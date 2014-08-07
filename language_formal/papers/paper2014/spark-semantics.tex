@@ -1,27 +1,47 @@
 \section{Formalization for A Subset of SPARK 2014 Semantics}
 \subsection{Syntax of SPARK 2014 Subset}
-%\begin{quote}
-\begin{lstlisting}[escapechar=\#]
-Inductive expr: Type := 
-  | Literal: astnum #$\rightarrow$# literal #$\rightarrow$# expr 
-  | Name: astnum #$\rightarrow$# name #$\rightarrow$# expr 
-  | BinOp: astnum #$\rightarrow$# binary_operator #$\rightarrow$# expr #$\rightarrow$# expr #$\rightarrow$# expr 
-  | UnaOp: astnum #$\rightarrow$# unary_operator #$\rightarrow$# expr #$\rightarrow$# expr
-with name: Type := 
-  | Identifier: astnum #$\rightarrow$# idnum #$\rightarrow$# name 
-  | Indexed_Component: astnum #$\rightarrow$# astnum #$\rightarrow$# idnum #$\rightarrow$# expr #$\rightarrow$# name 
-  | Selected_Component: astnum #$\rightarrow$# astnum #$\rightarrow$# idnum #$\rightarrow$# idnum #$\rightarrow$# name.
+The subset of SPARK 2014 that we have formalized is significant, which includes
+array/record (non-nested) and procedure calls. Furthermore, it also supports
+some intersting SPARK / Ada language structures, such as nested procedures and
+subtypes.
 
-Inductive stmt: Type := 
-  | Null: smt 
-  | Assignment: astnum #$\rightarrow$# name #$\rightarrow$# expr #$\rightarrow$# stmt 
-  | If: astnum #$\rightarrow$# expr #$\rightarrow$# stmt #$\rightarrow$# stmt #$\rightarrow$# stmt 
-  | While: astnum #$\rightarrow$# expr #$\rightarrow$# stmt #$\rightarrow$# stmt 
-  | Call: astnum #$\rightarrow$# astnum #$\rightarrow$# procnum #$\rightarrow$# list expr #$\rightarrow$# stmt 
-  | Sequence: astnum #$\rightarrow$# stmt #$\rightarrow$# stmt #$\rightarrow$# stmt.
+SPARK AST syntax is represented with inductive type definitions in Coq. And each
+AST node is annotated with an unique AST number, which will be used to record
+the type for each ast node, or it can be used later to track back to the
+SPARK source program when an run time error is detected, or it can be used to
+locate the position in source program where the run time check flags inserted by
+Gnat front end is incorrect.
+
+Here, we list some of SPARK language structures and show how we formalize them
+in Coq. Expression (\textit{expr}) can be literal, unary expression, binary
+expression or name, and each expression is annotated with an AST number
+(\textit{astnum}), which is represented by natural number. For type
+\textit{name}, it can be identifier, indexed component or selected component.
+Indexed component is constructed with the constructor
+\textit{Indexed\_Component}, whose first \textit{astnum} denotes the indexed
+component and the second \textit{astnum} denotes the prefix expression
+represented by \textit{idnum} and \textit{expr} is for index expression. 
+
+
+
+%\begin{quote}
+\begin{lstlisting}[escapechar=\#, language=coq, basicstyle=\small]
+Inductive expr: Type := 
+| Name: astnum -> name -> expr 
+| ...
+with name: Type := 
+| Identifier: astnum -> idnum -> name 
+| Indexed_Component: astnum -> astnum -> idnum -> expr -> name 
+| Selected_Component: astnum -> astnum -> idnum -> idnum -> name .
 \end{lstlisting}
 
-\begin{lstlisting}[escapechar=\#]
+\begin{lstlisting}[escapechar=\#, language=coq, basicstyle=\small]
+Inductive stmt: Type := 
+| Call: astnum #$\rightarrow$# astnum #$\rightarrow$# procnum #$\rightarrow$# list expr #$\rightarrow$# stmt 
+| ...
+\end{lstlisting}
+
+\begin{lstlisting}[escapechar=\#, language=coq, basicstyle=\small]
 Inductive type_decl: Type := 
   | Subtype: astnum #$\rightarrow$# typenum #$\rightarrow$# type #$\rightarrow$# range #$\rightarrow$# type_decl 
   | Derived_Type: astnum #$\rightarrow$# typenum #$\rightarrow$# type #$\rightarrow$# range #$\rightarrow$# type_decl 
@@ -32,5 +52,100 @@ Inductive type_decl: Type :=
 
 
 \subsection{Run-Time Check Flags}
+In SPARK, run time checks flags are automatically inserted at SPARK AST by the
+front end during semantic analysis, and their corresponding run time checks are
+then discharged by formally verifying their generated verification conditions
+with the GnatProve tool chain. So SPARK can guarantee the absence of run time
+errors for developing safety critical systems.
+
+For our formalized SPARK 2014 subset, the following check flags are sufficient,
+which are enforced on the expression nodes.
+\begin{itemize}
+\item 
+  Do\_Overflow\_Check: This flag is set on an operator where its operation may
+  cause overflow, such as binary operators \textit{(+, -, *, /)}, unary operator
+  \textit{(-)} and type conversion from one base type to another when the value
+  of source base type falls out of domain of the target base type.
+\item 
+  Do\_Division\_Check: This flag is set on division operators, such as
+  \textit{(/, mod, rem)}, to indicate a zero divide check.
+\item 
+  Do\_Range\_Check: This flag is set on an expression which appears in a
+  context where range check is required, such as right hand side of an
+  assignment, subscript expression in an indexed component, argument expressions
+  for a procedure call and initialization value expression for an object
+  declaration.
+\end{itemize}
 
 \subsection{Semantical Formalization With Run-Time Checks}
+The major semantical difference between SPARK and other programming languages is
+that verification for absence of run time errors are required by the languge
+itself.
+So in our semantical formalization for SPARK language, run time checks is an
+important integrant and they are always performed at appropriate points during
+the language semantic evaluation. The program will be terminated with a run time
+error message once any of its run time checks fails during the program
+evaluation.
+
+\subsubsection{Value}
+In SPARK semantics, return value for an expression evaluation can be either
+a normal basic value (integer or bool), a normal aggregate value (array or
+record value) or a run time error status detected during expression evaluation.
+Similarly, for a well-formed SPARK program, it should either terminate in a
+normal state or a detected run time error, which is expected to be detected and
+raised during program execution.
+
+\begin{lstlisting}[escapechar=\#, language=coq]
+Inductive return_value: Type :=
+| Normal: value -> return_value
+| Run_Time_Error: error_type -> return_value.
+\end{lstlisting}
+
+\subsubsection{Run Time Check Evaluation}
+A small but significant subset of SPARK run time checks are formalized in Coq,
+including overflow check, division check and range check. Overflow checks are
+performed to check that the result of a given orithmetic operation is within the
+bounds of the base type, division checks are performed to prevent divide being
+zero, and range checks are performed to check that the evaluation value of an
+expression is within bounds of its target type with respect to the context where
+it appears. A small fragment for overflow check formalization in Coq is:
+%\begin{quote}
+\begin{lstlisting}[escapechar = \#, language=coq, basicstyle=\small]
+Inductive overflow_check_bin: binop -> value -> value -> status -> Prop :=
+| Do_Overflow_Check_On_Binops: forall op v1 v2 v, 
+    op = Plus #$\vee$# op = Minus #$\vee$# op = Multiply #$\vee$# op = Divide ->
+    Val.binary_operation op v1 v2 = Some (BasicV (Int v)) ->
+    (Zge_bool v min_signed) && (Zle_bool v max_signed) = true ->  
+    overflow_check_bin op v1 v2 Success
+| ...
+\end{lstlisting}
+%\end{quote}
+Now we only model the 32-bit singed integer for SPARK program, where Coq integer
+(Z) is used to represent this integer value with a range bound between \textit{min\_signed}
+and \textit{max\_signed}. This integer range constraint is enforced through
+the above overflow check semantics when we define the semantics for the
+language. As we can see, overflow checks are required only for binary operators
+\textit{(+, -, *, /)} among the set of binary operators in our formalized SPARK
+subset. And it returns either \textit{Success} or \textit{Exception} with
+overflow signal.
+
+\subsubsection{Expression Evaluation}
+dd
+
+\subsubsection{Statement Evaluation}
+dd
+
+\subsubsection{Declaration Evaluation}
+dd
+
+
+
+
+
+
+
+
+
+
+
+
