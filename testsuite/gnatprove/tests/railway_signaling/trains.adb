@@ -33,10 +33,6 @@ is
          pragma Loop_Invariant
            (for all T in 1 .. Train =>
                not Is_Previous_Track (Trains (T), Track));
-         pragma Loop_Invariant
-           (for all Other_Track in Track_Id =>
-              (if Other_Track /= Track then
-                 Track_Signals (Other_Track) = Track_Signals'Loop_Entry (Other_Track)));
       end loop;
 
       Track_Signals (Track) := Green;
