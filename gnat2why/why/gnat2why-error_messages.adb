@@ -33,6 +33,7 @@ with Atree;               use Atree;
 with Einfo;               use Einfo;
 with Errout;              use Errout;
 with Flow_Error_Messages; use Flow_Error_Messages;
+with Osint;               use Osint;
 with Sinfo;               use Sinfo;
 
 with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
@@ -191,17 +192,23 @@ package body Gnat2Why.Error_Messages is
       use GNATCOLL.JSON;
 
       procedure Handle_Result (V : JSON_Value);
-      procedure Handle_Error (S : String);
+      procedure Handle_Error (Msg : String; Internal : Boolean);
 
       ------------------
       -- Handle_Error --
       ------------------
 
-      procedure Handle_Error (S : String) is
+      procedure Handle_Error (Msg : String; Internal : Boolean) is
       begin
-         Ada.Text_IO.Put_Line ("Internal error");
-         Ada.Text_IO.Put_Line (S);
-         raise Terminate_Program;
+         if Internal then
+            Ada.Text_IO.Put_Line ("Internal error");
+            Ada.Text_IO.Put_Line (Msg);
+            Exit_Program (E_Abort);
+         else
+            Ada.Text_IO.Put ("gnatprove: ");
+            Ada.Text_IO.Put_Line (Msg);
+            raise Terminate_Program;
+         end if;
       end Handle_Error;
 
       -------------------
@@ -254,7 +261,15 @@ package body Gnat2Why.Error_Messages is
          Results  : constant JSON_Array := Get (Get (File, "results"));
       begin
          if Has_Field (File, "error") then
-            Handle_Error (Get (Get (File, "error")));
+            declare
+               Msg : constant String := Get (Get (File, "error"));
+               Internal : constant Boolean :=
+                 (if Has_Field (File, "internal") then
+                       Get (Get (File, "internal"))
+                  else False);
+            begin
+               Handle_Error (Msg, Internal);
+            end;
          end if;
          for Index in 1 .. Length (Results) loop
             Handle_Result (Get (Results, Index));
@@ -263,7 +278,7 @@ package body Gnat2Why.Error_Messages is
    exception
       when Invalid_JSON_Stream =>
          --  something bad happened, output gnatwhy3 error as is
-         Handle_Error (S);
+         Handle_Error (S, Internal => True);
    end Parse_Why3_Results;
 
    --------------------
