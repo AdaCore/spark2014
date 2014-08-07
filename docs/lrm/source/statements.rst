@@ -96,7 +96,7 @@ Generalized Loop Iteration
    a subtype of a type T shall follow the following grammar for
    ``iterable_specification``::
 
-     iterable_specification ::= 
+     iterable_specification ::=
        (First       => name,
         Next        => name,
         Has_Element => name[,
@@ -147,7 +147,7 @@ Generalized Loop Iteration
 
 11. A container element iterator shall only occur as the
     loop_parameter_specification of a quantified_expression[, and not as
-    the iteration_scheme of a loop statement]. 
+    the iteration_scheme of a loop statement].
 
 .. todo: positional notation in an Iterable aspect spec ok?
 
@@ -190,6 +190,7 @@ the value an expression had upon entry to the subprogram.
   loop_variant_item       ::= change_direction => discrete_expression
   change_direction        ::= Increases | Decreases
 
+where ``discrete_expression`` is an ``expression`` of a discrete type.
 
 .. centered:: **Static Semantics**
 
@@ -618,7 +619,3 @@ and is used to state axioms.
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/up_timer.adb
    :language: ada
    :linenos:
-
-
-
-
