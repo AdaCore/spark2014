@@ -112,11 +112,11 @@ partition_refinement.adb:138:33: info: range check proved
 partition_refinement.adb:139:47: info: precondition proved
 partition_refinement.adb:139:47: info: range check proved
 partition_refinement.adb:140:13: info: precondition proved
+partition_refinement.adb:148:10: info: assertion proved
 partition_refinement.adb:148:40: info: overflow check proved
 partition_refinement.adb:148:69: info: precondition proved
 partition_refinement.adb:148:79: info: range check proved
 partition_refinement.adb:148:99: info: precondition proved
-partition_refinement.adb:148:99: warning: assertion might fail, requires Element (P, K) = Element (P'Loop_Entry, K)
 partition_refinement.adb:148:111: info: range check proved
 partition_refinement.adb:148:116: info: precondition proved
 partition_refinement.adb:148:139: info: range check proved
