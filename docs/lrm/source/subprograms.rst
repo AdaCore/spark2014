@@ -92,32 +92,48 @@ a subprogram.
 Preconditions and Postconditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. centered:: **Legality Rules**
+.. centered:: **Verification Rules**
 
-.. _tu-nt-preconditions_and_postconditions-01:
+For a call on a non-dispatching operation,
+a proof obligation is introduced (as
+for any run-time check) to ensure that the specific precondition
+check associated with the statically denoted callee will succeed.
+Upon entry to such a subprogram, the specific preconditions of
+the subprogram may then be assumed.
 
-1. As indicated by the ``aspect_specification`` being part of a
-   ``subprogram_declaration`` or ``subprogram_body``, a subprogram is
-   in |SPARK| only if its specific contract expressions (introduced by
-   Pre and Post), if any, are in |SPARK|.
+For a call (dispatching or not) on a dispatching operation,
+a proof obligation is introduced (as
+for any run-time check) to ensure that the class-wide precondition
+check associated with the statically denoted callee will succeed.
 
-.. _etu-preconditions_and_postconditions-lr:
+The proof obligation associated with the specific precondition
+of a dispatching subprogram is imposed on the callee, as opposed to
+on callers of the subprogram. Upon entry to a subprogram, the
+class-wide preconditions of the subprogram may be assumed. Given
+this, the specific preconditions of the subprogram must be proven.
 
-.. centered:: **Static Semantics**
+[The callee is responsible for discharging the proof obligations associated
+with any postcondition checks, class-wide or specific.]
 
-.. _tu-nt-preconditions_and_postconditions-02:
+In the case of an overriding dispatching operation whose Pre'Class
+attribute is explicitly specified, a proof obligation is introduced
+to ensure that the specified Pre'Class condition is implied by the
+Pre'Class condition of the overridden inherited subprogram(s). Similarly,
+in the case of an overriding dispatching operation whose Post'Class
+attribute is explicitly specified, a proof obligation is introduced
+to ensure that the specified Post'Class condition implies the
+Post'Class condition of the overridden inherited subprogram(s).
+[These proof obligations do not correspond to any run-time check.
+They are intended to, in effect, require users to make explicit the implicit
+disjunction/conjunction of class-wide preconditions/postconditions
+that is described in Ada RM 6.1.1.]
 
-2. For an ``expression_function_declaration``, F, without an explicit
-   Postcondition, the expression, E, implementing the function acts as
-   its Postcondition, that is the default postcondition is F'Result =
-   E.
-
-.. _etu-preconditions_and_postconditions-ss:
-
-In general the expression, E, of a postcondition of a function may be used as
-the expression of an ``expression_function_declaration`` instead making E both
-the implementation of the function and the expression of its [default]
-postcondition.
+[TBD: Should we mention Contract_Cases in this section?
+Is the caller or the callee responsible for proving the
+contract_cases checks that are performed at the start (as opposed to
+at the end) of a call to a non-dispatching subprogram? Presumably
+the caller. Certainly the callee is responsible in the case of call
+(dispatching or not) to a dispatching subprogram.]
 
 Subprogram Contracts
 ~~~~~~~~~~~~~~~~~~~~
