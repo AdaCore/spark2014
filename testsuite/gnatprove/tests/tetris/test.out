@@ -50,8 +50,8 @@ tetris.adb:135:55: warning: loop invariant might fail after first iteration, req
 tetris.adb:135:88: info: index check proved
 tetris.adb:142:13: info: loop invariant initialization proved
 tetris.adb:142:13: warning: loop invariant might fail after first iteration
-tetris.adb:146:35: info: range check proved
-tetris.adb:164:23: info: precondition proved
+tetris.adb:147:35: info: range check proved
+tetris.adb:165:23: info: precondition proved
 tetris.ads:104:06: info: length check proved
 tetris.ads:104:07: info: length check proved
 tetris.ads:105:07: info: length check proved

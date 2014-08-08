@@ -143,6 +143,7 @@ is
             pragma Loop_Invariant (From_Line < To_Line);
             if not Is_Empty_Line (Cur_Board (From_Line)) then
                Cur_Board (To_Line) := Cur_Board (From_Line);
+               Cur_Board (From_Line) := Empty_Line;
                To_Line := To_Line - 1;
             end if;
          end loop;
