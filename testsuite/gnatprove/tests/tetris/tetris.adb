@@ -129,14 +129,19 @@ is
    ---------------
 
    procedure Do_Action (A : Action; Success : out Boolean) is
-      Candidate : constant Piece := Move (Cur_Piece, A);
+      Candidate : Piece;
    begin
-      if No_Overlap (Cur_Board, Candidate) then
-         Cur_Piece := Candidate;
-         Success := True;
-      else
-         Success := False;
+      if Move_Is_Possible (Cur_Piece, A) then
+         Candidate := Move (Cur_Piece, A);
+
+         if No_Overlap (Cur_Board, Candidate) then
+            Cur_Piece := Candidate;
+            Success := True;
+            return;
+         end if;
       end if;
+
+      Success := False;
    end Do_Action;
 
 end Tetris;

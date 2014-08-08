@@ -159,12 +159,21 @@ is
          when Turn_Clockwise         =>
            (if D = Direction'Last then Direction'First else Direction'Succ (D)));
 
+   function Move_Is_Possible (P : Piece; A : Action) return Boolean is
+      (case A is
+         when Move_Left   => P.X - 1 in PX_Coord,
+         when Move_Right  => P.X + 1 in PX_Coord,
+         when Move_Down   => P.Y + 1 in PY_Coord,
+         when Turn_Action => True);
+
    function Move (P : Piece; A : Action) return Piece is
       (case A is
          when Move_Left   => P'Update (X => P.X - 1),
          when Move_Right  => P'Update (X => P.X + 1),
          when Move_Down   => P'Update (Y => P.Y + 1),
-         when Turn_Action => P'Update (D => Turn_Direction (P.D, A)));
+         when Turn_Action => P'Update (D => Turn_Direction (P.D, A)))
+   with
+     Pre => Move_Is_Possible (P, A);
 
    procedure Do_Action (A : Action; Success : out Boolean) with
      Pre  => Valid_Configuration,

@@ -51,6 +51,7 @@ tetris.adb:106:87: info: index check proved
 tetris.adb:113:13: info: loop invariant initialization proved
 tetris.adb:113:13: warning: loop invariant might fail after first iteration
 tetris.adb:117:35: info: range check proved
+tetris.adb:135:23: info: precondition proved
 tetris.ads:77:06: info: length check proved
 tetris.ads:77:07: info: length check proved
 tetris.ads:78:07: info: length check proved
@@ -82,7 +83,7 @@ tetris.ads:118:57: info: index check proved
 tetris.ads:140:46: warning: array index check might fail
 tetris.ads:158:77: info: range check proved
 tetris.ads:160:77: info: range check proved
-tetris.ads:167:66: info: range check proved
-tetris.ads:171:14: warning: postcondition might fail, requires (Valid_Configuration)
-tetris.ads:177:16: info: postcondition proved
-tetris.ads:186:16: warning: postcondition might fail
+tetris.ads:174:66: info: range check proved
+tetris.ads:180:14: warning: postcondition might fail, requires (Valid_Configuration)
+tetris.ads:186:16: info: postcondition proved
+tetris.ads:195:16: warning: postcondition might fail
