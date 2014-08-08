@@ -8,4 +8,16 @@ package Loops with SPARK_Mode is
    procedure Loop3 (A : in out Nat_Array; Bad : out Boolean);
 
    procedure Loop4 (A : in out Nat_Array; Bad : out Boolean);
+
+   procedure Loop5 (A : in out Nat_Array; Bad : out Boolean);
+
+   procedure Loop6 (A : in out Nat_Array; Bad : out Boolean);
+
+   procedure Loop7 (A : in out Nat_Array; Bad : out Boolean);
+
+   procedure Loop8 (A : in out Nat_Array; Bad : out Boolean);
+
+   function Loop9 (A : Nat_Array) return Boolean;
+
+   function Loop10 (A : Nat_Array) return Nat_Array;
 end Loops;

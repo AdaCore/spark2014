@@ -452,23 +452,32 @@ package body SPARK_Definition is
       --  special case here.
       --  Why aren't these kind of nodes Indexed_Components instead?
 
-      procedure Check_Loop_Invariant_Placement (Stmts : List_Id);
+      procedure Check_Loop_Invariant_Placement
+        (Stmts : List_Id;
+         Nested : Boolean := False);
       --  Checks that no non-scalar object declaration or nested loop appears
       --  before the last loop-invariant or variant in a loop's list of
       --  statements. Also stores scalar objects declared before the last
       --  loop-invariant in Loop_Entity_Set.
+      --  Nested should be true when checking statements coming from a nested
+      --  construct of the loop (if, case, and extended return statements.
 
       ------------------------------------
       -- Check_Loop_Invariant_Placement --
       ------------------------------------
 
-      procedure Check_Loop_Invariant_Placement (Stmts : List_Id) is
+      procedure Check_Loop_Invariant_Placement
+        (Stmts  : List_Id;
+         Nested : Boolean := False) is
 
          use Node_Lists;
 
          Loop_Stmts : constant Node_Lists.List :=
            Get_Flat_Statement_And_Declaration_List (Stmts);
-         Inv_Found  : Boolean := False;
+         Inv_Found  : Boolean := Nested;
+         --  We only call Check_Loop_Invariant_Placement on nested list of
+         --  statements if an invariant has been found.
+
          N          : Node_Id;
       begin
 
@@ -489,29 +498,68 @@ package body SPARK_Definition is
                --  Check that there are no nested loops and non-scalar object
                --  declarations before the last invariant/variant.
 
-               if Nkind (N) = N_Object_Declaration then
-                  if Is_Scalar_Type (Etype (Defining_Entity (N))) then
+               case Nkind (N) is
+                  when N_Object_Declaration =>
+                     if Is_Scalar_Type (Etype (Defining_Entity (N))) then
 
-                     --  Store scalar entities defined in loops before the
-                     --  invariant in Loop_Entity_Set
+                        --  Store scalar entities defined in loops before the
+                        --  invariant in Loop_Entity_Set
 
-                     Loop_Entity_Set.Include (Defining_Entity (N));
-                  else
+                        Loop_Entity_Set.Include (Defining_Entity (N));
+                     else
+                        Violation_Detected := True;
+                        if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+                           Error_Msg_N
+                             ("non-scalar objects declared before "
+                              & "loop-invariant not yet supported", N);
+                        end if;
+                     end if;
+                  when N_Loop_Statement =>
                      Violation_Detected := True;
                      if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
                         Error_Msg_N
-                          ("non-scalar objects declared before loop-invariant"
-                           & " not yet supported", N);
+                          ("nested loops before loop-invariant not yet "
+                             & "supported", N);
                      end if;
-                  end if;
-               elsif Nkind (N) = N_Loop_Statement then
-                  Violation_Detected := True;
-                  if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-                     Error_Msg_N
-                       ("nested loops before loop-invariant not yet supported",
-                        N);
-                  end if;
-               end if;
+
+                     --  Go inside if, case, and exended return statements to
+                     --  check for absence of non-scalar object declarations
+                     --  and nested loops.
+
+                  when N_If_Statement =>
+                     Check_Loop_Invariant_Placement
+                       (Then_Statements (N), True);
+                     if Present (Elsif_Parts (N)) then
+                        declare
+                           Cur : Node_Id := First (Elsif_Parts (N));
+                        begin
+                           while Present (Cur) loop
+                              Check_Loop_Invariant_Placement
+                                (Then_Statements (Cur), True);
+                              Next (Cur);
+                           end loop;
+                        end;
+                     end if;
+                     Check_Loop_Invariant_Placement
+                       (Else_Statements (N), True);
+                  when N_Case_Statement =>
+                     declare
+                        Cases : constant List_Id := Alternatives (N);
+                        Cur   : Node_Id := First (Cases);
+                     begin
+                        while Present (Cur) loop
+                           Check_Loop_Invariant_Placement
+                             (Statements (Cur), True);
+                           Next (Cur);
+                        end loop;
+                     end;
+                  when N_Extended_Return_Statement =>
+                     Check_Loop_Invariant_Placement
+                       (Return_Object_Declarations (N), True);
+                     Check_Loop_Invariant_Placement
+                       (Statements (Handled_Statement_Sequence (N)), True);
+                  when others => null;
+               end case;
             end if;
          end loop;
       end Check_Loop_Invariant_Placement;
