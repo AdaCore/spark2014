@@ -127,6 +127,13 @@ is
       P_Prime_Index : Partition_Index;
    begin
       for J in 0 .. Partition_Index'Base (Length (P)) - 1 loop
+
+         --  Intermediate assertion used to decrease time to prove loop invariant
+         pragma Assert (for all K in J .. Partition_Index'Base (Length (P)'Loop_Entry) - 1 => Element (P, K) = Element (P'Loop_Entry, K));
+
+         pragma Loop_Invariant (Capacity (P) = Capacity (P)'Loop_Entry);
+         pragma Loop_Invariant (Length (P) - Length (P)'Loop_Entry in 0 .. Count_Type(J));
+         pragma Loop_Invariant (for all K in J .. Partition_Index'Base (Length (P)'Loop_Entry) - 1 => Element (P, K) = Element (P'Loop_Entry, K));
          P_Elem := Element (P, J);
          if P_Elem.Count in 1 .. P_Elem.Last - P_Elem.First then
             P_Prime := Interval'(First => P_Elem.First + P_Elem.Count,
@@ -143,13 +150,6 @@ is
                F(I) := P_Prime_Index;
             end loop;
          end if;
-
-         --  Intermediate assertion used to decrease time to prove loop invariant
-         pragma Assert (for all K in J + 1 .. Partition_Index'Base (Length (P)'Loop_Entry) - 1 => Element (P, K) = Element (P'Loop_Entry, K));
-
-         pragma Loop_Invariant (Capacity (P) = Capacity (P)'Loop_Entry);
-         pragma Loop_Invariant (Length (P) - Length (P)'Loop_Entry in 0 .. Count_Type(J) + 1);
-         pragma Loop_Invariant (for all K in J + 1 .. Partition_Index'Base (Length (P)'Loop_Entry) - 1 => Element (P, K) = Element (P'Loop_Entry, K));
       end loop;
    end Make_New_Partitions;
 
