@@ -23,11 +23,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Sets;
-with Ada.Directories;
 with Ada.Strings.Unbounded.Hash;
-with Ada.Text_IO;                use Ada.Text_IO;
-
-with GNATCOLL.JSON;
 
 with Atree;                      use Atree;
 with Einfo;                      use Einfo;
@@ -35,13 +31,10 @@ with Errout;                     use Errout;
 with Erroutc;                    use Erroutc;
 with Namet;                      use Namet;
 with Opt;                        use Opt;
-with Sem_Util;                   use Sem_Util;
 with Sinfo;                      use Sinfo;
 with Sinput;                     use Sinput;
 with Stringt;                    use Stringt;
 with String_Utils;               use String_Utils;
-with VC_Kinds;
-
 with Gnat2Why.Nodes;             use Gnat2Why.Nodes;
 with Gnat2Why_Args;              use Gnat2Why_Args;
 
@@ -65,12 +58,6 @@ package body Flow_Error_Messages is
 
    type Message_Id is new Integer;
    --  type used to identify a message issued by gnat2why
-
-   procedure  Create_JSON_File
-     (GNAT_Root : Node_Id;
-      List      : GNATCOLL.JSON.JSON_Array;
-      Suffix    : String);
-   --  Write the JSON list in argument to the file "unit.suffix"
 
    function Compute_Message
      (Msg  : String;
@@ -212,47 +199,6 @@ package body Flow_Error_Messages is
       end if;
       return Slc;
    end Compute_Sloc;
-
-   ---------------------------
-   -- Create_Flow_Msgs_File --
-   ---------------------------
-
-   procedure Create_Flow_Msgs_File (GNAT_Root : Node_Id) is
-   begin
-      Create_JSON_File (GNAT_Root, Flow_Msgs, VC_Kinds.Flow_Suffix);
-   end Create_Flow_Msgs_File;
-
-   ----------------------
-   -- Create_JSON_File --
-   ----------------------
-
-   procedure  Create_JSON_File
-     (GNAT_Root : Node_Id;
-      List      : GNATCOLL.JSON.JSON_Array;
-      Suffix    : String)
-   is
-      FD : Ada.Text_IO.File_Type;
-      File_Name : constant String :=
-        Ada.Directories.Compose
-          (Name      => Spec_File_Name_Without_Suffix
-             (Enclosing_Comp_Unit_Node (GNAT_Root)),
-           Extension => Suffix);
-      Full : constant GNATCOLL.JSON.JSON_Value :=
-        GNATCOLL.JSON.Create (List);
-   begin
-      Ada.Text_IO.Create (FD, Ada.Text_IO.Out_File, File_Name);
-      Ada.Text_IO.Put (FD, GNATCOLL.JSON.Write (Full, Compact => False));
-      Ada.Text_IO.Close (FD);
-   end Create_JSON_File;
-
-   ----------------------------
-   -- Create_Proof_Msgs_File --
-   ----------------------------
-
-   procedure Create_Proof_Msgs_File (GNAT_Root : Node_Id) is
-   begin
-      Create_JSON_File (GNAT_Root, Proof_Msgs, VC_Kinds.Proof_Suffix);
-   end Create_Proof_Msgs_File;
 
    --------------------
    -- Error_Msg_Flow --
@@ -423,6 +369,18 @@ package body Flow_Error_Messages is
       return Result;
    end Fresh_Trace_File;
 
+   -------------------
+   -- Get_Flow_JSON --
+   -------------------
+
+   function Get_Flow_JSON return JSON_Array is (Flow_Msgs);
+
+   --------------------
+   -- Get_Proof_JSON --
+   --------------------
+
+   function Get_Proof_JSON return JSON_Array is (Proof_Msgs);
+
    ------------------------
    -- Msg_Kind_To_String --
    ------------------------
@@ -454,8 +412,6 @@ package body Flow_Error_Messages is
       Tracefile   : String := "";
       VC_File     : String := "";
       Editor_Cmd  : String := "") is
-
-      use GNATCOLL.JSON;
 
       Value     : constant JSON_Value := Create_Object;
       File       : constant String := File_Name (Slc);

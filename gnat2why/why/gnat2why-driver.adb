@@ -67,6 +67,7 @@ with Why.Inter;                use Why.Inter;
 with Why.Types;                use Why.Types;
 
 with Common_Containers;        use Common_Containers;
+with GNATCOLL.JSON;            use GNATCOLL.JSON;
 with Gnat2Why.Decls;           use Gnat2Why.Decls;
 with Gnat2Why.Error_Messages;  use Gnat2Why.Error_Messages;
 with Gnat2Why.External_Axioms; use Gnat2Why.External_Axioms;
@@ -113,8 +114,35 @@ package body Gnat2Why.Driver is
    --  signalled that everything went fine. This is done by creating the main
    --  output file of gnat2why, the main Why file.
 
-   procedure Run_Gnatwhy3 (GNAT_Root : Node_Id);
+   procedure Run_Gnatwhy3;
    --  After generating the Why file, run the proof tool
+
+   procedure Create_JSON_File (Flow_Done, Proof_Done : Boolean);
+   --  at the very end, write the analysis results to disk
+
+   ----------------------
+   -- Create_JSON_File --
+   ----------------------
+
+   procedure Create_JSON_File (Flow_Done, Proof_Done : Boolean) is
+      FD : Ada.Text_IO.File_Type;
+      File_Name : constant String :=
+        Ada.Directories.Compose
+          (Name      => Unit_Name,
+           Extension => "spark");
+      Full : constant JSON_Value := Create_Object;
+   begin
+      Set_Field (Full, "spark", Create (Get_SPARK_JSON));
+      if Flow_Done then
+         Set_Field (Full, "flow", Create (Get_Flow_JSON));
+      end if;
+      if Proof_Done then
+         Set_Field (Full, "proof", Create (Get_Proof_JSON));
+      end if;
+      Ada.Text_IO.Create (FD, Ada.Text_IO.Out_File, File_Name);
+      Ada.Text_IO.Put (FD, GNATCOLL.JSON.Write (Full, Compact => False));
+      Ada.Text_IO.Close (FD);
+   end Create_JSON_File;
 
    ----------------------------
    -- Compute_Global_Effects --
@@ -251,6 +279,11 @@ package body Gnat2Why.Driver is
       procedure Mark_All_Compilation_Units is new Sem.Walk_Library_Items
         (Action => Mark_Compilation_Unit);
 
+      --  these booleans indicate whether flow/proof have been attempted
+      --  anywhere in the unit
+
+      Flow_Done, Proof_Done : Boolean := False;
+
    begin
 
       if Is_Generic_Unit (Unique_Defining_Entity (N))
@@ -300,9 +333,7 @@ package body Gnat2Why.Driver is
       --  are not included, except for the main unit itself, which always
       --  comes last.
 
-      Before_Marking (Base_Name);
       Mark_All_Compilation_Units;
-      After_Marking;
 
       if Gnat2Why_Args.Global_Gen_Mode then
 
@@ -323,20 +354,24 @@ package body Gnat2Why.Driver is
          --  Do some flow analysis
 
          if Gnat2Why_Args.Flow_Analysis_Mode then
-            Flow_Analyse_CUnit (GNAT_Root);
+            Flow_Done := True;
+            Flow_Analyse_CUnit;
          end if;
 
          --  Start the translation to Why
 
          if Gnat2Why_Args.Prove_Mode and then Is_In_Analyzed_Files (N) then
+            Proof_Done := True;
             Why.Atree.Modules.Initialize;
             Init_Why_Sections;
             Translate_Standard_Package;
             Translate_CUnit;
-            Run_Gnatwhy3 (GNAT_Root);
+            Run_Gnatwhy3;
          end if;
 
       end if;
+
+      Create_JSON_File (Flow_Done, Proof_Done);
    end GNAT_To_Why;
 
    ------------------------
@@ -387,7 +422,7 @@ package body Gnat2Why.Driver is
    -- Run_Gnatwhy3 --
    ------------------
 
-   procedure Run_Gnatwhy3 (GNAT_Root : Node_Id) is
+   procedure Run_Gnatwhy3 is
       use Ada.Directories;
       Status  : aliased Integer;
       Fn      : constant String :=
@@ -414,7 +449,6 @@ package body Gnat2Why.Driver is
                Status     => Status'Access));
          Set_Directory (Old_Dir);
       end if;
-      Create_Proof_Msgs_File (GNAT_Root);
    end Run_Gnatwhy3;
 
    ---------------------

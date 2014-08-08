@@ -7,6 +7,7 @@ import os
 import sys
 import re
 import glob
+import json
 
 max_steps = 200
 default_vc_timeout = 120
@@ -548,6 +549,24 @@ def grep(regex, strlist, invert=False):
     """
     p = re.compile(regex)
     return [line for line in strlist if matches(p, line, invert)]
+
+
+def check_all_spark(result_file, expected_len):
+    """Using a gnatprove result file, check that all subprograms of that unit
+       are in SPARK. Also check that there are as many entries as expected.
+
+    PARAMETERS
+        result_file      the file to read
+        expected_len     the number of subprograms expected
+    RESULT
+        none
+    """
+    with open(result_file, 'r') as f:
+        result = json.load(f)
+        spark_result = result["spark"]
+        assert len(spark_result) == expected_len
+        for entry in spark_result:
+            assert entry["spark"] == "all"
 
 
 def check_dot_files(opt=None):

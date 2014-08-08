@@ -2,4 +2,5 @@ from test_support import *
 from os.path import join
 
 prove_all()
-cat (os.path.join("gnatprove", "pack.spark"))
+check_all_spark (os.path.join("gnatprove", "pack.spark"),
+                 expected_len = 10)

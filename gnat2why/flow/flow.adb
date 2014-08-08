@@ -1124,7 +1124,7 @@ package body Flow is
    -- Flow_Analyse_CUnit --
    ------------------------
 
-   procedure Flow_Analyse_CUnit (GNAT_Root : Node_Id) is
+   procedure Flow_Analyse_CUnit is
       FA_Graphs : Analysis_Maps.Map;
       Success   : Boolean;
    begin
@@ -1189,9 +1189,6 @@ package body Flow is
          --  immediately, instead of when this procedure ends.
          FA.Atr.Clear;
       end loop;
-
-      --  Create the "unit.flow" file that contains all emitted flow messages.
-      Create_Flow_Msgs_File (GNAT_Root);
 
       if Gnat2Why_Args.Flow_Advanced_Debug then
          Write_Str (Character'Val (8#33#) & "[33m" &

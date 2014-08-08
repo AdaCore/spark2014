@@ -14,17 +14,3 @@ p.ads:6:14: warning: subprogram "Proc5" has no effect
 p.ads:7:14: warning: subprogram "Proc6" has no effect
 p.ads:8:14: warning: subprogram "Proc7" has no effect
 p.ads:9:14: warning: subprogram "Proc8" has no effect
-[
-{ "name" : "P.Proc", "file" :"p.ads", "line" :  2, "spark" : "all" }
-, { "name" : "P.Proc2", "file" :"p.ads", "line" :  3, "spark" : "all" }
-, { "name" : "P.Proc3", "file" :"p.ads", "line" :  4, "spark" : "all" }
-, { "name" : "P.Proc4", "file" :"p.ads", "line" :  5, "spark" : "all" }
-, { "name" : "P.Proc5", "file" :"p.ads", "line" :  6, "spark" : "all" }
-, { "name" : "P.Proc6", "file" :"p.ads", "line" :  7, "spark" : "all" }
-, { "name" : "P.Proc7.Zero", "file" :"p.adb", "line" :  40, "spark" : "all" }
-, { "name" : "P.Proc7", "file" :"p.ads", "line" :  8, "spark" : "all" }
-, { "name" : "P.Proc8.Zero", "file" :"p.adb", "line" :  47, "spark" : "all" }
-, { "name" : "P.Proc8", "file" :"p.ads", "line" :  9, "spark" : "all" }
-, { "name" : "P", "file" :"p.ads", "line" :  1, "spark" : "all" }
-]
-

@@ -24,11 +24,10 @@
 --  This package provides mechanisms for emitting errors and warnings.
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-
-with Types;                 use Types;
-
 with Flow;                  use Flow;
 with Flow_Types;            use Flow_Types;
+with GNATCOLL.JSON;         use GNATCOLL.JSON;
+with Types;                 use Types;
 
 package Flow_Error_Messages is
 
@@ -36,11 +35,10 @@ package Flow_Error_Messages is
    --  This boolean becomes True if we find a flow error or if we find a
    --  flow warning while Warning_Mode = Treat_As_Error.
 
-   procedure Create_Flow_Msgs_File (GNAT_Root : Node_Id);
-   --  Writes out the flow messages to the file "unit.flow", in JSON format
-
-   procedure Create_Proof_Msgs_File (GNAT_Root : Node_Id);
-   --  Writes out the proof messages to the file "unit.proof", in JSON format
+   function Get_Flow_JSON return JSON_Array;
+   function Get_Proof_JSON return JSON_Array;
+   --  Call these functions to get the messages of proof and flow in JSON form.
+   --  Should be called only when analysis is finished
 
    function Fresh_Trace_File return String;
    --  Returns a name for a trace file. This name should be unique for the

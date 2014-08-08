@@ -25,18 +25,13 @@
 
 --  This program (SPARK_Report) is run at the very end of SPARK analysis (see
 --  also the comment in gnatprove.adb). The different bits of analysis have
---  stored the results of the analysis in various files, This program reads
---  all those files in and prints a summary in a file called "gnatprove.out".
+--  stored the results of the analysis in one result file per unit, This
+--  program reads all those files in and prints a summary in a file called
+--  "gnatprove.out".
 --
---  For each unit, the tool expects files to be present that look like this:
---    * <unit>.spark contains the SPARK status for all subprograms and packages
---    * <unit>.flow contains the flow warnings/error messages for all
---         subprograms and packages in SPARK
---    * <unit>.proof contains the proved/unproved VCs for all subprograms and
---        packages in SPARK
---
---  All these files are JSON files, and contain a list of entries that will be
---  read in by SPARK_Report. We now describe the format of each file.
+--  For each unit, the tool expects a file "<unit>.spark" be be present. This
+--  file is in JSON format. The following comments describe the format of this
+--  file.
 --
 --  --------------
 --  -- Entities --
@@ -50,25 +45,38 @@
 --      file  : string,
 --      line  : int }
 
---  -----------------------
---  -- SPARK status file --
---  -----------------------
+--  ---------------------------
+--  -- The SPARK result file --
+--  ---------------------------
 --
---  This file is called <unit>.spark and is a list of entities, with an extra
---  field for spark status, so that the entire dict looks like this:
---    { name  : string,
---      file  : string,
---      line  : int,
---      spark : string }
---  the entry "spark" is one of "all", "spec" or "no" and describes the SPARK
---  status of the entity.
+--  The file is of this form:
+--    { "spark" : list spark_result,
+--      "flow"  : list flow_result,
+--      "proof" : list proof_result }
 --
---  -----------------
---  --  Proof File --
---  -----------------
+--  Each entry is mapped to a list of entries whose format is described below.
 --
---  This file is called <unit>.proof and is a list of dictionaries of the
---  folling form:
+--  ------------------------
+--  -- SPARK status entry --
+--  ------------------------
+--
+--  This entry is simply an entity, with an extra field for spark status, so
+--  that the entire dict looks like this:
+--    spark_result = { name  : string,
+--                     file  : string,
+--                     line  : int,
+--                     spark : string }
+--  Field "spark" takes value in "spec", "all" or "no" to denote
+--  respectively that only the spec is in SPARK, both spec/body are in SPARK
+--  (or spec is in SPARK for a package without body), or the spec is not in
+--  SPARK.
+--
+--  ------------------
+--  --  Proof entry --
+--  ------------------
+--
+--  Entries for proof are of the following form:
+--  proof_result =
 --    { file     : string,
 --      line     : int,
 --      col      : int,
@@ -87,34 +95,32 @@
 --  - "entity" contains the entity dictionary for the entity that this VC
 --    belongs to
 --
---  ----------------
---  --  Flow File --
---  ----------------
+--  -----------------
+--  --  Flow Entry --
+--  -----------------
 --
---  This file is called <unit>.flow and is a list of dictionaries of the same
---  form as for proof. Differences are in the possible values for:
+--  Flow entries are of the same form as for proof. Differences are in the
+--  possible values for:
 --  - severity: ??? document what severities flow uses
 --  - rule:     ??? document possible values for flow
---  The special value "pragma_warning" is used for suppressed warnings. In
---  this case, the field "message" contains the reason for the message to
---  be suppressed, instead of the message string.
+
+--  Both for flow and proof, The special value "pragma_warning" is used as a
+--  possible value of the "rule" field, for suppressed warnings. In this case,
+--  the field "message" contains the reason for the message to be suppressed,
+--  instead of the message string.
 
 with Ada.Command_Line;
 with Ada.Directories;
 with Ada.Strings.Unbounded;
 with Ada.Text_IO;
-
+with Call;                    use Call;
+with Configuration;           use Configuration;
 with GNAT.Directory_Operations.Iteration;
 with GNAT.OS_Lib;             use GNAT.OS_Lib;
-
-with GNATCOLL.JSON;
-
-with Call;                    use Call;
+with GNATCOLL.JSON;           use GNATCOLL.JSON;
+with Report_Database;         use Report_Database;
 with String_Utils;            use String_Utils;
 with VC_Kinds;
-
-with Configuration;           use Configuration;
-with Report_Database;         use Report_Database;
 
 procedure SPARK_Report is
 
@@ -125,10 +131,10 @@ procedure SPARK_Report is
    --  No_Analysis_Done is set to true if no subprogram or package was
    --  analyzed in this unit.
 
-   procedure Handle_Flow_File (Fn : String);
-   --  Parse and extract all information from a flow result file
+   procedure Handle_Flow_Items (V : JSON_Array; Unit : Unit_Type);
+   --  Parse and extract all information from a flow result array
 
-   procedure Handle_Proof_File (Fn : String);
+   procedure Handle_Proof_Items (V : JSON_Array; Unit : Unit_Type);
    --  Parse and extract all information from a proof result file
 
    procedure Handle_Source_Dir (Dir : String);
@@ -147,7 +153,6 @@ procedure SPARK_Report is
 
    function Mk_Subp_Of_Entity (Ent : GNATCOLL.JSON.JSON_Value)
                                return Subp_Type is
-      use GNATCOLL.JSON;
    begin
       return
         Mk_Subp (Get (Get (Ent, "name")),
@@ -159,15 +164,11 @@ procedure SPARK_Report is
    -- Handle_Flow_File --
    ----------------------
 
-   procedure Handle_Flow_File (Fn : String) is
-      use GNATCOLL.JSON;
-      Dict : constant JSON_Value := Read (Read_File_Into_String (Fn), Fn);
-      Unit : constant Unit_Type := Mk_Unit (Ada.Directories.Base_Name (Fn));
-      Entries : constant JSON_Array := Get (Dict);
+   procedure Handle_Flow_Items (V : JSON_Array; Unit : Unit_Type) is
    begin
-      for Index in 1 .. Length (Entries) loop
+      for Index in 1 .. Length (V) loop
          declare
-            Result : constant JSON_Value := Get (Entries, Index);
+            Result : constant JSON_Value := Get (V, Index);
             Severe : constant String     := Get (Get (Result, "severity"));
             Kind   : constant String     := Get (Get (Result, "rule"));
             Subp   : constant Subp_Type  :=
@@ -189,21 +190,17 @@ procedure SPARK_Report is
             end if;
          end;
       end loop;
-   end Handle_Flow_File;
+   end Handle_Flow_Items;
 
    -----------------------
    -- Handle_Proof_File --
    -----------------------
 
-   procedure Handle_Proof_File (Fn : String) is
-      use GNATCOLL.JSON;
-      Dict : constant JSON_Value := Read (Read_File_Into_String (Fn), Fn);
-      Unit : constant Unit_Type := Mk_Unit (Ada.Directories.Base_Name (Fn));
-      Entries : constant JSON_Array := Get (Dict);
+   procedure Handle_Proof_Items (V : JSON_Array; Unit : Unit_Type) is
    begin
-      for Index in 1 .. Length (Entries) loop
+      for Index in 1 .. Length (V) loop
          declare
-            Result : constant JSON_Value := Get (Entries, Index);
+            Result : constant JSON_Value := Get (V, Index);
             Severe : constant String     := Get (Get (Result, "severity"));
             Kind   : constant String     := Get (Get (Result, "rule"));
             Subp   : constant Subp_Type  :=
@@ -225,29 +222,22 @@ procedure SPARK_Report is
             end if;
          end;
       end loop;
-   end Handle_Proof_File;
+   end Handle_Proof_Items;
 
    -----------------------
    -- Handle_SPARK_File --
    -----------------------
 
    procedure Handle_SPARK_File (Fn : String) is
-      use GNATCOLL.JSON;
       Dict : constant JSON_Value := Read (Read_File_Into_String (Fn), Fn);
       Basename : constant String := Ada.Directories.Base_Name (Fn);
       Unit : constant Unit_Type := Mk_Unit (Basename);
-      Has_Flow : constant Boolean :=
-        Ada.Directories.Exists
-          (Ada.Directories.Compose (Name      => Basename,
-                                    Extension => VC_Kinds.Flow_Suffix));
-      Has_Proof : constant Boolean :=
-        Ada.Directories.Exists
-          (Ada.Directories.Compose (Name      => Basename,
-                                    Extension => VC_Kinds.Proof_Suffix));
+      Has_Flow : constant Boolean := Has_Field (Dict, "flow");
+      Has_Proof : constant Boolean := Has_Field (Dict, "proof");
 
       --  Status of analysis performed on all subprograms and packages of a
-      --  unit depend on presence of a file <unit>.flow and <unit>.proof in
-      --  the same directory as the file <unit>.spark.
+      --  unit depend on presence of the "flow" and "proof" files present in
+      --  the .spark result file.
 
       --  This status is only relevant for subprograms and packages which are
       --  in SPARK. Also, we do not currently take into account the fact that
@@ -259,32 +249,35 @@ procedure SPARK_Report is
          elsif Has_Proof then Proof_Only
          else No_Analysis);
 
+      Entries : constant JSON_Array := Get (Get (Dict, "spark"));
    begin
-      declare
-         Entries : constant JSON_Array := Get (Dict);
-      begin
-         for Index in 1 .. Length (Entries) loop
-            declare
-               Result   : constant JSON_Value := Get (Entries, Index);
-               In_SPARK : constant Boolean :=
-                 Get (Get (Result, "spark")) = "all";
-            begin
-               Add_SPARK_Status
-                 (Unit         => Unit,
-                  Subp         => Mk_Subp_Of_Entity (Result),
-                  SPARK_Status => In_SPARK,
-                  Analysis     => Analysis);
+      for Index in 1 .. Length (Entries) loop
+         declare
+            Result   : constant JSON_Value := Get (Entries, Index);
+            In_SPARK : constant Boolean :=
+              Get (Get (Result, "spark")) = "all";
+         begin
+            Add_SPARK_Status
+              (Unit         => Unit,
+               Subp         => Mk_Subp_Of_Entity (Result),
+               SPARK_Status => In_SPARK,
+               Analysis     => Analysis);
 
-               --  If at least one subprogram or package was analyzed (either
-               --  flow analysis or proof), then record that the analysis was
-               --  effective.
+            --  If at least one subprogram or package was analyzed (either
+            --  flow analysis or proof), then record that the analysis was
+            --  effective.
 
-               if In_SPARK and Analysis /= No_Analysis then
-                  No_Analysis_Done := False;
-               end if;
-            end;
-         end loop;
-      end;
+            if In_SPARK and Analysis /= No_Analysis then
+               No_Analysis_Done := False;
+            end if;
+         end;
+      end loop;
+      if Has_Flow then
+         Handle_Flow_Items (Get (Get (Dict, "flow")), Unit);
+      end if;
+      if Has_Proof then
+         Handle_Proof_Items (Get (Get (Dict, "proof")), Unit);
+      end if;
    end Handle_SPARK_File;
 
    -----------------------
@@ -298,46 +291,6 @@ procedure SPARK_Report is
          Index   : Positive;
          Quit    : in out Boolean);
       --  Wrapper for Handle_SPARK_File
-
-      procedure Local_Handle_Flow_File
-        (Item    : String;
-         Index   : Positive;
-         Quit    : in out Boolean);
-      --  Wrapper for Handle_Flow_File
-
-      procedure Local_Handle_Proof_File
-        (Item    : String;
-         Index   : Positive;
-         Quit    : in out Boolean);
-      --  Wrapper for Handle_Proof_File
-
-      ----------------------------
-      -- Local_Handle_Flow_File --
-      ----------------------------
-
-      procedure Local_Handle_Flow_File
-        (Item    : String;
-         Index   : Positive;
-         Quit    : in out Boolean) is
-      begin
-         pragma Unreferenced (Index);
-         pragma Unreferenced (Quit);
-         Handle_Flow_File (Item);
-      end Local_Handle_Flow_File;
-
-      -----------------------------
-      -- Local_Handle_Proof_File --
-      -----------------------------
-
-      procedure Local_Handle_Proof_File
-        (Item    : String;
-         Index   : Positive;
-         Quit    : in out Boolean) is
-      begin
-         pragma Unreferenced (Index);
-         pragma Unreferenced (Quit);
-         Handle_Proof_File (Item);
-      end Local_Handle_Proof_File;
 
       -----------------------------
       -- Local_Handle_SPARK_File --
@@ -358,14 +311,6 @@ procedure SPARK_Report is
          GNAT.Directory_Operations.Iteration.Wildcard_Iterator
           (Action => Local_Handle_SPARK_File);
 
-      procedure Iterate_Flow is new
-         GNAT.Directory_Operations.Iteration.Wildcard_Iterator
-          (Action => Local_Handle_Flow_File);
-
-      procedure Iterate_Proof is new
-         GNAT.Directory_Operations.Iteration.Wildcard_Iterator
-          (Action => Local_Handle_Proof_File);
-
       Save_Dir : constant String := Ada.Directories.Current_Directory;
 
    --  Start of Handle_Source_Dir
@@ -373,10 +318,6 @@ procedure SPARK_Report is
    begin
       Ada.Directories.Set_Directory (Dir);
       Iterate_SPARK (Path => "*." & VC_Kinds.SPARK_Suffix);
-
-      Iterate_Flow (Path => "*." & VC_Kinds.Flow_Suffix);
-      Iterate_Proof (Path => "*." & VC_Kinds.Proof_Suffix);
-
       Ada.Directories.Set_Directory (Save_Dir);
    exception
       when others =>

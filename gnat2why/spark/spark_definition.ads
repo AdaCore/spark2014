@@ -41,12 +41,11 @@
 --  violation was detected in the body.
 
 with Atree;             use Atree;
-with Einfo;             use Einfo;
-with Sinfo;             use Sinfo;
-
-with Types;             use Types;
-
 with Common_Containers; use Common_Containers;
+with Einfo;             use Einfo;
+with GNATCOLL.JSON;     use GNATCOLL.JSON;
+with Sinfo;             use Sinfo;
+with Types;             use Types;
 
 package SPARK_Definition is
 
@@ -75,14 +74,6 @@ package SPARK_Definition is
    --  Emit messages only if this is set. We do not want to produce any
    --  error messages during marking when we generate globals (only the
    --  marking itself is important).
-
-   procedure Before_Marking (Basename : String);
-   --  Create a file to store detailed information about the SPARK status of
-   --  toplevel subprograms (spec/body in SPARK or not). Use the argument as
-   --  the base of the file.
-
-   procedure After_Marking;
-   --  Close the file created by Before_Marking.
 
    procedure Mark_Compilation_Unit (N : Node_Id);
    --  Put marks on a compilation unit. This should be called after all
@@ -128,5 +119,9 @@ package SPARK_Definition is
      Post => Fullview_Not_In_SPARK (Get_First_Ancestor_In_SPARK'Result);
    --  Returns the first type with Fullview_Not_In_SPARK in the ancestors of
    --  E.
+
+   function Get_SPARK_JSON return JSON_Array;
+   --  should be called after marking is finished. Returns the result of
+   --  marking as a JSON record.
 
 end SPARK_Definition;

@@ -2,7 +2,7 @@ configuration project Gnat2why is
    for Default_Language use "Ada";
    package Compiler is
       for Driver ("Ada") use "gnat2why";
-      for Object_File_Suffix ("Ada") use ".proof";
+      for Object_File_Suffix ("Ada") use ".spark";
       For Language_Kind ("Ada") use "unit_based";
       For Dependency_Kind ("Ada") use "ALI_Closure";
       for Dependency_Switches ("Ada") use ();

@@ -24,7 +24,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Directories;
 with Ada.Text_IO;            use Ada.Text_IO;
 
 with Aspects;                use Aspects;
@@ -46,8 +45,6 @@ with Snames;                 use Snames;
 with Stand;                  use Stand;
 with Uintp;                  use Uintp;
 with Urealp;                 use Urealp;
-
-with VC_Kinds;
 
 with SPARK_Util;             use SPARK_Util;
 
@@ -129,6 +126,8 @@ package body SPARK_Definition is
    --  Set to True when traversing actions (statements introduced by the
    --  compiler inside expressions), which require a special translation.
    --  Those entities are stored in Actions_Entity_Set.
+
+   SPARK_Status_JSON : JSON_Array := Empty_Array;
 
    procedure Initialize;
 
@@ -230,27 +229,6 @@ package body SPARK_Definition is
    ------------------------------
 
    procedure Generate_Output_In_Out_SPARK (Id : Entity_Id);
-   --  Produce a line in output file for subprogram or package Id, in JSON
-   --  format, with following interface:
-
-   --   { name  : string,          name of the subprogram / package
-   --     file  : string,          file name of the spec
-   --     line  : int,             line of the spec
-   --     spark : string           spec/body is in SPARK or not
-   --   }
-
-   --  Field "spark" takes value in "spec", "all" or "no" to denote
-   --  respectively that only the spec is in SPARK, both spec/body are in SPARK
-   --  (or spec is in SPARK for a package without body), or the spec is not in
-   --  SPARK.
-
-   Output_File : Ada.Text_IO.File_Type;
-   --  <file>.alfa in which this pass generates information about subprograms
-   --  in SPARK and subprograms not in SPARK.
-
-   First_Entry : Boolean := True;
-   --  Global variable used to decide whether a separator needs to be printed
-   --  between records in the JSON output
 
    ----------------------------------
    -- Recursive Marking of the AST --
@@ -311,28 +289,6 @@ package body SPARK_Definition is
    --  The most underlying type for type Id should be in SPARK, otherwise mark
    --  node N as not in SPARK.
 
-   -------------------
-   -- After_Marking --
-   -------------------
-
-   procedure After_Marking is
-   begin
-      Put_Line (Output_File, "]");
-      Close (Output_File);
-   end After_Marking;
-
-   --------------------
-   -- Before_Marking --
-   --------------------
-
-   procedure Before_Marking (Basename : String) is
-   begin
-      Create (Output_File, Out_File,
-              Ada.Directories.Compose (Name      => Basename,
-                                       Extension => VC_Kinds.SPARK_Suffix));
-      Put_Line (Output_File, "[");
-   end Before_Marking;
-
    ----------------------------------
    -- Generate_Output_In_Out_SPARK --
    ----------------------------------
@@ -346,9 +302,10 @@ package body SPARK_Definition is
               No (Get_Package_Body (Id))
               then "all" else "spec")
          else "no");
-      Line_Num     : constant String :=
-        Get_Logical_Line_Number (Sloc (Id))'Img;
+      Line_Num     : constant Integer :=
+        Integer (Get_Logical_Line_Number (Sloc (Id)));
 
+      V : constant JSON_Value := Create_Object;
    begin
       --  Only add infomation for Id if analysis is requested for that
       --  subprogram or package. Then, absence of errors in flow and warnings
@@ -356,17 +313,11 @@ package body SPARK_Definition is
       --  flow analysis or proof of that entity.
 
       if Analysis_Requested (Id) then
-         if First_Entry then
-            First_Entry := False;
-         else
-            Put (Output_File, ", ");
-         end if;
-         Put_Line
-           (Output_File,
-            "{ ""name"" : """ & Subprogram_Full_Source_Name (Id) & """, " &
-              """file"" :""" & File_Name (Sloc (Id)) & """, " &
-              """line"" : " & Line_Num & ", " &
-              """spark"" : """ & SPARK_Status & """ }");
+         Set_Field (V, "name", Subprogram_Full_Source_Name (Id));
+         Set_Field (V, "file", File_Name (Sloc (Id)));
+         Set_Field (V, "line", Line_Num);
+         Set_Field (V, "spark", SPARK_Status);
+         Append (SPARK_Status_JSON, V);
       end if;
    end Generate_Output_In_Out_SPARK;
 
@@ -376,6 +327,12 @@ package body SPARK_Definition is
 
    function Get_First_Ancestor_In_SPARK (E : Entity_Id) return Entity_Id is
      (Entities_Fullview_Not_In_SPARK.Element (E));
+
+   --------------------
+   -- Get_SPARK_JSON --
+   --------------------
+
+   function Get_SPARK_JSON return JSON_Array is (SPARK_Status_JSON);
 
    ----------------
    -- Initialize --
