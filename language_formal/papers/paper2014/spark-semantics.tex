@@ -22,8 +22,6 @@ Indexed component is constructed with the constructor
 component and the second \textit{astnum} denotes the prefix expression
 represented by \textit{idnum} and \textit{expr} is for index expression. 
 
-
-
 %\begin{quote}
 \begin{lstlisting}[escapechar=\#, language=coq, basicstyle=\small]
 Inductive expr: Type := 
@@ -32,22 +30,45 @@ Inductive expr: Type :=
 with name: Type := 
 | Identifier: astnum -> idnum -> name 
 | Indexed_Component: astnum -> astnum -> idnum -> expr -> name 
-| Selected_Component: astnum -> astnum -> idnum -> idnum -> name .
+| Selected_Component: astnum -> astnum -> idnum -> idnum -> name.
 \end{lstlisting}
+
+For procedure \textit{Call} in statement \textit{stmt}, its first
+\textit{astnum} is the AST number for the procedure call statement, and the
+second \textit{astnum} is the AST number for the called procedure represented by 
+\textit{procnum} followed by a list of arguments of type \textit{list expr}.
 
 \begin{lstlisting}[escapechar=\#, language=coq, basicstyle=\small]
 Inductive stmt: Type := 
-| Call: astnum #$\rightarrow$# astnum #$\rightarrow$# procnum #$\rightarrow$# list expr #$\rightarrow$# stmt 
+| Assignment: astnum -> name -> expr -> stmt 
+| Call: astnum -> astnum -> procnum -> list expr -> stmt 
 | ...
 \end{lstlisting}
 
+Range constrainted scalar types are used commonly in SPARK programs, they can be
+declared with either subtype declaration, derived type definition, or integer
+type definition. 
+A \textit{Subtype} declares a subtype, represented with
+\textit{typenum}, of some previously declared \textit{type} with an additional \textit{range}
+constraint (e.g. subtype T is Integer range 1 .. 10).
+A \textit{Derived\_Type}, whose name is represented by \textit{typenum},
+defines a derived type whose characteristics are derived from those of a parent
+\textit{type} with an additional \textit{range} constraint (e.g. type U is new
+Integer range 1 .. 10).
+A \textit{Integer\_Type} defines a new integer type, represented with
+\textit{typenum}, with an additional \textit{range} constraint (e.g. type W is
+range 0 .. 10).
+
+\textit{Array\_Type} and \textit{Record\_Type} are constructors for defining
+aggregate data types array and record.
+
 \begin{lstlisting}[escapechar=\#, language=coq, basicstyle=\small]
 Inductive type_decl: Type := 
-  | Subtype: astnum #$\rightarrow$# typenum #$\rightarrow$# type #$\rightarrow$# range #$\rightarrow$# type_decl 
-  | Derived_Type: astnum #$\rightarrow$# typenum #$\rightarrow$# type #$\rightarrow$# range #$\rightarrow$# type_decl 
-  | Integer_Type: astnum #$\rightarrow$# typenum #$\rightarrow$# range #$\rightarrow$# type_decl
-  | Array_Type: astnum #$\rightarrow$# typenum #$\rightarrow$# type #$\rightarrow$# type #$\rightarrow$# type_decl 
-  | Record_Type: astnum #$\rightarrow$# typenum #$\rightarrow$# list (idnum*type) #$\rightarrow$# type_decl.
+| Subtype: astnum -> typenum -> type -> range -> type_decl 
+| Derived_Type: astnum -> typenum -> type -> range -> type_decl 
+| Integer_Type: astnum -> typenum -> range -> type_decl 
+| Array_Type: astnum -> typenum -> type -> type -> type_decl 
+| Record_Type: astnum -> typenum -> list (idnum*type) -> type_decl.
 \end{lstlisting}
 
 
@@ -89,16 +110,16 @@ evaluation.
 
 \subsubsection{Value}
 In SPARK semantics, return value for an expression evaluation can be either
-a normal basic value (integer or bool), a normal aggregate value (array or
-record value) or a run time error status detected during expression evaluation.
+a normal value (basic or aggregate value) or a run time error status detected
+during expression evaluation.
 Similarly, for a well-formed SPARK program, it should either terminate in a
 normal state or a detected run time error, which is expected to be detected and
 raised during program execution.
 
 \begin{lstlisting}[escapechar=\#, language=coq]
-Inductive return_value: Type :=
-| Normal: value -> return_value
-| Run_Time_Error: error_type -> return_value.
+Inductive Return (A: Type): Type :=
+| Normal: A -> Return A
+| Run_Time_Error: error_type -> Return A.
 \end{lstlisting}
 
 \subsubsection{Run Time Check Evaluation}
@@ -111,7 +132,7 @@ expression is within bounds of its target type with respect to the context where
 it appears. A small fragment for overflow check formalization in Coq is:
 %\begin{quote}
 \begin{lstlisting}[escapechar = \#, language=coq, basicstyle=\small]
-Inductive overflow_check_bin: binop -> value -> value -> status -> Prop :=
+Inductive overflow_check_bin:binop -> value -> value -> status -> Prop :=
 | Do_Overflow_Check_On_Binops: forall op v1 v2 v, 
     op = Plus #$\vee$# op = Minus #$\vee$# op = Multiply #$\vee$# op = Divide ->
     Val.binary_operation op v1 v2 = Some (BasicV (Int v)) ->
@@ -130,14 +151,84 @@ subset. And it returns either \textit{Success} or \textit{Exception} with
 overflow signal.
 
 \subsubsection{Expression Evaluation}
-dd
+In an expression evaluation, for an arithmetical operation, run time checks are
+always performed according to the checking rules required for the arithmetical
+operators in SPARK reference manual, and a run time error returns whenever the
+check fails, otherwise, a normal operation result is returned. Further checks on
+the normal result value maybe required depending on the context where the
+expression appears. One such example is that range check should be performed on
+the index expression value before it can be used as an index value for an
+indexed component.
+
+The following is a snippet of how the expression evaluation is formalized in Coq
+with run time checks enforced during its semantics evaluation. For a binary
+expression (Binop ast\_num op e1 op e2), if both e1 and e2 are evaluated to some
+normal values, then all necessary run time checks required for the operator
+\textit{op} are performed, e.g. overflow check for \textit{+} and both overflow
+check and division check for \textit{/}, and a normal binary operation result is
+returned when the checks succeed. In name evaluation for indexed component, an
+additional range check is required to be performed according to the target type
+of the array, which is fetched from a preconstructed symbol table.
+
+\begin{lstlisting}[escapechar=\#, language=coq, basicstyle=\small]
+Inductive eval_expr:symboltable -> stack -> expr -> Return value -> Prop :=
+| Eval_Binop: forall st s e1 v1 e2 v2 ast_num op v,
+    eval_expr st s e1 (Normal v1) ->
+    eval_expr st s e2 (Normal v2) ->
+    do_run_time_check_on_binop op v1 v2 Success ->
+    Val.binary_operation op v1 v2 = Some v ->
+    eval_expr st s (Binop ast_num op e1 e2) (Normal v)
+| ...
+with eval_name: symboltable -> stack -> name -> Return value -> Prop :=
+| Eval_Indexed_Component_RTE: forall st s e msg ast_num x_ast_num x,
+    eval_expr st s e (Run_Time_Error msg) ->
+    eval_name st s (Indexed_Component ast_num x_ast_num x e) 
+                   (Run_Time_Error msg)
+| Eval_Indexed_Component: forall st s e i x_ast_num t l u x a v ast_num, 
+    eval_expr st s e (Normal (BasicV (Int i))) ->
+    fetch_exp_type x_ast_num st = Some (Array_Type t) ->
+    extract_array_index_range st t (Range l u) ->
+    do_range_check i l u Success ->
+    fetchG x s = Some (AggregateV (ArrayV a)) ->
+    array_select a i = Some v ->
+    eval_name st s (Indexed_Component ast_num x_ast_num x e) 
+                   (Normal (BasicV v))
+| ...
+\end{lstlisting}
 
 \subsubsection{Statement Evaluation}
-dd
+In the context of statement evaluation, range checks will be enforced during
+statement evaluation for both assignments and procedure calls. For the case of
+assignment evaluation, range check for the right hand side expression of the
+assignment is enforced if the target type of the left side of the assignment is
+some range constrainted type. For the case of procedure calls, range checks are
+required to be enforced on arguments against the type of the IN and IN OUT
+formal parameters when passing in the arguments before running the called
+procedure, and do range checks on values of OUT and IN OUT formal parameters
+on the procedure return.
+
+For a normal assignment evaluation, first evaluate its right hand side
+expression \textit{e}, if it returns a normal value, then fetch the type of
+its left hand side name \textit{x}, perform a range check before updating
+its value if it's a range constrainted type.
+
+\begin{lstlisting}[escapechar=\#, language=coq, basicstyle=\small]
+Inductive eval_stmt:symboltable -> stack -> stmt -> Return stack -> Prop :=
+| Eval_Assignment: forall st s e v x t l u s1 ast_num,
+    eval_expr st s e (Normal (BasicV (Int v))) ->
+    fetch_exp_type (name_astnum x) st = Some t ->
+    extract_subtype_range st t (Range l u) ->
+    do_range_check v l u Success ->
+    storeUpdate st s x (BasicV (Int v)) s1 ->
+    eval_stmt st s (Assignment ast_num x e) s1
+| ...
+\end{lstlisting}
 
 \subsubsection{Declaration Evaluation}
-dd
-
+For an object declaration, range check is required for its initialization
+expression if the type of the object being declared is range constrainted.
+Type declaration and procedure declaration should have no effect on the final
+stack.
 
 
 
