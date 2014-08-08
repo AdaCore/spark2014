@@ -1,0 +1,5 @@
+notinspark.ads:6:27: global item must denote variable or state
+   compilation of notinspark.ads failed
+
+
+gnatprove: error during generation of Global contracts
