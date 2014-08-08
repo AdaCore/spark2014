@@ -1,4 +1,33 @@
-pragma Warnings (Off, "*unused initial value*");  -- ignore false positive warnings
+------------------------------------------------------------------------------
+--                                                                          --
+--                             GNAT EXAMPLE                                 --
+--                                                                          --
+--                      Copyright (C) 2014, AdaCore                         --
+--                                                                          --
+-- GNAT is free software;  you can  redistribute it  and/or modify it under --
+-- terms of the  GNU General Public License as published  by the Free Soft- --
+-- ware  Foundation;  either version 3,  or (at your option) any later ver- --
+-- sion.  GNAT is distributed in the hope that it will be useful, but WITH- --
+-- OUT ANY WARRANTY;  without even the  implied warranty of MERCHANTABILITY --
+-- or FITNESS FOR A PARTICULAR PURPOSE.                                     --
+--                                                                          --
+-- As a special exception under Section 7 of GPL version 3, you are granted --
+-- additional permissions described in the GCC Runtime Library Exception,   --
+-- version 3.1, as published by the Free Software Foundation.               --
+--                                                                          --
+-- You should have received a copy of the GNU General Public License and    --
+-- a copy of the GCC Runtime Library Exception along with this program;     --
+-- see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see    --
+-- <http://www.gnu.org/licenses/>.                                          --
+--                                                                          --
+-- GNAT was originally developed  by the GNAT team at  New York University. --
+-- Extensive contributions were provided by Ada Core Technologies Inc.      --
+--                                                                          --
+------------------------------------------------------------------------------
+
+--  Ignore false positive warnings
+pragma Warnings (Off, "*unused initial value*");
+pragma Style_Checks ("M132");
 
 package body Tetris with
   SPARK_Mode
@@ -96,14 +125,14 @@ is
       --  the bottom (higher value of Y)
 
       for Del_Line in Y_Coord loop
-         if Is_Complete_Line (Cur_Board(Del_Line)) then
+         if Is_Complete_Line (Cur_Board (Del_Line)) then
             Cur_Board (Del_Line) := Empty_Line;
             Has_Complete_Lines := True;
             To_Line := Del_Line;
-            pragma Assert (Cur_Board(Del_Line)(X_Coord'First) = Empty);
+            pragma Assert (Cur_Board (Del_Line)(X_Coord'First) = Empty);
          end if;
          pragma Loop_Invariant
-           (for all Y in Y_Coord'First .. Del_Line => not Is_Complete_Line (Cur_Board(Y)));
+           (for all Y in Y_Coord'First .. Del_Line => not Is_Complete_Line (Cur_Board (Y)));
       end loop;
 
       --  iteratively move non-empty lines to the bottom of the board
@@ -112,7 +141,7 @@ is
          for From_Line in reverse Y_Coord'First .. To_Line - 1 loop
             pragma Loop_Invariant (No_Complete_Lines (Cur_Board));
             pragma Loop_Invariant (From_Line < To_Line);
-            if not Is_Empty_Line (Cur_Board(From_Line)) then
+            if not Is_Empty_Line (Cur_Board (From_Line)) then
                Cur_Board (To_Line) := Cur_Board (From_Line);
                To_Line := To_Line - 1;
             end if;

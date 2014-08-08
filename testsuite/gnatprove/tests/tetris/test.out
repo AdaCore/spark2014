@@ -1,89 +1,89 @@
-tetris.adb:14:33: warning: array index check might fail
-tetris.adb:14:47: warning: array index check might fail
-tetris.adb:15:36: warning: array index check might fail
-tetris.adb:15:51: info: index check proved
-tetris.adb:16:33: info: index check proved
-tetris.adb:16:50: warning: array index check might fail
-tetris.adb:17:36: info: index check proved
-tetris.adb:17:54: info: index check proved
-tetris.adb:25:24: warning: assertion might fail, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
-tetris.adb:29:27: info: range check proved
-tetris.adb:31:61: info: index check proved
-tetris.adb:32:27: warning: loop invariant might fail after first iteration, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
-tetris.adb:32:27: warning: loop invariant might fail in first iteration, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
-tetris.adb:32:60: info: overflow check proved
-tetris.adb:34:19: warning: loop invariant might fail after first iteration
-tetris.adb:34:19: warning: loop invariant might fail in first iteration
-tetris.adb:35:30: info: range check proved
-tetris.adb:37:64: info: index check proved
-tetris.adb:38:63: info: overflow check proved
-tetris.adb:40:30: info: range check proved
-tetris.adb:41:64: info: index check proved
-tetris.adb:42:77: info: overflow check proved
-tetris.adb:44:45: warning: array index check might fail
-tetris.adb:44:63: warning: array index check might fail
-tetris.adb:54:57: warning: array index check might fail
-tetris.adb:55:24: warning: assertion might fail, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
-tetris.adb:59:27: info: range check proved
-tetris.adb:61:60: warning: array index check might fail
-tetris.adb:61:78: info: index check proved
-tetris.adb:62:27: warning: loop invariant might fail after first iteration, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
-tetris.adb:62:27: warning: loop invariant might fail in first iteration, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
-tetris.adb:62:60: info: overflow check proved
-tetris.adb:64:19: warning: loop invariant might fail after first iteration
-tetris.adb:64:19: warning: loop invariant might fail in first iteration
-tetris.adb:65:30: info: range check proved
-tetris.adb:67:63: warning: array index check might fail
-tetris.adb:67:81: info: index check proved
-tetris.adb:68:63: info: overflow check proved
-tetris.adb:70:30: info: range check proved
-tetris.adb:71:60: warning: array index check might fail
-tetris.adb:71:81: info: index check proved
-tetris.adb:72:77: info: overflow check proved
-tetris.adb:73:54: warning: array index check might fail
-tetris.adb:74:45: warning: array index check might fail
-tetris.adb:74:63: warning: array index check might fail
-tetris.adb:90:37: info: length check proved
-tetris.adb:103:28: warning: assertion might fail, requires Cur_Board(Del_Line)(X_Coord'First) = Empty
-tetris.adb:105:10: info: loop invariant initialization proved
-tetris.adb:106:55: warning: loop invariant might fail after first iteration, requires not Is_Complete_Line (Cur_Board(Y)
-tetris.adb:106:87: info: index check proved
-tetris.adb:113:13: info: loop invariant initialization proved
-tetris.adb:113:13: warning: loop invariant might fail after first iteration
-tetris.adb:117:35: info: range check proved
-tetris.adb:135:23: info: precondition proved
-tetris.ads:77:06: info: length check proved
-tetris.ads:77:07: info: length check proved
-tetris.ads:78:07: info: length check proved
-tetris.ads:79:07: info: length check proved
-tetris.ads:80:07: info: length check proved
-tetris.ads:83:06: info: length check proved
-tetris.ads:84:08: info: length check proved
-tetris.ads:85:08: info: length check proved
-tetris.ads:86:08: info: length check proved
-tetris.ads:87:08: info: length check proved
-tetris.ads:90:08: info: length check proved
-tetris.ads:91:08: info: length check proved
-tetris.ads:92:08: info: length check proved
-tetris.ads:93:08: info: length check proved
-tetris.ads:96:08: info: length check proved
-tetris.ads:97:08: info: length check proved
-tetris.ads:98:08: info: length check proved
-tetris.ads:99:08: info: length check proved
-tetris.ads:102:08: info: length check proved
-tetris.ads:103:08: info: length check proved
-tetris.ads:104:08: info: length check proved
-tetris.ads:105:08: info: length check proved
-tetris.ads:108:08: info: length check proved
-tetris.ads:109:08: info: length check proved
-tetris.ads:110:08: info: length check proved
+tetris.adb:43:33: warning: array index check might fail
+tetris.adb:43:47: warning: array index check might fail
+tetris.adb:44:36: warning: array index check might fail
+tetris.adb:44:51: info: index check proved
+tetris.adb:45:33: info: index check proved
+tetris.adb:45:50: warning: array index check might fail
+tetris.adb:46:36: info: index check proved
+tetris.adb:46:54: info: index check proved
+tetris.adb:54:24: warning: assertion might fail, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
+tetris.adb:58:27: info: range check proved
+tetris.adb:60:61: info: index check proved
+tetris.adb:61:27: warning: loop invariant might fail after first iteration, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
+tetris.adb:61:27: warning: loop invariant might fail in first iteration, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
+tetris.adb:61:60: info: overflow check proved
+tetris.adb:63:19: warning: loop invariant might fail after first iteration
+tetris.adb:63:19: warning: loop invariant might fail in first iteration
+tetris.adb:64:30: info: range check proved
+tetris.adb:66:64: info: index check proved
+tetris.adb:67:63: info: overflow check proved
+tetris.adb:69:30: info: range check proved
+tetris.adb:70:64: info: index check proved
+tetris.adb:71:77: info: overflow check proved
+tetris.adb:73:45: warning: array index check might fail
+tetris.adb:73:63: warning: array index check might fail
+tetris.adb:83:57: warning: array index check might fail
+tetris.adb:84:24: warning: assertion might fail, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
+tetris.adb:88:27: info: range check proved
+tetris.adb:90:60: warning: array index check might fail
+tetris.adb:90:78: info: index check proved
+tetris.adb:91:27: warning: loop invariant might fail after first iteration, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
+tetris.adb:91:27: warning: loop invariant might fail in first iteration, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
+tetris.adb:91:60: info: overflow check proved
+tetris.adb:93:19: warning: loop invariant might fail after first iteration
+tetris.adb:93:19: warning: loop invariant might fail in first iteration
+tetris.adb:94:30: info: range check proved
+tetris.adb:96:63: warning: array index check might fail
+tetris.adb:96:81: info: index check proved
+tetris.adb:97:63: info: overflow check proved
+tetris.adb:99:30: info: range check proved
+tetris.adb:100:60: warning: array index check might fail
+tetris.adb:100:81: info: index check proved
+tetris.adb:101:77: info: overflow check proved
+tetris.adb:102:54: warning: array index check might fail
+tetris.adb:103:45: warning: array index check might fail
+tetris.adb:103:63: warning: array index check might fail
+tetris.adb:119:37: info: length check proved
+tetris.adb:132:28: warning: assertion might fail, requires Cur_Board (Del_Line)(X_Coord'First) = Empty
+tetris.adb:134:10: info: loop invariant initialization proved
+tetris.adb:135:55: warning: loop invariant might fail after first iteration, requires not Is_Complete_Line (Cur_Board (Y)
+tetris.adb:135:88: info: index check proved
+tetris.adb:142:13: info: loop invariant initialization proved
+tetris.adb:142:13: warning: loop invariant might fail after first iteration
+tetris.adb:146:35: info: range check proved
+tetris.adb:164:23: info: precondition proved
+tetris.ads:104:06: info: length check proved
+tetris.ads:104:07: info: length check proved
+tetris.ads:105:07: info: length check proved
+tetris.ads:106:07: info: length check proved
+tetris.ads:107:07: info: length check proved
+tetris.ads:110:06: info: length check proved
 tetris.ads:111:08: info: length check proved
-tetris.ads:118:54: info: index check proved
-tetris.ads:118:57: info: index check proved
-tetris.ads:140:46: warning: array index check might fail
-tetris.ads:158:77: info: range check proved
-tetris.ads:160:77: info: range check proved
-tetris.ads:174:66: info: range check proved
-tetris.ads:180:14: warning: postcondition might fail, requires (Valid_Configuration)
-tetris.ads:186:16: info: postcondition proved
-tetris.ads:195:16: warning: postcondition might fail
+tetris.ads:112:08: info: length check proved
+tetris.ads:113:08: info: length check proved
+tetris.ads:114:08: info: length check proved
+tetris.ads:117:08: info: length check proved
+tetris.ads:118:08: info: length check proved
+tetris.ads:119:08: info: length check proved
+tetris.ads:120:08: info: length check proved
+tetris.ads:123:08: info: length check proved
+tetris.ads:124:08: info: length check proved
+tetris.ads:125:08: info: length check proved
+tetris.ads:126:08: info: length check proved
+tetris.ads:129:08: info: length check proved
+tetris.ads:130:08: info: length check proved
+tetris.ads:131:08: info: length check proved
+tetris.ads:132:08: info: length check proved
+tetris.ads:135:08: info: length check proved
+tetris.ads:136:08: info: length check proved
+tetris.ads:137:08: info: length check proved
+tetris.ads:138:08: info: length check proved
+tetris.ads:145:54: info: index check proved
+tetris.ads:145:57: info: index check proved
+tetris.ads:167:46: warning: array index check might fail
+tetris.ads:185:77: info: range check proved
+tetris.ads:187:77: info: range check proved
+tetris.ads:201:66: info: range check proved
+tetris.ads:207:14: warning: postcondition might fail, requires (Valid_Configuration)
+tetris.ads:213:16: info: postcondition proved
+tetris.ads:222:16: warning: postcondition might fail
