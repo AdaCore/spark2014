@@ -1,4 +1,4 @@
-\section{Formalization for A Subset of SPARK 2014 Semantics}
+\section{SPARK Formalization}
 \subsection{Syntax of SPARK 2014 Subset}
 The subset of SPARK 2014 that we have formalized is significant, which includes
 array/record (non-nested) and procedure calls. Furthermore, it also supports
@@ -116,7 +116,7 @@ Similarly, for a well-formed SPARK program, it should either terminate in a
 normal state or a detected run time error, which is expected to be detected and
 raised during program execution.
 
-\begin{lstlisting}[escapechar=\#, language=coq]
+\begin{lstlisting}[escapechar=\#, language=coq, basicstyle=\small]
 Inductive Return (A: Type): Type :=
 | Normal: A -> Return A
 | Run_Time_Error: error_type -> Return A.
