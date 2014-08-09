@@ -106,10 +106,19 @@ Lemma statement_checks_soundness: forall st s stmt s' stmt' st',
 
 \subsection{Run-Time Check Optimization}
 \subsubsection{Optimization Strategy}
+We will do some simple optimizations for literal operations and remove those
+checks that can be obviously verified at compilation time. It's also the
+optimization strategy taken by the Gnat front end.
 \subsubsection{Soundness Proof}
+Soundess proof for the run-time checks optimization is being carried out.
 
 \subsection{Run-Time Check Verification}
-
+One of the major goals of our formalization work for SPARK language is
+to verify the soundness of run-time check flags produced by Gnat front
+end. It's done by comparing the Gnat generated run-time check flags with the
+expected ones provided by formally verified check generator with respect to the
+SPARK semantics. Run-time check flags are verified to be correct if they are
+superset of the expected ones required by the SPARK reference manual.
 
 
 
