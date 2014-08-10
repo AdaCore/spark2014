@@ -157,7 +157,7 @@ is
        Previous_Tracks_On_Orange_Or_Red);
 
    --  valid movements of trains can be of 3 kinds:
-   --    . moving completely inside a track
+   --    . moving inside one or two tracks
    --    . entering a new track
    --    . leaving a track
 
@@ -165,13 +165,12 @@ is
    --  movements. Function Valid_Move returns whether a movement is among
    --  these 3 kinds.
 
-   function Moving_Inside_Current_Track
+   function Moving_Inside_Current_Tracks
      (Cur_Position : Train_Position;
       New_Position : Train_Position) return Boolean
    is
-      (Inside_A_Track (Cur_Position) and then
-       Inside_A_Track (New_Position) and then
-       Cur_Position.Track_Begin = New_Position.Track_Begin);
+      (Cur_Position.Track_Begin = New_Position.Track_Begin and then
+       Cur_Position.Track_End = New_Position.Track_End);
 
    function Moving_To_A_New_Track
      (Cur_Position : Train_Position;
@@ -193,8 +192,8 @@ is
      (Cur_Position : Train_Position;
       New_Position : Train_Position) return Boolean
    is
-      --  either the train keeps moving in the current track
-      (Moving_Inside_Current_Track (Cur_Position, New_Position)
+      --  either the train keeps moving in the current tracks
+      (Moving_Inside_Current_Tracks (Cur_Position, New_Position)
          or else
       --  or the train was inside a track and enters a new track
        Moving_To_A_New_Track (Cur_Position, New_Position)

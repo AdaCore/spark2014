@@ -50,7 +50,7 @@ is
       Cur_Position : constant Train_Position := Trains (Train);
       Prev : Track_Opt_Id;
    begin
-      if Moving_Inside_Current_Track (Cur_Position, New_Position) then
+      if Moving_Inside_Current_Tracks (Cur_Position, New_Position) then
          Result := Move_Ok;
          Trains (Train) := New_Position;
 

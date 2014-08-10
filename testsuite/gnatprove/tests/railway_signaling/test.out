@@ -31,8 +31,8 @@ trains.adb:112:25: warning: assertion might fail, requires (Previous_Tracks_On_O
 trains.adb:113:10: info: assertion proved
 trains.adb:136:45: warning: array index check might fail
 trains.adb:138:37: info: index check proved
-trains.adb:141:19: info: loop invariant initialization proved
 trains.adb:141:19: warning: loop invariant might fail after first iteration
+trains.adb:141:19: warning: loop invariant might fail in first iteration
 trains.adb:143:68: info: range check proved
 trains.adb:144:42: warning: array index check might fail
 trains.adb:144:82: info: range check proved
@@ -66,4 +66,4 @@ trains.ads:148:59: info: index check proved
 trains.ads:151:51: info: index check proved
 trains.ads:152:31: warning: array index check might fail
 trains.ads:152:65: info: index check proved
-trains.ads:226:14: warning: postcondition might fail
+trains.ads:225:14: warning: postcondition might fail
