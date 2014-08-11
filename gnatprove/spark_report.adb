@@ -75,8 +75,7 @@
 --  --  Proof entry --
 --  ------------------
 --
---  Entries for proof are of the following form:
---  proof_result =
+--  Entries for proof are of the following form: proof_result =
 --    { file     : string,
 --      line     : int,
 --      col      : int,
@@ -84,16 +83,20 @@
 --      rule     : string,
 --      severity : string,
 --      tracefile: string,
+--      msg_id   : int,
 --      entity   : entity }
---  - (file, line, col) describe the source location of the message.
---  - "message" is the message text.
---  - "rule" describes the kind of VC, the possible values are described
+--  - (file, line, col) describe the source location of the message. -
+--  "message" is the message text. - "rule" describes the kind of VC,
+--  the possible values are described
 --    in the file vc_kinds.ads.
 --  - "severity" describes the kind status of the message, possible values used
 --    by gnatwhy3 are "info" and "error"
---  - "tracefile" contains the name of a trace file, if any
---  - "entity" contains the entity dictionary for the entity that this VC
+--  - "tracefile" contains the name of a trace file, if any - "entity" contains
+--  the entity dictionary for the entity that this VC
 --    belongs to
+--  - "msg_id" - if present indicates that this entry corresponds to a message
+--    issued on the commandline, with the exact same msg_id in brackets:
+--    "[#12]"
 --
 --  -----------------
 --  --  Flow Entry --
