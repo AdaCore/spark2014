@@ -786,6 +786,7 @@ package body Flow is
       Tmp.Aliasing_Present  := False;
       Tmp.Dependency_Map    := Dependency_Maps.Empty_Map;
       Tmp.No_Effects        := False;
+      Tmp.Direct_Calls      := Node_Sets.Empty_Set;
 
       if Compute_Globals then
          --  Generate Globals
@@ -852,6 +853,7 @@ package body Flow is
 
       if Compute_Globals then
          Tmp.GG.Aborted := False;
+         Tmp.GG.Globals := Node_Sets.Empty_Set;
       end if;
 
       declare
@@ -1125,8 +1127,7 @@ package body Flow is
    ------------------------
 
    procedure Flow_Analyse_CUnit is
-      FA_Graphs : Analysis_Maps.Map;
-      Success   : Boolean;
+      Success : Boolean;
    begin
 
       --  Process entities and construct graphs if necessary
@@ -1218,7 +1219,6 @@ package body Flow is
 
    procedure Generate_Flow_Globals (GNAT_Root : Node_Id)
    is
-      FA_Graphs : Analysis_Maps.Map;
       pragma Unreferenced (GNAT_Root);
    begin
       --  Process entities and construct graphs if necessary

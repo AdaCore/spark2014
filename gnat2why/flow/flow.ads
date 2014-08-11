@@ -126,9 +126,6 @@ package Flow is
             --  All obvious globals (non-local variables or parameters that
             --  are not subprogram parameters of the analyzed entity).
 
-            Subprograms : Node_Sets.Set;
-            --  All subprograms called
-
          when False =>
             null;
       end case;
@@ -212,7 +209,10 @@ package Flow is
       --  are disabled in this case as we would spam the user with error
       --  messages for almost every statement.
 
-      GG : Flow_Global_Generation_Info (Compute_Globals);
+      Direct_Calls      : Node_Sets.Set;
+      --  All subprograms called
+
+      GG                : Flow_Global_Generation_Info (Compute_Globals);
       --  Information for globals computation.
 
       case Kind is
@@ -300,7 +300,12 @@ private
 
    function Last_Statement_Is_Raise (E : Entity_Id) return Boolean
      with Pre => Ekind (E) in Subprogram_Kind;
-   --  Returns True if the last statement in the Handled_Sequence_Of_Statements
-   --  of subprogram E is an N_Raise_Statement.
+   --  Returns True if the last statement in the
+   --  Handled_Sequence_Of_Statements of subprogram E is an
+   --  N_Raise_Statement.
+
+   FA_Graphs : Analysis_Maps.Map := Analysis_Maps.Empty_Map;
+   --  All analysis results are stashed here in case we need them later. In
+   --  particular the Flow.Trivia package makes use of this.
 
 end Flow;

@@ -441,8 +441,7 @@ package body Flow.Slice is
       ---------------------------
 
       function Get_Proof_Subprograms return Node_Sets.Set is
-         All_Proof_Subprograms : Node_Sets.Set := FA.GG.Subprograms;
-
+         All_Proof_Subprograms : Node_Sets.Set := FA.Direct_Calls;
          A                     : V_Attributes;
       begin
          for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
@@ -468,11 +467,10 @@ package body Flow.Slice is
 
       function Get_Definite_Subprograms return Node_Sets.Set is
          All_Definite_Subprograms  : Node_Sets.Set := Node_Sets.Empty_Set;
-
          F                         : Flow_Id;
          V_Initial                 : Flow_Graphs.Vertex_Id;
       begin
-         for G of FA.GG.Subprograms loop
+         for G of FA.Direct_Calls loop
             --  We go through all Subprograms and check if their
             --  corresponding 'Initial vertex has no Out_Neighbours.
 
@@ -570,7 +568,7 @@ package body Flow.Slice is
       Proof_Calls       := Get_Proof_Subprograms;
       Definite_Calls    := Get_Definite_Subprograms - Proof_Calls;
       Conditional_Calls := Subprograms_Without_Contracts
-        (FA.GG.Subprograms - Definite_Calls - Proof_Calls);
+        (FA.Direct_Calls - Definite_Calls - Proof_Calls);
       Local_Variables   := Get_Local_Variables;
    end Compute_Globals;
 

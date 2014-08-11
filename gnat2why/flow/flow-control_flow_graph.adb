@@ -5275,6 +5275,11 @@ package body Flow.Control_Flow_Graph is
       --  Simplify graph by removing all null vertices.
       Simplify_CFG (FA);
 
+      --  Assemble the set of directly called subprograms.
+      for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         FA.Direct_Calls.Union (FA.Atr (V).Subprograms_Called);
+      end loop;
+
       --  In GG mode, we assemble a list of globals and subprograms
       --  now (and retroactively make some initial and final
       --  vertices).
@@ -5285,8 +5290,7 @@ package body Flow.Control_Flow_Graph is
          begin
             for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
                declare
-                  Atr : constant V_Attributes := FA.Atr (V);
-
+                  Atr  : constant V_Attributes     := FA.Atr (V);
                   Vars : constant Flow_Id_Sets.Set :=
                     To_Entire_Variables (Atr.Variables_Used or
                                            Atr.Variables_Defined);
@@ -5298,8 +5302,6 @@ package body Flow.Control_Flow_Graph is
                         FA.GG.Globals.Include (Get_Direct_Mapping_Id (Var));
                      end if;
                   end loop;
-
-                  FA.GG.Subprograms.Union (Atr.Subprograms_Called);
                end;
             end loop;
          end;
@@ -5315,7 +5317,7 @@ package body Flow.Control_Flow_Graph is
             end case;
          end loop;
 
-         for E of FA.GG.Subprograms loop
+         for E of FA.Direct_Calls loop
             declare
                F : constant Flow_Id := Direct_Mapping_Id (E);
                V : Flow_Graphs.Vertex_Id;
