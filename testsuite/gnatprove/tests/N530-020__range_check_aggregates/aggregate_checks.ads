@@ -3,4 +3,10 @@ package Aggregate_Checks with SPARK_Mode is
 
    procedure Do_Wrong_Aggregate (A : Nat_Array) with
      Pre => A'First <= A'Last;
+   procedure Do_Wrong_Aggregate_2 (A : Nat_Array) with
+     Pre => A'First <= A'Last;
+   procedure Do_Wrong_Aggregate_3 (A : Nat_Array) with
+     Pre => A'First <= A'Last;
+   procedure Do_Wrong_Aggregate_4 (A : Nat_Array) with
+     Pre => A'First <= A'Last;
 end;

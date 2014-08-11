@@ -115,6 +115,7 @@ package Gnat2Why.Expr is
    function Transform_Discrete_Choices
      (Choices      : List_Id;
       Choice_Type  : Entity_Id;
+      Index_Type   : Entity_Id;
       Matched_Expr : W_Expr_Id;
       Cond_Domain  : EW_Domain;
       Params       : Transformation_Params) return W_Expr_Id;

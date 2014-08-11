@@ -229,6 +229,7 @@ package body Gnat2Why.Expr is
    function Transform_Discrete_Choice
      (Choice      : Node_Id;
       Choice_Type : Entity_Id;
+      Index_Type  : Entity_Id;
       Expr        : W_Expr_Id;
       Domain      : EW_Domain;
       Params      : Transformation_Params) return W_Expr_Id;
@@ -1330,6 +1331,7 @@ package body Gnat2Why.Expr is
                    Transform_Discrete_Choices
                      (Choices      => Discrete_Choices (Cur_Case),
                       Choice_Type  => Etype (Expr),
+                      Index_Type   => Etype (Expr),
                       Matched_Expr => Matched_Expr,
                       Cond_Domain  => Cond_Domain,
                       Params       => Params),
@@ -1343,6 +1345,7 @@ package body Gnat2Why.Expr is
               Transform_Discrete_Choices
                 (Choices      => Discrete_Choices (First_Case),
                  Choice_Type  => Etype (Expr),
+                 Index_Type   => Etype (Expr),
                  Matched_Expr => Matched_Expr,
                  Cond_Domain  => Cond_Domain,
                  Params       => Params),
@@ -4681,14 +4684,12 @@ package body Gnat2Why.Expr is
                  New_Result_Ident (Get_Type (Pref));
                Binders     : constant W_Identifier_Array :=
                  New_Temp_Identifiers (Positive (Dim), Typ => EW_Int_Type);
-               Ada_Type    : constant Entity_Id :=
-                 Get_Ada_Node (+Get_Type (Pref));
                Indexes     : constant W_Expr_Array := To_Exprs (Binders);
                Range_Pred  : constant W_Expr_Id :=
                                Transform_Discrete_Choice
                                  (Choice => Discrete_Range (N),
-                                  Choice_Type =>
-                                    Etype (First_Index (Ada_Type)),
+                                  Choice_Type => Empty,
+                                  Index_Type => Empty,
                                   Expr   => Indexes (1),
                                   Domain => EW_Pred,
                                   Params => Params);
@@ -4999,12 +5000,13 @@ package body Gnat2Why.Expr is
 
          use Node_Lists;
 
-         Cnt   : Positive;
-         Value : Node_Lists.Cursor;
-         Typ   : Node_Lists.Cursor;
-         Args  : W_Expr_Array (1 .. Integer (Values.Length));
+         Cnt      : Positive;
+         Value    : Node_Lists.Cursor;
+         Typ      : Node_Lists.Cursor;
+         Ind_Ty   : Entity_Id;
+         Args     : W_Expr_Array (1 .. Integer (Values.Length));
 
-         R : W_Expr_Id;
+         R        : W_Expr_Id;
 
       begin
          --  Compute the arguments for the function call
@@ -5058,6 +5060,7 @@ package body Gnat2Why.Expr is
          if not In_Attribute_Update and then Domain = EW_Prog then
             Value := Index_Values.First;
             Typ   := Index_Types.First;
+            Ind_Ty := First_Index (Etype (Etype (Expr)));
 
             while Value /= No_Element loop
                R := +Sequence
@@ -5065,6 +5068,7 @@ package body Gnat2Why.Expr is
                         +Transform_Discrete_Choices
                           (Choices      => Choices (Element (Value)),
                            Choice_Type  => Element (Typ),
+                           Index_Type   => Etype (Ind_Ty),
                            Matched_Expr =>  --  The value does not matter here
                              New_Integer_Constant (Value => Uint_0),
                            Cond_Domain  => EW_Prog,
@@ -5072,6 +5076,7 @@ package body Gnat2Why.Expr is
                        +R);
                Next (Value);
                Next (Typ);
+               Next_Index (Ind_Ty);
             end loop;
          end if;
 
@@ -5903,6 +5908,7 @@ package body Gnat2Why.Expr is
                     Transform_Discrete_Choice
                       (Choice      => Choice,
                        Choice_Type => Empty,
+                       Index_Type  => Empty,
                        Expr        => Indexes (Integer (Dim)),
                        Domain      => EW_Pred,
                        Params      => Params);
@@ -7825,6 +7831,7 @@ package body Gnat2Why.Expr is
    function Transform_Discrete_Choice
      (Choice      : Node_Id;
       Choice_Type : Entity_Id;
+      Index_Type  : Entity_Id;
       Expr        : W_Expr_Id;
       Domain      : EW_Domain;
       Params      : Transformation_Params) return W_Expr_Id
@@ -7844,15 +7851,17 @@ package body Gnat2Why.Expr is
          --  In programs, we generate a check that the range_constraint of a
          --  subtype_indication is compatible with the given subtype.
 
+         --  ??? figure out why sometimes the index type may not be present
+
          if Domain = EW_Prog
-           and then Nkind (Choice) = N_Subtype_Indication
+           and then Present (Index_Type)
          then
             R := +Sequence
-                   (Assume_Of_Subtype_Indication (Params   => Params,
-                                                  N        => Choice,
-                                                  Sub_Type => Choice_Type,
-                                                  Do_Check => True),
-                    +R);
+              (Assume_Of_Scalar_Subtype (Params   => Params,
+                                         N        => Choice_Type,
+                                         Base     => Index_Type,
+                                         Do_Check => True),
+               +R);
          end if;
 
       else
@@ -7896,6 +7905,7 @@ package body Gnat2Why.Expr is
    function Transform_Discrete_Choices
      (Choices      : List_Id;
       Choice_Type  : Entity_Id;
+      Index_Type   : Entity_Id;
       Matched_Expr : W_Expr_Id;
       Cond_Domain  : EW_Domain;
       Params       : Transformation_Params) return W_Expr_Id
@@ -7909,6 +7919,7 @@ package body Gnat2Why.Expr is
            (C,
             Transform_Discrete_Choice (Choice      => Cur_Choice,
                                        Choice_Type => Choice_Type,
+                                       Index_Type  => Index_Type,
                                        Expr        => Matched_Expr,
                                        Domain      => Cond_Domain,
                                        Params      => Params),

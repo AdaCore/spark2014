@@ -1,0 +1,15 @@
+aggregate_checks.adb:4:15: info: range check proved
+aggregate_checks.adb:10:53: warning: range check might fail
+aggregate_checks.adb:16:15: info: range check proved
+aggregate_checks.adb:19:43: info: length check proved
+aggregate_checks.adb:19:49: warning: range check might fail
+aggregate_checks.adb:25:15: info: range check proved
+aggregate_checks.adb:28:44: info: length check proved
+aggregate_checks.adb:28:50: info: range check proved
+aggregate_checks.adb:28:58: warning: range check might fail
+aggregate_checks.adb:34:15: info: range check proved
+aggregate_checks.adb:37:41: warning: range check might fail
+aggregate_checks.ads:4:14: warning: subprogram "Do_Wrong_Aggregate" has no effect
+aggregate_checks.ads:6:14: warning: subprogram "Do_Wrong_Aggregate_2" has no effect
+aggregate_checks.ads:8:14: warning: subprogram "Do_Wrong_Aggregate_3" has no effect
+aggregate_checks.ads:10:14: warning: subprogram "Do_Wrong_Aggregate_4" has no effect
