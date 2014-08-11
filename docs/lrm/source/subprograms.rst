@@ -128,13 +128,6 @@ They are intended to, in effect, require users to make explicit the implicit
 disjunction/conjunction of class-wide preconditions/postconditions
 that is described in Ada RM 6.1.1.]
 
-[TBD: Should we mention Contract_Cases in this section?
-Is the caller or the callee responsible for proving the
-contract_cases checks that are performed at the start (as opposed to
-at the end) of a call to a non-dispatching subprogram? Presumably
-the caller. Certainly the callee is responsible in the case of call
-(dispatching or not) to a dispatching subprogram.]
-
 Subprogram Contracts
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -300,6 +293,13 @@ where
 
 .. _etu-contract_cases-ds:
 
+.. centered:: **Verification Rules**
+
+The proof obligations associated with the Contract_Cases runtime checks
+performed at the beginning of a call are assigned in the same way
+as those associated with a specific precondition check. More specifically,
+the proof obligation is imposed on the caller or on the callee depending
+on whether the subprogram in question is a dispatching operation.
 
 .. centered:: **Examples**
 
@@ -888,6 +888,67 @@ as it is used purely for static analysis purposes and is not executed.
    -- Depends aspects are only needed for special cases like here where the
    -- parameter Y has no discernible effect on the result of the function.
 
+.. _class-wide-global-and-depends-aspects:
+
+Class-Wide Global and Depends Aspects
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The Global'Class and Depends'Class aspects may be specified for
+a dispatching subprogram just as the Global and Depends aspects
+may be specified for any subprogram (dispatching or not). [The
+syntax, static semantics, and legality rules are all the same,
+except that the Depends'Class aspect of a subprogram is
+checked for consistency with the Global'Class aspect of the
+subprogram rather than with the Global aspect.]
+
+.. centered:: **Verification Rules**
+
+When analyzing a dispatching call, the Global and Class aspects
+of the statically denoted callee play no role; the corresponding
+class-wide aspects are used instead.
+
+[No relationship between the Global'Class/Depends'Class aspects of a
+subprogram and the subprogram's implementation is explicitly verified.
+This is instead accomplished implicitly by
+checking the consistency of the subprogram's implementation with
+its Global/Depends aspects (as described in preceding sections) and then
+checking (as described in this section) the consistency of the
+Global/Depends aspects with the Global'Class/Depends'Class
+aspects.]
+
+.. centered:: **Static Semantics**
+
+A Global or Global'Class aspect specification G2 is said to be
+a *valid overriding* of another such specification, G1, if the following
+conditions are met:
+
+* every Input-mode item of G2 is an Input-mode or an In_Out-mode
+  item of G1; and
+
+* every In_Out-mode item of G2 is an In_Out-mode item of G1; and
+
+* every Output-mode item of G2 is an Output-mode or In_Out-mode item of G1; and
+
+* every Output-mode item of G1 is an Output-mode item of G2.
+
+[TBD: This differs from the July LDG meeting minutes in allowing a
+Proof_In-mode item for G2 which is an In_Out-mode item of G1. Is this OK?]
+
+A Depends or Depends'Class aspect specification D2 is said to be a
+*valid overriding* of another such specification, D1, if the set of
+dependencies of D2 is a subset of the dependencies of D2.
+
+.. centered:: **Legality Rules**
+
+The Global aspect of a subprogram shall be a valid overriding of the
+Global'Class aspect of the subprogram. The Global'Class aspect of an
+an overriding subprogram shall be a valid overriding of the Global'Class
+aspect(s) of the overridden inherited subprogram(s).
+
+The Depends aspect of a subprogram shall be a valid overriding of the
+Depends'Class aspect of the subprogram. The Depends'Class aspect of an
+an overriding subprogram shall be a valid overriding of the Depends'Class
+aspect(s) of the overridden inherited subprogram(s).
 
 .. _extensions-visible-aspects:
 
