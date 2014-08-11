@@ -254,6 +254,8 @@ ar.ads:711:22: info: postcondition proved
 ar.ads:716:22: info: postcondition proved
 ar.ads:721:22: info: postcondition proved
 ar.ads:727:22: info: postcondition proved
+ar.ads:727:51: info: range check proved
+ar.ads:727:67: info: range check proved
 ar.ads:733:22: info: postcondition proved
 ar.ads:739:22: info: postcondition proved
 ar.ads:744:22: info: postcondition proved
@@ -269,6 +271,8 @@ ar.ads:792:22: info: postcondition proved
 ar.ads:797:22: info: postcondition proved
 ar.ads:802:22: info: postcondition proved
 ar.ads:808:22: info: postcondition proved
+ar.ads:808:77: info: range check proved
+ar.ads:808:96: info: range check proved
 ar.ads:814:22: info: postcondition proved
 ar.ads:820:22: info: postcondition proved
 ar.ads:826:22: info: postcondition proved
@@ -291,6 +295,8 @@ ar.ads:909:22: info: postcondition proved
 ar.ads:914:22: info: postcondition proved
 ar.ads:919:22: warning: postcondition might fail, requires R = Rec3TRec3T'((F3 => Rec2T'((F2 => F), (G2 => Rec1T'(F1 => E), (G1 => ...............)), ...)), ...)
 ar.ads:925:22: warning: postcondition might fail, requires R = R'Old'update
+ar.ads:925:106: info: range check proved
+ar.ads:925:128: info: range check proved
 ar.ads:931:22: info: postcondition proved
 ar.ads:937:22: warning: postcondition might fail, requires R = R'Old'update
 ar.ads:943:22: warning: postcondition might fail, requires R = Rec3TRec3T'((F3 => Rec2T'((F2 => R'old.F3.F2), (G2 => Rec1T'((F1 => .......), ...)), ...)), ...)
@@ -317,10 +323,12 @@ ar.ads:1046:22: info: postcondition proved
 ar.ads:1051:22: info: postcondition proved
 ar.ads:1056:22: warning: postcondition might fail, requires R = Rec4TRec4T'((F4 => Rec3T'((F3 => Rec2T'((F2 => R'old.F4.F3.F2), (... => ...), ...)), ...)), ...)
 ar.ads:1062:22: warning: postcondition might fail, requires R = R'Old'update
+ar.ads:1062:100: info: range check proved
 ar.ads:1068:22: info: postcondition proved
 ar.ads:1074:22: warning: postcondition might fail, requires R = R'Old'update
 ar.ads:1080:22: warning: postcondition might fail, requires R = Rec4TRec4T'((F4 => Rec3T'((F3 => Rec2T'((F2 => R'old.F4.F3.F2), (... => ...), ...)), ...)), ...)
 ar.ads:1086:22: warning: postcondition might fail, requires R = R'Old'update
+ar.ads:1086:100: info: range check proved
 ar.ads:1092:22: info: postcondition proved
 ar.ads:1098:22: warning: postcondition might fail, requires R = R'Old'update
 ar.ads:1104:22: warning: postcondition might fail, requires R = Rec4TRec4T'((F4 => Rec3T'((F3 => Rec2T'((F2 => R'old.F4.F3.F2), (... => ...), ...)), ...)), ...)

@@ -953,16 +953,19 @@ package body Why.Gen.Expr is
          when N_Component_Association =>
 
             declare
-               Pref       : Node_Id;
-               Array_Type : Entity_Id;
+               Pref        : Node_Id;
+               Prefix_Type : Entity_Id;
 
             begin
                --  Expr is either
                --  1) a choice of a 'Update aggregate, and needs a
                --  range check towards the corresponding index type of the
                --  prefix to the 'Update aggregate, or
-               --  2) a component expression of a 'Update aggregate, and
-               --  needs a range check towards the component type.
+               --  2) a component expression of a 'Update aggregate for arrays,
+               --  and needs a range check towards the component type.
+               --  3) a component expression of a 'Update aggregate for
+               --  records, and needs a range check towards the type of
+               --  the component
                --  3) an expression of a regular record aggregate, and
                --  needs a range check towards the expected type.
 
@@ -983,17 +986,28 @@ package body Why.Gen.Expr is
                   if Is_Entity_Name (Pref)
                     and then Present (Actual_Subtype (Entity (Pref)))
                   then
-                     Array_Type := Actual_Subtype (Entity (Pref));
+                     Prefix_Type := Actual_Subtype (Entity (Pref));
                   else
-                     Array_Type := Etype (Pref);
+                     Prefix_Type := Etype (Pref);
                   end if;
 
-                  if Expression (Par) = Expr then
-                     Check_Type := Component_Type (Unique_Entity (Array_Type));
+                  if Is_Record_Type (Prefix_Type) then
+
+                     Check_Type := Etype (First (Choices (Par)));
+
+                  --  it's an array type, determine whether the check is for
+                  --  the component or the index
+
+                  elsif Expression (Par) = Expr then
+                     Check_Type :=
+                       Component_Type (Unique_Entity (Prefix_Type));
                   else
                      Check_Type :=
-                       Etype (First_Index (Unique_Entity (Array_Type)));
+                       Etype (First_Index (Unique_Entity (Prefix_Type)));
                   end if;
+
+               --  must be a regular record aggregate
+
                else
                   pragma Assert (Expression (Par) = Expr);
 

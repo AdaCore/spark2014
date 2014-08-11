@@ -83,6 +83,9 @@ tetris.ads:145:57: info: index check proved
 tetris.ads:167:46: warning: array index check might fail
 tetris.ads:185:77: info: range check proved
 tetris.ads:187:77: info: range check proved
+tetris.ads:198:49: info: range check proved
+tetris.ads:199:49: info: range check proved
+tetris.ads:200:49: info: range check proved
 tetris.ads:201:66: info: range check proved
 tetris.ads:207:14: warning: postcondition might fail, requires (Valid_Configuration)
 tetris.ads:213:16: info: postcondition proved
