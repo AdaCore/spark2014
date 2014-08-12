@@ -83,7 +83,6 @@ prefixsum.ads:32:28: warning: overflow check might fail
 prefixsum.ads:32:34: info: index check proved
 prefixsum.ads:38:14: warning: postcondition might fail
 prefixsum.ads:40:17: info: precondition proved
-prefixsum.ads:43:07: warning: unused initial value of "Ghost"
 prefixsum.ads:48:17: info: precondition proved
 prefixsum.ads:50:08: warning: postcondition might fail
 prefixsum_expanded.adb:11:10: info: loop invariant initialization proved
@@ -157,7 +156,6 @@ prefixsum_expanded.ads:29:23: warning: overflow check might fail
 prefixsum_expanded.ads:31:23: warning: overflow check might fail
 prefixsum_expanded.ads:43:14: warning: postcondition might fail
 prefixsum_expanded.ads:45:17: info: precondition proved
-prefixsum_expanded.ads:48:07: warning: unused initial value of "Ghost"
 prefixsum_expanded.ads:53:17: info: precondition proved
 prefixsum_expanded.ads:55:08: info: postcondition proved
 prefixsum_general.adb:12:10: info: loop invariant initialization proved

@@ -1,6 +1,5 @@
 p.adb:9:13: info: loop invariant preservation proved
 p.adb:9:36: warning: loop invariant might fail in first iteration, requires F'Loop_Entry = Saved
-p.ads:5:17: warning: unused initial value of "F"
 partition_refinement.adb:11:43: info: precondition proved
 partition_refinement.adb:11:43: info: range check proved
 partition_refinement.adb:12:20: info: precondition proved

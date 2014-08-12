@@ -132,9 +132,6 @@ perm.adb:167:36: warning: precondition might fail
 perm.adb:167:54: warning: precondition might fail
 perm.adb:169:28: warning: assertion might fail, requires IH
 perm.adb:175:14: warning: precondition might fail
-perm.adb:178:27: warning: unused initial value of "A"
-perm.adb:178:30: warning: unused initial value of "B"
-perm.adb:178:33: warning: unused initial value of "C"
 perm.adb:180:30: warning: precondition might fail
 perm.adb:181:43: warning: postcondition might fail, requires Is_Perm (A, C)
 perm.adb:181:43: warning: precondition might fail
@@ -376,18 +373,12 @@ perm.ads:15:32: warning: overflow check might fail
 perm.ads:15:44: warning: array index check might fail
 perm.ads:15:44: warning: overflow check might fail
 perm.ads:15:66: warning: array index check might fail
-perm.ads:17:26: warning: unused initial value of "A"
-perm.ads:17:41: warning: unused initial value of "I1"
-perm.ads:17:45: warning: unused initial value of "I2"
 perm.ads:21:17: warning: postcondition might fail, requires Remove (Remove (A, I1), I2 - 1) = Remove (Remove (A, I2), I1)
 perm.ads:21:17: warning: precondition might fail
 perm.ads:21:25: warning: precondition might fail
 perm.ads:21:44: warning: range check might fail
 perm.ads:22:19: warning: precondition might fail
 perm.ads:22:27: warning: precondition might fail
-perm.ads:24:24: warning: unused initial value of "A"
-perm.ads:24:27: warning: unused initial value of "B"
-perm.ads:24:42: warning: unused initial value of "I"
 perm.ads:27:40: warning: postcondition might fail, requires Remove (A, I) = Remove (B, I)
 perm.ads:27:40: warning: precondition might fail
 perm.ads:27:56: warning: precondition might fail

@@ -131,14 +131,12 @@ evoting.adb:313:07: info: precondition proved
 evoting.adb:315:07: info: precondition proved
 evoting.adb:317:07: info: precondition proved
 evoting.ads:32:45: info: length check proved
-evoting.ads:51:30: warning: unused initial value of "Program_Phase"
 evoting.ads:58:28: warning: postcondition might fail, requires candidates(i)(j) = ' '
 evoting.ads:58:40: info: index check proved
 evoting.ads:60:14: warning: subprogram "Print_A_Candidate" has no effect
 evoting.ads:63:14: warning: subprogram "Print_Candidates" has no effect
 evoting.ads:95:11: warning: postcondition might fail, requires counters(i) = 0
 evoting.ads:95:20: info: index check proved
-evoting.ads:99:29: warning: unused initial value of "Program_Phase"
 evoting.ads:105:25: info: range check proved
 evoting.ads:106:57: info: index check proved
 evoting.ads:107:22: warning: postcondition might fail, requires counters(winner) > counters(i)

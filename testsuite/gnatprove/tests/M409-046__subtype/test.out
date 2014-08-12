@@ -16,7 +16,3 @@ tests.adb:41:04: warning: analyzing unreferenced procedure "Mem_Positive_With_Ho
 tests.adb:44:15: info: range check proved
 tests.adb:48:04: warning: analyzing unreferenced procedure "Mem_Positive_Not_One"
 tests.adb:51:15: info: range check proved
-tests.ads:4:20: warning: unused initial value of "V"
-tests.ads:6:27: warning: unused initial value of "V"
-tests.ads:8:24: warning: unused initial value of "V"
-tests.ads:10:27: warning: unused initial value of "V"

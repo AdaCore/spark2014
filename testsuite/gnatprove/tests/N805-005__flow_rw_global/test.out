@@ -1,0 +1,4 @@
+read_write.adb:16:27: warning: unused initial value of "V"
+read_write.adb:17:16: info: postcondition proved
+read_write.adb:27:22: warning: assertion might fail, requires not V
+read_write.adb:34:22: warning: assertion might fail, requires not V, in call inlined at read_write.adb:42

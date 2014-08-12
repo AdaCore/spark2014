@@ -132,10 +132,8 @@ infoflow.ads:37:06: warning: contract cases might not be complete
 infoflow.ads:38:24: info: contract case proved
 infoflow.ads:48:06: info: complete contract cases proved
 infoflow.ads:48:30: info: contract case proved
-infoflow.ads:61:07: warning: unused initial value of "J"
 infoflow.ads:63:06: warning: contract cases might not be complete
 infoflow.ads:64:27: info: contract case proved
-infoflow.ads:73:54: warning: unused initial value of "I"
 infoflow.ads:74:06: warning: contract cases might not be complete
 infoflow.ads:74:06: warning: contract cases might not be disjoint
 infoflow.ads:78:40: info: division check proved
@@ -154,7 +152,6 @@ infoflow.ads:86:70: info: division check proved
 infoflow.ads:87:24: warning: contract case might fail
 infoflow.ads:87:33: warning: array index check might fail
 infoflow.ads:87:44: warning: array index check might fail
-infoflow.ads:89:55: warning: unused initial value of "I"
 infoflow.ads:90:06: warning: contract cases might not be complete
 infoflow.ads:90:06: warning: contract cases might not be disjoint
 infoflow.ads:94:40: info: division check proved
@@ -175,7 +172,6 @@ infoflow.ads:103:33: warning: array index check might fail
 infoflow.ads:103:44: warning: array index check might fail
 infoflow.ads:112:07: warning: "A_V1" might not be initialized in "Arraypartitionedtransfer"
 infoflow.ads:112:13: warning: "A_V2" might not be initialized in "Arraypartitionedtransfer"
-infoflow.ads:114:17: warning: unused initial value of "I"
 infoflow.ads:129:06: warning: contract cases might not be complete
 infoflow.ads:129:06: warning: contract cases might not be disjoint
 infoflow.ads:131:33: info: index check proved

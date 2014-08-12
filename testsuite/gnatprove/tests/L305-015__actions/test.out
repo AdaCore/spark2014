@@ -1,10 +1,5 @@
 actions.adb:1:20: warning: "X" is not modified, could be "in"
 actions.adb:1:23: warning: "Y" is not modified, could be "in"
-actions.adb:1:43: warning: unused initial value of "B1"
-actions.adb:1:47: warning: unused initial value of "B2"
-actions.adb:1:51: warning: unused initial value of "B3"
-actions.adb:1:55: warning: unused initial value of "B4"
-actions.adb:1:59: warning: unused initial value of "B5"
 actions.adb:1:63: warning: unused initial value of "B6"
 actions.adb:3:04: warning: initialization has no effect
 actions.adb:3:13: info: length check proved

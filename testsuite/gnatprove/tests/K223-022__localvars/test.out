@@ -2,5 +2,4 @@ loc.adb:4:07: warning: initialization has no effect
 loc.adb:4:24: info: division check proved
 loc.adb:5:07: warning: initialization has no effect
 loc.adb:5:24: info: division check proved
-loc.ads:2:20: warning: unused initial value of "Z"
 loc.ads:4:20: info: postcondition proved

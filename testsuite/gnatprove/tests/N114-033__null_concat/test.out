@@ -14,7 +14,6 @@ null_concat.ads:6:14: warning: subprogram "P_Good" has no effect
 null_concat.ads:8:14: warning: subprogram "P_Bad" has no effect
 purecat.adb:1:11: warning: subprogram "Purecat" has no effect
 purecat.adb:2:29: info: length check proved
-purecat.adb:4:16: warning: unused initial value of "Y"
 purecat.adb:9:06: info: assertion proved
 purecat.adb:11:06: info: assertion proved
 purecat.adb:14:03: info: precondition proved

@@ -35,7 +35,6 @@ admintoken.adb:430:19: warning: precondition might fail
 admintoken.adb:459:31: info: precondition proved
 admintoken.adb:471:25: info: precondition proved
 admintoken.adb:546:21: info: range check proved
-admintoken.adb:548:31: warning: unused initial value of "Idcert"
 admintoken.ads:66:22: warning: postcondition might fail
 admintoken.ads:101:22: info: postcondition proved
 admintoken.ads:148:22: warning: postcondition might fail, requires TokenOk = (IsGood and then AuthCertValid and then TheAuthCertRole in PrivTypes.adminprivileget
@@ -232,7 +231,6 @@ certificatestore.adb:223:45: warning: length check might fail
 certificatestore.adb:288:21: warning: precondition might fail
 certificatestore.adb:334:47: info: range check proved
 certificatestore.adb:358:18: warning: precondition might fail
-certificatestore.adb:392:30: warning: unused initial value of "Overflow"
 certtypes.ads:35:22: info: length check proved
 clock.adb:73:11: info: range check proved
 clock.adb:74:12: info: index check proved
