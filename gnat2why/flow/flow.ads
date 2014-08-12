@@ -156,7 +156,10 @@ package Flow is
       Start_Vertex      : Flow_Graphs.Vertex_Id;
       Helper_End_Vertex : Flow_Graphs.Vertex_Id;
       End_Vertex        : Flow_Graphs.Vertex_Id;
-      --  The start, helper end and end vertices in the graphs.
+      --  The start, helper end and end vertices in the graphs. Start and
+      --  end are the obvious, and the helper end is used to indicate the
+      --  end of the procedure (i.e. returns jump here), but before
+      --  postconditions are checked.
 
       CFG               : Flow_Graphs.T;
       DDG               : Flow_Graphs.T;
