@@ -143,6 +143,11 @@ package Flow_Refinement is
    --  This is really an internal function, but as its useful for debug and
    --  trace it has been made visible.
 
+   function Get_Enclosing_Body_Flow_Scope (S : Flow_Scope) return Flow_Scope
+     with Pre => S.Section in Body_Part;
+   --  Returns the flow scope of the enclosing package if it exists
+   --  and the null scope otherwise.
+
    function Is_Initialized_At_Elaboration (E : Entity_Id;
                                            S : Flow_Scope)
                                            return Boolean;

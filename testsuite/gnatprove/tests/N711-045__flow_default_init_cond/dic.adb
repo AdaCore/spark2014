@@ -4,6 +4,12 @@ package body Dic is
    C : Pr_Uninit_T;
    D : Pr_Liar_T;
 
+   function Gimme_A_Pr_T return Pr_T is (Pr_T'(X => 0));
+
+   function Evaluate (R : Pr_T) return Integer is (R.X);
+
+   function Add (R : Pr_Record_T) return Integer is (R.X + R.Y);
+
    function Foo (Par : Pr_Record_T2) return Boolean is (Par.X + Par.Y = G);
 
    procedure Do_Stuff is

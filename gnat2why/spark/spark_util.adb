@@ -109,8 +109,7 @@ package body SPARK_Util is
       Component   : Entity_Id;
       Association : Node_Id;
       Not_Init    : constant Boolean :=
-        Default_Initialization (Typ) /= Full_Default_Initialization
-          and then not Is_Initialized_By_Formal_Container (N);
+        Default_Initialization (Typ) /= Full_Default_Initialization;
 
    --  Start of Aggregate_Is_Fully_Initialized
 
@@ -345,7 +344,9 @@ package body SPARK_Util is
    ----------------------------
 
    function Default_Initialization
-     (Typ : Entity_Id) return Default_Initialization_Kind
+     (Typ : Entity_Id;
+      Check_Mode : Boolean := False)
+      return Default_Initialization_Kind
    is
       Init : Default_Initialization_Kind;
 
@@ -381,7 +382,8 @@ package body SPARK_Util is
          if Comes_From_Source (Comp)
            or else Chars (Comp) = Name_uParent
          then
-            Init := Default_Initialization (Base_Type (Etype (Comp)));
+            Init := Default_Initialization (Base_Type (Etype (Comp)),
+                                            Check_Mode);
 
             --  A component with mixed initialization renders the whole
             --  record/protected type mixed.
@@ -421,11 +423,12 @@ package body SPARK_Util is
    --  Start of Default_Initialization
 
    begin
-      --  If Default_Initial_Condition was specified for the type, take it into
-      --  account.
+      --  If we are not in Check_Mode and Default_Initial_Condition
+      --  was specified for the type, take it into account.
 
-      if Has_Default_Init_Cond (Typ)
-        or else Has_Inherited_Default_Init_Cond (Typ)
+      if not Check_Mode
+        and then (Has_Default_Init_Cond (Typ)
+                    or else Has_Inherited_Default_Init_Cond (Typ))
       then
          declare
             Prag : constant Node_Id := Get_Default_Init_Cond_Pragma (Typ);
@@ -466,13 +469,15 @@ package body SPARK_Util is
          if Present (Default_Aspect_Component_Value (Base_Type (Typ))) then
             Result := Full_Default_Initialization;
          else
-            Result := Default_Initialization (Component_Type (Typ));
+            Result := Default_Initialization (Component_Type (Typ),
+                                              Check_Mode);
          end if;
 
       --  The initialization status of a private type depends on its full view
 
       elsif Is_Private_Type (Typ) and then Present (Full_View (Typ)) then
-         Result := Default_Initialization (Full_View (Typ));
+         Result := Default_Initialization (Full_View (Typ),
+                                           Check_Mode);
 
       --  Record types and protected types offer several initialization options
       --  depending on their components (if any).
@@ -530,7 +535,8 @@ package body SPARK_Util is
       elsif Is_Scalar_Type (Typ)
         and then Is_Private_Type (Base_Type (Typ))
       then
-         Result := Default_Initialization (Base_Type (Typ));
+         Result := Default_Initialization (Base_Type (Typ),
+                                           Check_Mode);
 
       --  Task types are always fully default initialized
 
@@ -635,24 +641,6 @@ package body SPARK_Util is
          return False;
       end;
    end Is_In_Analyzed_Files;
-
-   ----------------------------------------
-   -- Is_Initialized_By_Formal_Container --
-   ----------------------------------------
-
-   function Is_Initialized_By_Formal_Container (N : Node_Id) return Boolean
-   is
-      Typ : Entity_Id := Etype (N);
-   begin
-      --  If the Parent is an N_Private_Type_Declaration, then we need to use
-      --  the Full_View.
-      if Nkind (Parent (Typ)) = N_Private_Type_Declaration then
-         Typ := Full_View (Typ);
-      end if;
-
-      return In_Predefined_Unit (Root_Type (Typ))
-        and then Type_Based_On_External_Axioms (Typ);
-   end Is_Initialized_By_Formal_Container;
 
    -----------------------------
    -- Is_Requested_Subprogram --

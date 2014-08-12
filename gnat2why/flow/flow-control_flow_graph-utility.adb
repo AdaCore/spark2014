@@ -142,6 +142,7 @@ package body Flow.Control_Flow_Graph.Utility is
      (Var_Use          : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
       Sub_Called       : Node_Sets.Set     := Node_Sets.Empty_Set;
       Is_Proof         : Boolean           := False;
+      Is_DIC           : Boolean           := False;
       Is_Precondition  : Boolean           := False;
       Is_Postcondition : Boolean           := False;
       Is_Loop_Entry    : Boolean           := False;
@@ -162,6 +163,8 @@ package body Flow.Control_Flow_Graph.Utility is
 
       if Is_Fold_Check then
          A.Pretty_Print_Kind := Pretty_Print_Folded_Function_Check;
+      elsif Is_DIC then
+         A.Pretty_Print_Kind := Pretty_Print_DIC;
       end if;
 
       Add_Volatile_Effects (A);
@@ -295,7 +298,7 @@ package body Flow.Control_Flow_Graph.Utility is
                A.Variables_Used.Include (F);
                A.Variables_Explicitly_Used.Include (F);
             end if;
-            if not Is_Bound (F) and then Has_Bounds (F) then
+            if not Is_Bound (F) and then Has_Bounds (F, Scope) then
                A.Variables_Used.Include
                  (F'Update (Bound => (Kind => Some_Bound)));
                A.Variables_Explicitly_Used.Include
@@ -336,7 +339,9 @@ package body Flow.Control_Flow_Graph.Utility is
       E_Loc                        : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
-      A : V_Attributes := Null_Attributes;
+      A     : V_Attributes        := Null_Attributes;
+      Scope : constant Flow_Scope := Get_Flow_Scope (Call_Vertex);
+      FS    : Flow_Id_Sets.Set;
    begin
       A.Is_Global_Parameter             := True;
       A.Is_Discr_Or_Bounds_Parameter    := Discriminants_Or_Bounds_Only;
@@ -347,9 +352,10 @@ package body Flow.Control_Flow_Graph.Utility is
 
       case Global.Variant is
          when In_View =>
-            for F of Flatten_Variable
-              (Change_Variant (Global, Normal_Use))
-            loop
+            FS := Flatten_Variable (Change_Variant (Global, Normal_Use),
+                                    Scope);
+
+            for F of FS loop
                if not Discriminants_Or_Bounds_Only or else
                  Is_Discriminant (F)
                then
@@ -357,7 +363,9 @@ package body Flow.Control_Flow_Graph.Utility is
                   A.Variables_Explicitly_Used.Include (F);
                end if;
 
-               if not Is_Bound (F) and then Has_Bounds (F) then
+               if not Is_Bound (F)
+                 and then Has_Bounds (F, Scope)
+               then
                   A.Variables_Used.Include
                     (F'Update (Bound => (Kind => Some_Bound)));
                   A.Variables_Explicitly_Used.Include
@@ -369,7 +377,7 @@ package body Flow.Control_Flow_Graph.Utility is
             --  We do not need untangle_assignment_target as we only
             --  ever update the entire global.
             A.Variables_Defined := Flatten_Variable
-              (Change_Variant (Global, Normal_Use));
+              (Change_Variant (Global, Normal_Use), Scope);
 
          when others =>
             raise Program_Error;

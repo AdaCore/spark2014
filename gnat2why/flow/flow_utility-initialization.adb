@@ -21,10 +21,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Aspects;          use Aspects;
-with Nlists;           use Nlists;
+with Aspects;    use Aspects;
+with Nlists;     use Nlists;
 
-with SPARK_Util;       use SPARK_Util;
+with SPARK_Util; use SPARK_Util;
 
 with Why;
 
@@ -101,6 +101,12 @@ package body Flow_Utility.Initialization is
             return Get_Simple_Default (Etype (F.Node));
 
          when Record_Field =>
+            --  If the Flow_Id represents the 'Hidden part of a record
+            --  then we do not consider it to be initialized.
+            if F.Hidden_Part then
+               return Empty;
+            end if;
+
             --  We need to find the first one with a default
             --  initialization as that would overwrite any default
             --  initialization we might find later.
@@ -142,29 +148,32 @@ package body Flow_Utility.Initialization is
    -- Is_Default_Initialized --
    ----------------------------
 
-   function Is_Default_Initialized (F : Flow_Id) return Boolean
+   function Is_Default_Initialized
+     (F : Flow_Id;
+      S : Flow_Scope)
+      return Boolean
    is
    begin
       case F.Kind is
          when Direct_Mapping =>
             return Default_Initialization
-                     (Etype (Get_Direct_Mapping_Id (F))) =
+                     (Get_Full_Type (Get_Direct_Mapping_Id (F), S)) =
                         Full_Default_Initialization
-              or else Is_Initialized_By_Formal_Container
-                        (Get_Direct_Mapping_Id (F));
+              or else Default_Initialization (Root_Type
+                        (Get_Full_Type (Get_Direct_Mapping_Id (F), S))) =
+                           Full_Default_Initialization;
 
          when Record_Field =>
             if Is_Discriminant (F) then
                return Present (Discriminant_Default_Value
-                                 (F.Component.Last_Element))
-                 or else Is_Initialized_By_Formal_Container
-                           (Get_Direct_Mapping_Id (F));
+                                 (F.Component.Last_Element));
             else
                return Default_Initialization
-                        (Etype (Get_Direct_Mapping_Id (F))) =
+                        (Get_Full_Type (Get_Direct_Mapping_Id (F), S)) =
                            Full_Default_Initialization
-                 or else Is_Initialized_By_Formal_Container
-                           (Get_Direct_Mapping_Id (F));
+                 or else Default_Initialization (Root_Type
+                           (Get_Full_Type (Get_Direct_Mapping_Id (F), S))) =
+                              Full_Default_Initialization;
             end if;
 
          when Magic_String | Synthetic_Null_Export =>

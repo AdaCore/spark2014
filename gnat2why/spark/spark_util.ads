@@ -173,20 +173,16 @@ package SPARK_Util is
       --  default initialized.
 
    function Default_Initialization
-     (Typ : Entity_Id) return Default_Initialization_Kind;
+     (Typ        : Entity_Id;
+      Check_Mode : Boolean := False)
+      return Default_Initialization_Kind;
    --  Determine default initialization kind that applies to a particular
    --  type. Types defined in axiomatized units (such as formal containers) and
    --  private types are treated specially, so that they are either considered
    --  as having full default initialized, or no default initialization.
-
-   function Is_Initialized_By_Formal_Container (N : Node_Id) return Boolean;
-   --  Returns true if the type of the corresponding entity appears within
-   --  the source text of a predefined unit (i.e. within Ada, Interfaces,
-   --  System or within one of the descendent packages of one of these three
-   --  packages) and is considered to be default initialized because it is
-   --  declared in a formal container.
    --
-   --  ??? This should be removed once N122-014 is implemented.
+   --  If Check_Mode is True then we do not consider if Has_Default_Init_Cond
+   --  or Has_Inherited_Default_Init_Cond are true for this type.
 
    ---------------
    -- Utilities --

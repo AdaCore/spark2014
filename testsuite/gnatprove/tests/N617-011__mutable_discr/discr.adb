@@ -119,18 +119,18 @@ package body Discr with SPARK_Mode is
       D1 : P_With_Default := New_With_Default (C);
       D2 : P_With_Default (C) := New_With_Default (C);
 
-      procedure Nested1 (D : in out P_With_Default) with
+      procedure Nested1 (D : out P_With_Default) with
         Pre => True;
 
-      procedure Nested1 (D : in out P_With_Default) is
+      procedure Nested1 (D : out P_With_Default) is
       begin
          D := New_With_Default (0); -- @DISCRIMINANT_CHECK:FAIL
       end Nested1;
 
-      procedure Nested2 (D : in out P_With_Default) with
+      procedure Nested2 (D : out P_With_Default) with
         Pre => not D'Constrained;
 
-      procedure Nested2 (D : in out P_With_Default) is
+      procedure Nested2 (D : out P_With_Default) is
       begin
          D := New_With_Default (0);
       end Nested2;

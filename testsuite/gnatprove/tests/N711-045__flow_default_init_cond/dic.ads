@@ -1,6 +1,8 @@
 package Dic is
    G : Integer;
 
+   type Pr_T is private;
+
    type Pr_Record_T is private
      with Default_Initial_Condition;
 
@@ -13,10 +15,20 @@ package Dic is
    type Pr_Liar_T is private
      with Default_Initial_Condition;
 
+   function Gimme_A_Pr_T return Pr_T;
+
+   function Evaluate (R : Pr_T) return Integer;
+
+   function Add (R : Pr_Record_T) return Integer;
+
    function Foo (Par : Pr_Record_T2) return Boolean;
 
    procedure Do_Stuff;
 private
+   type Pr_T is record
+      X : Integer;
+   end record;
+
    type Pr_Record_T is record
       X, Y : Integer := 0;
    end record;

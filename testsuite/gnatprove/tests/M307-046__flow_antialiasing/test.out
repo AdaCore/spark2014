@@ -6,9 +6,7 @@ test.adb:119:04: warning: analyzing unreferenced procedure "Test_02"
 test.adb:125:04: warning: analyzing unreferenced procedure "Test_03"
 test.adb:125:14: flow analysis of "Test_03" abandoned due to aliasing
 test.adb:128:14: formal parameter "X" and global "Global_RA" must not be aliased
-test.adb:131:23: warning: "X.A" is not modified, could be "in"
-test.adb:131:23: warning: "X.B" is not modified, could be "in"
-test.adb:131:23: warning: "X.C" is not modified, could be "in"
+test.adb:131:23: warning: "X" is not modified, could be "in"
 test.adb:138:14: flow analysis of "Test_05" abandoned due to aliasing
 test.adb:142:19: formal parameters "Y" and "Z" must not be aliased
 test.adb:145:04: warning: analyzing unreferenced procedure "Test_06"

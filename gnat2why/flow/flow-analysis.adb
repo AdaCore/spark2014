@@ -782,7 +782,7 @@ package body Flow.Analysis is
                     (FA        => FA,
                      Msg       => "& is not modified, could be INPUT",
                      N         => Find_Global (FA.Analyzed_Entity, F_Final),
-                     F1        => F_Final,
+                     F1        => Entire_Variable (F_Final),
                      Tag       => "inout_only_read",
                      Warning   => True,
                      Vertex    => V);
@@ -791,7 +791,7 @@ package body Flow.Analysis is
                     (FA        => FA,
                      Msg       => "& is not modified, could be IN",
                      N         => Error_Location (FA.PDG, FA.Atr, V),
-                     F1        => F_Final,
+                     F1        => Entire_Variable (F_Final),
                      Tag       => "inout_only_read",
                      Warning   => True,
                      Vertex    => V);
@@ -981,22 +981,22 @@ package body Flow.Analysis is
                --  mode we don't produce this warning.
                if not FA.Is_Generative then
                   Error_Msg_Flow
-                    (FA        => FA,
-                     Msg       => "unused global &",
-                     N         => Find_Global (FA.Analyzed_Entity, F),
-                     F1        => F,
-                     Tag       => "unused",
-                     Warning   => True);
+                    (FA      => FA,
+                     Msg     => "unused global &",
+                     N       => Find_Global (FA.Analyzed_Entity, F),
+                     F1      => F,
+                     Tag     => "unused",
+                     Warning => True);
                end if;
             else
                --  ??? distinguish between variables and parameters
                Error_Msg_Flow
-                 (FA        => FA,
-                  Msg       => "unused variable &",
-                  N         => Error_Location (FA.PDG, FA.Atr, V),
-                  F1        => F,
-                  Tag       => "unused",
-                  Warning   => True);
+                 (FA      => FA,
+                  Msg     => "unused variable &",
+                  N       => Error_Location (FA.PDG, FA.Atr, V),
+                  F1      => F,
+                  Tag     => "unused",
+                  Warning => True);
             end if;
          end;
       end loop;
@@ -1033,8 +1033,8 @@ package body Flow.Analysis is
                  not FA.Is_Generative
                then
                   Error_Msg_Flow
-                    (FA        => FA,
-                     Msg       =>
+                    (FA      => FA,
+                     Msg     =>
                        (if FA.B_Scope.Section /= Body_Part
                           and then Is_Abstract_State (F)
                           and then Present (FA.B_Scope)
@@ -1046,22 +1046,22 @@ package body Flow.Analysis is
                           "- consider moving the subprogram to the " &
                           "package body and adding a Refined_Global"
                         else "unused initial value of &"),
-                     N         => Find_Global (FA.Analyzed_Entity, F),
-                     F1        => F,
-                     F2        => Direct_Mapping_Id (FA.Analyzed_Entity),
-                     Tag       => "unused_initial_value",
+                     N       => Find_Global (FA.Analyzed_Entity, F),
+                     F1      => F,
+                     F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
+                     Tag     => "unused_initial_value",
                      Warning => True);
                end if;
             else
                Error_Msg_Flow
-                 (FA        => FA,
-                  Msg       => "unused initial value of &",
+                 (FA      => FA,
+                  Msg     => "unused initial value of &",
                   --  ??? find_import
-                  N         => Error_Location (FA.PDG, FA.Atr, V),
-                  F1        => F,
-                  F2        => Direct_Mapping_Id (FA.Analyzed_Entity),
-                  Tag       => "unused_initial_value",
-                  Warning   => True);
+                  N       => Error_Location (FA.PDG, FA.Atr, V),
+                  F1      => F,
+                  F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
+                  Tag     => "unused_initial_value",
+                  Warning => True);
             end if;
          end;
       end loop;
@@ -1675,6 +1675,7 @@ package body Flow.Analysis is
               and then Has_Array_Type (Etype (The_Var.Node)))
            or else
            (The_Var.Kind = Record_Field
+              and then not The_Var.Hidden_Part
               and then Ekind (Etype (The_Var.Component.Last_Element))
                          in Type_Kind
               and then Has_Array_Type

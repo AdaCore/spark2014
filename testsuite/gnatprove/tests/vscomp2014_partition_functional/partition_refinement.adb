@@ -135,16 +135,16 @@ is
       P_Elem, P_Prime : Interval;
       P_Prime_Index : Partition_Index;
 
-      pragma Warnings (Off, "statement has no effect", Reason => "ghost code");
+      pragma Warnings (Off, "initialization has no effect", Reason => "ghost code");
       P_Save : Partition := P;
-      pragma Warnings (On, "statement has no effect", Reason => "ghost code");
+      pragma Warnings (On, "initialization has no effect", Reason => "ghost code");
 
    begin
       for J in 0 .. Partition_Index'Base (Length (P)) - 1 loop
 
-         pragma Warnings (Off, "statement has no effect", Reason => "ghost code");
+         pragma Warnings (Off, "unused assignment", Reason => "ghost code");
          P_Save := P;
-         pragma Warnings (On, "statement has no effect", Reason => "ghost code");
+         pragma Warnings (On, "unused assignment", Reason => "ghost code");
 
          P_Elem := Element (P, J);
          if P_Elem.Count in 1 .. P_Elem.Last - P_Elem.First then

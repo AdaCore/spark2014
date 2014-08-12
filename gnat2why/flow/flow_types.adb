@@ -24,15 +24,16 @@
 with Ada.Strings;
 with Ada.Strings.Hash;
 
-with Namet;            use Namet;
-with Sem_Util;         use Sem_Util;
-with Snames;           use Snames;
+with Namet;             use Namet;
+with Sem_Util;          use Sem_Util;
+with Snames;            use Snames;
 
-with Output;           use Output;
-with Casing;           use Casing;
+with Output;            use Output;
+with Casing;            use Casing;
 
 with Why;
 
+with Flow_Utility;      use Flow_Utility;
 with Flow_Tree_Utility; use Flow_Tree_Utility;
 
 package body Flow_Types is
@@ -87,6 +88,10 @@ package body Flow_Types is
          end if;
 
          if Left.Kind = Record_Field then
+            if Left.Hidden_Part /= Right.Hidden_Part then
+               return False;
+            end if;
+
             if Left.Component.Length = Right.Component.Length then
                for I in Natural range 1 .. Natural (Left.Component.Length) loop
                   if Left.Component (I) /= Right.Component (I) then
@@ -170,11 +175,12 @@ package body Flow_Types is
       Variant : Flow_Id_Variant := Normal_Use)
       return Flow_Id
    is
-      F : Flow_Id := (Kind      => Record_Field,
-                      Variant   => Variant,
-                      Node      => Empty,
-                      Bound     => Null_Bound,
-                      Component => Entity_Lists.Empty_Vector);
+      F : Flow_Id := (Kind        => Record_Field,
+                      Variant     => Variant,
+                      Node        => Empty,
+                      Bound       => Null_Bound,
+                      Component   => Entity_Lists.Empty_Vector,
+                      Hidden_Part => False);
       P : Node_Id;
    begin
       P := N;
@@ -221,11 +227,12 @@ package body Flow_Types is
    is
       Tmp : Flow_Id;
    begin
-      Tmp := (Kind      => Record_Field,
-              Variant   => F.Variant,
-              Node      => F.Node,
-              Bound     => F.Bound,
-              Component => Entity_Lists.Empty_Vector);
+      Tmp := (Kind        => Record_Field,
+              Variant     => F.Variant,
+              Node        => F.Node,
+              Bound       => F.Bound,
+              Component   => Entity_Lists.Empty_Vector,
+              Hidden_Part => False);
 
       if F.Kind = Record_Field then
          Tmp.Component := F.Component;
@@ -243,7 +250,11 @@ package body Flow_Types is
    begin
       case F.Kind is
          when Record_Field =>
-            return Ekind (F.Component.Last_Element) = E_Discriminant;
+            if F.Hidden_Part then
+               return False;
+            else
+               return Ekind (F.Component.Last_Element) = E_Discriminant;
+            end if;
          when Direct_Mapping | Magic_String | Synthetic_Null_Export =>
             return False;
          when Null_Value =>
@@ -255,7 +266,11 @@ package body Flow_Types is
    -- Has_Bounds --
    ----------------
 
-   function Has_Bounds (F : Flow_Id) return Boolean is
+   function Has_Bounds
+     (F     : Flow_Id;
+      Scope : Flow_Scope)
+      return Boolean
+   is
       T : Entity_Id;
    begin
       case F.Kind is
@@ -263,10 +278,14 @@ package body Flow_Types is
             return False;
 
          when Direct_Mapping =>
-            T := Etype (F.Node);
+            T := Get_Full_Type (F.Node, Scope);
 
          when Record_Field =>
-            T := Etype (F.Component.Last_Element);
+            if F.Hidden_Part then
+               return False;
+            else
+               T := Get_Full_Type (F.Component.Last_Element, Scope);
+            end if;
       end case;
 
       case Ekind (T) is
@@ -583,6 +602,9 @@ package body Flow_Types is
                Set_Casing (Mixed_Case);
                Append (R, Name_Buffer (1 .. Name_Len));
             end loop;
+            if F.Hidden_Part then
+               Append (R, "'Hidden");
+            end if;
 
          when Magic_String =>
             Append (R, F.Name.all);

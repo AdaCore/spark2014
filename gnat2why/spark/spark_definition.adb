@@ -2432,8 +2432,9 @@ package body SPARK_Definition is
             --  If the type has a Default_Initial_Condition aspect, store the
             --  corresponding expression in the Delayed_Type_Aspects map.
 
-            if Has_Default_Init_Cond (E)
-              or else Has_Inherited_Default_Init_Cond (E)
+            if (Has_Default_Init_Cond (E)
+                  or else Has_Inherited_Default_Init_Cond (E))
+              and then Present (Default_Init_Cond_Procedure (E))
             then
                declare
                   Default_Init_Expr : constant Node_Id :=

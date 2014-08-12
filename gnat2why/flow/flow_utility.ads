@@ -51,31 +51,52 @@ package Flow_Utility is
    --  try our best to get a direct mapping, resorting to the magic
    --  string only as a last resort.
 
-   function Get_Full_Type (E : Entity_Id) return Entity_Id;
-   --  Get the type of the given entity. Ignores private types and always
-   --  returns the full view.
+   function Get_Full_Type_Without_Checking (E : Entity_Id) return Entity_Id;
+   --  Get the type of the given entity. This function looks through
+   --  private types and should be used with extreme care.
 
-   function Get_Full_Etype (N : Node_Id) return Entity_Id
-   with Pre => Present (N);
-   --  Get the type of the given node. Ignores private types and always
-   --  returns the full view.
+   function Get_Full_Etype_Without_Checking (N : Node_Id) return Entity_Id
+     with Pre => Present (N);
+   --  Get the type of the given entity. This function looks through
+   --  private types and should be used with extreme care.
+
+   function Get_Full_Type
+     (E     : Entity_Id;
+      Scope : Flow_Scope)
+      return Entity_Id;
+   --  Get the type of the given entity. If the full view of the type
+   --  is not visible from Scope, then we return the non-full view.
+
+   function Get_Full_Etype
+     (N     : Node_Id;
+      Scope : Flow_Scope)
+      return Entity_Id
+     with Pre => Present (N);
+   --  Get the type of the given node. If the full view of the type
+   --  is not visible from Scope, then we return the non-full view.
 
    function All_Record_Components
-     (Entire_Var : Entity_Id)
+     (Entire_Var : Entity_Id;
+      Scope      : Flow_Scope)
       return Flow_Id_Sets.Set
-      with Pre => Ekind (Get_Full_Type (Entire_Var)) in
+      with Pre => Ekind (Get_Full_Type_Without_Checking (Entire_Var)) in
         E_Record_Type | E_Record_Subtype;
    --  Given the record Entire_Var, return a set with all components.
    --  So, for example we might return:
    --     * p.x
    --     * p.r.a
    --     * p.r.b
+   --
+   --  We return components relatively to Scope. If there are
+   --  discriminants that are visible from Scope then we return those
+   --  discriminants too.
 
    function All_Record_Components
-     (The_Record_Field : Flow_Id)
+     (The_Record_Field : Flow_Id;
+      Scope            : Flow_Scope)
       return Flow_Id_Sets.Set
       with Pre => The_Record_Field.Kind in Direct_Mapping | Record_Field
-                  and then Ekind (Get_Full_Type
+                  and then Ekind (Get_Full_Type_Without_Checking
                                     (Get_Direct_Mapping_Id
                                        (The_Record_Field))) in
                                      E_Record_Type | E_Record_Subtype;
@@ -230,12 +251,22 @@ package Flow_Utility is
    --  Return the set of entire variables which are introduced in a
    --  quantifier under node N
 
-   function Flatten_Variable (E : Entity_Id) return Flow_Id_Sets.Set;
+   function Flatten_Variable
+     (E     : Entity_Id;
+      Scope : Flow_Scope)
+      return Flow_Id_Sets.Set;
    --  Returns a set of flow_ids for all parts of the unique entity
    --  for E. For records this includes all subcomponents, for
    --  everything else this is just the variable E.
+   --
+   --  Flattening happens relatively to Scope. In the case of a
+   --  private record with visible discriminants we return Flow_Ids
+   --  for all discriminants and 'Hidden for the private part.
 
-   function Flatten_Variable (F : Flow_Id) return Flow_Id_Sets.Set
+   function Flatten_Variable
+     (F     : Flow_Id;
+      Scope : Flow_Scope)
+      return Flow_Id_Sets.Set
      with Pre => F.Kind in Direct_Mapping |
                            Magic_String |
                            Synthetic_Null_Export;
@@ -295,8 +326,10 @@ package Flow_Utility is
                  Get_Pragma_Id (N) = Pragma_Check;
    --  Given a check pragma, return if this is a precondition check.
 
-   function Contains_Discriminants (F : Flow_Id) return Boolean is
-     (for some X of Flatten_Variable (F) => Is_Discriminant (X))
+   function Contains_Discriminants
+     (F : Flow_Id;
+      S : Flow_Scope)
+      return Boolean
      with Pre => F.Kind in Direct_Mapping | Magic_String;
    --  Returns true if the flattened variable for F contains at least
    --  one discriminant.

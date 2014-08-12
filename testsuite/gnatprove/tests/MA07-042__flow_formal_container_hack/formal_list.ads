@@ -12,7 +12,8 @@ is
       Element_Type => Integer,
       "="          => Eq);
 
-   type T is private;
+   type T is private
+     with Default_Initial_Condition;
 
    type U is new Vec.Vector (100);
 

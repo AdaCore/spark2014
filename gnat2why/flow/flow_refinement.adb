@@ -147,8 +147,10 @@ package body Flow_Refinement is
                         S            : Flow_Scope)
                         return Boolean
    is
-      Ptr : Flow_Scope := S;
+      Ptr : Flow_Scope;
    begin
+      --  Go upwards from S and see if we end up in Target_Scope.
+      Ptr := S;
       while Ptr /= Null_Flow_Scope loop
          if Ptr = Target_Scope then
             return True;
@@ -156,7 +158,17 @@ package body Flow_Refinement is
 
          case Valid_Section_T'(Ptr.Section) is
             when Body_Part =>
-               Ptr.Section := Private_Part;
+               if Flow_Scope'(Ptr.Pkg, Private_Part) = Target_Scope
+                 or else Flow_Scope'(Ptr.Pkg, Spec_Part) = Target_Scope
+               then
+                  return True;
+               end if;
+
+               if Get_Enclosing_Body_Flow_Scope (Ptr) /= Null_Flow_Scope then
+                  Ptr := Get_Enclosing_Body_Flow_Scope (Ptr);
+               else
+                  Ptr.Section := Private_Part;
+               end if;
 
             when Private_Part =>
                if Flow_Scope'(Ptr.Pkg, Spec_Part) = Target_Scope then
@@ -168,6 +180,31 @@ package body Flow_Refinement is
                Ptr := Get_Enclosing_Flow_Scope (Ptr);
          end case;
       end loop;
+
+      --  Check if Target_Scope is generally visible
+      Ptr := Target_Scope;
+      while Ptr /= Null_Flow_Scope loop
+         case Valid_Section_T'(Ptr.Section) is
+            when Spec_Part =>
+               Ptr := Get_Enclosing_Flow_Scope (Ptr);
+
+            when Body_Part | Private_Part =>
+               exit;
+         end case;
+      end loop;
+
+      if Ptr = Null_Flow_Scope then
+         return True;
+      end if;
+
+      --  Check if Target_Scope is nested within S
+      Ptr := Target_Scope;
+      if Ptr /= Null_Flow_Scope
+        and then Valid_Section_T'(Ptr.Section) = Spec_Part
+      then
+         Ptr := Get_Enclosing_Flow_Scope (Ptr);
+         return Is_Visible (Ptr, S);
+      end if;
 
       return False;
    end Is_Visible;
@@ -188,27 +225,24 @@ package body Flow_Refinement is
    function Get_Enclosing_Flow_Scope (S : Flow_Scope) return Flow_Scope
    is
       Enclosing_Scope : Flow_Scope := S;
+      Ptr             : Node_Id    := S.Pkg;
    begin
-      declare
-         Ptr : Node_Id := S.Pkg;
-      begin
-         while Nkind (Ptr) /= N_Package_Declaration loop
-            Ptr := Parent (Ptr);
-         end loop;
-         Enclosing_Scope := Get_Flow_Scope (Ptr);
+      while Nkind (Ptr) /= N_Package_Declaration loop
+         Ptr := Parent (Ptr);
+      end loop;
+      Enclosing_Scope := Get_Flow_Scope (Ptr);
 
-         if Enclosing_Scope = Null_Flow_Scope and then
-           Scope (S.Pkg) /= Standard_Standard
-         then
-            Ptr := Scope (S.Pkg);
-            while Present (Ptr) and then Ekind (Ptr) /= E_Package loop
-               Ptr := Scope (Ptr);
-            end loop;
-            if Present (Ptr) and then Ptr /= Standard_Standard then
-               Enclosing_Scope := Flow_Scope'(Ptr, S.Section);
-            end if;
+      if Enclosing_Scope = Null_Flow_Scope and then
+        Scope (S.Pkg) /= Standard_Standard
+      then
+         Ptr := Scope (S.Pkg);
+         while Present (Ptr) and then Ekind (Ptr) /= E_Package loop
+            Ptr := Scope (Ptr);
+         end loop;
+         if Present (Ptr) and then Ptr /= Standard_Standard then
+            Enclosing_Scope := Flow_Scope'(Ptr, S.Section);
          end if;
-      end;
+      end if;
 
       if Is_Private_Descendant (S.Pkg) then
          Enclosing_Scope.Section := Private_Part;
@@ -216,6 +250,25 @@ package body Flow_Refinement is
 
       return Enclosing_Scope;
    end Get_Enclosing_Flow_Scope;
+
+   -----------------------------------
+   -- Get_Enclosing_Body_Flow_Scope --
+   -----------------------------------
+
+   function Get_Enclosing_Body_Flow_Scope (S : Flow_Scope) return Flow_Scope is
+      P : Node_Id;
+   begin
+      P := Body_Entity (S.Pkg);
+
+      --  We need to get to the node that is above the N_Package_Body
+      --  that corresponds to flow scope S.
+      while Nkind (P) /= N_Package_Body loop
+         P := Parent (P);
+      end loop;
+      P := Parent (P);
+
+      return Get_Flow_Scope (P);
+   end Get_Enclosing_Body_Flow_Scope;
 
    --------------------
    -- Get_Flow_Scope --

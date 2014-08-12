@@ -38,6 +38,8 @@ with Common_Containers;                  use Common_Containers;
 
 with SPARK_Util;                         use SPARK_Util;
 
+with Flow_Refinement;                    use Flow_Refinement;
+
 package Flow_Types is
 
    ----------------------------------------------------------------------
@@ -146,7 +148,8 @@ package Flow_Types is
 
             case Kind is
                when Record_Field =>
-                  Component : Entity_Lists.Vector;
+                  Component   : Entity_Lists.Vector;
+                  Hidden_Part : Boolean;
                when others =>
                   null;
             end case;
@@ -223,7 +226,10 @@ package Flow_Types is
    --  Returns true if the given flow id is a record field
    --  representing a discriminant.
 
-   function Has_Bounds (F : Flow_Id) return Boolean
+   function Has_Bounds
+     (F     : Flow_Id;
+      Scope : Flow_Scope)
+      return Boolean
      with Pre => (if F.Kind in Direct_Mapping | Record_Field
                   then F.Bound = Null_Bound and
                        Nkind (F.Node) in N_Entity);
@@ -235,6 +241,11 @@ package Flow_Types is
        then F.Bound.Kind /= No_Bound
        else False);
    --  Returns true if the given flow id represents a bound.
+
+   function Is_Hidden_Part (F : Flow_Id) return Boolean
+   is (F.Kind = Record_Field and then F.Hidden_Part);
+   --  Returns true if the given flow id represents the hidden part of
+   --  a record.
 
    function Is_Volatile (F : Flow_Id) return Boolean;
    --  Returns true if the given flow id is volatile in any way.
@@ -348,6 +359,7 @@ package Flow_Types is
    --  Flow.
 
    type Pretty_Print_Kind_T is (Pretty_Print_Null,
+                                Pretty_Print_DIC,
                                 Pretty_Print_Initializes_Aspect,
                                 Pretty_Print_Folded_Function_Check,
                                 Pretty_Print_Loop_Init,

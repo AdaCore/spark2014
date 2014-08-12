@@ -61,13 +61,17 @@ package Flow.Control_Flow_Graph.Utility is
      (Var_Use          : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
       Sub_Called       : Node_Sets.Set     := Node_Sets.Empty_Set;
       Is_Proof         : Boolean           := False;
+      Is_DIC           : Boolean           := False;
       Is_Precondition  : Boolean           := False;
       Is_Postcondition : Boolean           := False;
       Is_Loop_Entry    : Boolean           := False;
       Is_Fold_Check    : Boolean           := False;
       E_Loc            : Node_Or_Entity_Id := Empty)
       return V_Attributes
-     with Pre  => (if Is_Precondition or Is_Postcondition then Is_Proof),
+     with Pre  => (if Is_DIC
+                     or Is_Precondition
+                     or Is_Postcondition
+                   then Is_Proof),
           Post => not Make_Sink_Vertex_Attributes'Result.Is_Null_Node and
                   not Make_Sink_Vertex_Attributes'Result.Is_Program_Node;
    --  Create attributes for vertices modelling the following
@@ -202,7 +206,7 @@ package Flow.Control_Flow_Graph.Utility is
       Loops   : Node_Sets.Set := Node_Sets.Empty_Set)
       return V_Attributes
     with
-      Pre => Is_Default_Initialized (F),
+      Pre  => Is_Default_Initialized (F, Scope),
       Post => not Make_Default_Initialization_Attributes'Result.Is_Null_Node
         and Make_Default_Initialization_Attributes'Result.Is_Default_Init;
    --  Create attributes for the default initialization vertices.

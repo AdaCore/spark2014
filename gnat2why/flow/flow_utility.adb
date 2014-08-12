@@ -177,15 +177,17 @@ package body Flow_Utility is
    ---------------------------
 
    function All_Record_Components
-     (Entire_Var : Entity_Id)
+     (Entire_Var : Entity_Id;
+      Scope      : Flow_Scope)
       return Flow_Id_Sets.Set
    is
    begin
-      return All_Record_Components (Direct_Mapping_Id (Entire_Var));
+      return All_Record_Components (Direct_Mapping_Id (Entire_Var), Scope);
    end All_Record_Components;
 
    function All_Record_Components
-     (The_Record_Field : Flow_Id)
+     (The_Record_Field : Flow_Id;
+      Scope            : Flow_Scope)
       return Flow_Id_Sets.Set
    is
       Entire_Var : constant Entity_Id :=
@@ -199,7 +201,9 @@ package body Flow_Utility is
 
       procedure Process_Record (R_Type : Entity_Id;
                                 Comp   : Entity_Lists.Vector)
-      with Pre => Ekind (R_Type) in E_Record_Type | E_Record_Subtype;
+        with Pre => Ekind (R_Type) in E_Record_Type    |
+                                      E_Record_Subtype |
+                                      Private_Kind;
       --  Recursively go through the record's components, adding
       --  everything to All_Comp.
 
@@ -240,28 +244,45 @@ package body Flow_Utility is
          C : Entity_Id;
          F : Flow_Id;
       begin
+         if Ekind (R_Type) in Private_Kind then
+            F := (Kind        => Record_Field,
+                  Variant     => Normal_Use,
+                  Node        => Entire_Var,
+                  Bound       => Null_Bound,
+                  Component   => Comp,
+                  Hidden_Part => True);
+            Possibly_Include (F);
+         end if;
+
          --  Make a vertex for each subcomponent, unless its a
          --  record. If we have a record we recurse instead.
          C := First_Component_Or_Discriminant (R_Type);
          while Present (C) loop
-            declare
-               Tmp : Entity_Lists.Vector := Comp;
-            begin
-               Tmp.Append (Original_Record_Component (C));
+            if Is_Visible (C, Scope) then
+               declare
+                  Tmp : Entity_Lists.Vector := Comp;
+               begin
+                  Tmp.Append (Original_Record_Component (C));
 
-               case Ekind (Get_Full_Type (C)) is
-                  when Record_Kind =>
-                     Process_Record (Get_Full_Type (C), Tmp);
+                  case Ekind (Get_Full_Type (C, Scope)) is
+                     when Record_Kind               |
+                          E_Private_Type            |
+                          E_Private_Subtype         |
+                          E_Limited_Private_Type    |
+                          E_Limited_Private_Subtype =>
+                        Process_Record (Get_Full_Type (C, Scope), Tmp);
 
-                  when others =>
-                     F := (Kind      => Record_Field,
-                           Variant   => Normal_Use,
-                           Node      => Entire_Var,
-                           Bound     => Null_Bound,
-                           Component => Tmp);
-                     Possibly_Include (F);
-               end case;
-            end;
+                     when others =>
+                        F := (Kind        => Record_Field,
+                              Variant     => Normal_Use,
+                              Node        => Entire_Var,
+                              Bound       => Null_Bound,
+                              Component   => Tmp,
+                              Hidden_Part => False);
+                        Possibly_Include (F);
+                  end case;
+               end;
+            end if;
 
             C := Next_Component_Or_Discriminant (C);
          end loop;
@@ -272,7 +293,7 @@ package body Flow_Utility is
          Write_Str ("The_record_Field: ");
          Print_Flow_Id (The_Record_Field);
       end if;
-      Process_Record (Get_Full_Type (Entire_Var),
+      Process_Record (Get_Full_Type (Entire_Var, Scope),
                       Entity_Lists.Empty_Vector);
       return All_Comp;
    end All_Record_Components;
@@ -401,7 +422,7 @@ package body Flow_Utility is
       Seq           : Node_Lists.List  := Node_Lists.Empty_List;
 
       E             : Entity_Id;
-      Comp_Id       : Positive;
+      Comp_Id       : Natural;
       Current_Field : Flow_Id;
 
       Must_Abort    : Boolean := False;
@@ -420,12 +441,14 @@ package body Flow_Utility is
       --  First, we figure out what the root node is. For example in
       --  Foo.Bar'Update(...).Z the root node will be Foo.
       --
-      --  We also make a note of all components (bar, z) and a note of all
-      --  nodes in order that access or update fields (bar, the_update, z).
+      --  We also note all components (bar, z), 'update nodes and the
+      --  order in which they access or update fields (bar,
+      --  the_update, z).
 
       while Nkind (Root_Node) = N_Selected_Component or else
         (Is_Tick_Update (Root_Node) and then
-           Ekind (Get_Full_Etype (Root_Node)) in Record_Kind) or else
+           Ekind (Get_Full_Etype_Without_Checking (Root_Node))
+             in Record_Kind) or else
         Is_Ignored_Node (Root_Node)
       loop
          if Nkind (Root_Node) = N_Selected_Component then
@@ -473,7 +496,7 @@ package body Flow_Utility is
       --  abort.
 
       if Nkind (Root_Node) not in N_Identifier | N_Expanded_Name or else
-        Ekind (Get_Full_Etype (Root_Node)) not in Record_Kind
+        Ekind (Get_Full_Etype_Without_Checking (Root_Node)) not in Record_Kind
       then
          return Vars : Flow_Id_Sets.Set do
             --  Recurse on root.
@@ -526,13 +549,17 @@ package body Flow_Utility is
       --     r.x -> r.x
       --     r.y -> r.y
 
-      for F of All_Record_Components (Direct_Mapping_Id (Entity (Root_Node)))
-      loop
-         M.Insert (F, Flow_Id_Sets.To_Set (F));
-      end loop;
-      if Debug_Trace_Untangle_Record then
-         Show_Map;
-      end if;
+      declare
+         FS : constant Flow_Id_Sets.Set := All_Record_Components
+           (Direct_Mapping_Id (Entity (Root_Node)), Scope);
+      begin
+         for F of FS loop
+            M.Insert (F, Flow_Id_Sets.To_Set (F));
+         end loop;
+         if Debug_Trace_Untangle_Record then
+            Show_Map;
+         end if;
+      end;
 
       --  We then process Seq (the sequence of actions we have been asked
       --  to take) and update the map or eliminate entries from it.
@@ -596,6 +623,7 @@ package body Flow_Utility is
                                                   (First (Expressions (N))));
                   Field_Ptr : Node_Id;
                   Tmp       : Flow_Id_Sets.Set;
+                  FS        : Flow_Id_Sets.Set;
                begin
                   Indent;
                   while Present (Ptr) loop
@@ -609,7 +637,8 @@ package body Flow_Utility is
                            Write_Eol;
                         end if;
 
-                        if Ekind (Get_Full_Etype (E)) in Record_Kind then
+                        if Ekind (Get_Full_Etype (E, Scope)) in Record_Kind
+                        then
                            --  Composite update
 
                            --  We should call Untangle_Record_Aggregate
@@ -622,9 +651,10 @@ package body Flow_Utility is
                                  Tmp := Get_Vars_Wrapper (Expression (Ptr));
                                  --  Not sure what to do, so set all sensible
                                  --  fields to the given variables.
-                                 for F of All_Record_Components
-                                   (Add_Component (Current_Field, E))
-                                 loop
+                                 FS := All_Record_Components
+                                   (Add_Component (Current_Field, E), Scope);
+
+                                 for F of FS loop
                                     M.Replace (F, Tmp);
                                     All_Vars.Union (Tmp);
                                  end loop;
@@ -661,7 +691,9 @@ package body Flow_Utility is
                         V : constant Flow_Id_Sets.Set :=
                           Flow_Id_Maps.Element (C);
                      begin
-                        if K.Component (Comp_Id) = E then
+                        if Natural (K.Component.Length) >= Comp_Id
+                          and then K.Component (Comp_Id) = E
+                        then
                            New_Map.Insert (K, V);
                         end if;
                      end;
@@ -827,7 +859,7 @@ package body Flow_Utility is
             pragma Assert
               (List_Length (Pragma_Argument_Associations (Global_Node)) = 1);
 
-            PAA : constant Node_Id :=
+            PAA      : constant Node_Id :=
               First (Pragma_Argument_Associations (Global_Node));
             pragma Assert (Nkind (PAA) = N_Pragma_Argument_Association);
 
@@ -835,9 +867,9 @@ package body Flow_Utility is
             The_Mode : Name_Id;
             RHS      : Node_Id;
 
-            G_Proof : Node_Sets.Set := Node_Sets.Empty_Set;
-            G_In    : Node_Sets.Set := Node_Sets.Empty_Set;
-            G_Out   : Node_Sets.Set := Node_Sets.Empty_Set;
+            G_Proof  : Node_Sets.Set := Node_Sets.Empty_Set;
+            G_In     : Node_Sets.Set := Node_Sets.Empty_Set;
+            G_Out    : Node_Sets.Set := Node_Sets.Empty_Set;
 
             procedure Process (The_Mode   : Name_Id;
                                The_Global : Entity_Id);
@@ -873,7 +905,8 @@ package body Flow_Utility is
                   when Name_Output =>
                      if Consider_Discriminants and then
                        Contains_Discriminants
-                       (Direct_Mapping_Id (Non_Limited_Global, In_View))
+                       (Direct_Mapping_Id (Non_Limited_Global, In_View),
+                        Scope)
                      then
                         G_In.Insert (Non_Limited_Global);
                      end if;
@@ -1603,7 +1636,7 @@ package body Flow_Utility is
                if Reduced or Tmp.Kind = Record_Field then
                   R.Include (Tmp);
                else
-                  R.Union (Flatten_Variable (Tmp));
+                  R.Union (Flatten_Variable (Tmp, Scope));
                end if;
             end loop;
          end return;
@@ -1671,7 +1704,8 @@ package body Flow_Utility is
                                  VS.Include (Direct_Mapping_Id
                                              (Unique_Entity (Entity (N))));
                               else
-                                 VS.Union (Flatten_Variable (Entity (N)));
+                                 VS.Union (Flatten_Variable (Entity (N),
+                                                             Scope));
                               end if;
                            end if;
 
@@ -1687,7 +1721,7 @@ package body Flow_Utility is
                            VS.Include (Direct_Mapping_Id
                                        (Unique_Entity (Entity (N))));
                         else
-                           VS.Union (Flatten_Variable (Entity (N)));
+                           VS.Union (Flatten_Variable (Entity (N), Scope));
                         end if;
                      when others =>
                         null;
@@ -1708,7 +1742,7 @@ package body Flow_Utility is
                         if Reduced then
                            VS.Include (Direct_Mapping_Id (Unique_Entity (N)));
                         else
-                           VS.Union (Flatten_Variable (N));
+                           VS.Union (Flatten_Variable (N, Scope));
                         end if;
                      end if;
                   when others =>
@@ -1803,7 +1837,7 @@ package body Flow_Utility is
                      for F of Recurse_On (Prefix (N)) loop
                         if F.Kind in Direct_Mapping | Record_Field and then
                           F.Bound.Kind = No_Bound and then
-                          Has_Bounds (F)
+                          Has_Bounds (F, Scope)
                         then
                            --  This is not a bound variable, but it
                            --  requires bounds tracking. We make it a
@@ -1816,14 +1850,14 @@ package body Flow_Utility is
                      end loop;
                      return Skip;
 
-                  when Attribute_First       |
-                       Attribute_Last        |
-                       Attribute_Length      |
-                       Attribute_Range       =>
+                  when Attribute_First  |
+                       Attribute_Last   |
+                       Attribute_Length |
+                       Attribute_Range  =>
                      for F of Recurse_On (Prefix (N)) loop
                         if F.Kind in Direct_Mapping | Record_Field and then
                           F.Bound.Kind = No_Bound and then
-                          Has_Bounds (F)
+                          Has_Bounds (F, Scope)
                         then
                            --  This is not a bound variable, but it
                            --  requires bounds tracking. We make it a
@@ -1935,15 +1969,29 @@ package body Flow_Utility is
    -- Flatten_Variable --
    ----------------------
 
-   function Flatten_Variable (E : Entity_Id) return Flow_Id_Sets.Set is
-      U : constant Entity_Id := Unique_Entity (E);
+   function Flatten_Variable
+     (E     : Entity_Id;
+      Scope : Flow_Scope)
+      return Flow_Id_Sets.Set
+   is
+      U   : constant Entity_Id := Unique_Entity (E);
+      Typ : constant Entity_Id := Get_Full_Type (U, Scope);
    begin
-      case Ekind (Get_Full_Type (U)) is
-         when Elementary_Kind | Array_Kind | Private_Kind =>
+      case Ekind (Typ) is
+         when Elementary_Kind | Array_Kind =>
             return Flow_Id_Sets.To_Set (Direct_Mapping_Id (U));
 
+         when Private_Kind =>
+            if Has_Discriminants (Typ) then
+               return All_Record_Components (Entire_Var => U,
+                                             Scope      => Scope);
+            else
+               return Flow_Id_Sets.To_Set (Direct_Mapping_Id (U));
+            end if;
+
          when E_Record_Type | E_Record_Subtype =>
-            return All_Record_Components (Entire_Var => U);
+            return All_Record_Components (Entire_Var => U,
+                                          Scope      => Scope);
 
          when E_Void =>
             pragma Assert (Ekind (E) = E_Abstract_State);
@@ -1956,11 +2004,15 @@ package body Flow_Utility is
       end case;
    end Flatten_Variable;
 
-   function Flatten_Variable (F : Flow_Id) return Flow_Id_Sets.Set is
+   function Flatten_Variable
+     (F     : Flow_Id;
+      Scope : Flow_Scope)
+      return Flow_Id_Sets.Set
+   is
    begin
       case F.Kind is
          when Direct_Mapping =>
-            return Flatten_Variable (Get_Direct_Mapping_Id (F));
+            return Flatten_Variable (Get_Direct_Mapping_Id (F), Scope);
          when Magic_String | Synthetic_Null_Export =>
             return Flow_Id_Sets.To_Set (F);
          when others =>
@@ -1968,12 +2020,11 @@ package body Flow_Utility is
       end case;
    end Flatten_Variable;
 
-   -------------------
-   -- Get_Full_Type --
-   -------------------
+   ------------------------------------
+   -- Get_Full_Type_Without_Checking --
+   ------------------------------------
 
-   function Get_Full_Type (E : Entity_Id) return Entity_Id
-   is
+   function Get_Full_Type_Without_Checking (E : Entity_Id) return Entity_Id is
       T : constant Entity_Id := Etype (E);
    begin
       if Ekind (E) = E_Abstract_State then
@@ -1986,18 +2037,65 @@ package body Flow_Utility is
             return T;
          end if;
       end if;
+   end Get_Full_Type_Without_Checking;
+
+   -------------------------------------
+   -- Get_Full_Etype_Without_Checking --
+   -------------------------------------
+
+   function Get_Full_Etype_Without_Checking (N : Node_Id) return Entity_Id is
+      T : constant Entity_Id := Etype (N);
+   begin
+      pragma Assert (Is_Type (T));
+      if Present (Full_View (T)) then
+         return Full_View (T);
+      else
+         return T;
+      end if;
+   end Get_Full_Etype_Without_Checking;
+
+   -------------------
+   -- Get_Full_Type --
+   -------------------
+
+   function Get_Full_Type
+     (E     : Entity_Id;
+      Scope : Flow_Scope)
+      return Entity_Id
+   is
+      T : constant Entity_Id := Etype (E);
+   begin
+      if Ekind (E) = E_Abstract_State then
+         return T;
+      else
+         pragma Assert (Is_Type (T));
+         if Present (Full_View (T))
+           and then Is_Visible (Full_View (T), Scope)
+           and then not Is_Itype (Full_View (T))
+         then
+            return Full_View (T);
+         else
+            return T;
+         end if;
+      end if;
    end Get_Full_Type;
 
    --------------------
    -- Get_Full_Etype --
    --------------------
 
-   function Get_Full_Etype (N : Node_Id) return Entity_Id
+   function Get_Full_Etype
+     (N     : Node_Id;
+      Scope : Flow_Scope)
+      return Entity_Id
    is
       T : constant Entity_Id := Etype (N);
    begin
       pragma Assert (Is_Type (T));
-      if Present (Full_View (T)) then
+      if Present (Full_View (T))
+        and then Is_Visible (Full_View (T), Scope)
+        and then not Is_Itype (Full_View (T))
+      then
          return Full_View (T);
       else
          return T;
@@ -2288,7 +2386,7 @@ package body Flow_Utility is
                         --  components.
                         Vars_Defined.Union
                           (All_Record_Components
-                             (Record_Field_Id (End_Of_Record)));
+                             (Record_Field_Id (End_Of_Record), Scope));
 
                         Vars_Implicitly_Used.Union (Vars_Defined);
 
@@ -2298,7 +2396,7 @@ package body Flow_Utility is
                              Record_Field_Id (End_Of_Record);
                            S : constant Flow_Id_Sets.Set :=
                              All_Record_Components
-                             (Record_Field_Id (End_Of_Record));
+                             (Record_Field_Id (End_Of_Record), Scope);
                         begin
                            if Debug_Trace_Untangle then
                               Write_Str ("Field to split: ");
@@ -2477,6 +2575,20 @@ package body Flow_Utility is
       pragma Assert (Nkind (Expression (A)) = N_Identifier);
       return Chars (Expression (A)) in Name_Pre | Name_Precondition;
    end Is_Precondition_Check;
+
+   ----------------------------
+   -- Contains_Discriminants --
+   ----------------------------
+
+   function Contains_Discriminants
+     (F : Flow_Id;
+      S : Flow_Scope)
+      return Boolean
+   is
+      FS : constant Flow_Id_Sets.Set := Flatten_Variable (F, S);
+   begin
+      return (for some X of FS => Is_Discriminant (X));
+   end Contains_Discriminants;
 
    -----------------------------------
    -- Is_Initialized_At_Elaboration --

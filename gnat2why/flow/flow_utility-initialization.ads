@@ -31,7 +31,10 @@ package Flow_Utility.Initialization is
    --  (this only really works for record fields and direct mappings;
    --  magic strings are assumed to not be default initialized)
 
-   function Is_Default_Initialized (F : Flow_Id) return Boolean;
+   function Is_Default_Initialized
+     (F : Flow_Id;
+      S : Flow_Scope)
+      return Boolean;
    --  As above, but can also return true if we can't actually get a node
    --  which is the default-initialized expression.
 
