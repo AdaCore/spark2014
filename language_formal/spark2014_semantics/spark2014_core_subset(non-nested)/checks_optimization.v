@@ -212,7 +212,7 @@ Inductive optimize_args_x: symboltable_x -> list parameter_specification_x -> li
       do_range_check l l' u' (Exception RTE_Range) \/ do_range_check u l' u' (Exception RTE_Range) ->
       optimize_args_x st params args args' ->
       optimize_args_x st (param :: params) (arg :: args) (arg' :: args')
-  | O_Args_Head_Out_Range_Pass: forall param st l u ast_num t l' u' checkflags checkflags' params args args' x_ast_num x,
+  | O_Args_Head_Out_Range_Pass: forall param st l u ast_num t l' u' checkflags checkflags' params args args' x_ast_num x ckflags,
       param.(parameter_mode_x) = Out -> 
       extract_subtype_range_x st (param.(parameter_subtype_mark_x)) (Range_X l u) ->
       fetch_exp_type_x ast_num st = Some t ->
@@ -221,19 +221,19 @@ Inductive optimize_args_x: symboltable_x -> list parameter_specification_x -> li
       do_range_check u l' u' Success ->
       remove_check_flag Do_Range_Check checkflags checkflags' ->
       optimize_args_x st params args args' ->
-      optimize_args_x st (param :: params) ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) nil) :: args) 
-                                           ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags') nil) :: args')
-  | O_Args_Head_Out_Range_Fail: forall param st l u ast_num t l' u' params args args' x_ast_num x checkflags,
+      optimize_args_x st (param :: params) ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) ckflags) :: args) 
+                                           ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags') ckflags) :: args')
+  | O_Args_Head_Out_Range_Fail: forall param st l u ast_num t l' u' params args args' x_ast_num x checkflags ckflags,
       param.(parameter_mode_x) = Out ->
       extract_subtype_range_x st (param.(parameter_subtype_mark_x)) (Range_X l u) ->
       fetch_exp_type_x ast_num st = Some t ->
       extract_subtype_range_x st t (Range_X l' u') ->
       do_range_check l l' u' (Exception RTE_Range) \/ do_range_check u l' u' (Exception RTE_Range) ->
       optimize_args_x st params args args' ->
-      optimize_args_x st (param :: params) ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) nil) :: args) 
-                                           ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) nil) :: args')
+      optimize_args_x st (param :: params) ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) ckflags) :: args) 
+                                           ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) ckflags) :: args')
   | O_Args_Head_InOut_Range_Pass: forall param st l u ast_num t l' u' checkflags checkflags' checkflags'' 
-                                               params args args' x_ast_num x,
+                                               params args args' x_ast_num x ckflags,
       param.(parameter_mode_x) = In_Out ->
       extract_subtype_range_x st (param.(parameter_subtype_mark_x)) (Range_X l u) ->
       fetch_exp_type_x ast_num st = Some t ->
@@ -243,10 +243,10 @@ Inductive optimize_args_x: symboltable_x -> list parameter_specification_x -> li
       remove_check_flag Do_Range_Check checkflags checkflags' ->
       remove_check_flag Do_Range_Check_On_CopyOut checkflags' checkflags'' ->
       optimize_args_x st params args args' ->
-      optimize_args_x st (param :: params) ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) nil) :: args) 
-                                           ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags'') nil) :: args')
-  | O_Args_Head_InOut_In_Range_Pass: forall param st l u ast_num t l' u' checkflags checkflags'
-                                               params args args' x_ast_num x,
+      optimize_args_x st (param :: params) ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) ckflags) :: args) 
+                                           ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags'') ckflags) :: args')
+  | O_Args_Head_InOut_In_Range_Pass: forall param st l u ast_num t l' u' checkflags checkflags' 
+                                               params args args' x_ast_num x ckflags,
       param.(parameter_mode_x) = In_Out ->
       extract_subtype_range_x st (param.(parameter_subtype_mark_x)) (Range_X l u) ->
       fetch_exp_type_x ast_num st = Some t ->
@@ -255,10 +255,10 @@ Inductive optimize_args_x: symboltable_x -> list parameter_specification_x -> li
       do_range_check l l' u' (Exception RTE_Range) \/ do_range_check u l' u' (Exception RTE_Range) ->
       remove_check_flag Do_Range_Check checkflags checkflags' ->
       optimize_args_x st params args args' ->
-      optimize_args_x st (param :: params) ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) nil) :: args) 
-                                           ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags') nil) :: args')
-  | O_Args_Head_InOut_Out_Range_Pass: forall param st l u ast_num t l' u' checkflags checkflags'
-                                               params args args' x_ast_num x,
+      optimize_args_x st (param :: params) ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) ckflags) :: args) 
+                                           ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags') ckflags) :: args')
+  | O_Args_Head_InOut_Out_Range_Pass: forall param st l u ast_num t l' u' checkflags checkflags' 
+                                               params args args' x_ast_num x ckflags,
       param.(parameter_mode_x) = In_Out ->
       extract_subtype_range_x st (param.(parameter_subtype_mark_x)) (Range_X l u) ->
       fetch_exp_type_x ast_num st = Some t ->
@@ -267,10 +267,10 @@ Inductive optimize_args_x: symboltable_x -> list parameter_specification_x -> li
       do_range_check l' l u (Exception RTE_Range) \/ do_range_check u' l u (Exception RTE_Range) ->
       remove_check_flag Do_Range_Check_On_CopyOut checkflags checkflags' ->
       optimize_args_x st params args args' ->
-      optimize_args_x st (param :: params) ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) nil) :: args) 
-                                           ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags') nil) :: args')
+      optimize_args_x st (param :: params) ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) ckflags) :: args) 
+                                           ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags') ckflags) :: args')
   | O_Args_Head_InOut_InOut_Out_Range_Fail: forall param st l u ast_num t l' u' 
-                                               params args args' x_ast_num x checkflags,
+                                               params args args' x_ast_num x checkflags ckflags,
       param.(parameter_mode_x) = In_Out ->
       extract_subtype_range_x st (param.(parameter_subtype_mark_x)) (Range_X l u) ->
       fetch_exp_type_x ast_num st = Some t ->
@@ -278,8 +278,8 @@ Inductive optimize_args_x: symboltable_x -> list parameter_specification_x -> li
       do_range_check l l' u' (Exception RTE_Range) \/ do_range_check u l' u' (Exception RTE_Range) ->
       do_range_check l' l u (Exception RTE_Range) \/ do_range_check u' l u (Exception RTE_Range) ->
       optimize_args_x st params args args' ->
-      optimize_args_x st (param :: params) ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) nil) :: args) 
-                                           ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) nil) :: args').
+      optimize_args_x st (param :: params) ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) ckflags) :: args) 
+                                           ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) ckflags) :: args').
 
 
 (** * Run-Time Checks Optimization For Statement *)
