@@ -1,0 +1,2 @@
+conversions_of_records.adb:53:21: warning: missing dependency "Y1 => X2"
+conversions_of_records.adb:54:21: warning: missing dependency "Y2 => X1"
