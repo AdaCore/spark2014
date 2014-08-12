@@ -66,4 +66,4 @@ trains.ads:148:59: info: index check proved
 trains.ads:151:51: info: index check proved
 trains.ads:152:31: warning: array index check might fail
 trains.ads:152:65: info: index check proved
-trains.ads:225:14: warning: postcondition might fail
+trains.ads:228:14: warning: postcondition might fail

@@ -51,7 +51,7 @@ is
       Prev : Track_Opt_Id;
    begin
       if Moving_Inside_Current_Tracks (Cur_Position, New_Position) then
-         Result := Move_Ok;
+         Result := Keep_Going;
          Trains (Train) := New_Position;
 
          pragma Assert (Occupied_Tracks_On_Red);
@@ -59,7 +59,7 @@ is
          pragma Assert (Safe_Signaling);
 
       elsif Moving_Away_From_Current_Track (Cur_Position, New_Position) then
-         Result := Move_Ok;
+         Result := Keep_Going;
          Trains (Train) := New_Position;
 
          pragma Assert (Previous_Tracks_On_Orange_Or_Red);
@@ -121,7 +121,7 @@ is
 
             when others =>
                if Track_Signals (New_Position.Track_Begin) = Green then
-                  Result := Move_Ok;
+                  Result := Full_Speed;
                else
                   Result := Slow_Down;
                end if;

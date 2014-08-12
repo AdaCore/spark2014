@@ -202,14 +202,17 @@ is
        Moving_Away_From_Current_Track (Cur_Position, New_Position));
 
    --  moving the train ahead along a valid movement can result in:
-   --    . Move_Ok: the movement was performed, the position of the train
-   --               (Trains) and the signals (Track_Signals) have been updated.
-   --    . Slow_Down: Same as Move_Ok, but the train is entering an Orange
-   --                 track and should slow down.
-   --    . Stop: No movement performed, the train should stop here, prior to
-   --            entering a Red track.
+   --    . Full_Speed: the movement was performed, the position of the train
+   --                  (Trains) and the signals (Track_Signals) have been
+   --                  updated, and the train can continue full speed.
+   --    . Slow_Down:  Same as Full_Speed, but the train is entering an Orange
+   --                  track and should slow down.
+   --    . Keep_Going: Same as Full_Speed, but the train should keep its
+   --                  current speed.
+   --    . Stop:       No movement performed, the train should stop here,
+   --                  prior to entering a Red track.
 
-   type Move_Result is (Move_Ok, Slow_Down, Stop);
+   type Move_Result is (Full_Speed, Slow_Down, Keep_Going, Stop);
 
    procedure Move
      (Train        : Train_Id;
