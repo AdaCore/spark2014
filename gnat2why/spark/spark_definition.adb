@@ -2755,10 +2755,14 @@ package body SPARK_Definition is
 
       Entity_Set.Insert (E);
 
-      --  If the entity is declared in the scope of SPARK_Mode => Off, then do
-      --  not consider whether it could be in SPARK or not.
+      --  If the entity is declared in the scope of SPARK_Mode => Off, then
+      --  do not consider whether it could be in SPARK or not. An exception to
+      --  this rule is abstract state, which has to be added to the entity_list
+      --  regardless of SPARK status.
 
-      if SPARK_Pragma_Is (Opt.Off) then
+      if SPARK_Pragma_Is (Opt.Off)
+        and then Ekind (E) /= E_Abstract_State
+      then
          return;
       end if;
 
