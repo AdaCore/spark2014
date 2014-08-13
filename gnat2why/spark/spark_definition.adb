@@ -2826,6 +2826,19 @@ package body SPARK_Definition is
       Current_SPARK_Pragma := Save_SPARK_Pragma;
    end Mark_Entity;
 
+   ------------------------------------
+   -- Mark_Extended_Return_Statement --
+   ------------------------------------
+
+   procedure Mark_Extended_Return_Statement (N : Node_Id) is
+   begin
+      Mark_List (Return_Object_Declarations (N));
+
+      if Present (Handled_Statement_Sequence (N)) then
+         Mark (Handled_Statement_Sequence (N));
+      end if;
+   end Mark_Extended_Return_Statement;
+
    -----------------------------
    -- Mark_Handled_Statements --
    -----------------------------
@@ -3540,19 +3553,6 @@ package body SPARK_Definition is
          Mark (Expression (N));
       end if;
    end Mark_Simple_Return_Statement;
-
-   ------------------------------------
-   -- Mark_Extended_Return_Statement --
-   ------------------------------------
-
-   procedure Mark_Extended_Return_Statement (N : Node_Id) is
-   begin
-      Mark_List (Return_Object_Declarations (N));
-
-      if Present (Handled_Statement_Sequence (N)) then
-         Mark (Handled_Statement_Sequence (N));
-      end if;
-   end Mark_Extended_Return_Statement;
 
    ---------------------------
    -- Mark_Standard_Package --
