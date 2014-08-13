@@ -35,17 +35,7 @@ module Integer
 end
 
 module Int_Bitwise
-  use import int.Int
-
-  (* Bitwise operations in Ada are allowed on modular types only, which always
-  range from 0 to some value N - 1. In consequence, there is no (trouble with
-  the) sign bit, and in fact there is only one bitwise operation of each kind
-  (and, or, xor), and not one for each type. *)
-
-  function bitwise_and int int : int
-  function bitwise_or int int : int
-  function bitwise_xor int int : int
-
+  use export "_gnatprove_standard_th".Bitwise
 end
 
 module Int_Power
