@@ -134,6 +134,10 @@ package Why.Gen.Expr is
       Left_Most : Boolean := False) return Name_Id;
    --  Return a label that contains the Ada Sloc of the node
 
+   function New_Shape_Label (Node : Node_Id) return Name_Id;
+   --  Return a label representing the shape of the Ada code
+   --  surrounding the input node
+
    function New_Sub_VC_Marker (N : Node_Id) return Name_Id;
    --  Return a label that contains the pretty printing for the given node
 
