@@ -574,21 +574,6 @@ package body SPARK_Definition is
       --  Start of processing for Mark
 
    begin
-      --  If present, the type of N should be in SPARK. This also allows
-      --  marking Itypes and class-wide types at their first occurrence
-      --  (inside In_SPARK).
-
-      --  The type may be absent on kinds of nodes that should have types,
-      --  in very special cases, like the fake aggregate node in a 'Update
-      --  attribute_reference, and the fake identifier node for an abstract
-      --  state. So we also check that the type is explicitly present.
-
-      if Nkind (N) in N_Has_Etype
-        and then Present (Etype (N))
-        and then not In_SPARK (Etype (N))
-      then
-         Mark_Violation (N, From => Etype (N));
-      end if;
 
       --  Dispatch on node kind
 
@@ -1310,6 +1295,22 @@ package body SPARK_Definition is
               N_Variant =>
             raise Program_Error;
       end case;
+
+      --  If present, the type of N should be in SPARK. This also allows
+      --  marking Itypes and class-wide types at their first occurrence
+      --  (inside In_SPARK).
+
+      --  The type may be absent on kinds of nodes that should have types,
+      --  in very special cases, like the fake aggregate node in a 'Update
+      --  attribute_reference, and the fake identifier node for an abstract
+      --  state. So we also check that the type is explicitly present.
+
+      if Nkind (N) in N_Has_Etype
+        and then Present (Etype (N))
+        and then not In_SPARK (Etype (N))
+      then
+         Mark_Violation (N, From => Etype (N));
+      end if;
    end Mark;
 
    ------------------
