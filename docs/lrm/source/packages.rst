@@ -1918,15 +1918,9 @@ be a Boolean ``expression``.
    defaults to True) but for the body or body stub to have a
    Refined Postcondition.
 
-.. _tu-pr-refined_postcondition_aspects-05:
+.. _tu-cbatu-refined_postcondition_aspects-05:
 
-5. The default Refined_Post for an expression function, F, is
-   F'Result = ``expression``, where ``expression`` is the expression defining
-   the body of the function.
-
-.. _tu-cbatu-refined_postcondition_aspects-06:
-
-6. The static semantics are otherwise as for a postcondition.
+5. The static semantics are otherwise as for a postcondition.
 
 .. _etu-refined_postcondition_aspects-ss:
 
@@ -1950,10 +1944,30 @@ be a Boolean ``expression``.
 
 .. _tu-pr-refined_postcondition_aspects-08:
 
-8. The precondition of a subprogram declaration and its Refined Postcondition
-   together imply the postcondition of the declaration, that is:
+8. If a subprogram has both a Refined_Postcondition aspect and a
+   Postcondition aspect, then the proof obligation associated with
+   the Postcondition aspect is discharged in two steps. The success
+   of the Refined_Postcondition run-time check must be proven as usual.
+   It must also be shown that the precondition (or, in the case of a dispatching
+   operation, the class-wide precondition) and the refined postcondition
+   together imply the postcondition of the subprogram, that is:
 
    (Precondition and Refined Postcondition) -> Postcondition
+
+   [Note that this step does not depend on the statements or
+   declarations within the subprogram.]
+
+.. _tu-pr-refined_postcondition_aspects-09:
+
+9. If a Refined_Postcondition aspect specification is visible at the
+   point of a call to the subprogram, then the Refined_Postcondition
+   is used instead of the Postcondition aspect for purposes of formal
+   analysis of the call. Similarly for using the Refined_Global aspect
+   instead of the Global aspect and the Refined_Depends aspect instead
+   of the Depends aspect. [Roughly speaking, the "contract" associated
+   with a call is defined by using the Refined_* aspects of the callee
+   instead of the corresponding non-refined aspects in the case where
+   Refined_* aspect specifications are visible.]
 
 .. _etu-refined_postcondition_aspects-vr:
 
