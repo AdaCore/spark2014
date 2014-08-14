@@ -27,6 +27,7 @@ list.adb:37:46: info: precondition proved
 list.adb:37:61: info: overflow check proved
 list.adb:37:65: info: overflow check proved
 list.adb:37:65: info: range check proved
+list.ads:10:04: warning: range check might fail
 list.ads:15:14: info: postcondition proved
 list.ads:15:28: info: precondition proved
 list.ads:15:47: info: precondition proved
