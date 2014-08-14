@@ -515,6 +515,12 @@ procedure Gnatprove is
       procedure Generate_Main_Section;
       procedure Generate_Altergo_Section;
       procedure Generate_CVC4_Section;
+      procedure Generate_CVC4_CE_Section;
+
+      Common_CVC4_Options : constant String :=
+        "--lang=smt2 " &       --  we process SMTLIB2
+        "--user-pat=trust " &  --  trust the triggers we provide
+        "--macros-quant";      --  expand function definitions, and elim quant
 
       ------------------------------
       -- Generate_Altergo_Section --
@@ -543,14 +549,14 @@ procedure Gnatprove is
       ---------------------------
 
       procedure Generate_CVC4_Section is
-         Command : constant String := "cvc4 --lang=smt2 %f";
+         Command : constant String := "cvc4 " & Common_CVC4_Options;
       begin
          Start_Section ("prover");
          if Steps /= 0 then
             Put_Keyval ("command",
-                        Command & " --rlimit=" & Int_Image (Steps));
+                        Command & " --rlimit=" & Int_Image (Steps) & " %f");
          else
-            Put_Keyval ("command", Command);
+            Put_Keyval ("command", Command & " %f");
          end if;
          Put_Keyval ("driver",
                      Ada.Directories.Compose
@@ -559,6 +565,30 @@ procedure Gnatprove is
          Put_Keyval ("shortcut", "cvc4");
          Put_Keyval ("version", "1.3");
       end Generate_CVC4_Section;
+
+      ------------------------------
+      -- Generate_CVC4_CE_Section --
+      ------------------------------
+
+      procedure Generate_CVC4_CE_Section is
+         Command : constant String := "cvc4 " &
+           Common_CVC4_Options &
+           " --finite-model-find";  -- return sat on some quantified formulas
+      begin
+         Start_Section ("prover");
+         if Steps /= 0 then
+            Put_Keyval ("command",
+                        Command & " --rlimit=" & Int_Image (Steps) & " %f");
+         else
+            Put_Keyval ("command", Command & " %f");
+         end if;
+         Put_Keyval ("driver",
+                     Ada.Directories.Compose
+                       (Why3_Drivers_Dir, "cvc4_gnatprove.drv"));
+         Put_Keyval ("name", "CVC4_CE");
+         Put_Keyval ("shortcut", "cvc4_ce");
+         Put_Keyval ("version", "1.3");
+      end Generate_CVC4_CE_Section;
 
       ---------------------------
       -- Generate_Main_Section --
@@ -616,6 +646,7 @@ procedure Gnatprove is
       Generate_Main_Section;
       Generate_Altergo_Section;
       Generate_CVC4_Section;
+      Generate_CVC4_CE_Section;
 
       Close (File);
    end Generate_Why3_Conf_File;

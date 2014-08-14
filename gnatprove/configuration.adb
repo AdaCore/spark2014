@@ -187,7 +187,7 @@ ASCII.LF &
 ASCII.LF &
 "     --pedantic     Use a strict interpretation of the Ada standard" &
 ASCII.LF &
-"     --steps=nnn    Set the maximum number of proof steps to nnn for Alt-Ergo"
+"     --steps=nnn    Set the maximum number of proof steps (prover-specific)"
 & ASCII.LF &
 "     --timeout=s    Set the prover timeout in seconds (default: 1)" &
 ASCII.LF &
@@ -195,7 +195,7 @@ ASCII.LF &
 ASCII.LF &
 "     --limit-subp=s Limit analysis to subprogram defined by file and line" &
   ASCII.LF &
-"     --prover=s     Use given prover instead of default Alt-Ergo prover" &
+"     --prover=s     Use given prover" &
 ASCII.LF &
 ASCII.LF &
 " * Proof mode values" &
@@ -207,6 +207,19 @@ ASCII.LF &
 "   . progressive - Start with one formula per check, then split into" &
 ASCII.LF &
 "                   paths when needed" &
+ASCII.LF &
+ASCII.LF &
+" * Prover options" &
+ASCII.LF &
+"   (Provers marked with [steps] support the --steps option.)" &
+ASCII.LF &
+"   . altergo     - [steps] Use Alt-Ergo (default)" &
+ASCII.LF &
+"   . cvc4        - [steps] Use CVC4" &
+ASCII.LF &
+"   . cvc4_ce     - [steps] Use CVC4 for counter-example generation" &
+ASCII.LF &
+"   Any other prover in your why3.conf file can also be specified here." &
 ASCII.LF;
 
    -------------------------

@@ -54,17 +54,24 @@ Command-line Options
      --proof=p      Set the proof mode (p=per_check*, per_path, progressive)
      --RTS=dir      Specify the Ada runtime name/location
      --pedantic     Use a strict interpretation of the Ada standard
-     --steps=nnn    Set the maximum number of proof steps to nnn for Alt-Ergo
+     --steps=nnn    Set the maximum number of proof steps (prover-specific)
      --timeout=s    Set the prover timeout in seconds (default: 1)
      --limit-line=s Limit analysis to given file and line
      --limit-subp=s Limit analysis to subprogram defined by file and line
-     --prover=s     Select prover (s=altergo*, cvc4)
+     --prover=s     Select prover (s=altergo*, cvc4, cvc4_ce)
 
  * Proof mode values
    . per_check   - Generate one formula per check (default)
    . per_path    - Generate one formula per path for each check
    . progressive - Start with one formula per check, then split into
                    paths when needed
+
+ * Prover options
+   (Provers marked with [steps] support the --steps option.)
+   . altergo     - [steps] Use Alt-Ergo (default)
+   . cvc4        - [steps] Use CVC4
+   . cvc4_ce     - [steps] Use CVC4 for counter-example generation
+   Any other prover in your why3.conf file can also be specified here.
 
 .. _Alternative_Provers:
 
