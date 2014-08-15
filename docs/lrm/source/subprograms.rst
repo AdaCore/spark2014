@@ -112,8 +112,9 @@ on callers of the subprogram. Upon entry to a subprogram, the
 class-wide preconditions of the subprogram may be assumed. Given
 this, the specific preconditions of the subprogram must be proven.
 
-[The callee is responsible for discharging the proof obligations associated
-with any postcondition checks, class-wide or specific.]
+The callee is responsible for discharging the proof obligations associated
+with any postcondition checks, class-wide or specific. The success of these
+checks may then be assumed by the caller.
 
 In the case of an overriding dispatching operation whose Pre'Class
 attribute is explicitly specified, a proof obligation is introduced
