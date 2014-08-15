@@ -11,19 +11,24 @@ is
 
 
    function F1 return Boolean;
-   --  TU: 5. The default Refined_Post for an expression function, F, is
-   --  F'Result = ``expression``, where ``expression`` is the expression
-   --  defining the body of the function.
-
 
    procedure Calls_F1;
 
 
    procedure P2 (Par1, Par2 : Integer ; Par3 : out Integer)
-     --  TU: 8. The precondition of a subprogram declaration and its Refined
-     --  Postcondition together imply the postcondition of the declaration,
-     --  that is:
+     --  TU: 8. If a subprogram has both a Refined_Postcondition
+     --  aspect and a Postcondition aspect, then the proof obligation
+     --  associated with the Postcondition aspect is discharged in two
+     --  steps. The success of the Refined_Postcondition run-time
+     --  check must be proven as usual. It must also be shown that
+     --  the precondition (or, in the case of a dispatching operation,
+     --  the class-wide precondition) and the refined postcondition
+     --  together imply the postcondition of the subprogram, that is:
+     --
      --  (Precondition and Refined Postcondition) -> Postcondition
+     --
+     --  [Note that this step does not depend on the statements or
+     --  declarations within the subprogram.]
      with Pre  => Par1 > 10,
           Post => Par3 > 101;
 end Refined_Post_Illegal_2;

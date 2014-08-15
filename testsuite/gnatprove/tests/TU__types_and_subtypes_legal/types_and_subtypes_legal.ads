@@ -1,11 +1,6 @@
 package Types_And_Subtypes_Legal
   with SPARK_Mode
 is
-   --  TU: 1. The view of an entity introduced by a
-   --  ``private_type_declaration`` is in |SPARK| if the types of any
-   --  visible discriminants are in |SPARK|, even if the entity
-   --  declared by the corresponding ``full_type_declaration`` is not
-   --  in |SPARK|.
    type Node is private;
 
    function Get_Data (N : Node) return Integer;

@@ -15,12 +15,7 @@ is
    --      be used are A'Last, A'First and A'Length; examples of
    --      attributes that are dependent on the value of the object and
    --      shall not be used are X'Old and X'Update] and
-   --    - is always *fully initialized* (that is, all parts of the
-   --      ``global_item`` are initialized) as a result of any successful
-   --      execution of a call of the subprogram. A state abstraction
-   --      whose refinement is not visible is not fully initialized by
-   --      only updating one or more of its constituents [because it may
-   --      have other constituents that are not visible];
+   --    - is always fully initialized by a call of the subprogram. ;
    --  * otherwise the ``global_item`` denotes both an input and an output,
    --    and has a ``mode_selector`` of In_Out.
 

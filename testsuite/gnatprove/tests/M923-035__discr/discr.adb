@@ -11,8 +11,7 @@ procedure Discr is
    end record;
 
    -- TU: 2. A ``discriminant_specification`` shall not occur as part of a
-   --     derived type declaration whose parent type is discriminated. [In
-   --     other words, inherited discriminants shall not be hidden.]
+   --     derived type declaration.
    type Square (K : Integer) is new Rect(K,K); -- illegal discrimiant renaming
 
    procedure P (X : in Rect) is

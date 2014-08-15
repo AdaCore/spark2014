@@ -1,5 +1,5 @@
-types_and_subtypes_illegal.ads:5:12: warning: dynamic type predicate ignored (not yet supported)
-types_and_subtypes_illegal.ads:29:12: warning: dynamic type predicate ignored (not yet supported)
+types_and_subtypes_illegal.ads:6:12: warning: dynamic type predicate ignored (not yet supported)
+types_and_subtypes_illegal.ads:23:12: warning: dynamic type predicate ignored (not yet supported)
 types_and_subtypes_illegal_2.ads:4:34: initialization item must denote variable or state
-types_and_subtypes_illegal_2.ads:14:21: global item cannot denote a constant
-types_and_subtypes_illegal_2.ads:17:30: item must denote parameter, variable, or state
+types_and_subtypes_illegal_2.ads:9:21: global item cannot denote a constant
+types_and_subtypes_illegal_2.ads:12:30: item must denote parameter, variable, or state

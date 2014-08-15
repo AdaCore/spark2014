@@ -15,17 +15,25 @@ is
 
 
    procedure P1 (Par1 : out Dis_Rec; Par2 : in Dis_Rec)
-     --  TU: 5. The *input set* of a subprogram is the explicit input set of
-     --  the subprogram augmented with those formal parameters of mode **out**
-     --  and those ``global_items`` with a ``mode_selector`` of Output having
-     --  discriminants, array bounds, or a tag which can be read and whose
-     --  values are not implied by the subtype of the parameter. More
-     --  specifically, it includes formal parameters of mode **out** and
-     --  ``global_items`` with a ``mode_selector`` of Output which are of an
-     --  unconstrained array subtype, an unconstrained discriminated subtype, a
-     --  tagged type, or a type having a subcomponent of an unconstrained
-     --  discriminated subtype. [Tagged types are mentioned in this rule in
-     --  anticipation of a later version of |SPARK| will support them.]
+   --  TU: 5. The *input set* of a subprogram is the explicit input
+   --  set of the subprogram augmented with those formal parameters of
+   --  mode **out** and those ``global_items`` with a
+   --  ``mode_selector`` of Output having discriminants, array bounds,
+   --  or a tag which can be read and whose values are not implied by
+   --  the subtype of the parameter. More specifically, it includes
+   --  formal parameters of mode **out** and ``global_items`` with a
+   --  ``mode_selector`` of Output which are of an unconstrained array
+   --  subtype, an unconstrained discriminated subtype, a tagged type
+   --  (with one exception), or a type having a subcomponent of an
+   --  unconstrained discriminated subtype. The exception mentioned in
+   --  the previous sentence is in the case where the formal parameter
+   --  is of a specific tagged type and the applicable
+   --  Extensions_Visible aspect is False. In that case, the tag of
+   --  the parameter cannot be read and so the fact that the parameter
+   --  is tagged does not cause it to included in the subprogram's
+   --  *input_set*, although it may be included for some other reason
+   --  (e.g., if the parameter is of an unconstrained discriminated
+   --  subtype).
      with Global  => (Output => Rec1),
           Depends => (Par1 => Par1,
                       Rec1 => Par2)

@@ -18,16 +18,15 @@ is
 
 
    procedure P2
-     --  TU: 26. If only part of an entire object or state abstraction (only
-     --  some of its constituents) is updated then the updated entity is
-     --  dependent on itself as the parts that are not updated have their
-     --  current value preserved. [Where a constituent of a state
-     --  abstraction is updated but the refinement of the state abstraction
-     --  is not visible, it is not known if all of the constituents have
-     --  been updated by the subprogram and in such cases the the update is
-     --  represented as the the update of the encapsulating state
-     --  abstraction with a self dependency.]
-     with Refined_Global  => (Output => X),
+     --  TU: 26. If not all parts of an output are updated, then the
+     --  updated entity is dependent on itself as the parts that are
+     --  not updated have their current value preserved.
+     --
+     --  [In the case of a parameter of a tagged type (specific or
+     --  class-wide), see the definition of "fully initialized" for a
+     --  clarification of what the phrase "all parts" means in the
+     --  preceding sentence.]
+     with Refined_Global => (Output => X),
           Refined_Depends => (X => null)
    is
    begin

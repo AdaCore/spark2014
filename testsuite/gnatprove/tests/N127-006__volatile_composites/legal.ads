@@ -25,7 +25,9 @@ is
    --    formal parameter is of a non-scalar effectively volatile type; or
    --  * the prefix of a ``slice``, ``selected_component``,
    --    ``indexed_component``, or ``attribute_reference`` which is itself a
-   --    name occurring in a non-interfering context.
+   --    name occurring in a non-interfering context; or
+   --  * the expression of a type conversion occurring in a non-interfering
+   --    context.
 
    type R is record
       F1 : Integer;

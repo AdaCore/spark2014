@@ -28,12 +28,12 @@ depends_illegal.ads:160:23: useless dependence, null depends on itself
 depends_illegal.ads:165:39: cannot mix null and non-null dependency items
 depends_illegal.ads:172:31: null dependency clause cannot have a null input list
 depends_illegal_2.adb:12:11: aspect specification must appear in subprogram declaration
-depends_illegal_2.adb:30:11: constituent "Y" is missing in output list
-depends_illegal_2.adb:30:11: output state "A" must be replaced by all its constituents in global refinement
-depends_illegal_2.adb:42:22: reference to "A" not allowed
-depends_illegal_2.adb:42:22: refinement of "A" is visible at line 3
-depends_illegal_2.adb:43:36: reference to "A" not allowed
-depends_illegal_2.adb:43:36: refinement of "A" is visible at line 3
+depends_illegal_2.adb:29:11: constituent "Y" is missing in output list
+depends_illegal_2.adb:29:11: output state "A" must be replaced by all its constituents in global refinement
+depends_illegal_2.adb:41:22: reference to "A" not allowed
+depends_illegal_2.adb:41:22: refinement of "A" is visible at line 3
+depends_illegal_2.adb:42:36: reference to "A" not allowed
+depends_illegal_2.adb:42:36: refinement of "A" is visible at line 3
 depends_illegal_3.adb:13:33: warning: unused initial value of "X"
 depends_illegal_3.adb:15:11: warning: missing dependency "null => X"
 depends_illegal_3.adb:15:24: warning: incorrect dependency "X => X"

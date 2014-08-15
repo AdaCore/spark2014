@@ -20,5 +20,5 @@ refined_post_illegal_2.adb:26:27: info: refined post proved
 refined_post_illegal_2.adb:33:23: warning: overflow check might fail
 refined_post_illegal_2.adb:35:23: warning: overflow check might fail
 refined_post_illegal_2.ads:10:19: warning: postcondition might fail, requires Par >= 10
-refined_post_illegal_2.ads:19:14: warning: subprogram "Calls_F1" has no effect
-refined_post_illegal_2.ads:28:19: warning: postcondition might fail, requires Par3 > 101
+refined_post_illegal_2.ads:15:14: warning: subprogram "Calls_F1" has no effect
+refined_post_illegal_2.ads:33:19: warning: postcondition might fail, requires Par3 > 101
