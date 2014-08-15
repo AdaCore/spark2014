@@ -330,6 +330,7 @@ package Flow_Utility is
      (F : Flow_Id;
       S : Flow_Scope)
       return Boolean
+   is (for some X of Flatten_Variable (F, S) => Is_Discriminant (X))
      with Pre => F.Kind in Direct_Mapping | Magic_String;
    --  Returns true if the flattened variable for F contains at least
    --  one discriminant.

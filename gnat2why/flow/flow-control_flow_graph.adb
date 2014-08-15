@@ -1155,7 +1155,6 @@ package body Flow.Control_Flow_Graph is
             declare
                Comp_Assoc : Node_Id;
                Choice     : Node_Id;
-               FS         : Flow_Id_Sets.Set;
             begin
                Comp_Assoc := First
                  (Component_Associations
@@ -1166,10 +1165,9 @@ package body Flow.Control_Flow_Graph is
 
                   while Present (Choice) loop
                      if Is_Record_Type (Get_Full_View (Entity (Choice))) then
-                        FS := All_Record_Components (Entity (Choice),
-                                                     FA.B_Scope);
-
-                        for F of FS loop
+                        for F of All_Record_Components (Entity (Choice),
+                                                        FA.B_Scope)
+                        loop
                            declare
                               F1, F2 : Flow_Id;
                            begin
@@ -1530,16 +1528,12 @@ package body Flow.Control_Flow_Graph is
          M := Mode_Invalid;
       end if;
 
-      declare
-         FS : constant Flow_Id_Sets.Set := Flatten_Variable (E, FA.B_Scope);
-      begin
-         for Tmp of FS loop
-            Process (Tmp);
-            if Has_Bounds (Tmp, FA.B_Scope) then
-               Process (Tmp'Update (Bound => (Kind => Some_Bound)));
-            end if;
-         end loop;
-      end;
+      for Tmp of Flatten_Variable (E, FA.B_Scope) loop
+         Process (Tmp);
+         if Has_Bounds (Tmp, FA.B_Scope) then
+            Process (Tmp'Update (Bound => (Kind => Some_Bound)));
+         end if;
+      end loop;
    end Create_Initial_And_Final_Vertices;
 
    procedure Create_Initial_And_Final_Vertices
@@ -1589,11 +1583,8 @@ package body Flow.Control_Flow_Graph is
          FA.All_Vars.Include (F);
       end Process;
 
-      FS : Flow_Id_Sets.Set;
-
    begin
-      FS := Flatten_Variable (F, FA.B_Scope);
-      for Tmp of FS loop
+      for Tmp of Flatten_Variable (F, FA.B_Scope) loop
          Process (Tmp);
          if Has_Bounds (Tmp, FA.B_Scope) then
             Process (Tmp'Update (Bound => (Kind => Some_Bound)));
@@ -3040,7 +3031,6 @@ package body Flow.Control_Flow_Graph is
    is
       V     : Flow_Graphs.Vertex_Id;
       Inits : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
-      FS    : Flow_Id_Sets.Set;
    begin
       --  We are dealing with a local constant. These constants are *not*
       --  ignored.
@@ -3067,9 +3057,7 @@ package body Flow.Control_Flow_Graph is
       if not Present (Expression (N)) then
          --  No initializing expression, so we fall back to the
          --  default initialization (if any).
-         FS := Flatten_Variable (Defining_Identifier (N), FA.B_Scope);
-
-         for F of FS loop
+         for F of Flatten_Variable (Defining_Identifier (N), FA.B_Scope) loop
             if Is_Default_Initialized (F, FA.B_Scope) then
                Add_Vertex
                  (FA,
@@ -3101,9 +3089,8 @@ package body Flow.Control_Flow_Graph is
             Vars_Used     : Flow_Id_Sets.Set;
             All_Vertices  : Vertex_Sets.Set  := Vertex_Sets.Empty_Set;
          begin
-            FS := Flatten_Variable (Defining_Identifier (N), FA.B_Scope);
-
-            for F of FS loop
+            for F of Flatten_Variable (Defining_Identifier (N), FA.B_Scope)
+            loop
                Var_Def.Include (F);
                if Has_Bounds (F, FA.B_Scope) then
                   Var_Def.Include (F'Update (Bound => (Kind => Some_Bound)));
@@ -3183,9 +3170,7 @@ package body Flow.Control_Flow_Graph is
          --  introduced 'Initial and 'Final vertices for an entity
          --  that is mentioned in an initializes aspect, we have
          --  to set Is_Export on the corresponding 'Final vertices.
-         FS := Flatten_Variable (Defining_Identifier (N), FA.B_Scope);
-
-         for F of FS loop
+         for F of Flatten_Variable (Defining_Identifier (N), FA.B_Scope) loop
             declare
                Final_F_Id : constant Flow_Id :=
                  Change_Variant (F, Final_Value);
