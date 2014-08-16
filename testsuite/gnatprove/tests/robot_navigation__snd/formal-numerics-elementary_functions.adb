@@ -1,6 +1,8 @@
 with Ada.Numerics.Elementary_Functions;
 
-package body Formal.Numerics.Elementary_Functions is
+package body Formal.Numerics.Elementary_Functions with
+  SPARK_Mode => Off
+is
 
    function Sqrt
      (X : Float)

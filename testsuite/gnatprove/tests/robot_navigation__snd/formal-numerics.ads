@@ -1,6 +1,8 @@
 with Ada.Numerics;
 
-package Formal.Numerics is
+package Formal.Numerics with
+  SPARK_Mode
+is
    pragma Pure;
 
    pragma Annotate (GNATprove, External_Axiomatization);

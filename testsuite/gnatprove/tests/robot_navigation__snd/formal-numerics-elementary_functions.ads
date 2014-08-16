@@ -33,10 +33,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-package Formal.Numerics.Elementary_Functions is
+package Formal.Numerics.Elementary_Functions with
+  SPARK_Mode
+is
+   pragma Annotate (GNATprove, External_Axiomatization);
    pragma Pure;
 
-   pragma Annotate (GNATprove, External_Axiomatization);
 
    function Sqrt (X : Float) return Float with
      Pre => X >= 0.0,
