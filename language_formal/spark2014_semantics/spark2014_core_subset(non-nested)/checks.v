@@ -102,6 +102,7 @@ Function beq_check_flag (ck1 ck2: check_flag): bool :=
   | Do_Overflow_Check, Do_Overflow_Check => true
   | Do_Range_Check,    Do_Range_Check    => true
   | Do_Range_Check_On_CopyOut, Do_Range_Check_On_CopyOut => true
+  | Undefined_Check, Undefined_Check => true
   | _, _ => false
   end.
 
