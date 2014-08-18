@@ -10,7 +10,7 @@ import re
 if len(argv) == 1:
     #If no arguments were given, recursively search the current directory.
     print "No arguments were given. Searching under current directory."
-    print #Add one more a blank line.
+    print #Add a blank line.
     argv.append(".")
 
 #Initialize lists to empty.
@@ -81,6 +81,8 @@ for i in range(len(test_case_files)):
                 trace_unit = re.sub(" *$", "", trace_unit)
                 #Ensure all spaces are single spaces.
                 trace_unit = re.sub(" +", " ", trace_unit)
+                #Ignore the numbering that is at the front.
+                trace_unit = re.sub("^[0123456789]+\.", "", trace_unit)
                 test_case_trace_units.append \
                 (test_case_files[i] + ":" + str(line + 1) + " " + trace_unit)
 
@@ -125,6 +127,8 @@ for i in range(len(rst_files)):
             trace_unit = re.sub(" *$", "", trace_unit)
             #Ensure all spaces are single spaces.
             trace_unit = re.sub(" +", " ", trace_unit)
+            #Ignore the numbering that is at the front.
+            trace_unit = re.sub("^[0123456789]+\.", "", trace_unit)
 
             rst_trace_units.append \
             (rst_files[i] + ":" + str(line + 1) + " " + trace_unit)
