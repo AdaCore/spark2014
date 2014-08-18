@@ -138,6 +138,11 @@ package Why.Gen.Expr is
    --  Return a label representing the shape of the Ada code
    --  surrounding the input node
 
+   function New_Comment_Label
+     (Node : Node_Id; Loc : Name_Id; Reason : VC_Kind) return Name_Id;
+   --  Return a label with the tag "comment" in order to display VC information
+   --  in VC generated files.
+
    function New_Sub_VC_Marker (N : Node_Id) return Name_Id;
    --  Return a label that contains the pretty printing for the given node
 

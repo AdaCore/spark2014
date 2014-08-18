@@ -59,6 +59,8 @@ with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;           use Gnat2Why.Expr;
 with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
 
+with Ada.Strings.Fixed;
+
 package body Why.Gen.Expr is
 
    Pretty_Ada_Tag : constant String := "GP_Pretty_Ada";
@@ -2317,6 +2319,61 @@ package body Why.Gen.Expr is
       end if;
    end New_Shape_Label;
 
+   -------------------------
+   --  New_Comment_Label  --
+   -------------------------
+
+   function New_Comment_Label
+     (Node : Node_Id; Loc : Name_Id; Reason : VC_Kind) return Name_Id is
+      Prefix : constant String := "comment:";
+      Str_Loc : constant String := Get_Name_String (Loc);
+
+      Pointer : Source_Ptr := Original_Location (Sloc (Node));
+      Src_Buff : constant Source_Buffer_Ptr :=
+        Source_Text (Get_Source_File_Index (Pointer));
+
+      Buf : Unbounded_String := Null_Unbounded_String;
+
+      Line : Natural;
+      Column : Natural;
+
+      procedure Read_Loc_Label (Line : out Natural; Column : out Natural);
+
+      procedure Read_Loc_Label (Line : out Natural; Column : out Natural) is
+         Delim_Start : Natural :=
+           Ada.Strings.Fixed.Index (Str_Loc, ":",
+                                    Ada.Strings.Fixed.Index
+                                      (Str_Loc, ":", Str_Loc'First) + 1) + 1;
+         Delim_End : Natural;
+      begin
+         Delim_End := Ada.Strings.Fixed.Index (Str_Loc, ":", Delim_Start);
+
+         Line := Natural'Value (Str_Loc (Delim_Start .. Delim_End - 1));
+
+         Delim_Start := Delim_End + 1;
+         Delim_End := Ada.Strings.Fixed.Index (Str_Loc, ":", Delim_Start);
+         Delim_End := (if Delim_End /= 0 then Delim_End - 1 else Str_Loc'Last);
+
+         Column := Natural'Value (Str_Loc (Delim_Start .. Delim_End));
+      end Read_Loc_Label;
+
+   begin
+      Read_Loc_Label (Line, Column);
+      Pointer := Line_Start (Physical_Line_Number (Line),
+                             Get_Source_File_Index (Pointer));
+
+      while Src_Buff (Pointer) /= ASCII.LF and Src_Buff (Pointer) /= ASCII.CR
+      loop
+         Buf := Buf & Src_Buff (Pointer);
+         Pointer := Pointer + 1;
+      end loop;
+
+      Buf := Buf & ASCII.LF;
+      Buf := Buf & (1 .. Column - 1 => ' ') & "^ "
+        & Str_Loc (9 .. Str_Loc'Last) & ':' & VC_Kind'Image (Reason);
+      return NID (Prefix & To_String (Buf));
+   end New_Comment_Label;
+
    -----------------
    -- New_Or_Expr --
    -----------------
@@ -2634,11 +2691,15 @@ package body Why.Gen.Expr is
 
       Set : Name_Id_Set := Name_Id_Sets.Empty_Set;
       Id  : constant VC_Id := Register_VC (N, Current_Subp);
+      Location_Lab : Name_Id;
    begin
       Set.Include (NID ("GP_Reason:" & VC_Kind'Image (Reason)));
       Set.Include (NID ("GP_Id:" & Int_Image (Integer (Id))));
-      Set.Include
-        (New_Located_Label (N, Left_Most => Locate_On_First_Token (Reason)));
+
+      Location_Lab := New_Located_Label
+        (N, Left_Most => Locate_On_First_Token (Reason));
+      Set.Include (Location_Lab);
+      Set.Include (New_Comment_Label (N, Location_Lab, Reason));
       Set.Include (New_Shape_Label (Node => N));
       Set.Include (NID (Keep_On_Simp));
       return Set;
