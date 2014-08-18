@@ -421,35 +421,29 @@ follow the grammar of ``global_specification``
 
 .. _tu-fe-global_aspects-07:
 
-7. A ``global_item`` shall not denote a constant object other than a formal
-   parameter [of an enclosing subprogram] of mode **in** or a *constant
-   with variable input*.
-
-.. _tu-fe-global_aspects-08:
-
-8. A ``global_item`` shall not denote a state abstraction whose
+7. A ``global_item`` shall not denote a state abstraction whose
    refinement is visible. [A state abstraction cannot be named within
    its enclosing package's body other than in its refinement. Its
    constituents must be used rather than the state abstraction.]
 
+.. _tu-fe-global_aspects-08:
+
+8. Each ``mode_selector`` shall occur at most once in a single
+   Global aspect.
+
 .. _tu-fe-global_aspects-09:
 
-9. Each ``mode_selector`` shall occur at most once in a single
-   Global aspect.
+9.  A function subprogram shall not have a ``mode_selector`` of
+    Output or In_Out in its Global aspect.
 
 .. _tu-fe-global_aspects-10:
 
-10. A function subprogram shall not have a ``mode_selector`` of
-    Output or In_Out in its Global aspect.
+10. The ``global_items`` in a single Global aspect specification shall denote
+    distinct entities.
 
 .. _tu-fe-global_aspects-11:
 
-11. The ``global_items`` in a single Global aspect specification shall denote
-    distinct entities.
-
-.. _tu-fe-global_aspects-12:
-
-12. If a subprogram is nested within another and if the
+11. If a subprogram is nested within another and if the
     ``global_specification`` of the outer subprogram has an entity
     denoted by a ``global_item`` with a ``mode_specification`` of
     Input or the entity is a formal parameter with a mode of **in**,
@@ -466,22 +460,22 @@ is used purely for static analysis purposes and is not executed.
 
 .. centered:: **Verification Rules**
 
-.. _tu-fa-global_aspects-13:
+.. _tu-fa-global_aspects-12:
 
-13. For a subprogram that has a ``global_specification``, an object or
+12. For a subprogram that has a ``global_specification``, an object or
     state abstraction that is declared outside the scope of the
     subprogram, shall only be referenced within its implementation if
     it is a ``global_item`` in the ``global_specification``.
 
-.. _tu-fa-global_aspects-14:
+.. _tu-fa-global_aspects-13:
 
-14. A ``global_item`` shall occur in a Global aspect of a subprogram
+13. A ``global_item`` shall occur in a Global aspect of a subprogram
     if and only if it denotes an entity that is referenced by the
     subprogram.
 
-.. _tu-cbatu-global_aspects-15:
+.. _tu-cbatu-global_aspects-14:
 
-15. Where the refinement of a state abstraction is not visible (see
+14. Where the refinement of a state abstraction is not visible (see
     :ref:`state_refinement`) and a subprogram references one or more
     of its constituents the constituents may be represented by a
     ``global_item`` that denotes the state abstraction in the
@@ -489,9 +483,9 @@ is used purely for static analysis purposes and is not executed.
     encapsulating a constituent is known from the Part_Of indicator on
     the declaration of the constituent.]
 
-.. _tu-fa-global_aspects-16:
+.. _tu-fa-global_aspects-15:
 
-16. Each entity denoted by a ``global_item`` in a
+15. Each entity denoted by a ``global_item`` in a
     ``global_specification`` of a subprogram that is an input or
     output of the subprogram shall satisfy the following mode
     specification rules [which are checked during analysis of the
@@ -514,7 +508,7 @@ is used purely for static analysis purposes and is not executed.
     * otherwise the ``global_item`` denotes both an input and an output, and
       has a ``mode_selector`` of In_Out.
 
-.. _tu-fa-global_aspects-16.1:
+.. _tu-fa-global_aspects-15.1:
 
    [For purposes of determining whether an output of a subprogram shall have a
    ``mode_selector`` of Output or In_Out, reads of array bounds, discriminants,
@@ -525,12 +519,18 @@ is used purely for static analysis purposes and is not executed.
    to be constrained ("known to be constrained" is defined in Ada RM 3.3), the
    discriminants of the output might or might not be updated by the call.]
 
-.. _tu-fa-global_aspects-17:
+.. _tu-fa-global_aspects-16:
 
-17. An entity that is denoted by a ``global_item`` which is referenced
+16. An entity that is denoted by a ``global_item`` which is referenced
     by a subprogram but is neither an input nor an output but is only
     referenced directly, or indirectly in assertion expressions has a
     ``mode_selector`` of Proof_In.
+
+.. _tu-fa-global_aspects-17:
+
+17. A ``global_item`` shall not denote a constant object other than a formal
+    parameter [of an enclosing subprogram] of mode **in** or a *constant
+    with variable input*.
 
 .. _tu-fa-global_aspects-18:
 
@@ -839,7 +839,7 @@ as it is used purely for static analysis purposes and is not executed.
     [In the case of a parameter of a tagged type (specific or class-wide),
     see the definition of "fully initialized" for a clarification of what
     the phrase "all parts" means in the preceding sentence.]
-    
+
 
 .. _etu-depends_aspects-vr:
 
