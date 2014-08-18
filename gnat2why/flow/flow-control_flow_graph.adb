@@ -4064,7 +4064,7 @@ package body Flow.Control_Flow_Graph is
             end;
          end if;
 
-         --  Issue an error if the declared type has
+         --  Issue a warning if the declared type has
          --  Default_Initial_Condition while its root type is a
          --  private kind and does not have Default_Initial_Condition.
 
