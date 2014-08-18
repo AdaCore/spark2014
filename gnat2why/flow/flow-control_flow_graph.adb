@@ -3502,19 +3502,13 @@ package body Flow.Control_Flow_Graph is
                Add_Vertex
                  (FA,
                   Direct_Mapping_Id (Init_Item),
-                  Make_Basic_Attributes
-                    (Var_Def    => Flow_Id_Sets.To_Set (The_Out),
-                     Var_Ex_Use => The_Ins,
-                     Var_Im_Use => (if Is_Initialized_At_Elaboration
-                                      (The_Out, FA.B_Scope)
-                                      and then Is_Initialized_In_Specification
-                                      (The_Out, FA.B_Scope)
-                                    then Flow_Id_Sets.To_Set (The_Out)
-                                    else Flow_Id_Sets.Empty_Set),
-                     Loops      => Ctx.Current_Loops,
-                     E_Loc      => Init_Item),
+                  Make_Package_Initialization_Attributes
+                    (The_State => The_Out,
+                     Inputs    => The_Ins,
+                     Scope     => FA.B_Scope,
+                     Loops     => Ctx.Current_Loops,
+                     E_Loc     => Init_Item),
                   V);
-               FA.Atr (V).Pretty_Print_Kind := Pretty_Print_Initializes_Aspect;
                CM.Include (Union_Id (Init_Item),
                            Trivial_Connection (V));
             end;

@@ -1303,6 +1303,9 @@ package body Flow.Analysis is
                  --  Suppression for dead code
                  not Is_Dead_End (V) and then
 
+                 --  Suppression for package initializations
+                 not Atr.Is_Package_Initialization and then
+
                  --  Suppression for packages without initializes
                  (if FA.Kind in E_Package | E_Package_Body and then
                     not Present (FA.Initializes_N)

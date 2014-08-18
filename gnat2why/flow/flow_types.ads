@@ -360,7 +360,6 @@ package Flow_Types is
 
    type Pretty_Print_Kind_T is (Pretty_Print_Null,
                                 Pretty_Print_DIC,
-                                Pretty_Print_Initializes_Aspect,
                                 Pretty_Print_Folded_Function_Check,
                                 Pretty_Print_Loop_Init,
                                 Pretty_Print_Record_Field);
@@ -398,6 +397,9 @@ package Flow_Types is
 
       Is_Postcondition    : Boolean;
       --  True if this vertex represents the postcondition.
+
+      Is_Package_Initialization : Boolean;
+      --  True if this vertex represents a package initialization.
 
       Is_Default_Init     : Boolean;
       --  True if this vertex represents a default initialization.
@@ -519,6 +521,7 @@ package Flow_Types is
                    Is_Proof                        => False,
                    Is_Precondition                 => False,
                    Is_Postcondition                => False,
+                   Is_Package_Initialization       => False,
                    Is_Default_Init                 => False,
                    Is_Loop_Entry                   => False,
                    Is_Initialized                  => False,

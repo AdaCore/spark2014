@@ -580,4 +580,32 @@ package body Flow.Control_Flow_Graph.Utility is
       return A;
    end Make_Default_Initialization_Attributes;
 
+   --------------------------------------------
+   -- Make_Package_Initialization_Attributes --
+   --------------------------------------------
+
+   function Make_Package_Initialization_Attributes
+     (The_State : Flow_Id;
+      Inputs    : Flow_Id_Sets.Set;
+      Scope     : Flow_Scope;
+      Loops     : Node_Sets.Set;
+      E_Loc     : Node_Or_Entity_Id)
+      return V_Attributes
+   is
+      A : V_Attributes;
+   begin
+      A := Make_Basic_Attributes
+        (Var_Def    => Flow_Id_Sets.To_Set (The_State),
+         Var_Ex_Use => Inputs,
+         Var_Im_Use =>
+           (if Is_Initialized_At_Elaboration (The_State, Scope)
+              and then Is_Initialized_In_Specification (The_State, Scope)
+            then Flow_Id_Sets.To_Set (The_State)
+            else Flow_Id_Sets.Empty_Set),
+         Loops      => Loops,
+         E_Loc      => E_Loc);
+      A.Is_Package_Initialization := True;
+      return A;
+   end Make_Package_Initialization_Attributes;
+
 end Flow.Control_Flow_Graph.Utility;

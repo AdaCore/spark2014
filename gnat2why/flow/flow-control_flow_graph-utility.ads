@@ -211,4 +211,13 @@ package Flow.Control_Flow_Graph.Utility is
         and Make_Default_Initialization_Attributes'Result.Is_Default_Init;
    --  Create attributes for the default initialization vertices.
 
+   function Make_Package_Initialization_Attributes
+     (The_State : Flow_Id;
+      Inputs    : Flow_Id_Sets.Set;
+      Scope     : Flow_Scope;
+      Loops     : Node_Sets.Set;
+      E_Loc     : Node_Or_Entity_Id)
+      return V_Attributes;
+   --  Create attributes for package initialization vertices.
+
 end Flow.Control_Flow_Graph.Utility;

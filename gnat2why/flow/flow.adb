@@ -457,11 +457,31 @@ package body Flow is
                Write_Str ("&nbsp;is initialized implicitly");
             end if;
 
+         elsif A.Is_Package_Initialization then
+            Rv.Shape := Shape_None;
+            Write_Str ("initializes ");
+
+            pragma Assert (F.Kind = Direct_Mapping);
+            declare
+               N : constant Node_Id := Get_Direct_Mapping_Id (F);
+            begin
+               --  Look at the postcondition of Find_Node in
+               --  Do_Package_Body_Or_Stub in CFG as to why only these
+               --  three need to be supported.
+               case Nkind (N) is
+                  when N_Component_Association =>
+                     Sprint_Comma_List (Choices (N));
+                     Write_Str (" from ");
+                     Print_Node (Expression (N));
+                  when N_Identifier | N_Expanded_Name =>
+                     Print_Node (N);
+                  when others =>
+                     raise Why.Unexpected_Node;
+               end case;
+            end;
+
          else
-            if A.Pretty_Print_Kind = Pretty_Print_Initializes_Aspect then
-               Rv.Shape := Shape_None;
-               Write_Str ("initializes ");
-            elsif A.Is_Precondition then
+            if A.Is_Precondition then
                Rv.Shape := Shape_None;
                Write_Str ("precondition ");
             elsif A.Is_Postcondition then
@@ -487,16 +507,6 @@ package body Flow is
                            Rv.Shape := Shape_None;
                            Write_Str ("when ");
                            Sprint_Comma_List (Discrete_Choices (N));
-
-                        when N_Component_Association =>
-                           --  The only occasion where a Flow_Id corresponds
-                           --  to an N_Component_Association is when we are
-                           --  in an Initializes aspect.
-                           pragma Assert (A.Pretty_Print_Kind =
-                                            Pretty_Print_Initializes_Aspect);
-                           Sprint_Comma_List (Choices (N));
-                           Write_Str (" from ");
-                           Print_Node (Expression (N));
 
                         when N_Defining_Identifier =>
                            case Ekind (N) is
