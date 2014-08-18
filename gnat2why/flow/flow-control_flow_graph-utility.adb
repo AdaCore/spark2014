@@ -341,19 +341,21 @@ package body Flow.Control_Flow_Graph.Utility is
    is
       A     : V_Attributes        := Null_Attributes;
       Scope : constant Flow_Scope := Get_Flow_Scope (Call_Vertex);
+      FS    : Flow_Id_Sets.Set;
    begin
-      A.Is_Global_Parameter          := True;
-      A.Is_Discr_Or_Bounds_Parameter := Discriminants_Or_Bounds_Only;
-      A.Call_Vertex                  := Direct_Mapping_Id (Call_Vertex);
-      A.Parameter_Formal             := Global;
-      A.Loops                        := Loops;
-      A.Error_Location               := E_Loc;
+      A.Is_Global_Parameter             := True;
+      A.Is_Discr_Or_Bounds_Parameter    := Discriminants_Or_Bounds_Only;
+      A.Call_Vertex         := Direct_Mapping_Id (Call_Vertex);
+      A.Parameter_Formal    := Global;
+      A.Loops               := Loops;
+      A.Error_Location      := E_Loc;
 
       case Global.Variant is
          when In_View =>
-            for F of Flatten_Variable (Change_Variant (Global, Normal_Use),
-                                       Scope)
-            loop
+            FS := Flatten_Variable (Change_Variant (Global, Normal_Use),
+                                    Scope);
+
+            for F of FS loop
                if not Discriminants_Or_Bounds_Only or else
                  Is_Discriminant (F)
                then

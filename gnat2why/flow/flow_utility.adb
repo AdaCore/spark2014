@@ -549,14 +549,17 @@ package body Flow_Utility is
       --     r.x -> r.x
       --     r.y -> r.y
 
-      for F of All_Record_Components (Direct_Mapping_Id (Entity (Root_Node)),
-                                      Scope)
-      loop
-         M.Insert (F, Flow_Id_Sets.To_Set (F));
-      end loop;
-      if Debug_Trace_Untangle_Record then
-         Show_Map;
-      end if;
+      declare
+         FS : constant Flow_Id_Sets.Set := All_Record_Components
+           (Direct_Mapping_Id (Entity (Root_Node)), Scope);
+      begin
+         for F of FS loop
+            M.Insert (F, Flow_Id_Sets.To_Set (F));
+         end loop;
+         if Debug_Trace_Untangle_Record then
+            Show_Map;
+         end if;
+      end;
 
       --  We then process Seq (the sequence of actions we have been asked
       --  to take) and update the map or eliminate entries from it.
@@ -620,6 +623,7 @@ package body Flow_Utility is
                                                   (First (Expressions (N))));
                   Field_Ptr : Node_Id;
                   Tmp       : Flow_Id_Sets.Set;
+                  FS        : Flow_Id_Sets.Set;
                begin
                   Indent;
                   while Present (Ptr) loop
@@ -647,9 +651,10 @@ package body Flow_Utility is
                                  Tmp := Get_Vars_Wrapper (Expression (Ptr));
                                  --  Not sure what to do, so set all sensible
                                  --  fields to the given variables.
-                                 for F of All_Record_Components
-                                   (Add_Component (Current_Field, E), Scope)
-                                 loop
+                                 FS := All_Record_Components
+                                   (Add_Component (Current_Field, E), Scope);
+
+                                 for F of FS loop
                                     M.Replace (F, Tmp);
                                     All_Vars.Union (Tmp);
                                  end loop;
@@ -2570,6 +2575,20 @@ package body Flow_Utility is
       pragma Assert (Nkind (Expression (A)) = N_Identifier);
       return Chars (Expression (A)) in Name_Pre | Name_Precondition;
    end Is_Precondition_Check;
+
+   ----------------------------
+   -- Contains_Discriminants --
+   ----------------------------
+
+   function Contains_Discriminants
+     (F : Flow_Id;
+      S : Flow_Scope)
+      return Boolean
+   is
+      FS : constant Flow_Id_Sets.Set := Flatten_Variable (F, S);
+   begin
+      return (for some X of FS => Is_Discriminant (X));
+   end Contains_Discriminants;
 
    -----------------------------------
    -- Is_Initialized_At_Elaboration --

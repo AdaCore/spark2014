@@ -318,6 +318,7 @@ package body Flow.Slice is
 
       function Get_Inputs_Or_Proof_Ins return Node_Sets.Set is
          All_Ins   : Node_Sets.Set := Node_Sets.Empty_Set;
+         FS        : Flow_Id_Sets.Set;
          V_Initial : Flow_Graphs.Vertex_Id;
          V_Final   : Flow_Graphs.Vertex_Id;
          Guilty    : Boolean;
@@ -329,9 +330,9 @@ package body Flow.Slice is
 
             Guilty := False;  --  Innocent till found guilty
 
-            for Comp of Flatten_Variable (Direct_Mapping_Id (G),
-                                          FA.B_Scope)
-            loop
+            FS := Flatten_Variable (Direct_Mapping_Id (G), FA.B_Scope);
+
+            for Comp of FS loop
                V_Initial := FA.PDG.Get_Vertex
                  (Change_Variant (Comp, Initial_Value));
 
@@ -363,6 +364,7 @@ package body Flow.Slice is
 
       function Get_Outputs return Node_Sets.Set is
          All_Outs  : Node_Sets.Set := Node_Sets.Empty_Set;
+         FS        : Flow_Id_Sets.Set;
          V_Initial : Flow_Graphs.Vertex_Id;
          Guilty    : Boolean;
       begin
@@ -372,9 +374,9 @@ package body Flow.Slice is
 
             Guilty := False;  --  Innocent till found guilty
 
-            for Comp of Flatten_Variable (Direct_Mapping_Id (G),
-                                          FA.B_Scope)
-            loop
+            FS := Flatten_Variable (Direct_Mapping_Id (G), FA.B_Scope);
+
+            for Comp of FS loop
                V_Initial := FA.PDG.Get_Vertex
                  (Change_Variant (Comp, Initial_Value));
 
