@@ -461,6 +461,33 @@ Proof.
   specialize (remove_a_unique_check _ _ _ _ H HZ); auto.
 Qed.
 
+Lemma optimize_expression_reserve_notin: forall st e v e' ck,
+  optimize_expression_x st e (v, e') ->
+    ~(List.In ck (exp_check_flags e)) ->
+      ~(List.In ck (exp_check_flags e')).
+Proof.
+  intros;
+  inversion H; subst; simpl in *; auto;
+  match goal with
+  | [H: optimize_name_x _ _ _ |- _] => inversion H4; subst; smack
+  | _ => idtac
+  end;
+  match goal with
+  | [H1: ~(List.In ?ck ?cks), 
+     H2: remove_check_flag _ ?cks ?cks' |- _] => specialize (notin_reserved_by_remove _ _ _ _ H1 H2); auto
+  end.  
+Qed.
+
+Lemma extract_subtype_range_unique: forall st t l u l' u',
+  extract_subtype_range_x st t (Range_X l u) ->
+    extract_subtype_range_x st t (Range_X l' u') ->
+      l = l' /\ u = u'.
+Proof.
+  intros;
+  inversion H; inversion H0; smack.
+Qed.
+
+
 (*
 Lemma optimize_expression_exists: forall e st, 
   exists v' e', optimize_expression_x st e (v', e').
@@ -2421,8 +2448,13 @@ Lemma expression_checks_optimization_soundness_help: forall e e' st s checkflags
 *)
 
 (** * Checks Optimization for Copy_In *)
+(*
+    compile2_flagged_parameter_specifications params0 params ->
+    compile2_flagged_args st0 params0 args0 args -> 
+    compile2_flagged_symbol_table st0 st ->
+*)
 Lemma copy_in_args_checks_optimization_soundness: forall st s f params args f' args',
-  well_typed_stack st s ->
+  well_typed_stack st s ->    
     copy_in_x st s f params args f' -> 
       optimize_args_x st params args args' ->
         copy_in_x st s f params args' f'.
@@ -2445,21 +2477,152 @@ Proof.
   match goal with
   | [H: optimize_args_x _ (?a :: ?al) (?e :: ?el) (?e' :: ?el') |- _ ] => inversion H; subst
   end.
-  + (* 1. O_Args_Head_In_Range_Pass *)
+  + (* 1. Args_Head_In *)
   match goal with
   | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; smack
   end.
-  Print subtype_range_x.
-  + 
-
-  
-  inversion H0; subst.
-  
-
-  
-  
+  apply Copy_In_Cons_In_RTE_X; auto.
+    admit. admit.
+  apply Copy_In_Cons_In_X with (v:=v0) (f':=(STACK.push f (parameter_name_x a) v0)); auto.
+    admit. admit. specialize (IHparams _ _ _ _ _ _ H H18 H12); auto.
+  apply Copy_In_Cons_In_E_RTE_X with (cks1:=cks1) (cks2:=cks2); auto.
+    admit. admit.
+  apply Copy_In_Cons_In_Range_RTE_X with (cks1:=cks1) (cks2:=cks2) (v:=v0) (l:=l) (u:=u); auto.
+    admit. admit. 
+  apply Copy_In_Cons_In_Range_X with (cks1:=cks1) (cks2:=cks2) (v:=v0) (l:=l) (u:=u) 
+                                     (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v0)))); auto.
+    admit. admit. specialize (IHparams _ _ _ _ _ _ H H20 H12); auto.
+  + (* 2. Args_Head_In_Range_Pass *)
+  match goal with
+  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; smack
+  end.
+  apply Copy_In_Cons_In_RTE_X; auto.
+    admit. admit.
+  apply Copy_In_Cons_In_X with (v:=v) (f':=(STACK.push f (parameter_name_x a) v)); auto.
+    admit. admit. specialize (IHparams _ _ _ _ _ _ H H21 H16); auto.
+  apply Copy_In_Cons_In_RTE_X; auto.
+    admit. admit.
+  (* use contradictionary: possible value of argument is in the domain of its type, so there should be no overflow *)
+  admit.
+  apply Copy_In_Cons_In_X with (v:=(BasicV (Int v))) (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v)))); auto.
+    admit. admit. specialize (IHparams _ _ _ _ _ _ H H23 H16); auto.
+  + (* 3. Args_Head_In_Range_Fail *)
+  match goal with
+  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H1: parameter_mode_x ?x = _,
+     H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2; clear H2
+  end.   
+  apply Copy_In_Cons_In_RTE_X; auto.
+    admit. admit.
+  apply Copy_In_Cons_In_X with (v:=v) (f':=(STACK.push f (parameter_name_x a) v)); auto.
+    admit. admit. specialize (IHparams _ _ _ _ _ _ H H19 H13); auto.
+  apply Copy_In_Cons_In_E_RTE_X with (cks1:=cks1) (cks2:=cks2); auto.
+    admit. admit.  
+  apply Copy_In_Cons_In_Range_RTE_X with (cks1:=cks1) (cks2:=cks2) (v:=v) (l:=l0) (u:=u0); auto.
+    admit. admit. 
+  apply Copy_In_Cons_In_Range_X with (cks1:=cks1) (cks2:=cks2) (v:=v) (l:=l0) (u:=u0) 
+                                     (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v)))); auto.
+    admit. admit. specialize (IHparams _ _ _ _ _ _ H H21 H13); auto.
+  + (* 4. Args_Head_Out *)  
+  match goal with
+  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; smack
+  end.
+  apply Copy_In_Cons_Out_X with (f':=(STACK.push f (parameter_name_x a) Undefined)); auto.
+    specialize (IHparams _ _ _ _ _ _ H H20 H12); auto.
+  + (* 5. Args_Head_Out_Range *)
+  match goal with
+  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; smack
+  end.
+  apply Copy_In_Cons_Out_X with (f':=(STACK.push f (parameter_name_x a) Undefined)); auto.
+    specialize (IHparams _ _ _ _ _ _ H H21 H13); auto.  
+  + (* 6. Args_Head_Out_Range_Pass *)
+  match goal with
+  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; smack
+  end.
+  apply Copy_In_Cons_Out_X with (f':=(STACK.push f (parameter_name_x a) Undefined)); auto.
+    specialize (IHparams _ _ _ _ _ _ H H24 H16); auto.    
+  + (* 7. Args_Head_Out_Range_Fail *)
+  match goal with
+  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; smack
+  end.
+  apply Copy_In_Cons_Out_X with (f':=(STACK.push f (parameter_name_x a) Undefined)); auto.
+    specialize (IHparams _ _ _ _ _ _ H H22 H14); auto.
+  apply Copy_In_Cons_Out_X with (f':=(STACK.push f (parameter_name_x a) Undefined)); auto.
+    specialize (IHparams _ _ _ _ _ _ H H22 H14); auto.
+  + (* 8. Args_Head_InOut_Param *)
+  match goal with
+  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; smack
+  end.
+  apply Copy_In_Cons_InOut_X with (v:=v) (f':=(STACK.push f (parameter_name_x a) v)); auto.
+    specialize (IHparams _ _ _ _ _ _ H H21 H11); auto.
+  apply Copy_In_Cons_InOut_Range_RTE_X with (v:=v) (l:=l) (u:=u); auto.
+  apply Copy_In_Cons_InOut_Range_X with (v:=v) (l:=l) (u:=u) (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v)))); auto.
+    specialize (IHparams _ _ _ _ _ _ H H23 H11); auto.
+  + (* 9. Args_Head_InOut_Arg *)
+  match goal with
+  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; smack
+  end.
+  apply Copy_In_Cons_InOut_X with (v:=v) (f':=(STACK.push f (parameter_name_x a) v)); auto.
+    specialize (IHparams _ _ _ _ _ _ H H22 H12); auto.
+  apply Copy_In_Cons_InOut_Range_RTE_X with (v:=v) (l:=l) (u:=u); auto.
+  apply Copy_In_Cons_InOut_Range_X with (v:=v) (l:=l) (u:=u) (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v)))); auto.
+    specialize (IHparams _ _ _ _ _ _ H H24 H12); auto.
+  + (* 10. Args_Head_InOut_Range_Pass *)
+  match goal with
+  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; smack
+  end.
+  apply Copy_In_Cons_InOut_X with (v:=v) (f':=(STACK.push f (parameter_name_x a) v)); auto.
+    admit. specialize (IHparams _ _ _ _ _ _ H H27 H17); auto.
+  (* use contradictionary: possible value of argument is in the domain of its type, so there should be no overflow *)
+  admit.
+  apply Copy_In_Cons_InOut_X with (v:=(BasicV (Int v))) (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v)))); auto.
+    admit. specialize (IHparams _ _ _ _ _ _ H H29 H17); auto.
+  + (* 11. Args_Head_InOut_In_Range_Pass *)
+  match goal with
+  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H1: parameter_mode_x ?x = _,
+     H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2; clear H2
+  end.
+  apply Copy_In_Cons_InOut_X with (v:=v) (f':=(STACK.push f (parameter_name_x a) v)); auto.
+    admit. specialize (IHparams _ _ _ _ _ _ H H26 H16); auto.
+  (* use contradictionary: possible value of argument is in the domain of its type, so there should be no overflow *)
+  admit.
+  apply Copy_In_Cons_InOut_X with (v:=(BasicV (Int v))) (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v)))); auto.
+    admit. specialize (IHparams _ _ _ _ _ _ H H28 H16); auto.  
+  + (* 12. Args_Head_InOut_Out_Range_Pass *)
+  match goal with
+  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H1: parameter_mode_x ?x = _,
+     H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2; clear H2
+  end.
+  apply Copy_In_Cons_InOut_X with (v:=v) (f':=(STACK.push f (parameter_name_x a) v)); auto.
+    admit. specialize (IHparams _ _ _ _ _ _ H H26 H16); auto.
+  apply Copy_In_Cons_InOut_Range_RTE_X with (v:=v) (l:=l) (u:=u); auto.
+    admit. admit.
+  apply Copy_In_Cons_InOut_Range_X with (v:=v) (l:=l) (u:=u) (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v)))); auto.
+    admit. admit. specialize (IHparams _ _ _ _ _ _ H H28 H16); auto.
+  + (* 13. Args_Head_InOut_InOut_Range_Fail *)
+  match goal with
+  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H1: parameter_mode_x ?x = _,
+     H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2; clear H2
+  end.
+  apply Copy_In_Cons_InOut_X with (v:=v) (f':=(STACK.push f (parameter_name_x a) v)); auto.
+    specialize (IHparams _ _ _ _ _ _ H H25 H15); auto.
+  apply Copy_In_Cons_InOut_Range_RTE_X with (v:=v) (l:=l) (u:=u); auto.
+    admit. 
+  apply Copy_In_Cons_InOut_Range_X with (v:=v) (l:=l) (u:=u) 
+                                        (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v)))); auto.
+    admit. specialize (IHparams _ _ _ _ _ _ H H27 H15); auto. 
 Qed.
-
 
 
 

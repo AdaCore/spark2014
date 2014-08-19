@@ -218,14 +218,14 @@ Inductive optimize_args_x: symboltable_x -> list parameter_specification_x -> li
       do_range_check l l' u' (Exception RTE_Range) \/ do_range_check u l' u' (Exception RTE_Range) ->
       optimize_args_x st params args args' ->
       optimize_args_x st (param :: params) (arg :: args) (arg' :: args')
-  | O_Args_Head_Out: forall param ast_num st t params args args' x_ast_num x checkflags ckflags,
+  | O_Args_Head_Out_Arg: forall param ast_num st t params args args' x_ast_num x checkflags ckflags,
       param.(parameter_mode_x) = Out ->
       fetch_exp_type_x ast_num st = Some t ->
       is_range_constrainted_type t = false ->
       optimize_args_x st params args args' ->
       optimize_args_x st (param :: params) ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) ckflags) :: args) 
                                            ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) ckflags) :: args')
-  | O_Args_Head_Out_Range: forall param ast_num st t params args args' x_ast_num x checkflags ckflags,
+  | O_Args_Head_Out_Param: forall param ast_num st t params args args' x_ast_num x checkflags ckflags,
       param.(parameter_mode_x) = Out ->
       is_range_constrainted_type (param.(parameter_subtype_mark_x)) = false ->
       fetch_exp_type_x ast_num st = Some t ->
@@ -305,7 +305,7 @@ Inductive optimize_args_x: symboltable_x -> list parameter_specification_x -> li
       optimize_args_x st params args args' ->
       optimize_args_x st (param :: params) ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) ckflags) :: args) 
                                            ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags') ckflags) :: args')
-  | O_Args_Head_InOut_InOut_Out_Range_Fail: forall param st l u ast_num t l' u' 
+  | O_Args_Head_InOut_Range_Fail: forall param st l u ast_num t l' u' 
                                                params args args' x_ast_num x checkflags ckflags,
       param.(parameter_mode_x) = In_Out ->
       extract_subtype_range_x st (param.(parameter_subtype_mark_x)) (Range_X l u) ->
