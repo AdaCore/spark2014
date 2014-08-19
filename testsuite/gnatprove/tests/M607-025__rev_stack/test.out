@@ -34,7 +34,6 @@ list.adb:43:10: info: precondition proved
 list.adb:43:10: info: range check proved
 list.adb:43:23: info: precondition proved
 list.adb:44:10: info: precondition proved
-list.ads:9:04: warning: range check might fail
 list.ads:13:28: info: precondition proved
 list.ads:13:47: info: precondition proved
 list.ads:14:19: warning: postcondition might fail, requires Element (L, I) = Element (Reverse_List'Result, Last_Index (L) - I + First_Index (L)
