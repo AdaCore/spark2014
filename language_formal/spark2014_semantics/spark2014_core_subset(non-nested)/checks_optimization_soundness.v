@@ -2479,10 +2479,15 @@ Proof.
   end.
   + (* 1. Args_Head_In *)
   match goal with
-  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; smack
+  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H1: parameter_mode_x ?x = _,
+     H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2; clear H2
   end.
-  apply Copy_In_Cons_In_RTE_X; auto.
-    admit. admit.
+   apply Copy_In_Cons_In_RTE_X; auto.
+    specialize (optimize_expression_reserve_notin _ _ _ _ _ H10 H15); auto.
+    admit.
   apply Copy_In_Cons_In_X with (v:=v0) (f':=(STACK.push f (parameter_name_x a) v0)); auto.
     admit. admit. specialize (IHparams _ _ _ _ _ _ H H18 H12); auto.
   apply Copy_In_Cons_In_E_RTE_X with (cks1:=cks1) (cks2:=cks2); auto.
@@ -2525,13 +2530,13 @@ Proof.
   apply Copy_In_Cons_In_Range_X with (cks1:=cks1) (cks2:=cks2) (v:=v) (l:=l0) (u:=u0) 
                                      (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v)))); auto.
     admit. admit. specialize (IHparams _ _ _ _ _ _ H H21 H13); auto.
-  + (* 4. Args_Head_Out *)  
+  + (* 4. Args_Head_Out_Arg *)  
   match goal with
   | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; smack
   end.
   apply Copy_In_Cons_Out_X with (f':=(STACK.push f (parameter_name_x a) Undefined)); auto.
     specialize (IHparams _ _ _ _ _ _ H H20 H12); auto.
-  + (* 5. Args_Head_Out_Range *)
+  + (* 5. Args_Head_Out_Param *)
   match goal with
   | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; smack
   end.
@@ -2607,7 +2612,7 @@ Proof.
     admit. admit.
   apply Copy_In_Cons_InOut_Range_X with (v:=v) (l:=l) (u:=u) (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v)))); auto.
     admit. admit. specialize (IHparams _ _ _ _ _ _ H H28 H16); auto.
-  + (* 13. Args_Head_InOut_InOut_Range_Fail *)
+  + (* 13. Args_Head_InOut_Range_Fail *)
   match goal with
   | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
   end;
@@ -2627,19 +2632,284 @@ Qed.
 
 
 
-
-
 (** * Checks Optimization for Copy_Out *)
-
-
-
-
-
-
-
-
-
-
+Lemma copy_out_args_checks_optimization_soundness: forall st s f params args s' args',
+  well_typed_stack st s ->    
+    copy_out_x st s f params args s' -> 
+      optimize_args_x st params args args' ->
+        copy_out_x st s f params args' s'.
+Proof.
+  intros st s f params; revert st s f;
+  induction params; smack.
+- match goal with
+  | [H: copy_out_x _ _ _ _ _ _ |- _] => inversion H; subst
+  end.
+  match goal with
+  | [H: optimize_args_x _ _ _ _ |- _] => inversion H; subst
+  end.
+  constructor.
+- destruct args, args';
+  match goal with 
+  | [H: copy_out_x _ _ _ (?a :: ?al) nil _ |- _] => inversion H
+  | [H: optimize_args_x _ (?a :: ?al) (?e :: ?el) nil |- _] => inversion H
+  | _ => idtac
+  end.
+  match goal with
+  | [H: optimize_args_x _ (?a :: ?al) (?e :: ?el) (?e' :: ?el') |- _ ] => inversion H; subst
+  end.
+  + (* 1. Args_Head_In *)
+  match goal with
+  | [H: copy_out_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H: parameter_mode_x ?x = _ |- _] => rewrite H in *
+  end;
+  match goal with
+  | [H: In = Out \/ In = In_Out |- _] => smack
+  | _ => idtac
+  end.
+  apply Copy_Out_Cons_In_X; auto.
+    specialize (IHparams _ _ _ _ _ _ H H15 H12); auto.
+  + (* 2. Args_Head_In_Range_Pass *)
+  match goal with
+  | [H: copy_out_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H: parameter_mode_x ?x = _ |- _] => rewrite H in *
+  end;
+  match goal with
+  | [H: In = Out \/ In = In_Out |- _] => smack
+  | _ => idtac
+  end.
+  apply Copy_Out_Cons_In_X; auto.
+    specialize (IHparams _ _ _ _ _ _ H H18 H16); auto.
+  + (* 3. Args_Head_In_Range_Fail *)
+  match goal with
+  | [H: copy_out_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H: parameter_mode_x ?x = _ |- _] => rewrite H in *
+  end;
+  match goal with
+  | [H: In = Out \/ In = In_Out |- _] => smack
+  | _ => idtac
+  end.
+  apply Copy_Out_Cons_In_X; auto.
+    specialize (IHparams _ _ _ _ _ _ H H16 H13); auto.
+  + (* 4. Args_Head_Out_Arg *)
+  match goal with
+  | [H: copy_out_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H1: parameter_mode_x ?x = _,
+     H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2
+  | _ => idtac
+  end.
+  apply Copy_Out_Cons_Out_X with (v:=v) (s':=s'0); auto. 
+    assert(HE1: well_typed_stack st s'0). admit.
+    specialize (IHparams _ _ _ _ _ _ HE1 H22 H12); auto.
+  apply Copy_Out_Cons_Out_Range_RTE_X with (v:=v) (t:=t) (l:=l) (u:=u); auto.
+    match goal with
+    | [H1: fetch_exp_type_x _ _ = _, H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst; auto
+    end.
+  apply Copy_Out_Cons_Out_Range_X with (v:=v) (t:=t) (l:=l) (u:=u) (s':=s'0); auto.
+    match goal with
+    | [H1: fetch_exp_type_x _ _ = _, H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst; auto
+    end.
+    assert(HE1: well_typed_stack st s'0). admit.
+    specialize (IHparams _ _ _ _ _ _ HE1 H25 H12); auto.
+  + (* 5. Args_Head_Out_Param *)
+  match goal with
+  | [H: copy_out_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H1: parameter_mode_x ?x = _,
+     H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2
+  | _ => idtac
+  end.
+  apply Copy_Out_Cons_Out_X with (v:=v) (s':=s'0); auto. 
+    assert(HE1: well_typed_stack st s'0). admit.
+    specialize (IHparams _ _ _ _ _ _ HE1 H23 H13); auto.
+  apply Copy_Out_Cons_Out_Range_RTE_X with (v:=v) (t:=t) (l:=l) (u:=u); auto.
+    match goal with
+    | [H1: fetch_exp_type_x _ _ = _, H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst; auto
+    end.
+  apply Copy_Out_Cons_Out_Range_X with (v:=v) (t:=t) (l:=l) (u:=u) (s':=s'0); auto.
+    match goal with
+    | [H1: fetch_exp_type_x _ _ = _, H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst; auto
+    end.
+    assert(HE1: well_typed_stack st s'0). admit.
+    specialize (IHparams _ _ _ _ _ _ HE1 H26 H13); auto.
+  + (* 6. Args_Head_Out_Range_Pass *)
+  match goal with
+  | [H: copy_out_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H1: parameter_mode_x ?x = _,
+     H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2
+  | _ => idtac
+  end.
+  apply Copy_Out_Cons_Out_X with (v:=v) (s':=s'0); auto. 
+    admit.
+    assert(HE1: well_typed_stack st s'0). admit.
+    specialize (IHparams _ _ _ _ _ _ HE1 H26 H16); auto.
+  (* use contradictionary to prove... *)
+  admit.
+  apply Copy_Out_Cons_Out_X with (v:=(BasicV (Int v))) (s':=s'0); auto.
+    admit.
+    assert(HE1: well_typed_stack st s'0). admit.
+    specialize (IHparams _ _ _ _ _ _ HE1 H29 H16); auto.
+  + (* 7. Args_Head_Out_Range_Fail *)
+  match goal with
+  | [H: copy_out_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H1: parameter_mode_x ?x = _,
+     H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2
+  | _ => idtac
+  end.
+  apply Copy_Out_Cons_Out_X with (v:=v) (s':=s'0); auto. 
+    assert(HE1: well_typed_stack st s'0). admit.
+    specialize (IHparams _ _ _ _ _ _ HE1 H24 H14); auto.
+  apply Copy_Out_Cons_Out_Range_RTE_X with (v:=v) (t:=t) (l:=l') (u:=u'); auto.
+    match goal with
+    | [H1: fetch_exp_type_x _ _ = _, H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst; auto
+    end. admit.
+  apply Copy_Out_Cons_Out_Range_X with (v:=v) (t:=t) (l:=l') (u:=u') (s':=s'0); auto.
+    match goal with
+    | [H1: fetch_exp_type_x _ _ = _, H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst; auto
+    end. admit.
+    assert(HE1: well_typed_stack st s'0). admit.
+    specialize (IHparams _ _ _ _ _ _ HE1 H27 H14); auto.
+  + (* 8. Args_Head_InOut_Param *)
+  match goal with
+  | [H: copy_out_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H1: parameter_mode_x ?x = _,
+     H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2
+  | _ => idtac
+  end.
+  apply Copy_Out_Cons_Out_X with (v:=v) (s':=s'0); auto. 
+    assert(HE1: well_typed_stack st s'0). admit.
+    specialize (IHparams _ _ _ _ _ _ HE1 H21 H11); auto.
+  apply Copy_Out_Cons_Out_Range_RTE_X with (v:=v) (t:=t) (l:=l) (u:=u); auto.
+  apply Copy_Out_Cons_Out_Range_X with (v:=v) (t:=t) (l:=l) (u:=u) (s':=s'0); auto.
+    assert(HE1: well_typed_stack st s'0). admit.
+    specialize (IHparams _ _ _ _ _ _ HE1 H24 H11); auto.
+  + (* 9. Args_Head_InOut_Arg *)
+  match goal with
+  | [H: copy_out_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H1: parameter_mode_x ?x = _,
+     H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2
+  | _ => idtac
+  end.
+  apply Copy_Out_Cons_Out_X with (v:=v) (s':=s'0); auto. 
+    assert(HE1: well_typed_stack st s'0). admit.
+    specialize (IHparams _ _ _ _ _ _ HE1 H22 H12); auto.
+  apply Copy_Out_Cons_Out_Range_RTE_X with (v:=v) (t:=t) (l:=l) (u:=u); auto.
+    match goal with
+    | [H1: fetch_exp_type_x _ _ = _, H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst; auto
+    end.
+  apply Copy_Out_Cons_Out_Range_X with (v:=v) (t:=t) (l:=l) (u:=u) (s':=s'0); auto.
+    match goal with
+    | [H1: fetch_exp_type_x _ _ = _, H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst; auto
+    end.
+    assert(HE1: well_typed_stack st s'0). admit.
+    specialize (IHparams _ _ _ _ _ _ HE1 H25 H12); auto.
+  + (* 10. Args_Head_InOut_Range_Pass *)
+  match goal with
+  | [H: copy_out_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H1: parameter_mode_x ?x = _,
+     H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2
+  | _ => idtac
+  end.
+  apply Copy_Out_Cons_Out_X with (v:=v) (s':=s'0); auto. 
+    admit.
+    assert(HE1: well_typed_stack st s'0). admit.
+    specialize (IHparams _ _ _ _ _ _ HE1 H27 H17); auto.
+  match goal with
+    | [H1: fetch_exp_type_x _ _ = _, H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst; auto
+  end.
+  (* proof by contraditionary ... *)
+  admit.
+  apply Copy_Out_Cons_Out_X with (v:=(BasicV (Int v))) (s':=s'0); auto.
+    admit.
+    assert(HE1: well_typed_stack st s'0). admit.
+    specialize (IHparams _ _ _ _ _ _ HE1 H30 H17); auto.
+  + (* 11. Args_Head_InOut_In_Range_Pass *)
+  match goal with
+  | [H: copy_out_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H1: parameter_mode_x ?x = _,
+     H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2
+  | _ => idtac
+  end.
+  apply Copy_Out_Cons_Out_X with (v:=v) (s':=s'0); auto. 
+    admit.
+    assert(HE1: well_typed_stack st s'0). admit.
+    specialize (IHparams _ _ _ _ _ _ HE1 H26 H16); auto.
+  apply Copy_Out_Cons_Out_Range_RTE_X with (v:=v) (t:=t) (l:=l') (u:=u'); auto.
+    admit.
+    match goal with
+    | [H1: fetch_exp_type_x _ _ = _, H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst; auto
+    end. admit.
+  apply Copy_Out_Cons_Out_Range_X with (v:=v) (t:=t) (l:=l') (u:=u') (s':=s'0); auto.
+    admit.
+    match goal with
+    | [H1: fetch_exp_type_x _ _ = _, H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst; auto
+    end. admit.
+    assert(HE1: well_typed_stack st s'0). admit.
+    specialize (IHparams _ _ _ _ _ _ HE1 H29 H16); auto. 
+  + (* 12. Args_Head_InOut_Out_Range_Pass *)
+  match goal with
+  | [H: copy_out_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H1: parameter_mode_x ?x = _,
+     H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2
+  | _ => idtac
+  end.
+  apply Copy_Out_Cons_Out_X with (v:=v) (s':=s'0); auto. 
+    admit.
+    assert(HE1: well_typed_stack st s'0). admit.
+    specialize (IHparams _ _ _ _ _ _ HE1 H26 H16); auto.
+  (* proof by contraditionary ... *)
+  match goal with
+    | [H1: fetch_exp_type_x _ _ = _, H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst; auto
+  end. admit.
+  apply Copy_Out_Cons_Out_X with (v:=(BasicV (Int v))) (s':=s'0); auto.
+    admit.
+    assert(HE1: well_typed_stack st s'0). admit.
+    specialize (IHparams _ _ _ _ _ _ HE1 H29 H16); auto.
+  + (* 13. Args_Head_InOut_InOut_Range_Fail *)
+  match goal with
+  | [H: copy_out_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H1: parameter_mode_x ?x = _,
+     H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2
+  | _ => idtac
+  end.
+  apply Copy_Out_Cons_Out_X with (v:=v) (s':=s'0); auto. 
+    assert(HE1: well_typed_stack st s'0). admit.
+    specialize (IHparams _ _ _ _ _ _ HE1 H25 H15); auto.
+  apply Copy_Out_Cons_Out_Range_RTE_X with (v:=v) (t:=t) (l:=l') (u:=u'); auto.
+    match goal with
+    | [H1: fetch_exp_type_x _ _ = _, H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst; auto
+    end. admit.
+  apply Copy_Out_Cons_Out_Range_X with (v:=v) (t:=t) (l:=l') (u:=u') (s':=s'0); auto.
+    match goal with
+    | [H1: fetch_exp_type_x _ _ = _, H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst; auto
+    end. admit.
+    assert(HE1: well_typed_stack st s'0). admit.
+    specialize (IHparams _ _ _ _ _ _ HE1 H28 H15); auto.
+Qed.
 
 
 
