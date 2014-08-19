@@ -2,12 +2,11 @@ caller.adb:8:22: warning: assertion might fail, requires Evaluate (Pr_T (I)) = 0
 caller.adb:9:22: warning: assertion might fail, requires Add2 (R) = 0
 caller.ads:11:14: warning: subprogram "Test" has no effect
 caller.ads:13:04: warning: type "Pr_Tt" is not fully initialized
-callers_caller.adb:8:28: "R" is not initialized
+callers_caller.adb:8:22: warning: assertion might fail, requires Add3 (R) = 0
 callers_caller.ads:8:14: warning: subprogram "Test2" has no effect
 dic.adb:3:04: "G" is not initialized
 dic.ads:45:04: warning: type "Pr_Liar_T" is not fully initialized
 dic_test.adb:1:11: warning: subprogram "Dic_Test" has no effect
-   compilation of callers_caller.adb failed
    compilation of dic.adb failed
 
 
