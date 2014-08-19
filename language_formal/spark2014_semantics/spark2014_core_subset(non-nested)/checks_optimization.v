@@ -195,6 +195,12 @@ with optimize_name_x: symboltable_x -> name_x -> (valueO * name_x) -> Prop :=
 Inductive optimize_args_x: symboltable_x -> list parameter_specification_x -> list expression_x -> list expression_x -> Prop :=
   | O_Args_Nil: forall st,
       optimize_args_x st nil nil nil
+  | O_Args_Head_In: forall param st arg v arg' params args args',
+      param.(parameter_mode_x) = In -> 
+      optimize_expression_x st arg (v, arg') ->
+      is_range_constrainted_type (param.(parameter_subtype_mark_x)) = false ->
+      optimize_args_x st params args args' ->
+      optimize_args_x st (param :: params) (arg :: args) (arg' :: args')
   | O_Args_Head_In_Range_Pass: forall param st arg l u arg' l' u' checkflags' arg'' params args args',
       param.(parameter_mode_x) = In -> 
       optimize_expression_x st arg (IntBetween l u, arg') ->
@@ -212,6 +218,21 @@ Inductive optimize_args_x: symboltable_x -> list parameter_specification_x -> li
       do_range_check l l' u' (Exception RTE_Range) \/ do_range_check u l' u' (Exception RTE_Range) ->
       optimize_args_x st params args args' ->
       optimize_args_x st (param :: params) (arg :: args) (arg' :: args')
+  | O_Args_Head_Out: forall param ast_num st t params args args' x_ast_num x checkflags ckflags,
+      param.(parameter_mode_x) = Out ->
+      fetch_exp_type_x ast_num st = Some t ->
+      is_range_constrainted_type t = false ->
+      optimize_args_x st params args args' ->
+      optimize_args_x st (param :: params) ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) ckflags) :: args) 
+                                           ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) ckflags) :: args')
+  | O_Args_Head_Out_Range: forall param ast_num st t params args args' x_ast_num x checkflags ckflags,
+      param.(parameter_mode_x) = Out ->
+      is_range_constrainted_type (param.(parameter_subtype_mark_x)) = false ->
+      fetch_exp_type_x ast_num st = Some t ->
+      is_range_constrainted_type t = true ->
+      optimize_args_x st params args args' ->
+      optimize_args_x st (param :: params) ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) ckflags) :: args) 
+                                           ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) ckflags) :: args')
   | O_Args_Head_Out_Range_Pass: forall param st l u ast_num t l' u' checkflags checkflags' params args args' x_ast_num x ckflags,
       param.(parameter_mode_x) = Out -> 
       extract_subtype_range_x st (param.(parameter_subtype_mark_x)) (Range_X l u) ->
@@ -219,7 +240,7 @@ Inductive optimize_args_x: symboltable_x -> list parameter_specification_x -> li
       extract_subtype_range_x st t (Range_X l' u') ->
       do_range_check l l' u' Success ->
       do_range_check u l' u' Success ->
-      remove_check_flag Do_Range_Check checkflags checkflags' ->
+      remove_check_flag Do_Range_Check_On_CopyOut checkflags checkflags' ->
       optimize_args_x st params args args' ->
       optimize_args_x st (param :: params) ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) ckflags) :: args) 
                                            ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags') ckflags) :: args')
@@ -229,6 +250,21 @@ Inductive optimize_args_x: symboltable_x -> list parameter_specification_x -> li
       fetch_exp_type_x ast_num st = Some t ->
       extract_subtype_range_x st t (Range_X l' u') ->
       do_range_check l l' u' (Exception RTE_Range) \/ do_range_check u l' u' (Exception RTE_Range) ->
+      optimize_args_x st params args args' ->
+      optimize_args_x st (param :: params) ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) ckflags) :: args) 
+                                           ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) ckflags) :: args')
+  | O_Args_Head_InOut_Param: forall param st params args args' ast_num x_ast_num x checkflags ckflags, 
+      (* option: this constructor can be put together with O_Args_Head_In *)
+      param.(parameter_mode_x) = In_Out ->
+      is_range_constrainted_type (param.(parameter_subtype_mark_x)) = false ->
+      optimize_args_x st params args args' ->
+      optimize_args_x st (param :: params) ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) ckflags) :: args) 
+                                           ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) ckflags) :: args')
+  | O_Args_Head_InOut_Arg: forall param ast_num st t params args args' x_ast_num x checkflags ckflags,
+      (* option: this constructor can be put together with O_Args_Head_Out *)
+      param.(parameter_mode_x) = In_Out ->
+      fetch_exp_type_x ast_num st = Some t ->
+      is_range_constrainted_type t = false ->
       optimize_args_x st params args args' ->
       optimize_args_x st (param :: params) ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) ckflags) :: args) 
                                            ((E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) ckflags) :: args')

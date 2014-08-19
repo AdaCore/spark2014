@@ -2409,6 +2409,115 @@ Qed.
 
 
 
+
+(*
+Lemma expression_checks_optimization_soundness_help: forall e e' st s checkflags v v',
+  well_typed_stack st s ->
+    remove_check_flag Do_Range_Check (exp_check_flags e) checkflags ->
+      well_check_flagged_expr (update_exp_check_flags e checkflags) ->
+        eval_expr_x st s (update_exp_check_flags e checkflags) v ->
+          optimize_expression_x st (update_exp_check_flags e checkflags) (v', e') ->
+            eval_expr_x st s e' v.
+*)
+
+(** * Checks Optimization for Copy_In *)
+Lemma copy_in_args_checks_optimization_soundness: forall st s f params args f' args',
+  well_typed_stack st s ->
+    copy_in_x st s f params args f' -> 
+      optimize_args_x st params args args' ->
+        copy_in_x st s f params args' f'.
+Proof.
+  intros st s f params; revert st s f;
+  induction params; smack.
+- match goal with
+  | [H: copy_in_x _ _ _ _ _ _ |- _] => inversion H; subst
+  end.
+  match goal with
+  | [H: optimize_args_x _ _ _ _ |- _] => inversion H; subst
+  end.
+  constructor.
+- destruct args, args';
+  match goal with 
+  | [H: copy_in_x _ _ _ (?a :: ?al) nil _ |- _] => inversion H
+  | [H: optimize_args_x _ (?a :: ?al) (?e :: ?el) nil |- _] => inversion H
+  | _ => idtac
+  end.
+  match goal with
+  | [H: optimize_args_x _ (?a :: ?al) (?e :: ?el) (?e' :: ?el') |- _ ] => inversion H; subst
+  end.
+  + (* 1. O_Args_Head_In_Range_Pass *)
+  match goal with
+  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; smack
+  end.
+  Print subtype_range_x.
+  + 
+
+  
+  inversion H0; subst.
+  
+
+  
+  
+Qed.
+
+
+
+
+
+
+
+(** * Checks Optimization for Copy_Out *)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(** * Checks Optimizatioin Soundness for Statement *)
+(*
+Lemma expression_checks_optimization_soundness: forall e checkflags st s v v' e',
+  remove_check_flag Do_Range_Check (exp_check_flags e) checkflags ->
+      eval_expr_x st s (update_exp_check_flags e checkflags) v ->
+        optimize_expression_x st (update_exp_check_flags e checkflags) (v', e') ->
+          eval_expr_x st s e' v.
+*)
+Lemma statement_checks_optimization_soundness: forall st s c s' c',
+  eval_stmt_x st s c s' ->
+    optimize_statement_x st c c' ->
+      eval_stmt_x st s c' s'.
+Proof.
+  intros st s c s' c' H; revert c'.
+  induction H; intros.
+- admit.
+- match goal with
+  | [H: optimize_statement_x _ _ _ |- _] => inversion H; clear H; subst
+  end.
+  apply Eval_S_Assignment_RTE_X; auto; admit.
+  apply Eval_S_Assignment_RTE_X; auto; admit.
+- match goal with
+  | [H: optimize_statement_x _ _ _ |- _] => inversion H; clear H; subst
+  end.
+  apply Eval_S_Assignment_X with (v := v); auto; admit.
+  apply Eval_S_Assignment_X with (v := v); auto; admit.
+- match goal with
+  | [H: optimize_statement_x _ _ _ |- _] => inversion H; clear H; subst
+  end.
+  apply Eval_S_Assignment_RTE_X; auto; admit.
+  apply Eval_S_Assignment_E_RTE_X with (cks1 := cks1) (cks2 := cks2); auto.
+  
+Qed.
+
   (* continue .... *)
 
 
@@ -2873,49 +2982,12 @@ Qed.
 
 
 
+
+(*/////////////////////////////////////////////////////////////////////////////*)
+(*/////////////////////////////////////////////////////////////////////////////*)
+(*/////////////////////////////////////////////////////////////////////////////*)
+
 (*
-Lemma expression_checks_optimization_soundness: forall e checkflags st s v v' e',
-  remove_check_flag Do_Range_Check (exp_check_flags e) checkflags ->
-      eval_expr_x st s (update_exp_check_flags e checkflags) v ->
-        optimize_expression_x st (update_exp_check_flags e checkflags) (v', e') ->
-          eval_expr_x st s e' v.
-*)
-Lemma statement_checks_optimization_soundness: forall st s c s' c',
-  eval_stmt_x st s c s' ->
-    optimize_statement_x st c c' ->
-      eval_stmt_x st s c' s'.
-Proof.
-  intros st s c s' c' H; revert c'.
-  induction H; intros.
-- admit.
-- match goal with
-  | [H: optimize_statement_x _ _ _ |- _] => inversion H; clear H; subst
-  end.
-  apply Eval_S_Assignment_RTE_X; auto; admit.
-  apply Eval_S_Assignment_RTE_X; auto; admit.
-- match goal with
-  | [H: optimize_statement_x _ _ _ |- _] => inversion H; clear H; subst
-  end.
-  apply Eval_S_Assignment_X with (v := v); auto; admit.
-  apply Eval_S_Assignment_X with (v := v); auto; admit.
-- match goal with
-  | [H: optimize_statement_x _ _ _ |- _] => inversion H; clear H; subst
-  end.
-  apply Eval_S_Assignment_RTE_X; auto; admit.
-  apply Eval_S_Assignment_E_RTE_X with (cks1 := cks1) (cks2 := cks2); auto.
-  
-Qed.
-
-
-
-
-
-
-(*/////////////////////////////////////////////////////////////////////////////*)
-(*/////////////////////////////////////////////////////////////////////////////*)
-(*/////////////////////////////////////////////////////////////////////////////*)
-
-
 
 (** 
 It's impossible to prove the following theorem directly, as we do induction 
@@ -3146,11 +3218,6 @@ Proof.
   constructor; auto.
 
 
-
-
-
-
-
-
 Qed.
 
+*)
