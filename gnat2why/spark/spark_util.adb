@@ -587,6 +587,8 @@ package body SPARK_Util is
       loop
          if Has_Default_Init_Cond (Par) then
             return Get_Pragma (Typ, Pragma_Default_Initial_Condition);
+         elsif Is_Private_Type (Par) and then Etype (Par) = Par then
+            Par := Etype (Full_View (Par));
          else
             Par := Etype (Par);
          end if;
