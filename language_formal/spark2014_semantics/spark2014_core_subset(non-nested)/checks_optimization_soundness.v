@@ -522,6 +522,15 @@ Proof.
 Qed.
 *)
 
+(** the following lemma is used to prove soundness of statement checks optimization *)
+Lemma optimized_name_reserve_astnum: forall st x v' x',
+  optimize_name_x st x (v', x') ->
+    name_astnum_x x = name_astnum_x x'.
+Proof.
+  intros;
+  inversion H; smack.
+Qed.
+
 Lemma optimize_expression_reserve_range_check: forall e cks1 cks2 st v' e',
   exp_check_flags e = cks1 ++ Do_Range_Check :: cks2 ->
     optimize_expression_x st e (v', e') ->
@@ -2913,6 +2922,123 @@ Qed.
 
 
 
+Lemma store_update_optimization_soundness: forall st s x v s' v' x',
+  storeUpdate_x st s x v s' ->
+    optimize_name_x st x (v', x') ->
+      well_typed_stack st s ->
+        storeUpdate_x st s x' v s'.
+Proof.
+  intros.
+  inversion H; subst.
+- (* 1. SU_Identifier_X *)
+  match goal with
+  | [H: optimize_name_x _ _ _ |- _] => inversion H; subst; auto
+  end.
+- (* 2. SU_Indexed_Component_RTE_X *)
+  match goal with
+  | [H: optimize_name_x _ _ _ |- _] => inversion H; subst; auto
+  end.
+  (* 2.1 *)
+  apply SU_Indexed_Component_RTE_X; auto.
+    admit.
+    admit.
+  (* 2.2 *)
+  apply SU_Indexed_Component_RTE_X; auto.
+    admit.
+    admit.
+- (* 3. SU_Indexed_Component_Undef_X *)
+  match goal with
+  | [H: optimize_name_x _ _ _ |- _] => inversion H; subst; auto
+  end.
+  (* 3.1 *)
+  apply SU_Indexed_Component_Undef_X with (i:=i); auto.
+    admit.
+    admit.
+  (* 3.2 *)
+  apply SU_Indexed_Component_Undef_X with (i:=i); auto.
+    admit.
+    admit.
+- (* 4. SU_Indexed_Component_X *)
+  match goal with
+  | [H: optimize_name_x _ _ _ |- _] => inversion H; subst; auto
+  end.
+  (* 4.1 *)
+  apply SU_Indexed_Component_X with (i:=i) (a:=a) (a1:=(arrayUpdate a i v0)); auto.
+    admit.
+    admit.
+  (* 4.2 *)
+  apply SU_Indexed_Component_X with (i:=i) (a:=a) (a1:=(arrayUpdate a i v0)); auto.
+    admit.
+    admit.  
+- (* 5. SU_Indexed_Component_E_RTE_X *)
+  match goal with
+  | [H: optimize_name_x _ _ _ |- _] => inversion H; subst; auto
+  end.
+  (* 5.1 *)
+  apply SU_Indexed_Component_RTE_X; auto.
+    admit.
+    admit.
+  (* 5.2 *)
+  apply SU_Indexed_Component_E_RTE_X with (cks1:=cks1) (cks2:=cks2); auto.
+    admit.
+    admit.
+- (* 6. SU_Indexed_Component_Range_RTE_X *)
+  match goal with
+  | [H: optimize_name_x _ _ _ |- _] => inversion H; subst; auto
+  end;
+  match goal with
+  | [H1: fetch_exp_type_x _ _ = _, 
+     H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst
+  end.
+  (* 6.1 *)
+  (* use contradiction to prove it *)
+  admit.
+  (* 6.2 *)
+  apply SU_Indexed_Component_Range_RTE_X with (cks1:=cks1) (cks2:=cks2) (i:=i) (t:=t0) (l:=l) (u:=u); auto.
+    admit.
+    admit.
+- (* 7. SU_Indexed_Component_Range_Undef_X *)
+  match goal with
+  | [H: optimize_name_x _ _ _ |- _] => inversion H; subst; auto
+  end;
+  match goal with
+  | [H1: fetch_exp_type_x _ _ = _, 
+     H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst
+  end.
+  (* 7.1 *)
+  apply SU_Indexed_Component_Undef_X with (i:=i); auto.
+    admit.
+    admit.  
+  (* 7.2 *)
+  apply SU_Indexed_Component_Range_Undef_X with (cks1:=cks1) (cks2:=cks2) (i:=i) (t:=t0) (l:=l) (u:=u); auto.
+    admit.
+    admit.
+- (* 8. SU_Indexed_Component_Range_X *)
+  match goal with
+  | [H: optimize_name_x _ _ _ |- _] => inversion H; subst; auto
+  end;
+  match goal with
+  | [H1: fetch_exp_type_x _ _ = _, 
+     H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst
+  end.
+  (* 8.1 *)
+  apply SU_Indexed_Component_X with (i:=i) (a:=a) (a1:=(arrayUpdate a i v0)); auto.
+    admit.
+    admit.
+  (* 8.2 *)
+  apply SU_Indexed_Component_Range_X with (cks1:=cks1) (cks2:=cks2) (i:=i) (t:=t0) 
+                                          (l:=l) (u:=u) (a:=a) (a1:=(arrayUpdate a i v0)); auto.
+    admit.
+    admit.
+- (* 9. SU_Selected_Component_Undef_X *)
+  match goal with
+  | [H: optimize_name_x _ _ _ |- _] => inversion H; subst; auto
+  end.
+- (* 10. SU_Selected_Component_X *)
+  match goal with
+  | [H: optimize_name_x _ _ _ |- _] => inversion H; subst; auto
+  end.
+Qed.
 
 
 
@@ -2928,30 +3054,419 @@ Lemma expression_checks_optimization_soundness: forall e checkflags st s v v' e'
 Lemma statement_checks_optimization_soundness: forall st s c s' c',
   eval_stmt_x st s c s' ->
     optimize_statement_x st c c' ->
-      eval_stmt_x st s c' s'.
+      well_typed_stack st s ->
+        eval_stmt_x st s c' s'.
 Proof.
-  intros st s c s' c' H; revert c'.
+  intros st s c s' c' H; revert c';
   induction H; intros.
-- admit.
-- match goal with
-  | [H: optimize_statement_x _ _ _ |- _] => inversion H; clear H; subst
+- (* 1. Eval_S_Null *)
+  match goal with
+  | [H: optimize_statement_x _ _ _ |- _] => inversion H; subst; auto
   end.
-  apply Eval_S_Assignment_RTE_X; auto; admit.
-  apply Eval_S_Assignment_RTE_X; auto; admit.
-- match goal with
-  | [H: optimize_statement_x _ _ _ |- _] => inversion H; clear H; subst
+  constructor.
+- (* 2. Eval_S_Assignment_RTE *)
+  match goal with
+  | [H: optimize_statement_x _ _ _ |- _] => inversion H; subst; auto
   end.
-  apply Eval_S_Assignment_X with (v := v); auto; admit.
-  apply Eval_S_Assignment_X with (v := v); auto; admit.
-- match goal with
-  | [H: optimize_statement_x _ _ _ |- _] => inversion H; clear H; subst
+  + (* 2.1 Assignment_Range_Pass *)
+  apply Eval_S_Assignment_RTE_X; auto.
+    admit.
+    admit.
+  + (* 2.2 Assignment_Range_Fail *)
+  apply Eval_S_Assignment_RTE_X; auto.
+    admit.
+    admit.
+- (* 3. Eval_S_Assignment *)
+  match goal with
+  | [H: optimize_statement_x _ _ _ |- _] => inversion H; subst; auto
   end.
-  apply Eval_S_Assignment_RTE_X; auto; admit.
-  apply Eval_S_Assignment_E_RTE_X with (cks1 := cks1) (cks2 := cks2); auto.
-  
+  + (* 3.1 Assignment_Range_Pass *)
+  apply Eval_S_Assignment_X with (v:=v); auto.
+    admit.
+    admit.
+    (******)
+    admit.
+  + (* 3.2 Assignment_Range_Fail *)
+  apply Eval_S_Assignment_X with (v:=v); auto.
+    admit.
+    admit.
+    admit.
+- (* 4. Eval_S_Assignment_E_RTE_X *)
+  match goal with
+  | [H: optimize_statement_x _ _ _ |- _] => inversion H; subst; auto
+  end.
+  + (* 4.1 Assignment_Range_Pass *)
+  apply Eval_S_Assignment_RTE_X; auto.
+    admit.
+    admit.
+  + (* 4.1 Assignment_Range_Fail *)
+  apply Eval_S_Assignment_E_RTE_X with (cks1:=cks1) (cks2:=cks2); auto.
+    admit.
+    admit.
+- (* 5. Eval_S_Assignment_Range_RTE_X *)
+  match goal with
+  | [H: optimize_statement_x _ _ _ |- _] => inversion H; subst; auto
+  end.
+  + (* 5.1 Assignment_Range_Pass *)
+  (* use contradiction to prove it *)
+  admit.
+  + (* 5.1 Assignment_Range_Fail *)
+  apply Eval_S_Assignment_Range_RTE_X with (cks1:=cks1) (cks2:=cks2) (v:=v) (t:=t) (l:=l) (u:=u); auto.
+    admit.
+    admit.
+    admit.
+- (* 6. Eval_S_Assignment_Range_X *)
+  match goal with
+  | [H: optimize_statement_x _ _ _ |- _] => inversion H; subst; auto
+  end.
+  + (* 6.1 Assignment_Range_Pass *)
+  apply Eval_S_Assignment_X with (v:=(BasicV (Int v))); auto.
+    admit.
+    admit.
+    admit.
+  + (* 6.1 Assignment_Range_Fail *)
+  apply Eval_S_Assignment_Range_X with (cks1:=cks1) (cks2:=cks2) (v:=v) (t:=t) (l:=l) (u:=u); auto.
+    admit.
+    admit.
+    admit.
+    admit.
+- (* 7. Eval_S_If_RTE_X *)
+  match goal with
+  | [H: optimize_statement_x _ _ _ |- _] => inversion H; subst; auto
+  end.
+  apply Eval_S_If_RTE_X; auto.
+    admit.
+- (* 8. Eval_S_If_True_X *)
+  match goal with
+  | [H: optimize_statement_x _ _ _ |- _] => inversion H; subst; auto
+  end.
+  apply Eval_S_If_True_X; auto.
+    admit.
+- (* 9. Eval_S_If_False_X *)
+  match goal with
+  | [H: optimize_statement_x _ _ _ |- _] => inversion H; subst; auto
+  end.
+  apply Eval_S_If_False_X; auto.
+    admit.
+- (* 10. Eval_S_While_Loop_RTE_X *)
+  match goal with
+  | [H: optimize_statement_x _ _ _ |- _] => inversion H; subst; auto
+  end.
+  apply Eval_S_While_Loop_RTE_X; auto.
+    admit.
+- (* 11. Eval_S_While_Loop_True_RTE_X *)
+  match goal with
+  | [H: optimize_statement_x _ _ _ |- _] => inversion H; subst; auto
+  end.
+  apply Eval_S_While_Loop_True_RTE_X; auto.
+    admit.
+- (* 12. Eval_S_While_Loop_True_X *)
+  match goal with
+  | [H: optimize_statement_x _ _ _ |- _] => inversion H; subst; auto
+  end.
+  apply Eval_S_While_Loop_True_X with (s1:=s1); auto.
+    admit.
+    apply IHeval_stmt_x2; auto. admit.
+- (* 13. Eval_S_While_Loop_False_X *)
+  match goal with
+  | [H: optimize_statement_x _ _ _ |- _] => inversion H; subst; auto
+  end.
+  apply Eval_S_While_Loop_False_X; auto.
+    admit.
+- (* 14. Eval_S_Proc_RTE_Args_X *)
+  match goal with
+  | [H: optimize_statement_x _ _ _ |- _] => inversion H; subst; auto
+  end;
+  match goal with
+  | [H1: fetch_proc_x _ _ = _, H2: fetch_proc_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst
+  end.
+  apply Eval_S_Proc_RTE_Args_X with (n:=n0) (pb:=pb0); auto.
+  admit.
+- (* 15. Eval_S_Proc_RTE_Decl_X *)
+  match goal with
+  | [H: optimize_statement_x _ _ _ |- _] => inversion H; subst; auto
+  end;
+  match goal with
+  | [H1: fetch_proc_x _ _ = _, H2: fetch_proc_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst
+  end.
+  apply Eval_S_Proc_RTE_Decl_X with (n:=n0) (pb:=pb0) (f:=f) (intact_s:=intact_s) (s1:=s1); auto.
+  admit.
+- (* 16. Eval_S_Proc_RTE_Body_X *)
+  match goal with
+  | [H: optimize_statement_x _ _ _ |- _] => inversion H; subst; auto
+  end;
+  match goal with
+  | [H1: fetch_proc_x _ _ = _, H2: fetch_proc_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst
+  end.
+  apply Eval_S_Proc_RTE_Body_X with (n:=n0) (pb:=pb0) (f:=f) (intact_s:=intact_s) (s1:=s1) (f1:=f1); auto.
+  admit.
+- (* 17. Eval_S_Proc_X *)
+  match goal with
+  | [H: optimize_statement_x _ _ _ |- _] => inversion H; subst; auto
+  end;
+  match goal with
+  | [H1: fetch_proc_x _ _ = _, H2: fetch_proc_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst
+  end.
+  apply Eval_S_Proc_X with (n:=n0) (pb:=pb0) (f:=f) (intact_s:=intact_s) (s1:=s1) (f1:=f1)
+                           (s2:=((n0, locals_section ++ params_section) :: s3)) 
+                           (locals_section:=locals_section) (params_section:=params_section) (s3:=s3); auto.
+  admit. (* copy_in *)
+  admit. (* copy_out *)  
+- (* 18. Eval_S_Sequence_RTE_X *)
+  match goal with
+  | [H: optimize_statement_x _ _ _ |- _] => inversion H; subst; auto
+  end.
+  apply Eval_S_Sequence_RTE_X; auto.  
+- (* 19. Eval_S_Sequence_X *)
+  match goal with
+  | [H: optimize_statement_x _ _ _ |- _] => inversion H; subst; auto
+  end.
+  apply Eval_S_Sequence_X with (s1:=s1); auto.
+  apply IHeval_stmt_x2; auto. admit.
 Qed.
 
-  (* continue .... *)
+
+Lemma declaration_checks_optimization_soundness: forall st s f d f' d',
+  eval_decl_x st s f d f' ->
+    optimize_declaration_x st d d' ->
+      well_typed_stack st s ->
+        eval_decl_x st s f d' f'.
+Proof.
+  intros st s f d f' d' H; revert d';
+  induction H; intros.
+- (* 1. Eval_Decl_Null_X *)
+  match goal with
+  | [H: optimize_declaration_x _ _ _ |- _] => inversion H; subst; auto
+  end.
+  constructor.
+- (* 2. Eval_Decl_Type_X *)  
+  match goal with
+  | [H: optimize_declaration_x _ _ _ |- _] => inversion H; subst; auto
+  end.
+  apply Eval_Decl_Type_X; auto.  
+- (* 3. Eval_Decl_Var_None_X *)
+  match goal with
+  | [H: optimize_declaration_x _ _ _ |- _] => inversion H; subst; auto
+  end;
+  match goal with
+  | [H1: initialization_expression_x _ = _, 
+     H2: initialization_expression_x _ = _ |- _] => rewrite H1 in H2; inversion H2; subst
+  end.
+  apply Eval_Decl_Var_None_X; auto.
+- (* 4. Eval_Decl_Var_RTE_X *)
+  match goal with
+  | [H: optimize_declaration_x _ _ _ |- _] => inversion H; subst; auto
+  end;
+  match goal with
+  | [H1: initialization_expression_x _ = _, 
+     H2: initialization_expression_x _ = _ |- _] => rewrite H1 in H2; inversion H2; subst
+  end.
+  (* 4.1 O_Object_Declaration_Range_Pass_X *)
+  apply Eval_Decl_Var_RTE_X with (e:=e0); auto.
+    admit.
+  (* 4.2 O_Object_Declaration_Range_Fail_X *)
+  apply Eval_Decl_Var_RTE_X with (e:=e0); auto.
+    admit.
+- (* 5. Eval_Decl_Var_X *)
+  match goal with
+  | [H: optimize_declaration_x _ _ _ |- _] => inversion H; subst; auto
+  end;
+  match goal with
+  | [H1: initialization_expression_x _ = _, 
+     H2: initialization_expression_x _ = _ |- _] => rewrite H1 in H2; inversion H2; subst
+  end;
+  match goal with
+  | [|- eval_decl_x _ _ _ (D_Object_Declaration_X _ ?d) (Normal (STACK.push _ ?x ?v))] => 
+      replace x with (d.(object_name_x)); auto
+  end.
+  (* 5.1 O_Object_Declaration_Range_Pass_X *)
+  apply Eval_Decl_Var_X with (e:=(update_exp_check_flags e' checkflags')); auto.
+    admit.
+    admit.
+  (* 5.2 O_Object_Declaration_Range_Fail_X *)
+  apply Eval_Decl_Var_X with (e:=e'); auto.
+    admit.
+    admit.
+- (* 6. Eval_Decl_Var_E_RTE_X *)
+  match goal with
+  | [H: optimize_declaration_x _ _ _ |- _] => inversion H; subst; auto
+  end;
+  match goal with
+  | [H1: initialization_expression_x _ = _, 
+     H2: initialization_expression_x _ = _ |- _] => rewrite H1 in H2; inversion H2; subst
+  end.
+  (* 6.1 *)
+  apply Eval_Decl_Var_RTE_X with (e:=(update_exp_check_flags e' checkflags')); auto.
+    admit.
+    admit.
+  (* 6.2 *)
+  apply Eval_Decl_Var_E_RTE_X with (e:=e') (cks1:=cks1) (cks2:=cks2); auto.
+    admit.
+    admit.
+- (* 7. Eval_Decl_Var_Range_RTE_X *)
+  match goal with
+  | [H: optimize_declaration_x _ _ _ |- _] => inversion H; subst; auto
+  end;
+  match goal with
+  | [H1: initialization_expression_x _ = _, 
+     H2: initialization_expression_x _ = _ |- _] => rewrite H1 in H2; inversion H2; subst
+  end.
+  (* 7.1 *)
+  (* use contradiction to prove it *)
+  admit.
+  (* 7.2 *)
+  apply Eval_Decl_Var_Range_RTE_X with (e:=e') (cks1:=cks1) (cks2:=cks2) (v:=v) (l:=l) (u:=u); auto.
+    admit.
+    admit.
+- (* 8. Eval_Decl_Var_Range_X *)
+  match goal with
+  | [H: optimize_declaration_x _ _ _ |- _] => inversion H; subst; auto
+  end;
+  match goal with
+  | [H1: initialization_expression_x _ = _, 
+     H2: initialization_expression_x _ = _ |- _] => rewrite H1 in H2; inversion H2; subst
+  end;
+  match goal with
+  | [|- eval_decl_x _ _ _ (D_Object_Declaration_X _ ?d) (Normal (STACK.push _ ?x ?v))] => 
+      replace x with (d.(object_name_x)); auto
+  end.
+  (* 8.1 *)
+  apply Eval_Decl_Var_X with (e:=(update_exp_check_flags e' checkflags')); auto.
+    admit.
+    admit.
+  (* 8.2 *)
+  apply Eval_Decl_Var_Range_X with (e:=e') (cks1:=cks1) (cks2:=cks2) (l:=l) (u:=u); auto.
+    admit.
+    admit.
+- (* 9. Eval_Decl_Proc_X *)
+  match goal with
+  | [H: optimize_declaration_x _ _ _ |- _] => inversion H; subst; auto
+  end.
+  apply Eval_Decl_Proc_X; auto.
+- (* 10. Eval_Decl_Seq_E_X *)
+  match goal with
+  | [H: optimize_declaration_x _ _ _ |- _] => inversion H; subst; auto
+  end.
+  apply Eval_Decl_Seq_E_X; auto.  
+- (* 11. Eval_Decl_Seq_X *)
+  match goal with
+  | [H: optimize_declaration_x _ _ _ |- _] => inversion H; subst; auto
+  end.
+  apply Eval_Decl_Seq_X with (f':=f'); auto.  
+Qed.
+
+
+
+(*
+Lemma statement_checks_optimization_soundness: forall st c c' s s',
+  optimize_statement_x st c c' ->
+    well_typed_stack st s ->
+      eval_stmt_x st s c s' ->
+        eval_stmt_x st s c' s'.
+Proof.
+  intros st c c' s s' H; revert s s';
+  induction H; intros.
+- (* 1. Null *)
+  match goal with
+  | [H: eval_stmt_x _ _ _ _ |- _] => inversion H; subst; auto
+  end.
+- (* 2. Assignment_Range_Pass *)
+  match goal with
+  | [H: eval_stmt_x _ _ _ _ |- _] => inversion H; subst; auto
+  end.
+  + (* 2.1 Eval_S_Assignment_RTE *)
+  apply Eval_S_Assignment_RTE_X; auto.
+    admit.
+    admit.
+  + (* 2.2 Eval_S_Assignment *)
+  apply Eval_S_Assignment_X with (v:=v); auto.
+    admit.
+    admit.
+    (********)
+    admit.
+  + (* 2.3 *)
+  apply Eval_S_Assignment_RTE_X; auto.
+    admit.
+    admit.
+  + (* 2.4 *)
+  (* use contradiction to prove it, the value of e should be in the domain of x *)
+  admit.
+  + (* 2.5 *)
+  apply Eval_S_Assignment_X with (v:=(BasicV (Int v))); auto.
+    admit.
+    admit.
+    (*******)
+    admit.
+- (* 3. Assignment_Range_Fail *)
+  match goal with
+  | [H: eval_stmt_x _ _ _ _ |- _] => inversion H; subst; auto
+  end.
+  + (* 2.1 *)
+  apply Eval_S_Assignment_RTE_X; auto.
+    admit.
+    admit.
+  + (* 2.2 *)
+  apply Eval_S_Assignment_X with (v:=v); auto.
+    admit.
+    admit.
+    (********)
+    admit.
+  + (* 2.3 *)
+  apply Eval_S_Assignment_E_RTE_X with (cks1:=cks1) (cks2:=cks2); auto.
+    admit.
+    admit.
+  + (* 2.4 *)
+  apply Eval_S_Assignment_Range_RTE_X with (cks1:=cks1) (cks2:=cks2) (v:=v) (t:=t) (l:=l0) (u:=u0); auto.
+    admit.
+    admit.
+    admit.
+  + (* 2.5 *)
+  apply Eval_S_Assignment_Range_X with (cks1:=cks1) (cks2:=cks2) (v:=v) (t:=t) (l:=l0) (u:=u0); auto.
+    admit.
+    admit.
+    admit.
+    (*******)
+    admit.
+- (* 4. If *)
+  match goal with
+  | [H: eval_stmt_x _ _ _ _ |- _] => inversion H; subst; auto
+  end.
+  + (* 4.1 *)
+  apply Eval_S_If_RTE_X; auto.
+    admit.
+  + (* 4.2 *)
+  apply Eval_S_If_True_X; auto.
+    admit.
+  + (* 4.3 *)
+  apply Eval_S_If_False_X; auto.
+    admit.
+- (* 5. While_Loop *)
+  match goal with
+  | [H: eval_stmt_x _ _ _ _ |- _] => inversion H; subst; auto
+  end.
+  + (* 5.1 *)
+  apply Eval_S_While_Loop_RTE_X; auto.
+    admit.
+  + (* 5.2 *)
+  apply Eval_S_While_Loop_True_RTE_X; auto.
+    admit.
+  + (* 5.3 *)
+  apply Eval_S_While_Loop_True_X with (s1:=s1); auto.
+    admit.
+    
+    (* get stuck here: get into a dead lock ... *)
+
+  + (* 5.4 *)
+
+- (* 6. Procedure Call *)
+
+
+- (* 7. Sequence *)
+
+Qed.
+*)
+
+
 
 
 
