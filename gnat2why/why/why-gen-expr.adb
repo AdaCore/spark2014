@@ -2364,7 +2364,10 @@ package body Why.Gen.Expr is
 
       while Src_Buff (Pointer) /= ASCII.LF and Src_Buff (Pointer) /= ASCII.CR
       loop
-         Buf := Buf & Src_Buff (Pointer);
+
+         Buf := Buf & (if Src_Buff (Pointer) = ASCII.Back_Slash then
+                          ASCII.Back_Slash & ASCII.Back_Slash
+                       else Src_Buff (Pointer) & "");
          Pointer := Pointer + 1;
       end loop;
 
