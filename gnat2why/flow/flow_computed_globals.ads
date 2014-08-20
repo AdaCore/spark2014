@@ -34,6 +34,55 @@ with Flow_Dependency_Maps; use Flow_Dependency_Maps;
 
 package Flow_Computed_Globals is
 
+   --  -------------------------------
+   --  -- Generated Globals Section --
+   --  -------------------------------
+
+   --  The Generated Globals section is located at the end of the ALI file.
+
+   --  All lines introducing information related to the Generated Globals
+   --  have the string "GG" appearing in the beginning.
+
+   --  The Generated Globals section holds two kinds of information:
+
+   --  1) The first kind has to do with Abstract States and the
+   --     constituents thereof.
+
+   --     Information related to this kind occupy single lines and have
+   --     the string "AS" immediately after "GG". Following "AS" comes
+   --     the name of the Abstract State and following that are all its
+   --     constituents.
+
+   --     Example entries:
+   --       GG AS test__state test__constit_1 test__constit_2
+   --       GG AS test__state2
+   --       GG AS test__state3 test_state2
+
+   --  2) The second kind has to do with subprograms. For subprograms we
+   --     store the following:
+
+   --       * the subprogram's name                                  (S)
+   --       * the global variables read in proof contexts only       (VP)
+   --       * the global variables read    (input)                   (VI)
+   --       * the global variables written (output)                  (VO)
+   --       * the subprograms that are called only in proof contexts (CP)
+   --       * the subprograms that are called definitely             (CD)
+   --       * the subprograms that are called conditionally          (CC)
+   --       * the local variables of the subprogram                  (LV)
+
+   --     For an entry of the second kind to be complete/correct all of the
+   --     afformentioned lines must be present (order does not matter).
+
+   --     Example entry:
+   --       GG S test__proc
+   --       GG VP test__proof_var
+   --       GG VI test__g test__g2
+   --       GG VO test__g
+   --       GG CP test__ghost_func_a test__ghost_func_b
+   --       GG CD test__proc_2 test__proc__nested_proc
+   --       GG CC test__proc_3
+   --       GG LV test__proc__nested_proc__v
+
    type GG_Mode_T is (GG_No_Mode,
                       GG_Read_Mode,
                       GG_Write_Mode);
