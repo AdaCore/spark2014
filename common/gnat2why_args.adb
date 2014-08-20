@@ -53,6 +53,7 @@ package body Gnat2Why_Args is
    Flow_Advanced_Debug_Name : constant String := "flow_advanced_debug";
    Analyze_File_Name        : constant String := "analyze_file";
    Limit_Subp_Name          : constant String := "limit_subp";
+   Limit_Line_Name          : constant String := "limit_line";
    Pedantic_Name            : constant String := "pedantic";
    Ide_Mode_Name            : constant String := "ide_mode";
    Report_Mode_Name         : constant String := "report_mode";
@@ -156,6 +157,17 @@ package body Gnat2Why_Args is
          begin
             Limit_Subp := To_Unbounded_String (Token (Start .. Token'Last));
          end;
+
+      elsif Starts_With (Token, Limit_Line_Name) and then
+        Token (Token'First + Limit_Line_Name'Length) = '='
+      then
+         declare
+            Start : constant Integer :=
+              Token'First + Limit_Line_Name'Length + 1;
+         begin
+            Limit_Line := To_Unbounded_String (Token (Start .. Token'Last));
+         end;
+
       elsif Starts_With (Token, Why3_Args_Name) and then
         Token (Token'First + Why3_Args_Name'Length) = '='
       then
@@ -284,6 +296,10 @@ package body Gnat2Why_Args is
 
       if Limit_Subp /= Null_Unbounded_String then
          Add_Line (Limit_Subp_Name & "=" & To_String (Limit_Subp));
+      end if;
+
+      if Limit_Line /= Null_Unbounded_String then
+         Add_Line (Limit_Line_Name & "=" & To_String (Limit_Line));
       end if;
 
       if Why3_Dir /= Null_Unbounded_String then

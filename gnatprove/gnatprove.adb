@@ -734,6 +734,8 @@ procedure Gnatprove is
          Gnat2Why_Args.Single_File := Only_Given;
          Gnat2Why_Args.Limit_Subp :=
            Ada.Strings.Unbounded.To_Unbounded_String (Limit_Subp.all);
+         Gnat2Why_Args.Limit_Line :=
+           Ada.Strings.Unbounded.To_Unbounded_String (Limit_Line.all);
          Gnat2Why_Args.Why3_Args := Compute_Why3_Args;
          Gnat2Why_Args.Report_Mode := Report;
          Gnat2Why_Args.Why3_Dir := To_Unbounded_String (Obj_Dir);

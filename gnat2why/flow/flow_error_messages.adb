@@ -216,30 +216,54 @@ package body Flow_Error_Messages is
       Warning   : Boolean               := False;
       Vertex    : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex)
    is
-      E   : Entity_Id;
-      Img : constant String := Natural'Image
+      E       : Entity_Id;
+      Img     : constant String := Natural'Image
         (FA.CFG.Vertex_To_Natural (Vertex));
-      Tmp : constant String := (if Gnat2Why_Args.Flow_Advanced_Debug and then
-                                  Vertex /= Flow_Graphs.Null_Vertex
-                                then Msg & " <" & Img (2 .. Img'Last) & ">"
-                                else Msg);
-      Msg2 : constant String :=
+      Tmp     : constant String :=
+        (if Gnat2Why_Args.Flow_Advanced_Debug and then
+           Vertex /= Flow_Graphs.Null_Vertex
+         then Msg & " <" & Img (2 .. Img'Last) & ">"
+         else Msg);
+      Msg2    : constant String :=
         (if SRM_Ref'Length > 0 then Tmp & " (SPARK RM " & SRM_Ref & ")"
          else Tmp);
-      Kind : constant Msg_Kind :=
+      Kind    : constant Msg_Kind :=
         (if Warning then Warning_Kind else Error_Kind);
-      Msg3 : constant String := Compute_Message (Msg2, N, F1, F2);
-      Suppr : constant String_Id :=
+      Msg3    : constant String := Compute_Message (Msg2, N, F1, F2);
+      Suppr   : constant String_Id :=
         Warning_Is_Suppressed (N, Msg3, F1, F2);
-      Slc   : constant Source_Ptr := Compute_Sloc (N);
-      Msg_Id : Message_Id := No_Message_Id;
+      Slc     : constant Source_Ptr := Compute_Sloc (N);
+      Msg_Id  : Message_Id := No_Message_Id;
       Unb_Msg : constant Unbounded_String :=
         To_Unbounded_String (Msg3) &
         To_Unbounded_String (Source_Ptr'Image (Slc)) &
-        To_Unbounded_String (Msg_Kind_To_String (Kind));
+          To_Unbounded_String (Msg_Kind_To_String (Kind));
+
+      function Is_Specified_Line return Boolean;
+      --  Returns True if command line argument "--limit-line" was not
+      --  given, or if the the message currently being processed is to
+      --  be emitted on the line specified by the "--limit-line"
+      --  argument.
+
+      -----------------------
+      -- Is_Specified_Line --
+      -----------------------
+
+      function Is_Specified_Line return Boolean is
+         Loc  : constant Source_Ptr :=
+           Translate_Location (Sloc (N));
+         File : constant String := File_Name (Loc);
+         Line : constant Physical_Line_Number :=
+           Get_Physical_Line_Number (Loc);
+      begin
+         return Gnat2Why_Args.Limit_Line = Null_Unbounded_String
+           or else File & ":" & Int_Image (Integer (Line)) =
+                     To_String (Gnat2Why_Args.Limit_Line);
+      end Is_Specified_Line;
+
    begin
-      --  If the message that we are about to emit has already been
-      --  emitted in the past then we do nothing.
+      --  If the message we are about to emit has already been emitted
+      --  in the past then do nothing.
 
       if not Flow_Msgs_Set.Contains (Unb_Msg) then
 
@@ -252,11 +276,15 @@ package body Flow_Error_Messages is
                E := Spec_Entity (FA.Analyzed_Entity);
          end case;
 
-         --  print the message except when it's a suppressed warning
+         --  Print the message except when it's a suppressed warning.
+         --  Additionaly, if command line argument "--limit-line" was
+         --  given, only issue the warning if it is to be emitted on
+         --  the specified line (errors are emitted anyway).
 
          if Kind = Error_Kind or else
            (Kind = Warning_Kind and then
-              Suppr = No_String)
+              Suppr = No_String and then
+              Is_Specified_Line)
          then
             Msg_Id := Print_Regular_Msg (Msg3, Slc, Kind);
          end if;
@@ -271,8 +299,8 @@ package body Flow_Error_Messages is
             Tracefile => Tracefile,
             Msg_Id    => Msg_Id);
 
-         --  set the error flag if we have an error or an unsuppressed warning
-         --  with warnings-as-errors
+         --  Set the error flag if we have an error or an unsuppressed warning
+         --  with warnings-as-errors.
 
          if Kind = Error_Kind or else
            (Kind = Warning_Kind and then

@@ -125,6 +125,10 @@ package Gnat2Why_Args is
 
    Limit_Subp : Unbounded_String := Null_Unbounded_String;
 
+   --  Limit analysis to this line
+
+   Limit_Line : Unbounded_String := Null_Unbounded_String;
+
    --  The Why3 command will be run in this directory
 
    Why3_Dir : Unbounded_String := Null_Unbounded_String;

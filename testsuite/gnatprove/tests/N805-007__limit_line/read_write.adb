@@ -9,6 +9,7 @@ is
 
    procedure P is
    begin
+      V := False;  --  Flow warning that never gets emitted
       V := True;
    end P;
 
