@@ -101,6 +101,11 @@ End Well_Check_Flagged_Sec.
 
 
 (** * ZArith Help Lemmas *)
+(**
+Coq.ZArith.Zorder: http://coq.inria.fr/V8.1/stdlib/Coq.ZArith.Zorder.html#Zle_ge
+                   http://coq.inria.fr/V8.1/stdlib/Coq.ZArith.Zbool.html
+                   http://coq.inria.fr/V8.1/stdlib/Coq.ZArith.Zbool.html#Zle_bool
+*)
 Section ZArith_Help_Lemmas.
 
 (** In run time check semantics, Zge_bool and Zle_bool is used to define overflow check,
@@ -217,10 +222,10 @@ End Checks_Generator_Help_Lemmas.
 
 
 
-
+(*******************************************)
+(*******************************************)
 
 (** * Help Lemmas for Checks Optimizations *)
-Section Checks_Optimization_Help_Lemmas.
 
 Lemma well_check_flagged_generated_expr: forall e st e',
   compile2_flagged_exp st nil e e' ->
@@ -281,6 +286,12 @@ Proof.
   specialize (IHcks _ _ _ H6 H12); smack.
 Qed.
 
+Ltac apply_remove_check_flag_unique :=
+  match goal with
+  | [H1: remove_check_flag ?ck ?cks _,
+     H2: remove_check_flag ?ck ?cks _ |- _] => specialize (remove_check_flag_unique _ _ _ _ H1 H2)
+  end.
+
 
 Lemma removed_check_flag_notin: forall ck cks cks',
  remove_check_flag ck cks cks' ->
@@ -290,6 +301,12 @@ Proof.
   induction H; smack.
   destruct ck; inversion H.  
 Qed.
+
+Ltac apply_removed_check_flag_notin :=
+  match goal with
+  | [H: remove_check_flag ?ck ?cks ?cks' |- _] => specialize (removed_check_flag_notin _ _ _ H)
+  end.
+
 
 Lemma remove_notin_check_flag: forall ck cks,
   ~(List.In ck cks) ->
@@ -301,6 +318,13 @@ Proof.
   destruct a; destruct ck; smack;
   apply R_Check_Flag_Tail; smack.
 Qed.
+
+Ltac apply_remove_notin_check_flag :=
+  match goal with
+  | [H: ~(List.In ?ck ?cks) |- _] => specialize (remove_notin_check_flag _ _ H)
+  | [H: List.In ?ck ?cks -> False |- _] => specialize (remove_notin_check_flag _ _ H)
+  end.
+
 
 Lemma remove_a_unique_check: forall cks cks1 ck cks2,
   cks = cks1 ++ ck :: cks2 ->
@@ -315,6 +339,15 @@ Proof.
   apply R_Check_Flag_Tail; smack.
   unfold beq_check_flag; destruct ck, a; smack.
 Qed.
+
+Ltac apply_remove_a_unique_check :=
+  match goal with
+  | [H1: ?cks = ?cks1 ++ ?ck :: ?cks2,
+     H2: ~(List.In ?ck (?cks1 ++ ?cks2)) |- _] => specialize (remove_a_unique_check _ _ _ _ H1 H2)
+  | [H1: ?cks = ?cks1 ++ ?ck :: ?cks2,
+     H2: List.In ?ck (?cks1 ++ ?cks2) -> False |- _] => specialize (remove_a_unique_check _ _ _ _ H1 H2)
+  end.
+
 
 Lemma list_components_equal: forall ls1 (e: check_flag) ls2 ls1' ls2',
   ls1 ++ e :: ls2 = ls1' ++ e :: ls2' ->
@@ -331,6 +364,19 @@ Proof.
     specialize (IHls1 _ _ _ _ H3).
     unfold List.In in H0; smack.
 Qed.
+
+Ltac apply_list_components_equal :=
+  match goal with
+  | [H1: ?ls1 ++ ?e :: ?ls2 = _ ++ ?e :: _, 
+     H2: ~(List.In ?e (?ls1 ++ ?ls2)) |- _] => 
+      specialize (list_components_equal _ _ _ _ _ H1 H2); 
+      let HZ := fresh "HZ" in intros HZ; destruct HZ; subst 
+  | [H1: ?ls1 ++ ?e :: ?ls2 = _ ++ ?e :: _, 
+     H2: List.In ?e (?ls1 ++ ?ls2) -> False |- _] => 
+      specialize (list_components_equal _ _ _ _ _ H1 H2); 
+      let HZ := fresh "HZ" in intros HZ; destruct HZ; subst 
+  end.
+
 
 Lemma remove_split: forall ck cks1 cks2 cks,
   remove_check_flag ck (cks1 ++ cks2) cks ->
@@ -351,6 +397,12 @@ Proof.
     apply R_Check_Flag_Tail; auto.
 Qed.
 
+Ltac apply_remove_split :=
+  match goal with
+  | [H: remove_check_flag ?ck (?cks1 ++ ?cks2) ?cks |- _] => specialize (remove_split _ _ _ _ H)
+  end.
+
+
 Lemma remove_merge: forall ck cks1 cks1' cks2 cks2',
   remove_check_flag ck cks1 cks1' ->
     remove_check_flag ck cks2 cks2' ->
@@ -364,6 +416,13 @@ Proof.
   apply R_Check_Flag_Tail; auto.
 Qed.
 
+Ltac apply_remove_merge :=
+  match goal with
+  | [H1: remove_check_flag ?ck ?cks1 ?cks1',
+     H2: remove_check_flag ?ck ?cks2 ?cks2' |- _] => specialize (remove_merge _ _ _ _ _ H1 H2)
+  end.
+
+
 Lemma notin_reserved_by_remove: forall ck cks ck' cks',
   ~(List.In ck cks) ->
     remove_check_flag ck' cks cks' ->
@@ -375,6 +434,15 @@ Proof.
 - inversion H0; smack.
 Qed.
 
+Ltac apply_notin_reserved_by_remove :=
+  match goal with
+  | [H1: ~(List.In ?ck ?cks),
+     H2: remove_check_flag ?ck' ?cks ?cks' |- _] => specialize (notin_reserved_by_remove _ _ _ _ H1 H2)
+  | [H1: List.In ?ck ?cks -> False,
+     H2: remove_check_flag ?ck' ?cks ?cks' |- _] => specialize (notin_reserved_by_remove _ _ _ _ H1 H2)
+  end.
+
+
 Lemma check_flag_notin_split: forall (ck: check_flag) cks1 cks2,
   ~(List.In ck (cks1 ++ cks2)) ->
     ~(List.In ck cks1) /\ ~(List.In ck cks2).
@@ -382,6 +450,13 @@ Proof.
   intros ck cks1; revert ck;
   induction cks1; smack.
 Qed.
+
+Ltac apply_check_flag_notin_split :=
+  match goal with
+  | [H: ~(List.In ?ck (?cks1 ++ ?cks2)) |- _] => specialize (check_flag_notin_split _ _ _ H)
+  | [H: List.In ?ck (?cks1 ++ ?cks2) -> False |- _] => specialize (check_flag_notin_split _ _ _ H)
+  end.
+
 
 Lemma check_flag_notin_merge: forall (ck: check_flag) cks1 cks2,
   ~(List.In ck cks1) ->
@@ -391,6 +466,14 @@ Proof.
   intros ck cks1; revert ck;
   induction cks1; smack.
 Qed.
+
+Ltac apply_check_flag_notin_merge :=
+  match goal with
+  | [H1: ~(List.In ?ck ?cks1),
+     H2: ~(List.In ?ck ?cks2) |- _] => specialize (check_flag_notin_merge _ _ _ H1 H2)
+  | [H1: List.In ?ck ?cks1 -> False,
+     H2: List.In ?ck ?cks2 -> False |- _] => specialize (check_flag_notin_merge _ _ _ H1 H2)
+  end.
 
 
 (* /////////////////////////////////////////////////////// *)
@@ -433,6 +516,12 @@ Proof.
   end.
 Qed.
 
+Ltac apply_range_check_not_in_expr := 
+  match goal with
+  | [H: well_check_flagged_expr ?e |- _] => specialize (range_check_not_in_expr _ H)
+  end.
+
+
 (* TODO: this can be removed and replaced by lemma: remove_notin_check_flag *)
 Lemma rm_range_check_return_same_expr_checks: forall e,
   well_check_flagged_expr e ->
@@ -443,6 +532,10 @@ Proof.
   apply remove_notin_check_flag; auto.
 Qed.
 
+Ltac apply_rm_range_check_return_same_expr_checks :=
+  match goal with
+  | [H: well_check_flagged_expr ?e |- _] => specialize (rm_range_check_return_same_expr_checks _ H)
+  end.
 
 
 (* TODO: this can be removed and replace with lemma: remove_a_unique_check  *)
@@ -461,6 +554,14 @@ Proof.
   specialize (remove_a_unique_check _ _ _ _ H HZ); auto.
 Qed.
 
+Ltac apply_remove_range_check_property :=
+  match goal with
+  | [H1: exp_check_flags ?e = ?cks1 ++ ?ck :: ?cks2,
+     H2: well_check_flagged_expr (update_exp_check_flags ?e (?cks1 ++ ?cks2)) |- _] =>
+      specialize (remove_range_check_property _ _ _ H1 H2)
+  end.
+
+
 Lemma optimize_expression_reserve_notin: forall st e v e' ck,
   optimize_expression_x st e (v, e') ->
     ~(List.In ck (exp_check_flags e)) ->
@@ -478,6 +579,15 @@ Proof.
   end.  
 Qed.
 
+Ltac apply_optimize_expression_reserve_notin := 
+  match goal with
+  | [H1: optimize_expression_x _ ?e (_, ?e'), 
+     H2: ~(List.In ?ck (exp_check_flags ?e)) |- _] => specialize (optimize_expression_reserve_notin _ _ _ _ _ H1 H2)
+  | [H1: optimize_expression_x _ ?e (_, ?e'), 
+     H2: List.In ?ck (exp_check_flags ?e) -> False |- _] => specialize (optimize_expression_reserve_notin _ _ _ _ _ H1 H2)
+  end.
+
+
 Lemma extract_subtype_range_unique: forall st t l u l' u',
   extract_subtype_range_x st t (Range_X l u) ->
     extract_subtype_range_x st t (Range_X l' u') ->
@@ -486,6 +596,12 @@ Proof.
   intros;
   inversion H; inversion H0; smack.
 Qed.
+
+Ltac apply_extract_subtype_range_unique :=
+  match goal with
+  | [H1: extract_subtype_range_x _ ?t (Range_X ?l ?u), 
+     H2: extract_subtype_range_x _ ?t (Range_X ?l' ?u') |- _] => specialize (extract_subtype_range_unique _ _ _ _ _ _ H1 H2)
+  end.
 
 
 (*
@@ -530,6 +646,12 @@ Proof.
   intros;
   inversion H; smack.
 Qed.
+
+Ltac apply_optimized_name_reserve_astnum :=
+  match goal with
+  | [H: optimize_name_x _ ?x (?v, ?x') |- _] => specialize (optimized_name_reserve_astnum _ _ _ _ H)
+  end.
+
 
 Lemma optimize_expression_reserve_range_check: forall e cks1 cks2 st v' e',
   exp_check_flags e = cks1 ++ Do_Range_Check :: cks2 ->
@@ -606,6 +728,13 @@ Proof.
     | [|- exists cks1' cks2', ?x :: ?cks1 ++ ?ck :: ?cks2 = cks1' ++ ?ck :: cks2'] => exists (x :: cks1) cks2; auto
     end.
 Qed.
+
+Ltac apply_optimize_expression_reserve_range_check :=
+  match goal with
+  | [H1: exp_check_flags ?e = ?cks1 ++ ?ck :: ?cks2,
+     H2: optimize_expression_x _ ?e (?v, ?e') |- _] => specialize (optimize_expression_reserve_range_check _ _ _ _ _ _ H1 H2)
+  end.
+
 
 Lemma optimize_expression_range_check_notin: forall e cks1 cks2 st v' e' cks1' cks2',
   exp_check_flags e = cks1 ++ Do_Range_Check :: cks2 ->
@@ -709,22 +838,34 @@ Proof.
   specialize (list_components_equal _ _ _ _ _ H6 HZ); smack.
 Qed.
 
+Ltac apply_optimize_expression_range_check_notin :=
+  match goal with
+  | [H1: exp_check_flags ?e = ?cks1 ++ ?ck :: ?cks2,
+     H2: optimize_expression_x _ ?e (_, ?e'),
+     H3: exp_check_flags ?e' = ?cks1' ++ ?ck :: ?cks2',
+     H4: ~(List.In ?ck (?cks1 ++ ?cks2)) |- _] => 
+      specialize (optimize_expression_range_check_notin _ _ _ _ _ _ _ _ H1 H2 H3 H4)
+  | [H1: exp_check_flags ?e = ?cks1 ++ ?ck :: ?cks2,
+     H2: optimize_expression_x _ ?e (_, ?e'),
+     H3: exp_check_flags ?e' = ?cks1' ++ ?ck :: ?cks2',
+     H4: List.In ?ck (?cks1 ++ ?cks2) -> False |- _] => 
+      specialize (optimize_expression_range_check_notin _ _ _ _ _ _ _ _ H1 H2 H3 H4)
+  end.
 
-(** The way to first remove Do_Range_Check from the expression, 
-    and then do other checks optimization, its resulting expression should 
-    be the same as the expression optimized in the reverse way: that's, first
-    optimize the expression, then remove its Do_Range_Check;
+
+(** The way to first optimize the expression and then remove Do_Range_Check from 
+    the expression, its resulting expression should be the same as the expression 
+    optimized in the reverse way: that's, first remove its Do_Range_Check and then
+    optimize the expression;
 *)
-
-Lemma optimize_expr_to_same_checkflags: forall st e l u e' checkflags checkflags' cks1 cks2,
+Lemma optimize_expr_to_same_checkflags: forall st e l u e' checkflags cks1 cks2,
   optimize_expression_x st e (IntBetween l u, e') ->
     remove_check_flag Do_Range_Check (exp_check_flags e') checkflags ->
-      remove_check_flag Do_Range_Check (exp_check_flags e) checkflags' ->
-        (* two additional property for expression e *)
-        exp_check_flags e = cks1 ++ Do_Range_Check :: cks2 ->
-          well_check_flagged_expr (update_exp_check_flags e (cks1 ++ cks2)) ->
-            optimize_expression_x st (update_exp_check_flags e checkflags') 
-                                     (IntBetween l u, (update_exp_check_flags e' checkflags)).
+      (* two properties for expression e *)
+      exp_check_flags e = cks1 ++ Do_Range_Check :: cks2 ->
+        well_check_flagged_expr (update_exp_check_flags e (cks1 ++ cks2)) ->
+          optimize_expression_x st (update_exp_check_flags e (cks1 ++ cks2)) 
+                                   (IntBetween l u, (update_exp_check_flags e' checkflags)).
 Proof.
   intros.
   match goal with
@@ -744,10 +885,8 @@ Proof.
      H4: ~(List.In _ _) |- _] => 
       specialize (optimize_expression_range_check_notin _ _ _ _ _ _ _ _ H1 H2 H3 H4); intros HZ2
   end.
-  specialize (remove_a_unique_check _ _ _ _ H2 HZ1); intros HZ3.
-  specialize (remove_a_unique_check _ _ _ _ HE HZ2); intros HZ4.
-  specialize (remove_check_flag_unique _ _ _ _ H0 HZ4); intros HZ5.
-  specialize (remove_check_flag_unique _ _ _ _ H1 HZ3); intros HZ6; subst.
+  specialize (remove_a_unique_check _ _ _ _ HE HZ2); intros HZ3.
+  specialize (remove_check_flag_unique _ _ _ _ H0 HZ3); intros HZ4.
   
   inversion H; smack;
   match goal with
@@ -759,7 +898,9 @@ Proof.
   constructor; auto.
 - (* Name *)
   constructor; auto.
-  inversion H7; subst;
+  match goal with
+  | [H: optimize_name_x _ _ _ |- _] => inversion H; subst
+  end;
   repeat progress match goal with
   | [H: name_check_flags _ = _ |- _] => simpl in H; subst
   end;
@@ -775,7 +916,7 @@ Proof.
   apply O_Selected_Component_X with (t:=t); auto.
 - (* Binary Operation Plus - overflow check pass *)
   apply O_Binary_Plus_Operation_Overflow_Pass_X; auto.
-  specialize (remove_split _ _ _ _ H13); intros HZ;
+  specialize (remove_split _ _ _ _ H12); intros HZ;
   destruct HZ as [cks1'0 [cks2'0 HZ5]]. destruct HZ5 as [HZ5 [HZ6 HZ7]].
   inversion HZ6; smack.
   match goal with
@@ -789,7 +930,7 @@ Proof.
   apply O_Binary_Plus_Operation_Overflow_Fail_X with (l1:=l1) (u1:=u1) (l2:=l2) (u2:=u2); auto.
 - (* Binary Operation Minus - overflow check pass *)
   apply O_Binary_Minus_Operation_Overflow_Pass_X; auto.
-  specialize (remove_split _ _ _ _ H13); intros HZ;
+  specialize (remove_split _ _ _ _ H12); intros HZ;
   destruct HZ as [cks1'0 [cks2'0 HZ5]]. destruct HZ5 as [HZ5 [HZ6 HZ7]].
   inversion HZ6; smack.
   match goal with
@@ -807,7 +948,7 @@ Proof.
   apply O_Binary_Multiplying_Operation_X with (l1:=l1) (u1:=u1) (l2:=l2) (u2:=u2); auto.
 - (* Unary Operation Minus - overflow check pass *)
   apply O_Unary_Minus_Operation_X with (l:=l0) (u:=u0); auto.
-  specialize (remove_split _ _ _ _ H14); intros HZ;
+  specialize (remove_split _ _ _ _ H13); intros HZ;
   destruct HZ as [cks1'0 [cks2'0 HZ5]]. destruct HZ5 as [HZ5 [HZ6 HZ7]].
   inversion HZ6; smack.
   match goal with
@@ -823,6 +964,15 @@ Proof.
   apply O_Unary_Plus_Operation_X; auto.
 Qed.
 
+Ltac apply_optimize_expr_to_same_checkflags :=
+  match goal with
+  | [H1: optimize_expression_x _ ?e (_, ?e'),
+     H2: remove_check_flag ?ck (exp_check_flags ?e') _,
+     H3: exp_check_flags ?e = ?cks1 ++ ?ck :: ?cks2,
+     H4: well_check_flagged_expr (update_exp_check_flags ?e (?cks1 ++ ?cks2)) |- _] => 
+      specialize (optimize_expr_to_same_checkflags _ _ _ _ _ _ _ _ H1 H2 H3 H4)
+  end.
+
 
 Lemma extract_array_index_range_x_unique: forall st a l u l' u',
   extract_array_index_range_x st a (Range_X l u) ->
@@ -836,6 +986,13 @@ Proof.
      H2: ?x = _ |- _] => rewrite H1 in H2; clear H1; inversion H2; subst
   end; auto.
 Qed.
+
+Ltac apply_extract_array_index_range_x_unique := 
+  match goal with
+  | [H1: extract_array_index_range_x _ ?a (Range_X ?l ?u),
+     H2: extract_array_index_range_x _ ?a (Range_X ?l' ?u') |- _] => 
+      specialize (extract_array_index_range_x_unique _ _ _ _ _ _ H1 H2)
+  end.
 
 
 (* ~ ~ ~ 2014.08.15 ~ ~ ~
@@ -1278,15 +1435,9 @@ Proof.
 *)
 
 
-(** it's impossible to prove the following theorem directly, as we do induction 
-proof on it, the proof will get stuck when e is an indexed_component, e.g. a[e]; 
-the induction proof will generate a premise for e in the following theorem form,
-where (eval_expr_x st s e v) is impossible to be true as e has Do_Range_Check flag, 
-which is not acceptible by the semantics of eval_expr_x;
-
-Coq.ZArith.Zorder: http://coq.inria.fr/V8.1/stdlib/Coq.ZArith.Zorder.html#Zle_ge
-                   http://coq.inria.fr/V8.1/stdlib/Coq.ZArith.Zbool.html
-                   http://coq.inria.fr/V8.1/stdlib/Coq.ZArith.Zbool.html#Zle_bool
+(** when optimize an expression, it returns a range of its all possible
+    values according to its sub-expression types, so the value of an expression
+    evaluated according to its dynamic semantics should fall within that range; 
 *)
 Lemma eval_expr_value_in_domain: forall e e' st s v l u,
   well_typed_stack st s ->
@@ -1294,7 +1445,6 @@ Lemma eval_expr_value_in_domain: forall e e' st s v l u,
       eval_expr_x st s e (Normal (BasicV (Int v))) ->
         optimize_expression_x st e (IntBetween l u, e') ->
           (l <= v)%Z /\ (v <= u)%Z.
-          (* (Zge_bool v l) && (Zle_bool v u) = true. *)
 Proof.
   apply (expression_x_ind
     (fun e: expression_x => 
@@ -1662,8 +1812,13 @@ Proof.
   admit.
 Qed.
 
-End Checks_Optimization_Help_Lemmas.
-
+Ltac apply_eval_expr_value_in_domain :=
+  match goal with
+  | [H1: well_typed_stack ?st ?s,
+     H2: well_check_flagged_expr ?e,
+     H3: eval_expr_x ?st ?s ?e (Normal (BasicV (Int ?v))),
+     H4: optimize_expression_x ?st ?e (_, ?e') |- _] => specialize (eval_expr_value_in_domain _ _ _ _ _ _ _ H1 H2 H3 H4)
+  end.
 
 
 (** 
@@ -2317,8 +2472,7 @@ Proof.
   end;
   specialize (remove_range_check_property _ _ _ H5 H8);
   (let HZ := fresh "HZ" in intro HZ);
-  specialize (optimize_expr_to_same_checkflags _ _ _ _ _ _ _ _ _ H12 H19 HZ0 H5 H8);
-  (let HZ := fresh "HZ" in intro HZ);
+  apply_optimize_expr_to_same_checkflags; (let HZ := fresh "HZ" in intro HZ);
   match goal with
   | [H1: forall (e' : expression_x) (st : symboltable_x) (s : STACK.stack) (checkflags : check_flags)
                 (v : Return value) (v' : valueO),
@@ -2396,7 +2550,7 @@ Proof.
   ];
   specialize (remove_a_unique_check _ _ _ _ HE HZ1); 
   (let HZ := fresh "HZ" in intros HZ);
-  specialize (optimize_expr_to_same_checkflags _ _ _ _ _ _ _ _ _ H12 HZ2 HZ0 H5 H8); 
+  apply_optimize_expr_to_same_checkflags; 
   (let HZ := fresh "HZ" in intros HZ);
   match goal with
   | [H1: forall (e' : expression_x) (st : symboltable_x) (s : STACK.stack) (checkflags : check_flags)
@@ -2442,33 +2596,149 @@ Proof.
   auto.
 Qed.
 
-
-
+Ltac apply_expression_optimization_soundness := 
+  match goal with
+  | [H1: well_typed_stack _ _, 
+     H2: well_check_flagged_expr ?e, 
+     H3: eval_expr_x _ _ ?e _, 
+     H4: optimize_expression_x _ ?e _ |- _] =>
+      specialize (expression_checks_optimization_soundness _ _ _ _ _ _ H1 H2 H3 H4)
+  end.
 
 
 (*
-Lemma expression_checks_optimization_soundness_help: forall e e' st s checkflags v v',
+Lemma name_checks_optimization_soundness: forall n n' st s v v',
   well_typed_stack st s ->
-    remove_check_flag Do_Range_Check (exp_check_flags e) checkflags ->
-      well_check_flagged_expr (update_exp_check_flags e checkflags) ->
-        eval_expr_x st s (update_exp_check_flags e checkflags) v ->
-          optimize_expression_x st (update_exp_check_flags e checkflags) (v', e') ->
-            eval_expr_x st s e' v.
+    well_check_flagged_name n ->
+      eval_name_x st s n v ->
+        optimize_name_x st n (v', n') ->
+          eval_name_x st s n' v.
+Proof.
+  intros;
+  inversion H2; subst.
+- match goal with
+  | [H: eval_name_x _ _ _ _ |- _] => inversion H; subst
+  end.
+  apply Eval_E_Identifier_X; auto.
+- match goal with
+  | [H: eval_name_x _ _ _ _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H: well_check_flagged_name _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H1: exp_check_flags ?e = _,
+     H2: ~ List.In _ (exp_check_flags ?e) |- _] => rewrite H1 in H2; smack
+  | _ => idtac
+  end.
+  + (* 1 *)
+  apply Eval_E_Indexed_Component_RTE_X; auto.
+    rewrite update_exp_with_new_check_flags.
+    apply removed_check_flag_notin with (cks:=(exp_check_flags e')); auto.
+  match goal with
+  | [H1: exp_check_flags ?e = _ ,
+     H2: exp_check_flags ?e = _ |- _] => rewrite H2 in H1
+  end.
+  specialize (range_check_not_in_expr _ H15); intros HZ1.
+  rewrite update_exp_with_new_check_flags in HZ1.
+  apply_list_components_equal.
+
+(*
+  match goal with
+  | [H1: optimize_expression_x _ ?e (_, ?e'),
+     H2: ~(List.In ?x (exp_check_flags ?e)) |- _ ] => 
+      specialize (optimize_expression_reserve_notin _ _ _ _ _ H1 H2);
+      let HZ := fresh "HZ" in intros HZ
+  end.
+
+Lemma optimize_expr_to_same_checkflags: forall st e l u e' checkflags checkflags' cks1 cks2,
+  optimize_expression_x st e (IntBetween l u, e') ->
+    remove_check_flag Do_Range_Check (exp_check_flags e') checkflags ->
+      remove_check_flag Do_Range_Check (exp_check_flags e) checkflags' ->
+        (* two additional property for expression e *)
+        exp_check_flags e = cks1 ++ Do_Range_Check :: cks2 ->
+          well_check_flagged_expr (update_exp_check_flags e (cks1 ++ cks2)) ->
+            optimize_expression_x st (update_exp_check_flags e checkflags') 
+                                     (IntBetween l u, (update_exp_check_flags e' checkflags)).
+
+
+Lemma optimize_expression_reserve_notin: forall st e v e' ck,
+  optimize_expression_x st e (v, e') ->
+    ~(List.In ck (exp_check_flags e)) ->
+      ~(List.In ck (exp_check_flags e')).
 *)
+
+Qed.
+*)
+
+
+Inductive well_check_flagged_args: list parameter_specification_x -> list expression_x -> Prop :=
+  | WCF_Args_Nil:
+      well_check_flagged_args nil nil
+  | WCF_Args_Head_In: forall param arg params args,
+      parameter_mode_x param = In ->
+      ~(List.In Do_Range_Check (exp_check_flags arg)) ->
+      well_check_flagged_expr arg ->
+      well_check_flagged_args params args ->
+      well_check_flagged_args (param :: params) (arg :: args)
+  | WCF_Args_Head_In_CopyIn_Range: forall param arg cks1 cks2 params args,
+      parameter_mode_x param = In ->
+      exp_check_flags arg = cks1 ++ Do_Range_Check :: cks2 ->
+      well_check_flagged_expr (update_exp_check_flags arg (cks1 ++ cks2)) ->
+      well_check_flagged_args params args ->
+      well_check_flagged_args (param :: params) (arg :: args)
+  | WCF_Args_Head_Out: forall param arg params args,
+      parameter_mode_x param = Out ->
+      ~(List.In Do_Range_Check_On_CopyOut (exp_check_flags arg)) ->
+      well_check_flagged_expr arg ->
+      well_check_flagged_args params args ->
+      well_check_flagged_args (param :: params) (arg :: args)
+  | WCF_Args_Head_Out_CopyOut_Range: forall param arg cks1 cks2 params args,
+      parameter_mode_x param = Out ->
+      exp_check_flags arg = cks1 ++ Do_Range_Check_On_CopyOut :: cks2 ->
+      well_check_flagged_expr (update_exp_check_flags arg (cks1 ++ cks2)) ->
+      well_check_flagged_args params args ->
+      well_check_flagged_args (param :: params) (arg :: args)
+  | WCF_Args_Head_InOut: forall param arg params args,
+      parameter_mode_x param = In_Out ->
+      ~(List.In Do_Range_Check (exp_check_flags arg)) ->
+      ~(List.In Do_Range_Check_On_CopyOut (exp_check_flags arg)) ->
+      well_check_flagged_expr arg ->
+      well_check_flagged_args params args ->
+      well_check_flagged_args (param :: params) (arg :: args)
+  | WCF_Args_Head_InOut_CopyIn_Range: forall param arg cks1 cks2 params args,
+      parameter_mode_x param = In_Out ->
+      exp_check_flags arg = cks1 ++ Do_Range_Check :: cks2 ->
+      ~(List.In Do_Range_Check_On_CopyOut (exp_check_flags arg)) ->
+      well_check_flagged_expr (update_exp_check_flags arg (cks1 ++ cks2)) ->
+      well_check_flagged_args params args ->
+      well_check_flagged_args (param :: params) (arg :: args)
+  | WCF_Args_Head_InOut_CopyOut_Range: forall param arg cks1 cks2 params args,
+      parameter_mode_x param = In_Out ->
+      ~(List.In Do_Range_Check (exp_check_flags arg)) ->
+      exp_check_flags arg = cks1 ++ Do_Range_Check_On_CopyOut :: cks2 ->
+      well_check_flagged_expr (update_exp_check_flags arg (cks1 ++ cks2)) ->
+      well_check_flagged_args params args ->
+      well_check_flagged_args (param :: params) (arg :: args)
+  | WCF_Args_Head_InOut_CopyIn_CopyOut_Range: forall param arg cks1 cks2 params args,
+      parameter_mode_x param = In_Out ->
+      exp_check_flags arg = cks1 ++ Do_Range_Check :: Do_Range_Check_On_CopyOut :: cks2 ->
+      well_check_flagged_expr (update_exp_check_flags arg (cks1 ++ cks2)) ->
+      well_check_flagged_args params args ->
+      well_check_flagged_args (param :: params) (arg :: args).
+
+
 
 (** * Checks Optimization for Copy_In *)
-(*
-    compile2_flagged_parameter_specifications params0 params ->
-    compile2_flagged_args st0 params0 args0 args -> 
-    compile2_flagged_symbol_table st0 st ->
-*)
-Lemma copy_in_args_checks_optimization_soundness: forall st s f params args f' args',
-  well_typed_stack st s ->    
-    copy_in_x st s f params args f' -> 
-      optimize_args_x st params args args' ->
-        copy_in_x st s f params args' f'.
+
+Lemma copy_in_args_checks_optimization_soundness: forall st s params args f f' args',
+  well_typed_stack st s ->
+    well_check_flagged_args params args ->
+      copy_in_x st s f params args f' ->
+        optimize_args_x st params args args' ->
+          copy_in_x st s f params args' f'.
 Proof.
-  intros st s f params; revert st s f;
+  intros st s params; revert st s;
   induction params; smack.
 - match goal with
   | [H: copy_in_x _ _ _ _ _ _ |- _] => inversion H; subst
@@ -2495,8 +2765,15 @@ Proof.
      H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2; clear H2
   end.
    apply Copy_In_Cons_In_RTE_X; auto.
-    specialize (optimize_expression_reserve_notin _ _ _ _ _ H10 H15); auto.
-    admit.
+    specialize (optimize_expression_reserve_notin _ _ _ _ _ H11 H16); auto.
+    match goal with
+    | [H: well_check_flagged_args _ _ |- _] => inversion H; smack
+    end;
+    match goal with
+    | [H1: exp_check_flags ?e = _ , H2: List.In _ (exp_check_flags ?e) -> False |- _] => rewrite H1 in H2; smack
+    | _ => idtac
+    end.
+    apply_expression_optimization_soundness; auto.
   apply Copy_In_Cons_In_X with (v:=v0) (f':=(STACK.push f (parameter_name_x a) v0)); auto.
     admit. admit. specialize (IHparams _ _ _ _ _ _ H H18 H12); auto.
   apply Copy_In_Cons_In_E_RTE_X with (cks1:=cks1) (cks2:=cks2); auto.
