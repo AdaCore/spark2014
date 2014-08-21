@@ -1326,11 +1326,7 @@ package body Flow.Analysis is
                  Other_Fields_Are_Ineffective (V)
                then
                   Mask := Find_Masking_Code (V);
-                  if FA.PDG.Get_Key (V) = Null_Flow_Id then
-                     N := Empty;
-                  else
-                     N := Get_Direct_Mapping_Id (FA.PDG.Get_Key (V));
-                  end if;
+                  N    := Error_Location (FA.PDG, FA.Atr, V);
 
                   if Atr.Is_Parameter or Atr.Is_Global_Parameter then
                      if Atr.Is_Parameter then

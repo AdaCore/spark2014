@@ -4,7 +4,7 @@ skein.adb:36:77: warning: array index check might fail, in call inlined at skein
 skein.adb:36:77: warning: divide by zero might fail, in call inlined at skein.adb:139
 skein.adb:37:57: warning: range check might fail, in call inlined at skein.adb:139
 skein.adb:37:71: warning: range check might fail, in call inlined at skein.adb:139
-skein.adb:48:23: warning: statement has no effect, in call inlined at skein.adb:127
+skein.adb:48:23: warning: unused assignment, in call inlined at skein.adb:127
 skein.adb:56:22: warning: unused assignment, in call inlined at skein.adb:127
 skein.adb:60:04: warning: analyzing unreferenced procedure "Zero_Pad"
 skein.adb:64:11: info: range check proved

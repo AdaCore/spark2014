@@ -49,7 +49,6 @@ alarmapi.adb:62:29: warning: length check might fail
 alarmapi.adb:62:29: warning: no Global contract available for "Overwrite"
 alarmapi.ads:29:14: warning: subprogram "Activate" has no effect
 alarmapi.ads:38:14: warning: subprogram "Deactivate" has no effect
-auditlog.adb:77:04: warning: statement has no effect
 auditlog.adb:79:32: info: length check proved
 auditlog.adb:88:45: info: length check proved
 auditlog.adb:93:53: info: length check proved
@@ -899,7 +898,6 @@ tismain.adb:1496:07: warning: assertion might fail
 tismain.adb:1536:22: warning: precondition might fail
 tismain.adb:1542:23: warning: precondition might fail
 tismain.adb:1549:22: warning: precondition might fail
-tokenreader.adb:50:04: warning: statement has no effect
 tokenreader.adb:51:37: info: length check proved
 tokenreader.adb:62:23: info: length check proved
 tokenreader.adb:67:23: info: length check proved
