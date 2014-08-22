@@ -149,7 +149,8 @@ package body Flow_Refinement is
    is
       Ptr : Flow_Scope;
    begin
-      --  Go upwards from S and see if we end up in Target_Scope.
+      --  Go upwards from S (the scope we are in) and see if we end up in
+      --  Target_Scope (what we're checking if we can see).
       Ptr := S;
       while Ptr /= Null_Flow_Scope loop
          if Ptr = Target_Scope then
@@ -181,32 +182,30 @@ package body Flow_Refinement is
          end case;
       end loop;
 
-      --  Check if Target_Scope is generally visible
+      --  Check if Target_Scope is generally visible from anywhere (we know
+      --  this if we reach the null flow scope) or if are dealing with a
+      --  nested package where we happen to have visibility of its spec (we
+      --  know this if we find our origin scope by going up the spec parts
+      --  of the target scope).
       Ptr := Target_Scope;
-      while Ptr /= Null_Flow_Scope loop
+      while Ptr /= Null_Flow_Scope and Ptr /= S loop
          case Valid_Section_T'(Ptr.Section) is
             when Spec_Part =>
                Ptr := Get_Enclosing_Flow_Scope (Ptr);
+               if Ptr.Section = Private_Part then
+                  --  This deals with visibility of private children. A
+                  --  package body can see a private child's spec (and test
+                  --  for this if the enclosing flow scope of the private
+                  --  child's (the parents private part) can be seen from
+                  --  S).
+                  return Is_Visible (Ptr, S);
+               end if;
 
-            when Body_Part | Private_Part =>
+            when Private_Part | Body_Part =>
                exit;
          end case;
       end loop;
-
-      if Ptr = Null_Flow_Scope then
-         return True;
-      end if;
-
-      --  Check if Target_Scope is nested within S
-      Ptr := Target_Scope;
-      if Ptr /= Null_Flow_Scope
-        and then Valid_Section_T'(Ptr.Section) = Spec_Part
-      then
-         Ptr := Get_Enclosing_Flow_Scope (Ptr);
-         return Is_Visible (Ptr, S);
-      end if;
-
-      return False;
+      return Ptr = Null_Flow_Scope or Ptr = S;
    end Is_Visible;
 
    function Is_Visible (N : Node_Id;

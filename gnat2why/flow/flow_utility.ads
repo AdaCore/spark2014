@@ -51,28 +51,17 @@ package Flow_Utility is
    --  try our best to get a direct mapping, resorting to the magic
    --  string only as a last resort.
 
-   function Get_Full_Type_Without_Checking (E : Entity_Id) return Entity_Id;
-   --  Get the type of the given entity. This function looks through
-   --  private types and should be used with extreme care.
-
-   function Get_Full_Etype_Without_Checking (N : Node_Id) return Entity_Id
+   function Get_Full_Type_Without_Checking (N : Node_Id) return Entity_Id
      with Pre => Present (N);
    --  Get the type of the given entity. This function looks through
    --  private types and should be used with extreme care.
 
    function Get_Full_Type
-     (E     : Entity_Id;
-      Scope : Flow_Scope)
-      return Entity_Id;
-   --  Get the type of the given entity. If the full view of the type
-   --  is not visible from Scope, then we return the non-full view.
-
-   function Get_Full_Etype
      (N     : Node_Id;
       Scope : Flow_Scope)
       return Entity_Id
-     with Pre => Present (N);
-   --  Get the type of the given node. If the full view of the type
+   with Pre => Present (N);
+   --  Get the type of the given entity. If the full view of the type
    --  is not visible from Scope, then we return the non-full view.
 
    function All_Record_Components
@@ -251,10 +240,17 @@ package Flow_Utility is
    --  Return the set of entire variables which are introduced in a
    --  quantifier under node N
 
+   function Is_Null_Record (E : Entity_Id) return Boolean
+   with Pre => Nkind (E) in N_Entity;
+   --  Checks if E is a record that contains no fields at all. If E is not
+   --  a record we return False.
+
    function Flatten_Variable
      (E     : Entity_Id;
       Scope : Flow_Scope)
-      return Flow_Id_Sets.Set;
+      return Flow_Id_Sets.Set
+   with Post => (if not Is_Null_Record (E)
+                 then not Flatten_Variable'Result.Is_Empty);
    --  Returns a set of flow_ids for all parts of the unique entity
    --  for E. For records this includes all subcomponents, for
    --  everything else this is just the variable E.

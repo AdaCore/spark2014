@@ -284,7 +284,9 @@ package Flow_Types is
    function Parent_Record (F : Flow_Id) return Flow_Id
      with Pre  => F.Kind = Record_Field,
           Post => Parent_Record'Result.Kind in Direct_Mapping | Record_Field;
-   --  Return the parent record for the given record field.
+   --  Return the parent record for the given record field. If given the
+   --  hidden fields of a record, returns the visible part (i.e. clears the
+   --  hidden_part flag before moving up the component list).
 
    function Entire_Variable (F : Flow_Id) return Flow_Id
      with Post => Entire_Variable'Result.Kind /= Record_Field;

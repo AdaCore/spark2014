@@ -447,7 +447,7 @@ package body Flow_Utility is
 
       while Nkind (Root_Node) = N_Selected_Component or else
         (Is_Tick_Update (Root_Node) and then
-           Ekind (Get_Full_Etype_Without_Checking (Root_Node))
+           Ekind (Get_Full_Type_Without_Checking (Root_Node))
              in Record_Kind) or else
         Is_Ignored_Node (Root_Node)
       loop
@@ -496,7 +496,7 @@ package body Flow_Utility is
       --  abort.
 
       if Nkind (Root_Node) not in N_Identifier | N_Expanded_Name or else
-        Ekind (Get_Full_Etype_Without_Checking (Root_Node)) not in Record_Kind
+        Ekind (Get_Full_Type_Without_Checking (Root_Node)) not in Record_Kind
       then
          return Vars : Flow_Id_Sets.Set do
             --  Recurse on root.
@@ -637,7 +637,7 @@ package body Flow_Utility is
                            Write_Eol;
                         end if;
 
-                        if Ekind (Get_Full_Etype (E, Scope)) in Record_Kind
+                        if Ekind (Get_Full_Type (E, Scope)) in Record_Kind
                         then
                            --  Composite update
 
@@ -1965,6 +1965,32 @@ package body Flow_Utility is
       return RV;
    end Quantified_Variables;
 
+   --------------------
+   -- Is_Null_Record --
+   --------------------
+
+   function Is_Null_Record (E : Entity_Id) return Boolean
+   is
+   begin
+      if Is_Type (E) then
+         if Ekind (E) in Record_Kind then
+            case Ekind (E) is
+               when E_Class_Wide_Type | E_Class_Wide_Subtype =>
+                  --  We always have the tag.
+                  return False;
+               when others =>
+                  return No (First_Component_Or_Discriminant (E));
+            end case;
+         else
+            return False;
+         end if;
+      elsif Ekind (E) = E_Abstract_State then
+         return False;
+      else
+         return Is_Null_Record (Get_Full_Type_Without_Checking (E));
+      end if;
+   end Is_Null_Record;
+
    ----------------------
    -- Flatten_Variable --
    ----------------------
@@ -2024,12 +2050,13 @@ package body Flow_Utility is
    -- Get_Full_Type_Without_Checking --
    ------------------------------------
 
-   function Get_Full_Type_Without_Checking (E : Entity_Id) return Entity_Id is
-      T : constant Entity_Id := Etype (E);
+   function Get_Full_Type_Without_Checking (N : Node_Id) return Entity_Id is
+      T : constant Entity_Id := Etype (N);
    begin
-      if Ekind (E) = E_Abstract_State then
+      if Nkind (N) in N_Entity and then Ekind (N) = E_Abstract_State then
          return T;
       else
+         pragma Assert (Nkind (T) in N_Entity);
          pragma Assert (Is_Type (T));
          if Present (Full_View (T)) then
             return Full_View (T);
@@ -2039,35 +2066,21 @@ package body Flow_Utility is
       end if;
    end Get_Full_Type_Without_Checking;
 
-   -------------------------------------
-   -- Get_Full_Etype_Without_Checking --
-   -------------------------------------
-
-   function Get_Full_Etype_Without_Checking (N : Node_Id) return Entity_Id is
-      T : constant Entity_Id := Etype (N);
-   begin
-      pragma Assert (Is_Type (T));
-      if Present (Full_View (T)) then
-         return Full_View (T);
-      else
-         return T;
-      end if;
-   end Get_Full_Etype_Without_Checking;
-
    -------------------
    -- Get_Full_Type --
    -------------------
 
    function Get_Full_Type
-     (E     : Entity_Id;
+     (N     : Node_Id;
       Scope : Flow_Scope)
       return Entity_Id
    is
-      T : constant Entity_Id := Etype (E);
+      T : constant Entity_Id := Etype (N);
    begin
-      if Ekind (E) = E_Abstract_State then
+      if Nkind (N) in N_Entity and then Ekind (N) = E_Abstract_State then
          return T;
       else
+         pragma Assert (Nkind (T) in N_Entity);
          pragma Assert (Is_Type (T));
          if Present (Full_View (T))
            and then Is_Visible (Full_View (T), Scope)
@@ -2079,28 +2092,6 @@ package body Flow_Utility is
          end if;
       end if;
    end Get_Full_Type;
-
-   --------------------
-   -- Get_Full_Etype --
-   --------------------
-
-   function Get_Full_Etype
-     (N     : Node_Id;
-      Scope : Flow_Scope)
-      return Entity_Id
-   is
-      T : constant Entity_Id := Etype (N);
-   begin
-      pragma Assert (Is_Type (T));
-      if Present (Full_View (T))
-        and then Is_Visible (Full_View (T), Scope)
-        and then not Is_Itype (Full_View (T))
-      then
-         return Full_View (T);
-      else
-         return T;
-      end if;
-   end Get_Full_Etype;
 
    --------------------------------
    -- Untangle_Assignment_Target --

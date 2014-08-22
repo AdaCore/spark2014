@@ -450,7 +450,11 @@ package body Flow_Types is
    function Parent_Record (F : Flow_Id) return Flow_Id is
    begin
       return R : Flow_Id := F do
-         R.Component.Delete_Last;
+         if R.Hidden_Part then
+            R.Hidden_Part := False;
+         else
+            R.Component.Delete_Last;
+         end if;
          if R.Component.Length = 0 then
             R := (Kind    => Direct_Mapping,
                   Variant => F.Variant,

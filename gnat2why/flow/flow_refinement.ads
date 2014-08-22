@@ -144,7 +144,7 @@ package Flow_Refinement is
    --  trace it has been made visible.
 
    function Get_Enclosing_Body_Flow_Scope (S : Flow_Scope) return Flow_Scope
-     with Pre => S.Section in Body_Part;
+     with Pre => S.Section = Body_Part;
    --  Returns the flow scope of the enclosing package if it exists
    --  and the null scope otherwise.
 

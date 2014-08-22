@@ -521,7 +521,7 @@ package body Flow.Control_Flow_Graph is
    --  either generate a null vertex which is then stripped from the
    --  graph or a simple defining vertex. Additionally, if the
    --  object's type has a Default_Initial_Condition aspect, we check
-   --  for uninitialized variables.
+   --  for uninitialized variables in the default initial condition.
 
    procedure Do_Package_Declaration
      (N   : Node_Id;
@@ -3038,6 +3038,39 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
+      function Replace_Flow_Ids
+        (Of_This   : Entity_Id;
+         With_This : Entity_Id;
+         The_Set   : Flow_Id_Sets.Set)
+         return Flow_Id_Sets.Set;
+      --  Returns a flow set that replaces all Flow_Ids of The_Set that
+      --  correspond to Of_This with equivalent Flow_Ids that correspond to
+      --  With_This.
+
+      ----------------------
+      -- Replace_Flow_Ids --
+      ----------------------
+
+      function Replace_Flow_Ids
+        (Of_This   : Entity_Id;
+         With_This : Entity_Id;
+         The_Set   : Flow_Id_Sets.Set)
+         return Flow_Id_Sets.Set
+      is
+         FS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      begin
+         for F of The_Set loop
+            if F.Kind in Direct_Mapping | Record_Field
+              and then F.Node = Of_This
+            then
+               FS.Include (F'Update (Node => With_This));
+            else
+               FS.Include (F);
+            end if;
+         end loop;
+         return FS;
+      end Replace_Flow_Ids;
+
       V     : Flow_Graphs.Vertex_Id;
       Inits : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
       FS    : Flow_Id_Sets.Set;
@@ -3166,6 +3199,53 @@ package body Flow.Control_Flow_Graph is
          end;
       end if;
 
+      --  If this type has a Default_Initial_Condition then we need to
+      --  create a vertex to check for uninitialized variables within the
+      --  Default_Initial_Condition's expression.
+      declare
+         Typ  : Node_Id;
+         Expr : Node_Id;
+      begin
+         Typ := Etype (Defining_Identifier (N));
+
+         if (Has_Default_Init_Cond (Typ)
+               or else Has_Inherited_Default_Init_Cond (Typ))
+           and then Present (Default_Init_Cond_Procedure (Typ))
+         then
+            Expr := Get_Expr_From_Check_Only_Proc
+              (Default_Init_Cond_Procedure (Typ));
+
+            if Present (Expr) then
+               --  Note that default initial conditions make use of the
+               --  type mark, i.e. Foo (T) > 2; so if we declare X : T we
+               --  need to replace T with X to produce the correct default
+               --  initial condition.
+               Add_Vertex
+                 (FA,
+                  Make_Sink_Vertex_Attributes
+                    (Var_Use    => Replace_Flow_Ids
+                       (Of_This   => First_Entity (Default_Init_Cond_Procedure
+                                                   (Typ)),
+                        With_This => Defining_Identifier (N),
+                        The_Set   => Get_Variable_Set
+                          (Expr,
+                           Scope                => FA.B_Scope,
+                           Local_Constants      => FA.Local_Constants,
+                           Fold_Functions       => True,
+                           Use_Computed_Globals => not FA.Compute_Globals)),
+                     Sub_Called => Get_Function_Set (Expr),
+                     Is_Proof   => True,
+                     Is_DIC     => True,
+                     E_Loc      => N),
+                  V);
+               Inits.Append (V);
+
+               --  Check for folded functions
+               Ctx.Folded_Function_Checks (N).Include (Expr);
+            end if;
+         end if;
+      end;
+
       V := Flow_Graphs.Null_Vertex;
       for W of Inits loop
          if V /= Flow_Graphs.Null_Vertex then
@@ -3209,96 +3289,6 @@ package body Flow.Control_Flow_Graph is
             end;
          end loop;
       end if;
-
-      --  If this type has a Default_Initial_Condition then we need to
-      --  create a vertex to check for uninitialized variables within
-      --  the Default_Initial_Condition's expression.
-      declare
-         Typ  : Node_Id;
-         Expr : Node_Id;
-
-         function Replace_Flow_Ids
-           (Of_This   : Entity_Id;
-            With_This : Entity_Id;
-            The_Set   : Flow_Id_Sets.Set)
-            return Flow_Id_Sets.Set;
-         --  Returns a flow set that replaces all Flow_Ids of The_Set
-         --  that correspond to Of_This with equivalent Flow_Ids that
-         --  correspond to With_This.
-
-         ----------------------
-         -- Replace_Flow_Ids --
-         ----------------------
-
-         function Replace_Flow_Ids
-           (Of_This   : Entity_Id;
-            With_This : Entity_Id;
-            The_Set   : Flow_Id_Sets.Set)
-            return Flow_Id_Sets.Set
-         is
-            FS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-         begin
-            for F of The_Set loop
-               if F.Kind in Direct_Mapping | Record_Field
-                 and then F.Node = Of_This
-               then
-                  FS.Include (F'Update (Node => With_This));
-               else
-                  FS.Include (F);
-               end if;
-            end loop;
-
-            return FS;
-         end Replace_Flow_Ids;
-      begin
-         Typ := Etype (Defining_Identifier (N));
-
-         if (Has_Default_Init_Cond (Typ)
-               or else Has_Inherited_Default_Init_Cond (Typ))
-           and then Present (Default_Init_Cond_Procedure (Typ))
-         then
-            Expr := Get_Expr_From_Check_Only_Proc
-              (Default_Init_Cond_Procedure (Typ));
-
-            if Present (Expr) then
-               Add_Vertex
-                 (FA,
-                  Make_Sink_Vertex_Attributes
-                    (Var_Use    => Get_Variable_Set
-                       (Expr,
-                        Scope                => FA.B_Scope,
-                        Local_Constants      => FA.Local_Constants,
-                        Fold_Functions       => True,
-                        Use_Computed_Globals => not FA.Compute_Globals),
-                     Sub_Called => Get_Function_Set (Expr),
-                     Is_Proof   => True,
-                     Is_DIC     => True,
-                     E_Loc      => N),
-                  V);
-
-               --  Check for folded functions
-               Ctx.Folded_Function_Checks (N).Include (Expr);
-
-               --  Link the vertex up. It will come after the last
-               --  element.
-               Linkup (FA.CFG, Inits.Last_Element, V);
-
-               --  We now need to replace the temporary entity that
-               --  the front-end introduced with the object that was
-               --  just declared.
-               FA.Atr (V).Variables_Used := Replace_Flow_Ids
-                 (Of_This   => First_Entity
-                                 (Default_Init_Cond_Procedure (Typ)),
-                  With_This => Defining_Identifier (N),
-                  The_Set   => FA.Atr (V).Variables_Used);
-            end if;
-         end if;
-      end;
-      CM.Include (Union_Id (N),
-                  Graph_Connections'
-                    (Standard_Entry => Inits.First_Element,
-                     Standard_Exits => To_Set (V)));
-
    end Do_Object_Declaration;
 
    ----------------------------
