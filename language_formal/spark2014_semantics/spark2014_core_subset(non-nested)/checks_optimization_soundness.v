@@ -443,6 +443,26 @@ Ltac apply_notin_reserved_by_remove :=
   end.
 
 
+Lemma in_reserved_by_remove: forall ck cks ck' cks',
+  List.In ck cks ->
+    beq_check_flag ck' ck = false ->
+      remove_check_flag ck' cks cks' ->
+        List.In ck cks'.
+Proof.
+  intros ck cks; revert ck;
+  induction cks; intros; smack.
+- inversion H1; smack.
+- inversion H1; smack.
+Qed.
+
+Ltac apply_in_reserved_by_remove :=
+  match goal with
+  | [H1: List.In ?ck ?cks,
+     H2: beq_check_flag ?ck' ?ck = false,
+     H3: remove_check_flag ?ck' ?cks ?cks' |- _] => specialize (in_reserved_by_remove _ _ _ _ H1 H2 H3)
+  end.
+
+
 Lemma check_flag_notin_split: forall (ck: check_flag) cks1 cks2,
   ~(List.In ck (cks1 ++ cks2)) ->
     ~(List.In ck cks1) /\ ~(List.In ck cks2).
@@ -858,14 +878,15 @@ Ltac apply_optimize_expression_range_check_notin :=
     optimized in the reverse way: that's, first remove its Do_Range_Check and then
     optimize the expression;
 *)
-Lemma optimize_expr_to_same_checkflags: forall st e l u e' checkflags cks1 cks2,
-  optimize_expression_x st e (IntBetween l u, e') ->
+
+Lemma optimize_expr_to_same_checkflags: forall st e v e' checkflags cks1 cks2,
+  optimize_expression_x st e (v, e') ->
     remove_check_flag Do_Range_Check (exp_check_flags e') checkflags ->
       (* two properties for expression e *)
       exp_check_flags e = cks1 ++ Do_Range_Check :: cks2 ->
         well_check_flagged_expr (update_exp_check_flags e (cks1 ++ cks2)) ->
           optimize_expression_x st (update_exp_check_flags e (cks1 ++ cks2)) 
-                                   (IntBetween l u, (update_exp_check_flags e' checkflags)).
+                                   (v, (update_exp_check_flags e' checkflags)).
 Proof.
   intros.
   match goal with
@@ -893,7 +914,7 @@ Proof.
   | [H1: ?ls1 ++ ?e :: ?ls2 = ?ls1' ++ ?e :: ?ls2',
      H2: List.In ?e (?ls1 ++ ?ls2) -> False |- _] => specialize (list_components_equal _ _ _ _ _ H1 H2); smack
   | _ => idtac
-  end. 
+  end.
 - (* Literal *)
   constructor; auto.
 - (* Name *)
@@ -909,14 +930,15 @@ Proof.
      H2: List.In ?e (?ls1 ++ ?ls2) -> False |- _] => specialize (list_components_equal _ _ _ _ _ H1 H2); smack
   end.
   apply O_Identifier_X with (t:=t); auto.
-  apply O_Indexed_Component_Range_Pass_X with (l:=l0) (u:=u0) (e':=e') (t:=t) (l':=l') 
+  apply O_Indexed_Component_Range_Pass_X with (l:=l) (u:=u) (e':=e') (t:=t) (l':=l') 
                                                (u':=u') (checkflags':=checkflags'); auto.
-  apply O_Indexed_Component_Range_Fail_X with (l:=l0) (u:=u0) (e':=e') (t:=t) (l':=l') (u':=u'); auto.
-  apply O_Indexed_Component_Range_Fail_X with (l:=l0) (u:=u0) (e':=e') (t:=t) (l':=l') (u':=u'); auto.
+  apply O_Indexed_Component_Range_Fail_X with (l:=l) (u:=u) (e':=e') (t:=t) (l':=l') (u':=u'); auto.
+  apply O_Indexed_Component_Range_Fail_X with (l:=l) (u:=u) (e':=e') (t:=t) (l':=l') (u':=u'); auto.
   apply O_Selected_Component_X with (t:=t); auto.
 - (* Binary Operation Plus - overflow check pass *)
   apply O_Binary_Plus_Operation_Overflow_Pass_X; auto.
-  specialize (remove_split _ _ _ _ H12); intros HZ;
+  
+  specialize (remove_split _ _ _ _ H11); intros HZ;
   destruct HZ as [cks1'0 [cks2'0 HZ5]]. destruct HZ5 as [HZ5 [HZ6 HZ7]].
   inversion HZ6; smack.
   match goal with
@@ -930,7 +952,7 @@ Proof.
   apply O_Binary_Plus_Operation_Overflow_Fail_X with (l1:=l1) (u1:=u1) (l2:=l2) (u2:=u2); auto.
 - (* Binary Operation Minus - overflow check pass *)
   apply O_Binary_Minus_Operation_Overflow_Pass_X; auto.
-  specialize (remove_split _ _ _ _ H12); intros HZ;
+  specialize (remove_split _ _ _ _ H11); intros HZ;
   destruct HZ as [cks1'0 [cks2'0 HZ5]]. destruct HZ5 as [HZ5 [HZ6 HZ7]].
   inversion HZ6; smack.
   match goal with
@@ -946,9 +968,11 @@ Proof.
   apply O_Binary_Multiplying_Operation_X with (l1:=l1) (u1:=u1) (l2:=l2) (u2:=u2); auto.
 - (* Binary Operation Divide *)
   apply O_Binary_Multiplying_Operation_X with (l1:=l1) (u1:=u1) (l2:=l2) (u2:=u2); auto.
+- (* Binary Logic Operation *)
+  apply O_Binary_Logical_Operation_X; auto.
 - (* Unary Operation Minus - overflow check pass *)
-  apply O_Unary_Minus_Operation_X with (l:=l0) (u:=u0); auto.
-  specialize (remove_split _ _ _ _ H13); intros HZ;
+  apply O_Unary_Minus_Operation_X with (l:=l) (u:=u); auto.
+  specialize (remove_split _ _ _ _ H12); intros HZ;
   destruct HZ as [cks1'0 [cks2'0 HZ5]]. destruct HZ5 as [HZ5 [HZ6 HZ7]].
   inversion HZ6; smack.
   match goal with
@@ -957,11 +981,13 @@ Proof.
   end.
   apply remove_merge; auto.
 - (* Unary Operation Minus - overflow check fail *)
-  apply O_Unary_Minus_Operation_Overflow_X with (l:=l0) (u:=u0) (l':=(Z.opp u0)) (u':=(Z.opp l0)); auto.
+  apply O_Unary_Minus_Operation_Overflow_X with (l:=l) (u:=u) (l':=(Z.opp u)) (u':=(Z.opp l)); auto.
 - (* Unary Operation Minus - overflow check fail *)
-  apply O_Unary_Minus_Operation_Overflow_X with (l:=l0) (u:=u0) (l':=(Z.opp u0)) (u':=(Z.opp l0)); auto.
+  apply O_Unary_Minus_Operation_Overflow_X with (l:=l) (u:=u) (l':=(Z.opp u)) (u':=(Z.opp l)); auto.
 - (* Unary Operation Plus *)
   apply O_Unary_Plus_Operation_X; auto.
+- (* Unary Operation Not *)
+  apply O_Unary_Not_Operation_X; auto.
 Qed.
 
 Ltac apply_optimize_expr_to_same_checkflags :=
@@ -970,7 +996,7 @@ Ltac apply_optimize_expr_to_same_checkflags :=
      H2: remove_check_flag ?ck (exp_check_flags ?e') _,
      H3: exp_check_flags ?e = ?cks1 ++ ?ck :: ?cks2,
      H4: well_check_flagged_expr (update_exp_check_flags ?e (?cks1 ++ ?cks2)) |- _] => 
-      specialize (optimize_expr_to_same_checkflags _ _ _ _ _ _ _ _ H1 H2 H3 H4)
+      specialize (optimize_expr_to_same_checkflags _ _ _ _ _ _ _ H1 H2 H3 H4)
   end.
 
 
@@ -2728,7 +2754,6 @@ Inductive well_check_flagged_args: list parameter_specification_x -> list expres
       well_check_flagged_args (param :: params) (arg :: args).
 
 
-
 (** * Checks Optimization for Copy_In *)
 
 Lemma copy_in_args_checks_optimization_soundness: forall st s params args f f' args',
@@ -2763,113 +2788,245 @@ Proof.
   match goal with
   | [H1: parameter_mode_x ?x = _,
      H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2; clear H2
-  end.
-   apply Copy_In_Cons_In_RTE_X; auto.
-    specialize (optimize_expression_reserve_notin _ _ _ _ _ H11 H16); auto.
-    match goal with
-    | [H: well_check_flagged_args _ _ |- _] => inversion H; smack
-    end;
-    match goal with
-    | [H1: exp_check_flags ?e = _ , H2: List.In _ (exp_check_flags ?e) -> False |- _] => rewrite H1 in H2; smack
-    | _ => idtac
-    end.
-    apply_expression_optimization_soundness; auto.
-  apply Copy_In_Cons_In_X with (v:=v0) (f':=(STACK.push f (parameter_name_x a) v0)); auto.
-    admit. admit. specialize (IHparams _ _ _ _ _ _ H H18 H12); auto.
-  apply Copy_In_Cons_In_E_RTE_X with (cks1:=cks1) (cks2:=cks2); auto.
-    admit. admit.
-  apply Copy_In_Cons_In_Range_RTE_X with (cks1:=cks1) (cks2:=cks2) (v:=v0) (l:=l) (u:=u); auto.
-    admit. admit. 
-  apply Copy_In_Cons_In_Range_X with (cks1:=cks1) (cks2:=cks2) (v:=v0) (l:=l) (u:=u) 
-                                     (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v0)))); auto.
-    admit. admit. specialize (IHparams _ _ _ _ _ _ H H20 H12); auto.
-  + (* 2. Args_Head_In_Range_Pass *)
+  end;
   match goal with
-  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; smack
-  end.
-  apply Copy_In_Cons_In_RTE_X; auto.
-    admit. admit.
-  apply Copy_In_Cons_In_X with (v:=v) (f':=(STACK.push f (parameter_name_x a) v)); auto.
-    admit. admit. specialize (IHparams _ _ _ _ _ _ H H21 H16); auto.
-  apply Copy_In_Cons_In_RTE_X; auto.
-    admit. admit.
-  (* use contradictionary: possible value of argument is in the domain of its type, so there should be no overflow *)
-  admit.
-  apply Copy_In_Cons_In_X with (v:=(BasicV (Int v))) (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v)))); auto.
-    admit. admit. specialize (IHparams _ _ _ _ _ _ H H23 H16); auto.
-  + (* 3. Args_Head_In_Range_Fail *)
+  | [H: well_check_flagged_args _ _ |- _] => inversion H; smack
+  end;
+  match goal with
+  | [H1: exp_check_flags ?e = _ , H2: List.In _ (exp_check_flags ?e) -> False |- _] => rewrite H1 in H2; smack
+  | _ => idtac
+  end;
+  [ apply Copy_In_Cons_In_RTE_X; auto;
+      [ apply_optimize_expression_reserve_notin; auto |
+        apply_expression_optimization_soundness; auto ] |
+    apply Copy_In_Cons_In_X with (v:=v0) (f':=(STACK.push f (parameter_name_x a) v0)); auto;
+      [ apply_optimize_expression_reserve_notin; auto |
+        apply_expression_optimization_soundness; auto |
+        specialize (IHparams _ _ _ _ _ _ H H14 H19 H13); auto] |
+    | |
+  ];
+  apply_optimize_expression_reserve_range_check; intros HZ; destruct HZ as [cks1' [cks2' HZ1]];
+  [ apply Copy_In_Cons_In_E_RTE_X with (cks1:=cks1') (cks2:=cks2'); auto |
+    apply Copy_In_Cons_In_Range_RTE_X with (cks1:=cks1') (cks2:=cks2') (v:=v0) (l:=l) (u:=u); auto |
+    apply Copy_In_Cons_In_Range_X with (cks1:=cks1') (cks2:=cks2') (v:=v0) (l:=l) (u:=u) 
+                                     (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v0)))); auto
+  ];
+  match goal with
+  | [H1: exp_check_flags ?e = _ , H2: exp_check_flags ?e = _ |- _] => rewrite H2 in H1
+  end;
+  apply_range_check_not_in_expr; rewrite update_exp_with_new_check_flags; intros HZ0;
+  apply_list_components_equal;
+  apply_optimize_expression_range_check_notin; intros HZ2;
+  apply_remove_a_unique_check; intros HZ3;
+  apply_optimize_expr_to_same_checkflags; intros HZ4;
+  apply_expression_optimization_soundness; auto.  
+  specialize (IHparams _ _ _ _ _ _ H H16 H21 H13); auto.
+  + (* 2. Args_Head_In_Range_Pass *)
   match goal with
   | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
   end;
   match goal with
   | [H1: parameter_mode_x ?x = _,
      H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2; clear H2
-  end.   
-  apply Copy_In_Cons_In_RTE_X; auto.
-    admit. admit.
-  apply Copy_In_Cons_In_X with (v:=v) (f':=(STACK.push f (parameter_name_x a) v)); auto.
-    admit. admit. specialize (IHparams _ _ _ _ _ _ H H19 H13); auto.
-  apply Copy_In_Cons_In_E_RTE_X with (cks1:=cks1) (cks2:=cks2); auto.
-    admit. admit.  
-  apply Copy_In_Cons_In_Range_RTE_X with (cks1:=cks1) (cks2:=cks2) (v:=v) (l:=l0) (u:=u0); auto.
-    admit. admit. 
-  apply Copy_In_Cons_In_Range_X with (cks1:=cks1) (cks2:=cks2) (v:=v) (l:=l0) (u:=u0) 
-                                     (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v)))); auto.
-    admit. admit. specialize (IHparams _ _ _ _ _ _ H H21 H13); auto.
+  end;
+  match goal with
+  | [H: well_check_flagged_args _ _ |- _] => inversion H; smack
+  end;
+  match goal with
+  | [H1: exp_check_flags ?e = _ , H2: List.In _ (exp_check_flags ?e) -> False |- _] => rewrite H1 in H2; smack
+  | _ => idtac
+  end;
+  [ apply Copy_In_Cons_In_RTE_X; auto;
+      [ rewrite update_exp_with_new_check_flags; apply_removed_check_flag_notin; auto |
+        apply_optimize_expression_reserve_notin; intros HZ0;
+        apply_remove_notin_check_flag; intros HZ1; apply_remove_check_flag_unique; intros HZ2; subst;
+        rewrite update_exp_with_same_check_flags;
+        apply_expression_optimization_soundness; auto
+      ] |
+    apply Copy_In_Cons_In_X with (v:=v) (f':=(STACK.push f (parameter_name_x a) v)); auto;
+      [ rewrite update_exp_with_new_check_flags; apply_removed_check_flag_notin; auto |
+        apply_optimize_expression_reserve_notin; intros HZ0;
+        apply_remove_notin_check_flag; intros HZ1; apply_remove_check_flag_unique; intros HZ2; subst;
+        rewrite update_exp_with_same_check_flags;
+        apply_expression_optimization_soundness; auto |
+        specialize (IHparams _ _ _ _ _ _ H H16 H22 H17); auto
+      ] |
+    | | 
+  ];
+  apply_optimize_expression_reserve_range_check; intros HZ; destruct HZ as [cks1' [cks2' HZ1]];
+  [ apply Copy_In_Cons_In_RTE_X; auto |
+    (* use contradictionary: possible value of argument is in the domain of its type, so there should be no overflow *)
+    apply_extract_subtype_range_unique; intros HZ6; destruct HZ6; subst; admit |
+    apply Copy_In_Cons_In_X with (v:=(BasicV (Int v))) (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v)))); auto
+  ];
+  solve [
+    rewrite update_exp_with_new_check_flags; apply_removed_check_flag_notin; auto |
+    match goal with
+    | [H1: exp_check_flags ?e = _ , H2: exp_check_flags ?e = _ |- _] => rewrite H2 in H1
+    end;
+    apply_range_check_not_in_expr; rewrite update_exp_with_new_check_flags; intros HZ0;
+    apply_list_components_equal;
+    apply_optimize_expression_range_check_notin; intros HZ2;
+    apply_remove_a_unique_check; intros HZ3;
+    apply_optimize_expr_to_same_checkflags; intros HZ4;
+    apply_remove_check_flag_unique; intros HZ5; subst;
+    apply_expression_optimization_soundness; auto |
+    specialize (IHparams _ _ _ _ _ _ H H19 H24 H17); auto
+  ].
+  + (* 3. Args_Head_In_Range_Fail *)
+  match goal with
+  | [H: do_range_check _ _ _ (Exception RTE_Range) \/ do_range_check _ _ _ (Exception RTE_Range) |- _] => clear H
+  end;
+  match goal with
+  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H1: parameter_mode_x ?x = _,
+     H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2; clear H2
+  end;
+  match goal with
+  | [H: well_check_flagged_args _ _ |- _] => inversion H; smack
+  end;
+  match goal with
+  | [H1: exp_check_flags ?e = _ , H2: List.In _ (exp_check_flags ?e) -> False |- _] => rewrite H1 in H2; smack
+  | _ => idtac
+  end;
+  [ apply Copy_In_Cons_In_RTE_X; auto;
+      [ apply_optimize_expression_reserve_notin; auto |
+        apply_expression_optimization_soundness; auto ] |
+    apply Copy_In_Cons_In_X with (v:=v) (f':=(STACK.push f (parameter_name_x a) v)); auto;
+      [ apply_optimize_expression_reserve_notin; auto |
+        apply_expression_optimization_soundness; auto |
+        specialize (IHparams _ _ _ _ _ _ H H13 H19 H14); auto] |
+    | |
+  ];
+  apply_optimize_expression_reserve_range_check; intros HZ; destruct HZ as [cks1' [cks2' HZ1]];
+  [ apply Copy_In_Cons_In_E_RTE_X with (cks1:=cks1') (cks2:=cks2'); auto |
+    apply Copy_In_Cons_In_Range_RTE_X with (cks1:=cks1') (cks2:=cks2') (v:=v) (l:=l') (u:=u'); auto |
+    apply Copy_In_Cons_In_Range_X with (cks1:=cks1') (cks2:=cks2') (v:=v) (l:=l') (u:=u') 
+                                     (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v)))); auto
+  ];
+  solve [
+    match goal with
+    | [H1: exp_check_flags ?e = _ , H2: exp_check_flags ?e = _ |- _] => rewrite H2 in H1
+    end;
+    apply_range_check_not_in_expr; rewrite update_exp_with_new_check_flags; intros HZ0;
+    apply_list_components_equal;
+    apply_optimize_expression_range_check_notin; intros HZ2;
+    apply_remove_a_unique_check; intros HZ3;
+    apply_optimize_expr_to_same_checkflags; intros HZ4;
+    apply_expression_optimization_soundness; auto |
+    apply_extract_subtype_range_unique; smack |
+    specialize (IHparams _ _ _ _ _ _ H H16 H21 H14); auto
+  ].
   + (* 4. Args_Head_Out_Arg *)  
   match goal with
-  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; smack
-  end.
-  apply Copy_In_Cons_Out_X with (f':=(STACK.push f (parameter_name_x a) Undefined)); auto.
-    specialize (IHparams _ _ _ _ _ _ H H20 H12); auto.
+  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H1: parameter_mode_x ?x = _,
+     H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2; clear H2
+  end;
+  match goal with
+  | [H: well_check_flagged_args _ _ |- _] => inversion H; smack
+  end;
+  apply Copy_In_Cons_Out_X with (f':=(STACK.push f (parameter_name_x a) Undefined)); auto;
+  specialize (IHparams _ _ _ _ _ _ H H14 H21 H13); auto.
   + (* 5. Args_Head_Out_Param *)
   match goal with
-  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; smack
-  end.
-  apply Copy_In_Cons_Out_X with (f':=(STACK.push f (parameter_name_x a) Undefined)); auto.
-    specialize (IHparams _ _ _ _ _ _ H H21 H13); auto.  
+  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H1: parameter_mode_x ?x = _,
+     H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2; clear H2
+  end;
+  match goal with
+  | [H: well_check_flagged_args _ _ |- _] => inversion H; smack
+  end;
+  apply Copy_In_Cons_Out_X with (f':=(STACK.push f (parameter_name_x a) Undefined)); auto;
+  specialize (IHparams _ _ _ _ _ _ H H15 H22 H14); auto.
   + (* 6. Args_Head_Out_Range_Pass *)
   match goal with
-  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; smack
-  end.
-  apply Copy_In_Cons_Out_X with (f':=(STACK.push f (parameter_name_x a) Undefined)); auto.
-    specialize (IHparams _ _ _ _ _ _ H H24 H16); auto.    
+  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H1: parameter_mode_x ?x = _,
+     H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2; clear H2
+  end;
+  match goal with
+  | [H: well_check_flagged_args _ _ |- _] => inversion H; smack
+  end;
+  apply Copy_In_Cons_Out_X with (f':=(STACK.push f (parameter_name_x a) Undefined)); auto;
+  specialize (IHparams _ _ _ _ _ _ H H18 H25 H17); auto. 
   + (* 7. Args_Head_Out_Range_Fail *)
   match goal with
-  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; smack
-  end.
-  apply Copy_In_Cons_Out_X with (f':=(STACK.push f (parameter_name_x a) Undefined)); auto.
-    specialize (IHparams _ _ _ _ _ _ H H22 H14); auto.
-  apply Copy_In_Cons_Out_X with (f':=(STACK.push f (parameter_name_x a) Undefined)); auto.
-    specialize (IHparams _ _ _ _ _ _ H H22 H14); auto.
+  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H1: parameter_mode_x ?x = _,
+     H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2; clear H2
+  end;
+  match goal with
+  | [H: well_check_flagged_args _ _ |- _] => inversion H; smack
+  end;
+  apply Copy_In_Cons_Out_X with (f':=(STACK.push f (parameter_name_x a) Undefined)); auto;
+  specialize (IHparams _ _ _ _ _ _ H H16 H23 H15); auto.
   + (* 8. Args_Head_InOut_Param *)
   match goal with
-  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; smack
-  end.
-  apply Copy_In_Cons_InOut_X with (v:=v) (f':=(STACK.push f (parameter_name_x a) v)); auto.
-    specialize (IHparams _ _ _ _ _ _ H H21 H11); auto.
-  apply Copy_In_Cons_InOut_Range_RTE_X with (v:=v) (l:=l) (u:=u); auto.
-  apply Copy_In_Cons_InOut_Range_X with (v:=v) (l:=l) (u:=u) (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v)))); auto.
-    specialize (IHparams _ _ _ _ _ _ H H23 H11); auto.
+  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H1: parameter_mode_x ?x = _,
+     H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2; clear H2
+  end;
+  match goal with
+  | [H: well_check_flagged_args _ _ |- _] => inversion H; smack
+  end;
+  solve [
+    apply Copy_In_Cons_InOut_X with (v:=v) (f':=(STACK.push f (parameter_name_x a) v)); auto;
+      specialize (IHparams _ _ _ _ _ _ H H14 H22 H12); auto |
+    apply Copy_In_Cons_InOut_Range_RTE_X with (v:=v) (l:=l) (u:=u); auto |
+    apply Copy_In_Cons_InOut_Range_X with (v:=v) (l:=l) (u:=u) (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v)))); auto;
+      try ((specialize (IHparams _ _ _ _ _ _ H H14 H24 H12)) || (specialize (IHparams _ _ _ _ _ _ H H13 H24 H12))); auto
+  ].
   + (* 9. Args_Head_InOut_Arg *)
   match goal with
-  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; smack
-  end.
-  apply Copy_In_Cons_InOut_X with (v:=v) (f':=(STACK.push f (parameter_name_x a) v)); auto.
-    specialize (IHparams _ _ _ _ _ _ H H22 H12); auto.
-  apply Copy_In_Cons_InOut_Range_RTE_X with (v:=v) (l:=l) (u:=u); auto.
-  apply Copy_In_Cons_InOut_Range_X with (v:=v) (l:=l) (u:=u) (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v)))); auto.
-    specialize (IHparams _ _ _ _ _ _ H H24 H12); auto.
+  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H1: parameter_mode_x ?x = _,
+     H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2; clear H2
+  end;
+  match goal with
+  | [H: well_check_flagged_args _ _ |- _] => inversion H; smack
+  end;
+  solve [
+    apply Copy_In_Cons_InOut_X with (v:=v) (f':=(STACK.push f (parameter_name_x a) v)); auto;
+      specialize (IHparams _ _ _ _ _ _ H H15 H23 H13); auto |
+    apply Copy_In_Cons_InOut_Range_RTE_X with (v:=v) (l:=l) (u:=u); auto |
+    apply Copy_In_Cons_InOut_Range_X with (v:=v) (l:=l) (u:=u) (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v)))); auto;
+      try (specialize (IHparams _ _ _ _ _ _ H H15 H25 H13) || (specialize (IHparams _ _ _ _ _ _ H H14 H25 H13))); auto
+  ].
   + (* 10. Args_Head_InOut_Range_Pass *)
   match goal with
-  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; smack
-  end.
-  apply Copy_In_Cons_InOut_X with (v:=v) (f':=(STACK.push f (parameter_name_x a) v)); auto.
-    admit. specialize (IHparams _ _ _ _ _ _ H H27 H17); auto.
-  (* use contradictionary: possible value of argument is in the domain of its type, so there should be no overflow *)
-  admit.
-  apply Copy_In_Cons_InOut_X with (v:=(BasicV (Int v))) (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v)))); auto.
-    admit. specialize (IHparams _ _ _ _ _ _ H H29 H17); auto.
+  | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H1: parameter_mode_x ?x = _,
+     H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2; clear H2
+  end;
+  [ apply Copy_In_Cons_InOut_X with (v:=v) (f':=(STACK.push f (parameter_name_x a) v)); auto |
+    apply_extract_subtype_range_unique; smack;
+    (* use contradictionary: possible value of argument is in the domain of its type, so there should be no overflow *)
+    admit |
+    apply Copy_In_Cons_InOut_X with (v:=(BasicV (Int v))) (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v)))); auto
+  ];
+  solve [
+    specialize (removed_check_flag_notin _ _ _ H16); intros HZ0; apply_notin_reserved_by_remove; auto |
+    match goal with
+    | [H: well_check_flagged_args _ _ |- _] => inversion H; smack
+    end
+  ].
   + (* 11. Args_Head_InOut_In_Range_Pass *)
   match goal with
   | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
@@ -2877,13 +3034,19 @@ Proof.
   match goal with
   | [H1: parameter_mode_x ?x = _,
      H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2; clear H2
-  end.
-  apply Copy_In_Cons_InOut_X with (v:=v) (f':=(STACK.push f (parameter_name_x a) v)); auto.
-    admit. specialize (IHparams _ _ _ _ _ _ H H26 H16); auto.
-  (* use contradictionary: possible value of argument is in the domain of its type, so there should be no overflow *)
-  admit.
-  apply Copy_In_Cons_InOut_X with (v:=(BasicV (Int v))) (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v)))); auto.
-    admit. specialize (IHparams _ _ _ _ _ _ H H28 H16); auto.  
+  end;
+  [ apply Copy_In_Cons_InOut_X with (v:=v) (f':=(STACK.push f (parameter_name_x a) v)); auto |
+    apply_extract_subtype_range_unique; intros HZ0; destruct HZ0; subst;
+    (* use contradictionary: possible value of argument is in the domain of its type, so there should be no overflow *)
+    admit |
+    apply Copy_In_Cons_InOut_X with (v:=(BasicV (Int v))) (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v)))); auto
+  ];
+  solve [
+    apply_removed_check_flag_notin; auto |
+    match goal with
+    | [H: well_check_flagged_args _ _ |- _] => inversion H; smack
+    end
+  ].
   + (* 12. Args_Head_InOut_Out_Range_Pass *)
   match goal with
   | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
@@ -2891,13 +3054,20 @@ Proof.
   match goal with
   | [H1: parameter_mode_x ?x = _,
      H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2; clear H2
-  end.
-  apply Copy_In_Cons_InOut_X with (v:=v) (f':=(STACK.push f (parameter_name_x a) v)); auto.
-    admit. specialize (IHparams _ _ _ _ _ _ H H26 H16); auto.
-  apply Copy_In_Cons_InOut_Range_RTE_X with (v:=v) (l:=l) (u:=u); auto.
-    admit. admit.
-  apply Copy_In_Cons_InOut_Range_X with (v:=v) (l:=l) (u:=u) (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v)))); auto.
-    admit. admit. specialize (IHparams _ _ _ _ _ _ H H28 H16); auto.
+  end;
+  [ apply Copy_In_Cons_InOut_X with (v:=v) (f':=(STACK.push f (parameter_name_x a) v)); auto |
+    apply Copy_In_Cons_InOut_Range_RTE_X with (v:=v) (l:=l) (u:=u); auto |
+    apply Copy_In_Cons_InOut_Range_X with (v:=v) (l:=l) (u:=u) (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v)))); auto
+  ];
+  solve [
+    apply_notin_reserved_by_remove; auto |
+    match goal with
+    | [H: well_check_flagged_args _ _ |- _] => inversion H; smack
+    end |
+    assert(HZ0: beq_check_flag Do_Range_Check_On_CopyOut Do_Range_Check = false); unfold beq_check_flag; auto;
+      apply_in_reserved_by_remove; auto |
+    apply_extract_subtype_range_unique; smack
+  ].
   + (* 13. Args_Head_InOut_Range_Fail *)
   match goal with
   | [H: copy_in_x _ _ _ (?a :: ?al) (?e :: ?el) _ |- _] => inversion H; subst
@@ -2905,16 +3075,19 @@ Proof.
   match goal with
   | [H1: parameter_mode_x ?x = _,
      H2: parameter_mode_x ?x = _ |- _] => rewrite H1 in H2; inversion H2; clear H2
-  end.
-  apply Copy_In_Cons_InOut_X with (v:=v) (f':=(STACK.push f (parameter_name_x a) v)); auto.
-    specialize (IHparams _ _ _ _ _ _ H H25 H15); auto.
-  apply Copy_In_Cons_InOut_Range_RTE_X with (v:=v) (l:=l) (u:=u); auto.
-    admit. 
-  apply Copy_In_Cons_InOut_Range_X with (v:=v) (l:=l) (u:=u) 
-                                        (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v)))); auto.
-    admit. specialize (IHparams _ _ _ _ _ _ H H27 H15); auto. 
+  end;
+  [ apply Copy_In_Cons_InOut_X with (v:=v) (f':=(STACK.push f (parameter_name_x a) v)); auto |
+    apply Copy_In_Cons_InOut_Range_RTE_X with (v:=v) (l:=l) (u:=u); auto |
+    apply Copy_In_Cons_InOut_Range_X with (v:=v) (l:=l) (u:=u) 
+                                        (f':=(STACK.push f (parameter_name_x a) (BasicV (Int v)))); auto
+  ];
+  solve [
+    apply_extract_subtype_range_unique; smack |
+    match goal with
+    | [H: well_check_flagged_args _ _ |- _] => inversion H; smack
+    end
+  ].
 Qed.
-
 
 
 
@@ -3036,13 +3209,17 @@ Proof.
   | _ => idtac
   end.
   apply Copy_Out_Cons_Out_X with (v:=v) (s':=s'0); auto. 
-    admit.
+    apply_removed_check_flag_notin; auto.
     assert(HE1: well_typed_stack st s'0). admit.
     specialize (IHparams _ _ _ _ _ _ HE1 H26 H16); auto.
+  match goal with
+  | [H1: fetch_exp_type_x _ _ = _ , H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H2 in H1; inversion H1; subst
+  end.
+  apply_extract_subtype_range_unique; intros HZ0; destruct HZ0; subst.
   (* use contradictionary to prove... *)
   admit.
   apply Copy_Out_Cons_Out_X with (v:=(BasicV (Int v))) (s':=s'0); auto.
-    admit.
+    apply_removed_check_flag_notin; auto.
     assert(HE1: well_typed_stack st s'0). admit.
     specialize (IHparams _ _ _ _ _ _ HE1 H29 H16); auto.
   + (* 7. Args_Head_Out_Range_Fail *)
@@ -3060,11 +3237,11 @@ Proof.
   apply Copy_Out_Cons_Out_Range_RTE_X with (v:=v) (t:=t) (l:=l') (u:=u'); auto.
     match goal with
     | [H1: fetch_exp_type_x _ _ = _, H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst; auto
-    end. admit.
+    end. apply_extract_subtype_range_unique; smack.
   apply Copy_Out_Cons_Out_Range_X with (v:=v) (t:=t) (l:=l') (u:=u') (s':=s'0); auto.
     match goal with
     | [H1: fetch_exp_type_x _ _ = _, H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst; auto
-    end. admit.
+    end. apply_extract_subtype_range_unique; smack.
     assert(HE1: well_typed_stack st s'0). admit.
     specialize (IHparams _ _ _ _ _ _ HE1 H27 H14); auto.
   + (* 8. Args_Head_InOut_Param *)
@@ -3115,16 +3292,17 @@ Proof.
   | _ => idtac
   end.
   apply Copy_Out_Cons_Out_X with (v:=v) (s':=s'0); auto. 
-    admit.
+    apply_removed_check_flag_notin; auto.
     assert(HE1: well_typed_stack st s'0). admit.
     specialize (IHparams _ _ _ _ _ _ HE1 H27 H17); auto.
   match goal with
-    | [H1: fetch_exp_type_x _ _ = _, H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst; auto
+    | [H1: fetch_exp_type_x _ _ = _, H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H2 in H1; inversion H1; subst; auto
   end.
+  apply_extract_subtype_range_unique; intros HZ0; destruct HZ0; subst.
   (* proof by contraditionary ... *)
   admit.
   apply Copy_Out_Cons_Out_X with (v:=(BasicV (Int v))) (s':=s'0); auto.
-    admit.
+    apply_removed_check_flag_notin; auto.
     assert(HE1: well_typed_stack st s'0). admit.
     specialize (IHparams _ _ _ _ _ _ HE1 H30 H17); auto.
   + (* 11. Args_Head_InOut_In_Range_Pass *)
@@ -3137,19 +3315,21 @@ Proof.
   | _ => idtac
   end.
   apply Copy_Out_Cons_Out_X with (v:=v) (s':=s'0); auto. 
-    admit.
+    apply_notin_reserved_by_remove; auto.
     assert(HE1: well_typed_stack st s'0). admit.
     specialize (IHparams _ _ _ _ _ _ HE1 H26 H16); auto.
   apply Copy_Out_Cons_Out_Range_RTE_X with (v:=v) (t:=t) (l:=l') (u:=u'); auto.
-    admit.
+    assert(HZ0: beq_check_flag Do_Range_Check Do_Range_Check_On_CopyOut = false); unfold beq_check_flag; auto.
+    apply_in_reserved_by_remove; auto.
     match goal with
-    | [H1: fetch_exp_type_x _ _ = _, H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst; auto
-    end. admit.
+    | [H1: fetch_exp_type_x _ _ = _, H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H2 in H1; inversion H1; subst
+    end. apply_extract_subtype_range_unique; smack.
   apply Copy_Out_Cons_Out_Range_X with (v:=v) (t:=t) (l:=l') (u:=u') (s':=s'0); auto.
-    admit.
+    assert(HZ0: beq_check_flag Do_Range_Check Do_Range_Check_On_CopyOut = false); unfold beq_check_flag; auto.
+    apply_in_reserved_by_remove; auto.
     match goal with
     | [H1: fetch_exp_type_x _ _ = _, H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst; auto
-    end. admit.
+    end. apply_extract_subtype_range_unique; smack.
     assert(HE1: well_typed_stack st s'0). admit.
     specialize (IHparams _ _ _ _ _ _ HE1 H29 H16); auto. 
   + (* 12. Args_Head_InOut_Out_Range_Pass *)
@@ -3162,15 +3342,16 @@ Proof.
   | _ => idtac
   end.
   apply Copy_Out_Cons_Out_X with (v:=v) (s':=s'0); auto. 
-    admit.
+    apply_notin_reserved_by_remove; auto.
     assert(HE1: well_typed_stack st s'0). admit.
     specialize (IHparams _ _ _ _ _ _ HE1 H26 H16); auto.
   (* proof by contraditionary ... *)
   match goal with
-    | [H1: fetch_exp_type_x _ _ = _, H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst; auto
-  end. admit.
+    | [H1: fetch_exp_type_x _ _ = _, H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst
+  end. apply_extract_subtype_range_unique; intros HZ0; destruct HZ0; subst.
+  admit.
   apply Copy_Out_Cons_Out_X with (v:=(BasicV (Int v))) (s':=s'0); auto.
-    admit.
+    apply_removed_check_flag_notin; auto.
     assert(HE1: well_typed_stack st s'0). admit.
     specialize (IHparams _ _ _ _ _ _ HE1 H29 H16); auto.
   + (* 13. Args_Head_InOut_InOut_Range_Fail *)
@@ -3188,125 +3369,157 @@ Proof.
   apply Copy_Out_Cons_Out_Range_RTE_X with (v:=v) (t:=t) (l:=l') (u:=u'); auto.
     match goal with
     | [H1: fetch_exp_type_x _ _ = _, H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst; auto
-    end. admit.
+    end. apply_extract_subtype_range_unique; smack.
   apply Copy_Out_Cons_Out_Range_X with (v:=v) (t:=t) (l:=l') (u:=u') (s':=s'0); auto.
     match goal with
     | [H1: fetch_exp_type_x _ _ = _, H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst; auto
-    end. admit.
+    end. apply_extract_subtype_range_unique; smack.
     assert(HE1: well_typed_stack st s'0). admit.
     specialize (IHparams _ _ _ _ _ _ HE1 H28 H15); auto.
 Qed.
 
 
-
 Lemma store_update_optimization_soundness: forall st s x v s' v' x',
-  storeUpdate_x st s x v s' ->
-    optimize_name_x st x (v', x') ->
-      well_typed_stack st s ->
-        storeUpdate_x st s x' v s'.
+  well_typed_stack st s ->
+    well_check_flagged_name x -> 
+      storeUpdate_x st s x v s' ->
+        optimize_name_x st x (v', x') ->
+          storeUpdate_x st s x' v s'.
 Proof.
   intros.
-  inversion H; subst.
+  inversion H1; subst.
 - (* 1. SU_Identifier_X *)
   match goal with
   | [H: optimize_name_x _ _ _ |- _] => inversion H; subst; auto
   end.
 - (* 2. SU_Indexed_Component_RTE_X *)
   match goal with
-  | [H: optimize_name_x _ _ _ |- _] => inversion H; subst; auto
+  | [H: well_check_flagged_name _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H1: exp_check_flags ?e = _, 
+     H2: ~ List.In _ (exp_check_flags ?e) |- _] => rewrite H1 in H2; smack
   end.
-  (* 2.1 *)
-  apply SU_Indexed_Component_RTE_X; auto.
-    admit.
-    admit.
-  (* 2.2 *)
-  apply SU_Indexed_Component_RTE_X; auto.
-    admit.
-    admit.
 - (* 3. SU_Indexed_Component_Undef_X *)
   match goal with
-  | [H: optimize_name_x _ _ _ |- _] => inversion H; subst; auto
+  | [H: well_check_flagged_name _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H1: exp_check_flags ?e = _, 
+     H2: ~ List.In _ (exp_check_flags ?e) |- _] => rewrite H1 in H2; smack
   end.
-  (* 3.1 *)
-  apply SU_Indexed_Component_Undef_X with (i:=i); auto.
-    admit.
-    admit.
-  (* 3.2 *)
-  apply SU_Indexed_Component_Undef_X with (i:=i); auto.
-    admit.
-    admit.
 - (* 4. SU_Indexed_Component_X *)
   match goal with
-  | [H: optimize_name_x _ _ _ |- _] => inversion H; subst; auto
+  | [H: well_check_flagged_name _ |- _] => inversion H; subst
+  end;
+  match goal with
+  | [H1: exp_check_flags ?e = _, 
+     H2: ~ List.In _ (exp_check_flags ?e) |- _] => rewrite H1 in H2; smack
   end.
-  (* 4.1 *)
-  apply SU_Indexed_Component_X with (i:=i) (a:=a) (a1:=(arrayUpdate a i v0)); auto.
-    admit.
-    admit.
-  (* 4.2 *)
-  apply SU_Indexed_Component_X with (i:=i) (a:=a) (a1:=(arrayUpdate a i v0)); auto.
-    admit.
-    admit.  
 - (* 5. SU_Indexed_Component_E_RTE_X *)
   match goal with
   | [H: optimize_name_x _ _ _ |- _] => inversion H; subst; auto
-  end.
-  (* 5.1 *)
-  apply SU_Indexed_Component_RTE_X; auto.
-    admit.
-    admit.
-  (* 5.2 *)
-  apply SU_Indexed_Component_E_RTE_X with (cks1:=cks1) (cks2:=cks2); auto.
-    admit.
-    admit.
+  end;
+  match goal with
+  | [H: well_check_flagged_name _ |- _] => inversion H; subst
+  end;
+  apply_optimize_expression_reserve_range_check; intros HZ; destruct HZ as [cks1' [cks2' HZ1]];
+  [ apply SU_Indexed_Component_RTE_X; auto |
+    apply SU_Indexed_Component_E_RTE_X with (cks1:=cks1') (cks2:=cks2'); auto
+  ];
+  [ rewrite update_exp_with_new_check_flags; apply_removed_check_flag_notin; auto | | ];
+  match goal with
+  | [H1: exp_check_flags ?e = _ , H2: exp_check_flags ?e = _ |- _] => rewrite H2 in H1
+  end;
+  apply_range_check_not_in_expr; rewrite update_exp_with_new_check_flags; intros HZ0;
+  apply_list_components_equal;
+  apply_optimize_expression_range_check_notin; intros HZ2;
+  apply_remove_a_unique_check; intros HZ3;
+  [ apply_remove_check_flag_unique; intros HZ; subst | ];
+  apply_optimize_expr_to_same_checkflags; intros HZ4;
+  apply_expression_optimization_soundness; auto.
 - (* 6. SU_Indexed_Component_Range_RTE_X *)
   match goal with
   | [H: optimize_name_x _ _ _ |- _] => inversion H; subst; auto
   end;
   match goal with
   | [H1: fetch_exp_type_x _ _ = _, 
-     H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst
-  end.
-  (* 6.1 *)
+     H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H2 in H1; inversion H1; subst
+  end;
+  match goal with
+  | [H: well_check_flagged_name _ |- _] => inversion H; subst
+  end;
+  apply_extract_array_index_range_x_unique; intros HZ0; destruct HZ0; subst;
+  apply_optimize_expression_reserve_range_check; intros HZ; destruct HZ as [cks1' [cks2' HZ1]].
+  (* 6.1 *)  
   (* use contradiction to prove it *)
   admit.
-  (* 6.2 *)
-  apply SU_Indexed_Component_Range_RTE_X with (cks1:=cks1) (cks2:=cks2) (i:=i) (t:=t0) (l:=l) (u:=u); auto.
-    admit.
-    admit.
+  (* 6.2 *)  
+  apply SU_Indexed_Component_Range_RTE_X with (cks1:=cks1') (cks2:=cks2') (i:=i) (t:=t) (l:=l') (u:=u'); auto.
+  match goal with
+  | [H1: exp_check_flags ?e = _ , H2: exp_check_flags ?e = _ |- _] => rewrite H2 in H1
+  end;
+  apply_range_check_not_in_expr; rewrite update_exp_with_new_check_flags; intros HZ0;
+  apply_list_components_equal;
+  apply_optimize_expression_range_check_notin; intros HZ2;
+  apply_remove_a_unique_check; intros HZ3;
+  apply_optimize_expr_to_same_checkflags; intros HZ4;
+  apply_expression_optimization_soundness; auto.
 - (* 7. SU_Indexed_Component_Range_Undef_X *)
   match goal with
   | [H: optimize_name_x _ _ _ |- _] => inversion H; subst; auto
   end;
   match goal with
   | [H1: fetch_exp_type_x _ _ = _, 
-     H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst
-  end.
-  (* 7.1 *)
-  apply SU_Indexed_Component_Undef_X with (i:=i); auto.
-    admit.
-    admit.  
-  (* 7.2 *)
-  apply SU_Indexed_Component_Range_Undef_X with (cks1:=cks1) (cks2:=cks2) (i:=i) (t:=t0) (l:=l) (u:=u); auto.
-    admit.
-    admit.
+     H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H2 in H1; inversion H1; subst
+  end;
+  match goal with
+  | [H: well_check_flagged_name _ |- _] => inversion H; subst
+  end;
+  apply_optimize_expression_reserve_range_check; intros HZ; destruct HZ as [cks1' [cks2' HZ1]];
+  [ apply SU_Indexed_Component_Undef_X with (i:=i); auto |
+    apply SU_Indexed_Component_Range_Undef_X with (cks1:=cks1') (cks2:=cks2') (i:=i) (t:=t) (l:=l') (u:=u'); auto
+  ];
+  [ rewrite update_exp_with_new_check_flags; apply_removed_check_flag_notin; auto | | | 
+    apply_extract_array_index_range_x_unique; smack
+  ];
+  match goal with
+  | [H1: exp_check_flags ?e = _ , H2: exp_check_flags ?e = _ |- _] => rewrite H2 in H1
+  end;
+  apply_range_check_not_in_expr; rewrite update_exp_with_new_check_flags; intros HZ0;
+  apply_list_components_equal;
+  apply_optimize_expression_range_check_notin; intros HZ2;
+  apply_remove_a_unique_check; intros HZ3;
+  [ apply_remove_check_flag_unique; intros HZ; subst | ];
+  apply_optimize_expr_to_same_checkflags; intros HZ4;
+  apply_expression_optimization_soundness; auto.
 - (* 8. SU_Indexed_Component_Range_X *)
   match goal with
   | [H: optimize_name_x _ _ _ |- _] => inversion H; subst; auto
   end;
   match goal with
   | [H1: fetch_exp_type_x _ _ = _, 
-     H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H1 in H2; inversion H2; subst
-  end.
-  (* 8.1 *)
-  apply SU_Indexed_Component_X with (i:=i) (a:=a) (a1:=(arrayUpdate a i v0)); auto.
-    admit.
-    admit.
-  (* 8.2 *)
-  apply SU_Indexed_Component_Range_X with (cks1:=cks1) (cks2:=cks2) (i:=i) (t:=t0) 
-                                          (l:=l) (u:=u) (a:=a) (a1:=(arrayUpdate a i v0)); auto.
-    admit.
-    admit.
+     H2: fetch_exp_type_x _ _ = _ |- _] => rewrite H2 in H1; inversion H1; subst
+  end;
+  match goal with
+  | [H: well_check_flagged_name _ |- _] => inversion H; subst
+  end;
+  apply_optimize_expression_reserve_range_check; intros HZ; destruct HZ as [cks1' [cks2' HZ1]];
+  [ apply SU_Indexed_Component_X with (i:=i) (a:=a) (a1:=(arrayUpdate a i v0)); auto |
+    apply SU_Indexed_Component_Range_X with (cks1:=cks1') (cks2:=cks2') (i:=i) (t:=t) 
+                                          (l:=l) (u:=u) (a:=a) (a1:=(arrayUpdate a i v0)); auto
+  ];
+  [ rewrite update_exp_with_new_check_flags; apply_removed_check_flag_notin; auto | | ];
+  match goal with
+  | [H1: exp_check_flags ?e = _ , H2: exp_check_flags ?e = _ |- _] => rewrite H2 in H1
+  end;
+  apply_range_check_not_in_expr; rewrite update_exp_with_new_check_flags; intros HZ0;
+  apply_list_components_equal;
+  apply_optimize_expression_range_check_notin; intros HZ2;
+  apply_remove_a_unique_check; intros HZ3;
+  [ apply_remove_check_flag_unique; intros HZ; subst | ];
+  apply_optimize_expr_to_same_checkflags; intros HZ4;
+  apply_expression_optimization_soundness; auto.
 - (* 9. SU_Selected_Component_Undef_X *)
   match goal with
   | [H: optimize_name_x _ _ _ |- _] => inversion H; subst; auto
@@ -3318,6 +3531,36 @@ Proof.
 Qed.
 
 
+Inductive well_check_flagged_stmt: symboltable_x -> statement_x -> Prop :=
+  | WCF_Null_X: forall st,
+      well_check_flagged_stmt st S_Null_X
+  | WCF_Assignment_X: forall x e st ast_num,
+      ~(List.In Do_Range_Check (name_check_flags x)) ->
+      well_check_flagged_name x ->
+      well_check_flagged_expr e ->
+      well_check_flagged_stmt st (S_Assignment_X ast_num x e)
+  | WCF_Assignment_X_Range: forall x cks1 cks2 e st ast_num,
+      name_check_flags x = cks1 ++ Do_Range_Check :: cks2 ->
+      well_check_flagged_name x ->
+      well_check_flagged_expr e ->
+      well_check_flagged_stmt st (S_Assignment_X ast_num x e)
+  | WCF_If_X: forall b st c1 c2 ast_num,
+      well_check_flagged_expr b ->
+      well_check_flagged_stmt st c1 -> 
+      well_check_flagged_stmt st c2 ->
+      well_check_flagged_stmt st (S_If_X ast_num b c1 c2)
+  | WCF_While_Loop_X: forall b st c ast_num,
+      well_check_flagged_expr b ->
+      well_check_flagged_stmt st c ->
+      well_check_flagged_stmt st (S_While_Loop_X ast_num b c)
+  | WCF_Procedure_Call_X: forall p st n pb args ast_num p_ast_num,
+      fetch_proc_x p st = Some (n, pb) ->
+      well_check_flagged_args (procedure_parameter_profile_x pb) args ->
+      well_check_flagged_stmt st (S_Procedure_Call_X ast_num p_ast_num p args)
+  | WCF_Sequence_X: forall st c1 c2 ast_num,
+      well_check_flagged_stmt st c1 ->
+      well_check_flagged_stmt st c2 ->
+      well_check_flagged_stmt st (S_Sequence_X ast_num c1 c2).
 
 
 (** * Checks Optimizatioin Soundness for Statement *)
@@ -3333,6 +3576,14 @@ Lemma statement_checks_optimization_soundness: forall st s c s' c',
     optimize_statement_x st c c' ->
       well_typed_stack st s ->
         eval_stmt_x st s c' s'.
+(*
+Lemma statement_checks_optimization_soundness: forall st s c s' c',
+  well_typed_stack st s ->
+    well_check_flagged_stmt st c ->
+      eval_stmt_x st s c s' ->
+        optimize_statement_x st c c' ->
+          eval_stmt_x st s c' s'.
+*)
 Proof.
   intros st s c s' c' H; revert c';
   induction H; intros.
@@ -3347,7 +3598,7 @@ Proof.
   end.
   + (* 2.1 Assignment_Range_Pass *)
   apply Eval_S_Assignment_RTE_X; auto.
-    admit.
+    rewrite update_exp_with_new_check_flags; apply_removed_check_flag_notin; auto.
     admit.
   + (* 2.2 Assignment_Range_Fail *)
   apply Eval_S_Assignment_RTE_X; auto.
