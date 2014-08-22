@@ -184,36 +184,27 @@ package body Flow_Types is
       P : Node_Id;
    begin
       P := N;
-
-      loop
-         case Nkind (P) is
-            when N_Selected_Component =>
-               F.Component.Prepend
-                 (Original_Record_Component (Entity (Selector_Name (P))));
-               P := Prefix (P);
-
-            when N_Identifier | N_Expanded_Name | N_Operator_Symbol =>
-               --  X .Y.Z
-               F.Node := Unique_Entity (Entity (P));
-
-               return F;
-
-            when N_Attribute_Reference =>
-               --  X'Update(...).Y.Z
-               --  X'Old .Y.Z
-               case Attribute_Name (P) is
-                  when Name_Old | Name_Result | Name_Update =>
-                     P := Prefix (P);
-
-                  when others =>
-                     raise Why.Unexpected_Node;
-               end case;
-
-            when others =>
-               raise Program_Error;
-         end case;
+      while Nkind (P) = N_Selected_Component loop
+         F.Component.Append
+           (Original_Record_Component (Entity (Selector_Name (P))));
+         P := Prefix (P);
       end loop;
+      F.Component.Reverse_Elements;
 
+      case Nkind (P) is
+         when N_Identifier | N_Expanded_Name =>
+            --  X .Y.Z
+            F.Node := Unique_Entity (Entity (P));
+
+         when N_Attribute_Reference =>
+            --  X'Old .Y.Z
+            F.Node := Entity (Prefix (P));
+
+         when others =>
+            raise Program_Error;
+      end case;
+
+      return F;
    end Record_Field_Id;
 
    -------------------
