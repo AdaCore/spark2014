@@ -119,9 +119,18 @@ For this to work:
 
 - ``${install_dir}`` should be the directory where you installed |SPARK|;
 
-- ``${editor}`` must be a previously defined editor in ``.why3.conf``, the
-  default ``.why3.conf`` already defines two commonly used editors for Coq:
-  ``coqide`` and ``proofgeneral-coq``;
+- ``${editor}`` must be a previously defined editor in ``.why3.conf``,
+  here are the configurations for the two commonly used editors for Coq,
+  ``CoqIDE`` and ``Proof General``::
+
+    [editor proofgeneral-coq]
+    command = "emacs --exec \\\"(push '(\\\"%o/why3_libs/coq\\\" \\\"Why3\\\") coq-load-path)\\\" %f"
+    name = "Emacs/ProofGeneral/Coq"
+
+    [editor coqide]
+    command = "coqide -I %l/coq-tactic -R %o/why3_libs/coq Why3 %f"
+    name = "CoqIDE"
+
 
 - replace the version by your Coq version (e.g. ``version = "8.4pl3"``)
 
