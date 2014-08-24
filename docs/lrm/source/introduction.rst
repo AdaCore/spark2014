@@ -882,11 +882,9 @@ Some use cases where the synthesis of aspects is likely to be required are:
   the code was written with the intention that it would be analyzed.
 
 - Code is in maintenance phase, it might or might not have all of the |SPARK|
-  specific aspects. If the aspects are present, the synthesized aspects may be
-  compared with the explicit ones and auto correction used to update the aspects
-  if the changes are acceptable. If there are aspects missing they are
-  automatically synthesized for analysis purposes. This is also regarded
-  as generative analysis.
+  specific aspects.  If there are aspects missing they are automatically 
+  for analysis purposes when possible. This is also regarded as generative
+  analysis.
 
 - Legacy code is analyzed which has no or incomplete |SPARK| specific aspects
   This is regarded as *retrospective analysis*, where code is being analyzed
