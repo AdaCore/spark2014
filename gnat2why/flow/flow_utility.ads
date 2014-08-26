@@ -68,8 +68,9 @@ package Flow_Utility is
      (Entire_Var : Entity_Id;
       Scope      : Flow_Scope)
       return Flow_Id_Sets.Set
-      with Pre => Ekind (Get_Full_Type_Without_Checking (Entire_Var)) in
-        E_Record_Type | E_Record_Subtype;
+   with Pre =>
+     Ekind (Get_Full_Type_Without_Checking (Entire_Var)) in
+       E_Record_Type | E_Record_Subtype | E_Class_Wide_Type;
    --  Given the record Entire_Var, return a set with all components.
    --  So, for example we might return:
    --     * p.x
@@ -84,11 +85,12 @@ package Flow_Utility is
      (The_Record_Field : Flow_Id;
       Scope            : Flow_Scope)
       return Flow_Id_Sets.Set
-      with Pre => The_Record_Field.Kind in Direct_Mapping | Record_Field
-                  and then Ekind (Get_Full_Type_Without_Checking
-                                    (Get_Direct_Mapping_Id
-                                       (The_Record_Field))) in
-                                     E_Record_Type | E_Record_Subtype;
+   with Pre =>
+     The_Record_Field.Kind in Direct_Mapping | Record_Field
+     and then Ekind (Get_Full_Type_Without_Checking
+                       (Get_Direct_Mapping_Id
+                          (The_Record_Field))) in
+       E_Record_Type | E_Record_Subtype | E_Class_Wide_Type;
    --  As above but only include fields that are equal to Record_Field or are
    --  nested under it. For example if Record_Field = p.r for the above
    --  record, then we will get the following set:

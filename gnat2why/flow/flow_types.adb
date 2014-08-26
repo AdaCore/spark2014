@@ -88,7 +88,7 @@ package body Flow_Types is
          end if;
 
          if Left.Kind = Record_Field then
-            if Left.Hidden_Part /= Right.Hidden_Part then
+            if Left.Record_Part /= Right.Record_Part then
                return False;
             end if;
 
@@ -180,7 +180,7 @@ package body Flow_Types is
                       Node        => Empty,
                       Bound       => Null_Bound,
                       Component   => Entity_Lists.Empty_Vector,
-                      Hidden_Part => False);
+                      Record_Part => Normal_Part);
       P : Node_Id;
    begin
       P := N;
@@ -223,7 +223,7 @@ package body Flow_Types is
               Node        => F.Node,
               Bound       => F.Bound,
               Component   => Entity_Lists.Empty_Vector,
-              Hidden_Part => False);
+              Record_Part => Normal_Part);
 
       if F.Kind = Record_Field then
          Tmp.Component := F.Component;
@@ -241,7 +241,7 @@ package body Flow_Types is
    begin
       case F.Kind is
          when Record_Field =>
-            if F.Hidden_Part then
+            if F.Record_Part /= Normal_Part then
                return False;
             else
                return Ekind (F.Component.Last_Element) = E_Discriminant;
@@ -272,7 +272,7 @@ package body Flow_Types is
             T := Get_Full_Type (F.Node, Scope);
 
          when Record_Field =>
-            if F.Hidden_Part then
+            if F.Record_Part /= Normal_Part then
                return False;
             else
                T := Get_Full_Type (F.Component.Last_Element, Scope);
@@ -450,8 +450,8 @@ package body Flow_Types is
    function Parent_Record (F : Flow_Id) return Flow_Id is
    begin
       return R : Flow_Id := F do
-         if R.Hidden_Part then
-            R.Hidden_Part := False;
+         if R.Record_Part /= Normal_Part then
+            R.Record_Part := Normal_Part;
          else
             R.Component.Delete_Last;
          end if;
@@ -597,9 +597,14 @@ package body Flow_Types is
                Set_Casing (Mixed_Case);
                Append (R, Name_Buffer (1 .. Name_Len));
             end loop;
-            if F.Hidden_Part then
-               Append (R, "'Hidden");
-            end if;
+            case F.Record_Part is
+               when Normal_Part =>
+                  null;
+               when Hidden_Part =>
+                  Append (R, "'Hidden");
+               when The_Tag =>
+                  Append (R, "'Tag");
+            end case;
 
          when Magic_String =>
             Append (R, F.Name.all);

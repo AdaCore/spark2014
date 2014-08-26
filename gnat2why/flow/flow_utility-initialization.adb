@@ -103,7 +103,7 @@ package body Flow_Utility.Initialization is
          when Record_Field =>
             --  If the Flow_Id represents the 'Hidden part of a record
             --  then we do not consider it to be initialized.
-            if F.Hidden_Part then
+            if Is_Hidden_Part (F) or Is_Record_Tag (F) then
                return Empty;
             end if;
 
@@ -172,6 +172,10 @@ package body Flow_Utility.Initialization is
             if Is_Discriminant (F) then
                return Present (Discriminant_Default_Value
                                  (F.Component.Last_Element));
+
+            elsif Is_Record_Tag (F) then
+               return True;
+
             else
                return Default_Initialization (Typ, True) =
                         Full_Default_Initialization

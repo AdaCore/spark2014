@@ -109,6 +109,8 @@ package Flow_Types is
       --  For the procedure call parameter vertices.
    );
 
+   type Record_Part_T is (Normal_Part, Hidden_Part, The_Tag);
+
    subtype Initial_Or_Final_Variant is Flow_Id_Variant
      range Initial_Value .. Final_Value;
 
@@ -149,7 +151,7 @@ package Flow_Types is
             case Kind is
                when Record_Field =>
                   Component   : Entity_Lists.Vector;
-                  Hidden_Part : Boolean;
+                  Record_Part : Record_Part_T;
                when others =>
                   null;
             end case;
@@ -243,9 +245,15 @@ package Flow_Types is
    --  Returns true if the given flow id represents a bound.
 
    function Is_Hidden_Part (F : Flow_Id) return Boolean
-   is (F.Kind = Record_Field and then F.Hidden_Part);
-   --  Returns true if the given flow id represents the hidden part of
-   --  a record.
+   is (F.Kind = Record_Field and then F.Record_Part = Hidden_Part);
+   --  Returns true if the given flow id represents the hidden part of a
+   --  record (either because it is private and we don't have visibility or
+   --  because we are dealing with a classwide type or both).
+
+   function Is_Record_Tag (F : Flow_Id) return Boolean
+   is (F.Kind = Record_Field and then F.Record_Part = The_Tag);
+   --  Returns true if the given flow id represents the tag of a classwide
+   --  type.
 
    function Is_Volatile (F : Flow_Id) return Boolean;
    --  Returns true if the given flow id is volatile in any way.

@@ -553,10 +553,10 @@ package body Flow_Error_Messages is
                   Append (R, "null");
 
                when Direct_Mapping | Record_Field =>
-                  if F.Kind = Record_Field and then F.Hidden_Part then
+                  if Is_Hidden_Part (F) then
                      Append (R, "hidden part of ");
                      Append (R, Flow_Id_To_String
-                               (F'Update (Hidden_Part => False)));
+                               (F'Update (Record_Part => Normal_Part)));
                   else
                      Append (R, Flow_Id_To_String (F));
                   end if;

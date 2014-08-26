@@ -1674,7 +1674,7 @@ package body Flow.Analysis is
               and then Has_Array_Type (Etype (The_Var.Node)))
            or else
            (The_Var.Kind = Record_Field
-              and then not The_Var.Hidden_Part
+              and then The_Var.Record_Part = Normal_Part
               and then Ekind (Etype (The_Var.Component.Last_Element))
                          in Type_Kind
               and then Has_Array_Type

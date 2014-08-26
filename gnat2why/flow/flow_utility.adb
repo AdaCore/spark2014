@@ -201,8 +201,9 @@ package body Flow_Utility is
 
       procedure Process_Record (R_Type : Entity_Id;
                                 Comp   : Entity_Lists.Vector)
-        with Pre => Ekind (R_Type) in E_Record_Type    |
-                                      E_Record_Subtype |
+        with Pre => Ekind (R_Type) in E_Record_Type     |
+                                      E_Record_Subtype  |
+                                      E_Class_Wide_Type |
                                       Private_Kind;
       --  Recursively go through the record's components, adding
       --  everything to All_Comp.
@@ -244,13 +245,23 @@ package body Flow_Utility is
          C : Entity_Id;
          F : Flow_Id;
       begin
-         if Ekind (R_Type) in Private_Kind then
+         if Ekind (R_Type) in Private_Kind | E_Class_Wide_Type then
             F := (Kind        => Record_Field,
                   Variant     => Normal_Use,
                   Node        => Entire_Var,
                   Bound       => Null_Bound,
                   Component   => Comp,
-                  Hidden_Part => True);
+                  Record_Part => Hidden_Part);
+            Possibly_Include (F);
+         end if;
+
+         if Ekind (R_Type) in E_Class_Wide_Type then
+            F := (Kind        => Record_Field,
+                  Variant     => Normal_Use,
+                  Node        => Entire_Var,
+                  Bound       => Null_Bound,
+                  Component   => Comp,
+                  Record_Part => The_Tag);
             Possibly_Include (F);
          end if;
 
@@ -278,7 +289,7 @@ package body Flow_Utility is
                               Node        => Entire_Var,
                               Bound       => Null_Bound,
                               Component   => Tmp,
-                              Hidden_Part => False);
+                              Record_Part => Normal_Part);
                         Possibly_Include (F);
                   end case;
                end;
@@ -2015,7 +2026,7 @@ package body Flow_Utility is
                return Flow_Id_Sets.To_Set (Direct_Mapping_Id (U));
             end if;
 
-         when E_Record_Type | E_Record_Subtype =>
+         when E_Record_Type | E_Record_Subtype | E_Class_Wide_Type =>
             return All_Record_Components (Entire_Var => U,
                                           Scope      => Scope);
 

@@ -444,10 +444,13 @@ package body Flow.Control_Flow_Graph.Utility is
             A.Is_Import := Ekind (Entire_Var) in
               E_In_Out_Parameter | E_In_Parameter;
 
-            if Is_Discriminant (F_Ent) or Is_Bound (F_Ent) then
-               --  Discriminants and array bounds are *always* initialized.
-               --  They are also implicit imports if they are out
-               --  parameters.
+            if Is_Discriminant (F_Ent) or else
+              Is_Bound (F_Ent) or else
+              Is_Record_Tag (F_Ent)
+            then
+               --  Discriminants, array bounds and tags are *always*
+               --  initialized. They are also implicit imports if they are
+               --  out parameters.
                A.Is_Initialized := True;
                if Ekind (Entire_Var) = E_Out_Parameter then
                   A.Is_Import := True;
@@ -512,9 +515,12 @@ package body Flow.Control_Flow_Graph.Utility is
             A.Is_Initialized    := (not Uninit) and
               Mode in Initialized_Global_Modes;
 
-            if Is_Discriminant (F) or Is_Bound (F) then
-               --  Discriminants or array bounds are *always* initialized
-               --  imports.
+            if Is_Discriminant (F) or else
+              Is_Bound (F) or else
+              Is_Record_Tag (F)
+            then
+               --  Discriminants, array bounds and tags are *always*
+               --  initialized imports.
                A.Is_Initialized := True;
                A.Is_Import      := True;
             end if;

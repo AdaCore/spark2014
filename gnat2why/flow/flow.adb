@@ -613,7 +613,7 @@ package body Flow is
 
                   if not A.Is_Initialized then
                      Rv.Colour := To_Unbounded_String ("red");
-                  elsif Is_Discriminant (F) then
+                  elsif Is_Discriminant (F) or Is_Record_Tag (F) then
                      Rv.Colour := To_Unbounded_String ("purple");
                   end if;
 
