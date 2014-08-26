@@ -55,6 +55,14 @@ with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 
 package body Gnat2Why.Decls is
 
+   Counter_Example_Label : constant String := "GP_CE_Relevant";
+
+   function Entity_Relevant_For_Counter_Example (E : Entity_Id) return Boolean
+   is (Ekind (Etype (E)) in Scalar_Kind)
+   with Pre => Nkind (E) in N_Entity;
+   --  Returns true if the given entity should be included in the
+   --  counter-example model.
+
    function Mk_Item_Of_Entity
      (E    : Entity_Id) return Item_Type;
 
@@ -238,8 +246,8 @@ package body Gnat2Why.Decls is
      (File : in out Why_Section;
       E    : Entity_Id)
    is
-      Typ : constant W_Type_Id := EW_Abstract (Etype (E));
-
+      Typ    : constant W_Type_Id  := EW_Abstract (Etype (E));
+      Labels : Name_Id_Sets.Set    := Name_Id_Sets.Empty_Set;
    begin
       --  Start with opening the theory to define, as the creation of a
       --  function for the logic term needs the current theory to insert an
@@ -256,12 +264,16 @@ package body Gnat2Why.Decls is
 
       --  We generate a "logic", whose axiom will be given in a completion
 
+      if Entity_Relevant_For_Counter_Example (E) then
+         Labels.Include (NID (Counter_Example_Label));
+      end if;
+
       Emit (File.Cur_Theory,
             Why.Atree.Builders.New_Function_Decl
               (Domain      => EW_Term,
                Name        => To_Why_Id (E, Domain => EW_Term, Local => True),
                Binders     => (1 .. 0 => <>),
-               Labels      => Name_Id_Sets.Empty_Set,
+               Labels      => Labels,
                Return_Type => Typ));
       Insert_Entity (E, To_Why_Id (E, Typ => Typ));
       Close_Theory (File,
@@ -448,12 +460,10 @@ package body Gnat2Why.Decls is
 
    procedure Translate_Variable
      (File : in out Why_Section;
-      E     : Entity_Id)
+      E    : Entity_Id)
    is
-      Var        : constant Item_Type := Mk_Item_Of_Entity (E);
-
-   --  Start of Translate_Variable
-
+      Var    : constant Item_Type := Mk_Item_Of_Entity (E);
+      Labels : Name_Id_Sets.Set   := Name_Id_Sets.Empty_Set;
    begin
       Open_Theory (File, E_Module (E),
                    Comment =>
@@ -463,6 +473,10 @@ package body Gnat2Why.Decls is
                             " defined at " & Build_Location_String (Sloc (E))
                           else "")
                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      if Entity_Relevant_For_Counter_Example (E) then
+         Labels.Include (NID (Counter_Example_Label));
+      end if;
 
       case Var.Kind is
          when DRecord =>
@@ -474,7 +488,7 @@ package body Gnat2Why.Decls is
                  (File.Cur_Theory,
                   New_Global_Ref_Declaration
                     (Name     => Remove_Prefix (Var.Fields.Binder.B_Name),
-                     Labels   => Name_Id_Sets.Empty_Set,
+                     Labels   => Labels,
                      Ref_Type => Get_Typ (Var.Fields.Binder.B_Name)));
             end if;
 
@@ -487,7 +501,7 @@ package body Gnat2Why.Decls is
                     (File.Cur_Theory,
                      New_Global_Ref_Declaration
                        (Name     => Remove_Prefix (Var.Discrs.Binder.B_Name),
-                        Labels   => Name_Id_Sets.Empty_Set,
+                        Labels   => Labels,
                         Ref_Type => Get_Typ (Var.Discrs.Binder.B_Name)));
                else
                   Emit
@@ -497,7 +511,7 @@ package body Gnat2Why.Decls is
                         Name        =>
                           Remove_Prefix (Var.Discrs.Binder.B_Name),
                         Binders     => (1 .. 0 => <>),
-                        Labels      => Name_Id_Sets.Empty_Set,
+                        Labels      => Labels,
                         Return_Type => Get_Typ (Var.Discrs.Binder.B_Name)));
                end if;
             end if;
@@ -512,7 +526,7 @@ package body Gnat2Why.Decls is
                        (Domain      => EW_Term,
                         Name        => Remove_Prefix (Var.Constr.Id),
                         Binders     => (1 .. 0 => <>),
-                        Labels      => Name_Id_Sets.Empty_Set,
+                        Labels      => Labels,
                         Return_Type => Get_Typ (Var.Constr.Id)));
             end if;
 
@@ -526,7 +540,7 @@ package body Gnat2Why.Decls is
                        (Domain      => EW_Term,
                         Name        => Remove_Prefix (Var.Tag.Id),
                         Binders     => (1 .. 0 => <>),
-                        Labels      => Name_Id_Sets.Empty_Set,
+                        Labels      => Labels,
                         Return_Type => Get_Typ (Var.Tag.Id)));
             end if;
 
@@ -538,7 +552,7 @@ package body Gnat2Why.Decls is
               (File.Cur_Theory,
                New_Global_Ref_Declaration
                  (Name     => Remove_Prefix (Var.Content.B_Name),
-                  Labels   => Name_Id_Sets.Empty_Set,
+                  Labels   => Labels,
                   Ref_Type => Get_Typ (Var.Content.B_Name)));
 
             for D in 1 .. Var.Dim loop
@@ -557,15 +571,15 @@ package body Gnat2Why.Decls is
                        (Domain      => EW_Term,
                         Name        => Remove_Prefix (Var.Bounds (D).First),
                         Binders     => (1 .. 0 => <>),
-                        Labels      => Name_Id_Sets.Empty_Set,
+                        Labels      => Labels,
                         Return_Type => Ty_First));
                   Emit
                     (File.Cur_Theory,
                      Why.Atree.Builders.New_Function_Decl
                        (Domain      => EW_Term,
-                        Labels      => Name_Id_Sets.Empty_Set,
                         Name        => Remove_Prefix (Var.Bounds (D).Last),
                         Binders     => (1 .. 0 => <>),
+                        Labels      => Labels,
                         Return_Type => Ty_Last));
                end;
             end loop;
@@ -577,7 +591,7 @@ package body Gnat2Why.Decls is
               (File.Cur_Theory,
                New_Global_Ref_Declaration
                  (Name     => Remove_Prefix (Var.Main.B_Name),
-                  Labels   => Name_Id_Sets.Empty_Set,
+                  Labels   => Labels,
                   Ref_Type => Get_Typ (Var.Main.B_Name)));
          when Func =>
             raise Program_Error;

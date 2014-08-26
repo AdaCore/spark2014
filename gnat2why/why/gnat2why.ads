@@ -266,6 +266,7 @@
 --
 --  "keep_on_simp"
 --     Disallows simplification of that node. Required for all VC nodes.
+--
 --  "GP_Pretty_Ada:<string>"
 --     Gives the original Ada source for the Why3 term, as a string.
 --     Is used for pretty printing explanations for a VC
@@ -277,6 +278,10 @@
 --  "GP_Subp:<file:line>"
 --     This label is required for all subprograms that generate VCs. It is
 --     used to easily filter the subprogram in VC selection.
+--
+--  "GP_CE_Relevant"
+--     This label identifies things that should be included in the
+--     counter-example model.
 
 package Gnat2Why is
 
