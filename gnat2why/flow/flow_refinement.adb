@@ -88,9 +88,13 @@ package body Flow_Refinement is
    --  Unless S is a private descendant, in which case it is always "priv".
 
    function Find_Node_In_Initializes (E : Entity_Id) return Node_Id
-   with Post => not Present (Find_Node_In_Initializes'Result)
-                or else Entity (Find_Node_In_Initializes'Result) = E;
-   --  Returns the node representing E in an initializes aspect or Empty.
+   with Post =>
+     not Present (Find_Node_In_Initializes'Result)
+     or else Entity (Find_Node_In_Initializes'Result) = E
+     or else Entity (Find_Node_In_Initializes'Result) =
+             Encapsulating_State (E);
+   --  Returns the node representing E (or its immediately encapsulating
+   --  state) in an initializes aspect or Empty.
 
    function Get_Body_Or_Stub (N : Node_Id) return Node_Id;
    --  If a corresponding stub exists, then we return that instead of N.
@@ -274,11 +278,11 @@ package body Flow_Refinement is
    --------------------
 
    function Get_Flow_Scope (N : Node_Id) return Flow_Scope is
-      P : Node_Id;
+      P : Node_Id    := N;
       V : Section_T;
    begin
-      P := Get_Body_Or_Stub (N);
       while Present (P) loop
+         P := Get_Body_Or_Stub (P);
          case Nkind (P) is
             when N_Package_Body =>
                V := Body_Part;
@@ -485,15 +489,20 @@ package body Flow_Refinement is
    ------------------------------
 
    function Find_Node_In_Initializes (E : Entity_Id) return Node_Id is
-      P  : Entity_Id := E;
-      UE : constant Entity_Id := Unique_Entity (E);
+      P          : Entity_Id          := E;
 
-      PAA      : Node_Id;
-      Row, LHS : Node_Id;
+      Target_Ent : constant Entity_Id :=
+        (if Present (Encapsulating_State (E)) and
+            Scope (E) = Scope (Encapsulating_State (E))
+         then Encapsulating_State (E)
+         else Unique_Entity (E));
+      --  What we are searching for. Either the entity itself, or, if this
+      --  entity is part of abstract state of its immediately enclosing
+      --  package, that abstract state.
 
+      PAA        : Node_Id;
+      Row, LHS   : Node_Id;
    begin
-      --  ??? Fix this to support refined state
-
       while Ekind (P) /= E_Package loop
          case Ekind (P) is
             when E_Package_Body =>
@@ -530,7 +539,7 @@ package body Flow_Refinement is
 
          when N_Identifier =>
             --  Aspect => Foobar
-            if Unique_Entity (Entity (Expression (PAA))) = UE then
+            if Unique_Entity (Entity (Expression (PAA))) = Target_Ent then
                return Expression (PAA);
             end if;
 
@@ -545,7 +554,7 @@ package body Flow_Refinement is
       --  i.e. foo and bar in (foo, bar, baz => ..., bork => ...)
       Row := First (Expressions (Expression (PAA)));
       while Present (Row) loop
-         if Unique_Entity (Entity (Row)) = UE then
+         if Unique_Entity (Entity (Row)) = Target_Ent then
             return Row;
          end if;
 
@@ -567,7 +576,7 @@ package body Flow_Refinement is
                LHS := First (Expressions (LHS));
                while Present (LHS) loop
                   pragma Assert (Present (Entity (LHS)));
-                  if Unique_Entity (Entity (LHS)) = UE then
+                  if Unique_Entity (Entity (LHS)) = Target_Ent then
                      return LHS;
                   end if;
                   LHS := Next (LHS);
@@ -576,7 +585,7 @@ package body Flow_Refinement is
             when N_Identifier | N_Expanded_Name =>
                --  Foo => ...
                pragma Assert (Present (Entity (LHS)));
-               if Unique_Entity (Entity (LHS)) = UE then
+               if Unique_Entity (Entity (LHS)) = Target_Ent then
                   return LHS;
                end if;
 
