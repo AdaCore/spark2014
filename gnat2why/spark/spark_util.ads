@@ -173,16 +173,17 @@ package SPARK_Util is
       --  default initialized.
 
    function Default_Initialization
-     (Typ        : Entity_Id;
-      Check_Mode : Boolean := False)
+     (Typ           : Entity_Id;
+      Explicit_Only : Boolean := False)
       return Default_Initialization_Kind;
    --  Determine default initialization kind that applies to a particular
    --  type. Types defined in axiomatized units (such as formal containers) and
    --  private types are treated specially, so that they are either considered
    --  as having full default initialized, or no default initialization.
    --
-   --  If Check_Mode is True then we do not consider if Has_Default_Init_Cond
-   --  or Has_Inherited_Default_Init_Cond are true for this type.
+   --  If Explicit_Only is True then we do not consider if
+   --  Has_Default_Init_Cond or Has_Inherited_Default_Init_Cond are true
+   --  for this type.
 
    ---------------
    -- Utilities --

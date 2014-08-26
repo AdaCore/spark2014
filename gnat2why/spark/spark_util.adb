@@ -344,8 +344,8 @@ package body SPARK_Util is
    ----------------------------
 
    function Default_Initialization
-     (Typ : Entity_Id;
-      Check_Mode : Boolean := False)
+     (Typ           : Entity_Id;
+      Explicit_Only : Boolean := False)
       return Default_Initialization_Kind
    is
       Init : Default_Initialization_Kind;
@@ -383,7 +383,7 @@ package body SPARK_Util is
            or else Chars (Comp) = Name_uParent
          then
             Init := Default_Initialization (Base_Type (Etype (Comp)),
-                                            Check_Mode);
+                                            Explicit_Only);
 
             --  A component with mixed initialization renders the whole
             --  record/protected type mixed.
@@ -423,10 +423,11 @@ package body SPARK_Util is
    --  Start of Default_Initialization
 
    begin
-      --  If we are not in Check_Mode and Default_Initial_Condition
-      --  was specified for the type, take it into account.
+      --  If we are considering implicit initializations and
+      --  Default_Initial_Condition was specified for the type, take it
+      --  into account.
 
-      if not Check_Mode
+      if not Explicit_Only
         and then (Has_Default_Init_Cond (Typ)
                     or else Has_Inherited_Default_Init_Cond (Typ))
       then
@@ -470,14 +471,14 @@ package body SPARK_Util is
             Result := Full_Default_Initialization;
          else
             Result := Default_Initialization (Component_Type (Typ),
-                                              Check_Mode);
+                                              Explicit_Only);
          end if;
 
       --  The initialization status of a private type depends on its full view
 
       elsif Is_Private_Type (Typ) and then Present (Full_View (Typ)) then
          Result := Default_Initialization (Full_View (Typ),
-                                           Check_Mode);
+                                           Explicit_Only);
 
       --  Record types and protected types offer several initialization options
       --  depending on their components (if any).
@@ -536,7 +537,7 @@ package body SPARK_Util is
         and then Is_Private_Type (Base_Type (Typ))
       then
          Result := Default_Initialization (Base_Type (Typ),
-                                           Check_Mode);
+                                           Explicit_Only);
 
       --  Task types are always fully default initialized
 

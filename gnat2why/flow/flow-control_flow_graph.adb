@@ -4093,9 +4093,10 @@ package body Flow.Control_Flow_Graph is
                                     Get_Flow_Scope (Typ))
            and then not Has_Inherited_Default_Init_Cond (Typ)
            and then not Fullview_Not_In_SPARK (Typ)
-           and then Default_Initialization (Typ        => Typ,
-                                            Check_Mode => True) /=
-                      Default_Initialization (Typ => Typ)
+           and then Default_Initialization (Typ           => Typ,
+                                            Explicit_Only => True) /=
+                    Default_Initialization (Typ           => Typ,
+                                            Explicit_Only => False)
          then
             Error_Msg_Flow
               (FA      => FA,
