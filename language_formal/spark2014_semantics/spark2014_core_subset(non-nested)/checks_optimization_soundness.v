@@ -1181,6 +1181,34 @@ Ltac apply_eval_expr_value_in_domain :=
   end.
 
 
+(** TODO: to be proved later ... *)
+(** the value of expression returned by optimize_expression_x is a range of possible values 
+    when the expression is evaluated dynamically, so this value range should be in the domain
+    of the expression type;
+*)
+Lemma  optimize_exp_value_in_domain: forall e st t l u l' u' e',
+  fetch_exp_type_x (expression_astnum_x e) st = Some t ->
+    extract_subtype_range_x st t (Range_X l u) ->
+      (* need to add well-typed property for expression, in other words, the type 
+         of the expression should be the type recorded in the symbol table *)
+      optimize_expression_x st e (IntBetween l' u', e') ->
+        do_range_check l' l u Success /\ do_range_check u' l u Success.
+Proof.
+  admit.
+Qed.
+
+Lemma  optimize_name_value_in_domain: forall x st t l u l' u' x',
+  fetch_exp_type_x (name_astnum_x x) st = Some t ->
+    extract_subtype_range_x st t (Range_X l u) ->
+      (* need to add well-typed property for expression, in other words, the type 
+         of the expression should be the type recorded in the symbol table *)
+      optimize_name_x st x (IntBetween l' u', x') ->
+        do_range_check l' l u Success /\ do_range_check u' l u Success.
+Proof.
+  admit.
+Qed.
+
+
 (** 
 It's impossible to prove the following theorem directly, as we do induction 
 proof on it, the proof will get stuck when e is an indexed_component, e.g. a[e]; 
