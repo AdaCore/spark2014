@@ -923,21 +923,32 @@ A Global or Global'Class aspect specification G2 is said to be
 a *valid overriding* of another such specification, G1, if the following
 conditions are met:
 
-* every Input-mode item of G2 is an Input-mode or an In_Out-mode
-  item of G1; and
+* each Input-mode item of G2 is an Input-mode or an In_Out-mode
+  item of G1 or a direct or indirect constituent thereof; and
 
-* every In_Out-mode item of G2 is an In_Out-mode item of G1; and
+* each In_Out-mode item of G2 is an In_Out-mode item of G1 or a
+  direct or indirect constituent thereof; and 
 
-* every Output-mode item of G2 is an Output-mode or In_Out-mode item of G1; and
+* each Output-mode item of G2 is an Output-mode or In_Out-mode item of G1
+  or a direct or indirect constituent therof; and
 
-* every Output-mode item of G1 is an Output-mode item of G2.
+* each Output-mode item of G1 which is not a state abstraction whose
+  refinment is visible at the point of G2 is an Output-mode item of G2; and
 
-[TBD: This differs from the July LDG meeting minutes in allowing a
-Proof_In-mode item for G2 which is an In_Out-mode item of G1. Is this OK?]
+* for each Output-mode item of G1 which is a state abstraction whose
+  refinment is visible at the point of G2, each direct or indirect
+  constituent thereof is an Output-mode item of G2.
+
+[TBD: The rules as stated correctly handle interactions with Part_Of;
+is there any need to mention/discuss this case here?]
 
 A Depends or Depends'Class aspect specification D2 is said to be a
 *valid overriding* of another such specification, D1, if the set of
-dependencies of D2 is a subset of the dependencies of D2.
+dependencies of D2 is a subset of the dependencies of D1 or, in the
+case where D1 mentions a state abstraction whose refinement is
+visible at the point of D2, if D2 is derivable from such a subset
+as described in :ref:`refined-depends-aspect`.
+
 
 .. centered:: **Legality Rules**
 
