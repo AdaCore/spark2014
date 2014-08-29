@@ -1,0 +1,12 @@
+project Test is
+
+   for Languages use ("Ada");
+   for Source_Dirs use (".");
+   for Object_Dir use "obj";
+
+   package Naming is
+      for Body ("pkg") use "pkg__a.adb";
+   end Naming;
+
+end Test;
+
