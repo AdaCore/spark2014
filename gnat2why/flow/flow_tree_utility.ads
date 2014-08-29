@@ -31,9 +31,6 @@ with Types;  use Types;
 
 package Flow_Tree_Utility is
 
-   function Contains_Loop_Entry_Reference (N : Node_Id) return Boolean;
-   --  Check for 'Loop_Entry in the given tree.
-
    function Get_Procedure_Specification (E : Entity_Id) return Node_Id
      with Pre  => Ekind (E) = E_Procedure,
           Post => Nkind (Get_Procedure_Specification'Result) =

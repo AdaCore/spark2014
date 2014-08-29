@@ -1772,7 +1772,7 @@ package body Flow_Utility is
 
                   return OK;
 
-               elsif True then
+               else
 
                   --  ??? This will need to be updated for tagged types to
                   --  deal with view conversions. On conversions up the
@@ -1789,37 +1789,6 @@ package body Flow_Utility is
                         Use_Computed_Globals         => Use_Computed_Globals,
                         Expand_Synthesized_Constants =>
                           Expand_Synthesized_Constants));
-
-                  return Skip;
-
-               elsif not Contains_Loop_Entry_Reference (N) then
-
-                  --  We strip out loop entry references as they are
-                  --  dealt with by Do_Pragma and Do_Loop_Statement in
-                  --  the CFG construction.
-
-                  declare
-                     A, B, C, D : Flow_Id_Sets.Set;
-                  begin
-                     Untangle_Assignment_Target
-                       (N                    => N,
-                        Scope                => Scope,
-                        Local_Constants      => Local_Constants,
-                        Use_Computed_Globals => Use_Computed_Globals,
-                        Vars_Explicitly_Used => A,
-                        Vars_Implicitly_Used => B,
-                        Vars_Defined         => C,
-                        Vars_Semi_Used       => D);
-                     VS.Union (A);
-                     VS.Union (B);
-                     VS.Union (C);
-                     if not Fold_Functions then
-                        VS.Union (D);
-                     end if;
-                  end;
-                  return Skip;
-
-               else
 
                   return Skip;
 
