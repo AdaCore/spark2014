@@ -1,9 +1,8 @@
-Require Export util.
 Require Export more_list.
 Require Export values.
 Require Export environment.
 Require Export symboltable.
-Require Export X_SparkTactics.
+Require Export CpdtTactics.
 
 Module Entry_Value_Stored <: ENTRY.
   Definition T := value.

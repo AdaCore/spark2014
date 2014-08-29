@@ -1011,7 +1011,7 @@ End Checks_Generator_Function_Completeness_Proof.
 
 (** * Lemmas *)
 
-Require Import X_SparkTactics.
+Require Import CpdtTactics.
 
 Lemma procedure_components_rel: forall st p p',
   compile2_flagged_procedure_body st p p' ->

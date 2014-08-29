@@ -271,3 +271,7 @@ Ltac guess v H :=
 Ltac guessKeep v H :=
   let H' := fresh "H'" in
     generalize H; intro H'; guess v H'.
+
+Create HintDb X_Lib.
+
+Ltac smack := try autorewrite with X_Lib in *; crush; eauto.

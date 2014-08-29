@@ -1,35 +1,5 @@
 Require Import List.
 
-Section Non_Empty_List.
-
-  Inductive nlist (A: Type) :=
-    | NEnd: A -> nlist A
-    | NCons: A -> nlist A -> nlist A.
-
-  Arguments NEnd [A] _.
-  Arguments NCons [A] _ _.
-
-  Function append (A : Type) (l: nlist A) (a: A): nlist A := 
-    match l with
-      | NCons a1 l1 => NCons a1 (append A l1 a)
-      | NEnd a1 => NCons a1 (NEnd a)
-    end.
-
-  Arguments append [A] _ _.
-
-  Infix "::" := NCons (at level 60, right associativity) : nlist_scope.
-  Infix "+++" := append (right associativity, at level 60) : nlist_scope.
-
-End Non_Empty_List.
-
-(* In a special module to avoid conflict *)
-Module NListNotations.
-  Notation " [ x ] " := (NEnd x) : nlist_scope.
-End NListNotations.
-
-Delimit Scope nlist_scope with nlist.
-
-
 Lemma length_invnil : forall A (l:list A), length l = 0 -> l = nil.
 Proof.
   intros A l H.

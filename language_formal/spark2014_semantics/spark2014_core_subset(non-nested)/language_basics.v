@@ -1,10 +1,9 @@
 Require Export ZArith.
 Require Export Coq.Lists.List.
 Require Export Coq.Bool.Bool.
-Require Export X_SparkTactics.
+Require Export CpdtTactics.
 Require Export LibTactics.
 Require Export more_list.
-Require Export util.
 
 (** This file defines basic data types and operations used in the abstract syntax trees *)
 
