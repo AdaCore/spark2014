@@ -1,21 +1,28 @@
 \begin{abstract}
-\vspace*{-.5cm}
-\hspace{.5cm} We present the first steps of a broad effort to develop a formal
-representation of SPARK 2014 suitable for supporting machine-verified 
-static analyses and translations. In our initial work, we have developed 
-technology for translating the GNAT compiler's abstract syntax trees 
-into the Coq proof assistant, and we have formalized in Coq the dynamic
-semantics for a core subset of the SPARK 2014 language.
-SPARK 2014 programs must ensure the absence of certain run-time errors 
+\vspace*{-.5cm} 
+%\hspace{.5cm} 
+Formal verification and proof is a promising technique to develop 
+high integrity systems with a rigorous mathematical analysis
+procedure. SPARK 2014 is a programming language designed
+to meet the needs of high integrity software development with a 
+support of various formal and informal verification and proof tool 
+sets. Any formal methods for program specification and verification depend on
+the semantics of the language. 
+In this paper, we present our major work towards a formal representation of
+SPARK 2014 suitable for supporting formally verified static analyses and
+translations. In order to do this, we have developed technology for translating
+the GNAT compiler's abstract syntax trees into the Coq proof assistant, and we
+have formalized in Coq the dynamic semantics for a core subset of the SPARK 2014
+language. SPARK 2014 programs must ensure the absence of certain run-time errors 
 (for example, those arising while performing division by zero, accessing 
-non existing array cells, overflow on integer computation).  The main 
-novelty in our semantics is the encoding of (a small but nontrivial part of) the
-run-time checks performed by the compiler to ensure that well-formed SPARK
-programs do not lead to erroneous execution.
-This and other results are mechanically proved using the Coq proof assistant. 
-The modeling of on-the-fly run-time checks within the semantics lays the 
-foundation for future work on mechanical reasoning about SPARK 2014 
-program correctness (in the particular area of robustness) and for 
-studying the correctness of compiler optimizations concerning run-time 
-checks, among others.
+non existing array cells, overflow on integer computation).  
+The main novelty in our semantics is the modeling of on-the-fly run-time checks
+within the language semantics, which has been used to mechanically prove the
+correctness of the run-time checks performed by the compiler and the correctness
+of compiler optimizations concerning run-time checks.
+This work of run-time checks optimization and verfication can ensure that any
+well-formed SPARK programs do not lead to erroneous execution. And the
+formalization of SPARK 2014 semantics lays the foundation for future work on
+mechanical reasoning about correctness of other verification methods for SPARK
+2014 programs.
 \end{abstract}
