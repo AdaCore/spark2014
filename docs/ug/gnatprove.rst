@@ -558,8 +558,8 @@ for more details.
    A pragma Warnings Off on an entity disables all flow analysis
    warnings related to this entity, anywhere they occur.
 
-Warning and Error Messages
-==========================
+Warnings and Error Messages
+===========================
 
 This section lists the different error messages and warnings which |GNATprove|
 may output. Each message points to a very specific place in the source code.
@@ -632,7 +632,27 @@ other unclassified messages are warnings about questionable code constructs.
    "missing return",, "A return statement seems to be missing from the function."
    "export must not depend on Proof_In",, "Flow analysis has detected an output of a subprogram that depends on a constant which is marked Proof_In."
 
+Assumptions
+===========
+
+When you specify the option "--assumptions" on the commandline of |GNATprove|,
+the result file ``gnatprove.out`` of |GNATprove| also contains assumption
+information, i.e. the unproved properties on which each of the verification
+results of |GNATprove| depends.
+
+.. tabularcolumns:: |l|p{4in}|
+
+.. csv-table::
+   :header: "Assumption Kind", "Explanation"
+   :widths: 1, 6
+
+   "post", "The subprogram guarantees that its postcondition holds"
+   "aorte", "The subprogram is free of run-time errors"
+   "effects", "The subprogram interacts with parameters and global variables
+   as described by its specification and Global contract"
+
 .. _how to write loop invariants:
+
 
 How to Write Loop Invariants
 ============================
