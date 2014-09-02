@@ -5,22 +5,27 @@ Require Export CpdtTactics.
 Require Export LibTactics.
 Require Export more_list.
 
-(** This file defines basic data types and operations used in the abstract syntax trees *)
+(** This file defines some basic data types and operations used for
+    formalization of SPARK 2014 language;
+*)
 
 (** * Identifiers *)
 
-(** Distinct AST number labeled for each AST node; it's not the part  
-    of the SPARK language subset, it's introduced only for internal 
-    use, for example, it can be used to locate the source of the errors,
-    to collect type information for expression node, and to map ast node
-    to its run time check flags and so on;
+(** Distinct AST number labeled for each AST node; it's not a part  
+    of the SPARK 2014 language, but it's introduced to facilitate the 
+    formalization of the language and error debugging. For example, the
+    AST number can be used to map the error information back to the SPARK 
+    source code, and it also can be used to map each ast node to its type 
+    information;
 *)
 
 Definition astnum := nat.
 
-(** In CompCert, Cminor uses non-negative values to represent 
-    identifiers, we follow this style by using natural numbers 
-    to represent identifiers/names;
+(** In CompCert, non-negative values are used to represent identifiers, 
+    we take the same way to represent identifiers/names as natural numbers;
+   - idnum:   represent declared variables;
+   - procnum: represent declared procedure names;
+   - typenum: represent declared type names;
 *)
 
 Definition idnum := nat.
@@ -39,9 +44,17 @@ Record type_table: Type := mktype_table{
 *)
 
 (** * Data Types *)
+(** in SPARK, data types can be boolean, integer, subtype, array/record 
+    types and others; typenum denotes the subtype names or array/record 
+    types names;
 
-(** Note: now we only consider the 32-bit singed integer type for 
-    our SPARK subset language, and model it with _Integer_; Actually,
+    In SPARK, subtype can be declared in the following ways:
+    - subtype declaration,      e.g. subtype MyInt is Integer range 0 .. 5;
+    - derived type declaration, e.g. type MyInt is new Integer range 1 .. 100;
+    - integer type declaration, e.g. type MyInt is range 1 .. 10;
+
+    Note: now we only consider the 32-bit singed integer type for 
+    our SPARK subset language, and model it with Integer; Actually,
     SPARK has various integer types, we can extend our types by 
     adding more SPARK types here and adding its corresponding value
     definition in values.v;
@@ -50,7 +63,7 @@ Record type_table: Type := mktype_table{
 Inductive type: Type :=
     | Boolean (* 3.5.3 *)
     | Integer (* 3.5.4 *)
-    | Subtype (t: typenum) (* 3.2.2 *)
+    | Subtype (t: typenum) (* 3.2.2 *)     (* t: declared subtype name *)
     | Derived_Type (t: typenum) (* 3.4 *)
     | Integer_Type (t: typenum) (* 3.5.4 *)
     | Array_Type (t: typenum) (* 3.6 *)    (* t: declared array type name *)
@@ -64,7 +77,7 @@ Inductive mode: Type :=
     | Out
     | In_Out.
 
-(** * Operations *)
+(** * Operators *)
 
 (** unary and binary operators *)
 Inductive unary_operator: Type :=      
@@ -96,6 +109,7 @@ Inductive literal: Type :=
 
 Section LB_AuxiliaryFunctions.
   
+  (** it wll be used to determine whether to put range check *)
   Definition is_range_constrainted_type (t: type): bool :=
     match t with
     | Subtype _      => true

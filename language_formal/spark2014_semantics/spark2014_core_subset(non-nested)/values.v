@@ -4,12 +4,12 @@ Require Export language_basics.
 Inductive error_type: Type :=
     | RTE_Division_By_Zero
     | RTE_Overflow
-    | RTE_Range. (* range check for a scalar range, e.g. -1 is assigned to natural variable *)
+    | RTE_Range.
 
 (** * Return Values / States *)
-(** Statement and expressions evaluation returns one of the following results:
+(** Statement and expression evaluation returns one of the following results:
     - normal result;
-    - run time errors, which are required to be detected at run time,
+    - run-time errors, which are required to be detected at run time,
       for example, overflow check and division by zero check;
     - unterminated state caused by infinite loop (only for functional semantics);
     - abnormal state, which includes compile time errors

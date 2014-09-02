@@ -2,7 +2,7 @@
 (*_2_Require Export language._2_*)
 (*_2_Require Export checks._2_*)
 
-(* NOTICE *)
+(** NOTICE *)
 
 (** * SPARK Subset Language *)
 
@@ -24,10 +24,15 @@ Inductive expression_xx: Type :=
     | E_Binary_Operation_XX: astnum -> binary_operator -> expression_xx -> expression_xx (*checks*)-> expression_xx (* 4.5.3 and 4.5.5 *)
     | E_Unary_Operation_XX: astnum -> unary_operator -> expression_xx (*checks*)-> expression_xx (* 4.5.4 *)  
 
+(** in E_Indexed_Component_XX, the first astnum is the ast number for the indexed component, 
+    and the second astnum is the ast number for array represented by idnum;
+    in E_Selected_Component_XX, the first astnum is the ast number for the record field,
+    and second astnum is the ast number for record represented by idnum;
+ *)
 with name_xx: Type := (* 4.1 *)
     | E_Identifier_XX: astnum -> idnum (*checks*)-> name_xx (* 4.1 *)
     | E_Indexed_Component_XX: astnum -> astnum -> idnum -> expression_xx (*checks*)-> name_xx (* 4.1.1 *)
-    | E_Selected_Component_XX: astnum -> astnum -> idnum -> idnum (*checks*)-> name_xx (* 4.1.3 *). (* the first astnum for the record field and second one for record *)
+    | E_Selected_Component_XX: astnum -> astnum -> idnum -> idnum (*checks*)-> name_xx (* 4.1.3 *).
 
 (** ** Statements *)
 (* Chapter 5 *)
@@ -42,9 +47,14 @@ Inductive statement_xx: Type :=
     | S_Procedure_Call_XX: astnum -> astnum -> procnum -> list expression_xx -> statement_xx (* 6.4 *) (* the second astnum for the called procedure *)
     | S_Sequence_XX: astnum -> statement_xx -> statement_xx -> statement_xx (* 5.1 *).
 
+(** it's used for subtype declarations:
+    - subtype declaration,      e.g. subtype MyInt is Integer range 0 .. 5;
+    - derived type declaration, e.g. type MyInt is new Integer range 1 .. 100;
+    - integer type declaration, e.g. type MyInt is range 1 .. 10;
+*)
 Inductive range_xx: Type := Range_XX (l: Z) (u: Z). (* 3.5 *)
 
-(* Array / Record Type Declaration *)
+(** ** Type Declarations *)
 Inductive type_declaration_xx: Type := (* 3.2.1 *)
     | Subtype_Declaration_XX:
         astnum -> typenum (*subtype name*) -> type -> range_xx -> type_declaration_xx (* 3.2.2 *)
@@ -53,9 +63,9 @@ Inductive type_declaration_xx: Type := (* 3.2.1 *)
     | Integer_Type_Declaration_XX:
         astnum -> typenum (*integer type name*) -> range_xx -> type_declaration_xx (* 3.5.4 *)
     | Array_Type_Declaration_XX: (* Constrained_Array_Definition, non-nested one-dimentional array *)
-        astnum -> typenum (*array name*) -> type (*subtype mark*) -> type (*component type*) -> type_declaration_xx (* 3.6 *)
+        astnum -> typenum (*array type name*) -> type (*index subtype mark*) -> type (*component type*) -> type_declaration_xx (* 3.6 *)
     | Record_Type_Declaration_XX:
-        astnum -> typenum (*record name*) -> list (idnum * type (*field type*)) -> type_declaration_xx (* 3.8 *).
+        astnum -> typenum (*record type name*) -> list (idnum * type (*field type*)) -> type_declaration_xx (* 3.8 *).
 
 (* 3.3.1 *)
 Record object_declaration_xx: Type := mkobject_declaration_xx{
@@ -74,15 +84,14 @@ Record parameter_specification_xx: Type := mkparameter_specification_xx{
 (*  parameter_default_expression_xx: option (expression_xx) *)
 }.
 
+(** ** Declarations *)
 (* Mutual records/inductives are not allowed in coq, so we build a record by hand. *)
 Inductive declaration_xx: Type :=  (* 3.1 *)
     | D_Null_Declaration_XX: declaration_xx
     | D_Type_Declaration_XX: astnum -> type_declaration_xx -> declaration_xx (* 3.2.1 *)
-    | D_Object_Declaration_XX: astnum -> object_declaration_xx -> declaration_xx (* 3.3.1 *) 
+    | D_Object_Declaration_XX: astnum -> object_declaration_xx -> declaration_xx (* 3.3.1 *)
     | D_Procedure_Body_XX: astnum -> procedure_body_xx -> declaration_xx (* 6.1 *)
     | D_Seq_Declaration_XX: astnum -> declaration_xx -> declaration_xx -> declaration_xx (* it's introduced for easy proof *)
- (* | package_declaration 
-    | Other_Declarations *)
 
 with procedure_body_xx: Type :=
   mkprocedure_body_xx

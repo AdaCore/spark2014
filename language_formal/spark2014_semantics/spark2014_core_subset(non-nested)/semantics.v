@@ -11,7 +11,11 @@ End Entry_Value_Stored.
 Module STACK := STORE(Entry_Value_Stored).
 Import STACK.
 
-(** * Run Time Check Status *)
+(** * Run-Time Check Status *)
+(** instead of returning only true or false for the run-time checks 
+    result, a concrete run-time error is returned if the run-time check
+    fails, otherwise return Success;
+*)
 Inductive check_status :=
     | Success
     | Exception (m: error_type).
@@ -96,6 +100,7 @@ Inductive do_run_time_check_on_unop: unary_operator -> value -> check_status -> 
         op <> Unary_Minus ->
         do_run_time_check_on_unop op (BasicV (Int v)) Success.
 
+(** given a record value r, get the value of its field f *)
 Function record_select (r: list (idnum * basic_value)) (f: idnum): option basic_value :=
     match r with 
     | (f1, v1) :: r1 =>
@@ -106,7 +111,7 @@ Function record_select (r: list (idnum * basic_value)) (f: idnum): option basic_
     | nil => None 
     end.
 
-
+(** given an array value a, get its component value indexed by i *)
 Function array_select (a: list (index * basic_value)) (i: Z): option basic_value :=
     match a with 
     | (i0, v0) :: a1 =>
@@ -131,11 +136,11 @@ Definition eval_literal (l: literal): value :=
     for binary expression and unary expression, if a run time error 
     is detected in any of its child expressions, then return a run
     time error; for binary expression (e1 op e2), if both e1 and e2 
-    are evaluated to some normal value, then run time checks are
+    are evaluated to some normal values, then run-time checks are
     performed according to the checking rules specified for the 
-    operator 'op', whenever the check fails (returning false), a run 
-    time error is detected and the program is terminated, otherwise, 
-    normal binary operation result is returned;
+    operator 'op'; Whenever the check fails, a run-time error is 
+    detected and the program is terminated, otherwise, normal binary 
+    operation result is returned;
 *)
 
 Inductive eval_expr: symboltable -> stack -> expression -> Return value -> Prop :=
@@ -191,11 +196,11 @@ with eval_name: symboltable -> stack -> name -> Return value -> Prop :=
         eval_name st s (E_Indexed_Component ast_num x_ast_num x e) (Run_Time_Error RTE_Range)
     | Eval_E_Indexed_Component: forall st s e i x_ast_num t l u x a v ast_num, 
         eval_expr st s e (Normal (BasicV (Int i))) ->
-        fetch_exp_type x_ast_num st = Some (Array_Type t) ->
-        extract_array_index_range st t (Range l u) ->
-        do_range_check i l u Success ->
-        fetchG x s = Some (AggregateV (ArrayV a)) ->
-        array_select a i = Some v ->
+        fetch_exp_type x_ast_num st = Some (Array_Type t) -> (*get the array type of x from the symbol table with its ast number x_ast_num *)
+        extract_array_index_range st t (Range l u) -> (*given array type t, get its array type declaration from symbol table and extract its range*)
+        do_range_check i l u Success -> (*do range check on the index expression i against the range of the array index type*)
+        fetchG x s = Some (AggregateV (ArrayV a)) -> (*if the index i is within the range of array index type, first get the array value a*)
+        array_select a i = Some v -> (*then get the component value indexed by i from array value a*)
         eval_name st s (E_Indexed_Component ast_num x_ast_num x e) (Normal (BasicV v))
     | Eval_E_Selected_Component: forall x s r f v st ast_num x_ast_num,
         fetchG x s = Some (AggregateV (RecordV r)) ->
@@ -223,7 +228,7 @@ with eval_name: symboltable -> stack -> name -> Return value -> Prop :=
 
 (** Stack Manipulation For Procedure Calls And Return *)
 
-(** [Copy_out prefix lparams lexp s s'] means that s' is the result of
+(** [Copy_out st s prefix lparams lexp s'] means that s' is the result of
     copying Out params of the currently finished procedure of prefix
     into there output variables. More precisely:
   - [prefix] is a portion of stack where only the parameters of the
@@ -245,16 +250,16 @@ Inductive copy_out: symboltable -> stack -> frame -> list parameter_specificatio
     | Copy_Out_Cons_Out: forall param f v ast_num st t s x s' lparam lexp s'' x_ast_num,
         param.(parameter_mode) = Out \/ param.(parameter_mode) = In_Out ->
         fetch param.(parameter_name) f = Some v ->
-        fetch_exp_type ast_num st = Some t ->
-        is_range_constrainted_type t = false ->
+        fetch_exp_type ast_num st = Some t -> (*get the type of output argument x from the symbol table with its ast number*)
+        is_range_constrainted_type t = false -> (*if it's not a range constrainted scalar type, then no range check is needed*)
         updateG s x v = Some s' ->
         copy_out st s' f lparam lexp s'' ->
         copy_out st s f (param :: lparam) ((E_Name ast_num (E_Identifier x_ast_num x)) :: lexp) s''
     | Copy_Out_Cons_Out_Range_RTE: forall param f v ast_num st t l u s lparam x_ast_num x lexp,
         param.(parameter_mode) = Out \/ param.(parameter_mode) = In_Out ->
         fetch param.(parameter_name) f = Some (BasicV (Int v)) ->
-        fetch_exp_type ast_num st = Some t ->
-        extract_subtype_range st t (Range l u) ->
+        fetch_exp_type ast_num st = Some t -> (*get the type of output argument x from the symbol table with its ast number*)
+        extract_subtype_range st t (Range l u) -> (*if it's a range constrainted scalar type, then get its range and do range check before copy out*)
         do_range_check v l u (Exception RTE_Range) ->
         copy_out st s f (param :: lparam) ((E_Name ast_num (E_Identifier x_ast_num x)) :: lexp) (Run_Time_Error RTE_Range)
     | Copy_Out_Cons_Out_Range: forall param f v ast_num st t l u s x s' lparam lexp s'' x_ast_num,
@@ -271,15 +276,16 @@ Inductive copy_out: symboltable -> stack -> frame -> list parameter_specificatio
         copy_out st s f lparam lexp s' ->
         copy_out st s f (param :: lparam) (e :: lexp) s'.
 
-(** [Copy_in s lparams lexp frame] means the frame is the portion of
-    stack to push on the stack to start evaluating the procedure
+(** [Copy_in st s f lparams lexp frame] means the frame is the portion
+    of stack to push on the stack to start evaluating the procedure
     having [lparams] as parameters spcification. More precisely,
     [frame] contains the value of the formal parameters described by
     [lpamrams]. These values are computed from the list of arguments
-    [lexp]. Only "In" parameters are evaluated, "Out" parameters are
-    set to [Undefined]. *)
+    [lexp] starting from the initial frame f. Only "In" and "In Out" 
+    parameters are evaluated, "Out" parameters are set to [Undefined]. 
+*)
 
-(* start from an empty frame and then push the values of arguments into it *)
+(** start from an empty frame and then push the values of arguments into it *)
 
 (** *** Copy In *)
 Inductive copy_in: symboltable -> stack -> frame -> list parameter_specification -> list expression -> Return frame -> Prop :=
@@ -297,7 +303,7 @@ Inductive copy_in: symboltable -> stack -> frame -> list parameter_specification
     | Copy_In_Cons_In: forall param st s e v f f' lparam le f'',
         param.(parameter_mode) = In \/ param.(parameter_mode) = In_Out ->
         eval_expr st s e (Normal v) ->
-        is_range_constrainted_type (param.(parameter_subtype_mark)) = false ->
+        is_range_constrainted_type (param.(parameter_subtype_mark)) = false -> (*there's no need to do range check if the parameter's type is not range constrainted type*)
         push f param.(parameter_name) v = f' ->
         copy_in st s f' lparam le f'' ->
         copy_in st s f (param :: lparam) (e :: le) f''
@@ -310,8 +316,8 @@ Inductive copy_in: symboltable -> stack -> frame -> list parameter_specification
     | Copy_In_Cons_In_Range: forall param st s e v l u f f' lparam le f'',
         param.(parameter_mode) = In \/ param.(parameter_mode) = In_Out ->
         eval_expr st s e (Normal (BasicV (Int v))) ->
-        extract_subtype_range st (param.(parameter_subtype_mark)) (Range l u) ->
-        do_range_check v l u Success ->
+        extract_subtype_range st (param.(parameter_subtype_mark)) (Range l u) -> (*if the parameter's type is a range constrainted type, get its type's range*)
+        do_range_check v l u Success -> (*do range check on the value of argument against its corresponding parameter's type range*)
         push f param.(parameter_name) (BasicV (Int v)) = f' ->
         copy_in st s f' lparam le f'' ->
         copy_in st s f (param :: lparam) (e :: le) f''.
@@ -351,7 +357,7 @@ Inductive eval_decl: symboltable -> stack -> frame -> declaration -> Return fram
         d.(initialization_expression) = Some e ->
         eval_expr st (f :: s) e (Normal (BasicV (Int v))) ->
         extract_subtype_range st (d.(object_nominal_subtype)) (Range l u) ->
-        do_range_check v l u Success ->        
+        do_range_check v l u Success -> (*for a declared variable, do range check on value of its initialization expression if its declared type is range constrainted type*)
         eval_decl st s f (D_Object_Declaration ast_num d) (Normal (push f d.(object_name) (BasicV (Int v))))
     | Eval_Decl_Proc: forall st s f ast_num p,
         eval_decl st s f (D_Procedure_Body ast_num p) (Normal f)
@@ -364,7 +370,7 @@ Inductive eval_decl: symboltable -> stack -> frame -> declaration -> Return fram
         eval_decl st s f (D_Seq_Declaration ast_num d1 d2) f''.
 
 
-(* a[i] := v *)
+(** update the ith element of array a by value v: a[i] := v *)
 Function arrayUpdate (a: list (index * basic_value)) (i: index) (v: basic_value): list (index * basic_value) :=
     match a with
     | (i0, v0)::a1 => 
@@ -375,7 +381,7 @@ Function arrayUpdate (a: list (index * basic_value)) (i: index) (v: basic_value)
     | nil => (i, v) :: nil
     end.
 
-(* r.f := v *)
+(** update the field f of record r by value v: r.f := v *)
 Function recordUpdate (r: list (idnum * basic_value)) (f : idnum) (v: basic_value): list (idnum * basic_value) := 
     match r with 
     | (f1, v1) :: r1 => 
@@ -386,7 +392,13 @@ Function recordUpdate (r: list (idnum * basic_value)) (f : idnum) (v: basic_valu
    | nil => (f, v) :: nil
    end.
 
-  
+(** [cut_until s n s' s''] means cutting the stack s until to a frame 
+    whose corresponding procedure's nested declaration level is less 
+    than n, and s' is a stack with all its frame's corresponding procedure's 
+    nested declaration level greater or equal n, and s'' is a stack holds 
+    frames whose procedure's nested declaration levels are less than n, 
+    and s = s' ++ s'';
+*)
 Inductive cut_until: stack -> scope_level -> stack -> stack -> Prop :=
     | Cut_Until_Nil: forall n,
         cut_until nil n nil nil
@@ -414,7 +426,7 @@ Qed.
 
 (** in a statement evaluation, whenever a run time error is detected in
     the evaluation of its sub-statements or sub-component, the
-    evaluation is terminated and return a run time error; otherwise,
+    evaluation is terminated and return a run-time error; otherwise,
     evaluate the statement into a normal state.
  *)
 
@@ -432,9 +444,9 @@ Inductive eval_stmt: symboltable -> stack -> statement -> Return stack -> Prop :
         eval_stmt st s (S_Assignment ast_num x e) s1
     | Eval_S_Assignment_Range_RTE: forall st s e v x t l u ast_num,
         eval_expr st s e (Normal (BasicV (Int v))) ->
-        fetch_exp_type (name_astnum x) st = Some t ->
-        extract_subtype_range st t (Range l u) ->
-        do_range_check v l u (Exception RTE_Range) ->
+        fetch_exp_type (name_astnum x) st = Some t -> (*get the type of the left hand side of the assignment*)
+        extract_subtype_range st t (Range l u) -> (*if left hand side is an expression of range constrainted type, then get its range from symbol table*)
+        do_range_check v l u (Exception RTE_Range) -> (*do range check on the value of the right hand side expression of the assignment*)
         eval_stmt st s (S_Assignment ast_num x e) (Run_Time_Error RTE_Range)
     | Eval_S_Assignment_Range: forall st s e v x t l u s1 ast_num,
         eval_expr st s e (Normal (BasicV (Int v))) ->

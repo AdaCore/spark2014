@@ -2,20 +2,31 @@ Require Export language_flagged.
 Require Export symboltable.
 
 (* ***************************************************************
-   generate and insert check flags into AST nodes according to the 
-   run-time check rules;
+   generate and insert run-time check flags into SPARK AST nodes 
+   according to the run-time check rules;
    *************************************************************** *)
 
-(** * Compile To Flagged Program *)
-(** check flags for an expression not only depends on its operators, 
-    but also depends on its context where it appears, e.g. if it's 
-    used as an index, then Do_Range_Check should be set for it;
+(** * Compile To Check-Flagged Program *)
+(** run-time checks to be verified for an expression depend on both the
+    types of its operations and the context where it appears, e.g. if
+    it's used as an index, then Do_Range_Check should be set for it;
     in the following formalization, check_flags are the check flags
-    that are enforced by the context of the expression;
+    that are enforced by the context of the expression, for example,
+    in C2_Flagged_Indexed_Component, Do_Range_Check will be enforced
+    on the expression e as it's used as an index of array;
+
+    in the formalization for expression as defined in language_flagged.v 
+    and language.v, the constructor E_Name_X (E_Name) is introduced to 
+    incorporate type name_x (name) into type expression_x (expression),
+    for example, variable x is represented as a name expression with 
+    (E_Name_X ast_num (E_Identifier_X x_ast_num x checkflags) nil), and
+    we enforce that the run-time check flags are put in the constructor
+    E_Identifier_X instead of E_Name_X, that's why the check flags for
+    E_Name_X is nil;
 *)
 
 (*
-  TODO: add some optimization to the checks generator:
+  cases of possible run-time checks optimization:
   - range check for literal index can be removed, similarly, 
     overflow check and division check for literal can be optimized away;
   - range check for varialbe index, whose type is the same as index type,
@@ -34,7 +45,7 @@ Inductive compile2_flagged_exp: symboltable -> check_flags -> expression -> expr
                              (E_Literal ast_num l) 
                              (E_Literal_X ast_num l checkflags)
     | C2_Flagged_Name: forall st checkflags n n_flagged ast_num,
-        compile2_flagged_name st checkflags n n_flagged -> (* checkflags is passed into name expression *)
+        compile2_flagged_name st checkflags n n_flagged -> (* checkflags for name expression is enforced on name n *)
         compile2_flagged_exp st checkflags 
                              (E_Name ast_num n) 
                              (E_Name_X ast_num n_flagged nil)
@@ -91,11 +102,18 @@ with compile2_flagged_name: symboltable -> check_flags -> name -> name_x -> Prop
                               (E_Selected_Component_X ast_num x_ast_num x f checkflags).
 
 (**
-   For In / Out parameters, whose type is an integer subtype, range check should be
-   added when it's both copied into the called procedure and copied out the procedure,
-   these two range checks should be performed before the procedure call and after the
-   procedure returns; here we only put one range check flag and don't distinguish whether
-   it's a range check for copied in or copied out procedure;
+   for a procedure call, during its copy in, Do_Range_Check should be performed 
+   on input argument if its corresponding formal parameter is a value of range 
+   constrainted type; 
+   similarly, during its copy out, Do_Range_Check should be performed on output 
+   parameter if its corresponding actual argument is a value of range constrainted 
+   type; 
+   To distinguish the range checks performed on copy in and copy out,
+   Do_Range_Check_On_CopyOut is used to denote the range check on copy out, and
+   Do_Range_Check is used to denote the range check on copy in by default;
+
+   compile2_flagged_args formalizes how to insert run-time check flags for arguments
+   according to its corresponding formal parameters;
 *)
 
 Inductive compile2_flagged_args: symboltable -> list parameter_specification -> list expression -> list expression_x -> Prop :=
@@ -161,6 +179,11 @@ Inductive compile2_flagged_args: symboltable -> list parameter_specification -> 
         compile2_flagged_args st (param :: lparam) ((E_Name ast_num (E_Identifier x_ast_num x)) :: larg) (x_flagged :: larg_flagged).
 
 
+(**
+    given a statement, insert run-time check flags according to the
+    run-time checking rules enforced on the semantics of SPARK language 
+    and return a run-time checks-flagged statement;
+*)
 Inductive compile2_flagged_stmt: symboltable -> statement -> statement_x -> Prop := 
     | C2_Flagged_Null: forall st,
         compile2_flagged_stmt st S_Null S_Null_X
@@ -225,6 +248,9 @@ Inductive compile2_flagged_type_declaration: type_declaration -> type_declaratio
         compile2_flagged_type_declaration (Record_Type_Declaration   ast_num tn fs) 
                                           (Record_Type_Declaration_X ast_num tn fs).
 
+(** insert run-time check flags on the initialization expression 
+    for a newly declared object;
+*)
 Inductive compile2_flagged_object_declaration: symboltable -> object_declaration -> object_declaration_x -> Prop :=
     | C2_Flagged_Object_Declaration_NoneInit: forall st ast_num x t,
         compile2_flagged_object_declaration st 
@@ -306,7 +332,7 @@ with compile2_flagged_procedure_body: symboltable -> procedure_body -> procedure
                           Funtion Version
    *************************************************************** *)
 
-(** * Translator Function To Insert Checks *)
+(** * Functions for Inserting Run-Time Checks *)
 
 Function compile2_flagged_exp_f (st: symboltable) (checkflags: check_flags) (e: expression): expression_x :=
   match e with
@@ -580,7 +606,7 @@ with compile2_flagged_procedure_body_f (st: symboltable) (p: procedure_body): op
                  Semantics Equivalence Proof
    *************************************************************** *)
 
-(** * Semantics Equivalence Proof For Translator *)
+(** * Semantics Equivalence Proof For Run-Time Checks Generation *)
 
 Scheme expression_ind := Induction for expression Sort Prop 
                          with name_ind := Induction for name Sort Prop.

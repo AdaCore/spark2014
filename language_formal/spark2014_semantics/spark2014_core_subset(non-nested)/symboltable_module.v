@@ -25,11 +25,19 @@ Module SymbolTableM (S: SymTable_Element).
   Definition source_location := S.Source_Location.
   
   (** ** Symbol Table Structure *)
-
+  (** components of the symbol table:
+      - vars : map each variable to its declared type and in/out mode;
+      - procs: map each procedure name to its procedure declaration and 
+               the nested level of its procedure declaration;
+      - types: map each type name to its type declaration;
+      - exps : record the type for each expression ast node;
+      - sloc : map each ast node back to the source location in SPARK source code;
+  *)
+ 
   Record symboltable := mkSymbolTable{
-    vars:   list (idnum * (mode * type));
+    vars:  list (idnum * (mode * type));
     procs: list (procnum * (level * proc_decl));
-    types:  list (typenum * type_decl);
+    types: list (typenum * type_decl);
     exps: list (astnum * type);
     sloc: list (astnum * source_location)
     (*used to map back to the source location once an error is detected in ast tree*)

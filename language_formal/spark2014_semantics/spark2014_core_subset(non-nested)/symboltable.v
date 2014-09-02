@@ -11,14 +11,14 @@ Record source_location := sloc{
   endcol : nat
 }.
 
-(* symbol table for unflagged program *)
+(** symbol table for unflagged program *)
 Module Symbol_Table_Elements <: SymTable_Element.
   Definition Procedure_Decl := procedure_body.
   Definition Type_Decl := type_declaration.
   Definition Source_Location := source_location.
 End Symbol_Table_Elements.
 
-(* symbol table for flagged program *)
+(** symbol table for run-time checks-flagged program *)
 Module Symbol_Table_Elements_X <: SymTable_Element.
   Definition Procedure_Decl := procedure_body_x.
   Definition Type_Decl := type_declaration_x.
