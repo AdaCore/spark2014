@@ -324,10 +324,9 @@ Inductive copy_in: symboltable -> stack -> frame -> list parameter_specification
 
 
 (** ** Declaration Evaluation Semantics *)
-(** Inductive semantic of declarations. [eval_decl s nil decl
-    rsto] means that rsto is the frame to be pushed on s after
-    evaluating decl, sto is used as an accumulator for building
-    the frame.
+(** Inductive semantic of declarations [eval_decl st s sto decl rsto] 
+    means that rsto is the frame to be pushed on s after evaluating 
+    decl, sto is used as an accumulator for building the frame;
  *)
 
 Inductive eval_decl: symboltable -> stack -> frame -> declaration -> Return frame -> Prop :=
@@ -428,6 +427,46 @@ Qed.
     the evaluation of its sub-statements or sub-component, the
     evaluation is terminated and return a run-time error; otherwise,
     evaluate the statement into a normal state.
+
+   - in the evaluation for assignment statement (S_Assignment ast_num x e),
+
+     first, check if it's needed to do range check on the right side (e) 
+     of the assignment,
+     case 1: (is_range_constrainted_type t = false) means no range check 
+     needed for the value of expression e as the type of the left side of
+     the assignment is not a range constrainted type, 
+     case 2: (extract_subtype_range st t (Range l u)) means left side of
+     the assignment is a name expression of range constrainted type whose 
+     range is between l and u, so a range check is required on the value 
+     of expression e;
+
+     second, if there is no range check required for e, then do expression 
+     evaluation directly on e and update the value of x if there is no run-time
+     errors during their evaluation;
+     if there is a range check required for e, then a range check should be 
+     performed on the evaluation value of e before it's assigned to the left side
+     (x) of the assignment; 
+     
+     please note that the range check for the value of expression e is verified 
+     against the target type taken from the left side (x) of the assignment, that's
+     why the range check for expression e is enforced at the level of assignment 
+     statement even though the Do_Range_Check flag is set on the expression e;
+
+   - in the store update storeUpdate_x for indexed component (e.g. a(i):=v) or selected
+     component (e.g. r.f := v), 
+     
+     if the value of array a (or value of record r) is Undefined, then create a new 
+     aggregate array value with its ith element having value v (or create a new record 
+     value with its field f having value v), and assign this new aggregate value to array 
+     variable a (or record variable r);
+     
+     if the value of array a (or value of record r) is already defined, then update the
+     ith element of its array value (or update the filed f of its record value), and assign
+     the updated aggregate value to array variable a (or record variable r);
+
+   - in the store update storeUpdate_x for indexed component (e.g. a(i):=v), a
+     range check is required to be performed on the value of index expression i
+     before it's used to update the array value;
  *)
 
 Inductive eval_stmt: symboltable -> stack -> statement -> Return stack -> Prop := 

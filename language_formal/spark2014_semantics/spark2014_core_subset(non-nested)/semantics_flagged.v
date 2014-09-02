@@ -105,14 +105,29 @@ Function update_exp_check_flags (e: expression_x) (cks: check_flags): expression
 
 (** ** Expression Evaluation Semantics *)
 (**
-    for binary expression and unary expression, if a run time error 
-    is detected in any of its child expressions, then return a run
-    time error; for binary expression (e1 op e2), if both e1 and e2 
-    are evaluated to some normal value, then run time checks are
+    for binary expression and unary expression, if a run-time error 
+    is detected in any of its child expressions, then return a run-time
+    error; for binary expression (e1 op e2), if both e1 and e2 
+    are evaluated to some normal value, then run-time checks are
     performed according to the checking rules specified for the 
-    operator 'op', whenever the check fails (returning false), a run 
-    time error is detected and the program is terminated, otherwise, 
-    normal binary operation result is returned;
+    operator 'op', whenever the check fails, a run-time error is 
+    detected and the program is terminated, otherwise, normal binary 
+    operation result is returned;
+
+   - in name evaluation eval_name_x, the check flags for name are all nil, e.g.
+     (E_Indexed_Component_X ast_num x_ast_num x e nil), because if there is a
+     Do_Range_Check on the name expression, this range check should be enforced
+     by the context where the name expression appears, that's why it's invisible 
+     during the evaluation of name expression;
+
+     take the assignment (y := x) as an example, if y is a variable of integer 
+     subtype, and x is a variable of integer, then there should be a Do_Range_Check
+     flag on the right side (x) of the assignment; during the evaluation of the 
+     assignment, first evaluate the value of x, and then do the range check on the
+     value of x against the target subtype range of y, but the Do_Range_Check should
+     be invisible when evaluate the value of x even though the Do_Range_Check is set
+     on the variable x, this range check should be enforced at the assignment level; 
+     that's why in name evaluation eval_name_x, the check flags for name are all nil;
 *)
 
 Inductive eval_expr_x: symboltable_x -> stack -> expression_x -> Return value -> Prop :=
@@ -195,8 +210,9 @@ with eval_name_x: symboltable_x -> stack -> name_x -> Return value -> Prop :=
 
 (** ** Statement Evaluation Semantics *)
 
-(** *** Copy Out *)
 (** Stack manipulation for procedure calls and return *)
+
+(** *** Copy Out *)
 
 Inductive copy_out_x: symboltable_x -> stack -> frame -> list parameter_specification_x -> list expression_x -> Return stack -> Prop :=
     | Copy_Out_Nil_X : forall st s f, 
@@ -303,11 +319,10 @@ Inductive copy_in_x: symboltable_x -> stack -> frame -> list parameter_specifica
 
 
 
-(** Inductive semantic of declarations. [eval_decl s nil decl
-    rsto] means that rsto is the frame to be pushed on s after
-    evaluating decl, sto is used as an accumulator for building
-    the frame.
- *)
+(** Inductive semantic of declarations. [eval_decl_x st s sto decl rsto] 
+    means that rsto is the frame to be pushed on s after evaluating decl, 
+    sto is used as an accumulator for building the frame.
+*)
 
 (** ** Declaration Evaluation Semantics *)
 Inductive eval_decl_x: symboltable_x -> stack -> frame -> declaration_x -> Return frame -> Prop :=
@@ -361,9 +376,48 @@ Inductive eval_decl_x: symboltable_x -> stack -> frame -> declaration_x -> Retur
 
    in a statement evaluation, whenever a run time error is detected in
    the evaluation of its sub-statements or sub-component, the
-   evaluation is terminated and return a run time error; otherwise,
+   evaluation is terminated and return a run-time error; otherwise,
    evaluate the statement into a normal state.
 
+   - in the evaluation for assignment statement (S_Assignment_X ast_num x e),
+
+     first, check if there is a Do_Range_Check flag on the right side (e) of 
+     the assignment, 
+     case 1: ~(List.In Do_Range_Check (exp_check_flags e)) means
+     no range check needed for the value of expression e, 
+     case 2: (exp_check_flags e = cks1 ++ Do_Range_Check :: cks2) means
+     a range check required on the value of expression e;
+
+     second, if there is no range check required for e, then do expression 
+     evaluation directly on e and update the value of x if there is no run-time
+     errors during their evaluation;
+     if there is a range check required for e, then a range check should be 
+     performed on the evaluation value of e before it's assigned to the left side
+     (x) of the assignment; 
+     
+     please note that the range check for the value of expression e is verified 
+     against the target type taken from the left side (x) of the assignment, that's
+     why the range check for expression e is enforced at the level of assignment 
+     statement even though the Do_Range_Check flag is set on the expression e, and
+     that's also why we remove the Do_Range_Check flag from e's run-time check flag
+     set before the evaluation of e;
+
+   - in the store update storeUpdate_x for indexed component (e.g. a(i):=v) or selected
+     component (e.g. r.f := v), 
+     
+     if the value of array a (or value of record r) is Undefined, then create a new 
+     aggregate array value with its ith element having value v (or create a new record 
+     value with its field f having value v), and assign this new aggregate value to array 
+     variable a (or record variable r);
+     
+     if the value of array a (or value of record r) is already defined, then update the
+     ith element of its array value (or update the filed f of its record value), and assign
+     the updated aggregate value to array variable a (or record variable r);
+
+   - in the store update storeUpdate_x for indexed component (e.g. a(i):=v), a
+     range check may be required on the value of index expression i if Do_Range_Check
+     is set for it, and the range check should be performed for the value of i before
+     it's used to update the array value;
  *)
 
 Inductive eval_stmt_x: symboltable_x -> stack -> statement_x -> Return stack -> Prop := 
