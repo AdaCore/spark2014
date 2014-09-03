@@ -1,1 +1,4 @@
-inst_ext_ax.ads:20:04: warning: range check might fail
+inst_ext_ax.ads:31:10: warning: overflow check might fail
+inst_ext_ax.ads:31:14: warning: overflow check might fail
+inst_ext_ax.ads:33:04: warning: range check might fail
+inst_ext_ax.ads:34:04: warning: range check might fail
