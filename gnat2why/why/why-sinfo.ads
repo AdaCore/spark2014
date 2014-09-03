@@ -171,14 +171,6 @@ package Why.Sinfo is
    --
    --  ?? is W_Exn_Condition needed?
    --
-   --  ------------------
-   --  -- W_Loop_Annot --
-   --  ------------------
-   --  Invariant  W_Pred_Id
-   --
-   --  Loop annotations. These belong to the top of the loop, and each loop can
-   --  only have one.
-   --
    --  -------------------------
    --  -- W_Field_Association --
    --  -------------------------
@@ -432,7 +424,7 @@ package Why.Sinfo is
    --  -- W_While_Loop --
    --  ------------------
    --  Condition    W_Prog_Id
-   --  Annotation   W_Loop_Annot
+   --  Invariants   W_Pred_List
    --  Loop_Content W_Prog_Id
    --
    --  A loop, with loop annotations and body. The type of the expression is
@@ -661,7 +653,6 @@ package Why.Sinfo is
 
       W_Postcondition,
       W_Exn_Condition,
-      W_Loop_Annot,
       W_Handler,
       W_Field_Association,
 

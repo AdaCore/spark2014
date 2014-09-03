@@ -160,14 +160,12 @@ package body Why.Gen.Progs is
              New_While_Loop
                 (Ada_Node     => Ada_Node,
                  Condition    => Loop_Cond,
-                 Annotation   =>
-                   New_Loop_Annot
-                     (Invariant =>
-                        +New_VC_Expr
-                          (Ada_Node => Ada_Node,
-                           Expr     => +Enriched_Inv,
-                           Reason   => VC_Loop_Invariant,
-                           Domain   => EW_Pred)),
+                 Invariants   =>
+                   (1 => +New_VC_Expr
+                      (Ada_Node => Ada_Node,
+                       Expr     => +Enriched_Inv,
+                       Reason   => VC_Loop_Invariant,
+                       Domain   => EW_Pred)),
                  Loop_Content => Loop_Content));
    end New_For_Loop;
 

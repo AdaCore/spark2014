@@ -100,7 +100,6 @@ package body Why.Atree.Sprint is
    procedure Print_Integer_Constant (Node : W_Integer_Constant_Id);
    procedure Print_Label (Node : W_Label_Id);
    procedure Print_Literal (Node : W_Literal_Id);
-   procedure Print_Loop_Annot (Node : W_Loop_Annot_Id);
    procedure Print_Name (Node : W_Name_Id);
    procedure Print_Namespace_Declaration (Node : W_Namespace_Declaration_Id);
    procedure Print_Not (Node : W_Not_Id);
@@ -1107,24 +1106,6 @@ package body Why.Atree.Sprint is
       P (O, Get_Value (Node), Get_Domain (+Node));
    end Print_Literal;
 
-   -----------------------
-   -- Print_Loop_Annot --
-   -----------------------
-
-   procedure Print_Loop_Annot (Node : W_Loop_Annot_Id) is
-      Invariant : constant W_Pred_OId := Get_Invariant (Node);
-   begin
-      if Invariant /= Why_Empty then
-         P (O, "invariant ");
-         PL (O, "{ ");
-         Relative_Indent (O, 1);
-         Print_Node (+Invariant);
-         NL (O);
-         Relative_Indent (O, -1);
-         P (O, " }");
-      end if;
-   end Print_Loop_Annot;
-
    ---------------------
    -- Print_Module_Id --
    ---------------------
@@ -1214,9 +1195,6 @@ package body Why.Atree.Sprint is
 
          when W_Exn_Condition =>
             Print_Exn_Condition (+N);
-
-         when W_Loop_Annot =>
-            Print_Loop_Annot (+N);
 
          when W_Handler =>
             Print_Handler (+N);
@@ -1776,20 +1754,31 @@ package body Why.Atree.Sprint is
    -----------------------
 
    procedure Print_While_Loop (Node : W_While_Loop_Id) is
+
+      use Why_Node_Lists;
+
       Condition    : constant W_Prog_Id := Get_Condition (Node);
-      Annotation   : constant W_Loop_Annot_OId := Get_Annotation (Node);
+      Invs         : constant List := Get_List (+Get_Invariants (Node));
       Loop_Content : constant W_Prog_Id := Get_Loop_Content (Node);
+
    begin
       P (O, "while ");
       Print_Node (+Condition);
       PL (O, " do");
       Relative_Indent (O, 1);
 
-      if Annotation /= Why_Empty then
-         Print_Node (+Annotation);
-         NL (O);
+      if not Invs.Is_Empty then
+         for Inv of Invs loop
+            P (O, "invariant ");
+            PL (O, "{ ");
+            Relative_Indent (O, 1);
+            Print_Node (+Inv);
+            NL (O);
+            Relative_Indent (O, -1);
+            P (O, " }");
+            NL (O);
+         end loop;
       end if;
-
       Print_Node (+Loop_Content);
       Relative_Indent (O, -1);
       NL (O);

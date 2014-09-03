@@ -170,14 +170,6 @@ package body Xtree_Sinfo is
                  "Pred", "W_Pred", Id_One);
       Set_Domain (W_Exn_Condition, EW_Pred);
 
-      ------------------
-      -- W_Loop_Annot --
-      ------------------
-
-      New_Field (W_Loop_Annot,
-                 "Invariant", "W_Pred", Id_Lone);
-      Set_Domain (W_Loop_Annot, EW_Prog);
-
       ---------------
       -- W_Handler --
       ---------------
@@ -485,7 +477,7 @@ package body Xtree_Sinfo is
       New_Field (W_While_Loop,
                  "Condition", "W_Prog", Id_One);
       New_Field (W_While_Loop,
-                 "Annotation", "W_Loop_Annot", Id_One);
+                 "Invariants", "W_Pred", Id_Some);
       New_Field (W_While_Loop,
                  "Loop_Content", "W_Prog", Id_One);
 
