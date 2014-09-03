@@ -359,8 +359,6 @@ ASCII.LF;
    ------------------------
 
    procedure Prepare_Prover_Lib (Success : out Boolean) is
-      Prover_Name : constant String :=
-        Ada.Characters.Handling.To_Lower (Alter_Prover.all);
    begin
       Success := True;
       if Alter_Prover = null or else Alter_Prover.all = "" then
@@ -368,6 +366,8 @@ ASCII.LF;
       end if;
 
       declare
+         Prover_Name : constant String :=
+           Ada.Characters.Handling.To_Lower (Alter_Prover.all);
          Prover_Lib_Dir : constant String := Compose
            (Compose (Why3_Dir, "libs"), Name => Prover_Name);
          Prover_Obj_Dir : constant String := Compose
