@@ -1,16 +1,18 @@
 \section{SPARK Formalization}
-\subsection{Syntax of SPARK 2014 Subset}
-The subset of SPARK 2014 that we have formalized is significant, which includes
-array/record (non-nested) and procedure calls. Furthermore, it also supports
-some intersting SPARK / Ada language structures, such as nested procedures and
+\subsection{Representation of SPARK 2014 Subset}
+Towards the formalization of SPARK 2014, we have formalized a significant subset
+of it, including array, record (non-nested) and procedure calls, plus some
+intersting SPARK (Ada) language structures, such as nested procedures and
 subtypes.
 
-SPARK AST syntax is represented with inductive type definitions in Coq. And each
-AST node is annotated with an unique AST number, which will be used to record
-the type for each ast node, or it can be used later to track back to the
-SPARK source program when an run time error is detected, or it can be used to
-locate the position in source program where the run time check flags inserted by
-Gnat front end is incorrect.
+SPARK 2014 subset language is represented as inductive type definitions in Coq,
+and each constructor of the type definitions is annotated with an unique AST
+number. The AST numbers are useful in the following semantic formalization and
+run-time check verification for SPARK language. They can be used to record the
+type for each expression and subexpression, to track back to the SPARK source
+program when an run-time error is detected, and locate the position in
+SPARK source program where the run-time check flags inserted by GNAT front end
+are incorrect.
 
 Here, we list some of SPARK language structures and show how we formalize them
 in Coq. Expression (\textit{expr}) can be literal, unary expression, binary
@@ -45,22 +47,21 @@ Inductive stmt: Type :=
 | ...
 \end{lstlisting}
 
-Range constrainted scalar types are used commonly in SPARK programs, they can be
+Range constrainted scalar types are useful in SPARK programs, and they can be
 declared with either subtype declaration, derived type definition, or integer
 type definition. 
-A \textit{Subtype} declares a subtype, represented with
-\textit{typenum}, of some previously declared \textit{type} with an additional \textit{range}
+Constructor \textit{Subtype} declares a new subtype named \textit{typenum}
+of some previously declared \textit{type} with some new \textit{range}
 constraint (e.g. subtype T is Integer range 1 .. 10).
-A \textit{Derived\_Type}, whose name is represented by \textit{typenum},
-defines a derived type whose characteristics are derived from those of a parent
-\textit{type} with an additional \textit{range} constraint (e.g. type U is new
+Constructor \textit{Derived\_Type} defines a new derived type named
+\textit{typenum} with all its characteristics derived from its parent
+\textit{type} plus an additional \textit{range} constraint (e.g. type U is new
 Integer range 1 .. 10).
-A \textit{Integer\_Type} defines a new integer type, represented with
-\textit{typenum}, with an additional \textit{range} constraint (e.g. type W is
+Constructor \textit{Integer\_Type} defines a new integer type named
+\textit{typenum} with an additional \textit{range} constraint (e.g. type W is
 range 0 .. 10).
-
-\textit{Array\_Type} and \textit{Record\_Type} are constructors for defining
-aggregate data types array and record.
+\textit{Array\_Type} and \textit{Record\_Type} are constructors for declaring
+new array type and new record type.
 
 \begin{lstlisting}[escapechar=\#, language=coq, basicstyle=\small]
 Inductive type_decl: Type := 
@@ -73,13 +74,16 @@ Inductive type_decl: Type :=
 
 
 \subsection{Run-Time Check Flags}
-In SPARK, run time checks flags are automatically inserted at SPARK AST by the
-front end during semantic analysis, and their corresponding run time checks are
-then discharged by formally verifying their generated verification conditions
-with the GnatProve tool chain. So SPARK can guarantee the absence of run time
-errors for developing safety critical systems.
+In SPARK, various run-time check flags are inserted at SPARK AST by the GNAT
+front end during its static semantic analysis. Later, these check flags will
+trigger the corresponding run-time checks in the GNAT back end which are
+discharged by formally verifying their verification conditions with the GNATProve
+tool chain. That's how SPARK guarantees the absence of run-time errors for
+developing high integrity (both safety critical and security critical)
+softwares.
 
-For our formalized SPARK 2014 subset, the following check flags are sufficient,
+For the current SPARK 2014 subset that we are working on, all possible run-time
+checks as required by the language semantics are shown in the following list,
 which are enforced on the expression nodes.
 \begin{itemize}
 \item 
@@ -98,22 +102,22 @@ which are enforced on the expression nodes.
   declaration.
 \end{itemize}
 
-\subsection{Semantical Formalization With Run-Time Checks}
-The major semantical difference between SPARK and other programming languages is
-that verification for absence of run time errors are required by the languge
-itself.
-So in our semantical formalization for SPARK language, run time checks is an
+\subsection{Semantic Formalization With Run-Time Checks}
+A major semantic difference between SPARK and other programming languages is
+that verification for absence of run-time errors are required by the semantics
+of the language itself.
+So in our semantic formalization for SPARK language, run-time checks is an
 important integrant and they are always performed at appropriate points during
-the language semantic evaluation. The program will be terminated with a run time
-error message once any of its run time checks fails during the program
+the language semantic evaluation. The program will be terminated with a run-time
+error message once any of its run-time checks fails during the program
 evaluation.
 
 \subsubsection{Value}
-In SPARK semantics, return value for an expression evaluation can be either
-a normal value (basic or aggregate value) or a run time error status detected
-during expression evaluation.
+In SPARK semantics, the resulting value of an expression evaluation can be
+either a normal value (basic or aggregate value) or a run-time error status
+detected during expression evaluation.
 Similarly, for a well-formed SPARK program, it should either terminate in a
-normal state or a detected run time error, which is expected to be detected and
+normal state or a detected run-time error, which is expected to be detected and
 raised during program execution.
 
 \begin{lstlisting}[escapechar=\#, language=coq, basicstyle=\small]
@@ -122,8 +126,8 @@ Inductive Return (A: Type): Type :=
 | Run_Time_Error: error_type -> Return A.
 \end{lstlisting}
 
-\subsubsection{Run Time Check Evaluation}
-A small but significant subset of SPARK run time checks are formalized in Coq,
+\subsubsection{Run-Time Check Evaluation}
+A significant subset of SPARK run-time checks are formalized in Coq,
 including overflow check, division check and range check. Overflow checks are
 performed to check that the result of a given orithmetic operation is within the
 bounds of the base type, division checks are performed to prevent divide being
@@ -151,23 +155,23 @@ subset. And it returns either \textit{Success} or \textit{Exception} with
 overflow signal.
 
 \subsubsection{Expression Evaluation}
-In an expression evaluation, for an arithmetical operation, run time checks are
+In an expression evaluation, for an arithmetical operation, run-time checks are
 always performed according to the checking rules required for the arithmetical
-operators in SPARK reference manual, and a run time error returns whenever the
+operators in SPARK reference manual, and a run-time error returns whenever the
 check fails, otherwise, a normal operation result is returned. Further checks on
 the normal result value maybe required depending on the context where the
 expression appears. One such example is that range check should be performed on
-the index expression value before it can be used as an index value for an
+the value of the index expression before it can be used as an index for an
 indexed component.
 
 The following is a snippet of how the expression evaluation is formalized in Coq
-with run time checks enforced during its semantics evaluation. For a binary
+with run-time checks enforced during its semantics evaluation. For a binary
 expression (Binop ast\_num op e1 op e2), if both e1 and e2 are evaluated to some
-normal values, then all necessary run time checks required for the operator
+normal values, then all necessary run-time checks required for the operator
 \textit{op} are performed, e.g. overflow check for \textit{+} and both overflow
 check and division check for \textit{/}, and a normal binary operation result is
 returned when the checks succeed. In name evaluation for indexed component, an
-additional range check is required to be performed according to the target type
+additional range check is required to be performed according to the index type
 of the array, which is fetched from a preconstructed symbol table.
 
 \begin{lstlisting}[escapechar=\#, language=coq, basicstyle=\small]
@@ -199,13 +203,12 @@ with eval_name: symboltable -> stack -> name -> Return value -> Prop :=
 \subsubsection{Statement Evaluation}
 In the context of statement evaluation, range checks will be enforced during
 statement evaluation for both assignments and procedure calls. For the case of
-assignment evaluation, range check for the right hand side expression of the
-assignment is enforced if the target type of the left side of the assignment is
-some range constrainted type. For the case of procedure calls, range checks are
-required to be enforced on arguments against the type of the IN and IN OUT
-formal parameters when passing in the arguments before running the called
-procedure, and do range checks on values of OUT and IN OUT formal parameters
-on the procedure return.
+assignment evaluation, range check for its right hand side expression is
+enforced if the target type of its left hand side is some range
+constrainted type. 
+For the case of procedure calls, range checks may be required for both input
+arguments and output parameters if the types of input parameters and output
+argumetns are range constrainted types.
 
 For a normal assignment evaluation, first evaluate its right hand side
 expression \textit{e}, if it returns a normal value, then fetch the type of
@@ -225,8 +228,8 @@ Inductive eval_stmt:symboltable -> stack -> stmt -> Return stack -> Prop :=
 \end{lstlisting}
 
 \subsubsection{Declaration Evaluation}
-For an object declaration, range check is required for its initialization
-expression if the type of the object being declared is range constrainted.
+For an object declaration, range check is required for the value of its
+initialization expression if its declared type is a range constrainted type.
 Type declaration and procedure declaration should have no effect on the final
 stack.
 
