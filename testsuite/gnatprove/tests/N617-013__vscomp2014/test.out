@@ -11,9 +11,13 @@ partition_refinement.adb:21:16: info: loop invariant initialization proved
 partition_refinement.adb:21:16: info: loop invariant preservation proved
 partition_refinement.adb:21:47: info: range check proved
 partition_refinement.adb:21:88: info: index check proved
+partition_refinement.adb:22:16: info: loop invariant initialization proved
+partition_refinement.adb:22:16: info: loop invariant preservation proved
 partition_refinement.adb:22:47: info: range check proved
 partition_refinement.adb:22:92: info: index check proved
 partition_refinement.adb:22:110: info: index check proved
+partition_refinement.adb:23:16: info: loop invariant initialization proved
+partition_refinement.adb:23:16: info: loop invariant preservation proved
 partition_refinement.adb:23:47: info: range check proved
 partition_refinement.adb:23:66: info: overflow check proved
 partition_refinement.adb:23:89: info: index check proved

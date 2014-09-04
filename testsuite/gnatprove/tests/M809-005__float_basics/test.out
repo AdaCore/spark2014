@@ -226,10 +226,10 @@ generic_float_tests.adb:293:14: warning: subprogram "Unary_Ops" has no effect, i
 generic_float_tests.adb:293:14: warning: subprogram "Unary_Ops" has no effect, in instantiation at foo.ads:9
 generic_float_tests.adb:296:30: warning: assertion might fail, requires - (- X) = + X, in instantiation at foo.ads:14
 generic_float_tests.adb:296:30: warning: assertion might fail, requires - (- X) = + X, in instantiation at foo.ads:9
-generic_float_tests.adb:301:37: info: postcondition proved, in instantiation at foo.ads:14
-generic_float_tests.adb:301:37: info: postcondition proved, in instantiation at foo.ads:9
-generic_float_tests.adb:309:37: info: postcondition proved, in instantiation at foo.ads:14
-generic_float_tests.adb:309:37: info: postcondition proved, in instantiation at foo.ads:9
+generic_float_tests.adb:301:37: warning: postcondition might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:301:37: warning: postcondition might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:309:37: warning: postcondition might fail, in instantiation at foo.ads:14
+generic_float_tests.adb:309:37: warning: postcondition might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:318:21: info: postcondition proved, in instantiation at foo.ads:14
 generic_float_tests.adb:318:21: info: postcondition proved, in instantiation at foo.ads:9
 generic_float_tests.adb:324:14: warning: subprogram "Test_Floor_2" has no effect, in instantiation at foo.ads:14

@@ -131,13 +131,15 @@ aco-math-very_longs.adb:331:25: info: discriminant check proved
 aco-math-very_longs.adb:332:22: info: discriminant check proved
 aco-math-very_longs.adb:332:35: info: index check proved
 aco-math-very_longs.adb:336:13: info: loop invariant initialization proved
-aco-math-very_longs.adb:336:13: warning: loop invariant might fail after first iteration
+aco-math-very_longs.adb:336:13: info: loop invariant preservation proved
 aco-math-very_longs.adb:336:41: info: discriminant check proved
 aco-math-very_longs.adb:336:54: warning: array index check might fail
 aco-math-very_longs.adb:336:92: warning: overflow check might fail
 aco-math-very_longs.adb:336:105: info: discriminant check proved
 aco-math-very_longs.adb:336:132: info: discriminant check proved
 aco-math-very_longs.adb:336:145: info: index check proved
+aco-math-very_longs.adb:337:13: info: loop invariant initialization proved
+aco-math-very_longs.adb:337:13: info: loop invariant preservation proved
 aco-math-very_longs.adb:337:85: info: overflow check proved
 aco-math-very_longs.adb:337:103: info: discriminant check proved
 aco-math-very_longs.adb:337:116: info: index check proved
@@ -275,11 +277,9 @@ aco-math-very_longs.adb:552:07: info: precondition proved
 aco-math-very_longs.adb:553:36: info: precondition proved
 aco-math-very_longs.adb:554:20: info: precondition proved
 aco-math-very_longs.adb:554:20: warning: discriminant check might fail
-
 aco-math-very_longs.adb:564:07: info: precondition proved
 aco-math-very_longs.adb:566:20: info: precondition proved
 aco-math-very_longs.adb:566:20: warning: discriminant check might fail
-
 aco-math-very_longs.adb:583:55: info: division check proved
 aco-math-very_longs.adb:584:34: info: division check proved
 aco-math-very_longs.adb:586:29: info: discriminant check proved

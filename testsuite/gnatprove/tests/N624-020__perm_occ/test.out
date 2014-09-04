@@ -105,11 +105,13 @@ sort.adb:100:13: warning: precondition might fail
 sort.adb:100:13: warning: statement has no effect
 sort.adb:100:48: info: range check proved
 sort.adb:100:57: warning: range check might fail
-sort.adb:103:10: warning: loop invariant might fail after first iteration
-sort.adb:103:10: warning: loop invariant might fail in first iteration
 sort.adb:105:31: info: overflow check proved
+sort.adb:106:20: warning: loop invariant might fail after first iteration, requires Values (I) <= Values (J)
+sort.adb:106:20: warning: loop invariant might fail in first iteration, requires Values (I) <= Values (J)
 sort.adb:106:28: info: index check proved
 sort.adb:106:42: info: index check proved
+sort.adb:107:10: info: loop invariant initialization proved
+sort.adb:107:33: warning: loop invariant might fail after first iteration, requires Is_Perm (Values'Loop_Entry, Values)
 sort.ads:8:16: warning: postcondition might fail
 sort.ads:10:51: info: overflow check proved
 sort.ads:11:22: info: index check proved

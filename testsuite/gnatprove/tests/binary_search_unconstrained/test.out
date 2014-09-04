@@ -5,7 +5,11 @@ binary_search.adb:19:16: info: index check proved
 binary_search.adb:19:32: info: index check proved
 binary_search.adb:24:10: info: loop invariant initialization proved
 binary_search.adb:24:10: info: loop invariant preservation proved
+binary_search.adb:25:10: info: loop invariant initialization proved
+binary_search.adb:25:10: info: loop invariant preservation proved
 binary_search.adb:26:56: info: index check proved
+binary_search.adb:27:10: info: loop invariant initialization proved
+binary_search.adb:27:10: info: loop invariant preservation proved
 binary_search.adb:29:45: info: index check proved
 binary_search.adb:30:10: info: loop variant proved
 binary_search.adb:32:22: info: overflow check proved

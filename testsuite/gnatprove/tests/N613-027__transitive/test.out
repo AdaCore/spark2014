@@ -27,10 +27,14 @@ sorters.adb:75:22: warning: precondition might fail
 sorters.adb:75:40: info: range check proved
 sorters.adb:78:13: warning: precondition might fail
 sorters.adb:79:29: info: range check proved
-sorters.adb:85:10: warning: loop invariant might fail after first iteration
-sorters.adb:85:10: warning: loop invariant might fail in first iteration
+sorters.adb:85:10: info: loop invariant initialization proved
+sorters.adb:85:33: warning: loop invariant might fail after first iteration, requires Perm (Values'Loop_Entry, Values)
+sorters.adb:89:18: warning: loop invariant might fail after first iteration, requires Values (Current) <= Values (J)
+sorters.adb:89:18: warning: loop invariant might fail in first iteration, requires Values (Current) <= Values (J)
 sorters.adb:89:26: info: index check proved
 sorters.adb:89:46: info: index check proved
+sorters.adb:93:16: warning: loop invariant might fail after first iteration, requires Values (J) <= Values (J + 1)
+sorters.adb:93:16: warning: loop invariant might fail in first iteration, requires Values (J) <= Values (J + 1)
 sorters.adb:93:24: info: index check proved
 sorters.adb:93:40: info: index check proved
 sorters.adb:93:40: info: overflow check proved

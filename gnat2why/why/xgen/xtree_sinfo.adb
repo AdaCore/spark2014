@@ -477,7 +477,7 @@ package body Xtree_Sinfo is
       New_Field (W_While_Loop,
                  "Condition", "W_Prog", Id_One);
       New_Field (W_While_Loop,
-                 "Invariants", "W_Pred", Id_Some);
+                 "Invariants", "W_Pred", Id_Set);
       New_Field (W_While_Loop,
                  "Loop_Content", "W_Prog", Id_One);
 

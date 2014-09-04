@@ -129,7 +129,7 @@ package body Gnat2Why.Expr.Loops is
       Enter_Condition    : W_Prog_Id;
       Loop_Condition     : W_Prog_Id;
       Implicit_Invariant : W_Pred_Id;
-      User_Invariant     : W_Pred_Id;
+      User_Invariants    : W_Pred_Array;
       Invariant_Check    : W_Prog_Id;
       Variant_Tmps       : Why_Node_Lists.List;
       Variant_Update     : W_Prog_Id;
@@ -376,7 +376,6 @@ package body Gnat2Why.Expr.Loops is
       --  the proper values when the loop does not have an invariant.
 
       Inv_Check       : W_Prog_Id := New_Void;
-      Invariant       : W_Pred_Id := True_Pred;
 
       --  Variable for the implicit invariant for dynamic properties of
       --  modified objects.
@@ -424,350 +423,364 @@ package body Gnat2Why.Expr.Loops is
          Loop_Variants   => Loop_Variants,
          Final_Stmts     => Final_Stmts);
 
-      --  Transform statements before and after the loop invariants
-      In_Loop_Initial_Statements := True;
-      Initial_Prog := Transform_Loop_Body_Statements (Initial_Stmts);
-      In_Loop_Initial_Statements := False;
-      Final_Prog   := Transform_Loop_Body_Statements (Final_Stmts);
+      declare
+         Why_Invariants : W_Pred_Array (1 .. Integer (Loop_Invariants.Length));
+      begin
 
-      --  Generate the implicit invariant for the dynamic properties of objects
-      --  modified in the loop.
+         --  Transform statements before and after the loop invariants
+         In_Loop_Initial_Statements := True;
+         Initial_Prog := Transform_Loop_Body_Statements (Initial_Stmts);
+         In_Loop_Initial_Statements := False;
+         Final_Prog   := Transform_Loop_Body_Statements (Final_Stmts);
 
-      if Loop_Writes_Known (Loop_Id) then
-         declare
-            use Flow_Types;
+         --  Generate the implicit invariant for the dynamic properties of
+         --  objects modified in the loop.
 
-            Modified : constant Flow_Id_Sets.Set :=
-              To_Entire_Variables (Get_Loop_Writes (Loop_Id));
-            N        : Node_Id;
-            Dyn_Prop : W_Pred_Id;
-            Expr     : W_Expr_Id;
-            Binder   : Item_Type;
-         begin
-            for F of Modified loop
-               if F.Kind = Direct_Mapping then
-                  N := Get_Direct_Mapping_Id (F);
-                  if Nkind (N) in N_Entity
-                    and then Ekind (N) = E_Variable
-                  then
-                     Binder := Ada_Ent_To_Why.Element
-                       (Symbol_Table, N);
-                     Expr := (case Binder.Kind is
-                                 when Regular =>
-                                    New_Deref (Right => Binder.Main.B_Name,
-                                               Typ   => Get_Type
-                                                 (+Binder.Main.B_Name)),
-                                 when UCArray =>
-                                    New_Deref (Right => Binder.Content.B_Name,
-                                               Typ   => Get_Type
-                                                 (+Binder.Content.B_Name)),
-                                 when DRecord =>
-                                    Record_From_Split_Form (Binder, True),
-                                 when Func    => raise Program_Error);
-                     Dyn_Prop := Compute_Dynamic_Property
-                       (Expr     => Expr,
-                        Ty       => Etype (N),
-                        Only_Var => True);
+         if Loop_Writes_Known (Loop_Id) then
+            declare
+               use Flow_Types;
 
-                     if Dyn_Prop /= True_Pred then
-                        Dyn_Types_Inv :=
-                          +New_And_Expr (Left   => +Dyn_Types_Inv,
-                                         Right  => +Dyn_Prop,
-                                         Domain => EW_Prog);
+               Modified : constant Flow_Id_Sets.Set :=
+                 To_Entire_Variables (Get_Loop_Writes (Loop_Id));
+               N        : Node_Id;
+               Dyn_Prop : W_Pred_Id;
+               Expr     : W_Expr_Id;
+               Binder   : Item_Type;
+            begin
+               for F of Modified loop
+                  if F.Kind = Direct_Mapping then
+                     N := Get_Direct_Mapping_Id (F);
+                     if Nkind (N) in N_Entity
+                       and then Ekind (N) = E_Variable
+                     then
+                        Binder := Ada_Ent_To_Why.Element
+                          (Symbol_Table, N);
+                        Expr := (case Binder.Kind is
+                                    when Regular =>
+                                       New_Deref (Right => Binder.Main.B_Name,
+                                                  Typ   => Get_Type
+                                                    (+Binder.Main.B_Name)),
+                                    when UCArray =>
+                                       New_Deref (Right =>
+                                                     Binder.Content.B_Name,
+                                                  Typ   => Get_Type
+                                                    (+Binder.Content.B_Name)),
+                                    when DRecord =>
+                                       Record_From_Split_Form (Binder, True),
+                                    when Func    => raise Program_Error);
+                        Dyn_Prop := Compute_Dynamic_Property
+                          (Expr     => Expr,
+                           Ty       => Etype (N),
+                           Only_Var => True);
+
+                        if Dyn_Prop /= True_Pred then
+                           Dyn_Types_Inv :=
+                             +New_And_Expr (Left   => +Dyn_Types_Inv,
+                                            Right  => +Dyn_Prop,
+                                            Domain => EW_Prog);
+                        end if;
                      end if;
                   end if;
-               end if;
-            end loop;
-         end;
-      end if;
+               end loop;
+            end;
+         end if;
 
-      --  Generate a VC for the loop invariants, located on the first one
+         --  Generate the loop invariants VCs
 
-      if not Loop_Invariants.Is_Empty then
+         if not Loop_Invariants.Is_Empty then
 
-         --  Generate the relevant bits for the various loop invariants
-
-         for Loop_Invariant of Loop_Invariants loop
             declare
-               One_Inv_Check : W_Prog_Id;
-               One_Invariant : W_Pred_Id;
+               Count : Integer := 1;
             begin
-               Transform_Pragma_Check (Stmt    => Loop_Invariant,
-                                       Runtime => One_Inv_Check,
-                                       Pred    => One_Invariant);
-               Inv_Check := Sequence (Inv_Check, One_Inv_Check);
-               Invariant := +New_And_Expr (Left   => +Invariant,
-                                           Right  => +One_Invariant,
-                                           Domain => EW_Pred);
+
+               --  Generate the relevant bits for the various loop invariants
+
+               for Loop_Invariant of Loop_Invariants loop
+                  declare
+                     One_Inv_Check : W_Prog_Id;
+                     One_Invariant : W_Pred_Id;
+                  begin
+                     Transform_Pragma_Check (Stmt    => Loop_Invariant,
+                                             Runtime => One_Inv_Check,
+                                             Pred    => One_Invariant);
+                     Inv_Check := Sequence (Inv_Check, One_Inv_Check);
+
+                     Why_Invariants (Count) :=
+                       +New_VC_Expr (Ada_Node => Loop_Invariant,
+                                     Expr     => +One_Invariant,
+                                     Reason   => VC_Loop_Invariant,
+                                     Domain   => EW_Pred);
+                     Count := Count + 1;
+                  end;
+               end loop;
+            end;
+         end if;
+
+         --  Generate the relevant bits for the loop variants, if any
+
+         for Loop_Variant of Loop_Variants loop
+            declare
+               One_Variant_Prog   : W_Prog_Id;
+               One_Variant_Pred   : W_Pred_Id;
+               One_Variant_Update : W_Prog_Id;
+               One_Variant_Tmps   : Why_Node_Lists.List;
+               Unused_Pred        : W_Pred_Id;
+
+            begin
+
+               --  Generate the Why expressions for checking absence of
+               --  run-time errors and variant progress.
+
+               Transform_Loop_Variant
+                 (Stmt                  => Loop_Variant,
+                  Check_Prog            => One_Variant_Prog,
+                  Progress_Pred         => One_Variant_Pred,
+                  Same_Or_Progress_Pred => Unused_Pred,
+                  Tmp_Vars              => One_Variant_Tmps,
+                  Update_Prog           => One_Variant_Update);
+
+               --  Add new temporaries to the common list for loop variants
+
+               Append (To => Variant_Tmps, Elmts => One_Variant_Tmps);
+
+               --  Create the program that updates the variables holding saved
+               --  values of variant expressions.
+
+               Variant_Update := Sequence (Variant_Update, One_Variant_Update);
+
+               --  Combine the run-time check and the loop variant check in one
+               --  program Variant_Check, for use in Loop_Wrap.
+
+               Variant_Check :=
+                 Sequence
+                   ((1 => Variant_Check,
+                     2 => New_Ignore (Prog => One_Variant_Prog),
+                     3 => New_Located_Assert (Ada_Node => Loop_Variant,
+                                              Pred     => One_Variant_Pred,
+                                              Reason   => VC_Loop_Variant,
+                                              Kind     => EW_Check)));
             end;
          end loop;
 
-         Invariant := +New_VC_Expr (Ada_Node => Loop_Invariants.First_Element,
-                                    Expr     => +Invariant,
-                                    Reason   => VC_Loop_Invariant,
-                                    Domain   => EW_Pred);
-      end if;
+         --  Depending on the form of the loop, put together the generated Why
+         --  nodes in a different way.
 
-      --  Generate the relevant bits for the loop variants, if any
+         --  Case of a simple loop
 
-      for Loop_Variant of Loop_Variants loop
-         declare
-            One_Variant_Prog   : W_Prog_Id;
-            One_Variant_Pred   : W_Pred_Id;
-            One_Variant_Update : W_Prog_Id;
-            One_Variant_Tmps   : Why_Node_Lists.List;
-            Unused_Pred        : W_Pred_Id;
-
-         begin
-            --  Generate the Why expressions for checking absence of run-time
-            --  errors and variant progress.
-
-            Transform_Loop_Variant
-              (Stmt                  => Loop_Variant,
-               Check_Prog            => One_Variant_Prog,
-               Progress_Pred         => One_Variant_Pred,
-               Same_Or_Progress_Pred => Unused_Pred,
-               Tmp_Vars              => One_Variant_Tmps,
-               Update_Prog           => One_Variant_Update);
-
-            --  Add new temporaries to the common list for loop variants
-
-            Append (To => Variant_Tmps, Elmts => One_Variant_Tmps);
-
-            --  Create the program that updates the variables holding saved
-            --  values of variant expressions.
-
-            Variant_Update := Sequence (Variant_Update, One_Variant_Update);
-
-            --  Combine the run-time check and the loop variant check in one
-            --  program Variant_Check, for use in Loop_Wrap.
-
-            Variant_Check :=
-              Sequence
-                ((1 => Variant_Check,
-                  2 => New_Ignore (Prog => One_Variant_Prog),
-                  3 => New_Located_Assert (Ada_Node => Loop_Variant,
-                                           Pred     => One_Variant_Pred,
-                                           Reason   => VC_Loop_Variant,
-                                           Kind     => EW_Check)));
-         end;
-      end loop;
-
-      --  Depending on the form of the loop, put together the generated Why
-      --  nodes in a different way.
-
-      --  Case of a simple loop
-
-      if Nkind (Scheme) = N_Empty then
-         return Wrap_Loop (Loop_Id            => Loop_Id,
-                           Loop_Start         => Initial_Prog,
-                           Loop_End           => Final_Prog,
-                           Loop_Restart       => Initial_Prog,
-                           Enter_Condition    => True_Prog,
-                           Loop_Condition     => True_Prog,
-                           Implicit_Invariant => Dyn_Types_Inv,
-                           User_Invariant     => Invariant,
-                           Invariant_Check    => Inv_Check,
-                           Variant_Tmps       => Variant_Tmps,
-                           Variant_Update     => Variant_Update,
-                           Variant_Check      => Variant_Check);
-
-      --  Case of a WHILE loop
-
-      elsif Nkind (Iterator_Specification (Scheme)) = N_Empty
-              and then
-            Nkind (Loop_Parameter_Specification (Scheme)) = N_Empty
-      then
-         While_Loop : declare
-            Cond_Prog : constant W_Prog_Id :=
-              +Transform_Expr_With_Actions (Condition (Scheme),
-                                            Condition_Actions (Scheme),
-                                            EW_Bool_Type,
-                                            EW_Prog,
-                                            Params => Body_Params);
-            Cond_Pred : constant W_Pred_Id :=
-              +Transform_Expr_With_Actions (Condition (Scheme),
-                                            Condition_Actions (Scheme),
-                                            EW_Bool_Type,
-                                            EW_Pred,
-                                            Params => Body_Params);
-
-            --  If the Loop_Assertion pragma comes first in the loop body
-            --  (possibly inside nested block statements), then we can use the
-            --  loop condition as an implicit invariant of the generated Why
-            --  loop. In other cases, we cannot, as this would not be always
-            --  correct.
-
-            Impl_Pred : constant W_Pred_Id :=
-              (if Get_Kind (+Initial_Prog) = W_Void then
-                 Cond_Pred
-               else
-                  True_Pred);
-
-            Impl_Inv  : constant W_Pred_Id :=
-              +New_And_Expr (Left   => +Dyn_Types_Inv,
-                             Right  => +Impl_Pred,
-                             Domain => EW_Prog);
-         begin
+         if Nkind (Scheme) = N_Empty then
             return Wrap_Loop (Loop_Id            => Loop_Id,
                               Loop_Start         => Initial_Prog,
                               Loop_End           => Final_Prog,
                               Loop_Restart       => Initial_Prog,
-                              Enter_Condition    => Cond_Prog,
-                              Loop_Condition     => Cond_Prog,
-                              Implicit_Invariant => Impl_Inv,
-                              User_Invariant     => Invariant,
+                              Enter_Condition    => True_Prog,
+                              Loop_Condition     => True_Prog,
+                              Implicit_Invariant => Dyn_Types_Inv,
+                              User_Invariants    => Why_Invariants,
                               Invariant_Check    => Inv_Check,
                               Variant_Tmps       => Variant_Tmps,
                               Variant_Update     => Variant_Update,
                               Variant_Check      => Variant_Check);
-         end While_Loop;
 
-      --  Case of a FOR loop
+            --  Case of a WHILE loop
 
-      --  Here, we set the condition to express that the index is in the range
-      --  of the loop. We need to evaluate the range expression once at the
-      --  beginning of the loop, to get potential checks in that expression
-      --  only once.
+         elsif Nkind (Iterator_Specification (Scheme)) = N_Empty
+           and then
+             Nkind (Loop_Parameter_Specification (Scheme)) = N_Empty
+         then
+            While_Loop : declare
+               Cond_Prog : constant W_Prog_Id :=
+                 +Transform_Expr_With_Actions (Condition (Scheme),
+                                               Condition_Actions (Scheme),
+                                               EW_Bool_Type,
+                                               EW_Prog,
+                                               Params => Body_Params);
+               Cond_Pred : constant W_Pred_Id :=
+                 +Transform_Expr_With_Actions (Condition (Scheme),
+                                               Condition_Actions (Scheme),
+                                               EW_Bool_Type,
+                                               EW_Pred,
+                                               Params => Body_Params);
 
-      elsif Nkind (Condition (Scheme)) = N_Empty then
-         For_Loop : declare
-            LParam_Spec  : constant Node_Id :=
-                             Loop_Parameter_Specification (Scheme);
-            Loop_Range   : constant Node_Id :=
-              Discrete_Subtype_Definition (LParam_Spec);
-            Is_Reverse   : constant Boolean := Reverse_Present (LParam_Spec);
-            Index_Deref  : constant W_Prog_Id :=
-                             New_Deref
-                               (Ada_Node => Stmt,
-                                Right    => +Loop_Index,
-                                Typ      => EW_Int_Type);
-            Update_Op    : constant EW_Binary_Op :=
-                             (if Is_Reverse then EW_Substract
-                              else EW_Add);
-            Update_Expr  : constant W_Prog_Id :=
-                             New_Binary_Op
-                               (Ada_Node => Stmt,
-                                Op       => Update_Op,
-                                Op_Type  => EW_Int,
-                                Left     => +Index_Deref,
-                                Right    =>
-                                  New_Integer_Constant
-                                    (Ada_Node => Stmt,
-                                     Value     => Uint_1));
-            Update_Stmt  : constant W_Prog_Id :=
-                             New_Assignment
-                               (Ada_Node => Stmt,
-                                Name     => Loop_Index,
-                                Value    => Update_Expr);
+               --  If the Loop_Assertion pragma comes first in the loop body
+               --  (possibly inside nested block statements), then we can use
+               --  the loop condition as an implicit invariant of the generated
+               --  Why loop. In other cases, we cannot, as this would not be
+               --  always correct.
 
-            --  In the range expression of the invariant, explicitly
-            --  set T_Type to handle the special case of
-            --  Standard.Boolean, where bounds and index are of
-            --  different base types (bool for bounds, int for index).
+               Impl_Pred : constant W_Pred_Id :=
+                 (if Get_Kind (+Initial_Prog) = W_Void then
+                       Cond_Pred
+                  else
+                     True_Pred);
 
-            Cond_Pred    : constant W_Pred_Id :=
-              +Range_Expr (Loop_Range,
-                           New_Deref (Right => Loop_Index, Typ => EW_Int_Type),
-                           EW_Pred,
-                           Params => Body_Params,
-                           T_Type => EW_Int_Type);
-            Actual_Range : constant Node_Id := Get_Range (Loop_Range);
-            Low_Ident    : constant W_Identifier_Id :=
-              New_Temp_Identifier (Typ => EW_Int_Type);
-            High_Ident   : constant W_Identifier_Id :=
-              New_Temp_Identifier (Typ => EW_Int_Type);
-            Init_Index   : constant W_Identifier_Id :=
-              (if Is_Reverse then High_Ident else Low_Ident);
-            Exit_Index   : constant W_Identifier_Id :=
-              (if Is_Reverse then Low_Ident else High_Ident);
-            Exit_Cmp     : constant EW_Relation :=
-              (if Is_Reverse then EW_Ge else EW_Le);
-            Exit_Cond    : constant W_Expr_Id :=
-              New_Relation (Domain  => EW_Prog,
-                            Op_Type => EW_Int,
-                            Op      => Exit_Cmp,
-                            Left    => +Index_Deref,
-                            Right   => +Exit_Index);
-            Cond_Prog    : constant W_Prog_Id :=
-              +New_Range_Expr (Domain    => EW_Prog,
-                               Low       => +Low_Ident,
-                               High      => +High_Ident,
-                               Expr      => +Index_Deref);
-            Impl_Inv  : constant W_Pred_Id :=
-              +New_And_Expr (Left   => +Dyn_Types_Inv,
-                             Right  => +Cond_Pred,
-                             Domain => EW_Prog);
-            Entire_Loop  : W_Prog_Id :=
-              Wrap_Loop (Loop_Id            => Loop_Id,
-                         Loop_Start         => Initial_Prog,
-                         Loop_End           =>
-                           Sequence (Final_Prog, Update_Stmt),
-                         Loop_Restart       => Initial_Prog,
-                         Enter_Condition    => Cond_Prog,
-                         Loop_Condition     => +Exit_Cond,
-                         Implicit_Invariant => Impl_Inv,
-                         User_Invariant     => Invariant,
-                         Invariant_Check    => Inv_Check,
-                         Variant_Tmps       => Variant_Tmps,
-                         Variant_Update     => Variant_Update,
-                         Variant_Check      => Variant_Check);
+               Impl_Inv  : constant W_Pred_Id :=
+                 +New_And_Expr (Left   => +Dyn_Types_Inv,
+                                Right  => +Impl_Pred,
+                                Domain => EW_Prog);
+            begin
+               return Wrap_Loop (Loop_Id            => Loop_Id,
+                                 Loop_Start         => Initial_Prog,
+                                 Loop_End           => Final_Prog,
+                                 Loop_Restart       => Initial_Prog,
+                                 Enter_Condition    => Cond_Prog,
+                                 Loop_Condition     => Cond_Prog,
+                                 Implicit_Invariant => Impl_Inv,
+                                 User_Invariants    => Why_Invariants,
+                                 Invariant_Check    => Inv_Check,
+                                 Variant_Tmps       => Variant_Tmps,
+                                 Variant_Update     => Variant_Update,
+                                 Variant_Check      => Variant_Check);
+            end While_Loop;
 
-         --  Start of For_Loop
+            --  Case of a FOR loop
 
-         begin
-            Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
-            Entire_Loop :=
-              Sequence
-                (New_Assignment
-                     (Name => Loop_Index,
-                      Value  => +Init_Index),
-                 Entire_Loop);
-            Entire_Loop :=
-               +New_Typed_Binding
+            --  Here, we set the condition to express that the index is in the
+            --  range of the loop. We need to evaluate the range expression
+            --  once at the beginning of the loop, to get potential checks
+            --  in that expression only once.
+
+         elsif Nkind (Condition (Scheme)) = N_Empty then
+            For_Loop : declare
+               LParam_Spec  : constant Node_Id :=
+                 Loop_Parameter_Specification (Scheme);
+               Loop_Range   : constant Node_Id :=
+                 Discrete_Subtype_Definition (LParam_Spec);
+               Is_Reverse   : constant Boolean :=
+                 Reverse_Present (LParam_Spec);
+               Index_Deref  : constant W_Prog_Id :=
+                 New_Deref
+                   (Ada_Node => Stmt,
+                    Right    => +Loop_Index,
+                    Typ      => EW_Int_Type);
+               Update_Op    : constant EW_Binary_Op :=
+                 (if Is_Reverse then EW_Substract
+                  else EW_Add);
+               Update_Expr  : constant W_Prog_Id :=
+                 New_Binary_Op
+                   (Ada_Node => Stmt,
+                    Op       => Update_Op,
+                    Op_Type  => EW_Int,
+                    Left     => +Index_Deref,
+                    Right    =>
+                      New_Integer_Constant
+                        (Ada_Node => Stmt,
+                         Value     => Uint_1));
+               Update_Stmt  : constant W_Prog_Id :=
+                 New_Assignment
+                   (Ada_Node => Stmt,
+                    Name     => Loop_Index,
+                    Value    => Update_Expr);
+
+               --  In the range expression of the invariant, explicitly
+               --  set T_Type to handle the special case of
+               --  Standard.Boolean, where bounds and index are of
+               --  different base types (bool for bounds, int for index).
+
+               Cond_Pred    : constant W_Pred_Id :=
+                 +Range_Expr (Loop_Range,
+                              New_Deref (Right => Loop_Index,
+                                         Typ => EW_Int_Type),
+                              EW_Pred,
+                              Params => Body_Params,
+                              T_Type => EW_Int_Type);
+               Actual_Range : constant Node_Id := Get_Range (Loop_Range);
+               Low_Ident    : constant W_Identifier_Id :=
+                 New_Temp_Identifier (Typ => EW_Int_Type);
+               High_Ident   : constant W_Identifier_Id :=
+                 New_Temp_Identifier (Typ => EW_Int_Type);
+               Init_Index   : constant W_Identifier_Id :=
+                 (if Is_Reverse then High_Ident else Low_Ident);
+               Exit_Index   : constant W_Identifier_Id :=
+                 (if Is_Reverse then Low_Ident else High_Ident);
+               Exit_Cmp     : constant EW_Relation :=
+                 (if Is_Reverse then EW_Ge else EW_Le);
+               Exit_Cond    : constant W_Expr_Id :=
+                 New_Relation (Domain  => EW_Prog,
+                               Op_Type => EW_Int,
+                               Op      => Exit_Cmp,
+                               Left    => +Index_Deref,
+                               Right   => +Exit_Index);
+               Cond_Prog    : constant W_Prog_Id :=
+                 +New_Range_Expr (Domain    => EW_Prog,
+                                  Low       => +Low_Ident,
+                                  High      => +High_Ident,
+                                  Expr      => +Index_Deref);
+               Impl_Inv  : constant W_Pred_Id :=
+                 +New_And_Expr (Left   => +Dyn_Types_Inv,
+                                Right  => +Cond_Pred,
+                                Domain => EW_Prog);
+               Entire_Loop  : W_Prog_Id :=
+                 Wrap_Loop (Loop_Id            => Loop_Id,
+                            Loop_Start         => Initial_Prog,
+                            Loop_End           =>
+                              Sequence (Final_Prog, Update_Stmt),
+                            Loop_Restart       => Initial_Prog,
+                            Enter_Condition    => Cond_Prog,
+                            Loop_Condition     => +Exit_Cond,
+                            Implicit_Invariant => Impl_Inv,
+                            User_Invariants    => Why_Invariants,
+                            Invariant_Check    => Inv_Check,
+                            Variant_Tmps       => Variant_Tmps,
+                            Variant_Update     => Variant_Update,
+                            Variant_Check      => Variant_Check);
+
+               --  Start of For_Loop
+
+            begin
+               Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+               Entire_Loop :=
+                 Sequence
+                   (New_Assignment
+                      (Name => Loop_Index,
+                       Value  => +Init_Index),
+                    Entire_Loop);
+               Entire_Loop :=
+                 +New_Typed_Binding
                  (Name    => High_Ident,
                   Domain  => EW_Prog,
                   Def     => +Transform_Expr (High_Bound (Actual_Range),
-                                             EW_Int_Type,
-                                             EW_Prog,
-                                             Params => Body_Params),
+                    EW_Int_Type,
+                    EW_Prog,
+                    Params => Body_Params),
                   Context => +Entire_Loop);
-            Entire_Loop :=
-              +New_Typed_Binding
-                (Name    => Low_Ident,
-                 Domain  => EW_Prog,
-                 Def     =>
-                   +Transform_Expr
-                     (Low_Bound (Actual_Range),
-                      EW_Int_Type,
-                      EW_Prog,
-                      Params => Body_Params),
-                 Context => +Entire_Loop);
-
-            --  For loop_parameter_specification whose
-            --  discrete_subtype_definition is a subtype_indication,
-            --  we generate a check that the range_constraint of the
-            --  subtype_indication is compatible with the given subtype.
-
-            if Nkind (Loop_Range) = N_Subtype_Indication then
                Entire_Loop :=
-                 Sequence
-                   (Assume_Of_Subtype_Indication
-                      (Params   => Body_Params,
-                       N        => Loop_Range,
-                       Sub_Type => Etype (Defining_Identifier (LParam_Spec)),
-                       Do_Check => True),
-                    Entire_Loop);
-            end if;
+                 +New_Typed_Binding
+                 (Name    => Low_Ident,
+                  Domain  => EW_Prog,
+                  Def     =>
+                    +Transform_Expr
+                    (Low_Bound (Actual_Range),
+                     EW_Int_Type,
+                     EW_Prog,
+                     Params => Body_Params),
+                  Context => +Entire_Loop);
 
-            return Entire_Loop;
-         end For_Loop;
+               --  For loop_parameter_specification whose
+               --  discrete_subtype_definition is a subtype_indication,
+               --  we generate a check that the range_constraint of the
+               --  subtype_indication is compatible with the given subtype.
 
-      else
-         --  Some other kind of loop
-         Ada.Text_IO.Put_Line ("[Transform_Loop_Statement] other loop");
-         raise Not_Implemented;
-      end if;
+               if Nkind (Loop_Range) = N_Subtype_Indication then
+                  Entire_Loop :=
+                    Sequence
+                      (Assume_Of_Subtype_Indication
+                         (Params   => Body_Params,
+                          N        => Loop_Range,
+                          Sub_Type =>
+                            Etype (Defining_Identifier (LParam_Spec)),
+                          Do_Check => True),
+                       Entire_Loop);
+               end if;
+
+               return Entire_Loop;
+            end For_Loop;
+
+         else
+            --  Some other kind of loop
+            Ada.Text_IO.Put_Line ("[Transform_Loop_Statement] other loop");
+            raise Not_Implemented;
+         end if;
+      end;
    end Transform_Loop_Statement;
 
    ----------------------------
@@ -1023,7 +1036,7 @@ package body Gnat2Why.Expr.Loops is
       Enter_Condition    : W_Prog_Id;
       Loop_Condition     : W_Prog_Id;
       Implicit_Invariant : W_Pred_Id;
-      User_Invariant     : W_Pred_Id;
+      User_Invariants    : W_Pred_Array;
       Invariant_Check    : W_Prog_Id;
       Variant_Tmps       : Why_Node_Lists.List;
       Variant_Update     : W_Prog_Id;
@@ -1047,7 +1060,7 @@ package body Gnat2Why.Expr.Loops is
       Loop_Stmt : constant W_Prog_Id :=
         New_While_Loop
           (Condition    => True_Prog,
-           Invariants => (1 => User_Invariant),
+           Invariants   => User_Invariants,
            Loop_Content => Loop_Body);
 
       Try_Body : constant W_Prog_Id :=

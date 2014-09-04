@@ -97,24 +97,48 @@ step_function.adb:31:42: info: index check proved
 step_function.adb:32:61: info: index check proved
 step_function.adb:32:61: info: overflow check proved
 step_function.adb:45:10: info: loop invariant initialization proved
-step_function.adb:45:10: warning: loop invariant might fail after first iteration
+step_function.adb:45:10: info: loop invariant preservation proved
 step_function.adb:47:34: info: index check proved
 step_function.adb:48:33: info: index check proved
+step_function.adb:49:10: info: loop invariant initialization proved
+step_function.adb:49:10: warning: loop invariant might fail after first iteration
 step_function.adb:51:31: info: index check proved
 step_function.adb:53:34: info: index check proved
 step_function.adb:78:17: info: range check proved
 step_function.adb:95:07: info: assertion proved
 step_function.adb:98:10: info: loop invariant initialization proved
-step_function.adb:98:10: warning: loop invariant might fail after first iteration
+step_function.adb:98:10: info: loop invariant preservation proved
+step_function.adb:99:10: info: loop invariant initialization proved
+step_function.adb:99:10: info: loop invariant preservation proved
+step_function.adb:100:10: info: loop invariant initialization proved
+step_function.adb:100:10: info: loop invariant preservation proved
+step_function.adb:101:10: info: loop invariant initialization proved
+step_function.adb:101:10: info: loop invariant preservation proved
+step_function.adb:102:10: info: loop invariant initialization proved
+step_function.adb:102:10: info: loop invariant preservation proved
+step_function.adb:103:10: info: loop invariant initialization proved
+step_function.adb:104:12: warning: loop invariant might fail after first iteration, requires I1 = 0 and I2 = 0 and Im = 0) or else (I1 >= 1 and I2 >= 1 and Im >= 1 and Scan_SFun1 and Scan_SFun2 and Im <= I1 + I2 - 1) or else (I2 >= 1 and Im >= 1 and not Scan_SFun1 and Scan_SFun2 and Im <= i1 + I2) or else (I1 >= 1 and Im >= 1 and Scan_SFun1 and not Scan_SFun2 and Im <= i1 + i2
+step_function.adb:114:10: info: loop invariant initialization proved
+step_function.adb:114:10: info: loop invariant preservation proved
+step_function.adb:117:10: info: loop invariant initialization proved
+step_function.adb:117:10: info: loop invariant preservation proved
 step_function.adb:118:35: warning: "Merge.Step" may be referenced before it has a value
 step_function.adb:118:47: info: index check proved
 step_function.adb:118:74: info: index check proved
+step_function.adb:119:10: info: loop invariant initialization proved
+step_function.adb:119:10: warning: loop invariant might fail after first iteration
 step_function.adb:121:49: info: index check proved
 step_function.adb:123:49: info: index check proved
+step_function.adb:127:10: info: loop invariant initialization proved
+step_function.adb:127:10: warning: loop invariant might fail after first iteration
 step_function.adb:130:30: info: index check proved
 step_function.adb:130:56: info: index check proved
+step_function.adb:131:10: info: loop invariant initialization proved
+step_function.adb:131:10: warning: loop invariant might fail after first iteration
 step_function.adb:134:30: info: index check proved
 step_function.adb:134:56: info: index check proved
+step_function.adb:137:10: info: loop invariant initialization proved
+step_function.adb:139:15: warning: loop invariant might fail after first iteration, requires Merge.Step(i).Value = Min(Get_Value(SFun1, Merge.Step(i).Delimiter), Get_Value(SFun2, Merge.Step(i).Delimiter)
 step_function.adb:139:26: info: index check proved
 step_function.adb:140:19: info: precondition proved
 step_function.adb:140:47: info: index check proved

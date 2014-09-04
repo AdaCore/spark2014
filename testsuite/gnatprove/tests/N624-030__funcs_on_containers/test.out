@@ -2,10 +2,12 @@ find_map.adb:6:07: info: precondition proved
 find_map.adb:9:17: info: precondition proved
 find_map.adb:10:13: warning: precondition might fail
 find_map.adb:10:36: info: range check proved
-find_map.adb:13:10: warning: loop invariant might fail after first iteration
-find_map.adb:13:10: warning: loop invariant might fail in first iteration
+find_map.adb:13:10: info: loop invariant initialization proved
 find_map.adb:13:33: info: precondition proved
+find_map.adb:13:33: warning: loop invariant might fail after first iteration, requires Length (Result) <= K
 find_map.adb:13:64: info: range check proved
+find_map.adb:14:10: warning: loop invariant might fail after first iteration
+find_map.adb:14:10: warning: loop invariant might fail in first iteration
 find_map.adb:16:15: info: precondition proved
 find_map.adb:16:36: info: index check proved
 find_map.adb:17:13: warning: precondition might fail
@@ -14,6 +16,8 @@ find_map.adb:18:16: warning: array index check might fail
 find_map.adb:18:16: warning: precondition might fail
 find_map.adb:18:36: info: index check proved
 find_map.adb:18:46: info: index check proved
+find_map.adb:19:10: warning: loop invariant might fail after first iteration
+find_map.adb:19:10: warning: loop invariant might fail in first iteration
 find_map.adb:21:19: info: precondition proved
 find_map.adb:22:21: info: precondition proved
 find_map.adb:23:36: info: index check proved
@@ -35,7 +39,7 @@ find_map.ads:24:30: info: precondition proved
 find_map.ads:27:14: warning: postcondition might fail
 find_map.ads:28:17: info: precondition proved
 find_map.ads:28:47: info: index check proved
-find_map.ads:29:17: warning: precondition might fail
+find_map.ads:29:17: info: precondition proved
 find_map.ads:29:46: info: index check proved
 find_map.ads:30:20: warning: array index check might fail
 find_map.ads:30:20: warning: precondition might fail
