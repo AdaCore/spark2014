@@ -9555,6 +9555,7 @@ package body Gnat2Why.Expr is
               Pragma_Inline_Always                |
               Pragma_Linker_Section               |
               Pragma_No_Elaboration_Code_All      |
+              Pragma_No_Tagged_Streams            |
               Pragma_Pure_Function                |
               Pragma_Restriction_Warnings         |
               Pragma_Style_Checks                 |
