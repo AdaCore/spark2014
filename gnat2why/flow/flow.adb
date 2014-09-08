@@ -571,18 +571,6 @@ package body Flow is
 
             end case;
 
-            case F.Kind is
-               when Direct_Mapping | Record_Field =>
-                  case F.Bound.Kind is
-                     when No_Bound =>
-                        null;
-                     when Some_Bound =>
-                        Output.Write_Str ("'bounds");
-                  end case;
-               when others =>
-                  null;
-            end case;
-
             case F.Variant is
                when Initial_Grouping =>
                   Rv.Shape := Shape_None;

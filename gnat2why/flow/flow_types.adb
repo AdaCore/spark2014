@@ -38,6 +38,13 @@ with Flow_Tree_Utility; use Flow_Tree_Utility;
 
 package body Flow_Types is
 
+   Debug_Print_Node_Numbers : constant Boolean := False;
+   --  Enable this to print the gnat node numbers alongside flow id's, so
+   --  instead of "X.Y" we might print "X.Y < 2082; 2255 >". This can help
+   --  debug issues where two nodes print to the same but do not compare
+   --  equal. (This can happen if you forget to use Unique_Entity or
+   --  Original_Record_Component.)
+
    use type Ada.Containers.Count_Type;
 
    -----------------------
@@ -70,46 +77,37 @@ package body Flow_Types is
                              Left.Variant = Right.Variant);
 
       case Left.Kind is
-      when Null_Value =>
-         raise Program_Error;
+         when Null_Value =>
+            raise Program_Error;
 
-      when Direct_Mapping | Record_Field =>
-         if Left.Node /= Right.Node then
-            return False;
-         end if;
-
-         if Left.Bound.Kind /= Right.Bound.Kind then
-            return False;
-         else
-            case Left.Bound.Kind is
-               when No_Bound | Some_Bound =>
-                  null;
-            end case;
-         end if;
-
-         if Left.Kind = Record_Field then
-            if Left.Record_Part /= Right.Record_Part then
+         when Direct_Mapping | Record_Field =>
+            if Left.Node /= Right.Node then
+               return False;
+            end if;
+            if Left.Facet /= Right.Facet then
                return False;
             end if;
 
-            if Left.Component.Length = Right.Component.Length then
-               for I in Natural range 1 .. Natural (Left.Component.Length) loop
-                  if Left.Component (I) /= Right.Component (I) then
-                     return False;
-                  end if;
-               end loop;
-            else
-               return False;
+            if Left.Kind = Record_Field then
+               if Left.Component.Length = Right.Component.Length then
+                  for I in Natural range 1 .. Natural (Left.Component.Length)
+                  loop
+                     if Left.Component (I) /= Right.Component (I) then
+                        return False;
+                     end if;
+                  end loop;
+               else
+                  return False;
+               end if;
             end if;
-         end if;
 
-         return True;
+            return True;
 
-      when Magic_String =>
-         return Name_Equal (Left.Name, Right.Name);
+         when Magic_String =>
+            return Name_Equal (Left.Name, Right.Name);
 
-      when Synthetic_Null_Export =>
-         return True;
+         when Synthetic_Null_Export =>
+            return True;
       end case;
    end "=";
 
@@ -127,15 +125,10 @@ package body Flow_Types is
       case N.Kind is
          when Null_Value =>
             return 0;
-         when Direct_Mapping =>
-            return Ada.Strings.Hash (Unique_Name (N.Node));
-         when Record_Field =>
-            --  ??? We could also hash the components in order to
-            --  avoid collisions between the entire variable and each
-            --  record field.
-            return Ada.Strings.Hash (Unique_Name (N.Node));
          when Synthetic_Null_Export =>
-            return 0;
+            return 1;
+         when Direct_Mapping | Record_Field =>
+            return Ada.Strings.Hash (Unique_Name (N.Node));
          when Magic_String =>
             return Ada.Strings.Hash (N.Name.all);
       end case;
@@ -147,14 +140,14 @@ package body Flow_Types is
 
    function Direct_Mapping_Id
      (N       : Node_Or_Entity_Id;
-      Variant : Flow_Id_Variant := Normal_Use;
-      Bound   : Bound_Info_T    := Null_Bound)
+      Variant : Flow_Id_Variant  := Normal_Use;
+      Facet   : Variable_Facet_T := Normal_Part)
       return Flow_Id is
    begin
       return (Kind    => Direct_Mapping,
               Variant => Variant,
               Node    => N,
-              Bound   => Bound);
+              Facet   => Facet);
    end Direct_Mapping_Id;
 
    ---------------------------
@@ -172,15 +165,15 @@ package body Flow_Types is
 
    function Record_Field_Id
      (N       : Node_Id;
-      Variant : Flow_Id_Variant := Normal_Use)
+      Variant : Flow_Id_Variant  := Normal_Use;
+      Facet   : Variable_Facet_T := Normal_Part)
       return Flow_Id
    is
       F : Flow_Id := (Kind        => Record_Field,
                       Variant     => Variant,
                       Node        => Empty,
-                      Bound       => Null_Bound,
-                      Component   => Entity_Lists.Empty_Vector,
-                      Record_Part => Normal_Part);
+                      Facet       => Facet,
+                      Component   => Entity_Lists.Empty_Vector);
       P : Node_Id;
    begin
       P := N;
@@ -201,7 +194,7 @@ package body Flow_Types is
             F.Node := Entity (Prefix (P));
 
          when others =>
-            raise Program_Error;
+            raise Why.Unexpected_Node;
       end case;
 
       return F;
@@ -221,14 +214,13 @@ package body Flow_Types is
       Tmp := (Kind        => Record_Field,
               Variant     => F.Variant,
               Node        => F.Node,
-              Bound       => F.Bound,
-              Component   => Entity_Lists.Empty_Vector,
-              Record_Part => Normal_Part);
+              Facet       => F.Facet,
+              Component   => Entity_Lists.Empty_Vector);
 
       if F.Kind = Record_Field then
          Tmp.Component := F.Component;
       end if;
-      Tmp.Component.Append (Comp);
+      Tmp.Component.Append (Original_Record_Component (Comp));
 
       return Tmp;
    end Add_Component;
@@ -241,7 +233,7 @@ package body Flow_Types is
    begin
       case F.Kind is
          when Record_Field =>
-            if F.Record_Part /= Normal_Part then
+            if F.Facet /= Normal_Part then
                return False;
             else
                return Ekind (F.Component.Last_Element) = E_Discriminant;
@@ -272,7 +264,7 @@ package body Flow_Types is
             T := Get_Full_Type (F.Node, Scope);
 
          when Record_Field =>
-            if F.Record_Part /= Normal_Part then
+            if F.Facet /= Normal_Part then
                return False;
             else
                T := Get_Full_Type (F.Component.Last_Element, Scope);
@@ -419,14 +411,12 @@ package body Flow_Types is
                             Variant : Flow_Id_Variant)
                             return Flow_Id
    is
-      CF : Flow_Id := F;
    begin
       case F.Kind is
          when Null_Value =>
-            return Null_Flow_Id;
+            return F;
          when others =>
-            CF.Variant := Variant;
-            return CF;
+            return F'Update (Variant => Variant);
       end case;
    end Change_Variant;
 
@@ -450,16 +440,16 @@ package body Flow_Types is
    function Parent_Record (F : Flow_Id) return Flow_Id is
    begin
       return R : Flow_Id := F do
-         if R.Record_Part /= Normal_Part then
-            R.Record_Part := Normal_Part;
+         if R.Facet /= Normal_Part then
+            R.Facet := Normal_Part;
          else
             R.Component.Delete_Last;
          end if;
-         if R.Component.Length = 0 then
+         if F.Kind = Record_Field and then R.Component.Length = 0 then
             R := (Kind    => Direct_Mapping,
                   Variant => F.Variant,
-                  Bound   => F.Bound,
-                  Node    => F.Node);
+                  Node    => F.Node,
+                  Facet   => F.Facet);
          end if;
       end return;
    end Parent_Record;
@@ -481,8 +471,8 @@ package body Flow_Types is
             return R : Flow_Id do
                R := (Kind    => Direct_Mapping,
                      Variant => F.Variant,
-                     Bound   => Null_Bound,
-                     Node    => F.Node);
+                     Node    => F.Node,
+                     Facet   => Normal_Part);
             end return;
       end case;
    end Entire_Variable;
@@ -503,17 +493,6 @@ package body Flow_Types is
    procedure Print_Flow_Id (F : Flow_Id) is
    begin
       Sprint_Flow_Id (F);
-      case F.Kind is
-         when Direct_Mapping | Record_Field =>
-            case F.Bound.Kind is
-               when No_Bound =>
-                  null;
-               when Some_Bound =>
-                  Output.Write_Str ("'bounds");
-            end case;
-         when others =>
-            null;
-      end case;
       case F.Variant is
          when Normal_Use =>
             null;
@@ -597,18 +576,41 @@ package body Flow_Types is
                Set_Casing (Mixed_Case);
                Append (R, Name_Buffer (1 .. Name_Len));
             end loop;
-            case F.Record_Part is
-               when Normal_Part =>
-                  null;
-               when Hidden_Part =>
-                  Append (R, "'Hidden");
-               when The_Tag =>
-                  Append (R, "'Tag");
-            end case;
 
          when Magic_String =>
             Append (R, F.Name.all);
       end case;
+
+      if F.Kind in Direct_Mapping | Record_Field then
+         case F.Facet is
+            when Normal_Part =>
+               null;
+
+            when Private_Part =>
+               Append (R, "'Private_Part");
+
+            when Extension_Part =>
+               Append (R, "'Extensions");
+
+            when The_Tag =>
+               Append (R, "'Tag");
+
+            when The_Bounds =>
+               Append (R, "'Bounds");
+         end case;
+      end if;
+
+      if Debug_Print_Node_Numbers then
+         if F.Kind in Direct_Mapping | Record_Field then
+            Append (R, " <" & F.Node'Img);
+            if F.Kind = Record_Field then
+               for N of F.Component loop
+                  Append (R, ";" & N'Img);
+               end loop;
+            end if;
+            Append (R, " >");
+         end if;
+      end if;
 
       return To_String (R);
    end Flow_Id_To_String;
@@ -714,12 +716,12 @@ package body Flow_Types is
    --------------------
 
    function To_Flow_Id_Set (S : Node_Sets.Set) return Flow_Id_Sets.Set is
-      Fs : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      FS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
       for E of S loop
-         Fs.Include (Direct_Mapping_Id (E));
+         FS.Include (Direct_Mapping_Id (E));
       end loop;
-      return Fs;
+      return FS;
    end To_Flow_Id_Set;
 
 end Flow_Types;

@@ -25,6 +25,7 @@
 --  particular Flow_Id and V_Attributes.
 
 with Ada.Containers;
+with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Ordered_Sets;
 with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
@@ -109,7 +110,18 @@ package Flow_Types is
       --  For the procedure call parameter vertices.
    );
 
-   type Record_Part_T is (Normal_Part, Hidden_Part, The_Tag);
+   type Variable_Facet_T is (Normal_Part,
+                             Private_Part,    --  for private types
+                             Extension_Part,  --  for tagged types
+                             The_Tag,         --  for tagged types
+                             The_Bounds       --  for unconstrained arrays
+                             );
+   --  Not all things can be represented by just X. For example a
+   --  discriminated private type might need X'Hidden and X.D. Most flow_id
+   --  objects will describe the Normal_Part.
+   --
+   --  Flo's note on naming: I did want to use the name "aspect", but this
+   --  is perhaps asking for confion; hence I went for "facet".
 
    subtype Initial_Or_Final_Variant is Flow_Id_Variant
      range Initial_Value .. Final_Value;
@@ -124,34 +136,21 @@ package Flow_Types is
      (Initial_Value => Initial_Grouping,
       Final_Value   => Final_Grouping);
 
-   type Bound_Kind_T is (No_Bound,
-                         Some_Bound);
-   --  We are using an enum + record here because that way its easy to
-   --  extend to support tracking different bounds separately.
-
-   type Bound_Info_T (Kind : Bound_Kind_T := No_Bound) is record
-      case Kind is
-         when No_Bound | Some_Bound =>
-            null;
-      end case;
-   end record;
-
-   Null_Bound : constant Bound_Info_T := (Kind => No_Bound);
-
    type Flow_Id (Kind : Flow_Id_Kind := Null_Value) is record
       Variant : Flow_Id_Variant;
+      --  In theory this doesn't have to be part of a Null_Value id,
+      --  however there are many checks for Foo.Variant throughout flow
+      --  analysis and it will be quite tedious to prefix every one of the
+      --  with Present (Foo).
+
       case Kind is
          when Direct_Mapping | Record_Field =>
             Node  : Node_Or_Entity_Id;
-
-            Bound : Bound_Info_T;
-            --  If is set, this Flow_Id represents the bounds of an object,
-            --  instead of the object itself.
+            Facet : Variable_Facet_T;
 
             case Kind is
                when Record_Field =>
-                  Component   : Entity_Lists.Vector;
-                  Record_Part : Record_Part_T;
+                  Component : Entity_Lists.Vector;
                when others =>
                   null;
             end case;
@@ -193,8 +192,8 @@ package Flow_Types is
 
    function Direct_Mapping_Id
      (N       : Node_Or_Entity_Id;
-      Variant : Flow_Id_Variant := Normal_Use;
-      Bound   : Bound_Info_T    := Null_Bound)
+      Variant : Flow_Id_Variant  := Normal_Use;
+      Facet   : Variable_Facet_T := Normal_Part)
       return Flow_Id
       with Pre => Present (N);
    --  Create a Flow_Id for the given node or entity.
@@ -209,7 +208,8 @@ package Flow_Types is
 
    function Record_Field_Id
      (N       : Node_Id;
-      Variant : Flow_Id_Variant := Normal_Use)
+      Variant : Flow_Id_Variant  := Normal_Use;
+      Facet   : Variable_Facet_T := Normal_Part)
       return Flow_Id
       with Pre => Present (N) and then Nkind (N) = N_Selected_Component;
    --  Create a Flow_Id for the given record field.
@@ -218,11 +218,22 @@ package Flow_Types is
      (F    : Flow_Id;
       Comp : Entity_Id)
       return Flow_Id
-   with Pre  => F.Kind in Direct_Mapping | Record_Field and
+   with Pre  => F.Kind in Direct_Mapping | Record_Field and then
                 (Nkind (Comp) in N_Entity and then
-                   Ekind (Comp) in E_Component | E_Discriminant),
+                   Ekind (Comp) in E_Component | E_Discriminant) and then
+                F.Facet = Normal_Part,
         Post => Add_Component'Result.Kind = Record_Field;
    --  Returns the same flow id, but accessed with the given component.
+
+   function Depth (F : Flow_Id) return Natural
+   is (if F.Kind = Record_Field then Natural (F.Component.Length) else 0);
+   --  Returns the number of components.
+
+   function Magic_String_Id
+     (S       : Entity_Name;
+      Variant : Flow_Id_Variant := Normal_Use)
+      return Flow_Id;
+   --  Create a Flow_Id for the given magic string.
 
    function Is_Discriminant (F : Flow_Id) return Boolean;
    --  Returns true if the given flow id is a record field
@@ -233,27 +244,33 @@ package Flow_Types is
       Scope : Flow_Scope)
       return Boolean
      with Pre => (if F.Kind in Direct_Mapping | Record_Field
-                  then F.Bound = Null_Bound and
-                       Nkind (F.Node) in N_Entity);
+                    and then F.Facet = Normal_Part
+                  then Nkind (F.Node) in N_Entity);
    --  Returns true if a flow id needs separate representation for its
    --  bounds.
 
-   function Is_Bound (F : Flow_Id) return Boolean
-   is (if F.Kind in Direct_Mapping | Record_Field
-       then F.Bound.Kind /= No_Bound
-       else False);
-   --  Returns true if the given flow id represents a bound.
-
-   function Is_Hidden_Part (F : Flow_Id) return Boolean
-   is (F.Kind = Record_Field and then F.Record_Part = Hidden_Part);
+   function Is_Private_Part (F : Flow_Id) return Boolean
+   is (F.Kind in Direct_Mapping | Record_Field
+         and then F.Facet = Private_Part);
    --  Returns true if the given flow id represents the hidden part of a
-   --  record (either because it is private and we don't have visibility or
-   --  because we are dealing with a classwide type or both).
+   --  record (either because it is private and we don't have visibility).
+
+   function Is_Extension (F : Flow_Id) return Boolean
+   is (F.Kind in Direct_Mapping | Record_Field
+         and then F.Facet = Extension_Part);
+   --  Returns true if the given flow id represents the hidden part of a
+   --  record (either because it is private and we don't have visibility).
 
    function Is_Record_Tag (F : Flow_Id) return Boolean
-   is (F.Kind = Record_Field and then F.Record_Part = The_Tag);
+   is (F.Kind in Direct_Mapping | Record_Field
+         and then F.Facet = The_Tag);
    --  Returns true if the given flow id represents the tag of a classwide
    --  type.
+
+   function Is_Bound (F : Flow_Id) return Boolean
+   is (F.Kind in Direct_Mapping | Record_Field
+         and then F.Facet = The_Bounds);
+   --  Returns true if the given flow id represents a bound.
 
    function Is_Volatile (F : Flow_Id) return Boolean;
    --  Returns true if the given flow id is volatile in any way.
@@ -277,12 +294,6 @@ package Flow_Types is
    function Is_Abstract_State (F : Flow_Id) return Boolean;
    --  Checks if F is an abstract state.
 
-   function Magic_String_Id
-     (S       : Entity_Name;
-      Variant : Flow_Id_Variant := Normal_Use)
-      return Flow_Id;
-   --  Create a Flow_Id for the given magic string.
-
    function Change_Variant (F       : Flow_Id;
                             Variant : Flow_Id_Variant)
                             return Flow_Id;
@@ -290,14 +301,15 @@ package Flow_Types is
    --  variant.
 
    function Parent_Record (F : Flow_Id) return Flow_Id
-     with Pre  => F.Kind = Record_Field,
-          Post => Parent_Record'Result.Kind in Direct_Mapping | Record_Field;
+   with Pre  => F.Kind in Direct_Mapping | Record_Field and then
+                (F.Kind = Record_Field or else F.Facet /= Normal_Part),
+        Post => Parent_Record'Result.Kind in Direct_Mapping | Record_Field;
    --  Return the parent record for the given record field. If given the
    --  hidden fields of a record, returns the visible part (i.e. clears the
    --  hidden_part flag before moving up the component list).
 
    function Entire_Variable (F : Flow_Id) return Flow_Id
-     with Post => Entire_Variable'Result.Kind /= Record_Field;
+   with Post => Entire_Variable'Result.Kind /= Record_Field;
    --  Returns the entire variable represented by F.
 
    procedure Sprint_Flow_Id (F : Flow_Id);
@@ -325,6 +337,13 @@ package Flow_Types is
       Hash                => Hash,
       Equivalent_Elements => "=",
       "="                 => "=");
+
+   package Flow_Id_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Flow_Id,
+      Element_Type    => Flow_Id_Sets.Set,
+      Hash            => Hash,
+      Equivalent_Keys => "=",
+      "="             => Flow_Id_Sets."=");
 
    package Ordered_Flow_Id_Sets is new Ada.Containers.Ordered_Sets
      (Element_Type => Flow_Id,

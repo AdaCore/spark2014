@@ -550,9 +550,10 @@ package body Flow.Analysis.Sanity is
             Aspect_To_Fix : constant String :=
               (case FA.Kind is
                   when E_Subprogram_Body =>
-                    (if Present (FA.Refined_Global_N) then "Refined_Global"
-                     elsif not Present (FA.Global_N) then "Depends"
-                     else "Global"),
+                     (if Present (FA.Refined_Global_N) then "Refined_Global"
+                      elsif Present (FA.Global_N) then "Global"
+                      elsif Present (FA.Depends_N) then "Depends"
+                      else "Global"),
                   when others            => "Initializes");
 
             SRM_Ref : constant String :=

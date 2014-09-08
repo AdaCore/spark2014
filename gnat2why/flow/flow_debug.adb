@@ -121,6 +121,35 @@ package body Flow_Debug is
       end if;
    end Print_Node_Set;
 
+   --------------------
+   -- Print_Flow_Map --
+   --------------------
+
+   procedure Print_Flow_Map (M : Flow_Id_Maps.Map)
+   is
+   begin
+      Write_Str ("Flow_Id_Map (with" & M.Length'Img & " elements):");
+      Write_Eol;
+      Indent;
+      for C in M.Iterate loop
+         declare
+            K : constant Flow_Id          := Flow_Id_Maps.Key (C);
+            V : constant Flow_Id_Sets.Set := Flow_Id_Maps.Element (C);
+         begin
+            Sprint_Flow_Id (K);
+            Write_Str (" =>");
+
+            for F of V loop
+               Write_Str (" ");
+               Sprint_Flow_Id (F);
+            end loop;
+
+            Write_Eol;
+         end;
+      end loop;
+      Outdent;
+   end Print_Flow_Map;
+
    --------------------------
    -- Print_Dependency_Map --
    --------------------------

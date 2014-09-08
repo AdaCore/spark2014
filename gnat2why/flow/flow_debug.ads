@@ -44,6 +44,9 @@ package Flow_Debug is
    procedure Print_Node_Set (S : Ordered_Flow_Id_Sets.Set);
    --  Print a mostly human-readable form the given node set.
 
+   procedure Print_Flow_Map (M : Flow_Id_Maps.Map);
+   --  Print a human-readable version of the given map.
+
    procedure Print_Dependency_Map (M : Dependency_Maps.Map);
    --  Print a human-readable form of the given dependency relation.
 

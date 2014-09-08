@@ -37,7 +37,6 @@ with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Util;                 use SPARK_Util;
 
 with Flow_Debug;                 use Flow_Debug;
-with Flow_Tree_Utility;          use Flow_Tree_Utility;
 with Flow_Computed_Globals;      use Flow_Computed_Globals;
 
 package body Flow_Utility is
@@ -50,6 +49,9 @@ package body Flow_Utility is
 
    Debug_Trace_Get_Global      : constant Boolean := False;
    --  Enable this to debug Get_Global.
+
+   Debug_Trace_Flatten         : constant Boolean := False;
+   --  Enable this for tracing in Flatten_Variable.
 
    Debug_Trace_Untangle        : constant Boolean := False;
    --  Enable this to print the tree and def/use sets in each call of
@@ -75,82 +77,10 @@ package body Flow_Utility is
    --  Local
    ----------------------------------------------------------------------
 
-   package Flow_Id_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Flow_Id,
-      Element_Type    => Flow_Id_Sets.Set,
-      Hash            => Hash,
-      Equivalent_Keys => "=");
-
    function Filter_Out_Non_Local_Constants (S : Flow_Id_Sets.Set;
                                             C : Node_Sets.Set)
                                             return Flow_Id_Sets.Set;
    --  Remove all flow_ids referencing constants from the set.
-
-   function Is_Tick_Update (N : Node_Id) return Boolean
-   is (Nkind (N) = N_Attribute_Reference  and then
-         Get_Attribute_Id (Attribute_Name (N)) = Attribute_Update);
-   --  Checks if the given node is a 'Update node.
-
-   function Untangle_Record_Aggregate
-     (N                            : Node_Id;
-      Map_Root                     : Flow_Id;
-      Scope                        : Flow_Scope;
-      Local_Constants              : Node_Sets.Set;
-      Fold_Functions               : Boolean;
-      Use_Computed_Globals         : Boolean;
-      Expand_Synthesized_Constants : Boolean)
-      return Flow_Id_Maps.Map
-   with Pre => Nkind (N) = N_Aggregate and
-               Map_Root.Kind in Direct_Mapping | Record_Field;
-   pragma Unreferenced (Untangle_Record_Aggregate);
-   --  !!! NOT IMPLEMENTED YET
-   --
-   --  Process a record aggregate N and return a map which can be used to
-   --  work out which fields will depend on what inputs.
-   --
-   --  Map_Root is used to produce keys for the map. For example if
-   --     N         -->  (X => G, Y => H)
-   --     Map_Root  -->  Tmp.F
-   --
-   --  Then we return:
-   --     Tmp.F.X -> G
-   --     Tmp.F.Y -> H
-   --
-   --  Scope, Local_Constants, Fold_Functions, Use_Computed_Globals,
-   --  Expand_Synthesized_Constants will be passed on to Get_Variable_Set
-   --  if necessary.
-   --
-   --  Get_Variable_Set will be called with Reduced set to False (as this
-   --  function should never be called when its true...)
-
-   function Untangle_Record_Fields
-     (N                            : Node_Id;
-      Scope                        : Flow_Scope;
-      Local_Constants              : Node_Sets.Set;
-      Fold_Functions               : Boolean;
-      Use_Computed_Globals         : Boolean;
-      Expand_Synthesized_Constants : Boolean)
-      return Flow_Id_Sets.Set
-   with Pre => Nkind (N) = N_Selected_Component or else Is_Tick_Update (N);
-   --  Process a node describing one or more record fields and return a
-   --  variable set with all variables referenced.
-   --
-   --  Fold_Functions also has an effect on how we deal with useless
-   --  'Update expressions:
-   --
-   --     Node                 Fold_Functions  Result
-   --     -------------------  --------------  --------
-   --     R'Update (X => N).Y  False           {R.Y, N}
-   --     R'Update (X => N).Y  True            {R.Y}
-   --     R'Update (X => N)    False           {R.Y, N}
-   --     R'Update (X => N)    True            {R.Y, N}
-   --
-   --  Scope, Local_Constants, Use_Computed_Globals,
-   --  Expand_Synthesized_Constants will be passed on to Get_Variable_Set
-   --  if necessary.
-   --
-   --  Get_Variable_Set will be called with Reduced set to False (as this
-   --  function should never be called when its true...)
 
    -----------------
    -- Get_Flow_Id --
@@ -171,143 +101,6 @@ package body Flow_Utility is
       --  string.
       return Magic_String_Id (Name, View);
    end Get_Flow_Id;
-
-   ---------------------------
-   -- All_Record_Components --
-   ---------------------------
-
-   function All_Record_Components
-     (Entire_Var : Entity_Id;
-      Scope      : Flow_Scope)
-      return Flow_Id_Sets.Set
-   is
-   begin
-      return All_Record_Components (Direct_Mapping_Id (Entire_Var), Scope);
-   end All_Record_Components;
-
-   function All_Record_Components
-     (The_Record_Field : Flow_Id;
-      Scope            : Flow_Scope)
-      return Flow_Id_Sets.Set
-   is
-      Entire_Var : constant Entity_Id :=
-        Get_Direct_Mapping_Id (The_Record_Field);
-
-      All_Comp   : Flow_Id_Sets.Set   := Flow_Id_Sets.Empty_Set;
-
-      procedure Possibly_Include (F : Flow_Id);
-      --  Include F in All_Comp if it is The_Record_Field or a
-      --  subcomponent of it.
-
-      procedure Process_Record (R_Type : Entity_Id;
-                                Comp   : Entity_Lists.Vector)
-        with Pre => Ekind (R_Type) in E_Record_Type     |
-                                      E_Record_Subtype  |
-                                      E_Class_Wide_Type |
-                                      Private_Kind;
-      --  Recursively go through the record's components, adding
-      --  everything to All_Comp.
-
-      procedure Possibly_Include (F : Flow_Id)
-      is
-         Comp_F : constant Entity_Lists.Vector :=
-           (if F.Kind = Record_Field
-            then F.Component
-            else Entity_Lists.Empty_Vector);
-
-         Comp_RF : constant Entity_Lists.Vector :=
-           (if The_Record_Field.Kind = Record_Field
-            then The_Record_Field.Component
-            else Entity_Lists.Empty_Vector);
-      begin
-         if Debug_Trace_Untangle then
-            Write_Str ("Possibly include: ");
-            Print_Flow_Id (F);
-         end if;
-
-         --  ??? Direct access into flow_id, should be removed somehow.
-         if Comp_F.Length < Comp_RF.Length then
-            return;
-         end if;
-
-         for I in Natural range 1 .. Natural (Comp_RF.Length) loop
-            if Comp_RF (I) /= Comp_F (I) then
-               return;
-            end if;
-         end loop;
-
-         All_Comp.Include (F);
-      end Possibly_Include;
-
-      procedure Process_Record (R_Type : Entity_Id;
-                                Comp   : Entity_Lists.Vector)
-      is
-         C : Entity_Id;
-         F : Flow_Id;
-      begin
-         if Ekind (R_Type) in Private_Kind | E_Class_Wide_Type then
-            F := (Kind        => Record_Field,
-                  Variant     => Normal_Use,
-                  Node        => Entire_Var,
-                  Bound       => Null_Bound,
-                  Component   => Comp,
-                  Record_Part => Hidden_Part);
-            Possibly_Include (F);
-         end if;
-
-         if Ekind (R_Type) in E_Class_Wide_Type then
-            F := (Kind        => Record_Field,
-                  Variant     => Normal_Use,
-                  Node        => Entire_Var,
-                  Bound       => Null_Bound,
-                  Component   => Comp,
-                  Record_Part => The_Tag);
-            Possibly_Include (F);
-         end if;
-
-         --  Make a vertex for each subcomponent, unless its a
-         --  record. If we have a record we recurse instead.
-         C := First_Component_Or_Discriminant (R_Type);
-         while Present (C) loop
-            if Is_Visible (C, Scope) then
-               declare
-                  Tmp : Entity_Lists.Vector := Comp;
-               begin
-                  Tmp.Append (Original_Record_Component (C));
-
-                  case Ekind (Get_Full_Type (C, Scope)) is
-                     when Record_Kind               |
-                          E_Private_Type            |
-                          E_Private_Subtype         |
-                          E_Limited_Private_Type    |
-                          E_Limited_Private_Subtype =>
-                        Process_Record (Get_Full_Type (C, Scope), Tmp);
-
-                     when others =>
-                        F := (Kind        => Record_Field,
-                              Variant     => Normal_Use,
-                              Node        => Entire_Var,
-                              Bound       => Null_Bound,
-                              Component   => Tmp,
-                              Record_Part => Normal_Part);
-                        Possibly_Include (F);
-                  end case;
-               end;
-            end if;
-
-            C := Next_Component_Or_Discriminant (C);
-         end loop;
-      end Process_Record;
-
-   begin
-      if Debug_Trace_Untangle then
-         Write_Str ("The_record_Field: ");
-         Print_Flow_Id (The_Record_Field);
-      end if;
-      Process_Record (Get_Full_Type (Entire_Var, Scope),
-                      Entity_Lists.Empty_Vector);
-      return All_Comp;
-   end All_Record_Components;
 
    ------------------------------------
    -- Filter_Out_Non_Local_Constants --
@@ -398,48 +191,22 @@ package body Flow_Utility is
              Reduced                      => False,
              Expand_Synthesized_Constants => Expand_Synthesized_Constants));
 
-      M         : Flow_Id_Maps.Map    := Flow_Id_Maps.Empty_Map;
+      M             : Flow_Id_Maps.Map          := Flow_Id_Maps.Empty_Map;
 
-      procedure Show_Map;
+      Root_Node     : Node_Id                   := N;
 
-      procedure Show_Map is
-      begin
-         Write_Str ("Current map:");
-         Write_Eol;
-         Indent;
-         for C in M.Iterate loop
-            declare
-               K : constant Flow_Id          := Flow_Id_Maps.Key (C);
-               V : constant Flow_Id_Sets.Set := Flow_Id_Maps.Element (C);
-            begin
-               Sprint_Flow_Id (K);
-               Write_Str (" =>");
+      Component     : Entity_Lists.Vector       := Entity_Lists.Empty_Vector;
 
-               for F of V loop
-                  Write_Str (" ");
-                  Sprint_Flow_Id (F);
-               end loop;
-
-               Write_Eol;
-            end;
-         end loop;
-         Outdent;
-      end Show_Map;
-
-      Root_Node     : Node_Id             := N;
-
-      Component     : Entity_Lists.Vector := Entity_Lists.Empty_Vector;
-
-      Seq           : Node_Lists.List  := Node_Lists.Empty_List;
+      Seq           : Node_Lists.List           := Node_Lists.Empty_List;
 
       E             : Entity_Id;
       Comp_Id       : Natural;
       Current_Field : Flow_Id;
 
-      Must_Abort    : Boolean := False;
+      Must_Abort    : Boolean                   := False;
 
-      All_Vars      : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-      Depends_Vars  : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      All_Vars      : Flow_Id_Sets.Set          := Flow_Id_Sets.Empty_Set;
+      Depends_Vars  : Flow_Id_Sets.Set          := Flow_Id_Sets.Empty_Set;
       Proof_Vars    : constant Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
       if Debug_Trace_Untangle_Record then
@@ -561,14 +328,14 @@ package body Flow_Utility is
       --     r.y -> r.y
 
       declare
-         FS : constant Flow_Id_Sets.Set := All_Record_Components
-           (Direct_Mapping_Id (Entity (Root_Node)), Scope);
+         FS : constant Flow_Id_Sets.Set :=
+           Flatten_Variable (Entity (Root_Node), Scope);
       begin
          for F of FS loop
             M.Insert (F, Flow_Id_Sets.To_Set (F));
          end loop;
          if Debug_Trace_Untangle_Record then
-            Show_Map;
+            Print_Flow_Map (M);
          end if;
       end;
 
@@ -662,7 +429,7 @@ package body Flow_Utility is
                                  Tmp := Get_Vars_Wrapper (Expression (Ptr));
                                  --  Not sure what to do, so set all sensible
                                  --  fields to the given variables.
-                                 FS := All_Record_Components
+                                 FS := Flatten_Variable
                                    (Add_Component (Current_Field, E), Scope);
 
                                  for F of FS loop
@@ -702,7 +469,8 @@ package body Flow_Utility is
                         V : constant Flow_Id_Sets.Set :=
                           Flow_Id_Maps.Element (C);
                      begin
-                        if Natural (K.Component.Length) >= Comp_Id
+                        if K.Kind = Record_Field
+                          and then Natural (K.Component.Length) >= Comp_Id
                           and then K.Component (Comp_Id) = E
                         then
                            New_Map.Insert (K, V);
@@ -719,7 +487,7 @@ package body Flow_Utility is
          end case;
 
          if Debug_Trace_Untangle_Record then
-            Show_Map;
+            Print_Flow_Map (M);
          end if;
       end loop;
 
@@ -1816,14 +1584,13 @@ package body Flow_Utility is
                   when Attribute_Constrained =>
                      for F of Recurse_On (Prefix (N)) loop
                         if F.Kind in Direct_Mapping | Record_Field and then
-                          F.Bound.Kind = No_Bound and then
+                          F.Facet = Normal_Part and then
                           Has_Bounds (F, Scope)
                         then
                            --  This is not a bound variable, but it
                            --  requires bounds tracking. We make it a
                            --  bound variable.
-                           VS.Include
-                             (F'Update (Bound => (Kind => Some_Bound)));
+                           VS.Include (F'Update (Facet => The_Bounds));
                         elsif Is_Discriminant (F) then
                            VS.Include (F);
                         end if;
@@ -1836,14 +1603,13 @@ package body Flow_Utility is
                        Attribute_Range  =>
                      for F of Recurse_On (Prefix (N)) loop
                         if F.Kind in Direct_Mapping | Record_Field and then
-                          F.Bound.Kind = No_Bound and then
+                          F.Facet = Normal_Part and then
                           Has_Bounds (F, Scope)
                         then
                            --  This is not a bound variable, but it
                            --  requires bounds tracking. We make it a
                            --  bound variable.
-                           VS.Include
-                             (F'Update (Bound => (Kind => Some_Bound)));
+                           VS.Include (F'Update (Facet => The_Bounds));
 
                         else
                            --  This is something else. We just copy it.
@@ -1976,54 +1742,104 @@ package body Flow_Utility is
    ----------------------
 
    function Flatten_Variable
-     (E     : Entity_Id;
-      Scope : Flow_Scope)
-      return Flow_Id_Sets.Set
-   is
-      U   : constant Entity_Id := Unique_Entity (E);
-      Typ : constant Entity_Id := Get_Full_Type (U, Scope);
-   begin
-      case Ekind (Typ) is
-         when Elementary_Kind | Array_Kind =>
-            return Flow_Id_Sets.To_Set (Direct_Mapping_Id (U));
-
-         when Private_Kind =>
-            if Has_Discriminants (Typ) then
-               return All_Record_Components (Entire_Var => U,
-                                             Scope      => Scope);
-            else
-               return Flow_Id_Sets.To_Set (Direct_Mapping_Id (U));
-            end if;
-
-         when E_Record_Type | E_Record_Subtype | E_Class_Wide_Type =>
-            return All_Record_Components (Entire_Var => U,
-                                          Scope      => Scope);
-
-         when E_Void =>
-            pragma Assert (Ekind (E) = E_Abstract_State);
-            return Flow_Id_Sets.To_Set (Direct_Mapping_Id (U));
-
-         when others =>
-            Print_Tree_Node (U);
-            Print_Tree_Node (Etype (U));
-            raise Why.Unexpected_Node;
-      end case;
-   end Flatten_Variable;
-
-   function Flatten_Variable
      (F     : Flow_Id;
       Scope : Flow_Scope)
       return Flow_Id_Sets.Set
    is
+      function Get_Type (F     : Flow_Id;
+                         Scope : Flow_Scope)
+                         return Entity_Id
+      with Pre  => F.Kind in Direct_Mapping | Record_Field and then
+                   F.Facet = Normal_Part,
+           Post => Nkind (Get_Type'Result) in N_Entity;
+
+      function Get_Type (F     : Flow_Id;
+                         Scope : Flow_Scope)
+                         return Entity_Id
+      is
+      begin
+         case F.Kind is
+            when Direct_Mapping =>
+               return Get_Full_Type (F.Node, Scope);
+            when Record_Field =>
+               return Get_Full_Type (F.Component.Last_Element, Scope);
+            when others =>
+               raise Program_Error;
+         end case;
+      end Get_Type;
+
+      T   : Entity_Id;
+      Ids : Flow_Id_Sets.Set;
+
+      Ptr : Entity_Id;
    begin
-      case F.Kind is
-         when Direct_Mapping =>
-            return Flatten_Variable (Get_Direct_Mapping_Id (F), Scope);
-         when Magic_String | Synthetic_Null_Export =>
-            return Flow_Id_Sets.To_Set (F);
+      if Debug_Trace_Flatten then
+         Indent;
+         Write_Str ("Flatten: ");
+         Print_Flow_Id (F);
+      end if;
+
+      if not (F.Kind in Direct_Mapping | Record_Field and then
+                F.Facet = Normal_Part)
+      then
+         if Debug_Trace_Flatten then
+            Outdent;
+         end if;
+         return Flow_Id_Sets.To_Set (F);
+      end if;
+
+      T := Get_Type (F, Scope);
+
+      case Ekind (T) is
+         when E_Private_Type .. Private_Kind'Last =>
+            if Has_Discriminants (T) then
+               Ptr := First_Component_Or_Discriminant (T);
+               while Present (Ptr) loop
+                  if Ekind (Ptr) = E_Discriminant then
+                     Ids.Include (Add_Component (F, Ptr));
+                  end if;
+                  Next_Component_Or_Discriminant (Ptr);
+               end loop;
+               Ids.Include (F'Update (Facet => Private_Part));
+            else
+               Ids := Flow_Id_Sets.To_Set (F);
+            end if;
+
+         when Record_Kind =>
+            --  this includes classwide types and privates with
+            --  discriminants
+
+            Ids := Flow_Id_Sets.Empty_Set;
+
+            Ptr := First_Component_Or_Discriminant (T);
+            while Present (Ptr) loop
+               Ids.Union (Flatten_Variable (Add_Component (F, Ptr),
+                                            Scope));
+               Next_Component_Or_Discriminant (Ptr);
+            end loop;
+
+            if Ekind (T) in Private_Kind then
+               --  We must have some discriminant, so return X'Private_Part
+               --  and the discriminants. For simple private types we don't
+               --  do this split.
+               pragma Assert (not Ids.Is_Empty);
+               Ids.Include (F'Update (Facet => Private_Part));
+            end if;
+
+            if Ekind (T) in Class_Wide_Kind then
+               Ids.Include (F'Update (Facet => The_Tag));
+               Ids.Include (F'Update (Facet => Extension_Part));
+            end if;
+
          when others =>
-            raise Program_Error;
+            Ids := Flow_Id_Sets.To_Set (F);
       end case;
+
+      if Debug_Trace_Flatten then
+         Outdent;
+      end if;
+
+      return Ids;
    end Flatten_Variable;
 
    ------------------------------------
@@ -2082,371 +1898,243 @@ package body Flow_Utility is
       Scope                : Flow_Scope;
       Local_Constants      : Node_Sets.Set;
       Use_Computed_Globals : Boolean;
-      Vars_Defined         : in out Flow_Id_Sets.Set;
-      Vars_Explicitly_Used : in out Flow_Id_Sets.Set;
-      Vars_Implicitly_Used : in out Flow_Id_Sets.Set;
-      Vars_Semi_Used       : in out Flow_Id_Sets.Set)
+      Vars_Defined         : out Flow_Id_Sets.Set;
+      Vars_Used            : out Flow_Id_Sets.Set;
+      Vars_Proof           : out Flow_Id_Sets.Set;
+      Partial_Definition   : out Boolean)
    is
       --  Fold_Functions (a parameter for Get_Variable_Set) is specified as
       --  `false' here because Untangle should only ever be called where we
       --  assign something to something. And you can't assign to function
       --  results (yet).
 
-      procedure Find_Bottom_Node (N             : Node_Id;
-                                  Bottom_Node   : out Node_Id;
-                                  End_Of_Record : out Node_Id;
-                                  Partial_Use   : out Boolean);
-      --  This procedure returns the bottom node of the subtree and
-      --  finds the end of the outermost record node. We also detect
-      --  if the end of record node is a partial use (array indexing)
-      --  or entire use.
-      --
-      --  Let's consider the parse tree for P.R.A (I).A (J).X
-      --  In the following parse tree 'i' represents an indexed
-      --  component and s represents a selected component.
-      --
-      --                               Parse Tree
-      --                                    s
-      --                                   / \
-      --                                  i   X
-      --                                 / \
-      --                                s   J
-      --                               / \
-      --                              i   A
-      --                             / \
-      --        End_Of_Record --->  s   I
-      --                           / \
-      --                          s   A
-      --                         / \
-      --      Bottom_Node --->  P   R
-      --
-      --  In this example Partial_Use would be True. If we had been
-      --  given only P.R.A Partial_Use would be False.
+      subtype Valid_Nodes is Node_Kind
+        with Static_Predicate => Valid_Nodes in
+          N_Identifier                |
+          N_Expanded_Name             |
+          N_Type_Conversion           |
+          N_Unchecked_Type_Conversion |
+          N_Indexed_Component         |
+          N_Slice                     |
+          N_Selected_Component;
 
-      function Proc (N : Node_Id) return Traverse_Result;
-      --  Traverses a subtree and adds each variable found inside
-      --  the expression part of an N_Indexed_Component to the
-      --  Vars_Used set.
+      subtype Interesting_Nodes is Valid_Nodes
+        with Static_Predicate => Interesting_Nodes not in
+          N_Identifier | N_Expanded_Name;
 
-      -------------------
-      -- Find_Top_Node --
-      -------------------
+      function Get_Vars_Wrapper (N    : Node_Id;
+                                 Fold : Boolean)
+                                 return Flow_Id_Sets.Set
+      is (Get_Variable_Set
+            (N,
+             Scope                        => Scope,
+             Local_Constants              => Local_Constants,
+             Fold_Functions               => Fold,
+             Use_Computed_Globals         => Use_Computed_Globals,
+             Reduced                      => False));
 
-      procedure Find_Bottom_Node
-        (N             : Node_Id;
-         Bottom_Node   : out Node_Id;
-         End_Of_Record : out Node_Id;
-         Partial_Use   : out Boolean)
-      is
-      begin
-         Bottom_Node   := N;
-         End_Of_Record := N;
-         Partial_Use   := False;
+      Root_Node : Node_Id          := N;
+      Seq       : Node_Lists.List  := Node_Lists.Empty_List;
 
-         while Nkind (Bottom_Node) in
-           N_Indexed_Component | N_Selected_Component |
-           N_Slice | N_Type_Conversion
-         loop
-            if Nkind (Bottom_Node) in N_Indexed_Component | N_Slice then
-               End_Of_Record := Prefix (Bottom_Node);
-               Partial_Use   := True;
-            end if;
-            Bottom_Node := Prefix (Bottom_Node);
-         end loop;
-      end Find_Bottom_Node;
+      Idx                      : Natural;
+      Process_Type_Conversions : Boolean;
 
-      ----------
-      -- Proc --
-      ----------
-
-      function Proc (N : Node_Id) return Traverse_Result is
-         Used_All    : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-         Used_Folded : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-      begin
-         case Nkind (N) is
-            when N_Indexed_Component | N_Attribute_Reference =>
-               Used_All := Get_Variable_Set
-                 (Expressions (N),
-                  Scope                => Scope,
-                  Local_Constants      => Local_Constants,
-                  Fold_Functions       => False,
-                  Use_Computed_Globals => Use_Computed_Globals);
-               Used_Folded := Get_Variable_Set
-                 (Expressions (N),
-                  Scope                => Scope,
-                  Local_Constants      => Local_Constants,
-                  Fold_Functions       => True,
-                  Use_Computed_Globals => Use_Computed_Globals);
-            when N_Slice =>
-               Used_All := Get_Variable_Set
-                 (Discrete_Range (N),
-                  Scope                => Scope,
-                  Local_Constants      => Local_Constants,
-                  Fold_Functions       => False,
-                  Use_Computed_Globals => Use_Computed_Globals);
-               Used_Folded := Get_Variable_Set
-                 (Discrete_Range (N),
-                  Scope                => Scope,
-                  Local_Constants      => Local_Constants,
-                  Fold_Functions       => True,
-                  Use_Computed_Globals => Use_Computed_Globals);
-            when others =>
-               return OK;
-         end case;
-
-         Vars_Explicitly_Used.Union (Used_Folded);
-         Vars_Semi_Used.Union (Used_All - Used_Folded);
-         return OK;
-      end Proc;
-
-      procedure Merge_Array_Expressions is new Traverse_Proc (Proc);
-
-      Bottom_Node   : Node_Id;
-      End_Of_Record : Node_Id;
-      Partial_Use   : Boolean;
-
+      Base_Node : Flow_Id;
    begin
       if Debug_Trace_Untangle then
-         Sprint_Node (N);
-         Print_Node_Subtree (N);
+         Write_Str ("Untangle_Assignment_Target on ");
+         Sprint_Node_Inline (N);
+         Write_Eol;
+         Indent;
       end if;
 
-      case Nkind (N) is
-         when N_Type_Conversion | N_Unchecked_Type_Conversion =>
-            Untangle_Assignment_Target
-              (N                    => Expression (N),
-               Scope                => Scope,
-               Local_Constants      => Local_Constants,
-               Use_Computed_Globals => Use_Computed_Globals,
-               Vars_Defined         => Vars_Defined,
-               Vars_Explicitly_Used => Vars_Explicitly_Used,
-               Vars_Implicitly_Used => Vars_Implicitly_Used,
-               Vars_Semi_Used       => Vars_Semi_Used);
+      --  First we turn the tree into a more helpful sequence. We also
+      --  determine the root node which should be an entire variable.
 
-         when N_Identifier | N_Expanded_Name =>
-            --  X :=
-            Vars_Defined.Union
-              (Get_Variable_Set
-                 (N,
-                  Scope                => Scope,
-                  Local_Constants      => Local_Constants,
-                  Fold_Functions       => False,
-                  Use_Computed_Globals => Use_Computed_Globals));
+      while Nkind (Root_Node) in Interesting_Nodes loop
+         Seq.Prepend (Root_Node);
+         Root_Node := Prefix (Root_Node);
+      end loop;
+      pragma Assert (Nkind (Root_Node) in N_Identifier | N_Expanded_Name);
 
-         when N_Function_Call =>
-            --  Not strictly right, but this will satisfy the
-            --  postcondition.
-            Vars_Defined.Union
-              (Get_Variable_Set
-                 (N,
-                  Scope                => Scope,
-                  Local_Constants      => Local_Constants,
-                  Fold_Functions       => False,
-                  Use_Computed_Globals => Use_Computed_Globals));
-
-         when N_Selected_Component | N_Indexed_Component | N_Slice =>
-            --  R.A :=
-            --  A (...) :=
-
-            --  First we collect all variables used in any index
-            --  expression or a slice range, as they are always used.
-            --
-            --  So out of A (X + B (Y)).B (I) we call Get_Variable_Set
-            --  on X + B (Y) and I and add this to Vars_Used.
-
-            Merge_Array_Expressions (N);
-
-            --  We now need to work out what we're ultimately dealing
-            --  with. Bottom_Node is the entire variable and
-            --  End_Of_Record points to either the entire variable or
-            --  the last N_Selected_Component flow analysis will care
-            --  about.
-
-            Find_Bottom_Node (N, Bottom_Node, End_Of_Record, Partial_Use);
-            if Debug_Trace_Untangle then
-               Write_Str ("Bottom_Node: ");
-               Print_Node_Briefly (Bottom_Node);
-               Write_Str ("End_Of_Record: ");
-               Print_Node_Briefly (End_Of_Record);
-            end if;
-
-            case Nkind (Bottom_Node) is
-               when N_Identifier | N_Expanded_Name =>
-                  null;
-
-               when N_Attribute_Reference =>
-                  null;
-
-               when others =>
-                  Vars_Explicitly_Used.Union
-                    (Get_Variable_Set
-                       (Bottom_Node,
-                        Scope                => Scope,
-                        Local_Constants      => Local_Constants,
-                        Fold_Functions       => False,
-                        Use_Computed_Globals => Use_Computed_Globals));
-                  goto Fin;
-            end case;
-
-            --  We may be dealing with some record field. For example:
-            --
-            --     R.A
-            --     R.A (12)
-            --     R.A (12).Specific_Field
-            --
-            --  In all of these End_Of_Record will point to R.A.
-            --
-            --  There is the possibility that we are still dealing
-            --  with more than one variable, for example if R.X.A and
-            --  R.X.B exist then R.X will deal with both of the above.
-            --
-            --  We are interested it what comes next. For example with
-            --  R.A we just define R.A, but with R.A (12) we define
-            --  and use it. The Partial_Use flag keeps track of this.
-
-            case Nkind (End_Of_Record) is
-               when N_Selected_Component =>
-                  case Nkind (Prefix (End_Of_Record)) is
-                     when N_Function_Call =>
-                        Vars_Defined.Union
-                          (Get_Variable_Set
-                             (Prefix (End_Of_Record),
-                              Scope                => Scope,
-                              Local_Constants      => Local_Constants,
-                              Fold_Functions       => False,
-                              Use_Computed_Globals => Use_Computed_Globals));
-
-                     when N_Unchecked_Type_Conversion =>
-                        --  This is an interesting special case. We
-                        --  are querying a specific record field of
-                        --  the result of an unchecked conversion. The
-                        --  variables used and defined should be the
-                        --  argument to the unchecked conversion.
-                        Vars_Defined.Union
-                          (Get_Variable_Set
-                             (Expression (Prefix (End_Of_Record)),
-                              Scope                => Scope,
-                              Local_Constants      => Local_Constants,
-                              Fold_Functions       => False,
-                              Use_Computed_Globals => Use_Computed_Globals));
-
-                        --  Since we are using the defined variable
-                        --  only partially, we need to make sure its
-                        --  also used.
-                        Vars_Implicitly_Used.Union (Vars_Defined);
-
-                     when N_Attribute_Reference =>
-                        if Attribute_Name (Prefix (End_Of_Record)) =
-                          Name_Update
-                        then
-                           --  Here, we are adding all variables
-                           --  used within the 'Update attribute.
-                           Vars_Defined.Union
-                             (Get_Variable_Set
-                                (Expressions (Prefix (End_Of_Record)),
-                                 Scope                => Scope,
-                                 Local_Constants      => Local_Constants,
-                                 Fold_Functions       => False,
-                                 Use_Computed_Globals =>
-                                   Use_Computed_Globals));
-                        end if;
-
-                        --  We also add the record field itself. If we
-                        --  are dealing with a record instead of a
-                        --  record field, then we add all record
-                        --  components.
-                        Vars_Defined.Union
-                          (All_Record_Components
-                             (Record_Field_Id (End_Of_Record), Scope));
-
-                        Vars_Implicitly_Used.Union (Vars_Defined);
-
-                     when others =>
-                        declare
-                           F : constant Flow_Id :=
-                             Record_Field_Id (End_Of_Record);
-                           S : constant Flow_Id_Sets.Set :=
-                             All_Record_Components
-                             (Record_Field_Id (End_Of_Record), Scope);
-                        begin
-                           if Debug_Trace_Untangle then
-                              Write_Str ("Field to split: ");
-                              Print_Flow_Id (F);
-                              Write_Str ("To merge: ");
-                              Print_Node_Set (S);
-                           end if;
-
-                           Vars_Defined.Union (S);
-                           if Partial_Use then
-                              Vars_Implicitly_Used.Union (S);
-                           end if;
-                        end;
-                  end case;
-
-               when N_Indexed_Component | N_Slice =>
-                  raise Program_Error;
-
-               when N_Function_Call =>
-                  --  Not strictly right, but this will satisfy the
-                  --  postcondition.
-                  Vars_Defined.Union
-                    (Get_Variable_Set
-                       (End_Of_Record,
-                        Scope                => Scope,
-                        Local_Constants      => Local_Constants,
-                        Fold_Functions       => False,
-                        Use_Computed_Globals => Use_Computed_Globals));
-
-               when N_Unchecked_Type_Conversion =>
-                  --  See above.
-                  Vars_Defined.Union
-                    (Get_Variable_Set
-                       (Expression (End_Of_Record),
-                        Scope           => Scope,
-                        Local_Constants => Local_Constants,
-                        Fold_Functions  => False,
-                        Use_Computed_Globals => Use_Computed_Globals));
-
-               when N_Attribute_Reference =>
-
-                  if Present (Expressions (End_Of_Record)) then
-                     Vars_Explicitly_Used.Union
-                       (Get_Variable_Set
-                          (Expressions (End_Of_Record),
-                           Scope                => Scope,
-                           Local_Constants      => Local_Constants,
-                           Fold_Functions       => False,
-                           Use_Computed_Globals => Use_Computed_Globals));
-                  end if;
-
-                  Untangle_Assignment_Target
-                    (N                    => Prefix (End_Of_Record),
-                     Scope                => Scope,
-                     Local_Constants      => Local_Constants,
-                     Use_Computed_Globals => Use_Computed_Globals,
-                     Vars_Defined         => Vars_Defined,
-                     Vars_Explicitly_Used => Vars_Explicitly_Used,
-                     Vars_Implicitly_Used => Vars_Implicitly_Used,
-                     Vars_Semi_Used       => Vars_Semi_Used);
-
-               when others =>
-                  Vars_Defined.Include
-                    (Direct_Mapping_Id (Entity (End_Of_Record)));
-                  if Partial_Use then
-                     Vars_Implicitly_Used.Include
-                       (Direct_Mapping_Id (Entity (End_Of_Record)));
-                  end if;
-            end case;
-
-         when others =>
-            raise Why.Unexpected_Node;
-      end case;
-
-   <<Fin>>
       if Debug_Trace_Untangle then
-         Print_Node_Set (Vars_Explicitly_Used);
-         Print_Node_Set (Vars_Implicitly_Used);
+         Write_Str ("Seq is:");
+         Write_Eol;
+         Indent;
+         for N of Seq loop
+            Print_Tree_Node (N);
+         end loop;
+         Outdent;
+      end if;
+
+      --  We now work out which variable (or group of variables) is
+      --  actually defined, by following the selected components. If we
+      --  find an array slice or index we stop and note that we are dealing
+      --  with a partial assignment (the defined variable is implicitly
+      --  used).
+
+      Partial_Definition := False;
+      Base_Node          := Direct_Mapping_Id (Unique_Entity
+                                                 (Entity (Root_Node)));
+      for N of Seq loop
+         case Nkind (N) is
+            when N_Selected_Component =>
+               Base_Node := Add_Component (Base_Node,
+                                           Original_Record_Component
+                                             (Entity (Selector_Name (N))));
+            when N_Type_Conversion =>
+               null;
+            when N_Unchecked_Type_Conversion =>
+               --  We have only limited support for unchecked conversions
+               --  here - we support conversions from scalars to scalars
+               --  only. The assert here makes sure this assumption stays
+               --  valid.
+               declare
+                  Typ_From : constant Entity_Id := Etype (Expression (N));
+                  Typ_To   : constant Entity_Id := Etype (N);
+               begin
+                  pragma Assert (Ekind (Typ_From) in Scalar_Kind);
+                  pragma Assert (Ekind (Typ_To)   in Scalar_Kind);
+               end;
+            when others =>
+               Partial_Definition := True;
+               exit;
+         end case;
+      end loop;
+
+      if Debug_Trace_Untangle then
+         Write_Str ("Base_Node: ");
+         Print_Flow_Id (Base_Node);
+         Write_Eol;
+      end if;
+
+      --  We now set the variable(s) defined and will start to establish
+      --  other variables that might be used.
+
+      Vars_Defined := Flatten_Variable (Base_Node, Scope);
+
+      if Debug_Trace_Untangle then
+         Write_Str ("Components: ");
          Print_Node_Set (Vars_Defined);
+      end if;
+
+      Vars_Used    := Flow_Id_Sets.Empty_Set;
+      Vars_Proof   := Flow_Id_Sets.Empty_Set;
+
+      --  We go through the sequence. At each point we might do one of the
+      --  following, depending on the operation:
+      --
+      --    * Type conversion: we trim the variables defined to remove the
+      --      fields we no longer change. For this we use Idx to work out
+      --      which level of components (in the flow_id) we are looking at.
+      --
+      --    * Array index and slice: we process the expressions and add to
+      --      the variables used in code and proof. We also make sure to
+      --      not process any future type conversions as we flow analysis
+      --      can no longer distinguish elements.
+      --
+      --    * Component selection: we increment Idx.
+
+      Process_Type_Conversions := True;
+      Idx                      := 1;
+
+      for N of Seq loop
+         case Nkind (N) is
+            when N_Type_Conversion =>
+               if Process_Type_Conversions then
+                  declare
+                     Old_Typ  : constant Entity_Id        :=
+                       Etype (Expression (N));
+                     New_Typ  : constant Entity_Id        := Etype (N);
+                     Old_Vars : constant Flow_Id_Sets.Set := Vars_Defined;
+
+                     function In_Type (C : Entity_Id) return Boolean;
+
+                     function In_Type (C : Entity_Id) return Boolean
+                     is
+                        Ptr : Node_Id :=
+                          First_Component_Or_Discriminant (New_Typ);
+                     begin
+                        while Present (Ptr) loop
+                           if Original_Record_Component (C) =
+                             Original_Record_Component (Ptr)
+                           then
+                              return True;
+                           end if;
+                           Next_Component_Or_Discriminant (Ptr);
+                        end loop;
+                        return False;
+                     end In_Type;
+                  begin
+                     if Is_Tagged_Type (Old_Typ)
+                       and then Is_Tagged_Type (New_Typ)
+                     then
+                        Vars_Defined := Flow_Id_Sets.Empty_Set;
+                        for F of Old_Vars loop
+                           if In_Type (F.Component (Idx)) then
+                              Vars_Defined.Include (F);
+                           end if;
+                        end loop;
+                     else
+                        Process_Type_Conversions := False;
+                     end if;
+                  end;
+               end if;
+
+            when N_Indexed_Component =>
+               declare
+                  Ptr  : Node_Id := First (Expressions (N));
+                  A, B : Flow_Id_Sets.Set;
+               begin
+                  while Present (Ptr) loop
+                     A := Get_Vars_Wrapper (Ptr, Fold => False);
+                     B := Get_Vars_Wrapper (Ptr, Fold => True);
+                     Vars_Used.Union (B);
+                     Vars_Proof.Union (A - B);
+
+                     Next (Ptr);
+                  end loop;
+               end;
+               Process_Type_Conversions := False;
+
+            when N_Slice =>
+               declare
+                  A, B : Flow_Id_Sets.Set;
+               begin
+                  A := Get_Vars_Wrapper (Discrete_Range (N), Fold => False);
+                  B := Get_Vars_Wrapper (Discrete_Range (N), Fold => True);
+                  Vars_Used.Union (B);
+                  Vars_Proof.Union (A - B);
+               end;
+               Process_Type_Conversions := False;
+
+            when N_Selected_Component =>
+               Idx := Idx + 1;
+
+            when N_Unchecked_Type_Conversion =>
+               null;
+
+            when others =>
+               raise Why.Unexpected_Node;
+
+         end case;
+      end loop;
+
+      if Debug_Trace_Untangle then
+         Write_Str ("Variables ");
+         if Partial_Definition then
+            Write_Str ("partially ");
+         end if;
+         Write_Str ("defined: ");
+         Print_Node_Set (Vars_Defined);
+
+         Write_Str ("Variables used: ");
+         Print_Node_Set (Vars_Used);
+
+         Write_Str ("Proof variables used: ");
+         Print_Node_Set (Vars_Proof);
+
+         Outdent;
       end if;
    end Untangle_Assignment_Target;
 

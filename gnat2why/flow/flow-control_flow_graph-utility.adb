@@ -299,28 +299,35 @@ package body Flow.Control_Flow_Graph.Utility is
                A.Variables_Explicitly_Used.Include (F);
             end if;
             if not Is_Bound (F) and then Has_Bounds (F, Scope) then
-               A.Variables_Used.Include
-                 (F'Update (Bound => (Kind => Some_Bound)));
+               A.Variables_Used.Include (F'Update (Facet => The_Bounds));
                A.Variables_Explicitly_Used.Include
-                 (F'Update (Bound => (Kind => Some_Bound)));
+                 (F'Update (Facet => The_Bounds));
             end if;
          end loop;
       else
          pragma Assert
            (Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter);
          pragma Assert (not Discriminants_Or_Bounds_Only);
-         Untangle_Assignment_Target
-           (N                    => Actual,
-            Scope                => Scope,
-            Local_Constants      => FA.Local_Constants,
-            Use_Computed_Globals => not FA.Compute_Globals,
-            Vars_Explicitly_Used => A.Variables_Explicitly_Used,
-            Vars_Implicitly_Used => A.Variables_Used,
-            Vars_Defined         => A.Variables_Defined,
-            Vars_Semi_Used       => Unused);
-         --  We can ignore Vars_Semi_Used here as we have an unconditional
-         --  addition to folded_function_checks for each actual anyway.
-         A.Variables_Used.Union (A.Variables_Explicitly_Used);
+         declare
+            Partial : Boolean;
+         begin
+            --  We have an unconditional addition to folded_function_checks
+            --  for each actual anyway, so we can ignore the proof
+            --  variables here.
+            Untangle_Assignment_Target
+              (N                    => Actual,
+               Scope                => Scope,
+               Local_Constants      => FA.Local_Constants,
+               Use_Computed_Globals => not FA.Compute_Globals,
+               Vars_Defined         => A.Variables_Defined,
+               Vars_Used            => A.Variables_Explicitly_Used,
+               Vars_Proof           => Unused,
+               Partial_Definition   => Partial);
+            A.Variables_Used := A.Variables_Explicitly_Used;
+            if Partial then
+               A.Variables_Used.Union (A.Variables_Defined);
+            end if;
+         end;
       end if;
 
       Add_Volatile_Effects (A);
@@ -363,13 +370,10 @@ package body Flow.Control_Flow_Graph.Utility is
                   A.Variables_Explicitly_Used.Include (F);
                end if;
 
-               if not Is_Bound (F)
-                 and then Has_Bounds (F, Scope)
-               then
-                  A.Variables_Used.Include
-                    (F'Update (Bound => (Kind => Some_Bound)));
+               if not Is_Bound (F) and then Has_Bounds (F, Scope) then
+                  A.Variables_Used.Include (F'Update (Facet => The_Bounds));
                   A.Variables_Explicitly_Used.Include
-                    (F'Update (Bound => (Kind => Some_Bound)));
+                    (F'Update (Facet => The_Bounds));
                end if;
             end loop;
 

@@ -543,22 +543,21 @@ package body Flow_Error_Messages is
                   Append (R, "null");
 
                when Direct_Mapping | Record_Field =>
-                  if Is_Hidden_Part (F) then
-                     Append (R, "hidden part of ");
+                  if Is_Private_Part (F) then
+                     Append (R, "private part of ");
                      Append (R, Flow_Id_To_String
-                               (F'Update (Record_Part => Normal_Part)));
+                               (F'Update (Facet => Normal_Part)));
+                  elsif Is_Extension (F) then
+                     Append (R, "extension of ");
+                     Append (R, Flow_Id_To_String
+                               (F'Update (Facet => Normal_Part)));
+                  elsif Is_Bound (F) then
+                     Append (R, "bounds of ");
+                     Append (R, Flow_Id_To_String
+                               (F'Update (Facet => Normal_Part)));
                   else
                      Append (R, Flow_Id_To_String (F));
                   end if;
-
-                  case F.Bound.Kind is
-                     when No_Bound =>
-                        null;
-
-                     when Some_Bound =>
-                        Append (R, "'Some_Bound");
-                        --  raise Program_Error;
-                  end case;
 
                when Magic_String =>
                   --  ??? we may want to use __gnat_decode() here instead

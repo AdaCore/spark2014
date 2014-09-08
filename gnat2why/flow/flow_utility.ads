@@ -35,9 +35,10 @@ with Atree;                use Atree;
 
 with Common_Containers;    use Common_Containers;
 
-with Flow_Types;           use Flow_Types;
-with Flow_Refinement;      use Flow_Refinement;
 with Flow_Dependency_Maps; use Flow_Dependency_Maps;
+with Flow_Refinement;      use Flow_Refinement;
+with Flow_Tree_Utility;    use Flow_Tree_Utility;
+with Flow_Types;           use Flow_Types;
 
 use type Ada.Containers.Count_Type;
 
@@ -63,39 +64,6 @@ package Flow_Utility is
    with Pre => Present (N);
    --  Get the type of the given entity. If the full view of the type
    --  is not visible from Scope, then we return the non-full view.
-
-   function All_Record_Components
-     (Entire_Var : Entity_Id;
-      Scope      : Flow_Scope)
-      return Flow_Id_Sets.Set
-   with Pre =>
-     Ekind (Get_Full_Type_Without_Checking (Entire_Var)) in
-       E_Record_Type | E_Record_Subtype | E_Class_Wide_Type;
-   --  Given the record Entire_Var, return a set with all components.
-   --  So, for example we might return:
-   --     * p.x
-   --     * p.r.a
-   --     * p.r.b
-   --
-   --  We return components relatively to Scope. If there are
-   --  discriminants that are visible from Scope then we return those
-   --  discriminants too.
-
-   function All_Record_Components
-     (The_Record_Field : Flow_Id;
-      Scope            : Flow_Scope)
-      return Flow_Id_Sets.Set
-   with Pre =>
-     The_Record_Field.Kind in Direct_Mapping | Record_Field
-     and then Ekind (Get_Full_Type_Without_Checking
-                       (Get_Direct_Mapping_Id
-                          (The_Record_Field))) in
-       E_Record_Type | E_Record_Subtype | E_Class_Wide_Type;
-   --  As above but only include fields that are equal to Record_Field or are
-   --  nested under it. For example if Record_Field = p.r for the above
-   --  record, then we will get the following set:
-   --     * p.r.a
-   --     * p.r.b
 
    function Has_User_Supplied_Globals (Subprogram : Entity_Id) return Boolean
      with Pre => Ekind (Subprogram) in Subprogram_Kind;
@@ -248,61 +216,147 @@ package Flow_Utility is
    --  a record we return False.
 
    function Flatten_Variable
-     (E     : Entity_Id;
-      Scope : Flow_Scope)
-      return Flow_Id_Sets.Set
-   with Post => (if not Is_Null_Record (E)
-                 then not Flatten_Variable'Result.Is_Empty);
-   --  Returns a set of flow_ids for all parts of the unique entity
-   --  for E. For records this includes all subcomponents, for
-   --  everything else this is just the variable E.
-   --
-   --  Flattening happens relatively to Scope. In the case of a
-   --  private record with visible discriminants we return Flow_Ids
-   --  for all discriminants and 'Hidden for the private part.
-
-   function Flatten_Variable
      (F     : Flow_Id;
       Scope : Flow_Scope)
       return Flow_Id_Sets.Set
      with Pre => F.Kind in Direct_Mapping |
+                           Record_Field |
                            Magic_String |
                            Synthetic_Null_Export;
-   --  As above, but for flow ids.
+   --  The idea is to take a flow id F and split it up into all relevant
+   --  parts. For example, we might take X.Y and produce X.Y.A and X.Y.B,
+   --  or just X.Y (if we can't se the private part of X.Y's type).
+   --
+   --  For magic strings and the null export, we simply return a set
+   --  containing just that.
+   --
+   --  Note in cases where we are dealing with a null record this function
+   --  returns the empty set, but in general you can expect at least one
+   --  element in the result.
+   --
+   --  For private types we just return F. For private types with
+   --  discriminant C we return F.C and F'Hidden.
+   --
+   --  For tagged types T we just return all components as usual. For
+   --  classwide types we also return T'Extension and T'Tag.
+
+   function Flatten_Variable
+     (E     : Entity_Id;
+      Scope : Flow_Scope)
+      return Flow_Id_Sets.Set
+   is (Flatten_Variable (Direct_Mapping_Id (Unique_Entity (E)), Scope))
+   with Pre => Nkind (E) in N_Entity,
+        Post => (if not Is_Null_Record (E)
+                 then not Flatten_Variable'Result.Is_Empty);
+   --  As above, but conveniently taking an Entity instead of a Flow_Id.
 
    procedure Untangle_Assignment_Target
      (N                    : Node_Id;
       Scope                : Flow_Scope;
       Local_Constants      : Node_Sets.Set;
       Use_Computed_Globals : Boolean;
-      Vars_Defined         : in out Flow_Id_Sets.Set;
-      Vars_Explicitly_Used : in out Flow_Id_Sets.Set;
-      Vars_Implicitly_Used : in out Flow_Id_Sets.Set;
-      Vars_Semi_Used       : in out Flow_Id_Sets.Set)
-     with Pre => Nkind (N) in N_Attribute_Reference |
-                              N_Expanded_Name       |
-                              N_Function_Call       |
-                              N_Identifier          |
-                              N_Indexed_Component   |
-                              N_Selected_Component  |
-                              N_Slice               |
-                              N_Type_Conversion     |
-                              N_Unchecked_Type_Conversion;
-   --  Given the target of an assignment (perhaps the left-hand-side of an
-   --  assignment statement or an out vertex in a procedure call), work out
-   --  which variables are actually set and which variables are used to
-   --  determine what is set (in the case of arrays).
+      Vars_Defined         : out Flow_Id_Sets.Set;
+      Vars_Used            : out Flow_Id_Sets.Set;
+      Vars_Proof           : out Flow_Id_Sets.Set;
+      Partial_Definition   : out Boolean)
+     with Pre => Nkind (N) in N_Identifier                |
+                              N_Expanded_Name             |
+                              N_Type_Conversion           |
+                              N_Unchecked_Type_Conversion |
+                              N_Indexed_Component         |
+                              N_Slice                     |
+                              N_Selected_Component,
+          Post => (if not Is_Null_Record (Etype (N))
+                   then not Vars_Defined.Is_Empty);
+   --  Process the LHS of an assignment statement or an [in] out parameter,
+   --  establising the sets of variables used. For example, assume we have
+   --  a function Foo:
+   --     function Foo (X : Integer) return Integer
+   --     with Global => (Proof_In => Y);
+   --  And we process the expression:
+   --     A (Foo (B))
+   --  Then the variables used will be:
+   --     Defined      {A}
+   --     Partial      True
+   --     Used         {B}
+   --     Proof        {Y}
+   --  Since we are indexing A and only updating a single element, the
+   --  assignment is partial.
    --
-   --  Explicitly used variables are used directly. In
-   --     A (X) :=
-   --  We have explicitly used X. The implicitly used variables are "used"
-   --  variables due to a partial update. In the example above A is
-   --  implicitly used.
+   --  The expression denoted by N can be any combination of:
+   --     - entire variable
+   --     - view conversion (for tagged types)
+   --     - array index
+   --     - array slice
+   --     - record component
+   --     - unchecked conversion (for scalars)
    --
-   --  Vars_Semi_Used indicates variables we "read" but do not influence
-   --  the output and should not be included in dependencies. For example
-   --  the proof ins of function Foo will appear in this set.
-   --     A (Foo (X)) :=
+   --  Note that the expression(s) in the index or slice can be much more
+   --  general and thus will be processed by Get_Variable_Set.
+   --
+   --  Note we only support unchecked conversion from and to scalars, i.e.
+   --  for things generated from:
+   --     Foo (Positive (X))
+
+   function Untangle_Record_Aggregate
+     (N                            : Node_Id;
+      Map_Root                     : Flow_Id;
+      Scope                        : Flow_Scope;
+      Local_Constants              : Node_Sets.Set;
+      Fold_Functions               : Boolean;
+      Use_Computed_Globals         : Boolean;
+      Expand_Synthesized_Constants : Boolean)
+      return Flow_Id_Maps.Map
+   with Pre => Nkind (N) = N_Aggregate and
+               Map_Root.Kind in Direct_Mapping | Record_Field;
+   --  !!! NOT IMPLEMENTED YET
+   --
+   --  Process a record aggregate N and return a map which can be used to
+   --  work out which fields will depend on what inputs.
+   --
+   --  Map_Root is used to produce keys for the map. For example if
+   --     N         -->  (X => G, Y => H)
+   --     Map_Root  -->  Tmp.F
+   --
+   --  Then we return:
+   --     Tmp.F.X -> G
+   --     Tmp.F.Y -> H
+   --
+   --  Scope, Local_Constants, Fold_Functions, Use_Computed_Globals,
+   --  Expand_Synthesized_Constants will be passed on to Get_Variable_Set
+   --  if necessary.
+   --
+   --  Get_Variable_Set will be called with Reduced set to False (as this
+   --  function should never be called when its true...)
+
+   function Untangle_Record_Fields
+     (N                            : Node_Id;
+      Scope                        : Flow_Scope;
+      Local_Constants              : Node_Sets.Set;
+      Fold_Functions               : Boolean;
+      Use_Computed_Globals         : Boolean;
+      Expand_Synthesized_Constants : Boolean)
+      return Flow_Id_Sets.Set
+   with Pre => Nkind (N) = N_Selected_Component or else Is_Tick_Update (N);
+   --  Process a node describing one or more record fields and return a
+   --  variable set with all variables referenced.
+   --
+   --  Fold_Functions also has an effect on how we deal with useless
+   --  'Update expressions:
+   --
+   --     Node                 Fold_Functions  Result
+   --     -------------------  --------------  --------
+   --     R'Update (X => N).Y  False           {R.Y, N}
+   --     R'Update (X => N).Y  True            {R.Y}
+   --     R'Update (X => N)    False           {R.Y, N}
+   --     R'Update (X => N)    True            {R.Y, N}
+   --
+   --  Scope, Local_Constants, Use_Computed_Globals,
+   --  Expand_Synthesized_Constants will be passed on to Get_Variable_Set
+   --  if necessary.
+   --
+   --  Get_Variable_Set will be called with Reduced set to False (as this
+   --  function should never be called when its true...)
 
    function Get_Precondition_Expressions (E : Entity_Id) return Node_Lists.List
      with Pre => Ekind (E) in Subprogram_Kind;

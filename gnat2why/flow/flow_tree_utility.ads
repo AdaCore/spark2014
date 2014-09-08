@@ -67,4 +67,9 @@ package Flow_Tree_Utility is
                       Pragma_Effective_Writes | Pragma_Effective_Reads;
    --  Checks if the given entity (or its type) has the specified aspect.
 
+   function Is_Tick_Update (N : Node_Id) return Boolean
+   is (Nkind (N) = N_Attribute_Reference  and then
+         Get_Attribute_Id (Attribute_Name (N)) = Attribute_Update);
+   --  Checks if the given node is a 'Update node.
+
 end Flow_Tree_Utility;

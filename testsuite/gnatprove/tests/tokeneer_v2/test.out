@@ -680,7 +680,6 @@ keystore.adb:359:18: warning: precondition might fail
 keystore.adb:421:18: warning: precondition might fail
 keystore.adb:485:18: warning: precondition might fail
 keystore.adb:538:18: warning: precondition might fail
-keystore.adb:552:37: warning: unused assignment to "Theprivatekey"
 keystore.adb:690:21: warning: precondition might fail
 keystore.adb:758:21: warning: precondition might fail
 keystore.adb:773:47: info: length check proved

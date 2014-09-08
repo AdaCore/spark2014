@@ -230,7 +230,7 @@ package body Flow.Control_Flow_Graph is
    --  functions, we also remember the node_id of the expression. For
    --  example, if we have an if statement:
    --
-   --     if Multiply_After_Delay (X, Y, Z) then
+   --     if Multiply_After_Delay (X, Y, Z) = 0 then
    --        ...
    --
    --  Lets assume the node_id for the statement is 42, and the node_id for
@@ -324,16 +324,6 @@ package body Flow.Control_Flow_Graph is
    --  Join up the standard entry and standard exits of the given
    --  nodes. Block contains the combined standard entry and exits of
    --  the joined up sequence.
-
-   procedure Calculate_Variables_Used_By_Component
-     (N         : Node_Id;
-      Search    : Node_Id;
-      F_Comp    : Flow_Id;
-      FA        : Flow_Analysis_Graphs;
-      Ctx       : in out Context;
-      Vars_Used : out Flow_Id_Sets.Set);
-   --  This procedure looks under Search and gathers a set of Flow_Ids
-   --  that corresponds to all variables used by component F_Comp.
 
    procedure Create_Record_Tree
      (F        : Flow_Id;
@@ -774,13 +764,16 @@ package body Flow.Control_Flow_Graph is
    --  Process an arbitrary statement (this is basically a big case
    --  block which calls the various Do_XYZ procedures).
 
-   function RHS_Split_Useful (N : Node_Id) return Boolean
-     with Pre => Nkind (N) in N_Assignment_Statement |
-                              N_Object_Declaration
-                   and then Present (Expression (N));
+   function RHS_Split_Useful (N     : Node_Id;
+                              Scope : Flow_Scope)
+                              return Boolean
+   with Pre => Nkind (N) in N_Assignment_Statement |
+                            N_Object_Declaration
+               and then Present (Expression (N));
    --  Checks the right hand side of an assignment statement (or the
    --  expression on an object declaration) and determines if we can to
    --  perform some meaningful record-field splitting.
+   pragma Unreferenced (RHS_Split_Useful);
 
    procedure Simplify_CFG (FA : in out Flow_Analysis_Graphs);
    --  Remove all null vertices from the control flow graph.
@@ -904,497 +897,6 @@ package body Flow.Control_Flow_Graph is
       end if;
    end Join;
 
-   -------------------------------------------
-   -- Calculate_Variables_Used_By_Component --
-   -------------------------------------------
-
-   procedure Calculate_Variables_Used_By_Component
-     (N         : Node_Id;
-      Search    : Node_Id;
-      F_Comp    : Flow_Id;
-      FA        : Flow_Analysis_Graphs;
-      Ctx       : in out Context;
-      Vars_Used : out Flow_Id_Sets.Set)
-   is
-      function Compare_Components
-        (F1 : Flow_Id;
-         F2 : Flow_Id)
-         return Flow_Id;
-      --  For all record components of F1, checks if the components of F2 are
-      --  a subset of the F1 component and returns the matching F1 component.
-
-      function Null_Or_Constant (F : Flow_Id) return Flow_Id_Sets.Set;
-      --  Returns the empty Flow_Id set if F is either a Null_Flow_Id or
-      --  a constant that is not contained in the Local_Constants.
-      --  Otherwise, it returns a singleton set containing F.
-
-      ------------------------
-      -- Compare_Components --
-      ------------------------
-
-      function Compare_Components
-        (F1 : Flow_Id;
-         F2 : Flow_Id)
-         return Flow_Id
-      is
-         Min_Length    : Natural;
-         Equal_Lengths : Boolean;
-         Found         : Boolean;
-         F_Min         : Flow_Id;
-         F_Max         : Flow_Id;
-         FS            : Flow_Id_Sets.Set;
-      begin
-         FS := All_Record_Components (F1, FA.B_Scope);
-
-         if not (F2.Kind = Record_Field) then
-            for F of FS loop
-               if Original_Record_Component
-                 (F.Component (Natural (F.Component.Length))) = F2.Node
-               then
-                  return F;
-               end if;
-            end loop;
-
-            return Null_Flow_Id;
-         end if;
-
-         for F of FS loop
-            Equal_Lengths := Natural (F.Component.Length) =
-                               Natural (F2.Component.Length);
-
-            F_Min := (if Natural (F.Component.Length) <
-                           Natural (F2.Component.Length)
-                      then F
-                      else F2);
-
-            F_Max := (if F_Min = F
-                      then F2
-                      else F);
-
-            Min_Length := Natural (F_Min.Component.Length);
-
-            Found := True;  --  Innocent until proven guilty
-
-            for I in reverse Natural range 1 .. Min_Length loop
-               if Original_Record_Component
-                    (F.Component (Natural (F.Component.Length) - I + 1)) /=
-                 Original_Record_Component
-                   (F2.Component (Natural (F2.Component.Length) - I + 1))
-               then
-                  Found := False;
-                  exit;
-               end if;
-            end loop;
-
-            if not Equal_Lengths then
-               declare
-                  E       : Entity_Id;
-                  Has_ORC : Boolean;
-               begin
-                  if Ekind (F_Min.Node) in E_Void         |
-                                           E_Component    |
-                                           E_Discriminant
-                  then
-                     E := Original_Record_Component (F_Min.Node);
-                     Has_ORC := True;
-                  else
-                     E := Get_Full_Type_Without_Checking (F_Min.Node);
-                     Has_ORC := False;
-                  end if;
-
-                  if Has_ORC
-                   and then Original_Record_Component
-                              (F_Max.Component
-                                 (Natural (F_Max.Component.Length) -
-                                    Min_Length)) /= E
-                  then
-                     Found := False;
-                  elsif (not Has_ORC)
-                    and then Get_Full_Type_Without_Checking
-                               (Original_Record_Component
-                                  (F_Max.Component
-                                     (Natural (F_Max.Component.Length) -
-                                        Min_Length))) /= E
-                  then
-                     Found := False;
-                  end if;
-               end;
-            end if;
-
-            if Found then
-               return F;
-            end if;
-         end loop;
-
-         return Null_Flow_Id;
-      end Compare_Components;
-
-      ----------------------
-      -- Null_Or_Constant --
-      ----------------------
-
-      function Null_Or_Constant (F : Flow_Id) return Flow_Id_Sets.Set is
-        (if F = Null_Flow_Id
-           or else (Ekind (F.Node) = E_Constant
-                      and then not FA.Local_Constants.Contains (F.Node))
-         then Flow_Id_Sets.Empty_Set
-         else Flow_Id_Sets.To_Set (F));
-
-   begin  --  Beginning of Calculate_Variables_Used_By_Component
-      case Nkind (Search) is
-         when N_Identifier =>
-            --  A := B;
-            declare
-               F : constant Flow_Id :=
-                 Compare_Components (Direct_Mapping_Id (Entity (Search)),
-                                     F_Comp);
-            begin
-               Vars_Used := Null_Or_Constant (F);
-            end;
-
-         when N_Selected_Component =>
-            --  A := B.X;
-            declare
-               Pref : Node_Id;
-               Expr : Node_Id;
-               F    : Flow_Id;
-
-               Vars_Used_By_Nested_Expr : Flow_Id_Sets.Set :=
-                 Flow_Id_Sets.Empty_Set;
-            begin
-               Pref := Search;
-               while Present (Pref) loop
-                  case Nkind (Pref) is
-                     when N_Selected_Component =>
-                        --  A := B.Y.X;
-                        Pref := Prefix (Pref);
-
-                     when N_Identifier =>
-                        exit;
-
-                     when N_Attribute_Reference  |
-                          N_Qualified_Expression =>
-                        --  A := B'Update (Y => bar, X => foo).X;
-                        --  A := Type'(Y => bar, X => foo).X;
-                        Expr := (case Nkind (Pref) is
-                                    when N_Attribute_Reference =>
-                                       Pref,
-                                    when N_Qualified_Expression =>
-                                       Expression (Pref),
-                                    when others =>
-                                       raise Why.Unexpected_Node);
-
-                        Ctx.Folded_Function_Checks (N).Include (Expr);
-
-                        Vars_Used_By_Nested_Expr := Vars_Used_By_Nested_Expr or
-                          Get_Variable_Set
-                            (Expr,
-                             Scope                => FA.B_Scope,
-                             Local_Constants      => FA.Local_Constants,
-                             Fold_Functions       => True,
-                             Use_Computed_Globals => not FA.Compute_Globals);
-
-                        case Nkind (Pref) is
-                           when N_Attribute_Reference =>
-                              Pref := Prefix (Pref);
-                           when N_Qualified_Expression =>
-                              --  We cannot possibly have anything before the
-                              --  N_Qualified_Expression node.
-                              Vars_Used := Vars_Used_By_Nested_Expr;
-                              return;
-                           when others =>
-                              raise Why.Unexpected_Node;
-                        end case;
-
-                     when N_Indexed_Component =>
-                        --  A := B (foo).X;
-                        Vars_Used_By_Nested_Expr := Vars_Used_By_Nested_Expr or
-                          Get_Variable_Set
-                            (Expressions (Pref),
-                             Scope                => FA.B_Scope,
-                             Local_Constants      => FA.Local_Constants,
-                             Fold_Functions       => True,
-                             Use_Computed_Globals => not FA.Compute_Globals);
-
-                        Pref := Prefix (Pref);
-
-                     when others =>
-                        raise Why.Unexpected_Node;
-                  end case;
-               end loop;
-
-               if Nkind (Parent (Pref)) = N_Indexed_Component then
-                  --  If the leftmost node is an array, then we add it
-                  --  to the set of variables used and then return.
-                  Vars_Used := Vars_Used_By_Nested_Expr or
-                    Get_Variable_Set
-                      (Pref,
-                       Scope                => FA.B_Scope,
-                       Local_Constants      => FA.Local_Constants,
-                       Fold_Functions       => True,
-                       Use_Computed_Globals => not FA.Compute_Globals);
-                  return;
-               end if;
-
-               F := Compare_Components (Direct_Mapping_Id (Entity (Pref)),
-                                        F_Comp);
-
-               if F = Null_Flow_Id
-                 or else (Ekind (F.Node) = E_Constant
-                            and then not FA.Local_Constants.Contains (F.Node))
-               then
-                  Vars_Used := Vars_Used_By_Nested_Expr;
-               else
-                  Vars_Used := Flow_Id_Sets.To_Set (F) or
-                    Vars_Used_By_Nested_Expr;
-               end if;
-            end;
-
-         when N_Attribute_Reference =>
-            --  A := B'Update (X => foo);
-            declare
-               Comp_Assoc : Node_Id;
-               Choice     : Node_Id;
-               FS         : Flow_Id_Sets.Set;
-            begin
-               Comp_Assoc := First
-                 (Component_Associations
-                    (First (Expressions (Search))));
-
-               while Present (Comp_Assoc) loop
-                  Choice := First (Choices (Comp_Assoc));
-
-                  while Present (Choice) loop
-                     if Is_Record_Type (Get_Full_View (Entity (Choice))) then
-                        FS := All_Record_Components (Entity (Choice),
-                                                     FA.B_Scope);
-
-                        for F of FS loop
-                           declare
-                              F1, F2 : Flow_Id;
-                           begin
-                              F1 := Compare_Components
-                                (Direct_Mapping_Id (Entity (Prefix (Search))),
-                                 F);
-
-                              if F1 /= Null_Flow_Id then
-                                 F2 := Compare_Components (F1, F_Comp);
-
-                                 if F2 /= Null_Flow_Id then
-                                    Ctx.Folded_Function_Checks (N).Include
-                                      (Expression (Comp_Assoc));
-
-                                    Vars_Used := Get_Variable_Set
-                                      (Expression (Comp_Assoc),
-                                       Scope                => FA.B_Scope,
-                                       Local_Constants      =>
-                                         FA.Local_Constants,
-                                       Fold_Functions       => True,
-                                       Use_Computed_Globals =>
-                                         not FA.Compute_Globals);
-
-                                    return;
-                                 end if;
-                              end if;
-                           end;
-                        end loop;
-                     else
-                        declare
-                           F1, F2 : Flow_Id;
-                        begin
-                           F1 := Compare_Components
-                             (Direct_Mapping_Id (Entity (Prefix (Search))),
-                              Direct_Mapping_Id (Entity (Choice)));
-
-                           if F1 /= Null_Flow_Id then
-                              F2 := Compare_Components (F_Comp, F1);
-
-                              if F2 /= Null_Flow_Id then
-                                 Ctx.Folded_Function_Checks (N).Include
-                                   (Expression (Comp_Assoc));
-
-                                 Vars_Used := Get_Variable_Set
-                                   (Expression (Comp_Assoc),
-                                    Scope                => FA.B_Scope,
-                                    Local_Constants      => FA.Local_Constants,
-                                    Fold_Functions       => True,
-                                    Use_Computed_Globals =>
-                                      not FA.Compute_Globals);
-
-                                 return;
-                              end if;
-                           end if;
-                        end;
-                     end if;
-                     Next (Choice);
-                  end loop;
-
-                  Next (Comp_Assoc);
-               end loop;
-            end;
-
-            --  If we reached this point, then the 'Update did not actually
-            --  update the component that is currently being processed.
-            declare
-               F : constant Flow_Id := Compare_Components
-                 (Direct_Mapping_Id (Entity (Prefix (Search))),
-                  F_Comp);
-            begin
-               Vars_Used := Null_Or_Constant (F);
-            end;
-
-         when N_Aggregate            |
-              N_Qualified_Expression =>
-            --  A := (X => foo, Y => bar);
-            --  A := A'(X => foo, Y => bar);
-
-            Vars_Used := Flow_Id_Sets.Empty_Set;
-            --  It starts off empty but will be populated later.
-
-            declare
-               Current_Component : Node_Id;
-               Current_Search    : Node_Id;
-               Found             : Node_Id;
-
-               procedure Find_Matching_Choice
-                 (Component    : Node_Id;
-                  Search_Under : Node_Id;
-                  Found        : out Node_Id);
-               --  Searches under Search_Under for Component and points Found
-               --  to the corresponding expression. At the end Component is
-               --  pointed to the next element.
-
-               --------------------------
-               -- Find_Matching_Choice --
-               --------------------------
-
-               procedure Find_Matching_Choice
-                 (Component    : Node_Id;
-                  Search_Under : Node_Id;
-                  Found        : out Node_Id)
-               is
-                  Comp_Assoc : Node_Id;
-                  Choice     : Node_Id;
-                  F          : Flow_Id;
-               begin
-                  Found := Empty;
-
-                  case Nkind (Search_Under) is
-                     when N_Identifier =>
-                        F := Direct_Mapping_Id (Entity (Search_Under));
-
-                        if Is_Record_Type (Get_Full_Type
-                                             (Etype (Search_Under),
-                                              FA.B_Scope))
-                        then
-                           --  N_Identifier is a record so we need to find the
-                           --  correct field.
-                           F := Compare_Components (F, F_Comp);
-                           Vars_Used := Vars_Used or Null_Or_Constant (F);
-                        else
-                           --  N_Identifier is a simple variable so we just
-                           --  add this directly.
-                           Vars_Used := Vars_Used or Null_Or_Constant (F);
-                        end if;
-
-                     when N_Aggregate            |
-                          N_Qualified_Expression =>
-                        Comp_Assoc := (if Nkind (Search_Under) = N_Aggregate
-                                       then First (Component_Associations
-                                                     (Search_Under))
-                                       else First (Component_Associations
-                                                     (Expression
-                                                        (Search_Under))));
-
-                        while Present (Comp_Assoc) loop
-                           Choice := First (Choices (Comp_Assoc));
-                           while Present (Choice) loop
-                              if Entity (Choice) = Component
-                                or else (Ekind (Entity (Choice)) = E_Component
-                                           and then Original_Record_Component
-                                                      (Component) =
-                                                    Original_Record_Component
-                                                      (Entity (Choice)))
-                              then
-                                 Found := Expression (Comp_Assoc);
-                              end if;
-
-                              Next (Choice);
-                           end loop;
-
-                           Next (Comp_Assoc);
-                        end loop;
-
-                        if Present (Found)
-                          and Component = F_Comp.Component.Last_Element
-                        then
-                           Ctx.Folded_Function_Checks (N).Include (Found);
-
-                           Vars_Used := Vars_Used or Get_Variable_Set
-                             (Found,
-                              Scope                => FA.B_Scope,
-                              Local_Constants      => FA.Local_Constants,
-                              Fold_Functions       => True,
-                              Use_Computed_Globals => not FA.Compute_Globals);
-                        end if;
-
-                     when N_Attribute_Reference |
-                          N_Expanded_Name       |
-                          N_Function_Call       |
-                          N_Indexed_Component   |
-                          N_Selected_Component  =>
-                        Ctx.Folded_Function_Checks (N).Include (Search_Under);
-
-                        Vars_Used := Vars_Used or Get_Variable_Set
-                          (Search_Under,
-                           Scope                => FA.B_Scope,
-                           Local_Constants      => FA.Local_Constants,
-                           Fold_Functions       => True,
-                           Use_Computed_Globals => not FA.Compute_Globals);
-
-                     when others =>
-                        raise Why.Unexpected_Node;
-                  end case;
-               end Find_Matching_Choice;
-
-            begin
-               Current_Component := F_Comp.Component.First_Element;
-               Current_Search    := Search;
-
-               loop
-                  Find_Matching_Choice (Current_Component,
-                                        Current_Search,
-                                        Found);
-
-                  if Present (Found) then
-                     Current_Search := Found;
-                  end if;
-
-                  --  Termination condition
-                  exit when Current_Component = F_Comp.Component.Last_Element;
-
-                  declare
-                     This_Is_The_Next : Boolean := False;
-                  begin
-                     for C of F_Comp.Component loop
-                        if This_Is_The_Next then
-                           Current_Component := C;
-                           exit;
-                        end if;
-                        if C = Current_Component then
-                           This_Is_The_Next := True;
-                        end if;
-                     end loop;
-                  end;
-               end loop;
-            end;
-
-         when others =>
-            raise Why.Unexpected_Node;
-      end case;
-
-   end Calculate_Variables_Used_By_Component;
-
    ------------------------
    -- Create_Record_Tree --
    ------------------------
@@ -1417,19 +919,23 @@ package body Flow.Control_Flow_Graph is
             case F.Kind is
                when Null_Value =>
                   raise Program_Error;
-               when Direct_Mapping | Magic_String | Synthetic_Null_Export =>
+               when Magic_String | Synthetic_Null_Export =>
                   null;
-               when Record_Field =>
-                  declare
-                     P : constant Flow_Id :=
-                       Change_Variant (Parent_Record (F),
-                                       Corresponding_Grouping (F.Variant));
-                  begin
-                     Create_Record_Tree (P, Leaf_Atr, FA);
-                     Linkup (FA.CFG,
-                             FA.CFG.Get_Vertex (P),
-                             FA.CFG.Get_Vertex (F));
-                  end;
+               when Direct_Mapping | Record_Field =>
+                  if F.Kind = Record_Field
+                    or else F.Facet in Private_Part | Extension_Part
+                  then
+                     declare
+                        P : constant Flow_Id :=
+                          Change_Variant (Parent_Record (F),
+                                          Corresponding_Grouping (F.Variant));
+                     begin
+                        Create_Record_Tree (P, Leaf_Atr, FA);
+                        Linkup (FA.CFG,
+                                FA.CFG.Get_Vertex (P),
+                                FA.CFG.Get_Vertex (F));
+                     end;
+                  end if;
             end case;
 
          when Initial_Grouping | Final_Grouping =>
@@ -1536,7 +1042,7 @@ package body Flow.Control_Flow_Graph is
          for Tmp of FS loop
             Process (Tmp);
             if Has_Bounds (Tmp, FA.B_Scope) then
-               Process (Tmp'Update (Bound => (Kind => Some_Bound)));
+               Process (Tmp'Update (Facet => The_Bounds));
             end if;
          end loop;
       end;
@@ -1596,7 +1102,7 @@ package body Flow.Control_Flow_Graph is
       for Tmp of FS loop
          Process (Tmp);
          if Has_Bounds (Tmp, FA.B_Scope) then
-            Process (Tmp'Update (Bound => (Kind => Some_Bound)));
+            Process (Tmp'Update (Facet => The_Bounds));
          end if;
       end loop;
    end Create_Initial_And_Final_Vertices;
@@ -1616,16 +1122,16 @@ package body Flow.Control_Flow_Graph is
       V_Used_RHS : Flow_Id_Sets.Set;
       --  Things used because they appear on the RHS
 
-      V_Explicitly_Used_LHS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-      V_Implicitly_Used_LHS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      V_Explicitly_Used_LHS : Flow_Id_Sets.Set;
+      V_Implicitly_Used_LHS : Flow_Id_Sets.Set;
       --  Things used because they appear on the LHS (in A (J), J would be
       --  used explicitly and A implicitly).
 
-      V_Def_LHS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      V_Def_LHS : Flow_Id_Sets.Set;
       --  Things defined because they appear on the LHS (in A (J), A would
       --  be used).
 
-      V_Need_Checking_LHS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      V_Need_Checking_LHS : Flow_Id_Sets.Set;
    begin
       --  Work out which variables we use and define.
       V_Used_RHS := Get_Variable_Set
@@ -1636,15 +1142,22 @@ package body Flow.Control_Flow_Graph is
          Use_Computed_Globals => not FA.Compute_Globals);
       Ctx.Folded_Function_Checks (N).Insert (Expression (N));
 
-      Untangle_Assignment_Target
-        (N                    => Name (N),
-         Scope                => FA.B_Scope,
-         Local_Constants      => FA.Local_Constants,
-         Use_Computed_Globals => not FA.Compute_Globals,
-         Vars_Explicitly_Used => V_Explicitly_Used_LHS,
-         Vars_Implicitly_Used => V_Implicitly_Used_LHS,
-         Vars_Defined         => V_Def_LHS,
-         Vars_Semi_Used       => V_Need_Checking_LHS);
+      declare
+         Partial : Boolean;
+      begin
+         Untangle_Assignment_Target
+           (N                    => Name (N),
+            Scope                => FA.B_Scope,
+            Local_Constants      => FA.Local_Constants,
+            Use_Computed_Globals => not FA.Compute_Globals,
+            Vars_Defined         => V_Def_LHS,
+            Vars_Used            => V_Explicitly_Used_LHS,
+            Vars_Proof           => V_Need_Checking_LHS,
+            Partial_Definition   => Partial);
+         if Partial then
+            V_Implicitly_Used_LHS := V_Def_LHS;
+         end if;
+      end;
       if not V_Need_Checking_LHS.Is_Empty then
          Ctx.Folded_Function_Checks (N).Insert (Name (N));
       end if;
@@ -1657,81 +1170,22 @@ package body Flow.Control_Flow_Graph is
                            V_Used_RHS);
       end if;
 
-      if V_Def_LHS.Length > 1 and then RHS_Split_Useful (N) then
-         --  If the LHS defines more than 1 variables, then we are dealing
-         --  with a record.
-         declare
-            Assigned_Fields : Vertex_Vectors.Vector :=
-              Vertex_Vectors.Empty_Vector;
+      --  We have a vertex
+      Add_Vertex
+        (FA,
+         Direct_Mapping_Id (N),
+         Make_Basic_Attributes (Var_Def    => V_Def_LHS,
+                                Var_Ex_Use => V_Used_RHS or
+                                  V_Explicitly_Used_LHS,
+                                Var_Im_Use => V_Implicitly_Used_LHS,
+                                Sub_Called => Get_Function_Set (N),
+                                Loops      => Ctx.Current_Loops,
+                                E_Loc      => N),
+         V);
 
-            Vars_Used       : Flow_Id_Sets.Set;
-
-            All_Vertices    : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
-         begin
-            for F of V_Def_LHS loop
-               Vars_Used := Flow_Id_Sets.Empty_Set;
-
-               Calculate_Variables_Used_By_Component (N,
-                                                      Expression (N),
-                                                      F,
-                                                      FA,
-                                                      Ctx,
-                                                      Vars_Used);
-
-               Add_Vertex
-                 (FA,
-                  Make_Basic_Attributes
-                    (Var_Def    => Flow_Id_Sets.To_Set (F),
-                     Var_Ex_Use => Vars_Used or
-                                     V_Explicitly_Used_LHS,
-                     Sub_Called => Get_Function_Set (N),
-                     Loops      => Ctx.Current_Loops,
-                     E_Loc      => N,
-                     Print_Hint => Pretty_Print_Record_Field),
-                  V);
-
-               Assigned_Fields.Append (V);
-               All_Vertices.Insert (V);
-            end loop;
-
-            for V of All_Vertices loop
-               FA.Other_Fields.Insert (V,
-                                       All_Vertices - Vertex_Sets.To_Set (V));
-            end loop;
-
-            Assigned_Fields.Reverse_Elements;
-            V := Flow_Graphs.Null_Vertex;
-            for W of Assigned_Fields loop
-               if V /= Flow_Graphs.Null_Vertex then
-                  Linkup (FA.CFG, V, W);
-               end if;
-               V := W;
-            end loop;
-            CM.Include (Union_Id (N),
-                        Graph_Connections'
-                          (Standard_Entry => Assigned_Fields.First_Element,
-                           Standard_Exits => To_Set
-                             (Assigned_Fields.Last_Element)));
-         end;
-      else
-         --  We have a vertex
-         Add_Vertex
-           (FA,
-            Direct_Mapping_Id (N),
-            Make_Basic_Attributes (Var_Def    => V_Def_LHS,
-                                   Var_Ex_Use => V_Used_RHS or
-                                                   V_Explicitly_Used_LHS,
-                                   Var_Im_Use => V_Implicitly_Used_LHS,
-                                   Sub_Called => Get_Function_Set (N),
-                                   Loops      => Ctx.Current_Loops,
-                                   E_Loc      => N),
-            V);
-
-         --  Control goes in V and out of V
-         CM.Include (Union_Id (N),
-                     Trivial_Connection (V));
-      end if;
-
+      --  Control goes in V and out of V
+      CM.Include (Union_Id (N),
+                  Trivial_Connection (V));
    end Do_Assignment_Statement;
 
    -------------------------
@@ -1908,18 +1362,14 @@ package body Flow.Control_Flow_Graph is
          Make_Extended_Return_Attributes
            (Var_Def         => Flatten_Variable (FA.Analyzed_Entity,
                                                  FA.B_Scope),
-            Var_Use         => Get_Variable_Set
-              (Ret_Object,
-               Scope                => FA.B_Scope,
-               Local_Constants      => FA.Local_Constants,
-               Fold_Functions       => True,
-               Use_Computed_Globals => not FA.Compute_Globals),
+            Var_Use         => Flatten_Variable (Ret_Object,
+                                                 FA.B_Scope),
             Object_Returned => Ret_Object,
             Sub_Called      => Get_Function_Set (Ret_Object),
+            --  ??? really? I don't think we can call a function here...
             Loops           => Ctx.Current_Loops,
             E_Loc           => Ret_Entity),
          V);
-      Ctx.Folded_Function_Checks (N).Insert (Ret_Object);
       CM.Include (Union_Id (Ret_Entity), No_Connections);
       CM (Union_Id (Ret_Entity)).Standard_Entry := V;
 
@@ -3129,72 +2579,33 @@ package body Flow.Control_Flow_Graph is
       else
          --  We have a variable declaration with an initialization.
          declare
-            Var_Def       : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-            Var_Is_Record : Boolean          := False;
-            Vars_Used     : Flow_Id_Sets.Set;
-            All_Vertices  : Vertex_Sets.Set  := Vertex_Sets.Empty_Set;
+            Var_Def : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
          begin
             FS := Flatten_Variable (Defining_Identifier (N), FA.B_Scope);
 
             for F of FS loop
                Var_Def.Include (F);
                if Has_Bounds (F, FA.B_Scope) then
-                  Var_Def.Include (F'Update (Bound => (Kind => Some_Bound)));
-               end if;
-               if F.Kind = Record_Field then
-                  Var_Is_Record := True;
+                  Var_Def.Include (F'Update (Facet => The_Bounds));
                end if;
             end loop;
 
-            if Var_Is_Record and then RHS_Split_Useful (N) then
-               for F of Var_Def loop
-                  Vars_Used := Flow_Id_Sets.Empty_Set;
-
-                  Calculate_Variables_Used_By_Component (N,
-                                                         Expression (N),
-                                                         F,
-                                                         FA,
-                                                         Ctx,
-                                                         Vars_Used);
-
-                  Add_Vertex
-                    (FA,
-                     Make_Basic_Attributes
-                       (Var_Def    => Flow_Id_Sets.To_Set (F),
-                        Var_Ex_Use => Vars_Used,
-                        Sub_Called => Get_Function_Set (Expression (N)),
-                        Loops      => Ctx.Current_Loops,
-                        E_Loc      => N,
-                        Print_Hint => Pretty_Print_Record_Field),
-                     V);
-
-                  Inits.Append (V);
-                  All_Vertices.Insert (V);
-               end loop;
-
-               for V of All_Vertices loop
-                  FA.Other_Fields.Insert (V,
-                                          All_Vertices -
-                                            Vertex_Sets.To_Set (V));
-               end loop;
-            else
-               Add_Vertex
-                 (FA,
-                  Direct_Mapping_Id (N),
-                  Make_Basic_Attributes
-                    (Var_Def    => Var_Def,
-                     Var_Ex_Use => Get_Variable_Set
-                       (Expression (N),
-                        Scope                => FA.B_Scope,
-                        Local_Constants      => FA.Local_Constants,
-                        Fold_Functions       => True,
-                        Use_Computed_Globals => not FA.Compute_Globals),
-                     Sub_Called => Get_Function_Set (Expression (N)),
-                     Loops      => Ctx.Current_Loops,
-                     E_Loc      => N),
-                  V);
-               Inits.Append (V);
-            end if;
+            Add_Vertex
+              (FA,
+               Direct_Mapping_Id (N),
+               Make_Basic_Attributes
+                 (Var_Def    => Var_Def,
+                  Var_Ex_Use => Get_Variable_Set
+                    (Expression (N),
+                     Scope                => FA.B_Scope,
+                     Local_Constants      => FA.Local_Constants,
+                     Fold_Functions       => True,
+                     Use_Computed_Globals => not FA.Compute_Globals),
+                  Sub_Called => Get_Function_Set (Expression (N)),
+                  Loops      => Ctx.Current_Loops,
+                  E_Loc      => N),
+               V);
+            Inits.Append (V);
             Ctx.Folded_Function_Checks (N).Include (Expression (N));
          end;
       end if;
@@ -4536,15 +3947,24 @@ package body Flow.Control_Flow_Graph is
    -- RHS_Split_Useful --
    ----------------------
 
-   function RHS_Split_Useful (N : Node_Id) return Boolean is
+   function RHS_Split_Useful (N     : Node_Id;
+                              Scope : Flow_Scope)
+                              return Boolean is
 
       function Rec (N : Node_Id) return Boolean;
       --  Recursive helper function.
 
       function Rec (N : Node_Id) return Boolean is
       begin
+         if Ekind (Get_Full_Type (N, Scope)) not in Record_Kind
+         then
+            --  No point in trying to split if we are not dealing with some
+            --  record type.
+            return False;
+         end if;
+
          case Nkind (N) is
-            when N_Identifier | N_Aggregate =>
+            when N_Identifier | N_Expanded_Name | N_Aggregate =>
                return True;
 
             when N_Selected_Component =>
@@ -4554,7 +3974,7 @@ package body Flow.Control_Flow_Graph is
                return Get_Attribute_Id (Attribute_Name (N)) = Attribute_Update
                  and then Rec (Prefix (N));
 
-            when N_Qualified_Expression =>
+            when N_Qualified_Expression | N_Type_Conversion =>
                return Rec (Expression (N));
 
             when others =>
