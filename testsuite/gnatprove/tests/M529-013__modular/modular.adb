@@ -4,7 +4,7 @@ is
 
    function Add_Byte_C (A, B : in Integer)
                        return Unsigned_Byte
-      with Post    => Add_Byte_C'Result = Unsigned_Byte ((A + B) mod 256)
+      with Post    => Add_Byte_C'Result = Unsigned_Byte ((A + B) mod 256) --@POSTCONDITION:PASS
    is
    begin
       return Unsigned_Byte ((A mod 256 + B mod 256) mod 256);
