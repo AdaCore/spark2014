@@ -250,6 +250,21 @@ package Flow_Utility is
                  then not Flatten_Variable'Result.Is_Empty);
    --  As above, but conveniently taking an Entity instead of a Flow_Id.
 
+   subtype Valid_Assignment_Kinds is Node_Kind with Static_Predicate =>
+     Valid_Assignment_Kinds in N_Identifier                |
+                               N_Expanded_Name             |
+                               N_Type_Conversion           |
+                               N_Unchecked_Type_Conversion |
+                               N_Indexed_Component         |
+                               N_Slice                     |
+                               N_Selected_Component;
+
+   function Is_Valid_Assignment_Target (N : Node_Id) return Boolean
+   with Post => (if Is_Valid_Assignment_Target'Result
+                 then Nkind (N) in Valid_Assignment_Kinds);
+   --  Returns true if the tree under N is a combination of
+   --  Valid_Assignment_Kinds only.
+
    procedure Untangle_Assignment_Target
      (N                    : Node_Id;
       Scope                : Flow_Scope;
@@ -259,13 +274,7 @@ package Flow_Utility is
       Vars_Used            : out Flow_Id_Sets.Set;
       Vars_Proof           : out Flow_Id_Sets.Set;
       Partial_Definition   : out Boolean)
-     with Pre => Nkind (N) in N_Identifier                |
-                              N_Expanded_Name             |
-                              N_Type_Conversion           |
-                              N_Unchecked_Type_Conversion |
-                              N_Indexed_Component         |
-                              N_Slice                     |
-                              N_Selected_Component,
+     with Pre => Is_Valid_Assignment_Target (N),
           Post => (if not Is_Null_Record (Etype (N))
                    then not Vars_Defined.Is_Empty);
    --  Process the LHS of an assignment statement or an [in] out parameter,

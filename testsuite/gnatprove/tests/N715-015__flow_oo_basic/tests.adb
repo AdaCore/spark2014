@@ -2,6 +2,11 @@ with Foo; use Foo;
 
 package body Tests is
 
+   type Pair is record
+      A : Widget_T;
+      B : Nice_Widget_T;
+   end record;
+
    --  All annotations are meant to be `correct', so this test should not
    --  produce any messages.
 
@@ -101,5 +106,22 @@ package body Tests is
    --     Zero_Widget (Obj);
    --     N := Obj.Hash;
    --  end Test_08;
+
+   procedure Test_09 (A, B : in     Integer;
+                      C    : in     Boolean;
+                      N    :    out Natural)
+   with Global  => null,
+        Depends => (N => (A, B),
+                    null => C)
+   is
+      Obj : constant Nice_Widget_T := (X     => A,
+                                       Y     => B,
+                                       Round => C);
+      Tmp : Pair := (A => Widget_T (Obj),
+                     B => Obj);
+      Tmp2 : Widget_T := Widget_T (Tmp.B);
+   begin
+      N := Tmp2.Hash;
+   end Test_09;
 
 end Tests;

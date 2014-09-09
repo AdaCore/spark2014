@@ -1542,12 +1542,6 @@ package body Flow_Utility is
 
                else
 
-                  --  ??? This will need to be updated for tagged types to
-                  --  deal with view conversions. On conversions up the
-                  --  hierarchy we should just ignore it; on conversions
-                  --  the other way we should return the 'hidden_parts
-                  --  component instead.
-
                   VS.Union
                     (Untangle_Record_Fields
                        (N,
@@ -1559,6 +1553,58 @@ package body Flow_Utility is
                           Expand_Synthesized_Constants));
 
                   return Skip;
+
+               end if;
+
+            when N_Type_Conversion =>
+
+               if Reduced then
+
+                  return OK;
+
+               elsif Is_Valid_Assignment_Target (N) then
+
+                  --  This is could very well be a view conversion.
+                  --  Although the expression could be more complicated, if
+                  --  it is simple enough to be processed by
+                  --  Untangle_Assignment_Target, then we can make use of
+                  --  it.
+                  --
+                  --  A historical note: before we had the
+                  --  Untangle_Record_* functions, more and more
+                  --  functionality was crammed into
+                  --  Untangle_Assignment_Target in order to process a
+                  --  wider range of expressions, which resulted in a
+                  --  troublesome and unmaintainable functions. We should
+                  --  not repeat this mistake, so please do not expand the
+                  --  range nodes accepted by Is_Valid_Assignment_Target.
+
+                  declare
+                     Tmp_Def   : Flow_Id_Sets.Set;
+                     Tmp_Use   : Flow_Id_Sets.Set;
+                     Tmp_Proof : Flow_Id_Sets.Set;
+                     Unused    : Boolean;
+                  begin
+                     Untangle_Assignment_Target
+                       (N,
+                        Scope                => Scope,
+                        Local_Constants      => Local_Constants,
+                        Use_Computed_Globals => Use_Computed_Globals,
+                        Vars_Defined         => Tmp_Def,
+                        Vars_Used            => Tmp_Use,
+                        Vars_Proof           => Tmp_Proof,
+                        Partial_Definition   => Unused);
+                     VS.Union (Tmp_Def or Tmp_Use);
+                     if not Fold_Functions then
+                        VS.Union (Tmp_Proof);
+                     end if;
+                  end;
+
+                  return Skip;
+
+               else
+
+                  return OK;
 
                end if;
 
@@ -1890,6 +1936,41 @@ package body Flow_Utility is
    end Get_Full_Type;
 
    --------------------------------
+   -- Is_Valid_Assignment_Target --
+   --------------------------------
+
+   function Is_Valid_Assignment_Target (N : Node_Id) return Boolean
+   is
+      Ptr : Node_Id := N;
+   begin
+      while Nkind (Ptr) in Valid_Assignment_Kinds loop
+         case Valid_Assignment_Kinds (Nkind (Ptr)) is
+            when N_Identifier | N_Expanded_Name =>
+               return True;
+            when N_Type_Conversion =>
+               Ptr := Expression (Ptr);
+            when N_Unchecked_Type_Conversion =>
+               --  We only allow `unchecked' conversions of scalars in
+               --  assignment targets.
+               if Ekind (Get_Full_Type_Without_Checking (Ptr)) not in
+                 Scalar_Kind
+               then
+                  return False;
+               end if;
+               Ptr := Expression (Ptr);
+               if Ekind (Get_Full_Type_Without_Checking (Ptr)) not in
+                 Scalar_Kind
+               then
+                  return False;
+               end if;
+            when N_Indexed_Component | N_Slice | N_Selected_Component =>
+               Ptr := Prefix (Ptr);
+         end case;
+      end loop;
+      return False;
+   end Is_Valid_Assignment_Target;
+
+   --------------------------------
    -- Untangle_Assignment_Target --
    --------------------------------
 
@@ -1908,17 +1989,7 @@ package body Flow_Utility is
       --  assign something to something. And you can't assign to function
       --  results (yet).
 
-      subtype Valid_Nodes is Node_Kind
-        with Static_Predicate => Valid_Nodes in
-          N_Identifier                |
-          N_Expanded_Name             |
-          N_Type_Conversion           |
-          N_Unchecked_Type_Conversion |
-          N_Indexed_Component         |
-          N_Slice                     |
-          N_Selected_Component;
-
-      subtype Interesting_Nodes is Valid_Nodes
+      subtype Interesting_Nodes is Valid_Assignment_Kinds
         with Static_Predicate => Interesting_Nodes not in
           N_Identifier | N_Expanded_Name;
 
@@ -1977,7 +2048,7 @@ package body Flow_Utility is
       Base_Node          := Direct_Mapping_Id (Unique_Entity
                                                  (Entity (Root_Node)));
       for N of Seq loop
-         case Nkind (N) is
+         case Valid_Assignment_Kinds (Nkind (N)) is
             when N_Selected_Component =>
                Base_Node := Add_Component (Base_Node,
                                            Original_Record_Component
@@ -2039,7 +2110,7 @@ package body Flow_Utility is
       Idx                      := 1;
 
       for N of Seq loop
-         case Nkind (N) is
+         case Valid_Assignment_Kinds (Nkind (N)) is
             when N_Type_Conversion =>
                if Process_Type_Conversions then
                   declare
