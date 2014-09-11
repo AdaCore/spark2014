@@ -444,6 +444,26 @@ package body Why.Gen.Records is
       --  current type, and a function hide_ext__ to generate the extension
       --  field of the root type based on the extension components and special
       --  extension field rec__ext__ of the current type.
+      --
+      --  Note that we currently do not generate the axioms stating that
+      --  extraction and hiding are inverse functions, in the sense that:
+      --
+      --    root.rec_ext__ = hide_ext__ (extract__comp1 root.rec_ext__,
+      --                                 extract__comp2 root.rec_ext__,
+      --                                 ...
+      --                                 extract__ext__ root.rec_ext__)
+      --
+      --  and for every extension component <comp> or the special extension
+      --  component rec_ext__:
+      --
+      --    cur.comp = extract__comp (hide_ext__ (..., cur.comp, ...))
+      --
+      --  Instead, in Declare_Conversion_Functions we generate axioms that
+      --  state that converting back and forth between the current type and
+      --  its root type is the identity in both directions. Although this is
+      --  logically equivalent, automatic provers would likely perform better
+      --  with the above formulation, which would replace the axioms in
+      --  Declare_Extraction_Functions, if the need arises.
 
       procedure Declare_Extraction_Functions is
          X_Ident : constant W_Identifier_Id :=
