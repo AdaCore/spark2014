@@ -473,7 +473,7 @@ shall follow the grammar of ``abstract_state_list`` given below.
   option_list              ::= option { , option }
   option                   ::= simple_option
                              | name_value_option
-  simple_option            ::= identifier
+  simple_option            ::= Ghost
   name_value_option        ::= Part_Of => abstract_state
                              | External [=> external_property_list]
   external_property_list   ::= external_property
@@ -485,8 +485,6 @@ shall follow the grammar of ``abstract_state_list`` given below.
                              | others => expression
   state_name               ::= defining_identifier
   abstract_state           ::= name
-
-Currently no ``simple_options`` are defined.
 
 .. _etu-abstract_state_aspects-syntax:
 
@@ -560,6 +558,11 @@ Currently no ``simple_options`` are defined.
    :ref:`state_refinement`) exclusively of the state abstraction
    denoted by the ``abstract_state`` of the ``name_value_option`` (see
    :ref:`package_hierarchy`).
+
+.. _tu-fe-abstract_state_aspects-10:
+
+10. A state abstraction for which the ``simple_option`` Ghost is
+    specified is said to be a ghost state abstraction.
 
 .. _etu-abstract_state_aspects-ss:
 
@@ -1058,6 +1061,12 @@ where
 
 11. The legality rules related to a Refined_State aspect given in
     :ref:`package_hierarchy` also apply.
+
+.. _tu-cbatu-refined_state_aspects-12:
+
+12. Each ``constituent`` of a ghost state abstraction shall be either
+    a ghost variable or a ghost state abstraction. [The reverse situation
+    (i.e., a ghost constituent of a non-ghost state abstraction) is permitted.]
 
 .. _etu-refined_state_aspects-lr:
 

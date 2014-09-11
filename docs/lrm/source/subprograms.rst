@@ -1319,192 +1319,159 @@ Expression Functions
 
 .. _ghost-functions:
 
-Ghost Functions
----------------
+Ghost Entities
+--------------
 
-Ghost functions are intended for use in discharging verification conditions and in
-making it easier to express assertions about a program. The essential property
-of ghost functions is that they have no effect on the dynamic behavior of a
-valid SPARK program other than, depending on the assertion policy, the execution
-of known to be true assertion expressions. More specifically, if one were to
-take a valid SPARK program and remove all ghost function declarations from it
-and all assertions containing references to those functions, then the resulting
-program might no longer be a valid SPARK program (e.g., it might no longer be
-possible to discharge all the program's verification conditions) but its dynamic
-semantics (when viewed as an Ada program) should be unaffected by this
-transformation other than evaluating fewer known to be true assertion
-expressions.
-
-The rules below are given in general terms in relation to "ghost
-entities" to allow room for ghost types and ghost variables.
-Currently, however, only ghost functions are allowed and so an additional
-legality rule is provided that allows only functions to be explicitly
-declared as a ghost (though entities declared within a ghost function are
-regarded implicitly as ghost entities).
-
-.. todo::
-   Add ghost types and ghost variables to |SPARK|. To be completed in
-   a post-Release 1 version of this document.
+Ghost entities and are intended for use in discharging verification conditions
+and in making it easier to express assertions about a program. The essential
+property of ghost entities is that they have no effect on the dynamic behavior
+of a valid SPARK program. More specifically, if one
+were to take a valid SPARK program and remove all ghost entity declarations
+from it and all "innermost" statements, declarations, and pragmas which
+refer to those declarations (replacing removed statements with null statements
+when syntactically required), then the resulting  program might no longer be
+a valid SPARK program (e.g., it might no longer be possible to discharge all
+of the program's verification conditions) but its dynamic semantics (when
+viewed as an Ada program) should be unaffected by this transformation. This
+transformation might affect the performance characteristics of the program
+(e.g., due to no longer evaluating provably true assertions), but that
+is not what we are talking about here.
 
 .. centered:: **Static Semantics**
 
-.. _tu-cbatu-ghost_functions-01:
+.. _tu-cbatu-ghost_entities-01:
 
 1. |SPARK| defines the ``convention_identifier`` Ghost.
-   An entity (e.g., a subprogram or an object) whose Convention aspect is
-   specified to have the value Ghost is said to be a ghost entity (e.g., a ghost
-   function or a ghost variable).
+   An entity (e.g., a subprogram, a type, or an object) whose Convention
+   aspect is specified to have the value Ghost is said to be a ghost entity
+   (e.g., a ghost function or a ghost variable). [TBD: do we want to
+   define "ghost statement"?]
 
-.. _tu-nt-ghost_functions-02:
+.. _tu-nt-ghost_entities-02:
 
 2. The Convention aspect of an entity declared inside of a ghost entity (e.g.,
-   within the body of a ghost function) is defined to be Ghost.
+   within the body of a ghost subprogram) is defined to be Ghost.
+   The Convention aspect of an entity implicitly declared as part of the
+   explicit declaration of a ghost entity (e.g., an implicitly declared
+   subprogram associated with the declaration of a ghost type) is defined
+   to be Ghost.
 
-.. _tu-nt-ghost_functions-03:
+.. _tu-nt-ghost_entities-03:
 
 3. The Link_Name aspect of an imported ghost entity is defined
    to be a name that cannot be resolved in the external environment.
 
-.. _etu-ghost_functions-ss:
+.. _etu-ghost_entities-ss:
 
 .. centered:: **Legality Rules**
 
-.. _tu-fe-ghost_functions-04:
+.. _tu-fe-ghost_entities-04:
 
-4. Only functions can be explicitly declared with the Convention aspect Ghost.
-   [This means that the scope of the following rules is restricted to functions,
-   even though they are stated in more general terms.]
+4. A Convention aspect of Ghost may be only be specified for
+   the declaration of a subprogram, a
+   generic subprogram, a type (including a partial view thereof),
+   an object (or list of objects, in the case of an ``aspect_specification``
+   for an ``object_declaration`` having more than one ``defining_identifier``),
+   a package, or a generic package.
+   [In particular, |SPARK| does not currently include any form of
+   ghost components of non-ghost record types, ghost parameters of non-ghost
+   subprograms, or ghost extensions of non-ghost types. |SPARK| does define
+   ghost state abstractions, but these are described elsewhere.]
+   [TBD: Do we want to allow a ghost type which is derived from a predefined
+   scalar type, as in "type T is new Integer with Convention => Ghost;" ?]
+   [TBD: Do we want to allow ghost block statements (presumably specified
+   via a pragma)?]
 
-.. _tu-fe-ghost_functions-05:
+.. _tu-fe-ghost_entities-05:
 
-5. A ghost entity shall only be referenced:
+5. Any Convention aspect specification for an
+   entity declared inside of a ghost entity shall be confirming [(in
+   other words, the specified Convention shall be Ghost)].
+   The Link_Name or External_Name aspects of an imported ghost entity shall
+   not be specified.
 
-   * from within an assertion expression; or
+.. _tu-fe-ghost_entities-06:
 
-   * within or as part of the declaration or completion of a
-     ghost entity (e.g., from within the body of a ghost function); or
+6.  A ghost type or object shall not be effectively volatile.
+    A ghost object shall not be imported or exported.
+    [In other words, no ghost objects for which reading or writing
+    would constitute an external effect (see Ada RM 1.1.3).]
 
-   * within a statement which does not contain (and is not itself) either an
-     assignment statement targeting a non-ghost variable or a procedure call
-     which passes a non-ghost variable as an out or in out mode actual
-     parameter.
+.. _tu-fe-ghost_entities-07:
 
-.. _tu-fe-ghost_functions-06:
+7.  A derived type shall be a ghost type if and only if
+    its parent type and all of its progenitor types are ghost types.
 
-6. Within a ghost procedure, the view of any non-ghost variable is
-   a constant view. Within a ghost procedure, a volatile object shall
-   not be read. [In a ghost procedure we do not want to allow assignments to
-   non-ghosts either via assignment statements or procedure calls.]
+.. _tu-fe-ghost_entities-08:
 
-.. _tu-fe-ghost_functions-07:
+8.  If a ghost type has a partial view and is not declared within
+    an enclosing ghost entity (e.g., a ghost subprogram), then
+    an explicit convention aspect specification for the (partial view of the)
+    type shall be provided in the visible part of the enclosing package.
+    [This rule is to ensure that the ghostliness of a type can be
+    determined without looking through partial views.]
 
-7. A ghost entity shall not be referenced from within the expression of a
-   predicate specification of a non-ghost subtype [because such predicates
-   participate in determining the outcome of a membership test].
+.. _tu-fe-ghost_entities-09:
 
-.. _tu-nt-ghost_functions-08:
+9.  A non-ghost library unit package or generic package specification shall
+    not require a completion solely because of ghost declarations.
+    [In other words, if a library unit package or generic package specification
+    requires a body, than it must still require a body if all of the ghost
+    declarations therein were to be removed.]
 
-8. Rule removed.
+.. _tu-fe-ghost_entities-10:
 
-   .. todo:: Is the following rule needed?  8. All subcomponents of a
-        ghost object shall be initialized by the elaboration of the
-        declaration of the object.  Make worst-case assumptions about
-        private types for this rule, or blast through privacy? To be
-        decided in a post-Release 1 version of this document.
+10. A ghost entity shall only be referenced:
 
-.. _tu-fe-ghost_functions-09:
+    * from within an assertion expression; or
 
-9. A ghost instantiation shall not be an instantiation of a non-ghost
-   generic package. [This is a conservative rule until we have more precise
-   rules about the side effects of elaborating an instance of a generic package.
-   We will need the general rule that the elaboration of a ghost declaration of
-   any kind cannot modify non-ghost state.]
+    * within the declaration or completion of a
+      ghost entity (e.g., from within the body of a ghost subprogram); or
 
-.. _tu-nt-ghost_functions-10:
+    * within a statement which does not contain (and is not itself) either an
+      assignment statement targeting a non-ghost variable, a procedure call
+      which passes a non-ghost variable as an out or in out mode actual
+      parameter, or a call to a procedure which has a non-ghost global output.
+      [Strictly speaking, the final "non-ghost global output" part of this rule
+      is a Verification Rule rather than a Legality Rule.]
 
-10. The Link_Name or External_Name aspects of an imported ghost entity
-    shall not be specified. A Convention aspect specification for an
-    entity declared inside of a ghost entity shall be confirming [(in
-    other words, the specified Convention shall be Ghost)].
-
-.. _tu-nt-ghost_functions-11:
-
-11. Ghost tagged types are disallowed. [This is because just the
-    existence of a ghost tagged type (even if it is never referenced)
-    changes the behavior of Ada.Tags operations. Note overriding is
-    not a problem because the Convention aspect participates in conformance
-    checks (so ghost can't override non-ghost and vice versa).]
-
-.. _tu-fe-ghost_functions-12:
-
-12. The Convention aspect of an External entity shall not be Ghost.
-
-.. _etu-ghost_functions-lr:
-
-[We are ignoring interactions between ghostliness and freezing. Adding a ghost
-variable, for example, could change the freezing point of a non-ghost type. It
-appears that this is ok; that is, this does not violate the
-ghosts-have-no-effect-on-program-behavior rule.]
-
-.. todo::
-   Can a ghost variable be a constituent of a non-ghost state
-   abstraction, or would this somehow allow unwanted dependencies?
-   If not, then we presumably need to allow ghost state abstractions
-   or else it would be illegal for a library level package body to
-   declare a ghost variable. To be completed in a post-Release 1
-   version of this document.
-
-.. todo::
-   Do we want an implicit Ghost convention for an entity declared
-   within a statement whose execution depends on a ghost value?
-   To be completed in a post-Release 1 version of this document.
+... _etu-ghost_functions-lr:
 
 .. centered:: **Dynamic Semantics**
 
-.. _tu-nt-ghost_functions-13:
+.. _tu-nt-ghost_entities-11:
 
-13. The effects of specifying a convention of Ghost on the runtime
+11. The effects of specifying a convention of Ghost on the runtime
     representation, calling conventions, and other such dynamic
     properties of an entity are the same as if a convention of Ada had
-    been specified.
+    been specified. [TBD: I (Steve) think it is fine  here that we fail to
+    talk about cases where the default convention would have been
+    something other than Ada (e.g., Intrinsic); the idea we are trying
+    to get across seems clear. Still, I raise the issue.]
 
-    [If it is intended that a ghost entity should not have any runtime
-    representation (e.g., if the entity is used only in discharging
-    verification conditions and is not referenced (directly or indirectly)
-    in any enabled (e.g., via an Assertion_Policy pragma) assertions),
-    then the Import aspect of the entity may be specified to be True.]
-
-.. _etu-ghost_functions-ds:
+.. _etu-ghost_entities-ds:
 
 .. centered:: **Verification Rules**
 
-.. _tu-cbatu-ghost_functions-14:
+... _tu-fe-ghost_entities-12:
 
-14. A non-ghost output shall not depend on a ghost input.
+12. A ghost procedure shall not have a non-ghost [global] output.
 
-.. _tu-fe-ghost_functions-15:
+. _tu-cbatu-ghost_entities-13:
 
-15. A ghost entity shall not be referenced
+13. An output of a non-ghost subprogram other than a ghost global
+    shall not depend on a ghost input. [It is intended that this follows
+    as a consequence of other rules.] 
 
-    * within a call to a procedure which has a non-ghost output; or
+.. _tu-fe-ghost_entities-14:
 
-    * within a control flow expression (e.g., the condition of an if
-      statement, the selecting expression of a case statement, the
-      bounds of a for loop) of a compound statement which contains
-      such a procedure call. [The case of a non-ghost-updating
-      assignment statement is handled by a legality rule; this rule is
-      needed to prevent a call to a procedure which updates a
-      non-ghost via an up-level reference, as opposed to updating a
-      parameter.]
+14. A ghost procedure shall not have an effectively volatile global input
+    with the properties Async_Writers or Effective_Reads set to True.
+    [This rule says, in effect, that ghost procedures are
+    subject to the same restrictions as non-ghost functions with respect
+    to reading volatile objects.]
 
-      [This rule is intended to ensure an update of a non-ghost entity
-      shall not have a control flow dependency on a ghost entity.]
-
-.. _tu-cbatu-ghost_functions-16:
-
-16. A ghost procedure shall not have a non-ghost output.
-
-.. _etu-ghost_functions-vr:
+.. _etu-ghost_entities-vr:
 
 .. centered:: **Examples**
 
