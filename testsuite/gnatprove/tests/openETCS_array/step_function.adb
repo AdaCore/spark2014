@@ -92,6 +92,7 @@ package body Step_Function is pragma SPARK_Mode (On);
       scan_sfun1 : Boolean := True;
       scan_sfun2 : Boolean := True;
    begin
+      Merge := (Number_Of_Delimiters => 0, Step => (others => (0, 1.0)));
       Pragma Assert (SFun1.Step(0).Delimiter = SFun2.Step(0).Delimiter);
       loop
          -- im, i1 and i2 bounds

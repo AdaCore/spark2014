@@ -74,12 +74,13 @@ package Gnat2Why_Args is
 
    Check_Mode : Boolean := False;
 
-   --  Flow Analysis mode. In this mode, gnat2why will do flow analysis.
+   --  Flow Analysis mode. In this mode, gnat2why will do only flow analysis.
 
    Flow_Analysis_Mode : Boolean := False;
 
-   --  Prove mode. In this mode gnat2why will perform translation to
-   --  why. Note that Flow analysis mode and Prove mode can both be enabled.
+   --  Prove mode. In this mode gnat2why will also perform flow analysis, but
+   --  only report soundness-related messages. Note that Flow_Analysis_Mode and
+   --  Prove_Mode are mutually exclusive.
 
    Prove_Mode : Boolean := False;
 

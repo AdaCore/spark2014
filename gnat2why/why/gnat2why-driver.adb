@@ -119,7 +119,7 @@ package body Gnat2Why.Driver is
    procedure Run_Gnatwhy3;
    --  After generating the Why file, run the proof tool
 
-   procedure Create_JSON_File (Flow_Done, Proof_Done : Boolean);
+   procedure Create_JSON_File (Proof_Done : Boolean);
    --  at the very end, write the analysis results to disk
 
    procedure Generate_Assumptions;
@@ -129,7 +129,7 @@ package body Gnat2Why.Driver is
    -- Create_JSON_File --
    ----------------------
 
-   procedure Create_JSON_File (Flow_Done, Proof_Done : Boolean) is
+   procedure Create_JSON_File (Proof_Done : Boolean) is
       FD : Ada.Text_IO.File_Type;
       File_Name : constant String :=
         Ada.Directories.Compose
@@ -138,9 +138,7 @@ package body Gnat2Why.Driver is
       Full : constant JSON_Value := Create_Object;
    begin
       Set_Field (Full, "spark", Create (Get_SPARK_JSON));
-      if Flow_Done then
-         Set_Field (Full, "flow", Create (Get_Flow_JSON));
-      end if;
+      Set_Field (Full, "flow", Create (Get_Flow_JSON));
       if Proof_Done then
          Set_Field (Full, "proof", Create (Get_Proof_JSON));
       end if;
@@ -288,7 +286,7 @@ package body Gnat2Why.Driver is
       --  these booleans indicate whether flow/proof have been attempted
       --  anywhere in the unit
 
-      Flow_Done, Proof_Done : Boolean := False;
+      Proof_Done : Boolean := False;
 
    begin
 
@@ -359,18 +357,14 @@ package body Gnat2Why.Driver is
 
          --  Do some flow analysis
 
-         if Gnat2Why_Args.Flow_Analysis_Mode then
-            Flow_Done := True;
-            Flow_Analyse_CUnit;
-         end if;
-
-         if Gnat2Why_Args.Flow_Analysis_Mode then
-            Generate_Assumptions;
-         end if;
+         Flow_Analyse_CUnit;
+         Generate_Assumptions;
 
          --  Start the translation to Why
 
-         if Gnat2Why_Args.Prove_Mode and then Is_In_Analyzed_Files (N) then
+         if not Gnat2Why_Args.Flow_Analysis_Mode
+           and then Is_In_Analyzed_Files (N)
+         then
             Proof_Done := True;
             Why.Atree.Modules.Initialize;
             Init_Why_Sections;
@@ -381,7 +375,7 @@ package body Gnat2Why.Driver is
 
       end if;
 
-      Create_JSON_File (Flow_Done, Proof_Done);
+      Create_JSON_File (Proof_Done);
    end GNAT_To_Why;
 
    --------------------------

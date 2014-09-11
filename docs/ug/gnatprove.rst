@@ -168,8 +168,11 @@ analysis checks the correctness of aspects related to data flow (``Global``,
 these), and verifies the initialization of variables. Proof verifies the
 absence of run-time errors and the correctness of assertions such as ``Pre``
 and ``Post`` aspects.  Using the switch ``--mode=<mode>``, whose possible
-values are ``flow``, ``prove`` and ``all``, you can choose to perform only one
-or both of these analyses (``all`` is the default).
+values are ``flow``, ``prove`` and ``all``, you can choose which analysis is
+performed. With mode ``flow``, only flow analysis is performed, with mode
+``prove``, proof is performed as well as the part of flow analysis which
+guarantees soundness of the proof results. Mode ``all`` is the default and
+performs full flow analysis and proof.
 
 Using the option ``--limit-line=`` one can limit proofs to a particular file
 and line of an Ada file. For example, if you want to prove only line 12 of
@@ -506,15 +509,16 @@ warnings for incorrect data flow contracts (annotations ``Global``,
 these), unitialized variables, and suspicious situations such as
 unused assignments, missing return statements and so on.
 
-In mode ``prove`` and report ``fail``, |GNATprove| prints on the standard
-output warnings for checks that could not be proved.
+In mode ``all`` and report ``fail``, GNATprove does all of the above and
+prints on the standard output warnings for checks that could not be proved.
 
-In mode ``prove`` and report ``all`` or ``statistics``, |GNATprove| prints on
-the standard output warnings for checks that could not be proved, and
-information messages for checks proved.
+In mode ``all`` and report ``all`` or ``statistics``, |GNATprove| does the
+same, but in addition prints on the standard output information messages for
+proved checks.
 
-In mode ``all``, GNATprove behaves just as if both modes ``flow`` and
-``prove`` were activated.
+In mode ``prove`` , |GNATprove| does the same as in mode ``all``, except that
+suspicious situations are not reported, only messages which may have impact on
+the soundness of proof results.
 
 |GNATprove| generates global project statistics in file ``gnatprove.out``,
 which can be displayed in GPS using the menu :menuselection:`SPARK --> Show
