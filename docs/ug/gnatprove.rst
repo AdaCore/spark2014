@@ -414,8 +414,8 @@ may be proved using a manual prover.
 In the appendix, section :ref:`Alternative_Provers`, is explained how to use
 different provers than the one |GNATprove| uses as default.
 
-Manual proof in command line:
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Manual proof in command line
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 When the prover used by |GNATprove| is configured as interactive, for each
 analysed condition, either:
@@ -449,15 +449,20 @@ failing condition reported by |GNATprove|:
 
 .. csv-table::
    :header: "Warning", "Check kind"
-   :widths: 1, 4
+   :widths: 2, 1
 
+   **run-time checks**
    "divide by zero might fail",                         "VC_DIVISION_CHECK"
    "array index check might fail",                      "VC_INDEX_CHECK"
    "overflow check might fail",                         "VC_OVERFLOW_CHECK"
    "range check might fail",                            "VC_RANGE_CHECK"
    "length check might fail",                           "VC_LENGTH_CHECK"
    "discriminant check might fail",                     "VC_DISCRIMINANT_CHECK"
+
+   **assertions**
    "initial condition might fail",                      "VC_INITIAL_CONDITION"
+   "default initial condition might fail",              "VC_DEFAULT_INITIAL_CONDITION"
+   "call to nonreturning subprogram might be executed", "VC_PRECONDITION"
    "precondition might fail",                           "VC_PRECONDITION"
    "precondition of main program might fail",           "VC_PRECONDITION_MAIN"
    "postcondition might fail",                          "VC_POSTCONDITION"
@@ -465,16 +470,22 @@ failing condition reported by |GNATprove|:
    "contract case might fail",                          "VC_CONTRACT_CASE"
    "contract cases might not be disjoint",              "VC_DISJOINT_CONTRACT_CASES"
    "contract cases might not be complete",              "VC_COMPLETE_CONTRACT_CASES"
-   "loop invariant might fail",                         "VC_LOOP_INVARIANT"
    "loop invariant might fail in first iteration",      "VC_LOOP_INVARIANT_INIT"
    "loop invariant might fail after first iteration",   "VC_LOOP_INVARIANT_PRESERV"
    "loop variant might fail",                           "VC_LOOP_VARIANT"
    "assertion might fail",                              "VC_ASSERT"
    "exception might be raised",                         "VC_RAISE"
 
+   **Liskov Substitution Principle**
+   "precondition might be stronger than class-wide precondition",               "VC_WEAKER_PRE"
+   "precondition is stronger than the default class-wide precondition of True", "VC_TRIVIAL_WEAKER_PRE"
+   "postcondition might be weaker than class-wide postcondition",               "VC_STRONGER_POST"
+   "class-wide precondition might be stronger than overridden one",             "VC_WEAKER_CLASSWIDE_PRE"
+   "class-wide postcondition might be weaker than overridden one",              "VC_STRONGER_CLASSWIDE_POST"
 
-Manual proof in GPS:
-^^^^^^^^^^^^^^^^^^^^
+
+Manual proof in GPS
+^^^^^^^^^^^^^^^^^^^
 
 After running |GNATprove| with proof mode, the menu
 :menuselection:`SPARK --> Prove Check` is available by right-clicking on a
@@ -590,15 +601,22 @@ The following table shows the kinds of warnings issued by proof.
    :header: "Message Kind", "Explanation"
    :widths: 1, 4
 
+   **run-time checks**
    "divide by zero", "Check that the second operand of the division, mod or rem operation is different from zero."
    "index check", "Check that the given index is within the bounds of the array."
    "overflow check", "Check that the result of the given arithmetic operation is within the bounds of the base type."
    "range check", "Check that the given value is within the bounds of the expected scalar subtype."
    "length check", "Check that the given array is of the length of the expected array subtype."
    "discriminant check", "Check that the discriminant of the given discriminated record has the expected value. For variant records, this can happen for a simple access to a record field. But there are other cases where a fixed value of the discriminant is required."
+
+   **assertions**
    "initial condition", "Check that the initial condition of a package is true after elaboration."
+   "default initial condition", "Check that the default initial condition of a type is true after default initialization of an object of the type."
    "precondition", "Check that the precondition aspect of the given call evaluates to True."
+   "call to nonreturning subprogram", "Check that the call to a subprogram called in case of error is unreachable."
+   "precondition of main", "Check that the precondition aspect of the given main procedure evaluates to True after elaboration."
    "postcondition", "Check that the postcondition aspect of the subprogram evaluates to True."
+   "refined postcondition", "Check that the refined postcondition aspect of the subprogram evaluates to True."
    "contract case", "Check that all cases of the contract case evaluate to true at the end of the subprogram."
    "disjoint contract cases", "Check that the cases of the contract cases aspect are all mutually disjoint."
    "complete contract cases", "Check that the cases of the contract cases aspect cover the state space that is allowed by the precondition aspect."
@@ -606,7 +624,14 @@ The following table shows the kinds of warnings issued by proof.
    "loop invariant after first iteration", "Check that the loop invariant evaluates to True at each further iteration of the loop."
    "loop variant", "Check that the given loop variant decreases/increases as specified during each iteration of the loop. This implies termination of the loop."
    "assertion", "Check that the given assertion evaluates to True."
-   "exception, raise statement", "Check that the raise statement can never be reached."
+   "raised exception", "Check that the raise statement can never be reached."
+
+   **Liskov Substitution Principle**
+   "precondition weaker than class-wide precondition", "Check that the precondition aspect of the subprogram is weaker than its class-wide precondition."
+   "precondition not True while class-wide precondition is True", "Check that the precondition aspect of the subprogram is True if its class-wide precondition is True."
+   "postcondition stronger than class-wide postcondition", "Check that the postcondition aspect of the subprogram is stronger than its class-wide postcondition."
+   "class-wide precondition weaker than overridden one", "Check that the class-wide precondition aspect of the subprogram is weaker than its overridden class-wide precondition."
+   "class-wide postcondition stronger than overridden one", "Check that the class-wide postcondition aspect of the subprogram is stronger than its overridden class-wide postcondition."
 
 The following table shows all flow analysis messages, which come in three
 classes: I(nitialization) errors are the most serious flow errors as not fixing
