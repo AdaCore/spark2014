@@ -833,6 +833,8 @@ Tool Limitations
 #. Loop_Invariant and Loop_Variant pragmas must appear before
    any non-scalar object declaration and any nested loop.
 
+#. Inheriting the same subprogram from multiple interfaces is not supported.
+
 Legality Rules
 --------------
 
