@@ -1435,7 +1435,7 @@ is not what we are talking about here.
       [Strictly speaking, the final "non-ghost global output" part of this rule
       is a Verification Rule rather than a Legality Rule.]
 
-... _etu-ghost_functions-lr:
+.. _etu-ghost_entities-lr:
 
 .. centered:: **Dynamic Semantics**
 
@@ -1453,11 +1453,11 @@ is not what we are talking about here.
 
 .. centered:: **Verification Rules**
 
-... _tu-fe-ghost_entities-12:
+.. _tu-fe-ghost_entities-12:
 
 12. A ghost procedure shall not have a non-ghost [global] output.
 
-. _tu-cbatu-ghost_entities-13:
+.. _tu-cbatu-ghost_entities-13:
 
 13. An output of a non-ghost subprogram other than a ghost global
     shall not depend on a ghost input. [It is intended that this follows
