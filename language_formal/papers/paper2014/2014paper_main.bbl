@@ -1,0 +1,27 @@
+\begin{thebibliography}{1}
+
+\bibitem{sparkbook2012}
+Barnes, J.:
+\newblock {SPARK: The Proven Approach to High Integrity Software}.
+\newblock Altran Praxis (2012)
+
+\bibitem{oneill2012}
+O'Neill, I.:
+\newblock {SPARK} -- a language and tool-set for high-integrity software
+  development.
+\newblock In: Industrial Use of Formal Methods: Formal Verification.
+\newblock Wiley (2012)
+
+\bibitem{ada2012rationale}
+Barnes, J.:
+\newblock {Ada 2012 Rationale}.
+\newblock (2012)
+
+\bibitem{ieeesoftware2013}
+Moy, Y., Ledinot, E., Delseny, H., Wiels, V., Monate, B.:
+\newblock Testing or formal verification: {DO­178C} alternatives and
+  industrial experience.
+\newblock {IEEE} Software special issue on Safety­Critical Software Systems
+  (2013)
+
+\end{thebibliography}

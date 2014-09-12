@@ -1,4 +1,4 @@
-% LLNCS DOCUMENT CLASS -- version 2.13 (28-Jan-2002)
+% LLNCS DOCUMENT CLASS -- version 2.18 (27-Sep-2013)
 % Springer Verlag LaTeX2e support for Lecture Notes in Computer Science
 %
 %%
@@ -19,7 +19,7 @@
 %%   Right brace   \}     Tilde         \~}
 %%
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\ProvidesClass{llncs}[2002/01/28 v2.13
+\ProvidesClass{llncs}[2013/09/27 v2.18
 ^^J LaTeX document class for Lecture Notes in Computer Science]
 % Options
 \let\if@envcntreset\iffalse
@@ -35,6 +35,7 @@
 \let\if@runhead\iffalse
 \DeclareOption{runningheads}{\let\if@runhead\iftrue}
 
+\let\if@openright\iftrue
 \let\if@openbib\iffalse
 \DeclareOption{openbib}{\let\if@openbib\iftrue}
 
@@ -49,6 +50,7 @@
 
 \LoadClass[twoside]{article}
 \RequirePackage{multicol} % needed for the list of participants, index
+\RequirePackage{aliascnt}
 
 \setlength{\textwidth}{12.2cm}
 \setlength{\textheight}{19.3cm}
@@ -89,7 +91,7 @@
 \def\examplename{Example}
 \def\exercisename{Exercise}
 \def\figurename{Fig.}
-\def\keywordname{{\bf Key words:}}
+\def\keywordname{{\bf Keywords:}}
 \def\indexname{Index}
 \def\lemmaname{Lemma}
 \def\contriblistname{List of Contributors}
@@ -539,23 +541,29 @@ to0pt{\kern0.55\wd0\vrule height0.45\ht0\hss}\box0}}}}
 
 \def\@dotsep{2}
 
+\let\phantomsection=\relax
+
 \def\hyperhrefextend{\ifx\hyper@anchor\@undefined\else
-{chapter.\thechapter}\fi}
+{}\fi}
 
 \def\addnumcontentsmark#1#2#3{%
 \addtocontents{#1}{\protect\contentsline{#2}{\protect\numberline
-                     {\thechapter}#3}{\thepage}\hyperhrefextend}}
+                     {\thechapter}#3}{\thepage}\hyperhrefextend}}%
 \def\addcontentsmark#1#2#3{%
-\addtocontents{#1}{\protect\contentsline{#2}{#3}{\thepage}\hyperhrefextend}}
+\addtocontents{#1}{\protect\contentsline{#2}{#3}{\thepage}\hyperhrefextend}}%
 \def\addcontentsmarkwop#1#2#3{%
-\addtocontents{#1}{\protect\contentsline{#2}{#3}{0}\hyperhrefextend}}
+\addtocontents{#1}{\protect\contentsline{#2}{#3}{0}\hyperhrefextend}}%
 
 \def\@adcmk[#1]{\ifcase #1 \or
 \def\@gtempa{\addnumcontentsmark}%
   \or    \def\@gtempa{\addcontentsmark}%
   \or    \def\@gtempa{\addcontentsmarkwop}%
-  \fi\@gtempa{toc}{chapter}}
-\def\addtocmark{\@ifnextchar[{\@adcmk}{\@adcmk[3]}}
+  \fi\@gtempa{toc}{chapter}%
+}
+\def\addtocmark{%
+\phantomsection
+\@ifnextchar[{\@adcmk}{\@adcmk[3]}%
+}
 
 \def\l@chapter#1#2{\addpenalty{-\@highpenalty}
  \vskip 1.0em plus 1pt \@tempdima 1.5em \begingroup
@@ -587,7 +595,7 @@ to0pt{\kern0.55\wd0\vrule height0.45\ht0\hss}\box0}}}}
  \penalty\@highpenalty \endgroup}
 
 \def\l@author#1#2{\addpenalty{\@highpenalty}
- \@tempdima=\z@ %15\p@
+ \@tempdima=15\p@ %\z@
  \begingroup
  \parindent \z@ \rightskip \@tocrmarg
  \advance\rightskip by 0pt plus 2cm
@@ -779,6 +787,7 @@ to0pt{\kern0.55\wd0\vrule height0.45\ht0\hss}\box0}}}}
     \llap{\hb@xt@1em{\hss\@makefnmark\ }}\ignorespaces#1}
 
 \long\def\@makecaption#1#2{%
+  \small
   \vskip\abovecaptionskip
   \sbox\@tempboxa{{\bfseries #1.} #2}%
   \ifdim \wd\@tempboxa >\hsize
@@ -873,14 +882,23 @@ to0pt{\kern0.55\wd0\vrule height0.45\ht0\hss}\box0}}}}
 \@ifundefined{extrasenglish}{}{\addto\extrasenglish{\switcht@albion}}%
 \@ifundefined{extrasfrenchb}{}{\addto\extrasfrenchb{\switcht@francais}}%
 \@ifundefined{extrasgerman}{}{\addto\extrasgerman{\switcht@deutsch}}%
+\@ifundefined{extrasngerman}{}{\addto\extrasngerman{\switcht@deutsch}}%
 }{\switcht@@therlang}%
+\providecommand{\keywords}[1]{\par\addvspace\baselineskip
+\noindent\keywordname\enspace\ignorespaces#1}%
 }
 \def\homedir{\~{ }}
 
 \def\subtitle#1{\gdef\@subtitle{#1}}
 \clearheadinfo
-
+%
+%%% to avoid hyperref warnings
+\providecommand*{\toclevel@author}{999}
+%%% to make title-entry parent of section-entries
+\providecommand*{\toclevel@title}{0}
+%
 \renewcommand\maketitle{\newpage
+\phantomsection
   \refstepcounter{chapter}%
   \stepcounter{section}%
   \setcounter{section}{0}%
@@ -934,6 +952,7 @@ to0pt{\kern0.55\wd0\vrule height0.45\ht0\hss}\box0}}}}
       \protected@xdef\scratch{\the\tocauthor}%
       \protected@xdef\toc@uthor{\scratch}%
     \fi
+    \addtocontents{toc}{\noexpand\protect\noexpand\authcount{\the\c@auco}}%
     \addcontentsline{toc}{author}{\toc@uthor}%
     \if@runhead
        \if!\the\authorrunning!
@@ -1038,9 +1057,9 @@ to0pt{\kern0.55\wd0\vrule height0.45\ht0\hss}\box0}}}}
 \def\@spothm#1[#2]#3#4#5{%
   \@ifundefined{c@#2}{\@latexerr{No theorem environment `#2' defined}\@eha}%
   {\expandafter\@ifdefinable\csname #1\endcsname
-  {\global\@namedef{the#1}{\@nameuse{the#2}}%
+  {\newaliascnt{#1}{#2}%
   \expandafter\xdef\csname #1name\endcsname{#3}%
-  \global\@namedef{#1}{\@spthm{#2}{\csname #1name\endcsname}{#4}{#5}}%
+  \global\@namedef{#1}{\@spthm{#1}{\csname #1name\endcsname}{#4}{#5}}%
   \global\@namedef{end#1}{\@endtheorem}}}}
 
 \def\@spthm#1#2#3#4{\topsep 7\p@ \@plus2\p@ \@minus4\p@
