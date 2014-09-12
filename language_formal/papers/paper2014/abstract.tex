@@ -1,28 +1,26 @@
 \begin{abstract}
-\vspace*{-.5cm} 
-%\hspace{.5cm} 
-Formal verification and proof is a promising technique to develop 
-high integrity systems with a rigorous mathematical analysis
-procedure. SPARK 2014 is a programming language designed
-to meet the needs of high integrity software development with a 
-support of various formal and informal verification and proof tool 
-sets. Any formal methods for program specification and verification depend on
-the semantics of the language. 
-In this paper, we present our major work towards a formal representation of
-SPARK 2014 suitable for supporting formally verified static analyses and
-translations. In order to do this, we have developed technology for translating
-the GNAT compiler's abstract syntax trees into the Coq proof assistant, and we
-have formalized in Coq the dynamic semantics for a core subset of the SPARK 2014
-language. SPARK 2014 programs must ensure the absence of certain run-time errors 
-(for example, those arising while performing division by zero, accessing 
-non existing array cells, overflow on integer computation).  
-The main novelty in our semantics is the modeling of on-the-fly run-time checks
-within the language semantics, which has been used to mechanically prove the
-correctness of the run-time checks performed by the compiler and the correctness
-of compiler optimizations concerning run-time checks.
-This work of run-time checks optimization and verfication can ensure that any
-well-formed SPARK programs do not lead to erroneous execution. And the
-formalization of SPARK 2014 semantics lays the foundation for future work on
-mechanical reasoning about correctness of other verification methods for SPARK
-2014 programs.
+\vspace*{-.5cm}
+%\hspace{.5cm}
+SPARK 2014 is a subset of the Ada 2012 programming language amenable to formal
+verification, supported by the GNAT compilation toolchain. It is possible to
+use both industrial and academic tools that analyze SPARK 2014 programs to
+guarantee that a program does not raise run-time errors and respects its
+specification, mostly expressed as subprogram contracts. These analyses at
+source code level are valid for the final executable only if it can be shown
+that tools used for both compilation and verification comply with a common
+deterministic programming language semantics.
+
+In this paper, we present our work towards a formal semantics for SPARK 2014
+that is suitable for checking that both the compiler and analyzers correctly
+interpret critical parts of the program semantics. In particular, we are
+interested in checking that the compiler and analyzers agree on a correct
+placement of language defined checks, in order for a proved program to execute
+without run-time errors.
+
+To reach this goal, we share a common program representation between the
+compiler and analyzers, that we translate into the Coq proof assistant.  We
+have formalized in Coq the dynamic semantics for a core subset of SPARK 2014,
+including the modeling of run-time checks, which is used to mechanically prove
+that checks are correctly placed in the intermediate representation. We have
+also proved the correctness of optimizations that eliminate some checks.
 \end{abstract}
