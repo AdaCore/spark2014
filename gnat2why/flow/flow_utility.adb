@@ -57,8 +57,11 @@ package body Flow_Utility is
    --  Enable this to print the tree and def/use sets in each call of
    --  Untangle_Assignment_Target.
 
-   Debug_Trace_Untangle_Record : constant Boolean := False;
+   Debug_Trace_Untangle_Fields : constant Boolean := False;
    --  Enable this to print detailed traces in Untangle_Record_Fields.
+
+   Debug_Trace_Untangle_Record : constant Boolean := False;
+   --  Enable this to print traces for Untangle_Record_Assignemnt.
 
    ----------------------------------------------------------------------
    --  Loop information
@@ -139,13 +142,47 @@ package body Flow_Utility is
       return R;
    end Filter_Out_Non_Local_Constants;
 
-   -------------------------------
-   -- Untangle_Record_Aggregate --
-   -------------------------------
+   --------------
+   -- Get_Type --
+   --------------
 
-   function Untangle_Record_Aggregate
+   function Get_Type (F     : Flow_Id;
+                      Scope : Flow_Scope)
+                      return Entity_Id
+   is
+      E : Entity_Id;
+   begin
+      case F.Kind is
+         when Direct_Mapping =>
+            E := F.Node;
+         when Record_Field =>
+            E := F.Component.Last_Element;
+         when others =>
+            raise Program_Error;
+      end case;
+      if Ekind (E) in Private_Kind then
+         if Is_Visible (Full_View (E), Scope) and then
+           not Is_Itype (Full_View (E))
+         then
+            return Full_View (E);
+         else
+            return E;
+         end if;
+      elsif Ekind (E) in Type_Kind then
+         return E;
+      else
+         return Get_Full_Type (E, Scope);
+      end if;
+   end Get_Type;
+
+   --------------------------------
+   -- Untangle_Record_Assignment --
+   --------------------------------
+
+   function Untangle_Record_Assignment
      (N                            : Node_Id;
       Map_Root                     : Flow_Id;
+      Map_Type                     : Entity_Id;
       Scope                        : Flow_Scope;
       Local_Constants              : Node_Sets.Set;
       Fold_Functions               : Boolean;
@@ -153,12 +190,331 @@ package body Flow_Utility is
       Expand_Synthesized_Constants : Boolean)
       return Flow_Id_Maps.Map
    is
-      pragma Unreferenced (Scope, Local_Constants, Fold_Functions,
-                           Use_Computed_Globals, Expand_Synthesized_Constants);
+      M : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
+
+      --  !!! Join/Merge need to be able to deal with private parts and
+      --      extensions (i.e. non-normal facets).
+
+      function Get_Vars_Wrapper (N : Node_Id) return Flow_Id_Sets.Set
+      is (Get_Variable_Set
+            (N,
+             Scope                        => Scope,
+             Local_Constants              => Local_Constants,
+             Fold_Functions               => Fold_Functions,
+             Use_Computed_Globals         => Use_Computed_Globals,
+             Reduced                      => False,
+             Allow_Statements             => False,
+             Expand_Synthesized_Constants => Expand_Synthesized_Constants));
+      --  Helpful wrapper for calling Get_Variable_Set.
+
+      function Recurse_On (N        : Node_Id;
+                           Map_Root : Flow_Id)
+                           return Flow_Id_Maps.Map
+      is (Untangle_Record_Assignment
+            (N,
+             Map_Root                     => Map_Root,
+             Map_Type                     => Get_Type (Map_Root, Scope),
+             Scope                        => Scope,
+             Local_Constants              => Local_Constants,
+             Fold_Functions               => Fold_Functions,
+             Use_Computed_Globals         => Use_Computed_Globals,
+             Expand_Synthesized_Constants => Expand_Synthesized_Constants));
+      --  Helpful wrapper for recursing.
+
+      function Join (A, B   : Flow_Id;
+                     Offset : Natural := 0)
+                     return Flow_Id
+      with Pre => A.Kind in Direct_Mapping | Record_Field and then
+                  B.Kind = Record_Field;
+      --  Glues components of B to A, starting at offset. For example
+      --  consider A = Obj.X and B = R.X.Y and Offset = 1. Then joining
+      --  will return Obj.X.Y.
+
+      procedure Merge (Component : Entity_Id;
+                       Input     : Node_Id)
+      with Pre => Nkind (Component) in N_Entity
+                  and then Ekind (Component) in E_Component | E_Discriminant
+                  and then Present (Input);
+      --  Merge the assignment map for Input into our current assignment
+      --  map M. For example, if the input is (X => A, Y => B) and
+      --  Component is C, and Map_Root is Obj, then we include in M the
+      --  following: Obj.C.X => A, Obj.C.Y => B.
+      --
+      --  If Input is not some kind of record, we simply include a single
+      --  field. For example if the input is simply Foo, then (all other
+      --  things being equal to the example above) we include Obj.C => Foo.
+
+      ----------
+      -- Join --
+      ----------
+
+      function Join (A, B   : Flow_Id;
+                     Offset : Natural := 0)
+                     return Flow_Id
+      is
+         F : Flow_Id := A;
+         N : Natural := 0;
+      begin
+         for C of B.Component loop
+            if N >= Offset then
+               F := Add_Component (F, C);
+            end if;
+            N := N + 1;
+         end loop;
+         return F;
+      end Join;
+
+      -----------
+      -- Merge --
+      -----------
+
+      procedure Merge (Component : Entity_Id;
+                       Input     : Node_Id)
+      is
+         F      : constant Flow_Id := Add_Component (Map_Root, Component);
+         Tmp    : Flow_Id_Maps.Map;
+         Output : Flow_Id;
+         Inputs : Flow_Id_Sets.Set;
+      begin
+         case Ekind (Get_Full_Type (Component, Scope)) is
+            when Record_Kind =>
+               Tmp := Recurse_On (Input, F);
+
+               for C in Tmp.Iterate loop
+                  Output := Flow_Id_Maps.Key (C);
+                  Inputs := Flow_Id_Maps.Element (C);
+
+                  M.Include (Output, Inputs);
+               end loop;
+
+            when others =>
+               M.Include (F, Get_Vars_Wrapper (Input));
+         end case;
+      end Merge;
+
    begin
-      raise Program_Error;
-      return Flow_Id_Maps.Empty_Map;
-   end Untangle_Record_Aggregate;
+      if Debug_Trace_Untangle_Record then
+         Write_Str ("URA task: ");
+         Sprint_Flow_Id (Map_Root);
+         Write_Str (" <-- ");
+         Sprint_Node_Inline (N);
+         Write_Eol;
+
+         Indent;
+      end if;
+
+      case Nkind (N) is
+         when N_Aggregate =>
+            pragma Assert (No (Expressions (N)));
+            --  The front-end should rewrite this for us.
+
+            if Debug_Trace_Untangle_Record then
+               Write_Str ("processing aggregate");
+               Write_Eol;
+            end if;
+
+            declare
+               Ptr     : Node_Id;
+               Input   : Node_Id;
+               Target  : Node_Id;
+               Missing : Node_Sets.Set := Node_Sets.Empty_Set;
+            begin
+               Ptr := First_Component_Or_Discriminant (Map_Type);
+               while Present (Ptr) loop
+                  Missing.Include (Original_Record_Component (Ptr));
+                  Next_Component_Or_Discriminant (Ptr);
+               end loop;
+
+               Ptr := First (Component_Associations (N));
+               while Present (Ptr) loop
+                  Input  := Expression (Ptr);
+                  Target := First (Choices (Ptr));
+                  while Present (Target) loop
+                     Merge (Entity (Target), Input);
+                     Missing.Delete (Original_Record_Component
+                                       (Entity (Target)));
+                     Next (Target);
+                  end loop;
+                  Next (Ptr);
+               end loop;
+
+               --  If the aggregate is more constrained than the type would
+               --  suggest, we fill in the "missing" fields with null, so
+               --  that they appear initialized.
+               for Missing_Component of Missing loop
+                  for F of Flatten_Variable (Add_Component (Map_Root,
+                                                            Missing_Component),
+                                             Scope)
+                  loop
+                     M.Insert (F, Flow_Id_Sets.Empty_Set);
+                  end loop;
+               end loop;
+            end;
+
+         when N_Selected_Component =>
+            if Debug_Trace_Untangle_Record then
+               Write_Str ("processing selected component");
+               Write_Eol;
+            end if;
+
+            declare
+               Tmp : constant Flow_Id_Maps.Map :=
+                 Recurse_On (Prefix (N),
+                             Direct_Mapping_Id (Etype (Prefix (N))));
+               Output : Flow_Id;
+               Inputs : Flow_Id_Sets.Set;
+            begin
+               for C in Tmp.Iterate loop
+                  Output := Flow_Id_Maps.Key (C);
+                  Inputs := Flow_Id_Maps.Element (C);
+
+                  if Same_Component (Output.Component.First_Element,
+                                     Entity (Selector_Name (N)))
+                  then
+                     M.Include (Join (Map_Root, Output, 1), Inputs);
+                  end if;
+               end loop;
+            end;
+
+         when N_Identifier | N_Expanded_Name =>
+            if Debug_Trace_Untangle_Record then
+               Write_Str ("processing direct assignment");
+               Write_Eol;
+            end if;
+
+            declare
+               Tmp      : constant Flow_Id_Sets.Set :=
+                 Flatten_Variable (Entity (N), Scope);
+               Simplify : constant Boolean :=
+                 Ekind (Entity (N)) = E_Constant and then
+                 not Local_Constants.Contains (Entity (N));
+            begin
+               if Simplify then
+                  for Input of Tmp loop
+                     M.Include (Join (Map_Root, Input),
+                                Get_Vars_Wrapper (N));
+                  end loop;
+               else
+                  for Input of Tmp loop
+                     M.Include (Join (Map_Root, Input),
+                                Flow_Id_Sets.To_Set (Input));
+                  end loop;
+               end if;
+            end;
+
+         when N_Type_Conversion =>
+            if Debug_Trace_Untangle_Record then
+               Write_Str ("processing type/view conversion");
+               Write_Eol;
+            end if;
+
+            declare
+               Tmp : constant Flow_Id_Maps.Map := Recurse_On (Expression (N),
+                                                              Map_Root);
+
+               Leftovers : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+
+               Output : Flow_Id;
+               Inputs : Flow_Id_Sets.Set;
+
+               Contributions : Natural := 0;
+            begin
+               for F of Flatten_Variable (Get_Full_Type (N, Scope), Scope) loop
+                  Leftovers.Include (Join (Map_Root, F));
+               end loop;
+
+               for C in Tmp.Iterate loop
+                  Output := Flow_Id_Maps.Key (C);
+                  Inputs := Flow_Id_Maps.Element (C);
+
+                  if Leftovers.Contains (Output) then
+                     M.Include (Output, Inputs);
+                     Contributions := Contributions + 1;
+                  end if;
+               end loop;
+
+               --  Sanity check that we didn't discard anything we
+               --  shouldn't have.
+               pragma Assert (if Leftovers.Is_Empty
+                              then Contributions = 0
+                              else Contributions > 0);
+            end;
+
+         when N_Qualified_Expression =>
+            --  We can completely ignore these.
+            M := Recurse_On (Expression (N), Map_Root);
+
+         when N_Unchecked_Type_Conversion =>
+            raise Why.Not_Implemented;
+
+         when N_Attribute_Reference =>
+            case Get_Attribute_Id (Attribute_Name (N)) is
+               when Attribute_Update =>
+                  if Debug_Trace_Untangle_Record then
+                     Write_Str ("processing update expression");
+                     Write_Eol;
+                  end if;
+
+                  declare
+                     pragma Assert (List_Length (Expressions (N)) = 1);
+                     The_Aggregate : constant Node_Id :=
+                       First (Expressions (N));
+                     pragma Assert (No (Expressions (The_Aggregate)));
+
+                     Output : Node_Id;
+                     Input  : Node_Id;
+                     Ptr    : Node_Id;
+                     F      : Flow_Id;
+                  begin
+                     M := Recurse_On (Prefix (N), Map_Root);
+
+                     Ptr := First (Component_Associations (The_Aggregate));
+                     while Present (Ptr) loop
+                        pragma Assert (Nkind (Ptr) = N_Component_Association);
+
+                        Input  := Expression (Ptr);
+                        Output := First (Choices (Ptr));
+                        while Present (Output) loop
+
+                           F := Add_Component (Map_Root, Entity (Output));
+
+                           if Ekind (Get_Full_Type (Entity (Output), Scope))
+                             in Record_Kind
+                           then
+                              for C in Recurse_On (Input, F).Iterate loop
+                                 M.Replace (Flow_Id_Maps.Key (C),
+                                            Flow_Id_Maps.Element (C));
+                              end loop;
+                           else
+                              M.Replace (F, Get_Vars_Wrapper (Input));
+                           end if;
+
+                           Next (Output);
+                        end loop;
+
+                        Next (Ptr);
+                     end loop;
+                  end;
+
+               when others =>
+                  Error_Msg_N ("can't untangle attribute", N);
+                  raise Why.Not_Implemented;
+            end case;
+
+         when others =>
+            Error_Msg_N ("can't untangle node " & Nkind (N)'Img, N);
+            raise Why.Unexpected_Node;
+      end case;
+
+      if Debug_Trace_Untangle_Record then
+         Outdent;
+
+         Write_Str ("URA result: ");
+         Print_Flow_Map (M);
+      end if;
+
+      return M;
+   end Untangle_Record_Assignment;
 
    ----------------------------
    -- Untangle_Record_Fields --
@@ -209,7 +565,7 @@ package body Flow_Utility is
       Depends_Vars  : Flow_Id_Sets.Set          := Flow_Id_Sets.Empty_Set;
       Proof_Vars    : constant Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
-      if Debug_Trace_Untangle_Record then
+      if Debug_Trace_Untangle_Fields then
          Write_Str ("Untangle_Record_Field on ");
          Sprint_Node_Inline (N);
          Write_Eol;
@@ -248,7 +604,7 @@ package body Flow_Utility is
          Must_Abort := True;
       end if;
 
-      if Debug_Trace_Untangle_Record then
+      if Debug_Trace_Untangle_Fields then
          Write_Str ("Root: ");
          Sprint_Node_Inline (Root_Node);
          Write_Eol;
@@ -306,7 +662,7 @@ package body Flow_Utility is
                end case;
             end loop;
 
-            if Debug_Trace_Untangle_Record then
+            if Debug_Trace_Untangle_Fields then
                Write_Str ("Early delegation return: ");
                Print_Node_Set (Vars);
                Outdent;
@@ -334,7 +690,7 @@ package body Flow_Utility is
          for F of FS loop
             M.Insert (F, Flow_Id_Sets.To_Set (F));
          end loop;
-         if Debug_Trace_Untangle_Record then
+         if Debug_Trace_Untangle_Fields then
             Print_Flow_Map (M);
          end if;
       end;
@@ -377,7 +733,7 @@ package body Flow_Utility is
       Comp_Id       := 1;
       Current_Field := Direct_Mapping_Id (Entity (Root_Node));
       for N of Seq loop
-         if Debug_Trace_Untangle_Record then
+         if Debug_Trace_Untangle_Fields then
             Write_Str ("Processing: ");
             Print_Node_Briefly (N);
          end if;
@@ -389,7 +745,7 @@ package body Flow_Utility is
 
                pragma Assert (List_Length (Expressions (N)) = 1);
 
-               if Debug_Trace_Untangle_Record then
+               if Debug_Trace_Untangle_Fields then
                   Write_Str ("Updating the map at ");
                   Sprint_Flow_Id (Current_Field);
                   Write_Eol;
@@ -409,7 +765,7 @@ package body Flow_Utility is
                      while Present (Field_Ptr) loop
                         E := Original_Record_Component (Entity (Field_Ptr));
 
-                        if Debug_Trace_Untangle_Record then
+                        if Debug_Trace_Untangle_Fields then
                            Write_Str ("Updating component ");
                            Sprint_Node_Inline (E);
                            Write_Eol;
@@ -454,7 +810,7 @@ package body Flow_Utility is
             when N_Selected_Component =>
                --  We trim the result map
                E := Original_Record_Component (Entity (Selector_Name (N)));
-               if Debug_Trace_Untangle_Record then
+               if Debug_Trace_Untangle_Fields then
                   Write_Str ("Trimming for: ");
                   Sprint_Node_Inline (E);
                   Write_Eol;
@@ -486,7 +842,7 @@ package body Flow_Utility is
                raise Why.Unexpected_Node;
          end case;
 
-         if Debug_Trace_Untangle_Record then
+         if Debug_Trace_Untangle_Fields then
             Print_Flow_Map (M);
          end if;
       end loop;
@@ -498,7 +854,7 @@ package body Flow_Utility is
          Depends_Vars.Union (S);
       end loop;
 
-      if Debug_Trace_Untangle_Record then
+      if Debug_Trace_Untangle_Fields then
          Write_Str ("Final (all) set: ");
          Print_Node_Set (All_Vars);
          Write_Str ("Final (depends) set: ");
@@ -1792,37 +2148,15 @@ package body Flow_Utility is
       Scope : Flow_Scope)
       return Flow_Id_Sets.Set
    is
-      function Get_Type (F     : Flow_Id;
-                         Scope : Flow_Scope)
-                         return Entity_Id
-      with Pre  => F.Kind in Direct_Mapping | Record_Field and then
-                   F.Facet = Normal_Part,
-           Post => Nkind (Get_Type'Result) in N_Entity;
-
-      function Get_Type (F     : Flow_Id;
-                         Scope : Flow_Scope)
-                         return Entity_Id
-      is
-      begin
-         case F.Kind is
-            when Direct_Mapping =>
-               return Get_Full_Type (F.Node, Scope);
-            when Record_Field =>
-               return Get_Full_Type (F.Component.Last_Element, Scope);
-            when others =>
-               raise Program_Error;
-         end case;
-      end Get_Type;
-
       T   : Entity_Id;
       Ids : Flow_Id_Sets.Set;
 
       Ptr : Entity_Id;
    begin
       if Debug_Trace_Flatten then
-         Indent;
          Write_Str ("Flatten: ");
          Print_Flow_Id (F);
+         Indent;
       end if;
 
       if not (F.Kind in Direct_Mapping | Record_Field and then
@@ -1836,8 +2170,19 @@ package body Flow_Utility is
 
       T := Get_Type (F, Scope);
 
+      if Debug_Trace_Flatten then
+         Write_Str ("Branching on type: ");
+         Sprint_Node_Inline (T);
+         Write_Eol;
+      end if;
+
       case Ekind (T) is
          when E_Private_Type .. Private_Kind'Last =>
+            if Debug_Trace_Flatten then
+               Write_Str ("processing private type");
+               Write_Eol;
+            end if;
+
             if Has_Discriminants (T) then
                Ptr := First_Component_Or_Discriminant (T);
                while Present (Ptr) loop
@@ -1852,6 +2197,11 @@ package body Flow_Utility is
             end if;
 
          when Record_Kind =>
+            if Debug_Trace_Flatten then
+               Write_Str ("processing record type");
+               Write_Eol;
+            end if;
+
             --  this includes classwide types and privates with
             --  discriminants
 
@@ -1878,6 +2228,11 @@ package body Flow_Utility is
             end if;
 
          when others =>
+            if Debug_Trace_Flatten then
+               Write_Str ("processing misc type");
+               Write_Eol;
+            end if;
+
             Ids := Flow_Id_Sets.To_Set (F);
       end case;
 
@@ -2127,9 +2482,7 @@ package body Flow_Utility is
                           First_Component_Or_Discriminant (New_Typ);
                      begin
                         while Present (Ptr) loop
-                           if Original_Record_Component (C) =
-                             Original_Record_Component (Ptr)
-                           then
+                           if Same_Component (C, Ptr) then
                               return True;
                            end if;
                            Next_Component_Or_Discriminant (Ptr);

@@ -460,7 +460,11 @@ package body Flow.Analysis is
                or Atr.Is_Postcondition) and
            not Atr.Is_Callsite
          then
-            First_Use := Get_Direct_Mapping_Id (FA.CFG.Get_Key (V));
+            if Present (FA.CFG.Get_Key (V)) then
+               First_Use := Get_Direct_Mapping_Id (FA.CFG.Get_Key (V));
+            else
+               First_Use := FA.Atr (V).Error_Location;
+            end if;
          elsif Atr.Is_Parameter then
             First_Use := Get_Direct_Mapping_Id (Atr.Parameter_Actual);
          elsif Atr.Is_Global_Parameter then

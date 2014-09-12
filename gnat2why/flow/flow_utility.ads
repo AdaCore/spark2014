@@ -62,7 +62,7 @@ package Flow_Utility is
       Scope : Flow_Scope)
       return Entity_Id
    with Pre => Present (N);
-   --  Get the type of the given entity. If the full view of the type
+   --  Get the type of the given node. If the full view of the type
    --  is not visible from Scope, then we return the non-full view.
 
    function Has_User_Supplied_Globals (Subprogram : Entity_Id) return Boolean
@@ -307,21 +307,22 @@ package Flow_Utility is
    --  for things generated from:
    --     Foo (Positive (X))
 
-   function Untangle_Record_Aggregate
+   function Untangle_Record_Assignment
      (N                            : Node_Id;
       Map_Root                     : Flow_Id;
+      Map_Type                     : Entity_Id;
       Scope                        : Flow_Scope;
       Local_Constants              : Node_Sets.Set;
       Fold_Functions               : Boolean;
       Use_Computed_Globals         : Boolean;
       Expand_Synthesized_Constants : Boolean)
       return Flow_Id_Maps.Map
-   with Pre => Nkind (N) = N_Aggregate and
-               Map_Root.Kind in Direct_Mapping | Record_Field;
-   --  !!! NOT IMPLEMENTED YET
-   --
-   --  Process a record aggregate N and return a map which can be used to
-   --  work out which fields will depend on what inputs.
+   with Pre => Ekind (Get_Full_Type (N, Scope)) in Record_Kind
+               and then Map_Root.Kind in Direct_Mapping | Record_Field
+               and then Nkind (Map_Type) in N_Entity
+               and then Ekind (Map_Type) in Type_Kind;
+   --  Process a record or aggregate N and return a map which can be used
+   --  to work out which fields will depend on what inputs.
    --
    --  Map_Root is used to produce keys for the map. For example if
    --     N         -->  (X => G, Y => H)
@@ -346,7 +347,8 @@ package Flow_Utility is
       Use_Computed_Globals         : Boolean;
       Expand_Synthesized_Constants : Boolean)
       return Flow_Id_Sets.Set
-   with Pre => Nkind (N) = N_Selected_Component or else Is_Tick_Update (N);
+   with Pre => Nkind (N) = N_Selected_Component
+               or else Is_Tick_Update (N);
    --  Process a node describing one or more record fields and return a
    --  variable set with all variables referenced.
    --
@@ -437,5 +439,15 @@ package Flow_Utility is
    --  Returns the set of variables a given loop *may* write to. Please
    --  note that if a function returns inside a loop, the name of the
    --  function will be "written to" and will be returned here.
+
+private
+
+   function Get_Type (F     : Flow_Id;
+                      Scope : Flow_Scope)
+                      return Entity_Id
+   with Pre  => F.Kind in Direct_Mapping | Record_Field and then
+                F.Facet = Normal_Part,
+        Post => Nkind (Get_Type'Result) in N_Entity;
+   --  Determine the type of a flow_id.
 
 end Flow_Utility;

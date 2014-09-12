@@ -1,5 +1,7 @@
 split_records.adb:7:11: info: discriminant check proved
 split_records.adb:9:12: info: discriminant check proved
+split_records.adb:16:30: info: discriminant check proved
+split_records.adb:16:38: info: discriminant check proved
 split_records.adb:18:38: info: length check proved
 split_records.adb:19:59: info: discriminant check proved
 split_records.adb:21:39: info: discriminant check proved

@@ -29,6 +29,8 @@ with Treepr;     use Treepr;
 with Why;
 --  For the exceptions
 
+--  with SPARK_Util; use SPARK_Util;
+
 package body Flow_Tree_Utility is
 
    ---------------------------------
@@ -222,5 +224,18 @@ package body Flow_Tree_Utility is
             raise Why.Unexpected_Node;
       end case;
    end Has_Volatile_Aspect;
+
+   --------------------
+   -- Same_Component --
+   --------------------
+
+   function Same_Component (C1, C2 : Entity_Id) return Boolean
+   is
+      A : constant Entity_Id := Original_Record_Component (C1);
+      B : constant Entity_Id := Original_Record_Component (C2);
+   begin
+      --  !!! HACK HACK HACK
+      return A = B or else Sloc (A) = Sloc (B);
+   end Same_Component;
 
 end Flow_Tree_Utility;

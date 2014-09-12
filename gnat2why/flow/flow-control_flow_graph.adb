@@ -62,13 +62,6 @@ package body Flow.Control_Flow_Graph is
       "="          => "=");
 
    ------------------------------------------------------------
-   --  Debug
-   ------------------------------------------------------------
-
-   Debug_Print_Assignment_Def_Use_Sets_And_Tree : constant Boolean := False;
-   --  Enable this to debug print the node and its def-use effect
-
-   ------------------------------------------------------------
    --  Local types
    ------------------------------------------------------------
 
@@ -773,7 +766,6 @@ package body Flow.Control_Flow_Graph is
    --  Checks the right hand side of an assignment statement (or the
    --  expression on an object declaration) and determines if we can to
    --  perform some meaningful record-field splitting.
-   pragma Unreferenced (RHS_Split_Useful);
 
    procedure Simplify_CFG (FA : in out Flow_Analysis_Graphs);
    --  Remove all null vertices from the control flow graph.
@@ -1117,75 +1109,166 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      V : Flow_Graphs.Vertex_Id;
+      V     : Flow_Graphs.Vertex_Id;
+      Verts : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
 
-      V_Used_RHS : Flow_Id_Sets.Set;
-      --  Things used because they appear on the RHS
+      subtype Interesting_Nodes is Valid_Assignment_Kinds
+        with Static_Predicate => Interesting_Nodes not in
+          N_Identifier | N_Expanded_Name;
 
-      V_Explicitly_Used_LHS : Flow_Id_Sets.Set;
-      V_Implicitly_Used_LHS : Flow_Id_Sets.Set;
-      --  Things used because they appear on the LHS (in A (J), J would be
-      --  used explicitly and A implicitly).
+      Subprograms_Called  : constant Node_Sets.Set :=
+        Get_Function_Set (Expression (N));
 
-      V_Def_LHS : Flow_Id_Sets.Set;
-      --  Things defined because they appear on the LHS (in A (J), A would
-      --  be used).
-
-      V_Need_Checking_LHS : Flow_Id_Sets.Set;
+      Partial   : Boolean := False;
+      Map_Root  : Flow_Id;
    begin
-      --  Work out which variables we use and define.
-      V_Used_RHS := Get_Variable_Set
-        (Expression (N),
-         Scope                => FA.B_Scope,
-         Local_Constants      => FA.Local_Constants,
-         Fold_Functions       => True,
-         Use_Computed_Globals => not FA.Compute_Globals);
-      Ctx.Folded_Function_Checks (N).Insert (Expression (N));
+
+      --  First we need to determine the root name where we assign to, and
+      --  if this is a partial or full assignment. This mirror the
+      --  beginning of Untangle_Assignment_Target.
 
       declare
-         Partial : Boolean;
+         Root_Node : Node_Id;
+         Seq       : Node_Lists.List := Node_Lists.Empty_List;
       begin
-         Untangle_Assignment_Target
-           (N                    => Name (N),
-            Scope                => FA.B_Scope,
-            Local_Constants      => FA.Local_Constants,
-            Use_Computed_Globals => not FA.Compute_Globals,
-            Vars_Defined         => V_Def_LHS,
-            Vars_Used            => V_Explicitly_Used_LHS,
-            Vars_Proof           => V_Need_Checking_LHS,
-            Partial_Definition   => Partial);
-         if Partial then
-            V_Implicitly_Used_LHS := V_Def_LHS;
-         end if;
+         Root_Node := Name (N);
+         while Nkind (Root_Node) in Interesting_Nodes loop
+            Seq.Prepend (Root_Node);
+            Root_Node := Prefix (Root_Node);
+         end loop;
+         pragma Assert (Nkind (Root_Node) in
+                          N_Identifier | N_Expanded_Name);
+
+         Map_Root := Direct_Mapping_Id (Unique_Entity (Entity (Root_Node)));
+         for Node of Seq loop
+            case Valid_Assignment_Kinds (Nkind (Node)) is
+               when N_Selected_Component =>
+                  Map_Root := Add_Component
+                    (Map_Root,
+                     Entity (Selector_Name (Node)));
+               when N_Type_Conversion | N_Unchecked_Type_Conversion =>
+                  null;
+               when others =>
+                  Partial := True;
+            end case;
+         end loop;
       end;
-      if not V_Need_Checking_LHS.Is_Empty then
-         Ctx.Folded_Function_Checks (N).Insert (Name (N));
+
+      --  We have two likely scenarios: some kind of record assignment (in
+      --  which case we try our best to dis-entangle the record fields so
+      --  that information does not bleed all over the place) and the
+      --  default case.
+
+      if not Partial and then RHS_Split_Useful (N, FA.B_Scope) then
+         declare
+            M         : Flow_Id_Maps.Map;
+            Output    : Flow_Id;
+            Inputs    : Flow_Id_Sets.Set;
+            All_Vertices : Vertex_Sets.Set  := Vertex_Sets.Empty_Set;
+         begin
+            M := Untangle_Record_Assignment
+              (Expression (N),
+               Map_Root                     => Map_Root,
+               Map_Type                     => Etype (Name (N)),
+               Scope                        => FA.B_Scope,
+               Local_Constants              => FA.Local_Constants,
+               Fold_Functions               => True,
+               Use_Computed_Globals         => not FA.Compute_Globals,
+               Expand_Synthesized_Constants => False);
+
+            --  Split out the assignment over a number of vertices.
+            for C in M.Iterate loop
+               Output := Flow_Id_Maps.Key (C);
+               Inputs := Flow_Id_Maps.Element (C);
+
+               Add_Vertex
+                 (FA,
+                  Make_Basic_Attributes
+                    (Var_Def    => Flow_Id_Sets.To_Set (Output),
+                     Var_Ex_Use => Inputs,
+                     Sub_Called => Subprograms_Called,
+                     Loops      => Ctx.Current_Loops,
+                     E_Loc      => N,
+                     Print_Hint => Pretty_Print_Record_Field),
+                  V);
+               Verts.Append (V);
+               All_Vertices.Insert (V);
+            end loop;
+
+            for V of All_Vertices loop
+               FA.Other_Fields.Insert (V,
+                                       All_Vertices - Vertex_Sets.To_Set (V));
+            end loop;
+         end;
+      else
+         declare
+            Vars_Defined : Flow_Id_Sets.Set;
+            Vars_Used    : Flow_Id_Sets.Set;
+            Vars_Proof   : Flow_Id_Sets.Set;
+         begin
+            --  Work out which variables we define.
+            Untangle_Assignment_Target
+              (N                    => Name (N),
+               Scope                => FA.B_Scope,
+               Local_Constants      => FA.Local_Constants,
+               Use_Computed_Globals => not FA.Compute_Globals,
+               Vars_Defined         => Vars_Defined,
+               Vars_Used            => Vars_Used,
+               Vars_Proof           => Vars_Proof,
+               Partial_Definition   => Partial);
+
+            --  Work out the variables we use. These are the ones already
+            --  used by the LHS + everything on the RHS.
+            Vars_Used.Union
+              (Get_Variable_Set
+                 (Expression (N),
+                  Scope                => FA.B_Scope,
+                  Local_Constants      => FA.Local_Constants,
+                  Fold_Functions       => True,
+                  Use_Computed_Globals => not FA.Compute_Globals));
+
+            --  Any proof variables we need to check separately. We also
+            --  need to check the RHS for proof variables.
+            Ctx.Folded_Function_Checks (N).Insert (Expression (N));
+            if not Vars_Proof.Is_Empty then
+               Ctx.Folded_Function_Checks (N).Insert (Name (N));
+            end if;
+
+            --  Produce the vertex.
+            Add_Vertex
+              (FA,
+               Direct_Mapping_Id (N),
+               Make_Basic_Attributes
+                 (Var_Def    => Vars_Defined,
+                  Var_Ex_Use => Vars_Used,
+                  Var_Im_Use => (if Partial
+                                 then Vars_Defined
+                                 else Flow_Id_Sets.Empty_Set),
+                  Sub_Called => Subprograms_Called,
+                  Loops      => Ctx.Current_Loops,
+                  E_Loc      => N),
+               V);
+            Verts.Append (V);
+         end;
       end if;
 
-      if Debug_Print_Assignment_Def_Use_Sets_And_Tree then
-         Print_Node_Subtree (N);
-         Print_Node_Set (V_Def_LHS);
-         Print_Node_Set (V_Explicitly_Used_LHS or
-                           V_Implicitly_Used_LHS or
-                           V_Used_RHS);
-      end if;
+      --  Finally, we join up all the vertices we have produced and record
+      --  update the connection map.
 
-      --  We have a vertex
-      Add_Vertex
-        (FA,
-         Direct_Mapping_Id (N),
-         Make_Basic_Attributes (Var_Def    => V_Def_LHS,
-                                Var_Ex_Use => V_Used_RHS or
-                                  V_Explicitly_Used_LHS,
-                                Var_Im_Use => V_Implicitly_Used_LHS,
-                                Sub_Called => Get_Function_Set (N),
-                                Loops      => Ctx.Current_Loops,
-                                E_Loc      => N),
-         V);
+      V := Flow_Graphs.Null_Vertex;
+      for W of Verts loop
+         if V /= Flow_Graphs.Null_Vertex then
+            Linkup (FA.CFG, V, W);
+         end if;
+         V := W;
+      end loop;
 
-      --  Control goes in V and out of V
+      pragma Assert (Verts.Length > 0);
+
       CM.Include (Union_Id (N),
-                  Trivial_Connection (V));
+                  Graph_Connections'
+                    (Standard_Entry => Verts.First_Element,
+                     Standard_Exits => To_Set (Verts.Last_Element)));
    end Do_Assignment_Statement;
 
    -------------------------
@@ -2582,7 +2665,6 @@ package body Flow.Control_Flow_Graph is
             Var_Def : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
          begin
             FS := Flatten_Variable (Defining_Identifier (N), FA.B_Scope);
-
             for F of FS loop
                Var_Def.Include (F);
                if Has_Bounds (F, FA.B_Scope) then
@@ -2590,22 +2672,88 @@ package body Flow.Control_Flow_Graph is
                end if;
             end loop;
 
-            Add_Vertex
-              (FA,
-               Direct_Mapping_Id (N),
-               Make_Basic_Attributes
-                 (Var_Def    => Var_Def,
-                  Var_Ex_Use => Get_Variable_Set
-                    (Expression (N),
-                     Scope                => FA.B_Scope,
-                     Local_Constants      => FA.Local_Constants,
-                     Fold_Functions       => True,
-                     Use_Computed_Globals => not FA.Compute_Globals),
-                  Sub_Called => Get_Function_Set (Expression (N)),
-                  Loops      => Ctx.Current_Loops,
-                  E_Loc      => N),
-               V);
-            Inits.Append (V);
+            if RHS_Split_Useful (N, FA.B_Scope) then
+
+               declare
+                  M : constant Flow_Id_Maps.Map := Untangle_Record_Assignment
+                    (N                            => Expression (N),
+                     Map_Root                     =>
+                       Direct_Mapping_Id (Defining_Identifier (N)),
+                     Map_Type                     =>
+                       Etype (Defining_Identifier (N)),
+                     Scope                        => FA.B_Scope,
+                     Local_Constants              => FA.Local_Constants,
+                     Fold_Functions               => True,
+                     Use_Computed_Globals         => not FA.Compute_Globals,
+                     Expand_Synthesized_Constants => False);
+
+                  Subprograms  : constant Node_Sets.Set :=
+                    Get_Function_Set (Expression (N));
+
+                  Output       : Flow_Id;
+                  Inputs       : Flow_Id_Sets.Set;
+                  All_Vertices : Vertex_Sets.Set  := Vertex_Sets.Empty_Set;
+                  Missing      : Flow_Id_Sets.Set := Var_Def;
+               begin
+
+                  for C in M.Iterate loop
+                     Output := Flow_Id_Maps.Key (C);
+                     Inputs := Flow_Id_Maps.Element (C);
+
+                     --  ??? It might be useful to improve E_Loc to point
+                     --      at the relevant bit in the aggregate.
+
+                     Add_Vertex
+                       (FA,
+                        Make_Basic_Attributes
+                          (Var_Def    => Flow_Id_Sets.To_Set (Output),
+                           Var_Ex_Use => Inputs,
+                           Sub_Called => Subprograms,
+                           Loops      => Ctx.Current_Loops,
+                           E_Loc      => N,
+                           Print_Hint => Pretty_Print_Record_Field),
+                        V);
+                     Missing.Delete (Output);
+
+                     Inits.Append (V);
+                     All_Vertices.Insert (V);
+                  end loop;
+
+                  if not Missing.Is_Empty then
+                     Print_Node_Subtree (Expression (N));
+                     Print_Node_Set (Missing);
+                     raise Program_Error;
+                  end if;
+
+                  for V of All_Vertices loop
+                     FA.Other_Fields.Insert (V,
+                                             All_Vertices -
+                                               Vertex_Sets.To_Set (V));
+                  end loop;
+
+               end;
+
+            else
+
+               Add_Vertex
+                 (FA,
+                  Direct_Mapping_Id (N),
+                  Make_Basic_Attributes
+                    (Var_Def    => Var_Def,
+                     Var_Ex_Use => Get_Variable_Set
+                       (Expression (N),
+                        Scope                => FA.B_Scope,
+                        Local_Constants      => FA.Local_Constants,
+                        Fold_Functions       => True,
+                        Use_Computed_Globals => not FA.Compute_Globals),
+                     Sub_Called => Get_Function_Set (Expression (N)),
+                     Loops      => Ctx.Current_Loops,
+                     E_Loc      => N),
+                  V);
+               Inits.Append (V);
+
+            end if;
+
             Ctx.Folded_Function_Checks (N).Include (Expression (N));
          end;
       end if;

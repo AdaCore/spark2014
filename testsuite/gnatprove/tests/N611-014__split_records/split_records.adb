@@ -13,7 +13,7 @@ package body Split_Records with SPARK_Mode is
    procedure Test is
       C1 : Record_With_Mutable_Discrs (False);
       C2 : Record_With_Mutable_Discrs := (Present => False);
-      H1 : Holder (False);
+      H1 : Holder (False) := (False, (Present => False));
       H2 : Mutable_Holder := (Content => (Present => False));
       A  : Mutable_Array (1 .. 1) := (1 => (Present => False));
       C3 : constant Record_With_Mutable_Discrs (False) := (Present => False);

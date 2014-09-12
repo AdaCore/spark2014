@@ -72,4 +72,15 @@ package Flow_Tree_Utility is
          Get_Attribute_Id (Attribute_Name (N)) = Attribute_Update);
    --  Checks if the given node is a 'Update node.
 
+   function Same_Component (C1, C2 : Entity_Id) return Boolean
+   with Pre => Nkind (C1) in N_Entity and then
+               Nkind (C2) in N_Entity and then
+               Ekind (C1) in E_Component | E_Discriminant  and then
+               Ekind (C2) in E_Component | E_Discriminant;
+   --  Given two record components, checks if one can be considered to be
+   --  the `same' component (for purposes of flow analysis). For example a
+   --  record might contain component x, and its derived record also
+   --  contains this component x (but its a different entity). This
+   --  function can be used to check for this equivalence.
+
 end Flow_Tree_Utility;

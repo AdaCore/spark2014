@@ -581,7 +581,9 @@ package body Flow.Analysis.Sanity is
                                                       Var     => Var,
                                                       Kind    => Use_Any,
                                                       Precise => False),
-                           F1  => Entire_Variable (Var),
+                           F1  => (if Gnat2Why_Args.Flow_Advanced_Debug
+                                   then Var
+                                   else Entire_Variable (Var)),
                            F2  => Direct_Mapping_Id (FA.Analyzed_Entity));
 
                      when Magic_String =>

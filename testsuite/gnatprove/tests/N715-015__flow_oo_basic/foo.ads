@@ -21,4 +21,6 @@ is
 
    overriding procedure Zero_Widget (Obj : out Nice_Widget_T);
 
+   Null_Widget : constant Widget_T := (0, 0);
+
 end Foo;
