@@ -60,6 +60,7 @@ package body Gnat2Why_Args is
    Single_File_Name         : constant String := "single_file";
    Why3_Args_Name           : constant String := "why3_args";
    Why3_Dir_Name            : constant String := "why3_dir";
+   Prove_Only_Name          : constant String := "debug_prove_only";
 
    procedure Interpret_Token (Token : String);
    --  This procedure should be called on an individual token in the
@@ -103,6 +104,9 @@ package body Gnat2Why_Args is
 
       elsif Token = Debug_Mode_Name then
          Debug_Mode := True;
+
+      elsif Token = Prove_Only_Name then
+         Debug_Proof_Only := True;
 
       elsif Token = Flow_Advanced_Debug_Name then
          Flow_Advanced_Debug := True;
@@ -266,6 +270,10 @@ package body Gnat2Why_Args is
 
       if Prove_Mode then
          Add_Line (Prove_Mode_Name);
+      end if;
+
+      if Debug_Proof_Only then
+         Add_Line (Prove_Only_Name);
       end if;
 
       if Debug_Mode then

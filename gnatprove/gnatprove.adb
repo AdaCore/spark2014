@@ -738,6 +738,7 @@ procedure Gnatprove is
          Gnat2Why_Args.Check_Mode := MMode = GPM_Check;
          Gnat2Why_Args.Flow_Analysis_Mode := MMode = GPM_Flow;
          Gnat2Why_Args.Prove_Mode := MMode = GPM_Prove;
+         Gnat2Why_Args.Debug_Proof_Only := Configuration.Debug_Proof_Only;
          Gnat2Why_Args.Analyze_File := File_List;
          Gnat2Why_Args.Pedantic := Pedantic;
          Gnat2Why_Args.Ide_Mode := IDE_Progress_Bar;
@@ -801,9 +802,7 @@ procedure Gnatprove is
                   return "checking of SPARK legality rules";
                when GPM_Flow =>
                   return "analysis of data and information flow";
-               when GPM_Prove =>
-                  return "proof of contracts and absence of runtime errors";
-               when GPM_All =>
+               when GPM_Prove | GPM_All =>
                   return "flow analysis and proof";
             end case;
       end case;

@@ -182,6 +182,8 @@ ASCII.LF &
 " -d, --debug        Debug mode" &
 ASCII.LF &
 " --flow-debug       Extra debugging for flow analysis (requires graphviz)" &
+     ASCII.LF &
+" --dbg-proof-only   Disable flow analysis (possibly unsound results)" &
 ASCII.LF &
 "     --proof=p      Set the proof mode (p=per_check*, per_path, progressive)"
 & ASCII.LF &
@@ -598,6 +600,11 @@ ASCII.LF;
          (Config,
           Flow_Extra_Debug'Access,
           Long_Switch => "--flow-debug");
+
+      Define_Switch
+         (Config,
+          Debug_Proof_Only'Access,
+          Long_Switch => "--dbg-proof-only");
 
       Define_Switch
         (Config, Project_File'Access,

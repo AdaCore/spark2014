@@ -57,6 +57,8 @@ package Configuration is
    --  True if -m is present. Do not remove temporary files.
    Flow_Extra_Debug  : aliased Boolean;
    --  Enable some extra debugging for flow analysis.
+   Debug_Proof_Only  : aliased Boolean;
+   --  Do only proof (i.e. disable flow analysis), for debugging only
    Continue_On_Error : aliased Boolean;
    --  True if -k is present. Continue analysis in case of errors.
    Only_Given        : aliased Boolean;

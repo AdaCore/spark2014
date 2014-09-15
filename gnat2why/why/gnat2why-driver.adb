@@ -357,8 +357,10 @@ package body Gnat2Why.Driver is
 
          --  Do some flow analysis
 
-         Flow_Analyse_CUnit;
-         Generate_Assumptions;
+         if not Gnat2Why_Args.Debug_Proof_Only then
+            Flow_Analyse_CUnit;
+            Generate_Assumptions;
+         end if;
 
          --  Start the translation to Why
 
