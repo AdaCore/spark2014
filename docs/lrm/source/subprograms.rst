@@ -927,7 +927,7 @@ conditions are met:
   item of G1 or a direct or indirect constituent thereof; and
 
 * each In_Out-mode item of G2 is an In_Out-mode item of G1 or a
-  direct or indirect constituent thereof; and 
+  direct or indirect constituent thereof; and
 
 * each Output-mode item of G2 is an Output-mode or In_Out-mode item of G1
   or a direct or indirect constituent therof; and
@@ -1322,7 +1322,7 @@ Expression Functions
 Ghost Entities
 --------------
 
-Ghost entities and are intended for use in discharging verification conditions
+Ghost entities are intended for use in discharging verification conditions
 and in making it easier to express assertions about a program. The essential
 property of ghost entities is that they have no effect on the dynamic behavior
 of a valid SPARK program. More specifically, if one
@@ -1367,7 +1367,7 @@ is not what we are talking about here.
 
 .. _tu-fe-ghost_entities-04:
 
-4. A Convention aspect of Ghost may be only be specified for
+4. A Convention aspect of Ghost may only be specified for
    the declaration of a subprogram, a
    generic subprogram, a type (including a partial view thereof),
    an object (or list of objects, in the case of an ``aspect_specification``
@@ -1441,7 +1441,7 @@ is not what we are talking about here.
 
 .. _tu-nt-ghost_entities-11:
 
-11. The effects of specifying a convention of Ghost on the runtime
+11. The effects of specifying a convention of Ghost on the run-time
     representation, calling conventions, and other such dynamic
     properties of an entity are the same as if a convention of Ada had
     been specified. [TBD: I (Steve) think it is fine  here that we fail to
@@ -1461,7 +1461,7 @@ is not what we are talking about here.
 
 13. An output of a non-ghost subprogram other than a ghost global
     shall not depend on a ghost input. [It is intended that this follows
-    as a consequence of other rules.] 
+    as a consequence of other rules.]
 
 .. _tu-fe-ghost_entities-14:
 

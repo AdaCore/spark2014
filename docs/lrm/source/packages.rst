@@ -1072,18 +1072,18 @@ where
 
 .. centered:: **Static Semantics**
 
-.. _tu-fe-refined_state_aspects-12:
+.. _tu-fe-refined_state_aspects-13:
 
-12. A Refined_State aspect of a ``package_body`` completes the
+13. A Refined_State aspect of a ``package_body`` completes the
     declaration of the state abstractions occurring in the
     corresponding ``package_specification`` and defines the objects
     and each subordinate state abstraction that are the
     ``constituents`` of the *abstract_*\ ``state_names`` declared in
     the ``package_specification``.
 
-.. _tu-fe-refined_state_aspects-13:
+.. _tu-fe-refined_state_aspects-14:
 
-13. A **null** ``constituent_list`` indicates that the named abstract
+14. A **null** ``constituent_list`` indicates that the named abstract
     state has no constituents and termed a *null_refinement*. The
     state abstraction does not represent any actual state at
     all. [This feature may be useful to minimize changes to Global and
