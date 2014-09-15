@@ -3,7 +3,7 @@ inrange.adb:8:18: info: precondition proved
 inrange.adb:14:14: info: range check proved
 inrange.adb:21:07: info: precondition proved
 inrange.adb:21:16: info: range check proved
-inrange.adb:21:16: warning: range check might fail
+inrange.adb:21:16: medium: range check might fail
 inrange.ads:7:12: info: postcondition proved
 inrange.ads:10:17: info: postcondition proved
 inrange.ads:14:20: info: postcondition proved

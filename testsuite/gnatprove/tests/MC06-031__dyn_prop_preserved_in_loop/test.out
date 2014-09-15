@@ -13,5 +13,5 @@ dynamic_types.adb:26:52: info: index check proved
 dynamic_types.adb:27:10: info: precondition proved
 dynamic_types.adb:34:26: info: overflow check proved
 dynamic_types.adb:34:26: info: range check proved
-dynamic_types.ads:6:14: warning: postcondition might fail, requires Search'Result = 0 or else (Search'Result in A'Range and then A (Search'Result) = C
+dynamic_types.ads:6:14: medium: postcondition might fail, requires Search'Result = 0 or else (Search'Result in A'Range and then A (Search'Result) = C
 dynamic_types.ads:7:58: info: index check proved

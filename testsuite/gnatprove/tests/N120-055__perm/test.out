@@ -1,5 +1,5 @@
 sort.adb:12:15: info: precondition proved
-sort.adb:12:15: warning: postcondition might fail, requires Is_Perm (Values'Old, Values)
+sort.adb:12:15: medium: postcondition might fail, requires Is_Perm (Values'Old, Values)
 sort.adb:16:29: info: index check proved
 sort.adb:17:15: info: index check proved
 sort.adb:17:29: info: index check proved
@@ -12,9 +12,9 @@ sort.adb:32:38: info: index check proved
 sort.adb:33:20: info: range check proved
 sort.adb:36:14: info: range check proved
 sort.adb:47:50: info: overflow check proved
-sort.adb:48:22: warning: precondition might fail
+sort.adb:48:22: medium: precondition might fail
 sort.adb:48:40: info: range check proved
-sort.adb:51:13: warning: precondition might fail
+sort.adb:51:13: medium: precondition might fail
 sort.adb:52:29: info: range check proved
 sort.adb:53:29: info: range check proved
 sort.adb:56:10: info: loop invariant initialization proved

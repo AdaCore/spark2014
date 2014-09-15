@@ -1,1 +1,1 @@
-used.adb:6:17: warning: overflow check might fail
+used.adb:6:17: medium: overflow check might fail

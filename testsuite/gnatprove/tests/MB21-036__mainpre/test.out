@@ -1,4 +1,4 @@
-mainpre.adb:4:16: warning: precondition of main program might fail
+mainpre.adb:4:16: medium: precondition of main program might fail
 mainpre.adb:7:04: info: precondition proved
 pack.adb:4:04: warning: initialization has no effect
 pack.ads:4:09: info: initial condition proved

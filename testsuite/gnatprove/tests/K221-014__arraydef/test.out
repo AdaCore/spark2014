@@ -1,1 +1,1 @@
-arraydef.adb:6:24: warning: overflow check might fail
+arraydef.adb:6:24: medium: overflow check might fail

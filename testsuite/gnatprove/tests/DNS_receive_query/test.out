@@ -1,15 +1,15 @@
 parse.adb:12:20: info: precondition proved
-parse.adb:17:17: warning: discriminant check might fail
-parse.adb:33:17: warning: discriminant check might fail
-parse.adb:42:17: warning: discriminant check might fail
+parse.adb:17:17: medium: discriminant check might fail
+parse.adb:33:17: medium: discriminant check might fail
+parse.adb:42:17: medium: discriminant check might fail
 parse.adb:47:18: info: precondition proved
 parse.adb:50:42: info: range check proved
-parse.adb:52:17: warning: discriminant check might fail
+parse.adb:52:17: medium: discriminant check might fail
 parse.adb:57:16: info: precondition proved
-parse.adb:59:17: warning: discriminant check might fail
+parse.adb:59:17: medium: discriminant check might fail
 parse.adb:63:16: info: precondition proved
-parse.adb:65:17: warning: discriminant check might fail
+parse.adb:65:17: medium: discriminant check might fail
 parse.adb:69:16: info: precondition proved
-parse.adb:71:17: warning: discriminant check might fail
-parse.adb:75:14: warning: discriminant check might fail
+parse.adb:71:17: medium: discriminant check might fail
+parse.adb:75:14: medium: discriminant check might fail
 util.adb:7:36: info: index check proved

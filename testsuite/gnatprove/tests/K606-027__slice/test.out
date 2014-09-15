@@ -1,19 +1,19 @@
 fb20a00.adb:9:07: info: range check proved
 fb20a00.adb:10:07: info: range check proved
 fb20a00.adb:18:10: info: range check proved
-fb20a00.adb:25:24: warning: "Ret" might not be initialized
+fb20a00.adb:25:24: medium: "Ret" might not be initialized
 fb20a00.adb:25:38: info: range check proved
-fb20a00.adb:27:24: warning: "Ret" might not be initialized
-fb20a00.adb:30:18: warning: "Ret" might not be initialized
-fb20a00.adb:34:15: warning: length check might fail
-fb20a00.adb:34:18: warning: length check might fail
-fb20a00.adb:35:15: warning: length check might fail
-fb20a00.adb:35:18: warning: length check might fail
-fb20a00.adb:37:34: warning: overflow check might fail
-fb20a00.adb:37:49: warning: overflow check might fail
-fb20a00.adb:39:11: warning: range check might fail
-fb20a00.adb:39:31: warning: overflow check might fail
-fb20a00.adb:39:46: warning: overflow check might fail
-fb20a00.adb:42:21: warning: overflow check might fail
-fb20a00.adb:45:30: warning: overflow check might fail
-fb20a00.adb:45:45: warning: overflow check might fail
+fb20a00.adb:27:24: medium: "Ret" might not be initialized
+fb20a00.adb:30:18: medium: "Ret" might not be initialized
+fb20a00.adb:34:15: medium: length check might fail
+fb20a00.adb:34:18: medium: length check might fail
+fb20a00.adb:35:15: medium: length check might fail
+fb20a00.adb:35:18: medium: length check might fail
+fb20a00.adb:37:34: medium: overflow check might fail
+fb20a00.adb:37:49: medium: overflow check might fail
+fb20a00.adb:39:11: medium: range check might fail
+fb20a00.adb:39:31: medium: overflow check might fail
+fb20a00.adb:39:46: medium: overflow check might fail
+fb20a00.adb:42:21: medium: overflow check might fail
+fb20a00.adb:45:30: medium: overflow check might fail
+fb20a00.adb:45:45: medium: overflow check might fail

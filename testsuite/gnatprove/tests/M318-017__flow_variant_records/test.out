@@ -1,20 +1,16 @@
 test.adb:18:04: warning: analyzing unreferenced procedure "Test_Init_01"
 test.adb:33:04: warning: analyzing unreferenced procedure "Test_Init_02"
-test.adb:40:12: "V.Z" is not initialized
+test.adb:40:12: high: "V.Z" is not initialized
 test.adb:43:04: warning: analyzing unreferenced procedure "Test_Init_03"
 test.adb:80:04: warning: analyzing unreferenced procedure "Test_Definite_01"
 test.adb:88:04: warning: analyzing unreferenced procedure "Test_Definite_02"
-test.adb:88:32: "X.Reason" is not initialized in "Test_Definite_02"
+test.adb:88:32: high: "X.Reason" is not initialized in "Test_Definite_02"
 test.adb:96:04: warning: analyzing unreferenced procedure "Test_Definite_03"
-test.adb:96:32: warning: "X.Index" might not be initialized in "Test_Definite_03"
-test.adb:96:32: warning: "X.Reason" might not be initialized in "Test_Definite_03"
+test.adb:96:32: medium: "X.Index" might not be initialized in "Test_Definite_03"
+test.adb:96:32: medium: "X.Reason" might not be initialized in "Test_Definite_03"
 test.adb:108:04: warning: analyzing unreferenced procedure "Test_Definite_04"
 test.adb:120:04: warning: analyzing unreferenced procedure "Test_Definite_05"
-test.adb:132:12: warning: "R.Reason" might not be initialized
-test.adb:149:09: warning: incorrect dependency "null => X"
-test.adb:183:09: warning: incorrect dependency "null => R"
-test.adb:183:21: warning: missing dependency "R => R"
-   compilation of test.adb failed
-
-
-gnatprove: error during analysis of data and information flow
+test.adb:132:12: medium: "R.Reason" might not be initialized
+test.adb:149:09: medium: incorrect dependency "null => X"
+test.adb:183:09: medium: incorrect dependency "null => R"
+test.adb:183:21: medium: missing dependency "R => R"

@@ -2,5 +2,5 @@ foo.adb:29:25: warning: unused variable "X"
 foo.adb:46:37: warning: statement has no effect
 foo.adb:47:14: warning: unused assignment
 foo.adb:54:28: warning: unused variable "Y"
-foo.adb:56:09: warning: incorrect dependency "null => X"
-foo.adb:56:21: warning: missing dependency "G => X"
+foo.adb:56:09: medium: incorrect dependency "null => X"
+foo.adb:56:21: medium: missing dependency "G => X"

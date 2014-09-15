@@ -10,4 +10,4 @@ sgs.adb:21:07: info: assertion proved
 sgs.adb:22:07: info: assertion proved
 sgs.ads:5:53: info: range check proved
 sgs.ads:10:14: warning: subprogram "F" has no effect
-sgs.ads:13:17: warning: postcondition might fail
+sgs.ads:13:17: medium: postcondition might fail

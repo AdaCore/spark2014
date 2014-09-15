@@ -1,15 +1,15 @@
 alpha_launch_examples.adb:17:19: info: postcondition proved
 alpha_launch_examples.adb:17:38: info: overflow check proved
-alpha_launch_examples.adb:20:14: warning: overflow check might fail
-alpha_launch_examples.adb:25:22: warning: postcondition might fail
-alpha_launch_examples.adb:40:19: warning: postcondition might fail, requires Example_3'Result > 0
+alpha_launch_examples.adb:20:14: medium: overflow check might fail
+alpha_launch_examples.adb:25:22: medium: postcondition might fail
+alpha_launch_examples.adb:40:19: medium: postcondition might fail, requires Example_3'Result > 0
 alpha_launch_examples.adb:54:25: info: range check proved
 alpha_launch_examples.adb:54:56: info: range check proved
-alpha_launch_examples.adb:56:22: warning: postcondition might fail, requires Example_5'Result = (A (V1) = A (V2)
-alpha_launch_examples.adb:65:22: warning: postcondition might fail
-alpha_launch_examples.adb:76:30: warning: divide by zero might fail
-alpha_launch_examples.adb:80:36: warning: divide by zero might fail
-alpha_launch_examples.adb:80:36: warning: range check might fail
-alpha_launch_examples.adb:84:19: warning: postcondition might fail, requires 73 rem Example_7'Result /= 42
-alpha_launch_examples.adb:84:22: warning: divide by zero might fail
+alpha_launch_examples.adb:56:22: medium: postcondition might fail, requires Example_5'Result = (A (V1) = A (V2)
+alpha_launch_examples.adb:65:22: medium: postcondition might fail
+alpha_launch_examples.adb:76:30: medium: divide by zero might fail
+alpha_launch_examples.adb:80:36: medium: divide by zero might fail
+alpha_launch_examples.adb:80:36: medium: range check might fail
+alpha_launch_examples.adb:84:19: medium: postcondition might fail, requires 73 rem Example_7'Result /= 42
+alpha_launch_examples.adb:84:22: medium: divide by zero might fail
 alpha_launch_examples.adb:91:15: info: overflow check proved

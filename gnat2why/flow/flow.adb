@@ -1170,7 +1170,7 @@ package body Flow is
                            N         => FA.Analyzed_Entity,
                            F1        => Direct_Mapping_Id (FA.Analyzed_Entity),
                            Tag       => "ineffective",
-                           Warning   => True);
+                           Kind      => Warning_Kind);
                      end if;
                   else
                      Analysis.Find_Ineffective_Imports_And_Unused_Objects (FA);

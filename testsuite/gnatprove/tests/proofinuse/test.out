@@ -1,60 +1,60 @@
 bitwise.adb:6:53: info: range check proved
-bitwise.adb:7:22: warning: assertion might fail, requires Res = 1
-bitwise.adb:14:22: warning: assertion might fail, requires X and Res) = (X and LMask_8
+bitwise.adb:7:22: medium: assertion might fail, requires Res = 1
+bitwise.adb:14:22: medium: assertion might fail, requires X and Res) = (X and LMask_8
 bitwise.adb:20:07: info: assertion proved
 bitwise.adb:20:30: info: division check proved
-bitwise.adb:22:22: warning: assertion might fail, requires Res = X / 8
+bitwise.adb:22:22: medium: assertion might fail, requires Res = X / 8
 bitwise.adb:22:30: info: division check proved
 floating_point.adb:7:16: info: overflow check proved
-floating_point.adb:8:22: warning: assertion might fail, requires Res >=
+floating_point.adb:8:22: medium: assertion might fail, requires Res >=
 floating_point.adb:14:16: info: overflow check proved
-floating_point.adb:14:22: warning: overflow check might fail
-floating_point.adb:15:22: warning: assertion might fail, requires Res >= X
+floating_point.adb:14:22: medium: overflow check might fail
+floating_point.adb:15:22: medium: assertion might fail, requires Res >= X
 floating_point.adb:23:24: info: overflow check proved
-floating_point.adb:24:16: warning: overflow check might fail
+floating_point.adb:24:16: medium: overflow check might fail
 floating_point.adb:24:20: info: overflow check proved
-floating_point.adb:25:07: warning: assertion might fail
+floating_point.adb:25:07: medium: assertion might fail
 floating_point.adb:34:24: info: division check proved
 floating_point.adb:34:24: info: overflow check proved
 floating_point.adb:35:16: info: division check proved
-floating_point.adb:35:16: warning: overflow check might fail
-floating_point.adb:36:22: warning: assertion might fail, requires Res < Threshold
-floating_point.adb:42:33: warning: overflow check might fail
+floating_point.adb:35:16: medium: overflow check might fail
+floating_point.adb:36:22: medium: assertion might fail, requires Res < Threshold
+floating_point.adb:42:33: medium: overflow check might fail
 floating_point.adb:42:41: info: division check proved
 floating_point.adb:42:41: info: overflow check proved
 floating_point.adb:42:49: info: overflow check proved
-floating_point.adb:43:33: warning: overflow check might fail
+floating_point.adb:43:33: medium: overflow check might fail
 floating_point.adb:43:41: info: division check proved
 floating_point.adb:43:41: info: overflow check proved
 floating_point.adb:43:49: info: overflow check proved
-floating_point.adb:44:16: warning: overflow check might fail
-floating_point.adb:45:22: warning: assertion might fail, requires Res < (1.6181**N)/2.2360 +
-floating_point.adb:45:35: warning: overflow check might fail
+floating_point.adb:44:16: medium: overflow check might fail
+floating_point.adb:45:22: medium: assertion might fail, requires Res < (1.6181**N)/2.2360 +
+floating_point.adb:45:35: medium: overflow check might fail
 floating_point.adb:45:39: info: division check proved
 floating_point.adb:45:39: info: overflow check proved
 floating_point.adb:45:47: info: overflow check proved
 nonlinear.adb:10:17: info: overflow check proved
 nonlinear.adb:10:22: info: division check proved
-nonlinear.adb:10:22: warning: range check might fail
-nonlinear.adb:11:22: warning: assertion might fail, requires Res <= X
+nonlinear.adb:10:22: medium: range check might fail
+nonlinear.adb:11:22: medium: assertion might fail, requires Res <= X
 nonlinear.adb:18:22: info: division check proved
-nonlinear.adb:19:22: warning: assertion might fail, requires Res <= X
+nonlinear.adb:19:22: medium: assertion might fail, requires Res <= X
 nonlinear.adb:25:16: info: division check proved
-nonlinear.adb:25:16: warning: range check might fail
-nonlinear.adb:26:22: warning: assertion might fail, requires Res * Y) / Res = Y
-nonlinear.adb:26:27: warning: overflow check might fail
+nonlinear.adb:25:16: medium: range check might fail
+nonlinear.adb:26:22: medium: assertion might fail, requires Res * Y) / Res = Y
+nonlinear.adb:26:27: medium: overflow check might fail
 nonlinear.adb:26:32: info: division check proved
-nonlinear.adb:32:22: warning: assertion might fail, requires 2 ** X + 2 ** (X-1) < 2 ** (X+1
-nonlinear.adb:32:24: warning: overflow check might fail
-nonlinear.adb:32:29: warning: overflow check might fail
-nonlinear.adb:32:33: warning: overflow check might fail
+nonlinear.adb:32:22: medium: assertion might fail, requires 2 ** X + 2 ** (X-1) < 2 ** (X+1
+nonlinear.adb:32:24: medium: overflow check might fail
+nonlinear.adb:32:29: medium: overflow check might fail
+nonlinear.adb:32:33: medium: overflow check might fail
 nonlinear.adb:32:38: info: range check proved
-nonlinear.adb:32:46: warning: overflow check might fail
+nonlinear.adb:32:46: medium: overflow check might fail
 nonlinear.adb:32:51: info: overflow check proved
 nonlinear.ads:14:14: warning: subprogram "Power" has no effect
 quantifiers.adb:8:17: info: postcondition proved
 quantifiers.adb:10:37: info: length check proved
-quantifiers.adb:16:07: warning: assertion might fail
-quantifiers.adb:24:22: warning: assertion might fail, requires not (...
+quantifiers.adb:16:07: medium: assertion might fail
+quantifiers.adb:24:22: medium: assertion might fail, requires not (...
 quantifiers.ads:7:14: warning: subprogram "Previous_Seen" has no effect
 quantifiers.ads:10:14: warning: subprogram "Not_For_Some" has no effect

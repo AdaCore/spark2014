@@ -14,23 +14,23 @@ mda.adb:95:10: info: index check proved
 mda.adb:95:14: info: index check proved
 mda.adb:95:18: info: index check proved
 mda.ads:29:19: info: postcondition proved
-mda.ads:39:19: warning: postcondition might fail, requires A = A'Old'update
+mda.ads:39:19: medium: postcondition might fail, requires A = A'Old'update
 mda.ads:48:19: info: postcondition proved
-mda.ads:60:19: warning: postcondition might fail, requires A = A'Old'update
+mda.ads:60:19: medium: postcondition might fail, requires A = A'Old'update
 mda.ads:75:19: info: postcondition proved
-mda.ads:90:19: warning: postcondition might fail, requires A = A'Old'update
+mda.ads:90:19: medium: postcondition might fail, requires A = A'Old'update
 mda.ads:103:19: info: postcondition proved
-mda.ads:122:19: warning: postcondition might fail, requires A = A'Old'update
+mda.ads:122:19: medium: postcondition might fail, requires A = A'Old'update
 update.ads:8:34: info: length check proved
-update.ads:18:19: warning: postcondition might fail
+update.ads:18:19: medium: postcondition might fail
 update.ads:31:19: info: postcondition proved
-update.ads:38:19: warning: postcondition might fail, requires A = A'Old'update
+update.ads:38:19: medium: postcondition might fail, requires A = A'Old'update
 update_checks.adb:10:04: warning: analyzing unreferenced procedure "Test1"
 update_checks.adb:22:04: warning: analyzing unreferenced procedure "Test2"
-update_checks.adb:29:25: warning: range check might fail
-update_checks.adb:29:32: warning: range check might fail
-update_checks.adb:29:39: warning: range check might fail
-update_checks.adb:29:55: warning: range check might fail
+update_checks.adb:29:25: medium: range check might fail
+update_checks.adb:29:32: medium: range check might fail
+update_checks.adb:29:39: medium: range check might fail
+update_checks.adb:29:55: medium: range check might fail
 update_checks.adb:34:04: warning: analyzing unreferenced procedure "Test3"
 update_checks.adb:43:28: info: range check proved
 update_checks.adb:43:35: info: range check proved
@@ -38,13 +38,13 @@ update_checks.adb:43:42: info: range check proved
 update_checks.adb:43:58: info: range check proved
 update_checks.adb:49:04: warning: analyzing unreferenced procedure "Test4"
 update_checks.adb:61:04: warning: analyzing unreferenced procedure "Test5"
-update_checks.adb:68:26: warning: range check might fail
-update_checks.adb:68:34: warning: range check might fail
-update_checks.adb:68:42: warning: range check might fail
-update_checks.adb:69:28: warning: range check might fail
-update_checks.adb:69:36: warning: range check might fail
-update_checks.adb:69:44: warning: range check might fail
-update_checks.adb:69:60: warning: range check might fail
+update_checks.adb:68:26: medium: range check might fail
+update_checks.adb:68:34: medium: range check might fail
+update_checks.adb:68:42: medium: range check might fail
+update_checks.adb:69:28: medium: range check might fail
+update_checks.adb:69:36: medium: range check might fail
+update_checks.adb:69:44: medium: range check might fail
+update_checks.adb:69:60: medium: range check might fail
 update_checks.adb:74:04: warning: analyzing unreferenced procedure "Test6"
 update_checks.adb:84:29: info: range check proved
 update_checks.adb:84:37: info: range check proved
@@ -54,17 +54,17 @@ update_checks.adb:85:39: info: range check proved
 update_checks.adb:85:47: info: range check proved
 update_checks.adb:85:63: info: range check proved
 update_checks.adb:91:04: warning: analyzing unreferenced procedure "Test7"
-update_checks.adb:99:26: warning: range check might fail
-update_checks.adb:99:34: warning: range check might fail
-update_checks.adb:99:42: warning: range check might fail
-update_checks.adb:100:28: warning: range check might fail
-update_checks.adb:100:36: warning: range check might fail
-update_checks.adb:100:44: warning: range check might fail
-update_checks.adb:100:62: warning: range check might fail
-update_checks.adb:101:26: warning: range check might fail
-update_checks.adb:101:34: warning: range check might fail
-update_checks.adb:101:42: warning: range check might fail
-update_checks.adb:101:62: warning: range check might fail
+update_checks.adb:99:26: medium: range check might fail
+update_checks.adb:99:34: medium: range check might fail
+update_checks.adb:99:42: medium: range check might fail
+update_checks.adb:100:28: medium: range check might fail
+update_checks.adb:100:36: medium: range check might fail
+update_checks.adb:100:44: medium: range check might fail
+update_checks.adb:100:62: medium: range check might fail
+update_checks.adb:101:26: medium: range check might fail
+update_checks.adb:101:34: medium: range check might fail
+update_checks.adb:101:42: medium: range check might fail
+update_checks.adb:101:62: medium: range check might fail
 update_checks.adb:106:04: warning: analyzing unreferenced procedure "Test8"
 update_checks.adb:118:29: info: range check proved
 update_checks.adb:118:37: info: range check proved
@@ -104,14 +104,14 @@ update_logic_fn.ads:12:33: info: length check proved
 update_logic_fn.ads:13:33: info: length check proved
 update_logic_fn.ads:29:14: info: postcondition proved
 update_logic_fn.ads:39:14: info: postcondition proved
-update_logic_fn.ads:49:14: warning: postcondition might fail, requires A = A_2D_Arr'update
+update_logic_fn.ads:49:14: medium: postcondition might fail, requires A = A_2D_Arr'update
 update_logic_fn.ads:62:14: info: postcondition proved
 update_logic_fn.ads:62:22: info: length check proved
-update_logic_fn.ads:75:14: warning: postcondition might fail, requires A = A3'(others => (others => (others => 1000 ))) 'update
+update_logic_fn.ads:75:14: medium: postcondition might fail, requires A = A3'(others => (others => (others => 1000 ))) 'update
 update_logic_fn.ads:75:22: info: length check proved
-update_logic_fn.ads:90:17: warning: postcondition might fail, requires A = A2A2'(5 => (7 => V2), (others => 1000)), (others => (others => 1000))
+update_logic_fn.ads:90:17: medium: postcondition might fail, requires A = A2A2'(5 => (7 => V2), (others => 1000)), (others => (others => 1000))
 update_logic_fn.ads:90:24: info: length check proved
 update_logic_fn.ads:103:14: info: postcondition proved
 update_logic_fn.ads:116:14: info: postcondition proved
 update_logic_fn.ads:127:19: info: postcondition proved
-update_logic_fn.ads:140:06: warning: postcondition might fail, requires A = A_3D_Arr'update
+update_logic_fn.ads:140:06: medium: postcondition might fail, requires A = A_3D_Arr'update

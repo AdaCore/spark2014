@@ -1,18 +1,18 @@
 flight_manager.adb:12:11: info: postcondition proved
-flight_manager.adb:13:24: warning: overflow check might fail
+flight_manager.adb:13:24: medium: overflow check might fail
 flight_manager.adb:13:46: info: division check proved
 flight_manager.adb:13:46: info: overflow check proved
-flight_manager.adb:19:21: warning: overflow check might fail
+flight_manager.adb:19:21: medium: overflow check might fail
 flight_manager.adb:19:43: info: division check proved
 flight_manager.adb:19:43: info: overflow check proved
-flight_manager.adb:36:21: warning: "Result.X_Speed" might not be initialized
-flight_manager.adb:36:53: warning: overflow check might fail
-flight_manager.adb:37:21: warning: "Result.Y_Speed" might not be initialized
-flight_manager.adb:37:53: warning: overflow check might fail
-flight_manager.ads:10:17: warning: postcondition might fail
-flight_manager.ads:10:30: warning: overflow check might fail
-flight_manager.ads:10:65: warning: overflow check might fail
-flight_manager.ads:11:18: warning: overflow check might fail
-flight_manager.ads:12:23: warning: overflow check might fail
-flight_manager.ads:12:58: warning: overflow check might fail
-flight_manager.ads:13:18: warning: overflow check might fail
+flight_manager.adb:36:21: medium: "Result.X_Speed" might not be initialized
+flight_manager.adb:36:53: medium: overflow check might fail
+flight_manager.adb:37:21: medium: "Result.Y_Speed" might not be initialized
+flight_manager.adb:37:53: medium: overflow check might fail
+flight_manager.ads:10:17: medium: postcondition might fail
+flight_manager.ads:10:30: medium: overflow check might fail
+flight_manager.ads:10:65: medium: overflow check might fail
+flight_manager.ads:11:18: medium: overflow check might fail
+flight_manager.ads:12:23: medium: overflow check might fail
+flight_manager.ads:12:58: medium: overflow check might fail
+flight_manager.ads:13:18: medium: overflow check might fail

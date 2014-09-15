@@ -1,11 +1,11 @@
 usergroup_examples.adb:28:13: warning: null global effect assumed on imported subprogram
 usergroup_examples.adb:38:32: info: division check proved
-usergroup_examples.adb:38:32: warning: range check might fail
+usergroup_examples.adb:38:32: medium: range check might fail
 usergroup_examples.adb:42:04: warning: analyzing unreferenced function "Example_3"
-usergroup_examples.adb:51:27: warning: range check might fail
+usergroup_examples.adb:51:27: medium: range check might fail
 usergroup_examples.adb:51:32: info: division check proved
-usergroup_examples.adb:51:32: warning: array index check might fail
-usergroup_examples.adb:59:19: warning: postcondition might fail, requires Example_5'Result > 0
+usergroup_examples.adb:51:32: medium: array index check might fail
+usergroup_examples.adb:59:19: medium: postcondition might fail, requires Example_5'Result > 0
 usergroup_examples.adb:73:22: info: postcondition proved
 usergroup_examples.adb:93:22: info: postcondition proved
 usergroup_examples.adb:104:07: info: assertion proved

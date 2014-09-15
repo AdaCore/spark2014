@@ -9,14 +9,14 @@ s.adb:27:10: info: loop invariant preservation proved
 s.adb:30:07: info: assertion proved
 s.adb:39:10: info: loop invariant initialization proved
 s.adb:39:10: info: loop invariant preservation proved
-s.adb:40:36: warning: "Dest" might not be initialized
+s.adb:40:36: medium: "Dest" might not be initialized
 s.adb:40:42: info: index check proved
 s.adb:40:63: info: index check proved
 s.adb:42:43: info: index check proved
 s.adb:42:64: info: index check proved
 s.adb:52:10: info: loop invariant initialization proved
 s.adb:52:10: info: loop invariant preservation proved
-s.adb:53:36: warning: "Dest" might not be initialized
+s.adb:53:36: medium: "Dest" might not be initialized
 s.adb:53:42: info: index check proved
 s.adb:53:63: info: index check proved
 s.adb:55:43: info: index check proved

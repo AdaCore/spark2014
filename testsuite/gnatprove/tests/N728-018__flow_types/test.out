@@ -1,9 +1,7 @@
+repro.adb:20:43: info: length check proved
 repro.adb:153:04: warning: analyzing unreferenced procedure "CreateObject"
 repro.adb:153:27: warning: unused initial value of "Template"
 repro.adb:156:07: warning: initialization has no effect
+repro.adb:162:25: info: length check proved
 repro.adb:165:07: warning: unused variable "Unusedobjecthandle"
-repro.adb:167:22: "Localreturnvalue" is not initialized
-   compilation of repro.adb failed
-
-
-gnatprove: error during flow analysis and proof
+repro.adb:167:22: high: "Localreturnvalue" is not initialized

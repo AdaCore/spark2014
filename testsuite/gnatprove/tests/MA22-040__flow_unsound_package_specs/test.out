@@ -1,5 +1,1 @@
-foo.ads:10:04: "X" is not initialized in "Foo"
-   compilation of foo.ads failed
-
-
-gnatprove: error during analysis of data and information flow
+foo.ads:10:04: high: "X" is not initialized in "Foo"

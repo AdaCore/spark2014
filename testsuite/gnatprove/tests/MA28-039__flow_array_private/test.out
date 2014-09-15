@@ -1,1 +1,1 @@
-init.adb:15:23: warning: range check might fail
+init.adb:15:23: medium: range check might fail

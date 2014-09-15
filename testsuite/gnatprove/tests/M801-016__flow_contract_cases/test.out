@@ -1,8 +1,4 @@
-contract_cases.adb:8:31: "Num_Out" is not initialized
-contract_cases.adb:9:31: "Num_Out" is not initialized
-contract_cases.adb:19:31: "Y" is not initialized
-contract_cases.adb:20:31: "Y" is not initialized
-   compilation of contract_cases.adb failed
-
-
-gnatprove: error during analysis of data and information flow
+contract_cases.adb:8:31: high: "Num_Out" is not initialized
+contract_cases.adb:9:31: high: "Num_Out" is not initialized
+contract_cases.adb:19:31: high: "Y" is not initialized
+contract_cases.adb:20:31: high: "Y" is not initialized

@@ -1,7 +1,3 @@
-q.adb:12:09: "G" must be a global output of "Test_01" (SPARK RM 6.1.4)
-q.adb:20:09: "G" must be a global output of "Test_02" (SPARK RM 6.1.4)
-q.adb:28:09: "G" must be a global output of "Test_03" (SPARK RM 6.1.4)
-   compilation of q.adb failed
-
-
-gnatprove: error during analysis of data and information flow
+q.adb:12:09: high: "G" must be a global output of "Test_01" (SPARK RM 6.1.4)
+q.adb:20:09: high: "G" must be a global output of "Test_02" (SPARK RM 6.1.4)
+q.adb:28:09: high: "G" must be a global output of "Test_03" (SPARK RM 6.1.4)

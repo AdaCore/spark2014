@@ -1,5 +1,5 @@
 evoting.adb:44:07: warning: statement has no effect
-evoting.adb:49:30: warning: "Candidates" might not be initialized
+evoting.adb:49:30: medium: "Candidates" might not be initialized
 evoting.adb:54:60: info: length check proved
 evoting.adb:55:07: warning: assuming "Open" has no effect on global items
 evoting.adb:55:07: warning: no Global contract available for "Open"
@@ -9,7 +9,7 @@ evoting.adb:59:10: warning: assuming "Get_Line" has no effect on global items
 evoting.adb:59:10: warning: no Global contract available for "Get_Line"
 evoting.adb:60:49: info: length check proved
 evoting.adb:60:52: info: length check proved
-evoting.adb:60:52: warning: range check might fail
+evoting.adb:60:52: medium: range check might fail
 evoting.adb:62:49: info: range check proved
 evoting.adb:65:07: warning: assuming "Close" has no effect on global items
 evoting.adb:65:07: warning: no Global contract available for "Close"
@@ -54,7 +54,7 @@ evoting.adb:172:07: warning: assuming "Put_Line" has no effect on global items
 evoting.adb:172:07: warning: no Global contract available for "Put_Line"
 evoting.adb:172:07: warning: statement has no effect
 evoting.adb:174:54: info: range check proved
-evoting.adb:174:54: warning: overflow check might fail
+evoting.adb:174:54: medium: overflow check might fail
 evoting.adb:175:10: warning: assuming "Put_Line" has no effect on global items
 evoting.adb:175:10: warning: no Global contract available for "Put_Line"
 evoting.adb:175:10: warning: statement has no effect
@@ -73,7 +73,7 @@ evoting.adb:185:16: warning: no Global contract available for "Put_Line"
 evoting.adb:185:16: warning: statement has no effect
 evoting.adb:190:16: info: range check proved
 evoting.adb:202:07: warning: statement has no effect
-evoting.adb:205:41: warning: "Winners" might not be initialized
+evoting.adb:205:41: medium: "Winners" might not be initialized
 evoting.adb:211:10: info: loop invariant initialization proved
 evoting.adb:211:10: info: loop invariant preservation proved
 evoting.adb:215:24: info: range check proved
@@ -131,15 +131,15 @@ evoting.adb:313:07: info: precondition proved
 evoting.adb:315:07: info: precondition proved
 evoting.adb:317:07: info: precondition proved
 evoting.ads:32:45: info: length check proved
-evoting.ads:58:28: warning: postcondition might fail, requires candidates(i)(j) = ' '
+evoting.ads:58:28: medium: postcondition might fail, requires candidates(i)(j) = ' '
 evoting.ads:58:40: info: index check proved
 evoting.ads:60:14: warning: subprogram "Print_A_Candidate" has no effect
 evoting.ads:63:14: warning: subprogram "Print_Candidates" has no effect
-evoting.ads:95:11: warning: postcondition might fail, requires counters(i) = 0
+evoting.ads:95:11: medium: postcondition might fail, requires counters(i) = 0
 evoting.ads:95:20: info: index check proved
 evoting.ads:105:25: info: range check proved
 evoting.ads:106:57: info: index check proved
-evoting.ads:107:22: warning: postcondition might fail, requires counters(winner) > counters(i)
+evoting.ads:107:22: medium: postcondition might fail, requires counters(winner) > counters(i)
 evoting.ads:107:50: info: index check proved
 evoting.ads:109:55: info: index check proved
 evoting.ads:110:52: info: index check proved

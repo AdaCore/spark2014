@@ -1,2 +1,2 @@
-client.adb:5:11: warning: "Pack.Content" might not be initialized after elaboration of main program "Client"
-pack.adb:11:14: warning: overflow check might fail
+client.adb:5:11: medium: "Pack.Content" might not be initialized after elaboration of main program "Client"
+pack.adb:11:14: medium: overflow check might fail

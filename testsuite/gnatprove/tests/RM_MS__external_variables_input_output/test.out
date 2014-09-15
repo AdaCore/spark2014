@@ -1,1 +1,1 @@
-copy_14.adb:8:43: warning: "Input_Port_14.Input_State" might not be initialized after elaboration of main program "Copy_14"
+copy_14.adb:8:43: medium: "Input_Port_14.Input_State" might not be initialized after elaboration of main program "Copy_14"

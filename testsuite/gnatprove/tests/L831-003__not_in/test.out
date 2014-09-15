@@ -1,16 +1,16 @@
-lcp.adb:7:12: warning: overflow check might fail
+lcp.adb:7:12: medium: overflow check might fail
 lcp.adb:8:19: info: overflow check proved
 lcp.adb:13:15: info: index check proved
 lcp.adb:13:15: info: overflow check proved
 lcp.adb:13:28: info: index check proved
 lcp.adb:13:28: info: overflow check proved
 lcp.adb:17:14: info: overflow check proved
-lcp.ads:6:05: warning: postcondition might fail
+lcp.ads:6:05: medium: postcondition might fail
 lcp.ads:6:43: info: overflow check proved
-lcp.ads:6:43: warning: array index check might fail
-lcp.ads:6:55: warning: array index check might fail
-lcp.ads:6:55: warning: overflow check might fail
-lcp.ads:7:19: warning: overflow check might fail
+lcp.ads:6:43: medium: array index check might fail
+lcp.ads:6:55: medium: array index check might fail
+lcp.ads:6:55: medium: overflow check might fail
+lcp.ads:7:19: medium: overflow check might fail
 lcp.ads:8:29: info: overflow check proved
 lcp.ads:9:32: info: index check proved
 lcp.ads:9:32: info: overflow check proved

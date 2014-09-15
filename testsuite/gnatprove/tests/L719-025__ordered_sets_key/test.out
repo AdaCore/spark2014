@@ -2,4 +2,4 @@ p.adb:4:27: info: precondition proved
 p.adb:6:07: info: precondition proved
 p.ads:26:20: info: precondition proved
 p.ads:27:14: info: precondition proved
-p.ads:27:14: warning: postcondition might fail, requires Strict_Equal (L, L'old)
+p.ads:27:14: medium: postcondition might fail, requires Strict_Equal (L, L'old)

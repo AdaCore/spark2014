@@ -9,9 +9,8 @@ refined_global_illegal.adb:73:14: global refinement of state "State" redefines t
 refined_global_illegal.adb:81:14: global refinement of state "State" redefines the mode of its constituents
 refined_global_illegal.adb:89:14: constituent "Z" is missing in output list
 refined_global_illegal.adb:89:14: output state "State2" must be replaced by all its constituents in global refinement
-refined_global_illegal_2.adb:12:18: "Y" must be listed in the Refined_Global aspect of "P1" (SPARK RM 6.1.4(13))
-refined_global_illegal_2.adb:20:18: "Y" must be listed in the Refined_Global aspect of "P2" (SPARK RM 6.1.4(13))
-   compilation of refined_global_illegal_2.adb failed
-
-
-gnatprove: error during flow analysis and proof
+refined_global_illegal_2.adb:12:16: medium: overflow check might fail
+refined_global_illegal_2.adb:12:18: high: "Y" must be listed in the Refined_Global aspect of "P1" (SPARK RM 6.1.4(13))
+refined_global_illegal_2.adb:20:16: medium: overflow check might fail
+refined_global_illegal_2.adb:20:18: high: "Y" must be listed in the Refined_Global aspect of "P2" (SPARK RM 6.1.4(13))
+refined_global_illegal_2.adb:21:16: medium: overflow check might fail

@@ -6,7 +6,7 @@ anon_type.adb:29:07: warning: unused variable "My_Array1"
 anon_type.adb:30:07: warning: unused variable "My_Array2"
 anon_type.adb:32:13: warning: unused assignment
 anon_type.adb:32:16: info: length check proved
-anon_type.adb:33:26: warning: overflow check might fail
-anon_type.adb:33:26: warning: range check might fail
+anon_type.adb:33:26: medium: overflow check might fail
+anon_type.adb:33:26: medium: range check might fail
 anon_type.ads:7:19: info: postcondition proved
 anon_type.ads:7:45: info: overflow check proved

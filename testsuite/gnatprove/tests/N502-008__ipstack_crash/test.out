@@ -1,1 +1,1 @@
-buf-no_data.adb:14:30: warning: overflow check might fail
+buf-no_data.adb:14:30: medium: overflow check might fail

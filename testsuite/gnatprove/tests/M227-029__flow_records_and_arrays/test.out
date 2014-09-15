@@ -4,13 +4,13 @@ message_tests.adb:32:04: warning: analyzing unreferenced procedure "Not_All_Used
 message_tests.adb:40:04: warning: analyzing unreferenced procedure "Not_All_Used_In_4"
 message_tests.adb:40:33: warning: unused variable "C"
 message_tests.adb:48:04: warning: analyzing unreferenced procedure "Not_All_Used_Out"
-message_tests.adb:48:32: "C.Flags.A" is not initialized in "Not_All_Used_Out"
-message_tests.adb:48:32: "C.Flags.B" is not initialized in "Not_All_Used_Out"
-message_tests.adb:48:32: "C.W" is not initialized in "Not_All_Used_Out"
+message_tests.adb:48:32: high: "C.Flags.A" is not initialized in "Not_All_Used_Out"
+message_tests.adb:48:32: high: "C.Flags.B" is not initialized in "Not_All_Used_Out"
+message_tests.adb:48:32: high: "C.W" is not initialized in "Not_All_Used_Out"
 message_tests.adb:56:04: warning: analyzing unreferenced procedure "Undefined_Used_1"
-message_tests.adb:66:18: "F.B" is not initialized
+message_tests.adb:66:18: high: "F.B" is not initialized
 parameter_tests.adb:28:04: warning: analyzing unreferenced procedure "Clear_Position"
-parameter_tests.adb:36:32: "G.Y" is not initialized
+parameter_tests.adb:36:32: high: "G.Y" is not initialized
 parameter_tests.adb:50:33: warning: unused initial value of "G"
 parameter_tests.adb:50:36: warning: "H" is not modified, could be "input"
 test.adb:26:04: warning: analyzing unreferenced function "New_Player_01"
@@ -21,8 +21,3 @@ untangle_tests.adb:34:04: warning: analyzing unreferenced procedure "Swap_Triang
 untangle_tests.adb:44:04: warning: analyzing unreferenced procedure "Sieve"
 untangle_tests.adb:63:04: warning: analyzing unreferenced procedure "Transform"
 untangle_tests.adb:77:04: warning: analyzing unreferenced procedure "Set_Normal"
-   compilation of message_tests.adb failed
-   compilation of parameter_tests.adb failed
-
-
-gnatprove: error during analysis of data and information flow

@@ -35,48 +35,48 @@ depends_illegal_2.adb:41:22: refinement of "A" is visible at line 3
 depends_illegal_2.adb:42:36: reference to "A" not allowed
 depends_illegal_2.adb:42:36: refinement of "A" is visible at line 3
 depends_illegal_3.adb:13:33: warning: unused initial value of "X"
-depends_illegal_3.adb:15:11: warning: missing dependency "null => X"
-depends_illegal_3.adb:15:24: warning: incorrect dependency "X => X"
-depends_illegal_3.adb:15:27: warning: incorrect dependency "Par1 => Par2"
-depends_illegal_3.adb:23:24: "Par2" is not initialized in "P2"
-depends_illegal_3.adb:33:15: "Par2" is not initialized
-depends_illegal_3.adb:34:15: "Par2" is not initialized
+depends_illegal_3.adb:15:11: medium: missing dependency "null => X"
+depends_illegal_3.adb:15:24: medium: incorrect dependency "X => X"
+depends_illegal_3.adb:15:27: medium: incorrect dependency "Par1 => Par2"
+depends_illegal_3.adb:18:20: medium: overflow check might fail
+depends_illegal_3.adb:19:20: medium: overflow check might fail
+depends_illegal_3.adb:23:24: high: "Par2" is not initialized in "P2"
+depends_illegal_3.adb:33:15: high: "Par2" is not initialized
+depends_illegal_3.adb:34:15: high: "Par2" is not initialized
 depends_illegal_3.adb:38:18: warning: unused variable "Par1"
 depends_illegal_3.adb:38:35: warning: "Par2" is not modified, could be "in"
 depends_illegal_3.adb:38:35: warning: unused variable "Par2"
 depends_illegal_3.adb:42:33: warning: unused global "X"
 depends_illegal_3.adb:43:33: warning: "Y" is not modified, could be "input"
 depends_illegal_3.adb:43:33: warning: unused global "Y"
-depends_illegal_3.adb:44:11: warning: incorrect dependency "null => Par2"
-depends_illegal_3.adb:44:11: warning: incorrect dependency "null => Y"
-depends_illegal_3.adb:44:24: warning: missing dependency "Par2 => Par2"
-depends_illegal_3.adb:44:30: warning: missing dependency "Y => Y"
-depends_illegal_3.adb:60:07: "X" must be listed in the Depends aspect of "P4" (SPARK RM 6.1.4(13))
-depends_illegal_3.adb:75:23: warning: missing dependency "P2 => G_Var1"
-depends_illegal_3.adb:75:23: warning: missing dependency "P2 => G_Var3"
-depends_illegal_3.adb:75:23: warning: missing dependency "P2 => P3"
-depends_illegal_3.adb:76:23: warning: missing dependency "P3 => G_Var1"
-depends_illegal_3.adb:76:23: warning: missing dependency "P3 => G_Var3"
-depends_illegal_3.adb:76:23: warning: missing dependency "P3 => P1"
-depends_illegal_3.adb:77:23: warning: missing dependency "G_Var2 => G_Var3"
-depends_illegal_3.adb:77:23: warning: missing dependency "G_Var2 => P1"
-depends_illegal_3.adb:77:23: warning: missing dependency "G_Var2 => P3"
-depends_illegal_3.adb:78:23: warning: missing dependency "G_Var3 => G_Var1"
-depends_illegal_3.adb:78:23: warning: missing dependency "G_Var3 => P1"
-depends_illegal_3.adb:78:23: warning: missing dependency "G_Var3 => P3"
-depends_illegal_3.adb:98:11: warning: incorrect dependency "null => Par1"
-depends_illegal_3.adb:98:25: warning: missing dependency "F1'Result => Par1"
-   compilation of depends_illegal_3.adb failed
-
-
-gnatprove: error during flow analysis and proof
+depends_illegal_3.adb:44:11: medium: incorrect dependency "null => Par2"
+depends_illegal_3.adb:44:11: medium: incorrect dependency "null => Y"
+depends_illegal_3.adb:44:24: medium: missing dependency "Par2 => Par2"
+depends_illegal_3.adb:44:30: medium: missing dependency "Y => Y"
+depends_illegal_3.adb:60:07: high: "X" must be listed in the Depends aspect of "P4" (SPARK RM 6.1.4(13))
+depends_illegal_3.adb:75:23: medium: missing dependency "P2 => G_Var1"
+depends_illegal_3.adb:75:23: medium: missing dependency "P2 => G_Var3"
+depends_illegal_3.adb:75:23: medium: missing dependency "P2 => P3"
+depends_illegal_3.adb:76:23: medium: missing dependency "P3 => G_Var1"
+depends_illegal_3.adb:76:23: medium: missing dependency "P3 => G_Var3"
+depends_illegal_3.adb:76:23: medium: missing dependency "P3 => P1"
+depends_illegal_3.adb:77:23: medium: missing dependency "G_Var2 => G_Var3"
+depends_illegal_3.adb:77:23: medium: missing dependency "G_Var2 => P1"
+depends_illegal_3.adb:77:23: medium: missing dependency "G_Var2 => P3"
+depends_illegal_3.adb:78:23: medium: missing dependency "G_Var3 => G_Var1"
+depends_illegal_3.adb:78:23: medium: missing dependency "G_Var3 => P1"
+depends_illegal_3.adb:78:23: medium: missing dependency "G_Var3 => P3"
+depends_illegal_3.adb:98:11: medium: incorrect dependency "null => Par1"
+depends_illegal_3.adb:98:25: medium: missing dependency "F1'Result => Par1"
 depends_illegal_4.adb:7:14: warning: "Y" is not modified, could be "input"
-depends_illegal_4.adb:15:23: warning: missing dependency "Par2 => Y"
-depends_illegal_4.adb:16:23: warning: incorrect dependency "Par3 => Y"
-depends_illegal_4.adb:17:23: warning: missing dependency "Y => Y"
-depends_illegal_4.adb:32:07: "X" must be listed in the Depends aspect of "P2" (SPARK RM 6.1.4(13))
-depends_illegal_4.adb:44:15: "Y" must be listed in the Depends aspect of "P3" (SPARK RM 6.1.4(13))
-   compilation of depends_illegal_4.adb failed
-
-
-gnatprove: error during flow analysis and proof
+depends_illegal_4.adb:15:23: medium: missing dependency "Par2 => Y"
+depends_illegal_4.adb:16:23: medium: incorrect dependency "Par3 => Y"
+depends_illegal_4.adb:17:23: medium: missing dependency "Y => Y"
+depends_illegal_4.adb:20:20: medium: overflow check might fail
+depends_illegal_4.adb:20:24: medium: overflow check might fail
+depends_illegal_4.adb:21:20: medium: overflow check might fail
+depends_illegal_4.adb:32:07: high: "X" must be listed in the Depends aspect of "P2" (SPARK RM 6.1.4(13))
+depends_illegal_4.adb:43:17: medium: overflow check might fail
+depends_illegal_4.adb:43:24: medium: overflow check might fail
+depends_illegal_4.adb:44:15: high: "Y" must be listed in the Depends aspect of "P3" (SPARK RM 6.1.4(13))
+depends_illegal_4.adb:44:17: medium: overflow check might fail

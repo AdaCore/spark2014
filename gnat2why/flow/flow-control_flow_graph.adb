@@ -3672,7 +3672,7 @@ package body Flow.Control_Flow_Graph is
                N       => N,
                F1      => Direct_Mapping_Id (Typ),
                Tag     => "default_initialization_missmatch",
-               Warning => True);
+               Kind    => Medium_Check_Kind);
          end if;
 
          --  Issue a warning if the declared type promised to be
@@ -3693,7 +3693,7 @@ package body Flow.Control_Flow_Graph is
                N       => N,
                F1      => Direct_Mapping_Id (Typ),
                Tag     => "default_initialization_missmatch",
-               Warning => True);
+               Kind    => Medium_Check_Kind);
          end if;
       end if;
    end Do_Type_Declaration;
@@ -4651,6 +4651,7 @@ package body Flow.Control_Flow_Graph is
                                 "is not allowed in SPARK",
                               N   => FA.Analyzed_Entity,
                               F1  => G,
+                              Kind => Error_Kind,
                               Tag => "side_effects");
 
                            FA.Function_Side_Effects_Present := True;

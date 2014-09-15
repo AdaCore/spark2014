@@ -1,5 +1,5 @@
-proof_in_legal.adb:16:22: warning: assertion might fail, requires Var = 0
-proof_in_legal.adb:18:14: warning: overflow check might fail
+proof_in_legal.adb:16:22: medium: assertion might fail, requires Var = 0
+proof_in_legal.adb:18:14: medium: overflow check might fail
 proof_in_legal.ads:16:22: info: postcondition proved
 proof_in_illegal.adb:8:43: export "Error_Derived_From_Proof_In" must not depend on Proof_In "Body_Var" (SPARK RM 6.1.4(17))
 proof_in_illegal.adb:9:43: export "Error_Derived_From_Proof_In" must not depend on Proof_In "Var" (SPARK RM 6.1.4(17))

@@ -421,6 +421,9 @@ package SPARK_Util is
    function Is_Pragma (N : Node_Id; Name : Pragma_Id) return Boolean;
    --  Returns whether N is a pragma of the given kind
 
+   function Is_Pragma_Annotate_Gnatprove (N : Node_Id) return Boolean;
+   --  Returns True if N has the form pragma Annotate (Gnatprove,...);
+
    function Is_Pragma_Check (N : Node_Id; Name : Name_Id) return Boolean;
    --  Returns whether N has the form pragma Check (Name, ...)
 

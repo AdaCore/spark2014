@@ -3,9 +3,9 @@ subar.adb:9:04: warning: analyzing unreferenced procedure "Try_B"
 subar.adb:9:14: warning: subprogram "Try_B" has no effect
 subar.adb:13:07: info: precondition proved
 subar.adb:13:10: info: length check proved
-subar.adb:13:10: warning: "Ab" might not be initialized
+subar.adb:13:10: medium: "Ab" might not be initialized
 subar.adb:18:07: info: assertion proved
-subar.adb:18:26: warning: array index check might fail
+subar.adb:18:26: medium: array index check might fail
 subar.adb:22:04: warning: analyzing unreferenced procedure "Try_D"
 subar.adb:22:14: warning: subprogram "Try_D" has no effect
 subar.adb:25:14: info: length check proved
@@ -13,8 +13,8 @@ subar.adb:27:07: info: precondition proved
 subar.adb:30:04: warning: analyzing unreferenced procedure "Try_E"
 subar.adb:30:14: warning: subprogram "Try_E" has no effect
 subar.adb:34:07: info: precondition proved
-subar.adb:34:10: warning: "Ae" might not be initialized
-subar.adb:38:07: warning: range check might fail
+subar.adb:34:10: medium: "Ae" might not be initialized
+subar.adb:38:07: medium: range check might fail
 subar.adb:41:09: info: length check proved
 subar.adb:41:26: info: length check proved
 subar.adb:41:26: info: range check proved
@@ -25,8 +25,8 @@ subar.adb:50:11: info: range check proved
 subar.adb:53:14: info: overflow check proved
 subar.adb:54:11: info: range check proved
 subar.adb:57:14: info: overflow check proved
-subar.adb:59:11: warning: range check might fail
+subar.adb:59:11: medium: range check might fail
 subar.ads:21:14: warning: subprogram "F" has no effect
 subar.ads:24:14: warning: subprogram "G" has no effect
-subar.ads:25:23: warning: array index check might fail
+subar.ads:25:23: medium: array index check might fail
 subar.ads:27:14: warning: subprogram "Local" has no effect

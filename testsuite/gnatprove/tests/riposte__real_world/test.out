@@ -1,9 +1,9 @@
 real_world.adb:11:19: info: postcondition proved
 real_world.adb:44:07: info: assertion proved
 real_world.adb:45:21: info: range check proved
-real_world.adb:56:24: warning: overflow check might fail
-real_world.adb:56:51: warning: overflow check might fail
+real_world.adb:56:24: medium: overflow check might fail
+real_world.adb:56:51: medium: overflow check might fail
 real_world.adb:57:22: info: postcondition proved
-real_world.adb:71:21: warning: overflow check might fail
-real_world.adb:71:48: warning: overflow check might fail
+real_world.adb:71:21: medium: overflow check might fail
+real_world.adb:71:48: medium: overflow check might fail
 real_world.adb:72:19: info: postcondition proved

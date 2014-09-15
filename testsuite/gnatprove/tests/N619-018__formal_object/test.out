@@ -1,5 +1,5 @@
 gen.ads:6:06: warning: postcondition refers only to pre-state
 gen.ads:6:18: info: postcondition proved, in instantiation at user.adb:7
 gen.ads:6:18: info: postcondition proved, in instantiation at user.adb:8
-user.adb:11:19: warning: assertion might fail, requires Gen_X.Get = 0
-user.adb:13:19: warning: assertion might fail, requires Gen_Y.Get = 0
+user.adb:11:19: medium: assertion might fail, requires Gen_X.Get = 0
+user.adb:13:19: medium: assertion might fail, requires Gen_Y.Get = 0

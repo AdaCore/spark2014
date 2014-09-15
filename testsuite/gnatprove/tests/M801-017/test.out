@@ -1,2 +1,2 @@
-foo.adb:8:14: warning: overflow check might fail
-foo.adb:16:14: warning: overflow check might fail
+foo.adb:8:14: medium: overflow check might fail
+foo.adb:16:14: medium: overflow check might fail

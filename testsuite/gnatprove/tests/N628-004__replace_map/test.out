@@ -4,6 +4,6 @@ replacement.adb:8:22: info: precondition proved
 replacement.adb:8:44: info: precondition proved
 replacement.adb:9:22: info: precondition proved
 replacement.adb:9:44: info: precondition proved
-replacement.adb:9:44: warning: assertion might fail, requires Key (D_Old, C) = Key (D, C)
+replacement.adb:9:44: medium: assertion might fail, requires Key (D_Old, C) = Key (D, C)
 replacement.adb:9:61: info: precondition proved
 replacement.ads:19:13: info: precondition proved

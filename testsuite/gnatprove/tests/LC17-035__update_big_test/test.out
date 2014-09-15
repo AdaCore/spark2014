@@ -19,56 +19,56 @@ ar.adb:172:14: info: range check proved
 ar.adb:174:05: info: assertion proved
 ar.adb:178:14: info: range check proved
 ar.adb:237:18: info: range check proved
-ar.adb:241:18: warning: range check might fail
-ar.adb:243:18: warning: range check might fail
+ar.adb:241:18: medium: range check might fail
+ar.adb:243:18: medium: range check might fail
 ar.adb:256:18: info: range check proved
-ar.adb:260:18: warning: range check might fail
-ar.adb:262:18: warning: range check might fail
+ar.adb:260:18: medium: range check might fail
+ar.adb:262:18: medium: range check might fail
 ar.adb:275:18: info: range check proved
-ar.adb:279:18: warning: range check might fail
-ar.adb:281:18: warning: range check might fail
+ar.adb:279:18: medium: range check might fail
+ar.adb:281:18: medium: range check might fail
 ar.adb:294:18: info: range check proved
-ar.adb:298:18: warning: range check might fail
-ar.adb:300:18: warning: range check might fail
+ar.adb:298:18: medium: range check might fail
+ar.adb:300:18: medium: range check might fail
 ar.adb:451:19: info: range check proved
 ar.adb:456:14: info: range check proved
 ar.adb:471:19: info: range check proved
 ar.adb:476:14: info: range check proved
 ar.adb:488:07: warning: unused assignment
-ar.adb:490:28: warning: assertion might fail, requires A = T'update
+ar.adb:490:28: medium: assertion might fail, requires A = T'update
 ar.adb:494:19: info: range check proved
 ar.adb:499:14: info: range check proved
 ar.adb:511:07: warning: unused assignment
-ar.adb:513:28: warning: assertion might fail, requires A = T'update
+ar.adb:513:28: medium: assertion might fail, requires A = T'update
 ar.adb:517:19: info: range check proved
 ar.adb:522:14: info: range check proved
 ar.adb:534:07: warning: unused assignment
 ar.adb:539:19: info: range check proved
-ar.adb:541:05: warning: assertion might fail
+ar.adb:541:05: medium: assertion might fail
 ar.adb:545:14: info: range check proved
 ar.adb:557:07: warning: unused assignment
 ar.adb:562:19: info: range check proved
-ar.adb:564:05: warning: assertion might fail
+ar.adb:564:05: medium: assertion might fail
 ar.adb:568:14: info: range check proved
 ar.adb:751:19: info: range check proved
 ar.adb:756:14: info: range check proved
 ar.adb:771:19: info: range check proved
 ar.adb:776:14: info: range check proved
 ar.adb:788:07: warning: unused assignment
-ar.adb:790:28: warning: assertion might fail, requires A = T'update
+ar.adb:790:28: medium: assertion might fail, requires A = T'update
 ar.adb:794:19: info: range check proved
 ar.adb:799:14: info: range check proved
 ar.adb:811:07: warning: unused assignment
-ar.adb:813:28: warning: assertion might fail, requires A = T'update
+ar.adb:813:28: medium: assertion might fail, requires A = T'update
 ar.adb:817:19: info: range check proved
 ar.adb:822:14: info: range check proved
 ar.adb:834:07: warning: unused assignment
 ar.adb:839:19: info: range check proved
-ar.adb:841:05: warning: assertion might fail
+ar.adb:841:05: medium: assertion might fail
 ar.adb:845:14: info: range check proved
 ar.adb:857:07: warning: unused assignment
 ar.adb:862:19: info: range check proved
-ar.adb:864:05: warning: assertion might fail
+ar.adb:864:05: medium: assertion might fail
 ar.adb:868:14: info: range check proved
 ar.adb:1218:14: info: range check proved
 ar.adb:1228:14: info: range check proved
@@ -96,48 +96,48 @@ ar.ads:152:22: info: postcondition proved
 ar.ads:158:22: info: postcondition proved
 ar.ads:164:22: info: postcondition proved
 ar.ads:169:22: info: postcondition proved
-ar.ads:174:22: warning: postcondition might fail, requires I < IT1'Last and then( (E > ET1'First and then A = A'Old'Update (I => E, I+1 => E-1)) or else (E = ET1'First and then A = A'Old'Update (I => E, I+1 => ET1'Last)) )) or else (I = IT1'Last and then ( (E > ET1'First and then A = A'Old'Update (I => E, IT1'First => E-1)) or else (E = ET1'First and then A = A'Old'update
+ar.ads:174:22: medium: postcondition might fail, requires I < IT1'Last and then( (E > ET1'First and then A = A'Old'Update (I => E, I+1 => E-1)) or else (E = ET1'First and then A = A'Old'Update (I => E, I+1 => ET1'Last)) )) or else (I = IT1'Last and then ( (E > ET1'First and then A = A'Old'Update (I => E, IT1'First => E-1)) or else (E = ET1'First and then A = A'Old'update
 ar.ads:174:99: info: range check proved
 ar.ads:174:106: info: range check proved
 ar.ads:174:170: info: range check proved
 ar.ads:174:287: info: range check proved
 ar.ads:179:22: info: postcondition proved
-ar.ads:184:22: warning: postcondition might fail, requires I < IT1'Last and then ( (E > ET1'First and then A = A'Old'Update (I => E, I+1 => E-1)) or else (E = ET1'First and then A = A'Old'Update (I => E, I+1 => ET1'Last)) )) or else (I = IT1'Last and then ( (E > ET1'First and then A = A'Old'Update (I => E, IT1'First => E-1)) or else (E = ET1'First and then A = A'Old'update
+ar.ads:184:22: medium: postcondition might fail, requires I < IT1'Last and then ( (E > ET1'First and then A = A'Old'Update (I => E, I+1 => E-1)) or else (E = ET1'First and then A = A'Old'Update (I => E, I+1 => ET1'Last)) )) or else (I = IT1'Last and then ( (E > ET1'First and then A = A'Old'Update (I => E, IT1'First => E-1)) or else (E = ET1'First and then A = A'Old'update
 ar.ads:184:100: info: range check proved
 ar.ads:184:107: info: range check proved
 ar.ads:184:171: info: range check proved
 ar.ads:184:288: info: range check proved
 ar.ads:189:22: info: postcondition proved
-ar.ads:194:22: warning: postcondition might fail, requires I < IT1'Last and then ( (E > ET1'First and then A = A'Old'Update (I => E, I+1 => E-1)) or else (E = ET1'First and then A = A'Old'Update (I => E, I+1 => ET1'Last)) )) or else (I = IT1'Last and then ( (E > ET1'First and then A = A'Old'Update (I => E, IT1'First => E-1)) or else (E = ET1'First and then A = A'Old'update
+ar.ads:194:22: medium: postcondition might fail, requires I < IT1'Last and then ( (E > ET1'First and then A = A'Old'Update (I => E, I+1 => E-1)) or else (E = ET1'First and then A = A'Old'Update (I => E, I+1 => ET1'Last)) )) or else (I = IT1'Last and then ( (E > ET1'First and then A = A'Old'Update (I => E, IT1'First => E-1)) or else (E = ET1'First and then A = A'Old'update
 ar.ads:194:100: info: range check proved
 ar.ads:194:107: info: range check proved
 ar.ads:194:171: info: range check proved
 ar.ads:194:288: info: range check proved
-ar.ads:199:22: warning: postcondition might fail
+ar.ads:199:22: medium: postcondition might fail
 ar.ads:204:22: info: postcondition proved
-ar.ads:209:22: warning: postcondition might fail
+ar.ads:209:22: medium: postcondition might fail
 ar.ads:214:22: info: postcondition proved
 ar.ads:219:22: info: postcondition proved
-ar.ads:224:22: warning: postcondition might fail
+ar.ads:224:22: medium: postcondition might fail
 ar.ads:229:22: info: postcondition proved
-ar.ads:234:43: warning: postcondition might fail, requires A(N) = 0
-ar.ads:239:22: warning: postcondition might fail
-ar.ads:244:22: warning: postcondition might fail
+ar.ads:234:43: medium: postcondition might fail, requires A(N) = 0
+ar.ads:239:22: medium: postcondition might fail
+ar.ads:244:22: medium: postcondition might fail
 ar.ads:249:22: info: postcondition proved
-ar.ads:254:43: warning: postcondition might fail, requires A(N) = B(11-N)
-ar.ads:259:22: warning: postcondition might fail
-ar.ads:264:22: warning: postcondition might fail
+ar.ads:254:43: medium: postcondition might fail, requires A(N) = B(11-N)
+ar.ads:259:22: medium: postcondition might fail
+ar.ads:264:22: medium: postcondition might fail
 ar.ads:272:22: info: postcondition proved
 ar.ads:277:22: info: postcondition proved
-ar.ads:282:22: warning: postcondition might fail, requires A = A'Old'update
+ar.ads:282:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:287:22: info: postcondition proved
 ar.ads:293:22: info: postcondition proved
-ar.ads:299:22: warning: postcondition might fail
+ar.ads:299:22: medium: postcondition might fail
 ar.ads:304:22: info: postcondition proved
 ar.ads:309:22: info: postcondition proved
 ar.ads:314:22: info: postcondition proved
 ar.ads:319:22: info: postcondition proved
-ar.ads:324:22: warning: postcondition might fail, requires J < IT2'Last and then ( (E > ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => E-1))) or else (E = ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => ET1'Last))) )) or else (J = IT2'Last and then ( (E > ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => E-1))) or else (E = ET1'First and then A = A'Old'update
+ar.ads:324:22: medium: postcondition might fail, requires J < IT2'Last and then ( (E > ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => E-1))) or else (E = ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => ET1'Last))) )) or else (J = IT2'Last and then ( (E > ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => E-1))) or else (E = ET1'First and then A = A'Old'update
 ar.ads:324:123: info: range check proved
 ar.ads:324:136: info: index check proved
 ar.ads:324:154: info: range check proved
@@ -145,7 +145,7 @@ ar.ads:324:242: info: range check proved
 ar.ads:324:255: info: index check proved
 ar.ads:324:437: info: range check proved
 ar.ads:329:22: info: postcondition proved
-ar.ads:334:22: warning: postcondition might fail, requires J < IT2'Last and then ( (E > ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => E-1))) or else (E = ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => ET1'Last))) )) or else (J = IT2'Last and then ( (E > ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => E-1))) or else (E = ET1'First and then A = A'Old'update
+ar.ads:334:22: medium: postcondition might fail, requires J < IT2'Last and then ( (E > ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => E-1))) or else (E = ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => ET1'Last))) )) or else (J = IT2'Last and then ( (E > ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => E-1))) or else (E = ET1'First and then A = A'Old'update
 ar.ads:334:123: info: range check proved
 ar.ads:334:136: info: index check proved
 ar.ads:334:154: info: range check proved
@@ -153,7 +153,7 @@ ar.ads:334:242: info: range check proved
 ar.ads:334:255: info: index check proved
 ar.ads:334:437: info: range check proved
 ar.ads:339:22: info: postcondition proved
-ar.ads:344:22: warning: postcondition might fail, requires J < IT2'Last and then ( (E > ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => E-1))) or else (E = ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => ET1'Last))) )) or else (J = IT2'Last and then ( (E > ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => E-1))) or else (E = ET1'First and then A = A'Old'update
+ar.ads:344:22: medium: postcondition might fail, requires J < IT2'Last and then ( (E > ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => E-1))) or else (E = ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => ET1'Last))) )) or else (J = IT2'Last and then ( (E > ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => E-1))) or else (E = ET1'First and then A = A'Old'update
 ar.ads:344:123: info: range check proved
 ar.ads:344:136: info: index check proved
 ar.ads:344:154: info: range check proved
@@ -169,21 +169,21 @@ ar.ads:376:22: info: postcondition proved
 ar.ads:381:22: info: postcondition proved
 ar.ads:389:22: info: postcondition proved
 ar.ads:394:22: info: postcondition proved
-ar.ads:399:22: warning: postcondition might fail, requires A = A'Old'update
+ar.ads:399:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:404:22: info: postcondition proved
-ar.ads:410:22: warning: postcondition might fail
-ar.ads:416:22: warning: postcondition might fail, requires A = A'Old'update
+ar.ads:410:22: medium: postcondition might fail
+ar.ads:416:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:421:22: info: postcondition proved
 ar.ads:426:22: info: postcondition proved
 ar.ads:431:22: info: postcondition proved
 ar.ads:436:22: info: postcondition proved
 ar.ads:441:22: info: postcondition proved
-ar.ads:446:22: warning: postcondition might fail, requires A = A'Old'update
+ar.ads:446:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:451:16: info: postcondition proved
 ar.ads:456:22: info: postcondition proved
-ar.ads:461:22: warning: postcondition might fail, requires A = A'Old'update
+ar.ads:461:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:466:22: info: postcondition proved
-ar.ads:471:22: warning: postcondition might fail, requires K < IT3'Last and then ( (E > ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => E-1)))) or else (E = ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => ET1'Last)))) )) or else (K = IT3'Last and then ( (E > ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), IT3'First => A'Old(IT3'First)'Update (J => A'Old(IT3'First)(J)'Update (I => E-1)))) or else (E = ET1'First and then A = A'Old'update
+ar.ads:471:22: medium: postcondition might fail, requires K < IT3'Last and then ( (E > ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => E-1)))) or else (E = ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => ET1'Last)))) )) or else (K = IT3'Last and then ( (E > ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), IT3'First => A'Old(IT3'First)'Update (J => A'Old(IT3'First)(J)'Update (I => E-1)))) or else (E = ET1'First and then A = A'Old'update
 ar.ads:471:151: info: range check proved
 ar.ads:471:164: info: index check proved
 ar.ads:471:188: info: index check proved
@@ -193,7 +193,7 @@ ar.ads:471:339: info: index check proved
 ar.ads:471:363: info: index check proved
 ar.ads:471:608: info: range check proved
 ar.ads:476:22: info: postcondition proved
-ar.ads:481:22: warning: postcondition might fail, requires K < IT3'Last and then ( (E > ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => E-1)))) or else (E = ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => ET1'Last)))) )) or else (K = IT3'Last and then ( (E > ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), IT3'First => A'Old(IT3'First)'Update (J => A'Old(IT3'First)(J)'Update (I => E-1)))) or else (E = ET1'First and then A = A'Old'update
+ar.ads:481:22: medium: postcondition might fail, requires K < IT3'Last and then ( (E > ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => E-1)))) or else (E = ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => ET1'Last)))) )) or else (K = IT3'Last and then ( (E > ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), IT3'First => A'Old(IT3'First)'Update (J => A'Old(IT3'First)(J)'Update (I => E-1)))) or else (E = ET1'First and then A = A'Old'update
 ar.ads:481:151: info: range check proved
 ar.ads:481:164: info: index check proved
 ar.ads:481:188: info: index check proved
@@ -203,7 +203,7 @@ ar.ads:481:339: info: index check proved
 ar.ads:481:363: info: index check proved
 ar.ads:481:608: info: range check proved
 ar.ads:486:22: info: postcondition proved
-ar.ads:491:22: warning: postcondition might fail, requires K < IT3'Last and then( (E > ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => E-1)))) or else (E = ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => ET1'Last)))) )) or else (K = IT3'Last and then ( (E > ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), IT3'First => A'Old(IT3'First)'Update (J => A'Old(IT3'First)(J)'Update (I => E-1)))) or else (E = ET1'First and then A = A'Old'update
+ar.ads:491:22: medium: postcondition might fail, requires K < IT3'Last and then( (E > ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => E-1)))) or else (E = ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => ET1'Last)))) )) or else (K = IT3'Last and then ( (E > ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), IT3'First => A'Old(IT3'First)'Update (J => A'Old(IT3'First)(J)'Update (I => E-1)))) or else (E = ET1'First and then A = A'Old'update
 ar.ads:491:150: info: range check proved
 ar.ads:491:163: info: index check proved
 ar.ads:491:187: info: index check proved
@@ -218,35 +218,35 @@ ar.ads:508:22: info: postcondition proved
 ar.ads:513:22: info: postcondition proved
 ar.ads:518:22: info: postcondition proved
 ar.ads:523:22: info: postcondition proved
-ar.ads:528:22: warning: postcondition might fail, requires A = A'Old'update
+ar.ads:528:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:533:22: info: postcondition proved
 ar.ads:538:22: info: postcondition proved
-ar.ads:544:22: warning: postcondition might fail
-ar.ads:550:22: warning: postcondition might fail
+ar.ads:544:22: medium: postcondition might fail
+ar.ads:550:22: medium: postcondition might fail
 ar.ads:555:22: info: postcondition proved
 ar.ads:560:22: info: postcondition proved
 ar.ads:566:22: info: postcondition proved
 ar.ads:574:22: info: postcondition proved
 ar.ads:579:22: info: postcondition proved
-ar.ads:584:22: warning: postcondition might fail, requires A = A'Old'update
+ar.ads:584:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:590:22: info: postcondition proved
-ar.ads:597:22: warning: postcondition might fail
-ar.ads:604:22: warning: postcondition might fail, requires A = A'Old'update
+ar.ads:597:22: medium: postcondition might fail
+ar.ads:604:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:609:22: info: postcondition proved
 ar.ads:614:22: info: postcondition proved
 ar.ads:619:22: info: postcondition proved
-ar.ads:625:22: warning: postcondition might fail, requires A = A'Old'update
+ar.ads:625:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:630:22: info: postcondition proved
 ar.ads:636:22: info: postcondition proved
 ar.ads:642:22: info: postcondition proved
 ar.ads:647:22: info: postcondition proved
 ar.ads:653:22: info: postcondition proved
 ar.ads:659:22: info: postcondition proved
-ar.ads:665:22: warning: postcondition might fail, requires A = A'Old'update
+ar.ads:665:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:671:22: info: postcondition proved
 ar.ads:676:22: info: postcondition proved
-ar.ads:682:22: warning: postcondition might fail
-ar.ads:688:22: warning: postcondition might fail, requires A = A'Old'update
+ar.ads:682:22: medium: postcondition might fail
+ar.ads:688:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:693:22: info: postcondition proved
 ar.ads:701:22: info: postcondition proved
 ar.ads:706:22: info: postcondition proved
@@ -290,16 +290,16 @@ ar.ads:884:22: info: postcondition proved
 ar.ads:889:22: info: postcondition proved
 ar.ads:894:22: info: postcondition proved
 ar.ads:899:22: info: postcondition proved
-ar.ads:904:22: warning: postcondition might fail, requires R = R'Old'update
+ar.ads:904:22: medium: postcondition might fail, requires R = R'Old'update
 ar.ads:909:22: info: postcondition proved
 ar.ads:914:22: info: postcondition proved
-ar.ads:919:22: warning: postcondition might fail, requires R = Rec3TRec3T'((F3 => Rec2T'((F2 => F), (G2 => Rec1T'(F1 => E), (G1 => ...............)), ...)), ...)
-ar.ads:925:22: warning: postcondition might fail, requires R = R'Old'update
+ar.ads:919:22: medium: postcondition might fail, requires R = Rec3TRec3T'((F3 => Rec2T'((F2 => F), (G2 => Rec1T'(F1 => E), (G1 => ...............)), ...)), ...)
+ar.ads:925:22: medium: postcondition might fail, requires R = R'Old'update
 ar.ads:925:106: info: range check proved
 ar.ads:925:128: info: range check proved
 ar.ads:931:22: info: postcondition proved
-ar.ads:937:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:943:22: warning: postcondition might fail, requires R = Rec3TRec3T'((F3 => Rec2T'((F2 => R'old.F3.F2), (G2 => Rec1T'((F1 => .......), ...)), ...)), ...)
+ar.ads:937:22: medium: postcondition might fail, requires R = R'Old'update
+ar.ads:943:22: medium: postcondition might fail, requires R = Rec3TRec3T'((F3 => Rec2T'((F2 => R'old.F3.F2), (G2 => Rec1T'((F1 => .......), ...)), ...)), ...)
 ar.ads:948:22: info: postcondition proved
 ar.ads:953:22: info: postcondition proved
 ar.ads:958:22: info: postcondition proved
@@ -314,40 +314,40 @@ ar.ads:998:22: info: postcondition proved
 ar.ads:1003:22: info: postcondition proved
 ar.ads:1008:22: info: postcondition proved
 ar.ads:1013:22: info: postcondition proved
-ar.ads:1021:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1026:22: warning: postcondition might fail
+ar.ads:1021:22: medium: postcondition might fail, requires R = R'Old'update
+ar.ads:1026:22: medium: postcondition might fail
 ar.ads:1031:22: info: postcondition proved
-ar.ads:1036:22: warning: postcondition might fail, requires R = Rec4TRec4T'((F4 => Rec3T'((F3 => Rec2T'((F2 => R'old.F4.F3.F2), (... => ...), ...)), ...)), ...)
-ar.ads:1041:22: warning: postcondition might fail, requires R = R'Old'update
+ar.ads:1036:22: medium: postcondition might fail, requires R = Rec4TRec4T'((F4 => Rec3T'((F3 => Rec2T'((F2 => R'old.F4.F3.F2), (... => ...), ...)), ...)), ...)
+ar.ads:1041:22: medium: postcondition might fail, requires R = R'Old'update
 ar.ads:1046:22: info: postcondition proved
 ar.ads:1051:22: info: postcondition proved
-ar.ads:1056:22: warning: postcondition might fail, requires R = Rec4TRec4T'((F4 => Rec3T'((F3 => Rec2T'((F2 => R'old.F4.F3.F2), (... => ...), ...)), ...)), ...)
-ar.ads:1062:22: warning: postcondition might fail, requires R = R'Old'update
+ar.ads:1056:22: medium: postcondition might fail, requires R = Rec4TRec4T'((F4 => Rec3T'((F3 => Rec2T'((F2 => R'old.F4.F3.F2), (... => ...), ...)), ...)), ...)
+ar.ads:1062:22: medium: postcondition might fail, requires R = R'Old'update
 ar.ads:1062:100: info: range check proved
 ar.ads:1068:22: info: postcondition proved
-ar.ads:1074:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1080:22: warning: postcondition might fail, requires R = Rec4TRec4T'((F4 => Rec3T'((F3 => Rec2T'((F2 => R'old.F4.F3.F2), (... => ...), ...)), ...)), ...)
-ar.ads:1086:22: warning: postcondition might fail, requires R = R'Old'update
+ar.ads:1074:22: medium: postcondition might fail, requires R = R'Old'update
+ar.ads:1080:22: medium: postcondition might fail, requires R = Rec4TRec4T'((F4 => Rec3T'((F3 => Rec2T'((F2 => R'old.F4.F3.F2), (... => ...), ...)), ...)), ...)
+ar.ads:1086:22: medium: postcondition might fail, requires R = R'Old'update
 ar.ads:1086:100: info: range check proved
 ar.ads:1092:22: info: postcondition proved
-ar.ads:1098:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1104:22: warning: postcondition might fail, requires R = Rec4TRec4T'((F4 => Rec3T'((F3 => Rec2T'((F2 => R'old.F4.F3.F2), (... => ...), ...)), ...)), ...)
-ar.ads:1109:22: warning: postcondition might fail, requires R = R'Old'update
+ar.ads:1098:22: medium: postcondition might fail, requires R = R'Old'update
+ar.ads:1104:22: medium: postcondition might fail, requires R = Rec4TRec4T'((F4 => Rec3T'((F3 => Rec2T'((F2 => R'old.F4.F3.F2), (... => ...), ...)), ...)), ...)
+ar.ads:1109:22: medium: postcondition might fail, requires R = R'Old'update
 ar.ads:1114:22: info: postcondition proved
-ar.ads:1119:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1124:22: warning: postcondition might fail, requires R = Rec4TRec4T'((F4 => Rec3T'((F3 => Rec2T'((F2 => B.F2), (G2 => Rec1T'((... => ...), ...)), ...)), ...)), ...)
-ar.ads:1132:22: warning: postcondition might fail, requires R = R'Old'update
+ar.ads:1119:22: medium: postcondition might fail, requires R = R'Old'update
+ar.ads:1124:22: medium: postcondition might fail, requires R = Rec4TRec4T'((F4 => Rec3T'((F3 => Rec2T'((F2 => B.F2), (G2 => Rec1T'((... => ...), ...)), ...)), ...)), ...)
+ar.ads:1132:22: medium: postcondition might fail, requires R = R'Old'update
 ar.ads:1137:22: info: postcondition proved
-ar.ads:1142:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1147:22: warning: postcondition might fail, requires R = Rec5TRec5T'((F5 => Rec2T'(F2 => R'old.F5.F2), (G2 => A), (H2 => ...'old........)), ..., ...)
-ar.ads:1152:22: warning: postcondition might fail, requires R = R'Old'update
+ar.ads:1142:22: medium: postcondition might fail, requires R = R'Old'update
+ar.ads:1147:22: medium: postcondition might fail, requires R = Rec5TRec5T'((F5 => Rec2T'(F2 => R'old.F5.F2), (G2 => A), (H2 => ...'old........)), ..., ...)
+ar.ads:1152:22: medium: postcondition might fail, requires R = R'Old'update
 ar.ads:1157:22: info: postcondition proved
-ar.ads:1162:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1167:22: warning: postcondition might fail, requires R = Rec5TRec5T'((F5 => Rec2T'(F2 => R'old.F5.F2), (G2 => R'old.H5), (H2 => ...)), ..., ...)
-ar.ads:1172:22: warning: postcondition might fail, requires R = R'Old'update
+ar.ads:1162:22: medium: postcondition might fail, requires R = R'Old'update
+ar.ads:1167:22: medium: postcondition might fail, requires R = Rec5TRec5T'((F5 => Rec2T'(F2 => R'old.F5.F2), (G2 => R'old.H5), (H2 => ...)), ..., ...)
+ar.ads:1172:22: medium: postcondition might fail, requires R = R'Old'update
 ar.ads:1177:22: info: postcondition proved
-ar.ads:1182:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1187:22: warning: postcondition might fail, requires R = Rec5TRec5T'((F5 => Rec2T'(F2 => R'old.F5.F2), (G2 => R'old.H5), (H2 => ...)), ..., ...)
+ar.ads:1182:22: medium: postcondition might fail, requires R = R'Old'update
+ar.ads:1187:22: medium: postcondition might fail, requires R = Rec5TRec5T'((F5 => Rec2T'(F2 => R'old.F5.F2), (G2 => R'old.H5), (H2 => ...)), ..., ...)
 ar.ads:1195:22: info: postcondition proved
 ar.ads:1200:22: info: postcondition proved
 ar.ads:1205:22: info: postcondition proved
@@ -357,8 +357,8 @@ ar.ads:1222:22: info: postcondition proved
 ar.ads:1228:22: info: postcondition proved
 ar.ads:1234:22: info: postcondition proved
 ar.ads:1239:22: info: postcondition proved
-ar.ads:1244:22: warning: postcondition might fail
-ar.ads:1249:22: warning: postcondition might fail
+ar.ads:1244:22: medium: postcondition might fail
+ar.ads:1249:22: medium: postcondition might fail
 ar.ads:1254:22: info: postcondition proved
 ar.ads:1259:22: info: postcondition proved
 ar.ads:1264:22: info: postcondition proved
@@ -369,25 +369,25 @@ ar.ads:1284:22: info: postcondition proved
 ar.ads:1289:22: info: postcondition proved
 ar.ads:1294:22: info: postcondition proved
 ar.ads:1302:22: info: postcondition proved
-ar.ads:1307:22: warning: postcondition might fail
+ar.ads:1307:22: medium: postcondition might fail
 ar.ads:1312:22: info: postcondition proved
 ar.ads:1317:22: info: postcondition proved
 ar.ads:1322:22: info: postcondition proved
-ar.ads:1327:22: warning: postcondition might fail
-ar.ads:1332:22: warning: postcondition might fail, requires A = A'Old'update
+ar.ads:1327:22: medium: postcondition might fail
+ar.ads:1332:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:1337:22: info: postcondition proved
 ar.ads:1345:22: info: postcondition proved
-ar.ads:1350:22: warning: postcondition might fail
+ar.ads:1350:22: medium: postcondition might fail
 ar.ads:1355:22: info: postcondition proved
 ar.ads:1360:22: info: postcondition proved
-ar.ads:1366:22: warning: postcondition might fail
-ar.ads:1372:22: warning: postcondition might fail
-ar.ads:1378:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:1384:22: warning: postcondition might fail
-ar.ads:1392:22: warning: postcondition might fail
-ar.ads:1397:22: warning: postcondition might fail
-ar.ads:1402:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:1407:22: warning: postcondition might fail
+ar.ads:1366:22: medium: postcondition might fail
+ar.ads:1372:22: medium: postcondition might fail
+ar.ads:1378:22: medium: postcondition might fail, requires A = A'Old'update
+ar.ads:1384:22: medium: postcondition might fail
+ar.ads:1392:22: medium: postcondition might fail
+ar.ads:1397:22: medium: postcondition might fail
+ar.ads:1402:22: medium: postcondition might fail, requires A = A'Old'update
+ar.ads:1407:22: medium: postcondition might fail
 ar.ads:1415:22: info: postcondition proved
 ar.ads:1420:22: info: postcondition proved
 ar.ads:1425:22: info: postcondition proved
@@ -409,70 +409,70 @@ ar.ads:1503:22: info: postcondition proved
 ar.ads:1508:22: info: postcondition proved
 ar.ads:1516:22: info: postcondition proved
 ar.ads:1521:22: info: postcondition proved
-ar.ads:1526:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1531:22: warning: postcondition might fail
+ar.ads:1526:22: medium: postcondition might fail, requires R = R'Old'update
+ar.ads:1531:22: medium: postcondition might fail
 ar.ads:1536:22: info: postcondition proved
-ar.ads:1542:22: warning: postcondition might fail
-ar.ads:1548:22: warning: postcondition might fail
+ar.ads:1542:22: medium: postcondition might fail
+ar.ads:1548:22: medium: postcondition might fail
 ar.ads:1553:22: info: postcondition proved
-ar.ads:1558:22: warning: postcondition might fail
-ar.ads:1563:22: warning: postcondition might fail, requires R = R'Old'update
+ar.ads:1558:22: medium: postcondition might fail
+ar.ads:1563:22: medium: postcondition might fail, requires R = R'Old'update
 ar.ads:1563:73: info: range check proved
 ar.ads:1571:22: info: postcondition proved
-ar.ads:1576:22: warning: postcondition might fail
-ar.ads:1581:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1586:22: warning: postcondition might fail
-ar.ads:1592:22: warning: postcondition might fail
-ar.ads:1598:22: warning: postcondition might fail
-ar.ads:1604:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1610:22: warning: postcondition might fail
+ar.ads:1576:22: medium: postcondition might fail
+ar.ads:1581:22: medium: postcondition might fail, requires R = R'Old'update
+ar.ads:1586:22: medium: postcondition might fail
+ar.ads:1592:22: medium: postcondition might fail
+ar.ads:1598:22: medium: postcondition might fail
+ar.ads:1604:22: medium: postcondition might fail, requires R = R'Old'update
+ar.ads:1610:22: medium: postcondition might fail
 ar.ads:1618:22: info: postcondition proved
 ar.ads:1623:22: info: postcondition proved
-ar.ads:1628:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1633:22: warning: postcondition might fail
+ar.ads:1628:22: medium: postcondition might fail, requires R = R'Old'update
+ar.ads:1633:22: medium: postcondition might fail
 ar.ads:1641:22: info: postcondition proved
 ar.ads:1646:22: info: postcondition proved
-ar.ads:1651:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:1656:22: warning: postcondition might fail, requires A = A'Old'update
+ar.ads:1651:22: medium: postcondition might fail, requires A = A'Old'update
+ar.ads:1656:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:1661:22: info: postcondition proved
-ar.ads:1667:22: warning: postcondition might fail
-ar.ads:1673:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:1679:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:1685:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:1691:22: warning: postcondition might fail, requires A = A'Old'update
+ar.ads:1667:22: medium: postcondition might fail
+ar.ads:1673:22: medium: postcondition might fail, requires A = A'Old'update
+ar.ads:1679:22: medium: postcondition might fail, requires A = A'Old'update
+ar.ads:1685:22: medium: postcondition might fail, requires A = A'Old'update
+ar.ads:1691:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:1697:22: info: postcondition proved
-ar.ads:1703:22: warning: postcondition might fail
-ar.ads:1709:22: warning: postcondition might fail, requires A = B'update
-ar.ads:1715:22: warning: postcondition might fail, requires A = B'update
+ar.ads:1703:22: medium: postcondition might fail
+ar.ads:1709:22: medium: postcondition might fail, requires A = B'update
+ar.ads:1715:22: medium: postcondition might fail, requires A = B'update
 ar.ads:1723:22: info: postcondition proved
 ar.ads:1728:22: info: postcondition proved
-ar.ads:1733:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:1738:22: warning: postcondition might fail, requires A = A'Old'update
+ar.ads:1733:22: medium: postcondition might fail, requires A = A'Old'update
+ar.ads:1738:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:1743:22: info: postcondition proved
-ar.ads:1748:22: warning: postcondition might fail
-ar.ads:1753:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:1758:22: warning: postcondition might fail, requires A = A'Old'update
+ar.ads:1748:22: medium: postcondition might fail
+ar.ads:1753:22: medium: postcondition might fail, requires A = A'Old'update
+ar.ads:1758:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:1766:22: info: postcondition proved
 ar.ads:1771:22: info: postcondition proved
-ar.ads:1776:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1781:22: warning: postcondition might fail, requires R = RofAofR1RofAofR1'(A1 => R'old.A1'update), (B1 => R'old.B1), (C1 => R'old.C1)
-ar.ads:1786:22: warning: postcondition might fail
-ar.ads:1791:22: warning: postcondition might fail
-ar.ads:1796:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1801:22: warning: postcondition might fail, requires R = RofAofR1RofAofR1'(A1 => R'old.A1'update), (B1 => true), (C1 => R'old.C1)
-ar.ads:1809:22: warning: postcondition might fail
-ar.ads:1814:22: warning: postcondition might fail
-ar.ads:1819:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1824:22: warning: postcondition might fail, requires R = RofAofR2RofAofR2'(A2 => R'old.A2), (B2 => R'old.B2'update)
-ar.ads:1829:22: warning: postcondition might fail
-ar.ads:1835:22: warning: postcondition might fail
-ar.ads:1841:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1847:22: warning: postcondition might fail, requires R = RofAofR2RofAofR2'(A2 => I), (B2 => R'old.B2'update)
+ar.ads:1776:22: medium: postcondition might fail, requires R = R'Old'update
+ar.ads:1781:22: medium: postcondition might fail, requires R = RofAofR1RofAofR1'(A1 => R'old.A1'update), (B1 => R'old.B1), (C1 => R'old.C1)
+ar.ads:1786:22: medium: postcondition might fail
+ar.ads:1791:22: medium: postcondition might fail
+ar.ads:1796:22: medium: postcondition might fail, requires R = R'Old'update
+ar.ads:1801:22: medium: postcondition might fail, requires R = RofAofR1RofAofR1'(A1 => R'old.A1'update), (B1 => true), (C1 => R'old.C1)
+ar.ads:1809:22: medium: postcondition might fail
+ar.ads:1814:22: medium: postcondition might fail
+ar.ads:1819:22: medium: postcondition might fail, requires R = R'Old'update
+ar.ads:1824:22: medium: postcondition might fail, requires R = RofAofR2RofAofR2'(A2 => R'old.A2), (B2 => R'old.B2'update)
+ar.ads:1829:22: medium: postcondition might fail
+ar.ads:1835:22: medium: postcondition might fail
+ar.ads:1841:22: medium: postcondition might fail, requires R = R'Old'update
+ar.ads:1847:22: medium: postcondition might fail, requires R = RofAofR2RofAofR2'(A2 => I), (B2 => R'old.B2'update)
 ar.ads:1855:22: info: postcondition proved
-ar.ads:1860:22: warning: postcondition might fail
-ar.ads:1865:22: warning: postcondition might fail, requires A = A'Old'update
-ar.ads:1870:22: warning: postcondition might fail, requires A(I) = RofAofR1RofAofR1'(A1 => A'old (I).A1'update), (B1 => A'old (I).B1), (C1 => ... (...)....)
+ar.ads:1860:22: medium: postcondition might fail
+ar.ads:1865:22: medium: postcondition might fail, requires A = A'Old'update
+ar.ads:1870:22: medium: postcondition might fail, requires A(I) = RofAofR1RofAofR1'(A1 => A'old (I).A1'update), (B1 => A'old (I).B1), (C1 => ... (...)....)
 ar.ads:1878:22: info: postcondition proved
 ar.ads:1883:22: info: postcondition proved
-ar.ads:1888:22: warning: postcondition might fail, requires R = R'Old'update
-ar.ads:1893:22: warning: postcondition might fail, requires R = RofAofRofARofAofRofA'(D1 => R'old.D1'update), (E1 => R'old.E1)
+ar.ads:1888:22: medium: postcondition might fail, requires R = R'Old'update
+ar.ads:1893:22: medium: postcondition might fail, requires R = RofAofRofARofAofRofA'(D1 => R'old.D1'update), (E1 => R'old.E1)

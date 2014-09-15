@@ -31,6 +31,25 @@ with Types;                 use Types;
 
 package Flow_Error_Messages is
 
+   type Msg_Kind is
+     (Error_Kind,
+      Warning_Kind,
+      Info_Kind,
+      High_Check_Kind,
+      Medium_Check_Kind,
+      Low_Check_Kind);
+
+   subtype Check_Kind is Msg_Kind range High_Check_Kind .. Low_Check_Kind;
+
+   --  describes the kinds of messages issued by gnat2why.
+   --  * Errors may be issued whenever a SPARK legality issue is encountered.
+   --    This will happen only in SPARK checking mode and flow analysis.
+   --  * Warnings may be issued for suspicious situations (e.g. unused
+   --    statement), or where the tool makes assumptions.
+   --  * Info messages are mainly for proved checks
+   --  * check messages are for unproved VCs, and soundness-related flow
+   --    analysis messages. Checks come with a priority low, medium or high.
+
    Found_Flow_Error : Boolean := False;
    --  This boolean becomes True if we find a flow error or if we find a
    --  flow warning while Warning_Mode = Treat_As_Error.
@@ -47,13 +66,13 @@ package Flow_Error_Messages is
    procedure Error_Msg_Flow
      (FA        : Flow_Analysis_Graphs;
       Msg       : String;
+      Kind      : Msg_Kind;
       N         : Node_Id;
       F1        : Flow_Id               := Null_Flow_Id;
       F2        : Flow_Id               := Null_Flow_Id;
       Tag       : String                := "";
       SRM_Ref   : String                := "";
       Tracefile : String                := "";
-      Warning   : Boolean               := False;
       Vertex    : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex)
    with Pre => (if Present (F2) then Present (F1));
    --  Output a message attached to the given node with a substitution using F1

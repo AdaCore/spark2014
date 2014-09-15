@@ -7,5 +7,5 @@ dyn_arrays.ads:9:34: info: overflow check proved
 dyn_arrays.ads:9:45: info: index check proved
 dyn_arrays.ads:9:45: info: overflow check proved
 dyn_arrays.ads:12:51: info: overflow check proved
-dyn_arrays.ads:14:40: warning: postcondition might fail, requires To (I) = From (I)
+dyn_arrays.ads:14:40: medium: postcondition might fail, requires To (I) = From (I)
 dyn_arrays.ads:14:44: info: index check proved

@@ -1588,6 +1588,17 @@ package body SPARK_Util is
      (Nkind (N) = N_Pragma
        and then Get_Pragma_Id (Pragma_Name (N)) = Name);
 
+   ----------------------------------
+   -- Is_Pragma_Annotate_Gnatprove --
+   ----------------------------------
+
+   function Is_Pragma_Annotate_Gnatprove (N : Node_Id) return Boolean is
+     (Is_Pragma (N, Pragma_Annotate)
+        and then
+      Get_Name_String
+        (Chars (Get_Pragma_Arg (First (Pragma_Argument_Associations (N)))))
+      = "gnatprove");
+
    ---------------------
    -- Is_Pragma_Check --
    ---------------------

@@ -1,2 +1,2 @@
-refined_depends_legal.adb:24:20: warning: overflow check might fail
-refined_depends_legal.adb:25:20: warning: overflow check might fail
+refined_depends_legal.adb:24:20: medium: overflow check might fail
+refined_depends_legal.adb:25:20: medium: overflow check might fail

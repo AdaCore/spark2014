@@ -1,3 +1,3 @@
-slice_test_3.adb:13:21: warning: length check might fail
+slice_test_3.adb:13:21: medium: length check might fail
 slice_test_3.adb:14:12: info: length check proved
 slice_test_3.adb:14:12: info: range check proved

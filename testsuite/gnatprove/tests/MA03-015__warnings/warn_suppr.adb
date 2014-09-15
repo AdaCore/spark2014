@@ -4,10 +4,8 @@ package body Warn_Suppr is
       Z, K : Integer := 0;
    begin
       Z := X + Y;
-      pragma Warnings(Off, "overflow check",
-                      Reason =>"deliberately ignored");
+      pragma Annotate(Gnatprove, Intentional, "overflow check", "deliberately ignored");
       K := X * Y;
-      pragma Warnings(On, "overflow check");
       Z := Z + K;
    end P;
 

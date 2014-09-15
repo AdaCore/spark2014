@@ -1,8 +1,4 @@
-test_01.adb:4:32: warning: "Pkg_A.State" might not be initialized after elaboration of main program "Test_01"
-test_02.adb:7:09: "Pkg_A.State" is not initialized
+test_01.adb:4:32: medium: "Pkg_A.State" might not be initialized after elaboration of main program "Test_01"
+test_02.adb:7:09: high: "Pkg_A.State" is not initialized
 test_05.adb:4:32: warning: unused initial value of "Pkg_B.State"
-test_07.adb:4:32: warning: "State" might not be initialized after elaboration of main program "Test_07"
-   compilation of test_02.adb failed
-
-
-gnatprove: error during analysis of data and information flow
+test_07.adb:4:32: medium: "State" might not be initialized after elaboration of main program "Test_07"

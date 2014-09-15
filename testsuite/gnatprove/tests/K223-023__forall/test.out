@@ -1,2 +1,2 @@
 forall.ads:6:20: info: postcondition proved
-forall.ads:10:20: warning: postcondition might fail, requires Has_Zero'Result = 0
+forall.ads:10:20: medium: postcondition might fail, requires Has_Zero'Result = 0

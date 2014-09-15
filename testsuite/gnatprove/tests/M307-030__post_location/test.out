@@ -1,1 +1,1 @@
-p.adb:3:14: warning: postcondition might fail
+p.adb:3:14: medium: postcondition might fail

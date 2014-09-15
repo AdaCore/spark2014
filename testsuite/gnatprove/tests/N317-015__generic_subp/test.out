@@ -1,1 +1,1 @@
-opers.adb:7:16: warning: overflow check might fail, in instantiation at opers.adb:10
+opers.adb:7:16: medium: overflow check might fail, in instantiation at opers.adb:10

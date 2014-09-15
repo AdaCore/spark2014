@@ -2,7 +2,7 @@ update_examples.ads:23:19: info: postcondition proved
 update_examples.ads:30:19: info: postcondition proved
 update_examples.ads:38:19: info: postcondition proved
 update_examples.ads:54:19: info: postcondition proved
-update_examples.ads:69:08: warning: postcondition might fail, requires NA = NA'Old'update
+update_examples.ads:69:08: medium: postcondition might fail, requires NA = NA'Old'update
 loop_var_loop_invar.adb:8:07: info: loop invariant initialization proved
 loop_var_loop_invar.adb:8:07: info: loop invariant preservation proved
 loop_var_loop_invar.adb:8:39: info: overflow check proved
@@ -29,11 +29,11 @@ f.adb:13:26: info: range check proved
 f.adb:13:37: info: index check proved
 f.adb:13:37: info: overflow check proved
 f.adb:21:04: info: assertion proved
-f.adb:21:41: warning: "Control_Char" might not be initialized
-f.adb:34:12: warning: "Control_Char" might not be initialized
-param_1_illegal.adb:5:28: warning: "X" might not be initialized in "Param_1_Illegal"
+f.adb:21:41: medium: "Control_Char" might not be initialized
+f.adb:34:12: medium: "Control_Char" might not be initialized
+param_1_illegal.adb:5:28: medium: "X" might not be initialized in "Param_1_Illegal"
 param_1_illegal.adb:9:10: info: index check proved
-param_1_illegal.adb:9:13: warning: "X" might not be initialized
+param_1_illegal.adb:9:13: medium: "X" might not be initialized
 param_1_legal.adb:7:10: info: index check proved
 anti_aliasing.adb:62:16: writable actual for "X" overlaps with actual for "Y"
    compilation of anti_aliasing.adb failed
@@ -45,7 +45,7 @@ stacks_1.adb:16:27: info: refined post proved
 stacks_1.adb:17:44: info: range check proved
 stacks_1.adb:23:30: info: range check proved
 stacks_1.adb:24:18: info: index check proved
-stacks_1.adb:28:27: warning: refined postcondition might fail
+stacks_1.adb:28:27: medium: refined postcondition might fail
 stacks_1.adb:34:33: info: range check proved
 stacks_1.adb:38:64: info: index check proved
 stacks_1.ads:14:19: info: postcondition proved
@@ -55,25 +55,23 @@ stacks_2.adb:15:29: info: refined post proved
 stacks_2.adb:25:29: info: refined post proved
 stacks_2.adb:34:29: info: refined post proved
 stacks_2.adb:35:61: info: range check proved
-stacks_2.adb:40:30: warning: range check might fail
+stacks_2.adb:40:30: medium: range check might fail
 stacks_2.adb:41:17: info: index check proved
 stacks_2.adb:46:29: info: refined post proved
-stacks_2.adb:51:30: warning: range check might fail
-stacks_2.adb:54:46: warning: array index check might fail
-stacks_2.ads:17:21: warning: postcondition might fail, requires not (Is_Empty)
-stacks_2.ads:21:16: warning: postcondition might fail, requires not (Is_Full)
-externals.adb:54:04: "Out_Reg" is not written in "Externals"
-externals.adb:76:41: warning: "Out_Reg" might not be written
+stacks_2.adb:51:30: medium: range check might fail
+stacks_2.adb:54:46: medium: array index check might fail
+stacks_2.ads:17:21: medium: postcondition might fail, requires not (Is_Empty)
+stacks_2.ads:21:16: medium: postcondition might fail, requires not (Is_Full)
+externals.adb:36:31: medium: overflow check might fail
+externals.adb:36:38: medium: overflow check might fail
+externals.adb:54:04: high: "Out_Reg" is not written in "Externals"
+externals.adb:76:41: medium: "Out_Reg" might not be written
 externals.adb:91:20: warning: unused assignment
 externals.adb:94:13: warning: statement has no effect
-   compilation of externals.adb failed
-
-
-gnatprove: error during flow analysis and proof
-inter_unit_elaboration_examples.adb:8:14: warning: overflow check might fail
-intra_unit_elaboration_order_examples.adb:3:50: warning: overflow check might fail
+inter_unit_elaboration_examples.adb:8:14: medium: overflow check might fail
+intra_unit_elaboration_order_examples.adb:3:50: medium: overflow check might fail
 intra_unit_elaboration_order_examples.adb:20:17: info: overflow check proved
-intra_unit_elaboration_order_examples.adb:35:14: warning: overflow check might fail
+intra_unit_elaboration_order_examples.adb:35:14: medium: overflow check might fail
 intra_unit_elaboration_order_examples.ads:20:19: info: postcondition proved
-intra_unit_elaboration_order_examples.ads:27:50: warning: overflow check might fail
-initialization_and_elaboration.ads:8:08: warning: initial condition might fail
+intra_unit_elaboration_order_examples.ads:27:50: medium: overflow check might fail
+initialization_and_elaboration.ads:8:08: medium: initial condition might fail

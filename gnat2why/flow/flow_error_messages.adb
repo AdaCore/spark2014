@@ -24,26 +24,24 @@
 
 with Ada.Containers.Hashed_Sets;
 with Ada.Strings.Unbounded.Hash;
-with Assumption_Types;           use Assumption_Types;
-with Atree;                      use Atree;
-with Einfo;                      use Einfo;
-with Errout;                     use Errout;
-with Erroutc;                    use Erroutc;
-with Gnat2Why.Nodes;             use Gnat2Why.Nodes;
-with Gnat2Why_Args;              use Gnat2Why_Args;
-with Gnat2Why.Assumptions;       use Gnat2Why.Assumptions;
-with Namet;                      use Namet;
-with Opt;                        use Opt;
-with Sinfo;                      use Sinfo;
-with Sinput;                     use Sinput;
-with SPARK_Util;                 use SPARK_Util;
-with Stringt;                    use Stringt;
-with String_Utils;               use String_Utils;
+with Assumption_Types;     use Assumption_Types;
+with Atree;                use Atree;
+with Einfo;                use Einfo;
+with Errout;               use Errout;
+with Erroutc;              use Erroutc;
+with Gnat2Why.Annotate;    use Gnat2Why.Annotate;
+with Gnat2Why.Assumptions; use Gnat2Why.Assumptions;
+with Gnat2Why.Nodes;       use Gnat2Why.Nodes;
+with Gnat2Why_Args;        use Gnat2Why_Args;
+with Namet;                use Namet;
+with Opt;                  use Opt;
+with Sinfo;                use Sinfo;
+with Sinput;               use Sinput;
+with SPARK_Util;           use SPARK_Util;
+with Stringt;              use Stringt;
+with String_Utils;         use String_Utils;
 
 package body Flow_Error_Messages is
-
-   type Msg_Kind is (Error_Kind, Warning_Kind, Info_Kind);
-   --  describes the three kinds of messages issued by gnat2why
 
    package Msgs_Sets is new Ada.Containers.Hashed_Sets
      (Element_Type        => Unbounded_String,
@@ -209,13 +207,13 @@ package body Flow_Error_Messages is
    procedure Error_Msg_Flow
      (FA        : Flow_Analysis_Graphs;
       Msg       : String;
+      Kind      : Msg_Kind;
       N         : Node_Id;
       F1        : Flow_Id               := Null_Flow_Id;
       F2        : Flow_Id               := Null_Flow_Id;
       Tag       : String                := "";
       SRM_Ref   : String                := "";
       Tracefile : String                := "";
-      Warning   : Boolean               := False;
       Vertex    : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex)
    is
       E       : Entity_Id;
@@ -229,11 +227,8 @@ package body Flow_Error_Messages is
       Msg2    : constant String :=
         (if SRM_Ref'Length > 0 then Tmp & " (SPARK RM " & SRM_Ref & ")"
          else Tmp);
-      Kind    : constant Msg_Kind :=
-        (if Warning then Warning_Kind else Error_Kind);
       Msg3    : constant String := Compute_Message (Msg2, N, F1, F2);
-      Suppr   : constant String_Id :=
-        Warning_Is_Suppressed (N, Msg3, F1, F2);
+      Suppr   : String_Id := No_String;
       Slc     : constant Source_Ptr := Compute_Sloc (N);
       Msg_Id  : Message_Id := No_Message_Id;
       Unb_Msg : constant Unbounded_String :=
@@ -278,16 +273,26 @@ package body Flow_Error_Messages is
                E := Spec_Entity (FA.Analyzed_Entity);
          end case;
 
-         --  Print the message except when it's a suppressed warning.
-         --  Additionaly, if command line argument "--limit-line" was
+         if Kind = Warning_Kind then
+            Suppr := Warning_Is_Suppressed (N, Msg3, F1, F2);
+         elsif Kind in Check_Kind then
+            declare
+               Is_Annot : Boolean;
+               Info     : Annotated_Range;
+            begin
+               Check_Is_Annotated (N, Msg3, Is_Annot, Info);
+               if Is_Annot then
+                  Suppr := Info.Reason;
+               end if;
+            end;
+         end if;
+
+         --  Print the message except when it's suppressed.
+         --  Additionally, if command line argument "--limit-line" was
          --  given, only issue the warning if it is to be emitted on
          --  the specified line (errors are emitted anyway).
 
-         if Kind = Error_Kind or else
-           (Kind = Warning_Kind and then
-              Suppr = No_String and then
-              Is_Specified_Line)
-         then
+         if Suppr = No_String and then Is_Specified_Line then
             Msg_Id := Print_Regular_Msg (Msg3, Slc, Kind);
          end if;
 
@@ -331,23 +336,31 @@ package body Flow_Error_Messages is
       E           : Entity_Id;
       Place_First : Boolean) is
       Kind   : constant Msg_Kind :=
-        (if Is_Proved then Info_Kind else Warning_Kind);
+        (if Is_Proved then Info_Kind else Medium_Check_Kind);
       Msg2   : constant String :=
         Compute_Message (Msg, N);
-      Suppr  : constant String_Id := Warning_Is_Suppressed (N, Msg2);
+      Suppr  : String_Id := No_String;
       Slc    : constant Source_Ptr := Compute_Sloc (N, Place_First);
       Msg_Id : Message_Id := No_Message_Id;
    begin
       case Kind is
-         when Warning_Kind =>
-            if Suppr = No_String then
-               Msg_Id := Print_Regular_Msg (Msg2, Slc, Kind);
-            end if;
+         when Check_Kind =>
+            declare
+               Is_Annot : Boolean;
+               Info     : Annotated_Range;
+            begin
+               Check_Is_Annotated (N, Msg, Is_Annot, Info);
+               if Is_Annot then
+                  Suppr := Info.Reason;
+               else
+                  Msg_Id := Print_Regular_Msg (Msg2, Slc, Kind);
+               end if;
+            end;
          when Info_Kind =>
             if Report_Mode /= GPR_Fail then
                Msg_Id := Print_Regular_Msg (Msg2, Slc, Kind);
             end if;
-         when Error_Kind =>
+         when Error_Kind | Warning_Kind =>
             --  cannot happen
             null;
       end case;
@@ -424,6 +437,12 @@ package body Flow_Error_Messages is
             return "warning";
          when Info_Kind =>
             return "info";
+         when High_Check_Kind =>
+            return "high";
+         when Medium_Check_Kind =>
+            return "medium";
+         when Low_Check_Kind =>
+            return "low";
       end case;
    end Msg_Kind_To_String;
 
@@ -454,7 +473,7 @@ package body Flow_Error_Messages is
       Set_Field (Value, "line", Line);
       Set_Field (Value, "col", Col);
 
-      if Kind = Warning_Kind and then Suppr /= No_String then
+      if Suppr /= No_String then
          declare
             Len           : constant Natural :=
               Natural (String_Length (Suppr));
@@ -466,8 +485,10 @@ package body Flow_Error_Messages is
          end;
       end if;
 
+      --  ??? pragma Warning is not very good ...
+
       Set_Field (Value, "rule",
-                 (if Kind = Warning_Kind and then Suppr /= No_String then
+                 (if Suppr /= No_String then
                      "pragma_warning"
                   else Tag));
 
@@ -501,11 +522,17 @@ package body Flow_Error_Messages is
      (Msg  : String;
       Slc  : Source_Ptr;
       Kind : Msg_Kind) return Message_Id is
-      Id : constant Message_Id := Message_Id_Counter;
+      Id          : constant Message_Id := Message_Id_Counter;
+      Prefix      : constant String :=
+        (case Kind is
+            when Info_Kind         => "info: ?",
+            when Low_Check_Kind    => "low: ",
+            when Medium_Check_Kind => "medium: ",
+            when High_Check_Kind   => "high: ",
+            when Warning_Kind      => "?",
+            when Error_Kind        => "");
       Actual_Msg : constant String :=
-        (if Kind = Info_Kind then "info: " else "") &
-        Escape (Msg) & "!!" &
-      (if Kind /= Error_Kind then "?" else "") &
+        Prefix & Escape (Msg) & "!!" &
       (if Ide_Mode then
           "'['#" & Int_Image (Integer (Id)) & "']"
        else "");

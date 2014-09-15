@@ -1,4 +1,4 @@
 foo.adb:14:11: info: range check proved
 foo.adb:15:21: info: index check proved
-foo.adb:16:25: warning: overflow check might fail
-foo.ads:21:21: warning: postcondition might fail, requires S <= 100
+foo.adb:16:25: medium: overflow check might fail
+foo.ads:21:21: medium: postcondition might fail, requires S <= 100

@@ -1,3 +1,3 @@
 pack.adb:6:35: info: length check proved
-pack.adb:6:35: warning: range check might fail
+pack.adb:6:35: medium: range check might fail
 pack.ads:2:14: warning: subprogram "A2" has no effect

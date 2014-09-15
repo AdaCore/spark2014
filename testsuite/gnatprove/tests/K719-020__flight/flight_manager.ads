@@ -1,6 +1,4 @@
-package Flight_Manager is 
-
-   pragma Annotate (gnatprove, Force);
+package Flight_Manager is
 
    type Engine_Values is record
       X_Speed, Y_Speed : Integer;

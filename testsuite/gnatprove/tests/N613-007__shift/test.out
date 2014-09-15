@@ -1,4 +1,4 @@
 my_shift.adb:7:07: info: assertion proved
 my_shift.adb:7:32: info: division check proved
-my_shift.adb:9:22: warning: assertion might fail, requires Z = Z_Old / 8
+my_shift.adb:9:22: medium: assertion might fail, requires Z = Z_Old / 8
 my_shift.adb:9:32: info: division check proved

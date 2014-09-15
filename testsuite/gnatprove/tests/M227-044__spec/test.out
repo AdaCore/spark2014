@@ -1,3 +1,3 @@
 test.adb:12:07: warning: unused assignment
 test.adb:13:05: info: precondition proved
-test.adb:14:20: warning: assertion might fail, requires X = 0
+test.adb:14:20: medium: assertion might fail, requires X = 0

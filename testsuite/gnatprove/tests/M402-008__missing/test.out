@@ -1,2 +1,2 @@
-foo.adb:10:12: warning: divide by zero might fail, in instantiation at foo.adb:19
-foo.adb:10:12: warning: overflow check might fail, in instantiation at foo.adb:19
+foo.adb:10:12: medium: divide by zero might fail, in instantiation at foo.adb:19
+foo.adb:10:12: medium: overflow check might fail, in instantiation at foo.adb:19

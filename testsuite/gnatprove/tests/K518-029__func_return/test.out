@@ -1,5 +1,5 @@
-func_return.adb:12:14: warning: range check might fail
-func_return.adb:17:16: warning: range check might fail
-func_return.adb:22:17: warning: range check might fail
-func_return.adb:27:14: warning: range check might fail
-func_return.adb:27:16: warning: range check might fail
+func_return.adb:12:14: medium: range check might fail
+func_return.adb:17:16: medium: range check might fail
+func_return.adb:22:17: medium: range check might fail
+func_return.adb:27:14: medium: range check might fail
+func_return.adb:27:16: medium: range check might fail

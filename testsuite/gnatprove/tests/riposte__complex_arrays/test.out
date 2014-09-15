@@ -1,13 +1,13 @@
-complex_arrays.adb:26:22: warning: postcondition might fail, requires A(I)(J) = V
-complex_arrays.adb:35:22: warning: postcondition might fail, requires A(I) = A(J)
-complex_arrays.adb:46:22: warning: postcondition might fail, requires A(I)(J) = 17
-complex_arrays.adb:55:22: warning: postcondition might fail, requires A(I) = A(23)
-complex_arrays.adb:65:22: warning: postcondition might fail, requires A(I)(J) = A(J)(I)
-complex_arrays.adb:75:22: warning: postcondition might fail, requires A(I) = A(J)
-complex_arrays.adb:87:22: warning: postcondition might fail, requires A(I)(J) /= 23
-complex_arrays.adb:99:22: warning: postcondition might fail, requires A(I) /= A(23)
-complex_arrays.adb:112:22: warning: postcondition might fail, requires A /= A'old
-complex_arrays.adb:126:22: warning: postcondition might fail, requires A /= A'old
+complex_arrays.adb:26:22: medium: postcondition might fail, requires A(I)(J) = V
+complex_arrays.adb:35:22: medium: postcondition might fail, requires A(I) = A(J)
+complex_arrays.adb:46:22: medium: postcondition might fail, requires A(I)(J) = 17
+complex_arrays.adb:55:22: medium: postcondition might fail, requires A(I) = A(23)
+complex_arrays.adb:65:22: medium: postcondition might fail, requires A(I)(J) = A(J)(I)
+complex_arrays.adb:75:22: medium: postcondition might fail, requires A(I) = A(J)
+complex_arrays.adb:87:22: medium: postcondition might fail, requires A(I)(J) /= 23
+complex_arrays.adb:99:22: medium: postcondition might fail, requires A(I) /= A(23)
+complex_arrays.adb:112:22: medium: postcondition might fail, requires A /= A'old
+complex_arrays.adb:126:22: medium: postcondition might fail, requires A /= A'old
 complex_arrays.adb:142:19: info: postcondition proved
 complex_arrays.adb:150:26: info: length check proved
 complex_arrays.adb:152:11: info: range check proved

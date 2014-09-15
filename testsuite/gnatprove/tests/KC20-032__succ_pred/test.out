@@ -13,6 +13,6 @@ p.adb:37:14: info: postcondition proved
 p.adb:41:19: info: range check proved
 p.adb:41:31: info: overflow check proved
 p.adb:41:38: info: overflow check proved
-p.adb:46:14: warning: postcondition might fail, requires Ident'Result = F
+p.adb:46:14: medium: postcondition might fail, requires Ident'Result = F
 p.adb:50:31: info: overflow check proved
 p.adb:50:38: info: overflow check proved

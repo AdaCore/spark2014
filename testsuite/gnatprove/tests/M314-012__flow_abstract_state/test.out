@@ -1,12 +1,7 @@
 nested_pkg.adb:28:17: warning: subprogram "Wibble" has no effect
 nested_pkg.adb:43:17: warning: subprogram "Test" has no effect
 nested_pkg.adb:56:14: warning: subprogram "Test" has no effect
-stack_asm.adb:38:40: "The_Stack" is not initialized
+stack_asm.adb:38:40: high: "The_Stack" is not initialized
 stack_asm.adb:38:40: warning: unused global "The_Stack"
-test.adb:21:41: "Stack_Asm.State" is not initialized
-test.adb:24:21: "Stack_Asm.State" is not initialized
-   compilation of stack_asm.adb failed
-   compilation of test.adb failed
-
-
-gnatprove: error during analysis of data and information flow
+test.adb:21:41: high: "Stack_Asm.State" is not initialized
+test.adb:24:21: high: "Stack_Asm.State" is not initialized

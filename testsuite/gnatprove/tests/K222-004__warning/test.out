@@ -1,2 +1,2 @@
-pack.ads:3:19: warning: postcondition might fail, requires not F'result
+pack.ads:3:19: medium: postcondition might fail, requires not F'result
 pack.ads:4:14: warning: subprogram "P" has no effect

@@ -3,7 +3,7 @@ linear_div.adb:20:07: info: loop invariant initialization proved
 linear_div.adb:20:07: info: loop invariant preservation proved
 linear_div.adb:24:28: info: overflow check proved
 linear_div.adb:25:30: info: overflow check proved
-random_testing.adb:10:16: warning: postcondition might fail, requires Result
+random_testing.adb:10:16: medium: postcondition might fail, requires Result
 random_testing.adb:15:04: info: precondition proved
 random_testing.adb:16:04: info: precondition proved
 random_testing.adb:17:04: info: precondition proved

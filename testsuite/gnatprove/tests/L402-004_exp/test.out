@@ -1,6 +1,6 @@
-p.adb:3:07: warning: overflow check might fail
-p.adb:4:14: warning: overflow check might fail
-p.adb:5:14: warning: overflow check might fail
-p.adb:6:12: warning: overflow check might fail
-p.adb:7:14: warning: overflow check might fail
-p.adb:8:14: warning: overflow check might fail
+p.adb:3:07: medium: overflow check might fail
+p.adb:4:14: medium: overflow check might fail
+p.adb:5:14: medium: overflow check might fail
+p.adb:6:12: medium: overflow check might fail
+p.adb:7:14: medium: overflow check might fail
+p.adb:8:14: medium: overflow check might fail

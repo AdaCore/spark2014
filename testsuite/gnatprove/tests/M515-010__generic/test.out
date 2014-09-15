@@ -2,4 +2,4 @@ broken.adb:18:04: warning: call appears in assertion expression
 broken.adb:18:04: warning: in instantiation at broken.ads:6
 broken.adb:18:04: warning: no contextual analysis of "Is_Empty"
 broken.ads:5:17: warning: subprogram "Fill_Empty_Slots" has no effect, in instantiation at broken.adb:18
-broken.ads:6:17: warning: postcondition might fail, requires (Found_None), in instantiation at broken.adb:18
+broken.ads:6:17: medium: postcondition might fail, requires (Found_None), in instantiation at broken.adb:18

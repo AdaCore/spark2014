@@ -10,17 +10,13 @@ test.adb:35:12: warning: unused assignment
 test.adb:40:04: warning: analyzing unreferenced procedure "While_Loop"
 test.adb:50:04: warning: analyzing unreferenced function "Bergeretti_Fig9_Correct"
 test.adb:68:04: warning: analyzing unreferenced function "Bergeretti_Fig9_Incorrect"
-test.adb:77:23: "R" is not initialized
+test.adb:77:23: high: "R" is not initialized
 test.adb:86:04: warning: analyzing unreferenced procedure "Stable_Test_01"
 test.adb:96:04: warning: analyzing unreferenced procedure "Stable_Test_02"
 test.adb:109:04: warning: analyzing unreferenced procedure "For_Test_01"
-test.adb:109:27: "X" is not initialized in "For_Test_01"
+test.adb:109:27: high: "X" is not initialized in "For_Test_01"
 test.adb:109:27: warning: unused variable "X"
 test.adb:112:33: warning: statement has no effect
-test.adb:113:12: dead code
+test.adb:113:12: warning: dead code
 test.adb:117:04: warning: analyzing unreferenced procedure "For_Test_02"
 test.adb:138:04: warning: analyzing unreferenced function "Loop_Stability"
-   compilation of test.adb failed
-
-
-gnatprove: error during analysis of data and information flow

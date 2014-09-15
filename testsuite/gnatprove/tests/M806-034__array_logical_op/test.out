@@ -24,8 +24,8 @@ array_logical_ops.adb:30:07: info: assertion proved, in call inlined at array_lo
 array_logical_ops.adb:31:57: info: index check proved, in call inlined at array_logical_ops.adb:54
 array_logical_ops.adb:32:07: info: assertion proved, in call inlined at array_logical_ops.adb:54
 array_logical_ops.adb:32:55: info: index check proved, in call inlined at array_logical_ops.adb:54
-array_logical_ops.adb:37:36: warning: length check might fail, in call inlined at array_logical_ops.adb:56
+array_logical_ops.adb:37:36: medium: length check might fail, in call inlined at array_logical_ops.adb:56
 array_logical_ops.adb:45:37: info: length check proved, in call inlined at array_logical_ops.adb:55
-array_logical_ops.adb:45:37: warning: range check might fail, in call inlined at array_logical_ops.adb:55
-array_logical_ops.adb:46:35: warning: range check might fail, in call inlined at array_logical_ops.adb:55
+array_logical_ops.adb:45:37: medium: range check might fail, in call inlined at array_logical_ops.adb:55
+array_logical_ops.adb:46:35: medium: range check might fail, in call inlined at array_logical_ops.adb:55
 array_logical_ops.ads:12:14: warning: subprogram "P" has no effect

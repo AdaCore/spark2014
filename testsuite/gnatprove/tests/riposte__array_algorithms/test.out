@@ -17,7 +17,7 @@ array_algorithms.ads:31:13: info: postcondition proved
 array_algorithms.ads:32:37: info: index check proved
 array_algorithms.ads:32:53: info: index check proved
 array_algorithms.ads:33:43: info: range check proved
-array_algorithms.ads:34:59: warning: overflow check might fail
+array_algorithms.ads:34:59: medium: overflow check might fail
 array_algorithms.ads:34:69: info: index check proved
 array_algorithms.ads:34:77: info: index check proved
 array_algorithms.ads:35:28: info: range check proved
@@ -31,4 +31,4 @@ array_algorithms.ads:61:22: info: postcondition proved
 array_algorithms.ads:62:46: info: index check proved
 array_algorithms.ads:63:43: info: precondition proved
 array_algorithms.ads:64:47: info: precondition proved
-array_algorithms.ads:65:32: warning: precondition might fail
+array_algorithms.ads:65:32: medium: precondition might fail

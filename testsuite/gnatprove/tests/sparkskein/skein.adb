@@ -254,7 +254,8 @@ is
       Dst_Index : Word_Count_T;
       Src_Index : U64;
    begin
-      pragma Warnings (Off, "*Dst* might not be initialized");
+      pragma Annotate
+         (Gnatprove, False_Positive, " *Dst* might not be initialized", "");
       Dst_Index := 0;
       Src_Index := Src_Offset;
       loop
@@ -274,7 +275,6 @@ is
          Src_Index := Src_Index + 8;
       end loop;
 
-      pragma Warnings (On, "*Dst* might not be initialized");
    end Get_64_LSB_First;
 
    procedure Skein_Start_New_Type (Field_Type  : in     U6;
@@ -336,15 +336,15 @@ is
          --  This generates a false-alarm from the flow-analyser, but this is
          --  OK, since type-safety is later re-established by the proof system.
 
-         pragma Warnings (Off, "*Ks* might not be initialized");
          KS (WCNT_512) := Skein_KS_Parity;
+         pragma Annotate (Gnatprove, False_Positive,
+                          "Ks* might not be initialized", "");
 
          for I in I8 loop
             KS (I)    := Ctx.X (I);
             --  Compute overall parity
             KS (WCNT_512) := KS (WCNT_512) xor Ctx.X (I);
          end loop;
-         pragma Warnings (On, "*Ks* might not be initialized");
       end Initialize_Key_Schedule;
 
 

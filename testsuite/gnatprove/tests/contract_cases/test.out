@@ -2,8 +2,8 @@ p.adb:8:17: info: overflow check proved
 p.adb:15:17: info: overflow check proved
 p.adb:22:17: info: overflow check proved
 p.adb:29:17: info: overflow check proved
-p.ads:12:14: warning: postcondition might fail, requires X = Integer'min
-p.ads:12:37: warning: overflow check might fail
+p.ads:12:14: medium: postcondition might fail, requires X = Integer'min
+p.ads:12:37: medium: overflow check might fail
 p.ads:15:06: info: complete contract cases proved
 p.ads:15:06: info: disjoint contract cases proved
 p.ads:15:40: info: contract case proved

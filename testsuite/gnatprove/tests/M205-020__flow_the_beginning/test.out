@@ -1,11 +1,7 @@
 foo.adb:3:16: warning: unused initial value of "Y"
-foo.adb:4:16: "Z" is not initialized in "Foo"
+foo.adb:4:16: high: "Z" is not initialized in "Foo"
 foo.adb:9:04: warning: statement has no effect
 foo.adb:10:09: warning: unused assignment
 foo.adb:12:09: warning: unused assignment
-foo.adb:12:12: "Z" is not initialized
-foo.adb:15:12: "B" is not initialized
-   compilation of foo.adb failed
-
-
-gnatprove: error during analysis of data and information flow
+foo.adb:12:12: high: "Z" is not initialized
+foo.adb:15:12: high: "B" is not initialized

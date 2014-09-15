@@ -1,5 +1,2 @@
-pack.adb:11:16: "B" must be listed in the Refined_Global aspect of "Update_Content" (SPARK RM 6.1.4(13))
-   compilation of pack.adb failed
-
-
-gnatprove: error during flow analysis and proof
+pack.adb:11:14: medium: overflow check might fail
+pack.adb:11:16: high: "B" must be listed in the Refined_Global aspect of "Update_Content" (SPARK RM 6.1.4(13))

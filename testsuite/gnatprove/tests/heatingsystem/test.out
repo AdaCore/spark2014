@@ -1,8 +1,8 @@
 advancebutton.adb:86:34: info: range check proved
-heatingsystem_dfa.adb:12:41: warning: "Thermostat.Inputs" might not be initialized after elaboration of main program "Heatingsystem_Dfa"
-heatingsystem_dfa.adb:13:41: warning: "Modeswitch.Inputs" might not be initialized after elaboration of main program "Heatingsystem_Dfa"
-heatingsystem_dfa.adb:14:44: warning: "Programswitch.Inputs" might not be initialized after elaboration of main program "Heatingsystem_Dfa"
-heatingsystem_dfa.adb:15:36: warning: "Clock.Ticks" might not be initialized after elaboration of main program "Heatingsystem_Dfa"
+heatingsystem_dfa.adb:12:41: medium: "Thermostat.Inputs" might not be initialized after elaboration of main program "Heatingsystem_Dfa"
+heatingsystem_dfa.adb:13:41: medium: "Modeswitch.Inputs" might not be initialized after elaboration of main program "Heatingsystem_Dfa"
+heatingsystem_dfa.adb:14:44: medium: "Programswitch.Inputs" might not be initialized after elaboration of main program "Heatingsystem_Dfa"
+heatingsystem_dfa.adb:15:36: medium: "Clock.Ticks" might not be initialized after elaboration of main program "Heatingsystem_Dfa"
 heatingsystem_dfa.adb:65:20: info: division check proved
 heatingsystem_dfa.adb:66:23: info: division check proved
 heatingsystem_dfa.adb:66:42: info: division check proved
@@ -18,6 +18,6 @@ heatingsystem_dfa.adb:124:48: info: division check proved
 heatingsystem_dfa.adb:127:30: info: division check proved
 heatingsystem_dfa.adb:166:32: info: index check proved
 heatingsystem_dfa.adb:168:23: info: index check proved
-heatingsystem_dfa.adb:201:44: warning: "Actuator.Outputs" might not be written
-heatingsystem_dfa.adb:214:44: warning: "Actuator.Outputs" might not be written
+heatingsystem_dfa.adb:201:44: medium: "Actuator.Outputs" might not be written
+heatingsystem_dfa.adb:214:44: medium: "Actuator.Outputs" might not be written
 heatingsystem_dfa.adb:288:28: info: length check proved

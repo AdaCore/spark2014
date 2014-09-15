@@ -1,9 +1,9 @@
 vc4.adb:13:07: info: assertion proved
 vc4.adb:17:07: info: assertion proved
-vc4.adb:30:22: warning: assertion might fail, requires T1 = T2
-vc4.adb:34:22: warning: assertion might fail, requires T3 = T4
-vc4.adb:47:22: warning: assertion might fail, requires T1 = T2
-vc4.adb:51:22: warning: assertion might fail, requires T3 = T4
-vc4.adb:65:22: warning: assertion might fail, requires T1 = T2
-vc4.adb:69:22: warning: assertion might fail, requires T3 = T4
-vc4.adb:80:22: warning: assertion might fail, requires T1 = T2
+vc4.adb:30:22: medium: assertion might fail, requires T1 = T2
+vc4.adb:34:22: medium: assertion might fail, requires T3 = T4
+vc4.adb:47:22: medium: assertion might fail, requires T1 = T2
+vc4.adb:51:22: medium: assertion might fail, requires T3 = T4
+vc4.adb:65:22: medium: assertion might fail, requires T1 = T2
+vc4.adb:69:22: medium: assertion might fail, requires T3 = T4
+vc4.adb:80:22: medium: assertion might fail, requires T1 = T2

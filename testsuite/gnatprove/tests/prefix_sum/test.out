@@ -1,28 +1,28 @@
 prefixsum.adb:9:10: info: loop invariant initialization proved
-prefixsum.adb:9:10: warning: loop invariant might fail after first iteration
+prefixsum.adb:9:10: medium: loop invariant might fail after first iteration
 prefixsum.adb:10:40: info: range check proved
 prefixsum.adb:15:27: info: division check proved
 prefixsum.adb:22:30: info: division check proved
 prefixsum.adb:25:60: info: index check proved
 prefixsum.adb:26:41: info: index check proved
-prefixsum.adb:26:62: warning: array index check might fail
+prefixsum.adb:26:62: medium: array index check might fail
 prefixsum.adb:27:30: info: division check proved
 prefixsum.adb:30:60: info: index check proved
 prefixsum.adb:33:10: info: loop variant proved
-prefixsum.adb:38:13: warning: loop invariant might fail after first iteration
-prefixsum.adb:38:13: warning: loop invariant might fail in first iteration
+prefixsum.adb:38:13: medium: loop invariant might fail after first iteration
+prefixsum.adb:38:13: medium: loop invariant might fail in first iteration
 prefixsum.adb:39:26: info: division check proved
 prefixsum.adb:41:56: info: range check proved
 prefixsum.adb:43:57: info: range check proved
 prefixsum.adb:45:26: info: division check proved
 prefixsum.adb:51:37: info: division check proved
-prefixsum.adb:53:64: warning: array index check might fail
+prefixsum.adb:53:64: medium: array index check might fail
 prefixsum.adb:56:13: info: loop variant proved
 prefixsum.adb:58:31: info: overflow check proved
 prefixsum.adb:59:16: info: index check proved
 prefixsum.adb:59:29: info: index check proved
-prefixsum.adb:59:35: warning: overflow check might fail
-prefixsum.adb:59:40: warning: array index check might fail
+prefixsum.adb:59:35: medium: overflow check might fail
+prefixsum.adb:59:40: medium: array index check might fail
 prefixsum.adb:60:31: info: overflow check proved
 prefixsum.adb:60:31: info: range check proved
 prefixsum.adb:60:39: info: overflow check proved
@@ -30,33 +30,33 @@ prefixsum.adb:62:25: info: overflow check proved
 prefixsum.adb:62:25: info: range check proved
 prefixsum.adb:70:26: info: range check proved
 prefixsum.adb:76:27: info: division check proved
-prefixsum.adb:79:10: warning: loop invariant might fail after first iteration
-prefixsum.adb:79:10: warning: loop invariant might fail in first iteration
+prefixsum.adb:79:10: medium: loop invariant might fail after first iteration
+prefixsum.adb:79:10: medium: loop invariant might fail in first iteration
 prefixsum.adb:82:36: info: division check proved
-prefixsum.adb:82:49: warning: range check might fail
+prefixsum.adb:82:49: medium: range check might fail
 prefixsum.adb:87:49: info: division check proved
-prefixsum.adb:88:64: warning: array index check might fail
+prefixsum.adb:88:64: medium: array index check might fail
 prefixsum.adb:89:49: info: division check proved
-prefixsum.adb:90:45: warning: array index check might fail
+prefixsum.adb:90:45: medium: array index check might fail
 prefixsum.adb:93:49: info: division check proved
-prefixsum.adb:101:10: warning: loop variant might fail
+prefixsum.adb:101:10: medium: loop variant might fail
 prefixsum.adb:103:25: info: overflow check proved
 prefixsum.adb:103:29: info: overflow check proved
 prefixsum.adb:103:29: info: range check proved
-prefixsum.adb:105:13: warning: loop invariant might fail after first iteration
-prefixsum.adb:105:13: warning: loop invariant might fail in first iteration
+prefixsum.adb:105:13: medium: loop invariant might fail after first iteration
+prefixsum.adb:105:13: medium: loop invariant might fail in first iteration
 prefixsum.adb:108:31: info: division check proved
-prefixsum.adb:109:66: warning: array index check might fail
+prefixsum.adb:109:66: medium: array index check might fail
 prefixsum.adb:110:34: info: division check proved
 prefixsum.adb:111:47: info: index check proved
 prefixsum.adb:117:27: info: division check proved
 prefixsum.adb:121:13: info: loop variant proved
 prefixsum.adb:123:32: info: overflow check proved
-prefixsum.adb:123:32: warning: range check might fail
-prefixsum.adb:124:29: warning: array index check might fail
+prefixsum.adb:123:32: medium: range check might fail
+prefixsum.adb:124:29: medium: array index check might fail
 prefixsum.adb:125:16: info: index check proved
 prefixsum.adb:125:29: info: index check proved
-prefixsum.adb:125:35: warning: overflow check might fail
+prefixsum.adb:125:35: medium: overflow check might fail
 prefixsum.adb:125:40: info: index check proved
 prefixsum.adb:126:16: info: index check proved
 prefixsum.adb:127:32: info: overflow check proved
@@ -67,129 +67,129 @@ prefixsum.ads:26:23: info: division check proved
 prefixsum.ads:27:28: info: overflow check proved
 prefixsum.ads:27:36: info: overflow check proved
 prefixsum.ads:27:44: info: overflow check proved
-prefixsum.ads:27:52: warning: overflow check might fail
-prefixsum.ads:28:28: warning: overflow check might fail
-prefixsum.ads:28:36: warning: overflow check might fail
-prefixsum.ads:28:44: warning: overflow check might fail
+prefixsum.ads:27:52: medium: overflow check might fail
+prefixsum.ads:28:28: medium: overflow check might fail
+prefixsum.ads:28:36: medium: overflow check might fail
+prefixsum.ads:28:44: medium: overflow check might fail
 prefixsum.ads:29:25: info: division check proved
-prefixsum.ads:30:28: warning: overflow check might fail
+prefixsum.ads:30:28: medium: overflow check might fail
 prefixsum.ads:30:34: info: index check proved
-prefixsum.ads:30:38: warning: overflow check might fail
+prefixsum.ads:30:38: medium: overflow check might fail
 prefixsum.ads:30:44: info: index check proved
-prefixsum.ads:30:48: warning: overflow check might fail
+prefixsum.ads:30:48: medium: overflow check might fail
 prefixsum.ads:30:54: info: index check proved
 prefixsum.ads:31:25: info: division check proved
-prefixsum.ads:32:28: warning: overflow check might fail
+prefixsum.ads:32:28: medium: overflow check might fail
 prefixsum.ads:32:34: info: index check proved
-prefixsum.ads:38:14: warning: postcondition might fail
+prefixsum.ads:38:14: medium: postcondition might fail
 prefixsum.ads:40:17: info: precondition proved
 prefixsum.ads:48:17: info: precondition proved
-prefixsum.ads:50:08: warning: postcondition might fail
+prefixsum.ads:50:08: medium: postcondition might fail
 prefixsum_expanded.adb:11:10: info: loop invariant initialization proved
-prefixsum_expanded.adb:11:10: warning: loop invariant might fail after first iteration
+prefixsum_expanded.adb:11:10: medium: loop invariant might fail after first iteration
 prefixsum_expanded.adb:12:40: info: range check proved
 prefixsum_expanded.adb:52:10: info: loop variant proved
-prefixsum_expanded.adb:57:13: warning: loop invariant might fail after first iteration
-prefixsum_expanded.adb:57:13: warning: loop invariant might fail in first iteration
+prefixsum_expanded.adb:57:13: medium: loop invariant might fail after first iteration
+prefixsum_expanded.adb:57:13: medium: loop invariant might fail in first iteration
 prefixsum_expanded.adb:58:26: info: division check proved
 prefixsum_expanded.adb:60:56: info: range check proved
 prefixsum_expanded.adb:62:57: info: range check proved
 prefixsum_expanded.adb:64:26: info: division check proved
 prefixsum_expanded.adb:70:37: info: division check proved
-prefixsum_expanded.adb:72:64: warning: array index check might fail
+prefixsum_expanded.adb:72:64: medium: array index check might fail
 prefixsum_expanded.adb:75:13: info: loop variant proved
-prefixsum_expanded.adb:77:31: warning: overflow check might fail
+prefixsum_expanded.adb:77:31: medium: overflow check might fail
 prefixsum_expanded.adb:78:16: info: index check proved
 prefixsum_expanded.adb:78:29: info: index check proved
-prefixsum_expanded.adb:78:35: warning: overflow check might fail
-prefixsum_expanded.adb:78:40: warning: array index check might fail
+prefixsum_expanded.adb:78:35: medium: overflow check might fail
+prefixsum_expanded.adb:78:40: medium: array index check might fail
 prefixsum_expanded.adb:79:31: info: overflow check proved
 prefixsum_expanded.adb:79:31: info: range check proved
 prefixsum_expanded.adb:79:39: info: overflow check proved
 prefixsum_expanded.adb:81:25: info: overflow check proved
 prefixsum_expanded.adb:81:25: info: range check proved
-prefixsum_expanded.adb:84:07: warning: assertion might fail
+prefixsum_expanded.adb:84:07: medium: assertion might fail
 prefixsum_expanded.adb:108:26: info: range check proved
 prefixsum_expanded.adb:116:27: info: division check proved
 prefixsum_expanded.adb:117:15: warning: unused assignment
-prefixsum_expanded.adb:118:07: warning: assertion might fail
-prefixsum_expanded.adb:136:10: warning: loop invariant might fail after first iteration
-prefixsum_expanded.adb:136:10: warning: loop invariant might fail in first iteration
+prefixsum_expanded.adb:118:07: medium: assertion might fail
+prefixsum_expanded.adb:136:10: medium: loop invariant might fail after first iteration
+prefixsum_expanded.adb:136:10: medium: loop invariant might fail in first iteration
 prefixsum_expanded.adb:139:36: info: division check proved
-prefixsum_expanded.adb:139:49: warning: range check might fail
-prefixsum_expanded.adb:161:10: warning: loop variant might fail
+prefixsum_expanded.adb:139:49: medium: range check might fail
+prefixsum_expanded.adb:161:10: medium: loop variant might fail
 prefixsum_expanded.adb:163:25: info: overflow check proved
 prefixsum_expanded.adb:163:29: info: overflow check proved
 prefixsum_expanded.adb:163:29: info: range check proved
-prefixsum_expanded.adb:165:13: warning: loop invariant might fail after first iteration
-prefixsum_expanded.adb:165:13: warning: loop invariant might fail in first iteration
+prefixsum_expanded.adb:165:13: medium: loop invariant might fail after first iteration
+prefixsum_expanded.adb:165:13: medium: loop invariant might fail in first iteration
 prefixsum_expanded.adb:168:31: info: division check proved
-prefixsum_expanded.adb:169:66: warning: array index check might fail
+prefixsum_expanded.adb:169:66: medium: array index check might fail
 prefixsum_expanded.adb:170:34: info: division check proved
 prefixsum_expanded.adb:171:47: info: index check proved
 prefixsum_expanded.adb:177:27: info: division check proved
 prefixsum_expanded.adb:181:13: info: loop variant proved
-prefixsum_expanded.adb:183:32: warning: overflow check might fail
-prefixsum_expanded.adb:183:32: warning: range check might fail
-prefixsum_expanded.adb:184:29: warning: array index check might fail
+prefixsum_expanded.adb:183:32: medium: overflow check might fail
+prefixsum_expanded.adb:183:32: medium: range check might fail
+prefixsum_expanded.adb:184:29: medium: array index check might fail
 prefixsum_expanded.adb:185:16: info: index check proved
 prefixsum_expanded.adb:185:29: info: index check proved
-prefixsum_expanded.adb:185:35: warning: overflow check might fail
+prefixsum_expanded.adb:185:35: medium: overflow check might fail
 prefixsum_expanded.adb:185:40: info: index check proved
 prefixsum_expanded.adb:186:16: info: index check proved
 prefixsum_expanded.adb:187:32: info: overflow check proved
 prefixsum_expanded.adb:187:32: info: range check proved
 prefixsum_expanded.adb:187:40: info: overflow check proved
 prefixsum_expanded.adb:189:25: info: division check proved
-prefixsum_expanded.adb:192:07: warning: assertion might fail
+prefixsum_expanded.adb:192:07: medium: assertion might fail
 prefixsum_expanded.ads:25:23: info: overflow check proved
 prefixsum_expanded.ads:25:31: info: overflow check proved
 prefixsum_expanded.ads:25:39: info: overflow check proved
-prefixsum_expanded.ads:25:47: warning: overflow check might fail
-prefixsum_expanded.ads:25:55: warning: overflow check might fail
-prefixsum_expanded.ads:25:63: warning: overflow check might fail
-prefixsum_expanded.ads:25:71: warning: overflow check might fail
-prefixsum_expanded.ads:27:23: warning: overflow check might fail
-prefixsum_expanded.ads:27:31: warning: overflow check might fail
-prefixsum_expanded.ads:27:39: warning: overflow check might fail
-prefixsum_expanded.ads:29:23: warning: overflow check might fail
-prefixsum_expanded.ads:31:23: warning: overflow check might fail
-prefixsum_expanded.ads:43:14: warning: postcondition might fail
+prefixsum_expanded.ads:25:47: medium: overflow check might fail
+prefixsum_expanded.ads:25:55: medium: overflow check might fail
+prefixsum_expanded.ads:25:63: medium: overflow check might fail
+prefixsum_expanded.ads:25:71: medium: overflow check might fail
+prefixsum_expanded.ads:27:23: medium: overflow check might fail
+prefixsum_expanded.ads:27:31: medium: overflow check might fail
+prefixsum_expanded.ads:27:39: medium: overflow check might fail
+prefixsum_expanded.ads:29:23: medium: overflow check might fail
+prefixsum_expanded.ads:31:23: medium: overflow check might fail
+prefixsum_expanded.ads:43:14: medium: postcondition might fail
 prefixsum_expanded.ads:45:17: info: precondition proved
 prefixsum_expanded.ads:53:17: info: precondition proved
 prefixsum_expanded.ads:55:08: info: postcondition proved
 prefixsum_general.adb:12:10: info: loop invariant initialization proved
-prefixsum_general.adb:12:10: warning: loop invariant might fail after first iteration
+prefixsum_general.adb:12:10: medium: loop invariant might fail after first iteration
 prefixsum_general.adb:13:22: info: division check proved
 prefixsum_general.adb:21:24: info: division check proved
 prefixsum_general.adb:30:27: info: division check proved
 prefixsum_general.adb:31:25: info: precondition proved
-prefixsum_general.adb:31:56: warning: range check might fail
+prefixsum_general.adb:31:56: medium: range check might fail
 prefixsum_general.adb:32:10: info: loop variant proved
 prefixsum_general.adb:34:21: info: overflow check proved
-prefixsum_general.adb:35:13: warning: loop invariant might fail after first iteration
-prefixsum_general.adb:35:13: warning: loop invariant might fail in first iteration
+prefixsum_general.adb:35:13: medium: loop invariant might fail after first iteration
+prefixsum_general.adb:35:13: medium: loop invariant might fail in first iteration
 prefixsum_general.adb:38:25: info: division check proved
 prefixsum_general.adb:44:27: info: division check proved
 prefixsum_general.adb:56:43: info: division check proved
-prefixsum_general.adb:57:28: warning: precondition might fail
-prefixsum_general.adb:57:52: warning: range check might fail
+prefixsum_general.adb:57:28: medium: precondition might fail
+prefixsum_general.adb:57:52: medium: range check might fail
 prefixsum_general.adb:58:46: info: division check proved
 prefixsum_general.adb:59:28: info: precondition proved
-prefixsum_general.adb:59:52: warning: range check might fail
-prefixsum_general.adb:61:19: warning: array index check might fail
+prefixsum_general.adb:59:52: medium: range check might fail
+prefixsum_general.adb:61:19: medium: array index check might fail
 prefixsum_general.adb:61:27: info: precondition proved
-prefixsum_general.adb:61:54: warning: range check might fail
-prefixsum_general.adb:61:63: warning: range check might fail
+prefixsum_general.adb:61:54: medium: range check might fail
+prefixsum_general.adb:61:63: medium: range check might fail
 prefixsum_general.adb:63:24: info: index check proved
 prefixsum_general.adb:63:35: info: precondition proved
 prefixsum_general.adb:63:58: info: range check proved
 prefixsum_general.adb:63:68: info: range check proved
-prefixsum_general.adb:64:13: warning: loop variant might fail
-prefixsum_general.adb:66:31: warning: overflow check might fail
+prefixsum_general.adb:64:13: medium: loop variant might fail
+prefixsum_general.adb:66:31: medium: overflow check might fail
 prefixsum_general.adb:67:16: info: index check proved
 prefixsum_general.adb:67:29: info: index check proved
-prefixsum_general.adb:67:35: warning: overflow check might fail
+prefixsum_general.adb:67:35: medium: overflow check might fail
 prefixsum_general.adb:67:40: info: index check proved
 prefixsum_general.adb:68:31: info: overflow check proved
 prefixsum_general.adb:68:31: info: range check proved
@@ -198,17 +198,17 @@ prefixsum_general.adb:70:25: info: overflow check proved
 prefixsum_general.adb:70:25: info: range check proved
 prefixsum_general.adb:78:26: info: range check proved
 prefixsum_general.adb:84:27: info: division check proved
-prefixsum_general.adb:87:10: warning: loop variant might fail
-prefixsum_general.adb:89:25: warning: overflow check might fail
-prefixsum_general.adb:89:29: warning: overflow check might fail
-prefixsum_general.adb:89:29: warning: range check might fail
+prefixsum_general.adb:87:10: medium: loop variant might fail
+prefixsum_general.adb:89:25: medium: overflow check might fail
+prefixsum_general.adb:89:29: medium: overflow check might fail
+prefixsum_general.adb:89:29: medium: range check might fail
 prefixsum_general.adb:91:13: info: loop variant proved
 prefixsum_general.adb:93:32: info: overflow check proved
-prefixsum_general.adb:93:32: warning: range check might fail
+prefixsum_general.adb:93:32: medium: range check might fail
 prefixsum_general.adb:94:29: info: index check proved
 prefixsum_general.adb:95:16: info: index check proved
 prefixsum_general.adb:95:29: info: index check proved
-prefixsum_general.adb:95:35: warning: overflow check might fail
+prefixsum_general.adb:95:35: medium: overflow check might fail
 prefixsum_general.adb:95:40: info: index check proved
 prefixsum_general.adb:96:16: info: index check proved
 prefixsum_general.adb:97:32: info: overflow check proved
@@ -216,12 +216,12 @@ prefixsum_general.adb:97:32: info: range check proved
 prefixsum_general.adb:97:40: info: overflow check proved
 prefixsum_general.adb:99:25: info: division check proved
 prefixsum_general.adb:114:17: info: postcondition proved
-prefixsum_general.adb:123:27: warning: overflow check might fail
+prefixsum_general.adb:123:27: medium: overflow check might fail
 prefixsum_general.adb:123:29: info: precondition proved
 prefixsum_general.adb:123:66: info: range check proved
 prefixsum_general.adb:126:14: info: precondition proved
 prefixsum_general.ads:8:56: info: division check proved
 prefixsum_general.ads:13:14: info: postcondition proved
-prefixsum_general.ads:17:14: warning: postcondition might fail
+prefixsum_general.ads:17:14: medium: postcondition might fail
 prefixsum_general.ads:18:30: info: precondition proved
 prefixsum_general.ads:21:07: warning: unused variable "Ghost"

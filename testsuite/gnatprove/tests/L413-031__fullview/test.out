@@ -2,7 +2,7 @@ int_list.adb:4:07: info: precondition proved
 int_list.adb:8:24: info: precondition proved
 int_list.adb:10:13: info: precondition proved
 int_list.adb:11:10: info: loop invariant initialization proved
-int_list.adb:11:10: warning: loop invariant might fail after first iteration
+int_list.adb:11:10: medium: loop invariant might fail after first iteration
 int_list.adb:12:13: info: precondition proved
 int_list.adb:13:13: info: precondition proved
 int_list.adb:13:26: info: precondition proved
@@ -31,7 +31,7 @@ int_list.ads:21:48: info: precondition proved
 int_list.ads:24:15: info: precondition proved
 int_list.ads:24:33: info: precondition proved
 int_list.ads:26:08: info: precondition proved
-int_list.ads:26:08: warning: postcondition might fail
+int_list.ads:26:08: medium: postcondition might fail
 int_list.ads:26:21: info: precondition proved
 int_list.ads:27:07: info: precondition proved
 int_list.ads:27:25: info: precondition proved

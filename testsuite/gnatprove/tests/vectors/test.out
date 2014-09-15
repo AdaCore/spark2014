@@ -1,15 +1,15 @@
-vectors.adb:17:38: warning: overflow check might fail, in call inlined at vectors.adb:108
-vectors.adb:17:38: warning: overflow check might fail, in call inlined at vectors.adb:120
+vectors.adb:17:38: medium: overflow check might fail, in call inlined at vectors.adb:108
+vectors.adb:17:38: medium: overflow check might fail, in call inlined at vectors.adb:120
 vectors.adb:22:49: info: length check proved
-vectors.adb:37:56: warning: range check might fail
+vectors.adb:37:56: medium: range check might fail
 vectors.adb:51:56: info: range check proved
-vectors.adb:52:56: warning: range check might fail
+vectors.adb:52:56: medium: range check might fail
 vectors.adb:83:43: info: range check proved
 vectors.adb:102:11: info: range check proved
 vectors.adb:104:32: info: overflow check proved
-vectors.adb:104:32: warning: array index check might fail
-vectors.adb:107:52: warning: range check might fail
+vectors.adb:104:32: medium: array index check might fail
+vectors.adb:107:52: medium: range check might fail
 vectors.adb:115:11: info: range check proved
 vectors.adb:117:58: info: overflow check proved
-vectors.adb:117:58: warning: array index check might fail
-vectors.adb:119:52: warning: range check might fail
+vectors.adb:117:58: medium: array index check might fail
+vectors.adb:119:52: medium: range check might fail
