@@ -11,8 +11,6 @@ main.adb:18:10: warning: no Global contract available for "Put_Line"
 main.adb:21:38: warning: assuming "Get_Line" has no effect on global items
 main.adb:21:38: warning: no Global contract available for "Get_Line"
 main.adb:26:40: warning: range check might fail
-main.adb:27:16: warning: "S.Data" might not be initialized
-main.adb:27:16: warning: "S.Top" might not be initialized
 main.adb:27:16: warning: "private part of S" might not be initialized
 main.adb:27:17: warning: precondition might fail
 main.adb:28:16: warning: assuming "Put_Line" has no effect on global items
@@ -23,8 +21,6 @@ main.adb:32:44: warning: range check might fail
 main.adb:33:16: warning: assuming "Get" has no effect on global items
 main.adb:33:16: warning: no Global contract available for "Get"
 main.adb:33:21: info: range check proved
-main.adb:34:16: warning: "S.Data" might not be initialized
-main.adb:34:16: warning: "S.Top" might not be initialized
 main.adb:34:16: warning: "private part of S" might not be initialized
 main.adb:34:17: warning: precondition might fail
 main.adb:35:16: warning: assuming "Put_Line" has no effect on global items

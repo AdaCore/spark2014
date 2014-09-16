@@ -10,8 +10,8 @@ digraph G {
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    7 [label="a'initial\nVD: {A}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="a'final\nVU: {A}\n<VId: 8>",shape="plaintext"];
+    7 [label="A'initial\nVD: {A}\n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="A'final\nVU: {A}\n<VId: 8>",shape="plaintext"];
     12 [label="null;\n<VId: 12>"];
 
     1 ->  12 [arrowType="normal"];
@@ -27,8 +27,8 @@ digraph G {
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    7 [label="a'initial\nVD: {A}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="a'final\nVU: {A}\n<VId: 8>",shape="plaintext"];
+    7 [label="A'initial\nVD: {A}\n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="A'final\nVU: {A}\n<VId: 8>",shape="plaintext"];
     12 [label="null;\n<VId: 12>"];
 
     1 ->  2 [arrowType="normal"];
@@ -47,10 +47,10 @@ digraph G {
     8 [label="type input is (no_input, nothing, accelerate, brake);\n<VId: 8>"];
     9 [label="subtype valid_input is input range nothing .. brake;\n<VId: 9>"];
     10 [label="type speed_type is range -100 .. 100;\n<VId: 10>"];
-    11 [label="speed'initial\nVD: {Speed}\n<VId: 11>",shape="plaintext",fontcolor="red"];
-    12 [label="speed'final\nVU: {Speed}\n<VId: 12>",shape="plaintext"];
-    14 [label="state'initial\nVD: {State}\n<VId: 14>",shape="plaintext",fontcolor="red"];
-    15 [label="state'final\nVU: {State}\n<VId: 15>",shape="plaintext"];
+    11 [label="Speed'initial\nVD: {Speed}\n<VId: 11>",shape="plaintext",fontcolor="red"];
+    12 [label="Speed'final\nVU: {Speed}\n<VId: 12>",shape="plaintext"];
+    14 [label="State'initial\nVD: {State}\n<VId: 14>",shape="plaintext",fontcolor="red"];
+    15 [label="State'final\nVU: {State}\n<VId: 15>",shape="plaintext"];
     22 [label="null;\n<VId: 22>"];
 
     1 ->  7 [arrowType="normal"];
@@ -76,10 +76,10 @@ digraph G {
     8 [label="type input is (no_input, nothing, accelerate, brake);\n<VId: 8>"];
     9 [label="subtype valid_input is input range nothing .. brake;\n<VId: 9>"];
     10 [label="type speed_type is range -100 .. 100;\n<VId: 10>"];
-    11 [label="speed'initial\nVD: {Speed}\n<VId: 11>",shape="plaintext",fontcolor="red"];
-    12 [label="speed'final\nVU: {Speed}\n<VId: 12>",shape="plaintext"];
-    14 [label="state'initial\nVD: {State}\n<VId: 14>",shape="plaintext",fontcolor="red"];
-    15 [label="state'final\nVU: {State}\n<VId: 15>",shape="plaintext"];
+    11 [label="Speed'initial\nVD: {Speed}\n<VId: 11>",shape="plaintext",fontcolor="red"];
+    12 [label="Speed'final\nVU: {Speed}\n<VId: 12>",shape="plaintext"];
+    14 [label="State'initial\nVD: {State}\n<VId: 14>",shape="plaintext",fontcolor="red"];
+    15 [label="State'final\nVU: {State}\n<VId: 15>",shape="plaintext"];
     22 [label="null;\n<VId: 22>"];
 
     1 ->  2 [arrowType="normal"];
@@ -99,10 +99,10 @@ digraph G {
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="a'initial\n(global)\nVD: {A}\n<VId: 6>",shape="plaintext",fontcolor="red"];
-    7 [label="a'final\n(global)\nVU: {A}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    10 [label="b'initial\nVD: {B}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="b'final\nVU: {B}\n<VId: 11>",shape="plaintext"];
+    6 [label="A'initial\n(global)\nVD: {A}\n<VId: 6>",shape="plaintext",fontcolor="red"];
+    7 [label="A'final\n(global)\nVU: {A}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    10 [label="B'initial\nVD: {B}\n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="B'final\nVU: {B}\n<VId: 11>",shape="plaintext"];
     13 [label="a := 100;\nVD: {A}\n<VId: 13>"];
     14 [label="pragma check (assert, a > b);\nVU: {B, A}\nPROOF\n<VId: 14>"];
 
@@ -122,10 +122,10 @@ digraph G {
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="a'initial\n(global)\nVD: {A}\n<VId: 6>",shape="plaintext",fontcolor="red"];
-    7 [label="a'final\n(global)\nVU: {A}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    10 [label="b'initial\nVD: {B}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="b'final\nVU: {B}\n<VId: 11>",shape="plaintext"];
+    6 [label="A'initial\n(global)\nVD: {A}\n<VId: 6>",shape="plaintext",fontcolor="red"];
+    7 [label="A'final\n(global)\nVU: {A}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    10 [label="B'initial\nVD: {B}\n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="B'final\nVU: {B}\n<VId: 11>",shape="plaintext"];
     13 [label="a := 100;\nVD: {A}\n<VId: 13>"];
     14 [label="pragma check (assert, a > b);\nVU: {B, A}\nPROOF\n<VId: 14>"];
 
@@ -145,10 +145,10 @@ digraph G {
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="state'initial\n(global)\nVD: {State}\n<VId: 6>",shape="plaintext"];
-    7 [label="state'final\n(global)\nVU: {State}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="speed'initial\n(global)\nVD: {Speed}\n<VId: 8>",shape="plaintext"];
-    9 [label="speed'final\n(global)\nVU: {Speed}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    6 [label="State'initial\n(global)\nVD: {State}\n<VId: 6>",shape="plaintext"];
+    7 [label="State'final\n(global)\nVU: {State}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="Speed'initial\n(global)\nVD: {Speed}\n<VId: 8>",shape="plaintext"];
+    9 [label="Speed'final\n(global)\nVU: {Speed}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
     10 [label="precondition speed_is_valid\nVU: {State, Speed}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 10>",shape="plaintext"];
     11 [label="postcondition state = still and speed_is_valid\nVU: {State, Speed}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 11>",shape="plaintext"];
     13 [label="pragma check (loop_invariant, speed_is_valid);\nVU: {State, Speed}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 13>"];
@@ -200,10 +200,10 @@ digraph G {
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="state'initial\n(global)\nVD: {State}\n<VId: 6>",shape="plaintext"];
-    7 [label="state'final\n(global)\nVU: {State}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="speed'initial\n(global)\nVD: {Speed}\n<VId: 8>",shape="plaintext"];
-    9 [label="speed'final\n(global)\nVU: {Speed}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    6 [label="State'initial\n(global)\nVD: {State}\n<VId: 6>",shape="plaintext"];
+    7 [label="State'final\n(global)\nVU: {State}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="Speed'initial\n(global)\nVD: {Speed}\n<VId: 8>",shape="plaintext"];
+    9 [label="Speed'final\n(global)\nVU: {Speed}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
     10 [label="precondition speed_is_valid\nVU: {State, Speed}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 10>",shape="plaintext"];
     11 [label="postcondition state = still and speed_is_valid\nVU: {State, Speed}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 11>",shape="plaintext"];
     13 [label="pragma check (loop_invariant, speed_is_valid);\nVU: {State, Speed}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 13>"];
@@ -300,12 +300,12 @@ digraph G {
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="state'initial\n(global)\nVD: {State}\n<VId: 6>",shape="plaintext"];
-    7 [label="state'final\n(global)\nVU: {State}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="speed'initial\n(global)\nVD: {Speed}\n<VId: 8>",shape="plaintext"];
-    9 [label="speed'final\n(global)\nVU: {Speed}\n<VId: 9>",shape="plaintext",fontcolor="red"];
-    10 [label="speed_is_valid'initial\nVD: {Speed_Is_Valid}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="speed_is_valid'final\nVU: {Speed_Is_Valid}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    6 [label="State'initial\n(global)\nVD: {State}\n<VId: 6>",shape="plaintext"];
+    7 [label="State'final\n(global)\nVU: {State}\n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="Speed'initial\n(global)\nVD: {Speed}\n<VId: 8>",shape="plaintext"];
+    9 [label="Speed'final\n(global)\nVU: {Speed}\n<VId: 9>",shape="plaintext",fontcolor="red"];
+    10 [label="Speed_Is_Valid'initial\nVD: {Speed_Is_Valid}\n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="Speed_Is_Valid'final\nVU: {Speed_Is_Valid}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
     15 [label="return (case state is when still => speed = 0, when forward => speed >0, when backward => speed < 0);\nVU: {State, Speed}\nVD: {Speed_Is_Valid}\n<VId: 15>"];
 
     1 ->  15 [arrowType="normal"];
@@ -325,12 +325,12 @@ digraph G {
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="state'initial\n(global)\nVD: {State}\n<VId: 6>",shape="plaintext"];
-    7 [label="state'final\n(global)\nVU: {State}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="speed'initial\n(global)\nVD: {Speed}\n<VId: 8>",shape="plaintext"];
-    9 [label="speed'final\n(global)\nVU: {Speed}\n<VId: 9>",shape="plaintext",fontcolor="red"];
-    10 [label="speed_is_valid'initial\nVD: {Speed_Is_Valid}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="speed_is_valid'final\nVU: {Speed_Is_Valid}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    6 [label="State'initial\n(global)\nVD: {State}\n<VId: 6>",shape="plaintext"];
+    7 [label="State'final\n(global)\nVU: {State}\n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="Speed'initial\n(global)\nVD: {Speed}\n<VId: 8>",shape="plaintext"];
+    9 [label="Speed'final\n(global)\nVU: {Speed}\n<VId: 9>",shape="plaintext",fontcolor="red"];
+    10 [label="Speed_Is_Valid'initial\nVD: {Speed_Is_Valid}\n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="Speed_Is_Valid'final\nVU: {Speed_Is_Valid}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
     15 [label="return (case state is when still => speed = 0, when forward => speed >0, when backward => speed < 0);\nVU: {State, Speed}\nVD: {Speed_Is_Valid}\n<VId: 15>"];
 
     1 ->  2 [arrowType="normal"];
@@ -349,12 +349,12 @@ digraph G {
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="i'initial\nVD: {I}\n<VId: 6>",shape="plaintext"];
-    7 [label="i'final\nVU: {I}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="state'initial\n(global)\nVD: {State}\n<VId: 8>",shape="plaintext"];
-    9 [label="state'final\n(global)\nVU: {State}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    10 [label="speed'initial\n(global)\nVD: {Speed}\n<VId: 10>",shape="plaintext"];
-    11 [label="speed'final\n(global)\nVU: {Speed}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    6 [label="I'initial\nVD: {I}\n<VId: 6>",shape="plaintext"];
+    7 [label="I'final\nVU: {I}\n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="State'initial\n(global)\nVD: {State}\n<VId: 8>",shape="plaintext"];
+    9 [label="State'final\n(global)\nVU: {State}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    10 [label="Speed'initial\n(global)\nVD: {Speed}\n<VId: 10>",shape="plaintext"];
+    11 [label="Speed'final\n(global)\nVU: {Speed}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
     12 [label="precondition speed_is_valid\nVU: {State, Speed}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 12>",shape="plaintext"];
     13 [label="postcondition speed_is_valid\nVU: {State, Speed}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 13>",shape="plaintext"];
     15 [label="if i = accelerate\nVU: {I}\n<VId: 15>",shape="diamond"];
@@ -407,12 +407,12 @@ digraph G {
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="i'initial\nVD: {I}\n<VId: 6>",shape="plaintext"];
-    7 [label="i'final\nVU: {I}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="state'initial\n(global)\nVD: {State}\n<VId: 8>",shape="plaintext"];
-    9 [label="state'final\n(global)\nVU: {State}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    10 [label="speed'initial\n(global)\nVD: {Speed}\n<VId: 10>",shape="plaintext"];
-    11 [label="speed'final\n(global)\nVU: {Speed}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    6 [label="I'initial\nVD: {I}\n<VId: 6>",shape="plaintext"];
+    7 [label="I'final\nVU: {I}\n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="State'initial\n(global)\nVD: {State}\n<VId: 8>",shape="plaintext"];
+    9 [label="State'final\n(global)\nVU: {State}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    10 [label="Speed'initial\n(global)\nVD: {Speed}\n<VId: 10>",shape="plaintext"];
+    11 [label="Speed'final\n(global)\nVU: {Speed}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
     12 [label="precondition speed_is_valid\nVU: {State, Speed}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 12>",shape="plaintext"];
     13 [label="postcondition speed_is_valid\nVU: {State, Speed}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 13>",shape="plaintext"];
     15 [label="if i = accelerate\nVU: {I}\n<VId: 15>",shape="diamond"];
@@ -505,14 +505,14 @@ digraph G {
     21 [label="global&nbsp;State'out\nVD: {State}\n<VId: 21>",shape="plaintext"];
     22 [label="global&nbsp;Speed'out\nVD: {Speed}\n<VId: 22>",shape="plaintext"];
     23 [label="while state /= still\nLoops:&nbsp;L_1\nVU: {State}\n<VId: 23>",shape="diamond"];
-    24 [label="speed'initial\n(global)\nVD: {Speed}\n<VId: 24>",shape="plaintext"];
-    25 [label="speed'final\n(global)\nVU: {Speed}\n<VId: 25>",shape="plaintext",fontcolor="blue"];
-    26 [label="state'initial\n(global)\nVD: {State}\n<VId: 26>",shape="plaintext"];
-    27 [label="state'final\n(global)\nVU: {State}\n<VId: 27>",shape="plaintext",fontcolor="blue"];
-    28 [label="speed_is_valid'initial\nVD: {Speed_Is_Valid}\n<VId: 28>",shape="plaintext",fontcolor="red"];
-    29 [label="speed_is_valid'final\nVU: {Speed_Is_Valid}\n<VId: 29>",shape="plaintext",fontcolor="blue"];
-    30 [label="state_update'initial\nVD: {State_Update}\n<VId: 30>",shape="plaintext",fontcolor="red"];
-    31 [label="state_update'final\nVU: {State_Update}\n<VId: 31>",shape="plaintext"];
+    24 [label="Speed'initial\n(global)\nVD: {Speed}\n<VId: 24>",shape="plaintext"];
+    25 [label="Speed'final\n(global)\nVU: {Speed}\n<VId: 25>",shape="plaintext",fontcolor="blue"];
+    26 [label="State'initial\n(global)\nVD: {State}\n<VId: 26>",shape="plaintext"];
+    27 [label="State'final\n(global)\nVU: {State}\n<VId: 27>",shape="plaintext",fontcolor="blue"];
+    28 [label="Speed_Is_Valid'initial\nVD: {Speed_Is_Valid}\n<VId: 28>",shape="plaintext",fontcolor="red"];
+    29 [label="Speed_Is_Valid'final\nVU: {Speed_Is_Valid}\n<VId: 29>",shape="plaintext",fontcolor="blue"];
+    30 [label="State_Update'initial\nVD: {State_Update}\n<VId: 30>",shape="plaintext",fontcolor="red"];
+    31 [label="State_Update'final\nVU: {State_Update}\n<VId: 31>",shape="plaintext"];
 
     1 ->  6 [arrowType="normal"];
     2 ->  7 [arrowType="normal"];
@@ -568,14 +568,14 @@ digraph G {
     21 [label="global&nbsp;State'out\nVD: {State}\n<VId: 21>",shape="plaintext"];
     22 [label="global&nbsp;Speed'out\nVD: {Speed}\n<VId: 22>",shape="plaintext"];
     23 [label="while state /= still\nLoops:&nbsp;L_1\nVU: {State}\n<VId: 23>",shape="diamond"];
-    24 [label="speed'initial\n(global)\nVD: {Speed}\n<VId: 24>",shape="plaintext"];
-    25 [label="speed'final\n(global)\nVU: {Speed}\n<VId: 25>",shape="plaintext",fontcolor="blue"];
-    26 [label="state'initial\n(global)\nVD: {State}\n<VId: 26>",shape="plaintext"];
-    27 [label="state'final\n(global)\nVU: {State}\n<VId: 27>",shape="plaintext",fontcolor="blue"];
-    28 [label="speed_is_valid'initial\nVD: {Speed_Is_Valid}\n<VId: 28>",shape="plaintext",fontcolor="red"];
-    29 [label="speed_is_valid'final\nVU: {Speed_Is_Valid}\n<VId: 29>",shape="plaintext",fontcolor="blue"];
-    30 [label="state_update'initial\nVD: {State_Update}\n<VId: 30>",shape="plaintext",fontcolor="red"];
-    31 [label="state_update'final\nVU: {State_Update}\n<VId: 31>",shape="plaintext"];
+    24 [label="Speed'initial\n(global)\nVD: {Speed}\n<VId: 24>",shape="plaintext"];
+    25 [label="Speed'final\n(global)\nVU: {Speed}\n<VId: 25>",shape="plaintext",fontcolor="blue"];
+    26 [label="State'initial\n(global)\nVD: {State}\n<VId: 26>",shape="plaintext"];
+    27 [label="State'final\n(global)\nVU: {State}\n<VId: 27>",shape="plaintext",fontcolor="blue"];
+    28 [label="Speed_Is_Valid'initial\nVD: {Speed_Is_Valid}\n<VId: 28>",shape="plaintext",fontcolor="red"];
+    29 [label="Speed_Is_Valid'final\nVU: {Speed_Is_Valid}\n<VId: 29>",shape="plaintext",fontcolor="blue"];
+    30 [label="State_Update'initial\nVD: {State_Update}\n<VId: 30>",shape="plaintext",fontcolor="red"];
+    31 [label="State_Update'final\nVU: {State_Update}\n<VId: 31>",shape="plaintext"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  6 [arrowType="normal"];
@@ -648,13 +648,13 @@ digraph G {
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="speed_is_valid'initial\nVD: {Speed_Is_Valid}\n<VId: 6>",shape="plaintext",fontcolor="red"];
-    7 [label="speed_is_valid'final\nVU: {Speed_Is_Valid}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    6 [label="Speed_Is_Valid'initial\nVD: {Speed_Is_Valid}\n<VId: 6>",shape="plaintext",fontcolor="red"];
+    7 [label="Speed_Is_Valid'final\nVU: {Speed_Is_Valid}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
     11 [label="return (case state is when still => speed = 0, when forward => speed >0, when backward => speed < 0);\nVU: {State, Speed}\nVD: {Speed_Is_Valid}\n<VId: 11>"];
-    12 [label="speed'initial\n(global)\nVD: {Speed}\n<VId: 12>",shape="plaintext"];
-    13 [label="speed'final\n(global)\nVU: {Speed}\n<VId: 13>",shape="plaintext",fontcolor="blue"];
-    14 [label="state'initial\n(global)\nVD: {State}\n<VId: 14>",shape="plaintext"];
-    15 [label="state'final\n(global)\nVU: {State}\n<VId: 15>",shape="plaintext",fontcolor="blue"];
+    12 [label="Speed'initial\n(global)\nVD: {Speed}\n<VId: 12>",shape="plaintext"];
+    13 [label="Speed'final\n(global)\nVU: {Speed}\n<VId: 13>",shape="plaintext",fontcolor="blue"];
+    14 [label="State'initial\n(global)\nVD: {State}\n<VId: 14>",shape="plaintext"];
+    15 [label="State'final\n(global)\nVU: {State}\n<VId: 15>",shape="plaintext",fontcolor="blue"];
 
     1 ->  11 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -673,13 +673,13 @@ digraph G {
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="speed_is_valid'initial\nVD: {Speed_Is_Valid}\n<VId: 6>",shape="plaintext",fontcolor="red"];
-    7 [label="speed_is_valid'final\nVU: {Speed_Is_Valid}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    6 [label="Speed_Is_Valid'initial\nVD: {Speed_Is_Valid}\n<VId: 6>",shape="plaintext",fontcolor="red"];
+    7 [label="Speed_Is_Valid'final\nVU: {Speed_Is_Valid}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
     11 [label="return (case state is when still => speed = 0, when forward => speed >0, when backward => speed < 0);\nVU: {State, Speed}\nVD: {Speed_Is_Valid}\n<VId: 11>"];
-    12 [label="speed'initial\n(global)\nVD: {Speed}\n<VId: 12>",shape="plaintext"];
-    13 [label="speed'final\n(global)\nVU: {Speed}\n<VId: 13>",shape="plaintext",fontcolor="blue"];
-    14 [label="state'initial\n(global)\nVD: {State}\n<VId: 14>",shape="plaintext"];
-    15 [label="state'final\n(global)\nVU: {State}\n<VId: 15>",shape="plaintext",fontcolor="blue"];
+    12 [label="Speed'initial\n(global)\nVD: {Speed}\n<VId: 12>",shape="plaintext"];
+    13 [label="Speed'final\n(global)\nVU: {Speed}\n<VId: 13>",shape="plaintext",fontcolor="blue"];
+    14 [label="State'initial\n(global)\nVD: {State}\n<VId: 14>",shape="plaintext"];
+    15 [label="State'final\n(global)\nVU: {State}\n<VId: 15>",shape="plaintext",fontcolor="blue"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  11 [arrowType="normal"];

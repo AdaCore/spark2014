@@ -1109,18 +1109,15 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
+      Subprograms_Called : constant Node_Sets.Set :=
+        Get_Function_Set (Expression (N));
+
       V     : Flow_Graphs.Vertex_Id;
       Verts : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
 
-      subtype Interesting_Nodes is Valid_Assignment_Kinds
-        with Static_Predicate => Interesting_Nodes not in
-          N_Identifier | N_Expanded_Name;
-
-      Subprograms_Called  : constant Node_Sets.Set :=
-        Get_Function_Set (Expression (N));
-
-      Partial   : Boolean := False;
-      Map_Root  : Flow_Id;
+      Partial         : Boolean;
+      View_Conversion : Boolean;
+      Map_Root        : Flow_Id;
    begin
 
       --  First we need to determine the root name where we assign to, and
@@ -1128,30 +1125,14 @@ package body Flow.Control_Flow_Graph is
       --  beginning of Untangle_Assignment_Target.
 
       declare
-         Root_Node : Node_Id;
-         Seq       : Node_Lists.List := Node_Lists.Empty_List;
+         Unused : Node_Lists.List;
       begin
-         Root_Node := Name (N);
-         while Nkind (Root_Node) in Interesting_Nodes loop
-            Seq.Prepend (Root_Node);
-            Root_Node := Prefix (Root_Node);
-         end loop;
-         pragma Assert (Nkind (Root_Node) in
-                          N_Identifier | N_Expanded_Name);
-
-         Map_Root := Direct_Mapping_Id (Unique_Entity (Entity (Root_Node)));
-         for Node of Seq loop
-            case Valid_Assignment_Kinds (Nkind (Node)) is
-               when N_Selected_Component =>
-                  Map_Root := Add_Component
-                    (Map_Root,
-                     Entity (Selector_Name (Node)));
-               when N_Type_Conversion | N_Unchecked_Type_Conversion =>
-                  null;
-               when others =>
-                  Partial := True;
-            end case;
-         end loop;
+         Get_Assignment_Target_Properties
+           (Name (N),
+            Partial_Definition => Partial,
+            View_Conversion    => View_Conversion,
+            Map_Root           => Map_Root,
+            Seq                => Unused);
       end;
 
       --  We have two likely scenarios: some kind of record assignment (in
@@ -1161,25 +1142,31 @@ package body Flow.Control_Flow_Graph is
 
       if not Partial and then RHS_Split_Useful (N, FA.B_Scope) then
          declare
-            M         : Flow_Id_Maps.Map;
-            Output    : Flow_Id;
-            Inputs    : Flow_Id_Sets.Set;
+            M            : Flow_Id_Maps.Map;
+            Output       : Flow_Id;
+            Inputs       : Flow_Id_Sets.Set;
             All_Vertices : Vertex_Sets.Set  := Vertex_Sets.Empty_Set;
+            Missing      : Flow_Id_Sets.Set;
          begin
             M := Untangle_Record_Assignment
               (Expression (N),
                Map_Root                     => Map_Root,
-               Map_Type                     => Etype (Name (N)),
+               Map_Type                     => Get_Full_Type (Name (N),
+                                                              FA.B_Scope),
                Scope                        => FA.B_Scope,
                Local_Constants              => FA.Local_Constants,
                Fold_Functions               => True,
                Use_Computed_Globals         => not FA.Compute_Globals,
                Expand_Synthesized_Constants => False);
 
+            Missing := Flatten_Variable (Map_Root, FA.B_Scope);
+
             --  Split out the assignment over a number of vertices.
             for C in M.Iterate loop
                Output := Flow_Id_Maps.Key (C);
                Inputs := Flow_Id_Maps.Element (C);
+
+               Missing.Delete (Output);
 
                Add_Vertex
                  (FA,
@@ -1195,10 +1182,32 @@ package body Flow.Control_Flow_Graph is
                All_Vertices.Insert (V);
             end loop;
 
+            if not View_Conversion then
+               --  There might be some fields missing, but if this is not a
+               --  view conversion (and we have already established its a
+               --  full assignment), flow analysis must not claim any other
+               --  fields are "uninitialized".
+               for F of Missing loop
+                  Add_Vertex
+                    (FA,
+                     Make_Basic_Attributes
+                       (Var_Def    => Flow_Id_Sets.To_Set (F),
+                        Var_Ex_Use => Flow_Id_Sets.Empty_Set,
+                        Sub_Called => Node_Sets.Empty_Set,
+                        Loops      => Ctx.Current_Loops,
+                        E_Loc      => N,
+                        Print_Hint => Pretty_Print_Record_Field),
+                     V);
+                  Verts.Append (V);
+                  All_Vertices.Insert (V);
+               end loop;
+            end if;
+
             for V of All_Vertices loop
                FA.Other_Fields.Insert (V,
                                        All_Vertices - Vertex_Sets.To_Set (V));
             end loop;
+
          end;
       else
          declare
@@ -1255,6 +1264,17 @@ package body Flow.Control_Flow_Graph is
       --  Finally, we join up all the vertices we have produced and record
       --  update the connection map.
 
+      if Verts.Is_Empty then
+         pragma Assert (Is_Null_Record (Etype (Name (N))));
+         --  Assigning null records does not produce any assignments, so we
+         --  create a null vertex instead.
+         Add_Vertex (FA,
+                     Direct_Mapping_Id (N),
+                     Null_Node_Attributes,
+                     V);
+         Verts.Append (V);
+      end if;
+
       V := Flow_Graphs.Null_Vertex;
       for W of Verts loop
          if V /= Flow_Graphs.Null_Vertex then
@@ -1262,8 +1282,6 @@ package body Flow.Control_Flow_Graph is
          end if;
          V := W;
       end loop;
-
-      pragma Assert (Verts.Length > 0);
 
       CM.Include (Union_Id (N),
                   Graph_Connections'
@@ -2680,7 +2698,7 @@ package body Flow.Control_Flow_Graph is
                      Map_Root                     =>
                        Direct_Mapping_Id (Defining_Identifier (N)),
                      Map_Type                     =>
-                       Etype (Defining_Identifier (N)),
+                       Get_Full_Type (Defining_Identifier (N), FA.B_Scope),
                      Scope                        => FA.B_Scope,
                      Local_Constants              => FA.Local_Constants,
                      Fold_Functions               => True,
@@ -2719,18 +2737,30 @@ package body Flow.Control_Flow_Graph is
                      All_Vertices.Insert (V);
                   end loop;
 
-                  if not Missing.Is_Empty then
-                     Print_Node_Subtree (Expression (N));
-                     Print_Node_Set (Missing);
-                     raise Program_Error;
-                  end if;
+                  --  Any "missing" fields which are produced by flatten,
+                  --  but not by URA we flag as initialized to the empty
+                  --  set; since it is not possible in SPARK to partially
+                  --  initialize a variable at declaration.
+                  for F of Missing loop
+                     Add_Vertex
+                       (FA,
+                        Make_Basic_Attributes
+                          (Var_Def    => Flow_Id_Sets.To_Set (F),
+                           Var_Ex_Use => Flow_Id_Sets.Empty_Set,
+                           Sub_Called => Node_Sets.Empty_Set,
+                           Loops      => Ctx.Current_Loops,
+                           E_Loc      => N,
+                           Print_Hint => Pretty_Print_Record_Field),
+                        V);
+                     Inits.Append (V);
+                     All_Vertices.Insert (V);
+                  end loop;
 
                   for V of All_Vertices loop
                      FA.Other_Fields.Insert (V,
                                              All_Vertices -
                                                Vertex_Sets.To_Set (V));
                   end loop;
-
                end;
 
             else

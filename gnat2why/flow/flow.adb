@@ -515,7 +515,7 @@ package body Flow is
                                  Print_Node (A.Aux_Node);
 
                               when others =>
-                                 Print_Node (N);
+                                 Sprint_Flow_Id (F);
                            end case;
 
                         when N_Elsif_Part =>

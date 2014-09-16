@@ -22,6 +22,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Maps;
+with Ada.Containers.Hashed_Sets;
 
 with Elists;                     use Elists;
 with Errout;                     use Errout;
@@ -190,8 +191,6 @@ package body Flow_Utility is
       Expand_Synthesized_Constants : Boolean)
       return Flow_Id_Maps.Map
    is
-      M : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
-
       --  !!! Join/Merge need to be able to deal with private parts and
       --      extensions (i.e. non-normal facets).
 
@@ -208,12 +207,15 @@ package body Flow_Utility is
       --  Helpful wrapper for calling Get_Variable_Set.
 
       function Recurse_On (N        : Node_Id;
-                           Map_Root : Flow_Id)
+                           Map_Root : Flow_Id;
+                           Map_Type : Entity_Id := Empty)
                            return Flow_Id_Maps.Map
       is (Untangle_Record_Assignment
             (N,
              Map_Root                     => Map_Root,
-             Map_Type                     => Get_Type (Map_Root, Scope),
+             Map_Type                     => (if Present (Map_Type)
+                                              then Map_Type
+                                              else Get_Full_Type (N, Scope)),
              Scope                        => Scope,
              Local_Constants              => Local_Constants,
              Fold_Functions               => Fold_Functions,
@@ -225,10 +227,14 @@ package body Flow_Utility is
                      Offset : Natural := 0)
                      return Flow_Id
       with Pre => A.Kind in Direct_Mapping | Record_Field and then
-                  B.Kind = Record_Field;
+                  B.Kind in Direct_Mapping | Record_Field,
+           Post => Join'Result.Facet = B.Facet;
       --  Glues components of B to A, starting at offset. For example
       --  consider A = Obj.X and B = R.X.Y and Offset = 1. Then joining
       --  will return Obj.X.Y.
+      --
+      --  Similarly, if A = Obj.X and B = R.X'Private_Part and Offset = 1,
+      --  then joining will produce Obj.X'Private_Part.
 
       procedure Merge (Component : Entity_Id;
                        Input     : Node_Id)
@@ -244,6 +250,13 @@ package body Flow_Utility is
       --  field. For example if the input is simply Foo, then (all other
       --  things being equal to the example above) we include Obj.C => Foo.
 
+      package Component_Sets is new Ada.Containers.Hashed_Sets
+        (Element_Type        => Entity_Id,
+         Hash                => Node_Hash,
+         Equivalent_Elements => Same_Component);
+
+      M : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
+
       ----------
       -- Join --
       ----------
@@ -255,12 +268,15 @@ package body Flow_Utility is
          F : Flow_Id := A;
          N : Natural := 0;
       begin
-         for C of B.Component loop
-            if N >= Offset then
-               F := Add_Component (F, C);
-            end if;
-            N := N + 1;
-         end loop;
+         if B.Kind in Record_Field then
+            for C of B.Component loop
+               if N >= Offset then
+                  F := Add_Component (F, C);
+               end if;
+               N := N + 1;
+            end loop;
+         end if;
+         F.Facet := B.Facet;
          return F;
       end Join;
 
@@ -317,7 +333,7 @@ package body Flow_Utility is
                Ptr     : Node_Id;
                Input   : Node_Id;
                Target  : Node_Id;
-               Missing : Node_Sets.Set := Node_Sets.Empty_Set;
+               Missing : Component_Sets.Set := Component_Sets.Empty_Set;
             begin
                Ptr := First_Component_Or_Discriminant (Map_Type);
                while Present (Ptr) loop
@@ -406,6 +422,23 @@ package body Flow_Utility is
             if Debug_Trace_Untangle_Record then
                Write_Str ("processing type/view conversion");
                Write_Eol;
+               declare
+                  T_From : constant Entity_Id :=
+                    Get_Full_Type (Expression (N), Scope);
+                  T_To   : constant Entity_Id :=
+                    Get_Full_Type (N, Scope);
+               begin
+                  Write_Str ("from: ");
+                  Sprint_Node_Inline (T_From);
+                  Write_Str (" (" & Ekind (T_From)'Img & ")");
+                  Write_Eol;
+                  Write_Str ("to: ");
+                  Sprint_Node_Inline (T_To);
+                  Write_Str (" (" & Ekind (T_To)'Img & ")");
+                  Write_Eol;
+                  Write_Str ("Flattened target type: ");
+                  Print_Node_Set (Flatten_Variable (T_To, Scope));
+               end;
             end if;
 
             declare
@@ -442,7 +475,7 @@ package body Flow_Utility is
 
          when N_Qualified_Expression =>
             --  We can completely ignore these.
-            M := Recurse_On (Expression (N), Map_Root);
+            M := Recurse_On (Expression (N), Map_Root, Map_Type);
 
          when N_Unchecked_Type_Conversion =>
             raise Why.Not_Implemented;
@@ -1298,7 +1331,7 @@ package body Flow_Utility is
 
          if Debug_Trace_Get_Global then
             Indent;
-            Write_Str ("using generated globals");
+            Write_Str ("using pavlos globals");
             Write_Eol;
             Outdent;
          end if;
@@ -1347,7 +1380,7 @@ package body Flow_Utility is
 
          if Debug_Trace_Get_Global then
             Indent;
-            Write_Str ("using computed globals");
+            Write_Str ("using yannick globals");
             Write_Eol;
             Outdent;
          end if;
@@ -1437,7 +1470,6 @@ package body Flow_Utility is
          end if;
 
       end if;
-
    end Get_Globals;
 
    -----------------------
@@ -1918,42 +1950,29 @@ package body Flow_Utility is
 
                   return OK;
 
-               elsif Is_Valid_Assignment_Target (N) then
+               elsif Ekind (Get_Full_Type (N, Scope)) in Record_Kind then
 
-                  --  This is could very well be a view conversion.
-                  --  Although the expression could be more complicated, if
-                  --  it is simple enough to be processed by
-                  --  Untangle_Assignment_Target, then we can make use of
-                  --  it.
-                  --
-                  --  A historical note: before we had the
-                  --  Untangle_Record_* functions, more and more
-                  --  functionality was crammed into
-                  --  Untangle_Assignment_Target in order to process a
-                  --  wider range of expressions, which resulted in a
-                  --  troublesome and unmaintainable functions. We should
-                  --  not repeat this mistake, so please do not expand the
-                  --  range nodes accepted by Is_Valid_Assignment_Target.
+                  --  We use Untangle_Record_Assignment as this can deal
+                  --  with view conversions.
 
                   declare
-                     Tmp_Def   : Flow_Id_Sets.Set;
-                     Tmp_Use   : Flow_Id_Sets.Set;
-                     Tmp_Proof : Flow_Id_Sets.Set;
-                     Unused    : Boolean;
-                  begin
-                     Untangle_Assignment_Target
+                     M : constant Flow_Id_Maps.Map :=
+                       Untangle_Record_Assignment
                        (N,
-                        Scope                => Scope,
-                        Local_Constants      => Local_Constants,
-                        Use_Computed_Globals => Use_Computed_Globals,
-                        Vars_Defined         => Tmp_Def,
-                        Vars_Used            => Tmp_Use,
-                        Vars_Proof           => Tmp_Proof,
-                        Partial_Definition   => Unused);
-                     VS.Union (Tmp_Def or Tmp_Use);
-                     if not Fold_Functions then
-                        VS.Union (Tmp_Proof);
-                     end if;
+                        Map_Root                     =>
+                          Direct_Mapping_Id (Etype (N)),
+                        Map_Type                     =>
+                          Get_Full_Type (N, Scope),
+                        Scope                        => Scope,
+                        Local_Constants              => Local_Constants,
+                        Fold_Functions               => Fold_Functions,
+                        Use_Computed_Globals         => Use_Computed_Globals,
+                        Expand_Synthesized_Constants =>
+                          Expand_Synthesized_Constants);
+                  begin
+                     for C in M.Iterate loop
+                        VS.Union (Flow_Id_Maps.Element (C));
+                     end loop;
                   end;
 
                   return Skip;
@@ -2152,6 +2171,8 @@ package body Flow_Utility is
       Ids : Flow_Id_Sets.Set;
 
       Ptr : Entity_Id;
+
+      Contains_Non_Visible : Boolean := False;
    begin
       if Debug_Trace_Flatten then
          Write_Str ("Flatten: ");
@@ -2173,6 +2194,7 @@ package body Flow_Utility is
       if Debug_Trace_Flatten then
          Write_Str ("Branching on type: ");
          Sprint_Node_Inline (T);
+         Write_Str (" (" & Ekind (T)'Img & ")");
          Write_Eol;
       end if;
 
@@ -2186,7 +2208,7 @@ package body Flow_Utility is
             if Has_Discriminants (T) then
                Ptr := First_Component_Or_Discriminant (T);
                while Present (Ptr) loop
-                  if Ekind (Ptr) = E_Discriminant then
+                  if Is_Visible (Original_Record_Component (Ptr), Scope) then
                      Ids.Include (Add_Component (F, Ptr));
                   end if;
                   Next_Component_Or_Discriminant (Ptr);
@@ -2209,17 +2231,25 @@ package body Flow_Utility is
 
             Ptr := First_Component_Or_Discriminant (T);
             while Present (Ptr) loop
-               Ids.Union (Flatten_Variable (Add_Component (F, Ptr),
-                                            Scope));
+               if Is_Visible (Original_Record_Component (Ptr), Scope) then
+                  Ids.Union (Flatten_Variable (Add_Component (F, Ptr),
+                                               Scope));
+               else
+                  Contains_Non_Visible := True;
+               end if;
                Next_Component_Or_Discriminant (Ptr);
             end loop;
 
-            if Ekind (T) in Private_Kind then
+            if Ekind (T) in Private_Kind or Contains_Non_Visible then
                --  We must have some discriminant, so return X'Private_Part
                --  and the discriminants. For simple private types we don't
                --  do this split.
-               pragma Assert (not Ids.Is_Empty);
-               Ids.Include (F'Update (Facet => Private_Part));
+               pragma Assert (Contains_Non_Visible);
+               if Ids.Is_Empty then
+                  Ids := Flow_Id_Sets.To_Set (F);
+               else
+                  Ids.Include (F'Update (Facet => Private_Part));
+               end if;
             end if;
 
             if Ekind (T) in Class_Wide_Kind then
@@ -2325,6 +2355,75 @@ package body Flow_Utility is
       return False;
    end Is_Valid_Assignment_Target;
 
+   --------------------------------------
+   -- Get_Assignment_Target_Properties --
+   --------------------------------------
+
+   procedure Get_Assignment_Target_Properties
+     (N                  : Node_Id;
+      Partial_Definition : out Boolean;
+      View_Conversion    : out Boolean;
+      Map_Root           : out Flow_Id;
+      Seq                : out Node_Lists.List)
+   is
+      subtype Interesting_Nodes is Valid_Assignment_Kinds
+        with Static_Predicate => Interesting_Nodes not in
+          N_Identifier | N_Expanded_Name;
+
+      Root_Node : Node_Id := N;
+   begin
+
+      --  First we turn the tree into a more helpful sequence. We also
+      --  determine the root node which should be an entire variable.
+
+      Seq := Node_Lists.Empty_List;
+      while Nkind (Root_Node) in Interesting_Nodes loop
+         Seq.Prepend (Root_Node);
+         Root_Node := Prefix (Root_Node);
+      end loop;
+      pragma Assert (Nkind (Root_Node) in N_Identifier | N_Expanded_Name);
+
+      Partial_Definition := False;
+      View_Conversion    := False;
+      Map_Root           := Direct_Mapping_Id (Unique_Entity
+                                                 (Entity (Root_Node)));
+
+      --  We now work out which variable (or group of variables) is
+      --  actually defined, by following the selected components. If we
+      --  find an array slice or index we stop and note that we are dealing
+      --  with a partial assignment (the defined variable is implicitly
+      --  used).
+
+      for N of Seq loop
+         case Valid_Assignment_Kinds (Nkind (N)) is
+            when N_Selected_Component =>
+               Map_Root := Add_Component (Map_Root,
+                                          Original_Record_Component
+                                            (Entity (Selector_Name (N))));
+
+            when N_Type_Conversion =>
+               View_Conversion := True;
+
+            when N_Unchecked_Type_Conversion =>
+               --  We have only limited support for unchecked conversions
+               --  here - we support conversions from scalars to scalars
+               --  only. The assert here makes sure this assumption stays
+               --  valid.
+               declare
+                  Typ_From : constant Entity_Id := Etype (Expression (N));
+                  Typ_To   : constant Entity_Id := Etype (N);
+               begin
+                  pragma Assert (Ekind (Typ_From) in Scalar_Kind);
+                  pragma Assert (Ekind (Typ_To)   in Scalar_Kind);
+               end;
+
+            when others =>
+               Partial_Definition := True;
+               exit;
+         end case;
+      end loop;
+   end Get_Assignment_Target_Properties;
+
    --------------------------------
    -- Untangle_Assignment_Target --
    --------------------------------
@@ -2344,29 +2443,26 @@ package body Flow_Utility is
       --  assign something to something. And you can't assign to function
       --  results (yet).
 
-      subtype Interesting_Nodes is Valid_Assignment_Kinds
-        with Static_Predicate => Interesting_Nodes not in
-          N_Identifier | N_Expanded_Name;
-
       function Get_Vars_Wrapper (N    : Node_Id;
                                  Fold : Boolean)
                                  return Flow_Id_Sets.Set
       is (Get_Variable_Set
             (N,
-             Scope                        => Scope,
-             Local_Constants              => Local_Constants,
-             Fold_Functions               => Fold,
-             Use_Computed_Globals         => Use_Computed_Globals,
-             Reduced                      => False));
+             Scope                => Scope,
+             Local_Constants      => Local_Constants,
+             Fold_Functions       => Fold,
+             Use_Computed_Globals => Use_Computed_Globals,
+             Reduced              => False));
 
-      Root_Node : Node_Id          := N;
-      Seq       : Node_Lists.List  := Node_Lists.Empty_List;
+      Unused                   : Boolean;
+      Base_Node                : Flow_Id;
+      Seq                      : Node_Lists.List;
 
       Idx                      : Natural;
       Process_Type_Conversions : Boolean;
 
-      Base_Node : Flow_Id;
    begin
+
       if Debug_Trace_Untangle then
          Write_Str ("Untangle_Assignment_Target on ");
          Sprint_Node_Inline (N);
@@ -2374,14 +2470,12 @@ package body Flow_Utility is
          Indent;
       end if;
 
-      --  First we turn the tree into a more helpful sequence. We also
-      --  determine the root node which should be an entire variable.
-
-      while Nkind (Root_Node) in Interesting_Nodes loop
-         Seq.Prepend (Root_Node);
-         Root_Node := Prefix (Root_Node);
-      end loop;
-      pragma Assert (Nkind (Root_Node) in N_Identifier | N_Expanded_Name);
+      Get_Assignment_Target_Properties
+        (N,
+         Partial_Definition => Partial_Definition,
+         View_Conversion    => Unused,
+         Map_Root           => Base_Node,
+         Seq                => Seq);
 
       if Debug_Trace_Untangle then
          Write_Str ("Seq is:");
@@ -2391,44 +2485,7 @@ package body Flow_Utility is
             Print_Tree_Node (N);
          end loop;
          Outdent;
-      end if;
 
-      --  We now work out which variable (or group of variables) is
-      --  actually defined, by following the selected components. If we
-      --  find an array slice or index we stop and note that we are dealing
-      --  with a partial assignment (the defined variable is implicitly
-      --  used).
-
-      Partial_Definition := False;
-      Base_Node          := Direct_Mapping_Id (Unique_Entity
-                                                 (Entity (Root_Node)));
-      for N of Seq loop
-         case Valid_Assignment_Kinds (Nkind (N)) is
-            when N_Selected_Component =>
-               Base_Node := Add_Component (Base_Node,
-                                           Original_Record_Component
-                                             (Entity (Selector_Name (N))));
-            when N_Type_Conversion =>
-               null;
-            when N_Unchecked_Type_Conversion =>
-               --  We have only limited support for unchecked conversions
-               --  here - we support conversions from scalars to scalars
-               --  only. The assert here makes sure this assumption stays
-               --  valid.
-               declare
-                  Typ_From : constant Entity_Id := Etype (Expression (N));
-                  Typ_To   : constant Entity_Id := Etype (N);
-               begin
-                  pragma Assert (Ekind (Typ_From) in Scalar_Kind);
-                  pragma Assert (Ekind (Typ_To)   in Scalar_Kind);
-               end;
-            when others =>
-               Partial_Definition := True;
-               exit;
-         end case;
-      end loop;
-
-      if Debug_Trace_Untangle then
          Write_Str ("Base_Node: ");
          Print_Flow_Id (Base_Node);
          Write_Eol;

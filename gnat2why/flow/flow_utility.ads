@@ -265,6 +265,25 @@ package Flow_Utility is
    --  Returns true if the tree under N is a combination of
    --  Valid_Assignment_Kinds only.
 
+   procedure Get_Assignment_Target_Properties
+     (N                  : Node_Id;
+      Partial_Definition : out Boolean;
+      View_Conversion    : out Boolean;
+      Map_Root           : out Flow_Id;
+      Seq                : out Node_Lists.List)
+   with Pre  => Is_Valid_Assignment_Target (N),
+        Post =>
+          Map_Root.Kind in Direct_Mapping | Record_Field and then
+          (for all X of Seq => Nkind (X) in Valid_Assignment_Kinds);
+   --  Checks the assignment target N and determines a few basic
+   --  properties.
+   --
+   --  * Partial_Definition: if set this indicates that the assignment to N
+   --    touches only a few elements of a larger array.
+   --  * View_Conversion: indicates that N contains a view conversion.
+   --  * Map_Root: the non-flattened flow_id which is assigned to.
+   --  * Seq: the list of items used to derives Map_Root.
+
    procedure Untangle_Assignment_Target
      (N                    : Node_Id;
       Scope                : Flow_Scope;
@@ -317,7 +336,7 @@ package Flow_Utility is
       Use_Computed_Globals         : Boolean;
       Expand_Synthesized_Constants : Boolean)
       return Flow_Id_Maps.Map
-   with Pre => Ekind (Get_Full_Type (N, Scope)) in Record_Kind
+   with Pre => Ekind (Get_Full_Type (N, Scope)) in Record_Kind | Private_Kind
                and then Map_Root.Kind in Direct_Mapping | Record_Field
                and then Nkind (Map_Type) in N_Entity
                and then Ekind (Map_Type) in Type_Kind;
