@@ -1404,12 +1404,12 @@ is not what we are talking about here.
 
 .. _tu-fe-ghost_entities-08:
 
-8.  If a ghost type has a partial view and is not declared within
-    an enclosing ghost entity (e.g., a ghost subprogram), then
-    an explicit convention aspect specification for the (partial view of the)
-    type shall be provided in the visible part of the enclosing package.
-    [This rule is to ensure that the ghostliness of a type can be
-    determined without looking through partial views.]
+8.  A Convention aspect specification specifying a convention of Ghost
+    which applies either to a type which has a partial view or to a deferred
+    constant shall occur in the same package visible part as the initial
+    declaration of the type or deferred constant.
+    [This rule is to ensure that the ghostliness of an entity can be
+    determined without having to look through to its completion.]
 
 .. _tu-fe-ghost_entities-09:
 
@@ -1434,7 +1434,10 @@ is not what we are talking about here.
       parameter, or a call to a procedure which has a non-ghost global output.
       [Strictly speaking, the final "non-ghost global output" part of this rule
       is a Verification Rule rather than a Legality Rule.]
-
+      [Note that in order to determine whether a given reference satisfies
+      this condition, it suffices to examine only the innermost statement
+      enclosing the reference.]
+      
 .. _etu-ghost_entities-lr:
 
 .. centered:: **Dynamic Semantics**
