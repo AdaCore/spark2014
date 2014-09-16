@@ -68,7 +68,8 @@ package BioAPI is
    --    finger present to sample, and is called prior to attempting a Verify.
    --
    ------------------------------------------------------------------
-   function SamplePresent return Boolean;
+   function SamplePresent return Boolean
+   with Global => null;
 
 
    ------------------------------------------------------------------
@@ -85,7 +86,8 @@ package BioAPI is
                      MaxFAR         : in     RateT;
                      Matched        :    out Boolean;
                      FARAchieved    :    out RateT;
-                     BioReturn      :    out CommonTypes.Unsigned32T);
+                     BioReturn      :    out CommonTypes.Unsigned32T)
+   with Global => null;
 
 
    ------------------------------------------------------------------
@@ -95,6 +97,7 @@ package BioAPI is
    --    Flushes the Bio device of stale data.
    --
    ------------------------------------------------------------------
-   procedure Reset;
+   procedure Reset
+   with Global => null;
 
 end BioAPI;

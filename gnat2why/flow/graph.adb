@@ -1404,6 +1404,12 @@ package body Graph is
    begin
       Write_Dot_File (G, Filename, Node_Info, Edge_Info);
 
+      --  If we have a vast number of nodes, we don't call dot since it
+      --  will simply take too much time.
+      if G.Vertices.Length > 250 then
+         return;
+      end if;
+
       declare
          Success     : Boolean;
          Return_Code : Integer;

@@ -1389,9 +1389,12 @@ package body Flow_Utility is
          end if;
 
          declare
+            --  We exclude constants here, since any *analyzed* spark
+            --  program (as opposed to called programs) will have the new
+            --  generated globals. To be revisited in M314-013.
             ALI_Reads  : constant Name_Set.Set :=
               Get_Generated_Reads (Subprogram,
-                                   Include_Constants => not Globals_For_Proof);
+                                   Include_Constants => False);
             ALI_Writes : constant Name_Set.Set :=
               Get_Generated_Writes (Subprogram);
 

@@ -23,6 +23,8 @@ admin.ads:245:29: info: length check proved
 admin.ads:246:58: info: length check proved
 admin.ads:250:58: info: length check proved
 admin.ads:254:58: info: length check proved
+admintoken-interfac.ads:52:14: warning: subprogram "Init" has no effect
+admintoken.adb:155:15: warning: statement has no effect
 admintoken.adb:275:37: warning: length check might fail, in call inlined at admintoken.adb:366, in call inlined at admintoken.adb:502
 admintoken.adb:275:37: warning: length check might fail, in call inlined at admintoken.adb:369, in call inlined at admintoken.adb:502
 admintoken.adb:275:37: warning: length check might fail, in call inlined at admintoken.adb:476, in call inlined at admintoken.adb:504
@@ -84,22 +86,22 @@ auditlog.adb:168:28: info: length check proved
 auditlog.adb:169:28: info: length check proved
 auditlog.adb:194:26: info: range check proved, in call inlined at auditlog.adb:1007
 auditlog.adb:194:26: info: range check proved, in call inlined at auditlog.adb:900
-auditlog.adb:194:26: warning: range check might fail, in call inlined at auditlog.adb:1733
-auditlog.adb:194:26: warning: range check might fail, in call inlined at auditlog.adb:1859
-auditlog.adb:244:43: warning: length check might fail, in call inlined at auditlog.adb:1570
-auditlog.adb:244:43: warning: length check might fail, in call inlined at auditlog.adb:1660
+auditlog.adb:194:26: warning: range check might fail, in call inlined at auditlog.adb:1735
+auditlog.adb:194:26: warning: range check might fail, in call inlined at auditlog.adb:1861
+auditlog.adb:244:43: warning: length check might fail, in call inlined at auditlog.adb:1572
+auditlog.adb:244:43: warning: length check might fail, in call inlined at auditlog.adb:1662
 auditlog.adb:244:43: warning: length check might fail, in call inlined at auditlog.adb:302, in call inlined at auditlog.adb:360
 auditlog.adb:244:43: warning: length check might fail, in call inlined at auditlog.adb:305, in call inlined at auditlog.adb:360
 auditlog.adb:244:43: warning: length check might fail, in call inlined at auditlog.adb:429, in call inlined at auditlog.adb:476
 auditlog.adb:244:43: warning: length check might fail, in call inlined at auditlog.adb:432, in call inlined at auditlog.adb:476
-auditlog.adb:246:23: info: length check proved, in call inlined at auditlog.adb:1570
-auditlog.adb:246:23: info: length check proved, in call inlined at auditlog.adb:1660
+auditlog.adb:246:23: info: length check proved, in call inlined at auditlog.adb:1572
+auditlog.adb:246:23: info: length check proved, in call inlined at auditlog.adb:1662
 auditlog.adb:246:23: info: length check proved, in call inlined at auditlog.adb:302, in call inlined at auditlog.adb:360
 auditlog.adb:246:23: info: length check proved, in call inlined at auditlog.adb:305, in call inlined at auditlog.adb:360
 auditlog.adb:246:23: info: length check proved, in call inlined at auditlog.adb:429, in call inlined at auditlog.adb:476
 auditlog.adb:246:23: info: length check proved, in call inlined at auditlog.adb:432, in call inlined at auditlog.adb:476
-auditlog.adb:246:23: warning: range check might fail, in call inlined at auditlog.adb:1570
-auditlog.adb:246:23: warning: range check might fail, in call inlined at auditlog.adb:1660
+auditlog.adb:246:23: warning: range check might fail, in call inlined at auditlog.adb:1572
+auditlog.adb:246:23: warning: range check might fail, in call inlined at auditlog.adb:1662
 auditlog.adb:246:23: warning: range check might fail, in call inlined at auditlog.adb:302, in call inlined at auditlog.adb:360
 auditlog.adb:246:23: warning: range check might fail, in call inlined at auditlog.adb:305, in call inlined at auditlog.adb:360
 auditlog.adb:246:23: warning: range check might fail, in call inlined at auditlog.adb:429, in call inlined at auditlog.adb:476
@@ -124,8 +126,22 @@ auditlog.adb:432:15: warning: length check might fail, in call inlined at auditl
 auditlog.adb:432:15: warning: range check might fail, in call inlined at auditlog.adb:476
 auditlog.adb:433:41: info: range check proved, in call inlined at auditlog.adb:476
 auditlog.adb:433:53: warning: range check might fail, in call inlined at auditlog.adb:476
-auditlog.adb:499:22: info: precondition proved, in call inlined at auditlog.adb:1920
-auditlog.adb:499:22: warning: precondition might fail, in call inlined at auditlog.adb:1895
+auditlog.adb:499:15: warning: unused assignment, in call inlined at auditlog.adb:1897
+auditlog.adb:499:15: warning: unused assignment, in call inlined at auditlog.adb:1922
+auditlog.adb:499:22: info: precondition proved, in call inlined at auditlog.adb:1922
+auditlog.adb:499:22: warning: precondition might fail, in call inlined at auditlog.adb:1897
+auditlog.adb:501:11: warning: statement has no effect, in call inlined at auditlog.adb:1897
+auditlog.adb:501:11: warning: statement has no effect, in call inlined at auditlog.adb:1922
+auditlog.adb:501:21: warning: unused assignment to "Archive", in call inlined at auditlog.adb:1897
+auditlog.adb:501:21: warning: unused assignment to "Archive", in call inlined at auditlog.adb:1922
+auditlog.adb:502:21: warning: unused assignment to "Unused", in call inlined at auditlog.adb:1897
+auditlog.adb:502:21: warning: unused assignment to "Unused", in call inlined at auditlog.adb:1922
+auditlog.adb:503:11: warning: statement has no effect, in call inlined at auditlog.adb:1897
+auditlog.adb:503:11: warning: statement has no effect, in call inlined at auditlog.adb:1922
+auditlog.adb:503:19: warning: unused assignment to "Archive", in call inlined at auditlog.adb:1897
+auditlog.adb:503:19: warning: unused assignment to "Archive", in call inlined at auditlog.adb:1922
+auditlog.adb:504:19: warning: unused assignment to "Unused", in call inlined at auditlog.adb:1897
+auditlog.adb:504:19: warning: unused assignment to "Unused", in call inlined at auditlog.adb:1922
 auditlog.adb:600:12: warning: length check might fail, in call inlined at auditlog.adb:652
 auditlog.adb:600:34: warning: length check might fail, in call inlined at auditlog.adb:652
 auditlog.adb:753:47: warning: range check might fail
@@ -175,62 +191,66 @@ auditlog.adb:1127:47: warning: range check might fail
 auditlog.adb:1127:50: warning: overflow check might fail
 auditlog.adb:1127:69: warning: overflow check might fail
 auditlog.adb:1132:07: warning: precondition might fail
-auditlog.adb:1278:25: warning: assertion might fail, in call inlined at auditlog.adb:1318
-auditlog.adb:1282:55: info: range check proved, in call inlined at auditlog.adb:1318
-auditlog.adb:1317:12: info: assertion proved
-auditlog.adb:1371:10: warning: assertion might fail
-auditlog.adb:1385:20: info: range check proved
-auditlog.adb:1398:19: warning: assertion might fail
-auditlog.adb:1410:63: info: range check proved
-auditlog.adb:1411:65: info: range check proved
-auditlog.adb:1412:26: warning: range check might fail
-auditlog.adb:1413:32: info: overflow check proved
-auditlog.adb:1428:25: warning: assertion might fail
-auditlog.adb:1432:35: info: overflow check proved
-auditlog.adb:1439:43: info: index check proved
-auditlog.adb:1439:69: info: index check proved
-auditlog.adb:1439:69: info: overflow check proved
-auditlog.adb:1446:63: warning: range check might fail
-auditlog.adb:1447:65: warning: range check might fail
-auditlog.adb:1462:07: info: assertion proved
-auditlog.adb:1481:07: warning: assertion might fail
-auditlog.adb:1487:62: info: range check proved
-auditlog.adb:1487:67: info: overflow check proved
-auditlog.adb:1488:09: info: overflow check proved
-auditlog.adb:1488:09: info: range check proved
-auditlog.adb:1566:07: warning: precondition might fail
-auditlog.adb:1570:26: warning: length check might fail
-auditlog.adb:1576:10: info: precondition proved
-auditlog.adb:1658:22: info: precondition proved
-auditlog.adb:1660:22: warning: length check might fail
-auditlog.adb:1697:13: warning: assertion might fail
-auditlog.adb:1702:53: warning: range check might fail
-auditlog.adb:1702:56: warning: overflow check might fail
-auditlog.adb:1702:75: warning: overflow check might fail
-auditlog.adb:1732:52: warning: range check might fail
-auditlog.adb:1743:10: warning: assertion might fail, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
-auditlog.adb:1744:47: warning: range check might fail
-auditlog.adb:1744:50: warning: overflow check might fail
-auditlog.adb:1744:69: warning: overflow check might fail
-auditlog.adb:1834:10: warning: assertion might fail
-auditlog.adb:1837:52: info: range check proved
-auditlog.adb:1837:55: info: overflow check proved
-auditlog.adb:1837:74: info: overflow check proved
-auditlog.adb:1847:10: info: assertion proved
-auditlog.adb:1852:50: info: range check proved
-auditlog.adb:1852:53: info: overflow check proved
-auditlog.adb:1852:72: info: overflow check proved
-auditlog.adb:1858:53: info: range check proved
-auditlog.adb:1861:47: warning: range check might fail
-auditlog.adb:1869:10: warning: assertion might fail, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
-auditlog.adb:1870:47: warning: range check might fail
-auditlog.adb:1870:50: warning: overflow check might fail
-auditlog.adb:1870:69: warning: overflow check might fail
-auditlog.adb:1914:10: info: assertion proved
+auditlog.adb:1280:25: warning: assertion might fail, in call inlined at auditlog.adb:1320
+auditlog.adb:1284:55: info: range check proved, in call inlined at auditlog.adb:1320
+auditlog.adb:1319:12: info: assertion proved
+auditlog.adb:1321:30: warning: "Logfilesstatus" might not be initialized
+auditlog.adb:1323:30: warning: "Fileages" might not be initialized
+auditlog.adb:1324:30: warning: "Logfileentries" might not be initialized
+auditlog.adb:1373:10: warning: assertion might fail
+auditlog.adb:1387:20: info: range check proved
+auditlog.adb:1400:19: warning: assertion might fail
+auditlog.adb:1412:63: info: range check proved
+auditlog.adb:1413:65: info: range check proved
+auditlog.adb:1414:26: warning: range check might fail
+auditlog.adb:1415:32: info: overflow check proved
+auditlog.adb:1430:25: warning: assertion might fail
+auditlog.adb:1434:35: info: overflow check proved
+auditlog.adb:1441:43: info: index check proved
+auditlog.adb:1441:69: info: index check proved
+auditlog.adb:1441:69: info: overflow check proved
+auditlog.adb:1448:63: warning: range check might fail
+auditlog.adb:1449:65: warning: range check might fail
+auditlog.adb:1464:07: info: assertion proved
+auditlog.adb:1483:07: warning: assertion might fail
+auditlog.adb:1489:62: info: range check proved
+auditlog.adb:1489:67: info: overflow check proved
+auditlog.adb:1490:09: info: overflow check proved
+auditlog.adb:1490:09: info: range check proved
+auditlog.adb:1568:07: warning: precondition might fail
+auditlog.adb:1572:26: warning: length check might fail
+auditlog.adb:1578:10: info: precondition proved
+auditlog.adb:1660:22: info: precondition proved
+auditlog.adb:1662:22: warning: length check might fail
+auditlog.adb:1699:13: warning: assertion might fail
+auditlog.adb:1704:53: warning: range check might fail
+auditlog.adb:1704:56: warning: overflow check might fail
+auditlog.adb:1704:75: warning: overflow check might fail
+auditlog.adb:1734:52: warning: range check might fail
+auditlog.adb:1745:10: warning: assertion might fail, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
+auditlog.adb:1746:47: warning: range check might fail
+auditlog.adb:1746:50: warning: overflow check might fail
+auditlog.adb:1746:69: warning: overflow check might fail
+auditlog.adb:1836:10: warning: assertion might fail
+auditlog.adb:1839:52: info: range check proved
+auditlog.adb:1839:55: info: overflow check proved
+auditlog.adb:1839:74: info: overflow check proved
+auditlog.adb:1849:10: info: assertion proved
+auditlog.adb:1854:50: info: range check proved
+auditlog.adb:1854:53: info: overflow check proved
+auditlog.adb:1854:72: info: overflow check proved
+auditlog.adb:1860:53: info: range check proved
+auditlog.adb:1863:47: warning: range check might fail
+auditlog.adb:1871:10: warning: assertion might fail, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
+auditlog.adb:1872:47: warning: range check might fail
+auditlog.adb:1872:50: warning: overflow check might fail
+auditlog.adb:1872:69: warning: overflow check might fail
+auditlog.adb:1916:10: info: assertion proved
 audittypes.ads:94:58: info: length check proved
 audittypes.ads:107:06: info: length check proved
 bio-interfac.adb:66:57: info: length check proved
 bio-interfac.adb:78:38: warning: range check might fail
+bio-interfac.ads:70:14: warning: subprogram "Flush" has no effect
 bio.adb:129:20: warning: assertion might fail, requires Result = InternalError, in call inlined at bio.adb:198
 bio.adb:181:38: warning: range check might fail, in call inlined at bio.adb:200
 bio.adb:182:12: warning: range check might fail, in call inlined at bio.adb:200
@@ -241,8 +261,10 @@ bio.adb:189:42: warning: length check might fail, in call inlined at bio.adb:200
 bio.adb:189:45: warning: length check might fail, in call inlined at bio.adb:200
 bio.adb:191:23: info: length check proved, in call inlined at bio.adb:200
 bio.adb:191:23: warning: range check might fail, in call inlined at bio.adb:200
+bio.ads:91:14: warning: subprogram "Flush" has no effect
 certificatestore.adb:37:42: info: length check proved
 certificatestore.adb:223:31: warning: range check might fail, in call inlined at certificatestore.adb:239
+certificatestore.adb:224:26: warning: "Rawnext" might not be initialized, in call inlined at certificatestore.adb:239
 certificatestore.adb:224:26: warning: length check might fail, in call inlined at certificatestore.adb:239
 certificatestore.adb:224:29: warning: length check might fail, in call inlined at certificatestore.adb:239
 certificatestore.adb:224:29: warning: range check might fail, in call inlined at certificatestore.adb:239
@@ -395,6 +417,8 @@ configdata.adb:1114:70: info: division check proved
 configdata.adb:1124:68: info: division check proved
 configdata.adb:1194:69: info: division check proved
 configdata.adb:1204:68: info: division check proved
+configdata.adb:1389:40: warning: unused assignment to "Unused"
+configdata.adb:1390:38: warning: unused assignment to "Unused"
 configdata.adb:1599:70: info: range check proved
 configdata.adb:1767:17: info: division check proved
 configdata.adb:1767:17: warning: range check might fail
@@ -438,6 +462,7 @@ configuration.adb:131:41: warning: length check might fail, in call inlined at c
 display-interfac.adb:75:39: info: range check proved
 display-interfac.adb:92:45: info: range check proved
 display-interfac.adb:109:45: info: range check proved
+display-interfac.ads:96:14: warning: subprogram "Reset" has no effect
 display.adb:42:57: info: length check proved
 display.adb:45:43: info: length check proved
 display.adb:50:43: info: length check proved
@@ -471,6 +496,7 @@ display.adb:148:33: warning: overflow check might fail, in call inlined at displ
 display.adb:148:33: warning: overflow check might fail, in call inlined at display.adb:289
 display.adb:150:32: warning: range check might fail, in call inlined at display.adb:189
 display.adb:150:32: warning: range check might fail, in call inlined at display.adb:289
+display.adb:273:15: warning: statement has no effect
 display.ads:66:48: info: length check proved
 door.adb:99:10: warning: postcondition might fail, requires CurrentDoor = Open and then Latch.IsLocked and then Clock.GreaterThanOrEqual(Clock.TheCurrentTime, AlarmTimeout) ) = (DoorAlarm = AlarmTypes.alarming
 door.ads:148:08: warning: postcondition might fail
@@ -479,8 +505,10 @@ door.ads:270:08: warning: postcondition might fail
 enclave.adb:109:18: info: precondition proved, in call inlined at enclave.adb:1961
 enclave.adb:109:18: info: precondition proved, in call inlined at enclave.adb:2150
 enclave.adb:207:29: info: postcondition proved
+enclave.adb:212:16: warning: statement has no effect
 enclave.adb:276:10: warning: postcondition might fail, requires Status = EnclaveQuiescent and then KeyStore.PrivateKeyPresent) or else (Status = WaitingEndEnrol and then not KeyStore(KeyStore.privatekeypresent)
 enclave.adb:288:16: info: precondition proved
+enclave.adb:288:26: warning: unused assignment to "Thecurrentfloppy"
 enclave.adb:362:29: info: postcondition proved
 enclave.adb:441:29: info: postcondition proved
 enclave.adb:570:19: warning: precondition might fail
@@ -498,13 +526,18 @@ enclave.adb:856:19: info: precondition proved
 enclave.adb:867:19: info: precondition proved
 enclave.adb:872:24: info: precondition proved
 enclave.adb:924:13: info: postcondition proved
+enclave.adb:932:33: warning: unused assignment to "Thelog"
+enclave.adb:937:19: warning: statement has no effect
 enclave.adb:998:13: info: postcondition proved
+enclave.adb:1006:19: warning: statement has no effect
 enclave.adb:1046:15: info: precondition proved
 enclave.adb:1055:10: info: precondition proved
 enclave.adb:1057:10: info: precondition proved
 enclave.adb:1138:15: info: precondition proved
 enclave.adb:1140:10: warning: postcondition might fail
 enclave.adb:1148:19: warning: precondition might fail
+enclave.adb:1164:19: warning: statement has no effect
+enclave.adb:1178:14: warning: unused assignment to "Thecurrentfloppy"
 enclave.adb:1189:15: info: precondition proved
 enclave.adb:1302:15: info: precondition proved
 enclave.adb:1311:19: info: precondition proved
@@ -604,8 +637,14 @@ enrolment.ads:85:07: warning: postcondition might fail, requires DataOK = KeySto
 floppy.adb:43:37: info: length check proved
 floppy.adb:66:33: warning: range check might fail
 floppy.adb:66:39: warning: range check might fail
+floppy.ads:55:14: warning: subprogram "Write" has no effect
+floppy.ads:76:14: warning: subprogram "Read" has no effect
+floppy.ads:124:14: warning: subprogram "Init" has no effect
 iandatypes.ads:49:22: info: length check proved
 iandatypes.ads:67:38: info: length check proved
+keyboard.ads:50:14: warning: subprogram "Init" has no effect
+keyboard.ads:64:14: warning: subprogram "Finalise" has no effect
+keyboard.ads:98:14: warning: subprogram "Poll" has no effect
 keystore.adb:57:47: info: length check proved
 keystore.adb:113:69: warning: range check might fail, in call inlined at keystore.adb:274
 keystore.adb:113:69: warning: range check might fail, in call inlined at keystore.adb:283
@@ -725,6 +764,7 @@ latch-interfac.ads:61:26: warning: postcondition might fail, requires not isLock
 latch.ads:107:07: warning: postcondition might fail
 latch.ads:142:08: warning: postcondition might fail, requires IsLocked = LatchisLocked or SystemFault
 latch.ads:162:26: warning: postcondition might fail, requires Latch_Timeout = Time
+poll.adb:52:15: warning: statement has no effect
 poll.ads:132:11: warning: postcondition might fail
 screen.adb:122:06: info: length check proved
 screen.adb:122:07: info: length check proved
@@ -742,6 +782,8 @@ screen.adb:133:07: info: length check proved
 screen.adb:134:07: info: length check proved
 screen.adb:135:07: info: length check proved
 screen.adb:136:07: info: length check proved
+screen.adb:273:15: warning: statement has no effect, in call inlined at screen.adb:1076
+screen.adb:277:29: warning: unused assignment to "Unused", in call inlined at screen.adb:1076
 screen.adb:456:34: info: length check proved, in call inlined at screen.adb:620
 screen.adb:456:34: info: length check proved, in call inlined at screen.adb:626
 screen.adb:456:34: info: length check proved, in call inlined at screen.adb:632
@@ -798,6 +840,8 @@ screen.adb:620:49: info: range check proved
 screen.adb:626:49: warning: range check might fail
 screen.adb:632:49: warning: range check might fail
 screen.adb:638:49: warning: range check might fail
+screen.adb:725:15: warning: statement has no effect, in call inlined at screen.adb:1077
+screen.adb:729:29: warning: unused assignment to "Unused", in call inlined at screen.adb:1077
 screen.adb:816:40: info: length check proved, in call inlined at screen.adb:841
 screen.adb:816:40: info: length check proved, in call inlined at screen.adb:847
 screen.adb:816:40: info: length check proved, in call inlined at screen.adb:853
@@ -848,16 +892,42 @@ tokenreader.adb:212:23: warning: range check might fail, in call inlined at toke
 tokenreader.adb:219:22: info: range check proved
 tokenreader.adb:314:17: info: range check proved
 tokenreader.adb:315:48: info: range check proved
+tokenreader.adb:476:10: warning: statement has no effect, in call inlined at tokenreader.adb:501, in call inlined at tokenreader.adb:600
+tokenreader.adb:476:10: warning: statement has no effect, in call inlined at tokenreader.adb:501, in call inlined at tokenreader.adb:605
+tokenreader.adb:476:10: warning: statement has no effect, in call inlined at tokenreader.adb:501, in call inlined at tokenreader.adb:687
+tokenreader.adb:476:10: warning: statement has no effect, in call inlined at tokenreader.adb:501, in call inlined at tokenreader.adb:692
+tokenreader.adb:476:10: warning: statement has no effect, in call inlined at tokenreader.adb:527, in call inlined at tokenreader.adb:588
+tokenreader.adb:476:10: warning: statement has no effect, in call inlined at tokenreader.adb:527, in call inlined at tokenreader.adb:608
+tokenreader.adb:476:10: warning: statement has no effect, in call inlined at tokenreader.adb:527, in call inlined at tokenreader.adb:679
+tokenreader.adb:476:10: warning: statement has no effect, in call inlined at tokenreader.adb:527, in call inlined at tokenreader.adb:767
+tokenreader.adb:477:21: warning: statement has no effect, in call inlined at tokenreader.adb:501, in call inlined at tokenreader.adb:600
+tokenreader.adb:477:21: warning: statement has no effect, in call inlined at tokenreader.adb:501, in call inlined at tokenreader.adb:605
+tokenreader.adb:477:21: warning: statement has no effect, in call inlined at tokenreader.adb:501, in call inlined at tokenreader.adb:687
+tokenreader.adb:477:21: warning: statement has no effect, in call inlined at tokenreader.adb:501, in call inlined at tokenreader.adb:692
+tokenreader.adb:477:21: warning: statement has no effect, in call inlined at tokenreader.adb:527, in call inlined at tokenreader.adb:588
+tokenreader.adb:477:21: warning: statement has no effect, in call inlined at tokenreader.adb:527, in call inlined at tokenreader.adb:608
+tokenreader.adb:477:21: warning: statement has no effect, in call inlined at tokenreader.adb:527, in call inlined at tokenreader.adb:679
+tokenreader.adb:477:21: warning: statement has no effect, in call inlined at tokenreader.adb:527, in call inlined at tokenreader.adb:767
+tokenreader.adb:479:16: warning: unused assignment to "Unusedresponsecode", in call inlined at tokenreader.adb:501, in call inlined at tokenreader.adb:600
+tokenreader.adb:479:16: warning: unused assignment to "Unusedresponsecode", in call inlined at tokenreader.adb:501, in call inlined at tokenreader.adb:605
+tokenreader.adb:479:16: warning: unused assignment to "Unusedresponsecode", in call inlined at tokenreader.adb:501, in call inlined at tokenreader.adb:687
+tokenreader.adb:479:16: warning: unused assignment to "Unusedresponsecode", in call inlined at tokenreader.adb:501, in call inlined at tokenreader.adb:692
+tokenreader.adb:479:16: warning: unused assignment to "Unusedresponsecode", in call inlined at tokenreader.adb:527, in call inlined at tokenreader.adb:588
+tokenreader.adb:479:16: warning: unused assignment to "Unusedresponsecode", in call inlined at tokenreader.adb:527, in call inlined at tokenreader.adb:608
+tokenreader.adb:479:16: warning: unused assignment to "Unusedresponsecode", in call inlined at tokenreader.adb:527, in call inlined at tokenreader.adb:679
+tokenreader.adb:479:16: warning: unused assignment to "Unusedresponsecode", in call inlined at tokenreader.adb:527, in call inlined at tokenreader.adb:767
 tokenreader.adb:675:26: info: range check proved
 tokenreader.adb:752:22: info: range check proved
 tokenreader.adb:755:43: info: range check proved
 updates.ads:96:12: info: postcondition proved
 updates.ads:188:11: warning: postcondition might fail
+userentry.adb:289:19: warning: statement has no effect, in call inlined at userentry.adb:1299
 userentry.adb:508:12: warning: range check might fail, in call inlined at userentry.adb:526
 userentry.adb:514:42: warning: length check might fail, in call inlined at userentry.adb:526
 userentry.adb:514:45: warning: length check might fail, in call inlined at userentry.adb:526
 userentry.adb:516:23: info: length check proved, in call inlined at userentry.adb:526
 userentry.adb:516:23: warning: range check might fail, in call inlined at userentry.adb:526
+userentry.adb:560:13: warning: statement has no effect
 userentry.adb:685:19: info: precondition proved
 userentry.adb:919:12: warning: postcondition might fail, requires Latch.IsLocked and then Door.TheCurrentDoor = Door.Open and then Clock.GreaterThanOrEqual(Clock.TheCurrentTime, Door.alarm_Timeout) ) = (Door.TheDoorAlarm = AlarmTypes.alarming
 userentry.adb:1295:37: warning: range check might fail

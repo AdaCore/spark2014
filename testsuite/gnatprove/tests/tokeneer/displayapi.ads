@@ -31,7 +31,8 @@ package DisplayAPI is
    --
    ------------------------------------------------------------------
 
-   function GetMaxTextSizeTop return CommonTypes.Unsigned32T;
+   function GetMaxTextSizeTop return CommonTypes.Unsigned32T
+   with Global => null;
 
 
    ------------------------------------------------------------------
@@ -43,7 +44,8 @@ package DisplayAPI is
    --
    ------------------------------------------------------------------
 
-   function GetMaxTextSizeBottom return CommonTypes.Unsigned32T;
+   function GetMaxTextSizeBottom return CommonTypes.Unsigned32T
+   with Global => null;
 
 
    ------------------------------------------------------------------
@@ -55,7 +57,8 @@ package DisplayAPI is
    ------------------------------------------------------------------
 
    procedure SetTopText(TopText : in     String;
-                        Written :    out Boolean);
+                        Written :    out Boolean)
+   with Global => null;
 
 
    ------------------------------------------------------------------
@@ -67,7 +70,8 @@ package DisplayAPI is
    ------------------------------------------------------------------
 
    procedure SetBottomText(BottomText : in     String;
-                           Written    :    out Boolean);
+                           Written    :    out Boolean)
+   with Global => null;
 
 
    ------------------------------------------------------------------
@@ -81,7 +85,8 @@ package DisplayAPI is
    ------------------------------------------------------------------
 
    procedure SetTopTextScrollable(ScrollText : in     String;
-                                  Written    :    out Boolean);
+                                  Written    :    out Boolean)
+   with Global => null;
 
 
    ------------------------------------------------------------------
@@ -92,7 +97,8 @@ package DisplayAPI is
    --
    ------------------------------------------------------------------
 
-   procedure Reset(Success :     out Boolean);
+   procedure Reset(Success :     out Boolean)
+   with Global => null;
 
 
 end DisplayAPI;

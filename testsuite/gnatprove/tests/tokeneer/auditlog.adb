@@ -1210,7 +1210,9 @@ is pragma SPARK_Mode (On);
        --#         LogFilesStatus,
        --#         LogFileEntries,
        --#         FileAges         from LogFiles;
-
+     with
+        Global => (In_Out => (Auditsystemfault, Logfiles),
+                   Output => (Logfilesstatus, Logfileentries, Fileages))
      is
         FileH         : File.T;
         Status        : FileStatusT;

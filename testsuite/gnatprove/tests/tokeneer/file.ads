@@ -40,7 +40,8 @@ is pragma SPARK_Mode (On);
    -- Traceunit : C.File.SetName
    ------------------------------------------------------------------
    procedure SetName (TheName : in     String;
-                      TheFile : in out T);
+                      TheFile : in out T)
+   with Global => null;
    --# derives
    --#   TheFile from
    --#      TheName,
@@ -56,7 +57,8 @@ is pragma SPARK_Mode (On);
    ------------------------------------------------------------------
    procedure GetName (TheFile     : in     T;
                       TheName     :    out String;
-                      NameLength  :    out Natural);
+                      NameLength  :    out Natural)
+   with Global => null;
    --# derives TheName,
    --#         NameLength from TheFile;
    ------------------------------------------------------------------
@@ -67,7 +69,8 @@ is pragma SPARK_Mode (On);
    --
    -- Traceunit : C.File.Construct
    ------------------------------------------------------------------
-   function Construct (TheName : String) return T;
+   function Construct (TheName : String) return T
+   with Global => null;
    --# pre TheName'Last <= MaxNameLength;
    pragma Precondition (TheName'Last <= MaxNameLength);
 
@@ -80,7 +83,8 @@ is pragma SPARK_Mode (On);
    -- Traceunit : C.File.OpenAppend
    ------------------------------------------------------------------
    procedure OpenAppend ( TheFile : in out T ;
-                          Success :    out Boolean );
+                          Success :    out Boolean )
+   with Global => null;
    --# derives
    --#   Success,
    --#   TheFile from
@@ -95,7 +99,8 @@ is pragma SPARK_Mode (On);
    -- Traceunit : C.File.OpenWrite
    ------------------------------------------------------------------
    procedure OpenWrite ( TheFile : in out T ;
-                         Success :    out Boolean );
+                         Success :    out Boolean )
+   with Global => null;
    --# derives
    --#   Success,
    --#   TheFile from
@@ -110,7 +115,8 @@ is pragma SPARK_Mode (On);
    -- Traceunit : C.File.OpenRead
    ------------------------------------------------------------------
    procedure OpenRead ( TheFile : in out T ;
-                        Success :    out Boolean );
+                        Success :    out Boolean )
+   with Global => null;
    --# derives
    --#   Success,
    --#   TheFile from
@@ -125,7 +131,8 @@ is pragma SPARK_Mode (On);
    -- Traceunit : C.File.Close
    ------------------------------------------------------------------
    procedure Close ( TheFile : in out T ;
-                     Success :    out Boolean );
+                     Success :    out Boolean )
+   with Global => null;
    --# derives
    --#   Success,
    --#   TheFile from
@@ -153,7 +160,8 @@ is pragma SPARK_Mode (On);
    ------------------------------------------------------------------
    procedure PutString ( TheFile : in out T;
                          Text    : in     String;
-                         Stop    : in     Natural);
+                         Stop    : in     Natural)
+   with Global => null;
    --# derives
    --#   TheFile from
    --#      TheFile,
@@ -171,7 +179,8 @@ is pragma SPARK_Mode (On);
    ------------------------------------------------------------------
    procedure GetString ( TheFile : in out T;
                          Text    :    out String;
-                         Stop    :    out Natural);
+                         Stop    :    out Natural)
+   with Global => null;
    --# derives
    --#   Text,
    --#   Stop,
@@ -188,7 +197,8 @@ is pragma SPARK_Mode (On);
    -- Traceunit : C.File.GetChar
    ------------------------------------------------------------------
    procedure GetChar ( TheFile : in out T;
-                       Item    :    out Character);
+                       Item    :    out Character)
+   with Global => null;
    --# derives
    --#   Item,
    --#   TheFile from
@@ -204,7 +214,8 @@ is pragma SPARK_Mode (On);
    ------------------------------------------------------------------
    procedure PutInteger ( TheFile : in out T;
                           Item    : in Integer;
-                          Width   : in Natural);
+                          Width   : in Natural)
+   with Global => null;
    --# derives
    --#   TheFile from
    --#      TheFile,
@@ -222,7 +233,8 @@ is pragma SPARK_Mode (On);
    procedure GetInteger ( TheFile : in out T;
                           Item    :    out Integer;
                           Width   : in     Natural;
-                          Success :    out Boolean);
+                          Success :    out Boolean)
+   with Global => null;
    --# derives
    --#   Item,
    --#   Success,
@@ -238,7 +250,8 @@ is pragma SPARK_Mode (On);
    -- Traceunit : C.File.NewLine
    ------------------------------------------------------------------
    procedure NewLine ( TheFile : in out T;
-                       Spacing : in     Natural);
+                       Spacing : in     Natural)
+   with Global => null;
    --# derives
    --#   TheFile from *,
    --#      Spacing;
@@ -253,7 +266,8 @@ is pragma SPARK_Mode (On);
    -- Traceunit : C.File.SkipLine
    ------------------------------------------------------------------
    procedure SkipLine ( TheFile  : in out T;
-                        Spacing  : in     Positive);
+                        Spacing  : in     Positive)
+   with Global => null;
    --# derives
    --#   TheFile from *,
    --#      Spacing;
@@ -270,7 +284,8 @@ is pragma SPARK_Mode (On);
    ------------------------------------------------------------------
    procedure GetLine ( TheFile  : in out T;
                        Item     :    out String;
-                       Stop     :    out Natural);
+                       Stop     :    out Natural)
+   with Global => null;
    --# derives
    --#      Item,
    --#      Stop,
@@ -284,7 +299,8 @@ is pragma SPARK_Mode (On);
    --
    -- Traceunit : C.File.EndOfFile
    ------------------------------------------------------------------
-   function EndOfFile ( TheFile : T ) return Boolean;
+   function EndOfFile ( TheFile : T ) return Boolean
+   with Global => null;
 
    ------------------------------------------------------------------
    -- EndOfLine
@@ -294,7 +310,8 @@ is pragma SPARK_Mode (On);
    --
    -- Traceunit : C.File.EndOfLine
    ------------------------------------------------------------------
-   function EndOfLine ( TheFile : T ) return Boolean;
+   function EndOfLine ( TheFile : T ) return Boolean
+   with Global => null;
 
    ------------------------------------------------------------------
    -- Create
@@ -305,7 +322,8 @@ is pragma SPARK_Mode (On);
    -- Traceunit : C.File.Create
    ------------------------------------------------------------------
    procedure Create ( TheFile : in out T;
-                      Success :    out Boolean);
+                      Success :    out Boolean)
+   with Global => null;
    --# derives
    --#   Success,
    --#   TheFile from
@@ -320,7 +338,8 @@ is pragma SPARK_Mode (On);
    -- Traceunit : C.File.Delete
    ------------------------------------------------------------------
    procedure Delete ( TheFile : in out T;
-                      Success :    out Boolean);
+                      Success :    out Boolean)
+   with Global => null;
    --# derives
    --#   Success,
    --#   TheFile from
@@ -336,7 +355,8 @@ is pragma SPARK_Mode (On);
    ------------------------------------------------------------------
    procedure Compare ( FileA        : in out T;
                        FileB        : in out T;
-                       FilesTheSame :    out Boolean );
+                       FilesTheSame :    out Boolean )
+   with Global => null;
    --# derives
    --#   FilesTheSame from
    --#      FileA,
@@ -355,7 +375,8 @@ is pragma SPARK_Mode (On);
    ------------------------------------------------------------------
    procedure Copy ( FileA        : in out T;
                     FileB        : in out T;
-                    Success      :    out Boolean );
+                    Success      :    out Boolean )
+   with Global => null;
    --# derives
    --#   Success,
    --#   FileB from
@@ -372,7 +393,8 @@ is pragma SPARK_Mode (On);
    -- Traceunit : C.File.CreateDirectory
    ------------------------------------------------------------------
    procedure CreateDirectory ( DirName : in String;
-                               Success : out Boolean);
+                               Success : out Boolean)
+   with Global => null;
    --# derives
    --#   Success from
    --#      DirName;
