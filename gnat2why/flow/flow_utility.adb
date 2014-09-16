@@ -334,6 +334,7 @@ package body Flow_Utility is
                Input   : Node_Id;
                Target  : Node_Id;
                Missing : Component_Sets.Set := Component_Sets.Empty_Set;
+               FS      : Flow_Id_Sets.Set;
             begin
                Ptr := First_Component_Or_Discriminant (Map_Type);
                while Present (Ptr) loop
@@ -358,10 +359,10 @@ package body Flow_Utility is
                --  suggest, we fill in the "missing" fields with null, so
                --  that they appear initialized.
                for Missing_Component of Missing loop
-                  for F of Flatten_Variable (Add_Component (Map_Root,
-                                                            Missing_Component),
-                                             Scope)
-                  loop
+                  FS := Flatten_Variable (Add_Component
+                                          (Map_Root, Missing_Component),
+                                          Scope);
+                  for F of FS loop
                      M.Insert (F, Flow_Id_Sets.Empty_Set);
                   end loop;
                end loop;
@@ -451,8 +452,10 @@ package body Flow_Utility is
                Inputs : Flow_Id_Sets.Set;
 
                Contributions : Natural := 0;
+               FS : constant Flow_Id_Sets.Set :=
+                 Flatten_Variable (Get_Full_Type (N, Scope), Scope);
             begin
-               for F of Flatten_Variable (Get_Full_Type (N, Scope), Scope) loop
+               for F of FS loop
                   Leftovers.Include (Join (Map_Root, F));
                end loop;
 
