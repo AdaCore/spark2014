@@ -1298,6 +1298,11 @@ package body SPARK_Definition is
       --  marking Itypes and class-wide types at their first occurrence
       --  (inside In_SPARK).
 
+      --  The Itype may be located in some other unit than the expression, and
+      --  a violation of SPARK_Mode on the Itype may mask another violation on
+      --  the expression. As we prefer to have the error located on the
+      --  expression, we mark the type of the node after the expression.
+
       --  The type may be absent on kinds of nodes that should have types,
       --  in very special cases, like the fake aggregate node in a 'Update
       --  attribute_reference, and the fake identifier node for an abstract
