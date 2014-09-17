@@ -1,0 +1,5 @@
+x86.adb:6:29: info: range check proved
+x86.ads:13:14: info: postcondition proved
+x86.ads:13:42: info: range check proved
+x86.ads:17:14: info: postcondition proved
+x86.ads:21:14: warning: postcondition might fail
