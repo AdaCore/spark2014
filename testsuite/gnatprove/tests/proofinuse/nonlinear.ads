@@ -1,0 +1,16 @@
+with Types; use Types;
+
+package Nonlinear with
+  SPARK_Mode
+is
+   --  from J506-016 (industrial user)
+   procedure Scale (X, Y, Z : Natural_32; Res : out Natural_32);
+   procedure Unsigned_Scale (X, Y, Z : Unsigned_32; Res : out Unsigned_32);
+
+   --  from M118-036 (example for teaching)
+   procedure Divide (X, Y : Positive_32; Res : out Positive_32);
+
+   --  from M328-009 (example for teaching)
+   procedure Power (X : Natural);
+
+end Nonlinear;
