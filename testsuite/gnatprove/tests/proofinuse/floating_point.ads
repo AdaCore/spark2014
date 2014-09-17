@@ -12,4 +12,7 @@ is
    --  from N121-026 (industrial user)
    procedure Range_Add_Mult (X, Y, Z : Float_32; Res : out Float_32);
 
+   --  from MC13-026 (industrial user)
+   procedure Guarded_Div (X, Y : Float_32; Res : out Float_32);
+
 end Floating_Point;
