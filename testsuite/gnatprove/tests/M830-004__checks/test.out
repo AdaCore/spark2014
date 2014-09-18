@@ -1,4 +1,3 @@
-do_checks.adb:1:11: warning: subprogram "Do_Checks" has no effect
 do_checks.adb:5:14: warning: subprogram "Do_Range_Check" has no effect
 do_checks.adb:6:14: warning: subprogram "Do_Length_Check" has no effect
 do_checks.adb:7:14: warning: subprogram "Do_Discriminant_Check" has no effect

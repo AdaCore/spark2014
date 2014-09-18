@@ -1,4 +1,3 @@
-inline_init.adb:1:11: warning: subprogram "Inline_Init" has no effect
 inline_init.adb:7:22: warning: call appears in default expression
 inline_init.adb:7:22: warning: no contextual analysis of "Id"
 inline_init.adb:18:19: warning: assertion might fail, requires Y = 3

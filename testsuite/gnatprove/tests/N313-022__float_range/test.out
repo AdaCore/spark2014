@@ -1,4 +1,3 @@
-fr.adb:1:11: warning: subprogram "Fr" has no effect
 fr.adb:12:09: warning: unused assignment
 fr.adb:12:14: info: overflow check proved
 fr.adb:13:14: info: overflow check proved

@@ -1,4 +1,3 @@
-loops.adb:1:11: warning: subprogram "Loops" has no effect
 loops.adb:5:07: info: loop invariant initialization proved
 loops.adb:5:07: info: loop invariant preservation proved
 loops.adb:8:25: info: overflow check proved

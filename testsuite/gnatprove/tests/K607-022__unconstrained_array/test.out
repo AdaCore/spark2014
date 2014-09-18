@@ -1,4 +1,3 @@
-my_test.adb:3:11: warning: subprogram "My_Test" has no effect
 my_test.adb:5:23: info: length check proved
 my_test.adb:6:04: warning: "T2" is not modified, could be declared constant
 my_test.adb:6:23: info: length check proved
@@ -79,7 +78,6 @@ simple_unc_arrays.adb:100:18: info: index check proved
 simple_unc_arrays.adb:120:19: info: discriminant check proved
 simple_unc_arrays.adb:120:25: info: index check proved
 simple_unc_arrays.adb:120:25: info: overflow check proved
-
 simple_unc_arrays.adb:120:35: info: discriminant check proved
 simple_unc_arrays.adb:120:39: info: index check proved
 simple_unc_arrays.adb:121:16: info: precondition proved

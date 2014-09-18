@@ -1,4 +1,3 @@
-precise.adb:1:11: warning: subprogram "Precise" has no effect
 precise.adb:6:11: info: overflow check proved
 precise.adb:7:04: info: assertion proved
 precise.adb:8:11: info: overflow check proved
@@ -11,7 +10,6 @@ precise.adb:13:04: info: assertion proved
 test_18.adb:4:16: warning: postcondition might fail, requires Z >= X
 test_18.adb:7:12: info: overflow check proved
 test_18.adb:7:19: info: overflow check proved
-test_float.adb:3:11: warning: subprogram "Test_Float" has no effect
 test_float.adb:8:14: info: postcondition proved
 test_float.adb:8:24: info: overflow check proved
 test_float.adb:11:14: info: overflow check proved

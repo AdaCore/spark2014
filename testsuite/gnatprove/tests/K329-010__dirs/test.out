@@ -1,3 +1,2 @@
 a.ads:4:20: info: postcondition proved
-b.adb:3:11: warning: subprogram "B" has no effect
 b.adb:7:04: info: assertion proved

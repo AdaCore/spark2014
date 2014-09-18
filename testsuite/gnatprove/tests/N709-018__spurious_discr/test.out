@@ -1,3 +1,2 @@
-useless_discr.adb:1:11: warning: subprogram "Useless_Discr" has no effect
 useless_discr.adb:18:05: info: discriminant check proved
 useless_discr.adb:19:05: info: discriminant check proved

@@ -73,4 +73,3 @@ main.adb:5:11: warning: "concat_left.x" might not be initialized after elaborati
 main.adb:5:11: warning: "concat_left.y" might not be initialized after elaboration of main program "Main"
 main.adb:5:11: warning: "concat_right.x" might not be initialized after elaboration of main program "Main"
 main.adb:5:11: warning: "concat_right.y" might not be initialized after elaboration of main program "Main"
-main.adb:5:11: warning: subprogram "Main" has no effect

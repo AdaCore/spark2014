@@ -1,3 +1,2 @@
-arrays.adb:1:11: warning: subprogram "Arrays" has no effect
 arrays.adb:9:04: info: assertion proved
 arrays.adb:9:19: warning: "Obj" might not be initialized

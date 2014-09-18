@@ -1,3 +1,2 @@
-bad_constant.adb:2:11: warning: subprogram "Bad_Constant" has no effect
 bad_constant.adb:4:49: warning: overflow check might fail
 bad_constant.adb:4:49: warning: range check might fail

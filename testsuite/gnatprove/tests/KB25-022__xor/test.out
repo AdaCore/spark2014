@@ -1,2 +1,1 @@
 xor_bool.adb:1:11: warning: subprogram "Xor_Bool" has no effect
-xor_mod.adb:1:11: warning: subprogram "Xor_Mod" has no effect

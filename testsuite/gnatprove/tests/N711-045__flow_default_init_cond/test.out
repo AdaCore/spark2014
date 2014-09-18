@@ -17,7 +17,6 @@ dic3.ads:2:09: info: default initial condition proved
 dic3.ads:5:09: warning: default initial condition might fail
 dic3.ads:12:14: warning: subprogram "Test" has no effect
 dic3.ads:15:28: info: range check proved
-dic_test.adb:1:11: warning: subprogram "Dic_Test" has no effect
    compilation of callers_caller.adb failed
    compilation of dic.adb failed
 

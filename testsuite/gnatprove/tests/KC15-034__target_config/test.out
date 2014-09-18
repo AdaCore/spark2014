@@ -1,4 +1,3 @@
-testtarg.adb:3:11: warning: subprogram "Testtarg" has no effect
 testtarg.adb:5:04: info: assertion proved
 testtarg.adb:6:04: info: assertion proved
 testtarg.adb:7:04: info: assertion proved

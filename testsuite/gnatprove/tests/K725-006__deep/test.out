@@ -1,3 +1,2 @@
-pack.adb:1:11: warning: subprogram "Pack" has no effect
 pack.adb:9:29: info: length check proved, in instantiation at pack.adb:18
 pack.adb:13:32: info: length check proved, in instantiation at pack.adb:18

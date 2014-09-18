@@ -1,4 +1,3 @@
-repr.adb:1:11: warning: subprogram "Repr" has no effect
 repr.adb:6:31: warning: unused initial value of "Unsorted"
 repr.adb:10:30: warning: "Values" is not modified, could be "in"
 repr.adb:16:16: warning: unused assignment

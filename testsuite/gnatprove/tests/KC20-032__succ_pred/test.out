@@ -1,4 +1,3 @@
-p.adb:1:11: warning: subprogram "P" has no effect
 p.adb:10:14: info: postcondition proved
 p.adb:14:21: info: range check proved
 p.adb:14:35: info: overflow check proved

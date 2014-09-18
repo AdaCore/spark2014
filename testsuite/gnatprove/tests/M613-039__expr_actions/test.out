@@ -37,7 +37,6 @@ list.ads:16:64: info: precondition proved
 list.ads:16:79: info: overflow check proved
 list.ads:16:83: info: overflow check proved
 list.ads:16:83: info: range check proved
-main.adb:3:11: warning: subprogram "Main" has no effect
 main.adb:9:15: warning: precondition might fail
 main.adb:15:26: warning: precondition might fail
 stack.adb:4:47: info: range check proved

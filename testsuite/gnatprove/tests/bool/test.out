@@ -1,3 +1,2 @@
-bool.adb:1:11: warning: subprogram "Bool" has no effect
 bool.adb:4:14: info: postcondition proved
 bool.adb:15:14: info: postcondition proved

@@ -1,2 +1,1 @@
-p.adb:1:11: warning: subprogram "P" has no effect
 p.adb:3:14: warning: postcondition might fail

@@ -1,4 +1,3 @@
-test_vdll.adb:5:11: warning: subprogram "Test_Vdll" has no effect
 test_vdll.adb:21:08: warning: precondition might fail
 test_vdll.adb:25:19: warning: assertion might fail, requires not Has_Element (L1, First (L1)
 test_vdll.adb:25:23: info: precondition proved

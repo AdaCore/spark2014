@@ -1,3 +1,2 @@
-toto.adb:3:11: warning: subprogram "Toto" has no effect
 toto.adb:5:04: warning: analyzing unreferenced function "Exp"
 toto.adb:5:18: warning: unused initial value of "X"

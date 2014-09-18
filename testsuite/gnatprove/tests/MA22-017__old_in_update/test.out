@@ -1,3 +1,2 @@
-upd.adb:1:11: warning: subprogram "Upd" has no effect
 upd.adb:4:14: info: postcondition proved
 upd.adb:9:15: info: length check proved

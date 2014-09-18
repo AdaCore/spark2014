@@ -45,7 +45,6 @@ deceleration_curve.adb:111:10: warning: assuming "New_Line" has no effect on glo
 deceleration_curve.adb:111:10: warning: no Global contract available for "New_Line"
 deceleration_curve.ads:27:06: info: precondition proved
 deceleration_curve.ads:84:14: warning: subprogram "Print_Curve" has no effect
-deceleration_curve_test.adb:5:11: warning: subprogram "Deceleration_Curve_Test" has no effect
 deceleration_curve_test.adb:6:31: info: precondition proved
 deceleration_curve_test.adb:15:19: warning: assertion might fail, requires Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000
 deceleration_curve_test.adb:15:19: warning: precondition might fail
@@ -90,7 +89,6 @@ sec_3_13_6_deceleration.ads:47:30: warning: precondition might fail
 sec_3_13_6_deceleration.ads:52:26: info: range check proved
 sec_3_13_6_deceleration.ads:52:26: warning: overflow check might fail
 sec_3_13_8_targets_decel_curves.adb:24:07: warning: precondition might fail
-sec_3_13_test.adb:5:11: warning: subprogram "Sec_3_13_Test" has no effect
 section_3_5_3.adb:41:54: info: overflow check proved
 section_3_5_3.ads:70:14: warning: subprogram "Initiate_Communication_Session" has no effect
 section_3_5_3.ads:77:14: warning: postcondition might fail, requires Contains(Connections, destination)
@@ -198,7 +196,6 @@ step_function.ads:114:40: info: precondition proved
 step_function.ads:115:61: info: index check proved
 step_function.ads:116:40: info: precondition proved
 step_function.ads:117:61: info: index check proved
-step_function_test.adb:4:11: warning: subprogram "Step_Function_Test" has no effect
 step_function_test.adb:7:15: info: length check proved
 step_function_test.adb:14:15: info: length check proved
 step_function_test.adb:21:15: info: length check proved

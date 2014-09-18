@@ -4,7 +4,6 @@ main.adb:6:13: info: range check proved
 main.adb:7:14: info: range check proved
 main.adb:13:06: warning: unused assignment
 main.adb:19:14: warning: unused assignment to "Tv"
-p.adb:1:11: warning: subprogram "P" has no effect
 p.adb:2:09: warning: dynamic type predicate ignored (not yet supported)
 p.adb:10:40: info: overflow check proved, in call inlined at p.adb:17
 sub.adb:6:17: info: division check proved

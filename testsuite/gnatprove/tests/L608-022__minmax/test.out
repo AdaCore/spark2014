@@ -1,4 +1,3 @@
-minmax.adb:1:11: warning: subprogram "Minmax" has no effect
 minmax.adb:29:07: info: assertion proved
 minmax.adb:30:07: info: assertion proved
 minmax.adb:39:11: warning: unused assignment

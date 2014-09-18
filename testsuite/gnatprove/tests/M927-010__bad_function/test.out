@@ -1,2 +1,1 @@
-bad_function.adb:2:11: warning: subprogram "Bad_Function" has no effect
 bad_function.adb:4:57: warning: overflow check might fail

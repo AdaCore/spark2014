@@ -1,3 +1,1 @@
-p.adb:3:11: warning: subprogram "P" has no effect
 p.adb:6:19: warning: assertion might fail, requires (F)
-q.adb:1:11: warning: subprogram "Q" has no effect

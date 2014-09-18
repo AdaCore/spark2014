@@ -1,2 +1,1 @@
-anon.adb:1:11: warning: subprogram "Anon" has no effect
 anon.adb:4:13: warning: "My_A" might not be initialized
