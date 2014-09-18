@@ -1,1 +1,1 @@
-ALL XFAIL Requires CVC4 commit 94496160
+ALL XFAIL Requires CVC4 commit 94496160 (To be fixed in N805-025)
