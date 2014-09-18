@@ -2519,8 +2519,8 @@ package body Flow_Utility is
       --
       --    * Array index and slice: we process the expressions and add to
       --      the variables used in code and proof. We also make sure to
-      --      not process any future type conversions as we flow analysis
-      --      can no longer distinguish elements.
+      --      not process any future type conversions as flow analysis can
+      --      no longer distinguish elements.
       --
       --    * Component selection: we increment Idx.
 

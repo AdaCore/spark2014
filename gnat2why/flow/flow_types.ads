@@ -121,7 +121,7 @@ package Flow_Types is
    --  objects will describe the Normal_Part.
    --
    --  Flo's note on naming: I did want to use the name "aspect", but this
-   --  is perhaps asking for confion; hence I went for "facet".
+   --  is perhaps asking for confusion; hence I went for "facet".
 
    subtype Initial_Or_Final_Variant is Flow_Id_Variant
      range Initial_Value .. Final_Value;
@@ -178,17 +178,17 @@ package Flow_Types is
               Variant => Normal_Use);
 
    function Hash (N : Flow_Id) return Ada.Containers.Hash_Type;
-   --  Hash function for flow id's. The idea is that a direct mapping
+   --  Hash function for flow ids. The idea is that a direct mapping
    --  to node N will return the same hash as a magic string mapping
    --  to node N.
 
    function Present (F : Flow_Id) return Boolean
    is (F.Kind /= Null_Value);
-   --  Returns true iff F is not null.
+   --  Returns True iff F is not null.
 
    function Synthetic (F : Flow_Id) return Boolean
    is (F.Kind = Synthetic_Null_Export);
-   --  Returns true iff F is a synthesised Flow_Id.
+   --  Returns True iff F is a synthesised Flow_Id.
 
    function Direct_Mapping_Id
      (N       : Node_Or_Entity_Id;
@@ -223,7 +223,7 @@ package Flow_Types is
                    Ekind (Comp) in E_Component | E_Discriminant) and then
                 F.Facet = Normal_Part,
         Post => Add_Component'Result.Kind = Record_Field;
-   --  Returns the same flow id, but accessed with the given component.
+   --  Returns the same Flow_Id, but accessed with the given component.
 
    function Depth (F : Flow_Id) return Natural
    is (if F.Kind = Record_Field then Natural (F.Component.Length) else 0);
@@ -236,7 +236,7 @@ package Flow_Types is
    --  Create a Flow_Id for the given magic string.
 
    function Is_Discriminant (F : Flow_Id) return Boolean;
-   --  Returns true if the given flow id is a record field
+   --  Returns True if the given Flow_Id is a record field
    --  representing a discriminant.
 
    function Has_Bounds
@@ -246,34 +246,35 @@ package Flow_Types is
      with Pre => (if F.Kind in Direct_Mapping | Record_Field
                     and then F.Facet = Normal_Part
                   then Nkind (F.Node) in N_Entity);
-   --  Returns true if a flow id needs separate representation for its
+   --  Returns True if a Flow_Id needs separate representation for its
    --  bounds.
 
    function Is_Private_Part (F : Flow_Id) return Boolean
    is (F.Kind in Direct_Mapping | Record_Field
          and then F.Facet = Private_Part);
-   --  Returns true if the given flow id represents the hidden part of a
-   --  record (either because it is private and we don't have visibility).
+   --  Returns True if the given Flow_Id represents the hidden part of
+   --  a record (used when something is private and we don't have
+   --  visibility).
 
    function Is_Extension (F : Flow_Id) return Boolean
    is (F.Kind in Direct_Mapping | Record_Field
          and then F.Facet = Extension_Part);
-   --  Returns true if the given flow id represents the hidden part of a
-   --  record (either because it is private and we don't have visibility).
+   --  Returns True if the given Flow_Id represents the extension part
+   --  of a record.
 
    function Is_Record_Tag (F : Flow_Id) return Boolean
    is (F.Kind in Direct_Mapping | Record_Field
          and then F.Facet = The_Tag);
-   --  Returns true if the given flow id represents the tag of a classwide
+   --  Returns True if the given Flow_Id represents the tag of a classwide
    --  type.
 
    function Is_Bound (F : Flow_Id) return Boolean
    is (F.Kind in Direct_Mapping | Record_Field
          and then F.Facet = The_Bounds);
-   --  Returns true if the given flow id represents a bound.
+   --  Returns True if the given Flow_Id represents a bound.
 
    function Is_Volatile (F : Flow_Id) return Boolean;
-   --  Returns true if the given flow id is volatile in any way.
+   --  Returns True if the given Flow_Id is volatile in any way.
 
    function Has_Async_Readers (F : Flow_Id) return Boolean
    with Post => (if Has_Async_Readers'Result then Is_Volatile (F));
@@ -297,7 +298,7 @@ package Flow_Types is
    function Change_Variant (F       : Flow_Id;
                             Variant : Flow_Id_Variant)
                             return Flow_Id;
-   --  Returns a copy of the given flow id, but with a modified
+   --  Returns a copy of the given Flow_Id, but with a modified
    --  variant.
 
    function Parent_Record (F : Flow_Id) return Flow_Id

@@ -262,7 +262,7 @@ package Flow_Utility is
    function Is_Valid_Assignment_Target (N : Node_Id) return Boolean
    with Post => (if Is_Valid_Assignment_Target'Result
                  then Nkind (N) in Valid_Assignment_Kinds);
-   --  Returns true if the tree under N is a combination of
+   --  Returns True if the tree under N is a combination of
    --  Valid_Assignment_Kinds only.
 
    procedure Get_Assignment_Target_Properties
@@ -282,7 +282,7 @@ package Flow_Utility is
    --    touches only a few elements of a larger array.
    --  * View_Conversion: indicates that N contains a view conversion.
    --  * Map_Root: the non-flattened flow_id which is assigned to.
-   --  * Seq: the list of items used to derives Map_Root.
+   --  * Seq: the list of items used to derive Map_Root.
 
    procedure Untangle_Assignment_Target
      (N                    : Node_Id;
