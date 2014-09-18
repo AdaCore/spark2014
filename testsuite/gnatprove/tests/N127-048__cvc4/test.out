@@ -14,9 +14,9 @@ nose_gear.adb:273:07: info: assertion proved
 nose_gear.adb:275:47: info: range check proved
 nose_gear.adb:279:47: info: range check proved
 nose_gear.adb:283:40: info: range check proved
-nose_gear.adb:283:64: info: overflow check proved
+nose_gear.adb:283:64: warning: overflow check might fail
 nose_gear.adb:287:43: info: range check proved
 nose_gear.adb:287:69: info: division check proved
-nose_gear.adb:287:69: info: overflow check proved
-nose_gear.adb:313:40: info: division check proved
-nose_gear.adb:313:40: info: overflow check proved
+nose_gear.adb:287:69: warning: overflow check might fail
+nose_gear.adb:313:40: warning: divide by zero might fail
+nose_gear.adb:313:40: warning: overflow check might fail
