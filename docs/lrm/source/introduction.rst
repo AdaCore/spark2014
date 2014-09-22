@@ -763,18 +763,18 @@ must satisfy the following conditions:
 
 .. _ghost_entities:
 
-Ghost Functions
-~~~~~~~~~~~~~~~
+Ghost Entities
+~~~~~~~~~~~~~~
 
 Often extra entities, such as types, variables and functions may be required
 only for test and verification purposes. Such entities are termed *ghost*
-entities and their use should be restricted to places where they do not affect
+entities and their use is restricted so that they do not affect
 the functionality of the program. Complete removal of *ghost* entities has no
 functional impact on the program.
 
-|SPARK| currently supports ghost functions but not ghost types or
-variables.  Ghost functions may be executable or
-non-executable. Non-executable ghost functions have no implementation
+|SPARK| supports ghost subprograms, types, objects, and packages.
+Ghost subprograms may be executable or non-executable.
+Non-executable ghost subprograms have no implementation
 and can be used for the purposes of formal verification only. Such
 functions may have their specification defined within an external
 proof tool to facilitate formal verification. This specification is

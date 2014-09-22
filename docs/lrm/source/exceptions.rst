@@ -82,7 +82,8 @@ Pragmas Assert and Assertion_Policy
 
    There is an *assertion_*\ ``aspect_mark`` for each of these aspects
    and pragmas with the same identifier as the corresponding aspect or
-   pragma.
+   pragma. In addition, Ghost is a |SPARK| defined
+   *assertion_*\ ``aspect_mark``.
 
    An implementation may introduce further implementation defined
    *assertion_*\ ``aspect_marks`` some of which may apply to groups of
