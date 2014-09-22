@@ -1021,6 +1021,12 @@ is True shall not override an inherited primitive operation of a
 tagged type whose Extensions_Visible aspect is False.
 [The reverse is allowed.]
 
+If a nonnull type extension inherits a
+procedure having both a False Extensions_Visible aspect and one or
+more controlling out-mode parameters, then the inherited procedure
+requires overriding. [This is because the inherited procedure would not
+initialize the noninherited component(s).]
+
 The Extensions_Visible aspect shall not be specified for a subprogram
 which has no parameters of either a specific tagged type or a private
 type unless the subprogram is declared in an instance of a generic
