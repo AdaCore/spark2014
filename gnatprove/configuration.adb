@@ -66,6 +66,8 @@ package body Configuration is
    --  of the project.
 
    procedure Configure_Proof_Dir (Proj_Type : Project_Type);
+   --  If attribute Proof_Dir is set in the project file, set global variable
+   --  Proof_Dir to the full path <path-to-project-file>/<value-of-proof-dir>.
 
    procedure Handle_Scenarios
      (Switch    : String;
@@ -231,10 +233,21 @@ ASCII.LF;
    -------------------------
 
    procedure Configure_Proof_Dir (Proj_Type : Project_Type) is
+      Attr : constant Attribute_Pkg_String := Build ("Prove", "Proof_Dir");
    begin
-      Proof_Dir := new String'(Attribute_Value
-           (Proj_Type, Build ("Prove", "Proof_Dir"),
-            Default => ""));
+      if Has_Attribute (Proj_Type, Attr) then
+         declare
+            Dir_Name : constant Virtual_File :=
+              Create (Proj_Type.Project_Path.Dir_Name);
+            File_Name : constant String :=
+              Attribute_Value (Proj_Type, Attr, Default => "");
+            Full_Name : constant Virtual_File :=
+              Create_From_Dir (Dir_Name, +File_Name);
+         begin
+            Full_Name.Normalize_Path;
+            Proof_Dir := new String'(Full_Name.Display_Full_Name);
+         end;
+      end if;
    end Configure_Proof_Dir;
 
    --------------
@@ -373,7 +386,7 @@ ASCII.LF;
          Prover_Lib_Dir : constant String := Compose
            (Compose (Why3_Dir, "libs"), Name => Prover_Name);
          Prover_Obj_Dir : constant String := Compose
-           (Compose (+Subdir_Name, "why3_libs"), Name => Prover_Name);
+           (Compose (Main_Subdir.all, "why3_libs"), Name => Prover_Name);
       begin
          if Prover_Name = "coq" then
             if not Exists (Compose (Prover_Obj_Dir, Name => "BuiltIn.vo")) then
@@ -753,6 +766,10 @@ ASCII.LF;
          end if;
 
          Configure_Proof_Dir (Proj_Type);
+
+         --  After the call to Init, the object directory includes the
+         --  sub-directory "gnatprove" set through Set_Object_Subdir.
+         Main_Subdir := new String'(Proj_Type.Object_Dir.Display_Full_Name);
 
          declare
             Obj_Dir_Hash : constant Hash_Type :=

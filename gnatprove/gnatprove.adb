@@ -302,13 +302,13 @@ procedure Gnatprove is
             2 => new String'("--prover"),
             3 => new String'(Alter_Prover.all),
             4 => new String'("--proof-dir"),
-            5 => new String'(Ada.Directories.Full_Name (+(+Proof_Dir.all))));
+            5 => new String'(Proof_Dir.all));
          Res : Boolean;
          Old_Dir : constant String := Current_Directory;
          Gnatwhy3 : constant String := Compose (Compose (Prefix, "bin"),
                                                 "gnatwhy3");
       begin
-         Set_Directory  (+Subdir_Name);
+         Set_Directory  (Main_Subdir.all);
          GNAT.OS_Lib.Spawn (Program_Name => Gnatwhy3,
                             Args => Args,
                             Success => Res);
@@ -367,18 +367,16 @@ procedure Gnatprove is
       end if;
 
       if Proof_Dir /= null then
-         if Proof_Dir.all /= "" then
-            Create_Path (Compose (Proof_Dir.all, "sessions"));
-            Args.Append ("--proof-dir");
-            --  Why3 is executed in the gnatprove directory and does not know
-            --  the project directory so we give it an absolute path to the
-            --  proof_dir
-            Args.Append (Ada.Directories.Full_Name (+(+(Proof_Dir.all))));
-            if Alter_Prover /= null and then Alter_Prover.all /= "" then
-               Prepare_Why3_Manual;
-            end if;
+         pragma Assert (Proof_Dir.all /= "");
+         Create_Path (Compose (Proof_Dir.all, "sessions"));
+         Args.Append ("--proof-dir");
+         --  Why3 is executed in the gnatprove directory and does not know
+         --  the project directory so we give it an absolute path to the
+         --  proof_dir
+         Args.Append (Proof_Dir.all);
+         if Alter_Prover /= null and then Alter_Prover.all /= "" then
+            Prepare_Why3_Manual;
          end if;
-         GNAT.Strings.Free (Proof_Dir);
       end if;
 
       return Args;
