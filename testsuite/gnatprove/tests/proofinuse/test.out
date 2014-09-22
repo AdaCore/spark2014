@@ -19,6 +19,20 @@ floating_point.adb:34:24: info: overflow check proved
 floating_point.adb:35:16: info: division check proved
 floating_point.adb:35:16: warning: overflow check might fail
 floating_point.adb:36:22: warning: assertion might fail, requires Res < Threshold
+floating_point.adb:42:33: warning: overflow check might fail
+floating_point.adb:42:41: info: division check proved
+floating_point.adb:42:41: info: overflow check proved
+floating_point.adb:42:49: info: overflow check proved
+floating_point.adb:43:33: warning: overflow check might fail
+floating_point.adb:43:41: info: division check proved
+floating_point.adb:43:41: info: overflow check proved
+floating_point.adb:43:49: info: overflow check proved
+floating_point.adb:44:16: warning: overflow check might fail
+floating_point.adb:45:22: warning: assertion might fail, requires Res < (1.6181**N)/2.2360 +
+floating_point.adb:45:35: warning: overflow check might fail
+floating_point.adb:45:39: info: division check proved
+floating_point.adb:45:39: info: overflow check proved
+floating_point.adb:45:47: info: overflow check proved
 nonlinear.adb:10:17: info: overflow check proved
 nonlinear.adb:10:22: info: division check proved
 nonlinear.adb:10:22: warning: range check might fail

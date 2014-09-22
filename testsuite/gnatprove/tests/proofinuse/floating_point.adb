@@ -36,4 +36,13 @@ is
       pragma Assert (Res < Threshold);
    end Guarded_Div;
 
+   procedure Fibonacci (N : Positive; X, Y : Float_32; Res : out Float_32) is
+   begin
+      pragma Assume (N in 2 .. 46);
+      pragma Assume (X < (1.6181**(N-2))/2.2360 + 1.0);
+      pragma Assume (Y < (1.6181**(N-1))/2.2360 + 1.0);
+      Res := X + Y;
+      pragma Assert (Res < (1.6181**N)/2.2360 + 1.0);
+   end Fibonacci;
+
 end Floating_Point;
