@@ -14,6 +14,11 @@ floating_point.adb:23:24: info: overflow check proved
 floating_point.adb:24:16: warning: overflow check might fail
 floating_point.adb:24:20: info: overflow check proved
 floating_point.adb:25:07: warning: assertion might fail
+floating_point.adb:34:24: info: division check proved
+floating_point.adb:34:24: info: overflow check proved
+floating_point.adb:35:16: info: division check proved
+floating_point.adb:35:16: warning: overflow check might fail
+floating_point.adb:36:22: warning: assertion might fail, requires Res < Threshold
 nonlinear.adb:10:17: info: overflow check proved
 nonlinear.adb:10:22: info: division check proved
 nonlinear.adb:10:22: warning: range check might fail
