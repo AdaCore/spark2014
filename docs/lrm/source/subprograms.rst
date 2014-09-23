@@ -1354,7 +1354,6 @@ is not what we are talking about here.]
    object is itself a ghost object.
 
    |SPARK| also defines Ghost to be an assertion aspect.
-   The default Ghost assertion policy is Check.
    [This aspect shall not be named other than in an Assertion_Policy pragma.]
 
 .. _tu-nt-ghost_entities-02:
