@@ -1033,12 +1033,12 @@ type unless the subprogram is declared in an instance of a generic
 unit and the corresponding subprogram in the generic unit satisfies
 this rule. [Such an aspect specification, if allowed, would be ineffective.]
 
-[These rules ensure that the value of the underlying tag (at run time) of
-the actual parameter of a call to an "Extensions_Visible => False"
-subprogram will have no effect on the behavior of that call. In particular,
-if the actual parameter has any additional components which are not components
-of the type of the formal parameter, then these components are unreferenced by
-the execution of the call.]
+[These rules ensure that the value of the underlying tag (at run time) of the
+actual parameter of a call to a subprogram whose Extensions_Visible aspect is
+False will have no effect on the behavior of that call. In particular, if the
+actual parameter has any additional components which are not components of the
+type of the formal parameter, then these components are unreferenced by the
+execution of the call.]
 
 .. centered:: **Verification Rules**
 
