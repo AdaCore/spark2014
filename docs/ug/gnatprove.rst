@@ -423,7 +423,7 @@ analysed condition, either:
 * It is the first time the prover is used on the condition then a file
   (containing the condition as input to the specified prover) is created in the
   project's proof directory (see :ref:`Project_Attributes`). |GNATprove|
-  outputs a warning concerning this condition indicating the file that was
+  outputs a message concerning this condition indicating the file that was
   created. The created file should be edited by the user in order to prove the
   condition.
 
@@ -444,7 +444,7 @@ Analysis with |GNATprove| can be limited to a single condition with the
 
     gnatprove -P <project-file.gpr> --prover=<prover> --limit-line=<file>:<line>:<column>:<check-kind>
 
-Where ``check-kind`` can be deduced from the warning associated to the
+Where ``check-kind`` can be deduced from the message associated to the
 failing condition reported by |GNATprove|:
 
 .. csv-table::
@@ -489,8 +489,8 @@ Manual proof in GPS
 
 After running |GNATprove| with proof mode, the menu
 :menuselection:`SPARK --> Prove Check` is available by right-clicking on a
-warning message in the location tab or by right-clicking on a line that fails
-because of a single condition (i.e. there is only one warning in the output of
+check message in the location tab or by right-clicking on a line that fails
+because of a single condition (i.e. there is only one check in the output of
 |GNATprove| concerning this line).
 
 In the dialog box, the field "Alternate prover" can be filled to use another
@@ -509,19 +509,45 @@ offer to re-edit the file if the proof fails.
 How to View |GNATprove| Output
 ==============================
 
+Types of messages in |GNATprove|
+--------------------------------
+
+|GNATprove| issues four different kinds of messages: errors, warnings,
+checks and information messages.
+
+ * Errors are issued for |SPARK| violations or other language legality
+   problems, or any other problem which does not allow to proceed to analysis.
+ * Warnings are issued for any suspicious situation like unused values of
+   variables, useless assignements etc. Warnings are prefixed with the text
+   ``"warning: "`` and can be suppressed with ``pragma Warnings``, see
+   section :ref:`Warning_Control` below.
+ * Checks are issued for any potential problem in the code which could affect
+   the correctness of the program, such as missing initialization, possible
+   failing run-time checks or unproved assertions. Checks come with a
+   severity, and depending on the severity the message text is prefixed with
+   ``"low: "``, ``"medium: "`` or ``"high: "``. Check messages cannot be
+   suppressed with pragma Warnings, but with pragma Annotate, see section
+   :ref:`Check_Control` below.
+ * Information messages are issued for proved checks in some modes of
+   |GNATprove|.
+
+Messages depending on Tool mode
+-------------------------------
+
 In mode ``check``, |GNATprove| prints on the standard output error messages for
 |SPARK| violations on all the code for which ``SPARK_Mode`` is ``On``.
 
 In modes ``flow`` and ``prove``, this checking is done as a first phase.
 
-In mode ``flow``, GNATprove prints on the standard output error messages and
-warnings for incorrect data flow contracts (annotations ``Global``,
-``Depends``, ``Abstract_State``, ``Initializes``, and refinement versions of
-these), unitialized variables, and suspicious situations such as
-unused assignments, missing return statements and so on.
+In mode ``flow``, GNATprove prints on the standard output messages for
+incorrect data flow contracts (annotations ``Global``, ``Depends``,
+``Abstract_State``, ``Initializes``, and refinement versions of these),
+unitialized variables, and suspicious situations such as unused assignments,
+missing return statements and so on.
 
 In mode ``all`` and report ``fail``, GNATprove does all of the above and
-prints on the standard output warnings for checks that could not be proved.
+prints on the standard output check messages for checks that could not be
+proved.
 
 In mode ``all`` and report ``all`` or ``statistics``, |GNATprove| does the
 same, but in addition prints on the standard output information messages for
@@ -539,10 +565,12 @@ Report`. The statistics describe:
 * which subprograms in these units were analyzed
 * the results of this analysis
 
+.. _Warning_Control:
+
 Warning Control
 ===============
 
-|GNATprove| issues three kinds of warnings, which are controlled separately:
+|GNATprove| issues two kinds of warnings, which are controlled separately:
 
 * Compiler warnings are controlled with the usual GNAT compilation switches:
 
@@ -552,7 +580,7 @@ Warning Control
     See the GNAT User's Guide for more details. These should passed through
     the compilation switches specified in the project file.
 
-* Warnings regarding SPARK legality rules and flow analysis are controlled with switch ``--warnings``:
+* |SPARK| warnings are controlled with switch ``--warnings``:
 
   * ``--warnings=off`` suppresses all warnings
   * ``--warnings=error`` treats warnings as errors (default)
@@ -562,29 +590,74 @@ Warning Control
     warnings prevent the generation of verification conditions
     since such warnings may impact the validity of proof.
 
-* Proof warnings are currently not suppressible
-
-Both compiler and flow analysis warnings can be suppressed selectively by the
-use of ``pragma Warnings`` in the source code. See |GNAT Pro| Reference Manual
-for more details.
+Both types of warnings can be suppressed selectively by the use of ``pragma
+Warnings`` in the source code. See |GNAT Pro| Reference Manual for more
+details.
 
 .. note::
 
    A pragma Warnings Off on an entity disables all flow analysis
    warnings related to this entity, anywhere they occur.
 
+.. _Check_Control:
+
+Control of Check Messages
+=========================
+
+The user can suppress check messages emitted by gnatprove by putting a
+pragma Annotate in the source code. An example is the following::
+
+    return (X + Y) / (X - Y);
+    pragma Annotate (Gnatprove, False_Positive,
+                     "divide by zero", "reviewed by John Smith");
+
+The pragma has the following form::
+
+    pragma Annotate (Gnatprove, Category, Pattern, Reason);
+
+where the following table explains the different entries:
+
+.. tabularcolumns:: |l|p{4.5in}|
+
+.. csv-table::
+   :header: "Item", "Explanation"
+   :widths: 1, 4
+
+    "Gnatprove",   "is a fixed identifier"
+    "Category",    "is one of False_Positive or Intentional"
+    "Pattern",     "is a string literal describing the pattern of the messages which shall be suppressed"
+    "Reason",      "is a string literal providing a reason for the suppression."
+
+All arguments should be provided.
+
+The category currently has no impact on the behavior of the tool, but the idea
+is that False_Positive should be used to suppress checks that cannot occcur,
+but Gnatprove was unable to detect this; Intentional indicates that the
+condition can occur but is not considered to be a bug.
+
+Pattern should be a substring of the Gnatprove check message to be
+suppressed.
+
+Reason is any string that the user can use to provide a reason for the
+suppression. This reason may be present in a Gnatprove report.
+
+Placement rules are as follows: in a statement list or declaration list,
+pragma Annotate applies to the preceding item in the list, ignoring other
+pragma Annotate. If there is no preceding item, the pragma applies to the
+enclosing construct.
+
 Warnings and Error Messages
 ===========================
 
-This section lists the different error messages and warnings which |GNATprove|
-may output. Each message points to a very specific place in the source code.
-For example, if a source file ``file.adb`` contains a division as follows::
+This section lists the different messages which |GNATprove| may output. Each
+message points to a very specific place in the source code.  For example, if a
+source file ``file.adb`` contains a division as follows::
 
       if X / Y > Z then ...
 
 |GNATprove| may output a message such as::
 
-   file.adb:12:37: warning: divide by zero might fail
+   file.adb:12:37: medium divide by zero might fail
 
 where the division sign ``/`` is precisely on line 12, column 37. Looking at
 the explanation in the first table below, which states that a division check
@@ -593,7 +666,7 @@ is about ``Y``, and that |GNATprove| was unable to prove that ``Y`` cannot be
 zero. The explanations in the table below should be read with the context that
 is given by the source location.
 
-The following table shows the kinds of warnings issued by proof.
+The following table shows the kinds of check messages issued by proof.
 
 .. tabularcolumns:: |l|p{4.5in}|
 
@@ -633,12 +706,8 @@ The following table shows the kinds of warnings issued by proof.
    "class-wide precondition weaker than overridden one", "Check that the class-wide precondition aspect of the subprogram is weaker than its overridden class-wide precondition."
    "class-wide postcondition stronger than overridden one", "Check that the class-wide postcondition aspect of the subprogram is stronger than its overridden class-wide postcondition."
 
-The following table shows all flow analysis messages, which come in three
-classes: I(nitialization) errors are the most serious flow errors as not fixing
-them might result in a program which can exhibit erroneous (undefined) behaviour
-at run time. F(low) errors indicate a serious problem with a dependency relation, if
-such an error is not fixed, the dependency relations cannot be relied on. All
-other unclassified messages are warnings about questionable code constructs.
+The following table shows all flow analysis messages, either (W)arnings,
+(C)hecks.
 
 .. tabularcolumns:: |l|l|p{4in}|
 
@@ -646,20 +715,20 @@ other unclassified messages are warnings about questionable code constructs.
    :header: "Message Kind", "Class", "Explanation"
    :widths: 1, 1, 6
 
-   "missing dependency", "F", "A dependency is missing from the dependency relation."
-   "dependency relation", "F", "An out parameter or global is missing from the dependency relation."
-   "missing null dependency", "F", "A variable is missing from the null dependency."
-   "incorrect dependency", "F", "A stated dependency is not fulfilled."
-   "must be a global output", "I", "Flow analysis has detected an update of an in mode global."
-   "is not modified",, "The variable is declared with mode in out, but is never modified, so could be declared with mode in."
-   "unused assignment",, "Flow analysis has detected an assignment to a variable which is not read after the assignment."
-   "initialization has no effect",, "Flow analysis has detected an object which is initialized, but never read."
-   "statement has no effect",, "Flow analysis has detected a statement which has no effect."
-   "unused initial value",, "An in or in out parameter or global has been found which does not have any effect on any out or in out parameter or global."
-   "not initialized", "I", "Flow analysis has detected the use of an uninitialized variable."
-   "unused",, "A global or locally declared variable is never used."
-   "missing return",, "A return statement seems to be missing from the function."
-   "export must not depend on Proof_In",, "Flow analysis has detected an output of a subprogram that depends on a constant which is marked Proof_In."
+   "missing dependency", "C", "A dependency is missing from the dependency relation."
+   "dependency relation", "C", "An out parameter or global is missing from the dependency relation."
+   "missing null dependency", "C", "A variable is missing from the null dependency."
+   "incorrect dependency", "C", "A stated dependency is not fulfilled."
+   "must be a global output", "C", "Flow analysis has detected an update of an in mode global."
+   "is not modified","W", "The variable is declared with mode in out, but is never modified, so could be declared with mode in."
+   "unused assignment","W", "Flow analysis has detected an assignment to a variable which is not read after the assignment."
+   "initialization has no effect","W", "Flow analysis has detected an object which is initialized, but never read."
+   "statement has no effect","W", "Flow analysis has detected a statement which has no effect."
+   "unused initial value","W", "An in or in out parameter or global has been found which does not have any effect on any out or in out parameter or global."
+   "not initialized", "C", "Flow analysis has detected the use of an uninitialized variable."
+   "unused","W", "A global or locally declared variable is never used."
+   "missing return","W", "A return statement seems to be missing from the function."
+   "export must not depend on Proof_In","C", "Flow analysis has detected an output of a subprogram that depends on a constant which is marked Proof_In."
 
 Assumptions
 ===========

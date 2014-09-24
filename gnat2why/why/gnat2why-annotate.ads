@@ -39,11 +39,11 @@ package Gnat2Why.Annotate is
    --    pragma Annotate (Gnatprove, False_Positive,
    --                     "divide by zero", "reviewed by John Smith");
 
-   --  The pragma hasa the following form:
+   --  The pragma has the following form:
    --    pragma Annotate (Gnatprove, Category, Pattern, Reason);
 
    --  where
-   --    Gnatprove   is fixed
+   --    Gnatprove   is a fixed identifier
    --    Category    is one of False_Positive or Intentional
    --    Pattern     is a string literal describing the pattern of the messages
    --                which shall be suppressed
