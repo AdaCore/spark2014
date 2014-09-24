@@ -14,8 +14,8 @@ not a reference manual for the |SPARK| language, which can be found in:
 More details on how |GNAT Pro| compiles |SPARK| code can be found in the |GNAT
 Pro| Reference Manual.
 
-The |SPARK| Subset of Ada
-=========================
+Excluded Ada Features
+=====================
 
 To facilitate formal verification, |SPARK| enforces a number of global
 simplifications to Ada 2012. The most notable simplifications are:
@@ -44,17 +44,8 @@ revisited and it may be possible to relax some of these restrictions. There are
 other features which are technically feasible to formally verify but which were
 initially excluded for scheduling reasons.
 
-|SPARK| Features
-================
-
-|SPARK| contains many features for specifying the intended behavior of
-programs. Some of these features come from Ada 2012 (preconditions and
-postconditions for example). Other features are specific to |SPARK| (globals,
-and loop invariants for example). In this section, we describe these
-features and their impact on execution and formal verification.
-
 Subprogram Contracts
---------------------
+====================
 
 |SPARK| provides features to strengthen the contracts on Ada subprograms to
 enable more in-depth verification to be performed. The more information is
@@ -66,7 +57,7 @@ correctness properties.
 .. _Globals:
 
 Globals
-^^^^^^^
+-------
 
 The data-flow analysis performed by the |SPARK| tools considers the initialization
 of variables and the data dependencies of subprograms (which variables are read
@@ -111,88 +102,10 @@ of situations, for example:
   This is regarded as *retrospective analysis*, where code is being analyzed
   that was not originally written with analysis in mind.
 
-.. _Abstract_State and Initializes:
-
-Abstract_State, Refined_State and Initializes
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The previous section discussed the Global annotation, which applies to subprograms.
-There are two more annotations required for data-flow analysis, and these apply to
-packages rather than subprograms. Consider the specification of ``Add_To_Total``
-above. The global variable ``Total`` might well be declared in the body of the enclosing
-package. If the specification of ``Add_To_Total`` appears in the package specification,
-then its global annotation is referring to a variable ``Total`` about which nothing
-is known because the package body has not yet been analyzed. Indeed, the package
-body might not even have been written yet. The Abstract_State annotation allows
-us to announce the presence of variables declared within packages.
-
-.. code-block:: ada
-   :linenos:
-
-   package P
-      with Abstract_State => Total
-   is
-      procedure Add_To_Total (X : in Integer)
-         with Global => (In_Out => Total);
-   end P;
-
-Any state (typically a variable or collection of variables) declared within a
-package specification or body (but not within a subprogram of the package) must
-be announced in the package's Abstract_State annotation. As with the global
-annotation described above, the Abstract_State annotation may be stated
-explicitly by the programmer or it may be derived automatically by the tools
-depending on the circumstances.
-
-The language also provides facilities for combining multiple items of package state
-(which could be variables of the package itself, or state from its child packages
-or embedded packages) into a single item of Abstract_State (hence the name). There
-are also facilities for dealing with volatile state representing inputs or outputs
-at the interface with the environment. However these are outside the scope of this
-overview.
-
-In the example given above, when performing the flow analysis of any call to
-``Add_To_Total`` the tools will check that ``Total`` has previously been assigned a
-value. This is necessary because the global annotation states that ``Add_To_Total``
-reads the value of ``Total``, so if ``Total`` is undefined then a flow error will result.
-In order to perform this flow analysis for the whole program the tools need to
-know which elements of package state are initialized when the main program
-starts executing and which are still uninitialized. This is the purpose of the
-initializes annotation - it tells us what is initialized by the elaboration of
-the package. In our example, package ``P`` does initialize ``Total`` so this is specified
-by the initializes annotation.
-
-.. code-block:: ada
-   :linenos:
-
-   package P
-      with Abstract_State => Total,
-           Initializes    => Total
-   is
-      procedure Add_To_Total (X : in Integer)
-         with Global => (In_Out => Total);
-   end P;
-
-   package body P
-      with Refined_State => (Total => T)
-   is
-      T : Integer := 0;
-
-If state is initialized by the package then it must appear in an initializes
-annotation. If it is not initialized then it must not appear in the annotation.
-Once again, the initializes annotation may be derived automatically by the tools
-if not provided explicitly by the programmer.
-
-Note also the use of the Refined_State annotation in the package body. Each item
-named in the Abstract_State annotation in the package specification may be refined
-onto many constituents in the package body. This is done by means of the Refined_State
-annotation. In this case there is a one-to-one mapping between the abstract view in
-the specification (``Total``) and the refined view in the body (``T``) but it could
-be a one-to-many relationship or even, in special cases, a one-to-null relationship.
-
 .. _Depends:
 
 Depends
-^^^^^^^
+-------
 
 The Depends annotation adds more detail to subprogram contracts by specifying
 the relationship between the inputs and the outputs.
@@ -226,7 +139,7 @@ and may still be an approximation even if the body is available.
 .. _Preconditions and Postconditions:
 
 Preconditions and Postconditions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+--------------------------------
 
 Preconditions and postconditions are very important annotations in |SPARK| as
 they enable us to strengthen subprogram contracts by specifying the intended
@@ -331,7 +244,7 @@ to prove the same contracts.
 .. _Contract Cases:
 
 Contract Cases
-^^^^^^^^^^^^^^
+--------------
 
 The contract of a subprogram can alternatively be specified as a set of
 disjoint and complete contract cases:
@@ -410,7 +323,7 @@ example:
 .. _Refined Postconditions:
 
 Refined Postconditions
-^^^^^^^^^^^^^^^^^^^^^^
+----------------------
 
 The postcondition of a subprogram declared in the visible part of a package may
 refer to objects of a private type, or to abstract state. In such cases a second,
@@ -469,10 +382,100 @@ of which we will see more in the next section.
 
    end P;
 
+Package Contracts
+=================
+
+.. _Abstract_State and Initializes:
+
+Abstract_State, Refined_State and Initializes
+---------------------------------------------
+
+The previous section discussed the Global annotation, which applies to subprograms.
+There are two more annotations required for data-flow analysis, and these apply to
+packages rather than subprograms. Consider the specification of ``Add_To_Total``
+above. The global variable ``Total`` might well be declared in the body of the enclosing
+package. If the specification of ``Add_To_Total`` appears in the package specification,
+then its global annotation is referring to a variable ``Total`` about which nothing
+is known because the package body has not yet been analyzed. Indeed, the package
+body might not even have been written yet. The Abstract_State annotation allows
+us to announce the presence of variables declared within packages.
+
+.. code-block:: ada
+   :linenos:
+
+   package P
+      with Abstract_State => Total
+   is
+      procedure Add_To_Total (X : in Integer)
+         with Global => (In_Out => Total);
+   end P;
+
+Any state (typically a variable or collection of variables) declared within a
+package specification or body (but not within a subprogram of the package) must
+be announced in the package's Abstract_State annotation. As with the global
+annotation described above, the Abstract_State annotation may be stated
+explicitly by the programmer or it may be derived automatically by the tools
+depending on the circumstances.
+
+The language also provides facilities for combining multiple items of package state
+(which could be variables of the package itself, or state from its child packages
+or embedded packages) into a single item of Abstract_State (hence the name). There
+are also facilities for dealing with volatile state representing inputs or outputs
+at the interface with the environment. However these are outside the scope of this
+overview.
+
+In the example given above, when performing the flow analysis of any call to
+``Add_To_Total`` the tools will check that ``Total`` has previously been assigned a
+value. This is necessary because the global annotation states that ``Add_To_Total``
+reads the value of ``Total``, so if ``Total`` is undefined then a flow error will result.
+In order to perform this flow analysis for the whole program the tools need to
+know which elements of package state are initialized when the main program
+starts executing and which are still uninitialized. This is the purpose of the
+initializes annotation - it tells us what is initialized by the elaboration of
+the package. In our example, package ``P`` does initialize ``Total`` so this is specified
+by the initializes annotation.
+
+.. code-block:: ada
+   :linenos:
+
+   package P
+      with Abstract_State => Total,
+           Initializes    => Total
+   is
+      procedure Add_To_Total (X : in Integer)
+         with Global => (In_Out => Total);
+   end P;
+
+   package body P
+      with Refined_State => (Total => T)
+   is
+      T : Integer := 0;
+
+If state is initialized by the package then it must appear in an initializes
+annotation. If it is not initialized then it must not appear in the annotation.
+Once again, the initializes annotation may be derived automatically by the tools
+if not provided explicitly by the programmer.
+
+Note also the use of the Refined_State annotation in the package body. Each item
+named in the Abstract_State annotation in the package specification may be refined
+onto many constituents in the package body. This is done by means of the Refined_State
+annotation. In this case there is a one-to-one mapping between the abstract view in
+the specification (``Total``) and the refined view in the body (``T``) but it could
+be a one-to-many relationship or even, in special cases, a one-to-null relationship.
+
+Specification Features
+======================
+
+|SPARK| contains many features for specifying the intended behavior of
+programs. Some of these features come from Ada 2012 (preconditions and
+postconditions for example). Other features are specific to |SPARK| (globals,
+and loop invariants for example). In this section, we describe these
+features and their impact on execution and formal verification.
+
 .. _Expression Functions:
 
 Expression Functions
-^^^^^^^^^^^^^^^^^^^^
+--------------------
 
 Expression functions are functions whose body is an expression, which can be
 defined in a spec unit.  Expression functions were introduced in Ada 2012 as a
@@ -507,7 +510,7 @@ annotations.
 .. _Ghost Functions:
 
 Ghost Functions
-^^^^^^^^^^^^^^^
+---------------
 
 Sometimes it is useful to declare functions that are needed in annotations only,
 but that are intended never to be called in executable code. Such functions may
@@ -706,6 +709,27 @@ Pragma Unevaluated_Use_Of_Old applies to uses of attribute Old both inside
 postconditions and inside contract cases. See GNAT RM for a detailed
 description of this pragma.
 
+Quantified Expressions
+----------------------
+
+Ada 2012 quantified expressions are a special case with respect to run-time
+errors: the enclosed expression must be run-time error free over the *entire
+range* of the quantification, not only at points that would actually be
+reached at execution. As an example, consider the following expression:
+
+.. code-block:: ada
+
+    (for all I in 1 .. 10 => 1 / (I - 3) > 0)
+
+This quantified expression will never raise a run-time error, because the test
+is already false for the first value of the range, ``I = 1``, and the execution
+will stop, with the result value ``False``. However, |GNATprove| requires the
+expression to be run-time error free over the entire range, including ``I =
+3``, so there will be an unproved check for the division by zero in this case.
+
+Assertion Pragmas
+=================
+
 .. _loop invariants:
 
 Loop Invariants
@@ -831,24 +855,6 @@ such group) and the program point where the ``Loop_Variant`` pragma appears,
 and that this quantity either stays the same or progresses on the rest of the
 loop.
 
-Quantified Expressions
-----------------------
-
-Ada 2012 quantified expressions are a special case with respect to run-time
-errors: the enclosed expression must be run-time error free over the *entire
-range* of the quantification, not only at points that would actually be
-reached at execution. As an example, consider the following expression:
-
-.. code-block:: ada
-
-    (for all I in 1 .. 10 => 1 / (I - 3) > 0)
-
-This quantified expression will never raise a run-time error, because the test
-is already false for the first value of the range, ``I = 1``, and the execution
-will stop, with the result value ``False``. However, |GNATprove| requires the
-expression to be run-time error free over the entire range, including ``I =
-3``, so there will be an unproved check for the division by zero in this case.
-
 Pragma ``Assert_And_Cut``
 -------------------------
 
@@ -881,7 +887,7 @@ of the procedure, hence many fewer paths.
 .. _Overflow Modes:
 
 Overflow Modes
---------------
+==============
 
 Annotations such as preconditions, postconditions, assertions, loop invariants,
 are analyzed by |GNATprove| with the exact same meaning that they have during
@@ -1131,79 +1137,3 @@ The compiler will generate code that iterates over ``My_List`` using the functio
    end;
 
 where ``Result`` is the value of the quantified expression.
-
-Mixing |SPARK| Code and Ada Code
-================================
-
-An Ada program unit or other construct is said to be "in |SPARK|"
-if it complies with the restrictions required to permit formal verification
-given  in the |SPARK| Reference Manual.
-Conversely, an Ada program unit or other construct is "not in |SPARK|" if
-it does not meet these requirements, and so is not amenable to formal
-verification.
-
-Within a single Ada unit, constructs which are "in" and "not in" |SPARK| may be
-mixed at a fine level in accordance with the following two general principles:
-
-- SPARK code shall only reference SPARK declarations, but a SPARK
-  declaration which requires a completion may have a non-SPARK completion.
-
-- SPARK code shall only enclose SPARK code, except that SPARK code
-  may enclose a non-SPARK completion of an enclosed SPARK declaration.
-
-More specifically, non-SPARK completions of SPARK declarations are allowed
-for subprogram declarations, package declarations, private type declarations,
-and deferred constant declarations. [When tagged types are
-fully supported in |SPARK|, this list will also include private extension
-declarations.] [Strictly speaking, a package's private part is considered
-to be part of its completion for purposes of the above rules; this is
-described in more detail below].
-
-When a non-SPARK completion is provided for a SPARK declaration, the
-user has an obligation to ensure that the non-SPARK completion
-is consistent (with respect to the semantics of |SPARK|) with its SPARK
-declaration. For example, |SPARK| requires that a function call has no
-side effects. If the body of a given function is in |SPARK|, then this
-rule is enforced via various language rules; otherwise, it is the
-responsibility of the user to ensure that the function body does not
-violate this rule. As with other
-such constructs (notably pragma Assume), failure to meet this obligation
-can invalidate any or all analysis (i.e., proofs and/or flow analysis)
-associated with the SPARK portion of a program. A non-SPARK completion
-meets this obligation if it is semantically equivalent (with respect to
-dynamic semantics) to some notional completion that could have been
-written in |SPARK|.
-
-The |SPARK| semantics (specifically including flow analysis and proofs) of
-a "mixed" program which meets the aforementioned requirement is well defined -
-it is the semantics of the equivalent 100% |SPARK| program.
-For the semantics of other "mixed" programs, go look in the Ada Reference
-Manual.
-
-In the case of a package, the specification/completion division described
-above is a simplification of the true situation. A package is divided into
-4 sections, not just 2: its visible part, its private part, the declarations
-of its body, and the statement list of its body. For a given package and
-any number N in the range 0 .. 4, the first N sections of the package might
-be in |SPARK| while the remainder is not.
-
-For example, the following combinations may be typical:
-
-- Package specification in |SPARK|. Package body not in |SPARK|.
-
-- Visible part of package specification in |SPARK|. Private part and body not
-  in |SPARK|.
-
-- Package specification in |SPARK|. Package body almost entirely in |SPARK|,
-  with a small number of subprogram bodies not in |SPARK|.
-
-- Package specification in |SPARK|, with all subprogram bodies imported
-  from another language.
-
-- Package specification contains a mixture of declarations which are in |SPARK|
-  and not in |SPARK|.  The latter declarations are only visible and usable from
-  client units which are not in |SPARK|.
-
-Such patterns are intended to allow for application of formal verification to a
-subset of a program, and the combination of formal verification with more
-traditional testing (see :ref:`proof and test`).

@@ -15,6 +15,82 @@ This section contains a simple description of pragma and aspect
 Note that |GNATprove| only analyzes parts of the code that are identified as
 being in |SPARK| using pragma or aspect ``SPARK_Mode``.
 
+Mixing |SPARK| Code and Ada Code
+================================
+
+An Ada program unit or other construct is said to be "in |SPARK|"
+if it complies with the restrictions required to permit formal verification
+given  in the |SPARK| Reference Manual.
+Conversely, an Ada program unit or other construct is "not in |SPARK|" if
+it does not meet these requirements, and so is not amenable to formal
+verification.
+
+Within a single Ada unit, constructs which are "in" and "not in" |SPARK| may be
+mixed at a fine level in accordance with the following two general principles:
+
+- SPARK code shall only reference SPARK declarations, but a SPARK
+  declaration which requires a completion may have a non-SPARK completion.
+
+- SPARK code shall only enclose SPARK code, except that SPARK code
+  may enclose a non-SPARK completion of an enclosed SPARK declaration.
+
+More specifically, non-SPARK completions of SPARK declarations are allowed
+for subprogram declarations, package declarations, private type declarations,
+and deferred constant declarations. [When tagged types are
+fully supported in |SPARK|, this list will also include private extension
+declarations.] [Strictly speaking, a package's private part is considered
+to be part of its completion for purposes of the above rules; this is
+described in more detail below].
+
+When a non-SPARK completion is provided for a SPARK declaration, the
+user has an obligation to ensure that the non-SPARK completion
+is consistent (with respect to the semantics of |SPARK|) with its SPARK
+declaration. For example, |SPARK| requires that a function call has no
+side effects. If the body of a given function is in |SPARK|, then this
+rule is enforced via various language rules; otherwise, it is the
+responsibility of the user to ensure that the function body does not
+violate this rule. As with other
+such constructs (notably pragma Assume), failure to meet this obligation
+can invalidate any or all analysis (i.e., proofs and/or flow analysis)
+associated with the SPARK portion of a program. A non-SPARK completion
+meets this obligation if it is semantically equivalent (with respect to
+dynamic semantics) to some notional completion that could have been
+written in |SPARK|.
+
+The |SPARK| semantics (specifically including flow analysis and proofs) of
+a "mixed" program which meets the aforementioned requirement is well defined -
+it is the semantics of the equivalent 100% |SPARK| program.
+For the semantics of other "mixed" programs, go look in the Ada Reference
+Manual.
+
+In the case of a package, the specification/completion division described
+above is a simplification of the true situation. A package is divided into
+4 sections, not just 2: its visible part, its private part, the declarations
+of its body, and the statement list of its body. For a given package and
+any number N in the range 0 .. 4, the first N sections of the package might
+be in |SPARK| while the remainder is not.
+
+For example, the following combinations may be typical:
+
+- Package specification in |SPARK|. Package body not in |SPARK|.
+
+- Visible part of package specification in |SPARK|. Private part and body not
+  in |SPARK|.
+
+- Package specification in |SPARK|. Package body almost entirely in |SPARK|,
+  with a small number of subprogram bodies not in |SPARK|.
+
+- Package specification in |SPARK|, with all subprogram bodies imported
+  from another language.
+
+- Package specification contains a mixture of declarations which are in |SPARK|
+  and not in |SPARK|.  The latter declarations are only visible and usable from
+  client units which are not in |SPARK|.
+
+Such patterns are intended to allow for application of formal verification to a
+subset of a program, and the combination of formal verification with more
+traditional testing (see :ref:`proof and test`).
+
 Project File Setup
 ==================
 
