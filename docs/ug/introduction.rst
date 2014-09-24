@@ -36,6 +36,8 @@ testing.
 
 The remainder of this document is structured as follows:
 
+* :ref:`Identifying SPARK Code` describes the various means to identify the
+  part of the program in |SPARK| that should be analyzed.
 * :ref:`introduction to spark` provides an overview of the |SPARK|
   language.
 * :ref:`spark tutorial` gives an introduction

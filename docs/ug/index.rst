@@ -27,6 +27,7 @@ SPARK 2014 Toolset User's Guide
 
    getting_started
    introduction
+   spark_mode
    spark_2014
    tutorial
    gnatprove

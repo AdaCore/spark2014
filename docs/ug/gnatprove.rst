@@ -88,6 +88,8 @@ chosen location (e.g. root rights for installing under /opt/spark).
 How to Run |GNATprove|
 ======================
 
+.. _Setting Up a Project File:
+
 Setting Up a Project File
 -------------------------
 
@@ -136,6 +138,7 @@ different switches for compilation and verification:
              for Switches ("Ada") use ...
           when "Analyze" =>
              for Switches ("Ada") use ...
+       end case;
     end Compiler;
 
   end My_Project;
