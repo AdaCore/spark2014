@@ -1478,14 +1478,24 @@ is not what we are talking about here.]
 
 14. An Assertion_Policy pragma specifying a Ghost assertion policy
     shall not occur within a ghost subprogram or package.
+    If a ghost entity has a completion then the Ghost assertion policies in
+    effect at the declaration and at the completion of the entity shall
+    be the same. [This rule applies to subprograms, packages, types,
+    and deferred constants.]
+
+.. _tu-fe-ghost_entities-15:
+
+15. The Ghost assertion policies in effect at the declaration of a
+    state abstraction and at the declaration of each constituent of that
+    abstraction shall be the same.
 
 .. _etu-ghost_entities-lr:
 
 .. centered:: **Dynamic Semantics**
 
-.. _tu-nt-ghost_entities-15:
+.. _tu-nt-ghost_entities-16:
 
-15. The effects of specifying a convention of Ghost on the run-time
+16. The effects of specifying a convention of Ghost on the run-time
     representation, calling conventions, and other such dynamic
     properties of an entity are the same as if no convention had
     explicitly been specified. [This usually means the same as if
@@ -1495,31 +1505,49 @@ is not what we are talking about here.]
 
 .. centered:: **Verification Rules**
 
-.. _tu-fe-ghost_entities-16:
+.. _tu-fe-ghost_entities-17:
 
-16. A ghost procedure shall not have a non-ghost [global] output.
+17. A ghost procedure shall not have a non-ghost [global] output.
 
-.. _tu-cbatu-ghost_entities-17:
+.. _tu-cbatu-ghost_entities-18:
 
-17. An output of a non-ghost subprogram other than a ghost global
+18. An output of a non-ghost subprogram other than a ghost global
     shall not depend on a ghost input. [It is intended that this follows
     as a consequence of other rules.]
 
-.. _tu-fe-ghost_entities-18:
+.. _tu-fe-ghost_entities-19:
 
-18. A ghost procedure shall not have an effectively volatile global input
+19. A ghost procedure shall not have an effectively volatile global input
     with the properties Async_Writers or Effective_Reads set to True.
     [This rule says, in effect, that ghost procedures are
     subject to the same restrictions as non-ghost functions with respect
     to reading volatile objects.]
 
-.. _tu-fe-ghost_entities-19:
+.. _tu-fe-ghost_entities-20:
 
-19. If the Ghost assertion policy in effect at the point of the declaration
+20. If the Ghost assertion policy in effect at the point of the declaration
     of a ghost variable or ghost state abstraction is Check, then the Ghost
     assertion policy in effect at the point of any call to a procedure
     for which that variable or state abstraction is a global output shall
     be Check.
+
+.. _tu-fe-ghost_entities-21:
+
+21. If the limited view of a package includes one or more ghost
+    entities, then the Ghost assertion policies in effect at the point
+    of the package declaration and at each limited with of that
+    package shall be the same. [The general solution for
+    any problem of the form "At point A we need to know the Ghost
+    assertion policy in effect at point B" is to require that the
+    policies in effect at the two points must be the same.]
+    [TBD: Do we want a rule that a package spec which is the target of
+    a limited with shall not contain an Assertion_Policy pragma which
+    specifies a Ghost assertion policy? Consider a visible nested
+    package which declares a ghost state abstraction and which might
+    be affected by a preceding Assertion_Policy pragma. The other choice
+    is to require clients who need to know the policy that is
+    in force for such an abstraction to get it right, which violates the
+    "keep limited views simple" principle.]
 
 .. _etu-ghost_entities-vr:
 
