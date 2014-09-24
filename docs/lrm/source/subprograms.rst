@@ -1072,7 +1072,7 @@ Extensions_Visible Aspects
 
 #. [In the case of an actual parameter of a call to a subprogram whose
    Extensions_Visible aspect is False where the corresponding formal parameter
-   is of a specific tagged type T, these rules imply that formal verificaiton
+   is of a specific tagged type T, these rules imply that formal verification
    can safely assume that any components of the actual parameter which are not
    components of T will be neither read nor written by the call.]
 
