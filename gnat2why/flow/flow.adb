@@ -43,6 +43,7 @@ with SPARK_Definition;              use SPARK_Definition;
 with SPARK_Util;
 
 with Gnat2Why_Args;
+with Gnat2Why.Assumptions;          use Gnat2Why.Assumptions;
 
 with Flow.Analysis;
 with Flow.Control_Dependence_Graph;
@@ -769,27 +770,28 @@ package body Flow is
          then "Global generation"
          else "Flow analysis");
    begin
-      Tmp.Analyzed_Entity   := E;
-      Tmp.Spec_Node         := S;
-      Tmp.Start_Vertex      := Null_Vertex;
-      Tmp.Helper_End_Vertex := Null_Vertex;
-      Tmp.End_Vertex        := Null_Vertex;
-      Tmp.CFG               := Create;
-      Tmp.DDG               := Create;
-      Tmp.CDG               := Create;
-      Tmp.TDG               := Create;
-      Tmp.PDG               := Create;
-      Tmp.Atr               := Attribute_Maps.Empty_Map;
-      Tmp.Other_Fields      := Vertex_To_Vertex_Set_Maps.Empty_Map;
-      Tmp.Local_Constants   := Node_Sets.Empty_Set;
-      Tmp.All_Vars          := Flow_Id_Sets.Empty_Set;
-      Tmp.Unmodified_Vars   := Node_Sets.Empty_Set;
-      Tmp.Unreferenced_Vars := Node_Sets.Empty_Set;
-      Tmp.Loops             := Node_Sets.Empty_Set;
-      Tmp.Aliasing_Present  := False;
-      Tmp.Dependency_Map    := Dependency_Maps.Empty_Map;
-      Tmp.No_Effects        := False;
-      Tmp.Direct_Calls      := Node_Sets.Empty_Set;
+      Tmp.Analyzed_Entity       := E;
+      Tmp.Spec_Node             := S;
+      Tmp.Start_Vertex          := Null_Vertex;
+      Tmp.Helper_End_Vertex     := Null_Vertex;
+      Tmp.End_Vertex            := Null_Vertex;
+      Tmp.CFG                   := Create;
+      Tmp.DDG                   := Create;
+      Tmp.CDG                   := Create;
+      Tmp.TDG                   := Create;
+      Tmp.PDG                   := Create;
+      Tmp.Atr                   := Attribute_Maps.Empty_Map;
+      Tmp.Other_Fields          := Vertex_To_Vertex_Set_Maps.Empty_Map;
+      Tmp.Local_Constants       := Node_Sets.Empty_Set;
+      Tmp.All_Vars              := Flow_Id_Sets.Empty_Set;
+      Tmp.Unmodified_Vars       := Node_Sets.Empty_Set;
+      Tmp.Unreferenced_Vars     := Node_Sets.Empty_Set;
+      Tmp.Loops                 := Node_Sets.Empty_Set;
+      Tmp.Aliasing_Present      := False;
+      Tmp.Dependency_Map        := Dependency_Maps.Empty_Map;
+      Tmp.No_Effects            := False;
+      Tmp.No_Errors_Or_Warnings := True;
+      Tmp.Direct_Calls          := Node_Sets.Empty_Set;
 
       if Compute_Globals then
          --  Generate Globals
@@ -1182,6 +1184,14 @@ package body Flow is
                   Analysis.Check_Contracts (FA);
                   Analysis.Analyse_Main (FA);
                   Analysis.Enforce_No_Return (FA);
+
+                  --  If no errors or warnings were found during flow
+                  --  analysis of the subprogram then emit the
+                  --  relevant claim.
+                  if FA.No_Errors_Or_Warnings then
+                     Register_Claim ((E    => FA.Analyzed_Entity,
+                                      Kind => Claim_Effects));
+                  end if;
 
                when E_Package | E_Package_Body =>
                   Analysis.Find_Ineffective_Statements (FA);

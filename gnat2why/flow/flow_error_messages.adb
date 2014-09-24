@@ -205,7 +205,7 @@ package body Flow_Error_Messages is
    --------------------
 
    procedure Error_Msg_Flow
-     (FA        : Flow_Analysis_Graphs;
+     (FA        : in out Flow_Analysis_Graphs;
       Msg       : String;
       Kind      : Msg_Kind;
       N         : Node_Id;
@@ -315,6 +315,14 @@ package body Flow_Error_Messages is
               Suppr = No_String)
          then
             Found_Flow_Error := True;
+         end if;
+
+         --  Set the No_Errors_Or_Warnings flag to False for this
+         --  entity if we are dealing with anything but a suppressed
+         --  warning.
+
+         if Suppr = No_String then
+            FA.No_Errors_Or_Warnings := False;
          end if;
 
       end if;

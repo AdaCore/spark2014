@@ -44,8 +44,8 @@ package body Flow.Analysis.Sanity is
    ---------------------------------
 
    procedure Check_Function_Side_Effects
-     (FA   : Flow_Analysis_Graphs;
-      Sane : out Boolean)
+     (FA   : in out Flow_Analysis_Graphs;
+      Sane :    out Boolean)
    is
    begin
       Sane := True;
@@ -72,8 +72,8 @@ package body Flow.Analysis.Sanity is
    --------------------
 
    procedure Check_Aliasing
-     (FA   : Flow_Analysis_Graphs;
-      Sane : out Boolean)
+     (FA   : in out Flow_Analysis_Graphs;
+      Sane :    out Boolean)
    is
    begin
       Sane := True;
@@ -97,8 +97,8 @@ package body Flow.Analysis.Sanity is
    -------------------------------------
 
    procedure Check_Variable_Free_Expressions
-     (FA   : Flow_Analysis_Graphs;
-      Sane : out Boolean)
+     (FA   : in out Flow_Analysis_Graphs;
+      Sane :    out Boolean)
    is
       Entry_Node : Node_Id;
 
@@ -386,8 +386,8 @@ package body Flow.Analysis.Sanity is
    -------------------------
 
    procedure Check_Illegal_Reads
-     (FA   : Flow_Analysis_Graphs;
-      Sane : out Boolean)
+     (FA   : in out Flow_Analysis_Graphs;
+      Sane :    out Boolean)
    is
    begin
       Sane := True;
@@ -428,8 +428,8 @@ package body Flow.Analysis.Sanity is
    --------------------------
 
    procedure Check_Illegal_Writes
-     (FA   : Flow_Analysis_Graphs;
-      Sane : out Boolean)
+     (FA   : in out Flow_Analysis_Graphs;
+      Sane :    out Boolean)
    is
       Unused : Unbounded_String;
    begin
@@ -541,8 +541,8 @@ package body Flow.Analysis.Sanity is
    -------------------------------
 
    procedure Check_All_Variables_Known
-     (FA   : Flow_Analysis_Graphs;
-      Sane : out Boolean)
+     (FA   : in out Flow_Analysis_Graphs;
+      Sane :    out Boolean)
    is
       Unused : Unbounded_String;
    begin

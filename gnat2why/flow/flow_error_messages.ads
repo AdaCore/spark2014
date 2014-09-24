@@ -64,7 +64,7 @@ package Flow_Error_Messages is
    --  project.
 
    procedure Error_Msg_Flow
-     (FA        : Flow_Analysis_Graphs;
+     (FA        : in out Flow_Analysis_Graphs;
       Msg       : String;
       Kind      : Msg_Kind;
       N         : Node_Id;

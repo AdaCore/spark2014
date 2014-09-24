@@ -174,7 +174,7 @@ package body Flow.Analysis is
    ---------------------
 
    procedure Global_Required
-     (FA  : Flow_Analysis_Graphs;
+     (FA  : in out Flow_Analysis_Graphs;
       Var : Flow_Id)
    is
       First_Use : Node_Id;
@@ -528,7 +528,7 @@ package body Flow.Analysis is
    -- Analyse_Main --
    ------------------
 
-   procedure Analyse_Main (FA : Flow_Analysis_Graphs) is
+   procedure Analyse_Main (FA : in out Flow_Analysis_Graphs) is
       Proof_Reads : Flow_Id_Sets.Set;
       Reads       : Flow_Id_Sets.Set;
       Unused      : Flow_Id_Sets.Set;
@@ -576,11 +576,12 @@ package body Flow.Analysis is
    ------------------
 
    procedure Sanity_Check
-     (FA   : Flow_Analysis_Graphs;
-      Sane : out Boolean)
+     (FA   : in out Flow_Analysis_Graphs;
+      Sane :    out Boolean)
    is
-      type Sanity_Check is access procedure (FA   : Flow_Analysis_Graphs;
-                                             Sane : out Boolean);
+      type Sanity_Check is access procedure
+        (FA   : in out Flow_Analysis_Graphs;
+         Sane :    out Boolean);
 
       type Sanity_Checks_T is array (Positive range <>) of Sanity_Check;
 
@@ -602,7 +603,7 @@ package body Flow.Analysis is
    -- Sanity_Check_Postcondition --
    --------------------------------
 
-   procedure Sanity_Check_Postcondition (FA   : Flow_Analysis_Graphs;
+   procedure Sanity_Check_Postcondition (FA   : in out Flow_Analysis_Graphs;
                                          Sane : in out Boolean)
    is
       Vars_Used  : Flow_Id_Sets.Set;
@@ -744,7 +745,7 @@ package body Flow.Analysis is
    -- Find_Unwritten_Exports --
    ----------------------------
 
-   procedure Find_Unwritten_Exports (FA : Flow_Analysis_Graphs) is
+   procedure Find_Unwritten_Exports (FA : in out Flow_Analysis_Graphs) is
       F_Final   : Flow_Id;
       A_Final   : V_Attributes;
       F_Initial : Flow_Id;
@@ -826,7 +827,7 @@ package body Flow.Analysis is
    -------------------------------------------------
 
    procedure Find_Ineffective_Imports_And_Unused_Objects
-     (FA : Flow_Analysis_Graphs)
+     (FA : in out Flow_Analysis_Graphs)
    is
       function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean
       is (FA.PDG.Get_Key (V).Variant = Final_Value and then
@@ -1091,7 +1092,7 @@ package body Flow.Analysis is
    -- Find_Ineffective_Statements --
    ---------------------------------
 
-   procedure Find_Ineffective_Statements (FA : Flow_Analysis_Graphs) is
+   procedure Find_Ineffective_Statements (FA : in out Flow_Analysis_Graphs) is
 
       function Is_Final_Use_Any_Export (V : Flow_Graphs.Vertex_Id)
                                         return Boolean;
@@ -1449,7 +1450,7 @@ package body Flow.Analysis is
    -- Find_Dead_Code --
    --------------------
 
-   procedure Find_Dead_Code (FA : Flow_Analysis_Graphs)
+   procedure Find_Dead_Code (FA : in out Flow_Analysis_Graphs)
    is
       Dead_Code : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
 
@@ -1511,7 +1512,7 @@ package body Flow.Analysis is
    -- Enforce_No_Return --
    -----------------------
 
-   procedure Enforce_No_Return (FA : Flow_Analysis_Graphs)
+   procedure Enforce_No_Return (FA : in out Flow_Analysis_Graphs)
    is
       procedure Search (V   : Flow_Graphs.Vertex_Id;
                         Ins : out Flow_Graphs.Traversal_Instruction);
@@ -1581,7 +1582,8 @@ package body Flow.Analysis is
    -- Find_Use_Of_Uninitialized_Variables --
    -----------------------------------------
 
-   procedure Find_Use_Of_Uninitialized_Variables (FA : Flow_Analysis_Graphs)
+   procedure Find_Use_Of_Uninitialized_Variables
+     (FA : in out Flow_Analysis_Graphs)
    is
       Tracefile : Unbounded_String;
 
@@ -2174,7 +2176,7 @@ package body Flow.Analysis is
    -- Find_Stable_Elements --
    --------------------------
 
-   procedure Find_Stable_Elements (FA : Flow_Analysis_Graphs) is
+   procedure Find_Stable_Elements (FA : in out Flow_Analysis_Graphs) is
       Done      : Boolean            := False;
       M         : Attribute_Maps.Map := FA.Atr;
       Is_Stable : Boolean;
@@ -2243,7 +2245,9 @@ package body Flow.Analysis is
    --  Find_Exports_Derived_From_Proof_Ins  --
    -------------------------------------------
 
-   procedure Find_Exports_Derived_From_Proof_Ins (FA : Flow_Analysis_Graphs) is
+   procedure Find_Exports_Derived_From_Proof_Ins
+     (FA : in out Flow_Analysis_Graphs)
+   is
       function Path_Leading_To_Proof_In_Dependency
         (From : Flow_Graphs.Vertex_Id;
          To   : Flow_Graphs.Vertex_Id) return Vertex_Sets.Set;
@@ -2408,7 +2412,7 @@ package body Flow.Analysis is
    -- Check_Contracts --
    ---------------------
 
-   procedure Check_Contracts (FA : Flow_Analysis_Graphs) is
+   procedure Check_Contracts (FA : in out Flow_Analysis_Graphs) is
 
       function Find_Export (E : Entity_Id) return Node_Id;
       --  Looks through the depends aspect on FA.Analyzed_Entity and
@@ -2685,7 +2689,7 @@ package body Flow.Analysis is
    -- Check_Initializes_Contract --
    --------------------------------
 
-   procedure Check_Initializes_Contract (FA : Flow_Analysis_Graphs) is
+   procedure Check_Initializes_Contract (FA : in out Flow_Analysis_Graphs) is
 
       function Find_Entity
         (E    : Entity_Id;

@@ -27,38 +27,38 @@
 private package Flow.Analysis.Sanity is
 
    procedure Check_Function_Side_Effects
-     (FA   : Flow_Analysis_Graphs;
-      Sane : out Boolean);
+     (FA   : in out Flow_Analysis_Graphs;
+      Sane :    out Boolean);
    --  Make sure no functions with side-effects have been flagged during
    --  analysis.
    --  In debug mode we emit an error message that analysis is aborted here.
 
    procedure Check_Aliasing
-     (FA   : Flow_Analysis_Graphs;
-      Sane : out Boolean);
+     (FA   : in out Flow_Analysis_Graphs;
+      Sane :    out Boolean);
    --  Make sure no aliasing has been flagged during analysis.
    --  In debug mode we emit an error message that analysis is aborted here.
 
    procedure Check_Variable_Free_Expressions
-     (FA   : Flow_Analysis_Graphs;
-      Sane : out Boolean);
+     (FA   : in out Flow_Analysis_Graphs;
+      Sane :    out Boolean);
    --  Enforce SRM 4.4(2): certain expressions must be variable-free
 
    procedure Check_Illegal_Reads
-     (FA   : Flow_Analysis_Graphs;
-      Sane : out Boolean);
+     (FA   : in out Flow_Analysis_Graphs;
+      Sane :    out Boolean);
    --  Enforce SRM 7.1.3(14): a volatile out parameter must never be read from
 
    procedure Check_Illegal_Writes
-     (FA   : Flow_Analysis_Graphs;
-      Sane : out Boolean);
+     (FA   : in out Flow_Analysis_Graphs;
+      Sane :    out Boolean);
    --  Enforce a number of rules concerning illegal updates:
    --     * A package may not update another package's state during elaboration
    --     * An update of a global in
 
    procedure Check_All_Variables_Known
-     (FA   : Flow_Analysis_Graphs;
-      Sane : out Boolean);
+     (FA   : in out Flow_Analysis_Graphs;
+      Sane :    out Boolean);
    --  Sanity check all vertices if they mention a flow id that we do not
    --  know about.
 
