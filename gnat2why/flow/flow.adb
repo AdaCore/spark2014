@@ -1163,25 +1163,31 @@ package body Flow is
 
             case FA.Kind is
                when E_Subprogram_Body =>
-                  Analysis.Find_Unwritten_Exports (FA);
-                  if FA.No_Effects then
-                     if not FA.Is_Main then
-                        Error_Msg_Flow
-                          (FA        => FA,
-                           Msg       => "subprogram & has no effect",
-                           N         => FA.Analyzed_Entity,
-                           F1        => Direct_Mapping_Id (FA.Analyzed_Entity),
-                           Tag       => "ineffective",
-                           Kind      => Warning_Kind);
+                  --  In "Prove" mode we do not care about unwritten
+                  --  exports, ineffective statements, dead code and
+                  --  incorrect Depends aspects.
+                  if not Gnat2Why_Args.Prove_Mode then
+                     Analysis.Find_Unwritten_Exports (FA);
+                     if FA.No_Effects then
+                        if not FA.Is_Main then
+                           Error_Msg_Flow
+                             (FA   => FA,
+                              Msg  => "subprogram & has no effect",
+                              N    => FA.Analyzed_Entity,
+                              F1   => Direct_Mapping_Id (FA.Analyzed_Entity),
+                              Tag  => "ineffective",
+                              Kind => Warning_Kind);
+                        end if;
+                     else
+                        Analysis.Find_Ineffective_Imports_And_Unused_Objects
+                          (FA);
+                        Analysis.Find_Ineffective_Statements (FA);
                      end if;
-                  else
-                     Analysis.Find_Ineffective_Imports_And_Unused_Objects (FA);
-                     Analysis.Find_Ineffective_Statements (FA);
+                     Analysis.Find_Dead_Code (FA);
+                     Analysis.Check_Contracts (FA);
                   end if;
-                  Analysis.Find_Dead_Code (FA);
                   Analysis.Find_Use_Of_Uninitialized_Variables (FA);
                   Analysis.Find_Exports_Derived_From_Proof_Ins (FA);
-                  Analysis.Check_Contracts (FA);
                   Analysis.Analyse_Main (FA);
                   Analysis.Enforce_No_Return (FA);
 
@@ -1194,8 +1200,13 @@ package body Flow is
                   end if;
 
                when E_Package | E_Package_Body =>
-                  Analysis.Find_Ineffective_Statements (FA);
-                  Analysis.Find_Dead_Code (FA);
+                  --  In "Prove" mode we do not care about innefective
+                  --  statements and dead code.
+                  if not Gnat2Why_Args.Prove_Mode then
+                     Analysis.Find_Ineffective_Statements (FA);
+                     Analysis.Find_Dead_Code (FA);
+                  end if;
+
                   Analysis.Find_Use_Of_Uninitialized_Variables (FA);
                   Analysis.Check_Initializes_Contract (FA);
             end case;

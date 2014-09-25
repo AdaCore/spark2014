@@ -764,8 +764,7 @@ package body Flow.Analysis is
 
             --  We have a final use vertex which is an export that has
             --  a single in-link. If this in-link is its initial value
-            --  then clearly we do not set defined this output on any
-            --  path.
+            --  then clearly we do not set this output on any path.
 
             Unwritten := False;
             if FA.PDG.In_Neighbour_Count (V) = 1 then
@@ -2510,8 +2509,8 @@ package body Flow.Analysis is
          Print_Dependency_Map (Actual_Deps);
       end if;
 
-      --  If the user depds do not include something we have in the
-      --  actual deps we will raise an appropriate error. We should
+      --  If the user depends do not include something we have in the
+      --  actual depends we will raise an appropriate error. We should
       --  however also sanity check there is nothing in the user
       --  dependencies which is *not* in the actual dependencies.
 
