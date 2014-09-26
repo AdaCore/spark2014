@@ -1,0 +1,12 @@
+warn_not_suppr.ads:5:30: medium: "X" might not be initialized in "P"
+syntax.adb:12:07: a Gnatprove Annotate pragma requires exactly 4 arguments
+syntax.adb:13:07: the second argument of a Gnatprove Annotate pragma must be False_Positive or Intentional
+syntax.adb:14:07: the third argument of a Gnatprove Annotate pragma must be a string literal
+syntax.adb:15:07: the fourth argument of a Gnatprove Annotate pragma must be a string literal
+   compilation of syntax.adb failed
+
+
+gnatprove: error during generation of Global contracts
+suppr.adb:17:04: warning: analyzing unreferenced procedure "Q"
+suppr.adb:17:14: warning: subprogram "Q" has no effect
+syntax.ads:3:14: warning: subprogram "P" has no effect
