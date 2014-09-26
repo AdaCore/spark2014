@@ -1,0 +1,8 @@
+aip-ip.adb:13:36: warning: unused global "Default_Router"
+aip-ip.adb:13:55: warning: unused global "Udp.State"
+aip-ip.adb:14:36: warning: "Ip_Serial" is not modified, could be "input"
+aip-ip.adb:14:36: warning: unused global "Ip_Serial"
+aip-ip.adb:14:50: warning: "Tcp.State" is not modified, could be "input"
+aip-ip.adb:14:50: warning: unused global "Tcp.State"
+aip-ip.ads:9:24: warning: unused variable "Netif"
+aip-ip.ads:9:41: warning: unused variable "Buf"

@@ -1,0 +1,2 @@
+glob.adb:5:20: info: length check proved, in instantiation at glob.adb:15
+glob.adb:15:14: warning: subprogram "Proc2r" has no effect

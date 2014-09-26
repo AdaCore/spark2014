@@ -1,1 +1,1 @@
-floats.adb:6:19: warning: assertion might fail, requires false
+floats.adb:6:19: medium: assertion might fail, requires false
