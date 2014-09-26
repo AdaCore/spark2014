@@ -54,12 +54,17 @@ is
    type Laser_Scans is array (Robot_Iface.Laser_Scan_ID) of Laser_Scan_Data;
 
    type Controller is record
-      robot : Robot_Iface.Proxy;
-
-      laserScan : Laser_Scans;
+      robot : Robot_Iface.Proxy :=
+         (scan_Count => 0,
+          scans      => (others => 0.0),
+          speed      => (Opt => Robot_Iface.O_NONE),
+          goal_reached => false,
+          others    => 0.0);
+      laserScan : Laser_Scans :=
+         ( others =>  (first => 0.0, second => Null_Angle));
       gapVec    : List;
-      obsAvoidDelta : Float;
-      driveAngle : Angle;
+      obsAvoidDelta : Float := 0.0;
+      driveAngle : Angle := Null_Angle;
    end record;
    pragma Convention (CPP, Controller);
 
