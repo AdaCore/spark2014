@@ -1,0 +1,13 @@
+project No_SPARK_Mode is
+
+   for Source_Dirs use ("../examples");
+   for Excluded_Source_List_File use "spark_mode_or_illegal.txt";
+
+   package Compiler is
+      for Switches ("t1q4.ads") use ("-gnato13");
+      for Switches ("t1q4.adb") use ("-gnato13");
+      for Switches ("t1q5.ads") use ("-gnato13");
+      for Switches ("t1q5.adb") use ("-gnato13");
+   end Compiler;
+
+end No_SPARK_Mode;

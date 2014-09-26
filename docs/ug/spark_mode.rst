@@ -219,9 +219,9 @@ with`` clause between projects, as follows:
 
   limited with "project_b"
   project My_Project_A is
-     package Builder is
+     package Compiler is
         for Local_Configuration_Pragmas use "spark.adc";
-     end Builder;
+     end Compiler;
      for Source_Files use ("file1.ads", "file2.ads", "file1.adb", "file2.adb");
   end My_Project_A;
 

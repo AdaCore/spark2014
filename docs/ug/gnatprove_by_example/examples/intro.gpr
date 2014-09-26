@@ -1,13 +1,6 @@
+with "spark_mode";
+with "no_spark_mode";
+with "illegal";
+
 project Intro is
-
-   for Source_Dirs use ("../examples");
-
-   package Compiler is
-      for Switches ("t1q4.ads") use ("-gnato13");
-      for Switches ("t1q4.adb") use ("-gnato13");
-      for Switches ("t1q5.ads") use ("-gnato13");
-      for Switches ("t1q5.adb") use ("-gnato13");
-   end Compiler;
-
 end Intro;
-

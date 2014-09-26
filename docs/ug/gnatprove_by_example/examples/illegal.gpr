@@ -1,0 +1,6 @@
+project Illegal is
+
+   for Source_Dirs use ("../examples");
+   for Source_List_File use "illegal.txt";
+
+end Illegal;

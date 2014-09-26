@@ -752,8 +752,267 @@ results of |GNATprove| depends.
    "effects", "The subprogram interacts with parameters and global variables
    as described by its specification and Global contract"
 
-.. _how to write loop invariants:
+How to Write Subprogram Contracts
+=================================
 
+|GNATprove| relies on subprogram contracts to be able to analyze subprograms
+independently from their callers and callees. But no contracts are compulsory:
+|GNATprove| can either generate a contract or use a default value when a
+contract is not provided by the user. Hence, it is important to know which
+contracts to write for which verification objectives.
+
+Generation of Data and Information Flow Contracts
+-------------------------------------------------
+
+By default, |GNATprove| does not require the user to write data flow contracts
+(introduced with aspect ``Global``) and information flow contracts (introduced
+with aspect ``Depends``), as it can automatically generate them from the
+program.
+
+Precise Generation for |SPARK| Subprograms
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+|GNATprove| generates precise data and information flow contracts for |SPARK|
+subprograms, by using path-sensitive flow analysis to track data flows in the
+subprogram body.
+
+Case 1: No Abstract State
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Take for example a procedure ``Set_Global`` without contract which initializes
+a global variable ``V`` and is called in a number of contexts:
+
+.. literalinclude:: gnatprove_by_example/examples/gen_global.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: gnatprove_by_example/examples/gen_global.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| generates a data and information flow contract for procedure
+``Set_Global`` that is equivalent to:
+
+.. code-block:: ada
+
+   procedure Set_Global with
+     Global  => (Output => V),
+     Depends => (V => null);
+
+Note that the above contract would be illegal as given, because it refers to
+global variable ``V`` which is not visible at the point where ``Set_Global`` is
+declared in ``gen_global.ads``. Instead, a user who would like to write this
+contract on ``Set_Global`` would have to use abstract state.
+
+That generated contract for ``Set_Global`` allows |GNATprove| to both detect
+possible errors when calling ``Set_Global`` and to verify contracts given by
+the user on callers of ``Set_Global``. For example, procedure
+``Set_Global_Twice`` calls ``Set_Global`` twice in a row, which makes the first
+call useless as the value written in ``V`` is immediately overwritten by the
+second call. This is detected by |GNATprove|, which issues two warnings on
+line 18:
+
+.. literalinclude:: gnatprove_by_example/results/gen_global.flow
+   :language: none
+
+Note that |GNATprove| also issues a warning on subprogram ``Do_Nothing`` which
+has no effect, while it correctly analyzes that ``Set_Global`` has an effect,
+even if it has the same signature with no contract as ``Do_Nothing``.
+
+|GNATprove| also uses the generated contract for ``Set_Global`` to analyze
+procedure ``Set_Global_Conditionally``, which allows it to verify the contract
+given by the user for ``Set_Global_Conditionally``:
+
+.. code-block:: ada
+
+   procedure Set_Global_Conditionally (X : Boolean) with
+     Global  => (Output => V),
+     Depends => (V => X)
+
+Case 2: Some Abstract State
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In the presence of abstract state declared by the user, |GNATprove| generates
+data and information contracts which take abstract state into account.
+
+For example, take unit ``Gen_Global`` previously seen, where an abstract state
+``State`` is defined for package ``Gen_Abstract_Global``, and refined into
+global variable ``V`` in the body of the package:
+
+.. literalinclude:: gnatprove_by_example/examples/gen_abstract_global.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: gnatprove_by_example/examples/gen_abstract_global.adb
+   :language: ada
+   :linenos:
+
+We have chosen here to declare procedure ``Set_Global_Conditionally`` in
+``gen_abstract_global.ads``, and so to express its user contract abstractly. We
+could also have kept it local to the unit.
+
+|GNATprove| gives the same results on this unit as before: it issues warnings
+for the possible error in ``Set_Global_Twice`` and it verifies the contract
+given by the user for ``Set_Global_Conditionally``:
+
+.. literalinclude:: gnatprove_by_example/results/gen_abstract_global.flow
+   :language: none
+
+Coarse Generation for non-|SPARK| Subprograms
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For non-|SPARK| subprograms, |GNATprove| generates coarser data and information
+flow contracts, based on the reads and writes to variables in the subprogram
+body:
+
+ * if a variable is written in a subprogram body, it is considered both an input and an output of the subprogram; and
+ * if a variable is only read in a subprogram body, it is considered an input of the subprogram; and
+ * all outputs are considered to potentially depend on all inputs.
+
+For example, take unit ``Gen_Global`` previously seen, where the body of
+``Set_Global`` is marked with ``SPARK_Mode => Off``:
+
+.. literalinclude:: gnatprove_by_example/examples/gen_ada_global.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: gnatprove_by_example/examples/gen_ada_global.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| generates a data and information flow contract for procedure
+``Set_Global`` that is equivalent to:
+
+.. code-block:: ada
+
+   procedure Set_Global with
+     Global  => (In_Out => V),
+     Depends => (V => V);
+
+This is a conservative over-approximation of the real contract for
+``Set_Global``, which allows to detect all possible errors of initialization
+and contract violation in ``Set_Global`` callers, but which may also lead to
+false alarms because it is imprecise. Here, |GNATprove| generates a wrong
+message that the call to ``Set_Global`` on line 25 reads an uninitialized value
+for ``V``:
+
+.. literalinclude:: gnatprove_by_example/results/gen_ada_global.flow
+   :language: none
+
+This is because the generated contract for ``Set_Global`` is not precise
+enough, and considers ``V`` as an input of the procedure. Even if the body of
+``Set_Global`` is not in |SPARK|, the user can easily provide the precise
+information to |GNATprove| by adding a suitable contract to ``Set_Global``,
+which requires to define an abstract state ``State`` like in the previous
+section:
+
+.. code-block:: ada
+
+   procedure Set_Global with
+     Global  => (Output => State),
+     Depends => (State => null);
+
+With such a user contract on ``Set_Global``, |GNATprove| can verify the
+contract of ``Set_Global_Conditionally`` without false alarms.
+
+When to Add Data and Information Flow Contracts
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Since |GNATprove| generates data and information flow contracts, you don't need
+in general to add such contracts if you don't want to.
+
+The main reason to add such contracts is when you want |GNATprove| to verify
+that the implementation respects the specified data flows and information
+flows. For those projects submitted to certification, verification of data
+coupling and input/output relations may be a required verification objective,
+which can be achieved automatically with |GNATprove| provided the
+specifications are written as suitable contracts.
+
+Even if you write data and/or information flow contracts for the publicly
+visible subprograms, which describe the services offered by the unit, there is
+no need to write similar contracts on internal subprograms defined in the unit
+body. |GNATprove| can generate data and information flow contracts on these.
+
+Also, as seen in the previous section, the data and information flow contracts
+generated by |GNATprove| may be imprecise, in which case it is necessary to add
+manual contracts to avoid false alarms.
+
+Using Preconditions for Defensive Programming
+---------------------------------------------
+
+. move defensive programming code to precondition
+. can force execution of precondition with Assertion_Policy
+. includes Absence of Run Time Errors
+. possibly needed to write simple postconditions as well for proof
+
+Writing Contracts for Functional Correctness
+--------------------------------------------
+
+. requirement/specification depending on domain --> encode as pre/post/contract-cases
+. invariant? right now added to pre/post
+
+Contextual Analysis of Subprograms Without Contracts
+----------------------------------------------------
+
+It may be convenient to create local subprograms without necessarily specifying
+a contract for these. |GNATprove| attempts to perform a contextual analysis of
+these local subprograms without contract, at each call site, as if the code of
+the subprograms was inlined. Thus, the analysis proceeds in that case as if it
+had the most precise contract for the local subprogram, in the context of its
+calls.
+
+Let's consider as previously a subprogram which adds two to its integer input:
+
+.. literalinclude:: gnatprove_by_example/examples/arith_with_local_subp.ads
+   :language: ada
+   :linenos:
+
+And let's implement it by calling two local subprograms without contracts
+(which may or not have a separate declaration), which each increment the input
+by one:
+
+.. literalinclude:: gnatprove_by_example/examples/arith_with_local_subp.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| would not be able to prove that the addition in
+``Increment_In_Body`` or ``Increment_Nested`` cannot overflow in any
+context. If it was using only the default contract for these subprograms, it
+also would not prove that the contract of ``Add_Two`` is respected.  But since
+it analyzes these subprograms in the context of their calls only, it proves
+here that no overflow is possible, and that the two increments correctly
+implement the contract of ``Add_Two``:
+
+.. literalinclude:: gnatprove_by_example/results/arith_with_local_subp.prove
+   :language: none
+   :linenos:
+
+This contextual analysis is available only for regular functions (not
+expression functions) or procedures that are not externally visible (not
+declared in the public part of the unit), without contracts (any of Global,
+Depends, Pre, Post, Contract_Cases), and respect the following conditions:
+
+ * does not contain nested subprogram or package declarations or instantiations
+ * not recursive
+ * not a generic instance
+ * not defined in a generic instance
+ * has a single point of return at the end of the subprogram
+ * not called in an assertion or a contract
+ * not called in a potentially unevaluated context
+ * not called before its body is seen
+
+If any of the above conditions is violated, |GNATprove| issues a warning to
+explain why the subprogram could not be analyzed in the context of its calls,
+and then proceeds to analyze it normally, using the default contract.
+
+Note that it is very simple to prevent contextual analysis of a local
+subprogram, by adding a contract to it, for example a simple ``Pre => True`` or
+``Global => null``.
+
+Otherwise, both flow analysis and proof are done for the subprogram in the
+context of its calls.
+
+.. _how to write loop invariants:
 
 How to Write Loop Invariants
 ============================

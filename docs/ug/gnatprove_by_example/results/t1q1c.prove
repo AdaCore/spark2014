@@ -1,3 +1,3 @@
 t1q1c.adb:8:14: info: overflow check proved
-t1q1c.adb:14:7: warning: precondition might fail
-t1q1c.adb:15:7: warning: precondition might fail
+t1q1c.adb:14:07: warning: precondition might fail
+t1q1c.adb:15:07: warning: precondition might fail

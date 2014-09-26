@@ -1,2 +1,1 @@
-main3.adb:11:14: info: postcondition proved
-main3.adb:33:4: warning: precondition might fail
+main3.adb:33:04: warning: call to nonreturning subprogram might be executed

@@ -3,8 +3,8 @@ t1q5.adb:13:20: info: overflow check proved
 t1q5.adb:18:30: info: overflow check proved
 t1q5.adb:21:20: info: overflow check proved
 t1q5.adb:26:17: info: overflow check proved
-t1q5.ads:6:11: info: disjoint contract cases proved
 t1q5.ads:6:11: info: complete contract cases proved
+t1q5.ads:6:11: info: disjoint contract cases proved
 t1q5.ads:7:54: info: contract case proved
 t1q5.ads:8:54: info: contract case proved
 t1q5.ads:9:54: info: contract case proved

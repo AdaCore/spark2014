@@ -1,0 +1,10 @@
+project SPARK_Mode is
+
+   for Source_Dirs use ("../examples");
+   for Source_List_File use "spark_mode.txt";
+
+   package Compiler is
+      for Local_Configuration_Pragmas use "../examples/spark_mode.adc";
+   end Compiler;
+
+end SPARK_Mode;
