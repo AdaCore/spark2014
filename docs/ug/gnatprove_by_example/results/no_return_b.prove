@@ -1,2 +1,1 @@
-no_return_b.adb:14:04: warning: statement has no effect
 no_return_b.adb:17:11: info: division check proved

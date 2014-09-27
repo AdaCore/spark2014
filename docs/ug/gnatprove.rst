@@ -893,7 +893,7 @@ This is a conservative over-approximation of the real contract for
 ``Set_Global``, which allows to detect all possible errors of initialization
 and contract violation in ``Set_Global`` callers, but which may also lead to
 false alarms because it is imprecise. Here, |GNATprove| generates a wrong
-message that the call to ``Set_Global`` on line 25 reads an uninitialized value
+high message that the call to ``Set_Global`` on line 25 reads an uninitialized value
 for ``V``:
 
 .. literalinclude:: gnatprove_by_example/results/gen_ada_global.flow
@@ -1145,14 +1145,14 @@ Completing a Loop Invariant to Prove Checks Inside the Loop
 -----------------------------------------------------------
 
 Let's start by running |GNATprove| on program ``Binary_Search`` without loop
-invariant. It generates five warnings, four of which correspond to possible
-run-time check failures, and a last one corresponding to a possible failure of
+invariant. It generates two medium message, on corresponding to a possible
+run-time check failure, and one corresponding to a possible failure of
 the postcondition:
 
 .. literalinclude:: examples/results/binary_search_no_loopinv.prove
    :language: none
 
-We will focus here on the four warnings inside the loop, which correspond to
+We will focus here on the message inside the loop, which corresponds to
 property [INSIDE]. The problem is that variable ``Med`` varies in the loop, so
 |GNATprove| only knows that its value is in the range of its type ``Index`` at
 the start of an iteration (line 23), and that it is then assigned the value of
@@ -1162,7 +1162,7 @@ array ``A`` (lines 26 and 28) and inside expressions assigned to ``Left`` and
 
 As ``Left`` and ``Right`` also vary in the loop, |GNATprove| cannot use the
 assignment on line 24 to compute a more precise range for variable ``Med``,
-hence the four warnings on index checks and range checks.
+hence the message on index check.
 
 What is needed here is a loop invariant that states that the values of ``Left``
 and ``Right`` stay within the bounds of ``A`` inside the loop:
@@ -1172,7 +1172,7 @@ and ``Right`` stay within the bounds of ``A`` inside the loop:
    :lines: 23-26
 
 With this simple loop invariant, |GNATprove| now reports that the
-four checks on lines 26 through 29 are now proved. In particular,
+check on lines 27 is now proved.
 |GNATprove| computes that the value assigned to ``Med`` in the loop is also
 within the bounds of ``A``.
 
@@ -1182,13 +1182,13 @@ Completing a Loop Invariant to Prove Checks After the Loop
 With the simple loop invariant given before, |GNATprove| still reports that the
 postcondition of ``Search`` may fail, which corresponds to property [AFTER]. By
 instructing |GNATprove| to prove checks progressively, as seens in
-:ref:`proving spark programs`, we even get a precise warning pointing to the
+:ref:`proving spark programs`, we even get a precise message pointing to the
 part of the postcondition that could not be proved:
 
 .. literalinclude:: examples/results/binary_search_range.prove
    :language: none
 
-Here, the warning shows that the second line of the postcondition could not be
+Here, the message shows that the second line of the postcondition could not be
 proved. This line expresses that, in the case where ``Search`` returns
 ``No_Index`` after the loop, the array ``A`` should not contain the value
 searched ``I``.
@@ -1254,8 +1254,8 @@ Proving a Loop Invariant After the First Iteration
 With the loop invariant given before, |GNATprove| now reports that the loop
 invariant of ``Search`` may fail after the first iteration, which corresponds
 to property [PRESERVE]. By instructing |GNATprove| to prove checks
-progressively, as seen in :ref:`proving spark programs`, we even get a precise
-warning pointing to the part of the loop invariant that could not be proved:
+progressively, as seen in :ref:`proving spark programs`, we even get precise
+messages pointing to the parts of the loop invariant that could not be proved:
 
 .. literalinclude:: examples/results/binary_search_precise.prove
    :language: none

@@ -1,1 +1,1 @@
-gen_ada_global.adb:25:10: "V" is not initialized
+gen_ada_global.adb:25:10: high: "V" is not initialized
