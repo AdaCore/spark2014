@@ -769,12 +769,101 @@ By default, |GNATprove| does not require the user to write data flow contracts
 with aspect ``Depends``), as it can automatically generate them from the
 program.
 
+Auto Completion for Incomplete Contracts
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When only the data flow contract (resp. only the information flow contract) is
+given on a subprogram, |GNATprove| completes automatically the subprogram
+contract with the matching information flow contract (resp. data flow
+contract).
+
+Writing Only the Data Flow Contract
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When only the data flow contract is given on a subprogram, |GNATprove|
+completes it with an information flow contract that has all outputs depending
+on all inputs. This is a safe over-approximation of the real contract of the
+subprogram, which allows to detect all possible errors of initialization and
+contract violation in the subprogram and its callers, but which may also lead
+to false alarms because it is imprecise.
+
+Take for example procedures ``Add`` and ``Swap`` for which a data flow contract
+is given, but no information flow contract:
+
+.. literalinclude:: gnatprove_by_example/examples/only_data_flow.ads
+   :language: ada
+   :linenos:
+
+|GNATprove| completes the contract of ``Add`` and ``Swap`` with an information
+contract that is equivalent to:
+
+.. code-block:: ada
+
+   procedure Add (X : Integer) with
+     Global => (In_Out => V),
+     Depends => (V =>+ X);
+
+   procedure Swap (X : in out Integer) with
+     Global => (In_Out => V),
+     Depends => ((X, V) => (X, V));
+
+Other information flow contracts with fewer dependencies between inputs and
+outputs would be compatible with the given data flow contracts of ``Add`` and
+``Swap``. |GNATprove| chooses the contracts with the most dependencies. Here,
+this corresponds to the actual contract for ``Add``, but to an imprecise
+contract for ``Swap``:
+
+.. literalinclude:: gnatprove_by_example/examples/only_data_flow.adb
+   :language: ada
+   :linenos:
+
+This results in false alarms when |GNATprove| verifies the information flow
+contract of procedure ``Call_Swap`` which calls ``Swap``, while it succeeds in
+verifying the information flow contract of ``Call_Add`` which calls ``Add``:
+
+.. literalinclude:: gnatprove_by_example/results/only_data_flow.flow
+   :language: none
+
+The most precise information flow contract for ``Swap`` would be:
+
+.. code-block:: ada
+
+   procedure Swap (X : in out Integer) with
+     Global => (In_Out => V),
+     Depends => (V => X, X => V);
+
+If you add this precise contract in the program, then |GNATprove| can also
+verify the information flow contract of ``Call_Swap``.
+
+Writing Only the Information Flow Contract
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When only the information flow contract is given on a subprogram, |GNATprove|
+completes it with the only compatible data flow contract.
+
+Take for example procedures ``Add`` and ``Swap`` as previously, expect now an
+information flow contract is given, but no data flow contract:
+
+.. literalinclude:: gnatprove_by_example/examples/only_information_flow.ads
+   :language: ada
+   :linenos:
+
+The body of the unit is the same as before:
+
+.. literalinclude:: gnatprove_by_example/examples/only_information_flow.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| verifies the data and information flow contracts of all
+subprograms, including ``Call_Add`` and ``Call_Swap``, based on the completed
+contracts for ``Add`` and ``Swap``.
+
 Precise Generation for |SPARK| Subprograms
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-|GNATprove| generates precise data and information flow contracts for |SPARK|
-subprograms, by using path-sensitive flow analysis to track data flows in the
-subprogram body.
+When no data or information flow contract is given on a |SPARK| subprogram,
+|GNATprove| generates precise data and information flow contracts by using
+path-sensitive flow analysis to track data flows in the subprogram body.
 
 Case 1: No Abstract State
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -861,9 +950,9 @@ given by the user for ``Set_Global_Conditionally``:
 Coarse Generation for non-|SPARK| Subprograms
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-For non-|SPARK| subprograms, |GNATprove| generates coarser data and information
-flow contracts, based on the reads and writes to variables in the subprogram
-body:
+When no data or information flow contract is given on a non-|SPARK| subprogram,
+|GNATprove| generates coarser data and information flow contracts based on the
+reads and writes to variables in the subprogram body:
 
  * if a variable is written in a subprogram body, it is considered both an input and an output of the subprogram; and
  * if a variable is only read in a subprogram body, it is considered an input of the subprogram; and
@@ -889,7 +978,7 @@ For example, take unit ``Gen_Global`` previously seen, where the body of
      Global  => (In_Out => V),
      Depends => (V => V);
 
-This is a conservative over-approximation of the real contract for
+This is a safe over-approximation of the real contract for
 ``Set_Global``, which allows to detect all possible errors of initialization
 and contract violation in ``Set_Global`` callers, but which may also lead to
 false alarms because it is imprecise. Here, |GNATprove| generates a wrong
@@ -922,11 +1011,11 @@ Since |GNATprove| generates data and information flow contracts, you don't need
 in general to add such contracts if you don't want to.
 
 The main reason to add such contracts is when you want |GNATprove| to verify
-that the implementation respects the specified data flows and information
+that the implementation respects specified data flows and information
 flows. For those projects submitted to certification, verification of data
 coupling and input/output relations may be a required verification objective,
 which can be achieved automatically with |GNATprove| provided the
-specifications are written as suitable contracts.
+specifications are written as contracts.
 
 Even if you write data and/or information flow contracts for the publicly
 visible subprograms, which describe the services offered by the unit, there is
