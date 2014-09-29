@@ -878,7 +878,16 @@ Precise Generation for |SPARK| Subprograms
 
 When no data or information flow contract is given on a |SPARK| subprogram,
 |GNATprove| generates precise data and information flow contracts by using
-path-sensitive flow analysis to track data flows in the subprogram body.
+path-sensitive flow analysis to track data flows in the subprogram body:
+
+ * if a variable is written completely on all paths in a subprogram body, it is
+   considered an output of the subprogram; and
+ * other variables that are written in a subprogram body are considered both
+   inputs and outputs of the subprogram (even if they are not read explicitly,
+   their output value may depend on their input value); and
+ * if a variable is only read in a subprogram body, it is considered an input
+   of the subprogram; and
+ * all outputs are considered to potentially depend on all inputs.
 
 Case 1: No Abstract State
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -969,8 +978,10 @@ When no data or information flow contract is given on a non-|SPARK| subprogram,
 |GNATprove| generates coarser data and information flow contracts based on the
 reads and writes to variables in the subprogram body:
 
- * if a variable is written in a subprogram body, it is considered both an input and an output of the subprogram; and
- * if a variable is only read in a subprogram body, it is considered an input of the subprogram; and
+ * if a variable is written in a subprogram body, it is considered both an
+   input and an output of the subprogram; and
+ * if a variable is only read in a subprogram body, it is considered an input
+   of the subprogram; and
  * all outputs are considered to potentially depend on all inputs.
 
 For example, take unit ``Gen_Global`` previously seen, where the body of
