@@ -1,5 +1,5 @@
 sm_using_case_expression.adb:42:07: medium: assertion might fail
-sm_using_case_expression.adb:55:18: medium: assertion might fail, requires My_SM(State2, Trigger) /= Invalid_State or (...
+sm_using_case_expression.adb:55:18: medium: assertion might fail, requires My_SM(State2, Trigger) /= Invalid_State or (for some Idx in Invalid_Transition_Array_T'Range => Invalid_Transition_Array(Idx).Initial_State = State2 and Invalid_Transition_Array(Idx).Trigger = Trigger
 sm_using_case_expression.ads:17:17: info: postcondition proved
 sm_using_case_expression.ads:39:63: info: length check proved
 sm_using_case_expression.ads:55:19: info: postcondition proved

@@ -1,5 +1,5 @@
 search.adb:8:10: info: loop invariant initialization proved
-search.adb:9:13: medium: loop invariant might fail after first iteration, requires Pos = 0 and (for all J in Position range T'First .. I-1 => (T(J) /= V))) or (T(Pos) = V and (...
+search.adb:9:13: medium: loop invariant might fail after first iteration, requires Pos = 0 and (for all J in Position range T'First .. I-1 => (T(J) /= V))) or (T(Pos) = V and (for all J in Position range T'First .. Pos-1 => (T(J) /= V
 search.adb:10:25: info: range check proved
 search.adb:10:66: info: index check proved
 search.adb:12:18: medium: array index check might fail

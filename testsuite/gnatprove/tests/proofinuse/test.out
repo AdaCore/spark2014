@@ -55,6 +55,6 @@ nonlinear.ads:14:14: warning: subprogram "Power" has no effect
 quantifiers.adb:8:17: info: postcondition proved
 quantifiers.adb:10:37: info: length check proved
 quantifiers.adb:16:07: medium: assertion might fail
-quantifiers.adb:24:22: medium: assertion might fail, requires not (...
+quantifiers.adb:24:22: medium: assertion might fail, requires not (for all J in X'Range => Property (X(J), J)
 quantifiers.ads:7:14: warning: subprogram "Previous_Seen" has no effect
 quantifiers.ads:10:14: warning: subprogram "Not_For_Some" has no effect
