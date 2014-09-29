@@ -143,6 +143,8 @@ different switches for compilation and verification:
 
   end My_Project;
 
+.. _Running GNATprove from the Command Line:
+
 Running |GNATprove| from the Command Line
 -----------------------------------------
 
@@ -285,7 +287,7 @@ used, a warning is emitted for every operation that could be re-ordered:
 * any operand of a binary multiplying operation (\*,/,mod,rem) that is itself a
   binary multiplying operation.
 
-.. _GPS integration:
+.. _Running GNATprove from GPS:
 
 Running |GNATprove| from GPS
 ----------------------------
@@ -761,6 +763,8 @@ independently from their callers and callees. But no contracts are compulsory:
 contract is not provided by the user. Hence, it is important to know which
 contracts to write for which verification objectives.
 
+.. _Generation of Data and Information Flow Contracts:
+
 Generation of Data and Information Flow Contracts
 -------------------------------------------------
 
@@ -778,7 +782,7 @@ program.
    used instead to verify proper initialization and respect of data and
    information contracts in the callers of the subprogram.
 
-.. _`Auto Completion for Incomplete Contracts`:
+.. _Auto Completion for Incomplete Contracts:
 
 Auto Completion for Incomplete Contracts
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1096,14 +1100,16 @@ subprogram ``Update`` is only enabled at run time if compiled with switch
 takes contracts into account, whatever value of ``Assertion_Policy``.
 
 |GNATprove| cannot verify that all preconditions on ``Integrity`` are
-respected. For example, it cannot verify that the calls to ``Update`` respect
-their precondition, as it is not known from the calling context that
-``Invariant`` holds:
-
-CHECK: precondition proved on line 36
+respected. Namely, it cannot verify that the call to ``Update`` inside
+``Seen_One`` respects its precondition, as it is not known from the calling
+context that ``Invariant`` holds:
 
 .. literalinclude:: gnatprove_by_example/results/integrity.prove
    :language: none
+
+Note that, although ``Invariant`` is not required to hold either on entry to
+``Seen_Two``, the tests performed in if-statements in the body of ``Seen_Two``
+ensure that ``Invariant`` holds when calling ``Update`` inside ``Seen_Two``.
 
 To prove completely the integrity of unit ``Integrity``, it is sufficient to
 add ``Invariant`` as a precondition and postcondition on every subprogram which
@@ -1121,6 +1127,8 @@ Here is the result of running |GNATprove|:
 
 .. literalinclude:: gnatprove_by_example/results/integrity_proved.prove
    :language: none
+
+.. _Writing Contracts for Functional Correctness:
 
 Writing Contracts for Functional Correctness
 --------------------------------------------
@@ -1148,7 +1156,10 @@ previously, with additional functional contracts:
   ``Contract_Cases`` aspect) is a complete functional description of the
   behavior of the subprogram. There are three cases which correspond to
   different possible behaviors depending on the values of parameter ``X`` and
-  global variables ``Max`` and ``Snd``.
+  global variables ``Max`` and ``Snd``. The benefit of expressing the
+  postcondition as contract cases is both the gain in readability (no need to
+  use ``'Old`` for the guards, as in the postcondition of ``Update``) and the
+  automatic verification that the cases are disjoint and complete.
 
 Note that global variables ``Max`` and ``Snd`` are referred to through public
 accessor functions ``Max_Value_Seen`` and ``Second_Max_Value_Seen``. These
@@ -1163,12 +1174,36 @@ contracts are semantically analyzed only at the end of package declaration.
    :language: ada
    :linenos:
 
-|GNATprove| manages to prove automatically most of these functional contracts:
+|GNATprove| manages to prove automatically almost all of these functional
+contracts, except for the postcondition of ``Seen_Two`` (note in particular the
+proof that the contract cases for ``Seen_One`` on line 10 are disjoint and
+complete):
 
 .. literalinclude:: gnatprove_by_example/results/functional.prove
    :language: none
 
-CHECK postcondition on line 17
+Running |GNATprove| in mode ``per_path`` (see :ref:`Running GNATprove from the
+Command Line` or :ref:`Running GNATprove from GPS`), and highlighting the path
+on which the postcondition is not proved, shows that when the last branch of
+the if-statement is taken, the following property is not proved::
+
+  functional.ads:31:14: medium: postcondition might fail, requires Max_Value_Seen /= (Second_Max_Value_Seen)
+
+Indeed, it could be the case that ``Max = Snd = 10`` on entry to procedure
+``Seen_Two``, with values of parameters ``X = 1`` and ``Y = 2``, in which case
+``Max`` and ``Snd`` would still be equal to 10 on exit. The missing piece of
+information here is that ``Max`` and ``Snd`` are never equal, except when they
+are both zero (the initial value). This can be added to function ``Invariant`` as follows:
+
+.. literalinclude:: gnatprove_by_example/examples/functional_proved.adb
+   :language: ada
+   :lines: 7-8
+
+With this more precise definition for ``Invariant``, all contracts are now
+proved by |GNATprove|:
+
+.. literalinclude:: gnatprove_by_example/results/functional_proved.prove
+   :language: none
 
 In general, it may be needed to further refine the preconditions of subprograms
 to be able to prove their functional postconditions, to express either specific
@@ -1178,7 +1213,65 @@ execution.
 Writing Contracts on Imported Subprograms
 -----------------------------------------
 
-Checked at run time.
+Contracts are particularly useful to specify the behavior of imported
+subprograms, which cannot be analyzed by |GNATprove|. It is compulsory to
+specify in a data flow contract the global variables these imported subprograms
+may read and/or write, otherwise |GNATprove| assumes a default data flow
+contract of ``null`` (no global variable read or written).
+
+For example, unit ``Gen_Imported_Global`` is a modified version of the
+``Gen_Abstract_Global`` unit seen previously in :ref:`Generation of Data and
+Information Flow Contracts`, where procedure ``Get_Global`` is imported from C:
+
+.. literalinclude:: gnatprove_by_example/examples/gen_imported_global.ads
+   :language: ada
+   :linenos:
+
+Note that we added a data flow contract to procedure ``Set_Global``, which can
+be used to analyze its callers. We did not add an information flow contract, as
+it is the same as the auto completed contract (see :ref:`Auto Completion for
+Incomplete Contracts`).
+
+.. literalinclude:: gnatprove_by_example/examples/gen_imported_global.adb
+   :language: ada
+   :linenos:
+
+Note that we added an ``Address`` aspect to global variable ``V``, so that it
+can be read/written from a C file.
+
+|GNATprove| gives the same results on this unit as before: it issues warnings
+for the possible error in ``Set_Global_Twice`` and it verifies the contract
+given by the user for ``Set_Global_Conditionally``:
+
+.. literalinclude:: gnatprove_by_example/results/gen_imported_global.prove
+   :language: none
+
+It is also possible to add functional contracts on imported subprograms, which
+|GNATprove| uses to prove properties of their callers. One benefit of these
+contracts is that they are verified at run time when the corresponding
+assertion is enabled in Ada (either with pragma ``Assertion_Policy`` or
+compilation switch ``-gnata``).
+
+For example, unit ``Functional_Imported`` is a modified version of the
+``Functional_Proved`` unit seen previously in :ref:`Writing Contracts for
+Functional Correctness`, where procedures ``Update`` and ``Seen_One`` are
+imported from C:
+
+.. literalinclude:: gnatprove_by_example/examples/functional_imported.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: gnatprove_by_example/examples/functional_imported.adb
+   :language: ada
+   :linenos:
+
+Note that we added a data flow contract to the imported procedures, as
+|GNATprove| would assume otherwise an incorrect data flow contact of ``null``.
+
+As before, all contracts are proved by |GNATprove|:
+
+.. literalinclude:: gnatprove_by_example/results/functional_imported.prove
+   :language: none
 
 Contextual Analysis of Subprograms Without Contracts
 ----------------------------------------------------
@@ -1583,12 +1676,11 @@ cannot prove, which can help figuring out the problem. It may useful to
 simplify the code during this investigation, for example by adding a
 simpler assertion and trying to prove it.
 
-|GNATprove| provides path information that might help the code review. You
-can display inside the editor the path on which the proof failed, as
-described in :ref:`GPS integration`. In many cases, this is sufficient to
-spot a missing assertion. To further assist the user, we plan to add to
-this path some information about the values taken by variables from a
-counterexample.
+|GNATprove| provides path information that might help the code review. You can
+display inside the editor the path on which the proof failed, as described in
+:ref:`Running GNATprove from GPS`. In many cases, this is sufficient to spot a
+missing assertion. To further assist the user, we plan to add to this path some
+information about the values taken by variables from a counterexample.
 
 A property can also be conceptually provable, but the model used by
 |GNATProve| can currently not reason about it [MODEL]. (See
@@ -1610,13 +1702,13 @@ Investigating Prover Shortcomings
 The last step is to investigate if the prover would find a proof given enough
 time [TIMEOUT] or if another prover can find a proof [PROVER]. To that end,
 |GNATprove| provides options ``--timeout`` and ``--prover``, usable either from
-the command-line (see :ref:`command line`) or inside GPS (see :ref:`GPS
-integration`).
+the command-line (see :ref:`command line`) or inside GPS (see :ref:`Running
+GNATprove from GPS`).
 
 Note that for the above experiments, it is quite convenient to use the
 :menuselection:`SPARK --> Prove Line` or :menuselection:`SPARK --> Prove
-Subprogram` menus in GPS, as described in :ref:`GPS integration`, to get faster
-results for the desired line or subprogram.
+Subprogram` menus in GPS, as described in :ref:`Running GNATprove from GPS`, to
+get faster results for the desired line or subprogram.
 
 A common limitation of automatic provers is that they don't handle
 non-linear arithmetic well. For example, they might fail to prove simple checks

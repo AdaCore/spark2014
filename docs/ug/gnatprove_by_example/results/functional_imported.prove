@@ -1,0 +1,6 @@
+functional_imported.adb:39:10: info: precondition proved
+functional_imported.adb:40:10: info: precondition proved
+functional_imported.adb:42:10: info: precondition proved
+functional_imported.ads:15:06: info: complete contract cases proved
+functional_imported.ads:15:06: info: disjoint contract cases proved
+functional_imported.ads:34:14: medium: postcondition might fail

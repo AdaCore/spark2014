@@ -1,8 +1,14 @@
-package body Functional with
-  SPARK_Mode
+with System.Storage_Elements;
+
+package body Functional_Imported with
+  SPARK_Mode,
+  Refined_State => (Max_And_Snd => (Max, Snd))
 is
    Max : Natural := 0;  --  max value seen
+   for Max'Address use System.Storage_Elements.To_Address (16#8000_0000#);
+
    Snd : Natural := 0;  --  second max value seen
+   for Snd'Address use System.Storage_Elements.To_Address (16#8000_0004#);
 
    function Invariant return Boolean is (Snd <= Max);
 
@@ -11,6 +17,9 @@ is
    function Second_Max_Value_Seen return Integer is (Snd);
 
    procedure Update (X : Natural) with
+     Import,
+     Convention => C,
+     Global => (In_Out => (Max, Snd)),
      Pre  => X > Snd and then      --  support of maintenance
              Invariant,            --  invariant checking
      Post => Invariant and then    --  invariant checking
@@ -19,23 +28,7 @@ is
               elsif X < Max'Old then
                 Snd = X and Max = Max'Old
               else
-                Snd = Snd'Old and Max = Max'Old)
-   is
-   begin
-      if X > Max then
-         Snd := Max;
-         Max := X;
-      elsif X < Max then
-         Snd := X;
-      end if;
-   end Update;
-
-   procedure Seen_One (X : Integer) is
-   begin
-      if X > Snd then
-         Update (X);
-      end if;
-   end Seen_One;
+                Snd = Snd'Old and Max = Max'Old);
 
    procedure Seen_Two (X, Y : Natural) is
    begin
@@ -50,4 +43,4 @@ is
       end if;
    end Seen_Two;
 
-end Functional;
+end Functional_Imported;

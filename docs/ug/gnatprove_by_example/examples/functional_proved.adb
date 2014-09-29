@@ -1,10 +1,11 @@
-package body Functional with
+package body Functional_Proved with
   SPARK_Mode
 is
    Max : Natural := 0;  --  max value seen
    Snd : Natural := 0;  --  second max value seen
 
-   function Invariant return Boolean is (Snd <= Max);
+   function Invariant return Boolean is
+     (if Max = 0 then Snd = 0 else Snd < Max);
 
    function Max_Value_Seen return Integer is (Max);
 
@@ -50,4 +51,4 @@ is
       end if;
    end Seen_Two;
 
-end Functional;
+end Functional_Proved;
