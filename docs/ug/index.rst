@@ -24,6 +24,7 @@ SPARK 2014 Toolset User's Guide
 
 .. toctree::
    :maxdepth: 3
+   :numbered:
 
    getting_started
    introduction
