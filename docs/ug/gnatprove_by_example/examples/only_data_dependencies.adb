@@ -1,4 +1,4 @@
-package body Only_Data_Flow with
+package body Only_Data_Dependencies with
   SPARK_Mode
 is
    procedure Add (X : Integer) is
@@ -26,4 +26,4 @@ is
       Swap (X);
    end Call_Swap;
 
-end Only_Data_Flow;
+end Only_Data_Dependencies;

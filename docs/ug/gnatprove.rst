@@ -545,7 +545,7 @@ In mode ``check``, |GNATprove| prints on the standard output error messages for
 In modes ``flow`` and ``prove``, this checking is done as a first phase.
 
 In mode ``flow``, GNATprove prints on the standard output messages for
-incorrect data flow contracts (annotations ``Global``, ``Depends``,
+incorrect dependency contracts (annotations ``Global``, ``Depends``,
 ``Abstract_State``, ``Initializes``, and refinement versions of these),
 unitialized variables, and suspicious situations such as unused assignments,
 missing return statements and so on.
@@ -763,13 +763,13 @@ independently from their callers and callees. But no contracts are compulsory:
 contract is not provided by the user. Hence, it is important to know which
 contracts to write for which verification objectives.
 
-.. _Generation of Data and Information Flow Contracts:
+.. _Generation of Dependency Contracts:
 
-Generation of Data and Information Flow Contracts
--------------------------------------------------
+Generation of Dependency Contracts
+----------------------------------
 
-By default, |GNATprove| does not require the user to write data flow contracts
-(introduced with aspect ``Global``) and information flow contracts (introduced
+By default, |GNATprove| does not require the user to write data dependencies
+(introduced with aspect ``Global``) and flow dependencies (introduced
 with aspect ``Depends``), as it can automatically generate them from the
 program.
 
@@ -779,33 +779,32 @@ program.
    subprogram does not respect a generated contract. Indeed, the generated
    contract is a safe over-approximation of the real contract, hence it is
    unlikely that the subprogram body respects it. The generated contract is
-   used instead to verify proper initialization and respect of data and
-   information contracts in the callers of the subprogram.
+   used instead to verify proper initialization and respect of dependency
+   contracts in the callers of the subprogram.
 
 .. _Auto Completion for Incomplete Contracts:
 
 Auto Completion for Incomplete Contracts
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-When only the data flow contract (resp. only the information flow contract) is
-given on a subprogram, |GNATprove| completes automatically the subprogram
-contract with the matching information flow contract (resp. data flow
-contract).
+When only the data dependencies (resp. only the flow dependencies) are given on
+a subprogram, |GNATprove| completes automatically the subprogram contract with
+the matching flow dependencies (resp. data dependencies).
 
-Writing Only the Data Flow Contract
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Writing Only the Data Dependencies
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-When only the data flow contract is given on a subprogram, |GNATprove|
-completes it with an information flow contract that has all outputs depending
-on all inputs. This is a safe over-approximation of the real contract of the
+When only the data dependencies are given on a subprogram, |GNATprove|
+completes it with flow dependencies that have all outputs depending on all
+inputs. This is a safe over-approximation of the real contract of the
 subprogram, which allows to detect all possible errors of initialization and
 contract violation in the subprogram and its callers, but which may also lead
 to false alarms because it is imprecise.
 
-Take for example procedures ``Add`` and ``Swap`` for which a data flow contract
-is given, but no information flow contract:
+Take for example procedures ``Add`` and ``Swap`` for which data dependencies
+are given, but no flow dependencies:
 
-.. literalinclude:: gnatprove_by_example/examples/only_data_flow.ads
+.. literalinclude:: gnatprove_by_example/examples/only_data_dependencies.ads
    :language: ada
    :linenos:
 
@@ -822,13 +821,13 @@ contract that is equivalent to:
      Global => (In_Out => V),
      Depends => ((X, V) => (X, V));
 
-Other information flow contracts with fewer dependencies between inputs and
-outputs would be compatible with the given data flow contracts of ``Add`` and
+Other flow dependencies with fewer dependencies between inputs and
+outputs would be compatible with the given data dependencies of ``Add`` and
 ``Swap``. |GNATprove| chooses the contracts with the most dependencies. Here,
 this corresponds to the actual contract for ``Add``, but to an imprecise
 contract for ``Swap``:
 
-.. literalinclude:: gnatprove_by_example/examples/only_data_flow.adb
+.. literalinclude:: gnatprove_by_example/examples/only_data_dependencies.adb
    :language: ada
    :linenos:
 
@@ -836,7 +835,7 @@ This results in false alarms when |GNATprove| verifies the information flow
 contract of procedure ``Call_Swap`` which calls ``Swap``, while it succeeds in
 verifying the information flow contract of ``Call_Add`` which calls ``Add``:
 
-.. literalinclude:: gnatprove_by_example/results/only_data_flow.flow
+.. literalinclude:: gnatprove_by_example/results/only_data_dependencies.flow
    :language: none
 
 The most precise information flow contract for ``Swap`` would be:
@@ -848,36 +847,36 @@ The most precise information flow contract for ``Swap`` would be:
      Depends => (V => X, X => V);
 
 If you add this precise contract in the program, then |GNATprove| can also
-verify the information flow contract of ``Call_Swap``.
+verify the flow dependencies of ``Call_Swap``.
 
-Writing Only the Information Flow Contract
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Writing Only the Flow Dependencies
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-When only the information flow contract is given on a subprogram, |GNATprove|
-completes it with the only compatible data flow contract.
+When only the flow dependencies are given on a subprogram, |GNATprove|
+completes it with the only compatible data dependencies.
 
-Take for example procedures ``Add`` and ``Swap`` as previously, expect now an
-information flow contract is given, but no data flow contract:
+Take for example procedures ``Add`` and ``Swap`` as previously, expect now flow
+dependencies are given, but no data dependencies:
 
-.. literalinclude:: gnatprove_by_example/examples/only_information_flow.ads
+.. literalinclude:: gnatprove_by_example/examples/only_flow_dependencies.ads
    :language: ada
    :linenos:
 
 The body of the unit is the same as before:
 
-.. literalinclude:: gnatprove_by_example/examples/only_information_flow.adb
+.. literalinclude:: gnatprove_by_example/examples/only_flow_dependencies.adb
    :language: ada
    :linenos:
 
-|GNATprove| verifies the data and information flow contracts of all
+|GNATprove| verifies the data and flow dependencies of all
 subprograms, including ``Call_Add`` and ``Call_Swap``, based on the completed
 contracts for ``Add`` and ``Swap``.
 
 Precise Generation for |SPARK| Subprograms
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-When no data or information flow contract is given on a |SPARK| subprogram,
-|GNATprove| generates precise data and information flow contracts by using
+When no data or flow dependencies are given on a |SPARK| subprogram,
+|GNATprove| generates precise data and flow dependencies by using
 path-sensitive flow analysis to track data flows in the subprogram body:
 
  * if a variable is written completely on all paths in a subprogram body, it is
@@ -903,8 +902,8 @@ a global variable ``V`` and is called in a number of contexts:
    :language: ada
    :linenos:
 
-|GNATprove| generates a data and information flow contract for procedure
-``Set_Global`` that is equivalent to:
+|GNATprove| generates data and flow dependencies for procedure
+``Set_Global`` that are equivalent to:
 
 .. code-block:: ada
 
@@ -946,7 +945,7 @@ Case 2: Some Abstract State
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In the presence of abstract state declared by the user, |GNATprove| generates
-data and information contracts which take abstract state into account.
+data and flow dependencies which take abstract state into account.
 
 For example, take unit ``Gen_Global`` previously seen, where an abstract state
 ``State`` is defined for package ``Gen_Abstract_Global``, and refined into
@@ -974,8 +973,8 @@ given by the user for ``Set_Global_Conditionally``:
 Coarse Generation for non-|SPARK| Subprograms
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-When no data or information flow contract is given on a non-|SPARK| subprogram,
-|GNATprove| generates coarser data and information flow contracts based on the
+When no data or flow dependencies are given on a non-|SPARK| subprogram,
+|GNATprove| generates coarser data and flow dependencies based on the
 reads and writes to variables in the subprogram body:
 
  * if a variable is written in a subprogram body, it is considered both an
@@ -995,8 +994,8 @@ For example, take unit ``Gen_Global`` previously seen, where the body of
    :language: ada
    :linenos:
 
-|GNATprove| generates a data and information flow contract for procedure
-``Set_Global`` that is equivalent to:
+|GNATprove| generates a data and flow dependencies for procedure
+``Set_Global`` that are equivalent to:
 
 .. code-block:: ada
 
@@ -1030,25 +1029,25 @@ section:
 With such a user contract on ``Set_Global``, |GNATprove| can verify the
 contract of ``Set_Global_Conditionally`` without false alarms.
 
-Writing Data and Information Flow Contracts
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Writing Dependency Contracts
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Since |GNATprove| generates data and information flow contracts, you don't need
+Since |GNATprove| generates data and flow dependencies, you don't need
 in general to add such contracts if you don't want to.
 
 The main reason to add such contracts is when you want |GNATprove| to verify
-that the implementation respects specified data flows and information
-flows. For those projects submitted to certification, verification of data
-coupling and input/output relations may be a required verification objective,
-which can be achieved automatically with |GNATprove| provided the
+that the implementation respects specified data dependencies and flow
+dependencies. For those projects submitted to certification, verification of
+data coupling and input/output relations may be a required verification
+objective, which can be achieved automatically with |GNATprove| provided the
 specifications are written as contracts.
 
-Even if you write data and/or information flow contracts for the publicly
+Even if you write dependency contracts for the publicly
 visible subprograms, which describe the services offered by the unit, there is
 no need to write similar contracts on internal subprograms defined in the unit
-body. |GNATprove| can generate data and information flow contracts on these.
+body. |GNATprove| can generate data and flow dependencies on these.
 
-Also, as seen in the previous section, the data and information flow contracts
+Also, as seen in the previous section, the data and flow dependencies
 generated by |GNATprove| may be imprecise, in which case it is necessary to add
 manual contracts to avoid false alarms.
 
@@ -1226,21 +1225,21 @@ Writing Contracts on Imported Subprograms
 
 Contracts are particularly useful to specify the behavior of imported
 subprograms, which cannot be analyzed by |GNATprove|. It is compulsory to
-specify in a data flow contract the global variables these imported subprograms
-may read and/or write, otherwise |GNATprove| assumes a default data flow
-contract of ``null`` (no global variable read or written).
+specify in data dependencies the global variables these imported subprograms
+may read and/or write, otherwise |GNATprove| assumes ``null`` data dependencies
+(no global variable read or written).
 
 For example, unit ``Gen_Imported_Global`` is a modified version of the
-``Gen_Abstract_Global`` unit seen previously in :ref:`Generation of Data and
-Information Flow Contracts`, where procedure ``Get_Global`` is imported from C:
+``Gen_Abstract_Global`` unit seen previously in :ref:`Generation of Dependency
+Contracts`, where procedure ``Get_Global`` is imported from C:
 
 .. literalinclude:: gnatprove_by_example/examples/gen_imported_global.ads
    :language: ada
    :linenos:
 
-Note that we added a data flow contract to procedure ``Set_Global``, which can
-be used to analyze its callers. We did not add an information flow contract, as
-it is the same as the auto completed contract (see :ref:`Auto Completion for
+Note that we added data dependencies to procedure ``Set_Global``, which can
+be used to analyze its callers. We did not add flow dependencies, as
+they are the same as the auto completed ones (see :ref:`Auto Completion for
 Incomplete Contracts`).
 
 .. literalinclude:: gnatprove_by_example/examples/gen_imported_global.adb
@@ -1279,8 +1278,8 @@ imported from C:
    :language: ada
    :linenos:
 
-Note that we added a data flow contract to the imported procedures, as
-|GNATprove| would assume otherwise an incorrect data flow contact of ``null``.
+Note that we added data dependencies to the imported procedures, as
+|GNATprove| would assume otherwise incorrectly ``null`` data dependencies.
 
 As before, all contracts are proved by |GNATprove|:
 

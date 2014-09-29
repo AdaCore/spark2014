@@ -1,4 +1,4 @@
-package Only_Data_Flow with
+package Only_Data_Dependencies with
   SPARK_Mode
 is
    V : Integer;
@@ -17,4 +17,4 @@ is
      Global  => (In_Out => V),
      Depends => (X => Y, Y => X, V => V);
 
-end Only_Data_Flow;
+end Only_Data_Dependencies;

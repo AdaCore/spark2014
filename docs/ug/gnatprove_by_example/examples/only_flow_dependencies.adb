@@ -1,4 +1,4 @@
-package body Only_Information_Flow with
+package body Only_Flow_Dependencies with
   SPARK_Mode
 is
    procedure Add (X : Integer) is
@@ -26,4 +26,4 @@ is
       Swap (X);
    end Call_Swap;
 
-end Only_Information_Flow;
+end Only_Flow_Dependencies;
