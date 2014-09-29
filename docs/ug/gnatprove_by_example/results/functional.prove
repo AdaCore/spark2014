@@ -1,0 +1,13 @@
+functional.adb:17:15: medium: postcondition might fail
+functional.adb:36:10: info: precondition proved
+functional.adb:36:18: info: range check proved
+functional.adb:46:10: info: precondition proved
+functional.adb:47:10: info: precondition proved
+functional.adb:49:10: info: precondition proved
+functional.ads:9:14: info: postcondition proved
+functional.ads:10:06: info: complete contract cases proved
+functional.ads:10:06: info: disjoint contract cases proved
+functional.ads:11:28: info: contract case proved
+functional.ads:16:28: info: contract case proved
+functional.ads:21:36: info: contract case proved
+functional.ads:29:14: medium: postcondition might fail
