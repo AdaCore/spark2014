@@ -769,6 +769,17 @@ By default, |GNATprove| does not require the user to write data flow contracts
 with aspect ``Depends``), as it can automatically generate them from the
 program.
 
+.. note::
+
+   |GNATprove| does not generate warning or check messages when the body of a
+   subprogram does not respect a generated contract. Indeed, the generated
+   contract is a safe over-approximation of the real contract, hence it is
+   unlikely that the subprogram body respects it. The generated contract is
+   used instead to verify proper initialization and respect of data and
+   information contracts in the callers of the subprogram.
+
+.. _`Auto Completion for Incomplete Contracts`:
+
 Auto Completion for Incomplete Contracts
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
