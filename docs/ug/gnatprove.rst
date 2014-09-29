@@ -1247,7 +1247,10 @@ given by the user for ``Set_Global_Conditionally``:
    :language: none
 
 It is also possible to add functional contracts on imported subprograms, which
-|GNATprove| uses to prove properties of their callers. One benefit of these
+|GNATprove| uses to prove properties of their callers.  It is compulsory to
+specify in a precondition the conditions for calling these imported subprograms
+without errors, otherwise |GNATprove| assumes a default precondition of
+``True`` (no constraints on the calling context). One benefit of these
 contracts is that they are verified at run time when the corresponding
 assertion is enabled in Ada (either with pragma ``Assertion_Policy`` or
 compilation switch ``-gnata``).
