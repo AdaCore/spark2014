@@ -1243,7 +1243,7 @@ can be read/written from a C file.
 for the possible error in ``Set_Global_Twice`` and it verifies the contract
 given by the user for ``Set_Global_Conditionally``:
 
-.. literalinclude:: gnatprove_by_example/results/gen_imported_global.prove
+.. literalinclude:: gnatprove_by_example/results/gen_imported_global.flow
    :language: none
 
 It is also possible to add functional contracts on imported subprograms, which
