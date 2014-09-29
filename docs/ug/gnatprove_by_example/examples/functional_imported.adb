@@ -10,7 +10,8 @@ is
    Snd : Natural := 0;  --  second max value seen
    for Snd'Address use System.Storage_Elements.To_Address (16#8000_0004#);
 
-   function Invariant return Boolean is (Snd <= Max);
+   function Invariant return Boolean is
+     (if Max = 0 then Snd = 0 else Snd < Max);
 
    function Max_Value_Seen return Integer is (Max);
 
