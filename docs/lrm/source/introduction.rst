@@ -825,11 +825,12 @@ implementation code or from other |SPARK| aspects as follows:
 
   * if subprogram has no Depends aspect but has a Global aspect, an
     approximation of the Depends aspect is obtained by constructing a
-    ``dependency_relation`` by assuming that all of the ``global_items`` that
-    have a ``mode_selector`` of Output or In_Out are ``outputs``, those that
-    have a ``mode_selector`` of Input or In_Out are ``inputs`` of the
-    ``dependency_relation`` and that each ``output`` is dependent on every
-    ``input``. This is a conservative approximation;
+    ``dependency_relation`` by assuming that each output is dependent on every
+    input, where outputs are all of the parameters of mode out and in-out, plus
+    all the ``global_items`` that have a ``mode_selector`` of Output or In_Out,
+    and inputs are all the parameters of mode in and in-out, plus all the
+    ``global_items`` that have a ``mode_selector`` of Input or In_Out. This is
+    a conservative approximation;
 
   * if a subprogram has a Depends aspect but no Global aspect then the Global
     aspect is determined by taking each ``input`` of the ``dependency_relation``
@@ -882,7 +883,7 @@ Some use cases where the synthesis of aspects is likely to be required are:
   the code was written with the intention that it would be analyzed.
 
 - Code is in maintenance phase, it might or might not have all of the |SPARK|
-  specific aspects.  If there are aspects missing they are automatically 
+  specific aspects.  If there are aspects missing they are automatically
   for analysis purposes when possible. This is also regarded as generative
   analysis.
 
