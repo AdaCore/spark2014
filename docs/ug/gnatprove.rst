@@ -1409,7 +1409,7 @@ Note that the loop invariant closely resembles the second line in the
 postcondition of the subprogram, except with a different range of values in the
 quantification: instead of stating a property for all indexes in the array
 ``A``, the loop invariant states the same property for all indexes up to the
-current loop index ``Pos``. In fact, if we equal ``Pos`` to ``A'Last`` for the
+current loop index ``Pos``. In fact, if we equate ``Pos`` to ``A'Last`` for the
 last iteration of the loop, the two properties are equal. This explains here
 how the loop invariant allows proving the subprogram postcondition when the
 value searched is not found.
