@@ -110,6 +110,13 @@ package Flow.Analysis is
    --  Complexity is O(N^2) - (due to path search on each element of the
    --  precomputed dependency map)
 
+   procedure Find_Hidden_Unexposed_State (FA : in out Flow_Analysis_Graphs);
+   --  Finds hidden states that are not constituents of any state
+   --  abstractions even though an enclosing package declares a state
+   --  abstraction.
+   --
+   --  Complexity is O(N)
+
    procedure Check_Contracts (FA : in out Flow_Analysis_Graphs);
    --  Check the given depends against the reality. If there is no
    --  depends aspect this procedure does nothing.

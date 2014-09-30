@@ -23,12 +23,14 @@
 
 with Ada.Text_IO;
 
+with Elists;               use Elists;
 with Namet;                use Namet;
 with Nlists;               use Nlists;
 with Sem_Util;             use Sem_Util;
 with Sinfo;                use Sinfo;
 with Sinput;               use Sinput;
 with Snames;               use Snames;
+with Stand;                use Stand;
 
 with Why;
 with Gnat2Why_Args;
@@ -2406,6 +2408,135 @@ package body Flow.Analysis is
          end;
       end loop;
    end Find_Exports_Derived_From_Proof_Ins;
+
+   ---------------------------------
+   -- Find_Hidden_Unexposed_State --
+   ---------------------------------
+
+   procedure Find_Hidden_Unexposed_State (FA : in out Flow_Analysis_Graphs) is
+
+      function Enclosing_Package_Has_State (E : Entity_Id) return Boolean;
+      --  Returns True if there is an enclosing package of E (not
+      --  necessarily direcly) which has a state abstraction.
+
+      procedure Warn_About_Hidden_States (E : Entity_Id);
+      --  Issues one warning per hidden state found in package E
+
+      ---------------------------------
+      -- Enclosing_Package_Has_State --
+      ---------------------------------
+
+      function Enclosing_Package_Has_State (E : Entity_Id) return Boolean is
+         Scop : Entity_Id;
+      begin
+         Scop := E;
+         while Present (Scop) loop
+
+            --  If we reach Standard_Standard then there is no
+            --  enclosing package which has state.
+
+            if Scop = Standard_Standard then
+               return False;
+
+            --  If we find a body then we need to look if the entity
+            --  of the spec has abstract state.
+
+            elsif Ekind (Scop) = E_Package_Body
+              and then Present (Abstract_States (Spec_Entity (Scop)))
+            then
+               return True;
+
+            --  If we find a spec then we look if it has abstract
+            --  state.
+
+            elsif Ekind (Scop) in E_Generic_Package | E_Package
+              and then Present (Abstract_States (Scop))
+            then
+               return True;
+
+            --  If we find a public child then we return False
+
+            elsif Is_Child_Unit (Scop)
+              and then not Is_Private_Descendant (Scop)
+            then
+               return False;
+
+            end if;
+
+            Scop := Scope (Scop);
+         end loop;
+
+         --  If we reach this point then there is no enclosing package
+         --  which has state.
+
+         return False;
+      end Enclosing_Package_Has_State;
+
+      ------------------------------
+      -- Warn_About_Hidden_States --
+      ------------------------------
+
+      procedure Warn_About_Hidden_States (E : Entity_Id) is
+
+         procedure Warn_On_Non_Constant (First_Ent : Entity_Id);
+         --  Goes through a list of entities and issues warnings for
+         --  any non-constant variables.
+
+         --------------------------
+         -- Warn_On_Non_Constant --
+         --------------------------
+
+         procedure Warn_On_Non_Constant (First_Ent : Entity_Id) is
+            Hidden_State : Entity_Id;
+         begin
+            Hidden_State := First_Ent;
+            while Present (Hidden_State) loop
+               if Ekind (Hidden_State) in E_Variable
+                 and then not Is_Constant_Object (Hidden_State)
+               then
+                  Error_Msg_Flow
+                    (FA        => FA,
+                     Msg       => "& needs to be a constituent of " &
+                       "some state abstraction",
+                     N         => Hidden_State,
+                     F1        => Direct_Mapping_Id (Hidden_State),
+                     Tag       => "hidden_unexposed_state",
+                     Kind      => Medium_Check_Kind);
+               end if;
+
+               Next_Entity (Hidden_State);
+            end loop;
+         end Warn_On_Non_Constant;
+
+      begin
+         --  Warn about hidden state that lies in the private part
+         Warn_On_Non_Constant (First_Private_Entity (E));
+
+         --  Warn about hidden state that lies in the body
+         if Present (Body_Entity (E)) then
+            Warn_On_Non_Constant (First_Entity (Body_Entity (E)));
+         end if;
+      end Warn_About_Hidden_States;
+
+   begin
+      --  If the package has state abstraction then there is nothing
+      --  to do here.
+
+      if Present (Abstract_States (FA.Spec_Node)) then
+         return;
+      end if;
+
+      --  If there is no enclosing package that introduces a state
+      --  abstraction then the is nothing to do here.
+
+      if not Enclosing_Package_Has_State (FA.Spec_Node) then
+         return;
+      end if;
+
+      --  Issue one message per hidden state
+      Warn_About_Hidden_States (FA.Spec_Node);
+
+   end Find_Hidden_Unexposed_State;
 
    ---------------------
    -- Check_Contracts --
