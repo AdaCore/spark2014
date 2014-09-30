@@ -4,24 +4,31 @@ package body Ghost_Illegal_2 is
 
 
    function Add_And_Double (X, Y : Integer) return Integer is
-     --  TU: 5. A ghost entity shall only be referenced:
+     --  TU: 12. A ghost entity shall only be referenced:
      --  * from within an assertion expression; or
-     --  * within or as part of the declaration or completion of a
-     --    ghost entity (e.g., from within the body of a ghost function); or
-     --  * within a statement which does not contain (and is not itself) either
-     --    an assignment statement targeting a non-ghost variable or a
-     --    procedure call which passes a non-ghost variable as an out or in out
-     --    mode actual parameter.
+     --  * within the declaration or completion of a
+     --    ghost entity (e.g., from within the body of a ghost subprogram); or
+     --  * within a statement which does not contain (and is not itself)
+     --    either an assignment statement targeting a non-ghost variable,
+     --    a procedure call which passes a non-ghost variable as an out or in
+     --    out mode actual parameter, or a call to a procedure which has a
+     --    non-ghost global output. [Strictly speaking, the final "non-ghost
+     --    global output" part of this rule is a Verification Rule rather
+     --    than a Legality Rule.] [Note that in order to determine whether a
+     --    given reference satisfies this condition, it suffices to examine
+     --    only the innermost statement enclosing the reference.]
    begin
       return (Add (X, Y) * 2);
    end Add_And_Double;
 
 
    function Reads_A_Volatile return Integer is
-     --  TU: 6. Within a ghost procedure, the view of any non-ghost variable is
-     --  a constant view. Within a ghost procedure, a volatile object shall not
-     --  be read. [In a ghost procedure we do not want to allow assignments to
-     --  non-ghosts either via assignment statements or procedure calls.]
+     --  TU: 19. A ghost procedure shall not have an effectively
+     --  volatile global input with the properties Async_Writers or
+     --  Effective_Reads set to True. [This rule says, in effect, that
+     --  ghost procedures are subject to the same restrictions as
+     --  non-ghost functions with respect to reading volatile
+     --  objects.]
    begin
       return (Vol_Int + 1);  --  Ghost functions are not allowed to read
                              --  Volatiles.
@@ -33,18 +40,19 @@ package body Ghost_Illegal_2 is
 
 
    procedure Ghost_Func_In_Flow_Exprpession (Par : in out Integer) is
-     --  TU: 15. A ghost entity shall not be referenced
-     --  * within a call to a procedure which has a non-ghost output; or
-     --  * within a control flow expression (e.g., the condition of an if
-     --    statement, the selecting expression of a case statement, the
-     --    bounds of a for loop) of a compound statement which contains
-     --    such a procedure call. [The case of a non-ghost-updating
-     --    assignment statement is handled by a legality rule; this rule is
-     --    needed to prevent a call to a procedure which updates a
-     --    non-ghost via an up-level reference, as opposed to updating a
-     --    parameter.] [This rule is intended to ensure an update of a
-     --    non-ghost entity shall not have a control flow dependency on a
-     --    ghost entity.]
+     --  TU: 12. A ghost entity shall only be referenced:
+     --  * from within an assertion expression; or
+     --  * within the declaration or completion of a
+     --    ghost entity (e.g., from within the body of a ghost subprogram); or
+     --  * within a statement which does not contain (and is not itself)
+     --    either an assignment statement targeting a non-ghost variable,
+     --    a procedure call which passes a non-ghost variable as an out or in
+     --    out mode actual parameter, or a call to a procedure which has a
+     --    non-ghost global output. [Strictly speaking, the final "non-ghost
+     --    global output" part of this rule is a Verification Rule rather
+     --    than a Legality Rule.] [Note that in order to determine whether a
+     --    given reference satisfies this condition, it suffices to examine
+     --    only the innermost statement enclosing the reference.]
    begin
       if Is_Even (Par) then
         Par := 0;
