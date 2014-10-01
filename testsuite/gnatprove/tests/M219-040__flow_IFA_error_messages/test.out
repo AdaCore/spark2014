@@ -24,5 +24,5 @@ test.adb:185:39: warning: unused variable "Par2"
 test.adb:187:13: warning: unused variable "Z"
 test.adb:190:29: warning: unused global "Y"
 test.adb:208:14: warning: subprogram "Unreachable_Code_1" has no effect
-test.adb:213:12: warning: dead code
-test.adb:217:15: warning: dead code
+test.adb:213:12: warning: this statement is never reached
+test.adb:217:15: warning: this statement is never reached

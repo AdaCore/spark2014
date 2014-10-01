@@ -1500,7 +1500,7 @@ package body Flow.Analysis is
             A      : constant V_Attributes := FA.Atr.Element (V);
          begin
             Error_Msg_Flow (FA        => FA,
-                            Msg       => "dead code",
+                            Msg       => "this statement is never reached",
                             N         => A.Error_Location,
                             Tag       => "dead_code",
                             Kind      => Warning_Kind,
