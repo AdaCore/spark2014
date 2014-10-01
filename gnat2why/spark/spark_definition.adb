@@ -3684,9 +3684,9 @@ package body SPARK_Definition is
             end loop;
          else
             Mark (Cur);
+            Preceding := Cur;
+            Next (Cur);
          end if;
-         Preceding := Cur;
-         Next (Cur);
       end loop;
    end Mark_Stmt_Or_Decl_List;
 

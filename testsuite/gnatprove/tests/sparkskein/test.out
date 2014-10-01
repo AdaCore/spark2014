@@ -6,16 +6,18 @@ skein.adb:241:44: info: division check proved
 skein.adb:241:44: medium: array index check might fail
 skein.adb:242:35: info: range check proved
 skein.adb:242:49: medium: range check might fail
-skein.adb:261:15: medium: array index check might fail
-skein.adb:262:22: medium: array index check might fail
-skein.adb:263:44: medium: array index check might fail
+skein.adb:262:15: medium: array index check might fail
+skein.adb:262:26: medium: "Dst" might not be initialized
+skein.adb:263:22: medium: array index check might fail
 skein.adb:264:44: medium: array index check might fail
 skein.adb:265:44: medium: array index check might fail
 skein.adb:266:44: medium: array index check might fail
 skein.adb:267:44: medium: array index check might fail
 skein.adb:268:44: medium: array index check might fail
 skein.adb:269:44: medium: array index check might fail
-skein.adb:273:33: medium: range check might fail
+skein.adb:270:44: medium: array index check might fail
+skein.adb:274:33: medium: range check might fail
+skein.adb:339:24: medium: "Ks" might not be initialized, in call inlined at skein.adb:619
 skein.adb:358:26: info: length check proved, in call inlined at skein.adb:621
 skein.adb:367:25: info: length check proved, in call inlined at skein.adb:637
 skein.adb:400:45: info: division check proved, in call inlined at skein.adb:583
