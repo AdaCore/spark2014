@@ -76,7 +76,7 @@ version = get_version()
 release = version
 
 # Substitution for the new SPARK name
-rst_prolog = """.. |SPARK| replace:: SPARK 2014
+rst_prolog = """.. |SPARK| replace:: SPARK
 .. |GNATprove| replace:: GNATprove
 .. |GNAT Pro| replace:: GNAT
 """
@@ -251,5 +251,4 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'spark2014toolsetusersguide', u'SPARK 2014 Toolset User\'s Guide',
-     [u'AdaCore and Altran UK Ltd'], 1)
-]
+     [u'AdaCore and Altran UK Ltd'], 1)]
