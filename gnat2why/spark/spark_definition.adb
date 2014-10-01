@@ -609,9 +609,7 @@ package body SPARK_Definition is
             Mark_Binary_Op (N);
 
          when N_Block_Statement =>
-            if Present (Declarations (N)) then
-               Mark_Stmt_Or_Decl_List (Declarations (N));
-            end if;
+            Mark_Stmt_Or_Decl_List (Declarations (N));
             Mark (Handled_Statement_Sequence (N));
 
          when N_Case_Expression |
@@ -3654,9 +3652,18 @@ package body SPARK_Definition is
    ----------------------------
 
    procedure Mark_Stmt_Or_Decl_List (L : List_Id) is
-      Preceding : Node_Id := Parent (L);
+      Preceding : Node_Id;
       Cur       : Node_Id := First (L);
    begin
+
+      --  We delay the initialization after checking that we really have a list
+
+      if not Present (L) or not Present (Cur) then
+         return;
+      end if;
+
+      Preceding := Parent (L);
+
       while Present (Cur) loop
 
          --  We peek into the statement node to handle the case of the Annotate
