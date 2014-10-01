@@ -609,7 +609,9 @@ package body SPARK_Definition is
             Mark_Binary_Op (N);
 
          when N_Block_Statement =>
-            Mark_Stmt_Or_Decl_List (Declarations (N));
+            if Present (Declarations (N)) then
+               Mark_Stmt_Or_Decl_List (Declarations (N));
+            end if;
             Mark (Handled_Statement_Sequence (N));
 
          when N_Case_Expression |
