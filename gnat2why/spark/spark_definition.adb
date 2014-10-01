@@ -3655,10 +3655,9 @@ package body SPARK_Definition is
       Preceding : Node_Id;
       Cur       : Node_Id := First (L);
    begin
-
       --  We delay the initialization after checking that we really have a list
 
-      if not Present (L) or not Present (Cur) then
+      if not Present (Cur) then
          return;
       end if;
 
