@@ -59,7 +59,7 @@ Command-line Options
      --timeout=s    Set the prover timeout in seconds (default: 1)
      --limit-line=s Limit analysis to given file and line
      --limit-subp=s Limit analysis to subprogram defined by file and line
-     --prover=s     Select prover (s=altergo*, cvc4, cvc4_ce)
+     --prover=s     Select prover (s=altergo*, cvc4)
 
  * Proof mode values
    . per_check   - Generate one formula per check (default)
@@ -71,7 +71,6 @@ Command-line Options
    (Provers marked with [steps] support the --steps option.)
    . altergo     - [steps] Use Alt-Ergo (default)
    . cvc4        - [steps] Use CVC4
-   . cvc4_ce     - [steps] Use CVC4 for counter-example generation
    Any other prover in your why3.conf file can also be specified here.
 
 .. _Alternative_Provers:

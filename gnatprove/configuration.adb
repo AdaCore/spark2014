@@ -223,8 +223,6 @@ ASCII.LF &
 ASCII.LF &
 "   . cvc4        - [steps] Use CVC4" &
 ASCII.LF &
-"   . cvc4_ce     - [steps] Use CVC4 for counter-example generation" &
-ASCII.LF &
 "   Any other prover in your why3.conf file can also be specified here." &
 ASCII.LF;
 
