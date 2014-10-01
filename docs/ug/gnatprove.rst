@@ -609,16 +609,16 @@ details.
 Control of Check Messages
 =========================
 
-The user can suppress check messages emitted by gnatprove by putting a
-pragma Annotate in the source code. An example is the following::
+The user can suppress check messages emitted by |GNATprove| by putting a
+``pragma Annotate`` in the source code. An example is the following::
 
     return (X + Y) / (X - Y);
-    pragma Annotate (Gnatprove, False_Positive,
+    pragma Annotate (GNATprove, False_Positive,
                      "divide by zero", "reviewed by John Smith");
 
 The pragma has the following form::
 
-    pragma Annotate (Gnatprove, Category, Pattern, Reason);
+    pragma Annotate (GNATprove, Category, Pattern, Reason);
 
 where the following table explains the different entries:
 
@@ -628,7 +628,7 @@ where the following table explains the different entries:
    :header: "Item", "Explanation"
    :widths: 1, 4
 
-    "Gnatprove",   "is a fixed identifier"
+    "GNATprove",   "is a fixed identifier"
     "Category",    "is one of False_Positive or Intentional"
     "Pattern",     "is a string literal describing the pattern of the messages which shall be suppressed"
     "Reason",      "is a string literal providing a reason for the suppression."
@@ -636,19 +636,19 @@ where the following table explains the different entries:
 All arguments should be provided.
 
 The category currently has no impact on the behavior of the tool, but the idea
-is that False_Positive should be used to suppress checks that cannot occcur,
-but Gnatprove was unable to detect this; Intentional indicates that the
+is that ``False_Positive`` should be used to suppress checks that cannot occcur,
+but |GNATprove| was unable to detect this; ``Intentional`` indicates that the
 condition can occur but is not considered to be a bug.
 
-Pattern should be a substring of the Gnatprove check message to be
+Pattern should be a substring of the |GNATprove| check message to be
 suppressed.
 
 Reason is any string that the user can use to provide a reason for the
-suppression. This reason may be present in a Gnatprove report.
+suppression. This reason may be present in a |GNATprove| report.
 
 Placement rules are as follows: in a statement list or declaration list,
-pragma Annotate applies to the preceding item in the list, ignoring other
-pragma Annotate. If there is no preceding item, the pragma applies to the
+``pragma Annotate`` applies to the preceding item in the list, ignoring other
+``pragma Annotate``. If there is no preceding item, the pragma applies to the
 enclosing construct.
 
 Warnings and Error Messages
