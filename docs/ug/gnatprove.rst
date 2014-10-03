@@ -525,16 +525,16 @@ checks and information messages.
    problems, or any other problem which does not allow to proceed to analysis.
    Errors cannot be suppressed and must be fixed to proceed with analysis.
  * Warnings are issued for any suspicious situation like unused values of
-   variables, useless assignements etc. Warnings are prefixed with the text
+   variables, useless assignements, etc. Warnings are prefixed with the text
    ``"warning: "`` and can be suppressed with ``pragma Warnings``, see
-   section :ref:`Warning_Control` below.
+   section :ref:`Warning_Control`.
  * Checks are issued for any potential problem in the code which could affect
    the correctness of the program, such as missing initialization, possible
-   failing run-time checks or unproved assertions. Checks come with a
-   severity, and depending on the severity the message text is prefixed with
-   ``"low: "``, ``"medium: "`` or ``"high: "``. Check messages cannot be
-   suppressed with pragma Warnings, but with pragma Annotate, see section
-   :ref:`Check_Control` below.
+   failing run-time checks or unproved assertions. Checks come with a severity,
+   and depending on the severity the message text is prefixed with ``"low: "``,
+   ``"medium: "`` or ``"high: "``. Check messages cannot be suppressed like
+   warnings, but they can be individually justified with pragma Annotate, see
+   section :ref:`Check_Control`.
  * Information messages are issued for proved checks in some modes of
    |GNATprove|.
 
@@ -591,7 +591,7 @@ Warning Control
 
   * ``--warnings=off`` suppresses all warnings
   * ``--warnings=error`` treats warnings as errors
-  * ``--warnings=continue`` issues warnings but do not stop analysis (default)
+  * ``--warnings=continue`` issues warnings but does not stop analysis (default)
 
     The default is that |GNATprove| issues warnings but does not stop.
 
