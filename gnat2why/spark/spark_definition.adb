@@ -3306,6 +3306,7 @@ package body SPARK_Definition is
               Pragma_Elaborate_All                |
               Pragma_Elaborate_Body               |
               Pragma_Export                       |
+              Pragma_Extensions_Visible           |
               Pragma_Independent                  |
               Pragma_Independent_Components       |
               Pragma_Inline                       |

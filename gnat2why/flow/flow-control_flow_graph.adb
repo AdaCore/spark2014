@@ -4489,6 +4489,11 @@ package body Flow.Control_Flow_Graph is
             Errout.Error_Msg_N
               ("?pragma % ignored in flow analysis (not yet supported)", N);
             return False;
+
+         --  ??? ignored for now, see NA03-003
+
+         when Pragma_Extensions_Visible =>
+            return False;
       end case;
 
    end Pragma_Relevant_To_Flow;

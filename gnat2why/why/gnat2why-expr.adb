@@ -9463,6 +9463,11 @@ package body Gnat2Why.Expr is
             | Pragma_Type_Invariant_Class =>
             return New_Void (Prag);
 
+         --  ??? Currently ignored, see NA03-001
+
+         when Pragma_Extensions_Visible =>
+            return New_Void (Prag);
+
          --  Do not issue a warning on unknown pragmas, as one is already
          --  issued in SPARK.Definition.
 
