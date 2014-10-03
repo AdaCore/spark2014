@@ -58,6 +58,7 @@ package Report_Database is
       Flow_Errors   : Natural;            --  Number of flow analysis errors
       VC_Count      : Natural;            --  Total number of checks
       VC_Proved     : Natural;            --  Number of checks that were proved
+      Assumptions   : Rule_Lists.List;    --  final mapping claims->assumptions
    end record;
 
    procedure Add_Flow_Result
@@ -91,8 +92,8 @@ package Report_Database is
    --  For the subprogram in the given unit, register a suppressed warning with
    --  a reason
 
-   procedure Add_Assumption_List (L : Rule_Lists.List);
-   --  add the assumption list in argument to the database
+   procedure Add_Claim_With_Assumptions (Claim : Token; S : Token_Sets.Set);
+   --  register that claim C ultimately only depends on assumptions S
 
    procedure Reset_All_Results;
    --  Resets the results, removing all information on units and subprograms

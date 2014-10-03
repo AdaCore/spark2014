@@ -163,6 +163,28 @@ procedure SPARK_Report is
    procedure Print_Analysis_Report (Handle : Ada.Text_IO.File_Type);
    --  print the proof report in the given file
 
+   procedure Compute_Assumptions;
+   --  compute remaining assumptions for all subprograms and store them in
+   --  database
+
+   -------------------------
+   -- Compute_Assumptions --
+   -------------------------
+
+   procedure Compute_Assumptions is
+   begin
+
+      --  ??? This is slow, use a better algorithm in Assumptions.Search
+
+      for C of Get_All_Claims loop
+         declare
+            S : constant Token_Sets.Set := Claim_Depends_On (C);
+         begin
+            Add_Claim_With_Assumptions (C, S);
+         end;
+      end loop;
+   end Compute_Assumptions;
+
    -------------------------
    -- Handle_Assume_Items --
    -------------------------
@@ -461,7 +483,25 @@ procedure SPARK_Report is
                                     (Msg.Reason));
                      end loop;
                   end if;
+
+                  if Assumptions then
+                     for Rule of Stat.Assumptions loop
+                        if Rule.Assumptions.Is_Empty then
+                           Ada.Text_IO.Put_Line
+                             (Handle,
+                              To_String (Rule.Claim) & " fully established");
+                        else
+                           Ada.Text_IO.Put_Line
+                             (Handle, To_String (Rule.Claim) & " depends on");
+                           for A of Rule.Assumptions loop
+                              Ada.Text_IO.Put_Line
+                                (Handle, "  " & To_String (A));
+                           end loop;
+                        end if;
+                     end loop;
+                  end if;
                end if;
+
             else
                Put_Line (Handle, " skipped");
             end if;
@@ -475,27 +515,6 @@ procedure SPARK_Report is
                    & Int_Image (Num_Subps (Unit)) & " analyzed");
          Iter_Unit_Subps (Unit, For_Each_Subp'Access, Ordered => True);
 
-         --  ??? This is slow, use a better algorithm in Assumptions.Search
-
-         if Assumptions then
-            for C of Get_All_Claims loop
-               declare
-                  S : constant Token_Sets.Set := Claim_Depends_On (C);
-               begin
-                  if S.Is_Empty then
-                     Ada.Text_IO.Put_Line
-                       (Handle,
-                        To_String (C) & " does not depend on anything");
-                  else
-                     Ada.Text_IO.Put_Line
-                       (Handle, To_String (C) & " depends on");
-                     for A of S loop
-                        Ada.Text_IO.Put_Line (Handle, "  " & To_String (A));
-                     end loop;
-                  end if;
-               end;
-            end loop;
-         end if;
       end For_Each_Unit;
 
       N_Un : constant Integer := Num_Units;
@@ -529,6 +548,9 @@ begin
            Out_File,
            Configuration.SPARK_Report_File
              (GNAT.Directory_Operations.Dir_Name (Source_Directories_File)));
+   if Assumptions then
+      Compute_Assumptions;
+   end if;
    Print_Analysis_Report (Handle);
    Close (Handle);
 end SPARK_Report;
