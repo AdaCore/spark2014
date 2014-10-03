@@ -55,7 +55,7 @@ program units required contracts on their specifications.  These
 contracts had to be designed and added at an early stage to assist modular
 verification, and then maintained by the user as a program evolved.
 
-In contrast, |SPARK| is designed to facilitate a more *generative* mode of
+In contrast, SPARK 2014 is designed to facilitate a more *generative* mode of
 program construction and verification, where useful forms of verification can
 be achieved with code that complies with the core |SPARK| restrictions, but
 otherwise does not have any contracts.  In this mode, implicit contracts can be
