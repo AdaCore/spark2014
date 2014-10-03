@@ -27,23 +27,28 @@ with Ada.Containers;        use Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Sets;
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Strings.Unbounded.Hash;
 with Assumption_Types;      use Assumption_Types;
 
 with GNATCOLL.JSON;         use GNATCOLL.JSON;
 
 package Assumptions is
 
+   type Claim_Kind is
+     (Claim_Init,
+      Claim_Pre,
+      Claim_Post,
+      Claim_Effects,
+      Claim_AoRTE);
+
    type Token is record
-      Predicate : Unbounded_String;
+      Predicate : Claim_Kind;
       Arg       : Subp_Type;
    end record;
 
    function Hash_Token (X : Token) return Ada.Containers.Hash_Type;
 
    function Hash_Token (X : Token) return Ada.Containers.Hash_Type is
-     (Ada.Strings.Unbounded.Hash (X.Predicate) +
+     (Ada.Containers.Hash_Type (Claim_Kind'Pos (X.Predicate)) +
           3 * Hash (X.Arg));
 
    package Token_Sets is new Ada.Containers.Hashed_Sets
@@ -62,6 +67,7 @@ package Assumptions is
       "="          => "=");
 
    function To_String (T : Token) return String;
+   --  return a human-readable presentation of the assumption/claim
 
    function From_JSON (S : String) return Rule_Lists.List;
    function From_JSON (S : JSON_Array) return Rule_Lists.List;

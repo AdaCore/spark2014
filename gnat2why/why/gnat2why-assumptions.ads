@@ -26,17 +26,11 @@
 with Ada.Containers;   use Ada.Containers;
 with Ada.Containers.Hashed_Sets;
 with Assumption_Types; use Assumption_Types;
+with Assumptions;      use Assumptions;
 with GNATCOLL.JSON;
 with Types;            use Types;
 
 package Gnat2Why.Assumptions is
-
-   type Claim_Kind is
-     (Claim_Init,
-      Claim_Pre,
-      Claim_Post,
-      Claim_Effects,
-      Claim_AoRTE);
 
    type Claim is record
       Kind : Claim_Kind;

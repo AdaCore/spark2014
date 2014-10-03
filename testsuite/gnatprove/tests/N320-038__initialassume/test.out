@@ -17,41 +17,41 @@ my_pack.ads:14:22: info: postcondition proved
 
   My_Pack.Use_Bump at my_pack.ads:11 flow analyzed (0 errors and 0 warnings) and proved (2 checks)
 
-  aorte(My_Pack.Bump)
+  absence of run-time errors of My_Pack.Bump
 
-  aorte(My_Pack.Bump)
+  absence of run-time errors of My_Pack.Bump
 
-  effects(My_Pack.Bump)
+  effects on parameters and Global variables of My_Pack.Bump
 
-  effects(My_Pack.Bump)
+  effects on parameters and Global variables of My_Pack.Bump
 
-  effects(My_Pack.Bump)
+  effects on parameters and Global variables of My_Pack.Bump
 
-  post(My_Pack.Bump)
+  the postcondition of My_Pack.Bump
 
-  post(My_Pack.Bump)
+  the postcondition of My_Pack.Bump
 
 Analyzed 2 units
 
-aorte(Full.Bump) fully established
+absence of run-time errors of Full.Bump fully established
 
-aorte(Full.Use_Bump) fully established
+absence of run-time errors of Full.Use_Bump fully established
 
-aorte(My_Pack.Use_Bump) depends on
+absence of run-time errors of My_Pack.Use_Bump depends on
 
-effects(Full.Bump) fully established
+effects on parameters and Global variables of Full.Bump fully established
 
-effects(Full.Use_Bump) fully established
+effects on parameters and Global variables of Full.Use_Bump fully established
 
-effects(My_Pack.Use_Bump) depends on
+effects on parameters and Global variables of My_Pack.Use_Bump depends on
 
 in unit full, 3 subprograms and packages out of 3 analyzed
 
 in unit my_pack, 2 subprograms and packages out of 3 analyzed
 
-post(Full.Bump) fully established
+the postcondition of Full.Bump fully established
 
-post(Full.Use_Bump) fully established
+the postcondition of Full.Use_Bump fully established
 
-post(My_Pack.Use_Bump) depends on
+the postcondition of My_Pack.Use_Bump depends on
 

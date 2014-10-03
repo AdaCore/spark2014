@@ -66,7 +66,7 @@ package body Assumptions is
    function Read_Token (V : JSON_Value) return Token is
    begin
       return
-        (Predicate => Get (Get (V, "predicate")),
+        (Predicate => Claim_Kind'Value (Get (Get (V, "predicate"))),
          Arg       => From_JSON (Get (V, "arg")));
    end Read_Token;
 
@@ -98,7 +98,7 @@ package body Assumptions is
    function To_JSON (T : Token) return JSON_Value is
       Obj : constant JSON_Value := Create_Object;
    begin
-      Set_Field (Obj, "predicate", To_String (T.Predicate));
+      Set_Field (Obj, "predicate", Claim_Kind'Image (T.Predicate));
       Set_Field (Obj, "arg", To_JSON (T.Arg));
       return Obj;
    end To_JSON;
@@ -108,8 +108,32 @@ package body Assumptions is
    ---------------
 
    function To_String (T : Token) return String is
+
+      function Human_Readable (C : Claim_Kind) return String;
+      --  human readable string for claim kind
+
+      --------------------
+      -- Human_Readable --
+      --------------------
+
+      function Human_Readable (C : Claim_Kind) return String is
+      begin
+         case C is
+            when Claim_Init    =>
+               return "initializiation of all out parameters and out Globals";
+            when Claim_Pre     =>
+               return "the precondition";
+            when Claim_Post    =>
+               return "the postcondition";
+            when Claim_Effects =>
+               return "effects on parameters and Global variables";
+            when Claim_AoRTE   =>
+               return "absence of run-time errors";
+         end case;
+      end Human_Readable;
+
    begin
-      return To_String (T.Predicate) & "(" & Subp_Name (T.Arg) & ")";
+      return Human_Readable (T.Predicate) & " of " & Subp_Name (T.Arg);
    end To_String;
 
 end Assumptions;

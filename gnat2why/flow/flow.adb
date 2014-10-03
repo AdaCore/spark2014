@@ -22,42 +22,36 @@
 ------------------------------------------------------------------------------
 
 with Ada.Characters.Latin_1;
-with Ada.Strings;                   use Ada.Strings;
+with Ada.Strings;           use Ada.Strings;
 with Ada.Strings.Maps;
-
-with Errout;                        use Errout;
-with Lib;                           use Lib;
-with Namet;                         use Namet;
-with Nlists;                        use Nlists;
-with Osint;                         use Osint;
-with Sem_Ch7;                       use Sem_Ch7;
-with Sinfo;                         use Sinfo;
-with Snames;                        use Snames;
-with Sprint;                        use Sprint;
-
-with Output;                        use Output;
---  with Treepr;                        use Treepr;
-
-with Why;
-with SPARK_Definition;              use SPARK_Definition;
-with SPARK_Util;
-
-with Gnat2Why_Args;
-with Gnat2Why.Assumptions;          use Gnat2Why.Assumptions;
-
+with Assumptions;           use Assumptions;
+with Errout;                use Errout;
 with Flow.Analysis;
 with Flow.Control_Dependence_Graph;
 with Flow.Control_Flow_Graph;
 with Flow.Data_Dependence_Graph;
 with Flow.Interprocedural;
 with Flow.Program_Dependence_Graph;
-
-with Flow.Slice;                    use Flow.Slice;
-with Flow_Debug;                    use Flow_Debug;
-with Flow_Error_Messages;           use Flow_Error_Messages;
-with Flow_Tree_Utility;             use Flow_Tree_Utility;
-with Flow_Utility;                  use Flow_Utility;
-with Flow_Computed_Globals;         use Flow_Computed_Globals;
+with Flow.Slice;            use Flow.Slice;
+with Flow_Debug;            use Flow_Debug;
+with Flow_Error_Messages;   use Flow_Error_Messages;
+with Flow_Tree_Utility;     use Flow_Tree_Utility;
+with Flow_Utility;          use Flow_Utility;
+with Flow_Computed_Globals; use Flow_Computed_Globals;
+with Gnat2Why_Args;
+with Gnat2Why.Assumptions;  use Gnat2Why.Assumptions;
+with Lib;                   use Lib;
+with Namet;                 use Namet;
+with Nlists;                use Nlists;
+with Osint;                 use Osint;
+with Output;                use Output;
+with Sem_Ch7;               use Sem_Ch7;
+with Sinfo;                 use Sinfo;
+with Snames;                use Snames;
+with SPARK_Definition;      use SPARK_Definition;
+with SPARK_Util;
+with Sprint;                use Sprint;
+with Why;
 
 use type Ada.Containers.Count_Type;
 
