@@ -197,7 +197,11 @@ package body Report_Database is
    --  Start of Add_SPARK_Status
 
    begin
-      Subp_Unit_Map.Insert (Subp, Unit);
+
+      --  ??? We need to use include instead of insert because GNATprove
+      --  currently mixes up instances of the same generic
+
+      Subp_Unit_Map.Include (Subp, Unit);
       Update_Subp_Entry (Unit, Subp, Process'Access);
    end Add_SPARK_Status;
 
