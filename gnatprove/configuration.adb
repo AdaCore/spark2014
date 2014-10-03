@@ -181,27 +181,27 @@ ASCII.LF &
 ASCII.LF &
 "gnatprove advanced switches:" &
 ASCII.LF &
-" -d, --debug        Debug mode" &
+" -d, --debug         Debug mode" &
 ASCII.LF &
-" --flow-debug       Extra debugging for flow analysis (requires graphviz)" &
+" --flow-debug        Extra debugging for flow analysis (requires graphviz)" &
      ASCII.LF &
-" --dbg-proof-only   Disable flow analysis (possibly unsound results)" &
+" --dbg-proof-only    Disable flow analysis (possibly unsound results)" &
 ASCII.LF &
-"     --proof=p      Set the proof mode (p=per_check*, per_path, progressive)"
+"     --proof=p       Set the proof mode (p=per_check*, per_path, progressive)"
 & ASCII.LF &
-"     --RTS=dir      Specify the Ada runtime name/location" &
+"     --RTS=dir       Specify the Ada runtime name/location" &
 ASCII.LF &
-"     --pedantic     Use a strict interpretation of the Ada standard" &
+"     --pedantic      Use a strict interpretation of the Ada standard" &
 ASCII.LF &
-"     --steps=nnn    Set the maximum number of proof steps (prover-specific)"
+"     --steps=nnn     Set the maximum number of proof steps (prover-specific)"
 & ASCII.LF &
-"     --timeout=s    Set the prover timeout in seconds (default: 1)" &
+"     --timeout=s     Set the prover timeout in seconds (default: 1)" &
 ASCII.LF &
-"     --limit-line=s Limit analysis to given file and line" &
+"     --limit-line=s  Limit analysis to given file and line" &
 ASCII.LF &
-"     --limit-subp=s Limit analysis to subprogram defined by file and line" &
+"     --limit-subp=s  Limit analysis to subprogram defined by file and line" &
   ASCII.LF &
-"     --prover=s     Use given prover" &
+"     --prover=s[,s]* Use given provers" &
 ASCII.LF &
 ASCII.LF &
 " * Proof mode values" &
