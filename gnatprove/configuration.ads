@@ -99,7 +99,7 @@ package Configuration is
    --  This option is simply passed to gnatwhy3.
 
    MMode        : GP_Mode := GPM_Prove;
-   Warning_Mode : Opt.Warning_Mode_Type := Opt.Treat_As_Error;
+   Warning_Mode : Opt.Warning_Mode_Type := Opt.Normal;
    Report       : Report_Mode_Type := GPR_Fail;
    --  Silent reporting is the default
    Proof        : Proof_Mode;

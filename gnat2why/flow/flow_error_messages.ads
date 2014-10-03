@@ -51,8 +51,9 @@ package Flow_Error_Messages is
    --    analysis messages. Checks come with a priority low, medium or high.
 
    Found_Flow_Error : Boolean := False;
-   --  This boolean becomes True if we find a flow error or if we find a
-   --  flow warning while Warning_Mode = Treat_As_Error.
+
+   --  This boolean becomes True if we find a error during flow analysis which
+   --  should stop further analysis (i.e. proof).
 
    function Get_Flow_JSON return JSON_Array;
    function Get_Proof_JSON return JSON_Array;

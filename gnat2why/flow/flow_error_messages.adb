@@ -34,7 +34,6 @@ with Gnat2Why.Assumptions; use Gnat2Why.Assumptions;
 with Gnat2Why.Nodes;       use Gnat2Why.Nodes;
 with Gnat2Why_Args;        use Gnat2Why_Args;
 with Namet;                use Namet;
-with Opt;                  use Opt;
 with Sinfo;                use Sinfo;
 with Sinput;               use Sinput;
 with SPARK_Util;           use SPARK_Util;
@@ -306,14 +305,12 @@ package body Flow_Error_Messages is
             Tracefile => Tracefile,
             Msg_Id    => Msg_Id);
 
-         --  Set the error flag if we have an error or an unsuppressed warning
-         --  with warnings-as-errors.
+         --  Set the error flag if we have an error message. Note that
+         --  warnings do not count as errors here, they should not prevent
+         --  us going to proof. The errout mechanism already deals with the
+         --  warnings-as-errors handling for the whole unit.
 
-         if Kind = Error_Kind or else
-           (Kind = Warning_Kind and then
-              Opt.Warning_Mode = Treat_As_Error and then
-              Suppr = No_String)
-         then
+         if Kind = Error_Kind then
             Found_Flow_Error := True;
          end if;
 

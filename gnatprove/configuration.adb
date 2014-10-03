@@ -803,12 +803,13 @@ ASCII.LF;
       --  with release 14.0.1
       if Warning_Input.all = "off" then
          Warning_Mode := Opt.Suppress;
+      elsif Warning_Input.all = "error" then
+         Warning_Mode := Opt.Treat_As_Error;
       elsif Warning_Input.all = "on"
         or else Warning_Input.all = "continue"
+        or else Warning_Input.all = ""
       then
          Warning_Mode := Opt.Normal;
-      elsif Warning_Input.all = "error" or else Warning_Input.all = "" then
-         Warning_Mode := Opt.Treat_As_Error;
       else
          Abort_Msg ("warnings should be one of (off | continue | error)",
                     With_Help => False);
