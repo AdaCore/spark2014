@@ -795,7 +795,7 @@ Writing Only the Data Dependencies
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 When only the data dependencies are given on a subprogram, |GNATprove|
-completes it with flow dependencies that have all outputs depending on all
+completes them with flow dependencies that have all outputs depending on all
 inputs. This is a safe over-approximation of the real contract of the
 subprogram, which allows to detect all possible errors of initialization and
 contract violation in the subprogram and its callers, but which may also lead
@@ -808,8 +808,8 @@ are given, but no flow dependencies:
    :language: ada
    :linenos:
 
-|GNATprove| completes the contract of ``Add`` and ``Swap`` with an information
-contract that is equivalent to:
+|GNATprove| completes the contract of ``Add`` and ``Swap`` with flow
+dependencies that are equivalent to:
 
 .. code-block:: ada
 
@@ -821,8 +821,13 @@ contract that is equivalent to:
      Global => (In_Out => V),
      Depends => ((X, V) => (X, V));
 
-Other flow dependencies with fewer dependencies between inputs and
-outputs would be compatible with the given data dependencies of ``Add`` and
+The generated flow dependencies are used in the analysis of callers, but
+|GNATprove| generates no warnings or check messages if the body of ``Add`` or
+``Swap`` have fewer flow dependencies. That's a difference between these
+contracts being present in the code or auto completed.
+
+Other flow dependencies with fewer dependencies between inputs and outputs
+would be compatible with the given data dependencies of ``Add`` and
 ``Swap``. |GNATprove| chooses the contracts with the most dependencies. Here,
 this corresponds to the actual contract for ``Add``, but to an imprecise
 contract for ``Swap``:
@@ -1228,6 +1233,14 @@ subprograms, which cannot be analyzed by |GNATprove|. It is compulsory to
 specify in data dependencies the global variables these imported subprograms
 may read and/or write, otherwise |GNATprove| assumes ``null`` data dependencies
 (no global variable read or written).
+
+.. note::
+
+   A subprogram whose implementation is not available to |GNATprove|, either
+   because the corresponding unit body has not been developed yet, or because
+   the unit body is not part of the files analyzed by |GNATprove| (see
+   :ref:`Specifying Files To Analyze` and :ref:`Excluding Files From
+   Analysis`), is treated by |GNATprove| as an imported subprogram.
 
 For example, unit ``Gen_Imported_Global`` is a modified version of the
 ``Gen_Abstract_Global`` unit seen previously in :ref:`Generation of Dependency

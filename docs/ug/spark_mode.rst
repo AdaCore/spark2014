@@ -125,6 +125,8 @@ line:
 
   pragma SPARK_Mode (On);
 
+.. _Specifying Files To Analyze:
+
 Specifying Files To Analyze
 ---------------------------
 
