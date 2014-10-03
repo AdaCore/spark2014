@@ -186,21 +186,22 @@ the call to |GNATprove|. Using the option ``--limit-subp=`` one can limit proofs
 to a subprogram declared in a particular file at a particular line.
 
 A number of options exist to influence the behavior for proof. Internally, the
-prover Alt-Ergo is called repeatedly for each check or assertion. Using the
-option ``--timeout``, one can change the maximal time that is allocated to prove
-each check or assertion (default: 1s). Using the option ``--steps`` (default:
-not used), one can set the maximum number of reasoning steps that Alt-Ergo is
-allowed to perform before giving up. The ``steps`` option should be used when
-predictable results are required, because the results with a timeout may differ
-depending on the computing power or current load of the machine. The option
-``-j`` activates parallel compilation and parallel proofs.
+prover(s) specified with option ``--prover`` is/are called repeatedly for each
+check or assertion. Using the option ``--timeout``, one can change the maximal
+time that is allocated to each prover to prove each check or assertion
+(default: 1s). Using the option ``--steps`` (default: not used), one can set
+the maximum number of reasoning steps that the prover is allowed to perform
+before giving up. The ``steps`` option should be used when predictable results
+are required, because the results with a timeout may differ depending on the
+computing power or current load of the machine. The option ``-j`` activates
+parallel compilation and parallel proofs.
 
-The way checks are passed to Alt-Ergo can also be influenced using the option
-``--proof``. By default, Alt-Ergo is invoked a single time for each check or
+The way checks are passed to the prover can also be influenced using the option
+``--proof``. By default, the prover is invoked a single time for each check or
 assertion (mode ``per_check``). This can be changed using mode ``per_path`` to
-invoke Alt-Ergo for each *path* that leads to the check. This option usually
-takes much longer, because Alt-Ergo is invoked much more often, but may give
-better proof results. Finally, in mode ``progressive``, invoking Alt-Ergo a
+invoke the prover for each *path* that leads to the check. This option usually
+takes much longer, because the prover is invoked much more often, but may give
+better proof results. Finally, in mode ``progressive``, invoking the prover a
 single time on the entire check is tried, and only if the check is not proved,
 then other techniques that progressively consider each path in isolation
 are tried.

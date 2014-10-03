@@ -50,16 +50,16 @@ Command-line Options
    . error    - Treat warnings as errors (default)
 
  gnatprove advanced switches:
- -d, --debug        Debug mode
- --flow-debug       Extra debugging for flow analysis (requires graphviz)
-     --proof=p      Set the proof mode (p=per_check*, per_path, progressive)
-     --RTS=dir      Specify the Ada runtime name/location
-     --pedantic     Use a strict interpretation of the Ada standard
-     --steps=nnn    Set the maximum number of proof steps (prover-specific)
-     --timeout=s    Set the prover timeout in seconds (default: 1)
-     --limit-line=s Limit analysis to given file and line
-     --limit-subp=s Limit analysis to subprogram defined by file and line
-     --prover=s     Select prover (s=altergo*, cvc4)
+ -d, --debug             Debug mode
+ --flow-debug            Extra debugging for flow analysis (requires graphviz)
+     --proof=p           Set the proof mode (p=per_check*, per_path, progressive)
+     --RTS=dir           Specify the Ada runtime name/location
+     --pedantic          Use a strict interpretation of the Ada standard
+     --steps=nnn         Set the maximum number of proof steps (prover-specific)
+     --timeout=s         Set the prover timeout in seconds (default: 1)
+     --limit-line=s      Limit analysis to given file and line
+     --limit-subp=s      Limit analysis to subprogram defined by file and line
+     --prover=s[,s]*     Select provers. (s=altergo*, cvc4)
 
  * Proof mode values
    . per_check   - Generate one formula per check (default)
@@ -68,10 +68,17 @@ Command-line Options
                    paths when needed
 
  * Prover options
+   The option --prover allows a comma-separated list of prover names. The
+   following prover names are shipped with |GNATprove|:
    (Provers marked with [steps] support the --steps option.)
    . altergo     - [steps] Use Alt-Ergo (default)
    . cvc4        - [steps] Use CVC4
    Any other prover in your why3.conf file can also be specified here.
+   The default value of option --prover is "alt-ergo", so only Alt-Ergo will
+   be used. If more than one prover is specified, the provers are tried in
+   order until one of them succeeds, or all fail.
+   Interactive provers cannot be combined with other provers, so must appear
+   on their own.
 
 .. _Alternative_Provers:
 
@@ -83,10 +90,10 @@ different provers, as long as they are supported by the Why3
 platform. To use a prover, it must be listed in your ``.why3.conf``
 file. The command ``why3config --detect-provers`` can be used to
 search your PATH for any supported provers and add them to the config
-file. Any such prover can then be used with the ``--prover`` option,
-using the name stored in the ``.why3.conf`` file. The switch values
-``altergo`` and ``cvc4`` will select the provers which come with |GNATprove|,
-and the value ``altergo`` is the default.
+file. Any such prover (or several of them) can then be used with the
+``--prover`` option, using the name stored in the ``.why3.conf`` file. The
+switch values ``altergo`` and ``cvc4`` will select the provers which come with
+|GNATprove|, and the value ``altergo`` is the default.
 
 Coq
 ---
