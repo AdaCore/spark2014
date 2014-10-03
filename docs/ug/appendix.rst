@@ -59,7 +59,7 @@ Command-line Options
      --timeout=s         Set the prover timeout in seconds (default: 1)
      --limit-line=s      Limit analysis to given file and line
      --limit-subp=s      Limit analysis to subprogram defined by file and line
-     --prover=s[,s]*     Select provers. (s=altergo*, cvc4)
+     --prover=s[,s]*     Use given provers (s=altergo*, cvc4, ...)
 
  * Proof mode values
    . per_check   - Generate one formula per check (default)
@@ -67,33 +67,32 @@ Command-line Options
    . progressive - Start with one formula per check, then split into
                    paths when needed
 
- * Prover options
-   The option --prover allows a comma-separated list of prover names. The
-   following prover names are shipped with |GNATprove|:
-   (Provers marked with [steps] support the --steps option.)
+ * Prover name values
+   (Provers marked with [steps] support the --steps switch.)
    . altergo     - [steps] Use Alt-Ergo (default)
    . cvc4        - [steps] Use CVC4
-   Any other prover in your why3.conf file can also be specified here.
-   The default value of option --prover is "alt-ergo", so only Alt-Ergo will
-   be used. If more than one prover is specified, the provers are tried in
-   order until one of them succeeds, or all fail.
-   Interactive provers cannot be combined with other provers, so must appear
-   on their own.
+   . ...         - Any other prover configured in your .why3.conf file
 
 .. _Alternative_Provers:
 
 Alternative Provers
 ===================
 
-|GNATprove| comes with Alt-Ergo and CVC4 provers, but it can be used with
-different provers, as long as they are supported by the Why3
-platform. To use a prover, it must be listed in your ``.why3.conf``
-file. The command ``why3config --detect-provers`` can be used to
-search your PATH for any supported provers and add them to the config
-file. Any such prover (or several of them) can then be used with the
-``--prover`` option, using the name stored in the ``.why3.conf`` file. The
-switch values ``altergo`` and ``cvc4`` will select the provers which come with
-|GNATprove|, and the value ``altergo`` is the default.
+By default, |GNATprove| uses its own version of prover Alt-Ergo. Switch
+``--prover`` allows to use another prover, or a list of provers. Prover names
+``altergo`` and ``cvc4`` are used to refer to the versions of provers Alt-Ergo
+and CVC4 that are shipped with |GNATprove|.
+
+|GNATprove| can call other provers, as long as they are supported by the Why3
+platform. To use another prover, it must be listed in your ``.why3.conf``
+configuration file. The command ``why3config --detect-provers`` can be used to
+search your ``PATH`` for any supported provers and adding them to the
+configuration file. Any prover name configured in your ``.why3.conf`` file can
+be used as an argument to switch ``--prover``.
+
+If more than one prover is specified, the provers are tried in order on each
+goal, until one of them succeeds or all fail. Interactive provers cannot be
+combined with other provers, so must appear on their own.
 
 Coq
 ---

@@ -201,7 +201,7 @@ ASCII.LF &
 ASCII.LF &
 "     --limit-subp=s  Limit analysis to subprogram defined by file and line" &
   ASCII.LF &
-"     --prover=s[,s]* Use given provers" &
+"     --prover=s[,s]* Use given provers (s=altergo*, cvc4, ...)" &
 ASCII.LF &
 ASCII.LF &
 " * Proof mode values" &
@@ -215,15 +215,15 @@ ASCII.LF &
 "                   paths when needed" &
 ASCII.LF &
 ASCII.LF &
-" * Prover options" &
+" * Prover name values" &
 ASCII.LF &
-"   (Provers marked with [steps] support the --steps option.)" &
+"   (Provers marked with [steps] support the --steps switch.)" &
 ASCII.LF &
 "   . altergo     - [steps] Use Alt-Ergo (default)" &
 ASCII.LF &
 "   . cvc4        - [steps] Use CVC4" &
 ASCII.LF &
-"   Any other prover in your why3.conf file can also be specified here." &
+"   . ...         - Any other prover configured in your .why3.conf file" &
 ASCII.LF;
 
    -------------------------
