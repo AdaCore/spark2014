@@ -174,9 +174,9 @@ ASCII.LF &
 ASCII.LF &
 "   . off      - Do not issue warnings" &
 ASCII.LF &
-"   . continue - Issue warnings and continue" &
+"   . continue - Issue warnings and continue (default)" &
 ASCII.LF &
-"   . error    - Treat warnings as errors (default)" &
+"   . error    - Treat warnings as errors" &
 ASCII.LF &
 ASCII.LF &
 "gnatprove advanced switches:" &
