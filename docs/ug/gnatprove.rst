@@ -821,11 +821,6 @@ dependencies that are equivalent to:
      Global => (In_Out => V),
      Depends => ((X, V) => (X, V));
 
-The generated flow dependencies are used in the analysis of callers, but
-|GNATprove| generates no warnings or check messages if the body of ``Add`` or
-``Swap`` have fewer flow dependencies. That's a difference between these
-contracts being present in the code or auto completed.
-
 Other flow dependencies with fewer dependencies between inputs and outputs
 would be compatible with the given data dependencies of ``Add`` and
 ``Swap``. |GNATprove| chooses the contracts with the most dependencies. Here,
@@ -853,6 +848,11 @@ The most precise information flow contract for ``Swap`` would be:
 
 If you add this precise contract in the program, then |GNATprove| can also
 verify the flow dependencies of ``Call_Swap``.
+
+Note that the generated flow dependencies are used in the analysis of callers,
+but |GNATprove| generates no warnings or check messages if the body of ``Add``
+or ``Swap`` have fewer flow dependencies, as seen above. That's a difference
+between these contracts being present in the code or auto completed.
 
 Writing Only the Flow Dependencies
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
