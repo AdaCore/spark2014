@@ -523,6 +523,7 @@ checks and information messages.
 
  * Errors are issued for |SPARK| violations or other language legality
    problems, or any other problem which does not allow to proceed to analysis.
+   Errors cannot be suppressed and must be fixed to proceed with analysis.
  * Warnings are issued for any suspicious situation like unused values of
    variables, useless assignements etc. Warnings are prefixed with the text
    ``"warning: "`` and can be suppressed with ``pragma Warnings``, see
@@ -589,12 +590,10 @@ Warning Control
 * |SPARK| warnings are controlled with switch ``--warnings``:
 
   * ``--warnings=off`` suppresses all warnings
-  * ``--warnings=error`` treats warnings as errors (default)
-  * ``--warnings=continue`` issues warnings but allows further analyses to proceed
+  * ``--warnings=error`` treats warnings as errors
+  * ``--warnings=continue`` issues warnings but do not stop analysis (default)
 
-    The default is to treat |GNATprove| specific warnings as errors. In this mode,
-    warnings prevent the generation of verification conditions
-    since such warnings may impact the validity of proof.
+    The default is that |GNATprove| issues warnings but does not stop.
 
 Both types of warnings can be suppressed selectively by the use of ``pragma
 Warnings`` in the source code. See |GNAT Pro| Reference Manual for more

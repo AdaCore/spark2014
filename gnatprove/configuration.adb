@@ -144,7 +144,7 @@ ASCII.LF &
 "     --version      Output version of the tool and exit" &
 ASCII.LF &
 "     --warnings=w   Set the warning mode of GNATprove " &
-"(w=off, continue, error*)"
+"(w=off, continue*, error)"
 &
 ASCII.LF &
 " -h, --help         Display this usage information" &
