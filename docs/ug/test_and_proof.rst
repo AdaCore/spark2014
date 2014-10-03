@@ -69,6 +69,33 @@ originally designed with the |SPARK| contracts in mind.
 |GNATprove| supports both approaches. |GNATprove| can compute the data
 dependences of subprograms both inside and outside of |SPARK|.
 
+Assumptions of Verification Results
+-----------------------------------
+
+Provided with the option ``--assumptions``, |GNATprove| computes the remaining
+assumptions of all verification results and outputs these assumptions into the
+file ``gnatprove.out``, along with the verification results. Here, assumptions
+are properties of subprograms which |GNATprove| could not check itself, for
+example because the subprogram has not been analyzed (not in the |SPARK|
+subset, disabled using ``SPARK_Mode``), or because the analysis could not
+establish that the subprogram actually has the property (unproved checks).
+
+Note that currently, only assumptions on called subprograms are output, and
+not assumptions on calling subprograms.
+
+The following table explains the meaning of assumptions and claims which
+gnatprove may output:
+
+.. tabularcolumns:: |l|p{4.5in}|
+
+.. csv-table::
+   :header: "Assumption", "Explanation"
+   :widths: 2, 4
+
+    "effects on parameters and global variables", "the subprogram does not read or write any other parameters or global variables than what is described by its Global contract"
+    "absence of run-time errors", "the subprogram does not contain any run-time errors such as overflow check, division checks, etc."
+    "the postcondition", "the postconditon of the subprogram holds after each call of the subprogram"
+
 Compilation Options to Support Integration of Test and Proof
 ------------------------------------------------------------
 
