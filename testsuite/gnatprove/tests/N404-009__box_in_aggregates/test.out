@@ -1,0 +1,7 @@
+aggs.adb:7:15: info: length check proved
+aggs.adb:13:15: info: length check proved
+aggs.adb:19:16: info: length check proved
+aggs.adb:25:15: info: length check proved
+aggs.ads:25:22: medium: postcondition might fail, requires X (2) = 5
+aggs.ads:29:22: medium: postcondition might fail, requires X (2) = 20
+aggs.ads:36:22: info: postcondition proved

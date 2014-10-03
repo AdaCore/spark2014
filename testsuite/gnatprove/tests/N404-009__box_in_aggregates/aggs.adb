@@ -18,4 +18,11 @@ is
    begin
       X := AP1'(1 => 6, others => <>);
    end Init3;
+
+   procedure Init4 (X : out A2)
+   is
+   begin
+      X := A2'(others => 11);
+   end Init4;
+
 end Aggs;

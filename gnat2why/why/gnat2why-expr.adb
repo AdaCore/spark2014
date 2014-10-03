@@ -4996,8 +4996,6 @@ package body Gnat2Why.Expr is
          Index_Values : Node_Lists.List;
          Index_Types  : Node_Lists.List) return W_Expr_Id
       is
-         pragma Assert (Values.Length /= 0);
-
          use Node_Lists;
 
          Cnt      : Positive;
@@ -5138,8 +5136,6 @@ package body Gnat2Why.Expr is
          Values : Node_Lists.List;
          Types  : Node_Lists.List)
       is
-         pragma Assert (Values.Length /= 0);
-
          use Node_Lists;
 
          Expr_Typ   : constant Entity_Id  := Type_Of_Node (Expr);
