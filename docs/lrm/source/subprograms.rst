@@ -1366,10 +1366,13 @@ is not what we are talking about here.]
 
 4. A statement or pragma is said to be a "ghost statement" if
 
-   * It occurs within a ghost subprogram or package; or
+   * it occurs within a ghost subprogram or package; or
 
-   * It is the innermost enclosing statement or pragma
-     of a name denoting a ghost entity.
+   * it is a call to a ghost procedure; or
+
+   * it is an assignment statement whose target is a ghost variable; or
+
+   * it is a pragma which encloses a name denoting a ghost entity.
 
 .. _tu-nt-ghost_entities-05:
 
