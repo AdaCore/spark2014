@@ -1530,24 +1530,6 @@ is not what we are talking about here.]
     for which that variable or state abstraction is a global output shall
     be Check.
 
-.. _tu-fe-ghost_entities-21:
-
-21. If the limited view of a package includes one or more ghost
-    entities, then the Ghost assertion policies in effect at the point
-    of the package declaration and at each limited with of that
-    package shall be the same. [The general solution for
-    any problem of the form "At point A we need to know the Ghost
-    assertion policy in effect at point B" is to require that the
-    policies in effect at the two points must be the same.]
-    [TBD: Do we want a rule that a package spec which is the target of
-    a limited with shall not contain an Assertion_Policy pragma which
-    specifies a Ghost assertion policy? Consider a visible nested
-    package which declares a ghost state abstraction and which might
-    be affected by a preceding Assertion_Policy pragma. The other choice
-    is to require clients who need to know the policy that is
-    in force for such an abstraction to get it right, which violates the
-    "keep limited views simple" principle.]
-
 .. _etu-ghost_entities-vr:
 
 .. centered:: **Examples**
