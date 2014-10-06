@@ -427,7 +427,7 @@ package body SPARK_Util is
       --  If we have no visibility of the type then we consider the
       --  type to be uninitialized.
 
-      if Flow_Scop /= Null_Flow_Scope
+      if Present (Flow_Scop)
         and then not Is_Visible (Typ, Flow_Scop)
       then
          return No_Default_Initialization;
@@ -439,7 +439,7 @@ package body SPARK_Util is
 
       if not Explicit_Only
         and then (Has_Default_Init_Cond (Typ)
-                    or else (Flow_Scop = Null_Flow_Scope
+                    or else (not Present (Flow_Scop)
                                and then Has_Inherited_Default_Init_Cond (Typ)))
       then
          declare
