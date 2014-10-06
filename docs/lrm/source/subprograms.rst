@@ -1369,12 +1369,7 @@ is not what we are talking about here.]
    * It occurs within a ghost subprogram or package; or
 
    * It is the innermost enclosing statement or pragma
-     of a name denoting a ghost entity; or
-
-   * It is a compound statement which encloses at
-     least one ghost statement and which encloses no
-     statements or pragmas other than ghost statements
-     and null statements.
+     of a name denoting a ghost entity.
 
 .. _tu-nt-ghost_entities-05:
 
@@ -1522,6 +1517,10 @@ is not what we are talking about here.]
     [This rule says, in effect, that ghost procedures are
     subject to the same restrictions as non-ghost functions with respect
     to reading volatile objects.]
+    A name occurring within a ghost statement shall not denote an
+    effectively volatile object with the properties Async_Writers or
+    Effective_Reads set to True. [In other words, a ghost statement is
+    subject to effectively the same restrictions as a ghost procedure.]
 
 .. _tu-fe-ghost_entities-20:
 

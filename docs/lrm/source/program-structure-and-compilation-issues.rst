@@ -50,17 +50,17 @@ Abstact Views
 ^^^^^^^^^^^^^
 
 State abstractions are visible in the limited view of packages in |SPARK|. The
-notion of an *abstract view* of a variable declaration is also introduced, and
-the limited view of a package includes the abstract view of any variables
+notion of an *abstract view* of an object declaration is also introduced, and
+the limited view of a package includes the abstract view of any objects
 declared in the visible part of that package. The only allowed uses of an
-abstract view of a variable are where the use of a state abstraction would be
+abstract view of an object are where the use of a state abstraction would be
 allowed (for example, in a Global ``aspect_specification``).
 
 .. centered:: **Legality Rules**
 
 .. _tu-context_clauses_with_clauses-02:
 
-2. A name denoting the abstract view of a variable shall occur only:
+2. A name denoting the abstract view of an object shall occur only:
 
    a. as a ``global_item`` in a Global or Refined_Global aspect
       specification; or
@@ -84,7 +84,7 @@ allowed (for example, in a Global ``aspect_specification``).
 
 .. _tu-context_clauses_with_clauses-04:
 
-4. For every variable object declared by an ``object_declaration`` occurring
+4. For every object declared by an ``object_declaration`` occurring
    immediately within the visible part of a given package, the limited
    view of the package contains an *abstract view* of the object.
 
