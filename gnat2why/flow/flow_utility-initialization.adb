@@ -150,24 +150,25 @@ package body Flow_Utility.Initialization is
    ----------------------------
 
    function Is_Default_Initialized
-     (F : Flow_Id;
-      S : Flow_Scope)
+     (F             : Flow_Id;
+      Flow_Scop     : Flow_Scope;
+      Explicit_Only : Boolean := False)
       return Boolean
    is
-      Typ : constant Node_Id := Get_Full_Type (Get_Direct_Mapping_Id (F), S);
+      Typ      : constant Node_Id := Get_Direct_Mapping_Id (F);
+      Full_Typ : constant Node_Id := Get_Full_Type (Typ, Flow_Scop);
    begin
       case F.Kind is
          when Direct_Mapping =>
-            return Default_Initialization (Typ, True) =
+            return Default_Initialization (Typ,
+                                           Flow_Scop,
+                                           Explicit_Only) =
                      Full_Default_Initialization
-              or else (Has_Default_Init_Cond (Typ)
-                         and then Default_Initialization (Typ) =
-                                    Full_Default_Initialization)
-              or else (Root_Type (Typ) /= Typ
-                         and then Is_Visible (Root_Type (Typ), S)
+              or else (Full_Typ /= Typ
                          and then Is_Default_Initialized
-                                    (Direct_Mapping_Id (Root_Type (Typ)),
-                                     S));
+                                    (Direct_Mapping_Id (Full_Typ),
+                                     Flow_Scop,
+                                     Explicit_Only));
 
          when Record_Field =>
             if Is_Discriminant (F) then
@@ -178,16 +179,16 @@ package body Flow_Utility.Initialization is
                return True;
 
             else
-               return Default_Initialization (Typ, True) =
+               return Default_Initialization (Typ,
+                                              Flow_Scop,
+                                              Explicit_Only) =
                         Full_Default_Initialization
-                 or else (Has_Default_Init_Cond (Typ)
-                            and then Default_Initialization (Typ) =
-                                       Full_Default_Initialization)
-                 or else (Root_Type (Typ) /= Typ
-                            and then Is_Visible (Root_Type (Typ), S)
+                 or else (Full_Typ /= Typ
                             and then Is_Default_Initialized
-                                       (Direct_Mapping_Id (Root_Type (Typ)),
-                                        S));
+                                       (Direct_Mapping_Id (Full_Typ),
+                                        Flow_Scop,
+                                        Explicit_Only));
+
             end if;
 
          when Magic_String | Synthetic_Null_Export =>

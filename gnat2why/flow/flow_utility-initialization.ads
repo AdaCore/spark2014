@@ -32,10 +32,11 @@ package Flow_Utility.Initialization is
    --  magic strings are assumed to not be default initialized)
 
    function Is_Default_Initialized
-     (F : Flow_Id;
-      S : Flow_Scope)
+     (F             : Flow_Id;
+      Flow_Scop     : Flow_Scope;
+      Explicit_Only : Boolean := False)
       return Boolean;
-   --  As above, but can also return true if we can't actually get a node
+   --  As above, but can also return True if we can't actually get a node
    --  which is the default-initialized expression.
 
 end Flow_Utility.Initialization;

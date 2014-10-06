@@ -56,10 +56,10 @@ private
    end record;
 
    -- Derived types
-   type T7 is new Types.S2; -- OK???
+   type T7 is new Types.S2; -- OK
 
-   type T8 is new Types.FR; -- OK???
+   type T8 is new Types.FR; -- OK
 
-   type T9 is new Types.AR; -- OK???
+   type T9 is new Types.AR; -- OK
 
 end Q;

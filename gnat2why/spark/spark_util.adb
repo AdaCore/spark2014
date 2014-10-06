@@ -344,7 +344,8 @@ package body SPARK_Util is
 
    function Default_Initialization
      (Typ           : Entity_Id;
-      Explicit_Only : Boolean := False)
+      Flow_Scop     : Flow_Scope := Null_Flow_Scope;
+      Explicit_Only : Boolean    := False)
       return Default_Initialization_Kind
    is
       Init : Default_Initialization_Kind;
@@ -382,6 +383,7 @@ package body SPARK_Util is
            or else Chars (Comp) = Name_uParent
          then
             Init := Default_Initialization (Base_Type (Etype (Comp)),
+                                            Flow_Scop,
                                             Explicit_Only);
 
             --  A component with mixed initialization renders the whole
@@ -422,13 +424,23 @@ package body SPARK_Util is
    --  Start of Default_Initialization
 
    begin
+      --  If we have no visibility of the type then we consider the
+      --  type to be uninitialized.
+
+      if Flow_Scop /= Null_Flow_Scope
+        and then not Is_Visible (Typ, Flow_Scop)
+      then
+         return No_Default_Initialization;
+      end if;
+
       --  If we are considering implicit initializations and
       --  Default_Initial_Condition was specified for the type, take it
       --  into account.
 
       if not Explicit_Only
         and then (Has_Default_Init_Cond (Typ)
-                    or else Has_Inherited_Default_Init_Cond (Typ))
+                    or else (Flow_Scop = Null_Flow_Scope
+                               and then Has_Inherited_Default_Init_Cond (Typ)))
       then
          declare
             Prag : constant Node_Id := Get_Default_Init_Cond_Pragma (Typ);
@@ -470,6 +482,7 @@ package body SPARK_Util is
             Result := Full_Default_Initialization;
          else
             Result := Default_Initialization (Component_Type (Typ),
+                                              Flow_Scop,
                                               Explicit_Only);
          end if;
 
@@ -477,6 +490,7 @@ package body SPARK_Util is
 
       elsif Is_Private_Type (Typ) and then Present (Full_View (Typ)) then
          Result := Default_Initialization (Full_View (Typ),
+                                           Flow_Scop,
                                            Explicit_Only);
 
       --  Record types and protected types offer several initialization options
@@ -536,6 +550,7 @@ package body SPARK_Util is
         and then Is_Private_Type (Base_Type (Typ))
       then
          Result := Default_Initialization (Base_Type (Typ),
+                                           Flow_Scop,
                                            Explicit_Only);
 
       --  Task types are always fully default initialized

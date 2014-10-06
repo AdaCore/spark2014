@@ -1,5 +1,5 @@
 package X is
-   type T is private;
+   type T is private with Default_Initial_Condition;
    procedure P (x : T);
 private
    pragma SPARK_Mode (Off);

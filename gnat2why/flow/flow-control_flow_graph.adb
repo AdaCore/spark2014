@@ -3658,34 +3658,16 @@ package body Flow.Control_Flow_Graph is
             end;
          end if;
 
-         --  Issue a warning if the declared type has
-         --  Default_Initial_Condition while its root type is a
-         --  private kind and does not have Default_Initial_Condition.
-
-         if Has_Default_Init_Cond (Typ)
-           and then Ekind (Root_Type (Typ)) in Private_Kind
-           and then not Has_Default_Init_Cond (Root_Type (Typ))
-         then
-            Error_Msg_Flow
-              (FA      => FA,
-               Msg     => "type & is not fully initialized",
-               N       => N,
-               F1      => Direct_Mapping_Id (Typ),
-               Tag     => "default_initialization_missmatch",
-               Kind    => Medium_Check_Kind);
-         end if;
-
          --  Issue a warning if the declared type promised to be
          --  default initialized but is not.
 
-         if Is_Default_Initialized (Direct_Mapping_Id (Typ),
-                                    Get_Flow_Scope (Typ))
-           and then not Has_Inherited_Default_Init_Cond (Typ)
+         if Has_Default_Init_Cond (Typ)
            and then not Fullview_Not_In_SPARK (Typ)
-           and then Default_Initialization (Typ           => Typ,
-                                            Explicit_Only => True) /=
-                    Default_Initialization (Typ           => Typ,
-                                            Explicit_Only => False)
+           and then Is_Default_Initialized (Direct_Mapping_Id (Typ),
+                                            Get_Flow_Scope (Typ))
+           and then not Is_Default_Initialized (Direct_Mapping_Id (Typ),
+                                                Get_Flow_Scope (Typ),
+                                                Explicit_Only => True)
          then
             Error_Msg_Flow
               (FA      => FA,
