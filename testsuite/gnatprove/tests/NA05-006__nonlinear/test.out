@@ -1,0 +1,4 @@
+fait.adb:4:11: medium: postcondition might fail
+fait.adb:4:29: info: overflow check proved
+fait.adb:6:08: info: overflow check proved
+fait.adb:7:08: info: overflow check proved
