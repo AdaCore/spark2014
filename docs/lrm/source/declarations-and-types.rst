@@ -137,7 +137,7 @@ expression depends on:
 
   * Another *constant with variable inputs*
 
-.. centered:: **Legality Rules**
+.. centered:: **Verification Rules**
 
 .. _tu-object_declarations-01:
 
@@ -145,7 +145,7 @@ expression depends on:
    Depends, Initializes or Refined_State aspect specifications.
    [Two elaborations of such a constant declaration will always
    yield equal initialization expression values.]
-  
+
 .. centered:: **Examples**
 
 .. code-block:: ada
@@ -262,7 +262,7 @@ Tagged Types and Type Extensions
 .. _tu-tagged_types-02:
 
 2.  The identifier External_Tag shall not be used as an
-    '`attribute_designator``. 
+    ``attribute_designator``.
 
 .. _etu-tagged_types:
 
