@@ -1,4 +1,4 @@
 over.adb:7:20: medium: overflow check might fail
-over.adb:7:25: medium: range check might fail
-over.adb:9:19: medium: overflow check might fail
-over.adb:9:19: medium: range check might fail
+over.adb:7:25: info: range check proved
+over.adb:9:19: info: overflow check proved
+over.adb:9:19: info: range check proved
