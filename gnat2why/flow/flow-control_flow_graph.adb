@@ -2654,7 +2654,7 @@ package body Flow.Control_Flow_Graph is
          FS := Flatten_Variable (Defining_Identifier (N), FA.B_Scope);
 
          for F of FS loop
-            if Is_Default_Initialized (F, FA.B_Scope) then
+            if Is_Default_Initialized (F) then
                Add_Vertex
                  (FA,
                   Make_Default_Initialization_Attributes

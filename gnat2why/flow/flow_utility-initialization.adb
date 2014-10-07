@@ -151,8 +151,8 @@ package body Flow_Utility.Initialization is
 
    function Is_Default_Initialized
      (F             : Flow_Id;
-      Flow_Scop     : Flow_Scope;
-      Explicit_Only : Boolean := False)
+      Flow_Scop     : Flow_Scope := Null_Flow_Scope;
+      Explicit_Only : Boolean    := False)
       return Boolean
    is
       Typ      : constant Node_Id := Get_Direct_Mapping_Id (F);

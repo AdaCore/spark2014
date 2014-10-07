@@ -3,7 +3,6 @@ evoting.adb:49:30: medium: "Candidates" might not be initialized
 evoting.adb:54:60: info: length check proved
 evoting.adb:55:07: warning: assuming "Open" has no effect on global items
 evoting.adb:55:07: warning: no Global contract available for "Open"
-evoting.adb:55:20: high: "File" is not initialized
 evoting.adb:57:17: warning: assuming "End_Of_File" has no effect on global items
 evoting.adb:57:17: warning: no Global contract available for "End_Of_File"
 evoting.adb:59:10: warning: assuming "Get_Line" has no effect on global items

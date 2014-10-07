@@ -3,7 +3,6 @@ caller.adb:9:22: medium: assertion might fail, requires Add2 (R) = 0
 caller.ads:11:14: warning: subprogram "Test" has no effect
 caller.ads:13:04: medium: type "Pr_Tt" is not fully initialized
 callers_caller.adb:8:22: medium: assertion might fail, requires Add3 (R) = 0
-callers_caller.adb:8:28: high: "R" is not initialized
 callers_caller.ads:8:14: warning: subprogram "Test2" has no effect
 dic.adb:3:04: high: "G" is not initialized
 dic.adb:11:58: medium: overflow check might fail
