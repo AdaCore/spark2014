@@ -15,5 +15,10 @@ is
    begin
       Length := 0;
    end Init;
+      pragma Annotate
+         (Gnatprove,
+         Intentional,
+         """Data"" is not initialized",
+         "initialization not needed because length is zero");
 
 end Foo;
