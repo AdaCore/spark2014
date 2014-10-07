@@ -5,3 +5,8 @@ aggs.adb:25:15: info: length check proved
 aggs.ads:25:22: medium: postcondition might fail, requires X (2) = 5
 aggs.ads:29:22: medium: postcondition might fail, requires X (2) = 20
 aggs.ads:36:22: info: postcondition proved
+dynval.adb:1:11: warning: subprogram "Dynval" has no effect
+dynval.adb:4:12: info: range check proved
+dynval.adb:5:61: medium: range check might fail
+dynval.adb:8:06: info: length check proved
+dynval.adb:8:11: info: length check proved
