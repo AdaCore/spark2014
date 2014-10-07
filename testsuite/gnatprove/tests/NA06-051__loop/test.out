@@ -1,0 +1,25 @@
+indexbis.adb:8:33: info: range check proved
+indexbis.adb:11:13: info: loop invariant initialization proved
+indexbis.adb:11:13: info: loop invariant preservation proved
+indexbis.adb:13:99: info: index check proved
+indexbis.adb:13:107: info: index check proved
+indexbis.adb:15:40: info: range check proved
+indexbis.adb:18:19: info: loop invariant initialization proved
+indexbis.adb:18:19: info: loop invariant preservation proved
+indexbis.adb:20:105: info: index check proved
+indexbis.adb:20:113: info: index check proved
+indexbis.adb:22:80: info: index check proved
+indexbis.adb:22:94: info: index check proved
+indexbis.adb:23:25: info: index check proved
+indexbis.adb:23:39: info: index check proved
+indexbis.adb:26:42: info: range check proved
+indexbis.adb:26:49: info: overflow check proved
+indexbis.adb:33:35: info: range check proved
+indexbis.adb:33:42: info: overflow check proved
+indexbis.ads:4:05: info: postcondition proved
+indexbis.ads:5:72: info: index check proved
+indexbis.ads:5:80: info: index check proved
+indexbis.ads:9:90: info: index check proved
+indexbis.ads:9:98: info: index check proved
+indexbis.ads:10:52: info: index check proved
+indexbis.ads:10:66: info: index check proved
