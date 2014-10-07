@@ -4633,13 +4633,13 @@ package body Flow.Control_Flow_Graph is
                         --  global output, we raise an error.
                         if Ekind (FA.Analyzed_Entity) = E_Function then
                            Error_Msg_Flow
-                             (FA  => FA,
-                              Msg       => "function with output global & " &
+                             (FA   => FA,
+                              Msg  => "function with output global & " &
                                 "is not allowed in SPARK",
-                              N   => FA.Analyzed_Entity,
-                              F1  => G,
+                              N    => FA.Analyzed_Entity,
+                              F1   => G,
                               Kind => Error_Kind,
-                              Tag => "side_effects");
+                              Tag  => "side_effects");
 
                            FA.Function_Side_Effects_Present := True;
                         end if;
