@@ -1,6 +1,6 @@
 p.adb:1:11: warning: subprogram "P" has no effect
-p.adb:15:13: warning: "Tmp1" might not be initialized
-p.adb:15:16: warning: range check might fail
-p.adb:17:13: warning: "Tmp3" might not be initialized
-p.adb:18:13: warning: "Tmp4" might not be initialized
-p.adb:19:13: warning: "Tmp5" might not be initialized
+p.adb:15:13: medium: "Tmp1" might not be initialized
+p.adb:15:16: medium: range check might fail
+p.adb:17:13: medium: "Tmp3" might not be initialized
+p.adb:18:13: medium: "Tmp4" might not be initialized
+p.adb:19:13: medium: "Tmp5" might not be initialized

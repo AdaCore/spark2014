@@ -1,4 +1,4 @@
-array_arith.adb:12:12: warning: "X" might not be initialized
+array_arith.adb:12:12: medium: "X" might not be initialized
 array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:32
 array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:33
 array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:34
@@ -9,26 +9,26 @@ array_arith.adb:29:19: info: overflow check proved, in call inlined at array_ari
 array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:39
 array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:40
 array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:41
-array_arith.adb:32:12: warning: "X" might not be initialized
-array_arith.adb:50:15: warning: "X" might not be initialized, in call inlined at array_arith.adb:66
-array_arith.adb:63:19: warning: overflow check might fail
-array_arith.adb:63:19: warning: range check might fail
-array_arith.adb:73:12: warning: "X" might not be initialized, in call inlined at array_arith.adb:76
+array_arith.adb:32:12: medium: "X" might not be initialized
+array_arith.adb:50:15: medium: "X" might not be initialized, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: medium: overflow check might fail
+array_arith.adb:63:19: medium: range check might fail
+array_arith.adb:73:12: medium: "X" might not be initialized, in call inlined at array_arith.adb:76
 array_arith.ads:9:14: info: postcondition proved
 array_arith.ads:12:14: info: postcondition proved
-array_arith.ads:15:35: warning: postcondition might fail, requires X(J) = Natural(J) + 1
+array_arith.ads:15:35: medium: postcondition might fail, requires X(J) = Natural(J) + 1
 array_arith.ads:18:14: info: postcondition proved
-ident.adb:44:22: warning: assertion might fail, requires Res = X
+ident.adb:44:22: medium: assertion might fail, requires Res = X
 ident.adb:46:07: info: assertion proved
 ident.adb:48:07: info: assertion proved
-ident.adb:51:22: warning: assertion might fail, requires Y = 9
+ident.adb:51:22: medium: assertion might fail, requires Y = 9
 ident.adb:53:07: info: assertion proved
 ident.adb:55:07: info: assertion proved
 ident.ads:6:14: warning: subprogram "Test" has no effect
-incr_expr_fun.adb:4:62: warning: overflow check might fail
-incr_expr_fun.adb:6:63: warning: overflow check might fail
-incr_expr_fun.adb:8:58: warning: overflow check might fail
-incr_expr_fun.adb:11:63: warning: overflow check might fail
+incr_expr_fun.adb:4:62: medium: overflow check might fail
+incr_expr_fun.adb:6:63: medium: overflow check might fail
+incr_expr_fun.adb:8:58: medium: overflow check might fail
+incr_expr_fun.adb:11:63: medium: overflow check might fail
 incr_expr_fun.adb:16:07: info: assertion proved
 incr_expr_fun.adb:16:39: info: overflow check proved
 incr_expr_fun.adb:17:07: info: assertion proved
@@ -47,9 +47,9 @@ incr_expr_fun.adb:23:07: info: assertion proved
 incr_expr_fun.adb:23:40: info: overflow check proved
 incr_expr_fun.adb:24:07: info: assertion proved
 incr_expr_fun.adb:24:45: info: overflow check proved
-incr_expr_fun.ads:4:57: warning: overflow check might fail
-incr_expr_fun.ads:7:61: warning: overflow check might fail
+incr_expr_fun.ads:4:57: medium: overflow check might fail
+incr_expr_fun.ads:7:61: medium: overflow check might fail
 incr_expr_fun.ads:13:14: warning: subprogram "Test" has no effect
-incr_expr_fun.ads:15:62: warning: overflow check might fail
-incr_expr_fun.ads:17:58: warning: overflow check might fail
-incr_expr_fun.ads:20:63: warning: overflow check might fail
+incr_expr_fun.ads:15:62: medium: overflow check might fail
+incr_expr_fun.ads:17:58: medium: overflow check might fail
+incr_expr_fun.ads:20:63: medium: overflow check might fail

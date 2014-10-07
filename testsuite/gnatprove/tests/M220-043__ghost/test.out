@@ -1,17 +1,17 @@
-semantics.adb:9:22: warning: assertion might fail, requires Formal + Ghost_Func > 0
-semantics.adb:9:29: warning: overflow check might fail
-semantics.adb:10:29: warning: overflow check might fail
-semantics.adb:13:27: warning: overflow check might fail
+semantics.adb:9:22: medium: assertion might fail, requires Formal + Ghost_Func > 0
+semantics.adb:9:29: medium: overflow check might fail
+semantics.adb:10:29: medium: overflow check might fail
+semantics.adb:13:27: medium: overflow check might fail
 semantics.adb:15:10: info: loop invariant initialization proved
 semantics.adb:15:10: info: loop invariant preservation proved
-semantics.adb:15:40: warning: overflow check might fail
+semantics.adb:15:40: medium: overflow check might fail
 semantics.adb:16:10: info: loop variant proved
-semantics.adb:16:53: warning: overflow check might fail
-semantics.adb:33:40: warning: overflow check might fail, in call inlined at semantics.adb:41
-semantics.adb:33:53: warning: overflow check might fail, in call inlined at semantics.adb:41
+semantics.adb:16:53: medium: overflow check might fail
+semantics.adb:33:40: medium: overflow check might fail, in call inlined at semantics.adb:41
+semantics.adb:33:53: medium: overflow check might fail, in call inlined at semantics.adb:41
 semantics.ads:12:19: info: postcondition proved
 semantics.ads:12:43: info: overflow check proved
 semantics.ads:13:41: info: contract case proved
-semantics.ads:14:41: warning: contract case might fail
+semantics.ads:14:41: medium: contract case might fail
 semantics.ads:14:68: info: overflow check proved
 semantics.ads:22:13: warning: null global effect assumed on imported subprogram

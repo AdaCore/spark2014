@@ -1,0 +1,5 @@
+integrity.adb:26:10: medium: precondition might fail
+integrity.adb:26:18: info: range check proved
+integrity.adb:36:10: info: precondition proved
+integrity.adb:37:10: info: precondition proved
+integrity.adb:39:10: info: precondition proved

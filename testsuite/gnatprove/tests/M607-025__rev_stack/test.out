@@ -10,19 +10,19 @@ list.adb:25:35: info: overflow check proved
 list.adb:25:43: info: overflow check proved
 list.adb:28:35: info: overflow check proved
 list.adb:28:43: info: overflow check proved
-list.adb:28:43: warning: array index check might fail
+list.adb:28:43: medium: array index check might fail
 list.adb:28:50: info: precondition proved
 list.adb:28:62: info: range check proved
 list.adb:32:10: info: loop invariant initialization proved
-list.adb:32:10: warning: loop invariant might fail after first iteration
+list.adb:32:10: medium: loop invariant might fail after first iteration
 list.adb:34:22: info: precondition proved
 list.adb:34:40: info: overflow check proved
 list.adb:36:38: info: overflow check proved
 list.adb:36:42: info: overflow check proved
 list.adb:38:39: info: overflow check proved
 list.adb:38:43: info: overflow check proved
-list.adb:39:34: warning: array index check might fail
-list.adb:39:64: warning: array index check might fail
+list.adb:39:34: medium: array index check might fail
+list.adb:39:64: medium: array index check might fail
 list.adb:41:40: info: overflow check proved
 list.adb:42:20: info: precondition proved
 list.adb:42:34: info: range check proved
@@ -36,14 +36,14 @@ list.adb:43:23: info: precondition proved
 list.adb:44:10: info: precondition proved
 list.ads:13:28: info: precondition proved
 list.ads:13:47: info: precondition proved
-list.ads:14:19: warning: postcondition might fail, requires Element (L, I) = Element (Reverse_List'Result, Last_Index (L) - I + First_Index (L)
-list.ads:14:19: warning: precondition might fail
-list.ads:14:31: warning: range check might fail
-list.ads:14:36: warning: precondition might fail
+list.ads:14:19: medium: postcondition might fail, requires Element (L, I) = Element (Reverse_List'Result, Last_Index (L) - I + First_Index (L)
+list.ads:14:19: medium: precondition might fail
+list.ads:14:31: medium: range check might fail
+list.ads:14:36: medium: precondition might fail
 list.ads:15:19: info: precondition proved
-list.ads:15:34: warning: overflow check might fail
-list.ads:15:38: warning: overflow check might fail
-list.ads:15:38: warning: range check might fail
+list.ads:15:34: medium: overflow check might fail
+list.ads:15:38: medium: overflow check might fail
+list.ads:15:38: medium: range check might fail
 list.ads:15:40: info: precondition proved
 stack.adb:5:47: info: range check proved
 stack.adb:17:22: info: range check proved
@@ -51,16 +51,16 @@ stack.adb:18:19: info: index check proved
 stack.adb:29:22: info: range check proved
 stack.adb:37:28: info: length check proved
 stack.ads:12:17: info: postcondition proved
-stack.ads:23:14: warning: postcondition might fail, requires Is_Empty (Empty_Stack'result)
+stack.ads:23:14: medium: postcondition might fail, requires Is_Empty (Empty_Stack'result)
 stack.ads:27:14: info: postcondition proved
 stack.ads:27:41: info: index check proved
-stack.ads:32:14: warning: postcondition might fail
+stack.ads:32:14: medium: postcondition might fail
 stack.ads:32:44: info: overflow check proved
-stack.ads:33:20: warning: array index check might fail
-stack.ads:35:27: warning: array index check might fail
+stack.ads:33:20: medium: array index check might fail
+stack.ads:35:27: medium: array index check might fail
 stack.ads:35:44: info: index check proved
-stack.ads:40:14: warning: postcondition might fail
+stack.ads:40:14: medium: postcondition might fail
 stack.ads:40:44: info: overflow check proved
-stack.ads:42:27: warning: array index check might fail
-stack.ads:42:44: warning: array index check might fail
+stack.ads:42:27: medium: array index check might fail
+stack.ads:42:44: medium: array index check might fail
 stack.ads:53:60: info: index check proved

@@ -1,5 +1,5 @@
-main2.adb:4:32: warning: "X" might not be initialized after elaboration of main program "Main2"
-main2.adb:4:48: warning: "Some_Package.State" might not be initialized after elaboration of main program "Main2"
+main2.adb:4:32: medium: "X" might not be initialized after elaboration of main program "Main2"
+main2.adb:4:48: medium: "Some_Package.State" might not be initialized after elaboration of main program "Main2"
 main2.adb:4:48: warning: unused global "Some_Package.State"
 not_main.ads:5:17: warning: subprogram "Do_Nothing" has no effect
 not_main2.ads:4:14: warning: subprogram "Not_Main_Generic_Instantiationr" has no effect

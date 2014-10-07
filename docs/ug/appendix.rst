@@ -30,7 +30,7 @@ Command-line Options
  -v, --verbose      Output extra verbose information
  --assumptions      Output assumptions information
      --version      Output version of the tool and exit
-     --warnings=w   Set the warning mode of GNATprove (w=off, continue, error*)
+     --warnings=w   Set the warning mode of GNATprove (w=off, continue*, error)
  -h, --help         Display this usage information
 
  * Main mode values
@@ -50,16 +50,16 @@ Command-line Options
    . error    - Treat warnings as errors (default)
 
  gnatprove advanced switches:
- -d, --debug        Debug mode
- --flow-debug       Extra debugging for flow analysis (requires graphviz)
-     --proof=p      Set the proof mode (p=per_check*, per_path, progressive)
-     --RTS=dir      Specify the Ada runtime name/location
-     --pedantic     Use a strict interpretation of the Ada standard
-     --steps=nnn    Set the maximum number of proof steps (prover-specific)
-     --timeout=s    Set the prover timeout in seconds (default: 1)
-     --limit-line=s Limit analysis to given file and line
-     --limit-subp=s Limit analysis to subprogram defined by file and line
-     --prover=s     Select prover (s=altergo*, cvc4, cvc4_ce)
+ -d, --debug             Debug mode
+ --flow-debug            Extra debugging for flow analysis (requires graphviz)
+     --proof=p           Set the proof mode (p=per_check*, per_path, progressive)
+     --RTS=dir           Specify the Ada runtime name/location
+     --pedantic          Use a strict interpretation of the Ada standard
+     --steps=nnn         Set the maximum number of proof steps (prover-specific)
+     --timeout=s         Set the prover timeout in seconds (default: 1)
+     --limit-line=s      Limit analysis to given file and line
+     --limit-subp=s      Limit analysis to subprogram defined by file and line
+     --prover=s[,s]*     Use given provers (s=altergo*, cvc4, ...)
 
  * Proof mode values
    . per_check   - Generate one formula per check (default)
@@ -67,27 +67,32 @@ Command-line Options
    . progressive - Start with one formula per check, then split into
                    paths when needed
 
- * Prover options
-   (Provers marked with [steps] support the --steps option.)
+ * Prover name values
+   (Provers marked with [steps] support the --steps switch.)
    . altergo     - [steps] Use Alt-Ergo (default)
    . cvc4        - [steps] Use CVC4
-   . cvc4_ce     - [steps] Use CVC4 for counter-example generation
-   Any other prover in your why3.conf file can also be specified here.
+   . ...         - Any other prover configured in your .why3.conf file
 
 .. _Alternative_Provers:
 
 Alternative Provers
 ===================
 
-|GNATprove| comes with Alt-Ergo and CVC4 provers, but it can be used with
-different provers, as long as they are supported by the Why3
-platform. To use a prover, it must be listed in your ``.why3.conf``
-file. The command ``why3config --detect-provers`` can be used to
-search your PATH for any supported provers and add them to the config
-file. Any such prover can then be used with the ``--prover`` option,
-using the name stored in the ``.why3.conf`` file. The switch values
-``altergo`` and ``cvc4`` will select the provers which come with |GNATprove|,
-and the value ``altergo`` is the default.
+By default, |GNATprove| uses its own version of prover Alt-Ergo. Switch
+``--prover`` allows to use another prover, or a list of provers. Prover names
+``altergo`` and ``cvc4`` are used to refer to the versions of provers Alt-Ergo
+and CVC4 that are shipped with |GNATprove|.
+
+|GNATprove| can call other provers, as long as they are supported by the Why3
+platform. To use another prover, it must be listed in your ``.why3.conf``
+configuration file. The command ``why3config --detect-provers`` can be used to
+search your ``PATH`` for any supported provers and adding them to the
+configuration file. Any prover name configured in your ``.why3.conf`` file can
+be used as an argument to switch ``--prover``.
+
+If more than one prover is specified, the provers are tried in order on each
+goal, until one of them succeeds or all fail. Interactive provers cannot be
+combined with other provers, so must appear on their own.
 
 Coq
 ---

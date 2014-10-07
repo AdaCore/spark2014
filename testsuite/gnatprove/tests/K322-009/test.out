@@ -1,4 +1,4 @@
-pack.ads:8:19: warning: postcondition might fail, requires X = X'old
-pack.ads:11:19: warning: postcondition might fail, requires X = X'old
+pack.ads:8:19: medium: postcondition might fail, requires X = X'old
+pack.ads:11:19: medium: postcondition might fail, requires X = X'old
 pack.ads:13:14: warning: subprogram "P3" has no effect
-pack.ads:16:19: warning: postcondition might fail, requires X = X'old
+pack.ads:16:19: medium: postcondition might fail, requires X = X'old

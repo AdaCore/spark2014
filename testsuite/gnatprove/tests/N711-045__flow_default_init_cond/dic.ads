@@ -38,8 +38,8 @@ private
    end record;
 
    type Pr_Uninit_T is record
-      X : Integer;
-      Y : Integer;
+      X : Integer := 0;
+      Y : Integer := 0;
    end record;
 
    type Pr_Liar_T is record

@@ -39,16 +39,16 @@ binary_fixed.adb:54:28: info: overflow check proved
 binary_fixed.adb:64:17: info: division check proved
 binary_fixed.adb:64:17: info: overflow check proved
 binary_fixed.adb:64:17: info: range check proved
-binary_fixed.adb:65:25: warning: assertion might fail, requires Z =
+binary_fixed.adb:65:25: medium: assertion might fail, requires Z =
 binary_fixed.adb:67:14: info: division check proved
 binary_fixed.adb:67:14: info: overflow check proved
 binary_fixed.adb:67:14: info: range check proved
-binary_fixed.adb:68:22: warning: assertion might fail, requires Z = Inv_Y * X
-binary_fixed.adb:68:32: warning: overflow check might fail
+binary_fixed.adb:68:22: medium: assertion might fail, requires Z = Inv_Y * X
+binary_fixed.adb:68:32: medium: overflow check might fail
 binary_fixed.adb:69:14: info: division check proved
-binary_fixed.adb:69:14: warning: overflow check might fail
-binary_fixed.adb:69:14: warning: range check might fail
-binary_fixed.adb:70:22: warning: assertion might fail, requires X in 2 * Z - T'Small .. 2 * Z + T'small
+binary_fixed.adb:69:14: medium: overflow check might fail
+binary_fixed.adb:69:14: medium: range check might fail
+binary_fixed.adb:70:22: medium: assertion might fail, requires X in 2 * Z - T'Small .. 2 * Z + T'small
 binary_fixed.adb:70:29: info: overflow check proved
 binary_fixed.adb:70:33: info: overflow check proved
 binary_fixed.adb:70:48: info: overflow check proved
@@ -61,25 +61,25 @@ binary_fixed.adb:72:29: info: overflow check proved
 binary_fixed.adb:72:33: info: overflow check proved
 binary_fixed.adb:72:48: info: overflow check proved
 binary_fixed.adb:72:52: info: overflow check proved
-binary_fixed.adb:90:22: warning: range check might fail
-binary_fixed.adb:93:16: warning: range check might fail
+binary_fixed.adb:90:22: medium: range check might fail
+binary_fixed.adb:93:16: medium: range check might fail
 binary_fixed.adb:93:25: info: range check proved
-binary_fixed.adb:94:16: warning: range check might fail
+binary_fixed.adb:94:16: medium: range check might fail
 binary_fixed.adb:94:27: info: overflow check proved
-binary_fixed.adb:94:27: warning: range check might fail
+binary_fixed.adb:94:27: medium: range check might fail
 binary_fixed.adb:95:22: info: overflow check proved
 binary_fixed.adb:95:26: info: overflow check proved
-binary_fixed.adb:95:26: warning: range check might fail
-binary_fixed.adb:97:17: warning: range check might fail
+binary_fixed.adb:95:26: medium: range check might fail
+binary_fixed.adb:97:17: medium: range check might fail
 binary_fixed.adb:98:17: info: range check proved
 binary_fixed.adb:99:17: info: range check proved
-binary_fixed.adb:102:16: warning: range check might fail
-binary_fixed.adb:103:16: warning: range check might fail
+binary_fixed.adb:102:16: medium: range check might fail
+binary_fixed.adb:103:16: medium: range check might fail
 binary_fixed.adb:103:25: info: overflow check proved
 binary_fixed.adb:104:23: info: overflow check proved
 binary_fixed.adb:104:27: info: overflow check proved
-binary_fixed.adb:104:27: warning: range check might fail
-binary_fixed.adb:106:17: warning: range check might fail
+binary_fixed.adb:104:27: medium: range check might fail
+binary_fixed.adb:106:17: medium: range check might fail
 binary_fixed.adb:115:10: info: assertion proved
 binary_fixed.adb:116:10: info: assertion proved
 binary_fixed.adb:116:27: info: overflow check proved
@@ -138,16 +138,16 @@ decimal_fixed.adb:54:28: info: overflow check proved
 decimal_fixed.adb:64:17: info: division check proved
 decimal_fixed.adb:64:17: info: overflow check proved
 decimal_fixed.adb:64:17: info: range check proved
-decimal_fixed.adb:65:25: warning: assertion might fail, requires Z =
+decimal_fixed.adb:65:25: medium: assertion might fail, requires Z =
 decimal_fixed.adb:67:14: info: division check proved
 decimal_fixed.adb:67:14: info: overflow check proved
 decimal_fixed.adb:67:14: info: range check proved
-decimal_fixed.adb:68:22: warning: assertion might fail, requires Z = Inv_Y * X
-decimal_fixed.adb:68:32: warning: overflow check might fail
+decimal_fixed.adb:68:22: medium: assertion might fail, requires Z = Inv_Y * X
+decimal_fixed.adb:68:32: medium: overflow check might fail
 decimal_fixed.adb:69:14: info: division check proved
-decimal_fixed.adb:69:14: warning: overflow check might fail
-decimal_fixed.adb:69:14: warning: range check might fail
-decimal_fixed.adb:70:22: warning: assertion might fail, requires X in 2 * Z - T'Small .. 2 * Z + T'small
+decimal_fixed.adb:69:14: medium: overflow check might fail
+decimal_fixed.adb:69:14: medium: range check might fail
+decimal_fixed.adb:70:22: medium: assertion might fail, requires X in 2 * Z - T'Small .. 2 * Z + T'small
 decimal_fixed.adb:70:29: info: overflow check proved
 decimal_fixed.adb:70:33: info: overflow check proved
 decimal_fixed.adb:70:48: info: overflow check proved
@@ -160,25 +160,25 @@ decimal_fixed.adb:72:29: info: overflow check proved
 decimal_fixed.adb:72:33: info: overflow check proved
 decimal_fixed.adb:72:48: info: overflow check proved
 decimal_fixed.adb:72:52: info: overflow check proved
-decimal_fixed.adb:90:22: warning: range check might fail
-decimal_fixed.adb:93:16: warning: range check might fail
+decimal_fixed.adb:90:22: medium: range check might fail
+decimal_fixed.adb:93:16: medium: range check might fail
 decimal_fixed.adb:93:25: info: range check proved
-decimal_fixed.adb:94:16: warning: range check might fail
+decimal_fixed.adb:94:16: medium: range check might fail
 decimal_fixed.adb:94:27: info: overflow check proved
-decimal_fixed.adb:94:27: warning: range check might fail
+decimal_fixed.adb:94:27: medium: range check might fail
 decimal_fixed.adb:95:22: info: overflow check proved
 decimal_fixed.adb:95:26: info: overflow check proved
-decimal_fixed.adb:95:26: warning: range check might fail
-decimal_fixed.adb:97:17: warning: range check might fail
+decimal_fixed.adb:95:26: medium: range check might fail
+decimal_fixed.adb:97:17: medium: range check might fail
 decimal_fixed.adb:98:17: info: range check proved
 decimal_fixed.adb:99:17: info: range check proved
-decimal_fixed.adb:102:16: warning: range check might fail
-decimal_fixed.adb:103:16: warning: range check might fail
+decimal_fixed.adb:102:16: medium: range check might fail
+decimal_fixed.adb:103:16: medium: range check might fail
 decimal_fixed.adb:103:25: info: overflow check proved
 decimal_fixed.adb:104:23: info: overflow check proved
 decimal_fixed.adb:104:27: info: overflow check proved
-decimal_fixed.adb:104:27: warning: range check might fail
-decimal_fixed.adb:106:17: warning: range check might fail
+decimal_fixed.adb:104:27: medium: range check might fail
+decimal_fixed.adb:106:17: medium: range check might fail
 decimal_fixed.adb:115:10: info: assertion proved
 decimal_fixed.adb:116:10: info: assertion proved
 decimal_fixed.adb:116:27: info: overflow check proved
@@ -199,7 +199,7 @@ decimal_fixed.ads:23:14: warning: subprogram "Test_Compare" has no effect
 dynamic_fixed.adb:6:18: info: range check proved
 dynamic_fixed.adb:6:40: info: range check proved
 dynamic_fixed.adb:7:19: info: range check proved
-dynamic_fixed.adb:9:25: warning: assertion might fail, requires Integer (T'Last) = I
+dynamic_fixed.adb:9:25: medium: assertion might fail, requires Integer (T'Last) = I
 dynamic_fixed.adb:10:10: info: assertion proved
 unsupported.adb:2:04: fixed-point type whose small is not a negative power of 2 or 10 is not yet supported
 unsupported.adb:5:04: fixed-point type whose small is not a negative power of 2 or 10 is not yet supported

@@ -1,4 +1,4 @@
 p.ads:32:41: warning: unused initial value of "Raw_S"
-p.ads:33:11: warning: missing dependency "null => Raw_S"
-p.ads:33:32: warning: incorrect dependency "Raw_S => Raw_S"
-p.ads:33:32: warning: missing dependency "Raw_S => Full_S"
+p.ads:33:11: medium: missing dependency "null => Raw_S"
+p.ads:33:32: medium: incorrect dependency "Raw_S => Raw_S"
+p.ads:33:32: medium: missing dependency "Raw_S => Full_S"

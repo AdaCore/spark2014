@@ -1,5 +1,5 @@
-default.adb:11:16: warning: overflow check might fail
+default.adb:11:16: medium: overflow check might fail
 default.adb:14:04: warning: analyzing unreferenced function "Use_Sub"
 default.adb:16:25: info: overflow check proved
 default.adb:19:04: warning: analyzing unreferenced function "Use_Add"
-default.adb:21:25: warning: overflow check might fail
+default.adb:21:25: medium: overflow check might fail

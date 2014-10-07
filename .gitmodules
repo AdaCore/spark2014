@@ -4,3 +4,6 @@
 [submodule "alt-ergo"]
 	path = alt-ergo
 	url = https://forge.open-do.org/anonscm/git/spark2014/alt-ergo.git
+[submodule "cvc4"]
+	path = cvc4
+	url = https://forge.open-do.org/anonscm/git/spark2014/cvc4.git

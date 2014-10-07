@@ -35,6 +35,8 @@ package Spaces.Angles is
 
    type Angle is private;
 
+   Null_Angle : constant Angle;
+
    --  \brief Default constructor.
    function Create return Angle;
 
@@ -111,6 +113,8 @@ private
    type Angle is record
       Theta : normalized2Pi;
    end record;
+
+   Null_Angle : constant Angle := (Theta => 0.0);
 
    --  \brief Returns a value in [0, 2*M_PI).
    function norm2Pi (x : Float) return Float

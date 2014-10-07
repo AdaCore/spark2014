@@ -9,22 +9,22 @@ sorted_vectors.adb:13:42: info: range check proved
 sorted_vectors.adb:14:31: info: range check proved
 sorted_vectors.adb:17:07: info: precondition proved
 sorted_vectors.ads:25:14: info: precondition proved
-sorted_vectors.ads:27:08: warning: postcondition might fail
+sorted_vectors.ads:27:08: medium: postcondition might fail
 sorted_vectors.ads:27:20: info: precondition proved
 sorted_vectors.ads:27:56: info: precondition proved
 sorted_vectors.ads:28:06: info: precondition proved
 sorted_vectors.ads:28:27: info: precondition proved
 sorted_vectors.ads:28:50: info: overflow check proved
-sorted_vectors.ads:29:06: warning: precondition might fail
-sorted_vectors.ads:31:12: warning: precondition might fail
-sorted_vectors.ads:31:32: warning: range check might fail
-sorted_vectors.ads:31:37: warning: precondition might fail
-sorted_vectors.ads:31:61: warning: range check might fail
+sorted_vectors.ads:29:06: medium: precondition might fail
+sorted_vectors.ads:31:12: medium: precondition might fail
+sorted_vectors.ads:31:32: medium: range check might fail
+sorted_vectors.ads:31:37: medium: precondition might fail
+sorted_vectors.ads:31:61: medium: range check might fail
 sorted_vectors.ads:32:48: info: precondition proved
 sorted_vectors.ads:33:14: info: precondition proved
-sorted_vectors.ads:33:34: warning: range check might fail
+sorted_vectors.ads:33:34: medium: range check might fail
 sorted_vectors.ads:33:39: info: precondition proved
-sorted_vectors.ads:33:64: warning: overflow check might fail
-sorted_vectors.ads:33:64: warning: range check might fail
+sorted_vectors.ads:33:64: medium: overflow check might fail
+sorted_vectors.ads:33:64: medium: range check might fail
 sorted_vectors.ads:34:22: info: precondition proved
 sorted_vectors.ads:34:61: info: precondition proved

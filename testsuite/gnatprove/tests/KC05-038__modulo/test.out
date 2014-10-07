@@ -1,6 +1,6 @@
 p.adb:1:11: warning: subprogram "P" has no effect
-p.adb:6:24: warning: range check might fail
-p.adb:7:24: warning: range check might fail
+p.adb:6:24: medium: range check might fail
+p.adb:7:24: medium: range check might fail
 p.adb:9:25: info: range check proved
 p.adb:10:22: info: range check proved
 p.adb:11:22: info: range check proved

@@ -1,4 +1,4 @@
-typeinv.adb:6:17: warning: range check might fail
+typeinv.adb:6:17: medium: range check might fail
 typeinv.adb:12:14: info: division check proved
 typeinv.ads:12:09: warning: type invariant ignored (not yet supported)
 typeinv.ads:15:10: info: division check proved

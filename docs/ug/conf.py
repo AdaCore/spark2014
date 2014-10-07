@@ -76,7 +76,7 @@ version = get_version()
 release = version
 
 # Substitution for the new SPARK name
-rst_prolog = """.. |SPARK| replace:: SPARK 2014
+rst_prolog = """.. |SPARK| replace:: SPARK
 .. |GNATprove| replace:: GNATprove
 .. |GNAT Pro| replace:: GNAT
 """
@@ -122,7 +122,7 @@ todo_include_todos = True
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'default'
+html_theme = 'sphinxdoc'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -251,5 +251,4 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'spark2014toolsetusersguide', u'SPARK 2014 Toolset User\'s Guide',
-     [u'AdaCore and Altran UK Ltd'], 1)
-]
+     [u'AdaCore and Altran UK Ltd'], 1)]

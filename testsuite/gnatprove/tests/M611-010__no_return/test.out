@@ -1,2 +1,2 @@
-no_return.adb:14:07: warning: exception might be raised
-no_return.adb:20:10: warning: call to nonreturning subprogram might be executed
+no_return.adb:14:07: medium: exception might be raised
+no_return.adb:20:10: medium: call to nonreturning subprogram might be executed

@@ -47,7 +47,7 @@ the subprogram is called.
 
 |GNATprove| assumes that the precondition holds when it performs the proof
 of ``Increment``. For any subprogram which calls ``Increment``, |GNATprove|
-will check that the precondition holds at the point of the call. 
+will check that the precondition holds at the point of the call.
 
 .. literalinclude:: gnatprove_by_example/results/t1q1b.prove
    :language: none
@@ -92,7 +92,7 @@ holds.
    :language: none
    :linenos:
 
-NAND 
+NAND
 ^^^^
 
 .. _nand:
@@ -122,7 +122,7 @@ to write this type of postcondition, as shown below:
 The implementation is much simpler than the specification. This
 simplified expression for NAND could have been used in the specification
 as they are equivalent, but our programmer wanted to use the
-more efficient form in the implementation whilst keeping the more 
+more efficient form in the implementation whilst keeping the more
 explicit version in the specification.
 
 .. literalinclude:: gnatprove_by_example/examples/t1q3b.adb
@@ -146,7 +146,7 @@ NextDay
 .. rubric: : NextDay (no need for using rubric now as there is only one example)
 
 The next example shows two subprograms, ``NextDay_A`` and ``NextDay_B``, both
-of which have the same postcondition. Given a value of the enumeration type 
+of which have the same postcondition. Given a value of the enumeration type
 ``Day`` they will give the value of the next day. Naturally, this wraps around
 so if the day is Sunday (the last value in the enumeration) then the next day
 is Monday (the first value).
@@ -159,7 +159,7 @@ The bodies of the two subprograms illustrate two alternative implementations
 of the next day functionality. The first one uses the ``'Succ`` attribute to
 get the next day, with a special case for Sunday as it is the last value in
 the type. The second version uses a case statement to state explicitly what
-the output should be for each input. 
+the output should be for each input.
 
 .. literalinclude:: gnatprove_by_example/examples/t1q3c.adb
    :language: ada
@@ -201,7 +201,7 @@ then it would obviously need a larger type to store the result.)
    :linenos:
 
 The proof results show that |GNATprove| is able to prove all the checks
-for this subprogram, so it satisifes its postcondition and there are 
+for this subprogram, so it satisifes its postcondition and there are
 no run-time errors. You may be wondering how it is that the postcondition
 in the subprogram specification contains an expression which simply
 adds together the two Integers, yet this does not overflow. This is
@@ -216,11 +216,9 @@ option were changed to ``-gnato11`` then the normal Ada type system
 semantics would be used in proof expressions and |GNATprove| would
 (quite rightly) not be able to prove that there was no possibility
 of overflow in the postcondition. This is an important option and we
-recommend that users read the documentation carefully in order to 
+recommend that users read the documentation carefully in order to
 understand how it behaves.
 
 .. literalinclude:: gnatprove_by_example/results/t1q5.prove
    :language: none
    :linenos:
-
-

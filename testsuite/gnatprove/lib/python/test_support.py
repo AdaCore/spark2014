@@ -165,14 +165,15 @@ def check_marks(strlist):
 
     RESULT is either
     - PASS/FAIL for checks, or
-    - ERROR/WARN for flow messages.
+    - ERROR/CHECK/WARN for flow messages.
 
     Case does not matter for the tag or result, although UPPERCASE is better in
     source code to easily locate the marks visually.
 
     """
     files = glob.glob("*.ad?")
-    is_msg = re.compile(r"(\w*\.ad.?):(\d*):\d*: (info|warning)?(: )?(.*$)")
+    is_msg = re.compile(r"(\w*\.ad.?):(\d*):\d*:" +
+                        r" (info|warning|low|medium|high)?(: )?(.*$)")
     is_mark = re.compile(r"@(\w*):(\w*)")
 
     def get_tag(text):
@@ -281,6 +282,7 @@ def check_marks(strlist):
         """Returns True if the given result corresponds to a valid one"""
         return result in ("PASS",
                           "FAIL",
+                          "CHECK",
                           "WARN",
                           "ERROR")
 
@@ -300,6 +302,13 @@ def check_marks(strlist):
         elif qualifier == 'warning':
             if is_flow_tag:
                 return 'WARN'
+            else:
+                return 'FAIL'
+        elif qualifier == 'low' or\
+                qualifier == 'medium' or\
+                qualifier == 'high':
+            if is_flow_tag:
+                return 'CHECK'
             else:
                 return 'FAIL'
         else:

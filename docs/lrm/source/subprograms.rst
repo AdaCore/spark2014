@@ -939,9 +939,6 @@ conditions are met:
   refinment is visible at the point of G2, each direct or indirect
   constituent thereof is an Output-mode item of G2.
 
-[TBD: The rules as stated correctly handle interactions with Part_Of;
-is there any need to mention/discuss this case here?]
-
 A Depends or Depends'Class aspect specification D2 is said to be a
 *valid overriding* of another such specification, D1, if the set of
 dependencies of D2 is a subset of the dependencies of D1 or, in the
@@ -967,122 +964,117 @@ aspect(s) of the overridden inherited subprogram(s).
 Extensions_Visible Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The Extensions_Visible aspect provides a mechanism for ensuring that
-"hidden" components of a formal parameter of a specific tagged type
-are unreferenced.
-For example, if a formal parameter of a specific tagged type T is converted
-to a class-wide type and then used as a controlling operand in a dispatching
-call, then the (dynamic) callee might reference components of the parameter
-which are declared in some extension of T. Such a use of the formal parameter
-could be forbidden via an Extensions_Visible aspect specification as
-described below. The aspect also plays a corresponding role in the analysis
-of callers of the subprogram.
+1. The Extensions_Visible aspect provides a mechanism for ensuring that
+   "hidden" components of a formal parameter of a specific tagged type
+   are unreferenced.
+   For example, if a formal parameter of a specific tagged type T is converted
+   to a class-wide type and then used as a controlling operand in a dispatching
+   call, then the (dynamic) callee might reference components of the parameter
+   which are declared in some extension of T. Such a use of the formal parameter
+   could be forbidden via an Extensions_Visible aspect specification as
+   described below. The aspect also plays a corresponding role in the analysis
+   of callers of the subprogram.
 
 .. centered:: **Static Semantics**
 
-Extensions_Visible is a Boolean-valued aspect which may be specified for a
-subprogram. If directly specified, the aspect_definition shall be a static
-[Boolean] expression. The aspect is inherited by an inherited primitive
-subprogram. If the aspect is neither inherited nor directly specified
-for a subprogram, then the aspect is False.
+2. Extensions_Visible is a Boolean-valued aspect which may be specified for a
+   subprogram. If directly specified, the aspect_definition shall be a static
+   [Boolean] expression. The aspect is inherited by an inherited primitive
+   subprogram. If the aspect is neither inherited nor directly specified
+   for a subprogram, then the aspect is False.
 
 .. centered:: **Legality Rules**
 
-If the Extensions_Visible aspect is False for a subprogram, then
-certain restrictions are imposed on the use of any parameter of the
-subprogram which is of a specific tagged type (or of a private type
-whose full view is a specific tagged type).
+3. If the Extensions_Visible aspect is False for a subprogram, then
+   certain restrictions are imposed on the use of any parameter of the
+   subprogram which is of a specific tagged type (or of a private type
+   whose full view is a specific tagged type).
+   Such a parameter shall not be converted (implicitly or explicitly) to
+   a class-wide type. Such a parameter shall not be passed as an actual
+   parameter in a call to a subprogram whose Extensions_Visible aspect is
+   True. These restrictions also apply to any parenthesized expression,
+   qualified expression, or type conversion whose operand is subject to
+   these restrictions, and to any conditional expression having at least
+   one dependent_expression which is subject to these restrictions.
+   [A subcomponent of a parameter is not itself a parameter and is therefore
+   not subject to these restrictions. A parameter whose type is class-wide
+   is not subject to these restrictions.]
 
-Such a parameter shall not be converted (implicitly or explicitly) to
-a class-wide type. Such a parameter shall not be passed as an actual
-parameter in a call to a subprogram whose Extensions_Visible aspect is
-True. These restrictions also apply to any parenthesized expression,
-qualified expression, or type conversion whose operand is subject to
-these restrictions, and to any conditional expression having at least
-one dependent_expression which is subject to these restrictions.
+#. [The restriction disallowing implicit conversion to a class-wide type
+   applies, in particular, in the case described in Ada RM 6.1.1:
 
-[A subcomponent of a parameter is not itself a parameter and is therefore
-not subject to these restrictions. A parameter whose type is class-wide
-is not subject to these restrictions.]
+      Within the expression for a Pre'Class or Post'Class aspect for a
+      primitive subprogram of a tagged type T, a name that denotes a
+      formal parameter of type T is interpreted as having type T'Class.
 
-[The restriction disallowing implicit conversion to a class-wide type
-applies, in particular, in the case described in Ada RM 6.1.1:
+   As it stands today, this is excessively restrictive. It is hoped that it
+   will be possible to eliminate (or at least substantially relax) this
+   restriction after AI12-0113 is resolved.]
 
-  Within the expression for a Pre'Class or Post'Class aspect for a primitive
-  subprogram of a tagged type T, a name that denotes a formal parameter of type
-  T is interpreted as having type T'Class.
+#. A subprogram whose Extensions_Visible aspect is True shall not override
+   an inherited primitive operation of a tagged type whose
+   Extensions_Visible aspect is False. [The reverse is allowed.]
 
-As it stands today, this is excessively restrictive. It is hoped that it will
-be possible to eliminate (or at least substantially relax) this restriction
-after AI12-0113 is resolved.]
+#. If a nonnull type extension inherits a
+   procedure having both a False Extensions_Visible aspect and one or
+   more controlling out-mode parameters, then the inherited procedure
+   requires overriding. [This is because the inherited procedure would not
+   initialize the noninherited component(s).]
 
-A subprogram whose Extensions_Visible aspect
-is True shall not override an inherited primitive operation of a
-tagged type whose Extensions_Visible aspect is False.
-[The reverse is allowed.]
+#. The Extensions_Visible aspect shall not be specified for a subprogram
+   which has no parameters of either a specific tagged type or a private
+   type unless the subprogram is declared in an instance of a generic
+   unit and the corresponding subprogram in the generic unit satisfies
+   this rule. [Such an aspect specification, if allowed, would be ineffective.]
 
-If a nonnull type extension inherits a
-procedure having both a False Extensions_Visible aspect and one or
-more controlling out-mode parameters, then the inherited procedure
-requires overriding. [This is because the inherited procedure would not
-initialize the noninherited component(s).]
-
-The Extensions_Visible aspect shall not be specified for a subprogram
-which has no parameters of either a specific tagged type or a private
-type unless the subprogram is declared in an instance of a generic
-unit and the corresponding subprogram in the generic unit satisfies
-this rule. [Such an aspect specification, if allowed, would be ineffective.]
-
-[These rules ensure that the value of the underlying tag (at run time) of
-the actual parameter of a call to an "Extensions_Visible => False"
-subprogram will have no effect on the behavior of that call. In particular,
-if the actual parameter has any additional components which are not components
-of the type of the formal parameter, then these components are unreferenced by
-the execution of the call.]
+#. [These rules ensure that the value of the underlying tag (at run time) of
+   the actual parameter of a call to a subprogram whose Extensions_Visible
+   aspect is False will have no effect on the behavior of that call.
+   In particular, if the actual parameter has any additional components
+   which are not components of the type of the formal parameter, then these
+   components are unreferenced by the execution of the call.]
 
 .. centered:: **Verification Rules**
 
-|SPARK| requires that an actual parameter corresponding
-to an in mode or in out mode formal parameter in a call must be fully
-initialized before the call; similarly, the callee is responsible
-for fully initializing any out-mode parameters before returning.
+9. |SPARK| requires that an actual parameter corresponding
+   to an in mode or in out mode formal parameter in a call must be fully
+   initialized before the call; similarly, the callee is responsible
+   for fully initializing any out-mode parameters before returning.
 
-In the case of a formal parameter of a specific tagged type T (or of a
-private type whose full view is a specific tagged type), the set of
-components which must be initialized in order to meet these requirements
-depends on the Extensions_Visible aspect of the callee.
+#. In the case of a formal parameter of a specific tagged type T (or of a
+   private type whose full view is a specific tagged type), the set of
+   components which must be initialized in order to meet these requirements
+   depends on the Extensions_Visible aspect of the callee.
+   If the aspect is False, then that set of components is the
+   [statically known] set of non-discriminant components of T.
+   If the aspect is True, then this set is the set of non-discriminant
+   components of the specific type associated with the tag of the
+   corresponding actual parameter. [In general, this is not statically known.
+   This set will always include the non-discriminant components of T, but
+   it may also include additional components.]
 
-If the aspect is False, then that set of components is the
-[statically known] set of non-discriminant components of T.
+#. [To put it another way, if the applicable Extensions_Visible aspect
+   is True, then the initialization requirements (for both the caller and
+   the callee) for a parameter of a specific tagged type T are the same as
+   if the formal parameter's type were T'Class. If the aspect is False,
+   then components declared in proper descendants of T need not be initialized.
+   In the case of an out mode parameter, such initialization by the callee
+   is not only not required, it is effectively forbidden because
+   such an out-mode parameter could not be fully initialized
+   without some form of dispatching (e.g., a class-wide assignment or a
+   dispatching call in which an out-mode parameter is a controlling operand).
+   Such a dispatching assignment will always fully initialize its controlling
+   out-mode parameters, regardless of the Extensions_Visible aspect
+   of the callee. An assignment statement whose target is of a class-wide
+   type T'Class is treated, for purposes of formal verification, like a call
+   to a procedure with two parameters of type T'Class, one of mode out and
+   one of mode in.]
 
-If the aspect is True, then this set is the set of non-discriminant
-components of the specific type associated with the tag of the
-corresponding actual parameter. [In general, this is not statically known.
-This set will always include the non-discriminant components of T, but
-it may also include additional components.]
-
-[To put it another way, if the applicable Extensions_Visible aspect
-is True, then the initialization requirements (for both the caller and
-the callee) for a parameter of a specific tagged type T are the same as
-if the formal parameter's type were T'Class. If the aspect is False,
-then components declared in proper descendants of T need not be initialized.
-In the case of an out mode parameter, such initialization by the callee
-is not only not required, it is effectively forbidden because
-such an out-mode parameter could not be fully initialized
-without some form of dispatching (e.g., a class-wide assignment or a
-dispatching call in which an out-mode parameter is a controlling operand).
-Such a dispatching assignment will always fully initialize its controlling
-out-mode parameters, regardless of the Extensions_Visible aspect
-of the callee. An assignment statement whose target is of a class-wide
-type T'Class is treated, for purposes of formal verification, like a call to a
-procedure with two parameters of type T'Class, one of mode out and
-one of mode in.]
-
-[In the case of an actual parameter of a call to a subprogram whose
-Extensions_Visible aspect is False where the corresponding formal parameter
-is of a specific tagged type T, these rules imply that formal verificaiton can
-safely assume that any components of the actual parameter which are not
-components of T will be neither read nor written by the call.]
+#. [In the case of an actual parameter of a call to a subprogram whose
+   Extensions_Visible aspect is False where the corresponding formal parameter
+   is of a specific tagged type T, these rules imply that formal verification
+   can safely assume that any components of the actual parameter which are not
+   components of T will be neither read nor written by the call.]
 
 
 Formal Parameter Modes
@@ -1354,7 +1346,6 @@ is not what we are talking about here.]
    object is itself a ghost object.
 
    |SPARK| also defines Ghost to be an assertion aspect.
-   The default Ghost assertion policy is Check.
    [This aspect shall not be named other than in an Assertion_Policy pragma.]
 
 .. _tu-nt-ghost_entities-02:
@@ -1375,15 +1366,13 @@ is not what we are talking about here.]
 
 4. A statement or pragma is said to be a "ghost statement" if
 
-   * It occurs within a ghost subprogram or package; or
+   * it occurs within a ghost subprogram or package; or
 
-   * It is the innermost enclosing statement or pragma
-     of a name denoting a ghost entity; or
+   * it is a call to a ghost procedure; or
 
-   * It is a compound statement which encloses at
-     least one ghost statement and which encloses no
-     statements or pragmas other than ghost statements
-     and null statements.
+   * it is an assignment statement whose target is a ghost variable; or
+
+   * it is a pragma which encloses a name denoting a ghost entity.
 
 .. _tu-nt-ghost_entities-05:
 
@@ -1487,14 +1476,24 @@ is not what we are talking about here.]
 
 14. An Assertion_Policy pragma specifying a Ghost assertion policy
     shall not occur within a ghost subprogram or package.
+    If a ghost entity has a completion then the Ghost assertion policies in
+    effect at the declaration and at the completion of the entity shall
+    be the same. [This rule applies to subprograms, packages, types,
+    and deferred constants.]
+
+.. _tu-fe-ghost_entities-15:
+
+15. The Ghost assertion policies in effect at the declaration of a
+    state abstraction and at the declaration of each constituent of that
+    abstraction shall be the same.
 
 .. _etu-ghost_entities-lr:
 
 .. centered:: **Dynamic Semantics**
 
-.. _tu-nt-ghost_entities-15:
+.. _tu-nt-ghost_entities-16:
 
-15. The effects of specifying a convention of Ghost on the run-time
+16. The effects of specifying a convention of Ghost on the run-time
     representation, calling conventions, and other such dynamic
     properties of an entity are the same as if no convention had
     explicitly been specified. [This usually means the same as if
@@ -1504,27 +1503,31 @@ is not what we are talking about here.]
 
 .. centered:: **Verification Rules**
 
-.. _tu-fe-ghost_entities-16:
+.. _tu-fe-ghost_entities-17:
 
-16. A ghost procedure shall not have a non-ghost [global] output.
+17. A ghost procedure shall not have a non-ghost [global] output.
 
-.. _tu-cbatu-ghost_entities-17:
+.. _tu-cbatu-ghost_entities-18:
 
-17. An output of a non-ghost subprogram other than a ghost global
+18. An output of a non-ghost subprogram other than a ghost global
     shall not depend on a ghost input. [It is intended that this follows
     as a consequence of other rules.]
 
-.. _tu-fe-ghost_entities-18:
+.. _tu-fe-ghost_entities-19:
 
-18. A ghost procedure shall not have an effectively volatile global input
+19. A ghost procedure shall not have an effectively volatile global input
     with the properties Async_Writers or Effective_Reads set to True.
     [This rule says, in effect, that ghost procedures are
     subject to the same restrictions as non-ghost functions with respect
     to reading volatile objects.]
+    A name occurring within a ghost statement shall not denote an
+    effectively volatile object with the properties Async_Writers or
+    Effective_Reads set to True. [In other words, a ghost statement is
+    subject to effectively the same restrictions as a ghost procedure.]
 
-.. _tu-fe-ghost_entities-19:
+.. _tu-fe-ghost_entities-20:
 
-19. If the Ghost assertion policy in effect at the point of the declaration
+20. If the Ghost assertion policy in effect at the point of the declaration
     of a ghost variable or ghost state abstraction is Check, then the Ghost
     assertion policy in effect at the point of any call to a procedure
     for which that variable or state abstraction is a global output shall

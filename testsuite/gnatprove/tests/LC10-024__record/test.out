@@ -3,4 +3,4 @@ test.adb:16:57: info: division check proved
 test.adb:16:57: info: range check proved
 test.adb:21:34: info: range check proved
 test.ads:9:17: info: postcondition proved
-test.ads:13:17: warning: postcondition might fail, requires Get_Remaining(S) <= Get_Remaining(S'old)
+test.ads:13:17: medium: postcondition might fail, requires Get_Remaining(S) <= Get_Remaining(S'old)

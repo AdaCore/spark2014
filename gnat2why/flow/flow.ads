@@ -143,79 +143,84 @@ package Flow is
       --  After we have constructed the graph, we can create a list of
       --  global variables (kinda what the analysis sanity check would do).
 
-      Analyzed_Entity   : Entity_Id;
-      B_Scope           : Flow_Scope;
-      S_Scope           : Flow_Scope;
+      Analyzed_Entity       : Entity_Id;
+      B_Scope               : Flow_Scope;
+      S_Scope               : Flow_Scope;
       --  The entity and scope (of the body and spec) of the analysed
       --  entity. The two scopes might be the same in some cases.
 
-      Spec_Node         : Entity_Id;
+      Spec_Node             : Entity_Id;
       --  Useful shorthand to the node where the n_contract node is
       --  attached.
 
-      Start_Vertex      : Flow_Graphs.Vertex_Id;
-      Helper_End_Vertex : Flow_Graphs.Vertex_Id;
-      End_Vertex        : Flow_Graphs.Vertex_Id;
+      Start_Vertex          : Flow_Graphs.Vertex_Id;
+      Helper_End_Vertex     : Flow_Graphs.Vertex_Id;
+      End_Vertex            : Flow_Graphs.Vertex_Id;
       --  The start, helper end and end vertices in the graphs. Start and
       --  end are the obvious, and the helper end is used to indicate the
       --  end of the procedure (i.e. returns jump here), but before
       --  postconditions are checked.
 
-      CFG               : Flow_Graphs.T;
-      DDG               : Flow_Graphs.T;
-      CDG               : Flow_Graphs.T;
-      TDG               : Flow_Graphs.T;
-      PDG               : Flow_Graphs.T;
+      CFG                   : Flow_Graphs.T;
+      DDG                   : Flow_Graphs.T;
+      CDG                   : Flow_Graphs.T;
+      TDG                   : Flow_Graphs.T;
+      PDG                   : Flow_Graphs.T;
       --  The graphs.
 
-      Atr               : Attribute_Maps.Map;
+      Atr                   : Attribute_Maps.Map;
       --  The vertex attributes for the above graphs.
 
-      Other_Fields      : Vertex_To_Vertex_Set_Maps.Map;
+      Other_Fields          : Vertex_To_Vertex_Set_Maps.Map;
       --  For a vertex corresponding to a record field this map will
       --  hold a vertex set of the other record fields.
 
-      Local_Constants   : Node_Sets.Set;
+      Local_Constants       : Node_Sets.Set;
       --  All constants that have been locally declared. This is used as a
       --  workaround to the issue of constants being ignored in general.
       --  This field should be removed once constants, attributes, etc. are
       --  dealt with correctly.
 
-      All_Vars          : Flow_Id_Sets.Set;
+      All_Vars              : Flow_Id_Sets.Set;
       --  A set of all variables used in the body.
 
-      Unmodified_Vars   : Node_Sets.Set;
+      Unmodified_Vars       : Node_Sets.Set;
       --  A set of all variables that are not expected to be modified
       --  because the were named in a pragma Unmodified.
 
-      Unreferenced_Vars : Node_Sets.Set;
+      Unreferenced_Vars     : Node_Sets.Set;
       --  A set of all variables that are not expected to be referenced
       --  because the were named in a pragma Unreferenced.
 
-      Loops             : Node_Sets.Set;
+      Loops                 : Node_Sets.Set;
       --  A set of all loops (identified by label).
 
-      Base_Filename     : Unbounded_String;
+      Base_Filename         : Unbounded_String;
       --  A string with the name of the entity that is being analysed.
       --  This string follows the convention that we use for naming the
       --  .dot and .pdf files.
 
-      Aliasing_Present  : Boolean;
+      Aliasing_Present      : Boolean;
       --  True if this subprogram introduces (bad)
       --  aliasing. Subsequent analysis is then meaningless.
 
-      Dependency_Map    : Dependency_Maps.Map;
+      Dependency_Map        : Dependency_Maps.Map;
       --  A map of all the dependencies.
 
-      No_Effects        : Boolean;
+      No_Effects            : Boolean;
       --  True if this is a subprogram with no effects. Certain analysis
       --  are disabled in this case as we would spam the user with error
       --  messages for almost every statement.
 
-      Direct_Calls      : Node_Sets.Set;
+      No_Errors_Or_Warnings : Boolean;
+      --  True if no errors or warnings were found while flow
+      --  analysing this entity. This is initialized to True and set
+      --  to False when an error or a warning is found.
+
+      Direct_Calls          : Node_Sets.Set;
       --  All subprograms called
 
-      GG                : Flow_Global_Generation_Info (Compute_Globals);
+      GG                    : Flow_Global_Generation_Info (Compute_Globals);
       --  Information for globals computation.
 
       case Kind is
@@ -240,7 +245,7 @@ package Flow is
             --  tedious to find.
 
             Function_Side_Effects_Present : Boolean;
-            --  Set to true if we are dealing with a function that has side
+            --  Set to True if we are dealing with a function that has side
             --  effects.
 
          when E_Package | E_Package_Body =>

@@ -1,0 +1,2 @@
+gen_abstract_global.adb:14:07: warning: statement has no effect
+gen_abstract_global.adb:14:07: warning: unused assignment to "V"

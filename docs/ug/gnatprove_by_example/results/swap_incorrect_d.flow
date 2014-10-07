@@ -1,5 +1,5 @@
 swap_incorrect_d.adb:9:07: warning: variable "Old_Y" is read but never assigned
-swap_incorrect_d.adb:11:09: "Old_Y" is not initialized
+swap_incorrect_d.adb:11:12: high: "Old_Y" is not initialized
 swap_incorrect_d.ads:6:20: warning: unused initial value of "Y"
-swap_incorrect_d.ads:8:11: warning: missing dependency "null => Y"
-swap_incorrect_d.ads:8:23: warning: incorrect dependency "X => Y"
+swap_incorrect_d.ads:8:11: medium: missing dependency "null => Y"
+swap_incorrect_d.ads:8:23: medium: incorrect dependency "X => Y"

@@ -1,12 +1,12 @@
 loop_tutorial.adb:10:19: info: postcondition proved
 loop_tutorial.adb:10:32: info: overflow check proved
 loop_tutorial.adb:11:35: info: overflow check proved
-loop_tutorial.adb:11:40: warning: overflow check might fail
+loop_tutorial.adb:11:40: medium: overflow check might fail
 loop_tutorial.adb:11:56: info: overflow check proved
 loop_tutorial.adb:21:20: info: overflow check proved
 loop_tutorial.adb:27:10: info: loop invariant initialization proved
 loop_tutorial.adb:27:10: info: loop invariant preservation proved
-loop_tutorial.adb:30:43: warning: overflow check might fail
+loop_tutorial.adb:30:43: medium: overflow check might fail
 loop_tutorial.adb:31:43: info: overflow check proved
 loop_tutorial.adb:33:10: info: loop variant proved
 loop_tutorial.adb:37:25: info: overflow check proved

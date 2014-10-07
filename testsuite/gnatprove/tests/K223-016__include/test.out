@@ -1,1 +1,1 @@
-callee.adb:4:14: warning: overflow check might fail
+callee.adb:4:14: medium: overflow check might fail

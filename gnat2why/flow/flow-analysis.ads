@@ -26,12 +26,12 @@
 
 package Flow.Analysis is
 
-   procedure Analyse_Main (FA : Flow_Analysis_Graphs);
+   procedure Analyse_Main (FA : in out Flow_Analysis_Graphs);
    --  If FA corresponds to a main program, we ensure that
    --  all globals it references are initialized.
 
-   procedure Sanity_Check (FA   : Flow_Analysis_Graphs;
-                           Sane : out Boolean);
+   procedure Sanity_Check (FA   : in out Flow_Analysis_Graphs;
+                           Sane :    out Boolean);
    --  Check the following basic properties:
    --     - is aliasing present (using the flag FA.Aliasing_Present)?
    --     - absence of variables in default initializations of
@@ -42,7 +42,7 @@ package Flow.Analysis is
    --
    --  Complexity is O(N)
 
-   procedure Sanity_Check_Postcondition (FA   : Flow_Analysis_Graphs;
+   procedure Sanity_Check_Postcondition (FA   : in out Flow_Analysis_Graphs;
                                          Sane : in out Boolean)
    with Pre => Sane;
    --  Check post, refined_post and initializes for use of variables
@@ -50,34 +50,35 @@ package Flow.Analysis is
    --
    --  Complexity is O(N)
 
-   procedure Find_Unwritten_Exports (FA : Flow_Analysis_Graphs);
+   procedure Find_Unwritten_Exports (FA : in out Flow_Analysis_Graphs);
    --  Find outputs which are never written to.
    --
    --  Complexity is O(N)
 
    procedure Find_Ineffective_Imports_And_Unused_Objects
-     (FA : Flow_Analysis_Graphs);
+     (FA : in out Flow_Analysis_Graphs);
    --  Find all ineffective initial values and all unused objects.
    --
    --  Complexity is O(N^2) and O(N) respectively.
 
-   procedure Find_Ineffective_Statements (FA : Flow_Analysis_Graphs);
+   procedure Find_Ineffective_Statements (FA : in out Flow_Analysis_Graphs);
    --  Find all ineffective statements.
    --
    --  Complexity is O(N^2)
 
-   procedure Find_Dead_Code (FA : Flow_Analysis_Graphs);
+   procedure Find_Dead_Code (FA : in out Flow_Analysis_Graphs);
    --  Find all obviously dead code.
    --
    --  Complexity is O(N)
 
-   procedure Enforce_No_Return (FA : Flow_Analysis_Graphs);
+   procedure Enforce_No_Return (FA : in out Flow_Analysis_Graphs);
    --  If the analysed subprogram is marked No_Return, we check that we
    --  never return. In all other cases this procedure does nothing.
    --
    --  Complexity is O(N).
 
-   procedure Find_Use_Of_Uninitialized_Variables (FA : Flow_Analysis_Graphs);
+   procedure Find_Use_Of_Uninitialized_Variables
+     (FA : in out Flow_Analysis_Graphs);
    --  Find all instances where uninitialized variables are used. If a
    --  variable is always uninitialized then raise an Error, otherwise
    --  raise a Warning.
@@ -97,24 +98,32 @@ package Flow.Analysis is
    --
    --  Complexity is O(N^2)
 
-   procedure Find_Stable_Elements (FA : Flow_Analysis_Graphs);
+   procedure Find_Stable_Elements (FA : in out Flow_Analysis_Graphs);
    --  Find stable loop statements.
    --
    --  Complexity is O(N^2)
 
-   procedure Find_Exports_Derived_From_Proof_Ins (FA : Flow_Analysis_Graphs);
+   procedure Find_Exports_Derived_From_Proof_Ins
+     (FA : in out Flow_Analysis_Graphs);
    --  Finds exports derived from global variables with mode Proof_In.
    --
    --  Complexity is O(N^2) - (due to path search on each element of the
    --  precomputed dependency map)
 
-   procedure Check_Contracts (FA : Flow_Analysis_Graphs);
+   procedure Find_Hidden_Unexposed_State (FA : in out Flow_Analysis_Graphs);
+   --  Finds hidden states that are not constituents of any state
+   --  abstractions even though an enclosing package declares a state
+   --  abstraction.
+   --
+   --  Complexity is O(N)
+
+   procedure Check_Contracts (FA : in out Flow_Analysis_Graphs);
    --  Check the given depends against the reality. If there is no
    --  depends aspect this procedure does nothing.
    --
    --  Complexity is O(N^2)
 
-   procedure Check_Initializes_Contract (FA : Flow_Analysis_Graphs)
+   procedure Check_Initializes_Contract (FA : in out Flow_Analysis_Graphs)
    with Pre => FA.Kind in E_Package | E_Package_Body;
    --  Checks if the Initializes contract has extra dependencies or missing
    --  dependencies.
@@ -132,7 +141,7 @@ private
    --  Find a good place to raise an error for vertex V.
 
    procedure Global_Required
-     (FA  : Flow_Analysis_Graphs;
+     (FA  : in out Flow_Analysis_Graphs;
       Var : Flow_Id)
    with Pre  => Var.Kind = Magic_String;
    --  Emit an error message that (the first call) introducing the

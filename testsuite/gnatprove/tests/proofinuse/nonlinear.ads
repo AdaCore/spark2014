@@ -13,4 +13,7 @@ is
    --  from M328-009 (example for teaching)
    procedure Power (X : Natural);
 
+   --  from NA05-006 (example for teaching)
+   procedure Mult (X, Y : Integer; Res : out Integer);
+
 end Nonlinear;

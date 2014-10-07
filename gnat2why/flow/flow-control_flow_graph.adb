@@ -2654,7 +2654,7 @@ package body Flow.Control_Flow_Graph is
          FS := Flatten_Variable (Defining_Identifier (N), FA.B_Scope);
 
          for F of FS loop
-            if Is_Default_Initialized (F, FA.B_Scope) then
+            if Is_Default_Initialized (F) then
                Add_Vertex
                  (FA,
                   Make_Default_Initialization_Attributes
@@ -3658,34 +3658,16 @@ package body Flow.Control_Flow_Graph is
             end;
          end if;
 
-         --  Issue a warning if the declared type has
-         --  Default_Initial_Condition while its root type is a
-         --  private kind and does not have Default_Initial_Condition.
-
-         if Has_Default_Init_Cond (Typ)
-           and then Ekind (Root_Type (Typ)) in Private_Kind
-           and then not Has_Default_Init_Cond (Root_Type (Typ))
-         then
-            Error_Msg_Flow
-              (FA      => FA,
-               Msg     => "type & is not fully initialized",
-               N       => N,
-               F1      => Direct_Mapping_Id (Typ),
-               Tag     => "default_initialization_missmatch",
-               Warning => True);
-         end if;
-
          --  Issue a warning if the declared type promised to be
          --  default initialized but is not.
 
-         if Is_Default_Initialized (Direct_Mapping_Id (Typ),
-                                    Get_Flow_Scope (Typ))
-           and then not Has_Inherited_Default_Init_Cond (Typ)
+         if Has_Default_Init_Cond (Typ)
            and then not Fullview_Not_In_SPARK (Typ)
-           and then Default_Initialization (Typ           => Typ,
-                                            Explicit_Only => True) /=
-                    Default_Initialization (Typ           => Typ,
-                                            Explicit_Only => False)
+           and then Is_Default_Initialized (Direct_Mapping_Id (Typ),
+                                            Get_Flow_Scope (Typ))
+           and then not Is_Default_Initialized (Direct_Mapping_Id (Typ),
+                                                Get_Flow_Scope (Typ),
+                                                Explicit_Only => True)
          then
             Error_Msg_Flow
               (FA      => FA,
@@ -3693,7 +3675,7 @@ package body Flow.Control_Flow_Graph is
                N       => N,
                F1      => Direct_Mapping_Id (Typ),
                Tag     => "default_initialization_missmatch",
-               Warning => True);
+               Kind    => Medium_Check_Kind);
          end if;
       end if;
    end Do_Type_Declaration;
@@ -4489,6 +4471,11 @@ package body Flow.Control_Flow_Graph is
             Errout.Error_Msg_N
               ("?pragma % ignored in flow analysis (not yet supported)", N);
             return False;
+
+         --  ??? ignored for now, see NA03-003
+
+         when Pragma_Extensions_Visible =>
+            return False;
       end case;
 
    end Pragma_Relevant_To_Flow;
@@ -4646,12 +4633,13 @@ package body Flow.Control_Flow_Graph is
                         --  global output, we raise an error.
                         if Ekind (FA.Analyzed_Entity) = E_Function then
                            Error_Msg_Flow
-                             (FA  => FA,
-                              Msg       => "function with output global & " &
+                             (FA   => FA,
+                              Msg  => "function with output global & " &
                                 "is not allowed in SPARK",
-                              N   => FA.Analyzed_Entity,
-                              F1  => G,
-                              Tag => "side_effects");
+                              N    => FA.Analyzed_Entity,
+                              F1   => G,
+                              Kind => Error_Kind,
+                              Tag  => "side_effects");
 
                            FA.Function_Side_Effects_Present := True;
                         end if;

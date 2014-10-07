@@ -1,0 +1,2 @@
+gen_imported_global.adb:12:07: warning: statement has no effect
+gen_imported_global.adb:12:07: warning: unused assignment to "V"

@@ -20,8 +20,8 @@ p.ads:19:26: info: precondition proved
 p.ads:22:13: info: precondition proved
 p.ads:22:45: info: precondition proved
 p.ads:23:14: info: precondition proved
-p.ads:23:14: warning: postcondition might fail, requires Strict_Equal (L, L'old)
+p.ads:23:14: medium: postcondition might fail, requires Strict_Equal (L, L'old)
 p.ads:26:13: info: precondition proved
-p.ads:27:14: warning: postcondition might fail
+p.ads:27:14: medium: postcondition might fail
 p.ads:27:16: info: precondition proved
 p.ads:28:27: info: precondition proved

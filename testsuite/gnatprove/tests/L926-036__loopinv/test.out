@@ -1,24 +1,24 @@
 counters.adb:13:08: info: discriminant check proved
 counters.adb:13:15: info: discriminant check proved
-counters.adb:13:18: warning: overflow check might fail
+counters.adb:13:18: medium: overflow check might fail
 counters.adb:18:11: info: discriminant check proved
 counters.adb:18:18: info: discriminant check proved
-counters.adb:18:21: warning: overflow check might fail
+counters.adb:18:21: medium: overflow check might fail
 counters.adb:20:14: info: discriminant check proved
 counters.adb:21:14: info: discriminant check proved
 counters.adb:21:21: info: discriminant check proved
-counters.adb:21:24: warning: overflow check might fail
+counters.adb:21:24: medium: overflow check might fail
 counters.adb:23:14: info: discriminant check proved
 counters.adb:23:21: info: discriminant check proved
-counters.adb:23:24: warning: overflow check might fail
+counters.adb:23:24: medium: overflow check might fail
 counters.adb:26:11: info: discriminant check proved
 counters.adb:26:18: info: discriminant check proved
-counters.adb:26:21: warning: overflow check might fail
+counters.adb:26:21: medium: overflow check might fail
 counters.adb:28:14: info: discriminant check proved
 counters.adb:29:14: info: discriminant check proved
 counters.adb:29:21: info: discriminant check proved
-counters.adb:29:24: warning: overflow check might fail
+counters.adb:29:24: medium: overflow check might fail
 counters.adb:31:14: info: discriminant check proved
 counters.adb:31:21: info: discriminant check proved
-counters.adb:31:24: warning: overflow check might fail
+counters.adb:31:24: medium: overflow check might fail
 counters.adb:42:15: info: discriminant check proved

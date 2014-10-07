@@ -1,6 +1,2 @@
-test.adb:14:09: "Tmp_A" is not initialized
-test.adb:15:09: "Tmp_B" is not initialized
-   compilation of test.adb failed
-
-
-gnatprove: error during analysis of data and information flow
+test.adb:14:09: high: "Tmp_A" is not initialized
+test.adb:15:09: high: "Tmp_B" is not initialized

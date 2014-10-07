@@ -44,7 +44,8 @@ package body Report_Database is
                Flow_Warnings => 0,
                Flow_Errors   => 0,
                VC_Count      => 0,
-               VC_Proved     => 0);
+               VC_Proved     => 0,
+               Assumptions   => Rule_Lists.Empty_List);
 
    package Ordered_Subp_Sets is new
      Ada.Containers.Ordered_Sets (Element_Type => Subp_Type,
@@ -58,13 +59,23 @@ package body Report_Database is
         Equivalent_Keys => "=",
         "="             => Subp_Maps."=");
 
+   package Subp_Unit_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Subp_Type,
+        Element_Type    => Unit_Type,
+        Hash            => Hash,
+        Equivalent_Keys => "=",
+        "="             => "=");
+
    package Ordered_Unit_Sets is new
      Ada.Containers.Ordered_Sets (Element_Type => Unit_Type,
                                   "<"          => "<");
 
    Unit_Map : Unit_Maps.Map := Unit_Maps.Empty_Map;
 
-   Assume_List : Rule_Lists.List := Rule_Lists.Empty_List;
+   Subp_Unit_Map : Subp_Unit_Maps.Map := Subp_Unit_Maps.Empty_Map;
+   --  This map maps subprograms to their unit. This map is filled by the
+   --  Add_SPARK_Status function
 
    procedure Update_Subp_Entry
      (Unit    : Unit_Type;
@@ -74,16 +85,30 @@ package body Report_Database is
    --  unit/subp didn't exist yet, they are added, and a default Stat_Rec
    --  is created.
 
-   -------------------------
-   -- Add_Assumption_List --
-   -------------------------
+   --------------------------------
+   -- Add_Claim_With_Assumptions --
+   --------------------------------
 
-   procedure Add_Assumption_List (L : Rule_Lists.List) is
+   procedure Add_Claim_With_Assumptions (Claim : Token; S : Token_Sets.Set) is
+
+      procedure Add_Claim_Entry (Stat : in out Stat_Rec);
+      --  add the mapping claim -> assumption set to the stat record
+
+      ---------------------
+      -- Add_Claim_Entry --
+      ---------------------
+
+      procedure Add_Claim_Entry (Stat : in out Stat_Rec) is
+      begin
+         Stat.Assumptions.Append ((Claim => Claim, Assumptions => S));
+      end Add_Claim_Entry;
+
+      Subp : constant Subp_Type := Claim.Arg;
    begin
-      for Elt of L loop
-         Assume_List.Append (Elt);
-      end loop;
-   end Add_Assumption_List;
+      Update_Subp_Entry (Subp_Unit_Map.Element (Subp),
+                         Subp,
+                         Add_Claim_Entry'Access);
+   end Add_Claim_With_Assumptions;
 
    ---------------------
    -- Add_Flow_Result --
@@ -172,6 +197,11 @@ package body Report_Database is
    --  Start of Add_SPARK_Status
 
    begin
+
+      --  ??? We need to use include instead of insert because GNATprove
+      --  currently mixes up instances of the same generic
+
+      Subp_Unit_Map.Include (Subp, Unit);
       Update_Subp_Entry (Unit, Subp, Process'Access);
    end Add_SPARK_Status;
 

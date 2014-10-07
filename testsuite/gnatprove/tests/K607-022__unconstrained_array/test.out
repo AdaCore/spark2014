@@ -6,44 +6,44 @@ my_test.adb:12:22: info: precondition proved
 my_test.adb:13:26: info: precondition proved
 my_test.adb:17:10: info: discriminant check proved
 my_test.adb:17:10: info: precondition proved
-my_test.adb:18:48: warning: assertion might fail, requires T3.V (I) = 9
+my_test.adb:18:48: medium: assertion might fail, requires T3.V (I) = 9
 my_test.adb:18:50: info: discriminant check proved
 my_test.adb:18:54: info: index check proved
-my_test.adb:20:10: warning: discriminant check might fail
-my_test.adb:22:19: warning: assertion might fail, requires T1 = T3
-simple_unc_arrays.adb:10:07: warning: "C.V" might not be initialized
+my_test.adb:20:10: medium: discriminant check might fail
+my_test.adb:22:19: medium: assertion might fail, requires T1 = T3
+simple_unc_arrays.adb:10:07: medium: "C.V" might not be initialized
 simple_unc_arrays.adb:12:13: info: loop invariant initialization proved
 simple_unc_arrays.adb:12:13: info: loop invariant preservation proved
-simple_unc_arrays.adb:13:42: warning: "C.V" might not be initialized
+simple_unc_arrays.adb:13:42: medium: "C.V" might not be initialized
 simple_unc_arrays.adb:13:43: info: discriminant check proved
 simple_unc_arrays.adb:13:47: info: index check proved
 simple_unc_arrays.adb:13:53: info: discriminant check proved
 simple_unc_arrays.adb:13:57: info: index check proved
-simple_unc_arrays.adb:13:60: warning: overflow check might fail
+simple_unc_arrays.adb:13:60: medium: overflow check might fail
 simple_unc_arrays.adb:13:63: info: discriminant check proved
 simple_unc_arrays.adb:13:67: info: index check proved
 simple_unc_arrays.adb:14:14: info: discriminant check proved
 simple_unc_arrays.adb:14:18: info: index check proved
 simple_unc_arrays.adb:14:25: info: discriminant check proved
 simple_unc_arrays.adb:14:29: info: index check proved
-simple_unc_arrays.adb:14:32: warning: overflow check might fail
+simple_unc_arrays.adb:14:32: medium: overflow check might fail
 simple_unc_arrays.adb:14:35: info: discriminant check proved
 simple_unc_arrays.adb:14:39: info: index check proved
 simple_unc_arrays.adb:29:10: info: loop invariant initialization proved
-simple_unc_arrays.adb:29:10: warning: loop invariant might fail after first iteration
+simple_unc_arrays.adb:29:10: medium: loop invariant might fail after first iteration
 simple_unc_arrays.adb:30:46: info: discriminant check proved
-simple_unc_arrays.adb:30:50: warning: array index check might fail
+simple_unc_arrays.adb:30:50: medium: array index check might fail
 simple_unc_arrays.adb:30:82: info: overflow check proved
-simple_unc_arrays.adb:30:82: warning: array index check might fail
+simple_unc_arrays.adb:30:82: medium: array index check might fail
 simple_unc_arrays.adb:32:50: info: discriminant check proved
-simple_unc_arrays.adb:32:54: warning: array index check might fail
-simple_unc_arrays.adb:32:75: warning: array index check might fail
-simple_unc_arrays.adb:34:10: warning: precondition might fail
+simple_unc_arrays.adb:32:54: medium: array index check might fail
+simple_unc_arrays.adb:32:75: medium: array index check might fail
+simple_unc_arrays.adb:34:10: medium: precondition might fail
 simple_unc_arrays.adb:34:23: info: discriminant check proved
-simple_unc_arrays.adb:34:23: warning: length check might fail
+simple_unc_arrays.adb:34:23: medium: length check might fail
 simple_unc_arrays.adb:34:32: info: range check proved
-simple_unc_arrays.adb:35:22: warning: overflow check might fail
-simple_unc_arrays.adb:36:23: warning: range check might fail
+simple_unc_arrays.adb:35:22: medium: overflow check might fail
+simple_unc_arrays.adb:36:23: medium: range check might fail
 simple_unc_arrays.adb:45:22: info: discriminant check proved
 simple_unc_arrays.adb:45:26: info: index check proved
 simple_unc_arrays.adb:48:10: info: loop invariant initialization proved
@@ -64,7 +64,7 @@ simple_unc_arrays.adb:68:20: info: discriminant check proved
 simple_unc_arrays.adb:68:24: info: index check proved
 simple_unc_arrays.adb:69:21: info: discriminant check proved
 simple_unc_arrays.adb:69:25: info: index check proved
-simple_unc_arrays.adb:84:20: warning: overflow check might fail
+simple_unc_arrays.adb:84:20: medium: overflow check might fail
 simple_unc_arrays.adb:84:23: info: discriminant check proved
 simple_unc_arrays.adb:84:27: info: index check proved
 simple_unc_arrays.adb:87:18: info: division check proved
@@ -84,26 +84,26 @@ simple_unc_arrays.adb:121:16: info: precondition proved
 simple_unc_arrays.adb:121:31: info: discriminant check proved
 simple_unc_arrays.adb:121:31: info: length check proved
 simple_unc_arrays.adb:121:39: info: overflow check proved
-simple_unc_arrays.adb:143:35: warning: overflow check might fail
-simple_unc_arrays.adb:143:42: warning: overflow check might fail
+simple_unc_arrays.adb:143:35: medium: overflow check might fail
+simple_unc_arrays.adb:143:42: medium: overflow check might fail
 simple_unc_arrays.adb:143:47: info: division check proved
 simple_unc_arrays.adb:144:29: info: discriminant check proved
-simple_unc_arrays.adb:144:33: warning: array index check might fail
+simple_unc_arrays.adb:144:33: medium: array index check might fail
 simple_unc_arrays.adb:153:44: info: discriminant check proved
-simple_unc_arrays.adb:153:48: warning: array index check might fail
+simple_unc_arrays.adb:153:48: medium: array index check might fail
 simple_unc_arrays.adb:154:32: info: overflow check proved
 simple_unc_arrays.adb:157:46: info: discriminant check proved
-simple_unc_arrays.adb:157:50: warning: array index check might fail
-simple_unc_arrays.adb:158:34: warning: range check might fail
-simple_unc_arrays.adb:163:16: warning: precondition might fail
+simple_unc_arrays.adb:157:50: medium: array index check might fail
+simple_unc_arrays.adb:158:34: medium: range check might fail
+simple_unc_arrays.adb:163:16: medium: precondition might fail
 simple_unc_arrays.adb:163:29: info: discriminant check proved
-simple_unc_arrays.adb:163:29: warning: length check might fail
-simple_unc_arrays.adb:163:33: warning: range check might fail
-simple_unc_arrays.adb:163:39: warning: range check might fail
-simple_unc_arrays.adb:166:32: warning: overflow check might fail
-simple_unc_arrays.adb:167:34: warning: range check might fail
+simple_unc_arrays.adb:163:29: medium: length check might fail
+simple_unc_arrays.adb:163:33: medium: range check might fail
+simple_unc_arrays.adb:163:39: medium: range check might fail
+simple_unc_arrays.adb:166:32: medium: overflow check might fail
+simple_unc_arrays.adb:167:34: medium: range check might fail
 simple_unc_arrays.adb:172:16: info: precondition proved
-simple_unc_arrays.adb:172:34: warning: range check might fail
+simple_unc_arrays.adb:172:34: medium: range check might fail
 simple_unc_arrays.adb:176:16: info: precondition proved
 simple_unc_arrays.adb:181:06: warning: "Tmp" is not modified, could be declared constant
 simple_unc_arrays.adb:184:07: info: precondition proved
@@ -114,61 +114,61 @@ simple_unc_arrays.adb:200:10: info: index check proved
 simple_unc_arrays.adb:200:13: warning: useless assignment of object to itself
 simple_unc_arrays.adb:200:19: info: index check proved
 simple_unc_arrays.adb:201:10: info: index check proved
-simple_unc_arrays.ads:20:13: warning: postcondition might fail
+simple_unc_arrays.ads:20:13: medium: postcondition might fail
 simple_unc_arrays.ads:22:36: info: discriminant check proved
-simple_unc_arrays.ads:22:40: warning: array index check might fail
+simple_unc_arrays.ads:22:40: medium: array index check might fail
 simple_unc_arrays.ads:22:46: info: discriminant check proved
 simple_unc_arrays.ads:22:50: info: index check proved
-simple_unc_arrays.ads:22:53: warning: overflow check might fail
+simple_unc_arrays.ads:22:53: medium: overflow check might fail
 simple_unc_arrays.ads:22:56: info: discriminant check proved
 simple_unc_arrays.ads:22:60: info: index check proved
-simple_unc_arrays.ads:30:20: warning: postcondition might fail, requires A.V (J) = A.V'Old (A.Last - J + 1)
+simple_unc_arrays.ads:30:20: medium: postcondition might fail, requires A.V (J) = A.V'Old (A.Last - J + 1)
 simple_unc_arrays.ads:30:22: info: discriminant check proved
-simple_unc_arrays.ads:30:26: warning: array index check might fail
+simple_unc_arrays.ads:30:26: medium: array index check might fail
 simple_unc_arrays.ads:30:32: info: discriminant check proved
 simple_unc_arrays.ads:30:51: info: index check proved
 simple_unc_arrays.ads:30:51: info: overflow check proved
-simple_unc_arrays.ads:40:14: warning: postcondition might fail
+simple_unc_arrays.ads:40:14: medium: postcondition might fail
 simple_unc_arrays.ads:40:60: info: discriminant check proved
 simple_unc_arrays.ads:40:64: info: index check proved
 simple_unc_arrays.ads:42:61: info: discriminant check proved
 simple_unc_arrays.ads:42:65: info: index check proved
-simple_unc_arrays.ads:52:15: warning: postcondition might fail
+simple_unc_arrays.ads:52:15: medium: postcondition might fail
 simple_unc_arrays.ads:52:61: info: discriminant check proved
 simple_unc_arrays.ads:52:64: info: index check proved
 simple_unc_arrays.ads:54:64: info: discriminant check proved
 simple_unc_arrays.ads:54:68: info: index check proved
 simple_unc_arrays.ads:64:14: info: precondition proved
-simple_unc_arrays.ads:64:14: warning: postcondition might fail
+simple_unc_arrays.ads:64:14: medium: postcondition might fail
 simple_unc_arrays.ads:65:15: info: precondition proved
-simple_unc_arrays.ads:74:17: warning: postcondition might fail, requires Search'Result = 0 and then Not_In (A, V, 1 ,A.Last)) or else (A.V (Search'Result) = V and then Not_In (A, V, 1, Search'Result-1)
+simple_unc_arrays.ads:74:17: medium: postcondition might fail, requires Search'Result = 0 and then Not_In (A, V, 1 ,A.Last)) or else (A.V (Search'Result) = V and then Not_In (A, V, 1, Search'Result-1)
 simple_unc_arrays.ads:75:16: info: discriminant check proved
-simple_unc_arrays.ads:75:26: warning: array index check might fail
+simple_unc_arrays.ads:75:26: medium: array index check might fail
 simple_unc_arrays.ads:76:54: info: range check proved
-simple_unc_arrays.ads:84:17: warning: postcondition might fail
+simple_unc_arrays.ads:84:17: medium: postcondition might fail
 simple_unc_arrays.ads:85:34: info: discriminant check proved
 simple_unc_arrays.ads:85:38: info: index check proved
 simple_unc_arrays.ads:85:62: info: discriminant check proved
 simple_unc_arrays.ads:85:67: info: overflow check proved
-simple_unc_arrays.ads:85:67: warning: array index check might fail
+simple_unc_arrays.ads:85:67: medium: array index check might fail
 simple_unc_arrays.ads:88:22: info: discriminant check proved
 simple_unc_arrays.ads:88:26: info: index check proved
 simple_unc_arrays.ads:88:49: info: discriminant check proved
-simple_unc_arrays.ads:88:53: warning: array index check might fail
-simple_unc_arrays.ads:96:17: warning: postcondition might fail
+simple_unc_arrays.ads:88:53: medium: array index check might fail
+simple_unc_arrays.ads:96:17: medium: postcondition might fail
 simple_unc_arrays.ads:96:52: info: discriminant check proved
-simple_unc_arrays.ads:96:56: warning: array index check might fail
+simple_unc_arrays.ads:96:56: medium: array index check might fail
 simple_unc_arrays.ads:96:63: info: discriminant check proved
 simple_unc_arrays.ads:96:68: info: overflow check proved
-simple_unc_arrays.ads:96:68: warning: array index check might fail
+simple_unc_arrays.ads:96:68: medium: array index check might fail
 simple_unc_arrays.ads:98:47: info: discriminant check proved
 simple_unc_arrays.ads:98:55: info: index check proved
 simple_unc_arrays.ads:98:61: info: discriminant check proved
-simple_unc_arrays.ads:98:65: warning: array index check might fail
+simple_unc_arrays.ads:98:65: medium: array index check might fail
 simple_unc_arrays.ads:112:57: info: discriminant check proved
 simple_unc_arrays.ads:112:61: info: index check proved
 simple_unc_arrays.ads:116:18: info: postcondition proved
-simple_unc_arrays.ads:121:20: warning: postcondition might fail
+simple_unc_arrays.ads:121:20: medium: postcondition might fail
 simple_unc_arrays.ads:121:24: info: index check proved
 simple_unc_arrays.ads:121:36: info: index check proved
 simple_unc_arrays.ads:121:46: info: index check proved

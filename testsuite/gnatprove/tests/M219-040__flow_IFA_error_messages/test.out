@@ -1,13 +1,13 @@
 test.adb:7:04: warning: analyzing unreferenced function "Uninitialized_1"
-test.adb:16:14: warning: "Y" might not be initialized
+test.adb:16:14: medium: "Y" might not be initialized
 test.adb:38:04: warning: analyzing unreferenced procedure "Uninitialized_3"
-test.adb:38:51: warning: "C" might not be initialized in "Uninitialized_3"
+test.adb:38:51: medium: "C" might not be initialized in "Uninitialized_3"
 test.adb:56:04: warning: analyzing unreferenced procedure "Uninitialized_4"
-test.adb:56:31: warning: "Export" might not be initialized in "Uninitialized_4"
+test.adb:56:31: medium: "Export" might not be initialized in "Uninitialized_4"
 test.adb:76:04: warning: analyzing unreferenced procedure "Uninitialized_5"
-test.adb:76:31: warning: "A" might not be initialized in "Uninitialized_5"
-test.adb:79:21: "C" is not initialized
-test.adb:80:15: "A" is not initialized
+test.adb:76:31: medium: "A" might not be initialized in "Uninitialized_5"
+test.adb:79:21: high: "C" is not initialized
+test.adb:80:15: high: "A" is not initialized
 test.adb:88:04: warning: analyzing unreferenced procedure "Ineffective_Statements_1"
 test.adb:92:12: warning: unused assignment
 test.adb:101:04: warning: analyzing unreferenced procedure "Ineffective_Statements_2"
@@ -24,9 +24,5 @@ test.adb:185:39: warning: unused variable "Par2"
 test.adb:187:13: warning: unused variable "Z"
 test.adb:190:29: warning: unused global "Y"
 test.adb:208:14: warning: subprogram "Unreachable_Code_1" has no effect
-test.adb:213:12: dead code
-test.adb:217:15: dead code
-   compilation of test.adb failed
-
-
-gnatprove: error during analysis of data and information flow
+test.adb:213:12: warning: this statement is never reached
+test.adb:217:15: warning: this statement is never reached

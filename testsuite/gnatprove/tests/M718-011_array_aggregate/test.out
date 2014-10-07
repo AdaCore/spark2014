@@ -1,5 +1,5 @@
 simple.adb:4:34: info: length check proved
-simple.adb:4:54: warning: overflow check might fail
+simple.adb:4:54: medium: overflow check might fail
 simple.ads:8:17: info: postcondition proved
 simple.ads:8:40: info: length check proved
 simple.ads:8:69: info: overflow check proved

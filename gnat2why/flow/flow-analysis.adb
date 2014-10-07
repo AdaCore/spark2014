@@ -23,12 +23,14 @@
 
 with Ada.Text_IO;
 
+with Elists;               use Elists;
 with Namet;                use Namet;
 with Nlists;               use Nlists;
 with Sem_Util;             use Sem_Util;
 with Sinfo;                use Sinfo;
 with Sinput;               use Sinput;
 with Snames;               use Snames;
+with Stand;                use Stand;
 
 with Why;
 with Gnat2Why_Args;
@@ -174,7 +176,7 @@ package body Flow.Analysis is
    ---------------------
 
    procedure Global_Required
-     (FA  : Flow_Analysis_Graphs;
+     (FA  : in out Flow_Analysis_Graphs;
       Var : Flow_Id)
    is
       First_Use : Node_Id;
@@ -196,7 +198,8 @@ package body Flow.Analysis is
               "but no use can be found",
             N         => FA.Analyzed_Entity,
             F1        => Direct_Mapping_Id (FA.Analyzed_Entity),
-            F2        => Var);
+            F2        => Var,
+            Kind      => Error_Kind);
 
       else
          pragma Assert (Nkind (First_Use) in N_Subprogram_Call);
@@ -208,14 +211,16 @@ package body Flow.Analysis is
                  "aspect to make state & visible",
                N         => First_Use,
                F1        => Direct_Mapping_Id (Entity (Name (First_Use))),
-               F2        => Var);
+               F2        => Var,
+               Kind      => Error_Kind);
          else
             Error_Msg_Flow
               (FA        => FA,
                Msg       => "called subprogram & requires GLOBAL " &
                  "aspect to make state visible",
                N         => First_Use,
-               F1        => Direct_Mapping_Id (Entity (Name (First_Use))));
+               F1        => Direct_Mapping_Id (Entity (Name (First_Use))),
+               Kind      => Error_Kind);
          end if;
       end if;
    end Global_Required;
@@ -525,7 +530,7 @@ package body Flow.Analysis is
    -- Analyse_Main --
    ------------------
 
-   procedure Analyse_Main (FA : Flow_Analysis_Graphs) is
+   procedure Analyse_Main (FA : in out Flow_Analysis_Graphs) is
       Proof_Reads : Flow_Id_Sets.Set;
       Reads       : Flow_Id_Sets.Set;
       Unused      : Flow_Id_Sets.Set;
@@ -562,7 +567,7 @@ package body Flow.Analysis is
                F1        => R,
                F2        => Direct_Mapping_Id (FA.Analyzed_Entity),
                Tag       => "uninitialized",
-               Warning   => True);
+               Kind      => Medium_Check_Kind);
          end if;
 
       end loop;
@@ -573,11 +578,12 @@ package body Flow.Analysis is
    ------------------
 
    procedure Sanity_Check
-     (FA   : Flow_Analysis_Graphs;
-      Sane : out Boolean)
+     (FA   : in out Flow_Analysis_Graphs;
+      Sane :    out Boolean)
    is
-      type Sanity_Check is access procedure (FA   : Flow_Analysis_Graphs;
-                                             Sane : out Boolean);
+      type Sanity_Check is access procedure
+        (FA   : in out Flow_Analysis_Graphs;
+         Sane :    out Boolean);
 
       type Sanity_Checks_T is array (Positive range <>) of Sanity_Check;
 
@@ -599,7 +605,7 @@ package body Flow.Analysis is
    -- Sanity_Check_Postcondition --
    --------------------------------
 
-   procedure Sanity_Check_Postcondition (FA   : Flow_Analysis_Graphs;
+   procedure Sanity_Check_Postcondition (FA   : in out Flow_Analysis_Graphs;
                                          Sane : in out Boolean)
    is
       Vars_Used  : Flow_Id_Sets.Set;
@@ -702,7 +708,8 @@ package body Flow.Analysis is
                            Var     => Var,
                            Precise => False),
                         F1        => Entire_Variable (Var),
-                        F2        => Direct_Mapping_Id (FA.Analyzed_Entity));
+                        F2        => Direct_Mapping_Id (FA.Analyzed_Entity),
+                        Kind      => Error_Kind);
                      Sane := False;
 
                   elsif FA.Kind in E_Package | E_Package_Body
@@ -723,7 +730,8 @@ package body Flow.Analysis is
                                                          Scope   => FA.B_Scope,
                                                          Var     => Var,
                                                          Precise => False),
-                        F1        => Entire_Variable (Var));
+                        F1        => Entire_Variable (Var),
+                        Kind      => Error_Kind);
                      Sane := False;
 
                   end if;
@@ -739,7 +747,7 @@ package body Flow.Analysis is
    -- Find_Unwritten_Exports --
    ----------------------------
 
-   procedure Find_Unwritten_Exports (FA : Flow_Analysis_Graphs) is
+   procedure Find_Unwritten_Exports (FA : in out Flow_Analysis_Graphs) is
       F_Final   : Flow_Id;
       A_Final   : V_Attributes;
       F_Initial : Flow_Id;
@@ -758,8 +766,7 @@ package body Flow.Analysis is
 
             --  We have a final use vertex which is an export that has
             --  a single in-link. If this in-link is its initial value
-            --  then clearly we do not set defined this output on any
-            --  path.
+            --  then clearly we do not set this output on any path.
 
             Unwritten := False;
             if FA.PDG.In_Neighbour_Count (V) = 1 then
@@ -799,7 +806,7 @@ package body Flow.Analysis is
                      N         => Find_Global (FA.Analyzed_Entity, F_Final),
                      F1        => Entire_Variable (F_Final),
                      Tag       => "inout_only_read",
-                     Warning   => True,
+                     Kind      => Warning_Kind,
                      Vertex    => V);
                else
                   Error_Msg_Flow
@@ -808,7 +815,7 @@ package body Flow.Analysis is
                      N         => Error_Location (FA.PDG, FA.Atr, V),
                      F1        => Entire_Variable (F_Final),
                      Tag       => "inout_only_read",
-                     Warning   => True,
+                     Kind      => Warning_Kind,
                      Vertex    => V);
                end if;
             end if;
@@ -821,7 +828,7 @@ package body Flow.Analysis is
    -------------------------------------------------
 
    procedure Find_Ineffective_Imports_And_Unused_Objects
-     (FA : Flow_Analysis_Graphs)
+     (FA : in out Flow_Analysis_Graphs)
    is
       function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean
       is (FA.PDG.Get_Key (V).Variant = Final_Value and then
@@ -1001,7 +1008,7 @@ package body Flow.Analysis is
                      N       => Find_Global (FA.Analyzed_Entity, F),
                      F1      => F,
                      Tag     => "unused",
-                     Warning => True);
+                     Kind    => Warning_Kind);
                end if;
             else
                --  ??? distinguish between variables and parameters
@@ -1011,7 +1018,7 @@ package body Flow.Analysis is
                   N       => Error_Location (FA.PDG, FA.Atr, V),
                   F1      => F,
                   Tag     => "unused",
-                  Warning => True);
+                  Kind    => Warning_Kind);
             end if;
          end;
       end loop;
@@ -1065,7 +1072,7 @@ package body Flow.Analysis is
                      F1      => F,
                      F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
                      Tag     => "unused_initial_value",
-                     Warning => True);
+                     Kind    => Warning_Kind);
                end if;
             else
                Error_Msg_Flow
@@ -1076,7 +1083,7 @@ package body Flow.Analysis is
                   F1      => F,
                   F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
                   Tag     => "unused_initial_value",
-                  Warning => True);
+                  Kind    => Warning_Kind);
             end if;
          end;
       end loop;
@@ -1086,7 +1093,7 @@ package body Flow.Analysis is
    -- Find_Ineffective_Statements --
    ---------------------------------
 
-   procedure Find_Ineffective_Statements (FA : Flow_Analysis_Graphs) is
+   procedure Find_Ineffective_Statements (FA : in out Flow_Analysis_Graphs) is
 
       function Is_Final_Use_Any_Export (V : Flow_Graphs.Vertex_Id)
                                         return Boolean;
@@ -1381,8 +1388,7 @@ package body Flow.Analysis is
                            N         => Error_Location (FA.PDG, FA.Atr, V),
                            F1        => Tmp,
                            Tag       => Tag,
-                           Warning   => True,
-                           Vertex    => V);
+                           Kind      => Warning_Kind);
 
                      else
                         Error_Msg_Flow
@@ -1391,7 +1397,7 @@ package body Flow.Analysis is
                            Msg       => "unused assignment",
                            N         => Error_Location (FA.PDG, FA.Atr, V),
                            Tag       => Tag,
-                           Warning   => True,
+                           Kind      => Warning_Kind,
                            Vertex    => V);
                      end if;
 
@@ -1402,7 +1408,7 @@ package body Flow.Analysis is
                         Msg       => "unused assignment",
                         N         => Error_Location (FA.PDG, FA.Atr, V),
                         Tag       => Tag,
-                        Warning   => True,
+                        Kind      => Warning_Kind,
                         Vertex    => V);
 
                   elsif Nkind (N) = N_Object_Declaration then
@@ -1413,7 +1419,7 @@ package body Flow.Analysis is
                            Msg       => "initialization has no effect",
                            N         => Error_Location (FA.PDG, FA.Atr, V),
                            Tag       => Tag,
-                           Warning   => True,
+                           Kind      => Warning_Kind,
                            Vertex    => V);
                      end if;
                      --  This warning is ignored for local constants.
@@ -1423,9 +1429,9 @@ package body Flow.Analysis is
                        (FA        => FA,
                         Tracefile => Tracefile,
                         Msg       => "statement has no effect",
+                        Kind      => Warning_Kind,
                         N         => Error_Location (FA.PDG, FA.Atr, V),
                         Tag       => Tag,
-                        Warning   => True,
                         Vertex    => V);
 
                   end if;
@@ -1445,7 +1451,7 @@ package body Flow.Analysis is
    -- Find_Dead_Code --
    --------------------
 
-   procedure Find_Dead_Code (FA : Flow_Analysis_Graphs)
+   procedure Find_Dead_Code (FA : in out Flow_Analysis_Graphs)
    is
       Dead_Code : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
 
@@ -1494,10 +1500,10 @@ package body Flow.Analysis is
             A      : constant V_Attributes := FA.Atr.Element (V);
          begin
             Error_Msg_Flow (FA        => FA,
-                            Msg       => "dead code",
+                            Msg       => "this statement is never reached",
                             N         => A.Error_Location,
                             Tag       => "dead_code",
-                            Warning   => False,
+                            Kind      => Warning_Kind,
                             Vertex    => V);
          end;
       end loop;
@@ -1507,7 +1513,7 @@ package body Flow.Analysis is
    -- Enforce_No_Return --
    -----------------------
 
-   procedure Enforce_No_Return (FA : Flow_Analysis_Graphs)
+   procedure Enforce_No_Return (FA : in out Flow_Analysis_Graphs)
    is
       procedure Search (V   : Flow_Graphs.Vertex_Id;
                         Ins : out Flow_Graphs.Traversal_Instruction);
@@ -1562,6 +1568,7 @@ package body Flow.Analysis is
          Error_Msg_Flow (FA        => FA,
                          Tracefile => Tracefile,
                          Msg       => "no_return subprogram & must not return",
+                         Kind      => Error_Kind,
                          SRM_Ref   => "6.5.1",
                          N         => FA.Analyzed_Entity,
                          F1        => Direct_Mapping_Id (FA.Analyzed_Entity),
@@ -1576,7 +1583,8 @@ package body Flow.Analysis is
    -- Find_Use_Of_Uninitialized_Variables --
    -----------------------------------------
 
-   procedure Find_Use_Of_Uninitialized_Variables (FA : Flow_Analysis_Graphs)
+   procedure Find_Use_Of_Uninitialized_Variables
+     (FA : in out Flow_Analysis_Graphs)
    is
       Tracefile : Unbounded_String;
 
@@ -1997,7 +2005,7 @@ package body Flow.Analysis is
                                       (FA.Analyzed_Entity, Key_I),
                                     F1        => Key_I,
                                     Tag       => "uninitialized",
-                                    Warning   => True,
+                                    Kind      => Medium_Check_Kind,
                                     Vertex    => V_Use);
                               else
                                  Error_Msg_Flow
@@ -2007,6 +2015,7 @@ package body Flow.Analysis is
                                       (FA.Analyzed_Entity, Key_I),
                                     F1        => Key_I,
                                     Tag       => "uninitialized",
+                                    Kind      => High_Check_Kind,
                                     Vertex    => V_Use);
                               end if;
                               Mark_Definition_Free_Path
@@ -2037,6 +2046,7 @@ package body Flow.Analysis is
                                     F1        => Direct_Mapping_Id
                                       (FA.Analyzed_Entity),
                                     Tag       => "missing_return",
+                                    Kind      => Error_Kind,
                                     Vertex    => V_Use);
                                  Mark_Definition_Free_Path
                                    (From => FA.Start_Vertex,
@@ -2069,7 +2079,7 @@ package body Flow.Analysis is
                                     F2        => Direct_Mapping_Id
                                       (FA.Analyzed_Entity),
                                     Tag       => "uninitialized",
-                                    Warning   => True,
+                                    Kind      => Medium_Check_Kind,
                                     Vertex    => V_Use);
                               else
                                  Error_Msg_Flow
@@ -2089,6 +2099,7 @@ package body Flow.Analysis is
                                     F2        => Direct_Mapping_Id
                                       (FA.Analyzed_Entity),
                                     Tag       => "uninitialized",
+                                    Kind      => High_Check_Kind,
                                     Vertex    => V_Use);
                               end if;
                               Mark_Definition_Free_Path
@@ -2128,7 +2139,7 @@ package body Flow.Analysis is
                                  Targeted => True),
                               F1        => Key_I,
                               Tag       => "uninitialized",
-                              Warning   => True,
+                              Kind      => Medium_Check_Kind,
                               Vertex    => V_Use);
                         else
                            Error_Msg_Flow
@@ -2145,6 +2156,7 @@ package body Flow.Analysis is
                                  Targeted => True),
                               F1        => Key_I,
                               Tag       => "uninitialized",
+                              Kind      => High_Check_Kind,
                               Vertex    => V_Use);
                         end if;
                         Mark_Definition_Free_Path
@@ -2165,7 +2177,7 @@ package body Flow.Analysis is
    -- Find_Stable_Elements --
    --------------------------
 
-   procedure Find_Stable_Elements (FA : Flow_Analysis_Graphs) is
+   procedure Find_Stable_Elements (FA : in out Flow_Analysis_Graphs) is
       Done      : Boolean            := False;
       M         : Attribute_Maps.Map := FA.Atr;
       Is_Stable : Boolean;
@@ -2217,7 +2229,7 @@ package body Flow.Analysis is
                                                         FA.Atr,
                                                         N_Loop),
                            Tag       => "stable",
-                           Warning   => True,
+                           Kind      => Warning_Kind,
                            Vertex    => N_Loop);
 
                         --  There might be other stable elements now.
@@ -2234,7 +2246,9 @@ package body Flow.Analysis is
    --  Find_Exports_Derived_From_Proof_Ins  --
    -------------------------------------------
 
-   procedure Find_Exports_Derived_From_Proof_Ins (FA : Flow_Analysis_Graphs) is
+   procedure Find_Exports_Derived_From_Proof_Ins
+     (FA : in out Flow_Analysis_Graphs)
+   is
       function Path_Leading_To_Proof_In_Dependency
         (From : Flow_Graphs.Vertex_Id;
          To   : Flow_Graphs.Vertex_Id) return Vertex_Sets.Set;
@@ -2375,6 +2389,7 @@ package body Flow.Analysis is
                                                      Input),
                            F1        => Output,
                            F2        => Input,
+                           Kind      => Error_Kind,
                            Tag       => "export_depends_on_proof_in");
 
                         Vertices_Trail := Path_Leading_To_Proof_In_Dependency
@@ -2394,11 +2409,140 @@ package body Flow.Analysis is
       end loop;
    end Find_Exports_Derived_From_Proof_Ins;
 
+   ---------------------------------
+   -- Find_Hidden_Unexposed_State --
+   ---------------------------------
+
+   procedure Find_Hidden_Unexposed_State (FA : in out Flow_Analysis_Graphs) is
+
+      function Enclosing_Package_Has_State (E : Entity_Id) return Boolean;
+      --  Returns True if there is an enclosing package of E (not
+      --  necessarily direcly) which has a state abstraction.
+
+      procedure Warn_About_Hidden_States (E : Entity_Id);
+      --  Issues one warning per hidden state found in package E
+
+      ---------------------------------
+      -- Enclosing_Package_Has_State --
+      ---------------------------------
+
+      function Enclosing_Package_Has_State (E : Entity_Id) return Boolean is
+         Scop : Entity_Id;
+      begin
+         Scop := E;
+         while Present (Scop) loop
+
+            --  If we reach Standard_Standard then there is no
+            --  enclosing package which has state.
+
+            if Scop = Standard_Standard then
+               return False;
+
+            --  If we find a body then we need to look if the entity
+            --  of the spec has abstract state.
+
+            elsif Ekind (Scop) = E_Package_Body
+              and then Present (Abstract_States (Spec_Entity (Scop)))
+            then
+               return True;
+
+            --  If we find a spec then we look if it has abstract
+            --  state.
+
+            elsif Ekind (Scop) in E_Generic_Package | E_Package
+              and then Present (Abstract_States (Scop))
+            then
+               return True;
+
+            --  If we find a public child then we return False
+
+            elsif Is_Child_Unit (Scop)
+              and then not Is_Private_Descendant (Scop)
+            then
+               return False;
+
+            end if;
+
+            Scop := Scope (Scop);
+         end loop;
+
+         --  If we reach this point then there is no enclosing package
+         --  which has state.
+
+         return False;
+      end Enclosing_Package_Has_State;
+
+      ------------------------------
+      -- Warn_About_Hidden_States --
+      ------------------------------
+
+      procedure Warn_About_Hidden_States (E : Entity_Id) is
+
+         procedure Warn_On_Non_Constant (First_Ent : Entity_Id);
+         --  Goes through a list of entities and issues warnings for
+         --  any non-constant variables.
+
+         --------------------------
+         -- Warn_On_Non_Constant --
+         --------------------------
+
+         procedure Warn_On_Non_Constant (First_Ent : Entity_Id) is
+            Hidden_State : Entity_Id;
+         begin
+            Hidden_State := First_Ent;
+            while Present (Hidden_State) loop
+               if Ekind (Hidden_State) in E_Variable
+                 and then not Is_Constant_Object (Hidden_State)
+               then
+                  Error_Msg_Flow
+                    (FA        => FA,
+                     Msg       => "& needs to be a constituent of " &
+                       "some state abstraction",
+                     N         => Hidden_State,
+                     F1        => Direct_Mapping_Id (Hidden_State),
+                     Tag       => "hidden_unexposed_state",
+                     Kind      => Medium_Check_Kind);
+               end if;
+
+               Next_Entity (Hidden_State);
+            end loop;
+         end Warn_On_Non_Constant;
+
+      begin
+         --  Warn about hidden state that lies in the private part
+         Warn_On_Non_Constant (First_Private_Entity (E));
+
+         --  Warn about hidden state that lies in the body
+         if Present (Body_Entity (E)) then
+            Warn_On_Non_Constant (First_Entity (Body_Entity (E)));
+         end if;
+      end Warn_About_Hidden_States;
+
+   begin
+      --  If the package has state abstraction then there is nothing
+      --  to do here.
+
+      if Present (Abstract_States (FA.Spec_Node)) then
+         return;
+      end if;
+
+      --  If there is no enclosing package that introduces a state
+      --  abstraction then the is nothing to do here.
+
+      if not Enclosing_Package_Has_State (FA.Spec_Node) then
+         return;
+      end if;
+
+      --  Issue one message per hidden state
+      Warn_About_Hidden_States (FA.Spec_Node);
+
+   end Find_Hidden_Unexposed_State;
+
    ---------------------
    -- Check_Contracts --
    ---------------------
 
-   procedure Check_Contracts (FA : Flow_Analysis_Graphs) is
+   procedure Check_Contracts (FA : in out Flow_Analysis_Graphs) is
 
       function Find_Export (E : Entity_Id) return Node_Id;
       --  Looks through the depends aspect on FA.Analyzed_Entity and
@@ -2496,8 +2640,8 @@ package body Flow.Analysis is
          Print_Dependency_Map (Actual_Deps);
       end if;
 
-      --  If the user depds do not include something we have in the
-      --  actual deps we will raise an appropriate error. We should
+      --  If the user depends do not include something we have in the
+      --  actual depends we will raise an appropriate error. We should
       --  however also sanity check there is nothing in the user
       --  dependencies which is *not* in the actual dependencies.
 
@@ -2513,7 +2657,7 @@ package body Flow.Analysis is
                   N         => Depends_Location,
                   F1        => F_Out,
                   Tag       => "depends_null",
-                  Warning   => True);
+                  Kind      => Medium_Check_Kind);
             end if;
          end;
       end loop;
@@ -2556,7 +2700,7 @@ package body Flow.Analysis is
                   N         => Depends_Location,
                   F1        => F_Out,
                   Tag       => "depends_missing_clause",
-                  Warning   => True);
+                  Kind      => High_Check_Kind);
                U_Deps := Flow_Id_Sets.Empty_Set;
             end if;
 
@@ -2598,7 +2742,7 @@ package body Flow.Analysis is
                               N         => Depends_Location,
                               F1        => Missing_Var,
                               Tag       => "depends_null",
-                              Warning   => True);
+                              Kind      => Medium_Check_Kind);
                         elsif F_Out = Direct_Mapping_Id
                           (FA.Analyzed_Entity)
                         then
@@ -2611,7 +2755,7 @@ package body Flow.Analysis is
                               F1        => F_Out,
                               F2        => Missing_Var,
                               Tag       => "depends_missing",
-                              Warning   => True);
+                              Kind      => Medium_Check_Kind);
                         else
                            Error_Msg_Flow
                              (FA        => FA,
@@ -2621,7 +2765,7 @@ package body Flow.Analysis is
                               F1        => F_Out,
                               F2        => Missing_Var,
                               Tag       => "depends_missing",
-                              Warning   => True);
+                              Kind      => Medium_Check_Kind);
                            --  ??? show path
                         end if;
                      end if;
@@ -2638,7 +2782,7 @@ package body Flow.Analysis is
                         N         => Depends_Location,
                         F1        => Wrong_Var,
                         Tag       => "depends_wrong",
-                        Warning   => True);
+                        Kind      => Medium_Check_Kind);
                      --  ??? show a path?
                   elsif F_Out = Direct_Mapping_Id
                     (FA.Analyzed_Entity)
@@ -2651,7 +2795,7 @@ package body Flow.Analysis is
                         F1        => F_Out,
                         F2        => Wrong_Var,
                         Tag       => "depends_wrong",
-                        Warning   => True);
+                        Kind      => Medium_Check_Kind);
                   else
                      Error_Msg_Flow
                        (FA        => FA,
@@ -2661,7 +2805,7 @@ package body Flow.Analysis is
                         F1        => F_Out,
                         F2        => Wrong_Var,
                         Tag       => "depends_wrong",
-                        Warning   => True);
+                        Kind      => Medium_Check_Kind);
                   end if;
                end loop;
 
@@ -2675,7 +2819,7 @@ package body Flow.Analysis is
    -- Check_Initializes_Contract --
    --------------------------------
 
-   procedure Check_Initializes_Contract (FA : Flow_Analysis_Graphs) is
+   procedure Check_Initializes_Contract (FA : in out Flow_Analysis_Graphs) is
 
       function Find_Entity
         (E    : Entity_Id;
@@ -2921,6 +3065,7 @@ package body Flow.Analysis is
                        (E    => Get_Direct_Mapping_Id (The_Out),
                         E_In => Get_Direct_Mapping_Id (G)),
                      F1        => G,
+                     Kind      => High_Check_Kind,
                      Tag       => "uninitialized");
                   Found_Uninitialized := True;
                end if;
@@ -2994,7 +3139,7 @@ package body Flow.Analysis is
                         F1        => The_Out,
                         F2        => Actual_In,
                         Tag       => "initializes_wrong",
-                        Warning   => True);
+                        Kind      => Medium_Check_Kind);
 
                      --  Generate and write the tracefile
                      Write_Tracefile
@@ -3019,7 +3164,7 @@ package body Flow.Analysis is
                      F1        => The_Out,
                      F2        => Contract_In,
                      Tag       => "initializes_wrong",
-                     Warning   => True);
+                     Kind      => Medium_Check_Kind);
                end if;
             end loop;
          end loop;

@@ -44,8 +44,8 @@ package body Flow.Analysis.Sanity is
    ---------------------------------
 
    procedure Check_Function_Side_Effects
-     (FA   : Flow_Analysis_Graphs;
-      Sane : out Boolean)
+     (FA   : in out Flow_Analysis_Graphs;
+      Sane :    out Boolean)
    is
    begin
       Sane := True;
@@ -59,6 +59,7 @@ package body Flow.Analysis.Sanity is
                Msg       => "flow analysis of & abandoned due to " &
                  "function with side effects",
                N         => FA.Analyzed_Entity,
+               Kind      => Error_Kind,
                F1        => Direct_Mapping_Id (FA.Analyzed_Entity));
          end if;
 
@@ -71,8 +72,8 @@ package body Flow.Analysis.Sanity is
    --------------------
 
    procedure Check_Aliasing
-     (FA   : Flow_Analysis_Graphs;
-      Sane : out Boolean)
+     (FA   : in out Flow_Analysis_Graphs;
+      Sane :    out Boolean)
    is
    begin
       Sane := True;
@@ -83,6 +84,7 @@ package body Flow.Analysis.Sanity is
               (FA        => FA,
                Msg       => "flow analysis of & abandoned due to aliasing",
                N         => FA.Analyzed_Entity,
+               Kind      => Error_Kind,
                F1        => Direct_Mapping_Id (FA.Analyzed_Entity));
          end if;
 
@@ -95,8 +97,8 @@ package body Flow.Analysis.Sanity is
    -------------------------------------
 
    procedure Check_Variable_Free_Expressions
-     (FA   : Flow_Analysis_Graphs;
-      Sane : out Boolean)
+     (FA   : in out Flow_Analysis_Graphs;
+      Sane :    out Boolean)
    is
       Entry_Node : Node_Id;
 
@@ -183,6 +185,7 @@ package body Flow.Analysis.Sanity is
                      Msg       => Err_Msg,
                      SRM_Ref   => "4.4(2)",
                      N         => Err_Node,
+                     Kind      => Error_Kind,
                      F1        => F);
                   Sane := False;
                end if;
@@ -372,6 +375,7 @@ package body Flow.Analysis.Sanity is
                Msg       => "flow analysis of & abandoned due to " &
                  "expressions with variable inputs",
                N         => FA.Analyzed_Entity,
+               Kind      => Error_Kind,
                F1        => Direct_Mapping_Id (FA.Analyzed_Entity));
          end if;
       end if;
@@ -382,8 +386,8 @@ package body Flow.Analysis.Sanity is
    -------------------------
 
    procedure Check_Illegal_Reads
-     (FA   : Flow_Analysis_Graphs;
-      Sane : out Boolean)
+     (FA   : in out Flow_Analysis_Graphs;
+      Sane :    out Boolean)
    is
    begin
       Sane := True;
@@ -402,6 +406,7 @@ package body Flow.Analysis.Sanity is
                            Msg       => "volatile formal out & cannot be read",
                            SRM_Ref   => "7.1.3(14)",
                            N         => Error_Location (FA.PDG, FA.Atr, V),
+                           Kind      => Error_Kind,
                            F1        => Entire_Variable (R));
                         Sane := False;
                      end if;
@@ -423,8 +428,8 @@ package body Flow.Analysis.Sanity is
    --------------------------
 
    procedure Check_Illegal_Writes
-     (FA   : Flow_Analysis_Graphs;
-      Sane : out Boolean)
+     (FA   : in out Flow_Analysis_Graphs;
+      Sane :    out Boolean)
    is
       Unused : Unbounded_String;
    begin
@@ -454,13 +459,14 @@ package body Flow.Analysis.Sanity is
                   case F.Kind is
                      when Direct_Mapping | Record_Field =>
                         Error_Msg_Flow
-                          (FA        => FA,
-                           Msg       => "cannot write & during " &
+                          (FA      => FA,
+                           Msg     => "cannot write & during " &
                              "elaboration of &",
-                           SRM_Ref   => "7.7.1(5)",
-                           N   => Error_Location (FA.PDG, FA.Atr, V),
-                           F1  => Entire_Variable (Var),
-                           F2  => Direct_Mapping_Id (FA.Analyzed_Entity));
+                           SRM_Ref => "7.7.1(5)",
+                           N       => Error_Location (FA.PDG, FA.Atr, V),
+                           Kind    => Error_Kind,
+                           F1      => Entire_Variable (Var),
+                           F2      => Direct_Mapping_Id (FA.Analyzed_Entity));
 
                      when Magic_String =>
                         Global_Required (FA, Var);
@@ -502,6 +508,7 @@ package body Flow.Analysis.Sanity is
                              "elaboration of &",
                            SRM_Ref   => "7.7.1(5)",
                            N         => Error_Location (FA.PDG, FA.Atr, V),
+                           Kind      => Error_Kind,
                            F1        => Var,
                            F2        => Direct_Mapping_Id
                              (FA.Analyzed_Entity));
@@ -512,6 +519,7 @@ package body Flow.Analysis.Sanity is
                            Msg       => "& must be a global output of &",
                            SRM_Ref   => "6.1.4",
                            N         => Error_Location (FA.PDG, FA.Atr, V),
+                           Kind      =>  High_Check_Kind,
                            F1        =>
                              (if A.Is_Parameter
                               then A.Parameter_Formal
@@ -533,8 +541,8 @@ package body Flow.Analysis.Sanity is
    -------------------------------
 
    procedure Check_All_Variables_Known
-     (FA   : Flow_Analysis_Graphs;
-      Sane : out Boolean)
+     (FA   : in out Flow_Analysis_Graphs;
+      Sane :    out Boolean)
    is
       Unused : Unbounded_String;
    begin
@@ -573,8 +581,8 @@ package body Flow.Analysis.Sanity is
                   case F.Kind is
                      when Direct_Mapping | Record_Field =>
                         Error_Msg_Flow
-                          (FA        => FA,
-                           Msg       => "& must be listed in the " &
+                          (FA      => FA,
+                           Msg     => "& must be listed in the " &
                              Aspect_To_Fix & " aspect of &",
                            SRM_Ref   => SRM_Ref,
                            N   => First_Variable_Use (FA      => FA,
@@ -584,6 +592,7 @@ package body Flow.Analysis.Sanity is
                            F1  => (if Gnat2Why_Args.Flow_Advanced_Debug
                                    then Var
                                    else Entire_Variable (Var)),
+                           Kind    => High_Check_Kind,
                            F2  => Direct_Mapping_Id (FA.Analyzed_Entity));
 
                      when Magic_String =>

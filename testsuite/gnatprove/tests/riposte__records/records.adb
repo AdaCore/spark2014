@@ -1,7 +1,7 @@
 package body Records
 is
+   pragma Annotate (Gnatprove, False_Positive, "might not be initialized", "");
    pragma Warnings (Off, "* has no effect");
-   pragma Warnings (Off, "* might not be initialized *");
 
    function Init_A return Pair
      with Post => Init_A'Result = Pair' (A => 0, B => 0)  --  @POSTCONDITION:PASS

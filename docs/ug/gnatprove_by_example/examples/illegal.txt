@@ -1,0 +1,7 @@
+--  list of files with illegal contructs, which cause an error to be raised
+illegal_update.ads
+illegal_update.adb
+swap_incorrect_b.ads
+swap_incorrect_b.adb
+swap_incorrect_d.ads
+swap_incorrect_d.adb

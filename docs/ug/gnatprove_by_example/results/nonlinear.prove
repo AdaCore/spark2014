@@ -1,4 +1,4 @@
-nonlinear.adb:4:11: warning: postcondition might fail, requires R1 <= R2
+nonlinear.adb:4:11: medium: postcondition might fail, requires R1 <= R2
 nonlinear.adb:7:12: info: range check proved
 nonlinear.adb:7:12: info: division check proved
 nonlinear.adb:8:12: info: range check proved

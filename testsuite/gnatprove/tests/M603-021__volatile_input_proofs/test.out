@@ -1,12 +1,12 @@
 port.adb:7:04: warning: types for unchecked conversion have different sizes
 port.adb:9:04: warning: types for unchecked conversion have different sizes
-port.adb:29:16: warning: range check might fail
+port.adb:29:16: medium: range check might fail
 port.adb:39:10: warning: attribute Valid is assumed to return True
-port.adb:54:16: warning: range check might fail
+port.adb:54:16: medium: range check might fail
 port.adb:55:10: warning: attribute Valid is assumed to return True
 port.adb:109:10: warning: attribute Valid is assumed to return True
 port.adb:124:10: warning: attribute Valid is assumed to return True
-port.adb:143:22: warning: assertion might fail, requires T1 = T2
+port.adb:143:22: medium: assertion might fail, requires T1 = T2
 port.adb:160:07: info: assertion proved
 port.ads:16:04: info: assertion proved
 port.ads:68:22: info: postcondition proved

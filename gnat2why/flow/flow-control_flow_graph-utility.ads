@@ -206,7 +206,7 @@ package Flow.Control_Flow_Graph.Utility is
       Loops   : Node_Sets.Set := Node_Sets.Empty_Set)
       return V_Attributes
     with
-      Pre  => Is_Default_Initialized (F, Scope),
+      Pre  => Is_Default_Initialized (F),
       Post => not Make_Default_Initialization_Attributes'Result.Is_Null_Node
         and Make_Default_Initialization_Attributes'Result.Is_Default_Init;
    --  Create attributes for the default initialization vertices.

@@ -8,11 +8,20 @@ We begin with a very simple guide aimed at getting new users up and running
 with the |SPARK| tools. A small |SPARK| example program will be used for
 illustration.
 
+.. note::
+
+   This User's Guide applies to the latest development version of the |SPARK|
+   toolset. If you're using a SPARK GPL release, some of the described features
+   do not apply. Refer to the version of the |SPARK| Toolset User's Guide
+   shipping with your release, available through :menuselection:`Help -->
+   SPARK` in GPS and GNATbench IDEs, or under ``share/doc/spark`` in your
+   |SPARK| installation.
+
 As a prerequisite, it is assumed that the |SPARK| tools have already been
 installed. As a minimum you should install:
 
  - |GNATprove|
- - GPS.
+ - GPS
 
 Note that GPS is not strictly required for |SPARK| as all the commands can be
 invoked from the command line, or from Eclipse using the GNATbench plug-in, but

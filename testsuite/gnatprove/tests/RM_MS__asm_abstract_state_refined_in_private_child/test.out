@@ -1,1 +1,1 @@
-power_14.adb:19:24: warning: overflow check might fail
+power_14.adb:19:24: medium: overflow check might fail

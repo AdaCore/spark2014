@@ -32,6 +32,11 @@
    allocation strategy for large objects in certain cases). */
 int flag_stack_check = 0;
 
+/* Originally defined in GCC's common.opt. Controls the balance between GNAT
+   encodings and standard DWARF to emit in the debug infomation.  Useful for
+   DWARF debugging information generation only so not used in SPARK2014.  */
+int gnat_encodings = 0;
+
 /*  Originally defined in GCC's toplev.c. */
 int optimize = 0;
 int optimize_size = 0;

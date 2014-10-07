@@ -1,30 +1,22 @@
-init.adb:8:44: warning: overflow check might fail
-init.adb:8:48: warning: overflow check might fail
-init.adb:11:42: warning: overflow check might fail
-init.adb:11:46: warning: overflow check might fail
-init.adb:11:50: warning: overflow check might fail
+init.adb:8:44: medium: overflow check might fail
+init.adb:8:48: medium: overflow check might fail
+init.adb:11:42: medium: overflow check might fail
+init.adb:11:46: medium: overflow check might fail
+init.adb:11:50: medium: overflow check might fail
 init.ads:5:08: info: initial condition proved
-init_2.ads:7:08: warning: initial condition might fail
-init_2.ads:7:31: warning: overflow check might fail
-initializes_legal.adb:11:55: warning: overflow check might fail
-initializes_legal.ads:6:08: warning: initialization of V must not depend on A (SPARK RM 7.1.5(11))
-initializes_legal.ads:6:08: warning: initialization of V must not depend on Init.State (SPARK RM 7.1.5(11))
-initializes_illegal.adb:5:04: "Y" is not initialized in "Initializes_Illegal"
-initializes_illegal.ads:6:27: warning: initialization of V must not depend on A (SPARK RM 7.1.5(11))
-initializes_illegal.ads:7:27: warning: initialization of X does not depend on A (SPARK RM 7.1.5(11))
-initializes_illegal.ads:8:27: warning: initialization of Initializes_Illegal.Sa must not depend on A (SPARK RM 7.1.5(11))
+init_2.ads:7:08: medium: initial condition might fail
+init_2.ads:7:31: medium: overflow check might fail
+initializes_legal.adb:11:55: medium: overflow check might fail
+initializes_legal.ads:6:08: medium: initialization of V must not depend on A (SPARK RM 7.1.5(11))
+initializes_legal.ads:6:08: medium: initialization of V must not depend on Init.State (SPARK RM 7.1.5(11))
+initializes_illegal.adb:5:04: high: "Y" is not initialized in "Initializes_Illegal"
+initializes_illegal.ads:6:27: medium: initialization of V must not depend on A (SPARK RM 7.1.5(11))
+initializes_illegal.ads:7:27: medium: initialization of X does not depend on A (SPARK RM 7.1.5(11))
+initializes_illegal.ads:8:27: medium: initialization of Initializes_Illegal.Sa must not depend on A (SPARK RM 7.1.5(11))
 initializes_illegal.ads:11:04: warning: initialization has no effect
 initializes_illegal.ads:14:14: warning: subprogram "Does_Nothing" has no effect
-   compilation of initializes_illegal.adb failed
-
-
-gnatprove: error during flow analysis and proof
-initializes_illegal_2.adb:9:11: warning: overflow check might fail
-initializes_illegal_2.ads:7:27: warning: initialization of Initializes_Illegal_2.As2 must not depend on X (SPARK RM 7.1.5(11))
-initializes_illegal_2.ads:9:27: warning: initialization of Y must not depend on X (SPARK RM 7.1.5(11))
-initializes_illegal_2.ads:14:28: warning: overflow check might fail
-initializes_illegal_3.ads:5:35: Z must be initialized at elaboration
-   compilation of initializes_illegal_3.ads failed
-
-
-gnatprove: error during flow analysis and proof
+initializes_illegal_2.adb:9:11: medium: overflow check might fail
+initializes_illegal_2.ads:7:27: medium: initialization of Initializes_Illegal_2.As2 must not depend on X (SPARK RM 7.1.5(11))
+initializes_illegal_2.ads:9:27: medium: initialization of Y must not depend on X (SPARK RM 7.1.5(11))
+initializes_illegal_2.ads:14:28: medium: overflow check might fail
+initializes_illegal_3.ads:5:35: high: Z must be initialized at elaboration

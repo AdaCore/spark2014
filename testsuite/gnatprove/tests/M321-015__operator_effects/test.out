@@ -1,18 +1,18 @@
-opers.adb:5:16: warning: overflow check might fail, in instantiation at opers.adb:10
-opers.adb:5:16: warning: overflow check might fail, in instantiation at opers.adb:8
-opers.adb:46:35: warning: range check might fail
+opers.adb:5:16: medium: overflow check might fail, in instantiation at opers.adb:10
+opers.adb:5:16: medium: overflow check might fail, in instantiation at opers.adb:8
+opers.adb:46:35: medium: range check might fail
 opers.adb:47:35: info: range check proved
-opers.adb:48:22: warning: assertion might fail, requires not False1 (A)
-opers.adb:49:22: warning: assertion might fail, requires not False2 (A)
-opers.adb:50:22: warning: assertion might fail, requires Fixed_False1 (A)
+opers.adb:48:22: medium: assertion might fail, requires not False1 (A)
+opers.adb:49:22: medium: assertion might fail, requires not False2 (A)
+opers.adb:50:22: medium: assertion might fail, requires Fixed_False1 (A)
 opers.adb:50:44: info: range check proved
-opers.adb:51:22: warning: assertion might fail, requires Fixed_False2 (A)
+opers.adb:51:22: medium: assertion might fail, requires Fixed_False2 (A)
 opers.adb:51:44: info: range check proved
-opers.adb:52:22: warning: assertion might fail, requires True1 (A)
-opers.adb:53:22: warning: assertion might fail, requires True2 (A)
-opers.adb:54:22: warning: assertion might fail, requires not Fixed_True1 (A)
+opers.adb:52:22: medium: assertion might fail, requires True1 (A)
+opers.adb:53:22: medium: assertion might fail, requires True2 (A)
+opers.adb:54:22: medium: assertion might fail, requires not Fixed_True1 (A)
 opers.adb:54:47: info: range check proved
-opers.adb:55:22: warning: assertion might fail, requires not Fixed_True2 (A)
+opers.adb:55:22: medium: assertion might fail, requires not Fixed_True2 (A)
 opers.adb:55:47: info: range check proved
 opers.ads:5:18: warning: unused variable "X"
 opers.ads:5:21: warning: unused variable "Y"

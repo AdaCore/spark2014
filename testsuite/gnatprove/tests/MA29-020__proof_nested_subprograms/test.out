@@ -1,9 +1,9 @@
-skein.adb:34:14: warning: range check might fail, in call inlined at skein.adb:139
-skein.adb:35:29: warning: array index check might fail, in call inlined at skein.adb:139
-skein.adb:36:77: warning: array index check might fail, in call inlined at skein.adb:139
-skein.adb:36:77: warning: divide by zero might fail, in call inlined at skein.adb:139
-skein.adb:37:57: warning: range check might fail, in call inlined at skein.adb:139
-skein.adb:37:71: warning: range check might fail, in call inlined at skein.adb:139
+skein.adb:34:14: medium: range check might fail, in call inlined at skein.adb:139
+skein.adb:35:29: medium: array index check might fail, in call inlined at skein.adb:139
+skein.adb:36:77: medium: array index check might fail, in call inlined at skein.adb:139
+skein.adb:36:77: medium: divide by zero might fail, in call inlined at skein.adb:139
+skein.adb:37:57: medium: range check might fail, in call inlined at skein.adb:139
+skein.adb:37:71: medium: range check might fail, in call inlined at skein.adb:139
 skein.adb:48:23: warning: unused assignment, in call inlined at skein.adb:127
 skein.adb:56:22: warning: unused assignment, in call inlined at skein.adb:127
 skein.adb:60:04: warning: analyzing unreferenced procedure "Zero_Pad"
@@ -12,30 +12,30 @@ skein.adb:87:14: info: range check proved, in call inlined at skein.adb:111
 skein.adb:87:112: warning: statement has no effect, in call inlined at skein.adb:111
 skein.adb:88:29: warning: unused assignment, in call inlined at skein.adb:111
 skein.adb:95:26: warning: unused assignment, in call inlined at skein.adb:125
-skein.adb:95:43: warning: range check might fail, in call inlined at skein.adb:125
+skein.adb:95:43: medium: range check might fail, in call inlined at skein.adb:125
 skein.adb:96:26: warning: unused assignment, in call inlined at skein.adb:125
-skein.adb:96:72: warning: range check might fail, in call inlined at skein.adb:125
+skein.adb:96:72: medium: range check might fail, in call inlined at skein.adb:125
 skein.adb:97:26: warning: unused assignment, in call inlined at skein.adb:125
-skein.adb:97:72: warning: range check might fail, in call inlined at skein.adb:125
+skein.adb:97:72: medium: range check might fail, in call inlined at skein.adb:125
 skein.adb:98:26: warning: unused assignment, in call inlined at skein.adb:125
-skein.adb:98:72: warning: range check might fail, in call inlined at skein.adb:125
+skein.adb:98:72: medium: range check might fail, in call inlined at skein.adb:125
 skein.adb:99:26: warning: unused assignment, in call inlined at skein.adb:125
-skein.adb:99:72: warning: range check might fail, in call inlined at skein.adb:125
+skein.adb:99:72: medium: range check might fail, in call inlined at skein.adb:125
 skein.adb:100:26: warning: unused assignment, in call inlined at skein.adb:125
-skein.adb:100:72: warning: range check might fail, in call inlined at skein.adb:125
+skein.adb:100:72: medium: range check might fail, in call inlined at skein.adb:125
 skein.adb:101:26: warning: unused assignment, in call inlined at skein.adb:125
-skein.adb:101:72: warning: range check might fail, in call inlined at skein.adb:125
+skein.adb:101:72: medium: range check might fail, in call inlined at skein.adb:125
 skein.adb:102:26: warning: unused assignment, in call inlined at skein.adb:125
-skein.adb:102:72: warning: range check might fail, in call inlined at skein.adb:125
+skein.adb:102:72: medium: range check might fail, in call inlined at skein.adb:125
 skein.adb:107:12: info: length check proved
 skein.adb:109:43: warning: unused assignment
 skein.adb:110:07: warning: statement has no effect
 skein.adb:115:52: info: division check proved
-skein.adb:115:52: warning: range check might fail
+skein.adb:115:52: medium: range check might fail
 skein.adb:118:19: warning: unused assignment
 skein.adb:118:44: info: length check proved
-skein.adb:121:44: warning: divide by zero might fail
-skein.adb:146:37: warning: range check might fail
+skein.adb:121:44: medium: divide by zero might fail
+skein.adb:146:37: medium: range check might fail
 skein.ads:110:21: info: length check proved
 skein.ads:113:21: info: length check proved
 skein.ads:116:21: info: length check proved

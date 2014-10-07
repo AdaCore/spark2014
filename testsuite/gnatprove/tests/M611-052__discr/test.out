@@ -1,45 +1,45 @@
 list.adb:12:35: info: precondition proved
 list.adb:15:16: info: precondition proved
 list.adb:15:35: info: precondition proved
-list.adb:16:10: warning: precondition might fail
-list.adb:16:16: warning: "private part of S" might not be initialized
+list.adb:16:10: medium: precondition might fail
+list.adb:16:16: medium: "private part of S" might not be initialized
 list.adb:16:19: info: precondition proved
 list.adb:16:31: info: range check proved
 list.adb:19:17: info: precondition proved
 list.adb:19:36: info: precondition proved
 list.adb:20:10: info: range check proved
-list.adb:20:10: warning: precondition might fail
-list.adb:20:23: warning: precondition might fail
-list.adb:20:28: warning: "private part of S" might not be initialized
-list.adb:21:10: warning: precondition might fail
-list.adb:21:15: warning: "private part of S" might not be initialized
-list.adb:22:54: warning: loop invariant might fail after first iteration, requires Element (Res, J) = Element (L, Last_Index (L) - J + 1)
-list.adb:22:54: warning: loop invariant might fail in first iteration, requires Element (Res, J) = Element (L, Last_Index (L) - J + 1)
-list.adb:22:54: warning: precondition might fail
+list.adb:20:10: medium: precondition might fail
+list.adb:20:23: medium: precondition might fail
+list.adb:20:28: medium: "private part of S" might not be initialized
+list.adb:21:10: medium: precondition might fail
+list.adb:21:15: medium: "private part of S" might not be initialized
+list.adb:22:54: medium: loop invariant might fail after first iteration, requires Element (Res, J) = Element (L, Last_Index (L) - J + 1)
+list.adb:22:54: medium: loop invariant might fail in first iteration, requires Element (Res, J) = Element (L, Last_Index (L) - J + 1)
+list.adb:22:54: medium: precondition might fail
 list.adb:22:68: info: range check proved
 list.adb:22:73: info: precondition proved
 list.adb:22:85: info: precondition proved
 list.adb:22:104: info: range check proved
 list.ads:12:28: info: precondition proved
 list.ads:12:47: info: precondition proved
-list.ads:13:17: warning: postcondition might fail, requires Element (L, I) = Element (Reverse_List'Result, Last_Index (L) - I + 1)
-list.ads:13:17: warning: precondition might fail
-list.ads:13:29: warning: range check might fail
-list.ads:13:34: warning: precondition might fail
+list.ads:13:17: medium: postcondition might fail, requires Element (L, I) = Element (Reverse_List'Result, Last_Index (L) - I + 1)
+list.ads:13:17: medium: precondition might fail
+list.ads:13:29: medium: range check might fail
+list.ads:13:34: medium: precondition might fail
 list.ads:13:64: info: precondition proved
-list.ads:13:79: warning: overflow check might fail
-list.ads:13:83: warning: overflow check might fail
-list.ads:13:83: warning: range check might fail
+list.ads:13:79: medium: overflow check might fail
+list.ads:13:83: medium: overflow check might fail
+list.ads:13:83: medium: range check might fail
 main.adb:15:31: attribute "Img" is not permitted in SPARK
 stack.adb:4:47: info: discriminant check proved
 stack.adb:4:47: info: length check proved
 stack.adb:4:47: info: range check proved
-stack.adb:4:47: warning: range check might fail
+stack.adb:4:47: medium: range check might fail
 stack.adb:4:63: info: discriminant check proved
 stack.adb:5:55: info: discriminant check proved
 stack.adb:5:55: info: length check proved
 stack.adb:5:55: info: range check proved
-stack.adb:5:55: warning: range check might fail
+stack.adb:5:55: medium: range check might fail
 stack.adb:5:71: info: discriminant check proved
 stack.adb:7:57: info: discriminant check proved
 stack.adb:7:66: info: discriminant check proved
@@ -53,9 +53,9 @@ stack.adb:21:19: info: index check proved
 stack.adb:32:08: info: discriminant check proved
 stack.adb:32:17: info: discriminant check proved
 stack.adb:32:22: info: range check proved
-stack.ads:23:14: warning: postcondition might fail
-stack.ads:23:14: warning: precondition might fail
-stack.ads:27:14: warning: postcondition might fail, requires To_But_Top (S'old) = To (S)
+stack.ads:23:14: medium: postcondition might fail
+stack.ads:23:14: medium: precondition might fail
+stack.ads:27:14: medium: postcondition might fail, requires To_But_Top (S'old) = To (S)
 stack.ads:40:49: info: discriminant check proved
    compilation of main.adb failed
 

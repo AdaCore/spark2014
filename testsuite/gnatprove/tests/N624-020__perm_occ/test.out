@@ -1,47 +1,47 @@
-perm.adb:9:07: warning: precondition might fail
+perm.adb:9:07: medium: precondition might fail
 perm.adb:9:15: info: precondition proved
 perm.adb:9:32: info: precondition proved
 perm.adb:11:14: info: index check proved
-perm.adb:12:25: warning: assertion might fail, requires B (B'Last) = E
+perm.adb:12:25: medium: assertion might fail, requires B (B'Last) = E
 perm.adb:12:29: info: index check proved
-perm.adb:14:25: warning: assertion might fail, requires B (B'Last) /= E
+perm.adb:14:25: medium: assertion might fail, requires B (B'Last) /= E
 perm.adb:14:29: info: index check proved
 perm.adb:21:15: info: index check proved
-perm.adb:33:10: warning: precondition might fail
+perm.adb:33:10: medium: precondition might fail
 perm.adb:33:18: info: precondition proved
 perm.adb:33:35: info: precondition proved
 perm.adb:33:48: info: precondition proved
-perm.adb:35:10: warning: precondition might fail
+perm.adb:35:10: medium: precondition might fail
 perm.adb:35:19: info: precondition proved
-perm.adb:36:10: warning: precondition might fail
+perm.adb:36:10: medium: precondition might fail
 perm.adb:36:18: info: precondition proved
 perm.adb:36:31: info: precondition proved
-perm.adb:37:18: warning: precondition might fail
+perm.adb:37:18: medium: precondition might fail
 perm.adb:37:23: info: precondition proved
 perm.ads:7:07: info: range check proved
 perm.ads:7:28: info: overflow check proved
 perm.ads:12:17: info: index check proved
 perm.ads:12:42: info: precondition proved
-perm.ads:12:62: warning: range check might fail
+perm.ads:12:62: medium: range check might fail
 perm.ads:13:21: info: precondition proved
-perm.ads:15:14: warning: postcondition might fail, requires Occ_Def'Result <= A'length
+perm.ads:15:14: medium: postcondition might fail, requires Occ_Def'Result <= A'length
 perm.ads:19:14: info: postcondition proved
 perm.ads:21:14: warning: subprogram "Occ_Eq" has no effect
-perm.ads:23:17: warning: postcondition might fail, requires Occ (A, E) = Occ (B, E)
-perm.ads:27:14: warning: postcondition might fail
+perm.ads:23:17: medium: postcondition might fail, requires Occ (A, E) = Occ (B, E)
+perm.ads:27:14: medium: postcondition might fail
 perm.ads:28:27: info: index check proved
 perm.ads:30:46: info: index check proved
 perm.ads:30:54: info: index check proved
 perm.ads:32:14: warning: subprogram "Occ_Set" has no effect
-perm.ads:35:08: warning: postcondition might fail
+perm.ads:35:08: medium: postcondition might fail
 perm.ads:35:19: info: index check proved
 perm.ads:35:32: info: precondition proved
 perm.ads:36:31: info: precondition proved
 perm.ads:37:18: info: index check proved
 perm.ads:37:35: info: precondition proved
 perm.ads:38:19: info: precondition proved
-sort.adb:14:16: warning: postcondition might fail, requires Values = Set (Set (Values'Old, X, Values'Old (Y)), Y, Values'Old (X)
-sort.adb:15:10: warning: precondition might fail
+sort.adb:14:16: medium: postcondition might fail, requires Values = Set (Set (Values'Old, X, Values'Old (Y)), Y, Values'Old (X)
+sort.adb:15:10: medium: precondition might fail
 sort.adb:15:15: info: precondition proved
 sort.adb:15:32: info: range check proved
 sort.adb:15:47: info: index check proved
@@ -51,7 +51,7 @@ sort.adb:20:53: info: length check proved
 sort.adb:24:29: info: index check proved
 sort.adb:25:15: info: index check proved
 sort.adb:25:29: info: index check proved
-sort.adb:28:22: warning: assertion might fail, requires Values = Set (Init, X, Init (Y)
+sort.adb:28:22: medium: assertion might fail, requires Values = Set (Init, X, Init (Y)
 sort.adb:28:31: info: precondition proved
 sort.adb:28:42: info: range check proved
 sort.adb:28:51: info: index check proved
@@ -60,7 +60,7 @@ sort.adb:29:14: warning: unused assignment
 sort.adb:29:17: info: length check proved
 sort.adb:31:15: info: index check proved
 sort.adb:31:21: info: range check proved
-sort.adb:34:22: warning: assertion might fail, requires Values = Set (Interm, Y, Init (X)
+sort.adb:34:22: medium: assertion might fail, requires Values = Set (Interm, Y, Init (X)
 sort.adb:34:31: info: precondition proved
 sort.adb:34:44: info: range check proved
 sort.adb:34:53: info: index check proved
@@ -71,7 +71,7 @@ sort.adb:48:20: info: range check proved
 sort.adb:50:38: info: index check proved
 sort.adb:51:20: info: range check proved
 sort.adb:53:10: info: loop invariant initialization proved
-sort.adb:53:10: warning: loop invariant might fail after first iteration
+sort.adb:53:10: medium: loop invariant might fail after first iteration
 sort.adb:56:28: info: index check proved
 sort.adb:56:44: info: index check proved
 sort.adb:68:17: warning: subprogram "Prove_Swap_Perm" has no effect
@@ -79,40 +79,40 @@ sort.adb:70:19: info: precondition proved
 sort.adb:70:24: info: precondition proved
 sort.adb:70:48: info: index check proved
 sort.adb:70:64: info: index check proved
-sort.adb:71:17: warning: postcondition might fail, requires Is_Perm (Values, Next)
+sort.adb:71:17: medium: postcondition might fail, requires Is_Perm (Values, Next)
 sort.adb:74:13: info: precondition proved
 sort.adb:74:41: info: index check proved
-sort.adb:75:13: warning: precondition might fail
+sort.adb:75:13: medium: precondition might fail
 sort.adb:75:22: info: precondition proved
 sort.adb:75:46: info: index check proved
 sort.adb:75:62: info: index check proved
-sort.adb:76:13: warning: precondition might fail
-sort.adb:76:27: warning: precondition might fail
+sort.adb:76:13: medium: precondition might fail
+sort.adb:76:27: medium: precondition might fail
 sort.adb:76:32: info: precondition proved
 sort.adb:76:56: info: index check proved
 sort.adb:76:72: info: index check proved
-sort.adb:79:18: warning: loop invariant might fail after first iteration, requires Occ (Values, F) = Occ (Next, F)
-sort.adb:79:18: warning: loop invariant might fail in first iteration, requires Occ (Values, F) = Occ (Next, F)
+sort.adb:79:18: medium: loop invariant might fail after first iteration, requires Occ (Values, F) = Occ (Next, F)
+sort.adb:79:18: medium: loop invariant might fail in first iteration, requires Occ (Values, F) = Occ (Next, F)
 sort.adb:87:50: info: overflow check proved
-sort.adb:88:22: warning: precondition might fail
+sort.adb:88:22: medium: precondition might fail
 sort.adb:88:40: info: range check proved
-sort.adb:93:22: warning: length check might fail
+sort.adb:93:22: medium: length check might fail
 sort.adb:93:22: warning: unused assignment
 sort.adb:93:25: info: length check proved
-sort.adb:95:13: warning: precondition might fail
+sort.adb:95:13: medium: precondition might fail
 sort.adb:96:29: info: range check proved
-sort.adb:100:13: warning: precondition might fail
+sort.adb:100:13: medium: precondition might fail
 sort.adb:100:13: warning: statement has no effect
 sort.adb:100:48: info: range check proved
-sort.adb:100:57: warning: range check might fail
+sort.adb:100:57: medium: range check might fail
 sort.adb:105:31: info: overflow check proved
-sort.adb:106:20: warning: loop invariant might fail after first iteration, requires Values (I) <= Values (J)
-sort.adb:106:20: warning: loop invariant might fail in first iteration, requires Values (I) <= Values (J)
+sort.adb:106:20: medium: loop invariant might fail after first iteration, requires Values (I) <= Values (J)
+sort.adb:106:20: medium: loop invariant might fail in first iteration, requires Values (I) <= Values (J)
 sort.adb:106:28: info: index check proved
 sort.adb:106:42: info: index check proved
 sort.adb:107:10: info: loop invariant initialization proved
-sort.adb:107:33: warning: loop invariant might fail after first iteration, requires Is_Perm (Values'Loop_Entry, Values)
-sort.ads:8:16: warning: postcondition might fail
+sort.adb:107:33: medium: loop invariant might fail after first iteration, requires Is_Perm (Values'Loop_Entry, Values)
+sort.ads:8:16: medium: postcondition might fail
 sort.ads:10:51: info: overflow check proved
 sort.ads:11:22: info: index check proved
 sort.ads:11:38: info: index check proved

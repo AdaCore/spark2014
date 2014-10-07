@@ -25,6 +25,9 @@ is
       else
          Active := True;  -- "safe" value
       end if;
+
+      pragma Assert (10 > 5);  --  This ensures that there will be some
+                               --  proof-related output.
    end Is_Active;
 
 end Water_High;

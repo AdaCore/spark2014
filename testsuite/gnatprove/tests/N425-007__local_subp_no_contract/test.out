@@ -1,1 +1,1 @@
-flowsubp.adb:7:24: warning: "X" might not be initialized in "Local"
+flowsubp.adb:7:24: medium: "X" might not be initialized in "Local"

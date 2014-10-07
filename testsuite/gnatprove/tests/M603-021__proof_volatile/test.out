@@ -1,1 +1,1 @@
-foo.adb:27:19: warning: postcondition might fail, requires X = Y
+foo.adb:27:19: medium: postcondition might fail, requires X = Y

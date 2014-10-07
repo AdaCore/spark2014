@@ -8,4 +8,4 @@ very_longs.adb:14:50: info: division check proved
 very_longs.adb:14:50: info: range check proved
 very_longs.adb:15:23: info: division check proved
 very_longs.adb:17:07: info: assertion proved
-very_longs.ads:13:19: warning: postcondition might fail, requires Make_From_Natural'Result.Digit_Length = Digit_Length
+very_longs.ads:13:19: medium: postcondition might fail, requires Make_From_Natural'Result.Digit_Length = Digit_Length

@@ -2,63 +2,63 @@ com_map.ads:46:22: info: precondition proved
 com_map.ads:47:22: info: precondition proved
 deceleration_curve.adb:37:10: info: assertion proved
 deceleration_curve.adb:39:10: info: loop invariant initialization proved
-deceleration_curve.adb:39:10: warning: loop invariant might fail after first iteration
-deceleration_curve.adb:41:10: warning: assertion might fail
+deceleration_curve.adb:39:10: medium: loop invariant might fail after first iteration
+deceleration_curve.adb:41:10: medium: assertion might fail
 deceleration_curve.adb:41:34: info: division check proved
 deceleration_curve.adb:41:34: info: overflow check proved
 deceleration_curve.adb:41:48: info: division check proved
 deceleration_curve.adb:41:48: info: overflow check proved
-deceleration_curve.adb:43:14: warning: assertion might fail, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) <= Speed_t(Acceleration) / speed
+deceleration_curve.adb:43:14: medium: assertion might fail, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) <= Speed_t(Acceleration) / speed
 deceleration_curve.adb:44:38: info: division check proved
-deceleration_curve.adb:44:38: warning: overflow check might fail
-deceleration_curve.adb:46:14: warning: assertion might fail, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) * Speed_t(Distance_Resolution) <= (Speed_t(Acceleration) / speed) * Distance_Resolution
+deceleration_curve.adb:44:38: medium: overflow check might fail
+deceleration_curve.adb:46:14: medium: assertion might fail, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) * Speed_t(Distance_Resolution) <= (Speed_t(Acceleration) / speed) * Distance_Resolution
 deceleration_curve.adb:48:39: info: division check proved
-deceleration_curve.adb:48:39: warning: overflow check might fail
-deceleration_curve.adb:48:48: warning: overflow check might fail
+deceleration_curve.adb:48:39: medium: overflow check might fail
+deceleration_curve.adb:48:48: medium: overflow check might fail
 deceleration_curve.adb:50:48: info: division check proved
-deceleration_curve.adb:50:48: warning: overflow check might fail
-deceleration_curve.adb:51:12: warning: overflow check might fail
-deceleration_curve.adb:53:10: warning: assertion might fail
-deceleration_curve.adb:59:25: warning: overflow check might fail
-deceleration_curve.adb:61:31: warning: overflow check might fail
+deceleration_curve.adb:50:48: medium: overflow check might fail
+deceleration_curve.adb:51:12: medium: overflow check might fail
+deceleration_curve.adb:53:10: medium: assertion might fail
+deceleration_curve.adb:59:25: medium: overflow check might fail
+deceleration_curve.adb:61:31: medium: overflow check might fail
 deceleration_curve.adb:70:36: info: division check proved
 deceleration_curve.adb:70:36: info: range check proved
 deceleration_curve.adb:82:09: info: precondition proved
-deceleration_curve.adb:85:47: warning: "Braking_Curve.Curve" might not be initialized
-deceleration_curve.adb:90:19: warning: overflow check might fail
+deceleration_curve.adb:85:47: medium: "Braking_Curve.Curve" might not be initialized
+deceleration_curve.adb:90:19: medium: overflow check might fail
 deceleration_curve.adb:90:21: warning: assuming "Sqrt" has no effect on global items
 deceleration_curve.adb:90:21: warning: no Global contract available for "Sqrt"
-deceleration_curve.adb:90:32: warning: overflow check might fail
-deceleration_curve.adb:91:13: warning: overflow check might fail
-deceleration_curve.adb:91:29: warning: overflow check might fail
-deceleration_curve.adb:92:13: warning: overflow check might fail
+deceleration_curve.adb:90:32: medium: overflow check might fail
+deceleration_curve.adb:91:13: medium: overflow check might fail
+deceleration_curve.adb:91:29: medium: overflow check might fail
+deceleration_curve.adb:92:13: medium: overflow check might fail
 deceleration_curve.adb:92:46: info: division check proved
 deceleration_curve.adb:92:46: info: overflow check proved
-deceleration_curve.adb:97:36: warning: overflow check might fail
-deceleration_curve.adb:97:36: warning: range check might fail
-deceleration_curve.adb:107:09: warning: precondition might fail
+deceleration_curve.adb:97:36: medium: overflow check might fail
+deceleration_curve.adb:97:36: medium: range check might fail
+deceleration_curve.adb:107:09: medium: precondition might fail
 deceleration_curve.adb:108:10: warning: assuming "Put" has no effect on global items
 deceleration_curve.adb:108:10: warning: no Global contract available for "Put"
 deceleration_curve.adb:109:10: warning: assuming "Put" has no effect on global items
 deceleration_curve.adb:109:10: warning: no Global contract available for "Put"
 deceleration_curve.adb:110:10: warning: assuming "Put" has no effect on global items
 deceleration_curve.adb:110:10: warning: no Global contract available for "Put"
-deceleration_curve.adb:111:12: warning: precondition might fail
+deceleration_curve.adb:111:12: medium: precondition might fail
 deceleration_curve.adb:112:10: warning: assuming "New_Line" has no effect on global items
 deceleration_curve.adb:112:10: warning: no Global contract available for "New_Line"
 deceleration_curve.ads:27:06: info: precondition proved
 deceleration_curve.ads:84:14: warning: subprogram "Print_Curve" has no effect
 deceleration_curve_test.adb:6:31: info: precondition proved
-deceleration_curve_test.adb:15:19: warning: assertion might fail, requires Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000
-deceleration_curve_test.adb:15:19: warning: precondition might fail
+deceleration_curve_test.adb:15:19: medium: assertion might fail, requires Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000
+deceleration_curve_test.adb:15:19: medium: precondition might fail
 deceleration_curve_test.adb:17:04: info: precondition proved
 example.adb:4:13: info: overflow check proved
 example.adb:5:20: info: overflow check proved
 example.ads:5:14: info: postcondition proved
 sec_3_13_2_monitoring_inputs.adb:31:27: info: precondition proved
-sec_3_13_2_monitoring_inputs.adb:32:61: warning: range check might fail
+sec_3_13_2_monitoring_inputs.adb:32:61: medium: range check might fail
 sec_3_13_2_monitoring_inputs.adb:37:27: info: precondition proved
-sec_3_13_2_monitoring_inputs.adb:38:61: warning: range check might fail
+sec_3_13_2_monitoring_inputs.adb:38:61: medium: range check might fail
 sec_3_13_2_monitoring_inputs.ads:70:15: info: length check proved
 sec_3_13_2_monitoring_inputs.ads:164:15: info: length check proved
 sec_3_13_2_monitoring_inputs.ads:169:15: info: length check proved
@@ -71,108 +71,108 @@ sec_3_13_2_monitoring_inputs.ads:201:58: info: range check proved
 sec_3_13_2_monitoring_inputs.ads:243:46: info: precondition proved
 sec_3_13_2_monitoring_inputs.ads:247:14: warning: subprogram "Dummy" has no effect
 sec_3_13_4_gradient_accel_decel.ads:26:24: warning: unused variable "D"
-sec_3_13_6_deceleration.adb:26:37: warning: precondition might fail
-sec_3_13_6_deceleration.adb:26:37: warning: range check might fail
-sec_3_13_6_deceleration.adb:27:71: warning: range check might fail
+sec_3_13_6_deceleration.adb:26:37: medium: precondition might fail
+sec_3_13_6_deceleration.adb:26:37: medium: range check might fail
+sec_3_13_6_deceleration.adb:27:71: medium: range check might fail
 sec_3_13_6_deceleration.ads:34:43: warning: unused variable "D"
-sec_3_13_6_deceleration.ads:39:06: warning: postcondition might fail, requires A_brake_emergency'Result = (Step_Function.get_value (A_brake_emergency_model, V))
+sec_3_13_6_deceleration.ads:39:06: medium: postcondition might fail, requires A_brake_emergency'Result = (Step_Function.get_value (A_brake_emergency_model, V))
 sec_3_13_6_deceleration.ads:40:37: info: range check proved
-sec_3_13_6_deceleration.ads:40:37: warning: precondition might fail
+sec_3_13_6_deceleration.ads:40:37: medium: precondition might fail
 sec_3_13_6_deceleration.ads:41:71: info: range check proved
-sec_3_13_6_deceleration.ads:45:23: warning: precondition might fail
-sec_3_13_6_deceleration.ads:46:23: warning: overflow check might fail
-sec_3_13_6_deceleration.ads:46:26: warning: precondition might fail
-sec_3_13_6_deceleration.ads:46:38: warning: overflow check might fail
+sec_3_13_6_deceleration.ads:45:23: medium: precondition might fail
+sec_3_13_6_deceleration.ads:46:23: medium: overflow check might fail
+sec_3_13_6_deceleration.ads:46:26: medium: precondition might fail
+sec_3_13_6_deceleration.ads:46:38: medium: overflow check might fail
 sec_3_13_6_deceleration.ads:46:50: info: overflow check proved
-sec_3_13_6_deceleration.ads:46:57: warning: overflow check might fail
-sec_3_13_6_deceleration.ads:46:59: warning: precondition might fail
-sec_3_13_6_deceleration.ads:47:22: warning: overflow check might fail
-sec_3_13_6_deceleration.ads:47:22: warning: range check might fail
-sec_3_13_6_deceleration.ads:47:30: warning: precondition might fail
+sec_3_13_6_deceleration.ads:46:57: medium: overflow check might fail
+sec_3_13_6_deceleration.ads:46:59: medium: precondition might fail
+sec_3_13_6_deceleration.ads:47:22: medium: overflow check might fail
+sec_3_13_6_deceleration.ads:47:22: medium: range check might fail
+sec_3_13_6_deceleration.ads:47:30: medium: precondition might fail
 sec_3_13_6_deceleration.ads:52:26: info: range check proved
-sec_3_13_6_deceleration.ads:52:26: warning: overflow check might fail
-sec_3_13_8_targets_decel_curves.adb:24:07: warning: precondition might fail
+sec_3_13_6_deceleration.ads:52:26: medium: overflow check might fail
+sec_3_13_8_targets_decel_curves.adb:24:07: medium: precondition might fail
 section_3_5_3.adb:41:54: info: overflow check proved
 section_3_5_3.ads:51:53: info: precondition proved
 section_3_5_3.ads:68:14: warning: subprogram "Initiate_Communication_Session" has no effect
-section_3_5_3.ads:75:14: warning: postcondition might fail, requires Contains(Connections, destination)
+section_3_5_3.ads:75:14: medium: postcondition might fail, requires Contains(Connections, destination)
 section_3_5_3.ads:80:14: warning: subprogram "Contact_Rbc" has no effect
 section_4_6.ads:102:24: warning: unused variable "Mode"
-section_4_6.ads:106:06: warning: contract cases might not be complete
-section_4_6.ads:106:06: warning: contract cases might not be disjoint
+section_4_6.ads:106:06: medium: contract cases might not be complete
+section_4_6.ads:106:06: medium: contract cases might not be disjoint
 section_4_6.ads:106:55: info: contract case proved
 section_4_6.ads:107:55: info: contract case proved
 section_4_6.ads:108:55: info: contract case proved
 section_4_6.ads:109:14: info: postcondition proved
 step_function.adb:30:10: info: loop invariant initialization proved
-step_function.adb:31:35: warning: loop invariant might fail after first iteration, requires X >= SFun.Step(j).Delimiter
-step_function.adb:31:50: warning: array index check might fail
-step_function.adb:32:61: warning: array index check might fail
-step_function.adb:32:61: warning: overflow check might fail
+step_function.adb:31:35: medium: loop invariant might fail after first iteration, requires X >= SFun.Step(j).Delimiter
+step_function.adb:31:50: medium: array index check might fail
+step_function.adb:32:61: medium: array index check might fail
+step_function.adb:32:61: medium: overflow check might fail
 step_function.adb:45:10: info: loop invariant initialization proved
 step_function.adb:45:10: info: loop invariant preservation proved
-step_function.adb:47:34: warning: array index check might fail
+step_function.adb:47:34: medium: array index check might fail
 step_function.adb:48:33: info: index check proved
-step_function.adb:49:10: warning: loop invariant might fail after first iteration
-step_function.adb:49:10: warning: loop invariant might fail in first iteration
+step_function.adb:49:10: medium: loop invariant might fail after first iteration
+step_function.adb:49:10: medium: loop invariant might fail in first iteration
 step_function.adb:51:31: info: index check proved
-step_function.adb:53:34: warning: array index check might fail
-step_function.adb:60:18: warning: assertion might fail, requires SFun.Step(j-1).Delimiter < SFun.Step(j).Delimiter
+step_function.adb:53:34: medium: array index check might fail
+step_function.adb:60:18: medium: assertion might fail, requires SFun.Step(j-1).Delimiter < SFun.Step(j).Delimiter
 step_function.adb:60:29: info: index check proved
-step_function.adb:60:55: warning: array index check might fail
-step_function.adb:72:17: warning: range check might fail
+step_function.adb:60:55: medium: array index check might fail
+step_function.adb:72:17: medium: range check might fail
 step_function.adb:91:10: info: loop invariant initialization proved
-step_function.adb:91:33: warning: loop invariant might fail after first iteration, requires i1 >= 0
+step_function.adb:91:33: medium: loop invariant might fail after first iteration, requires i1 >= 0
 step_function.adb:92:10: info: loop invariant initialization proved
-step_function.adb:92:33: warning: loop invariant might fail after first iteration, requires i2 >= 0
+step_function.adb:92:33: medium: loop invariant might fail after first iteration, requires i2 >= 0
 step_function.adb:93:10: info: loop invariant initialization proved
-step_function.adb:93:33: warning: loop invariant might fail after first iteration, requires im >= 0
-step_function.adb:94:33: warning: loop invariant might fail after first iteration, requires i1 <= SFun1.Number_Of_Delimiters
-step_function.adb:94:33: warning: loop invariant might fail in first iteration, requires i1 <= SFun1.Number_Of_Delimiters
-step_function.adb:95:33: warning: loop invariant might fail after first iteration, requires i2 <= SFun2.Number_Of_Delimiters
-step_function.adb:95:33: warning: loop invariant might fail in first iteration, requires i2 <= SFun2.Number_Of_Delimiters
+step_function.adb:93:33: medium: loop invariant might fail after first iteration, requires im >= 0
+step_function.adb:94:33: medium: loop invariant might fail after first iteration, requires i1 <= SFun1.Number_Of_Delimiters
+step_function.adb:94:33: medium: loop invariant might fail in first iteration, requires i1 <= SFun1.Number_Of_Delimiters
+step_function.adb:95:33: medium: loop invariant might fail after first iteration, requires i2 <= SFun2.Number_Of_Delimiters
+step_function.adb:95:33: medium: loop invariant might fail in first iteration, requires i2 <= SFun2.Number_Of_Delimiters
 step_function.adb:96:10: info: loop invariant initialization proved
-step_function.adb:96:33: warning: loop invariant might fail after first iteration, requires im <= Num_Delimiters_Range'last
+step_function.adb:96:33: medium: loop invariant might fail after first iteration, requires im <= Num_Delimiters_Range'last
 step_function.adb:97:10: info: loop invariant initialization proved
-step_function.adb:97:33: warning: loop invariant might fail after first iteration, requires scan_sfun1 or scan_sfun2
+step_function.adb:97:33: medium: loop invariant might fail after first iteration, requires scan_sfun1 or scan_sfun2
 step_function.adb:98:10: info: loop invariant initialization proved
-step_function.adb:98:33: warning: loop invariant might fail after first iteration, requires i1 = 0 and i2 = 0 and im = 0) or else ((i1 > 0 or not scan_sfun1) and (i2 > 0 or not scan_sfun2) and im > 0
+step_function.adb:98:33: medium: loop invariant might fail after first iteration, requires i1 = 0 and i2 = 0 and im = 0) or else ((i1 > 0 or not scan_sfun1) and (i2 > 0 or not scan_sfun2) and im > 0
 step_function.adb:101:10: info: loop invariant initialization proved
-step_function.adb:101:10: warning: loop invariant might fail after first iteration
+step_function.adb:101:10: medium: loop invariant might fail after first iteration
 step_function.adb:106:10: info: loop invariant initialization proved
-step_function.adb:107:28: warning: "Merge.Step" might not be initialized
-step_function.adb:107:28: warning: loop invariant might fail after first iteration, requires Merge.Step(0).Delimiter = Function_Range'first
+step_function.adb:107:28: medium: "Merge.Step" might not be initialized
+step_function.adb:107:28: medium: loop invariant might fail after first iteration, requires Merge.Step(0).Delimiter = Function_Range'first
 step_function.adb:108:10: info: loop invariant initialization proved
-step_function.adb:110:16: warning: loop invariant might fail after first iteration, requires Merge.Step(im-1).Delimiter < SFun1.Step(i1).Delimiter
+step_function.adb:110:16: medium: loop invariant might fail after first iteration, requires Merge.Step(im-1).Delimiter < SFun1.Step(i1).Delimiter
 step_function.adb:110:29: info: index check proved
 step_function.adb:111:10: info: loop invariant initialization proved
-step_function.adb:113:16: warning: loop invariant might fail after first iteration, requires Merge.Step(im-1).Delimiter < SFun2.Step(i2).Delimiter
+step_function.adb:113:16: medium: loop invariant might fail after first iteration, requires Merge.Step(im-1).Delimiter < SFun2.Step(i2).Delimiter
 step_function.adb:113:29: info: index check proved
 step_function.adb:114:10: info: loop invariant initialization proved
-step_function.adb:116:15: warning: loop invariant might fail after first iteration, requires Merge.Step(i-1).Delimiter < Merge.Step(i).Delimiter
-step_function.adb:116:27: warning: array index check might fail
+step_function.adb:116:15: medium: loop invariant might fail after first iteration, requires Merge.Step(i-1).Delimiter < Merge.Step(i).Delimiter
+step_function.adb:116:27: medium: array index check might fail
 step_function.adb:116:54: info: index check proved
 step_function.adb:119:10: info: loop invariant initialization proved
-step_function.adb:119:10: warning: loop invariant might fail after first iteration
-step_function.adb:122:30: warning: array index check might fail
+step_function.adb:119:10: medium: loop invariant might fail after first iteration
+step_function.adb:122:30: medium: array index check might fail
 step_function.adb:122:56: info: index check proved
 step_function.adb:123:10: info: loop invariant initialization proved
-step_function.adb:123:10: warning: loop invariant might fail after first iteration
-step_function.adb:127:36: warning: array index check might fail
+step_function.adb:123:10: medium: loop invariant might fail after first iteration
+step_function.adb:127:36: medium: array index check might fail
 step_function.adb:127:62: info: index check proved
 step_function.adb:130:10: info: loop invariant initialization proved
-step_function.adb:130:10: warning: loop invariant might fail after first iteration
-step_function.adb:133:30: warning: array index check might fail
+step_function.adb:130:10: medium: loop invariant might fail after first iteration
+step_function.adb:133:30: medium: array index check might fail
 step_function.adb:133:56: info: index check proved
 step_function.adb:134:10: info: loop invariant initialization proved
-step_function.adb:134:10: warning: loop invariant might fail after first iteration
-step_function.adb:138:36: warning: array index check might fail
+step_function.adb:134:10: medium: loop invariant might fail after first iteration
+step_function.adb:138:36: medium: array index check might fail
 step_function.adb:138:62: info: index check proved
 step_function.adb:141:10: info: loop invariant initialization proved
-step_function.adb:143:15: warning: loop invariant might fail after first iteration, requires Merge.Step(i).Value = Min(Get_Value(SFun1, Merge.Step(i).Delimiter), Get_Value(SFun2, Merge.Step(i).Delimiter)
-step_function.adb:143:26: warning: array index check might fail
-step_function.adb:144:19: warning: precondition might fail
-step_function.adb:144:47: warning: array index check might fail
+step_function.adb:143:15: medium: loop invariant might fail after first iteration, requires Merge.Step(i).Value = Min(Get_Value(SFun1, Merge.Step(i).Delimiter), Get_Value(SFun2, Merge.Step(i).Delimiter)
+step_function.adb:143:26: medium: array index check might fail
+step_function.adb:144:19: medium: precondition might fail
+step_function.adb:144:47: medium: array index check might fail
 step_function.adb:145:17: info: precondition proved
 step_function.adb:145:45: info: index check proved
 step_function.adb:152:22: info: precondition proved
@@ -183,71 +183,71 @@ step_function.adb:166:22: info: precondition proved
 step_function.adb:167:22: info: precondition proved
 step_function.adb:175:19: info: precondition proved
 step_function.adb:176:19: info: precondition proved
-step_function.adb:182:22: warning: precondition might fail
+step_function.adb:182:22: medium: precondition might fail
 step_function.adb:183:22: info: precondition proved
-step_function.adb:188:22: warning: range check might fail
+step_function.adb:188:22: medium: range check might fail
 step_function.ads:40:17: info: postcondition proved
 step_function.ads:46:24: info: overflow check proved
-step_function.ads:46:24: warning: array index check might fail
-step_function.ads:46:50: warning: array index check might fail
+step_function.ads:46:24: medium: array index check might fail
+step_function.ads:46:50: medium: array index check might fail
 step_function.ads:52:23: info: index check proved
-step_function.ads:52:49: warning: array index check might fail
-step_function.ads:56:12: warning: postcondition might fail, requires for some i in Num_Delimiters_Range'First..(SFun.Number_Of_Delimiters - 1) => (SFun.Step(i).Delimiter <= X and X < SFun.Step(i+1).Delimiter and Get_Value'Result = SFun.Step(i).Value)) or (X >= SFun.Step(SFun.Number_Of_Delimiters).Delimiter and Get_Value'Result = SFun.Step(SFun.Number_Of_Delimiters).Value
+step_function.ads:52:49: medium: array index check might fail
+step_function.ads:56:12: medium: postcondition might fail, requires for some i in Num_Delimiters_Range'First..(SFun.Number_Of_Delimiters - 1) => (SFun.Step(i).Delimiter <= X and X < SFun.Step(i+1).Delimiter and Get_Value'Result = SFun.Step(i).Value)) or (X >= SFun.Step(SFun.Number_Of_Delimiters).Delimiter and Get_Value'Result = SFun.Step(SFun.Number_Of_Delimiters).Value
 step_function.ads:58:27: info: index check proved
-step_function.ads:59:36: warning: array index check might fail
-step_function.ads:60:50: warning: array index check might fail
-step_function.ads:72:06: warning: postcondition might fail
-step_function.ads:73:28: warning: array index check might fail
+step_function.ads:59:36: medium: array index check might fail
+step_function.ads:60:50: medium: array index check might fail
+step_function.ads:72:06: medium: postcondition might fail
+step_function.ads:73:28: medium: array index check might fail
 step_function.ads:74:50: info: index check proved
 step_function.ads:78:26: info: index check proved
-step_function.ads:80:53: warning: array index check might fail
+step_function.ads:80:53: medium: array index check might fail
 step_function.ads:86:06: info: postcondition proved
-step_function.ads:101:04: warning: postcondition might fail
-step_function.ads:106:30: warning: array index check might fail
-step_function.ads:106:56: warning: array index check might fail
-step_function.ads:111:30: warning: array index check might fail
-step_function.ads:111:56: warning: array index check might fail
-step_function.ads:114:25: warning: array index check might fail
-step_function.ads:114:40: warning: precondition might fail
-step_function.ads:115:61: warning: array index check might fail
-step_function.ads:116:40: warning: precondition might fail
-step_function.ads:117:61: warning: array index check might fail
+step_function.ads:101:04: medium: postcondition might fail
+step_function.ads:106:30: medium: array index check might fail
+step_function.ads:106:56: medium: array index check might fail
+step_function.ads:111:30: medium: array index check might fail
+step_function.ads:111:56: medium: array index check might fail
+step_function.ads:114:25: medium: array index check might fail
+step_function.ads:114:40: medium: precondition might fail
+step_function.ads:115:61: medium: array index check might fail
+step_function.ads:116:40: medium: precondition might fail
+step_function.ads:117:61: medium: array index check might fail
 step_function_test.adb:7:15: info: length check proved
 step_function_test.adb:14:15: info: length check proved
 step_function_test.adb:21:15: info: length check proved
 step_function_test.adb:31:15: info: length check proved
-step_function_test.adb:41:19: warning: assertion might fail, requires Is_Valid(SFun1)
-step_function_test.adb:42:19: warning: assertion might fail, requires Is_Valid(SFun2)
-step_function_test.adb:43:19: warning: assertion might fail, requires Step_Function.Is_Valid(sfun3)
-step_function_test.adb:44:19: warning: assertion might fail, requires Step_Function.Is_Valid(sfun4)
+step_function_test.adb:41:19: medium: assertion might fail, requires Is_Valid(SFun1)
+step_function_test.adb:42:19: medium: assertion might fail, requires Is_Valid(SFun2)
+step_function_test.adb:43:19: medium: assertion might fail, requires Step_Function.Is_Valid(sfun3)
+step_function_test.adb:44:19: medium: assertion might fail, requires Step_Function.Is_Valid(sfun4)
 step_function_test.adb:46:19: info: precondition proved
-step_function_test.adb:46:19: warning: assertion might fail, requires Get_Value(SFun1, 0) =
+step_function_test.adb:46:19: medium: assertion might fail, requires Get_Value(SFun1, 0) =
 step_function_test.adb:47:19: info: precondition proved
-step_function_test.adb:47:19: warning: assertion might fail, requires Get_Value(SFun1, 1) =
+step_function_test.adb:47:19: medium: assertion might fail, requires Get_Value(SFun1, 1) =
 step_function_test.adb:48:19: info: precondition proved
-step_function_test.adb:48:19: warning: assertion might fail, requires Get_Value(SFun1, 3) =
+step_function_test.adb:48:19: medium: assertion might fail, requires Get_Value(SFun1, 3) =
 step_function_test.adb:49:19: info: precondition proved
-step_function_test.adb:49:19: warning: assertion might fail, requires Get_Value(SFun1, 4) =
+step_function_test.adb:49:19: medium: assertion might fail, requires Get_Value(SFun1, 4) =
 step_function_test.adb:50:19: info: precondition proved
-step_function_test.adb:50:19: warning: assertion might fail, requires Get_Value(SFun1, 5) =
+step_function_test.adb:50:19: medium: assertion might fail, requires Get_Value(SFun1, 5) =
 step_function_test.adb:51:19: info: precondition proved
-step_function_test.adb:51:19: warning: assertion might fail, requires Get_Value(SFun1, Function_Range'Last) =
-step_function_test.adb:54:19: warning: assertion might fail, requires Has_Same_Delimiters(SFun1, SFun2)
+step_function_test.adb:51:19: medium: assertion might fail, requires Get_Value(SFun1, Function_Range'Last) =
+step_function_test.adb:54:19: medium: assertion might fail, requires Has_Same_Delimiters(SFun1, SFun2)
 step_function_test.adb:56:04: info: precondition proved
 step_function_test.adb:61:22: info: precondition proved
-step_function_test.adb:61:22: warning: assertion might fail, requires Get_Value(sfun_merge, i) = Min(Get_Value(sfun3, i), Get_Value(sfun4, i)
+step_function_test.adb:61:22: medium: assertion might fail, requires Get_Value(sfun_merge, i) = Min(Get_Value(sfun3, i), Get_Value(sfun4, i)
 step_function_test.adb:62:28: info: precondition proved
 step_function_test.adb:62:49: info: precondition proved
 step_function_test.adb:65:19: info: precondition proved
-step_function_test.adb:65:19: warning: assertion might fail, requires Minimum_Until_Point(sfun4, 1) =
+step_function_test.adb:65:19: medium: assertion might fail, requires Minimum_Until_Point(sfun4, 1) =
 step_function_test.adb:66:19: info: precondition proved
-step_function_test.adb:66:19: warning: assertion might fail, requires Minimum_Until_Point(sfun4, 5) =
+step_function_test.adb:66:19: medium: assertion might fail, requires Minimum_Until_Point(sfun4, 5) =
 step_function_test.adb:67:19: info: precondition proved
-step_function_test.adb:67:19: warning: assertion might fail, requires Minimum_Until_Point(sfun_merge, 11) =
-units.adb:24:38: warning: overflow check might fail
+step_function_test.adb:67:19: medium: assertion might fail, requires Minimum_Until_Point(sfun_merge, 11) =
+units.adb:24:38: medium: overflow check might fail
 units.adb:24:48: info: division check proved
 units.adb:24:48: info: overflow check proved
-units.ads:37:22: warning: overflow check might fail
+units.ads:37:22: medium: overflow check might fail
 units.ads:37:32: info: division check proved
 units.ads:37:32: info: overflow check proved
 units.ads:43:20: info: precondition proved

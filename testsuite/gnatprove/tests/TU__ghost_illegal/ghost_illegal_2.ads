@@ -8,7 +8,10 @@ is
      with Volatile,
           Address => System.Storage_Elements.To_Address (16#BAD#);
 
-   --  TU: 12. The Convention aspect of an External entity shall not be Ghost.
+   --  TU: 8. A ghost type or object shall not be effectively
+   --  volatile. A ghost object shall not be imported or exported.
+   --  [In other words, no ghost objects for which reading or writing
+   --  would constitute an external effect (see Ada RM 1.1.3).]
    Vol_Ghost : Integer := 0
      with Volatile,
           Convention => Ghost,
@@ -25,9 +28,6 @@ is
    function Is_Even (X : Integer) return Boolean
      with Convention => Ghost;
 
-   --  TU: 7. A ghost entity shall not be referenced from within the expression
-   --  of a predicate specification of a non-ghost subtype [because such
-   --  predicates participate in determining the outcome of a membership test].
    subtype Even is Integer
      with Dynamic_Predicate => Is_Even (Even);
 

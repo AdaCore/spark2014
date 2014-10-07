@@ -1,1 +1,1 @@
-legal.adb:48:33: warning: range check might fail
+legal.adb:48:33: medium: range check might fail

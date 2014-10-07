@@ -2,8 +2,8 @@ contract_cases_legal.adb:5:17: info: overflow check proved
 contract_cases_legal.adb:12:17: info: overflow check proved
 contract_cases_legal.adb:19:17: info: overflow check proved
 contract_cases_legal.adb:26:17: info: overflow check proved
-contract_cases_legal.ads:15:19: warning: postcondition might fail, requires X = Integer'min
-contract_cases_legal.ads:15:42: warning: overflow check might fail
+contract_cases_legal.ads:15:19: medium: postcondition might fail, requires X = Integer'min
+contract_cases_legal.ads:15:42: medium: overflow check might fail
 contract_cases_legal.ads:18:11: info: complete contract cases proved
 contract_cases_legal.ads:18:11: info: disjoint contract cases proved
 contract_cases_legal.ads:18:45: info: contract case proved

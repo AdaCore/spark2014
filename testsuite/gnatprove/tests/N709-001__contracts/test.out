@@ -2,7 +2,7 @@ main.adb:10:04: info: assertion proved
 main.adb:11:06: info: precondition proved
 main.adb:12:04: info: assertion proved
 main.adb:15:04: info: assertion proved
-main.adb:16:06: warning: precondition might fail
+main.adb:16:06: medium: precondition might fail
 main.adb:17:04: info: assertion proved
 main.adb:19:04: warning: assuming "Put_Line" has no effect on global items
 main.adb:19:04: warning: no Global contract available for "Put_Line"
@@ -10,30 +10,30 @@ unit1.adb:12:20: info: overflow check proved
 unit1.ads:12:20: info: postcondition is stronger than class-wide postcondition
 unit1.ads:12:20: info: postcondition proved
 unit1.ads:30:20: info: precondition is weaker than class-wide precondition
-unit1.ads:31:29: warning: precondition might fail
+unit1.ads:31:29: medium: precondition might fail
 unit1.ads:32:20: info: postcondition proved
-unit1.ads:32:20: warning: postcondition might be weaker than class-wide postcondition
+unit1.ads:32:20: medium: postcondition might be weaker than class-wide postcondition
 unit1.ads:32:36: info: overflow check proved
 unit2.adb:13:12: info: precondition proved
-unit2.adb:14:20: warning: overflow check might fail
+unit2.adb:14:20: medium: overflow check might fail
 unit2.ads:12:14: info: postcondition is stronger than class-wide postcondition
 unit2.ads:12:14: info: postcondition proved
-unit2.ads:23:14: warning: postcondition might be weaker than class-wide postcondition
-unit2.ads:23:14: warning: postcondition might fail
+unit2.ads:23:14: medium: postcondition might be weaker than class-wide postcondition
+unit2.ads:23:14: medium: postcondition might fail
 unit2.ads:23:30: info: overflow check proved
-unit2.ads:23:59: warning: overflow check might fail
-unit3.adb:13:12: warning: precondition might fail
-unit3.adb:14:20: warning: overflow check might fail
+unit2.ads:23:59: medium: overflow check might fail
+unit3.adb:13:12: medium: precondition might fail
+unit3.adb:14:20: medium: overflow check might fail
 unit3.ads:12:20: info: class-wide postcondition is stronger than overridden one
 unit3.ads:13:20: info: postcondition is stronger than class-wide postcondition
-unit3.ads:13:20: warning: postcondition might fail
-unit3.ads:24:20: warning: class-wide precondition might be stronger than overridden one
-unit3.ads:25:20: warning: class-wide postcondition might be weaker than overridden one
-unit3.ads:25:36: warning: overflow check might fail
-unit3.ads:25:65: warning: overflow check might fail
-unit3.ads:25:94: warning: overflow check might fail
+unit3.ads:13:20: medium: postcondition might fail
+unit3.ads:24:20: medium: class-wide precondition might be stronger than overridden one
+unit3.ads:25:20: medium: class-wide postcondition might be weaker than overridden one
+unit3.ads:25:36: medium: overflow check might fail
+unit3.ads:25:65: medium: overflow check might fail
+unit3.ads:25:94: medium: overflow check might fail
 unit3.ads:26:20: info: postcondition is stronger than class-wide postcondition
-unit3.ads:26:20: warning: postcondition might fail
+unit3.ads:26:20: medium: postcondition might fail
 unit3.ads:26:36: info: overflow check proved
-unit3.ads:26:65: warning: overflow check might fail
+unit3.ads:26:65: medium: overflow check might fail
 unit3.ads:26:94: info: overflow check proved

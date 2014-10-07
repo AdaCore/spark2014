@@ -8,7 +8,7 @@ null_concat.adb:13:07: info: assertion proved
 null_concat.adb:13:28: info: index check proved
 null_concat.adb:19:37: info: range check proved
 null_concat.adb:21:07: info: assertion proved
-null_concat.adb:22:22: warning: assertion might fail, requires A3 (1) = 2
+null_concat.adb:22:22: medium: assertion might fail, requires A3 (1) = 2
 null_concat.adb:22:26: info: index check proved
 null_concat.ads:6:14: warning: subprogram "P_Good" has no effect
 null_concat.ads:8:14: warning: subprogram "P_Bad" has no effect

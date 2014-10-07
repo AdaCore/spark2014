@@ -11,7 +11,7 @@ is
      --  option_list              ::= option { , option }
      --  option                   ::= simple_option
      --                             | name_value_option
-     --  simple_option            ::= identifier
+     --  simple_option            ::= Ghost
      --  name_value_option        ::= Part_Of => abstract_state
      --                             | External [=> external_property_list]
      --  external_property_list   ::= external_property
@@ -23,7 +23,6 @@ is
      --                             | others => expression
      --  state_name               ::= defining_identifier
      --  abstract_state           ::= name
-     --  Currently no ``simple_options`` are defined.
 
      --  TU: 1. An ``option`` shall not be repeated within a single
      --  ``option_list``.

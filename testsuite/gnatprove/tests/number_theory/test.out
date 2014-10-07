@@ -1,18 +1,18 @@
 number_theory.adb:18:17: info: range check proved
-number_theory.adb:19:16: warning: loop invariant might fail after first iteration
-number_theory.adb:19:16: warning: loop invariant might fail in first iteration
-number_theory.adb:19:50: warning: range check might fail
-number_theory.adb:19:74: warning: range check might fail
-number_theory.adb:23:30: warning: overflow check might fail
+number_theory.adb:19:16: medium: loop invariant might fail after first iteration
+number_theory.adb:19:16: medium: loop invariant might fail in first iteration
+number_theory.adb:19:50: medium: range check might fail
+number_theory.adb:19:74: medium: range check might fail
+number_theory.adb:23:30: medium: overflow check might fail
 number_theory.adb:33:09: info: length check proved
-number_theory.ads:20:32: warning: range check might fail
-number_theory.ads:20:37: warning: overflow check might fail
-number_theory.ads:20:45: warning: range check might fail
-number_theory.ads:23:16: warning: postcondition might fail, requires Float(Fib'Result) < (1.6181**N)/2.2360 +
+number_theory.ads:20:32: medium: range check might fail
+number_theory.ads:20:37: medium: overflow check might fail
+number_theory.ads:20:45: medium: range check might fail
+number_theory.ads:23:16: medium: postcondition might fail, requires Float(Fib'Result) < (1.6181**N)/2.2360 +
 number_theory.ads:23:25: info: range check proved
-number_theory.ads:23:43: warning: overflow check might fail
+number_theory.ads:23:43: medium: overflow check might fail
 number_theory.ads:23:47: info: division check proved
 number_theory.ads:23:47: info: overflow check proved
 number_theory.ads:23:55: info: overflow check proved
 number_theory.ads:27:19: info: postcondition proved
-number_theory.ads:31:19: warning: postcondition might fail, requires Fibonacci2'Result = Fib(N)
+number_theory.ads:31:19: medium: postcondition might fail, requires Fibonacci2'Result = Fib(N)

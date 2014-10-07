@@ -1,2 +1,2 @@
 test_equal.adb:25:04: info: assertion proved
-test_equal.adb:26:19: warning: assertion might fail, requires X /= Y
+test_equal.adb:26:19: medium: assertion might fail, requires X /= Y

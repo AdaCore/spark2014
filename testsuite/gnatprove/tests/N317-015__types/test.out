@@ -1,11 +1,11 @@
 conv.adb:11:14: info: overflow check proved, in call inlined at conv.adb:15
 conv.adb:15:10: info: range check proved
 conv.adb:16:04: info: assertion proved
-ident.adb:44:22: warning: assertion might fail, requires Res = X
+ident.adb:44:22: medium: assertion might fail, requires Res = X
 ident.adb:46:07: info: assertion proved
 ident.adb:48:07: info: assertion proved
 ident.adb:50:20: info: range check proved
-ident.adb:51:22: warning: assertion might fail, requires Y = 9
+ident.adb:51:22: medium: assertion might fail, requires Y = 9
 ident.adb:52:21: info: range check proved
 ident.adb:53:07: info: assertion proved
 ident.adb:54:18: info: range check proved

@@ -21,13 +21,19 @@ is
    type AP1 is array (I) of P1;
 
    procedure Init1 (X : out A1)
-     with Depends => (X => null);
+     with Depends => (X => null),
+          Post    => X (2) = 5;  -- valid postcondition
 
    procedure Init2 (X : out A2)
-     with Depends => (X => null);
+     with Depends => (X => null),
+          Post    => X (2) = 20;  -- valid postcondition
 
    procedure Init3 (X : out AP1)
      with Depends => (X => null);
+
+   procedure Init4 (X : out A2)
+     with Depends => (X => null),
+          Post    => X (2) = 11;  -- valid postcondition
 
 private
    type P1 is range 1 .. 10

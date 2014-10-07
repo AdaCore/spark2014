@@ -32,4 +32,11 @@ is
       pragma Assert (2 ** X + 2 ** (X-1) < 2 ** (X+1));
    end Power;
 
+   procedure Mult (X, Y : Integer; Res : out Integer) is
+   begin
+      pragma Assume (X in -10 .. -1 and Y in 1 .. 10);
+      Res := X * Y + 1;
+      pragma Assert (Res in -99 .. -Y);
+   end Mult;
+
 end Nonlinear;

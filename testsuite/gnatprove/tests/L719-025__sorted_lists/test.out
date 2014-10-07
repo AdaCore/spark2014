@@ -2,24 +2,24 @@ sorted_lists.adb:6:27: info: precondition proved
 sorted_lists.adb:9:13: info: precondition proved
 sorted_lists.adb:10:09: info: precondition proved
 sorted_lists.adb:11:10: info: loop invariant initialization proved
-sorted_lists.adb:12:13: warning: loop invariant might fail after first iteration, requires Current = First (Container) or else Element (Container, Previous (Container, Current)) < New_Item
+sorted_lists.adb:12:13: medium: loop invariant might fail after first iteration, requires Current = First (Container) or else Element (Container, Previous (Container, Current)) < New_Item
 sorted_lists.adb:12:23: info: precondition proved
 sorted_lists.adb:13:13: info: precondition proved
 sorted_lists.adb:13:33: info: precondition proved
 sorted_lists.adb:14:10: info: precondition proved
-sorted_lists.adb:17:07: warning: precondition might fail
+sorted_lists.adb:17:07: medium: precondition might fail
 sorted_lists.ads:23:14: info: precondition proved
 sorted_lists.ads:25:08: info: precondition proved
-sorted_lists.ads:25:08: warning: postcondition might fail
+sorted_lists.ads:25:08: medium: postcondition might fail
 sorted_lists.ads:26:06: info: precondition proved
 sorted_lists.ads:27:07: info: precondition proved
 sorted_lists.ads:27:21: info: precondition proved
-sorted_lists.ads:28:21: warning: precondition might fail
+sorted_lists.ads:28:21: medium: precondition might fail
 sorted_lists.ads:29:40: info: precondition proved
 sorted_lists.ads:30:09: info: precondition proved
 sorted_lists.ads:30:23: info: precondition proved
 sorted_lists.ads:30:51: info: precondition proved
-sorted_lists.ads:31:23: warning: precondition might fail
+sorted_lists.ads:31:23: medium: precondition might fail
 sorted_lists.ads:32:40: info: precondition proved
 sorted_lists.ads:33:20: info: precondition proved
 sorted_lists.ads:33:59: info: precondition proved

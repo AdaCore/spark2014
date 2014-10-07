@@ -2,7 +2,7 @@ sorters.adb:24:15: info: index check proved
 sorters.adb:24:32: info: index check proved
 sorters.adb:25:19: info: index check proved
 sorters.adb:25:36: info: index check proved
-sorters.adb:26:12: warning: postcondition might fail
+sorters.adb:26:12: medium: postcondition might fail
 sorters.adb:27:51: info: index check proved
 sorters.adb:27:68: info: index check proved
 sorters.adb:32:29: info: index check proved
@@ -23,22 +23,22 @@ sorters.adb:59:20: info: range check proved
 sorters.adb:71:50: info: overflow check proved
 sorters.adb:73:22: info: length check proved
 sorters.adb:73:25: info: length check proved
-sorters.adb:75:22: warning: precondition might fail
+sorters.adb:75:22: medium: precondition might fail
 sorters.adb:75:40: info: range check proved
-sorters.adb:78:13: warning: precondition might fail
+sorters.adb:78:13: medium: precondition might fail
 sorters.adb:79:29: info: range check proved
 sorters.adb:85:10: info: loop invariant initialization proved
-sorters.adb:85:33: warning: loop invariant might fail after first iteration, requires Perm (Values'Loop_Entry, Values)
-sorters.adb:89:18: warning: loop invariant might fail after first iteration, requires Values (Current) <= Values (J)
-sorters.adb:89:18: warning: loop invariant might fail in first iteration, requires Values (Current) <= Values (J)
+sorters.adb:85:33: medium: loop invariant might fail after first iteration, requires Perm (Values'Loop_Entry, Values)
+sorters.adb:89:18: medium: loop invariant might fail after first iteration, requires Values (Current) <= Values (J)
+sorters.adb:89:18: medium: loop invariant might fail in first iteration, requires Values (Current) <= Values (J)
 sorters.adb:89:26: info: index check proved
 sorters.adb:89:46: info: index check proved
-sorters.adb:93:16: warning: loop invariant might fail after first iteration, requires Values (J) <= Values (J + 1)
-sorters.adb:93:16: warning: loop invariant might fail in first iteration, requires Values (J) <= Values (J + 1)
+sorters.adb:93:16: medium: loop invariant might fail after first iteration, requires Values (J) <= Values (J + 1)
+sorters.adb:93:16: medium: loop invariant might fail in first iteration, requires Values (J) <= Values (J + 1)
 sorters.adb:93:24: info: index check proved
 sorters.adb:93:40: info: index check proved
 sorters.adb:93:40: info: overflow check proved
-sorters.ads:19:17: warning: postcondition might fail
+sorters.ads:19:17: medium: postcondition might fail
 sorters.ads:20:48: info: overflow check proved
 sorters.ads:21:17: info: index check proved
 sorters.ads:21:33: info: index check proved

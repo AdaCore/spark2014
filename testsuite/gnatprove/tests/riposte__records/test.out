@@ -8,53 +8,49 @@ records.adb:61:29: info: range check proved
 records.adb:62:29: info: range check proved
 records.adb:66:19: info: postcondition proved
 records.adb:76:15: info: precondition proved
-records.adb:87:25: warning: postcondition might fail, requires Safe_Add_Pair_B'Result = PairPair'(A => A.A + B.A), (B => A.B + B.B)
+records.adb:87:25: medium: postcondition might fail, requires Safe_Add_Pair_B'Result = PairPair'(A => A.A + B.A), (B => A.B + B.B)
 records.adb:95:15: info: precondition proved
 records.adb:104:19: info: postcondition proved
 records.adb:112:19: info: postcondition proved
-records.adb:120:19: warning: postcondition might fail, requires Is_Valid_C'Result = (if not (A.Exists) then A.The_Pair = Null_Pair else true
+records.adb:120:19: medium: postcondition might fail, requires Is_Valid_C'Result = (if not (A.Exists) then A.The_Pair = Null_Pair else true
 records.adb:133:22: info: postcondition proved
-records.adb:143:22: warning: postcondition might fail
+records.adb:143:22: medium: postcondition might fail
 records.adb:153:22: info: postcondition proved
-records.adb:154:49: warning: "Dst.The_Pair.A" might not be initialized
-records.adb:154:49: warning: "Dst.The_Pair.B" might not be initialized
-records.adb:166:22: warning: "Dst.The_Pair.A" might not be initialized
-records.adb:166:22: warning: "Dst.The_Pair.B" might not be initialized
-records.adb:166:22: warning: postcondition might fail, requires Dst = Src
+records.adb:166:22: medium: postcondition might fail, requires Dst = Src
 records.adb:177:22: info: postcondition proved
-records.adb:191:22: warning: postcondition might fail
-records.adb:205:22: warning: postcondition might fail
+records.adb:191:22: medium: postcondition might fail
+records.adb:205:22: medium: postcondition might fail
 records.adb:214:07: info: assertion proved
 records.adb:217:07: info: assertion proved
 records.adb:226:22: info: postcondition proved
 records.adb:242:22: info: postcondition proved
-records.adb:255:22: warning: postcondition might fail, requires X = X'Old'update
-records.adb:269:22: warning: postcondition might fail, requires X = X'Old'update
+records.adb:255:22: medium: postcondition might fail, requires X = X'Old'update
+records.adb:269:22: medium: postcondition might fail, requires X = X'Old'update
 records.adb:285:22: info: postcondition proved
-records.adb:296:22: warning: postcondition might fail
+records.adb:296:22: medium: postcondition might fail
 records.adb:308:19: info: postcondition proved
-records.adb:322:19: warning: postcondition might fail, requires Update_B'Result = X'update
+records.adb:322:19: medium: postcondition might fail, requires Update_B'Result = X'update
 records.adb:328:27: info: range check proved
 records.adb:334:22: info: postcondition proved
 records.adb:344:22: info: postcondition proved
 records.adb:351:19: info: postcondition proved
 records.adb:358:19: info: postcondition proved
 records.adb:365:19: info: postcondition proved
-records.adb:379:19: warning: postcondition might fail, requires Make_Optional_Pair_A_2'Result =  Optional_PairOptional_Pair'(Exists => false), (The_Pair => X)
+records.adb:379:19: medium: postcondition might fail, requires Make_Optional_Pair_A_2'Result =  Optional_PairOptional_Pair'(Exists => false), (The_Pair => X)
 records.adb:393:19: info: postcondition proved
-records.adb:409:22: warning: assertion might fail, requires X.The_Pair.A = 0
-records.adb:417:22: warning: assertion might fail, requires X.The_Pair.A = X.The_Pair.B
-records.adb:425:22: warning: assertion might fail, requires X.The_Pair.A /= X.The_Pair.B
-records.adb:435:22: warning: assertion might fail, requires not X.Exists
+records.adb:409:22: medium: assertion might fail, requires X.The_Pair.A = 0
+records.adb:417:22: medium: assertion might fail, requires X.The_Pair.A = X.The_Pair.B
+records.adb:425:22: medium: assertion might fail, requires X.The_Pair.A /= X.The_Pair.B
+records.adb:435:22: medium: assertion might fail, requires not X.Exists
 records.adb:445:04: warning: analyzing unreferenced function "Apply_Command"
-records.adb:452:24: warning: range check might fail
+records.adb:452:24: medium: range check might fail
 records.adb:465:22: info: postcondition proved
 records.adb:473:07: info: assertion proved
-records.adb:482:22: warning: postcondition might fail, requires R = R'Old'update
+records.adb:482:22: medium: postcondition might fail, requires R = R'Old'update
 records.adb:490:07: info: assertion proved
 records.adb:500:19: info: postcondition proved
-records.adb:503:22: warning: assertion might fail, requires R.Exists
+records.adb:503:22: medium: assertion might fail, requires R.Exists
 records.adb:513:22: info: postcondition proved
 records.adb:522:19: info: postcondition proved
-records.adb:533:22: warning: assertion might fail, requires F_Of_Pair (PairPair'(A => 5), (B => 5))
+records.adb:533:22: medium: assertion might fail, requires F_Of_Pair (PairPair'(A => 5), (B => 5))
 stack.ads:35:54: info: length check proved

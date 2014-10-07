@@ -1,2 +1,2 @@
-foo.adb:13:15: warning: range check might fail
+foo.adb:13:15: medium: range check might fail
 foo.adb:23:15: info: range check proved

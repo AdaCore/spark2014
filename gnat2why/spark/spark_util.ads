@@ -23,24 +23,26 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with AA_Util;               use AA_Util;
+with AA_Util;                            use AA_Util;
 with Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Ordered_Sets;
 with Ada.Containers.Vectors;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Atree;                 use Atree;
-with Einfo;                 use Einfo;
-with Impunit;               use Impunit;
-with Lib;                   use Lib;
-with Namet;                 use Namet;
-with Sinfo;                 use Sinfo;
-with Snames;                use Snames;
-with Types;                 use Types;
+with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
+with Atree;                              use Atree;
+with Einfo;                              use Einfo;
+with Impunit;                            use Impunit;
+with Lib;                                use Lib;
+with Namet;                              use Namet;
+with Sinfo;                              use Sinfo;
+with Snames;                             use Snames;
+with Types;                              use Types;
 
-with Why.Atree.Tables;      use Why.Atree.Tables;
+with Why.Atree.Tables;                   use Why.Atree.Tables;
 
-with Common_Containers;     use Common_Containers;
+with Common_Containers;                  use Common_Containers;
+
+with Flow_Refinement;                    use Flow_Refinement;
 
 package SPARK_Util is
 
@@ -50,22 +52,22 @@ package SPARK_Util is
 
    subtype Subtype_Kind is Entity_Kind with
      Static_Predicate => Subtype_Kind in E_Enumeration_Subtype
-       | E_Signed_Integer_Subtype
-         | E_Modular_Integer_Subtype
-           | E_Ordinary_Fixed_Point_Subtype
-             | E_Decimal_Fixed_Point_Subtype
-               |  E_Floating_Point_Subtype
-                 |  E_Access_Subtype
-                   |  E_Array_Subtype
-                     |  E_String_Subtype
-                       |  E_String_Literal_Subtype
-                         |  E_Class_Wide_Subtype
-                           |  E_Record_Subtype
-                             |  E_Record_Subtype_With_Private
-                               |  E_Private_Subtype
-                                 |  E_Limited_Private_Subtype
-                                   | E_Incomplete_Subtype
-                                     | E_Protected_Subtype
+                                       | E_Signed_Integer_Subtype
+                                       | E_Modular_Integer_Subtype
+                                       | E_Ordinary_Fixed_Point_Subtype
+                                       | E_Decimal_Fixed_Point_Subtype
+                                       | E_Floating_Point_Subtype
+                                       | E_Access_Subtype
+                                       | E_Array_Subtype
+                                       | E_String_Subtype
+                                       | E_String_Literal_Subtype
+                                       | E_Class_Wide_Subtype
+                                       | E_Record_Subtype
+                                       | E_Record_Subtype_With_Private
+                                       | E_Private_Subtype
+                                       | E_Limited_Private_Subtype
+                                       | E_Incomplete_Subtype
+                                       | E_Protected_Subtype
                                        | E_Task_Subtype;
 
    use type Ada.Containers.Count_Type;
@@ -176,16 +178,22 @@ package SPARK_Util is
 
    function Default_Initialization
      (Typ           : Entity_Id;
-      Explicit_Only : Boolean := False)
+      Flow_Scop     : Flow_Scope := Null_Flow_Scope;
+      Explicit_Only : Boolean    := False)
       return Default_Initialization_Kind;
    --  Determine default initialization kind that applies to a particular
    --  type. Types defined in axiomatized units (such as formal containers) and
    --  private types are treated specially, so that they are either considered
    --  as having full default initialized, or no default initialization.
    --
-   --  If Explicit_Only is True then we do not consider if
-   --  Has_Default_Init_Cond or Has_Inherited_Default_Init_Cond are true
-   --  for this type.
+   --  If Explicit_Only is True then do not consider whether
+   --  Has_Default_Init_Cond or Has_Inherited_Default_Init_Cond are
+   --  True for this type.
+   --
+   --  If Flow_Scop is provided then also consider visibility. For
+   --  example, if a type is fully initialized but its initialization
+   --  happens in a non visible section then this type will be
+   --  reported as uninitialized.
 
    ---------------
    -- Utilities --
@@ -420,6 +428,9 @@ package SPARK_Util is
 
    function Is_Pragma (N : Node_Id; Name : Pragma_Id) return Boolean;
    --  Returns whether N is a pragma of the given kind
+
+   function Is_Pragma_Annotate_Gnatprove (N : Node_Id) return Boolean;
+   --  Returns True if N has the form pragma Annotate (Gnatprove,...);
 
    function Is_Pragma_Check (N : Node_Id; Name : Name_Id) return Boolean;
    --  Returns whether N has the form pragma Check (Name, ...)

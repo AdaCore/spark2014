@@ -1,6 +1,6 @@
-p.adb:15:62: warning: overflow check might fail
-p.adb:15:62: warning: range check might fail
-p.adb:16:30: warning: range check might fail
-p.adb:22:38: warning: overflow check might fail
-p.adb:22:38: warning: range check might fail
-p.adb:23:30: warning: range check might fail
+p.adb:15:62: medium: overflow check might fail
+p.adb:15:62: medium: range check might fail
+p.adb:16:30: medium: range check might fail
+p.adb:22:38: medium: overflow check might fail
+p.adb:22:38: medium: range check might fail
+p.adb:23:30: medium: range check might fail

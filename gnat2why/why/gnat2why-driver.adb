@@ -345,6 +345,9 @@ package body Gnat2Why.Driver is
 
       else
 
+         --  Finalize has to be called before we call Compilation_Errors.
+         Finalize (Last_Call => False);
+
          if Compilation_Errors or else Gnat2Why_Args.Check_Mode then
             return;
          end if;

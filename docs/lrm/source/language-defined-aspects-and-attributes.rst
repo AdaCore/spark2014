@@ -93,6 +93,7 @@ Contract_Cases     	      Yes
 Depends		 	      Yes
 Effective_Reads		      Yes
 Effective_Writes	      Yes
+Extensions_Visible            Yes
 Global		 	      Yes
 Initializes	  	      Yes
 Initial_Condition  	      Yes

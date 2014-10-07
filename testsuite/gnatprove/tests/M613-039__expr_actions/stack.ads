@@ -1,5 +1,5 @@
 package Stack is pragma SPARK_Mode (On);
-   type Stack  is private;
+   type Stack  is private with Default_Initial_Condition;
 
    package Model is
       type M is array (Positive range <>) of Integer;

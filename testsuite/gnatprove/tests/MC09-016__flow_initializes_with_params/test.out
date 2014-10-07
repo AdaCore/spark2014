@@ -1,8 +1,6 @@
-p1.adb:60:28: "X" is not initialized
-p1.ads:28:17: "X" is not initialized in "D"
-p2.adb:27:25: "L" is not initialized
-   compilation of p1.adb failed
-   compilation of p2.adb failed
-
-
-gnatprove: error during flow analysis and proof
+p1.adb:15:14: medium: overflow check might fail
+p1.adb:29:14: medium: overflow check might fail
+p1.adb:30:14: medium: overflow check might fail
+p1.adb:60:28: high: "X" is not initialized
+p1.ads:28:17: high: "X" is not initialized in "D"
+p2.adb:27:25: high: "L" is not initialized

@@ -10,13 +10,19 @@ ALL_PROVE_MSG=$(patsubst examples/%.adb,$(RESULTS)/%.prove,$(ALL))
 gnatprove: flow prove
 
 flow:
-	cp examples/intro.gpr flow
-	-cd flow && gnatprove -f -k -q -P intro.gpr --report=all --warnings=on --mode=flow \
+	cp examples/*.gpr flow
+	cp examples/illegal.txt flow
+	cp examples/spark_mode.txt flow
+	cat examples/spark_mode.txt examples/illegal.txt > flow/spark_mode_or_illegal.txt
+	-cd flow && gnatprove -f -k -q -j0 -P intro.gpr --report=all --warnings=on --mode=flow \
 	  > flow.results
 
 prove:
-	cp examples/intro.gpr prove
-	cd prove && gnatprove -f -q -P intro.gpr --report=all --warnings=on --mode=prove \
+	cp examples/*.gpr prove
+	echo "" > prove/illegal.txt
+	cp examples/spark_mode.txt prove
+	cat examples/spark_mode.txt examples/illegal.txt > prove/spark_mode_or_illegal.txt
+	cd prove && gnatprove -f -q -j0 -P intro.gpr --report=all --warnings=on --mode=prove \
 	  --timeout=5 > prove.results
 
 results: $(ALL_FLOW_MSG) $(ALL_PROVE_MSG)

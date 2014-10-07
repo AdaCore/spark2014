@@ -1,2 +1,2 @@
 arrays.adb:9:04: info: assertion proved
-arrays.adb:9:19: warning: "Obj" might not be initialized
+arrays.adb:9:19: medium: "Obj" might not be initialized

@@ -1,6 +1,6 @@
 protectedfloat.adb:12:29: info: division check proved
 protectedfloat.adb:12:29: info: overflow check proved
 protectedfloat.adb:15:24: info: division check proved
-protectedfloat.adb:15:24: warning: overflow check might fail
+protectedfloat.adb:15:24: medium: overflow check might fail
 protectedfloat.adb:18:21: info: division check proved
 protectedfloat.adb:18:21: info: overflow check proved

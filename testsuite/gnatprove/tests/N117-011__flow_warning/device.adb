@@ -57,7 +57,6 @@ is
    -- reported that the value of Register is not assigned a value on all paths.
    -- After release 1 we may consider write only variables and for such
    -- variables this warning would not be generated.
-   pragma Warnings (Off, """Register"" might not be written");
    procedure Write (X : in Integer)
      with Refined_Global  => (Input => StatusPort,
                               Output => Register,
@@ -80,6 +79,10 @@ is
          pragma Warnings (On, "statement has no effect");
       end if;
    end Write;
+   pragma Annotate
+         (Gnatprove,
+          False_Positive,
+          """Register"" might not be written",
+          "false positive");
    pragma Warnings (On, "Unused*");
-   pragma Warnings (On, """Register"" might not be written");
 end Device;

@@ -57,7 +57,8 @@ themselves records.
 
 2. The hidden state of a package P consists of:
 
-   * any variables declared immediately in the private part or body of P; and
+   * any variables, or constants *with variable inputs*, declared immediately
+     in the private part or body of P; and
 
    * the visible state of any packages declared immediately within
      the private part or body of P.
@@ -679,16 +680,15 @@ grammar of ``initialization_spec`` given below.
 .. _tu-fe-initializes_aspects-03:
 
 3. The ``name`` of each ``initialization_item`` in the Initializes aspect
-   definition for a package shall denote a state abstraction of the package or
-   an entire variable declared immediately within the visible part of the
+   definition for a package shall denote a state abstraction of the package
+   or an entire object declared immediately within the visible part of the
    package.
 
 .. _tu-fe-initializes_aspects-04:
 
-4. Each ``name`` in the ``input_list`` shall denote an entire variable,
-   a formal parameter, or a state abstraction but shall not denote
-   an entity declared in the package with the
-   ``aspect_specification`` containing the Initializes aspect.
+4. Each ``name`` in the ``input_list`` shall denote an object, or a state
+   abstraction but shall not denote an entity declared in the package with
+   the ``aspect_specification`` containing the Initializes aspect.
 
 .. _tu-fe-initializes_aspects-05:
 
@@ -763,6 +763,12 @@ There are no dynamic semantics associated with the Initializes aspect.
     the package but are used in the initialization of an
     ``initialization_item`` shall appear in an ``input_list`` of the
     ``initialization_item``.
+
+.. _tu-fa-initializes_aspects-13:
+
+13. Any ``initialization_item`` that is a constant shall be a *constant
+    with variable input*. Any entity in an ``input_list`` that is a
+    constant shall be a parameter or constant *with variable input*.
 
 .. _tu-nt-initializes_aspects-note_1:
 
@@ -1020,7 +1026,8 @@ where
 
 .. _tu-fe-refined_state_aspects-05:
 
-5. Each ``constituent`` shall be either a variable or a state abstraction.
+5. Each ``constituent`` shall be either a variable, a constant, or a state
+   abstraction.
 
 .. _tu-fe-refined_state_aspects-06:
 
@@ -1045,10 +1052,10 @@ where
 
 9. Every entity of the hidden state of a package shall be denoted as a
    ``constituent`` of exactly one *abstract_*\ ``state_name`` in the
-   Refined_State aspect of the package and shall not be denoted more than once.
-   [These ``constituents`` are either variables declared in the private part or
-   body of the package, or the declarations from the visible part of
-   nested packages declared immediately therein.]
+   Refined_State aspect of the package and shall not be denoted more than
+   once. [These ``constituents`` shall be either objects declared in the
+   private part or body of the package, or the declarations from the
+   visible part of nested packages declared immediately therein.]
 
 .. _tu-cbatu-refined_state_aspects-10:
 
@@ -1090,15 +1097,18 @@ where
     Depends aspects if it is believed that a package may have some
     extra state in the future, or if hidden state is removed.]
 
-.. _etu-refined_state_aspects-ss:
-
 .. centered:: **Dynamic Semantics**
 
 There are no dynamic semantics associated with Refined_State aspect.
 
 .. centered:: **Verification Rules**
 
-There are no verification rules associated with Refined_State aspect.
+.. _tu-fe-refined_state_aspects-15:
+
+15. Each ``constituent`` that is a constant shall be a constant *with
+    variable inputs*.
+
+.. _etu-refined_state_aspects-ss:
 
 .. centered:: **Examples**
 

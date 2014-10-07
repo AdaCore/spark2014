@@ -144,7 +144,7 @@ ASCII.LF &
 "     --version      Output version of the tool and exit" &
 ASCII.LF &
 "     --warnings=w   Set the warning mode of GNATprove " &
-"(w=off, continue, error*)"
+"(w=off, continue*, error)"
 &
 ASCII.LF &
 " -h, --help         Display this usage information" &
@@ -174,34 +174,34 @@ ASCII.LF &
 ASCII.LF &
 "   . off      - Do not issue warnings" &
 ASCII.LF &
-"   . continue - Issue warnings and continue" &
+"   . continue - Issue warnings and continue (default)" &
 ASCII.LF &
-"   . error    - Treat warnings as errors (default)" &
+"   . error    - Treat warnings as errors" &
 ASCII.LF &
 ASCII.LF &
 "gnatprove advanced switches:" &
 ASCII.LF &
-" -d, --debug        Debug mode" &
+" -d, --debug         Debug mode" &
 ASCII.LF &
-" --flow-debug       Extra debugging for flow analysis (requires graphviz)" &
+" --flow-debug        Extra debugging for flow analysis (requires graphviz)" &
      ASCII.LF &
-" --dbg-proof-only   Disable flow analysis (possibly unsound results)" &
+" --dbg-proof-only    Disable flow analysis (possibly unsound results)" &
 ASCII.LF &
-"     --proof=p      Set the proof mode (p=per_check*, per_path, progressive)"
+"     --proof=p       Set the proof mode (p=per_check*, per_path, progressive)"
 & ASCII.LF &
-"     --RTS=dir      Specify the Ada runtime name/location" &
+"     --RTS=dir       Specify the Ada runtime name/location" &
 ASCII.LF &
-"     --pedantic     Use a strict interpretation of the Ada standard" &
+"     --pedantic      Use a strict interpretation of the Ada standard" &
 ASCII.LF &
-"     --steps=nnn    Set the maximum number of proof steps (prover-specific)"
+"     --steps=nnn     Set the maximum number of proof steps (prover-specific)"
 & ASCII.LF &
-"     --timeout=s    Set the prover timeout in seconds (default: 1)" &
+"     --timeout=s     Set the prover timeout in seconds (default: 1)" &
 ASCII.LF &
-"     --limit-line=s Limit analysis to given file and line" &
+"     --limit-line=s  Limit analysis to given file and line" &
 ASCII.LF &
-"     --limit-subp=s Limit analysis to subprogram defined by file and line" &
+"     --limit-subp=s  Limit analysis to subprogram defined by file and line" &
   ASCII.LF &
-"     --prover=s     Use given prover" &
+"     --prover=s[,s]* Use given provers (s=altergo*, cvc4, ...)" &
 ASCII.LF &
 ASCII.LF &
 " * Proof mode values" &
@@ -215,17 +215,15 @@ ASCII.LF &
 "                   paths when needed" &
 ASCII.LF &
 ASCII.LF &
-" * Prover options" &
+" * Prover name values" &
 ASCII.LF &
-"   (Provers marked with [steps] support the --steps option.)" &
+"   (Provers marked with [steps] support the --steps switch.)" &
 ASCII.LF &
 "   . altergo     - [steps] Use Alt-Ergo (default)" &
 ASCII.LF &
 "   . cvc4        - [steps] Use CVC4" &
 ASCII.LF &
-"   . cvc4_ce     - [steps] Use CVC4 for counter-example generation" &
-ASCII.LF &
-"   Any other prover in your why3.conf file can also be specified here." &
+"   . ...         - Any other prover configured in your .why3.conf file" &
 ASCII.LF;
 
    -------------------------
@@ -805,12 +803,13 @@ ASCII.LF;
       --  with release 14.0.1
       if Warning_Input.all = "off" then
          Warning_Mode := Opt.Suppress;
+      elsif Warning_Input.all = "error" then
+         Warning_Mode := Opt.Treat_As_Error;
       elsif Warning_Input.all = "on"
         or else Warning_Input.all = "continue"
+        or else Warning_Input.all = ""
       then
          Warning_Mode := Opt.Normal;
-      elsif Warning_Input.all = "error" or else Warning_Input.all = "" then
-         Warning_Mode := Opt.Treat_As_Error;
       else
          Abort_Msg ("warnings should be one of (off | continue | error)",
                     With_Help => False);

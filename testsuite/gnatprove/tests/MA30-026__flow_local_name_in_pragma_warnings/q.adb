@@ -21,7 +21,8 @@ is
      with Global  => (In_Out => Glob),
           Depends => (Glob => Glob)
    is
-      pragma Warnings (Off, Glob);
+      pragma Annotate (Gnatprove, Intentional, "dependency", "");
+      pragma Warnings(Off, Glob);
    begin
       Glob := 2;
    end Increase_Glob;

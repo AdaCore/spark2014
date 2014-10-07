@@ -1,44 +1,44 @@
 do_checks.adb:5:14: warning: subprogram "Do_Range_Check" has no effect
 do_checks.adb:6:14: warning: subprogram "Do_Length_Check" has no effect
 do_checks.adb:7:14: warning: subprogram "Do_Discriminant_Check" has no effect
-do_checks.adb:17:24: warning: range check might fail
+do_checks.adb:17:24: medium: range check might fail
 do_checks.adb:23:24: info: range check proved
-do_checks.adb:23:57: warning: overflow check might fail
-do_checks.adb:31:16: warning: range check might fail
+do_checks.adb:23:57: medium: overflow check might fail
+do_checks.adb:31:16: medium: range check might fail
 do_checks.adb:38:16: info: range check proved
-do_checks.adb:38:48: warning: overflow check might fail
-do_checks.adb:47:21: warning: range check might fail
+do_checks.adb:38:48: medium: overflow check might fail
+do_checks.adb:47:21: medium: range check might fail
 do_checks.adb:53:21: info: range check proved
-do_checks.adb:53:58: warning: overflow check might fail
-do_checks.adb:61:16: warning: range check might fail
+do_checks.adb:53:58: medium: overflow check might fail
+do_checks.adb:61:16: medium: range check might fail
 do_checks.adb:67:16: info: range check proved
-do_checks.adb:74:17: warning: range check might fail
+do_checks.adb:74:17: medium: range check might fail
 do_checks.adb:78:17: info: range check proved
-do_checks.adb:78:50: warning: overflow check might fail
-do_checks.adb:86:19: warning: range check might fail
+do_checks.adb:78:50: medium: overflow check might fail
+do_checks.adb:86:19: medium: range check might fail
 do_checks.adb:94:19: info: range check proved
-do_checks.adb:103:16: warning: range check might fail
+do_checks.adb:103:16: medium: range check might fail
 do_checks.adb:109:16: info: range check proved
-do_checks.adb:137:25: warning: range check might fail
+do_checks.adb:137:25: medium: range check might fail
 do_checks.adb:150:25: info: range check proved
-do_checks.adb:162:39: warning: length check might fail
-do_checks.adb:162:39: warning: range check might fail
+do_checks.adb:162:39: medium: length check might fail
+do_checks.adb:162:39: medium: range check might fail
 do_checks.adb:168:38: info: length check proved
 do_checks.adb:168:38: info: range check proved
-do_checks.adb:168:67: warning: overflow check might fail
+do_checks.adb:168:67: medium: overflow check might fail
 do_checks.adb:211:32: warning: "Y" is not modified, could be "in"
 do_checks.adb:213:21: info: length check proved
-do_checks.adb:213:26: warning: length check might fail
+do_checks.adb:213:26: medium: length check might fail
 do_checks.adb:215:35: info: length check proved
 do_checks.adb:216:35: info: length check proved
 do_checks.adb:218:16: info: precondition proved
 do_checks.adb:222:32: warning: "Y" is not modified, could be "in"
 do_checks.adb:224:21: info: length check proved
-do_checks.adb:224:26: warning: length check might fail
+do_checks.adb:224:26: medium: length check might fail
 do_checks.adb:226:35: info: length check proved
 do_checks.adb:227:35: info: length check proved
 do_checks.adb:229:16: info: precondition proved
-do_checks.adb:237:24: warning: length check might fail
+do_checks.adb:237:24: medium: length check might fail
 do_checks.adb:239:35: info: length check proved
 do_checks.adb:242:16: info: precondition proved
 do_checks.adb:250:24: info: length check proved
@@ -47,7 +47,7 @@ do_checks.adb:255:16: info: precondition proved
 do_checks.adb:261:30: warning: "X" is not modified, could be "in"
 do_checks.adb:261:30: warning: unused variable "X"
 do_checks.adb:267:19: info: precondition proved
-do_checks.adb:267:22: warning: length check might fail
+do_checks.adb:267:22: medium: length check might fail
 do_checks.adb:269:35: info: length check proved
 do_checks.adb:271:16: info: precondition proved
 do_checks.adb:275:30: warning: "X" is not modified, could be "in"
@@ -57,16 +57,16 @@ do_checks.adb:283:22: info: length check proved
 do_checks.adb:285:35: info: length check proved
 do_checks.adb:287:16: info: precondition proved
 do_checks.adb:313:32: warning: "Y" is not modified, could be "in"
-do_checks.adb:315:20: warning: discriminant check might fail
-do_checks.adb:315:25: warning: array index check might fail
-do_checks.adb:315:32: warning: discriminant check might fail
-do_checks.adb:315:37: warning: array index check might fail
+do_checks.adb:315:20: medium: discriminant check might fail
+do_checks.adb:315:25: medium: array index check might fail
+do_checks.adb:315:32: medium: discriminant check might fail
+do_checks.adb:315:37: medium: array index check might fail
 do_checks.adb:317:30: info: discriminant check proved
 do_checks.adb:318:30: info: discriminant check proved
 do_checks.adb:320:16: info: precondition proved
 do_checks.adb:324:32: warning: "Y" is not modified, could be "in"
 do_checks.adb:328:20: info: discriminant check proved
-do_checks.adb:328:25: warning: array index check might fail
+do_checks.adb:328:25: medium: array index check might fail
 do_checks.adb:328:32: info: discriminant check proved
 do_checks.adb:328:37: info: index check proved
 do_checks.adb:330:26: info: discriminant check proved
@@ -74,7 +74,7 @@ do_checks.adb:330:43: info: length check proved
 do_checks.adb:331:26: info: discriminant check proved
 do_checks.adb:331:43: info: length check proved
 do_checks.adb:333:16: info: precondition proved
-do_checks.adb:346:27: warning: discriminant check might fail
+do_checks.adb:346:27: medium: discriminant check might fail
 do_checks.adb:348:29: info: discriminant check proved
 do_checks.adb:349:29: info: discriminant check proved
 do_checks.adb:349:46: info: length check proved
@@ -85,7 +85,7 @@ do_checks.adb:361:47: info: length check proved
 do_checks.adb:362:30: info: discriminant check proved
 do_checks.adb:362:47: info: length check proved
 do_checks.adb:364:16: info: precondition proved
-do_checks.adb:372:24: warning: discriminant check might fail
+do_checks.adb:372:24: medium: discriminant check might fail
 do_checks.adb:374:29: info: discriminant check proved
 do_checks.adb:375:29: info: discriminant check proved
 do_checks.adb:375:46: info: length check proved
@@ -102,7 +102,7 @@ do_checks.adb:401:29: info: discriminant check proved
 do_checks.adb:402:29: info: discriminant check proved
 do_checks.adb:402:46: info: length check proved
 do_checks.adb:404:16: info: precondition proved
-do_checks.adb:404:22: warning: discriminant check might fail
+do_checks.adb:404:22: medium: discriminant check might fail
 do_checks.adb:408:29: warning: "X" is not modified, could be "in"
 do_checks.adb:412:30: info: discriminant check proved
 do_checks.adb:412:47: info: length check proved
@@ -112,7 +112,7 @@ do_checks.adb:415:16: info: precondition proved
 do_checks.adb:415:22: info: discriminant check proved
 do_checks.adb:421:30: warning: "X" is not modified, could be "in"
 do_checks.adb:427:19: info: precondition proved
-do_checks.adb:427:23: warning: discriminant check might fail
+do_checks.adb:427:23: medium: discriminant check might fail
 do_checks.adb:430:29: info: discriminant check proved
 do_checks.adb:431:29: info: discriminant check proved
 do_checks.adb:431:46: info: length check proved
@@ -127,7 +127,7 @@ do_checks.adb:444:19: info: discriminant check proved
 do_checks.adb:450:29: warning: "X" is not modified, could be "in"
 do_checks.adb:450:44: warning: "Y" is not modified, could be "in"
 do_checks.adb:452:19: warning: statement has no effect
-do_checks.adb:452:26: warning: discriminant check might fail
+do_checks.adb:452:26: medium: discriminant check might fail
 do_checks.adb:456:29: info: discriminant check proved
 do_checks.adb:457:29: info: discriminant check proved
 do_checks.adb:457:46: info: length check proved

@@ -88,6 +88,8 @@ chosen location (e.g. root rights for installing under /opt/spark).
 How to Run |GNATprove|
 ======================
 
+.. _Setting Up a Project File:
+
 Setting Up a Project File
 -------------------------
 
@@ -136,9 +138,12 @@ different switches for compilation and verification:
              for Switches ("Ada") use ...
           when "Analyze" =>
              for Switches ("Ada") use ...
+       end case;
     end Compiler;
 
   end My_Project;
+
+.. _Running GNATprove from the Command Line:
 
 Running |GNATprove| from the Command Line
 -----------------------------------------
@@ -181,21 +186,22 @@ the call to |GNATprove|. Using the option ``--limit-subp=`` one can limit proofs
 to a subprogram declared in a particular file at a particular line.
 
 A number of options exist to influence the behavior for proof. Internally, the
-prover Alt-Ergo is called repeatedly for each check or assertion. Using the
-option ``--timeout``, one can change the maximal time that is allocated to prove
-each check or assertion (default: 1s). Using the option ``--steps`` (default:
-not used), one can set the maximum number of reasoning steps that Alt-Ergo is
-allowed to perform before giving up. The ``steps`` option should be used when
-predictable results are required, because the results with a timeout may differ
-depending on the computing power or current load of the machine. The option
-``-j`` activates parallel compilation and parallel proofs.
+prover(s) specified with option ``--prover`` is/are called repeatedly for each
+check or assertion. Using the option ``--timeout``, one can change the maximal
+time that is allocated to each prover to prove each check or assertion
+(default: 1s). Using the option ``--steps`` (default: not used), one can set
+the maximum number of reasoning steps that the prover is allowed to perform
+before giving up. The ``steps`` option should be used when predictable results
+are required, because the results with a timeout may differ depending on the
+computing power or current load of the machine. The option ``-j`` activates
+parallel compilation and parallel proofs.
 
-The way checks are passed to Alt-Ergo can also be influenced using the option
-``--proof``. By default, Alt-Ergo is invoked a single time for each check or
+The way checks are passed to the prover can also be influenced using the option
+``--proof``. By default, the prover is invoked a single time for each check or
 assertion (mode ``per_check``). This can be changed using mode ``per_path`` to
-invoke Alt-Ergo for each *path* that leads to the check. This option usually
-takes much longer, because Alt-Ergo is invoked much more often, but may give
-better proof results. Finally, in mode ``progressive``, invoking Alt-Ergo a
+invoke the prover for each *path* that leads to the check. This option usually
+takes much longer, because the prover is invoked much more often, but may give
+better proof results. Finally, in mode ``progressive``, invoking the prover a
 single time on the entire check is tried, and only if the check is not proved,
 then other techniques that progressively consider each path in isolation
 are tried.
@@ -282,7 +288,7 @@ used, a warning is emitted for every operation that could be re-ordered:
 * any operand of a binary multiplying operation (\*,/,mod,rem) that is itself a
   binary multiplying operation.
 
-.. _GPS integration:
+.. _Running GNATprove from GPS:
 
 Running |GNATprove| from GPS
 ----------------------------
@@ -423,7 +429,7 @@ analysed condition, either:
 * It is the first time the prover is used on the condition then a file
   (containing the condition as input to the specified prover) is created in the
   project's proof directory (see :ref:`Project_Attributes`). |GNATprove|
-  outputs a warning concerning this condition indicating the file that was
+  outputs a message concerning this condition indicating the file that was
   created. The created file should be edited by the user in order to prove the
   condition.
 
@@ -444,7 +450,7 @@ Analysis with |GNATprove| can be limited to a single condition with the
 
     gnatprove -P <project-file.gpr> --prover=<prover> --limit-line=<file>:<line>:<column>:<check-kind>
 
-Where ``check-kind`` can be deduced from the warning associated to the
+Where ``check-kind`` can be deduced from the message associated to the
 failing condition reported by |GNATprove|:
 
 .. csv-table::
@@ -489,8 +495,8 @@ Manual proof in GPS
 
 After running |GNATprove| with proof mode, the menu
 :menuselection:`SPARK --> Prove Check` is available by right-clicking on a
-warning message in the location tab or by right-clicking on a line that fails
-because of a single condition (i.e. there is only one warning in the output of
+check message in the location tab or by right-clicking on a line that fails
+because of a single condition (i.e. there is only one check in the output of
 |GNATprove| concerning this line).
 
 In the dialog box, the field "Alternate prover" can be filled to use another
@@ -509,19 +515,46 @@ offer to re-edit the file if the proof fails.
 How to View |GNATprove| Output
 ==============================
 
+Types of messages in |GNATprove|
+--------------------------------
+
+|GNATprove| issues four different kinds of messages: errors, warnings,
+checks and information messages.
+
+ * Errors are issued for |SPARK| violations or other language legality
+   problems, or any other problem which does not allow to proceed to analysis.
+   Errors cannot be suppressed and must be fixed to proceed with analysis.
+ * Warnings are issued for any suspicious situation like unused values of
+   variables, useless assignements, etc. Warnings are prefixed with the text
+   ``"warning: "`` and can be suppressed with ``pragma Warnings``, see
+   section :ref:`Warning_Control`.
+ * Checks are issued for any potential problem in the code which could affect
+   the correctness of the program, such as missing initialization, possible
+   failing run-time checks or unproved assertions. Checks come with a severity,
+   and depending on the severity the message text is prefixed with ``"low: "``,
+   ``"medium: "`` or ``"high: "``. Check messages cannot be suppressed like
+   warnings, but they can be individually justified with pragma Annotate, see
+   section :ref:`Check_Control`.
+ * Information messages are issued for proved checks in some modes of
+   |GNATprove|.
+
+Messages depending on Tool mode
+-------------------------------
+
 In mode ``check``, |GNATprove| prints on the standard output error messages for
 |SPARK| violations on all the code for which ``SPARK_Mode`` is ``On``.
 
 In modes ``flow`` and ``prove``, this checking is done as a first phase.
 
-In mode ``flow``, GNATprove prints on the standard output error messages and
-warnings for incorrect data flow contracts (annotations ``Global``,
-``Depends``, ``Abstract_State``, ``Initializes``, and refinement versions of
-these), unitialized variables, and suspicious situations such as
-unused assignments, missing return statements and so on.
+In mode ``flow``, GNATprove prints on the standard output messages for
+incorrect dependency contracts (annotations ``Global``, ``Depends``,
+``Abstract_State``, ``Initializes``, and refinement versions of these),
+unitialized variables, and suspicious situations such as unused assignments,
+missing return statements and so on.
 
 In mode ``all`` and report ``fail``, GNATprove does all of the above and
-prints on the standard output warnings for checks that could not be proved.
+prints on the standard output check messages for checks that could not be
+proved.
 
 In mode ``all`` and report ``all`` or ``statistics``, |GNATprove| does the
 same, but in addition prints on the standard output information messages for
@@ -539,10 +572,12 @@ Report`. The statistics describe:
 * which subprograms in these units were analyzed
 * the results of this analysis
 
+.. _Warning_Control:
+
 Warning Control
 ===============
 
-|GNATprove| issues three kinds of warnings, which are controlled separately:
+|GNATprove| issues two kinds of warnings, which are controlled separately:
 
 * Compiler warnings are controlled with the usual GNAT compilation switches:
 
@@ -552,39 +587,82 @@ Warning Control
     See the GNAT User's Guide for more details. These should passed through
     the compilation switches specified in the project file.
 
-* Warnings regarding SPARK legality rules and flow analysis are controlled with switch ``--warnings``:
+* |SPARK| warnings are controlled with switch ``--warnings``:
 
   * ``--warnings=off`` suppresses all warnings
-  * ``--warnings=error`` treats warnings as errors (default)
-  * ``--warnings=continue`` issues warnings but allows further analyses to proceed
+  * ``--warnings=error`` treats warnings as errors
+  * ``--warnings=continue`` issues warnings but does not stop analysis (default)
 
-    The default is to treat |GNATprove| specific warnings as errors. In this mode,
-    warnings prevent the generation of verification conditions
-    since such warnings may impact the validity of proof.
+    The default is that |GNATprove| issues warnings but does not stop.
 
-* Proof warnings are currently not suppressible
-
-Both compiler and flow analysis warnings can be suppressed selectively by the
-use of ``pragma Warnings`` in the source code. See |GNAT Pro| Reference Manual
-for more details.
+Both types of warnings can be suppressed selectively by the use of ``pragma
+Warnings`` in the source code. See |GNAT Pro| Reference Manual for more
+details.
 
 .. note::
 
    A pragma Warnings Off on an entity disables all flow analysis
    warnings related to this entity, anywhere they occur.
 
+.. _Check_Control:
+
+Control of Check Messages
+=========================
+
+The user can suppress check messages emitted by |GNATprove| by putting a
+``pragma Annotate`` in the source code. An example is the following::
+
+    return (X + Y) / (X - Y);
+    pragma Annotate (GNATprove, False_Positive,
+                     "divide by zero", "reviewed by John Smith");
+
+The pragma has the following form::
+
+    pragma Annotate (GNATprove, Category, Pattern, Reason);
+
+where the following table explains the different entries:
+
+.. tabularcolumns:: |l|p{4.5in}|
+
+.. csv-table::
+   :header: "Item", "Explanation"
+   :widths: 1, 4
+
+    "GNATprove",   "is a fixed identifier"
+    "Category",    "is one of False_Positive or Intentional"
+    "Pattern",     "is a string literal describing the pattern of the messages which shall be suppressed"
+    "Reason",      "is a string literal providing a reason for the suppression."
+
+All arguments should be provided.
+
+The category currently has no impact on the behavior of the tool, but the idea
+is that ``False_Positive`` should be used to suppress checks that cannot occcur,
+but |GNATprove| was unable to detect this; ``Intentional`` indicates that the
+condition can occur but is not considered to be a bug.
+
+Pattern should be a substring of the |GNATprove| check message to be
+suppressed.
+
+Reason is any string that the user can use to provide a reason for the
+suppression. This reason may be present in a |GNATprove| report.
+
+Placement rules are as follows: in a statement list or declaration list,
+``pragma Annotate`` applies to the preceding item in the list, ignoring other
+``pragma Annotate``. If there is no preceding item, the pragma applies to the
+enclosing construct.
+
 Warnings and Error Messages
 ===========================
 
-This section lists the different error messages and warnings which |GNATprove|
-may output. Each message points to a very specific place in the source code.
-For example, if a source file ``file.adb`` contains a division as follows::
+This section lists the different messages which |GNATprove| may output. Each
+message points to a very specific place in the source code.  For example, if a
+source file ``file.adb`` contains a division as follows::
 
       if X / Y > Z then ...
 
 |GNATprove| may output a message such as::
 
-   file.adb:12:37: warning: divide by zero might fail
+   file.adb:12:37: medium divide by zero might fail
 
 where the division sign ``/`` is precisely on line 12, column 37. Looking at
 the explanation in the first table below, which states that a division check
@@ -593,7 +671,7 @@ is about ``Y``, and that |GNATprove| was unable to prove that ``Y`` cannot be
 zero. The explanations in the table below should be read with the context that
 is given by the source location.
 
-The following table shows the kinds of warnings issued by proof.
+The following table shows the kinds of check messages issued by proof.
 
 .. tabularcolumns:: |l|p{4.5in}|
 
@@ -633,12 +711,8 @@ The following table shows the kinds of warnings issued by proof.
    "class-wide precondition weaker than overridden one", "Check that the class-wide precondition aspect of the subprogram is weaker than its overridden class-wide precondition."
    "class-wide postcondition stronger than overridden one", "Check that the class-wide postcondition aspect of the subprogram is stronger than its overridden class-wide postcondition."
 
-The following table shows all flow analysis messages, which come in three
-classes: I(nitialization) errors are the most serious flow errors as not fixing
-them might result in a program which can exhibit erroneous (undefined) behaviour
-at run time. F(low) errors indicate a serious problem with a dependency relation, if
-such an error is not fixed, the dependency relations cannot be relied on. All
-other unclassified messages are warnings about questionable code constructs.
+The following table shows all flow analysis messages, either (W)arnings,
+(C)hecks.
 
 .. tabularcolumns:: |l|l|p{4in}|
 
@@ -646,20 +720,20 @@ other unclassified messages are warnings about questionable code constructs.
    :header: "Message Kind", "Class", "Explanation"
    :widths: 1, 1, 6
 
-   "missing dependency", "F", "A dependency is missing from the dependency relation."
-   "dependency relation", "F", "An out parameter or global is missing from the dependency relation."
-   "missing null dependency", "F", "A variable is missing from the null dependency."
-   "incorrect dependency", "F", "A stated dependency is not fulfilled."
-   "must be a global output", "I", "Flow analysis has detected an update of an in mode global."
-   "is not modified",, "The variable is declared with mode in out, but is never modified, so could be declared with mode in."
-   "unused assignment",, "Flow analysis has detected an assignment to a variable which is not read after the assignment."
-   "initialization has no effect",, "Flow analysis has detected an object which is initialized, but never read."
-   "statement has no effect",, "Flow analysis has detected a statement which has no effect."
-   "unused initial value",, "An in or in out parameter or global has been found which does not have any effect on any out or in out parameter or global."
-   "not initialized", "I", "Flow analysis has detected the use of an uninitialized variable."
-   "unused",, "A global or locally declared variable is never used."
-   "missing return",, "A return statement seems to be missing from the function."
-   "export must not depend on Proof_In",, "Flow analysis has detected an output of a subprogram that depends on a constant which is marked Proof_In."
+   "missing dependency", "C", "A dependency is missing from the dependency relation."
+   "dependency relation", "C", "An out parameter or global is missing from the dependency relation."
+   "missing null dependency", "C", "A variable is missing from the null dependency."
+   "incorrect dependency", "C", "A stated dependency is not fulfilled."
+   "must be a global output", "C", "Flow analysis has detected an update of an in mode global."
+   "is not modified","W", "The variable is declared with mode in out, but is never modified, so could be declared with mode in."
+   "unused assignment","W", "Flow analysis has detected an assignment to a variable which is not read after the assignment."
+   "initialization has no effect","W", "Flow analysis has detected an object which is initialized, but never read."
+   "statement has no effect","W", "Flow analysis has detected a statement which has no effect."
+   "unused initial value","W", "An in or in out parameter or global has been found which does not have any effect on any out or in out parameter or global."
+   "not initialized", "C", "Flow analysis has detected the use of an uninitialized variable."
+   "unused","W", "A global or locally declared variable is never used."
+   "missing return","W", "A return statement seems to be missing from the function."
+   "export must not depend on Proof_In","C", "Flow analysis has detected an output of a subprogram that depends on a constant which is marked Proof_In."
 
 Assumptions
 ===========
@@ -680,8 +754,613 @@ results of |GNATprove| depends.
    "effects", "The subprogram interacts with parameters and global variables
    as described by its specification and Global contract"
 
-.. _how to write loop invariants:
+How to Write Subprogram Contracts
+=================================
 
+|GNATprove| relies on subprogram contracts to be able to analyze subprograms
+independently from their callers and callees. But no contracts are compulsory:
+|GNATprove| can either generate a contract or use a default value when a
+contract is not provided by the user. Hence, it is important to know which
+contracts to write for which verification objectives.
+
+.. _Generation of Dependency Contracts:
+
+Generation of Dependency Contracts
+----------------------------------
+
+By default, |GNATprove| does not require the user to write data dependencies
+(introduced with aspect ``Global``) and flow dependencies (introduced
+with aspect ``Depends``), as it can automatically generate them from the
+program.
+
+.. note::
+
+   |GNATprove| does not generate warning or check messages when the body of a
+   subprogram does not respect a generated contract. Indeed, the generated
+   contract is a safe over-approximation of the real contract, hence it is
+   unlikely that the subprogram body respects it. The generated contract is
+   used instead to verify proper initialization and respect of dependency
+   contracts in the callers of the subprogram.
+
+.. _Auto Completion for Incomplete Contracts:
+
+Auto Completion for Incomplete Contracts
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When only the data dependencies (resp. only the flow dependencies) are given on
+a subprogram, |GNATprove| completes automatically the subprogram contract with
+the matching flow dependencies (resp. data dependencies).
+
+Writing Only the Data Dependencies
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When only the data dependencies are given on a subprogram, |GNATprove|
+completes them with flow dependencies that have all outputs depending on all
+inputs. This is a safe over-approximation of the real contract of the
+subprogram, which allows to detect all possible errors of initialization and
+contract violation in the subprogram and its callers, but which may also lead
+to false alarms because it is imprecise.
+
+Take for example procedures ``Add`` and ``Swap`` for which data dependencies
+are given, but no flow dependencies:
+
+.. literalinclude:: gnatprove_by_example/examples/only_data_dependencies.ads
+   :language: ada
+   :linenos:
+
+|GNATprove| completes the contract of ``Add`` and ``Swap`` with flow
+dependencies that are equivalent to:
+
+.. code-block:: ada
+
+   procedure Add (X : Integer) with
+     Global => (In_Out => V),
+     Depends => (V =>+ X);
+
+   procedure Swap (X : in out Integer) with
+     Global => (In_Out => V),
+     Depends => ((X, V) => (X, V));
+
+Other flow dependencies with fewer dependencies between inputs and outputs
+would be compatible with the given data dependencies of ``Add`` and
+``Swap``. |GNATprove| chooses the contracts with the most dependencies. Here,
+this corresponds to the actual contract for ``Add``, but to an imprecise
+contract for ``Swap``:
+
+.. literalinclude:: gnatprove_by_example/examples/only_data_dependencies.adb
+   :language: ada
+   :linenos:
+
+This results in false alarms when |GNATprove| verifies the information flow
+contract of procedure ``Call_Swap`` which calls ``Swap``, while it succeeds in
+verifying the information flow contract of ``Call_Add`` which calls ``Add``:
+
+.. literalinclude:: gnatprove_by_example/results/only_data_dependencies.flow
+   :language: none
+
+The most precise information flow contract for ``Swap`` would be:
+
+.. code-block:: ada
+
+   procedure Swap (X : in out Integer) with
+     Global => (In_Out => V),
+     Depends => (V => X, X => V);
+
+If you add this precise contract in the program, then |GNATprove| can also
+verify the flow dependencies of ``Call_Swap``.
+
+Note that the generated flow dependencies are used in the analysis of callers,
+but |GNATprove| generates no warnings or check messages if the body of ``Add``
+or ``Swap`` have fewer flow dependencies, as seen above. That's a difference
+between these contracts being present in the code or auto completed.
+
+Writing Only the Flow Dependencies
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When only the flow dependencies are given on a subprogram, |GNATprove|
+completes it with the only compatible data dependencies.
+
+Take for example procedures ``Add`` and ``Swap`` as previously, expect now flow
+dependencies are given, but no data dependencies:
+
+.. literalinclude:: gnatprove_by_example/examples/only_flow_dependencies.ads
+   :language: ada
+   :linenos:
+
+The body of the unit is the same as before:
+
+.. literalinclude:: gnatprove_by_example/examples/only_flow_dependencies.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| verifies the data and flow dependencies of all
+subprograms, including ``Call_Add`` and ``Call_Swap``, based on the completed
+contracts for ``Add`` and ``Swap``.
+
+Precise Generation for |SPARK| Subprograms
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When no data or flow dependencies are given on a |SPARK| subprogram,
+|GNATprove| generates precise data and flow dependencies by using
+path-sensitive flow analysis to track data flows in the subprogram body:
+
+ * if a variable is written completely on all paths in a subprogram body, it is
+   considered an output of the subprogram; and
+ * other variables that are written in a subprogram body are considered both
+   inputs and outputs of the subprogram (even if they are not read explicitly,
+   their output value may depend on their input value); and
+ * if a variable is only read in a subprogram body, it is considered an input
+   of the subprogram; and
+ * all outputs are considered to potentially depend on all inputs.
+
+Case 1: No Abstract State
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Take for example a procedure ``Set_Global`` without contract which initializes
+a global variable ``V`` and is called in a number of contexts:
+
+.. literalinclude:: gnatprove_by_example/examples/gen_global.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: gnatprove_by_example/examples/gen_global.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| generates data and flow dependencies for procedure
+``Set_Global`` that are equivalent to:
+
+.. code-block:: ada
+
+   procedure Set_Global with
+     Global  => (Output => V),
+     Depends => (V => null);
+
+Note that the above contract would be illegal as given, because it refers to
+global variable ``V`` which is not visible at the point where ``Set_Global`` is
+declared in ``gen_global.ads``. Instead, a user who would like to write this
+contract on ``Set_Global`` would have to use abstract state.
+
+That generated contract for ``Set_Global`` allows |GNATprove| to both detect
+possible errors when calling ``Set_Global`` and to verify contracts given by
+the user on callers of ``Set_Global``. For example, procedure
+``Set_Global_Twice`` calls ``Set_Global`` twice in a row, which makes the first
+call useless as the value written in ``V`` is immediately overwritten by the
+second call. This is detected by |GNATprove|, which issues two warnings on
+line 18:
+
+.. literalinclude:: gnatprove_by_example/results/gen_global.flow
+   :language: none
+
+Note that |GNATprove| also issues a warning on subprogram ``Do_Nothing`` which
+has no effect, while it correctly analyzes that ``Set_Global`` has an effect,
+even if it has the same signature with no contract as ``Do_Nothing``.
+
+|GNATprove| also uses the generated contract for ``Set_Global`` to analyze
+procedure ``Set_Global_Conditionally``, which allows it to verify the contract
+given by the user for ``Set_Global_Conditionally``:
+
+.. code-block:: ada
+
+   procedure Set_Global_Conditionally (X : Boolean) with
+     Global  => (Output => V),
+     Depends => (V => X)
+
+Case 2: Some Abstract State
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In the presence of abstract state declared by the user, |GNATprove| generates
+data and flow dependencies which take abstract state into account.
+
+For example, take unit ``Gen_Global`` previously seen, where an abstract state
+``State`` is defined for package ``Gen_Abstract_Global``, and refined into
+global variable ``V`` in the body of the package:
+
+.. literalinclude:: gnatprove_by_example/examples/gen_abstract_global.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: gnatprove_by_example/examples/gen_abstract_global.adb
+   :language: ada
+   :linenos:
+
+We have chosen here to declare procedure ``Set_Global_Conditionally`` in
+``gen_abstract_global.ads``, and so to express its user contract abstractly. We
+could also have kept it local to the unit.
+
+|GNATprove| gives the same results on this unit as before: it issues warnings
+for the possible error in ``Set_Global_Twice`` and it verifies the contract
+given by the user for ``Set_Global_Conditionally``:
+
+.. literalinclude:: gnatprove_by_example/results/gen_abstract_global.flow
+   :language: none
+
+Coarse Generation for non-|SPARK| Subprograms
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When no data or flow dependencies are given on a non-|SPARK| subprogram,
+|GNATprove| generates coarser data and flow dependencies based on the
+reads and writes to variables in the subprogram body:
+
+ * if a variable is written in a subprogram body, it is considered both an
+   input and an output of the subprogram; and
+ * if a variable is only read in a subprogram body, it is considered an input
+   of the subprogram; and
+ * all outputs are considered to potentially depend on all inputs.
+
+For example, take unit ``Gen_Global`` previously seen, where the body of
+``Set_Global`` is marked with ``SPARK_Mode => Off``:
+
+.. literalinclude:: gnatprove_by_example/examples/gen_ada_global.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: gnatprove_by_example/examples/gen_ada_global.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| generates a data and flow dependencies for procedure
+``Set_Global`` that are equivalent to:
+
+.. code-block:: ada
+
+   procedure Set_Global with
+     Global  => (In_Out => V),
+     Depends => (V => V);
+
+This is a safe over-approximation of the real contract for
+``Set_Global``, which allows to detect all possible errors of initialization
+and contract violation in ``Set_Global`` callers, but which may also lead to
+false alarms because it is imprecise. Here, |GNATprove| generates a wrong
+high message that the call to ``Set_Global`` on line 25 reads an uninitialized value
+for ``V``:
+
+.. literalinclude:: gnatprove_by_example/results/gen_ada_global.flow
+   :language: none
+
+This is because the generated contract for ``Set_Global`` is not precise
+enough, and considers ``V`` as an input of the procedure. Even if the body of
+``Set_Global`` is not in |SPARK|, the user can easily provide the precise
+information to |GNATprove| by adding a suitable contract to ``Set_Global``,
+which requires to define an abstract state ``State`` like in the previous
+section:
+
+.. code-block:: ada
+
+   procedure Set_Global with
+     Global  => (Output => State),
+     Depends => (State => null);
+
+With such a user contract on ``Set_Global``, |GNATprove| can verify the
+contract of ``Set_Global_Conditionally`` without false alarms.
+
+Writing Dependency Contracts
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Since |GNATprove| generates data and flow dependencies, you don't need
+in general to add such contracts if you don't want to.
+
+The main reason to add such contracts is when you want |GNATprove| to verify
+that the implementation respects specified data dependencies and flow
+dependencies. For those projects submitted to certification, verification of
+data coupling and input/output relations may be a required verification
+objective, which can be achieved automatically with |GNATprove| provided the
+specifications are written as contracts.
+
+Even if you write dependency contracts for the publicly
+visible subprograms, which describe the services offered by the unit, there is
+no need to write similar contracts on internal subprograms defined in the unit
+body. |GNATprove| can generate data and flow dependencies on these.
+
+Also, as seen in the previous section, the data and flow dependencies
+generated by |GNATprove| may be imprecise, in which case it is necessary to add
+manual contracts to avoid false alarms.
+
+Writing Contracts for Program Integrity
+---------------------------------------
+
+The most common use of contracts is to ensure program integrity, that is, the
+program keeps running within safe boundaries. For example, this includes the
+fact that the control flow of the program cannot be circumvented (e.g. through
+a buffer overflow vulnerability) and that data is not corrupted (e.g. data
+invariants are preserved).
+
+Preconditions can be written to ensure program integrity, and in particular
+they ensure:
+
+* absence of run-time errors (AoRTE): no violations of language rules which
+  would lead to raising an exception at run time (preconditions added to all
+  subprograms which may raise a run-time error); and
+* defensive programming: no execution of a subprogram from an unexpected state
+  (preconditions added to subprograms in the public API, to guard against
+  possible misuse by client units); and
+* support of maintenance: prevent decrease in integrity (regressions, code rot)
+  introduced during program evolution (preconditions added to internal
+  subprograms, to guard against violations of the conditions to call these
+  subprograms inside the unit itself); and
+* invariant checking: ensure key data invariants are maintained throughout
+  execution (preconditions added to all subprograms which may break the
+  invariant).
+
+For example, unit ``Integrity`` contains examples of all four kinds of
+preconditions:
+
+* Precondition ``X >= 0`` on procedure ``Seen_One`` ensures AoRTE, as otherwise
+  a negative value for ``X`` would cause the call to ``Update`` to fail a range
+  check, as ``Update`` expects a non-negative value for its parameter.
+* Precondition ``X < Y`` on procedure ``Seen_Two`` ensures defensive
+  programming, as the logic of the procedure is only correctly updating global
+  variables ``Max`` and ``Snd`` to the two maximal values seen if parameters
+  ``X`` and ``Y`` are given in strictly increasing order.
+* Precondition ``X > Snd`` on procedure ``Update`` ensures support of
+  maintenance, as this internal procedure relies on this condition on its
+  parameter to operate properly.
+* Precondition ``Invariant`` on procedure ``Update`` ensures invariant
+  checking, as the property that ``Snd`` is less than ``Max`` expressed in
+  ``Invariant`` should be always respected.
+
+.. literalinclude:: gnatprove_by_example/examples/integrity.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: gnatprove_by_example/examples/integrity.adb
+   :language: ada
+   :linenos:
+
+Note that ``pragma Assertion_Policy (Pre => Check)`` in ``integrity.ads``
+ensures that the preconditions on the public procedures ``Seen_One`` and
+``Seen_Two`` are always enabled at run time, while the precondition on internal
+subprogram ``Update`` is only enabled at run time if compiled with switch
+``-gnata`` (typically set only for debugging or testing). |GNATprove| always
+takes contracts into account, whatever value of ``Assertion_Policy``.
+
+|GNATprove| cannot verify that all preconditions on ``Integrity`` are
+respected. Namely, it cannot verify that the call to ``Update`` inside
+``Seen_One`` respects its precondition, as it is not known from the calling
+context that ``Invariant`` holds:
+
+.. literalinclude:: gnatprove_by_example/results/integrity.prove
+   :language: none
+
+Note that, although ``Invariant`` is not required to hold either on entry to
+``Seen_Two``, the tests performed in if-statements in the body of ``Seen_Two``
+ensure that ``Invariant`` holds when calling ``Update`` inside ``Seen_Two``.
+
+To prove completely the integrity of unit ``Integrity``, it is sufficient to
+add ``Invariant`` as a precondition and postcondition on every subprogram which
+modifies the value of global variables ``Max`` and ``Snd``:
+
+.. literalinclude:: gnatprove_by_example/examples/integrity_proved.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: gnatprove_by_example/examples/integrity_proved.adb
+   :language: ada
+   :linenos:
+
+Here is the result of running |GNATprove|:
+
+.. literalinclude:: gnatprove_by_example/results/integrity_proved.prove
+   :language: none
+
+.. _Writing Contracts for Functional Correctness:
+
+Writing Contracts for Functional Correctness
+--------------------------------------------
+
+Going beyond program integrity, it is possible to express functional properties
+of the program as subprogram contracts. Such a contract can express either
+partially or completely the behavior of the subprogram. Typical simple
+functional properties express the range/constraints for parameters on entry and
+exit of subprograms (encoding their `type-state`), and the state of the
+module/program on entry and exit of subprograms (encoding a safety or security
+automaton). For those projects submitted to certification, expressing a
+subprogram requirement or specification as a complete functional contract
+allows |GNATprove| to verify automatically the implementation against the
+requirement/specification.
+
+For example, unit ``Functional`` is the same as ``Integrity_Proved`` seen
+previously, with additional functional contracts:
+
+* The postcondition on procedure ``Update`` (expressed as a ``Post`` aspect) is
+  a complete functional description of the behavior of the subprogram. Note the
+  use of an if-expression.
+* The postcondition on procedure ``Seen_Two`` (expressed as a ``Post`` aspect)
+  is a partial functional description of the behavior of the subprogram.
+* The postcondition on procedure ``Seen_One`` (expressed as a
+  ``Contract_Cases`` aspect) is a complete functional description of the
+  behavior of the subprogram. There are three cases which correspond to
+  different possible behaviors depending on the values of parameter ``X`` and
+  global variables ``Max`` and ``Snd``. The benefit of expressing the
+  postcondition as contract cases is both the gain in readability (no need to
+  use ``'Old`` for the guards, as in the postcondition of ``Update``) and the
+  automatic verification that the cases are disjoint and complete.
+
+Note that global variables ``Max`` and ``Snd`` are referred to through public
+accessor functions ``Max_Value_Seen`` and ``Second_Max_Value_Seen``. These
+accessor functions can be declared after the contracts in which they appear, as
+contracts are semantically analyzed only at the end of package declaration.
+
+.. literalinclude:: gnatprove_by_example/examples/functional.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: gnatprove_by_example/examples/functional.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| manages to prove automatically almost all of these functional
+contracts, except for the postcondition of ``Seen_Two`` (note in particular the
+proof that the contract cases for ``Seen_One`` on line 10 are disjoint and
+complete):
+
+.. literalinclude:: gnatprove_by_example/results/functional.prove
+   :language: none
+
+Running |GNATprove| in mode ``per_path`` (see :ref:`Running GNATprove from the
+Command Line` or :ref:`Running GNATprove from GPS`), and highlighting the path
+on which the postcondition is not proved, shows that when the last branch of
+the if-statement is taken, the following property is not proved::
+
+  functional.ads:31:14: medium: postcondition might fail, requires Max_Value_Seen /= (Second_Max_Value_Seen)
+
+Indeed, it could be the case that ``Max = Snd = 10`` on entry to procedure
+``Seen_Two``, with values of parameters ``X = 1`` and ``Y = 2``, in which case
+``Max`` and ``Snd`` would still be equal to 10 on exit. The missing piece of
+information here is that ``Max`` and ``Snd`` are never equal, except when they
+are both zero (the initial value). This can be added to function ``Invariant`` as follows:
+
+.. literalinclude:: gnatprove_by_example/examples/functional_proved.adb
+   :language: ada
+   :lines: 7-8
+
+With this more precise definition for ``Invariant``, all contracts are now
+proved by |GNATprove|:
+
+.. literalinclude:: gnatprove_by_example/results/functional_proved.prove
+   :language: none
+
+In general, it may be needed to further refine the preconditions of subprograms
+to be able to prove their functional postconditions, to express either specific
+constraints on their calling context, or invariants maintained throughout the
+execution.
+
+Writing Contracts on Imported Subprograms
+-----------------------------------------
+
+Contracts are particularly useful to specify the behavior of imported
+subprograms, which cannot be analyzed by |GNATprove|. It is compulsory to
+specify in data dependencies the global variables these imported subprograms
+may read and/or write, otherwise |GNATprove| assumes ``null`` data dependencies
+(no global variable read or written).
+
+.. note::
+
+   A subprogram whose implementation is not available to |GNATprove|, either
+   because the corresponding unit body has not been developed yet, or because
+   the unit body is not part of the files analyzed by |GNATprove| (see
+   :ref:`Specifying Files To Analyze` and :ref:`Excluding Files From
+   Analysis`), is treated by |GNATprove| as an imported subprogram.
+
+For example, unit ``Gen_Imported_Global`` is a modified version of the
+``Gen_Abstract_Global`` unit seen previously in :ref:`Generation of Dependency
+Contracts`, where procedure ``Get_Global`` is imported from C:
+
+.. literalinclude:: gnatprove_by_example/examples/gen_imported_global.ads
+   :language: ada
+   :linenos:
+
+Note that we added data dependencies to procedure ``Set_Global``, which can
+be used to analyze its callers. We did not add flow dependencies, as
+they are the same as the auto completed ones (see :ref:`Auto Completion for
+Incomplete Contracts`).
+
+.. literalinclude:: gnatprove_by_example/examples/gen_imported_global.adb
+   :language: ada
+   :linenos:
+
+Note that we added an ``Address`` aspect to global variable ``V``, so that it
+can be read/written from a C file.
+
+|GNATprove| gives the same results on this unit as before: it issues warnings
+for the possible error in ``Set_Global_Twice`` and it verifies the contract
+given by the user for ``Set_Global_Conditionally``:
+
+.. literalinclude:: gnatprove_by_example/results/gen_imported_global.flow
+   :language: none
+
+It is also possible to add functional contracts on imported subprograms, which
+|GNATprove| uses to prove properties of their callers.  It is compulsory to
+specify in a precondition the conditions for calling these imported subprograms
+without errors, otherwise |GNATprove| assumes a default precondition of
+``True`` (no constraints on the calling context). One benefit of these
+contracts is that they are verified at run time when the corresponding
+assertion is enabled in Ada (either with pragma ``Assertion_Policy`` or
+compilation switch ``-gnata``).
+
+For example, unit ``Functional_Imported`` is a modified version of the
+``Functional_Proved`` unit seen previously in :ref:`Writing Contracts for
+Functional Correctness`, where procedures ``Update`` and ``Seen_One`` are
+imported from C:
+
+.. literalinclude:: gnatprove_by_example/examples/functional_imported.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: gnatprove_by_example/examples/functional_imported.adb
+   :language: ada
+   :linenos:
+
+Note that we added data dependencies to the imported procedures, as
+|GNATprove| would assume otherwise incorrectly ``null`` data dependencies.
+
+As before, all contracts are proved by |GNATprove|:
+
+.. literalinclude:: gnatprove_by_example/results/functional_imported.prove
+   :language: none
+
+Contextual Analysis of Subprograms Without Contracts
+----------------------------------------------------
+
+It may be convenient to create local subprograms without necessarily specifying
+a contract for these. |GNATprove| attempts to perform a contextual analysis of
+these local subprograms without contract, at each call site, as if the code of
+the subprograms was inlined. Thus, the analysis proceeds in that case as if it
+had the most precise contract for the local subprogram, in the context of its
+calls.
+
+Let's consider as previously a subprogram which adds two to its integer input:
+
+.. literalinclude:: gnatprove_by_example/examples/arith_with_local_subp.ads
+   :language: ada
+   :linenos:
+
+And let's implement it by calling two local subprograms without contracts
+(which may or not have a separate declaration), which each increment the input
+by one:
+
+.. literalinclude:: gnatprove_by_example/examples/arith_with_local_subp.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| would not be able to prove that the addition in
+``Increment_In_Body`` or ``Increment_Nested`` cannot overflow in any
+context. If it was using only the default contract for these subprograms, it
+also would not prove that the contract of ``Add_Two`` is respected.  But since
+it analyzes these subprograms in the context of their calls only, it proves
+here that no overflow is possible, and that the two increments correctly
+implement the contract of ``Add_Two``:
+
+.. literalinclude:: gnatprove_by_example/results/arith_with_local_subp.prove
+   :language: none
+   :linenos:
+
+This contextual analysis is available only for regular functions (not
+expression functions) or procedures that are not externally visible (not
+declared in the public part of the unit), without contracts (any of Global,
+Depends, Pre, Post, Contract_Cases), and respect the following conditions:
+
+ * does not contain nested subprogram or package declarations or instantiations
+ * not recursive
+ * not a generic instance
+ * not defined in a generic instance
+ * has a single point of return at the end of the subprogram
+ * not called in an assertion or a contract
+ * not called in a potentially unevaluated context
+ * not called before its body is seen
+
+If any of the above conditions is violated, |GNATprove| issues a warning to
+explain why the subprogram could not be analyzed in the context of its calls,
+and then proceeds to analyze it normally, using the default contract.
+
+Note that it is very simple to prevent contextual analysis of a local
+subprogram, by adding a contract to it, for example a simple ``Pre => True`` or
+``Global => null``.
+
+Otherwise, both flow analysis and proof are done for the subprogram in the
+context of its calls.
+
+.. _how to write loop invariants:
 
 How to Write Loop Invariants
 ============================
@@ -756,7 +1435,7 @@ Note that the loop invariant closely resembles the second line in the
 postcondition of the subprogram, except with a different range of values in the
 quantification: instead of stating a property for all indexes in the array
 ``A``, the loop invariant states the same property for all indexes up to the
-current loop index ``Pos``. In fact, if we equal ``Pos`` to ``A'Last`` for the
+current loop index ``Pos``. In fact, if we equate ``Pos`` to ``A'Last`` for the
 last iteration of the loop, the two properties are equal. This explains here
 how the loop invariant allows proving the subprogram postcondition when the
 value searched is not found.
@@ -814,14 +1493,14 @@ Completing a Loop Invariant to Prove Checks Inside the Loop
 -----------------------------------------------------------
 
 Let's start by running |GNATprove| on program ``Binary_Search`` without loop
-invariant. It generates five warnings, four of which correspond to possible
-run-time check failures, and a last one corresponding to a possible failure of
+invariant. It generates two medium message, on corresponding to a possible
+run-time check failure, and one corresponding to a possible failure of
 the postcondition:
 
 .. literalinclude:: examples/results/binary_search_no_loopinv.prove
    :language: none
 
-We will focus here on the four warnings inside the loop, which correspond to
+We will focus here on the message inside the loop, which corresponds to
 property [INSIDE]. The problem is that variable ``Med`` varies in the loop, so
 |GNATprove| only knows that its value is in the range of its type ``Index`` at
 the start of an iteration (line 23), and that it is then assigned the value of
@@ -831,7 +1510,7 @@ array ``A`` (lines 26 and 28) and inside expressions assigned to ``Left`` and
 
 As ``Left`` and ``Right`` also vary in the loop, |GNATprove| cannot use the
 assignment on line 24 to compute a more precise range for variable ``Med``,
-hence the four warnings on index checks and range checks.
+hence the message on index check.
 
 What is needed here is a loop invariant that states that the values of ``Left``
 and ``Right`` stay within the bounds of ``A`` inside the loop:
@@ -841,7 +1520,7 @@ and ``Right`` stay within the bounds of ``A`` inside the loop:
    :lines: 23-26
 
 With this simple loop invariant, |GNATprove| now reports that the
-four checks on lines 26 through 29 are now proved. In particular,
+check on lines 27 is now proved.
 |GNATprove| computes that the value assigned to ``Med`` in the loop is also
 within the bounds of ``A``.
 
@@ -851,13 +1530,13 @@ Completing a Loop Invariant to Prove Checks After the Loop
 With the simple loop invariant given before, |GNATprove| still reports that the
 postcondition of ``Search`` may fail, which corresponds to property [AFTER]. By
 instructing |GNATprove| to prove checks progressively, as seens in
-:ref:`proving spark programs`, we even get a precise warning pointing to the
+:ref:`proving spark programs`, we even get a precise message pointing to the
 part of the postcondition that could not be proved:
 
 .. literalinclude:: examples/results/binary_search_range.prove
    :language: none
 
-Here, the warning shows that the second line of the postcondition could not be
+Here, the message shows that the second line of the postcondition could not be
 proved. This line expresses that, in the case where ``Search`` returns
 ``No_Index`` after the loop, the array ``A`` should not contain the value
 searched ``I``.
@@ -923,8 +1602,8 @@ Proving a Loop Invariant After the First Iteration
 With the loop invariant given before, |GNATprove| now reports that the loop
 invariant of ``Search`` may fail after the first iteration, which corresponds
 to property [PRESERVE]. By instructing |GNATprove| to prove checks
-progressively, as seen in :ref:`proving spark programs`, we even get a precise
-warning pointing to the part of the loop invariant that could not be proved:
+progressively, as seen in :ref:`proving spark programs`, we even get precise
+messages pointing to the parts of the loop invariant that could not be proved:
 
 .. literalinclude:: examples/results/binary_search_precise.prove
    :language: none
@@ -1023,12 +1702,11 @@ cannot prove, which can help figuring out the problem. It may useful to
 simplify the code during this investigation, for example by adding a
 simpler assertion and trying to prove it.
 
-|GNATprove| provides path information that might help the code review. You
-can display inside the editor the path on which the proof failed, as
-described in :ref:`GPS integration`. In many cases, this is sufficient to
-spot a missing assertion. To further assist the user, we plan to add to
-this path some information about the values taken by variables from a
-counterexample.
+|GNATprove| provides path information that might help the code review. You can
+display inside the editor the path on which the proof failed, as described in
+:ref:`Running GNATprove from GPS`. In many cases, this is sufficient to spot a
+missing assertion. To further assist the user, we plan to add to this path some
+information about the values taken by variables from a counterexample.
 
 A property can also be conceptually provable, but the model used by
 |GNATProve| can currently not reason about it [MODEL]. (See
@@ -1050,13 +1728,13 @@ Investigating Prover Shortcomings
 The last step is to investigate if the prover would find a proof given enough
 time [TIMEOUT] or if another prover can find a proof [PROVER]. To that end,
 |GNATprove| provides options ``--timeout`` and ``--prover``, usable either from
-the command-line (see :ref:`command line`) or inside GPS (see :ref:`GPS
-integration`).
+the command-line (see :ref:`command line`) or inside GPS (see :ref:`Running
+GNATprove from GPS`).
 
 Note that for the above experiments, it is quite convenient to use the
 :menuselection:`SPARK --> Prove Line` or :menuselection:`SPARK --> Prove
-Subprogram` menus in GPS, as described in :ref:`GPS integration`, to get faster
-results for the desired line or subprogram.
+Subprogram` menus in GPS, as described in :ref:`Running GNATprove from GPS`, to
+get faster results for the desired line or subprogram.
 
 A common limitation of automatic provers is that they don't handle
 non-linear arithmetic well. For example, they might fail to prove simple checks

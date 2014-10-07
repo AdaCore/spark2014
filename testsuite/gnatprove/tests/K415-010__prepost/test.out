@@ -1,2 +1,2 @@
 prepost.adb:5:07: info: assertion proved
-prepost.adb:16:22: warning: assertion might fail, requires Z = 0
+prepost.adb:16:22: medium: assertion might fail, requires Z = 0

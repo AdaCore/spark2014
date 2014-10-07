@@ -49,6 +49,7 @@ with Urealp;                 use Urealp;
 with SPARK_Util;             use SPARK_Util;
 
 with Gnat2Why_Args;
+with Gnat2Why.Annotate;      use Gnat2Why.Annotate;
 with Gnat2Why.Assumptions;   use Gnat2Why.Assumptions;
 with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
 
@@ -277,6 +278,7 @@ package body SPARK_Definition is
    procedure Mark_Extended_Return_Statement   (N : Node_Id);
    procedure Mark_Subtype_Indication          (N : Node_Id);
    procedure Mark_Unary_Op                    (N : Node_Id);
+   procedure Mark_Stmt_Or_Decl_List           (L : List_Id);
 
    procedure Mark_Actions (N : Node_Id; L : List_Id);
    --  Mark a possibly null list of actions L from expression N. It should be
@@ -607,7 +609,7 @@ package body SPARK_Definition is
             Mark_Binary_Op (N);
 
          when N_Block_Statement =>
-            Mark_List (Declarations (N));
+            Mark_Stmt_Or_Decl_List (Declarations (N));
             Mark (Handled_Statement_Sequence (N));
 
          when N_Case_Expression |
@@ -620,7 +622,7 @@ package body SPARK_Definition is
             Mark (Expression (N));
 
          when N_Case_Statement_Alternative =>
-            Mark_List (Statements (N));
+            Mark_Stmt_Or_Decl_List (Statements (N));
 
          when N_Code_Statement =>
             Mark_Violation ("code statement", N);
@@ -752,7 +754,7 @@ package body SPARK_Definition is
             if Present (Iteration_Scheme (N)) then
                Mark_Iteration_Scheme (Iteration_Scheme (N));
             end if;
-            Mark_List (Statements (N));
+            Mark_Stmt_Or_Decl_List (Statements (N));
 
          when N_Membership_Test =>
             if Is_Array_Type (Etype (Left_Opnd (N))) then
@@ -2841,7 +2843,7 @@ package body SPARK_Definition is
 
    procedure Mark_Extended_Return_Statement (N : Node_Id) is
    begin
-      Mark_List (Return_Object_Declarations (N));
+      Mark_Stmt_Or_Decl_List (Return_Object_Declarations (N));
 
       if Present (Handled_Statement_Sequence (N)) then
          Mark (Handled_Statement_Sequence (N));
@@ -2860,7 +2862,7 @@ package body SPARK_Definition is
          Mark_Violation ("handler", First (Handlers));
       end if;
 
-      Mark_List (Statements (N));
+      Mark_Stmt_Or_Decl_List (Statements (N));
    end Mark_Handled_Statements;
 
    --------------------------------------
@@ -2958,7 +2960,7 @@ package body SPARK_Definition is
    begin
       Mark (Condition (N));
 
-      Mark_List (Then_Statements (N));
+      Mark_Stmt_Or_Decl_List (Then_Statements (N));
 
       if Present (Elsif_Parts (N)) then
          declare
@@ -2969,14 +2971,14 @@ package body SPARK_Definition is
             while Present (Part) loop
                Mark_Actions (N, Condition_Actions (Part));
                Mark (Condition (Part));
-               Mark_List (Then_Statements (Part));
+               Mark_Stmt_Or_Decl_List (Then_Statements (Part));
                Next (Part);
             end loop;
          end;
       end if;
 
       if Present (Else_Statements (N)) then
-         Mark_List (Else_Statements (N));
+         Mark_Stmt_Or_Decl_List (Else_Statements (N));
       end if;
    end Mark_If_Statement;
 
@@ -3070,7 +3072,7 @@ package body SPARK_Definition is
 
       Current_SPARK_Pragma := SPARK_Pragma (Defining_Entity (N));
 
-      Mark_List (Declarations (N));
+      Mark_Stmt_Or_Decl_List (Declarations (N));
 
       Current_SPARK_Pragma := SPARK_Aux_Pragma (Defining_Entity (N));
 
@@ -3156,13 +3158,13 @@ package body SPARK_Definition is
       end if;
 
       if Present (Vis_Decls) then
-         Mark_List (Vis_Decls);
+         Mark_Stmt_Or_Decl_List (Vis_Decls);
       end if;
 
       Current_SPARK_Pragma := SPARK_Aux_Pragma (Id);
 
       if Present (Priv_Decls) then
-         Mark_List (Priv_Decls);
+         Mark_Stmt_Or_Decl_List (Priv_Decls);
       end if;
 
       Current_SPARK_Pragma := Save_SPARK_Pragma;
@@ -3304,6 +3306,7 @@ package body SPARK_Definition is
               Pragma_Elaborate_All                |
               Pragma_Elaborate_Body               |
               Pragma_Export                       |
+              Pragma_Extensions_Visible           |
               Pragma_Independent                  |
               Pragma_Independent_Components       |
               Pragma_Inline                       |
@@ -3357,6 +3360,9 @@ package body SPARK_Definition is
          --  Group 1c - RM Table 16.3, GNAT implementation-defined pragmas
          --  marked "Yes".
          --  Note: pragma Debug is removed by the front-end.
+         --  Note: the interesting case of pragma Annotate (the one with first
+         --  argument Gnatprove) is handled in Mark_Stmt_Or_Decl_List.
+
               Pragma_Ada_83                       |
               Pragma_Ada_95                       |
               Pragma_Ada_05                       |
@@ -3642,6 +3648,48 @@ package body SPARK_Definition is
       Insert_All_And_SPARK (Standard_Integer_64);
    end Mark_Standard_Package;
 
+   ----------------------------
+   -- Mark_Stmt_Or_Decl_List --
+   ----------------------------
+
+   procedure Mark_Stmt_Or_Decl_List (L : List_Id) is
+      Preceding : Node_Id;
+      Cur       : Node_Id := First (L);
+   begin
+      --  We delay the initialization after checking that we really have a list
+
+      if not Present (Cur) then
+         return;
+      end if;
+
+      Preceding := Parent (L);
+
+      while Present (Cur) loop
+
+         --  We peek into the statement node to handle the case of the Annotate
+         --  pragma separately here, to avoid passing the "Preceding" node
+         --  around. All other cases are handled by Mark.
+
+         if Is_Pragma_Annotate_Gnatprove (Cur) then
+
+            --  Handle all the following pragma Annotate, with the same
+            --  "Preceding" node
+
+            loop
+               Mark_Pragma_Annotate (Cur, Preceding);
+               Next (Cur);
+               exit when
+                 not Present (Cur)
+                 or else not Is_Pragma_Annotate_Gnatprove (Cur);
+            end loop;
+         else
+            Mark (Cur);
+            Preceding := Cur;
+            Next (Cur);
+         end if;
+      end loop;
+   end Mark_Stmt_Or_Decl_List;
+
    --------------------------
    -- Mark_Subprogram_Body --
    --------------------------
@@ -3728,7 +3776,7 @@ package body SPARK_Definition is
 
             --  Detect violations in the body itself
 
-            Mark_List (Declarations (N));
+            Mark_Stmt_Or_Decl_List (Declarations (N));
             Mark (HSS);
 
             --  For the special case of an expression function, the frontend

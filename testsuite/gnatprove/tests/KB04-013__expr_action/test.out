@@ -1,13 +1,13 @@
 search.adb:8:10: info: loop invariant initialization proved
-search.adb:9:13: warning: loop invariant might fail after first iteration, requires Pos = 0 and then (for all J in Position range T'First .. I-1 => (T(J) /= V))) or else (T(Pos) = V and then (...
+search.adb:9:13: medium: loop invariant might fail after first iteration, requires Pos = 0 and then (for all J in Position range T'First .. I-1 => (T(J) /= V))) or else (T(Pos) = V and then (for all J in Position range T'First .. Pos-1 => (T(J) /= V
 search.adb:10:25: info: range check proved
 search.adb:10:66: info: index check proved
-search.adb:12:18: warning: array index check might fail
+search.adb:12:18: medium: array index check might fail
 search.adb:13:27: info: range check proved
 search.adb:13:61: info: overflow check proved
 search.adb:13:70: info: index check proved
 search.ads:5:55: info: index check proved
-search.ads:8:09: warning: postcondition might fail, requires Search'Result = 0 and then No_V_In_Range(T,V,T'First,T'Last)) or else (T(Search'Result) = V and then No_V_In_Range(T,V,T'First,Search'Result-1)
-search.ads:10:21: warning: array index check might fail
+search.ads:8:09: medium: postcondition might fail, requires Search'Result = 0 and then No_V_In_Range(T,V,T'First,T'Last)) or else (T(Search'Result) = V and then No_V_In_Range(T,V,T'First,Search'Result-1)
+search.ads:10:21: medium: array index check might fail
 search.ads:11:54: info: overflow check proved
-search.ads:11:54: warning: range check might fail
+search.ads:11:54: medium: range check might fail

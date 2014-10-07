@@ -1,3 +1,3 @@
 check.ads:3:37: info: division check proved
 check.ads:3:70: info: division check proved
-check.ads:4:20: warning: postcondition might fail, requires Div'Result > 0
+check.ads:4:20: medium: postcondition might fail, requires Div'Result > 0

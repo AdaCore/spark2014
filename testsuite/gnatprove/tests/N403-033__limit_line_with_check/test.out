@@ -1,2 +1,2 @@
 test_if.ads:5:37: info: overflow check proved
-test_if.adb:16:33: warning: loop invariant might fail after first iteration, requires B < Integer'Last / 2 - 1
+test_if.adb:16:33: medium: loop invariant might fail after first iteration, requires B < Integer'Last / 2 - 1

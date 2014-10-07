@@ -1,2 +1,2 @@
-constr.adb:6:24: warning: overflow check might fail
-constr.ads:6:20: warning: postcondition might fail, requires X(1) = 1
+constr.adb:6:24: medium: overflow check might fail
+constr.ads:6:20: medium: postcondition might fail, requires X(1) = 1

@@ -13,11 +13,11 @@ queen.adb:29:10: info: loop invariant preservation proved
 queen.adb:30:49: info: index check proved
 queen.adb:30:56: info: index check proved
 queen.adb:41:10: info: loop invariant initialization proved
-queen.adb:41:10: warning: loop invariant might fail after first iteration
+queen.adb:41:10: medium: loop invariant might fail after first iteration
 queen.adb:43:46: info: index check proved
 queen.adb:43:65: info: index check proved
-queen.adb:49:13: warning: precondition might fail
-queen.adb:51:13: warning: precondition might fail
+queen.adb:49:13: medium: precondition might fail
+queen.adb:51:13: medium: precondition might fail
 queen.ads:16:18: info: index check proved
 queen.ads:16:27: info: index check proved
 queen.ads:17:27: info: index check proved
@@ -27,7 +27,7 @@ queen.ads:18:35: info: index check proved
 queen.ads:24:42: info: index check proved
 queen.ads:24:49: info: index check proved
 queen.ads:25:38: info: range check proved
-queen.ads:26:14: warning: postcondition might fail
+queen.ads:26:14: medium: postcondition might fail
 queen.ads:27:42: info: index check proved
 queen.ads:27:54: info: index check proved
 queen.ads:31:16: info: postcondition proved
@@ -36,6 +36,6 @@ queen.ads:31:76: info: index check proved
 queen.ads:36:44: info: index check proved
 queen.ads:36:51: info: index check proved
 queen.ads:37:38: info: range check proved
-queen.ads:38:14: warning: postcondition might fail
+queen.ads:38:14: medium: postcondition might fail
 queen.ads:39:44: info: index check proved
 queen.ads:39:56: info: index check proved

@@ -22,41 +22,36 @@
 ------------------------------------------------------------------------------
 
 with Ada.Characters.Latin_1;
-with Ada.Strings;                   use Ada.Strings;
+with Ada.Strings;           use Ada.Strings;
 with Ada.Strings.Maps;
-
-with Errout;                        use Errout;
-with Lib;                           use Lib;
-with Namet;                         use Namet;
-with Nlists;                        use Nlists;
-with Osint;                         use Osint;
-with Sem_Ch7;                       use Sem_Ch7;
-with Sinfo;                         use Sinfo;
-with Snames;                        use Snames;
-with Sprint;                        use Sprint;
-
-with Output;                        use Output;
---  with Treepr;                        use Treepr;
-
-with Why;
-with SPARK_Definition;              use SPARK_Definition;
-with SPARK_Util;
-
-with Gnat2Why_Args;
-
+with Assumptions;           use Assumptions;
+with Errout;                use Errout;
 with Flow.Analysis;
 with Flow.Control_Dependence_Graph;
 with Flow.Control_Flow_Graph;
 with Flow.Data_Dependence_Graph;
 with Flow.Interprocedural;
 with Flow.Program_Dependence_Graph;
-
-with Flow.Slice;                    use Flow.Slice;
-with Flow_Debug;                    use Flow_Debug;
-with Flow_Error_Messages;           use Flow_Error_Messages;
-with Flow_Tree_Utility;             use Flow_Tree_Utility;
-with Flow_Utility;                  use Flow_Utility;
-with Flow_Computed_Globals;         use Flow_Computed_Globals;
+with Flow.Slice;            use Flow.Slice;
+with Flow_Debug;            use Flow_Debug;
+with Flow_Error_Messages;   use Flow_Error_Messages;
+with Flow_Tree_Utility;     use Flow_Tree_Utility;
+with Flow_Utility;          use Flow_Utility;
+with Flow_Computed_Globals; use Flow_Computed_Globals;
+with Gnat2Why_Args;
+with Gnat2Why.Assumptions;  use Gnat2Why.Assumptions;
+with Lib;                   use Lib;
+with Namet;                 use Namet;
+with Nlists;                use Nlists;
+with Osint;                 use Osint;
+with Output;                use Output;
+with Sem_Ch7;               use Sem_Ch7;
+with Sinfo;                 use Sinfo;
+with Snames;                use Snames;
+with SPARK_Definition;      use SPARK_Definition;
+with SPARK_Util;
+with Sprint;                use Sprint;
+with Why;
 
 use type Ada.Containers.Count_Type;
 
@@ -769,27 +764,28 @@ package body Flow is
          then "Global generation"
          else "Flow analysis");
    begin
-      Tmp.Analyzed_Entity   := E;
-      Tmp.Spec_Node         := S;
-      Tmp.Start_Vertex      := Null_Vertex;
-      Tmp.Helper_End_Vertex := Null_Vertex;
-      Tmp.End_Vertex        := Null_Vertex;
-      Tmp.CFG               := Create;
-      Tmp.DDG               := Create;
-      Tmp.CDG               := Create;
-      Tmp.TDG               := Create;
-      Tmp.PDG               := Create;
-      Tmp.Atr               := Attribute_Maps.Empty_Map;
-      Tmp.Other_Fields      := Vertex_To_Vertex_Set_Maps.Empty_Map;
-      Tmp.Local_Constants   := Node_Sets.Empty_Set;
-      Tmp.All_Vars          := Flow_Id_Sets.Empty_Set;
-      Tmp.Unmodified_Vars   := Node_Sets.Empty_Set;
-      Tmp.Unreferenced_Vars := Node_Sets.Empty_Set;
-      Tmp.Loops             := Node_Sets.Empty_Set;
-      Tmp.Aliasing_Present  := False;
-      Tmp.Dependency_Map    := Dependency_Maps.Empty_Map;
-      Tmp.No_Effects        := False;
-      Tmp.Direct_Calls      := Node_Sets.Empty_Set;
+      Tmp.Analyzed_Entity       := E;
+      Tmp.Spec_Node             := S;
+      Tmp.Start_Vertex          := Null_Vertex;
+      Tmp.Helper_End_Vertex     := Null_Vertex;
+      Tmp.End_Vertex            := Null_Vertex;
+      Tmp.CFG                   := Create;
+      Tmp.DDG                   := Create;
+      Tmp.CDG                   := Create;
+      Tmp.TDG                   := Create;
+      Tmp.PDG                   := Create;
+      Tmp.Atr                   := Attribute_Maps.Empty_Map;
+      Tmp.Other_Fields          := Vertex_To_Vertex_Set_Maps.Empty_Map;
+      Tmp.Local_Constants       := Node_Sets.Empty_Set;
+      Tmp.All_Vars              := Flow_Id_Sets.Empty_Set;
+      Tmp.Unmodified_Vars       := Node_Sets.Empty_Set;
+      Tmp.Unreferenced_Vars     := Node_Sets.Empty_Set;
+      Tmp.Loops                 := Node_Sets.Empty_Set;
+      Tmp.Aliasing_Present      := False;
+      Tmp.Dependency_Map        := Dependency_Maps.Empty_Map;
+      Tmp.No_Effects            := False;
+      Tmp.No_Errors_Or_Warnings := True;
+      Tmp.Direct_Calls          := Node_Sets.Empty_Set;
 
       if Compute_Globals then
          --  Generate Globals
@@ -1161,31 +1157,52 @@ package body Flow is
 
             case FA.Kind is
                when E_Subprogram_Body =>
-                  Analysis.Find_Unwritten_Exports (FA);
-                  if FA.No_Effects then
-                     if not FA.Is_Main then
-                        Error_Msg_Flow
-                          (FA        => FA,
-                           Msg       => "subprogram & has no effect",
-                           N         => FA.Analyzed_Entity,
-                           F1        => Direct_Mapping_Id (FA.Analyzed_Entity),
-                           Tag       => "ineffective",
-                           Warning   => True);
+                  --  In "Prove" mode we do not care about unwritten
+                  --  exports, ineffective statements, dead code and
+                  --  incorrect Depends aspects.
+                  if not Gnat2Why_Args.Prove_Mode then
+                     Analysis.Find_Unwritten_Exports (FA);
+                     if FA.No_Effects then
+                        if not FA.Is_Main then
+                           Error_Msg_Flow
+                             (FA   => FA,
+                              Msg  => "subprogram & has no effect",
+                              N    => FA.Analyzed_Entity,
+                              F1   => Direct_Mapping_Id (FA.Analyzed_Entity),
+                              Tag  => "ineffective",
+                              Kind => Warning_Kind);
+                        end if;
+                     else
+                        Analysis.Find_Ineffective_Imports_And_Unused_Objects
+                          (FA);
+                        Analysis.Find_Ineffective_Statements (FA);
                      end if;
-                  else
-                     Analysis.Find_Ineffective_Imports_And_Unused_Objects (FA);
-                     Analysis.Find_Ineffective_Statements (FA);
+                     Analysis.Find_Dead_Code (FA);
+                     Analysis.Check_Contracts (FA);
                   end if;
-                  Analysis.Find_Dead_Code (FA);
                   Analysis.Find_Use_Of_Uninitialized_Variables (FA);
                   Analysis.Find_Exports_Derived_From_Proof_Ins (FA);
-                  Analysis.Check_Contracts (FA);
                   Analysis.Analyse_Main (FA);
                   Analysis.Enforce_No_Return (FA);
 
+                  --  If no errors or warnings were found during flow
+                  --  analysis of the subprogram then emit the
+                  --  relevant claim.
+                  if FA.No_Errors_Or_Warnings then
+                     Register_Claim ((E    => FA.Analyzed_Entity,
+                                      Kind => Claim_Effects));
+                  end if;
+
                when E_Package | E_Package_Body =>
-                  Analysis.Find_Ineffective_Statements (FA);
-                  Analysis.Find_Dead_Code (FA);
+                  --  In "Prove" mode we do not care about hidden
+                  --  unexposed state, ineffective statements and dead
+                  --  code.
+                  if not Gnat2Why_Args.Prove_Mode then
+                     Analysis.Find_Hidden_Unexposed_State (FA);
+                     Analysis.Find_Ineffective_Statements (FA);
+                     Analysis.Find_Dead_Code (FA);
+                  end if;
+
                   Analysis.Find_Use_Of_Uninitialized_Variables (FA);
                   Analysis.Check_Initializes_Contract (FA);
             end case;

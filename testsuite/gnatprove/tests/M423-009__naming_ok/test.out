@@ -1,1 +1,1 @@
-p_body.adb:5:18: warning: overflow check might fail
+p_body.adb:5:18: medium: overflow check might fail

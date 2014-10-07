@@ -1,20 +1,20 @@
 kmp.adb:6:29: info: length check proved
-kmp.adb:11:23: warning: overflow check might fail
-kmp.adb:12:39: warning: overflow check might fail
+kmp.adb:11:23: medium: overflow check might fail
+kmp.adb:12:39: medium: overflow check might fail
 kmp.adb:13:13: info: loop invariant initialization proved
-kmp.adb:13:13: warning: loop invariant might fail after first iteration
-kmp.adb:16:17: warning: loop invariant might fail after first iteration, requires P (I - J .. J) = P (0..R12b)
-kmp.adb:16:17: warning: loop invariant might fail in first iteration, requires P (I - J .. J) = P (0..R12b)
-kmp.adb:16:17: warning: range check might fail
-kmp.adb:16:22: warning: overflow check might fail
-kmp.adb:16:34: warning: range check might fail
-kmp.adb:16:44: warning: overflow check might fail
-kmp.adb:17:19: warning: array index check might fail
+kmp.adb:13:13: medium: loop invariant might fail after first iteration
+kmp.adb:16:17: medium: loop invariant might fail after first iteration, requires P (I - J .. J) = P (0..R12b)
+kmp.adb:16:17: medium: loop invariant might fail in first iteration, requires P (I - J .. J) = P (0..R12b)
+kmp.adb:16:17: medium: range check might fail
+kmp.adb:16:22: medium: overflow check might fail
+kmp.adb:16:34: medium: range check might fail
+kmp.adb:16:44: medium: overflow check might fail
+kmp.adb:17:19: medium: array index check might fail
 kmp.adb:17:27: info: index check proved
 kmp.adb:18:23: info: overflow check proved
-kmp.adb:19:23: warning: overflow check might fail
+kmp.adb:19:23: medium: overflow check might fail
 kmp.adb:20:22: info: index check proved
 kmp.adb:22:23: info: overflow check proved
 kmp.adb:23:22: info: index check proved
 kmp.adb:25:27: info: index check proved
-kmp.ads:9:17: warning: postcondition might fail, requires Init_Next'Result'Length = P'length
+kmp.ads:9:17: medium: postcondition might fail, requires Init_Next'Result'Length = P'length

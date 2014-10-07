@@ -480,7 +480,7 @@ it is not the case, we add a loop variant, which specifies a quantity varying
 monotonically with each iteration. Since this quantity is bounded by its type,
 and we have proved absence of run-time errors in ``Search``, proving
 this monotonicity property also shows that there cannot be an infinite number
-of iterations of the loop. The natural loop invariant for ``Search`` is
+of iterations of the loop. The natural loop variant for ``Search`` is
 the index ``Pos``, which increases at each loop iteration:
 
 .. literalinclude:: examples/linear_search_final_cases/linear_search.adb

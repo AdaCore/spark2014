@@ -1,4 +1,4 @@
-initialization_warnings.adb:7:21: warning: "An_Arr" might not be initialized
-initialization_warnings.adb:17:12: warning: "An_Arr" might not be initialized
-initialization_warnings.adb:23:16: warning: "A" might not be initialized
-initialization_warnings.adb:33:12: warning: "A" might not be initialized
+initialization_warnings.adb:7:21: medium: "An_Arr" might not be initialized
+initialization_warnings.adb:17:12: medium: "An_Arr" might not be initialized
+initialization_warnings.adb:23:16: medium: "A" might not be initialized
+initialization_warnings.adb:33:12: medium: "A" might not be initialized

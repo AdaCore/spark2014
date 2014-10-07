@@ -24,9 +24,11 @@ SPARK 2014 Toolset User's Guide
 
 .. toctree::
    :maxdepth: 3
+   :numbered: 4
 
    getting_started
    introduction
+   spark_mode
    spark_2014
    tutorial
    gnatprove

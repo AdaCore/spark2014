@@ -1,22 +1,22 @@
 search.adb:19:10: info: range check proved
-search.adb:20:24: warning: assertion might fail, requires Found = 0 and not Found1 and not Found2) or else (Found = 1 and (Found1 or Found2)) or else (Found = 2 and Found1 and Found2
-search.adb:23:24: warning: assertion might fail, requires Found1 = False or else Found2 = false
-search.adb:24:24: warning: assertion might fail, requires not Found1 or else Table(Index1) = Value1
-search.adb:24:49: warning: array index check might fail
-search.adb:25:24: warning: assertion might fail, requires not Found2 or else Table(Index2) = Value2
-search.adb:25:49: warning: array index check might fail
+search.adb:20:24: medium: assertion might fail, requires Found = 0 and not Found1 and not Found2) or else (Found = 1 and (Found1 or Found2)) or else (Found = 2 and Found1 and Found2
+search.adb:23:24: medium: assertion might fail, requires Found1 = False or else Found2 = false
+search.adb:24:24: medium: assertion might fail, requires not Found1 or else Table(Index1) = Value1
+search.adb:24:49: medium: array index check might fail
+search.adb:25:24: medium: assertion might fail, requires not Found2 or else Table(Index2) = Value2
+search.adb:25:49: medium: array index check might fail
 search.adb:26:09: info: assertion proved
 search.adb:30:27: info: overflow check proved
 search.adb:31:12: info: assertion proved
 search.adb:32:12: info: assertion proved
-search.adb:37:27: warning: overflow check might fail
+search.adb:37:27: medium: overflow check might fail
 search.adb:38:12: info: assertion proved
-search.adb:39:27: warning: assertion might fail, requires Found <= 2
+search.adb:39:27: medium: assertion might fail, requires Found <= 2
 search.adb:53:19: info: index check proved
 search.adb:53:51: info: index check proved
-search.ads:13:25: warning: postcondition might fail
-search.ads:13:50: warning: array index check might fail
-search.ads:14:50: warning: array index check might fail
+search.ads:13:25: medium: postcondition might fail
+search.ads:13:50: medium: array index check might fail
+search.ads:14:50: medium: array index check might fail
 search.ads:24:25: info: postcondition proved
 search.ads:24:53: info: index check proved
 search.ads:25:55: info: index check proved

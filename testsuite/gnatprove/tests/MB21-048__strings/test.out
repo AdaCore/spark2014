@@ -1,1 +1,1 @@
-lines.adb:9:14: warning: range check might fail
+lines.adb:9:14: medium: range check might fail

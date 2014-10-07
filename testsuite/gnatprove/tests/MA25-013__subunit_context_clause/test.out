@@ -1,1 +1,1 @@
-skein.adb:17:22: warning: assertion might fail, requires false
+skein.adb:17:22: medium: assertion might fail, requires false

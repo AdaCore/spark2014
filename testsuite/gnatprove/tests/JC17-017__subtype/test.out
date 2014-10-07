@@ -2,16 +2,16 @@ p.adb:4:14: warning: subprogram "Proc" has no effect
 p.adb:8:15: info: range check proved
 p.adb:11:07: warning: analyzing unreferenced procedure "Proc_Loop"
 p.adb:11:17: warning: subprogram "Proc_Loop" has no effect
-p.adb:16:14: warning: range check might fail
-p.adb:16:34: warning: overflow check might fail
-p.adb:17:28: warning: overflow check might fail
+p.adb:16:14: medium: range check might fail
+p.adb:16:34: medium: overflow check might fail
+p.adb:17:28: medium: overflow check might fail
 p.adb:21:16: info: range check proved
-p.adb:23:11: warning: range check might fail
-p.adb:23:37: warning: overflow check might fail
-p.adb:24:25: warning: overflow check might fail
-p.adb:24:25: warning: range check might fail
+p.adb:23:11: medium: range check might fail
+p.adb:23:37: medium: overflow check might fail
+p.adb:24:25: medium: overflow check might fail
+p.adb:24:25: medium: range check might fail
 p.adb:28:04: warning: analyzing unreferenced procedure "Proc_Loop"
 p.adb:28:14: warning: subprogram "Proc_Loop" has no effect
-p.adb:33:11: warning: range check might fail
-p.adb:33:37: warning: overflow check might fail
-p.adb:34:25: warning: overflow check might fail
+p.adb:33:11: medium: range check might fail
+p.adb:33:37: medium: overflow check might fail
+p.adb:34:25: medium: overflow check might fail

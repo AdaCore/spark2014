@@ -1,0 +1,8 @@
+integrity_proved.adb:12:14: info: postcondition proved
+integrity_proved.adb:26:10: info: precondition proved
+integrity_proved.adb:26:18: info: range check proved
+integrity_proved.adb:36:10: info: precondition proved
+integrity_proved.adb:37:10: info: precondition proved
+integrity_proved.adb:39:10: info: precondition proved
+integrity_proved.ads:9:14: info: postcondition proved
+integrity_proved.ads:14:14: info: postcondition proved

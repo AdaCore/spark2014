@@ -1,6 +1,6 @@
 p.adb:8:10: info: loop invariant initialization proved
-p.adb:10:55: warning: range check might fail
-p.adb:11:41: warning: loop invariant might fail after first iteration, requires P.Shadow (J) = D
-p.adb:21:07: warning: precondition might fail
-p.ads:19:45: warning: postcondition might fail, requires P.Shadow(C) = D
+p.adb:10:55: medium: range check might fail
+p.adb:11:41: medium: loop invariant might fail after first iteration, requires P.Shadow (J) = D
+p.adb:21:07: medium: precondition might fail
+p.ads:19:45: medium: postcondition might fail, requires P.Shadow(C) = D
 p.ads:33:14: info: postcondition proved

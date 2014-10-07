@@ -1,88 +1,88 @@
 p.adb:1:11: warning: subprogram "P" has no effect
-p.adb:10:12: warning: array index check might fail
-p.adb:10:15: warning: "Tab" might not be initialized
-p.adb:11:14: warning: overflow check might fail
-p.adb:12:07: warning: loop variant might fail
-p.adb:19:12: warning: overflow check might fail
-p.adb:20:14: warning: array index check might fail
-p.adb:20:14: warning: overflow check might fail
-p.adb:20:19: warning: "Tab" might not be initialized
-p.adb:22:17: warning: overflow check might fail
-p.adb:24:17: warning: overflow check might fail
-p.adb:26:07: warning: loop variant might fail
-p.adb:35:12: warning: array index check might fail
-p.adb:35:15: warning: "Tab" might not be initialized
-p.adb:36:14: warning: overflow check might fail
-p.adb:37:14: warning: overflow check might fail
-p.adb:38:07: warning: loop variant might fail
-p.adb:39:07: warning: loop variant might fail
-p.adb:46:12: warning: array index check might fail
-p.adb:46:15: warning: "Tab" might not be initialized
-p.adb:47:14: warning: overflow check might fail
-p.adb:48:07: warning: loop variant might fail
-p.adb:49:50: warning: overflow check might fail
-p.adb:49:57: warning: loop invariant might fail after first iteration, requires Tab (L) = L
-p.adb:49:57: warning: loop invariant might fail in first iteration, requires Tab (L) = L
-p.adb:49:62: warning: array index check might fail
-p.adb:56:12: warning: array index check might fail
-p.adb:56:15: warning: "Tab" might not be initialized
-p.adb:57:14: warning: overflow check might fail
-p.adb:58:50: warning: overflow check might fail
-p.adb:58:57: warning: loop invariant might fail after first iteration, requires Tab (L) = L
-p.adb:58:57: warning: loop invariant might fail in first iteration, requires Tab (L) = L
-p.adb:58:62: warning: array index check might fail
-p.adb:59:07: warning: loop variant might fail
-p.adb:67:12: warning: array index check might fail
-p.adb:67:15: warning: "Tab" might not be initialized
-p.adb:68:14: warning: overflow check might fail
-p.adb:69:14: warning: overflow check might fail
-p.adb:70:30: warning: loop invariant might fail after first iteration, requires J = A + K
-p.adb:70:30: warning: loop invariant might fail in first iteration, requires J = A + K
-p.adb:70:36: warning: overflow check might fail
-p.adb:71:07: warning: loop variant might fail
-p.adb:72:50: warning: overflow check might fail
-p.adb:72:57: warning: loop invariant might fail after first iteration, requires Tab (L) = L
-p.adb:72:57: warning: loop invariant might fail in first iteration, requires Tab (L) = L
-p.adb:72:62: warning: array index check might fail
-p.adb:73:07: warning: loop variant might fail
-p.adb:74:50: warning: overflow check might fail
-p.adb:74:54: warning: overflow check might fail
-p.adb:74:61: warning: loop invariant might fail after first iteration, requires Tab (L) = L
-p.adb:74:61: warning: loop invariant might fail in first iteration, requires Tab (L) = L
-p.adb:74:66: warning: array index check might fail
-p.adb:80:12: warning: array index check might fail
-p.adb:80:15: warning: "Tab" might not be initialized
-p.adb:81:14: warning: overflow check might fail
-p.adb:82:14: warning: overflow check might fail
-p.adb:83:30: warning: loop invariant might fail after first iteration, requires J = A + K
-p.adb:83:30: warning: loop invariant might fail in first iteration, requires J = A + K
-p.adb:83:36: warning: overflow check might fail
-p.adb:84:50: warning: overflow check might fail
-p.adb:84:57: warning: loop invariant might fail after first iteration, requires Tab (L) = L
-p.adb:84:57: warning: loop invariant might fail in first iteration, requires Tab (L) = L
-p.adb:84:62: warning: array index check might fail
-p.adb:85:07: warning: loop variant might fail
-p.adb:86:07: warning: loop variant might fail
-p.adb:87:50: warning: overflow check might fail
-p.adb:87:54: warning: overflow check might fail
-p.adb:87:61: warning: loop invariant might fail after first iteration, requires Tab (L) = L
-p.adb:87:61: warning: loop invariant might fail in first iteration, requires Tab (L) = L
-p.adb:87:66: warning: array index check might fail
-p.adb:93:12: warning: array index check might fail
-p.adb:93:15: warning: "Tab" might not be initialized
-p.adb:94:14: warning: overflow check might fail
-p.adb:95:14: warning: overflow check might fail
-p.adb:96:07: warning: loop variant might fail
-p.adb:97:30: warning: loop invariant might fail after first iteration, requires J = A + K
-p.adb:97:30: warning: loop invariant might fail in first iteration, requires J = A + K
-p.adb:97:36: warning: overflow check might fail
-p.adb:98:50: warning: overflow check might fail
-p.adb:98:57: warning: loop invariant might fail after first iteration, requires Tab (L) = L
-p.adb:98:57: warning: loop invariant might fail in first iteration, requires Tab (L) = L
-p.adb:98:62: warning: array index check might fail
-p.adb:99:50: warning: overflow check might fail
-p.adb:99:54: warning: overflow check might fail
-p.adb:99:61: warning: loop invariant might fail after first iteration, requires Tab (L) = L
-p.adb:99:61: warning: loop invariant might fail in first iteration, requires Tab (L) = L
-p.adb:99:66: warning: array index check might fail
-p.adb:100:07: warning: loop variant might fail
+p.adb:10:12: medium: array index check might fail
+p.adb:10:15: medium: "Tab" might not be initialized
+p.adb:11:14: medium: overflow check might fail
+p.adb:12:07: medium: loop variant might fail
+p.adb:19:12: medium: overflow check might fail
+p.adb:20:14: medium: array index check might fail
+p.adb:20:14: medium: overflow check might fail
+p.adb:20:19: medium: "Tab" might not be initialized
+p.adb:22:17: medium: overflow check might fail
+p.adb:24:17: medium: overflow check might fail
+p.adb:26:07: medium: loop variant might fail
+p.adb:35:12: medium: array index check might fail
+p.adb:35:15: medium: "Tab" might not be initialized
+p.adb:36:14: medium: overflow check might fail
+p.adb:37:14: medium: overflow check might fail
+p.adb:38:07: medium: loop variant might fail
+p.adb:39:07: medium: loop variant might fail
+p.adb:46:12: medium: array index check might fail
+p.adb:46:15: medium: "Tab" might not be initialized
+p.adb:47:14: medium: overflow check might fail
+p.adb:48:07: medium: loop variant might fail
+p.adb:49:50: medium: overflow check might fail
+p.adb:49:57: medium: loop invariant might fail after first iteration, requires Tab (L) = L
+p.adb:49:57: medium: loop invariant might fail in first iteration, requires Tab (L) = L
+p.adb:49:62: medium: array index check might fail
+p.adb:56:12: medium: array index check might fail
+p.adb:56:15: medium: "Tab" might not be initialized
+p.adb:57:14: medium: overflow check might fail
+p.adb:58:50: medium: overflow check might fail
+p.adb:58:57: medium: loop invariant might fail after first iteration, requires Tab (L) = L
+p.adb:58:57: medium: loop invariant might fail in first iteration, requires Tab (L) = L
+p.adb:58:62: medium: array index check might fail
+p.adb:59:07: medium: loop variant might fail
+p.adb:67:12: medium: array index check might fail
+p.adb:67:15: medium: "Tab" might not be initialized
+p.adb:68:14: medium: overflow check might fail
+p.adb:69:14: medium: overflow check might fail
+p.adb:70:30: medium: loop invariant might fail after first iteration, requires J = A + K
+p.adb:70:30: medium: loop invariant might fail in first iteration, requires J = A + K
+p.adb:70:36: medium: overflow check might fail
+p.adb:71:07: medium: loop variant might fail
+p.adb:72:50: medium: overflow check might fail
+p.adb:72:57: medium: loop invariant might fail after first iteration, requires Tab (L) = L
+p.adb:72:57: medium: loop invariant might fail in first iteration, requires Tab (L) = L
+p.adb:72:62: medium: array index check might fail
+p.adb:73:07: medium: loop variant might fail
+p.adb:74:50: medium: overflow check might fail
+p.adb:74:54: medium: overflow check might fail
+p.adb:74:61: medium: loop invariant might fail after first iteration, requires Tab (L) = L
+p.adb:74:61: medium: loop invariant might fail in first iteration, requires Tab (L) = L
+p.adb:74:66: medium: array index check might fail
+p.adb:80:12: medium: array index check might fail
+p.adb:80:15: medium: "Tab" might not be initialized
+p.adb:81:14: medium: overflow check might fail
+p.adb:82:14: medium: overflow check might fail
+p.adb:83:30: medium: loop invariant might fail after first iteration, requires J = A + K
+p.adb:83:30: medium: loop invariant might fail in first iteration, requires J = A + K
+p.adb:83:36: medium: overflow check might fail
+p.adb:84:50: medium: overflow check might fail
+p.adb:84:57: medium: loop invariant might fail after first iteration, requires Tab (L) = L
+p.adb:84:57: medium: loop invariant might fail in first iteration, requires Tab (L) = L
+p.adb:84:62: medium: array index check might fail
+p.adb:85:07: medium: loop variant might fail
+p.adb:86:07: medium: loop variant might fail
+p.adb:87:50: medium: overflow check might fail
+p.adb:87:54: medium: overflow check might fail
+p.adb:87:61: medium: loop invariant might fail after first iteration, requires Tab (L) = L
+p.adb:87:61: medium: loop invariant might fail in first iteration, requires Tab (L) = L
+p.adb:87:66: medium: array index check might fail
+p.adb:93:12: medium: array index check might fail
+p.adb:93:15: medium: "Tab" might not be initialized
+p.adb:94:14: medium: overflow check might fail
+p.adb:95:14: medium: overflow check might fail
+p.adb:96:07: medium: loop variant might fail
+p.adb:97:30: medium: loop invariant might fail after first iteration, requires J = A + K
+p.adb:97:30: medium: loop invariant might fail in first iteration, requires J = A + K
+p.adb:97:36: medium: overflow check might fail
+p.adb:98:50: medium: overflow check might fail
+p.adb:98:57: medium: loop invariant might fail after first iteration, requires Tab (L) = L
+p.adb:98:57: medium: loop invariant might fail in first iteration, requires Tab (L) = L
+p.adb:98:62: medium: array index check might fail
+p.adb:99:50: medium: overflow check might fail
+p.adb:99:54: medium: overflow check might fail
+p.adb:99:61: medium: loop invariant might fail after first iteration, requires Tab (L) = L
+p.adb:99:61: medium: loop invariant might fail in first iteration, requires Tab (L) = L
+p.adb:99:66: medium: array index check might fail
+p.adb:100:07: medium: loop variant might fail

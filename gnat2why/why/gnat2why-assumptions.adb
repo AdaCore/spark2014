@@ -26,7 +26,6 @@
 
 with Ada.Containers.Hashed_Maps;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Assumptions;           use Assumptions;
 with Atree;                 use Atree;
 with Gnat2Why.Nodes;        use Gnat2Why.Nodes;
 with Sinput;                use Sinput;
@@ -44,8 +43,6 @@ package body Gnat2Why.Assumptions is
 
    function Claim_To_Token (C : Claim) return Token;
    --  Build an assumption token from a gnat2why claim
-
-   function To_String (C : Claim_Kind) return String;
 
    Claim_Assumptions : Claim_Maps.Map := Claim_Maps.Empty_Map;
    --  contains the assumptions of a claim, whether that claim has been
@@ -99,7 +96,7 @@ package body Gnat2Why.Assumptions is
 
    function Claim_To_Token (C : Claim) return Token is
    begin
-      return (Predicate => To_Unbounded_String (To_String (C.Kind)),
+      return (Predicate => C.Kind,
               Arg       => Entity_To_Subp (C.E));
    end Claim_To_Token;
 
@@ -183,20 +180,5 @@ package body Gnat2Why.Assumptions is
          Register_Claim ((E => E, Kind => Claim_Post));
       end if;
    end Register_Proof_Claims;
-
-   ---------------
-   -- To_String --
-   ---------------
-
-   function To_String (C : Claim_Kind) return String is
-   begin
-      case C is
-         when Claim_Init => return "init";
-         when Claim_Pre  => return "pre";
-         when Claim_Post => return "post";
-         when Claim_Effects => return "effects";
-         when Claim_AoRTE => return "aorte";
-      end case;
-   end To_String;
 
 end Gnat2Why.Assumptions;
