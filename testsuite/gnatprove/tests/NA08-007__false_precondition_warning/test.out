@@ -1,0 +1,2 @@
+foo.ads:7:25: warning: precondition is statically false
+foo.ads:8:17: info: postcondition proved

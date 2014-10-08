@@ -27,6 +27,7 @@ with GNAT.Source_Info;
 
 with Atree;                  use Atree;
 with Einfo;                  use Einfo;
+with Errout;                 use Errout;
 with Namet;                  use Namet;
 with Nlists;                 use Nlists;
 with Sem_Disp;               use Sem_Disp;
@@ -35,6 +36,7 @@ with Sem_Util;               use Sem_Util;
 with Sinfo;                  use Sinfo;
 with Sinput;                 use Sinput;
 with Snames;                 use Snames;
+with Stand;                  use Stand;
 with Uintp;                  use Uintp;
 with VC_Kinds;               use VC_Kinds;
 
@@ -1925,6 +1927,15 @@ package body Gnat2Why.Subprograms is
       --  if the subprogram is a main, the precondition needs to be *proved*,
       --  and in this case the assumption is realized using an assertion
       --  expression.
+
+      for Expr of Get_Precondition_Expressions (E) loop
+         if Nkind (Expr) = N_Identifier
+           and then Entity (Expr) = Standard_False
+         then
+            Error_Msg_N (Msg  => "?precondition is statically false",
+                         N    => Expr);
+         end if;
+      end loop;
 
       declare
          Pre : constant W_Pred_Id :=
