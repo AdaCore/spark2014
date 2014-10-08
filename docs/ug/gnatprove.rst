@@ -651,8 +651,8 @@ Placement rules are as follows: in a statement list or declaration list,
 ``pragma Annotate``. If there is no preceding item, the pragma applies to the
 enclosing construct.
 
-Warnings and Error Messages
-===========================
+|GNATprove| Messages
+====================
 
 This section lists the different messages which |GNATprove| may output. Each
 message points to a very specific place in the source code.  For example, if a
