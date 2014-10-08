@@ -1,14 +1,14 @@
-# This Makefile is used to build gnat2why and gnatprove, and to install these
-# tools.
+# This Makefile is used to build and install GNATprove and its sub-components,
+# at the exception of prover CVC4, which should be separately built/installed.
 #
-# To build gnat2why, you need a working GNAT compiler and a symbolic link in
-# gnat2why/gnat_src that points to the GNAT sources.
+# To build gnat2why, you need:
+#  . a working GNAT compiler
+#  . a symbolic link in gnat2why/gnat_src that points to the GNAT sources
+#  . an installation of the gnatcoll library
 #
-# To build gnatprove, you additionnally need an installation of the gnatcoll
-# library, and local checked out repositories of submodules why3 and alt-ergo.
-#
-# To build gnatmerge, you additionnally need python support in gnatcoll and
-# an installation of ASIS.
+# To build gnatprove, you need:
+#  . an installation of the gnatcoll library
+#  . local checked out repositories of submodules why3 and alt-ergo.
 #
 # The necessary steps to correctly install gnat2why/gnatprove are
 #
@@ -23,13 +23,14 @@
 # 3) make install-all
 #
 #    This copies all the necessary files into the install/ subdirectory, for
-#    gnatprove, why3 and alt-ergo.
+#    gnatprove, gnat2why, why3 and alt-ergo.
 #
-# 4) Put the directory install/bin in your path:
-#	export PATH=<path_to_hilite_repo>/install/bin:$PATH
+# 4) export PATH=/path/to/spark2014/install/bin:$PATH
+#
+#    This puts the directory install/bin in your path.
 
 .PHONY: clean doc gnat2why gnat2why-nightly gnatprove install \
-	install-all gnatmerge why3 alt-ergo all setup all-nightly doc-nightly
+	install-all why3 alt-ergo all setup all-nightly doc-nightly
 
 INSTALLDIR=$(CURDIR)/install
 SHAREDIR=$(INSTALLDIR)/share
@@ -116,12 +117,6 @@ gnatprove:
 
 gnatprove-nightly:
 	$(MAKE) -C gnatprove nightly
-
-gnatmerge:
-	$(MAKE) -C gnatmerge
-
-install-gnatmerge:
-	$(MAKE) -C gnatmerge INSTALLDIR=$(INSTALLDIR) install
 
 install-examples:
 	mkdir -p $(EXAMPLESDIR)
