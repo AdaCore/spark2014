@@ -72,6 +72,6 @@ package Gnat2Why.Assumptions is
    --  Save assumptions output to file "unit.assum"
 
    function Entity_To_Subp (E : Entity_Id) return Subp_Type;
-   --  transform an entity into the triple (name, file, line)
+   --  transform an entity into the tuple (name, sloc)
 
 end Gnat2Why.Assumptions;

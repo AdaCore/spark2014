@@ -199,7 +199,7 @@ package body Report_Database is
    begin
 
       --  ??? We need to use include instead of insert because GNATprove
-      --  currently mixes up instances of the same generic
+      --  currently mixes up packages and subprograms-acting-as packages
 
       Subp_Unit_Map.Include (Subp, Unit);
       Update_Subp_Entry (Unit, Subp, Process'Access);
