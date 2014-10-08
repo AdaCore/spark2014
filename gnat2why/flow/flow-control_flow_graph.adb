@@ -1203,11 +1203,17 @@ package body Flow.Control_Flow_Graph is
                end loop;
             end if;
 
-            for V of All_Vertices loop
-               FA.Other_Fields.Insert (V,
-                                       All_Vertices - Vertex_Sets.To_Set (V));
-            end loop;
-
+            declare
+               C : Flow_Graphs.Cluster_Id;
+            begin
+               FA.CFG.New_Cluster (C);
+               for V of All_Vertices loop
+                  FA.Other_Fields.Insert
+                    (V,
+                     All_Vertices - Vertex_Sets.To_Set (V));
+                  FA.CFG.Set_Cluster (V, C);
+               end loop;
+            end;
          end;
       else
          declare
@@ -2756,11 +2762,17 @@ package body Flow.Control_Flow_Graph is
                      All_Vertices.Insert (V);
                   end loop;
 
-                  for V of All_Vertices loop
-                     FA.Other_Fields.Insert (V,
-                                             All_Vertices -
-                                               Vertex_Sets.To_Set (V));
-                  end loop;
+                  declare
+                     C : Flow_Graphs.Cluster_Id;
+                  begin
+                     FA.CFG.New_Cluster (C);
+                     for V of All_Vertices loop
+                        FA.Other_Fields.Insert
+                          (V,
+                           All_Vertices - Vertex_Sets.To_Set (V));
+                        FA.CFG.Set_Cluster (V, C);
+                     end loop;
+                  end;
                end;
 
             else
@@ -3364,9 +3376,13 @@ package body Flow.Control_Flow_Graph is
          end if;
       end Get_Abend_Kind;
 
-      V        : Flow_Graphs.Vertex_Id;
+      V : Flow_Graphs.Vertex_Id;
+      C : Flow_Graphs.Cluster_Id;
 
    begin
+      --  Add a cluster to help pretty printing.
+      FA.CFG.New_Cluster (C);
+
       --  A vertex for the actual call.
       Add_Vertex
         (FA,
@@ -3377,6 +3393,7 @@ package body Flow.Control_Flow_Graph is
                                Loops      => Ctx.Current_Loops,
                                E_Loc      => N),
          V);
+      FA.CFG.Set_Cluster (V, C);
 
       --  Deal with the procedures parameters.
       Process_Parameter_Associations (N,
@@ -3433,6 +3450,7 @@ package body Flow.Control_Flow_Graph is
             if Prev /= Flow_Graphs.Null_Vertex then
                FA.CFG.Add_Edge (Prev, V, EC_Default);
             end if;
+            FA.CFG.Set_Cluster (V, C);
 
             Prev := V;
          end loop;

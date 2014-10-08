@@ -24,7 +24,8 @@
 with Ada.Containers.Doubly_Linked_Lists;
 
 with System.Strings;
-with Ada.Text_IO;    use Ada.Text_IO;
+with Ada.Text_IO;         use Ada.Text_IO;
+with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 
 with GNAT.OS_Lib;    use GNAT.OS_Lib;
 
@@ -58,22 +59,31 @@ package body Graph is
 
    function Create (Colour : Edge_Colours := Edge_Colours'First) return T is
    begin
-      return T'(Vertices       => VL.Empty_Vector,
-                Default_Colour => Colour,
-                Frozen         => False);
+      return (Vertices       => VL.Empty_Vector,
+              Default_Colour => Colour,
+              Frozen         => False,
+              Clusters       => 0);
    end Create;
 
-   function Create (G : T'Class) return T is
+   function Create (G             : T'Class;
+                    Copy_Clusters : Boolean := False)
+                    return T
+   is
       R : T := Create (G.Default_Colour);
    begin
       for V of G.Vertices loop
-         R.Vertices.Append
-           (Vertex'(Key            => V.Key,
-                    In_Neighbours  => VIS.Empty_Set,
-                    Out_Neighbours => EAM.Empty_Map));
+         R.Vertices.Append ((Key            => V.Key,
+                             In_Neighbours  => VIS.Empty_Set,
+                             Out_Neighbours => EAM.Empty_Map,
+                             Cluster        => (if Copy_Clusters
+                                                then V.Cluster
+                                                else Null_Cluster)));
       end loop;
 
-      R.Frozen := True;
+      R.Frozen   := True;
+      if Copy_Clusters then
+         R.Clusters := G.Clusters;
+      end if;
 
       return R;
    end Create;
@@ -117,7 +127,8 @@ package body Graph is
    begin
       G.Vertices.Append ((Key            => V,
                           In_Neighbours  => VIS.Empty_Set,
-                          Out_Neighbours => EAM.Empty_Map));
+                          Out_Neighbours => EAM.Empty_Map,
+                          Cluster        => Null_Cluster));
       Id := G.Vertices.Last_Index;
    end Add_Vertex;
 
@@ -127,7 +138,8 @@ package body Graph is
    begin
       G.Vertices.Append ((Key            => Null_Key,
                           In_Neighbours  => VIS.Empty_Set,
-                          Out_Neighbours => EAM.Empty_Map));
+                          Out_Neighbours => EAM.Empty_Map,
+                          Cluster        => Null_Cluster));
       Id := G.Vertices.Last_Index;
    end Add_Vertex;
 
@@ -137,7 +149,8 @@ package body Graph is
    begin
       G.Vertices.Append ((Key            => V,
                           In_Neighbours  => VIS.Empty_Set,
-                          Out_Neighbours => EAM.Empty_Map));
+                          Out_Neighbours => EAM.Empty_Map,
+                          Cluster        => Null_Cluster));
    end Add_Vertex;
 
    -----------------
@@ -358,6 +371,35 @@ package body Graph is
       end loop;
       return Null_Vertex;
    end Child;
+
+   ----------------------------------------------------------------------
+   --  Clusters
+   ----------------------------------------------------------------------
+
+   -----------------
+   -- New_Cluster --
+   -----------------
+
+   procedure New_Cluster (G : in out T'Class;
+                          C :    out Cluster_Id)
+   is
+   begin
+      G.Clusters := G.Clusters + 1;
+      C          := G.Clusters;
+   end New_Cluster;
+
+   -----------------
+   -- Set_Cluster --
+   -----------------
+
+   procedure Set_Cluster (G : in out T'Class;
+                          V : Vertex_Id;
+                          C : Cluster_Id)
+   is
+   begin
+      pragma Assert (C <= G.Clusters);
+      G.Vertices (V).Cluster := C;
+   end Set_Cluster;
 
    ----------------------------------------------------------------------
    --  Iterators
@@ -1316,36 +1358,53 @@ package body Graph is
       Put_Line (FD, "digraph G {");
       Put_Line (FD, "   graph [splines=True];");
 
-      for J in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
-         declare
-            Info : constant Node_Display_Info := Node_Info (G, J);
-         begin
-            if Info.Show then
-               Put (FD, "   ");
-               Put (FD, Valid_Vertex_Id'Image (J));
-               Put (FD, " [label=""");
-               Put (FD, Escape (Info.Label));
-               Put (FD, """");
-               case Info.Shape is
-                  when Shape_Oval =>
-                     null;
-                  when Shape_Box =>
-                     Put (FD, ",shape=""box""");
-                  when Shape_Diamond =>
-                     Put (FD, ",shape=""diamond""");
-                  when Shape_None =>
-                     Put (FD, ",shape=""plaintext""");
-               end case;
-               if Info.Colour /= Null_Unbounded_String then
-                  Put (FD, ",fontcolor=""" & To_String (Info.Colour) & """");
+      for C in Cluster_Id range 0 .. G.Clusters loop
+         if C > 0 then
+            Put (FD, "subgraph cluster");
+            Put (File  => FD,
+                 Item  => Integer (C),
+                 Width => 0,
+                 Base  => 10);
+            Put_Line (FD, " {");
+            Put_Line (FD, "  style=filled;");
+            Put_Line (FD, "  color=lightgrey;");
+            Put_Line (FD, "  node [style=filled,color=white];");
+         end if;
+         for J in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
+            declare
+               Info : constant Node_Display_Info := Node_Info (G, J);
+            begin
+               if Info.Show and then G.Vertices (J).Cluster = C then
+                  Put (FD, "   ");
+                  Put (FD, Valid_Vertex_Id'Image (J));
+                  Put (FD, " [label=""");
+                  Put (FD, Escape (Info.Label));
+                  Put (FD, """");
+                  case Info.Shape is
+                     when Shape_Oval =>
+                        null;
+                     when Shape_Box =>
+                        Put (FD, ",shape=""box""");
+                     when Shape_Diamond =>
+                        Put (FD, ",shape=""diamond""");
+                     when Shape_None =>
+                        Put (FD, ",shape=""plaintext""");
+                  end case;
+                  if Info.Colour /= Null_Unbounded_String then
+                     Put (FD, ",fontcolor="""
+                            & To_String (Info.Colour)
+                            & """");
+                  end if;
+                  Put (FD, "];");
+                  New_Line (FD);
                end if;
-               Put (FD, "];");
-               New_Line (FD);
-            end if;
-         end;
+            end;
+         end loop;
+         if C > 0 then
+            Put_Line (FD, "}");
+         end if;
+         New_Line (FD);
       end loop;
-
-      New_Line (FD);
 
       for V_1 in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
          for C in G.Vertices (V_1).Out_Neighbours.Iterate loop

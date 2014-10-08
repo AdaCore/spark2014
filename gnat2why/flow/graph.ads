@@ -92,6 +92,9 @@ package Graph is
    type Vertex_Id is private;
    Null_Vertex : constant Vertex_Id;
 
+   type Cluster_Id is private;
+   Null_Cluster : constant Cluster_Id;
+
    type Collection_Type_T is
      (
       --  Collections based on a vertex.
@@ -131,7 +134,9 @@ package Graph is
    function Create (Colour : Edge_Colours := Edge_Colours'First) return T;
    --  Creates a new, empty graph.
 
-   function Create (G : T'Class) return T
+   function Create (G             : T'Class;
+                    Copy_Clusters : Boolean := False)
+                    return T
      with Post => Create'Result.Is_Frozen;
    --  Creates a new graph with all the vertices from G, but no edges. Both
    --  graphs are frozen by this operation.
@@ -304,6 +309,25 @@ package Graph is
       with Pre => G.Out_Neighbour_Count (V) <= 1;
    --  Return the sole out neighbour of the vertex, if it exists, and
    --  Null_Vertex otherwise.
+   --
+   --  Complexity is O(1).
+
+   ----------------------------------------------------------------------
+   --  Clusters
+   ----------------------------------------------------------------------
+
+   procedure New_Cluster (G : in out T'Class;
+                          C :    out Cluster_Id);
+   --  Create a new cluster that vertices can be a member of.
+   --
+   --  Complexity is O(1).
+
+   procedure Set_Cluster (G : in out T'Class;
+                          V : Vertex_Id;
+                          C : Cluster_Id);
+   --  Assigns the given cluster to the given vertex. Note a vertex can
+   --  only be member of a single cluster, so any subsequent calls to
+   --  Set_Cluster will override the old cluster.
    --
    --  Complexity is O(1).
 
@@ -593,12 +617,20 @@ private
    subtype Edge_Attribute_Map is EAM.Map;
 
    ----------------------------------------------------------------------
+   --  Cluster stuff
+
+   type Cluster_Id is new Natural;
+
+   Null_Cluster : constant Cluster_Id := 0;
+
+   ----------------------------------------------------------------------
    --  Graph stuff
 
    type Vertex is record
       Key            : Vertex_Key;
       In_Neighbours  : Vertex_Index_Set;
       Out_Neighbours : Edge_Attribute_Map;
+      Cluster        : Cluster_Id;
    end record;
 
    package VL is new Ada.Containers.Vectors
@@ -611,6 +643,7 @@ private
       Vertices       : Vertex_List;
       Default_Colour : Edge_Colours;
       Frozen         : Boolean;
+      Clusters       : Cluster_Id;
    end record;
 
    ----------------------------------------------------------------------
