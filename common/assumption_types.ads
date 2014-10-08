@@ -23,6 +23,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers;
+with Ada.Containers.Doubly_Linked_Lists;
 with GNATCOLL.JSON;         use GNATCOLL.JSON;
 with GNATCOLL.Symbols;      use GNATCOLL.Symbols;
 
@@ -33,15 +34,29 @@ package Assumption_Types is
 
    Null_Subp : constant Subp_Type;
 
+   type Base_Sloc is record
+      File : Symbol;
+      Line : Integer;
+   end record;
+
+   function Base_Sloc_File (Subp : Base_Sloc) return String;
+
+   package Sloc_Lists is new Ada.Containers.Doubly_Linked_Lists
+     (Element_Type => Base_Sloc,
+      "="          => "=");
+
+   subtype My_Sloc is Sloc_Lists.List;
+   --  the type of slocs used in assumptions and more generally in the report
+   --  file
+
    function Subp_Name (Subp : Subp_Type) return String;
-   function Subp_File (Subp : Subp_Type) return String;
-   function Subp_Line (Subp : Subp_Type) return Integer;
+   function Subp_Sloc (Subp : Subp_Type) return My_Sloc;
 
    function From_JSON (V : JSON_Value) return Subp_Type;
    function To_JSON (S : Subp_Type) return JSON_Value;
 
-   function Mk_Subp (Name : String; File : String; Line : Integer)
-                     return Subp_Type;
+   function Mk_Base_Sloc (File : String; Line : Integer) return Base_Sloc;
+   function Mk_Subp (Name : String; Sloc : My_Sloc) return Subp_Type;
    --  Build a a subp object from its defining components
 
    function Mk_Unit (Name : String) return Unit_Type;
@@ -61,8 +76,7 @@ private
 
    type Subp_Type_Rec is record
       Name : Symbol;
-      File : Symbol;
-      Line : Integer;
+      Sloc : My_Sloc;
    end record;
 
    type Subp_Type is access constant Subp_Type_Rec;

@@ -31,8 +31,23 @@ package body Assumption_Types is
    Symbol_Table : constant Symbol_Table_Access := Allocate;
 
    function Hash (S : Subp_Type_Rec) return Ada.Containers.Hash_Type;
+   function Hash (S : Base_Sloc) return Ada.Containers.Hash_Type;
+   function Hash (S : My_Sloc) return Ada.Containers.Hash_Type;
+
+   function From_JSON (V : JSON_Array) return My_Sloc;
 
    function "<" (Left, Right : Symbol) return Boolean;
+   function "<" (Left, Right : Base_Sloc) return Boolean;
+   function "<" (Left, Right : My_Sloc) return Boolean;
+   --------------------
+   -- Base_Sloc_File --
+   --------------------
+
+   function Base_Sloc_File (Subp : Base_Sloc) return String is
+      S : constant GNATCOLL.Utils.Cst_String_Access := Get (Subp.File);
+   begin
+      return S.all;
+   end Base_Sloc_File;
 
    ---------------
    -- From_JSON --
@@ -40,9 +55,23 @@ package body Assumption_Types is
 
    function From_JSON (V : JSON_Value) return Subp_Type is
    begin
-      return Mk_Subp (Name => Get (Get (V, "name")),
-                      File => Get (Get (V, "file")),
-                      Line => Get (Get (V, "line")));
+      return
+        Mk_Subp (Get (Get (V, "name")),
+                 From_JSON (Get (Get (V, "sloc"))));
+   end From_JSON;
+
+   function From_JSON (V : JSON_Array) return My_Sloc is
+      Sloc : My_Sloc;
+   begin
+      for Index in 1 .. Length (V) loop
+         declare
+            JS_Base : constant JSON_Value := Get (V, Index);
+         begin
+            Sloc.Append (Mk_Base_Sloc (Get (JS_Base, "file"),
+                                       Get (JS_Base, "line")));
+         end;
+      end loop;
+      return Sloc;
    end From_JSON;
 
    ----------
@@ -52,7 +81,23 @@ package body Assumption_Types is
    function Hash (S : Subp_Type_Rec) return Ada.Containers.Hash_Type is
       use Ada.Containers;
    begin
-      return 3 * Hash (S.Name) + 5 * Hash (S.File) + 7 * Hash_Type (S.Line);
+      return 3 * Hash (S.Name) + 9 * Hash (S.Sloc);
+   end Hash;
+
+   function Hash (S : Base_Sloc) return Ada.Containers.Hash_Type is
+      use Ada.Containers;
+   begin
+      return 5 * Hash (S.File) + 7 * Hash_Type (S.Line);
+   end Hash;
+
+   function Hash (S : My_Sloc) return Ada.Containers.Hash_Type is
+      use Ada.Containers;
+      H : Hash_Type := 0;
+   begin
+      for B of S loop
+         H := H + 13 * Hash (B);
+      end loop;
+      return H;
    end Hash;
 
    package Unique_Subps is new
@@ -71,18 +116,25 @@ package body Assumption_Types is
    function Hash (S : Unit_Type) return Ada.Containers.Hash_Type is
      (Hash (Symbol (S)));
 
+   ------------------
+   -- Mk_Base_Sloc --
+   ------------------
+
+   function Mk_Base_Sloc (File : String; Line : Integer) return Base_Sloc is
+   begin
+      return (File => Find (Symbol_Table, File), Line => Line);
+   end Mk_Base_Sloc;
+
    -------------
    -- Mk_Subp --
    -------------
 
-   function Mk_Subp (Name : String; File : String; Line : Integer)
-                     return Subp_Type is
+   function Mk_Subp (Name : String; Sloc : My_Sloc) return Subp_Type is
    begin
       return
         Unique_Subps.Hash_Cons
           (Subp_Type_Rec'(Name => Find (Symbol_Table, Name),
-                          File => Find (Symbol_Table, File),
-                          Line => Line));
+                          Sloc => Sloc));
    end Mk_Subp;
 
    -------------
@@ -105,34 +157,29 @@ package body Assumption_Types is
       return S.all;
    end Subp_Name;
 
+   function Subp_Sloc (Subp : Subp_Type) return My_Sloc is (Subp.Sloc);
+
    -------------
    -- To_JSON --
    -------------
 
    function To_JSON (S : Subp_Type) return JSON_Value is
-      Obj : constant JSON_Value := Create_Object;
+      Obj     : constant JSON_Value := Create_Object;
+      JS_Sloc : JSON_Array := Empty_Array;
    begin
       Set_Field (Obj, "name", Subp_Name (S));
-      Set_Field (Obj, "file", Subp_File (S));
-      Set_Field (Obj, "line", Subp_Line (S));
+      for Base_Sloc of S.Sloc loop
+         declare
+            JS_Base : constant JSON_Value := Create_Object;
+         begin
+            Set_Field (JS_Base, "file", Base_Sloc_File (Base_Sloc));
+            Set_Field (JS_Base, "line", Base_Sloc.Line);
+            Append (JS_Sloc, JS_Base);
+         end;
+      end loop;
+      Set_Field (Obj, "sloc", JS_Sloc);
       return Obj;
    end To_JSON;
-
-   ---------------
-   -- Subp_File --
-   ---------------
-
-   function Subp_File (Subp : Subp_Type) return String is
-      S : constant GNATCOLL.Utils.Cst_String_Access := Get (Subp.File);
-   begin
-      return S.all;
-   end Subp_File;
-
-   ---------------
-   -- Subp_Line --
-   ---------------
-
-   function Subp_Line (Subp : Subp_Type) return Integer is (Subp.Line);
 
    ---------------
    -- Unit_Name --
@@ -148,12 +195,43 @@ package body Assumption_Types is
    -- "<" --
    ---------
 
+   function "<" (Left, Right : Base_Sloc) return Boolean is
+      (if Left.File < Right.File then True
+       elsif Right.File < Left.File then False
+       else Left.Line < Right.Line);
+
+   function "<" (Left, Right : My_Sloc) return Boolean is
+      use Sloc_Lists;
+      C1, C2 : Cursor;
+   begin
+      C1 := First (Left);
+      C2 := First (Right);
+      while Has_Element (C1) loop
+         if Has_Element (C2) then
+            if Element (C1) < Element (C2) then
+               return True;
+            elsif Element (C2) < Element (C1) then
+               return False;
+            else
+               null;
+            end if;
+            Next (C2);
+         else
+            return False;
+         end if;
+         Next (C1);
+      end loop;
+      if Has_Element (C2) then
+         return True;
+      else
+         return False;
+      end if;
+   end "<";
+
    function "<" (Left, Right : Subp_Type) return Boolean is
-     (if Left.File < Right.File then True
-      elsif Right.File < Left.File then False
-      elsif Left.Name < Right.Name then True
+     (if Left.Name < Right.Name then True
       elsif Right.Name < Left.Name then False
-      else Left.Line < Right.Line);
+      else Left.Sloc < Right.Sloc);
 
    function "<" (Left, Right : Symbol) return Boolean is
      (Get (Left, Empty_If_Null => True).all <

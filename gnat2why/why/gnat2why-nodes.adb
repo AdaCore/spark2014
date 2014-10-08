@@ -782,9 +782,13 @@ package body Gnat2Why.Nodes is
    function Subp_Location (E : Entity_Id) return String
    is
       S : constant Subp_Type := Entity_To_Subp (E);
+      B : constant Base_Sloc := Subp_Sloc (S).First_Element;
    begin
+
+      --  ??? Probably need to change this code to take M412-032 into account
+
       return
-        "GP_Subp:" & Subp_File (S) & ":" & Int_Image (Subp_Line (S));
+        "GP_Subp:" & Base_Sloc_File (B) & ":" & Int_Image (B.Line);
    end Subp_Location;
 
    ------------------

@@ -44,6 +44,8 @@ package body Gnat2Why.Assumptions is
    function Claim_To_Token (C : Claim) return Token;
    --  Build an assumption token from a gnat2why claim
 
+   function Loc_To_Assume_Sloc (Loc : Source_Ptr) return My_Sloc;
+
    Claim_Assumptions : Claim_Maps.Map := Claim_Maps.Empty_Map;
    --  contains the assumptions of a claim, whether that claim has been
    --  established or not
@@ -108,12 +110,9 @@ package body Gnat2Why.Assumptions is
    is
       Loc  : constant Source_Ptr :=
         Translate_Location (Sloc (E));
-      File : constant String := File_Name (Loc);
-      Line : constant Integer := Integer (Get_Physical_Line_Number (Loc));
    begin
       return Mk_Subp (Name => Subprogram_Full_Source_Name (E),
-                      File => File,
-                      Line => Line);
+                      Sloc => Loc_To_Assume_Sloc (Loc));
    end Entity_To_Subp;
 
    ---------------------
@@ -140,6 +139,27 @@ package body Gnat2Why.Assumptions is
       end loop;
       return To_JSON (Rules);
    end Get_Assume_JSON;
+
+   ------------------------
+   -- Loc_To_Assume_Sloc --
+   ------------------------
+
+   function Loc_To_Assume_Sloc (Loc : Source_Ptr) return My_Sloc is
+      Sloc : My_Sloc := Sloc_Lists.Empty_List;
+      Slc  : Source_Ptr := Loc;
+   begin
+      while Slc /= No_Location loop
+         declare
+            File : constant String := File_Name (Slc);
+            Line : constant Integer :=
+              Integer (Get_Physical_Line_Number (Slc));
+         begin
+            Sloc.Append (Mk_Base_Sloc (File => File, Line => Line));
+         end;
+         Slc := Instantiation_Location (Slc);
+      end loop;
+      return Sloc;
+   end Loc_To_Assume_Sloc;
 
    --------------------
    -- Register_Claim --

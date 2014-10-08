@@ -156,16 +156,15 @@ procedure SPARK_Report is
    procedure Handle_Source_Dir (Dir : String);
    --  Parse all result files of this directory.
 
-   function Mk_Subp_Of_Entity (Ent : GNATCOLL.JSON.JSON_Value)
-      return Subp_Type;
-   --  convert a json entity dict to a subp
-
    procedure Print_Analysis_Report (Handle : Ada.Text_IO.File_Type);
    --  print the proof report in the given file
 
    procedure Compute_Assumptions;
    --  compute remaining assumptions for all subprograms and store them in
    --  database
+
+   function To_String (Sloc : My_Sloc) return String;
+   --  pretty printing of slocs including instantiation chains
 
    -------------------------
    -- Compute_Assumptions --
@@ -207,8 +206,7 @@ procedure SPARK_Report is
             Result : constant JSON_Value := Get (V, Index);
             Severe : constant String     := Get (Get (Result, "severity"));
             Kind   : constant String     := Get (Get (Result, "rule"));
-            Subp   : constant Subp_Type  :=
-              Mk_Subp_Of_Entity (Get (Result, "entity"));
+            Subp   : constant Subp_Type  := From_JSON (Get (Result, "entity"));
          begin
             if Kind = "pragma_warning" then
                Add_Suppressed_Warning
@@ -239,8 +237,7 @@ procedure SPARK_Report is
             Result : constant JSON_Value := Get (V, Index);
             Severe : constant String     := Get (Get (Result, "severity"));
             Kind   : constant String     := Get (Get (Result, "rule"));
-            Subp   : constant Subp_Type  :=
-              Mk_Subp_Of_Entity (Get (Result, "entity"));
+            Subp   : constant Subp_Type  := From_JSON (Get (Result, "entity"));
          begin
             if Kind = "pragma_warning" then
                Add_Suppressed_Warning
@@ -253,7 +250,7 @@ procedure SPARK_Report is
             else
                Add_Proof_Result
                  (Unit   => Unit,
-                  Subp   => Mk_Subp_Of_Entity (Get (Result, "entity")),
+                  Subp   => Subp,
                   Proved => Severe = "info");
             end if;
          end;
@@ -340,7 +337,7 @@ procedure SPARK_Report is
          begin
             Add_SPARK_Status
               (Unit         => Unit,
-               Subp         => Mk_Subp_Of_Entity (Result),
+               Subp         => From_JSON (Result),
                SPARK_Status => In_SPARK,
                Analysis     => Analysis);
 
@@ -363,19 +360,6 @@ procedure SPARK_Report is
          Handle_Assume_Items (Get (Get (Dict, "assumptions")), Unit);
       end if;
    end Handle_SPARK_File;
-
-   -----------------------
-   -- Mk_Subp_Of_Entity --
-   -----------------------
-
-   function Mk_Subp_Of_Entity (Ent : GNATCOLL.JSON.JSON_Value)
-                               return Subp_Type is
-   begin
-      return
-        Mk_Subp (Get (Get (Ent, "name")),
-                 Get (Get (Ent, "file")),
-                 Get (Get (Ent, "line")));
-   end Mk_Subp_Of_Entity;
 
    ------------------------
    -- Parse_Command_Line --
@@ -438,8 +422,8 @@ procedure SPARK_Report is
          procedure For_Each_Subp (Subp : Subp_Type; Stat : Stat_Rec) is
          begin
             Put (Handle,
-                 "  " & Subp_Name (Subp) & " at " & Subp_File (Subp) & ":" &
-                   Int_Image (Subp_Line (Subp)));
+                 "  " & Subp_Name (Subp) & " at " &
+                   To_String (Subp_Sloc (Subp)));
 
             if Stat.SPARK then
                if Stat.Analysis = No_Analysis then
@@ -527,6 +511,30 @@ procedure SPARK_Report is
          Iter_Units (For_Each_Unit'Access, Ordered => True);
       end if;
    end Print_Analysis_Report;
+
+   ---------------
+   -- To_String --
+   ---------------
+
+   function To_String (Sloc : My_Sloc) return String is
+
+      use Ada.Strings.Unbounded;
+
+      First : Boolean := True;
+      UB    : Unbounded_String := Null_Unbounded_String;
+   begin
+      for S of Sloc loop
+         if not First then
+            Append (UB, ", instantiated at ");
+         else
+            First := False;
+         end if;
+         Append (UB, Base_Sloc_File (S));
+         Append (UB, ":");
+         Append (UB, Int_Image (S.Line));
+      end loop;
+      return To_String (UB);
+   end To_String;
 
    procedure Iterate_Source_Dirs is new For_Line_In_File (Handle_Source_Dir);
 
