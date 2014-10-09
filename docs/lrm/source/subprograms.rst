@@ -1359,12 +1359,7 @@ is not what we are talking about here.]
 
 .. _tu-nt-ghost_entities-03:
 
-3. The Link_Name aspect of an imported ghost entity is defined
-   to be a name that cannot be resolved in the external environment.
-
-.. _tu-nt-ghost_entities-04:
-
-4. A statement or pragma is said to be a "ghost statement" if
+3. A statement or pragma is said to be a "ghost statement" if
 
    * it occurs within a ghost subprogram or package; or
 
@@ -1372,11 +1367,12 @@ is not what we are talking about here.]
 
    * it is an assignment statement whose target is a ghost variable; or
 
-   * it is a pragma which encloses a name denoting a ghost entity.
+   * it is a pragma which encloses a name denoting a ghost entity or
+     which specifies an aspect of a ghost entity.
 
-.. _tu-nt-ghost_entities-05:
+.. _tu-nt-ghost_entities-04:
 
-5. If the Ghost assertion policy in effect at the point of a
+4. If the Ghost assertion policy in effect at the point of a
    ghost statement or the declaration of a ghost entity is Ignore, then the
    elaboration of that construct (at run time) has no effect,
    other Ada or |SPARK| rules notwithstanding. Similarly, the elaboration
@@ -1390,9 +1386,9 @@ is not what we are talking about here.]
 
 .. centered:: **Legality Rules**
 
-.. _tu-fe-ghost_entities-06:
+.. _tu-fe-ghost_entities-05:
 
-6. A Convention aspect of Ghost may only be specified for
+5. A Convention aspect of Ghost may only be specified for
    the declaration of a subprogram, a
    generic subprogram, a type (including a partial view thereof),
    an object (or list of objects, in the case of an ``aspect_specification``
@@ -1403,67 +1399,57 @@ is not what we are talking about here.]
    subprograms, or ghost extensions of non-ghost types. |SPARK| does define
    ghost state abstractions, but these are described elsewhere.]
 
-.. _tu-fe-ghost_entities-07:
+.. _tu-fe-ghost_entities-06:
 
-7. Any Convention aspect specification for an
+6. Any Convention aspect specification for an
    entity declared inside of a ghost entity shall be confirming [(in
    other words, the specified Convention shall be Ghost)].
-   The Link_Name or External_Name aspects of an imported ghost entity shall
-   not be specified.
 
-.. _tu-fe-ghost_entities-08:
+.. _tu-fe-ghost_entities-07:
 
-8.  A ghost type or object shall not be effectively volatile.
+7.  A ghost type or object shall not be effectively volatile.
     A ghost object shall not be imported or exported.
     [In other words, no ghost objects for which reading or writing
     would constitute an external effect (see Ada RM 1.1.3).]
 
-.. _tu-fe-ghost_entities-09:
+.. _tu-fe-ghost_entities-08:
 
-9.  A derived type shall be a ghost type if and only if
+8.  A derived type shall be a ghost type if and only if
     its parent type and all of its progenitor types are ghost types.
     [This rule does not prohibit declaring a non-derived numeric ghost type
     even in the cases where Ada defines such a type in terms of derivation.]
 
-.. _tu-fe-ghost_entities-10:
+.. _tu-fe-ghost_entities-9:
 
-10.  A Convention aspect specification specifying a convention of Ghost
+9.  A Convention aspect specification specifying a convention of Ghost
      which applies either to a type which has a partial view or to a deferred
      constant shall occur in the same package visible part as the initial
      declaration of the type or deferred constant.
      [This rule is to ensure that the ghostliness of an entity can be
      determined without having to look through to its completion.]
 
-.. _tu-fe-ghost_entities-11:
+.. _tu-fe-ghost_entities-10:
 
-11.  A non-ghost library unit package or generic package specification shall
+10.  A non-ghost library unit package or generic package specification shall
      not require a completion solely because of ghost declarations.
      [In other words, if a library unit package or generic package specification
      requires a body, then it must still require a body if all of the ghost
      declarations therein were to be removed.]
 
-.. _tu-fe-ghost_entities-12:
+.. _tu-fe-ghost_entities-11:
 
-12. A ghost entity shall only be referenced:
+11. A ghost entity shall only be referenced:
 
     * from within an assertion expression; or
 
     * within the declaration or completion of a
       ghost entity (e.g., from within the body of a ghost subprogram); or
 
-    * within a statement which does not contain (and is not itself) either an
-      assignment statement targeting a non-ghost variable, a procedure call
-      which passes a non-ghost variable as an out or in out mode actual
-      parameter, or a call to a procedure which has a non-ghost global output.
-      [Strictly speaking, the final "non-ghost global output" part of this rule
-      is a Verification Rule rather than a Legality Rule.]
-      [Note that in order to determine whether a given reference satisfies
-      this condition, it suffices to examine only the innermost statement
-      enclosing the reference.]
+    * within a ghost statement.
 
-.. _tu-fe-ghost_entities-13:
+.. _tu-fe-ghost_entities-12:
 
-13. If the Ghost assertion policy in effect at the point of the declaration
+12. If the Ghost assertion policy in effect at the point of the declaration
     of a ghost entity is Ignore, then the Ghost assertion policy in effect
     at the point of any reference to that entity shall be Ignore.
     If the Ghost assertion policy in effect at the point of the declaration
@@ -1472,18 +1458,18 @@ is not what we are talking about here.]
     [This includes both assignment statements and passing a ghost variable
     as an out or in out mode actual parameter.]
 
-.. _tu-fe-ghost_entities-14:
+.. _tu-fe-ghost_entities-13:
 
-14. An Assertion_Policy pragma specifying a Ghost assertion policy
+13. An Assertion_Policy pragma specifying a Ghost assertion policy
     shall not occur within a ghost subprogram or package.
     If a ghost entity has a completion then the Ghost assertion policies in
     effect at the declaration and at the completion of the entity shall
     be the same. [This rule applies to subprograms, packages, types,
     and deferred constants.]
 
-.. _tu-fe-ghost_entities-15:
+.. _tu-fe-ghost_entities-14:
 
-15. The Ghost assertion policies in effect at the declaration of a
+14. The Ghost assertion policies in effect at the declaration of a
     state abstraction and at the declaration of each constituent of that
     abstraction shall be the same.
 
@@ -1491,9 +1477,9 @@ is not what we are talking about here.]
 
 .. centered:: **Dynamic Semantics**
 
-.. _tu-nt-ghost_entities-16:
+.. _tu-nt-ghost_entities-15:
 
-16. The effects of specifying a convention of Ghost on the run-time
+15. The effects of specifying a convention of Ghost on the run-time
     representation, calling conventions, and other such dynamic
     properties of an entity are the same as if no convention had
     explicitly been specified. [This usually means the same as if
@@ -1503,19 +1489,19 @@ is not what we are talking about here.]
 
 .. centered:: **Verification Rules**
 
-.. _tu-fe-ghost_entities-17:
+.. _tu-fe-ghost_entities-16:
 
-17. A ghost procedure shall not have a non-ghost [global] output.
+16. A ghost procedure shall not have a non-ghost [global] output.
 
-.. _tu-cbatu-ghost_entities-18:
+.. _tu-cbatu-ghost_entities-17:
 
-18. An output of a non-ghost subprogram other than a ghost global
+17. An output of a non-ghost subprogram other than a ghost global
     shall not depend on a ghost input. [It is intended that this follows
     as a consequence of other rules.]
 
-.. _tu-fe-ghost_entities-19:
+.. _tu-fe-ghost_entities-18:
 
-19. A ghost procedure shall not have an effectively volatile global input
+18. A ghost procedure shall not have an effectively volatile global input
     with the properties Async_Writers or Effective_Reads set to True.
     [This rule says, in effect, that ghost procedures are
     subject to the same restrictions as non-ghost functions with respect
@@ -1525,9 +1511,9 @@ is not what we are talking about here.]
     Effective_Reads set to True. [In other words, a ghost statement is
     subject to effectively the same restrictions as a ghost procedure.]
 
-.. _tu-fe-ghost_entities-20:
+.. _tu-fe-ghost_entities-19:
 
-20. If the Ghost assertion policy in effect at the point of the declaration
+19. If the Ghost assertion policy in effect at the point of the declaration
     of a ghost variable or ghost state abstraction is Check, then the Ghost
     assertion policy in effect at the point of any call to a procedure
     for which that variable or state abstraction is a global output shall
