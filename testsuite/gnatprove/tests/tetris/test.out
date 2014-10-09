@@ -1,98 +1,222 @@
-tetris.adb:43:33: medium: array index check might fail
-tetris.adb:43:47: medium: array index check might fail
-tetris.adb:44:36: medium: array index check might fail
-tetris.adb:44:51: info: index check proved
-tetris.adb:45:33: info: index check proved
-tetris.adb:45:50: medium: array index check might fail
-tetris.adb:46:36: info: index check proved
-tetris.adb:46:54: info: index check proved
-tetris.adb:54:24: medium: assertion might fail, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
-tetris.adb:58:27: info: range check proved
-tetris.adb:60:61: info: index check proved
-tetris.adb:61:27: medium: loop invariant might fail after first iteration, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
-tetris.adb:61:27: medium: loop invariant might fail in first iteration, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
-tetris.adb:61:60: info: overflow check proved
-tetris.adb:64:30: info: range check proved
-tetris.adb:66:64: info: index check proved
-tetris.adb:67:30: medium: loop invariant might fail after first iteration, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
-tetris.adb:67:30: medium: loop invariant might fail in first iteration, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
-tetris.adb:67:63: info: overflow check proved
-tetris.adb:69:30: info: range check proved
-tetris.adb:70:64: info: index check proved
-tetris.adb:71:27: medium: loop invariant might fail after first iteration, requires Is_Empty (Cur_Board, Cur_Piece.Y + Y, Cur_Piece.X + XX)
-tetris.adb:71:27: medium: loop invariant might fail in first iteration, requires Is_Empty (Cur_Board, Cur_Piece.Y + Y, Cur_Piece.X + XX)
-tetris.adb:71:77: info: overflow check proved
-tetris.adb:73:45: medium: array index check might fail
-tetris.adb:73:63: medium: array index check might fail
-tetris.adb:83:57: medium: array index check might fail
-tetris.adb:84:24: medium: assertion might fail, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
-tetris.adb:88:27: info: range check proved
-tetris.adb:90:60: medium: array index check might fail
-tetris.adb:90:78: info: index check proved
-tetris.adb:91:27: medium: loop invariant might fail after first iteration, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
-tetris.adb:91:27: medium: loop invariant might fail in first iteration, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
-tetris.adb:91:60: info: overflow check proved
-tetris.adb:94:30: info: range check proved
-tetris.adb:96:63: medium: array index check might fail
-tetris.adb:96:81: info: index check proved
-tetris.adb:97:30: medium: loop invariant might fail after first iteration, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
-tetris.adb:97:30: medium: loop invariant might fail in first iteration, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
-tetris.adb:97:63: info: overflow check proved
-tetris.adb:99:30: info: range check proved
-tetris.adb:100:60: medium: array index check might fail
-tetris.adb:100:81: info: index check proved
-tetris.adb:101:27: medium: loop invariant might fail after first iteration, requires Is_Empty (Cur_Board, Cur_Piece.Y + Y, Cur_Piece.X + XX)
-tetris.adb:101:27: medium: loop invariant might fail in first iteration, requires Is_Empty (Cur_Board, Cur_Piece.Y + Y, Cur_Piece.X + XX)
-tetris.adb:101:77: info: overflow check proved
-tetris.adb:102:54: medium: array index check might fail
-tetris.adb:103:45: medium: array index check might fail
-tetris.adb:103:63: medium: array index check might fail
-tetris.adb:119:37: info: length check proved
-tetris.adb:132:28: medium: assertion might fail, requires Cur_Board (Del_Line)(X_Coord'First) = Empty
-tetris.adb:134:10: info: loop invariant initialization proved
-tetris.adb:135:55: medium: loop invariant might fail after first iteration, requires not Is_Complete_Line (Cur_Board (Y)
-tetris.adb:135:88: info: index check proved
-tetris.adb:142:13: info: loop invariant initialization proved
-tetris.adb:142:36: medium: loop invariant might fail after first iteration, requires No_Complete_Lines (Cur_Board)
-tetris.adb:143:13: info: loop invariant initialization proved
-tetris.adb:143:13: info: loop invariant preservation proved
-tetris.adb:147:35: info: range check proved
-tetris.adb:165:23: info: precondition proved
-tetris.ads:104:06: info: length check proved
-tetris.ads:104:07: info: length check proved
-tetris.ads:105:07: info: length check proved
-tetris.ads:106:07: info: length check proved
-tetris.ads:107:07: info: length check proved
-tetris.ads:110:06: info: length check proved
-tetris.ads:111:08: info: length check proved
-tetris.ads:112:08: info: length check proved
-tetris.ads:113:08: info: length check proved
-tetris.ads:114:08: info: length check proved
-tetris.ads:117:08: info: length check proved
-tetris.ads:118:08: info: length check proved
-tetris.ads:119:08: info: length check proved
-tetris.ads:120:08: info: length check proved
-tetris.ads:123:08: info: length check proved
-tetris.ads:124:08: info: length check proved
-tetris.ads:125:08: info: length check proved
-tetris.ads:126:08: info: length check proved
-tetris.ads:129:08: info: length check proved
-tetris.ads:130:08: info: length check proved
-tetris.ads:131:08: info: length check proved
-tetris.ads:132:08: info: length check proved
-tetris.ads:135:08: info: length check proved
-tetris.ads:136:08: info: length check proved
-tetris.ads:137:08: info: length check proved
-tetris.ads:138:08: info: length check proved
-tetris.ads:145:54: info: index check proved
-tetris.ads:145:57: info: index check proved
-tetris.ads:167:46: medium: array index check might fail
-tetris.ads:185:77: info: range check proved
-tetris.ads:187:77: info: range check proved
-tetris.ads:198:49: info: range check proved
-tetris.ads:199:49: info: range check proved
-tetris.ads:200:49: info: range check proved
-tetris.ads:201:66: info: range check proved
-tetris.ads:207:14: medium: postcondition might fail, requires (Valid_Configuration)
-tetris.ads:213:16: info: postcondition proved
-tetris.ads:222:16: medium: postcondition might fail
+tetris_flow.adb:41:33: medium: array index check might fail
+tetris_flow.adb:41:47: medium: array index check might fail
+tetris_flow.adb:42:36: info: index check proved
+tetris_flow.adb:42:51: info: index check proved
+tetris_flow.adb:43:33: info: index check proved
+tetris_flow.adb:43:50: info: index check proved
+tetris_flow.adb:44:36: info: index check proved
+tetris_flow.adb:44:54: info: index check proved
+tetris_flow.adb:50:45: medium: array index check might fail
+tetris_flow.adb:50:63: medium: array index check might fail
+tetris_flow.adb:58:54: info: index check proved
+tetris_flow.adb:59:45: medium: array index check might fail
+tetris_flow.adb:59:63: medium: array index check might fail
+tetris_flow.adb:71:37: info: length check proved
+tetris_flow.adb:94:35: medium: range check might fail
+tetris_flow.ads:92:06: info: length check proved
+tetris_flow.ads:92:07: info: length check proved
+tetris_flow.ads:93:07: info: length check proved
+tetris_flow.ads:94:07: info: length check proved
+tetris_flow.ads:95:07: info: length check proved
+tetris_flow.ads:98:06: info: length check proved
+tetris_flow.ads:99:08: info: length check proved
+tetris_flow.ads:100:08: info: length check proved
+tetris_flow.ads:101:08: info: length check proved
+tetris_flow.ads:102:08: info: length check proved
+tetris_flow.ads:105:08: info: length check proved
+tetris_flow.ads:106:08: info: length check proved
+tetris_flow.ads:107:08: info: length check proved
+tetris_flow.ads:108:08: info: length check proved
+tetris_flow.ads:111:08: info: length check proved
+tetris_flow.ads:112:08: info: length check proved
+tetris_flow.ads:113:08: info: length check proved
+tetris_flow.ads:114:08: info: length check proved
+tetris_flow.ads:117:08: info: length check proved
+tetris_flow.ads:118:08: info: length check proved
+tetris_flow.ads:119:08: info: length check proved
+tetris_flow.ads:120:08: info: length check proved
+tetris_flow.ads:123:08: info: length check proved
+tetris_flow.ads:124:08: info: length check proved
+tetris_flow.ads:125:08: info: length check proved
+tetris_flow.ads:126:08: info: length check proved
+tetris_flow.ads:133:54: info: index check proved
+tetris_flow.ads:133:57: info: index check proved
+tetris_flow.ads:155:46: info: index check proved
+tetris_flow.ads:167:77: info: range check proved
+tetris_flow.ads:169:77: info: range check proved
+tetris_flow.ads:173:49: medium: range check might fail
+tetris_flow.ads:174:49: medium: range check might fail
+tetris_flow.ads:175:49: medium: range check might fail
+tetris_flow.ads:176:66: info: range check proved
+tetris_functional.adb:41:33: info: index check proved
+tetris_functional.adb:41:47: info: index check proved
+tetris_functional.adb:42:36: info: index check proved
+tetris_functional.adb:42:51: info: index check proved
+tetris_functional.adb:43:33: info: index check proved
+tetris_functional.adb:43:50: info: index check proved
+tetris_functional.adb:44:36: info: index check proved
+tetris_functional.adb:44:54: info: index check proved
+tetris_functional.adb:52:24: medium: assertion might fail, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
+tetris_functional.adb:57:45: info: index check proved
+tetris_functional.adb:57:63: info: index check proved
+tetris_functional.adb:67:57: info: index check proved
+tetris_functional.adb:68:24: medium: assertion might fail, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
+tetris_functional.adb:72:54: info: index check proved
+tetris_functional.adb:73:45: info: index check proved
+tetris_functional.adb:73:63: info: index check proved
+tetris_functional.adb:89:37: info: length check proved
+tetris_functional.adb:102:13: info: assertion proved
+tetris_functional.adb:104:10: info: loop invariant initialization proved
+tetris_functional.adb:105:55: medium: loop invariant might fail after first iteration, requires not Is_Complete_Line (Cur_Board (Y)
+tetris_functional.adb:105:88: info: index check proved
+tetris_functional.adb:112:13: info: loop invariant initialization proved
+tetris_functional.adb:112:36: medium: loop invariant might fail after first iteration, requires No_Complete_Lines (Cur_Board)
+tetris_functional.adb:113:13: info: loop invariant initialization proved
+tetris_functional.adb:113:13: info: loop invariant preservation proved
+tetris_functional.adb:117:35: info: range check proved
+tetris_functional.adb:118:31: medium: assertion might fail, requires Cur_Board (From_Line)(X_Coord'First) = Empty
+tetris_functional.adb:136:23: info: precondition proved
+tetris_functional.ads:104:06: info: length check proved
+tetris_functional.ads:104:07: info: length check proved
+tetris_functional.ads:105:07: info: length check proved
+tetris_functional.ads:106:07: info: length check proved
+tetris_functional.ads:107:07: info: length check proved
+tetris_functional.ads:110:06: info: length check proved
+tetris_functional.ads:111:08: info: length check proved
+tetris_functional.ads:112:08: info: length check proved
+tetris_functional.ads:113:08: info: length check proved
+tetris_functional.ads:114:08: info: length check proved
+tetris_functional.ads:117:08: info: length check proved
+tetris_functional.ads:118:08: info: length check proved
+tetris_functional.ads:119:08: info: length check proved
+tetris_functional.ads:120:08: info: length check proved
+tetris_functional.ads:123:08: info: length check proved
+tetris_functional.ads:124:08: info: length check proved
+tetris_functional.ads:125:08: info: length check proved
+tetris_functional.ads:126:08: info: length check proved
+tetris_functional.ads:129:08: info: length check proved
+tetris_functional.ads:130:08: info: length check proved
+tetris_functional.ads:131:08: info: length check proved
+tetris_functional.ads:132:08: info: length check proved
+tetris_functional.ads:135:08: info: length check proved
+tetris_functional.ads:136:08: info: length check proved
+tetris_functional.ads:137:08: info: length check proved
+tetris_functional.ads:138:08: info: length check proved
+tetris_functional.ads:145:54: info: index check proved
+tetris_functional.ads:145:57: info: index check proved
+tetris_functional.ads:167:46: info: index check proved
+tetris_functional.ads:185:77: info: range check proved
+tetris_functional.ads:187:77: info: range check proved
+tetris_functional.ads:198:49: info: range check proved
+tetris_functional.ads:199:49: info: range check proved
+tetris_functional.ads:200:49: info: range check proved
+tetris_functional.ads:201:66: info: range check proved
+tetris_functional.ads:207:14: medium: postcondition might fail, requires (Valid_Configuration)
+tetris_functional.ads:213:16: info: postcondition proved
+tetris_functional.ads:222:16: medium: postcondition might fail
+tetris_initial.adb:41:33: medium: array index check might fail
+tetris_initial.adb:41:47: medium: array index check might fail
+tetris_initial.adb:42:36: info: index check proved
+tetris_initial.adb:42:51: info: index check proved
+tetris_initial.adb:43:33: info: index check proved
+tetris_initial.adb:43:50: info: index check proved
+tetris_initial.adb:44:36: info: index check proved
+tetris_initial.adb:44:54: info: index check proved
+tetris_initial.adb:50:45: medium: array index check might fail
+tetris_initial.adb:50:63: medium: array index check might fail
+tetris_initial.adb:58:54: info: index check proved
+tetris_initial.adb:59:45: medium: array index check might fail
+tetris_initial.adb:59:63: medium: array index check might fail
+tetris_initial.adb:71:37: info: length check proved
+tetris_initial.adb:94:35: medium: range check might fail
+tetris_initial.ads:92:06: info: length check proved
+tetris_initial.ads:92:07: info: length check proved
+tetris_initial.ads:93:07: info: length check proved
+tetris_initial.ads:94:07: info: length check proved
+tetris_initial.ads:95:07: info: length check proved
+tetris_initial.ads:98:06: info: length check proved
+tetris_initial.ads:99:08: info: length check proved
+tetris_initial.ads:100:08: info: length check proved
+tetris_initial.ads:101:08: info: length check proved
+tetris_initial.ads:102:08: info: length check proved
+tetris_initial.ads:105:08: info: length check proved
+tetris_initial.ads:106:08: info: length check proved
+tetris_initial.ads:107:08: info: length check proved
+tetris_initial.ads:108:08: info: length check proved
+tetris_initial.ads:111:08: info: length check proved
+tetris_initial.ads:112:08: info: length check proved
+tetris_initial.ads:113:08: info: length check proved
+tetris_initial.ads:114:08: info: length check proved
+tetris_initial.ads:117:08: info: length check proved
+tetris_initial.ads:118:08: info: length check proved
+tetris_initial.ads:119:08: info: length check proved
+tetris_initial.ads:120:08: info: length check proved
+tetris_initial.ads:123:08: info: length check proved
+tetris_initial.ads:124:08: info: length check proved
+tetris_initial.ads:125:08: info: length check proved
+tetris_initial.ads:126:08: info: length check proved
+tetris_initial.ads:133:54: info: index check proved
+tetris_initial.ads:133:57: info: index check proved
+tetris_initial.ads:152:46: info: index check proved
+tetris_initial.ads:164:77: info: range check proved
+tetris_initial.ads:166:77: info: range check proved
+tetris_initial.ads:170:49: medium: range check might fail
+tetris_initial.ads:171:49: medium: range check might fail
+tetris_initial.ads:172:49: medium: range check might fail
+tetris_initial.ads:173:66: info: range check proved
+tetris_integrity.adb:41:33: info: index check proved
+tetris_integrity.adb:41:47: info: index check proved
+tetris_integrity.adb:42:36: info: index check proved
+tetris_integrity.adb:42:51: info: index check proved
+tetris_integrity.adb:43:33: info: index check proved
+tetris_integrity.adb:43:50: info: index check proved
+tetris_integrity.adb:44:36: info: index check proved
+tetris_integrity.adb:44:54: info: index check proved
+tetris_integrity.adb:52:24: medium: assertion might fail, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
+tetris_integrity.adb:57:45: info: index check proved
+tetris_integrity.adb:57:63: info: index check proved
+tetris_integrity.adb:67:57: info: index check proved
+tetris_integrity.adb:68:24: medium: assertion might fail, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
+tetris_integrity.adb:72:54: info: index check proved
+tetris_integrity.adb:73:45: info: index check proved
+tetris_integrity.adb:73:63: info: index check proved
+tetris_integrity.adb:85:37: info: length check proved
+tetris_integrity.adb:105:13: info: loop invariant initialization proved
+tetris_integrity.adb:105:13: info: loop invariant preservation proved
+tetris_integrity.adb:109:35: info: range check proved
+tetris_integrity.adb:123:23: info: precondition proved
+tetris_integrity.ads:92:06: info: length check proved
+tetris_integrity.ads:92:07: info: length check proved
+tetris_integrity.ads:93:07: info: length check proved
+tetris_integrity.ads:94:07: info: length check proved
+tetris_integrity.ads:95:07: info: length check proved
+tetris_integrity.ads:98:06: info: length check proved
+tetris_integrity.ads:99:08: info: length check proved
+tetris_integrity.ads:100:08: info: length check proved
+tetris_integrity.ads:101:08: info: length check proved
+tetris_integrity.ads:102:08: info: length check proved
+tetris_integrity.ads:105:08: info: length check proved
+tetris_integrity.ads:106:08: info: length check proved
+tetris_integrity.ads:107:08: info: length check proved
+tetris_integrity.ads:108:08: info: length check proved
+tetris_integrity.ads:111:08: info: length check proved
+tetris_integrity.ads:112:08: info: length check proved
+tetris_integrity.ads:113:08: info: length check proved
+tetris_integrity.ads:114:08: info: length check proved
+tetris_integrity.ads:117:08: info: length check proved
+tetris_integrity.ads:118:08: info: length check proved
+tetris_integrity.ads:119:08: info: length check proved
+tetris_integrity.ads:120:08: info: length check proved
+tetris_integrity.ads:123:08: info: length check proved
+tetris_integrity.ads:124:08: info: length check proved
+tetris_integrity.ads:125:08: info: length check proved
+tetris_integrity.ads:126:08: info: length check proved
+tetris_integrity.ads:133:54: info: index check proved
+tetris_integrity.ads:133:57: info: index check proved
+tetris_integrity.ads:152:46: info: index check proved
+tetris_integrity.ads:164:77: info: range check proved
+tetris_integrity.ads:166:77: info: range check proved
+tetris_integrity.ads:177:49: info: range check proved
+tetris_integrity.ads:178:49: info: range check proved
+tetris_integrity.ads:179:49: info: range check proved
+tetris_integrity.ads:180:66: info: range check proved

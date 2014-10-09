@@ -25,7 +25,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-package Tetris with
+package Tetris_Flow with
   SPARK_Mode
 is
    --  possible content of the board cells
@@ -70,18 +70,6 @@ is
    end record;
 
    Cur_Piece : Piece;
-
-   --  the game loops through the following states:
-   --    . a piece is falling, in which case Cur_Piece is set to this piece
-   --    . the piece Cur_Piece is blocked by previous fallen pieces in the
-   --      board Cur_Board
-   --    . the piece has been included in the board, which may contain complete
-   --      lines that need to be deleted
-   --    . complete lines have been deleted from the board
-
-   type State is (Piece_Falling, Piece_Blocked, Board_Before_Clean, Board_After_Clean);
-
-   Cur_State : State;
 
    --  orientations of shapes are taken from the Super Rotation System at
    --  http://tetris.wikia.com/wiki/SRS
@@ -166,12 +154,6 @@ is
               (for all X in Three_Delta =>
                  (if Possible_Three_Shapes (P.S, P.D) (Y, X) then Is_Empty (B, P.Y + Y, P.X + X)))));
 
-   function Valid_Configuration return Boolean is
-      (case Cur_State is
-         when Piece_Falling | Piece_Blocked => No_Overlap (Cur_Board, Cur_Piece),
-         when Board_Before_Clean => True,
-         when Board_After_Clean => No_Complete_Lines (Cur_Board));
-
    --  movements of the piece in the 3 possible directions
 
    type Action is (Move_Left, Move_Right, Move_Down, Turn_Counter_Clockwise, Turn_Clockwise);
@@ -186,41 +168,22 @@ is
          when Turn_Clockwise         =>
            (if D = Direction'Last then Direction'First else Direction'Succ (D)));
 
-   function Move_Is_Possible (P : Piece; A : Action) return Boolean is
-      (case A is
-         when Move_Left   => P.X - 1 in PX_Coord,
-         when Move_Right  => P.X + 1 in PX_Coord,
-         when Move_Down   => P.Y + 1 in PY_Coord,
-         when Turn_Action => True);
-
    function Move (P : Piece; A : Action) return Piece is
       (case A is
          when Move_Left   => P'Update (X => P.X - 1),
          when Move_Right  => P'Update (X => P.X + 1),
          when Move_Down   => P'Update (Y => P.Y + 1),
-         when Turn_Action => P'Update (D => Turn_Direction (P.D, A)))
-   with
-     Pre => Move_Is_Possible (P, A);
+         when Turn_Action => P'Update (D => Turn_Direction (P.D, A)));
 
-   procedure Do_Action (A : Action; Success : out Boolean) with
-     Pre  => Valid_Configuration,
-     Post => Valid_Configuration;
+   procedure Do_Action (A : Action; Success : out Boolean);
 
    procedure Include_Piece_In_Board with
-     Global => (Input => Cur_Piece, In_Out => (Cur_State, Cur_Board)),
-     Pre    => Cur_State = Piece_Blocked and then
-               Valid_Configuration,
-     Post   => Cur_State = Board_Before_Clean and then
-               Valid_Configuration;
+     Global => (Input => Cur_Piece, In_Out => Cur_Board);
    --  transition from state where a piece is falling to its integration in the
    --  board when it cannot fall anymore.
 
    procedure Delete_Complete_Lines with
-     Global => (Proof_In => Cur_Piece, In_Out => (Cur_State, Cur_Board)),
-     Pre    => Cur_State = Board_Before_Clean and then
-               Valid_Configuration,
-     Post   => Cur_State = Board_After_Clean and then
-               Valid_Configuration;
+     Global => (In_Out => Cur_Board);
    --  remove all complete lines from the board
 
-end Tetris;
+end Tetris_Flow;

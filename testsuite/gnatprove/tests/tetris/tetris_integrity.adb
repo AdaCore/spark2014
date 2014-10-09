@@ -25,11 +25,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  Ignore false positive warnings
-pragma Warnings (Off, "*unused initial value*");
 pragma Style_Checks ("M132");
 
-package body Tetris with
+package body Tetris_Integrity with
   SPARK_Mode
 is
    ----------------------------
@@ -54,21 +52,7 @@ is
                        Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX))));
 
             for Y in I_Delta loop
-               pragma Loop_Invariant
-                 (for all YY in I_Delta range Y .. I_Delta'Last =>
-                    (for all XX in I_Delta =>
-                       (if Possible_I_Shapes (Cur_Piece.D) (YY, XX) then
-                          Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX))));
                for X in I_Delta loop
-                  pragma Loop_Invariant
-                    (for all YY in I_Delta range Y + 1 .. I_Delta'Last =>
-                       (for all XX in I_Delta =>
-                          (if Possible_I_Shapes (Cur_Piece.D) (YY, XX) then
-                             Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX))));
-                  pragma Loop_Invariant
-                    (for all XX in I_Delta range X .. I_Delta'Last =>
-                       (if Possible_I_Shapes (Cur_Piece.D) (Y, XX) then
-                          Is_Empty (Cur_Board, Cur_Piece.Y + Y, Cur_Piece.X + XX)));
                   if Possible_I_Shapes (Cur_Piece.D) (Y, X) then
                      Cur_Board (Cur_Piece.Y + Y) (Cur_Piece.X + X) := Cur_Piece.S;
                   end if;
@@ -84,31 +68,13 @@ is
                        Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX))));
 
             for Y in Three_Delta loop
-               pragma Loop_Invariant
-                 (for all YY in Three_Delta range Y .. Three_Delta'Last =>
-                    (for all XX in Three_Delta =>
-                       (if Possible_Three_Shapes (Cur_Piece.S, Cur_Piece.D) (YY, XX) then
-                          Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX))));
                for X in Three_Delta loop
-                  pragma Loop_Invariant
-                    (for all YY in Three_Delta range Y + 1 .. Three_Delta'Last =>
-                       (for all XX in Three_Delta =>
-                          (if Possible_Three_Shapes (Cur_Piece.S, Cur_Piece.D) (YY, XX) then
-                             Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX))));
-                  pragma Loop_Invariant
-                    (for all XX in Three_Delta range X .. Three_Delta'Last =>
-                       (if Possible_Three_Shapes (Cur_Piece.S, Cur_Piece.D) (Y, XX) then
-                          Is_Empty (Cur_Board, Cur_Piece.Y + Y, Cur_Piece.X + XX)));
                   if Possible_Three_Shapes (Cur_Piece.S, Cur_Piece.D) (Y, X) then
                      Cur_Board (Cur_Piece.Y + Y) (Cur_Piece.X + X) := Cur_Piece.S;
                   end if;
                end loop;
             end loop;
       end case;
-
-      --  update current state
-
-      Cur_State := Board_Before_Clean;
    end Include_Piece_In_Board;
 
    ---------------------------
@@ -129,17 +95,13 @@ is
             Cur_Board (Del_Line) := Empty_Line;
             Has_Complete_Lines := True;
             To_Line := Del_Line;
-            pragma Assert (Cur_Board (Del_Line)(X_Coord'First) = Empty);
          end if;
-         pragma Loop_Invariant
-           (for all Y in Y_Coord'First .. Del_Line => not Is_Complete_Line (Cur_Board (Y)));
       end loop;
 
       --  iteratively move non-empty lines to the bottom of the board
 
       if Has_Complete_Lines then
          for From_Line in reverse Y_Coord'First .. To_Line - 1 loop
-            pragma Loop_Invariant (No_Complete_Lines (Cur_Board));
             pragma Loop_Invariant (From_Line < To_Line);
             if not Is_Empty_Line (Cur_Board (From_Line)) then
                Cur_Board (To_Line) := Cur_Board (From_Line);
@@ -148,10 +110,6 @@ is
             end if;
          end loop;
       end if;
-
-      --  update current state
-
-      Cur_State := Board_After_Clean;
    end Delete_Complete_Lines;
 
    ---------------
@@ -174,4 +132,4 @@ is
       Success := False;
    end Do_Action;
 
-end Tetris;
+end Tetris_Integrity;

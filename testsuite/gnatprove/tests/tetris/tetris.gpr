@@ -1,0 +1,7 @@
+project Tetris is
+   for Object_Dir use "obj";
+
+   package Prove is
+      for Switches use ("-j0", "--prover=cvc4,altergo", "--timeout=20");
+   end Prove;
+end Tetris;
