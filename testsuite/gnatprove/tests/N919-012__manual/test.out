@@ -1,0 +1,4 @@
+p.ads:11:23: medium: postcondition might fail, requires X = Z + 1
+p.ads:11:29: info: overflow check proved
+p.ads:10:22: medium: postcondition might fail, vc file: gnatprove/../proof/mycoq/p/P__q__pragargs__and.v
+p.ads:11:29: info: overflow check proved

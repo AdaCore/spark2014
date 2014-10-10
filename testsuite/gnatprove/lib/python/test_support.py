@@ -508,7 +508,7 @@ def prove(opt=None, steps=max_steps, procs=parallel_procs,
     fullopt += ["--steps=%d" % (steps)]
     fullopt += ["--mode=%s" % (mode)]
     fullopt += ["-j%d" % (procs)]
-    # Add opt last, so that if may include switch -cargs
+    # Add opt last, so that it may include switch -cargs
     if opt is not None:
         fullopt += opt
     gnatprove(fullopt)
