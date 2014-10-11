@@ -1519,8 +1519,8 @@ constant record value.
 
 |SPARK| does not have a direct equivalent of proof types and proof
 functions. State abstractions cannot have a type and all functions in
-|SPARK| are Ada functions.  Functions may be denoted as having the
-convention Ghost which means that they can only be called within an
+|SPARK| are Ada functions.  Functions may be defined to be ghost functions
+which means that they can only be called within an
 assertion expression such as a pre or postcondition. Assertion
 expressions may be executed or ignored at run-time and if they are
 ignored Ghost functions behave much like SPARK 2005 proof functions.

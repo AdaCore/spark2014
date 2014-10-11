@@ -1339,23 +1339,24 @@ is not what we are talking about here.]
 
 .. _tu-cbatu-ghost_entities-01:
 
-1. |SPARK| defines the ``convention_identifier`` Ghost.
-   An entity (e.g., a subprogram, a type, or an object) whose Convention
-   aspect is specified to have the value Ghost is said to be a ghost entity
-   (e.g., a ghost function or a ghost variable). A subcomponent of a ghost
-   object is itself a ghost object.
+1. |SPARK| defines the Boolean-valued aspect Ghost.
+   Ghost is an aspect of all entities (e.g., subprograms, types, objects).
+   An entity whose Ghost aspect is True is said to be a ghost entity;
+   terms such as "ghost function" or "ghost variable" are defined analogously
+   (e.g., a function whose Ghost aspect is True is said to be a ghost function).
+   In addition, a subcomponent of a ghost object is a ghost object.   
 
-   |SPARK| also defines Ghost to be an assertion aspect.
-   [This aspect shall not be named other than in an Assertion_Policy pragma.]
+   Ghost is an assertion aspect.
+   [This means that Ghost can be named in an Assertion_Policy pragma.]
 
 .. _tu-nt-ghost_entities-02:
 
-2. The Convention aspect of an entity declared inside of a ghost entity (e.g.,
-   within the body of a ghost subprogram) is defined to be Ghost.
-   The Convention aspect of an entity implicitly declared as part of the
+2. The Ghost aspect of an entity declared inside of a ghost entity (e.g.,
+   within the body of a ghost subprogram) is defined to be True.
+   The Ghost aspect of an entity implicitly declared as part of the
    explicit declaration of a ghost entity (e.g., an implicitly declared
    subprogram associated with the declaration of a ghost type) is defined
-   to be Ghost.
+   to be True.
 
 .. _tu-nt-ghost_entities-03:
 
@@ -1382,13 +1383,19 @@ is not what we are talking about here.]
    [A Ghost assertion policy of Ignore can be used to ensure that
    a compiler generates no code for ghost constructs.]
 
+.. _tu-nt-ghost_entities-05:
+
+5. A ghost subprogram profile and a non-ghost subprogram profile
+   are not subtype conformant. [In other words, the Ghost aspect participates
+   in conformance checking in much the same way as the Convention aspect.]
+
 .. _etu-ghost_entities-ss:
 
 .. centered:: **Legality Rules**
 
-.. _tu-fe-ghost_entities-05:
+.. _tu-fe-ghost_entities-06:
 
-5. A Convention aspect of Ghost may only be specified for
+6. The Ghost aspect may only be specified [explicitly] for
    the declaration of a subprogram, a
    generic subprogram, a type (including a partial view thereof),
    an object (or list of objects, in the case of an ``aspect_specification``
@@ -1399,46 +1406,52 @@ is not what we are talking about here.]
    subprograms, or ghost extensions of non-ghost types. |SPARK| does define
    ghost state abstractions, but these are described elsewhere.]
 
-.. _tu-fe-ghost_entities-06:
-
-6. Any Convention aspect specification for an
-   entity declared inside of a ghost entity shall be confirming [(in
-   other words, the specified Convention shall be Ghost)].
-
 .. _tu-fe-ghost_entities-07:
 
-7.  A ghost type or object shall not be effectively volatile.
+7. A Ghost aspect value of False shall not be explicitly specified
+   except in a confirming aspect specification. [For example, a
+   non-ghost declaration cannot occur within a ghost subprogram.]
+
+   The value specified for the Ghost assertion policy in an
+   Assertion_Policy pragma shall be either Check or Ignore.
+   [In other words, implementation-defined assertion policy values
+   are not permitted.] The Assertion_Policy in effect at any point
+   of a SPARK program shall be either Check or Ignore.
+
+.. _tu-fe-ghost_entities-08:
+
+8.  A ghost type or object shall not be effectively volatile.
     A ghost object shall not be imported or exported.
     [In other words, no ghost objects for which reading or writing
     would constitute an external effect (see Ada RM 1.1.3).]
 
-.. _tu-fe-ghost_entities-08:
+.. _tu-fe-ghost_entities-09:
 
-8.  A derived type shall be a ghost type if and only if
+9.  A type extension shall be a ghost type if and only if
     its parent type and all of its progenitor types are ghost types.
-    [This rule does not prohibit declaring a non-derived numeric ghost type
-    even in the cases where Ada defines such a type in terms of derivation.]
+    [However, a non-ghost tagged type may have a ghost primitive subprogram.]
 
-.. _tu-fe-ghost_entities-9:
+.. _tu-fe-ghost_entities-10:
 
-9.  A Convention aspect specification specifying a convention of Ghost
+10.  A Ghost aspect specification
      which applies either to a type which has a partial view or to a deferred
      constant shall occur in the same package visible part as the initial
      declaration of the type or deferred constant.
      [This rule is to ensure that the ghostliness of an entity can be
-     determined without having to look through to its completion.]
+     determined without having to look through to its completion
+     in the private part of the package.]
 
-.. _tu-fe-ghost_entities-10:
+.. _tu-fe-ghost_entities-11:
 
-10.  A non-ghost library unit package or generic package specification shall
+11.  A non-ghost library unit package or generic package specification shall
      not require a completion solely because of ghost declarations.
      [In other words, if a library unit package or generic package specification
      requires a body, then it must still require a body if all of the ghost
      declarations therein were to be removed.]
 
-.. _tu-fe-ghost_entities-11:
+.. _tu-fe-ghost_entities-12:
 
-11. A ghost entity shall only be referenced:
+12. A ghost entity shall only be referenced:
 
     * from within an assertion expression; or
 
@@ -1447,9 +1460,9 @@ is not what we are talking about here.]
 
     * within a ghost statement.
 
-.. _tu-fe-ghost_entities-12:
+.. _tu-fe-ghost_entities-13:
 
-12. If the Ghost assertion policy in effect at the point of the declaration
+13. If the Ghost assertion policy in effect at the point of the declaration
     of a ghost entity is Ignore, then the Ghost assertion policy in effect
     at the point of any reference to that entity shall be Ignore.
     If the Ghost assertion policy in effect at the point of the declaration
@@ -1458,34 +1471,26 @@ is not what we are talking about here.]
     [This includes both assignment statements and passing a ghost variable
     as an out or in out mode actual parameter.]
 
-.. _tu-fe-ghost_entities-13:
+.. _tu-fe-ghost_entities-14:
 
-13. An Assertion_Policy pragma specifying a Ghost assertion policy
+14. An Assertion_Policy pragma specifying a Ghost assertion policy
     shall not occur within a ghost subprogram or package.
     If a ghost entity has a completion then the Ghost assertion policies in
     effect at the declaration and at the completion of the entity shall
     be the same. [This rule applies to subprograms, packages, types,
     and deferred constants.]
 
-.. _tu-fe-ghost_entities-14:
+    The Ghost assertion policies in effect at the point of the declaration
+    of an entity and at the point of an aspect specification
+    which applies to that entity shall be the same.
 
-14. The Ghost assertion policies in effect at the declaration of a
+.. _tu-fe-ghost_entities-15:
+
+15. The Ghost assertion policies in effect at the declaration of a
     state abstraction and at the declaration of each constituent of that
     abstraction shall be the same.
 
 .. _etu-ghost_entities-lr:
-
-.. centered:: **Dynamic Semantics**
-
-.. _tu-nt-ghost_entities-15:
-
-15. The effects of specifying a convention of Ghost on the run-time
-    representation, calling conventions, and other such dynamic
-    properties of an entity are the same as if no convention had
-    explicitly been specified. [This usually means the same as if
-    a convention of Ada had been explicitly specified.]
-
-.. _etu-ghost_entities-ds:
 
 .. centered:: **Verification Rules**
 
@@ -1529,17 +1534,17 @@ is not what we are talking about here.]
      (if Lo > Integer'Last - Hi then Lo else ((Lo + Hi) / 2))
      with Pre        => Lo <= Hi,
           Post       => A_Ghost_Expr_Function'Result in Lo .. Hi,
-          Convention => Ghost;
+          Ghost;
 
    function A_Ghost_Function (Lo, Hi : Natural) return Natural
      with Pre        => Lo <= Hi,
           Post       => A_Ghost_Function'Result in Lo .. Hi,
-          Convention => Ghost;
+          Ghost;
    -- The body of the function is declared elsewhere.
 
    function A_Nonexecutable_Ghost_Function (Lo, Hi : Natural) return Natural
      with Pre        => Lo <= Hi,
           Post       => A_Nonexecutable_Ghost_Function'Result in Lo .. Hi,
-          Convention => Ghost,
+          Ghost,
           Import;
    -- The body of the function is not declared elsewhere.
