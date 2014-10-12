@@ -850,17 +850,13 @@ be a *Boolean_*\ ``expression``.
 2. The Initial_Condition aspect shall follow the Abstract_State aspect and
    Initializes aspect if they are present.
 
-.. _tu-nt-initial_condition_aspects-03:
-
-3. Rule removed.
-
 .. _etu-initial_condition_aspects-lr:
 
 .. centered:: **Static Semantics**
 
-.. _tu-fe-pf-initial_condition_aspects-04:
+.. _tu-fe-pf-initial_condition_aspects-03:
 
-4. An Initial_Condition aspect is an assertion and behaves as a
+3. An Initial_Condition aspect is an assertion and behaves as a
    postcondition for the elaboration of both the specification and
    body of a package. If present on a package, then its assertion
    expression defines properties (a predicate) of the state of the
@@ -871,14 +867,13 @@ be a *Boolean_*\ ``expression``.
    the visible part acting on the state abstractions of the package
    must be used.]
 
-
 .. _etu-initial_condition_aspects-ss:
 
 .. centered:: **Dynamic Semantics**
 
-.. _tu-pr-fa-initial_condition_aspects-05:
+.. _tu-pr-fa-initial_condition_aspects-04:
 
-5. With respect to dynamic semantics, specifying a given expression as
+4. With respect to dynamic semantics, specifying a given expression as
    the Initial_Condition aspect of a package is equivalent to
    specifying that expression as the argument of an Assert pragma
    occurring at the end of the (possibly implicit) statement list of
@@ -893,15 +888,15 @@ be a *Boolean_*\ ``expression``.
 
 .. centered:: **Verification Rules**
 
-.. _tu-pr-initial_condition_aspects-06:
+.. _tu-pr-initial_condition_aspects-05:
 
-6. [The Initial_Condition aspect gives a verification condition to show that the
+5. [The Initial_Condition aspect gives a verification condition to show that the
    implementation of the ``package_specification`` and its body satisfy the
    predicate given in the Initial_Condition aspect.]
 
-.. _tu-fe-initial_condition_aspects-07:
+.. _tu-fe-initial_condition_aspects-06:
 
-7. Each variable or indirectly referenced state abstraction in an
+6. Each variable or indirectly referenced state abstraction in an
    Initial_Condition aspect of a package Q which is declared
    immediately within the visible part of Q shall be initialized
    during the elaboration of Q and be denoted by a ``name`` of an
