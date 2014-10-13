@@ -1339,7 +1339,7 @@ is not what we are talking about here.]
 
 .. _tu-cbatu-ghost_entities-01:
 
-1. |SPARK| defines the Boolean-valued aspect Ghost.
+1. |SPARK| defines the Boolean-valued representation aspect Ghost.
    Ghost is an aspect of all entities (e.g., subprograms, types, objects).
    An entity whose Ghost aspect is True is said to be a ghost entity;
    terms such as "ghost function" or "ghost variable" are defined analogously
@@ -1401,6 +1401,10 @@ is not what we are talking about here.]
    an object (or list of objects, in the case of an ``aspect_specification``
    for an ``object_declaration`` having more than one ``defining_identifier``),
    a package, or a generic package.
+   The Ghost aspect may be specified via either an ``aspect_specification``
+   or via a pragma. The representation pragma Ghost takes a single
+   argument, a name denoting one or more entities whose Ghost aspect is
+   then specified to be True.
    [In particular, |SPARK| does not currently include any form of
    ghost components of non-ghost record types, ghost parameters of non-ghost
    subprograms, or ghost extensions of non-ghost types. |SPARK| does define
@@ -1433,13 +1437,12 @@ is not what we are talking about here.]
 
 .. _tu-fe-ghost_entities-10:
 
-10.  A Ghost aspect specification
-     which applies either to a type which has a partial view or to a deferred
-     constant shall occur in the same package visible part as the initial
-     declaration of the type or deferred constant.
-     [This rule is to ensure that the ghostliness of an entity can be
-     determined without having to look through to its completion
-     in the private part of the package.]
+10.  A Ghost pragma which applies to a declaration occuring
+     in the visible part of a package shall not occur in the
+     private part of that package.
+     [This rule is to ensure that the ghostliness of a visible entity can be
+     determined without having to look into the private part of the
+     enclosing package.]
 
 .. _tu-fe-ghost_entities-11:
 
