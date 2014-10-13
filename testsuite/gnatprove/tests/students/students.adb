@@ -7,13 +7,14 @@ is
       Fees : Money_Type;
       Grants : Money_Type := 0.00;
       Insurance : Money_Type := 0.00;
-      Two : Money_Type := 2.0;
    begin
       Tuition := Base_Tuition;
 
       if not Student.In_State then
          Tuition := Tuition + Tuition/2;
       end if;
+
+      pragma Assert (Tuition <= 30_000.00);
 
       if not Student.Self_Insured then
          Insurance := 1_000.00;
