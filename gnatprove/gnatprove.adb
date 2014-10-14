@@ -24,49 +24,45 @@
 ------------------------------------------------------------------------------
 
 --  This program (gnatprove) is the command line interface of the SPARK 2014
---  tools. It works in four steps:
+--  tools. It works in three steps:
 --
---  1) Compute ALI information
+--  1) Compute_ALI_Information
 --     This step generates, for all relevant units, the ALI files, which
 --     contain the computed effects for all subprograms and packages.
---  2) Translate_To_Why
---     ??? change name of that subprogram
---     This step does all the SPARK analyses except proof. The tool "gnat2why"
---     is called on all units. The analyses done by gnat2why are
---     SPARK_Mode and Flow analysis. gnat2why also translates the SPARK code to
---     Why3.
---  3) Compute_VCs
---     ??? change the name of that subprogram
---     This step calls "gnatwhy3" on the Why3 files generated in step 2. This
---     will do the proofs and report proof messages.
---  4) Call SPARK_Report. The previous steps have generated extra information,
+--  2) Flow_Analysis_And_Proof
+--     This step does all the SPARK analyses: flow analysis and proof. The tool
+--     "gnat2why" is called on all units, translates the SPARK code to Why3
+--     and calls gnatwhy3 to prove the generated VCs.
+--  3) Call SPARK_Report. The previous steps have generated extra information,
 --     which is read in by the spark_report tool, and aggregated to a report.
 --     See the documentation of spark_report.adb for the details.
 
---  ------------------------
---  - Incremental Analysis -
---  ------------------------
+--  --------------------------
+--  -- Incremental Analysis --
+--  --------------------------
 
---  Gnatprove wants to achieve minimal work when rerun after a few changes to
+--  GNATprove wants to achieve minimal work when rerun after a few changes to
 --  the project, while keeping the analysis correct. Two different mechanisms
 --  are used to achieve this:
---    - gprbuild facilities for incremental compilation
+--    - GPRbuild facilities for incremental compilation
 --    - Why3 session mechanism
 
---  Gprbuild is capable of only recompiling files that actually need
---  recompiling. As we use gprbuild, and as gnat2why acts as a compiler, there
---  is nothing special to do to benefit from this, except that its dependency
---  model is slightly different. This is taken into account by specifying the
---  mode "ALI_Closure" as Dependency_Kind in the first phase of gnatprove.
---  We also use gprbuild with the "-s" switch to take into account changes of
---  compilation options. Note that this switch is only relevant in phase 2,
---  because in phase 1 these options are mostly irrelevant (and also option -s
---  wouldn't work because we also pass --no-object-check), and in phase 3 we
---  run gnatwhy3 unconditionally and use the session mechanism.
-
---  Why3 stores information about which VCs have already be given to a prover,
---  and will not try to rerun the prover when nothing has changed. We benefit
---  from that directly, and run gnatwhy3 unconditionally.
+--  GPRbuild is capable of only recompiling files that actually need
+--  recompiling. As we use GPRbuild with gnat2why as a special 'compiler',
+--  there is nothing special to do to benefit from this, except that its
+--  dependency model is slightly different. This is taken into account by:
+--    . specifying the mode "ALI_Closure" as Dependency_Kind in the first phase
+--      of GNATprove
+--    . calling GPRbuild with the "-s" switch to take into account changes of
+--      compilation options. Note that this switch is only relevant in phase 2,
+--      because in phase 1 these options are mostly irrelevant (and also
+--      option -s would not work because we also pass --no-object-check).
+--    . calling GPRbuild with the "--complete-output" switch to replay the
+--      stored output (both on stdout and stderr) of a previous run on some
+--      unit, when this unit output is up-to-date. This allows to get the same
+--      messages for warnings and checks when calling GNATprove multiple times
+--      on the same units, even when sources have not changed so analysis is
+--      not done on these units.
 
 with Ada.Directories;    use Ada.Directories;
 with Ada.Environment_Variables;
@@ -130,11 +126,13 @@ procedure Gnatprove is
    --  compute the list of arguments of gnatwhy3. This list is passed first to
    --  gnat2why, which then passes it to gnatwhy3
 
-   procedure Translate_To_Why
+   procedure Flow_Analysis_And_Proof
       (Project_File     : String;
        Proj             : Project_Tree;
        Status           : out Integer);
    --  Translate all source units to Why, using gnat2why, driven by gprbuild.
+   --  In the process, do flow analysis. Then call gnatwhy3 inside gnat2why to
+   --  prove the program.
 
    function Spawn_VC_Server
      (Proj_Type : Project_Type)
@@ -409,7 +407,7 @@ procedure Gnatprove is
             end if;
 
          when GS_Gnat2Why =>
-            Translate_To_Why (Project_File, Proj, Status);
+            Flow_Analysis_And_Proof (Project_File, Proj, Status);
             if Status /= 0
               and then MMode = GPM_Check
             then
@@ -811,7 +809,7 @@ procedure Gnatprove is
    -- Translate_To_Why --
    ----------------------
 
-   procedure Translate_To_Why
+   procedure Flow_Analysis_And_Proof
       (Project_File     : String;
        Proj             : Project_Tree;
        Status           : out Integer)
@@ -844,7 +842,8 @@ procedure Gnatprove is
       end loop;
 
       Args.Append ("-cargs:Ada");
-      Args.Append ("-gnatc");       --  No object file generation
+      Args.Append ("-gnatc");              --  No object file generation
+      Args.Prepend ("--complete-output");  --  Replay results if up-to-date
 
       Args.Append ("-gnates=" & Opt_File);
 
@@ -864,7 +863,7 @@ procedure Gnatprove is
          GNAT.OS_Lib.Delete_File (Opt_File, Del_Succ);
       end if;
       Kill (Id);
-   end Translate_To_Why;
+   end Flow_Analysis_And_Proof;
 
    Tree      : Project_Tree;
    --  GNAT project tree
