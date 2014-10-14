@@ -1,0 +1,32 @@
+skp-subjects.adb:7:06: info: length check proved
+skp-subjects.adb:12:06: info: length check proved
+skp-subjects.adb:39:70: info: length check proved
+skp-subjects.adb:91:47: info: length check proved
+skp-subjects.adb:128:47: info: length check proved
+skp-subjects.adb:160:47: info: length check proved
+skp-subjects.adb:197:47: info: length check proved
+skp-subjects.adb:233:46: info: length check proved
+skp-subjects.adb:292:47: info: length check proved
+skp-subjects.adb:323:46: info: length check proved
+skp-subjects.adb:382:47: info: length check proved
+skp-subjects.adb:400:09: medium: assertion might fail, requires Subject_Specs (0).Event_Table (0).Dst_Subject /= 0
+skp-subjects.adb:402:09: medium: assertion might fail, requires Subject_Specs (0).Event_Table (1).Dst_Subject /= 0
+skp-subjects.adb:413:23: medium: refined postcondition might fail
+skp-subjects.adb:413:48: info: division check proved
+skp-subjects.adb:420:12: medium: assertion might fail, requires Subject_Specs (Subject).PML4_Address mod 4096 = 0
+skp-subjects.adb:420:50: info: division check proved
+skp-subjects.adb:423:12: medium: assertion might fail, requires Subject_Specs (Subject).PML4_Address mod 4096 = 0
+skp-subjects.adb:423:50: info: division check proved
+skp-subjects.adb:426:12: medium: assertion might fail, requires Subject_Specs (Subject).PML4_Address mod 4096 = 0
+skp-subjects.adb:426:50: info: division check proved
+skp-subjects.adb:429:12: medium: assertion might fail, requires Subject_Specs (Subject).PML4_Address mod 4096 = 0
+skp-subjects.adb:429:50: info: division check proved
+skp-subjects.adb:432:12: medium: assertion might fail, requires Subject_Specs (Subject).PML4_Address mod 4096 = 0
+skp-subjects.adb:432:50: info: division check proved
+skp-subjects.adb:435:12: medium: assertion might fail, requires Subject_Specs (Subject).PML4_Address mod 4096 = 0
+skp-subjects.adb:435:50: info: division check proved
+skp-subjects.adb:438:12: medium: assertion might fail, requires Subject_Specs (Subject).PML4_Address mod 4096 = 0
+skp-subjects.adb:438:50: info: division check proved
+skp-subjects.ads:49:17: info: postcondition proved
+skp-subjects.ads:49:42: info: division check proved
+skp-subjects.ads:57:17: medium: postcondition might fail, requires Get_Event'Result.Dst_Subject /= Subject_Id
