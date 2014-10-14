@@ -1356,7 +1356,8 @@ is not what we are talking about here.]
    The Ghost aspect of an entity implicitly declared as part of the
    explicit declaration of a ghost entity (e.g., an implicitly declared
    subprogram associated with the declaration of a ghost type) is defined
-   to be True.
+   to be True. The Ghost aspect of a child of a ghost library unit
+   is deefined to be True.
 
 .. _tu-nt-ghost_entities-03:
 
@@ -1461,7 +1462,9 @@ is not what we are talking about here.]
     * within the declaration or completion of a
       ghost entity (e.g., from within the body of a ghost subprogram); or
 
-    * within a ghost statement.
+    * within a ghost statement; or
+
+    * within a ``with_clause``.
 
 .. _tu-fe-ghost_entities-13:
 
