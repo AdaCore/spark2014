@@ -1357,7 +1357,7 @@ is not what we are talking about here.]
    explicit declaration of a ghost entity (e.g., an implicitly declared
    subprogram associated with the declaration of a ghost type) is defined
    to be True. The Ghost aspect of a child of a ghost library unit
-   is deefined to be True.
+   is defined to be True.
 
 .. _tu-nt-ghost_entities-03:
 
