@@ -1,0 +1,3 @@
+foo.adb:15:41: info: refined post proved
+foo.adb:27:32: info: refined post proved
+main.adb:21:4: warning: assertion might fail, requires Foo.Get_Data = Value
