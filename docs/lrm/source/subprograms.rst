@@ -462,16 +462,17 @@ is used purely for static analysis purposes and is not executed.
 
 .. _tu-fa-global_aspects-12:
 
-12. For a subprogram that has a ``global_specification``, an object or
-    state abstraction that is declared outside the scope of the
-    subprogram, shall only be referenced within its implementation if
-    it is a ``global_item`` in the ``global_specification``.
+12. For a subprogram that has a ``global_specification``, an object (except
+    constants without variable input) or state abstraction that is declared
+    outside the scope of the subprogram, shall only be referenced within
+    its implementation if it is a ``global_item`` in the
+    ``global_specification``.
 
 .. _tu-fa-global_aspects-13:
 
-13. A ``global_item`` shall occur in a Global aspect of a subprogram
-    if and only if it denotes an entity that is referenced by the
-    subprogram.
+13. A ``global_item`` shall occur in a Global aspect of a subprogram if and
+    only if it denotes an entity (except for constants without variable
+    inputs) that is referenced by the subprogram.
 
 .. _tu-cbatu-global_aspects-14:
 
