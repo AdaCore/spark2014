@@ -463,15 +463,15 @@ is used purely for static analysis purposes and is not executed.
 .. _tu-fa-global_aspects-12:
 
 12. For a subprogram that has a ``global_specification``, an object (except
-    constants without variable input) or state abstraction that is declared
-    outside the scope of the subprogram, shall only be referenced within
-    its implementation if it is a ``global_item`` in the
+    a constant without variable inputs) or state abstraction that is
+    declared outside the scope of the subprogram, shall only be referenced
+    within its implementation if it is a ``global_item`` in the
     ``global_specification``.
 
 .. _tu-fa-global_aspects-13:
 
 13. A ``global_item`` shall occur in a Global aspect of a subprogram if and
-    only if it denotes an entity (except for constants without variable
+    only if it denotes an entity (except for a constant without variable
     inputs) that is referenced by the subprogram.
 
 .. _tu-cbatu-global_aspects-14:
@@ -531,12 +531,12 @@ is used purely for static analysis purposes and is not executed.
 
 17. A ``global_item`` shall not denote a constant object other than a formal
     parameter [of an enclosing subprogram] of mode **in** or a *constant
-    with variable input*.
+    with variable inputs*.
 
 .. _tu-fa-global_aspects-18:
 
 18. The ``mode_selector`` of a ``global_item`` denoting a *constant with
-    variable input* must be ``Input`` or ``Proof_In``.
+    variable inputs* must be ``Input`` or ``Proof_In``.
 
 .. _etu-global_aspects-vr:
 
@@ -1345,7 +1345,7 @@ is not what we are talking about here.]
    An entity whose Ghost aspect is True is said to be a ghost entity;
    terms such as "ghost function" or "ghost variable" are defined analogously
    (e.g., a function whose Ghost aspect is True is said to be a ghost function).
-   In addition, a subcomponent of a ghost object is a ghost object.   
+   In addition, a subcomponent of a ghost object is a ghost object.
 
    Ghost is an assertion aspect.
    [This means that Ghost can be named in an Assertion_Policy pragma.]

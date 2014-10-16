@@ -862,16 +862,16 @@ Legality Rules
    This limitation is corrected in versions of the toolset based
    on GNAT Pro 7.2.2, GPL 2014, or later.
 
+#. Constants *with variable inputs* are currently not allowed in contracts.
+
 Flow Analysis Limitations
 -------------------------
 
 #. Flow analysis currently treats all constants, types and array bounds as
-   static, as the current language does not allow constants and types to
-   appear in global and dependency contracts. The consequence is that
-   information flow through constants, type and array bounds is not
-   captured by flow analysis.
+   static. The consequence is that information flow through constants, type
+   and array bounds is not captured by flow analysis.
 
-   Information flow through constants declared locally is captured, but
+   Information flow through constants declared *locally* is captured, but
    only in the subprogram they have been declared in (they are again
    considered to be static objects in nested subprograms).
 
