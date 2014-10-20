@@ -1,2 +1,4 @@
 no_return.adb:14:07: medium: exception might be raised
 no_return.adb:20:10: medium: call to nonreturning subprogram might be executed
+no_return.ads:3:14: warning: subprogram "Aborting" has no effect
+no_return.ads:6:14: warning: subprogram "P" has no effect

@@ -66,7 +66,8 @@ package Flow.Control_Flow_Graph.Utility is
       Is_Postcondition : Boolean           := False;
       Is_Loop_Entry    : Boolean           := False;
       Is_Fold_Check    : Boolean           := False;
-      E_Loc            : Node_Or_Entity_Id := Empty)
+      E_Loc            : Node_Or_Entity_Id := Empty;
+      Execution        : Execution_Kind_T  := Normal_Execution)
       return V_Attributes
      with Pre  => (if Is_DIC
                      or Is_Precondition

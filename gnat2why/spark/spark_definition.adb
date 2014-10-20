@@ -829,51 +829,26 @@ package body SPARK_Definition is
             end if;
             Mark (Condition (N));
 
-         when N_Raise_Statement |
-              N_Raise_xxx_Error =>
+         when N_Raise_Statement =>
+            if Present (Expression (N)) then
+               Mark (Expression (N));
+            end if;
 
-            declare
-               RS    : constant String := "raise statement";
-               RSWSE : constant String := RS & " with string expression";
-            begin
-               --  A "raise statement" is only allowed when it is:
-               --
-               --    1. the only statement within an "if statement" that has no
-               --       elsif/else parts.
-               --
-               --    2. the very last statement directly within a subprogram.
+         when N_Raise_xxx_Error =>
+            --  The frontend inserts explicit checks during semantic
+            --  analysis in some cases, for which gnatprove issues a
+            --  corresponding check. Currently, this is only used for
+            --  discriminant checks introduced when converting a
+            --  discriminant type into another discriminant type, in
+            --  which multiple source discriminants are mapped to the
+            --  same target discriminant (RM 4.6(43)).
 
-               if Is_Enclosed_By_Simple_If_Statement (N)
-                 or else Is_Last_Statement_Of_Subprogram (N)
-               then
-                  --  If the raise statement has a String Expression,
-                  --  then it's illegal, otherwise OK.
-                  if Nkind (N) = N_Raise_Statement and then
-                    Present (Expression (N))
-                  then
-                     Mark_Violation (RSWSE, N);
-                  end if;
-
-                  --  The frontend inserts explicit checks during semantic
-                  --  analysis in some cases, for which gnatprove issues a
-                  --  corresponding check. Currently, this is only used for
-                  --  discriminant checks introduced when converting a
-                  --  discriminant type into another discriminant type, in
-                  --  which multiple source discriminants are mapped to the
-                  --  same target discriminant (RM 4.6(43)).
-
-               elsif Nkind (N) in N_Raise_xxx_Error then
-                  case RT_Exception_Code'Val (UI_To_Int (Reason (N))) is
-                     when CE_Discriminant_Check_Failed =>
-                        null;
-                     when others =>
-                        Mark_Violation (RS, N);
-                  end case;
-
-               else
-                  Mark_Violation (RS, N);
-               end if;
-            end;
+            case RT_Exception_Code'Val (UI_To_Int (Reason (N))) is
+               when CE_Discriminant_Check_Failed =>
+                  null;
+               when others =>
+                  Mark_Violation ("raise statement", N);
+            end case;
 
          when N_Raise_Expression =>
             Mark_Violation ("raise expression", N);

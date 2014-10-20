@@ -23,6 +23,7 @@
 
 with Ada.Characters.Latin_1;
 with Ada.Strings;           use Ada.Strings;
+with Ada.Strings.Hash;
 with Ada.Strings.Maps;
 with Assumptions;           use Assumptions;
 with Errout;                use Errout;
@@ -107,6 +108,20 @@ package body Flow is
         (Temp_String,
          Trim (To_Unbounded_String (S), Whitespace, Whitespace));
    end Add_To_Temp_String;
+
+   ----------------------
+   -- Vertex_Pair_Hash --
+   ----------------------
+
+   function Vertex_Pair_Hash
+     (VD : Vertex_Pair)
+      return Ada.Containers.Hash_Type
+   is
+   begin
+      --  Concatenate the hashes of the two vertices and hash that
+      return Ada.Strings.Hash (Flow_Graphs.Vertex_Hash (VD.To)'Img
+                                 & Flow_Graphs.Vertex_Hash (VD.From)'Img);
+   end Vertex_Pair_Hash;
 
    ------------------------
    -- Print_Graph_Vertex --
@@ -786,6 +801,7 @@ package body Flow is
       Tmp.No_Effects            := False;
       Tmp.No_Errors_Or_Warnings := True;
       Tmp.Direct_Calls          := Node_Sets.Empty_Set;
+      Tmp.Edges_To_Remove       := Vertex_Pair_Sets.Empty_Set;
 
       if Compute_Globals then
          --  Generate Globals
@@ -1183,7 +1199,6 @@ package body Flow is
                   Analysis.Find_Use_Of_Uninitialized_Variables (FA);
                   Analysis.Find_Exports_Derived_From_Proof_Ins (FA);
                   Analysis.Analyse_Main (FA);
-                  Analysis.Enforce_No_Return (FA);
 
                   --  If no errors or warnings were found during flow
                   --  analysis of the subprogram then emit the

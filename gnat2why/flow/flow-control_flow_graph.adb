@@ -24,11 +24,13 @@
 with Ada.Containers.Doubly_Linked_Lists;
 
 with Errout;
+with Namet;                              use Namet;
 with Nlists;                             use Nlists;
 with Sem_Eval;                           use Sem_Eval;
 with Sem_Util;                           use Sem_Util;
 with Sinfo;                              use Sinfo;
 with Snames;                             use Snames;
+with Stand;                              use Stand;
 
 with Treepr;                             use Treepr;
 
@@ -766,6 +768,18 @@ package body Flow.Control_Flow_Graph is
    --  Checks the right hand side of an assignment statement (or the
    --  expression on an object declaration) and determines if we can to
    --  perform some meaningful record-field splitting.
+
+   procedure Prune_Exceptional_Paths (FA : in out Flow_Analysis_Graphs);
+   --  This procedure fulfils two purposes.
+   --
+   --  1) It removes:
+   --       *  all vertices that inevitably lead to a raise statement,
+   --          a statically-false assertion or a non-returning procedure
+   --       *  all vertices that follow a raise statement, a
+   --          statically-false assertion or a non-returning procedure
+   --          that are not otherwise reachable from the start vertex.
+   --
+   --  2) It populates the Edges_To_Remove set of FA.
 
    procedure Simplify_CFG (FA : in out Flow_Analysis_Graphs);
    --  Remove all null vertices from the control flow graph.
@@ -3139,15 +3153,74 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      function Proc (N : Node_Id) return Traverse_Result;
-      --  Adds N to the appropriate entry references of the current
-      --  context, if N is a loop_entry reference.
+
+      function Find_Execution_Kind return Execution_Kind_T;
+      --  Figures out the pragma's execution kind. For
+      --  statically-false assertions we set the Execution to
+      --  Abnormal_Termination.
 
       procedure fip;
       --  A dummy procedure called when pragma Inspection_Point is
       --  processed. This is just to help debugging Why generation. If a
       --  pragma Inspection_Point is added to a source program, then
       --  breaking on tip will get you to that point in the program.
+
+      function Proc (N : Node_Id) return Traverse_Result;
+      --  Adds N to the appropriate entry references of the current
+      --  context, if N is a loop_entry reference.
+
+      -------------------------
+      -- Find_Execution_Kind --
+      -------------------------
+
+      function Find_Execution_Kind return Execution_Kind_T is
+      begin
+         if Get_Pragma_Id (N) /= Pragma_Check then
+            return Normal_Execution;
+         end if;
+
+         declare
+            PAA : constant Node_Id := First (Pragma_Argument_Associations (N));
+
+            function Was_Assertion return Boolean;
+            --  Checks if this pragma is a rewritten assert
+            --  pragma.
+
+            function Is_Statically_False return Boolean;
+            --  Checks if the rewritten assertion has a
+            --  statically-false argument.
+
+            -------------------
+            -- Was_Assertion --
+            -------------------
+
+            function Was_Assertion return Boolean is
+              (Present (PAA)
+                 and then Nkind (Expression (PAA)) = N_Identifier
+                 and then Get_Name_String (Chars (Expression (PAA))) =
+                            "assert");
+
+            -------------------------
+            -- Is_Statically_False --
+            -------------------------
+
+            function Is_Statically_False return Boolean is
+              (Present (Next (PAA))
+                 and then Nkind (Expression (Next (PAA))) =
+                            N_Identifier
+                 and then Entity (Expression (Next (PAA))) =
+                            Standard_False);
+
+         begin
+            if Was_Assertion
+              and then Is_Statically_False
+            then
+               return Abnormal_Termination;
+            else
+               return Normal_Execution;
+            end if;
+         end;
+      end Find_Execution_Kind;
 
       ---------
       -- fip --
@@ -3257,7 +3330,8 @@ package body Flow.Control_Flow_Graph is
                         Use_Computed_Globals => not FA.Compute_Globals),
                      Sub_Called => Get_Function_Set (N),
                      Is_Proof   => True,
-                     E_Loc      => N),
+                     E_Loc      => N,
+                     Execution  => Find_Execution_Kind),
                   V);
          end case;
 
@@ -3462,7 +3536,7 @@ package body Flow.Control_Flow_Graph is
                  (Standard_Entry => V,
                   Standard_Exits => Vertex_Sets.Empty_Set));
             Linkup (FA.CFG, Prev, FA.Helper_End_Vertex);
-            FA.Atr (Prev).Execution := Get_Abend_Kind;
+            FA.Atr (V).Execution := Get_Abend_Kind;
 
             --  We note down the vertex that we just connected to the
             --  Helper_End_Vertex. If this vertex lies within dead
@@ -4164,6 +4238,188 @@ package body Flow.Control_Flow_Graph is
       return Rec (Expression (N));
    end RHS_Split_Useful;
 
+   -----------------------------
+   -- Prune_Exceptional_Paths --
+   -----------------------------
+
+   procedure Prune_Exceptional_Paths (FA : in out Flow_Analysis_Graphs) is
+      procedure Prune (V   : Flow_Graphs.Vertex_Id;
+                       Ins : out Flow_Graphs.Simple_Traversal_Instruction);
+      --  Helper subprogram for DFS traversal. This traversal sets the
+      --  Is_Null_Node flag of dead vertices.
+
+      function Is_Dead (V : Flow_Graphs.Vertex_Id) return Boolean;
+      --  Check if the given vertex cannot reach the end vertex on
+      --  normal execution or if the given vertex cannot be reached
+      --  from the start vertex on normal execution.
+
+      function Dead_Path_Exists
+        (From : Flow_Graphs.Vertex_Id;
+         To   : Flow_Graphs.Vertex_Id)
+         return Boolean;
+      --  Check if there exists a path between vertices From and To
+      --  that crosses a vertex which has an execution mode of either
+      --  Abnormal_Termination or an Infinite_Loop.
+
+      -------------
+      -- Is_Dead --
+      -------------
+
+      function Is_Dead (V : Flow_Graphs.Vertex_Id) return Boolean is
+         Dead_Going_Down : Boolean := True;
+         Dead_Going_Up   : Boolean := True;
+         Reversed        : Boolean;
+
+         procedure Test (V   : Flow_Graphs.Vertex_Id;
+                         Ins : out Flow_Graphs.Simple_Traversal_Instruction);
+         --  Helper subprogram for DFS traversal.
+
+         ----------
+         -- Test --
+         ----------
+
+         procedure Test (V   : Flow_Graphs.Vertex_Id;
+                         Ins : out Flow_Graphs.Simple_Traversal_Instruction)
+         is
+            V_Check : constant Flow_Graphs.Vertex_Id :=
+              (if Reversed
+               then FA.Start_Vertex
+               else FA.Helper_End_Vertex);
+         begin
+            if V = V_Check then
+               if Reversed then
+                  Dead_Going_Up := False;
+               else
+                  Dead_Going_Down := False;
+               end if;
+               Ins := Flow_Graphs.Abort_Traversal;
+
+            elsif FA.Atr (V).Execution = Abnormal_Termination then
+               Ins := Flow_Graphs.Skip_Children;
+
+            elsif FA.Atr (V).Execution = Infinite_Loop then
+               declare
+                  F : constant Flow_Id := FA.CFG.Get_Key (V);
+               begin
+                  if F.Kind = Direct_Mapping
+                    and then Nkind (Get_Direct_Mapping_Id (F)) =
+                               N_Procedure_Call_Statement
+                  then
+                     Ins := Flow_Graphs.Skip_Children;
+                  else
+                     Ins := Flow_Graphs.Continue;
+                  end if;
+               end;
+
+            else
+               Ins := Flow_Graphs.Continue;
+            end if;
+         end Test;
+
+      begin
+         Reversed := False;
+         FA.CFG.DFS (Start         => V,
+                     Include_Start => True,
+                     Visitor       => Test'Access,
+                     Reversed      => Reversed);
+         Reversed := True;
+         FA.CFG.DFS (Start         => V,
+                     Include_Start => True,
+                     Visitor       => Test'Access,
+                     Reversed      => Reversed);
+         return Dead_Going_Up or Dead_Going_Down;
+      end Is_Dead;
+
+      -----------
+      -- Prune --
+      -----------
+
+      procedure Prune (V   : Flow_Graphs.Vertex_Id;
+                       Ins : out Flow_Graphs.Simple_Traversal_Instruction)
+      is
+      begin
+         if V = FA.Helper_End_Vertex then
+            Ins := Flow_Graphs.Skip_Children;
+         else
+            Ins := Flow_Graphs.Continue;
+            if Is_Dead (V) then
+               FA.Atr (V).Is_Null_Node := True;
+            end if;
+         end if;
+      end Prune;
+
+      ----------------------
+      -- Dead_Path_Exists --
+      ----------------------
+
+      function Dead_Path_Exists
+        (From : Flow_Graphs.Vertex_Id;
+         To   : Flow_Graphs.Vertex_Id)
+         return Boolean
+      is
+         Found_Dead_Path : Boolean := False;
+
+         procedure Test (V   : Flow_Graphs.Vertex_Id;
+                         Ins : out Flow_Graphs.Simple_Traversal_Instruction);
+         --  Helper subprogram for DFS traversal.
+
+         ----------
+         -- Test --
+         ----------
+
+         procedure Test (V   : Flow_Graphs.Vertex_Id;
+                         Ins : out Flow_Graphs.Simple_Traversal_Instruction)
+         is
+         begin
+            if V = To then
+               Ins := Flow_Graphs.Skip_Children;
+            elsif FA.Atr (V).Execution in Abnormal_Termination |
+                                          Infinite_Loop
+            then
+               if FA.CFG.Non_Trivial_Path_Exists (V, To) then
+                  Found_Dead_Path := True;
+                  Ins := Flow_Graphs.Abort_Traversal;
+               else
+                  Ins := Flow_Graphs.Continue;
+               end if;
+            else
+               Ins := Flow_Graphs.Continue;
+            end if;
+         end Test;
+
+      begin
+         FA.CFG.DFS (Start         => From,
+                     Include_Start => False,
+                     Visitor       => Test'Access);
+         return Found_Dead_Path;
+      end Dead_Path_Exists;
+
+   begin
+      FA.CFG.DFS (Start         => FA.Start_Vertex,
+                  Include_Start => False,
+                  Visitor       => Prune'Access);
+
+      --  Populate the Edges_To_Remove field of FA.
+      for From of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         for To of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+            if From /= To
+              and then not Is_Dead (From)
+              and then not Is_Dead (To)
+              and then not FA.CFG.Edge_Exists (From, To)
+              and then Dead_Path_Exists (From, To)
+            then
+               declare
+                  VD : constant Vertex_Pair := (From => From,
+                                                To   => To);
+               begin
+                  FA.Edges_To_Remove.Include (VD);
+               end;
+            end if;
+         end loop;
+      end loop;
+
+   end Prune_Exceptional_Paths;
+
    ------------------
    -- Simplify_CFG --
    ------------------
@@ -4177,15 +4433,22 @@ package body Flow.Control_Flow_Graph is
                for B of FA.CFG.Get_Collection (V,
                                                Flow_Graphs.Out_Neighbours)
                loop
-                  FA.CFG.Add_Edge (A, B, EC_Default);
+                  declare
+                     VD : constant Vertex_Pair := (From => A,
+                                                   To   => B);
+                  begin
+                     if not FA.Edges_To_Remove.Contains (VD) then
+                        FA.CFG.Add_Edge (A, B, EC_Default);
+                     end if;
+                  end;
                end loop;
             end loop;
 
             --  Remove all edges from the vertex.
             FA.CFG.Clear_Vertex (V);
 
-            --  Clear the Is_Program_Node flag.
-            FA.Atr (V).Is_Program_Node := False;
+            --  Clear the node.
+            FA.Atr (V) := Null_Attributes'Update (Is_Null_Node => True);
          end if;
       end loop;
    end Simplify_CFG;
@@ -5035,6 +5298,14 @@ package body Flow.Control_Flow_Graph is
                                      FA.Helper_End_Vertex);
          end if;
       end loop;
+
+      --  Remove:
+      --    *  all vertices that inevitably lead to a raise statement,
+      --       a statically-false assertion or a non-returning procedure
+      --    *  all vertices that follow a raise statement, a
+      --       statically-false assertion or a non-returning procedure
+      --       that are not otherwise reachable from the start vertex
+      Prune_Exceptional_Paths (FA);
 
       --  Simplify graph by removing all null vertices.
       Simplify_CFG (FA);

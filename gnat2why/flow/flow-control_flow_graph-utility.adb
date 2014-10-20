@@ -147,7 +147,8 @@ package body Flow.Control_Flow_Graph.Utility is
       Is_Postcondition : Boolean           := False;
       Is_Loop_Entry    : Boolean           := False;
       Is_Fold_Check    : Boolean           := False;
-      E_Loc            : Node_Or_Entity_Id := Empty)
+      E_Loc            : Node_Or_Entity_Id := Empty;
+      Execution        : Execution_Kind_T  := Normal_Execution)
       return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
@@ -160,6 +161,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Is_Postcondition          := Is_Postcondition;
       A.Is_Loop_Entry             := Is_Loop_Entry;
       A.Error_Location            := E_Loc;
+      A.Execution                 := Execution;
 
       if Is_Fold_Check then
          A.Pretty_Print_Kind := Pretty_Print_Folded_Function_Check;

@@ -1,0 +1,18 @@
+raise_statements.adb:5:17: info: overflow check proved
+raise_statements.adb:22:07: warning: statement has no effect
+raise_statements.adb:24:10: info: assertion proved
+raise_statements.adb:27:07: warning: statement has no effect
+raise_statements.adb:29:10: info: raise statement proved unreachable
+raise_statements.adb:32:23: medium: overflow check might fail
+raise_statements.adb:32:30: info: overflow check proved
+raise_statements.adb:36:07: info: call to nonreturning procedure never executed
+raise_statements.adb:45:07: warning: statement has no effect
+raise_statements.adb:46:10: medium: call to nonreturning subprogram might be executed
+raise_statements.adb:52:07: warning: statement has no effect
+raise_statements.adb:58:10: info: assertion proved
+raise_statements.adb:63:19: warning: unused initial value of "A"
+raise_statements.adb:65:09: medium: missing dependency "null => A"
+raise_statements.adb:65:21: medium: incorrect dependency "O => A"
+raise_statements.adb:68:07: warning: statement has no effect
+raise_statements.adb:71:10: medium: exception might be raised
+raise_statements.ads:5:04: warning: initialization has no effect

@@ -14,7 +14,6 @@ is
 
    procedure Set_Flags (F : in out Integer) is
    begin
-      pragma Assert (False);
       F := F + 1;
    end Set_Flags;
 end Skein;

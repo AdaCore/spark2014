@@ -76,6 +76,24 @@ package Flow is
    --  Print a human-readable representation for the given vertex.
 
    ----------------------------------------------------------------------
+   --  Vertex Pair
+   ----------------------------------------------------------------------
+
+   type Vertex_Pair is record
+      From : Flow_Graphs.Vertex_Id;
+      To   : Flow_Graphs.Vertex_Id;
+   end record;
+
+   function "=" (Left, Right : Vertex_Pair) return Boolean is
+     (Flow_Graphs."=" (Left.From, Right.From)
+        and then Flow_Graphs."=" (Left.To, Right.To));
+
+   function Vertex_Pair_Hash
+     (VD : Vertex_Pair)
+      return Ada.Containers.Hash_Type;
+   --  Hash a Vertex_Pair (useful for building sets of vertex pairs).
+
+   ----------------------------------------------------------------------
    --  Utility packages
    ----------------------------------------------------------------------
 
@@ -103,6 +121,12 @@ package Flow is
       Hash            => Flow_Graphs.Vertex_Hash,
       Equivalent_Keys => Flow_Graphs."=",
       "="             => Vertex_Sets."=");
+
+   package Vertex_Pair_Sets is new Ada.Containers.Hashed_Sets
+     (Element_Type        => Vertex_Pair,
+      Hash                => Vertex_Pair_Hash,
+      Equivalent_Elements => "=",
+      "="                 => "=");
 
    ----------------------------------------------------------------------
    --  Flow_Analysis_Graphs
@@ -222,6 +246,10 @@ package Flow is
 
       GG                    : Flow_Global_Generation_Info (Compute_Globals);
       --  Information for globals computation.
+
+      Edges_To_Remove       : Vertex_Pair_Sets.Set;
+      --  Set of vertex pairs between which we must not add edges
+      --  during the simplification of the graph.
 
       case Kind is
          when E_Subprogram_Body =>
