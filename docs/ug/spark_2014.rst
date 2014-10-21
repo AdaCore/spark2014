@@ -382,6 +382,55 @@ of which we will see more in the next section.
 
    end P;
 
+Exceptions, non-returning procedures and statically_False assertions
+--------------------------------------------------------------------
+
+The contracts on a subprogram describe its behaviour during a
+successful call. A subprogram abnormally terminates if it executes a
+``raise_statement``, a ``pragma Assert (statically_False)`` or a call
+to a subprogram marked ``No_Return``.  All statements that are
+inevitably executed when a ``raise_statement``, a ``pragma Assert
+(statically_False)`` or a call to a subprogram marked ``No_Return`` is
+executed, are completely ignored by flow analysis and have no impact
+on the subprogram's contracts.
+
+To better understand how flow analysis works we shall consider an
+example.
+
+.. code-block:: ada
+   :linenos:
+
+   package body Abnormal_Terminations is
+      G, G2 : Integer := 0;
+
+      procedure OK (OK : Boolean)
+        with Global => (Output => G),
+             Pre    => OK
+      is
+      begin
+         if OK then
+            G := 1;
+         else
+            pragma Assert (False);
+            G2 := 1;
+         end if;
+      end OK;
+   end Abnormal_Terminations;
+
+The tools emit a single warning after analyzing procedure ``OK``:
+
+   ``abnormal_terminations.adb:9:07: warning: statement has no effect``
+
+Due to the ``pragma Assert (False);``, the entire ``else`` branch is
+considered to be unreachable. Therefore, the ``if OK`` branch is the
+only possible path and the ``G := 1;`` statement will always be
+executed. On the other hand, the ``G2 := 1;`` statement is completely
+ignored since it should never be reachable. Under these assumptions,
+the provided ``Global`` contract is indeed the correct one. The
+emitted warning is effectively saying that there is no real option
+here, the ``if OK`` branch is the *ONLY* path that will ever be
+executed.
+
 Package Contracts
 =================
 
