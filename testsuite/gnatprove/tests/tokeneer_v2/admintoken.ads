@@ -39,15 +39,15 @@ is
    --  Proof functions
    function TheAuthCertRole return PrivTypes.PrivilegeT
      with Global     => State,
-          Convention => Ghost;
+          Ghost;
 
    function IsGood return Boolean
      with Global     => State,
-          Convention => Ghost;
+          Ghost;
 
    function AuthCertValid return Boolean
      with Global     => State,
-          Convention => Ghost;
+          Ghost;
 
    ------------------------------------------------------------------
    -- Init

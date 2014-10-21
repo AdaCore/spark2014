@@ -17,8 +17,8 @@ is
       Temp : Integer;
 
       --  Ghost variables
-      Init   : constant Nat_Array (Values'Range) := Values;
-      Interm : Nat_Array (Values'Range);
+      Init   : constant Nat_Array (Values'Range) := Values with Ghost;
+      Interm : Nat_Array (Values'Range) with Ghost;
 
    begin
       Temp       := Values (X);
@@ -62,10 +62,11 @@ is
       Smallest : Positive;  -- Index of the smallest value in the unsorted part
 
       --  Ghost variable
-      Previous : Nat_Array (Values'Range);
+      Previous : Nat_Array (Values'Range) with Ghost;
 
       --  Ghost procedure
       procedure Prove_Swap_Perm (Values, Next : Nat_Array; X, Y : Index) with
+        Ghost,
         Pre  => X in Values'Range and then Y in Values'Range and then
            Next = Set (Set (Values, X, Values (Y)), Y, Values (X)),
         Post => Is_Perm (Values, Next) is

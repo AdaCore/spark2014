@@ -2,7 +2,7 @@ package body Logic
 is
 
    function Ok (V: in Integer) return Boolean
-     with Convention => Ghost,
+     with Ghost,
           Import,
           Global => null;
 

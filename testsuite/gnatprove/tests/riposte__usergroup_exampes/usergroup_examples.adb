@@ -26,7 +26,7 @@ is
      array (Index_T) of Value_Cache_T;
 
    function Is_Valid (V : Value_T) return Boolean
-     with Convention => Ghost,
+     with Ghost,
           Import;
 
    procedure Example_2 (AR      : in out Array_Rec_T;

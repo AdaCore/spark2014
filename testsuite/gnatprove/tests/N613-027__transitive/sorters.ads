@@ -8,7 +8,7 @@ is
    -- Returns True is A is a permuation of B
      with
        Global => null,
-       Convention => Ghost, Import;
+       Ghost, Import;
 
 
    -- Sorts the elements in the array Values in ascending order

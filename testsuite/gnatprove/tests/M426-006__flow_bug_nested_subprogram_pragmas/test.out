@@ -1,2 +1,1 @@
 t3q5.adb:46:10: warning: initialization has no effect
-t3q5.ads:19:13: warning: null global effect assumed on imported subprogram

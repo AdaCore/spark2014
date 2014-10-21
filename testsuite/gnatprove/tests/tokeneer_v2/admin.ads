@@ -41,7 +41,7 @@ package Admin is
    --  Returns the role of TheAdmin.
    function RolePresent (TheAdmin : T) return PrivTypes.PrivilegeT
      with Global     => null,
-          Convention => Ghost;
+          Ghost;
 
    ------------------------------------------------------------------
    -- IsDoingOp

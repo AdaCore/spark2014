@@ -14,19 +14,19 @@ is
    --  would constitute an external effect (see Ada RM 1.1.3).]
    Vol_Ghost : Integer := 0
      with Volatile,
-          Convention => Ghost,
+          Ghost,
           Address => System.Storage_Elements.To_Address (16#B0B#);
 
    function Add (X, Y : Integer) return Integer
-     with Convention => Ghost;
+     with Ghost;
 
    function Add_And_Double (X, Y : Integer) return Integer;
 
    function Reads_A_Volatile return Integer
-     with Convention => Ghost;
+     with Ghost;
 
    function Is_Even (X : Integer) return Boolean
-     with Convention => Ghost;
+     with Ghost;
 
    subtype Even is Integer
      with Dynamic_Predicate => Is_Even (Even);

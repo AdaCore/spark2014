@@ -46,7 +46,7 @@ is
    ---------------------------------------------------------
    function Alarm_Timeout return Clock.TimeT
      with Global     => State,
-          Convention => Ghost;
+          Ghost;
 
    ------------------------------------------------------------------
    -- TheCurrentDoor

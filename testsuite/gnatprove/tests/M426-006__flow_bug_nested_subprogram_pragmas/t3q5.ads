@@ -1,4 +1,4 @@
-package T3Q5 is 
+package T3Q5 is
 
    Max_Table_Size : constant := 100;
    type Base_Index_Type is range 0..Max_Table_Size;
@@ -10,14 +10,14 @@ package T3Q5 is
 
    function Ordered(A : Array_Type; L, U : Index_Type) return Boolean is
       (for all I in Index_Type range L..U-1 => (A(I) <= A(I+1)))
-      with Convention => Ghost;
+      with Ghost;
    --# function Ordered (A : in Array_Type) return Boolean;
    --# return for all I in Index_Type range Index_Type'First .. Index_Type'Pred (Index_Type'Last) =>
    --#   (A (I) <= A (I + 1));
 
 
    function Perm(A, B : Array_Type) return Boolean
-      with Convention => Ghost,
+      with Ghost,
            Post       => (if A = B then Perm'Result),
            Import;
 
@@ -32,7 +32,7 @@ package T3Q5 is
 
    --  function Perm_Trans_Lemma (A, B, C : Array_Type) return Boolean is
    --     (if Perm(A, B) and then Perm(B, C) then Perm(A, C))
-   --     with Convention => Ghost;
+   --     with Ghost;
    --  The previously mentioned expression function used to be the following user rule.
    --  permutation_is_transitive(1):
    --       permutation(A, C)

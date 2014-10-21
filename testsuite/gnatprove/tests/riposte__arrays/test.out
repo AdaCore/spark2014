@@ -1,5 +1,4 @@
 arrays.adb:21:50: info: length check proved
-arrays.adb:43:13: warning: null global effect assumed on imported subprogram
 arrays.adb:51:18: info: postcondition proved
 arrays.adb:62:22: medium: postcondition might fail, requires Contains_B'Result = S (C)
 arrays.adb:71:19: info: postcondition proved

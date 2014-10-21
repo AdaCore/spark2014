@@ -37,20 +37,20 @@ is
    --  Proof functions (ghost functions)
    function Current_Latch return T
      with Global     => State,
-          Convention => Ghost;
+          Ghost;
 
    function Latch_Timeout return Clock.TimeT
      with Global     => State,
-          Convention => Ghost;
+          Ghost;
 
    function LatchIsLocked return Boolean
      with Global     => null,
-          Convention => Ghost;
+          Ghost;
 
    --  Dodgy function that retrieves Output
    function Interfac_IsLocked return Boolean
      with Global     => null,
-          Convention => Ghost;
+          Ghost;
 
    ------------------------------------------------------------------
    -- Init

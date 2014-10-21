@@ -1,4 +1,4 @@
-package body Semantics is 
+package body Semantics is
 
    ---------------------------
    -- Check_Assertion_Exprs --
@@ -30,9 +30,9 @@ package body Semantics is
       ----------------------
 
       procedure Nested_Non_Ghost (Var : Integer) is
-         Obj : constant Integer := Var + Ghost_Func + Ren_Ghost_Func;
+         Obj : Integer with Ghost;
       begin
-         null;
+         Obj := Var + Ghost_Func + Ren_Ghost_Func;
       end Nested_Non_Ghost;
 
    --  Start of processing for Check_Within_Ghost_Function

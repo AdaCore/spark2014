@@ -40,7 +40,7 @@ is
    ---------------------------------------------------------
    function IsAlarming return Boolean
      with Global     => null,
-          Convention => Ghost;
+          Ghost;
 
    ------------------------------------------------------------------
    -- UpdateDevice

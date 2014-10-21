@@ -41,7 +41,7 @@ is
    type Bool_Map is array (Boolean) of Unsigned_Byte;
 
    function Random_Array (N: Integer) return Int_Array
-     with Convention => Ghost,
+     with Ghost,
           Import;
 
 

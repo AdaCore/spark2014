@@ -31,7 +31,7 @@ is
    --  Proof function
    function isLocked return Boolean
      with Global     => null,
-          Convention => Ghost;
+          Ghost;
 
    ------------------------------------------------------------------
    -- Lock

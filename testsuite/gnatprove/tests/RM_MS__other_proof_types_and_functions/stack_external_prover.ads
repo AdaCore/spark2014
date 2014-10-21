@@ -10,30 +10,30 @@ is
    --  executable.
    function Max_Stack_Size return Natural
      with Global     => null,
-          Convention => Ghost,
+          Ghost,
           Import;
 
    --  Returns the number of elements on the stack
    function Count return Natural
      with Global     => (Input => State),
-          Convention => Ghost,
+          Ghost,
           Import;
 
    --  Returns the Nth entry on the stack. Stack_Entry (Count) is the
    --  top of stack
    function Stack_Entry (N : Natural) return Integer
      with Global     => (Input => State),
-          Convention => Ghost,
+          Ghost,
           Import;
 
    function Is_Empty return Boolean
      with Global     => State,
-          Convention => Ghost,
+          Ghost,
           Import;
 
    function Is_Full return Boolean
      with Global     => State,
-          Convention => Ghost,
+          Ghost,
           Import;
 
    procedure Push (X : in Integer)

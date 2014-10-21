@@ -19,7 +19,7 @@ package Number_Theory is
           when 0 | 1  => N,
           when others => Fib(N - 1) + Fib(N - 2))
      with
-       Convention => Ghost,
+       Ghost,
        Post => Float(Fib'Result) < (1.6181**N)/2.2360 + 1.0;
 
    -- Returns the Nth Fibonacci number.

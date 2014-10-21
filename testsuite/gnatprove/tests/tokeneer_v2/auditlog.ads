@@ -32,7 +32,7 @@ is
    --  and are not visible here and it acts as an invariant.
    function Valid_NumberLogEntries return Boolean
      with Global     => State,
-          Convention => Ghost;
+          Ghost;
 
    ------------------------------------------------------------------
    -- Types

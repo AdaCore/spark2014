@@ -1,7 +1,7 @@
-package Semantics is 
+package Semantics is
 
    function Ghost_Func return Integer
-     with Convention => Ghost;
+     with Ghost;
    --  Simple ghost function
 
    function Ren_Ghost_Func return Integer renames Ghost_Func;
@@ -15,12 +15,12 @@ package Semantics is
    --  Check all legal calls to a ghost function in assertion expressions
 
    function Check_Within_Ghost_Function return Integer
-     with Convention => Ghost;
+     with Ghost;
    --  Check all legal calls to a ghost function from within another ghost
    --  function.
 
    function Non_Callable_Ghost_Function return Integer
-     with Convention => Ghost, Import;
+     with Ghost, Import;
    --  Non-callable ghost function. The convention is temporary until a better
    --  approach or a name has been found.
 

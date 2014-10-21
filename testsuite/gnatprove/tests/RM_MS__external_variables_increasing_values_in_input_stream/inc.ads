@@ -9,10 +9,10 @@ is
    -- Access (ghost) functions for the private type only intended for
    -- use in pre and post conditions or other assertion expressions
    function First (Indicator : Increasing_Indicator) return Integer
-     with Convention => Ghost;
+     with Ghost;
 
    function Second (Indicator : Increasing_Indicator) return Integer
-     with Convention => Ghost;
+     with Ghost;
 
    -- Used to check that the value returned by procedure Increases
    -- is valid (Invalid values have not been read from the Sensor).

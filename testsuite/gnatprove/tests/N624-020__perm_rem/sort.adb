@@ -16,9 +16,9 @@ is
       Temp : Integer;
 
       --  Ghost variables
-      Init   : constant Array_Type := Values;
-      Interm : Array_Type;
-      HR     : True_Bool;
+      Init   : constant Array_Type := Values with Ghost;
+      Interm : Array_Type with Ghost;
+      HR     : True_Bool with Ghost;
    begin
       Temp       := Values (X);
       Values (X) := Values (Y);
@@ -33,7 +33,7 @@ is
       --  Ghost code
       if X > Y then
          declare
-            HR : True_Bool;
+            HR : True_Bool with Ghost;
          begin
             HR := Remove_Eq (Remove (Interm, Y), Remove (Values, Y), X - 1);
             HR := Remove_Swap (Interm, Y, X);
@@ -60,7 +60,7 @@ is
          pragma Assert (Is_Perm (Remove (Init, X), Remove (Values, Y)));
       else
          declare
-            HR : True_Bool;
+            HR : True_Bool with Ghost;
          begin
             HR := Remove_Eq (Remove (Interm, Y), Remove (Values, Y), X);
             HR := Remove_Swap (Interm, X, Y);
@@ -113,9 +113,9 @@ is
       Smallest : Positive;  -- Index of the smallest value in the unsorted part
 
       --  Ghost variables
-      Init     : constant Array_Type := Values;
-      Prec     : Array_Type := Values;
-      HR       : True_Bool;
+      Init     : constant Array_Type := Values with Ghost;
+      Prec     : Array_Type := Values with Ghost;
+      HR       : True_Bool with Ghost;
    begin -- Selection_Sort
 
       HR := Perm_Reflexive (Values, Values);

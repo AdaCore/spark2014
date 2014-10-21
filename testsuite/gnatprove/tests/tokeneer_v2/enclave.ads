@@ -61,31 +61,31 @@ is
    --  Proof functions
    function GetStatus return StatusT
      with Global     => State,
-          Convention => Ghost;
+          Ghost;
 
    function statusIsGotAdminToken return Boolean
      with Global     => State,
-          Convention => Ghost;
+          Ghost;
 
    function statusIsWaitingRemoveAdminTokenFail return Boolean
      with Global     => State,
-          Convention => Ghost;
+          Ghost;
 
    function statusIsWaitingStartAdminOp return Boolean
      with Global     => State,
-          Convention => Ghost;
+          Ghost;
 
    function statusIsWaitingFinishAdminOp return Boolean
      with Global     => State,
-          Convention => Ghost;
+          Ghost;
 
    function statusIsEnclaveQuiescent return Boolean
      with Global     => State,
-          Convention => Ghost;
+          Ghost;
 
    function statusIsShutdown return Boolean
      with Global     => State,
-          Convention => Ghost;
+          Ghost;
 
    ------------------------------------------------------------------
    -- EnrolmentIsInProgress

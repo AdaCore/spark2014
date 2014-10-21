@@ -9,7 +9,7 @@ is
          (if Perm_Transitive'Result
           and then Perm (A, B) and then Perm (B, C) then
              Perm (A, C)),
-       Convention => Ghost, Import;
+       Ghost, Import;
 
    -----------------------------------------------------------------------------
    procedure Swap (Values : in out Array_Type;

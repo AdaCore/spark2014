@@ -16,29 +16,29 @@ is
    --  convention Ghost meaning that they can only be called from
    --  assertion expressions, e.g., pre and postconditions
    function Max_Stack_Size return Natural
-     with Convention => Ghost;
+     with Ghost;
 
    -- Returns the number of elements on the stack
    function Count return Natural
      with Global     => (Input => State),
-          Convention => Ghost;
+          Ghost;
 
    --  Returns the Nth entry on the stack. Stack_Entry (Count) is the
    --  top of stack
    function Stack_Entry (N : Natural) return Integer
      with Global     => (Input => State),
           Pre        => N in 1 .. Count,
-          Convention => Ghost;
+          Ghost;
    --  A body (refined) version of this function can (must) be
    --  provided in the body of the package.
 
    function Is_Empty return Boolean is (Count = 0)
      with Global     => State,
-          Convention => Ghost;
+          Ghost;
 
    function Is_Full return Boolean is (Count = Max_Stack_Size)
      with Global     => State,
-          Convention => Ghost;
+          Ghost;
 
    --  The precondition requires the stack is not full when a value,
    --  X, is pushed onto it. Functions with global items (Is_Full

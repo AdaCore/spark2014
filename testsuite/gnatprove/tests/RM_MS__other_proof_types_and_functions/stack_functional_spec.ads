@@ -19,29 +19,29 @@ is
      with Global => State;
 
    function Max_Stack_Size return Natural
-     with Convention => Ghost;
+     with Ghost;
 
    --  Returns the number of elements on the stack
    --  A function may have a formal parameter (or return a value)
    --  of the abstract state.
    function Count (S : Stack_Type) return Natural
-     with Convention => Ghost;
+     with Ghost;
 
    -- Returns the Nth entry on the stack.
    -- Stack_Entry (S, Count (S)) is the top of stack
    function Stack_Entry (S : Stack_Type; N : Natural) return Integer
      with Pre        => N in 1 .. Count (S),
-          Convention => Ghost;
+          Ghost;
 
    -- The ghost function Count can be called in the function
    -- expression because Is_Empty is also a ghost function.
    function Is_Empty return Boolean is (Count (State) = 0)
      with Global     => State,
-          Convention => Ghost;
+          Ghost;
 
    function Is_Full return Boolean is (Count(State) = Max_Stack_Size)
      with Global     => State,
-          Convention => Ghost;
+          Ghost;
 
    --  The precondition requires the stack is not full when a value, X,
    --  is pushed onto it.
