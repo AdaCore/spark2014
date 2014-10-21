@@ -9528,6 +9528,7 @@ package body Gnat2Why.Expr is
               Pragma_Default_Initial_Condition    |
               Pragma_Effective_Reads              |
               Pragma_Effective_Writes             |
+              Pragma_Ghost                        |
               Pragma_Global                       |
               Pragma_Initializes                  |
               Pragma_Initial_Condition            |

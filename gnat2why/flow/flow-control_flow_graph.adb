@@ -4543,6 +4543,7 @@ package body Flow.Control_Flow_Graph is
               Pragma_Default_Initial_Condition    |
               Pragma_Effective_Reads              |
               Pragma_Effective_Writes             |
+              Pragma_Ghost                        |  --  ??? TO DO
               Pragma_Global                       |
               Pragma_Initializes                  |
               Pragma_Initial_Condition            |

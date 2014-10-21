@@ -1718,8 +1718,7 @@ package body SPARK_Definition is
 
             if Emit_Messages
               and then ((Is_Imported (E)
-                           and then not (Convention (E) in Convention_Ada |
-                                           Convention_Ghost))
+                           and then Convention (E) not in Convention_Ada)
                           or else Is_Internal_File_Name (File))
               and then No (Get_Pragma (E, Pragma_Global))
               and then not Entity_In_External_Axioms (E)
@@ -3319,6 +3318,7 @@ package body SPARK_Definition is
               Pragma_Default_Initial_Condition    |
               Pragma_Effective_Reads              |
               Pragma_Effective_Writes             |
+              Pragma_Ghost                        |
               Pragma_Global                       |
               Pragma_Initializes                  |
               Pragma_Initial_Condition            |

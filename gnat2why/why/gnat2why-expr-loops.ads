@@ -29,8 +29,7 @@ package Gnat2Why.Expr.Loops is
 
    function Transform_Loop_Statement (Stmt : Node_Id) return W_Prog_Id;
 
-   function Is_In_Loop_Initial_Statements return Boolean with
-     Convention => Ghost;
+   function Is_In_Loop_Initial_Statements return Boolean;
    --  return True when analyzing the initial statements of a loop.
 
 end Gnat2Why.Expr.Loops;
