@@ -4,7 +4,7 @@ test.adb:30:17: warning: subprogram "Nested" has no effect
 test.adb:43:04: warning: analyzing unreferenced procedure "Test_01"
 test.adb:66:24: warning: unused initial value of "A"
 test.adb:69:09: medium: missing dependency "null => A"
-test.adb:69:21: medium: incorrect dependency "B => A"
+test.adb:69:26: medium: incorrect dependency "B => A"
 test.adb:90:33: high: "A" is not initialized
 test.adb:100:31: high: "A" is not initialized
 test.adb:122:24: warning: unused initial value of "A"

@@ -2,7 +2,7 @@ test.adb:11:07: warning: statement has no effect
 test.adb:12:15: warning: unused assignment
 test.adb:95:22: high: "Z" must be listed in the Global aspect of "Check_Contract_7" (SPARK RM 6.1.4(13))
 test.adb:105:20: high: "Z" must be listed in the Global aspect of "Check_Contract_8" (SPARK RM 6.1.4(13))
-test.ads:15:24: medium: incorrect dependency "Y => X"
 test.ads:15:24: medium: missing dependency "Y => Y"
+test.ads:15:29: medium: incorrect dependency "Y => X"
 test.ads:30:47: medium: "Par2" might not be initialized in "Check_Contract_6"
 test.ads:34:24: medium: missing dependency "X => Par1"

@@ -37,7 +37,7 @@ depends_illegal_2.adb:42:36: refinement of "A" is visible at line 3
 depends_illegal_3.adb:13:33: warning: unused initial value of "X"
 depends_illegal_3.adb:15:11: medium: missing dependency "null => X"
 depends_illegal_3.adb:15:24: medium: incorrect dependency "X => X"
-depends_illegal_3.adb:15:27: medium: incorrect dependency "Par1 => Par2"
+depends_illegal_3.adb:15:38: medium: incorrect dependency "Par1 => Par2"
 depends_illegal_3.adb:18:20: medium: overflow check might fail
 depends_illegal_3.adb:19:20: medium: overflow check might fail
 depends_illegal_3.adb:23:24: high: "Par2" is not initialized in "P2"
@@ -70,7 +70,7 @@ depends_illegal_3.adb:98:11: medium: incorrect dependency "null => Par1"
 depends_illegal_3.adb:98:25: medium: missing dependency "F1'Result => Par1"
 depends_illegal_4.adb:7:14: warning: "Y" is not modified, could be "input"
 depends_illegal_4.adb:15:23: medium: missing dependency "Par2 => Y"
-depends_illegal_4.adb:16:23: medium: incorrect dependency "Par3 => Y"
+depends_illegal_4.adb:16:41: medium: incorrect dependency "Par3 => Y"
 depends_illegal_4.adb:17:23: medium: missing dependency "Y => Y"
 depends_illegal_4.adb:20:20: medium: overflow check might fail
 depends_illegal_4.adb:20:24: medium: overflow check might fail

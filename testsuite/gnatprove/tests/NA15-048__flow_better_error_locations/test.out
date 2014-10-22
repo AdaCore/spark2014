@@ -1,0 +1,3 @@
+better_error_locations.ads:5:42: warning: unused global "C.State"
+better_error_locations.ads:6:11: medium: missing dependency "null => C.State"
+better_error_locations.ads:6:48: medium: incorrect dependency "X => C.State"

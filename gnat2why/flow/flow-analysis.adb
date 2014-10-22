@@ -2441,13 +2441,13 @@ package body Flow.Analysis is
                  and then not Is_Constant_Object (Hidden_State)
                then
                   Error_Msg_Flow
-                    (FA        => FA,
-                     Msg       => "& needs to be a constituent of " &
+                    (FA   => FA,
+                     Msg  => "& needs to be a constituent of " &
                        "some state abstraction",
-                     N         => Hidden_State,
-                     F1        => Direct_Mapping_Id (Hidden_State),
-                     Tag       => "hidden_unexposed_state",
-                     Kind      => Medium_Check_Kind);
+                     N    => Hidden_State,
+                     F1   => Direct_Mapping_Id (Hidden_State),
+                     Tag  => "hidden_unexposed_state",
+                     Kind => Medium_Check_Kind);
                end if;
 
                Next_Entity (Hidden_State);
@@ -2490,17 +2490,25 @@ package body Flow.Analysis is
 
    procedure Check_Contracts (FA : in out Flow_Analysis_Graphs) is
 
-      function Find_Export (E : Entity_Id) return Node_Id;
+      function Find_Export
+        (E  : Entity_Id;
+         E2 : Entity_Id := Empty)
+         return Node_Id;
       --  Looks through the depends aspect on FA.Analyzed_Entity and
       --  returns the node which represents E in the dependency for E.
-      --  If none can be found, returns FA.Analyzed_Entity as a
-      --  fallback.
+      --  If E2 is present then we return the node which represents E2
+      --  on the list of entities that E depends on. If none can be
+      --  found, returns FA.Analyzed_Entity as a fallback.
 
       -----------------
       -- Find_Export --
       -----------------
 
-      function Find_Export (E : Entity_Id) return Node_Id is
+      function Find_Export
+        (E  : Entity_Id;
+         E2 : Entity_Id := Empty)
+         return Node_Id
+      is
          Depends_Contract : Node_Id;
          Needle           : Node_Id := Empty;
 
@@ -2509,8 +2517,8 @@ package body Flow.Analysis is
          --  to the node, if found.
 
          function Proc (N : Node_Id) return Traverse_Result is
-            Tmp : Node_Id;
-            O   : Entity_Id;
+            Tmp, Tmp2 : Node_Id;
+            O, I      : Entity_Id;
          begin
             case Nkind (N) is
                when N_Component_Association =>
@@ -2528,7 +2536,49 @@ package body Flow.Analysis is
                      end case;
                      if O = E then
                         Needle := Tmp;
-                        return Abandon;
+                        if E2 = Empty then
+                           return Abandon;
+                        end if;
+
+                        --  Look for specific input E2 of export E
+                        Tmp2 := Expression (Parent (Tmp));
+
+                        case Nkind (Tmp2) is
+                           when N_Attribute_Reference =>
+                              I := Entity (Prefix (Tmp2));
+                           when N_Identifier | N_Expanded_Name =>
+                              I := Entity (Tmp2);
+                           when N_Null =>
+                              I := Empty;
+                           when N_Aggregate =>
+                              Tmp2 := First (Expressions (Tmp2));
+
+                              while Present (Tmp2) loop
+                                 case Nkind (Tmp2) is
+                                    when N_Attribute_Reference =>
+                                       I := Entity (Prefix (Tmp2));
+                                    when N_Identifier | N_Expanded_Name =>
+                                       I := Entity (Tmp2);
+                                    when N_Null | N_Aggregate =>
+                                       I := Empty;
+                                    when others =>
+                                       raise Program_Error;
+                                 end case;
+                                 if I = E2 then
+                                    Needle := Tmp2;
+                                    return Abandon;
+                                 end if;
+                                 Tmp2 := Next (Tmp2);
+                              end loop;
+                           when others =>
+                              raise Program_Error;
+                        end case;
+
+                        if I = E2 then
+                           Needle := Tmp2;
+                           return Abandon;
+                        end if;
+
                      end if;
                      Tmp := Next (Tmp);
                   end loop;
@@ -2598,12 +2648,12 @@ package body Flow.Analysis is
             if not Actual_Deps.Contains (F_Out) then
                --  ??? check quotation in errout.ads
                Error_Msg_Flow
-                 (FA        => FA,
-                  Msg       => "missing dependency ""null => #""",
-                  N         => Depends_Location,
-                  F1        => F_Out,
-                  Tag       => "depends_null",
-                  Kind      => Medium_Check_Kind);
+                 (FA   => FA,
+                  Msg  => "missing dependency ""null => #""",
+                  N    => Depends_Location,
+                  F1   => F_Out,
+                  Tag  => "depends_null",
+                  Kind => Medium_Check_Kind);
             end if;
          end;
       end loop;
@@ -2640,13 +2690,13 @@ package body Flow.Analysis is
                --  ??? legality error, should be moved to frontend;
                --  ??? possibly raise exception here
                Error_Msg_Flow
-                 (FA        => FA,
-                  Msg       => "expected to see & on the left-hand-side of" &
+                 (FA   => FA,
+                  Msg  => "expected to see & on the left-hand-side of" &
                     " a dependency relation",
-                  N         => Depends_Location,
-                  F1        => F_Out,
-                  Tag       => "depends_missing_clause",
-                  Kind      => High_Check_Kind);
+                  N    => Depends_Location,
+                  F1   => F_Out,
+                  Tag  => "depends_missing_clause",
+                  Kind => High_Check_Kind);
                U_Deps := Flow_Id_Sets.Empty_Set;
             end if;
 
@@ -2683,35 +2733,35 @@ package body Flow.Analysis is
                         --  mention.
                         if F_Out = Null_Flow_Id then
                            Error_Msg_Flow
-                             (FA        => FA,
-                              Msg       => "missing dependency ""null => #""",
-                              N         => Depends_Location,
-                              F1        => Missing_Var,
-                              Tag       => "depends_null",
-                              Kind      => Medium_Check_Kind);
+                             (FA   => FA,
+                              Msg  => "missing dependency ""null => #""",
+                              N    => Depends_Location,
+                              F1   => Missing_Var,
+                              Tag  => "depends_null",
+                              Kind => Medium_Check_Kind);
                         elsif F_Out = Direct_Mapping_Id
                           (FA.Analyzed_Entity)
                         then
                            Error_Msg_Flow
-                             (FA        => FA,
-                              Msg       =>
+                             (FA   => FA,
+                              Msg  =>
                                 "missing dependency ""#'Result => #""",
-                              N         => Find_Export
+                              N    => Find_Export
                                 (Get_Direct_Mapping_Id (F_Out)),
-                              F1        => F_Out,
-                              F2        => Missing_Var,
-                              Tag       => "depends_missing",
-                              Kind      => Medium_Check_Kind);
+                              F1   => F_Out,
+                              F2   => Missing_Var,
+                              Tag  => "depends_missing",
+                              Kind => Medium_Check_Kind);
                         else
                            Error_Msg_Flow
-                             (FA        => FA,
-                              Msg       => "missing dependency ""# => #""",
-                              N         => Find_Export
+                             (FA   => FA,
+                              Msg  => "missing dependency ""# => #""",
+                              N    => Find_Export
                                 (Get_Direct_Mapping_Id (F_Out)),
-                              F1        => F_Out,
-                              F2        => Missing_Var,
-                              Tag       => "depends_missing",
-                              Kind      => Medium_Check_Kind);
+                              F1   => F_Out,
+                              F2   => Missing_Var,
+                              Tag  => "depends_missing",
+                              Kind => Medium_Check_Kind);
                            --  ??? show path
                         end if;
                      end if;
@@ -2723,35 +2773,37 @@ package body Flow.Analysis is
                   --  not happen in reality.
                   if F_Out = Null_Flow_Id then
                      Error_Msg_Flow
-                       (FA        => FA,
-                        Msg       => "incorrect dependency ""null => #""",
-                        N         => Depends_Location,
-                        F1        => Wrong_Var,
-                        Tag       => "depends_wrong",
-                        Kind      => Medium_Check_Kind);
+                       (FA   => FA,
+                        Msg  => "incorrect dependency ""null => #""",
+                        N    => Depends_Location,
+                        F1   => Wrong_Var,
+                        Tag  => "depends_wrong",
+                        Kind => Medium_Check_Kind);
                      --  ??? show a path?
                   elsif F_Out = Direct_Mapping_Id
                     (FA.Analyzed_Entity)
                   then
                      Error_Msg_Flow
-                       (FA        => FA,
-                        Msg       => "incorrect dependency ""#'Result => #""",
-                        N         => Find_Export
-                          (Get_Direct_Mapping_Id (F_Out)),
-                        F1        => F_Out,
-                        F2        => Wrong_Var,
-                        Tag       => "depends_wrong",
-                        Kind      => Medium_Check_Kind);
+                       (FA   => FA,
+                        Msg  => "incorrect dependency ""#'Result => #""",
+                        N    => Find_Export
+                          (Get_Direct_Mapping_Id (F_Out),
+                           Get_Direct_Mapping_Id (Wrong_Var)),
+                        F1   => F_Out,
+                        F2   => Wrong_Var,
+                        Tag  => "depends_wrong",
+                        Kind => Medium_Check_Kind);
                   else
                      Error_Msg_Flow
-                       (FA        => FA,
-                        Msg       => "incorrect dependency ""# => #""",
-                        N         => Find_Export
-                          (Get_Direct_Mapping_Id (F_Out)),
-                        F1        => F_Out,
-                        F2        => Wrong_Var,
-                        Tag       => "depends_wrong",
-                        Kind      => Medium_Check_Kind);
+                       (FA   => FA,
+                        Msg  => "incorrect dependency ""# => #""",
+                        N    => Find_Export
+                          (Get_Direct_Mapping_Id (F_Out),
+                           Get_Direct_Mapping_Id (Wrong_Var)),
+                        F1   => F_Out,
+                        F2   => Wrong_Var,
+                        Tag  => "depends_wrong",
+                        Kind => Medium_Check_Kind);
                   end if;
                end loop;
 

@@ -1,3 +1,3 @@
 foo.adb:6:14: medium: missing dependency "X => X"
 foo.adb:7:09: high: expected to see "X" on the left-hand-side of a dependency relation
-foo.adb:22:25: medium: incorrect dependency "X => X"
+foo.adb:22:31: medium: incorrect dependency "X => X"
