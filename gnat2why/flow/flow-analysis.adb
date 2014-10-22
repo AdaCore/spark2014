@@ -1893,6 +1893,9 @@ package body Flow.Analysis is
                      V_Error           : Flow_Graphs.Vertex_Id;
                   begin
 
+                     --  Get a name for a new trace file
+                     Tracefile := To_Unbounded_String (Fresh_Trace_File);
+
                      --  V_Use is a vertex that depends on V_Initial
                      --  Key_U is its flow_id
                      --  Atr_U are its attributes
@@ -1930,6 +1933,7 @@ package body Flow.Analysis is
                               if Defined_Elsewhere then
                                  Error_Msg_Flow
                                    (FA        => FA,
+                                    Tracefile => To_String (Tracefile),
                                     Msg       => "& might not be " & Action,
                                     N         => Find_Global
                                       (FA.Analyzed_Entity, Key_I),
@@ -1940,6 +1944,7 @@ package body Flow.Analysis is
                               else
                                  Error_Msg_Flow
                                    (FA        => FA,
+                                    Tracefile => To_String (Tracefile),
                                     Msg       => "& is not " & Action,
                                     N         => Find_Global
                                       (FA.Analyzed_Entity, Key_I),
@@ -1967,6 +1972,7 @@ package body Flow.Analysis is
 
                                  Error_Msg_Flow
                                    (FA        => FA,
+                                    Tracefile => To_String (Tracefile),
                                     Msg       =>
                                       (if Defined_Elsewhere
                                        then "possibly missing return "
@@ -2000,6 +2006,7 @@ package body Flow.Analysis is
                               if Defined_Elsewhere then
                                  Error_Msg_Flow
                                    (FA        => FA,
+                                    Tracefile => To_String (Tracefile),
                                     Msg       => "& might not be " & Action &
                                       " in &",
                                     N         => First_Variable_Use
@@ -2020,6 +2027,7 @@ package body Flow.Analysis is
                               else
                                  Error_Msg_Flow
                                    (FA        => FA,
+                                    Tracefile => To_String (Tracefile),
                                     Msg       => "& is not " & Action &
                                       " in &",
                                     N         => First_Variable_Use
@@ -2063,6 +2071,7 @@ package body Flow.Analysis is
                         if Defined_Elsewhere then
                            Error_Msg_Flow
                              (FA        => FA,
+                              Tracefile => To_String (Tracefile),
                               Msg       => "& might not be " & Action,
                               N         => First_Variable_Use
                                 (N        =>  Error_Location (FA.PDG,
@@ -2080,6 +2089,7 @@ package body Flow.Analysis is
                         else
                            Error_Msg_Flow
                              (FA        => FA,
+                              Tracefile => To_String (Tracefile),
                               Msg       => "& is not " & Action,
                               N         => First_Variable_Use
                                 (N        =>  Error_Location (FA.PDG,
