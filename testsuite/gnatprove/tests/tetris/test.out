@@ -104,16 +104,16 @@ tetris_functional.ads:137:08: info: length check proved
 tetris_functional.ads:138:08: info: length check proved
 tetris_functional.ads:145:54: info: index check proved
 tetris_functional.ads:145:57: info: index check proved
-tetris_functional.ads:167:46: info: index check proved
-tetris_functional.ads:185:77: info: range check proved
+tetris_functional.ads:168:46: info: index check proved
 tetris_functional.ads:187:77: info: range check proved
-tetris_functional.ads:198:49: info: range check proved
-tetris_functional.ads:199:49: info: range check proved
+tetris_functional.ads:189:77: info: range check proved
 tetris_functional.ads:200:49: info: range check proved
-tetris_functional.ads:201:66: info: range check proved
-tetris_functional.ads:207:14: medium: postcondition might fail, requires (Valid_Configuration)
-tetris_functional.ads:213:16: info: postcondition proved
-tetris_functional.ads:222:16: medium: postcondition might fail
+tetris_functional.ads:201:49: info: range check proved
+tetris_functional.ads:202:49: info: range check proved
+tetris_functional.ads:203:66: info: range check proved
+tetris_functional.ads:209:14: medium: postcondition might fail, requires (Valid_Configuration)
+tetris_functional.ads:215:16: info: postcondition proved
+tetris_functional.ads:224:16: medium: postcondition might fail
 tetris_initial.adb:41:33: medium: array index check might fail
 tetris_initial.adb:41:47: medium: array index check might fail
 tetris_initial.adb:42:36: info: index check proved

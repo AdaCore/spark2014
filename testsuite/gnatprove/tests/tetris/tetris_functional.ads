@@ -79,9 +79,9 @@ is
    --      lines that need to be deleted
    --    . complete lines have been deleted from the board
 
-   type State is (Piece_Falling, Piece_Blocked, Board_Before_Clean, Board_After_Clean);
+   type State is (Piece_Falling, Piece_Blocked, Board_Before_Clean, Board_After_Clean) with Ghost;
 
-   Cur_State : State;
+   Cur_State : State with Ghost;
 
    --  orientations of shapes are taken from the Super Rotation System at
    --  http://tetris.wikia.com/wiki/SRS
@@ -151,7 +151,8 @@ is
      (for all X in X_Coord => L(X) = Empty);
 
    function No_Complete_Lines (B : Board) return Boolean is
-      (for all Y in Y_Coord => not Is_Complete_Line (B(Y)));
+      (for all Y in Y_Coord => not Is_Complete_Line (B(Y)))
+   with Ghost;
 
    function No_Overlap (B : Board; P : Piece) return Boolean is
       (case P.S is
@@ -170,7 +171,8 @@ is
       (case Cur_State is
          when Piece_Falling | Piece_Blocked => No_Overlap (Cur_Board, Cur_Piece),
          when Board_Before_Clean => True,
-         when Board_After_Clean => No_Complete_Lines (Cur_Board));
+         when Board_After_Clean => No_Complete_Lines (Cur_Board))
+   with Ghost;
 
    --  movements of the piece in the 3 possible directions
 
