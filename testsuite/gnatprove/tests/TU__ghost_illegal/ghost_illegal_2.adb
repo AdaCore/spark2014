@@ -1,7 +1,5 @@
 package body Ghost_Illegal_2 is
-   function Add (X, Y : Integer) return Integer is
-      (X + Y);
-
+   function Add (X, Y : Integer) return Integer is (X + Y);
 
    function Add_And_Double (X, Y : Integer) return Integer is
      --  TU: 12. A ghost entity shall only be referenced:
@@ -18,9 +16,8 @@ package body Ghost_Illegal_2 is
      --    given reference satisfies this condition, it suffices to examine
      --    only the innermost statement enclosing the reference.]
    begin
-      return (Add (X, Y) * 2);
+      return Add (X, Y) * 2;
    end Add_And_Double;
-
 
    function Reads_A_Volatile return Integer is
      --  TU: 19. A ghost procedure shall not have an effectively
@@ -30,14 +27,12 @@ package body Ghost_Illegal_2 is
      --  non-ghost functions with respect to reading volatile
      --  objects.]
    begin
-      return (Vol_Int + 1);  --  Ghost functions are not allowed to read
-                             --  Volatiles.
+      return Vol_Int + 1;  --  Ghost functions are not allowed to read
+                           --  Volatiles.
    end Reads_A_Volatile;
 
 
-   function Is_Even (X : Integer) return Boolean is
-      (X mod 2 = 0);
-
+   function Is_Even (X : Integer) return Boolean is (X mod 2 = 0);
 
    procedure Ghost_Func_In_Flow_Exprpession (Par : in out Integer) is
      --  TU: 12. A ghost entity shall only be referenced:
@@ -55,9 +50,9 @@ package body Ghost_Illegal_2 is
      --    only the innermost statement enclosing the reference.]
    begin
       if Is_Even (Par) then
-        Par := 0;
+         Par := 0;
       else
-        Par := Par + 1;
+         Par := Par + 1;
       end if;
    end Ghost_Func_In_Flow_Exprpession;
 end Ghost_Illegal_2;

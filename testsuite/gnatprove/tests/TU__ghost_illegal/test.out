@@ -1,6 +1,9 @@
-ghost_illegal_2.ads:2:06: "Ghost_Illegal_2 (body)" depends on "Ghost_Illegal_2 (spec)"
-ghost_illegal_2.ads:2:06: "Ghost_Illegal_2 (spec)" depends on "Helper (spec)"
-ghost_illegal_2.ads:2:06: file "helper.ads" not found
+ghost_illegal_2.adb:19:14: ghost entity cannot appear in this context (SPARK RM 6.9(12))
+ghost_illegal_2.adb:30:14: volatile object cannot appear in this context (SPARK RM 7.1.3(13))
+ghost_illegal_2.adb:52:10: ghost entity cannot appear in this context (SPARK RM 6.9(12))
+ghost_illegal_2.ads:14:04: ghost variable "Vol_Ghost" cannot be volatile
+ghost_illegal_2.ads:31:32: ghost entity cannot appear in this context (SPARK RM 6.9(12))
+ghost_illegal_2.ads:34:36: ghost entity cannot appear in this context (SPARK RM 6.9(12))
    compilation of ghost_illegal_2.adb failed
 
 

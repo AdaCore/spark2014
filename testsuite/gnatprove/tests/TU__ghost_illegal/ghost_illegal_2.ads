@@ -1,5 +1,4 @@
 with System.Storage_Elements;
-with Helper; use Helper;
 
 package Ghost_Illegal_2
   with SPARK_Mode
