@@ -1001,17 +1001,6 @@ Extensions_Visible Aspects
    not subject to these restrictions. A parameter whose type is class-wide
    is not subject to these restrictions.]
 
-#. [The restriction disallowing implicit conversion to a class-wide type
-   applies, in particular, in the case described in Ada RM 6.1.1:
-
-      Within the expression for a Pre'Class or Post'Class aspect for a
-      primitive subprogram of a tagged type T, a name that denotes a
-      formal parameter of type T is interpreted as having type T'Class.
-
-   As it stands today, this is excessively restrictive. It is hoped that it
-   will be possible to eliminate (or at least substantially relax) this
-   restriction after AI12-0113 is resolved.]
-
 #. A subprogram whose Extensions_Visible aspect is True shall not override
    an inherited primitive operation of a tagged type whose
    Extensions_Visible aspect is False. [The reverse is allowed.]
@@ -1037,7 +1026,7 @@ Extensions_Visible Aspects
 
 .. centered:: **Verification Rules**
 
-9. |SPARK| requires that an actual parameter corresponding
+8. |SPARK| requires that an actual parameter corresponding
    to an in mode or in out mode formal parameter in a call must be fully
    initialized before the call; similarly, the callee is responsible
    for fully initializing any out-mode parameters before returning.
