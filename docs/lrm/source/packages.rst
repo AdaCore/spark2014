@@ -1103,6 +1103,14 @@ There are no dynamic semantics associated with Refined_State aspect.
 15. Each ``constituent`` that is a constant shall be a constant *with
     variable inputs*.
 
+.. _tu-fe-refined_state_aspects-16:
+
+16. If the Async_Writers aspect of a state abstraction is True and the
+    Async_Writers aspect of a constituent of that state abstraction is
+    False, then after the elaboration of the (possibly implicit) body
+    of the package which declares the abstraction, the constituent
+    shall be initialized.
+
 .. _etu-refined_state_aspects-ss:
 
 .. centered:: **Examples**
