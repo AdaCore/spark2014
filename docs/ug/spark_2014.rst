@@ -14,8 +14,11 @@ not a reference manual for the |SPARK| language, which can be found in:
 More details on how |GNAT Pro| compiles |SPARK| code can be found in the |GNAT
 Pro| Reference Manual.
 
+The |SPARK| Subset of Ada
+=========================
+
 Excluded Ada Features
-=====================
+---------------------
 
 To facilitate formal verification, |SPARK| enforces a number of global
 simplifications to Ada 2012. The most notable simplifications are:
@@ -30,9 +33,7 @@ simplifications to Ada 2012. The most notable simplifications are:
 
 - The use of controlled types is not permitted.
 
-- Raising and handling of exceptions is not currently permitted (exceptions can
-  be included in a program but proof must be used to show that they cannot be
-  raised).
+- Handling of exceptions is not permitted.
 
 Uses of these features in |SPARK| code are detected by |GNATprove| and reported
 as errors. Formal verification is not possible on subprograms using these
@@ -44,8 +45,125 @@ revisited and it may be possible to relax some of these restrictions. There are
 other features which are technically feasible to formally verify but which were
 initially excluded for scheduling reasons.
 
+Data Initialization Policy
+--------------------------
+
+Modes on parameters and data dependency contracts in |SPARK| have a stricter
+meaning than in Ada:
+
+ * Parameter mode ``in`` (resp. global mode ``Input``) indicates that the
+   object denoted in the parameter (resp. data dependencies) should be
+   completely initialized before calling the subprogram. It should not be
+   written in the subprogram.
+
+ * Parameter mode ``out`` (resp. global mode ``Output``) indicates that the
+   object denoted in the parameter (resp. data dependencies) should be
+   completely initialized before returning from the subprogram. It should not
+   be read in the program prior to initialization.
+
+ * Parameter mode ``in out`` (resp. global mode ``In_Out``) indicates that the
+   object denoted in the parameter (resp. data dependencies) should be
+   completely initialized before calling the subprogram. It can be written in
+   the subprogram.
+
+Hence, all inputs should be completely initialized at subprogram entry, and all
+outputs should be completely initialized at subprogram output. Similarly, all
+objects should be completely initialized when read (e.g. inside subprograms),
+at the exception of record subcomponents (but not array subcomponents) provided
+the subcomponents that are read are initialized.
+
+|GNATprove| will issue check messages if a subprogram does not respect the
+aforementioned data initialization policy. For example, consider a procedure
+``Proc`` which has a parameter and a global item of each mode:
+
+.. literalinclude:: gnatprove_by_example/examples/data_initialization.ads
+   :language: ada
+   :linenos:
+
+Procedure ``Proc`` should completely initialize its outputs ``P2`` and ``G2``,
+but it only initalize them partially. Similarly, procedure ``Call_Proc`` which
+calls ``Proc`` should completely initalize all of ``Proc``'s inputs prior to
+the call, but it only initalize ``G1`` completely.
+
+.. literalinclude:: gnatprove_by_example/examples/data_initialization.adb
+   :language: ada
+   :linenos:
+
+On this program, |GNATprove| issues 6 high check messages, corresponding to
+the violations of the data initialization policy:
+
+.. literalinclude:: gnatprove_by_example/results/data_initialization.flow
+   :language: none
+
+While a user can justify individually such messages with pragma Annotate (see
+section :ref:`Check_Control`), it is under her responsibility to then ensure
+correct initialization of subcomponents that are read, as |GNATprove| relies
+during proof on the property that data is properly initialized before being
+read.
+
+Note also the various warnings that |GNATprove| issues on unused parameters,
+global items and assignments.
+
+Raising Exceptions And Other Error Signaling Mechanisms
+-------------------------------------------------------
+
+Raising an exception is allowed in |SPARK| to signal an error, but handling the
+exception raised to perform recovery or mitigation actions is outside of the
+|SPARK| subset. Typically, such exception handling code should be added to
+top-level subprograms in full Ada, or to a last chance handler called by the
+runtime when an exception is raised, none of which is analyzed by |GNATprove|.
+
+|GNATprove| treats raising an exception specially:
+
+ * in flow analysis, the program paths that lead to a ``raise_statement`` are
+   not considered when checking the contract of the subprogram, which is only
+   concerned with executions that terminate normally; and
+ * in proof, a check is generated for each ``raise_statement``, to prove that
+   no such program point is reachable.
+
+Multiple error signaling mechanisms are treated the same way:
+
+ * raising an exception
+ * ``pragma Assert (X)`` where ``X`` is an expression statically equivalent to
+   ``False``
+ * calling a subprogram with an aspect or pragma ``No_Return``
+
+For example, consider the artificial subprogram ``Check_OK`` which raises an
+exception when parameter ``OK`` is ``False``:
+
+.. literalinclude:: gnatprove_by_example/examples/abnormal_terminations.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: gnatprove_by_example/examples/abnormal_terminations.adb
+   :language: ada
+   :linenos:
+
+Note that, although ``G2`` is assigned in ``Check_OK``, its assignment is
+directly followed by a ``raise_statement``, so ``G2`` is never assigned on an
+execution of ``Check_OK`` that terminates normally. As a result, ``G2`` is not
+mentioned in the data dependencies of ``Check_OK``. During flow analysis,
+|GNATprove| verifies that the body of ``Check_OK`` implements its declared data
+dependencies and simply issues a warning that the test on line 7 is always
+true:
+
+.. literalinclude:: gnatprove_by_example/results/abnormal_terminations.flow
+   :language: none
+
+During proof, |GNATprove| generates a check that the ``raise_statement`` on
+line 11 is never reached. Here, it is proved thanks to the precondition of
+``Check_OK`` which states that parameter ``OK`` should always be ``True`` on
+entry:
+
+.. literalinclude:: gnatprove_by_example/results/abnormal_terminations.prove
+   :language: none
+
 Subprogram Contracts
 ====================
+
+
+The contracts on a subprogram describe its behaviour during a
+successful call.
 
 |SPARK| provides features to strengthen the contracts on Ada subprograms to
 enable more in-depth verification to be performed. The more information is
@@ -381,55 +499,6 @@ of which we will see more in the next section.
       end Push;
 
    end P;
-
-Exceptions, non-returning procedures and statically_False assertions
---------------------------------------------------------------------
-
-The contracts on a subprogram describe its behaviour during a
-successful call. A subprogram abnormally terminates if it executes a
-``raise_statement``, a ``pragma Assert (statically_False)`` or a call
-to a subprogram marked ``No_Return``.  All statements that are
-inevitably executed when a ``raise_statement``, a ``pragma Assert
-(statically_False)`` or a call to a subprogram marked ``No_Return`` is
-executed, are completely ignored by flow analysis and have no impact
-on the subprogram's contracts.
-
-To better understand how flow analysis works we shall consider an
-example.
-
-.. code-block:: ada
-   :linenos:
-
-   package body Abnormal_Terminations is
-      G, G2 : Integer := 0;
-
-      procedure OK (OK : Boolean)
-        with Global => (Output => G),
-             Pre    => OK
-      is
-      begin
-         if OK then
-            G := 1;
-         else
-            pragma Assert (False);
-            G2 := 1;
-         end if;
-      end OK;
-   end Abnormal_Terminations;
-
-The tools emit a single warning after analyzing procedure ``OK``:
-
-   ``abnormal_terminations.adb:9:07: warning: statement has no effect``
-
-Due to the ``pragma Assert (False);``, the entire ``else`` branch is
-considered to be unreachable. Therefore, the ``if OK`` branch is the
-only possible path and the ``G := 1;`` statement will always be
-executed. On the other hand, the ``G2 := 1;`` statement is completely
-ignored since it should never be reachable. Under these assumptions,
-the provided ``Global`` contract is indeed the correct one. The
-emitted warning is effectively saying that there is no real option
-here, the ``if OK`` branch is the *ONLY* path that will ever be
-executed.
 
 Package Contracts
 =================

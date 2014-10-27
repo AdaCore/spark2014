@@ -1,0 +1,6 @@
+data_initialization.adb:23:07: high: "G3.Num" is not initialized
+data_initialization.adb:23:07: high: "G3.Val" is not initialized
+data_initialization.adb:23:13: high: "X1.Num" is not initialized
+data_initialization.adb:23:21: high: "X3.Val" is not initialized
+data_initialization.ads:13:07: high: "P2.Num" is not initialized in "Proc"
+data_initialization.ads:17:27: high: "G2.Val" is not initialized
