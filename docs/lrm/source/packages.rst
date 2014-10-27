@@ -327,10 +327,10 @@ The new aspects are:
 
 .. _tu-fe-nt-external_state_variables-12:
 
-12. A effectively volatile object shall only occur as an actual parameter of a
-    subprogram if the corresponding formal parameter is of a
-    non-scalar effectively volatile type or as an actual parameter in a call to an
-    instance of Unchecked_Conversion.
+12. An effectively volatile object shall only occur as an actual
+    parameter of a subprogram if the corresponding formal parameter is
+    of a non-scalar effectively volatile type or as an actual
+    parameter in a call to an instance of Unchecked_Conversion.
 
 .. _tu-fe-external_state_variables-13:
 
