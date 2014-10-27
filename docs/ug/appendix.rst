@@ -78,20 +78,31 @@ Command-line Options
 Alternative Provers
 ===================
 
+Installed with |SPARK|
+----------------------
+
 By default, |GNATprove| uses its own version of prover Alt-Ergo. Switch
 ``--prover`` allows to use another prover, or a list of provers. Prover names
 ``altergo`` and ``cvc4`` are used to refer to the versions of provers Alt-Ergo
-and CVC4 that are shipped with |GNATprove|.
+and CVC4 that are installed with |SPARK| toolset. More information on Alt-Ergo
+and CVC4 can be found on their respective webpages:
+
+ * Alt-Ergo:  http://alt-ergo.ocamlpro.com/
+ * CVC4: http://cvc4.cs.nyu.edu/web/
+
+Other Automatic or Manual Provers
+---------------------------------
 
 |GNATprove| can call other provers, as long as they are supported by the Why3
-platform. To use another prover, it must be listed in your ``.why3.conf``
-configuration file. The command ``why3config --detect-provers`` can be used to
-search your ``PATH`` for any supported provers and adding them to the
-configuration file. Any prover name configured in your ``.why3.conf`` file can
-be used as an argument to switch ``--prover``.
+platform (see complete list on `Why3 webpage
+<http://why3.lri.fr/#provers>`_). To use another prover, it must be listed in
+your ``.why3.conf`` configuration file. The command ``why3config
+--detect-provers`` can be used to search your ``PATH`` for any supported
+provers and adding them to the configuration file. Any prover name configured
+in your ``.why3.conf`` file can be used as an argument to switch ``--prover``.
 
 If more than one prover is specified, the provers are tried in order on each
-goal, until one of them succeeds or all fail. Interactive provers cannot be
+VC, until one of them succeeds or all fail. Interactive provers cannot be
 combined with other provers, so must appear on their own.
 
 Coq
