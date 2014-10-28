@@ -24,8 +24,7 @@ is
 
    procedure Local (P : Partition; X : Partition_Index) with
      Pre => X in 0 .. Partition_Index (Length (P)) - 1 and then
-            (for all C in P => Element (P, C).First + Element (P, C).Last in Index)
---            (for all J in First_Index (P) .. Last_Index (P) => Element (P, J).First + Element (P, J).Last in Index)
+            (for all J in First_Index (P) .. Last_Index (P) => Element (P, J).First + Element (P, J).Last in Index)
    is
    begin
       pragma Assert (Element (P, X).First + Element (P, X).Last in Index);

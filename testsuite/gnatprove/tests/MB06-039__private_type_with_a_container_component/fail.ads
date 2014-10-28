@@ -5,7 +5,7 @@ package Fail is
 
    pragma Elaborate_Body;
 
-   type X is private;
+   type X is limited private;
 
 private
 

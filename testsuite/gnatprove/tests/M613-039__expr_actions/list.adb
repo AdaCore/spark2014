@@ -14,10 +14,10 @@ package body List is
    is
       pragma Spark_Mode;
       S   : Stack.Stack;
-      Res : List;
       First : constant Integer := First_Index (L);
       Last  : constant Integer := Last_Index (L);
    begin
+      return Res : List do
 
       for I in First .. Last loop
          Push (S, Element (L, I));
@@ -37,7 +37,7 @@ package body List is
               Element (Res, J) = Element (L, Last_Index (L) - J + 1)));
       end loop;
 
-      return Res;
+      end return;
    end Reverse_List;
 
 end List;

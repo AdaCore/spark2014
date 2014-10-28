@@ -5,7 +5,7 @@ with Spaces.Positions;
 with Gaps;
 with Valleys;
 
-with Ada.Containers.Formal_Vectors;
+with Ada.Containers.Formal_Doubly_Linked_Lists;
 
 with Formal.Numerics;
 
@@ -38,12 +38,11 @@ is
    subtype Gap_ID is Integer range 1 .. Max_Gaps;
 
    package Gap_Vectors is new
-     Ada.Containers.Formal_Vectors (
-                                    Gap_ID,
+     Ada.Containers.Formal_Doubly_Linked_Lists (
                                     Gaps.Gap,
                                     Gaps.Equal);
 
-   subtype List is Gap_Vectors.Vector (Max_Gaps);
+   subtype List is Gap_Vectors.List (Max_Gaps);
 
    type Laser_Scan_Data is
       record

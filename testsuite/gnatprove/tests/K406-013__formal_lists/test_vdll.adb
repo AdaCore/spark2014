@@ -1,11 +1,10 @@
 with Ada.Containers.Formal_Doubly_Linked_Lists;
 with Ada.Containers;
 use Ada.Containers;
+with Formal_Container; use Formal_Container;
 
 procedure test_vdll is
-   function My_Eq (I1, I2 : Integer) return Boolean is (I1 = I2);
-   package VDLL is new Formal_Doubly_Linked_Lists
-     (Element_Type => Integer, "=" => My_Eq);
+   pragma Ghost;
    use VDLL;
    L1 :  List (3);
    L2 :  List (3);

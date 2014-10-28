@@ -1,5 +1,5 @@
 with Stack; use Stack;
-package body List is 
+package body List is
    pragma Spark_Mode (On);
 
    ------------------
@@ -12,12 +12,12 @@ package body List is
    is
       use My_Lists;
       S     : Stack.Stack := Empty_Stack;
-      Res   : List;
       First : constant Integer := First_Index (L);
       Last  : constant Integer := Last_Index (L);
    begin
+      return Res : List do
       clear (Res);
-      
+
       for I in First .. Last loop
          Push (S, Element (L, I));
          pragma Loop_Invariant
@@ -44,7 +44,7 @@ package body List is
          Pop (S);
       end loop;
 
-      return Res;
+      end return;
    end Reverse_List;
 
 end List;

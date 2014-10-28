@@ -10,8 +10,8 @@ package body List is
       return List
    is
       S   : Stack.Stack (Integer (Length (L)));
-      Res : List;
    begin
+      return Res : List do
       for I in First_Index (L) .. Last_Index (L) loop
          Push (S, Element (L, I));
       end loop;
@@ -22,7 +22,7 @@ package body List is
          pragma Loop_Invariant (for all J in 1..I => Element (Res, J) = Element (L, Last_Index (L) - J + 1));
       end loop;
 
-      return Res;
+      end return;
    end Reverse_List;
 
 end List;

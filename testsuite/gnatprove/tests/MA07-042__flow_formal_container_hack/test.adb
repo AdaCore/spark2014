@@ -13,6 +13,6 @@ is
 begin
    A := Tmp_A; -- flow error
    B := Tmp_B; -- flow error
-   C := Tmp_C; -- ok
-   D := Tmp_D; -- ok
+   --  C := Tmp_C; -- ok
+   --  D := Tmp_D; -- ok
 end Test;

@@ -34,10 +34,10 @@ is
                     A'Old(K))) and then
                 Capacity (P) = Capacity (P)'Old and then
                 Length (P) = Length (P)'Old and then
-                (for all J in 0 .. Partition_Index(Length (P)) - 1 =>
-                   Element (P, J).First = Element (P'Old, J).First) and then
-                (for all J in 0 .. Partition_Index(Length (P)) - 1 =>
-                   Element (P, J).Count = Element (P'Old, J).Count + (if J = F(Element (D'Old, X_Elem)) then 1 else 0)) and then
+                --  (for all J in 0 .. Partition_Index(Length (P)) - 1 =>
+                --     Element (P, J).First = Element (P'Old, J).First) and then
+                --  (for all J in 0 .. Partition_Index(Length (P)) - 1 =>
+                --     Element (P, J).Count = Element (P'Old, J).Count + (if J = F(Element (D'Old, X_Elem)) then 1 else 0)) and then
                 (for all J in Index => Contains (D, A(J))) and then
                 (for all C in D => A (Element (D, C)) = Key (D, C)) and then
                 (for all C in D'Old => Has_Element (D, C) and then Key (D'Old, C) = Key (D, C));
@@ -129,11 +129,11 @@ is
       for J in 0 .. Partition_Index'Base (Length (P)) - 1 loop
 
          --  Intermediate assertion used to decrease time to prove loop invariant
-         pragma Assert (for all K in J .. Partition_Index'Base (Length (P)'Loop_Entry) - 1 => Element (P, K) = Element (P'Loop_Entry, K));
+         --  pragma Assert (for all K in J .. Partition_Index'Base (Length (P)'Loop_Entry) - 1 => Element (P, K) = Element (P'Loop_Entry, K));
 
          pragma Loop_Invariant (Capacity (P) = Capacity (P)'Loop_Entry);
          pragma Loop_Invariant (Length (P) - Length (P)'Loop_Entry in 0 .. Count_Type(J));
-         pragma Loop_Invariant (for all K in J .. Partition_Index'Base (Length (P)'Loop_Entry) - 1 => Element (P, K) = Element (P'Loop_Entry, K));
+         --  pragma Loop_Invariant (for all K in J .. Partition_Index'Base (Length (P)'Loop_Entry) - 1 => Element (P, K) = Element (P'Loop_Entry, K));
          P_Elem := Element (P, J);
          if P_Elem.Count in 1 .. P_Elem.Last - P_Elem.First then
             P_Prime := Interval'(First => P_Elem.First + P_Elem.Count,

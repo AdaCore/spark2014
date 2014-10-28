@@ -10,9 +10,11 @@ begin
       Append (L, I);
    end loop;
 
-   L:= Reverse_List (L);
-
-   for I in 1 .. 10 loop
-      Put_Line (Element (L, I)'img);
-   end loop;
+   declare
+      Rev_L : List.List := Reverse_List (L);
+   begin
+      for I in 1 .. 10 loop
+         Put_Line (Element (Rev_L, I)'img);
+      end loop;
+   end;
 end Main;

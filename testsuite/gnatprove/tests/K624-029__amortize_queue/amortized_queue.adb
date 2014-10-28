@@ -1,4 +1,16 @@
-package body Amortized_Queue is pragma SPARK_Mode (On); 
+package body Amortized_Queue is pragma SPARK_Mode (On);
+
+   function "&" (Left, Right : Vector) return Vector is
+      Result : Vector (Capacity => Left.Capacity);
+   begin
+      for Cu in Left loop
+         Result.Append (Left, Element (Left, Cu));
+      end loop;
+      for Cu in Right loop
+         Result.Append (Right, Element (Right, Cu));
+      end loop;
+      return Result;
+   end "&";
 
    function Model (Q : in Queue) return Vector is
       RevRear : Vector := Copy (Q.Rear);
