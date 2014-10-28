@@ -1,7 +1,7 @@
 test.adb:5:23: warning: unused initial value of "X"
 test.adb:6:11: medium: missing dependency "null => X"
-test.adb:7:23: medium: incorrect dependency "Y => X"
 test.adb:7:23: medium: missing dependency "Y => Y"
+test.adb:7:28: medium: incorrect dependency "Y => X"
 test.adb:26:33: high: "G" is not initialized
 test.adb:26:33: warning: unused global "G"
 test.adb:37:32: warning: unused global "G"
