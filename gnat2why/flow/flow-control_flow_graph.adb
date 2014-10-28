@@ -770,7 +770,7 @@ package body Flow.Control_Flow_Graph is
    --  perform some meaningful record-field splitting.
 
    procedure Prune_Exceptional_Paths (FA : in out Flow_Analysis_Graphs);
-   --  This procedure fulfils two purposes.
+   --  This procedure fulfils three purposes.
    --
    --  1) It removes:
    --       *  all vertices that inevitably lead to a raise statement,
@@ -780,6 +780,8 @@ package body Flow.Control_Flow_Graph is
    --          that are not otherwise reachable from the start vertex.
    --
    --  2) It populates the Edges_To_Remove set of FA.
+   --
+   --  3) It populates the Lead_To_Abnormal_Termination set of FA.
 
    procedure Simplify_CFG (FA : in out Flow_Analysis_Graphs);
    --  Remove all null vertices from the control flow graph.
@@ -4401,6 +4403,16 @@ package body Flow.Control_Flow_Graph is
 
       --  Populate the Edges_To_Remove field of FA.
       for From of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         --  Populate the Lead_To_Abnormal_Termination field of FA.
+         if FA.CFG.Out_Neighbour_Count (From) > 1
+           and then Dead_Path_Exists (From, FA.Helper_End_Vertex)
+         then
+            --  To add a vertex on the Lead_To_Abnormal_Termination
+            --  set it has to be some kind of flow control vertex and
+            --  it has to be able to lead to an abnormal termination.
+            FA.Lead_To_Abnormal_Termination.Include (From);
+         end if;
+
          for To of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
             if From /= To
               and then not Is_Dead (From)

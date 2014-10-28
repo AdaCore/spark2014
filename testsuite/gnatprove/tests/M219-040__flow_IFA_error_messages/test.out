@@ -1,6 +1,5 @@
 test.adb:7:04: warning: analyzing unreferenced function "Uninitialized_1"
 test.adb:16:14: medium: "Y" might not be initialized
-test.adb:28:07: warning: statement has no effect
 test.adb:38:04: warning: analyzing unreferenced procedure "Uninitialized_3"
 test.adb:38:51: medium: "C" might not be initialized in "Uninitialized_3"
 test.adb:56:04: warning: analyzing unreferenced procedure "Uninitialized_4"

@@ -1,6 +1,5 @@
 p.adb:4:19: info: postcondition proved
 p.adb:4:29: info: overflow check proved
-p.adb:12:04: warning: statement has no effect
 p.adb:15:09: info: overflow check proved
 p.adb:17:22: medium: assertion might fail, requires false
 p.adb:20:04: info: assertion proved

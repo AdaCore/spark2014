@@ -251,6 +251,11 @@ package Flow is
       --  Set of vertex pairs between which we must not add edges
       --  during the simplification of the graph.
 
+      Lead_To_Abnormal_Termination : Vertex_Sets.Set;
+      --  Set of vertices that can lead to an abnormal
+      --  termination. This is used to suppress ineffective statement
+      --  warnings.
+
       case Kind is
          when E_Subprogram_Body =>
             Is_Main : Boolean;

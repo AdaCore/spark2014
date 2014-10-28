@@ -1339,7 +1339,11 @@ package body Flow.Analysis is
                  --  vertex that corresponds to a variable that is
                  --  mentioned in a pragma unreferenced.
                  not FA.PDG.Non_Trivial_Path_Exists
-                 (V, Is_Final_Use_Unreferenced'Access) and then
+                       (V, Is_Final_Use_Unreferenced'Access) and then
+
+                 --  Suppression for vertices that can lead to
+                 --  abnormal termination.
+                 not FA.Lead_To_Abnormal_Termination.Contains (V) and then
 
                  --  Suppression for vertices that correspond to
                  --  an assignment to a record field, that comes

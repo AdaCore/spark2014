@@ -139,21 +139,17 @@ exception when parameter ``OK`` is ``False``:
    :language: ada
    :linenos:
 
-Note that, although ``G2`` is assigned in ``Check_OK``, its assignment is
-directly followed by a ``raise_statement``, so ``G2`` is never assigned on an
-execution of ``Check_OK`` that terminates normally. As a result, ``G2`` is not
-mentioned in the data dependencies of ``Check_OK``. During flow analysis,
-|GNATprove| verifies that the body of ``Check_OK`` implements its declared data
-dependencies and simply issues a warning that the test on line 7 is always
-true:
+Note that, although ``G2`` is assigned in ``Check_OK``, its assignment
+is directly followed by a ``raise_statement``, so ``G2`` is never
+assigned on an execution of ``Check_OK`` that terminates normally. As
+a result, ``G2`` is not mentioned in the data dependencies of
+``Check_OK``. During flow analysis, |GNATprove| verifies that the body of
+``Check_OK`` implements its declared data dependencies.
 
-.. literalinclude:: gnatprove_by_example/results/abnormal_terminations.flow
-   :language: none
-
-During proof, |GNATprove| generates a check that the ``raise_statement`` on
-line 11 is never reached. Here, it is proved thanks to the precondition of
-``Check_OK`` which states that parameter ``OK`` should always be ``True`` on
-entry:
+During proof, |GNATprove| generates a check that the
+``raise_statement`` on line 11 is never reached. Here, it is proved
+thanks to the precondition of ``Check_OK`` which states that parameter
+``OK`` should always be ``True`` on entry:
 
 .. literalinclude:: gnatprove_by_example/results/abnormal_terminations.prove
    :language: none
