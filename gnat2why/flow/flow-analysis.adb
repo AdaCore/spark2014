@@ -1342,8 +1342,11 @@ package body Flow.Analysis is
                        (V, Is_Final_Use_Unreferenced'Access) and then
 
                  --  Suppression for vertices that can lead to
-                 --  abnormal termination.
-                 not FA.Lead_To_Abnormal_Termination.Contains (V) and then
+                 --  abnormal termination and have had some of their
+                 --  out edges removed.
+                 (not FA.Lead_To_Abnormal_Termination.Contains (V) or else
+                    FA.CFG.Out_Neighbour_Count (V) =
+                      FA.Lead_To_Abnormal_Termination.Element (V)) and then
 
                  --  Suppression for vertices that correspond to
                  --  an assignment to a record field, that comes

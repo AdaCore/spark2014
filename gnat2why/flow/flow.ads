@@ -122,6 +122,13 @@ package Flow is
       Equivalent_Keys => Flow_Graphs."=",
       "="             => Vertex_Sets."=");
 
+   package Vertex_To_Natural_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Flow_Graphs.Vertex_Id,
+      Element_Type    => Natural,
+      Hash            => Flow_Graphs.Vertex_Hash,
+      Equivalent_Keys => Flow_Graphs."=",
+      "="             => "=");
+
    package Vertex_Pair_Sets is new Ada.Containers.Hashed_Sets
      (Element_Type        => Vertex_Pair,
       Hash                => Vertex_Pair_Hash,
@@ -251,10 +258,10 @@ package Flow is
       --  Set of vertex pairs between which we must not add edges
       --  during the simplification of the graph.
 
-      Lead_To_Abnormal_Termination : Vertex_Sets.Set;
-      --  Set of vertices that can lead to an abnormal
-      --  termination. This is used to suppress ineffective statement
-      --  warnings.
+      Lead_To_Abnormal_Termination : Vertex_To_Natural_Maps.Map;
+      --  Mapping from vertices to number of neighbours. This is used
+      --  to suppress ineffective statement warnings related to
+      --  abnormal terminations.
 
       case Kind is
          when E_Subprogram_Body =>

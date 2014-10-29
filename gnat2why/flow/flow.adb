@@ -802,7 +802,7 @@ package body Flow is
       Tmp.No_Errors_Or_Warnings        := True;
       Tmp.Direct_Calls                 := Node_Sets.Empty_Set;
       Tmp.Edges_To_Remove              := Vertex_Pair_Sets.Empty_Set;
-      Tmp.Lead_To_Abnormal_Termination := Vertex_Sets.Empty_Set;
+      Tmp.Lead_To_Abnormal_Termination := Vertex_To_Natural_Maps.Empty_Map;
 
       if Compute_Globals then
          --  Generate Globals

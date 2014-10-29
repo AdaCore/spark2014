@@ -4404,14 +4404,21 @@ package body Flow.Control_Flow_Graph is
       --  Populate the Edges_To_Remove field of FA.
       for From of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          --  Populate the Lead_To_Abnormal_Termination field of FA.
-         if FA.CFG.Out_Neighbour_Count (From) > 1
-           and then Dead_Path_Exists (From, FA.Helper_End_Vertex)
-         then
-            --  To add a vertex on the Lead_To_Abnormal_Termination
-            --  set it has to be some kind of flow control vertex and
-            --  it has to be able to lead to an abnormal termination.
-            FA.Lead_To_Abnormal_Termination.Include (From);
-         end if;
+         declare
+            Number_Of_Out_Neighbours : constant Natural :=
+              FA.CFG.Out_Neighbour_Count (From);
+         begin
+            if Number_Of_Out_Neighbours > 1
+              and then Dead_Path_Exists (From, FA.Helper_End_Vertex)
+            then
+               --  To add a vertex to the Lead_To_Abnormal_Termination
+               --  map it has to be some kind of flow control vertex
+               --  and it has to be able to lead to an abnormal
+               --  termination.
+               FA.Lead_To_Abnormal_Termination.Include
+                 (From, Number_Of_Out_Neighbours);
+            end if;
+         end;
 
          for To of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
             if From /= To
