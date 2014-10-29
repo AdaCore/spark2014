@@ -15,7 +15,9 @@ package Amortized_Queue is pragma SPARK_Mode (On);
    use My_Vectors;
 
    function "&" (Left, Right : Vector) return Vector;
-   --  Implement local version of concatenation for formal vectors, which do
+   function "&" (Left : Integer; Right : Vector) return Vector;
+   function "&" (Left : Vector; Right : Integer) return Vector;
+   --  Implement local versions of concatenation for formal vectors, which do
    --  not define concatenation anymore.
 
    Capacity : constant Count_Type := Count_Type (Index'Last);
