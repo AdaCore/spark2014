@@ -995,8 +995,10 @@ Extensions_Visible Aspects
    parameter in a call to a subprogram whose Extensions_Visible aspect is
    True. These restrictions also apply to any parenthesized expression,
    qualified expression, or type conversion whose operand is subject to
-   these restrictions, and to any conditional expression having at least
-   one dependent_expression which is subject to these restrictions.
+   these restrictions, to any Old or Update ``attribute_reference`` whose
+   prefix is subject to these restrictions, and to any conditional
+   expression having at least one dependent_expression which is subject
+   to these restrictions.
    [A subcomponent of a parameter is not itself a parameter and is therefore
    not subject to these restrictions. A parameter whose type is class-wide
    is not subject to these restrictions.]
