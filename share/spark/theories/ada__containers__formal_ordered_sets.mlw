@@ -56,6 +56,8 @@ module Ada__containers__formal_ordered_sets__cursor
 
   type cursor = __private
 
+  function dummy : cursor
+
   function position set cursor : int
 
   function position_inv set int : cursor
@@ -65,7 +67,7 @@ module Ada__containers__formal_ordered_sets__cursor
         length_ co >= position co cu >= 0
 
   axiom position_eq1:
-   forall co:set, i :int [position co (position_inv co i)]. 0 < i <= length_ co -> 
+   forall co:set, i :int [position co (position_inv co i)]. 0 < i <= length_ co ->
               position co (position_inv co i) = i
 
   axiom position_eq2:
@@ -109,7 +111,7 @@ module Ada__containers__formal_ordered_sets__is_empty
   function is_empty__logic set : bool
 
   axiom is_empty:
-    forall co:set [is_empty__logic (co)]. 
+    forall co:set [is_empty__logic (co)].
           is_empty__logic (co) = True <-> length_ co = 0
 
   val is_empty (co:set) : bool
@@ -303,7 +305,7 @@ module Ada__containers__formal_ordered_sets__find
   use import Ada__containers__formal_ordered_sets__element
 
   function find_ set real : cursor
-  
+
   predicate find__ (co : set) (i : real) (cu : cursor) =
     (cu = (no_element  : cursor) /\
       (forall cun:cursor.
@@ -311,7 +313,7 @@ module Ada__containers__formal_ordered_sets__find
          witness (Ada__containers__formal_ordered_sets__element_type.to_base (element__logic co cun)) <> i)) \/
      (position co cu > 0 /\
       witness (Ada__containers__formal_ordered_sets__element_type.to_base (element__logic co cu)) = i)
-  
+
   axiom Find_find_val:
     (forall co:set.
       (forall i:real.
@@ -336,9 +338,9 @@ module Ada__containers__formal_ordered_sets__ceiling
   use import Ada__containers__formal_ordered_sets__no_element
   use import Ada__containers__formal_ordered_sets__last
   use import Ada__containers__formal_ordered_sets__element
-  
+
   function ceiling_ set real : cursor
-  
+
   predicate is_ceiling (s : set) (i : real) (cu : cursor) =
      (cu = no_element  /\
        (length_ s = 0 \/ length_ s > 0 /\
@@ -347,7 +349,7 @@ module Ada__containers__formal_ordered_sets__ceiling
        Real.(<=) i (witness (Ada__containers__formal_ordered_sets__element_type.to_base (element__logic s cu))) /\
 	(forall cun : cursor [element__logic s cun]. 0 < position s cun < position s cu
 	 -> Real.(>) i (witness (Ada__containers__formal_ordered_sets__element_type.to_base (element__logic s cun)))))
-  
+
   axiom ceiling_is_ceiling:
     forall s:set.
       forall i:real [(ceiling_ s i : cursor)].
@@ -371,9 +373,9 @@ module Ada__containers__formal_ordered_sets__floor
   use import Ada__containers__formal_ordered_sets__no_element
   use import Ada__containers__formal_ordered_sets__first
   use import Ada__containers__formal_ordered_sets__element
-  
+
   function floor_ set real : cursor
-  
+
   predicate is_floor (s : set) (i : real) (cu : cursor) =
      (cu = no_element  /\
        (length_ s = 0 \/ length_ s > 0 /\
@@ -382,7 +384,7 @@ module Ada__containers__formal_ordered_sets__floor
        Real.(>=) i (witness (Ada__containers__formal_ordered_sets__element_type.to_base (element__logic s cu))) /\
 	(forall cun : cursor. position s cu < position s cun
 	 ->  Real.(<) i (witness (Ada__containers__formal_ordered_sets__element_type.to_base (element__logic s cun)))))
-  
+
   axiom floor_is_floor:
     (forall s:set.
       (forall i:real [(floor_ s i : cursor)].
@@ -444,8 +446,8 @@ module Ada__containers__formal_ordered_sets__first_to_previous
      (Real.(>) (witness (Ada__containers__formal_ordered_sets__element_type.to_base (element__logic co cu))) w  ->
       find_ co w = find_ (first_to_previous__logic co cu) w) /\
      (Real.(<=) (witness (Ada__containers__formal_ordered_sets__element_type.to_base (element__logic co cu))) w  ->
-      find_ (first_to_previous__logic co cu) w = no_element) 
-     
+      find_ (first_to_previous__logic co cu) w = no_element)
+
   val first_to_previous (co:set) (cu:cursor) : set
      requires { cu = no_element \/ position co cu > 0 }
      ensures  { result = first_to_previous__logic co cu }
@@ -500,7 +502,7 @@ module Ada__containers__formal_ordered_sets__current_to_last
      (Real.(<=) (witness (Ada__containers__formal_ordered_sets__element_type.to_base (element__logic co cu))) w  ->
       find_ co w = find_ (current_to_last__logic co cu) w) /\
      (Real.(>) (witness (Ada__containers__formal_ordered_sets__element_type.to_base (element__logic co cu))) w  ->
-      find_ (current_to_last__logic co cu) w = no_element) 
+      find_ (current_to_last__logic co cu) w = no_element)
 
   val current_to_last (co:set) (cu:cursor) : set
      requires { cu = no_element \/ position co cu > 0 }
@@ -518,7 +520,7 @@ module Ada__containers__formal_ordered_sets__replace
   use import Ada__containers__formal_ordered_sets__cursor
   use import Ada__containers__formal_ordered_sets__no_element
   use import Ada__containers__formal_ordered_sets__element
-  use import Ada__containers__formal_ordered_sets__find  
+  use import Ada__containers__formal_ordered_sets__find
 
   predicate replace (co1:set) (e:Ada__containers__formal_ordered_sets__element_type.base_type) (co2:set) =
     (position co1 (find_ co1 (witness e)) > 0 /\
@@ -739,7 +741,7 @@ module Ada__containers__formal_ordered_sets__delete
      | delete co1 cu co2,  element__logic co2 cun].
       delete co1 cu co2 ->
       0 < position co2 cun ->
-        element__logic co1 cun = element__logic co2 cun  
+        element__logic co1 cun = element__logic co2 cun
 
   axiom delete_find :
     forall co1:set, co2:set, cu:cursor, w:real [delete co1 cu co2,
@@ -855,7 +857,7 @@ module Ada__containers__formal_ordered_sets__to_set
 
   axiom to_set__def:
   forall e : Ada__containers__formal_ordered_sets__element_type.base_type [to_set__logic e].
-    length_ (to_set__logic e) = 1 /\ Ada__containers__formal_ordered_sets__element_type.to_base (element__logic (to_set__logic e) (first__logic (to_set__logic e))) = e 
+    length_ (to_set__logic e) = 1 /\ Ada__containers__formal_ordered_sets__element_type.to_base (element__logic (to_set__logic e) (first__logic (to_set__logic e))) = e
 
  val  to_set  (e: Ada__containers__formal_ordered_sets__element_type.base_type) : set
      ensures { result = to_set__logic e }
@@ -961,7 +963,7 @@ module Ada__containers__formal_ordered_sets__Oeq__2
    forall co1 co2 : set [oeq__2__logic co1 co2]. oeq__2__logic co1 co2 <> True ->
    (length_ co1 <> length_ co2 \/
    exists e : real. position co1 (find_ co1 e) > 0 /\
-         (find_ co2 e = no_element \/ position co2 (find_ co2 e) > 0 /\ 
+         (find_ co2 e = no_element \/ position co2 (find_ co2 e) > 0 /\
           Ada__containers__formal_ordered_sets__oeq.oeq (Ada__containers__formal_ordered_sets__element_type.to_base (element__logic co2 (find_ co2 e))) (Ada__containers__formal_ordered_sets__element_type.to_base (element__logic co1 (find_ co1 e))) <> True))
 
   axiom oeq__2_sym :
@@ -985,15 +987,15 @@ module Ada__containers__formal_ordered_sets__equivalent_sets
   use import Ada__containers__formal_ordered_sets__cursor
   use import Ada__containers__formal_ordered_sets__no_element
   use import Ada__containers__formal_ordered_sets__find
-  
-  function equivalent_sets__logic set set : bool 
+
+  function equivalent_sets__logic set set : bool
 
   axiom equivalent_sets__def :
     forall co1:set, co2:set [equivalent_sets__logic co1 co2].
      (forall i:real.
        not find_ co1 i = no_element -> not find_ co2 i = no_element) /\
       length_ co1 = length_ co2 <-> equivalent_sets__logic co1 co2 = True
-  
+
   axiom equivalent_sym :
     forall co1:set.
      forall co2:set [equivalent_sets__logic co2 co1| equivalent_sets__logic co1 co2].
@@ -1011,8 +1013,8 @@ module Ada__containers__formal_ordered_sets__intersection
   use import Ada__containers__formal_ordered_sets__cursor
   use import Ada__containers__formal_ordered_sets__no_element
   use import Ada__containers__formal_ordered_sets__find
-  
-  function intersection set set : set 
+
+  function intersection set set : set
 
   predicate is_inter (s1:set) (s2:set) (i:set) =
     forall j:real [find_ s1 j, find_ s2 j| find_ i j].
@@ -1020,13 +1022,13 @@ module Ada__containers__formal_ordered_sets__intersection
        not find_ i j = no_element) /\
       (find_ s1 j = no_element \/ find_ s2 j = no_element ->
         find_ i j = no_element)
-  
+
   axiom Inter_is_inter :
     forall s1:set.
      forall s2:set [intersection s1 s2].
       is_inter s1 s2 (intersection s1 s2) /\
        length_ (intersection s1 s2) = length_ (intersection s2 s1)
-  
+
   val intersection (co1: ref set) (co2:set) :unit
      reads { co1 }
      writes { co1 }
@@ -1055,8 +1057,8 @@ module Ada__containers__formal_ordered_sets__union
   use import Ada__containers__formal_ordered_sets__no_element
   use import Ada__containers__formal_ordered_sets__find
   use import Ada__containers__formal_ordered_sets__intersection
-  
-  function union set set : set  
+
+  function union set set : set
 
   predicate is_union (s1:set) (s2:set) (u:set) =
     (forall i:real [find_ s1 i, find_ s2 i| find_ u i].
@@ -1065,10 +1067,10 @@ module Ada__containers__formal_ordered_sets__union
        (find_ s1 i = no_element /\ find_ s2 i = no_element ->
          find_ u i = no_element)) /\
      length_ u = ((length_ s1 + length_ s2) - length_ (intersection s1 s2))
-  
+
   axiom union_is_union :
     forall s1:set. forall s2:set [union s1 s2]. is_union s1 s2 (union s1 s2)
-  
+
   val union (co1: ref set) (co2:set) :unit
      requires { length_ (union !co1 co2) <= capacity !co1}
      reads { co1 }
@@ -1104,8 +1106,8 @@ module Ada__containers__formal_ordered_sets__difference
   use import Ada__containers__formal_ordered_sets__no_element
   use import Ada__containers__formal_ordered_sets__find
   use import Ada__containers__formal_ordered_sets__intersection
-  
-  function difference set set : set 
+
+  function difference set set : set
 
   predicate is_diff (s1:set) (s2:set) (d:set) =
     (forall i:real [find_ s1 i, find_ s2 i| find_ d i].
@@ -1114,7 +1116,7 @@ module Ada__containers__formal_ordered_sets__difference
        (find_ s1 i = no_element \/ not find_ s2 i = no_element ->
          find_ d i = no_element)) /\
      length_ d = (length_ s1 - length_ (intersection s1 s2))
-  
+
   axiom diff_is_diff :
     forall s1:set.
      forall s2:set [difference s1 s2]. is_diff s1 s2 (difference s1 s2)
@@ -1147,8 +1149,8 @@ module Ada__containers__formal_ordered_sets__symmetric_difference
   use import Ada__containers__formal_ordered_sets__no_element
   use import Ada__containers__formal_ordered_sets__find
   use import Ada__containers__formal_ordered_sets__intersection
-  
-  function symmetric_difference set set : set 
+
+  function symmetric_difference set set : set
 
   predicate is_sdiff (s1:set) (s2:set) (d:set) =
     (forall i:real [find_ s1 i, find_ s2 i| find_ d i].
@@ -1162,12 +1164,12 @@ module Ada__containers__formal_ordered_sets__symmetric_difference
            find_ d i = no_element)) /\
      length_ d =
       ((length_ s1 + length_ s2) - (2 * length_ (intersection s1 s2)))
-  
+
   axiom sdiff_is_sdiff :
     forall s1:set.
      forall s2:set [symmetric_difference s1 s2].
       is_sdiff s1 s2 (symmetric_difference s1 s2)
-  
+
   val symmetric_difference (co1: ref set) (co2:set) :unit
      requires { length_ (symmetric_difference !co1 co2) <= capacity !co1}
      reads { co1 }
@@ -1203,8 +1205,8 @@ module Ada__containers__formal_ordered_sets__is_subset
   use import Ada__containers__formal_ordered_sets__cursor
   use import Ada__containers__formal_ordered_sets__no_element
   use import Ada__containers__formal_ordered_sets__find
-  
-  function is_subset__logic set set : bool 
+
+  function is_subset__logic set set : bool
 
   axiom is_subset__def :
     forall s1:set, s2:set [is_subset__logic s1 s2].
@@ -1225,7 +1227,7 @@ module Ada__containers__formal_ordered_sets__overlap
   use import Ada__containers__formal_ordered_sets__no_element
   use import Ada__containers__formal_ordered_sets__find
 
-  function overlap__logic set set : bool  
+  function overlap__logic set set : bool
 
   axiom overlap__def :
     forall s1:set, s2:set [overlap__logic s1 s2].
@@ -1279,7 +1281,7 @@ module Ada__containers__formal_ordered_sets__clear
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_ordered_sets__set
   use import Ada__containers__formal_ordered_sets__length
-  
+
   val clear (co:ref set) : unit
      writes     { co }
      ensures { length_ !co = 0 /\ capacity !co = capacity (old !co) }

@@ -133,6 +133,8 @@ module Ada__containers__formal_vectors__cursor
 
   type cursor = __private
 
+  function dummy : cursor
+
   function bool_eq cursor cursor : bool
   function user_eq cursor cursor : bool
 end

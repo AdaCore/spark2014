@@ -43,6 +43,8 @@ module Ada__containers__formal_doubly_linked_lists__cursor
 
   type cursor = __private
 
+  function dummy : cursor
+
   function position list cursor : int
 
   function position_inv list int : cursor
@@ -52,7 +54,7 @@ module Ada__containers__formal_doubly_linked_lists__cursor
         length_ co >= position co cu >= 0
 
   axiom position_eq1:
-   forall co:list, i :int [position co (position_inv co i)]. 0 < i <= length_ co -> 
+   forall co:list, i :int [position co (position_inv co i)]. 0 < i <= length_ co ->
               position co (position_inv co i) = i
 
   axiom position_eq2:
@@ -96,7 +98,7 @@ module Ada__containers__formal_doubly_linked_lists__is_empty
   function is_empty__logic list : bool
 
   axiom is_empty:
-    forall co:list [is_empty__logic (co)]. 
+    forall co:list [is_empty__logic (co)].
           is_empty__logic (co) = True <-> length_ co = 0
 
   val is_empty (co:list) : bool
@@ -511,7 +513,7 @@ module Ada__containers__formal_doubly_linked_lists__Oeq__2
   axiom oeq__2_element:
    forall co1 co2 : list [oeq__2__logic co1 co2]. oeq__2__logic co1 co2 = True ->
    forall cu1 : cursor [element__logic co1 cu1]. position co1 cu1 > 0 ->
-	exists cu2 : cursor. position co2 cu2 = position co1 cu1 /\ 
+	exists cu2 : cursor. position co2 cu2 = position co1 cu1 /\
           Ada__containers__formal_doubly_linked_lists__oeq.oeq (Ada__containers__formal_doubly_linked_lists__element_type.to_base (element__logic co2 cu2)) (Ada__containers__formal_doubly_linked_lists__element_type.to_base (element__logic co1 cu1)) = True
 
   axiom oeq__2_inv:
@@ -714,7 +716,7 @@ module Ada__containers__formal_doubly_linked_lists__insert
 	 exists nl : list [insert li1 cu e nl].
     		(insert li1 cu e nl /\ insert_mult nl cu e (c - 1) li2)
 
-  val insert (co:ref list) (cu:cursor) (e:Ada__containers__formal_doubly_linked_lists__element_type.base_type) 
+  val insert (co:ref list) (cu:cursor) (e:Ada__containers__formal_doubly_linked_lists__element_type.base_type)
                                              (c : int) : unit
      requires { length_ !co + c <= capacity !co
                          /\ (position !co cu > 0 \/ cu = no_element) }
@@ -768,7 +770,7 @@ module Ada__containers__formal_doubly_linked_lists__insert__3
 
   axiom insert_3_mult_1 :
     forall li1 li2 : list, cu : cursor [insert_3_mult li1 cu 1 li2].
-	insert_3_mult li1 cu 1 li2 -> 
+	insert_3_mult li1 cu 1 li2 ->
         exists e : Ada__containers__formal_doubly_linked_lists__element_type.base_type.
          Ada__containers__formal_doubly_linked_lists__element_type.valid e /\ insert li1 cu e li2
 
@@ -777,7 +779,7 @@ module Ada__containers__formal_doubly_linked_lists__insert__3
 	insert_3_mult li1 cu c li2 -> c > 1 ->
 	 exists nl : list , e : Ada__containers__formal_doubly_linked_lists__element_type.base_type [insert li1 cu e nl].
          Ada__containers__formal_doubly_linked_lists__element_type.valid e /\
-    		(insert li1 cu e nl /\ insert_3_mult nl cu (c - 1) li2) 
+    		(insert li1 cu e nl /\ insert_3_mult nl cu (c - 1) li2)
 
   val insert__3 (co:ref list) (cu:cursor)  (p:ref cursor)
                                              (c : int) : unit
@@ -799,7 +801,7 @@ module Ada__containers__formal_doubly_linked_lists__prepend
   use import Ada__containers__formal_doubly_linked_lists__first
   use import Ada__containers__formal_doubly_linked_lists__insert
 
-  val prepend (co:ref list) (e:Ada__containers__formal_doubly_linked_lists__element_type.base_type) 
+  val prepend (co:ref list) (e:Ada__containers__formal_doubly_linked_lists__element_type.base_type)
                                              (c : int) : unit
      requires { length_ !co + c <= capacity !co }
      writes     { co }
@@ -817,7 +819,7 @@ module Ada__containers__formal_doubly_linked_lists__append
   use import Ada__containers__formal_doubly_linked_lists__no_element
   use import Ada__containers__formal_doubly_linked_lists__insert
 
-   val append (co:ref list) (e:Ada__containers__formal_doubly_linked_lists__element_type.base_type) 
+   val append (co:ref list) (e:Ada__containers__formal_doubly_linked_lists__element_type.base_type)
                                              (c : int) : unit
      requires { length_ !co + c <= capacity !co }
      writes     { co }
@@ -945,38 +947,38 @@ module Ada__containers__formal_doubly_linked_lists__swap_links
   predicate swap_links list cursor cursor list
 
   axiom swap_links_elements:
-    forall co1 co2 : list, cu cu1 cu2 : cursor 
-             [swap_links co1 cu1 cu2 co2, element__logic co1 cu | 
+    forall co1 co2 : list, cu cu1 cu2 : cursor
+             [swap_links co1 cu1 cu2 co2, element__logic co1 cu |
                swap_links co1 cu1 cu2 co2, element__logic co2 cu].
     swap_links co1 cu1 cu2 co2 -> position co1 cu > 0 ->
     element__logic co1 cu = element__logic co2 cu
 
   axiom swap_links_length_:
-    forall co1 co2 : list, cu1 cu2 : cursor 
+    forall co1 co2 : list, cu1 cu2 : cursor
              [swap_links co1 cu1 cu2 co2, length_ co1].
     swap_links co1 cu1 cu2 co2 -> length_ co1 = length_ co2
 
   axiom swap_links_capacity:
-    forall co1 co2 : list, cu1 cu2 : cursor 
+    forall co1 co2 : list, cu1 cu2 : cursor
              [swap_links co1 cu1 cu2 co2, capacity co1
              | swap_links co1 cu1 cu2 co2, capacity co2].
     swap_links co1 cu1 cu2 co2 -> capacity co1 = capacity co2
 
   axiom swap_links_position_ext:
-    forall co1 co2 : list, cu cu1 cu2 : cursor 
-             [swap_links co1 cu1 cu2 co2, position co1 cu | 
+    forall co1 co2 : list, cu cu1 cu2 : cursor
+             [swap_links co1 cu1 cu2 co2, position co1 cu |
                swap_links co1 cu1 cu2 co2, position co2 cu].
-    swap_links co1 cu1 cu2 co2 -> 
+    swap_links co1 cu1 cu2 co2 ->
      cu <> cu1 -> cu <> cu2 -> position co1 cu = position co2 cu
 
   axiom swap_links_position_in:
-    forall co1 co2 : list, cu1 cu2 : cursor 
+    forall co1 co2 : list, cu1 cu2 : cursor
              [swap_links co1 cu1 cu2 co2].
-    swap_links co1 cu1 cu2 co2 -> 
+    swap_links co1 cu1 cu2 co2 ->
      position co1 cu1 = position co2 cu2 /\
      position co1 cu2 = position co2 cu1 /\
      position co1 cu1 > 0 /\ position co1 cu2 > 0
-  
+
   val swap_links (co:ref list) (cu1 cu2 : cursor) : unit
     requires { position !co cu1 > 0 /\ position !co cu2 > 0 }
      writes     { co }
@@ -995,37 +997,37 @@ module Ada__containers__formal_doubly_linked_lists__swap
   predicate swap list cursor cursor list
 
   axiom swap_position:
-    forall co1 co2 : list, cu cu1 cu2 : cursor 
-             [swap co1 cu1 cu2 co2, position co1 cu | 
+    forall co1 co2 : list, cu cu1 cu2 : cursor
+             [swap co1 cu1 cu2 co2, position co1 cu |
                swap co1 cu1 cu2 co2, position co2 cu].
     swap co1 cu1 cu2 co2 -> position co1 cu = position co2 cu
 
   axiom swap_length_:
-    forall co1 co2 : list, cu1 cu2 : cursor 
+    forall co1 co2 : list, cu1 cu2 : cursor
              [swap co1 cu1 cu2 co2].
     swap co1 cu1 cu2 co2 -> length_ co1 = length_ co2
 
   axiom swap_capacity:
-    forall co1 co2 : list, cu1 cu2 : cursor 
+    forall co1 co2 : list, cu1 cu2 : cursor
              [swap co1 cu1 cu2 co2, capacity co1
              | swap co1 cu1 cu2 co2, capacity co2].
     swap co1 cu1 cu2 co2 -> capacity co1 = capacity co2
 
   axiom swap_element_ext:
-    forall co1 co2 : list, cu cu1 cu2 : cursor 
-             [swap co1 cu1 cu2 co2, element__logic co1 cu | 
+    forall co1 co2 : list, cu cu1 cu2 : cursor
+             [swap co1 cu1 cu2 co2, element__logic co1 cu |
                swap co1 cu1 cu2 co2, element__logic co2 cu].
     swap co1 cu1 cu2 co2 -> position co1 cu > 0 ->
      cu <> cu1 -> cu <> cu2 -> element__logic co1 cu = element__logic co2 cu
 
   axiom swap_element_in:
-    forall co1 co2 : list, cu1 cu2 : cursor 
+    forall co1 co2 : list, cu1 cu2 : cursor
              [swap co1 cu1 cu2 co2].
-    swap co1 cu1 cu2 co2 -> 
+    swap co1 cu1 cu2 co2 ->
      element__logic co1 cu1 = element__logic co2 cu2 /\
      element__logic co1 cu2 = element__logic co2 cu1 /\
      position co1 cu1 > 0 /\ position co1 cu2 > 0
-  
+
   val swap (co:ref list) (cu1 cu2 : cursor) : unit
     requires { position !co cu1 > 0 /\ position !co cu2 > 0 }
      writes     { co }
@@ -1049,7 +1051,7 @@ module Ada__containers__formal_doubly_linked_lists__splice
   use import Ada__containers__formal_doubly_linked_lists__strict_equal
 
   val splice (target:ref list) (cu:cursor) (source:ref list) : unit
-     requires { capacity !target >= (length_ !target) + (length_ !source) 
+     requires { capacity !target >= (length_ !target) + (length_ !source)
                            /\ (position !target cu > 0 \/ cu = no_element)}
      writes     { target, source }
      reads      { target, source }
@@ -1071,7 +1073,7 @@ module Ada__containers__formal_doubly_linked_lists__splice__2
   use import Ada__containers__formal_doubly_linked_lists__insert
   use import Ada__containers__formal_doubly_linked_lists__insert__2
   use import Ada__containers__formal_doubly_linked_lists__delete
-  
+
   val splice__2 (target:ref list) (cu:cursor) (source:ref list)
                                 (p:ref cursor) : unit
      requires { capacity !target >= (length_ !target) + (length_ !source)
@@ -1080,7 +1082,7 @@ module Ada__containers__formal_doubly_linked_lists__splice__2
      writes     { target, source, p }
      reads      { target, source, p }
      ensures { insert (old !target) cu (Ada__containers__formal_doubly_linked_lists__element_type.to_base (element__logic (old !source) (old !p))) !target /\
-                         delete (old !source) (old !p) !source /\ 
+                         delete (old !source) (old !p) !source /\
                         first_inserted (old !target) cu !target !p  }
 end
 
@@ -1101,7 +1103,7 @@ module Ada__containers__formal_doubly_linked_lists__splice__3
                            /\ (position !co before > 0 \/ before = no_element) }
      writes     { co }
      reads      { co }
-     ensures { exists interm : list. 
+     ensures { exists interm : list.
                        delete (old !co) p  interm /\
                        insert interm before (Ada__containers__formal_doubly_linked_lists__element_type.to_base (element__logic (old !co) p)) !co }
 end
@@ -1151,7 +1153,7 @@ module Ada__containers__formal_doubly_linked_lists__clear
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__length
-  
+
   val clear (co:ref list) : unit
      writes     { co }
      ensures { length_ !co = 0 /\ capacity !co = capacity (old !co) }
