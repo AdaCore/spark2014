@@ -263,7 +263,7 @@ package body Algorithm is
                                   iterL = Next (This.gapVec, iterR) and then
                                   This.robot.robot_radius = This.robot.robot_radius'Loop_Entry
                                  );
-            pragma Loop_Variant (Decreases => Last_Index (This.gapVec) - To_Index (iterL));
+--            pragma Loop_Variant (Decreases => Last_Index (This.gapVec) - To_Index (iterL));
             if ccwDiff (Element (This.gapVec, iterR).bearing, Element (This.gapVec, iterL).bearing) < 2.0 * This.robot.scan_Res and then
               Element (This.gapVec, iterL).iDir = 1 and then Element (This.gapVec, iterR).iDir = 1
             then
@@ -326,7 +326,7 @@ package body Algorithm is
                                   riterL = Next (This.gapVec, riterR) and then
                                   This.robot.robot_radius = This.robot.robot_radius'Loop_Entry
                                  );
-            pragma Loop_Variant (Decreases => To_Index (riterL));
+--            pragma Loop_Variant (Decreases => To_Index (riterL));
             if ccwDiff (Element (This.gapVec, riterR).bearing, Element (This.gapVec, riterL).bearing) < 2.0 * This.robot.scan_Res and then
               Element (This.gapVec, riterL).iDir = -1 and then Element (This.gapVec, riterR).iDir = -1
             then
@@ -385,22 +385,22 @@ package body Algorithm is
          when O_NONE =>
             null;
          when O_SOME =>
-            rising, other : Existing_Gap_ID;
+            rising, other : Cursor;
          end case;
       end record;
 
       Best_Valley_IDS : Gap_ID_Pair := (Opt => O_NONE);
+      iR : Cursor := First (This.gapVec);
    begin
       pragma Assert (This.gapVec.Capacity = Max_Gaps);
 
-      for iR in Existing_Gap_ID range 1 .. Gap_ID (Length (This.gapVec))
-      loop
+      while Has_Element (This.GapVec, iR) loop
          pragma Loop_Invariant (This.gapVec.Capacity = Max_Gaps and then
                                Length (This.gapVec) = Length (This.gapVec'Loop_Entry));
 
          declare
-            iL : constant Existing_Gap_ID :=
-              (iR mod Integer (Length (This.gapVec))) + 1;
+            iL : constant Cursor :=
+              (if iR = Last (This.gapVec) then First (This.GapVec) else Next (This.Gapvec, iR));
 
             Candidate_Valley_IDS : Gap_ID_Pair := (Opt => O_NONE);
          begin
@@ -457,7 +457,7 @@ package body Algorithm is
 --                    pragma Assert(iBestValleyRising <= Integer(Length(This.gapVec)));
                   if gDebug > 4 then
                      Put ("      Checking valley with rising ");
-                     Put_Line (Gap_ID'Image (Candidate_Valley_IDS.rising));
+--                     Put_Line (Gap_ID'Image (Candidate_Valley_IDS.rising));
 
                      Put ("        Goal at ");
                      Put_Line (Print (bearing (distToGoal)));
@@ -479,7 +479,7 @@ package body Algorithm is
                   then
                      if gDebug > 3 then
                         Put ("    New best valley with rising ");
-                        Put_Line (Gap_ID'Image (Candidate_Valley_IDS.rising));
+--                        Put_Line (Gap_ID'Image (Candidate_Valley_IDS.rising));
                      end if;
                      Best_Valley_IDS := Candidate_Valley_IDS;
                   end if;
@@ -494,12 +494,14 @@ package body Algorithm is
                else
                   if gDebug > 3 then
                      Put ("    New best valley with rising ");
-                     Put_Line (Gap_ID'Image (Candidate_Valley_IDS.rising));
+--                     Put_Line (Gap_ID'Image (Candidate_Valley_IDS.rising));
                   end if;
                   Best_Valley_IDS := Candidate_Valley_IDS;
                end if;
             end if;
          end;
+
+         Next (This.GapVec, iR);
       end loop;
 
       if Best_Valley_IDS.Opt = O_SOME then
@@ -685,19 +687,19 @@ package body Algorithm is
                      minGapWidth => This.robot.min_gap_width,
                      fMaxRange   => This.robot.max_Range);
 
-      if gDebug > 2 then
-         for I in First_Index (This.gapVec) .. Last_Index (This.gapVec)
-         loop
-            pragma Loop_Invariant (distToGoal /= Zero_Position and then
-                                  This = This'Loop_Entry);
-            Put ("  Gap at ");
-            Put (Float'Image (dCastPi (Element (This.gapVec, I).bearing)));
-            Put (", dir ");
-            Put (iDir_t'Image (Element (This.gapVec, I).iDir));
-            Put (", ");
-            Put_Line (Float'Image (Element (This.gapVec, I).distance));
-         end loop;
-      end if;
+      --  if gDebug > 2 then
+      --     for I in First_Index (This.gapVec) .. Last_Index (This.gapVec)
+      --     loop
+      --        pragma Loop_Invariant (distToGoal /= Zero_Position and then
+      --                              This = This'Loop_Entry);
+      --        Put ("  Gap at ");
+      --        Put (Float'Image (dCastPi (Element (This.gapVec, I).bearing)));
+      --        Put (", dir ");
+      --        Put (iDir_t'Image (Element (This.gapVec, I).iDir));
+      --        Put (", ");
+      --        Put_Line (Float'Image (Element (This.gapVec, I).distance));
+      --     end loop;
+      --  end if;
 
       pragma  Assert_And_Cut (distToGoal /= Zero_Position and then distToClosestObstacle > This.robot.robot_radius);
 
