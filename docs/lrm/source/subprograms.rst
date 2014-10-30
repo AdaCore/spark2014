@@ -998,10 +998,14 @@ Extensions_Visible Aspects
    these restrictions, to any Old, Update, or Loop_Entry
    ``attribute_reference`` whose prefix is subject to these restrictions,
    and to any conditional expression having at least one dependent_expression
-   which is subjec to these restrictions.
+   which is subject to these restrictions.
    [A subcomponent of a parameter is not itself a parameter and is therefore
    not subject to these restrictions. A parameter whose type is class-wide
-   is not subject to these restrictions.]
+   is not subject to these restrictions. An Old, Update, or
+   Loop_Entry ``attribute_reference`` does not itself violate these
+   restrictions (despite the fact that (in the tagged case) each of these
+   attributes yields a result having the same underlying dynamic tag as their
+   prefix).]
 
 #. A subprogram whose Extensions_Visible aspect is True shall not override
    an inherited primitive operation of a tagged type whose
