@@ -246,6 +246,33 @@ The new aspects are:
 
   * Effective_Writes - as described in :ref:`external_state`.
 
+These four aspects are said to be the *volatility refinement* aspects.
+Ada's notion of volatility corresponds to the case where all four
+aspects are True. Specifying a volatility
+refinement aspect value of False for an object
+grants permission for the |SPARK| implementation to make additional
+assumptions about how the object in question is accessed;
+it is the responsibility of the user to ensure that these assumptions hold.
+In contrast, specifying a value of True imposes no such obligation on the user.
+
+For example, consider
+
+.. code-block:: ada
+
+   X : Integer with Volatile, Async_Writers => False;
+   ...
+   procedure Proc with ... is
+     Y : Integer;
+   begin
+     X := 0;
+     Y := X;
+     pragma Assert (Y = 0);
+   end Proc;
+
+The proof obligation associated with the assertion can be
+successfully discharged but this success depends on the
+Async_Writers aspect specification.
+
 .. centered:: **Static Semantics**
 
 1. Concurrent accesses of an effectively volatile object may cause a run-time
@@ -271,33 +298,38 @@ The new aspects are:
 
 .. _tu-cbatu-external_state_variables-03:
 
-3. All effectively volatile objects are considered to have one or more external
-   state properties, either given explicitly in their declaration or
-   implicitly when all the properties are considered to be True. The
-   following rules also apply to all effectively volatile objects.
+3. In the absence of an explicit aspect specification, the value of a
+   volatility refinement aspect of an effectively volatile stand-alone object
+   other than a formal parameter is True. The Effective_Reads aspect of an
+   effectively volatile formal parameter of mode **in** is False; in all other
+   cases, the value of a volatility refinement aspect of an effectively
+   volatile formal parameter is True.
+
+   The volatility refinement aspect values of a subcomponent of an object
+   are those of the enclosing object.
 
 .. _tu-fe-external_state_variables-04:
 
-4. The aspects shall only be specified in the aspect specification of an
-   effectively volatile object declaration excluding volatile formal
-   parameter declarations.
+4. The value of a volatility refinement aspect shall only be specified
+   for an effectively volatile stand-alone object. [A formal parameter
+   is not a stand-alone object; see Ada RM 3.3.1 .]
 
 .. _tu-fe-external_state_variables-05:
 
-5. The declaration of an effectively volatile object (other than as a formal
-   parameter) shall be at library level. [That is, it shall not be
-   declared within the scope of a subprogram body. An effectively
-   volatile object has an external effect and therefore should be global
-   even if it is not visible. It is made visible via a state abstraction.]
+5. The declaration of an effectively volatile stand-alone object
+   shall be a library-level declaration. [In particular, it shall not be
+   declared within a subprogram.]
 
 .. _tu-fe-external_state_variables-06:
 
-6. A constant object, a discriminant or a loop parameter shall not
-   be effectively volatile.
+6. A constant object (other than a formal parameter of mode **in**)
+   shall not be effectively volatile. An effectively volatile object
+   shall not have a discriminated part.
 
 .. _tu-fe-external_state_variables-07:
 
-7. A object which is not effectively volatile shall not have a volatile component.
+7. A object which is not effectively volatile shall not have a
+   volatile component.
 
 .. _tu-fe-external_state_variables-08:
 
@@ -315,15 +347,13 @@ The new aspects are:
 
 .. _tu-fe-external_state_variables-11:
 
-11. If an effectively volatile object has set to True any of:
-
-   - Async_Readers, Effective_Writes or Effective_Reads - it may only
-     used as an actual parameter of a procedure whose corresponding
-     formal parameter is of mode **out** or **in out**; or
-
-   - Async_Writers - it may only used as an actual parameter of a
-     procedure whose corresponding formal parameter is of mode **in**
-     or **in out**.
+11. If a procedure has an **in** mode parameter of an effectively
+    volatile type, then the Effective_Reads aspect of any corresponding
+    actual parameter shall be False.
+    [This is because the parameter is passed by reference and the corresponding
+    aspect of the formal parameter is False. In the 11 other cases, the
+    volatility refining aspect of the formal parameter is True and so the
+    aspect of the corresponding actual parameter may be either True or False.]
 
 .. _tu-fe-nt-external_state_variables-12:
 
@@ -372,36 +402,6 @@ These are explained in :ref:`external_state`.
 There are no dynamic semantics associated with these aspects.
 
 .. centered:: **Verification Rules**
-
-.. _tu-nt-external_state_variables-14:
-
-14. As formal subprogram parameters of an effectively volatile type cannot
-    have these aspects specified assumptions have to be made in the body
-    of the subprogram of the properties that the formal parameter of a
-    given mode may have as follows:
-
-    * mode **in**: the formal parameter cannot be updated by the
-      subprogram and is considered to have the properties
-      Async_Writers => True and Effective_Reads => False. The actual
-      parameter in a call must be effectively volatile and have these properties
-      but may also have the properties Async_Readers and
-      Effective_Writes set to True.
-
-    * mode **out**: the formal parameter cannot be read by the
-      subprogram as it is unknown whether a read will have an external
-      effect. The formal parameter is considered to have the
-      properties Async_Readers => True and/or Effective_Writes =>
-      True. The actual parameter in a call to the subprogram must be
-      effectively volatile and have either or both of these properties True
-      but may also have Async_Writers and Effective_Reads set to True. If
-      the subprogram attempts a read of the formal parameter a flow
-      anomaly will be reported.
-
-    * mode **in out**: the formal parameter is considered to have all
-      properties; Async_Readers => True, Async_Writers => True,
-      Effective_Reads => True, Effective_Writes => True. The actual
-      parameter in a subprogram call must be effectively volatile and have
-      all of these properties set to True.
 
 .. _etu-external_state_variables-vr:
 
