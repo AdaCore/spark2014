@@ -11,11 +11,11 @@ instr-child.adb:9:67: info: division check proved
 instr-child.adb:10:07: warning: assuming "Put" has no effect on global items
 instr-child.adb:10:07: warning: no Global contract available for "Put"
 instr-child.adb:10:60: info: division check proved
-instr-child.adb:15:39: warning: overflow check might fail
+instr-child.adb:15:39: medium: overflow check might fail
 instr-child.adb:15:46: info: division check proved
-instr-child.adb:16:32: warning: overflow check might fail
+instr-child.adb:16:32: medium: overflow check might fail
 instr-child.adb:16:39: info: division check proved
-instr.adb:7:18: warning: array index check might fail
+instr.adb:7:18: medium: array index check might fail
 instr.adb:14:07: warning: assuming "New_Line" has no effect on global items
 instr.adb:14:07: warning: no Global contract available for "New_Line"
 instr.adb:15:07: warning: assuming "Put" has no effect on global items
@@ -30,11 +30,11 @@ instr.adb:39:07: warning: assuming "Put" has no effect on global items
 instr.adb:39:07: warning: no Global contract available for "Put"
 instr.adb:40:07: warning: assuming "Put" has no effect on global items
 instr.adb:40:07: warning: no Global contract available for "Put"
-instr.adb:54:39: warning: overflow check might fail
+instr.adb:54:39: medium: overflow check might fail
 instr.adb:54:49: info: division check proved
-instr.adb:55:07: warning: range check might fail
+instr.adb:55:07: medium: range check might fail
 instr.adb:55:41: info: length check proved
-instr.adb:56:07: warning: range check might fail
+instr.adb:56:07: medium: range check might fail
 instr.adb:56:50: info: length check proved
 instr.adb:59:07: warning: assuming "Put" has no effect on global items
 instr.adb:59:07: warning: no Global contract available for "Put"
@@ -66,15 +66,15 @@ instr.adb:74:59: info: division check proved
 instr.adb:75:07: warning: assuming "Put" has no effect on global items
 instr.adb:75:07: warning: no Global contract available for "Put"
 instr.adb:75:59: info: division check proved
-instr.adb:82:31: warning: overflow check might fail
+instr.adb:82:31: medium: overflow check might fail
 instr.adb:82:38: info: division check proved
-instr.adb:83:26: warning: overflow check might fail
+instr.adb:83:26: medium: overflow check might fail
 instr.adb:83:33: info: division check proved
 instr.adb:84:31: info: overflow check proved
 instr.adb:84:39: info: division check proved
 instr.adb:85:26: info: overflow check proved
 instr.adb:85:34: info: division check proved
-instr.adb:86:27: warning: overflow check might fail
+instr.adb:86:27: medium: overflow check might fail
 instr.adb:86:35: info: division check proved
 instr.adb:108:23: info: overflow check proved
 instr.adb:108:35: info: overflow check proved

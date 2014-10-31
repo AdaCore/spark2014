@@ -588,8 +588,8 @@ package body Flow_Utility is
                      F      : Flow_Id;
 
                      Class_Wide_Conversion : constant Boolean :=
-                       Ekind (Get_Full_Type (N, Scope)) not in Class_Wide_Kind
-                       and then Ekind (Map_Type) in Class_Wide_Kind;
+                       (Ekind (Get_Full_Type (N, Scope)) not in Class_Wide_Kind
+                          and then Ekind (Map_Type) in Class_Wide_Kind);
                   begin
                      M := Recurse_On (Prefix (N),
                                       Map_Root,
@@ -2328,7 +2328,7 @@ package body Flow_Utility is
       T         := Get_Type (F, Scope);
       Classwide := Ekind (T) in Class_Wide_Kind;
       if Classwide then
-         T := Etype (T);
+         T := Get_Full_Type (T, Scope);
          pragma Assert (Ekind (T) not in Class_Wide_Kind);
       end if;
 
@@ -2443,22 +2443,21 @@ package body Flow_Utility is
       Scope : Flow_Scope)
       return Entity_Id
    is
-      T : constant Entity_Id := Etype (N);
+      T : Entity_Id := Etype (N);
    begin
       if Nkind (N) in N_Entity and then Ekind (N) = E_Abstract_State then
          return T;
-      else
-         pragma Assert (Nkind (T) in N_Entity);
-         pragma Assert (Is_Type (T));
-         if Present (Full_View (T))
-           and then Is_Visible (Full_View (T), Scope)
-           and then not Is_Itype (Full_View (T))
-         then
-            return Full_View (T);
-         else
-            return T;
-         end if;
       end if;
+
+      while Present (Full_View (T))
+        and then Is_Visible (Full_View (T), Scope)
+        and then not Is_Itype (Full_View (T))
+        and then Full_View (T) /= T
+      loop
+         T := Full_View (T);
+      end loop;
+
+      return T;
    end Get_Full_Type;
 
    --------------------------------

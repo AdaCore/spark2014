@@ -696,7 +696,9 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-      with Pre => Nkind (N) in N_Full_Type_Declaration | N_Subtype_Declaration;
+   with Pre => Nkind (N) in N_Full_Type_Declaration |
+                            N_Subtype_Declaration |
+                            N_Private_Extension_Declaration;
    --  This ignores type declarations (but creates a sink vertex so we
    --  can check for use of uninitialized variables).
 
@@ -4158,7 +4160,9 @@ package body Flow.Control_Flow_Graph is
             Do_Procedure_Call_Statement (N, FA, CM, Ctx);
          when N_Simple_Return_Statement =>
             Do_Simple_Return_Statement (N, FA, CM, Ctx);
-         when N_Full_Type_Declaration | N_Subtype_Declaration =>
+         when N_Full_Type_Declaration |
+              N_Subtype_Declaration |
+              N_Private_Extension_Declaration =>
             Do_Type_Declaration (N, FA, CM, Ctx);
          when N_Raise_Statement |
               N_Raise_xxx_Error =>
