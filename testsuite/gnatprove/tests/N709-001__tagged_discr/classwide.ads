@@ -25,7 +25,8 @@ is
    function D_Is_Zero (V : T) return Boolean is
       (C_Is_Zero (T'Class (V)))
    with
-     Global => null;
+     Global => null,
+     Extensions_Visible;
 
    procedure Init (V : out T) with
      Post => Is_Zero (V),
@@ -37,7 +38,8 @@ is
 
    procedure D_Init (V : out T) with
      Post => D_Is_Zero (V),
-     Global => null;
+     Global => null,
+     Extensions_Visible;
 
    procedure Update (V : in out T) with
      Post => Is_Zero (V),
@@ -49,7 +51,8 @@ is
 
    procedure D_Update (V : in out T) with
      Post => D_Is_Zero (V),
-     Global => null;
+     Global => null,
+     Extensions_Visible;
 
    type U1 is new T with null record;
 
@@ -78,7 +81,8 @@ is
    function D_Is_Zero (V : U1) return Boolean is
       (C_U1_Is_Zero (U1'Class (V)))
    with
-     Global => null;
+     Global => null,
+     Extensions_Visible;
 
    type U2 is new T with record
       W : Integer;
