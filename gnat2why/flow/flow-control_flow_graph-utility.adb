@@ -267,10 +267,15 @@ package body Flow.Control_Flow_Graph.Utility is
       E_Loc                        : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
-      A        : V_Attributes        := Null_Attributes;
-      Tmp_Used : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
-      Scope    : constant Flow_Scope := Get_Flow_Scope (Call_Vertex);
-      Unused   : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+      Subprogram : constant Entity_Id  := Entity (Name (Call_Vertex));
+      Scope      : constant Flow_Scope := Get_Flow_Scope (Call_Vertex);
+      Ext_Relevant_To_Formal : constant Boolean :=
+        Has_Extensions_Visible_Aspect (Subprogram) or else
+        Ekind (Get_Full_Type (Formal, Scope)) in Class_Wide_Kind;
+
+      A          : V_Attributes        := Null_Attributes;
+      Tmp_Used   : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+      Unused     : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
    begin
       A.Is_Parameter                  := True;
       A.Is_Discr_Or_Bounds_Parameter  := Discriminants_Or_Bounds_Only;
@@ -291,7 +296,8 @@ package body Flow.Control_Flow_Graph.Utility is
             Scope                => Scope,
             Local_Constants      => FA.Local_Constants,
             Fold_Functions       => True,
-            Use_Computed_Globals => not FA.Compute_Globals);
+            Use_Computed_Globals => not FA.Compute_Globals,
+            Consider_Extensions  => Ext_Relevant_To_Formal);
 
          for F of Tmp_Used loop
             if (if Discriminants_Or_Bounds_Only
@@ -311,8 +317,22 @@ package body Flow.Control_Flow_Graph.Utility is
            (Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter);
          pragma Assert (not Discriminants_Or_Bounds_Only);
          declare
-            Partial : Boolean;
+            Partial    : Boolean;
+            Unused_Vc  : Boolean;
+            Unused_Seq : Node_Lists.List;
+            Classwide  : Boolean;
+            Map_Root   : Flow_Id;
          begin
+            --  We're interested in the map root, since we might have to do
+            --  something about extensions.
+            Get_Assignment_Target_Properties
+              (Actual,
+               Partial_Definition => Partial,
+               View_Conversion    => Unused_Vc,
+               Classwide          => Classwide,
+               Map_Root           => Map_Root,
+               Seq                => Unused_Seq);
+
             --  We have an unconditional addition to folded_function_checks
             --  for each actual anyway, so we can ignore the proof
             --  variables here.
@@ -325,6 +345,12 @@ package body Flow.Control_Flow_Graph.Utility is
                Vars_Used            => A.Variables_Explicitly_Used,
                Vars_Proof           => Unused,
                Partial_Definition   => Partial);
+            if Ext_Relevant_To_Formal
+              and then Extensions_Visible (Map_Root, Scope)
+            then
+               A.Variables_Defined.Include
+                 (Map_Root'Update (Facet => Extension_Part));
+            end if;
             A.Variables_Used := A.Variables_Explicitly_Used;
             if Partial then
                A.Variables_Used.Union (A.Variables_Defined);
@@ -348,23 +374,27 @@ package body Flow.Control_Flow_Graph.Utility is
       E_Loc                        : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
+      G     : constant Flow_Id    := Change_Variant (Global, Normal_Use);
       A     : V_Attributes        := Null_Attributes;
       Scope : constant Flow_Scope := Get_Flow_Scope (Call_Vertex);
-      FS    : Flow_Id_Sets.Set;
+      Tmp   : Flow_Id_Sets.Set;
    begin
-      A.Is_Global_Parameter             := True;
-      A.Is_Discr_Or_Bounds_Parameter    := Discriminants_Or_Bounds_Only;
-      A.Call_Vertex         := Direct_Mapping_Id (Call_Vertex);
-      A.Parameter_Formal    := Global;
-      A.Loops               := Loops;
-      A.Error_Location      := E_Loc;
+      A.Is_Global_Parameter          := True;
+      A.Is_Discr_Or_Bounds_Parameter := Discriminants_Or_Bounds_Only;
+      A.Call_Vertex                  := Direct_Mapping_Id (Call_Vertex);
+      A.Parameter_Formal             := Global;
+      A.Loops                        := Loops;
+      A.Error_Location               := E_Loc;
 
       case Global.Variant is
          when In_View =>
-            FS := Flatten_Variable (Change_Variant (Global, Normal_Use),
-                                    Scope);
+            Tmp := Flatten_Variable (G, Scope);
+            if Extensions_Visible (G, Scope) then
+               --  Tmp.Include (G'Update (Facet => The_Tag));
+               Tmp.Include (G'Update (Facet => Extension_Part));
+            end if;
 
-            for F of FS loop
+            for F of Tmp loop
                if not Discriminants_Or_Bounds_Only or else
                  Is_Discriminant (F)
                then
@@ -382,8 +412,13 @@ package body Flow.Control_Flow_Graph.Utility is
          when Out_View =>
             --  We do not need untangle_assignment_target as we only
             --  ever update the entire global.
-            A.Variables_Defined := Flatten_Variable
-              (Change_Variant (Global, Normal_Use), Scope);
+            Tmp := Flatten_Variable (G, Scope);
+            if Extensions_Visible (G, Scope) then
+               --  We can't actually modify the tag, so this is not an
+               --  omission.
+               Tmp.Include (G'Update (Facet => Extension_Part));
+            end if;
+            A.Variables_Defined := Tmp;
 
          when others =>
             raise Program_Error;

@@ -188,7 +188,8 @@ package body Flow_Utility is
       Local_Constants              : Node_Sets.Set;
       Fold_Functions               : Boolean;
       Use_Computed_Globals         : Boolean;
-      Expand_Synthesized_Constants : Boolean)
+      Expand_Synthesized_Constants : Boolean;
+      Extensions_Irrelevant        : Boolean := True)
       return Flow_Id_Maps.Map
    is
       --  !!! Join/Merge need to be able to deal with private parts and
@@ -206,10 +207,12 @@ package body Flow_Utility is
              Expand_Synthesized_Constants => Expand_Synthesized_Constants));
       --  Helpful wrapper for calling Get_Variable_Set.
 
-      function Recurse_On (N        : Node_Id;
-                           Map_Root : Flow_Id;
-                           Map_Type : Entity_Id := Empty)
-                           return Flow_Id_Maps.Map
+      function Recurse_On
+        (N              : Node_Id;
+         Map_Root       : Flow_Id;
+         Map_Type       : Entity_Id := Empty;
+         Ext_Irrelevant : Boolean   := Extensions_Irrelevant)
+         return Flow_Id_Maps.Map
       is (Untangle_Record_Assignment
             (N,
              Map_Root                     => Map_Root,
@@ -220,8 +223,12 @@ package body Flow_Utility is
              Local_Constants              => Local_Constants,
              Fold_Functions               => Fold_Functions,
              Use_Computed_Globals         => Use_Computed_Globals,
-             Expand_Synthesized_Constants => Expand_Synthesized_Constants));
-      --  Helpful wrapper for recursing.
+             Expand_Synthesized_Constants => Expand_Synthesized_Constants,
+             Extensions_Irrelevant        => Ext_Irrelevant))
+      with Pre => (if not Extensions_Irrelevant
+                   then not Ext_Irrelevant);
+      --  Helpful wrapper for recursing. Note that once extensions are not
+      --  irrlevant its not right to start ignoring them again.
 
       function Join (A, B   : Flow_Id;
                      Offset : Natural := 0)
@@ -311,12 +318,23 @@ package body Flow_Utility is
    begin
       if Debug_Trace_Untangle_Record then
          Write_Str ("URA task: ");
+         Write_Str (Character'Val (8#33#) & "[1m");
          Sprint_Flow_Id (Map_Root);
+         Write_Str (Character'Val (8#33#) & "[0m");
          Write_Str (" <-- ");
+         Write_Str (Character'Val (8#33#) & "[1m");
          Sprint_Node_Inline (N);
+         Write_Str (Character'Val (8#33#) & "[0m");
          Write_Eol;
 
          Indent;
+
+         Write_Str ("Map_Type: " & Ekind (Map_Type)'Img);
+         Write_Eol;
+         Write_Str ("RHS_Type: " & Ekind (Etype (N))'Img);
+         Write_Eol;
+         Write_Str ("Ext_Irrl: " & Extensions_Irrelevant'Img);
+         Write_Eol;
       end if;
 
       case Nkind (N) is
@@ -359,8 +377,8 @@ package body Flow_Utility is
                --  suggest, we fill in the "missing" fields with null, so
                --  that they appear initialized.
                for Missing_Component of Missing loop
-                  FS := Flatten_Variable (Add_Component
-                                          (Map_Root, Missing_Component),
+                  FS := Flatten_Variable (Add_Component (Map_Root,
+                                                         Missing_Component),
                                           Scope);
                   for F of FS loop
                      M.Insert (F, Flow_Id_Sets.Empty_Set);
@@ -400,22 +418,60 @@ package body Flow_Utility is
             end if;
 
             declare
-               Tmp      : constant Flow_Id_Sets.Set :=
-                 Flatten_Variable (Entity (N), Scope);
                Simplify : constant Boolean :=
                  Ekind (Entity (N)) = E_Constant and then
                  not Local_Constants.Contains (Entity (N));
+               --  We're assigning a local constant; and currently we just
+               --  use get_variable_set to "look through" it. We simply
+               --  assign all fields of the LHS to the RHS. Not as precise
+               --  as it could be, but it works for now...
+
+               LHS : constant Flow_Id_Sets.Set :=
+                 Flatten_Variable (Map_Root, Scope);
+
+               LHS_Ext : constant Flow_Id :=
+                 Map_Root'Update (Facet => Extension_Part);
+
+               RHS : Flow_Id_Sets.Set :=
+                 Flatten_Variable (Entity (N), Scope);
+
+               To_Ext : Flow_Id_Sets.Set;
+               F      : Flow_Id;
             begin
+               if Extensions_Visible (Entity (N), Scope)
+                 and then ((Ekind (Map_Type) in Class_Wide_Kind and then
+                              Ekind (Etype (N)) not in Class_Wide_Kind)
+                             or else not Extensions_Irrelevant)
+               then
+                  --  This is an implicit conversion to class wide, or we
+                  --  for some other reason care specifically about the
+                  --  extensions.
+                  RHS.Include (Direct_Mapping_Id (Entity (N),
+                                                  Facet => Extension_Part));
+                  --  RHS.Include (Direct_Mapping_Id (Entity (N),
+                  --                                  Facet => The_Tag));
+               end if;
                if Simplify then
-                  for Input of Tmp loop
+                  for Input of RHS loop
                      M.Include (Join (Map_Root, Input),
                                 Get_Vars_Wrapper (N));
                   end loop;
                else
-                  for Input of Tmp loop
-                     M.Include (Join (Map_Root, Input),
-                                Flow_Id_Sets.To_Set (Input));
+                  To_Ext := Flow_Id_Sets.Empty_Set;
+                  for Input of RHS loop
+                     F := Join (Map_Root, Input);
+                     if LHS.Contains (F) then
+                        M.Include (F, Flow_Id_Sets.To_Set (Input));
+                     else
+                        To_Ext.Include (Input);
+                     end if;
                   end loop;
+                  if not To_Ext.Is_Empty then
+                     if not M.Contains (LHS_Ext) then
+                        M.Include (LHS_Ext, Flow_Id_Sets.Empty_Set);
+                     end if;
+                     M (LHS_Ext).Union (To_Ext);
+                  end if;
                end if;
             end;
 
@@ -423,57 +479,86 @@ package body Flow_Utility is
             if Debug_Trace_Untangle_Record then
                Write_Str ("processing type/view conversion");
                Write_Eol;
-               declare
-                  T_From : constant Entity_Id :=
-                    Get_Full_Type (Expression (N), Scope);
-                  T_To   : constant Entity_Id :=
-                    Get_Full_Type (N, Scope);
-               begin
-                  Write_Str ("from: ");
-                  Sprint_Node_Inline (T_From);
-                  Write_Str (" (" & Ekind (T_From)'Img & ")");
-                  Write_Eol;
-                  Write_Str ("to: ");
-                  Sprint_Node_Inline (T_To);
-                  Write_Str (" (" & Ekind (T_To)'Img & ")");
-                  Write_Eol;
-                  Write_Str ("Flattened target type: ");
-                  Print_Node_Set (Flatten_Variable (T_To, Scope));
-               end;
             end if;
 
             declare
-               Tmp : constant Flow_Id_Maps.Map := Recurse_On (Expression (N),
-                                                              Map_Root);
+               T_From : constant Entity_Id :=
+                 Get_Full_Type (Expression (N), Scope);
+               T_To   : constant Entity_Id :=
+                 Get_Full_Type (N, Scope);
 
-               Leftovers : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+               --  To_Class_Wide : constant Boolean :=
+               --    Ekind (T_To) in Class_Wide_Kind;
 
-               Output : Flow_Id;
-               Inputs : Flow_Id_Sets.Set;
+               Class_Wide_Conversion : constant Boolean :=
+                 Ekind (T_From) not in Class_Wide_Kind and then
+                 Ekind (T_To) in Class_Wide_Kind;
 
-               Contributions : Natural := 0;
-               FS : constant Flow_Id_Sets.Set :=
-                 Flatten_Variable (Get_Full_Type (N, Scope), Scope);
+               Tmp : constant Flow_Id_Maps.Map :=
+                 Recurse_On (Expression (N),
+                             Map_Root,
+                             Ext_Irrelevant =>
+                               not (Class_Wide_Conversion or
+                                      not Extensions_Irrelevant));
+               --  If we convert to a classwide type then any extensions
+               --  are no longer irrelevant.
+
+               Valid_To_Fields : Flow_Id_Sets.Set;
+
+               Tmp_Set : Flow_Id_Sets.Set;
+
+               The_Ext : constant Flow_Id :=
+                 Map_Root'Update (Facet => Extension_Part);
+               The_Tg : constant Flow_Id :=
+                 Map_Root'Update (Facet => The_Tag);
             begin
-               for F of FS loop
-                  Leftovers.Include (Join (Map_Root, F));
+               if Debug_Trace_Untangle_Record then
+                  Write_Str ("from: ");
+                  Sprint_Node_Inline (T_From);
+                  Write_Str (" (" & Ekind (T_From)'Img & ")");
+                  Write_Str (" to: ");
+                  Sprint_Node_Inline (T_To);
+                  Write_Str (" (" & Ekind (T_To)'Img & ")");
+                  Write_Eol;
+
+                  Write_Str ("temporary map: ");
+                  Print_Flow_Map (Tmp);
+               end if;
+
+               Valid_To_Fields := Flow_Id_Sets.Empty_Set;
+               Tmp_Set         := Flatten_Variable (T_To, Scope);
+               --  !!! Tmp_Set is workaround for compiler bug
+               for F of Tmp_Set loop
+                  Valid_To_Fields.Include (Join (Map_Root, F));
                end loop;
 
                for C in Tmp.Iterate loop
-                  Output := Flow_Id_Maps.Key (C);
-                  Inputs := Flow_Id_Maps.Element (C);
-
-                  if Leftovers.Contains (Output) then
-                     M.Include (Output, Inputs);
-                     Contributions := Contributions + 1;
-                  end if;
+                  declare
+                     Output : constant Flow_Id := Flow_Id_Maps.Key (C);
+                     Inputs : constant Flow_Id_Sets.Set :=
+                       Flow_Id_Maps.Element (C);
+                  begin
+                     if Valid_To_Fields.Contains (Output) then
+                        M.Include (Output, Inputs);
+                        Valid_To_Fields.Exclude (Output);
+                     end if;
+                  end;
                end loop;
 
-               --  Sanity check that we didn't discard anything we
-               --  shouldn't have.
-               pragma Assert (if Leftovers.Is_Empty
-                              then Contributions = 0
-                              else Contributions > 0);
+               if Valid_To_Fields.Contains (The_Tg) then
+                  if not M.Contains (The_Tg) then
+                     M.Include (The_Tg, Flow_Id_Sets.Empty_Set);
+                  end if;
+                  Valid_To_Fields.Exclude (The_Tg);
+               end if;
+
+               if Valid_To_Fields.Contains (The_Ext) then
+                  if not M.Contains (The_Ext) then
+                     M.Include (The_Ext, Flow_Id_Sets.Empty_Set);
+                  end if;
+                  Valid_To_Fields.Exclude (The_Ext);
+                  M (The_Ext).Union (Valid_To_Fields);
+               end if;
             end;
 
          when N_Qualified_Expression =>
@@ -501,8 +586,16 @@ package body Flow_Utility is
                      Input  : Node_Id;
                      Ptr    : Node_Id;
                      F      : Flow_Id;
+
+                     Class_Wide_Conversion : constant Boolean :=
+                       Ekind (Get_Full_Type (N, Scope)) not in Class_Wide_Kind
+                       and then Ekind (Map_Type) in Class_Wide_Kind;
                   begin
-                     M := Recurse_On (Prefix (N), Map_Root);
+                     M := Recurse_On (Prefix (N),
+                                      Map_Root,
+                                      Ext_Irrelevant =>
+                                        not (Class_Wide_Conversion or
+                                               not Extensions_Irrelevant));
 
                      Ptr := First (Component_Associations (The_Aggregate));
                      while Present (Ptr) loop
@@ -1657,12 +1750,15 @@ package body Flow_Utility is
       Use_Computed_Globals         : Boolean;
       Reduced                      : Boolean := False;
       Allow_Statements             : Boolean := False;
-      Expand_Synthesized_Constants : Boolean := False)
+      Expand_Synthesized_Constants : Boolean := False;
+      Consider_Extensions          : Boolean := False)
       return Flow_Id_Sets.Set
    is
       VS : Flow_Id_Sets.Set;
 
-      function Recurse_On (N : Node_Id) return Flow_Id_Sets.Set
+      function Recurse_On (N                   : Node_Id;
+                           Consider_Extensions : Boolean := False)
+                           return Flow_Id_Sets.Set
       is (Get_Variable_Set
             (N,
              Scope                        => Scope,
@@ -1671,7 +1767,8 @@ package body Flow_Utility is
              Use_Computed_Globals         => Use_Computed_Globals,
              Reduced                      => Reduced,
              Allow_Statements             => False,
-             Expand_Synthesized_Constants => Expand_Synthesized_Constants));
+             Expand_Synthesized_Constants => Expand_Synthesized_Constants,
+             Consider_Extensions          => Consider_Extensions));
       --  Recurse on N. Please note that Allow_Statements is always false;
       --  this is intentional as we should only ever recurse on something
       --  inside expressions.
@@ -1763,10 +1860,18 @@ package body Flow_Utility is
                 then Used_Reads.Contains (Change_Variant (G, Normal_Use)))
             then
                V.Include (Change_Variant (G, Normal_Use));
+               if Extensions_Visible (G, Scope) then
+                  V.Include (Change_Variant (G, Normal_Use)'Update
+                               (Facet => Extension_Part));
+               end if;
             end if;
          end loop;
          for G of Global_Writes loop
             V.Include (Change_Variant (G, Normal_Use));
+            if Extensions_Visible (G, Scope) then
+               V.Include (Change_Variant (G, Normal_Use)'Update
+                            (Facet => Extension_Part));
+            end if;
          end loop;
 
          --  Merge the actuals into the set of variables used.
@@ -1794,7 +1899,13 @@ package body Flow_Utility is
                if (if Folding
                    then Used_Reads.Contains (Direct_Mapping_Id (Formal)))
                then
-                  V.Union (Recurse_On (Actual));
+                  V.Union
+                    (Recurse_On
+                       (Actual,
+                        Consider_Extensions =>
+                          Has_Extensions_Visible_Aspect (Subprogram) or else
+                          Ekind (Get_Full_Type (Formal, Scope))
+                            in Class_Wide_Kind));
                end if;
 
                Next (Ptr);
@@ -1896,6 +2007,14 @@ package body Flow_Utility is
                         else
                            VS.Union (Flatten_Variable (Entity (N), Scope));
                         end if;
+                        if Consider_Extensions and then
+                          Extensions_Visible (Entity (N), Scope)
+                        then
+                           VS.Include (Direct_Mapping_Id
+                                         (Unique_Entity (Entity (N)),
+                                          Facet => Extension_Part));
+                        end if;
+
                      when others =>
                         null;
                   end case;
@@ -1917,6 +2036,13 @@ package body Flow_Utility is
                         else
                            VS.Union (Flatten_Variable (N, Scope));
                         end if;
+                        if Consider_Extensions and then
+                          Extensions_Visible (N, Scope)
+                        then
+                           VS.Include (Direct_Mapping_Id
+                                         (Unique_Entity (N),
+                                          Facet => Extension_Part));
+                        end if;
                      end if;
                   when others =>
                      null;
@@ -1929,10 +2055,11 @@ package body Flow_Utility is
 
                if Reduced then
 
-                  --  In reduced mode we just keep traversing the
-                  --  tree.
+                  --  In reduced mode we just keep traversing the tree, but
+                  --  we need to turn off consider_extensions.
 
-                  return OK;
+                  VS.Union (Recurse_On (Prefix (N)));
+                  return Skip;
 
                else
 
@@ -1945,7 +2072,6 @@ package body Flow_Utility is
                         Use_Computed_Globals         => Use_Computed_Globals,
                         Expand_Synthesized_Constants =>
                           Expand_Synthesized_Constants));
-
                   return Skip;
 
                end if;
@@ -1992,7 +2118,9 @@ package body Flow_Utility is
             when N_Attribute_Reference =>
                case Get_Attribute_Id (Attribute_Name (N)) is
                   when Attribute_Update =>
-                     if Reduced then
+                     if Reduced or Is_Tagged_Type (Get_Full_Type (N, Scope))
+                     then
+                        --  !!! Precise analysis is disabled for tagged types
                         return OK;
                      else
                         VS.Union
@@ -2173,10 +2301,11 @@ package body Flow_Utility is
       Scope : Flow_Scope)
       return Flow_Id_Sets.Set
    is
-      T   : Entity_Id;
-      Ids : Flow_Id_Sets.Set;
+      T                    : Entity_Id;
+      Ids                  : Flow_Id_Sets.Set;
+      Classwide            : Boolean;
 
-      Ptr : Entity_Id;
+      Ptr                  : Entity_Id;
 
       Contains_Non_Visible : Boolean := False;
    begin
@@ -2195,7 +2324,13 @@ package body Flow_Utility is
          return Flow_Id_Sets.To_Set (F);
       end if;
 
-      T := Get_Type (F, Scope);
+      pragma Assert (Nkind (F.Node) in N_Entity);
+      T         := Get_Type (F, Scope);
+      Classwide := Ekind (T) in Class_Wide_Kind;
+      if Classwide then
+         T := Etype (T);
+         pragma Assert (Ekind (T) not in Class_Wide_Kind);
+      end if;
 
       if Debug_Trace_Flatten then
          Write_Str ("Branching on type: ");
@@ -2258,8 +2393,8 @@ package body Flow_Utility is
                end if;
             end if;
 
-            if Ekind (T) in Class_Wide_Kind then
-               Ids.Include (F'Update (Facet => The_Tag));
+            if Classwide then
+               --  Ids.Include (F'Update (Facet => The_Tag));
                Ids.Include (F'Update (Facet => Extension_Part));
             end if;
 
@@ -2369,6 +2504,7 @@ package body Flow_Utility is
      (N                  : Node_Id;
       Partial_Definition : out Boolean;
       View_Conversion    : out Boolean;
+      Classwide          : out Boolean;
       Map_Root           : out Flow_Id;
       Seq                : out Node_Lists.List)
    is
@@ -2391,6 +2527,7 @@ package body Flow_Utility is
 
       Partial_Definition := False;
       View_Conversion    := False;
+      Classwide          := False;
       Map_Root           := Direct_Mapping_Id (Unique_Entity
                                                  (Entity (Root_Node)));
 
@@ -2406,9 +2543,13 @@ package body Flow_Utility is
                Map_Root := Add_Component (Map_Root,
                                           Original_Record_Component
                                             (Entity (Selector_Name (N))));
+               Classwide := False;
 
             when N_Type_Conversion =>
                View_Conversion := True;
+               if Ekind (Etype (N)) in Class_Wide_Kind then
+                  Classwide := True;
+               end if;
 
             when N_Unchecked_Type_Conversion =>
                --  We have only limited support for unchecked conversions
@@ -2425,6 +2566,7 @@ package body Flow_Utility is
 
             when others =>
                Partial_Definition := True;
+               Classwide          := False;
                exit;
          end case;
       end loop;
@@ -2461,6 +2603,7 @@ package body Flow_Utility is
              Reduced              => False));
 
       Unused                   : Boolean;
+      Classwide                : Boolean;
       Base_Node                : Flow_Id;
       Seq                      : Node_Lists.List;
 
@@ -2480,6 +2623,7 @@ package body Flow_Utility is
         (N,
          Partial_Definition => Partial_Definition,
          View_Conversion    => Unused,
+         Classwide          => Classwide,
          Map_Root           => Base_Node,
          Seq                => Seq);
 
@@ -2606,6 +2750,10 @@ package body Flow_Utility is
 
          end case;
       end loop;
+
+      if Classwide then
+         Vars_Defined.Include (Base_Node'Update (Facet => Extension_Part));
+      end if;
 
       if Debug_Trace_Untangle then
          Write_Str ("Variables ");

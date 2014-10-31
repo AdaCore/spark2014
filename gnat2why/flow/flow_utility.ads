@@ -160,7 +160,8 @@ package Flow_Utility is
       Use_Computed_Globals         : Boolean;
       Reduced                      : Boolean := False;
       Allow_Statements             : Boolean := False;
-      Expand_Synthesized_Constants : Boolean := False)
+      Expand_Synthesized_Constants : Boolean := False;
+      Consider_Extensions          : Boolean := False)
       return Flow_Id_Sets.Set
      with Pre  => (if Fold_Functions then not Allow_Statements),
           Post => (if Reduced
@@ -204,7 +205,8 @@ package Flow_Utility is
       Allow_Statements             : Boolean := False;
       Expand_Synthesized_Constants : Boolean := False)
       return Flow_Id_Sets.Set;
-   --  As above, but operating on a list.
+   --  As above, but operating on a list. Note we don't have the
+   --  Consider_Extensions parameter here as its implicitly false.
 
    function Quantified_Variables (N : Node_Id) return Flow_Id_Sets.Set;
    --  Return the set of entire variables which are introduced in a
@@ -269,6 +271,7 @@ package Flow_Utility is
      (N                  : Node_Id;
       Partial_Definition : out Boolean;
       View_Conversion    : out Boolean;
+      Classwide          : out Boolean;
       Map_Root           : out Flow_Id;
       Seq                : out Node_Lists.List)
    with Pre  => Is_Valid_Assignment_Target (N),
@@ -281,6 +284,7 @@ package Flow_Utility is
    --  * Partial_Definition: if set this indicates that the assignment to N
    --    touches only a few elements of a larger array.
    --  * View_Conversion: indicates that N contains a view conversion.
+   --  * Classwide: the assignment to map_root is classwide.
    --  * Map_Root: the non-flattened flow_id which is assigned to.
    --  * Seq: the list of items used to derive Map_Root.
 
@@ -334,7 +338,8 @@ package Flow_Utility is
       Local_Constants              : Node_Sets.Set;
       Fold_Functions               : Boolean;
       Use_Computed_Globals         : Boolean;
-      Expand_Synthesized_Constants : Boolean)
+      Expand_Synthesized_Constants : Boolean;
+      Extensions_Irrelevant        : Boolean := True)
       return Flow_Id_Maps.Map
    with Pre => Ekind (Get_Full_Type (N, Scope)) in Record_Kind | Private_Kind
                and then Map_Root.Kind in Direct_Mapping | Record_Field

@@ -1142,7 +1142,14 @@ package body Flow.Control_Flow_Graph is
 
       Partial         : Boolean;
       View_Conversion : Boolean;
+      Classwide       : Boolean;
       Map_Root        : Flow_Id;
+      To_Cw           : constant Boolean :=
+        Ekind (Get_Full_Type (Name (N),
+                              FA.B_Scope)) in Class_Wide_Kind
+        and then Ekind (Get_Full_Type (Expression (N),
+                                       FA.B_Scope)) not in Class_Wide_Kind;
+
    begin
 
       --  First we need to determine the root name where we assign to, and
@@ -1156,6 +1163,7 @@ package body Flow.Control_Flow_Graph is
            (Name (N),
             Partial_Definition => Partial,
             View_Conversion    => View_Conversion,
+            Classwide          => Classwide,
             Map_Root           => Map_Root,
             Seq                => Unused);
       end;
@@ -1185,6 +1193,11 @@ package body Flow.Control_Flow_Graph is
                Expand_Synthesized_Constants => False);
 
             Missing := Flatten_Variable (Map_Root, FA.B_Scope);
+            if Ekind (Get_Full_Type (Name (N), FA.B_Scope)) in Class_Wide_Kind
+              and then Map_Root.Kind = Direct_Mapping
+            then
+               Missing.Include (Map_Root'Update (Facet => Extension_Part));
+            end if;
 
             --  Split out the assignment over a number of vertices.
             for C in M.Iterate loop
@@ -1265,7 +1278,8 @@ package body Flow.Control_Flow_Graph is
                   Scope                => FA.B_Scope,
                   Local_Constants      => FA.Local_Constants,
                   Fold_Functions       => True,
-                  Use_Computed_Globals => not FA.Compute_Globals));
+                  Use_Computed_Globals => not FA.Compute_Globals,
+                  Consider_Extensions  => To_Cw));
 
             --  Any proof variables we need to check separately. We also
             --  need to check the RHS for proof variables.
@@ -2656,6 +2670,7 @@ package body Flow.Control_Flow_Graph is
       V     : Flow_Graphs.Vertex_Id;
       Inits : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
       FS    : Flow_Id_Sets.Set;
+      To_Cw : Boolean;
    begin
       --  We are dealing with a local constant. These constants are *not*
       --  ignored.
@@ -2710,6 +2725,11 @@ package body Flow.Control_Flow_Graph is
 
       else
          --  We have a variable declaration with an initialization.
+         To_Cw := Ekind (Get_Full_Type (Defining_Identifier (N),
+                                        FA.B_Scope)) in Class_Wide_Kind
+           and then Ekind (Get_Full_Type (Expression (N),
+                                          FA.B_Scope)) not in Class_Wide_Kind;
+
          declare
             Var_Def : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
          begin
@@ -2812,7 +2832,8 @@ package body Flow.Control_Flow_Graph is
                         Scope                => FA.B_Scope,
                         Local_Constants      => FA.Local_Constants,
                         Fold_Functions       => True,
-                        Use_Computed_Globals => not FA.Compute_Globals),
+                        Use_Computed_Globals => not FA.Compute_Globals,
+                        Consider_Extensions  => To_Cw),
                      Sub_Called => Get_Function_Set (Expression (N)),
                      Loops      => Ctx.Current_Loops,
                      E_Loc      => N),
@@ -2871,6 +2892,16 @@ package body Flow.Control_Flow_Graph is
             end if;
          end if;
       end;
+
+      if Inits.Is_Empty then
+         --  For some null records, nothing might happen, so we create a
+         --  dummy vertex.
+         Add_Vertex (FA,
+                     Direct_Mapping_Id (N),
+                     Null_Node_Attributes,
+                     V);
+         Inits.Append (V);
+      end if;
 
       V := Flow_Graphs.Null_Vertex;
       for W of Inits loop
@@ -3966,10 +3997,7 @@ package body Flow.Control_Flow_Graph is
 
          Find_Actual (Actual, Formal, Call);
          pragma Assert (Entity (Name (Call)) = Called_Subprogram);
-
-         pragma Assert (Ekind (Formal) = E_In_Parameter or
-                          Ekind (Formal) = E_In_Out_Parameter or
-                          Ekind (Formal) = E_Out_Parameter);
+         pragma Assert (Ekind (Formal) in Formal_Kind);
 
          --  Build an in vertex.
          Add_Vertex
@@ -4218,11 +4246,16 @@ package body Flow.Control_Flow_Graph is
       --  Recursive helper function.
 
       function Rec (N : Node_Id) return Boolean is
+         T : constant Entity_Id := Get_Full_Type (N, Scope);
       begin
-         if Ekind (Get_Full_Type (N, Scope)) not in Record_Kind
+         if Ekind (T) not in Record_Kind
+           or else Is_Tagged_Type (T)
+           or else Ekind (T) in Class_Wide_Kind
          then
             --  No point in trying to split if we are not dealing with some
             --  record type.
+            --  !!! Workaround for N715-015 difficulties - disable this for
+            --  !!! any tagged type.
             return False;
          end if;
 
@@ -4245,8 +4278,14 @@ package body Flow.Control_Flow_Graph is
          end case;
       end Rec;
 
+      T : constant Entity_Id :=
+        Get_Full_Type ((if Nkind (N) = N_Assignment_Statement
+                        then Name (N)
+                        else Defining_Identifier (N)), Scope);
    begin
-      return Rec (Expression (N));
+      return Ekind (T) not in Class_Wide_Kind
+        and then not Is_Tagged_Type (T)
+        and then Rec (Expression (N));
    end RHS_Split_Useful;
 
    -----------------------------
