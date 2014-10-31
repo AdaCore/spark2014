@@ -1,0 +1,1 @@
+ALL XFAIL derived type from private access is rejected (NA31-006)

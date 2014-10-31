@@ -1,0 +1,2 @@
+test.adb:14:09: high: "Tmp_A" is not initialized
+test.adb:15:09: high: "Tmp_B" is not initialized
