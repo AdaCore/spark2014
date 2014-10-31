@@ -509,13 +509,12 @@ is
    -- Buffer_Init --
    -----------------
 
-   --  Intentionally leave Data_Array not initialized
-
-   pragma Warnings (Off, """Data_Array"" might not be initialized");
    procedure Buffer_Init with
      Refined_Global => (Output => (Buf_List, Data_Array, Free_List))
    is
-      pragma Warnings (On, """Data_Array"" might not be initialized");
+      pragma Annotate (GNATprove, Intentional,
+                       """Data_Array"" might not be initialized",
+                       "Leave Data_Array not Initialized for efficiency");
    begin
       --  First initialize all the memory for buffers to zero, except for
       --  special number fields initialized to one.
