@@ -4245,15 +4245,6 @@ package body Flow.Control_Flow_Graph is
    -----------------------------
 
    procedure Prune_Exceptional_Paths (FA : in out Flow_Analysis_Graphs) is
-      procedure Prune (V   : Flow_Graphs.Vertex_Id;
-                       Ins : out Flow_Graphs.Simple_Traversal_Instruction);
-      --  Helper subprogram for DFS traversal. This traversal sets the
-      --  Is_Null_Node flag of dead vertices.
-
-      function Is_Dead (V : Flow_Graphs.Vertex_Id) return Boolean;
-      --  Check if the given vertex cannot reach the end vertex on
-      --  normal execution or if the given vertex cannot be reached
-      --  from the start vertex on normal execution.
 
       function Dead_Path_Exists
         (From : Flow_Graphs.Vertex_Id;
@@ -4261,7 +4252,76 @@ package body Flow.Control_Flow_Graph is
          return Boolean;
       --  Check if there exists a path between vertices From and To
       --  that crosses a vertex which has an execution mode of either
-      --  Abnormal_Termination or an Infinite_Loop.
+      --  Abnormal_Termination or Infinite_Loop.
+
+      function Is_Dead (V : Flow_Graphs.Vertex_Id) return Boolean;
+      --  Check if the given vertex cannot reach the helper end vertex
+      --  on normal execution or if the given vertex cannot be reached
+      --  from the start vertex on normal execution.
+
+      procedure Prune (V   : Flow_Graphs.Vertex_Id;
+                       Ins : out Flow_Graphs.Simple_Traversal_Instruction);
+      --  Helper subprogram for DFS traversal. This traversal sets the
+      --  Is_Null_Node flag of dead vertices.
+
+      procedure Populate_Lead_To_Abnormal_Termination
+        (V   : Flow_Graphs.Vertex_Id;
+         Ins : out Flow_Graphs.Simple_Traversal_Instruction);
+      --  Helper subprogram for DFS traversal. This traversal
+      --  populates the Lead_To_Abnormal_Termination field of FA.
+
+      procedure Populate_Edges_To_Remove
+        (From : Flow_Graphs.Vertex_Id;
+         Ins  : out Flow_Graphs.Simple_Traversal_Instruction);
+      --  Helper subprogram for DFS traversal. This traversal
+      --  populates the Edges_To_Remove field of FA.
+
+      ----------------------
+      -- Dead_Path_Exists --
+      ----------------------
+
+      function Dead_Path_Exists
+        (From : Flow_Graphs.Vertex_Id;
+         To   : Flow_Graphs.Vertex_Id)
+         return Boolean
+      is
+         Found_Dead_Path : Boolean := False;
+
+         procedure Test (V   : Flow_Graphs.Vertex_Id;
+                         Ins : out Flow_Graphs.Simple_Traversal_Instruction);
+         --  Helper subprogram for DFS traversal
+
+         ----------
+         -- Test --
+         ----------
+
+         procedure Test (V   : Flow_Graphs.Vertex_Id;
+                         Ins : out Flow_Graphs.Simple_Traversal_Instruction)
+         is
+         begin
+            if V = To then
+               Ins := Flow_Graphs.Skip_Children;
+
+            elsif FA.Atr (V).Execution in Abnormal_Termination |
+                                          Infinite_Loop
+            then
+               if FA.CFG.Non_Trivial_Path_Exists (V, To) then
+                  Found_Dead_Path := True;
+                  Ins := Flow_Graphs.Abort_Traversal;
+               else
+                  Ins := Flow_Graphs.Skip_Children;
+               end if;
+            else
+               Ins := Flow_Graphs.Continue;
+            end if;
+         end Test;
+
+      begin
+         FA.CFG.DFS (Start         => From,
+                     Include_Start => False,
+                     Visitor       => Test'Access);
+         return Found_Dead_Path;
+      end Dead_Path_Exists;
 
       -------------
       -- Is_Dead --
@@ -4274,7 +4334,7 @@ package body Flow.Control_Flow_Graph is
 
          procedure Test (V   : Flow_Graphs.Vertex_Id;
                          Ins : out Flow_Graphs.Simple_Traversal_Instruction);
-         --  Helper subprogram for DFS traversal.
+         --  Helper subprogram for DFS traversal
 
          ----------
          -- Test --
@@ -4283,12 +4343,12 @@ package body Flow.Control_Flow_Graph is
          procedure Test (V   : Flow_Graphs.Vertex_Id;
                          Ins : out Flow_Graphs.Simple_Traversal_Instruction)
          is
-            V_Check : constant Flow_Graphs.Vertex_Id :=
+            Destination : constant Flow_Graphs.Vertex_Id :=
               (if Reversed
                then FA.Start_Vertex
                else FA.Helper_End_Vertex);
          begin
-            if V = V_Check then
+            if V = Destination then
                if Reversed then
                   Dead_Going_Up := False;
                else
@@ -4329,7 +4389,7 @@ package body Flow.Control_Flow_Graph is
                      Include_Start => True,
                      Visitor       => Test'Access,
                      Reversed      => Reversed);
-         return Dead_Going_Up or Dead_Going_Down;
+         return Dead_Going_Down or Dead_Going_Up;
       end Is_Dead;
 
       -----------
@@ -4344,98 +4404,109 @@ package body Flow.Control_Flow_Graph is
             Ins := Flow_Graphs.Skip_Children;
          else
             Ins := Flow_Graphs.Continue;
+
             if Is_Dead (V) then
                FA.Atr (V).Is_Null_Node := True;
             end if;
          end if;
       end Prune;
 
-      ----------------------
-      -- Dead_Path_Exists --
-      ----------------------
+      -------------------------------------------
+      -- Populate_Lead_To_Abnormal_Termination --
+      -------------------------------------------
 
-      function Dead_Path_Exists
-        (From : Flow_Graphs.Vertex_Id;
-         To   : Flow_Graphs.Vertex_Id)
-         return Boolean
+      procedure Populate_Lead_To_Abnormal_Termination
+        (V   : Flow_Graphs.Vertex_Id;
+         Ins : out Flow_Graphs.Simple_Traversal_Instruction)
       is
-         Found_Dead_Path : Boolean := False;
-
-         procedure Test (V   : Flow_Graphs.Vertex_Id;
-                         Ins : out Flow_Graphs.Simple_Traversal_Instruction);
-         --  Helper subprogram for DFS traversal.
-
-         ----------
-         -- Test --
-         ----------
-
-         procedure Test (V   : Flow_Graphs.Vertex_Id;
-                         Ins : out Flow_Graphs.Simple_Traversal_Instruction)
-         is
-         begin
-            if V = To then
-               Ins := Flow_Graphs.Skip_Children;
-            elsif FA.Atr (V).Execution in Abnormal_Termination |
-                                          Infinite_Loop
-            then
-               if FA.CFG.Non_Trivial_Path_Exists (V, To) then
-                  Found_Dead_Path := True;
-                  Ins := Flow_Graphs.Abort_Traversal;
-               else
-                  Ins := Flow_Graphs.Continue;
-               end if;
-            else
-               Ins := Flow_Graphs.Continue;
-            end if;
-         end Test;
-
+         Number_Of_Out_Neighbours : constant Natural :=
+           FA.CFG.Out_Neighbour_Count (V);
       begin
-         FA.CFG.DFS (Start         => From,
-                     Include_Start => False,
-                     Visitor       => Test'Access);
-         return Found_Dead_Path;
-      end Dead_Path_Exists;
+         if V = FA.Helper_End_Vertex then
+            Ins := Flow_Graphs.Skip_Children;
+         else
+            Ins := Flow_Graphs.Continue;
 
-   begin
-      FA.CFG.DFS (Start         => FA.Start_Vertex,
-                  Include_Start => False,
-                  Visitor       => Prune'Access);
-
-      --  Populate the Edges_To_Remove field of FA.
-      for From of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
-         --  Populate the Lead_To_Abnormal_Termination field of FA.
-         declare
-            Number_Of_Out_Neighbours : constant Natural :=
-              FA.CFG.Out_Neighbour_Count (From);
-         begin
             if Number_Of_Out_Neighbours > 1
-              and then Dead_Path_Exists (From, FA.Helper_End_Vertex)
+              and then Dead_Path_Exists (V, FA.Helper_End_Vertex)
             then
                --  To add a vertex to the Lead_To_Abnormal_Termination
                --  map it has to be some kind of flow control vertex
                --  and it has to be able to lead to an abnormal
                --  termination.
                FA.Lead_To_Abnormal_Termination.Include
-                 (From, Number_Of_Out_Neighbours);
+                 (V, Number_Of_Out_Neighbours);
             end if;
-         end;
+         end if;
+      end Populate_Lead_To_Abnormal_Termination;
 
-         for To of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
-            if From /= To
-              and then not Is_Dead (From)
-              and then not Is_Dead (To)
+      ------------------------------
+      -- Populate_Edges_To_Remove --
+      ------------------------------
+
+      procedure Populate_Edges_To_Remove
+        (From : Flow_Graphs.Vertex_Id;
+         Ins  : out Flow_Graphs.Simple_Traversal_Instruction)
+      is
+         procedure Test (To  : Flow_Graphs.Vertex_Id;
+                         Ins : out Flow_Graphs.Simple_Traversal_Instruction);
+         --  Helper subprogram for internal DFS traversal
+
+         ----------
+         -- Test --
+         ----------
+
+         procedure Test (To  : Flow_Graphs.Vertex_Id;
+                         Ins : out Flow_Graphs.Simple_Traversal_Instruction)
+         is
+            VP : constant Vertex_Pair := (From => From,
+                                          To   => To);
+         begin
+            if To = FA.Helper_End_Vertex then
+               Ins := Flow_Graphs.Skip_Children;
+            else
+               Ins := Flow_Graphs.Continue;
+            end if;
+
+            if not Is_Dead (To)
               and then not FA.CFG.Edge_Exists (From, To)
               and then Dead_Path_Exists (From, To)
             then
-               declare
-                  VD : constant Vertex_Pair := (From => From,
-                                                To   => To);
-               begin
-                  FA.Edges_To_Remove.Include (VD);
-               end;
+               FA.Edges_To_Remove.Include (VP);
             end if;
-         end loop;
-      end loop;
+
+         end Test;
+
+      begin
+         if From = FA.Helper_End_Vertex then
+            Ins := Flow_Graphs.Skip_Children;
+         else
+            Ins := Flow_Graphs.Continue;
+
+            if not Is_Dead (From) then
+               FA.CFG.DFS (Start         => From,
+                           Include_Start => False,
+                           Visitor       => Test'Access);
+            end if;
+         end if;
+      end Populate_Edges_To_Remove;
+
+   begin
+      --  Set the Is_Null_Node field of dead vertices
+      FA.CFG.DFS (Start         => FA.Start_Vertex,
+                  Include_Start => False,
+                  Visitor       => Prune'Access);
+
+      --  Populate the Lead_To_Abnormal_Termination field of FA
+      FA.CFG.DFS (Start         => FA.Start_Vertex,
+                  Include_Start => False,
+                  Visitor       =>
+                    Populate_Lead_To_Abnormal_Termination'Access);
+
+      --  Populate the Edges_To_Remove field of FA
+      FA.CFG.DFS (Start         => FA.Start_Vertex,
+                  Include_Start => False,
+                  Visitor       => Populate_Edges_To_Remove'Access);
 
    end Prune_Exceptional_Paths;
 
@@ -4453,10 +4524,10 @@ package body Flow.Control_Flow_Graph is
                                                Flow_Graphs.Out_Neighbours)
                loop
                   declare
-                     VD : constant Vertex_Pair := (From => A,
+                     VP : constant Vertex_Pair := (From => A,
                                                    To   => B);
                   begin
-                     if not FA.Edges_To_Remove.Contains (VD) then
+                     if not FA.Edges_To_Remove.Contains (VP) then
                         FA.CFG.Add_Edge (A, B, EC_Default);
                      end if;
                   end;
