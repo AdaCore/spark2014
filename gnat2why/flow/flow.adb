@@ -912,6 +912,7 @@ package body Flow is
                   end loop;
                   Outdent;
                end;
+
                Write_Str ("Body_Scope: ");
                Print_Flow_Scope (FA.B_Scope);
                Write_Eol;

@@ -238,4 +238,14 @@ package body Flow_Tree_Utility is
       return A = B or else Sloc (A) = Sloc (B);
    end Same_Component;
 
+   -----------------------------------
+   -- Has_Extensions_Visible_Aspect --
+   -----------------------------------
+
+   function Has_Extensions_Visible_Aspect (E : Entity_Id) return Boolean
+   is
+   begin
+      return Present (Get_Pragma (E, Pragma_Extensions_Visible));
+   end Has_Extensions_Visible_Aspect;
+
 end Flow_Tree_Utility;

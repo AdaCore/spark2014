@@ -351,7 +351,8 @@ package body Flow.Control_Flow_Graph is
      (F             : Flow_Id;
       Mode          : Param_Mode;
       Uninitialized : Boolean;
-      FA            : in out Flow_Analysis_Graphs);
+      FA            : in out Flow_Analysis_Graphs)
+   with Pre => F.Kind in Direct_Mapping | Magic_String;
    --  Create the 'initial and 'final vertices for the given global
    --  and link them up to the start and end vertices.
 
@@ -1054,6 +1055,10 @@ package body Flow.Control_Flow_Graph is
             end if;
          end loop;
       end;
+
+      if Extensions_Visible (E, FA.B_Scope) then
+         Process (Direct_Mapping_Id (E, Facet => Extension_Part));
+      end if;
    end Create_Initial_And_Final_Vertices;
 
    procedure Create_Initial_And_Final_Vertices
@@ -1113,6 +1118,10 @@ package body Flow.Control_Flow_Graph is
             Process (Tmp'Update (Facet => The_Bounds));
          end if;
       end loop;
+
+      if Extensions_Visible (F, FA.B_Scope) then
+         Process (F'Update (Facet => Extension_Part));
+      end if;
    end Create_Initial_And_Final_Vertices;
 
    -------------------------------

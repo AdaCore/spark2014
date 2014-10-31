@@ -459,8 +459,6 @@ package Flow_Utility is
    --  note that if a function returns inside a loop, the name of the
    --  function will be "written to" and will be returned here.
 
-private
-
    function Get_Type (F     : Flow_Id;
                       Scope : Flow_Scope)
                       return Entity_Id
@@ -468,5 +466,25 @@ private
                 F.Facet = Normal_Part,
         Post => Nkind (Get_Type'Result) in N_Entity;
    --  Determine the type of a flow_id.
+
+   function Extensions_Visible (E     : Entity_Id;
+                                Scope : Flow_Scope)
+                                return Boolean
+   with Pre => Ekind (E) in Object_Kind | E_Function | E_Abstract_State;
+   --  Checks if extensions are visible for this particular entity. Note
+   --  that if we give it a function, then we always return false, since
+   --  this refers to the return of the function, not if the subprogram's
+   --  aspect.
+   --
+   --  To check if a subprogram has the aspect, use the function
+   --  Has_Extensions_Visible_Aspect from Flow_Tree_Utilities instead.
+
+   function Extensions_Visible (F     : Flow_Id;
+                                Scope : Flow_Scope)
+                                return Boolean
+   with Pre => (if F.Kind in Direct_Mapping | Record_Field
+                then Ekind (Get_Direct_Mapping_Id (F))
+                  in Object_Kind | E_Function | E_Abstract_State);
+   --  As above, but using a flow_id.
 
 end Flow_Utility;

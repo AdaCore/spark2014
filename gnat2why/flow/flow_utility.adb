@@ -2835,4 +2835,40 @@ package body Flow_Utility is
       return Loop_Info (E);
    end Get_Loop_Writes;
 
+   ------------------------
+   -- Extensions_Visible --
+   ------------------------
+
+   function Extensions_Visible (E     : Entity_Id;
+                                Scope : Flow_Scope)
+                                return Boolean
+   is
+      T : constant Entity_Id := Get_Full_Type (E, Scope);
+   begin
+      return Ekind (E) in Formal_Kind
+        and then Is_Tagged_Type (T)
+        and then Ekind (T) not in Class_Wide_Kind
+        and then Has_Extensions_Visible_Aspect (Sinfo.Scope (E));
+   end Extensions_Visible;
+
+   function Extensions_Visible (F     : Flow_Id;
+                                Scope : Flow_Scope)
+                                return Boolean
+   is
+   begin
+      case F.Kind is
+         when Direct_Mapping =>
+            return Extensions_Visible (Get_Direct_Mapping_Id (F), Scope);
+
+         when Record_Field =>
+            --  Record fields themselves cannot be classwide.
+            return False;
+
+         when Null_Value | Synthetic_Null_Export | Magic_String =>
+            --  These are just blobs which we don't know much about, so no
+            --  extensions here.
+            return False;
+      end case;
+   end Extensions_Visible;
+
 end Flow_Utility;

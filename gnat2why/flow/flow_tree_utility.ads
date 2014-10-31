@@ -83,4 +83,9 @@ package Flow_Tree_Utility is
    --  contains this component x (but its a different entity). This
    --  function can be used to check for this equivalence.
 
+   function Has_Extensions_Visible_Aspect (E : Entity_Id) return Boolean
+   with Pre => Nkind (E) in N_Entity and then
+               Ekind (E) in Subprogram_Kind;
+   --  Checks if extensions are visible for this subprogram.
+
 end Flow_Tree_Utility;

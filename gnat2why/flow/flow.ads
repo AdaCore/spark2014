@@ -192,53 +192,53 @@ package Flow is
       --  end of the procedure (i.e. returns jump here), but before
       --  postconditions are checked.
 
-      CFG                   : Flow_Graphs.T;
-      DDG                   : Flow_Graphs.T;
-      CDG                   : Flow_Graphs.T;
-      TDG                   : Flow_Graphs.T;
-      PDG                   : Flow_Graphs.T;
+      CFG                    : Flow_Graphs.T;
+      DDG                    : Flow_Graphs.T;
+      CDG                    : Flow_Graphs.T;
+      TDG                    : Flow_Graphs.T;
+      PDG                    : Flow_Graphs.T;
       --  The graphs.
 
-      Atr                   : Attribute_Maps.Map;
+      Atr                    : Attribute_Maps.Map;
       --  The vertex attributes for the above graphs.
 
-      Other_Fields          : Vertex_To_Vertex_Set_Maps.Map;
+      Other_Fields           : Vertex_To_Vertex_Set_Maps.Map;
       --  For a vertex corresponding to a record field this map will
       --  hold a vertex set of the other record fields.
 
-      Local_Constants       : Node_Sets.Set;
+      Local_Constants        : Node_Sets.Set;
       --  All constants that have been locally declared. This is used as a
       --  workaround to the issue of constants being ignored in general.
       --  This field should be removed once constants, attributes, etc. are
       --  dealt with correctly.
 
-      All_Vars              : Flow_Id_Sets.Set;
+      All_Vars               : Flow_Id_Sets.Set;
       --  A set of all variables used in the body.
 
-      Unmodified_Vars       : Node_Sets.Set;
+      Unmodified_Vars        : Node_Sets.Set;
       --  A set of all variables that are not expected to be modified
       --  because the were named in a pragma Unmodified.
 
-      Unreferenced_Vars     : Node_Sets.Set;
+      Unreferenced_Vars      : Node_Sets.Set;
       --  A set of all variables that are not expected to be referenced
       --  because the were named in a pragma Unreferenced.
 
-      Loops                 : Node_Sets.Set;
+      Loops                  : Node_Sets.Set;
       --  A set of all loops (identified by label).
 
-      Base_Filename         : Unbounded_String;
+      Base_Filename          : Unbounded_String;
       --  A string with the name of the entity that is being analysed.
       --  This string follows the convention that we use for naming the
       --  .dot and .pdf files.
 
-      Aliasing_Present      : Boolean;
+      Aliasing_Present       : Boolean;
       --  True if this subprogram introduces (bad)
       --  aliasing. Subsequent analysis is then meaningless.
 
-      Dependency_Map        : Dependency_Maps.Map;
+      Dependency_Map         : Dependency_Maps.Map;
       --  A map of all the dependencies.
 
-      No_Effects            : Boolean;
+      No_Effects             : Boolean;
       --  True if this is a subprogram with no effects. Certain analysis
       --  are disabled in this case as we would spam the user with error
       --  messages for almost every statement.
@@ -251,7 +251,7 @@ package Flow is
       Direct_Calls          : Node_Sets.Set;
       --  All subprograms called
 
-      GG                    : Flow_Global_Generation_Info (Compute_Globals);
+      GG                     : Flow_Global_Generation_Info (Compute_Globals);
       --  Information for globals computation.
 
       Edges_To_Remove       : Vertex_Pair_Sets.Set;

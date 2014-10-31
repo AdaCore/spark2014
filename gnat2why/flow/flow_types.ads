@@ -225,10 +225,6 @@ package Flow_Types is
         Post => Add_Component'Result.Kind = Record_Field;
    --  Returns the same Flow_Id, but accessed with the given component.
 
-   function Depth (F : Flow_Id) return Natural
-   is (if F.Kind = Record_Field then Natural (F.Component.Length) else 0);
-   --  Returns the number of components.
-
    function Magic_String_Id
      (S       : Entity_Name;
       Variant : Flow_Id_Variant := Normal_Use)
