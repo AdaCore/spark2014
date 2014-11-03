@@ -89,7 +89,7 @@ function which (directly or indirectly) reads a variable.
    ``loop_parameter_specification``, shall not be defined using an
    expression with a variable input.
 
-.. _etu-subtype_declarations:
+.. _etu-subtype_declarations-lr:
 
 
 Classification of Operations
@@ -145,6 +145,8 @@ expression depends on:
    Depends, Initializes or Refined_State aspect specifications.
    [Two elaborations of such a constant declaration will always
    yield equal initialization expression values.]
+
+.. _etu-object_declarations-vr:
 
 .. centered:: **Examples**
 

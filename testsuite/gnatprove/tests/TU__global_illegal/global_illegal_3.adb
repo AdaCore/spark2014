@@ -1,7 +1,7 @@
 package body Global_Illegal_3
   with SPARK_Mode
 is
-   --  TU: 16. Each entity denoted by a ``global_item`` in a
+   --  TU: 15. Each entity denoted by a ``global_item`` in a
    --  ``global_specification`` of a subprogram that is an input or
    --  output of the subprogram shall satisfy the following mode
    --  specification rules [which are checked during analysis of the
@@ -20,10 +20,12 @@ is
    --    and has a ``mode_selector`` of In_Out.
 
    procedure P1 (Par1 : out Integer)
-     --  TU: 13. For a subprogram that has a ``global_specification``, an
-     --  object or state abstraction that is declared outside the scope of the
-     --  subprogram, shall only be referenced within its implementation if
-     --  it is a ``global_item`` in the ``global_specification``.
+     --  TU: 12. For a subprogram that has a ``global_specification``,
+     --  an object (except a constant without variable inputs) or
+     --  state abstraction that is declared outside the scope of the
+     --  subprogram, shall only be referenced within its
+     --  implementation if it is a ``global_item`` in the
+     --  ``global_specification``.
      with Global => X
    is
    begin
@@ -53,9 +55,10 @@ is
 
 
    procedure P4
-     --  TU: 14. A ``global_item`` shall occur in a Global aspect of a
-     --  subprogram if and only if it denotes an entity that is referenced by
-     --  the subprogram.
+     --  TU: 13. A ``global_item`` shall occur in a Global aspect of a
+     --  subprogram if and only if it denotes an entity (except for a
+     --  constant without variable inputs) that is referenced by the
+     --  subprogram.
      with Global => X
    is
    begin

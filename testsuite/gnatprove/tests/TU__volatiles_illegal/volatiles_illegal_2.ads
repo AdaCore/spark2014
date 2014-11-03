@@ -21,9 +21,8 @@ package Volatiles_Illegal_2
   --    only be True if Async_Writers is True and Effective_Writes can only
   --    be True if Async_Readers is True.]
 
-  --  TU: 4. The aspects shall only be specified in the aspect
-  --  specification of an effectively volatile object declaration
-  --  excluding volatile formal parameter declarations.
+  --  TU: 4. If any one property is explicitly defined, all undefined
+  --  properties default to a value of False.
   with SPARK_Mode,
        Abstract_State => ((State with External => (others => False)),
                           --  The above should not be allowed.

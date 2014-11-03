@@ -1,30 +1,14 @@
 with System.Storage_Elements;
 
 package Volatiles_Illegal_4
-  --  TU: 14. As formal subprogram parameters of an effectively volatile type
-  --  cannot have these aspects specified assumptions have to be made in the
-  --  body of the subprogram of the properties that the formal parameter of a
-  --  given mode may have as follows:
-  --  * mode **in**: the formal parameter cannot be updated by the
-  --    subprogram and is considered to have the properties
-  --    Async_Writers => True and Effective_Reads => False. The actual
-  --    parameter in a call must be effectively volatile and have these
-  --    properties but may also have the properties Async_Readers and
-  --    Effective_Writes set to True.
-  --  * mode **out**: the formal parameter cannot be read by the
-  --    subprogram as it is unknown whether a read will have an external
-  --    effect. The formal parameter is considered to have the
-  --    properties Async_Readers => True and/or Effective_Writes =>
-  --    True. The actual parameter in a call to the subprogram must be
-  --    effectively volatile and have either or both of these properties True
-  --    but may also have Async_Writers and Effective_Reads set to True. If
-  --    the subprogram attempts a read of the formal parameter a flow
-  --    anomaly will be reported.
-  --  * mode **in out**: the formal parameter is considered to have all
-  --    properties; Async_Readers => True, Async_Writers => True,
-  --    Effective_Reads => True, Effective_Writes => True. The actual
-  --    parameter in a subprogram call must be effectively volatile and have
-  --    all of these properties set to True.
+  --  TU: 11. If a procedure has an **in** mode parameter of an
+  --  effectively volatile type, then the Effective_Reads aspect of
+  --  any corresponding actual parameter shall be False.  [This is
+  --  because the parameter is passed by reference and the
+  --  corresponding aspect of the formal parameter is False. In the 11
+  --  other cases, the volatility refining aspect of the formal
+  --  parameter is True and so the aspect of the corresponding actual
+  --  parameter may be either True or False.]
   with SPARK_Mode
 is
    A : Integer;

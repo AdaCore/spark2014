@@ -12,7 +12,7 @@ refined_state_illegal.ads:98:07: "Pr_Var1" is declared in the private part of pa
 refined_state_illegal.ads:98:07: indicator Part_Of is required in this context (SPARK RM 7.2.6(2))
 refined_state_illegal.ads:99:07: "Pr_Var2" is declared in the private part of package "Pac8"
 refined_state_illegal.ads:99:07: indicator Part_Of is required in this context (SPARK RM 7.2.6(2))
-refined_state_illegal.ads:124:34: abstract state "S2" must be refined
+refined_state_illegal.ads:125:34: abstract state "S2" must be refined
    compilation of refined_state_illegal.adb failed
 
 

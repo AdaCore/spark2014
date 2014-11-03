@@ -45,8 +45,8 @@ is
 
 
    package Pac5
-     --  TU: 5. Each ``constituent`` shall be either a variable or a state
-     --  abstraction.
+     --  TU: 5. Each ``constituent`` shall be either a variable, a
+     --  constant, or a state abstraction.
      with Abstract_State => S
    is
       function F1 return Boolean;
@@ -84,13 +84,13 @@ is
      --  declaration has a Part_Of ``option`` or aspect which denotes this
      --  state abstraction (see :ref:`package_hierarchy`).
 
-     --  TU: 9. Every entity of the hidden state of a package shall be denoted
-     --  as a ``constituent`` of exactly one *abstract_*\ ``state_name`` in the
-     --  Refined_State aspect of the package and shall not be denoted more than
-     --  once.
-     --  [These ``constituents`` are either variables declared in the private
-     --  part or body of the package, or the declarations from the visible part
-     --  of nested packages declared immediately therein.]
+     --  TU: 9. Every entity of the hidden state of a package shall be
+     --  denoted as a ``constituent`` of exactly one *abstract_*\
+     --  ``state_name`` in the Refined_State aspect of the package and
+     --  shall not be denoted more than once. [These ``constituents``
+     --  shall be either objects declared in the private part or
+     --  body of the package, or the declarations from the visible
+     --  part of nested packages declared immediately therein.]
      with Abstract_State => (S1, S2)
    is
       procedure P1;
@@ -101,12 +101,13 @@ is
 
 
    package Pac9
-     --  TU: 13. A **null** ``constituent_list`` indicates that the named
-     --  abstract state has no constituents and termed a *null_refinement*.
-     --  The state abstraction does not represent any actual state at
-     --  all. [This feature may be useful to minimize changes to Global and
-     --  Depends aspects if it is believed that a package may have some
-     --  extra state in the future, or if hidden state is removed.]
+     --  TU: 14. A **null** ``constituent_list`` indicates that the
+     --  named abstract state has no constituents and termed a
+     --  *null_refinement*. The state abstraction does not represent
+     --  any actual state at all. [This feature may be useful to
+     --  minimize changes to Global and Depends aspects if it is
+     --  believed that a package may have some extra state in the
+     --  future, or if hidden state is removed.]
      with Abstract_State => S
    is
       function F1 return Integer

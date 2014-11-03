@@ -1092,6 +1092,8 @@ where
     Depends aspects if it is believed that a package may have some
     extra state in the future, or if hidden state is removed.]
 
+.. _etu-refined_state_aspects-ss:
+
 .. centered:: **Dynamic Semantics**
 
 There are no dynamic semantics associated with Refined_State aspect.
@@ -1111,7 +1113,7 @@ There are no dynamic semantics associated with Refined_State aspect.
     of the package which declares the abstraction, the constituent
     shall be initialized.
 
-.. _etu-refined_state_aspects-ss:
+.. _etu-refined_state_aspects-vr:
 
 .. centered:: **Examples**
 

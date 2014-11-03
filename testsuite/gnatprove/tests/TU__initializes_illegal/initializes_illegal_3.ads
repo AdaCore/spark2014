@@ -4,12 +4,12 @@ use  Initializes_Illegal_3_Helper;
 package Initializes_Illegal_3
   --  TU: 3. The ``name`` of each ``initialization_item`` in the Initializes
   --  aspect definition for a package shall denote a state abstraction of the
-  --  package or an entire variable declared immediately within the visible
+  --  package or an entire object declared immediately within the visible
   --  part of the package.
 
-  --  TU: 4. Each ``name`` in the ``input_list`` shall denote an entire
-  --  variable, a formal parameter, or a state abstraction but shall not denote
-  --  an entity declared in the package with the ``aspect_specification``
+  --  TU: 4. Each ``name`` in the ``input_list`` shall denote an
+  --  object, or a state abstraction but shall not denote an entity
+  --  declared in the package with the ``aspect_specification``
   --  containing the Initializes aspect.
 
   --  TU: 5. Each entity in a single ``input_list`` shall be distinct.

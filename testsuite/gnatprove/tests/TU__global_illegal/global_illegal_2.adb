@@ -6,9 +6,9 @@ is
    Z    : constant Integer := 0;
 
    procedure P1 (Par1 : Integer)
-     --  TU: 5. The Global aspect may only be specified for the initial
-     --  declaration of a subprogram (which may be a declaration, a body or a
-     --  body stub).
+     --  TU: 5. The Global aspect may only be specified for the
+     --  initial declaration of a subprogram (which may be a
+     --  declaration, a body or a body stub).
      with Global => (Output => X)
    is
    begin
@@ -17,10 +17,11 @@ is
 
 
    procedure P2 (Par1 : out Integer)
-     --  TU: 8. A ``global_item`` shall not denote a state abstraction whose
-     --  refinement is visible. [A state abstraction cannot be named within
-     --  its enclosing package's body other than in its refinement. Its
-     --  constituents must be used rather than the state abstraction.]
+     --  TU: 7. A ``global_item`` shall not denote a state abstraction
+     --  whose refinement is visible. [A state abstraction cannot be
+     --  named within its enclosing package's body other than in its
+     --  refinement. Its constituents must be used rather than the
+     --  state abstraction.]
      with Global => (Input => A)
    is
    begin
@@ -53,9 +54,9 @@ is
 
 
    procedure P4 (Par1 : out Integer)
-     --  TU: 7. A ``global_item`` shall not denote a constant object other than
-     --  a formal parameter [of an enclosing subprogram] of mode **in** or a
-     --  *constant with variable input*.
+     --  TU: 17. A ``global_item`` shall not denote a constant object
+     --  other than a formal parameter [of an enclosing subprogram] of
+     --  mode **in** or a *constant with variable inputs*.
      with Global => Z
    is
    begin
