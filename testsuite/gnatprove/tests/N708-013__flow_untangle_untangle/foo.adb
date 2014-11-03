@@ -62,16 +62,14 @@ is
 
    procedure Test_04 (A : Integer;
                       B : Integer;
-                      C : Integer;
                       O : out Integer)
-   with Depends => (O => A, null => (B, C))
+   with Depends => (O => A, null => B)
    is
       Tmp : T;
    begin
       Tmp.F.X := A;
-      --Tmp.G   := Tmp.G'Update (Y => A);
-      O       := Tmp'Update (G => (0, 0, B)).F'Update (Y => C,
-                                                       Z => A + Tmp.F.X).X;
+      O       := Tmp.F'Update (Y => B,
+                               Z => A + Tmp.F.X).X;
    end Test_04;
 
    procedure Test_05 (A : Integer;
