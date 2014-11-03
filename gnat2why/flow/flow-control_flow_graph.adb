@@ -4062,7 +4062,9 @@ package body Flow.Control_Flow_Graph is
       P := First (L);
       while Present (P) loop
          case Nkind (P) is
-            when N_Freeze_Entity                |
+            when
+              N_Abstract_Subprogram_Declaration |
+              N_Freeze_Entity                   |
               N_Freeze_Generic_Entity           |
               N_Generic_Instantiation           |
               N_Generic_Package_Declaration     |
