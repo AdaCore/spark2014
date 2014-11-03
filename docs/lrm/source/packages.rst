@@ -1378,7 +1378,7 @@ shall follow the grammar of ``dependency_relation`` in :ref:`depends-aspects`.
       **null** refinement, otherwise all of the ``outputs`` shall
       denote a ``constituent`` of the state abstraction.
 
-   c. If the ``output`` in the Depends_Aspect denotes a state
+   c. If the ``output`` in the Depends aspect denotes a state
       abstraction which is not also an ``input``, then each
       ``constituent`` of the state abstraction shall be denoted as an
       ``output`` of the partially refined dependency relation.
