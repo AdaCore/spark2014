@@ -311,7 +311,14 @@ package body Flow_Utility is
                end loop;
 
             when others =>
-               M.Include (F, Get_Vars_Wrapper (Input));
+               declare
+                  FS : constant Flow_Id_Sets.Set :=
+                    Flatten_Variable (F, Scope);
+               begin
+                  for Id of FS loop
+                     M.Include (Id, Get_Vars_Wrapper (Input));
+                  end loop;
+               end;
          end case;
       end Merge;
 
