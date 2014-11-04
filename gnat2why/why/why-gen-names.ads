@@ -148,7 +148,9 @@ package Why.Gen.Names is
    Def_Axiom : constant String := "def_axiom";
    --  suffix for a definition axiom
 
-   Post_Axiom : constant String := "post_axiom";
+   Post_Axiom          : constant String := "post_axiom";
+   Post_Dispatch_Axiom : constant String := "post__dispatch_axiom";
+   Post_Refine_Axiom   : constant String := "post_refine_axiom";
    --  suffix for a postcondition axiom
 
    Keep_On_Simp : constant String := "keep_on_simp";
@@ -251,6 +253,10 @@ package Why.Gen.Names is
       --  Name of module containing the functions which correspond to the
       --  dispatching version of a primitive operation of a tagged type.
       WNE_Dispatch_Module,  --  Dispatch
+
+      --  Name of module containing the function which corresponds to the
+      --  refined version (refined_post) of a subprogram.
+      WNE_Refine_Module,  --  Dispatch
 
       --  Suffix for name of logic functions
       WNE_Logic_Fun_Suffix,  --  __logic

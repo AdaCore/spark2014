@@ -2229,16 +2229,20 @@ package body Gnat2Why.Subprograms is
       E    : Entity_Id)
    is
       Logic_Func_Binders : constant Item_Array := Compute_Binders (E, EW_Term);
-      Params       : Transformation_Params;
-      Pre          : W_Pred_Id;
-      Post         : W_Pred_Id;
-      Why_Type     : W_Type_Id := Why_Empty;
+      Params             : Transformation_Params;
+      Pre                : W_Pred_Id;
+      Post               : W_Pred_Id;
+      Dispatch_Pre       : W_Pred_Id;
+      Dispatch_Post      : W_Pred_Id;
+      Refined_Post        : W_Pred_Id;
+      Why_Type           : W_Type_Id := Why_Empty;
    begin
 
       if Ekind (E) = E_Procedure
         or else No_Return (E)
         or else not Is_Non_Recursive_Subprogram (E)
         or else (not Has_Contracts (E, Name_Postcondition)
+                 and then not Has_Contracts (E, Name_Refined_Post)
                  and then not Has_Contracts (E, Name_Contract_Cases))
       then
          return;
@@ -2300,44 +2304,97 @@ package body Gnat2Why.Subprograms is
          Right  => +Compute_Contract_Cases_Postcondition (Params, E),
          Domain => EW_Pred);
 
+      if Is_Dispatching_Operation (E) then
+         Dispatch_Pre :=
+           Get_Dispatching_Contract (Params, E, Name_Precondition);
+         Dispatch_Post :=
+           Get_Dispatching_Contract (Params, E, Name_Postcondition);
+      end if;
+
+      if Has_Contracts (E, Name_Refined_Post) then
+         Refined_Post := +Compute_Spec (Params, E, Name_Refined_Post, EW_Pred);
+      end if;
+
       declare
          Logic_Why_Binders : constant Binder_Array :=
            To_Binder_Array (Logic_Func_Binders);
          Logic_Id        : constant W_Identifier_Id :=
            To_Why_Id (E, Domain => EW_Term, Local => False);
+         Dispatch_Logic_Id   : constant W_Identifier_Id :=
+           To_Why_Id
+             (E, Domain => EW_Term, Local => False, Selector => Dispatch);
+         Refine_Logic_Id     : constant W_Identifier_Id :=
+           To_Why_Id
+             (E, Domain => EW_Term, Local => False, Selector => Refine);
          Guard   : constant W_Pred_Id :=
            Compute_Guard_Formula (Logic_Func_Binders);
+
+         procedure Emit_Post_Axiom
+           (Suffix : String;
+            Id     : W_Identifier_Id;
+            Pre, Post : W_Pred_Id);
+         --  emit the post_axiom with the given axiom_suffix, id, pre and post
+
+         ---------------------
+         -- Emit_Post_Axiom --
+         ---------------------
+
+         procedure Emit_Post_Axiom
+           (Suffix : String;
+            Id     : W_Identifier_Id;
+            Pre, Post : W_Pred_Id) is
+         begin
+            Emit
+              (File.Cur_Theory,
+               New_Guarded_Axiom
+                 (Ada_Node => Empty,
+                  Name     => NID (Short_Name (E) & "__" & Suffix),
+                  Binders  => Logic_Why_Binders,
+                  Triggers =>
+                    New_Triggers
+                      (Triggers =>
+                           (1 => New_Trigger
+                              (Terms =>
+                                 (1 => New_Call
+                                      (Domain  => EW_Term,
+                                       Name    => Id,
+                                       Binders => Logic_Why_Binders))))),
+                  Pre      =>
+                    +New_And_Expr (Left   => +Guard,
+                                   Right  => +Pre,
+                                   Domain => EW_Pred),
+                  Def      =>
+                    +New_Typed_Binding
+                    (Ada_Node => Empty,
+                     Domain   => EW_Pred,
+                     Name     => +New_Result_Ident (Why_Type),
+                     Def      => New_Call
+                       (Domain  => EW_Term,
+                        Name    => Id,
+                        Binders => Logic_Why_Binders),
+                     Context  => +Post)));
+         end Emit_Post_Axiom;
+
+         --  beginning of processing of Generate_Axiom_For_Post
+
       begin
 
-         Emit
-           (File.Cur_Theory,
-            New_Guarded_Axiom
-              (Ada_Node => Empty,
-               Name     => NID (Short_Name (E) & "__" & Post_Axiom),
-               Binders  => Logic_Why_Binders,
-               Triggers =>
-                 New_Triggers
-                   (Triggers =>
-                        (1 => New_Trigger
-                           (Terms =>
-                              (1 => New_Call
-                                   (Domain  => EW_Term,
-                                    Name    => Logic_Id,
-                                    Binders => Logic_Why_Binders))))),
-               Pre      =>
-                 +New_And_Expr (Left   => +Guard,
-                                Right  => +Pre,
-                                Domain => EW_Pred),
-               Def      =>
-                 +New_Typed_Binding
-                 (Ada_Node => Empty,
-                  Domain   => EW_Pred,
-                  Name     => +New_Result_Ident (Why_Type),
-                  Def      => New_Call
-                    (Domain  => EW_Term,
-                     Name    => Logic_Id,
-                     Binders => Logic_Why_Binders),
-                  Context  => +Post)));
+         --  ??? clean up this code duplication for dispatch and refine
+
+         Emit_Post_Axiom (Post_Axiom, Logic_Id, Pre, Post);
+         if Is_Dispatching_Operation (E) then
+            Emit_Post_Axiom (Post_Dispatch_Axiom,
+                             Dispatch_Logic_Id,
+                             Dispatch_Pre,
+                             Dispatch_Post);
+         end if;
+
+         if Has_Contracts (E, Name_Refined_Post) then
+            Emit_Post_Axiom (Post_Refine_Axiom,
+                             Refine_Logic_Id,
+                             Pre,
+                             Refined_Post);
+         end if;
       end;
 
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
@@ -2381,18 +2438,19 @@ package body Gnat2Why.Subprograms is
       E    : Entity_Id)
    is
       Logic_Func_Binders : constant Item_Array := Compute_Binders (E, EW_Term);
-      Func_Binders : constant Item_Array := Compute_Binders (E, EW_Prog);
-      Func_Why_Binders : constant Binder_Array :=
+      Func_Binders       : constant Item_Array := Compute_Binders (E, EW_Prog);
+      Func_Why_Binders   : constant Binder_Array :=
         To_Binder_Array (Func_Binders);
-      Params       : Transformation_Params;
-      Effects      : W_Effects_Id;
-      Pre          : W_Pred_Id;
-      Post         : W_Pred_Id;
-      Dispatch_Pre : W_Pred_Id;
-      Dispatch_Post : W_Pred_Id;
-      Prog_Id      : constant W_Identifier_Id :=
+      Params             : Transformation_Params;
+      Effects            : W_Effects_Id;
+      Pre                : W_Pred_Id;
+      Post               : W_Pred_Id;
+      Dispatch_Pre       : W_Pred_Id;
+      Dispatch_Post      : W_Pred_Id;
+      Refined_Post       : W_Pred_Id;
+      Prog_Id            : constant W_Identifier_Id :=
         To_Why_Id (E, Domain => EW_Prog, Local => True);
-      Why_Type     : W_Type_Id := Why_Empty;
+      Why_Type           : W_Type_Id := Why_Empty;
    begin
       Params :=
         (File        => File.File,
@@ -2440,6 +2498,9 @@ package body Gnat2Why.Subprograms is
             Dispatch_Pre := False_Pred;
             Dispatch_Post := False_Pred;
          end if;
+         if Has_Contracts (E, Name_Refined_Post) then
+            Refined_Post := False_Pred;
+         end if;
       else
          Pre := Get_Static_Call_Contract (Params, E, Name_Precondition);
          Post :=
@@ -2455,6 +2516,11 @@ package body Gnat2Why.Subprograms is
             Dispatch_Post :=
               Get_Dispatching_Contract (Params, E, Name_Postcondition);
          end if;
+
+         if Has_Contracts (E, Name_Refined_Post) then
+            Refined_Post :=
+              Get_Static_Call_Contract (Params, E, Name_Refined_Post);
+         end if;
       end if;
 
       if Ekind (E) = E_Function then
@@ -2462,37 +2528,41 @@ package body Gnat2Why.Subprograms is
          Why_Type := EW_Abstract (Etype (E));
 
          declare
-            Logic_Why_Binders : constant Binder_Array :=
+            Logic_Why_Binders   : constant Binder_Array :=
               To_Binder_Array (Logic_Func_Binders);
-            Logic_Func_Args : constant W_Expr_Array :=
+            Logic_Func_Args     : constant W_Expr_Array :=
               Compute_Args (E, Logic_Why_Binders);
-            Logic_Id        : constant W_Identifier_Id :=
+            Logic_Id            : constant W_Identifier_Id :=
               To_Why_Id (E, Domain => EW_Term, Local => False);
-            Dispatch_Logic_Id        : constant W_Identifier_Id :=
+            Dispatch_Logic_Id   : constant W_Identifier_Id :=
               To_Why_Id
-                (E, Domain => EW_Term, Local => False, Dispatch => True);
+                (E, Domain => EW_Term, Local => False, Selector => Dispatch);
+            Refine_Logic_Id     : constant W_Identifier_Id :=
+              To_Why_Id
+                (E, Domain => EW_Term, Local => False, Selector => Refine);
 
             --  Each function has in its postcondition that its result is
             --  equal to the application of the corresponding logic function
             --  to the same arguments.
 
-            Param_Post : constant W_Pred_Id :=
+            Param_Post          : constant W_Pred_Id :=
               +New_And_Expr
-              (Left   => New_Relation
-                 (Op      => EW_Eq,
-                  Op_Type =>
-                    Get_Base_Type (Why_Type),
-                  Left    => +New_Result_Ident (Why_Type),
-                  Right   =>
-                    New_Call
-                      (Domain  => EW_Term,
-                       Name    => Logic_Id,
-                       Args    => Logic_Func_Args),
-                  Domain => EW_Pred),
+              (Left   =>
+                 New_Relation
+                   (Op      => EW_Eq,
+                    Op_Type => Get_Base_Type (Why_Type),
+                    Left    => +New_Result_Ident (Why_Type),
+                    Right   =>
+                      New_Call
+                        (Domain  => EW_Term,
+                         Name    => Logic_Id,
+                         Args    => Logic_Func_Args),
+                    Domain => EW_Pred),
                Right  => +Post,
                Domain => EW_Pred);
 
             Dispatch_Param_Post : W_Pred_Id;
+            Refine_Param_Post   : W_Pred_Id;
 
          begin
             Emit
@@ -2537,6 +2607,36 @@ package body Gnat2Why.Subprograms is
                              Pre         => Dispatch_Pre,
                              Post        => Dispatch_Param_Post))));
             end if;
+            if Has_Contracts (E, Name_Refined_Post) then
+               Refine_Param_Post :=
+                 +New_And_Expr
+                 (Left   => New_Relation
+                    (Op      => EW_Eq,
+                     Op_Type =>
+                       Get_Base_Type (Why_Type),
+                     Left    => +New_Result_Ident (Why_Type),
+                     Right   =>
+                       New_Call
+                         (Domain  => EW_Term,
+                          Name    => Refine_Logic_Id,
+                          Args    => Logic_Func_Args),
+                     Domain => EW_Pred),
+                  Right  => +Refined_Post,
+                  Domain => EW_Pred);
+               Emit
+                 (File.Cur_Theory,
+                  New_Namespace_Declaration
+                    (Name    => NID (To_String (WNE_Refine_Module)),
+                     Declarations =>
+                       (1 => New_Function_Decl
+                            (Domain      => EW_Prog,
+                             Name        => Prog_Id,
+                             Binders     => Func_Why_Binders,
+                             Return_Type => EW_Abstract (Etype (E)),
+                             Labels      => Name_Id_Sets.Empty_Set,
+                             Pre         => Pre,
+                             Post        => Refine_Param_Post))));
+            end if;
          end;
 
       --  Ekind (E) = E_Procedure
@@ -2569,6 +2669,22 @@ package body Gnat2Why.Subprograms is
                           Effects     => Effects,
                           Pre         => Dispatch_Pre,
                           Post        => Dispatch_Post))));
+         end if;
+         if Has_Contracts (E, Name_Refined_Post) then
+            Emit
+              (File.Cur_Theory,
+               New_Namespace_Declaration
+                 (Name    => NID (To_String (WNE_Refine_Module)),
+                  Declarations =>
+                    (1 => New_Function_Decl
+                         (Domain      => EW_Prog,
+                          Name        => Prog_Id,
+                          Binders     => Func_Why_Binders,
+                          Labels      => Name_Id_Sets.Empty_Set,
+                          Return_Type => EW_Unit_Type,
+                          Effects     => Effects,
+                          Pre         => Pre,
+                          Post        => Refined_Post))));
          end if;
       end if;
 
@@ -2805,13 +2921,10 @@ package body Gnat2Why.Subprograms is
       Logic_Func_Binders : constant Item_Array := Compute_Binders (E, EW_Term);
       Why_Type     : W_Type_Id := Why_Empty;
 
-      function Get_Subp_Symbol
-        (Domain   : EW_Domain;
-         Dispatch : Boolean) return Binder_Type
+      function Get_Subp_Symbol (Domain   : EW_Domain) return Binder_Type
       is
         (Binder_Type'(B_Name   =>
-                        To_Why_Id (E, Typ => Why_Type, Domain => Domain,
-                                   Dispatch => Dispatch),
+                        To_Why_Id (E, Typ => Why_Type, Domain => Domain),
                       B_Ent    => null,
                       Ada_Node => E,
                       Mutable  => False));
@@ -2862,15 +2975,26 @@ package body Gnat2Why.Subprograms is
                              Labels      => Name_Id_Sets.Empty_Set,
                              Return_Type => Why_Type))));
             end if;
+            if Has_Contracts (E, Name_Refined_Post) then
+               Emit
+                 (File.Cur_Theory,
+                  New_Namespace_Declaration
+                    (Name    => NID (To_String (WNE_Refine_Module)),
+                     Declarations =>
+                       (1 => New_Function_Decl
+                            (Domain      => EW_Term,
+                             Name        => Logic_Id,
+                             Binders     => Logic_Why_Binders,
+                             Labels      => Name_Id_Sets.Empty_Set,
+                             Return_Type => Why_Type))));
+            end if;
          end;
 
          Ada_Ent_To_Why.Insert
            (Symbol_Table, E,
             Item_Type'(Func,
-              For_Logic =>
-                Get_Subp_Symbol (Domain => EW_Term, Dispatch => False),
-              For_Prog  =>
-                Get_Subp_Symbol (Domain => EW_Prog, Dispatch => False)));
+              For_Logic => Get_Subp_Symbol (EW_Term),
+              For_Prog  => Get_Subp_Symbol (EW_Prog)));
       else
          Insert_Entity (E, To_Why_Id (E, Typ => Why_Type));
       end if;

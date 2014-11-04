@@ -55,13 +55,13 @@ stacks_2.adb:15:29: info: refined post proved
 stacks_2.adb:25:29: info: refined post proved
 stacks_2.adb:34:29: info: refined post proved
 stacks_2.adb:35:61: info: range check proved
-stacks_2.adb:40:30: medium: range check might fail
+stacks_2.adb:40:30: info: range check proved
 stacks_2.adb:41:17: info: index check proved
 stacks_2.adb:46:29: info: refined post proved
 stacks_2.adb:51:30: medium: range check might fail
-stacks_2.adb:54:46: medium: array index check might fail
-stacks_2.ads:17:21: medium: postcondition might fail, requires not (Is_Empty)
-stacks_2.ads:21:16: medium: postcondition might fail, requires not (Is_Full)
+stacks_2.adb:54:46: info: index check proved
+stacks_2.ads:17:21: info: postcondition proved
+stacks_2.ads:21:16: info: postcondition proved
 externals.adb:36:31: medium: overflow check might fail
 externals.adb:36:38: medium: overflow check might fail
 externals.adb:54:04: high: "Out_Reg" is not written in "Externals"

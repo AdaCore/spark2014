@@ -9,7 +9,7 @@ pf.adb:23:14: info: division check proved
 pf.adb:24:07: info: assertion proved
 pf.adb:24:28: info: division check proved
 pf.adb:25:07: info: assertion proved
-pf.adb:26:22: medium: assertion might fail, requires B = Prf_Hidden (A)
+pf.adb:26:07: info: assertion proved
 pf.ads:5:17: info: postcondition proved
 pf.ads:5:39: info: division check proved
 pf.ads:10:17: info: postcondition proved

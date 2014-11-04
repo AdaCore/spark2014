@@ -34,6 +34,7 @@ with Atree;                  use Atree;
 with Checks;                 use Checks;
 with Elists;                 use Elists;
 with Errout;                 use Errout;
+with Flow_Refinement;        use Flow_Refinement;
 with Namet;                  use Namet;
 with Nlists;                 use Nlists;
 with Opt;
@@ -243,7 +244,7 @@ package body Gnat2Why.Expr is
       Expr     : Node_Id;
       Ent      : Entity_Id;
       Domain   : EW_Domain;
-      Dispatch : Boolean := False) return W_Expr_Id;
+      Selector : Selection_Kind := Why.Inter.Standard) return W_Expr_Id;
    --  Transform an Ada identifier to a Why item (take care of enumeration
    --  literals, boolean values etc)
    --
@@ -428,8 +429,7 @@ package body Gnat2Why.Expr is
    function Transform_Function_Call
      (Expr     : Node_Id;
       Domain   : EW_Domain;
-      Params   : Transformation_Params;
-      Dispatch : Boolean := False) return W_Expr_Id;
+      Params   : Transformation_Params) return W_Expr_Id;
    --  Transform a function call
 
    function Transform_Enum_Literal
@@ -497,6 +497,13 @@ package body Gnat2Why.Expr is
    function Transform_Raise (Stat : Node_Id) return W_Prog_Id with
      Pre => Nkind (Stat) in N_Raise_xxx_Error | N_Raise_Statement;
    --  Returns the Why program for raise statement Stat
+
+   function Has_Visibility_On_Refined
+     (Expr : Node_Id;
+      E : Entity_Id)
+      return Boolean;
+   --  return True if the Expression can "see" the implementation of entity E
+   --  (e.g. the Refined_Post, or the full view, etc)
 
    -------------------
    -- Apply_Modulus --
@@ -3068,6 +3075,20 @@ package body Gnat2Why.Expr is
          return Result;
       end if;
    end Get_Pure_Logic_Term_If_Possible;
+
+   -------------------------------
+   -- Has_Visibility_On_Refined --
+   -------------------------------
+
+   function Has_Visibility_On_Refined
+     (Expr : Node_Id;
+      E : Entity_Id)
+      return Boolean
+   is
+      Our_Scope : constant Flow_Scope := Get_Flow_Scope (Expr);
+   begin
+      return Is_Visible (E, Our_Scope);
+   end Has_Visibility_On_Refined;
 
    ---------------------------
    -- Insert_Overflow_Check --
@@ -8682,9 +8703,7 @@ package body Gnat2Why.Expr is
 
          when N_Function_Call =>
             T := Transform_Function_Call
-              (Expr, Domain, Local_Params,
-               Dispatch => Present (Controlling_Argument (Expr)));
-
+              (Expr, Domain, Local_Params);
          when N_Indexed_Component | N_Selected_Component =>
             T := One_Level_Access (Expr,
                                    Transform_Expr
@@ -8941,17 +8960,21 @@ package body Gnat2Why.Expr is
    function Transform_Function_Call
      (Expr     : Node_Id;
       Domain   : EW_Domain;
-      Params   : Transformation_Params;
-      Dispatch : Boolean := False) return W_Expr_Id
+      Params   : Transformation_Params) return W_Expr_Id
    is
       Subp       : constant Entity_Id := Entity (Name (Expr));
+      Selector   : constant Selection_Kind :=
+        (if Present (Controlling_Argument (Expr)) then Dispatch
+         elsif Has_Contracts (Subp, Name_Refined_Post) and then
+               Has_Visibility_On_Refined (Expr, Subp) then Refine
+         else Why.Inter.Standard);
       Why_Name   : constant W_Identifier_Id :=
         W_Identifier_Id
           (Transform_Identifier (Params   => Params,
                                  Expr     => Expr,
                                  Ent      => Subp,
                                  Domain   => Domain,
-                                 Dispatch => Dispatch));
+                                 Selector => Selector));
       Nb_Of_Refs : Natural;
       Nb_Of_Lets : Natural;
       Args       : constant W_Expr_Array :=
@@ -9002,7 +9025,8 @@ package body Gnat2Why.Expr is
          end;
       end if;
 
-      if Why_Subp_Has_Precondition (Subp, Dispatch => Dispatch) then
+      if Why_Subp_Has_Precondition (Subp, Dispatch => (Selector = Dispatch))
+      then
          T := +New_VC_Call
            (Ada_Node => Expr,
             Name     => Why_Name,
@@ -9064,7 +9088,7 @@ package body Gnat2Why.Expr is
       Expr     : Node_Id;
       Ent      : Entity_Id;
       Domain   : EW_Domain;
-      Dispatch : Boolean := False) return W_Expr_Id
+      Selector : Selection_Kind := Why.Inter.Standard) return W_Expr_Id
    is
       C        : constant Ada_Ent_To_Why.Cursor :=
         Ada_Ent_To_Why.Find (Symbol_Table, Ent);
@@ -9146,10 +9170,10 @@ package body Gnat2Why.Expr is
                   end if;
             end case;
 
-            if Dispatch then
+            if Selector /= Why.Inter.Standard then
                T := +To_Why_Id (Ent, Domain,
-                                Dispatch => Dispatch,
-                                Typ => Get_Type (T));
+                                Selector => Selector,
+                                Typ      => Get_Type (T));
             end if;
          end;
       elsif Ekind (Ent) = E_Enumeration_Literal then
@@ -10642,19 +10666,26 @@ package body Gnat2Why.Expr is
                    (Stmt_Or_Decl, EW_Prog, Nb_Of_Refs, Nb_Of_Lets,
                     Params => Body_Params);
                Subp       : constant Entity_Id := Entity (Name (Stmt_Or_Decl));
-               Dispatch   : constant Boolean :=
-                 Present (Controlling_Argument (Stmt_Or_Decl));
+               Selector   : constant Selection_Kind :=
+                 (if Present (Controlling_Argument (Stmt_Or_Decl)) then
+                     Dispatch
+                  elsif Has_Contracts (Subp, Name_Refined_Post) and then
+                        Has_Visibility_On_Refined (Stmt_Or_Decl, Subp) then
+                     Refine
+                  else Why.Inter.Standard);
                Why_Name   : constant W_Identifier_Id :=
                  W_Identifier_Id
                    (Transform_Identifier (Params   => Body_Params,
                                           Expr     => Stmt_Or_Decl,
                                           Ent      => Subp,
                                           Domain   => EW_Prog,
-                                          Dispatch => Dispatch));
+                                          Selector => Selector));
                Call       : W_Expr_Id;
             begin
 
-               if Why_Subp_Has_Precondition (Subp, Dispatch => Dispatch) then
+               if Why_Subp_Has_Precondition
+                 (Subp, Dispatch => (Selector = Dispatch))
+               then
                   Call :=
                     +New_VC_Call
                       (Stmt_Or_Decl,
