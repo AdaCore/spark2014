@@ -1,7 +1,5 @@
-make[2]: Entering directory `/nfs/gnathome/gnat.home/gnatmail/tmp/spark2014/docs/ug/examples'
 linear_search.ads:10:13: function with "out" parameter is not allowed in SPARK
 linear_search.ads:10:13: violation of aspect SPARK_Mode at line 2
 
    compilation of linear_search.adb failed
 
-make[2]: Leaving directory `/nfs/gnathome/gnat.home/gnatmail/tmp/spark2014/docs/ug/examples'

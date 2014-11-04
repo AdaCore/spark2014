@@ -1,4 +1,3 @@
-make[2]: Entering directory `/nfs/gnathome/gnat.home/gnatmail/tmp/spark2014/docs/ug/examples'
 linear_search.adb:9:20: info: range check proved
 linear_search.adb:12:10: info: loop invariant preservation proved
 linear_search.adb:12:10: info: loop invariant initialization proved
@@ -6,4 +5,3 @@ linear_search.adb:12:67: info: index check proved
 linear_search.ads:13:14: info: postcondition proved
 linear_search.ads:13:57: info: index check proved
 linear_search.ads:14:48: info: index check proved
-make[2]: Leaving directory `/nfs/gnathome/gnat.home/gnatmail/tmp/spark2014/docs/ug/examples'
