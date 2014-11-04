@@ -1099,7 +1099,7 @@ package body Why.Inter is
      (E        : Entity_Id;
       Domain   : EW_Domain := EW_Prog;
       Local    : Boolean := False;
-      Dispatch : Boolean := False;
+      Selector : Selection_Kind := Standard;
       Rec      : Entity_Id := Empty;
       Typ      : W_Type_Id := Why_Empty) return W_Identifier_Id
    is
@@ -1159,10 +1159,10 @@ package body Why.Inter is
                else
                  E_Module (E));
             Namespace : constant Name_Id :=
-              (if Dispatch then
-                 NID (To_String (WNE_Dispatch_Module))
-               else
-                  No_Name);
+              (case Selector is
+               when Dispatch => NID (To_String (WNE_Dispatch_Module)),
+               when Refine => NID (To_String (WNE_Refine_Module)),
+               when Standard => No_Name);
          begin
             return
               New_Identifier

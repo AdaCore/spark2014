@@ -119,11 +119,13 @@ package Why.Inter is
       return W_Name_Id;
    --  transform a loop entity into a name for a Why exception.
 
+   type Selection_Kind is (Standard, Dispatch, Refine);
+
    function To_Why_Id
      (E        : Entity_Id;
       Domain   : EW_Domain := EW_Prog;
       Local    : Boolean := False;
-      Dispatch : Boolean := False;
+      Selector : Selection_Kind := Standard;
       Rec      : Entity_Id := Empty;
       Typ      : W_Type_Id := Why_Empty) return W_Identifier_Id;
    --  The one and only way to transform an Ada Entity to a Why identifier.
@@ -134,6 +136,9 @@ package Why.Inter is
    --  else.
    --  The Rec entity is used only for record components and specifies the
    --  (sub-)type which contains the component.
+   --  There may be several ways to refer to an Ada Name, especially for
+   --  subprograms. A call may use the refined contracts, or the dispatching
+   --  contracts.
 
    function To_Why_Id (Obj : String; Local : Boolean) return W_Identifier_Id;
    --  This function should only be called for object references for effects

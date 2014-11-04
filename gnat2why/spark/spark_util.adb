@@ -817,9 +817,13 @@ package body SPARK_Util is
             elsif Name = Name_Postcondition then
                P := Pre_Post_Conditions (C);
             elsif Name = Name_Refined_Post then
-               P := Pre_Post_Conditions
-                 (Contract (Defining_Entity (Specification
-                                               (Get_Subprogram_Body (E)))));
+               if Present (Get_Subprogram_Body (E)) then
+                  P := Pre_Post_Conditions
+                    (Contract (Defining_Entity (Specification
+                     (Get_Subprogram_Body (E)))));
+               else
+                  P := Empty;
+               end if;
             elsif Name = Name_Initial_Condition then
                P := Classifications (C);
             else

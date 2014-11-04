@@ -1,0 +1,8 @@
+double_list.adb:25:32: info: refined post proved, in instantiation at list_handler.adb:10
+double_list.adb:29:17: info: length check proved, in instantiation at list_handler.adb:10
+double_list.adb:33:20: info: length check proved, in instantiation at list_handler.adb:10
+double_list.adb:68:25: info: range check proved, in instantiation at list_handler.adb:10
+double_list.adb:86:36: info: refined post proved, in instantiation at list_handler.adb:10
+double_list.ads:9:05: info: initial condition proved, in instantiation at list_handler.adb:10
+double_list.ads:18:21: info: postcondition proved, in instantiation at list_handler.adb:10
+list_handler.adb:26:29: info: overflow check proved
