@@ -1,2 +1,4 @@
+make[2]: Entering directory `/nfs/gnathome/gnat.home/gnatmail/tmp/spark2014/docs/ug/examples'
 linear_search.adb:22:21: medium: range check might fail
 linear_search.ads:35:67: medium: contract case might fail
+make[2]: Leaving directory `/nfs/gnathome/gnat.home/gnatmail/tmp/spark2014/docs/ug/examples'
