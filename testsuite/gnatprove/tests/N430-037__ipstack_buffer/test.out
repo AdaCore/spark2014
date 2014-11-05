@@ -1,2 +1,3 @@
 buf-no_data.adb:11:42: medium: overflow check might fail
 buf-no_data.adb:12:30: medium: overflow check might fail
+buf-no_data.ads:5:22: warning: no procedure exists that can initialize abstract state "No_Data.State"

@@ -44,7 +44,7 @@ package Flow.Analysis is
 
    procedure Sanity_Check_Postcondition (FA   : in out Flow_Analysis_Graphs;
                                          Sane : in out Boolean)
-   with Pre => Sane;
+     with Pre => Sane;
    --  Check post, refined_post and initializes for use of variables
    --  we have not introduced through a global or parameter.
    --
@@ -111,6 +111,16 @@ package Flow.Analysis is
    --
    --  Complexity is O(N)
 
+   procedure Find_Impossible_To_Initialize_State
+     (FA : in out Flow_Analysis_Graphs)
+     with Pre => FA.Kind in E_Package | E_Package_Body;
+   --  Finds state abstractions that are not mentioned in an
+   --  initializes aspect and are not pure global outputs of any of
+   --  the package's subprograms. This makes it impossible for users
+   --  of these package's to initialize those state abstractions.
+   --
+   --  Complexity is O(N)
+
    procedure Check_Contracts (FA : in out Flow_Analysis_Graphs);
    --  Check the given depends against the reality. If there is no
    --  depends aspect this procedure does nothing.
@@ -118,7 +128,7 @@ package Flow.Analysis is
    --  Complexity is O(N^2)
 
    procedure Check_Initializes_Contract (FA : in out Flow_Analysis_Graphs)
-   with Pre => FA.Kind in E_Package | E_Package_Body;
+     with Pre => FA.Kind in E_Package | E_Package_Body;
    --  Checks if the Initializes contract has extra dependencies or missing
    --  dependencies.
    --

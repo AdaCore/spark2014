@@ -6,3 +6,4 @@ refined_global_legal.adb:24:20: medium: overflow check might fail
 refined_global_legal.adb:25:20: medium: overflow check might fail
 refined_global_legal.adb:26:20: medium: overflow check might fail
 refined_global_legal.adb:27:20: medium: overflow check might fail
+refined_global_legal.ads:3:27: warning: no procedure exists that can initialize abstract state "Refined_Global_Legal.State"

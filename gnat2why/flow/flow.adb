@@ -1212,12 +1212,14 @@ package body Flow is
 
                when E_Package | E_Package_Body =>
                   --  In "Prove" mode we do not care about hidden
-                  --  unexposed state, ineffective statements and dead
-                  --  code.
+                  --  unexposed state, ineffective statements, dead
+                  --  code and impossible to initialize state
+                  --  abstractions.
                   if not Gnat2Why_Args.Prove_Mode then
                      Analysis.Find_Hidden_Unexposed_State (FA);
                      Analysis.Find_Ineffective_Statements (FA);
                      Analysis.Find_Dead_Code (FA);
+                     Analysis.Find_Impossible_To_Initialize_State (FA);
                   end if;
 
                   Analysis.Find_Use_Of_Uninitialized_Variables (FA);

@@ -1398,8 +1398,12 @@ package body Flow_Computed_Globals is
                  not Is_Visible (Find_Entity (N), S))
             then
                declare
-                  Var               : Entity_Name := N;
-                  ES                : Entity_Name := GG_Enclosing_State (Var);
+                  Var               : Entity_Name :=
+                    (if Find_Entity (N) /= Empty
+                       and then Is_Visible (Find_Entity (N), S)
+                     then N
+                     else GG_Enclosing_State (N));
+                  ES                : Entity_Name := GG_Enclosing_State (N);
                   Is_Abstract_State : Boolean     := False;
                begin
                   while Find_Entity (ES) = Empty or else

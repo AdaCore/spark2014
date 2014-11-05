@@ -41,6 +41,8 @@ anti_aliasing.adb:62:16: writable actual for "X" overlaps with actual for "Y"
 
 gnatprove: error during generation of Global contracts
 gnatprove: error during generation of Global contracts
+refined_global_examples.ads:3:31: warning: no procedure exists that can initialize abstract state "Refined_Global_Examples.S2"
+refined_depends_examples.ads:3:31: warning: no procedure exists that can initialize abstract state "Refined_Depends_Examples.S2"
 stacks_1.adb:16:27: info: refined post proved
 stacks_1.adb:17:44: info: range check proved
 stacks_1.adb:23:30: info: range check proved

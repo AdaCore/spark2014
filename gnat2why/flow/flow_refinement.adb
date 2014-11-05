@@ -186,11 +186,12 @@ package body Flow_Refinement is
          end case;
       end loop;
 
-      --  Check if Target_Scope is generally visible from anywhere (we know
-      --  this if we reach the null flow scope) or if are dealing with a
-      --  nested package where we happen to have visibility of its spec (we
-      --  know this if we find our origin scope by going up the spec parts
-      --  of the target scope).
+      --  Check if Target_Scope is generally visible from anywhere (we
+      --  know this if we reach the null flow scope) or if are dealing
+      --  with a nested package where we happen to have visibility of
+      --  its spec (we know this if we find a scope that is visible
+      --  from origin scope while going up the spec parts of the
+      --  target scope).
       Ptr := Target_Scope;
       while Ptr /= Null_Flow_Scope and Ptr /= S loop
          case Valid_Section_T'(Ptr.Section) is
@@ -209,7 +210,10 @@ package body Flow_Refinement is
                exit;
          end case;
       end loop;
-      return Ptr = Null_Flow_Scope or Ptr = S;
+      return Ptr = Null_Flow_Scope
+        or else Ptr = S
+        or else (Ptr /= Target_Scope
+                   and then Is_Visible (Ptr, S));
    end Is_Visible;
 
    function Is_Visible (N : Node_Id;

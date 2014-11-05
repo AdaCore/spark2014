@@ -32,3 +32,4 @@ uninitialized.adb:138:12: warning: unused assignment
 uninitialized.adb:140:09: warning: unused assignment
 uninitialized.adb:140:12: medium: "X" might not be initialized
 uninitialized.adb:140:14: medium: overflow check might fail
+uninitialized.ads:3:26: warning: no procedure exists that can initialize abstract state "Uninitialized.State"

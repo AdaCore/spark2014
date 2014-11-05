@@ -2491,6 +2491,144 @@ package body Flow.Analysis is
 
    end Find_Hidden_Unexposed_State;
 
+   -----------------------------------------
+   -- Find_Impossible_To_Initialize_State --
+   -----------------------------------------
+
+   procedure Find_Impossible_To_Initialize_State
+     (FA : in out Flow_Analysis_Graphs)
+   is
+      function Initialized_By_Initializes_Aspect return Flow_Id_Sets.Set;
+      --  Returns the set of all flow ids that are mentioned in the
+      --  package's initializes aspect.
+
+      function Outputs_Of_Procedures return Flow_Id_Sets.Set;
+      --  Returns the set of all flow ids that are pure outputs (not
+      --  In_Outs) of procedures.
+
+      ---------------------------------------
+      -- Initialized_By_Initializes_Aspect --
+      ---------------------------------------
+
+      function Initialized_By_Initializes_Aspect return Flow_Id_Sets.Set is
+         FS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+
+         DM : constant Dependency_Maps.Map :=
+           (if Present (FA.Initializes_N)
+            then Parse_Initializes (FA.Initializes_N)
+            else Dependency_Maps.Empty_Map);
+      begin
+         --  If there is no Initializes aspect then we return an empty
+         --  set.
+
+         if not Present (FA.Initializes_N) then
+            return FS;
+         end if;
+
+         for C in DM.Iterate loop
+            declare
+               The_Out : constant Flow_Id := Dependency_Maps.Key (C);
+            begin
+               FS.Include (The_Out);
+            end;
+         end loop;
+
+         return FS;
+      end Initialized_By_Initializes_Aspect;
+
+      ---------------------------
+      -- Outputs_Of_Procedures --
+      ---------------------------
+
+      function Outputs_Of_Procedures return Flow_Id_Sets.Set is
+         E    : Entity_Id;
+         Scop : constant Flow_Scope := FA.S_Scope;
+         FS   : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      begin
+         E := First_Entity (FA.Spec_Node);
+         while Present (E) loop
+            if Ekind (E) = E_Procedure then
+               declare
+                  Proof_Ins : Flow_Id_Sets.Set;
+                  Reads     : Flow_Id_Sets.Set;
+                  Writes    : Flow_Id_Sets.Set;
+               begin
+                  Get_Globals (Subprogram => E,
+                               Scope      => Scop,
+                               Proof_Ins  => Proof_Ins,
+                               Reads      => Reads,
+                               Writes     => Writes);
+
+                  --  If the Flow_Id is an Output (and not an Input)
+                  --  of the procedure then include it to FS.
+
+                  for Write of Writes loop
+                     if not Reads.Contains (Change_Variant (Write,
+                                                            In_View))
+                     then
+                        FS.Include (Change_Variant (Write, Normal_Use));
+                     end if;
+                  end loop;
+               end;
+            end if;
+
+            Next_Entity (E);
+         end loop;
+
+         return FS;
+      end Outputs_Of_Procedures;
+
+   begin
+      --  If the package either has no state abstractions, or has
+      --  "Abstract_State => null" then there is nothing to do here.
+
+      if not Present (Abstract_States (FA.Spec_Node))
+        or else Is_Null_State
+                  (Node (First_Elmt (Abstract_States (FA.Spec_Node))))
+      then
+         return;
+      end if;
+
+      declare
+         State_Elmt : Elmt_Id;
+         State      : Entity_Id;
+
+         --  The following is the set of all flow ids that are or can
+         --  potentially be initialized.
+         Initializable : constant Flow_Id_Sets.Set :=
+           Initialized_By_Initializes_Aspect or Outputs_Of_Procedures;
+      begin
+         State_Elmt := First_Elmt (Abstract_States (FA.Spec_Node));
+         State := Node (State_Elmt);
+
+         while Present (State) loop
+
+            if not Initializable.Contains (Direct_Mapping_Id (State))
+              and then not Has_Async_Writers (Direct_Mapping_Id (State))
+            then
+               --  For every state abstraction that is not mentioned
+               --  in an Initializes aspect, is not a pure Output of
+               --  any procedure and does not have Async_Writers we
+               --  emit a warning.
+
+               Error_Msg_Flow
+                 (FA   => FA,
+                  Msg  => "no procedure exists that can initialize " &
+                    "abstract state &",
+                  N    => State,
+                  F1   => Direct_Mapping_Id (State),
+                  Tag  => "impossible_to_initialize_state",
+                  Kind => Warning_Kind);
+            end if;
+
+            --  Move on to the next state abstraction
+            Next_Elmt (State_Elmt);
+            State := Node (State_Elmt);
+         end loop;
+      end;
+
+   end Find_Impossible_To_Initialize_State;
+
    ---------------------
    -- Check_Contracts --
    ---------------------
@@ -3040,7 +3178,7 @@ package body Flow.Analysis is
         or else not Is_Library_Level_Entity (FA.Analyzed_Entity)
       then
          --  If there is no Initializes contract or if we are not analyzing
-         --  a  library level entity then we have nothing to do.
+         --  a library level entity then we have nothing to do.
          return;
       end if;
 

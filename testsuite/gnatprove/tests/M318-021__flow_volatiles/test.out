@@ -1,4 +1,5 @@
 caller.adb:29:09: warning: unused assignment to "Tmp"
+tests_async_readers.ads:2:27: warning: no procedure exists that can initialize abstract state "Tests_Async_Readers.State_With_Async_Readers"
 types.adb:34:04: warning: analyzing unreferenced procedure "Test_01"
 types.adb:34:14: warning: subprogram "Test_01" has no effect
 types.adb:40:04: warning: analyzing unreferenced procedure "Test_02"

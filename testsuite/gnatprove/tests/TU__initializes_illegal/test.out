@@ -19,6 +19,8 @@ initializes_illegal_4.adb:9:07: warning: initialization has no effect
 initializes_illegal_4.adb:11:09: warning: unused assignment
 initializes_illegal_4.adb:22:17: warning: unused assignment
 initializes_illegal_4.adb:30:35: medium: overflow check might fail
+initializes_illegal_4.ads:16:29: warning: no procedure exists that can initialize abstract state "Pac1.State"
+initializes_illegal_4.ads:32:37: warning: no procedure exists that can initialize abstract state "Pac2.State2"
 initializes_illegal_4.ads:35:07: warning: initialization has no effect
 initializes_illegal_4.ads:52:30: medium: overflow check might fail
 initializes_illegal_4.ads:52:32: high: "G_Var2" must be listed in the Initializes aspect of "Pac3" (SPARK RM 7.1.5(12))
