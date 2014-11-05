@@ -29,5 +29,24 @@ is
        Post =>
          (for all I in Index range Left'First .. Left'Last =>
             (Result (I) = XOR2 (Left (I), Right (I))));
+      pragma Annotate
+        (GNATprove, False_Positive,
+         """Result"" might not be initialized",
+         "Initialized in complete loop");
 
+   procedure Block_XOR_2
+     (Left   : in     Word32_Array_Type;
+      Right  : in     Word32_Array_Type;
+      Result :    out Word32_Array_Type)
+     with
+       Depends =>
+         (Result =>+ (Left, Right)),
+       Pre =>
+         Left'First  = Right'First and
+         Left'Last   = Right'Last  and
+         Right'First = Result'First and
+         Right'Last  = Result'Last,
+       Post =>
+         (for all I in Index range Left'First .. Left'Last =>
+            (Result (I) = XOR2 (Left (I), Right (I))));
 end Test;

@@ -24,6 +24,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Atree;      use Atree;
 with SPARK_Util; use SPARK_Util;
 with Types;      use Types;
 
@@ -63,16 +64,22 @@ package Gnat2Why.Annotate is
    --  Reason is any string that the user can use to provide a reason for the
    --  suppression. This reason may be present in a Gnatprove report.
 
-   --  Placement rules are as follows: in a statement
-   --  list or declaration list, pragma Annotate applies to the preceding item
-   --  in the list, ignoring other pragma Annotate. If there is no preceding
-   --  item, the pragma applies to the enclosing entity.
+   --  Placement rules are as follows: in a statement list or declaration list,
+   --  pragma Annotate applies to the preceding item in the list, ignoring
+   --  other pragma Annotate. If there is no preceding item, the pragma applies
+   --  to the enclosing entity. If the preceding item is a subprogram body, the
+   --  pragma applies both to the body and the spec of the subprogram.
 
    procedure Mark_Pragma_Annotate
-     (N         : Node_Id;
-      Preceding : Node_Id)
-     with Pre => Is_Pragma_Annotate_Gnatprove (N);
-   --  Call this procedure to register a pragma Annotate
+     (N             : Node_Id;
+      Preceding     : Node_Id;
+      Consider_Next : Boolean)
+     with Pre => Is_Pragma_Annotate_Gnatprove (N) and Present (Preceding);
+   --  Call this procedure to register a pragma Annotate. The "Preceding" node
+   --  is the node in the tree to which this pragma refers to. If Consider_Next
+   --  is true, "Preceding" must be part of a list, and the pragma will
+   --  be considered to also apply to all "Next" declarations following
+   --  "Preceding" which are not from source.
 
    type Annotate_Kind is (Intentional, False_Positive);
 
