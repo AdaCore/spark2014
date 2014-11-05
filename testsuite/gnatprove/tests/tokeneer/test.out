@@ -244,6 +244,7 @@ bio.adb:189:42: medium: length check might fail, in call inlined at bio.adb:200
 bio.adb:189:45: medium: length check might fail, in call inlined at bio.adb:200
 bio.adb:191:23: info: length check proved, in call inlined at bio.adb:200
 bio.adb:191:23: medium: range check might fail, in call inlined at bio.adb:200
+cert-attr-auth.ads:149:14: class-wide input "keystore.thistisinfo" must also be a class-wide input of overridden subprogram "Isok" at cert-attr.ads:46 (SPARK RM 6.1.6)
 certificatestore.adb:37:42: info: length check proved
 certificatestore.adb:223:31: medium: range check might fail, in call inlined at certificatestore.adb:239
 certificatestore.adb:224:26: medium: "Rawnext" might not be initialized, in call inlined at certificatestore.adb:239
@@ -909,3 +910,7 @@ usertoken.adb:982:18: medium: length check might fail, in call inlined at userto
 usertoken.adb:985:18: medium: length check might fail, in call inlined at usertoken.adb:985, in call inlined at usertoken.adb:1005
 usertoken.adb:1010:25: medium: length check might fail
 usertoken.adb:1085:45: info: precondition proved
+   compilation of cert-attr-auth.adb failed
+
+
+gnatprove: error during flow analysis and proof

@@ -21,17 +21,18 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Errout;       use Errout;
-with Nlists;       use Nlists;
-with Sem_Eval;     use Sem_Eval;
-with Sem_Util;     use Sem_Util;
+with Errout;         use Errout;
+with Nlists;         use Nlists;
+with Sem_Eval;       use Sem_Eval;
+with Sem_Util;       use Sem_Util;
 
-with Output;       use Output;
-with Sprint;       use Sprint;
+with Output;         use Output;
+with Sprint;         use Sprint;
 
 with Why;
 
-with Flow_Utility; use Flow_Utility;
+with Flow_Classwide; use Flow_Classwide;
+with Flow_Utility;   use Flow_Utility;
 
 package body Flow.Antialiasing is
 
@@ -722,6 +723,7 @@ package body Flow.Antialiasing is
       begin
          Get_Globals (Subprogram => Entity (Name (Call)),
                       Scope      => Scope,
+                      Classwide  => Is_Dispatching_Call (Call),
                       Proof_Ins  => Proof_Reads,
                       Reads      => Reads,
                       Writes     => Writes);

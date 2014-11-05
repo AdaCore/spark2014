@@ -44,6 +44,7 @@ with Gnat2Why.Nodes;                     use Gnat2Why.Nodes;
 
 with Flow.Antialiasing;                  use Flow.Antialiasing;
 with Flow.Control_Flow_Graph.Utility;    use Flow.Control_Flow_Graph.Utility;
+with Flow_Classwide;                     use Flow_Classwide;
 with Flow_Error_Messages;                use Flow_Error_Messages;
 with Flow_Tree_Utility;                  use Flow_Tree_Utility;
 with Flow_Utility.Initialization;        use Flow_Utility.Initialization;
@@ -3537,6 +3538,7 @@ package body Flow.Control_Flow_Graph is
          begin
             Get_Depends (Subprogram => Called_Procedure,
                          Scope      => FA.B_Scope,
+                         Classwide  => Is_Dispatching_Call (N),
                          Depends    => D_Map);
             if D_Map.Contains (Null_Flow_Id) and then
               D_Map (Null_Flow_Id).Length >= 1
@@ -3918,6 +3920,7 @@ package body Flow.Control_Flow_Graph is
       --  stuff).
       Get_Globals (Subprogram   => Entity (Name (Callsite)),
                    Scope        => FA.B_Scope,
+                   Classwide    => Is_Dispatching_Call (Callsite),
                    Proof_Ins    => Proof_Reads,
                    Reads        => Reads,
                    Writes       => Writes);
@@ -5028,6 +5031,7 @@ package body Flow.Control_Flow_Graph is
                begin
                   Get_Globals (Subprogram => Subprogram_Spec,
                                Scope      => FA.B_Scope,
+                               Classwide  => False,
                                Proof_Ins  => Proof_Ins,
                                Reads      => Reads,
                                Writes     => Writes);

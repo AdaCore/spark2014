@@ -39,6 +39,7 @@ with SPARK_Util;                 use SPARK_Util;
 
 with Flow_Debug;                 use Flow_Debug;
 with Flow_Computed_Globals;      use Flow_Computed_Globals;
+with Flow_Classwide;             use Flow_Classwide;
 
 package body Flow_Utility is
 
@@ -1042,8 +1043,13 @@ package body Flow_Utility is
 
    procedure Get_Depends (Subprogram : Entity_Id;
                           Scope      : Flow_Scope;
+                          Classwide  : Boolean;
                           Depends    : out Dependency_Maps.Map)
    is
+      pragma Unreferenced (Classwide);
+      --  For now we assume classwide globals are the same as the actual
+      --  globals.
+
       Tmp : Dependency_Maps.Map;
    begin
 
@@ -1091,6 +1097,7 @@ package body Flow_Utility is
 
    procedure Get_Globals (Subprogram             : Entity_Id;
                           Scope                  : Flow_Scope;
+                          Classwide              : Boolean;
                           Proof_Ins              : out Flow_Id_Sets.Set;
                           Reads                  : out Flow_Id_Sets.Set;
                           Writes                 : out Flow_Id_Sets.Set;
@@ -1355,6 +1362,7 @@ package body Flow_Utility is
          begin
             Get_Depends (Subprogram => Subprogram,
                          Scope      => Scope,
+                         Classwide  => Classwide,
                          Depends    => D_Map);
 
             --  We need to make sure not to include our own parameters in
@@ -1583,6 +1591,7 @@ package body Flow_Utility is
    -----------------------
 
    procedure Get_Proof_Globals (Subprogram : Entity_Id;
+                                Classwide  : Boolean;
                                 Reads      : out Flow_Id_Sets.Set;
                                 Writes     : out Flow_Id_Sets.Set)
    is
@@ -1663,6 +1672,7 @@ package body Flow_Utility is
                                       Entity_Body_In_SPARK (Subprogram)
                                     then Get_Flow_Scope (Body_E)
                                     else Get_Flow_Scope (Subprogram)),
+         Classwide              => Classwide,
          Proof_Ins              => Proof_Ins,
          Reads                  => Tmp_In,
          Writes                 => Tmp_Out,
@@ -1688,12 +1698,15 @@ package body Flow_Utility is
    -- Has_Proof_Global_Reads --
    ----------------------------
 
-   function Has_Proof_Global_Reads (Subprogram : Entity_Id) return Boolean
+   function Has_Proof_Global_Reads (Subprogram : Entity_Id;
+                                    Classwide  : Boolean)
+                                    return Boolean
    is
       Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
       Write_Ids : Flow_Types.Flow_Id_Sets.Set;
    begin
       Get_Proof_Globals (Subprogram => Subprogram,
+                         Classwide  => Classwide,
                          Reads      => Read_Ids,
                          Writes     => Write_Ids);
       return not Read_Ids.Is_Empty;
@@ -1703,12 +1716,15 @@ package body Flow_Utility is
    -- Has_Proof_Global_Writes --
    -----------------------------
 
-   function Has_Proof_Global_Writes (Subprogram : Entity_Id) return Boolean
+   function Has_Proof_Global_Writes (Subprogram : Entity_Id;
+                                     Classwide  : Boolean)
+                                     return Boolean
    is
       Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
       Write_Ids : Flow_Types.Flow_Id_Sets.Set;
    begin
       Get_Proof_Globals (Subprogram => Subprogram,
+                         Classwide  => Classwide,
                          Reads      => Read_Ids,
                          Writes     => Write_Ids);
       return not Write_Ids.Is_Empty;
@@ -1825,6 +1841,8 @@ package body Flow_Utility is
          begin
             Get_Globals (Subprogram           => Subprogram,
                          Scope                => Scope,
+                         Classwide            =>
+                           Is_Dispatching_Call (Callsite),
                          Proof_Ins            => Proof_Reads,
                          Reads                => Global_Reads,
                          Writes               => Global_Writes,
@@ -1842,6 +1860,7 @@ package body Flow_Utility is
             begin
                Get_Depends (Subprogram => Subprogram,
                             Scope      => Scope,
+                            Classwide  => Is_Dispatching_Call (Callsite),
                             Depends    => Depends);
                pragma Assert (Depends.Length in 1 .. 2);
                Used_Reads := Depends (Direct_Mapping_Id (Subprogram));

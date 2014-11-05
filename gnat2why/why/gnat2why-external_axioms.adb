@@ -936,7 +936,9 @@ package body Gnat2Why.External_Axioms is
 
                --  Check that the function actual is pure
 
-               if Flow_Utility.Has_Proof_Global_Reads (Actual) then
+               if Flow_Utility.Has_Proof_Global_Reads (Actual,
+                                                       Classwide => True)
+               then
                   Error_Msg_FE
                     ("non-pure actual & in instance with external axioms not"
                      & " yet supported", Package_Entity, Actual);
