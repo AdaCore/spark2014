@@ -4522,8 +4522,9 @@ package body Flow.Control_Flow_Graph is
                Ins := Flow_Graphs.Continue;
             end if;
 
-            if not Is_Dead (To)
+            if FA.CFG.In_Neighbour_Count (To) > 1
               and then not FA.CFG.Edge_Exists (From, To)
+              and then not Is_Dead (To)
               and then Dead_Path_Exists (From, To)
             then
                FA.Edges_To_Remove.Include (VP);
@@ -4537,7 +4538,9 @@ package body Flow.Control_Flow_Graph is
          else
             Ins := Flow_Graphs.Continue;
 
-            if not Is_Dead (From) then
+            if FA.CFG.Out_Neighbour_Count (From) > 1
+              and then not Is_Dead (From)
+            then
                FA.CFG.DFS (Start         => From,
                            Include_Start => False,
                            Visitor       => Test'Access);
