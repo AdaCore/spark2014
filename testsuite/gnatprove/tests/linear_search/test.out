@@ -14,5 +14,5 @@ search.ads:32:06: info: complete contract cases proved
 search.ads:32:06: info: disjoint contract cases proved
 search.ads:33:20: medium: contract case might fail
 search.ads:34:31: info: discriminant check proved
-search.ads:35:67: medium: contract case might fail
-search.ads:37:49: medium: contract case might fail
+search.ads:35:67: info: contract case proved
+search.ads:37:49: info: contract case proved
