@@ -1,0 +1,30 @@
+test.adb:18:11: info: range check proved
+test.adb:20:36: info: index check proved
+test.adb:20:47: info: index check proved
+test.adb:21:10: info: loop invariant initialization proved
+test.adb:21:10: info: loop invariant preservation proved
+test.adb:22:21: info: range check proved
+test.adb:23:16: medium: "Result" might not be initialized
+test.adb:23:24: info: index check proved
+test.adb:23:43: info: index check proved
+test.adb:23:56: info: index check proved
+test.adb:33:11: info: range check proved
+test.adb:35:36: info: index check proved
+test.adb:35:47: info: index check proved
+test.adb:36:10: info: loop invariant initialization proved
+test.adb:36:10: info: loop invariant preservation proved
+test.adb:37:21: info: range check proved
+test.adb:38:24: info: index check proved
+test.adb:38:43: info: index check proved
+test.adb:38:56: info: index check proved
+test.ads:15:19: info: postcondition proved
+test.ads:30:10: info: postcondition proved
+test.ads:30:19: info: range check proved
+test.ads:31:22: info: index check proved
+test.ads:31:39: info: index check proved
+test.ads:31:50: info: index check proved
+test.ads:50:10: info: postcondition proved
+test.ads:50:19: info: range check proved
+test.ads:51:22: info: index check proved
+test.ads:51:39: info: index check proved
+test.ads:51:50: info: index check proved

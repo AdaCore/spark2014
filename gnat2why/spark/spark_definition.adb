@@ -278,7 +278,10 @@ package body SPARK_Definition is
    procedure Mark_Extended_Return_Statement   (N : Node_Id);
    procedure Mark_Subtype_Indication          (N : Node_Id);
    procedure Mark_Unary_Op                    (N : Node_Id);
+
    procedure Mark_Stmt_Or_Decl_List           (L : List_Id);
+   --  mark a list of statements and declarations, and register any pragma
+   --  Annotate (Gnatprove) which may be part of that list
 
    procedure Mark_Actions (N : Node_Id; L : List_Id);
    --  Mark a possibly null list of actions L from expression N. It should be
@@ -3630,6 +3633,7 @@ package body SPARK_Definition is
    procedure Mark_Stmt_Or_Decl_List (L : List_Id) is
       Preceding : Node_Id;
       Cur       : Node_Id := First (L);
+      Is_Parent : Boolean := True;
    begin
       --  We delay the initialization after checking that we really have a list
 
@@ -3651,7 +3655,8 @@ package body SPARK_Definition is
             --  "Preceding" node
 
             loop
-               Mark_Pragma_Annotate (Cur, Preceding);
+               Mark_Pragma_Annotate (Cur, Preceding,
+                                     Consider_Next => not Is_Parent);
                Next (Cur);
                exit when
                  not Present (Cur)
@@ -3659,7 +3664,16 @@ package body SPARK_Definition is
             end loop;
          else
             Mark (Cur);
-            Preceding := Cur;
+
+            --  if the current declaration does not come from source, we
+            --  consider it to be part of the preceding one as far as pragma
+            --  Annotate is concerned, so we don't update the "preceding" node
+            --  in that case.
+
+            if Comes_From_Source (Cur) then
+               Preceding := Cur;
+               Is_Parent := False;
+            end if;
             Next (Cur);
          end if;
       end loop;

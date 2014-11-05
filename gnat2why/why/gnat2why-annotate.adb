@@ -26,7 +26,6 @@
 
 with AA_Util;              use AA_Util;
 with Ada.Containers.Vectors;
-with Atree;                use Atree;
 with Errout;               use Errout;
 with GNAT.Regpat;          use GNAT.Regpat;
 with Namet;                use Namet;
@@ -50,6 +49,25 @@ package body Gnat2Why.Annotate is
       Pattern, Reason : String_Id;
       Range_Node      : Node_Id);
    --  insert the node range into the sorted vector of node ranges
+
+   procedure Insert_Annotate_Range
+     (Kind            : Annotate_Kind;
+      Pattern, Reason : String_Id;
+      List            : List_Id);
+   --  same as above, but compute the node range from a list of nodes
+
+   procedure Insert_Annotate_Range
+     (Kind            : Annotate_Kind;
+      Pattern, Reason : String_Id;
+      First, Last     : Source_Ptr);
+   --  same as above, but take the node range in argument
+
+   procedure Insert_With_Next
+     (Kind            : Annotate_Kind;
+      Pattern, Reason : String_Id;
+      First_Node      : Node_Id);
+   --  same as above, but also consider all nodes "next" after First_Node,
+   --  until (and excluding) a node which comes from source
 
    procedure Syntax_Check_Pragma_Annotate_Gnatprove
      (Node     : Node_Id;
@@ -117,31 +135,98 @@ package body Gnat2Why.Annotate is
       Pattern, Reason : String_Id;
       Range_Node      : Node_Id) is
 
+      First_Sloc, Last_Sloc : Source_Ptr;
+   begin
+
+      if No (Range_Node) then
+         return;
+      end if;
+
+      --  The following if-block achieves two things:
+      --  - it avoids a call to Sloc_Range with a N_Subprogram_Body node, which
+      --    doesn't work;
+      --  - includes the spec node in the range to be considered for subprogram
+      --  bodies
+
+      if Nkind (Range_Node) = N_Subprogram_Body then
+         Insert_Annotate_Range (Kind, Pattern, Reason,
+                                Specification (Range_Node));
+         Insert_Annotate_Range (Kind, Pattern, Reason,
+                                Handled_Statement_Sequence (Range_Node));
+         Insert_Annotate_Range (Kind, Pattern, Reason,
+                                Declarations (Range_Node));
+         Insert_With_Next (Kind, Pattern, Reason,
+                           Parent (Parent (Corresponding_Spec (Range_Node))));
+         return;
+      end if;
+      Sloc_Range (Range_Node, First_Sloc, Last_Sloc);
+      Insert_Annotate_Range (Kind, Pattern, Reason, First_Sloc, Last_Sloc);
+   end Insert_Annotate_Range;
+
+   procedure Insert_Annotate_Range
+     (Kind            : Annotate_Kind;
+      Pattern, Reason : String_Id;
+      First, Last     : Source_Ptr)
+   is
+
       use Annot_Range_Vectors;
 
-      First_Sloc, Last_Sloc : Source_Ptr;
-      Cur : Cursor := First (Annotations);
+      Cur : Cursor := Annotations.First;
    begin
-      Sloc_Range (Range_Node, First_Sloc, Last_Sloc);
-      while Has_Element (Cur) and then First_Sloc > Element (Cur).First loop
+      while Has_Element (Cur) and then First > Element (Cur).First loop
          Next (Cur);
       end loop;
       Annotations.Insert
         (Cur,
          (Kind    => Kind,
-          First   => First_Sloc,
-          Last    => Last_Sloc,
+          First   => First,
+          Last    => Last,
           Pattern => Pattern,
           Reason  => Reason));
    end Insert_Annotate_Range;
+
+   procedure Insert_Annotate_Range
+     (Kind            : Annotate_Kind;
+      Pattern, Reason : String_Id;
+      List            : List_Id)
+   is
+      First_Sloc, Last_Sloc, Tmp : Source_Ptr;
+   begin
+      if Present (List) then
+         Sloc_Range (First (List), First_Sloc, Tmp);
+         Sloc_Range (Last (List), Tmp, Last_Sloc);
+      end if;
+      Insert_Annotate_Range (Kind, Pattern, Reason, First_Sloc, Last_Sloc);
+   end Insert_Annotate_Range;
+
+   ----------------------
+   -- Insert_With_Next --
+   ----------------------
+
+   procedure Insert_With_Next
+     (Kind            : Annotate_Kind;
+      Pattern, Reason : String_Id;
+      First_Node      : Node_Id)
+   is
+      Node : Node_Id := First_Node;
+   begin
+      Insert_Annotate_Range (Kind, Pattern, Reason, Node);
+      Next (Node);
+      while Present (Node) and not Comes_From_Source (Node) loop
+         Insert_Annotate_Range (Kind, Pattern, Reason, Node);
+         Next (Node);
+      end loop;
+   end Insert_With_Next;
 
    --------------------------
    -- Mark_Pragma_Annotate --
    --------------------------
 
    procedure Mark_Pragma_Annotate
-     (N         : Node_Id;
-      Preceding : Node_Id) is
+     (N             : Node_Id;
+      Preceding     : Node_Id;
+      Consider_Next : Boolean)
+   is
       Ok              : Boolean;
       Pattern, Reason : String_Id;
       Kind            : Annotate_Kind;
@@ -150,14 +235,10 @@ package body Gnat2Why.Annotate is
       if not Ok then
          return;
       end if;
-      if Present (Preceding) then
-         Insert_Annotate_Range (Kind, Pattern, Reason, Preceding);
+      if Consider_Next then
+         Insert_With_Next (Kind, Pattern, Reason, Preceding);
       else
-
-         --  ??? FIXME
-
-         Error_Msg_N ("did not find pre node for pragma Annotate, aborting",
-                      N);
+         Insert_Annotate_Range (Kind, Pattern, Reason, Preceding);
       end if;
    end Mark_Pragma_Annotate;
 
