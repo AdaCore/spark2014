@@ -547,6 +547,7 @@ package body Flow.Analysis is
       --     Output  ->   Always OK
       Get_Globals (Subprogram => FA.Analyzed_Entity,
                    Scope      => FA.B_Scope,
+                   Classwide  => False,
                    Proof_Ins  => Proof_Reads,
                    Reads      => Reads,
                    Writes     => Unused);
@@ -648,6 +649,7 @@ package body Flow.Analysis is
 
                         Get_Globals (Subprogram => FA.Spec_Node,
                                      Scope      => FA.S_Scope,
+                                     Classwide  => False,
                                      Proof_Ins  => Tmp_A,
                                      Reads      => Tmp_B,
                                      Writes     => Tmp_C);
@@ -873,6 +875,7 @@ package body Flow.Analysis is
          begin
             Get_Depends (Subprogram => FA.Analyzed_Entity,
                          Scope      => FA.B_Scope,
+                         Classwide  => False,
                          Depends    => D);
             if D.Contains (Null_Flow_Id) then
                Suppressed_Entire_Ids := D (Null_Flow_Id);
@@ -2555,6 +2558,7 @@ package body Flow.Analysis is
                begin
                   Get_Globals (Subprogram => E,
                                Scope      => Scop,
+                               Classwide  => False,
                                Proof_Ins  => Proof_Ins,
                                Reads      => Reads,
                                Writes     => Writes);
@@ -2772,6 +2776,7 @@ package body Flow.Analysis is
 
       Get_Depends (Subprogram => FA.Analyzed_Entity,
                    Scope      => FA.B_Scope,
+                   Classwide  => False,
                    Depends    => User_Deps);
 
       Actual_Deps := FA.Dependency_Map;
@@ -2794,7 +2799,7 @@ package body Flow.Analysis is
                --  ??? check quotation in errout.ads
                Error_Msg_Flow
                  (FA   => FA,
-                  Msg  => "missing dependency ""null => #""",
+                  Msg  => "missing dependency ""null => %""",
                   N    => Depends_Location,
                   F1   => F_Out,
                   Tag  => "depends_null",
@@ -2879,7 +2884,7 @@ package body Flow.Analysis is
                         if F_Out = Null_Flow_Id then
                            Error_Msg_Flow
                              (FA   => FA,
-                              Msg  => "missing dependency ""null => #""",
+                              Msg  => "missing dependency ""null => %""",
                               N    => Depends_Location,
                               F1   => Missing_Var,
                               Tag  => "depends_null",
@@ -2890,7 +2895,7 @@ package body Flow.Analysis is
                            Error_Msg_Flow
                              (FA   => FA,
                               Msg  =>
-                                "missing dependency ""#'Result => #""",
+                                "missing dependency ""%'Result => %""",
                               N    => Find_Export
                                 (Get_Direct_Mapping_Id (F_Out)),
                               F1   => F_Out,
@@ -2900,7 +2905,7 @@ package body Flow.Analysis is
                         else
                            Error_Msg_Flow
                              (FA   => FA,
-                              Msg  => "missing dependency ""# => #""",
+                              Msg  => "missing dependency ""% => %""",
                               N    => Find_Export
                                 (Get_Direct_Mapping_Id (F_Out)),
                               F1   => F_Out,
@@ -2919,7 +2924,7 @@ package body Flow.Analysis is
                   if F_Out = Null_Flow_Id then
                      Error_Msg_Flow
                        (FA   => FA,
-                        Msg  => "incorrect dependency ""null => #""",
+                        Msg  => "incorrect dependency ""null => %""",
                         N    => Depends_Location,
                         F1   => Wrong_Var,
                         Tag  => "depends_wrong",
@@ -2930,7 +2935,7 @@ package body Flow.Analysis is
                   then
                      Error_Msg_Flow
                        (FA   => FA,
-                        Msg  => "incorrect dependency ""#'Result => #""",
+                        Msg  => "incorrect dependency ""%'Result => %""",
                         N    => Find_Export
                           (Get_Direct_Mapping_Id (F_Out),
                            Get_Direct_Mapping_Id (Wrong_Var)),
@@ -2941,7 +2946,7 @@ package body Flow.Analysis is
                   else
                      Error_Msg_Flow
                        (FA   => FA,
-                        Msg  => "incorrect dependency ""# => #""",
+                        Msg  => "incorrect dependency ""% => %""",
                         N    => Find_Export
                           (Get_Direct_Mapping_Id (F_Out),
                            Get_Direct_Mapping_Id (Wrong_Var)),
@@ -3203,7 +3208,7 @@ package body Flow.Analysis is
                if not Is_Initialized_At_Elaboration (G, FA.B_Scope) then
                   Error_Msg_Flow
                     (FA        => FA,
-                     Msg       => "# must be initialized at elaboration",
+                     Msg       => "% must be initialized at elaboration",
                      N         => Find_Entity
                        (E    => Get_Direct_Mapping_Id (The_Out),
                         E_In => Get_Direct_Mapping_Id (G)),
@@ -3275,7 +3280,7 @@ package body Flow.Analysis is
                        (FA        => FA,
                         Tracefile => Tracefile,
                         Msg       =>
-                          "initialization of # must not depend on #",
+                          "initialization of % must not depend on %",
                         SRM_Ref   => "7.1.5(11)",
                         N         => Find_Entity
                           (Get_Direct_Mapping_Id (The_Out)),
@@ -3300,7 +3305,7 @@ package body Flow.Analysis is
                if not All_Actual_Ins.Contains (Contract_In) then
                   Error_Msg_Flow
                     (FA        => FA,
-                     Msg       => "initialization of # does not depend on #",
+                     Msg       => "initialization of % does not depend on %",
                      SRM_Ref   => "7.1.5(11)",
                      N         => Find_Entity
                        (Get_Direct_Mapping_Id (The_Out)),

@@ -77,6 +77,7 @@ package Flow_Utility is
 
    procedure Get_Depends (Subprogram : Entity_Id;
                           Scope      : Flow_Scope;
+                          Classwide  : Boolean;
                           Depends    : out Dependency_Maps.Map)
      with Pre  => Ekind (Subprogram) in Subprogram_Kind and
                   Has_Depends (Subprogram),
@@ -104,6 +105,7 @@ package Flow_Utility is
 
    procedure Get_Globals (Subprogram             : Entity_Id;
                           Scope                  : Flow_Scope;
+                          Classwide              : Boolean;
                           Proof_Ins              : out Flow_Id_Sets.Set;
                           Reads                  : out Flow_Id_Sets.Set;
                           Writes                 : out Flow_Id_Sets.Set;
@@ -130,6 +132,7 @@ package Flow_Utility is
    --  Get_Generated_Reads will not specify Include_Constants.
 
    procedure Get_Proof_Globals (Subprogram : Entity_Id;
+                                Classwide  : Boolean;
                                 Reads      : out Flow_Id_Sets.Set;
                                 Writes     : out Flow_Id_Sets.Set)
      with Pre  => Ekind (Subprogram) in E_Procedure | E_Function,
@@ -139,12 +142,16 @@ package Flow_Utility is
    --  discriminants receive no special handling and globals are proof
    --  globals, and we always return the most refined view possible.
 
-   function Has_Proof_Global_Reads (Subprogram : Entity_Id) return Boolean
+   function Has_Proof_Global_Reads (Subprogram : Entity_Id;
+                                    Classwide  : Boolean)
+                                    return Boolean
      with Pre => Ekind (Subprogram) in E_Procedure | E_Function;
    --  Returns True if Subprogram has a Global Input or In_Out contract,
    --  whether user-defined or generated.
 
-   function Has_Proof_Global_Writes (Subprogram : Entity_Id) return Boolean
+   function Has_Proof_Global_Writes (Subprogram : Entity_Id;
+                                     Classwide  : Boolean)
+                                     return Boolean
      with Pre => Ekind (Subprogram) in E_Procedure | E_Function;
    --  Returns True if Subprogram has a Global Output or In_Out contract,
    --  whether user-defined or generated.

@@ -24,20 +24,22 @@
 
 with Ada.Containers.Hashed_Sets;
 with Ada.Strings.Unbounded.Hash;
-with Assumption_Types;     use Assumption_Types;
+
 with Atree;                use Atree;
 with Einfo;                use Einfo;
 with Errout;               use Errout;
 with Erroutc;              use Erroutc;
+with Namet;                use Namet;
+with Sinfo;                use Sinfo;
+with Sinput;               use Sinput;
+with Stringt;              use Stringt;
+
+with Assumption_Types;     use Assumption_Types;
 with Gnat2Why.Annotate;    use Gnat2Why.Annotate;
 with Gnat2Why.Assumptions; use Gnat2Why.Assumptions;
 with Gnat2Why.Nodes;       use Gnat2Why.Nodes;
 with Gnat2Why_Args;        use Gnat2Why_Args;
-with Namet;                use Namet;
-with Sinfo;                use Sinfo;
-with Sinput;               use Sinput;
 with SPARK_Util;           use SPARK_Util;
-with Stringt;              use Stringt;
 with String_Utils;         use String_Utils;
 
 package body Flow_Error_Messages is
@@ -119,10 +121,13 @@ package body Flow_Error_Messages is
    --  character.
 
    function Substitute
-     (S : Unbounded_String;
-      F : Flow_Id) return Unbounded_String;
-   --  Find the first '&' or '#' and substitute with the given flow
-   --  id, with or without enclosing quotes respectively.
+     (S    : Unbounded_String;
+      F    : Flow_Id;
+      Flag : Source_Ptr)
+      return Unbounded_String;
+   --  Find the first '&' or '%' and substitute with the given flow id,
+   --  with or without enclosing quotes respectively. Alternatively, '#'
+   --  works like '&', but is followed by a line reference.
 
    File_Counter : Integer := 0;
    Message_Id_Counter : Message_Id := 0;
@@ -142,10 +147,10 @@ package body Flow_Error_Messages is
    begin
       Append (M, Msg);
       if Present (F1) then
-         M := Substitute (M, F1);
+         M := Substitute (M, F1, Sloc (N));
       end if;
       if Present (F2) then
-         M := Substitute (M, F2);
+         M := Substitute (M, F2, Sloc (N));
       end if;
 
       if Instantiation_Location (Sloc (N)) /= No_Location then
@@ -204,28 +209,20 @@ package body Flow_Error_Messages is
    --------------------
 
    procedure Error_Msg_Flow
-     (FA        : in out Flow_Analysis_Graphs;
-      Msg       : String;
-      Kind      : Msg_Kind;
-      N         : Node_Id;
-      F1        : Flow_Id               := Null_Flow_Id;
-      F2        : Flow_Id               := Null_Flow_Id;
-      Tag       : String                := "";
-      SRM_Ref   : String                := "";
-      Tracefile : String                := "";
-      Vertex    : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex)
+     (E          : Entity_Id;
+      Msg        : String;
+      Kind       : Msg_Kind;
+      N          : Node_Id;
+      Suppressed : out Boolean;
+      F1         : Flow_Id   := Null_Flow_Id;
+      F2         : Flow_Id   := Null_Flow_Id;
+      Tag        : String    := "";
+      SRM_Ref    : String    := "";
+      Tracefile  : String    := "")
    is
-      E       : Entity_Id;
-      Img     : constant String := Natural'Image
-        (FA.CFG.Vertex_To_Natural (Vertex));
-      Tmp     : constant String :=
-        (if Gnat2Why_Args.Flow_Advanced_Debug and then
-           Vertex /= Flow_Graphs.Null_Vertex
-         then Msg & " <" & Img (2 .. Img'Last) & ">"
-         else Msg);
       Msg2    : constant String :=
-        (if SRM_Ref'Length > 0 then Tmp & " (SPARK RM " & SRM_Ref & ")"
-         else Tmp);
+        (if SRM_Ref'Length > 0 then Msg & " (SPARK RM " & SRM_Ref & ")"
+         else Msg);
       Msg3    : constant String := Compute_Message (Msg2, N, F1, F2);
       Suppr   : String_Id := No_String;
       Slc     : constant Source_Ptr := Compute_Sloc (N);
@@ -261,16 +258,10 @@ package body Flow_Error_Messages is
       --  If the message we are about to emit has already been emitted
       --  in the past then do nothing.
 
-      if not Flow_Msgs_Set.Contains (Unb_Msg) then
-
+      if Flow_Msgs_Set.Contains (Unb_Msg) then
+         Suppressed := True;
+      else
          Flow_Msgs_Set.Insert (Unb_Msg);
-
-         case FA.Kind is
-            when E_Subprogram_Body | E_Package =>
-               E := FA.Analyzed_Entity;
-            when E_Package_Body =>
-               E := Spec_Entity (FA.Analyzed_Entity);
-         end case;
 
          if Kind = Warning_Kind then
             Suppr := Warning_Is_Suppressed (N, Msg3, F1, F2);
@@ -285,13 +276,14 @@ package body Flow_Error_Messages is
                end if;
             end;
          end if;
+         Suppressed := Suppr /= No_String;
 
          --  Print the message except when it's suppressed.
          --  Additionally, if command line argument "--limit-line" was
          --  given, only issue the warning if it is to be emitted on
          --  the specified line (errors are emitted anyway).
 
-         if Suppr = No_String and then Is_Specified_Line then
+         if not Suppressed and then Is_Specified_Line then
             Msg_Id := Print_Regular_Msg (Msg3, Slc, Kind);
          end if;
 
@@ -313,17 +305,56 @@ package body Flow_Error_Messages is
          if Kind = Error_Kind then
             Found_Flow_Error := True;
          end if;
-
-         --  Set the No_Errors_Or_Warnings flag to False for this
-         --  entity if we are dealing with anything but a suppressed
-         --  warning.
-
-         if Suppr = No_String then
-            FA.No_Errors_Or_Warnings := False;
-         end if;
-
       end if;
+   end Error_Msg_Flow;
 
+   procedure Error_Msg_Flow
+     (FA        : in out Flow_Analysis_Graphs;
+      Msg       : String;
+      Kind      : Msg_Kind;
+      N         : Node_Id;
+      F1        : Flow_Id               := Null_Flow_Id;
+      F2        : Flow_Id               := Null_Flow_Id;
+      Tag       : String                := "";
+      SRM_Ref   : String                := "";
+      Tracefile : String                := "";
+      Vertex    : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex)
+   is
+      E       : Entity_Id;
+      Img     : constant String := Natural'Image
+        (FA.CFG.Vertex_To_Natural (Vertex));
+      Tmp     : constant String :=
+        (if Gnat2Why_Args.Flow_Advanced_Debug and then
+           Vertex /= Flow_Graphs.Null_Vertex
+         then Msg & " <" & Img (2 .. Img'Last) & ">"
+         else Msg);
+      Suppressed : Boolean;
+   begin
+      case FA.Kind is
+         when E_Subprogram_Body | E_Package =>
+            E := FA.Analyzed_Entity;
+         when E_Package_Body =>
+            E := Spec_Entity (FA.Analyzed_Entity);
+      end case;
+
+      Error_Msg_Flow (E          => E,
+                      Msg        => Tmp,
+                      Kind       => Kind,
+                      N          => N,
+                      Suppressed => Suppressed,
+                      F1         => F1,
+                      F2         => F2,
+                      Tag        => Tag,
+                      SRM_Ref    => SRM_Ref,
+                      Tracefile  => Tracefile);
+
+      --  Set the No_Errors_Or_Warnings flag to False for this
+      --  entity if we are dealing with anything but a suppressed
+      --  warning.
+
+      if not Suppressed then
+         FA.No_Errors_Or_Warnings := False;
+      end if;
    end Error_Msg_Flow;
 
    ---------------------
@@ -552,16 +583,18 @@ package body Flow_Error_Messages is
    ----------------
 
    function Substitute
-     (S : Unbounded_String;
-      F : Flow_Id) return Unbounded_String
+     (S    : Unbounded_String;
+      F    : Flow_Id;
+      Flag : Source_Ptr)
+      return Unbounded_String
    is
       R      : Unbounded_String := Null_Unbounded_String;
       Do_Sub : Boolean          := True;
       Quote  : Boolean;
    begin
       for Index in Positive range 1 .. Length (S) loop
-         if Do_Sub and then Element (S, Index) in '&' | '#' then
-            Quote := Element (S, Index) = '&';
+         if Do_Sub and then Element (S, Index) in '&' | '#' | '%' then
+            Quote := Element (S, Index) in '&' | '#';
 
             if Quote then
                Append (R, """");
@@ -624,6 +657,24 @@ package body Flow_Error_Messages is
 
             if Quote then
                Append (R, """");
+            end if;
+
+            if Element (S, Index) = '#' then
+               case F.Kind is
+                  when Direct_Mapping | Record_Field =>
+                     declare
+                        N : constant Node_Id := Get_Direct_Mapping_Id (F);
+                     begin
+                        Msglen := 0;
+                        Set_Msg_Insertion_Line_Number (Sloc (N), Flag);
+                        Append (R, " ");
+                        Append (R, Msg_Buffer (1 .. Msglen));
+                     end;
+                  when others =>
+                     --  Can't really add source information for stuff that
+                     --  doesn't come from the tree.
+                     null;
+               end case;
             end if;
 
             Do_Sub := False;

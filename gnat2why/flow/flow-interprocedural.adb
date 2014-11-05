@@ -21,12 +21,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Sem_Util;     use Sem_Util;
-with Sinfo;        use Sinfo;
+with Sem_Util;       use Sem_Util;
+with Sinfo;          use Sinfo;
 
 with Why;
 
-with Flow_Utility; use Flow_Utility;
+with Flow_Utility;   use Flow_Utility;
+with Flow_Classwide; use Flow_Classwide;
 
 package body Flow.Interprocedural is
 
@@ -160,6 +161,7 @@ package body Flow.Interprocedural is
          begin
             Get_Depends (Subprogram => Called_Procedure,
                          Scope      => Get_Flow_Scope (N),
+                         Classwide  => Is_Dispatching_Call (N),
                          Depends    => Deps);
             for C in Deps.Iterate loop
                declare
@@ -194,6 +196,7 @@ package body Flow.Interprocedural is
             --  Collect all the globals first.
             Get_Globals (Subprogram             => Called_Procedure,
                          Scope                  => Get_Flow_Scope (N),
+                         Classwide              => Is_Dispatching_Call (N),
                          Proof_Ins              => Proof_Ins,
                          Reads                  => Inputs,
                          Writes                 => Outputs,

@@ -65,6 +65,32 @@ package Flow_Error_Messages is
    --  project.
 
    procedure Error_Msg_Flow
+     (E          : Entity_Id;
+      Msg        : String;
+      Kind       : Msg_Kind;
+      N          : Node_Id;
+      Suppressed : out Boolean;
+      F1         : Flow_Id   := Null_Flow_Id;
+      F2         : Flow_Id   := Null_Flow_Id;
+      Tag        : String    := "";
+      SRM_Ref    : String    := "";
+      Tracefile  : String    := "")
+   with Pre => (if Present (F2) then Present (F1));
+   --  Output a message attached to the given node with a substitution
+   --  using F1 and F2. It also adds a JSON entry in the "unit.flow" file
+   --  for the given entity E.
+   --
+   --  The substitution characters used are slightly different from the
+   --  standard GNAT ones defined in Errout.
+   --  * Use & or % as the substitution characters, which quote the flow id
+   --    with or without double quotes respectively.
+   --  * Use # to insert both the quoted name of the entity, and a line
+   --    reference.
+   --
+   --  SRM_Ref should be a pointer into the SPARK RM. For example:
+   --     "1.2.3(4)"
+
+   procedure Error_Msg_Flow
      (FA        : in out Flow_Analysis_Graphs;
       Msg       : String;
       Kind      : Msg_Kind;
@@ -76,13 +102,10 @@ package Flow_Error_Messages is
       Tracefile : String                := "";
       Vertex    : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex)
    with Pre => (if Present (F2) then Present (F1));
-   --  Output a message attached to the given node with a substitution using F1
-   --  and F2. Use & or # as the substitution characters, which quote the flow
-   --  id with or without double quotes respectively. It also adds a JSON entry
-   --  in the "unit.flow" file.
+   --  As above, but:
    --
-   --  SRM_Ref should be a pointer into the SPARK RM. For example:
-   --     "1.2.3(4)"
+   --  E is worked out from FA, and FA.No_Errors_Or_Warnings is
+   --  appropriately modified.
    --
    --  Finally, for debug purposes, Vertex should be set to the vertex
    --  where the error was detected. This is printed in debug mode.
@@ -97,5 +120,6 @@ package Flow_Error_Messages is
       Editor_Cmd  : String;
       E           : Entity_Id;
       Place_First : Boolean);
+   --  !!! documentation needed
 
 end Flow_Error_Messages;

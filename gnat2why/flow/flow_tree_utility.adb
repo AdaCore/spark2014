@@ -96,6 +96,8 @@ package body Flow_Tree_Utility is
    begin
       if Nkind (P) = N_Defining_Program_Unit_Name then
          P := Parent (P);
+      elsif Nkind (P) = N_Private_Extension_Declaration then
+         return Empty;
       end if;
 
       P := Parent (P);
@@ -116,6 +118,8 @@ package body Flow_Tree_Utility is
             return Empty;
 
          when others =>
+            Print_Tree_Node (E);
+            Print_Tree_Node (P);
             raise Why.Unexpected_Node;
       end case;
    end Get_Body;
