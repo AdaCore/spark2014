@@ -27,16 +27,17 @@ prove:
 
 results: $(ALL_FLOW_MSG) $(ALL_PROVE_MSG)
 
-# The apparently useless use of 'cat' is meant to ignore a possible empty
-# result of 'grep'. In that case, force generation of a non-empty output,
-# to avoid errors when creating the pdf document.
+# Make sure to accept a possible empty result of 'grep' (currently ensured by
+# sorting the output of grep), instead of treating it as an error. In that
+# case, force generation of a non-empty output, to avoid errors when creating
+# the pdf document.
 
 $(RESULTS)/%.flow: force
-	cd $(RESULTS) && grep -e '^$*.ad' ../flow/flow.results | cat > $@
+	cd $(RESULTS) && grep -e '^$*.ad' ../flow/flow.results | python $(PWD)/../sort_messages.py > $@
 	test -s $@ || echo "no output" > $@
 
 $(RESULTS)/%.prove: force
-	cd $(RESULTS) && grep -e '^$*.ad' ../prove/prove.results | cat > $@
+	cd $(RESULTS) && grep -e '^$*.ad' ../prove/prove.results | python $(PWD)/../sort_messages.py > $@
 	test -s $@ || echo "no output" > $@
 
 clean:

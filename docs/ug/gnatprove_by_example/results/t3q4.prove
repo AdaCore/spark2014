@@ -3,8 +3,8 @@ t3q4.adb:9:56: info: overflow check proved
 t3q4.adb:14:27: info: precondition proved
 t3q4.adb:14:51: info: range check proved
 t3q4.adb:14:56: info: range check proved
-t3q4.adb:22:10: info: loop invariant preservation proved
 t3q4.adb:22:10: info: loop invariant initialization proved
+t3q4.adb:22:10: info: loop invariant preservation proved
 t3q4.adb:24:19: info: precondition proved
 t3q4.adb:24:57: info: range check proved
 t3q4.adb:25:25: info: overflow check proved
