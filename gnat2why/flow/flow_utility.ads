@@ -499,4 +499,20 @@ package Flow_Utility is
                   in Object_Kind | E_Function | E_Abstract_State);
    --  As above, but using a flow_id.
 
+   function Search_Depends (Subprogram : Entity_Id;
+                            Output     : Entity_Id;
+                            Input      : Entity_Id := Empty)
+                            return Node_Id
+   with Pre => Nkind (Subprogram) in N_Entity and then
+               Ekind (Subprogram) in Subprogram_Kind and then
+               Nkind (Output) in N_Entity and then
+               (if Present (Input) then Nkind (Input) in N_Entity),
+        Post => Present (Search_Depends'Result);
+   --  Search the depends (or refined depends) of the given subprogram for
+   --  the given output. If input is also given, search for that input in
+   --  the dependency list for the given output.
+   --
+   --  If we can't find what we're looking for, we return the subprogram
+   --  itself.
+
 end Flow_Utility;

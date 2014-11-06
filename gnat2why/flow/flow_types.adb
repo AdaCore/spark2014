@@ -532,6 +532,28 @@ package body Flow_Types is
 
    function Flow_Id_To_String (F : Flow_Id) return String
    is
+      function Get_Unmangled_Name (N : Node_Id) return String;
+
+      ------------------------
+      -- Get_Unmangled_Name --
+      ------------------------
+
+      function Get_Unmangled_Name (N : Node_Id) return String
+      is
+      begin
+         if Nkind (N) in N_Entity then
+            if Ekind (N) in Subprogram_Kind
+              and then Present (Overridden_Operation (N))
+            then
+               return Get_Unmangled_Name (Overridden_Operation (N));
+            end if;
+         end if;
+
+         Get_Name_String (Chars (N));
+         Set_Casing (Mixed_Case);
+         return Name_Buffer (1 .. Name_Len);
+      end Get_Unmangled_Name;
+
       R : Unbounded_String := Null_Unbounded_String;
    begin
       case F.Kind is
@@ -544,12 +566,10 @@ package body Flow_Types is
                --  would work for any other flow id as well.)
                case Nkind (F.Node) is
                   when N_Entity =>
-                     Get_Name_String (Chars (Scope (F.Node)));
+                     Append (R, Get_Unmangled_Name (Scope (F.Node)));
                   when others =>
-                     Get_Name_String (Chars (Scope (Entity (F.Node))));
+                     Append (R, Get_Unmangled_Name (Scope (Entity (F.Node))));
                end case;
-               Set_Casing (Mixed_Case);
-               Append (R, Name_Buffer (1 .. Name_Len));
                Append (R, ".");
             end if;
          when Null_Value | Magic_String | Synthetic_Null_Export =>
@@ -564,19 +584,13 @@ package body Flow_Types is
             Append (R, "null");
 
          when Direct_Mapping =>
-            Get_Name_String (Chars (F.Node));
-            Set_Casing (Mixed_Case);
-            Append (R, Name_Buffer (1 .. Name_Len));
+            Append (R, Get_Unmangled_Name (F.Node));
 
          when Record_Field =>
-            Get_Name_String (Chars (F.Node));
-            Set_Casing (Mixed_Case);
-            Append (R, Name_Buffer (1 .. Name_Len));
+            Append (R, Get_Unmangled_Name (F.Node));
             for Comp of F.Component loop
                Append (R, ".");
-               Get_Name_String (Chars (Comp));
-               Set_Casing (Mixed_Case);
-               Append (R, Name_Buffer (1 .. Name_Len));
+               Append (R, Get_Unmangled_Name (Comp));
             end loop;
 
          when Magic_String =>

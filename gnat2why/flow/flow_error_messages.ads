@@ -72,10 +72,12 @@ package Flow_Error_Messages is
       Suppressed : out Boolean;
       F1         : Flow_Id   := Null_Flow_Id;
       F2         : Flow_Id   := Null_Flow_Id;
+      F3         : Flow_Id   := Null_Flow_Id;
       Tag        : String    := "";
       SRM_Ref    : String    := "";
       Tracefile  : String    := "")
-   with Pre => (if Present (F2) then Present (F1));
+   with Pre => (if Present (F2) then Present (F1)) and
+               (if Present (F3) then Present (F2));
    --  Output a message attached to the given node with a substitution
    --  using F1 and F2. It also adds a JSON entry in the "unit.flow" file
    --  for the given entity E.
@@ -97,11 +99,13 @@ package Flow_Error_Messages is
       N         : Node_Id;
       F1        : Flow_Id               := Null_Flow_Id;
       F2        : Flow_Id               := Null_Flow_Id;
+      F3        : Flow_Id               := Null_Flow_Id;
       Tag       : String                := "";
       SRM_Ref   : String                := "";
       Tracefile : String                := "";
       Vertex    : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex)
-   with Pre => (if Present (F2) then Present (F1));
+   with Pre => (if Present (F2) then Present (F1)) and
+               (if Present (F3) then Present (F2));
    --  As above, but:
    --
    --  E is worked out from FA, and FA.No_Errors_Or_Warnings is
