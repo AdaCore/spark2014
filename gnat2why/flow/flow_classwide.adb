@@ -108,6 +108,10 @@ package body Flow_Classwide is
       function Mode (F : Flow_Id) return String;
       --  Given F, check if its a proof_in, input, in_out or output.
 
+      ----------
+      -- Mode --
+      ----------
+
       function Mode (F : Flow_Id) return String
       is
          subtype Valid_Param_Mode is Param_Mode range Mode_Proof .. Mode_Out;
@@ -298,6 +302,7 @@ package body Flow_Classwide is
                          Classwide  => Classwide,
                          Depends    => M);
          else
+            --  Assemble the final dependency from globals...
             declare
                Proof : Flow_Id_Sets.Set;
                Reads : Flow_Id_Sets.Set;
@@ -314,6 +319,7 @@ package body Flow_Classwide is
                Outputs := Change_Variant (Write, Normal_Use);
             end;
 
+            --  ... all parameters...
             declare
                Ptr  : Node_Id := First_Formal (E);
                Kind : Formal_Kind;
@@ -331,6 +337,8 @@ package body Flow_Classwide is
                end loop;
             end;
 
+            --  ... and the function symbol if we're dealing with a
+            --  function.
             if Ekind (E) = E_Function then
                Outputs.Include (Direct_Mapping_Id (E));
             end if;
@@ -343,6 +351,7 @@ package body Flow_Classwide is
                M (Null_Flow_Id) := Void;
             end if;
          end if;
+
          return M;
       end Get_Or_Make_Depends;
 
@@ -359,6 +368,8 @@ package body Flow_Classwide is
       My_To_Anc  : Flow_Id_Surjection.Map := Flow_Id_Surjection.Empty_Map;
       Anc_To_My  : Flow_Id_Surjection.Map := Flow_Id_Surjection.Empty_Map;
    begin
+      --  The entities in the depends for E and its ancestor are different.
+      --  We construct two maps that translate either way.
       declare
          Anc_Ptr : Node_Id := First_Formal (Overridden_Operation (E));
          My_Ptr  : Node_Id := First_Formal (E);
@@ -380,7 +391,7 @@ package body Flow_Classwide is
          pragma Assert (Present (Anc_Ptr) = Present (My_Ptr));
       end;
 
-      --  We need to check that My_Dep is a strict subset of Anc_Dep.
+      --  We now check that My_Dep is a strict subset of Anc_Dep.
 
       for C in My_Dep.Iterate loop
          declare
@@ -449,7 +460,8 @@ package body Flow_Classwide is
 
       if No (Overridden_Operation (E)) then
          --  This subprogram is not overriding, hence there can't be a
-         --  problem currently. (Since we assume Global'Class = Global.)
+         --  problem currently. (Since we assume both global'class and
+         --  depends'class are equal to their non-class-wide versions.)
          return;
       end if;
 
