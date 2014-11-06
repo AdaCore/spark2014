@@ -18,7 +18,7 @@ perm-lemma_subprograms.adb:36:18: info: precondition proved
 perm-lemma_subprograms.adb:36:31: info: precondition proved
 perm-lemma_subprograms.adb:37:18: info: precondition proved
 perm-lemma_subprograms.adb:37:23: info: precondition proved
-perm-lemma_subprograms.ads:5:17: info: postcondition proved
+perm-lemma_subprograms.ads:5:17: medium: postcondition might fail, requires Occ (A, E) = Occ (B, E)
 perm-lemma_subprograms.ads:9:14: info: postcondition proved
 perm-lemma_subprograms.ads:10:27: info: index check proved
 perm-lemma_subprograms.ads:12:46: info: index check proved
