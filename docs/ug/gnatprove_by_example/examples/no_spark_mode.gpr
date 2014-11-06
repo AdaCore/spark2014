@@ -10,4 +10,8 @@ project No_SPARK_Mode is
       for Switches ("t1q5.adb") use ("-gnato13");
    end Compiler;
 
+   package Prove is
+      for Switches use ("--timeout=2");
+   end Prove;
+
 end No_SPARK_Mode;
