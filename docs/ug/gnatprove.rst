@@ -649,9 +649,27 @@ suppression. This reason may be present in a |GNATprove| report.
 Placement rules are as follows: in a statement list or declaration list,
 ``pragma Annotate`` applies to the preceding item in the list, ignoring other
 ``pragma Annotate``. If there is no preceding item, the pragma applies to the
-enclosing construct. If the preceding or enclosing construct is a subprogram
-body, the pragma applies to both the subprogram body and the spec including
-its aspect specifications.
+enclosing construct.
+
+If the preceding or enclosing construct is a subprogram body, the pragma
+applies to both the subprogram body and the spec including its aspect
+specifications. This allows to place a justification for a check message issued
+by |GNATprove| either on the spec when the it is relevant for callers:
+
+.. literalinclude:: gnatprove_by_example/examples/justifications.ads
+   :language: ada
+   :lines: 4-7
+
+or on the body when it is an implementation choice that needs not be visible
+to users of the unit:
+
+.. literalinclude:: gnatprove_by_example/examples/justifications.ads
+   :language: ada
+   :lines: 9-10
+
+.. literalinclude:: gnatprove_by_example/examples/justifications.adb
+   :language: ada
+   :lines: 10-16
 
 |GNATprove| Messages
 ====================
