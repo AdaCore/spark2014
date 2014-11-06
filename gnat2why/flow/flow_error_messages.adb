@@ -64,7 +64,8 @@ package body Flow_Error_Messages is
      (Msg  : String;
       N    : Node_Id;
       F1   : Flow_Id := Null_Flow_Id;
-      F2   : Flow_Id := Null_Flow_Id)
+      F2   : Flow_Id := Null_Flow_Id;
+      F3   : Flow_Id := Null_Flow_Id)
       return String;
    --  This function does:
    --    * add more precise location for generics and inlining
@@ -90,8 +91,9 @@ package body Flow_Error_Messages is
    function Warning_Is_Suppressed
      (N   : Node_Id;
       Msg : String;
-      F1   : Flow_Id := Null_Flow_Id;
-      F2   : Flow_Id := Null_Flow_Id)
+      F1  : Flow_Id := Null_Flow_Id;
+      F2  : Flow_Id := Null_Flow_Id;
+      F3  : Flow_Id := Null_Flow_Id)
      return String_Id;
    --  Check if the warning for the given node, message and flow Id is
    --  suppressed. If the function returns No_String, the warning is not
@@ -141,7 +143,8 @@ package body Flow_Error_Messages is
      (Msg  : String;
       N    : Node_Id;
       F1   : Flow_Id := Null_Flow_Id;
-      F2   : Flow_Id := Null_Flow_Id)
+      F2   : Flow_Id := Null_Flow_Id;
+      F3   : Flow_Id := Null_Flow_Id)
       return String is
       M : Unbounded_String := Null_Unbounded_String;
    begin
@@ -151,6 +154,9 @@ package body Flow_Error_Messages is
       end if;
       if Present (F2) then
          M := Substitute (M, F2, Sloc (N));
+      end if;
+      if Present (F3) then
+         M := Substitute (M, F3, Sloc (N));
       end if;
 
       if Instantiation_Location (Sloc (N)) /= No_Location then
@@ -216,6 +222,7 @@ package body Flow_Error_Messages is
       Suppressed : out Boolean;
       F1         : Flow_Id   := Null_Flow_Id;
       F2         : Flow_Id   := Null_Flow_Id;
+      F3         : Flow_Id   := Null_Flow_Id;
       Tag        : String    := "";
       SRM_Ref    : String    := "";
       Tracefile  : String    := "")
@@ -223,7 +230,7 @@ package body Flow_Error_Messages is
       Msg2    : constant String :=
         (if SRM_Ref'Length > 0 then Msg & " (SPARK RM " & SRM_Ref & ")"
          else Msg);
-      Msg3    : constant String := Compute_Message (Msg2, N, F1, F2);
+      Msg3    : constant String := Compute_Message (Msg2, N, F1, F2, F3);
       Suppr   : String_Id := No_String;
       Slc     : constant Source_Ptr := Compute_Sloc (N);
       Msg_Id  : Message_Id := No_Message_Id;
@@ -264,7 +271,7 @@ package body Flow_Error_Messages is
          Flow_Msgs_Set.Insert (Unb_Msg);
 
          if Kind = Warning_Kind then
-            Suppr := Warning_Is_Suppressed (N, Msg3, F1, F2);
+            Suppr := Warning_Is_Suppressed (N, Msg3, F1, F2, F3);
          elsif Kind in Check_Kind then
             declare
                Is_Annot : Boolean;
@@ -315,6 +322,7 @@ package body Flow_Error_Messages is
       N         : Node_Id;
       F1        : Flow_Id               := Null_Flow_Id;
       F2        : Flow_Id               := Null_Flow_Id;
+      F3        : Flow_Id               := Null_Flow_Id;
       Tag       : String                := "";
       SRM_Ref   : String                := "";
       Tracefile : String                := "";
@@ -344,6 +352,7 @@ package body Flow_Error_Messages is
                       Suppressed => Suppressed,
                       F1         => F1,
                       F2         => F2,
+                      F3         => F3,
                       Tag        => Tag,
                       SRM_Ref    => SRM_Ref,
                       Tracefile  => Tracefile);
@@ -694,8 +703,9 @@ package body Flow_Error_Messages is
    function Warning_Is_Suppressed
      (N   : Node_Id;
       Msg : String;
-      F1   : Flow_Id := Null_Flow_Id;
-      F2   : Flow_Id := Null_Flow_Id)
+      F1  : Flow_Id := Null_Flow_Id;
+      F2  : Flow_Id := Null_Flow_Id;
+      F3  : Flow_Id := Null_Flow_Id)
      return String_Id is
 
       function Warning_Disabled_For_Entity return Boolean;
@@ -734,6 +744,13 @@ package body Flow_Error_Messages is
          if Present (F2)
            and then F2.Kind in Direct_Mapping | Record_Field
            and then Is_Entity_And_Has_Warnings_Off (Get_Direct_Mapping_Id (F2))
+         then
+            return True;
+         end if;
+
+         if Present (F3)
+           and then F3.Kind in Direct_Mapping | Record_Field
+           and then Is_Entity_And_Has_Warnings_Off (Get_Direct_Mapping_Id (F3))
          then
             return True;
          end if;

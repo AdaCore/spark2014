@@ -342,6 +342,13 @@ package Flow_Types is
       Equivalent_Keys => "=",
       "="             => Flow_Id_Sets."=");
 
+   package Flow_Id_Surjection is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Flow_Id,
+      Element_Type    => Flow_Id,
+      Hash            => Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
+
    package Ordered_Flow_Id_Sets is new Ada.Containers.Ordered_Sets
      (Element_Type => Flow_Id,
       "<"          => "<",

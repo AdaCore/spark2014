@@ -2498,126 +2498,8 @@ package body Flow.Analysis is
    -- Check_Contracts --
    ---------------------
 
-   procedure Check_Contracts (FA : in out Flow_Analysis_Graphs) is
-
-      function Find_Export
-        (E  : Entity_Id;
-         E2 : Entity_Id := Empty)
-         return Node_Id;
-      --  Looks through the depends aspect on FA.Analyzed_Entity and
-      --  returns the node which represents E in the dependency for E.
-      --  If E2 is present then we return the node which represents E2
-      --  on the list of entities that E depends on. If none can be
-      --  found, returns FA.Analyzed_Entity as a fallback.
-
-      -----------------
-      -- Find_Export --
-      -----------------
-
-      function Find_Export
-        (E  : Entity_Id;
-         E2 : Entity_Id := Empty)
-         return Node_Id
-      is
-         Depends_Contract : Node_Id;
-         Needle           : Node_Id := Empty;
-
-         function Proc (N : Node_Id) return Traverse_Result;
-         --  Searches dependency aspect for export E and sets needle
-         --  to the node, if found.
-
-         function Proc (N : Node_Id) return Traverse_Result is
-            Tmp, Tmp2 : Node_Id;
-            O, I      : Entity_Id;
-         begin
-            case Nkind (N) is
-               when N_Component_Association =>
-                  Tmp := First (Choices (N));
-                  while Present (Tmp) loop
-                     case Nkind (Tmp) is
-                        when N_Attribute_Reference =>
-                           O := Entity (Prefix (Tmp));
-                        when N_Identifier | N_Expanded_Name =>
-                           O := Entity (Tmp);
-                        when N_Null | N_Aggregate =>
-                           O := Empty;
-                        when others =>
-                           raise Program_Error;
-                     end case;
-                     if O = E then
-                        Needle := Tmp;
-                        if E2 = Empty then
-                           return Abandon;
-                        end if;
-
-                        --  Look for specific input E2 of export E
-                        Tmp2 := Expression (Parent (Tmp));
-
-                        case Nkind (Tmp2) is
-                           when N_Attribute_Reference =>
-                              I := Entity (Prefix (Tmp2));
-                           when N_Identifier | N_Expanded_Name =>
-                              I := Entity (Tmp2);
-                           when N_Null =>
-                              I := Empty;
-                           when N_Aggregate =>
-                              Tmp2 := First (Expressions (Tmp2));
-
-                              while Present (Tmp2) loop
-                                 case Nkind (Tmp2) is
-                                    when N_Attribute_Reference =>
-                                       I := Entity (Prefix (Tmp2));
-                                    when N_Identifier | N_Expanded_Name =>
-                                       I := Entity (Tmp2);
-                                    when N_Null | N_Aggregate =>
-                                       I := Empty;
-                                    when others =>
-                                       raise Program_Error;
-                                 end case;
-                                 if I = E2 then
-                                    Needle := Tmp2;
-                                    return Abandon;
-                                 end if;
-                                 Tmp2 := Next (Tmp2);
-                              end loop;
-                           when others =>
-                              raise Program_Error;
-                        end case;
-
-                        if I = E2 then
-                           Needle := Tmp2;
-                           return Abandon;
-                        end if;
-
-                     end if;
-                     Tmp := Next (Tmp);
-                  end loop;
-                  return Skip;
-               when others =>
-                  null;
-            end case;
-            return OK;
-         end Proc;
-
-         procedure Find_Export_Internal is new Traverse_Proc (Proc);
-
-      begin
-         if Present (FA.Refined_Depends_N) then
-            Depends_Contract := FA.Refined_Depends_N;
-         elsif Present (FA.Depends_N) then
-            Depends_Contract := FA.Depends_N;
-         else
-            return FA.Analyzed_Entity;
-         end if;
-
-         Find_Export_Internal (Depends_Contract);
-         if Present (Needle) then
-            return Needle;
-         else
-            return FA.Analyzed_Entity;
-         end if;
-      end Find_Export;
-
+   procedure Check_Contracts (FA : in out Flow_Analysis_Graphs)
+   is
       User_Deps   : Dependency_Maps.Map;
       Actual_Deps : Dependency_Maps.Map;
 
@@ -2757,8 +2639,9 @@ package body Flow.Analysis is
                              (FA   => FA,
                               Msg  =>
                                 "missing dependency ""%'Result => %""",
-                              N    => Find_Export
-                                (Get_Direct_Mapping_Id (F_Out)),
+                              N    => Search_Depends
+                                (FA.Analyzed_Entity,
+                                 Get_Direct_Mapping_Id (F_Out)),
                               F1   => F_Out,
                               F2   => Missing_Var,
                               Tag  => "depends_missing",
@@ -2767,8 +2650,9 @@ package body Flow.Analysis is
                            Error_Msg_Flow
                              (FA   => FA,
                               Msg  => "missing dependency ""% => %""",
-                              N    => Find_Export
-                                (Get_Direct_Mapping_Id (F_Out)),
+                              N    => Search_Depends
+                                (FA.Analyzed_Entity,
+                                 Get_Direct_Mapping_Id (F_Out)),
                               F1   => F_Out,
                               F2   => Missing_Var,
                               Tag  => "depends_missing",
@@ -2797,8 +2681,9 @@ package body Flow.Analysis is
                      Error_Msg_Flow
                        (FA   => FA,
                         Msg  => "incorrect dependency ""%'Result => %""",
-                        N    => Find_Export
-                          (Get_Direct_Mapping_Id (F_Out),
+                        N    => Search_Depends
+                          (FA.Analyzed_Entity,
+                           Get_Direct_Mapping_Id (F_Out),
                            Get_Direct_Mapping_Id (Wrong_Var)),
                         F1   => F_Out,
                         F2   => Wrong_Var,
@@ -2808,8 +2693,9 @@ package body Flow.Analysis is
                      Error_Msg_Flow
                        (FA   => FA,
                         Msg  => "incorrect dependency ""% => %""",
-                        N    => Find_Export
-                          (Get_Direct_Mapping_Id (F_Out),
+                        N    => Search_Depends
+                          (FA.Analyzed_Entity,
+                           Get_Direct_Mapping_Id (F_Out),
                            Get_Direct_Mapping_Id (Wrong_Var)),
                         F1   => F_Out,
                         F2   => Wrong_Var,

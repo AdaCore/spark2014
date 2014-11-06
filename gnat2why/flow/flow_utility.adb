@@ -3044,4 +3044,120 @@ package body Flow_Utility is
       end case;
    end Extensions_Visible;
 
+   --------------------
+   -- Search_Depends --
+   --------------------
+
+   function Search_Depends (Subprogram : Entity_Id;
+                            Output     : Entity_Id;
+                            Input      : Entity_Id := Empty)
+                            return Node_Id
+   is
+
+      Depends_Contract : Node_Id;
+      Needle           : Node_Id := Empty;
+
+      function Proc (N : Node_Id) return Traverse_Result;
+      --  Searches dependency aspect for export E and sets needle
+      --  to the node, if found.
+
+      function Proc (N : Node_Id) return Traverse_Result is
+         Tmp, Tmp2 : Node_Id;
+         O, I      : Entity_Id;
+      begin
+         case Nkind (N) is
+            when N_Component_Association =>
+               Tmp := First (Choices (N));
+               while Present (Tmp) loop
+                  case Nkind (Tmp) is
+                     when N_Attribute_Reference =>
+                        O := Entity (Prefix (Tmp));
+                     when N_Identifier | N_Expanded_Name =>
+                        O := Entity (Tmp);
+                     when N_Null | N_Aggregate =>
+                        O := Empty;
+                     when others =>
+                        raise Program_Error;
+                  end case;
+                  if O = Output then
+                     Needle := Tmp;
+                     if No (Input) then
+                        return Abandon;
+                     end if;
+
+                     --  Look for specific input Input of export
+                     Tmp2 := Expression (Parent (Tmp));
+
+                     case Nkind (Tmp2) is
+                        when N_Attribute_Reference =>
+                           I := Entity (Prefix (Tmp2));
+                        when N_Identifier | N_Expanded_Name =>
+                           I := Entity (Tmp2);
+                        when N_Null =>
+                           I := Empty;
+                        when N_Aggregate =>
+                           Tmp2 := First (Expressions (Tmp2));
+
+                           while Present (Tmp2) loop
+                              case Nkind (Tmp2) is
+                                 when N_Attribute_Reference =>
+                                    I := Entity (Prefix (Tmp2));
+                                 when N_Identifier | N_Expanded_Name =>
+                                    I := Entity (Tmp2);
+                                 when N_Null | N_Aggregate =>
+                                    I := Empty;
+                                 when others =>
+                                    raise Program_Error;
+                              end case;
+                              if I = Input then
+                                 Needle := Tmp2;
+                                 return Abandon;
+                              end if;
+                              Tmp2 := Next (Tmp2);
+                           end loop;
+                        when others =>
+                           raise Program_Error;
+                     end case;
+
+                     if I = Input then
+                        Needle := Tmp2;
+                        return Abandon;
+                     end if;
+
+                  end if;
+                  Tmp := Next (Tmp);
+               end loop;
+               return Skip;
+            when others =>
+               null;
+         end case;
+         return OK;
+      end Proc;
+
+      procedure Find_Export_Internal is new Traverse_Proc (Proc);
+
+   begin
+      declare
+         Body_N : constant Node_Id :=
+           (if Acts_As_Spec (SPARK_Util.Get_Subprogram_Body (Subprogram))
+            then Subprogram
+            else Get_Body (Subprogram));
+      begin
+         Depends_Contract := Get_Pragma (Body_N, Pragma_Refined_Depends);
+      end;
+      if No (Depends_Contract) then
+         Depends_Contract := Get_Pragma (Subprogram, Pragma_Depends);
+      end if;
+      if No (Depends_Contract) then
+         return Subprogram;
+      end if;
+
+      Find_Export_Internal (Depends_Contract);
+      if Present (Needle) then
+         return Needle;
+      else
+         return Subprogram;
+      end if;
+   end Search_Depends;
+
 end Flow_Utility;
