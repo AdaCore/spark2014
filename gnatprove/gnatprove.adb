@@ -348,6 +348,10 @@ procedure Gnatprove is
          Args.Append (To_String (Proof));
       end if;
 
+      if not Lazy then
+         Args.Append ("--prove-all");
+      end if;
+
       Args.Append ("-j");
       Args.Append (Int_Image (Parallel));
 

@@ -102,8 +102,10 @@ package Configuration is
    Warning_Mode : Opt.Warning_Mode_Type := Opt.Normal;
    Report       : Report_Mode_Type := GPR_Fail;
    --  Silent reporting is the default
+
    Proof        : Proof_Mode;
-   --  The default proof mode depends on other switches
+   Lazy         : Boolean;
+
    Parallel     : aliased Integer;
    --  The number of parallel processes. Specified with -j.
    Timeout      : aliased Integer;

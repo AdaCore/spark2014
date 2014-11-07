@@ -61,6 +61,13 @@ package body Configuration is
    --  This is the project environment used to load the project. It may be
    --  modified before loading it, e.g. -X switches
 
+   procedure Abort_Msg (Config    : Command_Line_Configuration;
+                        Msg       : String;
+                        With_Help : Boolean)
+     with No_Return;
+   --  Stop the program, output the message and the help message when
+   --  requested, then exit
+
    procedure Clean_Up (Tree : Project_Tree);
    --  Deletes generated "gnatprove" sub-directories in all object directories
    --  of the project.
@@ -100,6 +107,13 @@ package body Configuration is
    procedure Print_Errors (S : String);
    --  The String in argument is an error message from gnatcoll. Print it on
    --  stderr with a prefix
+
+   procedure Set_Proof_Mode
+     (Config : Command_Line_Configuration;
+      Input  : String;
+      Proof  : out Proof_Mode;
+      Lazy   : out Boolean);
+   --  parse the "--proof" option into the two values "proof" and "lazy"
 
    Usage_Message : constant String :=
      "-Pproj [files] [switches] [-cargs switches]";
@@ -187,7 +201,8 @@ ASCII.LF &
      ASCII.LF &
 " --dbg-proof-only    Disable flow analysis (possibly unsound results)" &
 ASCII.LF &
-"     --proof=p       Set the proof mode (p=per_check*, per_path, progressive)"
+"     --proof=p[:l]   Set the proof mode (p=per_check*, per_path, progressive)"
+& " (l=lazy*, all)"
 & ASCII.LF &
 "     --RTS=dir       Specify the Ada runtime name/location" &
 ASCII.LF &
@@ -215,6 +230,15 @@ ASCII.LF &
 "                   paths when needed" &
 ASCII.LF &
 ASCII.LF &
+" * Lazy mode values" &
+ASCII.LF &
+"   . lazy        - Stop at first unproved VC for each check "
+& "(most suited for fully automatic proof) (default)" &
+ ASCII.LF &
+"   . all         - Attempt to prove all VCs "
+& "(most suited for combination of automatic and manual proof)" &
+ASCII.LF &
+ASCII.LF &
 " * Prover name values" &
 ASCII.LF &
 "   (Provers marked with [steps] support the --steps switch.)" &
@@ -226,27 +250,25 @@ ASCII.LF &
 "   . ...         - Any other prover configured in your .why3.conf file" &
 ASCII.LF;
 
-   -------------------------
-   -- Configure_Proof_Dir --
-   -------------------------
+   ---------------
+   -- Abort_Msg --
+   ---------------
 
-   procedure Configure_Proof_Dir (Proj_Type : Project_Type) is
-      Attr : constant Attribute_Pkg_String := Build ("Prove", "Proof_Dir");
+   procedure Abort_Msg (Config    : Command_Line_Configuration;
+                        Msg       : String;
+                        With_Help : Boolean) is
    begin
-      if Has_Attribute (Proj_Type, Attr) then
-         declare
-            Dir_Name : constant Virtual_File :=
-              Create (Proj_Type.Project_Path.Dir_Name);
-            File_Name : constant String :=
-              Attribute_Value (Proj_Type, Attr, Default => "");
-            Full_Name : constant Virtual_File :=
-              Create_From_Dir (Dir_Name, +File_Name);
-         begin
-            Full_Name.Normalize_Path;
-            Proof_Dir := new String'(Full_Name.Display_Full_Name);
-         end;
+      if Msg /= "" then
+         Ada.Text_IO.Put_Line (Ada.Text_IO.Standard_Error, Msg);
       end if;
-   end Configure_Proof_Dir;
+      if With_Help then
+         Display_Help (Config);
+      else
+         Ada.Text_IO.Put_Line
+           ("Try ""gnatprove --help"" for more information.");
+      end if;
+      GNAT.OS_Lib.OS_Exit (1);
+   end Abort_Msg;
 
    --------------
    -- Clean_Up --
@@ -293,6 +315,28 @@ ASCII.LF;
          Next (Iter);
       end loop;
    end Clean_Up;
+
+   -------------------------
+   -- Configure_Proof_Dir --
+   -------------------------
+
+   procedure Configure_Proof_Dir (Proj_Type : Project_Type) is
+      Attr : constant Attribute_Pkg_String := Build ("Prove", "Proof_Dir");
+   begin
+      if Has_Attribute (Proj_Type, Attr) then
+         declare
+            Dir_Name : constant Virtual_File :=
+              Create (Proj_Type.Project_Path.Dir_Name);
+            File_Name : constant String :=
+              Attribute_Value (Proj_Type, Attr, Default => "");
+            Full_Name : constant Virtual_File :=
+              Create_From_Dir (Dir_Name, +File_Name);
+         begin
+            Full_Name.Normalize_Path;
+            Proof_Dir := new String'(Full_Name.Display_Full_Name);
+         end;
+      end if;
+   end Configure_Proof_Dir;
 
    ----------------------
    -- Handle_Scenarios --
@@ -457,32 +501,9 @@ ASCII.LF;
    procedure Read_Command_Line (Tree : out Project_Tree) is
       Config : Command_Line_Configuration;
 
-      procedure Abort_Msg (Msg : String; With_Help : Boolean)
-         with No_Return;
-      --  Stop the program, output the message and the help message when
-      --  requested, then exit
-
       function Init return Project_Tree;
       --  Load the project file; This function requires the project file to be
       --  present.
-
-      ---------------
-      -- Abort_Msg --
-      ---------------
-
-      procedure Abort_Msg (Msg : String; With_Help : Boolean) is
-      begin
-         if Msg /= "" then
-            Ada.Text_IO.Put_Line (Ada.Text_IO.Standard_Error, Msg);
-         end if;
-         if With_Help then
-            Display_Help (Config);
-         else
-            Ada.Text_IO.Put_Line
-              ("Try ""gnatprove --help"" for more information.");
-         end if;
-         GNAT.OS_Lib.OS_Exit (1);
-      end Abort_Msg;
 
       ----------
       -- Init --
@@ -502,7 +523,7 @@ ASCII.LF;
                                           Is_List => True);
          begin
             if Sswitches /= "" then
-               Abort_Msg (Sswitches, With_Help => False);
+               Abort_Msg (Config, Sswitches, With_Help => False);
             end if;
          end;
 
@@ -511,7 +532,7 @@ ASCII.LF;
               Register_New_Attribute ("Proof_Dir", "Prove");
          begin
             if Sproof_dir /= "" then
-               Abort_Msg (Sproof_dir, With_Help => False);
+               Abort_Msg (Config, Sproof_dir, With_Help => False);
             end if;
          end;
 
@@ -521,7 +542,7 @@ ASCII.LF;
                Proj_Env,
                Errors => Print_Errors'Access);
          else
-            Abort_Msg ("No project file is given", With_Help => False);
+            Abort_Msg (Config, "No project file is given", With_Help => False);
          end if;
          return Tree;
       end Init;
@@ -545,7 +566,7 @@ ASCII.LF;
       --  if no arguments have been given, print help message and exit
 
       if Com_Lin'Length = 0 then
-         Abort_Msg ("", With_Help => True);
+         Abort_Msg (Config, "", With_Help => True);
       end if;
 
       --  We parse the command line *twice*. The reason is that before parsing
@@ -795,7 +816,8 @@ ASCII.LF;
       elsif MMode_Input.all = "all" or else MMode_Input.all = "" then
          MMode := GPM_All;
       else
-         Abort_Msg ("mode should be one of (check | prove | flow | all)",
+         Abort_Msg (Config,
+                    "mode should be one of (check | prove | flow | all)",
                     With_Help => False);
       end if;
 
@@ -811,7 +833,8 @@ ASCII.LF;
       then
          Warning_Mode := Opt.Normal;
       else
-         Abort_Msg ("warnings should be one of (off | continue | error)",
+         Abort_Msg (Config,
+                    "warnings should be one of (off | continue | error)",
                     With_Help => False);
       end if;
 
@@ -822,36 +845,16 @@ ASCII.LF;
       elsif Report_Input.all = "statistics" then
          Report := GPR_Statistics;
       else
-         Abort_Msg ("report should be one of (fail | all | statistics)",
+         Abort_Msg (Config,
+                    "report should be one of (fail | all | statistics)",
                     With_Help => False);
       end if;
 
-      if Proof_Input.all = "progressive" then
-         Proof := Then_Split;
-      elsif Proof_Input.all = "per_path" then
-         Proof := Path_WP;
-      elsif Proof_Input.all = "per_check" then
-         Proof := No_Split;
-
-      --  Hidden debugging values
-
-      elsif Proof_Input.all = "no_wp" then
-         Proof := No_WP;
-      elsif Proof_Input.all = "all_split" then
-         Proof := All_Split;
-
-      --  The default proof mode is per_check
-
-      elsif Proof_Input.all = "" then
-         Proof := No_Split;
-      else
-         Abort_Msg
-           ("proof mode should be one of (per_check | per_path | progressive)",
-            With_Help => False);
-      end if;
+      Set_Proof_Mode (Config, Proof_Input.all, Proof,  Lazy);
 
       if Flow_Extra_Debug and not Debug then
-         Abort_Msg ("extra debugging for flow analysis requires -d",
+         Abort_Msg (Config,
+                    "extra debugging for flow analysis requires -d",
                     With_Help => False);
       end if;
 
@@ -881,7 +884,8 @@ ASCII.LF;
                end loop;
                if Index = Limit_String.all'Last then
                   Abort_Msg
-                    ("limit-line: incorrect line specification" &
+                    (Config,
+                     "limit-line: incorrect line specification" &
                        " - missing ':' followed by operand",
                      With_Help => False);
                end if;
@@ -897,7 +901,9 @@ ASCII.LF;
       begin
          Prepare_Prover_Lib (Prover_Valid);
          if not Prover_Valid then
-            Abort_Msg ("Problem with the chosen prover", With_Help => False);
+            Abort_Msg (Config,
+                       "Problem with the chosen prover",
+                       With_Help => False);
          end if;
       end;
 
@@ -907,7 +913,8 @@ ASCII.LF;
       when Invalid_Switch | Exit_From_Command_Line =>
          GNAT.OS_Lib.OS_Exit (1);
       when Invalid_Parameter =>
-         Abort_Msg ("No parameter given to switch -" & Full_Switch,
+         Abort_Msg (Config,
+                    "No parameter given to switch -" & Full_Switch,
                     With_Help => False);
    end Read_Command_Line;
 
@@ -957,6 +964,70 @@ ASCII.LF;
       end loop;
    end Sanitize_File_List;
 
+   --------------------
+   -- Set_Proof_Mode --
+   --------------------
+
+   procedure Set_Proof_Mode
+     (Config : Command_Line_Configuration;
+      Input  : String;
+      Proof  : out Proof_Mode;
+      Lazy   : out Boolean)
+   is
+      Find_Colon : Integer := 0;
+   begin
+      for I in Input'Range loop
+         if Input (I) = ':' then
+            Find_Colon := I;
+            exit;
+         end if;
+      end loop;
+      declare
+         Proof_Input : constant String :=
+           (if Find_Colon /= 0 then Input (Input'First .. Find_Colon - 1)
+            else Input);
+         Lazy_Input : constant String :=
+           (if Find_Colon /= 0 then Input (Find_Colon + 1 .. Input'Last)
+            else "");
+      begin
+         if Proof_Input = "progressive" then
+            Proof := Then_Split;
+         elsif Proof_Input = "per_path" then
+            Proof := Path_WP;
+         elsif Proof_Input = "per_check" then
+            Proof := No_Split;
+
+            --  Hidden debugging values
+
+         elsif Proof_Input = "no_wp" then
+            Proof := No_WP;
+         elsif Proof_Input = "all_split" then
+            Proof := All_Split;
+
+            --  The default proof mode is per_check
+
+         elsif Proof_Input = "" then
+            Proof := No_Split;
+         else
+            Abort_Msg
+              (Config,
+               "proof mode should be one of " &
+               "(per_check | per_path | progressive)",
+               With_Help => False);
+         end if;
+
+         if Lazy_Input = "all" then
+            Lazy := False;
+         elsif Lazy_Input = "lazy" or else Lazy_Input = "" then
+            Lazy := True;
+         else
+            Abort_Msg
+              (Config,
+               "lazy mode should be one of (lazy | all)",
+               With_Help => False);
+         end if;
+      end;
+   end Set_Proof_Mode;
    -----------------------
    -- SPARK_Report_File --
    -----------------------

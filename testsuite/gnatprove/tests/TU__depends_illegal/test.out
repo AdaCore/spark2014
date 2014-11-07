@@ -43,6 +43,8 @@ depends_illegal_3.adb:19:20: medium: overflow check might fail
 depends_illegal_3.adb:23:24: high: "Par2" is not initialized in "P2"
 depends_illegal_3.adb:33:15: high: "Par2" is not initialized
 depends_illegal_3.adb:34:15: high: "Par2" is not initialized
+depends_illegal_3.adb:38:14: medium: missing dependency "Par2 => Par2"
+depends_illegal_3.adb:38:14: medium: missing dependency "Y => Y"
 depends_illegal_3.adb:38:18: warning: unused variable "Par1"
 depends_illegal_3.adb:38:35: warning: "Par2" is not modified, could be "in"
 depends_illegal_3.adb:38:35: warning: unused variable "Par2"
@@ -51,8 +53,6 @@ depends_illegal_3.adb:43:33: warning: "Y" is not modified, could be "input"
 depends_illegal_3.adb:43:33: warning: unused global "Y"
 depends_illegal_3.adb:44:11: medium: incorrect dependency "null => Par2"
 depends_illegal_3.adb:44:11: medium: incorrect dependency "null => Y"
-depends_illegal_3.adb:44:24: medium: missing dependency "Par2 => Par2"
-depends_illegal_3.adb:44:30: medium: missing dependency "Y => Y"
 depends_illegal_3.adb:60:07: high: "X" must be listed in the Depends aspect of "P4" (SPARK RM 6.1.4(13))
 depends_illegal_3.adb:75:23: medium: missing dependency "P2 => G_Var1"
 depends_illegal_3.adb:75:23: medium: missing dependency "P2 => G_Var3"
