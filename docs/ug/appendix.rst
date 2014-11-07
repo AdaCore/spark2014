@@ -52,7 +52,7 @@ Command-line Options
  gnatprove advanced switches:
  -d, --debug             Debug mode
  --flow-debug            Extra debugging for flow analysis (requires graphviz)
-     --proof=p           Set the proof mode (p=per_check*, per_path, progressive)
+     --proof=p[:l]       Set the proof mode (p=per_check*, per_path, progressive) (l=lazy*, all)
      --RTS=dir           Specify the Ada runtime name/location
      --pedantic          Use a strict interpretation of the Ada standard
      --steps=nnn         Set the maximum number of proof steps (prover-specific)
@@ -66,6 +66,12 @@ Command-line Options
    . per_path    - Generate one formula per path for each check
    . progressive - Start with one formula per check, then split into
                    paths when needed
+
+ * Lazy mode values
+   . lazy        - Stop at first unproved VC for each check
+                    (most suited for fully automatic proof) (default)
+   . all         - Attempt to prove all VCs
+                   (most suited for combination of automatic and manual proof)
 
  * Prover name values
    (Provers marked with [steps] support the --steps switch.)

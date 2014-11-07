@@ -206,6 +206,16 @@ single time on the entire check is tried, and only if the check is not proved,
 then other techniques that progressively consider each path in isolation
 are tried.
 
+The proof mode set with ``--proof`` can be extended with a qualifier ``all``
+or ``lazy``, so that the entire option may for example look like this:
+``--proof=progressive:all``.  With this qualifier, on can select if proof
+should stop at the first unproved part (to save time) of a check or should
+continue attempting to prove the other parts (to identify more clearly which
+part really is unproved). The former is most suited for fully automatic proof,
+it is the default value, and can be explicitly selected with ``lazy``. The
+latter is most suited for combination of automatic and manual proof and can be
+selected with ``all``.
+
 By default, |GNATprove| avoids reanalyzing unchanged files, on a
 per-unit basis. This mechanism can be disabled with the option ``-f``.
 
