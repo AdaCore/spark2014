@@ -1,0 +1,154 @@
+sorting.adb:28:18: medium: overflow check might fail
+sorting.adb:28:37: medium: overflow check might fail
+sorting.adb:30:18: medium: overflow check might fail
+sorting.adb:30:37: medium: overflow check might fail
+sorting.adb:31:15: info: postcondition proved
+sorting.adb:31:24: info: range check proved
+sorting.adb:32:38: medium: overflow check might fail
+sorting.adb:33:16: info: index check proved
+sorting.adb:33:32: medium: overflow check might fail
+sorting.adb:33:36: info: index check proved
+sorting.adb:33:36: info: overflow check proved
+sorting.adb:34:42: medium: overflow check might fail
+sorting.adb:35:16: info: index check proved
+sorting.adb:35:28: info: index check proved
+sorting.adb:38:09: info: range check proved
+sorting.adb:40:07: info: loop invariant initialization proved
+sorting.adb:40:07: info: loop invariant preservation proved
+sorting.adb:41:18: info: range check proved
+sorting.adb:42:41: info: overflow check proved
+sorting.adb:43:19: info: index check proved
+sorting.adb:43:35: medium: overflow check might fail
+sorting.adb:43:39: info: index check proved
+sorting.adb:43:39: info: overflow check proved
+sorting.adb:44:45: info: overflow check proved
+sorting.adb:45:19: info: index check proved
+sorting.adb:45:38: info: index check proved
+sorting.adb:47:18: info: index check proved
+sorting.adb:47:18: info: overflow check proved
+sorting.adb:47:37: info: index check proved
+sorting.adb:47:37: info: overflow check proved
+sorting.adb:49:18: info: range check proved
+sorting.adb:50:41: medium: overflow check might fail
+sorting.adb:50:46: info: overflow check proved
+sorting.adb:51:19: info: index check proved
+sorting.adb:51:35: medium: overflow check might fail
+sorting.adb:51:39: info: index check proved
+sorting.adb:51:39: info: overflow check proved
+sorting.adb:52:45: medium: overflow check might fail
+sorting.adb:52:50: info: overflow check proved
+sorting.adb:53:16: medium: assertion might fail, requires B (J) = B'Loop_Entry (J)
+sorting.adb:53:19: info: index check proved
+sorting.adb:53:38: info: index check proved
+sorting.adb:68:40: medium: overflow check might fail
+sorting.adb:68:50: medium: overflow check might fail
+sorting.adb:68:70: medium: overflow check might fail
+sorting.adb:69:17: medium: overflow check might fail
+sorting.adb:69:51: medium: overflow check might fail
+sorting.adb:70:61: medium: overflow check might fail
+sorting.adb:73:37: info: overflow check proved
+sorting.adb:74:09: medium: postcondition might fail, requires Perm (A'Old, A, A_First, Length1 + Length2)
+sorting.adb:74:42: info: overflow check proved
+sorting.adb:75:18: info: range check proved
+sorting.adb:76:44: medium: overflow check might fail
+sorting.adb:76:54: medium: overflow check might fail
+sorting.adb:77:18: info: index check proved
+sorting.adb:77:30: info: index check proved
+sorting.adb:87:23: info: range check proved
+sorting.adb:87:33: info: overflow check proved
+sorting.adb:88:41: medium: overflow check might fail
+sorting.adb:88:53: info: range check proved
+sorting.adb:89:28: info: range check proved
+sorting.adb:89:44: medium: overflow check might fail
+sorting.adb:89:51: info: overflow check proved
+sorting.adb:89:64: info: overflow check proved
+sorting.adb:89:64: info: range check proved
+sorting.adb:90:11: medium: loop invariant might fail after first iteration, requires Le_Array (B, A, B'First, A_First + Length1 + J, I + J, Length2 - J)
+sorting.adb:90:28: info: range check proved
+sorting.adb:90:44: medium: overflow check might fail
+sorting.adb:90:54: medium: overflow check might fail
+sorting.adb:90:61: info: overflow check proved
+sorting.adb:90:74: info: overflow check proved
+sorting.adb:90:74: info: range check proved
+sorting.adb:91:11: medium: loop invariant might fail in first iteration, requires A = A'loop_entry
+sorting.adb:98:43: info: index check proved
+sorting.adb:98:43: info: overflow check proved
+sorting.adb:98:63: info: overflow check proved
+sorting.adb:98:74: info: index check proved
+sorting.adb:98:74: info: overflow check proved
+sorting.adb:100:22: info: index check proved
+sorting.adb:100:22: info: overflow check proved
+sorting.adb:100:27: info: overflow check proved
+sorting.adb:100:47: info: index check proved
+sorting.adb:100:47: info: overflow check proved
+sorting.adb:101:18: info: overflow check proved
+sorting.adb:103:22: info: index check proved
+sorting.adb:103:22: info: overflow check proved
+sorting.adb:103:27: info: overflow check proved
+sorting.adb:103:48: info: overflow check proved
+sorting.adb:103:59: info: index check proved
+sorting.adb:103:59: info: overflow check proved
+sorting.adb:104:18: info: overflow check proved
+sorting.adb:108:05: info: precondition proved
+sorting.adb:108:18: info: range check proved
+sorting.adb:108:34: info: overflow check proved
+sorting.adb:126:19: medium: overflow check might fail
+sorting.adb:127:33: medium: overflow check might fail
+sorting.adb:127:33: medium: range check might fail
+sorting.adb:127:37: info: overflow check proved
+sorting.adb:127:49: medium: range check might fail
+sorting.adb:127:65: medium: overflow check might fail
+sorting.adb:127:69: info: overflow check proved
+sorting.adb:128:61: medium: loop invariant might fail after first iteration, requires L >= 1
+sorting.adb:128:61: medium: loop invariant might fail in first iteration, requires L >= 1
+sorting.adb:133:10: info: loop invariant initialization proved
+sorting.adb:135:35: info: division check proved
+sorting.adb:135:42: medium: overflow check might fail
+sorting.adb:137:22: medium: overflow check might fail
+sorting.adb:137:26: medium: overflow check might fail
+sorting.adb:138:36: medium: overflow check might fail
+sorting.adb:138:36: medium: range check might fail
+sorting.adb:138:40: info: overflow check proved
+sorting.adb:138:44: info: overflow check proved
+sorting.adb:138:56: medium: range check might fail
+sorting.adb:138:64: medium: overflow check might fail
+sorting.adb:138:76: medium: overflow check might fail
+sorting.adb:138:80: info: overflow check proved
+sorting.adb:138:84: info: overflow check proved
+sorting.adb:140:22: medium: overflow check might fail
+sorting.adb:140:35: info: overflow check proved
+sorting.adb:141:36: medium: overflow check might fail
+sorting.adb:141:40: medium: overflow check might fail
+sorting.adb:141:40: medium: range check might fail
+sorting.adb:141:44: info: overflow check proved
+sorting.adb:141:56: medium: range check might fail
+sorting.adb:141:72: medium: overflow check might fail
+sorting.adb:141:76: medium: overflow check might fail
+sorting.adb:141:80: info: overflow check proved
+sorting.adb:142:64: medium: loop invariant might fail after first iteration, requires L >= 1
+sorting.adb:145:36: medium: overflow check might fail
+sorting.adb:147:22: info: range check proved
+sorting.adb:147:39: info: overflow check proved
+sorting.adb:147:44: info: overflow check proved
+sorting.adb:148:10: medium: precondition might fail
+sorting.adb:148:31: medium: overflow check might fail
+sorting.adb:149:17: medium: overflow check might fail
+sorting.adb:149:22: medium: overflow check might fail
+sorting.adb:154:19: medium: overflow check might fail
+sorting.adb:154:23: medium: overflow check might fail
+sorting.adb:155:14: medium: assertion might fail, requires Sorted (A, A_First + J * L * 2, Natural'min)
+sorting.adb:155:33: medium: overflow check might fail
+sorting.adb:155:33: medium: range check might fail
+sorting.adb:155:37: info: overflow check proved
+sorting.adb:155:41: info: overflow check proved
+sorting.adb:155:53: medium: range check might fail
+sorting.adb:155:61: medium: overflow check might fail
+sorting.adb:155:73: medium: overflow check might fail
+sorting.adb:155:77: info: overflow check proved
+sorting.adb:155:81: info: overflow check proved
+sorting.adb:158:24: info: overflow check proved
+sorting.adb:159:14: info: overflow check proved
+sorting.adb:159:14: info: range check proved
+sorting.ads:23:54: medium: overflow check might fail
+sorting.ads:23:73: medium: overflow check might fail
+sorting.ads:24:23: medium: postcondition might fail, requires Sorted (A, A_First, Length)
