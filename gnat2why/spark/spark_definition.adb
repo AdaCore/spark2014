@@ -2166,7 +2166,7 @@ package body SPARK_Definition is
             --  occurrence of these variables/states.
 
             Collect_Subprogram_Inputs_Outputs
-              (Id, Subp_Inputs, Subp_Outputs, Global_Seen);
+              (Id, False, Subp_Inputs, Subp_Outputs, Global_Seen);
             Mark_Global_Items (Subp_Inputs);
             Mark_Global_Items (Subp_Outputs);
          end Mark_Subprogram_Specification;
