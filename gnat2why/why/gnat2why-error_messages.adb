@@ -380,6 +380,18 @@ package body Gnat2Why.Error_Messages is
          for Index in 1 .. Length (Results) loop
             Handle_Result (Get (Results, Index));
          end loop;
+         if Has_Field (File, "warnings") then
+            declare
+               Warnings : constant JSON_Array := Get (Get (File, "warnings"));
+            begin
+               for Index in 1 .. Length (Warnings) loop
+
+                  --  ??? Use some other mechanism to print those messages?
+
+                  Ada.Text_IO.Put_Line (Get (Get (Warnings, Index)));
+               end loop;
+            end;
+         end if;
       end;
    exception
       when Invalid_JSON_Stream =>
