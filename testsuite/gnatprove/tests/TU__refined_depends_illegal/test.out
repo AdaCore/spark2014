@@ -4,8 +4,8 @@ refined_depends_illegal.adb:33:14: aspect "Refined_Depends" cannot apply to a st
 refined_depends_illegal.adb:50:48: global "X" must appear in exactly one output dependence list
 refined_depends_illegal.adb:59:51: global "Var2" must appear in at least one input dependence list
 refined_depends_illegal.adb:60:44: global "Var" must appear in exactly one output dependence list
-refined_depends_illegal.adb:69:39: unmatched or extra clause in dependence refinement
-refined_depends_illegal.adb:70:39: unmatched or extra clause in dependence refinement
+refined_depends_illegal.adb:69:14: constituent "Z" is missing in output list
+refined_depends_illegal.adb:69:14: output state "State2" must be replaced by all its constituents in dependence refinement
 refined_depends_illegal.adb:79:48: duplicate use of item "W"
 refined_depends_illegal.adb:87:48: cannot mix null and non-null dependency items
 refined_depends_illegal_2.adb:11:16: medium: overflow check might fail
