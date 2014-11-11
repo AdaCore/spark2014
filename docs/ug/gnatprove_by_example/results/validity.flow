@@ -1,0 +1,2 @@
+validity.adb:11:22: warning: attribute Valid is assumed to return True
+validity.adb:13:22: warning: attribute Valid is assumed to return True
