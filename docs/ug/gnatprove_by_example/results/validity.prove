@@ -1,0 +1,4 @@
+validity.adb:11:07: info: assertion proved
+validity.adb:11:22: warning: attribute Valid is assumed to return True
+validity.adb:13:07: info: assertion proved
+validity.adb:13:22: warning: attribute Valid is assumed to return True

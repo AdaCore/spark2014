@@ -138,16 +138,16 @@ Examine File` menu, shows that there are no reads of uninitialized data.
 Writing Functional Contracts
 ----------------------------
 
-We now have a valid SPARK program. It is not yet very interesting |SPARK|
-code though, as it does not contain any contracts, which are necessary to
-be able to apply formal verification modularly on each subprogram,
-independently of the implementation of other subprograms. The precondition
-constrains the value of input parameters, while the postcondition states
-desired properties of the result of the function. See :ref:`Preconditions
-and Postconditions` for more details. Here, we can require in the
-precondition that callers of ``Search`` always pass a non-negative value
-for parameter ``Val``, and we can state that, when the search succeeds, the
-index returned points to the desired value in the array:
+We now have a valid SPARK program. It is not yet very interesting |SPARK| code
+though, as it does not contain any contracts, which are necessary to be able to
+apply formal verification modularly on each subprogram, independently of the
+implementation of other subprograms. The precondition constrains the value of
+input parameters, while the postcondition states desired properties of the
+result of the function. See :ref:`Preconditions` and :ref:`Postconditions` for
+more details. Here, we can require in the precondition that callers of
+``Search`` always pass a non-negative value for parameter ``Val``, and we can
+state that, when the search succeeds, the index returned points to the desired
+value in the array:
 
 .. literalinclude:: examples/linear_search_contract/linear_search.ads
    :language: ada

@@ -3,9 +3,9 @@ DUMMY:=$(shell mkdir -p flow prove)
 .PHONY: gnatprove flow prove results clean force
 
 RESULTS=$(PWD)/results
-ALL=$(wildcard examples/*.adb)
-ALL_FLOW_MSG=$(patsubst examples/%.adb,$(RESULTS)/%.flow,$(ALL))
-ALL_PROVE_MSG=$(patsubst examples/%.adb,$(RESULTS)/%.prove,$(ALL))
+ALL=$(wildcard examples/*.ad?)
+ALL_FLOW_MSG=$(sort $(patsubst examples/%.ads,$(RESULTS)/%.flow,$(patsubst examples/%.adb,$(RESULTS)/%.flow,$(ALL))))
+ALL_PROVE_MSG=$(sort $(patsubst examples/%.ads,$(RESULTS)/%.prove,$(patsubst examples/%.adb,$(RESULTS)/%.prove,$(ALL))))
 
 gnatprove: flow prove
 
@@ -14,8 +14,12 @@ flow:
 	cp examples/illegal.txt flow
 	cp examples/spark_mode.txt flow
 	cat examples/spark_mode.txt examples/illegal.txt > flow/spark_mode_or_illegal.txt
-	-cd flow && gnatprove -f -k -q -j0 -P intro.gpr --report=all --warnings=on --mode=flow \
+	-cd flow && gnatprove -f -k -q -j0 -P illegal.gpr --report=all --warnings=on --mode=flow \
 	  > flow.results
+	cd flow && gnatprove -f -k -q -j0 -P spark_mode.gpr --report=all --warnings=on --mode=flow \
+	  >> flow.results
+	cd flow && gnatprove -f -k -q -j0 -P no_spark_mode.gpr --report=all --warnings=on --mode=flow \
+	  >> flow.results
 
 prove:
 	cp examples/*.gpr prove

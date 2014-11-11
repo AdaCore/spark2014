@@ -1,1 +1,2 @@
-no output
+illegal_update.adb:12:11: high: "X" must be a global output of "Do_Stuff" (SPARK RM 6.1.4)
+illegal_update.adb:12:16: medium: overflow check might fail

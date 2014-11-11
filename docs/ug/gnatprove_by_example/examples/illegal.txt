@@ -1,7 +1,5 @@
 --  list of files with illegal contructs, which cause an error to be raised
-illegal_update.ads
-illegal_update.adb
-swap_incorrect_b.ads
-swap_incorrect_b.adb
-swap_incorrect_d.ads
-swap_incorrect_d.adb
+check_param_aliasing.adb
+--  test check_aliasing.adb should not generate errors after NB12-007, so the following
+--  line should be removed after NB12-007 is fixed.
+check_aliasing.adb

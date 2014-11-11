@@ -14,8 +14,23 @@ not a reference manual for the |SPARK| language, which can be found in:
 More details on how |GNAT Pro| compiles |SPARK| code can be found in the |GNAT
 Pro| Reference Manual.
 
-The |SPARK| Subset of Ada
-=========================
+Although |SPARK| can be seen as a subset of Ada with additional
+aspects/pragmas/attributes, the latest version SPARK 2014 is a much larger
+subset than previous versions of |SPARK|. It includes in particular:
+
+* richer types (subtypes with bounds not known statically, discriminant records)
+* more flexible features to structure programs (function and operator
+  overloading, early returns and exits, raise statements)
+* static polymorphism (generics)
+* object oriented features (tagged types, dispatching)
+
+In the rest of this chapter, the marker [Ada 2005] (resp. [Ada 2012]) is used
+to denote that a feature defined in Ada 2005 (resp. Ada 2012) is supported in
+|SPARK|, and the marker [|SPARK|] is used to denote that a feature is specific
+to |SPARK|.
+
+Language Restrictions
+=====================
 
 Excluded Ada Features
 ---------------------
@@ -23,54 +38,117 @@ Excluded Ada Features
 To facilitate formal verification, |SPARK| enforces a number of global
 simplifications to Ada 2012. The most notable simplifications are:
 
-- The use of access types and allocators is not permitted.
+* The use of access types and allocators is not permitted. Formal verification
+  of programs with pointers requires tracking which memory is allocated and
+  which memory has been freed, as well as separation between different blocks
+  of memory, which are not doable precisely without a lot of manual work.
 
-- All expressions (including function calls) are free of side-effects.
+* All expressions (including function calls) are free of
+  side-effects. Functions with side-effects are more complex to treat logically
+  and may lead to non-deterministic evaluation due to conflicting side-effects
+  in sub-expressions of an enclosing expression.
 
-- Aliasing of names is not permitted.
+* Aliasing of names is not permitted. Aliasing may lead to unexpected
+  interferences, in which the value denoted locally by a given name changes as
+  the result of an update to another locally named variable. Formal
+  verification of programs with aliasing is less precise and requires more
+  manual work. See :ref:`Absence of Interference`.
 
-- The goto statement is not permitted.
+* The goto statement is not permitted. Gotos can be used to create loops, which
+  require a specific treatment in formal verification, and thus should be
+  precisely identified. See :ref:`Loop Invariants` and :ref:`Loop Variants`.
 
-- The use of controlled types is not permitted.
+* The use of controlled types is not permitted. Controlled types lead to the
+  insertion of implicit calls by the compiler. Formal verification of implicit
+  calls makes it harder for users to interact with formal verification tools,
+  as there is no source code on which information can be reported.
 
-- Handling of exceptions is not permitted.
+* Handling of exceptions is not permitted. Exception handling gives raise to
+  numerous interprocedural control-flow paths. Formal verification of programs
+  with exception handlers requires tracking properties along all those paths,
+  which is not doable precisely without a lot of manual work.
+
+The features listed above are excluded from |SPARK| because, currently, they
+defy formal verification. As formal verification technology advances the list
+will be revisited and it may be possible to relax some of these
+restrictions. There are other features which are technically feasible to
+formally verify but which are currently not supported in |SPARK|, most notably
+concurrency features (tasks, protected objects, etc.).
 
 Uses of these features in |SPARK| code are detected by |GNATprove| and reported
 as errors. Formal verification is not possible on subprograms using these
-features.
+features. But these features can be used in subprograms in Ada not identified
+as |SPARK| code, see :ref:`Identifying SPARK Code`.
 
-The features listed above are excluded from |SPARK| because, currently, they defy
-formal verification. As formal verification technology advances the list will be
-revisited and it may be possible to relax some of these restrictions. There are
-other features which are technically feasible to formally verify but which were
-initially excluded for scheduling reasons.
+Partially Analyzed Ada Features
+-------------------------------
+
+|SPARK| reinforces the strong typing of Ada with a stricter initialization
+policy (see :ref:`Data Initialization Policy`), and thus provides no means
+currently of specifying that some input data may be invalid. As a result, the
+following features are allowed in |SPARK|, but only partially analyzed by
+|GNATprove|:
+
+* The result of a call to ``Unchecked_Conversion`` is assumed to be a valid
+  value of the resulting type.
+
+* The evaluation of attribute ``Valid`` is assumed to always return True.
+
+This is illustrated in the following example:
+
+.. literalinclude:: gnatprove_by_example/examples/validity.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: gnatprove_by_example/examples/validity.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| proves both assertions, but issues warnings about its assumptions
+that the evaluation of attribute ``Valid`` on both input parameter ``X`` and
+the result of the call to ``Unchecked_Conversion`` return True:
+
+.. literalinclude:: gnatprove_by_example/results/validity.prove
+   :language: none
+
+.. _Data Initialization Policy:
 
 Data Initialization Policy
 --------------------------
 
-Modes on parameters and data dependency contracts in |SPARK| have a stricter
-meaning than in Ada:
+Modes on parameters and data dependency contracts (see :ref:`Data
+Dependencies`) in |SPARK| have a stricter meaning than in Ada:
 
- * Parameter mode ``in`` (resp. global mode ``Input``) indicates that the
-   object denoted in the parameter (resp. data dependencies) should be
-   completely initialized before calling the subprogram. It should not be
-   written in the subprogram.
+* Parameter mode ``in`` (resp. global mode ``Input``) indicates that the
+  object denoted in the parameter (resp. data dependencies) should be
+  completely initialized before calling the subprogram. It should not be
+  written in the subprogram.
 
- * Parameter mode ``out`` (resp. global mode ``Output``) indicates that the
-   object denoted in the parameter (resp. data dependencies) should be
-   completely initialized before returning from the subprogram. It should not
-   be read in the program prior to initialization.
+* Parameter mode ``out`` (resp. global mode ``Output``) indicates that the
+  object denoted in the parameter (resp. data dependencies) should be
+  completely initialized before returning from the subprogram. It should not
+  be read in the program prior to initialization.
 
- * Parameter mode ``in out`` (resp. global mode ``In_Out``) indicates that the
-   object denoted in the parameter (resp. data dependencies) should be
-   completely initialized before calling the subprogram. It can be written in
-   the subprogram.
+* Parameter mode ``in out`` (resp. global mode ``In_Out``) indicates that the
+  object denoted in the parameter (resp. data dependencies) should be
+  completely initialized before calling the subprogram. It can be written in
+  the subprogram.
+
+* Global mode ``Proof_In`` indicates that the object denoted in the data
+  dependencies should be completely initialized before calling the
+  subprogram. It should not be written in the subprogram, and only read in
+  contracts and assertions.
 
 Hence, all inputs should be completely initialized at subprogram entry, and all
 outputs should be completely initialized at subprogram output. Similarly, all
 objects should be completely initialized when read (e.g. inside subprograms),
 at the exception of record subcomponents (but not array subcomponents) provided
 the subcomponents that are read are initialized.
+
+A consequence of the rules above is that a parameter (resp. global variable)
+that is partially written in a subprogram should be marked as ``in out``
+(resp. ``In_Out``), because the input value of the parameter (resp. global
+variable) is `read` when returning from the subprogram.
 
 |GNATprove| will issue check messages if a subprogram does not respect the
 aforementioned data initialization policy. For example, consider a procedure
@@ -102,9 +180,80 @@ during proof on the property that data is properly initialized before being
 read.
 
 Note also the various warnings that |GNATprove| issues on unused parameters,
-global items and assignments.
+global items and assignments, also based on the stricter |SPARK| interpretation
+of parameter and global modes.
 
-Raising Exceptions And Other Error Signaling Mechanisms
+.. _Absence of Interference:
+
+Absence of Interference
+-----------------------
+
+It is not possible in |SPARK| to change the value denoted locally by a given
+name as the result of an update to another locally named variable. This is
+enforced by forbidding the use of access types (pointers) in |SPARK|, and by
+restricting aliasing between parameters and global variables so that only
+benign aliasing is accepted (i.e. aliasing that does not cause interference).
+
+The precise rules detailed in SPARK RM 6.4.2 can be summarized as follows:
+
+* Two output parameters should never be aliased.
+* An input and an output parameters should not be aliased, unless the input
+  parameter is always passed by copy.
+* An output parameter should never be aliased with a global variable referenced
+  by the subprogram.
+* An input parameter should not be aliased with a global variable referenced by
+  the subprogram, unless the input parameter is always passed by copy.
+
+These rules extend the existing rules in Ada RM 6.4.1 for restricting aliasing,
+which already make it illegal to call a procedure with problematic (non-benign)
+aliasing between parameters of scalar type that are `known to denote the same
+object` (a notion formally defined in Ada RM).
+
+For example, in the following example:
+
+.. literalinclude:: gnatprove_by_example/examples/aliasing.ads
+   :language: ada
+   :linenos:
+
+Procedure ``Whatever`` can only be called on arguments that satisfy the
+following constraints:
+
+1. Arguments for ``Out_1`` and ``Out_2`` should not be aliased.
+2. Variable ``Glob`` should not be passed in argument for ``Out_1`` and ``Out_2``.
+
+Note that there are no constraints on input parameters ``In_1`` and ``In_2``,
+as these are always passed by copy (being of a scalar type). This would not be
+the case if these input parameters were of a record or array type.
+
+For example, here are examples of correct and illegal (according to Ada and
+SPARK rules) calls to procedure ``Whatever``:
+
+.. literalinclude:: gnatprove_by_example/examples/check_param_aliasing.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| (like |GNAT Pro| compiler, since these are also Ada rules)
+correctly detects the two illegal calls and issues errors:
+
+.. literalinclude:: gnatprove_by_example/results/check_param_aliasing.flow
+   :language: none
+
+Here are other examples of correct and incorrect calls (according to SPARK
+rules) to procedure ``Whatever``:
+
+.. literalinclude:: gnatprove_by_example/examples/check_aliasing.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| correctly detects the two incorrect calls and issues error
+messages:
+
+.. literalinclude:: gnatprove_by_example/results/check_aliasing.flow
+   :language: none
+
+.. _Raising Exceptions and Other Error Signaling Mechanisms:
+
+Raising Exceptions and Other Error Signaling Mechanisms
 -------------------------------------------------------
 
 Raising an exception is allowed in |SPARK| to signal an error, but handling the
@@ -154,532 +303,833 @@ thanks to the precondition of ``Check_OK`` which states that parameter
 .. literalinclude:: gnatprove_by_example/results/abnormal_terminations.prove
    :language: none
 
+.. _Subprogram Contracts:
+
 Subprogram Contracts
 ====================
 
+The most important feature to specify the intended behavior of a |SPARK|
+program is the ability to attach a contract to subprograms. This contract is
+made up of various optional parts:
 
-The contracts on a subprogram describe its behaviour during a
-successful call.
+* The `precondition` introduced by aspect ``Pre`` specifies constraints on
+  callers of the subprogram.
+* The `postcondition` introduced by aspect ``Post`` specifies (partly or
+  completely) the functional behavior of the subprogram.
+* The `contract cases` introduced by aspect ``Contract_Cases`` is a way to
+  partition the behavior of a subprogram. It can replace or complement a
+  precondition and a postcondition.
+* The `data dependencies` introduced by aspect ``Global`` specify the global
+  data read and written by the subprogram.
+* The `flow dependencies` introduced by aspect ``Depends`` specify how
+  subprogram outputs depend on subprogram inputs.
 
-|SPARK| provides features to strengthen the contracts on Ada subprograms to
-enable more in-depth verification to be performed. The more information is
-provided in a contract, the more verification can be performed by the |SPARK|
-tools to check that the contracts are satisfied. This ranges from data-flow and
-information-flow analysis through to formal proof of robustness and
-correctness properties.
+Which contracts to write for a given verification objective, and how
+|GNATprove| generates default contracts, is detailed in :ref:`How to Write
+Subprogram Contracts`.
 
-.. _Globals:
+The contract on a subprogram describes the behavior of successful
+calls. Executions that end up by signalling an error, as described in
+:ref:`Raising Exceptions and Other Error Signaling Mechanisms`, are not covered
+by the subprogram's contract.
 
-Globals
--------
+.. _Preconditions:
 
-The data-flow analysis performed by the |SPARK| tools considers the initialization
-of variables and the data dependencies of subprograms (which variables are read
-or written). This type of analysis can detect errors such as attempting to read
-from a variable which has not been assigned a value. In order to perform data-flow
-analysis, the tools need to know the complete set of variables which may be read
-or written by each subprogram, which consists of any formal parameters of the
-subprogram and any global variables used by the subprogram. This set of global
-variables may be specified by the programmer via the global annotation, as in
-this example:
+Preconditions
+-------------
 
-.. code-block:: ada
-   :linenos:
+[Ada 2012]
 
-   procedure Add_To_Total (X : in Integer)
-      with Global => (In_Out => Total);
+The precondition of a subprogram specifies constraints on callers of the
+subprogram. Typically, preconditions are written as conjunctions of constraints
+that fall in one of the following categories:
 
-This states that the global variable ``Total`` is both an input and an output of the
-subprogram (it is both read and written). If such a Global annotation is
-present then it will be used in the analysis of calls to the subprogram - callers
-may assume that ``Total`` is both read and written and, very importantly, that no
-other global variables are read or written by this subprogram. Then, when the body
-of the subprogram is analyzed, the tools will check that its implementation satisfies
-this contract.
+* exclusion of forbidden values of parameter, for example ``X /= 0`` or ``Y not
+  in Active_States``
+* specification of allowed parameter values, for example ``X in 1 .. 10`` or
+  ``Y in Idle_States``
+* relations that should hold between parameter values, for example ``(if Y in
+  Active_State then Z /= Null_State)``
+* expected values of global variables denoting the state of the computation,
+  for example ``Current_State in Active_States``
+* invariants about the global state that should hold when calling this
+  subprogram, for example ``Is_Complete (State_Mapping)``
+* relations involving the global state and input parameters that should hold
+  when calling this subprogram, for example ``X in Next_States (Global_Map,
+  Y)``
 
-If the Global annotation is not explicitly provided then the tools can derive it
-automatically from the body of the subprogram. This may be appropriate in a number
-of situations, for example:
-
-- Code has been developed as |SPARK| but not all the aspects are included on all
-  subprograms by the developer. This is regarded as *generative analysis*, where
-  the code was written with the intention that it would be analyzed.
-
-- Code is in maintenance phase, it might or might not have all of the |SPARK|
-  Global aspects. If the Global aspects are present, the synthesized aspects
-  may be compared with the explicit ones to update the aspects if the changes
-  are acceptable. If there are aspects missing, they are automatically
-  synthesized for analysis purposes. This is also regarded as generative
-  analysis.
-
-- Legacy code is analyzed which has no (or incomplete) |SPARK| specific aspects.
-  This is regarded as *retrospective analysis*, where code is being analyzed
-  that was not originally written with analysis in mind.
-
-.. _Depends:
-
-Depends
--------
-
-The Depends annotation adds more detail to subprogram contracts by specifying
-the relationship between the inputs and the outputs.
+When the program is compiled with assertions (for example with switch
+``-gnata`` in |GNAT Pro|), the precondition of a subprogram is checked at run
+time every time the subprogram is called. An exception is raised if the
+precondition fails. Not all assertions need to be enabled though. For example,
+a common idiom is to enable only preconditions (and not other assertions) in
+the production binary, by setting pragma ``Assertion_Policy`` as follows:
 
 .. code-block:: ada
-   :linenos:
 
-   procedure Swap (X, Y : in out Integer)
-      with Depends => (X => Y,
-                       Y => X);
+   pragma Assertion_Policy (Pre => Check);
 
-In the example above the Depends annotation states that the final value of ``X``
-depends on the initial value of ``Y``, and the final value of ``Y`` depends on the
-initial value of ``X``. It is important to note that this is not stating the
-stronger property that the values of ``X`` and ``Y`` are swapped - that would require
-a postcondition aspect which will be described in the next section. So an
-implementation which, for example, doubled ``X`` and ``Y`` and then swapped their
-values would satisfy this dependency. If a Depends annotation is present then
-it must be complete: for every output of the subprogram it must specify
-the (possibly null) list of inputs on which that output depends.
+When a subprogram is analyzed with |GNATprove|, its precondition is used to
+restrict the contexts in which it may be executed, which is required in general
+to prove that the subprogram's implementation:
 
-The Depends aspect of a subprogram is used by the tools when performing flow
-analysis of calls to that subprogram, and it is checked by the tools when
-analyzing the body. This level of flow analysis is referred to as information-flow
-analysis. As with the other annotations discussed so far, if the
-Depends aspect is not provided explicitly for a subprogram then it will be
-synthesized by the tools. The synthesized dependency will be a conservative
-approximation if the body of the subprogram is not available for analysis,
-and may still be an approximation even if the body is available.
+* is free from run-time errors (see :ref:`Writing Contracts for Program
+  Integrity`); and
+* ensures that the postcondition of the subprogram always holds (see
+  :ref:`Writing Contracts for Functional Correctness`).
 
-.. _Preconditions and Postconditions:
+In particular, the default precondition of ``True`` used by |GNATprove| when no
+explicit one is given may not be precise enough, unless it can be analyzed in
+the context of its callers by |GNATprove| (see :ref:`Contextual Analysis of
+Subprograms Without Contracts`). And even when the implementation of the
+subprogram is not analyzed with |GNATprove|, it may be necessary to add a
+precondition to the subprogram for analyzing its callers (see :ref:`Writing
+Contracts on Imported Subprograms`).
 
-Preconditions and Postconditions
---------------------------------
-
-Preconditions and postconditions are very important annotations in |SPARK| as
-they enable us to strengthen subprogram contracts by specifying the intended
-behaviour in more detail. For example:
+For example, consider the procedure ``Add_To_Total`` which increments global
+counter ``Total`` by the value given in parameter ``Incr``. To ensure that
+there are no integer overflows in the implementation, ``Incr`` should not be
+too large, which a user can express with the following precondition:
 
 .. code-block:: ada
-   :linenos:
 
-    procedure Incr_Threshold (X : in out Integer) with
-      Pre  => X >= 0,
-      Post => X = Integer'Min (X'Old + 1, Threshold);
+   procedure Add_To_Total (Incr : in Integer) with
+     Pre => Incr >= 0 and then Total <= Integer'Last - Incr;
 
-The precondition states the obligation on the caller of the subprogram. For
-example, all callers of ``Incr_Threshold`` should ensure that the value passed
-in parameter is non-negative before calling ``Incr_Threshold``. The
-postcondition states the obligation on the subprogram when it returns. For
-example, ``Incr_Threshold`` should always return in a state where the value of
-its parameter is the minimum between its value at entry (``X'Old``) incremented
-by one, and a given threshold value. This expresses precisely the property of
-incrementing until a threshold is reached.
-
-The special attributes ``Result`` and ``Old`` defined in Ada 2012 are allowed
-in postconditions only (not in preconditions), to refer respectively to the
-result of a function, and the value of an object on subprogram entry.
-
-When compiling with assertions (switch ``-gnata`` in |GNAT Pro|), the resulting
-program contains run-time checks that the precondition evaluates to ``True`` on
-subprogram entry, and that the postcondition evaluates to ``True`` on
-subprogram exit. Their evaluation should also not raise a run-time error, for
-example when accessing an array element, or doing arithmetic computations.
-
-When proving a subprogram with |GNATprove|, its precondition is assumed to
-hold, and its postcondition is proved. |GNATprove| also generates checks to
-prove that the precondition can never raise a run-time error, whatever the
-calling context. For example:
+To ensure that the value of ``Total`` remains non-negative, one should also add
+the condition ``Total >= 0`` to the precondition:
 
 .. code-block:: ada
-   :linenos:
 
-    function Add (X, Y : Integer) return Integer with
-      Pre  => X + Y in Integer,
-      Post => Add'Result = X + Y;
+   procedure Add_To_Total (Incr : in Integer) with
+     Pre => Incr >= 0 and then Total in 0 .. Integer'Last - Incr;
 
-    function Get_Value (A : My_Array; J : Index) return Element with
-      Pre  => A(J) /= No_Element,
-      Post => Get_Value'Result = A(J);
+Finally, |GNATprove| also analyzes preconditions to ensure that they are free
+from run-time errors in all contexts. This may require writing the precondition
+in a special way. For example, the precondition of ``Add_To_Total`` above uses
+the shorcut boolean operator ``and then`` instead of ``and``, so that calling
+the procedure in a context where ``Incr`` is negative does not result in an
+overflow when evaluating ``Integer'Last - Incr``. Instead, the use of ``and
+then`` ensures that a precondition failure will occur before the expression
+``Integer'Last - Incr`` is evaluated.
 
-|GNATprove| generates checks to show that ``X + Y`` in the precondition of
-``Add`` can never overflow, and that ``A(J)`` in the precondition of ``Get_Value``
-can never access ``A`` outside its bounds. These checks cannot be proved. One
-can usually rewrite the precondition so that it cannot raise a run-time error,
-either by adding a guard in the precondition, or by using a different
-formulation that cannot raise a run-time error. For example:
+.. note::
+
+   It is good practice to use the shortcut boolean operator ``and then``
+   instead of ``and`` in preconditions. This is required in some cases by
+   |GNATprove| to prove absence of run-time errors inside preconditions.
+
+.. _Postconditions:
+
+Postconditions
+--------------
+
+[Ada 2012]
+
+The postcondition of a subprogram specifies partly or completely the functional
+behavior of the subprogram. Typically, postconditions are written as
+conjunctions of properties that fall in one of the following categories:
+
+* possible values returned by a function, using the special attribute
+  ``Result`` (see :ref:`Attribute Result`), for example ``Get'Result in
+  Active_States``
+* possible values of output parameters, for example ``Y in Active_States``
+* expected relations between output parameter values, for example ``if Success
+  then Y /= Null_State``
+* expected relations between input and output parameter values, possibly using
+  the special attribute ``Old`` (see :ref:`Attribute Old`), for example ``if
+  Success then Y /= Y'Old``
+* expected values of global variables denoting updates to the state of the
+  computation, for example ``Current_State in Active_States``
+* invariants about the global state that should hold when returning from this
+  subprogram, for example ``Is_Complete (State_Mapping)``
+* relations involving the global state and output parameters that should hold
+  when returning from this subprogram, for example ``X in Next_States
+  (Global_Map, Y)``
+
+When the program is compiled with assertions (for example with switch
+``-gnata`` in |GNAT Pro|), the postcondition of a subprogram is checked at run
+time every time the subprogram returns. An exception is raised if the
+postcondition fails. Usually, postconditions are enabled during tests, as they
+provide dynamically checkable oracles of the intended behavior of the program,
+and disabled in the production binary for efficiency.
+
+When a subprogram is analyzed with |GNATprove|, it checks that the
+postcondition of a subprogram cannot fail. This verification is modular:
+|GNATprove| considers all calling contexts in which the precondition of the
+subprogram holds for the analysis of a subprogram. |GNATprove| also analyzes
+postconditions to ensure that they are free from run-time errors, like any
+other assertion.
+
+For example, consider the procedure ``Add_To_Total`` which increments global
+counter ``Total`` with the value given in parameter ``Incr``. This intended
+behavior can be expressed in its postcondition:
 
 .. code-block:: ada
-   :linenos:
 
-    function Add (X, Y : Integer) return Integer with
-      Pre  => (if X > 0 and Y > 0 then X <= Integer'Last - Y)
-                and then
-              (if X < 0 and Y < 0 then X >= Integer'First - Y),
-      Post => Add'Result = X + Y;
+   procedure Add_To_Total (Incr : in Integer) with
+     Post => Total = Total'Old + Incr;
 
-    function Get_Value (A : My_Array; J : Index) return Element with
-      Pre  => J in A'Range and then A(J) /= No_Element,
-      Post => Get_Value'Result = A(J);
+The postcondition of a subprogram is used to analyze calls to the
+subprograms. In particular, the default postcondition of ``True`` used by
+|GNATprove| when no explicit one is given may not be precise enough to prove
+properties of its callers, unless it analyzes the subprogam's implementation in
+the context of its callers (see :ref:`Contextual Analysis of Subprograms
+Without Contracts`).
 
-For overflow checks, an alternate solution exists to avoid them altogether in
-annotations, by using unbounded arithmetic in annotations, see :ref:`Overflow
-Modes`.
-
-A correct contract may not be sufficient for proof: even if the precondition
-and postcondition always evaluate to ``True``, and never raise a run-time
-error, they might not be strong enough:
-
-* |GNATprove| analyzes the body of a subprogram in all possible contexts
-  allowed by its precondition. The precondition should be strong enough to
-  prove that the body is free from run-time errors.
-
-* |GNATprove| proves the postcondition of a subprogram in the context of its
-  precondition and body. The precondition should be strong enough to prove the
-  postcondition.
-
-* |GNATprove| replaces a call to a subprogram by its contract, asserting its
-  precondition and assuming its postcondition. The only information available
-  about the call is the callee's postcondition. This postcondition should be
-  strong enough to prove the desired properties in the caller.
-
-One can strengthen a contract by making its precondition more restrictive
-(accepting less calling contexts) and making its postcondition more precise
-(giving more information to prove its callers).
-
-Note that the default precondition (resp. postcondition) of ``True`` used by
-|GNATprove| when no explicit one is given may not be strong enough.
-
-Note also that direct recursive subprograms or mutually recursive subprograms
-are treated in this respect exactly like non-recursive ones. Provided the
-execution of these subprograms always terminates (a property that is not
-verified by |GNATprove|), then it is sound to use their contracts at call-site
-to prove the same contracts.
+Recursive subprograms and mutually recursive subprograms are treated in this
+respect exactly like non-recursive ones. Provided the execution of these
+subprograms always terminates (a property that is not verified by |GNATprove|),
+then |GNATprove| correctly checks that their postcondition is respected by
+using this postcondition for recursive calls.
 
 .. _Contract Cases:
 
 Contract Cases
 --------------
 
-The contract of a subprogram can alternatively be specified as a set of
-disjoint and complete contract cases:
+[|SPARK|]
+
+When a subprogram has a fixed set of different functional behaviors, it may be
+more convenient to specify these behaviors as contract cases rather than a
+postcondition. For example, consider a variant of procedure ``Add_To_Total``
+which either increments global counter ``Total`` by the given parameter value
+when possible, or saturates at a given threshold. Each of these behaviors can
+be defined in a contract case as follows:
 
 .. code-block:: ada
-   :linenos:
 
-    procedure Incr_Threshold (X : in out Integer) with
-      Contract_Cases => (X < Threshold => X = X'Old + 1,
-                         X = Threshold => X = X'Old);
+   procedure Add_To_Total (Incr : in Integer) with
+     Contract_Cases => (Total + Incr < Threshold  => Total = Total'Old + Incr,
+                        Total + Incr >= Threshold => Total = Threshold);
 
-Each case in the list consists in a guard and a consequence separated by the
-symbol ``=>``. All guards are evaluated on entry to the subprogram. For each
-input, only one guard should evaluate to ``True``. The corresponding
-consequence should evaluate to ``True`` when returning from the subprogram. For
-example, the contract cases of ``Incr_Threshold`` express that the subprogram
+Each contract case consists in a guard and a consequence separated by the
+symbol ``=>``. When the guard evaluates to ``True`` on subprogram entry, the
+corresponding consequence should also evaluate to ``True`` on subprogram
+exit. We say that this contract case was enabled for the call. Exactly one
+contract case should be enabled for each call, or said equivalently, the
+contract cases should be disjoint and complete.
+
+For example, the contract cases of ``Add_To_Total`` express that the subprogram
 should be called in two distinct cases only:
 
-* on inputs that are strictly less than the value of a given threshold, in
-  which case ``Incr_Threshold`` increments this value.
-* on inputs whose value is equal to the given threshold, in which case
-  ``Incr_Threshold`` does not modify this value.
+* on inputs that can be added to ``Total`` to obtain a value strictly less than
+  a given threshold, in which case ``Add_To_Total`` adds the input to
+  ``Total``.
+* on inputs whose addition to ``Total`` exceeds the given threshold, in which
+  case ``Add_To_Total`` sets ``Total`` to the threshold value.
 
-Contract cases provide a convenient way to express complex contracts, which
-would be cumbersome to express with a precondition and a postcondition. For
-example, the contract cases of ``Incr_Threshold`` are equivalent to the
-following precondition and postcondition:
+When the program is compiled with assertions (for example with switch
+``-gnata`` in |GNAT Pro|), all guards are evaluated on entry to the subprogram,
+and there is a run-time check that exactly one of them is ``True``. For this
+enabled contract case, there is another run-time check when returning from the
+subprogram that the corresponding consequence evaluates to ``True``.
 
-.. code-block:: ada
-   :linenos:
+When a subprogram is analyzed with |GNATprove|, it checks that there is always
+exactly one contract case enabled, and that the consequence of the contract
+case enabled cannot fail. If the subprogram also has a precondition,
+|GNATprove| performs these checks only for inputs that satisfy the
+precondition, otherwise for all inputs.
 
-    procedure Incr_Threshold (X : in out Integer) with
-      Pre  => (X < Threshold and not (X = Threshold))
-                or else
-              (not (X < Threshold) and X = Threshold),
-      Post => (if X'Old < Threshold'Old then X = X'Old + 1
-               elsif X'Old = Threshold'Old then X = X'Old);
-
-Note that using contract cases or the equivalent (for run-time checking)
-preconditions and postconditions is not equivalent for proof with |GNATprove|.
-If contract cases are used, |GNATprove| attempts to prove that they are
-disjoint and complete once and for all. If preconditions and postconditions are
-used, |GNATprove| treats these properties as any other precondition, so they
-must be verified at each call.
-
-Contract cases can also be used in addition to preconditions and
-postconditions. In that case, the cases should cover all inputs allowed by the
-precondition. For example, the contract of ``Incr_Threshold`` can be written:
+In the simple example presented above, there are various ways to express an
+equivalent postcondition, in particular using :ref:`Conditional Expressions`:
 
 .. code-block:: ada
-   :linenos:
 
-    procedure Incr_Threshold (X : in out Integer) with
-      Pre  => X in 0 .. Threshold,
-      Post => X >= X'Old,
-      Contract_Cases => (X < Threshold => X = X'Old + 1,
-                         X = Threshold => X = X'Old);
+   procedure Add_To_Total (Incr : in Integer) with
+     Post => (if Total'Old + Incr < Threshold  then
+                Total = Total'Old + Incr
+              else
+                Total = Threshold);
 
-|GNATprove| is able to prove that the contract cases of ``Incr_Threshold`` are
-disjoint and complete, even if the case of ``X`` greater than ``Threshold`` is
-not considered, because this case is ruled out by the precondition of
-``Incr_Threshold``.
+   procedure Add_To_Total (Incr : in Integer) with
+     Post => Total = (if Total'Old + Incr < Threshold then Total'Old + Incr else Threshold);
 
-Note that the completeness is automatically reached when the last guard is
-``others``, denoting all cases that are not captured by any other guard. For
+   procedure Add_To_Total (Incr : in Integer) with
+     Post => Total = Integer'Min (Total'Old + Incr, Threshold);
+
+In general, an equivalent postcondition may be cumbersome to write and less
+readable. Contract cases also provide a way to automatically verify that the
+input space is partitioned in the specified cases, which may not be obvious
+with a single expression in a postcondition when there are many cases.
+
+The guard of the last case may be ``others``, to denote all cases not captured
+by previous contract cases. For example, the contract of ``Add_To_Total`` may
+be written:
+
+.. code-block:: ada
+
+   procedure Add_To_Total (Incr : in Integer) with
+     Contract_Cases => (Total + Incr < Threshold => Total = Total'Old + Incr,
+                        others                   => Total = Threshold);
+
+When ``others`` is used as a guard, there is no need for verification (both at
+run-time and using |GNATprove|) that the set of contract cases covers all
+possible inputs. Only disjointness of contract cases is checked in that case.
+
+.. _Data Dependencies:
+
+Data Dependencies
+-----------------
+
+[|SPARK|]
+
+The data dependencies of a subprogram specify the global data that a subprogram
+is allowed to read and write. Together with the parameters, they completely
+specify the inputs and outputs of a subprogram. Like parameters, the global
+variables mentioned in data dependencies have a mode: ``Input`` for inputs,
+``Output`` for outputs and ``In_Out`` for global variables that are both inputs
+and outputs. A last mode of ``Proof_In`` is defined for inputs that are only
+read in contracts and assertions. For example, data dependencies can be
+specified for procedure ``Add_To_Total`` which increments global counter
+``Total`` as follows:
+
+.. code-block:: ada
+
+   procedure Add_To_Total (Incr : in Integer) with
+     Global => (In_Out => Total);
+
+Data dependencies have no impact on compilation and the run-time behavior of a
+program. When a subprogram is analyzed with |GNATprove|, it checks that the
+implementation of the subprogram:
+
+* only reads global inputs mentioned in its data dependencies,
+* only writes global outputs mentioned in its data dependencies, and
+* always completely initializes global outputs that are not also inputs.
+
+See :ref:`Data Initialization Policy` for more details on this analysis of
+|GNATprove|. During its analysis, |GNATprove| uses the specified data
+dependencies of callees to analyze callers, if present, otherwise a default
+data dependency contract is generated (see :ref:`Generation of Dependency
+Contracts`) for callees.
+
+There are various benefits when specifying data dependencies on a subprogram,
+which gives various reasons for users to add such contracts:
+
+* |GNATprove| verifies automatically that the subprogram implementation
+  respects the specified accesses to global data.
+* |GNATprove| uses the specified contract during flow analysis, to analyze the
+  data and flow dependencies of the subprogram's callers, which may result in a
+  more precise analysis (less false alarms) than with the generated data
+  dependencies.
+* |GNATprove| uses the specified contract during proof, to check absence of
+  run-time errors and the functional contract of the subprogram's callers,
+  which may also result in a more precise analysis (less false alarms) than
+  with the generated data dependencies.
+
+When data dependencies are specified on a subprogram, they should mention all
+global data read and written in the subprogram. When a subprogram has neither
+global inputs nor global outputs, it can be specified using the ``null`` data
+dependencies:
+
+.. code-block:: ada
+
+   function Get (X : T) return Integer with
+     Global => null;
+
+When a subprogram has only global inputs but no global outputs, it can be
+specified either using the ``Input`` mode:
+
+.. code-block:: ada
+
+   function Get_Sum return Integer with
+     Global => (Input => (X, Y, Z));
+
+or equivalently without any mode:
+
+.. code-block:: ada
+
+   function Get_Sum return Integer with
+     Global => (X, Y, Z);
+
+Note the use of parentheses around a list of global inputs or outputs for a
+given mode.
+
+Global data that is both read and written should be mentioned with the
+``In_Out`` mode, and not as both input and output. For example, the following
+data dependencies on ``Add_To_Total`` are illegal and rejected by |GNATprove|:
+
+.. code-block:: ada
+
+   procedure Add_To_Total (Incr : in Integer) with
+     Global => (Input  => Total,
+                Output => Total);  --  INCORRECT
+
+Global data that is partially written in the subprogram should also be
+mentioned with the ``In_Out`` mode, and not as an output. See :ref:`Data
+Initialization Policy`.
+
+.. _Flow Dependencies:
+
+Flow Dependencies
+-----------------
+
+[|SPARK|]
+
+The flow dependencies of a subprogram specify how its outputs (both output
+parameters and global outputs) depend on its inputs (both input parameters and
+global inputs). For example, flow dependencies can be specified for procedure
+``Add_To_Total`` which increments global counter ``Total`` as follows:
+
+.. code-block:: ada
+
+   procedure Add_To_Total (Incr : in Integer) with
+     Depends => (Total => (Total, Incr));
+
+The above flow dependencies can be read as "the output value of global variable
+``Total`` depends on the input values of global variable ``Total`` and
+parameter ``Incr``".
+
+Flow dependencies have no impact on compilation and the run-time behavior of a
+program. When a subprogram is analyzed with |GNATprove|, it checks that, in the
+implementation of the subprogram, outputs depend on inputs as specified in the
+flow dependencies. During its analysis, |GNATprove| uses the specified flow
+dependencies of callees to analyze callers, if present, otherwise a default
+flow dependency contract is generated for callees (see :ref:`Generation of
+Dependency Contracts`).
+
+When flow dependencies are specified on a subprogram, they should mention all
+flows from inputs to outputs. In particular, the output value of a parameter or
+global variable that is partially written by a subprogram depends on its input
+value (see :ref:`Data Initialization Policy`).
+
+When the output value of a parameter or global variable depends on its input
+value, the corresponding flow dependency can use the shorthand symbol ``*`` to
+denote that a variable's output value depends on the variable's input value
+plus any other input listed. For example, the flow dependencies of
+``Add_To_Total`` above can be specified equivalently:
+
+.. code-block:: ada
+
+   procedure Add_To_Total (Incr : in Integer) with
+     Depends => (Total =>* Incr);
+
+When an output value depends on no input value, meaning that it is completely
+(re)initialized with constants that do not depend on variables, the
+corresponding flow dependency should use the ``null`` input list:
+
+.. code-block:: ada
+
+   procedure Init_Total with
+     Depends => (Total => null);
+
+.. _State Abstraction and Contracts:
+
+State Abstraction and Contracts
+-------------------------------
+
+[|SPARK|]
+
+The subprogram contracts mentioned so far always used directly global
+variables. In many cases, this is not possible because the global variables are
+defined in another unit and not directly visible (because they are defined in
+the private part of a package specification, or in a package
+implementation). The notion of abstract state in |SPARK| can be used in that
+case (see :ref:`State Abstraction`) to name in contracts global data that is
+not visible.
+
+.. _State Abstraction and Dependencies:
+
+State Abstraction and Dependencies
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Suppose the global variable ``Total`` incremented by procedure ``Add_To_Total``
+is defined in the package implementation, and a procedure ``Cash_Tickets`` in a
+client package calls ``Add_To_Total``. Package ``Account`` which defines
+``Total`` can define an abstract state ``State`` that represents ``Total``, as
+seen in :ref:`State Abstraction`, which allows using it in ``Cash_Tickets``'s
+data and flow dependencies:
+
+.. code-block:: ada
+
+   procedure Cash_Tickets (Tickets : Ticket_Array) with
+     Global  => (Output => Account.State),
+     Depends => (Account.State => Tickets);
+
+As global variable ``Total`` is not visible from clients of unit ``Account``,
+it is not visible either in the visible part of ``Account``'s
+specification. Hence, externally visible subprograms in ``Account`` must also
+use abstract state ``State`` in their data and flow dependencies, for example:
+
+.. code-block:: ada
+
+   procedure Init_Total with
+     Global  => (Output => State),
+     Depends => (State => null);
+
+   procedure Add_To_Total (Incr : in Integer) with
+     Global  => (In_Out => State),
+     Depends => (State =>* Incr);
+
+Then, unless they are not in |SPARK|, the implementations of ``Init_Total`` and
+``Add_To_Total`` need to define refined data and flow dependencies, which give
+the precise dependencies for these subprograms in terms of concrete variables:
+
+.. code-block:: ada
+
+   procedure Init_Total with
+     Refined_Global  => (Output => Total),
+     Refined_Depends => (Total => null)
+   is
+   begin
+      Total := 0;
+   end Init_Total;
+
+   procedure Add_To_Total (Incr : in Integer) with
+     Refined_Global  => (In_Out => Total),
+     Refined_Depends => (Total =>* Incr)
+   is
+   begin
+      Total := Total + Incr;
+   end Add_To_Total;
+
+Here, the refined dependencies are the same as the abstract ones where
+``State`` has been replaced by ``Total``, but that's not always the case, in
+particular when the abstract state is refined into multiple concrete variables
+(see :ref:`State Abstraction`). |GNATprove| checks that:
+
+* the concrete global inputs are a subset of the abstract global inputs
+* the concrete global outputs are a subset of the abstract global outputs
+* between the abstract and the concrete view, the outputs that are not also
+  inputs represent exactly the same global data
+* the concrete flow dependencies are a subset of the abstract flow dependencies
+
+|GNATprove| uses the abstract contract (data and flow dependencies) of
+``Init_Total`` and ``Add_To_Total`` when analyzing calls outside package
+``Account`` and the more precise refined contract (refined data and flow
+dependencies) of ``Init_Total`` and ``Add_To_Total`` when analyzing calls
+inside package ``Account``.
+
+.. _State Abstraction and Functional Contracts:
+
+State Abstraction and Functional Contracts
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If global variables are not visible for data dependencies, they are not visible
+either for functional contracts. For example, in the case of procedure
+``Add_To_Total``, if global variable ``Total`` is not visible, we cannot
+express anymore the precondition and postcondition of ``Add_To_Total`` as in
+:ref:`Preconditions` and :ref:`Postconditions`. Instead, we define accessor
+functions to retrieve properties of the state that we need to express, and we
+use these in contracts. For example here:
+
+.. code-block:: ada
+
+   function Get_Total return Integer;
+
+   procedure Add_To_Total (Incr : in Integer) with
+     Pre  => Incr >= 0 and then Get_Total in 0 .. Integer'Last - Incr,
+     Post => Get_Total = Get_Total'Old + Incr;
+
+Function ``Get_Total`` may be defined either in the private part of package
+``Account`` or in its implementation. It may take the form of a regular
+function or an expression function (see :ref:`Expression Functions`), for
 example:
 
 .. code-block:: ada
-   :linenos:
 
-    procedure Incr_Threshold (X : in out Integer) with
-      Contract_Cases => (X >= 0 and X < Threshold  => X = X'Old + 1,
-                         X = Threshold             => X = X'Old,
-                         others                    => X = -1;
+   Total : Integer;
 
-.. _Refined Postconditions:
+   function Get_Total return Integer is (Total);
 
-Refined Postconditions
-----------------------
-
-The postcondition of a subprogram declared in the visible part of a package may
-refer to objects of a private type, or to abstract state. In such cases a second,
-refined, version of the postcondition may be applied to the subprogram body. This
-restates the postcondition in terms of the full view of the private type or the
-constituents of the refined state. In fact, a refined postcondition may be given
-on the body even if there is no explicit postcondition on the declaration in the
-visible part, in which case the postcondition on the declaration defaults to ``True``.
-
-|GNATprove| will attempt to verify that the precondition of the subprogram together
-with its refined postcondition imply the postcondition on the declaration (and
-a warning will be reported if this cannot be shown to hold).
-
-The example below shows how this might be used in a package which provides a type
-for declaring stacks of integers, and operations for that type. In the package
-specification the type ``Stack`` is private and the postcondition on procedure ``Push``
-states that the stack will not be empty after a push. In the body, where the
-type ``Stack`` is fully visible, the refined postcondition gives more detail
-about the effect of ``Push``. Note that ``Empty`` is an expression function -
-of which we will see more in the next section.
+Although no refined preconditions and postconditions are required on the
+implementation of ``Add_To_Total``, it is possible to provide a refined
+postcondition in that case, which specifies a more precise functional behavior
+of the subprogram. For example, procedure ``Add_To_Total`` may also increment
+the value of a counter ``Call_Count`` at each call, which can be expressed in
+the refined postcondition:
 
 .. code-block:: ada
-   :linenos:
 
-   package P is
+   procedure Add_To_Total (Incr : in Integer) with
+     Refined_Post => Total = Total'Old + Incr and Call_Count = Call_Count'Old + 1
+   is
+      ...
+   end Add_To_Total;
 
-      type Stack is private;
+A refined postcondition can be given on a subprogram implementation even when
+the unit does not use state abstraction, and even when the default
+postcondition of ``True`` is used implicitly on the subprogram declaration.
 
-      function Empty (S : Stack) return Boolean;
-
-      procedure Push (I : in Integer; S : in out Stack)
-         with Post => (not Empty (S));
-
-   private
-      Stack_Size : constant := 100;
-      type Pointer_Range is range 0 .. Stack_Size;
-      subtype Stack_Range is Pointer_Range range 1 .. Stack_Size;
-      type Stack_Array is array (Stack_Range) of Integer;
-      type Stack is record
-         Vector  : Stack_Array;
-         Pointer : Pointer_Range;
-      end record;
-   end P;
-
-   package body P is
-
-      function Empty (S : Stack) return Boolean is (S.Pointer = 0);
-
-      procedure Push (I : in Integer; S : in out Stack)
-         with Refined_Post => (S.Pointer = S.Pointer'Old + 1)
-      is
-      begin
-         S.Pointer := S.Pointer + 1;
-         S.Vector (S.Pointer) := I;
-      end Push;
-
-   end P;
+|GNATprove| uses the abstract contract (precondition and postcondition) of
+``Add_To_Total`` when analyzing calls outside package ``Account`` and the more
+precise refined contract (precondition and refined postcondition) of
+``Add_To_Total`` when analyzing calls inside package ``Account``.
 
 Package Contracts
 =================
 
-.. _Abstract_State and Initializes:
+Subprograms are not the only entities to bear contracts in |SPARK|. Package
+contracts are made up of various optional parts:
 
-Abstract_State, Refined_State and Initializes
----------------------------------------------
+* The `state abstraction` specifies how global variables defined in the package
+  are referred to abstractly where they are not visible. Aspect
+  ``Abstract_State`` introduces abstract names and aspect ``Refined_State``
+  specifies the mapping between these names and global variables.
+* The `package initialization` introduced by aspect ``Initializes`` specifies
+  which global data (global variables and abstract state) defined in the
+  package is initialized at package startup.
+* The `package initial condition` introduced by aspect ``Initial_Condition``
+  specifies the properties holding after package startup.
 
-The previous section discussed the Global annotation, which applies to subprograms.
-There are two more annotations required for data-flow analysis, and these apply to
-packages rather than subprograms. Consider the specification of ``Add_To_Total``
-above. The global variable ``Total`` might well be declared in the body of the enclosing
-package. If the specification of ``Add_To_Total`` appears in the package specification,
-then its global annotation is referring to a variable ``Total`` about which nothing
-is known because the package body has not yet been analyzed. Indeed, the package
-body might not even have been written yet. The Abstract_State annotation allows
-us to announce the presence of variables declared within packages.
+Package startup (a.k.a. package `elaboration` in Ada RM) consists in the
+evaluation of all declarations in the package specification and implementation,
+in particular the evaluation of constant declarations and those variable
+declarations which contain an initialization expression, as well as the
+statements sometimes given at the end of a package body that are precisely
+executed at package startup.
 
-.. code-block:: ada
-   :linenos:
+.. _State Abstraction:
 
-   package P
-      with Abstract_State => Total
-   is
-      procedure Add_To_Total (X : in Integer)
-         with Global => (In_Out => Total);
-   end P;
+State Abstraction
+-----------------
 
-Any state (typically a variable or collection of variables) declared within a
-package specification or body (but not within a subprogram of the package) must
-be announced in the package's Abstract_State annotation. As with the global
-annotation described above, the Abstract_State annotation may be stated
-explicitly by the programmer or it may be derived automatically by the tools
-depending on the circumstances.
+[|SPARK|]
 
-The language also provides facilities for combining multiple items of package state
-(which could be variables of the package itself, or state from its child packages
-or embedded packages) into a single item of Abstract_State (hence the name). There
-are also facilities for dealing with volatile state representing inputs or outputs
-at the interface with the environment. However these are outside the scope of this
-overview.
+The state abstraction of a package specifies a mapping between abstract names
+and concrete global variables defined in the package. One abstract name may be
+mapped to more than one concrete variable, but no two abstract names can be
+mapped to the same concrete variable. When state abstraction is specified on a
+package, all non-visible global variables defined in the private part of the
+package specification and in its implementation should be mapped to abstract
+names. Thus, abstract names correspond to a partitioning of the non-visible
+global variables defined in the package.
 
-In the example given above, when performing the flow analysis of any call to
-``Add_To_Total`` the tools will check that ``Total`` has previously been assigned a
-value. This is necessary because the global annotation states that ``Add_To_Total``
-reads the value of ``Total``, so if ``Total`` is undefined then a flow error will result.
-In order to perform this flow analysis for the whole program the tools need to
-know which elements of package state are initialized when the main program
-starts executing and which are still uninitialized. This is the purpose of the
-initializes annotation - it tells us what is initialized by the elaboration of
-the package. In our example, package ``P`` does initialize ``Total`` so this is specified
-by the initializes annotation.
+The simplest use of state abstraction is to define a single abstract name
+(conventionally called ``State``) to denote all non-visible global variables
+defined in the package. For example, consider package ``Account`` defining a
+global variable ``Total`` in its implementation, which is abstracted as
+``State``:
 
 .. code-block:: ada
-   :linenos:
 
-   package P
-      with Abstract_State => Total,
-           Initializes    => Total
+   package Account with
+     Abstract_State => State
    is
-      procedure Add_To_Total (X : in Integer)
-         with Global => (In_Out => Total);
-   end P;
+      ...
+   end Account;
 
-   package body P
-      with Refined_State => (Total => T)
+   package body Account with
+     Refined_State => (State => Total)
    is
-      T : Integer := 0;
+      Total : Integer;
+      ...
+   end Account;
 
-If state is initialized by the package then it must appear in an initializes
-annotation. If it is not initialized then it must not appear in the annotation.
-Once again, the initializes annotation may be derived automatically by the tools
-if not provided explicitly by the programmer.
+The aspect ``Refined_State`` maps each abstract name to a list of concrete
+global variables defined in the package. The list can be simply ``null`` to
+serve as placeholder for future definitions of global variables. Instead of
+concrete global variables, one can also use abstract names for the state of
+nested packages and private child packages, whose state is considered to be
+also defined in the parent package.
 
-Note also the use of the Refined_State annotation in the package body. Each item
-named in the Abstract_State annotation in the package specification may be refined
-onto many constituents in the package body. This is done by means of the Refined_State
-annotation. In this case there is a one-to-one mapping between the abstract view in
-the specification (``Total``) and the refined view in the body (``T``) but it could
-be a one-to-many relationship or even, in special cases, a one-to-null relationship.
+If global variable ``Total`` is defined in the private part of ``Account``'s
+package specification, then the declaration of ``Total`` must use the special
+aspect ``Part_Of`` to declare its membership in abstract state ``State``:
+
+.. code-block:: ada
+
+   package Account with
+     Abstract_State => State
+   is
+      ...
+   private
+     Total : Integer with Part_Of => State;
+     ...
+   end Account;
+
+This ensures that ``Account``'s package specification can be checked by
+|GNATprove| even if its implementation is not in |SPARK|, or not available for
+analysis, or not yet developed.
+
+In general, an abstract name corresponds to multiple global variables defined
+in the package. For example, we can imagine adding global variables to log
+values passed in argument to procedure ``Add_To_Total``, that are also mapped to
+abstract name ``State``:
+
+.. code-block:: ada
+
+   package Account with
+     Abstract_State => State
+   is
+      ...
+   end Account;
+
+   package body Account with
+     Refined_State => (State => (Total, Log, Log_Size))
+   is
+      Total    : Integer;
+      Log      : Integer_Array;
+      Log_Size : Natural;
+      ...
+   end Account;
+
+We can also imagine defining different abstract names for the total and the log:
+
+.. code-block:: ada
+
+   package Account with
+     Abstract_State => (State, Internal_State)
+   is
+      ...
+   end Account;
+
+   package body Account with
+     Refined_State => (State => Total,
+                       Internal_State => (Log, Log_Size))
+   is
+      Total    : Integer;
+      Log      : Integer_Array;
+      Log_Size : Natural;
+      ...
+   end Account;
+
+The abstract names defined in a package are visible everywhere the package name
+itself is visible:
+
+* in the scope where the package is declared, for a locally defined package
+* in units that have a clause ``with <package>;``
+* in units that have a clause ``limited with <package>;``
+
+The last case allows subprograms in two packages to mutually reference the
+abstract state of the other package in their data and flow dependencies.
+
+.. _Package Initialization:
+
+Package Initialization
+----------------------
+
+[|SPARK|]
+
+The package initialization specifies which global data (global variables and
+abstract state) defined in the package is initialized at package startup. The
+corresponding global variables may either be initialized at declaration, or by
+the package body statements.
+
+For example, we can specify that the state of package ``Account`` is
+initialized at package startup as follows:
+
+.. code-block:: ada
+
+   package Account with
+     Abstract_State => State,
+     Initializes    => State
+   is
+      ...
+   end Account;
+
+Then, unless ``Account``'s implementation is not in |SPARK|, it should
+initialize the corresponding global variable ``Total`` either at declaration:
+
+.. code-block:: ada
+
+   package body Account with
+     Refined_State => (State => Total)
+   is
+      Total : Integer := 0;
+      ...
+   end Account;
+
+or in the package body statements:
+
+.. code-block:: ada
+
+   package body Account with
+     Refined_State => (State => Total)
+   is
+      Total : Integer;
+      ...
+   begin
+      Total := 0;
+   end Account;
+
+These initializations need not correspond to direct assignments, but may be
+performed in a call, for example here to procedure ``Init_Total`` as seen in
+:ref:`State Abstraction and Dependencies`. A mix of initializations at
+declaration and in package body statements is also possible.
+
+.. _Package Initial Condition:
+
+Package Initial Condition
+-------------------------
+
+[|SPARK|]
+
+The package initial condition specifies the properties holding after package
+startup. For example, we can specify that the value of ``Total`` defined in
+package ``Account``'s implementation is initially zero:
+
+.. code-block:: ada
+
+   package Account with
+     Abstract_State    => State,
+     Initial_Condition => Get_Total = 0
+   is
+      function Get_Total return Integer;
+      ...
+   end Account;
+
+This is ensured either by initializing ``Total`` with value zero at
+declaration, or by assigning the value zero to ``Total`` in the package body
+statements, as seen in :ref:`Package Initialization`.
+
+When the program is compiled with assertions (for example with switch
+``-gnata`` in |GNAT Pro|), the initial condition of a package is checked at run
+time after package startup. An exception is raised if the initial condition
+fails.
+
+When a package is analyzed with |GNATprove|, it checks that the initial
+condition of a package cannot fail. |GNATprove| also analyzes the initial
+condition expression to ensure that it is free from run-time errors, like any
+other assertion.
+
+Interfaces to the Physical World
+--------------------------------
+
+[|SPARK|]
+
+TODO
+
+Type Contracts
+==============
+
+Static Predicates
+-----------------
+
+[Ada 2012]
+
+TODO
+
+Default Initial Condition
+-------------------------
+
+[|SPARK|]
+
+TODO
 
 Specification Features
 ======================
 
 |SPARK| contains many features for specifying the intended behavior of
-programs. Some of these features come from Ada 2012 (preconditions and
-postconditions for example). Other features are specific to |SPARK| (globals,
-and loop invariants for example). In this section, we describe these
-features and their impact on execution and formal verification.
+programs. Some of these features come from Ada 2012 (:ref:`Attribute Old` and
+:ref:`Expression Functions` for example). Other features are specific to
+|SPARK| (:ref:`Attribute loop_Entry` and :ref:`Ghost Code` for example). In
+this section, we describe these features and their impact on execution and
+formal verification.
 
-.. _Expression Functions:
+.. _Attribute Old:
 
-Expression Functions
---------------------
+Attribute ``Old``
+-----------------
 
-Expression functions are functions whose body is an expression, which can be
-defined in a spec unit.  Expression functions were introduced in Ada 2012 as a
-useful abstraction mechanism for stating properties in preconditions and
-postconditions.
-
-Expression functions that do not have a user-defined postcondition are treated
-specially by |GNATprove|, which generates an implicit postcondition stating
-that their result is equal to the expression that defines them. For example,
-the function ``Increment`` defined as an expression function:
-
-.. code-block:: ada
-
-   function Increment (X : Integer) return Integer is (X + 1);
-
-is treated by |GNATprove| as if it had a postcondition:
-
-.. code-block:: ada
-
-   Post => Increment'Result = X + 1;
-
-This postcondition is automatically satisfied, so |GNATprove| does not generate
-checks for it. Expression functions that have a user-defined postcondition
-are treated like regular functions.
-
-Currently, the knowledge that a function call in an annotation respects
-its postcondition (when called in a context where the precondition is
-satisfied) is only available for expression functions. Thus, expression
-functions should be used whenever possible for these functions called in
-annotations.
-
-.. _Ghost Functions:
-
-Ghost Functions
----------------
-
-Sometimes it is useful to declare functions that are needed in annotations only,
-but that are intended never to be called in executable code. Such functions may
-be used to factor out common parts of expressions in annotations, or to make it
-easier to express some desired property to be proved or tested. Such functions
-are referred to as ghost functions and their key property is that they have no
-effect on the dynamic semantics of the Ada program. If all ghost functions
-and references to them in assertions were removed from the source code, the
-behaviour of the compiled program would be unchanged.
-
-Ghost functions are identified by ``Ghost`` aspect and may be expression
-functions or regular functions. If they are regular functions, then they may be
-executable (with a body declared as normal) or non-executable (no body is declared).
-If they are non-executable, then they can only be used for proof, not testing, and
-their definitions might be provided by an external proof tool in order to complete
-the formal verification process.
-
-The examples below show the declarations of the three types of ghost functions
-mentioned above.
-
-.. code-block:: ada
-
-   function A_Ghost_Expr_Function (Lo, Hi : Natural) return Natural is
-      (if Lo > Integer'Last - Hi then Lo else ((Lo + Hi) / 2))
-   with Pre        => Lo <= Hi,
-        Post       => A_Ghost_Expr_Function'Result in Lo .. Hi,
-        Ghost;
-
-   function A_Ghost_Function (Lo, Hi : Natural) return Natural
-   with Pre        => Lo <= Hi,
-        Post       => A_Ghost_Function'Result in Lo .. Hi,
-        Ghost;
-   -- The body of the function is declared elsewhere.
-
-   function A_Nonexecutable_Ghost_Function (Lo, Hi : Natural) return Natural
-   with Pre        => Lo <= Hi,
-        Post       => A_Nonexecutable_Ghost_Function'Result in Lo .. Hi,
-        Ghost,
-        Import;
-   -- The body of the function is not declared elsewhere.
-
-The |SPARK| tools verify that ghost functions cannot influence any non-ghost
-entities in the program.
-
-.. _attribute old:
-
-Attribute Old
--------------
+[Ada 2012]
 
 In a Postcondition
 ^^^^^^^^^^^^^^^^^^
 
-Inside a postcondition, Ada 2012 defines attribute Old to refer to the
-values that expressions had at subprogram entry. For example, the postcondition
-of procedure ``Increment`` might specify that the value of parameter ``X`` upon
+Inside :ref:`Postconditions`, attribute ``Old`` refers to the values that
+expressions had at subprogram entry. For example, the postcondition of
+procedure ``Increment`` might specify that the value of parameter ``X`` upon
 returning from the procedure has been incremented:
 
 .. code-block:: ada
@@ -689,11 +1139,12 @@ returning from the procedure has been incremented:
 
 By using ``X'Old`` in the postcondition, we instruct the compiler to create a
 copy of ``X`` at subprogram entry that can be dynamically tested when exiting
-the subprogram to check that the postcondition holds.
+the subprogram to check that the postcondition holds. Because it requires
+copying the value of ``X``, the type of ``X`` cannot be limited.
 
-Strictly speaking, attribute Old must apply to a *name* in Ada syntax, for
+Strictly speaking, attribute ``Old`` must apply to a *name* in Ada syntax, for
 example a variable, a component selection, a call, but not an addition like
-``X + Y``. For expressions that are not *names*, attribute Old can be applied
+``X + Y``. For expressions that are not *names*, attribute ``Old`` can be applied
 to their qualified version, for example:
 
 .. code-block:: ada
@@ -702,7 +1153,7 @@ to their qualified version, for example:
      Post => X + Y = Integer'(X + Y)'Old + 1;
 
 Because the compiler unconditionnally creates a copy of the expression to which
-attribute Old is applied at subprogram entry, there is a risk that this feature
+attribute ``Old`` is applied at subprogram entry, there is a risk that this feature
 might confuse users in more complex postconditions. Take the example of a
 procedure ``Extract``, which copies the value of array ``A`` at index ``J`` into
 parameter ``V``, and zeroes out this value in the array, but only if ``J`` is
@@ -717,16 +1168,16 @@ Clearly, the value of ``A(J)`` at subprogram entry is only meaningful if ``J``
 is in the bounds of ``A``. If the code above was allowed, then a copy of
 ``A(J)`` would be made on entry to subprogram ``Extract``, even when ``J`` is
 out of bounds, which would raise a run-time error. To avoid this common
-pitfall, use of attribute Old in expressions that are potentially unevaluated
+pitfall, use of attribute ``Old`` in expressions that are potentially unevaluated
 (like the then-part in an if-expression, or the right argument of a shortcut
 boolean expression - See Ada RM 6.1.1) is restricted to
-plain variables: ``A`` is allowed, but not ``A(J)``. The GNAT compiler
+plain variables: ``A`` is allowed, but not ``A(J)``. The |GNAT Pro| compiler
 issues the following error on the code above::
 
    prefix of attribute "Old" that is potentially unevaluated must denote an entity
 
 The correct way to specify the postcondition in the case above is to apply
-attribute Old to the entity prefix ``A``:
+attribute ``Old`` to the entity prefix ``A``:
 
 .. code-block:: ada
 
@@ -736,9 +1187,9 @@ attribute Old to the entity prefix ``A``:
 In Contract Cases
 ^^^^^^^^^^^^^^^^^
 
-The rule for attribute Old inside contract cases (see :ref:`Contract Cases`) is
-more permissive. Take for example the same contract
-as above for procedure ``Extract``, expressed with contract cases:
+The rule for attribute ``Old`` inside :ref:`Contract Cases` is more
+permissive. Take for example the same contract as above for procedure
+``Extract``, expressed with contract cases:
 
 .. code-block:: ada
 
@@ -746,7 +1197,7 @@ as above for procedure ``Extract``, expressed with contract cases:
      Contract_Cases => ((J in A'Range) => V = A(J)'Old,
                         others         => True);
 
-Only the expressions used as prefixes of attribute Old in the *currently
+Only the expressions used as prefixes of attribute ``Old`` in the *currently
 enabled case* are copied on entry to the subprogram. So if ``Extract`` is
 called with ``J`` out of the range of ``A``, then the second case is enabled,
 so ``A(J)`` is not copied when entering procedure ``Extract``. Hence, the above
@@ -764,13 +1215,13 @@ incorrect variation of the above contract would be:
 
 For the same reason that such uses are forbidden by Ada RM inside
 postconditions, the SPARK RM forbids these uses inside contract cases (see
-SPARK RM 6.1.3(2)). The GNAT compiler issues the following error on the code
+SPARK RM 6.1.3(2)). The |GNAT Pro| compiler issues the following error on the code
 above::
 
    prefix of attribute "Old" that is potentially unevaluated must denote an entity
 
 The correct way to specify the consequence expression in the case above is to
-apply attribute Old to the entity prefix ``A``:
+apply attribute ``Old`` to the entity prefix ``A``:
 
 .. code-block:: ada
 
@@ -778,10 +1229,12 @@ apply attribute Old to the entity prefix ``A``:
      Contract_Cases => (J >= A'First => (if J <= A'Last then V = A'Old(J)),
                         others       => True);
 
+.. _In a Potentially Unevaluated Expression:
+
 In a Potentially Unevaluated Expression
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In some cases, the compiler issues the error discussed above (on attribute Old
+In some cases, the compiler issues the error discussed above (on attribute ``Old``
 applied to a non-entity in a potentially unevaluated context) on an expression
 that can safely be evaluated on subprogram entry, for example:
 
@@ -802,8 +1255,8 @@ evaluated* anymore, for example:
    procedure Extract (A : in out My_Array; J : Integer; V : out Value) with
      Post => J not in A'Range or V = Get_If_In_Range(A,J)'Old;
 
-or to use the GNAT pragma Unevaluated_Use_Of_Old to allow such uses of
-attribute Old in potentially unevaluated expressions:
+or to use the |GNAT Pro| pragma ``Unevaluated_Use_Of_Old`` to allow such uses
+of attribute ``Old`` in potentially unevaluated expressions:
 
 .. code-block:: ada
 
@@ -812,180 +1265,1052 @@ attribute Old in potentially unevaluated expressions:
    procedure Extract (A : in out My_Array; J : Integer; V : out Value) with
      Post => (if J in A'Range then V = Get_If_In_Range(A,J)'Old);
 
-GNAT does not issue an error on the code above, and always evaluates the call
-to ``Get_If_In_Range`` on entry to procedure ``Extract``, even if this value
-may not be used when executing the postcondition. Note that the formal
+|GNAT Pro| does not issue an error on the code above, and always evaluates the
+call to ``Get_If_In_Range`` on entry to procedure ``Extract``, even if this
+value may not be used when executing the postcondition. Note that the formal
 verification tool |GNATprove| correctly generates all required checks to prove
 that this evaluation on subprogram entry does not fail a run-time check or a
 contract (like the precondition of ``Get_If_In_Range`` if any).
 
-Pragma Unevaluated_Use_Of_Old applies to uses of attribute Old both inside
-postconditions and inside contract cases. See GNAT RM for a detailed
-description of this pragma.
+Pragma ``Unevaluated_Use_Of_Old`` applies to uses of attribute ``Old`` both
+inside postconditions and inside contract cases. See |GNAT Pro| RM for a
+detailed description of this pragma.
+
+.. _Attribute Result:
+
+Attribute ``Result``
+--------------------
+
+[Ada 2012]
+
+Inside :ref:`Postconditions` of functions, attribute ``Result`` refers to the
+value returned by the function. For example, the postcondition of function
+``Increment`` might specify that it returns the value of parameter ``X`` plus
+one:
+
+.. code-block:: ada
+
+   function Increment (X : Integer) return Integer with
+     Post => Increment'Result = X + 1;
+
+Contrary to ``Attribute Old``, attribute ``Result`` does not require copying
+the value, hence it can be applied to functions that return a limited
+type. Attribute ``Result`` can also be used inside consequence expressions in
+:ref:`Contract Cases`.
+
+.. _Attribute Loop_Entry:
+
+Attribute ``Loop_Entry``
+------------------------
+
+[|SPARK|]
+
+It is sometimes convenient to refer to the value of variables at loop entry. In
+many cases, the variable has not been modified between the subprogram entry and
+the start of the loop, so this value is the same as the value at subprogram
+entry. But :ref:`Attribute Old` cannot be used in that case. Instead, we can
+use attribute ``Loop_Entry``. For example, we can express that after ``J``
+iterations of the loop, the value of parameter array ``X`` at index ``J`` is
+equal to its value at loop entry plus one:
+
+.. code-block:: ada
+
+   procedure Increment_Array (X : in out Integer_Array) is
+   begin
+      for J in X'Range loop
+         X(J) := X(J) + 1;
+         pragma Assert (X(J) = X'Loop_Entry(J) + 1);
+      end loop
+   end Increment_Array;
+
+Attribute ``Loop_Entry`` can only be used in top-level :ref:`Assertion Pragmas`
+inside a loop. It is mostly useful for expressing complex :ref:`Loop
+Invariants` which relate the value of a variable at a given iteration of the
+loop and its value at loop entry. For example, we can express that after ``J``
+iterations of the loop, the value of parameter array ``X`` at all indexes
+already seen is equal to its value at loop entry plus one, using
+:ref:`Quantified Expressions`:
+
+.. code-block:: ada
+
+   procedure Increment_Array (X : in out Integer_Array) is
+   begin
+      for J in X'Range loop
+         X(J) := X(J) + 1;
+         pragma Loop_Invariant (for all K in X'First .. J => X(J) = X'Loop_Entry(J) + 1);
+      end loop
+   end Increment_Array;
+
+Attribute ``Loop_Entry`` may be indexed by the name of the loop to which it
+applies, which is useful to refer to the value of a variable on entry to an
+outter loop. When used without loop name, the attribute applies to the closest
+enclosing loop. For examples, ``X'Loop_Entry`` is the same as
+``X'Loop_Entry(Inner)`` in the loop below, which is not the same as
+``X'Loop_Entry(Outter)`` (although all three assertions are true):
+
+.. code-block:: ada
+
+   procedure Increment_Matrix (X : in out Integer_Matrix) is
+   begin
+      Outter: for J in X'Range(1) loop
+         Inner: for K in X'Range(2) loop
+            X(J,K) := X(J,K) + 1;
+            pragma Assert (X(J) = X'Loop_Entry(J,K) + 1);
+            pragma Assert (X(J) = X'Loop_Entry(Inner)(J,K) + 1);
+            pragma Assert (X(J) = X'Loop_Entry(Outter)(J,K) + 1);
+         end loop Inner;
+      end loop Outter;
+   end Increment_Matrix;
+
+By default, similar restrictions exist for the use of attribute ``Loop_Entry``
+and the use of attribute ``Old`` :ref:``In a Potentially Unevaluated
+Expression``. The same solutions apply here, in particular the use of |GNAT Pro|
+pragma ``Unevaluated_Use_Of_Old``.
+
+.. _Attribute Update:
+
+Attribute ``Update``
+--------------------
+
+[|SPARK|]
+
+It is quite common in :ref:`Postconditions` to relate the input and output
+values of parameters. While this can be as easy as ``X = X'Old + 1`` in the
+case of scalar parameters, it is more complex to express for array and record
+parameters. Attribute ``Update`` is useful in that case, to denote the updated
+value of a composite variable. For example, we can express more clearly that
+procedure ``Zero_Range`` zeroes out the elements of its array parameter ``X``
+between ``From`` and ``To`` by using attribute ``Update``:
+
+.. code-block:: ada
+
+   procedure Zero_Range (X : in out Integer_Array; From, To : Positive) with
+     Post => X = X'Old'Update(From .. To => 0);
+
+than with an equivalent postcondition using :ref:`Quantified Expressions` and
+:ref:`Conditional Expressions`:
+
+.. code-block:: ada
+
+   procedure Zero_Range (X : in out Integer_Array; From, To : Positive) with
+     Post => (for all J in X'Range =>
+                (if J in From .. To then X(J) = 0 else X(J) = X'Old(J)));
+
+Attribute ``Update`` takes in argument a list of associations between indexes
+(for arrays) or components (for records) and values. Components can only be
+mentioned once, with the semantics that all values are evaluated before any
+update. Array indexes may be mentioned more than once, with the semantics that
+updates are applied in left-to-right order. For example, the postcondition of
+procedure ``Swap`` expresses that the values at indexes ``J`` and ``K`` in
+array ``X`` have been swapped:
+
+.. code-block:: ada
+
+   procedure Swap (X : in out Integer_Array; J, K : Positive) with
+     Post => X = X'Old'Update(J => X'Old(K), K => X'Old(J));
+
+and the postcondition of procedure ``Rotate_Clockwize_Z`` expresses that the
+point ``P`` given in parameter has been rotated 90 degrees clockwise around the
+Z axis (thus component ``Z`` is preserved while components ``X`` and ``Y`` are
+modified):
+
+.. code-block:: ada
+
+   procedure Rotate_Clockwize_Z (P : in out Point_3D) with
+     Post => P = P'Old'Update(X => P.Y'Old, Y => - P.X'Old);
+
+Similarly to its use in combination with attribute ``Old`` in postconditions,
+attribute ``Update`` is useful in combination with :ref:`Attribute Loop_Entry`
+inside :ref:`Loop Invariants`. For example, we can express the property that,
+after iteration ``J`` in the main loop in procedure ``Zero_Range``, the value
+of parameter array ``X`` at all indexes already seen is equal to zero:
+
+.. code-block:: ada
+
+   procedure Zero_Range (X : in out Integer_Array; From, To : Positive) is
+   begin
+      for J in From .. To loop
+         X(J) := 0;
+         pragma Loop_Invariant (X = X'Loop_Entry'Update(From .. J => 0));
+      end loop;
+   end Zero_Range;
+
+Attribute ``Update`` can also be used outside of assertions. It is particularly
+useful in expression functions. For example, the functionality in procedure
+``Rotate_Clockwize_Z`` could be expressed equivalently as an expression
+function:
+
+.. code-block:: ada
+
+   function Rotate_Clockwize_Z (P : Point_3D) return Point_3D is
+     (P'Update(X => P.Y, Y => - P.X));
+
+.. _Conditional Expressions:
+
+Conditional Expressions
+-----------------------
+
+[Ada 2012]
+
+A conditional expression is a way to express alternative possibilities in an
+expression. It is like the ternary conditional expression ``cond ? expr1 :
+expr2`` in C or Java, except more powerful. There are two kinds of conditional
+expressions in Ada:
+
+* if-expressions are the counterpart of if-statements in expressions
+* case-expressions are the counterpart of case-statements in expressions
+
+For example, consider the variant of procedure ``Add_To_Total`` seen in
+:ref:`Contract Cases`, which saturates at a given threshold. Its postcondition
+can be expressed with an if-expression as follows:
+
+.. code-block:: ada
+
+   procedure Add_To_Total (Incr : in Integer) with
+     Post => (if Total'Old + Incr < Threshold  then
+                Total = Total'Old + Incr
+              else
+                Total = Threshold);
+
+Each branch of an if-expression (there may be one, two or more branches when
+``elsif`` is used) can be seen as a logical implication, which explains why the
+above postcondition can also be written:
+
+.. code-block:: ada
+
+   procedure Add_To_Total (Incr : in Integer) with
+     Post => (if Total'Old + Incr < Threshold then Total = Total'Old + Incr) and
+             (if Total'Old + Incr >= Threshold then Total = Threshold);
+
+or equivalently (as the absence of ``else`` branch above is implicitly the same
+as ``else False``):
+
+.. code-block:: ada
+
+   procedure Add_To_Total (Incr : in Integer) with
+     Post => (if Total'Old + Incr < Threshold then Total = Total'Old + Incr else False) and
+             (if Total'Old + Incr >= Threshold then Total = Threshold else False);
+
+If-expressions are not necessarily of boolean type, in which case they must
+have an ``else`` branch that gives the value of the expression for cases not
+covered in previous conditions (as there is no implicit ``else False`` in such
+a case). For example, here is a postcondition equivalent to the above, that
+uses an if-expression of ``Integer`` type:
+
+.. code-block:: ada
+
+   procedure Add_To_Total (Incr : in Integer) with
+     Post => Total = (if Total'Old + Incr < Threshold then Total'Old + Incr else Threshold);
+
+Although case-expressions can be used to cover cases of any scalar type, they
+are mostly used with enumerations, and the compiler checks that all cases are
+disjoint and that together they cover all possible cases. For example, consider
+a variant of procedure ``Add_To_Total`` which takes an additional ``Mode``
+parameter of enumeration value ``Single``, ``Double``, ``Negate`` or
+``Ignore``, with the intuitive corresponding leverage effect on the
+addition. The postcondition of this variant can be expressed using a
+case-expression as follows:
+
+.. code-block:: ada
+
+   procedure Add_To_Total (Incr : in Integer) with
+     Post => (case Mode is
+                when Single => Total = Total'Old + Incr,
+                when Double => Total = Total'Old + 2 * Incr,
+                when Ignore => Total = Total'Old,
+                when Negate => Total = Total'Old - Incr);
+
+Like if-expressions, case-expressions are not necessarily of boolean type. For
+example, here is a postcondition equivalent to the above, that uses a
+case-expression of ``Integer`` type:
+
+.. code-block:: ada
+
+   procedure Add_To_Total (Incr : in Integer) with
+     Post => Total = Total'Old + (case Mode is
+                                    when Single => Incr,
+                                    when Double => 2 * Incr,
+                                    when Ignore => 0,
+                                    when Negate => - Incr);
+
+A last case of ``others`` can be used to denote all cases not covered by
+previous conditions. If-expressions and case-expressions should always be
+parenthesized.
+
+.. _Quantified Expressions:
 
 Quantified Expressions
 ----------------------
 
-Ada 2012 quantified expressions are a special case with respect to run-time
-errors: the enclosed expression must be run-time error free over the *entire
-range* of the quantification, not only at points that would actually be
-reached at execution. As an example, consider the following expression:
+[Ada 2012]
+
+A quantified expression is a way to express a property over a collection,
+either an array or a container (see :ref:`Formal Containers Library`):
+
+* a `universally quantified expression` using ``for all`` expresses a property
+  that holds for all elements of a collection
+* an `existentially quantified expression` using ``for some`` expresses a
+  property that holds for at least one element of a collection
+
+For example, consider the procedure ``Increment_Array`` that increments each
+element of its array parameter ``X`` by one. Its postcondition can be expressed
+using a universally quantified expression as follows:
+
+.. code-block:: ada
+
+   procedure Increment_Array (X : in out Integer_Array) with
+     Post => (for all J in X'Range => X(J) = X'Old(J) + 1);
+
+The negation of a universal property being an existential property (the
+opposite is true too), the postcondition above can be expressed also using an
+existentially quantified expression as follows:
+
+.. code-block:: ada
+
+   procedure Increment_Array (X : in out Integer_Array) with
+     Post => not (for some J in X'Range => X(J) /= X'Old(J) + 1);
+
+At run time, a quantified expression is executed like a loop, which exits as
+soon as the value of the expression is known: if the property does not hold
+(resp. holds) for a given element of a universally (resp. existentially)
+quantified expression, execution of the loop does not proceed with remaining
+elements and returns the value ``False`` (resp. ``True``) for the expression.
+
+When a quantified expression is analyzed with |GNATprove|, it uses the logical
+counterpart of the quantified expression. |GNATprove| also checks that the
+expression is free from run-time errors. For this checking, |GNATprove| checks
+that the enclosed expression is free from run-time errors over the *entire
+range* of the quantification, not only at points that would actually be reached
+at run time. As an example, consider the following expression:
 
 .. code-block:: ada
 
     (for all I in 1 .. 10 => 1 / (I - 3) > 0)
 
-This quantified expression will never raise a run-time error, because the test
-is already false for the first value of the range, ``I = 1``, and the execution
-will stop, with the result value ``False``. However, |GNATprove| requires the
-expression to be run-time error free over the entire range, including ``I =
-3``, so there will be an unproved check for the division by zero in this case.
+This quantified expression cannot raise a run-time error, because the enclosed
+expression ``1 / (I - 3) > 0`` is false for the first value of the range ``I =
+1``, so the execution of the loop exits immediately with the value ``False``
+for the quantified expression. |GNATprove| is stricter and requires the
+enclosed expression ``1 / (I - 3) > 0`` to be free from run-time errors over
+the entire range ``I in 1 .. 10`` (including ``I = 3``) so it issues a check
+message for a possible division by zero in this case.
+
+Quantified expressions should always be parenthesized.
+
+.. _Expression Functions:
+
+Expression Functions
+--------------------
+
+[Ada 2012]
+
+An expression function is a function whose implementation is given by a single
+expression. For example, the function ``Increment`` can be defined as an
+expression function as follows:
+
+.. code-block:: ada
+
+   function Increment (X : Integer) return Integer is (X + 1);
+
+For compilation and execution, this definition is equivalent to:
+
+.. code-block:: ada
+
+   function Increment (X : Integer) return Integer is
+   begin
+      return X + 1;
+   end Increment;
+
+For |GNATprove|, this definition as expression function is equivalent to the
+same function body as above, plus a postcondition:
+
+.. code-block:: ada
+
+   function Increment (X : Integer) return Integer with
+     Post => Increment'Result = X + 1
+   is
+   begin
+      return X + 1;
+   end Increment;
+
+Thus, a user does not need in general to add a postcondition to an expression
+function, as the implicit postcondition generated by |GNATprove| is the most
+precise one. If a user adds a postcondition to an expression function,
+|GNATprove| uses this postcondition to analyze the function's callers instead
+of the most precise implicit postcondition. For example, we can choose to hide
+the exact implementation of ``Increment`` to analyze its callers, and rely
+instead for these analyses on the fact that ``Increment``'s result is greater
+than its parameter:
+
+.. code-block:: ada
+
+   function Increment (X : Integer) return Integer is (X + 1) with
+     Post => Increment'Result > X;
+
+On the contrary, it may be useful in general to add a precondition to an
+expression function, to constrain the contexts in which it can be called. For
+example, parameter ``X`` passed to function ``Increment`` should be less than
+the maximal integer value, otherwise an overflow would occur. We can specify
+this property in ``Increment``'s precondition as follows:
+
+.. code-block:: ada
+
+   function Increment (X : Integer) return Integer is (X + 1) with
+     Pre => X < Integer'Last;
+
+Note that the contract of an expression function follows its expression.
+
+Expression functions can be defined in package declarations, hence they are
+well suited for factoring out common properties that are referred to in
+contracts. For example, consider the procedure ``Increment_Array`` that
+increments each element of its array parameter ``X`` by one. Its precondition
+can be expressed using expression functions as follows:
+
+.. code-block:: ada
+
+   package Increment_Utils is
+
+      function Not_Max (X : Integer) return Boolean is (X < Integer'Last);
+
+      function None_Max (X : Integer_Array) return Boolean is
+        (for all J in X'Range => Not_Max (X(J)));
+
+      procedure Increment_Array (X : in out Integer_Array) with
+        Pre => None_Max (X);
+
+   end Increment_Utils;
+
+Expression functions can be defined over private types, and still be used in
+the contracts of publicly visible subprograms of the package, by declaring the
+function publicly and defining it in the private part. For example:
+
+.. code-block:: ada
+
+   package Increment_Utils is
+
+      type Integer_Array is private;
+
+      function None_Max (X : Integer_Array) return Boolean;
+
+      procedure Increment_Array (X : in out Integer_Array) with
+        Pre => None_Max (X);
+
+   private
+
+      type Integer_Array is array (Positive range <>) of Integer;
+
+      function Not_Max (X : Integer) return Boolean is (X < Integer'Last);
+
+      function None_Max (X : Integer_Array) return Boolean is
+        (for all J in X'Range => Not_Max (X(J)));
+
+   end Increment_Utils;
+
+.. _Ghost Code:
+
+Ghost Code
+----------
+
+[|SPARK|]
+
+Sometimes, the variables and functions that are present in a program are not
+sufficient to specify intended properties and to verify these properties with
+|GNATprove|. In such a case, it is possible in |SPARK| to insert in the program
+additional code useful for specification and verification, specially identified
+with the aspect ``Ghost`` so that it can be discarded during
+compilation. So-called `ghost code` in |SPARK| are these parts of the code that
+are only meant for specification and verification, and have no effect on the
+functional behavior of the program.
+
+Various kinds of ghost code are useful in different situations:
+
+* `Ghost functions` are typically used to express properties used in contracts.
+* `Global ghost variables` are typically used to keep track of the current
+  state of a program, or to maintain a log of past events of some type. This
+  information can then be referred to in contracts.
+* `Local ghost variables` are typically used to hold intermediate values during
+  computation, which can then be referred to in assertion pragmas like loop
+  invariants.
+* `Ghost procedures` can be used to factor out common treatments on ghost
+  variables. Ghost procedures should not have non-ghost outputs, either output
+  parameters or global outputs.
+* `Ghost packages` provide a means to encapsulate all types and operations for
+  a specific kind of ghost code.
+* `Imported ghost subprograms` are used to provide placeholders for properties
+  that are defined in a logical language, when using manual proof.
+
+When the program is compiled with assertions (for example with switch
+``-gnata`` in |GNAT Pro|), ghost code is executed like normal code. Ghost code
+can also be selectively enabled by setting pragma ``Assertion_Policy`` as
+follows:
+
+.. code-block:: ada
+
+   pragma Assertion_Policy (Ghost => Check);
+
+|GNATprove| checks that ghost code cannot have an effect on the behavior of the
+program. |GNAT Pro| compiler also performs some of these checks, although not
+all of them. Apart from these checks, |GNATprove| treats ghost code like normal
+code during its analyses.
+
+Ghost Functions
+^^^^^^^^^^^^^^^
+
+Ghost functions are useful to express properties only used in contracts, and to
+factor out common expressions used in contracts. For example, function
+``Get_Total`` introduced in :ref:`State Abstraction and Functional Contracts`
+to retrieve the value of variable ``Total`` in the contract of ``Add_To_Total``
+could be marked as a ghost function as follows:
+
+.. code-block:: ada
+
+   function Get_Total return Integer with Ghost;
+
+and still be used exactly as seen in :ref:`State Abstraction and Functional
+Contracts`:
+
+.. code-block:: ada
+
+   procedure Add_To_Total (Incr : in Integer) with
+     Pre  => Incr >= 0 and then Get_Total in 0 .. Integer'Last - Incr,
+     Post => Get_Total = Get_Total'Old + Incr;
+
+The definition of ``Get_Total`` would be also the same:
+
+.. code-block:: ada
+
+   Total : Integer;
+
+   function Get_Total return Integer is (Total);
+
+Although it is more common to define ghost functions as :ref:`Expression
+Functions`, a regular function might be used too:
+
+.. code-block:: ada
+
+   function Get_Total return Integer is
+   begin
+      return Total;
+   end Get_Total;
+
+In that case, |GNATprove| uses only the contract of ``Get_Total`` (either
+user-specified or the default one) when analyzing its callers, like for a
+non-ghost regular function. (The same exception applies as for regular
+functions, when |GNATprove| can analyze a subprogram in the context of its
+callers, as described in :ref:`Contextual Analysis of Subprograms Without
+Contracts`.)
+
+In the usual context where ghost code is not kept in the final executable, the
+user is given more freedom to use in ghost code constructs that are less
+efficient than in normal code, which may be useful to express rich
+properties. For example, the ghost functions defined in the :ref:`Formal
+Containers Library` in |GNAT Pro| typically copy the entire content of the
+argument container, which would not be acceptable for non-ghost functions.
+
+Ghost Variables
+^^^^^^^^^^^^^^^
+
+Ghost variables are useful to keep track of local or global information during
+the computation, which can then be referred to in contracts or assertion
+pragmas.
+
+Case 1: Keeping Intermediate Values
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Local ghost variables are commonly used to keep intermediate values. For
+example, we can define a local ghost variable ``Init_Total`` to hold the
+initial value of variable ``Total`` in procedure ``Add_To_Total``, which allows
+checking the relation between the initial and final values of ``Total`` in an
+assertion:
+
+.. code-block:: ada
+
+   procedure Add_To_Total (Incr : in Integer) is
+      Init_Total : Integer with Ghost := Total;
+   begin
+      Total := Total + Incr;
+      pragma Assert (Total = Init_Total + Incr);
+   end Add_To_Total;
+
+Case 2: Keeping Memory of Previous State
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Global ghost variables are commonly used to memorize the value of a previous
+state. For example, we can define a global ghost variable ``Last_Incr`` to hold
+the previous value passed in argument when calling procedure ``Add_To_Total``,
+which allows checking in its precondition that the sequence of values passed in
+argument is non-decreasing:
+
+.. code-block:: ada
+
+   Last_Incr : Integer with Ghost := Integer'First;
+
+   procedure Add_To_Total (Incr : in Integer) with
+     Pre => Incr >= Last_Incr;
+
+   procedure Add_To_Total (Incr : in Integer) is
+   begin
+      Total := Total + Incr;
+      Last_Incr := Incr;
+   end Add_To_Total;
+
+Case 3: Logging Previous Events
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Going beyond the previous case, global ghost variables can be used to store a
+complete log of events. For example, we can define global ghost variables
+``Log`` and ``Log_Size`` to hold the sequence of values passed in argument to
+procedure ``Add_To_Total``, as in :ref:`State Abstraction`:
+
+.. code-block:: ada
+
+   Log      : Integer_Array with Ghost;
+   Log_Size : Natural with Ghost;
+
+   procedure Add_To_Total (Incr : in Integer) with
+     Post => Log_Size = Log_Size'Old + 1 and Log = Log'Old'Update (Log_Size => Incr);
+
+   procedure Add_To_Total (Incr : in Integer) is
+   begin
+      Total := Total + Incr;
+      Log_Size := Log_Size + 1;
+      Log (Log_Size) := Incr;
+   end Add_To_Total;
+
+The postcondition of ``Add_To_Total`` above expresses that ``Log_Size`` is
+incremented by one at each call, and that the current value of parameter
+``Incr`` is appended to ``Log`` at each call (using :ref:`Attribute Old` and
+:ref:`Attribute Update`).
+
+Ghost Procedures
+^^^^^^^^^^^^^^^^
+
+Ghost procedures are useful to factor out common treatments on ghost
+variables. For example, we can define a ghost procedure ``Append_To_Log`` to
+append a value to the log as seen previously.
+
+.. code-block:: ada
+
+   Log      : Integer_Array with Ghost;
+   Log_Size : Natural with Ghost;
+
+   procedure Append_To_Log (Incr : in Integer) with
+     Ghost,
+     Post => Log_Size = Log_Size'Old + 1 and Log = Log'Old'Update (Log_Size => Incr);
+
+   procedure Append_To_Log (Incr : in Integer) is
+   begin
+      Log_Size := Log_Size + 1;
+      Log (Log_Size) := Incr;
+   end Append_To_Log;
+
+Then, this procedure can be called in ``Add_To_Total`` as follows:
+
+.. code-block:: ada
+
+   procedure Add_To_Total (Incr : in Integer) is
+   begin
+      Total := Total + Incr;
+      Append_To_Log (Incr);
+   end Add_To_Total;
+
+.. _Ghost Packages:
+
+Ghost Packages
+^^^^^^^^^^^^^^
+
+Ghost packages are useful to encapsulate all types and operations for a
+specific kind of ghost code. For example, we can define a ghost package
+``Logging`` to deal with all all logging operations on package ``Account``:
+
+.. code-block:: ada
+
+   package Logging with
+     Ghost
+   is
+      Log      : Integer_Array;
+      Log_Size : Natural;
+
+      procedure Append_To_Log (Incr : in Integer) with
+        Post => Log_Size = Log_Size'Old + 1 and Log = Log'Old'Update (Log_Size => Incr);
+
+      ...
+
+   end Logging;
+
+The implementation of package ``Logging`` is the same as if it was not a ghost
+package. In particular, a ``Ghost`` aspect is implicitly added to all
+declarations in ``Logging``, so it is not necessary to specify it explicitly.
+``Logging`` can be defined either as a local ghost package or as a separate
+unit. In the latter case, unit ``Account`` needs to reference unit ``Logging``
+in a with-clause like for a non-ghost unit:
+
+.. code-block:: ada
+
+   with Logging;
+
+   package Account is
+      ...
+   end Account;
+
+Imported Ghost Subprograms
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When using manual proof (see :ref:`GNATprove and Manual Proof`), it may be more
+convenient to define some properties in the logical language of the prover
+rather than in |SPARK|. In that case, ghost functions might be marked as
+imported, so that no implementation is needed. For example, the ghost procedure
+``Append_To_Log`` seen previously may be defined equivalently as a ghost
+imported function as follows:
+
+.. code-block:: ada
+
+   function Append_To_Log (Log : Log_type; Incr : in Integer) return Log_Type with
+     Ghost,
+     Import;
+
+where ``Log_Type`` is an Ada type used also as placeholder for a type in the
+logical language of the prover. To avoid any inconsistency between the
+interpretations of ``Log_Type`` in |GNATprove| and in the manual prover, it is
+preferable in such a case to mark the definition of ``Log_Type`` as not in
+|SPARK|, so that |GNATprove| does not make any assumptions on its content. This
+can be achieved by defining ``Log_Type`` as a private type and marking the
+private part of the enclosing package as not in |SPARK|:
+
+.. code-block:: ada
+
+   package Logging with
+     SPARK_Mode,
+     Ghost
+   is
+      type Log_Type is private;
+
+      function Append_To_Log (Log : Log_type; Incr : in Integer) return Log_Type with
+        Import;
+
+      ...
+
+   private
+      pragma SPARK_Mode (Off);
+
+      type Log_Type is new Integer;  --  Any definition is fine here
+   end Logging;
+
+A ghost imported subprogram cannot be executed, so calls to ``Append_To_Log``
+above should not be enabled during compilation, otherwise a compilation error
+is issued.
+
+.. _Assertion Pragmas:
 
 Assertion Pragmas
 =================
 
-.. _loop invariants:
+|SPARK| contains features for directing formal verification with
+|GNATprove|. These features may also be used by other tools, in particular the
+|GNAT Pro| compiler. Assertion pragmas are refinements of pragma ``Assert``
+defined in Ada. For all assertion pragmas, an exception is raised at run time
+when the property asserted does not hold, if the program was compiled with
+assertions. The real difference between assertion pragmas is how they are used
+by |GNATprove| during proof.
+
+.. _Pragma Assert:
+
+Pragma ``Assert``
+-----------------
+
+[Ada 2005]
+
+Pragma ``Assert`` is the simplest assertion pragma. |GNATprove| checks that the
+property asserted holds, and uses the information that it holds for analyzing
+code that follows. For example, consider two assertions of the same property
+``X > 0`` in procedure ``Assert_Twice``:
+
+.. literalinclude:: gnatprove_by_example/examples/assert_twice.adb
+   :language: ada
+   :linenos:
+
+As expected, the first assertion on line 5 is not provable in absence of a
+suitable precondition for ``Assert_Twice``, but |GNATprove| proves that it
+holds the second time the property is asserted on line 6:
+
+.. literalinclude:: gnatprove_by_example/results/assert_twice.prove
+   :language: none
+
+|GNATprove| considers that an execution of ``Assert_Twice`` with ``X <= 0``
+stops at the first assertion that fails. Thus ``X >= 0`` when execution reaches
+the second assertion.  This is true if assertions are executed at run time, but
+not if assertions are discarded during compilation. In the latter case,
+unproved assertions should be inspected carefully to ensure that the property
+asserted will indeed hold at run time. This is true of all assertion pragmas,
+which |GNATprove| analyzes like pragma ``Assert`` in that respect.
+
+.. _Loop Invariants:
 
 Loop Invariants
 ---------------
 
-In order for |GNATprove| to prove formally the properties of interest on
-subprograms with loops, the user should annotate these loops with loop
-invariants. A loop invariant gives information on the state at entry to the
-loop at each iteration. Loop invariants in |SPARK| are expressed with the
-``Loop_Invariant`` pragma, which may appear anywhere in the main list of
-statements in a loop body, or directly in a chain of nested block statements in
-this main list of statements.
+[|SPARK|]
 
-Users that are already familiar with the notion of loop invariant in other
-proof systems should be aware that |SPARK| loop invariants are slightly
-different: they only need to hold when the control flow of
-the program passes over it, so only when the loop is actually entered, and
-only after iterations excepting the last one.
+Pragma ``Loop_Invariant`` is a special kind of assertion used in
+loops. |GNATprove| performs two checks that ensure that the property asserted
+holds at each iteration of the loop:
 
-Internally, |GNATprove| forms a "virtual loop" around the loop
-invariants to prove the subprogram. The virtual loop is formed by "unrolling"
-the statements preceding the first ``Loop_Invariant`` pragma until it is at
-the top of the loop body.
+1. `loop invariant initialization`: |GNATprove| checks that the property
+   asserted holds during the first iteration of the loop.
+2. `loop invariant preservation`: |GNATprove| checks that the property asserted
+   holds during an arbitrary iteration of the loop, assuming that it held in
+   the previous iteration.
 
-Loop invariants may have to be precise enough to prove the property
-of interest. For example, in order to prove the postcondition of function
-``Contains`` below, one has to write a precise loop invariant such as the one
-given below:
+Each of these properties can be independently true or false. For example, in
+the following loop, the loop invariant is false during the first iteration and
+true in all remaining iterations:
 
-.. code-block:: ada
-   :linenos:
+.. literalinclude:: gnatprove_by_example/examples/simple_loops.adb
+   :language: ada
+   :lines: 6-10
 
-   type IntArray is array (1 .. 10) of Integer;
+Thus, |GNATprove| checks that property 2 holds but not property 1:
 
-   function Contains (Table : IntArray; Value : Integer) return Boolean with
-     Post => (if Contains'Result then
-                (for some J in Table'Range => Table (J) = Value)
- 	      else
-                (for all J in Table'Range => Table (J) /= Value));
+.. literalinclude:: gnatprove_by_example/results/simple_loops.prove
+   :language: none
+   :lines: 1-2
 
-   function Contains (Table : IntArray; Value : Integer) return Boolean is
-   begin
-      for Index in Table'Range loop
-         pragma Loop_Invariant (for all J in Table'First .. Index - 1 =>
-                                 Table (J) /= Value);
+Conversely, in the following loop, the loop invariant is true during the first
+iteration and false in all remaining iterations:
 
-         if Table(Index) = Value then
-            return True;
-         end if;
-      end loop;
+.. literalinclude:: gnatprove_by_example/examples/simple_loops.adb
+   :language: ada
+   :lines: 12-16
 
-      return False;
-   end Contains;
+Thus, |GNATprove| checks that property 1 holds but not property 2:
 
-When the loop involves modifying a variable, it may be necessary to refer to
-the value of the variable at loop entry. This can be done using
-attribute ``Loop_Entry``. For example, the following procedure
-reverses the contents of an array in-place. In order to prove
-the postcondition, the loop invariant needs to refer to the original
-value of ``A'Loop_Entry`` not the value of ``A`` that has been modified
-by earlier iterations of the loop.
+.. literalinclude:: gnatprove_by_example/results/simple_loops.prove
+   :language: none
+   :lines: 3-4
 
-.. code-block:: ada
-   :linenos:
+The following loop shows a case where the loop invariant holds both during the
+first iteration and all remaining iterations:
 
-   procedure Reverse_Order (A : in out IntArray)
-      with Post =>
-         (for all J in A'Range => A (J) = A'Old (A'Last - J + 1) and
-                                  A (A'Last - J + 1) = A'Old (J));
+.. literalinclude:: gnatprove_by_example/examples/simple_loops.adb
+   :language: ada
+   :lines: 18-22
 
-   procedure Reverse_Order (A : in out IntArray)
-   is
-      Temp : Integer;
-   begin
-      for Index in A'First .. (A'Last + 1) / 2 loop
-         Temp := A (Index);
-         A (Index) := A (A'Last - Index + 1);
-         A (A'Last - Index + 1) := Temp;
-         pragma Loop_Invariant (-- Elements that have visited so far are swapped
-                                (for all J in A'First .. Index =>
-                                    A (J) = A'Loop_Entry (A'Last - J + 1) and
-                                    A (A'Last - J + 1) = A'Loop_Entry (J))
-                                   and then
-                                   -- Elements not yet visited are unchanged
-                                   (for all J in Index + 1 .. A'Last - Index =>
-                                       A (J) = A'Loop_Entry (J)));
+|GNATprove| checks here that both properties 1 and 2 hold:
 
-      end loop;
-   end Reverse_Order;
+.. literalinclude:: gnatprove_by_example/results/simple_loops.prove
+   :language: none
+   :lines: 5-6
 
+But it is not sufficient that a loop invariant is true for |GNATprove| to prove
+it. The loop invariant should also be `inductive`: it should be precise enough
+that |GNATprove| can check loop invariant preservation by assuming `only` that
+the loop invariant held during the last iteration. For example, the following
+loop is the same as the previous one, except the loop invariant is true but not
+inductive:
 
-Note in particular the second conjunct in the loop invariant, which states the
-elements of ``A`` that have not yet been swapped. This part of an invariant
-or contract stating what has not been
-modified, called in the scientific literature the *frame condition*, is essential for
-|GNATprove| to work effectively. Special care should be taken to write adequate
-frame conditions, as they usually look obvious to programmers, and so it is
-very common to forget to write them.
+.. literalinclude:: gnatprove_by_example/examples/simple_loops.adb
+   :language: ada
+   :lines: 24-28
+
+|GNATprove| cannot check property 2 on that loop:
+
+.. literalinclude:: gnatprove_by_example/results/simple_loops.prove
+   :language: none
+   :lines: 7-8
+
+The reasoning of |GNATprove| for checking property 2 in that case can be
+summarized as follows:
+
+* Let's take iteration K of the loop, where K > 1 (not the first iteration).
+* Let's assume that the loop invariant held during iteration K-1, so we know
+  that if K-1 > 1 then Prop holds.
+* The previous assumption can be rewritten: if K > 2 then Prop.
+* But all we know is that K > 1, so we cannot deduce Prop.
+
+When a loop modifies a collection, which can be either an array or a container
+(see :ref:`Formal Containers Library`), it is in general necessary to state in
+the loop invariant those parts of the collection that have not been modified up
+to the current iteration. This property called `frame condition` in the
+scientific literature is essential for |GNATprove|, which otherwise must assume
+that all elements in the collection may have been modified. Special care should
+be taken to write adequate frame conditions, as they usually look obvious to
+programmers, and so it is very common to forget to write them and not being
+able to realize what's the problem afterwards. For example, consider the
+following loop invariant expressing that, after ``J`` iterations, the part of
+the boolean array ``Arr`` already seen has been set to ``True``:
+
+.. literalinclude:: gnatprove_by_example/examples/array_loops.adb
+   :language: ada
+   :lines: 7-11
+
+|GNATprove| does not prove property 2 in that case:
+
+.. literalinclude:: gnatprove_by_example/results/array_loops.prove
+   :language: none
+   :lines: 2-3
+
+Let's add a loop invariant stating that the part of the boolean array ``Arr``
+not already seen is still set to ``False`` (the frame condition):
+
+.. literalinclude:: gnatprove_by_example/examples/array_loops.adb
+   :language: ada
+   :lines: 13-18
+
+|GNATprove| is able to prove property 2 with this more precise loop invariant:
+
+.. literalinclude:: gnatprove_by_example/results/array_loops.prove
+   :language: none
+   :lines: 6-7,9-10
+
+See :ref:`How to Write Loop Invariants` for further guidelines.
+
+Pragma ``Loop_Invariant`` may appear anywhere at the top level of a loop: it is
+usually added at the start of the loop, but it may be more convenient in some
+cases to add it at the end of the loop, or in the middle of the loop, in cases
+where this simplifies the asserted property. In all cases, |GNATprove| checks
+loop invariant preservation by reasoning on the virtual loop that starts and
+ends at the loop invariant.
+
+It is possible to use multiple loop invariants, which should be grouped
+together without intervening statements or declarations. The resulting complete
+loop invariant is the conjunction of individual ones. The benefits of writing
+multiple loop invariants instead of a conjunction can be improved readability
+and better provability (because |GNATprove| checks each pragma
+``Loop_Invariant`` separately).
+
+Finally, :ref:`Attribute Loop_Entry` and :ref:`Attribute Update` can be very
+useful to express complex loop invariants.
+
+.. note::
+
+   Users that are already familiar with the notion of loop invariant in other
+   proof systems should be aware that loop invariants in |SPARK| are slightly
+   different from the usual ones. In |SPARK|, a loop invariant must hold when
+   execution reaches the corresponding pragma inside the loop. Hence, it needs
+   not hold when the loop is never entered, or when exiting the loop.
+
+.. _Loop Variants:
 
 Loop Variants
 -------------
 
-Proofs of termination of loops rely on ``Loop_Variant`` pragmas. Proving one
-loop variant is sufficient to prove that a loop terminates, even if the loop
-contains multiple ``Loop_Variant`` pragmas, and others are not proved. Indeed,
-it is sufficient to know that one bounded quantity decreases or increases
-monotonically (or a mix of these, as loop invariants may have increasing and
-decreasing parts, the order of which fixes the lexicographic combined order of
-progress) to be assured that the loop terminates. Note that, in general, this
-requires proving also that there are no run-time errors in the loop, to show
-that the quantity stays within bounds. Otherwise, the code may still wrap
-around at run time (if the code is compiled without checks), and the loop will
-not necessarily exit.
+[|SPARK|]
 
-The ``Loop_Variant`` pragmas that appear next to the first group of
-``Loop_Invariant`` pragmas (or at the start of the loop body if there are no
-``Loop_Invariant`` pragmas in the loop) are handled with the most precision by
-|GNATprove|, as they become loop variants of the underlying virtual loop. Other
-``Loop_Variant`` pragmas are proved by showing that the quantity that should
-progress monotonically does so between the program point where the first group
-of ``Loop_Invariant`` pragmas appears (or the start of the loop if there is no
-such group) and the program point where the ``Loop_Variant`` pragma appears,
-and that this quantity either stays the same or progresses on the rest of the
-loop.
+Pragma ``Loop_Variant`` is a special kind of assertion used in
+loops. |GNATprove| checks that the given scalar value decreases (or increases)
+at each iteration of the loop. Because a scalar value is always bounded by its
+type in Ada, it cannot decrease (or increase) at each iteration an infinite
+number of times, thus one of two outcomes is possible:
+
+1. the loop exits, or
+2. a run-time error occurs.
+
+Therefore, it is possible to prove the termination of loops in |SPARK| programs
+by proving both a loop variant for each plain-loop or while-loop (for-loops
+always terminate in Ada) and the absence of run-time errors.
+
+For example, the while-loops in procedure ``Terminating_Loops`` compute the
+value of ``X mod 3`` in variable ``X_Mod_3``:
+
+.. literalinclude:: gnatprove_by_example/examples/terminating_loops.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| is able to prove both loop variants, as well as absence of run-time
+errors in the subprogram, hence that loops terminate:
+
+.. literalinclude:: gnatprove_by_example/results/terminating_loops.prove
+   :language: none
+
+Pragma ``Loop_Variant`` may appear anywhere a loop invariant appears. It is
+also possible to use multiple loop variants, which should be grouped together
+with loop invariants. A loop variant may be more complex than a single
+decreasing (or increasing) value, and be given instead by a list of either
+decreasing or increasing values (possibly a mix of both). In that case, the
+order of the list defines the lexicographic order of progress. See |SPARK| RM
+5.5.3 for details.
+
+.. _ Pragma Assume:
+
+Pragma ``Assume``
+-----------------
+
+[|SPARK|]
+
+Pragma ``Assume`` is a variant of :ref:`Pragma Assert` that does not require
+|GNATprove| to check that the property holds. This is used to convey trustable
+information to |GNATprove|, in particular properties about external objects
+that |GNATprove| has no control upon. |GNATprove| uses the information that the
+assumed property holds for analyzing code that follows. For example, consider
+an assumption of the property ``X > 0`` in procedure ``Assume_Then_Assert``,
+followed by an assertion of the same property:
+
+.. literalinclude:: gnatprove_by_example/examples/assume_then_assert.adb
+   :language: ada
+   :linenos:
+
+As expected, |GNATprove| does not check the property on line 5, but used it to
+prove that the assertion holds on line 6:
+
+.. literalinclude:: gnatprove_by_example/results/assume_then_assert.prove
+   :language: none
+
+|GNATprove| considers that an execution of ``Assume_Then_Assert`` with ``X <=
+0`` stops at the assumption on line 5, and it does not issue a message in that
+case because the user explicitly indicated that this case is not possible. Thus
+``X >= 0`` when execution reaches the assertion on line 6. This is true if
+assertions (of which assumptions are a special kind) are executed at run time,
+but not if assertions are discarded during compilation. In the latter case,
+assumptions should be inspected carefully to ensure that the property assumed
+will indeed hold at run time.
+
+.. _Pragma Assert_And_Cut:
 
 Pragma ``Assert_And_Cut``
 -------------------------
 
-|GNATprove| may need to consider many possible paths through a subprogram. If
-this number of paths is too large, |GNATprove| will take a long time to prove
-even trivial properties. To reduce the number of paths analyzed by |GNATprove|,
-one may use the pragma ``Assert_And_Cut``, to mark program points where
-|GNATprove| can *cut* paths, replacing precise knowledge about execution before
-the program point by the assertion given. The effect of this pragma for
-compilation is exactly the same as the one of pragma ``Assert``.
+[|SPARK|]
 
-For example, in the procedure below, all that is needed to prove that the code
-using ``X`` is free from run-time errors is that ``X`` is positive. Without the
-pragma, |GNATprove| considers all execution paths through ``P``, which may be
-many. With the pragma, |GNATprove| only needs to consider the paths from the
-start of the procedure to the pragma, and the paths from the pragma to the end
-of the procedure, hence many fewer paths.
+Pragma ``Assert_And_Cut`` is a variant of :ref:`Pragma Assert` that allows
+hiding some information to |GNATprove|. |GNATprove| checks that the property
+asserted holds, and uses *only* the information that it holds for analyzing
+code that follows. For example, consider two assertions of the same property
+``X = 1`` in procedure ``Forgetful_Assert``, separated by a pragma
+``Assert_And_Cut``:
+
+.. literalinclude:: gnatprove_by_example/examples/forgetful_assert.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| proves that the assertion on line 7 holds, but it cannot prove that
+the same assertion on line 12 holds:
+
+.. literalinclude:: gnatprove_by_example/results/forgetful_assert.prove
+   :language: none
+
+|GNATprove| *forgets* the exact value of ``X`` after line 9. All it knows is
+the information given in pragma ``Assert_And_Cut``, here that ``X > 0``. And
+indeed |GNATprove| proves that such an assertion holds on line 11.
+
+Pragma ``Assert_And_Cut`` may be useful in two cases:
+
+1. When the automatic provers are overwhelmed with information from the
+   context, pragma ``Assert_And_Cut`` may be used to simplify this context,
+   thus leading to more automatic proofs.
+
+2. When |GNATprove| is proving checks for each path through the subprogram (see
+   switch ``--proof`` in :ref:`Running GNATprove from the Command Line`), and
+   the number of paths is very large, pragma ``Assert_And_Cut`` may be used to
+   reduce the number of paths, thus leading to faster automatic proofs.
+
+   For example, consider procedure ``P`` below, where all that is needed to
+   prove that the code using ``X`` is free from run-time errors is that ``X``
+   is positive. Let's assume that we are running |GNATprove| with switch
+   ``--proof=per_path`` so that a formula is generated for each execution path.
+   Without the pragma, |GNATprove| considers all execution paths through ``P``,
+   which may be many. With the pragma, |GNATprove| only considers the paths
+   from the start of the procedure to the pragma, and the paths from the pragma
+   to the end of the procedure, hence many fewer paths.
 
 .. code-block:: ada
    :linenos:
@@ -1064,7 +2389,7 @@ For example:
 
 specifies that general expressions outside assertions be evaluated in the usual
 strict mode, and expressions within assertions be evaluated in "eliminate
-intermediate overflows" mode. Currently, GNATprove only supports pragma
+intermediate overflows" mode. Currently, |GNATprove| only supports pragma
 ``Overflow_Mode`` being specified in a configuration pragma file.
 
 Additionally, a compiler switch ``-gnato??`` can be used to control the
@@ -1087,8 +2412,241 @@ about the treatment of overflows for fixed-point and floating-point arithmetic
 please refer to the "Overflow Check Handling in GNAT" appendix in the |GNAT Pro|
 User's Guide.
 
+.. _Tagged Types and Liskov Substitution Principle:
+
+Tagged Types and Liskov Substitution Principle
+==============================================
+
+|SPARK| supports safe Object Oriented Programming by checking behavioral
+subtyping between parent types and derived types, a.k.a. Liskov Substitution
+Principle: every overriding operation of the derived type should behave so that
+it can be substituted for the corresponding overridden operation of the parent
+type anywhere.
+
+Class-Wide Subprogram Contracts
+-------------------------------
+
+[Ada 2012]
+
+Specific :ref:`Subprogram Contracts` are required on operations of tagged
+types, so that |GNATprove| can check Liskov Substitution Principle on every
+overriding operation:
+
+* The `class-wide precondition` introduced by aspect ``Pre'Class`` is similar
+  to the normal precondition.
+* The `class-wide postcondition` introduced by aspect ``Post'Class`` is similar
+  to the normal postcondition.
+
+Although these contracts are defined in Ada 2012, they have a stricter meaning
+in |SPARK| for checking Liskov Substitution Principle:
+
+* The class-wide precondition of an overriding operation should be weaker (more
+  permissive) than the class-wide precondition of the corresponding overridden.
+  operation.
+* The class-wide postcondition of an overriding operation should be stronger
+  (more restrictive) than the class-wide postcondition of the corresponding
+  overridden operation.
+
+For example, suppose that the ``Logging`` unit introduced in :ref:`Ghost
+Packages` defines a tagged type ``Log_Type`` for logs, with corresponding
+operations:
+
+.. literalinclude:: gnatprove_by_example/examples/logging.ads
+   :language: ada
+   :linenos:
+
+and that this type is derived in ``Range_Logging.Log_Type`` which additionally
+keeps track of the minimum and maximum values in the log, so that they can be
+accessed in constant time:
+
+.. literalinclude:: gnatprove_by_example/examples/range_logging.ads
+   :language: ada
+   :linenos:
+
+|GNATprove| proves that the contracts on ``Logging.Append_To_Log`` and its
+overriding ``Range_Logging.Append_To_Log`` respect the Liskov Substitution
+Principle:
+
+.. literalinclude:: gnatprove_by_example/results/range_logging.prove
+   :language: none
+
+Units ``Logging`` and ``Range_Logging`` need not be implemented, or available,
+or in |SPARK|. It is sufficient that the specification of ``Logging`` and
+``Range_Logging`` are in |SPARK| for this checking. Here, the postcondition of
+``Range_Logging.Append_To_Log`` is strictly stronger than the postcondition of
+``Logging.Append_To_Log``, as it also specifies the new expected value of the
+minimum and maximum values. The preconditions of both procedures are exactly
+the same, which is the most common case, but in other cases it might be useful
+to be more permissive in the overriding operation's precondition. For example,
+``Range_Logging.Append_To_Log`` could allocate dynamically additional memory
+for storing an unbounded number of events, instead of being limited to
+``Max_Count`` events like ``Logging.Append_To_Log``, in which case its
+precondition would be simply ``True`` (the default precondition).
+
+A derived type may inherit both from a parent type and from one or more
+interfaces, which only provide abstract operations and no
+components. |GNATprove| checks Liskov Substitution Principle on every
+overriding operation, both when the overridden operation is inherited from the
+parent type and when it is inherited from an interface.
+
+|GNATprove| separately checks that a subprogram implements its class-wide
+contract, like for a specific contract.
+
+Mixing Class-Wide and Specific Subprogram Contracts
+---------------------------------------------------
+
+[Ada 2012]
+
+It is possible to specify both a specific contract and a class-wide contract on
+a subprogram, in order to use of more precise contract (the specific one) for
+non-dispatching calls and a contract compatible with the Liskov Substitution
+Principle (the class-wide contract) for dispatching calls. In that case,
+|GNATprove| checks that:
+
+* The specific precondition is weaker (more permissive) than the class-wide precondition.
+* The specific postcondition is stronger (more restrictive) than the class-wide
+  postcondition.
+
+For example, ``Logging.Append_To_Log`` could set a boolean flag
+``Special_Value_Logged`` when some ``Special_Value`` is appended to the log,
+and express this property in its specific postcondition so that it is available
+for analyzing non-dispatching calls to the procedure:
+
+.. code-block:: ada
+
+   procedure Append_To_Log (Log : in out Log_Type; Incr : in Integer) with
+     Pre'Class  => Log.Log_Size < Max_Count,
+     Post'Class => Log.Log_Size = Log.Log_Size'Old + 1,
+     Post       => Log.Log_Size = Log.Log_Size'Old + 1 and
+                   (if Incr = Special_Value then Special_Value_Logged = True);
+
+This additional postcondition would play no role in dispatching calls, thus it
+is not involved in checking the Liskov Substitution Principle. Note that the
+absence of specific precondition on procedure ``Append_To_Log`` does not mean
+that the default precondition of ``True`` is used: as a class-wide precondition
+is specified on procedure ``Append_To_Log``, it is also used as specific
+precondition. Similarly, if a procedure has a class-wide contract and a
+specific precondition, but no specific postcondition, then the class-wide
+postcondition is also used as specific postcondition.
+
+When both a specific contract and a class-wide contract are specified on a
+subprogram, |GNATprove| only checks that the subprogram implements its specific
+(more precise) contract.
+
+Dispatching Calls and Controlling Operands
+------------------------------------------
+
+[Ada 2012]
+
+In a dispatching call, the *controlling operand* is the parameter of class-wide
+type whose dynamic type determinates the actual subprogram called. The dynamic
+type of this controlling operand may be any type derived from the specific type
+corresponding to the classe-wide type of the parameter (the specific type is
+``T`` when the class-wide type is ``T'Class``). Thus, in general it is not
+possible to know in advance which subprograms may be called in a dispatching
+call, when separately analyzing a unit.
+
+In |SPARK|, there is no need to know all possible subprograms called in order
+to analyze a dispatching call, which makes it possible for |GNATprove| to
+perform this analysis without knowledge of the whole program. As |SPARK|
+enforces Liskov Substitution Principle, the class-wide contract of an
+overriding operation is always less restrictive than the class-wide contract of
+the corresponding overridden operation. Thus, |GNATprove| uses the class-wide
+contract of the operation for the specific type of controlling operand to
+analyze a dispatching call.
+
+For example, suppose a global variable ``The_Log`` of class-wide type defines
+the log that should be used in the program:
+
+.. code-block:: ada
+
+   The_Log : Logging.Log_Type'Class := ...
+
+The call to ``Append_To_Log`` in procedure ``Add_To_Total`` may dynamically
+call either ``Logging.Append_To_Log`` or ``Range_Logging.Append_To_Log``:
+
+.. code-block:: ada
+
+   procedure Add_To_Total (Incr : in Integer) is
+   begin
+      Total := Total + Incr;
+      The_Log.Append_To_Log (Incr);
+   end Add_To_Total;
+
+Because |GNATprove| separately checks Liskov Substitution Principle for
+procedure ``Append_To_Log``, it can use the class-wide contract of
+``Logging.Append_To_Log`` for analyzing procedure ``Add_To_Total``.
+
+Dynamic Types and Invisible Components
+--------------------------------------
+
+[|SPARK|]
+
+The :ref:`Data Initialization Policy` in |SPARK| applies specially to objects
+of tagged type. In general, the dynamic type of an object of tagged type may be
+different from its static type, hence the object may have invisible components,
+that are only revealed when the object is converted to a class-wide type.
+
+For objects of tagged type, modes on parameters and data dependency contracts
+have a different meaning depending on the object's static type:
+
+* For objects of a specific (not class-wide) tagged type, the constraints
+  described in :ref:`Data Initialization Policy` apply to the visible
+  components of the object only.
+
+* For objects of a class-wide type, the constraints described in :ref:`Data
+  Initialization Policy` apply to all components of the object, including
+  invisible ones.
+
+|GNATprove| checks during flow analysis that no uninitialized data is read in
+the program, and that the specified data dependencies and flow dependencies are
+respected in the implementation, based on the semantics above for objects of
+tagged type. For example, it detects no issues during flow analysis on
+procedure ``Use_Logging`` which initializes parameter ``Log`` and then updates
+it:
+
+.. literalinclude:: gnatprove_by_example/examples/use_logging.adb
+   :language: ada
+   :linenos:
+
+If parameter ``Log`` is of dynamic type ``Logging.Log_Type``, then the call to
+``Init_Log`` initializes all components of ``Log`` as expected, and the call to
+``Append_To_Log`` can safely read those. If parameter ``Log`` is of dynamic
+type ``Range_Logging.Log_Type``, then the call to ``Init_Log`` only initializes
+those components of ``Log`` that come from the parent type
+``Logging.Log_Type``, but since the call to ``Append_To_Log`` only read those,
+then there is no read of uninitialized data. This is in contrast with what
+occurs in procedure ``Use_Logging_Classwide``:
+
+.. literalinclude:: gnatprove_by_example/examples/use_logging_classwide.adb
+   :language: ada
+   :linenos:
+
+on which |GNATprove| issues an error during flow analysis:
+
+.. literalinclude:: gnatprove_by_example/results/use_logging_classwide.flow
+   :language: none
+
+Indeed, the call to ``Init_Log`` (a non-dispatching call to
+``Logging.Init_Log`` due to the conversion on its parameter) only initializes
+those components of ``Log`` that that come from the parent type
+``Logging.Log_Type``, but the call to ``Append_To_Log`` may read other
+components from ``Range_Logging.Log_Type`` which may not be initialized.
+
+A consequence of these rules for data initialization policy is that a parameter
+of a specific tagged type cannot be converted to a class-wide type, for example
+for a dispatching call. A special aspect ``Extensions_Visible`` is defined in
+|SPARK| to allow this case. When ``Extensions_Visible`` is specified on a
+subprogram, the data initialization policy for the subprogram parameters of a
+specific tagged type requires that the constraints described in :ref:`Data
+Initialization Policy` apply to all components of the object, as if the
+parameter was of a class-wide type. This allows converting this object to a
+class-wide type.
+
 |SPARK| Libraries
 =================
+
+.. _Formal Containers Library:
 
 Formal Containers Library
 -------------------------
@@ -1101,7 +2659,7 @@ Libraries. In critical software where verification objectives
 severely restrict the use of pointers, containers offer an attractive
 alternative to pointer-intensive data structures.
 
-There are 6 formal containers, which are part of the GNAT standard
+There are 6 formal containers, which are part of the |GNAT Pro| standard
 library:
 
 * ``Ada.Containers.Formal_Vectors``

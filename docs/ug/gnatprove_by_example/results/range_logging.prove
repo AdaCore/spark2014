@@ -1,0 +1,3 @@
+range_logging.ads:16:20: info: class-wide postcondition is stronger than overridden one
+range_logging.ads:22:20: info: class-wide precondition is weaker than overridden one
+range_logging.ads:23:20: info: class-wide postcondition is stronger than overridden one

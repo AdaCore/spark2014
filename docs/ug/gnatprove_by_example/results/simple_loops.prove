@@ -1,0 +1,8 @@
+simple_loops.adb:8:07: info: loop invariant preservation proved
+simple_loops.adb:8:30: medium: loop invariant might fail in first iteration, requires Prop
+simple_loops.adb:14:07: info: loop invariant initialization proved
+simple_loops.adb:14:30: medium: loop invariant might fail after first iteration, requires Prop
+simple_loops.adb:20:07: info: loop invariant initialization proved
+simple_loops.adb:20:07: info: loop invariant preservation proved
+simple_loops.adb:26:07: info: loop invariant initialization proved
+simple_loops.adb:26:44: medium: loop invariant might fail after first iteration, requires Prop

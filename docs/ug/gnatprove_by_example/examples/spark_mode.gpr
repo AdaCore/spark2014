@@ -3,6 +3,9 @@ project SPARK_Mode is
    for Source_Dirs use ("../examples");
    for Source_List_File use "spark_mode.txt";
 
+   --  Remove the following line after NC03-006 is corrected
+   for Excluded_Source_Files use ("use_logging_classwide.adb");
+
    package Compiler is
       for Local_Configuration_Pragmas use "../examples/spark_mode.adc";
    end Compiler;
