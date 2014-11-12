@@ -17,67 +17,69 @@ Command-line Options
  -cargs switches are passed to gcc
 
  gnatprove basic switches:
- -f                 Force recompilation/analysis of all units
- -jnnn              Use nnn parallel processes (default: 1)
- -k                 Do not stop analysis at the first error
- -m                 Minimal reanalysis
-     --mode=m       Set the mode of GNATprove (m=check, flow, prove, all*)
- -q, --quiet        Be quiet/terse
-     --clean        Remove GNATprove intermediate files, and exit
-     --report=r     Set the report mode of GNATprove (r=fail*, all, statistics)
- -u                 Unique analysis. Only analyze the given units
- -U                 Analyze all units of all projects
- -v, --verbose      Output extra verbose information
- --assumptions      Output assumptions information
-     --version      Output version of the tool and exit
-     --warnings=w   Set the warning mode of GNATprove (w=off, continue*, error)
- -h, --help         Display this usage information
+  -f                 Force recompilation/analysis of all units
+  -jnnn              Use nnn parallel processes (default: 1)
+  -k                 Do not stop analysis at the first error
+      -m             Minimal reanalysis
+      --mode=m       Set the mode of GNATprove (m=check, flow, prove, all*)
+  -q, --quiet        Be quiet/terse
+      --clean        Remove GNATprove intermediate files, and exit
+      --report=r     Set the report mode of GNATprove (r=fail*, all, statistics)
+  -u                 Unique analysis. Only analyze the given units
+  -U                 Analyze all units of all projects
+  -v, --verbose      Output extra verbose information
+      --assumptions  Output assumptions information
+      --version      Output version of the tool and exit
+      --warnings=w   Set the warning mode of GNATprove (w=off, continue*, error)
+  -h, --help         Display this usage information
 
- * Main mode values
-   . check - Check SPARK restrictions for code where SPARK_Mode=On
-   . flow  - Prove object initialization and flow contracts
-   . prove - Prove subprogram contracts and absence of run-time errors
-   . all   - Activates all modes (default)
+  * Main mode values
+    . check        - Check SPARK restrictions for code where SPARK_Mode=On
+    . flow         - Prove object initialization and flow contracts
+    . prove        - Prove subprogram contracts and absence of run-time errors
+    . all          - Activates all modes (default)
 
- * Report mode values
-   . fail       - Report failures to prove checks (default)
-   . all        - Report all results of proving checks
-   . statistics - Same as all, plus timing and steps information
+  * Report mode values
+    . fail         - Report failures to prove checks (default)
+    . all          - Report all results of proving checks
+    . statistics   - Same as all, plus timing and steps information
 
- * Warning mode values
-   . off      - Do not issue warnings
-   . continue - Issue warnings and continue
-   . error    - Treat warnings as errors (default)
+  * Warning mode values
+    . off          - Do not issue warnings
+    . continue     - Issue warnings and continue (default)
+    . error        - Treat warnings as errors
 
  gnatprove advanced switches:
- -d, --debug             Debug mode
- --flow-debug            Extra debugging for flow analysis (requires graphviz)
-     --proof=p[:l]       Set the proof mode (p=per_check*, per_path, progressive) (l=lazy*, all)
-     --RTS=dir           Specify the Ada runtime name/location
-     --pedantic          Use a strict interpretation of the Ada standard
-     --steps=nnn         Set the maximum number of proof steps (prover-specific)
-     --timeout=s         Set the prover timeout in seconds (default: 1)
-     --limit-line=s      Limit analysis to given file and line
-     --limit-subp=s      Limit analysis to subprogram defined by file and line
-     --prover=s[,s]*     Use given provers (s=altergo*, cvc4, ...)
+  -d, --debug        Debug mode
+  --flow-debug       Extra debugging for flow analysis (requires graphviz)
+  --dbg-proof-only   Disable flow analysis (possibly unsound results)
+  --proof=g[:l]      Set the proof modes for generation of formulas
+                     (g=per_check*, per_path, progressive) (l=lazy*, all)
+  --RTS=dir          Specify the Ada runtime name/location
+  --pedantic         Use a strict interpretation of the Ada standard
+  --steps=nnn        Set the maximum number of proof steps (prover-specific)
+  --timeout=s        Set the prover timeout in seconds (default: 1)
+  --limit-line=s     Limit analysis to given file and line
+  --limit-subp=s     Limit analysis to subprogram defined by file and line
+  --prover=s[,s]*    Use given provers (s=altergo*, cvc4, ...)
 
- * Proof mode values
-   . per_check   - Generate one formula per check (default)
-   . per_path    - Generate one formula per path for each check
-   . progressive - Start with one formula per check, then split into
-                   paths when needed
+  * Proof mode values for generation
+    . per_check    - Generate one formula per check (default)
+    . per_path     - Generate one formula per path for each check
+    . progressive  - Start with one formula per check, then split into
+                     paths when needed
 
- * Lazy mode values
-   . lazy        - Stop at first unproved VC for each check
-                    (most suited for fully automatic proof) (default)
-   . all         - Attempt to prove all VCs
-                   (most suited for combination of automatic and manual proof)
+  * Proof mode values for laziness
+    . lazy         - Stop at first unproved formula for each check
+                     (most suited for fully automatic proof) (default)
+    . all          - Attempt to prove all formulas
+                     (most suited for combination of automatic and manual proof)
 
- * Prover name values
-   (Provers marked with [steps] support the --steps switch.)
-   . altergo     - [steps] Use Alt-Ergo (default)
-   . cvc4        - [steps] Use CVC4
-   . ...         - Any other prover configured in your .why3.conf file
+  * Prover name values
+    (Provers marked with [steps] support the --steps switch.)
+    . altergo      - [steps] Use Alt-Ergo (default)
+    . cvc4         - [steps] Use CVC4
+    . ...          - Any other prover configured in your .why3.conf file
 
 .. _Alternative_Provers:
 

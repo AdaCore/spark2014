@@ -153,7 +153,7 @@ ASCII.LF &
 ASCII.LF &
 " -v, --verbose      Output extra verbose information" &
 ASCII.LF &
-" --assumptions      Output assumptions information" &
+"     --assumptions  Output assumptions information" &
 ASCII.LF &
 "     --version      Output version of the tool and exit" &
 ASCII.LF &
@@ -166,88 +166,93 @@ ASCII.LF &
 ASCII.LF &
 " * Main mode values" &
 ASCII.LF &
-"   . check - Check SPARK restrictions for code where SPARK_Mode=On" &
+"   . check        - Check SPARK restrictions for code where SPARK_Mode=On" &
 ASCII.LF &
-"   . flow  - Prove object initialization and flow contracts" &
+"   . flow         - Prove object initialization and flow contracts" &
 ASCII.LF &
-"   . prove - Prove subprogram contracts and absence of run-time errors" &
+"   . prove        - Prove subprogram contracts and absence of run-time errors"
+&
 ASCII.LF &
-"   . all   - Activates all modes (default)" &
+"   . all          - Activates all modes (default)" &
 ASCII.LF &
 ASCII.LF &
 " * Report mode values" &
 ASCII.LF &
-"   . fail       - Report failures to prove checks (default)" &
+"   . fail         - Report failures to prove checks (default)" &
 ASCII.LF &
-"   . all        - Report all results of proving checks" &
+"   . all          - Report all results of proving checks" &
 ASCII.LF &
-"   . statistics - Same as all, plus timing and steps information" &
+"   . statistics   - Same as all, plus timing and steps information" &
 ASCII.LF &
 ASCII.LF &
 " * Warning mode values" &
 ASCII.LF &
-"   . off      - Do not issue warnings" &
+"   . off          - Do not issue warnings" &
 ASCII.LF &
-"   . continue - Issue warnings and continue (default)" &
+"   . continue     - Issue warnings and continue (default)" &
 ASCII.LF &
-"   . error    - Treat warnings as errors" &
+"   . error        - Treat warnings as errors" &
 ASCII.LF &
 ASCII.LF &
 "gnatprove advanced switches:" &
 ASCII.LF &
-" -d, --debug         Debug mode" &
+" -d, --debug        Debug mode" &
 ASCII.LF &
-" --flow-debug        Extra debugging for flow analysis (requires graphviz)" &
+" --flow-debug       Extra debugging for flow analysis (requires graphviz)" &
      ASCII.LF &
-" --dbg-proof-only    Disable flow analysis (possibly unsound results)" &
+" --dbg-proof-only   Disable flow analysis (possibly unsound results)" &
 ASCII.LF &
-"     --proof=p[:l]   Set the proof mode (p=per_check*, per_path, progressive)"
-& " (l=lazy*, all)"
+" --proof=g[:l]      Set the proof modes for generation of formulas" &
+ASCII.LF &
+"                    (g=per_check*, per_path, progressive) (l=lazy*, all)"
 & ASCII.LF &
-"     --RTS=dir       Specify the Ada runtime name/location" &
+" --RTS=dir          Specify the Ada runtime name/location" &
 ASCII.LF &
-"     --pedantic      Use a strict interpretation of the Ada standard" &
+" --pedantic         Use a strict interpretation of the Ada standard" &
 ASCII.LF &
-"     --steps=nnn     Set the maximum number of proof steps (prover-specific)"
+" --steps=nnn        Set the maximum number of proof steps (prover-specific)"
 & ASCII.LF &
-"     --timeout=s     Set the prover timeout in seconds (default: 1)" &
+" --timeout=s        Set the prover timeout in seconds (default: 1)" &
 ASCII.LF &
-"     --limit-line=s  Limit analysis to given file and line" &
+" --limit-line=s     Limit analysis to given file and line" &
 ASCII.LF &
-"     --limit-subp=s  Limit analysis to subprogram defined by file and line" &
+" --limit-subp=s     Limit analysis to subprogram defined by file and line" &
   ASCII.LF &
-"     --prover=s[,s]* Use given provers (s=altergo*, cvc4, ...)" &
+" --prover=s[,s]*    Use given provers (s=altergo*, cvc4, ...)" &
 ASCII.LF &
 ASCII.LF &
-" * Proof mode values" &
+" * Proof mode values for generation" &
 ASCII.LF &
-"   . per_check   - Generate one formula per check (default)" &
+"   . per_check    - Generate one formula per check (default)" &
 ASCII.LF &
-"   . per_path    - Generate one formula per path for each check" &
+"   . per_path     - Generate one formula per path for each check" &
 ASCII.LF &
-"   . progressive - Start with one formula per check, then split into" &
+"   . progressive  - Start with one formula per check, then split into" &
 ASCII.LF &
-"                   paths when needed" &
+"                    paths when needed" &
 ASCII.LF &
 ASCII.LF &
-" * Lazy mode values" &
+" * Proof mode values for laziness" &
 ASCII.LF &
-"   . lazy        - Stop at first unproved VC for each check "
-& "(most suited for fully automatic proof) (default)" &
+"   . lazy         - Stop at first unproved formula for each check" &
+ASCII.LF &
+"                    (most suited for fully automatic proof) (default)" &
  ASCII.LF &
-"   . all         - Attempt to prove all VCs "
-& "(most suited for combination of automatic and manual proof)" &
+"   . all          - Attempt to prove all formulas" &
+ASCII.LF &
+"                    (most suited for combination of automatic and " &
+"manual proof)" &
 ASCII.LF &
 ASCII.LF &
 " * Prover name values" &
 ASCII.LF &
 "   (Provers marked with [steps] support the --steps switch.)" &
 ASCII.LF &
-"   . altergo     - [steps] Use Alt-Ergo (default)" &
+"   . altergo      - [steps] Use Alt-Ergo (default)" &
 ASCII.LF &
-"   . cvc4        - [steps] Use CVC4" &
+"   . cvc4         - [steps] Use CVC4" &
 ASCII.LF &
-"   . ...         - Any other prover configured in your .why3.conf file" &
+"   . ...          - Any other prover configured in your .why3.conf file" &
 ASCII.LF;
 
    ---------------
