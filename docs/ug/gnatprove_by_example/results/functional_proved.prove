@@ -10,4 +10,4 @@ functional_proved.ads:10:06: info: disjoint contract cases proved
 functional_proved.ads:11:28: info: contract case proved
 functional_proved.ads:16:28: info: contract case proved
 functional_proved.ads:21:36: info: contract case proved
-functional_proved.ads:29:14: info: postcondition proved
+functional_proved.ads:29:14: medium: postcondition might fail

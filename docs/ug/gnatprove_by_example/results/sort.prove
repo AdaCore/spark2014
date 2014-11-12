@@ -50,7 +50,7 @@ sort.adb:77:72: info: index check proved
 sort.adb:80:18: medium: loop invariant might fail after first iteration, requires Occ (Values, F) = Occ (Next, F)
 sort.adb:80:18: medium: loop invariant might fail in first iteration, requires Occ (Values, F) = Occ (Next, F)
 sort.adb:88:50: info: overflow check proved
-sort.adb:89:22: info: precondition proved
+sort.adb:89:22: medium: precondition might fail
 sort.adb:89:40: info: range check proved
 sort.adb:94:22: info: length check proved
 sort.adb:94:25: info: length check proved
