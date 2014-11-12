@@ -564,7 +564,7 @@ procedure Gnatprove is
          Start_Section ("prover");
          if Steps /= 0 then
             Put_Keyval ("command",
-                        Command & " --rlimit=" & Int_Image (Steps * 100) &
+                        Command & " --rlimit=" & Int_Image (Steps * 10) &
                         " %f");
          else
             Put_Keyval ("command", Command & " %f");
