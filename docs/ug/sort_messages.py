@@ -11,7 +11,7 @@ import glob
 
 # Add directory for finding test_support
 sys.path.append(os.path.normpath(os.path.join(os.path.dirname(sys.argv[0]), "../../testsuite/gnatprove/lib/python")))
-from test_support import sort_key_for_errors
+from test_util import sort_key_for_errors
 
 def print_sorted(strlist):
     strlist.sort(key=sort_key_for_errors)
