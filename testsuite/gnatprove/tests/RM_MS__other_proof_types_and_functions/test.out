@@ -47,7 +47,7 @@ stack_functional_spec.adb:56:27: info: index check proved
 stack_functional_spec.adb:56:69: info: index check proved
 stack_functional_spec.adb:57:36: info: index check proved
 stack_functional_spec.ads:5:08: info: initial condition proved
-stack_functional_spec.ads:57:21: medium: postcondition might fail
+stack_functional_spec.ads:57:21: info: postcondition proved
 stack_functional_spec.ads:57:55: info: overflow check proved
 stack_functional_spec.ads:59:21: info: precondition proved
 stack_functional_spec.ads:61:25: info: precondition proved

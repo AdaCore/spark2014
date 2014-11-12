@@ -14,8 +14,7 @@ record_discr.adb:38:39: info: range check proved
 record_discr.adb:39:33: info: discriminant check proved
 record_discr.adb:39:33: info: length check proved
 record_discr.adb:39:33: info: range check proved
-record_discr.adb:39:33: medium: length check might fail
-record_discr.adb:47:46: medium: discriminant check might fail
+record_discr.adb:47:46: info: discriminant check proved
 record_discr.adb:47:56: info: range check proved
 record_discr.adb:47:76: info: length check proved
 record_discr.ads:14:14: info: postcondition proved
@@ -25,7 +24,7 @@ record_discr.ads:16:44: info: index check proved
 record_discr.ads:16:44: info: precondition proved
 record_discr.ads:17:52: info: discriminant check proved
 record_discr.ads:17:64: info: index check proved
-record_discr.ads:22:14: medium: postcondition might fail
+record_discr.ads:22:14: info: postcondition proved
 record_discr.ads:22:46: info: index check proved
 record_discr.ads:22:46: info: precondition proved
 record_discr.ads:23:50: info: index check proved

@@ -11,7 +11,7 @@ algorithm.adb:111:42: info: overflow check proved
 algorithm.adb:111:49: medium: divide by zero might fail
 algorithm.adb:111:49: medium: overflow check might fail
 algorithm.adb:111:51: info: precondition proved
-algorithm.adb:150:63: medium: range check might fail
+algorithm.adb:150:63: info: range check proved
 algorithm.adb:150:70: medium: overflow check might fail
 algorithm.adb:154:70: medium: overflow check might fail
 algorithm.adb:184:07: info: assertion proved
@@ -25,10 +25,10 @@ algorithm.adb:195:108: medium: overflow check might fail
 algorithm.adb:195:121: medium: overflow check might fail
 algorithm.adb:195:124: info: precondition proved
 algorithm.adb:198:13: info: precondition proved
-algorithm.adb:202:07: medium: assertion might fail
+algorithm.adb:202:07: info: assertion proved
 algorithm.adb:203:29: info: precondition proved
 algorithm.adb:207:10: info: loop invariant initialization proved
-algorithm.adb:207:10: medium: loop invariant might fail after first iteration
+algorithm.adb:207:10: info: loop invariant preservation proved
 algorithm.adb:208:32: info: precondition proved
 algorithm.adb:213:49: medium: overflow check might fail
 algorithm.adb:217:16: info: precondition proved
@@ -41,14 +41,14 @@ algorithm.adb:231:95: medium: overflow check might fail
 algorithm.adb:231:108: medium: overflow check might fail
 algorithm.adb:231:121: medium: overflow check might fail
 algorithm.adb:231:124: info: precondition proved
-algorithm.adb:235:13: medium: precondition might fail
+algorithm.adb:235:13: info: precondition proved
 algorithm.adb:246:17: medium: postcondition might fail, requires This.robot.robot_radius = This.robot.robot_radius'old
 algorithm.adb:250:17: medium: postcondition might fail, requires This.robot.robot_radius = This.robot.robot_radius'old
 algorithm.adb:255:19: info: precondition proved
 algorithm.adb:257:10: info: precondition proved
 algorithm.adb:258:74: info: precondition proved
-algorithm.adb:260:13: medium: loop invariant might fail after first iteration
-algorithm.adb:260:13: medium: loop invariant might fail in first iteration
+algorithm.adb:260:13: info: loop invariant initialization proved
+algorithm.adb:260:13: info: loop invariant preservation proved
 algorithm.adb:261:35: info: precondition proved
 algorithm.adb:262:35: info: precondition proved
 algorithm.adb:263:43: info: precondition proved
@@ -63,16 +63,16 @@ algorithm.adb:279:19: info: precondition proved
 algorithm.adb:280:28: info: precondition proved
 algorithm.adb:282:28: info: precondition proved
 algorithm.adb:283:19: info: precondition proved
-algorithm.adb:284:19: medium: precondition might fail
-algorithm.adb:290:13: medium: precondition might fail
+algorithm.adb:284:19: info: precondition proved
+algorithm.adb:290:13: info: precondition proved
 algorithm.adb:296:42: info: precondition proved
 algorithm.adb:297:22: info: precondition proved
 algorithm.adb:299:25: medium: precondition might fail
-algorithm.adb:299:63: medium: precondition might fail
+algorithm.adb:299:63: info: precondition proved
 algorithm.adb:299:107: medium: overflow check might fail
-algorithm.adb:300:15: medium: precondition might fail
+algorithm.adb:300:15: info: precondition proved
 algorithm.adb:300:62: medium: precondition might fail
-algorithm.adb:304:36: medium: precondition might fail
+algorithm.adb:304:36: info: precondition proved
 algorithm.adb:309:16: medium: precondition might fail
 algorithm.adb:318:20: info: precondition proved
 algorithm.adb:320:10: info: precondition proved
@@ -90,7 +90,7 @@ algorithm.adb:331:64: info: precondition proved
 algorithm.adb:335:36: info: precondition proved
 algorithm.adb:335:58: info: precondition proved
 algorithm.adb:340:16: info: precondition proved
-algorithm.adb:345:13: medium: precondition might fail
+algorithm.adb:345:13: info: precondition proved
 algorithm.adb:348:23: info: precondition proved
 algorithm.adb:348:52: info: precondition proved
 algorithm.adb:349:23: info: precondition proved
@@ -99,8 +99,8 @@ algorithm.adb:351:64: medium: precondition might fail
 algorithm.adb:351:109: medium: overflow check might fail
 algorithm.adb:352:15: medium: precondition might fail
 algorithm.adb:352:64: info: precondition proved
-algorithm.adb:356:36: medium: precondition might fail
-algorithm.adb:356:58: medium: precondition might fail
+algorithm.adb:356:36: info: precondition proved
+algorithm.adb:356:58: info: precondition proved
 algorithm.adb:361:27: medium: precondition might fail
 algorithm.adb:381:15: info: range check proved
 algorithm.adb:381:71: info: precondition proved
@@ -119,28 +119,28 @@ algorithm.adb:408:16: info: precondition proved
 algorithm.adb:409:42: info: precondition proved
 algorithm.adb:410:40: info: discriminant check proved
 algorithm.adb:415:34: info: precondition proved
-algorithm.adb:421:16: medium: precondition might fail
-algorithm.adb:422:42: medium: precondition might fail
-algorithm.adb:427:38: medium: precondition might fail
+algorithm.adb:421:16: info: precondition proved
+algorithm.adb:422:42: info: precondition proved
+algorithm.adb:427:38: info: precondition proved
 algorithm.adb:427:74: info: precondition proved
-algorithm.adb:428:39: medium: precondition might fail
+algorithm.adb:428:39: info: precondition proved
 algorithm.adb:428:81: info: discriminant check proved
 algorithm.adb:428:100: info: precondition proved
 algorithm.adb:430:46: info: discriminant check proved
 algorithm.adb:442:43: info: discriminant check proved
 algorithm.adb:448:34: info: precondition proved
 algorithm.adb:463:39: info: precondition proved
-algorithm.adb:466:34: medium: precondition might fail
+algorithm.adb:466:34: info: precondition proved
 algorithm.adb:466:76: info: discriminant check proved
-algorithm.adb:468:58: medium: precondition might fail
+algorithm.adb:468:58: info: precondition proved
 algorithm.adb:468:100: info: discriminant check proved
 algorithm.adb:468:119: info: precondition proved
-algorithm.adb:471:34: medium: precondition might fail
+algorithm.adb:471:34: info: precondition proved
 algorithm.adb:471:71: info: discriminant check proved
-algorithm.adb:473:58: medium: precondition might fail
+algorithm.adb:473:58: info: precondition proved
 algorithm.adb:473:95: info: discriminant check proved
 algorithm.adb:473:114: info: precondition proved
-algorithm.adb:477:35: medium: precondition might fail
+algorithm.adb:477:35: info: precondition proved
 algorithm.adb:477:77: info: discriminant check proved
 algorithm.adb:477:96: info: precondition proved
 algorithm.adb:478:36: medium: precondition might fail
@@ -148,8 +148,8 @@ algorithm.adb:478:73: info: discriminant check proved
 algorithm.adb:478:92: info: precondition proved
 algorithm.adb:484:38: info: discriminant check proved
 algorithm.adb:499:35: info: discriminant check proved
-algorithm.adb:504:10: medium: precondition might fail
-algorithm.adb:510:30: medium: precondition might fail
+algorithm.adb:504:10: info: precondition proved
+algorithm.adb:510:30: info: precondition proved
 algorithm.adb:510:67: info: discriminant check proved
 algorithm.adb:514:20: medium: precondition might fail
 algorithm.adb:514:57: info: discriminant check proved
@@ -177,7 +177,7 @@ algorithm.adb:581:07: info: assertion proved
 algorithm.adb:589:07: info: assertion proved
 algorithm.adb:601:07: info: assertion proved
 algorithm.adb:605:67: medium: overflow check might fail
-algorithm.adb:605:101: medium: range check might fail
+algorithm.adb:605:101: info: range check proved
 algorithm.adb:605:111: info: division check proved
 algorithm.adb:608:07: info: assertion proved
 algorithm.adb:617:07: info: assertion proved
@@ -189,17 +189,17 @@ algorithm.adb:636:70: info: division check proved
 algorithm.adb:636:70: info: overflow check proved
 algorithm.adb:636:114: info: division check proved
 algorithm.adb:636:114: info: overflow check proved
-algorithm.adb:645:51: medium: precondition might fail
-algorithm.adb:647:22: medium: assertion might fail, requires distToGoal /= Zero_Position
+algorithm.adb:645:51: info: precondition proved
+algorithm.adb:647:07: info: assertion proved
 algorithm.adb:648:22: medium: assertion might fail, requires This.robot.robot_radius < This.robot.max_Range
 algorithm.adb:655:07: info: assertion proved
 algorithm.adb:658:07: info: assertion proved
 algorithm.adb:661:10: info: loop invariant initialization proved
-algorithm.adb:661:10: medium: loop invariant might fail after first iteration
+algorithm.adb:661:10: info: loop invariant preservation proved
 algorithm.adb:671:10: info: assertion proved
 algorithm.adb:673:72: medium: overflow check might fail
-algorithm.adb:674:43: medium: range check might fail
-algorithm.adb:679:07: medium: assertion might fail
+algorithm.adb:674:43: info: range check proved
+algorithm.adb:679:07: info: assertion proved
 algorithm.adb:680:22: medium: assertion might fail, requires This.robot.robot_radius / 10.0 <= This.robot.obstacle_avoid_dist
 algorithm.adb:680:46: info: division check proved
 algorithm.adb:680:46: info: overflow check proved
@@ -219,14 +219,14 @@ algorithm.adb:728:25: info: precondition proved
 algorithm.adb:730:44: info: precondition proved
 algorithm.adb:737:52: info: division check proved
 algorithm.adb:737:52: info: overflow check proved
-algorithm.adb:744:58: medium: precondition might fail
+algorithm.adb:744:58: info: precondition proved
 algorithm.adb:745:88: medium: overflow check might fail
-algorithm.adb:746:104: medium: discriminant check might fail
+algorithm.adb:746:104: info: discriminant check proved
 algorithm.adb:757:44: info: discriminant check proved
-algorithm.adb:763:13: medium: assertion might fail
+algorithm.adb:763:13: info: assertion proved
 algorithm.adb:766:46: info: discriminant check proved
 algorithm.adb:766:99: info: discriminant check proved
-algorithm.adb:766:115: medium: range check might fail
+algorithm.adb:766:115: info: range check proved
 algorithm.adb:766:122: medium: overflow check might fail
 algorithm.adb:768:27: info: discriminant check proved
 algorithm.adb:769:53: info: discriminant check proved
@@ -236,11 +236,11 @@ algorithm.adb:771:91: info: discriminant check proved
 algorithm.adb:774:13: info: assertion proved
 algorithm.adb:777:60: info: discriminant check proved
 algorithm.adb:778:57: info: discriminant check proved
-algorithm.adb:795:31: medium: assertion might fail, requires distToClosestObstacle > This.robot.robot_radius
+algorithm.adb:795:07: info: assertion proved
 algorithm.adb:798:29: info: precondition proved
 algorithm.adb:806:07: info: assertion proved
-algorithm.adb:823:31: medium: assertion might fail, requires distToClosestObstacle > This.robot.robot_radius
-algorithm.adb:826:43: medium: overflow check might fail
+algorithm.adb:823:07: info: assertion proved
+algorithm.adb:826:43: info: overflow check proved
 algorithm.adb:831:07: info: assertion proved
 algorithm.adb:846:07: info: assertion proved
 algorithm.adb:855:07: info: assertion proved
@@ -273,17 +273,17 @@ algorithm.adb:865:103: info: division check proved
 algorithm.adb:865:103: medium: overflow check might fail
 algorithm.adb:867:16: info: precondition proved
 algorithm.adb:870:32: medium: overflow check might fail
-algorithm.adb:870:34: medium: precondition might fail
-algorithm.adb:870:41: medium: precondition might fail
+algorithm.adb:870:34: info: precondition proved
+algorithm.adb:870:41: info: precondition proved
 algorithm.adb:871:32: medium: overflow check might fail
-algorithm.adb:871:34: medium: precondition might fail
-algorithm.adb:871:41: medium: precondition might fail
+algorithm.adb:871:34: info: precondition proved
+algorithm.adb:871:41: info: precondition proved
 algorithm.adb:871:70: medium: overflow check might fail
-algorithm.adb:871:97: medium: divide by zero might fail
+algorithm.adb:871:97: info: division check proved
 algorithm.adb:871:97: medium: overflow check might fail
 algorithm.adb:872:32: medium: overflow check might fail
-algorithm.adb:872:34: medium: precondition might fail
-algorithm.adb:872:53: medium: overflow check might fail
-algorithm.adb:872:68: medium: divide by zero might fail
-algorithm.adb:872:68: medium: overflow check might fail
+algorithm.adb:872:34: info: precondition proved
+algorithm.adb:872:53: info: overflow check proved
+algorithm.adb:872:68: info: division check proved
+algorithm.adb:872:68: info: overflow check proved
 algorithm.ads:91:14: info: postcondition proved

@@ -1,13 +1,13 @@
 number_theory.adb:18:17: info: range check proved
-number_theory.adb:19:16: medium: loop invariant might fail after first iteration
-number_theory.adb:19:16: medium: loop invariant might fail in first iteration
-number_theory.adb:19:50: medium: range check might fail
-number_theory.adb:19:74: medium: range check might fail
+number_theory.adb:19:16: info: loop invariant initialization proved
+number_theory.adb:19:16: info: loop invariant preservation proved
+number_theory.adb:19:50: info: range check proved
+number_theory.adb:19:74: info: range check proved
 number_theory.adb:23:30: medium: overflow check might fail
 number_theory.adb:33:09: info: length check proved
-number_theory.ads:20:32: medium: range check might fail
+number_theory.ads:20:32: info: range check proved
 number_theory.ads:20:37: medium: overflow check might fail
-number_theory.ads:20:45: medium: range check might fail
+number_theory.ads:20:45: info: range check proved
 number_theory.ads:23:16: medium: postcondition might fail, requires Float(Fib'Result) < (1.6181**N)/2.2360 +
 number_theory.ads:23:25: info: range check proved
 number_theory.ads:23:43: medium: overflow check might fail

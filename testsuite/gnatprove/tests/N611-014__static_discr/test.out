@@ -27,7 +27,7 @@ static_discr.adb:24:35: info: discriminant check proved
 static_discr.adb:24:43: info: range check proved
 static_discr.adb:30:40: info: discriminant check proved
 static_discr.adb:31:10: info: loop invariant initialization proved
-static_discr.adb:31:10: medium: loop invariant might fail after first iteration
+static_discr.adb:31:10: info: loop invariant preservation proved
 static_discr.adb:32:20: info: discriminant check proved
 static_discr.adb:32:37: info: discriminant check proved
 static_discr.adb:33:23: info: discriminant check proved
@@ -43,7 +43,7 @@ static_discr.adb:35:46: info: index check proved
 static_discr.adb:36:10: info: assertion proved
 static_discr.adb:37:10: info: precondition proved
 static_discr.adb:38:10: info: assertion proved
-static_discr.adb:39:25: medium: assertion might fail, requires A.Content.Content = Current.Content.Content
+static_discr.adb:39:10: info: assertion proved
 static_discr.adb:39:26: info: discriminant check proved
 static_discr.adb:39:34: info: discriminant check proved
 static_discr.adb:39:52: info: discriminant check proved
@@ -78,14 +78,14 @@ static_discr.adb:67:43: info: range check proved
 static_discr.adb:70:31: info: discriminant check proved
 static_discr.adb:70:33: info: range check proved
 static_discr.adb:70:41: info: range check proved
-static_discr.adb:70:48: medium: discriminant check might fail
+static_discr.adb:70:48: info: discriminant check proved
 static_discr.adb:70:50: info: range check proved
 static_discr.adb:70:58: info: range check proved
 static_discr.adb:70:65: info: length check proved
 static_discr.adb:70:70: info: range check proved
 static_discr.adb:73:40: info: discriminant check proved
-static_discr.adb:74:10: medium: loop invariant might fail after first iteration
-static_discr.adb:74:10: medium: loop invariant might fail in first iteration
+static_discr.adb:74:10: info: loop invariant initialization proved
+static_discr.adb:74:10: info: loop invariant preservation proved
 static_discr.adb:75:20: info: discriminant check proved
 static_discr.adb:76:33: info: discriminant check proved
 static_discr.adb:76:41: info: discriminant check proved
@@ -95,7 +95,7 @@ static_discr.adb:78:30: info: index check proved
 static_discr.adb:79:10: info: assertion proved
 static_discr.adb:80:10: info: precondition proved
 static_discr.adb:81:10: info: assertion proved
-static_discr.adb:82:25: medium: assertion might fail, requires A = Current.Content.Content
+static_discr.adb:82:10: info: assertion proved
 static_discr.adb:82:36: info: discriminant check proved
 static_discr.adb:82:44: info: discriminant check proved
 static_discr.adb:91:26: info: discriminant check proved
@@ -120,14 +120,14 @@ static_discr.adb:98:63: info: index check proved
 static_discr.adb:103:20: info: discriminant check proved
 static_discr.adb:103:28: info: discriminant check proved
 static_discr.adb:103:45: info: discriminant check proved
-static_discr.adb:103:45: medium: array index check might fail
+static_discr.adb:103:45: info: index check proved
 static_discr.adb:104:30: info: discriminant check proved
 static_discr.adb:108:17: info: discriminant check proved
 static_discr.adb:108:35: info: discriminant check proved
 static_discr.adb:108:43: info: range check proved
 static_discr.adb:114:40: info: discriminant check proved
 static_discr.adb:115:10: info: loop invariant initialization proved
-static_discr.adb:115:10: medium: loop invariant might fail after first iteration
+static_discr.adb:115:10: info: loop invariant preservation proved
 static_discr.adb:116:20: info: discriminant check proved
 static_discr.adb:116:37: info: discriminant check proved
 static_discr.adb:117:23: info: discriminant check proved
@@ -167,7 +167,7 @@ static_discr.ads:28:60: info: discriminant check proved
 static_discr.ads:28:70: info: index check proved
 static_discr.ads:29:28: info: discriminant check proved
 static_discr.ads:29:36: info: discriminant check proved
-static_discr.ads:29:52: medium: array index check might fail
+static_discr.ads:29:52: info: index check proved
 static_discr.ads:33:14: medium: postcondition might fail
 static_discr.ads:35:48: info: index check proved
-static_discr.ads:36:42: medium: array index check might fail
+static_discr.ads:36:42: info: index check proved

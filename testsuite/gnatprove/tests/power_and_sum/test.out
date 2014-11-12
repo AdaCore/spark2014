@@ -24,5 +24,5 @@ power_and_sum.adb:49:17: medium: overflow check might fail
 power_and_sum.adb:51:22: medium: assertion might fail, requires 6*TotalSum = N*(N+1)*(N+2
 power_and_sum.adb:52:17: medium: range check might fail
 power_and_sum.ads:3:14: medium: postcondition might fail, requires X ** N = Result
-power_and_sum.ads:6:14: medium: postcondition might fail, requires 2 * Result = N * (N+1
-power_and_sum.ads:9:14: medium: postcondition might fail, requires 6 * Result = N * (N+1) * (N+2
+power_and_sum.ads:6:14: info: postcondition proved
+power_and_sum.ads:9:14: info: postcondition proved

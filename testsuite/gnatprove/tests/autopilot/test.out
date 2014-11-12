@@ -10,10 +10,10 @@ ap-altitude-pitch-rate.adb:29:45: medium: range check might fail, in call inline
 ap-altitude-pitch-rate.adb:40:24: info: index check proved
 ap-altitude-pitch-rate.adb:63:43: info: overflow check proved
 ap-altitude-pitch-rate.adb:64:14: info: division check proved
-ap-altitude-pitch-rate.adb:64:14: medium: range check might fail
+ap-altitude-pitch-rate.adb:64:14: info: range check proved
 ap-altitude-pitch-rate.adb:68:43: info: overflow check proved
 ap-altitude-pitch-rate.adb:70:14: info: division check proved
-ap-altitude-pitch-rate.adb:70:14: medium: range check might fail
+ap-altitude-pitch-rate.adb:70:14: info: range check proved
 ap-altitude-pitch-rate.adb:75:55: info: division check proved
 ap-altitude-pitch.adb:28:69: info: division check proved, in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:28:69: info: range check proved, in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101

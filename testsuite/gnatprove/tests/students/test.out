@@ -1,8 +1,8 @@
-students.adb:14:29: medium: overflow check might fail
-students.adb:14:29: medium: range check might fail
+students.adb:14:29: info: overflow check proved
+students.adb:14:29: info: range check proved
 students.adb:14:38: info: division check proved
-students.adb:14:38: medium: overflow check might fail
-students.adb:17:22: medium: assertion might fail, requires Tuition <=
+students.adb:14:38: info: overflow check proved
+students.adb:17:07: info: assertion proved
 students.adb:30:23: info: overflow check proved
 students.adb:30:23: info: range check proved
 students.adb:33:44: info: overflow check proved
@@ -21,7 +21,7 @@ students.adb:47:27: info: overflow check proved
 students.adb:47:27: info: range check proved
 students.adb:50:30: info: overflow check proved
 students.adb:50:30: info: range check proved
-students.adb:54:25: medium: overflow check might fail
-students.adb:54:33: medium: overflow check might fail
-students.adb:54:43: medium: overflow check might fail
-students.adb:54:43: medium: range check might fail
+students.adb:54:25: info: overflow check proved
+students.adb:54:33: info: overflow check proved
+students.adb:54:43: info: overflow check proved
+students.adb:54:43: info: range check proved

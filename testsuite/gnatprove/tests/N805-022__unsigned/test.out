@@ -2,13 +2,13 @@ x86.adb:13:32: info: division check proved
 x86.adb:13:32: info: range check proved
 x86.adb:14:33: info: division check proved
 x86.adb:14:43: info: division check proved
-x86.adb:14:43: medium: range check might fail
+x86.adb:14:43: info: range check proved
 x86.adb:15:33: info: division check proved
 x86.adb:15:44: info: division check proved
-x86.adb:15:44: medium: range check might fail
+x86.adb:15:44: info: range check proved
 x86.adb:16:33: info: division check proved
 x86.adb:16:44: info: division check proved
-x86.adb:16:44: medium: range check might fail
+x86.adb:16:44: info: range check proved
 x86.adb:17:22: medium: assertion might fail, requires Unsigned_32(XCX(0)) + (Unsigned_32(XCX(1)) * (2**8))) = (val rem 2**16
 x86.adb:18:61: info: division check proved
 x86.adb:19:22: medium: assertion might fail, requires Unsigned_32(XCX(2)) + (Unsigned_32(XCX(3)) * (2**8))) = ((val / (2**16)) rem 2**16
@@ -26,13 +26,13 @@ x86.adb:44:32: info: division check proved
 x86.adb:44:32: info: range check proved
 x86.adb:45:33: info: division check proved
 x86.adb:45:43: info: division check proved
-x86.adb:45:43: medium: range check might fail
+x86.adb:45:43: info: range check proved
 x86.adb:46:33: info: division check proved
 x86.adb:46:44: info: division check proved
-x86.adb:46:44: medium: range check might fail
+x86.adb:46:44: info: range check proved
 x86.adb:47:33: info: division check proved
 x86.adb:47:44: info: division check proved
-x86.adb:47:44: medium: range check might fail
+x86.adb:47:44: info: range check proved
 x86.adb:48:22: medium: assertion might fail, requires Unsigned_32(XSI(0)) + (Unsigned_32(XSI(1)) * (2**8))) = (val rem 2**16
 x86.adb:49:61: info: division check proved
 x86.adb:50:22: medium: assertion might fail, requires Unsigned_32(XSI(2)) + (Unsigned_32(XSI(3)) * (2**8))) = ((val / (2**16)) rem 2**16
@@ -50,13 +50,13 @@ x86.adb:75:32: info: division check proved
 x86.adb:75:32: info: range check proved
 x86.adb:76:33: info: division check proved
 x86.adb:76:43: info: division check proved
-x86.adb:76:43: medium: range check might fail
+x86.adb:76:43: info: range check proved
 x86.adb:77:33: info: division check proved
 x86.adb:77:44: info: division check proved
-x86.adb:77:44: medium: range check might fail
+x86.adb:77:44: info: range check proved
 x86.adb:78:33: info: division check proved
 x86.adb:78:44: info: division check proved
-x86.adb:78:44: medium: range check might fail
+x86.adb:78:44: info: range check proved
 x86.adb:79:22: medium: assertion might fail, requires Unsigned_32(XDI(0)) + (Unsigned_32(XDI(1)) * (2**8))) = (val rem 2**16
 x86.adb:80:61: info: division check proved
 x86.adb:81:22: medium: assertion might fail, requires Unsigned_32(XDI(2)) + (Unsigned_32(XDI(3)) * (2**8))) = ((val / (2**16)) rem 2**16
@@ -74,13 +74,13 @@ x86.adb:126:38: info: division check proved
 x86.adb:126:38: info: range check proved
 x86.adb:127:43: info: division check proved
 x86.adb:127:53: info: division check proved
-x86.adb:127:53: medium: range check might fail
+x86.adb:127:53: info: range check proved
 x86.adb:128:43: info: division check proved
 x86.adb:128:54: info: division check proved
-x86.adb:128:54: medium: range check might fail
+x86.adb:128:54: info: range check proved
 x86.adb:129:43: info: division check proved
 x86.adb:129:54: info: division check proved
-x86.adb:129:54: medium: range check might fail
+x86.adb:129:54: info: range check proved
 x86.adb:130:22: medium: assertion might fail, requires Unsigned_32(Memory(addr)) + (Unsigned_32(Memory(addr + 1)) * (2**8))) = (val rem 2**16
 x86.adb:131:71: info: division check proved
 x86.adb:132:22: medium: assertion might fail, requires Unsigned_32(Memory(addr + 2)) + (Unsigned_32(Memory(addr + 3)) * (2**8))) = ((val / (2**16)) rem 2**16
@@ -98,15 +98,15 @@ x86.adb:157:10: info: assertion proved
 x86.ads:18:48: info: length check proved
 x86.ads:20:31: info: length check proved
 x86.ads:24:16: info: postcondition proved
-x86.ads:31:16: medium: postcondition might fail
+x86.ads:31:16: info: postcondition proved
 x86.ads:38:31: info: length check proved
 x86.ads:42:16: info: postcondition proved
-x86.ads:49:16: medium: postcondition might fail
+x86.ads:49:16: info: postcondition proved
 x86.ads:56:31: info: length check proved
 x86.ads:60:16: info: postcondition proved
-x86.ads:67:16: medium: postcondition might fail
+x86.ads:67:16: info: postcondition proved
 x86.ads:76:14: info: postcondition proved
 x86.ads:82:14: info: postcondition proved
 x86.ads:89:14: info: postcondition proved
-x86.ads:97:14: medium: postcondition might fail
+x86.ads:97:14: info: postcondition proved
 x86.ads:110:14: info: postcondition proved

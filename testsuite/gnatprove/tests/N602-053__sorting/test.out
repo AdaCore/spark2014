@@ -21,12 +21,12 @@ sorters.adb:64:43: info: index check proved
 sorters.adb:66:42: info: index check proved
 sorters.adb:67:20: info: range check proved
 sorters.adb:78:50: info: overflow check proved
-sorters.adb:79:22: medium: precondition might fail
+sorters.adb:79:22: info: precondition proved
 sorters.adb:79:40: info: range check proved
-sorters.adb:82:13: medium: precondition might fail
+sorters.adb:82:13: info: precondition proved
 sorters.adb:83:29: info: range check proved
-sorters.adb:96:18: medium: loop invariant might fail after first iteration, requires Values (Current) <= Values (J)
-sorters.adb:96:18: medium: loop invariant might fail in first iteration, requires Values (Current) <= Values (J)
+sorters.adb:94:10: info: loop invariant initialization proved
+sorters.adb:94:10: info: loop invariant preservation proved
 sorters.adb:96:26: info: index check proved
 sorters.adb:96:46: info: index check proved
 sorters.adb:98:11: info: loop invariant initialization proved

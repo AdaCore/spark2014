@@ -78,7 +78,7 @@ arithmetic.adb:244:39: medium: overflow check might fail
 arithmetic.adb:244:45: info: division check proved
 arithmetic.adb:244:45: medium: overflow check might fail
 arithmetic.adb:244:50: info: overflow check proved
-arithmetic.adb:244:55: medium: overflow check might fail
+arithmetic.adb:244:55: info: overflow check proved
 arithmetic.adb:247:16: info: division check proved
 arithmetic.adb:254:41: medium: overflow check might fail
 arithmetic.adb:257:17: info: overflow check proved
@@ -89,7 +89,7 @@ arithmetic.adb:266:22: medium: assertion might fail, requires 101 rem A /= 0
 arithmetic.adb:266:26: info: division check proved
 arithmetic.adb:277:22: medium: assertion might fail, requires 100 rem A /= 0
 arithmetic.adb:277:26: info: division check proved
-arithmetic.adb:283:19: medium: postcondition might fail
+arithmetic.adb:283:19: info: postcondition proved
 arithmetic.adb:288:29: info: range check proved
 arithmetic.adb:288:34: info: overflow check proved
 arithmetic.adb:288:42: info: overflow check proved

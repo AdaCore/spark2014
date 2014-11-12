@@ -1,7 +1,7 @@
 pck.adb:16:27: info: division check proved
 pck.adb:16:27: info: range check proved
 pck.adb:17:27: info: division check proved
-pck.adb:17:27: medium: range check might fail
+pck.adb:17:27: info: range check proved
 pck.adb:31:20: medium: overflow check might fail
 pck.adb:31:20: medium: range check might fail
 pck.adb:32:20: medium: overflow check might fail
@@ -15,16 +15,16 @@ pck.adb:40:22: medium: assertion might fail, requires Result_Hi < 16#7FFF_FFFF#
 pck.adb:49:25: medium: overflow check might fail
 pck.adb:49:25: medium: range check might fail
 pck.adb:49:37: medium: overflow check might fail
-pck.adb:51:30: medium: overflow check might fail
-pck.adb:51:30: medium: range check might fail
+pck.adb:51:30: info: overflow check proved
+pck.adb:51:30: info: range check proved
 pck.adb:56:15: medium: overflow check might fail
 pck.adb:56:27: medium: overflow check might fail
 pck.adb:56:37: medium: overflow check might fail
-pck.adb:56:51: medium: divide by zero might fail
+pck.adb:56:51: info: division check proved
 pck.adb:56:56: medium: divide by zero might fail
 pck.adb:56:56: medium: range check might fail
 pck.adb:59:11: medium: assertion might fail, requires Result_Lo <= Uint_64 (Natural'Last) * 2 ** 32 - Result_Hi
-pck.adb:68:24: medium: overflow check might fail
+pck.adb:68:24: info: overflow check proved
 pck.ads:6:14: medium: postcondition might fail, requires Int64 (Mul_Div'Result) = Int64 (V) * Int64 (M) / D
 pck.ads:6:49: medium: overflow check might fail
 pck.ads:6:61: medium: divide by zero might fail

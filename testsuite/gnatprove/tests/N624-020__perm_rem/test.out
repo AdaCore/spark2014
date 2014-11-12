@@ -1,48 +1,48 @@
-perm.adb:4:07: medium: range check might fail
-perm.adb:6:09: medium: range check might fail
+perm.adb:4:07: info: range check proved
+perm.adb:6:09: info: range check proved
 perm.adb:6:24: medium: length check might fail
 perm.adb:6:24: medium: range check might fail
-perm.adb:6:26: medium: range check might fail
-perm.adb:13:36: medium: array index check might fail
-perm.adb:13:45: medium: array index check might fail
+perm.adb:6:26: info: range check proved
+perm.adb:13:36: info: index check proved
+perm.adb:13:45: info: index check proved
 perm.adb:14:11: medium: precondition might fail
-perm.adb:14:20: medium: precondition might fail
-perm.adb:14:36: medium: precondition might fail
+perm.adb:14:20: info: precondition proved
+perm.adb:14:36: info: precondition proved
 perm.adb:14:47: medium: range check might fail
 perm.adb:15:14: medium: postcondition might fail
-perm.adb:16:09: medium: array index check might fail
-perm.adb:16:29: medium: array index check might fail
+perm.adb:16:09: info: index check proved
+perm.adb:16:29: info: index check proved
 perm.adb:17:06: medium: precondition might fail
-perm.adb:17:15: medium: precondition might fail
-perm.adb:18:15: medium: precondition might fail
-perm.adb:23:16: medium: array index check might fail
+perm.adb:17:15: info: precondition proved
+perm.adb:18:15: info: precondition proved
+perm.adb:23:16: info: index check proved
 perm.adb:24:12: medium: precondition might fail
-perm.adb:24:21: medium: precondition might fail
-perm.adb:24:37: medium: precondition might fail
+perm.adb:24:21: info: precondition proved
+perm.adb:24:37: info: precondition proved
 perm.adb:24:48: medium: range check might fail
 perm.adb:26:20: medium: range check might fail
 perm.adb:30:16: medium: loop invariant might fail after first iteration, requires not (A (Ia) = B (Kb) and then Is_Perm (Remove (A, Ia), Remove (B, Kb)
 perm.adb:30:16: medium: loop invariant might fail in first iteration, requires not (A (Ia) = B (Kb) and then Is_Perm (Remove (A, Ia), Remove (B, Kb)
-perm.adb:30:24: medium: array index check might fail
+perm.adb:30:24: info: index check proved
 perm.adb:30:33: medium: array index check might fail
 perm.adb:31:15: medium: precondition might fail
-perm.adb:31:24: medium: precondition might fail
-perm.adb:31:40: medium: precondition might fail
+perm.adb:31:24: info: precondition proved
+perm.adb:31:40: info: precondition proved
 perm.adb:31:51: medium: range check might fail
 perm.adb:33:22: medium: assertion might fail, requires false
-perm.adb:43:06: medium: precondition might fail
+perm.adb:43:06: info: precondition proved
 perm.adb:44:14: medium: postcondition might fail
-perm.adb:46:29: medium: array index check might fail
-perm.adb:46:59: medium: array index check might fail
+perm.adb:46:29: info: index check proved
+perm.adb:46:59: info: index check proved
 perm.adb:47:06: medium: precondition might fail
-perm.adb:47:15: medium: precondition might fail
-perm.adb:48:15: medium: precondition might fail
-perm.adb:53:43: medium: array index check might fail
-perm.adb:53:52: medium: array index check might fail
+perm.adb:47:15: info: precondition proved
+perm.adb:48:15: info: precondition proved
+perm.adb:53:43: info: index check proved
+perm.adb:53:52: info: index check proved
 perm.adb:54:14: medium: precondition might fail
-perm.adb:54:23: medium: precondition might fail
+perm.adb:54:23: info: precondition proved
 perm.adb:54:34: medium: range check might fail
-perm.adb:54:39: medium: precondition might fail
+perm.adb:54:39: info: precondition proved
 perm.adb:54:50: medium: range check might fail
 perm.adb:56:21: medium: range check might fail
 perm.adb:56:25: medium: precondition might fail
@@ -50,25 +50,25 @@ perm.adb:56:44: medium: range check might fail
 perm.adb:61:22: medium: loop invariant might fail after first iteration, requires not (A (Ka) = B (Kb) and then Is_Perm (Remove (A, Ka), Remove (B, Kb)
 perm.adb:61:22: medium: loop invariant might fail in first iteration, requires not (A (Ka) = B (Kb) and then Is_Perm (Remove (A, Ka), Remove (B, Kb)
 perm.adb:61:30: medium: array index check might fail
-perm.adb:61:39: medium: array index check might fail
+perm.adb:61:39: info: index check proved
 perm.adb:62:19: medium: precondition might fail
-perm.adb:62:28: medium: precondition might fail
+perm.adb:62:28: info: precondition proved
 perm.adb:62:39: medium: range check might fail
-perm.adb:62:44: medium: precondition might fail
+perm.adb:62:44: info: precondition proved
 perm.adb:62:55: medium: range check might fail
 perm.adb:64:22: medium: assertion might fail, requires false
+perm.adb:71:54: info: precondition proved
 perm.adb:71:54: medium: postcondition might fail, requires Is_Perm (A, B)
-perm.adb:71:54: medium: precondition might fail
 perm.adb:80:15: medium: precondition might fail
-perm.adb:80:37: medium: precondition might fail
-perm.adb:80:49: medium: range check might fail
-perm.adb:80:58: medium: precondition might fail
-perm.adb:80:70: medium: range check might fail
+perm.adb:80:37: info: precondition proved
+perm.adb:80:49: info: range check proved
+perm.adb:80:58: info: precondition proved
+perm.adb:80:70: info: range check proved
 perm.adb:82:28: medium: assertion might fail, requires IH
-perm.adb:88:14: medium: precondition might fail
-perm.adb:94:63: medium: precondition might fail
+perm.adb:88:14: info: precondition proved
+perm.adb:94:63: info: precondition proved
+perm.adb:95:54: info: precondition proved
 perm.adb:95:54: medium: postcondition might fail, requires Is_Perm (B, A)
-perm.adb:95:54: medium: precondition might fail
 perm.adb:103:40: medium: precondition might fail
 perm.adb:105:15: medium: precondition might fail
 perm.adb:105:37: medium: precondition might fail
@@ -77,78 +77,78 @@ perm.adb:107:28: medium: assertion might fail, requires IH
 perm.adb:108:28: medium: assertion might fail, requires B (W.Ib) = A (W.Ia)
 perm.adb:108:32: medium: array index check might fail
 perm.adb:108:43: medium: array index check might fail
-perm.adb:114:14: medium: precondition might fail
-perm.adb:118:35: medium: precondition might fail
-perm.adb:119:35: medium: precondition might fail
+perm.adb:114:14: info: precondition proved
+perm.adb:118:35: info: precondition proved
+perm.adb:119:35: info: precondition proved
 perm.adb:120:35: medium: precondition might fail
-perm.adb:120:43: medium: precondition might fail
+perm.adb:120:43: info: precondition proved
 perm.adb:120:62: medium: range check might fail
 perm.adb:121:35: medium: precondition might fail
-perm.adb:121:43: medium: precondition might fail
+perm.adb:121:43: info: precondition proved
 perm.adb:123:07: medium: assertion might fail
-perm.adb:124:45: medium: array index check might fail
+perm.adb:124:45: info: index check proved
 perm.adb:124:53: medium: array index check might fail
-perm.adb:125:52: medium: array index check might fail
+perm.adb:125:52: info: index check proved
 perm.adb:125:62: medium: array index check might fail
 perm.adb:125:62: medium: overflow check might fail
-perm.adb:126:35: medium: array index check might fail
+perm.adb:126:35: info: index check proved
 perm.adb:126:45: medium: array index check might fail
 perm.adb:126:45: medium: overflow check might fail
 perm.adb:127:07: medium: assertion might fail
-perm.adb:128:45: medium: array index check might fail
+perm.adb:128:45: info: index check proved
 perm.adb:128:53: medium: array index check might fail
-perm.adb:129:52: medium: array index check might fail
+perm.adb:129:52: info: index check proved
 perm.adb:129:62: medium: array index check might fail
 perm.adb:129:62: medium: overflow check might fail
-perm.adb:130:35: medium: array index check might fail
+perm.adb:130:35: info: index check proved
 perm.adb:130:45: medium: array index check might fail
 perm.adb:130:45: medium: overflow check might fail
-perm.adb:135:35: medium: precondition might fail
+perm.adb:135:35: info: precondition proved
 perm.adb:136:35: medium: precondition might fail
 perm.adb:138:46: medium: assertion might fail, requires A (J) = B (J)
-perm.adb:138:49: medium: array index check might fail
+perm.adb:138:49: info: index check proved
 perm.adb:138:57: medium: array index check might fail
 perm.adb:139:07: medium: assertion might fail
-perm.adb:140:43: medium: array index check might fail
+perm.adb:140:43: info: index check proved
 perm.adb:140:51: medium: array index check might fail
-perm.adb:140:67: medium: array index check might fail
+perm.adb:140:67: info: index check proved
 perm.adb:140:75: medium: array index check might fail
-perm.adb:141:34: medium: array index check might fail
+perm.adb:141:34: info: index check proved
 perm.adb:141:44: medium: array index check might fail
 perm.adb:141:44: medium: overflow check might fail
-perm.adb:141:62: medium: array index check might fail
+perm.adb:141:62: info: index check proved
 perm.adb:141:72: medium: array index check might fail
 perm.adb:141:72: medium: overflow check might fail
-perm.adb:147:30: medium: precondition might fail
-perm.adb:148:43: medium: postcondition might fail, requires Is_Perm (C, B)
-perm.adb:148:43: medium: precondition might fail
-perm.adb:154:33: medium: precondition might fail
+perm.adb:147:30: info: precondition proved
+perm.adb:148:14: info: postcondition proved
+perm.adb:148:43: info: precondition proved
+perm.adb:154:33: info: precondition proved
+perm.adb:155:54: info: precondition proved
 perm.adb:155:54: medium: postcondition might fail, requires Is_Perm (C, B)
-perm.adb:155:54: medium: precondition might fail
 perm.adb:164:39: medium: precondition might fail
 perm.adb:166:15: medium: precondition might fail
 perm.adb:167:18: medium: precondition might fail
 perm.adb:167:36: medium: precondition might fail
 perm.adb:167:54: medium: precondition might fail
 perm.adb:169:28: medium: assertion might fail, requires IH
-perm.adb:175:14: medium: precondition might fail
-perm.adb:180:30: medium: precondition might fail
+perm.adb:175:14: info: precondition proved
+perm.adb:180:30: info: precondition proved
+perm.adb:181:43: info: precondition proved
 perm.adb:181:43: medium: postcondition might fail, requires Is_Perm (A, C)
-perm.adb:181:43: medium: precondition might fail
+perm.adb:185:22: info: precondition proved
 perm.adb:185:22: medium: assertion might fail, requires Perm_Symmetric (A, B)
-perm.adb:185:22: medium: precondition might fail
 perm.adb:186:22: medium: assertion might fail, requires Shift_Perm_L (B, A, C)
 perm.adb:186:22: medium: precondition might fail
 perm.adb:187:22: medium: assertion might fail, requires Perm_Symmetric (C, A)
 perm.adb:187:22: medium: precondition might fail
-perm.adb:192:60: medium: precondition might fail
+perm.adb:192:60: info: precondition proved
 perm.adb:193:14: medium: postcondition might fail
-perm.adb:195:52: medium: array index check might fail
-perm.adb:195:61: medium: array index check might fail
+perm.adb:195:52: info: index check proved
+perm.adb:195:61: info: index check proved
 perm.adb:196:29: medium: precondition might fail
-perm.adb:196:38: medium: precondition might fail
+perm.adb:196:38: info: precondition proved
 perm.adb:196:49: medium: range check might fail
-perm.adb:196:54: medium: precondition might fail
+perm.adb:196:54: info: precondition proved
 perm.adb:196:65: medium: range check might fail
 perm.adb:204:37: medium: precondition might fail
 perm.adb:205:37: medium: precondition might fail
@@ -168,7 +168,7 @@ perm.adb:220:39: medium: precondition might fail
 perm.adb:220:51: medium: range check might fail
 perm.adb:220:56: medium: precondition might fail
 perm.adb:221:39: medium: precondition might fail
-perm.adb:221:47: medium: precondition might fail
+perm.adb:221:47: info: precondition proved
 perm.adb:221:58: medium: range check might fail
 perm.adb:221:68: medium: range check might fail
 perm.adb:222:34: medium: assertion might fail, requires IH
@@ -177,7 +177,7 @@ perm.adb:224:28: medium: precondition might fail
 perm.adb:225:37: medium: assertion might fail, requires IH
 perm.adb:226:28: medium: precondition might fail
 perm.adb:227:25: medium: precondition might fail
-perm.adb:227:33: medium: precondition might fail
+perm.adb:227:33: info: precondition proved
 perm.adb:227:44: medium: range check might fail
 perm.adb:227:54: medium: range check might fail
 perm.adb:228:25: medium: precondition might fail
@@ -188,7 +188,7 @@ perm.adb:229:37: medium: assertion might fail, requires IH
 perm.adb:231:25: medium: assertion might fail, requires Is_Perm (Remove (Remove (A, Ia), W.Ia - 1), Remove (Remove (B, Ib), W.Ib - 1)
 perm.adb:231:25: medium: precondition might fail
 perm.adb:231:34: medium: precondition might fail
-perm.adb:231:42: medium: precondition might fail
+perm.adb:231:42: info: precondition proved
 perm.adb:231:53: medium: range check might fail
 perm.adb:231:63: medium: range check might fail
 perm.adb:232:25: medium: precondition might fail
@@ -196,7 +196,7 @@ perm.adb:232:33: medium: precondition might fail
 perm.adb:232:54: medium: range check might fail
 perm.adb:234:25: medium: assertion might fail, requires Is_Perm (Remove (A, Ia), Remove (B, Ib)
 perm.adb:234:25: medium: precondition might fail
-perm.adb:234:34: medium: precondition might fail
+perm.adb:234:34: info: precondition proved
 perm.adb:234:45: medium: range check might fail
 perm.adb:234:50: medium: precondition might fail
 perm.adb:236:31: medium: range check might fail
@@ -205,7 +205,7 @@ perm.adb:237:28: medium: precondition might fail
 perm.adb:238:37: medium: assertion might fail, requires IH
 perm.adb:239:28: medium: precondition might fail
 perm.adb:240:25: medium: precondition might fail
-perm.adb:240:33: medium: precondition might fail
+perm.adb:240:33: info: precondition proved
 perm.adb:240:44: medium: range check might fail
 perm.adb:240:54: medium: range check might fail
 perm.adb:241:25: medium: precondition might fail
@@ -216,14 +216,14 @@ perm.adb:242:37: medium: assertion might fail, requires IH
 perm.adb:244:25: medium: assertion might fail, requires Is_Perm (Remove (Remove (A, Ia), W.Ia - 1), Remove (Remove (B, Ib), W.Ib)
 perm.adb:244:25: medium: precondition might fail
 perm.adb:244:34: medium: precondition might fail
-perm.adb:244:42: medium: precondition might fail
+perm.adb:244:42: info: precondition proved
 perm.adb:244:53: medium: range check might fail
 perm.adb:244:63: medium: range check might fail
 perm.adb:245:25: medium: precondition might fail
 perm.adb:245:33: medium: precondition might fail
 perm.adb:247:25: medium: assertion might fail, requires Is_Perm (Remove (A, Ia), Remove (B, Ib)
 perm.adb:247:25: medium: precondition might fail
-perm.adb:247:34: medium: precondition might fail
+perm.adb:247:34: info: precondition proved
 perm.adb:247:45: medium: range check might fail
 perm.adb:247:50: medium: precondition might fail
 perm.adb:250:22: warning: unused assignment
@@ -240,7 +240,7 @@ perm.adb:253:54: medium: overflow check might fail
 perm.adb:253:54: medium: range check might fail
 perm.adb:253:60: medium: precondition might fail
 perm.adb:254:39: medium: precondition might fail
-perm.adb:254:47: medium: precondition might fail
+perm.adb:254:47: info: precondition proved
 perm.adb:254:58: medium: range check might fail
 perm.adb:255:34: medium: assertion might fail, requires IH
 perm.adb:257:25: warning: unused assignment
@@ -248,7 +248,7 @@ perm.adb:257:28: medium: precondition might fail
 perm.adb:258:37: medium: assertion might fail, requires IH
 perm.adb:259:28: medium: precondition might fail
 perm.adb:260:25: medium: precondition might fail
-perm.adb:260:33: medium: precondition might fail
+perm.adb:260:33: info: precondition proved
 perm.adb:260:44: medium: range check might fail
 perm.adb:261:25: medium: precondition might fail
 perm.adb:261:42: medium: precondition might fail
@@ -258,14 +258,14 @@ perm.adb:262:37: medium: assertion might fail, requires IH
 perm.adb:264:25: medium: assertion might fail, requires Is_Perm (Remove (Remove (A, Ia), W.Ia), Remove (Remove (B, Ib), W.Ib - 1)
 perm.adb:264:25: medium: precondition might fail
 perm.adb:264:34: medium: precondition might fail
-perm.adb:264:42: medium: precondition might fail
+perm.adb:264:42: info: precondition proved
 perm.adb:264:53: medium: range check might fail
 perm.adb:265:25: medium: precondition might fail
 perm.adb:265:33: medium: precondition might fail
 perm.adb:265:54: medium: range check might fail
 perm.adb:267:25: medium: assertion might fail, requires Is_Perm (Remove (A, Ia), Remove (B, Ib)
 perm.adb:267:25: medium: precondition might fail
-perm.adb:267:34: medium: precondition might fail
+perm.adb:267:34: info: precondition proved
 perm.adb:267:45: medium: range check might fail
 perm.adb:267:50: medium: precondition might fail
 perm.adb:269:31: medium: range check might fail
@@ -274,7 +274,7 @@ perm.adb:270:28: medium: precondition might fail
 perm.adb:271:37: medium: assertion might fail, requires IH
 perm.adb:272:28: medium: precondition might fail
 perm.adb:273:25: medium: precondition might fail
-perm.adb:273:33: medium: precondition might fail
+perm.adb:273:33: info: precondition proved
 perm.adb:273:44: medium: range check might fail
 perm.adb:274:25: medium: precondition might fail
 perm.adb:274:40: medium: range check might fail
@@ -284,51 +284,51 @@ perm.adb:275:37: medium: assertion might fail, requires IH
 perm.adb:277:25: medium: assertion might fail, requires Is_Perm (Remove (Remove (A, Ia), W.Ia), Remove (Remove (B, Ib), W.Ib)
 perm.adb:277:25: medium: precondition might fail
 perm.adb:277:34: medium: precondition might fail
-perm.adb:277:42: medium: precondition might fail
+perm.adb:277:42: info: precondition proved
 perm.adb:277:53: medium: range check might fail
 perm.adb:278:25: medium: precondition might fail
 perm.adb:278:33: medium: precondition might fail
 perm.adb:280:25: medium: assertion might fail, requires Is_Perm (Remove (A, Ia), Remove (B, Ib)
 perm.adb:280:25: medium: precondition might fail
-perm.adb:280:34: medium: precondition might fail
+perm.adb:280:34: info: precondition proved
 perm.adb:280:45: medium: range check might fail
 perm.adb:280:50: medium: precondition might fail
 perm.adb:283:16: medium: assertion might fail
-perm.adb:284:48: medium: array index check might fail
-perm.adb:284:57: medium: array index check might fail
+perm.adb:284:48: info: index check proved
+perm.adb:284:57: info: index check proved
 perm.adb:285:19: medium: precondition might fail
-perm.adb:285:28: medium: precondition might fail
+perm.adb:285:28: info: precondition proved
 perm.adb:285:39: medium: range check might fail
-perm.adb:285:44: medium: precondition might fail
+perm.adb:285:44: info: precondition proved
 perm.adb:285:55: medium: range check might fail
 perm.adb:287:13: medium: loop invariant might fail after first iteration
 perm.adb:287:13: medium: loop invariant might fail in first iteration
 perm.adb:289:48: medium: array index check might fail
-perm.adb:289:56: medium: array index check might fail
+perm.adb:289:56: info: index check proved
 perm.adb:290:19: medium: precondition might fail
-perm.adb:290:28: medium: precondition might fail
+perm.adb:290:28: info: precondition proved
 perm.adb:290:39: medium: range check might fail
-perm.adb:290:43: medium: precondition might fail
+perm.adb:290:43: info: precondition proved
 perm.adb:290:54: medium: range check might fail
-perm.adb:297:25: medium: precondition might fail
-perm.adb:306:18: medium: precondition might fail
-perm.adb:306:42: medium: precondition might fail
+perm.adb:297:25: info: precondition proved
+perm.adb:306:18: info: precondition proved
+perm.adb:306:42: info: precondition proved
+perm.adb:307:54: info: precondition proved
 perm.adb:307:54: medium: postcondition might fail, requires Is_Perm (A, C)
-perm.adb:307:54: medium: precondition might fail
 perm.adb:315:41: medium: precondition might fail
-perm.adb:316:41: medium: precondition might fail
+perm.adb:316:41: info: precondition proved
 perm.adb:317:37: medium: precondition might fail
 perm.adb:319:20: medium: precondition might fail
 perm.adb:320:16: medium: precondition might fail
 perm.adb:320:34: medium: precondition might fail
-perm.adb:320:52: medium: precondition might fail
-perm.adb:325:14: medium: precondition might fail
+perm.adb:320:52: info: precondition proved
+perm.adb:325:14: info: precondition proved
 perm.adb:329:07: warning: initialization has no effect
-perm.adb:329:26: medium: precondition might fail
+perm.adb:329:26: info: precondition proved
 perm.adb:330:31: medium: precondition might fail
-perm.adb:331:35: medium: precondition might fail
-perm.adb:332:35: medium: precondition might fail
-perm.adb:333:35: medium: precondition might fail
+perm.adb:331:35: info: precondition proved
+perm.adb:332:35: info: precondition proved
+perm.adb:333:35: info: precondition proved
 perm.adb:340:09: warning: unused assignment
 perm.adb:340:12: medium: precondition might fail
 perm.adb:341:22: medium: assertion might fail, requires H
@@ -339,7 +339,7 @@ perm.adb:346:07: warning: statement has no effect
 perm.adb:347:14: warning: unused assignment
 perm.adb:347:17: medium: precondition might fail
 perm.adb:348:12: warning: unused assignment
-perm.adb:348:15: medium: precondition might fail
+perm.adb:348:15: info: precondition proved
 perm.adb:349:25: medium: assertion might fail, requires H
 perm.adb:350:12: warning: unused assignment
 perm.adb:350:15: medium: precondition might fail
@@ -363,297 +363,297 @@ perm.adb:358:29: medium: precondition might fail
 perm.adb:359:25: medium: assertion might fail, requires H
 perm.adb:361:12: medium: precondition might fail
 perm.ads:11:14: medium: postcondition might fail
-perm.ads:12:34: medium: overflow check might fail
+perm.ads:12:34: info: overflow check proved
 perm.ads:13:37: medium: array index check might fail
 perm.ads:13:57: medium: array index check might fail
 perm.ads:14:42: medium: array index check might fail
 perm.ads:14:64: medium: array index check might fail
 perm.ads:14:64: medium: overflow check might fail
-perm.ads:15:32: medium: overflow check might fail
+perm.ads:15:32: info: overflow check proved
 perm.ads:15:44: medium: array index check might fail
 perm.ads:15:44: medium: overflow check might fail
 perm.ads:15:66: medium: array index check might fail
 perm.ads:21:17: medium: postcondition might fail, requires Remove (Remove (A, I1), I2 - 1) = Remove (Remove (A, I2), I1)
 perm.ads:21:17: medium: precondition might fail
-perm.ads:21:25: medium: precondition might fail
+perm.ads:21:25: info: precondition proved
 perm.ads:21:44: medium: range check might fail
 perm.ads:22:19: medium: precondition might fail
-perm.ads:22:27: medium: precondition might fail
+perm.ads:22:27: info: precondition proved
+perm.ads:27:40: info: precondition proved
 perm.ads:27:40: medium: postcondition might fail, requires Remove (A, I) = Remove (B, I)
-perm.ads:27:40: medium: precondition might fail
 perm.ads:27:56: medium: precondition might fail
-perm.ads:35:50: medium: array index check might fail
-perm.ads:35:59: medium: array index check might fail
+perm.ads:35:50: info: index check proved
+perm.ads:35:59: info: index check proved
 perm.ads:36:21: medium: precondition might fail
-perm.ads:36:30: medium: precondition might fail
+perm.ads:36:30: info: precondition proved
 perm.ads:36:41: medium: range check might fail
-perm.ads:36:46: medium: precondition might fail
+perm.ads:36:46: info: precondition proved
 perm.ads:36:57: medium: range check might fail
-perm.ads:40:45: medium: postcondition might fail, requires Is_Perm (A, B)
-perm.ads:40:45: medium: precondition might fail
-perm.ads:43:60: medium: precondition might fail
-perm.ads:44:45: medium: postcondition might fail, requires Is_Perm (B, A)
-perm.ads:44:45: medium: precondition might fail
-perm.ads:48:06: medium: precondition might fail
-perm.ads:48:30: medium: precondition might fail
-perm.ads:49:46: medium: postcondition might fail, requires Is_Perm (A, C)
-perm.ads:49:46: medium: precondition might fail
-perm.ads:52:59: medium: precondition might fail
+perm.ads:40:14: info: postcondition proved
+perm.ads:40:45: info: precondition proved
+perm.ads:43:60: info: precondition proved
+perm.ads:44:14: info: postcondition proved
+perm.ads:44:45: info: precondition proved
+perm.ads:48:06: info: precondition proved
+perm.ads:48:30: info: precondition proved
+perm.ads:49:14: info: postcondition proved
+perm.ads:49:46: info: precondition proved
+perm.ads:52:59: info: precondition proved
 perm.ads:53:14: medium: postcondition might fail
-perm.ads:55:52: medium: array index check might fail
-perm.ads:55:61: medium: array index check might fail
-perm.ads:59:52: medium: precondition might fail
-perm.ads:60:18: medium: array index check might fail
-perm.ads:60:27: medium: array index check might fail
+perm.ads:55:52: info: index check proved
+perm.ads:55:61: info: index check proved
+perm.ads:59:52: info: precondition proved
+perm.ads:60:18: info: index check proved
+perm.ads:60:27: info: index check proved
 perm.ads:62:17: medium: postcondition might fail, requires Is_Perm (Remove (A, Ia), Remove (B, Ib)
 perm.ads:62:17: medium: precondition might fail
-perm.ads:62:26: medium: precondition might fail
-perm.ads:62:42: medium: precondition might fail
+perm.ads:62:26: info: precondition proved
+perm.ads:62:42: info: precondition proved
 sort.adb:14:15: medium: postcondition might fail, requires Is_Perm (Values'Old, Values)
 sort.adb:14:15: medium: precondition might fail
 sort.adb:23:29: info: index check proved
-sort.adb:24:15: medium: array index check might fail
-sort.adb:24:29: medium: array index check might fail
+sort.adb:24:15: info: index check proved
+sort.adb:24:29: info: index check proved
 sort.adb:27:14: warning: unused assignment
 sort.adb:28:22: medium: assertion might fail, requires Remove (Init, X) = Remove (Interm, X)
 sort.adb:28:22: medium: precondition might fail
-sort.adb:28:36: medium: range check might fail
+sort.adb:28:36: info: range check proved
 sort.adb:28:41: medium: precondition might fail
-sort.adb:28:57: medium: range check might fail
-sort.adb:30:15: medium: array index check might fail
+sort.adb:28:57: info: range check proved
+sort.adb:30:15: info: index check proved
 sort.adb:30:21: medium: range check might fail
 sort.adb:31:22: medium: assertion might fail, requires Remove (Interm, Y) = Remove (Values, Y)
 sort.adb:31:22: medium: precondition might fail
-sort.adb:31:38: medium: range check might fail
+sort.adb:31:38: info: range check proved
 sort.adb:31:43: medium: precondition might fail
-sort.adb:31:59: medium: range check might fail
+sort.adb:31:59: info: range check proved
 sort.adb:34:07: warning: statement has no effect
 sort.adb:38:16: warning: unused assignment
 sort.adb:38:19: medium: precondition might fail
 sort.adb:38:30: medium: precondition might fail
-sort.adb:38:46: medium: range check might fail
+sort.adb:38:46: info: range check proved
 sort.adb:38:50: medium: precondition might fail
-sort.adb:38:66: medium: range check might fail
-sort.adb:38:72: medium: range check might fail
+sort.adb:38:66: info: range check proved
+sort.adb:38:72: info: range check proved
 sort.adb:39:16: warning: unused assignment
 sort.adb:39:19: medium: precondition might fail
-sort.adb:39:40: medium: range check might fail
-sort.adb:39:43: medium: range check might fail
+sort.adb:39:40: info: range check proved
+sort.adb:39:43: info: range check proved
 sort.adb:40:28: medium: assertion might fail, requires Remove (Remove (Interm, X), Y) = Remove (Remove (Interm, Y), X - 1)
 sort.adb:40:28: medium: precondition might fail
 sort.adb:40:36: medium: precondition might fail
-sort.adb:40:52: medium: range check might fail
-sort.adb:40:56: medium: range check might fail
+sort.adb:40:52: info: range check proved
+sort.adb:40:56: info: range check proved
 sort.adb:41:30: medium: precondition might fail
 sort.adb:41:38: medium: precondition might fail
-sort.adb:41:54: medium: range check might fail
+sort.adb:41:54: info: range check proved
 sort.adb:41:60: medium: range check might fail
 sort.adb:42:28: medium: assertion might fail, requires Remove (Remove (Interm, X), Y) = Remove (Remove (Values, Y), X - 1)
 sort.adb:42:28: medium: precondition might fail
 sort.adb:42:36: medium: precondition might fail
-sort.adb:42:52: medium: range check might fail
-sort.adb:42:56: medium: range check might fail
+sort.adb:42:52: info: range check proved
+sort.adb:42:56: info: range check proved
 sort.adb:43:30: medium: precondition might fail
 sort.adb:43:38: medium: precondition might fail
-sort.adb:43:54: medium: range check might fail
+sort.adb:43:54: info: range check proved
 sort.adb:43:60: medium: range check might fail
 sort.adb:44:16: warning: unused assignment
 sort.adb:44:19: medium: precondition might fail
-sort.adb:44:40: medium: range check might fail
-sort.adb:44:43: medium: range check might fail
+sort.adb:44:40: info: range check proved
+sort.adb:44:43: info: range check proved
 sort.adb:45:28: medium: assertion might fail, requires Remove (Remove (Interm, X), Y) = Remove (Remove (Values, X), Y)
 sort.adb:45:28: medium: precondition might fail
 sort.adb:45:36: medium: precondition might fail
-sort.adb:45:52: medium: range check might fail
-sort.adb:45:56: medium: range check might fail
+sort.adb:45:52: info: range check proved
+sort.adb:45:56: info: range check proved
 sort.adb:46:30: medium: precondition might fail
 sort.adb:46:38: medium: precondition might fail
-sort.adb:46:54: medium: range check might fail
-sort.adb:46:58: medium: range check might fail
+sort.adb:46:54: info: range check proved
+sort.adb:46:58: info: range check proved
 sort.adb:47:16: warning: unused assignment
 sort.adb:47:19: medium: precondition might fail
 sort.adb:47:30: medium: precondition might fail
-sort.adb:47:44: medium: range check might fail
+sort.adb:47:44: info: range check proved
 sort.adb:47:48: medium: precondition might fail
-sort.adb:47:64: medium: range check might fail
-sort.adb:47:68: medium: range check might fail
+sort.adb:47:64: info: range check proved
+sort.adb:47:68: info: range check proved
 sort.adb:48:36: medium: assertion might fail, requires Remove (Remove (Init, X), Y) = Remove (Remove (Values, X), Y)
 sort.adb:48:36: medium: precondition might fail
 sort.adb:48:44: medium: precondition might fail
-sort.adb:48:58: medium: range check might fail
-sort.adb:48:62: medium: range check might fail
+sort.adb:48:58: info: range check proved
+sort.adb:48:62: info: range check proved
 sort.adb:49:38: medium: precondition might fail
 sort.adb:49:46: medium: precondition might fail
-sort.adb:49:62: medium: range check might fail
-sort.adb:49:66: medium: range check might fail
+sort.adb:49:62: info: range check proved
+sort.adb:49:66: info: range check proved
 sort.adb:51:13: warning: unused assignment
 sort.adb:51:16: medium: precondition might fail
 sort.adb:51:32: medium: precondition might fail
 sort.adb:51:40: medium: precondition might fail
-sort.adb:51:54: medium: range check might fail
-sort.adb:51:58: medium: range check might fail
+sort.adb:51:54: info: range check proved
+sort.adb:51:58: info: range check proved
 sort.adb:52:32: medium: precondition might fail
 sort.adb:52:40: medium: precondition might fail
-sort.adb:52:56: medium: range check might fail
-sort.adb:52:60: medium: range check might fail
+sort.adb:52:56: info: range check proved
+sort.adb:52:60: info: range check proved
 sort.adb:53:13: warning: unused assignment
 sort.adb:53:16: medium: precondition might fail
-sort.adb:53:37: medium: range check might fail
-sort.adb:53:40: medium: range check might fail
+sort.adb:53:37: info: range check proved
+sort.adb:53:40: info: range check proved
 sort.adb:54:13: warning: unused assignment
 sort.adb:54:16: medium: precondition might fail
 sort.adb:54:32: medium: precondition might fail
 sort.adb:54:40: medium: precondition might fail
-sort.adb:54:56: medium: range check might fail
-sort.adb:54:60: medium: range check might fail
+sort.adb:54:56: info: range check proved
+sort.adb:54:60: info: range check proved
 sort.adb:55:32: medium: precondition might fail
 sort.adb:55:40: medium: precondition might fail
-sort.adb:55:56: medium: range check might fail
+sort.adb:55:56: info: range check proved
 sort.adb:55:62: medium: range check might fail
 sort.adb:56:13: warning: unused assignment
 sort.adb:56:16: medium: precondition might fail
 sort.adb:56:33: medium: precondition might fail
 sort.adb:56:41: medium: precondition might fail
-sort.adb:56:55: medium: range check might fail
-sort.adb:56:59: medium: range check might fail
+sort.adb:56:55: info: range check proved
+sort.adb:56:59: info: range check proved
 sort.adb:57:33: medium: precondition might fail
 sort.adb:57:41: medium: precondition might fail
-sort.adb:57:57: medium: range check might fail
-sort.adb:57:61: medium: range check might fail
+sort.adb:57:57: info: range check proved
+sort.adb:57:61: info: range check proved
 sort.adb:58:33: medium: precondition might fail
 sort.adb:58:41: medium: precondition might fail
-sort.adb:58:57: medium: range check might fail
+sort.adb:58:57: info: range check proved
 sort.adb:58:63: medium: range check might fail
 sort.adb:59:25: medium: assertion might fail, requires Remove (Init, X) (Y) = Remove (Values, Y) (X - 1)
 sort.adb:59:25: medium: precondition might fail
-sort.adb:59:39: medium: range check might fail
+sort.adb:59:39: info: range check proved
 sort.adb:59:43: medium: array index check might fail
 sort.adb:59:48: medium: precondition might fail
-sort.adb:59:64: medium: range check might fail
+sort.adb:59:64: info: range check proved
 sort.adb:59:70: medium: array index check might fail
 sort.adb:60:25: medium: assertion might fail, requires Is_Perm (Remove (Init, X), Remove (Values, Y)
 sort.adb:60:25: medium: precondition might fail
 sort.adb:60:34: medium: precondition might fail
-sort.adb:60:48: medium: range check might fail
+sort.adb:60:48: info: range check proved
 sort.adb:60:52: medium: precondition might fail
-sort.adb:60:68: medium: range check might fail
+sort.adb:60:68: info: range check proved
 sort.adb:65:16: warning: unused assignment
 sort.adb:65:19: medium: precondition might fail
 sort.adb:65:30: medium: precondition might fail
-sort.adb:65:46: medium: range check might fail
+sort.adb:65:46: info: range check proved
 sort.adb:65:50: medium: precondition might fail
-sort.adb:65:66: medium: range check might fail
-sort.adb:65:70: medium: range check might fail
+sort.adb:65:66: info: range check proved
+sort.adb:65:70: info: range check proved
 sort.adb:66:16: warning: unused assignment
 sort.adb:66:19: medium: precondition might fail
-sort.adb:66:40: medium: range check might fail
-sort.adb:66:43: medium: range check might fail
+sort.adb:66:40: info: range check proved
+sort.adb:66:43: info: range check proved
 sort.adb:67:28: medium: assertion might fail, requires Remove (Remove (Interm, X), Y - 1) = Remove (Remove (Interm, Y), X)
 sort.adb:67:28: medium: precondition might fail
 sort.adb:67:36: medium: precondition might fail
-sort.adb:67:52: medium: range check might fail
+sort.adb:67:52: info: range check proved
 sort.adb:67:58: medium: range check might fail
 sort.adb:68:30: medium: precondition might fail
 sort.adb:68:38: medium: precondition might fail
-sort.adb:68:54: medium: range check might fail
-sort.adb:68:58: medium: range check might fail
+sort.adb:68:54: info: range check proved
+sort.adb:68:58: info: range check proved
 sort.adb:69:28: medium: assertion might fail, requires Remove (Remove (Interm, X), Y - 1) = Remove (Remove (Values, Y), X)
 sort.adb:69:28: medium: precondition might fail
 sort.adb:69:36: medium: precondition might fail
-sort.adb:69:52: medium: range check might fail
+sort.adb:69:52: info: range check proved
 sort.adb:69:58: medium: range check might fail
 sort.adb:70:30: medium: precondition might fail
 sort.adb:70:38: medium: precondition might fail
-sort.adb:70:54: medium: range check might fail
-sort.adb:70:58: medium: range check might fail
+sort.adb:70:54: info: range check proved
+sort.adb:70:58: info: range check proved
 sort.adb:71:16: warning: unused assignment
 sort.adb:71:19: medium: precondition might fail
-sort.adb:71:40: medium: range check might fail
-sort.adb:71:43: medium: range check might fail
+sort.adb:71:40: info: range check proved
+sort.adb:71:43: info: range check proved
 sort.adb:72:28: medium: assertion might fail, requires Remove (Remove (Interm, X), Y - 1) = Remove (Remove (Values, X), Y - 1)
 sort.adb:72:28: medium: precondition might fail
 sort.adb:72:36: medium: precondition might fail
-sort.adb:72:52: medium: range check might fail
+sort.adb:72:52: info: range check proved
 sort.adb:72:58: medium: range check might fail
 sort.adb:73:30: medium: precondition might fail
 sort.adb:73:38: medium: precondition might fail
-sort.adb:73:54: medium: range check might fail
+sort.adb:73:54: info: range check proved
 sort.adb:73:60: medium: range check might fail
 sort.adb:74:16: warning: unused assignment
 sort.adb:74:19: medium: precondition might fail
 sort.adb:74:30: medium: precondition might fail
-sort.adb:74:44: medium: range check might fail
+sort.adb:74:44: info: range check proved
 sort.adb:74:48: medium: precondition might fail
-sort.adb:74:64: medium: range check might fail
+sort.adb:74:64: info: range check proved
 sort.adb:74:70: medium: range check might fail
 sort.adb:75:36: medium: assertion might fail, requires Remove (Remove (Init, X), Y - 1) = Remove (Remove (Values, X), Y - 1)
 sort.adb:75:36: medium: precondition might fail
 sort.adb:75:44: medium: precondition might fail
-sort.adb:75:58: medium: range check might fail
+sort.adb:75:58: info: range check proved
 sort.adb:75:64: medium: range check might fail
 sort.adb:76:38: medium: precondition might fail
 sort.adb:76:46: medium: precondition might fail
-sort.adb:76:62: medium: range check might fail
+sort.adb:76:62: info: range check proved
 sort.adb:76:68: medium: range check might fail
 sort.adb:78:13: warning: unused assignment
 sort.adb:78:16: medium: precondition might fail
 sort.adb:78:32: medium: precondition might fail
 sort.adb:78:40: medium: precondition might fail
-sort.adb:78:54: medium: range check might fail
+sort.adb:78:54: info: range check proved
 sort.adb:78:60: medium: range check might fail
 sort.adb:79:32: medium: precondition might fail
 sort.adb:79:40: medium: precondition might fail
-sort.adb:79:56: medium: range check might fail
-sort.adb:79:62: medium: range check might fail
+sort.adb:79:56: info: range check proved
+sort.adb:79:62: info: range check proved
 sort.adb:80:13: warning: unused assignment
 sort.adb:80:16: medium: precondition might fail
-sort.adb:80:37: medium: range check might fail
-sort.adb:80:40: medium: range check might fail
+sort.adb:80:37: info: range check proved
+sort.adb:80:40: info: range check proved
 sort.adb:81:13: warning: unused assignment
 sort.adb:81:16: medium: precondition might fail
 sort.adb:81:32: medium: precondition might fail
 sort.adb:81:40: medium: precondition might fail
-sort.adb:81:56: medium: range check might fail
+sort.adb:81:56: info: range check proved
 sort.adb:81:62: medium: range check might fail
 sort.adb:82:32: medium: precondition might fail
 sort.adb:82:40: medium: precondition might fail
-sort.adb:82:56: medium: range check might fail
-sort.adb:82:60: medium: range check might fail
+sort.adb:82:56: info: range check proved
+sort.adb:82:60: info: range check proved
 sort.adb:83:13: warning: unused assignment
 sort.adb:83:16: medium: precondition might fail
 sort.adb:83:33: medium: precondition might fail
 sort.adb:83:41: medium: precondition might fail
-sort.adb:83:55: medium: range check might fail
+sort.adb:83:55: info: range check proved
 sort.adb:83:61: medium: range check might fail
 sort.adb:84:33: medium: precondition might fail
 sort.adb:84:41: medium: precondition might fail
-sort.adb:84:57: medium: range check might fail
+sort.adb:84:57: info: range check proved
 sort.adb:84:63: medium: range check might fail
 sort.adb:85:33: medium: precondition might fail
 sort.adb:85:41: medium: precondition might fail
-sort.adb:85:57: medium: range check might fail
-sort.adb:85:61: medium: range check might fail
+sort.adb:85:57: info: range check proved
+sort.adb:85:61: info: range check proved
 sort.adb:86:25: medium: assertion might fail, requires Remove (Init, X) (Y - 1) = Remove (Values, Y) (X)
 sort.adb:86:25: medium: precondition might fail
-sort.adb:86:39: medium: range check might fail
+sort.adb:86:39: info: range check proved
 sort.adb:86:45: medium: array index check might fail
 sort.adb:86:52: medium: precondition might fail
-sort.adb:86:68: medium: range check might fail
+sort.adb:86:68: info: range check proved
 sort.adb:86:72: medium: array index check might fail
 sort.adb:87:25: medium: assertion might fail, requires Is_Perm (Remove (Init, X), Remove (Values, Y)
 sort.adb:87:25: medium: precondition might fail
 sort.adb:87:34: medium: precondition might fail
-sort.adb:87:48: medium: range check might fail
+sort.adb:87:48: info: range check proved
 sort.adb:87:52: medium: precondition might fail
-sort.adb:87:68: medium: range check might fail
+sort.adb:87:68: info: range check proved
 sort.adb:97:16: medium: postcondition might fail, requires Index_Of_Minimum'Result in First .. Last
+sort.adb:103:10: info: loop invariant initialization proved
 sort.adb:103:33: medium: loop invariant might fail after first iteration, requires Min in First .. Last
-sort.adb:103:33: medium: loop invariant might fail in first iteration, requires Min in First .. Last
-sort.adb:104:38: medium: array index check might fail
+sort.adb:104:38: info: index check proved
 sort.adb:117:07: warning: initialization has no effect
 sort.adb:121:10: warning: unused assignment
 sort.adb:121:13: medium: precondition might fail
-sort.adb:123:22: medium: precondition might fail
+sort.adb:123:22: info: precondition proved
 sort.adb:126:18: warning: unused assignment
 sort.adb:128:13: medium: precondition might fail
 sort.adb:132:16: warning: unused assignment

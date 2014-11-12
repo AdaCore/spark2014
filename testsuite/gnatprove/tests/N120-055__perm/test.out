@@ -12,9 +12,9 @@ sort.adb:32:38: info: index check proved
 sort.adb:33:20: info: range check proved
 sort.adb:36:14: info: range check proved
 sort.adb:47:50: info: overflow check proved
-sort.adb:48:22: medium: precondition might fail
+sort.adb:48:22: info: precondition proved
 sort.adb:48:40: info: range check proved
-sort.adb:51:13: medium: precondition might fail
+sort.adb:51:13: info: precondition proved
 sort.adb:52:29: info: range check proved
 sort.adb:53:29: info: range check proved
 sort.adb:56:10: info: loop invariant initialization proved

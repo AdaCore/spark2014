@@ -27,26 +27,25 @@ with_default.adb:108:69: info: range check proved
 with_default.adb:108:69: medium: range check might fail
 with_default.adb:109:15: info: range check proved
 with_default.adb:127:69: info: range check proved
-with_default.adb:127:69: medium: range check might fail
 with_default.adb:128:15: info: range check proved
 with_default.adb:130:15: info: range check proved
 with_default.adb:134:36: info: range check proved
 with_default.adb:169:43: info: range check proved
 with_default.adb:187:57: info: range check proved
-with_default.adb:195:22: medium: assertion might fail, requires Simple.F1 = 0
-with_default.adb:196:22: medium: assertion might fail, requires Simple.F2 = C
-with_default.adb:197:22: medium: assertion might fail, requires W_Disc.F1 = 0
-with_default.adb:197:28: medium: discriminant check might fail
-with_default.adb:198:22: medium: assertion might fail, requires W_D_Di.F1 = 0
-with_default.adb:198:28: medium: discriminant check might fail
-with_default.adb:199:22: medium: assertion might fail, requires not W_O_Di.B
-with_default.adb:200:22: medium: assertion might fail, requires W_O_Di.F3 = C
-with_default.adb:200:28: medium: discriminant check might fail
-with_default.adb:201:22: medium: assertion might fail, requires Empty.Content'Last = 0
-with_default.adb:201:27: medium: discriminant check might fail
-with_default.adb:202:22: medium: assertion might fail, requires Wrap.Content.F1 = 0
-with_default.adb:202:26: medium: discriminant check might fail
-with_default.adb:202:34: medium: discriminant check might fail
+with_default.adb:195:07: info: assertion proved
+with_default.adb:196:07: info: assertion proved
+with_default.adb:197:07: info: assertion proved
+with_default.adb:197:28: info: discriminant check proved
+with_default.adb:198:07: info: assertion proved
+with_default.adb:198:28: info: discriminant check proved
+with_default.adb:199:07: info: assertion proved
+with_default.adb:200:07: info: assertion proved
+with_default.adb:200:28: info: discriminant check proved
+with_default.adb:201:07: info: assertion proved
+with_default.adb:201:27: info: discriminant check proved
+with_default.adb:202:07: info: assertion proved
+with_default.adb:202:26: info: discriminant check proved
+with_default.adb:202:34: info: discriminant check proved
 with_default.adb:206:39: medium: range check might fail
 with_default.adb:219:39: medium: range check might fail
 with_default.adb:233:40: info: range check proved

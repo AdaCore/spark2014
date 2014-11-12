@@ -1,17 +1,17 @@
 copy.adb:42:14: medium: precondition of main program might fail
 copy.adb:62:07: info: loop invariant initialization proved
-copy.adb:62:07: medium: loop invariant might fail after first iteration
+copy.adb:62:07: info: loop invariant preservation proved
 copy.adb:66:10: info: precondition proved
 copy.adb:68:10: info: precondition proved
 copy.adb:82:40: info: range check proved
 copy.adb:84:13: info: precondition proved
 copy.adb:92:22: info: precondition proved
-copy.adb:92:51: medium: range check might fail
-copy.adb:93:32: medium: range check might fail
+copy.adb:92:51: info: range check proved
+copy.adb:93:32: info: range check proved
 copy.adb:95:22: info: precondition proved
 copy.adb:101:22: info: precondition proved
-copy.adb:101:51: medium: range check might fail
-copy.adb:102:32: medium: range check might fail
+copy.adb:101:51: info: range check proved
+copy.adb:102:32: info: range check proved
 copy.adb:104:22: info: precondition proved
 copy.adb:110:22: info: precondition proved
 copy.adb:113:22: info: precondition proved
@@ -24,54 +24,54 @@ copy.adb:142:10: info: precondition proved
 copy.adb:155:40: info: range check proved
 copy.adb:157:13: info: precondition proved
 copy.adb:165:22: info: precondition proved
-copy.adb:166:32: medium: range check might fail
+copy.adb:166:32: info: range check proved
 copy.adb:168:22: info: precondition proved
 copy.adb:174:22: info: precondition proved
-copy.adb:175:32: medium: range check might fail
-copy.adb:177:22: medium: precondition might fail
+copy.adb:175:32: info: range check proved
+copy.adb:177:22: info: precondition proved
 copy.adb:182:22: info: precondition proved
-copy.adb:182:44: medium: range check might fail
-copy.adb:183:32: medium: range check might fail
+copy.adb:182:44: info: range check proved
+copy.adb:183:32: info: range check proved
 copy.adb:186:22: info: precondition proved
-copy.adb:188:22: medium: precondition might fail
-copy.adb:194:22: medium: loop invariant might fail after first iteration
-copy.adb:194:22: medium: loop invariant might fail in first iteration
+copy.adb:188:22: info: precondition proved
+copy.adb:194:22: info: loop invariant initialization proved
+copy.adb:194:22: info: loop invariant preservation proved
 copy.adb:202:55: info: overflow check proved
 copy.adb:202:55: info: range check proved
-copy.adb:206:30: medium: range check might fail
+copy.adb:206:30: info: range check proved
 copy.adb:207:31: info: range check proved
-copy.adb:210:34: medium: range check might fail
+copy.adb:210:34: info: range check proved
 copy.adb:211:31: info: range check proved
 copy.adb:213:31: info: precondition proved
 copy.adb:220:34: info: precondition proved
-copy.adb:221:43: medium: range check might fail
+copy.adb:221:43: info: range check proved
 copy.adb:224:34: info: precondition proved
 copy.adb:232:31: info: precondition proved
-copy.adb:234:31: medium: precondition might fail
+copy.adb:234:31: info: precondition proved
 copy.adb:243:22: info: precondition proved
-copy.adb:246:22: medium: precondition might fail
+copy.adb:246:22: info: precondition proved
 copy.adb:249:19: info: precondition proved
 copy.adb:256:13: info: precondition proved
-copy.adb:259:13: medium: precondition might fail
+copy.adb:259:13: info: precondition proved
 copy.adb:262:10: info: precondition proved
 copy.adb:269:14: medium: precondition might fail
-copy.adb:270:07: medium: loop invariant might fail after first iteration
+copy.adb:270:07: info: loop invariant preservation proved
 copy.adb:270:07: medium: loop invariant might fail in first iteration
 copy.adb:278:07: info: precondition proved
 copy.adb:281:13: info: precondition proved
 copy.adb:281:32: info: discriminant check proved
-copy.adb:284:34: medium: overflow check might fail
+copy.adb:284:34: info: overflow check proved
 copy.adb:291:16: info: precondition proved
 copy.adb:292:73: medium: range check might fail
 copy.adb:293:19: info: precondition proved
 copy.adb:296:16: info: precondition proved
-copy.adb:298:16: medium: precondition might fail
+copy.adb:298:16: info: precondition proved
 copy.adb:299:16: info: precondition proved
 copy.adb:305:13: info: precondition proved
 copy.adb:305:55: medium: range check might fail
-copy.adb:306:23: medium: precondition might fail
+copy.adb:306:23: info: precondition proved
 copy.adb:309:13: info: precondition proved
-copy.adb:311:13: medium: precondition might fail
+copy.adb:311:13: info: precondition proved
 copy.adb:312:13: info: precondition proved
 copy.adb:320:10: info: precondition proved
 copy.adb:323:10: info: precondition proved
@@ -129,7 +129,7 @@ use_enum_io.adb:51:14: info: precondition proved
 use_enum_io.adb:54:10: info: precondition proved
 use_float_io.adb:32:18: medium: precondition of main program might fail
 use_float_io.adb:38:19: info: range check proved
-use_float_io.adb:38:22: medium: overflow check might fail
+use_float_io.adb:38:22: info: overflow check proved
 use_float_io.adb:39:07: info: loop invariant initialization proved
 use_float_io.adb:39:07: info: loop invariant preservation proved
 use_float_io.adb:42:10: info: precondition proved

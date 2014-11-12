@@ -16,7 +16,7 @@ deceleration_curve.adb:49:48: info: division check proved
 deceleration_curve.adb:49:48: info: overflow check proved
 deceleration_curve.adb:50:12: medium: overflow check might fail
 deceleration_curve.adb:52:10: medium: assertion might fail
-deceleration_curve.adb:58:25: medium: overflow check might fail
+deceleration_curve.adb:58:25: info: overflow check proved
 deceleration_curve.adb:60:31: medium: overflow check might fail
 deceleration_curve.adb:69:36: info: division check proved
 deceleration_curve.adb:69:36: info: range check proved
@@ -31,8 +31,8 @@ deceleration_curve.adb:90:29: medium: overflow check might fail
 deceleration_curve.adb:91:13: medium: overflow check might fail
 deceleration_curve.adb:91:46: info: division check proved
 deceleration_curve.adb:91:46: info: overflow check proved
-deceleration_curve.adb:96:36: medium: overflow check might fail
-deceleration_curve.adb:96:36: medium: range check might fail
+deceleration_curve.adb:96:36: info: overflow check proved
+deceleration_curve.adb:96:36: info: range check proved
 deceleration_curve.adb:106:09: medium: precondition might fail
 deceleration_curve.adb:107:10: warning: assuming "Put" has no effect on global items
 deceleration_curve.adb:107:10: warning: no Global contract available for "Put"
@@ -72,14 +72,14 @@ sec_3_13_6_deceleration.adb:26:37: medium: precondition might fail
 sec_3_13_6_deceleration.adb:26:37: medium: range check might fail
 sec_3_13_6_deceleration.adb:27:71: medium: range check might fail
 sec_3_13_6_deceleration.ads:34:43: warning: unused variable "D"
-sec_3_13_6_deceleration.ads:39:06: medium: postcondition might fail, requires A_brake_emergency'Result = (Step_Function.get_value (A_brake_emergency_model, V))
+sec_3_13_6_deceleration.ads:39:06: info: postcondition proved
 sec_3_13_6_deceleration.ads:40:37: info: range check proved
 sec_3_13_6_deceleration.ads:40:37: medium: precondition might fail
 sec_3_13_6_deceleration.ads:41:71: info: range check proved
 sec_3_13_6_deceleration.ads:45:23: medium: precondition might fail
 sec_3_13_6_deceleration.ads:46:23: medium: overflow check might fail
 sec_3_13_6_deceleration.ads:46:26: medium: precondition might fail
-sec_3_13_6_deceleration.ads:46:38: medium: overflow check might fail
+sec_3_13_6_deceleration.ads:46:38: info: overflow check proved
 sec_3_13_6_deceleration.ads:46:50: info: overflow check proved
 sec_3_13_6_deceleration.ads:46:57: medium: overflow check might fail
 sec_3_13_6_deceleration.ads:46:59: medium: precondition might fail
@@ -109,14 +109,14 @@ step_function.adb:45:10: info: loop invariant preservation proved
 step_function.adb:47:34: info: index check proved
 step_function.adb:48:33: info: index check proved
 step_function.adb:49:10: info: loop invariant initialization proved
-step_function.adb:49:10: medium: loop invariant might fail after first iteration
+step_function.adb:49:10: info: loop invariant preservation proved
 step_function.adb:51:31: info: index check proved
 step_function.adb:53:34: info: index check proved
 step_function.adb:78:17: info: range check proved
 step_function.adb:95:52: info: length check proved
 step_function.adb:96:07: info: assertion proved
 step_function.adb:99:10: info: loop invariant initialization proved
-step_function.adb:99:10: medium: loop invariant might fail after first iteration
+step_function.adb:99:10: info: loop invariant preservation proved
 step_function.adb:100:10: info: loop invariant initialization proved
 step_function.adb:100:10: info: loop invariant preservation proved
 step_function.adb:101:10: info: loop invariant initialization proved
@@ -126,7 +126,7 @@ step_function.adb:102:10: info: loop invariant preservation proved
 step_function.adb:103:10: info: loop invariant initialization proved
 step_function.adb:103:10: info: loop invariant preservation proved
 step_function.adb:104:10: info: loop invariant initialization proved
-step_function.adb:105:12: medium: loop invariant might fail after first iteration, requires I1 = 0 and I2 = 0 and Im = 0) or else (I1 >= 1 and I2 >= 1 and Im >= 1 and Scan_SFun1 and Scan_SFun2 and Im <= I1 + I2 - 1) or else (I2 >= 1 and Im >= 1 and not Scan_SFun1 and Scan_SFun2 and Im <= i1 + I2) or else (I1 >= 1 and Im >= 1 and Scan_SFun1 and not Scan_SFun2 and Im <= i1 + i2
+step_function.adb:104:10: info: loop invariant preservation proved
 step_function.adb:115:10: info: loop invariant initialization proved
 step_function.adb:115:10: info: loop invariant preservation proved
 step_function.adb:118:10: info: loop invariant initialization proved
@@ -162,7 +162,7 @@ step_function.adb:172:19: info: precondition proved
 step_function.adb:173:19: info: precondition proved
 step_function.adb:179:22: info: precondition proved
 step_function.adb:180:22: info: precondition proved
-step_function.adb:186:22: medium: range check might fail
+step_function.adb:186:22: info: range check proved
 step_function.adb:188:30: medium: assertion might fail, requires Merge.Step(I-1).Delimiter < Merge.Step(I).Delimiter
 step_function.adb:188:42: info: index check proved
 step_function.adb:188:69: info: index check proved
@@ -180,16 +180,16 @@ step_function.ads:56:12: medium: postcondition might fail, requires for some i i
 step_function.ads:58:27: info: index check proved
 step_function.ads:59:36: info: index check proved
 step_function.ads:60:50: info: index check proved
-step_function.ads:72:06: medium: postcondition might fail
-step_function.ads:73:28: medium: array index check might fail
+step_function.ads:72:06: info: postcondition proved
+step_function.ads:73:28: info: index check proved
 step_function.ads:74:50: info: index check proved
 step_function.ads:78:26: info: index check proved
 step_function.ads:80:53: info: index check proved
 step_function.ads:86:06: info: postcondition proved
 step_function.ads:101:04: medium: postcondition might fail
-step_function.ads:106:30: medium: array index check might fail
+step_function.ads:106:30: info: index check proved
 step_function.ads:106:56: info: index check proved
-step_function.ads:111:30: medium: array index check might fail
+step_function.ads:111:30: info: index check proved
 step_function.ads:111:56: info: index check proved
 step_function.ads:114:25: info: index check proved
 step_function.ads:114:40: info: precondition proved
@@ -228,7 +228,7 @@ step_function_test.adb:66:19: info: precondition proved
 step_function_test.adb:66:19: medium: assertion might fail, requires Minimum_Until_Point(sfun4, 5) =
 step_function_test.adb:67:19: info: precondition proved
 step_function_test.adb:67:19: medium: assertion might fail, requires Minimum_Until_Point(sfun_merge, 11) =
-units.adb:24:29: medium: overflow check might fail
+units.adb:24:29: info: overflow check proved
 units.adb:24:39: info: division check proved
 units.adb:24:39: info: overflow check proved
 units.adb:29:38: medium: overflow check might fail

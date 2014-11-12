@@ -53,7 +53,7 @@ is
                                          Enum_T'Pred (Enum_T'Last) =>
                (for all J in Enum_T range Enum_T'Succ (I) .. Enum_T'Last =>
                   (A (I) /= A (J)))),
-          Post    => Example_5'Result = (A (V1) = A (V2))  --  @POSTCONDITION:FAIL
+          Post    => Example_5'Result = (A (V1) = A (V2))
    is
    begin
       return V1 = V2;

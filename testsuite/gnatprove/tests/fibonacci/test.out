@@ -1,6 +1,6 @@
 fib.adb:7:11: info: range check proved
 fib.adb:8:10: info: loop invariant initialization proved
-fib.adb:8:10: medium: loop invariant might fail after first iteration
+fib.adb:8:10: info: loop invariant preservation proved
 fib.adb:10:17: medium: overflow check might fail
 fib.adb:20:15: warning: unused assignment
 fib.adb:21:15: warning: unused assignment
@@ -47,27 +47,27 @@ fib.adb:82:18: medium: overflow check might fail
 fib.adb:82:18: medium: range check might fail
 fib.adb:94:10: info: loop invariant initialization proved
 fib.adb:94:33: medium: loop invariant might fail after first iteration, requires a1 ** n1 = p1 * (b1 ** k1
-fib.adb:95:10: medium: loop variant might fail
+fib.adb:95:10: info: loop variant proved
 fib.adb:96:17: info: division check proved
 fib.adb:97:28: medium: assertion might fail, requires p1 * (b1 * b1) ** (k1 / 2) = a1 ** n1
 fib.adb:97:50: info: division check proved
 fib.adb:98:22: info: division check proved
 fib.adb:99:22: medium: overflow check might fail
 fib.adb:101:13: info: assertion proved
-fib.adb:101:51: medium: range check might fail
-fib.adb:102:22: medium: range check might fail
+fib.adb:101:51: info: range check proved
+fib.adb:102:22: info: range check proved
 fib.adb:103:22: medium: overflow check might fail
 fib.adb:110:10: medium: loop invariant might fail after first iteration
 fib.adb:110:10: medium: loop invariant might fail in first iteration
-fib.adb:112:10: medium: loop variant might fail
+fib.adb:112:10: info: loop variant proved
 fib.adb:113:17: info: division check proved
 fib.adb:114:28: medium: assertion might fail, requires p2 * (b2 * b2) ** (k2 / 2) = a2 ** n2
 fib.adb:114:50: info: division check proved
 fib.adb:115:22: info: division check proved
 fib.adb:116:22: medium: overflow check might fail
 fib.adb:118:13: info: assertion proved
-fib.adb:118:51: medium: range check might fail
-fib.adb:120:22: medium: range check might fail
+fib.adb:118:51: info: range check proved
+fib.adb:120:22: info: range check proved
 fib.adb:121:22: medium: overflow check might fail
 fib.adb:130:11: info: range check proved
 fib.adb:131:13: info: index check proved

@@ -1,8 +1,8 @@
-dynamic_float.adb:6:18: medium: range check might fail
+dynamic_float.adb:6:18: info: range check proved
 dynamic_float.adb:6:40: info: range check proved
 dynamic_float.adb:7:19: medium: range check might fail
 dynamic_float.adb:9:25: medium: assertion might fail, requires Integer (S'Last) = I
-dynamic_float.adb:9:35: medium: range check might fail
-dynamic_float.adb:10:25: medium: assertion might fail, requires S'First /= S'last
+dynamic_float.adb:9:35: info: range check proved
+dynamic_float.adb:10:10: info: assertion proved
 zero_and_min.adb:14:10: info: assertion proved, in call inlined at zero_and_min.adb:26
 zero_and_unchecked.adb:14:22: info: division check proved, in call inlined at zero_and_unchecked.adb:27

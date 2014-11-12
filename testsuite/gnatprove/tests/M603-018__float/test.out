@@ -3,7 +3,7 @@ testfloat.adb:7:25: info: division check proved
 testfloat.adb:7:25: info: overflow check proved
 testfloat.adb:11:14: warning: subprogram "Triplet" has no effect
 testfloat.adb:14:23: info: overflow check proved
-testfloat.adb:19:23: medium: overflow check might fail
+testfloat.adb:19:23: info: overflow check proved
 testfloat.adb:19:28: info: division check proved
 testfloat.adb:19:28: info: overflow check proved
 testfloat.adb:21:07: info: assertion proved
@@ -18,12 +18,12 @@ testfloat.adb:31:07: info: assertion proved
 testfloat.adb:32:07: info: assertion proved
 testfloat.adb:36:19: medium: assertion might fail, requires Float'Floor (X) = X
 testfloat.adb:37:04: info: assertion proved
-testfloat.adb:38:19: medium: assertion might fail, requires Float'Floor (Z) = X
-testfloat.adb:39:19: medium: assertion might fail, requires Float'Floor (T) = X
+testfloat.adb:38:04: info: assertion proved
+testfloat.adb:39:04: info: assertion proved
 testfloat.adb:41:04: info: assertion proved
 testfloat.adb:42:04: info: assertion proved
 testfloat.adb:43:04: info: assertion proved
-testfloat.adb:44:19: medium: assertion might fail, requires Float'Ceiling (T) = Y
+testfloat.adb:44:04: info: assertion proved
 testfloat.adb:46:04: info: assertion proved
 testfloat.adb:47:04: info: assertion proved
 testfloat.adb:49:04: info: precondition proved

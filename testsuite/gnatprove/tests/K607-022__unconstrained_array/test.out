@@ -19,7 +19,7 @@ simple_unc_arrays.adb:13:43: info: discriminant check proved
 simple_unc_arrays.adb:13:47: info: index check proved
 simple_unc_arrays.adb:13:53: info: discriminant check proved
 simple_unc_arrays.adb:13:57: info: index check proved
-simple_unc_arrays.adb:13:60: medium: overflow check might fail
+simple_unc_arrays.adb:13:60: info: overflow check proved
 simple_unc_arrays.adb:13:63: info: discriminant check proved
 simple_unc_arrays.adb:13:67: info: index check proved
 simple_unc_arrays.adb:14:14: info: discriminant check proved
@@ -42,8 +42,8 @@ simple_unc_arrays.adb:34:10: medium: precondition might fail
 simple_unc_arrays.adb:34:23: info: discriminant check proved
 simple_unc_arrays.adb:34:23: medium: length check might fail
 simple_unc_arrays.adb:34:32: info: range check proved
-simple_unc_arrays.adb:35:22: medium: overflow check might fail
-simple_unc_arrays.adb:36:23: medium: range check might fail
+simple_unc_arrays.adb:35:22: info: overflow check proved
+simple_unc_arrays.adb:36:23: info: range check proved
 simple_unc_arrays.adb:45:22: info: discriminant check proved
 simple_unc_arrays.adb:45:26: info: index check proved
 simple_unc_arrays.adb:48:10: info: loop invariant initialization proved
@@ -94,16 +94,16 @@ simple_unc_arrays.adb:153:48: medium: array index check might fail
 simple_unc_arrays.adb:154:32: info: overflow check proved
 simple_unc_arrays.adb:157:46: info: discriminant check proved
 simple_unc_arrays.adb:157:50: medium: array index check might fail
-simple_unc_arrays.adb:158:34: medium: range check might fail
+simple_unc_arrays.adb:158:34: info: range check proved
 simple_unc_arrays.adb:163:16: medium: precondition might fail
 simple_unc_arrays.adb:163:29: info: discriminant check proved
 simple_unc_arrays.adb:163:29: medium: length check might fail
 simple_unc_arrays.adb:163:33: medium: range check might fail
-simple_unc_arrays.adb:163:39: medium: range check might fail
-simple_unc_arrays.adb:166:32: medium: overflow check might fail
-simple_unc_arrays.adb:167:34: medium: range check might fail
+simple_unc_arrays.adb:163:39: info: range check proved
+simple_unc_arrays.adb:166:32: info: overflow check proved
+simple_unc_arrays.adb:167:34: info: range check proved
 simple_unc_arrays.adb:172:16: info: precondition proved
-simple_unc_arrays.adb:172:34: medium: range check might fail
+simple_unc_arrays.adb:172:34: info: range check proved
 simple_unc_arrays.adb:176:16: info: precondition proved
 simple_unc_arrays.adb:181:06: warning: "Tmp" is not modified, could be declared constant
 simple_unc_arrays.adb:184:07: info: precondition proved
@@ -114,12 +114,12 @@ simple_unc_arrays.adb:200:10: info: index check proved
 simple_unc_arrays.adb:200:13: warning: useless assignment of object to itself
 simple_unc_arrays.adb:200:19: info: index check proved
 simple_unc_arrays.adb:201:10: info: index check proved
-simple_unc_arrays.ads:20:13: medium: postcondition might fail
+simple_unc_arrays.ads:20:13: info: postcondition proved
 simple_unc_arrays.ads:22:36: info: discriminant check proved
-simple_unc_arrays.ads:22:40: medium: array index check might fail
+simple_unc_arrays.ads:22:40: info: index check proved
 simple_unc_arrays.ads:22:46: info: discriminant check proved
 simple_unc_arrays.ads:22:50: info: index check proved
-simple_unc_arrays.ads:22:53: medium: overflow check might fail
+simple_unc_arrays.ads:22:53: info: overflow check proved
 simple_unc_arrays.ads:22:56: info: discriminant check proved
 simple_unc_arrays.ads:22:60: info: index check proved
 simple_unc_arrays.ads:30:20: medium: postcondition might fail, requires A.V (J) = A.V'Old (A.Last - J + 1)

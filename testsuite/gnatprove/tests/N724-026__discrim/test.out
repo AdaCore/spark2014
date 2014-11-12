@@ -7,6 +7,6 @@ discrimrec.adb:17:14: info: discriminant check proved
 discrimrec.adb:17:40: info: discriminant check proved
 discrimrec.adb:18:14: info: discriminant check proved
 discrimrec.adb:19:17: info: discriminant check proved
-discrimrec.ads:36:16: medium: postcondition might fail, requires RAX.Value_64 = 32
+discrimrec.ads:36:16: info: postcondition proved
 discrimrec.ads:36:20: info: discriminant check proved
 main.adb:3:11: medium: "Rax" might not be initialized after elaboration of main program "Main"

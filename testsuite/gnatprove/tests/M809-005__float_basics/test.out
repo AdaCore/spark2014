@@ -82,14 +82,14 @@ generic_float_tests.adb:131:32: medium: overflow check might fail, in instantiat
 generic_float_tests.adb:131:32: medium: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:134:14: warning: subprogram "Substract_Identity_1" has no effect, in instantiation at foo.ads:14
 generic_float_tests.adb:134:14: warning: subprogram "Substract_Identity_1" has no effect, in instantiation at foo.ads:9
-generic_float_tests.adb:138:25: medium: overflow check might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:138:25: medium: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:138:25: info: overflow check proved, in instantiation at foo.ads:14
+generic_float_tests.adb:138:25: info: overflow check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:138:36: medium: assertion might fail, requires X - Y = 0.0) = (X = Y, in instantiation at foo.ads:14
 generic_float_tests.adb:138:36: medium: assertion might fail, requires X - Y = 0.0) = (X = Y, in instantiation at foo.ads:9
 generic_float_tests.adb:141:14: warning: subprogram "Substract_Identity_2" has no effect, in instantiation at foo.ads:14
 generic_float_tests.adb:141:14: warning: subprogram "Substract_Identity_2" has no effect, in instantiation at foo.ads:9
-generic_float_tests.adb:145:25: medium: overflow check might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:145:25: medium: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:145:25: info: overflow check proved, in instantiation at foo.ads:14
+generic_float_tests.adb:145:25: info: overflow check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:145:30: medium: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:145:30: medium: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:145:34: medium: assertion might fail, requires X - Y) + Y = X, in instantiation at foo.ads:14
@@ -226,10 +226,10 @@ generic_float_tests.adb:293:14: warning: subprogram "Unary_Ops" has no effect, i
 generic_float_tests.adb:293:14: warning: subprogram "Unary_Ops" has no effect, in instantiation at foo.ads:9
 generic_float_tests.adb:296:30: medium: assertion might fail, requires - (- X) = + X, in instantiation at foo.ads:14
 generic_float_tests.adb:296:30: medium: assertion might fail, requires - (- X) = + X, in instantiation at foo.ads:9
-generic_float_tests.adb:301:37: medium: postcondition might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:301:37: medium: postcondition might fail, in instantiation at foo.ads:9
-generic_float_tests.adb:309:37: medium: postcondition might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:309:37: medium: postcondition might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:301:37: info: postcondition proved, in instantiation at foo.ads:14
+generic_float_tests.adb:301:37: info: postcondition proved, in instantiation at foo.ads:9
+generic_float_tests.adb:309:37: info: postcondition proved, in instantiation at foo.ads:14
+generic_float_tests.adb:309:37: info: postcondition proved, in instantiation at foo.ads:9
 generic_float_tests.adb:318:21: info: postcondition proved, in instantiation at foo.ads:14
 generic_float_tests.adb:318:21: info: postcondition proved, in instantiation at foo.ads:9
 generic_float_tests.adb:324:14: warning: subprogram "Test_Floor_2" has no effect, in instantiation at foo.ads:14
@@ -256,54 +256,54 @@ generic_float_tests.adb:348:07: info: assertion proved, in instantiation at foo.
 generic_float_tests.adb:348:07: info: assertion proved, in instantiation at foo.ads:9
 generic_float_tests.adb:351:14: warning: subprogram "Test_Floor_6" has no effect, in instantiation at foo.ads:14
 generic_float_tests.adb:351:14: warning: subprogram "Test_Floor_6" has no effect, in instantiation at foo.ads:9
-generic_float_tests.adb:357:40: medium: assertion might fail, requires FT'Floor (X) = , in instantiation at foo.ads:14
-generic_float_tests.adb:357:40: medium: assertion might fail, requires FT'Floor (X) = , in instantiation at foo.ads:9
-generic_float_tests.adb:358:40: medium: assertion might fail, requires FT'Ceiling (X) = , in instantiation at foo.ads:14
-generic_float_tests.adb:358:40: medium: assertion might fail, requires FT'Ceiling (X) = , in instantiation at foo.ads:9
-generic_float_tests.adb:361:40: medium: assertion might fail, requires FT'Floor (X) = , in instantiation at foo.ads:14
-generic_float_tests.adb:361:40: medium: assertion might fail, requires FT'Floor (X) = , in instantiation at foo.ads:9
-generic_float_tests.adb:362:40: medium: assertion might fail, requires FT'Ceiling (X) = , in instantiation at foo.ads:14
-generic_float_tests.adb:362:40: medium: assertion might fail, requires FT'Ceiling (X) = , in instantiation at foo.ads:9
-generic_float_tests.adb:365:40: medium: assertion might fail, requires FT'Floor (X) = , in instantiation at foo.ads:14
-generic_float_tests.adb:365:40: medium: assertion might fail, requires FT'Floor (X) = , in instantiation at foo.ads:9
-generic_float_tests.adb:366:40: medium: assertion might fail, requires FT'Ceiling (X) = , in instantiation at foo.ads:14
-generic_float_tests.adb:366:40: medium: assertion might fail, requires FT'Ceiling (X) = , in instantiation at foo.ads:9
+generic_float_tests.adb:357:10: info: assertion proved, in instantiation at foo.ads:14
+generic_float_tests.adb:357:10: info: assertion proved, in instantiation at foo.ads:9
+generic_float_tests.adb:358:10: info: assertion proved, in instantiation at foo.ads:14
+generic_float_tests.adb:358:10: info: assertion proved, in instantiation at foo.ads:9
+generic_float_tests.adb:361:10: info: assertion proved, in instantiation at foo.ads:14
+generic_float_tests.adb:361:10: info: assertion proved, in instantiation at foo.ads:9
+generic_float_tests.adb:362:10: info: assertion proved, in instantiation at foo.ads:14
+generic_float_tests.adb:362:10: info: assertion proved, in instantiation at foo.ads:9
+generic_float_tests.adb:365:10: info: assertion proved, in instantiation at foo.ads:14
+generic_float_tests.adb:365:10: info: assertion proved, in instantiation at foo.ads:9
+generic_float_tests.adb:366:10: info: assertion proved, in instantiation at foo.ads:14
+generic_float_tests.adb:366:10: info: assertion proved, in instantiation at foo.ads:9
 generic_float_tests.adb:369:10: info: assertion proved, in instantiation at foo.ads:14
 generic_float_tests.adb:369:10: info: assertion proved, in instantiation at foo.ads:9
 generic_float_tests.adb:370:10: info: assertion proved, in instantiation at foo.ads:14
 generic_float_tests.adb:370:10: info: assertion proved, in instantiation at foo.ads:9
-generic_float_tests.adb:373:40: medium: assertion might fail, requires FT'Floor (X) = -, in instantiation at foo.ads:14
-generic_float_tests.adb:373:40: medium: assertion might fail, requires FT'Floor (X) = -, in instantiation at foo.ads:9
-generic_float_tests.adb:374:40: medium: assertion might fail, requires FT'Ceiling (X) = , in instantiation at foo.ads:14
-generic_float_tests.adb:374:40: medium: assertion might fail, requires FT'Ceiling (X) = , in instantiation at foo.ads:9
+generic_float_tests.adb:373:10: info: assertion proved, in instantiation at foo.ads:14
+generic_float_tests.adb:373:10: info: assertion proved, in instantiation at foo.ads:9
+generic_float_tests.adb:374:10: info: assertion proved, in instantiation at foo.ads:14
+generic_float_tests.adb:374:10: info: assertion proved, in instantiation at foo.ads:9
+generic_float_tests.adb:381:06: info: disjoint contract cases proved, in instantiation at foo.ads:14
+generic_float_tests.adb:381:06: info: disjoint contract cases proved, in instantiation at foo.ads:9
 generic_float_tests.adb:381:06: medium: contract cases might not be complete, in instantiation at foo.ads:14
 generic_float_tests.adb:381:06: medium: contract cases might not be complete, in instantiation at foo.ads:9
-generic_float_tests.adb:381:06: medium: contract cases might not be disjoint, in instantiation at foo.ads:14
-generic_float_tests.adb:381:06: medium: contract cases might not be disjoint, in instantiation at foo.ads:9
-generic_float_tests.adb:381:34: medium: contract case might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:381:34: medium: contract case might fail, in instantiation at foo.ads:9
-generic_float_tests.adb:382:34: medium: contract case might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:382:34: medium: contract case might fail, in instantiation at foo.ads:9
-generic_float_tests.adb:383:34: medium: contract case might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:383:34: medium: contract case might fail, in instantiation at foo.ads:9
-generic_float_tests.adb:384:34: medium: contract case might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:384:34: medium: contract case might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:381:34: info: contract case proved, in instantiation at foo.ads:14
+generic_float_tests.adb:381:34: info: contract case proved, in instantiation at foo.ads:9
+generic_float_tests.adb:382:34: info: contract case proved, in instantiation at foo.ads:14
+generic_float_tests.adb:382:34: info: contract case proved, in instantiation at foo.ads:9
+generic_float_tests.adb:383:34: info: contract case proved, in instantiation at foo.ads:14
+generic_float_tests.adb:383:34: info: contract case proved, in instantiation at foo.ads:9
+generic_float_tests.adb:384:34: info: contract case proved, in instantiation at foo.ads:14
+generic_float_tests.adb:384:34: info: contract case proved, in instantiation at foo.ads:9
 generic_float_tests.adb:385:34: info: contract case proved, in instantiation at foo.ads:14
 generic_float_tests.adb:385:34: info: contract case proved, in instantiation at foo.ads:9
 generic_float_tests.adb:386:34: info: contract case proved, in instantiation at foo.ads:14
 generic_float_tests.adb:386:34: info: contract case proved, in instantiation at foo.ads:9
-generic_float_tests.adb:387:34: medium: contract case might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:387:34: medium: contract case might fail, in instantiation at foo.ads:9
-generic_float_tests.adb:388:34: medium: contract case might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:388:34: medium: contract case might fail, in instantiation at foo.ads:9
-generic_float_tests.adb:389:34: medium: contract case might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:389:34: medium: contract case might fail, in instantiation at foo.ads:9
-generic_float_tests.adb:392:21: medium: range check might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:392:21: medium: range check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:387:34: info: contract case proved, in instantiation at foo.ads:14
+generic_float_tests.adb:387:34: info: contract case proved, in instantiation at foo.ads:9
+generic_float_tests.adb:388:34: info: contract case proved, in instantiation at foo.ads:14
+generic_float_tests.adb:388:34: info: contract case proved, in instantiation at foo.ads:9
+generic_float_tests.adb:389:34: info: contract case proved, in instantiation at foo.ads:14
+generic_float_tests.adb:389:34: info: contract case proved, in instantiation at foo.ads:9
+generic_float_tests.adb:392:21: info: range check proved, in instantiation at foo.ads:14
+generic_float_tests.adb:392:21: info: range check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:398:21: medium: postcondition might fail, requires Y in X - 0.5 .. X + , in instantiation at foo.ads:14
 generic_float_tests.adb:398:21: medium: postcondition might fail, requires Y in X - 0.5 .. X + , in instantiation at foo.ads:9
-generic_float_tests.adb:398:26: medium: overflow check might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:398:26: medium: overflow check might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:398:26: info: overflow check proved, in instantiation at foo.ads:14
+generic_float_tests.adb:398:26: info: overflow check proved, in instantiation at foo.ads:9
 generic_float_tests.adb:398:37: medium: overflow check might fail, in instantiation at foo.ads:14
 generic_float_tests.adb:398:37: medium: overflow check might fail, in instantiation at foo.ads:9
 generic_float_tests.adb:406:21: info: postcondition proved, in instantiation at foo.ads:14
@@ -312,28 +312,28 @@ generic_float_tests.adb:421:21: info: postcondition proved, in instantiation at 
 generic_float_tests.adb:421:21: info: postcondition proved, in instantiation at foo.ads:9
 generic_float_tests.adb:426:18: info: length check proved, in instantiation at foo.ads:14
 generic_float_tests.adb:426:18: info: length check proved, in instantiation at foo.ads:9
+generic_float_tests.adb:436:06: info: disjoint contract cases proved, in instantiation at foo.ads:14
+generic_float_tests.adb:436:06: info: disjoint contract cases proved, in instantiation at foo.ads:9
 generic_float_tests.adb:436:06: medium: contract cases might not be complete, in instantiation at foo.ads:14
 generic_float_tests.adb:436:06: medium: contract cases might not be complete, in instantiation at foo.ads:9
-generic_float_tests.adb:436:06: medium: contract cases might not be disjoint, in instantiation at foo.ads:14
-generic_float_tests.adb:436:06: medium: contract cases might not be disjoint, in instantiation at foo.ads:9
-generic_float_tests.adb:436:34: medium: contract case might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:436:34: medium: contract case might fail, in instantiation at foo.ads:9
-generic_float_tests.adb:437:34: medium: contract case might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:437:34: medium: contract case might fail, in instantiation at foo.ads:9
-generic_float_tests.adb:438:34: medium: contract case might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:438:34: medium: contract case might fail, in instantiation at foo.ads:9
-generic_float_tests.adb:439:34: medium: contract case might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:439:34: medium: contract case might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:436:34: info: contract case proved, in instantiation at foo.ads:14
+generic_float_tests.adb:436:34: info: contract case proved, in instantiation at foo.ads:9
+generic_float_tests.adb:437:34: info: contract case proved, in instantiation at foo.ads:14
+generic_float_tests.adb:437:34: info: contract case proved, in instantiation at foo.ads:9
+generic_float_tests.adb:438:34: info: contract case proved, in instantiation at foo.ads:14
+generic_float_tests.adb:438:34: info: contract case proved, in instantiation at foo.ads:9
+generic_float_tests.adb:439:34: info: contract case proved, in instantiation at foo.ads:14
+generic_float_tests.adb:439:34: info: contract case proved, in instantiation at foo.ads:9
 generic_float_tests.adb:440:34: info: contract case proved, in instantiation at foo.ads:14
 generic_float_tests.adb:440:34: info: contract case proved, in instantiation at foo.ads:9
 generic_float_tests.adb:441:34: info: contract case proved, in instantiation at foo.ads:14
 generic_float_tests.adb:441:34: info: contract case proved, in instantiation at foo.ads:9
-generic_float_tests.adb:442:34: medium: contract case might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:442:34: medium: contract case might fail, in instantiation at foo.ads:9
-generic_float_tests.adb:443:34: medium: contract case might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:443:34: medium: contract case might fail, in instantiation at foo.ads:9
-generic_float_tests.adb:444:34: medium: contract case might fail, in instantiation at foo.ads:14
-generic_float_tests.adb:444:34: medium: contract case might fail, in instantiation at foo.ads:9
+generic_float_tests.adb:442:34: info: contract case proved, in instantiation at foo.ads:14
+generic_float_tests.adb:442:34: info: contract case proved, in instantiation at foo.ads:9
+generic_float_tests.adb:443:34: info: contract case proved, in instantiation at foo.ads:14
+generic_float_tests.adb:443:34: info: contract case proved, in instantiation at foo.ads:9
+generic_float_tests.adb:444:34: info: contract case proved, in instantiation at foo.ads:14
+generic_float_tests.adb:444:34: info: contract case proved, in instantiation at foo.ads:9
 generic_interval_tests.adb:8:21: medium: postcondition might fail, requires Z in 5.0 .. , in instantiation at bar.ads:11
 generic_interval_tests.adb:8:21: medium: postcondition might fail, requires Z in 5.0 .. , in instantiation at bar.ads:7
 generic_interval_tests.adb:11:14: info: overflow check proved, in instantiation at bar.ads:11
@@ -406,22 +406,22 @@ generic_interval_tests.adb:138:21: medium: postcondition might fail, requires Z 
 generic_interval_tests.adb:138:21: medium: postcondition might fail, requires Z in 10.0 .. , in instantiation at bar.ads:7
 generic_interval_tests.adb:141:14: info: overflow check proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:141:14: info: overflow check proved, in instantiation at bar.ads:7
+generic_interval_tests.adb:147:21: info: postcondition proved, in instantiation at bar.ads:7
 generic_interval_tests.adb:147:21: medium: postcondition might fail, requires Z > X, in instantiation at bar.ads:11
-generic_interval_tests.adb:147:21: medium: postcondition might fail, requires Z > X, in instantiation at bar.ads:7
 generic_interval_tests.adb:150:14: info: overflow check proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:150:14: info: overflow check proved, in instantiation at bar.ads:7
 generic_interval_tests.adb:156:21: medium: postcondition might fail, requires Z > X, in instantiation at bar.ads:11
 generic_interval_tests.adb:156:21: medium: postcondition might fail, requires Z > X, in instantiation at bar.ads:7
 generic_interval_tests.adb:159:15: info: overflow check proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:159:15: info: overflow check proved, in instantiation at bar.ads:7
+generic_interval_tests.adb:159:22: info: overflow check proved, in instantiation at bar.ads:7
 generic_interval_tests.adb:159:22: medium: overflow check might fail, in instantiation at bar.ads:11
-generic_interval_tests.adb:159:22: medium: overflow check might fail, in instantiation at bar.ads:7
 generic_interval_tests.adb:165:21: medium: postcondition might fail, requires Z >= X, in instantiation at bar.ads:11
 generic_interval_tests.adb:165:21: medium: postcondition might fail, requires Z >= X, in instantiation at bar.ads:7
 generic_interval_tests.adb:168:15: info: overflow check proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:168:15: info: overflow check proved, in instantiation at bar.ads:7
+generic_interval_tests.adb:168:22: info: overflow check proved, in instantiation at bar.ads:7
 generic_interval_tests.adb:168:22: medium: overflow check might fail, in instantiation at bar.ads:11
-generic_interval_tests.adb:168:22: medium: overflow check might fail, in instantiation at bar.ads:7
 generic_interval_tests.adb:178:21: info: postcondition proved, in instantiation at bar.ads:11
 generic_interval_tests.adb:178:21: info: postcondition proved, in instantiation at bar.ads:7
 generic_interval_tests.adb:181:07: info: assertion proved, in instantiation at bar.ads:11
@@ -452,7 +452,7 @@ homothetical.adb:47:13: warning: unused assignment
 homothetical.adb:47:16: info: length check proved
 homothetical.adb:48:13: warning: unused assignment
 homothetical.adb:48:16: info: length check proved
-homothetical.adb:50:07: medium: assertion might fail
+homothetical.adb:50:07: info: assertion proved
 homothetical.adb:59:58: medium: overflow check might fail
 homothetical.adb:59:69: medium: divide by zero might fail
 homothetical.adb:59:69: medium: overflow check might fail

@@ -19,8 +19,8 @@ p.ads:18:14: info: precondition proved
 p.ads:18:26: info: precondition proved
 p.ads:21:13: info: precondition proved
 p.ads:21:45: info: precondition proved
+p.ads:22:14: info: postcondition proved
 p.ads:22:14: info: precondition proved
-p.ads:22:14: medium: postcondition might fail, requires Strict_Equal (L, L'old)
 p.ads:25:13: info: precondition proved
 p.ads:26:14: medium: postcondition might fail
 p.ads:26:16: info: precondition proved

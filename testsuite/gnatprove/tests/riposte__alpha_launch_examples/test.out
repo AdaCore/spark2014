@@ -5,7 +5,7 @@ alpha_launch_examples.adb:25:22: medium: postcondition might fail
 alpha_launch_examples.adb:40:19: medium: postcondition might fail, requires Example_3'Result > 0
 alpha_launch_examples.adb:54:25: info: range check proved
 alpha_launch_examples.adb:54:56: info: range check proved
-alpha_launch_examples.adb:56:22: medium: postcondition might fail, requires Example_5'Result = (A (V1) = A (V2)
+alpha_launch_examples.adb:56:22: info: postcondition proved
 alpha_launch_examples.adb:65:22: medium: postcondition might fail
 alpha_launch_examples.adb:76:30: medium: divide by zero might fail
 alpha_launch_examples.adb:80:36: medium: divide by zero might fail

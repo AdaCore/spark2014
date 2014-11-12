@@ -1,4 +1,4 @@
-p1.adb:5:14: medium: postcondition might fail
+p1.adb:5:14: info: postcondition proved
 p1.adb:5:16: info: index check proved
 p1.adb:5:23: info: index check proved
 p1.adb:6:16: info: index check proved

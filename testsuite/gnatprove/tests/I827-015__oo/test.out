@@ -32,7 +32,7 @@ instr.adb:40:07: warning: assuming "Put" has no effect on global items
 instr.adb:40:07: warning: no Global contract available for "Put"
 instr.adb:54:39: medium: overflow check might fail
 instr.adb:54:49: info: division check proved
-instr.adb:55:07: medium: range check might fail
+instr.adb:55:07: info: range check proved
 instr.adb:55:41: info: length check proved
 instr.adb:56:07: medium: range check might fail
 instr.adb:56:50: info: length check proved
@@ -74,7 +74,7 @@ instr.adb:84:31: info: overflow check proved
 instr.adb:84:39: info: division check proved
 instr.adb:85:26: info: overflow check proved
 instr.adb:85:34: info: division check proved
-instr.adb:86:27: medium: overflow check might fail
+instr.adb:86:27: info: overflow check proved
 instr.adb:86:35: info: division check proved
 instr.adb:108:23: info: overflow check proved
 instr.adb:108:35: info: overflow check proved

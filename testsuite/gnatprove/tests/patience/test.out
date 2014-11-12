@@ -34,8 +34,8 @@ patience.adb:47:24: info: overflow check proved
 patience.adb:47:24: info: range check proved
 patience.adb:48:15: info: index check proved
 patience.adb:48:23: medium: range check might fail
-patience.adb:53:40: medium: range check might fail
-patience.adb:54:26: medium: array index check might fail
+patience.adb:53:40: info: range check proved
+patience.adb:54:26: info: index check proved
 patience.adb:55:22: info: index check proved
 patience.adb:55:31: info: range check proved
 patience.adb:56:24: info: index check proved
@@ -50,7 +50,7 @@ patience.adb:64:40: info: range check proved
 patience.adb:65:24: info: index check proved
 patience.adb:65:32: info: range check proved
 patience.adb:66:25: info: index check proved
-patience.adb:70:07: medium: assertion might fail
+patience.adb:70:07: info: assertion proved
 patience.adb:80:13: medium: assertion might fail, requires S.StackSizes(I) >= 1
 patience.adb:80:26: info: index check proved
 patience.adb:82:07: medium: assertion might fail
@@ -59,44 +59,44 @@ patience.adb:86:45: info: index check proved
 patience.adb:87:30: info: index check proved
 patience.adb:87:33: info: index check proved
 patience.adb:87:49: info: index check proved
-patience.adb:87:52: medium: array index check might fail
+patience.adb:87:52: info: index check proved
 patience.adb:90:07: medium: assertion might fail
 patience.adb:92:24: info: index check proved
 patience.adb:94:25: info: index check proved
-patience.adb:94:50: medium: array index check might fail
+patience.adb:94:50: info: index check proved
 patience.adb:94:60: info: index check proved
 patience.adb:95:32: info: index check proved
 patience.adb:95:42: info: index check proved
-patience.adb:95:47: medium: array index check might fail
+patience.adb:95:47: info: index check proved
 patience.adb:95:58: info: index check proved
 patience.adb:100:44: info: index check proved
 patience.adb:101:32: info: index check proved
 patience.adb:101:40: info: index check proved
 patience.adb:101:45: info: index check proved
-patience.adb:103:32: medium: array index check might fail
+patience.adb:103:32: info: index check proved
 patience.adb:103:40: info: index check proved
-patience.adb:103:45: medium: array index check might fail
+patience.adb:103:45: info: index check proved
 patience.adb:107:45: info: index check proved
-patience.adb:108:31: medium: overflow check might fail
+patience.adb:108:31: info: overflow check proved
 patience.adb:108:50: info: index check proved
 patience.adb:109:28: info: index check proved
 patience.adb:109:31: info: index check proved
 patience.adb:109:45: info: index check proved
-patience.adb:109:48: medium: array index check might fail
+patience.adb:109:48: info: index check proved
 patience.adb:113:45: info: index check proved
-patience.adb:114:31: medium: overflow check might fail
+patience.adb:114:31: info: overflow check proved
 patience.adb:114:50: info: index check proved
-patience.adb:115:29: medium: array index check might fail
+patience.adb:115:29: info: index check proved
 patience.adb:115:37: info: index check proved
 patience.adb:115:40: info: index check proved
-patience.adb:115:57: medium: array index check might fail
+patience.adb:115:57: info: index check proved
 patience.adb:115:65: info: index check proved
-patience.adb:115:68: medium: array index check might fail
+patience.adb:115:68: info: index check proved
 patience.adb:119:21: info: index check proved
 patience.adb:122:21: info: index check proved
 patience.adb:125:25: info: index check proved
 patience.adb:125:48: info: index check proved
-patience.adb:128:24: medium: array index check might fail
+patience.adb:128:24: info: index check proved
 patience.adb:128:31: info: index check proved
 patience.adb:128:46: info: index check proved
 patience.adb:130:31: info: index check proved
@@ -106,8 +106,8 @@ patience.adb:132:56: info: index check proved
 patience.adb:146:10: info: loop invariant initialization proved
 patience.adb:146:10: info: loop invariant preservation proved
 patience.adb:146:47: info: overflow check proved
+patience.adb:147:10: info: loop invariant initialization proved
 patience.adb:147:10: info: loop invariant preservation proved
-patience.adb:147:33: medium: loop invariant might fail in first iteration, requires Inv(S)
 patience.adb:148:10: info: precondition proved
 patience.ads:33:37: info: length check proved
 patience.ads:35:38: info: length check proved
@@ -129,7 +129,7 @@ patience.ads:65:50: info: index check proved
 patience.ads:65:60: info: index check proved
 patience.ads:66:32: info: index check proved
 patience.ads:66:42: info: index check proved
-patience.ads:66:47: medium: array index check might fail
+patience.ads:66:47: info: index check proved
 patience.ads:66:58: info: index check proved
 patience.ads:71:44: info: index check proved
 patience.ads:72:32: info: index check proved
@@ -148,10 +148,10 @@ patience.ads:80:48: info: index check proved
 patience.ads:84:45: info: index check proved
 patience.ads:85:31: info: overflow check proved
 patience.ads:85:50: info: index check proved
-patience.ads:86:29: medium: array index check might fail
+patience.ads:86:29: info: index check proved
 patience.ads:86:37: info: index check proved
 patience.ads:86:40: info: index check proved
-patience.ads:86:57: medium: array index check might fail
+patience.ads:86:57: info: index check proved
 patience.ads:86:65: info: index check proved
 patience.ads:86:68: info: index check proved
 patience.ads:90:21: info: index check proved
@@ -215,4 +215,4 @@ test_patience.adb:41:07: warning: assuming "Put_Line" has no effect on global it
 test_patience.adb:41:07: warning: no Global contract available for "Put_Line"
 test_patience.adb:50:04: warning: assuming "Put_Line" has no effect on global items
 test_patience.adb:50:04: warning: no Global contract available for "Put_Line"
-test_patience.adb:52:09: medium: precondition might fail
+test_patience.adb:52:09: info: precondition proved

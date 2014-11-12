@@ -1,5 +1,5 @@
 a.adb:9:10: info: loop invariant initialization proved
-a.adb:9:10: medium: loop invariant might fail after first iteration
+a.adb:9:10: info: loop invariant preservation proved
 a.adb:12:25: info: overflow check proved
 a.adb:12:35: info: overflow check proved
 a.adb:12:49: info: overflow check proved
@@ -16,15 +16,15 @@ a.adb:29:18: info: overflow check proved
 a.adb:29:23: info: division check proved
 a.adb:29:23: info: overflow check proved
 a.adb:32:14: medium: overflow check might fail
-a.ads:7:07: medium: postcondition might fail, requires Pgcd'Result = 0 or else Pgcd'Result in 1 .. abs A or else Pgcd'Result in 1 .. abs B
-a.ads:8:34: medium: overflow check might fail
-a.ads:9:34: medium: overflow check might fail
+a.ads:7:07: info: postcondition proved
+a.ads:8:34: info: overflow check proved
+a.ads:9:34: info: overflow check proved
 a.ads:14:25: info: overflow check proved
 a.ads:14:47: info: overflow check proved
 a.ads:17:07: medium: postcondition might fail, requires Ppcm'Result = 0 or else Ppcm'Result in abs A .. abs (A * B) or else Ppcm'Result in abs B .. abs (A * B
-a.ads:18:29: medium: overflow check might fail
+a.ads:18:29: info: overflow check proved
 a.ads:18:38: info: overflow check proved
 a.ads:18:45: info: overflow check proved
-a.ads:19:29: medium: overflow check might fail
+a.ads:19:29: info: overflow check proved
 a.ads:19:38: info: overflow check proved
 a.ads:19:45: info: overflow check proved

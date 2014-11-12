@@ -3,9 +3,9 @@ skein.adb:218:04: info: no contextual analysis of "To_LittleEndian" (multiple re
 skein.adb:238:14: info: range check proved
 skein.adb:239:29: medium: array index check might fail
 skein.adb:241:44: info: division check proved
-skein.adb:241:44: medium: array index check might fail
+skein.adb:241:44: info: index check proved
 skein.adb:242:35: info: range check proved
-skein.adb:242:49: medium: range check might fail
+skein.adb:242:49: info: range check proved
 skein.adb:262:15: medium: array index check might fail
 skein.adb:262:26: medium: "Dst" might not be initialized
 skein.adb:263:22: medium: array index check might fail
@@ -16,7 +16,7 @@ skein.adb:267:44: medium: array index check might fail
 skein.adb:268:44: medium: array index check might fail
 skein.adb:269:44: medium: array index check might fail
 skein.adb:270:44: medium: array index check might fail
-skein.adb:274:33: medium: range check might fail
+skein.adb:274:33: info: range check proved
 skein.adb:339:24: medium: "Ks" might not be initialized, in call inlined at skein.adb:619
 skein.adb:358:26: info: length check proved, in call inlined at skein.adb:621
 skein.adb:367:25: info: length check proved, in call inlined at skein.adb:637
@@ -28,34 +28,34 @@ skein.adb:404:64: info: division check proved, in call inlined at skein.adb:583
 skein.adb:404:64: info: division check proved, in call inlined at skein.adb:592
 skein.adb:599:41: info: length check proved, in call inlined at skein.adb:647
 skein.adb:623:10: medium: precondition might fail
-skein.adb:656:17: medium: range check might fail
+skein.adb:656:17: info: range check proved
 skein.adb:695:09: info: length check proved
 skein.adb:703:38: info: length check proved
-skein.adb:706:07: medium: precondition might fail
+skein.adb:706:07: info: precondition proved
 skein.adb:708:61: info: length check proved
 skein.adb:752:25: medium: range check might fail
-skein.adb:754:30: medium: range check might fail
+skein.adb:754:30: info: range check proved
 skein.adb:759:36: medium: array index check might fail
-skein.adb:763:27: medium: range check might fail
+skein.adb:763:27: info: range check proved
 skein.adb:782:42: medium: range check might fail
 skein.adb:784:13: medium: precondition might fail
 skein.adb:789:13: medium: precondition might fail
 skein.adb:803:49: info: division check proved
-skein.adb:803:49: medium: range check might fail
+skein.adb:803:49: info: range check proved
 skein.adb:805:13: medium: precondition might fail
 skein.adb:824:07: medium: precondition might fail
-skein.adb:865:14: medium: range check might fail, in call inlined at skein.adb:900
-skein.adb:869:13: medium: loop invariant might fail after first iteration, in call inlined at skein.adb:900
+skein.adb:865:14: info: range check proved, in call inlined at skein.adb:900
+skein.adb:869:13: info: loop invariant preservation proved, in call inlined at skein.adb:900
 skein.adb:869:13: medium: loop invariant might fail in first iteration, in call inlined at skein.adb:900
-skein.adb:883:43: medium: range check might fail, in call inlined at skein.adb:926
-skein.adb:884:61: medium: range check might fail, in call inlined at skein.adb:926
-skein.adb:885:61: medium: range check might fail, in call inlined at skein.adb:926
-skein.adb:886:61: medium: range check might fail, in call inlined at skein.adb:926
-skein.adb:887:61: medium: range check might fail, in call inlined at skein.adb:926
-skein.adb:888:61: medium: range check might fail, in call inlined at skein.adb:926
-skein.adb:889:61: medium: range check might fail, in call inlined at skein.adb:926
-skein.adb:890:61: medium: range check might fail, in call inlined at skein.adb:926
-skein.adb:896:12: medium: length check might fail
+skein.adb:883:43: info: range check proved, in call inlined at skein.adb:926
+skein.adb:884:61: info: range check proved, in call inlined at skein.adb:926
+skein.adb:885:61: info: range check proved, in call inlined at skein.adb:926
+skein.adb:886:61: info: range check proved, in call inlined at skein.adb:926
+skein.adb:887:61: info: range check proved, in call inlined at skein.adb:926
+skein.adb:888:61: info: range check proved, in call inlined at skein.adb:926
+skein.adb:889:61: info: range check proved, in call inlined at skein.adb:926
+skein.adb:890:61: info: range check proved, in call inlined at skein.adb:926
+skein.adb:896:12: info: length check proved
 skein.adb:906:07: medium: precondition might fail
 skein.adb:914:52: info: division check proved
 skein.adb:914:52: info: range check proved

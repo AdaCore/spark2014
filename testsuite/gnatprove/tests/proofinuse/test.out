@@ -3,12 +3,12 @@ bitwise.adb:7:22: medium: assertion might fail, requires Res = 1
 bitwise.adb:14:22: medium: assertion might fail, requires X and Res) = (X and LMask_8
 bitwise.adb:20:07: info: assertion proved
 bitwise.adb:20:30: info: division check proved
-bitwise.adb:22:22: medium: assertion might fail, requires Res = X / 8
+bitwise.adb:22:07: info: assertion proved
 bitwise.adb:22:30: info: division check proved
 floating_point.adb:7:16: info: overflow check proved
 floating_point.adb:8:22: medium: assertion might fail, requires Res >=
 floating_point.adb:14:16: info: overflow check proved
-floating_point.adb:14:22: medium: overflow check might fail
+floating_point.adb:14:22: info: overflow check proved
 floating_point.adb:15:22: medium: assertion might fail, requires Res >= X
 floating_point.adb:23:24: info: overflow check proved
 floating_point.adb:24:16: medium: overflow check might fail
