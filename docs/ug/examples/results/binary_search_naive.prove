@@ -1,1 +1,0 @@
-binary_search.adb:38:50: medium: assertion might fail, requires A (Index) /= I

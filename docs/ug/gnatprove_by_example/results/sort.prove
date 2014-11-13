@@ -47,25 +47,25 @@ sort.adb:77:27: info: precondition proved
 sort.adb:77:32: info: precondition proved
 sort.adb:77:56: info: index check proved
 sort.adb:77:72: info: index check proved
-sort.adb:80:18: medium: loop invariant might fail after first iteration, requires Occ (Values, F) = Occ (Next, F)
-sort.adb:80:18: medium: loop invariant might fail in first iteration, requires Occ (Values, F) = Occ (Next, F)
+sort.adb:78:13: info: loop invariant initialization proved
+sort.adb:78:13: info: loop invariant preservation proved
 sort.adb:88:50: info: overflow check proved
 sort.adb:89:22: info: precondition proved
 sort.adb:89:40: info: range check proved
 sort.adb:94:22: info: length check proved
 sort.adb:94:25: info: length check proved
-sort.adb:96:13: medium: precondition might fail
+sort.adb:96:13: info: precondition proved
 sort.adb:97:29: info: range check proved
 sort.adb:101:13: medium: precondition might fail
 sort.adb:101:48: info: range check proved
-sort.adb:101:57: medium: range check might fail
+sort.adb:101:57: info: range check proved
 sort.adb:106:31: info: overflow check proved
 sort.adb:107:20: medium: loop invariant might fail after first iteration, requires Values (I) <= Values (J)
 sort.adb:107:20: medium: loop invariant might fail in first iteration, requires Values (I) <= Values (J)
 sort.adb:107:28: info: index check proved
 sort.adb:107:42: info: index check proved
 sort.adb:108:10: info: loop invariant initialization proved
-sort.adb:108:33: medium: loop invariant might fail after first iteration, requires Is_Perm (Values'Loop_Entry, Values)
+sort.adb:108:10: info: loop invariant preservation proved
 sort.ads:8:16: medium: postcondition might fail
 sort.ads:10:51: info: overflow check proved
 sort.ads:11:22: info: index check proved
