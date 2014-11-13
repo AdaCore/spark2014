@@ -2475,12 +2475,12 @@ global variables discussed later in this section.
 
 .. _tu-nt-elaboration_issues-07:
 
-   7. In the case of a dispatching call, the subprogram_body mentioned
+7. In the case of a dispatching call, the subprogram_body mentioned
    in the above rules is that (if any) of the statically denoted callee.
 
 .. _tu-nt-elaboration_issues-08:
 
-   8. The first freezing point of a tagged type shall occur within the
+8. The first freezing point of a tagged type shall occur within the
    early call region of each of its overriding primitive operations.
 
    [This rule is needed to prevent a dispatching call before the body
