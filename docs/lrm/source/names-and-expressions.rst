@@ -202,7 +202,7 @@ multidimensional array type ``T``, the attribute
     X'Update ( multidimensional_array_component_association
             {, multidimensional_array_component_association} )
 
-is defined and yields an object of type ``T`` and is a
+is defined and yields a value of type ``T`` and is a
 *multi-dimensional array update*.  Where
 ``multidimensional_array_component_association`` has the following
 syntax:
@@ -310,7 +310,7 @@ required.
      Field_2 => ... ,
      Field_1 => ... ); -- illegal; components not distinct
 
-because  the order of component updates is unspecified.]
+because the order of component updates is unspecified.]
 
 Array Update Expressions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
