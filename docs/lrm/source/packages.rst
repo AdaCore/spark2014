@@ -2627,7 +2627,7 @@ are imposed in |SPARK| which have the following consequences:
    constituents of state abstractions declared in the package) remain
    unchanged. The Initial_Condition aspect is an assertion which is
    checked at the end of the elaboration of a package body (but occurs
-   textually in the package spec see :ref:`initial_condition_aspect`).
+   textually in the package spec; see :ref:`initial_condition_aspect`).
    The initial condition of a library level package will remain true
    from this point until the invocation of the main subprogram
    (because none of the inputs used in computing the condition can
