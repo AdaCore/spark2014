@@ -25,7 +25,7 @@ result:
 	cd prove && \
         cp -rf ../$(EXAMPLE) . && \
         cd $(EXAMPLE) && \
-        gnatprove -f -q -j0 -P search.gpr --warnings=on --timeout=60
+        gnatprove -f -q -j0 -P search.gpr --warnings=on --timeout=60 --prover=altergo
 
 clean:
 	rm -rf prove
