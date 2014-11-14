@@ -990,55 +990,6 @@ package body Why.Gen.Records is
                  New_Record_Aggregate
                    (Associations => From_Root_Aggr)));
 
-         --  Generate axioms that state that converting back and forth is the
-         --  identity in both directions.
-
-         declare
-            Calls    : W_Expr_Id;
-            Equality : W_Pred_Id;
-         begin
-            --  forall a:t [of_base(to_base(a))]. of_base (to_base a) = a
-
-            Calls := New_Call (Domain  => EW_Term,
-                               Name    => To_Ident (WNE_To_Base),
-                               Binders => R_Binder);
-            Calls := New_Call (Domain  => EW_Term,
-                               Name    => From_Ident,
-                               Args    => (1 => Calls));
-            Equality := New_Relation (Op      => EW_Eq,
-                                      Op_Type => EW_Abstract,
-                                      Left    => Calls,
-                                      Right   => +A_Ident);
-            Emit (Theory,
-                  New_Guarded_Axiom
-                    (Name     =>
-                       NID (To_String (WNE_Inversion_Axiom_Prefix) & "__t"),
-                     Binders  => R_Binder,
-                     Triggers => New_Triggers (Triggers =>
-                                 (1 => New_Trigger (Terms => (1 => +Calls)))),
-                     Def      => Equality));
-
-            --  forall r:root [to_base(of_base(r))]. to_base (of_base r) = r
-
-            Calls := New_Call (Domain  => EW_Term,
-                               Name    => From_Ident,
-                               Binders => From_Binder);
-            Calls := New_Call (Domain  => EW_Term,
-                               Name    => To_Ident (WNE_To_Base),
-                               Args    => (1 => Calls));
-            Equality := New_Relation (Op      => EW_Eq,
-                                      Op_Type => EW_Abstract,
-                                      Left    => Calls,
-                                      Right   => +R_Ident);
-            Emit (Theory,
-                  New_Guarded_Axiom
-                    (Name     =>
-                       NID (To_String (WNE_Inversion_Axiom_Prefix) & "__root"),
-                     Binders  => From_Binder,
-                     Triggers => New_Triggers (Triggers =>
-                                 (1 => New_Trigger (Terms => (1 => +Calls)))),
-                     Def      => Equality));
-         end;
       end Declare_Conversion_Functions;
 
       -------------------------------
