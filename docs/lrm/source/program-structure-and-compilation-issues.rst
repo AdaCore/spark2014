@@ -46,8 +46,8 @@ Context Clauses - With Clauses
 
 .. _etu-context_clauses_with_clauses-lr:
 
-Abstact Views
-^^^^^^^^^^^^^
+Abstract Views
+^^^^^^^^^^^^^^
 
 State abstractions are visible in the limited view of packages in |SPARK|. The
 notion of an *abstract view* of an object declaration is also introduced, and
