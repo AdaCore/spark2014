@@ -1,0 +1,2 @@
+initializing_state_abstractions.adb:5:04: high: "A_1" is not initialized in "Initializing_State_Abstractions"
+initializing_state_abstractions.adb:7:04: high: "B_1" is not initialized in "Initializing_State_Abstractions"

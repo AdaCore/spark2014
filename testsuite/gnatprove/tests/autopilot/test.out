@@ -34,14 +34,6 @@ ap-heading-yaw.adb:25:28: info: precondition proved, in call inlined at ap-headi
 ap-heading-yaw.adb:27:53: info: division check proved, in call inlined at ap-heading-yaw.adb:47
 ap-heading.adb:13:50: medium: "Surfaces.Ailerons" might not be written
 ap-heading.adb:14:50: medium: "Surfaces.Rudder" might not be written
-main.adb:4:42: medium: "Instruments.Altitude" might not be initialized after elaboration of main program "Main"
-main.adb:5:42: medium: "Instruments.Bank" might not be initialized after elaboration of main program "Main"
-main.adb:6:42: medium: "Instruments.Heading" might not be initialized after elaboration of main program "Main"
-main.adb:7:42: medium: "Instruments.Heading_Bug" might not be initialized after elaboration of main program "Main"
-main.adb:8:42: medium: "Instruments.Mach" might not be initialized after elaboration of main program "Main"
-main.adb:9:42: medium: "Instruments.Pitch" might not be initialized after elaboration of main program "Main"
-main.adb:10:42: medium: "Instruments.Rate_Of_Climb" might not be initialized after elaboration of main program "Main"
-main.adb:11:42: medium: "Instruments.Slip" might not be initialized after elaboration of main program "Main"
 scale.adb:19:20: info: overflow check proved
 scale.adb:19:32: info: division check proved
 scale.adb:19:32: info: overflow check proved
