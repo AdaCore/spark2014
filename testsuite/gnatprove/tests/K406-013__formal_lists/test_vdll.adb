@@ -93,7 +93,10 @@ begin
       pragma Unreferenced (E);
    begin
       --  Precondition should not be provable
-      E := Find (L3, 3, Next (L1, Next (L3, First (L3))));
+      E := Find (L3, 3,                      -- @PRECONDITION:FAIL
+                 Next (L1,
+                       Next (L3,
+                             First (L3))));
    end;
 
    --   Copy of First_To_Previous : Length
@@ -116,7 +119,9 @@ begin
       pragma Unreferenced (E);
    begin
       --  Precondition should not be provable
-      E := Find (L4, 3, Next (L1, First (L4)));
+      E := Find (L4, 3,               -- @PRECONDITION:FAIL
+                 Next (L1,
+                       First (L4)));
    end;
 
    --  Deleting a cursor after the cut doesn't change First_To_Previous
@@ -150,7 +155,8 @@ begin
       pragma Unreferenced (E);
    begin
       --  Precondition should not be provable
-      E := Find (L3, 3, First (L1));
+      E := Find (L3, 3,         -- @PRECONDITION:FAIL
+                 First (L1));
    end;
 
    --  Copy of Current_To_Last : Length
@@ -173,7 +179,9 @@ begin
       pragma Unreferenced (E);
    begin
       --  Precondition should not be provable
-      E := Find (L4, 3, Previous (L1, First (L4)));
+      E := Find (L4, 3,                    -- @PRECONDITION:FAIL
+                 Previous (L1,
+                           First (L4)));
    end;
 
    --  Deleting a cursor before the cut doesn't change Current_To_Last
@@ -194,14 +202,14 @@ begin
       E : Integer;
    begin
       --  Precondition should not be provable
-      E := First_Element (L1);
+      E := First_Element (L1);   -- @PRECONDITION:FAIL
    end;
 
    declare
       E : Integer;
    begin
       --  Precondition should not be provable
-      E := Last_Element (L1);
+      E := Last_Element (L1);  -- @PRECONDITION:FAIL
    end;
 
 end test_vdll;
