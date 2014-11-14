@@ -127,7 +127,7 @@ static_discr.adb:108:35: info: discriminant check proved
 static_discr.adb:108:43: info: range check proved
 static_discr.adb:114:40: info: discriminant check proved
 static_discr.adb:115:10: info: loop invariant initialization proved
-static_discr.adb:115:10: info: loop invariant preservation proved
+static_discr.adb:115:10: medium: loop invariant might fail after first iteration
 static_discr.adb:116:20: info: discriminant check proved
 static_discr.adb:116:37: info: discriminant check proved
 static_discr.adb:117:23: info: discriminant check proved
