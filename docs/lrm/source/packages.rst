@@ -395,13 +395,17 @@ Async_Writers aspect specification.
 
 .. centered:: **Static Semantics**
 
-These are explained in :ref:`external_state`.
+14. These are explained in :ref:`external_state`.
 
 .. centered:: **Dynamic Semantics**
 
-There are no dynamic semantics associated with these aspects.
+15. There are no dynamic semantics associated with these aspects.
 
 .. centered:: **Verification Rules**
+
+16. An effectively volatile formal parameter of mode **out** shall not be read,
+    even after it has been updated. [This is because the
+    Async_Writers aspect of the parameter is True].
 
 .. _etu-external_state_variables-vr:
 
