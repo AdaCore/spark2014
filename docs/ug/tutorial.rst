@@ -55,8 +55,8 @@ Semantic`` menu, which completes without any errors or warnings:
 
 .. image:: static/search_check_semantic.png
 
-Static Analysis of SPARK Programs
----------------------------------
+Checking SPARK Legality Rules
+-----------------------------
 
 Now, let us run |GNATprove| on this unit, using the :menuselection:`SPARK -->
 Examine File` menu, so that it issues errors on |SPARK| code that violates
@@ -89,14 +89,20 @@ The implementation of ``Search`` is modified to use this type:
    :language: ada
    :linenos:
 
-Re-running |GNATprove| on this unit, using the :menuselection:`SPARK -->
-Examine File` menu, now reports a different kind of error. This time it is
-the static analysis pass of |GNATprove| called *flow analysis* that
-detects a not fully initialized variable: ``Res``.
+.. _Checking SPARK Initialization Policy:
+
+Checking SPARK Initialization Policy
+------------------------------------
+
+Re-running |GNATprove| on this unit, still using the :menuselection:`SPARK -->
+Examine File` menu, now reports a different kind of error. This time it is the
+static analysis pass of |GNATprove| called *flow analysis* that detects an
+attempt of the program to return variable ``Res`` while it is not fully
+initialized, thus violating the initialization policy of |SPARK|:
 
 .. image:: static/search_flow_error.png
 
-Inside the GPS editor, we can click on the path icon, either on the left of the
+Inside the GPS editor, we can click on the icon, either on the left of the
 message, or on line 23 in file ``linear_search.adb``, to show the path on which
 ``Res.At_Index`` is not initialized:
 
@@ -129,8 +135,8 @@ discriminant depending on the success of the search:
 Now re-running |GNATprove| on this unit, using the :menuselection:`SPARK -->
 Examine File` menu, shows that there are no reads of uninitialized data.
 
-Writing Contracts in SPARK
---------------------------
+Writing Functional Contracts
+----------------------------
 
 We now have a valid SPARK program. It is not yet very interesting |SPARK|
 code though, as it does not contain any contracts, which are necessary to
@@ -294,14 +300,14 @@ Proving |SPARK| Programs
 
 Formal verification of |SPARK| programs is a two-step process:
 
-#. the first step checks that flows through the program correctly implement the
+1. the first step checks that flows through the program correctly implement the
    specified flows (if any), and that all values read are initialized.
-#. the second step checks that the program correctly implement its specified
+2. the second step checks that the program correctly implement its specified
    contracts (if any), and that no run-time error can be raised.
 
 Step 1 is implemented as a static analysis pass in the tool |GNATprove|, in
-``flow`` mode. We have seen this flow analysis at work earlier during basic
-static analysis of our running example. Step 2 is implemented as a
+``flow`` mode. We have seen this flow analysis at work earlier (see
+:ref:`Checking SPARK Initialization Policy`). Step 2 is implemented as a
 deductive verification pass in the tool |GNATprove|, in the default ``all``
 mode.
 
@@ -309,11 +315,11 @@ The difference between these two steps should be emphasized. Static analysis in
 step 1 is a terminating algorithm, which typically takes 2 to 10 times as long
 as compilation to complete. Deductive verification in step 2 is based on the
 generation of logical formulas for each check to prove, which are then passed
-on to an automatic prover to decide whether the logical formula holds or
+on to automatic provers to decide whether the logical formula holds or
 not. The generation of logical formulas is a translation phase, which typically
 takes 10 times as long as compilation to complete. The automatic proof of logical
 formulas may take a very long time, or never terminate, hence the use of a timeout
-(default=1s) for each call to the automatic prover. It is this last step which
+(default=1s) for each call to the automatic provers. It is this last step which
 takes the most time when calling |GNATprove| on a program, but it is also a
 step which can be completely parallelized (using switch ``-j`` to specify the
 number of parallel processes): each logical formula can be proved
@@ -322,7 +328,7 @@ independently, so the more cores are available the faster it completes.
 .. note::
 
    The proof results presented in this tutorial may slightly vary from
-   the results you obtain on your machine, as the automatic prover may take
+   the results you obtain on your machine, as automatic provers may take
    more or less time to complete a proof depending on the platform and machine
    used.
 
@@ -426,8 +432,8 @@ Here, testing does not show any problems:
    > OK: Found existing value at first index
    > OK: Did not find non-existing value
 
-The next easy thing to do is to increase the timeout of the automatic
-prover. Its default of 1s is deliberately low, to facilitate interaction with
+The next easy thing to do is to increase the timeout of automatic
+provers. Its default of 1s is deliberately low, to facilitate interaction with
 |GNATprove| during the development of annotations, but it is not sufficient to
 prove the more complex checks. Let's increase it to 10s, and rerun |GNATprove|:
 
