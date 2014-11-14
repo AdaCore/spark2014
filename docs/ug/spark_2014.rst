@@ -299,7 +299,7 @@ calling context. For example:
 
     function Get_Value (A : My_Array; J : Index) return Element with
       Pre  => A(J) /= No_Element,
-      Post => Add'Result = A(J);
+      Post => Get_Value'Result = A(J);
 
 |GNATprove| generates checks to show that ``X + Y`` in the precondition of
 ``Add`` can never overflow, and that ``A(J)`` in the precondition of ``Get_Value``
@@ -319,7 +319,7 @@ formulation that cannot raise a run-time error. For example:
 
     function Get_Value (A : My_Array; J : Index) return Element with
       Pre  => J in A'Range and then A(J) /= No_Element,
-      Post => Add'Result = A(J);
+      Post => Get_Value'Result = A(J);
 
 For overflow checks, an alternate solution exists to avoid them altogether in
 annotations, by using unbounded arithmetic in annotations, see :ref:`Overflow
