@@ -2517,16 +2517,8 @@ package body Flow.Analysis is
          FS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
 
          DM : constant Dependency_Maps.Map :=
-           (if Present (FA.Initializes_N)
-            then Parse_Initializes (FA.Initializes_N)
-            else Dependency_Maps.Empty_Map);
+           Parse_Initializes (FA.Initializes_N, FA.Spec_Node);
       begin
-         --  If there is no Initializes aspect then we return an empty
-         --  set.
-
-         if not Present (FA.Initializes_N) then
-            return FS;
-         end if;
 
          for C in DM.Iterate loop
             declare
@@ -3064,8 +3056,11 @@ package body Flow.Analysis is
             Filename => Tracefile);
       end Write_Tracefile;
 
+      DM : constant Dependency_Maps.Map :=
+        Parse_Initializes (FA.Initializes_N, FA.Spec_Node);
+
    begin  --  Check_Initializes_Contract
-      if not Present (FA.Initializes_N)
+      if DM.Is_Empty
         or else not Is_Library_Level_Entity (FA.Analyzed_Entity)
       then
          --  If there is no Initializes contract or if we are not analyzing
@@ -3074,9 +3069,6 @@ package body Flow.Analysis is
       end if;
 
       declare
-         DM                  : constant Dependency_Maps.Map :=
-           Parse_Initializes (FA.Initializes_N);
-
          The_Out             : Flow_Id;
          The_Ins             : Flow_Id_Sets.Set;
          All_Contract_Outs   : Flow_Id_Sets.Set;
@@ -3093,14 +3085,14 @@ package body Flow.Analysis is
             for G of The_Ins loop
                if not Is_Initialized_At_Elaboration (G, FA.B_Scope) then
                   Error_Msg_Flow
-                    (FA        => FA,
-                     Msg       => "% must be initialized at elaboration",
-                     N         => Find_Entity
+                    (FA   => FA,
+                     Msg  => "% must be initialized at elaboration",
+                     N    => Find_Entity
                        (E    => Get_Direct_Mapping_Id (The_Out),
                         E_In => Get_Direct_Mapping_Id (G)),
-                     F1        => G,
-                     Kind      => High_Check_Kind,
-                     Tag       => "uninitialized");
+                     F1   => G,
+                     Kind => High_Check_Kind,
+                     Tag  => "uninitialized");
                   Found_Uninitialized := True;
                end if;
             end loop;
@@ -3190,15 +3182,14 @@ package body Flow.Analysis is
             for Contract_In of All_Contract_Ins loop
                if not All_Actual_Ins.Contains (Contract_In) then
                   Error_Msg_Flow
-                    (FA        => FA,
-                     Msg       => "initialization of % does not depend on %",
-                     SRM_Ref   => "7.1.5(11)",
-                     N         => Find_Entity
-                       (Get_Direct_Mapping_Id (The_Out)),
-                     F1        => The_Out,
-                     F2        => Contract_In,
-                     Tag       => "initializes_wrong",
-                     Kind      => Medium_Check_Kind);
+                    (FA      => FA,
+                     Msg     => "initialization of % does not depend on %",
+                     SRM_Ref => "7.1.5(11)",
+                     N       => Find_Entity (Get_Direct_Mapping_Id (The_Out)),
+                     F1      => The_Out,
+                     F2      => Contract_In,
+                     Tag     => "initializes_wrong",
+                     Kind    => Medium_Check_Kind);
                end if;
             end loop;
          end loop;

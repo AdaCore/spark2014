@@ -57,11 +57,29 @@ package Flow_Dependency_Maps is
                    Pragma_Depends |
                    Pragma_Refined_Depends;
 
-   function Parse_Initializes (N : Node_Id)
-                               return Dependency_Maps.Map
+   function Parse_Initializes
+     (N : Node_Id;
+      P : Entity_Id := Empty)
+      return Dependency_Maps.Map
+     with Pre => (if Present (N) then
+                    Nkind (N) = N_Pragma and then
+                      Get_Pragma_Id (Chars (Pragma_Identifier (N))) =
+                        Pragma_Initializes);
+   --  Parses the Initializes aspect.
+   --
+   --  When we parse the Initializes aspect we add any external state
+   --  abstractions with the property Async_Writers set to the
+   --  dependency map (even if the user did not manually write them
+   --  there). This is to ensure that constituents that are not
+   --  volatile and have Async_Writers are also initialized. Notice
+   --  that as a result of this, the function may return a Dependency
+   --  map even if there is no Initializes aspect to begin with. P
+   --  represents the enclosing package.
+
+   function Parse_Refined_State (N : Node_Id) return Dependency_Maps.Map
      with Pre => Nkind (N) = N_Pragma and then
-                 Get_Pragma_Id (Chars (Pragma_Identifier (N))) in
-                   Pragma_Initializes |
+                 Get_Pragma_Id (Chars (Pragma_Identifier (N))) =
                    Pragma_Refined_State;
+   --  Parses the Refined_State aspect
 
 end Flow_Dependency_Maps;

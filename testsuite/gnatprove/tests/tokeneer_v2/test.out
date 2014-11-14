@@ -844,13 +844,6 @@ stats.adb:94:47: info: overflow check proved
 tcpip.ads:30:41: info: length check proved
 tcpip.ads:30:41: info: length check proved
 tcpip.ads:30:41: info: length check proved
-tismain.adb:53:41: medium: "Admintoken.Input" might not be initialized after elaboration of main program "Tismain"
-tismain.adb:54:34: medium: "Bio.Input" might not be initialized after elaboration of main program "Tismain"
-tismain.adb:55:36: medium: "Clock.Now" might not be initialized after elaboration of main program "Tismain"
-tismain.adb:56:35: medium: "Door.Input" might not be initialized after elaboration of main program "Tismain"
-tismain.adb:57:37: medium: "Floppy.Input" might not be initialized after elaboration of main program "Tismain"
-tismain.adb:58:39: medium: "Keyboard.Inputs" might not be initialized after elaboration of main program "Tismain"
-tismain.adb:59:40: medium: "Usertoken.Input" might not be initialized after elaboration of main program "Tismain"
 tismain.adb:209:22: medium: postcondition might fail
 tismain.adb:246:18: medium: precondition might fail
 tismain.adb:253:18: medium: precondition might fail

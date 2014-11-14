@@ -3056,6 +3056,7 @@ package body Flow.Control_Flow_Graph is
    is
       function Find_Node (E : Entity_Id) return Node_Id
         with Post => Nkind (Find_Node'Result) in
+                       N_Defining_Identifier  |
                        N_Identifier           |
                        N_Expanded_Name        |
                        N_Component_Association;
@@ -3083,52 +3084,31 @@ package body Flow.Control_Flow_Graph is
       Initializes_Aspect : constant Node_Id := Get_Pragma (Package_Spec,
                                                            Pragma_Initializes);
 
+      DM : constant Dependency_Maps.Map :=
+        Parse_Initializes (Initializes_Aspect, Package_Spec);
+
       ---------------
       -- Find_Node --
       ---------------
 
       function Find_Node (E : Entity_Id) return Node_Id is
-         PAA_Expr : constant Node_Id :=
-           Expression (First
-                         (Pragma_Argument_Associations
-                            (Initializes_Aspect)));
-         Search : Node_Id;
+         F : Flow_Id;
+         N : Node_Id;
       begin
-         if Present (Expressions (PAA_Expr)) then
-            Search := First (Expressions (PAA_Expr));
-            while Present (Search) loop
-               if Entity (Search) = E then
-                  return Search;
-               end if;
+         for Initialized_Var in DM.Iterate loop
+            F := Dependency_Maps.Key (Initialized_Var);
+            N := (if F.Kind in Direct_Mapping | Record_Field
+                  then Get_Direct_Mapping_Id (F)
+                  else Empty);
 
-               Next (Search);
-            end loop;
-         end if;
-
-         if Present (Component_Associations (PAA_Expr)) then
-            declare
-               CA : Node_Id;
-            begin
-               CA := First (Component_Associations (PAA_Expr));
-               while Present (CA) loop
-                  Search := First (Choices (CA));
-                  if Entity (Search) = E then
-                     return CA;
-                  end if;
-
-                  Next (CA);
-               end loop;
-            end;
-         end if;
+            if N = E then
+               return N;
+            end if;
+         end loop;
 
          --  We should never reach here!
          raise Program_Error;
       end Find_Node;
-
-      DM : constant Dependency_Maps.Map :=
-        (if Present (Initializes_Aspect)
-         then Parse_Initializes (Initializes_Aspect)
-         else Dependency_Maps.Empty_Map);
 
       V : Flow_Graphs.Vertex_Id;
 
@@ -3137,13 +3117,13 @@ package body Flow.Control_Flow_Graph is
       --  If we have no initialize aspect, then the package elaboration
       --  will have no observable effect in the enclosing package.
 
-      if No (Initializes_Aspect) then
+      if DM.Is_Empty then
          Add_Vertex (FA, Direct_Mapping_Id (N), Null_Node_Attributes, V);
          CM.Include (Union_Id (N), Trivial_Connection (V));
          return;
       end if;
 
-      pragma Assert_And_Cut (Present (Initializes_Aspect));
+      pragma Assert_And_Cut (not DM.Is_Empty);
 
       --  When we encounter the package body (or its stub), we know that
       --  the package has been elaborated. We need to apply the initializes
@@ -5124,30 +5104,28 @@ package body Flow.Control_Flow_Graph is
 
                The_Out : Flow_Id;
                The_In  : Flow_Id_Sets.Set;
-               DM      : Dependency_Maps.Map;
+               DM      : constant Dependency_Maps.Map :=
+                 Parse_Initializes (FA.Initializes_N, FA.Spec_Node);
             begin
-               if Present (FA.Initializes_N) then
-                  DM := Parse_Initializes (FA.Initializes_N);
-                  for C in DM.Iterate loop
-                     The_Out := Dependency_Maps.Key (C);
-                     The_In  := Dependency_Maps.Element (C);
+               for C in DM.Iterate loop
+                  The_Out := Dependency_Maps.Key (C);
+                  The_In  := Dependency_Maps.Element (C);
 
-                     for G of The_In loop
-                        if not Global_Ins.Contains (G) then
-                           Global_Ins.Include (G);
-                           Create_Initial_And_Final_Vertices
-                             (F             => G,
-                              Mode          => Mode_In,
-                              Uninitialized => False,
-                              FA            => FA);
-                        end if;
-                     end loop;
-
-                     if Present (The_Out) then
-                        Package_Writes.Include (The_Out);
+                  for G of The_In loop
+                     if not Global_Ins.Contains (G) then
+                        Global_Ins.Include (G);
+                        Create_Initial_And_Final_Vertices
+                          (F             => G,
+                           Mode          => Mode_In,
+                           Uninitialized => False,
+                           FA            => FA);
                      end if;
                   end loop;
-               end if;
+
+                  if Present (The_Out) then
+                     Package_Writes.Include (The_Out);
+                  end if;
+               end loop;
             end;
 
             --  If a Refined_State aspect exists, we gather all
@@ -5164,7 +5142,7 @@ package body Flow.Control_Flow_Graph is
                   DM              : Dependency_Maps.Map;
                begin
                   if Present (Refined_State_N) then
-                     DM := Parse_Initializes (Refined_State_N);
+                     DM := Parse_Refined_State (Refined_State_N);
                      for C in DM.Iterate loop
                         Constituents := Dependency_Maps.Element (C);
 

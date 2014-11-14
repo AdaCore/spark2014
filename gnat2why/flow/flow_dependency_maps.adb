@@ -21,14 +21,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Einfo;    use Einfo;
+with Elists;   use Elists;
 with Nlists;   use Nlists;
 with Sem_Util; use Sem_Util;
 
 with Treepr;   use Treepr;
 
 with Why;
-
---  with Flow.Debug; use Flow.Debug;
 
 package body Flow_Dependency_Maps is
 
@@ -203,9 +203,7 @@ package body Flow_Dependency_Maps is
    -- Parse_Depends --
    -------------------
 
-   function Parse_Depends (N : Node_Id)
-                           return Dependency_Maps.Map
-   is
+   function Parse_Depends (N : Node_Id) return Dependency_Maps.Map is
    begin
       return Parse_Raw_Dependency_Map (N);
    end Parse_Depends;
@@ -214,11 +212,56 @@ package body Flow_Dependency_Maps is
    -- Parse_Initializes --
    -----------------------
 
-   function Parse_Initializes (N : Node_Id)
-                               return Dependency_Maps.Map
+   function Parse_Initializes
+     (N : Node_Id;
+      P : Entity_Id := Empty)
+      return Dependency_Maps.Map
    is
+      M : Dependency_Maps.Map :=
+        (if Present (N) then Parse_Raw_Dependency_Map (N)
+         else Dependency_Maps.Empty_Map);
+   begin
+      --  When we parse the Initializes aspect we add any external
+      --  state abstractions with the property Async_Writers set to
+      --  the dependency map (even if the user did not manually write
+      --  them there). This is to ensure that constituents that are
+      --  not volatile and have Async_Writers are also initialized.
+      if Present (P)
+        and then Ekind (P) in E_Generic_Package | E_Package
+        and then Present (Abstract_States (P))
+        and then not Is_Null_State (Node (First_Elmt (Abstract_States (P))))
+      then
+         declare
+            State_Elmt : Elmt_Id;
+            State      : Entity_Id;
+         begin
+            State_Elmt := First_Elmt (Abstract_States (P));
+            State      := Node (State_Elmt);
+
+            while Present (State) loop
+               if Has_Async_Writers (Direct_Mapping_Id (State))
+                 and then not M.Contains (Direct_Mapping_Id (State))
+               then
+                  M.Insert (Direct_Mapping_Id (State), Flow_Id_Sets.Empty_Set);
+               end if;
+
+               --  Move on to the next state abstraction
+               Next_Elmt (State_Elmt);
+               State := Node (State_Elmt);
+            end loop;
+         end;
+      end if;
+
+      return M;
+   end Parse_Initializes;
+
+   -------------------------
+   -- Parse_Refined_State --
+   -------------------------
+
+   function Parse_Refined_State (N : Node_Id) return Dependency_Maps.Map is
    begin
       return Parse_Raw_Dependency_Map (N);
-   end Parse_Initializes;
+   end Parse_Refined_State;
 
 end Flow_Dependency_Maps;

@@ -482,13 +482,15 @@ package body Flow is
             begin
                --  Look at the postcondition of Find_Node in
                --  Do_Package_Body_Or_Stub in CFG as to why only these
-               --  three need to be supported.
+               --  four need to be supported.
                case Nkind (N) is
                   when N_Component_Association =>
                      Sprint_Comma_List (Choices (N));
                      Write_Str (" from ");
                      Print_Node (Expression (N));
-                  when N_Identifier | N_Expanded_Name =>
+                  when N_Defining_Identifier |
+                       N_Identifier          |
+                       N_Expanded_Name       =>
                      Print_Node (N);
                   when others =>
                      raise Why.Unexpected_Node;
@@ -975,7 +977,7 @@ package body Flow is
                            Write_Eol;
                         end if;
 
-                        DM := Parse_Initializes (Refined_State_N);
+                        DM := Parse_Refined_State (Refined_State_N);
                         if Gnat2Why_Args.Flow_Advanced_Debug then
                            for State in DM.Iterate loop
                               Write_Line ("State       :");
