@@ -11,5 +11,5 @@ test_globals.adb:19:65: info: index check proved
 test_globals.adb:20:14: info: discriminant check proved
 test_globals.adb:20:32: info: discriminant check proved
 test_globals.adb:20:50: info: discriminant check proved
+test_globals.adb:24:04: info: assertion proved
 test_globals.adb:24:19: info: precondition proved
-test_globals.adb:24:19: medium: assertion might fail, requires (Nested_With_Globals)

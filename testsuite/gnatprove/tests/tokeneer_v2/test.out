@@ -169,7 +169,7 @@ auditlog.adb:1461:58: info: overflow check proved
 auditlog.adb:1461:78: info: overflow check proved
 auditlog.adb:1491:52: info: range check proved
 auditlog.adb:1499:10: info: precondition proved
-auditlog.adb:1509:07: medium: precondition might fail
+auditlog.adb:1509:07: info: precondition proved
 auditlog.adb:1564:30: info: refined post proved
 auditlog.adb:1566:67: info: range check proved
 auditlog.adb:1566:72: info: overflow check proved
@@ -593,7 +593,7 @@ enrolment.adb:71:40: info: length check proved
 enrolment.adb:71:43: medium: length check might fail
 enrolment.adb:73:23: info: length check proved
 enrolment.adb:73:23: medium: range check might fail
-enrolment.adb:123:25: medium: postcondition might fail
+enrolment.adb:123:25: info: postcondition proved
 enrolment.adb:228:27: info: overflow check proved
 enrolment.adb:238:30: medium: overflow check might fail
 enrolment.ads:78:22: medium: postcondition might fail, requires DataOK = KeyStore(KeyStore.privatekeypresent)
@@ -684,7 +684,7 @@ keystore.adb:690:21: medium: precondition might fail
 keystore.adb:758:21: medium: precondition might fail
 keystore.adb:773:47: info: length check proved
 keystore.adb:843:18: medium: precondition might fail
-keystore.ads:227:22: medium: postcondition might fail, requires Added and (not IsPublic) and PrivateKeyPresent) xor (not (Added and not IsPublic) and (PrivateKeyPresent = PrivateKeyPresent'old
+keystore.ads:227:22: info: postcondition proved
 keystore.ads:245:22: info: postcondition proved
 latch.adb:96:30: info: refined post proved
 latch.adb:113:18: medium: precondition might fail

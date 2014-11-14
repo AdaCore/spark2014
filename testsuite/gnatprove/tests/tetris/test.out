@@ -74,7 +74,7 @@ tetris_functional.adb:112:36: medium: loop invariant might fail after first iter
 tetris_functional.adb:113:13: info: loop invariant initialization proved
 tetris_functional.adb:113:13: info: loop invariant preservation proved
 tetris_functional.adb:117:35: info: range check proved
-tetris_functional.adb:118:31: medium: assertion might fail, requires Cur_Board (From_Line)(X_Coord'First) = Empty
+tetris_functional.adb:118:16: info: assertion proved
 tetris_functional.adb:136:23: info: precondition proved
 tetris_functional.ads:104:06: info: length check proved
 tetris_functional.ads:104:07: info: length check proved

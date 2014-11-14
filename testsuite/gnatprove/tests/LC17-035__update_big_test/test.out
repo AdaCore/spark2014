@@ -386,23 +386,23 @@ ar.ads:1378:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:1384:22: medium: postcondition might fail
 ar.ads:1392:22: info: postcondition proved
 ar.ads:1397:22: medium: postcondition might fail
-ar.ads:1402:22: medium: postcondition might fail, requires A = A'Old'update
+ar.ads:1402:22: info: postcondition proved
 ar.ads:1407:22: medium: postcondition might fail
 ar.ads:1415:22: info: postcondition proved
 ar.ads:1420:22: info: postcondition proved
-ar.ads:1425:22: medium: postcondition might fail, requires R = R'Old'update
-ar.ads:1430:22: medium: postcondition might fail
+ar.ads:1425:22: info: postcondition proved
+ar.ads:1430:22: info: postcondition proved
 ar.ads:1435:22: info: postcondition proved
 ar.ads:1440:22: info: postcondition proved
-ar.ads:1445:22: medium: postcondition might fail, requires R = R'Old'update
-ar.ads:1450:22: medium: postcondition might fail
+ar.ads:1445:22: info: postcondition proved
+ar.ads:1450:22: info: postcondition proved
 ar.ads:1455:22: info: postcondition proved
 ar.ads:1460:22: info: postcondition proved
-ar.ads:1465:22: medium: postcondition might fail, requires R = R'Old'update
+ar.ads:1465:22: info: postcondition proved
 ar.ads:1470:22: info: postcondition proved
 ar.ads:1475:22: info: postcondition proved
 ar.ads:1481:22: info: postcondition proved
-ar.ads:1487:22: medium: postcondition might fail, requires R = R'Old'update
+ar.ads:1487:22: info: postcondition proved
 ar.ads:1493:22: info: postcondition proved
 ar.ads:1498:22: info: postcondition proved
 ar.ads:1503:22: info: postcondition proved
@@ -415,7 +415,7 @@ ar.ads:1536:22: info: postcondition proved
 ar.ads:1542:22: medium: postcondition might fail
 ar.ads:1548:22: medium: postcondition might fail
 ar.ads:1553:22: info: postcondition proved
-ar.ads:1558:22: medium: postcondition might fail
+ar.ads:1558:22: info: postcondition proved
 ar.ads:1563:22: medium: postcondition might fail, requires R = R'Old'update
 ar.ads:1563:73: info: range check proved
 ar.ads:1571:22: info: postcondition proved
@@ -431,20 +431,20 @@ ar.ads:1623:22: medium: postcondition might fail
 ar.ads:1628:22: medium: postcondition might fail, requires R = R'Old'update
 ar.ads:1633:22: medium: postcondition might fail
 ar.ads:1641:22: info: postcondition proved
-ar.ads:1646:22: medium: postcondition might fail
+ar.ads:1646:22: info: postcondition proved
 ar.ads:1651:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:1656:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:1661:22: medium: postcondition might fail
-ar.ads:1667:22: medium: postcondition might fail
+ar.ads:1667:22: info: postcondition proved
 ar.ads:1673:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:1679:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:1685:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:1691:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:1697:22: medium: postcondition might fail
-ar.ads:1703:22: medium: postcondition might fail
+ar.ads:1703:22: info: postcondition proved
 ar.ads:1709:22: medium: postcondition might fail, requires A = B'update
 ar.ads:1715:22: medium: postcondition might fail, requires A = B'update
-ar.ads:1723:22: info: postcondition proved
+ar.ads:1723:22: medium: postcondition might fail
 ar.ads:1728:22: medium: postcondition might fail
 ar.ads:1733:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:1738:22: medium: postcondition might fail, requires A = A'Old'update
@@ -461,7 +461,7 @@ ar.ads:1791:22: info: postcondition proved
 ar.ads:1796:22: medium: postcondition might fail, requires R = R'Old'update
 ar.ads:1801:22: medium: postcondition might fail, requires R = RofAofR1RofAofR1'(A1 => R'old.A1'update), (B1 => true), (C1 => R'old.C1)
 ar.ads:1809:22: info: postcondition proved
-ar.ads:1814:22: medium: postcondition might fail
+ar.ads:1814:22: info: postcondition proved
 ar.ads:1819:22: medium: postcondition might fail, requires R = R'Old'update
 ar.ads:1824:22: medium: postcondition might fail, requires R = RofAofR2RofAofR2'(A2 => R'old.A2), (B2 => R'old.B2'update)
 ar.ads:1829:22: info: postcondition proved
@@ -469,10 +469,10 @@ ar.ads:1835:22: medium: postcondition might fail
 ar.ads:1841:22: medium: postcondition might fail, requires R = R'Old'update
 ar.ads:1847:22: medium: postcondition might fail, requires R = RofAofR2RofAofR2'(A2 => I), (B2 => R'old.B2'update)
 ar.ads:1855:22: info: postcondition proved
-ar.ads:1860:22: medium: postcondition might fail
+ar.ads:1860:22: info: postcondition proved
 ar.ads:1865:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:1870:22: medium: postcondition might fail, requires A(I) = RofAofR1RofAofR1'(A1 => A'old (I).A1'update), (B1 => A'old (I).B1), (C1 => ... (...)....)
 ar.ads:1878:22: info: postcondition proved
-ar.ads:1883:22: medium: postcondition might fail
+ar.ads:1883:22: info: postcondition proved
 ar.ads:1888:22: medium: postcondition might fail, requires R = R'Old'update
 ar.ads:1893:22: medium: postcondition might fail, requires R = RofAofRofARofAofRofA'(D1 => R'old.D1'update), (E1 => R'old.E1)

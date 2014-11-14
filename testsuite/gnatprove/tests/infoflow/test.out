@@ -142,16 +142,16 @@ infoflow.ads:79:45: info: division check proved
 infoflow.ads:79:59: info: index check proved
 infoflow.ads:79:70: info: division check proved
 infoflow.ads:80:24: medium: contract case might fail
-infoflow.ads:80:33: medium: array index check might fail
-infoflow.ads:80:44: medium: array index check might fail
+infoflow.ads:80:33: info: index check proved
+infoflow.ads:80:44: info: index check proved
 infoflow.ads:85:39: info: division check proved
 infoflow.ads:86:34: info: index check proved
 infoflow.ads:86:45: info: division check proved
 infoflow.ads:86:59: info: index check proved
 infoflow.ads:86:70: info: division check proved
 infoflow.ads:87:24: medium: contract case might fail
-infoflow.ads:87:33: medium: array index check might fail
-infoflow.ads:87:44: medium: array index check might fail
+infoflow.ads:87:33: info: index check proved
+infoflow.ads:87:44: info: index check proved
 infoflow.ads:90:06: info: disjoint contract cases proved
 infoflow.ads:90:06: medium: contract cases might not be complete
 infoflow.ads:94:40: info: division check proved
@@ -169,7 +169,7 @@ infoflow.ads:102:59: info: index check proved
 infoflow.ads:102:70: info: division check proved
 infoflow.ads:103:24: info: contract case proved
 infoflow.ads:103:33: info: index check proved
-infoflow.ads:103:44: medium: array index check might fail
+infoflow.ads:103:44: info: index check proved
 infoflow.ads:112:07: medium: "A_V1" might not be initialized in "Arraypartitionedtransfer"
 infoflow.ads:112:13: medium: "A_V2" might not be initialized in "Arraypartitionedtransfer"
 infoflow.ads:129:06: info: disjoint contract cases proved

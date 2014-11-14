@@ -2,7 +2,7 @@ skein.adb:34:14: info: range check proved, in call inlined at skein.adb:139
 skein.adb:35:29: medium: array index check might fail, in call inlined at skein.adb:139
 skein.adb:36:77: info: division check proved, in call inlined at skein.adb:139
 skein.adb:36:77: medium: array index check might fail, in call inlined at skein.adb:139
-skein.adb:37:57: medium: range check might fail, in call inlined at skein.adb:139
+skein.adb:37:57: info: range check proved, in call inlined at skein.adb:139
 skein.adb:37:71: info: range check proved, in call inlined at skein.adb:139
 skein.adb:48:23: warning: unused assignment, in call inlined at skein.adb:127
 skein.adb:56:22: warning: unused assignment, in call inlined at skein.adb:127
@@ -45,6 +45,6 @@ skein.ads:269:52: info: length check proved
 Analyzed 1 units
 in unit skein, 3 subprograms and packages out of 3 analyzed
   Skein at skein.ads:6 flow analyzed (0 errors and 0 warnings) and proved (6 checks)
-  Skein.Skein_512_Final at skein.ads:131 flow analyzed (0 errors and 15 warnings) and not proved, 16 checks out of 21 proved
+  Skein.Skein_512_Final at skein.ads:131 flow analyzed (0 errors and 15 warnings) and not proved, 17 checks out of 21 proved
   Skein.Zero_Pad at skein.adb:60 flow analyzed (0 errors and 0 warnings) and proved (1 checks)
 

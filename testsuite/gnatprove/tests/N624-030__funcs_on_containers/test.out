@@ -7,7 +7,7 @@ find_map.adb:13:10: info: loop invariant preservation proved
 find_map.adb:13:33: info: precondition proved
 find_map.adb:13:64: info: range check proved
 find_map.adb:14:10: info: loop invariant initialization proved
-find_map.adb:14:10: medium: loop invariant might fail after first iteration
+find_map.adb:14:10: info: loop invariant preservation proved
 find_map.adb:16:15: info: precondition proved
 find_map.adb:16:36: info: index check proved
 find_map.adb:17:13: info: precondition proved
@@ -16,8 +16,8 @@ find_map.adb:18:16: info: index check proved
 find_map.adb:18:16: info: precondition proved
 find_map.adb:18:36: info: index check proved
 find_map.adb:18:46: info: index check proved
-find_map.adb:19:10: medium: loop invariant might fail after first iteration
-find_map.adb:19:10: medium: loop invariant might fail in first iteration
+find_map.adb:19:10: info: loop invariant initialization proved
+find_map.adb:19:10: info: loop invariant preservation proved
 find_map.adb:21:19: info: precondition proved
 find_map.adb:22:21: info: precondition proved
 find_map.adb:23:36: info: index check proved

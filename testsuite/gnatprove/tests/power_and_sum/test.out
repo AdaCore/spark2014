@@ -1,5 +1,5 @@
+power_and_sum.adb:9:10: info: loop invariant initialization proved
 power_and_sum.adb:9:10: medium: loop invariant might fail after first iteration
-power_and_sum.adb:9:10: medium: loop invariant might fail in first iteration
 power_and_sum.adb:9:47: medium: range check might fail
 power_and_sum.adb:10:27: medium: overflow check might fail
 power_and_sum.adb:11:17: medium: overflow check might fail

@@ -602,7 +602,7 @@ enrolment.adb:76:23: medium: range check might fail, in call inlined at enrolmen
 enrolment.adb:76:23: medium: range check might fail, in call inlined at enrolment.adb:223
 enrolment.adb:76:23: medium: range check might fail, in call inlined at enrolment.adb:241
 enrolment.adb:76:23: medium: range check might fail, in call inlined at enrolment.adb:272
-enrolment.adb:135:13: medium: postcondition might fail
+enrolment.adb:135:13: info: postcondition proved
 enrolment.adb:246:27: info: overflow check proved
 enrolment.adb:259:27: medium: overflow check might fail
 enrolment.ads:85:07: medium: postcondition might fail, requires DataOK = KeyStore(KeyStore.privatekeypresent)
