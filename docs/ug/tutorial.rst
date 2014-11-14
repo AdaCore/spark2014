@@ -55,7 +55,10 @@ Semantic`` menu, which completes without any errors or warnings:
 
 .. image:: static/search_check_semantic.png
 
-Then, we run |GNATprove| on this unit, using the :menuselection:`SPARK -->
+Static Analysis of SPARK Programs
+---------------------------------
+
+Now, let us run |GNATprove| on this unit, using the :menuselection:`SPARK -->
 Examine File` menu, so that it issues errors on |SPARK| code that violates
 |SPARK| rules:
 
@@ -87,18 +90,58 @@ The implementation of ``Search`` is modified to use this type:
    :linenos:
 
 Re-running |GNATprove| on this unit, using the :menuselection:`SPARK -->
-Examine File` menu, reports a different kind of error that we describe in
-:ref:`proving spark programs`.
+Examine File` menu, now reports a different kind of error. This time it is
+the static analysis pass of |GNATprove| called *flow analysis* that
+detects a not fully initialized variable: ``Res``.
 
-It is not yet very interesting |SPARK| code though, as it does not contain any
-contracts, which are necessary to be able to apply formal verification
-modularly on each subprogram, independently of the implementation of other
-subprograms. The precondition constrains the value of input parameters, while
-the postcondition states desired properties of the result of the function. See
-:ref:`Preconditions and Postconditions` for more details. Here, we can require
-in the precondition that callers of ``Search`` always pass a
-non-negative value for parameter ``Val``, and we can state that, when the
-search succeeds, the index returned points to the desired value in the array:
+.. image:: static/search_flow_error.png
+
+Inside the GPS editor, we can click on the path icon, either on the left of the
+message, or on line 23 in file ``linear_search.adb``, to show the path on which
+``Res.At_Index`` is not initialized:
+
+.. image:: static/search_flow_error_path.png
+
+Another click on the icon makes the path disappear.
+
+This shows that, when the value is not found, the component ``At_Index`` of
+the value returned is indeed not initialized. Although that is allowed in
+Ada, |SPARK| requires that all inputs and outputs of subprograms are
+completely initialized (and the value returned by a function is such an
+output). Although we could give a dummy value to component ``At_Index``
+when the search fails, we choose to turn the type ``Search_Result`` into a
+discriminant record, so that the component ``At_Index`` is only usable when
+the search succeeds:
+
+.. literalinclude:: examples/linear_search_prove/linear_search.ads
+   :language: ada
+   :linenos:
+   :lines: 10-17
+
+Then, in the implementation of ``Search``, we change the value of the
+discriminant depending on the success of the search:
+
+.. literalinclude:: examples/linear_search_prove/linear_search.adb
+   :language: ada
+   :linenos:
+   :lines: 5-24
+
+Now re-running |GNATprove| on this unit, using the :menuselection:`SPARK -->
+Examine File` menu, shows that there are no reads of uninitialized data.
+
+Writing Contracts in SPARK
+--------------------------
+
+We now have a valid SPARK program. It is not yet very interesting |SPARK|
+code though, as it does not contain any contracts, which are necessary to
+be able to apply formal verification modularly on each subprogram,
+independently of the implementation of other subprograms. The precondition
+constrains the value of input parameters, while the postcondition states
+desired properties of the result of the function. See :ref:`Preconditions
+and Postconditions` for more details. Here, we can require in the
+precondition that callers of ``Search`` always pass a non-negative value
+for parameter ``Val``, and we can state that, when the search succeeds, the
+index returned points to the desired value in the array:
 
 .. literalinclude:: examples/linear_search_contract/linear_search.ads
    :language: ada
@@ -207,8 +250,8 @@ compiler with the switch ``-gnateE``:
    $ gnatmake -gnata -gnateE -f test_search.adb
    $ test_search
    > raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : contract cases overlap for subprogram search
-   >   case guard at linear_search.ads:29 evaluates to True
-   >   case guard at linear_search.ads:31 evaluates to True
+   >   case guard at linear_search.ads:33 evaluates to True
+   >   case guard at linear_search.ads:35 evaluates to True
 
 It shows here that the guards of the first and second contract cases hold at
 the same time. This failure in annotations can be debugged with ``gdb`` like a
@@ -257,8 +300,10 @@ Formal verification of |SPARK| programs is a two-step process:
    contracts (if any), and that no run-time error can be raised.
 
 Step 1 is implemented as a static analysis pass in the tool |GNATprove|, in
-``flow`` mode. Step 2 is implemented as a deductive verification pass
-in the tool |GNATprove|, in the default ``all`` mode.
+``flow`` mode. We have seen this flow analysis at work earlier during basic
+static analysis of our running example. Step 2 is implemented as a
+deductive verification pass in the tool |GNATprove|, in the default ``all``
+mode.
 
 The difference between these two steps should be emphasized. Static analysis in
 step 1 is a terminating algorithm, which typically takes 2 to 10 times as long
@@ -281,50 +326,10 @@ independently, so the more cores are available the faster it completes.
    more or less time to complete a proof depending on the platform and machine
    used.
 
-We start with the flow analysis of ``Linear_Search``, using mode ``flow`` of
-|GNATprove| reached through the :menuselection:`SPARK --> Examine File` menu:
-
-.. image:: static/search_flow.png
-
-Here, it issues an error message:
-
-.. image:: static/search_flow_error.png
-
-Inside the GPS editor, we can click on the path icon, either on the left of the
-message, or on line 23 in file ``linear_search.adb``, to show the path on which
-``Res.At_Index`` is not initialized:
-
-.. image:: static/search_flow_error_path.png
-
-Another click on the icon makes the path disappear.
-
-This shows that, when the value is not found, the component ``At_Index``
-of the value returned is indeed not initialized. Although that is allowed in Ada,
-|SPARK| requires that all inputs and outputs of subprograms are completely
-initialized (and the value returned by a function is such an output). Although
-we could give a dummy value to component ``At_Index`` when the search fails, we
-choose to turn the type ``Search_Result`` into a discriminant record, so that
-the component ``At_Index`` is only usable when the search succeeds:
-
-.. literalinclude:: examples/linear_search_prove/linear_search.ads
-   :language: ada
-   :linenos:
-   :lines: 10-17
-
-Then, in the implementation of ``Search``, we change the value of the
-discriminant depending on the success of the search:
-
-.. literalinclude:: examples/linear_search_prove/linear_search.adb
-   :language: ada
-   :linenos:
-   :lines: 5-24
-
-|GNATprove| runs without errors in mode ``flow`` on this program, which shows
-there are no reads of uninitialized data.
-
-We continue with the proof of contracts and absence of run-time errors, using
-the main mode ``all`` of |GNATprove| reached through the
-:menuselection:`SPARK --> Prove File` menu.
+Let us continue with our running example. This time we will see how step 2
+works to prove contracts and absence of run-time errors, using the main
+mode ``all`` of |GNATprove| reached through the :menuselection:`SPARK -->
+Prove File` menu.
 
 .. image:: static/search_prove_file.png
 
@@ -374,12 +379,12 @@ iterations around the (virtual) loop formed by the following steps:
 #. Execute the start of a source loop iteration (just the if-statement here).
 #. Check that the loop invariant still holds.
 
-Around this virtual loop, nothing guarantees that the index ``Pos`` is not the
-maximal index at step 2 (the increment), so the range check cannot be
-proved. It was previously proved because, in the absence of a loop invariant,
-|GNATprove| proves iterations around the source loop, and then we get the
-information that, since the loop did not exit, its test ``Pos < A'Last`` is
-false, so the range check can be proved.
+Around this virtual loop, nothing guarantees that the index ``Pos`` is
+below the maximal index at step 2 (the increment), so the range check
+cannot be proved. It was previously proved because, in the absence of a
+loop invariant, |GNATprove| proves iterations around the source loop, and
+then we get the information that, since the loop did not exit, its test
+``Pos < A'Last`` is false, so the range check can be proved.
 
 We solve this issue by setting the type of ``Pos`` to the base type of
 ``Index``, which ranges past the last value of ``Index``. (This may not be the
