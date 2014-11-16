@@ -1973,9 +1973,9 @@ package body SPARK_Definition is
 
                   if Ekind (EActual) /= E_Operator then
 
-                     --  Mark the entity of the actual
+                     --  Mark the entity or the expression of the actual
 
-                     Mark_Entity (EActual);
+                     Mark (Actual);
                   end if;
                end;
 

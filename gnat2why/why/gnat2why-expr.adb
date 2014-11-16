@@ -71,7 +71,6 @@ with Why.Gen.Progs;          use Why.Gen.Progs;
 with Why.Gen.Records;        use Why.Gen.Records;
 with Why.Gen.Terms;          use Why.Gen.Terms;
 with Why.Gen.Preds;          use Why.Gen.Preds;
-with Why.Inter;              use Why.Inter;
 
 with Gnat2Why.Decls;         use Gnat2Why.Decls;
 with Gnat2Why.Expr.Loops;    use Gnat2Why.Expr.Loops;
@@ -143,11 +142,11 @@ package body Gnat2Why.Expr is
    --  Build Case expression of Ada Node.
 
    function Compute_Call_Args
-     (Call        : Node_Id;
-      Domain      : EW_Domain;
+     (Call        :     Node_Id;
+      Domain      :     EW_Domain;
       Nb_Of_Refs  : out Natural;
       Nb_Of_Lets  : out Natural;
-      Params      : Transformation_Params) return W_Expr_Array;
+      Params      :     Transformation_Params) return W_Expr_Array;
    --  Compute arguments for a function call or procedure call. The node in
    --  argument must have a "Name" field and a "Parameter_Associations" field.
    --  Nb_Of_Refs is the number of ref arguments that could not be
@@ -238,18 +237,6 @@ package body Gnat2Why.Expr is
    --  the expression that Expr belongs to the range expressed by Choice. In
    --  programs, also generate a check that dynamic choices are in the subtype
    --  Choice_Type.
-
-   function Transform_Identifier
-     (Params   : Transformation_Params;
-      Expr     : Node_Id;
-      Ent      : Entity_Id;
-      Domain   : EW_Domain;
-      Selector : Selection_Kind := Why.Inter.Standard) return W_Expr_Id;
-   --  Transform an Ada identifier to a Why item (take care of enumeration
-   --  literals, boolean values etc)
-   --
-   --  This also deals with volatility, so that an object with a Async_Writers
-   --  is suitably havoc'd before being read.
 
    function Transform_Quantified_Expression
      (Expr   : Node_Id;
@@ -1368,17 +1355,17 @@ package body Gnat2Why.Expr is
    -----------------------
 
    function Compute_Call_Args
-     (Call        : Node_Id;
-      Domain      : EW_Domain;
+     (Call        :     Node_Id;
+      Domain      :     EW_Domain;
       Nb_Of_Refs  : out Natural;
       Nb_Of_Lets  : out Natural;
-      Params      : Transformation_Params) return W_Expr_Array
+      Params      :     Transformation_Params) return W_Expr_Array
    is
       Subp    : constant Entity_Id := Entity (Name (Call));
       Binders : constant Item_Array :=
         Compute_Subprogram_Parameters (Subp, Domain);
-   begin
 
+   begin
       Nb_Of_Refs := 0;
       Nb_Of_Lets := 0;
 
@@ -9074,8 +9061,9 @@ package body Gnat2Why.Expr is
          end;
       end if;
 
-      pragma Assert (Nb_Of_Refs = 0,
-                     "Only pure functions are in alfa");
+      --  SPARK function cannot have side-effects
+      pragma Assert (Nb_Of_Refs = 0);
+
       return T;
    end Transform_Function_Call;
 
