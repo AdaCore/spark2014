@@ -7,7 +7,6 @@ list.adb:16:19: info: precondition proved
 list.adb:16:31: info: range check proved
 list.adb:19:17: info: precondition proved
 list.adb:19:36: info: precondition proved
-list.adb:20:10: info: range check proved
 list.adb:20:10: medium: precondition might fail
 list.adb:20:23: medium: precondition might fail
 list.adb:20:28: medium: "private part of S" might not be initialized
@@ -30,7 +29,7 @@ list.ads:13:64: info: precondition proved
 list.ads:13:79: medium: overflow check might fail
 list.ads:13:83: medium: overflow check might fail
 list.ads:13:83: medium: range check might fail
-main.adb:15:31: attribute "Img" is not permitted in SPARK
+main.adb:16:38: attribute "Img" is not permitted in SPARK
 stack.adb:4:47: info: discriminant check proved
 stack.adb:4:47: info: length check proved
 stack.adb:4:47: info: range check proved

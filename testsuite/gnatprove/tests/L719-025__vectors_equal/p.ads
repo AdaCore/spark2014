@@ -10,7 +10,7 @@ package P is pragma SPARK_Mode (On);
      (I1 = I2);
 
    package My_Vectors is new Ada.Containers.Formal_Vectors
-     (Index_Type, Element_Type, My_Eq);
+     (Index_Type, Element_Type, My_Eq, True);
    use My_Vectors;
 
    procedure Nearly_Identity_1 (L : in out Vector; I : Extended_Index) with

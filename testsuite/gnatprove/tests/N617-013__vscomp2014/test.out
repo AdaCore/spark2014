@@ -1,9 +1,7 @@
 p.adb:9:13: info: loop invariant preservation proved
 p.adb:9:36: medium: loop invariant might fail in first iteration, requires F'Loop_Entry = Saved
 partition_refinement.adb:11:43: info: precondition proved
-partition_refinement.adb:11:43: info: range check proved
 partition_refinement.adb:12:20: info: precondition proved
-partition_refinement.adb:12:32: info: range check proved
 partition_refinement.adb:14:56: info: range check proved
 partition_refinement.adb:17:47: info: precondition proved
 partition_refinement.adb:17:47: medium: range check might fail
@@ -22,4 +20,4 @@ partition_refinement.adb:23:47: info: range check proved
 partition_refinement.adb:23:66: info: overflow check proved
 partition_refinement.adb:23:89: info: index check proved
 partition_refinement.adb:23:107: info: index check proved
-partition_refinement.ads:31:07: warning: "P" is not modified, could be "in"
+partition_refinement.ads:32:07: warning: "P" is not modified, could be "in"

@@ -25,16 +25,18 @@
 
 with Ada.Containers.Hashed_Maps;
 
-with Types;          use Types;
+with Einfo;             use Einfo;
+with Sinfo;             use Sinfo;
+with Types;             use Types;
 
-with Why.Types;      use Why.Types;
-with Why.Ids;        use Why.Ids;
-with Why.Sinfo;      use Why.Sinfo;
-with Sinfo;          use Sinfo;
+with Why.Types;         use Why.Types;
+with Why.Ids;           use Why.Ids;
+with Why.Inter;         use Why.Inter;
+with Why.Sinfo;         use Why.Sinfo;
 
 with Common_Containers; use Common_Containers;
+
 with Gnat2Why.Util;     use Gnat2Why.Util;
-with Einfo; use Einfo;
 
 package Gnat2Why.Expr is
 
@@ -103,6 +105,18 @@ package Gnat2Why.Expr is
 
    function Get_Container_In_Iterator_Specification
      (N : Node_Id) return Node_Id;
+
+   function Transform_Identifier
+     (Params   : Transformation_Params;
+      Expr     : Node_Id;
+      Ent      : Entity_Id;
+      Domain   : EW_Domain;
+      Selector : Selection_Kind := Why.Inter.Standard) return W_Expr_Id;
+   --  Transform an Ada identifier to a Why item (take care of enumeration
+   --  literals, boolean values etc)
+   --
+   --  This also deals with volatility, so that an object with a Async_Writers
+   --  is suitably havoc'd before being read.
 
    procedure Transform_Pragma_Check
      (Stmt    : Node_Id;

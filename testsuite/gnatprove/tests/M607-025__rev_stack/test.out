@@ -1,5 +1,5 @@
+list.adb:15:35: info: precondition proved
 list.adb:16:35: info: precondition proved
-list.adb:17:35: info: precondition proved
 list.adb:19:07: info: precondition proved
 list.adb:22:10: info: precondition proved
 list.adb:22:19: info: precondition proved
@@ -31,7 +31,6 @@ list.adb:42:56: info: overflow check proved
 list.adb:42:60: info: overflow check proved
 list.adb:42:60: info: range check proved
 list.adb:43:10: info: precondition proved
-list.adb:43:10: info: range check proved
 list.adb:43:23: info: precondition proved
 list.adb:44:10: info: precondition proved
 list.ads:13:28: info: precondition proved

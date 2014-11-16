@@ -1,2 +1,0 @@
-32bits DEAD too slow on 32bits machines
-ALL XFAIL crash in gnat2why on formal vectors (NA30-006)

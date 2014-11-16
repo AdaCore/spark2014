@@ -206,11 +206,12 @@ package Gnat2Why.Util is
    function Usual_Params (Phase : Transformation_Phase)
                           return Transformation_Params
    is
-     (Transformation_Params'(File        => Why_Sections (WF_Main).File,
-                             Theory      => Why_Sections (WF_Main).Cur_Theory,
-                             Phase       => Phase,
-                             Gen_Marker   => False,
-                             Ref_Allowed => True));
+     (Transformation_Params'
+        (File        => Why_Sections (WF_Main).File,
+         Theory      => Why_Sections (WF_Main).Cur_Theory,
+         Phase       => Phase,
+         Gen_Marker   => False,
+         Ref_Allowed => (if Phase = Generate_Logic then False else True)));
    --  Usual set of transformation parameters for a given phase
 
    ---------------------------------------------

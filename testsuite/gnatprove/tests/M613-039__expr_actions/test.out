@@ -1,5 +1,5 @@
+list.adb:17:35: info: precondition proved
 list.adb:18:35: info: precondition proved
-list.adb:19:35: info: precondition proved
 list.adb:23:10: medium: precondition might fail
 list.adb:23:19: info: precondition proved
 list.adb:23:31: info: range check proved
@@ -38,7 +38,7 @@ list.ads:16:79: info: overflow check proved
 list.ads:16:83: info: overflow check proved
 list.ads:16:83: info: range check proved
 main.adb:9:15: medium: precondition might fail
-main.adb:15:26: medium: precondition might fail
+main.adb:16:29: medium: precondition might fail
 stack.adb:4:47: info: range check proved
 stack.adb:5:55: info: range check proved
 stack.adb:20:22: info: range check proved

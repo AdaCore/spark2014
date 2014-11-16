@@ -290,8 +290,8 @@ package body Gnat2Why.External_Axioms is
 
    procedure Compute_Substitution
      (G_Parents     :     List_Of_Entity.List;
-      Subst         : out W_Custom_Substitution_Array) is
-
+      Subst         : out W_Custom_Substitution_Array)
+   is
       procedure Compute_Substitution_Package
         (Assoc         : List_Id;
          Labs          : List_Id;
@@ -311,6 +311,10 @@ package body Gnat2Why.External_Axioms is
       Of_Base_Name   : constant String := "of_base";
       In_Range_Name  : constant String := "valid";
       Subst_Cur : Integer := 1;
+
+      ----------------------------------
+      -- Compute_Substitution_Package --
+      ----------------------------------
 
       procedure Compute_Substitution_Package
         (Assoc         : List_Id;
@@ -521,8 +525,39 @@ package body Gnat2Why.External_Axioms is
                                         Get_Name_String (Chars (Formal)))))));
                   Subst_Cur := Subst_Cur + 1;
 
-               else
+               elsif Ekind (Formal) = E_Generic_In_Parameter then
 
+                  --  Replace:
+                  --  use "<Generic_Name>__args".<Generic_Name>__<Formal>
+                  --  by: use <Instance_Name>__<Formal>
+
+                  Subst (Subst_Cur) := New_Custom_Substitution
+                    (Domain   => EW_Prog,
+                     From     => NID ("use\s+" & """" & Generic_Name &
+                         "__args""\." & Capitalize_First (Generic_Name)
+                       & "__" & Short_Name (Formal) & "\s"),
+                     To       => W_Any_Node_Id (New_Identifier
+                       (Name => "use " & Capitalize_First (Instance_Name)
+                        & "__" & Short_Name (Formal) & ASCII.LF)));
+                  Subst_Cur := Subst_Cur + 1;
+
+                  --  Replace: <Generic_Name>__<Formal>.<Formal>
+                  --  by: <Instance_Name>__<Formal>.<Formal>
+
+                  Subst (Subst_Cur) := New_Custom_Substitution
+                    (Domain   => EW_Prog,
+                     From     => NID (Capitalize_First (Generic_Name)
+                       & "__" & Short_Name (Formal) & "\." &
+                         Short_Name (Formal)),
+                     To       => W_Any_Node_Id (New_Identifier
+                       (Name => Capitalize_First (Instance_Name)
+                        & "__" & Short_Name (Formal) & "." &
+                         Short_Name (Formal))));
+                  Subst_Cur := Subst_Cur + 1;
+
+               --  When do we reach here???
+
+               else
                   --  Replace:
                   --  use "<Generic_Name>__args".<Generic_Name>__<Formal>
                   --  by: use Name_Of_Node (Actual)
@@ -839,8 +874,9 @@ package body Gnat2Why.External_Axioms is
    begin
       while Present (CurAssoc) loop
          declare
-            A      : constant Entity_Id :=
-              Entity (Explicit_Generic_Actual_Parameter (CurAssoc));
+            Par    : constant Node_Id :=
+              Explicit_Generic_Actual_Parameter (CurAssoc);
+            A      : constant Entity_Id := Entity (Par);
             Actual : constant Entity_Id :=
               (if Ekind (A) = E_Function then
                   Get_Renamed_Entity (A)
@@ -848,8 +884,88 @@ package body Gnat2Why.External_Axioms is
             Formal : constant Entity_Id := Defining_Entity (CurLabs);
 
          begin
+            --  For a constant parameter, generate a theory similar to
+            --  those for other constants, except it contains here both the
+            --  declaration of the constant function, and possibly the axiom
+            --  for the definition.
 
-            if Ekind (Formal) in Type_Kind and then
+            if Ekind (Formal) = E_Generic_In_Parameter then
+               declare
+                  Typ  : constant W_Type_Id  := EW_Abstract (Etype (Formal));
+                  Def  : W_Term_Id;
+                  Params             : constant Transformation_Params :=
+                    (File        => TFile.File,
+                     Theory      => TFile.Cur_Theory,
+                     Phase       => Generate_Logic,
+                     Gen_Marker   => False,
+                     Ref_Allowed => False);
+               begin
+
+                  --  Start with opening the theory to define, as the creation
+                  --  of a function for the logic term needs the current theory
+                  --  to insert an include declaration.
+
+                  Open_Theory
+                    (TFile,
+                     Module =>
+                       New_Module
+                         (Name =>
+                              NID (Capitalize_First (Instance_Name) & "__"
+                            & Short_Name (Formal)),
+                          File => No_Name),
+                     Comment =>
+                    "Module for defining a constant for the formal "
+                    & """" & Get_Name_String (Chars (Formal)) & """"
+                    & (if Sloc (Formal) > 0 then
+                       " defined at " & Build_Location_String (Sloc (Formal))
+                       else "")
+                    & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+                  --  We generate a "logic", whose axiom will be given
+
+                  Emit (TFile.Cur_Theory,
+                     Why.Atree.Builders.New_Function_Decl
+                       (Domain      => EW_Term,
+                        Name        =>
+                          To_Why_Id (Formal, Domain => EW_Term, Local => True),
+                        Binders     => (1 .. 0 => <>),
+                        Labels      => Name_Id_Sets.Empty_Set,
+                        Return_Type => Typ));
+
+                  --  ??? What is the purpose of this insertion in the symbol
+                  --  table, and same question for function parameters below.
+
+                  Insert_Entity (Formal, To_Why_Id (Formal, Typ => Typ));
+
+                  Def :=
+                    (if Present (Actual) then
+                      +Transform_Identifier
+                        (Params, Actual, Actual, Domain => EW_Term)
+                     else
+                        +Transform_Expr (Par, EW_Term, Params));
+
+                  if Def /= Why_Empty then
+                     Emit
+                       (TFile.Cur_Theory,
+                        New_Defining_Axiom
+                          (Ada_Node    => Formal,
+                           Name        =>
+                         To_Why_Id (Formal, Domain => EW_Term, Local => True),
+                           Return_Type => Get_Base_Type (Typ),
+                           Binders     => (1 .. 0 => <>),
+                           Def         => Def));
+                  end if;
+
+                  Close_Theory (TFile,
+                                Kind => Definition_Theory,
+                                Defined_Entity => Formal);
+               end;
+
+            --  ??? The use of Full_Name_Is_Not_Unique_Name below does not
+            --  correspond to the description of this subprogram. Comment on
+            --  declaration of Full_Name_Is_Not_Unique_Name should be updated.
+
+            elsif Ekind (Formal) in Type_Kind and then
               not Full_Name_Is_Not_Unique_Name (Formal)
             then
 
@@ -1369,6 +1485,7 @@ package body Gnat2Why.External_Axioms is
 
    begin
       Register_External_Entities (Package_Entity);
+
       if List_Of_Entity.Is_Empty (G_Parents) then
          File_Append_To_Theories
            (TFile.File, New_Custom_Declaration
@@ -1405,4 +1522,5 @@ package body Gnat2Why.External_Axioms is
          end;
       end if;
    end Translate_Package_With_External_Axioms;
+
 end Gnat2Why.External_Axioms;
