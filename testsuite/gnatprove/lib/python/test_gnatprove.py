@@ -34,6 +34,8 @@ def run_testsuite(test_driver):
         os.environ["debug"] = "true"
     if options.verbose:
         os.environ["verbose"] = "true"
+    if options.inverse_prover:
+        os.environ["inverse_prover"] = "true"
 
     test_list = [t for t in filter_list('tests/*', options.run_test)
                  if os.path.isdir(t)]
@@ -84,6 +86,9 @@ def __parse_options():
                  default=False, help="output debugging information")
     m.add_option("--vc-timeout", dest="vc_timeout", action="store",
                  type="int", help="set timeout for prover")
+    m.add_option("--inverse-prover", dest="inverse_prover",
+                 action="store_true",
+                 default=False, help="inverse order of default provers")
     m.parse_args()
 
     if m.args:

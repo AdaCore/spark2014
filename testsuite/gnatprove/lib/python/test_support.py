@@ -39,6 +39,11 @@ def verbose_mode():
     return "verbose" in os.environ and os.environ["verbose"] == "true"
 
 
+def inverse_prover():
+    return "inverse_prover" in os.environ and\
+        os.environ["inverse_prover"] == "true"
+
+
 def vc_timeout():
     if "vc_timeout" in os.environ:
         return int(os.environ["vc_timeout"])
@@ -470,6 +475,8 @@ def prove(opt=None, steps=max_steps, procs=parallel_procs,
     fullopt += ["--steps=%d" % (steps)]
     fullopt += ["--mode=%s" % (mode)]
     fullopt += ["-j%d" % (procs)]
+    if inverse_prover():
+        fullopt += ["--prover=altergo,cvc4"]
     # Add opt last, so that it may include switch -cargs
     if opt is not None:
         fullopt += opt
