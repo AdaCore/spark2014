@@ -167,7 +167,7 @@ patience.ads:103:39: info: index check proved
 patience.ads:103:56: info: index check proved
 patience.ads:113:14: medium: postcondition might fail
 patience.ads:113:43: info: index check proved
-patience.ads:118:14: medium: postcondition might fail, requires Inv(PlayGame'result)
+patience.ads:118:14: info: postcondition proved
 test_patience.adb:9:07: warning: assuming "Put_Line" has no effect on global items
 test_patience.adb:9:07: warning: no Global contract available for "Put_Line"
 test_patience.adb:10:07: warning: assuming "Put" has no effect on global items

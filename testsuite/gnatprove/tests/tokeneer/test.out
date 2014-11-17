@@ -25,10 +25,10 @@ admin.ads:250:58: info: length check proved
 admin.ads:254:58: info: length check proved
 admintoken.adb:275:37: info: length check proved, in call inlined at admintoken.adb:366, in call inlined at admintoken.adb:502
 admintoken.adb:275:37: info: length check proved, in call inlined at admintoken.adb:369, in call inlined at admintoken.adb:502
-admintoken.adb:275:37: info: length check proved, in call inlined at admintoken.adb:476, in call inlined at admintoken.adb:504
 admintoken.adb:275:37: info: length check proved, in call inlined at admintoken.adb:479, in call inlined at admintoken.adb:504
 admintoken.adb:275:37: info: length check proved, in call inlined at admintoken.adb:482, in call inlined at admintoken.adb:504
 admintoken.adb:275:37: info: length check proved, in call inlined at admintoken.adb:524
+admintoken.adb:275:37: medium: length check might fail, in call inlined at admintoken.adb:476, in call inlined at admintoken.adb:504
 admintoken.adb:275:37: medium: length check might fail, in call inlined at admintoken.adb:512
 admintoken.adb:277:23: info: length check proved, in call inlined at admintoken.adb:366, in call inlined at admintoken.adb:502
 admintoken.adb:277:23: info: length check proved, in call inlined at admintoken.adb:369, in call inlined at admintoken.adb:502

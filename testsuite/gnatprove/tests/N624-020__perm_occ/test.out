@@ -2,9 +2,9 @@ perm.adb:9:07: medium: precondition might fail
 perm.adb:9:15: info: precondition proved
 perm.adb:9:32: info: precondition proved
 perm.adb:11:14: info: index check proved
-perm.adb:12:25: medium: assertion might fail, requires B (B'Last) = E
+perm.adb:12:10: info: assertion proved
 perm.adb:12:29: info: index check proved
-perm.adb:14:25: medium: assertion might fail, requires B (B'Last) /= E
+perm.adb:14:10: info: assertion proved
 perm.adb:14:29: info: index check proved
 perm.adb:21:15: info: index check proved
 perm.adb:33:10: info: precondition proved

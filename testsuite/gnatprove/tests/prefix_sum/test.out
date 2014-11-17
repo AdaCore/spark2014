@@ -134,7 +134,7 @@ prefixsum_expanded.adb:183:32: medium: range check might fail
 prefixsum_expanded.adb:184:29: info: index check proved
 prefixsum_expanded.adb:185:16: info: index check proved
 prefixsum_expanded.adb:185:29: info: index check proved
-prefixsum_expanded.adb:185:35: medium: overflow check might fail
+prefixsum_expanded.adb:185:35: info: overflow check proved
 prefixsum_expanded.adb:185:40: info: index check proved
 prefixsum_expanded.adb:186:16: info: index check proved
 prefixsum_expanded.adb:187:32: info: overflow check proved

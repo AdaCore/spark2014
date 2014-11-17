@@ -386,19 +386,19 @@ ar.ads:1378:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:1384:22: medium: postcondition might fail
 ar.ads:1392:22: info: postcondition proved
 ar.ads:1397:22: medium: postcondition might fail
-ar.ads:1402:22: info: postcondition proved
+ar.ads:1402:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:1407:22: medium: postcondition might fail
 ar.ads:1415:22: info: postcondition proved
 ar.ads:1420:22: info: postcondition proved
-ar.ads:1425:22: info: postcondition proved
+ar.ads:1425:22: medium: postcondition might fail, requires R = R'Old'update
 ar.ads:1430:22: info: postcondition proved
 ar.ads:1435:22: info: postcondition proved
 ar.ads:1440:22: info: postcondition proved
-ar.ads:1445:22: info: postcondition proved
+ar.ads:1445:22: medium: postcondition might fail, requires R = R'Old'update
 ar.ads:1450:22: info: postcondition proved
 ar.ads:1455:22: info: postcondition proved
 ar.ads:1460:22: info: postcondition proved
-ar.ads:1465:22: info: postcondition proved
+ar.ads:1465:22: medium: postcondition might fail, requires R = R'Old'update
 ar.ads:1470:22: info: postcondition proved
 ar.ads:1475:22: info: postcondition proved
 ar.ads:1481:22: info: postcondition proved
@@ -415,7 +415,7 @@ ar.ads:1536:22: info: postcondition proved
 ar.ads:1542:22: medium: postcondition might fail
 ar.ads:1548:22: medium: postcondition might fail
 ar.ads:1553:22: info: postcondition proved
-ar.ads:1558:22: info: postcondition proved
+ar.ads:1558:22: medium: postcondition might fail
 ar.ads:1563:22: medium: postcondition might fail, requires R = R'Old'update
 ar.ads:1563:73: info: range check proved
 ar.ads:1571:22: info: postcondition proved

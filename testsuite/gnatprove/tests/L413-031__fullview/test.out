@@ -2,7 +2,7 @@ int_list.adb:4:07: info: precondition proved
 int_list.adb:8:24: info: precondition proved
 int_list.adb:10:13: info: precondition proved
 int_list.adb:11:10: info: loop invariant initialization proved
-int_list.adb:11:10: medium: loop invariant might fail after first iteration
+int_list.adb:11:10: info: loop invariant preservation proved
 int_list.adb:12:13: info: precondition proved
 int_list.adb:13:13: info: precondition proved
 int_list.adb:13:26: info: precondition proved

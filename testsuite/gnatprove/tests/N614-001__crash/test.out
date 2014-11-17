@@ -21,9 +21,9 @@ part.adb:42:13: medium: precondition might fail, in call inlined at part.adb:72
 part.adb:42:13: medium: precondition might fail, in call inlined at part.adb:79
 part.adb:43:26: medium: range check might fail, in call inlined at part.adb:72
 part.adb:43:26: medium: range check might fail, in call inlined at part.adb:79
+part.adb:45:10: info: loop invariant initialization proved, in call inlined at part.adb:72
 part.adb:45:33: medium: loop invariant might fail after first iteration, requires Same_Set (A'Loop_Entry, A), in call inlined at part.adb:72
 part.adb:45:33: medium: loop invariant might fail after first iteration, requires Same_Set (A'Loop_Entry, A), in call inlined at part.adb:79
-part.adb:45:33: medium: loop invariant might fail in first iteration, requires Same_Set (A'Loop_Entry, A), in call inlined at part.adb:72
 part.adb:45:33: medium: loop invariant might fail in first iteration, requires Same_Set (A'Loop_Entry, A), in call inlined at part.adb:79
 part.adb:47:32: medium: overflow check might fail, in call inlined at part.adb:72
 part.adb:47:32: medium: overflow check might fail, in call inlined at part.adb:79
@@ -59,7 +59,7 @@ part.ads:51:50: medium: overflow check might fail
 part.ads:51:61: medium: overflow check might fail
 part.ads:54:45: medium: overflow check might fail
 part.ads:54:56: info: overflow check proved
-part.ads:56:16: medium: precondition might fail
+part.ads:56:16: info: precondition proved
 part.ads:56:29: info: range check proved
 part.ads:56:54: medium: overflow check might fail
 part.ads:56:65: info: overflow check proved

@@ -538,16 +538,11 @@ procedure Gnatprove is
       --
       --  * user-pat=trust
       --    trust the triggers we provide
-      --
-      --  * macros-quant
-      --    expand function definitions, and eliminate quantifiers, making
-      --    it possible to return sat on more queries (instead of unknown)
 
       Common_CVC4_Options : constant String :=
         "--lang=smt2 " &
         "--inst-when=full-last-call " &
-        "--user-pat=trust " &
-        "--macros-quant";
+        "--user-pat=trust";
 
       ------------------------------
       -- Generate_Altergo_Section --
@@ -599,9 +594,19 @@ procedure Gnatprove is
       ------------------------------
 
       procedure Generate_CVC4_CE_Section is
+         --  The CVC4 options explained.
+         --
+         --  * finite-model-find
+         --    resturn SAT on some quantified formulae
+         --
+         --  * macros-quant
+         --    expand function definitions, and eliminate quantifiers, making
+         --    it possible to return sat on more queries (instead of unknown)
+
          Command : constant String := "cvc4 " &
            Common_CVC4_Options &
-           " --finite-model-find";  -- return sat on some quantified formulas
+           " --macros-quant" &
+           " --finite-model-find";
       begin
          Start_Section ("prover");
          if Steps /= 0 then

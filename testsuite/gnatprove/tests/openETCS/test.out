@@ -117,7 +117,7 @@ step_function.adb:49:10: info: loop invariant initialization proved
 step_function.adb:49:10: info: loop invariant preservation proved
 step_function.adb:51:31: info: index check proved
 step_function.adb:53:34: info: index check proved
-step_function.adb:58:13: info: assertion proved
+step_function.adb:60:18: medium: assertion might fail, requires SFun.Step(j-1).Delimiter < SFun.Step(j).Delimiter
 step_function.adb:60:29: info: index check proved
 step_function.adb:60:55: info: index check proved
 step_function.adb:72:17: info: range check proved

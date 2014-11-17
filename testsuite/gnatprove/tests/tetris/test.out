@@ -111,7 +111,7 @@ tetris_functional.ads:200:49: info: range check proved
 tetris_functional.ads:201:49: info: range check proved
 tetris_functional.ads:202:49: info: range check proved
 tetris_functional.ads:203:66: info: range check proved
-tetris_functional.ads:209:14: medium: postcondition might fail, requires (Valid_Configuration)
+tetris_functional.ads:209:14: info: postcondition proved
 tetris_functional.ads:215:16: info: postcondition proved
 tetris_functional.ads:224:16: medium: postcondition might fail
 tetris_initial.adb:41:33: medium: array index check might fail
