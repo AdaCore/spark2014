@@ -11,7 +11,7 @@ x86.adb:16:44: info: division check proved
 x86.adb:16:44: info: range check proved
 x86.adb:17:22: medium: assertion might fail, requires Unsigned_32(XCX(0)) + (Unsigned_32(XCX(1)) * (2**8))) = (val rem 2**16
 x86.adb:18:61: info: division check proved
-x86.adb:19:22: medium: assertion might fail, requires Unsigned_32(XCX(2)) + (Unsigned_32(XCX(3)) * (2**8))) = ((val / (2**16)) rem 2**16
+x86.adb:19:07: info: assertion proved
 x86.adb:20:62: info: division check proved
 x86.adb:20:73: info: division check proved
 x86.adb:21:22: medium: assertion might fail, requires val rem 2**16) + (((val / (2**16)) rem 2**16) * 2**16) = val
@@ -35,7 +35,7 @@ x86.adb:47:44: info: division check proved
 x86.adb:47:44: info: range check proved
 x86.adb:48:22: medium: assertion might fail, requires Unsigned_32(XSI(0)) + (Unsigned_32(XSI(1)) * (2**8))) = (val rem 2**16
 x86.adb:49:61: info: division check proved
-x86.adb:50:22: medium: assertion might fail, requires Unsigned_32(XSI(2)) + (Unsigned_32(XSI(3)) * (2**8))) = ((val / (2**16)) rem 2**16
+x86.adb:50:07: info: assertion proved
 x86.adb:51:62: info: division check proved
 x86.adb:51:73: info: division check proved
 x86.adb:52:22: medium: assertion might fail, requires val rem 2**16) + (((val / (2**16)) rem 2**16) * 2**16) = val
@@ -59,7 +59,7 @@ x86.adb:78:44: info: division check proved
 x86.adb:78:44: info: range check proved
 x86.adb:79:22: medium: assertion might fail, requires Unsigned_32(XDI(0)) + (Unsigned_32(XDI(1)) * (2**8))) = (val rem 2**16
 x86.adb:80:61: info: division check proved
-x86.adb:81:22: medium: assertion might fail, requires Unsigned_32(XDI(2)) + (Unsigned_32(XDI(3)) * (2**8))) = ((val / (2**16)) rem 2**16
+x86.adb:81:07: info: assertion proved
 x86.adb:82:62: info: division check proved
 x86.adb:82:73: info: division check proved
 x86.adb:83:22: medium: assertion might fail, requires val rem 2**16) + (((val / (2**16)) rem 2**16) * 2**16) = val
@@ -83,7 +83,7 @@ x86.adb:129:54: info: division check proved
 x86.adb:129:54: info: range check proved
 x86.adb:130:22: medium: assertion might fail, requires Unsigned_32(Memory(addr)) + (Unsigned_32(Memory(addr + 1)) * (2**8))) = (val rem 2**16
 x86.adb:131:71: info: division check proved
-x86.adb:132:22: medium: assertion might fail, requires Unsigned_32(Memory(addr + 2)) + (Unsigned_32(Memory(addr + 3)) * (2**8))) = ((val / (2**16)) rem 2**16
+x86.adb:132:07: info: assertion proved
 x86.adb:133:72: info: division check proved
 x86.adb:133:83: info: division check proved
 x86.adb:134:22: medium: assertion might fail, requires val rem 2**16) + (((val / (2**16)) rem 2**16) * 2**16) = val

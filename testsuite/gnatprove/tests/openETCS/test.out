@@ -105,7 +105,7 @@ section_4_6.ads:107:55: info: contract case proved
 section_4_6.ads:108:55: info: contract case proved
 section_4_6.ads:109:14: info: postcondition proved
 step_function.adb:30:10: info: loop invariant initialization proved
-step_function.adb:31:35: medium: loop invariant might fail after first iteration, requires X >= SFun.Step(j).Delimiter
+step_function.adb:30:10: info: loop invariant preservation proved
 step_function.adb:31:50: info: index check proved
 step_function.adb:32:61: info: index check proved
 step_function.adb:32:61: info: overflow check proved
@@ -192,7 +192,7 @@ step_function.ads:46:24: info: overflow check proved
 step_function.ads:46:50: info: index check proved
 step_function.ads:52:23: info: index check proved
 step_function.ads:52:49: info: index check proved
-step_function.ads:56:12: medium: postcondition might fail, requires for some i in Num_Delimiters_Range'First..(SFun.Number_Of_Delimiters - 1) => (SFun.Step(i).Delimiter <= X and X < SFun.Step(i+1).Delimiter and Get_Value'Result = SFun.Step(i).Value)) or (X >= SFun.Step(SFun.Number_Of_Delimiters).Delimiter and Get_Value'Result = SFun.Step(SFun.Number_Of_Delimiters).Value
+step_function.ads:56:12: info: postcondition proved
 step_function.ads:58:27: info: index check proved
 step_function.ads:59:36: info: index check proved
 step_function.ads:60:50: info: index check proved

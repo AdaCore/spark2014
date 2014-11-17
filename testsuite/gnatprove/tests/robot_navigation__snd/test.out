@@ -77,8 +77,8 @@ algorithm.adb:309:16: medium: precondition might fail
 algorithm.adb:318:20: info: precondition proved
 algorithm.adb:320:10: info: precondition proved
 algorithm.adb:321:76: info: precondition proved
-algorithm.adb:323:13: medium: loop invariant might fail after first iteration
-algorithm.adb:323:13: medium: loop invariant might fail in first iteration
+algorithm.adb:323:13: info: loop invariant initialization proved
+algorithm.adb:323:13: info: loop invariant preservation proved
 algorithm.adb:324:35: info: precondition proved
 algorithm.adb:325:35: info: precondition proved
 algorithm.adb:326:44: info: precondition proved

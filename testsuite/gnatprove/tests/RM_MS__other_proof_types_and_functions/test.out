@@ -56,7 +56,7 @@ stack_functional_spec.ads:71:21: info: postcondition proved
 stack_functional_spec.ads:72:25: info: precondition proved
 stack_functional_spec.ads:74:24: info: precondition proved
 stack_functional_spec.ads:74:49: info: precondition proved
-stack_functional_spec.ads:83:21: medium: postcondition might fail
+stack_functional_spec.ads:83:21: info: postcondition proved
 stack_functional_spec.ads:84:21: info: precondition proved
 stack_functional_spec.ads:85:24: info: precondition proved
 stack_functional_spec.ads:85:62: info: range check proved

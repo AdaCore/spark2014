@@ -527,10 +527,27 @@ procedure Gnatprove is
       procedure Generate_CVC4_Section;
       procedure Generate_CVC4_CE_Section;
 
+      --  The CVC4 options explained.
+      --
+      --  * lang=smt2
+      --    we process SMTLIB2
+      --
+      --  * inst-when=full-last-call
+      --    interleaves theory combination with quantifier instantiation,
+      --    which can avoid matching loops (might return unsat faster)
+      --
+      --  * user-pat=trust
+      --    trust the triggers we provide
+      --
+      --  * macros-quant
+      --    expand function definitions, and eliminate quantifiers, making
+      --    it possible to return sat on more queries (instead of unknown)
+
       Common_CVC4_Options : constant String :=
-        "--lang=smt2 " &       --  we process SMTLIB2
-        "--user-pat=trust " &  --  trust the triggers we provide
-        "--macros-quant";      --  expand function definitions, and elim quant
+        "--lang=smt2 " &
+        "--inst-when=full-last-call " &
+        "--user-pat=trust " &
+        "--macros-quant";
 
       ------------------------------
       -- Generate_Altergo_Section --

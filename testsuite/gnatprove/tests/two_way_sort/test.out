@@ -13,7 +13,7 @@ p1.adb:25:13: info: range check proved
 p1.adb:26:13: info: range check proved
 p1.adb:28:10: info: loop variant proved
 p1.adb:29:10: info: loop invariant initialization proved
-p1.adb:29:10: medium: loop invariant might fail after first iteration
+p1.adb:29:10: info: loop invariant preservation proved
 p1.adb:32:62: info: index check proved
 p1.adb:33:57: info: index check proved
 p1.adb:34:19: info: index check proved

@@ -50,8 +50,8 @@ test_vdll.adb:60:57: info: precondition proved
 test_vdll.adb:61:19: info: precondition proved
 test_vdll.adb:61:19: medium: assertion might fail, requires Find (L1, 4, No_Element) = Last (L1)
 test_vdll.adb:61:47: info: precondition proved
+test_vdll.adb:62:04: info: assertion proved
 test_vdll.adb:62:19: info: precondition proved
-test_vdll.adb:62:19: medium: assertion might fail, requires Find (L1, 3, No_Element) = Previous (L1, Last (L1)
 test_vdll.adb:62:47: info: precondition proved
 test_vdll.adb:62:61: info: precondition proved
 test_vdll.adb:65:19: info: precondition proved
@@ -86,14 +86,14 @@ test_vdll.adb:82:19: info: precondition proved
 test_vdll.adb:82:19: medium: assertion might fail, requires Find (L3, 3, No_Element) = Next (L3, First (L3)
 test_vdll.adb:82:47: info: precondition proved
 test_vdll.adb:82:57: info: precondition proved
+test_vdll.adb:83:04: info: assertion proved
 test_vdll.adb:83:19: info: precondition proved
-test_vdll.adb:83:19: medium: assertion might fail, requires Find (L3, 3, No_Element) = Last (L3)
 test_vdll.adb:83:46: info: precondition proved
+test_vdll.adb:84:04: info: assertion proved
 test_vdll.adb:84:19: info: precondition proved
-test_vdll.adb:84:19: medium: assertion might fail, requires Find (L3, 1, No_Element) = First (L3)
 test_vdll.adb:84:47: info: precondition proved
+test_vdll.adb:85:04: info: assertion proved
 test_vdll.adb:85:19: info: precondition proved
-test_vdll.adb:85:19: medium: assertion might fail, requires Find (L3, 1, No_Element) = Previous (L3, Last (L3)
 test_vdll.adb:85:46: info: precondition proved
 test_vdll.adb:85:60: info: precondition proved
 test_vdll.adb:88:19: info: precondition proved

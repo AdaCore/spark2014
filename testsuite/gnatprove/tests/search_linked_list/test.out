@@ -15,7 +15,7 @@ lists.ads:10:51: info: contract case proved
 lists.ads:10:58: info: precondition proved
 lists.ads:11:10: info: precondition proved
 lists.ads:11:30: info: precondition proved
-lists.ads:11:51: medium: contract case might fail
+lists.ads:11:51: info: contract case proved
 lists.ads:11:54: info: precondition proved
 lists.ads:12:21: info: precondition proved
 lists.ads:12:35: info: precondition proved

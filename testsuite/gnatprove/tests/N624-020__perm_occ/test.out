@@ -7,7 +7,7 @@ perm.adb:12:29: info: index check proved
 perm.adb:14:25: medium: assertion might fail, requires B (B'Last) /= E
 perm.adb:14:29: info: index check proved
 perm.adb:21:15: info: index check proved
-perm.adb:33:10: medium: precondition might fail
+perm.adb:33:10: info: precondition proved
 perm.adb:33:18: info: precondition proved
 perm.adb:33:35: info: precondition proved
 perm.adb:33:48: info: precondition proved
@@ -71,7 +71,7 @@ sort.adb:48:20: info: range check proved
 sort.adb:50:38: info: index check proved
 sort.adb:51:20: info: range check proved
 sort.adb:53:10: info: loop invariant initialization proved
-sort.adb:53:10: medium: loop invariant might fail after first iteration
+sort.adb:53:10: info: loop invariant preservation proved
 sort.adb:56:28: info: index check proved
 sort.adb:56:44: info: index check proved
 sort.adb:68:17: warning: subprogram "Prove_Swap_Perm" has no effect
@@ -86,7 +86,7 @@ sort.adb:76:13: info: precondition proved
 sort.adb:76:22: info: precondition proved
 sort.adb:76:46: info: index check proved
 sort.adb:76:62: info: index check proved
-sort.adb:77:13: medium: precondition might fail
+sort.adb:77:13: info: precondition proved
 sort.adb:77:27: info: precondition proved
 sort.adb:77:32: info: precondition proved
 sort.adb:77:56: info: index check proved
@@ -101,7 +101,7 @@ sort.adb:94:22: warning: unused assignment
 sort.adb:94:25: info: length check proved
 sort.adb:96:13: info: precondition proved
 sort.adb:97:29: info: range check proved
-sort.adb:101:13: medium: precondition might fail
+sort.adb:101:13: info: precondition proved
 sort.adb:101:13: warning: statement has no effect
 sort.adb:101:48: info: range check proved
 sort.adb:101:57: info: range check proved

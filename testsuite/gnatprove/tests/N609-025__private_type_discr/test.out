@@ -28,7 +28,7 @@ record_discr.ads:22:14: info: postcondition proved
 record_discr.ads:22:46: info: index check proved
 record_discr.ads:22:46: info: precondition proved
 record_discr.ads:23:50: info: index check proved
-record_discr.ads:26:14: medium: postcondition might fail
+record_discr.ads:26:14: info: postcondition proved
 record_discr.ads:27:18: info: precondition proved
 record_discr.ads:28:32: info: discriminant check proved
 record_discr.ads:28:44: info: index check proved

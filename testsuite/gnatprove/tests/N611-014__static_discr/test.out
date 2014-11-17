@@ -99,7 +99,7 @@ static_discr.adb:82:10: info: assertion proved
 static_discr.adb:82:36: info: discriminant check proved
 static_discr.adb:82:44: info: discriminant check proved
 static_discr.adb:91:26: info: discriminant check proved
-static_discr.adb:92:19: medium: postcondition might fail
+static_discr.adb:92:19: info: postcondition proved
 static_discr.adb:92:26: info: discriminant check proved
 static_discr.adb:92:34: info: discriminant check proved
 static_discr.adb:92:56: info: discriminant check proved

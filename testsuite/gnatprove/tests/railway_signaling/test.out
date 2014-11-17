@@ -6,7 +6,7 @@ trains.adb:33:10: info: loop invariant initialization proved
 trains.adb:33:10: info: loop invariant preservation proved
 trains.adb:35:47: info: index check proved
 trains.adb:57:10: info: assertion proved
-trains.adb:58:10: info: assertion proved
+trains.adb:58:25: medium: assertion might fail, requires (Previous_Tracks_On_Orange_Or_Red)
 trains.adb:59:10: info: assertion proved
 trains.adb:65:25: medium: assertion might fail, requires (Previous_Tracks_On_Orange_Or_Red)
 trains.adb:72:25: medium: assertion might fail, requires (Occupied_Tracks_On_Red)
@@ -32,7 +32,7 @@ trains.adb:113:10: info: assertion proved
 trains.adb:136:45: info: index check proved
 trains.adb:138:37: info: index check proved
 trains.adb:141:19: info: loop invariant initialization proved
-trains.adb:141:19: medium: loop invariant might fail after first iteration
+trains.adb:141:19: info: loop invariant preservation proved
 trains.adb:143:68: info: range check proved
 trains.adb:144:42: info: index check proved
 trains.adb:144:82: info: range check proved

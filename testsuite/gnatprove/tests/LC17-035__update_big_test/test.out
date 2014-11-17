@@ -402,7 +402,7 @@ ar.ads:1465:22: info: postcondition proved
 ar.ads:1470:22: info: postcondition proved
 ar.ads:1475:22: info: postcondition proved
 ar.ads:1481:22: info: postcondition proved
-ar.ads:1487:22: info: postcondition proved
+ar.ads:1487:22: medium: postcondition might fail, requires R = R'Old'update
 ar.ads:1493:22: info: postcondition proved
 ar.ads:1498:22: info: postcondition proved
 ar.ads:1503:22: info: postcondition proved

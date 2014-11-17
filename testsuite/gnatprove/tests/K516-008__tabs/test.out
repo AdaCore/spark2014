@@ -1,5 +1,5 @@
 tab.adb:6:49: medium: range check might fail
-tab.adb:9:10: medium: loop invariant might fail after first iteration
+tab.adb:9:10: info: loop invariant preservation proved
 tab.adb:9:10: medium: loop invariant might fail in first iteration
 tab.adb:10:21: info: range check proved
 tab.adb:11:22: info: index check proved

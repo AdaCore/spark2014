@@ -43,7 +43,7 @@ arr_aggregate.ads:24:69: info: index check proved
 arr_aggregate.ads:27:69: info: index check proved
 arr_aggregate.ads:28:77: info: index check proved
 arr_aggregate.ads:32:14: info: postcondition proved
-arr_aggregate.ads:37:14: medium: postcondition might fail
+arr_aggregate.ads:37:14: info: postcondition proved
 arr_aggregate.ads:45:14: medium: postcondition might fail
 arr_aggregate.ads:45:40: info: length check proved
 arr_aggregate.ads:45:50: info: length check proved
