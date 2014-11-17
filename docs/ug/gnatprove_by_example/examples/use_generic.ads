@@ -1,4 +1,5 @@
 with Exclude_Generic_Unit_Body;
+pragma Elaborate_All (Exclude_Generic_Unit_Body);
 
 package Use_Generic with
   SPARK_Mode => On
