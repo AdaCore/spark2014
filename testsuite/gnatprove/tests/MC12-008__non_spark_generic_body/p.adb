@@ -1,4 +1,5 @@
 with G;
+pragma Elaborate_All(G);
 with G2;
 package body P
   with SPARK_Mode => On

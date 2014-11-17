@@ -46,8 +46,8 @@ deceleration_curve.adb:110:10: warning: no Global contract available for "Put"
 deceleration_curve.adb:111:12: medium: precondition might fail
 deceleration_curve.adb:112:10: warning: assuming "New_Line" has no effect on global items
 deceleration_curve.adb:112:10: warning: no Global contract available for "New_Line"
-deceleration_curve.ads:27:06: info: precondition proved
-deceleration_curve.ads:84:14: warning: subprogram "Print_Curve" has no effect
+deceleration_curve.ads:28:06: info: precondition proved
+deceleration_curve.ads:85:14: warning: subprogram "Print_Curve" has no effect
 deceleration_curve_test.adb:6:31: info: precondition proved
 deceleration_curve_test.adb:15:19: medium: assertion might fail, requires Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000
 deceleration_curve_test.adb:15:19: medium: precondition might fail
@@ -59,17 +59,17 @@ sec_3_13_2_monitoring_inputs.adb:31:27: info: precondition proved
 sec_3_13_2_monitoring_inputs.adb:32:61: medium: range check might fail
 sec_3_13_2_monitoring_inputs.adb:37:27: info: precondition proved
 sec_3_13_2_monitoring_inputs.adb:38:61: medium: range check might fail
-sec_3_13_2_monitoring_inputs.ads:70:15: info: length check proved
-sec_3_13_2_monitoring_inputs.ads:164:15: info: length check proved
-sec_3_13_2_monitoring_inputs.ads:169:15: info: length check proved
-sec_3_13_2_monitoring_inputs.ads:183:08: info: postcondition proved
-sec_3_13_2_monitoring_inputs.ads:184:24: info: precondition proved
-sec_3_13_2_monitoring_inputs.ads:185:58: info: range check proved
-sec_3_13_2_monitoring_inputs.ads:199:08: info: postcondition proved
-sec_3_13_2_monitoring_inputs.ads:200:24: info: precondition proved
-sec_3_13_2_monitoring_inputs.ads:201:58: info: range check proved
-sec_3_13_2_monitoring_inputs.ads:243:46: info: precondition proved
-sec_3_13_2_monitoring_inputs.ads:247:14: warning: subprogram "Dummy" has no effect
+sec_3_13_2_monitoring_inputs.ads:71:15: info: length check proved
+sec_3_13_2_monitoring_inputs.ads:165:15: info: length check proved
+sec_3_13_2_monitoring_inputs.ads:170:15: info: length check proved
+sec_3_13_2_monitoring_inputs.ads:184:08: info: postcondition proved
+sec_3_13_2_monitoring_inputs.ads:185:24: info: precondition proved
+sec_3_13_2_monitoring_inputs.ads:186:58: info: range check proved
+sec_3_13_2_monitoring_inputs.ads:200:08: info: postcondition proved
+sec_3_13_2_monitoring_inputs.ads:201:24: info: precondition proved
+sec_3_13_2_monitoring_inputs.ads:202:58: info: range check proved
+sec_3_13_2_monitoring_inputs.ads:244:46: info: precondition proved
+sec_3_13_2_monitoring_inputs.ads:248:14: warning: subprogram "Dummy" has no effect
 sec_3_13_4_gradient_accel_decel.ads:26:24: warning: unused variable "D"
 sec_3_13_6_deceleration.adb:26:37: info: precondition proved
 sec_3_13_6_deceleration.adb:26:37: medium: range check might fail

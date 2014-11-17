@@ -1,4 +1,5 @@
 with P;
+pragma Elaborate_All(P);
 package Q is 
 
    function QF1 (J : Integer) return Integer;

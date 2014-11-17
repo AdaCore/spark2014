@@ -1,4 +1,5 @@
 with Generic_Interval_Tests;
+pragma Elaborate_All(Generic_Interval_Tests);
 
 package Bar
   with SPARK_Mode

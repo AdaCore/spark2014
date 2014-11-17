@@ -1,4 +1,5 @@
 with Init;
+pragma Elaborate_All(Init);
 
 package Initializes_Illegal
   with SPARK_Mode,

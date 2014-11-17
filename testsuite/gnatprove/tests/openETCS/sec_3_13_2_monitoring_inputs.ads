@@ -21,6 +21,7 @@
 -- Reference: UNISIG SUBSET-026-3 v3.3.0
 
 with Units; use Units;
+pragma Elaborate_All(Units);
 with Step_Function; use Step_Function;
 
 package sec_3_13_2_monitoring_inputs is pragma SPARK_Mode (On);

@@ -1,1 +1,1 @@
-p.ads:9:14: warning: subprogram "P" has no effect, in instantiation at gentyp.ads:3
+p.ads:9:14: warning: subprogram "P" has no effect, in instantiation at gentyp.ads:4

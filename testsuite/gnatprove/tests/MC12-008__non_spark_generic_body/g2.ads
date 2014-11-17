@@ -1,4 +1,5 @@
 with G;
+pragma Elaborate_All(G);
 with P;
 --  This instantiation fails because the body of G contains
 --  non-SPARK constructs.

@@ -1,4 +1,5 @@
 with Generic_Float_Tests;
+pragma Elaborate_All(Generic_Float_Tests);
 
 package Foo
   with SPARK_Mode

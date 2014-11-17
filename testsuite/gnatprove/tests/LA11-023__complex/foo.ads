@@ -14,6 +14,7 @@
 ------------------------------------------------------------------------------
 
 with Bar;
+pragma Elaborate_All(Bar);
 
 package Foo is 
    new Bar (Float);

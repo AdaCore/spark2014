@@ -1,6 +1,7 @@
 pragma SPARK_Mode(On);
 
 with Double_List;
+pragma Elaborate_All(Double_List);
 
 package body List_Handler
    with
