@@ -1,4 +1,5 @@
 with Remote; use Remote;
+pragma Elaborate_All(Remote);
 
 package body Initialize_Remote_Stuff
   with SPARK_Mode

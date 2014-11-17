@@ -1,7 +1,7 @@
-initialize_remote_stuff.adb:17:08: cannot write "Var" during elaboration of "Initialize_Remote_Stuff" (SPARK RM 7.7.1(5))
-initialize_remote_stuff.adb:18:04: cannot write "Remote.State" during elaboration of "Initialize_Remote_Stuff" (SPARK RM 7.7.1(5))
-initialize_remote_stuff.adb:19:04: cannot write "Var" during elaboration of "Initialize_Remote_Stuff" (SPARK RM 7.7.1(5))
-initialize_remote_stuff.adb:20:04: cannot write "Remote.State" during elaboration of "Initialize_Remote_Stuff" (SPARK RM 7.7.1(5))
+initialize_remote_stuff.adb:18:08: cannot write "Var" during elaboration of "Initialize_Remote_Stuff" (SPARK RM 7.7.1(5))
+initialize_remote_stuff.adb:19:04: cannot write "Remote.State" during elaboration of "Initialize_Remote_Stuff" (SPARK RM 7.7.1(5))
+initialize_remote_stuff.adb:20:04: cannot write "Var" during elaboration of "Initialize_Remote_Stuff" (SPARK RM 7.7.1(5))
+initialize_remote_stuff.adb:21:04: cannot write "Remote.State" during elaboration of "Initialize_Remote_Stuff" (SPARK RM 7.7.1(5))
    compilation of initialize_remote_stuff.adb failed
 
 
