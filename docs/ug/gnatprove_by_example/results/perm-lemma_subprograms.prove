@@ -7,7 +7,7 @@ perm-lemma_subprograms.adb:12:29: info: index check proved
 perm-lemma_subprograms.adb:14:10: info: assertion proved
 perm-lemma_subprograms.adb:14:29: info: index check proved
 perm-lemma_subprograms.adb:21:15: info: index check proved
-perm-lemma_subprograms.adb:33:10: medium: precondition might fail
+perm-lemma_subprograms.adb:33:10: info: precondition proved
 perm-lemma_subprograms.adb:33:18: info: precondition proved
 perm-lemma_subprograms.adb:33:35: info: precondition proved
 perm-lemma_subprograms.adb:33:48: info: precondition proved
@@ -23,7 +23,7 @@ perm-lemma_subprograms.ads:9:14: info: postcondition proved
 perm-lemma_subprograms.ads:10:27: info: index check proved
 perm-lemma_subprograms.ads:12:46: info: index check proved
 perm-lemma_subprograms.ads:12:54: info: index check proved
-perm-lemma_subprograms.ads:17:08: medium: postcondition might fail
+perm-lemma_subprograms.ads:17:08: info: postcondition proved
 perm-lemma_subprograms.ads:17:19: info: index check proved
 perm-lemma_subprograms.ads:17:32: info: precondition proved
 perm-lemma_subprograms.ads:18:31: info: precondition proved

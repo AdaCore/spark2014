@@ -56,7 +56,7 @@ sort.adb:94:22: info: length check proved
 sort.adb:94:25: info: length check proved
 sort.adb:96:13: info: precondition proved
 sort.adb:97:29: info: range check proved
-sort.adb:101:13: medium: precondition might fail
+sort.adb:101:13: info: precondition proved
 sort.adb:101:48: info: range check proved
 sort.adb:101:57: info: range check proved
 sort.adb:106:31: info: overflow check proved
