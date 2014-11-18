@@ -487,7 +487,7 @@ Some are expanded in subsequent sections within this chapter.
 
 - |SPARK| shall support entities which do not affect the functionality of
   a program but may be used in the test and verification of a program.
-  See section :ref:`ghost_entities`.
+  See section :ref:`Adding Code for Specification and Verification`.
 
 - |SPARK| shall provide counterparts of all language features and
   analysis modes provided in SPARK 83/95/2005, unless it has been
@@ -761,10 +761,10 @@ must satisfy the following conditions:
   subprogram is called.  The proof of the called subprogram relies on
   its precondition evaluating to True.
 
-.. _ghost_entities:
+.. _Adding Code for Specification and Verification:
 
-Ghost Entities
-~~~~~~~~~~~~~~
+Adding Code for Specification and Verification
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Often extra entities, such as types, variables and functions may be required
 only for test and verification purposes. Such entities are termed *ghost*
