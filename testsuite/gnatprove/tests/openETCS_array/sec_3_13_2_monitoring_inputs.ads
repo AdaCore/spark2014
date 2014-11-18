@@ -20,7 +20,7 @@
 
 -- Reference: UNISIG SUBSET-026-3 v3.3.0
 
-with Units; use Units;
+with Units; use Units; pragma Elaborate_All (Units);
 with Step_Function; use Step_Function;
 
 package sec_3_13_2_monitoring_inputs is pragma SPARK_Mode (On);
@@ -246,4 +246,3 @@ package sec_3_13_2_monitoring_inputs is pragma SPARK_Mode (On);
    -- all sections of 3.13.2.3 not formalized
    procedure dummy;
 end sec_3_13_2_monitoring_inputs;
-

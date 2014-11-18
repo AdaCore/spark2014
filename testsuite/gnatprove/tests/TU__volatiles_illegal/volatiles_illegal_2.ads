@@ -1,5 +1,5 @@
 with System.Storage_Elements;
-with Volatiles_Illegal_Helper;
+with Volatiles_Illegal_Helper; pragma Elaborate_All (Volatiles_Illegal_Helper);
 
 package Volatiles_Illegal_2
   --  TU: 3. A property may be explicitly given the value False [for instance

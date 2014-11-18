@@ -18,7 +18,7 @@
 --  See the Licence for the specific language governing permissions and
 --  limitations under the Licence.
 
-with Units; use Units;
+with Units; use Units; pragma Elaborate_All (Units);
 
 package Deceleration_Curve is pragma SPARK_Mode (On);
    Distance_Resolution : constant Distance_t := 5; -- m
