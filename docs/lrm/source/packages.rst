@@ -2724,10 +2724,6 @@ are imposed in |SPARK| which have the following consequences:
    :language: ada
    :linenos:
 
-.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/p.ads
-   :language: ada
-   :linenos:
-
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/initialization_and_elaboration.ads
    :language: ada
    :linenos:
