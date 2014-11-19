@@ -6,7 +6,7 @@ sorted_vectors.adb:11:10: info: loop invariant preservation proved
 sorted_vectors.adb:12:24: info: precondition proved
 sorted_vectors.adb:13:13: info: precondition proved
 sorted_vectors.adb:13:42: info: range check proved
-sorted_vectors.adb:14:31: info: range check proved
+sorted_vectors.adb:14:31: medium: range check might fail
 sorted_vectors.adb:19:07: info: precondition proved
 sorted_vectors.ads:25:14: info: precondition proved
 sorted_vectors.ads:27:08: medium: postcondition might fail
