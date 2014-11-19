@@ -1,5 +1,5 @@
 pragma SPARK_Mode(On);
-with P;
+with P; pragma Elaborate_All (P);
 package Try_Init_1
    with Initializes => (C => P.V)
 is

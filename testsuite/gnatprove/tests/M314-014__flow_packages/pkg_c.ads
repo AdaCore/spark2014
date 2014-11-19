@@ -1,4 +1,4 @@
-with Other;
+with Other; pragma Elaborate_All (Other);
 
 package Pkg_C
   with Abstract_State => (State_A, State_B, State_C),

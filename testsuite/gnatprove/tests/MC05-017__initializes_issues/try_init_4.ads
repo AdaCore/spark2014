@@ -1,5 +1,5 @@
 pragma SPARK_Mode(On);
-with P;
+with P; pragma Elaborate_All (P);
 package Try_Init_4
    with Abstract_State => (X, Y),
         Initializes => (X,

@@ -1,4 +1,4 @@
-with Other;
+with Other; pragma Elaborate_All (Other);
 
 package Pkg_D
 with Initializes => (X => Other.X,

@@ -1,5 +1,5 @@
 pragma SPARK_Mode(On);
-with P;
+with P; pragma Elaborate_All (P);
 package Try_Init_5
    with Initializes => (Not_Used => P.V)
 is
