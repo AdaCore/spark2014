@@ -2355,7 +2355,7 @@ global variables discussed later in this section.
    spec or body L2, the elaboration of the body of L1 is said to be
    *known to precede* the elaboration of L2 if either:
 
-   a. L2 references L1 in an Elaborate_All pragma; or
+   a. L2 references L1 in an Elaborate or Elaborate_All pragma; or
 
    b. L1's Elaborate_Body aspect is True; or
 
@@ -2363,10 +2363,6 @@ global variables discussed later in this section.
       case because L1 has no body); or
 
    d. L1 is preelaborable and L2's library unit is not.
-
-   [If Elaborate pragmas were in |SPARK| then this list would also include the
-   case where L2 references L1 in an Elaborate pragma, but they aren't so it
-   doesn't - see below.]
 
 .. _etu-elaboration_issues-ss:
 
@@ -2536,17 +2532,6 @@ global variables discussed later in this section.
 11. For an instantiation of a generic which does not occur in the same
     compilation unit as the generic body, the rules are as described
     in the GNAT Pro User's Guide passage quoted above.
-
-.. _tu-nt-elaboration_issues-12:
-
-12. Elaborate pragmas are not in |SPARK|.
-    [This rule is needed only because of a detail of GNAT's static
-    elaboration model described in section C.7 of the GNAT Pro
-    User's Guide. GNAT allows using a Elaborate pragma instead of
-    an Elaborate_All pragma at some points where the latter is needed
-    to ensure the absence of access-before-elaboration problems; this is
-    too permissive for |SPARK|, so Elaborate pragmas are disallowed.
-    This rule may be relaxed at some point in the future.]
 
 .. _etu-elaboration_issues-lr:
 

@@ -26,7 +26,7 @@ Default_Storage_Pool   	      No		     No access types
 Detect_Blocking	  	      No		     No tasking
 Discard_Names 	  	      No
 Dispatching_Domain 	      No		     No tasking
-Elaborate          	      No
+Elaborate          	      Yes
 Elaborate_All      	      Yes
 Elaborate_Body     	      Yes
 Export             	      Yes
