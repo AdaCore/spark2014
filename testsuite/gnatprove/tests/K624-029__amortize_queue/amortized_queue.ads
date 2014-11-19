@@ -11,7 +11,7 @@ package Amortized_Queue is pragma SPARK_Mode (On);
      (I1 = I2);
 
    package My_Vectors is new Ada.Containers.Formal_Vectors
-     (Index, Val, Eq);
+     (Index, Val, Eq, True);
    use My_Vectors;
 
    function "&" (Left, Right : Vector) return Vector;
