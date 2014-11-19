@@ -1,3 +1,4 @@
+pragma SPARK_Mode(Off);
 with List; use List;
 with Text_IO; use Text_IO;
 procedure Main is

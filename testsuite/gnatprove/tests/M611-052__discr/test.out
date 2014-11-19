@@ -19,17 +19,16 @@ list.adb:22:68: info: range check proved
 list.adb:22:73: info: precondition proved
 list.adb:22:85: info: precondition proved
 list.adb:22:104: info: range check proved
+list.ads:12:14: info: postcondition proved
 list.ads:12:28: info: precondition proved
 list.ads:12:47: info: precondition proved
-list.ads:13:17: medium: postcondition might fail, requires Element (L, I) = Element (Reverse_List'Result, Last_Index (L) - I + 1)
-list.ads:13:17: medium: precondition might fail
-list.ads:13:29: medium: range check might fail
+list.ads:13:17: info: precondition proved
+list.ads:13:29: info: range check proved
 list.ads:13:34: medium: precondition might fail
 list.ads:13:64: info: precondition proved
-list.ads:13:79: medium: overflow check might fail
-list.ads:13:83: medium: overflow check might fail
-list.ads:13:83: medium: range check might fail
-main.adb:16:38: attribute "Img" is not permitted in SPARK
+list.ads:13:79: info: overflow check proved
+list.ads:13:83: info: overflow check proved
+list.ads:13:83: info: range check proved
 stack.adb:4:47: info: discriminant check proved
 stack.adb:4:47: info: length check proved
 stack.adb:4:47: info: range check proved
@@ -52,11 +51,7 @@ stack.adb:21:19: info: index check proved
 stack.adb:32:08: info: discriminant check proved
 stack.adb:32:17: info: discriminant check proved
 stack.adb:32:22: info: range check proved
+stack.ads:23:14: info: precondition proved
 stack.ads:23:14: medium: postcondition might fail
-stack.ads:23:14: medium: precondition might fail
-stack.ads:27:14: medium: postcondition might fail, requires To_But_Top (S'old) = To (S)
+stack.ads:27:14: info: postcondition proved
 stack.ads:40:49: info: discriminant check proved
-   compilation of main.adb failed
-
-
-gnatprove: error during flow analysis and proof
