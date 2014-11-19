@@ -116,7 +116,7 @@ is
       pragma Assert (First_To_Previous (V, 2) = Current_To_Last (V, 2));
 
       --  Capacity of unbounded vector should not be known for sure here
-      pragma Assert (Capacity (V) = 5);  --  @ASSERT:FAIL
+      pragma Assert (Capacity (V) = 10);  --  @ASSERT:FAIL
 
       pragma Check (Only_For_Proof, False);  --  @ASSERT:FAIL check absence of inconsistency
    end Test;
