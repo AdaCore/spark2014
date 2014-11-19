@@ -9,6 +9,13 @@ prove_all(steps=1000, opt=["-u", "bounded.adb", "unbounded.adb"])
 # IN THOSE TESTS AT THIS POINT
 # "indefinite_bounded.adb", "indefinite_unbounded.adb"
 
+# ADD ALSO THE TESTS BELOW AFTER THE ABOVE AND NB19-034 ARE FIXED, AND REPLACE
+#   @ ASSERT:FAIL
+# BY
+#   @ASSERT:FAIL
+# IN THOSE TESTS AT THIS POINT
+# "indefinite_bounded_tagged.adb", "indefinite_unbounded_tagged.adb"
+
 # COMMENTED OUT UNTIL NB18-035 IS FIXED
 #call(["gnatmake", "-gnata", "-q", "test_vectors.adb"])
 #call(["./test_vectors"])
