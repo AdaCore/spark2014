@@ -327,10 +327,19 @@ package body Gnat2Why.External_Axioms is
       begin
          while Present (CurAssoc) loop
             declare
-               Actual : constant Entity_Id :=
+               Actual : Entity_Id :=
                  Entity (Explicit_Generic_Actual_Parameter (CurAssoc));
                Formal : constant Entity_Id := Defining_Entity (CurLabs);
+
             begin
+               --  Classwide types are represented by their underlying tagged
+               --  type. This matters here as we're using the name of the
+               --  actual type in the include declaration.
+
+               if Ekind (Actual) in E_Class_Wide_Type | E_Class_Wide_Subtype
+               then
+                  Actual := Corresponding_Tagged (Actual);
+               end if;
 
                if Ekind (Formal) in Type_Kind then
 
