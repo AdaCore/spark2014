@@ -8,6 +8,12 @@
    the modules for formal parameters and the modules of the enclosing instance of
    Ada.Containers.Formal_Vectors. There is one module for each public subprogram defined
    in the Ada unit. The order of modules follows the order of declarations in the Ada spec.
+
+   IMPORTANT NOTE: currently, the file
+     ada__containers__formal_indefinite_vectors__generic_sorting.mlw
+   is the same as this one, where "formal_vectors" has been replaced with "formal_indefinite_vectors".
+   The two should be kept synchronized until a better mechanism is used for sharing common
+   theories.
 *)
 
 module Ada__containers__formal_vectors__generic_sorting__is_sorted

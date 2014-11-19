@@ -1,0 +1,63 @@
+(* This is the definition of generic modules for the translation in Why3 of instances of
+   Ada.Containers.Formal_Indefinite_Vectors.Generic_Sorting
+
+   GNATprove generates first a module for the instance formal parameter for function "<":
+     module ada__containers__formal_indefinite_vectors__generic_sorting__olt
+
+   GNATprove then specializes every module in this file for the given instance, based on
+   the modules for formal parameters and the modules of the enclosing instance of
+   Ada.Containers.Formal_Indefinite_Vectors. There is one module for each public subprogram
+   defined in the Ada unit. The order of modules follows the order of declarations in the
+   Ada spec.
+
+   IMPORTANT NOTE: currently, this file is the same as
+     ada__containers__formal_vectors__generic_sorting.mlw,
+   where "formal_vectors" has been replaced with "formal_indefinite_vectors". The two should
+   be kept synchronized until a better mechanism is used for sharing common theories.
+*)
+
+module Ada__containers__formal_indefinite_vectors__generic_sorting__is_sorted
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use        "ada__containers__formal_indefinite_vectors__args".Ada__containers__formal_indefinite_vectors__element_type
+  use import "ada__containers__formal_indefinite_vectors".Ada__containers__formal_indefinite_vectors__vector
+  use import "ada__containers__formal_indefinite_vectors".Ada__containers__formal_indefinite_vectors__length
+  use import "ada__containers__formal_indefinite_vectors".Ada__containers__formal_indefinite_vectors__element
+  use        "ada__containers__formal_indefinite_vectors__generic_sorting__args".Ada__containers__formal_indefinite_vectors__generic_sorting__olt
+
+  function is_sorted__logic vector : bool
+
+  axiom is_sorted__def :
+    forall v : vector.
+      is_sorted__logic v <->
+        (forall i1 i2 : int [element__logic v i1, element__logic v i2].
+           length_ v >= i1 > i2 > 0 ->
+             not Ada__containers__formal_indefinite_vectors__generic_sorting__olt.olt
+               (Ada__containers__formal_indefinite_vectors__element_type.to_base (element__logic v i1))
+               (Ada__containers__formal_indefinite_vectors__element_type.to_base (element__logic v i2)))
+
+  val is_sorted (v : vector) : bool
+    ensures { result = is_sorted__logic v }
+end
+
+module Ada__containers__formal_indefinite_vectors__generic_sorting__sort
+  use import int.Int
+  use import "_gnatprove_standard".Main
+  use        "ada__containers__formal_indefinite_vectors__args".Ada__containers__formal_indefinite_vectors__element_type
+  use import "ada__containers__formal_indefinite_vectors".Ada__containers__formal_indefinite_vectors__vector
+  use import "ada__containers__formal_indefinite_vectors".Ada__containers__formal_indefinite_vectors__capacity
+  use import "ada__containers__formal_indefinite_vectors".Ada__containers__formal_indefinite_vectors__length
+  use import "ada__containers__formal_indefinite_vectors".Ada__containers__formal_indefinite_vectors__contains
+  use import "ada__containers__formal_indefinite_vectors".Ada__containers__formal_indefinite_vectors__find_index
+  use import Ada__containers__formal_indefinite_vectors__generic_sorting__is_sorted
+
+  val sort (v : ref vector) : bool
+    writes  { v }
+    reads   { v }
+    ensures { is_sorted__logic !v /\
+              length_ !v = length_ (old !v) /\
+              capacity !v = capacity (old !v) /\
+              (forall e : Ada__containers__formal_indefinite_vectors__element_type.base_type
+                      [find_index_ !v e 1| find_index_ (old !v) e 1].
+                contains__logic !v e = contains__logic (old !v) e) }
+end
