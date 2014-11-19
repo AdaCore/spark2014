@@ -2511,27 +2511,25 @@ global variables discussed later in this section.
 
 .. _tu-nt-elaboration_issues-10:
 
-10. For the inter-compilation_unit case, |SPARK| enforces the following static
-    elaboration order rule:
-
-    a. If a unit has elaboration code that can directly or indirectly
-       make a call to a subprogram in a with'd unit, or instantiate a
-       generic unit in a with'd unit, then if the with'd unit does
-       not have pragma Pure or Preelaborate, then the client should
-       have a pragma Elaborate_All for the with'd unit.
-
-    b. For each call that is executable during elaboration for a given
-       library unit package spec or body, there are two cases: it is
-       (statically) a call to a subprogram whose body is in the
-       current compilation_unit, or it is not. In the latter case, we
-       require an Elaborate_All pragma as described above (the pragma
-       must be given explicitly; it is not supplied implicitly).
+10. For each call that is executable during elaboration for a given
+    library unit package spec or body, there are two cases: it is
+    (statically) a call to a subprogram whose completion is in the
+    current compilation_unit (or in a preelaborated unit), or it is not.
+    In the latter case, an Elaborate_All pragma shall be provided to ensure
+    that the given library unit spec or body will not be elaborated
+    until after the complete semantic closure of the unit in which
+    the (statically denoted) callee is declared.
 
 .. _tu-nt-elaboration_issues-11:
 
-11. For an instantiation of a generic which does not occur in the same
-    compilation unit as the generic body, the rules are as described
-    in the GNAT Pro User's Guide passage quoted above.
+11. For an instantiation of a generic package (excluding a bodiless generic
+    package) which does not occur in the same compilation unit as the generic
+    body, the same rules apply as described
+    above for a call (i.e., an Elaborate_All pragma is required).
+    For an instantiation of a generic subprogram which does not occur in
+    the same compilation unit as the generic body, the same rules also
+    apply except that only an Elaborate (as opposed to an Elaborate_All)
+    pragma is required.
 
 .. _etu-elaboration_issues-lr:
 
