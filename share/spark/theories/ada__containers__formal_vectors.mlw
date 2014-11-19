@@ -11,6 +11,11 @@
    the modules for formal parameters. There is one module for each public subprogram defined
    in the Ada unit. The order of modules follows the order of declarations in the Ada spec,
    except for modules which have to be defined earlier due to dependencies.
+
+   IMPORTANT NOTE: currently, the file ada__containers__formal_indefinite_vectors.mlw is the
+   same as this one, where "formal_vectors" has been replaced with "formal_indefinite_vectors".
+   The two should be kept synchronized until a better mechanism is used for sharing common
+   theories.
 *)
 
 (* useful helper functions on index types *)
