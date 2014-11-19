@@ -1,5 +1,5 @@
 with P;
-pragma Elaborate_All (P);  --  required because P.VP is used in initialization of V
+pragma Elaborate (P);  --  required because P.VP is used in initialization of V
 
 package Initialization_And_Elaboration
   with Abstract_State    => State,

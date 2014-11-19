@@ -1,6 +1,6 @@
 with Initialization_And_Elaboration.Private_Child;
-pragma Elaborate_All (Initialization_And_Elaboration.Private_Child);
---  pragma Elaborate_All for the private child is required because it is a
+pragma Elaborate (Initialization_And_Elaboration.Private_Child);
+--  pragma Elaborate for the private child is required because it is a
 --  constituent of the state abstraction
 --  Initialization_And_Elaboration.State, which is mentioned in the
 --  Initializes aspect of the package.
