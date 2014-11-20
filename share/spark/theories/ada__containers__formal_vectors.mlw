@@ -370,7 +370,7 @@ module Ada__containers__formal_vectors__copy
   axiom copy__def:
     forall v : vector, cap : int [copy__logic v cap].
       oeq__2__logic v (copy__logic v cap) /\
-      (cap = 0 -> capacity (copy__logic v cap) = capacity v) /\
+      (cap = 0 -> capacity (copy__logic v cap) = length_ v) /\
       (length_ v <= cap -> capacity (copy__logic v cap) = cap)
 
   val copy (v : vector) (cap : int) : vector
