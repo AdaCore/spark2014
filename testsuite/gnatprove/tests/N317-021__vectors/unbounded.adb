@@ -34,7 +34,7 @@ is
       begin
          pragma Assert (not Is_Empty (W));
          pragma Assert (Length (W) = 3);
-         pragma Assert (Capacity (W) = Capacity (V));
+         pragma Assert (Capacity (W) = 3);
          pragma Assert (Element (W, 1) = 1);
          pragma Assert (Element (W, 2) = 2);
          pragma Assert (Element (W, 3) = 3);
