@@ -1,3 +1,1 @@
-make[2]: Entering directory `/nfs/gnathome/gnat.home/gnatmail/tmp/spark2014/docs/ug/examples'
 binary_search.adb:36:50: medium: assertion might fail, requires A (Index) /= I
-make[2]: Leaving directory `/nfs/gnathome/gnat.home/gnatmail/tmp/spark2014/docs/ug/examples'
