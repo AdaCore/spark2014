@@ -9,9 +9,9 @@ is
      with Volatile;
 
    procedure Init
-     (Item : in out Volatile_Type;
-      Data :        Natural)
+     (Item : out Volatile_Type;
+      Data :     Natural)
    with
-       Depends => (Item =>+ Data);
+       Depends => (Item => Data);
 
 end Foo;

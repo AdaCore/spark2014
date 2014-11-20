@@ -5,8 +5,8 @@ is
    -------------------------------------------------------------------------
 
    procedure Init
-     (Item : in out Volatile_Type;
-      Data :        Natural)
+     (Item : out Volatile_Type;
+      Data :     Natural)
    is
    begin
       Item := Volatile_Type'(Header => 0,

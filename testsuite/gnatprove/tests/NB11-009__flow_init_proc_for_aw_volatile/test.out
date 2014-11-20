@@ -1,3 +1,0 @@
-foo.ads:12:07: warning: unused initial value of "Item"
-foo.ads:15:08: medium: missing dependency "null => Item"
-foo.ads:15:20: medium: incorrect dependency "Item => Item"
