@@ -21,7 +21,7 @@ $(RESULTS)/%.prove: force
 	for t in $(EXPECTED_ERRORS); do \
 	   if [ "$$t" = $* ]; then \
 		c=true; \
-		echo "failure expected ($t)"; \
+		echo "failure expected ($$t)"; \
 	   fi; \
 	done && \
 	gnatprove -f -q -j0 -P search.gpr --warnings=on --timeout=60 --prover=altergo >$@ || $$c
