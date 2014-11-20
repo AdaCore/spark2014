@@ -1,3 +1,5 @@
+make[2]: Entering directory `/nfs/gnathome/gnat.home/gnatmail/tmp/spark2014/docs/ug/examples'
 linear_search.ads:28:06: medium: contract cases might not be disjoint
 linear_search.ads:29:20: medium: contract case might fail
 linear_search.ads:31:46: medium: contract case might fail
+make[2]: Leaving directory `/nfs/gnathome/gnat.home/gnatmail/tmp/spark2014/docs/ug/examples'

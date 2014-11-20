@@ -1,2 +1,4 @@
+make[2]: Entering directory `/nfs/gnathome/gnat.home/gnatmail/tmp/spark2014/docs/ug/examples'
 binary_search.adb:26:16: medium: array index check might fail
 binary_search.ads:20:14: medium: postcondition might fail
+make[2]: Leaving directory `/nfs/gnathome/gnat.home/gnatmail/tmp/spark2014/docs/ug/examples'
