@@ -9,23 +9,22 @@ ALL_PROVE_MSG=$(patsubst %/search.gpr,$(RESULTS)/%.prove,$(ALL))
 gnatprove: $(ALL_PROVE_MSG)
 
 # expected errors from gnatprove:
-
-$(RESULTS)/linear_search_ada.prove: force
-	-$(MAKE) -s -f Makefile.examples EXAMPLE=linear_search_ada result > $@
-
-$(RESULTS)/linear_search_flow.prove: force
-	-$(MAKE) -s -f Makefile.examples EXAMPLE=linear_search_flow result > $@
+EXPECTED_ERRORS=linear_search_ada linear_search_flow
 
 # success expected for all other examples
 
 $(RESULTS)/%.prove: force
-	$(MAKE) -s -f Makefile.examples EXAMPLE=$* result > $@
-
-result:
 	cd prove && \
-        cp -rf ../$(EXAMPLE) . && \
-        cd $(EXAMPLE) && \
-        gnatprove -f -q -j0 -P search.gpr --warnings=on --timeout=60 --prover=altergo
+	cp -rf ../$* . && \
+	cd $* && \
+	c=false && \
+	for t in $(EXPECTED_ERRORS); do \
+	   if [ "$$t" = $* ]; then \
+		c=true; \
+	   fi; \
+	done && \
+	echo "expecte a failure?: $$c" && \
+	gnatprove -f -q -j0 -P search.gpr --warnings=on --timeout=60 --prover=altergo >$@ || $$c
 
 clean:
 	rm -rf prove
