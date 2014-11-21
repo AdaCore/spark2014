@@ -195,7 +195,6 @@ unbounded.adb:36:10: info: assertion proved
 unbounded.adb:36:25: info: precondition proved
 unbounded.adb:37:10: info: assertion proved
 unbounded.adb:37:25: info: precondition proved
-unbounded.adb:37:40: info: precondition proved
 unbounded.adb:38:10: info: assertion proved
 unbounded.adb:38:25: info: precondition proved
 unbounded.adb:39:10: info: assertion proved
