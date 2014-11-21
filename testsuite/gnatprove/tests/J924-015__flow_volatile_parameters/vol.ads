@@ -8,7 +8,7 @@ is
 
    V : T;
 
-   procedure Assign (X : in out T);
+   procedure Assign (X : out T);
 
    procedure Proc with
      Global => (Output => V);

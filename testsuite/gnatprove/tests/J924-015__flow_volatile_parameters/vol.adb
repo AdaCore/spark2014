@@ -1,7 +1,7 @@
 package body Vol with
   SPARK_Mode
 is
-   procedure Assign (X : in out T) is
+   procedure Assign (X : out T) is
    begin
       X.C := 1;
    end Assign;
