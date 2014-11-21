@@ -31,9 +31,6 @@ is
    procedure P1 (Par : in Vol_Rec_T ; Par2 : out Integer);
    --  Par must have Async_Writers => True and Effective_Reads => False.
 
-   procedure P2 (Par : out Vol_Rec_T);
-   --  Par must have Async_Readers => True.
-
    procedure P3 (Par : in out Vol_Rec_T);
    --  Par must have all attributes set to True.
 

@@ -6,11 +6,6 @@ is
       Par2 := Par.X;
    end P1;
 
-   procedure P2 (Par : out Vol_Rec_T) is
-   begin
-      Par.X := 5;
-   end P2;
-
    procedure P3 (Par : in out Vol_Rec_T) is
    begin
       Par.X := Par.X + 1; -- illegal RM 7.1.3(13)
@@ -22,9 +17,6 @@ is
    end P4;
 begin
    P1 (Vol1, A);  --  Vol1 does not have Effective_Reads => False.
-
-   P2 (Vol2);     --  Vol2 does not have Async_Readers and
-                  --  Effective_Writes set to True.
 
    P3 (Vol2);     --  Vol2 does not have all attributes set to True.
 
