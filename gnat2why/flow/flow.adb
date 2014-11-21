@@ -24,14 +24,14 @@
 with Ada.Characters.Latin_1;
 with Ada.Strings.Hash;
 with Ada.Strings.Maps;
-with Ada.Strings;           use Ada.Strings;
+with Ada.Strings;                   use Ada.Strings;
 
-with Assumptions;           use Assumptions;
-with Gnat2Why.Assumptions;  use Gnat2Why.Assumptions;
+with Assumptions;                   use Assumptions;
+with Gnat2Why.Assumptions;          use Gnat2Why.Assumptions;
 with Gnat2Why_Args;
 with Why;
 
-with SPARK_Definition;      use SPARK_Definition;
+with SPARK_Definition;              use SPARK_Definition;
 with SPARK_Util;
 
 with Flow.Analysis;
@@ -40,24 +40,24 @@ with Flow.Control_Flow_Graph;
 with Flow.Data_Dependence_Graph;
 with Flow.Interprocedural;
 with Flow.Program_Dependence_Graph;
-with Flow.Slice;            use Flow.Slice;
-with Flow_Classwide;        use Flow_Classwide;
-with Flow_Computed_Globals; use Flow_Computed_Globals;
-with Flow_Debug;            use Flow_Debug;
-with Flow_Error_Messages;   use Flow_Error_Messages;
-with Flow_Tree_Utility;     use Flow_Tree_Utility;
-with Flow_Utility;          use Flow_Utility;
+with Flow.Slice;                    use Flow.Slice;
+with Flow_Classwide;                use Flow_Classwide;
+with Flow_Computed_Globals;         use Flow_Computed_Globals;
+with Flow_Debug;                    use Flow_Debug;
+with Flow_Error_Messages;           use Flow_Error_Messages;
+with Flow_Tree_Utility;             use Flow_Tree_Utility;
+with Flow_Utility;                  use Flow_Utility;
 
-with Errout;                use Errout;
-with Lib;                   use Lib;
-with Namet;                 use Namet;
-with Nlists;                use Nlists;
-with Osint;                 use Osint;
-with Output;                use Output;
-with Sem_Ch7;               use Sem_Ch7;
-with Sinfo;                 use Sinfo;
-with Snames;                use Snames;
-with Sprint;                use Sprint;
+with Errout;                        use Errout;
+with Lib;                           use Lib;
+with Namet;                         use Namet;
+with Nlists;                        use Nlists;
+with Osint;                         use Osint;
+with Output;                        use Output;
+with Sem_Ch7;                       use Sem_Ch7;
+with Sinfo;                         use Sinfo;
+with Snames;                        use Snames;
+with Sprint;                        use Sprint;
 
 use type Ada.Containers.Count_Type;
 
@@ -1105,6 +1105,10 @@ package body Flow is
                   if SPARK_Util.Analysis_Requested (E)
                     and Entity_Spec_In_SPARK (E)
                     and not In_Predefined_Unit (E)
+                    and not Is_Wrapper_Package (E)
+                    --  We do not generate graphs for wrapper packages
+                    --  of subprogram instantiations since messages
+                    --  emitted on them would be confusing.
                   then
                      Pkg_Body := Pkg_Spec;
                      while Present (Pkg_Body) and

@@ -1,5 +1,7 @@
 generic
    Bounded : Boolean := True;
-package Gen is
-   X : Boolean := Bounded;
+package Gen with Initializes => Y is
+   Y : Boolean;
+
+   procedure P;
 end Gen;

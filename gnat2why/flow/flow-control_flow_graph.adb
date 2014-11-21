@@ -4981,8 +4981,39 @@ package body Flow.Control_Flow_Graph is
             end;
 
          when E_Package | E_Package_Body =>
-            --  No parameters to see here.
-            null;
+            if Is_Generic_Instance (FA.Analyzed_Entity) then
+               declare
+                  Instance    : constant Node_Id :=
+                    (if FA.Kind = E_Package
+                     then Next (Parent (Spec_N))
+                     else Next (Next (Parent (Spec_N))));
+                  Association : Node_Id;
+                  Parameter   : Node_Id;
+               begin
+                  Association := First (Generic_Associations (Instance));
+                  while Present (Association) loop
+                     Parameter := Explicit_Generic_Actual_Parameter
+                                    (Association);
+
+                     case Nkind (Parameter) is
+                        when N_Identifier =>
+                           if Ekind (Entity (Parameter)) in
+                             E_Constant | E_Variable
+                           then
+                              Create_Initial_And_Final_Vertices
+                                (Direct_Mapping_Id (Entity (Parameter)),
+                                 Mode_In,
+                                 False,
+                                 FA);
+                           end if;
+
+                        when others =>
+                           null;
+                     end case;
+                     Next (Association);
+                  end loop;
+               end;
+            end if;
       end case;
 
       --  Collect globals for the analyzed entity and create initial

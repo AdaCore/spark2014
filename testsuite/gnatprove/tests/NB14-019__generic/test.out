@@ -1,1 +1,1 @@
-user.adb:9:04: info: assertion proved
+user.adb:10:19: medium: assertion might fail, requires not X
