@@ -20,33 +20,33 @@ amortized_queue.adb:29:12: medium: precondition might fail
 amortized_queue.adb:29:28: info: precondition proved
 amortized_queue.adb:29:43: medium: range check might fail
 amortized_queue.adb:31:09: medium: precondition might fail
-amortized_queue.adb:37:26: info: precondition proved, in call inlined at amortized_queue.adb:54
-amortized_queue.adb:37:26: info: precondition proved, in call inlined at amortized_queue.adb:64
-amortized_queue.adb:37:48: info: precondition proved, in call inlined at amortized_queue.adb:54
-amortized_queue.adb:37:48: info: precondition proved, in call inlined at amortized_queue.adb:64
-amortized_queue.adb:38:10: medium: precondition might fail, in call inlined at amortized_queue.adb:54
-amortized_queue.adb:38:10: medium: precondition might fail, in call inlined at amortized_queue.adb:64
-amortized_queue.adb:38:25: medium: precondition might fail, in call inlined at amortized_queue.adb:54
-amortized_queue.adb:38:25: medium: precondition might fail, in call inlined at amortized_queue.adb:64
-amortized_queue.adb:38:40: info: range check proved, in call inlined at amortized_queue.adb:54
-amortized_queue.adb:38:40: info: range check proved, in call inlined at amortized_queue.adb:64
+amortized_queue.adb:37:26: info: precondition proved, in call inlined at amortized_queue.adb:55
+amortized_queue.adb:37:26: info: precondition proved, in call inlined at amortized_queue.adb:66
+amortized_queue.adb:37:48: info: precondition proved, in call inlined at amortized_queue.adb:55
+amortized_queue.adb:37:48: info: precondition proved, in call inlined at amortized_queue.adb:66
+amortized_queue.adb:38:10: medium: precondition might fail, in call inlined at amortized_queue.adb:55
+amortized_queue.adb:38:10: medium: precondition might fail, in call inlined at amortized_queue.adb:66
+amortized_queue.adb:38:25: medium: precondition might fail, in call inlined at amortized_queue.adb:55
+amortized_queue.adb:38:25: medium: precondition might fail, in call inlined at amortized_queue.adb:66
+amortized_queue.adb:38:40: info: range check proved, in call inlined at amortized_queue.adb:55
+amortized_queue.adb:38:40: info: range check proved, in call inlined at amortized_queue.adb:66
 amortized_queue.adb:43:27: info: precondition proved
 amortized_queue.adb:45:07: info: precondition proved
 amortized_queue.adb:51:42: info: discriminant check proved
 amortized_queue.adb:51:42: info: precondition proved
-amortized_queue.adb:51:66: info: discriminant check proved
-amortized_queue.adb:51:66: info: precondition proved
-amortized_queue.adb:52:09: info: precondition proved
-amortized_queue.adb:53:12: info: precondition proved
-amortized_queue.adb:53:36: info: precondition proved
-amortized_queue.adb:61:42: info: discriminant check proved
-amortized_queue.adb:61:42: info: precondition proved
-amortized_queue.adb:61:66: info: discriminant check proved
-amortized_queue.adb:61:66: info: precondition proved
-amortized_queue.adb:62:09: info: precondition proved
-amortized_queue.adb:63:12: info: precondition proved
-amortized_queue.adb:63:36: info: precondition proved
-amortized_queue.adb:71:14: info: precondition proved
+amortized_queue.adb:52:41: info: discriminant check proved
+amortized_queue.adb:52:41: info: precondition proved
+amortized_queue.adb:53:09: info: precondition proved
+amortized_queue.adb:54:12: info: precondition proved
+amortized_queue.adb:54:36: info: precondition proved
+amortized_queue.adb:62:42: info: discriminant check proved
+amortized_queue.adb:62:42: info: precondition proved
+amortized_queue.adb:63:41: info: discriminant check proved
+amortized_queue.adb:63:41: info: precondition proved
+amortized_queue.adb:64:09: info: precondition proved
+amortized_queue.adb:65:12: info: precondition proved
+amortized_queue.adb:65:36: info: precondition proved
+amortized_queue.adb:73:14: info: precondition proved
 amortized_queue.ads:31:07: info: precondition proved
 amortized_queue.ads:31:27: info: precondition proved
 amortized_queue.ads:32:26: info: precondition proved
