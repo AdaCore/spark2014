@@ -1,73 +1,94 @@
-amortized_queue.adb:4:27: info: precondition proved
-amortized_queue.adb:6:07: info: precondition proved
-amortized_queue.adb:7:22: info: precondition proved
-amortized_queue.adb:11:25: info: precondition proved
-amortized_queue.adb:12:24: info: precondition proved
-amortized_queue.adb:14:07: info: precondition proved
-amortized_queue.adb:15:10: info: precondition proved
-amortized_queue.adb:15:27: info: precondition proved
-amortized_queue.adb:16:10: info: precondition proved
-amortized_queue.adb:17:10: medium: precondition might fail
-amortized_queue.adb:18:10: info: precondition proved
-amortized_queue.adb:20:30: medium: discriminant check might fail
-amortized_queue.adb:20:45: info: discriminant check proved
-amortized_queue.adb:24:25: info: precondition proved
-amortized_queue.adb:25:24: info: precondition proved
-amortized_queue.adb:27:07: info: precondition proved
-amortized_queue.adb:28:10: info: precondition proved
-amortized_queue.adb:28:27: info: precondition proved
-amortized_queue.adb:29:10: info: precondition proved
-amortized_queue.adb:30:10: medium: precondition might fail
-amortized_queue.adb:31:10: info: precondition proved
-amortized_queue.adb:33:30: info: discriminant check proved
-amortized_queue.adb:33:45: info: discriminant check proved
-amortized_queue.adb:38:14: info: precondition proved
-amortized_queue.ads:25:07: info: precondition proved
-amortized_queue.ads:25:27: info: precondition proved
-amortized_queue.ads:26:26: info: precondition proved
-amortized_queue.ads:26:46: info: precondition proved
-amortized_queue.ads:30:07: info: precondition proved
-amortized_queue.ads:30:24: info: overflow check proved
-amortized_queue.ads:30:26: info: precondition proved
-amortized_queue.ads:30:44: info: precondition proved
-amortized_queue.ads:31:20: info: range check proved
-amortized_queue.ads:31:51: info: precondition proved
-amortized_queue.ads:32:17: info: precondition proved
-amortized_queue.ads:32:29: info: range check proved
-amortized_queue.ads:33:18: info: precondition proved
-amortized_queue.ads:33:44: info: precondition proved
-amortized_queue.ads:33:65: info: overflow check proved
-amortized_queue.ads:33:65: info: range check proved
-amortized_queue.ads:34:18: info: range check proved
-amortized_queue.ads:34:49: info: precondition proved
-amortized_queue.ads:35:15: info: precondition proved
-amortized_queue.ads:35:29: info: overflow check proved
-amortized_queue.ads:35:29: info: range check proved
-amortized_queue.ads:35:40: info: precondition proved
-amortized_queue.ads:36:14: info: precondition proved
-amortized_queue.ads:36:32: info: range check proved
-amortized_queue.ads:40:14: medium: postcondition might fail, requires Is_Model (Q, Model'result)
-amortized_queue.ads:43:31: info: precondition proved
-amortized_queue.ads:44:31: info: precondition proved
-amortized_queue.ads:45:17: info: precondition proved
-amortized_queue.ads:45:17: medium: postcondition might fail, requires Last_Element (Model (Q)) = Front'result
-amortized_queue.ads:45:31: info: precondition proved
-amortized_queue.ads:48:31: info: precondition proved
-amortized_queue.ads:49:14: medium: postcondition might fail
-amortized_queue.ads:50:23: info: precondition proved
-amortized_queue.ads:50:61: info: precondition proved
-amortized_queue.ads:51:09: info: precondition proved
-amortized_queue.ads:51:19: info: precondition proved
-amortized_queue.ads:51:21: info: precondition proved
-amortized_queue.ads:51:41: medium: precondition might fail
-amortized_queue.ads:51:43: medium: precondition might fail
-amortized_queue.ads:51:57: info: precondition proved
-amortized_queue.ads:55:25: info: precondition proved
-amortized_queue.ads:55:44: info: precondition proved
-amortized_queue.ads:56:14: medium: postcondition might fail
-amortized_queue.ads:57:23: info: precondition proved
-amortized_queue.ads:57:64: info: precondition proved
-amortized_queue.ads:58:11: medium: precondition might fail
-amortized_queue.ads:58:13: info: precondition proved
-amortized_queue.ads:58:23: info: precondition proved
-amortized_queue.ads:58:25: info: precondition proved
+amortized_queue.adb:6:20: info: precondition proved
+amortized_queue.adb:6:42: info: precondition proved
+amortized_queue.adb:7:12: medium: precondition might fail
+amortized_queue.adb:7:28: info: precondition proved
+amortized_queue.adb:7:43: medium: range check might fail
+amortized_queue.adb:9:20: info: precondition proved
+amortized_queue.adb:9:43: info: precondition proved
+amortized_queue.adb:10:12: medium: precondition might fail
+amortized_queue.adb:10:28: info: precondition proved
+amortized_queue.adb:10:44: medium: range check might fail
+amortized_queue.adb:18:09: medium: precondition might fail
+amortized_queue.adb:19:20: info: precondition proved
+amortized_queue.adb:19:43: info: precondition proved
+amortized_queue.adb:20:12: medium: precondition might fail
+amortized_queue.adb:20:28: info: precondition proved
+amortized_queue.adb:20:44: medium: range check might fail
+amortized_queue.adb:28:20: info: precondition proved
+amortized_queue.adb:28:42: info: precondition proved
+amortized_queue.adb:29:12: medium: precondition might fail
+amortized_queue.adb:29:28: info: precondition proved
+amortized_queue.adb:29:43: medium: range check might fail
+amortized_queue.adb:31:09: medium: precondition might fail
+amortized_queue.adb:37:26: info: precondition proved, in call inlined at amortized_queue.adb:55
+amortized_queue.adb:37:26: info: precondition proved, in call inlined at amortized_queue.adb:66
+amortized_queue.adb:37:48: info: precondition proved, in call inlined at amortized_queue.adb:55
+amortized_queue.adb:37:48: info: precondition proved, in call inlined at amortized_queue.adb:66
+amortized_queue.adb:38:10: medium: precondition might fail, in call inlined at amortized_queue.adb:55
+amortized_queue.adb:38:10: medium: precondition might fail, in call inlined at amortized_queue.adb:66
+amortized_queue.adb:38:25: medium: precondition might fail, in call inlined at amortized_queue.adb:55
+amortized_queue.adb:38:25: medium: precondition might fail, in call inlined at amortized_queue.adb:66
+amortized_queue.adb:38:40: info: range check proved, in call inlined at amortized_queue.adb:55
+amortized_queue.adb:38:40: info: range check proved, in call inlined at amortized_queue.adb:66
+amortized_queue.adb:43:27: info: precondition proved
+amortized_queue.adb:45:07: info: precondition proved
+amortized_queue.adb:51:42: info: discriminant check proved
+amortized_queue.adb:51:42: info: precondition proved
+amortized_queue.adb:52:41: info: discriminant check proved
+amortized_queue.adb:52:41: info: precondition proved
+amortized_queue.adb:53:09: info: precondition proved
+amortized_queue.adb:54:12: info: precondition proved
+amortized_queue.adb:54:36: info: precondition proved
+amortized_queue.adb:62:42: info: discriminant check proved
+amortized_queue.adb:62:42: info: precondition proved
+amortized_queue.adb:63:41: info: discriminant check proved
+amortized_queue.adb:63:41: info: precondition proved
+amortized_queue.adb:64:09: info: precondition proved
+amortized_queue.adb:65:12: info: precondition proved
+amortized_queue.adb:65:36: info: precondition proved
+amortized_queue.adb:73:14: info: precondition proved
+amortized_queue.ads:31:07: info: precondition proved
+amortized_queue.ads:31:27: info: precondition proved
+amortized_queue.ads:32:26: info: precondition proved
+amortized_queue.ads:32:46: info: precondition proved
+amortized_queue.ads:36:07: info: precondition proved
+amortized_queue.ads:36:26: info: precondition proved
+amortized_queue.ads:36:44: info: precondition proved
+amortized_queue.ads:37:20: info: range check proved
+amortized_queue.ads:37:51: info: precondition proved
+amortized_queue.ads:38:17: info: precondition proved
+amortized_queue.ads:38:29: info: range check proved
+amortized_queue.ads:39:18: info: precondition proved
+amortized_queue.ads:39:44: info: precondition proved
+amortized_queue.ads:39:65: info: range check proved
+amortized_queue.ads:40:18: info: range check proved
+amortized_queue.ads:40:49: info: precondition proved
+amortized_queue.ads:41:15: info: precondition proved
+amortized_queue.ads:41:29: info: overflow check proved
+amortized_queue.ads:41:29: medium: range check might fail
+amortized_queue.ads:41:40: info: precondition proved
+amortized_queue.ads:42:14: info: precondition proved
+amortized_queue.ads:42:32: info: range check proved
+amortized_queue.ads:46:14: medium: postcondition might fail, requires Is_Model (Q, Model'result)
+amortized_queue.ads:49:31: info: precondition proved
+amortized_queue.ads:50:14: info: postcondition proved
+amortized_queue.ads:50:31: info: precondition proved
+amortized_queue.ads:51:17: info: precondition proved
+amortized_queue.ads:51:31: info: precondition proved
+amortized_queue.ads:54:31: info: precondition proved
+amortized_queue.ads:55:14: medium: postcondition might fail
+amortized_queue.ads:56:23: info: precondition proved
+amortized_queue.ads:56:61: info: precondition proved
+amortized_queue.ads:57:09: info: precondition proved
+amortized_queue.ads:57:19: info: precondition proved
+amortized_queue.ads:57:21: info: precondition proved
+amortized_queue.ads:57:43: info: precondition proved
+amortized_queue.ads:57:57: info: precondition proved
+amortized_queue.ads:61:25: info: precondition proved
+amortized_queue.ads:61:44: info: precondition proved
+amortized_queue.ads:62:14: medium: postcondition might fail
+amortized_queue.ads:63:23: info: precondition proved
+amortized_queue.ads:63:64: info: precondition proved
+amortized_queue.ads:64:13: info: precondition proved
+amortized_queue.ads:64:23: info: precondition proved
+amortized_queue.ads:64:25: info: precondition proved

@@ -48,7 +48,8 @@ package body Amortized_Queue is pragma SPARK_Mode (On);
 
    function Tail (Q : Queue) return Queue is
    begin
-      return Result : Queue := (Front => Copy (Q.Front), Rear => Copy (Q.Rear)) do
+      return Result : Queue := (Front => Copy (Q.Front, 1000),
+                                Rear => Copy (Q.Rear, 1000)) do
         Delete_Last (Result.Front);
         if Length (Result.Front) < Length (Result.Rear) then
            Reverse_Insert (Result.Front, Result.Rear);
@@ -58,7 +59,8 @@ package body Amortized_Queue is pragma SPARK_Mode (On);
 
    function Enqueue (Q : in Queue; V : in Val) return Queue is
    begin
-      return Result : Queue := (Front => Copy (Q.Front), Rear => Copy (Q.Rear)) do
+      return Result : Queue := (Front => Copy (Q.Front, 1000),
+                                Rear => Copy (Q.Rear, 1000)) do
         Append (Result.Rear, V);
         if Length (Result.Front) < Length (Result.Rear) then
            Reverse_Insert (Result.Front, Result.Rear);
