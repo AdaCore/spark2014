@@ -632,10 +632,10 @@ be used to factor out common parts of expressions in annotations, or to make it
 easier to express some desired property to be proved or tested. Such functions
 are referred to as ghost functions and their key property is that they have no
 effect on the dynamic semantics of the Ada program. If all ghost functions
-and references to them in assertions were removed from the source code, the behaviour
-of the compiled program would be unchanged.
+and references to them in assertions were removed from the source code, the
+behaviour of the compiled program would be unchanged.
 
-Ghost functions are identified by the convention ``Ghost`` and may be expression
+Ghost functions are identified by ``Ghost`` aspect and may be expression
 functions or regular functions. If they are regular functions, then they may be
 executable (with a body declared as normal) or non-executable (no body is declared).
 If they are non-executable, then they can only be used for proof, not testing, and
@@ -651,18 +651,18 @@ mentioned above.
       (if Lo > Integer'Last - Hi then Lo else ((Lo + Hi) / 2))
    with Pre        => Lo <= Hi,
         Post       => A_Ghost_Expr_Function'Result in Lo .. Hi,
-        Convention => Ghost;
+        Ghost;
 
    function A_Ghost_Function (Lo, Hi : Natural) return Natural
    with Pre        => Lo <= Hi,
         Post       => A_Ghost_Function'Result in Lo .. Hi,
-        Convention => Ghost;
+        Ghost;
    -- The body of the function is declared elsewhere.
 
    function A_Nonexecutable_Ghost_Function (Lo, Hi : Natural) return Natural
    with Pre        => Lo <= Hi,
         Post       => A_Nonexecutable_Ghost_Function'Result in Lo .. Hi,
-        Convention => Ghost,
+        Ghost,
         Import;
    -- The body of the function is not declared elsewhere.
 
