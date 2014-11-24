@@ -217,6 +217,36 @@ Ada legality rules here), |GNATprove| does not attempt analysis. If there are
 violations of |SPARK| legality rules, or flow analysis errors, |GNATprove| does
 not attempt proof.
 
+Setting up the runtime
+----------------------
+
+Just as other GNAT tools, |GNATprove| provides a ``--RTS=<runtime>`` switch
+which allows to select the runtime to be used along with the project code.
+Gnatprove will search the runtime in the following locations:
+
+ * if the argument of the ``--RTS`` switch is a valid absolute or relative
+   directory name, then this directory is interpreted as the runtime
+   directory;
+ * if not, |GNATprove| looks for the runtime in the directory
+   ``<spark-install>/share/spark/runtimes``.
+
+The first option is the simplest, but the second one is more convenient, as
+the same |GNATprove| commandline can be used on different machines. However,
+it requires copying the appropriate runtime into the above-mentioned
+directory. To do this, first find out the location of the target GNAT runtime.
+You can use the ``<target>-gnatls -v`` command, and if you are using the
+``--RTS`` switch, specify it also when running gnatls.
+
+For example if you are using ``powerpc-vxworks-gnatmake`` as your builder and
+``--RTS=kernel``, then you can use::
+
+    powerpc-vxworks-gnatls -v --RTS=kernel | grep adainclude
+
+to find where the rts-kernel directory is located and then copy this directory
+to the |GNATprove| installation, under::
+
+    spark-prefix/share/spark/runtimes
+
 .. _implementation_defined:
 
 Implementation-Defined Behavior
