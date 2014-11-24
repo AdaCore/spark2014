@@ -3218,33 +3218,6 @@ package body SPARK_Definition is
                end loop;
             end;
 
-         when Pragma_Import =>
-            --  If the associated node of Pragma_Import:
-            --     1. is a subprogram
-            --     2. and is marked as In-SPARK
-            --     3. and no global aspect has been specified
-            --     4. and the subprogram is not Pure
-            --  then we warn that null global effect was assumed.
-            declare
-               Argument_Associations : constant List_Id :=
-                 Pragma_Argument_Associations (N);
-
-               Associated_Subprogram : constant Node_Id :=
-                 Associated_Node (Expression
-                                    (Next (First (Argument_Associations))));
-            begin
-               if Emit_Messages
-                 and then Ekind (Associated_Subprogram) in Subprogram_Kind
-                 and then Entity_In_SPARK (Associated_Subprogram)
-                 and then No (Get_Pragma
-                                (Associated_Subprogram, Pragma_Global))
-                 and then not Is_Pure (Associated_Subprogram)
-               then
-                  Error_Msg_N ("?null global effect assumed on imported"
-                                 & " subprogram", Associated_Subprogram);
-               end if;
-            end;
-
          --  Do not issue a warning on invariant pragmas, as one is already
          --  issued on the corresponding type.
 
@@ -3284,6 +3257,7 @@ package body SPARK_Definition is
               Pragma_Elaborate_Body               |
               Pragma_Export                       |
               Pragma_Extensions_Visible           |
+              Pragma_Import                       |
               Pragma_Independent                  |
               Pragma_Independent_Components       |
               Pragma_Inline                       |

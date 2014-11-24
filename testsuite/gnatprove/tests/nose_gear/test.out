@@ -18,17 +18,11 @@ ng.adb:65:37: info: division check proved
 ng.adb:65:37: medium: range check might fail
 ng.adb:65:43: info: overflow check proved
 ng.adb:78:07: medium: precondition might fail
-ng_v1.adb:5:13: warning: null global effect assumed on imported subprogram
-ng_v1.adb:8:13: warning: null global effect assumed on imported subprogram
-ng_v1.adb:11:13: warning: null global effect assumed on imported subprogram
 ng_v1.adb:30:23: info: division check proved
 ng_v1.adb:33:53: medium: divide by zero might fail
 ng_v1.ads:28:17: medium: postcondition might fail, requires EstimatedGroundVelocity = (((WHCF * (ThisCount - PrevCount)) + ((WHCF * (ThisCount - PrevCount)) * (CurrTime - ThisTime)) / (ThisTime - PrevTime)) * 3600) / (CurrTime - PrevTime
 ng_v1.ads:31:23: info: division check proved
 ng_v1.ads:32:28: medium: divide by zero might fail
-ng_v2.adb:5:13: warning: null global effect assumed on imported subprogram
-ng_v2.adb:8:13: warning: null global effect assumed on imported subprogram
-ng_v2.adb:11:13: warning: null global effect assumed on imported subprogram
 ng_v2.adb:49:09: info: division check proved
 ng_v2.adb:52:44: medium: precondition might fail
 ng_v2.adb:65:13: info: precondition proved

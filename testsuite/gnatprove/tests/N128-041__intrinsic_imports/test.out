@@ -1,4 +1,0 @@
-prags.ads:32:13: warning: null global effect assumed on imported subprogram
-prags.ads:41:13: warning: null global effect assumed on imported subprogram
-prags.ads:46:13: warning: null global effect assumed on imported subprogram
-prags.ads:53:13: warning: null global effect assumed on imported subprogram
