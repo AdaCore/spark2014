@@ -93,7 +93,7 @@ procedure Gnatprove is
    procedure Call_Gprbuild
       (Project_File : String;
        Config_File  : String;
-       RTS_Dir      : String;
+       New_File     : String;
        Args         : in out String_Lists.List;
        Status       : out Integer);
    --  Call gprbuild with the given arguments. Pass in explicitly a number of
@@ -161,6 +161,14 @@ procedure Gnatprove is
    procedure Kill (P : in out Process_Descriptor);
    --  kill the process
 
+   function Replace_Config_File_If_Needed
+     (Config_File : String;
+      New_File    : String) return String;
+   --  if option --RTS was not used, do nothing (i.e. return the first
+   --  argument). Otherwise, copy the provided config file to a new file with
+   --  the name of the second argument while adding the runtime information to
+   --  it. Return the second argument.
+
    -------------------
    -- Call_Gprbuild --
    -------------------
@@ -168,10 +176,14 @@ procedure Gnatprove is
    procedure Call_Gprbuild
       (Project_File : String;
        Config_File  : String;
-       RTS_Dir      : String;
+       New_File     : String;
        Args         : in out String_Lists.List;
-       Status       : out Integer) is
+       Status       : out Integer)
+   is
+      Actual_Config_File : constant String :=
+        Replace_Config_File_If_Needed (Config_File, New_File);
    begin
+
       if Verbose then
          Args.Prepend ("-v");
       else
@@ -202,17 +214,13 @@ procedure Gnatprove is
          Args.Prepend (Var);
       end loop;
 
-      if RTS_Dir /= "" then
-         Args.Prepend ("--RTS=" & RTS_Dir);
-      end if;
-
       if Project_File /= "" then
          Args.Prepend (Project_File);
          Args.Prepend ("-P");
       end if;
 
       if Config_File /= "" then
-         Args.Prepend ("--config=" & Config_File);
+         Args.Prepend ("--config=" & Actual_Config_File);
       end if;
 
       if Debug then
@@ -271,9 +279,14 @@ procedure Gnatprove is
       Args.Append ("-gnatc");       --  only generate ALI
 
       Args.Append ("-gnates=" & Opt_File);
+
+      if RTS_Dir.all /= "" then
+         Args.Append ("--RTS=" & RTS_Dir.all);
+      end if;
+
       Call_Gprbuild (Project_File,
                      Gpr_Frames_Cnf_File,
-                     RTS_Dir.all,
+                     Compose (Obj_Dir, Frames_Cgpr),
                      Args,
                      Status);
       if Status = 0 and then not Debug then
@@ -421,6 +434,51 @@ procedure Gnatprove is
            ("gnatprove: error during " & Text_Of_Step (Step));
       end if;
    end Execute_Step;
+
+   -----------------------------------
+   -- Replace_Config_File_If_Needed --
+   -----------------------------------
+
+   function Replace_Config_File_If_Needed
+     (Config_File : String;
+      New_File    : String) return String
+   is
+      Handle : File_Type;
+
+      procedure Copy_Replace_Line (Line : String);
+      --  copy the given line over to Handle. If the line corresponds to the
+      --  Runtime_library pattern, replace it by
+      --    for Runtime_Library_Dir ("Ada") use ("dir");
+
+      -----------------------
+      -- Copy_Replace_Line --
+      -----------------------
+
+      procedure Copy_Replace_Line (Line : String) is
+      begin
+         if String_Utils.Starts_With (Line, "--RUNTIME_LIBRARY_DIR") then
+            Put_Line
+              (Handle,
+               " for Runtime_Library_Dir (""Ada"") use """ & RTS_Dir.all &
+                 """;");
+         else
+            Put_Line (Handle, Line);
+         end if;
+      end Copy_Replace_Line;
+
+      procedure Copy_File is new For_Line_In_File (Copy_Replace_Line);
+
+      --  beginning of processing for Replace_Config_File_If_Needed);
+
+   begin
+      if RTS_Dir = null or else RTS_Dir.all = "" then
+         return Config_File;
+      end if;
+      Create (Handle, Out_File, New_File);
+      Copy_File (Config_File);
+      Close (Handle);
+      return New_File;
+   end Replace_Config_File_If_Needed;
 
    --------------------------
    -- Report_File_Is_Empty --
@@ -851,12 +909,15 @@ procedure Gnatprove is
          Args.Append (Element (Cur));
          Next (Cur);
       end loop;
+      if RTS_Dir.all /= "" then
+         Args.Append ("--RTS=" & RTS_Dir.all);
+      end if;
 
       Id := Spawn_VC_Server (Proj.Root_Project);
 
       Call_Gprbuild (Project_File,
                      Gpr_Translation_Cnf_File,
-                     RTS_Dir.all,
+                     Compose (Obj_Dir, Gnat2why_Cgpr),
                      Args,
                      Status);
       if Status = 0 and then not Debug then

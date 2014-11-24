@@ -850,6 +850,35 @@ ASCII.LF;
             With_Help => False);
       end if;
 
+      if RTS_Dir = null or else RTS_Dir.all = "" then
+         return;
+      end if;
+
+      declare
+         Dir : Virtual_File :=
+           Create_From_Base (Filesystem_String (RTS_Dir.all));
+      begin
+
+         --  if this test is true, then RTS_Dir is a valid absolute or relative
+         --  path (we don't care which)
+
+         if Is_Directory (Dir) then
+            Normalize_Path (Dir);
+            RTS_Dir := new String'(Dir.Display_Full_Name);
+         else
+            Dir := Create_From_Dir
+              (Create (Filesystem_String (Runtimes_Dir)),
+               Filesystem_String (RTS_Dir.all));
+            if Is_Directory (Dir) then
+               Normalize_Path (Dir);
+               RTS_Dir := new String'(Dir.Display_Full_Name);
+            else
+               Abort_Msg ("could not find runtime " & RTS_Dir.all,
+                          With_Help => False);
+            end if;
+         end if;
+      end;
+
       if Flow_Extra_Debug and not Debug then
          Abort_Msg ("extra debugging for flow analysis requires -d",
                     With_Help => False);

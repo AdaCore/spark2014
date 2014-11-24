@@ -161,14 +161,15 @@ package Configuration is
    Theories_Dir     : constant String := Compose (Gnatprove_Dir, "theories");
    Gpr_Cnf_Dir      : constant String := Compose (Gnatprove_Dir, "config");
    Why3_Drivers_Dir : constant String := Compose (Why3_Dir, "drivers");
+   Runtimes_Dir     : aliased constant String :=
+     Compose (Gnatprove_Dir, "runtimes");
 
-   --  The exact places for the three configuration files used by gnatprove
+   --  The exact places for the  configuration files used by gnatprove
+   Frames_Cgpr              : constant String := "frames.cgpr";
+   Gnat2why_Cgpr            : constant String := "gnat2why.cgpr";
    Gpr_Translation_Cnf_File : constant String :=
-     Compose (Gpr_Cnf_Dir, "gnat2why.cgpr");
-   Gpr_Frames_Cnf_File : constant String :=
-      Compose (Gpr_Cnf_Dir, "frames.cgpr");
-   Gpr_Why_Cnf_File : constant String :=
-      Compose (Gpr_Cnf_Dir, "why.cgpr");
+     Compose (Gpr_Cnf_Dir, Gnat2why_Cgpr);
+   Gpr_Frames_Cnf_File : constant String := Compose (Gpr_Cnf_Dir, Frames_Cgpr);
 
    function SPARK_Report_File (Out_Dir : String) return String;
    --  The name of the file in which the SPARK report is generated:
