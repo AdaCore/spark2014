@@ -115,6 +115,11 @@ package body Configuration is
       Lazy   : out Boolean);
    --  parse the "--proof" option into the two values "proof" and "lazy"
 
+   procedure Set_RTS_Dir
+     (Config  : Command_Line_Configuration;
+      RTS_Dir : in out GNAT.Strings.String_Access);
+   --  interpret the string provided to --RTS and transform it into a full path
+
    Usage_Message : constant String :=
      "-Pproj [files] [switches] [-cargs switches]";
 
@@ -856,6 +861,7 @@ ASCII.LF;
       end if;
 
       Set_Proof_Mode (Config, Proof_Input.all, Proof,  Lazy);
+      Set_RTS_Dir (Config, RTS_Dir);
 
       if Flow_Extra_Debug and not Debug then
          Abort_Msg (Config,
@@ -1033,6 +1039,46 @@ ASCII.LF;
          end if;
       end;
    end Set_Proof_Mode;
+
+   -----------------
+   -- Set_RTS_Dir --
+   -----------------
+
+   procedure Set_RTS_Dir
+     (Config  : Command_Line_Configuration;
+      RTS_Dir : in out GNAT.Strings.String_Access)
+   is
+   begin
+      if RTS_Dir = null or else RTS_Dir.all = "" then
+         return;
+      end if;
+
+      declare
+         Dir : Virtual_File :=
+           Create_From_Base (Filesystem_String (RTS_Dir.all));
+      begin
+
+         --  if this test is true, then RTS_Dir is a valid absolute or relative
+         --  path (we don't care which)
+
+         if Is_Directory (Dir) then
+            Normalize_Path (Dir);
+            RTS_Dir := new String'(Dir.Display_Full_Name);
+         else
+            Dir := Create_From_Dir
+              (Create (Filesystem_String (Runtimes_Dir)),
+               Filesystem_String (RTS_Dir.all));
+            if Is_Directory (Dir) then
+               Normalize_Path (Dir);
+               RTS_Dir := new String'(Dir.Display_Full_Name);
+            else
+               Abort_Msg (Config, "could not find runtime " & RTS_Dir.all,
+                          With_Help => False);
+            end if;
+         end if;
+      end;
+   end Set_RTS_Dir;
+
    -----------------------
    -- SPARK_Report_File --
    -----------------------
