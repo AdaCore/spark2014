@@ -1,18 +1,8 @@
 caller.adb:29:09: warning: unused assignment to "Tmp"
 tests_async_readers.ads:2:27: warning: no procedure exists that can initialize abstract state "Tests_Async_Readers.State_With_Async_Readers"
-types.adb:34:04: warning: analyzing unreferenced procedure "Test_01"
-types.adb:34:14: warning: subprogram "Test_01" has no effect
-types.adb:40:04: warning: analyzing unreferenced procedure "Test_02"
-types.adb:40:23: high: "R.X" is not written in "Test_02"
-types.adb:40:23: warning: unused variable "R"
-types.adb:46:04: warning: analyzing unreferenced procedure "Test_03"
-types.adb:46:23: warning: "R" is not modified, could be "in"
-types.adb:46:23: warning: unused variable "R"
-types.adb:52:04: warning: analyzing unreferenced procedure "Test_04"
-types.adb:56:09: volatile formal out "R" cannot be read (SPARK RM 7.1.3(14))
-types.adb:59:04: warning: analyzing unreferenced procedure "Test_05"
-types.adb:64:09: volatile formal out "R" cannot be read (SPARK RM 7.1.3(14))
+types.adb:56:12: illegal reading of volatile "out" parameter
+types.adb:64:12: illegal reading of volatile "out" parameter
    compilation of types.adb failed
 
 
-gnatprove: error during flow analysis and proof
+gnatprove: error during generation of Global contracts

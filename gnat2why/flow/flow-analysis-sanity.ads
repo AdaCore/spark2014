@@ -44,11 +44,6 @@ private package Flow.Analysis.Sanity is
       Sane :    out Boolean);
    --  Enforce SRM 4.4(2): certain expressions must be variable-free
 
-   procedure Check_Illegal_Reads
-     (FA   : in out Flow_Analysis_Graphs;
-      Sane :    out Boolean);
-   --  Enforce SRM 7.1.3(14): a volatile out parameter must never be read from
-
    procedure Check_Illegal_Writes
      (FA   : in out Flow_Analysis_Graphs;
       Sane :    out Boolean);

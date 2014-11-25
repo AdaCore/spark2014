@@ -592,7 +592,6 @@ package body Flow.Analysis is
         (Sanity.Check_Function_Side_Effects'Access,
          Sanity.Check_Aliasing'Access,
          Sanity.Check_Variable_Free_Expressions'Access,
-         Sanity.Check_Illegal_Reads'Access,
          Sanity.Check_Illegal_Writes'Access,
          Sanity.Check_All_Variables_Known'Access);
    begin
