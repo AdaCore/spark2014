@@ -339,7 +339,8 @@ package body Flow_Refinement is
       end loop;
 
       if Present (P) then
-         return Flow_Scope'(P, V);
+         return (Pkg     => P,
+                 Section => V);
       else
          return Null_Flow_Scope;
       end if;
