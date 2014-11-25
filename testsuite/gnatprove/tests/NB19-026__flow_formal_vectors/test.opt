@@ -1,1 +1,0 @@
-ALL XFAIL flow analysis fails when assertions are on in GNATprove

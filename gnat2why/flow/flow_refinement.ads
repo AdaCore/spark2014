@@ -53,7 +53,7 @@ package Flow_Refinement is
    subtype Package_Id is Entity_Id
      with Dynamic_Predicate => No (Package_Id) or else
        (Nkind (Package_Id) in N_Entity and then
-        Ekind (Package_Id) = E_Package);
+        Ekind (Package_Id) in E_Package | E_Generic_Package);
 
    type Flow_Scope is record
       Pkg     : Package_Id;
