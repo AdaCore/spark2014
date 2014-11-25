@@ -1,0 +1,3 @@
+The test requires an adalib directory to be present, but no files are needed
+in this dir. Git does not allow empty directories, so the only content is this
+README file
