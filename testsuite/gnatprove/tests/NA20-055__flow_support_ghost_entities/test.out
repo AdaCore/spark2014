@@ -1,0 +1,3 @@
+casper.adb:4:17: medium: overflow check might fail
+casper.adb:8:27: medium: overflow check might fail
+casper.adb:11:07: info: assertion proved

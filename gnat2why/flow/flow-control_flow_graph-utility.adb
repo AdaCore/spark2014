@@ -21,6 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Sem_Util;          use Sem_Util;
 with Sinfo;             use Sinfo;
 
 with Why;
@@ -77,12 +78,49 @@ package body Flow.Control_Flow_Graph.Utility is
       end loop;
    end Add_Volatile_Effects;
 
+   ---------------------
+   -- Refers_To_Ghost --
+   ---------------------
+
+   function Refers_To_Ghost
+     (FA  : Flow_Analysis_Graphs;
+      Atr : V_Attributes)
+      return Boolean
+   is
+      All_Vars : constant Flow_Id_Sets.Set :=
+        Atr.Variables_Used or Atr.Variables_Defined;
+   begin
+      --  Check if the analyzed entity is a ghost
+      if Is_Ghost_Entity (FA.Analyzed_Entity) then
+         return True;
+      end if;
+
+      --  Check if any of the variables used or defined is a ghost
+      for Var of All_Vars loop
+         if Var.Kind in Direct_Mapping | Record_Field
+           and then Is_Ghost_Entity (Get_Direct_Mapping_Id (Var))
+         then
+            return True;
+         end if;
+      end loop;
+
+      --  Check if any of the subprograms called is a ghost
+      for Sub of Atr.Subprograms_Called loop
+         if Is_Ghost_Entity (Sub) then
+            return True;
+         end if;
+      end loop;
+
+      return False;
+   end Refers_To_Ghost;
+
    ---------------------------
    -- Make_Basic_Attributes --
    ---------------------------
 
    function Make_Basic_Attributes
-     (Var_Def    : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+     (FA         : Flow_Analysis_Graphs;
+      Var_Def    : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
       Var_Ex_Use : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
       Var_Im_Use : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
       Sub_Called : Node_Sets.Set       := Node_Sets.Empty_Set;
@@ -101,6 +139,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Loops                     := Loops;
       A.Error_Location            := E_Loc;
       A.Pretty_Print_Kind         := Print_Hint;
+      A.Is_Proof                  := Refers_To_Ghost (FA, A);
 
       Add_Volatile_Effects (A);
       return A;
@@ -111,7 +150,8 @@ package body Flow.Control_Flow_Graph.Utility is
    ------------------------------------
 
    function Make_Extended_Return_Attributes
-     (Var_Def         : Flow_Id_Sets.Set;
+     (FA              : Flow_Analysis_Graphs;
+      Var_Def         : Flow_Id_Sets.Set;
       Var_Use         : Flow_Id_Sets.Set;
       Object_Returned : Entity_Id;
       Sub_Called      : Node_Sets.Set     := Node_Sets.Empty_Set;
@@ -129,6 +169,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Loops                     := Loops;
       A.Error_Location            := E_Loc;
       A.Aux_Node                  := Object_Returned;
+      A.Is_Proof                  := Refers_To_Ghost (FA, A);
 
       Add_Volatile_Effects (A);
       return A;
@@ -139,7 +180,8 @@ package body Flow.Control_Flow_Graph.Utility is
    ---------------------------------
 
    function Make_Sink_Vertex_Attributes
-     (Var_Use          : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
+     (FA               : Flow_Analysis_Graphs;
+      Var_Use          : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
       Sub_Called       : Node_Sets.Set     := Node_Sets.Empty_Set;
       Is_Proof         : Boolean           := False;
       Is_DIC           : Boolean           := False;
@@ -156,7 +198,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Variables_Used            := Var_Use;
       A.Variables_Explicitly_Used := Var_Use;
       A.Subprograms_Called        := Sub_Called;
-      A.Is_Proof                  := Is_Proof;
+      A.Is_Proof                  := Is_Proof or else Refers_To_Ghost (FA, A);
       A.Is_Precondition           := Is_Precondition;
       A.Is_Postcondition          := Is_Postcondition;
       A.Is_Loop_Entry             := Is_Loop_Entry;
@@ -211,10 +253,11 @@ package body Flow.Control_Flow_Graph.Utility is
    --------------------------
 
    function Make_Call_Attributes
-     (Callsite     : Node_Id           := Empty;
-      Sub_Called   : Node_Sets.Set     := Node_Sets.Empty_Set;
-      Loops        : Node_Sets.Set     := Node_Sets.Empty_Set;
-      E_Loc        : Node_Or_Entity_Id := Empty)
+     (FA         : Flow_Analysis_Graphs;
+      Callsite   : Node_Id           := Empty;
+      Sub_Called : Node_Sets.Set     := Node_Sets.Empty_Set;
+      Loops      : Node_Sets.Set     := Node_Sets.Empty_Set;
+      E_Loc      : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
@@ -230,6 +273,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Loops              := Loops;
       A.Is_Callsite        := True;
       A.Error_Location     := E_Loc;
+      A.Is_Proof           := Refers_To_Ghost (FA, A);
 
       --  ??? The below is the logic for doing IPFA within a
       --  compilation unit. To be enabled by M227-027.
@@ -358,6 +402,7 @@ package body Flow.Control_Flow_Graph.Utility is
          end;
       end if;
 
+      A.Is_Proof := Refers_To_Ghost (FA, A);
       Add_Volatile_Effects (A);
       return A;
    end Make_Parameter_Attributes;
@@ -367,7 +412,8 @@ package body Flow.Control_Flow_Graph.Utility is
    ----------------------------
 
    function Make_Global_Attributes
-     (Call_Vertex                  : Node_Id;
+     (FA                           : Flow_Analysis_Graphs;
+      Call_Vertex                  : Node_Id;
       Global                       : Flow_Id;
       Discriminants_Or_Bounds_Only : Boolean;
       Loops                        : Node_Sets.Set;
@@ -424,6 +470,7 @@ package body Flow.Control_Flow_Graph.Utility is
             raise Program_Error;
       end case;
 
+      A.Is_Proof := Refers_To_Ghost (FA, A);
       Add_Volatile_Effects (A, Global);
       return A;
    end Make_Global_Attributes;
@@ -460,7 +507,8 @@ package body Flow.Control_Flow_Graph.Utility is
    ------------------------------
 
    function Make_Variable_Attributes
-     (F_Ent : Flow_Id;
+     (FA    : Flow_Analysis_Graphs;
+      F_Ent : Flow_Id;
       Mode  : Param_Mode;
       E_Loc : Node_Or_Entity_Id := Empty)
       return V_Attributes
@@ -530,6 +578,8 @@ package body Flow.Control_Flow_Graph.Utility is
             raise Why.Unexpected_Node;
       end case;
 
+      A.Is_Proof := Refers_To_Ghost (FA, A);
+
       return A;
    end Make_Variable_Attributes;
 
@@ -538,16 +588,17 @@ package body Flow.Control_Flow_Graph.Utility is
    -------------------------------------
 
    function Make_Global_Variable_Attributes
-     (F       : Flow_Id;
-      Mode    : Param_Mode;
-      Uninit  : Boolean           := False;
-      E_Loc   : Node_Or_Entity_Id := Empty)
-      return V_Attributes is
+     (FA     : Flow_Analysis_Graphs;
+      F      : Flow_Id;
+      Mode   : Param_Mode;
+      Uninit : Boolean           := False;
+      E_Loc  : Node_Or_Entity_Id := Empty)
+      return V_Attributes
+   is
       A : V_Attributes := Null_Attributes;
    begin
       A.Error_Location := E_Loc;
       A.Is_Global      := True;
-      A.Is_Proof       := Mode = Mode_Proof;
       A.Is_Constant    := Mode in In_Global_Modes;
       A.Mode           := Mode;
 
@@ -571,7 +622,7 @@ package body Flow.Control_Flow_Graph.Utility is
               Flow_Id_Sets.To_Set (Change_Variant (F, Normal_Use));
 
          when Final_Value =>
-            A.Is_Export      := Mode in Exported_Global_Modes;
+            A.Is_Export := Mode in Exported_Global_Modes;
 
             if Is_Bound (F) then
                --  Array bounds are not exported.
@@ -586,6 +637,8 @@ package body Flow.Control_Flow_Graph.Utility is
             raise Program_Error;
       end case;
 
+      A.Is_Proof := (Mode = Mode_Proof) or else Refers_To_Ghost (FA, A);
+
       return A;
    end Make_Global_Variable_Attributes;
 
@@ -594,10 +647,10 @@ package body Flow.Control_Flow_Graph.Utility is
    --------------------------------------------
 
    function Make_Default_Initialization_Attributes
-     (FA      : Flow_Analysis_Graphs;
-      Scope   : Flow_Scope;
-      F       : Flow_Id;
-      Loops   : Node_Sets.Set := Node_Sets.Empty_Set)
+     (FA    : Flow_Analysis_Graphs;
+      Scope : Flow_Scope;
+      F     : Flow_Id;
+      Loops : Node_Sets.Set := Node_Sets.Empty_Set)
       return V_Attributes
    is
       A  : V_Attributes     := Null_Attributes;
@@ -611,8 +664,8 @@ package body Flow.Control_Flow_Graph.Utility is
          A.Error_Location := Etype (Get_Direct_Mapping_Id (F));
       end if;
 
-      A.Default_Init_Var := F;
-      A.Default_Init_Val := DI;
+      A.Default_Init_Var  := F;
+      A.Default_Init_Val  := DI;
 
       A.Variables_Defined := Flow_Id_Sets.To_Set (F);
       if Present (DI) then
@@ -624,6 +677,7 @@ package body Flow.Control_Flow_Graph.Utility is
             Use_Computed_Globals => not FA.Compute_Globals);
          A.Variables_Explicitly_Used := A.Variables_Used;
       end if;
+      A.Is_Proof          := Refers_To_Ghost (FA, A);
 
       Add_Volatile_Effects (A);
       return A;
@@ -634,7 +688,8 @@ package body Flow.Control_Flow_Graph.Utility is
    --------------------------------------------
 
    function Make_Package_Initialization_Attributes
-     (The_State : Flow_Id;
+     (FA        : Flow_Analysis_Graphs;
+      The_State : Flow_Id;
       Inputs    : Flow_Id_Sets.Set;
       Scope     : Flow_Scope;
       Loops     : Node_Sets.Set;
@@ -644,7 +699,8 @@ package body Flow.Control_Flow_Graph.Utility is
       A : V_Attributes;
    begin
       A := Make_Basic_Attributes
-        (Var_Def    => Flow_Id_Sets.To_Set (The_State),
+        (FA         => FA,
+         Var_Def    => Flow_Id_Sets.To_Set (The_State),
          Var_Ex_Use => Inputs,
          Var_Im_Use =>
            (if Is_Initialized_At_Elaboration (The_State, Scope)
@@ -654,6 +710,7 @@ package body Flow.Control_Flow_Graph.Utility is
          Loops      => Loops,
          E_Loc      => E_Loc);
       A.Is_Package_Initialization := True;
+      A.Is_Proof := Refers_To_Ghost (FA, A);
       return A;
    end Make_Package_Initialization_Attributes;
 
