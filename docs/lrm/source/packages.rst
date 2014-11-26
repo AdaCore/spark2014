@@ -2678,7 +2678,7 @@ are imposed in |SPARK| which have the following consequences:
 
 5. The elaboration of a package's specification and body shall not
    write to a variable (or state abstraction, in the case of a call to
-   a procedure which takes an abstraction as in output) declared
+   a procedure which takes an abstraction as an output) declared
    outside of the package. The output associated with a read of an
    external state with the property Effective_Reads is permitted.
    [This rule applies to all packages: library level or not,
