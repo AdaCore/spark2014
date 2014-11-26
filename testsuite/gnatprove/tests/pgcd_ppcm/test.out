@@ -20,7 +20,7 @@ a.ads:7:07: info: postcondition proved
 a.ads:8:34: info: overflow check proved
 a.ads:9:34: info: overflow check proved
 a.ads:14:25: info: overflow check proved
-a.ads:14:47: info: overflow check proved
+a.ads:14:52: info: overflow check proved
 a.ads:17:07: medium: postcondition might fail, requires Ppcm'Result = 0 or else Ppcm'Result in abs A .. abs (A * B) or else Ppcm'Result in abs B .. abs (A * B
 a.ads:18:29: info: overflow check proved
 a.ads:18:38: info: overflow check proved

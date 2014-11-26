@@ -1,4 +1,4 @@
-package A is 
+package A is
 
    function Pgcd (A, B : in Integer) return Integer;
    pragma Precondition (A /= Integer'First);
@@ -11,8 +11,8 @@ package A is
    function Ppcm (A, B : in Integer) return Integer;
    pragma Precondition (A /= Integer'First);
    pragma Precondition (B /= Integer'First);
-   pragma Precondition (abs (Long_Integer (A) * Long_Integer (B))
-                         <= Long_Integer (Integer'Last));
+   pragma Precondition (abs (Long_Long_Integer (A) * Long_Long_Integer (B))
+                         <= Long_Long_Integer (Integer'Last));
    pragma Postcondition
      (Ppcm'Result = 0
      or else Ppcm'Result in abs A .. abs (A * B)
