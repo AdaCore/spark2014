@@ -15,4 +15,15 @@ is
      with Global => (Input    => G1,
                      Proof_In => G2,
                      Output   => Ghost_G1);
+
+   package Nested_Ghost_Package
+     with Ghost,
+          Abstract_State => Nested_State,
+          Initializes    => (Nested_Global, Nested_State)
+   is
+      Nested_Global : Integer := 0;
+
+      function Is_OK (Par : Integer) return Boolean
+        with Global => Nested_State;
+   end Nested_Ghost_Package;
 end Casper;

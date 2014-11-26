@@ -10,6 +10,16 @@ package body Casper is
    begin
       pragma Assert (Tmp > G2);
       Par := G1;
-      Ghost_G1 := Tmp;  --  This is fine
+      Ghost_G1 := G2;  --  This is fine
    end P;
+
+   package body Nested_Ghost_Package
+     with Refined_State => (Nested_State => Nested_Hidden_Var)
+   is
+      Nested_Hidden_Var : Integer := 5;
+
+      function Is_OK (Par : Integer) return Boolean is
+        (Par < Nested_Hidden_Var)
+        with Refined_Global => Nested_Hidden_Var;
+   end Nested_Ghost_Package;
 end Casper;

@@ -7,7 +7,6 @@ semantics.adb:15:10: info: loop invariant preservation proved
 semantics.adb:15:40: medium: overflow check might fail
 semantics.adb:16:10: info: loop variant proved
 semantics.adb:16:53: medium: overflow check might fail
-semantics.adb:35:14: warning: unused assignment, in call inlined at semantics.adb:41
 semantics.adb:35:21: medium: overflow check might fail, in call inlined at semantics.adb:41
 semantics.adb:35:34: medium: overflow check might fail, in call inlined at semantics.adb:41
 semantics.ads:12:19: info: postcondition proved

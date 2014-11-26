@@ -1355,7 +1355,10 @@ package body Flow.Analysis is
                  --  an assignment to a record field, that comes
                  --  from a record split, while the rest of the
                  --  fields are not ineffective.
-                 Other_Fields_Are_Ineffective (V)
+                 Other_Fields_Are_Ineffective (V) and then
+
+                 --  Suppression for vertices that relate to proof
+                 not Atr.Is_Proof
                then
                   Mask := Find_Masking_Code (V);
                   N    := Error_Location (FA.PDG, FA.Atr, V);
@@ -2317,14 +2320,22 @@ package body Flow.Analysis is
       end Path_Leading_To_Proof_In_Dependency;
 
    begin  --  Find_Exports_Derived_From_Proof_Ins
+
+      --  If we are dealing with a ghost subprogram then we do NOT
+      --  need to perform this check.
+      if Is_Ghost_Entity (FA.Analyzed_Entity) then
+         return;
+      end if;
+
       for O in FA.Dependency_Map.Iterate loop
          declare
             Output : constant Flow_Id          := Dependency_Maps.Key (O);
             Inputs : constant Flow_Id_Sets.Set := Dependency_Maps.Element (O);
          begin
-            if Output = Null_Flow_Id then
-               null;
-            else
+            if Output /= Null_Flow_Id
+              and then Output.Kind in Direct_Mapping | Record_Field
+              and then not Is_Ghost_Entity (Get_Direct_Mapping_Id (Output))
+            then
                for Input of Inputs loop
                   declare
                      V              : constant Flow_Graphs.Vertex_Id :=
