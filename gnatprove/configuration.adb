@@ -219,6 +219,8 @@ ASCII.LF &
 & ASCII.LF &
 " --timeout=s        Set the prover timeout in seconds (default: 1)" &
 ASCII.LF &
+" --why3-conf=f      Specify a configuration file for why3" &
+ASCII.LF &
 " --limit-line=s     Limit analysis to given file and line" &
 ASCII.LF &
 " --limit-subp=s     Limit analysis to subprogram defined by file and line" &
@@ -756,6 +758,10 @@ ASCII.LF;
         (Config,
          Alter_Prover'Access,
          Long_Switch => "--prover=");
+
+      Define_Switch
+        (Config, Why3_Config_File'Access,
+         Long_Switch => "--why3-conf=");
 
       Define_Section (Config, "cargs");
       Define_Switch (Config, "*", Section => "cargs");

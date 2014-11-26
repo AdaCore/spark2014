@@ -136,6 +136,10 @@ package Configuration is
    --  The name of the directory in which will be stored Why3 session file and
    --  manual proof files (Attribute of gpr package Prove).
 
+   Why3_Config_File : aliased GNAT.Strings.String_Access;
+   --  The name of a why3 configuration file to be used in a single run of
+   --  gnatprove.
+
    Socket_Name  : aliased GNAT.Strings.String_Access := null;
    --  Name of the socket used by why3server, based on a hash of the main
    --  object directory.

@@ -300,7 +300,12 @@ procedure Gnatprove is
 
    function Compute_Why3_Args return String_Lists.List is
       Args : String_Lists.List := String_Lists.Empty_List;
-
+      Gnatwhy3_Conf : constant String :=
+        (if Why3_Config_File /= null
+         and then Why3_Config_File.all /= ""
+         then
+            Compose (+Get_Current_Dir.Full_Name, Why3_Config_File.all)
+         else "");
       ---------------------------
       --  Prepare_Why3_Manual  --
       ---------------------------
@@ -309,11 +314,20 @@ procedure Gnatprove is
 
       procedure Prepare_Why3_Manual is
          Args : GNAT.OS_Lib.Argument_List :=
-           (1 => new String'("--prepare-shared"),
-            2 => new String'("--prover"),
-            3 => new String'(Alter_Prover.all),
-            4 => new String'("--proof-dir"),
-            5 => new String'(Proof_Dir.all));
+           (if Gnatwhy3_Conf /= "" then
+              (1 => new String'("--prepare-shared"),
+               2 => new String'("--prover"),
+               3 => new String'(Alter_Prover.all),
+               4 => new String'("--proof-dir"),
+               5 => new String'(Proof_Dir.all),
+               6 => new String'("--why3-conf"),
+               7 => new String'(Gnatwhy3_Conf))
+            else
+              (1 => new String'("--prepare-shared"),
+               2 => new String'("--prover"),
+               3 => new String'(Alter_Prover.all),
+               4 => new String'("--proof-dir"),
+               5 => new String'(Proof_Dir.all)));
          Res : Boolean;
          Old_Dir : constant String := Current_Directory;
          Gnatwhy3 : constant String := Compose (Compose (Prefix, "bin"),
@@ -392,6 +406,11 @@ procedure Gnatprove is
          if Alter_Prover /= null and then Alter_Prover.all /= "" then
             Prepare_Why3_Manual;
          end if;
+      end if;
+
+      if Gnatwhy3_Conf /= "" then
+         Args.Append ("--why3-conf");
+         Args.Append (Gnatwhy3_Conf);
       end if;
 
       return Args;
