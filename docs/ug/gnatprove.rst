@@ -734,7 +734,7 @@ is given by the source location.
 
 The following table shows the kinds of check messages issued by proof.
 
-.. tabularcolumns:: |l|p{4.5in}|
+.. tabularcolumns:: |l|p{3in}|
 
 .. csv-table::
    :header: "Message Kind", "Explanation"
