@@ -116,7 +116,7 @@ is
 
       pragma Assert (Capacity (V) = 5);
 
-      pragma Check (Only_For_Proof, False);  --  @ASSERT:FAIL check absence of inconsistency
+      pragma Check (Only_For_Proof, False);
    end Test;
 
 end Indefinite_Bounded;
