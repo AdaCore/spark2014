@@ -36,13 +36,11 @@ whyconf.write('magic = 14')
 whyconf.write(os.linesep)
 whyconf.write('[prover]' + os.linesep)
 whyconf.write('command = "echo %f"' + os.linesep)
-whyconf.write('driver = "/nfs/tolbiac/tolbiac.a/homes/thierry/gcc-49-sandbox/'
-              + 'workspace/spark2014/install/share/why3/drivers/coq.drv"'
-              + os.linesep)
+whyconf.write('driver = "' + driver_path + '"' + os.linesep)
 whyconf.write('in_place = false' + os.linesep)
 whyconf.write('interactive = true' + os.linesep)
-whyconf.write('name = "Coq"' + os.linesep)
-whyconf.write('shortcut = "coq"' + os.linesep)
+whyconf.write('name = "Qoc"' + os.linesep)
+whyconf.write('shortcut = "qoc"' + os.linesep)
 whyconf.write('version = "X"' + os.linesep)
 whyconf.write('configure_build = "cp %f %f.configured"' + os.linesep)
 whyconf.write('build_commands = "cp %f %f.built"' + os.linesep)
@@ -51,6 +49,7 @@ whyconf.close()
 
 Run(["gnatprove", "-Ptest.gpr",
      "--limit-line=test_if.ads:5:37:VC_OVERFLOW_CHECK",
-     "--prover=Coq",
+     "--prover=Qoc",
      "--why3-conf=test.whyconf"])
-ls("gnatprove/user/Coq")
+
+ls("gnatprove/user/Qoc")
