@@ -1,7 +1,7 @@
 p.adb:3:11: warning: subprogram "P" has no effect
 p.adb:11:18: info: range check proved
 p.adb:12:18: info: range check proved
-pack.ads:4:21: warning: "A" is not modified, could be "in"
+pack.ads:4:21: warning: "A" is not modified, could be IN
 pack.ads:4:21: warning: unused variable "A"
-pack.ads:4:24: warning: "B" is not modified, could be "in"
+pack.ads:4:24: warning: "B" is not modified, could be IN
 pack.ads:4:24: warning: unused variable "B"

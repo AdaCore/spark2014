@@ -1,4 +1,4 @@
-p.adb:2:14: warning: "Y" is not modified, could be "in"
+p.adb:2:14: warning: "Y" is not modified, could be IN
 p.adb:2:14: warning: unused variable "Y"
 p.adb:4:04: warning: initialization has no effect
 p.adb:5:04: warning: initialization has no effect

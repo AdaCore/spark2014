@@ -1,4 +1,4 @@
-test.adb:30:30: warning: "X" is not modified, could be "in"
+test.adb:30:30: warning: "X" is not modified, could be IN
 test.adb:38:04: warning: analyzing unreferenced procedure "Detect_Uninitialised_In_Out"
 test.adb:43:23: high: "V" is not initialized
 test.adb:46:27: high: "X" is not initialized in "T_Out_Param"

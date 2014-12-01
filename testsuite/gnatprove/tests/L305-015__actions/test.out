@@ -1,5 +1,5 @@
-actions.adb:1:20: warning: "X" is not modified, could be "in"
-actions.adb:1:23: warning: "Y" is not modified, could be "in"
+actions.adb:1:20: warning: "X" is not modified, could be IN
+actions.adb:1:23: warning: "Y" is not modified, could be IN
 actions.adb:1:63: warning: unused initial value of "B6"
 actions.adb:3:04: warning: initialization has no effect
 actions.adb:3:13: info: length check proved

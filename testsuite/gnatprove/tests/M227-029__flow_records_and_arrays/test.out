@@ -12,7 +12,7 @@ message_tests.adb:66:18: high: "F.B" is not initialized
 parameter_tests.adb:28:04: warning: analyzing unreferenced procedure "Clear_Position"
 parameter_tests.adb:36:32: high: "G.Y" is not initialized
 parameter_tests.adb:50:33: warning: unused initial value of "G"
-parameter_tests.adb:50:36: warning: "H" is not modified, could be "input"
+parameter_tests.adb:50:36: warning: "H" is not modified, could be INPUT
 test.adb:26:04: warning: analyzing unreferenced function "New_Player_01"
 test.adb:36:04: warning: analyzing unreferenced function "New_Player_02"
 test.adb:46:04: warning: analyzing unreferenced function "New_Player_03"

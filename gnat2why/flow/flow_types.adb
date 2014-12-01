@@ -29,7 +29,7 @@ with Sem_Util;          use Sem_Util;
 with Snames;            use Snames;
 
 with Output;            use Output;
-with Casing;            use Casing;
+with Errout;            use Errout;
 
 with Why;
 
@@ -541,16 +541,15 @@ package body Flow_Types is
       function Get_Unmangled_Name (N : Node_Id) return String
       is
       begin
-         if Nkind (N) in N_Entity then
-            if Ekind (N) in Subprogram_Kind
-              and then Present (Overridden_Operation (N))
-            then
-               return Get_Unmangled_Name (Overridden_Operation (N));
-            end if;
+         if Nkind (N) in N_Entity
+           and then Ekind (N) in Subprogram_Kind
+           and then Present (Overridden_Operation (N))
+         then
+            return Get_Unmangled_Name (Overridden_Operation (N));
          end if;
 
          Get_Name_String (Chars (N));
-         Set_Casing (Mixed_Case);
+         Adjust_Name_Case (Sloc (N));
          return Name_Buffer (1 .. Name_Len);
       end Get_Unmangled_Name;
 

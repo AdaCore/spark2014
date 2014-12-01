@@ -26,13 +26,13 @@ do_checks.adb:162:39: medium: range check might fail
 do_checks.adb:168:38: info: length check proved
 do_checks.adb:168:38: info: range check proved
 do_checks.adb:168:67: medium: overflow check might fail
-do_checks.adb:211:32: warning: "Y" is not modified, could be "in"
+do_checks.adb:211:32: warning: "Y" is not modified, could be IN
 do_checks.adb:213:21: info: length check proved
 do_checks.adb:213:26: medium: length check might fail
 do_checks.adb:215:35: info: length check proved
 do_checks.adb:216:35: info: length check proved
 do_checks.adb:218:16: info: precondition proved
-do_checks.adb:222:32: warning: "Y" is not modified, could be "in"
+do_checks.adb:222:32: warning: "Y" is not modified, could be IN
 do_checks.adb:224:21: info: length check proved
 do_checks.adb:224:26: medium: length check might fail
 do_checks.adb:226:35: info: length check proved
@@ -44,19 +44,19 @@ do_checks.adb:242:16: info: precondition proved
 do_checks.adb:250:24: info: length check proved
 do_checks.adb:252:35: info: length check proved
 do_checks.adb:255:16: info: precondition proved
-do_checks.adb:261:30: warning: "X" is not modified, could be "in"
+do_checks.adb:261:30: warning: "X" is not modified, could be IN
 do_checks.adb:261:30: warning: unused variable "X"
 do_checks.adb:267:19: info: precondition proved
 do_checks.adb:267:22: medium: length check might fail
 do_checks.adb:269:35: info: length check proved
 do_checks.adb:271:16: info: precondition proved
-do_checks.adb:275:30: warning: "X" is not modified, could be "in"
+do_checks.adb:275:30: warning: "X" is not modified, could be IN
 do_checks.adb:275:30: warning: unused variable "X"
 do_checks.adb:283:19: info: precondition proved
 do_checks.adb:283:22: info: length check proved
 do_checks.adb:285:35: info: length check proved
 do_checks.adb:287:16: info: precondition proved
-do_checks.adb:313:32: warning: "Y" is not modified, could be "in"
+do_checks.adb:313:32: warning: "Y" is not modified, could be IN
 do_checks.adb:315:20: medium: discriminant check might fail
 do_checks.adb:315:25: medium: array index check might fail
 do_checks.adb:315:32: medium: discriminant check might fail
@@ -64,7 +64,7 @@ do_checks.adb:315:37: medium: array index check might fail
 do_checks.adb:317:30: info: discriminant check proved
 do_checks.adb:318:30: info: discriminant check proved
 do_checks.adb:320:16: info: precondition proved
-do_checks.adb:324:32: warning: "Y" is not modified, could be "in"
+do_checks.adb:324:32: warning: "Y" is not modified, could be IN
 do_checks.adb:328:20: info: discriminant check proved
 do_checks.adb:328:25: info: index check proved
 do_checks.adb:328:32: info: discriminant check proved
@@ -90,50 +90,50 @@ do_checks.adb:374:29: info: discriminant check proved
 do_checks.adb:375:29: info: discriminant check proved
 do_checks.adb:375:46: info: length check proved
 do_checks.adb:377:16: info: precondition proved
-do_checks.adb:381:29: warning: "X" is not modified, could be "in"
+do_checks.adb:381:29: warning: "X" is not modified, could be IN
 do_checks.adb:385:24: info: discriminant check proved
 do_checks.adb:387:30: info: discriminant check proved
 do_checks.adb:387:47: info: length check proved
 do_checks.adb:388:30: info: discriminant check proved
 do_checks.adb:388:47: info: length check proved
 do_checks.adb:390:16: info: precondition proved
-do_checks.adb:397:29: warning: "X" is not modified, could be "in"
+do_checks.adb:397:29: warning: "X" is not modified, could be IN
 do_checks.adb:401:29: info: discriminant check proved
 do_checks.adb:402:29: info: discriminant check proved
 do_checks.adb:402:46: info: length check proved
 do_checks.adb:404:16: info: precondition proved
 do_checks.adb:404:22: medium: discriminant check might fail
-do_checks.adb:408:29: warning: "X" is not modified, could be "in"
+do_checks.adb:408:29: warning: "X" is not modified, could be IN
 do_checks.adb:412:30: info: discriminant check proved
 do_checks.adb:412:47: info: length check proved
 do_checks.adb:413:30: info: discriminant check proved
 do_checks.adb:413:47: info: length check proved
 do_checks.adb:415:16: info: precondition proved
 do_checks.adb:415:22: info: discriminant check proved
-do_checks.adb:421:30: warning: "X" is not modified, could be "in"
+do_checks.adb:421:30: warning: "X" is not modified, could be IN
 do_checks.adb:427:19: info: precondition proved
 do_checks.adb:427:23: medium: discriminant check might fail
 do_checks.adb:430:29: info: discriminant check proved
 do_checks.adb:431:29: info: discriminant check proved
 do_checks.adb:431:46: info: length check proved
 do_checks.adb:433:16: info: precondition proved
-do_checks.adb:437:29: warning: "X" is not modified, could be "in"
+do_checks.adb:437:29: warning: "X" is not modified, could be IN
 do_checks.adb:441:30: info: discriminant check proved
 do_checks.adb:441:47: info: length check proved
 do_checks.adb:442:30: info: discriminant check proved
 do_checks.adb:442:47: info: length check proved
 do_checks.adb:444:16: info: precondition proved
 do_checks.adb:444:19: info: discriminant check proved
-do_checks.adb:450:29: warning: "X" is not modified, could be "in"
-do_checks.adb:450:44: warning: "Y" is not modified, could be "in"
+do_checks.adb:450:29: warning: "X" is not modified, could be IN
+do_checks.adb:450:44: warning: "Y" is not modified, could be IN
 do_checks.adb:452:19: warning: statement has no effect
 do_checks.adb:452:26: medium: discriminant check might fail
 do_checks.adb:456:29: info: discriminant check proved
 do_checks.adb:457:29: info: discriminant check proved
 do_checks.adb:457:46: info: length check proved
 do_checks.adb:459:16: info: precondition proved
-do_checks.adb:463:29: warning: "X" is not modified, could be "in"
-do_checks.adb:463:44: warning: "Y" is not modified, could be "in"
+do_checks.adb:463:29: warning: "X" is not modified, could be IN
+do_checks.adb:463:44: warning: "Y" is not modified, could be IN
 do_checks.adb:467:19: warning: statement has no effect
 do_checks.adb:467:26: info: discriminant check proved
 do_checks.adb:471:30: info: discriminant check proved

@@ -1,2 +1,2 @@
-pack-child.ads:3:26: warning: "I" is not modified, could be "in"
+pack-child.ads:3:26: warning: "I" is not modified, could be IN
 pack-child.ads:3:26: warning: unused variable "I"

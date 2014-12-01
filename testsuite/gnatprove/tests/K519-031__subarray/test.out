@@ -3,7 +3,7 @@ subar.adb:9:04: warning: analyzing unreferenced procedure "Try_B"
 subar.adb:9:14: warning: subprogram "Try_B" has no effect
 subar.adb:13:07: info: precondition proved
 subar.adb:13:10: info: length check proved
-subar.adb:13:10: medium: "Ab" might not be initialized
+subar.adb:13:10: medium: "AB" might not be initialized
 subar.adb:18:07: info: assertion proved
 subar.adb:18:26: medium: array index check might fail
 subar.adb:22:04: warning: analyzing unreferenced procedure "Try_D"
@@ -13,7 +13,7 @@ subar.adb:27:07: info: precondition proved
 subar.adb:30:04: warning: analyzing unreferenced procedure "Try_E"
 subar.adb:30:14: warning: subprogram "Try_E" has no effect
 subar.adb:34:07: info: precondition proved
-subar.adb:34:10: medium: "Ae" might not be initialized
+subar.adb:34:10: medium: "AE" might not be initialized
 subar.adb:38:07: medium: range check might fail
 subar.adb:41:09: info: length check proved
 subar.adb:41:26: info: length check proved

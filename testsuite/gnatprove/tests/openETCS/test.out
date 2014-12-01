@@ -24,7 +24,7 @@ deceleration_curve.adb:61:31: medium: overflow check might fail
 deceleration_curve.adb:70:36: info: division check proved
 deceleration_curve.adb:70:36: info: range check proved
 deceleration_curve.adb:82:09: info: precondition proved
-deceleration_curve.adb:85:47: medium: "Braking_Curve.Curve" might not be initialized
+deceleration_curve.adb:85:47: medium: "Braking_Curve.curve" might not be initialized
 deceleration_curve.adb:90:19: medium: overflow check might fail
 deceleration_curve.adb:90:21: warning: assuming "Sqrt" has no effect on global items
 deceleration_curve.adb:90:21: warning: no Global contract available for "Sqrt"
@@ -69,12 +69,12 @@ sec_3_13_2_monitoring_inputs.ads:200:08: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:201:24: info: precondition proved
 sec_3_13_2_monitoring_inputs.ads:202:58: info: range check proved
 sec_3_13_2_monitoring_inputs.ads:244:46: info: precondition proved
-sec_3_13_2_monitoring_inputs.ads:248:14: warning: subprogram "Dummy" has no effect
-sec_3_13_4_gradient_accel_decel.ads:26:24: warning: unused variable "D"
+sec_3_13_2_monitoring_inputs.ads:248:14: warning: subprogram "dummy" has no effect
+sec_3_13_4_gradient_accel_decel.ads:26:24: warning: unused variable "d"
 sec_3_13_6_deceleration.adb:26:37: info: precondition proved
 sec_3_13_6_deceleration.adb:26:37: medium: range check might fail
 sec_3_13_6_deceleration.adb:27:71: medium: range check might fail
-sec_3_13_6_deceleration.ads:34:43: warning: unused variable "D"
+sec_3_13_6_deceleration.ads:34:43: warning: unused variable "d"
 sec_3_13_6_deceleration.ads:39:06: info: postcondition proved
 sec_3_13_6_deceleration.ads:40:37: info: precondition proved
 sec_3_13_6_deceleration.ads:40:37: info: range check proved
@@ -96,8 +96,8 @@ section_3_5_3.adb:41:54: info: overflow check proved
 section_3_5_3.ads:51:53: info: precondition proved
 section_3_5_3.ads:68:14: warning: subprogram "Initiate_Communication_Session" has no effect
 section_3_5_3.ads:75:14: medium: postcondition might fail, requires Contains(Connections, destination)
-section_3_5_3.ads:80:14: warning: subprogram "Contact_Rbc" has no effect
-section_4_6.ads:102:24: warning: unused variable "Mode"
+section_3_5_3.ads:80:14: warning: subprogram "Contact_RBC" has no effect
+section_4_6.ads:102:24: warning: unused variable "mode"
 section_4_6.ads:106:06: medium: contract cases might not be complete
 section_4_6.ads:106:06: medium: contract cases might not be disjoint
 section_4_6.ads:106:55: info: contract case proved

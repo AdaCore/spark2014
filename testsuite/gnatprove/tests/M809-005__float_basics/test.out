@@ -152,8 +152,8 @@ generic_float_tests.adb:198:14: medium: divide by zero might fail, in instantiat
 generic_float_tests.adb:198:14: medium: divide by zero might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:198:14: medium: overflow check might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:198:14: medium: overflow check might fail, in instantiation at foo.ads:15
-generic_float_tests.adb:204:14: warning: subprogram "Introduce_Nan_2" has no effect, in instantiation at foo.ads:10
-generic_float_tests.adb:204:14: warning: subprogram "Introduce_Nan_2" has no effect, in instantiation at foo.ads:15
+generic_float_tests.adb:204:14: warning: subprogram "Introduce_NaN_2" has no effect, in instantiation at foo.ads:10
+generic_float_tests.adb:204:14: warning: subprogram "Introduce_NaN_2" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:208:07: info: assertion proved, in instantiation at foo.ads:10
 generic_float_tests.adb:208:07: info: assertion proved, in instantiation at foo.ads:15
 generic_float_tests.adb:208:24: medium: divide by zero might fail, in instantiation at foo.ads:10

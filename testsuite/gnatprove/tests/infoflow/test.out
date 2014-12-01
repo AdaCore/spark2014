@@ -6,10 +6,10 @@ infoflow.adb:68:10: info: loop invariant preservation proved
 infoflow.adb:69:51: medium: "Cache_V2" might not be initialized
 infoflow.adb:80:10: info: loop invariant initialization proved
 infoflow.adb:80:10: info: loop invariant preservation proved
-infoflow.adb:81:47: medium: "Outkeys_V1" might not be initialized
+infoflow.adb:81:47: medium: "OutKeys_V1" might not be initialized
 infoflow.adb:88:10: info: loop invariant initialization proved
 infoflow.adb:88:10: info: loop invariant preservation proved
-infoflow.adb:89:47: medium: "Outkeys_V2" might not be initialized
+infoflow.adb:89:47: medium: "OutKeys_V2" might not be initialized
 infoflow.adb:99:28: info: division check proved
 infoflow.adb:101:13: medium: loop invariant might fail after first iteration
 infoflow.adb:101:13: medium: loop invariant might fail in first iteration
@@ -170,8 +170,8 @@ infoflow.ads:102:70: info: division check proved
 infoflow.ads:103:24: info: contract case proved
 infoflow.ads:103:33: info: index check proved
 infoflow.ads:103:44: info: index check proved
-infoflow.ads:112:07: medium: "A_V1" might not be initialized in "Arraypartitionedtransfer"
-infoflow.ads:112:13: medium: "A_V2" might not be initialized in "Arraypartitionedtransfer"
+infoflow.ads:112:07: medium: "A_V1" might not be initialized in "ArrayPartitionedTransfer"
+infoflow.ads:112:13: medium: "A_V2" might not be initialized in "ArrayPartitionedTransfer"
 infoflow.ads:129:06: info: disjoint contract cases proved
 infoflow.ads:129:06: medium: contract cases might not be complete
 infoflow.ads:131:33: info: index check proved

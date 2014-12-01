@@ -25,22 +25,23 @@
 with Ada.Containers.Hashed_Sets;
 with Ada.Strings.Unbounded.Hash;
 
-with Atree;                use Atree;
-with Einfo;                use Einfo;
-with Errout;               use Errout;
-with Erroutc;              use Erroutc;
-with Namet;                use Namet;
-with Sinfo;                use Sinfo;
-with Sinput;               use Sinput;
-with Stringt;              use Stringt;
+with Atree;                      use Atree;
+with Csets;                      use Csets;
+with Einfo;                      use Einfo;
+with Errout;                     use Errout;
+with Erroutc;                    use Erroutc;
+with Namet;                      use Namet;
+with Sinfo;                      use Sinfo;
+with Sinput;                     use Sinput;
+with Stringt;                    use Stringt;
 
-with Assumption_Types;     use Assumption_Types;
-with Gnat2Why.Annotate;    use Gnat2Why.Annotate;
-with Gnat2Why.Assumptions; use Gnat2Why.Assumptions;
-with Gnat2Why.Nodes;       use Gnat2Why.Nodes;
-with Gnat2Why_Args;        use Gnat2Why_Args;
-with SPARK_Util;           use SPARK_Util;
-with String_Utils;         use String_Utils;
+with Assumption_Types;           use Assumption_Types;
+with Gnat2Why.Annotate;          use Gnat2Why.Annotate;
+with Gnat2Why.Assumptions;       use Gnat2Why.Assumptions;
+with Gnat2Why.Nodes;             use Gnat2Why.Nodes;
+with Gnat2Why_Args;              use Gnat2Why_Args;
+with SPARK_Util;                 use SPARK_Util;
+with String_Utils;               use String_Utils;
 
 package body Flow_Error_Messages is
 
@@ -120,7 +121,7 @@ package body Flow_Error_Messages is
    function Escape (S : String) return String;
    --  Escape any special characters used in the error message (for
    --  example transforms "=>" into "='>" as > is a special insertion
-   --  character.
+   --  character. We also escape capital letters.
 
    function Substitute
      (S    : Unbounded_String;
@@ -237,7 +238,7 @@ package body Flow_Error_Messages is
       Unb_Msg : constant Unbounded_String :=
         To_Unbounded_String (Msg3) &
         To_Unbounded_String (Source_Ptr'Image (Slc)) &
-          To_Unbounded_String (Msg_Kind_To_String (Kind));
+        To_Unbounded_String (Msg_Kind_To_String (Kind));
 
       function Is_Specified_Line return Boolean;
       --  Returns True if command line argument "--limit-line" was not
@@ -432,9 +433,10 @@ package body Flow_Error_Messages is
       R : Unbounded_String := Null_Unbounded_String;
    begin
       for Index in S'Range loop
-         if S (Index) in '%' | '$' | '{' | '*' | '&' |
-           '#' | '}' | '@' | '^' | '>' |
-           '!' | '?' | '<' | '`' | ''' | '\' | '|'
+         if S (Index) in '%' | '$' | '{' | '*' | '&' | '#' |
+                         '}' | '@' | '^' | '>' | '!' | '?' |
+                         '<' | '`' | ''' | '\' | '|'
+           or else Is_Upper_Case_Letter (S (Index))
          then
             Append (R, "'");
          end if;
@@ -505,13 +507,12 @@ package body Flow_Error_Messages is
       Msg_Id      : Message_Id;
       Tracefile   : String := "";
       VC_File     : String := "";
-      Editor_Cmd  : String := "") is
-
-      Value     : constant JSON_Value := Create_Object;
-      File       : constant String := File_Name (Slc);
-      Line       : constant Integer :=
-        Integer (Get_Logical_Line_Number (Slc));
-      Col        : constant Integer := Integer (Get_Column_Number (Slc));
+      Editor_Cmd  : String := "")
+   is
+      Value : constant JSON_Value := Create_Object;
+      File  : constant String     := File_Name (Slc);
+      Line  : constant Integer    := Integer (Get_Logical_Line_Number (Slc));
+      Col   : constant Integer    := Integer (Get_Column_Number (Slc));
    begin
 
       Set_Field (Value, "file", File);
@@ -566,9 +567,11 @@ package body Flow_Error_Messages is
    function Print_Regular_Msg
      (Msg  : String;
       Slc  : Source_Ptr;
-      Kind : Msg_Kind) return Message_Id is
-      Id          : constant Message_Id := Message_Id_Counter;
-      Prefix      : constant String :=
+      Kind : Msg_Kind)
+      return Message_Id
+   is
+      Id         : constant Message_Id := Message_Id_Counter;
+      Prefix     : constant String :=
         (case Kind is
             when Info_Kind         => "info: ?",
             when Low_Check_Kind    => "low: ",
@@ -578,9 +581,8 @@ package body Flow_Error_Messages is
             when Error_Kind        => "");
       Actual_Msg : constant String :=
         Prefix & Escape (Msg) & "!!" &
-      (if Ide_Mode then
-          "'['#" & Int_Image (Integer (Id)) & "']"
-       else "");
+        (if Ide_Mode then "'['#" & Int_Image (Integer (Id)) & "']"
+         else "");
    begin
       Message_Id_Counter := Message_Id_Counter + 1;
       Error_Msg (Actual_Msg, Slc);

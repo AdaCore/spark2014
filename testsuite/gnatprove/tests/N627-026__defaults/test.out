@@ -50,11 +50,11 @@ with_default.adb:206:39: medium: range check might fail
 with_default.adb:219:39: medium: range check might fail
 with_default.adb:233:40: info: range check proved
 with_default.ads:3:14: warning: subprogram "Bad_Scalar" has no effect
-with_default.ads:5:14: warning: subprogram "Ok_Scalar" has no effect
+with_default.ads:5:14: warning: subprogram "OK_Scalar" has no effect
 with_default.ads:7:14: warning: subprogram "Bad_Array1" has no effect
 with_default.ads:9:14: warning: subprogram "Bad_Array2" has no effect
-with_default.ads:11:14: warning: subprogram "Ok_Array" has no effect
-with_default.ads:14:14: warning: subprogram "Ok_Record" has no effect
+with_default.ads:11:14: warning: subprogram "OK_Array" has no effect
+with_default.ads:14:14: warning: subprogram "OK_Record" has no effect
 with_default.ads:16:14: warning: subprogram "Bad_Record1" has no effect
 with_default.ads:18:14: warning: subprogram "Bad_Record2" has no effect
 with_default.ads:20:14: warning: subprogram "Bad_Record3" has no effect

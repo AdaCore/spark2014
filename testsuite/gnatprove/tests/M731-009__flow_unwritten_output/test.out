@@ -1,4 +1,4 @@
-q.adb:7:32: warning: "G" is not modified, could be "input"
-q.adb:13:32: warning: "G" is not modified, could be "input"
+q.adb:7:32: warning: "G" is not modified, could be INPUT
+q.adb:13:32: warning: "G" is not modified, could be INPUT
 q.adb:19:04: warning: analyzing unreferenced procedure "Test_03"
-q.adb:20:23: warning: "G" is not modified, could be "in"
+q.adb:20:23: warning: "G" is not modified, could be IN

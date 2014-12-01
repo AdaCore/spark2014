@@ -1,5 +1,5 @@
 evoting.adb:44:07: warning: statement has no effect
-evoting.adb:49:30: medium: "Candidates" might not be initialized
+evoting.adb:49:30: medium: "candidates" might not be initialized
 evoting.adb:54:60: info: length check proved
 evoting.adb:55:07: warning: assuming "Open" has no effect on global items
 evoting.adb:55:07: warning: no Global contract available for "Open"
@@ -14,7 +14,7 @@ evoting.adb:62:49: info: range check proved
 evoting.adb:65:07: warning: assuming "Close" has no effect on global items
 evoting.adb:65:07: warning: no Global contract available for "Close"
 evoting.adb:65:07: warning: statement has no effect
-evoting.adb:65:13: warning: unused assignment to "File"
+evoting.adb:65:13: warning: unused assignment to "file"
 evoting.adb:66:43: info: range check proved
 evoting.adb:73:10: warning: assuming "Put" has no effect on global items
 evoting.adb:73:10: warning: no Global contract available for "Put"
@@ -60,7 +60,7 @@ evoting.adb:175:10: warning: no Global contract available for "Put_Line"
 evoting.adb:175:10: warning: statement has no effect
 evoting.adb:176:10: warning: assuming "Get_Line" has no effect on global items
 evoting.adb:176:10: warning: no Global contract available for "Get_Line"
-evoting.adb:176:32: warning: unused assignment to "Last"
+evoting.adb:176:32: warning: unused assignment to "last"
 evoting.adb:178:13: info: precondition proved
 evoting.adb:181:63: info: range check proved
 evoting.adb:182:51: info: overflow check proved
@@ -73,7 +73,7 @@ evoting.adb:185:16: warning: no Global contract available for "Put_Line"
 evoting.adb:185:16: warning: statement has no effect
 evoting.adb:190:16: info: range check proved
 evoting.adb:202:07: warning: statement has no effect
-evoting.adb:205:41: medium: "Winners" might not be initialized
+evoting.adb:205:41: medium: "winners" might not be initialized
 evoting.adb:211:10: info: loop invariant initialization proved
 evoting.adb:211:10: info: loop invariant preservation proved
 evoting.adb:215:24: info: range check proved

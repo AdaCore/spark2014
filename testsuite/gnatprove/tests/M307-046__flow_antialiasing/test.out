@@ -1,4 +1,4 @@
-test.adb:103:30: warning: "Y" is not modified, could be "in"
+test.adb:103:30: warning: "Y" is not modified, could be IN
 test.adb:113:04: warning: analyzing unreferenced procedure "Test_01"
 test.adb:113:14: flow analysis of "Test_01" abandoned due to aliasing
 test.adb:116:14: formal parameters "X" and "Y" must not be aliased
@@ -6,7 +6,7 @@ test.adb:119:04: warning: analyzing unreferenced procedure "Test_02"
 test.adb:125:04: warning: analyzing unreferenced procedure "Test_03"
 test.adb:125:14: flow analysis of "Test_03" abandoned due to aliasing
 test.adb:128:14: formal parameter "X" and global "Global_RA" must not be aliased
-test.adb:131:23: warning: "X" is not modified, could be "in"
+test.adb:131:23: warning: "X" is not modified, could be IN
 test.adb:138:14: flow analysis of "Test_05" abandoned due to aliasing
 test.adb:142:19: formal parameters "Y" and "Z" must not be aliased
 test.adb:145:04: warning: analyzing unreferenced procedure "Test_06"
@@ -31,7 +31,7 @@ test.adb:193:15: formal parameters "X" and "Y" might be aliased
 test.adb:196:04: warning: analyzing unreferenced procedure "Test_14"
 test.adb:206:04: warning: analyzing unreferenced procedure "Slice_01"
 test.adb:212:04: warning: analyzing unreferenced procedure "Slice_02"
-test.adb:213:24: warning: "B" is not modified, could be "in"
+test.adb:213:24: warning: "B" is not modified, could be IN
 test.adb:219:04: warning: analyzing unreferenced procedure "Slice_03"
 test.adb:219:14: flow analysis of "Slice_03" abandoned due to aliasing
 test.adb:223:23: formal parameters "X" and "Y" might be aliased
@@ -54,10 +54,10 @@ test.adb:259:04: warning: analyzing unreferenced procedure "Slice_08"
 test.adb:259:14: flow analysis of "Slice_08" abandoned due to aliasing
 test.adb:263:23: formal parameters "X" and "Y" might be aliased
 test.adb:270:04: warning: analyzing unreferenced procedure "UCC_01"
-test.adb:270:14: flow analysis of "Ucc_01" abandoned due to aliasing
+test.adb:270:14: flow analysis of "UCC_01" abandoned due to aliasing
 test.adb:273:14: formal parameters "X" and "Y" must not be aliased
 test.adb:276:04: warning: analyzing unreferenced procedure "UCC_02"
-test.adb:276:14: flow analysis of "Ucc_02" abandoned due to aliasing
+test.adb:276:14: flow analysis of "UCC_02" abandoned due to aliasing
 test.adb:279:15: formal parameters "X" and "Y" must not be aliased
 test.adb:282:04: warning: analyzing unreferenced procedure "UCC_03"
 test.adb:288:04: warning: analyzing unreferenced procedure "UCC_04"

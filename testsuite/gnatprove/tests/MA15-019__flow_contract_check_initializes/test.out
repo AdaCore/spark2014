@@ -12,11 +12,11 @@ initializes_legal.ads:7:08: medium: initialization of V must not depend on Init.
 initializes_illegal.adb:5:04: high: "Y" is not initialized in "Initializes_Illegal"
 initializes_illegal.ads:7:27: medium: initialization of V must not depend on A (SPARK RM 7.1.5(11))
 initializes_illegal.ads:8:27: medium: initialization of X does not depend on A (SPARK RM 7.1.5(11))
-initializes_illegal.ads:9:27: medium: initialization of Initializes_Illegal.Sa must not depend on A (SPARK RM 7.1.5(11))
+initializes_illegal.ads:9:27: medium: initialization of Initializes_Illegal.SA must not depend on A (SPARK RM 7.1.5(11))
 initializes_illegal.ads:12:04: warning: initialization has no effect
 initializes_illegal.ads:15:14: warning: subprogram "Does_Nothing" has no effect
 initializes_illegal_2.adb:9:11: medium: overflow check might fail
-initializes_illegal_2.ads:7:27: medium: initialization of Initializes_Illegal_2.As2 must not depend on X (SPARK RM 7.1.5(11))
+initializes_illegal_2.ads:7:27: medium: initialization of Initializes_Illegal_2.AS2 must not depend on X (SPARK RM 7.1.5(11))
 initializes_illegal_2.ads:9:27: medium: initialization of Y must not depend on X (SPARK RM 7.1.5(11))
 initializes_illegal_2.ads:14:28: medium: overflow check might fail
 initializes_illegal_3.ads:5:35: high: Z must be initialized at elaboration

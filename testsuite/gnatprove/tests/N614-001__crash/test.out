@@ -27,8 +27,8 @@ part.adb:45:33: medium: loop invariant might fail after first iteration, require
 part.adb:45:33: medium: loop invariant might fail in first iteration, requires Same_Set (A'Loop_Entry, A), in call inlined at part.adb:79
 part.adb:47:32: medium: overflow check might fail, in call inlined at part.adb:72
 part.adb:47:32: medium: overflow check might fail, in call inlined at part.adb:79
-part.adb:48:27: medium: "Np" might not be initialized, in call inlined at part.adb:72
-part.adb:48:27: medium: "Np" might not be initialized, in call inlined at part.adb:79
+part.adb:48:27: medium: "NP" might not be initialized, in call inlined at part.adb:72
+part.adb:48:27: medium: "NP" might not be initialized, in call inlined at part.adb:79
 part.adb:48:31: info: range check proved, in call inlined at part.adb:72
 part.adb:48:31: info: range check proved, in call inlined at part.adb:79
 part.adb:52:35: medium: overflow check might fail, in call inlined at part.adb:72

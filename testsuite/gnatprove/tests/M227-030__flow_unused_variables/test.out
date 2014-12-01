@@ -1,9 +1,9 @@
 test.adb:7:04: warning: analyzing unreferenced procedure "Test_01"
 test.adb:7:23: warning: unused variable "A"
-test.adb:9:23: warning: "C" is not modified, could be "in"
+test.adb:9:23: warning: "C" is not modified, could be IN
 test.adb:9:23: warning: unused variable "C"
 test.adb:19:19: warning: unused global "State"
-test.adb:31:30: warning: "State" is not modified, could be "input"
+test.adb:31:30: warning: "State" is not modified, could be INPUT
 test.adb:31:30: warning: unused global "State"
 test.adb:41:04: warning: analyzing unreferenced procedure "Test_04"
 test.adb:41:23: warning: unused variable "A"

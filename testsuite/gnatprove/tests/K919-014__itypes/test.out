@@ -1,6 +1,6 @@
 p.adb:4:17: info: discriminant check proved
 p.adb:4:26: warning: statement has no effect
-p.ads:3:18: warning: "X" is not modified, could be "in"
+p.ads:3:18: warning: "X" is not modified, could be IN
 q.adb:4:17: info: discriminant check proved
 q.adb:4:26: warning: statement has no effect
-q.ads:4:18: warning: "X" is not modified, could be "in"
+q.ads:4:18: warning: "X" is not modified, could be IN

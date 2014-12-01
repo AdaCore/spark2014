@@ -1,5 +1,5 @@
 p.adb:11:07: medium: "Pr_Var" needs to be a constituent of some state abstraction
-p.adb:17:07: medium: "Gn" needs to be a constituent of some state abstraction
+p.adb:17:07: medium: "GN" needs to be a constituent of some state abstraction
 p.adb:19:42: medium: overflow check might fail
 p.adb:24:22: medium: assertion might fail, requires G = 0 + Nest(Nest.foo)
 p.adb:24:28: info: overflow check proved

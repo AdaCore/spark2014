@@ -1,5 +1,5 @@
 repr.adb:6:31: warning: unused initial value of "Unsorted"
-repr.adb:10:30: warning: "Values" is not modified, could be "in"
+repr.adb:10:30: warning: "Values" is not modified, could be IN
 repr.adb:16:16: warning: unused assignment
 repr.adb:16:37: medium: range check might fail
 sorters.adb:15:20: info: index check proved

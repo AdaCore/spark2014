@@ -98,7 +98,7 @@ auditlog.adb:421:44: info: range check proved
 auditlog.adb:425:16: info: range check proved
 auditlog.adb:425:28: info: range check proved
 auditlog.adb:425:37: info: range check proved
-auditlog.adb:481:14: warning: subprogram "Deletearchivefile" has no effect
+auditlog.adb:481:14: warning: subprogram "DeleteArchiveFile" has no effect
 auditlog.adb:491:22: info: precondition proved
 auditlog.adb:520:22: info: postcondition proved
 auditlog.adb:588:68: info: length check proved, in call inlined at auditlog.adb:636
@@ -697,11 +697,11 @@ latch.ads:150:22: info: postcondition proved
 latchapi.adb:95:37: medium: length check might fail
 latchapi.adb:95:37: warning: assuming "Overwrite" has no effect on global items
 latchapi.adb:95:37: warning: no Global contract available for "Overwrite"
-latchapi.adb:105:29: warning: unused assignment to "Inmsg"
+latchapi.adb:105:29: warning: unused assignment to "InMsg"
 latchapi.adb:129:37: medium: length check might fail
 latchapi.adb:129:37: warning: assuming "Overwrite" has no effect on global items
 latchapi.adb:129:37: warning: no Global contract available for "Overwrite"
-latchapi.adb:140:10: warning: unused assignment to "Inmsg"
+latchapi.adb:140:10: warning: unused assignment to "InMsg"
 poll.ads:113:13: info: postcondition proved
 screen.adb:113:06: info: length check proved
 screen.adb:113:07: info: length check proved
@@ -848,7 +848,7 @@ tismain.adb:209:22: medium: postcondition might fail
 tismain.adb:246:18: medium: precondition might fail
 tismain.adb:253:18: medium: precondition might fail
 tismain.adb:279:40: medium: "Floppy.Output" might not be written
-tismain.adb:280:43: medium: "Usertoken.Output" might not be written
+tismain.adb:280:43: medium: "UserToken.Output" might not be written
 tismain.adb:556:20: medium: precondition might fail
 tismain.adb:562:21: medium: precondition might fail
 tismain.adb:569:20: medium: precondition might fail
@@ -866,7 +866,7 @@ tismain.adb:744:41: medium: "Display.Output" might not be written
 tismain.adb:745:40: medium: "Floppy.Output" might not be written
 tismain.adb:746:39: medium: "Latch.Output" might not be written
 tismain.adb:747:40: medium: "Screen.Output" might not be written
-tismain.adb:749:43: medium: "Usertoken.Output" might not be written
+tismain.adb:749:43: medium: "UserToken.Output" might not be written
 tismain.adb:1078:25: medium: precondition might fail
 tismain.adb:1084:26: medium: precondition might fail
 tismain.adb:1091:25: medium: precondition might fail
@@ -919,7 +919,7 @@ tokenreader.adb:299:24: medium: precondition might fail
 tokenreader.adb:310:24: medium: precondition might fail
 tokenreader.adb:321:21: medium: precondition might fail
 tokenreader.adb:332:18: medium: precondition might fail
-tokenreader.adb:386:17: warning: subprogram "Disconnecttoken" has no effect
+tokenreader.adb:386:17: warning: subprogram "DisconnectToken" has no effect
 tokenreader.adb:668:43: info: range check proved
 tokenreader.adb:688:21: medium: precondition might fail
 updates.ads:79:22: info: postcondition proved
@@ -940,7 +940,7 @@ userentry.adb:484:26: info: length check proved
 userentry.adb:484:26: medium: range check might fail
 userentry.adb:533:21: medium: precondition might fail
 userentry.adb:548:21: medium: precondition might fail
-userentry.adb:589:43: medium: "Usertoken.Output" might not be written
+userentry.adb:589:43: medium: "UserToken.Output" might not be written
 userentry.adb:651:19: info: precondition proved
 userentry.adb:667:21: medium: precondition might fail
 userentry.adb:682:21: medium: precondition might fail
@@ -949,7 +949,7 @@ userentry.adb:772:21: medium: precondition might fail
 userentry.adb:859:13: medium: postcondition might fail
 userentry.adb:887:21: medium: precondition might fail
 userentry.adb:941:15: medium: precondition might fail
-userentry.adb:1045:50: medium: "Usertoken.Output" might not be written
+userentry.adb:1045:50: medium: "UserToken.Output" might not be written
 userentry.adb:1183:13: medium: refined postcondition might fail
 userentry.adb:1197:37: info: range check proved
 userentry.adb:1203:13: info: precondition proved

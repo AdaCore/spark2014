@@ -1,5 +1,5 @@
 dynamic_types.adb:4:15: info: range check proved
-dynamic_types.adb:6:31: warning: "From" is not modified, could be "in"
+dynamic_types.adb:6:31: warning: "From" is not modified, could be IN
 dynamic_types.adb:8:17: info: postcondition proved
 dynamic_types.adb:9:64: info: index check proved
 dynamic_types.adb:10:48: info: index check proved

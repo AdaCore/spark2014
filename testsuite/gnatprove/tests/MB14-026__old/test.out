@@ -1,4 +1,4 @@
 bug0.adb:5:07: warning: initialization has no effect
 bug0.adb:7:07: info: assertion proved
-bug0.ads:4:19: warning: "S" is not modified, could be "in"
+bug0.ads:4:19: warning: "S" is not modified, could be IN
 bug0.ads:5:12: info: postcondition proved

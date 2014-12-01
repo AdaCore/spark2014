@@ -178,9 +178,9 @@ auditlog.adb:1132:07: info: precondition proved
 auditlog.adb:1280:25: medium: assertion might fail, in call inlined at auditlog.adb:1320
 auditlog.adb:1284:55: info: range check proved, in call inlined at auditlog.adb:1320
 auditlog.adb:1319:12: info: assertion proved
-auditlog.adb:1321:30: medium: "Logfilesstatus" might not be initialized
-auditlog.adb:1323:30: medium: "Fileages" might not be initialized
-auditlog.adb:1324:30: medium: "Logfileentries" might not be initialized
+auditlog.adb:1321:30: medium: "LogFilesStatus" might not be initialized
+auditlog.adb:1323:30: medium: "FileAges" might not be initialized
+auditlog.adb:1324:30: medium: "LogFileEntries" might not be initialized
 auditlog.adb:1373:10: medium: assertion might fail
 auditlog.adb:1387:20: info: range check proved
 auditlog.adb:1400:19: medium: assertion might fail
@@ -244,11 +244,11 @@ bio.adb:189:42: info: length check proved, in call inlined at bio.adb:200
 bio.adb:189:45: medium: length check might fail, in call inlined at bio.adb:200
 bio.adb:191:23: info: length check proved, in call inlined at bio.adb:200
 bio.adb:191:23: medium: range check might fail, in call inlined at bio.adb:200
-cert-attr-auth.ads:149:14: class-wide input "keystore.thistisinfo" must also be a class-wide input of overridden subprogram "Isok" at cert-attr.ads:46 (SPARK RM 6.1.6)
+cert-attr-auth.ads:149:14: class-wide input "keystore.thistisinfo" must also be a class-wide input of overridden subprogram "IsOK" at cert-attr.ads:46 (SPARK RM 6.1.6)
 certificatestore.adb:37:42: info: length check proved
 certificatestore.adb:223:31: medium: range check might fail, in call inlined at certificatestore.adb:239
 certificatestore.adb:224:26: info: length check proved, in call inlined at certificatestore.adb:239
-certificatestore.adb:224:26: medium: "Rawnext" might not be initialized, in call inlined at certificatestore.adb:239
+certificatestore.adb:224:26: medium: "RawNext" might not be initialized, in call inlined at certificatestore.adb:239
 certificatestore.adb:224:29: info: length check proved, in call inlined at certificatestore.adb:239
 certificatestore.adb:224:29: medium: range check might fail, in call inlined at certificatestore.adb:239
 certificatestore.adb:225:42: info: length check proved, in call inlined at certificatestore.adb:239

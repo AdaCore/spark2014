@@ -17,7 +17,7 @@ skein.adb:268:44: medium: array index check might fail
 skein.adb:269:44: medium: array index check might fail
 skein.adb:270:44: medium: array index check might fail
 skein.adb:274:33: info: range check proved
-skein.adb:339:24: medium: "Ks" might not be initialized, in call inlined at skein.adb:619
+skein.adb:339:24: medium: "KS" might not be initialized, in call inlined at skein.adb:619
 skein.adb:358:26: info: length check proved, in call inlined at skein.adb:621
 skein.adb:367:25: info: length check proved, in call inlined at skein.adb:637
 skein.adb:400:45: info: division check proved, in call inlined at skein.adb:583

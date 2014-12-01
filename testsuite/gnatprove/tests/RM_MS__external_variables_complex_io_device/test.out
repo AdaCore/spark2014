@@ -1,5 +1,5 @@
 device.adb:17:04: high: "Register" is not written in "Device"
 device.adb:42:41: medium: "Register" might not be written
 device.adb:55:13: warning: statement has no effect
-device.adb:55:22: warning: unused assignment to "Ok"
+device.adb:55:22: warning: unused assignment to "OK"
 device.adb:56:13: warning: statement has no effect
