@@ -1,0 +1,13 @@
+q.adb:14:19: info: range check proved
+q.adb:14:27: info: division check proved
+q.adb:14:27: info: overflow check proved
+q.adb:17:17: info: overflow check proved
+q.adb:20:07: info: assertion proved
+q.adb:21:14: info: division check proved
+q.adb:21:14: info: overflow check proved
+q.adb:24:29: info: range check proved
+q.adb:26:29: info: range check proved
+q.adb:28:31: info: range check proved
+test.adb:16:19: medium: assertion might fail, requires Value in -0.0001 .. +
+test.adb:22:19: medium: assertion might fail, requires Value in -0.0015 .. -
+test.adb:28:19: medium: assertion might fail, requires Value >=
