@@ -11,7 +11,7 @@ is
       pragma Assert (Is_Empty (V));
       pragma Assert (V = Empty_Vector);
       --  Clear on unbounded vector does not always preserve capacity
-      pragma Assert (Capacity (V) = 2);  --  @ ASSERT:FAIL
+      pragma Assert (Capacity (V) = 2);  --  @ASSERT:FAIL
 
       Append (V, 1);
       Append (V, 2);
@@ -116,9 +116,9 @@ is
       pragma Assert (First_To_Previous (V, 2) = Current_To_Last (V, 2));
 
       --  Capacity of unbounded vector should not be known for sure here
-      pragma Assert (Capacity (V) = 10);  --  @ ASSERT:FAIL
+      pragma Assert (Capacity (V) = 10);  --  @ASSERT:FAIL
 
-      pragma Check (Only_For_Proof, False);  --  @ ASSERT:FAIL check absence of inconsistency
+      pragma Check (Only_For_Proof, False);  --  @ASSERT:FAIL check absence of inconsistency
    end Test;
 
 end Indefinite_Unbounded;
