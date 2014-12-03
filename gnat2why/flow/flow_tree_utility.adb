@@ -21,17 +21,221 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
+with Ada.Characters.Latin_1;
+with Ada.Strings.Maps;
+
 with Sem_Util;   use Sem_Util;
 with Uintp;      use Uintp;
 
+with Output;     use Output;
 with Treepr;     use Treepr;
 
 with Why;
 --  For the exceptions
 
 --  with SPARK_Util; use SPARK_Util;
+with SPARK_Definition; use SPARK_Definition;
+with Common_Containers; use Common_Containers;
+
+with Graph;
 
 package body Flow_Tree_Utility is
+
+   Record_Component_Debug : constant Boolean := False;
+
+   package Component_Graphs is new Graph (Vertex_Key   => Entity_Id,
+                                          Edge_Colours => Natural,
+                                          Null_Key     => Empty,
+                                          Test_Key     => "=");
+
+   Comp_Graph  : Component_Graphs.T;
+
+   Temp_String : Unbounded_String := Null_Unbounded_String;
+
+   procedure Add_To_Temp_String (S : String);
+   --  Nasty nasty hack to add the given string to a global variable,
+   --  Temp_String. We use this to pretty print nodes via Sprint_Node.
+
+   -------------------------
+   -- Add_To_Temp_String  --
+   -------------------------
+
+   procedure Add_To_Temp_String (S : String) is
+      Whitespace : constant Ada.Strings.Maps.Character_Set :=
+        Ada.Strings.Maps.To_Set
+        (" " & Ada.Characters.Latin_1.CR & Ada.Characters.Latin_1.LF);
+   begin
+      Append (Temp_String,
+              Trim (To_Unbounded_String (S), Whitespace, Whitespace));
+      Append (Temp_String, '\');
+      Append (Temp_String, 'n');
+   end Add_To_Temp_String;
+
+   ----------------
+   -- Initialize --
+   ----------------
+
+   procedure Initialize
+   is
+      use Component_Graphs;
+
+      function Node_Info (G : T'Class;
+                          V : Vertex_Id)
+                          return Node_Display_Info;
+
+      function Edge_Info (G      : T'Class;
+                          A      : Vertex_Id;
+                          B      : Vertex_Id;
+                          Marked : Boolean;
+                          Colour : Natural)
+                          return Edge_Display_Info;
+
+      function Node_Info (G : T'Class;
+                          V : Vertex_Id)
+                          return Node_Display_Info
+      is
+      begin
+         Temp_String := Null_Unbounded_String;
+         Set_Special_Output (Add_To_Temp_String'Access);
+         Print_Tree_Node (G.Get_Key (V));
+         Cancel_Special_Output;
+
+         return (Show   => True,
+                 Shape  => Shape_Oval,
+                 Colour => To_Unbounded_String ("black"),
+                 Label  => Temp_String);
+      end Node_Info;
+
+      function Edge_Info (G      : T'Class;
+                          A      : Vertex_Id;
+                          B      : Vertex_Id;
+                          Marked : Boolean;
+                          Colour : Natural)
+                          return Edge_Display_Info
+      is
+         pragma Unreferenced (G, A, B, Marked, Colour);
+      begin
+         return (Show   => True,
+                 Shape  => Edge_Normal,
+                 Colour => To_Unbounded_String ("black"),
+                 Label  => Null_Unbounded_String);
+      end Edge_Info;
+
+      Ptr  : Entity_Id;
+      Ptr2 : Entity_Id;
+
+      S    : Node_Sets.Set;
+   begin
+      Comp_Graph := Component_Graphs.Create;
+
+      S := Node_Sets.Empty_Set;
+      for E of Entity_Set loop
+         if Ekind (E) in Record_Kind then
+            Ptr := First_Component_Or_Discriminant (E);
+            while Present (Ptr) loop
+               if not S.Contains (Ptr) then
+                  S.Include (Ptr);
+                  Comp_Graph.Add_Vertex (Ptr);
+               end if;
+               if Present (Original_Record_Component (Ptr))
+                 and then not S.Contains (Original_Record_Component (Ptr))
+               then
+                  S.Include (Original_Record_Component (Ptr));
+                  Comp_Graph.Add_Vertex (Original_Record_Component (Ptr));
+               end if;
+               if Ekind (Ptr) = E_Discriminant
+                 and then Present (Corresponding_Discriminant (Ptr))
+                 and then not S.Contains (Corresponding_Discriminant (Ptr))
+               then
+                  S.Include (Corresponding_Discriminant (Ptr));
+                  Comp_Graph.Add_Vertex (Corresponding_Discriminant (Ptr));
+               end if;
+               Next_Component_Or_Discriminant (Ptr);
+            end loop;
+         end if;
+      end loop;
+
+      S := Node_Sets.Empty_Set;
+      for V of Comp_Graph.Get_Collection (All_Vertices) loop
+         Ptr := Comp_Graph.Get_Key (V);
+         S.Include (Ptr);
+         if Present (Original_Record_Component (Ptr)) then
+            Comp_Graph.Add_Edge (V_1    => Ptr,
+                                 V_2    => Original_Record_Component (Ptr),
+                                 Colour => 0);
+         end if;
+         case Ekind (Ptr) is
+            when E_Discriminant =>
+               if Present (Corresponding_Discriminant (Ptr)) then
+                  Comp_Graph.Add_Edge
+                    (V_1    => Ptr,
+                     V_2    => Corresponding_Discriminant (Ptr),
+                     Colour => 0);
+               end if;
+            when E_Component =>
+               null;
+            when others =>
+               raise Program_Error;
+         end case;
+         for V2 of Comp_Graph.Get_Collection (All_Vertices) loop
+            exit when V = V2;
+            Ptr2 := Comp_Graph.Get_Key (V2);
+            if Sloc (Ptr) = Sloc (Ptr2) then
+               Comp_Graph.Add_Edge (V_1    => V,
+                                    V_2    => V2,
+                                    Colour => 0);
+            end if;
+         end loop;
+      end loop;
+
+      declare
+         C         : Cluster_Id;
+         Work_List : Node_Sets.Set;
+      begin
+         while not S.Is_Empty loop
+            --  Pick an element at random.
+            Ptr := Node_Sets.Element (S.First);
+            S.Exclude (Ptr);
+
+            --  Create a new component.
+            Comp_Graph.New_Cluster (C);
+
+            --  Seed the work list.
+            Work_List := Node_Sets.To_Set (Ptr);
+
+            --  Flood current component.
+            while not Work_List.Is_Empty loop
+               Ptr := Node_Sets.Element (Work_List.First);
+               S.Exclude (Ptr);
+               Work_List.Exclude (Ptr);
+
+               Comp_Graph.Set_Cluster (Comp_Graph.Get_Vertex (Ptr), C);
+
+               for Neighbour_Kind in Collection_Type_T range
+                 Out_Neighbours .. In_Neighbours
+               loop
+                  for V of Comp_Graph.Get_Collection
+                    (Comp_Graph.Get_Vertex (Ptr), Neighbour_Kind)
+                  loop
+                     Ptr := Comp_Graph.Get_Key (V);
+                     if S.Contains (Ptr) then
+                        Work_List.Include (Ptr);
+                     end if;
+                  end loop;
+               end loop;
+            end loop;
+         end loop;
+      end;
+
+      if Record_Component_Debug then
+         Comp_Graph.Write_Pdf_File (Filename  => "component_graph",
+                                    Node_Info => Node_Info'Access,
+                                    Edge_Info => Edge_Info'Access);
+      end if;
+
+      Init_Done := True;
+   end Initialize;
 
    ---------------------------------
    -- Get_Procedure_Specification --
@@ -91,37 +295,29 @@ package body Flow_Tree_Utility is
    -- Get_Body --
    --------------
 
-   function Get_Body (E : Entity_Id) return Entity_Id is
-      P : Node_Id := Parent (E);
+   function Get_Body (E : Entity_Id) return Entity_Id
+   is
+      Body_N : constant Node_Id := Sem_Util.Get_Subprogram_Body (E);
+
+      Ptr : Node_Id;
    begin
-      if Nkind (P) = N_Defining_Program_Unit_Name then
-         P := Parent (P);
-      elsif Nkind (P) = N_Private_Extension_Declaration then
+      if No (Body_N) or else Nkind (Body_N) /= N_Subprogram_Body then
          return Empty;
       end if;
 
-      P := Parent (P);
+      if Acts_As_Spec (Body_N) then
+         return Empty;
+      end if;
 
-      case Nkind (P) is
-         when N_Subprogram_Body =>
-            pragma Assert (Acts_As_Spec (P));
-            return Empty;
+      Ptr := Specification (Body_N);
+      pragma Assert (Present (Ptr)
+                       and then Nkind (Ptr) in N_Subprogram_Specification);
 
-         when N_Subprogram_Declaration | N_Subprogram_Body_Stub =>
-            return Corresponding_Body (P);
+      Ptr := Defining_Unit_Name (Ptr);
+      pragma Assert (Present (Ptr)
+                       and then Nkind (Ptr) in N_Entity);
 
-         when N_Formal_Concrete_Subprogram_Declaration =>
-            --  We should only get here from Magic_String_To_Node_Sets
-            return Empty;
-
-         when N_Abstract_Subprogram_Declaration =>
-            return Empty;
-
-         when others =>
-            Print_Tree_Node (E);
-            Print_Tree_Node (P);
-            raise Why.Unexpected_Node;
-      end case;
+      return Ptr;
    end Get_Body;
 
    -------------------
@@ -230,16 +426,31 @@ package body Flow_Tree_Utility is
    end Has_Volatile_Aspect;
 
    --------------------
+   -- Component_Hash --
+   --------------------
+
+   function Component_Hash (E : Entity_Id) return Ada.Containers.Hash_Type
+   is
+   begin
+      return Ada.Containers.Hash_Type
+        (Comp_Graph.Cluster_To_Natural
+           (Comp_Graph.Get_Cluster (Comp_Graph.Get_Vertex (E))));
+   end Component_Hash;
+
+   --------------------
    -- Same_Component --
    --------------------
 
    function Same_Component (C1, C2 : Entity_Id) return Boolean
    is
-      A : constant Entity_Id := Original_Record_Component (C1);
-      B : constant Entity_Id := Original_Record_Component (C2);
+      use Component_Graphs;
+
+      A : constant Cluster_Id :=
+        Comp_Graph.Get_Cluster (Comp_Graph.Get_Vertex (C1));
+      B : constant Cluster_Id :=
+        Comp_Graph.Get_Cluster (Comp_Graph.Get_Vertex (C2));
    begin
-      --  !!! HACK HACK HACK
-      return A = B or else Sloc (A) = Sloc (B);
+      return A = B;
    end Same_Component;
 
    -----------------------------------
@@ -251,5 +462,25 @@ package body Flow_Tree_Utility is
    begin
       return Present (Get_Pragma (E, Pragma_Extensions_Visible));
    end Has_Extensions_Visible_Aspect;
+
+   ------------------------------------
+   -- Get_Full_Type_Without_Checking --
+   ------------------------------------
+
+   function Get_Full_Type_Without_Checking (N : Node_Id) return Entity_Id is
+      T : constant Entity_Id := Etype (N);
+   begin
+      if Nkind (N) in N_Entity and then Ekind (N) = E_Abstract_State then
+         return T;
+      else
+         pragma Assert (Nkind (T) in N_Entity);
+         pragma Assert (Is_Type (T));
+         if Present (Full_View (T)) then
+            return Full_View (T);
+         else
+            return T;
+         end if;
+      end if;
+   end Get_Full_Type_Without_Checking;
 
 end Flow_Tree_Utility;

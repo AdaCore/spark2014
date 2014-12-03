@@ -401,6 +401,18 @@ package body Graph is
       G.Vertices (V).Cluster := C;
    end Set_Cluster;
 
+   -----------------
+   -- Get_Cluster --
+   -----------------
+
+   function Get_Cluster (G : T'Class;
+                         V : Vertex_Id)
+                         return Cluster_Id
+   is
+   begin
+      return G.Vertices (V).Cluster;
+   end Get_Cluster;
+
    ----------------------------------------------------------------------
    --  Iterators
    ----------------------------------------------------------------------
@@ -1508,5 +1520,15 @@ package body Graph is
    begin
       return Natural (V);
    end Vertex_To_Natural;
+
+   ------------------------
+   -- Cluster_To_Natural --
+   ------------------------
+
+   function Cluster_To_Natural (G : T'Class; C : Cluster_Id) return Natural is
+      pragma Unreferenced (G);
+   begin
+      return Natural (C);
+   end Cluster_To_Natural;
 
 end Graph;

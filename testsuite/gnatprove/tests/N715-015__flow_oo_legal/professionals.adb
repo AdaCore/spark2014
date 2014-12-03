@@ -1,5 +1,8 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
+pragma Warnigns (Off, "assuming * has no effect on global items");
+pragma Warnings (Off, "no Global contract available for *");
+
 package body Professionals
   with Refined_State => (State => Skill_Of_The_Day)
 is
@@ -39,10 +42,10 @@ is
          Put_Line ("dead.");
       end if;
 
-      Put_Line ("Profession: " & This.Profession'Img);
+      Put_Line ("Profession: " & Professions'Image (This.Profession));
 
       for I in Skill_Range loop
-         Put_Line ("Skilled in " & This.Skilled_In (I)'Img);
+         Put_Line ("Skilled in " & Skills'Image (This.Skilled_In (I)));
          if This.Skilled_In (I) = Nothing then
             exit;
          end if;

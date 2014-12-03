@@ -23,13 +23,23 @@
 
 --  This package contains utilities related to the gnat tree.
 
-with Atree;  use Atree;
-with Einfo;  use Einfo;
-with Sinfo;  use Sinfo;
-with Snames; use Snames;
-with Types;  use Types;
+with Ada.Containers;
 
-package Flow_Tree_Utility is
+with Atree;             use Atree;
+with Einfo;             use Einfo;
+with Sinfo;             use Sinfo;
+with Snames;            use Snames;
+with Types;             use Types;
+
+package Flow_Tree_Utility with
+   Initial_Condition => not Is_Initialized
+is
+
+   procedure Initialize;
+   --  Set up state required by some functions in this package.
+
+   function Is_Initialized return Boolean;
+   --  Tests if we're initialized.
 
    function Get_Procedure_Specification (E : Entity_Id) return Node_Id
      with Pre  => Ekind (E) = E_Procedure,
@@ -72,8 +82,15 @@ package Flow_Tree_Utility is
          Get_Attribute_Id (Attribute_Name (N)) = Attribute_Update);
    --  Checks if the given node is a 'Update node.
 
+   function Component_Hash (E : Entity_Id) return Ada.Containers.Hash_Type
+   with Pre => Is_Initialized and then
+               Nkind (E) in N_Entity and then
+               Ekind (E) in E_Component | E_Discriminant;
+   --  Compute a suitable hash for the given record component.
+
    function Same_Component (C1, C2 : Entity_Id) return Boolean
-   with Pre => Nkind (C1) in N_Entity and then
+   with Pre => Is_Initialized and then
+               Nkind (C1) in N_Entity and then
                Nkind (C2) in N_Entity and then
                Ekind (C1) in E_Component | E_Discriminant  and then
                Ekind (C2) in E_Component | E_Discriminant;
@@ -87,5 +104,19 @@ package Flow_Tree_Utility is
    with Pre => Nkind (E) in N_Entity and then
                Ekind (E) in Subprogram_Kind;
    --  Checks if extensions are visible for this subprogram.
+
+   function Get_Full_Type_Without_Checking (N : Node_Id) return Entity_Id
+     with Pre => Present (N);
+   --  Get the type of the given entity. This function looks through
+   --  private types and should be used with extreme care.
+
+private
+   Init_Done : Boolean := False;
+
+   --------------------
+   -- Is_Initialized --
+   --------------------
+
+   function Is_Initialized return Boolean is (Init_Done);
 
 end Flow_Tree_Utility;

@@ -1,5 +1,8 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
+pragma Warnigns (Off, "assuming * has no effect on global items");
+pragma Warnings (Off, "no Global contract available for *");
+
 package People
   with Abstract_State => Date,
        Initializes    => Date

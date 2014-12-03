@@ -2862,19 +2862,22 @@ digraph G {
     20 [label="[type TtB (valid : boolean) is private]subtype t is TtB (false);\n<VId: 20>"];
     21 [label="[type TtB (valid : boolean) is recordcase valid iswhen true =>field : integer;when false =>null;end caseend record]type TtB (valid : boolean) is recordcase valid iswhen true =>field : integer;when false =>null;end caseend record;\n<VId: 21>"];
     22 [label="subtype t is TtB (false);\n<VId: 22>"];
-    23 [label="X.Valid'initial\nVD: {X.Valid}\n<VId: 23>",shape="plaintext",fontcolor="purple"];
-    24 [label="X.Valid'final\nVU: {X.Valid}\n<VId: 24>",shape="plaintext"];
-    26 [label="x := t(a);\nVU: {A.Valid}\nVD: {X.Valid}\n<VId: 26>"];
-    31 [label="b := x.valid;\nVU: {X.Valid}\nVD: {B}\n<VId: 31>"];
+    23 [label="X'Private_Part'initial\nVD: {X'Private_Part}\n<VId: 23>",shape="plaintext",fontcolor="red"];
+    24 [label="X'group'initial\n<VId: 24>",shape="plaintext"];
+    25 [label="X'Private_Part'final\nVU: {X'Private_Part}\n<VId: 25>",shape="plaintext"];
+    26 [label="X.Valid'initial\nVD: {X.Valid}\n<VId: 26>",shape="plaintext",fontcolor="purple"];
+    27 [label="X.Valid'final\nVU: {X.Valid}\n<VId: 27>",shape="plaintext"];
+    29 [label="x := t(a);\nVU: {A.Valid, A'Private_Part}\nVD: {X'Private_Part, X.Valid}\n<VId: 29>"];
+    34 [label="b := x.valid;\nVU: {X.Valid}\nVD: {B}\n<VId: 34>"];
 
 subgraph cluster1 {
   style=filled;
   color=lightgrey;
   node [style=filled,color=white];
-    27 [label="call modify_it\nSC: {Modify_It}\n<VId: 27>",shape="box"];
-    28 [label="x'in&nbsp;:=&nbsp;x\nVU: {X.Valid}\n<VId: 28>",shape="plaintext"];
-    29 [label="x&nbsp;:=&nbsp;x'out\nVD: {X.Valid}\n<VId: 29>",shape="plaintext"];
-    30 [label="n'in&nbsp;:=&nbsp;n\nVU: {N}\n<VId: 30>",shape="plaintext"];
+    30 [label="call modify_it\nSC: {Modify_It}\n<VId: 30>",shape="box"];
+    31 [label="x'in&nbsp;:=&nbsp;x\nVU: {X.Valid, X'Private_Part}\n<VId: 31>",shape="plaintext"];
+    32 [label="x&nbsp;:=&nbsp;x'out\nVD: {X'Private_Part, X.Valid}\n<VId: 32>",shape="plaintext"];
+    33 [label="n'in&nbsp;:=&nbsp;n\nVU: {N}\n<VId: 33>",shape="plaintext"];
 }
 
     1 ->  15 [arrowType="normal"];
@@ -2883,7 +2886,8 @@ subgraph cluster1 {
     3 ->  10 [arrowType="normal"];
     3 ->  12 [arrowType="normal"];
     3 ->  14 [arrowType="normal"];
-    3 ->  24 [arrowType="normal"];
+    3 ->  25 [arrowType="normal"];
+    3 ->  27 [arrowType="normal"];
     6 ->  1 [arrowType="normal"];
     7 ->  6 [arrowType="normal"];
     9 ->  1 [arrowType="normal"];
@@ -2892,14 +2896,16 @@ subgraph cluster1 {
     15 ->  20 [arrowType="normal"];
     20 ->  21 [arrowType="normal"];
     21 ->  22 [arrowType="normal"];
-    22 ->  26 [arrowType="normal"];
+    22 ->  29 [arrowType="normal"];
     23 ->  1 [arrowType="normal"];
-    26 ->  27 [arrowType="normal"];
-    27 ->  28 [arrowType="normal"];
-    28 ->  30 [arrowType="normal"];
-    29 ->  31 [arrowType="normal"];
-    30 ->  29 [arrowType="normal"];
-    31 ->  2 [arrowType="normal"];
+    24 ->  23 [arrowType="normal"];
+    26 ->  1 [arrowType="normal"];
+    29 ->  30 [arrowType="normal"];
+    30 ->  31 [arrowType="normal"];
+    31 ->  33 [arrowType="normal"];
+    32 ->  34 [arrowType="normal"];
+    33 ->  32 [arrowType="normal"];
+    34 ->  2 [arrowType="normal"];
 }
 
 // fa_subprogram_test_19_pdg
@@ -2921,38 +2927,43 @@ digraph G {
     20 [label="subtype t is TtB (false);\n<VId: 20>"];
     21 [label="type TtB (valid : boolean) is recordcase valid iswhen true =>field : integer;when false =>null;end caseend record;\n<VId: 21>"];
     22 [label="subtype t is TtB (false);\n<VId: 22>"];
-    23 [label="X.Valid'initial\nVD: {X.Valid}\n<VId: 23>",shape="plaintext",fontcolor="purple"];
-    24 [label="X.Valid'final\nVU: {X.Valid}\n<VId: 24>",shape="plaintext"];
-    26 [label="x := t(a);\nVU: {A.Valid}\nVD: {X.Valid}\n<VId: 26>"];
-    27 [label="call modify_it\nSC: {Modify_It}\n<VId: 27>",shape="box"];
-    28 [label="x'in&nbsp;:=&nbsp;x\nVU: {X.Valid}\n<VId: 28>",shape="plaintext"];
-    29 [label="x&nbsp;:=&nbsp;x'out\nVD: {X.Valid}\n<VId: 29>",shape="plaintext"];
-    30 [label="n'in&nbsp;:=&nbsp;n\nVU: {N}\n<VId: 30>",shape="plaintext"];
-    31 [label="b := x.valid;\nVU: {X.Valid}\nVD: {B}\n<VId: 31>"];
+    23 [label="X'Private_Part'initial\nVD: {X'Private_Part}\n<VId: 23>",shape="plaintext",fontcolor="red"];
+    24 [label="X'group'initial\n<VId: 24>",shape="plaintext"];
+    25 [label="X'Private_Part'final\nVU: {X'Private_Part}\n<VId: 25>",shape="plaintext"];
+    26 [label="X.Valid'initial\nVD: {X.Valid}\n<VId: 26>",shape="plaintext",fontcolor="purple"];
+    27 [label="X.Valid'final\nVU: {X.Valid}\n<VId: 27>",shape="plaintext"];
+    29 [label="x := t(a);\nVU: {A.Valid, A'Private_Part}\nVD: {X'Private_Part, X.Valid}\n<VId: 29>"];
+    30 [label="call modify_it\nSC: {Modify_It}\n<VId: 30>",shape="box"];
+    31 [label="x'in&nbsp;:=&nbsp;x\nVU: {X.Valid, X'Private_Part}\n<VId: 31>",shape="plaintext"];
+    32 [label="x&nbsp;:=&nbsp;x'out\nVD: {X'Private_Part, X.Valid}\n<VId: 32>",shape="plaintext"];
+    33 [label="n'in&nbsp;:=&nbsp;n\nVU: {N}\n<VId: 33>",shape="plaintext"];
+    34 [label="b := x.valid;\nVU: {X.Valid}\nVD: {B}\n<VId: 34>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
     1 ->  20 [arrowType="normal"];
     1 ->  21 [arrowType="normal"];
     1 ->  22 [arrowType="normal"];
-    1 ->  26 [arrowType="normal"];
-    1 ->  27 [arrowType="normal"];
-    1 ->  31 [arrowType="normal"];
+    1 ->  29 [arrowType="normal"];
+    1 ->  30 [arrowType="normal"];
+    1 ->  34 [arrowType="normal"];
     6 ->  8 [arrowType="normal",color="red"];
+    6 ->  29 [arrowType="normal",color="red"];
     9 ->  10 [arrowType="normal",color="red"];
     9 ->  15 [arrowType="normal",color="red"];
-    9 ->  26 [arrowType="normal",color="red"];
+    9 ->  29 [arrowType="normal",color="red"];
     11 ->  12 [arrowType="normal",color="red"];
-    11 ->  30 [arrowType="normal",color="red"];
-    26 ->  28 [arrowType="normal",color="red"];
-    27 ->  28 [arrowType="normal"];
-    27 ->  29 [arrowType="normal"];
-    27 ->  30 [arrowType="normal"];
-    28 ->  29 [arrowType="normal",color="cornflowerblue"];
-    29 ->  24 [arrowType="normal",color="red"];
+    11 ->  33 [arrowType="normal",color="red"];
     29 ->  31 [arrowType="normal",color="red"];
-    30 ->  29 [arrowType="normal",color="cornflowerblue"];
-    31 ->  14 [arrowType="normal",color="red"];
+    30 ->  31 [arrowType="normal"];
+    30 ->  32 [arrowType="normal"];
+    30 ->  33 [arrowType="normal"];
+    31 ->  32 [arrowType="normal",color="cornflowerblue"];
+    32 ->  25 [arrowType="normal",color="red"];
+    32 ->  27 [arrowType="normal",color="red"];
+    32 ->  34 [arrowType="normal",color="red"];
+    33 ->  32 [arrowType="normal",color="cornflowerblue"];
+    34 ->  14 [arrowType="normal",color="red"];
 }
 
 // fa_subprogram_test_20_cfg
