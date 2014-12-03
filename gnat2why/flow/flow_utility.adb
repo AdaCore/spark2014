@@ -2700,7 +2700,6 @@ package body Flow_Utility is
                            then
                               Vars_Defined.Include (F);
                            elsif F.Kind = Direct_Mapping then
-                              pragma Assert (F.Facet /= Normal_Part);
                               Vars_Defined.Include (F);
                            end if;
                         end loop;
