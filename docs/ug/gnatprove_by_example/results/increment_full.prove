@@ -1,0 +1,3 @@
+increment_full.adb:6:14: info: postcondition proved
+increment_full.adb:6:24: info: overflow check proved
+increment_full.adb:9:11: info: overflow check proved

@@ -1,0 +1,4 @@
+addition.adb:4:16: medium: overflow check might fail
+addition.adb:5:14: info: postcondition proved
+addition.adb:5:34: info: overflow check proved
+addition.adb:8:13: info: overflow check proved
