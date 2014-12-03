@@ -228,6 +228,8 @@ package body Gnat2Why.Error_Messages is
             return "length check might fail";
          when VC_Discriminant_Check        =>
             return "discriminant check might fail";
+         when VC_Tag_Check                 =>
+            return "tag check might fail";
          when VC_Initial_Condition         =>
             return "initial condition might fail";
          when VC_Default_Initial_Condition =>
@@ -415,6 +417,9 @@ package body Gnat2Why.Error_Messages is
          when VC_Length_Check              => return "length check proved";
          when VC_Discriminant_Check        =>
             return "discriminant check proved";
+         when VC_Tag_Check                 =>
+            return "tag check proved";
+
          when VC_Initial_Condition         =>
             return "initial condition proved";
          when VC_Default_Initial_Condition =>
@@ -486,6 +491,7 @@ package body Gnat2Why.Error_Messages is
          when VC_Range_Check               => "range_check",
          when VC_Length_Check              => "length_check",
          when VC_Discriminant_Check        => "discriminant_check",
+         when VC_Tag_Check                 => "tag_check",
          when VC_Default_Initial_Condition => "default_initial_condition",
          when VC_Initial_Condition         => "initial_condition",
          when VC_Precondition              => "precondition",
