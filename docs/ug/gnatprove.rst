@@ -1943,32 +1943,21 @@ producing and attempting to prove.
 deductive verification. It is very different both from compilers, which do very
 little analysis of the code, and static analyzers, which execute symbolically
 the program. |GNATprove| does a very powerful local analysis of the program,
-but it does not cross subprogram boundaries. Instead, it uses the subprogram
-contracts provided by users to interpret the effect of calls.  Thus, it is
-essential to understand how |GNATprove| uses contracts, as well as other forms
-of annotations. This section aims at providing a deeper insight into how
-|GNATprove| flow analysis and formal verification works, through a
-step-by-step exploration of simple code examples.
-
-For simplicity, all the examples in this section use explicit ``SPARK_Mode`` aspects where needed.
-
-This section is structured into the following subsections:
-
-.. contents::
-  :depth: 1
-  :local:
-
-.. _flow_examples:
-
-.. include:: gnatprove_by_example/flow.rst
+but it does not cross subprogram boundaries. Instead, it uses the
+:ref:`Subprogram Contracts` provided by users to analyze calls. |GNATprove|
+also requires sometimes that users direct the analysis with :ref:`Assertion
+Pragmas`. Thus, it is essential to understand how |GNATprove| uses contracts
+and assertion pragmas. This section aims at providing a deeper insight into how
+|GNATprove|'s flow analysis and proof work, through a step-by-step exploration
+of small code examples.
 
 .. _basic_examples:
 
 .. include:: gnatprove_by_example/basic.rst
 
-.. _call_examples:
+.. _flow_examples:
 
-.. include:: gnatprove_by_example/call.rst
+.. include:: gnatprove_by_example/flow.rst
 
 .. _loop_examples:
 

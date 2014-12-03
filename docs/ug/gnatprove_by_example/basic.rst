@@ -1,224 +1,277 @@
-Basic Proof Examples
---------------------
+Basic Examples
+--------------
 
-The remaining examples in this section show the use of |GNATprove| for formal
-verification. We start by looking at the results of running |GNATprove| on
-simple subprograms composed of assignments and branches.  Note that the
-remaining examples generally do not
-have ``Global`` and ``Depends`` annotations present as we want to focus on
-formal verification. In practise the contracts for flow analysis and proof
-can, of course, co-exist happily together.
+The examples in this section have no loops, and do not use more complex
+features of |SPARK| like :ref:`Ghost Code`, :ref:`Interfaces to the Physical
+World`, or :ref:`Tagged Types and Liskov Substitution Principle`.
 
-Scalar Assignment
-^^^^^^^^^^^^^^^^^
+.. _Increment:
 
-.. _assign:
+Increment
+^^^^^^^^^
 
-.. rubric: : Assign (no need for using rubric now as there is only one example)
+Consider a simple procedure that increments its integer parameter ``X``:
 
-|GNATprove| is able to follow very precisely the assignments to scalar variables
-throughout the program. Take a very simple program ``Increment`` that assigns the
-value ``X+1`` to the variable ``X``. This subprogram does not have any annotations
-to specify what its behaviour should be so |GNATprove| has no specification to
-verify it against. It will, however, attempt to prove that none of Ada's predefined
-exceptions can be raised during its execution.
-
-.. literalinclude:: gnatprove_by_example/examples/t1q1a.adb
+.. literalinclude:: gnatprove_by_example/examples/increment.adb
    :language: ada
    :linenos:
 
-The proof results show that |GNATprove| is unable to prove the overflow
-check on line 7, where ``X`` is incremented. This is not surprising, given
-that the initial value of ``X`` could be ``Integer'Last`` and incrementing
-it would indeed cause an overflow in this case.
+As this procedure does not have a contract yet, |GNATprove| only checks that
+there are no possible reads of uninitialized data and no possible run-time
+errors in the procedure. Here, it issues a message about a possible overflow
+check failure on ``X + 1``:
 
-.. literalinclude:: gnatprove_by_example/results/t1q1a.prove
+.. literalinclude:: gnatprove_by_example/results/increment.prove
    :language: none
-   :linenos:
 
-We can guard against this possibility by adding a suitable precondition
-to the specification of ``Increment``. This states that that ``X``
-must always be strictly less than ``Integer'Last`` at the point where
-the subprogram is called.
+This is a real vulnerability, as ``Increment`` could be called on value
+``Integer'Last`` for parameter ``X``, which would cause the increment to raise
+a run-time error. One way to eliminate this vulnerability is to add a
+precondition to ``Increment`` specifying that ``X`` should be less than
+``Integer'Last`` when calling the procedure:
 
-.. literalinclude:: gnatprove_by_example/examples/t1q1b.ads
+.. literalinclude:: gnatprove_by_example/examples/increment_guarded.adb
    :language: ada
    :linenos:
 
-|GNATprove| assumes that the precondition holds when it performs the proof
-of ``Increment``. For any subprogram which calls ``Increment``, |GNATprove|
-will check that the precondition holds at the point of the call.
+As this procedure has a contract now, |GNATprove| checks like before that there
+are no possible reads of uninitialized data and no possible run-time errors in
+the procedure, including in its contrat, and that the procedure implements its
+contract. As expected, |GNATprove| now proves that there is no possible
+overflow check failure on ``X + 1``:
 
-.. literalinclude:: gnatprove_by_example/results/t1q1b.prove
+.. literalinclude:: gnatprove_by_example/results/increment_guarded.prove
    :language: none
+
+The precondition is usually the first contract added to a subprogram, but there
+are other :ref:`Subprogram Contracts`. Here is a version of ``Increment``
+with:
+
+* global dependencies (aspect ``Global``) stating that the procedure reads and
+  writes no global variables
+* flow dependencies (aspect ``Depends``) stating that the final value of
+  parameter ``X`` only depends on its input value
+* a precondition (aspect ``Pre``) stating that parameter ``X`` should be less
+  than ``Integer'Last`` on entry
+* a postcondition (aspect ``Post``) stating that parameter ``X`` should have
+  been incremented by the procedure on exit
+
+.. literalinclude:: gnatprove_by_example/examples/increment_full.adb
+   :language: ada
    :linenos:
+
+|GNATprove| checks that ``Increment_Full`` implements its contract, and that it
+cannot raise run-time errors or read uninitialized data. By default,
+|GNATprove|'s output is empty in such a case, but we can request that it prints
+one line per check proved by using switch ``--report=all``, which we do here:
+
+.. literalinclude:: gnatprove_by_example/results/increment_full.prove
+   :language: none
+
+As subprogram contracts are used to analyze callers of a subprogram, let's
+consider a procedure ``Increment_Calls`` that calls the different versions of
+``Increment`` presented so far:
+
+.. literalinclude:: gnatprove_by_example/examples/increment_calls.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| proves all preconditions expect the one on the second call to
+``Increment_Guarded``:
+
+.. literalinclude:: gnatprove_by_example/results/increment_calls.prove
+   :language: none
+
+``Increment`` has no precondition, so there is nothing to check here except the
+initialization of ``X`` when calling ``Increment`` on lines 11 and 12. But
+remember that |GNATprove| did issue a message about a true vulnaribility on
+``Increment``'s implementation.
+
+This vulnerability was corrected by adding a precondition to
+``Increment_Guarded``. This has the effect of pushing the constraint on
+callers, here procedure ``Increment_Calls``. As expected, |GNATprove| proves
+that the first call to ``Increment_Guarded`` on line 15 satisfies its
+precondition. But it does not prove the same for the second call to
+``Increment_Guarded`` on line 16, because the value of ``X`` on line 16 was set
+by the call to ``Increment_Guarded`` on line 15, and the contract of
+``Increment_Guarded`` does not say anything about the possible values of ``X``
+on exit.
+
+Thus, a postcondition like the one on ``Increment_Full`` is needed so that
+|GNATprove| can check the second call to increment ``X``. As expected,
+|GNATprove| proves that both calls to ``Increment_Full`` on lines 19 and 20
+satisfy their precondition.
+
+.. _Swap:
 
 Swap
 ^^^^
 
-.. _swap:
+Consider a simple procedure that swaps its integer parameters ``X`` and ``Y``,
+whose simple-minded implementation is wrong:
 
-.. rubric: : Swap (no need for using rubric now as there is only one example)
-
-In the previous example |GNATprove| was able to prove that the subprogram
-was free from run-time exceptions but it did not help us with the question
-of whether the subprogram performed its intended function. Why not? Because
-we did not provide any specification of what the subprogram is supposed to
-do. We can specify properties about the required results of subprograms by
-adding postconditions to them, then using |GNATprove| to check that those
-postconditions hold.
-
-To illustrate the use of postconditions, consider the subprogram ``Swap``
-which exchanges the values of its two parameters ``X`` and ``Y``. The ``Post``
-aspect states that the new value of ``X`` will be the initial value of ``Y``
-and vice-versa. Note the use of the ``'Old`` attribute to refer to the initial
-values of the parameters.
-
-.. literalinclude:: gnatprove_by_example/examples/t1q3a.ads
+.. literalinclude:: gnatprove_by_example/examples/swap_bad.adb
    :language: ada
    :linenos:
 
-The body of ``Swap`` makes use of a temporary variable to exchange the
-values of ``X`` and ``Y`` in the standard way.
+As this procedure does not have a contract yet, |GNATprove| only checks that
+there are no possible reads of uninitialized data and no possible run-time
+errors in the procedure. Here, it simply issues a warning:
 
-.. literalinclude:: gnatprove_by_example/examples/t1q3a.adb
-   :language: ada
-   :linenos:
-
-The proof results show that |GNATprove| is able to prove that the postcondition
-holds.
-
-.. literalinclude:: gnatprove_by_example/results/t1q3a.prove
+.. literalinclude:: gnatprove_by_example/results/swap_bad.flow
    :language: none
-   :linenos:
 
-NAND
-^^^^
+But we know the procedure is wrong, so we'd like to get an error of some sort!
+We could not detect it with |GNATprove| because the error is functional, and
+|GNATprove| cannot guess the intended functionality of
+``Swap_Bad``. Fortunately, we can give this information to |GNATprove| by
+adding a contract to ``Swap_Bad``.
 
-.. _nand:
+One such contract is the flow dependencies introduced by aspect
+``Depends``. Here it specifies that the final value of ``X`` (resp. ``Y``)
+should depend on the initial value of ``Y`` (resp. ``X``):
 
-.. rubric: : Nand (no need for using rubric now as there is only one example)
-
-Now we turn to a procedure ``NandGate`` which calculates the NAND
-of two Boolean values. Here the programmer has decided to specify
-the postcondition by enumerating all the entries in the truth
-table for a NAND function. This could have been written using the
-``Post`` aspect like this:
-
-.. code-block:: ada
-
-   with Post => ((if ((not P) and (not Q)) then R) and
-                 (if ((not P) and Q) then R) and
-                 (if (P and (not Q)) then R) and
-                 (if (P and Q) then (not R)));
-
-However, the ``Contract_Cases`` aspect provides a convenient way
-to write this type of postcondition, as shown below:
-
-.. literalinclude:: gnatprove_by_example/examples/t1q3b.ads
+.. literalinclude:: gnatprove_by_example/examples/swap_bad_depends.adb
    :language: ada
    :linenos:
 
-The implementation is much simpler than the specification. This
-simplified expression for NAND could have been used in the specification
-as they are equivalent, but our programmer wanted to use the
-more efficient form in the implementation whilst keeping the more
-explicit version in the specification.
+|GNATprove| issues 3 check messages on ``Swap_Bad_Depends``:
 
-.. literalinclude:: gnatprove_by_example/examples/t1q3b.adb
-   :language: ada
-   :linenos:
-
-The proof results show that |GNATprove| is able to prove that the postcondition
-holds, thus demonstrating that the simple expression in the body does indeed
-implement a NAND function. Note how the results show that each individual contract
-case was proved and that the overall contract was proved.
-
-.. literalinclude:: gnatprove_by_example/results/t1q3b.prove
+.. literalinclude:: gnatprove_by_example/results/swap_bad_depends.flow
    :language: none
-   :linenos:
 
-NextDay
-^^^^^^^
+The last message informs us that the dependency ``Y => X`` stated in
+``Swap_Bad_Depends``'s contract is incorrect for the given implementation. That
+might be either an error in the code or an error in the contract. Here this is
+an error in the code. The two other messages are consequences of this error.
 
-.. _nextday:
+Another possible contract is the postcondition introduced by aspect
+``Post``. Here it specifies that the final value of ``X`` (resp. ``Y``) is
+equal to the initial value of ``Y`` (resp. ``X``):
 
-.. rubric: : NextDay (no need for using rubric now as there is only one example)
-
-The next example shows two subprograms, ``NextDay_A`` and ``NextDay_B``, both
-of which have the same postcondition. Given a value of the enumeration type
-``Day`` they will give the value of the next day. Naturally, this wraps around
-so if the day is Sunday (the last value in the enumeration) then the next day
-is Monday (the first value).
-
-.. literalinclude:: gnatprove_by_example/examples/t1q3c.ads
+.. literalinclude:: gnatprove_by_example/examples/swap_bad_post.adb
    :language: ada
    :linenos:
 
-The bodies of the two subprograms illustrate two alternative implementations
-of the next day functionality. The first one uses the ``'Succ`` attribute to
-get the next day, with a special case for Sunday as it is the last value in
-the type. The second version uses a case statement to state explicitly what
-the output should be for each input.
+|GNATprove| issues one check message on the unproved postcondition of
+``Swap_Bad_Post``:
 
-.. literalinclude:: gnatprove_by_example/examples/t1q3c.adb
-   :language: ada
-   :linenos:
-
-The proof results show that |GNATprove| is able to prove that both implementations
-meet their postconditions. There is also a range check on line 11, because the use
-of the ``'Succ`` attribute could potentially cause a run-time error if ``Today`` is
-the last value in the type. However, the ``if`` statement guards against this so
-the check is proved.
-
-.. literalinclude:: gnatprove_by_example/results/t1q3c.prove
+.. literalinclude:: gnatprove_by_example/results/swap_bad_post.prove
    :language: none
-   :linenos:
 
-Bounded_Addition
-^^^^^^^^^^^^^^^^
+Both the check messages on ``Swap_Bad_Depends`` and on ``Swap_Bad_Post`` inform
+us that the intended functionality as expressed in the contracts is not
+implemented in the procedure. And looking again at the warning issued by
+|GNATprove| on ``Swap_Bad``, this was already pointing at the same issue:
+swapping the values of ``X`` and ``Y`` should obviously lead to reading the
+initial value of ``X``; the fact that this value is not used is a clear sign
+that there is an error in the implementation. The correct version of ``Swap``
+uses a temporary value to hold the value of ``X``:
 
-.. _boundedadd:
-
-.. rubric: : BoundedAdd (no need for using rubric now as there is only one example)
-
-The procedure ``Bounded_Add`` takes two Integer values and calculates their
-sum. If the result would exceed the bounds of the Integer type then it should
-saturate at the maximum or minimum Integer value. The ``Contract_Cases`` aspect
-gives a natural way to express this specification.
-
-.. literalinclude:: gnatprove_by_example/examples/t1q5.ads
+.. literalinclude:: gnatprove_by_example/examples/swap.adb
    :language: ada
    :linenos:
 
-The tricky part is to implement this in the body without making use of a
-type that is larger than Integer. (If the implementation simply added the
-two values together to see if the result exceeded the bounds of Integer
-then it would obviously need a larger type to store the result.)
+|GNATprove| proves both contracts on ``Swap`` and it informs us that the
+postcondition was proved:
 
-.. literalinclude:: gnatprove_by_example/examples/t1q5.adb
-   :language: ada
-   :linenos:
-
-The proof results show that |GNATprove| is able to prove all the checks
-for this subprogram, so it satisifes its postcondition and there are
-no run-time errors. You may be wondering how it is that the postcondition
-in the subprogram specification contains an expression which simply
-adds together the two Integers, yet this does not overflow. This is
-because the project file specifies the compiler switch ``-gnato13``
-to define the semantics when calculating intermediate expressions.
-The first digit specifies the semantics for general code, with ``1``
-meaning that the normal Ada type system semantics should be used. The
-second digit specifies the semantics for use in proof (preconditions,
-postconditions, assertions, invariants), with ``3`` meaning that mathematical
-semantics are used so there is no possibility of overflow. If this
-option were changed to ``-gnato11`` then the normal Ada type system
-semantics would be used in proof expressions and |GNATprove| would
-(quite rightly) not be able to prove that there was no possibility
-of overflow in the postcondition. This is an important option and we
-recommend that users read the documentation carefully in order to
-understand how it behaves.
-
-.. literalinclude:: gnatprove_by_example/results/t1q5.prove
+.. literalinclude:: gnatprove_by_example/results/swap.prove
    :language: none
+
+.. prove Swap_Modulo once modulo arithmetic better supported?
+
+|GNATprove|'s flow analysis issues warnings like the one on ``Swap_Bad``
+whenever it detects that some variables or statements are not used in the
+computation, which is likely uncovering an error. For example, consider
+procedure ``Swap_Warn`` which assigns ``X`` and ``Tmp_Y`` out of order:
+
+.. literalinclude:: gnatprove_by_example/examples/swap_warn.adb
+   :language: ada
    :linenos:
+
+On this wrong implementation, |GNATprove| issues a high check message for the
+certain read of an uninitialized variable, and two warnings that point to
+unused constructs:
+
+.. literalinclude:: gnatprove_by_example/results/swap_warn.flow
+   :language: none
+
+In general, warnings issued by |GNATprove|'s flow analysis should be carefully
+reviewed, as they may lead to the discovery of errors in the program.
+
+.. _Addition:
+
+Addition
+^^^^^^^^
+
+Consider a simple function ``Addition`` that returns the sum of its integer
+parameters ``X`` and ``Y``. As in :ref:`Increment`, we add a suitable
+precondition and postcondition for this function:
+
+.. literalinclude:: gnatprove_by_example/examples/addition.adb
+   :language: ada
+   :linenos:
+
+We also added flow dependencies to ``Addition`` for illustration purposes, but
+they are the same as the default generated ones (the result of the function
+depends on all its inputs), so are not in general given explicitly.
+
+|GNATprove| issues a check message about a possible overflow in the
+precondition of ``Addition``:
+
+.. literalinclude:: gnatprove_by_example/results/addition.prove
+   :language: none
+
+Indeed, if we call for example ``Addition`` on values ``Integer'Last`` for
+``X`` and ``1`` for ``Y``, the expression ``X + Y`` evaluated in the
+precondition does not fit in a machine integer and raises an exception at run
+time. In this specific case, some people may consider that it does not really
+matter that an exception is raised due to overflow as the failure of the
+precondition should also raise a run-time exception. But in general the
+precondition should not fail (just consider the precondition ``X + Y not in
+Integer`` for example), and even here, the different exceptions raised may be
+treated differently (``Constraint_Error`` in the case of an overflow,
+``Assertion_Error`` in the case of a failing precondition).
+
+One way to avoid this vulnerability is to rewrite the precondition so that no
+overflow can occur:
+
+.. literalinclude:: gnatprove_by_example/examples/addition_rewrite.adb
+   :language: ada
+   :linenos:
+
+Although |GNATprove| proves that ``Addition_Rewrite`` implements its contract
+and is free from run-time errors, the rewritten precondition is not so readable
+anymore:
+
+.. literalinclude:: gnatprove_by_example/results/addition_rewrite.prove
+   :language: none
+
+A better way to achieve the same goal without losing in readability is to
+execute and analyze contracts in a special mode where overflows cannot occur,
+as explained in :ref:`Overflow Modes`. In that case, |GNATprove| proves that
+there are no run-time errors in function ``Addition``, and that it implements
+its contract.
+
+Finally, we can choose to expand the range of applicability of the function, by
+accepting any values of inputs ``X`` and ``Y``, and saturating when the
+addition would overflow the bounds of machine integers. That's what function
+``Addition_Saturated`` does, and its saturating behavior is expressed in
+:ref:`Contract Cases`:
+
+.. literalinclude:: gnatprove_by_example/examples/addition_saturated.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| proves that ``Addition_Saturated`` implements its contract and is
+free from run-time errors:
+
+.. literalinclude:: gnatprove_by_example/results/addition_saturated.prove
+   :language: none
+
+Note that we analyzed this function in ELIMINATED overflow mode, using the
+switch ``-gnato13``, otherwise there would be possible overflows in the guard
+expressions of the contract cases.
+
+
+.. global/depends + errors

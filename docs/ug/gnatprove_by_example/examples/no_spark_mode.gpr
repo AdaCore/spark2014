@@ -4,6 +4,7 @@ project No_SPARK_Mode is
    for Excluded_Source_List_File use "spark_mode_or_illegal.txt";
 
    package Compiler is
+      for Switches ("addition_saturated.adb") use ("-gnato13");
       for Switches ("t1q4.ads") use ("-gnato13");
       for Switches ("t1q4.adb") use ("-gnato13");
       for Switches ("t1q5.ads") use ("-gnato13");

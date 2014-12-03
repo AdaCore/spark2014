@@ -1,0 +1,2 @@
+swap_modulo.adb:5:15: medium: missing dependency "X => X"
+swap_modulo.adb:5:23: medium: missing dependency "Y => Y"

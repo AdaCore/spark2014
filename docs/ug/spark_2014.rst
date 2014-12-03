@@ -1083,6 +1083,8 @@ condition of a package cannot fail. |GNATprove| also analyzes the initial
 condition expression to ensure that it is free from run-time errors, like any
 other assertion.
 
+.. _Interfaces to the Physical World:
+
 Interfaces to the Physical World
 --------------------------------
 
@@ -2008,10 +2010,10 @@ Assertion Pragmas
 |SPARK| contains features for directing formal verification with
 |GNATprove|. These features may also be used by other tools, in particular the
 |GNAT Pro| compiler. Assertion pragmas are refinements of pragma ``Assert``
-defined in Ada. For all assertion pragmas, an exception is raised at run time
-when the property asserted does not hold, if the program was compiled with
-assertions. The real difference between assertion pragmas is how they are used
-by |GNATprove| during proof.
+defined in Ada. For all assertion pragmas, an exception ``Assertion_Error`` is
+raised at run time when the property asserted does not hold, if the program was
+compiled with assertions. The real difference between assertion pragmas is how
+they are used by |GNATprove| during proof.
 
 .. _Pragma Assert:
 

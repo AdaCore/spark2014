@@ -1,0 +1,4 @@
+increment_calls.adb:15:04: info: precondition proved
+increment_calls.adb:16:04: medium: precondition might fail
+increment_calls.adb:19:04: info: precondition proved
+increment_calls.adb:20:04: info: precondition proved
