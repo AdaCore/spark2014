@@ -18,4 +18,10 @@ is
    --  from N920-003 (teaching example)
    procedure Fibonacci (N : Positive; X, Y : Float_32; Res : out Float_32);
 
+   --  from NC01-041 (industrial user)
+   procedure Int_To_Float_Complex (X : Unsigned_16; Y : Float_32; Res : out Float_32);
+
+   --  from NC03-013 (industrial user)
+   procedure Int_To_Float_Simple (X : Unsigned_16; Res : out Float_32);
+
 end Floating_Point;

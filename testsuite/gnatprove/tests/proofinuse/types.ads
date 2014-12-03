@@ -7,6 +7,8 @@ is
 
    type Unsigned_32 is mod 2 ** 32;
 
+   type Unsigned_16 is mod 2 ** 16;
+
    type Unsigned_8 is mod 2 ** 8;
 
    --  Same function as in Interfaces

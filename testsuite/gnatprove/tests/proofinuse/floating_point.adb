@@ -45,4 +45,25 @@ is
       pragma Assert (Res < (1.6181**N)/2.2360 + 1.0);
    end Fibonacci;
 
+   procedure Int_To_Float_Complex (X : Unsigned_16; Y : Float_32; Res : out Float_32) is
+      S_Max   : constant := 10.0;
+      S_MSB   : constant := S_Max * 2.0;
+      S_Scale : constant := 2.0 ** 16 / S_MSB;
+   begin
+      pragma Assume (Y in 0.25 .. 1.0);
+      Res := Float_32 (X) / S_Scale;
+      if Res >= S_Max then
+         Res := Res - S_MSB;
+      end if;
+      Res := Res / Y;  --  overflow check unprovable
+   end Int_To_Float_Complex;
+
+   procedure Int_To_Float_Simple (X : Unsigned_16; Res : out Float_32) is
+      L : constant := 7.3526e6;
+   begin
+      pragma Assume (X /= 0);
+      pragma Assert (Float_32 (X) >= 0.9);
+      Res := L / Float_32 (X);
+   end Int_To_Float_Simple;
+
 end Floating_Point;
