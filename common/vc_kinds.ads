@@ -47,6 +47,7 @@ package VC_Kinds is
       VC_Range_Check,
       VC_Length_Check,
       VC_Discriminant_Check,
+      VC_Tag_Check,
 
       --  VC_Assert_Kind - assertions
 
@@ -81,7 +82,7 @@ package VC_Kinds is
       VC_Stronger_Classwide_Post);    --  classwide post stronger t/ inherited
 
    subtype VC_RTE_Kind is VC_Kind range
-     VC_Division_Check .. VC_Discriminant_Check;
+     VC_Division_Check .. VC_Tag_Check;
    subtype VC_Assert_Kind is  VC_Kind range
      VC_Initial_Condition .. VC_Raise;
    subtype VC_LSP_Kind is  VC_Kind range

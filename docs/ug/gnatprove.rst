@@ -496,6 +496,7 @@ failing condition reported by |GNATprove|:
    "range check might fail",                            "VC_RANGE_CHECK"
    "length check might fail",                           "VC_LENGTH_CHECK"
    "discriminant check might fail",                     "VC_DISCRIMINANT_CHECK"
+   "tag check might fail",                              "VC_TAG_CHECK"
 
    **assertions**
    "initial condition might fail",                      "VC_INITIAL_CONDITION"
