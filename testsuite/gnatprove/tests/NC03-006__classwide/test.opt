@@ -1,0 +1,1 @@
+ALL XFAIL generation of globals by flow analysis crashes on classwide
