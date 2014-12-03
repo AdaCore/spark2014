@@ -10,7 +10,7 @@ package body Simple_OO_With_Contracts is
    procedure Do_Stuff (Par : T1) is
    begin
       pragma Assert (G1 = G2);
-      G3 := G3 + Par.X + Par.Y;
+      G4 := G3 + Par.X + Par.Y;
    end Do_Stuff;
 
    overriding

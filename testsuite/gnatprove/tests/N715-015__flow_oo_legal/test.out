@@ -1,7 +1,2 @@
 simple_oo_with_contracts.ads:38:14: warning: subprogram "Do_Stuff" has no effect
-simple_oo_without_contracts.ads:22:14: class-wide output "G4" must also be a class-wide output of overridden subprogram "Do_Stuff" at line 15 (SPARK RM 6.1.6)
 simple_oo_without_contracts.ads:29:14: warning: subprogram "Do_Stuff" has no effect
-   compilation of simple_oo_without_contracts.adb failed
-
-
-gnatprove: error during analysis of data and information flow

@@ -1,1 +1,0 @@
-ALL XFAIL Slightly too strict check for classwide globals, NC03-017 to fix.
