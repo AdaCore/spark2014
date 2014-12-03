@@ -52,11 +52,6 @@ package Flow_Utility is
    --  try our best to get a direct mapping, resorting to the magic
    --  string only as a last resort.
 
-   function Get_Full_Type_Without_Checking (N : Node_Id) return Entity_Id
-     with Pre => Present (N);
-   --  Get the type of the given entity. This function looks through
-   --  private types and should be used with extreme care.
-
    function Get_Full_Type
      (N     : Node_Id;
       Scope : Flow_Scope)
@@ -514,5 +509,12 @@ package Flow_Utility is
    --
    --  If we can't find what we're looking for, we return the subprogram
    --  itself.
+
+   function All_Components (E : Entity_Id) return Node_Lists.List
+   with Pre => Nkind (E) in N_Entity and then
+               Ekind (E) in Type_Kind;
+   --  Obtain all components of the given entity E, similar to
+   --  {First,Next}_Component_Or_Discriminant, with the difference that any
+   --  components of private ancestors are included.
 
 end Flow_Utility;

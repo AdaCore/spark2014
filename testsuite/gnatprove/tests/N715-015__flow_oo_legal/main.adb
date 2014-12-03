@@ -2,6 +2,8 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with People;                use People;
 with Professionals;         use Professionals;
 
+pragma Warnigns (Off, "assuming * has no effect on global items");
+pragma Warnings (Off, "no Global contract available for *");
 
 procedure Main is
    Kenny : Person := New_Person (To_Unbounded_String ("Kenneth McCormick"));

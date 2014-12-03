@@ -348,7 +348,7 @@ package body Flow_Classwide is
                M.Include (F, Inputs);
             end loop;
             if not Void.Is_Empty then
-               M (Null_Flow_Id) := Void;
+               M.Include (Null_Flow_Id, Void);
             end if;
          end if;
 

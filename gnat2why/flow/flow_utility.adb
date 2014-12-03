@@ -82,6 +82,11 @@ package body Flow_Utility is
    --  Local
    ----------------------------------------------------------------------
 
+   package Component_Sets is new Ada.Containers.Hashed_Sets
+     (Element_Type        => Entity_Id,
+      Hash                => Component_Hash,
+      Equivalent_Elements => Same_Component);
+
    function Filter_Out_Non_Local_Constants (S : Flow_Id_Sets.Set;
                                             C : Node_Sets.Set)
                                             return Flow_Id_Sets.Set;
@@ -258,11 +263,6 @@ package body Flow_Utility is
       --  field. For example if the input is simply Foo, then (all other
       --  things being equal to the example above) we include Obj.C => Foo.
 
-      package Component_Sets is new Ada.Containers.Hashed_Sets
-        (Element_Type        => Entity_Id,
-         Hash                => Node_Hash,
-         Equivalent_Elements => Same_Component);
-
       M : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
 
       ----------
@@ -362,10 +362,8 @@ package body Flow_Utility is
                Missing : Component_Sets.Set := Component_Sets.Empty_Set;
                FS      : Flow_Id_Sets.Set;
             begin
-               Ptr := First_Component_Or_Discriminant (Map_Type);
-               while Present (Ptr) loop
+               for Ptr of All_Components (Map_Type) loop
                   Missing.Include (Original_Record_Component (Ptr));
-                  Next_Component_Or_Discriminant (Ptr);
                end loop;
 
                Ptr := First (Component_Associations (N));
@@ -2306,7 +2304,7 @@ package body Flow_Utility is
                   --  We always have the tag.
                   return False;
                when others =>
-                  return No (First_Component_Or_Discriminant (E));
+                  return All_Components (E).Is_Empty;
             end case;
          else
             return False;
@@ -2330,8 +2328,6 @@ package body Flow_Utility is
       T                    : Entity_Id;
       Ids                  : Flow_Id_Sets.Set;
       Classwide            : Boolean;
-
-      Ptr                  : Entity_Id;
 
       Contains_Non_Visible : Boolean := False;
    begin
@@ -2373,12 +2369,10 @@ package body Flow_Utility is
             end if;
 
             if Has_Discriminants (T) then
-               Ptr := First_Component_Or_Discriminant (T);
-               while Present (Ptr) loop
+               for Ptr of All_Components (T) loop
                   if Is_Visible (Original_Record_Component (Ptr), Scope) then
                      Ids.Include (Add_Component (F, Ptr));
                   end if;
-                  Next_Component_Or_Discriminant (Ptr);
                end loop;
                Ids.Include (F'Update (Facet => Private_Part));
             else
@@ -2396,15 +2390,13 @@ package body Flow_Utility is
 
             Ids := Flow_Id_Sets.Empty_Set;
 
-            Ptr := First_Component_Or_Discriminant (T);
-            while Present (Ptr) loop
+            for Ptr of All_Components (T) loop
                if Is_Visible (Original_Record_Component (Ptr), Scope) then
                   Ids.Union (Flatten_Variable (Add_Component (F, Ptr),
                                                Scope));
                else
                   Contains_Non_Visible := True;
                end if;
-               Next_Component_Or_Discriminant (Ptr);
             end loop;
 
             if Ekind (T) in Private_Kind or Contains_Non_Visible then
@@ -2439,26 +2431,6 @@ package body Flow_Utility is
 
       return Ids;
    end Flatten_Variable;
-
-   ------------------------------------
-   -- Get_Full_Type_Without_Checking --
-   ------------------------------------
-
-   function Get_Full_Type_Without_Checking (N : Node_Id) return Entity_Id is
-      T : constant Entity_Id := Etype (N);
-   begin
-      if Nkind (N) in N_Entity and then Ekind (N) = E_Abstract_State then
-         return T;
-      else
-         pragma Assert (Nkind (T) in N_Entity);
-         pragma Assert (Is_Type (T));
-         if Present (Full_View (T)) then
-            return Full_View (T);
-         else
-            return T;
-         end if;
-      end if;
-   end Get_Full_Type_Without_Checking;
 
    -------------------
    -- Get_Full_Type --
@@ -2708,16 +2680,12 @@ package body Flow_Utility is
 
                      function In_Type (C : Entity_Id) return Boolean;
 
-                     function In_Type (C : Entity_Id) return Boolean
-                     is
-                        Ptr : Node_Id :=
-                          First_Component_Or_Discriminant (New_Typ);
+                     function In_Type (C : Entity_Id) return Boolean is
                      begin
-                        while Present (Ptr) loop
+                        for Ptr of All_Components (New_Typ) loop
                            if Same_Component (C, Ptr) then
                               return True;
                            end if;
-                           Next_Component_Or_Discriminant (Ptr);
                         end loop;
                         return False;
                      end In_Type;
@@ -2727,7 +2695,12 @@ package body Flow_Utility is
                      then
                         Vars_Defined := Flow_Id_Sets.Empty_Set;
                         for F of Old_Vars loop
-                           if In_Type (F.Component (Idx)) then
+                           if F.Kind = Record_Field
+                             and then In_Type (F.Component (Idx))
+                           then
+                              Vars_Defined.Include (F);
+                           elsif F.Kind = Direct_Mapping then
+                              pragma Assert (F.Facet /= Normal_Part);
                               Vars_Defined.Include (F);
                            end if;
                         end loop;
@@ -3159,5 +3132,53 @@ package body Flow_Utility is
          return Subprogram;
       end if;
    end Search_Depends;
+
+   --------------------
+   -- All_Components --
+   --------------------
+
+   function All_Components (E : Entity_Id) return Node_Lists.List
+   is
+      Ptr : Entity_Id;
+      T   : Entity_Id          := E;
+      L   : Node_Lists.List    := Node_Lists.Empty_List;
+      S   : Component_Sets.Set := Component_Sets.Empty_Set;
+
+      function Up (E : Entity_Id) return Entity_Id;
+      --  Get parent type, but don't consider record subtypes' ancestors.
+
+      function Up (E : Entity_Id) return Entity_Id
+      is
+         A : constant Entity_Id := Etype (E);
+         B : Entity_Id;
+      begin
+         if Ekind (E) = E_Record_Subtype then
+            B := Up (A);
+            if A /= B then
+               return B;
+            else
+               return E;
+            end if;
+         else
+            return A;
+         end if;
+      end Up;
+
+   begin
+      loop
+         Ptr := First_Component_Or_Discriminant (T);
+         while Present (Ptr) loop
+            if not S.Contains (Ptr) then
+               S.Include (Ptr);
+               L.Append (Ptr);
+            end if;
+            Next_Component_Or_Discriminant (Ptr);
+         end loop;
+         exit when Up (T) = T;
+         T := Up (T);
+      end loop;
+
+      return L;
+   end All_Components;
 
 end Flow_Utility;

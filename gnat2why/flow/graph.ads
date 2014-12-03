@@ -331,6 +331,13 @@ package Graph is
    --
    --  Complexity is O(1).
 
+   function Get_Cluster (G : T'Class;
+                         V : Vertex_Id)
+                         return Cluster_Id;
+   --  Returns the vertex' cluster.
+   --
+   --  Complexity is O(1).
+
    ----------------------------------------------------------------------
    --  Iterators
    ----------------------------------------------------------------------
@@ -576,6 +583,9 @@ package Graph is
 
    function Vertex_To_Natural (G : T'Class; V : Vertex_Id) return Natural;
    --  Debug function to get the internal index of the given vertex.
+
+   function Cluster_To_Natural (G : T'Class; C : Cluster_Id) return Natural;
+   --  Debug function to get the internal index of the given cluster.
 
 private
 

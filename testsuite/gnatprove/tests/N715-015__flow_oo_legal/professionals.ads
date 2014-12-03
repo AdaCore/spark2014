@@ -2,6 +2,9 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with People;                use People;
 with Printable;
 
+pragma Warnigns (Off, "assuming * has no effect on global items");
+pragma Warnings (Off, "no Global contract available for *");
+
 package Professionals
   with Abstract_State => State
 is
