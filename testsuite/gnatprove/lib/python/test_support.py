@@ -174,6 +174,8 @@ def check_marks(strlist):
             return 'LENGTH_CHECK'
         elif 'discriminant check' in text:
             return 'DISCRIMINANT_CHECK'
+        elif 'tag check' in text:
+            return 'TAG_CHECK'
         elif 'default initial condition' in text:
             return 'DEFAULT_INITIAL_CONDITION'
         elif 'initial condition' in text:
@@ -225,6 +227,7 @@ def check_marks(strlist):
                        "RANGE_CHECK",
                        "LENGTH_CHECK",
                        "DISCRIMINANT_CHECK",
+                       "TAG_CHECK",
                        "INITIAL_CONDITION",
                        "DEFAULT_INITIAL_CONDITION",
                        "PRECONDITION",
