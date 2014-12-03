@@ -2473,19 +2473,7 @@ package body Flow_Utility is
             when N_Type_Conversion =>
                Ptr := Expression (Ptr);
             when N_Unchecked_Type_Conversion =>
-               --  We only allow `unchecked' conversions of scalars in
-               --  assignment targets.
-               if Ekind (Get_Full_Type_Without_Checking (Ptr)) not in
-                 Scalar_Kind
-               then
-                  return False;
-               end if;
                Ptr := Expression (Ptr);
-               if Ekind (Get_Full_Type_Without_Checking (Ptr)) not in
-                 Scalar_Kind
-               then
-                  return False;
-               end if;
             when N_Indexed_Component | N_Slice | N_Selected_Component =>
                Ptr := Prefix (Ptr);
          end case;
@@ -2549,17 +2537,7 @@ package body Flow_Utility is
                end if;
 
             when N_Unchecked_Type_Conversion =>
-               --  We have only limited support for unchecked conversions
-               --  here - we support conversions from scalars to scalars
-               --  only. The assert here makes sure this assumption stays
-               --  valid.
-               declare
-                  Typ_From : constant Entity_Id := Etype (Expression (N));
-                  Typ_To   : constant Entity_Id := Etype (N);
-               begin
-                  pragma Assert (Ekind (Typ_From) in Scalar_Kind);
-                  pragma Assert (Ekind (Typ_To)   in Scalar_Kind);
-               end;
+               null;
 
             when others =>
                Partial_Definition := True;
