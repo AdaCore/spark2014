@@ -43,14 +43,6 @@ with Flow_Error_Messages;  use Flow_Error_Messages;
 with Flow_Tree_Utility;    use Flow_Tree_Utility;
 with Flow_Utility;         use Flow_Utility;
 
------------------------------------------------------------------------------
---
---  ??? Important: Please make sure to always use FA.Atr.Element (V)
---  instead of the implicit reference FA.Atr (V), due to finalization
---  issues. See N131-017 for further information.
---
------------------------------------------------------------------------------
-
 package body Flow.Analysis is
 
    Debug_Trace_Depends : constant Boolean := False;
