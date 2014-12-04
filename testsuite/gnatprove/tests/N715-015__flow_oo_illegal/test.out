@@ -1,0 +1,25 @@
+illegal_1.ads:13:13: class-wide proof_in "G" must also be a class-wide (proof) input of overridden subprogram "New_Object" at root.ads:14 (SPARK RM 6.1.6)
+illegal_1.ads:19:13: class-wide input "G" must also be a class-wide input of overridden subprogram "New_Object_From_State" at root.ads:18 (SPARK RM 6.1.6)
+illegal_1.ads:28:13: class-wide input "G" must also be a class-wide input of overridden subprogram "New_P_Object_From_State" at root.ads:25 (SPARK RM 6.1.6)
+illegal_1.ads:31:14: class-wide in_out "G" must also be a class-wide input of overridden subprogram "New_Object_And_Update_Global_Outputs" at root.ads:28 (SPARK RM 6.1.6)
+illegal_1.ads:31:14: class-wide in_out "G" must also be a class-wide output of overridden subprogram "New_Object_And_Update_Global_Outputs" at root.ads:28 (SPARK RM 6.1.6)
+illegal_1.ads:34:14: class-wide output "G" must also be a class-wide output of overridden subprogram "Update_Global_Based_On_Object" at root.ads:31 (SPARK RM 6.1.6)
+   compilation of illegal_1.adb failed
+
+
+gnatprove: error during flow analysis and proof
+root.adb:11:29: info: overflow check proved
+simple_illegal_with_contracts.ads:25:14: class-wide input "PI" must also be a class-wide input of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
+simple_illegal_with_contracts.ads:34:14: class-wide in_out "I" must also be a class-wide output of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
+simple_illegal_with_contracts.ads:43:14: class-wide output "I" must also be a class-wide output of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
+   compilation of simple_illegal_with_contracts.adb failed
+
+
+gnatprove: error during flow analysis and proof
+simple_illegal_without_contracts.ads:21:14: class-wide input "PI" must also be a class-wide input of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
+simple_illegal_without_contracts.ads:27:14: class-wide in_out "I" must also be a class-wide output of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
+simple_illegal_without_contracts.ads:33:14: class-wide output "I" must also be a class-wide output of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
+   compilation of simple_illegal_without_contracts.adb failed
+
+
+gnatprove: error during flow analysis and proof

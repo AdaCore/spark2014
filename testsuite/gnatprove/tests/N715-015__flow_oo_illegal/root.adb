@@ -4,7 +4,7 @@ is
    Counter : Integer := Integer'First;
 
    procedure Progress_State
-     with Refined_Global => (In_Out => State)
+     with Refined_Global => (In_Out => Counter)
    is
    begin
       if Counter < Integer'Last then
