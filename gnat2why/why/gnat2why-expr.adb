@@ -10813,6 +10813,11 @@ package body Gnat2Why.Expr is
          when N_Implicit_Label_Declaration =>
             return New_Void;
 
+         --  Nothing to do for a number declaration
+
+         when N_Number_Declaration =>
+            return New_Void;
+
          --  Subprogram and package declarations are already taken care of
          --  explicitly. They should not be treated as part of a list of
          --  declarations.
