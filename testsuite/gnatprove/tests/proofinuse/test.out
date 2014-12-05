@@ -5,6 +5,8 @@ bitwise.adb:20:07: info: assertion proved
 bitwise.adb:20:30: info: division check proved
 bitwise.adb:22:07: info: assertion proved
 bitwise.adb:22:30: info: division check proved
+bitwise.adb:32:22: medium: assertion might fail, requires X = YY
+bitwise.adb:33:22: medium: assertion might fail, requires Y = XX
 floating_point.adb:7:16: info: overflow check proved
 floating_point.adb:8:22: medium: assertion might fail, requires Res >=
 floating_point.adb:14:16: info: overflow check proved
