@@ -1355,7 +1355,10 @@ package body SPARK_Definition is
 
       if Present (L) then
          Mark_List (L);
-         if Emit_Messages and then not Acceptable_Actions (L) then
+         if Emit_Messages
+           and then SPARK_Pragma_Is (Opt.On)
+           and then not Acceptable_Actions (L)
+         then
 
             --  We should never reach here, but in case we do, we issue an
             --  understandable error message pointing to the source of the
@@ -1472,14 +1475,17 @@ package body SPARK_Definition is
            Attribute_Position       |
            Attribute_Size
          =>
-            if Emit_Messages and then Gnat2Why_Args.Pedantic then
+            if Emit_Messages
+              and then SPARK_Pragma_Is (Opt.On)
+              and then Gnat2Why_Args.Pedantic
+            then
                Error_Msg_Name_1 := Aname;
                Error_Msg_N
                  ("?attribute % has an implementation-defined value", N);
             end if;
 
          when Attribute_Valid =>
-            if Emit_Messages then
+            if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
                Error_Msg_F ("?attribute Valid is assumed to return True", N);
             end if;
 
@@ -1591,6 +1597,7 @@ package body SPARK_Definition is
          case N_Binary_Op'(Nkind (N)) is
             when N_Op_Add | N_Op_Subtract =>
                if Emit_Messages
+                 and then SPARK_Pragma_Is (Opt.On)
                  and then Nkind_In (Left_Opnd (N), N_Op_Add, N_Op_Subtract)
                  and then Paren_Count (Left_Opnd (N)) = 0
                then
@@ -1600,6 +1607,7 @@ package body SPARK_Definition is
                end if;
 
                if Emit_Messages
+                 and then SPARK_Pragma_Is (Opt.On)
                  and then Nkind_In (Right_Opnd (N), N_Op_Add, N_Op_Subtract)
                  and then Paren_Count (Right_Opnd (N)) = 0
                then
@@ -1610,6 +1618,7 @@ package body SPARK_Definition is
 
             when N_Op_Multiply | N_Op_Divide | N_Op_Mod | N_Op_Rem =>
                if Emit_Messages
+                 and then SPARK_Pragma_Is (Opt.On)
                  and then Nkind (Left_Opnd (N)) in N_Multiplying_Operator
                  and then Paren_Count (Left_Opnd (N)) = 0
                then
@@ -1619,6 +1628,7 @@ package body SPARK_Definition is
                end if;
 
                if Emit_Messages
+                 and then SPARK_Pragma_Is (Opt.On)
                  and then Nkind (Right_Opnd (N)) in N_Multiplying_Operator
                  and then Paren_Count (Right_Opnd (N)) = 0
                then
@@ -1720,6 +1730,7 @@ package body SPARK_Definition is
             --  also pure subprograms which have no global effects.
 
             if Emit_Messages
+              and then SPARK_Pragma_Is (Opt.On)
               and then ((Is_Imported (E)
                            and then Convention (E) not in Convention_Ada)
                           or else Is_Internal_File_Name (File))
@@ -2456,7 +2467,7 @@ package body SPARK_Definition is
             elsif Is_Itype (E) then
                null;
 
-            elsif Emit_Messages then
+            elsif Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
                Error_Msg_N ("?type invariant ignored (not yet supported)", E);
             end if;
          end if;
@@ -2470,7 +2481,7 @@ package body SPARK_Definition is
                --  inherits them.
 
                if Has_Rep_Item (E, Name_Predicate, Check_Parents => False)
-                 and then Emit_Messages
+                 and then Emit_Messages and then SPARK_Pragma_Is (Opt.On)
                then
                   Error_Msg_N
                     ("?dynamic type predicate ignored (not yet supported)", E);
@@ -3253,8 +3264,14 @@ package body SPARK_Definition is
             | Pragma_Type_Invariant_Class =>
             null;
 
+         --  Emit warning on pragma Overflow_Mode being currently ignored, even
+         --  in code not marked SPARK_Mode On, as otherwise no warning would
+         --  be issued on configuration pragmas at the start of units whose
+         --  top level declaration is marked later SPARK_Mode On. Do not emit
+         --  a warning in code marked SPARK_Mode Off though.
+
          when Pragma_Overflow_Mode =>
-            if Emit_Messages then
+            if Emit_Messages and then not SPARK_Pragma_Is (Opt.Off) then
                Error_Msg_F ("?pragma Overflow_Mode in code is ignored", N);
             end if;
 
@@ -3530,7 +3547,7 @@ package body SPARK_Definition is
            Pragma_Priority                       |
            Pragma_Storage_Size                   =>
 
-            if Emit_Messages then
+            if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
                Error_Msg_Name_1 := Pname;
                Error_Msg_N ("?pragma % ignored (not yet supported)", N);
             end if;
@@ -3725,7 +3742,7 @@ package body SPARK_Definition is
               and then not Referenced (E)
               and then not Has_Unreferenced (E)
             then
-               if Emit_Messages then
+               if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
                   if Ekind (E) = E_Function then
                      Error_Msg_NE ("?analyzing unreferenced function &", N, E);
                   else
