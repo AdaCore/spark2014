@@ -22,4 +22,15 @@ is
       pragma Assert (Res = X / 8);  --  shift translated as div, proved by CVC4 and not proved by Alt-Ergo
    end Shift_Is_Div;
 
+   procedure Swap (X, Y : in out Unsigned_32) is
+      XX : constant Unsigned_32 := X;
+      YY : constant Unsigned_32 := Y;
+   begin
+      X := X xor Y;
+      Y := X xor Y;
+      X := X xor Y;
+      pragma Assert (X = YY);
+      pragma Assert (Y = XX);
+   end Swap;
+
 end Bitwise;
