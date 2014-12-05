@@ -66,4 +66,15 @@ is
       Res := L / Float_32 (X);
    end Int_To_Float_Simple;
 
+   function Float_to_Long_Float (X : Float) return Long_Float
+   is
+      Tmp : Long_Float;
+   begin
+      pragma Assume (X >= Float'First and X <= Float'Last);
+      Tmp := Long_Float (X);
+      pragma Assert
+           (Tmp >= Long_Float (Float'First) and
+            Tmp <= Long_Float (Float'Last));
+      return Tmp;
+   end Float_to_Long_Float;
 end Floating_Point;

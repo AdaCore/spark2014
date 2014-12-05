@@ -46,7 +46,7 @@ floating_point.adb:65:32: info: range check proved
 floating_point.adb:66:16: info: division check proved
 floating_point.adb:66:16: medium: overflow check might fail
 floating_point.adb:66:28: info: range check proved
-floating_point.ads:32:20: medium: postcondition might fail
+floating_point.adb:75:07: medium: assertion might fail
 nonlinear.adb:10:17: info: overflow check proved
 nonlinear.adb:10:22: info: division check proved
 nonlinear.adb:10:22: medium: range check might fail

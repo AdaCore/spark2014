@@ -25,11 +25,6 @@ is
    procedure Int_To_Float_Simple (X : Unsigned_16; Res : out Float_32);
 
    --  from NC04-023 (industrial user)
-   function Float_to_Long_Float (X : Float) return Long_Float
-   is (Long_Float (X))
-      with Pre  => (X >= Float'First and
-                    X <= Float'Last),
-           Post => (Float_to_Long_Float'Result >= Long_Float (Float'First) and
-                    Float_to_Long_Float'Result <= Long_Float (Float'Last));
+   function Float_to_Long_Float (X : Float) return Long_Float;
 
 end Floating_Point;
