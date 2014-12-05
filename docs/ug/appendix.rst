@@ -113,6 +113,38 @@ If more than one prover is specified, the provers are tried in order on each
 VC, until one of them succeeds or all fail. Interactive provers cannot be
 combined with other provers, so must appear on their own.
 
+Theorem Libraries
+^^^^^^^^^^^^^^^^^
+When |GNATprove| is used with a manual prover, the user can provide theorem
+libraries to use during the proof process.
+
+To do so, the user will need to set a proof directory
+(see :ref:`Project_Attributes` for more details on this directory).
+The user needs to create a folder with the same name as the chosen manual
+prover (the casing of the name is the same as passed to the switch
+``--prover``) and put the library sources inside this folder.
+
+Finally, some additional fields need to be added to the prover configuration
+in the why3 configuration file (a basic example of prover configuration can
+be found in the following section :ref:`Coq`):
+
+* ``configure_build``: this field allows you to specify a command to configure
+  the compilation of the theorem library. This command will be called each time
+  a source file is added to the library.
+
+* ``build_commands``: this field allows you to specify a set of command which
+  will be called sequentially to build your library. These commands will be
+  called each time |GNATprove| runs the corresponding manual prover.
+  (In order to define multiple commands for this field, just set the field
+  multiple times with different values, each time the field is set it adds a
+  new element to the set of `build_commands`).
+
+Users can specify the path of the created library to their prover in the why3
+configuration file with ``%o/user/<prover_name>``. The list of files considered
+for the library can be specified in the why3 configuration file with ``%f``.
+
+.. _Coq:
+
 Coq
 ---
 
