@@ -55,12 +55,12 @@ package body Flow.Analysis.Sanity is
       then
          if Gnat2Why_Args.Debug_Mode then
             Error_Msg_Flow
-              (FA        => FA,
-               Msg       => "flow analysis of & abandoned due to " &
-                 "function with side effects",
-               N         => FA.Analyzed_Entity,
-               Kind      => Error_Kind,
-               F1        => Direct_Mapping_Id (FA.Analyzed_Entity));
+              (FA   => FA,
+               Msg  => "flow analysis of & abandoned due to " &
+                         "function with side effects",
+               N    => FA.Analyzed_Entity,
+               Kind => Error_Kind,
+               F1   => Direct_Mapping_Id (FA.Analyzed_Entity));
          end if;
 
          Sane := False;
@@ -81,11 +81,11 @@ package body Flow.Analysis.Sanity is
       if FA.Aliasing_Present then
          if Gnat2Why_Args.Debug_Mode then
             Error_Msg_Flow
-              (FA        => FA,
-               Msg       => "flow analysis of & abandoned due to aliasing",
-               N         => FA.Analyzed_Entity,
-               Kind      => Error_Kind,
-               F1        => Direct_Mapping_Id (FA.Analyzed_Entity));
+              (FA   => FA,
+               Msg  => "flow analysis of & abandoned due to aliasing",
+               N    => FA.Analyzed_Entity,
+               Kind => Error_Kind,
+               F1   => Direct_Mapping_Id (FA.Analyzed_Entity));
          end if;
 
          Sane := False;
@@ -181,12 +181,12 @@ package body Flow.Analysis.Sanity is
                         Is_Bound (F)))
                then
                   Error_Msg_Flow
-                    (FA        => FA,
-                     Msg       => Err_Msg,
-                     SRM_Ref   => "4.4(2)",
-                     N         => Err_Node,
-                     Kind      => Error_Kind,
-                     F1        => F);
+                    (FA      => FA,
+                     Msg     => Err_Msg,
+                     SRM_Ref => "4.4(2)",
+                     N       => Err_Node,
+                     Kind    => Error_Kind,
+                     F1      => F);
                   Sane := False;
                end if;
             end loop;
@@ -542,16 +542,16 @@ package body Flow.Analysis.Sanity is
                           (FA      => FA,
                            Msg     => "& must be listed in the " &
                              Aspect_To_Fix & " aspect of &",
-                           SRM_Ref   => SRM_Ref,
-                           N   => First_Variable_Use (FA      => FA,
-                                                      Var     => Var,
-                                                      Kind    => Use_Any,
-                                                      Precise => False),
-                           F1  => (if Gnat2Why_Args.Flow_Advanced_Debug
-                                   then Var
-                                   else Entire_Variable (Var)),
-                           Kind    => High_Check_Kind,
-                           F2  => Direct_Mapping_Id (FA.Analyzed_Entity));
+                           SRM_Ref => SRM_Ref,
+                           N       => First_Variable_Use (FA      => FA,
+                                                          Var     => Var,
+                                                          Kind    => Use_Any,
+                                                          Precise => False),
+                           F1      => (if Gnat2Why_Args.Flow_Advanced_Debug
+                                         then Var
+                                         else Entire_Variable (Var)),
+                           Kind    => Error_Kind,
+                           F2      => Direct_Mapping_Id (FA.Analyzed_Entity));
 
                      when Magic_String =>
                         Global_Required (FA, Var);

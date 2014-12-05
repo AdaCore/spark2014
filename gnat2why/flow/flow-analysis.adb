@@ -185,34 +185,34 @@ package body Flow.Analysis is
          --  globals for FA.Analyzed_Entity contain a symbol Var for
          --  no good reason.
          Error_Msg_Flow
-           (FA        => FA,
-            Msg       => "bug: & contains reference to &, " &
+           (FA   => FA,
+            Msg  => "bug: & contains reference to &, " &
               "but no use can be found",
-            N         => FA.Analyzed_Entity,
-            F1        => Direct_Mapping_Id (FA.Analyzed_Entity),
-            F2        => Var,
-            Kind      => Error_Kind);
+            N    => FA.Analyzed_Entity,
+            F1   => Direct_Mapping_Id (FA.Analyzed_Entity),
+            F2   => Var,
+            Kind => Error_Kind);
 
       else
          pragma Assert (Nkind (First_Use) in N_Subprogram_Call);
 
          if Gnat2Why_Args.Flow_Advanced_Debug then
             Error_Msg_Flow
-              (FA        => FA,
-               Msg       => "called subprogram & requires GLOBAL " &
+              (FA   => FA,
+               Msg  => "called subprogram & requires GLOBAL " &
                  "aspect to make state & visible",
-               N         => First_Use,
-               F1        => Direct_Mapping_Id (Entity (Name (First_Use))),
-               F2        => Var,
-               Kind      => Error_Kind);
+               N    => First_Use,
+               F1   => Direct_Mapping_Id (Entity (Name (First_Use))),
+               F2   => Var,
+               Kind => Error_Kind);
          else
             Error_Msg_Flow
-              (FA        => FA,
-               Msg       => "called subprogram & requires GLOBAL " &
+              (FA   => FA,
+               Msg  => "called subprogram & requires GLOBAL " &
                  "aspect to make state visible",
-               N         => First_Use,
-               F1        => Direct_Mapping_Id (Entity (Name (First_Use))),
-               Kind      => Error_Kind);
+               N    => First_Use,
+               F1   => Direct_Mapping_Id (Entity (Name (First_Use))),
+               Kind => Error_Kind);
          end if;
       end if;
    end Global_Required;
@@ -553,14 +553,14 @@ package body Flow.Analysis is
                                                   FA.B_Scope))
          then
             Error_Msg_Flow
-              (FA        => FA,
-               Msg       => "& might not be initialized after elaboration " &
+              (FA   => FA,
+               Msg  => "& might not be initialized after elaboration " &
                  "of main program &",
-               N         => Find_Global (FA.Analyzed_Entity, R),
-               F1        => R,
-               F2        => Direct_Mapping_Id (FA.Analyzed_Entity),
-               Tag       => "uninitialized",
-               Kind      => Medium_Check_Kind);
+               N    => Find_Global (FA.Analyzed_Entity, R),
+               F1   => R,
+               F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
+               Tag  => "uninitialized",
+               Kind => Medium_Check_Kind);
          end if;
 
       end loop;
@@ -689,20 +689,18 @@ package body Flow.Analysis is
                for Var of Vars_Used loop
                   if not Vars_Known.Contains (Var) then
                      Error_Msg_Flow
-                       (FA        => FA,
-                        Msg       => "& must be listed in the " &
-                          Aspect_To_Fix &
-                          " aspect of &",
-                        SRM_Ref   => SRM_Ref,
-                        N         => First_Variable_Use
-                          (N       => Expr,
-                           FA      => FA,
-                           Scope   => FA.B_Scope,
-                           Var     => Var,
-                           Precise => False),
-                        F1        => Entire_Variable (Var),
-                        F2        => Direct_Mapping_Id (FA.Analyzed_Entity),
-                        Kind      => Error_Kind);
+                       (FA      => FA,
+                        Msg     => "& must be listed in the " &
+                                      Aspect_To_Fix & " aspect of &",
+                        SRM_Ref => SRM_Ref,
+                        N       => First_Variable_Use (N       => Expr,
+                                                       FA      => FA,
+                                                       Scope   => FA.B_Scope,
+                                                       Var     => Var,
+                                                       Precise => False),
+                        F1      => Entire_Variable (Var),
+                        F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
+                        Kind    => Error_Kind);
                      Sane := False;
 
                   elsif FA.Kind in E_Package | E_Package_Body
@@ -716,15 +714,15 @@ package body Flow.Analysis is
                      --  an initializes aspect.
 
                      Error_Msg_Flow
-                       (FA        => FA,
-                        Msg       => "& must be initialized at elaboration",
-                        N         => First_Variable_Use (N       => Expr,
-                                                         FA      => FA,
-                                                         Scope   => FA.B_Scope,
-                                                         Var     => Var,
-                                                         Precise => False),
-                        F1        => Entire_Variable (Var),
-                        Kind      => Error_Kind);
+                       (FA   => FA,
+                        Msg  => "& must be initialized at elaboration",
+                        N    => First_Variable_Use (N       => Expr,
+                                                    FA      => FA,
+                                                    Scope   => FA.B_Scope,
+                                                    Var     => Var,
+                                                    Precise => False),
+                        F1   => Entire_Variable (Var),
+                        Kind => Error_Kind);
                      Sane := False;
 
                   end if;
@@ -794,22 +792,22 @@ package body Flow.Analysis is
 
                if A_Final.Is_Global then
                   Error_Msg_Flow
-                    (FA        => FA,
-                     Msg       => "& is not modified, could be INPUT",
-                     N         => Find_Global (FA.Analyzed_Entity, F_Final),
-                     F1        => Entire_Variable (F_Final),
-                     Tag       => "inout_only_read",
-                     Kind      => Warning_Kind,
-                     Vertex    => V);
+                    (FA     => FA,
+                     Msg    => "& is not modified, could be INPUT",
+                     N      => Find_Global (FA.Analyzed_Entity, F_Final),
+                     F1     => Entire_Variable (F_Final),
+                     Tag    => "inout_only_read",
+                     Kind   => Warning_Kind,
+                     Vertex => V);
                else
                   Error_Msg_Flow
-                    (FA        => FA,
-                     Msg       => "& is not modified, could be IN",
-                     N         => Error_Location (FA.PDG, FA.Atr, V),
-                     F1        => Entire_Variable (F_Final),
-                     Tag       => "inout_only_read",
-                     Kind      => Warning_Kind,
-                     Vertex    => V);
+                    (FA     => FA,
+                     Msg    => "& is not modified, could be IN",
+                     N      => Error_Location (FA.PDG, FA.Atr, V),
+                     F1     => Entire_Variable (F_Final),
+                     Tag    => "inout_only_read",
+                     Kind   => Warning_Kind,
+                     Vertex => V);
                end if;
             end if;
          end if;
@@ -997,22 +995,22 @@ package body Flow.Analysis is
                --  mode we don't produce this warning.
                if not FA.Is_Generative then
                   Error_Msg_Flow
-                    (FA      => FA,
-                     Msg     => "unused global &",
-                     N       => Find_Global (FA.Analyzed_Entity, F),
-                     F1      => F,
-                     Tag     => "unused",
-                     Kind    => Warning_Kind);
+                    (FA   => FA,
+                     Msg  => "unused global &",
+                     N    => Find_Global (FA.Analyzed_Entity, F),
+                     F1   => F,
+                     Tag  => "unused",
+                     Kind => Warning_Kind);
                end if;
             else
                --  ??? distinguish between variables and parameters
                Error_Msg_Flow
-                 (FA      => FA,
-                  Msg     => "unused variable &",
-                  N       => Error_Location (FA.PDG, FA.Atr, V),
-                  F1      => F,
-                  Tag     => "unused",
-                  Kind    => Warning_Kind);
+                 (FA   => FA,
+                  Msg  => "unused variable &",
+                  N    => Error_Location (FA.PDG, FA.Atr, V),
+                  F1   => F,
+                  Tag  => "unused",
+                  Kind => Warning_Kind);
             end if;
          end;
       end loop;
@@ -1049,8 +1047,8 @@ package body Flow.Analysis is
                  not FA.Is_Generative
                then
                   Error_Msg_Flow
-                    (FA      => FA,
-                     Msg     =>
+                    (FA   => FA,
+                     Msg  =>
                        (if FA.B_Scope.Section /= Body_Part
                           and then Is_Abstract_State (F)
                           and then Present (FA.B_Scope)
@@ -1062,26 +1060,165 @@ package body Flow.Analysis is
                           "- consider moving the subprogram to the " &
                           "package body and adding a Refined_Global"
                         else "unused initial value of &"),
-                     N       => Find_Global (FA.Analyzed_Entity, F),
-                     F1      => F,
-                     F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
-                     Tag     => "unused_initial_value",
-                     Kind    => Warning_Kind);
+                     N    => Find_Global (FA.Analyzed_Entity, F),
+                     F1   => F,
+                     F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
+                     Tag  => "unused_initial_value",
+                     Kind => Warning_Kind);
                end if;
             else
                Error_Msg_Flow
-                 (FA      => FA,
-                  Msg     => "unused initial value of &",
+                 (FA   => FA,
+                  Msg  => "unused initial value of &",
                   --  ??? find_import
-                  N       => Error_Location (FA.PDG, FA.Atr, V),
-                  F1      => F,
-                  F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
-                  Tag     => "unused_initial_value",
-                  Kind    => Warning_Kind);
+                  N    => Error_Location (FA.PDG, FA.Atr, V),
+                  F1   => F,
+                  F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
+                  Tag  => "unused_initial_value",
+                  Kind => Warning_Kind);
             end if;
          end;
       end loop;
    end Find_Ineffective_Imports_And_Unused_Objects;
+
+   --------------------------------------------
+   -- Find_Non_Elaborated_State_Abstractions --
+   --------------------------------------------
+
+   procedure Find_Non_Elaborated_State_Abstractions
+     (FA : in out Flow_Analysis_Graphs)
+   is
+      procedure Check_If_From_Another_Non_Elaborated_CU
+        (F : Flow_Id;
+         V : Flow_Graphs.Vertex_Id);
+      --  If F is used but is not declared in the compilation unit
+      --  enclosing the currently analyzed entity AND the other
+      --  compilation unit does not have an Elaborate_All then emit an
+      --  error.
+
+      ---------------------------------------------
+      -- Check_If_From_Another_Non_Elaborated_CU --
+      ---------------------------------------------
+
+      procedure Check_If_From_Another_Non_Elaborated_CU
+        (F : Flow_Id;
+         V : Flow_Graphs.Vertex_Id)
+      is
+
+         function Get_Enclosing_Comp_Unit (Start : Node_Id) return Node_Id;
+         --  Goes up the tree and returns the first N_Compilation_Unit
+         --  that it finds.
+
+         -----------------------------
+         -- Get_Enclosing_Comp_Unit --
+         -----------------------------
+
+         function Get_Enclosing_Comp_Unit (Start : Node_Id) return Node_Id is
+            Current_Unit : Node_Id := Start;
+         begin
+            while Present (Current_Unit)
+              and then Nkind (Current_Unit) /= N_Compilation_Unit
+            loop
+               Current_Unit := Parent (Current_Unit);
+            end loop;
+
+            return Current_Unit;
+         end Get_Enclosing_Comp_Unit;
+
+         N     : constant Node_Id := (if F.Kind = Direct_Mapping
+                                      then Get_Direct_Mapping_Id (F)
+                                      else Empty);
+
+         V_Use : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
+         V_Atr : V_Attributes;
+      begin
+         --  Find a non-'Final vertex where the state abstraction is
+         --  used. If the state abstraction is not used then we do not
+         --  issue an error.
+         for Neighbour of FA.PDG.Get_Collection (V,
+                                                 Flow_Graphs.Out_Neighbours)
+         loop
+            declare
+               Key : constant Flow_Id := FA.PDG.Get_Key (Neighbour);
+            begin
+               if Key.Variant /= Final_Value
+                 or else Change_Variant (Entire_Variable (Key),
+                                         Normal_Use) /= F
+               then
+                  V_Use := Neighbour;
+                  V_Atr := FA.Atr.Element (Neighbour);
+                  exit;
+               end if;
+            end;
+         end loop;
+
+         if Present (N)
+           and then V_Use /= Flow_Graphs.Null_Vertex
+           and then Is_Compilation_Unit (Scope (N))
+           and then (Scope (N) /= FA.Analyzed_Entity
+                       and then Scope (N) /= FA.Spec_Node)
+         then
+            declare
+               Clause       : Node_Id;
+               Current_Unit : constant Node_Id :=
+                 Get_Enclosing_Comp_Unit (FA.Spec_Node);
+               Other_Unit   : constant Node_Id :=
+                 Get_Enclosing_Comp_Unit (Scope (N));
+            begin
+               Clause := First (Context_Items (Current_Unit));
+               while Present (Clause) loop
+                  if Nkind (Clause) = N_With_Clause
+                    and then Library_Unit (Clause) = Other_Unit
+                  then
+                     if not Elaborate_All_Present (Clause) then
+                        Error_Msg_Flow
+                          (FA      => FA,
+                           Msg     => "use of remote abstract state &"
+                             & " during elaboration of &" &
+                             " - Elaborate_All pragma required for &",
+                           SRM_Ref => "7.7.1(4)",
+                           N       => V_Atr.Error_Location,
+                           F1      => F,
+                           F2      => Direct_Mapping_Id (FA.Spec_Node),
+                           F3      => Direct_Mapping_Id (Scope (N)),
+                           Kind    => Error_Kind,
+                           Tag     => "pragma_elaborate_all_needed");
+                     end if;
+
+                     return;
+                  end if;
+
+                  Next (Clause);
+               end loop;
+            end;
+         end if;
+      end Check_If_From_Another_Non_Elaborated_CU;
+   begin
+      --  If we are not analyzing a compilation unit then there is
+      --  nothing to do here.
+      if not Is_Compilation_Unit (FA.Analyzed_Entity) then
+         return;
+      end if;
+
+      for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         declare
+            Key : constant Flow_Id := FA.PDG.Get_Key (V);
+            F   : Flow_Id;
+         begin
+            if Key.Variant = Initial_Value
+              and then Key.Kind /= Synthetic_Null_Export
+            then
+
+               --  Note the Flow_Id of the entire variable
+               F := Change_Variant (Entire_Variable (Key), Normal_Use);
+
+               if Is_Abstract_State (F) then
+                  Check_If_From_Another_Non_Elaborated_CU (F, V);
+               end if;
+            end if;
+         end;
+      end loop;
+   end Find_Non_Elaborated_State_Abstractions;
 
    ---------------------------------
    -- Find_Ineffective_Statements --
@@ -2173,14 +2310,14 @@ package body Flow.Analysis is
 
                         --  Complain
                         Error_Msg_Flow
-                          (FA        => FA,
-                           Msg       => "stable",
-                           N         => Error_Location (FA.PDG,
-                                                        FA.Atr,
-                                                        N_Loop),
-                           Tag       => "stable",
-                           Kind      => Warning_Kind,
-                           Vertex    => N_Loop);
+                          (FA     => FA,
+                           Msg    => "stable",
+                           N      => Error_Location (FA.PDG,
+                                                     FA.Atr,
+                                                     N_Loop),
+                           Tag    => "stable",
+                           Kind   => Warning_Kind,
+                           Vertex => N_Loop);
 
                         --  There might be other stable elements now.
                         Done := False;

@@ -1244,7 +1244,7 @@ package body Flow is
                      Analysis.Find_Dead_Code (FA);
                      Analysis.Find_Impossible_To_Initialize_State (FA);
                   end if;
-
+                  Analysis.Find_Non_Elaborated_State_Abstractions (FA);
                   Analysis.Find_Use_Of_Uninitialized_Variables (FA);
                   Analysis.Check_Initializes_Contract (FA);
             end case;

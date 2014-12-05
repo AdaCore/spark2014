@@ -61,6 +61,14 @@ package Flow.Analysis is
    --
    --  Complexity is O(N^2) and O(N) respectively.
 
+   procedure Find_Non_Elaborated_State_Abstractions
+     (FA : in out Flow_Analysis_Graphs)
+     with Pre => FA.Kind in E_Package | E_Package_Body;
+   --  Finds usages of state abstractions that belong to other
+   --  non-elaborated packages.
+   --
+   --  Complexity is O(N)
+
    procedure Find_Ineffective_Statements (FA : in out Flow_Analysis_Graphs);
    --  Find all ineffective statements.
    --
