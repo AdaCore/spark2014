@@ -1,0 +1,2 @@
+logging_in.adb:6:28: medium: overflow check might fail
+logging_in.adb:7:12: medium: array index check might fail

@@ -275,7 +275,8 @@ Multiple error signaling mechanisms are treated the same way:
  * raising an exception
  * ``pragma Assert (X)`` where ``X`` is an expression statically equivalent to
    ``False``
- * calling a subprogram with an aspect or pragma ``No_Return``
+ * calling a subprogram with an aspect or pragma ``No_Return`` that has no
+   outputs
 
 For example, consider the artificial subprogram ``Check_OK`` which raises an
 exception when parameter ``OK`` is ``False``:
@@ -302,6 +303,10 @@ thanks to the precondition of ``Check_OK`` which states that parameter
 
 .. literalinclude:: gnatprove_by_example/results/abnormal_terminations.prove
    :language: none
+
+|GNATprove| also checks that procedures that are marked with aspect or pragma
+``No_Return`` do not return: they should either raise an exception or loop
+forever on any input.
 
 .. _Subprogram Contracts:
 
@@ -331,7 +336,11 @@ Subprogram Contracts`.
 The contract on a subprogram describes the behavior of successful
 calls. Executions that end up by signalling an error, as described in
 :ref:`Raising Exceptions and Other Error Signaling Mechanisms`, are not covered
-by the subprogram's contract.
+by the subprogram's contract. A call to a subprogram is successful if execution
+terminates normally, or if execution loops without errors for a subprogram
+marked with aspect ``No_Return`` that has some outputs (this is typically the
+case of a non-terminating subprogram implementing the main loop of a
+controller).
 
 .. _Preconditions:
 
@@ -702,7 +711,7 @@ plus any other input listed. For example, the flow dependencies of
 .. code-block:: ada
 
    procedure Add_To_Total (Incr : in Integer) with
-     Depends => (Total =>* Incr);
+     Depends => (Total =>+ Incr);
 
 When an output value depends on no input value, meaning that it is completely
 (re)initialized with constants that do not depend on variables, the
@@ -759,7 +768,7 @@ use abstract state ``State`` in their data and flow dependencies, for example:
 
    procedure Add_To_Total (Incr : in Integer) with
      Global  => (In_Out => State),
-     Depends => (State =>* Incr);
+     Depends => (State =>+ Incr);
 
 Then, unless they are not in |SPARK|, the implementations of ``Init_Total`` and
 ``Add_To_Total`` need to define refined data and flow dependencies, which give
@@ -777,7 +786,7 @@ the precise dependencies for these subprograms in terms of concrete variables:
 
    procedure Add_To_Total (Incr : in Integer) with
      Refined_Global  => (In_Out => Total),
-     Refined_Depends => (Total =>* Incr)
+     Refined_Depends => (Total =>+ Incr)
    is
    begin
       Total := Total + Incr;
@@ -1090,24 +1099,408 @@ Interfaces to the Physical World
 
 [|SPARK|]
 
-TODO
+Volatile Variables
+^^^^^^^^^^^^^^^^^^
+
+Most embedded programs interact with the physical world or other programs
+through so-called `volatile` variables, which are identified as volatile to
+protect them from the usual compiler optimizations. In |SPARK|, volatile
+variables are also analyzed specially, so that possible changes to their value
+from outside the program are taken into account, and so that changes to their
+value from inside the program are also interpreted correctly (in particular for
+checking flow dependencies).
+
+For example, consider package ``Volatile_Or_Not`` which defines a volatile
+variable ``V`` and a non-volatile variable ``N``, and procedure
+``Swap_Then_Zero`` which starts by swapping the values of ``V`` and ``N``
+before zeroing them out:
+
+.. literalinclude:: gnatprove_by_example/examples/volatile_or_not.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: gnatprove_by_example/examples/volatile_or_not.adb
+   :language: ada
+   :linenos:
+
+Compare the difference in contracts between volatile variable ``V`` and
+non-volatile variable ``N``:
+
+* The :ref:`Package Initialization` of package ``Volatile_Or_Not`` mentions
+  ``V`` although this variable is not initialized at declaration or in the
+  package body statements. This is because a volatile variable is assumed to be
+  initialized.
+
+* The :ref:`Flow Dependencies` of procedure ``Swap_Then_Zero`` are very
+  different for ``V`` and ``N``. If both variables were not volatile, the
+  correct contract would state that both input values are not used with ``null
+  => (V, N)`` and that both output values depend on no inputs with ``(V, N) =>
+  null``. The difference comes the special treatment of volatile variable
+  ``V``: as its value may be read at any time, the intermediate value ``N``
+  assigned to ``V`` on line 8 of ``volatile_or_not.adb`` needs to be mentioned
+  in the flow dependencies for output ``V``.
+
+|GNATprove| checks that ``Volatile_Or_Not`` and ``Swap_Then_Zero`` implement
+their contract, and it issues a warning on the first assignment to ``N``:
+
+.. literalinclude:: gnatprove_by_example/results/volatile_or_not.flow
+   :language: none
+
+This warning points to a real issue, as the intermediate value of ``N`` is not
+used before ``N`` is zeroed out on line 12. But note that no warning is issued
+on the similar first assignment to ``V``, because the intermediate value of
+``V`` may be read outside the program before ``V`` is zeroed out on line 11.
+
+Note that in real code, the memory address of the volatile variable is set
+through aspect ``Address`` or the corresponding representation clause, so that
+it can be read or written outside the program.
+
+.. _Flavors of Volatile Variables:
+
+Flavors of Volatile Variables
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Not all volatile variables are read and written outside the program, sometimes
+they are only read or only written outside the program. For example, the log
+introduced in :ref:`State Abstraction` could be implemented as an output port
+for the program logging the information, and as an input port for the program
+performing the logging. Two aspects are defined in |SPARK| to distinguish these
+different flavors of volatile variables:
+
+* Aspect ``Async_Writers`` indicates that the value of the variable may be
+  changed at any time (asynchronously) by hardware or software outside the
+  program.
+
+* Aspect ``Async_Readers`` indicates that the value of the variable may be read
+  at any time (asynchronously) by hardware or software outside the program.
+
+Only ``Async_Writers`` has an effect on |GNATprove|'s analysis: during proof,
+two successive reads of the same variable may return different
+results. ``Async_Readers`` serves mostly a documentation purpose. In
+particular, neither ``Async_Writers`` nor ``Async_Readers`` change flow
+analysis. Thus, these aspects are well suited to model respectively a sensor
+and a display, but not an input stream or an actuator, for which the act of
+reading or writing has an effect that should be reflected in the flow
+dependencies. Two more aspects are defined in |SPARK| to further refine the
+previous flavors of volatile variables:
+
+* Aspect ``Effective_Reads`` indicates that reading the value of the variable
+  has an effect (for example, removing a value from an input stream). It can
+  only be specified on a variable that also has ``Async_Writers`` set.
+
+* Aspect ``Effective_Writes`` indicates that writing the value of the variable
+  has an effect (for example, sending a command to an actuator). It can only be
+  specified on a variable that also has ``Async_Readers`` set.
+
+Both aspects ``Effective_Reads`` and ``Effective_Writes`` have an effect on
+|GNATprove|'s flow analysis: reading the former or writing the latter is
+modelled as having an effect on the value of the variable, which needs to be
+reflected in flow dependencies. Because reading a variable with
+``Effective_Reads`` set has an effect on its value, such a variable cannot be
+only a subprogram input, it must be also an output.
+
+For example, the program writing in a log each value passed as argument to
+procedure ``Add_To_Total`` may model the output port ``Log_Out`` as a volatile
+variable with ``Async_Readers`` and ``Effective_Writes`` set:
+
+.. literalinclude:: gnatprove_by_example/examples/logging_out.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: gnatprove_by_example/examples/logging_out.adb
+   :language: ada
+   :linenos:
+
+while the logging program may model the input port ``Log_In`` as a volatile
+variable with ``Async_Writers`` and ``Effective_Reads`` set:
+
+.. literalinclude:: gnatprove_by_example/examples/logging_in.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: gnatprove_by_example/examples/logging_in.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| checks the specified data and flow dependencies on both programs.
+
+A volatile variable on which none of the four aspects ``Async_Writers``,
+``Async_Readers``, ``Effective_Reads`` or ``Effective_Writes`` is set is
+assumed to have all four aspects set to ``True``. A volatile variable on which
+some of the four aspects are set to ``True`` is assumed to have the remaining
+ones set to ``False``. See SPARK RM 7.1.3 for details.
+
+External State Abstraction
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Volatile variables may be part of :ref:`State Abstraction`, in which case the
+volatility of the abstract name must be specified by using aspect ``External``
+on the abstract name, as follows:
+
+.. code-block:: ada
+
+   package Account with
+     Abstract_State => (State with External)
+   is
+      ...
+   end Account;
+
+An external state may represent both volatile variables and non-volatile ones,
+for example:
+
+.. code-block:: ada
+
+   package body Account with
+     Refined_State => (State => (Total, Log, Log_Size))
+   is
+      Total    : Integer;
+      Log      : Integer_Array with Volatile;
+      Log_Size : Natural with Volatile;
+      ...
+   end Account;
+
+The different :ref:`Flavors of Volatile Variables` may also be specified in the
+state abstraction, which is then used by |GNATprove| to refine the
+analysis. For example, the program writing in a log seen in the previous
+section can be rewritten to abstract global variables as follows:
+
+.. literalinclude:: gnatprove_by_example/examples/logging_out_abstract.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: gnatprove_by_example/examples/logging_out_abstract.adb
+   :language: ada
+   :linenos:
+
+while the logging program seen in the previous section may be rewritten to
+abstract global variables as follows:
+
+.. literalinclude:: gnatprove_by_example/examples/logging_in_abstract.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: gnatprove_by_example/examples/logging_in_abstract.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| checks the specified data and flow dependencies on both programs.
+
+An external abstract state on which none of the four aspects ``Async_Writers``,
+``Async_Readers``, ``Effective_Reads`` or ``Effective_Writes`` is set is
+assumed to have all four aspects set to ``True``. An external abstract state on
+which some of the four aspects are set to ``True`` is assumed to have the
+remaining ones set to ``False``. See SPARK RM 7.1.2 for details.
 
 Type Contracts
 ==============
+
+|SPARK| contains various features to constrain the values of a given type:
+
+* A *scalar range* may be specified on a scalar type or subtype to bound its
+  values.
+* A *static predicate* introduced by aspect ``Static_Predicate`` may be
+  specified on a scalar type or subtype to list values allowed or forbidden.
+* A *record discriminant* may be specified on a record type to distinguish
+  between variants of the same record.
+* A *default initial condition* introduced by aspect
+  ``Default_Initial_Condition`` on a private type specifies the initialization
+  status and possibly properties of the default initialization for a type.
+
+Note that |SPARK| does not yet support aspects ``Dynamic_Predicate`` and
+``Type_Invariant`` from Ada 2012.
+
+.. _Scalar Ranges:
+
+Scalar Ranges
+-------------
+
+[Ada 83]
+
+Scalar types (signed integer types, modulo types, fixed-point types,
+floating-point types) can be given a low bound and a high bound to specify that
+values of the type must remain within these bounds. For example, the global
+counter ``Total`` can never be negative, which can be expressed in its type:
+
+.. code-block:: ada
+
+   Total : Integer range 0 .. Integer'Last;
+
+Any attempt to assign a negative value to variable ``Total`` results in raising
+an exception at run time. During analysis, |GNATprove| checks that all values
+assigned to ``Total`` are positive or null. The anonymous subtype above can
+also be given an explicit name:
+
+.. code-block:: ada
+
+   subtype Nat is Integer range 0 .. Integer'Last;
+   Total : Nat;
+
+or we can use the equivalent standard subtype ``Natural``:
+
+.. code-block:: ada
+
+   Total : Natural;
+
+or ``Nat`` can be defined as a derived type instead of a subtype:
+
+.. code-block:: ada
+
+   type Nat is new Integer range 0 .. Integer'Last;
+   Total : Nat;
+
+or as a new signed integer type:
+
+.. code-block:: ada
+
+   type Nat is range 0 .. Integer'Last;
+   Total : Nat;
+
+All the variants above result in the same range checks both at run-time and in
+|GNATprove|. |GNATprove| also uses the range information for proving properties
+about the program (for example, the absence of overflows in computations).
 
 Static Predicates
 -----------------
 
 [Ada 2012]
 
-TODO
+A static predicate allows specifying which values are allowed or forbidden in a
+scalar type, when this specification cannot be expressed with :ref:`Scalar
+Ranges` (because it has *holes*). For example, we can express that the global
+counter ``Total`` cannot be equal to ``10`` or ``100`` with the following
+static predicate:
+
+.. code-block:: ada
+
+   subtype Count is Integer with
+     Static_Predicate => Count /= 10 and Count /= 100;
+   Total : Count;
+
+or equivalently:
+
+.. code-block:: ada
+
+   subtype Count is Integer with
+     Static_Predicate => Count in Integer'First .. 9 | 11 .. 99 | 101 .. Integer'Last;
+   Total : Count;
+
+Uses of the name of the subtype ``Count`` in the predicate refer to variables
+of this type. Scalar ranges and static predicates can also be combined, and
+static predicates can be specified on subtypes, derived types and new signed
+integer types. For example, we may define ``Count`` as follows:
+
+.. code-block:: ada
+
+   type Count is new Natural with
+     Static_Predicate => Count /= 10 and Count /= 100;
+
+Any attempt to assign a forbidden value to variable ``Total`` results in
+raising an exception at run time. During analysis, |GNATprove| checks that all
+values assigned to ``Total`` are allowed. |GNATprove| also uses the predicate
+information for proving properties about the program.
+
+Record Discriminants
+---------------------
+
+[Ada 83]
+
+Record types can use discriminants to:
+
+* define multiple variants and associate each component to a specific variant
+* bound the size of array components
+
+For example, the log introduced in :ref:`State Abstraction` could be
+implemented as a discriminated record with a discriminant ``Kind`` selecting
+between two variants of the record for logging either only the minimum and
+maximum entries or the last entries, and a discriminant ``Capacity`` specifying
+the maximum number of entries logged:
+
+.. literalinclude:: gnatprove_by_example/examples/logging_discr.ads
+   :language: ada
+   :linenos:
+
+Subtypes of ``Log_Type`` can specify fixed values for ``Kind`` and
+``Capacity``, like in ``Min_Max_Log`` and ``Ten_Values_Log``. The discriminants
+``Kind`` and ``Capacity`` are accessed like regular components, for example:
+
+.. literalinclude:: gnatprove_by_example/examples/logging_discr.adb
+   :language: ada
+   :linenos:
+
+Any attempt to access a component not present in a variable (because it is of a
+different variant), or to access an array component outside its bounds, results
+in raising an exception at run time. During analysis, |GNATprove| checks that
+components accessed are present, and that array components are accessed within
+bounds:
+
+.. literalinclude:: gnatprove_by_example/results/logging_discr.prove
+   :language: none
 
 Default Initial Condition
 -------------------------
 
 [|SPARK|]
 
-TODO
+Private types in a package define an encapsulation mechanism that prevents
+client units from accessing the implementation of the type. That boundary may
+also be used to specify properties that hold for default initialized values of
+that type in client units. For example, the log introduced in :ref:`State
+Abstraction` could be implemented as a private type with a default initial
+condition specifying that the size of the log is initially zero, where uses of
+the name of the private type ``Log_Type`` in the argument refer to variables of
+this type:
+
+.. literalinclude:: gnatprove_by_example/examples/logging_priv.ads
+   :language: ada
+   :linenos:
+
+This may be useful to analyze with |GNATprove| client code that defines a
+variable of type ``Log_Type`` with default initialization, and then proceeds to
+append values to this log, as procedure ``Append_To_Log``'s precondition
+requires that the log size is not maximal:
+
+.. code-block:: ada
+
+   The_Log : Log_Type;
+   ...
+   Append_To_Log (The_Log, X);
+
+|GNATprove|'s flow analysis also uses the presence of a default initial
+condition as an indication that default initialized variables of that type are
+considered as fully initialized. So the code snippet above would pass flow
+analysis without messages being issued on the read of ``The_Log``. If the full
+definition of the private type is in |SPARK|, |GNATprove| also checks that the
+type is indeed fully default initialized, and if not issues a message like
+here:
+
+.. literalinclude:: gnatprove_by_example/results/logging_priv.flow
+   :language: none
+
+If partial default initialization of the type is intended, in general for
+efficiency like here, then the corresponding message can be justified with
+pragma ``Annotate``, see section :ref:`Check_Control`.
+
+Aspect ``Default_Initial_Condition`` can also be specified without argument to
+only indicate that default initialized variables of that type are considered as
+fully initialized. This is equivalent to ``Default_Initial_Condition => True``:
+
+.. code-block:: ada
+
+   type Log_Type is private with
+     Default_Initial_Condition;
+
+The argument can also be ``null`` to specify that default initialized variables
+of that type are *not* considered as fully initialized:
+
+.. code-block:: ada
+
+   type Log_Type is private with
+     Default_Initial_Condition => null;
+
+This is different from an argument of ``False`` which can be used to indicate
+that variables of that type should always be explicitly initialized (otherwise
+|GNATprove| will not be able to prove the condition ``False`` on the default
+initialization and will issue a message during proof).
 
 Specification Features
 ======================
@@ -1365,8 +1758,8 @@ enclosing loop. For examples, ``X'Loop_Entry`` is the same as
    end Increment_Matrix;
 
 By default, similar restrictions exist for the use of attribute ``Loop_Entry``
-and the use of attribute ``Old`` :ref:``In a Potentially Unevaluated
-Expression``. The same solutions apply here, in particular the use of |GNAT Pro|
+and the use of attribute ``Old`` :ref:`In a Potentially Unevaluated
+Expression`. The same solutions apply here, in particular the use of |GNAT Pro|
 pragma ``Unevaluated_Use_Of_Old``.
 
 .. _Attribute Update:
