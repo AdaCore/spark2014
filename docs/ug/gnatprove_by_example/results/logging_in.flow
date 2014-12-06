@@ -1,0 +1,2 @@
+logging_in.ads:12:29: medium: missing dependency "Log_In => Log"
+logging_in.ads:12:29: medium: missing dependency "Log_In => Log_Size"
