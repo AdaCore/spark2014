@@ -565,8 +565,8 @@ checks and information messages.
    failing run-time checks or unproved assertions. Checks come with a severity,
    and depending on the severity the message text is prefixed with ``"low: "``,
    ``"medium: "`` or ``"high: "``. Check messages cannot be suppressed like
-   warnings, but they can be individually justified with pragma Annotate, see
-   section :ref:`Check_Control`.
+   warnings, but they can be individually justified with pragma ``Annotate``,
+   see section :ref:`Check_Control`.
  * Information messages are issued for proved checks in some modes of
    |GNATprove|.
 
@@ -1943,25 +1943,13 @@ of small code examples.
 
 .. include:: gnatprove_by_example/basic.rst
 
-.. _flow_examples:
-
-.. include:: gnatprove_by_example/flow.rst
-
 .. _loop_examples:
 
 .. include:: gnatprove_by_example/loop.rst
 
-.. _manual_proof_with_coq_examples:
+.. _manual_proof:
 
-.. include:: gnatprove_by_example/manual_proof_with_coq.rst
-
-.. _manual_proof_with_ghost_examples:
-
-.. include:: gnatprove_by_example/manual_proof_with_ghost.rst
-
-.. .. _advanced_examples:
-
-.. .. include:: gnatprove_by_example/advanced.rst
+.. include:: gnatprove_by_example/manual_proof.rst
 
 |SPARK| Examples in the Toolset Distribution
 ============================================
