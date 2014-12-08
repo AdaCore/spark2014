@@ -1,0 +1,2 @@
+diff2.adb:6:11: info: overflow check proved
+diff2.adb:6:11: medium: range check might fail
