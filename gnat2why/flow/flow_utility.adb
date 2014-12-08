@@ -2349,10 +2349,9 @@ package body Flow_Utility is
       pragma Assert (Nkind (F.Node) in N_Entity);
       T         := Get_Type (F, Scope);
       Classwide := Ekind (T) in Class_Wide_Kind;
-      if Classwide then
+      while Ekind (T) in Class_Wide_Kind loop
          T := Get_Full_Type (T, Scope);
-         pragma Assert (Ekind (T) not in Class_Wide_Kind);
-      end if;
+      end loop;
 
       if Debug_Trace_Flatten then
          Write_Str ("Branching on type: ");
