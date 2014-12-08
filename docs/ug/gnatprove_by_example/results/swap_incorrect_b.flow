@@ -1,1 +1,0 @@
-swap_incorrect_b.adb:15:07: high: "Call_Count" must be listed in the Global aspect of "Swap" (SPARK RM 6.1.4(13))

@@ -1,2 +1,0 @@
-swap_incorrect_d.adb:9:07: warning: variable "Old_Y" is read but never assigned
-swap_incorrect_d.adb:11:12: high: "Old_Y" is not initialized

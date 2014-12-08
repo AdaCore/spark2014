@@ -1,4 +1,0 @@
-swap_incorrect_a.ads:5:20: warning: unused initial value of "X"
-swap_incorrect_a.ads:8:11: medium: missing dependency "null => X"
-swap_incorrect_a.ads:9:23: medium: missing dependency "Y => Y"
-swap_incorrect_a.ads:9:28: medium: incorrect dependency "Y => X"
