@@ -1901,7 +1901,7 @@ Although case-expressions can be used to cover cases of any scalar type, they
 are mostly used with enumerations, and the compiler checks that all cases are
 disjoint and that together they cover all possible cases. For example, consider
 a variant of procedure ``Add_To_Total`` which takes an additional ``Mode``
-parameter of enumeration value ``Single``, ``Double``, ``Negate`` or
+global input of enumeration value ``Single``, ``Double``, ``Negate`` or
 ``Ignore``, with the intuitive corresponding leverage effect on the
 addition. The postcondition of this variant can be expressed using a
 case-expression as follows:
@@ -2432,7 +2432,7 @@ holds the second time the property is asserted on line 6:
    :language: none
 
 |GNATprove| considers that an execution of ``Assert_Twice`` with ``X <= 0``
-stops at the first assertion that fails. Thus ``X >= 0`` when execution reaches
+stops at the first assertion that fails. Thus ``X > 0`` when execution reaches
 the second assertion.  This is true if assertions are executed at run time, but
 not if assertions are discarded during compilation. In the latter case,
 unproved assertions should be inspected carefully to ensure that the property
@@ -2653,7 +2653,7 @@ prove that the assertion holds on line 6:
 |GNATprove| considers that an execution of ``Assume_Then_Assert`` with ``X <=
 0`` stops at the assumption on line 5, and it does not issue a message in that
 case because the user explicitly indicated that this case is not possible. Thus
-``X >= 0`` when execution reaches the assertion on line 6. This is true if
+``X > 0`` when execution reaches the assertion on line 6. This is true if
 assertions (of which assumptions are a special kind) are executed at run time,
 but not if assertions are discarded during compilation. In the latter case,
 assumptions should be inspected carefully to ensure that the property assumed
@@ -2764,7 +2764,7 @@ There are three overflow modes:
   avoids all intermediate overflows by using arbitrary precision arithmetic as
   required.
 
-The desired mode of for handling intermediate overflow can be specified using
+The desired mode for handling intermediate overflow can be specified using
 either the Overflow_Mode pragma or an equivalent compiler switch. The pragma
 has the form::
 
@@ -2893,7 +2893,7 @@ Mixing Class-Wide and Specific Subprogram Contracts
 [Ada 2012]
 
 It is possible to specify both a specific contract and a class-wide contract on
-a subprogram, in order to use of more precise contract (the specific one) for
+a subprogram, in order to use a more precise contract (the specific one) for
 non-dispatching calls and a contract compatible with the Liskov Substitution
 Principle (the class-wide contract) for dispatching calls. In that case,
 |GNATprove| checks that:
@@ -3024,7 +3024,7 @@ on which |GNATprove| issues an error during flow analysis:
 
 Indeed, the call to ``Init_Log`` (a non-dispatching call to
 ``Logging.Init_Log`` due to the conversion on its parameter) only initializes
-those components of ``Log`` that that come from the parent type
+those components of ``Log`` that come from the parent type
 ``Logging.Log_Type``, but the call to ``Append_To_Log`` may read other
 components from ``Range_Logging.Log_Type`` which may not be initialized.
 
