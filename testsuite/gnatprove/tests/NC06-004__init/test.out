@@ -1,0 +1,41 @@
+circle_demo.adb:8:11: medium: "Wild_Man" might not be initialized after elaboration of main program "Circle_Demo"
+circle_demo.adb:12:14: warning: unused assignment
+circle_demo.adb:14:04: warning: statement has no effect
+circle_demo.adb:14:14: medium: precondition might fail
+circle_demo.adb:15:18: warning: assuming "Put_Line" has no effect on global items
+circle_demo.adb:15:18: warning: no Global contract available for "Put_Line"
+circle_demo.adb:15:18: warning: statement has no effect
+circle_demo.adb:17:18: warning: assuming "Put_Line" has no effect on global items
+circle_demo.adb:17:18: warning: no Global contract available for "Put_Line"
+circle_demo.adb:17:18: warning: statement has no effect
+shapes5.adb:8:08: medium: refined postcondition might fail
+shapes5.adb:8:37: info: overflow check proved
+shapes5.adb:10:37: info: overflow check proved
+shapes5.adb:12:37: info: overflow check proved
+shapes5.adb:14:37: info: overflow check proved
+shapes5.adb:19:36: info: overflow check proved
+shapes5.adb:20:36: info: overflow check proved
+shapes5.adb:20:36: info: range check proved
+shapes5.adb:22:17: info: overflow check proved
+shapes5.adb:23:17: info: overflow check proved
+shapes5.adb:23:17: info: range check proved
+shapes5.adb:25:36: info: overflow check proved
+shapes5.adb:26:36: info: overflow check proved
+shapes5.adb:26:36: info: range check proved
+shapes5.adb:28:17: info: overflow check proved
+shapes5.adb:29:17: info: overflow check proved
+shapes5.adb:29:17: info: range check proved
+shapes5.adb:42:34: medium: range check might fail
+shapes5.adb:42:41: info: overflow check proved
+shapes5.adb:43:34: medium: range check might fail
+shapes5.adb:43:41: info: overflow check proved
+shapes5.adb:44:21: info: overflow check proved
+shapes5.adb:44:30: info: overflow check proved
+shapes5.adb:44:39: info: overflow check proved
+shapes5.adb:44:75: info: overflow check proved
+shapes5.adb:44:75: info: range check proved
+shapes5.adb:54:29: info: overflow check proved
+shapes5.adb:55:29: info: overflow check proved
+shapes5.adb:56:29: info: overflow check proved
+shapes5.adb:57:29: info: overflow check proved
+shapes5.ads:13:18: medium: postcondition might fail, requires In_Bounds (Make_Circle'result)
