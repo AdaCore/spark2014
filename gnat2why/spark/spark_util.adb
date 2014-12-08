@@ -23,23 +23,23 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings;               use Ada.Strings;
+with Ada.Strings;                        use Ada.Strings;
 with Ada.Strings.Equal_Case_Insensitive;
 
-with Fname;                     use Fname;
-with Nlists;                    use Nlists;
-with Sem_Disp;                  use Sem_Disp;
-with Sem_Util;                  use Sem_Util;
-with Exp_Util;                  use Exp_Util;
-with Sinput;                    use Sinput;
-with Stand;                     use Stand;
-with Treepr;                    use Treepr;
-with Uintp;                     use Uintp;
+with Fname;                              use Fname;
+with Nlists;                             use Nlists;
+with Sem_Disp;                           use Sem_Disp;
+with Sem_Util;                           use Sem_Util;
+with Exp_Util;                           use Exp_Util;
+with Sinput;                             use Sinput;
+with Stand;                              use Stand;
+with Treepr;                             use Treepr;
+with Uintp;                              use Uintp;
 
 with Gnat2Why_Args;
-with Gnat2Why.Nodes;            use Gnat2Why.Nodes;
+with Gnat2Why.Nodes;                     use Gnat2Why.Nodes;
 
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with GNAT.Directory_Operations;          use GNAT.Directory_Operations;
 
 package body SPARK_Util is
 
@@ -85,23 +85,63 @@ package body SPARK_Util is
 
    function Aggregate_Is_Fully_Initialized (N : Node_Id) return Boolean is
 
-      procedure Skip_Generated_Components (Component : in out Entity_Id);
-      --  If Component is a compiler generated component, skip it and the
-      --  following compiler generated components, until a component coming
-      --  from source is reached. Otherwise, set Component to Empty.
+      procedure Skip_Ancestor_And_Generated_Components
+        (Component : in out Entity_Id);
+      --  If Component is either a component belonging to an ancestor
+      --  or a compiler generated component, skip it and all similar
+      --  following components.
 
-      -------------------------------
-      -- Skip_Generated_Components --
-      -------------------------------
+      --------------------------------------------
+      -- Skip_Ancestor_And_Generated_Components --
+      --------------------------------------------
 
-      procedure Skip_Generated_Components (Component : in out Entity_Id) is
+      procedure Skip_Ancestor_And_Generated_Components
+        (Component : in out Entity_Id)
+      is
+         function Is_Ancestor_Component (Component : Entity_Id) return Boolean;
+         --  Returns True if the component in question comes from the
+         --  ancestor.
+
+         ---------------------------
+         -- Is_Ancestor_Component --
+         ---------------------------
+
+         function Is_Ancestor_Component (Component : Entity_Id) return Boolean
+         is
+            Ancestor_Typ  : Entity_Id;
+            Ancestor_Comp : Entity_Id;
+         begin
+            if No (Ancestor_Part (N)) then
+               return False;
+            end if;
+
+            Ancestor_Typ  := Underlying_Type (Etype (Ancestor_Part (N)));
+            Ancestor_Comp := First_Component_Or_Discriminant (Ancestor_Typ);
+
+            while Present (Ancestor_Comp) loop
+               if Component = Ancestor_Comp
+                 or else Original_Record_Component (Component) =
+                           Original_Record_Component (Ancestor_Comp)
+                 or else Root_Record_Component (Component) =
+                           Root_Record_Component (Ancestor_Comp)
+               then
+                  return True;
+               end if;
+
+               Ancestor_Comp := Next_Component_Or_Discriminant (Ancestor_Comp);
+            end loop;
+
+            return False;
+         end Is_Ancestor_Component;
+
       begin
          while Present (Component)
-           and then not Comes_From_Source (Component)
+           and then (not Comes_From_Source (Component)
+                       or else Is_Ancestor_Component (Component))
          loop
             Component := Next_Component_Or_Discriminant (Component);
          end loop;
-      end Skip_Generated_Components;
+      end Skip_Ancestor_And_Generated_Components;
 
       Typ         : constant Entity_Id := Underlying_Type (Etype (N));
       Assocs      : List_Id;
@@ -120,7 +160,7 @@ package body SPARK_Util is
          Component   := First_Component_Or_Discriminant (Typ);
          Association := First (Assocs);
 
-         Skip_Generated_Components (Component);
+         Skip_Ancestor_And_Generated_Components (Component);
 
          while Present (Component) loop
             if Present (Association)
@@ -135,7 +175,7 @@ package body SPARK_Util is
             end if;
 
             Component := Next_Component_Or_Discriminant (Component);
-            Skip_Generated_Components (Component);
+            Skip_Ancestor_And_Generated_Components (Component);
          end loop;
 
       else
