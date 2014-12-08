@@ -1,0 +1,4 @@
+titi.adb:7:28: medium: overflow check might fail
+titi.adb:8:12: medium: array index check might fail
+titi.ads:13:29: medium: missing dependency "Log_In => Log"
+titi.ads:13:29: medium: missing dependency "Log_In => Log_Size"
