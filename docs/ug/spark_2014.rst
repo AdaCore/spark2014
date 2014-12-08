@@ -159,7 +159,7 @@ aforementioned data initialization policy. For example, consider a procedure
    :linenos:
 
 Procedure ``Proc`` should completely initialize its outputs ``P2`` and ``G2``,
-but it only initalize them partially. Similarly, procedure ``Call_Proc`` which
+but it only initalizes them partially. Similarly, procedure ``Call_Proc`` which
 calls ``Proc`` should completely initalize all of ``Proc``'s inputs prior to
 the call, but it only initalize ``G1`` completely.
 
