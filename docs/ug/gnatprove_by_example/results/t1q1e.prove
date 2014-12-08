@@ -1,7 +1,0 @@
-t1q1e.adb:7:14: info: overflow check proved
-t1q1e.adb:12:07: info: precondition proved
-t1q1e.adb:13:07: info: precondition proved
-t1q1e.ads:7:19: info: postcondition proved
-t1q1e.ads:7:29: info: overflow check proved
-t1q1e.ads:11:19: info: postcondition proved
-t1q1e.ads:11:29: info: overflow check proved

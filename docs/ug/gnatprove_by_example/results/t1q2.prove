@@ -1,7 +1,0 @@
-t1q2.adb:9:14: info: overflow check proved
-t1q2.adb:10:07: info: assertion proved
-t1q2.adb:10:41: info: overflow check proved
-t1q2.adb:11:14: info: overflow check proved
-t1q2.ads:8:19: info: postcondition proved
-t1q2.ads:8:30: info: overflow check proved
-t1q2.ads:9:41: info: overflow check proved
