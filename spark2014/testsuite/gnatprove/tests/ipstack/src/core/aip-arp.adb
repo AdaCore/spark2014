@@ -325,14 +325,10 @@ is
          for Result'Address use Netif_MAC_Addr_Ptr;
          pragma Import (Ada, Result);
       begin
-         --  Fake initialisation of Result, to avoid an error being generated,
-         --  and justify the warning.
-
-         if False then
-            Result := Ethernet_Address'(others => 0);
-         end if;
-
          return Result;
+         pragma Annotate (GNATprove, Intentional,
+                          """Result"" is not initialized",
+                          "Result is initialized outside the program");
       end Netif_MAC;
 
    --  Start of processing for ARP_Input;

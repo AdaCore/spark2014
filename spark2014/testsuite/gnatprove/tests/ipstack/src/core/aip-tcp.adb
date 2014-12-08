@@ -2760,15 +2760,11 @@ is
          for Result'Address use
            Conversions.Ofs (Seg.Thdr, Natural (Option_Offset));
       begin
-         --  Fake initialisation of Result to avoid a flow error, so that we
-         --  can justify the warning.
-
-         if False then
-            Result := 0;
-         end if;
-
          Option_Offset := Option_Offset + 1;
          V := Result;
+         pragma Annotate (GNATprove, Intentional,
+                          """Result"" is not initialized",
+                          "Result is initialized outside the program");
       end Get_Option_Byte;
 
       -------------------------

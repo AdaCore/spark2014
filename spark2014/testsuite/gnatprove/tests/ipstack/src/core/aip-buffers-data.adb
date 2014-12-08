@@ -509,12 +509,14 @@ is
    -- Buffer_Init --
    -----------------
 
+   pragma Warnings (Off, "unused global ""Data_Array""",
+                    Reason => "Data_Array not initialized for efficiency");
    procedure Buffer_Init with
      Refined_Global => (Output => (Buf_List, Data_Array, Free_List))
    is
       pragma Annotate (GNATprove, Intentional,
-                       """Data_Array"" might not be initialized",
-                       "Leave Data_Array not Initialized for efficiency");
+                       """Data_Array"" is not initialized",
+                       "Data_Array not initialized for efficiency");
    begin
       --  First initialize all the memory for buffers to zero, except for
       --  special number fields initialized to one.
@@ -533,14 +535,9 @@ is
       --  Make the head of the free-list point to the first buffer
 
       Free_List := Buf_List'First;
-
-      --  Fake initialization of Data_Array to avoid getting a flow error.
-      --  Instead a flow warning is issued which is justified.
-
-      if False then
-         Data_Array := Data_Array_Type'(others => ' ');
-      end if;
    end Buffer_Init;
+   pragma Warnings (On, "unused global ""Data_Array""",
+                    Reason => "Data_Array not initialized for efficiency");
 
    ------------------
    -- Buffer_Alloc --

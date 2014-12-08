@@ -1,9 +1,5 @@
-aip-arp.adb:335:17: medium: "Result" might not be initialized
-aip-arp.adb:400:25: warning: statement has no effect
+aip-arp.adb:396:25: warning: statement has no effect
 aip-arp.adb:61:13: warning: statement has no effect
-aip-arp.ads:69:07: warning: unused variable "Netif_Mac_Addr_Ptr"
+aip-arp.ads:69:07: warning: unused variable "Netif_MAC_Addr_Ptr"
 aip-pcbs.adb:136:04: warning: analyzing unreferenced function "Bound_To"
-aip-tcp.adb:2771:15: medium: "Result" might not be initialized
-aip-tcp.adb:3049:11: warning: unused assignment
-aip-tcp.adb:359:14: warning: procedure "TCP_Syn" is not referenced
-aip-tcp.adb:364:14: warning: procedure "TCP_Ack" is not referenced
+aip-tcp.adb:3045:11: warning: unused assignment
