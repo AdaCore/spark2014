@@ -268,7 +268,7 @@ occurs on the first call to ``Search`` in the test program:
 .. image:: static/search_gdb.png
 
 Indeed, the value 1 is present twice in the array, at indexes 1 and 8, which
-makes the two guards ``A(1) = Val`` and ``Value_Found_In_Range (A, Val, 2, 10``
+makes the two guards ``A(1) = Val`` and ``Value_Found_In_Range (A, Val, 2, 10)``
 evaluate to ``True``. We correct the contract of ``Search`` by
 strengthening the guard of the second contract case, so that it only applies
 when the value is not found at index 1:
