@@ -1975,16 +1975,25 @@ package body SPARK_Definition is
                declare
                   Actual : constant Node_Id :=
                     Explicit_Generic_Actual_Parameter (Cur_Assoc);
-                  EActual : constant Entity_Id :=
-                    (if Ekind (Entity (Actual)) = E_Function then
-                        Get_Renamed_Entity (Entity (Actual))
-                     else Entity (Actual));
-
                begin
+                  if Nkind (Actual) in N_Identifier | N_Expanded_Name then
+                     declare
+                        EActual : constant Entity_Id :=
+                          (if Ekind (Entity (Actual)) = E_Function then
+                              Get_Renamed_Entity (Entity (Actual))
+                           else Entity (Actual));
+                     begin
+                        if Ekind (EActual) /= E_Operator then
 
-                  if Ekind (EActual) /= E_Operator then
+                           --  Mark the entity of the actual
 
-                     --  Mark the entity or the expression of the actual
+                           Mark_Entity (EActual);
+                        end if;
+                     end;
+                  else
+                     --  For constant parameters, the actual may be an
+                     --  expression instead of a name.
+                     --  In that case, mark the expression of the actual.
 
                      Mark (Actual);
                   end if;
