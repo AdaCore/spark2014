@@ -14,8 +14,8 @@ not a reference manual for the |SPARK| language, which can be found in:
 More details on how |GNAT Pro| compiles |SPARK| code can be found in the |GNAT
 Pro| Reference Manual.
 
-Although |SPARK| can be seen as a subset of Ada with additional
-aspects/pragmas/attributes, the latest version SPARK 2014 is a much larger
+|SPARK| can be seen as a large subset of Ada with additional
+aspects/pragmas/attributes, the latest version SPARK 2014 being a much larger
 subset than previous versions of |SPARK|. It includes in particular:
 
 * richer types (subtypes with bounds not known statically, discriminant records)
