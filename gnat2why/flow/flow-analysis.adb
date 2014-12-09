@@ -31,6 +31,7 @@ with Sinfo;                use Sinfo;
 with Sinput;               use Sinput;
 with Snames;               use Snames;
 with Stand;                use Stand;
+with Ghost;                use Ghost;
 
 with Why;
 with Gnat2Why_Args;
