@@ -1031,6 +1031,9 @@ Proof Limitations
          Crash (Zero_Plus, Zero_Neg);
       end Zero_And_Unchecked;
 
+#. |GNATprove| does not follow the value of tags for tagged objects. As a
+   consequence, tag checks are currently unprovable in most cases.
+
 Portability Issues
 ==================
 

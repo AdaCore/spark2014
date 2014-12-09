@@ -750,6 +750,7 @@ The following table shows the kinds of check messages issued by proof.
    "range check", "Check that the given value is within the bounds of the expected scalar subtype."
    "length check", "Check that the given array is of the length of the expected array subtype."
    "discriminant check", "Check that the discriminant of the given discriminated record has the expected value. For variant records, this can happen for a simple access to a record field. But there are other cases where a fixed value of the discriminant is required."
+   "tag check",          "Check that the tag of the given tagged object has the expected value."
 
    **assertions**
    "initial condition", "Check that the initial condition of a package is true after elaboration."
