@@ -161,7 +161,7 @@ aforementioned data initialization policy. For example, consider a procedure
 Procedure ``Proc`` should completely initialize its outputs ``P2`` and ``G2``,
 but it only initalizes them partially. Similarly, procedure ``Call_Proc`` which
 calls ``Proc`` should completely initalize all of ``Proc``'s inputs prior to
-the call, but it only initalize ``G1`` completely.
+the call, but it only initalizes ``G1`` completely.
 
 .. literalinclude:: gnatprove_by_example/examples/data_initialization.adb
    :language: ada
