@@ -176,10 +176,10 @@ package body Flow.Slice is
 
       Out_Discrim   : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
       --  We need to keep track of discriminated or unconstrained out
-      --  parameters, as the implicit input (the discriminant) is never
-      --  unused. So if it unused after all we silently take it out the
-      --  unused_inputs set, so that we don't produce a flow error about a
-      --  missing null dependency.
+      --  parameters, as the implicit input (the discriminant) is
+      --  never unused. So if it is unused after all we silently take
+      --  it out the unused_inputs set, so that we don't produce a
+      --  flow error about a missing null dependency.
 
       DM            : Dependency_Maps.Map := Dependency_Maps.Empty_Map;
 
@@ -220,8 +220,9 @@ package body Flow.Slice is
                if (Is_Discriminant (F_Initial) or Is_Bound (F_Initial))
                  and then Attr.Mode = Mode_Out
                then
-                  --  See above about supressing "null => foo" dependency
-                  --  error messages for out parameters and globals.
+                  --  See above about suppressing "null => foo"
+                  --  dependency error messages for out parameters and
+                  --  globals.
                   Out_Discrim.Include
                     (Change_Variant (Entire_Variable (F_Initial),
                                      Normal_Use));
