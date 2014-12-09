@@ -41,12 +41,15 @@ simplifications to Ada 2012. The most notable simplifications are:
 * The use of access types and allocators is not permitted. Formal verification
   of programs with pointers requires tracking which memory is allocated and
   which memory has been freed, as well as separation between different blocks
-  of memory, which are not doable precisely without a lot of manual work.
+  of memory, which are not doable precisely without a lot of manual work. As a
+  replacement, |SPARK| provides rich generic data structures in the
+  :ref:`Formal Containers Library`.
 
 * All expressions (including function calls) are free of
   side-effects. Functions with side-effects are more complex to treat logically
   and may lead to non-deterministic evaluation due to conflicting side-effects
-  in sub-expressions of an enclosing expression.
+  in sub-expressions of an enclosing expression. Functions with side-effects
+  should be written as procedures in |SPARK|.
 
 * Aliasing of names is not permitted. Aliasing may lead to unexpected
   interferences, in which the value denoted locally by a given name changes as
@@ -66,7 +69,9 @@ simplifications to Ada 2012. The most notable simplifications are:
 * Handling of exceptions is not permitted. Exception handling gives raise to
   numerous interprocedural control-flow paths. Formal verification of programs
   with exception handlers requires tracking properties along all those paths,
-  which is not doable precisely without a lot of manual work.
+  which is not doable precisely without a lot of manual work. But raising
+  exceptions is allowed (see :ref:`Raising Exceptions and Other Error Signaling
+  Mechanisms`).
 
 The features listed above are excluded from |SPARK| because, currently, they
 defy formal verification. As formal verification technology advances the list
@@ -173,11 +178,11 @@ the violations of the data initialization policy:
 .. literalinclude:: gnatprove_by_example/results/data_initialization.flow
    :language: none
 
-While a user can justify individually such messages with pragma Annotate (see
-section :ref:`Check_Control`), it is under her responsibility to then ensure
-correct initialization of subcomponents that are read, as |GNATprove| relies
-during proof on the property that data is properly initialized before being
-read.
+While a user can justify individually such messages with pragma ``Annotate``
+(see section :ref:`Justifying Check Messages`), it is under her responsibility
+to then ensure correct initialization of subcomponents that are read, as
+|GNATprove| relies during proof on the property that data is properly
+initialized before being read.
 
 Note also the various warnings that |GNATprove| issues on unused parameters,
 global items and assignments, also based on the stricter |SPARK| interpretation
@@ -188,11 +193,11 @@ of parameter and global modes.
 Absence of Interference
 -----------------------
 
-It is not possible in |SPARK| to change the value denoted locally by a given
-name as the result of an update to another locally named variable. This is
-enforced by forbidding the use of access types (pointers) in |SPARK|, and by
-restricting aliasing between parameters and global variables so that only
-benign aliasing is accepted (i.e. aliasing that does not cause interference).
+In |SPARK|, an assignment to a variable cannot change the value of another
+variable. This is enforced by forbidding the use of access types (pointers) in
+|SPARK|, and by restricting aliasing between parameters and global variables so
+that only benign aliasing is accepted (i.e. aliasing that does not cause
+interference).
 
 The precise rules detailed in SPARK RM 6.4.2 can be summarized as follows:
 
@@ -390,10 +395,11 @@ to prove that the subprogram's implementation:
 In particular, the default precondition of ``True`` used by |GNATprove| when no
 explicit one is given may not be precise enough, unless it can be analyzed in
 the context of its callers by |GNATprove| (see :ref:`Contextual Analysis of
-Subprograms Without Contracts`). And even when the implementation of the
-subprogram is not analyzed with |GNATprove|, it may be necessary to add a
-precondition to the subprogram for analyzing its callers (see :ref:`Writing
-Contracts on Imported Subprograms`).
+Subprograms Without Contracts`). When a caller is analyzed with |GNATprove|, it
+checks that the precondition of the called subprogram holds at the point of
+call. And even when the implementation of the subprogram is not analyzed with
+|GNATprove|, it may be necessary to add a precondition to the subprogram for
+analyzing its callers (see :ref:`Writing Contracts on Imported Subprograms`).
 
 For example, consider the procedure ``Add_To_Total`` which increments global
 counter ``Total`` by the value given in parameter ``Incr``. To ensure that
@@ -491,6 +497,24 @@ respect exactly like non-recursive ones. Provided the execution of these
 subprograms always terminates (a property that is not verified by |GNATprove|),
 then |GNATprove| correctly checks that their postcondition is respected by
 using this postcondition for recursive calls.
+
+Special care should be exercized for functions that return a boolean, as a
+common mistake is to write the expected boolean result as the postcondition:
+
+.. code-block:: ada
+
+   function Total_Above_Threshold (Threshold : in Integer) return Boolean with
+     Post => Total > Threshold;
+
+while the correct postcondition uses :ref:`Attribute Result`:
+
+.. code-block:: ada
+
+   function Total_Above_Threshold (Threshold : in Integer) return Boolean with
+     Post => Total_Above_Threshold'Result = Total > Threshold;
+
+Both |GNAT Pro| compiler and |GNATprove| issue a warning on the semantically
+correct but likely functionally wrong postcondition.
 
 .. _Contract Cases:
 
@@ -771,8 +795,9 @@ use abstract state ``State`` in their data and flow dependencies, for example:
      Depends => (State =>+ Incr);
 
 Then, unless they are not in |SPARK|, the implementations of ``Init_Total`` and
-``Add_To_Total`` need to define refined data and flow dependencies, which give
-the precise dependencies for these subprograms in terms of concrete variables:
+``Add_To_Total`` need to define refined data and flow dependencies introduced
+respectively by ``Refined_Global`` and ``Refined_Depends``, which give the
+precise dependencies for these subprograms in terms of concrete variables:
 
 .. code-block:: ada
 
@@ -843,10 +868,10 @@ example:
 
 Although no refined preconditions and postconditions are required on the
 implementation of ``Add_To_Total``, it is possible to provide a refined
-postcondition in that case, which specifies a more precise functional behavior
-of the subprogram. For example, procedure ``Add_To_Total`` may also increment
-the value of a counter ``Call_Count`` at each call, which can be expressed in
-the refined postcondition:
+postcondition introduced by ``Refined_Post`` in that case, which specifies a
+more precise functional behavior of the subprogram. For example, procedure
+``Add_To_Total`` may also increment the value of a counter ``Call_Count`` at
+each call, which can be expressed in the refined postcondition:
 
 .. code-block:: ada
 
@@ -896,13 +921,18 @@ State Abstraction
 [|SPARK|]
 
 The state abstraction of a package specifies a mapping between abstract names
-and concrete global variables defined in the package. One abstract name may be
-mapped to more than one concrete variable, but no two abstract names can be
-mapped to the same concrete variable. When state abstraction is specified on a
-package, all non-visible global variables defined in the private part of the
-package specification and in its implementation should be mapped to abstract
-names. Thus, abstract names correspond to a partitioning of the non-visible
-global variables defined in the package.
+and concrete global variables defined in the package. State abstraction allows
+to define :ref:`Subprogram Contracts` at an abstract level that does not depend
+on a particular choice of implementation (see :ref:`State Abstraction and
+Contracts`), which is better both for maintenance (no need to change contracts)
+and scalability of analysis (contracts can be much smaller).
+
+One abstract name may be mapped to more than one concrete variable, but no two
+abstract names can be mapped to the same concrete variable. When state
+abstraction is specified on a package, all non-visible global variables defined
+in the private part of the package specification and in its implementation
+should be mapped to abstract names. Thus, abstract names correspond to a
+partitioning of the non-visible global variables defined in the package.
 
 The simplest use of state abstraction is to define a single abstract name
 (conventionally called ``State``) to denote all non-visible global variables
@@ -1013,7 +1043,9 @@ Package Initialization
 The package initialization specifies which global data (global variables and
 abstract state) defined in the package is initialized at package startup. The
 corresponding global variables may either be initialized at declaration, or by
-the package body statements.
+the package body statements. Thus, package initialization can be seen as the
+output data dependencies of the package elaboration procedure generated by the
+compiler.
 
 For example, we can specify that the state of package ``Account`` is
 initialized at package startup as follows:
@@ -1065,8 +1097,10 @@ Package Initial Condition
 [|SPARK|]
 
 The package initial condition specifies the properties holding after package
-startup. For example, we can specify that the value of ``Total`` defined in
-package ``Account``'s implementation is initially zero:
+startup.  Thus, package initial condition can be seen as the postcondition of
+the package elaboration procedure generated by the compiler.  For example, we
+can specify that the value of ``Total`` defined in package ``Account``'s
+implementation is initially zero:
 
 .. code-block:: ada
 
@@ -1478,7 +1512,7 @@ here:
 
 If partial default initialization of the type is intended, in general for
 efficiency like here, then the corresponding message can be justified with
-pragma ``Annotate``, see section :ref:`Check_Control`.
+pragma ``Annotate``, see section :ref:`Justifying Check Messages`.
 
 Aspect ``Default_Initial_Condition`` can also be specified without argument to
 only indicate that default initialized variables of that type are considered as
@@ -1532,10 +1566,10 @@ returning from the procedure has been incremented:
    procedure Increment (X : in out Integer) with
      Post => X = X'Old + 1;
 
-By using ``X'Old`` in the postcondition, we instruct the compiler to create a
-copy of ``X`` at subprogram entry that can be dynamically tested when exiting
-the subprogram to check that the postcondition holds. Because it requires
-copying the value of ``X``, the type of ``X`` cannot be limited.
+At run time, a copy of the variable ``X`` is made when entering the
+subprogram. This copy is then read when evaluating the expression ``X'Old`` in
+the postcondition. Because it requires copying the value of ``X``, the type of
+``X`` cannot be limited.
 
 Strictly speaking, attribute ``Old`` must apply to a *name* in Ada syntax, for
 example a variable, a component selection, a call, but not an addition like
@@ -1718,6 +1752,11 @@ equal to its value at loop entry plus one:
       end loop
    end Increment_Array;
 
+At run time, a copy of the variable ``X`` is made when entering the loop. This
+copy is then read when evaluating the expression ``X'Loop_Entry``. No copy is
+made if the loop is never entered. Because it requires copying the value of
+``X``, the type of ``X`` cannot be limited.
+
 Attribute ``Loop_Entry`` can only be used in top-level :ref:`Assertion Pragmas`
 inside a loop. It is mostly useful for expressing complex :ref:`Loop
 Invariants` which relate the value of a variable at a given iteration of the
@@ -1839,6 +1878,9 @@ function:
 
    function Rotate_Clockwize_Z (P : Point_3D) return Point_3D is
      (P'Update(X => P.Y, Y => - P.X));
+
+Because it requires copying the value of ``P``, the type of ``P`` cannot be
+limited.
 
 .. _Conditional Expressions:
 
