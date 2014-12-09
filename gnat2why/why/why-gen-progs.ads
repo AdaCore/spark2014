@@ -94,7 +94,7 @@ package Why.Gen.Progs is
       Post     : W_Pred_Id;
       Reason   : VC_Kind)
       return W_Prog_Id;
-   --  build a located abstract Why3 program expression.
+   --  build a located abstract Why3 program expression with a postcondition.
 
    function New_Simpl_Any_Prog
      (T    : W_Type_Id;

@@ -39,6 +39,7 @@ with Namet;                  use Namet;
 with Nlists;                 use Nlists;
 with Opt;
 with Sem_Aux;                use Sem_Aux;
+with Sem_Disp;               use Sem_Disp;
 with Sem_Eval;               use Sem_Eval;
 with Sem_Util;               use Sem_Util;
 with Sem_Type;               use Sem_Type;
@@ -152,6 +153,10 @@ package body Gnat2Why.Expr is
    --  Nb_Of_Refs is the number of ref arguments that could not be
    --  translated "as is" (because of a type mismatch) and for which
    --  Insert_Ref_Context must be called.
+
+   function Compute_Tag_Check
+     (Call   : Node_Id;
+      Params : Transformation_Params) return W_Prog_Id;
 
    function Why_Subp_Has_Precondition
      (E        : Entity_Id;
@@ -1364,7 +1369,6 @@ package body Gnat2Why.Expr is
       Subp    : constant Entity_Id := Entity (Name (Call));
       Binders : constant Item_Array :=
         Compute_Subprogram_Parameters (Subp, Domain);
-
    begin
       Nb_Of_Refs := 0;
       Nb_Of_Lets := 0;
@@ -2955,6 +2959,98 @@ package body Gnat2Why.Expr is
 
       return T;
    end Compute_Dynamic_Property;
+
+   -----------------------
+   -- Compute_Tag_Check --
+   -----------------------
+
+   function Compute_Tag_Check
+     (Call   : Node_Id;
+      Params : Transformation_Params) return W_Prog_Id
+   is
+      Controlling_Arg : constant Node_Id := Controlling_Argument (Call);
+      Control_Tag     : W_Expr_Id;
+      Check           : W_Pred_Id := True_Pred;
+      Needs_Check     : Boolean := False;
+
+      procedure One_Arg (Formal, Actual : Node_Id);
+         --  Compute a Why expression for each parameter
+
+      -------------
+      -- One_Arg --
+      -------------
+
+      procedure One_Arg (Formal, Actual : Node_Id) is
+         pragma Unreferenced (Formal);
+         New_Check : W_Pred_Id;
+      begin
+         if not Is_Controlling_Actual (Actual)
+           or else Actual = Controlling_Arg
+         then
+            return;
+         end if;
+
+         --  We have found a controlling argument different from the first one.
+         --  We need a check. If it's the first time we come here, we need to
+         --  compute the reference tag first
+
+         if not Needs_Check then
+            Needs_Check := True;
+            declare
+               Tmp : constant W_Expr_Id :=
+                 Transform_Expr (Controlling_Arg, EW_Term, Params);
+            begin
+               Control_Tag :=
+                 New_Tag_Access
+                   (Ada_Node => Controlling_Arg,
+                    Domain   => EW_Term,
+                    Name     => Tmp,
+                    Ty       => Get_Ada_Node (+Get_Type (Tmp)));
+            end;
+         end if;
+         declare
+            Tmp : constant W_Expr_Id :=
+              Transform_Expr (Actual, EW_Term, Params);
+         begin
+            New_Check :=
+              New_Relation
+                (Op      => EW_Eq,
+                 Op_Type => EW_Int,
+                 Left    => Control_Tag,
+                 Right   =>
+                   New_Tag_Access
+                     (Name => Tmp,
+                      Ada_Node => Actual,
+                      Domain => EW_Term,
+                      Ty   => Get_Ada_Node (+Get_Type (Tmp))));
+         end;
+
+         Check :=
+           +New_And_Expr
+           (Domain => EW_Pred,
+            Left   => +Check,
+            Right  => +New_Check);
+      end One_Arg;
+
+      procedure Iterate_Call is new Iterate_Call_Arguments (One_Arg);
+
+   begin
+      if not Present (Controlling_Arg) then
+         return New_Void (Call);
+      end if;
+
+      Iterate_Call (Call);
+      if Needs_Check then
+         return
+           New_Located_Assert
+             (Ada_Node => Call,
+              Pred     => Check,
+              Reason   => VC_Tag_Check,
+              Kind     => EW_Assert);
+      else
+         return New_Void (Call);
+      end if;
+   end Compute_Tag_Check;
 
    ------------------------------
    -- Discrete_Choice_Is_Range --
@@ -6737,8 +6833,36 @@ package body Gnat2Why.Expr is
                                     Tmp      => Lval,
                                     Context  => +T);
          end;
-      else
-         T := +Tmp;
+      elsif Ekind (Etype (Lvalue)) in Class_Wide_Kind and then
+        not Sem_Disp.Is_Tag_Indeterminate (Expression (Stmt))
+      then
+         declare
+            Lval  : constant W_Expr_Id :=
+              New_Temp_For_Expr
+                (Transform_Expr (Lvalue, EW_Term, Body_Params), True);
+            Pred : constant W_Pred_Id :=
+              New_Relation
+                (Op      => EW_Eq,
+                 Op_Type => EW_Int,
+                 Left    =>
+                   New_Tag_Access
+                     (Name => Lval, Domain => EW_Term,
+                      Ty   => Etype (Lvalue)),
+                 Right   =>
+                   New_Tag_Access
+                     (Name => Tmp, Domain => EW_Term,
+                      Ty   => Get_Ada_Node (+Get_Type (Tmp))));
+         begin
+            T :=
+              Sequence
+                (New_Located_Assert
+                   (Stmt, +Pred, VC_Tag_Check, EW_Assert),
+                 +Tmp);
+            T := +Binding_For_Temp (Ada_Node => Empty,
+                                    Domain   => EW_Prog,
+                                    Tmp      => Lval,
+                                    Context  => +T);
+         end;
       end if;
       T :=
         +Insert_Simple_Conversion
@@ -9058,6 +9182,11 @@ package body Gnat2Why.Expr is
                           Post        => +Dyn_Prop),
                      Right => +Tmp));
             end if;
+
+            if Present (Controlling_Argument (Expr)) then
+               T := +Sequence (Compute_Tag_Check (Expr, Params),
+                               +T);
+            end if;
          end;
       end if;
 
@@ -10694,6 +10823,10 @@ package body Gnat2Why.Expr is
 
                Call := +Assume_Dynamic_Property_After_Call
                  (Body_Params, Stmt_Or_Decl, +Call);
+
+               Call :=
+                 +Sequence (Compute_Tag_Check (Stmt_Or_Decl, Body_Params),
+                            +Call);
 
                if Nb_Of_Refs = 0 and then Nb_Of_Lets = 0 then
                   return +Call;
