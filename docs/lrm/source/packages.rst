@@ -392,18 +392,13 @@ Async_Writers aspect specification.
 
 .. _etu-external_state_variables-lr:
 
-
-.. centered:: **Static Semantics**
-
-14. These are explained in :ref:`external_state`.
-
 .. centered:: **Dynamic Semantics**
 
-15. There are no dynamic semantics associated with these aspects.
+14. There are no dynamic semantics associated with these aspects.
 
 .. centered:: **Verification Rules**
 
-16. An effectively volatile formal parameter of mode **out** shall not be read,
+15. An effectively volatile formal parameter of mode **out** shall not be read,
     even after it has been updated. [This is because the
     Async_Writers aspect of the parameter is True].
 
@@ -1200,8 +1195,10 @@ shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
 
 .. centered:: **Static Semantics**
 
-1. The static semantics are equivalent to those given for the Global aspect in
-   :ref:`global-aspects`.
+1. The static semantics are as for those of the Global aspect given in
+   :ref:`global-aspects`. [Differences between these two aspects for one
+   subprogram stem from differences in state abstraction visibility
+   between the points where the two aspects are specified.]
 
 .. centered:: **Legality Rules**
 
@@ -1339,8 +1336,10 @@ shall follow the grammar of ``dependency_relation`` in :ref:`depends-aspects`.
 
 .. centered:: **Static Semantics**
 
-1. The static semantics are equivalent to those given for the Depends aspect in
-   :ref:`depends-aspects`.
+1. The static semantics are as for those of the Depends aspect given in
+   :ref:`depends-aspects`. [Differences between these two aspects for one
+   subprogram stem from differences in state abstraction visibility
+   between the points where the two aspects are specified.]
 
 .. centered:: **Legality Rules**
 
