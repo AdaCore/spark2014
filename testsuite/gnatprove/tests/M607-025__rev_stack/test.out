@@ -33,6 +33,7 @@ list.adb:42:60: info: range check proved
 list.adb:43:10: info: precondition proved
 list.adb:43:23: info: precondition proved
 list.adb:44:10: info: precondition proved
+list.ads:9:12: medium: range check might fail
 list.ads:13:28: info: precondition proved
 list.ads:13:47: info: precondition proved
 list.ads:14:19: info: precondition proved

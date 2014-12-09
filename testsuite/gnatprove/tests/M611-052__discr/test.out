@@ -19,6 +19,7 @@ list.adb:22:68: info: range check proved
 list.adb:22:73: info: precondition proved
 list.adb:22:85: info: precondition proved
 list.adb:22:104: info: range check proved
+list.ads:8:12: medium: range check might fail
 list.ads:12:14: info: postcondition proved
 list.ads:12:28: info: precondition proved
 list.ads:12:47: info: precondition proved
