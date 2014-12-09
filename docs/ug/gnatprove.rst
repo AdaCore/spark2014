@@ -173,11 +173,24 @@ analysis checks the correctness of aspects related to data flow (``Global``,
 these), and verifies the initialization of variables. Proof verifies the
 absence of run-time errors and the correctness of assertions such as ``Pre``
 and ``Post`` aspects.  Using the switch ``--mode=<mode>``, whose possible
-values are ``flow``, ``prove`` and ``all``, you can choose which analysis is
-performed. With mode ``flow``, only flow analysis is performed, with mode
-``prove``, proof is performed as well as the part of flow analysis which
-guarantees soundness of the proof results. Mode ``all`` is the default and
-performs full flow analysis and proof.
+values are ``check``, ``flow``, ``prove`` and ``all``, you can choose which
+analysis is performed:
+
+* In mode ``check``, |GNATprove| checks that the program does not violate
+  |SPARK| restrictions.
+
+* In mode ``flow``, |GNATprove| checks that no uninitialized data is read in
+  the program, and that the specified data dependencies and flow dependencies
+  are respected in the implementation. Mode ``flow`` includes mode ``check``.
+  This phase is called *flow analysis*.
+
+* In mode ``prove``, |GNATprove| checks that the program is free from run-time
+  errors, and that the specified functional contracts are respected in the
+  implementation. Mode ``prove`` includes mode ``check``, as well as the part
+  of mode ``flow`` which checks that no uninitialized data is read, to
+  guarantees soundness of the proof results. This phase is called *proof*.
+
+* In the default mode ``all``, |GNATprove| does both flow analysis and proof.
 
 Using the option ``--limit-line=`` one can limit proofs to a particular file
 and line of an Ada file. For example, if you want to prove only line 12 of
@@ -496,6 +509,9 @@ Analysis with |GNATprove| can be limited to a single condition with the
 Where ``check-kind`` can be deduced from the message associated to the
 failing condition reported by |GNATprove|:
 
+.. UPDATES TO THIS TABLE SHOULD ALSO BE REFLECTED IN THE TABLE UNDER SECTION
+.. "GNATprove Messages"
+
 .. csv-table::
    :header: "Warning", "Check kind"
    :widths: 2, 1
@@ -555,168 +571,78 @@ Once the editor is closed, GPS re-executes
 alternative prover as before is still specified. After execution, GPS will
 offer to re-edit the file if the proof fails.
 
-
 How to View |GNATprove| Output
 ==============================
 
-Types of messages in |GNATprove|
---------------------------------
+Categories of Messages
+----------------------
 
 |GNATprove| issues four different kinds of messages: errors, warnings,
-checks and information messages.
+check messages and information messages.
 
- * Errors are issued for |SPARK| violations or other language legality
-   problems, or any other problem which does not allow to proceed to analysis.
-   Errors cannot be suppressed and must be fixed to proceed with analysis.
- * Warnings are issued for any suspicious situation like unused values of
-   variables, useless assignements, etc. Warnings are prefixed with the text
-   ``"warning: "`` and can be suppressed with ``pragma Warnings``, see
-   section :ref:`Warning_Control`.
- * Checks are issued for any potential problem in the code which could affect
-   the correctness of the program, such as missing initialization, possible
-   failing run-time checks or unproved assertions. Checks come with a severity,
-   and depending on the severity the message text is prefixed with ``"low: "``,
-   ``"medium: "`` or ``"high: "``. Check messages cannot be suppressed like
-   warnings, but they can be individually justified with pragma ``Annotate``,
-   see section :ref:`Check_Control`.
- * Information messages are issued for proved checks in some modes of
-   |GNATprove|.
+* Errors are issued for |SPARK| violations or other language legality problems,
+  or any other problem which does not allow to proceed to analysis.  Errors
+  cannot be suppressed and must be fixed to proceed with analysis.
 
-Messages depending on Tool mode
--------------------------------
+* Warnings are issued for any suspicious situation like unused values of
+  variables, useless assignements, etc. Warnings are prefixed with the text
+  ``"warning: "`` and can be suppressed with ``pragma Warnings``, see section
+  :ref:`Suppressing Warnings`.
+
+* Check messages are issued for any potential problem in the code which could
+  affect the correctness of the program, such as missing initialization,
+  possible failing run-time checks or unproved assertions. Checks come with a
+  severity, and depending on the severity the message text is prefixed with
+  ``"low: "``, ``"medium: "`` or ``"high: "``. Check messages cannot be
+  suppressed like warnings, but they can be individually justified with pragma
+  ``Annotate``, see section :ref:`Justifying Check Messages`.
+
+* Information messages are issued for proved checks in some modes of
+  |GNATprove|.
+
+Effect of Mode on Output
+------------------------
+
+|GNATprove| can be run in four different modes, as selected with the switch
+``--mode=<mode>``, whose possible values are ``check``, ``flow``, ``prove`` and
+``all`` (see :ref:`Running GNATprove from the Command Line`). The output
+depends on the selected mode.
 
 In mode ``check``, |GNATprove| prints on the standard output error messages for
-|SPARK| violations on all the code for which ``SPARK_Mode`` is ``On``.
+violations of |SPARK| restrictions on all the code for which ``SPARK_Mode`` is
+``On``.
 
 In modes ``flow`` and ``prove``, this checking is done as a first phase.
 
-In mode ``flow``, GNATprove prints on the standard output messages for
-incorrect dependency contracts (annotations ``Global``, ``Depends``,
-``Abstract_State``, ``Initializes``, and refinement versions of these),
-unitialized variables, and suspicious situations such as unused assignments,
-missing return statements and so on.
+In mode ``flow``, |GNATprove| prints on the standard output messages for
+possible reads of uninitialized data, mismatches betwen the specified data
+dependencies and flow dependencies and the implementation, and suspicious
+situations such as unused assignments and missing return statements. These
+messages are all based on flow analysis.
 
-In mode ``all`` and report ``fail``, GNATprove does all of the above and
-prints on the standard output check messages for checks that could not be
-proved.
+In mode ``prove``, |GNATprove| prints on the standard output messages for
+possible reads of uninitialized data (using flow analysis), possible run-time
+errors and mismatches between the specified functional contracts and the
+implementation (using proof).
 
-In mode ``all`` and report ``all`` or ``statistics``, |GNATprove| does the
-same, but in addition prints on the standard output information messages for
-proved checks.
+In mode ``all``, |GNATprove| prints on the standard output both messages for
+mode ``flow`` and for mode ``prove``.
 
-In mode ``prove`` , |GNATprove| does the same as in mode ``all``, except that
-suspicious situations are not reported, only messages which may have impact on
-the soundness of proof results.
+If switch ``--report=all`` or ``--report=statistics`` is specified, |GNATprove|
+additionally prints on the standard output information messages for proved
+checks.
 
 |GNATprove| generates global project statistics in file ``gnatprove.out``,
 which can be displayed in GPS using the menu :menuselection:`SPARK --> Show
 Report`. The statistics describe:
 
-* which units were analyzed
-* which subprograms in these units were analyzed
+* which units were analyzed (with flow analysis, proof, or both)
+* which subprograms in these units were analyzed (with flow analysis, proof, or
+  both)
 * the results of this analysis
 
-.. _Warning_Control:
-
-Warning Control
-===============
-
-|GNATprove| issues two kinds of warnings, which are controlled separately:
-
-* Compiler warnings are controlled with the usual GNAT compilation switches:
-
-  * ``-gnatws`` suppresses all warnings
-  * ``-gnatwa`` enables all optional warnings
-  * ``-gnatw?`` enables a specific warning denoted by the last character
-    See the GNAT User's Guide for more details. These should passed through
-    the compilation switches specified in the project file.
-
-* |SPARK| warnings are controlled with switch ``--warnings``:
-
-  * ``--warnings=off`` suppresses all warnings
-  * ``--warnings=error`` treats warnings as errors
-  * ``--warnings=continue`` issues warnings but does not stop analysis (default)
-
-    The default is that |GNATprove| issues warnings but does not stop.
-
-Both types of warnings can be suppressed selectively by the use of ``pragma
-Warnings`` in the source code. See |GNAT Pro| Reference Manual for more
-details.
-
-.. note::
-
-   A pragma Warnings Off on an entity disables all flow analysis
-   warnings related to this entity, anywhere they occur.
-
-.. _Check_Control:
-
-Control of Check Messages
-=========================
-
-The user can suppress check messages emitted by |GNATprove| by putting a
-``pragma Annotate`` in the source code. An example is the following::
-
-    return (X + Y) / (X - Y);
-    pragma Annotate (GNATprove, False_Positive,
-                     "divide by zero", "reviewed by John Smith");
-
-The pragma has the following form::
-
-    pragma Annotate (GNATprove, Category, Pattern, Reason);
-
-where the following table explains the different entries:
-
-.. tabularcolumns:: |l|p{4.5in}|
-
-.. csv-table::
-   :header: "Item", "Explanation"
-   :widths: 1, 4
-
-    "GNATprove",   "is a fixed identifier"
-    "Category",    "is one of False_Positive or Intentional"
-    "Pattern",     "is a string literal describing the pattern of the messages which shall be suppressed"
-    "Reason",      "is a string literal providing a reason for the suppression."
-
-All arguments should be provided.
-
-The category currently has no impact on the behavior of the tool, but the idea
-is that ``False_Positive`` should be used to suppress checks that cannot occcur,
-but |GNATprove| was unable to detect this; ``Intentional`` indicates that the
-condition can occur but is not considered to be a bug.
-
-Pattern should be a substring of the |GNATprove| check message to be
-suppressed.
-
-Reason is any string that the user can use to provide a reason for the
-suppression. This reason may be present in a |GNATprove| report.
-
-Placement rules are as follows: in a statement list or declaration list,
-``pragma Annotate`` applies to the preceding item in the list, ignoring other
-``pragma Annotate``. If there is no preceding item, the pragma applies to the
-enclosing construct.
-
-If the preceding or enclosing construct is a subprogram body, the pragma
-applies to both the subprogram body and the spec including its aspect
-specifications. This allows to place a justification for a check message issued
-by |GNATprove| either on the spec when the it is relevant for callers:
-
-.. literalinclude:: gnatprove_by_example/examples/justifications.ads
-   :language: ada
-   :lines: 4-7
-
-or on the body when it is an implementation choice that needs not be visible
-to users of the unit:
-
-.. literalinclude:: gnatprove_by_example/examples/justifications.ads
-   :language: ada
-   :lines: 9-10
-
-.. literalinclude:: gnatprove_by_example/examples/justifications.adb
-   :language: ada
-   :lines: 10-16
-
-|GNATprove| Messages
-====================
+Description of Messages
+-----------------------
 
 This section lists the different messages which |GNATprove| may output. Each
 message points to a very specific place in the source code.  For example, if a
@@ -726,7 +652,7 @@ source file ``file.adb`` contains a division as follows::
 
 |GNATprove| may output a message such as::
 
-   file.adb:12:37: medium divide by zero might fail
+   file.adb:12:37: medium: divide by zero might fail
 
 where the division sign ``/`` is precisely on line 12, column 37. Looking at
 the explanation in the first table below, which states that a division check
@@ -736,6 +662,9 @@ zero. The explanations in the table below should be read with the context that
 is given by the source location.
 
 The following table shows the kinds of check messages issued by proof.
+
+.. UPDATES TO THIS TABLE SHOULD ALSO BE REFLECTED IN THE TABLE UNDER SECTION
+.. "Manual Proof in Command Line"
 
 .. tabularcolumns:: |l|p{3in}|
 
@@ -776,7 +705,11 @@ The following table shows the kinds of check messages issued by proof.
    "class-wide precondition weaker than overridden one", "Check that the class-wide precondition aspect of the subprogram is weaker than its overridden class-wide precondition."
    "class-wide postcondition stronger than overridden one", "Check that the class-wide postcondition aspect of the subprogram is stronger than its overridden class-wide postcondition."
 
-The following table shows all flow analysis messages, either (W)arnings,
+.. insert blank line to separate more clearly the two tables in the HTML output
+
+|
+
+The following table shows all flow analysis messages, either (W)arnings or
 (C)hecks.
 
 .. tabularcolumns:: |l|l|p{4in}|
@@ -800,24 +733,165 @@ The following table shows all flow analysis messages, either (W)arnings,
    "missing return","W", "A return statement seems to be missing from the function."
    "export must not depend on Proof_In","C", "Flow analysis has detected an output of a subprogram that depends on a constant which is marked Proof_In."
 
-Assumptions
-===========
+.. _How to Suppress or Justify Messages:
 
-When you specify the option "--assumptions" on the commandline of |GNATprove|,
-the result file ``gnatprove.out`` of |GNATprove| also contains assumption
-information, i.e. the unproved properties on which each of the verification
-results of |GNATprove| depends.
+How to Suppress or Justify Messages
+===================================
+
+Like every sound and complete verification tool, |GNATprove| may issue false
+alarms. A first step is to identify the type of message:
+
+* warnings can be suppressed, see :ref:`Suppressing Warnings`
+* check messages can be justified, see :ref:`Justifying Check Messages`
+
+Check messages from proof may in fact correspond to provable checks, which
+require interacting with |GNATprove| to find the correct contracts and/or
+analysis switches, see :ref:`How to Investigate Unproved Checks`.
+
+.. _Suppressing Warnings:
+
+Suppressing Warnings
+--------------------
+
+|GNATprove| issues two kinds of warnings, which are controlled separately:
+
+* Compiler warnings are controlled with the usual GNAT compilation switches:
+
+  * ``-gnatws`` suppresses all warnings
+  * ``-gnatwa`` enables all optional warnings
+  * ``-gnatw?`` enables a specific warning denoted by the last character
+
+    See the |GNAT Pro| User's Guide for more details. These should passed
+    through the compilation switches specified in the project file.
+
+* |GNATprove| specific warnings are controlled with switch ``--warnings``:
+
+  * ``--warnings=off`` suppresses all warnings
+  * ``--warnings=error`` treats warnings as errors
+  * ``--warnings=continue`` issues warnings but does not stop analysis (default)
+
+    The default is that |GNATprove| issues warnings but does not stop.
+
+Both types of warnings can be suppressed selectively by the use of pragma
+``Warnings`` in the source code. For example, |GNATprove| issues three warnings
+on procedure ``Warn``, which are suppressed by the three pragma ``Warnings`` in
+the source code:
+
+.. literalinclude:: gnatprove_by_example/examples/warn.adb
+   :language: ada
+   :linenos:
+
+Warnings with the specified message are suppressed in the region starting at
+pragma ``Warnings Off`` and ending at the matching pragma ``Warnings On`` or at
+the end of the enclosing scope. The ``Reason`` argument string is optional. A
+regular expression can be given instead of a specific message in order to
+suppress all warnings of a given form. Pragma ``Warnings Off`` can be added in
+a configuration file to suppress the corresponding warnings across all units in
+the project. Pragma ``Warnings Off`` can be specified for an entity to suppress
+all warnings related to this entity. See the |GNAT Pro| Reference Manual for
+more details.
+
+.. _Justifying Check Messages:
+
+Justifying Check Messages
+-------------------------
+
+Check messages generated by |GNATprove|'s flow analysis or proof can be
+selectively justified by adding a pragma ``Annotate`` in the source code. For
+example, the check message about a possible division by zero in the return
+expression can be justified as follows:
+
+.. code-block:: ada
+
+    return (X + Y) / (X - Y);
+    pragma Annotate (GNATprove, False_Positive,
+                     "divide by zero", "reviewed by John Smith");
+
+The pragma has the following form:
+
+.. code-block:: ada
+
+    pragma Annotate (GNATprove, Category, Pattern, Reason);
+
+where the following table explains the different entries:
+
+.. tabularcolumns:: |l|p{4.5in}|
+
+.. csv-table::
+   :header: "Item", "Explanation"
+   :widths: 1, 4
+
+    "GNATprove",   "is a fixed identifier"
+    "Category",    "is one of ``False_Positive`` or ``Intentional``"
+    "Pattern",     "is a string literal describing the pattern of the check messages which shall be justified"
+    "Reason",      "is a string literal providing a justification for reviews"
+
+All arguments should be provided.
+
+The *Category* currently has no impact on the behavior of the tool but serves a
+documentation purpose:
+
+* ``False_Positive`` indicates that the check cannot fail, although |GNATprove|
+  was unable to prove it.
+
+* ``Intentional`` indicates that the check can fail but that it is not
+  considered to be a bug.
+
+*Pattern* should be a substring of the check message to justify.
+
+*Reason* is a string provided by the user as a justification for reviews. This
+reason may be present in a |GNATprove| report.
+
+Placement rules are as follows: in a statement list or declaration list, pragma
+``Annotate`` applies to the preceding item in the list, ignoring other pragma
+``Annotate``. If there is no preceding item, the pragma applies to the
+enclosing construct. If the preceding or enclosing construct is a subprogram
+body, the pragma applies to both the subprogram body and the spec including its
+contract. This allows to place a justification for a check message issued by
+|GNATprove| either on the spec when it is relevant for callers:
+
+.. literalinclude:: gnatprove_by_example/examples/justifications.ads
+   :language: ada
+   :lines: 4-7
+
+or on the body when it is an implementation choice that needs not be visible
+to users of the unit:
+
+.. literalinclude:: gnatprove_by_example/examples/justifications.ads
+   :language: ada
+   :lines: 9-10
+
+.. literalinclude:: gnatprove_by_example/examples/justifications.adb
+   :language: ada
+   :lines: 10-16
+
+How to Manage Assumptions
+=========================
+
+Because |GNATprove| analyzes separately subprograms and packages, its results
+depend on assumptions about unanalyzed subprograms and packages. For example,
+the verification that a subprogram is free from run-time errors depends on the
+property that all the subprograms it calls implement their specified
+contract. If a program is completely analyzed with |GNATprove|, cross-checking
+of assumptions is mostly done automatically (with a few exceptions like
+checking absence of infinite call chains). But in general, a program is partly
+in |SPARK| and partly in other languages, mostly Ada, C and assembly
+languages. Thus, assumptions on parts of the program that cannot be analyzed
+with |GNATprove| need to be recorded for verification by other means, like
+testing, manual analysis or reviews. When switch ``--assumptions`` is used,
+|GNATprove| generates additional information about assumptions in its result
+file ``gnatprove.out``:
 
 .. tabularcolumns:: |l|p{4in}|
 
 .. csv-table::
    :header: "Assumption Kind", "Explanation"
-   :widths: 1, 6
+   :widths: 1, 3
 
-   "post", "The subprogram guarantees that its postcondition holds"
-   "aorte", "The subprogram is free from run-time errors"
+   "post", "The subprogram guarantees that its postcondition holds."
+   "aorte", "The subprogram is free from run-time errors."
    "effects", "The subprogram interacts with parameters and global variables
-   as described by its specification and Global contract"
+   as described in its spec (signature + data dependencies)."
 
 .. _How to Write Subprogram Contracts:
 
@@ -1768,7 +1842,7 @@ to factor the loop into into local subprograms so that the subprograms'
 preconditions and postconditions provide the intermediate assertions that are
 needed to prove the loop invariant.
 
-.. _how to investigate unproved checks:
+.. _How to Investigate Unproved Checks:
 
 How to Investigate Unproved Checks
 ==================================
