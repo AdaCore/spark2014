@@ -92,8 +92,9 @@ Installed with |SPARK|
 By default, |GNATprove| uses its own version of prover Alt-Ergo. Switch
 ``--prover`` allows to use another prover, or a list of provers. Prover names
 ``altergo`` and ``cvc4`` are used to refer to the versions of provers Alt-Ergo
-and CVC4 that are installed with |SPARK| toolset. More information on Alt-Ergo
-and CVC4 can be found on their respective webpages:
+and CVC4 that are installed with |SPARK| toolset. The string ``alt-ergo`` can
+also be used to refer to Alt-Ergo. More information on Alt-Ergo and CVC4 can
+be found on their respective webpages:
 
  * Alt-Ergo:  http://alt-ergo.ocamlpro.com/
  * CVC4: http://cvc4.cs.nyu.edu/web/
