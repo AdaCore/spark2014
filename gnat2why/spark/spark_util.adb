@@ -658,14 +658,24 @@ package body SPARK_Util is
    -- Is_In_Analyzed_Files --
    --------------------------
 
-   function Is_In_Analyzed_Files (E : Entity_Id) return Boolean is
+   function Is_In_Analyzed_Files (E : Entity_Id) return Boolean
+   is
+      Encl_Unit : Node_Id := Enclosing_Comp_Unit_Node (E);
    begin
-      --  If the entity is not in the compilation unit that is
-      --  currently being analyzed then return false.
 
-      if Cunit (Main_Unit) /= Enclosing_Comp_Unit_Node (E)
-        and then Library_Unit (Cunit (Main_Unit)) /=
-          Enclosing_Comp_Unit_Node (E)
+      --  Encl_Unit is supposed to be the node of the unit which contains
+      --  E. But the call to Enclosing_Comp_Unit_Node may return the subunit
+      --  instead of the compilation unit. We rectify this now:
+
+      if Nkind (Unit (Encl_Unit)) = N_Subunit then
+         Encl_Unit := Library_Unit (Encl_Unit);
+      end if;
+
+      --  if the entity is not in the
+      --  compilation unit that is currently being analyzed then return false.
+
+      if Cunit (Main_Unit) /= Encl_Unit
+        and then Library_Unit (Cunit (Main_Unit)) /= Encl_Unit
       then
          return False;
       end if;
