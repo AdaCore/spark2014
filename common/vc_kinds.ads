@@ -34,7 +34,7 @@
 --  Changes in VC_Kind should be reflected in
 --    - file gnat_expl.ml in gnatwhy3
 --    - GPS plug-in spark2014.py
---    - the appendix of SPARK User's Guide
+--    - 2 tables in the section of SPARK User's Guide on GNATprove
 
 package VC_Kinds is
 
