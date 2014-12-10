@@ -27,7 +27,8 @@ subset than previous versions of |SPARK|. It includes in particular:
 In the rest of this chapter, the marker [Ada 2005] (resp. [Ada 2012]) is used
 to denote that a feature defined in Ada 2005 (resp. Ada 2012) is supported in
 |SPARK|, and the marker [|SPARK|] is used to denote that a feature is specific
-to |SPARK|.
+to |SPARK|. Both the |GNAT Pro| compiler and |GNATprove| analyzer support all
+features listed here.
 
 Language Restrictions
 =====================
