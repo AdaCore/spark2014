@@ -1,10 +1,12 @@
-classwide.ads:35:14: warning: postcondition might fail, requires C_Is_Zero (V)
-classwide.ads:39:14: info: postcondition proved
-classwide.ads:43:14: info: postcondition proved
-classwide.ads:47:14: warning: postcondition might fail, requires C_Is_Zero (V)
-classwide.ads:51:14: info: postcondition proved
-classwide.ads:68:14: info: postcondition proved
-classwide.ads:102:14: warning: postcondition might fail, requires Is_Zero (V)
+classwide.ads:36:14: medium: postcondition might fail, requires C_Is_Zero (V)
+classwide.ads:40:14: info: postcondition proved
+classwide.ads:44:22: warning: unused initial value of "V"
+classwide.ads:45:14: info: postcondition proved
+classwide.ads:49:14: medium: postcondition might fail, requires C_Is_Zero (V)
+classwide.ads:53:14: info: postcondition proved
+classwide.ads:70:22: warning: unused initial value of "V"
+classwide.ads:71:14: info: postcondition proved
+classwide.ads:106:14: info: postcondition proved
 tagged_discr.adb:7:09: info: discriminant check proved
 tagged_discr.adb:12:08: info: discriminant check proved
 tagged_discr.adb:15:14: info: discriminant check proved
@@ -27,10 +29,10 @@ tagged_discr.ads:34:09: info: discriminant check proved
 tagged_discr.ads:36:28: info: discriminant check proved
 tagged_discr.ads:37:29: info: discriminant check proved
 tagged_discr.ads:38:10: info: discriminant check proved
-tagged_discr.ads:41:14: warning: postcondition might fail, requires Is_Zero (V)
+tagged_discr.ads:41:14: medium: postcondition might fail, requires Is_Zero (V)
 tagged_discr.ads:44:14: info: postcondition proved
 tagged_discr.ads:54:09: info: discriminant check proved
 tagged_discr.ads:55:09: info: discriminant check proved
 tagged_discr.ads:56:09: info: discriminant check proved
-tagged_discr.ads:59:14: warning: postcondition might fail, requires Is_Zero (V)
-tagged_discr.ads:62:14: warning: postcondition might fail, requires Is_Zero (V)
+tagged_discr.ads:59:14: medium: postcondition might fail, requires Is_Zero (V)
+tagged_discr.ads:62:14: info: postcondition proved
