@@ -1920,17 +1920,17 @@ above postcondition can also be written:
              (if Total'Old + Incr >= Threshold then Total = Threshold);
 
 or equivalently (as the absence of ``else`` branch above is implicitly the same
-as ``else False``):
+as ``else True``):
 
 .. code-block:: ada
 
    procedure Add_To_Total (Incr : in Integer) with
-     Post => (if Total'Old + Incr < Threshold then Total = Total'Old + Incr else False) and
-             (if Total'Old + Incr >= Threshold then Total = Threshold else False);
+     Post => (if Total'Old + Incr < Threshold then Total = Total'Old + Incr else True) and
+             (if Total'Old + Incr >= Threshold then Total = Threshold else True);
 
 If-expressions are not necessarily of boolean type, in which case they must
 have an ``else`` branch that gives the value of the expression for cases not
-covered in previous conditions (as there is no implicit ``else False`` in such
+covered in previous conditions (as there is no implicit ``else True`` in such
 a case). For example, here is a postcondition equivalent to the above, that
 uses an if-expression of ``Integer`` type:
 
