@@ -67,13 +67,12 @@ package body Back_End is
       --    Global_Gen_Mode = True for generating ALI files with effects.
       --    Global_Gen_Mode = False for flow analysis and proof.
 
-      --  Frontend warnings are issued when running in the first mode, and
-      --  suppressed in the second mode to avoid issuing twice the same
+      --  Frontend warnings are issued when running in the second mode, and
+      --  suppressed in the first mode to avoid issuing twice the same
       --  warnings. Change that setting in the second mode to the expected
       --  warning mode for flow analysis and proof.
 
       if not Gnat2Why_Args.Global_Gen_Mode then
-         pragma Assert (Opt.Warning_Mode = Opt.Suppress);
          Opt.Warning_Mode := Gnat2Why_Args.Warning_Mode;
       end if;
 
@@ -142,12 +141,12 @@ package body Back_End is
 
          SPARK_Definition.Emit_Messages := False;
 
-      else
-         --  In this mode, we should run the frontend with no warnings, in
-         --  order to avoid repeating those already issued, and then we should
-         --  run flow analysis and proof with warnings-as-errors by default.
+         --  In this mode, we should run the frontend with no warnings, they
+         --  will be issued in the second run
 
          Opt.Warning_Mode := Opt.Suppress;
+
+      else
 
          --  An ALI file should be generated only when generating globals.
          --  Otherwise, when translating the program to Why, ALI file
