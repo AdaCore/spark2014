@@ -1,0 +1,6 @@
+project Flow_Error is
+
+   for Source_Dirs use ("../examples");
+   for Source_List_File use "flow_error.txt";
+
+end Flow_Error;
