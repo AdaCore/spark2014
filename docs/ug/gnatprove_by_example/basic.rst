@@ -102,6 +102,24 @@ Thus, a postcondition like the one on ``Increment_Full`` is needed so that
 |GNATprove| proves that both calls to ``Increment_Full`` on lines 19 and 20
 satisfy their precondition.
 
+In some cases, the user is not interested in specifying and verifying a
+complete contract like the one on ``Increment_Full``, typically for helper
+subprograms defined locally in a subprogram or package body. |GNATprove| allows
+performing :ref:`Contextual Analysis of Subprograms Without Contracts` for these
+local subprograms. For example, consider a local definition of ``Increment``
+inside procedure ``Increment_Local``:
+
+.. literalinclude:: gnatprove_by_example/examples/increment_local.adb
+   :language: ada
+   :linenos:
+
+Although ``Increment`` has no contract (like the previous non-local version),
+|GNATprove| proves that this program is free from run-time errors, and that the
+assertion on line 15 holds:
+
+.. literalinclude:: gnatprove_by_example/results/increment_local.prove
+   :language: none
+
 .. _Swap:
 
 Swap
