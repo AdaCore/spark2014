@@ -1,0 +1,3 @@
+variants.adb:6:15: medium: discriminant check might fail
+variants.adb:7:15: medium: discriminant check might fail
+variants.ads:16:27: warning: unused initial value of "Y"
