@@ -146,6 +146,11 @@ module Floating
     forall x : real [round_double x].
       x -. 0x1p-53 *. AbsReal.abs(x) -. 0x1p-1075 <=. round_single x <=. x +. 0x1p-53 *. AbsReal.abs(x) +. 0x1p-1075
 
+  (* this axiom expresses that every single is also a double *)
+  axiom round_double_single :
+    forall x : real [ round_single x ].
+      round_double (round_single x) = round_single x
+
   use export _gnatprove_standard_th.Floating_Func
 
   function real_of_int (x : int) : real = FromInt.from_int x
