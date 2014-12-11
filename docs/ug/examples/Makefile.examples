@@ -24,7 +24,10 @@ $(RESULTS)/%.prove: force
 		echo "failure expected ($$t)"; \
 	   fi; \
 	done && \
-	gnatprove -f -q -j0 -P search.gpr --warnings=on --timeout=60 --prover=altergo >$@ || $$c
+	res=`gnatprove -f -q -j0 -P search.gpr --warnings=on --timeout=60 --prover=altergo`; \
+        rc=$$?; \
+        echo "$$res" | python $(PWD)/../sort_messages.py >$@; \
+        [ $$rc -eq 0 ] || $$c
 
 clean:
 	rm -rf prove
