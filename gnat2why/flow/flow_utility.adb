@@ -2677,7 +2677,14 @@ package body Flow_Utility is
                            then
                               Vars_Defined.Include (F);
                            elsif F.Kind = Direct_Mapping then
-                              Vars_Defined.Include (F);
+                              case F.Facet is
+                                 when Extension_Part =>
+                                    if Ekind (New_Typ) in Class_Wide_Kind then
+                                       Vars_Defined.Include (F);
+                                    end if;
+                                 when others =>
+                                    Vars_Defined.Include (F);
+                              end case;
                            end if;
                         end loop;
                      else
