@@ -746,6 +746,11 @@ The following table shows all flow analysis messages, (E)rrors,
    "no procedure exists that can initialize abstract state", "W", "Flow analysis detected a state abstraction that is impossible to initialize."
    "subprogram has no effect", "W", "A subprogram that has no exports has been detected."
 
+.. note::
+
+   Certain messages emitted by flow analysis are classified as errors
+   and consequently cannot be suppressed or justified.
+
 .. _How to Suppress or Justify Messages:
 
 How to Suppress or Justify Messages
