@@ -1,1 +1,1 @@
-no output
+use_logging_classwide.adb:9:04: high: "extension of Log" is not initialized

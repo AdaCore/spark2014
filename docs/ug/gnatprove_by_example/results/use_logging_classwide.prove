@@ -1,1 +1,2 @@
+use_logging_classwide.adb:9:04: high: "extension of Log" is not initialized
 use_logging_classwide.adb:9:07: info: precondition proved
