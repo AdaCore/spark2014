@@ -10,10 +10,10 @@ deceleration_curve.adb:43:38: info: division check proved
 deceleration_curve.adb:43:38: medium: overflow check might fail
 deceleration_curve.adb:45:14: medium: assertion might fail, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) * Speed_t(Distance_Resolution) <= (Speed_t(Acceleration) / speed) * Distance_Resolution
 deceleration_curve.adb:47:39: info: division check proved
-deceleration_curve.adb:47:39: info: overflow check proved
+deceleration_curve.adb:47:39: medium: overflow check might fail
 deceleration_curve.adb:47:48: medium: overflow check might fail
 deceleration_curve.adb:49:48: info: division check proved
-deceleration_curve.adb:49:48: info: overflow check proved
+deceleration_curve.adb:49:48: medium: overflow check might fail
 deceleration_curve.adb:50:12: medium: overflow check might fail
 deceleration_curve.adb:52:10: medium: assertion might fail
 deceleration_curve.adb:58:25: info: overflow check proved
