@@ -2676,6 +2676,8 @@ are imposed in |SPARK| which have the following consequences:
    [This is needed to ensure that the variable has been initialized at the
    time of the read.]
 
+.. _tu-nt-use_of_initial_condition_and_initializes_aspects-05:
+
 5. If a variable is declared (immediately or not) within a library unit
    package specification, and if that variable is initialized (perhaps
    by default) during the elaboration of that specification, and if any
@@ -2685,9 +2687,9 @@ are imposed in |SPARK| which have the following consequences:
    the variable remains unread between the elaboration of the
    specification and of the body of its enclosing library unit.]
 
-.. _tu-nt-use_of_initial_condition_and_initializes_aspects-05:
+.. _tu-nt-use_of_initial_condition_and_initializes_aspects-06:
 
-5. The elaboration of a package's specification and body shall not
+6. The elaboration of a package's specification and body shall not
    write to a variable (or state abstraction, in the case of a call to
    a procedure which takes an abstraction as in output) declared
    outside of the package. The output associated with a read of an
@@ -2702,9 +2704,9 @@ are imposed in |SPARK| which have the following consequences:
 
 .. centered:: **Legality Rules**
 
-.. _tu-nt-use_of_initial_condition_and_initializes_aspects-06:
+.. _tu-nt-use_of_initial_condition_and_initializes_aspects-07:
 
-6. The elaboration of a package body shall be known to follow the
+7. The elaboration of a package body shall be known to follow the
    elaboration of the body of each of the
    library units [(typically private children)] which provide
    constituents for a state abstraction denoted in the Initializes

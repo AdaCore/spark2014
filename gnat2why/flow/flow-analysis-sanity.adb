@@ -462,7 +462,7 @@ package body Flow.Analysis.Sanity is
                           (FA      => FA,
                            Msg     => "cannot write & during " &
                              "elaboration of &",
-                           SRM_Ref => "7.7.1(5)",
+                           SRM_Ref => "7.7.1(6)",
                            N       => Error_Location (FA.PDG, FA.Atr, V),
                            Kind    => Error_Kind,
                            F1      => Entire_Variable (Var),
@@ -503,29 +503,27 @@ package body Flow.Analysis.Sanity is
                   then
                      if FA.Kind in E_Package | E_Package_Body then
                         Error_Msg_Flow
-                          (FA        => FA,
-                           Msg       => "cannot write & during " &
-                             "elaboration of &",
-                           SRM_Ref   => "7.7.1(5)",
-                           N         => Error_Location (FA.PDG, FA.Atr, V),
-                           Kind      => Error_Kind,
-                           F1        => Var,
-                           F2        => Direct_Mapping_Id
-                             (FA.Analyzed_Entity));
+                          (FA      => FA,
+                           Msg     => "cannot write & during " &
+                                        "elaboration of &",
+                           SRM_Ref => "7.7.1(6)",
+                           N       => Error_Location (FA.PDG, FA.Atr, V),
+                           Kind    => Error_Kind,
+                           F1      => Var,
+                           F2      => Direct_Mapping_Id (FA.Analyzed_Entity));
 
                      else
                         Error_Msg_Flow
-                          (FA        => FA,
-                           Msg       => "& must be a global output of &",
-                           SRM_Ref   => "6.1.4",
-                           N         => Error_Location (FA.PDG, FA.Atr, V),
-                           Kind      =>  High_Check_Kind,
-                           F1        =>
-                             (if A.Is_Parameter
-                              then A.Parameter_Formal
-                              else Var),
-                           F2        => Direct_Mapping_Id (FA.Analyzed_Entity),
-                           Tag       => "illegal_update");
+                          (FA      => FA,
+                           Msg     => "& must be a global output of &",
+                           SRM_Ref => "6.1.4",
+                           N       => Error_Location (FA.PDG, FA.Atr, V),
+                           Kind    => Error_Kind,
+                           F1      => (if A.Is_Parameter
+                                       then A.Parameter_Formal
+                                       else Var),
+                           F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
+                           Tag     => "illegal_update");
                      end if;
 
                      Sane := False;
@@ -583,17 +581,17 @@ package body Flow.Analysis.Sanity is
                         Error_Msg_Flow
                           (FA      => FA,
                            Msg     => "& must be listed in the " &
-                             Aspect_To_Fix & " aspect of &",
-                           SRM_Ref   => SRM_Ref,
-                           N   => First_Variable_Use (FA      => FA,
-                                                      Var     => Var,
-                                                      Kind    => Use_Any,
-                                                      Precise => False),
-                           F1  => (if Gnat2Why_Args.Flow_Advanced_Debug
-                                   then Var
-                                   else Entire_Variable (Var)),
-                           Kind    => High_Check_Kind,
-                           F2  => Direct_Mapping_Id (FA.Analyzed_Entity));
+                                        Aspect_To_Fix & " aspect of &",
+                           SRM_Ref => SRM_Ref,
+                           N       => First_Variable_Use (FA      => FA,
+                                                          Var     => Var,
+                                                          Kind    => Use_Any,
+                                                          Precise => False),
+                           F1      => (if Gnat2Why_Args.Flow_Advanced_Debug
+                                       then Var
+                                       else Entire_Variable (Var)),
+                           Kind    => Error_Kind,
+                           F2      => Direct_Mapping_Id (FA.Analyzed_Entity));
 
                      when Magic_String =>
                         Global_Required (FA, Var);
