@@ -13,7 +13,7 @@ begin
          -- erreur := 1.0/Long_Float(Index)/Long_Float(Index);
          -- bug GNATProve sur les conversion Entier <=> Flottants
          Index_Float := Index_Float + 1.0;
-         pragma Loop_Invariant (Index_Float in 1.0..Long_Float(Long_Integer'Last));
+         pragma Loop_Invariant (Index_Float >= 1.0);
          Pragma Assert (Index_Float >= 1.0);
          Erreur := 1.0/Index_Float/Index_Float;
          Pi := Pi+Erreur;
