@@ -16,7 +16,7 @@ pkg_a.ads:2:36: warning: no procedure exists that can initialize abstract state 
 pkg_a.ads:8:04: high: "X" is not initialized in "Pkg_A"
 pkg_a.ads:10:04: warning: initialization has no effect
 pkg_b.adb:10:14: "Y" must be listed in the Initializes aspect of "Pkg_B" (SPARK RM 7.1.5(12))
-pkg_c.adb:15:12: cannot write "X" during elaboration of "Pkg_C" (SPARK RM 7.7.1(5))
+pkg_c.adb:15:12: cannot write "X" during elaboration of "Pkg_C" (SPARK RM 7.7.1(6))
 pkg_d.ads:4:32: high: X must be initialized at elaboration
 pkg_e.adb:6:03: high: "X" is not initialized in "Pkg_E"
 pkg_e.adb:14:06: warning: unused assignment

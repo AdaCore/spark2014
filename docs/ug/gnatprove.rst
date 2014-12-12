@@ -709,29 +709,42 @@ The following table shows the kinds of check messages issued by proof.
 
 |
 
-The following table shows all flow analysis messages, either (W)arnings or
-(C)hecks.
+The following table shows all flow analysis messages, (E)rrors,
+(W)arnings and (C)hecks.
 
-.. tabularcolumns:: |l|l|p{4in}|
+.. tabularcolumns:: |p{3in}|l|p{3in}|
 
 .. csv-table::
    :header: "Message Kind", "Class", "Explanation"
    :widths: 1, 1, 6
 
+   "aliasing", "E", "Two formal or global parameter are aliased."
+   "function with side effects", "E", "A function with side effects has been detected."
+   "cannot depend on variable", "E", "Certain expressions (for example: discriminant specifications and component declarations) need to be variable free."
+   "missing global", "E", "Flow analysis has detected a global that was not mentioned on the Global or Initializes aspects"
+   "must be a global output", "E", "Flow analysis has detected an update of an in mode global."
+   "pragma Elaborate_All needed", "E", "A remote state abstraction is used during the package's elaboration. Elaborate_All required for the remote package."
+   "export must not depend on Proof_In", "E", "Flow analysis has detected an output of a subprogram that depends on a constant which is marked Proof_In."
+   "class-wide mode must also be a class-wide mode of overridden subprogram", "E", "Miss-match between Global contracts of overridding and overridden subprograms."
+   "class-wide dependency is not class-wide dependency of overridden subprogram", "E", "Miss-match between Depends contracts of overridding and overridden subprograms."
    "missing dependency", "C", "A dependency is missing from the dependency relation."
    "dependency relation", "C", "An out parameter or global is missing from the dependency relation."
    "missing null dependency", "C", "A variable is missing from the null dependency."
    "incorrect dependency", "C", "A stated dependency is not fulfilled."
-   "must be a global output", "C", "Flow analysis has detected an update of an in mode global."
-   "is not modified","W", "The variable is declared with mode in out, but is never modified, so could be declared with mode in."
-   "unused assignment","W", "Flow analysis has detected an assignment to a variable which is not read after the assignment."
-   "initialization has no effect","W", "Flow analysis has detected an object which is initialized, but never read."
-   "statement has no effect","W", "Flow analysis has detected a statement which has no effect."
-   "unused initial value","W", "An in or in out parameter or global has been found which does not have any effect on any out or in out parameter or global."
    "not initialized", "C", "Flow analysis has detected the use of an uninitialized variable."
-   "unused","W", "A global or locally declared variable is never used."
-   "missing return","W", "A return statement seems to be missing from the function."
-   "export must not depend on Proof_In","C", "Flow analysis has detected an output of a subprogram that depends on a constant which is marked Proof_In."
+   "initialization must not depend on something", "C", "Wrong Initializes aspect detected."
+   "type is not fully initialized", "C", "A type promised to be default initialized but is not."
+   "needs to be a constituent of some state abstraction", "C", "Flow analysis detected a constituent that has to be exposed through some state abstraction."
+   "is not modified", "W", "The variable is declared with mode in out, but is never modified, so could be declared with mode in."
+   "unused assignment", "W", "Flow analysis has detected an assignment to a variable which is not read after the assignment."
+   "initialization has no effect", "W", "Flow analysis has detected an object which is initialized, but never read."
+   "this statement is never reached", "W", "This statement will never be executed (dead code)."
+   "statement has no effect", "W", "Flow analysis has detected a statement which has no effect."
+   "unused initial value", "W", "An in or in out parameter or global has been found which does not have any effect on any out or in out parameter or global."
+   "unused", "W", "A global or locally declared variable is never used."
+   "missing return", "W", "A return statement seems to be missing from the function."
+   "no procedure exists that can initialize abstract state", "W", "Flow analysis detected a state abstraction that is impossible to initialize."
+   "subprogram has no effect", "W", "A subprogram that has no exports has been detected."
 
 .. _How to Suppress or Justify Messages:
 

@@ -1641,12 +1641,12 @@ package body Flow.Analysis is
          declare
             A      : constant V_Attributes := FA.Atr.Element (V);
          begin
-            Error_Msg_Flow (FA        => FA,
-                            Msg       => "this statement is never reached",
-                            N         => A.Error_Location,
-                            Tag       => "dead_code",
-                            Kind      => Warning_Kind,
-                            Vertex    => V);
+            Error_Msg_Flow (FA     => FA,
+                            Msg    => "this statement is never reached",
+                            N      => A.Error_Location,
+                            Tag    => "dead_code",
+                            Kind   => Warning_Kind,
+                            Vertex => V);
          end;
       end loop;
    end Find_Dead_Code;
