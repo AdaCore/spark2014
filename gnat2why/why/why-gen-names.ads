@@ -205,8 +205,15 @@ package Why.Gen.Names is
       --  type or a class-wide type.
       WNE_Rec_Extension,  --  rec__ext__
 
+      --  Name of the Why3 field representing invisible ancestor components in
+      --  record with a private ancestor.
+      WNE_Rec_Ancestor,  --  rec__anc__
+
       --  Suffix of the above extension field, to be used in related functions
       WNE_Rec_Extension_Suffix,  --  ext__
+
+      --  Suffix of the above ancestor field, to be used in related functions
+      WNE_Rec_Ancestor_Suffix,  --  anc__
 
       --  Name of constant tag value for a tagged type
       WNE_Tag,  --  __tag
@@ -218,6 +225,10 @@ package Why.Gen.Names is
       --  special extension field rec__ext__ in the derived type, to generate
       --  a value of the special extension field rec__ext__ in the root type.
       WNE_Hide_Extension,  --  hide_ext__
+
+      --  Name of the function hiding ancestor components in a derived tagged
+      --  type with private ancestor
+      WNE_Hide_Ancestor,  --  hide_anc__
 
       --  Division operator for a fixed-point type
       WNE_Fixed_Point_Div,
@@ -249,6 +260,10 @@ package Why.Gen.Names is
       --  Prefix for name of functions which extract the value of an extension
       --  component from the extension field of a value of the root type.
       WNE_Extract_Prefix,
+
+      --  Prefix for name of functions which extract the value of an ancestor
+      --  component from the ancestor field of a value of the derived type.
+      WNE_Ancestor_Prefix,
 
       --  Name of module containing the functions which correspond to the
       --  dispatching version of a primitive operation of a tagged type.

@@ -346,7 +346,9 @@ package body Gnat2Why.Driver is
 
       if Gnat2Why_Args.Global_Gen_Mode then
 
-         Generate_Flow_Globals (GNAT_Root);
+         if not Gnat2Why_Args.Debug_Proof_Only then
+            Generate_Flow_Globals (GNAT_Root);
+         end if;
 
       else
 
