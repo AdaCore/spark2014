@@ -3535,8 +3535,11 @@ package body Flow.Control_Flow_Graph is
                                      FA, CM, Ctx);
       end if;
 
-      --  Check if we need a magic null export.
+      --  A magic null export is needed when:
+      --    * there is a Depends => (null => ...);
+      --    * the subprogram has no exports
       if Has_Depends (Called_Procedure) then
+         --  Check if there exists a Depends => (null => ...)
          declare
             D_Map : Dependency_Maps.Map;
             V     : Flow_Graphs.Vertex_Id;
@@ -3545,8 +3548,8 @@ package body Flow.Control_Flow_Graph is
                          Scope      => FA.B_Scope,
                          Classwide  => Is_Dispatching_Call (N),
                          Depends    => D_Map);
-            if D_Map.Contains (Null_Flow_Id) and then
-              D_Map (Null_Flow_Id).Length >= 1
+            if D_Map.Contains (Null_Flow_Id)
+              and then D_Map (Null_Flow_Id).Length >= 1
             then
                Add_Vertex
                  (FA,
@@ -3562,6 +3565,26 @@ package body Flow.Control_Flow_Graph is
                Out_List.Append (V);
             end if;
          end;
+      else
+         --  Check if there are no exports
+         if Out_List.Is_Empty then
+            declare
+               V : Flow_Graphs.Vertex_Id;
+            begin
+               Add_Vertex
+                 (FA,
+                  Make_Global_Attributes
+                    (FA                           => FA,
+                     Call_Vertex                  => N,
+                     Global                       => Change_Variant
+                       (Null_Export_Flow_Id, Out_View),
+                     Discriminants_Or_Bounds_Only => False,
+                     Loops                        => Ctx.Current_Loops,
+                     E_Loc                        => N),
+                  V);
+               Out_List.Append (V);
+            end;
+         end if;
       end if;
 
       --  We now build the connection map for this sequence.

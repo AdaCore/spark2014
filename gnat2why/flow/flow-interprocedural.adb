@@ -233,14 +233,21 @@ package body Flow.Interprocedural is
                E := Next_Formal (E);
             end loop;
 
-            --  Each output depends on all inputs.
-            for Input of Inputs loop
-               for Output of Outputs loop
-                  FA.TDG.Add_Edge (Find_Parameter_Vertex (FA, V, Input),
-                                   Find_Parameter_Vertex (FA, V, Output),
-                                   EC_TDG);
+            if Flow_Id_Sets."/=" (Outputs, Flow_Id_Sets.Empty_Set) then
+               --  Each output depends on all inputs.
+               for Input of Inputs loop
+                  for Output of Outputs loop
+                     FA.TDG.Add_Edge (Find_Parameter_Vertex (FA, V, Input),
+                                      Find_Parameter_Vertex (FA, V, Output),
+                                      EC_TDG);
+                  end loop;
                end loop;
-            end loop;
+            else
+               --  All inputs flow into the null export vertex.
+               for Input of Inputs loop
+                  Add_TD_Edge (Input, Null_Export_Flow_Id);
+               end loop;
+            end if;
          end;
       end if;
    end Add_Simple_Procedure_Dependency;

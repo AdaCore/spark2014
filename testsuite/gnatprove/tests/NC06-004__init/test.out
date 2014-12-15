@@ -1,13 +1,9 @@
 circle_demo.adb:8:11: medium: "Wild_Man" might not be initialized after elaboration of main program "Circle_Demo"
-circle_demo.adb:12:14: warning: unused assignment
-circle_demo.adb:14:04: warning: statement has no effect
 circle_demo.adb:14:14: medium: precondition might fail
 circle_demo.adb:15:18: warning: assuming "Put_Line" has no effect on global items
 circle_demo.adb:15:18: warning: no Global contract available for "Put_Line"
-circle_demo.adb:15:18: warning: statement has no effect
 circle_demo.adb:17:18: warning: assuming "Put_Line" has no effect on global items
 circle_demo.adb:17:18: warning: no Global contract available for "Put_Line"
-circle_demo.adb:17:18: warning: statement has no effect
 shapes5.adb:8:08: medium: refined postcondition might fail
 shapes5.adb:8:37: info: overflow check proved
 shapes5.adb:10:37: info: overflow check proved

@@ -3,53 +3,12 @@ c3900050.ads:55:33: warning: no Global contract available for "Time_Of"
 c3900050.ads:57:33: warning: assuming "Time_Of" has no effect on global items
 c3900050.ads:57:33: warning: no Global contract available for "Time_Of"
 c3900053.adb:95:11: medium: "Display_Count_For" might not be initialized after elaboration of main program "C3900053"
-c3900053.adb:98:10: warning: statement has no effect
-c3900053.adb:108:10: warning: statement has no effect
-c3900053.adb:109:19: warning: statement has no effect
-c3900053.adb:112:18: warning: unused assignment to "Alarm"
-c3900053.adb:114:10: warning: statement has no effect
-c3900053.adb:115:19: warning: statement has no effect
-c3900053.adb:122:04: warning: statement has no effect
-c3900053.adb:127:13: warning: statement has no effect
-c3900053.adb:137:10: warning: statement has no effect
-c3900053.adb:138:19: warning: statement has no effect
-c3900053.adb:141:18: warning: unused assignment to "Low_Alarm"
-c3900053.adb:143:10: warning: statement has no effect
-c3900053.adb:144:19: warning: statement has no effect
-c3900053.adb:151:04: warning: statement has no effect
-c3900053.adb:156:13: warning: statement has no effect
-c3900053.adb:166:10: warning: statement has no effect
-c3900053.adb:167:19: warning: statement has no effect
-c3900053.adb:170:18: warning: unused assignment to "Medium_Alarm"
-c3900053.adb:172:10: warning: statement has no effect
-c3900053.adb:173:19: warning: statement has no effect
-c3900053.adb:180:04: warning: statement has no effect
-c3900053.adb:185:13: warning: statement has no effect
-c3900053.adb:189:10: warning: statement has no effect
 c3900060.ads:57:33: warning: assuming "Time_Of" has no effect on global items
 c3900060.ads:57:33: warning: no Global contract available for "Time_Of"
 c3900060.ads:59:33: warning: assuming "Time_Of" has no effect on global items
 c3900060.ads:59:33: warning: no Global contract available for "Time_Of"
 c3900063.adb:94:11: medium: "Display_Count_For" might not be initialized after elaboration of main program "C3900063"
-c3900063.adb:97:10: warning: statement has no effect
-c3900063.adb:113:10: warning: statement has no effect
-c3900063.adb:114:19: warning: statement has no effect
-c3900063.adb:117:18: warning: unused assignment to "Medium_Alarm"
-c3900063.adb:119:10: warning: statement has no effect
-c3900063.adb:120:19: warning: statement has no effect
-c3900063.adb:127:04: warning: statement has no effect
-c3900063.adb:132:13: warning: statement has no effect
-c3900063.adb:136:10: warning: statement has no effect
-c392004_1.adb:5:05: warning: statement has no effect
-c392004_1.adb:8:16: warning: statement has no effect
-c392004_1.ads:56:52: warning: unused initial value of "TC_Flag"
 c392004_1.ads:57:22: warning: unused initial value of "The_Vehicle"
-c392004_2.adb:9:05: warning: statement has no effect
-c392004_2.adb:11:28: warning: statement has no effect
-c392004_2.adb:19:05: warning: statement has no effect
-c392004_2.adb:21:28: warning: statement has no effect
-c392004_2.ads:12:40: warning: unused initial value of "TC_Flag"
-c392004_2.ads:16:42: warning: unused initial value of "TC_Flag"
 c392008.adb:57:17: high: "B_Acct.Current_Balance" is not initialized
 c392008.adb:58:17: high: "C_Acct.Current_Balance" is not initialized
 c392008.adb:58:17: high: "C_Acct.Overdraft_Fee" is not initialized
@@ -61,21 +20,12 @@ c392008_1.ads:17:20: warning: unused initial value of "A"
 c392008_2.ads:24:14: class-wide input "Current_Rate" must also be a class-wide input of overridden subprogram "Open" at c392008_1.ads:17 (SPARK RM 6.1.6)
 cc1311a.adb:86:25: warning: subprogram "D281B" has no effect, in instantiation at cc1311a.adb:387
 cc1311a.adb:117:25: warning: subprogram "D237B" has no effect, in instantiation at cc1311a.adb:396
-cc1311a.adb:129:17: warning: statement has no effect, in instantiation at cc1311a.adb:396
-cc1311a.adb:134:11: warning: statement has no effect, in instantiation at cc1311a.adb:396
-cc1311a.adb:137:22: warning: statement has no effect, in instantiation at cc1311a.adb:396
 cc1311a.adb:153:25: warning: subprogram "D293B" has no effect, in instantiation at cc1311a.adb:405
 cc1311a.adb:180:26: warning: subprogram "D305B" has no effect, in instantiation at cc1311a.adb:414
 cc1311a.adb:215:26: warning: subprogram "D261B" has no effect, in instantiation at cc1311a.adb:423
-cc1311a.adb:232:11: warning: statement has no effect, in instantiation at cc1311a.adb:423
-cc1311a.adb:235:22: warning: statement has no effect, in instantiation at cc1311a.adb:423
 cc1311a.adb:251:26: warning: subprogram "D317B" has no effect, in instantiation at cc1311a.adb:432
 cc1311a.adb:284:25: warning: subprogram "D273B" has no effect, in instantiation at cc1311a.adb:442
-cc1311a.adb:290:11: warning: statement has no effect, in instantiation at cc1311a.adb:442
-cc1311a.adb:291:22: warning: statement has no effect, in instantiation at cc1311a.adb:442
 cc1311a.adb:323:26: warning: subprogram "D275B" has no effect, in instantiation at cc1311a.adb:446
-cc1311a.adb:331:11: warning: statement has no effect, in instantiation at cc1311a.adb:446
-cc1311a.adb:332:23: warning: statement has no effect, in instantiation at cc1311a.adb:446
 cc1311a.adb:362:15: warning: subprogram "D201B" has no effect
 cc1311a.adb:375:16: warning: subprogram "D329B" has no effect
 cc1311a.adb:387:16: warning: subprogram "NEW_PROC_WITH_3D_FUNCR" has no effect

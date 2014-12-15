@@ -253,7 +253,7 @@ package Graph is
       Colour   : Edge_Colours)
       with Pre  => G.Get_Vertex (V_1) /= Null_Vertex and
                    G.Get_Vertex (V_2) /= Null_Vertex;
-   --  Convenience function to add an edge between to vertices given
+   --  Convenience function to add an edge between two vertices given
    --  by key (instead of id).
    --
    --  Complexity is O(N) due to Get_Vertex.

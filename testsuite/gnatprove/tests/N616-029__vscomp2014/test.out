@@ -3,7 +3,6 @@ sum_elem.adb:6:22: info: precondition proved
 sum_elem.adb:6:45: info: precondition proved
 sum_elem.adb:11:07: medium: precondition might fail
 sum_elem.adb:12:07: medium: precondition might fail
-sum_elem.adb:12:07: warning: statement has no effect
 sum_elem.ads:26:14: warning: subprogram "Local" has no effect
 sum_elem.ads:27:40: info: precondition proved
 sum_elem.ads:27:40: medium: range check might fail

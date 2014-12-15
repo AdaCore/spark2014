@@ -1,15 +1,10 @@
 p.adb:2:14: warning: "Y" is not modified, could be IN
 p.adb:2:14: warning: unused variable "Y"
-p.adb:4:04: warning: initialization has no effect
-p.adb:5:04: warning: initialization has no effect
 p.adb:5:18: warning: assuming "Get_Line" has no effect on global items
 p.adb:5:18: warning: no Global contract available for "Get_Line"
 p.adb:7:04: warning: assuming "Put_Line" has no effect on global items
 p.adb:7:04: warning: no Global contract available for "Put_Line"
-p.adb:7:04: warning: statement has no effect
-p.adb:8:06: warning: unused assignment
 p.adb:8:10: medium: precondition might fail
 p.adb:8:10: medium: range check might fail
 p.adb:9:04: warning: assuming "Put_Line" has no effect on global items
 p.adb:9:04: warning: no Global contract available for "Put_Line"
-p.adb:9:04: warning: statement has no effect
