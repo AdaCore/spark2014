@@ -1,0 +1,15 @@
+update_proof.adb:9:18: info: length check proved
+update_proof.adb:14:07: info: assertion proved
+update_proof.adb:15:07: info: assertion proved
+update_proof.adb:16:07: info: assertion proved
+update_proof.adb:21:09: info: length check proved
+update_proof.adb:21:15: info: length check proved
+update_proof.adb:22:15: info: length check proved
+update_proof.adb:25:15: info: length check proved
+update_proof.adb:27:07: info: assertion proved
+update_proof.adb:28:07: info: assertion proved
+update_proof.adb:28:34: info: length check proved
+update_proof.adb:29:22: medium: assertion might fail, requires B = O_B'update
+update_proof.adb:29:43: info: length check proved
+update_proof.adb:32:07: info: assertion proved
+update_proof.adb:35:20: info: length check proved
