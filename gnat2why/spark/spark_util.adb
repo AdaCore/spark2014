@@ -328,6 +328,13 @@ package body SPARK_Util is
          Next_Component (Field);
       end loop;
 
+      --  Add one field for record types with a private ancestor, whose
+      --  components are not visible.
+
+      if Has_Private_Ancestor (E) then
+         Count := Count + 1;
+      end if;
+
       --  Add one field for tagged types to represent the unknown extension
       --  components. The field for the tag itself is stored directly in the
       --  Why3 record.

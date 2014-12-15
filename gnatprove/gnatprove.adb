@@ -828,17 +828,20 @@ procedure Gnatprove is
        Obj_Dir           : String) return String is
       use Ada.Strings.Unbounded;
    begin
+      --  Always set debug flags
+
+      Gnat2Why_Args.Debug_Mode := Debug;
+      Gnat2Why_Args.Flow_Advanced_Debug := Flow_Extra_Debug;
+      Gnat2Why_Args.Debug_Proof_Only := Configuration.Debug_Proof_Only;
+
       --  In the translation phase, set a number of values
 
       if Translation_Phase then
-         Gnat2Why_Args.Warning_Mode := Warning_Mode;
          Gnat2Why_Args.Global_Gen_Mode := False;
-         Gnat2Why_Args.Debug_Mode := Debug;
-         Gnat2Why_Args.Flow_Advanced_Debug := Flow_Extra_Debug;
+         Gnat2Why_Args.Warning_Mode := Warning_Mode;
          Gnat2Why_Args.Check_Mode := MMode = GPM_Check;
          Gnat2Why_Args.Flow_Analysis_Mode := MMode = GPM_Flow;
          Gnat2Why_Args.Prove_Mode := MMode = GPM_Prove;
-         Gnat2Why_Args.Debug_Proof_Only := Configuration.Debug_Proof_Only;
          Gnat2Why_Args.Analyze_File := File_List;
          Gnat2Why_Args.Pedantic := Pedantic;
          Gnat2Why_Args.Ide_Mode := IDE_Progress_Bar;
@@ -851,13 +854,10 @@ procedure Gnatprove is
          Gnat2Why_Args.Report_Mode := Report;
          Gnat2Why_Args.Why3_Dir := To_Unbounded_String (Obj_Dir);
 
-      --  In the globals generation phase, only set Global_Gen_Mode and
-      --  debug flags
+      --  In the globals generation phase, only set Global_Gen_Mode
 
       else
          Gnat2Why_Args.Global_Gen_Mode := True;
-         Gnat2Why_Args.Debug_Mode := Debug;
-         Gnat2Why_Args.Flow_Advanced_Debug := Flow_Extra_Debug;
       end if;
 
       return Gnat2Why_Args.Set (Obj_Dir);

@@ -1,0 +1,7 @@
+base-ext.ads:10:48: medium: overflow check might fail
+base.ads:9:14: info: postcondition proved
+ext.adb:4:04: warning: analyzing unreferenced procedure "Test"
+ext.adb:8:22: medium: assertion might fail, requires T(A).Sum = T(B).Sum
+ext.ads:13:53: medium: overflow check might fail
+notag_base.ads:9:14: info: postcondition proved
+notag_ext.adb:8:07: info: assertion proved

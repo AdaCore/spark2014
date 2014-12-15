@@ -620,10 +620,14 @@ package body Why.Gen.Names is
          when WNE_Attr_Tag             => return "attr__tag";
          when WNE_Rec_Extension        => return "rec__ext__";
          when WNE_Rec_Extension_Suffix => return "ext__";
+         when WNE_Rec_Ancestor_Suffix  => return "anc__";
+         when WNE_Rec_Ancestor         => return "rec__anc__";
          when WNE_Rec_Comp_Prefix      => return "rec__";
          when WNE_Extract_Prefix       => return "extract__";
+         when WNE_Ancestor_Prefix      => return "extract_anc__";
          when WNE_Null_Extension       => return "__null_ext__";
          when WNE_Hide_Extension       => return "hide_ext__";
+         when WNE_Hide_Ancestor        => return "hide_anc__";
          when WNE_Dispatch_Module      => return "Dispatch";
          when WNE_Refine_Module        => return "Refine";
          when WNE_Logic_Fun_Suffix     => return "__logic";
