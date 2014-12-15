@@ -21,7 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ghost;             use Ghost;
+with Sem_Util;          use Sem_Util;
 with Sinfo;             use Sinfo;
 
 with Why;
