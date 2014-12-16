@@ -1,0 +1,16 @@
+x86.adb:7:28: info: range check proved
+x86.adb:17:59: info: division check proved
+x86.adb:27:29: info: range check proved
+x86.adb:37:29: info: range check proved
+x86.ads:20:14: info: postcondition proved
+x86.ads:20:41: info: range check proved
+x86.ads:24:14: info: postcondition proved
+x86.ads:28:14: info: postcondition proved
+x86.ads:28:72: info: division check proved
+x86.ads:32:14: info: postcondition proved
+x86.ads:37:14: info: postcondition proved
+x86.ads:37:42: info: range check proved
+x86.ads:41:14: info: postcondition proved
+x86.ads:45:16: info: postcondition proved
+x86.ads:45:45: info: range check proved
+x86.ads:49:16: info: postcondition proved
