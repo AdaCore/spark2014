@@ -4,7 +4,7 @@ q.adb:14:27: info: overflow check proved
 q.adb:17:17: info: overflow check proved
 q.adb:20:07: info: assertion proved
 q.adb:21:14: info: division check proved
-q.adb:21:14: info: overflow check proved
+q.adb:21:14: medium: overflow check might fail
 q.adb:24:29: info: range check proved
 q.adb:26:29: info: range check proved
 q.adb:28:31: info: range check proved
