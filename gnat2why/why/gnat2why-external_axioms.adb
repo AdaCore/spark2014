@@ -941,11 +941,6 @@ package body Gnat2Why.External_Axioms is
                         Labels      => Name_Id_Sets.Empty_Set,
                         Return_Type => Typ));
 
-                  --  ??? What is the purpose of this insertion in the symbol
-                  --  table, and same question for function parameters below.
-
-                  Insert_Entity (Formal, To_Why_Id (Formal, Typ => Typ));
-
                   Def :=
                     (if Present (Actual) then
                       +Transform_Identifier

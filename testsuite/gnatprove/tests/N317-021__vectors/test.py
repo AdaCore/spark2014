@@ -7,8 +7,7 @@ from test_support import *
 # BY
 #   @ASSERT:FAIL
 # IN THOSE TESTS AT THIS POINT
-prove_all(steps=1000, opt = ["bounded.adb", "unbounded.adb",
-                             "indefinite_bounded.adb", "indefinite_unbounded.adb"])
+prove_all(steps=1000)
 
 call(["gnatmake", "-gnata", "-q", "test_vectors.adb"])
 call(["./test_vectors"])
