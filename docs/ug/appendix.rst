@@ -982,6 +982,12 @@ Proof Limitations
 #. |GNATprove| does not follow the value of tags for tagged objects. As a
    consequence, tag checks are currently unprovable in most cases.
 
+#. For calls in class-wide preconditions and postcondition, |GNATprove| uses
+   the semantics defined originally in the Ada 2012 Reference Manual (calls to
+   primitive operations are dispatching), and not yet the modified semantics
+   introduced in the revision of the language AI12-0113 (calls to primitive
+   operations are reinterpreted at each level of the inheritance hierarchy).
+
 Portability Issues
 ==================
 
