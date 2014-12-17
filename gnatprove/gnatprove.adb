@@ -223,6 +223,13 @@ procedure Gnatprove is
          Args.Prepend ("--config=" & Actual_Config_File);
       end if;
 
+      if not GPR_Project_Path.Is_Empty then
+         for S of GPR_Project_Path loop
+            Args.Prepend (S);
+            Args.Prepend ("-aP");
+         end loop;
+      end if;
+
       if Debug then
          Args.Prepend ("-dn");
       end if;

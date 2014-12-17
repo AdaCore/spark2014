@@ -119,7 +119,11 @@ package Configuration is
    --  The list of files to be compiled
 
    Cargs_List   : String_Lists.List;
-   --  The options to be passed to the compilers
+   --  The options to be passed to the compilers, passed to gnatprove via
+   --  --cargs
+
+   GPR_Project_Path : String_Lists.List;
+   --  extra paths to look for project files, passed to gnatprove via -aP
 
    Scenario_Variables : String_Lists.List;
    --  Scenario variables to be passed to gprbuild

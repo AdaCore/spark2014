@@ -1,0 +1,7 @@
+with "a.gpr";
+
+project Test is
+
+   for Main use ("b.adb");
+
+end Test;

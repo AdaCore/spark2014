@@ -76,11 +76,11 @@ package body Configuration is
    --  If attribute Proof_Dir is set in the project file, set global variable
    --  Proof_Dir to the full path <path-to-project-file>/<value-of-proof-dir>.
 
-   procedure Handle_Scenarios
+   procedure Handle_Project_Loading_Switches
      (Switch    : String;
       Parameter : String;
       Section   : String);
-   --  Command line handler which deals with -X switches
+   --  Command line handler which deals with -X switches and -aP switches
 
    procedure Handle_Switch
      (Switch    : String;
@@ -140,6 +140,8 @@ ASCII.LF &
 " -k                 Do not stop analysis at the first error" &
 ASCII.LF &
 "     -m             Minimal reanalysis" &
+ASCII.LF &
+" -aP=p              Add path p to project path" &
 ASCII.LF &
 "     --mode=m       Set the mode of GNATprove (m=check, flow, prove, all*)"
 & ASCII.LF &
@@ -350,16 +352,16 @@ ASCII.LF;
       end if;
    end Configure_Proof_Dir;
 
-   ----------------------
-   -- Handle_Scenarios --
-   ----------------------
+   -------------------------------------
+   -- Handle_Project_Loading_Switches --
+   -------------------------------------
 
-   procedure Handle_Scenarios
+   procedure Handle_Project_Loading_Switches
      (Switch    : String;
       Parameter : String;
       Section   : String)
    is
-      pragma Unreferenced (Section, Parameter);
+      pragma Unreferenced (Section);
       Equal : Natural := 0;
    begin
       if Switch'Length > 2
@@ -390,8 +392,10 @@ ASCII.LF;
          --  Second, we add the whole switch to the list of Scenario switches
 
          Scenario_Variables.Append (Switch);
+      elsif Switch = "-aP" then
+         GPR_Project_Path.Append (Parameter);
       end if;
-   end Handle_Scenarios;
+   end Handle_Project_Loading_Switches;
 
    -------------------
    -- Handle_Switch --
@@ -417,6 +421,8 @@ ASCII.LF;
       elsif Switch'Length >= 2
         and then Switch (Switch'First + 1) = 'X'
       then
+         null;
+      elsif Switch = "-aP" then
          null;
       else
          raise Invalid_Switch;
@@ -548,6 +554,18 @@ ASCII.LF;
             end if;
          end;
 
+         declare
+            Arr  : constant File_Array := Proj_Env.Predefined_Project_Path;
+            Arr2 : File_Array (1 .. Integer (GPR_Project_Path.Length));
+            I    : Integer := 1;
+         begin
+            for S of GPR_Project_Path loop
+               Arr2 (I) := Create (Filesystem_String (S));
+               I := I + 1;
+            end loop;
+            Proj_Env.Set_Predefined_Project_Path (Arr & Arr2);
+         end;
+
          if Project_File.all /= "" then
             Tree.Load
               (GNATCOLL.VFS.Create (Filesystem_String (Project_File.all)),
@@ -617,6 +635,8 @@ ASCII.LF;
           Long_Switch => "--clean",
           Help => "Remove GNATprove intermediate files");
 
+      Define_Switch (First_Config, "-aP=");
+
       Define_Switch (First_Config, "*", Help => "list of source files");
 
       --  We now initialize the project environment; it may be changed by the
@@ -625,7 +645,7 @@ ASCII.LF;
       Initialize (Proj_Env);
 
       Getopt (First_Config,
-              Callback => Handle_Scenarios'Access,
+              Callback => Handle_Project_Loading_Switches'Access,
               Concatenate => False);
 
       if Version then
@@ -633,7 +653,12 @@ ASCII.LF;
          GNAT.OS_Lib.OS_Exit (0);
       end if;
 
-      --  The second parsing needs the info for all switches
+      --  The second parsing needs the info for all switches, including the
+      --  ones that are only used by the first pass (e.g. -aP), so that they
+      --  can be properly ignored. An exception is the option -X, which is
+      --  explicitly ignored by the callback Handle_Switch
+
+      Define_Switch (Config, "-aP=");
 
       Define_Switch
          (Config,
