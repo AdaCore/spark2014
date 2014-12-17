@@ -8233,8 +8233,15 @@ package body Gnat2Why.Expr is
                --  of generating a dummy value for unused components in a
                --  discriminant record, if needed.
 
+               Prefix_Ty : constant Entity_Id :=
+                 Unique_Entity (Etype (Ancestor_Part (Expr)));
                Anc_Ty : constant Entity_Id :=
-                 Etype (Etype (Ancestor_Part (Expr)));
+                 (if Ekind (Prefix_Ty) in E_Record_Subtype |
+                                          E_Record_Subtype_With_Private
+                  then
+                    Unique_Entity (Etype (Prefix_Ty))
+                  else
+                    Prefix_Ty);
 
                Anc_Expr : constant W_Expr_Id :=
                  Transform_Expr (Ancestor_Part (Expr),
@@ -8244,8 +8251,9 @@ package body Gnat2Why.Expr is
                Tmp : constant W_Expr_Id := New_Temp_For_Expr (Anc_Expr);
                Anc_Num_Discrs : constant Natural :=
                  Number_Discriminants (Anc_Ty);
-               Anc_Num_Fields : constant Natural :=
-                 Count_Fields (Anc_Ty) - 1;
+               pragma Assert (if Has_Private_Ancestor (Anc_Ty)
+                              then Has_Private_Ancestor (Expr_Type));
+               Anc_Num_Fields : constant Natural := Count_Fields (Anc_Ty) - 1;
                Anc_Discr_Assocs : W_Field_Association_Array
                                     (1 .. Anc_Num_Discrs);
                Anc_Field_Assocs : W_Field_Association_Array
