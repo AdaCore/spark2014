@@ -1,1 +1,1 @@
-ALL XFAIL waiting for NB04-010
+32bits DEAD too slow on 32bits machines
