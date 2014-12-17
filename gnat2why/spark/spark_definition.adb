@@ -2651,6 +2651,47 @@ package body SPARK_Definition is
                   SRM_Reference => "SPARK RM 3.7(2)");
             end if;
 
+            --  A local derived type cannot have ancestors not defined in
+            --  the same local scope. We only check direct ancestors, as the
+            --  definition of these ancestors will already have checked this
+            --  rule for their own ancestors.
+
+            if Nkind (Parent (E)) = N_Full_Type_Declaration
+              and then Nkind (Type_Definition (Parent (E))) =
+                       N_Derived_Type_Definition
+            then
+               declare
+                  Scop : constant Entity_Id := Enclosing_Dynamic_Scope (E);
+               begin
+                  if Scop /= Standard_Standard then
+                     if Enclosing_Dynamic_Scope (Etype (E)) /= Scop then
+                        Mark_Violation
+                          ("local derived type from non-local parent",
+                           E,
+                           SRM_Reference => "SPARK RM 3.9.1(1)");
+                     end if;
+
+                     if Present (Interfaces (E)) then
+                        declare
+                           Ty : Elmt_Id := First_Elmt (Interfaces (E));
+                        begin
+                           while Present (Node (Ty)) loop
+                              if Enclosing_Dynamic_Scope (Node (Ty)) /= Scop
+                              then
+                                 Mark_Violation
+                                   ("local derived type from non-local " &
+                                    "interface",
+                                    E,
+                                    SRM_Reference => "SPARK RM 3.9.1(1)");
+                              end if;
+                              Ty := Next_Elmt (Ty);
+                           end loop;
+                        end;
+                     end if;
+                  end if;
+               end;
+            end if;
+
          when E_Class_Wide_Type    |
               E_Class_Wide_Subtype =>
             null;
