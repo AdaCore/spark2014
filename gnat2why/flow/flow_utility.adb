@@ -636,6 +636,24 @@ package body Flow_Utility is
                   raise Why.Not_Implemented;
             end case;
 
+         when N_Function_Call =>
+            declare
+               FS  : constant Flow_Id_Sets.Set := Get_Vars_Wrapper (N);
+               LHS : Flow_Id_Sets.Set;
+            begin
+               if M.Is_Empty then
+                  LHS := Flatten_Variable (Map_Root, Scope);
+
+                  for Comp of LHS loop
+                     M.Include (Comp, FS);
+                  end loop;
+               else
+                  for C in M.Iterate loop
+                     M (C).Union (FS);
+                  end loop;
+               end if;
+            end;
+
          when others =>
             Error_Msg_N ("can't untangle node " & Nkind (N)'Img, N);
             raise Why.Unexpected_Node;
