@@ -8,7 +8,9 @@ refined_depends_illegal.adb:69:39: unmatched or extra clause in dependence refin
 refined_depends_illegal.adb:70:39: unmatched or extra clause in dependence refinement
 refined_depends_illegal.adb:79:48: duplicate use of item "W"
 refined_depends_illegal.adb:87:48: cannot mix null and non-null dependency items
-refined_depends_illegal_2.adb:11:16: medium: overflow check might fail
-refined_depends_illegal_2.adb:11:18: high: "Y" must be listed in the Depends aspect of "P1" (SPARK RM 6.1.4(13))
+refined_depends_illegal_2.adb:11:18: "Y" must be listed in the Depends aspect of "P1" (SPARK RM 6.1.4(13))
 refined_depends_illegal_2.adb:18:31: medium: missing dependency "Y => Par"
-refined_depends_illegal_2.adb:22:14: medium: overflow check might fail
+   compilation of refined_depends_illegal_2.adb failed
+
+
+gnatprove: error during flow analysis and proof

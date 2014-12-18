@@ -18,11 +18,13 @@ initializes_illegal_3_helper.ads:5:67: "S2" not declared in "Initializes_Illegal
 initializes_illegal_4.adb:9:07: warning: initialization has no effect
 initializes_illegal_4.adb:11:09: warning: unused assignment
 initializes_illegal_4.adb:22:17: warning: unused assignment
-initializes_illegal_4.adb:30:35: medium: overflow check might fail
 initializes_illegal_4.ads:35:07: warning: initialization has no effect
-initializes_illegal_4.ads:52:30: medium: overflow check might fail
-initializes_illegal_4.ads:52:32: high: "G_Var2" must be listed in the Initializes aspect of "Pac3" (SPARK RM 7.1.5(12))
-initializes_illegal_4.ads:64:22: high: "G_Var" must be listed in the Initializes aspect of "Pac4" (SPARK RM 7.1.5(12))
+initializes_illegal_4.ads:52:32: "G_Var2" must be listed in the Initializes aspect of "Pac3" (SPARK RM 7.1.5(12))
+initializes_illegal_4.ads:64:22: "G_Var" must be listed in the Initializes aspect of "Pac4" (SPARK RM 7.1.5(12))
+   compilation of initializes_illegal_4.adb failed
+
+
+gnatprove: error during flow analysis and proof
 initializes_illegal_5.ads:1:14: current unit must also be private descendant of "Initializes_Illegal_5"
 initializes_illegal_5.ads:14:66: "Pr_Var" not declared in "Pr_Child"
 initializes_illegal_6.adb:8:04: high: "Var" is not initialized in "Initializes_Illegal_6"
