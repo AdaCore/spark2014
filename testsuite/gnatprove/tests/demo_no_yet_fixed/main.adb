@@ -2,7 +2,7 @@ with Use_Stacks;
 with ASM_Stack;
 with ADT_Stack;
 with Ada.Text_IO;
-procedure Main
+procedure Main with SPARK_Mode
 is
    X, Y : Integer := 0;
    My_Stack : ADT_Stack.Stack;

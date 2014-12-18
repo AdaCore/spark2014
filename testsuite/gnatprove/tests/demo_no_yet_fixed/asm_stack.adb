@@ -1,7 +1,7 @@
 --  Implementation of the subprograms
 with Exc; use Exc;
 
-package body ASM_Stack
+package body ASM_Stack with SPARK_Mode
 is
 
    Stack_Size : constant := 100;

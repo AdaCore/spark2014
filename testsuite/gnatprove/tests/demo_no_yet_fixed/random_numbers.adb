@@ -1,4 +1,5 @@
 package body Random_Numbers with
+  SPARK_Mode,
   Refined_State => (State => Seed)
 is
 

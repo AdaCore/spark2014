@@ -3,7 +3,7 @@
 -- the behaviour of those object. Khown well on the name OOP.
 
 
-package ADT_Stack is
+package ADT_Stack with SPARK_Mode is
 
    type Stack is tagged private; -- tagged for extension in child package
 
@@ -18,8 +18,6 @@ package ADT_Stack is
    -- pragma Postcondition (S.Stack_Vector(S.Stack_Top) = X);
 
    procedure Pop(S : in out Stack; X : out Integer); -- not a function as in ASM_Stack
-
-   Overflow, Underflow : exception; --  Not yet translated
 
    --  overloading operators = to compare two stack
    function "=" (S, T : Stack) return Boolean; -- Not yet transladed

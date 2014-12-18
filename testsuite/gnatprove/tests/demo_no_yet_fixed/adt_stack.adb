@@ -1,4 +1,5 @@
-package body ADT_Stack
+with Exceptions; use Exceptions;
+package body ADT_Stack with SPARK_Mode
 is
 
    function Is_Empty(S : Stack) return Boolean

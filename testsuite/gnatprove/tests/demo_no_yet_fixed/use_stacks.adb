@@ -4,7 +4,7 @@ with ADT_Stack;
 with ADT_Stack.Child;
 with  Generic_Stack;
 
-package body Use_Stacks is
+package body Use_Stacks with SPARK_Mode is
    procedure Fill_ASM_Stack
    is
       V : Integer;

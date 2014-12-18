@@ -1,6 +1,6 @@
 -- This package implement an extension of the type adt_stack
 -- with ADT_Stack; use ADT_Stack; -- inherite clause ?
-package ADT_Stack.Child
+package ADT_Stack.Child with SPARK_Mode
 is
    type Child_Stack is new ADT_Stack.Stack with private;
 

@@ -1,6 +1,6 @@
 --  mutual recursion
 
-package body ADT_Stack.Child
+package body ADT_Stack.Child with SPARK_Mode
 is
    procedure Clear(S : out Child_Stack)
    is
