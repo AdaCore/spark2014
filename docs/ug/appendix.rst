@@ -459,10 +459,10 @@ and provide a file `spark.adc` which contains::
 
    pragma SPARK_Mode;
 
-.. _External_Axiomatizations:
+.. _External Axiomatizations:
 
 External Axiomatizations
-===========================
+========================
 
 What is it ?
 ----------------

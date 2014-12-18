@@ -33,6 +33,8 @@ features listed here.
 Language Restrictions
 =====================
 
+.. _Excluded Ada Features:
+
 Excluded Ada Features
 ---------------------
 
@@ -2191,6 +2193,8 @@ program. |GNAT Pro| compiler also performs some of these checks, although not
 all of them. Apart from these checks, |GNATprove| treats ghost code like normal
 code during its analyses.
 
+.. _Ghost Functions:
+
 Ghost Functions
 ^^^^^^^^^^^^^^^
 
@@ -3090,160 +3094,179 @@ Formal Containers Library
 -------------------------
 
 Containers are generic data structures offering a high-level view of
-collections of objects, while guaranteeing fast access to their
-content to retrieve or modify it. The most common containers are
-lists, vectors, sets and maps, which are defined in Ada Standard
-Libraries. In critical software where verification objectives
-severely restrict the use of pointers, containers offer an attractive
-alternative to pointer-intensive data structures.
+collections of objects, while guaranteeing fast access to their content to
+retrieve or modify it. The most common containers are lists, vectors, sets and
+maps, which are defined as generic units in the Ada Standard Library. In
+critical software where verification objectives severely restrict the use of
+pointers, containers offer an attractive alternative to pointer-intensive data
+structures.
 
-There are 6 formal containers, which are part of the |GNAT Pro| standard
-library:
+The Ada Standard Library defines two kinds of containers:
+
+* The controlled containers using dynamic allocation, for example
+  ``Ada.Containers.Vectors``. They define containers as controlled tagged
+  types, so that memory for the container is automatic reallocated during
+  assignement and automatically freed when the container object's scope ends.
+* The bounded containers not using dynamic allocation, for example
+  ``Ada.Containers.Bounded_Vectors``. They define containers as discriminated
+  tagged types, so that the memory for the container can be reserved at
+  initialization.
+
+Although bounded containers are better suited to critical software development,
+neither controlled containers nor bounded containers can be used in |SPARK|,
+because their API does not lend itself to adding suitable contracts (in
+particular preconditions) ensuring correct usage in client code.
+
+The formal containers are a variation of the bounded containers with API
+changes that allow adding suitable contracts, so that |GNATprove| can prove
+that client code manipulates containers correctly. There are 7 formal
+containers, which are part of the |GNAT Pro| standard library:
 
 * ``Ada.Containers.Formal_Vectors``
+* ``Ada.Containers.Formal_Indefinite_Vectors``
 * ``Ada.Containers.Formal_Doubly_Linked_Lists``
 * ``Ada.Containers.Formal_Hashed_Sets``
 * ``Ada.Containers.Formal_Ordered_Sets``
 * ``Ada.Containers.Formal_Hashed_Maps``
 * ``Ada.Containers.Formal_Ordered_Maps``
 
-They are adapted to critical software
-development. They are bounded, so that there can be no dynamic
-allocation and they have preconditions that can be used to ensure that
-there is no error at run-time. They are experimental, and, as such,
-should be used with care. In particular, the examples below can be
-compiled and fed to |GNATprove| but not everything is proved about them in a
-reasonable amount of time.
+Lists, sets and maps are always bounded. Vectors can be bounded or unbounded
+depending on the value of the formal parameter ``Bounded`` when instantiating
+the generic unit. Bounded containers do not use dynamic allocation. Unbounded
+vectors use dynamic allocation to expand their internal block of memory.
 
-Specification of formal containers is in |SPARK|. As a consequence,
-there is no procedure that take a procedure as an argument such that
-``Update_Element`` or ``Query_Element`` in Ada Standard container
-library.
+Lists, sets and maps can only be used with definite objects (objects for which
+the compiler can compute the size in memory, hence not ``String`` nor
+``T'Class``). Vectors come in two flavors for definite objects
+(``Formal_Vectors``) and indefinite objects (``Formal_Indefinite_Vectors``).
 
-Formal containers are adapted to the specification process. First of all,
-cursors no longer have a reference to underlying container. Indeed, in Ada
-Standard container library, cursors contain a pointer to their underlying
-container. As a consequence, if a container is modified, then so are all
-cursors attached to this container, which is contrary to the philosophy of
-modular verification in |SPARK|, hence the modification to separate cursors
-from containers. This modification also allows you to use the same cursor with
-different containers. In particular, it is useful to link elements associated
-to a list before and after a modification. Formal containers also provide three
-new functions per container type. ``Current_To_Last (C : Container; Cu : Cursor)
-returns Container`` and ``First_To_Previous (C : Container; Cu : Cursor) returns
-Container`` can be used to write loop invariant. They return the trailing
-(resp. the leading) part of the container ``C`` starting before
-(resp. stopping before) the cursor ``Cu``.
+Modified API of Formal Containers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-For example, in the function ``My_Find`` below, ``First_To_Previous`` is used in the
-loop invariant to state that the element ``E`` has not been found in
-the part of the list that as been analyzed already.
+The visible specification of formal containers is in |SPARK|, with suitable
+preconditions on subprograms to ensure correct usage, while their private part
+and implementation is not in |SPARK|. Hence, |GNATprove| can be used to prove
+correct usage of formal containers in client code, but not to prove that formal
+containers implement their specification.
+
+Procedures ``Update_Element`` or ``Query_Element`` that iterate over a
+container are not defined on formal containers. Specification and analysis of
+such procedures that take an access-to-procedure in parameter is beyond the
+capabilities of |SPARK| and |GNATprove|. See :ref:`Excluded Ada Features`.
+
+Procedures and functions that query the content of a container take the
+container in parameter. For example, function ``Has_Element`` that queries if a
+container has an element at a given position is declared as follows:
+
+.. code-block:: ada
+
+   function Has_Element (Container : T; Position : Cursor) return Boolean;
+
+This is different from the API of controlled containers and bounded containers,
+where it is sufficient to pass a cursor to these subprograms, as the cursor
+holds a reference to the underlying container:
+
+.. code-block:: ada
+
+   function Has_Element (Position : Cursor) return Boolean;
+
+Cursors of formal containers do not hold a reference to a specific container,
+as this would otherwise introduce aliasing between container and cursor
+variables, which is not supported in |SPARK|. See :ref:`Absence of
+Interference`. As a result, the same cursor can be applied to multiple
+container objects.
+
+Three :ref:`Ghost Functions` are defined on formal containers:
+
+* ``Current_To_Last`` returns a copy of a container from a given position (included)
+* ``First_To_Previous`` returns a copy of a container up to a given position (excluded)
+* ``Strict_Equal`` returns whether two containers are equal in their content and cursors
+
+The purpose of these ghost functions is to facilitate specifying properties of
+programs that manipulate formal containers. The linear order of positions is
+given by the underlying structure allowing iteration over a container, which
+corresponds to the natural order for vectors, lists, ordered sets and ordered
+maps.
+
+For example, consider a variant of the ``List.Find`` function defined in the
+API of formal containers, which returns a cursor holding the value searched if
+there is one, and the special cursor ``No_Element`` otherwise:
+
+.. literalinclude:: gnatprove_by_example/examples/my_find.ads
+   :language: ada
+   :linenos:
+
+The ghost functions mentioned above are specially useful in :ref:`Loop
+Invariants` to refer to parts of containers. For example, here, ghost function
+``First_To_Previous`` is used in the loop invariant to specify that the value
+searched is not contained in the part of the container already traversed
+(otherwise the loop would have exited):
+
+.. literalinclude:: gnatprove_by_example/examples/my_find.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| proves that function ``My_Find`` implements its specification:
+
+.. literalinclude:: gnatprove_by_example/results/my_find.prove
+   :language: none
+
+Function ``Strict_Equal`` is mostly useful to state which parts of a container
+have not changed in a loop invariant or a postcondition. For example, it is
+used in the postcondition of function ``My_Prepend`` below to state that
+``My_Prepend`` does not modify the tail of the list:
 
 .. code-block:: ada
    :linenos:
 
-   function My_Find (L : List; E : Element_Type) return Cursor with
-     Post => (if My_Find'Result = No_Element then
-                not Contains (L, E)
-              else (Has_Element (L, My_Find'Result)
-                     and then
-                    Element (L, My_Find'Result) = E));
+   procedure My_Prepend (L : in out List; E : Element_Type) with
+     Pre  => L.Capacity > Length (L),
+     Post => Length (L) = 1 + Length (L'Old) and then
+             First_Element (L) = E and then
+             Strict_Equal (Current_To_Last(L, First (L'Old)), L'Old);
 
-.. code-block:: ada
-   :linenos:
+.. note::
 
-   function My_Find (L : List; E : Element_Type) return Cursor is
-      Cu : Cursor := First (L);
-   begin
-      while Has_Element (L, Cu) loop
-         pragma Loop_Invariant (not Contains (First_To_Previous (L, Cu), E));
-         if Element (L, Cu) = E then
-            return Cu;
-         end if;
-         Next (L, Cu);
-      end loop;
-      return No_Element;
-   end My_Find;
+   The behavior of formal containers is defined through :ref:`External
+   Axiomatizations`, to facilitate automation of proofs. In this model, the
+   behavior of ``Strict_Equal`` is specified based on the logical equality of
+   elements instead of the formal parameter ``=`` of the generic in |SPARK|, a
+   stronger interpretation made to facilitate automation of proofs. But the
+   implementation of ``Strict_Equal`` uses the operation ``=`` on elements
+   passes as formal parameter to the generic unit. Thus, an assertion involving
+   ``Strict_Equal`` may always hold at run time but not be provable.
 
-The third new function,
-``Strict_Equal (C1, C2 : Container)`` checks whether ``C1`` and ``C2``
-really are equal with respect to everything that can impact existing
-functions of the library. On lists for example, it does not only check
-that ``C1`` and ``C2`` contain the same elements in the same order but
-also that ``C1`` and ``C2`` share the same cursors. This function is
-generaly used for stating which parts of a container do not change in a
-loop invariant or a postcondition.
+Quantification over Formal Containers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Note that the model of ``Strict_Equal`` uses the theoretical equality
-on elements whereas its implementation uses the parameter ``=``
-of the generic to compare elements. This is done so that the function
-``Strict_Equal`` can always be used to express invariant properties of
-collections over loops and calls.
-This difference between proof and test means that, when the parameter
-``=`` used to instantiate a generic formal container
-is not the physical equality on elements, a
-user should be careful not to use testing to discharge
-assumptions involving ``Strict_Equal``, such as preconditions of
-proven subprograms and postconditions of programs called by a
-proven subprogram, which mention ``Strict_Equal``.
+:ref:`Quantified Expressions` can be used over the content of a formal
+container to express that a property holds for all elements of a container
+(using ``for all``) or that a property holds for at least one element of a
+container (using ``for some``).
 
-For example, in the function ``My_Prepend`` below, ``Strict_Equal`` is
-used to state that ``My_Prepend`` does not modify the tail of the
-list. Note that we use ``First (L1'Old)`` to refer to the first
-element of the tail in the postcondition of ``My_Prepend``, which would not have
-been possible if cursors still had an internal reference to the list
-they come from.
-
-.. code-block:: ada
-   :linenos:
-
-   procedure My_Prepend (L1 : in out List; E : Element_Type) with
-     Pre  => L1.Capacity > Length (L1),
-     Post => Length (L1) = 1 + Length (L1'Old)
-               and then First_Element (L1) = E
-               and then Strict_Equal (Current_To_Last(L1, First (L1'Old)), L1'Old);
-
-Quantification over Containers
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The Ada 2012 language  provides quantified expressions that can be used to express a property over a standard container.
-For example, that all elements of a list of integers are prime, which can be expressed by iterating over cursors as follows:
-
-.. code-block:: ada
-
-   (for all Cu in My_List => Is_Prime (Element (Cu)))
-
-The general mechanism in Ada 2012 that provides this functionality relies on the use of tagged types (for the container type) and various aspects involving access types, so cannot be applied to the SPARK formal containers.
-
-Instead, formal containers are annotated with an aspect named Iterable that provides the same functionality in a simpler way, leading also to much simpler object code. For example, here is the definition of the type ``List`` for doubly linked lists:
-
-.. code-block:: ada
-
-   type List (Capacity : Count_Type) is private
-     with Iterable => (First       => First,
-                       Has_Element => Has_Element,
-                       Next        => Next,
-                       Element     => Element);
-
-Thanks to this mechanism, one can use a quantified expression to express that all elements of a formal list of integers are prime:
+For example, we can express that all elements of a formal list of integers are
+prime as follows:
 
 .. code-block:: ada
 
    (for all Cu in My_List => Is_Prime (Element (My_List, Cu)))
 
-The compiler will generate code that iterates over ``My_List`` using the functions ``First``, ``Has_Element`` and ``Next`` given in the Iterable aspect, so that the above is equivalent to:
+On this expression, the |GNAT Pro| compiler generates code that iterates over
+``My_List`` using the functions ``First``, ``Has_Element`` and ``Next`` given
+in the ``Iterable`` aspect applying to the type of formal lists, so the
+quantified expression above is equivalent to:
 
 .. code-block:: ada
-   :linenos:
 
    declare
-     Cu     : Cursor_Type := First (My_List);
-     Result : Boolean := True;
+      Cu     : Cursor_Type := First (My_List);
+      Result : Boolean := True;
    begin
-     while Result and then Has_Element (My_List, Cu) loop
-       Result := Is_Prime (Element (My_List, Cu));
-       Cu     := Next (My_List, Cu);
-     end loop;
+      while Result and then Has_Element (My_List, Cu) loop
+         Result := Is_Prime (Element (My_List, Cu));
+         Cu     := Next (My_List, Cu);
+      end loop;
    end;
 
-where ``Result`` is the value of the quantified expression.
+where ``Result`` is the value of the quantified expression. See |GNAT Pro|
+Reference Manual for details on aspect ``Iterable``.
