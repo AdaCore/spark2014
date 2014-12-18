@@ -6,5 +6,4 @@ generic
 package Generic_Stack is
    procedure Push(E : in  Item);
    procedure Pop (E : out Item);
-   Overflow, Underflow : exception;
 end Generic_Stack;

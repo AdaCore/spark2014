@@ -1,10 +1,11 @@
-package body Random_Numbers
+package body Random_Numbers with
+  Refined_State => (State => Seed)
 is
 
    Seed     : Integer;
    Seed_Max : constant Integer := 99;
 
-   function Random return Integer
+   procedure Random (Res : out Integer)
    is
       My_Stack : ADT_Stack.Stack;
    begin
@@ -14,7 +15,7 @@ is
          Seed := ASM_Stack.Pop;
       end if;
 
-      return GCD (Seed, Seed_Max);
+      Res := GCD (Seed, Seed_Max);
    end Random;
 
    function GCD (M, N : Integer) return Integer

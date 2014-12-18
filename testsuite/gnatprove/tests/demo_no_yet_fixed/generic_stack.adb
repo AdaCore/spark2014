@@ -1,3 +1,5 @@
+with Exceptions; use Exceptions;
+
 package body Generic_Stack
 is
    --# hide  Generic_Stack
