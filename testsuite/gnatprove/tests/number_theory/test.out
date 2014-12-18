@@ -1,4 +1,4 @@
-number_theory.adb:18:17: info: range check proved
+number_theory.adb:18:17: medium: range check might fail
 number_theory.adb:19:16: medium: loop invariant might fail after first iteration
 number_theory.adb:19:16: medium: loop invariant might fail in first iteration
 number_theory.adb:19:50: medium: range check might fail

@@ -123,9 +123,9 @@ partition_refinement.adb:185:33: info: precondition proved
 partition_refinement.adb:185:54: info: precondition proved
 partition_refinement.adb:185:72: info: precondition proved
 partition_refinement.adb:188:10: info: loop invariant initialization proved
-partition_refinement.adb:188:10: info: loop invariant preservation proved
 partition_refinement.adb:188:33: info: precondition proved
 partition_refinement.adb:188:51: info: precondition proved
+partition_refinement.adb:188:51: medium: loop invariant might fail after first iteration, requires Contains (D, Element (X, C)
 partition_refinement.adb:188:64: info: precondition proved
 partition_refinement.adb:189:10: info: loop invariant initialization proved
 partition_refinement.adb:189:10: info: loop invariant preservation proved

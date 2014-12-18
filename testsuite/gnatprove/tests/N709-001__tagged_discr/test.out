@@ -6,7 +6,7 @@ classwide.ads:49:14: medium: postcondition might fail, requires C_Is_Zero (V)
 classwide.ads:53:14: info: postcondition proved
 classwide.ads:70:22: warning: unused initial value of "V"
 classwide.ads:71:14: info: postcondition proved
-classwide.ads:106:14: info: postcondition proved
+classwide.ads:106:14: medium: postcondition might fail, requires Is_Zero (V)
 tagged_discr.adb:7:09: info: discriminant check proved
 tagged_discr.adb:12:08: info: discriminant check proved
 tagged_discr.adb:15:14: info: discriminant check proved
@@ -35,4 +35,4 @@ tagged_discr.ads:54:09: info: discriminant check proved
 tagged_discr.ads:55:09: info: discriminant check proved
 tagged_discr.ads:56:09: info: discriminant check proved
 tagged_discr.ads:59:14: medium: postcondition might fail, requires Is_Zero (V)
-tagged_discr.ads:62:14: info: postcondition proved
+tagged_discr.ads:62:14: medium: postcondition might fail, requires Is_Zero (V)

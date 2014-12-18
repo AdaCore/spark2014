@@ -28,8 +28,8 @@ amortized_queue.adb:38:10: medium: precondition might fail, in call inlined at a
 amortized_queue.adb:38:10: medium: precondition might fail, in call inlined at amortized_queue.adb:66
 amortized_queue.adb:38:25: medium: precondition might fail, in call inlined at amortized_queue.adb:55
 amortized_queue.adb:38:25: medium: precondition might fail, in call inlined at amortized_queue.adb:66
-amortized_queue.adb:38:40: info: range check proved, in call inlined at amortized_queue.adb:55
 amortized_queue.adb:38:40: info: range check proved, in call inlined at amortized_queue.adb:66
+amortized_queue.adb:38:40: medium: range check might fail, in call inlined at amortized_queue.adb:55
 amortized_queue.adb:43:27: info: precondition proved
 amortized_queue.adb:45:07: info: precondition proved
 amortized_queue.adb:51:42: info: discriminant check proved
@@ -71,9 +71,9 @@ amortized_queue.ads:42:14: info: precondition proved
 amortized_queue.ads:42:32: info: range check proved
 amortized_queue.ads:46:14: medium: postcondition might fail, requires Is_Model (Q, Model'result)
 amortized_queue.ads:49:31: info: precondition proved
-amortized_queue.ads:50:14: info: postcondition proved
 amortized_queue.ads:50:31: info: precondition proved
 amortized_queue.ads:51:17: info: precondition proved
+amortized_queue.ads:51:17: medium: postcondition might fail, requires Last_Element (Model (Q)) = Front'result
 amortized_queue.ads:51:31: info: precondition proved
 amortized_queue.ads:54:31: info: precondition proved
 amortized_queue.ads:55:14: medium: postcondition might fail
@@ -82,7 +82,7 @@ amortized_queue.ads:56:61: info: precondition proved
 amortized_queue.ads:57:09: info: precondition proved
 amortized_queue.ads:57:19: info: precondition proved
 amortized_queue.ads:57:21: info: precondition proved
-amortized_queue.ads:57:43: info: precondition proved
+amortized_queue.ads:57:43: medium: precondition might fail
 amortized_queue.ads:57:57: info: precondition proved
 amortized_queue.ads:61:25: info: precondition proved
 amortized_queue.ads:61:44: info: precondition proved
