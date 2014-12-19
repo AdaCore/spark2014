@@ -491,12 +491,14 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-      with Pre => Nkind (N) = N_Null_Statement
-                    or else Nkind (N) = N_Raise_Statement
-                    or else Nkind (N) in N_Raise_xxx_Error;
+      with Pre => Nkind (N) in N_Null_Statement
+                             | N_Raise_Statement
+                             | N_Raise_xxx_Error
+                             | N_Exception_Declaration
+                             | N_Exception_Renaming_Declaration;
    --  Deals with null and raise statements. We create a new vertex that has
    --  control flow in from the top and leave from the bottom (nothing happens
-   --  in between).
+   --  in between). Exception declarations are treated like null statements.
 
    procedure Do_Object_Declaration
      (N   : Node_Id;
@@ -4206,6 +4208,9 @@ package body Flow.Control_Flow_Graph is
             Do_Type_Declaration (N, FA, CM, Ctx);
          when N_Raise_Statement |
               N_Raise_xxx_Error =>
+            Do_Null_Or_Raise_Statement (N, FA, CM, Ctx);
+         when N_Exception_Declaration |
+              N_Exception_Renaming_Declaration =>
             Do_Null_Or_Raise_Statement (N, FA, CM, Ctx);
          when others =>
             Print_Node_Subtree (N);
