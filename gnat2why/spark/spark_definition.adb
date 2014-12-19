@@ -2716,6 +2716,17 @@ package body SPARK_Definition is
                end loop;
             end;
 
+            --  Full views that are themeselves private types should not be
+            --  considered in SPARK if the underlying type is not in SPARK,
+            --  otherwise we end up with two definitions for the same private
+            --  type.
+
+            if Is_Full_View (E)
+              and then not In_SPARK (MUT (E))
+            then
+               Mark_Violation (E, From => MUT (E));
+            end if;
+
          when others =>
             raise Program_Error;
          end case;
