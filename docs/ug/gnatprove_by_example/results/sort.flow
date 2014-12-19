@@ -1,4 +1,2 @@
 sort.adb:30:14: warning: unused assignment
 sort.adb:69:17: warning: subprogram "Prove_Swap_Perm" has no effect
-sort.adb:94:22: warning: unused assignment
-sort.adb:101:13: warning: statement has no effect
