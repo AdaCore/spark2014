@@ -1,1 +1,1 @@
-ALL XFAIL tagged types and exceptions not yet supported
+ALL XFAIL spurious flow errors (NC18-019)
