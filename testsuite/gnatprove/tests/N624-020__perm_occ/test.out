@@ -95,11 +95,11 @@ sort.adb:80:18: medium: loop invariant might fail in first iteration, requires O
 sort.adb:88:50: info: overflow check proved
 sort.adb:89:22: medium: precondition might fail
 sort.adb:89:40: info: range check proved
-sort.adb:94:22: info: length check proved
+sort.adb:94:22: medium: length check might fail
 sort.adb:94:25: info: length check proved
 sort.adb:96:13: medium: precondition might fail
 sort.adb:97:29: info: range check proved
-sort.adb:101:13: info: precondition proved
+sort.adb:101:13: medium: precondition might fail
 sort.adb:101:48: info: range check proved
 sort.adb:101:57: medium: range check might fail
 sort.adb:106:31: info: overflow check proved
