@@ -1,4 +1,4 @@
-a.adb:21:25: medium: assertion might fail, requires Float(X) >=
+a.adb:21:10: info: assertion proved
 a.adb:21:31: info: range check proved
 a.adb:22:17: info: division check proved
 a.adb:22:17: info: overflow check proved

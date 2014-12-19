@@ -11,7 +11,7 @@ begin
          Index := Index+1;
          pragma Loop_Invariant (Index >= 1);
          pragma Assert (Long_Float(Index) >= 1.0);
-         Erreur := 1.0/Long_Float(Index);
+         Erreur := 1.0/Long_Float(Index);  --  @OVERFLOW:PASS
          Pi := Pi+Erreur;
       end;
    end loop;

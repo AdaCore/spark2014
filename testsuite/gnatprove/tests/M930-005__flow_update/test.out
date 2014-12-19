@@ -4,6 +4,7 @@ gnatbind -x main.ali
 gnatlink main.ali
 update_legal.adb:13:07: info: assertion proved
 update_uninitialized.adb:15:26: medium: "Element" might not be initialized
+update_uninitialized.adb:30:31: info: range check proved
 update_uninitialized.adb:30:40: medium: "Element" might not be initialized
 update_uninitialized_2.adb:16:32: medium: "Z" might not be initialized
 update_uninitialized_2.adb:19:25: high: "Z" is not initialized

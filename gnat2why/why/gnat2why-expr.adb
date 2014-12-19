@@ -8764,26 +8764,24 @@ package body Gnat2Why.Expr is
          when N_Qualified_Expression |
               N_Type_Conversion      =>
 
-            --  When converting between discrete types, only require that the
+            --  When converting between elementary types, only require that the
             --  converted expression is translated into a value of the expected
-            --  type. Necessary checks and conversions will be introduced at
-            --  the end of Transform_Expr below.
+            --  base type. Necessary checks, rounding and conversions will
+            --  be introduced at the end of Transform_Expr below. Fixed-point
+            --  types are special, because the base type __fixed really
+            --  represents a different base for every fixed-point type, so
+            --  use full conversion to the expected type in that case.
 
-            if Domain /= EW_Prog
-              and then Ekind (Expr_Type) in Discrete_Kind
-              and then Has_Discrete_Type (Etype (Expression (Expr)))
+            if Ekind (Expr_Type) in Elementary_Kind
+              and not Has_Fixed_Point_Type (Expr_Type)
             then
                T := Transform_Expr (Expression (Expr),
-                                    Expected_Type,
+                                    Base_Why_Type (Expr_Type),
                                     Domain,
                                     Local_Params);
 
             --  In other cases, require that the converted expression
             --  is translated into a value of the type of the conversion.
-
-            --  When converting to a flating-point type, this ensures that
-            --  a rounding operation can be applied on the intermediate real
-            --  value.
 
             --  When converting to a discriminant record or an array, this
             --  ensures that the proper target type can be retrieved from

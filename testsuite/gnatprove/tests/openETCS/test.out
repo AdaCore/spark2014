@@ -64,10 +64,10 @@ sec_3_13_2_monitoring_inputs.ads:165:15: info: length check proved
 sec_3_13_2_monitoring_inputs.ads:170:15: info: length check proved
 sec_3_13_2_monitoring_inputs.ads:184:08: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:185:24: info: precondition proved
-sec_3_13_2_monitoring_inputs.ads:186:58: info: range check proved
+sec_3_13_2_monitoring_inputs.ads:186:58: medium: range check might fail
 sec_3_13_2_monitoring_inputs.ads:200:08: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:201:24: info: precondition proved
-sec_3_13_2_monitoring_inputs.ads:202:58: info: range check proved
+sec_3_13_2_monitoring_inputs.ads:202:58: medium: range check might fail
 sec_3_13_2_monitoring_inputs.ads:244:46: info: precondition proved
 sec_3_13_2_monitoring_inputs.ads:248:14: warning: subprogram "dummy" has no effect
 sec_3_13_4_gradient_accel_decel.ads:26:24: warning: unused variable "d"
@@ -77,8 +77,8 @@ sec_3_13_6_deceleration.adb:27:71: medium: range check might fail
 sec_3_13_6_deceleration.ads:34:43: warning: unused variable "d"
 sec_3_13_6_deceleration.ads:39:06: info: postcondition proved
 sec_3_13_6_deceleration.ads:40:37: info: precondition proved
-sec_3_13_6_deceleration.ads:40:37: info: range check proved
-sec_3_13_6_deceleration.ads:41:71: info: range check proved
+sec_3_13_6_deceleration.ads:40:37: medium: range check might fail
+sec_3_13_6_deceleration.ads:41:71: medium: range check might fail
 sec_3_13_6_deceleration.ads:45:23: info: precondition proved
 sec_3_13_6_deceleration.ads:46:23: medium: overflow check might fail
 sec_3_13_6_deceleration.ads:46:26: info: precondition proved

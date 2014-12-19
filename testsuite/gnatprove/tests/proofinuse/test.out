@@ -41,10 +41,10 @@ floating_point.adb:54:27: info: overflow check proved
 floating_point.adb:56:21: info: overflow check proved
 floating_point.adb:58:18: info: division check proved
 floating_point.adb:58:18: medium: overflow check might fail
-floating_point.adb:65:22: medium: assertion might fail, requires Float_32 (X) >=
+floating_point.adb:65:07: info: assertion proved
 floating_point.adb:65:32: info: range check proved
 floating_point.adb:66:16: info: division check proved
-floating_point.adb:66:16: medium: overflow check might fail
+floating_point.adb:66:16: info: overflow check proved
 floating_point.adb:66:28: info: range check proved
 floating_point.adb:75:07: info: assertion proved
 nonlinear.adb:10:17: info: overflow check proved

@@ -62,8 +62,8 @@ is
       L : constant := 7.3526e6;
    begin
       pragma Assume (X /= 0);
-      pragma Assert (Float_32 (X) >= 0.9);
-      Res := L / Float_32 (X);
+      pragma Assert (Float_32 (X) >= 0.9);  --  @ASSERT:PASS
+      Res := L / Float_32 (X);              --  @OVERFLOW:PASS
    end Int_To_Float_Simple;
 
    function Float_to_Long_Float (X : Float) return Long_Float

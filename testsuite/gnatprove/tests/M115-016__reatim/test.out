@@ -2,8 +2,8 @@ pck.adb:16:27: info: division check proved
 pck.adb:16:27: info: range check proved
 pck.adb:17:27: info: division check proved
 pck.adb:17:27: info: range check proved
-pck.adb:31:20: medium: overflow check might fail
-pck.adb:31:20: medium: range check might fail
+pck.adb:31:20: info: overflow check proved
+pck.adb:31:20: info: range check proved
 pck.adb:32:20: medium: overflow check might fail
 pck.adb:32:20: medium: range check might fail
 pck.adb:33:20: medium: overflow check might fail

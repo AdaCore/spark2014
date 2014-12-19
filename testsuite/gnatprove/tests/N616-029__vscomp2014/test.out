@@ -9,6 +9,6 @@ sum_elem.ads:27:40: medium: range check might fail
 sum_elem.ads:28:27: info: precondition proved
 sum_elem.ads:28:46: info: precondition proved
 sum_elem.ads:28:64: info: precondition proved
-sum_elem.ads:28:76: info: range check proved
+sum_elem.ads:28:76: medium: range check might fail
 sum_elem.ads:28:87: info: precondition proved
-sum_elem.ads:28:99: info: range check proved
+sum_elem.ads:28:99: medium: range check might fail

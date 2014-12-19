@@ -18,7 +18,7 @@ is
       if X /= 0 then
 
          --# check X >= 1;
-         pragma Assert (Float(X) >= 0.9);
+         pragma Assert (Float(X) >= 0.9);  --  @ASSERT:PASS
          H := L / Float (X);
 
          if H >= Float (T.Output_T'Last) then
@@ -34,4 +34,3 @@ is
    end Get;
 
 end A;
-
