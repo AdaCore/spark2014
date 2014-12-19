@@ -1,0 +1,5 @@
+stacks_14-monitored_14.adb:10:42: info: length check proved
+stacks_14-monitored_14.adb:12:44: info: length check proved
+stacks_14-monitored_14.adb:19:25: medium: array index check might fail
+stacks_14-monitored_14.adb:20:54: medium: overflow check might fail
+stacks_14-monitored_14.adb:25:30: medium: array index check might fail

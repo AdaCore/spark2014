@@ -1,2 +1,0 @@
-ALL XFAIL fails to spot elaboration order issue (MB20-055)
-

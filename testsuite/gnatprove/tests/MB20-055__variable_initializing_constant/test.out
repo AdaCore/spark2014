@@ -1,0 +1,15 @@
+client1.ads:8:36: Elaborate_All pragma required for "Trouble"
+client1.ads:8:36: reference to "V" during elaboration in SPARK
+client2.ads:9:36: Elaborate_All pragma required for "Trouble"
+client2.ads:9:36: reference to "V" during elaboration in SPARK
+client3.ads:10:36: Elaborate_All pragma required for "Trouble"
+client3.ads:10:36: reference to "V" during elaboration in SPARK
+client4.ads:9:36: Elaborate_All pragma required for "Trouble"
+client4.ads:9:36: reference to "V" during elaboration in SPARK
+   compilation of client1.ads failed
+   compilation of client2.ads failed
+   compilation of client3.ads failed
+   compilation of client4.ads failed
+
+
+gnatprove: error during generation of Global contracts

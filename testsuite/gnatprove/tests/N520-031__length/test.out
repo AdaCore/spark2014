@@ -1,0 +1,9 @@
+main.adb:3:24: info: length check proved
+main.adb:5:04: info: precondition proved
+p.adb:8:16: info: index check proved
+p.adb:9:09: info: index check proved
+p.adb:9:17: info: index check proved
+p.adb:10:09: info: index check proved
+p.ads:10:16: medium: postcondition might fail, requires V = V'Old'update
+p.ads:10:45: info: index check proved
+p.ads:10:60: info: index check proved

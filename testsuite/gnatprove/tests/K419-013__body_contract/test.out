@@ -1,0 +1,7 @@
+body_contract.adb:7:14: medium: overflow check might fail
+body_contract.adb:12:14: info: postcondition proved
+body_contract.adb:12:24: info: overflow check proved
+body_contract.adb:15:14: info: overflow check proved
+body_contract.adb:22:14: info: overflow check proved
+body_contract.ads:7:14: info: postcondition proved
+body_contract.ads:7:24: info: overflow check proved

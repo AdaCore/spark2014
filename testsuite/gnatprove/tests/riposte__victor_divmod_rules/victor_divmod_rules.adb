@@ -38,7 +38,7 @@ is
    procedure DivMod_04 (X, Y : in T)
      with Depends => (null => (X, Y)),
           Pre     => Y < 0,
-          Post    => Y < X mod Y  --  @POSTCONDITION:PASS
+          Post    => Y < X mod Y
    is
    begin
       null;
@@ -162,7 +162,7 @@ is
    procedure DivMod_14 (X, Y : in T)
      with Depends => (null => (X, Y)),
           Pre     => X rem Y = 0,
-          Post    => X mod Y = 0  --  @POSTCONDITION:PASS
+          Post    => X mod Y = 0
    is
    begin
       null;
@@ -172,7 +172,7 @@ is
    procedure DivMod_15 (X, Y : in T)
      with Depends => (null => (X, Y)),
           Pre     => 0 <= X and 0 < Y,
-          Post    => X mod Y = X rem Y  --  @POSTCONDITION:PASS
+          Post    => X mod Y = X rem Y
    is
    begin
       null;
@@ -182,7 +182,7 @@ is
    procedure DivMod_16 (X, Y : in T)
      with Depends => (null => (X, Y)),
           Pre     => X <= 0 and 0 < Y and X rem Y /= 0,
-          Post    => X mod Y = X rem Y + Y  --  @POSTCONDITION:PASS
+          Post    => X mod Y = X rem Y + Y
    is
    begin
       null;
@@ -192,7 +192,7 @@ is
    procedure DivMod_17 (X, Y : in T)
      with Depends => (null => (X, Y)),
           Pre     => 0 <= X and Y < 0 and X rem Y /= 0,
-          Post    => X mod Y = X rem Y + Y  --  @POSTCONDITION:PASS
+          Post    => X mod Y = X rem Y + Y
    is
    begin
       null;
@@ -202,7 +202,7 @@ is
    procedure DivMod_18 (X, Y : in T)
      with Depends => (null => (X, Y)),
           Pre     => X <= 0 and Y < 0,
-          Post    => X mod Y = X rem Y  --  @POSTCONDITION:PASS
+          Post    => X mod Y = X rem Y
    is
    begin
       null;

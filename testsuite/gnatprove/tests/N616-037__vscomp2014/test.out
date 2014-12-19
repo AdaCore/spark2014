@@ -1,4 +1,3 @@
-old_val.adb:1:11: warning: subprogram "Old_Val" has no effect
 old_val.adb:6:14: warning: subprogram "Local" has no effect
 old_val.adb:7:14: info: postcondition proved
-old_val.adb:7:21: warning: range check might fail
+old_val.adb:7:25: medium: range check might fail
