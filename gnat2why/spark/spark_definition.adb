@@ -6,8 +6,8 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                      Copyright (C) 2011-2014, AdaCore                    --
---                      Copyright (C) 2014, Altran UK Limited               --
+--                      Copyright (C) 2011-2015, AdaCore                    --
+--                      Copyright (C) 2014-2015, Altran UK Limited          --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -641,10 +641,6 @@ package body SPARK_Definition is
          when N_Component_Declaration =>
             Mark_Component_Declaration (N);
 
-         when N_Exception_Declaration          |
-              N_Exception_Renaming_Declaration =>
-            Mark_Violation ("exception", N);
-
          when N_Exit_Statement =>
             if Present (Condition (N)) then
                Mark (Condition (N));
@@ -1133,6 +1129,8 @@ package body SPARK_Definition is
               N_Attribute_Definition_Clause            |
               N_Character_Literal                      |
               N_Enumeration_Representation_Clause      |
+              N_Exception_Declaration                  |
+              N_Exception_Renaming_Declaration         |
               N_Formal_Object_Declaration              |
               N_Formal_Package_Declaration             |
               N_Formal_Subprogram_Declaration          |
@@ -2945,16 +2943,14 @@ package body SPARK_Definition is
                  E_Return_Statement      |
                  E_Package               |
                  E_Package_Body          |
-                 E_Subprogram_Body       =>
+                 E_Subprogram_Body       |
+                 E_Exception             =>
                null;
 
             --  Abstract state entities are passed directly to Mark_Entity
 
             when E_Abstract_State =>
                raise Program_Error;
-
-            when E_Exception =>
-               Mark_Violation ("exception", N);
 
             when E_Entry                 |
                  E_Entry_Family          |

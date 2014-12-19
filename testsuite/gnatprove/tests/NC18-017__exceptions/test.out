@@ -1,0 +1,4 @@
+client.adb:4:11: warning: subprogram "Client" has no effect
+client.adb:9:07: medium: exception might be raised
+client.adb:11:07: medium: exception might be raised
+client.adb:13:07: medium: exception might be raised
