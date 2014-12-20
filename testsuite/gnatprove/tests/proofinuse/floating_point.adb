@@ -63,7 +63,7 @@ is
    begin
       pragma Assume (X /= 0);
       pragma Assert (Float_32 (X) >= 0.9);  --  @ASSERT:PASS
-      Res := L / Float_32 (X);              --  @OVERFLOW:PASS
+      Res := L / Float_32 (X);              --  @OVERFLOW_CHECK:PASS
    end Int_To_Float_Simple;
 
    function Float_to_Long_Float (X : Float) return Long_Float
