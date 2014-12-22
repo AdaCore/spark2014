@@ -17,7 +17,7 @@ is
       loop
          exit when Free_Slot /= Null_Ident;
 
-         --  So far (until and including Slot -1 )the search criterion (an
+         --  So far (until and including Slot -1) the search criterion (an
          --  empty slot) is not fulfilled.
          pragma Loop_Invariant
            (Free_Slot = Null_Ident and
@@ -37,7 +37,7 @@ is
       loop
          exit when Free_Slot /= Null_Ident;
 
-         --  So far (until and including Slot -1 )the search criterion (an
+         --  So far (until and including Slot -1) the search criterion (an
          --  empty slot) is not fulfilled.
          pragma Loop_Invariant
            (Free_Slot = Null_Ident and
