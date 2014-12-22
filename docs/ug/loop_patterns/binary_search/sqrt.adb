@@ -20,10 +20,10 @@ is
 
       loop
          pragma Loop_Invariant (0 <= Lower and
-                                  Lower < Upper and
-                                    Upper <= Maximum_Root and
-                                      Lower * Lower <= N and
-                                        N < Upper * Upper);
+                                Lower < Upper and
+                                Upper <= Maximum_Root and
+                                Lower * Lower <= N and
+                                N < Upper * Upper);
          exit when Lower + 1 = Upper;
          Middle := (Lower + Upper) / 2;
          if Middle * Middle > N then

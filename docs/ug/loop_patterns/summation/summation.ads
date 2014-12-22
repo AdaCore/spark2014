@@ -11,7 +11,7 @@ is
 
    type Ar is array (Index_T) of Component_T;
 
-      procedure Sum (A : in Ar; S: out Natural) with
-        Post => S <= Max_Val * Max_Index;
+   procedure Sum (A : in Ar; S: out Natural) with
+     Post => S <= Max_Val * Max_Index;
 
 end Summation;

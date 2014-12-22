@@ -160,7 +160,7 @@ When given a list of files, each of which contains a compilation unit,
 |GNATprove| will analyze those units (including bodies and subunits)
 plus the specifications and bodies of units on which they depend.
 
-Two options modify this behaviour:
+Two options modify this behavior:
 
 * With option ``-u``, the bodies of dependent units are ignored, so only the
   given units and the specifications of dependent units are analyzed.
@@ -1898,14 +1898,14 @@ seen as instantiations of a very general loop pattern:
 Loop Pattern      Loop Over Data Structure
 ================  ========================
 Proof Objective   Establish property P.
-Loop Behaviour    Loops over the data structure and establishes P.
+Loop Behavior     Loops over the data structure and establishes P.
 Loop Invariant    Property P is established for the part of the data structure
                   looped over so far.
 ================  ========================
 
 However, it is useful to break this down into more detailed patterns since
 often a small modification to the proof objective, or to the control
-behaviour of the loop, leads to a significantly changed loop invariant. In
+behavior of the loop, leads to a significantly changed loop invariant. In
 the following, we focus on some loop patterns for scalar and array
 properties that occur frequently in practice.
 
@@ -1944,7 +1944,7 @@ Initialization Patterns
 Loop Pattern      Array Initialization
 ================  ========================
 Proof Objective   Every element of the array has a specific value.
-Loop Behaviour    Loops linearly over the array indexes and initializes every
+Loop Behavior     Loops linearly over the array indexes and initializes every
                   element of the array.
                   The array to be initialized is an out parameter.
 Loop Invariant    Every element initialized so far has its specific value.
@@ -2068,7 +2068,7 @@ Loop Pattern      Sequence Validation with Early Exit
 ================  ========================
 Proof Objective   Determine (flag) if there are any invalid elements in a given
                   array.
-Loop Behaviour    Loops linearly over the array elements and exits if an
+Loop Behavior     Loops linearly over the array elements and exits if an
                   invalid element is encountered.
 Loop Invariant    Every element encountered so far is valid.
 ================  ========================
@@ -2092,17 +2092,17 @@ proof result:
    :language: none
    :linenos:
 
-================  ========================
-Loop Pattern      Sequence Validation that Validates Entire Structure
-================  ========================
-Proof Objective   Determine (flag) if there are any invalid elements in a given
-                  array.
-Loop Behaviour    Loops linearly over the array elements. If an invalid
-                  element is encountered, flag this, but keep validating
-                  (typically logging every invalidity) for the entire array.
-Loop Invariant    If invalidity is not flagged, every element encountered so
-                  far is valid.
-================  ========================
+===============  ===================================================
+Loop Pattern     Sequence Validation that Validates Entire Structure
+===============  ===================================================
+Proof Objective  Determine (flag) if there are any invalid elements
+                 in a given array.
+Loop Behavior    Loops linearly over the array elements. If an invalid
+                 element is encountered, flag this, but keep validating
+                 (typically logging every invalidity) for the entire array.
+Loop Invariant   If invalidity is not flagged, every element encountered so
+                 far is valid.
+===============  ===================================================
 
 Note that even though we have the same proof objective (flag any
 invalidity) as in the previous example, the control flow has changed not to
@@ -2127,18 +2127,18 @@ As expected, we have successful proof results:
    :language: none
    :linenos:
 
-================  ========================
-Loop Pattern      Sequence Validation Preserving Invalidity Flag
-================  ========================
-Proof Objective   Determine (flag) if there are any invalid elements in
-                  a given array, and preserve previously flagged alarm.
-Loop Behaviour    Loops linearly over the array elements. If an invalid
-                  element is encountered, flag this, but keep validating
-                  for the entire array and preserve previously flagged
-                  alarm. The flag is an in out parameter.
-Loop Invariant    If invalidity is not flagged, every element encountered
-                  so far is valid. Preserve previously flagged alarm.
-================  ========================
+===============  ==============================================
+Loop Pattern     Sequence Validation Preserving Invalidity Flag
+===============  ==============================================
+Proof Objective  Determine (flag) if there are any invalid elements in
+                 a given array, and preserve previously flagged alarm.
+Loop Behavior    Loops linearly over the array elements. If an invalid
+                 element is encountered, flag this, but keep validating
+                 for the entire array and preserve previously flagged
+                 alarm. The flag is an in out parameter.
+Loop Invariant   If invalidity is not flagged, every element encountered
+                 so far is valid. Preserve previously flagged alarm.
+===============  ==============================================
 
 
 A common usage pattern is to perform a sequence of validation operations,
@@ -2212,7 +2212,7 @@ Loop Pattern      Strong Sequence Validation Preserving Invalidity Flag
 ================  ========================
 Proof Objective   The validity flag is True exactly when all the elements
                   are valid and previous validity was true.
-Loop Behaviour    Loops linearly over the array elements. If an invalid
+Loop Behavior     Loops linearly over the array elements. If an invalid
                   element is encountered, flag this, but keep validating
                   for the entire array and preserve previously flagged
                   alarm. The flag is an in out parameter.
@@ -2243,7 +2243,7 @@ Loop Pattern      Array Update --- Basic
 ================  ========================
 Proof Objective   Elements of the array are updated according to
                   specified positions and with specified component values.
-Loop Behaviour    Loops over (a range of) array elements and assigns the
+Loop Behavior     Loops over (a range of) array elements and assigns the
                   specified positions to values.
 Loop Invariant    Every element assigned so far has been assigned at the
                   specified position and value.
@@ -2273,7 +2273,7 @@ Proof Objective   Elements of the array are updated according to
                   specified positions and with specified component values.
                   Element not specified to be updated should have the same
                   value as on entry.
-Loop Behaviour    Loops over (a range of) array elements and assigns the
+Loop Behavior     Loops over (a range of) array elements and assigns the
                   specified positions to values.
 Loop Invariant    Every element assigned so far has been assigned at the
                   specified position and value. Element encountered so
@@ -2306,14 +2306,14 @@ Search Patterns
 ---------------
 
 We have seen earlier examples of linear and binary search, in the section
-on how to write loop invariants.
+on :ref:`how to write loop invariants`.
 
 ================  ========================
 Loop Pattern      Search with Early Exit
 ================  ========================
 Proof Objective   Has found an element or position that meets a search
                   criterion.
-Loop Behaviour    Loops over the array elements. Exits when
+Loop Behavior     Loops over the array elements. Exits when
                   found an element that meets the search criterion.
 Loop Invariant    Every element encountered so far does not meet the search
                   criterion.
@@ -2349,7 +2349,7 @@ Example: Linear Wrap-around Search of Table --- Strong
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Similarly to what we did for the validation patterns, let us strengthen the
-proof objective towards full functional behaviour:
+proof objective towards full functional behavior:
 
 .. literalinclude:: loop_patterns/linear_search_strong/find.ads
    :language: ada
@@ -2359,7 +2359,7 @@ proof objective towards full functional behaviour:
    :language: ada
    :linenos:
 
-Note that the proof objectives of the individual loops has not changed, but
+Note that the proof objectives of the individual loops have not changed, but
 the post condition that sums up the effects of the two loops has. We get
 the following proof results:
 
@@ -2398,7 +2398,7 @@ Loop Pattern      Bounded Calculation
 ================  ========================
 Proof Objective   Perform a calculation over all elements in a data structure
                   so that this is bounded.
-Loop Behaviour    Loops over the data structure, and use the elements
+Loop Behavior     Loops over the data structure, and uses the elements
                   to contribute to the calculated result.
 Loop Invariant    The calculation performed so far is of a sufficiently small
                   bound so that the total bound can be met.
@@ -2424,7 +2424,7 @@ Proof result:
    :language: none
    :linenos:
 
-For more full-functional behaviour specifications of calculations like
+For more full-functional behavior specifications of calculations like
 summation, usually lemmas or external axioms are necessary.
 
 .. _How to Investigate Unproved Checks:

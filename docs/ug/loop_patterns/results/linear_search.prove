@@ -6,5 +6,5 @@ find.adb:35:11: info: range check proved
 find.adb:42:10: info: loop invariant initialization proved
 find.adb:42:10: info: loop invariant preservation proved
 find.adb:45:25: info: index check proved
-find.ads:32:14: info: postcondition proved
-find.ads:33:37: info: index check proved
+find.ads:28:14: info: postcondition proved
+find.ads:29:37: info: index check proved
