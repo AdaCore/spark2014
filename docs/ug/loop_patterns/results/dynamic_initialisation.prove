@@ -1,0 +1,9 @@
+init.adb:9:09: info: length check proved
+init.adb:9:12: info: range check proved
+init.adb:13:30: info: overflow check proved
+init.adb:13:30: info: range check proved
+init.adb:16:10: info: loop invariant initialization proved
+init.adb:16:10: info: loop invariant preservation proved
+init.adb:17:47: info: index check proved
+init.ads:16:15: info: postcondition proved
+init.ads:16:43: info: index check proved

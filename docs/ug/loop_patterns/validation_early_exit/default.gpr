@@ -1,0 +1,8 @@
+project Default is
+   package Prove is
+      for Switches use ("--report=all");
+   end Prove;
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnato13", "-gnatws");
+   end Compiler;
+end Default;
