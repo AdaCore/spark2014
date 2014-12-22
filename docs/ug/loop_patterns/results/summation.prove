@@ -1,0 +1,4 @@
+summation.adb:11:17: info: overflow check proved
+summation.adb:13:10: info: loop invariant initialization proved
+summation.adb:13:10: info: loop invariant preservation proved
+summation.ads:15:17: info: postcondition proved

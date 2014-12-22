@@ -1,0 +1,23 @@
+DUMMY:=$(shell mkdir -p prove)
+
+.PHONY: gnatprove prove results result clean force
+
+RESULTS=$(PWD)/results
+ALL=$(wildcard */default.gpr)
+ALL_PROVE_MSG=$(patsubst %/default.gpr,$(RESULTS)/%.prove,$(ALL))
+
+gnatprove: $(ALL_PROVE_MSG)
+
+# success expected for all loop patterns
+
+$(RESULTS)/%.prove: force
+	cd prove && \
+	cp -rf ../$* . && \
+	cd $* && \
+	res=`gnatprove -f -q -j0 -P default.gpr --warnings=on --timeout=60 --prover=altergo`; \
+        rc=$$?; \
+        echo "$$res" | python $(PWD)/../sort_messages.py >$@; \
+        [ $$rc -eq 0 ]
+
+clean:
+	rm -rf prove

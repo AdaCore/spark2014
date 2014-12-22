@@ -1,0 +1,8 @@
+sqrt.adb:18:21: info: overflow check proved
+sqrt.adb:22:10: info: loop invariant initialization proved
+sqrt.adb:22:10: info: loop invariant preservation proved
+sqrt.adb:27:26: info: overflow check proved
+sqrt.adb:28:27: info: overflow check proved
+sqrt.adb:28:36: info: division check proved
+sqrt.adb:29:20: info: overflow check proved
+sqrt.ads:8:19: info: postcondition proved

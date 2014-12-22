@@ -36,17 +36,20 @@ help:
 clean:
 	(cd gnatprove_by_example; make -f Makefile.examples clean)
 	(cd examples; make -f Makefile.examples clean)
+	(cd loop_patterns; make -f Makefile.patterns clean)
 	-rm -rf $(BUILDDIR)/*
 
 generate:
 	@echo "Generating GNATprove results..."
 	(cd gnatprove_by_example; make -f Makefile.examples gnatprove results)
 	(cd examples; make -f Makefile.examples gnatprove)
+	(cd loop_patterns; make -f Makefile.patterns gnatprove)
 
 generate-nightly:
 	@echo "Generating GNATprove results..."
 	(cd gnatprove_by_example; make -f Makefile.examples gnatprove results clean)
 	(cd examples; make -f Makefile.examples gnatprove clean)
+	(cd loop_patterns; make -f Makefile.patterns gnatprove clean)
 
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html

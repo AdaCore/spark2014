@@ -1,0 +1,5 @@
+update.adb:13:10: info: loop invariant initialization proved
+update.adb:13:10: info: loop invariant preservation proved
+update.adb:14:49: info: index check proved
+update.ads:15:15: info: postcondition proved
+update.ads:15:57: info: index check proved
