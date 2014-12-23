@@ -1896,28 +1896,28 @@ properties that occur frequently in practice.
 List of Loop Patterns
 ---------------------
 
-1. Initialization Patterns
+#. Initialization Patterns
 
    a) default array initialization
    b) array initialization using dynamic expressions
 
-2. Validation Patterns
+#. Validation Patterns
 
    a) with early exit
    b) keep validating
    c) preserve flag
 
-3. Update Patterns
+#. Update Patterns
 
    a) array update, basic
-   a) array update, strong
+   b) array update, strong
 
-4. Search Patterns
+#. Search Patterns
 
    a) linear
    b) binary
 
-5. Calculation Patterns
+#. Calculation Patterns
 
    a) bounded summation
 
