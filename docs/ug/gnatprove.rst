@@ -1893,33 +1893,35 @@ behavior of the loop, leads to a significantly changed loop invariant. In
 the following, we focus on some loop patterns for scalar and array
 properties that occur frequently in practice.
 
-List of Loop Patterns
----------------------
+In the remainder of this section we identify the following loop
+patterns:
 
-#. Initialization Patterns
+#. :ref:`Initialization Patterns`
 
    a) default array initialization
    b) array initialization using dynamic expressions
 
-#. Validation Patterns
+#. :ref:`Validation Patterns`
 
    a) with early exit
    b) keep validating
    c) preserve flag
 
-#. Update Patterns
+#. :ref:`Update Patterns`
 
    a) array update, basic
    b) array update, strong
 
-#. Search Patterns
+#. :ref:`Search Patterns`
 
    a) linear
    b) binary
 
-#. Calculation Patterns
+#. :ref:`Calculation Patterns`
 
    a) bounded summation
+
+.. _Initialization Patterns:
 
 Initialization Patterns
 -----------------------
@@ -2037,6 +2039,7 @@ result:
    :language: none
    :linenos:
 
+.. _Validation Patterns:
 
 Validation Patterns
 -------------------
@@ -2218,6 +2221,7 @@ And the proof is successful:
    :language: none
    :linenos:
 
+.. _Update Patterns:
 
 Update Patterns
 ---------------
@@ -2285,6 +2289,7 @@ And the proof results:
    :language: none
    :linenos:
 
+.. _Search Patterns:
 
 Search Patterns
 ---------------
@@ -2376,6 +2381,11 @@ We get the following proof results:
 .. literalinclude:: loop_patterns/results/binary_search.prove
    :language: none
    :linenos:
+
+.. _Calculation Patterns:
+
+Calculation Patterns
+--------------------
 
 ================  ========================
 Loop Pattern      Bounded Calculation
