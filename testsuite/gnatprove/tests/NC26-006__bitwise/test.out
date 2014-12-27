@@ -1,0 +1,5 @@
+x86.ads:16:48: info: length check proved
+x86.ads:21:14: info: postcondition proved
+x86.ads:25:14: info: postcondition proved
+x86.ads:30:14: medium: postcondition might fail, requires ReadMem32'Result = (Unsigned32(ReadMem16(addr)) or Shift_Left(Unsigned32(ReadMem16(addr + 2)),16)
+x86.ads:36:14: info: postcondition proved
