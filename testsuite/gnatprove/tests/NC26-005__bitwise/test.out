@@ -1,0 +1,10 @@
+x86.adb:29:37: info: range check proved
+x86.adb:30:53: info: range check proved
+x86.adb:36:37: info: range check proved
+x86.adb:37:53: info: range check proved
+x86.ads:16:48: info: length check proved
+x86.ads:21:14: info: postcondition proved
+x86.ads:26:14: info: postcondition proved
+x86.ads:30:14: info: postcondition proved
+x86.ads:35:14: medium: postcondition might fail, requires ReadMem16(addr) = Val
+x86.ads:39:14: medium: postcondition might fail, requires Unsigned16(ReadMem8(addr)) or  Shift_Left(Unsigned16(ReadMem8(addr+1)),8)) = Val
