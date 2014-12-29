@@ -157,8 +157,8 @@ package body Why.Gen.Names is
       (From : W_Type_Id;
        To   : W_Type_Id) return W_Identifier_Id
    is
-      From_Kind : constant EW_Type := Get_Base_Type (From);
-      To_Kind   : constant EW_Type := Get_Base_Type (To);
+      From_Kind : constant EW_Type := Get_Type_Kind (From);
+      To_Kind   : constant EW_Type := Get_Type_Kind (To);
    begin
       case From_Kind is
          when EW_Unit | EW_Prop | EW_Private =>
@@ -330,7 +330,7 @@ package body Why.Gen.Names is
      (Rel       : EW_Relation;
       Arg_Types : W_Type_Id) return W_Identifier_Id
    is
-      Kind : constant EW_Type := Get_Base_Type (Arg_Types);
+      Kind : constant EW_Type := Get_Type_Kind (Arg_Types);
       A    : constant Node_Id :=
         (if Kind = EW_Abstract then Get_Ada_Node (+Arg_Types)
          else Empty);

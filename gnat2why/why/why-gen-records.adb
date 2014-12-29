@@ -1426,7 +1426,7 @@ package body Why.Gen.Records is
                     Name     => To_String (WNE_Rec_Split_Discrs),
                     Typ      =>
                       New_Type
-                        (Base_Type  => EW_Abstract,
+                        (Type_Kind  => EW_Abstract,
                          Name       =>
                            (if not Is_Root then To_Name
                               (Prefix (E_Module (Root), WNE_Rec_Split_Discrs))
@@ -1496,7 +1496,7 @@ package body Why.Gen.Records is
                                  Name     => To_String (WNE_Rec_Split_Fields),
                                  Typ      =>
                                    New_Type
-                                     (Base_Type  => EW_Abstract,
+                                     (Type_Kind  => EW_Abstract,
                                       Name       =>
                                         To_Name (WNE_Rec_Split_Fields),
                                       Is_Mutable => False)),
@@ -1946,7 +1946,7 @@ package body Why.Gen.Records is
                Name        => To_Ident (WNE_Rec_Split_Discrs),
                Return_Type =>
                  New_Type
-                   (Base_Type  => EW_Abstract,
+                   (Type_Kind  => EW_Abstract,
                     Name       =>
                       To_Name (WNE_Rec_Split_Discrs),
                     Is_Mutable => False),
@@ -2024,7 +2024,7 @@ package body Why.Gen.Records is
    function Field_Type_For_Discriminants (E : Entity_Id) return W_Type_Id is
      (New_Type (Ada_Node   => E,
                 Is_Mutable => False,
-                Base_Type  => EW_Abstract,
+                Type_Kind  => EW_Abstract,
                 Name       =>
                    To_Name (Prefix
                             (Ada_Node => E,
@@ -2039,7 +2039,7 @@ package body Why.Gen.Records is
    function Field_Type_For_Fields (E : Entity_Id) return W_Type_Id is
      (New_Type (Ada_Node   => E,
                 Is_Mutable => False,
-                Base_Type  => EW_Abstract,
+                Type_Kind  => EW_Abstract,
                 Name       =>
                    To_Name (Prefix
                             (Ada_Node => E,

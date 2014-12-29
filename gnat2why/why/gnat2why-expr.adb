@@ -1679,19 +1679,19 @@ package body Gnat2Why.Expr is
                      Actual_Type : constant W_Type_Id :=
                        Type_Of_Node (Actual);
                      Array_Expr  : constant W_Expr_Id :=
-                       (if Get_Base_Type (Actual_Type) = EW_Abstract then
+                       (if Get_Type_Kind (Actual_Type) = EW_Abstract then
                         +New_Identifier
                           (Ada_Node => Empty,
                            Name     => Full_Name (Formal) & "__compl",
                            Typ      => Actual_Type)
                         else Transform_Expr (Actual, Domain, Params));
                      Need_Ref : constant Boolean :=
-                       Get_Base_Type (Actual_Type) = EW_Abstract
+                       Get_Type_Kind (Actual_Type) = EW_Abstract
                        or else not (Nkind (Actual) in N_Identifier |
                                     N_Expanded_Name);
                   begin
                      if Need_Ref then
-                        if Get_Base_Type (Actual_Type) = EW_Abstract then
+                        if Get_Type_Kind (Actual_Type) = EW_Abstract then
 
                            --  The actual is not in split form. We need a
                            --  temporary variable for the content of the array.
@@ -3359,7 +3359,7 @@ package body Gnat2Why.Expr is
                   end;
                end if;
             when UCArray =>
-               if Get_Base_Type (Type_Of_Node (Actual)) = EW_Abstract
+               if Get_Type_Kind (Type_Of_Node (Actual)) = EW_Abstract
                  or else not (Nkind (Actual) in N_Identifier |
                               N_Expanded_Name)
                then
@@ -3392,7 +3392,7 @@ package body Gnat2Why.Expr is
                      --  variable for it.
 
                      Need_Reconstruction : constant Boolean :=
-                       Get_Base_Type (Actual_T) = EW_Abstract;
+                       Get_Type_Kind (Actual_T) = EW_Abstract;
 
                   --  1/ Before the call (saving into a temporary variable):
                   ----------------------------------------------------------
@@ -3435,7 +3435,7 @@ package body Gnat2Why.Expr is
                      --  bounds before applying the conversion.
 
                      Reconstructed_Temp : constant W_Prog_Id :=
-                       (if Get_Base_Type (Formal_T) = EW_Split then
+                       (if Get_Type_Kind (Formal_T) = EW_Split then
                         +Array_Convert_From_Base
                           (EW_Prog, +Prefetch_Actual_Rec, +Tmp_Var_Deref)
                         else +Tmp_Var_Deref);
@@ -4239,7 +4239,7 @@ package body Gnat2Why.Expr is
                     Domain   => Domain,
                     Expr     => Right,
                     To       => Base_Why_Type (Right_Type)),
-                 Op_Type  => Get_Base_Type (Base_Why_Type (Right_Type)));
+                 Op_Type  => Get_Type_Kind (Base_Why_Type (Right_Type)));
             T := Apply_Modulus_Or_Rounding (Op, Return_Type, T, Domain);
 
          when N_Op_Plus =>
@@ -4256,7 +4256,7 @@ package body Gnat2Why.Expr is
                    (Ada_Node => Ada_Node,
                     Domain   => Domain,
                     Name     =>
-                      New_Abs (Get_Base_Type (Typ)),
+                      New_Abs (Get_Type_Kind (Typ)),
                     Args     => (1 => Insert_Simple_Conversion
                                  (Ada_Node => Ada_Node,
                                   Domain   => Domain,
@@ -4286,7 +4286,7 @@ package body Gnat2Why.Expr is
                                                 Expr     => Right,
                                                 To       => Base),
                     Op       => Transform_Binop (Op),
-                    Op_Type  => Get_Base_Type (Base));
+                    Op_Type  => Get_Type_Kind (Base));
                T := Apply_Modulus_Or_Rounding (Op, Return_Type, T, Domain);
             end;
 
@@ -4363,7 +4363,7 @@ package body Gnat2Why.Expr is
                      Left     => L_Why,
                      Right    => R_Why,
                      Op       => Transform_Binop (Op),
-                     Op_Type  => Get_Base_Type (Base));
+                     Op_Type  => Get_Type_Kind (Base));
                end if;
 
                T := Apply_Modulus_Or_Rounding (Op, Return_Type, T, Domain);
@@ -4407,7 +4407,7 @@ package body Gnat2Why.Expr is
                   elsif Is_Modular_Integer_Type (Return_Type) then
                        Euclid_Div
                   else
-                     New_Division (Get_Base_Type (Base)));
+                     New_Division (Get_Type_Kind (Base)));
 
                L_Why := Insert_Simple_Conversion
                  (Ada_Node => Ada_Node,
@@ -4482,7 +4482,7 @@ package body Gnat2Why.Expr is
                Name    : W_Identifier_Id;
                Typ     : constant W_Type_Id := Base_Why_Type (Left_Type);
             begin
-               Name := New_Exp (Get_Base_Type (Typ));
+               Name := New_Exp (Get_Type_Kind (Typ));
 
                T := New_Call
                  (Ada_Node => Ada_Node,
@@ -6806,7 +6806,7 @@ package body Gnat2Why.Expr is
                             New_Relation
                               (Domain  => EW_Pred,
                                Op_Type =>
-                                 Get_Base_Type (Base_Why_Type (Etype (Discr))),
+                                 Get_Type_Kind (Base_Why_Type (Etype (Discr))),
                                Op      => EW_Eq,
                                Left    => +Input_Discr,
                                Right   => +Expected_Discr));
@@ -7024,7 +7024,7 @@ package body Gnat2Why.Expr is
                                       Right    => Offset,
                                       Op       => Op,
                                       Op_Type  =>
-                                        Get_Base_Type (W_Type));
+                                        Get_Type_Kind (W_Type));
                end;
             end if;
 
@@ -7686,7 +7686,7 @@ package body Gnat2Why.Expr is
       --  Return Empty otherwise.
 
       -------------------
-      -- Get_Base_Type --
+      -- Get_Type_Kind --
       -------------------
 
       function Get_Base_Type (N : Node_Id) return Entity_Id is
@@ -10580,7 +10580,7 @@ package body Gnat2Why.Expr is
       if not Is_Static_Array_Type (Etype (Expr))
         and then
           not Is_Static_Array_Type (Get_Ada_Node (+Get_Type (Pref_Expr)))
-        and then Get_Base_Type (Get_Type (Pref_Expr)) /= EW_Split
+        and then Get_Type_Kind (Get_Type (Pref_Expr)) /= EW_Split
       then
          T := Array_Convert_To_Base (Domain, T);
       end if;

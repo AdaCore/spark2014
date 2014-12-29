@@ -1608,7 +1608,7 @@ package body Why.Atree.Sprint is
 
    procedure Print_Type (Node : W_Type_Id)
    is
-      Base_Type : constant EW_Type := Get_Base_Type (Node);
+      Base_Type : constant EW_Type := Get_Type_Kind (Node);
       Name      : constant W_Name_Id := Get_Name (Node);
    begin
       if Get_Is_Mutable (Node) then

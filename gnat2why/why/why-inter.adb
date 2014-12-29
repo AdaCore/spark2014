@@ -404,7 +404,7 @@ package body Why.Inter is
    -------------------
 
    function Base_Why_Type (W : W_Type_Id) return W_Type_Id is
-      Kind : constant EW_Type := Get_Base_Type (W);
+      Kind : constant EW_Type := Get_Type_Kind (W);
    begin
       case Kind is
          when EW_Abstract =>
@@ -923,8 +923,8 @@ package body Why.Inter is
    -------------------------
 
    function Is_Array_Conversion (Left, Right : W_Type_Id) return Boolean
-   is (Get_Base_Type (Base_Why_Type (Left)) in EW_Abstract | EW_Split and then
-       Get_Base_Type (Base_Why_Type (Right)) in EW_Abstract | EW_Split and then
+   is (Get_Type_Kind (Base_Why_Type (Left)) in EW_Abstract | EW_Split and then
+       Get_Type_Kind (Base_Why_Type (Right)) in EW_Abstract | EW_Split and then
        Has_Array_Type (Get_Ada_Node (+Left)) and then
        Has_Array_Type (Get_Ada_Node (+Right)));
 
@@ -933,8 +933,8 @@ package body Why.Inter is
    ------------------------------
 
    function Is_Private_Conversion (Left, Right : W_Type_Id) return Boolean
-   is (Get_Base_Type (Base_Why_Type (Left)) in EW_Abstract | EW_Split
-       and then Get_Base_Type (Base_Why_Type (Right)) in EW_Abstract | EW_Split
+   is (Get_Type_Kind (Base_Why_Type (Left)) in EW_Abstract | EW_Split
+       and then Get_Type_Kind (Base_Why_Type (Right)) in EW_Abstract | EW_Split
        and then Fullview_Not_In_SPARK (Get_Ada_Node (+Left))
        and then Fullview_Not_In_SPARK (Get_Ada_Node (+Right)));
 
@@ -943,8 +943,8 @@ package body Why.Inter is
    --------------------------
 
    function Is_Record_Conversion (Left, Right : W_Type_Id) return Boolean
-   is (Get_Base_Type (Base_Why_Type (Left)) in EW_Abstract | EW_Split and then
-       Get_Base_Type (Base_Why_Type (Right)) in EW_Abstract | EW_Split and then
+   is (Get_Type_Kind (Base_Why_Type (Left)) in EW_Abstract | EW_Split and then
+       Get_Type_Kind (Base_Why_Type (Right)) in EW_Abstract | EW_Split and then
        Has_Record_Type (Get_Ada_Node (+Left)) and then
        Has_Record_Type (Get_Ada_Node (+Right)));
 
@@ -964,8 +964,8 @@ package body Why.Inter is
          return Left;
 
       else
-         Left_Base := Get_Base_Type (Base_Why_Type (Left));
-         Right_Base := Get_Base_Type (Base_Why_Type (Right));
+         Left_Base := Get_Type_Kind (Base_Why_Type (Left));
+         Right_Base := Get_Type_Kind (Base_Why_Type (Right));
 
          if Left_Base = EW_Abstract and then Right_Base = EW_Abstract then
             declare
@@ -1026,12 +1026,12 @@ package body Why.Inter is
       if Kind = EW_Abstract then
          return New_Type (Ada_Node   => E,
                           Is_Mutable => False,
-                          Base_Type  => EW_Abstract,
+                          Type_Kind  => EW_Abstract,
                           Name       => To_Why_Type (E));
       else
          return New_Type (Ada_Node   => E,
                           Is_Mutable => False,
-                          Base_Type  => EW_Split,
+                          Type_Kind  => EW_Split,
                           Name       =>
                             New_Name
                               (Ada_Node => E,
@@ -1048,7 +1048,7 @@ package body Why.Inter is
    begin
       return New_Type (Ada_Node   => Empty,
                        Is_Mutable => False,
-                       Base_Type  => EW_Abstract,
+                       Type_Kind  => EW_Abstract,
                        Name       => Name);
    end New_Named_Type;
 
@@ -1068,7 +1068,7 @@ package body Why.Inter is
       else
          return
            New_Type (Ada_Node   => Get_Ada_Node (+Ty),
-                     Base_Type  => Get_Base_Type (+Ty),
+                     Type_Kind  => Get_Type_Kind (+Ty),
                      Name       => Get_Name (+Ty),
                      Is_Mutable => True);
       end if;
@@ -1274,7 +1274,7 @@ package body Why.Inter is
    --------
 
    function Up (WT : W_Type_Id) return W_Type_Id is
-      Kind : constant EW_Type := Get_Base_Type (WT);
+      Kind : constant EW_Type := Get_Type_Kind (WT);
    begin
       case Kind is
          when EW_Abstract =>

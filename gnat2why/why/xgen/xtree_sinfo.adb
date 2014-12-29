@@ -89,7 +89,7 @@ package body Xtree_Sinfo is
       ------------
 
       New_Field (W_Type,
-                 "Base_Type", "EW_Type");
+                 "Type_Kind", "EW_Type");
       New_Field (W_Type,
                  "Name", "W_Name", Id_One);
       New_Field (W_Type,

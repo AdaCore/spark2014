@@ -360,7 +360,7 @@ package body Why.Gen.Scalars is
 
       Define_Scalar_Attributes
         (Theory    => Theory,
-         Base_Type => Get_Base_Type (Base_Why_Type (E)),
+         Base_Type => Get_Type_Kind (Base_Why_Type (E)),
          First     => First,
          Last      => Last,
          Modulus   => Modul,

@@ -167,14 +167,14 @@ package Why.Gen.Arrays is
    function Array_Convert_To_Base
      (Domain    : EW_Domain;
       Ar        : W_Expr_Id) return W_Expr_Id
-   with Pre => Get_Base_Type (Get_Type (Ar)) = EW_Abstract;
+   with Pre => Get_Type_Kind (Get_Type (Ar)) = EW_Abstract;
    --  "Ar" must be a Why expression of unconstrained array type. Convert it to
    --  the "split" view of UC arrays
 
    function Array_Convert_From_Base
      (Domain    : EW_Domain;
       Ar        : W_Expr_Id) return W_Expr_Id
-   with Pre => Get_Base_Type (Get_Type (Ar)) = EW_Split;
+   with Pre => Get_Type_Kind (Get_Type (Ar)) = EW_Split;
    --  "Ar" must be a Why expression of unconstrained array type, in split
    --  form. Convert it to the regular unconstrained form.
 
@@ -192,7 +192,7 @@ package Why.Gen.Arrays is
      (Domain    : EW_Domain;
       Old_Ar    : W_Expr_Id;
       New_Base  : W_Expr_Id) return W_Expr_Id
-   with Pre => Get_Base_Type (Get_Type (New_Base)) = EW_Split;
+   with Pre => Get_Type_Kind (Get_Type (New_Base)) = EW_Split;
    --  "New_Base" must be a Why expression of unconstrained array type, in
    --  split form. Convert it to the regular unconstrained form, using Old_Ar's
    --  bounds.

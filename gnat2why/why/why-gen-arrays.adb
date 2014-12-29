@@ -83,7 +83,7 @@ package body Why.Gen.Arrays is
       W_Ty    : constant W_Type_Id := Get_Type (Expr);
       Ty      : constant Entity_Id := Get_Ada_Node (+W_Ty);
    begin
-      if Is_Static_Array_Type (Ty) or else Get_Base_Type (W_Ty) = EW_Split then
+      if Is_Static_Array_Type (Ty) or else Get_Type_Kind (W_Ty) = EW_Split then
          Args (Arg_Ind) := Expr;
       else
          Args (Arg_Ind) :=
@@ -744,7 +744,7 @@ package body Why.Gen.Arrays is
       --  if the object is a split object, look up the required expressions in
       --  the symbol table
 
-      elsif Get_Base_Type (W_Ty) = EW_Split then
+      elsif Get_Type_Kind (W_Ty) = EW_Split then
          return Get_Array_Attr (Domain,
                                 Ada_Ent_To_Why.Element
                                   (Symbol_Table,
@@ -843,7 +843,7 @@ package body Why.Gen.Arrays is
         Type_Of_Node (Component_Type (Unique_Entity (Ty_Entity)));
    begin
       if Is_Static_Array_Type (Ty_Entity) or else
-        Get_Base_Type (Why_Ty) = EW_Split
+        Get_Type_Kind (Why_Ty) = EW_Split
       then
          Elts := Ar;
       else
@@ -878,7 +878,7 @@ package body Why.Gen.Arrays is
                 W => WNE_Array_Update);
    begin
       if Is_Static_Array_Type (Ty_Entity) or else
-        Get_Base_Type (W_Ty) = EW_Split
+        Get_Type_Kind (W_Ty) = EW_Split
       then
          return
            New_Call

@@ -113,31 +113,31 @@ package body Why.Atree.Modules is
       --  builtin Why types
 
       EW_Bool_Type :=
-        New_Type (Base_Type  => EW_Bool,
+        New_Type (Type_Kind  => EW_Bool,
                   Name       => New_Name (Symbol => NID ("bool")),
                   Is_Mutable => False);
       EW_Int_Type :=
-        New_Type (Base_Type  => EW_Int,
+        New_Type (Type_Kind  => EW_Int,
                   Name       => New_Name (Symbol => NID ("int")),
                   Is_Mutable => False);
       EW_Fixed_Type :=
-        New_Type (Base_Type  => EW_Fixed,
+        New_Type (Type_Kind  => EW_Fixed,
                   Name       => New_Name (Symbol => NID ("__fixed")),
                   Is_Mutable => False);
       EW_Private_Type :=
-        New_Type (Base_Type  => EW_Private,
+        New_Type (Type_Kind  => EW_Private,
                   Name       => New_Name (Symbol => NID ("__private")),
                   Is_Mutable => False);
       EW_Prop_Type :=
-        New_Type (Base_Type  => EW_Prop,
+        New_Type (Type_Kind  => EW_Prop,
                   Name       => New_Name (Symbol => NID ("prop")),
                   Is_Mutable => False);
       EW_Real_Type :=
-        New_Type (Base_Type  => EW_Real,
+        New_Type (Type_Kind  => EW_Real,
                   Name       => New_Name (Symbol => NID ("real")),
                   Is_Mutable => False);
       EW_Unit_Type :=
-        New_Type (Base_Type  => EW_Unit,
+        New_Type (Type_Kind  => EW_Unit,
                   Name       => New_Name (Symbol => NID ("unit")),
                   Is_Mutable => False);
 
@@ -327,13 +327,13 @@ package body Why.Atree.Modules is
    --  Identifiers of the Main module
 
       String_Image_Type :=
-        New_Type (Base_Type  => EW_Abstract,
+        New_Type (Type_Kind  => EW_Abstract,
                   Name       =>
                     New_Name (Symbol => NID ("__image")),
                   Is_Mutable => False);
 
       Type_Of_Heap :=
-        New_Type (Base_Type  => EW_Abstract,
+        New_Type (Type_Kind  => EW_Abstract,
                   Name       => New_Name (Symbol => NID ("__type_of_heap")),
                   Is_Mutable => False);
 

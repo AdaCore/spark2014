@@ -955,7 +955,7 @@ package body Gnat2Why.External_Axioms is
                           (Ada_Node    => Formal,
                            Name        =>
                          To_Why_Id (Formal, Domain => EW_Term, Local => True),
-                           Return_Type => Get_Base_Type (Typ),
+                           Return_Type => Get_Type_Kind (Typ),
                            Binders     => (1 .. 0 => <>),
                            Def         => Def));
                   end if;
@@ -1316,7 +1316,7 @@ package body Gnat2Why.External_Axioms is
                              Name => Full_Name (F_Id),
                              Typ  => F_W_Type);
                         M : constant W_Module_Id :=
-                          (case Get_Base_Type (F_W_Type) is
+                          (case Get_Type_Kind (F_W_Type) is
                               when EW_Int | EW_Fixed => Integer_Module,
                               when EW_Real => Floating_Module,
                               when EW_Bool => Boolean_Module,

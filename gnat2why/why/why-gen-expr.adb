@@ -419,12 +419,12 @@ package body Why.Gen.Expr is
          --  unique representation. This is checked here.
 
          if not Is_Static_Array_Type (To_Ent) then
-            if Get_Base_Type (From) = EW_Split and then
-              Get_Base_Type (To) = EW_Abstract
+            if Get_Type_Kind (From) = EW_Split and then
+              Get_Type_Kind (To) = EW_Abstract
             then
                return Array_Convert_From_Base (Domain, Expr);
-            elsif Get_Base_Type (From) = EW_Abstract and then
-              Get_Base_Type (To) = EW_Split
+            elsif Get_Type_Kind (From) = EW_Abstract and then
+              Get_Type_Kind (To) = EW_Split
             then
                return Array_Convert_To_Base (Domain, Expr);
             else
@@ -445,7 +445,7 @@ package body Why.Gen.Expr is
            Need_Temp => Sliding or else not Is_Static_Array_Type (From_Ent));
 
       if Is_Static_Array_Type (To_Ent) or else
-        Get_Base_Type (To) = EW_Split
+        Get_Type_Kind (To) = EW_Split
       then
          if Sliding then
             declare
@@ -469,7 +469,7 @@ package body Why.Gen.Expr is
                   Typ    => To);
             end;
          elsif not Is_Static_Array_Type (From_Ent) and then
-           Get_Base_Type (From) /= EW_Split
+           Get_Type_Kind (From) /= EW_Split
          then
             T :=
               New_Call
@@ -547,9 +547,9 @@ package body Why.Gen.Expr is
 
       From : constant W_Type_Id := Get_Type (Expr);
       Check_Needed : constant Boolean :=
-        (if Get_Base_Type (From) in EW_Abstract | EW_Split
+        (if Get_Type_Kind (From) in EW_Abstract | EW_Split
               and
-            Get_Base_Type (To) in EW_Abstract | EW_Split
+            Get_Type_Kind (To) in EW_Abstract | EW_Split
          then
             Check_Needed_On_Conversion (From => Get_Ada_Node (+From),
                                         To   => Get_Ada_Node (+To))
@@ -614,7 +614,7 @@ package body Why.Gen.Expr is
                     and then Do_Overflow_Check (Parent (Ada_Node))
                   then
                      True
-                  else Get_Base_Type (To) = EW_Abstract
+                  else Get_Type_Kind (To) = EW_Abstract
                     and then Has_Predicates (Get_Ada_Node (+To)))
                else False);
 
@@ -1177,7 +1177,7 @@ package body Why.Gen.Expr is
 
       if Eq_Base (To, From)
         and then (not Do_Check
-                    or else  Get_Base_Type (To) = EW_Bool)
+                    or else  Get_Type_Kind (To) = EW_Bool)
         and then No (Round_Func)
       then
          return Expr;
@@ -1283,7 +1283,7 @@ package body Why.Gen.Expr is
       --  1. If From is an abstract type, convert it to type int, __fixed or
       --     real.
 
-      if Get_Base_Type (From) = EW_Abstract then
+      if Get_Type_Kind (From) = EW_Abstract then
          Cur := Base_Why_Type (From);
          Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
                                              Domain   => Domain,
@@ -1298,7 +1298,7 @@ package body Why.Gen.Expr is
       if Present (Range_Type)
         and then not Range_Check_Applied
         and then Base_Why_Type (Range_Type) = Cur
-        and then Get_Base_Type (From) /= EW_Bool
+        and then Get_Type_Kind (From) /= EW_Bool
       then
          Range_Check_Applied := True;
 
@@ -1322,7 +1322,7 @@ package body Why.Gen.Expr is
             --       abstract type, for which conversion to int/real is
             --       defined.
 
-            if Get_Base_Type (Base_Why_Type (From)) = EW_Fixed then
+            if Get_Type_Kind (Base_Why_Type (From)) = EW_Fixed then
                Fixed_Type :=
                  (if Nkind (Ada_Node) in N_Type_Conversion
                                        | N_Qualified_Expression
@@ -1331,13 +1331,13 @@ package body Why.Gen.Expr is
                   else
                      Etype (Ada_Node));
                Shadow_From := EW_Abstract (Fixed_Type);
-               pragma Assert (Get_Base_Type (Shadow_From) = EW_Abstract);
+               pragma Assert (Get_Type_Kind (Shadow_From) = EW_Abstract);
 
             --  3.2. If To is a fixed-point type, retrieve the corresponding
             --       abstract type, for which conversion from int/real is
             --       defined.
 
-            elsif Get_Base_Type (Base_Why_Type (To)) = EW_Fixed then
+            elsif Get_Type_Kind (Base_Why_Type (To)) = EW_Fixed then
                Fixed_Type :=
                  (if Nkind (Parent (Ada_Node)) in N_Type_Conversion
                                                 | N_Qualified_Expression
@@ -1346,7 +1346,7 @@ package body Why.Gen.Expr is
                   else
                     Etype (Ada_Node));
                Shadow_To := EW_Abstract (Fixed_Type);
-               pragma Assert (Get_Base_Type (Shadow_To) = EW_Abstract);
+               pragma Assert (Get_Type_Kind (Shadow_To) = EW_Abstract);
             end if;
 
             Cur := Base_Why_Type (To);
@@ -1362,7 +1362,7 @@ package body Why.Gen.Expr is
       --     a rounding operation.
 
       if Present (Round_Func) then
-         pragma Assert (Get_Base_Type (Cur) = EW_Real);
+         pragma Assert (Get_Type_Kind (Cur) = EW_Real);
          Result := New_Call (Domain   => Domain,
                              Name     => Round_Func,
                              Args     => (1 => Result),
@@ -1385,7 +1385,7 @@ package body Why.Gen.Expr is
 
       --  6. If To is an abstract type, convert from int, __fixed or real to it
 
-      if Get_Base_Type (To) = EW_Abstract then
+      if Get_Type_Kind (To) = EW_Abstract then
          Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
                                              Domain   => Domain,
                                              From     => Cur,
@@ -1545,7 +1545,7 @@ package body Why.Gen.Expr is
                  New_Relation
                    (Domain  => Domain,
                     Op      => EW_Eq,
-                    Op_Type => Get_Base_Type (Base_Why_Type (Why_Type)),
+                    Op_Type => Get_Type_Kind (Base_Why_Type (Why_Type)),
                     Left    => Left_Int,
                     Right   => Right_Int);
                Is_Pred := True;
@@ -1794,7 +1794,7 @@ package body Why.Gen.Expr is
       --  Why without going throught integers are the equality and inequality
       --  in a predicate context, translated as equivalence or inequivalence.
 
-      if Get_Base_Type (Arg_Type) = EW_Bool
+      if Get_Type_Kind (Arg_Type) = EW_Bool
         and then (Cmp in EW_Inequality or else Domain /= EW_Pred)
       then
          Op_Type := EW_Int_Type;
@@ -1818,7 +1818,7 @@ package body Why.Gen.Expr is
          return
            New_Relation
              (Domain  => Domain,
-              Op_Type => Get_Base_Type (Op_Type),
+              Op_Type => Get_Type_Kind (Op_Type),
               Left    => +Left1,
               Right   => +Right1,
               Op      => Cmp);
