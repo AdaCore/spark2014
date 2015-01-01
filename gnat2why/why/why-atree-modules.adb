@@ -262,6 +262,17 @@ package body Why.Atree.Modules is
           (File => Ada_Model_File,
            Name => NID ("Subtype_Array_Logical_Op_Axioms"));
 
+      --  builtin unary minus
+
+      Int_Unary_Minus :=
+        New_Identifier (Domain => EW_Term,
+                        Symbol => NID ("-"),
+                        Typ    => EW_Int_Type);
+      Real_Unary_Minus :=
+        New_Identifier (Domain => EW_Term,
+                        Symbol => NID ("-."),
+                        Typ    => EW_Real_Type);
+
       --  identifiers of Integer module
       Integer_Bitwise_And :=
         New_Identifier (Module => Int_Bit_Module,

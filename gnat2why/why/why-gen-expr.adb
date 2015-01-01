@@ -177,9 +177,6 @@ package body Why.Gen.Expr is
          when W_Binary_Op =>
             return Why_Types (Get_Op_Type (W_Binary_Op_Id (E)));
 
-         when W_Unary_Op =>
-            return Why_Types (Get_Op_Type (W_Unary_Op_Id (E)));
-
          when W_Identifier =>
             return Get_Typ (W_Identifier_Id (E));
 

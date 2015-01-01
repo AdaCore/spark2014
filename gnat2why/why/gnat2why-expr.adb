@@ -4219,23 +4219,35 @@ package body Gnat2Why.Expr is
             end if;
 
          when N_Op_Minus =>
+
             --  unary minus
-            T :=
-              New_Unary_Op
-                (Ada_Node => Ada_Node,
-                 Op       => EW_Minus,
-                 Right    =>
-                    Insert_Simple_Conversion
-                   (Ada_Node => Ada_Node,
-                    Domain   => Domain,
-                    Expr     => Right,
-                    To       => Base_Why_Type (Right_Type)),
-                 Op_Type  => Get_Type_Kind (Base_Why_Type (Right_Type)));
-            T := Apply_Modulus_Or_Rounding (Op, Return_Type, T, Domain);
+
+            declare
+               Minus_Ident : constant W_Identifier_Id :=
+                 (if Get_Type_Kind (Base_Why_Type (Right_Type)) = EW_Int then
+                     Int_Unary_Minus
+                  else Real_Unary_Minus);
+            begin
+               T :=
+                 New_Call
+                   (Domain   => Domain,
+                    Ada_Node => Ada_Node,
+                    Name     => Minus_Ident,
+                    Args     =>
+                      (1 =>
+                             Insert_Simple_Conversion
+                         (Ada_Node => Ada_Node,
+                          Domain   => Domain,
+                          Expr     => Right,
+                          To       => Base_Why_Type (Right_Type))),
+                   Typ       => Get_Type (+Minus_Ident));
+               T := Apply_Modulus_Or_Rounding (Op, Return_Type, T, Domain);
+            end;
 
          when N_Op_Plus =>
 
             --  unary plus
+
             T := Right;
 
          when N_Op_Abs =>

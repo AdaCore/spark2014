@@ -324,7 +324,7 @@ package body Why.Images is
       --  positive, even when denominator is negative or null.
 
       if UR_Is_Negative (Value) then
-         P (O, EW_Minus, EW_Real);
+         P (O, "-.");
       end if;
 
       --  The base is zero, hence the absolute value is numerator/denominator
@@ -465,16 +465,6 @@ package body Why.Images is
 
          when EW_And =>
             P (O, "/\");
-      end case;
-   end P;
-
-   procedure P (O       : Output_Id;
-                Value   : EW_Unary_Op;
-                Op_Type : EW_Scalar := EW_Int) is
-   begin
-      case Value is
-         when EW_Minus =>
-            P (O, EW_Substract, Op_Type);
       end case;
    end P;
 

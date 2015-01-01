@@ -121,7 +121,6 @@ package body Why.Atree.Sprint is
    procedure Print_Try_Block (Node : W_Try_Block_Id);
    procedure Print_Type (Node : W_Type_Id);
    procedure Print_Type_Decl (Node : W_Type_Decl_Id);
-   procedure Print_Unary_Op (Node : W_Unary_Op_Id);
    procedure Print_Universal_Quantif (Node : W_Universal_Quantif_Id);
    procedure Print_Void (Node : W_Void_Id);
    procedure Print_While_Loop (Node : W_While_Loop_Id);
@@ -1262,9 +1261,6 @@ package body Why.Atree.Sprint is
          when W_Binary_Op =>
             Print_Binary_Op (+N);
 
-         when W_Unary_Op =>
-            Print_Unary_Op (+N);
-
          when W_Deref =>
             Print_Deref (+N);
 
@@ -1687,20 +1683,6 @@ package body Why.Atree.Sprint is
       end if;
       NL (O);
    end Print_Type_Decl;
-
-   ---------------------
-   -- Print_Unary_Op --
-   ---------------------
-
-   procedure Print_Unary_Op (Node : W_Unary_Op_Id) is
-      Op : constant EW_Unary_Op := Get_Op (Node);
-   begin
-      P (O, "( ");
-      P (O, Op, Get_Op_Type (Node));
-      P (O, " ");
-      Print_Node (+Get_Right (Node));
-      P (O, " )");
-   end Print_Unary_Op;
 
    ------------------------------
    -- Print_Universal_Quantif --

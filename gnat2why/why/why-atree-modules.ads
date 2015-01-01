@@ -98,6 +98,11 @@ package Why.Atree.Modules is
    String_Image_Type         : W_Type_Id;
    Type_Of_Heap              : W_Type_Id;
 
+   --  builtin unary minus
+
+   Int_Unary_Minus           : W_Identifier_Id;
+   Real_Unary_Minus          : W_Identifier_Id;
+
    --  Identifiers of the Integer module
 
    Integer_Bitwise_And       : W_Identifier_Id;

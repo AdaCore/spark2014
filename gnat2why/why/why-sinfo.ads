@@ -694,7 +694,6 @@ package Why.Sinfo is
       W_Void,
       W_Comment,
       W_Binary_Op,
-      W_Unary_Op,
       W_Deref,
       W_Record_Access,
       W_Record_Update,
@@ -868,7 +867,5 @@ package Why.Sinfo is
    type EW_Assert_Kind is
      (EW_Assert,
       EW_Check);
-
-   type EW_Unary_Op is (EW_Minus);
 
 end Why.Sinfo;

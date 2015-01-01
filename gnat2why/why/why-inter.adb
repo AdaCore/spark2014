@@ -144,10 +144,6 @@ package body Why.Inter is
         (State : in out Search_State;
          Node  : W_Relation_Id);
 
-      procedure Unary_Op_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Unary_Op_Id);
-
       procedure Binary_Op_Pre_Op
         (State : in out Search_State;
          Node  : W_Binary_Op_Id);
@@ -273,17 +269,6 @@ package body Why.Inter is
       begin
          Handle_Op (State.S, Get_Op_Type (Node));
       end Relation_Pre_Op;
-
-      ---------------------
-      -- Unary_Op_Pre_Op --
-      ---------------------
-
-      procedure Unary_Op_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Unary_Op_Id) is
-      begin
-         Handle_Op (State.S, Get_Op_Type (Node));
-      end Unary_Op_Pre_Op;
 
       SS : Search_State := (Control => Continue, S => Empty_Set);
 
