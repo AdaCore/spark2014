@@ -33,8 +33,6 @@ with Snames;        use Snames;
 with Stand;         use Stand;
 with String_Utils;  use String_Utils;
 
-with Constant_Tree;
-
 with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util;             use SPARK_Util;
@@ -66,9 +64,6 @@ package body Why.Inter is
    --  Subtype of nodes (instead of entities) which have an associated theory,
    --  and should be treated specially.
 
-   package Type_Hierarchy is
-     new Constant_Tree (EW_Type, EW_Unit);
-
    function Extract_Object_Name (Obj : String) return String;
    --  Extract the name after the last "__"; return Obj when the string does
    --  not contain "__". This is useful to determine the user name of an Ada
@@ -80,6 +75,16 @@ package body Why.Inter is
    --  element.
 
    function Get_EW_Term_Type (N : Node_Id) return EW_Type;
+
+   function LCA (Left, Right : EW_Type) return EW_Type;
+   --  implement the "lowest common ancestor" on the following tree:
+   --              EW_Int
+   --             /     \
+   --          EW_Bool  EW_Real
+   --  (root of all other types is EW_Unit)
+
+   function Up (K : EW_Type) return EW_Type;
+   --  implement the "up" function on the same tree
 
    function EW_Abstract_Shared
      (N    : Node_Id;
@@ -978,9 +983,22 @@ package body Why.Inter is
             end;
 
          else
-            return Why_Types (Type_Hierarchy.LCA (Left_Base, Right_Base));
+            return Why_Types (LCA (Left_Base, Right_Base));
          end if;
       end if;
+   end LCA;
+
+   function LCA (Left, Right : EW_Type) return EW_Type is
+   begin
+      if Left = Right then
+         return Left;
+      end if;
+      if Left in EW_Bool | EW_Real | EW_Int and then
+        Right in  EW_Bool | EW_Real | EW_Int
+      then
+         return EW_Int;
+      end if;
+      return EW_Unit;
    end LCA;
 
    -------------------------
@@ -1280,13 +1298,17 @@ package body Why.Inter is
          when EW_Abstract =>
             return Base_Why_Type (WT);
          when others =>
-            return Why_Types (Type_Hierarchy.Up (Kind));
+            return Why_Types (Up (Kind));
       end case;
    end Up;
 
-   --------
-   -- Up --
-   --------
+   function Up (K : EW_Type) return EW_Type is
+   begin
+      case K is
+         when EW_Bool | EW_Real => return EW_Int;
+         when others => return EW_Unit;
+      end case;
+   end Up;
 
    function Up (From, To : W_Type_Id) return W_Type_Id is
    begin
@@ -1297,9 +1319,4 @@ package body Why.Inter is
       end if;
    end Up;
 
-begin
-   Type_Hierarchy.Move_Child (EW_Unit, EW_Real);
-   Type_Hierarchy.Move_Child (EW_Int, EW_Bool);
-   Type_Hierarchy.Move_Child (EW_Real, EW_Int);
-   Type_Hierarchy.Freeze;
 end Why.Inter;
