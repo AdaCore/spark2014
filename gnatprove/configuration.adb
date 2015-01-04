@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2014, AdaCore                   --
+--                       Copyright (C) 2010-2015, AdaCore                   --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -285,8 +285,20 @@ ASCII.LF;
                Name_Dir : constant String := +Base_Dir_Name (Obj_Dir);
             begin
                pragma Assert (Name_Dir = Name_GNATprove);
+               if Verbose then
+                  Ada.Text_IO.Put ("Deleting directory " &
+                                     Obj_Dir.Display_Full_Name & "...");
+               end if;
                GNAT.Directory_Operations.Remove_Dir
                  (Obj_Dir.Display_Full_Name, True);
+               if Verbose then
+                  Ada.Text_IO.Put_Line (" done");
+               end if;
+            exception
+               when GNAT.Directory_Operations.Directory_Error =>
+                  if Verbose then
+                     Ada.Text_IO.Put_Line (" failed, please delete manually");
+                  end if;
             end;
          end if;
 
@@ -577,6 +589,11 @@ ASCII.LF;
          Version'Access,
          Long_Switch => "--version",
          Help => "Output version of the tool");
+
+      Define_Switch
+        (First_Config,
+         Verbose'Access,
+         "-v", Long_Switch => "--verbose");
 
       Define_Switch
          (First_Config,
