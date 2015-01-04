@@ -273,16 +273,10 @@ package body Why.Gen.Arrays is
            Left    => +First_Int,
            Right   => +Last_Int);
       Len : constant W_Expr_Id :=
-        New_Binary_Op
-          (Op      => EW_Add,
-           Op_Type => EW_Int,
-           Left    =>
-             New_Binary_Op
-               (Op      => EW_Substract,
-                Op_Type => EW_Int,
-                Left    => Last_Int,
-                Right   => First_Int),
-           Right   => New_Integer_Constant (Value => Uint_1));
+        New_Int_Add
+          (Domain,
+           New_Int_Substract (Domain, Last_Int, First_Int),
+           New_Integer_Constant (Value => Uint_1));
    begin
       return
         New_Conditional

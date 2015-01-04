@@ -414,9 +414,6 @@ package body Gnat2Why.Expr is
    --  Associations for discriminants are stored before associations for
    --  normal fields.
 
-   function Transform_Binop (Op : N_Binary_Op) return EW_Binary_Op;
-   --  Convert an Ada binary operator to a Why term symbol
-
    function Transform_Function_Call
      (Expr     : Node_Id;
       Domain   : EW_Domain;
@@ -4224,7 +4221,9 @@ package body Gnat2Why.Expr is
 
             declare
                Minus_Ident : constant W_Identifier_Id :=
-                 (if Get_Type_Kind (Base_Why_Type (Right_Type)) = EW_Int then
+                 (if Get_Type_Kind (Base_Why_Type (Right_Type)) in
+                    EW_Int | EW_Fixed
+                  then
                      Int_Unary_Minus
                   else Real_Unary_Minus);
             begin
@@ -4272,24 +4271,35 @@ package body Gnat2Why.Expr is
             --  The arguments of arithmetic functions have to be of base
             --  scalar types
             declare
-               Base  : constant W_Type_Id :=
+               Base : constant W_Type_Id :=
                  Base_Why_Type (Left_Type, Right_Type);
+               Name : constant W_Identifier_Id :=
+                 (if Op = N_Op_Add then
+                    (if Base = EW_Int_Type or else Base = EW_Fixed_Type then
+                          Int_Infix_Add
+                     else Real_Infix_Add)
+                  else
+                       (if Base = EW_Int_Type or else Base = EW_Fixed_Type then
+                          Int_Infix_Subtr
+                     else Real_Infix_Subtr));
             begin
                T :=
-                 New_Binary_Op
+                 New_Call
                    (Ada_Node => Ada_Node,
-                    Left     =>
-                      Insert_Simple_Conversion (Ada_Node => Ada_Node,
-                                                Domain   => Domain,
-                                                Expr     => Left,
-                                                To       => Base),
-                    Right    =>
-                      Insert_Simple_Conversion (Ada_Node => Ada_Node,
-                                                Domain   => Domain,
-                                                Expr     => Right,
-                                                To       => Base),
-                    Op       => Transform_Binop (Op),
-                    Op_Type  => Get_Type_Kind (Base));
+                    Domain   => Domain,
+                    Name     => Name,
+                    Args     =>
+                      (1 =>
+                             Insert_Simple_Conversion (Ada_Node => Ada_Node,
+                                                       Domain   => Domain,
+                                                       Expr     => Left,
+                                                       To       => Base),
+                       2 =>
+                         Insert_Simple_Conversion (Ada_Node => Ada_Node,
+                                                   Domain   => Domain,
+                                                   Expr     => Right,
+                                                   To       => Base)),
+                    Typ   => Base);
                T := Apply_Modulus_Or_Rounding (Op, Return_Type, T, Domain);
             end;
 
@@ -4361,12 +4371,20 @@ package body Gnat2Why.Expr is
                                     Typ      => Base);
                   end;
                else
-                  T := New_Binary_Op
-                    (Ada_Node => Ada_Node,
-                     Left     => L_Why,
-                     Right    => R_Why,
-                     Op       => Transform_Binop (Op),
-                     Op_Type  => Get_Type_Kind (Base));
+                  declare
+                     Name : constant W_Identifier_Id :=
+                       (if Base = EW_Int_Type or else Base = EW_Fixed_Type then
+                           Int_Infix_Mult
+                        else Real_Infix_Mult);
+                  begin
+                     T :=
+                       New_Call
+                         (Ada_Node => Ada_Node,
+                          Domain   => Domain,
+                          Name     => Name,
+                          Args     => (1 => L_Why, 2 => R_Why),
+                          Typ      => Base);
+                  end;
                end if;
 
                T := Apply_Modulus_Or_Rounding (Op, Return_Type, T, Domain);
@@ -5883,12 +5901,11 @@ package body Gnat2Why.Expr is
                                             Attribute_First,
                                             Params);
 
-               Val := New_Binary_Op
-                        (Left     => First,
-                         Right    =>
-                          New_Integer_Constant (Value => UI_From_Int (Offset)),
-                         Op       => EW_Add,
-                         Op_Type  => EW_Int);
+               Val :=
+                 New_Int_Add
+                   (Domain,
+                    First,
+                    New_Integer_Constant (Value => UI_From_Int (Offset)));
             end if;
 
             return Val;
@@ -6989,11 +7006,9 @@ package body Gnat2Why.Expr is
 
             else
                declare
-                  Op     : constant EW_Binary_Op :=
-                    (if Attr_Id = Attribute_Succ then
-                        EW_Add
-                     else
-                        EW_Substract);
+                  Op     : constant W_Identifier_Id :=
+                    (if Attr_Id = Attribute_Succ then Int_Infix_Add
+                     else Int_Infix_Subtr);
                   Old    : W_Expr_Id;
                   Offset : W_Expr_Id;
                   A_Type : constant Entity_Id := Etype (Var);
@@ -7022,12 +7037,13 @@ package body Gnat2Why.Expr is
                                          Domain,
                                          Params);
 
-                  T := New_Binary_Op (Ada_Node => Expr,
-                                      Left     => Old,
-                                      Right    => Offset,
-                                      Op       => Op,
-                                      Op_Type  =>
-                                        Get_Type_Kind (W_Type));
+                  T :=
+                    New_Call
+                      (Ada_Node => Expr,
+                       Domain   => Domain,
+                       Name     => Op,
+                       Args     => (1 => Old, 2 => Offset),
+                       Typ      => W_Type);
                end;
             end if;
 
@@ -7357,22 +7373,6 @@ package body Gnat2Why.Expr is
       end case;
       return T;
    end Transform_Attr;
-
-   ---------------------
-   -- Transform_Binop --
-   ---------------------
-
-   function Transform_Binop (Op : N_Binary_Op) return EW_Binary_Op is
-   begin
-      case Op is
-         when N_Op_Add      => return EW_Add;
-         when N_Op_Subtract => return EW_Substract;
-         when N_Op_Divide   => return EW_Divide;
-         when N_Op_Multiply => return EW_Multiply;
-         when N_Op_Concat | N_Op_Expon => raise Program_Error;
-         when others => raise Program_Error;
-      end case;
-   end Transform_Binop;
 
    -------------------------------
    -- Transform_Block_Statement --

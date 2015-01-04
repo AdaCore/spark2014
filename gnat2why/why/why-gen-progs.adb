@@ -105,15 +105,12 @@ package body Why.Gen.Progs is
                          (Ada_Node => Ada_Node,
                           Right    => Loop_Index);
       Addition     : constant W_Prog_Id :=
-                       New_Binary_Op
+        +New_Int_Add (Domain => EW_Prog,
+                     Left   => +Index_Deref,
+                     Right  =>
+                       New_Integer_Constant
                          (Ada_Node => Ada_Node,
-                          Op       => EW_Add,
-                          Op_Type  => EW_Int,
-                          Left     => +Index_Deref,
-                          Right    =>
-                            New_Integer_Constant
-                              (Ada_Node => Ada_Node,
-                               Value    => Uint_1));
+                          Value    => Uint_1));
       Incr_Stmt    : constant W_Prog_Id :=
                        New_Assignment
                          (Ada_Node => Ada_Node,
@@ -143,13 +140,14 @@ package body Why.Gen.Progs is
                                Right   => +Loop_Index,
                                Op2     => EW_Le,
                                Right2  =>
-                                 New_Binary_Op
-                                   (Op      => EW_Add,
-                                    Op_Type => EW_Int,
-                                    Left    => +High,
-                                    Right   =>
-                                      New_Integer_Constant
-                                        (Value => Uint_1))));
+                                 New_Call
+                                   (Domain => EW_Term,
+                                    Name => Int_Infix_Add,
+                                    Args => (1 => +High,
+                                             2 =>
+                                               New_Integer_Constant
+                                                 (Value => Uint_1)),
+                                    Typ  => EW_Int_Type)));
    begin
       return
         New_Binding_Ref

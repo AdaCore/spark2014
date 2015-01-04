@@ -71,7 +71,6 @@ package body Why.Atree.Sprint is
    procedure Print_Assert (Node : W_Assert_Id);
    procedure Print_Assignment (Node : W_Assignment_Id);
    procedure Print_Axiom (Node : W_Axiom_Id);
-   procedure Print_Binary_Op (Node : W_Binary_Op_Id);
    procedure Print_Binder (Node : W_Binder_Id);
    procedure Print_Binding (Node : W_Binding_Id);
    procedure Print_Binding_Ref (Node : W_Binding_Ref_Id);
@@ -207,21 +206,6 @@ package body Why.Atree.Sprint is
       NL (O);
    end Print_Axiom;
 
-   ----------------------
-   -- Print_Binary_Op --
-   ----------------------
-
-   procedure Print_Binary_Op (Node : W_Binary_Op_Id) is
-   begin
-      P (O, "( ");
-      Print_Node (+Get_Left (Node));
-      P (O, " ");
-      P (O, Get_Op (Node), Get_Op_Type (Node));
-      P (O, " ");
-      Print_Node (+Get_Right (Node));
-      P (O, " )");
-   end Print_Binary_Op;
-
    -------------------
    -- Print_Binder --
    -------------------
@@ -304,7 +288,26 @@ package body Why.Atree.Sprint is
       --  needs being parenthesized.
 
       P (O, "(");
-      case Get_Domain (+Node) is
+      if Get_Infix (Name) then
+         declare
+            use Why_Node_Lists;
+
+            Nodes       : constant List := Get_List (+Args);
+
+            Left, Right : Why_Node_Id;
+            C           : constant Cursor := First (Nodes);
+         begin
+            pragma Assert (Nodes.Length = 2);
+            Left := Element (C);
+            Right := Element (Next (C));
+            Print_Node (Left);
+            P (O, " ");
+            Print_Node (+Name);
+            P (O, " ");
+            Print_Node (Right);
+         end;
+      else
+         case Get_Domain (+Node) is
          when EW_Term | EW_Pred =>
             Print_Node (+Name);
             P (O, " ");
@@ -318,7 +321,9 @@ package body Why.Atree.Sprint is
                Print_List (+Args, ") (");
                P (O, ")");
             end if;
-      end case;
+         end case;
+
+      end if;
       P (O, ")");
    end Print_Call;
 
@@ -1001,14 +1006,17 @@ package body Why.Atree.Sprint is
       Module    : constant W_Module_Id := Get_Module (Node);
       Namespace : constant Name_Id := Get_Namespace (Node);
    begin
-      if Module /= Why_Empty
+      if not Get_Infix (Node)
+        and then Module /= Why_Empty
         and then Get_Name (Module) /= No_Name
       then
          Print_Module_Id (Module);
          P (O, ".");
       end if;
 
-      if Namespace /= No_Name then
+      if not Get_Infix (Node)
+        and then Namespace /= No_Name
+      then
          P (O, Namespace);
          P (O, ".");
       end if;
@@ -1257,9 +1265,6 @@ package body Why.Atree.Sprint is
 
          when W_Comment =>
             Print_Comment (+N);
-
-         when W_Binary_Op =>
-            Print_Binary_Op (+N);
 
          when W_Deref =>
             Print_Deref (+N);

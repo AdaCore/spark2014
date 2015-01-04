@@ -103,6 +103,16 @@ package Why.Atree.Modules is
    Int_Unary_Minus           : W_Identifier_Id;
    Real_Unary_Minus          : W_Identifier_Id;
 
+   --  builtin infix symbols
+
+   Int_Infix_Add             : W_Identifier_Id;
+   Int_Infix_Subtr           : W_Identifier_Id;
+   Int_Infix_Mult            : W_Identifier_Id;
+
+   Real_Infix_Add            : W_Identifier_Id;
+   Real_Infix_Subtr          : W_Identifier_Id;
+   Real_Infix_Mult           : W_Identifier_Id;
+
    --  Identifiers of the Integer module
 
    Integer_Bitwise_And       : W_Identifier_Id;

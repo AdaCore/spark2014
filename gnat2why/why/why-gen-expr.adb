@@ -174,9 +174,6 @@ package body Why.Gen.Expr is
             | W_Existential_Quantif =>
             return EW_Bool_Type;
 
-         when W_Binary_Op =>
-            return Why_Types (Get_Op_Type (W_Binary_Op_Id (E)));
-
          when W_Identifier =>
             return Get_Typ (W_Identifier_Id (E));
 
@@ -1943,19 +1940,20 @@ package body Why.Gen.Expr is
       Right  : W_Expr_Id) return W_Expr_Id is
    begin
       return
-        New_Binary_Op
-          (Op      => EW_Add,
-           Op_Type => EW_Int,
-           Left    =>
-             Insert_Scalar_Conversion
-               (Domain => Domain,
-                Expr   => Left,
-                To     => EW_Int_Type),
-           Right   =>
-             Insert_Scalar_Conversion
-               (Domain => Domain,
-                Expr   => Right,
-                To     => EW_Int_Type));
+        New_Call
+          (Domain => Domain,
+           Name   => Int_Infix_Add,
+           Typ    => EW_Int_Type,
+           Args => (1 =>
+                      Insert_Scalar_Conversion
+                        (Domain => Domain,
+                         Expr   => Left,
+                         To     => EW_Int_Type),
+                    2 =>
+                      Insert_Scalar_Conversion
+                        (Domain => Domain,
+                         Expr   => Right,
+                         To     => EW_Int_Type)));
    end New_Int_Add;
 
    -----------------------
@@ -1968,19 +1966,21 @@ package body Why.Gen.Expr is
       Right  : W_Expr_Id) return W_Expr_Id is
    begin
       return
-        New_Binary_Op
-          (Op      => EW_Substract,
-           Op_Type => EW_Int,
-           Left    =>
-             Insert_Scalar_Conversion
-               (Domain => Domain,
-                Expr   => Left,
-                To     => EW_Int_Type),
-           Right   =>
-             Insert_Scalar_Conversion
-               (Domain => Domain,
-                Expr   => Right,
-                To     => EW_Int_Type));
+        New_Call
+          (Domain => Domain,
+           Name   => Int_Infix_Subtr,
+           Typ    => EW_Int_Type,
+           Args   =>
+             (1 =>
+                Insert_Scalar_Conversion
+                  (Domain => Domain,
+                   Expr   => Left,
+                   To     => EW_Int_Type),
+              2 =>
+                Insert_Scalar_Conversion
+                  (Domain => Domain,
+                   Expr   => Right,
+                   To     => EW_Int_Type)));
    end New_Int_Substract;
 
    -----------------------

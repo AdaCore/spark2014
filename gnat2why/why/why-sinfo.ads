@@ -242,6 +242,7 @@ package Why.Sinfo is
    --  Namespace   Name_Id
    --  Module      W_Module_Id
    --  Typ         W_Type
+   --  Infix       Boolean       (default False)
    --
    --  This node is used for all places where a name is used in Why. There are
    --  three fields to denote the precise name:
@@ -330,27 +331,6 @@ package Why.Sinfo is
    --  Value       Ureal
    --
    --  The node for real literals.
-   --
-   --  -----------------
-   --  -- W_Binary_Op --
-   --  -----------------
-   --  Op         EW_Binary_Op
-   --  Op_Type    EW_Scalar
-   --  Left       W_Expr_Id
-   --  Right      W_Expr_Id
-   --
-   --  The four arithmetic operations. Depending on Op_Type, they work on
-   --  "real" or "int".
-   --
-   --  -----------------
-   --  -- W_Unary_Op --
-   --  -----------------
-   --  Op         EW_Unary_Op
-   --  Right      W_Expr_Id
-   --  Op_Type    EW_Scalar
-   --
-   --  Unary plus and minus. Depending on Op_Type, they work on "real" or
-   --  "int".
    --
    --  -------------
    --  -- W_Deref --
@@ -693,7 +673,6 @@ package Why.Sinfo is
       W_Real_Constant,
       W_Void,
       W_Comment,
-      W_Binary_Op,
       W_Deref,
       W_Record_Access,
       W_Record_Update,

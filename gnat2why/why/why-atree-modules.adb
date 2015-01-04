@@ -273,6 +273,46 @@ package body Why.Atree.Modules is
                         Symbol => NID ("-."),
                         Typ    => EW_Real_Type);
 
+      --  builtin infix operations
+
+      Int_Infix_Add :=
+        New_Identifier (Module => Int_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("+"),
+                        Typ    => EW_Int_Type,
+                        Infix  => True);
+      Int_Infix_Subtr :=
+        New_Identifier (Module => Int_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("-"),
+                        Typ    => EW_Int_Type,
+                        Infix  => True);
+      Int_Infix_Mult :=
+        New_Identifier (Module => Int_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("*"),
+                        Typ    => EW_Int_Type,
+                        Infix  => True);
+
+      Real_Infix_Add :=
+        New_Identifier (Module => RealInfix,
+                        Domain => EW_Term,
+                        Symbol => NID ("+."),
+                        Typ    => EW_Real_Type,
+                        Infix  => True);
+      Real_Infix_Subtr :=
+        New_Identifier (Module => RealInfix,
+                        Domain => EW_Term,
+                        Symbol => NID ("-."),
+                        Typ    => EW_Real_Type,
+                        Infix  => True);
+      Real_Infix_Mult :=
+        New_Identifier (Module => RealInfix,
+                        Domain => EW_Term,
+                        Symbol => NID ("*."),
+                        Typ    => EW_Real_Type,
+                        Infix  => True);
+
       --  identifiers of Integer module
       Integer_Bitwise_And :=
         New_Identifier (Module => Int_Bit_Module,

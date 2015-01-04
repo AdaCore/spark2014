@@ -1154,11 +1154,13 @@ package body Gnat2Why.Subprograms is
                     Then_Part   => New_Integer_Constant (Value => Uint_1),
                     Else_Part   => New_Integer_Constant (Value => Uint_0));
             begin
-               Count := New_Binary_Op (Ada_Node => Case_Guard,
-                                       Op       => EW_Add,
-                                       Op_Type  => EW_Int,
-                                       Left     => Count,
-                                       Right    => Enabled);
+               Count :=
+                 New_Call
+                   (Ada_Node => Case_Guard,
+                    Domain   => EW_Term,
+                    Name     => Int_Infix_Add,
+                    Args     => (1 => Count, 2 => Enabled),
+                    Typ      => EW_Int_Type);
             end;
          end if;
 

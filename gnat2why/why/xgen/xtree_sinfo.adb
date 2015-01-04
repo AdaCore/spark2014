@@ -93,7 +93,7 @@ package body Xtree_Sinfo is
       New_Field (W_Type,
                  "Name", "W_Name", Id_One);
       New_Field (W_Type,
-                 "Is_Mutable", "Boolean");
+                 "Is_Mutable", "Boolean", "False");
       Set_Domain (W_Type, EW_Term);
 
       ---------------
@@ -284,6 +284,7 @@ package body Xtree_Sinfo is
       New_Field (W_Identifier, "Namespace", "Name_Id", "No_Name");
       New_Field (W_Identifier, "Module", "W_Module", Id_Lone);
       New_Field (W_Identifier, "Typ", "W_Type", Id_Lone);
+      New_Field (W_Identifier, "Infix", "Boolean", "False");
 
       --------------
       -- W_Tagged --
@@ -370,19 +371,6 @@ package body Xtree_Sinfo is
 
       New_Field (W_Comment,
                  "Comment", "Name_Id");
-
-      -----------------
-      -- W_Binary_Op --
-      -----------------
-
-      New_Field (W_Binary_Op,
-                 "Op", "EW_Binary_Op");
-      New_Field (W_Binary_Op,
-                 "Op_Type", "EW_Scalar");
-      New_Field (W_Binary_Op,
-                 "Left", "W_Expr", Id_One);
-      New_Field (W_Binary_Op,
-                 "Right", "W_Expr", Id_One);
 
       -------------
       -- W_Deref --

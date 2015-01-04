@@ -653,19 +653,20 @@ package body Gnat2Why.Expr.Loops is
                    (Ada_Node => Stmt,
                     Right    => +Loop_Index,
                     Typ      => EW_Int_Type);
-               Update_Op    : constant EW_Binary_Op :=
-                 (if Is_Reverse then EW_Substract
-                  else EW_Add);
+               Update_Op    : constant W_Identifier_Id :=
+                 (if Is_Reverse then Int_Infix_Subtr
+                  else Int_Infix_Add);
                Update_Expr  : constant W_Prog_Id :=
-                 New_Binary_Op
+                 New_Call
                    (Ada_Node => Stmt,
-                    Op       => Update_Op,
-                    Op_Type  => EW_Int,
-                    Left     => +Index_Deref,
-                    Right    =>
-                      New_Integer_Constant
-                        (Ada_Node => Stmt,
-                         Value     => Uint_1));
+                    Name     => Update_Op,
+                    Args     =>
+                      (1 => +Index_Deref,
+                       2 =>
+                         New_Integer_Constant
+                           (Ada_Node => Stmt,
+                            Value     => Uint_1)),
+                   Typ      => EW_Int_Type);
                Update_Stmt  : constant W_Prog_Id :=
                  New_Assignment
                    (Ada_Node => Stmt,

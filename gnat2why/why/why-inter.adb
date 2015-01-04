@@ -144,10 +144,6 @@ package body Why.Inter is
         (State : in out Search_State;
          Node  : W_Relation_Id);
 
-      procedure Binary_Op_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Binary_Op_Id);
-
       procedure Integer_Constant_Pre_Op
         (State : in out Search_State;
          Node  : W_Integer_Constant_Id);
@@ -163,17 +159,6 @@ package body Why.Inter is
       procedure Handle_Op (S : in out Set; Op : EW_Type);
       --  add needed modules for basic scalar (unary and binary +,- etc) to the
       --  state
-
-      ----------------------
-      -- Binary_Op_Pre_Op --
-      ----------------------
-
-      procedure Binary_Op_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Binary_Op_Id) is
-      begin
-         Handle_Op (State.S, Get_Op_Type (Node));
-      end Binary_Op_Pre_Op;
 
       ---------------------------
       -- Fixed_Constant_Pre_Op --
