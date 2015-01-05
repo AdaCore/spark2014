@@ -215,7 +215,13 @@ package body Gnat2Why.Error_Messages is
      (Node : Node_Id;
       Kind : VC_Kind) return String is
    begin
+      --  Any change in the messages issued for a check should be reflected in
+      --    - GPS plug-in spark2014.py
+      --    - the section of SPARK User's Guide on GNATprove
+
       case Kind is
+         --  VC_RTE_Kind - run-time checks
+
          when VC_Division_Check            =>
             return "divide by zero might fail";
          when VC_Index_Check               =>
@@ -230,6 +236,9 @@ package body Gnat2Why.Error_Messages is
             return "discriminant check might fail";
          when VC_Tag_Check                 =>
             return "tag check might fail";
+
+         --  VC_Assert_Kind - assertions
+
          when VC_Initial_Condition         =>
             return "initial condition might fail";
          when VC_Default_Initial_Condition =>
@@ -267,6 +276,9 @@ package body Gnat2Why.Error_Messages is
             return "assertion might fail";
          when VC_Raise                     =>
             return "exception might be raised";
+
+         --  VC_LSP_Kind - Liskov Substitution Principle
+
          when VC_Weaker_Pre                =>
             return "precondition might be stronger than "
               & "class-wide precondition";
