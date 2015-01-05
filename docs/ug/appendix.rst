@@ -126,7 +126,7 @@ The file needs to be manually edited to remove everything before the actual
 prover command (here: cvc4) in that command, so that the new command looks
 like this::
 
-    command = "why3cpulimit %t %m -s cvc4 ..."
+    command = "cvc4 ..."
 
 |GNATprove| reads the default configuration file ``.why3.conf`` in your
 ``HOME``, or the configuration file given in argument with switch
