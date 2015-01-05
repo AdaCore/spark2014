@@ -2652,7 +2652,7 @@ by proving both a loop variant for each plain-loop or while-loop (for-loops
 always terminate in Ada) and the absence of run-time errors.
 
 For example, the while-loops in procedure ``Terminating_Loops`` compute the
-value of ``X mod 3`` in variable ``X_Mod_3``:
+value of ``X - X mod 3`` (or equivalently ``X / 3 * 3``) in variable ``Y``:
 
 .. literalinclude:: gnatprove_by_example/examples/terminating_loops.adb
    :language: ada
@@ -2672,7 +2672,7 @@ decreasing or increasing values (possibly a mix of both). In that case, the
 order of the list defines the lexicographic order of progress. See |SPARK| RM
 5.5.3 for details.
 
-.. _ Pragma Assume:
+.. _Pragma Assume:
 
 Pragma ``Assume``
 -----------------
