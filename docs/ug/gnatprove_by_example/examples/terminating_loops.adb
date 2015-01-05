@@ -1,17 +1,17 @@
-procedure Terminating_Loops (X : Integer) with
+procedure Terminating_Loops (X : Natural) with
   SPARK_Mode
 is
-   X_Mod_3 : Natural;
+   Y : Natural;
 begin
-   X_Mod_3 := 0;
-   while X - X_Mod_3 >= 3 loop
-      X_Mod_3 := X_Mod_3 + 3;
-      pragma Loop_Variant (Increases => X_Mod_3);
+   Y := 0;
+   while X - Y >= 3 loop
+      Y := Y + 3;
+      pragma Loop_Variant (Increases => Y);
    end loop;
 
-   X_Mod_3 := 0;
-   while X - X_Mod_3 >= 3 loop
-      X_Mod_3 := X_Mod_3 + 3;
-      pragma Loop_Variant (Decreases => X - X_Mod_3);
+   Y := 0;
+   while X - Y >= 3 loop
+      Y := Y + 3;
+      pragma Loop_Variant (Decreases => X - Y);
    end loop;
 end Terminating_Loops;

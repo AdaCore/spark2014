@@ -1,7 +1,7 @@
 terminating_loops.adb:7:12: info: overflow check proved
-terminating_loops.adb:8:26: info: overflow check proved
+terminating_loops.adb:8:14: info: overflow check proved
 terminating_loops.adb:9:07: info: loop variant proved
 terminating_loops.adb:13:12: info: overflow check proved
-terminating_loops.adb:14:26: info: overflow check proved
+terminating_loops.adb:14:14: info: overflow check proved
 terminating_loops.adb:15:07: info: loop variant proved
 terminating_loops.adb:15:43: info: overflow check proved
