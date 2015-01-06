@@ -12,6 +12,8 @@ configuration project Gnat2why is
       for Mapping_Body_Suffix      ("Ada") use "%b";
       for Config_File_Switches     ("Ada") use ("-gnatec=");
       for Object_Path_Switches     ("Ada") use ("-gnateO=");
+      for Multi_Unit_Switches      ("Ada") use ("-gnateI");
+      for Multi_Unit_Object_Separator ("Ada") use "~";
       for Include_Path_File        ("Ada") use "ADA_PRJ_INCLUDE_FILE";
       for Config_Body_File_Name ("Ada") use
            "pragma Source_File_Name_Project (%u, Body_File_Name => ""%f"");";

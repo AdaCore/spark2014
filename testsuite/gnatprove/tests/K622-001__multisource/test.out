@@ -1,0 +1,2 @@
+c.ada:2:14: warning: subprogram "Foo" has no effect
+c.ada:14:14: warning: subprogram "Bar" has no effect
