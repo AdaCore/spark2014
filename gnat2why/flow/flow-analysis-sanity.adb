@@ -549,7 +549,8 @@ package body Flow.Analysis.Sanity is
                                        then Var
                                        else Entire_Variable (Var)),
                            Kind    => Error_Kind,
-                           F2      => Direct_Mapping_Id (FA.Analyzed_Entity));
+                           F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
+                           Vertex  => V);
 
                      when Magic_String =>
                         Global_Required (FA, Var);

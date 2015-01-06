@@ -335,7 +335,17 @@ package body Flow_Refinement is
                null;
          end case;
 
-         P := Parent (P);
+         --  If we get a node from some contract, we will get the node from
+         --  the generated pragma instead. This pragma does not have a
+         --  parent set, so in this case we jump to the entity the aspect
+         --  is for.
+         if Nkind (P) = N_Pragma and then From_Aspect_Specification (P) then
+            P := Corresponding_Aspect (P);
+            pragma Assert (Nkind (P) = N_Aspect_Specification);
+            P := Entity (P);
+         else
+            P := Parent (P);
+         end if;
       end loop;
 
       if Present (P) then
