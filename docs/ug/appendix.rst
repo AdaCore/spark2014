@@ -896,10 +896,6 @@ Tool Limitations
    access-to-subprogram and dynamic binding) and indirect reads/writes to
    global variables (through access variables).
 
-#. Defining multiple units in the same file is not supported. Instead,
-   define each unit in a separate file. You can use the gnatchop tool to
-   automate this.
-
 #. A subset of all Ada fixed-point types and fixed-point operations is
    supported:
 
