@@ -6,7 +6,7 @@
 --                                                                          --
 --                                B o d y                                   --
 --                                                                          --
---               Copyright (C) 2013-2014, Altran UK Limited                 --
+--               Copyright (C) 2013-2015, Altran UK Limited                 --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -331,7 +331,17 @@ package body Flow_Refinement is
                null;
          end case;
 
-         P := Parent (P);
+         --  If we get a node from some contract, we will get the node from
+         --  the generated pragma instead. This pragma does not have a
+         --  parent set, so in this case we jump to the entity the aspect
+         --  is for.
+         if Nkind (P) = N_Pragma and then From_Aspect_Specification (P) then
+            P := Corresponding_Aspect (P);
+            pragma Assert (Nkind (P) = N_Aspect_Specification);
+            P := Entity (P);
+         else
+            P := Parent (P);
+         end if;
       end loop;
 
       if Present (P) then

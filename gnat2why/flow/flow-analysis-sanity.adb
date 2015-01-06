@@ -6,7 +6,7 @@
 --                                                                          --
 --                                B o d y                                   --
 --                                                                          --
---                  Copyright (C) 2013-2014, Altran UK Limited              --
+--                  Copyright (C) 2013-2015, Altran UK Limited              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -591,7 +591,8 @@ package body Flow.Analysis.Sanity is
                                        then Var
                                        else Entire_Variable (Var)),
                            Kind    => Error_Kind,
-                           F2      => Direct_Mapping_Id (FA.Analyzed_Entity));
+                           F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
+                           Vertex  => V);
 
                      when Magic_String =>
                         Global_Required (FA, Var);
