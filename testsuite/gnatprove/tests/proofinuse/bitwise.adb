@@ -33,4 +33,27 @@ is
       pragma Assert (Y = XX);
    end Swap;
 
+   procedure Write16 (Val : in Unsigned_16; FstHalf, SndHalf : out Unsigned_8) is
+   begin
+      FstHalf := Unsigned_8 (Val and 16#00FF#);
+      SndHalf := Unsigned_8 (Shift_Right(Val, 8) and 16#00FF#);
+      pragma assert (Val =
+                     (Unsigned_16(FstHalf) or
+                          Shift_Left(Unsigned_16(SndHalf), 8 )));
+   end Write16;
+
+   procedure Read32 (Val1, Val2, Val3, Val4 : in Unsigned_8; Res : out Unsigned_32) is
+   begin
+      Res := (Unsigned_32(Val1) or
+                Shift_Left(Unsigned_32(Val2), 8) or
+                  Shift_Left(Unsigned_32(Val3), 16) or
+                Shift_Left(Unsigned_32(Val4), 24));
+      pragma assert (Res =
+                     (Unsigned_32(
+                        Unsigned_16(Val1) or Shift_Left(Unsigned_16(Val2), 8)
+                       ) or Shift_Left(Unsigned_32(
+                          Unsigned_16(Val3) or Shift_Left(Unsigned_16(Val4), 8)
+                         ), 16)));
+   end Read32;
+
 end Bitwise;

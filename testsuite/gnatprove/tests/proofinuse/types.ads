@@ -16,6 +16,21 @@ is
    function Shift_Right (Value : Unsigned_32; Count : Natural) return Unsigned_32
       with Import,
       Convention => Intrinsic,
+     Global     => null;
+
+   function Shift_Right (Value : Unsigned_16; Count : Natural) return Unsigned_16
+      with Import,
+      Convention => Intrinsic,
+     Global     => null;
+
+   function Shift_Left (Value : Unsigned_32; Count : Natural) return Unsigned_32
+      with Import,
+      Convention => Intrinsic,
+     Global     => null;
+
+   function Shift_Left (Value : Unsigned_16; Count : Natural) return Unsigned_16
+      with Import,
+      Convention => Intrinsic,
       Global     => null;
 
    --  Subtypes of Integer_32
