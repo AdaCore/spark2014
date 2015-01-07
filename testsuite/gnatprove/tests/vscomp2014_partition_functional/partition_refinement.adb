@@ -34,10 +34,10 @@ is
                     A'Old(K))) and then
                 Capacity (P) = Capacity (P)'Old and then
                 Length (P) = Length (P)'Old and then
-                (for all J in 0 .. Partition_Index(Length (P)) - 1 => Element (P, J).First = Element (P'Old, J).First) and then
-                (for all J in 0 .. Partition_Index(Length (P)) - 1 => Element (P, J).Last = Element (P'Old, J).Last) and then
-                (for all J in 0 .. Partition_Index(Length (P)) - 1 =>
-                   Element (P, J).Count = Element (P'Old, J).Count + (if J = F(Element (D'Old, X_Elem)) then 1 else 0)) and then
+--                (for all J in 0 .. Partition_Index(Length (P)) - 1 => Element (P, J).First = Element (P'Old, J).First) and then
+--                (for all J in 0 .. Partition_Index(Length (P)) - 1 => Element (P, J).Last = Element (P'Old, J).Last) and then
+--                (for all J in 0 .. Partition_Index(Length (P)) - 1 =>
+--                   Element (P, J).Count = Element (P'Old, J).Count + (if J = F(Element (D'Old, X_Elem)) then 1 else 0)) and then
                 (for all J in Index => Contains (D, A(J))) and then
                 (for all C in D => A (Element (D, C)) = Key (D, C)) and then
                 (for all C in D'Old => Has_Element (D, C));
@@ -136,14 +136,14 @@ is
       P_Prime_Index : Partition_Index;
 
       pragma Warnings (Off, "initialization has no effect", Reason => "ghost code");
-      P_Save : Partition := P;
+--      P_Save : Partition := P;
       pragma Warnings (On, "initialization has no effect", Reason => "ghost code");
 
    begin
       for J in 0 .. Partition_Index'Base (Length (P)) - 1 loop
 
          pragma Warnings (Off, "unused assignment", Reason => "ghost code");
-         P_Save := P;
+--         P_Save := P;
          pragma Warnings (On, "unused assignment", Reason => "ghost code");
 
          P_Elem := Element (P, J);
@@ -165,7 +165,7 @@ is
                pragma Assert (P_Prime_Index = Partition_Index (Length (P)) - 1);
                --  Append has the effect of setting at index Length(P) the value P_Prime, and not modifying any existing element. Use assumptions as this is not proved by SPARK GPL 2014.
                pragma Assume (Element (P, P_Prime_Index) = P_Prime);
-               pragma Assume (for all K in Partition_Index range 0 .. P_Prime_Index - 1 => (if K /= J then Element (P, K) = Element (P_Save, K)));
+--               pragma Assume (for all K in Partition_Index range 0 .. P_Prime_Index - 1 => (if K /= J then Element (P, K) = Element (P_Save, K)));
             end;
 
             declare
@@ -189,11 +189,11 @@ is
                pragma Assert (for all K in Index range P_Elem.First .. P_Elem.Last => K in Element (P, F(K)).First .. Element (P, F(K)).Last);
                pragma Assert (for all K in Index range P_Prime.First .. P_Prime.Last => Element (P, F(K)) = P_Prime);
                pragma Assert (for all K in Index range P_Prime.First .. P_Prime.Last => K in Element (P, F(K)).First .. Element (P, F(K)).Last);
-               pragma Assert (for all K in Index range 0 .. P_Elem.First - 1 => Element (P, F(K)) = Element (P_Save, F(K)));
-               pragma Assert (for all K in Index range 0 .. P_Elem.First - 1 => K in Element (P_Save, F_Loop_Entry(K)).First .. Element (P_Save, F_Loop_Entry(K)).Last);
+--               pragma Assert (for all K in Index range 0 .. P_Elem.First - 1 => Element (P, F(K)) = Element (P_Save, F(K)));
+--               pragma Assert (for all K in Index range 0 .. P_Elem.First - 1 => K in Element (P_Save, F_Loop_Entry(K)).First .. Element (P_Save, F_Loop_Entry(K)).Last);
                pragma Assert (for all K in Index range 0 .. P_Elem.First - 1 => K in Element (P, F(K)).First .. Element (P, F(K)).Last);
-               pragma Assert (for all K in Index range P_Prime.Last + 1 .. Index'Last => Element (P, F(K)) = Element (P_Save, F(K)));
-               pragma Assert (for all K in Index range P_Prime.Last + 1 .. Index'Last => K in Element (P_Save, F_Loop_Entry(K)).First .. Element (P_Save, F_Loop_Entry(K)).Last);
+--               pragma Assert (for all K in Index range P_Prime.Last + 1 .. Index'Last => Element (P, F(K)) = Element (P_Save, F(K)));
+--               pragma Assert (for all K in Index range P_Prime.Last + 1 .. Index'Last => K in Element (P_Save, F_Loop_Entry(K)).First .. Element (P_Save, F_Loop_Entry(K)).Last);
                pragma Assert (for all K in Index range P_Prime.Last + 1 .. Index'Last => K in Element (P, F(K)).First .. Element (P, F(K)).Last);
 
                pragma Assert (for all K in 0 .. J - 1 => (for all L in Index range Element (P, K).First .. Element (P, K).Last => F(L) = K));
@@ -203,21 +203,21 @@ is
          end if;
 
          --  Intermediate assertion used to decrease time to prove loop invariant
-         pragma Assert (for all K in J + 1 .. Partition_Index'Base (Length (P)'Loop_Entry) - 1 => Element (P, K) = Element (P'Loop_Entry, K));
+--         pragma Assert (for all K in J + 1 .. Partition_Index'Base (Length (P)'Loop_Entry) - 1 => Element (P, K) = Element (P'Loop_Entry, K));
 
          pragma Assert (Capacity (P) = Capacity (P)'Loop_Entry);
          pragma Assert (Length (P) - Length (P)'Loop_Entry in 0 .. Count_Type(J) + 1);
-         pragma Assert (for all K in J + 1 .. Partition_Index'Base (Length (P)'Loop_Entry) - 1 => Element (P, K) = Element (P'Loop_Entry, K));
+--         pragma Assert (for all K in J + 1 .. Partition_Index'Base (Length (P)'Loop_Entry) - 1 => Element (P, K) = Element (P'Loop_Entry, K));
          pragma Assert (for all K in Index => F(K) in 0 .. Partition_Index'Base (Length (P)) - 1);
          pragma Assert (for all K in Index => K in Element (P, F(K)).First .. Element (P, F(K)).Last);
          pragma Assert (for all K in 0 .. Partition_Index'Base (Length (P)) - 1 => (for all L in Index range Element (P, K).First .. Element (P, K).Last => F(L) = K));
 
-         pragma Loop_Invariant (Capacity (P) = Capacity (P)'Loop_Entry);
-         pragma Loop_Invariant (Length (P) - Length (P)'Loop_Entry in 0 .. Count_Type(J) + 1);
-         pragma Loop_Invariant (for all K in J + 1 .. Partition_Index'Base (Length (P)'Loop_Entry) - 1 => Element (P, K) = Element (P'Loop_Entry, K));
-         pragma Loop_Invariant (for all K in Index => F(K) in 0 .. Partition_Index'Base (Length (P)) - 1);
-         pragma Loop_Invariant (for all K in Index => K in Element (P, F(K)).First .. Element (P, F(K)).Last);
-         pragma Loop_Invariant (for all J in 0 .. Partition_Index'Base (Length (P)) - 1 => (for all K in Element (P, J).First .. Element (P, J).Last => F(K) = J));
+--         pragma Loop_Invariant (Capacity (P) = Capacity (P)'Loop_Entry);
+--         pragma Loop_Invariant (Length (P) - Length (P)'Loop_Entry in 0 .. Count_Type(J) + 1);
+--         pragma Loop_Invariant (for all K in J + 1 .. Partition_Index'Base (Length (P)'Loop_Entry) - 1 => Element (P, K) = Element (P'Loop_Entry, K));
+--         pragma Loop_Invariant (for all K in Index => F(K) in 0 .. Partition_Index'Base (Length (P)) - 1);
+--         pragma Loop_Invariant (for all K in Index => K in Element (P, F(K)).First .. Element (P, F(K)).Last);
+--         pragma Loop_Invariant (for all J in 0 .. Partition_Index'Base (Length (P)) - 1 => (for all K in Element (P, J).First .. Element (P, J).Last => F(K) = J));
       end loop;
    end Make_New_Partitions;
 
