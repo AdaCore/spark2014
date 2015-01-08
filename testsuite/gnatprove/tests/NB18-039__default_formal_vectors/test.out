@@ -1,0 +1,4 @@
+bounded.adb:8:07: medium: precondition might fail
+bounded.adb:9:07: medium: precondition might fail
+bounded.adb:10:07: medium: precondition might fail
+bounded.ads:12:14: warning: subprogram "Test" has no effect
