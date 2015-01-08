@@ -319,16 +319,17 @@ ASCII.LF;
             declare
                Obj_Dir  : constant Virtual_File := Project.Object_Dir;
                Name_Dir : constant String := +Base_Dir_Name (Obj_Dir);
+               Rm_Dir   : constant String := Obj_Dir.Display_Full_Name;
             begin
                pragma Assert (Name_Dir = Name_GNATprove);
-               if Verbose then
-                  Ada.Text_IO.Put ("Deleting directory " &
-                                     Obj_Dir.Display_Full_Name & "...");
-               end if;
-               GNAT.Directory_Operations.Remove_Dir
-                 (Obj_Dir.Display_Full_Name, True);
-               if Verbose then
-                  Ada.Text_IO.Put_Line (" done");
+               if GNAT.OS_Lib.Is_Directory (Rm_Dir) then
+                  if Verbose then
+                     Ada.Text_IO.Put ("Deleting directory " & Rm_Dir & "...");
+                  end if;
+                  GNAT.Directory_Operations.Remove_Dir (Rm_Dir, True);
+                  if Verbose then
+                     Ada.Text_IO.Put_Line (" done");
+                  end if;
                end if;
             exception
                when GNAT.Directory_Operations.Directory_Error =>
