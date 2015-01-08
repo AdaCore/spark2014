@@ -17,9 +17,9 @@ is
    procedure Shift_Is_Div (X : Unsigned_32; Res : out Unsigned_32) is
    begin
       Res := Shift_Right (X, 1);
-      pragma Assert (Res = X / 2);  --  shift translated as div, proved
+      pragma Assert (Res = X / 2);  --  shift translated as div, proved (not anymore)
       Res := Shift_Right (Res, 2);
-      pragma Assert (Res = X / 8);  --  shift translated as div, proved by CVC4 and not proved by Alt-Ergo
+      pragma Assert (Res = X / 8);  --  shift translated as div, proved by CVC4 and not proved by Alt-Ergo (not anymore)
    end Shift_Is_Div;
 
    procedure Swap (X, Y : in out Unsigned_32) is
