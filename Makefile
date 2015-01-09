@@ -91,7 +91,7 @@ doc-nightly: $(DOC)
 	cd docs/ug; $(MAKE) generate-nightly
 
 $(DOC):
-	echo x | $(MAKE) -C docs/$@ latexpdf
+	echo x | $(MAKE) -C docs/$@ latexpdf LATEXOPTS="-interaction=nonstopmode"
 	$(MAKE) -C docs/$@ html
 	mkdir -p $(DOCDIR)/pdf
 	mkdir -p $(DOCDIR)/html/$@
