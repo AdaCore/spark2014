@@ -65,7 +65,8 @@ package body Flow.Analysis is
      (FA       : Flow_Analysis_Graphs;
       Set      : Vertex_Sets.Set;
       Filename : String);
-   --  Write a trace file for GPS.
+   --  Write a trace file for GPS. Do not generate a trace file if there is no
+   --  sloc, or a single sloc in the vertex set, as this is not useful.
 
    function Find_Global
      (S : Entity_Id;
@@ -146,7 +147,7 @@ package body Flow.Analysis is
    is
       FD       : Ada.Text_IO.File_Type;
    begin
-      if not Set.Is_Empty then
+      if Set.Length > 1 then
          Ada.Text_IO.Create (FD, Ada.Text_IO.Out_File, Filename);
 
          for V of Set loop
