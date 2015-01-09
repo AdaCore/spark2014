@@ -130,7 +130,10 @@ partition_refinement.adb:188:64: info: precondition proved
 partition_refinement.adb:189:10: info: loop invariant initialization proved
 partition_refinement.adb:189:10: info: loop invariant preservation proved
 partition_refinement.adb:189:55: info: precondition proved
-partition_refinement.adb:195:07: info: precondition proved
+partition_refinement.adb:191:10: info: loop variant proved
+partition_refinement.adb:191:44: info: precondition proved
+partition_refinement.adb:191:52: info: precondition proved
+partition_refinement.adb:194:07: info: precondition proved
 partition_refinement.ads:57:17: medium: overflow check might fail
 partition_refinement.ads:57:19: info: precondition proved
 partition_refinement.ads:57:33: info: precondition proved

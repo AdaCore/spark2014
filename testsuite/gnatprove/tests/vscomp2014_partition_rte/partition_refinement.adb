@@ -188,8 +188,7 @@ is
          pragma Loop_Invariant (for all C in X => Contains (D, Element (X, C)));
          pragma Loop_Invariant (for all J in Index => Contains (D, A(J)));
 
-         --  Uncomment loop variant to prove termination. It is commented because its presence causes GNATprove to fail to prove the loop invariant. But as the loop invariant is proved otherwise, we know it holds, thus the loop variant and invariant are both proved.
---       pragma Loop_Variant (Decreases => Length (Current_To_Last (X, C)));
+         pragma Loop_Variant (Decreases => Length (Current_To_Last (X, C)));
       end loop;
 
       Make_New_Partitions (P, F);
