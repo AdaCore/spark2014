@@ -1,7 +1,7 @@
 repro.adb:20:43: info: length check proved
+repro.adb:150:20: high: "LocalReturnValue" is not initialized, in call inlined at repro.adb:167
 repro.adb:153:04: warning: analyzing unreferenced procedure "CreateObject"
 repro.adb:153:27: warning: unused initial value of "Template"
 repro.adb:156:07: warning: initialization has no effect
 repro.adb:162:25: info: length check proved
 repro.adb:165:07: warning: unused variable "UnusedObjectHandle"
-repro.adb:167:22: high: "LocalReturnValue" is not initialized

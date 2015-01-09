@@ -967,6 +967,16 @@ usertoken.adb:693:37: info: length check proved, in call inlined at usertoken.ad
 usertoken.adb:693:37: info: length check proved, in call inlined at usertoken.adb:958
 usertoken.adb:693:37: info: length check proved, in call inlined at usertoken.adb:961
 usertoken.adb:693:37: info: length check proved, in call inlined at usertoken.adb:985
+usertoken.adb:693:40: medium: length check might fail, in call inlined at usertoken.adb:737
+usertoken.adb:693:40: medium: length check might fail, in call inlined at usertoken.adb:740
+usertoken.adb:693:40: medium: length check might fail, in call inlined at usertoken.adb:743
+usertoken.adb:693:40: medium: length check might fail, in call inlined at usertoken.adb:846
+usertoken.adb:693:40: medium: length check might fail, in call inlined at usertoken.adb:849
+usertoken.adb:693:40: medium: length check might fail, in call inlined at usertoken.adb:852
+usertoken.adb:693:40: medium: length check might fail, in call inlined at usertoken.adb:955
+usertoken.adb:693:40: medium: length check might fail, in call inlined at usertoken.adb:958
+usertoken.adb:693:40: medium: length check might fail, in call inlined at usertoken.adb:961
+usertoken.adb:693:40: medium: length check might fail, in call inlined at usertoken.adb:985
 usertoken.adb:695:23: info: length check proved, in call inlined at usertoken.adb:737
 usertoken.adb:695:23: info: length check proved, in call inlined at usertoken.adb:740
 usertoken.adb:695:23: info: length check proved, in call inlined at usertoken.adb:743
@@ -987,15 +997,5 @@ usertoken.adb:695:23: medium: range check might fail, in call inlined at usertok
 usertoken.adb:695:23: medium: range check might fail, in call inlined at usertoken.adb:958
 usertoken.adb:695:23: medium: range check might fail, in call inlined at usertoken.adb:961
 usertoken.adb:695:23: medium: range check might fail, in call inlined at usertoken.adb:985
-usertoken.adb:737:31: medium: length check might fail
-usertoken.adb:740:18: medium: length check might fail
-usertoken.adb:743:18: medium: length check might fail
-usertoken.adb:846:31: medium: length check might fail
-usertoken.adb:849:18: medium: length check might fail
-usertoken.adb:852:18: medium: length check might fail
-usertoken.adb:955:31: medium: length check might fail
-usertoken.adb:958:18: medium: length check might fail
-usertoken.adb:961:18: medium: length check might fail
-usertoken.adb:985:25: medium: length check might fail
 usertoken.adb:1059:45: info: precondition proved
 usertoken.adb:1064:18: medium: precondition might fail

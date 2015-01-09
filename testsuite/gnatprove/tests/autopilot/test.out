@@ -17,12 +17,12 @@ ap-altitude-pitch-rate.adb:70:14: info: range check proved
 ap-altitude-pitch-rate.adb:75:55: info: division check proved
 ap-altitude-pitch.adb:28:69: info: division check proved, in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:28:69: info: range check proved, in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
+ap-altitude-pitch.adb:51:30: info: range check proved, in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:53:07: info: assertion proved, in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:55:71: info: division check proved, in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:71:28: info: precondition proved, in call inlined at ap-altitude-pitch.adb:104
 ap-altitude-pitch.adb:73:54: info: division check proved, in call inlined at ap-altitude-pitch.adb:104
 ap-altitude-pitch.adb:74:53: info: division check proved, in call inlined at ap-altitude-pitch.adb:104
-ap-altitude-pitch.adb:101:27: info: range check proved
 ap-altitude.adb:15:49: medium: "Surfaces.Elevators" might not be written
 ap-heading-roll.adb:33:42: info: range check proved, in call inlined at ap-heading-roll.adb:48, in call inlined at ap-heading-roll.adb:94
 ap-heading-roll.adb:35:46: info: range check proved, in call inlined at ap-heading-roll.adb:48, in call inlined at ap-heading-roll.adb:94

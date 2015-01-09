@@ -30,6 +30,13 @@ admintoken.adb:275:37: info: length check proved, in call inlined at admintoken.
 admintoken.adb:275:37: info: length check proved, in call inlined at admintoken.adb:524
 admintoken.adb:275:37: medium: length check might fail, in call inlined at admintoken.adb:476, in call inlined at admintoken.adb:504
 admintoken.adb:275:37: medium: length check might fail, in call inlined at admintoken.adb:512
+admintoken.adb:275:40: medium: length check might fail, in call inlined at admintoken.adb:366, in call inlined at admintoken.adb:502
+admintoken.adb:275:40: medium: length check might fail, in call inlined at admintoken.adb:369, in call inlined at admintoken.adb:502
+admintoken.adb:275:40: medium: length check might fail, in call inlined at admintoken.adb:476, in call inlined at admintoken.adb:504
+admintoken.adb:275:40: medium: length check might fail, in call inlined at admintoken.adb:479, in call inlined at admintoken.adb:504
+admintoken.adb:275:40: medium: length check might fail, in call inlined at admintoken.adb:482, in call inlined at admintoken.adb:504
+admintoken.adb:275:40: medium: length check might fail, in call inlined at admintoken.adb:512
+admintoken.adb:275:40: medium: length check might fail, in call inlined at admintoken.adb:524
 admintoken.adb:277:23: info: length check proved, in call inlined at admintoken.adb:366, in call inlined at admintoken.adb:502
 admintoken.adb:277:23: info: length check proved, in call inlined at admintoken.adb:369, in call inlined at admintoken.adb:502
 admintoken.adb:277:23: info: length check proved, in call inlined at admintoken.adb:476, in call inlined at admintoken.adb:504
@@ -44,13 +51,6 @@ admintoken.adb:277:23: medium: range check might fail, in call inlined at admint
 admintoken.adb:277:23: medium: range check might fail, in call inlined at admintoken.adb:482, in call inlined at admintoken.adb:504
 admintoken.adb:277:23: medium: range check might fail, in call inlined at admintoken.adb:512
 admintoken.adb:277:23: medium: range check might fail, in call inlined at admintoken.adb:524
-admintoken.adb:366:28: medium: length check might fail, in call inlined at admintoken.adb:366, in call inlined at admintoken.adb:502
-admintoken.adb:369:15: medium: length check might fail, in call inlined at admintoken.adb:369, in call inlined at admintoken.adb:502
-admintoken.adb:476:31: medium: length check might fail, in call inlined at admintoken.adb:476, in call inlined at admintoken.adb:504
-admintoken.adb:479:19: medium: length check might fail, in call inlined at admintoken.adb:479, in call inlined at admintoken.adb:504
-admintoken.adb:482:19: medium: length check might fail, in call inlined at admintoken.adb:482, in call inlined at admintoken.adb:504
-admintoken.adb:512:31: medium: length check might fail
-admintoken.adb:524:25: medium: length check might fail
 admintoken.adb:612:28: medium: range check might fail
 admintoken.ads:78:26: info: postcondition proved
 admintoken.ads:124:07: info: postcondition proved
@@ -92,6 +92,12 @@ auditlog.adb:244:43: info: length check proved, in call inlined at auditlog.adb:
 auditlog.adb:244:43: info: length check proved, in call inlined at auditlog.adb:305, in call inlined at auditlog.adb:360
 auditlog.adb:244:43: info: length check proved, in call inlined at auditlog.adb:429, in call inlined at auditlog.adb:476
 auditlog.adb:244:43: info: length check proved, in call inlined at auditlog.adb:432, in call inlined at auditlog.adb:476
+auditlog.adb:244:46: info: length check proved, in call inlined at auditlog.adb:302, in call inlined at auditlog.adb:360
+auditlog.adb:244:46: info: length check proved, in call inlined at auditlog.adb:305, in call inlined at auditlog.adb:360
+auditlog.adb:244:46: info: length check proved, in call inlined at auditlog.adb:429, in call inlined at auditlog.adb:476
+auditlog.adb:244:46: info: length check proved, in call inlined at auditlog.adb:432, in call inlined at auditlog.adb:476
+auditlog.adb:244:46: medium: length check might fail, in call inlined at auditlog.adb:1572
+auditlog.adb:244:46: medium: length check might fail, in call inlined at auditlog.adb:1662
 auditlog.adb:246:23: info: length check proved, in call inlined at auditlog.adb:1572
 auditlog.adb:246:23: info: length check proved, in call inlined at auditlog.adb:1662
 auditlog.adb:246:23: info: length check proved, in call inlined at auditlog.adb:302, in call inlined at auditlog.adb:360
@@ -104,11 +110,9 @@ auditlog.adb:246:23: info: range check proved, in call inlined at auditlog.adb:4
 auditlog.adb:246:23: info: range check proved, in call inlined at auditlog.adb:432, in call inlined at auditlog.adb:476
 auditlog.adb:246:23: medium: range check might fail, in call inlined at auditlog.adb:1572
 auditlog.adb:246:23: medium: range check might fail, in call inlined at auditlog.adb:1662
-auditlog.adb:302:15: info: length check proved, in call inlined at auditlog.adb:302, in call inlined at auditlog.adb:360
 auditlog.adb:302:15: info: range check proved, in call inlined at auditlog.adb:360
 auditlog.adb:302:50: info: range check proved, in call inlined at auditlog.adb:360
 auditlog.adb:302:62: info: range check proved, in call inlined at auditlog.adb:360
-auditlog.adb:305:15: info: length check proved, in call inlined at auditlog.adb:305, in call inlined at auditlog.adb:360
 auditlog.adb:305:15: info: range check proved, in call inlined at auditlog.adb:360
 auditlog.adb:306:41: info: range check proved, in call inlined at auditlog.adb:360
 auditlog.adb:306:53: info: range check proved, in call inlined at auditlog.adb:360
@@ -116,11 +120,9 @@ auditlog.adb:424:23: info: length check proved, in call inlined at auditlog.adb:
 auditlog.adb:424:23: info: range check proved, in call inlined at auditlog.adb:476
 auditlog.adb:424:42: info: overflow check proved, in call inlined at auditlog.adb:476
 auditlog.adb:425:42: info: overflow check proved, in call inlined at auditlog.adb:476
-auditlog.adb:429:15: info: length check proved, in call inlined at auditlog.adb:429, in call inlined at auditlog.adb:476
 auditlog.adb:429:15: info: range check proved, in call inlined at auditlog.adb:476
 auditlog.adb:429:50: info: range check proved, in call inlined at auditlog.adb:476
 auditlog.adb:429:62: info: range check proved, in call inlined at auditlog.adb:476
-auditlog.adb:432:15: info: length check proved, in call inlined at auditlog.adb:432, in call inlined at auditlog.adb:476
 auditlog.adb:432:15: info: range check proved, in call inlined at auditlog.adb:476
 auditlog.adb:433:41: info: range check proved, in call inlined at auditlog.adb:476
 auditlog.adb:433:53: info: range check proved, in call inlined at auditlog.adb:476
@@ -202,10 +204,8 @@ auditlog.adb:1489:67: info: overflow check proved
 auditlog.adb:1490:09: info: overflow check proved
 auditlog.adb:1490:09: info: range check proved
 auditlog.adb:1568:07: medium: precondition might fail
-auditlog.adb:1572:26: medium: length check might fail
 auditlog.adb:1578:10: info: precondition proved
 auditlog.adb:1660:22: info: precondition proved
-auditlog.adb:1662:22: medium: length check might fail
 auditlog.adb:1699:13: medium: assertion might fail
 auditlog.adb:1704:53: info: range check proved
 auditlog.adb:1704:56: info: overflow check proved
@@ -841,6 +841,9 @@ tokenreader.adb:63:26: info: length check proved
 tokenreader.adb:68:26: info: length check proved
 tokenreader.adb:68:36: info: length check proved
 tokenreader.adb:69:36: info: length check proved
+tokenreader.adb:101:47: info: range check proved, in call inlined at tokenreader.adb:219
+tokenreader.adb:127:46: info: range check proved, in call inlined at tokenreader.adb:752
+tokenreader.adb:153:44: info: range check proved, in call inlined at tokenreader.adb:675
 tokenreader.adb:202:38: medium: range check might fail, in call inlined at tokenreader.adb:221
 tokenreader.adb:203:12: medium: range check might fail, in call inlined at tokenreader.adb:221
 tokenreader.adb:203:56: medium: range check might fail, in call inlined at tokenreader.adb:221
@@ -850,11 +853,8 @@ tokenreader.adb:210:42: info: length check proved, in call inlined at tokenreade
 tokenreader.adb:210:45: medium: length check might fail, in call inlined at tokenreader.adb:221
 tokenreader.adb:212:23: info: length check proved, in call inlined at tokenreader.adb:221
 tokenreader.adb:212:23: medium: range check might fail, in call inlined at tokenreader.adb:221
-tokenreader.adb:219:22: info: range check proved
 tokenreader.adb:314:17: info: range check proved
 tokenreader.adb:315:48: info: range check proved
-tokenreader.adb:675:26: info: range check proved
-tokenreader.adb:752:22: info: range check proved
 tokenreader.adb:755:43: info: range check proved
 updates.ads:96:12: info: postcondition proved
 updates.ads:188:11: info: postcondition proved
@@ -879,6 +879,16 @@ usertoken.adb:713:37: medium: length check might fail, in call inlined at userto
 usertoken.adb:713:37: medium: length check might fail, in call inlined at usertoken.adb:979, in call inlined at usertoken.adb:1005
 usertoken.adb:713:37: medium: length check might fail, in call inlined at usertoken.adb:982, in call inlined at usertoken.adb:1005
 usertoken.adb:713:37: medium: length check might fail, in call inlined at usertoken.adb:985, in call inlined at usertoken.adb:1005
+usertoken.adb:713:40: medium: length check might fail, in call inlined at usertoken.adb:1010
+usertoken.adb:713:40: medium: length check might fail, in call inlined at usertoken.adb:759, in call inlined at usertoken.adb:1001
+usertoken.adb:713:40: medium: length check might fail, in call inlined at usertoken.adb:762, in call inlined at usertoken.adb:1001
+usertoken.adb:713:40: medium: length check might fail, in call inlined at usertoken.adb:765, in call inlined at usertoken.adb:1001
+usertoken.adb:713:40: medium: length check might fail, in call inlined at usertoken.adb:870, in call inlined at usertoken.adb:1003
+usertoken.adb:713:40: medium: length check might fail, in call inlined at usertoken.adb:873, in call inlined at usertoken.adb:1003
+usertoken.adb:713:40: medium: length check might fail, in call inlined at usertoken.adb:876, in call inlined at usertoken.adb:1003
+usertoken.adb:713:40: medium: length check might fail, in call inlined at usertoken.adb:979, in call inlined at usertoken.adb:1005
+usertoken.adb:713:40: medium: length check might fail, in call inlined at usertoken.adb:982, in call inlined at usertoken.adb:1005
+usertoken.adb:713:40: medium: length check might fail, in call inlined at usertoken.adb:985, in call inlined at usertoken.adb:1005
 usertoken.adb:715:23: info: length check proved, in call inlined at usertoken.adb:1010
 usertoken.adb:715:23: info: length check proved, in call inlined at usertoken.adb:759, in call inlined at usertoken.adb:1001
 usertoken.adb:715:23: info: length check proved, in call inlined at usertoken.adb:762, in call inlined at usertoken.adb:1001
@@ -899,16 +909,6 @@ usertoken.adb:715:23: medium: range check might fail, in call inlined at usertok
 usertoken.adb:715:23: medium: range check might fail, in call inlined at usertoken.adb:979, in call inlined at usertoken.adb:1005
 usertoken.adb:715:23: medium: range check might fail, in call inlined at usertoken.adb:982, in call inlined at usertoken.adb:1005
 usertoken.adb:715:23: medium: range check might fail, in call inlined at usertoken.adb:985, in call inlined at usertoken.adb:1005
-usertoken.adb:759:31: medium: length check might fail, in call inlined at usertoken.adb:759, in call inlined at usertoken.adb:1001
-usertoken.adb:762:18: medium: length check might fail, in call inlined at usertoken.adb:762, in call inlined at usertoken.adb:1001
-usertoken.adb:765:18: medium: length check might fail, in call inlined at usertoken.adb:765, in call inlined at usertoken.adb:1001
-usertoken.adb:870:31: medium: length check might fail, in call inlined at usertoken.adb:870, in call inlined at usertoken.adb:1003
-usertoken.adb:873:18: medium: length check might fail, in call inlined at usertoken.adb:873, in call inlined at usertoken.adb:1003
-usertoken.adb:876:18: medium: length check might fail, in call inlined at usertoken.adb:876, in call inlined at usertoken.adb:1003
-usertoken.adb:979:31: medium: length check might fail, in call inlined at usertoken.adb:979, in call inlined at usertoken.adb:1005
-usertoken.adb:982:18: medium: length check might fail, in call inlined at usertoken.adb:982, in call inlined at usertoken.adb:1005
-usertoken.adb:985:18: medium: length check might fail, in call inlined at usertoken.adb:985, in call inlined at usertoken.adb:1005
-usertoken.adb:1010:25: medium: length check might fail
 usertoken.adb:1085:45: info: precondition proved
    compilation of cert-attr-auth.adb failed
 
