@@ -154,7 +154,10 @@ free from side-effects only retrieves or computes a value.
 
     * an indexing expresssion of an indexed_component or the discrete_range
       of a slice in an object renaming declaration which renames
-      part of that index or slice.
+      part of that index or slice;
+
+    * a generic actual parameter corresponding to a generic formal object
+      having mode **in**.
 
 .. _etu-expressions:
 
