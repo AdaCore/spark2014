@@ -28,18 +28,18 @@ package Stack is
 
    procedure Push(S : in out Stack; X : in Integer) with
      Pre  => not Is_Full (S),
---       Post => To (S) = To (S)'Old & X;
-     Post => To (S)'Last = To (S)'Old'Last + 1 and then
-     To (S) (To (S)'Last) = X and then
-     (for all I in To (S)'Old'Range =>
-                  To (S) (I) = To (S)'Old (I));
+     Post => To (S) = To (S)'Old & (1 => X);
+--       Post => To (S)'Last = To (S)'Old'Last + 1 and then
+--       To (S) (To (S)'Last) = X and then
+--       (for all I in To (S)'Old'Range =>
+--                    To (S) (I) = To (S)'Old (I));
 
    procedure Pop (S : in out Stack) with
      Pre  => not Is_Empty (S),
---       Post => To (S) = To (S)'Old (1 .. To (S)'Old'Last - 1);
-     Post => To (S)'Last = To (S)'Old'Last - 1 and then
-     (for all I in To (S)'Range =>
-                  To (S) (I) = To (S)'Old (I));
+     Post => To (S) = To (S)'Old (1 .. To (S)'Old'Last - 1);
+--       Post => To (S)'Last = To (S)'Old'Last - 1 and then
+--       (for all I in To (S)'Range =>
+--                    To (S) (I) = To (S)'Old (I));
 
 private
    type Intarray is array (positive range <>) of integer;

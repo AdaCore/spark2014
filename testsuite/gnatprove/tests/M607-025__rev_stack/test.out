@@ -14,7 +14,7 @@ list.adb:28:43: info: overflow check proved
 list.adb:28:50: info: precondition proved
 list.adb:28:62: info: range check proved
 list.adb:32:10: info: loop invariant initialization proved
-list.adb:32:10: medium: loop invariant might fail after first iteration
+list.adb:32:10: info: loop invariant preservation proved
 list.adb:34:22: info: precondition proved
 list.adb:34:40: info: overflow check proved
 list.adb:36:38: info: overflow check proved
@@ -33,11 +33,10 @@ list.adb:42:60: info: range check proved
 list.adb:43:10: info: precondition proved
 list.adb:43:23: info: precondition proved
 list.adb:44:10: info: precondition proved
-list.ads:9:12: medium: range check might fail
+list.ads:13:14: info: postcondition proved
 list.ads:13:28: info: precondition proved
 list.ads:13:47: info: precondition proved
 list.ads:14:19: info: precondition proved
-list.ads:14:19: medium: postcondition might fail, requires Element (L, I) = Element (Reverse_List'Result, Last_Index (L) - I + First_Index (L)
 list.ads:14:31: info: range check proved
 list.ads:14:36: info: precondition proved
 list.ads:15:19: info: precondition proved
@@ -54,13 +53,9 @@ stack.ads:12:17: info: postcondition proved
 stack.ads:23:14: info: postcondition proved
 stack.ads:27:14: info: postcondition proved
 stack.ads:27:41: info: index check proved
-stack.ads:32:14: info: postcondition proved
-stack.ads:32:44: info: overflow check proved
-stack.ads:33:20: info: index check proved
-stack.ads:35:27: info: index check proved
-stack.ads:35:44: info: index check proved
-stack.ads:40:14: info: postcondition proved
-stack.ads:40:44: info: overflow check proved
-stack.ads:42:27: info: index check proved
-stack.ads:42:44: info: index check proved
+stack.ads:31:14: info: postcondition proved
+stack.ads:31:34: info: range check proved
+stack.ads:39:14: info: postcondition proved
+stack.ads:39:29: info: range check proved
+stack.ads:39:56: info: overflow check proved
 stack.ads:53:60: info: index check proved

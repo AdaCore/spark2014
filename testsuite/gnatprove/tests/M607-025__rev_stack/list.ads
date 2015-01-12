@@ -4,8 +4,8 @@ package List is
    pragma Spark_Mode (On);
 
    Max : constant := 100;
-   subtype T is integer range 1 .. Max;
-   function Eq (E1 : T; E2 : T) return Boolean is (E1 = E2);
+   subtype T is Integer range 1 .. Max;
+   function Eq (E1 : Integer; E2 : Integer) return Boolean is (E1 = E2);
    package My_Lists is new Ada.Containers.Formal_Vectors (T, Integer, Eq, True);
    type List is new My_Lists.Vector (Max);
 
