@@ -277,8 +277,9 @@ Implementation-Defined Behavior
 -------------------------------
 
 A |SPARK| program is guaranteed to be unambiguous, so that formal verification
-of properties is possible. However, some behaviors may depend on the compiler
-used. By default, |GNATprove| adopts the same choices as the GNAT
+of properties is possible. However, some behaviors (for example some
+representation attribute values like the ``Size`` attribute) may depend on the
+compiler used. By default, |GNATprove| adopts the same choices as the GNAT
 compiler. |GNATprove| also supports other compilers by providing special
 switches:
 
