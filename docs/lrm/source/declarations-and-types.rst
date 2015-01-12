@@ -232,7 +232,8 @@ and the default initialization expressions must not have variable inputs.
 .. _tu-record_types-02:
 
 2. The ``default_expression`` of a ``component_declaration`` shall not
-   have any variable inputs.
+   have any variable inputs, nor shall it contain a name denoting
+   the current instance of the enclosing type.
 
 .. _etu-record_types:
 
