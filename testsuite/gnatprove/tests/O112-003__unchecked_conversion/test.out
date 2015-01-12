@@ -1,0 +1,2 @@
+scbe_main.adb:5:32: info: length check proved
+unchecked.adb:14:22: info: length check proved
