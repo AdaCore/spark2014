@@ -268,6 +268,10 @@ package body Why.Atree.Modules is
         New_Identifier (Domain => EW_Term,
                         Symbol => NID ("-"),
                         Typ    => EW_Int_Type);
+      Fixed_Unary_Minus :=
+        New_Identifier (Domain => EW_Term,
+                        Symbol => NID ("-"),
+                        Typ    => EW_Fixed_Type);
       Real_Unary_Minus :=
         New_Identifier (Domain => EW_Term,
                         Symbol => NID ("-."),
@@ -292,6 +296,25 @@ package body Why.Atree.Modules is
                         Domain => EW_Term,
                         Symbol => NID ("*"),
                         Typ    => EW_Int_Type,
+                        Infix  => True);
+
+      Fixed_Infix_Add :=
+        New_Identifier (Module => Int_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("+"),
+                        Typ    => EW_Fixed_Type,
+                        Infix  => True);
+      Fixed_Infix_Subtr :=
+        New_Identifier (Module => Int_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("-"),
+                        Typ    => EW_Fixed_Type,
+                        Infix  => True);
+      Fixed_Infix_Mult :=
+        New_Identifier (Module => Int_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("*"),
+                        Typ    => EW_Fixed_Type,
                         Infix  => True);
 
       Real_Infix_Add :=

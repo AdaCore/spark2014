@@ -4221,10 +4221,10 @@ package body Gnat2Why.Expr is
 
             declare
                Minus_Ident : constant W_Identifier_Id :=
-                 (if Get_Type_Kind (Base_Why_Type (Right_Type)) in
-                    EW_Int | EW_Fixed
-                  then
+                 (if Get_Type_Kind (Base_Why_Type (Right_Type)) = EW_Int then
                      Int_Unary_Minus
+                  elsif Get_Type_Kind (Base_Why_Type (Right_Type)) = EW_Fixed
+                  then Fixed_Unary_Minus
                   else Real_Unary_Minus);
             begin
                T :=
@@ -4275,12 +4275,12 @@ package body Gnat2Why.Expr is
                  Base_Why_Type (Left_Type, Right_Type);
                Name : constant W_Identifier_Id :=
                  (if Op = N_Op_Add then
-                    (if Base = EW_Int_Type or else Base = EW_Fixed_Type then
-                          Int_Infix_Add
+                    (if Base = EW_Int_Type then Int_Infix_Add
+                     elsif Base = EW_Fixed_Type then Fixed_Infix_Add
                      else Real_Infix_Add)
                   else
-                       (if Base = EW_Int_Type or else Base = EW_Fixed_Type then
-                          Int_Infix_Subtr
+                    (if Base = EW_Int_Type then Int_Infix_Subtr
+                     elsif Base = EW_Fixed_Type then Fixed_Infix_Subtr
                      else Real_Infix_Subtr));
             begin
                T :=
@@ -4373,8 +4373,8 @@ package body Gnat2Why.Expr is
                else
                   declare
                      Name : constant W_Identifier_Id :=
-                       (if Base = EW_Int_Type or else Base = EW_Fixed_Type then
-                           Int_Infix_Mult
+                       (if Base = EW_Int_Type then Int_Infix_Mult
+                        elsif Base = EW_Fixed_Type then Fixed_Infix_Mult
                         else Real_Infix_Mult);
                   begin
                      T :=
