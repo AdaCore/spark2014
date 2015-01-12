@@ -469,6 +469,7 @@ enclave.adb:274:18: medium: precondition might fail
 enclave.adb:286:18: medium: precondition might fail
 enclave.adb:329:22: info: postcondition proved
 enclave.adb:394:22: info: postcondition proved
+enclave.adb:396:07: info: assertion proved
 enclave.adb:399:15: medium: precondition might fail
 enclave.adb:481:18: medium: precondition might fail
 enclave.adb:487:19: medium: precondition might fail

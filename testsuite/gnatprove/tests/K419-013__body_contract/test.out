@@ -1,7 +1,12 @@
-body_contract.adb:7:14: medium: overflow check might fail
+body_contract.adb:4:28: medium: assertion might fail, requires X > 0
+body_contract.adb:5:07: info: assertion proved
+body_contract.adb:5:39: info: overflow check proved
+body_contract.adb:7:14: info: overflow check proved
 body_contract.adb:12:14: info: postcondition proved
 body_contract.adb:12:24: info: overflow check proved
 body_contract.adb:15:14: info: overflow check proved
+body_contract.adb:19:07: info: assertion proved
+body_contract.adb:20:07: info: assertion proved
 body_contract.adb:22:14: info: overflow check proved
 body_contract.ads:7:14: info: postcondition proved
 body_contract.ads:7:24: info: overflow check proved

@@ -2060,6 +2060,60 @@ package body Gnat2Why.Subprograms is
                        Def  => New_Void)));
          end;
 
+         --  Check pragmas Precondition and Postcondition in the body of the
+         --  subprogram as plain assertions.
+
+         declare
+            Pre_Prags  : Node_Lists.List;
+            Post_Prags : Node_Lists.List;
+
+            procedure Get_Pre_Post_Pragmas (Decls : Node_Lists.List);
+            --  Retrieve pragmas Precondition and Postcondition from the list
+            --  of body declarations, and add them to Pre_Prags and Post_Prags
+            --  when they do not come from aspects.
+
+            function Transform_All_Pragmas
+              (Prags : Node_Lists.List) return W_Prog_Id;
+            --  Force the translation of all pragmas in Prags into Why3.
+
+            procedure Get_Pre_Post_Pragmas (Decls : Node_Lists.List) is
+            begin
+               for Decl of Decls loop
+                  if Is_Pragma_Check (Decl, Name_Precondition) and then
+                    not From_Aspect_Specification (Decl)
+                  then
+                     Pre_Prags.Append (Decl);
+
+                  elsif Is_Pragma (Decl, Pragma_Postcondition) and then
+                    not From_Aspect_Specification (Decl)
+                  then
+                     Post_Prags.Append (Decl);
+                  end if;
+               end loop;
+            end Get_Pre_Post_Pragmas;
+
+            function Transform_All_Pragmas
+              (Prags : Node_Lists.List) return W_Prog_Id
+            is
+               Result : W_Prog_Id := New_Void;
+            begin
+               for Prag of Prags loop
+                  Result :=
+                    Sequence (Result, Transform_Pragma (Prag, Force => True));
+               end loop;
+               return Result;
+            end Transform_All_Pragmas;
+
+         begin
+            Get_Pre_Post_Pragmas
+              (Get_Flat_Statement_And_Declaration_List
+                 (Declarations (Body_N)));
+            Why_Body := Sequence
+              ((1 => Transform_All_Pragmas (Pre_Prags),
+                2 => Why_Body,
+                3 => Transform_All_Pragmas (Post_Prags)));
+         end;
+
          --  Refined_Post
 
          if Has_Contracts (E, Name_Refined_Post) then

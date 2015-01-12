@@ -30,7 +30,6 @@ with GNAT.Source_Info;
 
 with Ada.Containers;         use Ada.Containers;
 
-with Atree;                  use Atree;
 with Checks;                 use Checks;
 with Elists;                 use Elists;
 with Errout;                 use Errout;
@@ -440,14 +439,6 @@ package body Gnat2Why.Expr is
       Expr   : Node_Id) return W_Expr_Id;
    --  Convert a membership expression (N_In or N_Not_In) into a boolean Why
    --  expression.
-
-   function Transform_Pragma (Prag : Node_Id) return W_Prog_Id with
-     Pre => Nkind (Prag) = N_Pragma;
-   --  Returns the Why program for pragma Prag
-
-   function Transform_Pragma_Check (Prag : Node_Id) return W_Prog_Id;
-   --  Returns the Why program for pragma Check (pragma Assert,
-   --  Assume etc internally are all pragma Check).
 
    function Transform_Array_Equality
      (Op        : N_Op_Compare;
@@ -7887,7 +7878,7 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Pragma =>
-            R := Transform_Pragma (Decl);
+            R := Transform_Pragma (Decl, Force => False);
 
          when N_Raise_xxx_Error | N_Raise_Statement =>
             R := Transform_Raise (Decl);
@@ -9555,7 +9546,10 @@ package body Gnat2Why.Expr is
    -- Transform_Pragma --
    ----------------------
 
-   function Transform_Pragma (Prag : Node_Id) return W_Prog_Id is
+   function Transform_Pragma
+     (Prag  : Node_Id;
+      Force : Boolean) return W_Prog_Id
+   is
       Pname   : constant Name_Id   := Pragma_Name (Prag);
       Prag_Id : constant Pragma_Id := Get_Pragma_Id (Pname);
 
@@ -9582,7 +9576,7 @@ package body Gnat2Why.Expr is
          --  Ignore pragma Check for preconditions and postconditions
 
          when Pragma_Check =>
-            return Transform_Pragma_Check (Prag);
+            return Transform_Pragma_Check (Prag, Force);
 
          --  Pragma Overflow_Mode should have an effect on proof, but is
          --  currently ignored (and a corresponding warning is issued
@@ -9590,6 +9584,36 @@ package body Gnat2Why.Expr is
 
          when Pragma_Overflow_Mode =>
             return New_Void (Prag);
+
+         --  Unless Force is True to force the translation of pragma
+         --  Postcondition (for those pragmas declared in a subprogram body),
+         --  this pragma is translated elsewhere.
+
+         when Pragma_Postcondition =>
+            if Force then
+               declare
+                  Expr   : constant Node_Id :=
+                    Expression (First (Pragma_Argument_Associations (Prag)));
+                  Params : Transformation_Params := Assert_Params;
+                  Result : W_Prog_Id;
+
+               begin
+                  Result := New_Ignore
+                    (Prog =>
+                       +Transform_Expr (Expr, EW_Prog, Params => Params));
+                  Params.Gen_Marker := True;
+                  Result := Sequence
+                    (Result,
+                     New_Located_Assert
+                       (Prag,
+                        +Transform_Expr (Expr, EW_Pred, Params => Params),
+                        VC_Assert,
+                        EW_Assert));
+                  return Result;
+               end;
+            else
+               return New_Void (Prag);
+            end if;
 
          --  Pragma Inspection_Point is ignored, but we insert a call to a
          --  dummy procedure, to allow to break on it during debugging.
@@ -9681,7 +9705,6 @@ package body Gnat2Why.Expr is
               Pragma_Initial_Condition            |
               Pragma_Loop_Variant                 |
               Pragma_Part_Of                      |
-              Pragma_Postcondition                |
               Pragma_Precondition                 |
               Pragma_Refined_Depends              |
               Pragma_Refined_Global               |
@@ -9894,18 +9917,18 @@ package body Gnat2Why.Expr is
    ----------------------------
 
    procedure Transform_Pragma_Check
-     (Stmt    : Node_Id;
+     (Stmt    :     Node_Id;
+      Force   :     Boolean;
       Runtime : out W_Prog_Id;
       Pred    : out W_Pred_Id)
    is
-
       Arg1   : constant Node_Id := First (Pragma_Argument_Associations (Stmt));
       Arg2   : constant Node_Id := Next (Arg1);
       Expr   : constant Node_Id := Expression (Arg2);
       Params : Transformation_Params := Assert_Params;
 
    begin
-      if Is_Ignored_Pragma_Check (Stmt) then
+      if not Force and then Is_Ignored_Pragma_Check (Stmt) then
          Runtime := New_Void (Stmt);
          Pred := True_Pred;
          return;
@@ -9922,7 +9945,10 @@ package body Gnat2Why.Expr is
       end if;
    end Transform_Pragma_Check;
 
-   function Transform_Pragma_Check (Prag : Node_Id) return W_Prog_Id is
+   function Transform_Pragma_Check
+     (Prag  : Node_Id;
+      Force : Boolean) return W_Prog_Id
+   is
       Check_Expr : W_Prog_Id;
       Pred       : W_Pred_Id;
 
@@ -9938,9 +9964,11 @@ package body Gnat2Why.Expr is
       T : W_Prog_Id;
    begin
 
-      --  pre / post / predicate are not handled here
+      --  pre / post / predicate are not handled here, unless Force is True
 
-      if Is_Pragma_Check (Prag, Name_Precondition)
+      if not Force
+        and then
+         (Is_Pragma_Check (Prag, Name_Precondition)
         or else
           Is_Pragma_Check (Prag, Name_Pre)
         or else
@@ -9950,12 +9978,12 @@ package body Gnat2Why.Expr is
         or else
           Is_Pragma_Check (Prag, Name_Static_Predicate)
         or else
-          Is_Pragma_Check (Prag, Name_Predicate)
+          Is_Pragma_Check (Prag, Name_Predicate))
       then
          return New_Void (Prag);
       end if;
 
-      Transform_Pragma_Check (Prag, Check_Expr, Pred);
+      Transform_Pragma_Check (Prag, Force, Check_Expr, Pred);
 
       --  assert and cut is not handled here, except for runtime errors.
 
@@ -9980,8 +10008,10 @@ package body Gnat2Why.Expr is
          return New_Void (Prag);
       end if;
 
-      --  now handle remaining cases of "regular" pragma Check/Assert and
-      --  pragma Assume
+      --  Now handle remaining cases of "regular" pragma Check/Assert
+      --  and pragma Assume. This is also how pragmas Preconditions and
+      --  Postconditions inside a subprogram body are translated, as
+      --  regular assertions.
 
       if Is_Pragma_Check (Prag, Name_Assume) then
          T := New_Assume_Statement (Post => Pred);
@@ -10925,12 +10955,15 @@ package body Gnat2Why.Expr is
                   Check_Expr : W_Prog_Id;
                   Pred       : W_Pred_Id;
                begin
-                  Transform_Pragma_Check (Stmt_Or_Decl, Check_Expr, Pred);
+                  Transform_Pragma_Check (Stmt_Or_Decl,
+                                          Force   => False,
+                                          Runtime => Check_Expr,
+                                          Pred    => Pred);
                   Assert_And_Cut := Pred;
                end;
             end if;
 
-            return Transform_Pragma (Stmt_Or_Decl);
+            return Transform_Pragma (Stmt_Or_Decl, Force => False);
 
          when N_Raise_xxx_Error | N_Raise_Statement =>
             return Transform_Raise (Stmt_Or_Decl);

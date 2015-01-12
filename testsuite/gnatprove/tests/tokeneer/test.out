@@ -23,6 +23,7 @@ admin.ads:245:29: info: length check proved
 admin.ads:246:58: info: length check proved
 admin.ads:250:58: info: length check proved
 admin.ads:254:58: info: length check proved
+admintoken.adb:248:10: medium: assertion might fail, requires TokenOk = (IDCert.Valid and then AuthCert.Valid and then Cert.Attr.Auth.TheRole(AuthCert.Contents) in PrivTypes.adminprivileget
 admintoken.adb:275:37: info: length check proved, in call inlined at admintoken.adb:366, in call inlined at admintoken.adb:502
 admintoken.adb:275:37: info: length check proved, in call inlined at admintoken.adb:369, in call inlined at admintoken.adb:502
 admintoken.adb:275:37: info: length check proved, in call inlined at admintoken.adb:479, in call inlined at admintoken.adb:504
@@ -51,13 +52,15 @@ admintoken.adb:277:23: medium: range check might fail, in call inlined at admint
 admintoken.adb:277:23: medium: range check might fail, in call inlined at admintoken.adb:482, in call inlined at admintoken.adb:504
 admintoken.adb:277:23: medium: range check might fail, in call inlined at admintoken.adb:512
 admintoken.adb:277:23: medium: range check might fail, in call inlined at admintoken.adb:524
-admintoken.adb:612:28: medium: range check might fail
+admintoken.adb:609:28: medium: assertion might fail, requires Cert.Attr.Auth.TheRole(AuthCert.Contents) in PrivTypes.adminprivileget
+admintoken.adb:612:28: info: range check proved
 admintoken.ads:78:26: info: postcondition proved
 admintoken.ads:124:07: info: postcondition proved
 admintoken.ads:178:07: medium: postcondition might fail, requires TokenOk = (IsGood and then AuthCertValid and then TheAuthCertRole in PrivTypes.adminprivileget
 admintoken.ads:263:07: medium: postcondition might fail
 alarm-interfac.ads:54:26: medium: postcondition might fail, requires (IsAlarming)
 alarm-interfac.ads:70:26: medium: postcondition might fail, requires not (IsAlarming)
+alarm.adb:62:07: info: assertion proved
 alarm.ads:82:07: medium: postcondition might fail, requires Door.TheDoorAlarm = AlarmTypes.Alarming) <= (IsAlarming)
 auditlog.adb:80:32: info: length check proved
 auditlog.adb:89:45: info: length check proved
@@ -130,30 +133,40 @@ auditlog.adb:499:22: info: precondition proved, in call inlined at auditlog.adb:
 auditlog.adb:499:22: info: precondition proved, in call inlined at auditlog.adb:1922
 auditlog.adb:600:12: info: length check proved, in call inlined at auditlog.adb:652
 auditlog.adb:600:34: medium: length check might fail, in call inlined at auditlog.adb:652
+auditlog.adb:748:07: info: assertion proved
 auditlog.adb:753:47: medium: range check might fail
 auditlog.adb:753:50: info: overflow check proved
 auditlog.adb:753:69: info: overflow check proved
+auditlog.adb:756:07: info: assertion proved
 auditlog.adb:757:10: info: postcondition proved
 auditlog.adb:758:47: info: range check proved
 auditlog.adb:758:50: info: overflow check proved
 auditlog.adb:758:69: info: overflow check proved
+auditlog.adb:805:10: info: assertion proved
+auditlog.adb:807:10: info: assertion proved
 auditlog.adb:808:13: info: postcondition proved
 auditlog.adb:821:75: info: range check proved
-auditlog.adb:868:13: medium: postcondition might fail
+auditlog.adb:866:10: info: assertion proved
+auditlog.adb:867:10: medium: assertion might fail
+auditlog.adb:868:13: info: postcondition proved
 auditlog.adb:881:16: info: assertion proved, in call inlined at auditlog.adb:894
 auditlog.adb:899:53: info: range check proved
 auditlog.adb:924:10: info: precondition proved
 auditlog.adb:933:10: info: assertion proved
 auditlog.adb:935:10: info: precondition proved
 auditlog.adb:942:44: info: range check proved
+auditlog.adb:981:07: info: assertion proved
 auditlog.adb:984:47: info: overflow check proved
+auditlog.adb:985:07: info: assertion proved
 auditlog.adb:986:10: info: postcondition proved
 auditlog.adb:988:47: info: overflow check proved
 auditlog.adb:1008:50: info: range check proved
 auditlog.adb:1010:44: info: range check proved
+auditlog.adb:1072:07: info: assertion proved
 auditlog.adb:1074:47: medium: range check might fail
 auditlog.adb:1074:50: info: overflow check proved
 auditlog.adb:1074:69: info: overflow check proved
+auditlog.adb:1076:07: info: assertion proved
 auditlog.adb:1077:10: info: postcondition proved
 auditlog.adb:1078:47: info: range check proved
 auditlog.adb:1078:50: info: overflow check proved
@@ -177,6 +190,10 @@ auditlog.adb:1127:47: medium: range check might fail
 auditlog.adb:1127:50: info: overflow check proved
 auditlog.adb:1127:69: info: overflow check proved
 auditlog.adb:1132:07: info: precondition proved
+auditlog.adb:1178:07: info: assertion proved
+auditlog.adb:1180:47: info: range check proved
+auditlog.adb:1180:50: info: overflow check proved
+auditlog.adb:1180:69: info: overflow check proved
 auditlog.adb:1280:25: medium: assertion might fail, in call inlined at auditlog.adb:1320
 auditlog.adb:1284:55: info: range check proved, in call inlined at auditlog.adb:1320
 auditlog.adb:1319:12: info: assertion proved
@@ -203,18 +220,42 @@ auditlog.adb:1489:62: info: range check proved
 auditlog.adb:1489:67: info: overflow check proved
 auditlog.adb:1490:09: info: overflow check proved
 auditlog.adb:1490:09: info: range check proved
-auditlog.adb:1568:07: medium: precondition might fail
+auditlog.adb:1555:10: medium: assertion might fail, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
+auditlog.adb:1556:47: medium: range check might fail
+auditlog.adb:1556:50: info: overflow check proved
+auditlog.adb:1556:69: info: overflow check proved
+auditlog.adb:1558:07: info: assertion proved
+auditlog.adb:1560:47: medium: range check might fail
+auditlog.adb:1560:50: info: overflow check proved
+auditlog.adb:1560:69: info: overflow check proved
+auditlog.adb:1568:07: info: precondition proved
 auditlog.adb:1578:10: info: precondition proved
+auditlog.adb:1644:10: medium: assertion might fail, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
+auditlog.adb:1645:47: medium: range check might fail
+auditlog.adb:1645:50: info: overflow check proved
+auditlog.adb:1645:69: info: overflow check proved
+auditlog.adb:1648:10: medium: assertion might fail, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
+auditlog.adb:1649:47: medium: range check might fail
+auditlog.adb:1649:50: info: overflow check proved
+auditlog.adb:1649:69: info: overflow check proved
 auditlog.adb:1660:22: info: precondition proved
-auditlog.adb:1699:13: medium: assertion might fail
+auditlog.adb:1699:13: info: assertion proved
 auditlog.adb:1704:53: info: range check proved
 auditlog.adb:1704:56: info: overflow check proved
 auditlog.adb:1704:75: info: overflow check proved
 auditlog.adb:1734:52: info: range check proved
-auditlog.adb:1745:10: medium: assertion might fail, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
+auditlog.adb:1744:07: info: assertion proved
 auditlog.adb:1746:47: medium: range check might fail
 auditlog.adb:1746:50: info: overflow check proved
 auditlog.adb:1746:69: info: overflow check proved
+auditlog.adb:1817:10: medium: assertion might fail, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
+auditlog.adb:1818:47: medium: range check might fail
+auditlog.adb:1818:50: info: overflow check proved
+auditlog.adb:1818:69: info: overflow check proved
+auditlog.adb:1821:10: medium: assertion might fail, requires NumberLogEntries = LogEntryCountT(UsedLogFiles.Length -1)*MaxLogFileEntries + LogFileEntries(CurrentLogFile)
+auditlog.adb:1822:47: medium: range check might fail
+auditlog.adb:1822:50: info: overflow check proved
+auditlog.adb:1822:69: info: overflow check proved
 auditlog.adb:1836:10: medium: assertion might fail
 auditlog.adb:1839:52: info: range check proved
 auditlog.adb:1839:55: info: overflow check proved
@@ -255,6 +296,7 @@ certificatestore.adb:225:42: info: length check proved, in call inlined at certi
 certificatestore.adb:225:45: info: length check proved, in call inlined at certificatestore.adb:239
 certificatestore.adb:353:47: info: range check proved
 certtypes.ads:39:22: info: length check proved
+clock.adb:68:07: info: assertion proved
 clock.adb:74:11: info: range check proved
 clock.adb:78:10: info: assertion proved
 clock.adb:82:12: info: index check proved
@@ -477,59 +519,87 @@ display.adb:148:33: medium: array index check might fail, in call inlined at dis
 display.adb:150:32: info: range check proved, in call inlined at display.adb:189
 display.adb:150:32: info: range check proved, in call inlined at display.adb:289
 display.ads:66:48: info: length check proved
+door.adb:98:07: info: assertion proved
 door.adb:99:10: info: postcondition proved
-door.ads:148:08: medium: postcondition might fail
+door.adb:202:07: medium: assertion might fail
+door.adb:319:07: medium: assertion might fail
+door.adb:398:07: medium: assertion might fail
+door.ads:148:08: info: postcondition proved
 door.ads:215:08: medium: postcondition might fail
 door.ads:270:08: medium: postcondition might fail
 enclave.adb:109:18: info: precondition proved, in call inlined at enclave.adb:1961
 enclave.adb:109:18: info: precondition proved, in call inlined at enclave.adb:2150
+enclave.adb:206:07: info: assertion proved
+enclave.adb:207:07: info: assertion proved
 enclave.adb:207:29: info: postcondition proved
+enclave.adb:274:07: info: assertion proved
+enclave.adb:275:07: info: assertion proved
 enclave.adb:276:10: info: postcondition proved
 enclave.adb:288:16: info: precondition proved
+enclave.adb:361:07: info: assertion proved
+enclave.adb:362:07: info: assertion proved
 enclave.adb:362:29: info: postcondition proved
+enclave.adb:441:07: info: assertion proved
 enclave.adb:441:29: info: postcondition proved
+enclave.adb:560:07: info: assertion proved
 enclave.adb:570:19: medium: precondition might fail
 enclave.adb:575:24: info: precondition proved
-enclave.adb:579:10: medium: postcondition might fail
+enclave.adb:578:07: medium: assertion might fail
+enclave.adb:579:10: info: postcondition proved
 enclave.adb:593:19: info: precondition proved
 enclave.adb:598:24: info: precondition proved
 enclave.adb:638:48: info: precondition proved
+enclave.adb:697:07: info: assertion proved
 enclave.adb:697:29: info: postcondition proved
+enclave.adb:823:07: info: assertion proved
 enclave.adb:829:15: info: precondition proved
 enclave.adb:837:19: info: precondition proved
 enclave.adb:842:24: info: precondition proved
+enclave.adb:845:07: info: assertion proved
 enclave.adb:846:10: info: postcondition proved
 enclave.adb:856:19: info: precondition proved
 enclave.adb:867:19: info: precondition proved
 enclave.adb:872:24: info: precondition proved
+enclave.adb:922:10: info: assertion proved
+enclave.adb:923:10: info: assertion proved
 enclave.adb:924:13: info: postcondition proved
+enclave.adb:996:10: info: assertion proved
+enclave.adb:997:10: info: assertion proved
 enclave.adb:998:13: info: postcondition proved
 enclave.adb:1046:15: info: precondition proved
 enclave.adb:1055:10: info: precondition proved
 enclave.adb:1057:10: info: precondition proved
+enclave.adb:1133:07: info: assertion proved
 enclave.adb:1138:15: info: precondition proved
+enclave.adb:1139:07: info: assertion proved
 enclave.adb:1140:10: info: postcondition proved
 enclave.adb:1148:19: info: precondition proved
 enclave.adb:1189:15: info: precondition proved
+enclave.adb:1300:07: info: assertion proved
 enclave.adb:1302:15: info: precondition proved
 enclave.adb:1311:19: info: precondition proved
 enclave.adb:1316:24: info: precondition proved
+enclave.adb:1319:07: info: assertion proved
 enclave.adb:1320:10: info: postcondition proved
 enclave.adb:1344:19: info: precondition proved
 enclave.adb:1349:24: info: precondition proved
 enclave.adb:1354:22: info: precondition proved
 enclave.adb:1368:12: medium: precondition might fail
+enclave.adb:1503:07: info: assertion proved
 enclave.adb:1508:15: info: precondition proved
 enclave.adb:1523:24: info: precondition proved
-enclave.adb:1527:10: medium: postcondition might fail
+enclave.adb:1526:07: medium: assertion might fail
+enclave.adb:1527:10: info: postcondition proved
 enclave.adb:1537:17: medium: precondition might fail
 enclave.adb:1545:19: info: precondition proved
 enclave.adb:1568:19: info: precondition proved
 enclave.adb:1573:24: info: precondition proved
+enclave.adb:1795:07: info: assertion proved
 enclave.adb:1800:19: info: precondition proved
 enclave.adb:1818:19: info: precondition proved
 enclave.adb:1823:24: info: precondition proved
-enclave.adb:1827:11: medium: postcondition might fail
+enclave.adb:1826:07: medium: assertion might fail
+enclave.adb:1827:11: info: postcondition proved
 enclave.adb:1850:19: info: precondition proved
 enclave.adb:1873:19: info: precondition proved
 enclave.adb:1878:24: info: precondition proved
@@ -539,15 +609,39 @@ enclave.adb:1887:13: info: precondition proved
 enclave.adb:1890:13: info: precondition proved
 enclave.adb:1893:13: info: precondition proved
 enclave.adb:1896:13: info: precondition proved
+enclave.adb:1934:07: medium: assertion might fail
+enclave.adb:2065:07: info: assertion proved
+enclave.adb:2068:07: medium: assertion might fail
 enclave.adb:2075:39: medium: range check might fail
 enclave.adb:2079:13: info: precondition proved
 enclave.adb:2082:13: info: precondition proved
 enclave.adb:2085:13: info: precondition proved
+enclave.adb:2134:07: medium: assertion might fail
+enclave.adb:2140:07: medium: assertion might fail
+enclave.adb:2417:07: medium: assertion might fail
+enclave.adb:2447:19: info: precondition proved
+enclave.adb:2456:19: info: precondition proved
+enclave.adb:2461:24: info: precondition proved
+enclave.adb:2464:07: medium: assertion might fail
+enclave.adb:2487:19: info: precondition proved
+enclave.adb:2492:24: info: precondition proved
+enclave.adb:2517:19: info: precondition proved
+enclave.adb:2522:20: medium: precondition might fail
 enclave.adb:2526:42: medium: range check might fail
-enclave.adb:2531:13: medium: precondition might fail
-enclave.adb:2536:13: medium: precondition might fail
+enclave.adb:2531:13: info: precondition proved
+enclave.adb:2536:13: info: precondition proved
+enclave.adb:2660:07: medium: assertion might fail
+enclave.adb:2689:19: info: precondition proved
+enclave.adb:2693:19: info: precondition proved
+enclave.adb:2698:24: info: precondition proved
+enclave.adb:2701:07: medium: assertion might fail
+enclave.adb:2728:19: info: precondition proved
+enclave.adb:2737:19: info: precondition proved
+enclave.adb:2742:24: info: precondition proved
+enclave.adb:2889:10: info: assertion proved
 enclave.adb:2902:22: info: precondition proved
 enclave.adb:2907:27: info: precondition proved
+enclave.adb:2910:10: info: assertion proved
 enclave.adb:2911:13: info: postcondition proved
 enclave.adb:2920:22: info: precondition proved
 enclave.adb:2925:27: info: precondition proved
@@ -602,7 +696,9 @@ enrolment.adb:76:23: medium: range check might fail, in call inlined at enrolmen
 enrolment.adb:76:23: medium: range check might fail, in call inlined at enrolment.adb:223
 enrolment.adb:76:23: medium: range check might fail, in call inlined at enrolment.adb:241
 enrolment.adb:76:23: medium: range check might fail, in call inlined at enrolment.adb:272
+enrolment.adb:134:10: info: assertion proved
 enrolment.adb:135:13: info: postcondition proved
+enrolment.adb:137:10: info: assertion proved
 enrolment.adb:246:27: info: overflow check proved
 enrolment.adb:259:27: medium: overflow check might fail
 enrolment.ads:85:07: medium: postcondition might fail, requires DataOK = KeyStore(KeyStore.privatekeypresent)
@@ -707,6 +803,7 @@ keystore.adb:119:20: medium: range check might fail, in call inlined at keystore
 keystore.adb:119:20: medium: range check might fail, in call inlined at keystore.adb:731
 keystore.adb:119:20: medium: range check might fail, in call inlined at keystore.adb:801
 keystore.adb:119:20: medium: range check might fail, in call inlined at keystore.adb:891
+keystore.adb:190:10: info: assertion proved
 keystore.adb:195:30: info: range check proved
 keystore.adb:195:41: info: overflow check proved
 keystore.adb:195:57: info: overflow check proved
@@ -723,11 +820,16 @@ keystore.adb:337:40: info: length check proved, in call inlined at keystore.adb:
 keystore.adb:337:40: info: length check proved, in call inlined at keystore.adb:496, in call inlined at keystore.adb:565
 keystore.adb:337:40: info: length check proved, in call inlined at keystore.adb:496, in call inlined at keystore.adb:786
 keystore.adb:810:77: info: length check proved
-keystore.ads:255:07: medium: postcondition might fail
-keystore.ads:275:26: medium: postcondition might fail, requires not (PrivateKeyPresent)
+keystore.adb:857:07: medium: assertion might fail
+keystore.adb:913:29: medium: assertion might fail, requires not (PrivateKeyPresent)
+keystore.ads:255:07: info: postcondition proved
+keystore.ads:275:26: info: postcondition proved
 latch-interfac.ads:45:26: medium: postcondition might fail, requires isLocked or Fault
 latch-interfac.ads:61:26: medium: postcondition might fail, requires not isLocked or Fault
-latch.ads:107:07: medium: postcondition might fail
+latch.adb:105:10: medium: assertion might fail, requires IsLocked = Clock.GreaterThanOrEqual(Clock.TheCurrentTime, LatchTimeout)
+latch.adb:164:10: medium: assertion might fail, requires IsLocked = Interfac.isLocked ) or SystemFault
+latch.adb:200:07: info: assertion proved
+latch.ads:107:07: info: postcondition proved
 latch.ads:142:08: medium: postcondition might fail, requires IsLocked = LatchisLocked or SystemFault
 latch.ads:162:26: medium: postcondition might fail, requires Latch_Timeout = Time
 poll.ads:132:11: info: postcondition proved
@@ -858,17 +960,23 @@ tokenreader.adb:315:48: info: range check proved
 tokenreader.adb:755:43: info: range check proved
 updates.ads:96:12: info: postcondition proved
 updates.ads:188:11: info: postcondition proved
+userentry.adb:367:07: info: assertion proved
 userentry.adb:508:12: medium: range check might fail, in call inlined at userentry.adb:526
 userentry.adb:514:42: info: length check proved, in call inlined at userentry.adb:526
 userentry.adb:514:45: medium: length check might fail, in call inlined at userentry.adb:526
 userentry.adb:516:23: info: length check proved, in call inlined at userentry.adb:526
 userentry.adb:516:23: medium: range check might fail, in call inlined at userentry.adb:526
+userentry.adb:672:07: info: assertion proved
 userentry.adb:685:19: info: precondition proved
+userentry.adb:909:07: info: assertion proved
+userentry.adb:918:07: info: assertion proved
 userentry.adb:919:12: info: postcondition proved
-userentry.adb:1295:37: medium: range check might fail
+userentry.adb:1270:07: medium: assertion might fail
+userentry.adb:1282:07: info: assertion proved
+userentry.adb:1295:37: info: range check proved
 userentry.adb:1301:13: info: precondition proved
-userentry.adb:1305:13: medium: precondition might fail
-userentry.adb:1309:13: medium: precondition might fail
+userentry.adb:1305:13: info: precondition proved
+userentry.adb:1309:13: info: precondition proved
 usertoken.adb:713:37: info: length check proved, in call inlined at usertoken.adb:1010
 usertoken.adb:713:37: info: length check proved, in call inlined at usertoken.adb:759, in call inlined at usertoken.adb:1001
 usertoken.adb:713:37: info: length check proved, in call inlined at usertoken.adb:762, in call inlined at usertoken.adb:1001
@@ -909,6 +1017,7 @@ usertoken.adb:715:23: medium: range check might fail, in call inlined at usertok
 usertoken.adb:715:23: medium: range check might fail, in call inlined at usertoken.adb:979, in call inlined at usertoken.adb:1005
 usertoken.adb:715:23: medium: range check might fail, in call inlined at usertoken.adb:982, in call inlined at usertoken.adb:1005
 usertoken.adb:715:23: medium: range check might fail, in call inlined at usertoken.adb:985, in call inlined at usertoken.adb:1005
+usertoken.adb:1057:07: info: assertion proved
 usertoken.adb:1085:45: info: precondition proved
    compilation of cert-attr-auth.adb failed
 

@@ -1,3 +1,4 @@
-cursor_location.adb:17:11: medium: postcondition might fail
+cursor_location.adb:16:07: medium: assertion might fail
+cursor_location.adb:17:11: info: postcondition proved
 cursor_location.ads:18:09: medium: postcondition might fail
 cursor_location.ads:27:09: info: postcondition proved

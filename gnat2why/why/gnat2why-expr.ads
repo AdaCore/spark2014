@@ -25,6 +25,7 @@
 
 with Ada.Containers.Hashed_Maps;
 
+with Atree;             use Atree;
 with Einfo;             use Einfo;
 with Sinfo;             use Sinfo;
 with Types;             use Types;
@@ -119,12 +120,42 @@ package Gnat2Why.Expr is
    --  is suitably havoc'd before being read.
 
    procedure Transform_Pragma_Check
-     (Stmt    : Node_Id;
+     (Stmt    :     Node_Id;
+      Force   :     Boolean;
       Runtime : out W_Prog_Id;
       Pred    : out W_Pred_Id);
-   --  Given a pragma Check in Stmt, generates the corresponding proposition in
-   --  Pred, and the program which checks the absence of run-time errors in
-   --  Runtime.
+   --  Translates a pragma Check into Why3.
+   --  @param Stmt The pragma Check to translate.
+   --  @param Force True to force the translation of the pragma, even for those
+   --     pragmas normally translated elsewhere like preconditions and
+   --     postconditions.
+   --  @param Runtime On exit, Why3 program for checking absence of run-time
+   --     errors in the pragma.
+   --  @param Pred On exit, Why3 proposition corresponding to the pragma.
+
+   function Transform_Pragma_Check
+     (Prag  : Node_Id;
+      Force : Boolean) return W_Prog_Id;
+   --  Returns the Why program for pragma Check. As most assertion pragmas
+   --  (like Assert or Assume) are internally rewritten by semantic analysis
+   --  into pragma Check, this is where these are translated.
+   --  @param Prag The pragma Check to translate into Why3.
+   --  @param Force True to force the translation of the pragma, even for those
+   --     pragmas normally translated elsewhere like preconditions and
+   --     postconditions.
+   --  @return The translated pragma into Why3.
+
+   function Transform_Pragma
+     (Prag  : Node_Id;
+      Force : Boolean) return W_Prog_Id
+   with
+     Pre => Nkind (Prag) = N_Pragma;
+   --  Returns the Why program for pragma.
+   --  @param Prag The pragma to translate into Why3.
+   --  @param Force True to force the translation of the pragma, for those
+   --     pragmas normally translated elsewhere like preconditions and
+   --     postconditions.
+   --  @return The translated pragma into Why3.
 
    function Transform_Discrete_Choices
      (Choices      : List_Id;

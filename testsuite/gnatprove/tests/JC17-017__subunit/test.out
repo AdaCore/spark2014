@@ -1,3 +1,4 @@
+main-sub2.adb:3:04: info: assertion proved
 main.adb:5:19: info: postcondition proved
 main.adb:13:19: info: postcondition proved
 main.adb:21:22: info: postcondition proved

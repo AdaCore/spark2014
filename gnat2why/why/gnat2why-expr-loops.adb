@@ -501,6 +501,7 @@ package body Gnat2Why.Expr.Loops is
                      One_Invariant : W_Pred_Id;
                   begin
                      Transform_Pragma_Check (Stmt    => Loop_Invariant,
+                                             Force   => False,
                                              Runtime => One_Inv_Check,
                                              Pred    => One_Invariant);
                      Inv_Check := Sequence (Inv_Check, One_Inv_Check);
