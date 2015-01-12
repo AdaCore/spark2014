@@ -432,33 +432,74 @@ package body Why.Gen.Arrays is
         Is_Discrete_Type (Component_Type (Und_Ent))
       then
 
-         --  For discrete arrays of dimension 1 we need the to_int function on
-         --  component_type to define the comparison functions.
+         --  For discrete arrays of dimension 1 we need the to_rep
+         --  function on component_type to define the comparison functions.
          --  We clone a specific module Array_Comparison_Axiom which needs an
-         --  additional parameter to_int.
+         --  additional parameter to_rep.
 
-         Emit (Theory,
-               New_Clone_Declaration
-                 (Theory_Kind   => EW_Module,
-                  Clone_Kind    => EW_Export,
-                  Origin        => Array_Comparison_Ax,
-                  As_Name       => No_Name,
-                  Substitutions =>
-                    (1 => New_Clone_Substitution
-                         (Kind      => EW_Type_Subst,
-                          Orig_Name => To_Name (WNE_Array_Component_Type),
-                          Image     => Ident_Of_Ada_Type
-                            (Component_Type (Und_Ent))),
-                     2 =>
-                       New_Clone_Substitution
-                         (Kind      => EW_Function,
-                          Orig_Name => To_Name (WNE_To_Int),
-                          Image     =>
-                            To_Name
-                              (Conversion_Name
-                                 (From =>
-                                    Type_Of_Node (Component_Type (Und_Ent)),
-                                  To   => +Int_Type))))));
+         if Is_Modular_Integer_Type (Component_Type (Und_Ent)) then
+            declare
+               base : constant W_Type_Id :=
+                 Base_Why_Type (Component_Type (Und_Ent));
+            begin
+               Emit (Theory,
+                  New_Clone_Declaration
+                    (Theory_Kind   => EW_Module,
+                     Clone_Kind    => EW_Export,
+                     Origin        =>
+                       (if base = EW_BitVector_8_Type then
+                             Array_BV8_Rep_Comparison_Ax
+                        elsif base = EW_BitVector_16_Type then
+                           Array_BV16_Rep_Comparison_Ax
+                        elsif base = EW_BitVector_32_Type then
+                           Array_BV32_Rep_Comparison_Ax
+                        elsif base = EW_BitVector_64_Type then
+                           Array_BV64_Rep_Comparison_Ax
+                        else raise Program_Error),
+                     As_Name       => No_Name,
+                     Substitutions =>
+                       (1 => New_Clone_Substitution
+                            (Kind      => EW_Type_Subst,
+                             Orig_Name => To_Name (WNE_Array_Component_Type),
+                             Image     => Ident_Of_Ada_Type
+                               (Component_Type (Und_Ent))),
+                        2 =>
+                          New_Clone_Substitution
+                            (Kind      => EW_Function,
+                             Orig_Name => To_Name (WNE_To_Rep),
+                             Image     =>
+                               To_Name
+                                 (Conversion_Name
+                                    (From =>
+                                          Type_Of_Node
+                                       (Component_Type (Und_Ent)),
+                                     To   => base))))));
+            end;
+         else
+            Emit (Theory,
+                  New_Clone_Declaration
+                    (Theory_Kind   => EW_Module,
+                     Clone_Kind    => EW_Export,
+                     Origin        => Array_Int_Rep_Comparison_Ax,
+                     As_Name       => No_Name,
+                     Substitutions =>
+                       (1 => New_Clone_Substitution
+                            (Kind      => EW_Type_Subst,
+                             Orig_Name => To_Name (WNE_Array_Component_Type),
+                             Image     => Ident_Of_Ada_Type
+                               (Component_Type (Und_Ent))),
+                        2 =>
+                          New_Clone_Substitution
+                            (Kind      => EW_Function,
+                             Orig_Name => To_Name (WNE_To_Rep),
+                             Image     =>
+                               To_Name
+                                 (Conversion_Name
+                                    (From =>
+                                           Type_Of_Node
+                                       (Component_Type (Und_Ent)),
+                                     To   => +Int_Type))))));
+         end if;
       end if;
 
       if Dimension = 1 and then
@@ -555,7 +596,13 @@ package body Why.Gen.Arrays is
                 (Kind      => EW_Predicate,
                  Orig_Name =>
                    To_Name (Append_Num (WNE_Array_Base_Range_Pred, Dim_Count)),
-                 Image     => To_Name (Range_Pred_Name (B_Ty)));
+                 Image     =>
+                  (if Is_Modular_Integer_Type (B_Ty) then
+                        To_Name (Prefix (Ada_Node => B_Ty,
+                                         M        => E_Module (B_Ty),
+                                         W        => WNE_Range_Pred_BV_Int))
+                 else
+                    To_Name (Range_Pred_Name (B_Ty))));
             Cursor := Cursor + 1;
             Subst (Cursor) :=
               New_Clone_Substitution
@@ -564,7 +611,13 @@ package body Why.Gen.Arrays is
                    To_Name
                      (Append_Num (WNE_Index_Dynamic_Property, Dim_Count)),
                  Image     =>
-                   To_Name (Dynamic_Prop_Name (Ind_Ty)));
+                   (if Is_Modular_Integer_Type (B_Ty) then
+                         To_Name (Prefix (Ada_Node => B_Ty,
+                                          M        => E_Module (B_Ty),
+                                          W        =>
+                                            WNE_Dynamic_Property_BV_Int))
+                      else
+                       To_Name (Dynamic_Prop_Name (Ind_Ty))));
             Cursor := Cursor + 1;
          end;
          Dim_Count := Dim_Count + 1;
@@ -628,27 +681,72 @@ package body Why.Gen.Arrays is
          --  For discrete arrays of dimension 1 we need the to_int function on
          --  component_type to define the comparison functions.
          --  We clone a specific module Array_Comparison_Axiom which needs an
-         --  additional parameter to_int.
+         --  additional parameter to_rep.
 
-         Emit (Theory,
-               New_Clone_Declaration
-                 (Theory_Kind   => EW_Module,
-                  Clone_Kind    => EW_Export,
-                  As_Name       => No_Name,
-                  Origin        => Array_Comparison_Ax,
-                  Substitutions =>
-                    (1 => New_Clone_Substitution
-                         (Kind      => EW_Type_Subst,
-                          Orig_Name => To_Name (WNE_Array_Component_Type),
-                          Image     => Ident_Of_Ada_Type
-                            (Component_Type (Und_Ent))),
-                     2 => New_Clone_Substitution
-                       (Kind      => EW_Function,
-                        Orig_Name => To_Name (WNE_To_Int),
-                        Image     =>
-                          To_Name (Conversion_Name
-                          (From => +Type_Of_Node (Component_Type (Und_Ent)),
-                           To   => +Int_Type))))));
+         if Is_Modular_Integer_Type (Component_Type (Und_Ent)) then
+            declare
+               base : constant W_Type_Id :=
+                 Base_Why_Type (Component_Type (Und_Ent));
+            begin
+               Emit (Theory,
+                  New_Clone_Declaration
+                    (Theory_Kind   => EW_Module,
+                     Clone_Kind    => EW_Export,
+                     Origin        =>
+                       (if base = EW_BitVector_8_Type then
+                             Array_BV8_Rep_Comparison_Ax
+                        elsif base = EW_BitVector_16_Type then
+                           Array_BV16_Rep_Comparison_Ax
+                        elsif base = EW_BitVector_32_Type then
+                           Array_BV32_Rep_Comparison_Ax
+                        elsif base = EW_BitVector_64_Type then
+                           Array_BV64_Rep_Comparison_Ax
+                        else raise Program_Error),
+                     As_Name       => No_Name,
+                     Substitutions =>
+                       (1 => New_Clone_Substitution
+                            (Kind      => EW_Type_Subst,
+                             Orig_Name => To_Name (WNE_Array_Component_Type),
+                             Image     => Ident_Of_Ada_Type
+                               (Component_Type (Und_Ent))),
+                        2 =>
+                          New_Clone_Substitution
+                            (Kind      => EW_Function,
+                             Orig_Name => To_Name (WNE_To_Rep),
+                             Image     =>
+                               To_Name
+                                 (Conversion_Name
+                                    (From =>
+                                          Type_Of_Node
+                                       (Component_Type (Und_Ent)),
+                                     To   => base))))));
+            end;
+         else
+            Emit (Theory,
+                  New_Clone_Declaration
+                    (Theory_Kind   => EW_Module,
+                     Clone_Kind    => EW_Export,
+                     Origin        => Array_Int_Rep_Comparison_Ax,
+                     As_Name       => No_Name,
+                     Substitutions =>
+                       (1 => New_Clone_Substitution
+                            (Kind      => EW_Type_Subst,
+                             Orig_Name => To_Name (WNE_Array_Component_Type),
+                             Image     => Ident_Of_Ada_Type
+                               (Component_Type (Und_Ent))),
+                        2 =>
+                          New_Clone_Substitution
+                            (Kind      => EW_Function,
+                             Orig_Name => To_Name (WNE_To_Rep),
+                             Image     =>
+                               To_Name
+                                 (Conversion_Name
+                                    (From =>
+                                           Type_Of_Node
+                                       (Component_Type (Und_Ent)),
+                                     To   => +Int_Type))))));
+         end if;
+
       end if;
 
       if Dimension = 1 and then
@@ -707,9 +805,12 @@ package body Why.Gen.Arrays is
          declare
             Index_Type : constant Entity_Id := Nth_Index_Type (Ty, Dim);
          begin
-            return New_Attribute_Expr (Ty     => Index_Type,
-                                       Attr   => Attr,
-                                       Params => Body_Params);
+            return Insert_Simple_Conversion
+              (Domain   => EW_Term,
+               Expr     => New_Attribute_Expr (Ty     => Index_Type,
+                                               Attr   => Attr,
+                                               Params => Body_Params),
+               To       => EW_Int_Type);
          end;
       else
          pragma Assert (Is_Constrained (Ty));

@@ -2236,4 +2236,30 @@ package body SPARK_Util is
         and then Is_Intrinsic_Subprogram (Conv);
    end Is_Unchecked_Conversion_Instance;
 
+   function Is_Accepted_Shift_Or_Rotate (Subp : Entity_Id) return Boolean is
+   begin
+
+      Get_Unqualified_Decoded_Name_String (Chars (Subp));
+
+      declare
+         Name : constant String := Name_Buffer (1 .. Name_Len);
+      begin
+         return Is_Intrinsic_Subprogram (Subp) and then
+           Is_Modular_Integer_Type (Etype (Subp)) and then
+           Modulus (Etype (Subp)) <= UI_Expon (2, 64) and then
+           not Has_Contracts (Subp, Name_Precondition) and then
+           not Has_Contracts (Subp, Name_Postcondition) and then
+           (Equal_Case_Insensitive
+              (Name, Get_Name_String (Name_Shift_Right)) or
+                Equal_Case_Insensitive
+              (Name,  Get_Name_String (Name_Shift_Right_Arithmetic)) or
+                Equal_Case_Insensitive
+              (Name, Get_Name_String (Name_Shift_Left)) or
+                Equal_Case_Insensitive
+              (Name, Get_Name_String (Name_Rotate_Left)) or
+                Equal_Case_Insensitive
+              (Name, Get_Name_String (Name_Rotate_Right)));
+      end;
+   end Is_Accepted_Shift_Or_Rotate;
+
 end SPARK_Util;

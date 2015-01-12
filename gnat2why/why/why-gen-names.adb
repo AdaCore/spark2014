@@ -33,6 +33,8 @@ with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Conversions;     use Why.Conversions;
 with Why.Types;           use Why.Types;
+with Why.Inter;           use Why.Inter;
+with Gnat2Why.Util;       use Gnat2Why.Util;
 
 package body Why.Gen.Names is
 
@@ -184,7 +186,18 @@ package body Why.Gen.Names is
                      return Prefix (Ada_Node => Standard_Boolean,
                                     M        => Boolean_Module,
                                     W        => WNE_Of_Int);
-
+                  elsif Why_Type_Is_BitVector (From) and then
+                    To = EW_Int_Type
+                  then
+                     return Create_Modular_ToInt (From);
+                  elsif From = EW_Int_Type and then
+                    Why_Type_Is_BitVector (To)
+                  then
+                     return Create_Modular_OfInt (To);
+                  elsif Why_Type_Is_BitVector (From) and then
+                    Why_Type_Is_BitVector (To)
+                  then
+                     return Create_Modular_Converter (From, To);
                   --  Either the two objects are of the same type
                   --  (in which case the conversion is useless) or
                   --  they are of incompatible types
@@ -198,10 +211,21 @@ package body Why.Gen.Names is
                   declare
                      A : constant Node_Id := Get_Ada_Node (+To);
                   begin
-                     return
-                       Prefix (Ada_Node => A,
-                               M        => E_Module (A),
-                               W        => Convert_From (From));
+                     if Base_Why_Type (To) = From and then
+                       (From = EW_Int_Type or else
+                        Why_Type_Is_BitVector (From))
+                     then
+                        --  if we're converting from the representation type
+                        --  of a discrete kind
+                        return Prefix (Ada_Node => A,
+                                       M => E_Module (A),
+                                       W => WNE_Of_Rep);
+                     else
+                        return
+                          Prefix (Ada_Node => A,
+                                  M        => E_Module (A),
+                                  W        => Convert_From (From));
+                     end if;
                   end;
             end case;
 
@@ -211,10 +235,21 @@ package body Why.Gen.Names is
                   declare
                      A : constant Node_Id := Get_Ada_Node (+From);
                   begin
-                     return
-                       Prefix (Ada_Node => A,
-                               M        => E_Module (A),
-                               W => Convert_To (To));
+                     if Base_Why_Type (From) = To and then
+                       (To = EW_Int_Type or else
+                        Why_Type_Is_BitVector (To))
+                     then
+                        --  if we're converting to the representation type
+                        --  of a discrete kind
+                        return Prefix (Ada_Node => A,
+                                       M => E_Module (A),
+                                       W => WNE_To_Rep);
+                     else
+                        return
+                          Prefix (Ada_Node => A,
+                                  M        => E_Module (A),
+                                  W => Convert_To (To));
+                     end if;
                   end;
 
                --  Case of a conversion between two record or private types
@@ -256,6 +291,8 @@ package body Why.Gen.Names is
          return WNE_Of_Fixed;
       elsif Kind = EW_Real_Type then
          return WNE_Of_Real;
+      elsif Why_Type_Is_BitVector (Kind) then
+         return WNE_Of_BitVector;
       else
          raise Why.Not_Implemented;
       end if;
@@ -273,6 +310,8 @@ package body Why.Gen.Names is
          return WNE_To_Fixed;
       elsif Kind = EW_Real_Type then
          return WNE_To_Real;
+      elsif Why_Type_Is_BitVector (Kind) then
+         return WNE_To_BitVector;
       else
          raise Why.Not_Implemented;
       end if;
@@ -317,6 +356,8 @@ package body Why.Gen.Names is
          return Floating_Abs_Real;
       elsif Kind = EW_Int_Type or else Kind = EW_Fixed_Type then
          return Integer_Abs;
+      elsif Why_Type_Is_BitVector (Kind) then
+         return Create_Modular_Abs (Kind);
       else
          raise Not_Implemented;
       end if;
@@ -332,6 +373,8 @@ package body Why.Gen.Names is
          return Floating_Div_Real;
       elsif Kind = EW_Int_Type then
          return Integer_Div;
+      elsif Why_Type_Is_BitVector (Kind) then
+         return Create_Modular_Div (Kind);
       elsif Kind = EW_Fixed_Type then
          raise Program_Error;
       else
@@ -349,6 +392,8 @@ package body Why.Gen.Names is
          return Floating_Power;
       elsif Kind = EW_Int_Type then
          return Integer_Power;
+      elsif Why_Type_Is_BitVector (Kind) then
+         return Create_Modular_Power (Kind);
       elsif Kind = EW_Fixed_Type then
          raise Program_Error;
       else
@@ -515,19 +560,26 @@ package body Why.Gen.Names is
    begin
       case W is
          when WNE_Range_Pred           => return "in_range";
+         when WNE_Range_Pred_BV_Int    => return "in_range_int";
          when WNE_Dynamic_Property     => return "dynamic_property";
-         when WNE_Index_Dynamic_Property => return "index_dynamic_property";
+         when WNE_Dynamic_Property_BV_Int => return "dynamic_property_int";
+         when WNE_Index_Dynamic_Property  => return "index_dynamic_property";
          when WNE_To_Int               => return "to_int";
          when WNE_Of_Int               => return "of_int";
          when WNE_To_Fixed             => return "to_fixed";
          when WNE_Of_Fixed             => return "of_fixed";
          when WNE_To_Real              => return "to_real";
          when WNE_Of_Real              => return "of_real";
+         when WNE_To_BitVector         => return "to_int";
+         when WNE_Of_BitVector         => return "of_int";
          when WNE_To_Array             => return "to_array";
          when WNE_Of_Array             => return "of_array";
          when WNE_To_Base              => return "to_base";
          when WNE_Of_Base              => return "of_base";
+         when WNE_To_Rep               => return "to_rep";
+         when WNE_Of_Rep               => return "of_rep";
          when WNE_Range_Check_Fun      => return "range_check_";
+         when WNE_Range_Check_Fun_BV_Int => return "range_check_int_";
          when WNE_Bool_And             => return "andb";
          when WNE_Bool_Or              => return "orb";
          when WNE_Bool_Xor             => return "xorb";

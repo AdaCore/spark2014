@@ -27,7 +27,6 @@ with Atree;                  use Atree;
 with Einfo;                  use Einfo;
 with Sem_Util;               use Sem_Util;
 with Sinfo;                  use Sinfo;
-with Uintp;                  use Uintp;
 
 with SPARK_Definition;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
@@ -588,5 +587,30 @@ package body Gnat2Why.Util is
          return EW_Abstract (Binder.Typ);
       end case;
    end Why_Type_Of_Entity;
+
+   ---------------------------
+   -- Why_Type_Is_BitVector --
+   ---------------------------
+
+   function Why_Type_Is_BitVector (Typ : W_Type_Id) return Boolean is
+   begin
+      return Typ = EW_BitVector_8_Type or else
+        Typ = EW_BitVector_16_Type or else
+        Typ = EW_BitVector_32_Type or else
+        Typ = EW_BitVector_64_Type;
+   end Why_Type_Is_BitVector;
+
+   -------------------------
+   -- BitVector_Type_Size --
+   -------------------------
+
+   function BitVector_Type_Size (Typ : W_Type_Id) return Uint is
+   begin
+      return (if Typ = EW_BitVector_8_Type then Uint_8
+              elsif Typ = EW_BitVector_16_Type then Uint_16
+              elsif Typ = EW_BitVector_32_Type then Uint_32
+              elsif Typ = EW_BitVector_64_Type then Uint_64
+              else raise Program_Error);
+   end BitVector_Type_Size;
 
 end Gnat2Why.Util;

@@ -392,7 +392,8 @@ package body Gnat2Why.Expr.Loops is
 
       Loop_Param_Ent  : Entity_Id := Empty;
       Loop_Index      : W_Identifier_Id;
-      --  These two variables hold the loop parameter in Ada and Why, if any
+      Loop_Index_Type : W_Type_Id := EW_Int_Type;
+      --  These three variables hold the loop parameter in Ada and Why, if any
 
    begin
 
@@ -404,12 +405,17 @@ package body Gnat2Why.Expr.Loops is
         not Present (Condition (Scheme)) and then
         Present (Loop_Parameter_Specification (Scheme))
       then
-         Loop_Param_Ent :=
+         Loop_Param_Ent  :=
            Defining_Identifier (Loop_Parameter_Specification (Scheme));
-         Loop_Index     :=
-           To_Why_Id (E      => Loop_Param_Ent,
-                      Domain => EW_Prog,
-                      Typ    => EW_Int_Type);
+         Loop_Index_Type := (if Is_Modular_Integer_Type
+                             (Etype (Loop_Param_Ent))
+                             then
+                                Base_Why_Type (Loop_Param_Ent)
+                             else
+                                EW_Int_Type);
+         Loop_Index      := To_Why_Id (E      => Loop_Param_Ent,
+                                       Domain => EW_Prog,
+                                       Typ    => Loop_Index_Type);
          Ada_Ent_To_Why.Push_Scope (Symbol_Table);
          Insert_Entity (Loop_Param_Ent, Loop_Index, Mutable => True);
       end if;
@@ -654,10 +660,16 @@ package body Gnat2Why.Expr.Loops is
                  New_Deref
                    (Ada_Node => Stmt,
                     Right    => +Loop_Index,
-                    Typ      => EW_Int_Type);
+                    Typ      => Loop_Index_Type);
                Update_Op    : constant W_Identifier_Id :=
-                 (if Is_Reverse then Int_Infix_Subtr
-                  else Int_Infix_Add);
+                 (if Why_Type_Is_BitVector (Loop_Index_Type) then
+                      (if Is_Reverse then
+                            Create_Modular_Sub (Loop_Index_Type)
+                       else
+                          Create_Modular_Add (Loop_Index_Type))
+                  else
+                    (if Is_Reverse then Int_Infix_Subtr
+                     else Int_Infix_Add));
                Update_Expr  : constant W_Prog_Id :=
                  New_Call
                    (Ada_Node => Stmt,
@@ -665,10 +677,16 @@ package body Gnat2Why.Expr.Loops is
                     Args     =>
                       (1 => +Index_Deref,
                        2 =>
-                         New_Integer_Constant
-                           (Ada_Node => Stmt,
-                            Value     => Uint_1)),
-                   Typ      => EW_Int_Type);
+                         (if Why_Type_Is_BitVector (Loop_Index_Type) then
+                               New_Modular_Constant
+                            (Ada_Node => Stmt,
+                             Value    => Uint_1,
+                             Typ      => Loop_Index_Type)
+                          else
+                             New_Integer_Constant
+                            (Ada_Node => Stmt,
+                             Value     => Uint_1))),
+                   Typ      => Loop_Index_Type);
                Update_Stmt  : constant W_Prog_Id :=
                  New_Assignment
                    (Ada_Node => Stmt,
@@ -683,21 +701,25 @@ package body Gnat2Why.Expr.Loops is
                Cond_Pred    : constant W_Pred_Id :=
                  +Range_Expr (Loop_Range,
                               New_Deref (Right => Loop_Index,
-                                         Typ => EW_Int_Type),
+                                         Typ => Loop_Index_Type),
                               EW_Pred,
                               Params => Body_Params,
-                              T_Type => EW_Int_Type);
+                              T_Type => Loop_Index_Type);
                Actual_Range : constant Node_Id := Get_Range (Loop_Range);
                Low_Ident    : constant W_Identifier_Id :=
-                 New_Temp_Identifier (Typ => EW_Int_Type);
+                 New_Temp_Identifier (Typ => Loop_Index_Type);
                High_Ident   : constant W_Identifier_Id :=
-                 New_Temp_Identifier (Typ => EW_Int_Type);
+                 New_Temp_Identifier (Typ => Loop_Index_Type);
                Init_Index   : constant W_Identifier_Id :=
                  (if Is_Reverse then High_Ident else Low_Ident);
                Exit_Index   : constant W_Identifier_Id :=
                  (if Is_Reverse then Low_Ident else High_Ident);
                Exit_Cmp     : constant W_Identifier_Id :=
-                 (if Is_Reverse then Int_Infix_Ge else Int_Infix_Le);
+                 (if Why_Type_Is_BitVector (Loop_Index_Type) then
+                      (if Is_Reverse then Create_Modular_Ge (Loop_Index_Type)
+                       else Create_Modular_Le (Loop_Index_Type))
+                  else
+                     (if Is_Reverse then Int_Infix_Ge else Int_Infix_Le));
                Exit_Cond    : constant W_Expr_Id :=
                  New_Call (Domain => EW_Prog,
                            Name   => Exit_Cmp,
@@ -742,7 +764,7 @@ package body Gnat2Why.Expr.Loops is
                  (Name    => High_Ident,
                   Domain  => EW_Prog,
                   Def     => +Transform_Expr (High_Bound (Actual_Range),
-                    EW_Int_Type,
+                    Loop_Index_Type,
                     EW_Prog,
                     Params => Body_Params),
                   Context => +Entire_Loop);
@@ -753,7 +775,7 @@ package body Gnat2Why.Expr.Loops is
                   Def     =>
                     +Transform_Expr
                     (Low_Bound (Actual_Range),
-                     EW_Int_Type,
+                     Loop_Index_Type,
                      EW_Prog,
                      Params => Body_Params),
                   Context => +Entire_Loop);

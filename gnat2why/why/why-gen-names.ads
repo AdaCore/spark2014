@@ -178,6 +178,7 @@ package Why.Gen.Names is
       WNE_Check_Not_Last,
       WNE_Dummy,
       WNE_Dynamic_Property,
+      WNE_Dynamic_Property_BV_Int, --  for bitvector when index of an array
 
       --  Prefix for Why3 field names corresponding to record components
       WNE_Rec_Comp_Prefix,
@@ -254,19 +255,25 @@ package Why.Gen.Names is
 
       WNE_Of_Array,
       WNE_Of_Base,
+      WNE_Of_Rep,
       WNE_Of_Int,
       WNE_Of_Fixed,
       WNE_Of_Real,
+      WNE_Of_BitVector,
       WNE_Of_String,
       WNE_Range_Check_Fun,
+      WNE_Range_Check_Fun_BV_Int, --  for convertion from int to bitvector
       WNE_Rec_Split_Discrs,
       WNE_Rec_Split_Fields,
       WNE_Range_Pred,
+      WNE_Range_Pred_BV_Int,      --  range predicate on bv with ints
       WNE_To_Array,
       WNE_To_Base,
+      WNE_To_Rep,
       WNE_To_Int,
       WNE_To_Fixed,
       WNE_To_Real,
+      WNE_To_BitVector,
       WNE_To_String
      );
 

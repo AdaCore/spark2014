@@ -39,6 +39,7 @@ with Why.Gen.Binders;        use Why.Gen.Binders;
 with Why.Ids;                use Why.Ids;
 with Why.Sinfo;              use Why.Sinfo;
 with Why.Types;
+with Uintp;                  use Uintp;
 
 package Gnat2Why.Util is
 
@@ -318,5 +319,12 @@ package Gnat2Why.Util is
    function Why_Type_Of_Entity (E : Entity_Id) return W_Type_Id;
    --  For an object entity in Ada, return the Why type that has been
    --  registered for it in the symbol table.
+
+   function Why_Type_Is_BitVector (Typ : W_Type_Id) return Boolean;
+   --  Return wether Typ is a bitvector type.
+
+   function BitVector_Type_Size (Typ : W_Type_Id) return Uint;
+   --  Return the size in bit of bitvector type Typ.
+   --  raise an exception if Typ is not a bitvector type
 
 end Gnat2Why.Util;

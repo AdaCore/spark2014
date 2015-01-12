@@ -4,31 +4,33 @@ module Discrete_Base
     modular and non-modular types, and range-related functions and axioms which
     differ between "static" and "dynamic" discrete types. *)
 
-  use import int.Int
   use import "_gnatprove_standard".Main
   use        "_gnatprove_standard".Integer
 
-  use export "ada__model_th".Discrete_Base_Theory
+  type rep_type
 
-  type t 
+  function bool_eq (x : rep_type) (y : rep_type) : bool =
+    if x = y then True else False
 
-  function attr__ATTRIBUTE_IMAGE int : __image
+  type t
+
+  function attr__ATTRIBUTE_IMAGE rep_type : __image
 
   predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
 
-  function attr__ATTRIBUTE_VALUE __image : int
+  function attr__ATTRIBUTE_VALUE __image : rep_type
 
-  val attr__ATTRIBUTE_VALUE_ (x : __image) : int
+  val attr__ATTRIBUTE_VALUE_ (x : __image) : rep_type
     requires { attr__ATTRIBUTE_VALUE__pre_check x }
     ensures { true }
 
-  function to_int  t : int
+  function to_rep t : rep_type
 
-  function of_int  int : t
+  function of_rep rep_type : t
 
-  val of_int (x : int) : t
+  val of_rep (x : rep_type) : t
     requires { true }
-    ensures { to_int(result) = x }
+    ensures { to_rep(result) = x }
 
   function user_eq  (x : t) (y : t) : bool
 
@@ -42,89 +44,243 @@ module Static_Discrete_Base
      Why only sees a static version of the type, with constants for the bounds,
      even though this might correspond to dynamic types in Ada. *)
 
+  clone export Discrete_Base
   use import int.Int
 
-  clone export Discrete_Base
-
-  axiom inversion_axiom  :
-    forall x : t [to_int x].
-    of_int (to_int (x)) = x
-
+  (* first and last are ints since, even for bitvectors we want to do
+     the range checks with ints when converting from int to some
+     bitvector type. We then need a to_int function for check_not_last
+     and check_not_first *)
   function first : int
 
-  function last : int
+  function last  : int
 
-  val check_not_last (n : int) : int
-    requires { n <> last }
+  axiom inversion_axiom  :
+    forall x : t [to_rep x].
+    of_rep (to_rep (x)) = x
+
+  function rep_to_int rep_type : int
+
+  val check_not_last (n : rep_type) : rep_type
+    requires { rep_to_int n <> last }
     ensures { result = n }
 
-  val check_not_first (n : int) : int
-    requires { n <> first }
+  val check_not_first (n : rep_type) : rep_type
+    requires { rep_to_int n <> first }
     ensures { result = n }
 
-  predicate in_range  (x : int)
+  predicate in_range (x : rep_type)
 
-  val range_check_ (n : int) : int
+  val range_check_ (n : rep_type) : rep_type
     requires { in_range n }
     ensures { result = n }
 
-  axiom range_axiom  :
-    forall x : t. in_range (to_int x)
+  axiom range_axiom :
+    forall x : t. in_range (to_rep x)
 
-  predicate dynamic_property "inline" (f l x : int) = in_range x
+  predicate dynamic_property "inline" (f l : int) (x : rep_type) = in_range x
 end
 
 module Static_Discrete
   use import int.Int
-  clone export Static_Discrete_Base
 
-  axiom coerce_axiom  :
-    forall x  : int [to_int (of_int x)].
-      in_range x -> to_int (of_int x) = x
+  function rep_to_int "inline" (x : int) : int = x
+
+  clone export Static_Discrete_Base with
+    type rep_type = int,
+    function rep_to_int = rep_to_int
+
+  axiom coerce_axiom :
+    forall x  : int [to_rep (of_rep x)].
+      in_range x -> to_rep (of_rep x) = x
 end
 
-module Static_Modular
+module Static_Modular_Base
+  use import int.Int
+
   clone export Static_Discrete_Base
-  use _gnatprove_standard.Int_Division
+
+  (* for conversions from int to bitvectors, we need to be able to do
+     the range check directly in int. *)
+  predicate in_range_int int
+
+  function to_int (x : t) : int = rep_to_int (to_rep x) (* used for modular indexed arrays cloning *)
+
+  val range_check_int_ (n : int) : int
+    requires { in_range_int n }
+    ensures { result = n }
+
+  axiom range_int_axiom :
+    forall x : t. in_range_int (rep_to_int (to_rep x))
+
+  predicate dynamic_property_int "inline" (f l x : int) = in_range_int x
+end
+
+module Static_Modular_Default
+
+  function rep_to_int "inline" (x : int) : int = x
+
+  clone export Static_Modular_Base with
+    type rep_type = int,
+    function rep_to_int = rep_to_int
 
   function attr__ATTRIBUTE_MODULUS : int
 
+  use _gnatprove_standard.Int_Division
+
   axiom coerce_axiom :
-    forall x  : int [to_int (of_int x)].
+    forall x : int [to_rep (of_rep x)].
       let y = Int_Division.math_mod x attr__ATTRIBUTE_MODULUS in
-       in_range y -> to_int (of_int x) = y
+        in_range y -> to_rep (of_rep x) = y
+end
+
+module Static_Modular_lt64
+  use _gnatprove_standard.BitVector64
+  type rep_type = BitVector64.t
+
+  function rep_to_int "inline" (x : rep_type) : int = BitVector64.to_int x
+
+  clone export Static_Modular_Base with
+    type rep_type = rep_type,
+    function rep_to_int = rep_to_int
+
+  function attr__ATTRIBUTE_MODULUS : rep_type
+
+  axiom coerce_axiom :
+    forall x : rep_type [to_rep (of_rep x)].
+      let y = BitVector64.urem x attr__ATTRIBUTE_MODULUS in
+        in_range y -> to_rep (of_rep x) = y
+end
+
+module Static_Modular_64
+  use _gnatprove_standard.BitVector64
+  type rep_type = BitVector64.t
+
+  function rep_to_int "inline" (x : rep_type) : int = BitVector64.to_int x
+
+  clone export Static_Modular_Base with
+    type rep_type = rep_type,
+    function rep_to_int = rep_to_int
+
+  axiom coerce_axiom :
+    forall x : rep_type [to_rep (of_rep x)].
+      to_rep (of_rep x) = x
+end
+
+module Static_Modular_lt32
+  use _gnatprove_standard.BitVector32
+  type rep_type = BitVector32.t
+
+  function rep_to_int "inline" (x : rep_type) : int = BitVector32.to_int x
+
+  clone export Static_Modular_Base with
+    type rep_type = rep_type,
+    function rep_to_int = rep_to_int
+
+  function attr__ATTRIBUTE_MODULUS : rep_type
+
+  axiom coerce_axiom :
+    forall x : rep_type [to_rep (of_rep x)].
+      let y = BitVector32.urem x attr__ATTRIBUTE_MODULUS in
+        in_range y -> to_rep (of_rep x) = y
+end
+
+module Static_Modular_32
+  use _gnatprove_standard.BitVector32
+  type rep_type = BitVector32.t
+
+  function rep_to_int "inline" (x : rep_type) : int = BitVector32.to_int x
+
+  clone export Static_Modular_Base with
+    type rep_type = rep_type,
+    function rep_to_int = rep_to_int
+
+  axiom coerce_axiom :
+    forall x : rep_type [to_rep (of_rep x)].
+      to_rep (of_rep x) = x
+end
+
+module Static_Modular_lt16
+  use _gnatprove_standard.BitVector16
+  type rep_type = BitVector16.t
+
+  function rep_to_int "inline" (x : rep_type) : int = BitVector16.to_int x
+
+  clone export Static_Modular_Base with
+    type rep_type = rep_type,
+    function rep_to_int = rep_to_int
+
+  function attr__ATTRIBUTE_MODULUS : rep_type
+
+  axiom coerce_axiom :
+    forall x : rep_type [to_rep (of_rep x)].
+      let y = BitVector16.urem x attr__ATTRIBUTE_MODULUS in
+        in_range y -> to_rep (of_rep x) = y
+end
+
+module Static_Modular_16
+  use _gnatprove_standard.BitVector16
+  type rep_type = BitVector16.t
+
+  function rep_to_int "inline" (x : rep_type) : int = BitVector16.to_int x
+
+  clone export Static_Modular_Base with
+    type rep_type = rep_type,
+    function rep_to_int = rep_to_int
+
+  axiom coerce_axiom :
+    forall x : rep_type [to_rep (of_rep x)].
+      to_rep (of_rep x) = x
+end
+
+module Static_Modular_lt8
+  use _gnatprove_standard.BitVector8
+  type rep_type = BitVector8.t
+
+  function rep_to_int "inline" (x : rep_type) : int = BitVector8.to_int x
+
+  clone export Static_Modular_Base with
+    type rep_type = rep_type,
+    function rep_to_int = rep_to_int
+
+  function attr__ATTRIBUTE_MODULUS : rep_type
+
+  axiom coerce_axiom :
+    forall x : rep_type [to_rep (of_rep x)].
+      let y = BitVector8.urem x attr__ATTRIBUTE_MODULUS in
+        in_range y -> to_rep (of_rep x) = y
+end
+
+module Static_Modular_8
+  use _gnatprove_standard.BitVector8
+  type rep_type = BitVector8.t
+
+  function rep_to_int "inline" (x : rep_type) : int = BitVector8.to_int x
+
+  clone export Static_Modular_Base with
+    type rep_type = rep_type,
+    function rep_to_int = rep_to_int
+
+  axiom coerce_axiom :
+    forall x  : rep_type [to_rep (of_rep x)].
+      to_rep (of_rep x) = x
 end
 
 module Dynamic_Discrete
- use import "int".Int
+  type rep_type
+  type t
 
- type t
+  function to_base t : rep_type
+  function of_base rep_type : t
 
- function to_base t : int
- function of_base int : t
+  function to_rep "inline" (x : t) : rep_type = to_base x
+  function of_rep "inline" (x : rep_type) : t = of_base x
 
- function to_int "inline" (x : t) : int = to_base x
- function of_int "inline" (x : int) : t = of_base x
-
-  clone export Discrete_Base 
-      with type t = t, function of_int = of_int, function to_int = to_int
-end
-
-module Dynamic_Modular
-  use import int.Int
-
- type t
-
- function to_base t : int
- function of_base int : t
-
- function to_int "inline" (x : t) : int = to_base x
- function of_int "inline" (x : int) : t = of_base x
-
-  clone export Discrete_Base 
-      with type t = t, function of_int = of_int, function to_int = to_int
-
-  function attr__ATTRIBUTE_MODULUS : int
+  clone export Discrete_Base
+      with type t = t,
+      type rep_type = rep_type,
+      function of_rep = of_rep,
+      function to_rep = to_rep
 end
 
 module Fixed_Point_Base
@@ -427,7 +583,7 @@ module Dynamic_Fixed_Point
  function to_fixed "inline" (x : t) : __fixed = to_base (x)
  function of_fixed "inline" (x : __fixed) : t = of_base (x)
 
-  clone export Fixed_Point_Base 
+  clone export Fixed_Point_Base
       with type t = t, function of_fixed = of_fixed, function to_fixed = to_fixed
 end
 
@@ -537,7 +693,7 @@ module Dynamic_Floating_Point
  function to_real "inline" (x : t) : real = to_base x
  function of_real "inline" (x : real) : t = of_base x
 
-  clone export Floating_Point_Base 
+  clone export Floating_Point_Base
       with type t = t, function of_real = of_real, function to_real = to_real
 end
 
@@ -619,10 +775,14 @@ module Array_Comparison_Axiom
   (* These declarations have to be filled in by gnat2why for each
   discrete 1 dimension array type *)
   type component_type
+  type rep_type
 
-   function to_int component_type : int
+  predicate rep_lt rep_type rep_type
+  predicate rep_gt rep_type rep_type
 
-   axiom compare_def :
+   function to_rep component_type : rep_type
+
+  axiom compare_def :
     forall a b : Array__1.map component_type.
     forall a_first a_last b_first b_last : int [Array__1.compare a a_first a_last b b_first b_last].
       (Array__1.compare a a_first a_last b b_first b_last = 0 <->
@@ -632,14 +792,60 @@ module Array_Comparison_Axiom
              (Array__1.bool_eq a a_first  i b b_first j = True /\
              (i = a_last \/
                    i < a_last /\
-                       to_int (Array__1.get a (i + 1)) < to_int (Array__1.get b (j + 1))))) /\
+                       rep_lt (to_rep (Array__1.get a (i + 1))) (to_rep (Array__1.get b (j + 1)))))) /\
       (Array__1.compare a a_first a_last b b_first b_last > 0 <->
          exists i j : int. i <= b_last /\ j < a_last /\
              (Array__1.bool_eq a a_first j b b_first i = True /\
              (i = b_last \/ i < b_last /\
-                       to_int (Array__1.get a (j + 1)) > to_int (Array__1.get b (i + 1)))))
+                       rep_gt (to_rep (Array__1.get a (j + 1))) (to_rep (Array__1.get b (i + 1))))))
 
 end
+
+module Array_Int_Rep_Comparison_Axiom
+  use import int.Int
+
+  clone export Array_Comparison_Axiom with
+  type rep_type = int,
+  predicate rep_lt = (<),
+  predicate rep_gt = (>)
+end
+
+module Array_BV8_Rep_Comparison_Axiom
+  use import bitvec.BV8
+
+  clone export Array_Comparison_Axiom with
+  type rep_type = t,
+  predicate rep_lt = ult,
+  predicate rep_gt = ugt
+end
+
+module Array_BV16_Rep_Comparison_Axiom
+  use import bitvec.BV16
+
+  clone export Array_Comparison_Axiom with
+  type rep_type = t,
+  predicate rep_lt = ult,
+  predicate rep_gt = ugt
+end
+
+module Array_BV32_Rep_Comparison_Axiom
+  use import bitvec.BV32
+
+  clone export Array_Comparison_Axiom with
+  type rep_type = t,
+  predicate rep_lt = ult,
+  predicate rep_gt = ugt
+end
+
+module Array_BV64_Rep_Comparison_Axiom
+  use import bitvec.BV64
+
+  clone export Array_Comparison_Axiom with
+  type rep_type = t,
+  predicate rep_lt = ult,
+  predicate rep_gt = ugt
+end
+
 
 module Array_Generic_Op_Axiom
   use import int.Int

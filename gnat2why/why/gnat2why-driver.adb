@@ -565,6 +565,7 @@ package body Gnat2Why.Driver is
               and then not Subprogram_Is_Ignored_For_Proof (E)
               and then (not (Present (Get_Expression_Function (E)))
                         or else not Entity_Body_In_SPARK (E))
+              and then not Is_Accepted_Shift_Or_Rotate (E)
             then
                declare
                   Compl_File : Why_Section :=
@@ -766,6 +767,10 @@ package body Gnat2Why.Driver is
 
               and then not (Is_Generic_Actual_Subprogram (E) and then
                             Entity_In_External_Axioms (E))
+
+              -- ignore shifts and rotates
+
+              and then not Is_Accepted_Shift_Or_Rotate (E)
             then
 
                --  Generate a logic function for Ada functions

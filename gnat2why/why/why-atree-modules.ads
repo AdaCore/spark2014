@@ -52,13 +52,17 @@ package Why.Atree.Modules is
 
    --  basic Why types
 
-   EW_Bool_Type    : W_Type_Id;
-   EW_Int_Type     : W_Type_Id;
-   EW_Fixed_Type   : W_Type_Id;
-   EW_Private_Type : W_Type_Id;
-   EW_Prop_Type    : W_Type_Id;
-   EW_Real_Type    : W_Type_Id;
-   EW_Unit_Type    : W_Type_Id;
+   EW_Bool_Type         : W_Type_Id;
+   EW_Int_Type          : W_Type_Id;
+   EW_Fixed_Type        : W_Type_Id;
+   EW_Private_Type      : W_Type_Id;
+   EW_Prop_Type         : W_Type_Id;
+   EW_Real_Type         : W_Type_Id;
+   EW_BitVector_8_Type  : W_Type_Id;
+   EW_BitVector_16_Type : W_Type_Id;
+   EW_BitVector_32_Type : W_Type_Id;
+   EW_BitVector_64_Type : W_Type_Id;
+   EW_Unit_Type         : W_Type_Id;
 
    --  Modules of "_gnatprove_standard.mlw"
 
@@ -71,24 +75,53 @@ package Why.Atree.Modules is
    Int_Minmax_Module         : W_Module_Id;
    Floating_Module           : W_Module_Id;
    Boolean_Module            : W_Module_Id;
+   BitVector_8_Module        : W_Module_Id;
+   BitVector_16_Module       : W_Module_Id;
+   BitVector_32_Module       : W_Module_Id;
+   BitVector_64_Module       : W_Module_Id;
+   BVConv_32_64_Module       : W_Module_Id;
+   BVConv_16_64_Module       : W_Module_Id;
+   BVConv_8_64_Module        : W_Module_Id;
+   BVConv_16_32_Module       : W_Module_Id;
+   BVConv_8_32_Module        : W_Module_Id;
+   BVConv_8_16_Module        : W_Module_Id;
    Array_Modules             : W_Module_Array (1 .. Max_Array_Dimensions);
 
    --  Modules of file "ada__model.mlw"
 
    Static_Discrete           : W_Module_Id;
-   Static_Modular            : W_Module_Id;
+   Static_Modular_Default    : W_Module_Id;
+   Static_Modular_8          : W_Module_Id;
+   Static_Modular_16         : W_Module_Id;
+   Static_Modular_32         : W_Module_Id;
+   Static_Modular_64         : W_Module_Id;
+   Static_Modular_lt8        : W_Module_Id;
+   Static_Modular_lt16       : W_Module_Id;
+   Static_Modular_lt32       : W_Module_Id;
+   Static_Modular_lt64       : W_Module_Id;
+   Dynamic_Modular_8         : W_Module_Id;
+   Dynamic_Modular_16        : W_Module_Id;
+   Dynamic_Modular_32        : W_Module_Id;
+   Dynamic_Modular_64        : W_Module_Id;
+   Dynamic_Modular_lt8       : W_Module_Id;
+   Dynamic_Modular_lt16      : W_Module_Id;
+   Dynamic_Modular_lt32      : W_Module_Id;
+   Dynamic_Modular_lt64      : W_Module_Id;
    Dynamic_Discrete          : W_Module_Id;
-   Dynamic_Modular           : W_Module_Id;
    Static_Fixed_Point        : W_Module_Id;
    Dynamic_Fixed_Point       : W_Module_Id;
    Static_Floating_Point     : W_Module_Id;
    Dynamic_Floating_Point    : W_Module_Id;
 
-   Constr_Arrays             : W_Module_Array (1 .. Max_Array_Dimensions);
-   Unconstr_Arrays           : W_Module_Array (1 .. Max_Array_Dimensions);
-   Array_Comparison_Ax       : W_Module_Id;
-   Standard_Array_Logical_Ax : W_Module_Id;
-   Subtype_Array_Logical_Ax  : W_Module_Id;
+   Constr_Arrays                 : W_Module_Array (1 .. Max_Array_Dimensions);
+   Unconstr_Arrays               : W_Module_Array (1 .. Max_Array_Dimensions);
+   Array_Int_Rep_Comparison_Ax   : W_Module_Id;
+   Array_BV8_Rep_Comparison_Ax   : W_Module_Id;
+   Array_BV16_Rep_Comparison_Ax  : W_Module_Id;
+   Array_BV32_Rep_Comparison_Ax  : W_Module_Id;
+   Array_BV64_Rep_Comparison_Ax  : W_Module_Id;
+   Standard_Array_Logical_Ax     : W_Module_Id;
+   Subtype_Array_Logical_Ax      : W_Module_Id;
 
    --  Identifiers of the Main module
 
@@ -184,6 +217,55 @@ package Why.Atree.Modules is
    Old_Tag                   : Name_Id;
    Def_Name                  : W_Identifier_Id;
    Return_Exc                : W_Name_Id;
+
+   --  Modular identifiers constructors
+   --  (to deal with modulus dependency in a simple way)
+   function Create_Modular_Operator (Typ : W_Type_Id; Symbol : Name_Id)
+                                     return W_Identifier_Id;
+   function Create_Modular_Rem      (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Div      (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Mul      (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Add      (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Sub      (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Neg      (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_And      (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Or       (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Xor      (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Not      (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Ge       (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Gt       (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Le       (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Lt       (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Bool_Ge  (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Bool_Gt  (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Bool_Le  (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Bool_Lt  (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Bool_Eq  (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Bool_Neq (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Abs      (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Power    (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Lsl      (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Lsr      (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Asr      (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_ToInt    (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_OfInt    (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Rl_Var   (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Rr_Var   (Typ : W_Type_Id) return W_Identifier_Id;
+
+   --  Create_Modular_Modulus will return an ew_int with 2 ** size of Typ
+   --  (from the why3 theory). It is used for the interpretation of the Mod
+   --  attribute for unsigned_8/16/32/64 since the attribute modulus is not
+   --  present for these types.
+   function Create_Modular_Modulus (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Rl_Const     (Typ : W_Type_Id; n : Int)
+                                   return W_Identifier_Id;
+   function Create_Modular_Rr_Const     (Typ : W_Type_Id; n : Int)
+                                   return W_Identifier_Id;
+
+   function Create_Modular_Converter (From, To : W_Type_Id)
+                                      return W_Identifier_Id;
+   function Create_Modular_Converter_Range_Check (From, To : W_Type_Id)
+                                                  return W_Identifier_Id;
 
    procedure Initialize;
    --  Call this procedure before using any of the entities in this package.

@@ -4,18 +4,18 @@ module Perm__index
  use import "int".Int
 
  type index
- 
+
  function first :int = 1
- 
+
  function last :int = 100
- 
+
  predicate in_range (x : int)  = 1 <= x <= 100
 
  (* Copy of the model of modules for static discrete types *)
  clone export "ada__model".Static_Discrete with
- type t = index, 
- function first = first, 
- function last = last, 
+ type t = index,
+ function first = first,
+ function last = last,
  predicate in_range = in_range
 
 end
@@ -31,18 +31,18 @@ module Perm__nat_array
 
  (* Copy of the model of modules for unconstrained array types *)
  clone export "ada__model".Unconstr_Array with
- type component_type = Standard__natural.natural, 
- type base_type = Standard__integer.integer, 
- function to_int = Standard__integer.to_int, 
- predicate in_range_base = Standard__integer.in_range, 
+ type component_type = Standard__natural.natural,
+ type base_type = Standard__integer.integer,
+ function to_int = Standard__integer.to_rep,
+ predicate in_range_base = Standard__integer.in_range,
  predicate index_dynamic_property = Perm__index.dynamic_property
- 
+
  type nat_array  = __t
- 
+
  (* Copy of the axiom for array bitwise comparison *)
- clone export "ada__model".Array_Comparison_Axiom with
- type component_type = Standard__natural.natural, 
- function to_int = Standard__natural.to_int
+ clone export "ada__model".Array_Int_Rep_Comparison_Axiom with
+ type component_type = Standard__natural.natural,
+ function to_rep = Standard__natural.to_rep
 
 end
 
@@ -63,11 +63,11 @@ module Perm__is_perm
   axiom occ_set:
     forall e v: natural, a : nat_array, i: int.
       let b = of_array (set (to_array a) i v) (first a) (last a) in
-        first a <= i <= last a -> 
-          (get (to_array a) i <> e -> 
+        first a <= i <= last a ->
+          (get (to_array a) i <> e ->
             (v <> e -> occ e b = occ e a) /\
             (v = e  -> occ e b = (occ e a) + 1)) /\
-          (get (to_array a) i = e -> 
+          (get (to_array a) i = e ->
             (v <> e -> occ e b = (occ e a) - 1) /\
             (v = e  -> occ e b = occ e a))
 

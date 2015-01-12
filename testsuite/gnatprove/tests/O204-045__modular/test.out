@@ -3,8 +3,8 @@ simple1_zstspark.adb:13:07: info: assertion proved
 simple1_zstspark.adb:42:21: warning: unused assignment
 simple1_zstspark.adb:103:07: info: assertion proved
 simple1_zstspark.adb:106:07: info: assertion proved
-simple1_zstspark.adb:107:22: medium: assertion might fail, requires X86.RSP = SaveRSP + (-8 + 8
-simple1_zstspark.adb:108:22: medium: assertion might fail, requires X86.RSP = SaveRSP
+simple1_zstspark.adb:107:07: info: assertion proved
+simple1_zstspark.adb:108:07: info: assertion proved
 simple1_zstspark.ads:14:40: warning: "RDI" is not modified, could be INPUT
 simple1_zstspark.ads:14:58: warning: "RSI" is not modified, could be INPUT
 simple1_zstspark.ads:15:32: warning: unused initial value of "SignFlag"
@@ -188,5 +188,5 @@ x86.ads:475:14: info: postcondition proved
 x86.ads:479:14: info: postcondition proved
 x86.ads:488:14: info: postcondition proved
 x86.ads:494:14: info: postcondition proved
-x86.ads:503:14: medium: postcondition might fail
-x86.ads:508:14: medium: postcondition might fail
+x86.ads:503:14: info: postcondition proved
+x86.ads:508:14: info: postcondition proved

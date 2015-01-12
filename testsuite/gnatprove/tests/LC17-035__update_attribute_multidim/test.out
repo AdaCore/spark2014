@@ -103,15 +103,15 @@ update_checks.ads:28:64: info: range check proved
 update_logic_fn.ads:12:33: info: length check proved
 update_logic_fn.ads:13:33: info: length check proved
 update_logic_fn.ads:29:14: info: postcondition proved
-update_logic_fn.ads:39:14: info: postcondition proved
+update_logic_fn.ads:39:14: medium: postcondition might fail, requires A = A_2D_Arr'update
 update_logic_fn.ads:49:14: medium: postcondition might fail, requires A = A_2D_Arr'update
-update_logic_fn.ads:62:14: info: postcondition proved
+update_logic_fn.ads:62:14: medium: postcondition might fail, requires A = A3'(others => (others => (others => 1000 ))) 'update
 update_logic_fn.ads:62:22: info: length check proved
 update_logic_fn.ads:75:14: medium: postcondition might fail, requires A = A3'(others => (others => (others => 1000 ))) 'update
 update_logic_fn.ads:75:22: info: length check proved
 update_logic_fn.ads:90:17: medium: postcondition might fail, requires A = A2A2'(5 => (7 => V2), (others => 1000)), (others => (others => 1000))
 update_logic_fn.ads:90:24: info: length check proved
 update_logic_fn.ads:103:14: info: postcondition proved
-update_logic_fn.ads:116:14: info: postcondition proved
+update_logic_fn.ads:116:14: medium: postcondition might fail, requires A = A_2D_Arr'update
 update_logic_fn.ads:127:19: info: postcondition proved
 update_logic_fn.ads:140:06: medium: postcondition might fail, requires A = A_3D_Arr'update

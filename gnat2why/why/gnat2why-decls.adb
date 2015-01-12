@@ -193,7 +193,13 @@ package body Gnat2Why.Decls is
          declare
             Typ    : constant W_Type_Id :=
               (if Ekind (E) = E_Abstract_State then EW_Private_Type
-               elsif Ekind (E) = E_Loop_Parameter then EW_Int_Type
+               elsif Ekind (E) = E_Loop_Parameter then
+                   (if Is_Modular_Integer_Type
+                    (Etype (E))
+                    then
+                       Base_Why_Type (E)
+                    else
+                       EW_Int_Type)
                else EW_Abstract (Ty));
             Name   : constant W_Identifier_Id :=
               To_Why_Id (E => E, Typ => Typ);

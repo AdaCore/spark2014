@@ -304,6 +304,14 @@ package Why.Sinfo is
    --
    --  The node for integer literals.
    --
+   --  ------------------------
+   --  -- W_Modular_Constant --
+   --  ------------------------
+   --  Value       Uint
+   --  Typ         W_Type_Id
+   --
+   --  The node for modular literals.
+   --
    --  ----------------------
    --  -- W_Fixed_Constant --
    --  ----------------------
@@ -654,6 +662,7 @@ package Why.Sinfo is
       -------------------------
 
       W_Integer_Constant,
+      W_Modular_Constant,
       W_Fixed_Constant,
       W_Real_Constant,
       W_Void,

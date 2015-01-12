@@ -1,16 +1,16 @@
 bitwise.adb:6:53: info: range check proved
-bitwise.adb:7:22: medium: assertion might fail, requires Res = 1
-bitwise.adb:14:22: medium: assertion might fail, requires X and Res) = (X and LMask_8
-bitwise.adb:20:22: medium: assertion might fail, requires Res = X / 2
+bitwise.adb:7:07: info: assertion proved
+bitwise.adb:14:07: info: assertion proved
+bitwise.adb:20:07: info: assertion proved
 bitwise.adb:20:30: info: division check proved
-bitwise.adb:22:22: medium: assertion might fail, requires Res = X / 8
+bitwise.adb:22:07: info: assertion proved
 bitwise.adb:22:30: info: division check proved
-bitwise.adb:32:22: medium: assertion might fail, requires X = YY
-bitwise.adb:33:22: medium: assertion might fail, requires Y = XX
+bitwise.adb:32:07: info: assertion proved
+bitwise.adb:33:07: info: assertion proved
 bitwise.adb:38:34: info: range check proved
 bitwise.adb:39:50: info: range check proved
-bitwise.adb:40:22: medium: assertion might fail, requires Val = (Unsigned_16(FstHalf) or Shift_Left(Unsigned_16(SndHalf), 8)
-bitwise.adb:51:22: medium: assertion might fail, requires Res = (Unsigned_32( Unsigned_16(Val1) or Shift_Left(Unsigned_16(Val2), 8) ) or Shift_Left(Unsigned_32( Unsigned_16(Val3) or Shift_Left(Unsigned_16(Val4), 8) ), 16)
+bitwise.adb:40:07: info: assertion proved
+bitwise.adb:51:07: info: assertion proved
 floating_point.adb:7:16: info: overflow check proved
 floating_point.adb:8:22: medium: assertion might fail, requires Res >=
 floating_point.adb:14:16: info: overflow check proved
@@ -53,12 +53,12 @@ floating_point.adb:66:28: info: range check proved
 floating_point.adb:75:07: info: assertion proved
 nonlinear.adb:10:17: info: overflow check proved
 nonlinear.adb:10:22: info: division check proved
-nonlinear.adb:10:22: medium: range check might fail
+nonlinear.adb:10:22: info: range check proved
 nonlinear.adb:11:22: medium: assertion might fail, requires Res <= X
 nonlinear.adb:18:22: info: division check proved
 nonlinear.adb:19:22: medium: assertion might fail, requires Res <= X
 nonlinear.adb:25:16: info: division check proved
-nonlinear.adb:25:16: medium: range check might fail
+nonlinear.adb:25:16: info: range check proved
 nonlinear.adb:26:22: medium: assertion might fail, requires Res * Y) / Res = Y
 nonlinear.adb:26:27: info: overflow check proved
 nonlinear.adb:26:32: info: division check proved

@@ -11,7 +11,7 @@ admin.adb:119:10: info: loop invariant preservation proved
 admin.adb:125:36: info: index check proved
 admin.adb:206:64: info: range check proved
 admin.ads:118:22: info: postcondition proved
-admin.ads:137:21: medium: postcondition might fail, requires for some Op in Opt => Str_Comp (KeyedOp, Op) and AllowedOp (TheAdmin, Op) and OpIsAvailable'Result = Op) xor OpIsAvailable'Result = NullOp
+admin.ads:137:21: info: postcondition proved
 admin.ads:138:28: info: precondition proved
 admin.ads:155:22: info: postcondition proved
 admin.ads:170:21: info: postcondition proved
@@ -22,7 +22,7 @@ admin.ads:233:08: info: length check proved
 admin.ads:233:48: info: length check proved
 admin.ads:235:48: info: length check proved
 admin.ads:237:48: info: length check proved
-admintoken.adb:199:30: medium: refined postcondition might fail
+admintoken.adb:199:30: info: refined post proved
 admintoken.adb:225:37: info: length check proved
 admintoken.adb:225:40: info: length check proved
 admintoken.adb:227:23: info: length check proved
@@ -133,7 +133,7 @@ auditlog.adb:1021:10: info: precondition proved
 auditlog.adb:1023:10: info: precondition proved
 auditlog.adb:1031:07: info: precondition proved
 auditlog.adb:1070:30: info: refined post proved
-auditlog.adb:1072:67: medium: range check might fail
+auditlog.adb:1072:67: info: range check proved
 auditlog.adb:1072:72: info: overflow check proved
 auditlog.adb:1073:50: info: overflow check proved
 auditlog.adb:1168:55: info: range check proved
@@ -181,8 +181,8 @@ auditlog.adb:1587:55: info: overflow check proved
 auditlog.adb:1587:75: info: overflow check proved
 auditlog.adb:1595:53: info: range check proved
 auditlog.adb:1598:47: info: range check proved
-auditlog.adb:1611:10: medium: precondition might fail
-auditlog.adb:1619:07: medium: precondition might fail
+auditlog.adb:1611:10: info: precondition proved
+auditlog.adb:1619:07: info: precondition proved
 auditlog.ads:60:22: info: postcondition proved
 auditlog.ads:92:22: info: postcondition proved
 auditlog.ads:119:22: info: postcondition proved
@@ -393,7 +393,7 @@ configuration.adb:110:71: medium: range check might fail
 configuration.adb:111:12: medium: range check might fail
 configuration.adb:116:26: info: length check proved
 configuration.adb:116:26: medium: range check might fail
-configuration.adb:118:38: medium: length check might fail
+configuration.adb:118:38: info: length check proved
 configuration.adb:118:41: medium: length check might fail
 configuration.adb:161:18: medium: precondition might fail
 configuration.adb:185:21: info: precondition proved
@@ -614,6 +614,7 @@ keystore.adb:112:09: medium: range check might fail, in call inlined at keystore
 keystore.adb:112:09: medium: range check might fail, in call inlined at keystore.adb:847
 keystore.adb:116:41: info: length check proved, in call inlined at keystore.adb:268
 keystore.adb:116:41: info: length check proved, in call inlined at keystore.adb:276
+keystore.adb:116:41: info: length check proved, in call inlined at keystore.adb:284
 keystore.adb:116:41: info: length check proved, in call inlined at keystore.adb:347
 keystore.adb:116:41: info: length check proved, in call inlined at keystore.adb:355
 keystore.adb:116:41: info: length check proved, in call inlined at keystore.adb:363
@@ -621,7 +622,6 @@ keystore.adb:116:41: info: length check proved, in call inlined at keystore.adb:
 keystore.adb:116:41: info: length check proved, in call inlined at keystore.adb:694
 keystore.adb:116:41: info: length check proved, in call inlined at keystore.adb:762
 keystore.adb:116:41: info: length check proved, in call inlined at keystore.adb:847
-keystore.adb:116:41: medium: length check might fail, in call inlined at keystore.adb:284
 keystore.adb:116:44: info: length check proved, in call inlined at keystore.adb:268
 keystore.adb:116:44: info: length check proved, in call inlined at keystore.adb:276
 keystore.adb:116:44: info: length check proved, in call inlined at keystore.adb:284
@@ -731,12 +731,12 @@ screen.adb:437:37: medium: array index check might fail, in call inlined at scre
 screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:609
 screen.adb:440:41: info: length check proved, in call inlined at screen.adb:591
 screen.adb:440:41: info: length check proved, in call inlined at screen.adb:597
-screen.adb:440:41: medium: length check might fail, in call inlined at screen.adb:603
-screen.adb:440:41: medium: length check might fail, in call inlined at screen.adb:609
+screen.adb:440:41: info: length check proved, in call inlined at screen.adb:603
+screen.adb:440:41: info: length check proved, in call inlined at screen.adb:609
 screen.adb:440:44: info: length check proved, in call inlined at screen.adb:591
 screen.adb:440:44: info: length check proved, in call inlined at screen.adb:597
-screen.adb:440:44: medium: length check might fail, in call inlined at screen.adb:603
-screen.adb:440:44: medium: length check might fail, in call inlined at screen.adb:609
+screen.adb:440:44: info: length check proved, in call inlined at screen.adb:603
+screen.adb:440:44: info: length check proved, in call inlined at screen.adb:609
 screen.adb:440:44: medium: range check might fail, in call inlined at screen.adb:591
 screen.adb:440:44: medium: range check might fail, in call inlined at screen.adb:597
 screen.adb:440:44: medium: range check might fail, in call inlined at screen.adb:603
@@ -756,22 +756,22 @@ screen.adb:476:38: info: length check proved, in call inlined at screen.adb:651
 screen.adb:476:38: info: length check proved, in call inlined at screen.adb:657
 screen.adb:478:37: medium: length check might fail, in call inlined at screen.adb:651
 screen.adb:478:37: medium: length check might fail, in call inlined at screen.adb:657
-screen.adb:478:40: medium: length check might fail, in call inlined at screen.adb:651
-screen.adb:478:40: medium: length check might fail, in call inlined at screen.adb:657
+screen.adb:478:40: info: length check proved, in call inlined at screen.adb:651
+screen.adb:478:40: info: length check proved, in call inlined at screen.adb:657
 screen.adb:478:40: medium: range check might fail, in call inlined at screen.adb:651
 screen.adb:478:40: medium: range check might fail, in call inlined at screen.adb:657
 screen.adb:496:42: info: length check proved, in call inlined at screen.adb:615
-screen.adb:498:33: medium: length check might fail, in call inlined at screen.adb:615
+screen.adb:498:33: info: length check proved, in call inlined at screen.adb:615
 screen.adb:498:36: medium: length check might fail, in call inlined at screen.adb:615
 screen.adb:515:35: info: length check proved, in call inlined at screen.adb:639
 screen.adb:515:35: info: length check proved, in call inlined at screen.adb:645
-screen.adb:517:33: medium: length check might fail, in call inlined at screen.adb:639
-screen.adb:517:33: medium: length check might fail, in call inlined at screen.adb:645
+screen.adb:517:33: info: length check proved, in call inlined at screen.adb:639
+screen.adb:517:33: info: length check proved, in call inlined at screen.adb:645
 screen.adb:517:36: medium: length check might fail, in call inlined at screen.adb:639
 screen.adb:517:36: medium: length check might fail, in call inlined at screen.adb:645
 screen.adb:535:33: info: length check proved, in call inlined at screen.adb:663
 screen.adb:537:37: medium: length check might fail, in call inlined at screen.adb:663
-screen.adb:537:40: medium: length check might fail, in call inlined at screen.adb:663
+screen.adb:537:40: info: length check proved, in call inlined at screen.adb:663
 screen.adb:537:40: medium: range check might fail, in call inlined at screen.adb:663
 screen.adb:591:49: info: range check proved
 screen.adb:597:49: info: range check proved

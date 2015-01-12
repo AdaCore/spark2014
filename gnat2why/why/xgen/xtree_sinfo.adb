@@ -336,6 +336,13 @@ package body Xtree_Sinfo is
 
       New_Field (W_Integer_Constant, "Value", "Uint");
 
+      ------------------------
+      -- W_Modular_Constant --
+      ------------------------
+
+      New_Field (W_Modular_Constant, "Value", "Uint");
+      New_Field (W_Modular_Constant, "Typ", "W_Type", Id_One);
+
       ----------------------
       -- W_Fixed_Constant --
       ----------------------

@@ -85,7 +85,9 @@ package body Why.Gen.Scalars is
       function Compute_Clone_Subst return W_Clone_Substitution_Array;
       --  generate the substitutions to be passed to the clone
 
-      procedure Generate_Range_Predicate;
+      procedure Generate_Range_Predicate
+        (Ty : W_Type_Id := Base_Why_Type (E);
+         Name : Why_Name_Enum);
       --  generate the range predicate for the type. In simple cases, this
       --  predicate simply expresses "first < x < last"
 
@@ -110,6 +112,14 @@ package body Why.Gen.Scalars is
              (Kind      => EW_Type_Subst,
               Orig_Name => New_Name (Symbol => NID ("t")),
               Image     => Why_Name);
+         Rep_Type_Clone_Substitution : constant W_Clone_Substitution_Array :=
+           (if not Is_Static and Has_Discrete_Type (E) then
+                (1 => New_Clone_Substitution
+                 (Kind      => EW_Type_Subst,
+                  Orig_Name => New_Name
+                    (Symbol => NID ("rep_type")),
+                  Image     => Get_Name (Base_Why_Type (E))))
+            else (1 .. 0 => <>));
          Round_Clone_Subst : constant W_Clone_Substitution_Array :=
            (if Has_Round_Real then
               (1 => New_Clone_Substitution
@@ -152,11 +162,23 @@ package body Why.Gen.Scalars is
                          To   => Base_Type_In_Why))))
             else (1 .. 0 => <>));
          Mod_Clone_Subst : constant W_Clone_Substitution_Array :=
-           (if Has_Modular_Integer_Type (E) then
+           (if Has_Modular_Integer_Type (E) and then Is_Static and then
+            Modulus (E) /= UI_Expon (2, 8) and then
+            Modulus (E) /= UI_Expon (2, 16) and then
+            Modulus (E) /= UI_Expon (2, 32) and then
+            Modulus (E) /= UI_Expon (2, 64)
+            then
                 (1 => New_Clone_Substitution
                  (Kind      => EW_Function,
                   Orig_Name => To_Name (WNE_Attr_Modulus),
                   Image     => To_Name (WNE_Attr_Modulus)))
+            else (1 .. 0 => <>));
+         Range_Int_Clone_Subst : constant W_Clone_Substitution_Array :=
+           (if Is_Static and Has_Modular_Integer_Type (E) then
+                (1 => New_Clone_Substitution
+                 (Kind      => EW_Predicate,
+                  Orig_Name => To_Name (WNE_Range_Pred_BV_Int),
+                  Image     => To_Name (WNE_Range_Pred_BV_Int)))
             else (1 .. 0 => <>));
          Fixed_Clone_Subst : constant W_Clone_Substitution_Array :=
            (if Is_Fixed_Point_Type (E) then
@@ -171,11 +193,13 @@ package body Why.Gen.Scalars is
          --  substitution to replace the default one.
 
          return
-           Default_Clone_Subst &
+              Default_Clone_Subst &
+              Rep_Type_Clone_Substitution &
            Round_Clone_Subst &
            Static_Clone_Subst &
            Discrete_Conv_Subst &
            Mod_Clone_Subst &
+           Range_Int_Clone_Subst &
            Fixed_Clone_Subst;
       end Compute_Clone_Subst;
 
@@ -183,21 +207,40 @@ package body Why.Gen.Scalars is
       -- Generate_Range_Predicate --
       ------------------------------
 
-      procedure Generate_Range_Predicate is
-         Ty  : constant W_Type_Id := Base_Why_Type (E);
+      procedure Generate_Range_Predicate
+        (Ty : W_Type_Id := Base_Why_Type (E);
+         Name : Why_Name_Enum)
+      is
          Var : constant W_Identifier_Id :=
            New_Identifier (Name => "x", Typ => Ty);
          Def : W_Pred_Id := True_Pred;
+         --  in the case of modular types first and last are integers
+         --  in the why3 theory (and not bv), so we need to insert proper
+         --  convertion / type specification for these attributes
+         Bnd_Type : constant W_Type_Id := (if Why_Type_Is_BitVector (Ty) then
+                                             EW_Int_Type
+                                          else
+                                             Ty);
          Fst : constant W_Identifier_Id :=
            New_Identifier
              (Symbol => Get_Symbol (To_Ident (WNE_Attr_First)),
               Domain => EW_Term,
-              Typ    => Ty);
+              Typ    => Bnd_Type);
          Lst : constant W_Identifier_Id :=
            New_Identifier
              (Symbol => Get_Symbol (To_Ident (WNE_Attr_Last)),
               Domain => EW_Term,
-              Typ    => Ty);
+              Typ    => Bnd_Type);
+         Fst_Expr : constant W_Expr_Id :=
+           Insert_Simple_Conversion
+             (Domain => EW_Term,
+              Expr   => +Fst,
+              To     => Ty);
+         Lst_Expr : constant W_Expr_Id :=
+           Insert_Simple_Conversion
+             (Domain => EW_Term,
+              Expr   => +Lst,
+              To     => Ty);
       begin
          if Has_Predicates (E) then
             declare
@@ -213,9 +256,21 @@ package body Why.Gen.Scalars is
                   declare
                      Rng   : constant Node_Id := Get_Range (Pred);
                      First : constant W_Term_Id :=
-                       Num_Constant (E, Low_Bound (Rng));
+                       (if Why_Type_Is_BitVector (Ty) then
+                             +Insert_Simple_Conversion
+                          (Domain => EW_Term,
+                           Expr   => +Num_Constant (E, Low_Bound (Rng)),
+                           To     => Ty)
+                        else
+                           Num_Constant (E, Low_Bound (Rng)));
                      Last  : constant W_Term_Id :=
-                       Num_Constant (E, High_Bound (Rng));
+                       (if Why_Type_Is_BitVector (Ty) then
+                             +Insert_Simple_Conversion
+                          (Domain => EW_Term,
+                           Expr   => +Num_Constant (E, High_Bound (Rng)),
+                           To     => Ty)
+                        else
+                           Num_Constant (E, High_Bound (Rng)));
                   begin
                      Def :=
                        +New_Or_Else_Expr
@@ -243,8 +298,8 @@ package body Why.Gen.Scalars is
                Left   => +Def,
                Right  =>
                  +New_Range_Expr (Domain => EW_Pred,
-                                  Low    => +Fst,
-                                  High   => +Lst,
+                                  Low    => Fst_Expr,
+                                  High   => Lst_Expr,
                                   Expr   => +Var));
          end if;
 
@@ -252,9 +307,6 @@ package body Why.Gen.Scalars is
          --  otherwise.
 
          declare
-            Name           : constant W_Identifier_Id :=
-              (if Is_Static then To_Ident (WNE_Range_Pred)
-               else To_Ident (WNE_Dynamic_Property));
             Static_Binders : constant Binder_Array :=
               Binder_Array'(1 => Binder_Type'(B_Name => Var,
                                               others => <>));
@@ -269,10 +321,19 @@ package body Why.Gen.Scalars is
             Emit (Theory,
                   Why.Gen.Binders.New_Function_Decl
                     (Domain  => EW_Pred,
-                     Name    => Name,
+                     Name    => To_Ident (Name),
                      Def     => +Def,
                      Labels  => Name_Id_Sets.Empty_Set,
                      Binders => Binders));
+
+            --  in case we're dealing with bitvectors, we also need to generate
+            --  a range check from integers
+            if Why_Type_Is_BitVector (Ty) then
+               Generate_Range_Predicate (EW_Int_Type,
+                                         (if Is_Static
+                                          then WNE_Range_Pred_BV_Int
+                                          else WNE_Dynamic_Property_BV_Int));
+            end if;
          end;
       end Generate_Range_Predicate;
 
@@ -284,7 +345,33 @@ package body Why.Gen.Scalars is
       begin
          if Is_Static then
             if Has_Modular_Integer_Type (E) then
-               return Static_Modular;
+               declare
+                  modulus_val : constant Uint := Modulus (E);
+                  typ : constant W_Type_Id := Base_Why_Type (E);
+               begin
+                  return (if typ = EW_BitVector_8_Type then
+                            (if UI_Lt (modulus_val, UI_Expon (2, 8)) then
+                                  Static_Modular_lt8
+                             else
+                                Static_Modular_8)
+                          elsif typ = EW_BitVector_16_Type then
+                            (if UI_Lt (modulus_val, UI_Expon (2, 16)) then
+                                  Static_Modular_lt16
+                             else
+                                Static_Modular_16)
+                          elsif typ = EW_BitVector_32_Type then
+                            (if UI_Lt (modulus_val, UI_Expon (2, 32)) then
+                                  Static_Modular_lt32
+                             else
+                                Static_Modular_32)
+                          elsif typ = EW_BitVector_64_Type then
+                            (if UI_Lt (modulus_val, UI_Expon (2, 64)) then
+                                  Static_Modular_lt64
+                             else
+                                Static_Modular_64)
+                          else
+                             Static_Modular_Default);
+               end;
             elsif Has_Discrete_Type (E) then
                return Static_Discrete;
             elsif Has_Fixed_Point_Type (E) then
@@ -294,9 +381,7 @@ package body Why.Gen.Scalars is
                return Static_Floating_Point;
             end if;
          else
-            if Has_Modular_Integer_Type (E) then
-               return Dynamic_Modular;
-            elsif Has_Discrete_Type (E) then
+            if Has_Discrete_Type (E) then
                return Dynamic_Discrete;
             elsif Has_Fixed_Point_Type (E) then
                return Dynamic_Fixed_Point;
@@ -334,7 +419,40 @@ package body Why.Gen.Scalars is
       --  retrieve and declare the attributes first, last and modulus
 
       if Has_Modular_Integer_Type (E) then
-         Modul := New_Integer_Constant (Value => Modulus (E));
+         declare
+            Modulus_Val : constant Uint := Modulus (E);
+            Typ : constant W_Type_Id := Base_Why_Type (E);
+         begin
+            Modul := (if Typ = EW_BitVector_8_Type then
+                        (if UI_Lt (Modulus_Val, UI_Expon (2, 8)) then
+                              New_Modular_Constant (Value => Modulus_Val,
+                                                    Typ => EW_BitVector_8_Type)
+                         else
+                                Why_Empty)
+                      elsif Typ = EW_BitVector_16_Type then
+                        (if UI_Lt (Modulus_Val, UI_Expon (2, 16)) then
+                              New_Modular_Constant
+                           (Value => Modulus_Val,
+                            Typ => EW_BitVector_16_Type)
+                         else
+                                Why_Empty)
+                      elsif Typ = EW_BitVector_32_Type then
+                        (if UI_Lt (Modulus_Val, UI_Expon (2, 32)) then
+                              New_Modular_Constant
+                           (Value => Modulus_Val,
+                            Typ => EW_BitVector_32_Type)
+                         else
+                                Why_Empty)
+                      elsif Typ = EW_BitVector_64_Type then
+                        (if UI_Lt (Modulus_Val, UI_Expon (2, 64)) then
+                              New_Modular_Constant
+                           (Value => Modulus_Val,
+                            Typ => EW_BitVector_64_Type)
+                         else
+                            Why_Empty)
+                      else
+                            New_Integer_Constant (Value => Modulus_Val));
+         end;
       end if;
 
       if Has_Fixed_Point_Type (E) then
@@ -347,10 +465,10 @@ package body Why.Gen.Scalars is
       end if;
 
       if Is_Static_Expression (Low_Bound (Rng)) then
-         First := Num_Constant (E, Low_Bound (Rng));
+         First := +Num_Constant (E, Low_Bound (Rng));
       end if;
       if Is_Static_Expression (High_Bound (Rng)) then
-         Last := Num_Constant (E, High_Bound (Rng));
+         Last := +Num_Constant (E, High_Bound (Rng));
       end if;
 
       Define_Scalar_Attributes
@@ -362,7 +480,9 @@ package body Why.Gen.Scalars is
          Small     => Small,
          Is_Static => Is_Static);
 
-      Generate_Range_Predicate;
+      Generate_Range_Predicate (Name => (if Is_Static
+                                         then WNE_Range_Pred
+                                         else WNE_Dynamic_Property));
 
       --  clone the appropriate module
 
@@ -414,7 +534,10 @@ package body Why.Gen.Scalars is
                      Name        =>
                        To_Ident (Attr_To_Why_Name (Attr_Values (J).Attr_Id)),
                      Binders     => (1 .. 0 => <>),
-                     Return_Type => Base_Type,
+                     Return_Type => (if Attr_Values (J).Value = Why_Empty then
+                                        Base_Type
+                                     else
+                                        Get_Type (+Attr_Values (J).Value)),
                      Labels      => Name_Id_Sets.Empty_Set,
                      Def         => W_Expr_Id (Attr_Values (J).Value)));
          end if;

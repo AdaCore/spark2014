@@ -1,3 +1,3 @@
 from test_support import *
 
-prove(steps=60,procs=4)
+prove(steps=800,procs=4)

@@ -23,7 +23,7 @@ module Ada__containers__formal_ordered_maps__map
   function __split_discrs map : __split_discrs
 
    function capacity  (co : map) : int =
-          Ada__containers__count_type.to_int (rec__capacity (__split_discrs co))
+          Ada__containers__count_type.to_rep (rec__capacity (__split_discrs co))
 
   function bool_eq map map : bool
   function user_eq map map : bool
@@ -38,7 +38,7 @@ module Ada__containers__formal_ordered_maps__length
   function length__logic map : Ada__containers__count_type.count_type
 
   function length_ "inline" (co : map) : int =
-    Ada__containers__count_type.to_int (length__logic co)
+    Ada__containers__count_type.to_rep (length__logic co)
 
   axiom length_range:
     forall co:map [length__logic co]. 0 <= length_ co <= capacity co

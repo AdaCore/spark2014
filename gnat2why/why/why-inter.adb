@@ -47,6 +47,7 @@ with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Atree.Traversal; use Why.Atree.Traversal;
 with Why.Conversions;     use Why.Conversions;
 with Why.Gen.Names;       use Why.Gen.Names;
+with Uintp;
 
 ---------------
 -- Why.Inter --
@@ -142,6 +143,10 @@ package body Why.Inter is
         (State : in out Search_State;
          Node  : W_Integer_Constant_Id);
 
+      procedure Modular_Constant_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Modular_Constant_Id);
+
       procedure Real_Constant_Pre_Op
         (State : in out Search_State;
          Node  : W_Real_Constant_Id);
@@ -196,6 +201,29 @@ package body Why.Inter is
       begin
          State.S.Include (+Int_Module);
       end Integer_Constant_Pre_Op;
+
+      -----------------------------
+      -- Modular_Constant_Pre_Op --
+      -----------------------------
+
+      procedure Modular_Constant_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Modular_Constant_Id) is
+         Typ : constant W_Type_Id := Get_Typ (Node);
+         pragma Unreferenced (Node);
+      begin
+         if Typ = EW_BitVector_8_Type then
+            State.S.Include (+BitVector_8_Module);
+         elsif Typ = EW_BitVector_16_Type then
+            State.S.Include (+BitVector_16_Module);
+         elsif Typ = EW_BitVector_32_Type then
+            State.S.Include (+BitVector_32_Module);
+         elsif Typ = EW_BitVector_64_Type then
+            State.S.Include (+BitVector_64_Module);
+         else
+            raise Unexpected_Node;
+         end if;
+      end Modular_Constant_Pre_Op;
 
       -----------------
       -- Name_Pre_Op --
@@ -825,6 +853,24 @@ package body Why.Inter is
                return EW_Bool_Type;
             elsif Ty = Universal_Fixed then
                return EW_Real_Type;
+            elsif Ekind (Ty) in Modular_Integer_Kind then
+               declare
+                  Size : U;
+               begin
+                  Size := Esize (Ty);
+
+                  if Uintp.UI_Le (Size, 8) then
+                     return EW_BitVector_8_Type;
+                  elsif Uintp.UI_Le (Size, 16) then
+                     return EW_BitVector_16_Type;
+                  elsif Uintp.UI_Le (Size, 32) then
+                     return EW_BitVector_32_Type;
+                  elsif Uintp.UI_Le (Size, 64) then
+                     return EW_BitVector_64_Type;
+                  else
+                     return EW_Int_Type;
+                  end if;
+               end;
             else
                return EW_Int_Type;
             end if;
@@ -894,6 +940,22 @@ package body Why.Inter is
           (Left_Base = EW_Bool_Type and then Right_Base = EW_Int_Type)
       then
          return EW_Int_Type;
+      elsif Left_Base = EW_BitVector_8_Type or else
+        Right_Base = EW_BitVector_8_Type
+      then
+         return EW_BitVector_8_Type;
+      elsif Left_Base = EW_BitVector_16_Type or else
+        Right_Base = EW_BitVector_16_Type
+      then
+         return EW_BitVector_16_Type;
+      elsif Left_Base = EW_BitVector_32_Type or else
+        Right_Base = EW_BitVector_32_Type
+      then
+         return EW_BitVector_32_Type;
+      elsif Left_Base = EW_BitVector_64_Type or else
+        Right_Base = EW_BitVector_64_Type
+      then
+         return EW_BitVector_64_Type;
       end if;
 
       --  There are no other uses of this subprogram for now

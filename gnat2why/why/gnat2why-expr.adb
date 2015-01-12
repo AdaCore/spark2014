@@ -28,6 +28,8 @@ with Ada.Text_IO;
 
 with GNAT.Source_Info;
 
+with Ada.Strings.Equal_Case_Insensitive;
+
 with Ada.Containers;         use Ada.Containers;
 
 with Checks;                 use Checks;
@@ -413,6 +415,12 @@ package body Gnat2Why.Expr is
       Params   : Transformation_Params) return W_Expr_Id;
    --  Transform a function call
 
+   function Transform_Shift_Or_Rotate_Call
+     (Expr     : Node_Id;
+      Domain   : EW_Domain;
+      Params   : Transformation_Params) return W_Expr_Id;
+   --  Transform shift or rotate calls
+
    function Transform_Enum_Literal
      (Expr         : Node_Id;
       Enum         : Entity_Id;
@@ -490,16 +498,52 @@ package body Gnat2Why.Expr is
       E      : Entity_Id;
       T      : W_Expr_Id;
       Domain : EW_Domain) return W_Expr_Id is
+      Modulus_Val : Uint;
    begin
       if Is_Modular_Integer_Type (E) and then Op /= N_Op_Divide then
-         return
-            New_Call (Name => Integer_Math_Mod,
-                      Domain => Domain,
-                      Args =>
-                       (1 => T,
-                        2 => New_Integer_Constant
-                          (Value => Modulus (E))),
-                      Typ  => EW_Int_Type);
+
+         Modulus_Val := Modulus (E);
+
+         if Modulus_Val = UI_Expon (2, Esize (E)) then
+
+            --  for modular types with modulus to the size of the
+            --  underlying bit-vectors the modulo operation is not needed
+
+            return T;
+         end if;
+
+         declare
+            BV_Type : constant W_Type_Id := Base_Why_Type (E);
+         begin
+
+            if Why_Type_Is_BitVector (BV_Type) then
+
+               --  for modular types with base type bit-vector
+               --  do the modulo operation directly with bit-vectors
+
+               return
+                 New_Call (Name => Create_Modular_Rem (BV_Type),
+                           Domain => Domain,
+                           Args =>
+                             (1 => T,
+                              2 => New_Modular_Constant
+                                (Value => Modulus (E),
+                                 Typ => BV_Type)),
+                           Typ => BV_Type);
+            else
+               --  for the others, do integer math
+
+               return
+                 New_Call (Name => Integer_Math_Mod,
+                           Domain => Domain,
+                           Args =>
+                             (1 => T,
+                              2 => New_Integer_Constant
+                                (Value => Modulus (E))),
+                           Typ  => EW_Int_Type);
+            end if;
+
+         end;
 
       elsif Is_Floating_Point_Type (E) then
          return New_Call (Domain   => Domain,
@@ -898,6 +942,8 @@ package body Gnat2Why.Expr is
             Why_Base         : constant W_Type_Id := Base_Why_Type (N);
             Le               : constant W_Identifier_Id :=
               (if Why_Base = EW_Real_Type then Real_Infix_Le
+               elsif Why_Type_Is_BitVector (Why_Base) then
+                    Create_Modular_Le (Why_Base)
                else Int_Infix_Le);
             Low_Expr         : constant W_Term_Id :=
               +Transform_Expr (Low_Bound (Rng), Why_Base, EW_Term, Params);
@@ -921,18 +967,38 @@ package body Gnat2Why.Expr is
               New_Call
                 (Name =>
                    (if Why_Base = EW_Real_Type then Real_Infix_Ge
+                    elsif Why_Type_Is_BitVector (Why_Base) then
+                         Create_Modular_Ge (Why_Base)
                     else Int_Infix_Ge),
                  Typ  => EW_Bool_Type,
                  Args => (+Low_Expr,
-                          +New_Attribute_Expr
-                            (Base, Attribute_First, Params)));
+                          (if Why_Type_Is_BitVector (Why_Base) then
+                              Insert_Simple_Conversion (Domain => EW_Term,
+                                                        Expr   =>
+                                                          New_Attribute_Expr
+                                                            (Base,
+                                                             Attribute_First,
+                                                             Params),
+                                                        To     => Why_Base)
+                           else
+                              +New_Attribute_Expr
+                             (Base, Attribute_First, Params))));
             Last_In_Range    : constant W_Pred_Id :=
               New_Call
                 (Name => Le,
                  Typ  => EW_Bool_Type,
                  Args => (+High_Expr,
-                          +New_Attribute_Expr
-                            (Base, Attribute_Last, Params)));
+                          (if Why_Type_Is_BitVector (Why_Base) then
+                              Insert_Simple_Conversion (Domain => EW_Term,
+                                                        Expr   =>
+                                                          New_Attribute_Expr
+                                                            (Base,
+                                                             Attribute_Last,
+                                                             Params),
+                                                        To     => Why_Base)
+                           else
+                              +New_Attribute_Expr
+                             (Base, Attribute_Last, Params))));
             First_Le_Last    : constant W_Pred_Id :=
               New_Call
                 (Name => Le,
@@ -4183,10 +4249,14 @@ package body Gnat2Why.Expr is
             --  unary minus
 
             declare
+               Typ : constant W_Type_Id := Base_Why_Type (Right_Type);
+
                Minus_Ident : constant W_Identifier_Id :=
-                 (if Base_Why_Type (Right_Type) = EW_Int_Type then
+                 (if Typ = EW_Int_Type then
                      Int_Unary_Minus
-                  elsif Base_Why_Type (Right_Type) = EW_Fixed_Type
+                  elsif Why_Type_Is_BitVector (Typ) then
+                       Create_Modular_Neg (Typ)
+                 elsif Typ = EW_Fixed_Type
                   then Fixed_Unary_Minus
                   else Real_Unary_Minus);
             begin
@@ -4201,7 +4271,7 @@ package body Gnat2Why.Expr is
                          (Ada_Node => Ada_Node,
                           Domain   => Domain,
                           Expr     => Right,
-                          To       => Base_Why_Type (Right_Type))),
+                          To       => Typ)),
                    Typ       => Get_Type (+Minus_Ident));
                T := Apply_Modulus_Or_Rounding (Op, Return_Type, T, Domain);
             end;
@@ -4238,10 +4308,14 @@ package body Gnat2Why.Expr is
                Name : constant W_Identifier_Id :=
                  (if Op = N_Op_Add then
                     (if Base = EW_Int_Type then Int_Infix_Add
+                     elsif Why_Type_Is_BitVector (Base) then
+                        Create_Modular_Add (Base)
                      elsif Base = EW_Fixed_Type then Fixed_Infix_Add
                      else Real_Infix_Add)
                   else
                     (if Base = EW_Int_Type then Int_Infix_Subtr
+                     elsif Why_Type_Is_BitVector (Base) then
+                          Create_Modular_Sub (Base)
                      elsif Base = EW_Fixed_Type then Fixed_Infix_Subtr
                      else Real_Infix_Subtr));
             begin
@@ -4336,6 +4410,8 @@ package body Gnat2Why.Expr is
                   declare
                      Name : constant W_Identifier_Id :=
                        (if Base = EW_Int_Type then Int_Infix_Mult
+                        elsif Why_Type_Is_BitVector (Base) then
+                           Create_Modular_Mul (Base)
                         elsif Base = EW_Fixed_Type then Fixed_Infix_Mult
                         else Real_Infix_Mult);
                   begin
@@ -4380,16 +4456,13 @@ package body Gnat2Why.Expr is
                   R_Type := Base;
                end if;
 
-               --  optimization: use euclidian division for modular division
-
                Name :=
                  (if Is_Fixed_Point_Type (Return_Type) then
                        Prefix (Ada_Node => Return_Type,
                                M        => E_Module (Return_Type),
                                W        => Oper)
-                  elsif Is_Modular_Integer_Type (Return_Type) then
-                       Euclid_Div
-                  else New_Division (Base));
+                  else
+                     New_Division (Base));
 
                L_Why := Insert_Simple_Conversion
                  (Ada_Node => Ada_Node,
@@ -4433,8 +4506,12 @@ package body Gnat2Why.Expr is
                  Base_Why_Type (Left_Type, Right_Type);
                Name  : W_Identifier_Id;
             begin
-               Name := (if Op = N_Op_Rem then Integer_Rem
+               Name := (if Why_Type_Is_BitVector (Base) then
+                           Create_Modular_Rem (Base)
+                        elsif Op = N_Op_Rem then
+                           Integer_Rem
                         else Integer_Mod);
+
                Name := (if Domain = EW_Prog then
                            To_Program_Space (Name)
                         else
@@ -4495,9 +4572,9 @@ package body Gnat2Why.Expr is
                   Do_Check   => Domain = EW_Prog);
             else
                if Domain = EW_Term then
-                  T :=
-                    New_Call
-                      (Ada_Node => Ada_Node,
+                     T :=
+                       New_Call
+                         (Ada_Node => Ada_Node,
                        Domain   => Domain,
                        Name     => New_Identifier (Name => "notb"),
                        Args     =>
@@ -4520,27 +4597,7 @@ package body Gnat2Why.Expr is
             end if;
 
          when N_Op_And | N_Op_Or | N_Op_Xor =>
-
-            if Is_Modular_Integer_Type (Return_Type)
-              and then Op = N_Op_And
-              and then Get_Kind (+Right) = W_Integer_Constant
-              and then Is_Power_Of_2
-                (Get_Value (W_Integer_Constant_Id (Right)) + Uint_1)
-            then
-               T :=
-                 New_Call
-                   (Ada_Node => Ada_Node,
-                    Domain   => EW_Term,
-                    Name     => Integer_Math_Mod,
-                    Args     =>
-                      (1 => Left,
-                       2 =>
-                         New_Integer_Constant
-                           (Value =>
-                                Get_Value (W_Integer_Constant_Id (Right)) +
-                              Uint_1)),
-                    Typ     => EW_Int_Type);
-            elsif Is_Array_Type (Left_Type) then
+            if Is_Array_Type (Left_Type) then
                T := Transform_Array_Logical_Op
                  (Op        => Op,
                   Left      => Left,
@@ -4553,7 +4610,7 @@ package body Gnat2Why.Expr is
                declare
                   Base  : constant W_Type_Id :=
                     (if Is_Boolean_Type (Return_Type) then EW_Bool_Type
-                     else EW_Int_Type);
+                     else Base_Why_Type (Return_Type));
                   L_Why : constant W_Expr_Id :=  Insert_Simple_Conversion
                     (Ada_Node => Ada_Node,
                      Domain   => Domain,
@@ -4588,7 +4645,7 @@ package body Gnat2Why.Expr is
                Domain             => Domain,
                Ada_Node           => Ada_Node);
 
-         when others =>
+         when N_Op_Shift =>
             Ada.Text_IO.Put_Line ("[New_Op_Expr] kind ="
                                   & Node_Kind'Image (Op));
             raise Not_Implemented;
@@ -4859,7 +4916,9 @@ package body Gnat2Why.Expr is
           (Domain    => Domain,
            Low       => +Transform_Expr (Low, Base_Type, Subdomain, Params),
            High      => +Transform_Expr (High, Base_Type, Subdomain, Params),
-           Expr      => T);
+           Expr      => Insert_Simple_Conversion (Domain   => Subdomain,
+                                                  Expr     => T,
+                                                  To       => Base_Type));
 
       --  In programs, we generate a check that the range_constraint of a
       --  subtype_indication is compatible with the given subtype.
@@ -6972,6 +7031,33 @@ package body Gnat2Why.Expr is
             --  adding 1 to the representation value, and 'Pred is modelled
             --  as subtracting 1 to the representation value.
 
+            elsif Ekind (Etype (Var)) in Modular_Integer_Kind then
+               declare
+                  W_Type : constant W_Type_Id := Base_Why_Type (Etype (Var));
+                  Op     : constant W_Identifier_Id :=
+                    (if Attr_Id = Attribute_Succ then
+                        Create_Modular_Add (W_Type)
+                     else
+                        Create_Modular_Sub (W_Type));
+                  Old    : W_Expr_Id;
+                  Offset : constant W_Expr_Id :=
+                    New_Modular_Constant (Typ => W_Type,
+                                          Value => Uint_1);
+               begin
+
+                  Old := Transform_Expr (First (Expressions (Expr)),
+                                         W_Type,
+                                         Domain,
+                                         Params);
+
+                  T :=
+                    New_Call
+                      (Ada_Node => Expr,
+                       Domain   => Domain,
+                       Name     => Op,
+                       Args     => (1 => Old, 2 => Offset),
+                       Typ      => W_Type);
+               end;
             else
                declare
                   Op     : constant W_Identifier_Id :=
@@ -7112,20 +7198,91 @@ package body Gnat2Why.Expr is
             T := New_Attribute_Expr (Etype (Var), Attr_Id);
 
          when Attribute_Mod =>
-            T :=
-              New_Call (Ada_Node => Expr,
-                        Domain   => Domain,
-                        Name     => Integer_Mod,
-                        Args     =>
-                          (1 => Transform_Expr (First (Expressions (Expr)),
-                           EW_Int_Type,
-                           Domain,
-                           Params),
-                           2 =>
-                              New_Attribute_Expr
-                             (Etype (Var), Attribute_Modulus)),
-                        Typ   => EW_Int_Type);
-
+            declare
+               Arg : constant Node_Id := First (Expressions (Expr));
+               Arg_BTyp : constant W_Type_Id := Base_Why_Type (Arg);
+               Target_Type : constant W_Type_Id := Base_Why_Type (Var);
+            begin
+               --  Optimisation : If the argument is a bitvector we do the
+               --  modulo on bitvectors,
+               if Why_Type_Is_BitVector (Arg_BTyp) then
+                  declare
+                     Arg_Modulus : constant Uint := Modulus (Etype (Arg));
+                     Var_Modulus : constant Uint := Modulus (Etype (Var));
+                  begin
+                     if UI_Gt (Arg_Modulus, Var_Modulus) then
+                        T :=
+                          Insert_Simple_Conversion
+                            (Domain => EW_Term,
+                             Expr   =>
+                               New_Call (Ada_Node => Expr,
+                                    Domain   => Domain,
+                                    Name     => Create_Modular_Rem (Arg_BTyp),
+                                    Args     =>
+                                      (1 => Transform_Expr (Arg,
+                                       Arg_BTyp,
+                                       Domain,
+                                       Params),
+                                       2 =>
+                                         (if Get_EW_Type (Var) = EW_Builtin
+                                          then
+                               --  if we're builtin, i.e., not abstract,
+                               --  we use standard modulus from why theory
+                                             Insert_Simple_Conversion
+                                            (Domain => EW_Term,
+                                             Expr   => +Create_Modular_Modulus
+                                               (Base_Why_Type (Var)),
+                                             To     => Arg_BTyp)
+                                          else
+                                          --  else, use the attribute
+                                             New_Attribute_Expr
+                                            (Etype (Var), Attribute_Modulus))),
+                                         Typ   => Arg_BTyp),
+                             To => Target_Type);
+                     else
+                        --  in the case where the argument's type size is
+                        --  bigger than the type doing the modulo, simply
+                        --  convert since Arg is then necessary smaller than
+                        --  var's modulus.
+                        T := Insert_Simple_Conversion (Domain => EW_Term,
+                                                       Expr   =>
+                                                         Transform_Expr
+                                                           (Arg,
+                                                            Domain,
+                                                            Params),
+                                                       To => Target_Type);
+                     end if;
+                  end;
+               else
+                  --  if not, we do the modulo on integer and convert back
+                  T := Insert_Simple_Conversion
+                    (Domain => EW_Term,
+                     Expr   =>
+                       New_Call (Ada_Node => Expr,
+                           Domain   => Domain,
+                           Name     => Integer_Mod,
+                           Args     =>
+                             (1 => Transform_Expr (Arg,
+                              EW_Int_Type,
+                              Domain,
+                              Params),
+                              2 =>
+                                (if Get_EW_Type (Var) = EW_Builtin then
+                                 --  if we're builtin, i.e., not abstract,
+                                 --  we use standard modulus from why theory
+                                        +Create_Modular_Modulus
+                                   (Base_Why_Type (Var))
+                                 else
+                                 --  else we refer to the attribute modulus
+                                    Insert_Simple_Conversion
+                                   (Domain => EW_Term,
+                                    Expr   => New_Attribute_Expr
+                                      (Etype (Var), Attribute_Modulus),
+                                       To     => EW_Int_Type))),
+                                 Typ   => EW_Int_Type),
+                     To   => Target_Type);
+               end if;
+            end;
          when Attribute_Image =>
 
             --  We generate the expression String.to_string (image_func (expr))
@@ -7391,6 +7548,15 @@ package body Gnat2Why.Expr is
                when N_Op_Ge => return Bool_Bool_Ge;
                when N_Op_Le => return Bool_Bool_Le;
             end case;
+         elsif Why_Type_Is_BitVector (Ty) then
+            case Op is
+               when N_Op_Gt => return Create_Modular_Bool_Gt  (Ty);
+               when N_Op_Lt => return Create_Modular_Bool_Lt  (Ty);
+               when N_Op_Eq => return Create_Modular_Bool_Eq  (Ty);
+               when N_Op_Ne => return Create_Modular_Bool_Neq (Ty);
+               when N_Op_Ge => return Create_Modular_Bool_Ge  (Ty);
+               when N_Op_Le => return Create_Modular_Bool_Le  (Ty);
+            end case;
          elsif Op in N_Op_Eq | N_Op_Ne then
             return
               New_Identifier
@@ -7421,6 +7587,15 @@ package body Gnat2Why.Expr is
             when N_Op_Ne => return Why_Neq;
             when N_Op_Ge => return Real_Infix_Ge;
             when N_Op_Le => return Real_Infix_Le;
+         end case;
+      elsif Why_Type_Is_BitVector (Ty) then
+         case Op is
+            when N_Op_Gt => return Create_Modular_Gt (Ty);
+            when N_Op_Lt => return Create_Modular_Lt (Ty);
+            when N_Op_Eq => return Why_Eq;
+            when N_Op_Ne => return Why_Neq;
+            when N_Op_Ge => return Create_Modular_Ge (Ty);
+            when N_Op_Le => return Create_Modular_Le (Ty);
          end case;
       elsif Op = N_Op_Eq then
          return Why_Eq;
@@ -8586,7 +8761,6 @@ package body Gnat2Why.Expr is
                                  Domain,
                                  Local_Params);
             begin
-
                T := New_Op_Expr
                  (Op          => Nkind (Expr),
                   Left        => Transform_Expr (Left,
@@ -8616,6 +8790,23 @@ package body Gnat2Why.Expr is
                         Domain      => Domain,
                         Ada_Node    => Expr);
                end;
+            elsif Is_Modular_Integer_Type (Expr_Type) then
+               declare
+                  base : constant W_Type_Id := Base_Why_Type (Expr_Type);
+               begin
+                  T :=
+                    New_Call
+                      (Ada_Node => Expr,
+                       Domain   => Domain,
+                       Name     => Create_Modular_Not (base),
+                       Args     =>
+                         (1 => Transform_Expr
+                            (Right_Opnd (Expr),
+                             base,
+                             Domain,
+                             Local_Params)),
+                       Typ      => base);
+               end;
             else
                T := New_Op_Expr
                  (Op          => Nkind (Expr),
@@ -8643,7 +8834,7 @@ package body Gnat2Why.Expr is
                      Left        =>
                        Transform_Expr (Left_Opnd (Expr), Subdomain, Params),
                      Right       =>
-                     Transform_Expr (Right_Opnd (Expr), Subdomain, Params),
+                       Transform_Expr (Right_Opnd (Expr), Subdomain, Params),
                      Left_Type   => Etype (Left_Opnd (Expr)),
                      Right_Type  => Etype (Right_Opnd (Expr)),
                      Return_Type => Expr_Type,
@@ -8654,7 +8845,7 @@ package body Gnat2Why.Expr is
                declare
                   Base  : constant W_Type_Id :=
                     (if Is_Boolean_Type (Expr_Type) then EW_Bool_Type
-                     else EW_Int_Type);
+                     else Base_Why_Type (Expr_Type));
                   Left  : constant W_Expr_Id :=
                     Transform_Expr (Left_Opnd (Expr),
                                     Base,
@@ -8849,8 +9040,13 @@ package body Gnat2Why.Expr is
             end if;
 
          when N_Function_Call =>
-            T := Transform_Function_Call
-              (Expr, Domain, Local_Params);
+            if Is_Accepted_Shift_Or_Rotate (Entity (Name (Expr))) then
+               T := Transform_Shift_Or_Rotate_Call
+                 (Expr, Domain, Local_Params);
+            else
+               T := Transform_Function_Call
+                 (Expr, Domain, Local_Params);
+            end if;
          when N_Indexed_Component | N_Selected_Component =>
             T := One_Level_Access (Expr,
                                    Transform_Expr
@@ -9128,49 +9324,7 @@ package body Gnat2Why.Expr is
         Compute_Call_Args (Expr, Domain, Nb_Of_Refs, Nb_Of_Lets, Params);
       T          : W_Expr_Id;
 
-      function Is_Constant_Shift_Right return Boolean;
-      --  detect the case of a shift_right with a constant second argument,
-      --  where the intrinsic subprogram has no contracts
-
-      -----------------------------
-      -- Is_Constant_Shift_Right --
-      -----------------------------
-
-      function Is_Constant_Shift_Right return Boolean is
-      begin
-         return Is_Intrinsic_Subprogram (Subp) and then
-           Is_Modular_Integer_Type (Etype (Subp)) and then
-           Chars (Subp) = Name_Shift_Right and then
-           not Has_Contracts (Subp, Name_Precondition) and then
-           not Has_Contracts (Subp, Name_Postcondition) and then
-           Is_Static_Expression (Next_Actual (First_Actual (Expr)));
-      end Is_Constant_Shift_Right;
-
    begin
-      --  Optimization: in the case of a constant shift right, we directly
-      --  replace the shift by a division of the correct power of 2
-
-      if Is_Constant_Shift_Right then
-         pragma Assert (Args'Length = 2);
-         declare
-            Op    : constant W_Expr_Id := Args (Args'First);
-            Shift : constant Uint :=
-              Expr_Value (Next_Actual (First_Actual (Expr)));
-         begin
-            if Shift = Uint_0 then
-               return Op;
-            else
-               return
-                 New_Call
-                   (Domain => EW_Term,
-                    Name   => Euclid_Div,
-                    Args   => (1 => Op,
-                               2 => New_Integer_Constant
-                                 (Value => Uint_2 ** Shift)),
-                    Typ    => EW_Int_Type);
-            end if;
-         end;
-      end if;
 
       if Why_Subp_Has_Precondition (Subp, Dispatch => (Selector = Dispatch))
       then
@@ -9202,6 +9356,122 @@ package body Gnat2Why.Expr is
 
       return T;
    end Transform_Function_Call;
+
+   function Transform_Shift_Or_Rotate_Call
+     (Expr     : Node_Id;
+      Domain   : EW_Domain;
+      Params   : Transformation_Params) return W_Expr_Id
+   is
+      Subp        : constant Entity_Id := Entity (Name (Expr));
+      Nb_Of_Refs  : Natural;
+      Nb_Of_Lets  : Natural;
+      Args        : constant W_Expr_Array :=
+        Compute_Call_Args (Expr, Domain, Nb_Of_Refs, Nb_Of_Lets, Params);
+      Modulus_Val : constant Uint := Modulus (Etype (Subp));
+      Nb_Of_Bits  : constant Int := (if Modulus_Val = UI_Expon (2, 8) then
+                                        8
+                                     elsif Modulus_Val = UI_Expon (2, 16) then
+                                        16
+                                     elsif Modulus_Val = UI_Expon (2, 32) then
+                                        32
+                                     elsif Modulus_Val = UI_Expon (2, 64) then
+                                        64
+                                     else
+                                        raise Program_Error);
+      Typ         : constant W_Type_Id := (if Nb_Of_Bits = 8 then
+                                              EW_BitVector_8_Type
+                                           elsif Nb_Of_Bits = 16 then
+                                              EW_BitVector_16_Type
+                                           elsif Nb_Of_Bits = 32 then
+                                              EW_BitVector_32_Type
+                                           elsif Nb_Of_Bits = 64 then
+                                              EW_BitVector_64_Type
+                                           else raise Program_Error);
+      --  for modular types with modulus bigger than 64,
+      --  transform_function_call is called (filtered through
+      --  Is_Accepted_Shift_Or_Rotate).
+      T           : W_Expr_Id;
+   begin
+
+      --  /!\ it is assumed that rotate call are only valid on actual
+      --  unsigned_8/16/32/64 types with the corresponding 'Size /!\
+      pragma Assert (Args'Length = 2);
+
+      Get_Unqualified_Decoded_Name_String (Chars (Subp));
+
+      declare
+         Arg1   : constant W_Expr_Id := Args (Args'First);
+         Arg2   : constant W_Expr_Id := Args (Args'First + 1);
+         Name_S : constant String := Name_Buffer (1 .. Name_Len);
+      begin
+
+         --  We only deal with rotation by a literal (smtlib v2 restriction).
+         --  If we have a rotation by a constant, convert the constant to
+         --  bitvector (modulo the nb of bits) and call the appropriate
+         --  function.
+         if Ada.Strings.Equal_Case_Insensitive
+           (Name_S, Get_Name_String (Name_Rotate_Left)) and then
+           Get_Kind (+Arg2) = W_Integer_Constant
+         then
+            declare
+               val : constant Int :=
+                 (UI_To_Int (Get_Value (W_Integer_Constant_Id (Arg2))))
+               mod Nb_Of_Bits;
+            begin
+               T := New_Call (Domain => EW_Term,
+                              Name   => Create_Modular_Rl_Const (Typ, val),
+                              Args   => (1 => Arg1),
+                              Typ    => Typ);
+            end;
+         elsif Ada.Strings.Equal_Case_Insensitive
+              (Name_S, Get_Name_String (Name_Rotate_Right)) and then
+              Get_Kind (+Arg2) = W_Integer_Constant
+         then
+            declare
+               val : constant Int :=
+                 (UI_To_Int (Get_Value (W_Integer_Constant_Id (Arg2))))
+               mod Nb_Of_Bits;
+            begin
+               T := New_Call (Domain => EW_Term,
+                              Name   => Create_Modular_Rr_Const (Typ, val),
+                              Args   => (1 => Arg1),
+                              Typ    => Typ);
+            end;
+         else
+            --  else, translate to an axiomatized, uninterpreted function
+            T := New_Call
+              (Domain => EW_Term,
+               Name   => (if Ada.Strings.Equal_Case_Insensitive
+                          (Name_S, Get_Name_String (Name_Shift_Right)) then
+                             Create_Modular_Lsr (Typ)
+                          elsif Ada.Strings.Equal_Case_Insensitive (Name_S,
+                            Get_Name_String (Name_Shift_Right_Arithmetic)) then
+                             Create_Modular_Asr (Typ)
+                          elsif Ada.Strings.Equal_Case_Insensitive
+                            (Name_S, Get_Name_String (Name_Shift_Left)) then
+                               Create_Modular_Lsl (Typ)
+                          elsif Ada.Strings.Equal_Case_Insensitive
+                            (Name_S, Get_Name_String (Name_Rotate_Left))  then
+                               Create_Modular_Rl_Var (Typ)
+                          elsif Ada.Strings.Equal_Case_Insensitive
+                            (Name_S, Get_Name_String (Name_Rotate_Right))  then
+                               Create_Modular_Rr_Var (Typ)
+                          else
+                             raise Program_Error),
+               Args   => (1 => Arg1,
+                          2 => Insert_Simple_Conversion
+                            (Domain => EW_Term,
+                             Expr => Arg2,
+                             To => Typ)),
+               Typ    => Typ);
+         end if;
+      end;
+
+      --  SPARK function cannot have side-effects
+      pragma Assert (Nb_Of_Refs = 0);
+
+      return T;
+   end Transform_Shift_Or_Rotate_Call;
 
    --------------------------
    -- Transform_Identifier --
@@ -10230,7 +10500,11 @@ package body Gnat2Why.Expr is
       Range_E    : constant Node_Id   := Extract_Set_Node (Expr, Over_Range);
       Index_Type : constant Entity_Id := Etype (Index_Ent);
       Index_Base : constant W_Type_Id :=
-        (if Over_Range then EW_Int_Type
+        (if Over_Range then
+           (if Is_Modular_Integer_Type (Index_Type) then
+                 Base_Why_Type (Index_Type)
+            else
+               EW_Int_Type)
          else EW_Abstract (Index_Type));
       Cond_Expr  : W_Expr_Id;
       Why_Id     : constant W_Identifier_Id :=
@@ -10241,7 +10515,7 @@ package body Gnat2Why.Expr is
          then Get_Cursor_Type_In_Iterable_Aspect (Etype (Range_E))
          else Etype (Index_Ent));
       Quant_Base : constant W_Type_Id :=
-        (if Over_Range then EW_Int_Type else EW_Abstract (Quant_Type));
+        (if Over_Range then Index_Base else EW_Abstract (Quant_Type));
       Quant_Var  : constant W_Identifier_Id :=
         (if not Over_Range and then Of_Present (Iterator_Specification (Expr))
          then New_Temp_Identifier (Typ => Quant_Base) else Why_Id);

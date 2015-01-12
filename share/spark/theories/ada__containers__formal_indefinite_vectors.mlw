@@ -79,7 +79,7 @@ module Ada__containers__formal_indefinite_vectors__no_index
   function no_index : extended_index
 
   axiom no_index__def :
-    to_int (no_index) = first
+    to_rep (no_index) = first
 end
 
 (* subtype Capacity_Range *)
@@ -141,15 +141,15 @@ module Ada__containers__formal_indefinite_vectors__capacity
   (* value of discriminant Capacity is called "initial_capacity" to distinguish from function
      Capacity, which might be different in the unbounded case *)
   function capacity "inline" (v : vector) : int =
-    Ada__containers__formal_indefinite_vectors__capacity_range.to_int (capacity__logic v)
+    Ada__containers__formal_indefinite_vectors__capacity_range.to_rep (capacity__logic v)
 
   axiom capacity__def :
     forall v : vector [capacity__logic v | initial_capacity v].
       if Ada__containers__formal_indefinite_vectors__bounded.bounded then
         capacity__logic v = initial_capacity v
       else
-        Ada__containers__formal_indefinite_vectors__capacity_range.to_int (capacity__logic v) >=
-        Ada__containers__formal_indefinite_vectors__capacity_range.to_int (initial_capacity v)
+        Ada__containers__formal_indefinite_vectors__capacity_range.to_rep (capacity__logic v) >=
+        Ada__containers__formal_indefinite_vectors__capacity_range.to_rep (initial_capacity v)
 
   val capacity (v : vector) : Ada__containers__formal_indefinite_vectors__capacity_range.capacity_range
     ensures { result = capacity__logic v }
@@ -167,7 +167,7 @@ module Ada__containers__formal_indefinite_vectors__length
     Ada__containers__formal_indefinite_vectors__capacity_range.capacity_range
 
   function length_ "inline" (v : vector) : int =
-    Ada__containers__formal_indefinite_vectors__capacity_range.to_int (length__logic v)
+    Ada__containers__formal_indefinite_vectors__capacity_range.to_rep (length__logic v)
 
   axiom length_range:
     forall v : vector [length__logic v].
@@ -608,11 +608,11 @@ module Ada__containers__formal_indefinite_vectors__first_index
 
   axiom first_index__def :
     forall v : vector [first_index__logic v].
-      Ada__containers__formal_indefinite_vectors__index_type.to_int (first_index__logic v) =
+      Ada__containers__formal_indefinite_vectors__index_type.to_rep (first_index__logic v) =
       index_type__of_index 1
 
   val first_index (v : vector) : Ada__containers__formal_indefinite_vectors__index_type.index_type
-      ensures { Ada__containers__formal_indefinite_vectors__index_type.to_int (result) =
+      ensures { Ada__containers__formal_indefinite_vectors__index_type.to_rep (result) =
                 index_type__of_index 1 }
 end
 
@@ -646,10 +646,10 @@ module Ada__containers__formal_indefinite_vectors__last_index
 
   axiom last_index__def :
     forall v:vector [last_index__logic v].
-      to_int (last_index__logic v) = extended_index__of_index (length_ v)
+      to_rep (last_index__logic v) = extended_index__of_index (length_ v)
 
   val last_index (v:vector) : extended_index
-    ensures { to_int (result) = extended_index__of_index (length_ v) }
+    ensures { to_rep (result) = extended_index__of_index (length_ v) }
 end
 
 (* function Last_Element *)
@@ -698,7 +698,7 @@ module Ada__containers__formal_indefinite_vectors__find_index
     (e : Ada__containers__formal_indefinite_vectors__element_type.base_type)
     (i : int)
   : int
-  = extended_index__to_index (to_int (find_index_ v e i))
+  = extended_index__to_index (to_rep (find_index_ v e i))
 
   axiom find_range :
     forall v : vector,
@@ -766,7 +766,7 @@ module Ada__containers__formal_indefinite_vectors__reverse_find_index
     (e : Ada__containers__formal_indefinite_vectors__element_type.base_type)
     (i : int)
   : int
-  = extended_index__to_index (to_int (reverse_find_index_ v e i))
+  = extended_index__to_index (to_rep (reverse_find_index_ v e i))
 
   axiom reverse_find_range :
     forall v : vector,
@@ -839,13 +839,13 @@ module Ada__containers__formal_indefinite_vectors__contains
     (v : vector)
     (e : Ada__containers__formal_indefinite_vectors__element_type.base_type)
   : bool
-  = if extended_index__to_index (to_int (find_index_ v e 1)) > 0 then True else False
+  = if extended_index__to_index (to_rep (find_index_ v e 1)) > 0 then True else False
 
   val contains
     (v : vector)
     (e : Ada__containers__formal_indefinite_vectors__element_type.base_type)
   : bool
-    ensures { if extended_index__to_index (to_int (find_index_ v e 1)) > 0 then
+    ensures { if extended_index__to_index (to_rep (find_index_ v e 1)) > 0 then
                 result = True
               else
                 result = False }

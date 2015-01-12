@@ -97,6 +97,7 @@ package body Why.Atree.Sprint is
    procedure Print_Identifier (Node : W_Identifier_Id);
    procedure Print_Include_Declaration (Node : W_Include_Declaration_Id);
    procedure Print_Integer_Constant (Node : W_Integer_Constant_Id);
+   procedure Print_Modular_Constant (Node : W_Modular_Constant_Id);
    procedure Print_Label (Node : W_Label_Id);
    procedure Print_Literal (Node : W_Literal_Id);
    procedure Print_Name (Node : W_Name_Id);
@@ -1052,6 +1053,31 @@ package body Why.Atree.Sprint is
       end if;
    end Print_Integer_Constant;
 
+   -----------------------------
+   -- Print_Modular_Constant --
+   -----------------------------
+
+   procedure Print_Modular_Constant (Node : W_Modular_Constant_Id) is
+      Value : constant Uint := Get_Value (Node);
+      Typ : constant W_Type_Id := Get_Typ (Node);
+   begin
+      P (O, "( ");
+      if Typ = EW_BitVector_8_Type then
+         P (O, "BitVector8.");
+      elsif Typ = EW_BitVector_16_Type then
+         P (O, "BitVector16.");
+      elsif Typ = EW_BitVector_32_Type then
+         P (O, "BitVector32.");
+      elsif Typ = EW_BitVector_64_Type then
+         P (O, "BitVector64.");
+      else
+         raise Unexpected_Node;
+      end if;
+      P (O, "of_int ");
+      P (O, Value);
+      P (O, " )");
+   end Print_Modular_Constant;
+
    ------------------
    -- Print_Label --
    ------------------
@@ -1249,6 +1275,9 @@ package body Why.Atree.Sprint is
 
          when W_Integer_Constant =>
             Print_Integer_Constant (+N);
+
+         when W_Modular_Constant =>
+            Print_Modular_Constant (+N);
 
          when W_Fixed_Constant =>
             Print_Fixed_Constant (+N);

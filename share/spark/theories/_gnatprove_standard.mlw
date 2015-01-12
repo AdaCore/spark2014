@@ -524,3 +524,172 @@ theory Array__4
               (k - (new_first_3 - old_first_3))
               (l - (new_first_4 - old_first_4))
 end
+
+module BitVectorAda
+  type t
+
+  function abs "inline" (x : t) : t = x
+
+  predicate ult t t
+  predicate ule t t
+  predicate ugt t t
+  predicate uge t t
+
+  use import bool.Bool
+  function bool_eq (x: t) (y: t) : bool = x = y
+  function bool_ne (x: t) (y: t) : bool = x <> y
+  function bool_lt (x: t) (y: t) : bool = ult x y
+  function bool_le (x: t) (y: t) : bool = ule x y
+  function bool_gt (x: t) (y: t) : bool = ugt x y
+  function bool_ge (x: t) (y: t) : bool = uge x y
+
+  clone export int.Exponentiation with type t = t
+end
+
+module BitVector8
+  use export bitvec.BV8
+
+  clone export BitVectorAda with
+    type t = t,
+    predicate ult = ult,
+    predicate ule = ule,
+    predicate ugt = ugt,
+    predicate uge = uge,
+    function ( * ) = mul,
+    constant one = one
+
+  val of_int_ (i : int) : t
+    requires{ int_in_range i }
+    ensures{ result = of_int i }
+
+  val udiv_ (x : t) (y : t) : t
+    requires{ y <> zero }
+    ensures{ result = udiv x y }
+
+  val urem_ (x : t) (y : t) : t
+    requires{ y <> zero }
+    ensures{ result = urem x y }
+end
+
+module BitVector16
+  use export bitvec.BV16
+
+  clone export BitVectorAda with
+    type t = t,
+    predicate ult = ult,
+    predicate ule = ule,
+    predicate ugt = ugt,
+    predicate uge = uge,
+    function ( * ) = mul,
+    constant one = one
+
+  val of_int_ (i : int) : t
+    requires{ int_in_range i }
+    ensures{ result = of_int i }
+
+  val udiv_ (x : t) (y : t) : t
+    requires{ y <> zero }
+    ensures{ result = udiv x y }
+
+  val urem_ (x : t) (y : t) : t
+    requires{ y <> zero }
+    ensures{ result = urem x y }
+end
+
+module BitVector32
+  use export bitvec.BV32
+
+  clone export BitVectorAda with
+    type t = t,
+    predicate ult = ult,
+    predicate ule = ule,
+    predicate ugt = ugt,
+    predicate uge = uge,
+    function ( * ) = mul,
+    constant one = one
+
+  val of_int_ (i : int) : t
+    requires{ int_in_range i }
+    ensures{ result = of_int i }
+
+  val udiv_ (x : t) (y : t) : t
+    requires{ y <> zero }
+    ensures{ result = udiv x y }
+
+  val urem_ (x : t) (y : t) : t
+    requires{ y <> zero }
+    ensures{ result = urem x y }
+end
+
+module BitVector64
+  use export bitvec.BV64
+
+  clone export BitVectorAda with
+    type t = t,
+    predicate ult = ult,
+    predicate ule = ule,
+    predicate ugt = ugt,
+    predicate uge = uge,
+    function ( * ) = mul,
+    constant one = one
+
+  val of_int_ (i : int) : t
+    requires{ int_in_range i }
+    ensures{ result = of_int i }
+
+  val udiv_ (x : t) (y : t) : t
+    requires{ y <> zero }
+    ensures{ result = udiv x y }
+
+  val urem_ (x : t) (y : t) : t
+    requires{ y <> zero }
+    ensures{ result = urem x y }
+end
+
+module BVConv_32_64
+  use export bitvec.BVConverter_32_64
+
+  val range_check_ (f l x : BV64.t) : BV64.t
+    requires { (BV64.ule f x) /\ (BV64.ule x l) }
+    ensures { result = x }
+end
+
+module BVConv_16_64
+  use export bitvec.BVConverter_16_64
+
+  val range_check_ (f l x : BV64.t) : BV64.t
+    requires { (BV64.ule f x) /\ (BV64.ule x l) }
+    ensures { result = x }
+end
+
+module BVConv_8_64
+  use export bitvec.BVConverter_8_64
+
+  val range_check_ (f l x : BV64.t) : BV64.t
+    requires { (BV64.ule f x) /\ (BV64.ule x l) }
+    ensures { result = x }
+end
+
+module BVConv_16_32
+  use export bitvec.BVConverter_16_32
+
+  val range_check_ (f l x : BV32.t) : BV32.t
+    requires { (BV32.ule f x) /\ (BV32.ule x l) }
+    ensures { result = x }
+end
+
+module BVConv_8_32
+  use export bitvec.BVConverter_8_32
+
+  val range_check_ (f l x : BV32.t) : BV32.t
+    requires { (BV32.ule f x) /\ (BV32.ule x l) }
+    ensures { result = x }
+end
+
+module BVConv_8_16
+  use export bitvec.BVConverter_8_16
+
+  val range_check_ (f l x : BV16.t) : BV16.t
+    requires { (BV16.ule f x) /\ (BV16.ule x l) }
+    ensures { result = x }
+end

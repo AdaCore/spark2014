@@ -158,6 +158,9 @@ package body Why.Gen.Expr is
          when W_Real_Constant =>
             return EW_Real_Type;
 
+         when W_Modular_Constant =>
+            return +Get_Typ (W_Modular_Constant_Id (E));
+
          when W_Literal =>
             return EW_Bool_Type;
 
@@ -805,6 +808,20 @@ package body Why.Gen.Expr is
                                  Tmp    => Expr,
                                  Context => +Sequence (T, +Expr));
          end;
+      elsif Is_Modular_Integer_Type (Ty) and then
+        Get_Type (W_Expr) = EW_Int_Type
+      then
+            --  in case we have a range check between an int expression and
+            --  a range from bitvectors, do the range check on the int side
+         return +New_VC_Call (Domain   => EW_Prog,
+                              Ada_Node => Ada_Node,
+                              Name     =>
+                                Prefix (M        => E_Module (Ty),
+                                        W        => WNE_Range_Check_Fun_BV_Int,
+                                        Ada_Node => Ty),
+                              Progs    => (1 => +W_Expr),
+                              Reason   => To_VC_Kind (Check_Kind),
+                              Typ      => Get_Type (W_Expr));
       else
          return +New_VC_Call (Domain   => EW_Prog,
                               Ada_Node => Ada_Node,
@@ -1257,11 +1274,12 @@ package body Why.Gen.Expr is
 
       --  The regular case, we take care to insert the range check at a
       --  valid place where the expression is of the appropriate Why base
-      --  type (real for a range check of a floating point type, int for a
-      --  range check of a discrete type).
+      --  type (real for a range check of a floating point type, bitvector_?
+      --  for a range check of a modular type, int for a  range check of a
+      --  discrete type).
 
       --  1. If From is an abstract type, convert it to type int, __fixed or
-      --     real.
+      --     real, or bitvector_?.
 
       if Get_Type_Kind (From) = EW_Abstract then
          Cur := Base_Why_Type (From);
@@ -1277,7 +1295,9 @@ package body Why.Gen.Expr is
 
       if Present (Range_Type)
         and then not Range_Check_Applied
-        and then Base_Why_Type (Range_Type) = Cur
+        and then (Base_Why_Type (Range_Type) = Cur or else
+                      (Why_Type_Is_BitVector (Base_Why_Type (Range_Type))
+                       and then Cur = EW_Int_Type))
         and then From /= EW_Bool_Type
       then
          Range_Check_Applied := True;
@@ -1288,8 +1308,45 @@ package body Why.Gen.Expr is
                                     Check_Kind => Check_Kind);
       end if;
 
+      --  2.2 If Range_Type is modular, we need to check before converting
+      --      in the case where Cur is modular with base type of size greater
+      --      than the size of range_type base type.
+
+      if Present (Range_Type)
+        and then not Range_Check_Applied
+        and then Why_Type_Is_BitVector (Base_Why_Type (Range_Type))
+        and then Why_Type_Is_BitVector (Cur)
+        and then UI_Gt (BitVector_Type_Size (Cur), Esize (Range_Type))
+      then
+         Range_Check_Applied := True;
+
+         Result := +New_VC_Call (Domain   => EW_Prog,
+                                 Ada_Node => Ada_Node,
+                                 Name     =>
+                                   Create_Modular_Converter_Range_Check
+                                     (Cur, Base_Why_Type (Range_Type)),
+                                 Progs    =>
+                                   (1 => Insert_Simple_Conversion
+                                      (Domain   => EW_Term,
+                                       Expr     => New_Attribute_Expr
+                                         (Ty     => Range_Type,
+                                          Attr   => Attribute_First,
+                                          Params => Body_Params),
+                                       To       => Cur),
+                                    2 => Insert_Simple_Conversion
+                                      (Domain   => EW_Term,
+                                       Expr     => New_Attribute_Expr
+                                         (Ty     => Range_Type,
+                                          Attr   => Attribute_Last,
+                                          Params => Body_Params),
+                                       To       => Cur),
+                                    3 => +Result),
+                                 Reason   => To_VC_Kind (Check_Kind),
+                                 Typ      => Get_Type (Result));
+      end if;
+
       --  3. If From and To do not share the same base type (bool, int, __fixed
-      --     or real), convert from one to the other.
+      --     bitvector_? or real), convert from one to the other.
 
       if Base_Why_Type (From) /= Base_Why_Type (To) then
          declare
@@ -1327,6 +1384,38 @@ package body Why.Gen.Expr is
                     Etype (Ada_Node));
                Shadow_To := EW_Abstract (Fixed_Type);
                pragma Assert (Get_Type_Kind (Shadow_To) = EW_Abstract);
+            end if;
+
+            --  3.3. If To (resp. From) is a modular type and From (resp. To)
+            --       is not, insert a convertion to int since we only support
+            --       direct convertion from modular to int.
+
+            if (Why_Type_Is_BitVector (Base_Why_Type (From)) and then
+                  not (Why_Type_Is_BitVector (Base_Why_Type (To))))
+              or else
+                (Why_Type_Is_BitVector (Base_Why_Type (To)) and then
+                   not (Why_Type_Is_BitVector (Base_Why_Type (From))))
+            then
+               Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
+                                                   Domain   => Domain,
+                                                   To       => EW_Int_Type,
+                                                   Expr     => Result);
+               Shadow_From := EW_Int_Type;
+
+               --  3.3.1 If we have a convertion from int to modular,
+               --        do the range check before the convertion.
+               if Present (Range_Type)
+                 and then not Range_Check_Applied
+                 and then Why_Type_Is_BitVector (Base_Why_Type (Range_Type))
+               then
+                  Range_Check_Applied := True;
+
+                  Result := +Do_Range_Check (Ada_Node   => Ada_Node,
+                                             Ty         => Range_Type,
+                                             W_Expr     => Result,
+                                             Check_Kind => Check_Kind);
+
+               end if;
             end if;
 
             Cur := Base_Why_Type (To);
@@ -1633,6 +1722,12 @@ package body Why.Gen.Expr is
    begin
       if Base = EW_Bool_Type then
          return New_And_Expr (Left, Right, Domain);
+      elsif Base in EW_BitVector_8_Type .. EW_BitVector_64_Type then
+         return
+           New_Call (Domain => Domain,
+                     Name   => Create_Modular_And (Base),
+                     Args   => (1 => +Left, 2 => +Right),
+                     Typ    => Base);
       else
          return
            New_Call (Domain => Domain,
@@ -1723,8 +1818,14 @@ package body Why.Gen.Expr is
             BT : constant W_Type_Id :=
               (case Attr is
                   when Attribute_First
-                     | Attribute_Last
-                     | Attribute_Modulus
+                    | Attribute_Last
+               =>
+                 (if Is_Standard_Boolean_Type (Ty) or else
+                  Why_Type_Is_BitVector (Base_Why_Type (Ty))
+                  then
+                       EW_Int_Type
+                  else Base_Why_Type (Ty)),
+                  when Attribute_Modulus
                      | Attribute_Value
                      =>
                      (if Is_Standard_Boolean_Type (Ty) then
@@ -1817,20 +1918,43 @@ package body Why.Gen.Expr is
 
          return New_Call (Domain => Domain,
                           Name   => Dynamic_Prop_Name (Ty),
-                          Args   => (1 => New_Attribute_Expr
+                          Args   =>
+                            (if Has_Modular_Integer_Type (Ty) then
+                                 (1 => Insert_Simple_Conversion
+                                  (Domain   => EW_Term,
+                                   Expr     => New_Attribute_Expr
                                      (Ty     => Ty,
                                       Attr   => Attribute_First,
                                       Params => Body_Params),
-                                     2 => New_Attribute_Expr
+                                   To       => EW_Int_Type),
+                                  2 => Insert_Simple_Conversion
+                                    (Domain   => EW_Term,
+                                     Expr     => New_Attribute_Expr
                                        (Ty     => Ty,
                                         Attr   => Attribute_Last,
                                         Params => Body_Params),
-                                     3 =>
-                                       Insert_Simple_Conversion
-                                         (Ada_Node => Ty,
-                                          Domain   => Domain,
-                                          Expr     => Expr,
-                                          To       => Base_Why_Type (Ty))),
+                                     To       => EW_Int_Type),
+                                  3 =>
+                                    Insert_Simple_Conversion
+                                      (Ada_Node => Ty,
+                                       Domain   => Domain,
+                                       Expr     => Expr,
+                                       To       => Base_Why_Type (Ty)))
+                             else
+                               (1 => New_Attribute_Expr
+                                    (Ty     => Ty,
+                                     Attr   => Attribute_First,
+                                     Params => Body_Params),
+                                2 => New_Attribute_Expr
+                                  (Ty     => Ty,
+                                   Attr   => Attribute_Last,
+                                   Params => Body_Params),
+                                3 =>
+                                  Insert_Simple_Conversion
+                                    (Ada_Node => Ty,
+                                     Domain   => Domain,
+                                     Expr     => Expr,
+                                     To       => Base_Why_Type (Ty)))),
                           Typ    => EW_Bool_Type);
       elsif Is_Array_Type (Ty) and then not Is_Static_Array_Type (Ty) then
          declare
@@ -1848,8 +1972,18 @@ package body Why.Gen.Expr is
                                     Attr   => Attribute_Last,
                                     Dim    => Count + 1);
                begin
-                  Args (4 * Count + 1) := First_Expr;
-                  Args (4 * Count + 2) := Last_Expr;
+                  Args (4 * Count + 1) :=
+                    Insert_Simple_Conversion
+                      (Ada_Node => Ty,
+                       Domain   => Domain,
+                       Expr     => First_Expr,
+                       To       => EW_Int_Type);
+                  Args (4 * Count + 2) :=
+                    Insert_Simple_Conversion
+                      (Ada_Node => Ty,
+                       Domain   => Domain,
+                       Expr     => Last_Expr,
+                       To       => EW_Int_Type);
                   Args (4 * Count + 3) :=
                     Insert_Simple_Conversion
                       (Ada_Node => Ty,
@@ -2418,6 +2552,12 @@ package body Why.Gen.Expr is
    begin
       if Base = EW_Bool_Type then
          return New_Or_Expr (Left, Right, Domain);
+      elsif Base in EW_BitVector_8_Type .. EW_BitVector_64_Type then
+         return
+           New_Call (Domain => Domain,
+                     Name   => Create_Modular_Or (Base),
+                     Args   => (1 => +Left, 2 => +Right),
+                     Typ    => Base);
       else
          return
            New_Call (Domain => Domain,
@@ -2493,6 +2633,7 @@ package body Why.Gen.Expr is
       Ty : constant W_Type_Id := Get_Type (Low);
       Le : constant W_Identifier_Id :=
         (if Ty = EW_Int_Type or else Ty = EW_Fixed_Type then Int_Infix_Le
+         elsif Why_Type_Is_BitVector (Ty) then Create_Modular_Le (Ty)
          else Real_Infix_Le);
    begin
       return
@@ -2704,6 +2845,12 @@ package body Why.Gen.Expr is
                Left   => Or_Expr,
                Right  => Not_Both_Expr);
          end;
+      elsif Base in EW_BitVector_8_Type .. EW_BitVector_64_Type then
+         return
+           New_Call (Domain => Domain,
+                     Name   => Create_Modular_Xor (Base),
+                     Args   => (1 => +Left, 2 => +Right),
+                     Typ    => Base);
       else
          declare
             Id : constant W_Identifier_Id :=

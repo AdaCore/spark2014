@@ -537,7 +537,11 @@ package SPARK_Util is
 
    function Unit_Name return String is
      (File_Name_Without_Suffix
-          (Get_Name_String (Unit_File_Name (Main_Unit))));
+        (Get_Name_String (Unit_File_Name (Main_Unit))));
+
+   function Is_Accepted_Shift_Or_Rotate (Subp : Entity_Id) return Boolean;
+   --  Return true if the entity is an intrisic shift or rotate of a modular
+   --  type of modulus smaller or equal to 64 with no pre or post conditions.
 
    function Has_User_Supplied_Globals (E : Entity_Id) return Boolean
      with Pre => Nkind (E) in N_Entity and then Ekind (E) in Subprogram_Kind;

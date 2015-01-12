@@ -10,7 +10,7 @@ module Ada__containers__formal_doubly_linked_lists__list
   function __split_discrs list : __split_discrs
 
    function capacity  (co : list) : int =
-          Ada__containers__count_type.to_int (rec__capacity (__split_discrs (co)))
+          Ada__containers__count_type.to_rep (rec__capacity (__split_discrs (co)))
 
   function bool_eq list list : bool
   function user_eq list list : bool
@@ -25,7 +25,7 @@ module Ada__containers__formal_doubly_linked_lists__length
   function length__logic list : Ada__containers__count_type.count_type
 
   function length_ "inline" (co : list) : int =
-    Ada__containers__count_type.to_int (length__logic co)
+    Ada__containers__count_type.to_rep (length__logic co)
 
   axiom length_range:
     forall co:list [length__logic co]. 0 <= length_ co <= capacity co

@@ -86,7 +86,7 @@ module Sums__vector
  clone export "ada__model".Unconstr_Array with
  type component_type = Sums__vector_element.vector_element,
  type base_type = Standard__integer.integer,
- function to_int = Standard__integer.to_int,
+ function to_int = Standard__integer.to_rep,
  predicate in_range_base = Standard__integer.in_range,
  predicate index_dynamic_property = index_dynamic_property
 
@@ -94,7 +94,7 @@ module Sums__vector
 
  (* Helper function *)
  function _get "inline" (v : vector) (i : int) : int =
-   	  Sums__vector_element.to_int (Array__1.get (to_array v) i)
+   	  Sums__vector_element.to_rep (Array__1.get (to_array v) i)
 end
 
 module Sums__slice_bounds
@@ -114,11 +114,11 @@ module Sums__slice_bounds
 
  (* Helper function *)
  function _rec__lo "inline" (b : slice_bounds) : int =
-   	  Sums__index.to_int (rec__lo (__split_fields (b)))
+   	  Sums__index.to_rep (rec__lo (__split_fields (b)))
 
  (* Helper function *)
  function _rec__hi "inline" (b : slice_bounds) : int =
-   	  Sums__extended_index.to_int (rec__hi (__split_fields (b)))
+   	  Sums__extended_index.to_rep (rec__hi (__split_fields (b)))
 
  (* Condition to be allowed to access Lo *)
  predicate lo__pred  (a : slice_bounds) =
@@ -165,7 +165,7 @@ module Sums__sum
 
  (* Helper function *)
  function _sum "inline" (x : vector) (bounds : slice_bounds)  :int =
-   	  Standard__integer.to_int (sum__logic x bounds)
+   	  Standard__integer.to_rep (sum__logic x bounds)
 
  (* Axiom for defining the sum function *)
  axiom sum_def:
@@ -187,12 +187,12 @@ module Sums__sum
              ((_rec__hi b1 = _rec__hi b /\ _rec__lo b < _rec__lo b1 <= _rec__hi b) ->
               let b2 = {__split_fields =
 	      	         {rec__lo = rec__lo (__split_fields b);
-                          rec__hi = Sums__extended_index.of_int ((_rec__lo b1) - 1)}} in
+                          rec__hi = Sums__extended_index.of_rep ((_rec__lo b1) - 1)}} in
                  _sum v b = _sum v b1 + _sum v b2) /\
              (* Sartind at the same index *)
              ((_rec__lo b1 = _rec__lo b /\ _rec__lo b <= _rec__hi b1 < _rec__hi b) ->
               let b2 = {__split_fields =
-	      	         {rec__lo = Sums__index.of_int ((_rec__hi b1) + 1);
+	      	         {rec__lo = Sums__index.of_rep ((_rec__hi b1) + 1);
                           rec__hi = rec__hi (__split_fields b)}} in
                  _sum v b = _sum v b1 + _sum v b2)))
 

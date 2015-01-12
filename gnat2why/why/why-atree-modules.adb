@@ -30,6 +30,7 @@ with Stand;              use Stand;
 
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Names;      use Why.Gen.Names;
+with String_Utils;       use String_Utils;
 
 package body Why.Atree.Modules is
 
@@ -109,6 +110,36 @@ package body Why.Atree.Modules is
       Int_Module := New_Module (File => Int_File, Name => NID ("Int"));
       RealInfix := New_Module (File => Real_File, Name => NID ("RealInfix"));
       Ref_Module := New_Module (File => Ref_File, Name => NID ("Ref"));
+      BitVector_8_Module :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => NID ("BitVector8"));
+      BitVector_16_Module :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => NID ("BitVector16"));
+      BitVector_32_Module :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => NID ("BitVector32"));
+      BitVector_64_Module :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => NID ("BitVector64"));
+      BVConv_32_64_Module  :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => NID ("BVConv_32_64"));
+      BVConv_16_64_Module  :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => NID ("BVConv_16_64"));
+      BVConv_8_64_Module  :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => NID ("BVConv_8_64"));
+      BVConv_16_32_Module  :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => NID ("BVConv_16_32"));
+      BVConv_8_32_Module  :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => NID ("BVConv_8_32"));
+      BVConv_8_16_Module  :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => NID ("BVConv_8_16"));
 
       --  builtin Why types
 
@@ -135,6 +166,26 @@ package body Why.Atree.Modules is
       EW_Real_Type :=
         New_Type (Type_Kind  => EW_Builtin,
                   Name       => New_Name (Symbol => NID ("real")),
+                  Is_Mutable => False);
+      EW_BitVector_8_Type :=
+        New_Type (Type_Kind  => EW_Builtin,
+                  Name       => New_Name (Symbol => NID ("t"),
+                                          Module => BitVector_8_Module),
+                  Is_Mutable => False);
+      EW_BitVector_16_Type :=
+        New_Type (Type_Kind  => EW_Builtin,
+                  Name       => New_Name (Symbol => NID ("t"),
+                                         Module => BitVector_16_Module),
+                  Is_Mutable => False);
+      EW_BitVector_32_Type :=
+        New_Type (Type_Kind  => EW_Builtin,
+                  Name       => New_Name (Symbol => NID ("t"),
+                                         Module => BitVector_32_Module),
+                  Is_Mutable => False);
+      EW_BitVector_64_Type :=
+        New_Type (Type_Kind  => EW_Builtin,
+                  Name       => New_Name (Symbol => NID ("t"),
+                                         Module => BitVector_64_Module),
                   Is_Mutable => False);
       EW_Unit_Type :=
         New_Type (Type_Kind  => EW_Builtin,
@@ -187,18 +238,78 @@ package body Why.Atree.Modules is
 
       --  modules of "ada__model" file
 
-      Static_Modular :=
+      Static_Modular_Default :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Static_Modular"));
+           Name => NID ("Static_Modular_Default"));
+      Static_Modular_lt8 :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Static_Modular_lt8"));
+      Static_Modular_lt16 :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Static_Modular_lt16"));
+      Static_Modular_lt32 :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Static_Modular_lt32"));
+      Static_Modular_lt64 :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Static_Modular_lt64"));
+      Static_Modular_8 :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Static_Modular_8"));
+      Static_Modular_16 :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Static_Modular_16"));
+      Static_Modular_32 :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Static_Modular_32"));
+      Static_Modular_64 :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Static_Modular_64"));
       Static_Discrete :=
         New_Module
           (File => Ada_Model_File,
            Name => NID ("Static_Discrete"));
-      Dynamic_Modular :=
+      Dynamic_Modular_lt8 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Dynamic_Modular"));
+           Name => NID ("Dynamic_Modular_lt8"));
+      Dynamic_Modular_lt16 :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Dynamic_Modular_lt16"));
+      Dynamic_Modular_lt32 :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Dynamic_Modular_lt32"));
+      Dynamic_Modular_lt64 :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Dynamic_Modular_lt64"));
+      Dynamic_Modular_8 :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Dynamic_Modular_8"));
+      Dynamic_Modular_16 :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Dynamic_Modular_16"));
+      Dynamic_Modular_32 :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Dynamic_Modular_32"));
+      Dynamic_Modular_64 :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Dynamic_Modular_64"));
       Dynamic_Discrete :=
         New_Module
           (File => Ada_Model_File,
@@ -239,10 +350,30 @@ package body Why.Atree.Modules is
          4 => New_Module (File => Ada_Model_File,
                           Name => NID ("Unconstr_Array_4")));
 
-      Array_Comparison_Ax :=
+      Array_Int_Rep_Comparison_Ax :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Array_Comparison_Axiom"));
+           Name => NID ("Array_Int_Rep_Comparison_Axiom"));
+
+      Array_BV8_Rep_Comparison_Ax :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Array_BV8_Rep_Comparison_Axiom"));
+
+      Array_BV16_Rep_Comparison_Ax :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Array_BV16_Rep_Comparison_Axiom"));
+
+      Array_BV32_Rep_Comparison_Ax :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Array_BV32_Rep_Comparison_Axiom"));
+
+      Array_BV64_Rep_Comparison_Ax :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Array_BV64_Rep_Comparison_Axiom"));
 
       Standard_Array_Logical_Ax :=
         New_Module
@@ -649,6 +780,316 @@ package body Why.Atree.Modules is
           (Symbol => NID ("def"),
            Domain => EW_Term);
    end Initialize;
+
+   --------------------------------------
+   -- Modular identifiers constructors --
+   --------------------------------------
+
+   function Create_Modular_Operator (Typ : W_Type_Id; Symbol : Name_Id)
+                                     return W_Identifier_Id is
+   begin
+      return New_Identifier (Module =>
+                               (if Typ = EW_BitVector_8_Type then
+                                   BitVector_8_Module
+                                elsif Typ = EW_BitVector_16_Type then
+                                   BitVector_16_Module
+                                elsif Typ = EW_BitVector_32_Type then
+                                   BitVector_32_Module
+                                elsif Typ = EW_BitVector_64_Type then
+                                   BitVector_64_Module
+                                else raise Program_Error),
+                             Domain => EW_Term,
+                             Symbol => Symbol,
+                             Typ => Typ);
+   end Create_Modular_Operator;
+
+   function Create_Modular_Rem (Typ : W_Type_Id) return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("urem"));
+   end Create_Modular_Rem;
+
+   function Create_Modular_Div (Typ : W_Type_Id) return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("udiv"));
+   end Create_Modular_Div;
+
+   function Create_Modular_Mul (Typ : W_Type_Id) return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("mul"));
+   end Create_Modular_Mul;
+
+   function Create_Modular_Add (Typ : W_Type_Id) return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("add"));
+   end Create_Modular_Add;
+
+   function Create_Modular_Sub (Typ : W_Type_Id) return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("sub"));
+   end Create_Modular_Sub;
+
+   function Create_Modular_Neg (Typ : W_Type_Id) return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("neg"));
+   end Create_Modular_Neg;
+
+   function Create_Modular_And (Typ : W_Type_Id) return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("bw_and"));
+   end Create_Modular_And;
+
+   function Create_Modular_Or  (Typ : W_Type_Id) return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("bw_or"));
+   end Create_Modular_Or;
+
+   function Create_Modular_Xor (Typ : W_Type_Id) return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("bw_xor"));
+   end Create_Modular_Xor;
+
+   function Create_Modular_Not (Typ : W_Type_Id) return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("bw_not"));
+   end Create_Modular_Not;
+
+   function Create_Modular_Ge (Typ : W_Type_Id) return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("uge"));
+   end Create_Modular_Ge;
+
+   function Create_Modular_Gt (Typ : W_Type_Id) return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("ugt"));
+   end Create_Modular_Gt;
+
+   function Create_Modular_Le (Typ : W_Type_Id) return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("ule"));
+   end Create_Modular_Le;
+
+   function Create_Modular_Lt (Typ : W_Type_Id) return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("ult"));
+   end Create_Modular_Lt;
+
+   function Create_Modular_Bool_Ge (Typ : W_Type_Id) return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("bool_ge"));
+   end Create_Modular_Bool_Ge;
+
+   function Create_Modular_Bool_Gt (Typ : W_Type_Id) return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("bool_gt"));
+   end Create_Modular_Bool_Gt;
+
+   function Create_Modular_Bool_Le (Typ : W_Type_Id) return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("bool_le"));
+   end Create_Modular_Bool_Le;
+
+   function Create_Modular_Bool_Lt (Typ : W_Type_Id) return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("bool_lt"));
+   end Create_Modular_Bool_Lt;
+
+   function Create_Modular_Bool_Eq (Typ : W_Type_Id) return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("bool_eq"));
+   end Create_Modular_Bool_Eq;
+
+   function Create_Modular_Bool_Neq (Typ : W_Type_Id) return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("bool_ne"));
+   end Create_Modular_Bool_Neq;
+
+   function Create_Modular_Abs (Typ : W_Type_Id) return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("abs"));
+   end Create_Modular_Abs;
+
+   function Create_Modular_Power (Typ : W_Type_Id) return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("power"));
+   end Create_Modular_Power;
+
+   function Create_Modular_Lsl (Typ : W_Type_Id) return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("lsl"));
+   end Create_Modular_Lsl;
+
+   function Create_Modular_Lsr (Typ : W_Type_Id) return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("lsr"));
+   end Create_Modular_Lsr;
+
+   function Create_Modular_Asr (Typ : W_Type_Id) return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("asr"));
+   end Create_Modular_Asr;
+
+   function Create_Modular_Rl_Var (Typ : W_Type_Id)
+                                   return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("rotate_left_n"));
+   end Create_Modular_Rl_Var;
+
+   function Create_Modular_Rr_Var (Typ : W_Type_Id)
+                                   return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("rotate_right_n"));
+   end Create_Modular_Rr_Var;
+
+   function Create_Modular_Rl_Const (Typ : W_Type_Id; n : Int)
+                               return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("rotate_left_" &
+                                        Int_Image (Integer (n))));
+   end Create_Modular_Rl_Const;
+
+   function Create_Modular_Rr_Const (Typ : W_Type_Id; n : Int)
+                               return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("rotate_right_" &
+                                        Int_Image (Integer (n))));
+   end Create_Modular_Rr_Const;
+
+   function Create_Modular_ToInt (Typ : W_Type_Id) return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("to_int"));
+   end Create_Modular_ToInt;
+
+   function Create_Modular_OfInt (Typ : W_Type_Id) return W_Identifier_Id is
+   begin
+      return Create_Modular_Operator (Typ, NID ("of_int"));
+   end Create_Modular_OfInt;
+
+   function Create_Modular_Modulus (Typ : W_Type_Id) return W_Identifier_Id
+   is
+      Symbol : constant Name_Id := NID ("two_power_size");
+   begin
+      return (if Typ = EW_BitVector_8_Type then
+                 New_Identifier (Module => BitVector_8_Module,
+                                 Domain => EW_Term,
+                                 Symbol => Symbol,
+                                 Typ => EW_Int_Type)
+              elsif Typ = EW_BitVector_16_Type then
+                 New_Identifier (Module => BitVector_16_Module,
+                                 Domain => EW_Term,
+                                 Symbol => Symbol,
+                                 Typ => EW_Int_Type)
+              elsif Typ = EW_BitVector_32_Type then
+                 New_Identifier (Module => BitVector_32_Module,
+                                 Domain => EW_Term,
+                                 Symbol => Symbol,
+                                 Typ => EW_Int_Type)
+              elsif Typ = EW_BitVector_64_Type then
+                 New_Identifier (Module => BitVector_64_Module,
+                                 Domain => EW_Term,
+                                 Symbol => Symbol,
+                                 Typ => EW_Int_Type)
+              else raise Program_Error);
+   end Create_Modular_Modulus;
+
+   function Create_Modular_Converter (From, To : W_Type_Id)
+                                      return W_Identifier_Id
+   is
+      Module : W_Module_Id;
+      Symbol : Name_Id;
+   begin
+      if From = EW_BitVector_8_Type then
+
+         Symbol := NID ("toBig");
+
+         if To = EW_BitVector_16_Type then
+            Module := BVConv_8_16_Module;
+         elsif To = EW_BitVector_32_Type then
+            Module := BVConv_8_32_Module;
+         elsif To = EW_BitVector_64_Type then
+            Module := BVConv_8_64_Module;
+         else
+            raise Program_Error;
+         end if;
+
+      elsif From = EW_BitVector_16_Type then
+
+         if To = EW_BitVector_8_Type then
+            Module := BVConv_8_16_Module;
+            Symbol := NID ("toSmall");
+         elsif To = EW_BitVector_32_Type then
+            Module := BVConv_16_32_Module;
+            Symbol := NID ("toBig");
+         elsif To = EW_BitVector_64_Type then
+            Module := BVConv_16_64_Module;
+            Symbol := NID ("toBig");
+         else
+            raise Program_Error;
+         end if;
+
+      elsif From = EW_BitVector_32_Type then
+
+         if To = EW_BitVector_8_Type then
+            Module := BVConv_8_32_Module;
+            Symbol := NID ("toSmall");
+         elsif To = EW_BitVector_16_Type then
+            Module := BVConv_16_32_Module;
+            Symbol := NID ("toSmall");
+         elsif To = EW_BitVector_64_Type then
+            Module := BVConv_32_64_Module;
+            Symbol := NID ("toBig");
+         else
+            raise Program_Error;
+         end if;
+
+      elsif From = EW_BitVector_64_Type then
+
+         if To = EW_BitVector_8_Type then
+            Module := BVConv_8_64_Module;
+            Symbol := NID ("toSmall");
+         elsif To = EW_BitVector_16_Type then
+            Module := BVConv_16_64_Module;
+            Symbol := NID ("toSmall");
+         elsif To = EW_BitVector_32_Type then
+            Module := BVConv_32_64_Module;
+            Symbol := NID ("toSmall");
+         else
+            raise Program_Error;
+         end if;
+
+      else
+         raise Program_Error;
+      end if;
+
+      return New_Identifier (Module => Module,
+                             Domain => EW_Term,
+                             Symbol => Symbol,
+                             Typ => To);
+   end Create_Modular_Converter;
+
+   function Create_Modular_Converter_Range_Check (From, To : W_Type_Id)
+                                                  return W_Identifier_Id
+   is
+   begin
+      return New_Identifier (Module =>
+                               (if From = EW_BitVector_16_Type then
+                                   --  To = EW_BitVector_8_Type
+                                   BVConv_8_16_Module
+                                elsif From = EW_BitVector_32_Type then
+                                  (if To = EW_BitVector_8_Type then
+                                        BVConv_8_32_Module
+                                   else --  To = EW_BitVector_16_Type
+                                      BVConv_16_32_Module)
+                                else --  From = EW_BitVector_64_Type
+                                  (if To = EW_BitVector_8_Type then
+                                        BVConv_8_64_Module
+                                   elsif To = EW_BitVector_16_Type then
+                                      BVConv_16_64_Module
+                                   else --  To = EW_BitVector_32_Type
+                                      BVConv_32_64_Module)),
+                             Domain => EW_Term,
+                             Symbol => NID ("range_check_"),
+                             Typ => To);
+   end Create_Modular_Converter_Range_Check;
 
    -------------------------
    -- Insert_Extra_Module --
