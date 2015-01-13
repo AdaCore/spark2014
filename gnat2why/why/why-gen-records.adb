@@ -1712,11 +1712,11 @@ package body Why.Gen.Records is
                                To_Why_Type (Clone, Local => True))));
             end if;
 
-            --  if the cloned type is a root type, we need to define the
-            --  conversion functions; in all other cases, they are already
-            --  there.
+            --  if the cloned type is a root type, or the private view of a
+            --  root type, we need to define the conversion functions; in all
+            --  other cases, they are already there.
 
-            if Root_Record_Type (Clone) = Clone then
+            if Root_Record_Type (Clone) = MUT (Clone) then
                Emit
                  (Theory,
                   New_Function_Decl
