@@ -27,16 +27,21 @@ with Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Text_IO;
+
 with Atree;                use Atree;
-with Common_Containers;    use Common_Containers;
 with Einfo;                use Einfo;
 with Errout;               use Errout;
-with Flow_Error_Messages;  use Flow_Error_Messages;
-with GNATCOLL.JSON;
-with Gnat2Why.Assumptions; use Gnat2Why.Assumptions;
-with Gnat2Why.Nodes;       use Gnat2Why.Nodes;
 with Osint;                use Osint;
 with Sinfo;                use Sinfo;
+
+with GNATCOLL.JSON;
+
+with Common_Containers;    use Common_Containers;
+with SPARK_Util;           use SPARK_Util;
+with Flow_Error_Messages;  use Flow_Error_Messages;
+
+with Gnat2Why.Assumptions; use Gnat2Why.Assumptions;
+with Gnat2Why.Nodes;       use Gnat2Why.Nodes;
 
 package body Gnat2Why.Error_Messages is
 
@@ -246,6 +251,8 @@ package body Gnat2Why.Error_Messages is
          when VC_Precondition              =>
             if Nkind (Node) in N_Function_Call | N_Procedure_Call_Statement
               and then No_Return (Entity (Name (Node)))
+              and then
+                Get_Abend_Kind (Entity (Name (Node))) = Abnormal_Termination
             then
                return
                  "call to nonreturning subprogram might be executed";
@@ -439,6 +446,8 @@ package body Gnat2Why.Error_Messages is
          when VC_Precondition              =>
             if Nkind (Node) in N_Function_Call | N_Procedure_Call_Statement
               and then No_Return (Entity (Name (Node)))
+              and then
+                Get_Abend_Kind (Entity (Name (Node))) = Abnormal_Termination
             then
                return "call to nonreturning procedure never executed";
             else

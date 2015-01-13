@@ -2510,6 +2510,7 @@ package body Gnat2Why.Subprograms is
       Prog_Id            : constant W_Identifier_Id :=
         To_Why_Id (E, Domain => EW_Prog, Local => True);
       Why_Type           : W_Type_Id := Why_Empty;
+
    begin
       Params :=
         (File        => File.File,
@@ -2546,22 +2547,50 @@ package body Gnat2Why.Subprograms is
 
       Effects := Compute_Effects (E);
 
-      --  From the outside, a No_Return subprogram has both Pre and Post set
-      --  to "False".
+      --  A procedure can be marked No_Return either to denote an error
+      --  reporting subprogram, or because it is the subprogram of a main loop.
 
-      if No_Return (E) then
+      --  For a subprogram reporting an error, the precondition at call site
+      --  should be "False", so that calling it is an error.
+
+      if No_Return (E) and then Get_Abend_Kind (E) = Abnormal_Termination then
          Pre := False_Pred;
-         Post := False_Pred;
 
          if Is_Dispatching_Operation (E) then
             Dispatch_Pre := False_Pred;
+         end if;
+
+      --  In other cases (including the subprogram of a main loop), the
+      --  precondition is extracted from the subprogram contract.
+
+      else
+         Pre := Get_Static_Call_Contract (Params, E, Name_Precondition);
+
+         if Is_Dispatching_Operation (E) then
+            Dispatch_Pre :=
+              Get_Dispatching_Contract (Params, E, Name_Precondition);
+         end if;
+      end if;
+
+      --  For a subprogram marked with No_Return, the postcondition at call
+      --  site should be "False", so that it is known in the caller that the
+      --  call does not return.
+
+      if No_Return (E) then
+         Post := False_Pred;
+
+         if Is_Dispatching_Operation (E) then
             Dispatch_Post := False_Pred;
          end if;
+
          if Has_Contracts (E, Name_Refined_Post) then
             Refined_Post := False_Pred;
          end if;
+
+      --  In other cases, the postcondition is extracted from the subprogram
+      --  contract.
+
       else
-         Pre := Get_Static_Call_Contract (Params, E, Name_Precondition);
          Post :=
            +New_And_Expr
            (Left   =>
@@ -2570,8 +2599,6 @@ package body Gnat2Why.Subprograms is
             Domain => EW_Pred);
 
          if Is_Dispatching_Operation (E) then
-            Dispatch_Pre :=
-              Get_Dispatching_Contract (Params, E, Name_Precondition);
             Dispatch_Post :=
               Get_Dispatching_Contract (Params, E, Name_Postcondition);
          end if;

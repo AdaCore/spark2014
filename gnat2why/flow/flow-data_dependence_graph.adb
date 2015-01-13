@@ -21,6 +21,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with SPARK_Util; use SPARK_Util;
+
 package body Flow.Data_Dependence_Graph is
 
    use type Flow_Id_Sets.Set;

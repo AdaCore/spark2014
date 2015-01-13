@@ -32,7 +32,7 @@ with Gnat2Why_Args;
 with Why;
 
 with SPARK_Definition;              use SPARK_Definition;
-with SPARK_Util;
+with SPARK_Util;                    use SPARK_Util;
 
 with Flow.Analysis;
 with Flow.Control_Dependence_Graph;

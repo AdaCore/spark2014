@@ -536,4 +536,40 @@ package SPARK_Util is
      (File_Name_Without_Suffix
           (Get_Name_String (Unit_File_Name (Main_Unit))));
 
+   type Execution_Kind_T is (Normal_Execution,
+                             Abnormal_Termination,
+                             Infinite_Loop);
+   --  Please be *exceptionally* alert when adding elements to this type,
+   --  as many checks simlpy check for one of the options (and do not
+   --  explicitly make sure all cases are considered).
+
+   function Has_Output (E : Entity_Id) return Boolean with
+     Pre => Ekind (E) = E_Procedure;
+   --  Returns True if procedure E has no output
+
+   function Get_Abend_Kind (E : Entity_Id) return Execution_Kind_T;
+   --  Infer how the Called_Procedure abnormally ends. If a subprogram
+   --  has an output, we assume that it contains an infinite loop. If it
+   --  does not, we assume its a thinly veiled wrapper around an
+   --  exception raising program.
+   --
+   --  Certainly, if you have a procedure that never returns due to an
+   --  exception, and it is implemented in SPARK, then you will run into
+   --  trouble unless there is nothing of interest going on in it.
+   --
+   --  If we get this wrong, its not the end of the world, as failure is
+   --  safe:
+   --
+   --  A) If the procedure throws an exception, but we think it loops
+   --     forever (because it has outputs), then you might get *extra*
+   --     data dependencies.
+   --
+   --  B) If the procedure loops forever, and:
+   --     i) it has no outputs, its indistinguishable from an exception
+   --     ii) it has outputs we classify it correctly
+   --
+   --  C) If the procedure loops forever but is not in SPARK and we have
+   --     lied about contracts (as in, stated it has no outputs), then
+   --     this is not a "new" failure.
+
 end SPARK_Util;

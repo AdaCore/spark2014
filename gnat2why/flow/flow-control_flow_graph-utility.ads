@@ -23,6 +23,7 @@
 
 --  This package contains a few helper functions for CFG construction.
 
+with SPARK_Util;                  use SPARK_Util;
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 
 package Flow.Control_Flow_Graph.Utility is

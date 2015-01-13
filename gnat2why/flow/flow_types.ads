@@ -397,13 +397,6 @@ package Flow_Types is
                                 Pretty_Print_Loop_Init,
                                 Pretty_Print_Record_Field);
 
-   type Execution_Kind_T is (Normal_Execution,
-                             Abnormal_Termination,
-                             Infinite_Loop);
-   --  Please be *exceptionally* alert when adding elements to this type,
-   --  as many checks simlpy check for one of the options (and do not
-   --  explicitly make sure all cases are considered).
-
    type V_Attributes is record
       Is_Null_Node        : Boolean;
       --  Set for auxiliary nodes which can be removed, such as early

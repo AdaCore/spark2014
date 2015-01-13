@@ -1,2 +1,1 @@
 main3.adb:7:35: high: "Lights.State" is not written
-main3.adb:33:04: medium: call to nonreturning subprogram might be executed

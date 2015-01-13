@@ -37,6 +37,9 @@ with Stand;                              use Stand;
 with Treepr;                             use Treepr;
 with Uintp;                              use Uintp;
 
+with Flow_Types;                         use Flow_Types;
+with Flow_Utility;                       use Flow_Utility;
+
 with Gnat2Why_Args;
 with Gnat2Why.Nodes;                     use Gnat2Why.Nodes;
 
@@ -952,6 +955,63 @@ package body SPARK_Util is
 
       return Comp_Id;
    end First_Discriminant;
+
+   ----------------
+   -- Has_Output --
+   ----------------
+
+   function Has_Output (E : Entity_Id) return Boolean is
+      Params : constant List_Id :=
+                 Parameter_Specifications (Get_Subprogram_Spec (E));
+      Param  : Node_Id;
+
+      Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
+      Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
+      Write_Names : Name_Set.Set;
+
+   begin
+      --  Consider output parameters
+
+      Param := First (Params);
+      while Present (Param) loop
+         case Formal_Kind'(Ekind (Defining_Identifier (Param))) is
+            when E_Out_Parameter | E_In_Out_Parameter =>
+               return True;
+            when E_In_Parameter =>
+               null;
+         end case;
+         Next (Param);
+      end loop;
+
+      --  Consider output globals
+
+      Flow_Utility.Get_Proof_Globals (Subprogram => E,
+                                      Classwide  => True,
+                                      Reads      => Read_Ids,
+                                      Writes     => Write_Ids);
+      Write_Names := Flow_Types.To_Name_Set (Write_Ids);
+
+      if not Write_Names.Is_Empty then
+         return True;
+      end if;
+
+      --  No output found
+
+      return False;
+   end Has_Output;
+
+   --------------------
+   -- Get_Abend_Kind --
+   --------------------
+
+   function Get_Abend_Kind (E : Entity_Id) return Execution_Kind_T is
+   begin
+      if Has_Output (E) then
+         return Infinite_Loop;
+      else
+         return Abnormal_Termination;
+      end if;
+   end Get_Abend_Kind;
 
    ----------------------------------------
    -- Get_Cursor_Type_In_Iterable_Aspect --

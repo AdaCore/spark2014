@@ -11145,7 +11145,11 @@ package body Gnat2Why.Expr is
       return (not Dispatch and Has_Precondition) or else
         Has_Classwide_Or_Inherited_Precondition or else
         Entity_In_External_Axioms (E) or else
-        No_Return (E);
+
+        --  E is an error signaling subprogram, for which an implicit
+        --  precondition of False is used.
+
+        (No_Return (E) and then Get_Abend_Kind (E) = Abnormal_Termination);
    end Why_Subp_Has_Precondition;
 
 end Gnat2Why.Expr;
