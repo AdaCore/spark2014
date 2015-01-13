@@ -28,6 +28,7 @@ with Ada.Strings.Equal_Case_Insensitive;
 
 with Fname;                              use Fname;
 with Nlists;                             use Nlists;
+with Sem_Aux;                            use Sem_Aux;
 with Sem_Disp;                           use Sem_Disp;
 with Sem_Util;                           use Sem_Util;
 with Exp_Util;                           use Exp_Util;
@@ -1437,6 +1438,38 @@ package body SPARK_Util is
          return False;
       end if;
    end Has_Default_Init_Condition;
+
+   -------------------------------
+   -- Has_Static_Scalar_Subtype --
+   -------------------------------
+
+   --  This function is similar to Sem_Eval.Is_Static_Subtype, except it only
+   --  considers scalar subtypes (otherwise returns False), and looks part
+   --  private types.
+
+   function Has_Static_Scalar_Subtype (T : Entity_Id) return Boolean is
+      Under_T  : constant Entity_Id := Underlying_Type (T);
+      Base_T   : constant Entity_Id := Base_Type (Under_T);
+      Anc_Subt : Entity_Id;
+   begin
+      Anc_Subt := Ancestor_Subtype (Under_T);
+
+      if Anc_Subt = Empty then
+         Anc_Subt := Base_T;
+      end if;
+
+      if not Has_Scalar_Type (Under_T) then
+         return False;
+
+      elsif Base_T = Under_T then
+         return True;
+
+      else
+         return     Has_Static_Scalar_Subtype (Anc_Subt)
+           and then Is_Static_Expression (Type_Low_Bound (Under_T))
+           and then Is_Static_Expression (Type_High_Bound (Under_T));
+      end if;
+   end Has_Static_Scalar_Subtype;
 
    -----------------------------
    -- In_Private_Declarations --

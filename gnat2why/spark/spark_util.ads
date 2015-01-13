@@ -150,6 +150,10 @@ package SPARK_Util is
    function Has_Floating_Point_Type (T : Entity_Id) return Boolean is
      (MUT_Kind (T) in Float_Kind);
 
+   function Has_Static_Scalar_Subtype (T : Entity_Id) return Boolean;
+   --  Returns whether type T has a scalar subtype with statically known
+   --  bounds. This included looking past private types.
+
    --  The following type lists all possible forms of default initialization
    --  that may apply to a type.
 

@@ -127,7 +127,7 @@ package body Why.Gen.Scalars is
                   Image     => To_Name (WNE_Attr_Last)))
             else (1 .. 0 => <>));
          Mod_Clone_Subst : constant W_Clone_Substitution_Array :=
-           (if Is_Modular_Integer_Type (E) then
+           (if Has_Modular_Integer_Type (E) then
                 (1 => New_Clone_Substitution
                  (Kind      => EW_Function,
                   Orig_Name => To_Name (WNE_Attr_Modulus),
@@ -239,25 +239,25 @@ package body Why.Gen.Scalars is
       function Pick_Clone return W_Module_Id is
       begin
          if Is_Static then
-            if Is_Modular_Integer_Type (E) then
+            if Has_Modular_Integer_Type (E) then
                return Static_Modular;
-            elsif Is_Discrete_Type (E) then
+            elsif Has_Discrete_Type (E) then
                return Static_Discrete;
-            elsif Is_Fixed_Point_Type (E) then
+            elsif Has_Fixed_Point_Type (E) then
                return Static_Fixed_Point;
             else
-               pragma Assert (Is_Floating_Point_Type (E));
+               pragma Assert (Has_Floating_Point_Type (E));
                return Static_Floating_Point;
             end if;
          else
-            if Is_Modular_Integer_Type (E) then
+            if Has_Modular_Integer_Type (E) then
                return Dynamic_Modular;
-            elsif Is_Discrete_Type (E) then
+            elsif Has_Discrete_Type (E) then
                return Dynamic_Discrete;
-            elsif Is_Fixed_Point_Type (E) then
+            elsif Has_Fixed_Point_Type (E) then
                return Dynamic_Fixed_Point;
             else
-               pragma Assert (Is_Floating_Point_Type (E));
+               pragma Assert (Has_Floating_Point_Type (E));
                return Dynamic_Floating_Point;
             end if;
          end if;
@@ -271,8 +271,7 @@ package body Why.Gen.Scalars is
    --  Start of Declare_Scalar_Type
 
    begin
-
-      if not Is_Static_Subtype (E) and then Is_Discrete_Type (E) then
+      if not Has_Static_Scalar_Subtype (E) and then Has_Discrete_Type (E) then
          declare
             Why_Base_Type : constant W_Type_Id := EW_Abstract (Base_Type (E));
 
@@ -338,11 +337,11 @@ package body Why.Gen.Scalars is
 
       --  retrieve and declare the attributes first, last and modulus
 
-      if Is_Modular_Integer_Type (E) then
+      if Has_Modular_Integer_Type (E) then
          Modul := New_Integer_Constant (Value => Modulus (E));
       end if;
 
-      if Is_Fixed_Point_Type (E) then
+      if Has_Fixed_Point_Type (E) then
          declare
             Inv_Small : constant Ureal := UR_Div (Uint_1, Small_Value (E));
          begin
