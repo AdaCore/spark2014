@@ -197,20 +197,8 @@ package Why.Inter is
    --  Same as unary Up, except that it stops when To is reached;
    --  i.e. if From = To then To is returned.
 
-   function LCA (Left, Right : W_Type_Id;
-                 Force : Boolean := False) return W_Type_Id;
-   --  Return the lowest common ancestor in base type hierarchy,
-   --  i.e. the smallest base type B such that Left <= B and right <= B.
-   --  If Force = True, we also force B to be different from Left or Right,
-   --  even in the case Left = Right.
-
-   function Eq_Base_Type (Left, Right : W_Type_Id) return Boolean;
-   --  Return True if Left and Right are both W_Type_Id nodes, and Eq
-   --  returns True on these seen as W_Type_Id nodes.
-
    function Eq_Base (Left, Right : W_Type_Id) return Boolean;
-   --  Extensional equality (i.e. returns True if Left and Right are of
-   --  the same kind, and have the same Ada Node if this kind is EW_Abstract).
+   --  Equality of type ids
 
    function Eq (Left, Right : Entity_Id) return Boolean;
    --  Return True if Left and Right corresponds to the same Why identifier

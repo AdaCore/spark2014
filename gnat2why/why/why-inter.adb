@@ -74,14 +74,13 @@ package body Why.Inter is
    --  transform a module set into a node set by taking the Ada_Node of each
    --  element.
 
-   function Get_EW_Term_Type (N : Node_Id) return EW_Type;
+   function LCA (Left, Right : W_Type_Id) return W_Type_Id;
+   --  Return the lowest common ancestor in base type hierarchy,
+   --  i.e. the smallest base type B such that Left <= B and right <= B.
+   --  If Force = True, we also force B to be different from Left or Right,
+   --  even in the case Left = Right.
 
-   function LCA (Left, Right : EW_Type) return EW_Type;
-   --  implement the "lowest common ancestor" on the following tree:
-   --              EW_Int
-   --             /     \
-   --          EW_Bool  EW_Real
-   --  (root of all other types is EW_Unit)
+   function Get_EW_Term_Type (N : Node_Id) return EW_Type;
 
    function Up (K : EW_Type) return EW_Type;
    --  implement the "up" function on the same tree
@@ -734,15 +733,6 @@ package body Why.Inter is
       end;
    end Eq_Base;
 
-   ------------------
-   -- Eq_Base_Type --
-   ------------------
-
-   function Eq_Base_Type (Left, Right : W_Type_Id) return Boolean is
-   begin
-      return Left = Right or else Eq_Base (Left, Right);
-   end Eq_Base_Type;
-
    -----------------
    -- EW_Abstract --
    -----------------
@@ -929,46 +919,28 @@ package body Why.Inter is
 
    function LCA
      (Left  : W_Type_Id;
-      Right : W_Type_Id;
-      Force : Boolean := False) return W_Type_Id
+      Right : W_Type_Id) return W_Type_Id
    is
       Left_Base, Right_Base : EW_Type;
 
    begin
-      if not Force and then Eq_Base (Left, Right) then
-         return Left;
-
-      else
-         Left_Base := Get_Type_Kind (Base_Why_Type (Left));
-         Right_Base := Get_Type_Kind (Base_Why_Type (Right));
-
-         if Left_Base = EW_Abstract and then Right_Base = EW_Abstract then
-            declare
-               L : constant Node_Id := Get_Ada_Node (+Left);
-               R : constant Node_Id := Get_Ada_Node (+Right);
-            begin
-               pragma Assert
-                 (Root_Record_Type (L) = Root_Record_Type (R));
-               return EW_Abstract (Root_Record_Type (L));
-            end;
-
-         else
-            return Why_Types (LCA (Left_Base, Right_Base));
-         end if;
-      end if;
-   end LCA;
-
-   function LCA (Left, Right : EW_Type) return EW_Type is
-   begin
-      if Left = Right then
+      if Eq_Base (Left, Right) then
          return Left;
       end if;
-      if Left in EW_Bool | EW_Real | EW_Int and then
-        Right in  EW_Bool | EW_Real | EW_Int
+
+      Left_Base := Get_Type_Kind (Base_Why_Type (Left));
+      Right_Base := Get_Type_Kind (Base_Why_Type (Right));
+
+      if (Left_Base = EW_Int and then Right_Base = EW_Bool)
+        or else
+          (Left_Base = EW_Bool and then Right_Base = EW_Int)
       then
-         return EW_Int;
+         return EW_Int_Type;
       end if;
-      return EW_Unit;
+
+      --  There are no other uses of this subprogram for now
+
+      pragma Assert (False);
    end LCA;
 
    -------------------------

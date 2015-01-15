@@ -398,7 +398,7 @@ package body Why.Gen.Binders is
 
          Cnt := 0;
          for B of Binders loop
-            if Eq_Base_Type (Get_Type (+B.B_Name), Typ) then
+            if Eq_Base (Get_Type (+B.B_Name), Typ) then
                Cnt := Cnt + 1;
             end if;
          end loop;
@@ -418,7 +418,7 @@ package body Why.Gen.Binders is
             Others_Cnt := 0;
             Typ        := Get_Type (+Binders (Binders'First).B_Name);
             for B of Binders loop
-               if Eq_Base_Type (Get_Type (+B.B_Name), Typ) then
+               if Eq_Base (Get_Type (+B.B_Name), Typ) then
                   Vars_Cnt := Vars_Cnt + 1;
                   Vars (Vars_Cnt) := B.B_Name;
                else
