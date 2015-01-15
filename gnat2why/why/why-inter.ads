@@ -189,19 +189,8 @@ package Why.Inter is
    function Get_EW_Type (T : Node_Id) return EW_Type;
    --  Return the EW_Type of the given entity
 
-   function Up (WT : W_Type_Id) return W_Type_Id;
-   --  If WT is the highest base type, return WT; otherwise, return the
-   --  smallest base type BT such that WT < BT.
-
-   function Up (From, To : W_Type_Id) return W_Type_Id;
-   --  Same as unary Up, except that it stops when To is reached;
-   --  i.e. if From = To then To is returned.
-
    function Eq_Base (Left, Right : W_Type_Id) return Boolean;
    --  Equality of type ids
-
-   function Eq (Left, Right : Entity_Id) return Boolean;
-   --  Return True if Left and Right corresponds to the same Why identifier
 
 private
    Entity_Dependencies : Node_Graphs.Map;

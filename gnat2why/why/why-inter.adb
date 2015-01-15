@@ -82,9 +82,6 @@ package body Why.Inter is
 
    function Get_EW_Term_Type (N : Node_Id) return EW_Type;
 
-   function Up (K : EW_Type) return EW_Type;
-   --  implement the "up" function on the same tree
-
    function EW_Abstract_Shared
      (N    : Node_Id;
       Kind : EW_Type) return W_Type_Id
@@ -690,19 +687,9 @@ package body Why.Inter is
       return WF_Main;
    end Dispatch_Entity_Completion;
 
-   --------
-   -- Eq --
-   --------
-
-   function Eq (Left, Right : Entity_Id) return Boolean is
-   begin
-      if No (Left) or else No (Right) then
-         return Left = Right;
-      else
-         return
-           Full_Name (Left) = Full_Name (Right);
-      end if;
-   end Eq;
+   -------------
+   -- Eq_Base --
+   -------------
 
    function Eq_Base (Left, Right : W_Type_Id) return Boolean is
    begin
@@ -1228,37 +1215,5 @@ package body Why.Inter is
          return EW_Abstract (E);
       end if;
    end Type_Of_Node;
-
-   --------
-   -- Up --
-   --------
-
-   function Up (WT : W_Type_Id) return W_Type_Id is
-      Kind : constant EW_Type := Get_Type_Kind (WT);
-   begin
-      case Kind is
-         when EW_Abstract =>
-            return Base_Why_Type (WT);
-         when others =>
-            return Why_Types (Up (Kind));
-      end case;
-   end Up;
-
-   function Up (K : EW_Type) return EW_Type is
-   begin
-      case K is
-         when EW_Bool | EW_Real => return EW_Int;
-         when others => return EW_Unit;
-      end case;
-   end Up;
-
-   function Up (From, To : W_Type_Id) return W_Type_Id is
-   begin
-      if Eq_Base (From, To) then
-         return From;
-      else
-         return Up (From);
-      end if;
-   end Up;
 
 end Why.Inter;
