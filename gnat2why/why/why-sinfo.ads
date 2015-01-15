@@ -757,38 +757,13 @@ package Why.Sinfo is
    --  EW_Private
        EW_Abstract;
 
-   subtype EW_Term_Type is EW_Not_Null_Type range
-       EW_Bool ..
-   --  EW_Int
-   --  EW_Fixed,
-   --  EW_Real
-   --  EW_Private
-       EW_Abstract;
-
-   subtype EW_Base_Type is EW_Type range
-       EW_Unit ..
-   --  EW_Prop
-   --  EW_Bool
-   --  EW_Int
-   --  EW_Fixed
-       EW_Real;
-
-   subtype EW_Basic_Type is EW_Type range
-       EW_Unit ..
-   --  EW_Prop
-   --  EW_Bool
-   --  EW_Int
-   --  EW_Fixed
-   --  EW_Real
-       EW_Private;
-
-   subtype EW_Scalar is EW_Base_Type range
+   subtype EW_Scalar is EW_Type range
        EW_Bool ..
    --  EW_Int
    --  EW_Fixed
        EW_Real;
 
-   subtype EW_Numeric is EW_Base_Type range
+   subtype EW_Numeric is EW_Type range
        EW_Int ..
    --  EW_Fixed
        EW_Real;
