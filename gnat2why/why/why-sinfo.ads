@@ -797,12 +797,6 @@ package Why.Sinfo is
      (EW_True,
       EW_False);
 
-   type EW_Binary_Op is
-     (EW_Add,
-      EW_Substract,
-      EW_Multiply,
-      EW_Divide);
-
    type EW_Relation is
      (EW_None,
       EW_Eq,

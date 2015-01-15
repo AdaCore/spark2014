@@ -332,7 +332,7 @@ package body Why.Images is
       if Base = 0 then
          P (O, Num);
          P (O, ".0");
-         P (O, EW_Divide, EW_Real);
+         P (O, "/.");
          P (O, Den);
          P (O, ".0");
 
@@ -364,7 +364,7 @@ package body Why.Images is
          pragma Assert (Den > Uint_0);
          P (O, Num);
          P (O, ".0");
-         P (O, EW_Divide, EW_Real);
+         P (O, "/.");
          P (O, UI_Expon (Base, Den));
          P (O, ".0");
       end if;
@@ -395,27 +395,6 @@ package body Why.Images is
                P (O, "false");
             end if;
       end case;
-   end P;
-
-   procedure P
-     (O       : Output_Id;
-      Value   : EW_Binary_Op;
-      Op_Type : EW_Scalar := EW_Int) is
-   begin
-      case Value is
-         when EW_Add =>
-            P (O, "+");
-         when EW_Substract =>
-            P (O, "-");
-         when EW_Multiply =>
-            P (O, "*");
-         when EW_Divide =>
-            P (O, "/");
-      end case;
-
-      if Op_Type = EW_Real then
-         P (O, ".");
-      end if;
    end P;
 
    procedure P

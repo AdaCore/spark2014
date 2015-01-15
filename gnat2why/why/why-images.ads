@@ -65,11 +65,6 @@ package Why.Images is
 
    procedure P
      (O       : Output_Id;
-      Value   : EW_Binary_Op;
-      Op_Type : EW_Scalar := EW_Int);
-
-   procedure P
-     (O       : Output_Id;
       Value   : EW_Relation;
       Op_Type : EW_Type := EW_Int);
 
