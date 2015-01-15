@@ -266,12 +266,11 @@ package body Why.Gen.Arrays is
       Last_Int : constant W_Expr_Id :=
         Insert_Scalar_Conversion (Domain, Empty, Last, EW_Int_Type);
       Cond : constant W_Expr_Id :=
-        New_Relation
-          (Domain  => Domain,
-           Op_Type => EW_Int,
-           Op      => EW_Le,
-           Left    => +First_Int,
-           Right   => +Last_Int);
+        New_Call
+          (Domain => Domain,
+           Name   => Int_Infix_Le,
+           Typ    => EW_Bool_Type,
+           Args   => (+First_Int, +Last_Int));
       Len : constant W_Expr_Id :=
         New_Int_Add
           (Domain,
@@ -961,7 +960,7 @@ package body Why.Gen.Arrays is
       Result     : constant W_Pred_Id :=
         +New_Comparison
         (Domain    => EW_Pred,
-         Cmp       => EW_Eq,
+         Symbol    => Why_Eq,
          Left      => Left,
          Right     => Right);
    begin

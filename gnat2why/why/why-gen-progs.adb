@@ -117,12 +117,10 @@ package body Why.Gen.Progs is
                           Name     => Loop_Index,
                           Value    => Addition);
       Loop_Cond    : constant W_Prog_Id  :=
-                       New_Relation
-                         (Ada_Node => Ada_Node,
-                          Op_Type  => EW_Int,
-                          Op       => EW_Le,
-                          Left     => +Index_Deref,
-                          Right    => +High);
+        New_Call (Ada_Node => Ada_Node,
+                  Name     => Int_Infix_Le,
+                  Typ      => EW_Bool_Type,
+                  Args     => (+Index_Deref, +High));
       Loop_Content : constant W_Prog_Id :=
                        New_Statement_Sequence
                          (Ada_Node   => Ada_Node,
@@ -132,14 +130,10 @@ package body Why.Gen.Progs is
                          (Op     => EW_Or,
                           Left   => +Invariant,
                           Right  =>
-                            New_Relation
-                              (Domain  => EW_Pred,
-                               Op_Type => EW_Int,
-                               Left    => +Low,
-                               Op      => EW_Le,
-                               Right   => +Loop_Index,
-                               Op2     => EW_Le,
-                               Right2  =>
+                            New_Range_Expr
+                              (Domain => EW_Pred,
+                               Low    => +Low,
+                               High   =>
                                  New_Call
                                    (Domain => EW_Term,
                                     Name => Int_Infix_Add,
@@ -147,7 +141,8 @@ package body Why.Gen.Progs is
                                              2 =>
                                                New_Integer_Constant
                                                  (Value => Uint_1)),
-                                    Typ  => EW_Int_Type)));
+                                    Typ  => EW_Int_Type),
+                               Expr => +Loop_Index));
    begin
       return
         New_Binding_Ref

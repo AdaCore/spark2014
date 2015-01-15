@@ -955,7 +955,6 @@ package body Gnat2Why.External_Axioms is
                           (Ada_Node    => Formal,
                            Name        =>
                          To_Why_Id (Formal, Domain => EW_Term, Local => True),
-                           Return_Type => Get_Type_Kind (Typ),
                            Binders     => (1 .. 0 => <>),
                            Def         => Def));
                   end if;

@@ -109,7 +109,6 @@ package body Why.Atree.Sprint is
    procedure Print_Record_Aggregate (Node : W_Record_Aggregate_Id);
    procedure Print_Record_Definition (Node : W_Record_Definition_Id);
    procedure Print_Record_Update (Node : W_Record_Update_Id);
-   procedure Print_Relation (Node : W_Relation_Id);
    procedure Print_Statement_Sequence (Node : W_Statement_Sequence_Id);
    procedure Print_Tagged (Node : W_Tagged_Id);
    procedure Print_Theory_Declaration (Node : W_Theory_Declaration_Id);
@@ -1218,9 +1217,6 @@ package body Why.Atree.Sprint is
          when W_Not =>
             Print_Not (+N);
 
-         when W_Relation =>
-            Print_Relation (+N);
-
          when W_Connection =>
             Print_Connection (+N);
 
@@ -1456,33 +1452,6 @@ package body Why.Atree.Sprint is
       Print_List (+Get_Updates (Node), "; ");
       P (O, " }");
    end Print_Record_Update;
-
-   ---------------------
-   -- Print_Relation --
-   ---------------------
-
-   procedure Print_Relation (Node : W_Relation_Id) is
-      Left   : constant W_Expr_Id := Get_Left (Node);
-      Op     : constant EW_Relation := Get_Op (Node);
-      Right  : constant W_Expr_Id := Get_Right (Node);
-      Op2    : constant EW_Relation := Get_Op2 (Node);
-      Right2 : constant W_Expr_OId := Get_Right2 (Node);
-   begin
-      P (O, "( ");
-      Print_Node (+Left);
-      P (O, " ");
-      P (O, Op, Get_Op_Type (Node));
-      P (O, " ");
-      Print_Node (+Right);
-
-      if Op2 /= EW_None then
-         P (O, " ");
-         P (O, Op2, Get_Op_Type (Node));
-         P (O, " ");
-         Print_Node (+Right2);
-      end if;
-      P (O, " )");
-   end Print_Relation;
 
    ---------------------
    -- Sprint_Why_Node --

@@ -191,8 +191,8 @@ package body Why.Gen.Scalars is
                              Left   => +Def,
                              Right  =>
                                New_Range_Expr (Domain => EW_Pred,
-                                                Low    => +First,
-                                                High   => +Last,
+                                               Low    => +First,
+                                               High   => +Last,
                                                Expr   => +Var));
                         Next (Pred);
                      end;

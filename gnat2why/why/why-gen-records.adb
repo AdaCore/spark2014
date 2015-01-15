@@ -1345,14 +1345,15 @@ package body Why.Gen.Records is
                                       WNE_Rec_Split_Discrs
                                else WNE_Rec_Split_Fields));
                      Post      : constant W_Pred_Id :=
-                       New_Relation
-                         (Left    => +New_Result_Ident (Why_Empty),
-                          Op_Type => EW_Abstract,
-                          Op      => EW_Eq,
-                          Right   =>
-                            New_Record_Access
-                              (Name  => R_Access,
-                               Field => Why_Name));
+                       New_Call
+                         (Name => Why_Eq,
+                          Typ  => EW_Bool_Type,
+                          Args =>
+                            (1 => +New_Result_Ident (Why_Empty),
+                             2 =>
+                               New_Record_Access
+                                 (Name  => R_Access,
+                                  Field => Why_Name)));
                      Precond   : constant W_Pred_Id :=
                        (if Ekind (Field) = E_Discriminant then True_Pred
                         else Discriminant_Check_Pred_Call (Field, A_Ident));
@@ -1801,10 +1802,10 @@ package body Why.Gen.Records is
                              Prefix (E_Module (Root), WNE_Rec_Split_Discrs));
       Discr      : Node_Id := First_Discriminant (E);
       Post       : constant W_Pred_Id :=
-        New_Relation (Op      => EW_Eq,
-                      Op_Type => EW_Abstract,
-                      Left    => +New_Result_Ident (Why_Empty),
-                      Right   => +A_Ident);
+        New_Call
+          (Name => Why_Eq,
+           Typ  => EW_Bool_Type,
+           Args => (+New_Result_Ident (Why_Empty), +A_Ident));
       R_Binder   : Binder_Array (1 .. Num_Discr + 1);
       Args       : W_Expr_Array (1 .. Num_Discr + 1);
       Check_Pred : W_Pred_Id := True_Pred;
@@ -1835,24 +1836,27 @@ package body Why.Gen.Records is
               (Domain => EW_Pred,
                Left   => +Check_Pred,
                Right  =>
-                 New_Relation
+                 New_Call
                    (Domain => EW_Pred,
-                    Op      => EW_Eq,
-                    Op_Type => EW_Int,
-                    Left    => +To_Why_Id
-                      (Discr, Local => True,
-                       Typ => Base_Why_Type (Unique_Entity (Etype (Discr)))),
-                    Right   =>
-                      Insert_Simple_Conversion
-                        (Domain   => EW_Term,
-                         Expr     => New_Call
-                           (Ada_Node => Root,
-                            Name     => To_Why_Id (Discr, Rec => Root),
-                            Args     => (1 => R_Access),
-                            Domain   => EW_Term,
-                            Typ      => EW_Abstract (Etype (Discr))),
-                         To       =>
-                           Base_Why_Type (Unique_Entity (Etype (Discr))))));
+                    Name   => Why_Eq,
+                    Typ    => EW_Bool_Type,
+                    Args =>
+                      (1 =>
+                        +To_Why_Id
+                        (Discr, Local => True,
+                         Typ => Base_Why_Type (Unique_Entity (Etype (Discr)))),
+                       2 =>
+                         Insert_Simple_Conversion
+                           (Domain   => EW_Term,
+                            Expr     => New_Call
+                              (Ada_Node => Root,
+                               Name     => To_Why_Id (Discr, Rec => Root),
+                               Args     => (1 => R_Access),
+                               Domain   => EW_Term,
+                               Typ      => EW_Abstract (Etype (Discr))),
+                            To       =>
+                              Base_Why_Type
+                                (Unique_Entity (Etype (Discr)))))));
             Count := Count + 1;
          end if;
          Next_Discriminant (Discr);

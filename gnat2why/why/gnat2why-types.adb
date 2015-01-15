@@ -139,7 +139,6 @@ package body Gnat2Why.Types is
                     New_Identifier
                       (Module => E_Module (E),
                        Name    => "user_eq"),
-                  Return_Type => EW_Bool,
                   Def         => +Def));
          end;
       end if;

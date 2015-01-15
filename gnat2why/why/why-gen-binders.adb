@@ -104,7 +104,6 @@ package body Why.Gen.Binders is
      (Ada_Node    : Node_Id := Empty;
       Name        : W_Identifier_Id;
       Binders     : Binder_Array;
-      Return_Type : EW_Type;
       Pre         : W_Pred_OId := Why_Empty;
       Def         : W_Term_Id)
      return W_Declaration_Id
@@ -121,11 +120,10 @@ package body Why.Gen.Binders is
                                        else "") & Def_Axiom;
    begin
       Equality :=
-        New_Relation
-          (Op      => EW_Eq,
-           Op_Type => Return_Type,
-           Left    => +Left,
-           Right   => +Def);
+        New_Call
+          (Name => Why_Eq,
+           Args => (+Left, +Def),
+           Typ  => EW_Bool_Type);
       return New_Guarded_Axiom
         (Ada_Node => Ada_Node,
          Name     => NID (Axiom_Name),

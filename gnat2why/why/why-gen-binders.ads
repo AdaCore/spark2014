@@ -196,7 +196,6 @@ package Why.Gen.Binders is
      (Ada_Node    : Node_Id := Empty;
       Name        : W_Identifier_Id;
       Binders     : Binder_Array;
-      Return_Type : EW_Type;
       Pre         : W_Pred_OId := Why_Empty;
       Def         : W_Term_Id)
      return W_Declaration_Id;

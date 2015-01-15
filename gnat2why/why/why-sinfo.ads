@@ -200,20 +200,6 @@ package Why.Sinfo is
    --
    --  logical negation. The type of such expressions is always "bool".
    --
-   --  ----------------
-   --  -- W_Relation --
-   --  ----------------
-   --  Op_Type   EW_Not_Null_Type
-   --  Left      W_Expr_Id
-   --  Op        EW_Relation
-   --  Right     W_Expr_Id
-   --  Op2       EW_Relation
-   --  Right2    W_Expr_Id
-   --
-   --  Comparison, "<", "<=" etc. Op_Type tells whether the comparison is on
-   --  Integers or Reals. The type of such expressions is always "bool". Op2
-   --  and Right2 allow to build a chain like "a <= b < c"
-   --
    --  ------------------
    --  -- W_Connection --
    --  ------------------
@@ -648,7 +634,6 @@ package Why.Sinfo is
       ------------------------
 
       W_Not,
-      W_Relation,
       W_Connection,
       W_Label,
 
@@ -771,21 +756,6 @@ package Why.Sinfo is
    type EW_Literal is
      (EW_True,
       EW_False);
-
-   type EW_Relation is
-     (EW_None,
-      EW_Eq,
-      EW_Ne,
-      EW_Lt,
-      EW_Le,
-      EW_Gt,
-      EW_Ge);
-
-   subtype EW_Inequality is EW_Relation range
-       EW_Lt ..
-   --  EW_Le
-   --  EW_Gt
-       EW_Ge;
 
    type EW_Theory_Type is
      (EW_Theory,

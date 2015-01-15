@@ -271,6 +271,17 @@ package body Why.Atree.Modules is
 
       --  builtin infix operations
 
+      Why_Eq :=
+        New_Identifier (Domain => EW_Term,
+                        Symbol => NID ("="),
+                        Typ    => EW_Bool_Type,
+                        Infix  => True);
+      Why_Neq :=
+        New_Identifier (Domain => EW_Term,
+                        Symbol => NID ("<>"),
+                        Typ    => EW_Bool_Type,
+                        Infix  => True);
+
       Int_Infix_Add :=
         New_Identifier (Module => Int_Module,
                         Domain => EW_Term,
@@ -288,6 +299,30 @@ package body Why.Atree.Modules is
                         Domain => EW_Term,
                         Symbol => NID ("*"),
                         Typ    => EW_Int_Type,
+                        Infix  => True);
+      Int_Infix_Le :=
+        New_Identifier (Module => Int_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("<="),
+                        Typ    => EW_Bool_Type,
+                        Infix  => True);
+      Int_Infix_Lt :=
+        New_Identifier (Module => Int_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("<"),
+                        Typ    => EW_Bool_Type,
+                        Infix  => True);
+      Int_Infix_Ge :=
+        New_Identifier (Module => Int_Module,
+                        Domain => EW_Term,
+                        Symbol => NID (">="),
+                        Typ    => EW_Bool_Type,
+                        Infix  => True);
+      Int_Infix_Gt :=
+        New_Identifier (Module => Int_Module,
+                        Domain => EW_Term,
+                        Symbol => NID (">"),
+                        Typ    => EW_Bool_Type,
                         Infix  => True);
 
       Fixed_Infix_Add :=
@@ -325,6 +360,30 @@ package body Why.Atree.Modules is
         New_Identifier (Module => RealInfix,
                         Domain => EW_Term,
                         Symbol => NID ("*."),
+                        Typ    => EW_Real_Type,
+                        Infix  => True);
+      Real_Infix_Le :=
+        New_Identifier (Module => RealInfix,
+                        Domain => EW_Term,
+                        Symbol => NID ("<=."),
+                        Typ    => EW_Real_Type,
+                        Infix  => True);
+      Real_Infix_Lt :=
+        New_Identifier (Module => RealInfix,
+                        Domain => EW_Term,
+                        Symbol => NID ("<."),
+                        Typ    => EW_Real_Type,
+                        Infix  => True);
+      Real_Infix_Ge :=
+        New_Identifier (Module => RealInfix,
+                        Domain => EW_Term,
+                        Symbol => NID (">=."),
+                        Typ    => EW_Real_Type,
+                        Infix  => True);
+      Real_Infix_Gt :=
+        New_Identifier (Module => RealInfix,
+                        Domain => EW_Term,
+                        Symbol => NID (">."),
                         Typ    => EW_Real_Type,
                         Infix  => True);
 
@@ -389,6 +448,37 @@ package body Why.Atree.Modules is
                         Domain => EW_Term,
                         Symbol => NID ("abs"),
                         Typ    => EW_Int_Type);
+
+      Int_Bool_Eq :=
+        New_Identifier (Module => Integer_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("bool_eq"),
+                        Typ    => EW_Bool_Type);
+      Int_Bool_Ne :=
+        New_Identifier (Module => Integer_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("bool_ne"),
+                        Typ    => EW_Bool_Type);
+      Int_Bool_Le :=
+        New_Identifier (Module => Integer_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("bool_le"),
+                        Typ    => EW_Bool_Type);
+      Int_Bool_Lt :=
+        New_Identifier (Module => Integer_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("bool_lt"),
+                        Typ    => EW_Bool_Type);
+      Int_Bool_Ge :=
+        New_Identifier (Module => Integer_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("bool_ge"),
+                        Typ    => EW_Bool_Type);
+      Int_Bool_Gt :=
+        New_Identifier (Module => Integer_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("bool_gt"),
+                        Typ    => EW_Bool_Type);
 
    --  Identifiers of the Main module
 
@@ -456,6 +546,68 @@ package body Why.Atree.Modules is
         New_Identifier (Module => Floating_Module,
                         Domain => EW_Term,
                         Symbol => NID ("round_double"));
+
+      Real_Bool_Eq :=
+        New_Identifier (Module => Floating_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("bool_eq"),
+                        Typ    => EW_Bool_Type);
+      Real_Bool_Ne :=
+        New_Identifier (Module => Floating_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("bool_ne"),
+                        Typ    => EW_Bool_Type);
+      Real_Bool_Le :=
+        New_Identifier (Module => Floating_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("bool_le"),
+                        Typ    => EW_Bool_Type);
+      Real_Bool_Lt :=
+        New_Identifier (Module => Floating_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("bool_lt"),
+                        Typ    => EW_Bool_Type);
+      Real_Bool_Ge :=
+        New_Identifier (Module => Floating_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("bool_ge"),
+                        Typ    => EW_Bool_Type);
+      Real_Bool_Gt :=
+        New_Identifier (Module => Floating_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("bool_gt"),
+                        Typ    => EW_Bool_Type);
+
+      Bool_Bool_Eq :=
+        New_Identifier (Module => Boolean_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("bool_eq"),
+                        Typ    => EW_Bool_Type);
+      Bool_Bool_Ne :=
+        New_Identifier (Module => Boolean_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("bool_ne"),
+                        Typ    => EW_Bool_Type);
+      Bool_Bool_Le :=
+        New_Identifier (Module => Boolean_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("bool_le"),
+                        Typ    => EW_Bool_Type);
+      Bool_Bool_Lt :=
+        New_Identifier (Module => Boolean_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("bool_lt"),
+                        Typ    => EW_Bool_Type);
+      Bool_Bool_Ge :=
+        New_Identifier (Module => Boolean_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("bool_ge"),
+                        Typ    => EW_Bool_Type);
+      Bool_Bool_Gt :=
+        New_Identifier (Module => Boolean_Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("bool_gt"),
+                        Typ    => EW_Bool_Type);
 
       --  Other identifiers
 

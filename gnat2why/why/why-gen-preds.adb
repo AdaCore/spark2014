@@ -23,7 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Conversions;     use Why.Conversions;
+with Why.Conversions;   use Why.Conversions;
+with Why.Atree.Modules; use Why.Atree.Modules;
 
 package body Why.Gen.Preds is
 
@@ -40,12 +41,12 @@ package body Why.Gen.Preds is
         New_Connection
           (Op    => EW_Equivalent,
            Left  =>
-             New_Relation
-               (Domain  => EW_Prog,
-                Op      => EW_Eq,
-                Op_Type => EW_Bool,
-                Left    => +Left,
-                Right   => New_Literal (Value => EW_True, Domain => EW_Prog)),
+             New_Call
+               (Domain => EW_Pred,
+                Name   => Why_Eq,
+                Typ    => EW_Bool_Type,
+                Args => (+Left,
+                         New_Literal (Value => EW_True, Domain => EW_Prog))),
            Right => +Right);
    end New_Equal_Bool;
 

@@ -138,10 +138,6 @@ package body Why.Inter is
         (State : in out Search_State;
          Node  : W_Name_Id);
 
-      procedure Relation_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Relation_Id);
-
       procedure Integer_Constant_Pre_Op
         (State : in out Search_State;
          Node  : W_Integer_Constant_Id);
@@ -153,10 +149,6 @@ package body Why.Inter is
       procedure Fixed_Constant_Pre_Op
         (State : in out Search_State;
          Node  : W_Fixed_Constant_Id);
-
-      procedure Handle_Op (S : in out Set; Op : EW_Type);
-      --  add needed modules for basic scalar (unary and binary +,- etc) to the
-      --  state
 
       ---------------------------
       -- Fixed_Constant_Pre_Op --
@@ -170,24 +162,6 @@ package body Why.Inter is
          State.S.Include (+Int_Module);
       end Fixed_Constant_Pre_Op;
 
-      ---------------
-      -- Handle_Op --
-      ---------------
-
-      procedure Handle_Op (S : in out Set; Op : EW_Type) is
-      begin
-         case Op is
-            when EW_Int | EW_Fixed =>
-               S.Include (+Integer_Module);
-               S.Include (+Int_Module);
-            when EW_Real =>
-               S.Include (+Floating_Module);
-               S.Include (+RealInfix);
-            when others =>
-               null;
-         end case;
-      end Handle_Op;
-
       -----------------------
       -- Identifier_Pre_Op --
       -----------------------
@@ -200,6 +174,12 @@ package body Why.Inter is
       begin
          if Module /= Why_Empty then
             State.S.Include (+Module);
+         end if;
+
+         --  ??? special hack to be removed at some point
+
+         if Node = Int_Unary_Minus then
+            State.S.Include (+Int_Module);
          end if;
       end Identifier_Pre_Op;
 
@@ -241,17 +221,6 @@ package body Why.Inter is
       begin
          State.S.Include (+RealInfix);
       end Real_Constant_Pre_Op;
-
-      ---------------------
-      -- Relation_Pre_Op --
-      ---------------------
-
-      procedure Relation_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Relation_Id) is
-      begin
-         Handle_Op (State.S, Get_Op_Type (Node));
-      end Relation_Pre_Op;
 
       SS : Search_State := (Control => Continue, S => Empty_Set);
 

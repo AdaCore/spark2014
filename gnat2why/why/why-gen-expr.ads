@@ -75,10 +75,9 @@ package Why.Gen.Expr is
        Domain      : EW_Domain) return W_Expr_Id;
 
    function New_Comparison
-     (Cmp         : EW_Relation;
+     (Symbol      : W_Identifier_Id;
       Left, Right : W_Expr_Id;
-      Domain      : EW_Domain)
-      return W_Expr_Id;
+      Domain      : EW_Domain) return W_Expr_Id;
 
    function New_Ada_Equality
      (Typ              : Entity_Id;

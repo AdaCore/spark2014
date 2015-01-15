@@ -694,14 +694,13 @@ package body Gnat2Why.Expr.Loops is
                  (if Is_Reverse then High_Ident else Low_Ident);
                Exit_Index   : constant W_Identifier_Id :=
                  (if Is_Reverse then Low_Ident else High_Ident);
-               Exit_Cmp     : constant EW_Relation :=
-                 (if Is_Reverse then EW_Ge else EW_Le);
+               Exit_Cmp     : constant W_Identifier_Id :=
+                 (if Is_Reverse then Int_Infix_Ge else Int_Infix_Le);
                Exit_Cond    : constant W_Expr_Id :=
-                 New_Relation (Domain  => EW_Prog,
-                               Op_Type => EW_Int,
-                               Op      => Exit_Cmp,
-                               Left    => +Index_Deref,
-                               Right   => +Exit_Index);
+                 New_Call (Domain => EW_Prog,
+                           Name   => Exit_Cmp,
+                           Typ    => EW_Bool_Type,
+                           Args   => (+Index_Deref, +Exit_Index));
                Cond_Prog    : constant W_Prog_Id :=
                  +New_Range_Expr (Domain    => EW_Prog,
                                   Low       => +Low_Ident,
@@ -890,15 +889,17 @@ package body Gnat2Why.Expr.Loops is
          Name    : W_Identifier_Id) return W_Pred_Id
       is
          Expr : constant Node_Id := Expression (Variant);
-         Cmp  : constant EW_Relation :=
-           (if Chars (Variant) = Name_Decreases then EW_Lt else EW_Gt);
+         Cmp  : constant W_Identifier_Id :=
+           (if Chars (Variant) = Name_Decreases then Int_Infix_Lt
+            else Int_Infix_Gt);
       begin
-         return +New_Comparison (Cmp       => Cmp,
-                                 Left      => Variant_Expr (Expr, EW_Term),
-                                 Right     =>
-                                   New_Deref (Right => +Name,
-                                              Typ => EW_Int_Type),
-                                 Domain    => EW_Pred);
+         return
+           +New_Comparison
+           (Symbol => Cmp,
+            Left   => Variant_Expr (Expr, EW_Term),
+            Right  =>  New_Deref (Right => +Name,
+                                  Typ   => EW_Int_Type),
+            Domain => EW_Pred);
       end Variant_Part_Does_Progress;
 
       ---------------------------------
@@ -911,12 +912,14 @@ package body Gnat2Why.Expr.Loops is
       is
          Expr : constant Node_Id := Expression (Variant);
       begin
-         return +New_Comparison (Cmp       => EW_Eq,
-                                 Left      => Variant_Expr (Expr, EW_Term),
-                                 Right     =>
-                                   New_Deref (Right => +Name,
-                                              Typ => EW_Int_Type),
-                                 Domain    => EW_Pred);
+         return
+           +New_Comparison
+           (Symbol => Why_Eq,
+            Left   => Variant_Expr (Expr, EW_Term),
+            Right  =>
+              New_Deref (Right => +Name,
+                         Typ   => EW_Int_Type),
+            Domain => EW_Pred);
       end Variant_Part_Stays_Constant;
 
    --  Start of Transform_Loop_Variant

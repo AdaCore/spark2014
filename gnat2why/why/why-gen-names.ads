@@ -71,14 +71,6 @@ package Why.Gen.Names is
      (Ty : Entity_Id; R : Range_Check_Kind) return W_Identifier_Id;
    --  Return the name of the "range_check_" program function for the type
 
-   function New_Bool_Cmp
-     (Rel       : EW_Relation;
-      Arg_Types : W_Type_Id)
-     return W_Identifier_Id;
-   --  Return the name of boolean comparison operators for Why term types
-   --  in the domain EW_Term (i.e. the name of a logic function returning
-   --  bool).
-
    function Why_Scalar_Type_Name (Kind : EW_Scalar) return String;
    --  Return the name of the Why scalar type (e.g. "real" from real)
 

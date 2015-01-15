@@ -397,33 +397,6 @@ package body Why.Images is
       end case;
    end P;
 
-   procedure P
-     (O       : Output_Id;
-      Value   : EW_Relation;
-      Op_Type : EW_Type := EW_Int) is
-   begin
-      case Value is
-         when EW_None =>
-            P (O, " <none> ");
-         when EW_Eq =>
-            P (O, "=");
-         when EW_Ne =>
-            P (O, "<>");
-         when EW_Lt =>
-            P (O, "<");
-         when EW_Le =>
-            P (O, "<=");
-         when EW_Gt =>
-            P (O, ">");
-         when EW_Ge =>
-            P (O, ">=");
-      end case;
-
-      if Op_Type = EW_Real and then not (Value in EW_Eq .. EW_Ne) then
-         P (O, ".");
-      end if;
-   end P;
-
    procedure P (O : Output_Id; Value : EW_Connector) is
    begin
       case Value is

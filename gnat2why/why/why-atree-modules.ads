@@ -103,9 +103,15 @@ package Why.Atree.Modules is
 
    --  builtin infix symbols
 
+   Why_Eq                    : W_Identifier_Id;
+   Why_Neq                   : W_Identifier_Id;
    Int_Infix_Add             : W_Identifier_Id;
    Int_Infix_Subtr           : W_Identifier_Id;
    Int_Infix_Mult            : W_Identifier_Id;
+   Int_Infix_Le              : W_Identifier_Id;
+   Int_Infix_Ge              : W_Identifier_Id;
+   Int_Infix_Gt              : W_Identifier_Id;
+   Int_Infix_Lt              : W_Identifier_Id;
 
    Fixed_Infix_Add           : W_Identifier_Id;
    Fixed_Infix_Subtr         : W_Identifier_Id;
@@ -114,6 +120,10 @@ package Why.Atree.Modules is
    Real_Infix_Add            : W_Identifier_Id;
    Real_Infix_Subtr          : W_Identifier_Id;
    Real_Infix_Mult           : W_Identifier_Id;
+   Real_Infix_Lt             : W_Identifier_Id;
+   Real_Infix_Le             : W_Identifier_Id;
+   Real_Infix_Gt             : W_Identifier_Id;
+   Real_Infix_Ge             : W_Identifier_Id;
 
    --  Identifiers of the Integer module
 
@@ -130,6 +140,13 @@ package Why.Atree.Modules is
    Integer_Min               : W_Identifier_Id;
    Integer_Abs               : W_Identifier_Id;
 
+   Int_Bool_Eq               : W_Identifier_Id;
+   Int_Bool_Lt               : W_Identifier_Id;
+   Int_Bool_Le               : W_Identifier_Id;
+   Int_Bool_Ne               : W_Identifier_Id;
+   Int_Bool_Gt               : W_Identifier_Id;
+   Int_Bool_Ge               : W_Identifier_Id;
+
    Floating_Div_Real         : W_Identifier_Id;
    Floating_Abs_Real         : W_Identifier_Id;
    Floating_Ceil             : W_Identifier_Id;
@@ -142,6 +159,20 @@ package Why.Atree.Modules is
    Floating_Min              : W_Identifier_Id;
    Floating_Round_Single     : W_Identifier_Id;
    Floating_Round_Double     : W_Identifier_Id;
+
+   Real_Bool_Eq               : W_Identifier_Id;
+   Real_Bool_Lt               : W_Identifier_Id;
+   Real_Bool_Le               : W_Identifier_Id;
+   Real_Bool_Ne               : W_Identifier_Id;
+   Real_Bool_Gt               : W_Identifier_Id;
+   Real_Bool_Ge               : W_Identifier_Id;
+
+   Bool_Bool_Eq               : W_Identifier_Id;
+   Bool_Bool_Lt               : W_Identifier_Id;
+   Bool_Bool_Le               : W_Identifier_Id;
+   Bool_Bool_Ne               : W_Identifier_Id;
+   Bool_Bool_Gt               : W_Identifier_Id;
+   Bool_Bool_Ge               : W_Identifier_Id;
 
    --  Other identifiers
 

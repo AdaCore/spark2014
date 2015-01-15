@@ -367,7 +367,6 @@ package body Gnat2Why.Decls is
                  (Ada_Node    => E,
                   Name        =>
                     To_Why_Id (E, Domain => EW_Term, Local => False),
-                  Return_Type => Get_Type_Kind (Typ),
                   Binders     => (1 .. 0 => <>),
                   Def         => Def));
 
@@ -381,7 +380,6 @@ package body Gnat2Why.Decls is
                  (Ada_Node    => E,
                   Name        =>
                     To_Why_Id (E, Domain => EW_Term, Local => False),
-                  Return_Type => Get_Type_Kind (Typ),
                   Binders     => (1 .. 0 => <>),
                   Def         => Def));
          end if;

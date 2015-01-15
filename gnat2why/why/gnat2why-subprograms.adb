@@ -1150,13 +1150,13 @@ package body Gnat2Why.Subprograms is
                    (Ada_Node    => Case_Guard,
                     Domain      => EW_Term,
                     Condition   =>
-                      New_Relation (Domain   => EW_Pred,
-                                    Op_Type  => EW_Bool,
-                                    Left     => +Guard_Ident,
-                                    Op       => EW_Eq,
-                                    Right    =>
-                                      New_Literal (Domain => EW_Term,
-                                                   Value  => EW_True)),
+                      New_Call
+                        (Domain => EW_Pred,
+                         Name   => Why_Eq,
+                         Args   => (1 => +Guard_Ident,
+                                    2 => New_Literal (Domain => EW_Term,
+                                                      Value  => EW_True)),
+                         Typ    => EW_Bool_Type),
                     Then_Part   => New_Integer_Constant (Value => Uint_1),
                     Else_Part   => New_Integer_Constant (Value => Uint_0));
             begin
@@ -1183,17 +1183,18 @@ package body Gnat2Why.Subprograms is
          Result := Sequence
            (Result,
             New_Assert
-              (Pred     => +New_VC_Expr
-                   (Prag,
-                    New_Relation (Domain   => EW_Pred,
-                                  Op_Type  => EW_Int,
-                                  Left     => +Count,
-                                  Op       => EW_Le,
-                                  Right    =>
-                                    New_Integer_Constant (Value => Uint_1)),
-                    VC_Disjoint_Contract_Cases,
-                    EW_Pred),
-             Assert_Kind => EW_Check));
+              (Pred     =>
+                   +New_VC_Expr
+                 (Prag,
+                  New_Call
+                    (Name => Int_Infix_Le,
+                     Typ  => EW_Bool_Type,
+                     Domain => EW_Pred,
+                     Args =>
+                       (+Count, New_Integer_Constant (Value => Uint_1))),
+                  VC_Disjoint_Contract_Cases,
+                  EW_Pred),
+            Assert_Kind => EW_Check));
       end if;
 
       --  A check that contract cases are complete is generated only when there
@@ -1203,14 +1204,15 @@ package body Gnat2Why.Subprograms is
          Result := Sequence
            (Result,
             New_Assert
-              (Pred       => +New_VC_Expr
+              (Pred       =>
+                   +New_VC_Expr
                  (Prag,
-                  New_Relation (Domain   => EW_Pred,
-                                Op_Type  => EW_Int,
-                                Left     => +Count,
-                                Op       => EW_Ge,
-                                Right    =>
-                                  New_Integer_Constant (Value => Uint_1)),
+                  New_Call
+                    (Domain => EW_Pred,
+                     Typ    => EW_Bool_Type,
+                     Name   => Int_Infix_Ge,
+                     Args => (+Count,
+                              New_Integer_Constant (Value => Uint_1))),
                   VC_Complete_Contract_Cases,
                     EW_Pred),
                Assert_Kind => EW_Check));
@@ -1266,12 +1268,13 @@ package body Gnat2Why.Subprograms is
          --  Enabled must be converted to a predicate to be used as the
          --  condition in an if-expr inside a predicate.
          Enabled_Pred : constant W_Expr_Id :=
-           New_Relation (Domain   => EW_Pred,
-                         Op_Type  => EW_Bool,
-                         Left     => +Enabled,
-                         Op       => EW_Eq,
-                         Right    => New_Literal (Domain => EW_Term,
-                                                  Value  => EW_True));
+           New_Call
+             (Domain => EW_Pred,
+              Name   => Why_Eq,
+              Typ    => EW_Bool_Type,
+              Args   => (+Enabled,
+                         New_Literal (Domain => EW_Term,
+                                      Value  => EW_True)));
       begin
          return Sequence
            (New_Ignore
@@ -2640,16 +2643,15 @@ package body Gnat2Why.Subprograms is
             Param_Post          : constant W_Pred_Id :=
               +New_And_Expr
               (Left   =>
-                 New_Relation
-                   (Op      => EW_Eq,
-                    Op_Type => Get_Type_Kind (Why_Type),
-                    Left    => +New_Result_Ident (Why_Type),
-                    Right   =>
-                      New_Call
-                        (Domain  => EW_Term,
-                         Name    => Logic_Id,
-                         Args    => Logic_Func_Args),
-                    Domain => EW_Pred),
+                 New_Call
+                   (Name   => Why_Eq,
+                    Domain => EW_Pred,
+                    Typ    => EW_Bool_Type,
+                    Args   => (+New_Result_Ident (Why_Type),
+                               New_Call
+                                 (Domain => EW_Term,
+                                  Name   => Logic_Id,
+                                  Args   => Logic_Func_Args))),
                Right  => +Post,
                Domain => EW_Pred);
 
@@ -2671,17 +2673,17 @@ package body Gnat2Why.Subprograms is
             if Is_Dispatching_Operation (E) then
                Dispatch_Param_Post :=
                  +New_And_Expr
-                 (Left   => New_Relation
-                    (Op      => EW_Eq,
-                     Op_Type =>
-                       Get_Type_Kind (Why_Type),
-                     Left    => +New_Result_Ident (Why_Type),
-                     Right   =>
-                       New_Call
-                         (Domain  => EW_Term,
-                          Name    => Dispatch_Logic_Id,
-                          Args    => Logic_Func_Args),
-                     Domain => EW_Pred),
+                 (Left   =>
+                    New_Call
+                      (Domain => EW_Pred,
+                       Name   => Why_Eq,
+                       Typ    => EW_Bool_Type,
+                       Args =>
+                         (+New_Result_Ident (Why_Type),
+                          New_Call
+                            (Domain  => EW_Term,
+                             Name    => Dispatch_Logic_Id,
+                             Args    => Logic_Func_Args))),
                   Right  => +Dispatch_Post,
                   Domain => EW_Pred);
 
@@ -2702,16 +2704,18 @@ package body Gnat2Why.Subprograms is
             if Has_Contracts (E, Name_Refined_Post) then
                Refine_Param_Post :=
                  +New_And_Expr
-                 (Left   => New_Relation
-                    (Op      => EW_Eq,
-                     Op_Type => Get_Type_Kind (Why_Type),
-                     Left    => +New_Result_Ident (Why_Type),
-                     Right   =>
-                       New_Call
-                         (Domain  => EW_Term,
-                          Name    => Refine_Logic_Id,
-                          Args    => Logic_Func_Args),
-                     Domain => EW_Pred),
+                 (Left   =>
+                    New_Call
+                      (Domain => EW_Pred,
+                       Name   => Why_Eq,
+                       Typ    => EW_Bool_Type,
+                       Args   =>
+                         (1 => +New_Result_Ident (Why_Type),
+                          2 =>
+                            New_Call
+                              (Domain  => EW_Term,
+                               Name    => Refine_Logic_Id,
+                               Args    => Logic_Func_Args))),
                   Right  => +Refined_Post,
                   Domain => EW_Pred);
                Emit
@@ -2976,7 +2980,6 @@ package body Gnat2Why.Subprograms is
                New_Defining_Axiom
                  (Ada_Node    => E,
                   Name        => Logic_Id,
-                  Return_Type => Get_EW_Type (Expression (Expr_Fun_N)),
                   Binders     => Flat_Binders,
                   Pre         => Guard,
                   Def         =>

@@ -167,8 +167,7 @@ package body Why.Gen.Expr is
             | W_Assert =>
             return EW_Unit_Type;
 
-         when W_Relation
-            | W_Connection
+         when W_Connection
             | W_Not
             | W_Universal_Quantif
             | W_Existential_Quantif =>
@@ -336,12 +335,11 @@ package body Why.Gen.Expr is
                    (Domain => EW_Pred,
                     Left   => +Check,
                     Right  =>
-                      New_Relation
-                        (Domain  => Domain,
-                         Op_Type => EW_Int,
-                         Op      => EW_Eq,
-                         Left    => +Input_Length,
-                         Right   => +Expected_Length));
+                      New_Call
+                        (Name   => Why_Eq,
+                         Typ    => EW_Bool_Type,
+                         Domain => Domain,
+                         Args   => (+Input_Length, +Expected_Length)));
             end;
          end loop;
          return
@@ -1536,12 +1534,11 @@ package body Why.Gen.Expr is
          begin
             if Use_Predef then
                T :=
-                 New_Relation
-                   (Domain  => Domain,
-                    Op      => EW_Eq,
-                    Op_Type => Get_Type_Kind (Base_Why_Type (Why_Type)),
-                    Left    => Left_Int,
-                    Right   => Right_Int);
+                 New_Call
+                   (Name   => Why_Eq,
+                    Domain => Domain,
+                    Typ    => EW_Bool_Type,
+                    Args   => (Left_Int, Right_Int));
                Is_Pred := True;
             else
                T :=
@@ -1566,12 +1563,11 @@ package body Why.Gen.Expr is
          return T;
       else
          return
-           New_Relation
-             (Op_Type => EW_Bool,
-              Domain  => Domain,
-              Op      => EW_Eq,
-              Left    => T,
-              Right   => Bool_True (EW_Term));
+           New_Call
+             (Name   => Why_Eq,
+              Domain => Domain,
+              Typ    => EW_Bool_Type,
+              Args   => (T, Bool_True (EW_Term)));
       end if;
    end New_Ada_Equality;
 
@@ -1773,25 +1769,24 @@ package body Why.Gen.Expr is
    --------------------
 
    function New_Comparison
-     (Cmp         : EW_Relation;
+     (Symbol      : W_Identifier_Id;
       Left, Right : W_Expr_Id;
-      Domain      : EW_Domain)
-     return W_Expr_Id
+      Domain      : EW_Domain) return W_Expr_Id
    is
-      Op_Type  : W_Type_Id;
       Left1    : W_Expr_Id;
       Right1   : W_Expr_Id;
       Arg_Type : constant W_Type_Id := Get_Type (Left);
-
    begin
+
       --  The only comparisons between Boolean operands that we translate in
       --  Why without going throught integers are the equality and inequality
       --  in a predicate context, translated as equivalence or inequivalence.
 
-      if Get_Type_Kind (Arg_Type) = EW_Bool
-        and then (Cmp in EW_Inequality or else Domain /= EW_Pred)
+      if Arg_Type = EW_Bool_Type
+        and then
+          ((Symbol /= Why_Eq and then Symbol /= Why_Neq)
+           or else Domain /= EW_Pred)
       then
-         Op_Type := EW_Int_Type;
          Left1  :=
            Insert_Simple_Conversion
              (Domain => Domain,
@@ -1803,27 +1798,16 @@ package body Why.Gen.Expr is
               Expr   => Right,
               To     => EW_Int_Type);
       else
-         Op_Type := Arg_Type;
          Left1  := Left;
          Right1 := Right;
       end if;
 
-      if Domain in EW_Pred | EW_Prog then
-         return
-           New_Relation
-             (Domain  => Domain,
-              Op_Type => Get_Type_Kind (Op_Type),
-              Left    => +Left1,
-              Right   => +Right1,
-              Op      => Cmp);
-      else
-         return
-           New_Call
-             (Name   => New_Bool_Cmp (Cmp, Op_Type),
-              Args   => (1 => +Left1, 2 => +Right1),
-              Domain => Domain,
-              Typ    => EW_Bool_Type);
-      end if;
+      return
+        New_Call
+          (Domain => Domain,
+           Name   => Symbol,
+           Args   => (Left1, Right1),
+           Typ    => EW_Bool_Type);
    end New_Comparison;
 
    --------------------------
@@ -2519,21 +2503,25 @@ package body Why.Gen.Expr is
       Low, High : W_Expr_Id;
       Expr      : W_Expr_Id) return W_Expr_Id
    is
+      Ty : constant W_Type_Id := Get_Type (Low);
+      Le : constant W_Identifier_Id :=
+        (if Ty = EW_Int_Type or else Ty = EW_Fixed_Type then Int_Infix_Le
+         else Real_Infix_Le);
    begin
       return
          New_And_Expr
            (Left  =>
               New_Comparison
-                (Domain    => Domain,
-                 Cmp       => EW_Le,
-                 Left      => Low,
-                 Right     => Expr),
+                (Domain => Domain,
+                 Symbol => Le,
+                 Left   => Low,
+                 Right  => Expr),
             Right  =>
               New_Comparison
-                (Domain    => Domain,
-                 Cmp       => EW_Le,
-                 Left      => Expr,
-                 Right     => High),
+                (Domain => Domain,
+                 Symbol => Le,
+                 Left   => Expr,
+                 Right  => High),
             Domain => Domain);
    end New_Range_Expr;
 

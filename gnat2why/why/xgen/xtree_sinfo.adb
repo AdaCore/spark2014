@@ -227,23 +227,6 @@ package body Xtree_Sinfo is
       New_Field (W_Not,
                  "Right", "W_Expr", Id_One);
 
-      ----------------
-      -- W_Relation --
-      ----------------
-
-      New_Field (W_Relation,
-                 "Op_Type", "EW_Type");
-      New_Field (W_Relation,
-                 "Left", "W_Expr", Id_One);
-      New_Field (W_Relation,
-                 "Op", "EW_Relation");
-      New_Field (W_Relation,
-                 "Right", "W_Expr", Id_One);
-      New_Field (W_Relation,
-                 "Op2", "EW_Relation", "EW_None");
-      New_Field (W_Relation,
-                 "Right2", "W_Expr", Id_Lone);
-
       ------------------
       -- W_Connection --
       ------------------

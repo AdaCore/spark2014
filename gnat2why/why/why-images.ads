@@ -63,11 +63,6 @@ package Why.Images is
       Value  : EW_Literal;
       Domain : EW_Domain := EW_Prog);
 
-   procedure P
-     (O       : Output_Id;
-      Value   : EW_Relation;
-      Op_Type : EW_Type := EW_Int);
-
    procedure P (O : Output_Id; Value : EW_Connector);
 
    procedure P (O : Output_Id; Value : EW_Domain);
