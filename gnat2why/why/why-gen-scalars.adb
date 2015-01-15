@@ -54,7 +54,7 @@ package body Why.Gen.Scalars is
 
    procedure Define_Scalar_Attributes
      (Theory     : W_Theory_Declaration_Id;
-      Base_Type  : EW_Scalar;
+      Base_Type  : W_Type_Id;
       First      : W_Term_Id;
       Last       : W_Term_Id;
       Modulus    : W_Term_OId;
@@ -359,7 +359,7 @@ package body Why.Gen.Scalars is
 
       Define_Scalar_Attributes
         (Theory    => Theory,
-         Base_Type => Get_Type_Kind (Base_Why_Type (E)),
+         Base_Type => Base_Why_Type (E),
          First     => First,
          Last      => Last,
          Modulus   => Modul,
@@ -383,7 +383,7 @@ package body Why.Gen.Scalars is
 
    procedure Define_Scalar_Attributes
      (Theory     : W_Theory_Declaration_Id;
-      Base_Type  : EW_Scalar;
+      Base_Type  : W_Type_Id;
       First      : W_Term_Id;
       Last       : W_Term_Id;
       Modulus    : W_Term_OId;
@@ -416,7 +416,7 @@ package body Why.Gen.Scalars is
                      Name        =>
                        To_Ident (Attr_To_Why_Name (Attr_Values (J).Attr_Id)),
                      Binders     => (1 .. 0 => <>),
-                     Return_Type => Why_Types (Base_Type),
+                     Return_Type => Base_Type,
                      Labels      => Name_Id_Sets.Empty_Set,
                      Def         => W_Expr_Id (Attr_Values (J).Value)));
          end if;

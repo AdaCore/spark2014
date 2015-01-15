@@ -141,14 +141,6 @@ package body Why.Atree.Modules is
                   Name       => New_Name (Symbol => NID ("unit")),
                   Is_Mutable => False);
 
-      Why_Types (EW_Bool) := EW_Bool_Type;
-      Why_Types (EW_Int) := EW_Int_Type;
-      Why_Types (EW_Fixed) := EW_Fixed_Type;
-      Why_Types (EW_Private) := EW_Private_Type;
-      Why_Types (EW_Prop) := EW_Prop_Type;
-      Why_Types (EW_Real) := EW_Real_Type;
-      Why_Types (EW_Unit) := EW_Unit_Type;
-
       --  modules of "_gnatprove_standard.mlw" file
 
       Main_Module :=

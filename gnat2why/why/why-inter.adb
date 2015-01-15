@@ -80,7 +80,9 @@ package body Why.Inter is
    --  If Force = True, we also force B to be different from Left or Right,
    --  even in the case Left = Right.
 
-   function Get_EW_Term_Type (N : Node_Id) return EW_Type;
+   function Get_EW_Term_Type (N : Node_Id) return W_Type_Id;
+   --  If the node is of some scalar type, return the corresponding Why
+   --  representation type. Otherwise return the empty node.
 
    function EW_Abstract_Shared
      (N    : Node_Id;
@@ -387,30 +389,29 @@ package body Why.Inter is
 
    function Base_Why_Type (N : Node_Id) return W_Type_Id is
 
-      E   : constant EW_Type := Get_EW_Term_Type (N);
+      E   : constant W_Type_Id := Get_EW_Term_Type (N);
       Typ : constant Entity_Id := Etype (N);
    begin
-      case E is
-         when EW_Abstract =>
+      if E = Why_Empty then
 
-            --  For a record type, we take as base type its root type, in order
-            --  to allow conversions between all types that derive from it.
+         --  For a record type, we take as base type its root type, in order
+         --  to allow conversions between all types that derive from it.
 
-            --  Record in units with external axiomatization may have a root
-            --  type not in SPARK. Conversions between these record types is
-            --  expected to be noop, so the base type is taken to be the same
-            --  as the type in that case.
+         --  Record in units with external axiomatization may have a root
+         --  type not in SPARK. Conversions between these record types is
+         --  expected to be noop, so the base type is taken to be the same
+         --  as the type in that case.
 
-            if Fullview_Not_In_SPARK (Typ) then
-               return EW_Abstract (Get_First_Ancestor_In_SPARK (Typ));
-            elsif Has_Record_Type (Typ) then
-               return EW_Abstract (Root_Record_Type (Typ));
-            else
-               return EW_Abstract (Typ);
-            end if;
-         when others =>
-            return Why_Types (E);
-      end case;
+         if Fullview_Not_In_SPARK (Typ) then
+            return EW_Abstract (Get_First_Ancestor_In_SPARK (Typ));
+         elsif Has_Record_Type (Typ) then
+            return EW_Abstract (Root_Record_Type (Typ));
+         else
+            return EW_Abstract (Typ);
+         end if;
+      else
+         return E;
+      end if;
    end Base_Why_Type;
 
    function Base_Why_Type (Left, Right : W_Type_Id) return W_Type_Id
@@ -808,21 +809,20 @@ package body Why.Inter is
    end Extract_Object_Name;
 
    function Get_EW_Type (T : Node_Id) return EW_Type is
-      E : constant EW_Type := Get_EW_Term_Type (T);
+      E : constant W_Type_Id := Get_EW_Term_Type (T);
    begin
-      case E is
-         when EW_Scalar =>
-            return E;
-         when others =>
-            return EW_Abstract;
-      end case;
+      if E = Why_Empty then
+         return EW_Abstract;
+      else
+         return Get_Type_Kind (E);
+      end if;
    end Get_EW_Type;
 
    ----------------------
    -- Get_EW_Term_Type --
    ----------------------
 
-   function Get_EW_Term_Type (N : Node_Id) return EW_Type is
+   function Get_EW_Term_Type (N : Node_Id) return W_Type_Id is
       Ty : Node_Id := N;
    begin
       if Nkind (N) /= N_Defining_Identifier
@@ -833,10 +833,10 @@ package body Why.Inter is
 
       case Ekind (Ty) is
          when Fixed_Point_Kind =>
-            return EW_Fixed;
+            return EW_Fixed_Type;
 
          when Float_Kind =>
-            return EW_Real;
+            return EW_Real_Type;
 
          when Discrete_Kind =>
             --  In the case of Standard.Boolean, the base type 'bool' is
@@ -851,22 +851,22 @@ package body Why.Inter is
             --  problem for the prover.
 
             if Is_Standard_Boolean_Type (Ty) then
-               return EW_Bool;
+               return EW_Bool_Type;
             elsif Ty = Universal_Fixed then
-               return EW_Real;
+               return EW_Real_Type;
             else
-               return EW_Int;
+               return EW_Int_Type;
             end if;
 
          when Private_Kind =>
             if Fullview_Not_In_SPARK (Ty) then
-               return EW_Abstract;
+               return Why_Empty;
             else
                return Get_EW_Term_Type (MUT (Ty));
             end if;
 
          when others =>
-            return EW_Abstract;
+            return Why_Empty;
       end case;
    end Get_EW_Term_Type;
 
