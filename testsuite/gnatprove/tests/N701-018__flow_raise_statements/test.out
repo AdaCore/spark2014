@@ -3,8 +3,6 @@ raise_statements.adb:24:10: info: assertion proved
 raise_statements.adb:29:10: info: raise statement proved unreachable
 raise_statements.adb:32:23: medium: overflow check might fail
 raise_statements.adb:32:30: info: overflow check proved
-raise_statements.adb:36:07: info: call to nonreturning procedure never executed
-raise_statements.adb:46:10: medium: call to nonreturning subprogram might be executed
 raise_statements.adb:58:10: info: assertion proved
 raise_statements.adb:63:19: warning: unused initial value of "A"
 raise_statements.adb:65:09: medium: missing dependency "null => A"
