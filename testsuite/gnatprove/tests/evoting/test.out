@@ -1,3 +1,4 @@
+evoting.adb:44:07: info: precondition proved
 evoting.adb:49:30: medium: "candidates" might not be initialized
 evoting.adb:54:60: info: length check proved
 evoting.adb:55:07: warning: assuming "Open" has no effect on global items
@@ -59,6 +60,7 @@ evoting.adb:183:16: warning: no Global contract available for "Put"
 evoting.adb:185:16: warning: assuming "Put_Line" has no effect on global items
 evoting.adb:185:16: warning: no Global contract available for "Put_Line"
 evoting.adb:190:16: info: range check proved
+evoting.adb:202:07: info: precondition proved
 evoting.adb:205:41: medium: "winners" might not be initialized
 evoting.adb:211:10: info: loop invariant initialization proved
 evoting.adb:211:10: info: loop invariant preservation proved
