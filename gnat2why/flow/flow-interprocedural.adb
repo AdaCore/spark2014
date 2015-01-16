@@ -186,12 +186,13 @@ package body Flow.Interprocedural is
          --  We do not have a dependency aspect, so we will make up
          --  one (all outputs depend on all inputs).
          declare
-            Proof_Ins : Flow_Id_Sets.Set;
-            Inputs    : Flow_Id_Sets.Set;
-            Outputs   : Flow_Id_Sets.Set;
-            E         : Entity_Id;
-            The_In    : Flow_Id;
-            The_Out   : Flow_Id;
+            Proof_Ins       : Flow_Id_Sets.Set;
+            Inputs          : Flow_Id_Sets.Set;
+            Outputs         : Flow_Id_Sets.Set;
+            E               : Entity_Id;
+            The_In          : Flow_Id;
+            The_Out         : Flow_Id;
+            Ignore_Computed : Boolean;
          begin
             --  Collect all the globals first.
             Get_Globals (Subprogram             => Called_Procedure,
@@ -200,6 +201,7 @@ package body Flow.Interprocedural is
                          Proof_Ins              => Proof_Ins,
                          Reads                  => Inputs,
                          Writes                 => Outputs,
+                         Computed               => Ignore_Computed,
                          Consider_Discriminants => True,
                          Use_Computed_Globals   => not FA.Compute_Globals);
 

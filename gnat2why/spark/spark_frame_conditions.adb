@@ -1133,6 +1133,7 @@ package body SPARK_Frame_Conditions is
          declare
             E : constant Entity_Id :=
               Find_Entity (Entity_Names.Element (Callee));
+            Ignore_Computed : Boolean;
          begin
             --  If Callee has a user-provided Global contract then we use
             --  Get_Proof_Global to work out the Globals from that. Otherwise,
@@ -1149,7 +1150,8 @@ package body SPARK_Frame_Conditions is
                   Get_Proof_Globals (Subprogram => E,
                                      Classwide  => True,
                                      Reads      => Read_Ids,
-                                     Writes     => Write_Ids);
+                                     Writes     => Write_Ids,
+                                     Computed   => Ignore_Computed);
                   Prop_Reads  := To_Ids (Flow_Types.To_Name_Set (Read_Ids));
                   Prop_Writes := To_Ids (Flow_Types.To_Name_Set (Write_Ids));
                end;

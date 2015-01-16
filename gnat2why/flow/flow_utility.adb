@@ -1111,15 +1111,17 @@ package body Flow_Utility is
    -- Get_Globals --
    -----------------
 
-   procedure Get_Globals (Subprogram             : Entity_Id;
-                          Scope                  : Flow_Scope;
-                          Classwide              : Boolean;
-                          Proof_Ins              : out Flow_Id_Sets.Set;
-                          Reads                  : out Flow_Id_Sets.Set;
-                          Writes                 : out Flow_Id_Sets.Set;
-                          Consider_Discriminants : Boolean := False;
-                          Globals_For_Proof      : Boolean := False;
-                          Use_Computed_Globals   : Boolean := True)
+   procedure Get_Globals
+     (Subprogram             : Entity_Id;
+      Scope                  : Flow_Scope;
+      Classwide              : Boolean;
+      Proof_Ins              : out Flow_Id_Sets.Set;
+      Reads                  : out Flow_Id_Sets.Set;
+      Writes                 : out Flow_Id_Sets.Set;
+      Computed               : out Boolean;
+      Consider_Discriminants : Boolean := False;
+      Globals_For_Proof      : Boolean := False;
+      Use_Computed_Globals   : Boolean := True)
    is
       Global_Node  : constant Node_Id := Get_Contract_Node (Subprogram,
                                                             Scope,
@@ -1131,6 +1133,7 @@ package body Flow_Utility is
       Proof_Ins := Flow_Id_Sets.Empty_Set;
       Reads     := Flow_Id_Sets.Empty_Set;
       Writes    := Flow_Id_Sets.Empty_Set;
+      Computed  := Present (Global_Node) or Present (Depends_Node);
 
       if Debug_Trace_Get_Global then
          Write_Str ("Get_Global (");
@@ -1606,10 +1609,13 @@ package body Flow_Utility is
    -- Get_Proof_Globals --
    -----------------------
 
-   procedure Get_Proof_Globals (Subprogram : Entity_Id;
-                                Classwide  : Boolean;
-                                Reads      : out Flow_Id_Sets.Set;
-                                Writes     : out Flow_Id_Sets.Set)
+   procedure Get_Proof_Globals
+     (Subprogram           : Entity_Id;
+      Classwide            : Boolean;
+      Reads                : out Flow_Id_Sets.Set;
+      Writes               : out Flow_Id_Sets.Set;
+      Computed             : out Boolean;
+      Use_Computed_Globals : Boolean := True)
    is
       Proof_Ins : Flow_Id_Sets.Set;
       Tmp_In    : Flow_Id_Sets.Set;
@@ -1692,8 +1698,10 @@ package body Flow_Utility is
          Proof_Ins              => Proof_Ins,
          Reads                  => Tmp_In,
          Writes                 => Tmp_Out,
+         Computed               => Computed,
          Consider_Discriminants => False,
-         Globals_For_Proof      => True);
+         Globals_For_Proof      => True,
+         Use_Computed_Globals   => Use_Computed_Globals);
 
       --  Merge the proof ins with the reads.
       Tmp_In.Union (Proof_Ins);
@@ -1718,13 +1726,15 @@ package body Flow_Utility is
                                     Classwide  : Boolean)
                                     return Boolean
    is
-      Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
-      Write_Ids : Flow_Types.Flow_Id_Sets.Set;
+      Read_Ids        : Flow_Types.Flow_Id_Sets.Set;
+      Write_Ids       : Flow_Types.Flow_Id_Sets.Set;
+      Ignore_Computed : Boolean;
    begin
       Get_Proof_Globals (Subprogram => Subprogram,
                          Classwide  => Classwide,
                          Reads      => Read_Ids,
-                         Writes     => Write_Ids);
+                         Writes     => Write_Ids,
+                         Computed   => Ignore_Computed);
       return not Read_Ids.Is_Empty;
    end Has_Proof_Global_Reads;
 
@@ -1736,13 +1746,15 @@ package body Flow_Utility is
                                      Classwide  : Boolean)
                                      return Boolean
    is
-      Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
-      Write_Ids : Flow_Types.Flow_Id_Sets.Set;
+      Read_Ids        : Flow_Types.Flow_Id_Sets.Set;
+      Write_Ids       : Flow_Types.Flow_Id_Sets.Set;
+      Ignore_Computed : Boolean;
    begin
       Get_Proof_Globals (Subprogram => Subprogram,
                          Classwide  => Classwide,
                          Reads      => Read_Ids,
-                         Writes     => Write_Ids);
+                         Writes     => Write_Ids,
+                         Computed   => Ignore_Computed);
       return not Write_Ids.Is_Empty;
    end Has_Proof_Global_Writes;
 
@@ -1853,7 +1865,8 @@ package body Flow_Utility is
          --  Determine the global effects of the called program.
 
          declare
-            Proof_Reads : Flow_Id_Sets.Set;
+            Proof_Reads     : Flow_Id_Sets.Set;
+            Ignore_Computed : Boolean;
          begin
             Get_Globals (Subprogram           => Subprogram,
                          Scope                => Scope,
@@ -1862,6 +1875,7 @@ package body Flow_Utility is
                          Proof_Ins            => Proof_Reads,
                          Reads                => Global_Reads,
                          Writes               => Global_Writes,
+                         Computed             => Ignore_Computed,
                          Use_Computed_Globals => Use_Computed_Globals);
             if not Fold_Functions then
                Global_Reads.Union (Proof_Reads);

@@ -960,10 +960,14 @@ package body SPARK_Util is
    -- Has_Output --
    ----------------
 
-   function Has_Output (E : Entity_Id) return Boolean is
+   function Has_Output
+     (E                    : Entity_Id;
+      Use_Computed_Globals : Boolean := True) return Tribool
+   is
       Params : constant List_Id :=
                  Parameter_Specifications (Get_Subprogram_Spec (E));
       Param  : Node_Id;
+      Computed : Boolean;
 
       Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
       Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
@@ -985,32 +989,42 @@ package body SPARK_Util is
 
       --  Consider output globals
 
-      Flow_Utility.Get_Proof_Globals (Subprogram => E,
-                                      Classwide  => True,
-                                      Reads      => Read_Ids,
-                                      Writes     => Write_Ids);
+      Flow_Utility.Get_Proof_Globals
+        (Subprogram => E,
+         Classwide  => True,
+         Reads      => Read_Ids,
+         Writes     => Write_Ids,
+         Computed   => Computed,
+         Use_Computed_Globals => Use_Computed_Globals);
       Write_Names := Flow_Types.To_Name_Set (Write_Ids);
 
       if not Write_Names.Is_Empty then
          return True;
-      end if;
+
+      --  No output specified, but there might be some output anyway
+
+      elsif Computed and not Use_Computed_Globals then
+         return Dont_Know;
 
       --  No output found
 
-      return False;
+      else
+         return False;
+      end if;
    end Has_Output;
 
    --------------------
    -- Get_Abend_Kind --
    --------------------
 
-   function Get_Abend_Kind (E : Entity_Id) return Execution_Kind_T is
+   function Get_Abend_Kind
+     (E                    : Entity_Id;
+      Use_Computed_Globals : Boolean := True) return Execution_Kind_T is
    begin
-      if Has_Output (E) then
-         return Infinite_Loop;
-      else
-         return Abnormal_Termination;
-      end if;
+      case Has_Output (E, Use_Computed_Globals) is
+         when True | Dont_Know => return Infinite_Loop;
+         when False            => return Abnormal_Termination;
+      end case;
    end Get_Abend_Kind;
 
    ----------------------------------------

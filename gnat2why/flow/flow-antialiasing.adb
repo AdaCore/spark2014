@@ -717,16 +717,18 @@ package body Flow.Antialiasing is
       --  Check against globals.
 
       declare
-         Proof_Reads : Flow_Id_Sets.Set;
-         Reads       : Flow_Id_Sets.Set;
-         Writes      : Flow_Id_Sets.Set;
+         Proof_Reads     : Flow_Id_Sets.Set;
+         Reads           : Flow_Id_Sets.Set;
+         Writes          : Flow_Id_Sets.Set;
+         Ignore_Computed : Boolean;
       begin
          Get_Globals (Subprogram => Entity (Name (Call)),
                       Scope      => Scope,
                       Classwide  => Is_Dispatching_Call (Call),
                       Proof_Ins  => Proof_Reads,
                       Reads      => Reads,
-                      Writes     => Writes);
+                      Writes     => Writes,
+                      Computed   => Ignore_Computed);
          if Is_Out then
             for R of Reads loop
                --  No use in checking both the read and the write of
