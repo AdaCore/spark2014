@@ -1890,7 +1890,7 @@ package body Flow_Utility is
          then
             Error_Msg_NE
               (Msg =>
-                 "side-effects of function & are not modelled in SPARK",
+                 "side effects of function & are not modeled in SPARK",
                N   => Callsite,
                E   => Subprogram);
          end if;
