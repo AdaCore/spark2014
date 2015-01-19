@@ -716,42 +716,13 @@ package Why.Sinfo is
        EW_Prog;
 
    type EW_Type is
-     (EW_Unit,
-      EW_Prop,
-      EW_Bool,
-      EW_Int,
-      EW_Fixed,
-      EW_Real,
-
-      --  This is the set of all private types whose most underlying type is
-      --  not in SPARK.
-      EW_Private,
+     (EW_Builtin,
 
       --  This is a special marker for "split types"
 
       EW_Split,
 
       EW_Abstract);
-
-   subtype EW_Not_Null_Type is EW_Type range
-       EW_Prop ..
-   --  EW_Bool
-   --  EW_Int
-   --  EW_Fixed
-   --  EW_Real
-   --  EW_Private
-       EW_Abstract;
-
-   subtype EW_Scalar is EW_Type range
-       EW_Bool ..
-   --  EW_Int
-   --  EW_Fixed
-       EW_Real;
-
-   subtype EW_Numeric is EW_Type range
-       EW_Int ..
-   --  EW_Fixed
-       EW_Real;
 
    type EW_Literal is
      (EW_True,

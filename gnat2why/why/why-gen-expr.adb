@@ -1169,7 +1169,7 @@ package body Why.Gen.Expr is
 
       if Eq_Base (To, From)
         and then (not Do_Check
-                    or else  Get_Type_Kind (To) = EW_Bool)
+                    or else  To = EW_Bool_Type)
         and then No (Round_Func)
       then
          return Expr;
@@ -1290,7 +1290,7 @@ package body Why.Gen.Expr is
       if Present (Range_Type)
         and then not Range_Check_Applied
         and then Base_Why_Type (Range_Type) = Cur
-        and then Get_Type_Kind (From) /= EW_Bool
+        and then From /= EW_Bool_Type
       then
          Range_Check_Applied := True;
 
@@ -1314,7 +1314,7 @@ package body Why.Gen.Expr is
             --       abstract type, for which conversion to int/real is
             --       defined.
 
-            if Get_Type_Kind (Base_Why_Type (From)) = EW_Fixed then
+            if Base_Why_Type (From) = EW_Fixed_Type then
                Fixed_Type :=
                  (if Nkind (Ada_Node) in N_Type_Conversion
                                        | N_Qualified_Expression
@@ -1329,7 +1329,7 @@ package body Why.Gen.Expr is
             --       abstract type, for which conversion from int/real is
             --       defined.
 
-            elsif Get_Type_Kind (Base_Why_Type (To)) = EW_Fixed then
+            elsif Base_Why_Type (To) = EW_Fixed_Type then
                Fixed_Type :=
                  (if Nkind (Parent (Ada_Node)) in N_Type_Conversion
                                                 | N_Qualified_Expression
@@ -1354,7 +1354,7 @@ package body Why.Gen.Expr is
       --     a rounding operation.
 
       if Present (Round_Func) then
-         pragma Assert (Get_Type_Kind (Cur) = EW_Real);
+         pragma Assert (Cur = EW_Real_Type);
          Result := New_Call (Domain   => Domain,
                              Name     => Round_Func,
                              Args     => (1 => Result),

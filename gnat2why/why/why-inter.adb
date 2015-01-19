@@ -879,19 +879,19 @@ package body Why.Inter is
      (Left  : W_Type_Id;
       Right : W_Type_Id) return W_Type_Id
    is
-      Left_Base, Right_Base : EW_Type;
+      Left_Base, Right_Base : W_Type_Id;
 
    begin
       if Eq_Base (Left, Right) then
          return Left;
       end if;
 
-      Left_Base := Get_Type_Kind (Base_Why_Type (Left));
-      Right_Base := Get_Type_Kind (Base_Why_Type (Right));
+      Left_Base := Base_Why_Type (Left);
+      Right_Base := Base_Why_Type (Right);
 
-      if (Left_Base = EW_Int and then Right_Base = EW_Bool)
+      if (Left_Base = EW_Int_Type and then Right = EW_Bool_Type)
         or else
-          (Left_Base = EW_Bool and then Right_Base = EW_Int)
+          (Left_Base = EW_Bool_Type and then Right_Base = EW_Int_Type)
       then
          return EW_Int_Type;
       end if;

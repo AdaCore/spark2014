@@ -38,8 +38,6 @@ with SPARK_Util;           use SPARK_Util;
 with String_Utils;         use String_Utils;
 with Stringt;              use Stringt;
 with Urealp;               use Urealp;
-with Why.Gen.Names;        use Why.Gen.Names;
-with Why.Sinfo;            use Why.Sinfo;
 
 package body Gnat2Why.Nodes is
 
@@ -818,19 +816,6 @@ package body Gnat2Why.Nodes is
          return MUT (T);
       else
          return T;
-      end if;
-   end Type_Of_Node;
-
-   function Type_Of_Node (N : Node_Id) return String
-   is
-      E : constant Entity_Id := Type_Of_Node (N);
-   begin
-      if Is_Standard_Boolean_Type (E) then
-         return Why_Scalar_Type_Name (EW_Bool);
-      elsif E = Universal_Fixed then
-         return Why_Scalar_Type_Name (EW_Fixed);
-      else
-         return Full_Name (E);
       end if;
    end Type_Of_Node;
 

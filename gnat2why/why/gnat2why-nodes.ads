@@ -160,9 +160,6 @@ package Gnat2Why.Nodes is
    --  Returns the name of entity E capitalized as it appears in the source
    --  code.
 
-   function Type_Of_Node (N : Node_Id) return String;
-   --  Get the name of the type of an Ada node, as a string
-
    function Type_Of_Node (N : Node_Id) return Entity_Id;
    --  Get the name of the type of an Ada node, as a Node_Id of Kind
    --  N_Defining_Identifier

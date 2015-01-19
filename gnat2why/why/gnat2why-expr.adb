@@ -4239,9 +4239,9 @@ package body Gnat2Why.Expr is
 
             declare
                Minus_Ident : constant W_Identifier_Id :=
-                 (if Get_Type_Kind (Base_Why_Type (Right_Type)) = EW_Int then
+                 (if Base_Why_Type (Right_Type) = EW_Int_Type then
                      Int_Unary_Minus
-                  elsif Get_Type_Kind (Base_Why_Type (Right_Type)) = EW_Fixed
+                  elsif Base_Why_Type (Right_Type) = EW_Fixed_Type
                   then Fixed_Unary_Minus
                   else Real_Unary_Minus);
             begin
@@ -4275,8 +4275,7 @@ package body Gnat2Why.Expr is
                  New_Call
                    (Ada_Node => Ada_Node,
                     Domain   => Domain,
-                    Name     =>
-                      New_Abs (Get_Type_Kind (Typ)),
+                    Name     => New_Abs (Typ),
                     Args     => (1 => Insert_Simple_Conversion
                                  (Ada_Node => Ada_Node,
                                   Domain   => Domain,
@@ -4445,8 +4444,7 @@ package body Gnat2Why.Expr is
                                W        => Oper)
                   elsif Is_Modular_Integer_Type (Return_Type) then
                        Euclid_Div
-                  else
-                     New_Division (Get_Type_Kind (Base)));
+                  else New_Division (Base));
 
                L_Why := Insert_Simple_Conversion
                  (Ada_Node => Ada_Node,
@@ -4521,7 +4519,7 @@ package body Gnat2Why.Expr is
                Name    : W_Identifier_Id;
                Typ     : constant W_Type_Id := Base_Why_Type (Left_Type);
             begin
-               Name := New_Exp (Get_Type_Kind (Typ));
+               Name := New_Exp (Typ);
 
                T := New_Call
                  (Ada_Node => Ada_Node,

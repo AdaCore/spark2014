@@ -61,15 +61,9 @@ package body Why.Images is
    function Img (Ty : EW_Type) return String is
    begin
       case Ty is
-         when EW_Unit => return "unit";
-         when EW_Prop => return "prop";
-         when EW_Real => return "real";
-         when EW_Int =>  return "int";
-         when EW_Bool => return "bool";
-         when EW_Private => return "__private";
+         when EW_Builtin => return "builtin";
          when EW_Abstract => return "[abstract node]";
          when EW_Split => return "[split node]";
-         when EW_Fixed => return "__fixed";
       end case;
    end Img;
 

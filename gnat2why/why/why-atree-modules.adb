@@ -113,31 +113,31 @@ package body Why.Atree.Modules is
       --  builtin Why types
 
       EW_Bool_Type :=
-        New_Type (Type_Kind  => EW_Bool,
+        New_Type (Type_Kind  => EW_Builtin,
                   Name       => New_Name (Symbol => NID ("bool")),
                   Is_Mutable => False);
       EW_Int_Type :=
-        New_Type (Type_Kind  => EW_Int,
+        New_Type (Type_Kind  => EW_Builtin,
                   Name       => New_Name (Symbol => NID ("int")),
                   Is_Mutable => False);
       EW_Fixed_Type :=
-        New_Type (Type_Kind  => EW_Fixed,
+        New_Type (Type_Kind  => EW_Builtin,
                   Name       => New_Name (Symbol => NID ("__fixed")),
                   Is_Mutable => False);
       EW_Private_Type :=
-        New_Type (Type_Kind  => EW_Private,
+        New_Type (Type_Kind  => EW_Builtin,
                   Name       => New_Name (Symbol => NID ("__private")),
                   Is_Mutable => False);
       EW_Prop_Type :=
-        New_Type (Type_Kind  => EW_Prop,
+        New_Type (Type_Kind  => EW_Builtin,
                   Name       => New_Name (Symbol => NID ("prop")),
                   Is_Mutable => False);
       EW_Real_Type :=
-        New_Type (Type_Kind  => EW_Real,
+        New_Type (Type_Kind  => EW_Builtin,
                   Name       => New_Name (Symbol => NID ("real")),
                   Is_Mutable => False);
       EW_Unit_Type :=
-        New_Type (Type_Kind  => EW_Unit,
+        New_Type (Type_Kind  => EW_Builtin,
                   Name       => New_Name (Symbol => NID ("unit")),
                   Is_Mutable => False);
 

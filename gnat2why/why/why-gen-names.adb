@@ -161,32 +161,26 @@ package body Why.Gen.Names is
       To_Kind   : constant EW_Type := Get_Type_Kind (To);
    begin
       case From_Kind is
-         when EW_Unit | EW_Prop | EW_Private =>
-            raise Not_Implemented;
-
-         when EW_Scalar =>
+         when EW_Builtin =>
             case To_Kind is
-               when EW_Unit | EW_Prop | EW_Private =>
-                  raise Not_Implemented;
-
-               when EW_Scalar =>
+               when EW_Builtin =>
 
                   --  Only certain conversions are OK
 
-                  if From_Kind = EW_Int and then To_Kind = EW_Real then
+                  if From = EW_Int_Type and then To = EW_Real_Type then
                      return Floating_Real_Of_Int;
 
                   --  Conversions from real to int in Ada round to the nearest
                   --  integer, and away from zero in case of tie, exactly like
                   --  'Rounding attribute.
 
-                  elsif From_Kind = EW_Real and then To_Kind = EW_Int then
+                  elsif From = EW_Real_Type and then To = EW_Int_Type then
                      return Floating_Round;
-                  elsif From_Kind = EW_Bool and then To_Kind = EW_Int then
+                  elsif From = EW_Bool_Type and then To = EW_Int_Type then
                      return Prefix (Ada_Node => Standard_Boolean,
                                     M        => Boolean_Module,
                                     W        => WNE_To_Int);
-                  elsif From_Kind = EW_Int and then To_Kind = EW_Bool then
+                  elsif From = EW_Int_Type and then To = EW_Bool_Type then
                      return Prefix (Ada_Node => Standard_Boolean,
                                     M        => Boolean_Module,
                                     W        => WNE_Of_Int);
@@ -207,23 +201,20 @@ package body Why.Gen.Names is
                      return
                        Prefix (Ada_Node => A,
                                M        => E_Module (A),
-                               W        => Convert_From (From_Kind));
+                               W        => Convert_From (From));
                   end;
             end case;
 
          when EW_Abstract | EW_Split =>
             case To_Kind is
-               when EW_Unit | EW_Prop | EW_Private =>
-                  raise Not_Implemented;
-
-               when EW_Scalar =>
+               when EW_Builtin =>
                   declare
                      A : constant Node_Id := Get_Ada_Node (+From);
                   begin
                      return
                        Prefix (Ada_Node => A,
                                M        => E_Module (A),
-                               W => Convert_To (To_Kind));
+                               W => Convert_To (To));
                   end;
 
                --  Case of a conversion between two record or private types
@@ -257,26 +248,34 @@ package body Why.Gen.Names is
    -- Convert_From --
    ------------------
 
-   function Convert_From (Kind : EW_Numeric) return Why_Name_Enum is
+   function Convert_From (Kind : W_Type_Id) return Why_Name_Enum is
    begin
-      case Kind is
-         when EW_Int   => return WNE_Of_Int;
-         when EW_Fixed => return WNE_Of_Fixed;
-         when EW_Real  => return WNE_Of_Real;
-      end case;
+      if Kind = EW_Int_Type then
+         return WNE_Of_Int;
+      elsif Kind = EW_Fixed_Type then
+         return WNE_Of_Fixed;
+      elsif Kind = EW_Real_Type then
+         return WNE_Of_Real;
+      else
+         raise Why.Not_Implemented;
+      end if;
    end Convert_From;
 
    ----------------
    -- Convert_To --
    ----------------
 
-   function Convert_To (Kind : EW_Numeric) return Why_Name_Enum is
+   function Convert_To (Kind : W_Type_Id) return Why_Name_Enum is
    begin
-      case Kind is
-         when EW_Int   => return WNE_To_Int;
-         when EW_Fixed => return WNE_To_Fixed;
-         when EW_Real  => return WNE_To_Real;
-      end case;
+      if Kind = EW_Int_Type then
+         return WNE_To_Int;
+      elsif Kind = EW_Fixed_Type then
+         return WNE_To_Fixed;
+      elsif Kind = EW_Real_Type then
+         return WNE_To_Real;
+      else
+         raise Why.Not_Implemented;
+      end if;
    end Convert_To;
 
    -----------------------
@@ -312,46 +311,49 @@ package body Why.Gen.Names is
    -- New_Abs --
    -------------
 
-   function New_Abs (Kind : EW_Numeric) return W_Identifier_Id is
+   function New_Abs (Kind : W_Type_Id) return W_Identifier_Id is
    begin
-      case Kind is
-         when EW_Real =>
-            return Floating_Abs_Real;
-         when EW_Int | EW_Fixed =>
-            return Integer_Abs;
-      end case;
+      if Kind = EW_Real_Type then
+         return Floating_Abs_Real;
+      elsif Kind = EW_Int_Type or else Kind = EW_Fixed_Type then
+         return Integer_Abs;
+      else
+         raise Not_Implemented;
+      end if;
    end New_Abs;
 
    ------------------
    -- New_Division --
    ------------------
 
-   function New_Division (Kind : EW_Numeric) return W_Identifier_Id is
+   function New_Division (Kind : W_Type_Id) return W_Identifier_Id is
    begin
-      case Kind is
-         when EW_Real =>
-            return Floating_Div_Real;
-         when EW_Int =>
-            return Integer_Div;
-         when EW_Fixed =>
-            raise Program_Error;
-      end case;
+      if Kind = EW_Real_Type then
+         return Floating_Div_Real;
+      elsif Kind = EW_Int_Type then
+         return Integer_Div;
+      elsif Kind = EW_Fixed_Type then
+         raise Program_Error;
+      else
+         raise Not_Implemented;
+      end if;
    end New_Division;
 
    -------------
    -- New_Exp --
    -------------
 
-   function New_Exp (Kind : EW_Numeric) return W_Identifier_Id is
+   function New_Exp (Kind : W_Type_Id) return W_Identifier_Id is
    begin
-      case Kind is
-         when EW_Real =>
-            return Floating_Power;
-         when EW_Int =>
-            return Integer_Power;
-         when EW_Fixed =>
-            raise Program_Error;
-      end case;
+      if Kind = EW_Real_Type then
+         return Floating_Power;
+      elsif Kind = EW_Int_Type then
+         return Integer_Power;
+      elsif Kind = EW_Fixed_Type then
+         raise Program_Error;
+      else
+         raise Program_Error;
+      end if;
    end New_Exp;
 
    --------------------
@@ -737,23 +739,5 @@ package body Why.Gen.Names is
          raise Program_Error;
       end if;
    end Uint_To_Positive;
-
-   --------------------------
-   -- Why_Scalar_Type_Name --
-   --------------------------
-
-   function Why_Scalar_Type_Name (Kind : EW_Scalar) return String is
-   begin
-      case Kind is
-         when EW_Bool =>
-            return "bool";
-         when EW_Int =>
-            return "int";
-         when EW_Real =>
-            return "real";
-         when EW_Fixed =>
-            return "** special ""fixed"" type **";
-      end case;
-   end Why_Scalar_Type_Name;
 
 end Why.Gen.Names;

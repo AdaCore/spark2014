@@ -71,16 +71,13 @@ package Why.Gen.Names is
      (Ty : Entity_Id; R : Range_Check_Kind) return W_Identifier_Id;
    --  Return the name of the "range_check_" program function for the type
 
-   function Why_Scalar_Type_Name (Kind : EW_Scalar) return String;
-   --  Return the name of the Why scalar type (e.g. "real" from real)
-
-   function New_Division (Kind : EW_Numeric) return W_Identifier_Id;
+   function New_Division (Kind : W_Type_Id) return W_Identifier_Id;
    --  Return the name of the division for the given kind
 
-   function New_Exp (Kind : EW_Numeric) return W_Identifier_Id;
+   function New_Exp (Kind : W_Type_Id) return W_Identifier_Id;
    --  Return the name of the exponential for the given kind
 
-   function New_Abs (Kind : EW_Numeric) return W_Identifier_Id;
+   function New_Abs (Kind : W_Type_Id) return W_Identifier_Id;
    --  Return the name of the absolute value operator for the given kind
 
    function New_Identifier (Ada_Node : Node_Id := Empty;
@@ -329,8 +326,8 @@ package Why.Gen.Names is
                     N        : String;
                     Ada_Node : Node_Id := Empty) return W_Identifier_Id;
 
-   function Convert_To (Kind : EW_Numeric) return Why_Name_Enum;
+   function Convert_To (Kind : W_Type_Id) return Why_Name_Enum;
 
-   function Convert_From (Kind : EW_Numeric) return Why_Name_Enum;
+   function Convert_From (Kind : W_Type_Id) return Why_Name_Enum;
 
 end Why.Gen.Names;

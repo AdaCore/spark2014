@@ -1316,11 +1316,16 @@ package body Gnat2Why.External_Axioms is
                              Typ  => F_W_Type);
                         M : constant W_Module_Id :=
                           (case Get_Type_Kind (F_W_Type) is
-                              when EW_Int | EW_Fixed => Integer_Module,
-                              when EW_Real => Floating_Module,
-                              when EW_Bool => Boolean_Module,
-                              when EW_Unit .. EW_Prop => Main_Module,
-                              when EW_Abstract | EW_Split | EW_Private =>
+                              when EW_Builtin =>
+                             (if F_W_Type = EW_Bool_Type then Boolean_Module
+                              elsif F_W_Type = EW_Fixed_Type then
+                                 Integer_Module
+                              elsif F_W_Type = EW_Int_Type then
+                                 Integer_Module
+                              elsif F_W_Type = EW_Real_Type then
+                                 Floating_Module
+                              else Main_Module),
+                              when EW_Abstract | EW_Split =>
                                  E_Module (Get_Ada_Node (+F_W_Type)));
                      begin
                         Add_With_Clause (TFile.Cur_Theory,
