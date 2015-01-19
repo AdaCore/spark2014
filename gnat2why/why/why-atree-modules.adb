@@ -24,12 +24,12 @@
 ------------------------------------------------------------------------------
 
 with Atree;              use Atree;
+with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
 with Sinfo;              use Sinfo;
+with Stand;              use Stand;
 
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Names;      use Why.Gen.Names;
-
-with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
 
 package body Why.Atree.Modules is
 
@@ -496,6 +496,24 @@ package body Why.Atree.Modules is
       Return_Exc :=
         New_Name (Symbol => NID ("Return__exc"));
 
+      Havoc_Fun :=
+        New_Identifier (Domain => EW_Term,
+                        Module => Main_Module,
+                        Symbol => NID ("__havoc"),
+                        Typ    => EW_Unit_Type);
+
+      Ignore_Id :=
+        New_Identifier (Domain => EW_Term,
+                        Module => Main_Module,
+                        Symbol => NID ("___ignore"),
+                        Typ    => EW_Unit_Type);
+
+      Bool_Not :=
+        New_Identifier (Domain => EW_Term,
+                        Module => Main_Module,
+                        Symbol => NID ("notb"),
+                        Typ    => EW_Bool_Type);
+
       --  identifiers of the "_gnatprove_standard.Floating" module
 
       Floating_Div_Real :=
@@ -608,6 +626,20 @@ package body Why.Atree.Modules is
                         Domain => EW_Term,
                         Symbol => NID ("bool_gt"),
                         Typ    => EW_Bool_Type);
+
+      --  To_String function
+
+      To_String_Id :=
+        New_Identifier (Ada_Node => Standard_String,
+                        Domain   => EW_Term,
+                        Module   => E_Module (Standard_String),
+                        Symbol   => NID ("to_string"));
+
+      Of_String_Id :=
+        New_Identifier (Ada_Node => Standard_String,
+                        Domain   => EW_Term,
+                        Module   => E_Module (Standard_String),
+                        Symbol   => NID ("from_string"));
 
       --  Other identifiers
 

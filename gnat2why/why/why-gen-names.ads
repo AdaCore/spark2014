@@ -172,18 +172,11 @@ package Why.Gen.Names is
       WNE_Attr_Small,
 
       WNE_Attr_Value,
-      WNE_Attr_Value_Pre_Check,
       WNE_Base_Type,
       WNE_Bool_And,
       WNE_Bool_Eq,
-      WNE_Bool_Ge,
-      WNE_Bool_Gt,
-      WNE_Bool_Le,
-      WNE_Bool_Lt,
-      WNE_Bool_Ne,
       WNE_Bool_Or,
       WNE_Bool_Xor,
-      WNE_Bool_Not,
       WNE_Check_Not_First,
       WNE_Check_Not_Last,
       WNE_Def,
@@ -245,10 +238,6 @@ package Why.Gen.Names is
       WNE_Ignore,
       WNE_Index_Dynamic_Property,
 
-      --  Polymorphic __havoc procedure sets the value of its parameter to any
-      --  possible value allowed by its type.
-      WNE_Havoc,
-
       --  Prefix for name of functions which extract the value of an extension
       --  component from the extension field of a value of the root type.
       WNE_Extract_Prefix,
@@ -268,9 +257,6 @@ package Why.Gen.Names is
       --  Suffix for name of logic functions
       WNE_Logic_Fun_Suffix,  --  __logic
 
-      --  Prefix of the inversion axioms between root type and record type
-      WNE_Inversion_Axiom_Prefix,  --  inversion_axiom
-
       WNE_Of_Array,
       WNE_Of_Base,
       WNE_Of_Int,
@@ -280,15 +266,13 @@ package Why.Gen.Names is
       WNE_Range_Check_Fun,
       WNE_Rec_Split_Discrs,
       WNE_Rec_Split_Fields,
-      WNE_Pre_Check,
       WNE_Range_Pred,
       WNE_To_Array,
       WNE_To_Base,
       WNE_To_Int,
       WNE_To_Fixed,
       WNE_To_Real,
-      WNE_To_String,
-      WNE_Type
+      WNE_To_String
      );
 
    function Attr_To_Why_Name (A : Attribute_Id) return Why_Name_Enum;

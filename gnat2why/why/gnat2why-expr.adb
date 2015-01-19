@@ -4211,7 +4211,7 @@ package body Gnat2Why.Expr is
                      elsif Op = N_Op_Ne then
                         T :=
                           New_Call (Domain => Domain,
-                                    Name   => To_Ident (WNE_Bool_Not),
+                                    Name   => Bool_Not,
                                     Args   => (1 => T),
                                     Typ    => EW_Bool_Type);
                      end if;
@@ -6473,7 +6473,7 @@ package body Gnat2Why.Expr is
       elsif Op = N_Op_Ne then
          T :=
            New_Call (Domain => Domain,
-                     Name   => To_Ident (WNE_Bool_Not),
+                     Name   => Bool_Not,
                      Args   => (1 => T),
                      Typ    => EW_Bool_Type);
       end if;
@@ -7198,11 +7198,7 @@ package body Gnat2Why.Expr is
                               Params)));
             T := New_Call (Ada_Node => Expr,
                            Domain   => Domain,
-                           Name     =>
-                           Prefix
-                             (Ada_Node => Standard_String,
-                              M        => E_Module (Standard_String),
-                              W        => WNE_To_String),
+                           Name     => To_String_Id,
                            Args     => (1 => T),
                            Typ      => EW_Abstract (Standard_String));
 
@@ -7234,11 +7230,7 @@ package body Gnat2Why.Expr is
                  New_Call
                    (Ada_Node => Expr,
                     Domain   => Domain,
-                    Name     =>
-                      Prefix
-                        (Ada_Node => Standard_String,
-                         M        => E_Module (Standard_String),
-                         W        => WNE_Of_String),
+                    Name     => Of_String_Id,
                     Args     => (1 => Arg));
                if Domain = EW_Prog then
                   T := New_VC_Call
@@ -9358,7 +9350,7 @@ package body Gnat2Why.Expr is
                         pragma Assert (E.Fields.Binder.Mutable);
 
                         T := +Sequence
-                          (New_Call (Name => To_Ident (WNE_Havoc),
+                          (New_Call (Name => Havoc_Fun,
                                      Args => (1 => +E.Fields.Binder.B_Name)),
                            +T);
                      end if;
@@ -9372,7 +9364,7 @@ package body Gnat2Why.Expr is
                         declare
                            Havoc_Discr      : constant W_Prog_Id :=
                              New_Call
-                               (Name => To_Ident (WNE_Havoc),
+                               (Name => Havoc_Fun,
                                 Args => (1 => +E.Discrs.Binder.B_Name));
                            Havoc_Discr_Cond : constant W_Expr_Id :=
                              New_Conditional
@@ -9420,7 +9412,7 @@ package body Gnat2Why.Expr is
       then
          pragma Assert (Is_Mutable_In_Why (Ent));
          pragma Assert (Params.Ref_Allowed);
-         T := +Sequence (Left  => New_Call (Name => To_Ident (WNE_Havoc),
+         T := +Sequence (Left  => New_Call (Name => Havoc_Fun,
                                             Args => (1 => T)),
                          Right => New_Deref (Ada_Node => Get_Ada_Node (+T),
                                              Right    => +T,

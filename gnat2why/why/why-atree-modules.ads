@@ -94,7 +94,9 @@ package Why.Atree.Modules is
 
    String_Image_Type         : W_Type_Id;
    Type_Of_Heap              : W_Type_Id;
-
+   Havoc_Fun                 : W_Identifier_Id;
+   Ignore_Id                 : W_Identifier_Id;
+   Bool_Not                  : W_Identifier_Id;
    --  builtin unary minus
 
    Int_Unary_Minus           : W_Identifier_Id;
@@ -173,6 +175,9 @@ package Why.Atree.Modules is
    Bool_Bool_Ne               : W_Identifier_Id;
    Bool_Bool_Gt               : W_Identifier_Id;
    Bool_Bool_Ge               : W_Identifier_Id;
+
+   To_String_Id               : W_Identifier_Id;
+   Of_String_Id               : W_Identifier_Id;
 
    --  Other identifiers
 

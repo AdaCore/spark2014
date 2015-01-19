@@ -525,14 +525,11 @@ package body Why.Gen.Names is
          when WNE_Of_Array             => return "of_array";
          when WNE_To_Base              => return "to_base";
          when WNE_Of_Base              => return "of_base";
-         when WNE_Type                 => return "t";
          when WNE_Ignore               => return "___ignore";
-         when WNE_Havoc                => return "__havoc";
          when WNE_Range_Check_Fun      => return "range_check_";
          when WNE_Bool_And             => return "andb";
          when WNE_Bool_Or              => return "orb";
          when WNE_Bool_Xor             => return "xorb";
-         when WNE_Bool_Not             => return "notb";
          when WNE_Fixed_Point_Div      => return "fxp_div";
          when WNE_Fixed_Point_Mult     => return "fxp_mult";
          when WNE_Fixed_Point_Div_Int  => return "fxp_div_int";
@@ -555,13 +552,7 @@ package body Why.Gen.Names is
          when WNE_To_String            => return "to_string";
          when WNE_Of_String            => return "from_string";
          when WNE_Bool_Eq              => return "bool_eq";
-         when WNE_Bool_Ne              => return "bool_ne";
-         when WNE_Bool_Lt              => return "bool_lt";
-         when WNE_Bool_Le              => return "bool_le";
-         when WNE_Bool_Gt              => return "bool_gt";
-         when WNE_Bool_Ge              => return "bool_ge";
          when WNE_Def                  => return "def";
-         when WNE_Pre_Check            => return "pre_check";
          when WNE_Dummy                => return "dummy";
          when WNE_Check_Not_First      => return "check_not_first";
          when WNE_Check_Not_Last       => return "check_not_last";
@@ -576,9 +567,6 @@ package body Why.Gen.Names is
          when WNE_Attr_Small           => return "inv_small";
          when WNE_Attr_Value           =>
             return "attr__" & Attribute_Id'Image (Attribute_Value);
-         when WNE_Attr_Value_Pre_Check =>
-            return "attr__" & Attribute_Id'Image (Attribute_Value)
-              & "__pre_check";
          when WNE_Rec_Split_Discrs     => return "__split_discrs";
          when WNE_Rec_Split_Fields     => return "__split_fields";
          when WNE_Attr_Tag             => return "attr__tag";
@@ -595,7 +583,6 @@ package body Why.Gen.Names is
          when WNE_Dispatch_Module      => return "Dispatch";
          when WNE_Refine_Module        => return "Refine";
          when WNE_Logic_Fun_Suffix     => return "__logic";
-         when WNE_Inversion_Axiom_Prefix => return "inversion_axiom";
          when WNE_Tag                  => return "__tag";
          when WNE_Attr_Size            => return "attr__size";
       end case;
