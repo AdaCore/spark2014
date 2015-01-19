@@ -1,3 +1,3 @@
 from test_support import *
 
-prove_all(steps=60, procs=4)
+prove_all(steps=60, procs=8)
