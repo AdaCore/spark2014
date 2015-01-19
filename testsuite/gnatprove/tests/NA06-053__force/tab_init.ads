@@ -1,4 +1,4 @@
-package  Tab_Init
+package  Tab_Init with SPARK_Mode
 is
     subtype Index is Integer range 1 .. 10;
     type Tab is array (Index) of Integer;

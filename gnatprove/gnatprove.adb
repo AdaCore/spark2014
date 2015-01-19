@@ -638,7 +638,8 @@ procedure Gnatprove is
          Start_Section ("prover");
          if Steps /= 0 then
             Put_Keyval ("command",
-                        Altergo_Command & " -steps " & Int_Image (Steps));
+                        Altergo_Command & " -steps-bound " &
+                          Int_Image (Steps));
          else
             Put_Keyval ("command", Altergo_Command);
          end if;
@@ -647,7 +648,7 @@ procedure Gnatprove is
                        (Why3_Drivers_Dir, "alt_ergo.drv"));
          Put_Keyval ("name", "altergo");
          Put_Keyval ("shortcut", "altergo");
-         Put_Keyval ("version", "0.95");
+         Put_Keyval ("version", "0.99.1");
       end Generate_Altergo_Section;
 
       ---------------------------

@@ -3,10 +3,10 @@ precise.adb:7:04: info: assertion proved
 precise.adb:8:11: info: overflow check proved
 precise.adb:9:04: info: assertion proved
 precise.adb:10:11: info: overflow check proved
-precise.adb:11:04: info: assertion proved
+precise.adb:11:19: medium: assertion might fail, requires Z in 3.39999 ..
 precise.adb:12:11: info: division check proved
 precise.adb:12:11: info: overflow check proved
-precise.adb:13:04: info: assertion proved
+precise.adb:13:19: medium: assertion might fail, requires Z in 24.99999 ..
 test_18.adb:4:16: medium: postcondition might fail, requires Z >= X
 test_18.adb:7:12: info: overflow check proved
 test_18.adb:7:19: info: overflow check proved

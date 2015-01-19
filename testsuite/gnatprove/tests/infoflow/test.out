@@ -89,7 +89,7 @@ infoflow.adb:187:16: info: index check proved
 infoflow.adb:187:22: medium: "A_V1" might not be initialized
 infoflow.adb:187:36: info: index check proved
 infoflow.adb:187:36: info: overflow check proved
-infoflow.adb:190:07: medium: assertion might fail
+infoflow.adb:190:07: info: assertion proved
 infoflow.adb:192:13: medium: "A_V1" might not be initialized
 infoflow.adb:192:19: info: index check proved
 infoflow.adb:192:30: info: index check proved

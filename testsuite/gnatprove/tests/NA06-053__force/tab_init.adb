@@ -1,4 +1,4 @@
-package body Tab_Init is
+package body Tab_Init with SPARK_Mode is
    procedure Init (T : out Tab; A : in Integer) is
    begin
       for I in Tab'First .. Tab'Last loop

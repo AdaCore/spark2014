@@ -215,7 +215,7 @@ auditlog.adb:1441:69: info: overflow check proved
 auditlog.adb:1448:63: info: range check proved
 auditlog.adb:1449:65: info: range check proved
 auditlog.adb:1464:07: info: assertion proved
-auditlog.adb:1483:07: medium: assertion might fail
+auditlog.adb:1483:07: info: assertion proved
 auditlog.adb:1489:62: info: range check proved
 auditlog.adb:1489:67: info: overflow check proved
 auditlog.adb:1490:09: info: overflow check proved
@@ -904,7 +904,7 @@ screen.adb:566:40: medium: range check might fail, in call inlined at screen.adb
 screen.adb:620:49: info: range check proved
 screen.adb:626:49: info: range check proved
 screen.adb:632:49: info: range check proved
-screen.adb:638:49: medium: range check might fail
+screen.adb:638:49: info: range check proved
 screen.adb:816:40: info: length check proved, in call inlined at screen.adb:841
 screen.adb:816:40: info: length check proved, in call inlined at screen.adb:847
 screen.adb:816:40: info: length check proved, in call inlined at screen.adb:853

@@ -48,7 +48,7 @@ scale.adb:55:25: info: overflow check proved
 scale.adb:57:10: info: assertion proved
 scale.adb:58:64: info: overflow check proved
 scale.adb:58:70: info: division check proved
-scale.adb:58:70: medium: overflow check might fail
+scale.adb:58:70: info: overflow check proved
 scale.adb:58:70: medium: range check might fail
 scale.adb:74:07: info: assertion proved
 scale.adb:76:17: info: overflow check proved

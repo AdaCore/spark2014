@@ -158,8 +158,8 @@ prefixsum_expanded.ads:43:14: medium: postcondition might fail
 prefixsum_expanded.ads:45:17: info: precondition proved
 prefixsum_expanded.ads:53:17: info: precondition proved
 prefixsum_expanded.ads:55:08: info: postcondition proved
-prefixsum_general.adb:12:10: info: loop invariant initialization proved
 prefixsum_general.adb:12:10: medium: loop invariant might fail after first iteration
+prefixsum_general.adb:12:10: medium: loop invariant might fail in first iteration
 prefixsum_general.adb:13:22: info: division check proved
 prefixsum_general.adb:21:24: info: division check proved
 prefixsum_general.adb:30:27: info: division check proved

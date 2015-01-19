@@ -56,18 +56,18 @@ tetris_functional.adb:43:33: info: index check proved
 tetris_functional.adb:43:50: info: index check proved
 tetris_functional.adb:44:36: info: index check proved
 tetris_functional.adb:44:54: info: index check proved
-tetris_functional.adb:52:24: medium: assertion might fail, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
+tetris_functional.adb:48:13: info: assertion proved
 tetris_functional.adb:57:45: info: index check proved
 tetris_functional.adb:57:63: info: index check proved
+tetris_functional.adb:64:13: info: assertion proved
 tetris_functional.adb:67:57: info: index check proved
-tetris_functional.adb:68:24: medium: assertion might fail, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
 tetris_functional.adb:72:54: info: index check proved
 tetris_functional.adb:73:45: info: index check proved
 tetris_functional.adb:73:63: info: index check proved
 tetris_functional.adb:89:37: info: length check proved
 tetris_functional.adb:102:13: info: assertion proved
 tetris_functional.adb:104:10: info: loop invariant initialization proved
-tetris_functional.adb:105:55: medium: loop invariant might fail after first iteration, requires not Is_Complete_Line (Cur_Board (Y)
+tetris_functional.adb:104:10: info: loop invariant preservation proved
 tetris_functional.adb:105:88: info: index check proved
 tetris_functional.adb:112:13: info: loop invariant initialization proved
 tetris_functional.adb:112:36: medium: loop invariant might fail after first iteration, requires No_Complete_Lines (Cur_Board)
@@ -172,11 +172,11 @@ tetris_integrity.adb:43:33: info: index check proved
 tetris_integrity.adb:43:50: info: index check proved
 tetris_integrity.adb:44:36: info: index check proved
 tetris_integrity.adb:44:54: info: index check proved
-tetris_integrity.adb:52:24: medium: assertion might fail, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
+tetris_integrity.adb:48:13: info: assertion proved
 tetris_integrity.adb:57:45: info: index check proved
 tetris_integrity.adb:57:63: info: index check proved
+tetris_integrity.adb:64:13: info: assertion proved
 tetris_integrity.adb:67:57: info: index check proved
-tetris_integrity.adb:68:24: medium: assertion might fail, requires Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX)
 tetris_integrity.adb:72:54: info: index check proved
 tetris_integrity.adb:73:45: info: index check proved
 tetris_integrity.adb:73:63: info: index check proved

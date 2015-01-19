@@ -2,7 +2,7 @@ from test_support import *
 
 prove_all(opt=["--steps=20000", "-u", "update_examples.adb"])
 prove_all(opt=["-u", "loop_var_loop_invar.adb"])
-prove_all(opt=["--steps=10000", "-u", "reverse_ord.adb"])
+prove_all(opt=["--steps=15000", "-u", "reverse_ord.adb"])
 prove_all(opt=["-u", "up_timer.adb"])
 prove_all(opt=["-u", "f.adb"])
 prove_all(opt=["-u", "param_1_illegal.adb"])

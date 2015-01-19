@@ -3,7 +3,7 @@ aggregate.adb:5:28: info: division check proved
 aggregate.adb:5:45: info: overflow check proved
 aggregate.adb:6:26: info: overflow check proved
 aggregate.ads:6:09: info: length check proved
-aggregate.ads:10:21: medium: postcondition might fail
+aggregate.ads:10:21: info: postcondition proved
 arr_aggregate.adb:6:18: info: length check proved
 arr_aggregate.adb:8:18: info: length check proved
 arr_aggregate.adb:16:18: info: length check proved

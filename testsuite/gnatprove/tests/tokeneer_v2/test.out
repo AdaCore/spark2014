@@ -169,7 +169,7 @@ auditlog.adb:1461:58: info: overflow check proved
 auditlog.adb:1461:78: info: overflow check proved
 auditlog.adb:1491:52: info: range check proved
 auditlog.adb:1499:10: info: precondition proved
-auditlog.adb:1509:07: medium: precondition might fail
+auditlog.adb:1509:07: info: precondition proved
 auditlog.adb:1564:30: info: refined post proved
 auditlog.adb:1566:67: info: range check proved
 auditlog.adb:1566:72: info: overflow check proved
@@ -796,7 +796,7 @@ screen.adb:597:49: info: range check proved
 screen.adb:603:18: warning: unused assignment to "Interfac.Output"
 screen.adb:603:49: info: range check proved
 screen.adb:609:18: warning: unused assignment to "Interfac.Output"
-screen.adb:609:49: medium: range check might fail
+screen.adb:609:49: info: range check proved
 screen.adb:615:18: warning: unused assignment to "Interfac.Output"
 screen.adb:621:18: warning: unused assignment to "Interfac.Output"
 screen.adb:627:18: warning: unused assignment to "Interfac.Output"

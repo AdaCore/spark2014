@@ -117,7 +117,7 @@ sorting.adb:138:80: info: overflow check proved
 sorting.adb:138:84: info: overflow check proved
 sorting.adb:140:22: medium: overflow check might fail
 sorting.adb:140:35: info: overflow check proved
-sorting.adb:141:36: medium: overflow check might fail
+sorting.adb:141:36: info: overflow check proved
 sorting.adb:141:40: medium: overflow check might fail
 sorting.adb:141:40: medium: range check might fail
 sorting.adb:141:44: info: overflow check proved

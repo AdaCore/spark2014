@@ -13,8 +13,8 @@ t3q3.adb:30:31: info: overflow check proved
 t3q3.adb:30:35: info: overflow check proved
 t3q3.adb:34:11: info: division check proved
 t3q3.adb:34:11: info: range check proved
-t3q3.adb:35:12: info: range check proved
-t3q3.adb:35:12: medium: overflow check might fail
+t3q3.adb:35:12: info: overflow check proved
+t3q3.adb:35:12: medium: range check might fail
 t3q3.adb:35:16: info: overflow check proved
 t3q3.adb:43:05: info: precondition proved
 t3q3.adb:44:05: info: precondition proved
