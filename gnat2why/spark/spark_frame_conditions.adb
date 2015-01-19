@@ -28,8 +28,6 @@ with Unchecked_Deallocation;
 
 with Ada.Text_IO;            use Ada.Text_IO;
 
-with Atree;                  use Atree;
-with Einfo;                  use Einfo;
 with Fname.UF;
 with Get_SPARK_Xrefs;
 with Lib;
@@ -787,7 +785,8 @@ package body SPARK_Frame_Conditions is
 
    procedure Load_SPARK_Xrefs
      (ALI_Filename    : String;
-      Has_SPARK_Xrefs : out Boolean)
+      Has_SPARK_Xrefs : out Boolean;
+      Already_Loaded  : Boolean := False)
    is
       ALI_File : Ada.Text_IO.File_Type;
       Line     : String (1 .. 1024);
@@ -852,32 +851,37 @@ package body SPARK_Frame_Conditions is
    --  Start of processing for Load_SPARK_Xrefs
 
    begin
-      Open (ALI_File, In_File, ALI_Filename);
+      if not Already_Loaded then
+         Open (ALI_File, In_File, ALI_Filename);
 
-      Scan_ALI : loop
-         if End_Of_File (ALI_File) then
-            --  No SPARK cross-reference information in this ALI
+         Scan_ALI : loop
+            if End_Of_File (ALI_File) then
+               --  No SPARK cross-reference information in this ALI
 
-            Close (ALI_File);
-            Has_SPARK_Xrefs := False;
-            return;
-         end if;
+               Close (ALI_File);
+               Has_SPARK_Xrefs := False;
+               return;
+            end if;
 
-         Get_Line (ALI_File, Line, Last);
-         case Line (1) is
-            when 'F' =>
-               exit Scan_ALI;
+            Get_Line (ALI_File, Line, Last);
+            case Line (1) is
+               when 'F' =>
+                  exit Scan_ALI;
 
-            when others =>
-               null;
-         end case;
-      end loop Scan_ALI;
+               when others =>
+                  null;
+            end case;
+         end loop Scan_ALI;
 
-      Has_SPARK_Xrefs := True;
-      Index := 1;
+         Has_SPARK_Xrefs := True;
+         Index := 1;
 
-      Get_SPARK_From_ALI;
-      Close (ALI_File);
+         Get_SPARK_From_ALI;
+         Close (ALI_File);
+      else
+         Has_SPARK_Xrefs := True;
+         Index := 1;
+      end if;
 
       --  Walk low-level SPARK tables for this unit and populate high-level
       --  maps.
@@ -888,7 +892,7 @@ package body SPARK_Frame_Conditions is
             File_Num  : Nat;
             Scope_Num : Nat;
          end record;
-         --  Nameresentative of a scope
+         --  Name representative of a scope
 
          function Scope_Hash (S : Scope_Name) return Hash_Type is
            (Hash_Type (S.File_Num * 17 + S.Scope_Num));
@@ -1344,6 +1348,45 @@ package body SPARK_Frame_Conditions is
          end loop;
       end;
    end Set_Default_To_Empty;
+
+   --------------------------------------
+   -- Collect_Current_Computed_Globals --
+   --------------------------------------
+
+   procedure Collect_Current_Computed_Globals
+     (E                  : Entity_Id;
+      Inputs             : out Name_Set.Set;
+      Outputs            : out Name_Set.Set;
+      Called_Subprograms : out Name_Set.Set)
+   is
+      E_Alias : constant Entity_Id :=
+        (if Present (Alias (E)) then Ultimate_Alias (E) else E);
+      Name    : aliased constant String := Unique_Name (E_Alias);
+      E_Name  : constant Entity_Name    :=
+        Make_Entity_Name (Name'Unrestricted_Access);
+      E_Id    : Id;
+
+   begin
+      --  Abstract subprograms not yet supported. Avoid issuing an
+      --  error on those, which do not have effects, instead return
+      --  empty sets.
+
+      if Is_Abstract_Subprogram (E_Alias) then
+         Inputs             := Name_Set.Empty_Set;
+         Outputs            := Name_Set.Empty_Set;
+         Called_Subprograms := Name_Set.Empty_Set;
+         return;
+      end if;
+
+      E_Id := Entity_Ids.Element (E_Name);
+
+      Called_Subprograms := To_Names (Calls.Element (E_Id));
+      Inputs             := Get_Generated_Reads (E, False);
+      Outputs            := Get_Generated_Writes (E);
+
+      --  Add variables written to variables read
+      Inputs.Union (Outputs);
+   end Collect_Current_Computed_Globals;
 
    -----------------------
    -- Set_Ignore_Errors --

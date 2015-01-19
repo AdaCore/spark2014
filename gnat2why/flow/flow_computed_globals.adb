@@ -383,6 +383,27 @@ package body Flow_Computed_Globals is
                         Local_Variables   => To_Name_Set (Local_Variables)));
    end GG_Write_Subprogram_Info;
 
+   procedure GG_Write_Subprogram_Info
+     (E                 : Entity_Id;
+      Inputs_Proof      : Name_Set.Set;
+      Inputs            : Name_Set.Set;
+      Outputs           : Name_Set.Set;
+      Proof_Calls       : Name_Set.Set;
+      Definite_Calls    : Name_Set.Set;
+      Conditional_Calls : Name_Set.Set;
+      Local_Variables   : Name_Set.Set)
+   is
+   begin
+      Info_Set.Insert ((To_Name (E),
+                        Inputs_Proof      => Inputs_Proof,
+                        Inputs            => Inputs,
+                        Outputs           => Outputs,
+                        Proof_Calls       => Proof_Calls,
+                        Definite_Calls    => Definite_Calls,
+                        Conditional_Calls => Conditional_Calls,
+                        Local_Variables   => Local_Variables));
+   end GG_Write_Subprogram_Info;
+
    -----------------------
    -- GG_Write_Finalize --
    -----------------------
@@ -454,11 +475,19 @@ package body Flow_Computed_Globals is
    -------------
 
    procedure GG_Read (GNAT_Root : Node_Id) is
-      All_Globals     : Name_Set.Set := Name_Set.Empty_Set;
+      All_Globals           : Name_Set.Set := Name_Set.Empty_Set;
       --  Contains all global variables
 
-      All_Subprograms : Name_Set.Set := Name_Set.Empty_Set;
-      --  Contains all subprograms
+      GG_Subprograms        : Name_Set.Set := Name_Set.Empty_Set;
+      --  Contains all subprograms for which a GG entry exists
+
+      All_Subprograms       : Name_Set.Set := Name_Set.Empty_Set;
+      --  Contains all subprograms that we know of, even if a
+      --  GG entry does not exist for them.
+
+      All_Other_Subprograms : Name_Set.Set := Name_Set.Empty_Set;
+      --  Contains all subprograms for which a GG entry does not
+      --  exist.
 
       procedure Add_All_Edges;
       --  Reads the populated Info_Set and generates all the edges of
@@ -600,55 +629,76 @@ package body Flow_Computed_Globals is
          end loop;
 
          --  Add edges between subprograms and variables coming from
-         --  Computed Globals.
-         for N of All_Subprograms loop
-            if (for all Info of Info_Set => Info.Subprogram.all /= N.all) then
-               --  There are no generated globals for this
-               --  subprogram. This means that we have used the
-               --  computed ones.
-               declare
-                  Subprogram : constant Entity_Id := Find_Entity (N);
-                  ALI_Reads  : Name_Set.Set;
-                  ALI_Writes : Name_Set.Set;
-                  G_Ins      : Global_Id;
-                  G_Outs     : Global_Id;
-                  G          : Global_Id;
+         --  the Get_Globals function.
+         for N of All_Other_Subprograms loop
+            declare
+               Subprogram   : constant Entity_Id := Find_Entity (N);
+               G_Proof_Ins  : Global_Id;
+               G_Ins        : Global_Id;
+               G_Outs       : Global_Id;
+               FS_Proof_Ins : Flow_Id_Sets.Set;
+               FS_Reads     : Flow_Id_Sets.Set;
+               FS_Writes    : Flow_Id_Sets.Set;
+               Unreferenced : Boolean;
+
+               procedure Add_Edges_For_FS
+                 (FS   : Flow_Id_Sets.Set;
+                  From : Global_Id);
+               --  Adds an edge from From to every Flow_Id in FS
+
+               ----------------------
+               -- Add_Edges_For_FS --
+               ----------------------
+
+               procedure Add_Edges_For_FS
+                 (FS   : Flow_Id_Sets.Set;
+                  From : Global_Id)
+               is
+                  G   : Global_Id;
+                  Nam : Entity_Name;
                begin
-                  if Subprogram /= Empty then
-                     ALI_Reads  := Get_Generated_Reads (Subprogram, False);
+                  for F of FS loop
+                     Nam := (if F.Kind in Direct_Mapping |
+                                          Record_Field
+                             then
+                                To_Name (Get_Direct_Mapping_Id (F))
+                             elsif F.Kind = Magic_String then
+                                F.Name
+                             else
+                                raise Program_Error);
+                     G   := Global_Id'(Kind => Variable_Kind,
+                                       Name => Nam);
 
-                     ALI_Writes := Get_Generated_Writes (Subprogram);
+                     if not Global_Graph.Edge_Exists (From, G) then
+                        Add_Edge (From, G);
+                     end if;
+                  end loop;
+               end Add_Edges_For_FS;
 
-                     G_Ins      := Global_Id'(Kind => Ins_Kind,
-                                              Name => N);
+            begin
+               G_Proof_Ins := Global_Id'(Kind => Proof_Ins_Kind,
+                                         Name => N);
 
-                     G_Outs     := Global_Id'(Kind => Outs_Kind,
-                                              Name => N);
+               G_Ins       := Global_Id'(Kind => Ins_Kind,
+                                         Name => N);
 
-                     for R of ALI_Reads loop
-                        G := Global_Id'(Kind => Variable_Kind,
-                                        Name => R);
+               G_Outs      := Global_Id'(Kind => Outs_Kind,
+                                         Name => N);
 
-                        if not Global_Graph.Edge_Exists (G_Ins, G) then
-                           Add_Edge (G_Ins, G);
-                        end if;
-                     end loop;
+               if Subprogram /= Empty then
+                  Get_Globals (Subprogram => Subprogram,
+                               Scope      => Get_Flow_Scope (Subprogram),
+                               Classwide  => False,
+                               Proof_Ins  => FS_Proof_Ins,
+                               Reads      => FS_Reads,
+                               Writes     => FS_Writes,
+                               Computed   => Unreferenced);
 
-                     for W of ALI_Writes loop
-                        G := Global_Id'(Kind => Variable_Kind,
-                                        Name => W);
-
-                        if not Global_Graph.Edge_Exists (G_Ins, G) then
-                           Add_Edge (G_Ins, G);
-                        end if;
-
-                        if not Global_Graph.Edge_Exists (G_Outs, G) then
-                           Add_Edge (G_Outs, G);
-                        end if;
-                     end loop;
-                  end if;
-               end;
-            end if;
+                  Add_Edges_For_FS (FS_Proof_Ins, G_Proof_Ins);
+                  Add_Edges_For_FS (FS_Reads, G_Ins);
+                  Add_Edges_For_FS (FS_Writes, G_Outs);
+               end if;
+            end;
          end loop;
 
          --  Close graph
@@ -689,44 +739,58 @@ package body Flow_Computed_Globals is
          end loop;
 
          --  Lastly we have to create vertices for variables that come
-         --  from Computed Globals.
-         for N of All_Subprograms loop
-            if (for all Info of Info_Set => Info.Subprogram.all /= N.all) then
-               --  There are no generated globals for this subprogram
-               --  so we use the computed ones.
-               declare
-                  Subprogram : constant Entity_Id := Find_Entity (N);
-                  ALI_Reads  : Name_Set.Set;
-                  ALI_Writes : Name_Set.Set;
-                  G          : Global_Id;
+         --  from the Get_Globals function.
+         for N of All_Other_Subprograms loop
+            declare
+               Subprogram   : constant Entity_Id := Find_Entity (N);
+               FS_Proof_Ins : Flow_Id_Sets.Set;
+               FS_Reads     : Flow_Id_Sets.Set;
+               FS_Writes    : Flow_Id_Sets.Set;
+               Unreferenced : Boolean;
+
+               procedure Create_Vertices_For_FS (FS : Flow_Id_Sets.Set);
+               --  Creates a vertex for every Flow_Id in FS that
+               --  does not already have one.
+
+               ----------------------------
+               -- Create_Vertices_For_FS --
+               ----------------------------
+
+               procedure Create_Vertices_For_FS (FS : Flow_Id_Sets.Set) is
+                  G   : Global_Id;
+                  Nam : Entity_Name;
                begin
-                  if Subprogram /= Empty then
-                     ALI_Reads := Get_Generated_Reads
-                       (Subprogram,
-                        Include_Constants => False);
+                  for F of FS loop
+                     Nam := (if F.Kind in Direct_Mapping | Record_Field then
+                                To_Name (Get_Direct_Mapping_Id (F))
+                             elsif F.Kind = Magic_String then
+                                F.Name
+                             else
+                                raise Program_Error);
+                     G   := Global_Id'(Kind => Variable_Kind,
+                                       Name => Nam);
 
-                     ALI_Writes := Get_Generated_Writes (Subprogram);
+                     if Global_Graph.Get_Vertex (G) = Null_Vertex then
+                        Global_Graph.Add_Vertex (G);
+                     end if;
+                  end loop;
+               end Create_Vertices_For_FS;
 
-                     for R of ALI_Reads loop
-                        G := Global_Id'(Kind => Variable_Kind,
-                                        Name => R);
+            begin
+               if Subprogram /= Empty then
+                  Get_Globals (Subprogram => Subprogram,
+                               Scope      => Get_Flow_Scope (Subprogram),
+                               Classwide  => False,
+                               Proof_Ins  => FS_Proof_Ins,
+                               Reads      => FS_Reads,
+                               Writes     => FS_Writes,
+                               Computed   => Unreferenced);
 
-                        if Global_Graph.Get_Vertex (G) = Null_Vertex then
-                           Global_Graph.Add_Vertex (G);
-                        end if;
-                     end loop;
-
-                     for W of ALI_Writes loop
-                        G := Global_Id'(Kind => Variable_Kind,
-                                        Name => W);
-
-                        if Global_Graph.Get_Vertex (G) = Null_Vertex then
-                           Global_Graph.Add_Vertex (G);
-                        end if;
-                     end loop;
-                  end if;
-               end;
-            end if;
+                  Create_Vertices_For_FS (FS_Proof_Ins);
+                  Create_Vertices_For_FS (FS_Reads);
+                  Create_Vertices_For_FS (FS_Writes);
+               end if;
+            end;
          end loop;
       end Create_All_Vertices;
 
@@ -901,7 +965,7 @@ package body Flow_Computed_Globals is
                                           Length (Line)));
                   begin
                      New_Info.Subprogram := EN;
-                     All_Subprograms.Include (EN);
+                     GG_Subprograms.Include (EN);
                   end;
 
                elsif Length (Line) >= 5 then
@@ -939,7 +1003,6 @@ package body Flow_Computed_Globals is
 
                      Line_Found (5) := True;
                      New_Info.Proof_Calls := Get_Names_From_Line;
-                     All_Subprograms.Union (Get_Names_From_Line);
 
                   elsif Slice (Line, 4, 5) = "CD" then
                      if Line_Found (6) then
@@ -948,7 +1011,6 @@ package body Flow_Computed_Globals is
 
                      Line_Found (6) := True;
                      New_Info.Definite_Calls := Get_Names_From_Line;
-                     All_Subprograms.Union (Get_Names_From_Line);
 
                   elsif Slice (Line, 4, 5) = "CC" then
                      if Line_Found (7) then
@@ -957,7 +1019,6 @@ package body Flow_Computed_Globals is
 
                      Line_Found (7) := True;
                      New_Info.Conditional_Calls := Get_Names_From_Line;
-                     All_Subprograms.Union (Get_Names_From_Line);
 
                   elsif Slice (Line, 4, 5) = "LV" then
                      if Line_Found (8) then
@@ -970,12 +1031,12 @@ package body Flow_Computed_Globals is
 
                   else
                      --  Unexpected type of line. Something is wrong
-                     --  with the ali file.
+                     --  with the ALI file.
                      raise Program_Error;
                   end if;
 
                else
-                  --  Something is wrong with the ali file
+                  --  Something is wrong with the ALI file
                   raise Program_Error;
                end if;
 
@@ -985,7 +1046,7 @@ package body Flow_Computed_Globals is
                elsif (for some I in 1 .. 8 => Line_Found (I) = False) then
                   --  We reached the end of the file and our New_Info
                   --  is not yet complete. Something is missing from
-                  --  the ali file.
+                  --  the ALI file.
                   raise Program_Error;
                end if;
             end loop;
@@ -1030,9 +1091,9 @@ package body Flow_Computed_Globals is
          --  local variable or a variable that is local to any of the
          --  subprograms called by this subprogram.
 
-         --------------------------------------
-         --  Remove_Local_Variables_From_Set --
-         --------------------------------------
+         -------------------------------------
+         -- Remove_Local_Variables_From_Set --
+         -------------------------------------
 
          procedure Remove_Local_Variables_From_Set
            (Start : Vertex_Id;
@@ -1208,6 +1269,20 @@ package body Flow_Computed_Globals is
             end loop;
          end loop;
       end if;
+
+      --  Populated the All_Subprograms set
+      All_Subprograms := GG_Subprograms;
+      for Info of Info_Set loop
+         --  Add all subprograms mentioned in the proof calls
+         All_Subprograms.Union (Info.Proof_Calls);
+         --  Add all subprograms mentioned in the definite calls
+         All_Subprograms.Union (Info.Definite_Calls);
+         --  Add all subprograms mentioned in the conditional calls
+         All_Subprograms.Union (Info.Conditional_Calls);
+      end loop;
+
+      --  Populated the All_Other_Subprograms set
+      All_Other_Subprograms := All_Subprograms - GG_Subprograms;
 
       --  Initialize Global_Graph
       Global_Graph := Global_Graphs.Create;

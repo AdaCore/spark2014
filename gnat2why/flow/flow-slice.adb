@@ -30,8 +30,6 @@ with SPARK_Util;
 
 with Flow_Utility; use Flow_Utility;
 
---  with Treepr;       use Treepr;
-
 package body Flow.Slice is
 
    use type Node_Sets.Set;

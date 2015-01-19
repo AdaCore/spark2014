@@ -34,6 +34,51 @@ with Flow_Dependency_Maps; use Flow_Dependency_Maps;
 
 package Flow_Computed_Globals is
 
+   --  -------------------------------------
+   --  -- Flow_Computed_Globals Algorithm --
+   --  -------------------------------------
+
+   --  This algorithm is applied on a per Compilation Unit basis.
+
+   --  During the first pass:
+   --    * For every subprogram in SPARK a GG graph is created. The
+   --      graph is then traversed and all global variables are classified
+   --      as proof ins, ins and outs. During the traversal we also
+   --      classify called subprograms as proof only calls, definite calls
+   --      and conditional calls. Lastly we take note of all local
+   --      variables. This info is then appended on the ALI file.
+   --    * For every subprogram that is NOT in SPARK and does NOT have
+   --      a user-provided contract a GG graph is NOT created. However, we
+   --      do create GG entries for those subprograms in the ALI file.
+   --      Those GG entries mirror the information that (Yannick's)
+   --      computed globals store in the ALI file. As a result, all
+   --      subprogram calls are considered to be conditional calls and all
+   --      writes to variables are considered to be read-writes (pure reads
+   --      are also included in the reads of course).
+   --    * For every package we gather all know state abstractions and
+   --      all their constituents and that info is then appended on the
+   --      ALI file.
+
+   --  During the second pass:
+   --    * All information stored in the ALI files during the first
+   --      pass is read back.
+   --    * A Global Graph for the entire compilation unit is created.
+   --      This graph contains subprograms and variables only. No
+   --      abstract states and packages are present on this graph.
+   --      We create 3 vertices per subprogram. These represent the
+   --      subprogram's proof inputs, inputs and outputs. For each
+   --      variable we create a single vertex that represents the
+   --      variable.
+   --    * We then draw edges between those vertices based on the GG
+   --      info that we read from the ALI files. For subprograms that
+   --      are marked as SPARK_Mode Off or that contain illegal SPARK
+   --      contracts we use the Get_Globals function instead of the GG
+   --      info from the ALI files.
+   --    * Lastly we use the compilation unit's Global Graph and
+   --      information that we have about state abstractions and their
+   --      constituents to return globals relatively to the caller's
+   --      scope.
+
    --  -------------------------------
    --  -- Generated Globals Section --
    --  -------------------------------
@@ -122,6 +167,19 @@ package Flow_Computed_Globals is
    --  Records the information we need to later compute globals.
    --  Compute_Globals in Flow.Slice is used to produce the inputs.
 
+   procedure GG_Write_Subprogram_Info
+     (E                 : Entity_Id;
+      Inputs_Proof      : Name_Set.Set;
+      Inputs            : Name_Set.Set;
+      Outputs           : Name_Set.Set;
+      Proof_Calls       : Name_Set.Set;
+      Definite_Calls    : Name_Set.Set;
+      Conditional_Calls : Name_Set.Set;
+      Local_Variables   : Name_Set.Set)
+   with Pre  => GG_Mode = GG_Write_Mode,
+        Post => GG_Mode = GG_Write_Mode;
+   --  Same as above but uses Name_Set instead of Node_Sets.
+
    procedure GG_Write_Finalize
    with Pre  => GG_Mode = GG_Write_Mode;
    --  Appends all subprogram and package information to the ALI file.
@@ -141,8 +199,8 @@ package Flow_Computed_Globals is
 
    function GG_Exist (E : Entity_Id) return Boolean
    with Pre => GG_Mode = GG_Read_Mode;
-   --  Returns true if flow globals have been computed for the given
-   --  entity.
+   --  Returns True if generated globals have been computed for the
+   --  given entity.
 
    function GG_Has_Refinement (EN : Entity_Name) return Boolean
    with Pre => GG_Mode = GG_Read_Mode;

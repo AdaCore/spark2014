@@ -34,7 +34,9 @@
 with Ada.Containers;             use Ada.Containers;
 with Ada.Containers.Hashed_Sets;
 
+with Atree;                      use Atree;
 with Common_Containers;          use Common_Containers;
+with Einfo;                      use Einfo;
 with Namet;                      use Namet;
 with Types;                      use Types;
 
@@ -86,8 +88,30 @@ package SPARK_Frame_Conditions is
    --  Return the name of the file defining the entity E
 
    procedure Load_SPARK_Xrefs (ALI_Filename    : String;
-                               Has_SPARK_Xrefs : out Boolean);
-   --  Extract xref information from an ALI file
+                               Has_SPARK_Xrefs : out Boolean;
+                               Already_Loaded  : Boolean := False);
+   --  Extract xref information from an ALI file.
+   --
+   --  If Already_Loaded is set then the info is actually already
+   --  present and we do NOT actually need to read the ALI file.
+
+   procedure Collect_Current_Computed_Globals
+     (E                  : Entity_Id;
+      Inputs             : out Name_Set.Set;
+      Outputs            : out Name_Set.Set;
+      Called_Subprograms : out Name_Set.Set)
+   with Pre  => Ekind (E) in Subprogram_Kind,
+        Post => (for all E of Outputs => Inputs.Contains (E));
+   --  Collects the Computed Globals information based on the current
+   --  compilation unit alone.
+   --
+   --  This procedure is only ever called during phase 1 so no ALI
+   --  file is actually read. This procedure is used to create flow
+   --  analysis' Generated Globals when a subprogram is NOT in SPARK.
+   --
+   --  The Inputs set will contain all variables purely read as well
+   --  as all the variables written (since the Computed Globals are an
+   --  over approximation).
 
    procedure Set_Ignore_Errors (Ignore_Errors : Boolean);
    --  Set a flag to ignore failures to find some scope that should have been

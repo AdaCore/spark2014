@@ -5026,6 +5026,30 @@ digraph G {
 // foo_Globals_Graph
 digraph G {
    graph [splines=True];
+    1 [label="foo__zero_widget__2'Ins",shape="box"];
+    2 [label="foo__zero_widget__2'Outs",shape="box"];
+    3 [label="foo__zero_widget__2'Proof_Ins",shape="box"];
+    4 [label="foo__zero_widget__3'Ins",shape="box"];
+    5 [label="foo__zero_widget__3'Outs",shape="box"];
+    6 [label="foo__zero_widget__3'Proof_Ins",shape="box"];
+    7 [label="foo__hash'Ins",shape="box"];
+    8 [label="foo__hash'Outs",shape="box"];
+    9 [label="foo__hash'Proof_Ins",shape="box"];
+    10 [label="foo__zero_widget'Ins",shape="box"];
+    11 [label="foo__zero_widget'Outs",shape="box"];
+    12 [label="foo__zero_widget'Proof_Ins",shape="box"];
+    13 [label="foo__hash__2'Ins",shape="box"];
+    14 [label="foo__hash__2'Outs",shape="box"];
+    15 [label="foo__hash__2'Proof_Ins",shape="box"];
+    16 [label="foo__hash__3'Ins",shape="box"];
+    17 [label="foo__hash__3'Outs",shape="box"];
+    18 [label="foo__hash__3'Proof_Ins",shape="box"];
+    19 [label="foo__hash__4'Ins",shape="box"];
+    20 [label="foo__hash__4'Outs",shape="box"];
+    21 [label="foo__hash__4'Proof_Ins",shape="box"];
+    22 [label="foo__modify_it'Ins",shape="box"];
+    23 [label="foo__modify_it'Outs",shape="box"];
+    24 [label="foo__modify_it'Proof_Ins",shape="box"];
 
 }
 
@@ -5472,12 +5496,63 @@ digraph G {
 // misc_Globals_Graph
 digraph G {
    graph [splines=True];
+    1 [label="foo__zero_widget__2'Ins",shape="box"];
+    2 [label="foo__zero_widget__2'Outs",shape="box"];
+    3 [label="foo__zero_widget__2'Proof_Ins",shape="box"];
+    4 [label="foo__zero_widget__3'Ins",shape="box"];
+    5 [label="foo__zero_widget__3'Outs",shape="box"];
+    6 [label="foo__zero_widget__3'Proof_Ins",shape="box"];
+    7 [label="foo__hash'Ins",shape="box"];
+    8 [label="foo__hash'Outs",shape="box"];
+    9 [label="foo__hash'Proof_Ins",shape="box"];
+    10 [label="foo__zero_widget'Ins",shape="box"];
+    11 [label="foo__zero_widget'Outs",shape="box"];
+    12 [label="foo__zero_widget'Proof_Ins",shape="box"];
+    13 [label="foo__hash__2'Ins",shape="box"];
+    14 [label="foo__hash__2'Outs",shape="box"];
+    15 [label="foo__hash__2'Proof_Ins",shape="box"];
+    16 [label="foo__hash__3'Ins",shape="box"];
+    17 [label="foo__hash__3'Outs",shape="box"];
+    18 [label="foo__hash__3'Proof_Ins",shape="box"];
+    19 [label="foo__hash__4'Ins",shape="box"];
+    20 [label="foo__hash__4'Outs",shape="box"];
+    21 [label="foo__hash__4'Proof_Ins",shape="box"];
+    22 [label="foo__modify_it'Ins",shape="box"];
+    23 [label="foo__modify_it'Outs",shape="box"];
+    24 [label="foo__modify_it'Proof_Ins",shape="box"];
 
 }
 
 // other_Globals_Graph
 digraph G {
    graph [splines=True];
+    1 [label="foo__zero_widget__2'Ins",shape="box"];
+    2 [label="foo__zero_widget__2'Outs",shape="box"];
+    3 [label="foo__zero_widget__2'Proof_Ins",shape="box"];
+    4 [label="foo__zero_widget__3'Ins",shape="box"];
+    5 [label="foo__zero_widget__3'Outs",shape="box"];
+    6 [label="foo__zero_widget__3'Proof_Ins",shape="box"];
+    7 [label="foo__hash'Ins",shape="box"];
+    8 [label="foo__hash'Outs",shape="box"];
+    9 [label="foo__hash'Proof_Ins",shape="box"];
+    10 [label="foo__zero_widget'Ins",shape="box"];
+    11 [label="foo__zero_widget'Outs",shape="box"];
+    12 [label="foo__zero_widget'Proof_Ins",shape="box"];
+    13 [label="other__new_widget'Ins",shape="box"];
+    14 [label="other__new_widget'Outs",shape="box"];
+    15 [label="other__new_widget'Proof_Ins",shape="box"];
+    16 [label="foo__hash__2'Ins",shape="box"];
+    17 [label="foo__hash__2'Outs",shape="box"];
+    18 [label="foo__hash__2'Proof_Ins",shape="box"];
+    19 [label="foo__hash__3'Ins",shape="box"];
+    20 [label="foo__hash__3'Outs",shape="box"];
+    21 [label="foo__hash__3'Proof_Ins",shape="box"];
+    22 [label="foo__hash__4'Ins",shape="box"];
+    23 [label="foo__hash__4'Outs",shape="box"];
+    24 [label="foo__hash__4'Proof_Ins",shape="box"];
+    25 [label="foo__modify_it'Ins",shape="box"];
+    26 [label="foo__modify_it'Outs",shape="box"];
+    27 [label="foo__modify_it'Proof_Ins",shape="box"];
 
 }
 
@@ -5491,49 +5566,70 @@ digraph G {
     5 [label="tests__f_get_item__w"];
     6 [label="tests__test_15__id__h"];
     7 [label="tests__test_18__tmp"];
-    8 [label="other__new_widget'Ins",shape="box"];
-    9 [label="other__new_widget'Outs",shape="box"];
-    10 [label="other__new_widget'Proof_Ins",shape="box"];
-    11 [label="tests__test_16__f'Ins",shape="box"];
-    12 [label="tests__test_16__f'Outs",shape="box"];
-    13 [label="tests__test_16__f'Proof_Ins",shape="box"];
-    14 [label="foo__hash__2'Ins",shape="box"];
-    15 [label="foo__hash__2'Outs",shape="box"];
-    16 [label="foo__hash__2'Proof_Ins",shape="box"];
-    17 [label="tests__test_15__id'Ins",shape="box"];
-    18 [label="tests__test_15__id'Outs",shape="box"];
-    19 [label="tests__test_15__id'Proof_Ins",shape="box"];
-    20 [label="tests__f_get_item'Ins",shape="box"];
-    21 [label="tests__f_get_item'Outs",shape="box"];
-    22 [label="tests__f_get_item'Proof_Ins",shape="box"];
-    23 [label="tests__f_get_item_c'Ins",shape="box"];
-    24 [label="tests__f_get_item_c'Outs",shape="box"];
-    25 [label="tests__f_get_item_c'Proof_Ins",shape="box"];
-    26 [label="tests__f_get_item_e'Ins",shape="box"];
-    27 [label="tests__f_get_item_e'Outs",shape="box"];
-    28 [label="tests__f_get_item_e'Proof_Ins",shape="box"];
-    29 [label="tests__test_18'Ins",shape="box"];
-    30 [label="tests__test_18'Outs",shape="box"];
-    31 [label="tests__test_18'Proof_Ins",shape="box"];
+    8 [label="foo__zero_widget__2'Ins",shape="box"];
+    9 [label="foo__zero_widget__2'Outs",shape="box"];
+    10 [label="foo__zero_widget__2'Proof_Ins",shape="box"];
+    11 [label="foo__zero_widget__3'Ins",shape="box"];
+    12 [label="foo__zero_widget__3'Outs",shape="box"];
+    13 [label="foo__zero_widget__3'Proof_Ins",shape="box"];
+    14 [label="foo__hash'Ins",shape="box"];
+    15 [label="foo__hash'Outs",shape="box"];
+    16 [label="foo__hash'Proof_Ins",shape="box"];
+    17 [label="foo__zero_widget'Ins",shape="box"];
+    18 [label="foo__zero_widget'Outs",shape="box"];
+    19 [label="foo__zero_widget'Proof_Ins",shape="box"];
+    20 [label="other__new_widget'Ins",shape="box"];
+    21 [label="other__new_widget'Outs",shape="box"];
+    22 [label="other__new_widget'Proof_Ins",shape="box"];
+    23 [label="tests__test_16__f'Ins",shape="box"];
+    24 [label="tests__test_16__f'Outs",shape="box"];
+    25 [label="tests__test_16__f'Proof_Ins",shape="box"];
+    26 [label="foo__hash__2'Ins",shape="box"];
+    27 [label="foo__hash__2'Outs",shape="box"];
+    28 [label="foo__hash__2'Proof_Ins",shape="box"];
+    29 [label="foo__hash__3'Ins",shape="box"];
+    30 [label="foo__hash__3'Outs",shape="box"];
+    31 [label="foo__hash__3'Proof_Ins",shape="box"];
+    32 [label="foo__hash__4'Ins",shape="box"];
+    33 [label="foo__hash__4'Outs",shape="box"];
+    34 [label="foo__hash__4'Proof_Ins",shape="box"];
+    35 [label="tests__test_15__id'Ins",shape="box"];
+    36 [label="tests__test_15__id'Outs",shape="box"];
+    37 [label="tests__test_15__id'Proof_Ins",shape="box"];
+    38 [label="tests__f_get_item'Ins",shape="box"];
+    39 [label="tests__f_get_item'Outs",shape="box"];
+    40 [label="tests__f_get_item'Proof_Ins",shape="box"];
+    41 [label="foo__modify_it'Ins",shape="box"];
+    42 [label="foo__modify_it'Outs",shape="box"];
+    43 [label="foo__modify_it'Proof_Ins",shape="box"];
+    44 [label="tests__f_get_item_c'Ins",shape="box"];
+    45 [label="tests__f_get_item_c'Outs",shape="box"];
+    46 [label="tests__f_get_item_c'Proof_Ins",shape="box"];
+    47 [label="tests__f_get_item_e'Ins",shape="box"];
+    48 [label="tests__f_get_item_e'Outs",shape="box"];
+    49 [label="tests__f_get_item_e'Proof_Ins",shape="box"];
+    50 [label="tests__test_18'Ins",shape="box"];
+    51 [label="tests__test_18'Outs",shape="box"];
+    52 [label="tests__test_18'Proof_Ins",shape="box"];
 
-    20 ->  14 [arrowType="normal"];
-    21 ->  15 [arrowType="normal"];
-    22 ->  16 [arrowType="normal"];
-    23 ->  14 [arrowType="normal"];
-    24 ->  15 [arrowType="normal"];
-    25 ->  16 [arrowType="normal"];
-    26 ->  14 [arrowType="normal"];
-    26 ->  23 [arrowType="normal"];
-    27 ->  15 [arrowType="normal"];
-    27 ->  24 [arrowType="normal"];
-    28 ->  16 [arrowType="normal"];
-    28 ->  25 [arrowType="normal"];
-    29 ->  8 [arrowType="normal"];
-    29 ->  14 [arrowType="normal"];
-    30 ->  9 [arrowType="normal"];
-    30 ->  15 [arrowType="normal"];
-    31 ->  10 [arrowType="normal"];
-    31 ->  16 [arrowType="normal"];
+    38 ->  26 [arrowType="normal"];
+    39 ->  27 [arrowType="normal"];
+    40 ->  28 [arrowType="normal"];
+    44 ->  26 [arrowType="normal"];
+    45 ->  27 [arrowType="normal"];
+    46 ->  28 [arrowType="normal"];
+    47 ->  26 [arrowType="normal"];
+    47 ->  44 [arrowType="normal"];
+    48 ->  27 [arrowType="normal"];
+    48 ->  45 [arrowType="normal"];
+    49 ->  28 [arrowType="normal"];
+    49 ->  46 [arrowType="normal"];
+    50 ->  20 [arrowType="normal"];
+    50 ->  26 [arrowType="normal"];
+    51 ->  21 [arrowType="normal"];
+    51 ->  27 [arrowType="normal"];
+    52 ->  22 [arrowType="normal"];
+    52 ->  28 [arrowType="normal"];
 }
 
 // untangle_Globals_Graph

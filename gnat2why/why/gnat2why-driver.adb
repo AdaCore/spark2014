@@ -93,9 +93,12 @@ package body Gnat2Why.Driver is
    -- Local Subprograms --
    -----------------------
 
-   procedure Compute_Global_Effects;
+   procedure Compute_Global_Effects (Current_Unit_Only : Boolean := False);
    --  Make the computed global effects information available for all
-   --  subprograms
+   --  subprograms.
+   --
+   --  If Current_Unit_Only is set then we do not pull in the ALIs of
+   --  dependent units.
 
    procedure Translate_CUnit;
    --  Translates the current compilation unit into Why
@@ -153,7 +156,7 @@ package body Gnat2Why.Driver is
    -- Compute_Global_Effects --
    ----------------------------
 
-   procedure Compute_Global_Effects is
+   procedure Compute_Global_Effects (Current_Unit_Only : Boolean := False) is
       Main_Lib_File : File_Name_Type;
       Text          : Text_Buffer_Ptr;
       Main_Lib_Id   : ALI_Id;
@@ -194,31 +197,50 @@ package body Gnat2Why.Driver is
          Ignore_Errors    => Debug_Flag_I,
          Directly_Scanned => True);
       Free (Text);
-      Read_Withed_ALIs (Main_Lib_Id, Ignore_Errors => True);
 
-      --  Load SPARK cross-reference information from ALIs for all dependent
-      --  units.
-
-      for Index in ALIs.First .. ALIs.Last loop
+      --  If Current_Unit_Only is set then we do NOT load the withed
+      --  ALI files.
+      if Current_Unit_Only then
          declare
             ALI_File_Name : constant File_Name_Type :=
-              ALIs.Table (Index).Afile;
+              ALIs.Table (Main_Lib_Id).Afile;
             ALI_File_Name_Str : constant String :=
               Name_String (Name_Id (Full_Lib_File_Name (ALI_File_Name)));
             Has_SPARK_Xrefs : Boolean;
          begin
-            Load_SPARK_Xrefs (ALI_File_Name_Str, Has_SPARK_Xrefs);
+            Load_SPARK_Xrefs (ALI_File_Name_Str, Has_SPARK_Xrefs, False);
 
             if Has_SPARK_Xrefs then
                Loaded_ALI_Files.Include (ALI_File_Name);
             end if;
          end;
-      end loop;
+      else
+         Read_Withed_ALIs (Main_Lib_Id, Ignore_Errors => True);
+
+         --  Load SPARK cross-reference information from ALIs for all
+         --  dependent units.
+
+         for Index in ALIs.First .. ALIs.Last loop
+            declare
+               ALI_File_Name : constant File_Name_Type :=
+                 ALIs.Table (Index).Afile;
+               ALI_File_Name_Str : constant String :=
+                 Name_String (Name_Id (Full_Lib_File_Name (ALI_File_Name)));
+               Has_SPARK_Xrefs : Boolean;
+            begin
+               Load_SPARK_Xrefs (ALI_File_Name_Str, Has_SPARK_Xrefs);
+
+               if Has_SPARK_Xrefs then
+                  Loaded_ALI_Files.Include (ALI_File_Name);
+               end if;
+            end;
+         end loop;
+      end if;
 
       --  Compute the frame condition from raw SPARK cross-reference
       --  information.
 
-      Propagate_Through_Call_Graph (Ignore_Errors => False);
+      Propagate_Through_Call_Graph (Ignore_Errors => Current_Unit_Only);
    end Compute_Global_Effects;
 
    ---------------------
@@ -346,6 +368,10 @@ package body Gnat2Why.Driver is
 
       if Gnat2Why_Args.Global_Gen_Mode then
 
+         --  Compute basic globals. These will be used for subprograms
+         --  that are NOT in SPARK.
+         Compute_Global_Effects (Current_Unit_Only => True);
+
          if not Gnat2Why_Args.Debug_Proof_Only then
             Generate_Flow_Globals (GNAT_Root);
          end if;
@@ -362,7 +388,7 @@ package body Gnat2Why.Driver is
          --  Compute basic globals
          Compute_Global_Effects;
 
-         --  Add computation of flow globals here
+         --  Read the generated globals from the ALI files
          GG_Read (GNAT_Root);
 
          --  Do some flow analysis

@@ -59,6 +59,8 @@ with Sinfo;                         use Sinfo;
 with Snames;                        use Snames;
 with Sprint;                        use Sprint;
 
+with SPARK_Frame_Conditions;        use SPARK_Frame_Conditions;
+
 use type Ada.Containers.Count_Type;
 
 package body Flow is
@@ -1085,14 +1087,44 @@ package body Flow is
       for E of Entity_Set loop
          case Ekind (E) is
             when Subprogram_Kind =>
-               if SPARK_Util.Analysis_Requested (E)
-                 and then Entity_Body_In_SPARK (E)
-                 and then Entity_Body_Valid_SPARK (E)
-               then
-                  FA_Graphs.Include (E, Flow_Analyse_Entity
-                                       (E,
-                                        E,
-                                        Compute_Globals));
+               if SPARK_Util.Analysis_Requested (E) then
+                  if Entity_Body_In_SPARK (E)
+                    and then Entity_Body_Valid_SPARK (E)
+                  then
+                     --  Produce a GG graph
+                     FA_Graphs.Include (E, Flow_Analyse_Entity
+                                          (E,
+                                           E,
+                                           Compute_Globals));
+                  elsif Compute_Globals then
+                     --  Use (Yannick's) Computed Globals info to add a
+                     --  GG entry on the ALI file.
+                     declare
+                        Reads  : Name_Set.Set;
+                        Writes : Name_Set.Set;
+                        Calls  : Name_Set.Set;
+                     begin
+                        GG_Write_Initialize;
+
+                        --  Collect the damn thing...
+                        Collect_Current_Computed_Globals (E,
+                                                          Reads,
+                                                          Writes,
+                                                          Calls);
+
+                        GG_Write_Subprogram_Info
+                          (E,
+                           Inputs_Proof      => Name_Set.Empty_Set,
+                           Inputs            => Reads,
+                           Outputs           => Writes,
+                           Proof_Calls       => Name_Set.Empty_Set,
+                           Definite_Calls    => Name_Set.Empty_Set,
+                           Conditional_Calls => Calls,
+                           Local_Variables   => Name_Set.Empty_Set);
+
+                        GG_Write_Finalize;
+                     end;
+                  end if;
                end if;
 
             when E_Package =>
@@ -1291,7 +1323,7 @@ package body Flow is
 
       GG_Write_Initialize;
 
-      --  !!! Write computed globals to the ALI file here
+      --  Writing Generated Globals to the ALI file
       for FA of FA_Graphs loop
          if Gnat2Why_Args.Flow_Advanced_Debug then
             Write_Str (Character'Val (8#33#) & "[32m" &
