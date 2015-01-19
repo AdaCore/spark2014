@@ -117,12 +117,17 @@ package SPARK_Frame_Conditions is
    --  Set a flag to ignore failures to find some scope that should have been
    --  present in some ALI file.
 
-   procedure Propagate_Through_Call_Graph (Ignore_Errors : Boolean);
+   procedure Propagate_Through_Call_Graph
+     (Ignore_Errors     : Boolean;
+      Current_Unit_Only : Boolean := False);
    --  Propagate reads and writes through the call-graph defined by calls and
    --  callers. If Ignore_Errors is true, then ignore failures to find some
    --  scope that should have been present in some ALI file. This mode is used
    --  in simpler modes of operation that do not lead to translation into Why.
    --  It also determines which subprograms are (mutually) recursive.
+   --
+   --  If Current_Unit_Only is set then we only want the direct calls
+   --  and globals.
 
    function Is_Non_Recursive_Subprogram (E : Entity_Id) return Boolean;
    --  Returns True if E is not a (mutually) recursive subprogram.

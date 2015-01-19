@@ -1077,7 +1077,10 @@ package body SPARK_Frame_Conditions is
    -- Propagate_Through_Call_Graph --
    ----------------------------------
 
-   procedure Propagate_Through_Call_Graph (Ignore_Errors : Boolean) is
+   procedure Propagate_Through_Call_Graph
+     (Ignore_Errors     : Boolean;
+      Current_Unit_Only : Boolean := False)
+   is
 
       procedure Propagate_On_Call (Caller, Callee : Id);
       --  Update reads and writes of subprogram Caller from Callee
@@ -1199,6 +1202,12 @@ package body SPARK_Frame_Conditions is
          Updated := False;
 
          Called_Subp := Calls.Element (Subp);
+
+         --  If Current_Unit_Only is set then we only want the direct
+         --  calls and globals.
+         if Current_Unit_Only then
+            return;
+         end if;
 
 --  Workaround for K526-008
 

@@ -1097,31 +1097,82 @@ package body Flow is
                                            E,
                                            Compute_Globals));
                   elsif Compute_Globals then
-                     --  Use (Yannick's) Computed Globals info to add a
-                     --  GG entry on the ALI file.
                      declare
-                        Reads  : Name_Set.Set;
-                        Writes : Name_Set.Set;
-                        Calls  : Name_Set.Set;
+                        Scope        : constant Flow_Scope :=
+                          Get_Flow_Scope (E);
+
+                        Global_Node  : constant Node_Id :=
+                          Get_Contract_Node (E,
+                                             Scope,
+                                             Global_Contract);
+                        Depends_Node : constant Node_Id :=
+                          Get_Contract_Node (E,
+                                             Scope,
+                                             Depends_Contract);
                      begin
+                        --  Initialize ALI file for GG writing
                         GG_Write_Initialize;
 
-                        --  Collect the damn thing...
-                        Collect_Current_Computed_Globals (E,
-                                                          Reads,
-                                                          Writes,
-                                                          Calls);
+                        if Present (Global_Node)
+                          or else Present (Depends_Node)
+                        then
+                           --  If we have a user-provided Global or
+                           --  Depends aspect then we use Get_Globals
+                           --  to get that.
 
-                        GG_Write_Subprogram_Info
-                          (E,
-                           Inputs_Proof      => Name_Set.Empty_Set,
-                           Inputs            => Reads,
-                           Outputs           => Writes,
-                           Proof_Calls       => Name_Set.Empty_Set,
-                           Definite_Calls    => Name_Set.Empty_Set,
-                           Conditional_Calls => Calls,
-                           Local_Variables   => Name_Set.Empty_Set);
+                           declare
+                              Proof_Ins    : Flow_Id_Sets.Set;
+                              Reads        : Flow_Id_Sets.Set;
+                              Writes       : Flow_Id_Sets.Set;
+                              Unreferenced : Boolean;
+                           begin
+                              Get_Globals (Subprogram => E,
+                                           Scope      => Scope,
+                                           Classwide  => False,
+                                           Proof_Ins  => Proof_Ins,
+                                           Reads      => Reads,
+                                           Writes     => Writes,
+                                           Computed   => Unreferenced);
 
+                              GG_Write_Subprogram_Info
+                                (E,
+                                 Inputs_Proof      => To_Name_Set (Proof_Ins),
+                                 Inputs            => To_Name_Set (Reads),
+                                 Outputs           => To_Name_Set (Writes),
+                                 Proof_Calls       => Name_Set.Empty_Set,
+                                 Definite_Calls    => Name_Set.Empty_Set,
+                                 Conditional_Calls => Name_Set.Empty_Set,
+                                 Local_Variables   => Name_Set.Empty_Set);
+                           end;
+
+                        else
+                           --  Use (Yannick's) Computed Globals info
+                           --  to add a GG entry on the ALI file.
+                           declare
+                              Reads  : Name_Set.Set;
+                              Writes : Name_Set.Set;
+                              Calls  : Name_Set.Set;
+                           begin
+                              --  Collect the computed globals using
+                              --  only info from the current
+                              --  compilation unit.
+                              Collect_Current_Computed_Globals (E,
+                                                                Reads,
+                                                                Writes,
+                                                                Calls);
+
+                              GG_Write_Subprogram_Info
+                                (E,
+                                 Inputs_Proof      => Name_Set.Empty_Set,
+                                 Inputs            => Reads,
+                                 Outputs           => Writes,
+                                 Proof_Calls       => Name_Set.Empty_Set,
+                                 Definite_Calls    => Name_Set.Empty_Set,
+                                 Conditional_Calls => Calls,
+                                 Local_Variables   => Name_Set.Empty_Set);
+                           end;
+                        end if;
+                        --  Finalize ALI file after GG Writing
                         GG_Write_Finalize;
                      end;
                   end if;

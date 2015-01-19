@@ -240,7 +240,8 @@ package body Gnat2Why.Driver is
       --  Compute the frame condition from raw SPARK cross-reference
       --  information.
 
-      Propagate_Through_Call_Graph (Ignore_Errors => Current_Unit_Only);
+      Propagate_Through_Call_Graph (Ignore_Errors     => Current_Unit_Only,
+                                    Current_Unit_Only => Current_Unit_Only);
    end Compute_Global_Effects;
 
    ---------------------
