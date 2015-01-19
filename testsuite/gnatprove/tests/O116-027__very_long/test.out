@@ -1,0 +1,301 @@
+very_longs-divide.adb:15:12: info: range check proved
+very_longs-divide.adb:19:12: info: range check proved
+very_longs-divide.adb:20:48: info: overflow check proved
+very_longs-divide.adb:20:64: info: overflow check proved
+very_longs-divide.adb:61:13: info: discriminant check proved
+very_longs-divide.adb:61:26: info: length check proved
+very_longs-divide.adb:61:29: info: length check proved
+very_longs-divide.adb:63:22: info: discriminant check proved
+very_longs-divide.adb:64:44: info: discriminant check proved
+very_longs-divide.adb:64:57: info: index check proved
+very_longs-divide.adb:65:16: info: discriminant check proved
+very_longs-divide.adb:65:29: medium: array index check might fail
+very_longs-divide.adb:65:52: info: discriminant check proved
+very_longs-divide.adb:65:65: info: index check proved
+very_longs-divide.adb:66:16: info: discriminant check proved
+very_longs-divide.adb:66:29: info: index check proved
+very_longs-divide.adb:66:41: info: discriminant check proved
+very_longs-divide.adb:66:54: info: index check proved
+very_longs-divide.adb:69:13: info: discriminant check proved
+very_longs-divide.adb:69:32: info: discriminant check proved
+very_longs-divide.adb:69:44: info: index check proved
+very_longs-divide.adb:82:22: info: discriminant check proved
+very_longs-divide.adb:83:44: info: discriminant check proved
+very_longs-divide.adb:83:57: medium: array index check might fail
+very_longs-divide.adb:84:16: info: discriminant check proved
+very_longs-divide.adb:84:29: info: index check proved
+very_longs-divide.adb:84:52: info: discriminant check proved
+very_longs-divide.adb:84:65: info: index check proved
+very_longs-divide.adb:85:16: info: discriminant check proved
+very_longs-divide.adb:85:29: info: index check proved
+very_longs-divide.adb:85:41: info: discriminant check proved
+very_longs-divide.adb:85:54: info: index check proved
+very_longs-divide.adb:100:30: info: discriminant check proved
+very_longs-divide.adb:101:32: info: discriminant check proved
+very_longs-divide.adb:101:45: medium: array index check might fail
+very_longs-divide.adb:102:16: info: discriminant check proved
+very_longs-divide.adb:102:29: info: index check proved
+very_longs-divide.adb:102:53: info: discriminant check proved
+very_longs-divide.adb:102:66: info: index check proved
+very_longs-divide.adb:103:16: info: discriminant check proved
+very_longs-divide.adb:103:29: info: index check proved
+very_longs-divide.adb:104:18: info: discriminant check proved
+very_longs-divide.adb:104:31: info: index check proved
+very_longs-divide.adb:113:28: medium: overflow check might fail
+very_longs-divide.adb:119:29: info: discriminant check proved
+very_longs-divide.adb:119:44: info: index check proved
+very_longs-divide.adb:119:44: info: overflow check proved
+very_longs-divide.adb:119:66: info: discriminant check proved
+very_longs-divide.adb:119:81: info: overflow check proved
+very_longs-divide.adb:119:85: info: index check proved
+very_longs-divide.adb:120:32: medium: divide by zero might fail
+very_longs-divide.adb:120:48: info: discriminant check proved
+very_longs-divide.adb:120:61: medium: array index check might fail
+very_longs-divide.adb:123:32: medium: divide by zero might fail
+very_longs-divide.adb:123:50: info: discriminant check proved
+very_longs-divide.adb:123:63: info: index check proved
+very_longs-divide.adb:127:32: info: discriminant check proved
+very_longs-divide.adb:127:47: info: index check proved
+very_longs-divide.adb:128:40: info: discriminant check proved
+very_longs-divide.adb:128:56: info: overflow check proved
+very_longs-divide.adb:128:61: info: index check proved
+very_longs-divide.adb:131:41: info: discriminant check proved
+very_longs-divide.adb:131:54: info: index check proved
+very_longs-divide.adb:136:35: info: discriminant check proved
+very_longs-divide.adb:136:50: info: index check proved
+very_longs-divide.adb:137:43: info: discriminant check proved
+very_longs-divide.adb:137:59: info: overflow check proved
+very_longs-divide.adb:137:64: info: index check proved
+very_longs-divide.adb:157:11: medium: range check might fail
+very_longs-divide.adb:158:43: info: discriminant check proved
+very_longs-divide.adb:158:56: medium: array index check might fail
+very_longs-divide.adb:162:28: info: discriminant check proved
+very_longs-divide.adb:162:43: info: overflow check proved
+very_longs-divide.adb:162:59: medium: array index check might fail
+very_longs-divide.adb:169:11: info: discriminant check proved
+very_longs-divide.adb:169:26: info: overflow check proved
+very_longs-divide.adb:169:42: info: index check proved
+very_longs-divide.adb:170:34: info: discriminant check proved
+very_longs-divide.adb:170:49: info: overflow check proved
+very_longs-divide.adb:170:65: info: index check proved
+very_longs-divide.adb:170:108: info: range check proved
+very_longs-divide.adb:175:24: info: discriminant check proved
+very_longs-divide.adb:175:39: info: overflow check proved
+very_longs-divide.adb:175:39: medium: array index check might fail
+very_longs-divide.adb:180:08: info: discriminant check proved
+very_longs-divide.adb:180:23: info: index check proved
+very_longs-divide.adb:180:23: info: overflow check proved
+very_longs-divide.adb:181:31: info: discriminant check proved
+very_longs-divide.adb:181:46: info: index check proved
+very_longs-divide.adb:181:46: info: overflow check proved
+very_longs-divide.adb:181:79: info: range check proved
+very_longs-divide.adb:194:15: info: discriminant check proved
+very_longs-divide.adb:194:28: medium: array index check might fail
+very_longs-divide.adb:194:40: medium: range check might fail
+very_longs-divide.adb:198:18: info: discriminant check proved
+very_longs-divide.adb:198:31: info: index check proved
+very_longs-divide.adb:198:45: info: discriminant check proved
+very_longs-divide.adb:198:58: info: index check proved
+very_longs-divide.adb:200:14: medium: range check might fail
+very_longs-divide.adb:201:34: info: discriminant check proved
+very_longs-divide.adb:201:49: info: overflow check proved
+very_longs-divide.adb:201:65: medium: array index check might fail
+very_longs-divide.adb:202:34: info: discriminant check proved
+very_longs-divide.adb:202:47: medium: array index check might fail
+very_longs-divide.adb:203:14: info: discriminant check proved
+very_longs-divide.adb:203:29: info: overflow check proved
+very_longs-divide.adb:203:45: info: index check proved
+very_longs-divide.adb:206:11: info: discriminant check proved
+very_longs-divide.adb:206:26: info: index check proved
+very_longs-divide.adb:206:26: info: overflow check proved
+very_longs-divide.adb:206:35: info: discriminant check proved
+very_longs-divide.adb:206:50: info: overflow check proved
+very_longs-divide.adb:206:50: medium: array index check might fail
+very_longs-divide.adb:211:12: info: discriminant check proved
+very_longs-divide.adb:211:26: info: length check proved
+very_longs-divide.adb:211:29: info: length check proved
+very_longs-divide.adb:212:13: info: discriminant check proved
+very_longs-divide.adb:212:26: info: length check proved
+very_longs-divide.adb:212:29: info: length check proved
+very_longs-divide.adb:215:09: medium: range check might fail
+very_longs-divide.adb:216:25: info: range check proved
+very_longs-divide.adb:219:22: info: precondition proved
+very_longs-divide.adb:219:48: info: discriminant check proved
+very_longs-divide.adb:219:61: info: index check proved
+very_longs-divide.adb:220:04: info: precondition proved
+very_longs-divide.adb:221:09: info: discriminant check proved
+very_longs-divide.adb:225:08: info: range check proved
+very_longs-divide.adb:225:51: info: overflow check proved
+very_longs-divide.adb:227:07: info: precondition proved
+very_longs-divide.adb:227:10: info: range check proved
+very_longs-divide.adb:230:10: info: range check proved
+very_longs-divide.adb:233:10: info: range check proved
+very_longs-divide.adb:239:08: info: range check proved
+very_longs-divide.adb:240:16: info: discriminant check proved
+very_longs-divide.adb:240:29: medium: array index check might fail
+very_longs-divide.adb:240:48: info: discriminant check proved
+very_longs-divide.adb:240:61: medium: array index check might fail
+very_longs.adb:59:13: info: discriminant check proved
+very_longs.adb:59:26: info: length check proved
+very_longs.adb:59:29: info: length check proved
+very_longs.adb:61:17: info: discriminant check proved
+very_longs.adb:65:10: info: loop invariant initialization proved
+very_longs.adb:65:10: info: loop invariant preservation proved
+very_longs.adb:68:10: info: loop invariant initialization proved
+very_longs.adb:68:10: info: loop invariant preservation proved
+very_longs.adb:69:14: info: discriminant check proved
+very_longs.adb:69:36: info: discriminant check proved
+very_longs.adb:70:16: info: discriminant check proved
+very_longs.adb:70:43: info: discriminant check proved
+very_longs.adb:72:35: info: discriminant check proved
+very_longs.adb:72:48: info: index check proved
+very_longs.adb:73:35: info: discriminant check proved
+very_longs.adb:73:48: info: index check proved
+very_longs.adb:76:16: info: discriminant check proved
+very_longs.adb:76:29: info: index check proved
+very_longs.adb:92:13: info: discriminant check proved
+very_longs.adb:92:26: info: length check proved
+very_longs.adb:92:29: info: length check proved
+very_longs.adb:94:17: info: discriminant check proved
+very_longs.adb:98:10: info: loop invariant initialization proved
+very_longs.adb:98:10: info: loop invariant preservation proved
+very_longs.adb:101:10: info: loop invariant initialization proved
+very_longs.adb:101:10: info: loop invariant preservation proved
+very_longs.adb:102:14: info: discriminant check proved
+very_longs.adb:102:36: info: discriminant check proved
+very_longs.adb:103:16: info: discriminant check proved
+very_longs.adb:103:43: info: discriminant check proved
+very_longs.adb:105:38: info: discriminant check proved
+very_longs.adb:105:51: info: index check proved
+very_longs.adb:106:38: info: discriminant check proved
+very_longs.adb:106:51: info: index check proved
+very_longs.adb:113:10: info: assertion proved
+very_longs.adb:113:35: info: discriminant check proved
+very_longs.adb:114:16: info: discriminant check proved
+very_longs.adb:114:29: info: index check proved
+very_longs.adb:133:07: info: assertion proved
+very_longs.adb:134:13: info: discriminant check proved
+very_longs.adb:134:26: info: length check proved
+very_longs.adb:134:29: info: length check proved
+very_longs.adb:136:26: info: discriminant check proved
+very_longs.adb:137:16: info: discriminant check proved
+very_longs.adb:137:29: info: index check proved
+very_longs.adb:137:50: info: division check proved
+very_longs.adb:137:50: info: range check proved
+very_longs.adb:138:23: info: division check proved
+very_longs.adb:154:13: info: discriminant check proved
+very_longs.adb:154:26: info: length check proved
+very_longs.adb:154:29: info: length check proved
+very_longs.adb:157:22: info: discriminant check proved
+very_longs.adb:157:34: info: range check proved
+very_longs.adb:158:29: info: range check proved
+very_longs.adb:161:10: info: loop invariant initialization proved
+very_longs.adb:161:10: info: loop invariant preservation proved
+very_longs.adb:162:26: info: overflow check proved
+very_longs.adb:162:41: info: overflow check proved
+very_longs.adb:162:45: info: division check proved
+very_longs.adb:163:10: info: loop invariant initialization proved
+very_longs.adb:163:10: info: loop invariant preservation proved
+very_longs.adb:164:10: info: loop invariant initialization proved
+very_longs.adb:164:10: info: loop invariant preservation proved
+very_longs.adb:164:47: info: discriminant check proved
+very_longs.adb:166:31: info: index check proved
+very_longs.adb:167:44: info: index check proved
+very_longs.adb:167:44: info: overflow check proved
+very_longs.adb:172:10: info: assertion proved
+very_longs.adb:172:39: info: discriminant check proved
+very_longs.adb:173:16: info: discriminant check proved
+very_longs.adb:173:29: info: index check proved
+very_longs.adb:175:25: info: range check proved
+very_longs.adb:176:39: info: overflow check proved
+very_longs.adb:188:25: info: discriminant check proved
+very_longs.adb:189:14: info: discriminant check proved
+very_longs.adb:189:27: info: index check proved
+very_longs.adb:189:33: info: discriminant check proved
+very_longs.adb:189:46: info: index check proved
+very_longs.adb:193:14: info: discriminant check proved
+very_longs.adb:193:27: info: index check proved
+very_longs.adb:193:33: info: discriminant check proved
+very_longs.adb:193:46: info: index check proved
+very_longs.adb:205:17: info: precondition proved
+very_longs.adb:211:21: info: precondition proved
+very_longs.adb:217:21: info: precondition proved
+very_longs.adb:224:07: medium: refined postcondition might fail
+very_longs.adb:225:16: info: discriminant check proved
+very_longs.adb:225:45: medium: array index check might fail
+very_longs.adb:226:62: info: discriminant check proved
+very_longs.adb:227:22: info: discriminant check proved
+very_longs.adb:227:36: info: index check proved
+very_longs.adb:232:26: info: discriminant check proved
+very_longs.adb:233:19: info: discriminant check proved
+very_longs.adb:233:33: info: index check proved
+very_longs.adb:234:28: info: range check proved
+very_longs.adb:237:10: info: loop invariant initialization proved
+very_longs.adb:237:10: info: loop invariant preservation proved
+very_longs.adb:240:26: info: discriminant check proved
+very_longs.adb:240:40: info: index check proved
+very_longs.adb:258:13: info: discriminant check proved
+very_longs.adb:258:26: info: length check proved
+very_longs.adb:258:29: info: length check proved
+very_longs.adb:260:17: info: discriminant check proved
+very_longs.adb:261:35: info: discriminant check proved
+very_longs.adb:261:48: info: index check proved
+very_longs.adb:262:35: info: discriminant check proved
+very_longs.adb:262:48: info: index check proved
+very_longs.adb:265:16: info: discriminant check proved
+very_longs.adb:265:29: info: index check proved
+very_longs.adb:278:13: info: discriminant check proved
+very_longs.adb:278:26: info: length check proved
+very_longs.adb:278:29: info: length check proved
+very_longs.adb:280:17: info: discriminant check proved
+very_longs.adb:281:38: info: discriminant check proved
+very_longs.adb:281:51: info: index check proved
+very_longs.adb:282:38: info: discriminant check proved
+very_longs.adb:282:51: info: index check proved
+very_longs.adb:289:16: info: discriminant check proved
+very_longs.adb:289:29: info: index check proved
+very_longs.adb:308:13: info: discriminant check proved
+very_longs.adb:308:26: info: length check proved
+very_longs.adb:308:29: info: length check proved
+very_longs.adb:311:17: info: discriminant check proved
+very_longs.adb:313:20: info: discriminant check proved
+very_longs.adb:314:38: info: discriminant check proved
+very_longs.adb:314:51: info: index check proved
+very_longs.adb:315:38: info: discriminant check proved
+very_longs.adb:315:51: info: index check proved
+very_longs.adb:316:18: info: overflow check proved
+very_longs.adb:316:35: info: discriminant check proved
+very_longs.adb:317:46: info: discriminant check proved
+very_longs.adb:317:61: info: overflow check proved
+very_longs.adb:317:65: info: index check proved
+very_longs.adb:319:22: info: discriminant check proved
+very_longs.adb:319:37: info: overflow check proved
+very_longs.adb:319:41: info: index check proved
+very_longs.adb:337:13: info: discriminant check proved
+very_longs.adb:337:26: info: length check proved
+very_longs.adb:337:29: info: length check proved
+very_longs.adb:340:17: info: discriminant check proved
+very_longs.adb:342:20: info: discriminant check proved
+very_longs.adb:343:39: info: discriminant check proved
+very_longs.adb:343:52: info: index check proved
+very_longs.adb:344:39: info: discriminant check proved
+very_longs.adb:344:52: info: index check proved
+very_longs.adb:345:44: info: discriminant check proved
+very_longs.adb:345:59: info: overflow check proved
+very_longs.adb:345:63: info: index check proved
+very_longs.adb:347:19: info: discriminant check proved
+very_longs.adb:347:34: info: overflow check proved
+very_longs.adb:347:38: info: index check proved
+very_longs.adb:350:16: info: discriminant check proved
+very_longs.adb:350:38: info: index check proved
+very_longs.adb:350:38: info: overflow check proved
+very_longs.ads:14:20: info: postcondition proved
+very_longs.ads:21:34: info: overflow check proved
+very_longs.ads:46:18: info: postcondition proved
+very_longs.ads:52:18: info: postcondition proved
+very_longs.ads:58:18: info: postcondition proved
+very_longs.ads:62:19: info: postcondition proved
+very_longs.ads:75:37: info: overflow check proved
+very_longs.ads:90:26: info: discriminant check proved
+very_longs.ads:90:54: info: discriminant check proved
+very_longs.ads:90:68: info: index check proved
