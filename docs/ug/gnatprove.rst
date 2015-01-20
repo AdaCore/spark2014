@@ -807,8 +807,24 @@ regular expression can be given instead of a specific message in order to
 suppress all warnings of a given form. Pragma ``Warnings Off`` can be added in
 a configuration file to suppress the corresponding warnings across all units in
 the project. Pragma ``Warnings Off`` can be specified for an entity to suppress
-all warnings related to this entity. See the |GNAT Pro| Reference Manual for
-more details.
+all warnings related to this entity.
+
+Pragma ``Warnings`` can also take a first argument of ``GNAT`` or ``GNATprove``
+to specify that it applies only to GNAT compiler or GNATprove. For example, the
+previous example can be modified to use these refined pragma ``Warnings``:
+
+.. literalinclude:: gnatprove_by_example/examples/warn2.adb
+   :language: ada
+   :linenos:
+
+Besides the documentation benefit of using this refined version of pragma
+``Warnings``, it makes it possible to detect useless pragma ``Warnings``, that
+do not suppress any warning, with switch ``-gnatw.w``. Indeed, this switch can
+then be used both during compilation with GNAT and formal verification with
+GNATprove, as pragma ``Warnings`` that apply to only one tool can be identified
+as such.
+
+See the |GNAT Pro| Reference Manual for more details.
 
 .. _Justifying Check Messages:
 
