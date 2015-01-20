@@ -1121,18 +1121,16 @@ package body Flow is
                            --  to get that.
 
                            declare
-                              Proof_Ins    : Flow_Id_Sets.Set;
-                              Reads        : Flow_Id_Sets.Set;
-                              Writes       : Flow_Id_Sets.Set;
-                              Unreferenced : Boolean;
+                              Proof_Ins : Flow_Id_Sets.Set;
+                              Reads     : Flow_Id_Sets.Set;
+                              Writes    : Flow_Id_Sets.Set;
                            begin
                               Get_Globals (Subprogram => E,
                                            Scope      => Scope,
                                            Classwide  => False,
                                            Proof_Ins  => Proof_Ins,
                                            Reads      => Reads,
-                                           Writes     => Writes,
-                                           Computed   => Unreferenced);
+                                           Writes     => Writes);
 
                               GG_Write_Subprogram_Info
                                 (E,

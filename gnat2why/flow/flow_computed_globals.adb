@@ -639,7 +639,6 @@ package body Flow_Computed_Globals is
                FS_Proof_Ins : Flow_Id_Sets.Set;
                FS_Reads     : Flow_Id_Sets.Set;
                FS_Writes    : Flow_Id_Sets.Set;
-               Unreferenced : Boolean;
 
                procedure Add_Edges_For_FS
                  (FS   : Flow_Id_Sets.Set;
@@ -691,8 +690,7 @@ package body Flow_Computed_Globals is
                                Classwide  => False,
                                Proof_Ins  => FS_Proof_Ins,
                                Reads      => FS_Reads,
-                               Writes     => FS_Writes,
-                               Computed   => Unreferenced);
+                               Writes     => FS_Writes);
 
                   Add_Edges_For_FS (FS_Proof_Ins, G_Proof_Ins);
                   Add_Edges_For_FS (FS_Reads, G_Ins);
@@ -746,7 +744,6 @@ package body Flow_Computed_Globals is
                FS_Proof_Ins : Flow_Id_Sets.Set;
                FS_Reads     : Flow_Id_Sets.Set;
                FS_Writes    : Flow_Id_Sets.Set;
-               Unreferenced : Boolean;
 
                procedure Create_Vertices_For_FS (FS : Flow_Id_Sets.Set);
                --  Creates a vertex for every Flow_Id in FS that
@@ -783,8 +780,7 @@ package body Flow_Computed_Globals is
                                Classwide  => False,
                                Proof_Ins  => FS_Proof_Ins,
                                Reads      => FS_Reads,
-                               Writes     => FS_Writes,
-                               Computed   => Unreferenced);
+                               Writes     => FS_Writes);
 
                   Create_Vertices_For_FS (FS_Proof_Ins);
                   Create_Vertices_For_FS (FS_Reads);

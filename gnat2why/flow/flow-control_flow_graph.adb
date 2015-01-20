@@ -45,11 +45,10 @@ with Gnat2Why.Nodes;                     use Gnat2Why.Nodes;
 with Flow.Antialiasing;                  use Flow.Antialiasing;
 with Flow.Control_Flow_Graph.Utility;    use Flow.Control_Flow_Graph.Utility;
 with Flow_Classwide;                     use Flow_Classwide;
-with Flow_Computed_Globals;              use Flow_Computed_Globals;
 with Flow_Error_Messages;                use Flow_Error_Messages;
 with Flow_Tree_Utility;                  use Flow_Tree_Utility;
-with Flow_Utility;                       use Flow_Utility;
 with Flow_Utility.Initialization;        use Flow_Utility.Initialization;
+with Flow_Utility;                       use Flow_Utility;
 
 package body Flow.Control_Flow_Graph is
 
@@ -3575,14 +3574,7 @@ package body Flow.Control_Flow_Graph is
                  (Standard_Entry => V,
                   Standard_Exits => Vertex_Sets.Empty_Set));
             Linkup (FA.CFG, Prev, FA.Helper_End_Vertex);
-
-            --  The distinction between main loop procedures and error
-            --  signaling procedures is based on the presence or absence of
-            --  an output.
-            FA.Atr (V).Execution :=
-              Get_Abend_Kind
-                (Called_Procedure,
-                 Use_Computed_Globals => GG_Mode /= GG_No_Mode);
+            FA.Atr (V).Execution := Get_Abend_Kind (Called_Procedure);
 
             --  We note down the vertex that we just connected to the
             --  Helper_End_Vertex. If this vertex lies within dead
@@ -3914,11 +3906,10 @@ package body Flow.Control_Flow_Graph is
    is
       pragma Unreferenced (CM);
 
-      Proof_Reads     : Flow_Id_Sets.Set;
-      Reads           : Flow_Id_Sets.Set;
-      Writes          : Flow_Id_Sets.Set;
-      V               : Flow_Graphs.Vertex_Id;
-      Ignore_Computed : Boolean;
+      Proof_Reads : Flow_Id_Sets.Set;
+      Reads       : Flow_Id_Sets.Set;
+      Writes      : Flow_Id_Sets.Set;
+      V           : Flow_Graphs.Vertex_Id;
    begin
       --  Obtain globals (either from contracts or the computed
       --  stuff).
@@ -3927,8 +3918,7 @@ package body Flow.Control_Flow_Graph is
                    Classwide    => Is_Dispatching_Call (Callsite),
                    Proof_Ins    => Proof_Reads,
                    Reads        => Reads,
-                   Writes       => Writes,
-                   Computed     => Ignore_Computed);
+                   Writes       => Writes);
       Reads.Union (Proof_Reads);
 
       for R of Reads loop
@@ -5070,7 +5060,6 @@ package body Flow.Control_Flow_Graph is
                   Proof_Ins : Flow_Id_Sets.Set;
                   Reads     : Flow_Id_Sets.Set;
                   Writes    : Flow_Id_Sets.Set;
-                  Ignore_Computed : Boolean;
                   Globals   : Global_Maps.Map := Global_Maps.Empty_Map;
                begin
                   Get_Globals (Subprogram => Subprogram_Spec,
@@ -5078,8 +5067,7 @@ package body Flow.Control_Flow_Graph is
                                Classwide  => False,
                                Proof_Ins  => Proof_Ins,
                                Reads      => Reads,
-                               Writes     => Writes,
-                               Computed   => Ignore_Computed);
+                               Writes     => Writes);
                   for G of Proof_Ins loop
                      Globals.Include (Change_Variant (G, Normal_Use),
                                       G_Prop'(Is_Read     => False,

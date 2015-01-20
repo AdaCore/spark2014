@@ -98,17 +98,15 @@ package Flow_Utility is
    --  The + shorthand to mean "itself" is expanded away by the
    --  front-end and this procedure does not have to deal with it.
 
-   procedure Get_Globals
-     (Subprogram             : Entity_Id;
-      Scope                  : Flow_Scope;
-      Classwide              : Boolean;
-      Proof_Ins              : out Flow_Id_Sets.Set;
-      Reads                  : out Flow_Id_Sets.Set;
-      Writes                 : out Flow_Id_Sets.Set;
-      Computed               : out Boolean;
-      Consider_Discriminants : Boolean := False;
-      Globals_For_Proof      : Boolean := False;
-      Use_Computed_Globals   : Boolean := True)
+   procedure Get_Globals (Subprogram             : Entity_Id;
+                          Scope                  : Flow_Scope;
+                          Classwide              : Boolean;
+                          Proof_Ins              : out Flow_Id_Sets.Set;
+                          Reads                  : out Flow_Id_Sets.Set;
+                          Writes                 : out Flow_Id_Sets.Set;
+                          Consider_Discriminants : Boolean := False;
+                          Globals_For_Proof      : Boolean := False;
+                          Use_Computed_Globals   : Boolean := True)
      with Pre  => Ekind (Subprogram) in E_Procedure | E_Function,
           Post => (for all G of Proof_Ins => G.Variant = In_View) and
                   (for all G of Reads     => G.Variant = In_View) and
@@ -127,17 +125,11 @@ package Flow_Utility is
    --
    --  If Globals_For_Proof is set then the calls to
    --  Get_Generated_Reads will not specify Include_Constants.
-   --
-   --  Computed is True on return if the globals were computed instead of
-   --  specified through a Global or Depends contract.
 
-   procedure Get_Proof_Globals
-     (Subprogram           : Entity_Id;
-      Classwide            : Boolean;
-      Reads                : out Flow_Id_Sets.Set;
-      Writes               : out Flow_Id_Sets.Set;
-      Computed             : out Boolean;
-      Use_Computed_Globals : Boolean := True)
+   procedure Get_Proof_Globals (Subprogram : Entity_Id;
+                                Classwide  : Boolean;
+                                Reads      : out Flow_Id_Sets.Set;
+                                Writes     : out Flow_Id_Sets.Set)
      with Pre  => Ekind (Subprogram) in E_Procedure | E_Function,
           Post => (for all G of Reads  => G.Variant = In_View) and
                   (for all G of Writes => G.Variant = Out_View);

@@ -100,7 +100,6 @@ package body Flow_Classwide is
       My_Reads : Flow_Id_Sets.Set;
       My_Write : Flow_Id_Sets.Set;
 
-      Ignore_Computed : Boolean;
       Suppressed : Boolean;
 
       Ancestor : constant Flow_Id :=
@@ -148,16 +147,14 @@ package body Flow_Classwide is
                    Classwide  => True,
                    Proof_Ins  => Anc_Proof,
                    Reads      => Anc_Reads,
-                   Writes     => Anc_Write,
-                   Computed   => Ignore_Computed);
+                   Writes     => Anc_Write);
 
       Get_Globals (Subprogram => E,
                    Scope      => Scope,
                    Classwide  => True,
                    Proof_Ins  => My_Proof,
                    Reads      => My_Reads,
-                   Writes     => My_Write,
-                   Computed   => Ignore_Computed);
+                   Writes     => My_Write);
 
       --  A Global or Global’Class aspect specification G2 is said to be a
       --  valid overriding of another such specification, G1, if the
@@ -298,8 +295,6 @@ package body Flow_Classwide is
          Void    : Flow_Id_Sets.Set;
          Outputs : Flow_Id_Sets.Set;
          Inputs  : Flow_Id_Sets.Set;
-
-         Ignore_Computed : Boolean;
       begin
          if Has_Depends (E) then
             Get_Depends (Subprogram => E,
@@ -318,8 +313,7 @@ package body Flow_Classwide is
                             Classwide  => Classwide,
                             Proof_Ins  => Proof,
                             Reads      => Reads,
-                            Writes     => Write,
-                            Computed   => Ignore_Computed);
+                            Writes     => Write);
                Void    := Change_Variant (Proof, Normal_Use);
                Inputs  := Change_Variant (Reads, Normal_Use);
                Outputs := Change_Variant (Write, Normal_Use);

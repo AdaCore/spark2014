@@ -543,18 +543,12 @@ package SPARK_Util is
    --  as many checks simlpy check for one of the options (and do not
    --  explicitly make sure all cases are considered).
 
-   type Tribool is (False, True, Dont_Know);
-
-   function Has_Output
-     (E                    : Entity_Id;
-      Use_Computed_Globals : Boolean := True) return Tribool
-   with
+   function Has_Output (E : Entity_Id) return Boolean with
      Pre => Ekind (E) = E_Procedure;
-   --  Returns True if procedure E has no output
+   --  Returns True if procedure E has at least one output (parameter or
+   --  global).
 
-   function Get_Abend_Kind
-     (E                    : Entity_Id;
-      Use_Computed_Globals : Boolean := True) return Execution_Kind_T;
+   function Get_Abend_Kind (E : Entity_Id) return Execution_Kind_T;
    --  Infer how the Called_Procedure abnormally ends. If a subprogram
    --  has an output, we assume that it contains an infinite loop. If it
    --  does not, we assume its a thinly veiled wrapper around an

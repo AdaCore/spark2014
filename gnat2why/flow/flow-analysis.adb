@@ -525,10 +525,9 @@ package body Flow.Analysis is
    ------------------
 
    procedure Analyse_Main (FA : in out Flow_Analysis_Graphs) is
-      Proof_Reads     : Flow_Id_Sets.Set;
-      Reads           : Flow_Id_Sets.Set;
-      Unused          : Flow_Id_Sets.Set;
-      Ignore_Computed : Boolean;
+      Proof_Reads : Flow_Id_Sets.Set;
+      Reads       : Flow_Id_Sets.Set;
+      Unused      : Flow_Id_Sets.Set;
    begin
       if not FA.Is_Main then
          --  Nothing to see here, move along.
@@ -545,8 +544,7 @@ package body Flow.Analysis is
                    Classwide  => False,
                    Proof_Ins  => Proof_Reads,
                    Reads      => Reads,
-                   Writes     => Unused,
-                   Computed   => Ignore_Computed);
+                   Writes     => Unused);
       Reads := To_Entire_Variables (Reads or Proof_Reads);
       --  Note we never actually need writes in this analysis.
 
@@ -635,7 +633,6 @@ package body Flow.Analysis is
                      declare
                         E                   : Entity_Id;
                         Tmp_A, Tmp_B, Tmp_C : Flow_Id_Sets.Set;
-                        Ignore_Computed     : Boolean;
                      begin
                         E := First_Formal (FA.Spec_Node);
                         while Present (E) loop
@@ -648,8 +645,7 @@ package body Flow.Analysis is
                                      Classwide  => False,
                                      Proof_Ins  => Tmp_A,
                                      Reads      => Tmp_B,
-                                     Writes     => Tmp_C,
-                                     Computed   => Ignore_Computed);
+                                     Writes     => Tmp_C);
                         for F of To_Entire_Variables (Tmp_A or
                                                         Tmp_B or
                                                         Tmp_C)
@@ -2689,18 +2685,16 @@ package body Flow.Analysis is
          while Present (E) loop
             if Ekind (E) = E_Procedure then
                declare
-                  Proof_Ins       : Flow_Id_Sets.Set;
-                  Reads           : Flow_Id_Sets.Set;
-                  Writes          : Flow_Id_Sets.Set;
-                  Ignore_Computed : Boolean;
+                  Proof_Ins : Flow_Id_Sets.Set;
+                  Reads     : Flow_Id_Sets.Set;
+                  Writes    : Flow_Id_Sets.Set;
                begin
                   Get_Globals (Subprogram => E,
                                Scope      => Scop,
                                Classwide  => False,
                                Proof_Ins  => Proof_Ins,
                                Reads      => Reads,
-                               Writes     => Writes,
-                               Computed   => Ignore_Computed);
+                               Writes     => Writes);
 
                   --  If the Flow_Id is an Output (and not an Input)
                   --  of the procedure then include it to FS.
