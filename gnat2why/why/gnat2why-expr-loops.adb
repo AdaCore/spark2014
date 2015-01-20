@@ -451,7 +451,7 @@ package body Gnat2Why.Expr.Loops is
                   if F.Kind = Direct_Mapping then
                      N := Get_Direct_Mapping_Id (F);
                      if Nkind (N) in N_Entity
-                       and then Ekind (N) = E_Variable
+                       and then Ekind (N) in Object_Kind
                      then
                         Binder := Ada_Ent_To_Why.Element
                           (Symbol_Table, N);

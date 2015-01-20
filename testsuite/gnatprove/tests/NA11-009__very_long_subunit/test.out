@@ -182,7 +182,7 @@ very_longs.adb:142:31: medium: array index check might fail
 very_longs.adb:143:44: info: index check proved
 very_longs.adb:143:44: info: overflow check proved
 very_longs.adb:148:16: info: discriminant check proved
-very_longs.adb:148:29: medium: array index check might fail
+very_longs.adb:148:29: info: index check proved
 very_longs.adb:150:25: info: range check proved
 very_longs.adb:151:39: medium: overflow check might fail
 very_longs.adb:163:25: info: discriminant check proved
