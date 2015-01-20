@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---               Copyright (C) 2013-2014, Altran UK Limited                 --
+--               Copyright (C) 2013-2015, Altran UK Limited                 --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -472,7 +472,9 @@ package body Flow_Utility is
                         To_Ext.Include (Input);
                      end if;
                   end loop;
-                  if not To_Ext.Is_Empty then
+                  if not To_Ext.Is_Empty
+                    and then Is_Tagged_Type (Map_Type)
+                  then
                      if not M.Contains (LHS_Ext) then
                         M.Include (LHS_Ext, Flow_Id_Sets.Empty_Set);
                      end if;
