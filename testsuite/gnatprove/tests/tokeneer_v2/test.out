@@ -145,7 +145,7 @@ auditlog.adb:1239:32: info: overflow check proved
 auditlog.adb:1241:43: info: index check proved
 auditlog.adb:1241:69: info: index check proved
 auditlog.adb:1241:69: info: overflow check proved
-auditlog.adb:1248:64: medium: range check might fail
+auditlog.adb:1248:64: info: range check proved
 auditlog.adb:1249:65: medium: range check might fail
 auditlog.adb:1270:62: info: range check proved
 auditlog.adb:1270:67: info: overflow check proved

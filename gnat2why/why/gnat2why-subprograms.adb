@@ -564,23 +564,27 @@ package body Gnat2Why.Subprograms is
       declare
          Arg : Node_Id;
          Id  : Entity_Id;
+         Ty  : Entity_Id;
          Ident : W_Identifier_Id;
       begin
          if Is_Non_Empty_List (Ada_Binders) then
             Arg := First (Ada_Binders);
             while Present (Arg) loop
                Id := Defining_Identifier (Arg);
+               Ty := Etype (Id);
+               Ty :=
+                 (if Fullview_Not_In_SPARK (Ty) then Ty else MUT (Ty));
 
                if Ekind_In (Id, E_Out_Parameter, E_In_Out_Parameter) then
 
                   --  For records, we modifiy the fields if any and the
                   --  discriminants if they are mutable.
 
-                  if Entity_In_SPARK (Etype (Id))
-                    and then Is_Record_Type (Etype (Id))
+                  if Entity_In_SPARK (Ty)
+                    and then Is_Record_Type (Ty)
                   then
-                     if Count_Fields (Etype (Id)) > 0
-                       or else Is_Tagged_Type (Etype (Id))
+                     if Count_Fields (Ty) > 0
+                       or else Is_Tagged_Type (Ty)
                      then
                         if Global_Params then
                            Ident := Prefix
@@ -593,8 +597,8 @@ package body Gnat2Why.Subprograms is
                         end if;
                         Effects_Append_To_Writes (Eff, Ident);
                      end if;
-                     if not Is_Constrained (Etype (Id))
-                       and then Has_Defaulted_Discriminants (Etype (Id))
+                     if not Is_Constrained (Ty)
+                       and then Has_Defaulted_Discriminants (Ty)
                      then
                         if Global_Params then
                            Ident := Prefix
@@ -818,8 +822,11 @@ package body Gnat2Why.Subprograms is
 
          declare
             Id   : constant Node_Id := Defining_Identifier (Param);
+            Ty   : constant Entity_Id :=
+              (if Fullview_Not_In_SPARK (Etype (Id)) then Etype (Id)
+               else MUT (Etype (Id)));
          begin
-            if Is_Record_Type (Etype (Id))
+            if Is_Record_Type (Ty)
               and then Is_Mutable_In_Why (Id)
             then
 
@@ -830,14 +837,14 @@ package body Gnat2Why.Subprograms is
                declare
                   Binder   : Item_Type :=
                     (Kind   => DRecord,
-                     Typ    => Etype (Id),
+                     Typ    => Ty,
                      others => <>);
                   Unconstr : constant Boolean :=
-                    not Is_Constrained (Etype (Id)) and then
-                    Has_Defaulted_Discriminants (Etype (Id));
+                    not Is_Constrained (Ty) and then
+                    Has_Defaulted_Discriminants (Ty);
                begin
-                  if Count_Fields (Etype (Id)) > 0
-                    or else Is_Tagged_Type (Etype (Id))
+                  if Count_Fields (Ty) > 0
+                    or else Is_Tagged_Type (Ty)
                   then
                      Binder.Fields :=
                        (Present => True,
@@ -851,12 +858,12 @@ package body Gnat2Why.Subprograms is
                                   Name     => Short_Name (Id) &
                                       To_String (WNE_Rec_Split_Fields),
                                   Typ      =>
-                                    Field_Type_For_Fields (Etype (Id))),
+                                    Field_Type_For_Fields (Ty)),
                              B_Ent    => null,
                              Mutable  => True));
                   end if;
 
-                  if Number_Discriminants (Etype (Id)) > 0 then
+                  if Number_Discriminants (Ty) > 0 then
                      Binder.Discrs :=
                        (Present => True,
                         Binder  =>
@@ -869,7 +876,7 @@ package body Gnat2Why.Subprograms is
                                   Name     => Short_Name (Id) &
                                       To_String (WNE_Rec_Split_Discrs),
                                   Typ      =>
-                                    Field_Type_For_Discriminants (Etype (Id))),
+                                    Field_Type_For_Discriminants (Ty)),
                              B_Ent    => null,
                              Mutable  => Unconstr));
                   end if;
@@ -885,7 +892,7 @@ package body Gnat2Why.Subprograms is
                            Typ      => EW_Bool_Type));
                   end if;
 
-                  if Is_Tagged_Type (Etype (Id)) then
+                  if Is_Tagged_Type (Ty) then
                      Binder.Tag :=
                        (Present => True,
                         Id      => New_Identifier
@@ -898,8 +905,8 @@ package body Gnat2Why.Subprograms is
 
                   Result (Count) := Binder;
                end;
-            elsif Is_Array_Type (Etype (Id))
-              and then not Is_Static_Array_Type (Etype (Id))
+            elsif Is_Array_Type (Ty)
+              and then not Is_Static_Array_Type (Ty)
               and then Is_Mutable_In_Why (Id)
             then
 
@@ -912,10 +919,10 @@ package body Gnat2Why.Subprograms is
 
                declare
                   Dim    : constant Positive :=
-                    Positive (Number_Dimensions (Etype (Id)));
+                    Positive (Number_Dimensions (Ty));
                   Bounds : Array_Bounds;
-                  Index  : Node_Id := First_Index (Etype (Id));
-                  Typ  : constant W_Type_Id := EW_Split (Etype (Id));
+                  Index  : Node_Id := First_Index (Ty);
+                  Typ  : constant W_Type_Id := EW_Split (Ty);
                   Name : constant W_Identifier_Id :=
                     New_Identifier (Ada_Node => Id,
                                     Name     => Short_Name (Id),
@@ -954,8 +961,8 @@ package body Gnat2Why.Subprograms is
                declare
                   Typ  : constant W_Type_Id :=
                     (if Use_Why_Base_Type (Id) then
-                          Base_Why_Type (Unique_Entity (Etype (Id)))
-                     else EW_Abstract (Etype (Id)));
+                          Base_Why_Type (Unique_Entity (Ty))
+                     else EW_Abstract (Ty));
                   Name : constant W_Identifier_Id :=
                     New_Identifier (Ada_Node => Id,
                                     Name     => Short_Name (Id),

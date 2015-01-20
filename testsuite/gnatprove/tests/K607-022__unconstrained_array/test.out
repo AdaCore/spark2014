@@ -32,15 +32,15 @@ simple_unc_arrays.adb:14:39: info: index check proved
 simple_unc_arrays.adb:29:10: info: loop invariant initialization proved
 simple_unc_arrays.adb:29:10: medium: loop invariant might fail after first iteration
 simple_unc_arrays.adb:30:46: info: discriminant check proved
-simple_unc_arrays.adb:30:50: medium: array index check might fail
+simple_unc_arrays.adb:30:50: info: index check proved
 simple_unc_arrays.adb:30:82: info: overflow check proved
 simple_unc_arrays.adb:30:82: medium: array index check might fail
 simple_unc_arrays.adb:32:50: info: discriminant check proved
-simple_unc_arrays.adb:32:54: medium: array index check might fail
+simple_unc_arrays.adb:32:54: info: index check proved
 simple_unc_arrays.adb:32:75: medium: array index check might fail
 simple_unc_arrays.adb:34:10: medium: precondition might fail
 simple_unc_arrays.adb:34:23: info: discriminant check proved
-simple_unc_arrays.adb:34:23: medium: length check might fail
+simple_unc_arrays.adb:34:23: info: length check proved
 simple_unc_arrays.adb:34:32: info: range check proved
 simple_unc_arrays.adb:35:22: info: overflow check proved
 simple_unc_arrays.adb:36:23: info: range check proved
@@ -95,10 +95,10 @@ simple_unc_arrays.adb:154:32: info: overflow check proved
 simple_unc_arrays.adb:157:46: info: discriminant check proved
 simple_unc_arrays.adb:157:50: medium: array index check might fail
 simple_unc_arrays.adb:158:34: info: range check proved
-simple_unc_arrays.adb:163:16: medium: precondition might fail
+simple_unc_arrays.adb:163:16: info: precondition proved
 simple_unc_arrays.adb:163:29: info: discriminant check proved
-simple_unc_arrays.adb:163:29: medium: length check might fail
-simple_unc_arrays.adb:163:33: medium: range check might fail
+simple_unc_arrays.adb:163:29: info: length check proved
+simple_unc_arrays.adb:163:33: info: range check proved
 simple_unc_arrays.adb:163:39: info: range check proved
 simple_unc_arrays.adb:166:32: info: overflow check proved
 simple_unc_arrays.adb:167:34: info: range check proved

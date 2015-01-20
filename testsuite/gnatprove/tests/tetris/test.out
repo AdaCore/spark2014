@@ -70,7 +70,7 @@ tetris_functional.adb:104:10: info: loop invariant initialization proved
 tetris_functional.adb:104:10: info: loop invariant preservation proved
 tetris_functional.adb:105:88: info: index check proved
 tetris_functional.adb:112:13: info: loop invariant initialization proved
-tetris_functional.adb:112:36: medium: loop invariant might fail after first iteration, requires No_Complete_Lines (Cur_Board)
+tetris_functional.adb:112:13: info: loop invariant preservation proved
 tetris_functional.adb:113:13: info: loop invariant initialization proved
 tetris_functional.adb:113:13: info: loop invariant preservation proved
 tetris_functional.adb:117:35: info: range check proved

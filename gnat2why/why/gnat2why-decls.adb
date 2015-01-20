@@ -74,19 +74,24 @@ package body Gnat2Why.Decls is
      (E    : Entity_Id)
      return Item_Type
    is
-      --  We first build the type that we use in Why; this may be e.g. String
-
       Use_Ty : constant Entity_Id :=
         (if Ekind (E) in Object_Kind and then Present (Actual_Subtype (E))
          and then Entity_In_SPARK (Actual_Subtype (E)) then
-              Actual_Subtype (E) else Etype (E));
+            Actual_Subtype (E) else Etype (E));
+      --  We use the actual subtype for the parameter if one is provided
+
+      Ty : constant Entity_Id :=
+        (if Ekind (Use_Ty) in Type_Kind
+         and then not Fullview_Not_In_SPARK (Use_Ty)
+         then MUT (Use_Ty) else Use_Ty);
+      --  We use the most underlying subtype if it is in spark.
    begin
-      if Entity_In_SPARK (Use_Ty)
-        and then Is_Array_Type (Use_Ty)
-        and then not Is_Static_Array_Type (Use_Ty)
+      if Entity_In_SPARK (Ty)
+        and then Is_Array_Type (Ty)
+        and then not Is_Static_Array_Type (Ty)
       then
          declare
-            Typ    : constant W_Type_Id := EW_Split (Use_Ty);
+            Typ    : constant W_Type_Id := EW_Split (Ty);
             Name   : constant W_Identifier_Id :=
               To_Why_Id (E => E, Typ => Typ);
             Binder : constant Binder_Type :=
@@ -97,9 +102,9 @@ package body Gnat2Why.Decls is
             Result : Item_Type :=
               (Kind    => UCArray,
                Content => Binder,
-               Dim     => Natural (Number_Dimensions (Etype (E))),
+               Dim     => Natural (Number_Dimensions (Ty)),
                Bounds  => (others => <>));
-            Index  : Node_Id := First_Index (Etype (E));
+            Index  : Node_Id := First_Index (Ty);
          begin
             for D in 1 .. Result.Dim loop
                Result.Bounds (D).First :=
@@ -112,19 +117,19 @@ package body Gnat2Why.Decls is
             end loop;
             return Result;
          end;
-      elsif Entity_In_SPARK (Use_Ty)
-        and then Is_Record_Type (Etype (E))
+      elsif Entity_In_SPARK (Ty)
+        and then Is_Record_Type (Ty)
       then
          declare
             Result   : Item_Type :=
               (Kind   => DRecord,
-               Typ    => Use_Ty,
+               Typ    => Ty,
                others => <>);
             Unconstr : constant Boolean :=
-              not Is_Constrained (Etype (E)) and then
-              Has_Defaulted_Discriminants (Etype (E));
+              not Is_Constrained (Ty) and then
+              Has_Defaulted_Discriminants (Ty);
          begin
-            if Count_Fields (Use_Ty) > 0 or else Is_Tagged_Type (Use_Ty) then
+            if Count_Fields (Ty) > 0 or else Is_Tagged_Type (Ty) then
                Result.Fields :=
                  (Present => True,
                   Binder  =>
@@ -137,12 +142,12 @@ package body Gnat2Why.Decls is
                                         To_String (WNE_Rec_Split_Fields),
                                       Module   => E_Module (E),
                                       Typ      =>
-                                        Field_Type_For_Fields (Use_Ty)),
+                                        Field_Type_For_Fields (Ty)),
                                  B_Ent    => null,
                                  Mutable  => True));
             end if;
 
-            if Number_Discriminants (Use_Ty) > 0 then
+            if Number_Discriminants (Ty) > 0 then
                Result.Discrs :=
                  (Present => True,
                   Binder  =>
@@ -155,7 +160,7 @@ package body Gnat2Why.Decls is
                                         To_String (WNE_Rec_Split_Discrs),
                                       Module   => E_Module (E),
                                       Typ      =>
-                                        Field_Type_For_Discriminants (Use_Ty)),
+                                        Field_Type_For_Discriminants (Ty)),
                                  B_Ent    => null,
                                  Mutable  => Unconstr));
             end if;
@@ -171,7 +176,7 @@ package body Gnat2Why.Decls is
                      Typ      => EW_Bool_Type));
             end if;
 
-            if Is_Tagged_Type (Use_Ty) then
+            if Is_Tagged_Type (Ty) then
                Result.Tag :=
                  (Present => True,
                   Id      => New_Identifier
@@ -189,7 +194,7 @@ package body Gnat2Why.Decls is
             Typ    : constant W_Type_Id :=
               (if Ekind (E) = E_Abstract_State then EW_Private_Type
                elsif Ekind (E) = E_Loop_Parameter then EW_Int_Type
-               else EW_Abstract (Use_Ty));
+               else EW_Abstract (Ty));
             Name   : constant W_Identifier_Id :=
               To_Why_Id (E => E, Typ => Typ);
             Binder : constant Binder_Type :=

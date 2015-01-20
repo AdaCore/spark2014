@@ -43,10 +43,10 @@ aco-math-very_longs.adb:125:85: info: overflow check proved
 aco-math-very_longs.adb:125:94: info: overflow check proved
 aco-math-very_longs.adb:125:94: info: range check proved
 aco-math-very_longs.adb:127:31: medium: array index check might fail
-aco-math-very_longs.adb:128:44: medium: array index check might fail
-aco-math-very_longs.adb:128:44: medium: overflow check might fail
+aco-math-very_longs.adb:128:44: info: index check proved
+aco-math-very_longs.adb:128:44: info: overflow check proved
 aco-math-very_longs.adb:133:16: info: discriminant check proved
-aco-math-very_longs.adb:133:29: medium: array index check might fail
+aco-math-very_longs.adb:133:29: info: index check proved
 aco-math-very_longs.adb:135:32: info: range check proved
 aco-math-very_longs.adb:136:39: info: overflow check proved
 aco-math-very_longs.adb:148:25: info: discriminant check proved
@@ -151,7 +151,7 @@ aco-math-very_longs.adb:370:25: info: discriminant check proved
 aco-math-very_longs.adb:371:64: info: discriminant check proved
 aco-math-very_longs.adb:371:77: info: index check proved
 aco-math-very_longs.adb:372:19: info: discriminant check proved
-aco-math-very_longs.adb:372:32: medium: array index check might fail
+aco-math-very_longs.adb:372:32: info: index check proved
 aco-math-very_longs.adb:372:72: info: discriminant check proved
 aco-math-very_longs.adb:372:85: info: index check proved
 aco-math-very_longs.adb:373:19: info: discriminant check proved
@@ -163,7 +163,7 @@ aco-math-very_longs.adb:376:35: info: discriminant check proved
 aco-math-very_longs.adb:376:47: info: index check proved
 aco-math-very_longs.adb:389:25: info: discriminant check proved
 aco-math-very_longs.adb:390:64: info: discriminant check proved
-aco-math-very_longs.adb:390:77: medium: array index check might fail
+aco-math-very_longs.adb:390:77: info: index check proved
 aco-math-very_longs.adb:391:19: info: discriminant check proved
 aco-math-very_longs.adb:391:32: info: index check proved
 aco-math-very_longs.adb:391:72: info: discriminant check proved
@@ -174,7 +174,7 @@ aco-math-very_longs.adb:392:44: info: discriminant check proved
 aco-math-very_longs.adb:392:57: info: index check proved
 aco-math-very_longs.adb:407:33: info: discriminant check proved
 aco-math-very_longs.adb:408:35: info: discriminant check proved
-aco-math-very_longs.adb:408:48: medium: array index check might fail
+aco-math-very_longs.adb:408:48: info: index check proved
 aco-math-very_longs.adb:409:19: info: discriminant check proved
 aco-math-very_longs.adb:409:32: info: index check proved
 aco-math-very_longs.adb:409:73: info: discriminant check proved
@@ -270,7 +270,7 @@ aco-math-very_longs.adb:515:12: info: discriminant check proved
 aco-math-very_longs.adb:533:17: info: range check proved
 aco-math-very_longs.adb:537:11: info: range check proved
 aco-math-very_longs.adb:538:19: info: discriminant check proved
-aco-math-very_longs.adb:538:32: medium: array index check might fail
+aco-math-very_longs.adb:538:32: info: index check proved
 aco-math-very_longs.adb:538:51: info: discriminant check proved
 aco-math-very_longs.adb:538:64: medium: array index check might fail
 aco-math-very_longs.adb:552:07: info: precondition proved
