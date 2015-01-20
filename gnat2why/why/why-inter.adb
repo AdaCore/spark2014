@@ -180,6 +180,8 @@ package body Why.Inter is
 
          if Node = Int_Unary_Minus then
             State.S.Include (+Int_Module);
+         elsif Node = Real_Unary_Minus then
+            State.S.Include (+RealInfix);
          end if;
       end Identifier_Pre_Op;
 
