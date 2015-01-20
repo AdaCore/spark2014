@@ -26,7 +26,7 @@ with Why;
 with Sem_Util;     use Sem_Util;
 with Sinfo;        use Sinfo;
 
-with SPARK_Util;
+with SPARK_Util;   use SPARK_Util;
 
 with Flow_Utility; use Flow_Utility;
 

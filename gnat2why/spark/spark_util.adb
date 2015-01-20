@@ -956,11 +956,22 @@ package body SPARK_Util is
       return Comp_Id;
    end First_Discriminant;
 
-   ----------------
-   -- Has_Output --
-   ----------------
+   -------------------------------
+   -- Has_User_Supplied_Globals --
+   -------------------------------
 
-   function Has_Output (E : Entity_Id) return Boolean is
+   function Has_User_Supplied_Globals (E : Entity_Id) return Boolean
+   is (Present (Get_Pragma (E, Pragma_Global)) or else
+         Present (Get_Pragma (E, Pragma_Depends)));
+
+   -------------------
+   -- Has_No_Output --
+   -------------------
+
+   function Has_No_Output (E          : Entity_Id;
+                           GG_Allowed : Boolean)
+                           return Boolean
+   is
       Params : constant List_Id :=
                  Parameter_Specifications (Get_Subprogram_Spec (E));
       Param  : Node_Id;
@@ -976,7 +987,7 @@ package body SPARK_Util is
       while Present (Param) loop
          case Formal_Kind'(Ekind (Defining_Identifier (Param))) is
             when E_Out_Parameter | E_In_Out_Parameter =>
-               return True;
+               return False;
             when E_In_Parameter =>
                null;
          end case;
@@ -985,31 +996,36 @@ package body SPARK_Util is
 
       --  Consider output globals
 
-      Flow_Utility.Get_Proof_Globals (Subprogram => E,
-                                      Classwide  => True,
-                                      Reads      => Read_Ids,
-                                      Writes     => Write_Ids);
-      Write_Names := Flow_Types.To_Name_Set (Write_Ids);
+      if GG_Allowed or else Has_User_Supplied_Globals (E) then
+         Flow_Utility.Get_Proof_Globals (Subprogram => E,
+                                         Classwide  => True,
+                                         Reads      => Read_Ids,
+                                         Writes     => Write_Ids);
+         Write_Names := Flow_Types.To_Name_Set (Write_Ids);
 
-      if not Write_Names.Is_Empty then
-         return True;
+         if not Write_Names.Is_Empty then
+            return False;
+         end if;
       end if;
 
       --  No output found
 
-      return False;
-   end Has_Output;
+      return True;
+   end Has_No_Output;
 
    --------------------
    -- Get_Abend_Kind --
    --------------------
 
-   function Get_Abend_Kind (E : Entity_Id) return Execution_Kind_T is
+   function Get_Abend_Kind (E          : Entity_Id;
+                            GG_Allowed : Boolean := True)
+                            return Execution_Kind_T
+   is
    begin
-      if Has_Output (E) then
-         return Infinite_Loop;
-      else
+      if Has_No_Output (E, GG_Allowed) then
          return Abnormal_Termination;
+      else
+         return Infinite_Loop;
       end if;
    end Get_Abend_Kind;
 

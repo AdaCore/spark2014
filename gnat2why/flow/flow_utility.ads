@@ -60,11 +60,6 @@ package Flow_Utility is
    --  Get the type of the given node. If the full view of the type
    --  is not visible from Scope, then we return the non-full view.
 
-   function Has_User_Supplied_Globals (Subprogram : Entity_Id) return Boolean
-     with Pre => Ekind (Subprogram) in Subprogram_Kind;
-   --  Return true if the given subprogram has been annotated with a global
-   --  (or depends) contract.
-
    function Has_Depends (Subprogram : Entity_Id) return Boolean
      with Pre => Ekind (Subprogram) in Subprogram_Kind;
    --  Return true if the given subprogram has been annotated with a

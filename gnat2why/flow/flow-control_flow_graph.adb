@@ -3464,7 +3464,6 @@ package body Flow.Control_Flow_Graph is
 
       V : Flow_Graphs.Vertex_Id;
       C : Flow_Graphs.Cluster_Id;
-
    begin
       --  Add a cluster to help pretty printing.
       FA.CFG.New_Cluster (C);
@@ -3574,7 +3573,9 @@ package body Flow.Control_Flow_Graph is
                  (Standard_Entry => V,
                   Standard_Exits => Vertex_Sets.Empty_Set));
             Linkup (FA.CFG, Prev, FA.Helper_End_Vertex);
-            FA.Atr (V).Execution := Get_Abend_Kind (Called_Procedure);
+            FA.Atr (V).Execution :=
+              Get_Abend_Kind (Called_Procedure,
+                              GG_Allowed => not FA.Compute_Globals);
 
             --  We note down the vertex that we just connected to the
             --  Helper_End_Vertex. If this vertex lies within dead

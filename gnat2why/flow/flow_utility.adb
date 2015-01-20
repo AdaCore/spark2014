@@ -1032,18 +1032,6 @@ package body Flow_Utility is
    --  Package
    ----------------------------------------------------------------------
 
-   -------------------------------
-   -- Has_User_Supplied_Globals --
-   -------------------------------
-
-   function Has_User_Supplied_Globals (Subprogram : Entity_Id)
-                                       return Boolean
-   is
-   begin
-      return Present (Get_Pragma (Subprogram, Pragma_Global)) or else
-        Has_Depends (Subprogram);
-   end Has_User_Supplied_Globals;
-
    -----------------
    -- Has_Depends --
    -----------------
