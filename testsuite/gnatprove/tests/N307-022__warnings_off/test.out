@@ -1,0 +1,5 @@
+warns.adb:6:13: medium: overflow check might fail
+warns.adb:10:15: medium: overflow check might fail
+warns2.adb:6:13: medium: overflow check might fail
+warns2.adb:9:08: warning: unused assignment
+warns2.adb:9:15: medium: overflow check might fail

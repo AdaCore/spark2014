@@ -1,0 +1,5 @@
+project Compil is
+   package Compiler is
+      for Default_Switches ("Ada") use ("-gnatwa", "-gnatw.w");
+   end Compiler;
+end Compil;

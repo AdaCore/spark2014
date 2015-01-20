@@ -1,5 +1,5 @@
 project Test is
    package Compiler is
-      for Switches ("warns2.adb") use ("-gnatwa");
+      for Switches ("warns2.adb") use ("-gnatwa", "-gnatw.w");
    end Compiler;
 end Test;
