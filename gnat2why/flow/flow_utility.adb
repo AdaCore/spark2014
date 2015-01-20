@@ -472,7 +472,9 @@ package body Flow_Utility is
                         To_Ext.Include (Input);
                      end if;
                   end loop;
-                  if not To_Ext.Is_Empty then
+                  if not To_Ext.Is_Empty
+                    and then Is_Tagged_Type (Map_Type)
+                  then
                      if not M.Contains (LHS_Ext) then
                         M.Include (LHS_Ext, Flow_Id_Sets.Empty_Set);
                      end if;
