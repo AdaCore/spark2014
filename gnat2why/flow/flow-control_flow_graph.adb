@@ -50,6 +50,8 @@ with Flow_Tree_Utility;                  use Flow_Tree_Utility;
 with Flow_Utility.Initialization;        use Flow_Utility.Initialization;
 with Flow_Utility;                       use Flow_Utility;
 
+with VC_Kinds;                           use VC_Kinds;
+
 package body Flow.Control_Flow_Graph is
 
    use type Ada.Containers.Count_Type;
@@ -3808,7 +3810,7 @@ package body Flow.Control_Flow_Graph is
                Msg     => "type & is not fully initialized",
                N       => N,
                F1      => Direct_Mapping_Id (Typ),
-               Tag     => "default_initialization_missmatch",
+               Tag     => Default_Initialization_Missmatch,
                Kind    => Medium_Check_Kind);
          end if;
       end if;
@@ -5106,7 +5108,7 @@ package body Flow.Control_Flow_Graph is
                               N    => FA.Analyzed_Entity,
                               F1   => G,
                               Kind => Error_Kind,
-                              Tag  => "side_effects");
+                              Tag  => Side_Effects);
 
                            FA.Function_Side_Effects_Present := True;
                         end if;

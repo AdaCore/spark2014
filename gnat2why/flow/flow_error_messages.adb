@@ -221,12 +221,12 @@ package body Flow_Error_Messages is
       Kind       : Msg_Kind;
       N          : Node_Id;
       Suppressed : out Boolean;
-      F1         : Flow_Id   := Null_Flow_Id;
-      F2         : Flow_Id   := Null_Flow_Id;
-      F3         : Flow_Id   := Null_Flow_Id;
-      Tag        : String    := "";
-      SRM_Ref    : String    := "";
-      Tracefile  : String    := "")
+      F1         : Flow_Id       := Null_Flow_Id;
+      F2         : Flow_Id       := Null_Flow_Id;
+      F3         : Flow_Id       := Null_Flow_Id;
+      Tag        : Flow_Tag_Kind := Empty_Tag;
+      SRM_Ref    : String        := "";
+      Tracefile  : String        := "")
    is
       Msg2    : constant String :=
         (if SRM_Ref'Length > 0 then Msg & " (SPARK RM " & SRM_Ref & ")"
@@ -297,7 +297,7 @@ package body Flow_Error_Messages is
 
          Add_Json_Msg
            (Suppr     => Suppr,
-            Tag       => Tag,
+            Tag       => Flow_Tag_Kind'Image (Tag),
             Kind      => Kind,
             Slc       => Slc,
             Msg_List  => Flow_Msgs,
@@ -324,7 +324,7 @@ package body Flow_Error_Messages is
       F1        : Flow_Id               := Null_Flow_Id;
       F2        : Flow_Id               := Null_Flow_Id;
       F3        : Flow_Id               := Null_Flow_Id;
-      Tag       : String                := "";
+      Tag       : Flow_Tag_Kind         := Empty_Tag;
       SRM_Ref   : String                := "";
       Tracefile : String                := "";
       Vertex    : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex)

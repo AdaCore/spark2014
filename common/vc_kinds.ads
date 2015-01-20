@@ -88,6 +88,73 @@ package VC_Kinds is
    subtype VC_LSP_Kind is  VC_Kind range
      VC_Weaker_Pre .. VC_Stronger_Classwide_Post;
 
+   type Flow_Tag_Kind is
+     (Empty_Tag,
+      --  Used when a tag is not specified
+
+      Dead_Code,
+      --  Statement is never reached
+
+      Default_Initialization_Missmatch,
+      --  A type marked as Fully_Default_Initialized is not fully initialized
+
+      Depends_Null,
+      --  There is a missing dependency of the format "null => something"
+
+      Depends_Missing,
+      --  There is a variable missing from the RHS of a dependency
+
+      Depends_Missing_Clause,
+      --  There is an entire clause missing from the Depends contract
+
+      Depends_Wrong,
+      --  User provided an incorrect dependency
+
+      Export_Depends_On_Proof_In,
+      --  A Proof_In variable has been used in the computation of an export
+
+      Hidden_Unexposed_State,
+      --  Some hidden state has not been exposed through a state abstraction
+
+      Illegal_Update,
+      --  Writing to a variable which is not a global Output
+
+      Impossible_To_Initialize_State,
+      --  A state abstraction cannot possibly be initialized
+
+      Ineffective,
+      --  Code has no effect on any exports
+
+      Initializes_Wrong,
+      --  User provided an incorrect Initializes contract
+
+      Inout_Only_Read,
+      --  Inout could have been an In
+
+      Missing_Return,
+      --  Function has a path without a return statement
+
+      Pragma_Elaborate_All_Needed,
+      --  A remote state abstraction has been used during elaboration
+      --  so a pragma Elaborate_All is needed.
+
+      Side_Effects,
+      --  A function with side-effects has been found
+
+      Stable,
+      --  Found a stable element inside a loop (this has not been
+      --  implemented yet).
+
+      Uninitialized,
+      --  Use of an uninitialized variable
+
+      Unused,
+      --  A parameter has not been used
+
+      Unused_Initial_Value
+      --  Initial value has not been used
+     );
+
    --  Returns True if this kind of VC should be considered like an assertion
    --  when positioning the message to the left-most subexpression of the
    --  checked expression. For example, this is not true for VC_Precondition,

@@ -29,6 +29,8 @@ with Flow_Types;            use Flow_Types;
 with GNATCOLL.JSON;         use GNATCOLL.JSON;
 with Types;                 use Types;
 
+with VC_Kinds;              use VC_Kinds;
+
 package Flow_Error_Messages is
 
    type Msg_Kind is
@@ -70,12 +72,12 @@ package Flow_Error_Messages is
       Kind       : Msg_Kind;
       N          : Node_Id;
       Suppressed : out Boolean;
-      F1         : Flow_Id   := Null_Flow_Id;
-      F2         : Flow_Id   := Null_Flow_Id;
-      F3         : Flow_Id   := Null_Flow_Id;
-      Tag        : String    := "";
-      SRM_Ref    : String    := "";
-      Tracefile  : String    := "")
+      F1         : Flow_Id       := Null_Flow_Id;
+      F2         : Flow_Id       := Null_Flow_Id;
+      F3         : Flow_Id       := Null_Flow_Id;
+      Tag        : Flow_Tag_Kind := Empty_Tag;
+      SRM_Ref    : String        := "";
+      Tracefile  : String        := "")
    with Pre => (if Present (F2) then Present (F1)) and
                (if Present (F3) then Present (F2));
    --  Output a message attached to the given node with a substitution
@@ -100,7 +102,7 @@ package Flow_Error_Messages is
       F1        : Flow_Id               := Null_Flow_Id;
       F2        : Flow_Id               := Null_Flow_Id;
       F3        : Flow_Id               := Null_Flow_Id;
-      Tag       : String                := "";
+      Tag       : Flow_Tag_Kind         := Empty_Tag;
       SRM_Ref   : String                := "";
       Tracefile : String                := "";
       Vertex    : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex)

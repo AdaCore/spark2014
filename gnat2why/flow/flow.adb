@@ -60,6 +60,7 @@ with Snames;                        use Snames;
 with Sprint;                        use Sprint;
 
 with SPARK_Frame_Conditions;        use SPARK_Frame_Conditions;
+with VC_Kinds;                      use VC_Kinds;
 
 use type Ada.Containers.Count_Type;
 
@@ -1291,7 +1292,7 @@ package body Flow is
                               Msg  => "subprogram & has no effect",
                               N    => FA.Analyzed_Entity,
                               F1   => Direct_Mapping_Id (FA.Analyzed_Entity),
-                              Tag  => "ineffective",
+                              Tag  => Ineffective,
                               Kind => Warning_Kind);
                         end if;
                      else

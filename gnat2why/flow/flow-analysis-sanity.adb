@@ -34,6 +34,8 @@ with Flow_Error_Messages; use Flow_Error_Messages;
 with Flow_Tree_Utility;   use Flow_Tree_Utility;
 with Flow_Utility;        use Flow_Utility;
 
+with VC_Kinds;            use VC_Kinds;
+
 package body Flow.Analysis.Sanity is
 
    use type Flow_Graphs.Vertex_Id;
@@ -481,7 +483,7 @@ package body Flow.Analysis.Sanity is
                                        then A.Parameter_Formal
                                        else Var),
                            F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
-                           Tag     => "illegal_update");
+                           Tag     => Illegal_Update);
                      end if;
 
                      Sane := False;

@@ -44,6 +44,8 @@ with Flow_Error_Messages;  use Flow_Error_Messages;
 with Flow_Tree_Utility;    use Flow_Tree_Utility;
 with Flow_Utility;         use Flow_Utility;
 
+with VC_Kinds;             use VC_Kinds;
+
 package body Flow.Analysis is
 
    Debug_Trace_Depends : constant Boolean := False;
@@ -561,7 +563,7 @@ package body Flow.Analysis is
                N    => Find_Global (FA.Analyzed_Entity, R),
                F1   => R,
                F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
-               Tag  => "uninitialized",
+               Tag  => Uninitialized,
                Kind => Medium_Check_Kind);
          end if;
 
@@ -798,7 +800,7 @@ package body Flow.Analysis is
                      Msg    => "& is not modified, could be INPUT",
                      N      => Find_Global (FA.Analyzed_Entity, F_Final),
                      F1     => Entire_Variable (F_Final),
-                     Tag    => "inout_only_read",
+                     Tag    => Inout_Only_Read,
                      Kind   => Warning_Kind,
                      Vertex => V);
                else
@@ -807,7 +809,7 @@ package body Flow.Analysis is
                      Msg    => "& is not modified, could be IN",
                      N      => Error_Location (FA.PDG, FA.Atr, V),
                      F1     => Entire_Variable (F_Final),
-                     Tag    => "inout_only_read",
+                     Tag    => Inout_Only_Read,
                      Kind   => Warning_Kind,
                      Vertex => V);
                end if;
@@ -1001,7 +1003,7 @@ package body Flow.Analysis is
                      Msg  => "unused global &",
                      N    => Find_Global (FA.Analyzed_Entity, F),
                      F1   => F,
-                     Tag  => "unused",
+                     Tag  => Unused,
                      Kind => Warning_Kind);
                end if;
             else
@@ -1011,7 +1013,7 @@ package body Flow.Analysis is
                   Msg  => "unused variable &",
                   N    => Error_Location (FA.PDG, FA.Atr, V),
                   F1   => F,
-                  Tag  => "unused",
+                  Tag  => Unused,
                   Kind => Warning_Kind);
             end if;
          end;
@@ -1065,7 +1067,7 @@ package body Flow.Analysis is
                      N    => Find_Global (FA.Analyzed_Entity, F),
                      F1   => F,
                      F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
-                     Tag  => "unused_initial_value",
+                     Tag  => Unused_Initial_Value,
                      Kind => Warning_Kind);
                end if;
             else
@@ -1076,7 +1078,7 @@ package body Flow.Analysis is
                   N    => Error_Location (FA.PDG, FA.Atr, V),
                   F1   => F,
                   F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
-                  Tag  => "unused_initial_value",
+                  Tag  => Unused_Initial_Value,
                   Kind => Warning_Kind);
             end if;
          end;
@@ -1184,7 +1186,7 @@ package body Flow.Analysis is
                            F2      => Direct_Mapping_Id (FA.Spec_Node),
                            F3      => Direct_Mapping_Id (Scope (N)),
                            Kind    => Error_Kind,
-                           Tag     => "pragma_elaborate_all_needed");
+                           Tag     => Pragma_Elaborate_All_Needed);
                      end if;
 
                      return;
@@ -1434,7 +1436,7 @@ package body Flow.Analysis is
             Key       : constant Flow_Id      := FA.PDG.Get_Key (V);
             Atr       : constant V_Attributes := FA.Atr.Element (V);
             Mask      : Vertex_Sets.Set;
-            Tag       : constant String       := "ineffective";
+            Tag       : constant Flow_Tag_Kind := Ineffective;
             Tmp       : Flow_Id;
             Tracefile : constant String := Fresh_Trace_File;
          begin
@@ -1640,13 +1642,13 @@ package body Flow.Analysis is
       --  Anything remaining is dead
       for V of Dead_Code loop
          declare
-            A      : constant V_Attributes := FA.Atr.Element (V);
+            A : constant V_Attributes := FA.Atr.Element (V);
          begin
             Error_Msg_Flow (FA     => FA,
                             Msg    => "this statement is never reached",
-                            N      => A.Error_Location,
-                            Tag    => "dead_code",
                             Kind   => Warning_Kind,
+                            N      => A.Error_Location,
+                            Tag    => VC_Kinds.Dead_Code,
                             Vertex => V);
          end;
       end loop;
@@ -2081,7 +2083,7 @@ package body Flow.Analysis is
                                     N         => Find_Global
                                       (FA.Analyzed_Entity, Key_I),
                                     F1        => Key_I,
-                                    Tag       => "uninitialized",
+                                    Tag       => Uninitialized,
                                     Kind      => Medium_Check_Kind,
                                     Vertex    => V_Use);
                               else
@@ -2092,7 +2094,7 @@ package body Flow.Analysis is
                                     N         => Find_Global
                                       (FA.Analyzed_Entity, Key_I),
                                     F1        => Key_I,
-                                    Tag       => "uninitialized",
+                                    Tag       => Uninitialized,
                                     Kind      => High_Check_Kind,
                                     Vertex    => V_Use);
                               end if;
@@ -2128,7 +2130,7 @@ package body Flow.Analysis is
                                                       FA.Start_Vertex),
                                     F1        => Direct_Mapping_Id
                                       (FA.Analyzed_Entity),
-                                    Tag       => "missing_return",
+                                    Tag       => Missing_Return,
                                     Kind      => (if Defined_Elsewhere
                                                   then Warning_Kind
                                                   else Error_Kind),
@@ -2164,7 +2166,7 @@ package body Flow.Analysis is
                                     F1        => Key_I,
                                     F2        => Direct_Mapping_Id
                                       (FA.Analyzed_Entity),
-                                    Tag       => "uninitialized",
+                                    Tag       => Uninitialized,
                                     Kind      => Medium_Check_Kind,
                                     Vertex    => V_Use);
                               else
@@ -2185,7 +2187,7 @@ package body Flow.Analysis is
                                     F1        => Key_I,
                                     F2        => Direct_Mapping_Id
                                       (FA.Analyzed_Entity),
-                                    Tag       => "uninitialized",
+                                    Tag       => Uninitialized,
                                     Kind      => High_Check_Kind,
                                     Vertex    => V_Use);
                               end if;
@@ -2226,7 +2228,7 @@ package body Flow.Analysis is
                                  Precise  => True,
                                  Targeted => True),
                               F1        => Key_I,
-                              Tag       => "uninitialized",
+                              Tag       => Uninitialized,
                               Kind      => Medium_Check_Kind,
                               Vertex    => V_Use);
                         else
@@ -2244,7 +2246,7 @@ package body Flow.Analysis is
                                  Precise  => True,
                                  Targeted => True),
                               F1        => Key_I,
-                              Tag       => "uninitialized",
+                              Tag       => Uninitialized,
                               Kind      => High_Check_Kind,
                               Vertex    => V_Use);
                         end if;
@@ -2317,7 +2319,7 @@ package body Flow.Analysis is
                            N      => Error_Location (FA.PDG,
                                                      FA.Atr,
                                                      N_Loop),
-                           Tag    => "stable",
+                           Tag    => Stable,
                            Kind   => Warning_Kind,
                            Vertex => N_Loop);
 
@@ -2487,7 +2489,7 @@ package body Flow.Analysis is
                            F1        => Output,
                            F2        => Input,
                            Kind      => Error_Kind,
-                           Tag       => "export_depends_on_proof_in");
+                           Tag       => Export_Depends_On_Proof_In);
 
                         Vertices_Trail := Path_Leading_To_Proof_In_Dependency
                           (From => V,
@@ -2597,7 +2599,7 @@ package body Flow.Analysis is
                        "some state abstraction",
                      N    => Hidden_State,
                      F1   => Direct_Mapping_Id (Hidden_State),
-                     Tag  => "hidden_unexposed_state",
+                     Tag  => Hidden_Unexposed_State,
                      Kind => Medium_Check_Kind);
                end if;
 
@@ -2754,7 +2756,7 @@ package body Flow.Analysis is
                     "abstract state &",
                   N    => State,
                   F1   => Direct_Mapping_Id (State),
-                  Tag  => "impossible_to_initialize_state",
+                  Tag  => Impossible_To_Initialize_State,
                   Kind => Warning_Kind);
             end if;
 
@@ -2817,7 +2819,7 @@ package body Flow.Analysis is
                   Msg  => "missing dependency ""null => %""",
                   N    => Depends_Location,
                   F1   => F_Out,
-                  Tag  => "depends_null",
+                  Tag  => Depends_Null,
                   Kind => Medium_Check_Kind);
             end if;
          end;
@@ -2860,7 +2862,7 @@ package body Flow.Analysis is
                     " a dependency relation",
                   N    => Depends_Location,
                   F1   => F_Out,
-                  Tag  => "depends_missing_clause",
+                  Tag  => Depends_Missing_Clause,
                   Kind => High_Check_Kind);
                U_Deps := Flow_Id_Sets.Empty_Set;
             end if;
@@ -2902,7 +2904,7 @@ package body Flow.Analysis is
                               Msg  => "missing dependency ""null => %""",
                               N    => Depends_Location,
                               F1   => Missing_Var,
-                              Tag  => "depends_null",
+                              Tag  => Depends_Null,
                               Kind => Medium_Check_Kind);
                         elsif F_Out = Direct_Mapping_Id
                           (FA.Analyzed_Entity)
@@ -2916,7 +2918,7 @@ package body Flow.Analysis is
                                  Get_Direct_Mapping_Id (F_Out)),
                               F1   => F_Out,
                               F2   => Missing_Var,
-                              Tag  => "depends_missing",
+                              Tag  => Depends_Missing,
                               Kind => Medium_Check_Kind);
                         else
                            Error_Msg_Flow
@@ -2927,7 +2929,7 @@ package body Flow.Analysis is
                                  Get_Direct_Mapping_Id (F_Out)),
                               F1   => F_Out,
                               F2   => Missing_Var,
-                              Tag  => "depends_missing",
+                              Tag  => Depends_Missing,
                               Kind => Medium_Check_Kind);
                            --  ??? show path
                         end if;
@@ -2944,7 +2946,7 @@ package body Flow.Analysis is
                         Msg  => "incorrect dependency ""null => %""",
                         N    => Depends_Location,
                         F1   => Wrong_Var,
-                        Tag  => "depends_wrong",
+                        Tag  => Depends_Wrong,
                         Kind => Medium_Check_Kind);
                      --  ??? show a path?
                   elsif F_Out = Direct_Mapping_Id
@@ -2959,7 +2961,7 @@ package body Flow.Analysis is
                            Get_Direct_Mapping_Id (Wrong_Var)),
                         F1   => F_Out,
                         F2   => Wrong_Var,
-                        Tag  => "depends_wrong",
+                        Tag  => Depends_Wrong,
                         Kind => Medium_Check_Kind);
                   else
                      Error_Msg_Flow
@@ -2971,7 +2973,7 @@ package body Flow.Analysis is
                            Get_Direct_Mapping_Id (Wrong_Var)),
                         F1   => F_Out,
                         F2   => Wrong_Var,
-                        Tag  => "depends_wrong",
+                        Tag  => Depends_Wrong,
                         Kind => Medium_Check_Kind);
                   end if;
                end loop;
@@ -3233,7 +3235,7 @@ package body Flow.Analysis is
                         E_In => Get_Direct_Mapping_Id (G)),
                      F1   => G,
                      Kind => High_Check_Kind,
-                     Tag  => "uninitialized");
+                     Tag  => Uninitialized);
                   Found_Uninitialized := True;
                end if;
             end loop;
@@ -3305,7 +3307,7 @@ package body Flow.Analysis is
                           (Get_Direct_Mapping_Id (The_Out)),
                         F1        => The_Out,
                         F2        => Actual_In,
-                        Tag       => "initializes_wrong",
+                        Tag       => Initializes_Wrong,
                         Kind      => Medium_Check_Kind);
 
                      --  Generate and write the tracefile
@@ -3329,7 +3331,7 @@ package body Flow.Analysis is
                      N       => Find_Entity (Get_Direct_Mapping_Id (The_Out)),
                      F1      => The_Out,
                      F2      => Contract_In,
-                     Tag     => "initializes_wrong",
+                     Tag     => Initializes_Wrong,
                      Kind    => Medium_Check_Kind);
                end if;
             end loop;
