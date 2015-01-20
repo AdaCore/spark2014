@@ -968,9 +968,9 @@ package body SPARK_Util is
    -- Has_No_Output --
    -------------------
 
-   function Has_No_Output (E          : Entity_Id;
-                           GG_Allowed : Boolean)
-                           return Boolean
+   function Has_No_Output
+     (E          : Entity_Id;
+      GG_Allowed : Boolean) return Boolean
    is
       Params : constant List_Id :=
                  Parameter_Specifications (Get_Subprogram_Spec (E));
@@ -1017,9 +1017,9 @@ package body SPARK_Util is
    -- Get_Abend_Kind --
    --------------------
 
-   function Get_Abend_Kind (E          : Entity_Id;
-                            GG_Allowed : Boolean := True)
-                            return Execution_Kind_T
+   function Get_Abend_Kind
+     (E          : Entity_Id;
+      GG_Allowed : Boolean := True) return Execution_Kind_T
    is
    begin
       if Has_No_Output (E, GG_Allowed) then

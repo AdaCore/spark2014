@@ -548,19 +548,20 @@ package SPARK_Util is
    --  as many checks simlpy check for one of the options (and do not
    --  explicitly make sure all cases are considered).
 
-   function Has_No_Output (E          : Entity_Id;
-                           GG_Allowed : Boolean)
-                           return Boolean
-   with Pre => Nkind (E) in N_Entity and then Ekind (E) = E_Procedure;
+   function Has_No_Output
+     (E          : Entity_Id;
+      GG_Allowed : Boolean) return Boolean
+   with
+     Pre => Nkind (E) in N_Entity and then Ekind (E) = E_Procedure;
    --  Returns True if procedure E has no output (parameter or global).
    --  Otherwise, or if we don't know for sure, we return False.
    --
-   --  If GG_Allowed is False, then we will not query either yannick's or
-   --  pavlos' globals. This is useful for phase 1.
+   --  If GG_Allowed is False, then we will not query generated globals. This
+   --  is useful before generated globals are computed.
 
-   function Get_Abend_Kind (E          : Entity_Id;
-                            GG_Allowed : Boolean := True)
-                            return Execution_Kind_T;
+   function Get_Abend_Kind
+     (E          : Entity_Id;
+      GG_Allowed : Boolean := True) return Execution_Kind_T;
    --  Infer how the Called_Procedure abnormally ends. If a subprogram
    --  has an output, we assume that it contains an infinite loop. If it
    --  does not, we assume its a thinly veiled wrapper around an
