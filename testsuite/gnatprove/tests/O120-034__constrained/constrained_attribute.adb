@@ -1,7 +1,7 @@
 package body Constrained_Attribute with SPARK_Mode is
    procedure Test is
-      A : Mut_Rec := (D => 0);
-      B : Mut_Rec (0) := (D => 0);
+      A : Mut_Rec := (D => 0, others => <>);
+      B : Mut_Rec (0) := A;
    begin
       pragma Assert (B'Constrained);
       pragma Assert (Is_Constrained (B));
