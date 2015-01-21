@@ -1,6 +1,9 @@
 tick_old_implies_input.ads:6:21: medium: postcondition might fail, requires G = G'Old + 1
+tick_old_implies_input.ads:6:26: high: "G" is not initialized when 'Old is evaluated
 tick_old_implies_input.ads:6:31: medium: overflow check might fail
 tick_old_implies_input.ads:9:19: medium: postcondition might fail, requires X = X'Old + 1
+tick_old_implies_input.ads:9:24: high: "X" is not initialized when 'Old is evaluated
 tick_old_implies_input.ads:9:29: medium: overflow check might fail
 tick_old_implies_input.ads:12:21: medium: postcondition might fail, requires G = G'Old + 1
+tick_old_implies_input.ads:12:26: high: "G" is not initialized when 'Old is evaluated
 tick_old_implies_input.ads:12:31: medium: overflow check might fail

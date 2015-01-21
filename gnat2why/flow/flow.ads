@@ -321,6 +321,23 @@ package Flow is
    --  Given a loop label, returns the identifier of the loop
    --  parameter or Empty.
 
+   function Get_Initial_Vertex (G : Flow_Graphs.T;
+                                F : Flow_Id)
+                                return Flow_Graphs.Vertex_Id
+     with Pre  => F.Variant = Normal_Use,
+          Post => G.Get_Key
+            (Get_Initial_Vertex'Result).Variant in Initial_Value |
+                                                   Initial_Grouping;
+   --  Returns the vertex id which represents the initial value for F
+
+   function Get_Final_Vertex (G : Flow_Graphs.T;
+                              F : Flow_Id)
+                              return Flow_Graphs.Vertex_Id
+     with Pre  => F.Variant = Normal_Use,
+          Post => G.Get_Key
+            (Get_Final_Vertex'Result).Variant = Final_Value;
+   --  Returns the vertex id which represents the final value for F
+
    ----------------------------------------------------------------------
    --  Debug
    ----------------------------------------------------------------------

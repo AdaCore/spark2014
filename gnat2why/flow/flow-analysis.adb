@@ -78,23 +78,6 @@ package body Flow.Analysis is
    --  because of computed globals) we just return S which is a useful
    --  fallback place to raise an error.
 
-   function Get_Initial_Vertex (G : Flow_Graphs.T;
-                                F : Flow_Id)
-                                return Flow_Graphs.Vertex_Id
-     with Pre => F.Variant = Normal_Use,
-          Post => G.Get_Key
-            (Get_Initial_Vertex'Result).Variant in Initial_Value |
-                                                   Initial_Grouping;
-   --  Returns the vertex id which represents the initial value for F
-
-   function Get_Final_Vertex (G : Flow_Graphs.T;
-                              F : Flow_Id)
-                              return Flow_Graphs.Vertex_Id
-     with Pre => F.Variant = Normal_Use,
-          Post => G.Get_Key
-            (Get_Final_Vertex'Result).Variant = Final_Value;
-   --  Returns the vertex id which represents the final value for F
-
    --------------------
    -- Error_Location --
    --------------------
@@ -298,35 +281,6 @@ package body Flow.Analysis is
             raise Why.Unexpected_Node;
       end case;
    end Find_Global;
-
-   ------------------------
-   -- Get_Initial_Vertex --
-   ------------------------
-
-   function Get_Initial_Vertex (G : Flow_Graphs.T;
-                                F : Flow_Id)
-                                return Flow_Graphs.Vertex_Id
-   is
-   begin
-      for V of G.Get_Collection (Flow_Graphs.All_Vertices) loop
-         if Change_Variant (G.Get_Key (V), Normal_Use) = F then
-            return V;
-         end if;
-      end loop;
-      raise Program_Error;
-   end Get_Initial_Vertex;
-
-   ----------------------
-   -- Get_Final_Vertex --
-   ----------------------
-
-   function Get_Final_Vertex (G : Flow_Graphs.T;
-                              F : Flow_Id)
-                              return Flow_Graphs.Vertex_Id
-   is
-   begin
-      return G.Get_Vertex (Change_Variant (F, Final_Value));
-   end Get_Final_Vertex;
 
    ------------------------
    -- First_Variable_Use --
