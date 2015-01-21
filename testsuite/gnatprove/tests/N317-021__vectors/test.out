@@ -11,14 +11,14 @@ bounded.adb:16:07: info: precondition proved
 bounded.adb:17:07: info: precondition proved
 bounded.adb:18:07: info: assertion proved
 bounded.adb:18:26: info: precondition proved
-bounded.adb:19:07: info: assertion proved
 bounded.adb:19:22: info: precondition proved
+bounded.adb:19:22: medium: assertion might fail, requires Length (V) = 3
 bounded.adb:20:07: info: assertion proved
 bounded.adb:20:22: info: precondition proved
-bounded.adb:21:07: info: assertion proved
 bounded.adb:21:22: info: precondition proved
-bounded.adb:22:07: info: assertion proved
+bounded.adb:21:22: medium: assertion might fail, requires Element (V, 1) = 1
 bounded.adb:22:22: info: precondition proved
+bounded.adb:22:22: medium: assertion might fail, requires Element (V, 2) = 2
 bounded.adb:23:07: info: assertion proved
 bounded.adb:23:22: info: precondition proved
 bounded.adb:25:07: info: precondition proved
@@ -29,18 +29,18 @@ bounded.adb:28:22: info: precondition proved
 bounded.adb:29:07: info: assertion proved
 bounded.adb:29:22: info: precondition proved
 bounded.adb:32:24: info: precondition proved
-bounded.adb:34:10: info: assertion proved
+bounded.adb:34:25: medium: assertion might fail, requires not Is_Empty (W)
 bounded.adb:34:29: info: precondition proved
-bounded.adb:35:10: info: assertion proved
 bounded.adb:35:25: info: precondition proved
+bounded.adb:35:25: medium: assertion might fail, requires Length (W) = 3
 bounded.adb:36:10: info: assertion proved
 bounded.adb:36:25: info: precondition proved
-bounded.adb:37:10: info: assertion proved
 bounded.adb:37:25: info: precondition proved
-bounded.adb:38:10: info: assertion proved
+bounded.adb:37:25: medium: assertion might fail, requires Element (W, 1) = 1
 bounded.adb:38:25: info: precondition proved
-bounded.adb:39:10: info: assertion proved
+bounded.adb:38:25: medium: assertion might fail, requires Element (W, 2) = 2
 bounded.adb:39:25: info: precondition proved
+bounded.adb:39:25: medium: assertion might fail, requires Element (W, 3) = 3
 bounded.adb:41:10: info: precondition proved
 bounded.adb:42:10: info: assertion proved
 bounded.adb:42:29: info: precondition proved
@@ -62,8 +62,8 @@ bounded.adb:50:10: info: assertion proved
 bounded.adb:50:25: info: precondition proved
 bounded.adb:52:10: info: precondition proved
 bounded.adb:52:21: info: precondition proved
-bounded.adb:53:10: info: assertion proved
 bounded.adb:53:25: info: precondition proved
+bounded.adb:53:25: medium: assertion might fail, requires Is_Empty (W)
 bounded.adb:54:10: info: assertion proved
 bounded.adb:54:27: info: precondition proved
 bounded.adb:54:29: info: precondition proved
@@ -75,23 +75,23 @@ bounded.adb:59:22: info: precondition proved
 bounded.adb:60:07: info: assertion proved
 bounded.adb:60:22: info: precondition proved
 bounded.adb:62:07: info: precondition proved
-bounded.adb:63:07: info: assertion proved
 bounded.adb:63:22: info: precondition proved
-bounded.adb:64:07: info: assertion proved
+bounded.adb:63:22: medium: assertion might fail, requires Element (V, 1) = 3
 bounded.adb:64:22: info: precondition proved
-bounded.adb:65:07: info: assertion proved
+bounded.adb:64:22: medium: assertion might fail, requires Element (V, 2) = 4
 bounded.adb:65:22: info: precondition proved
+bounded.adb:65:22: medium: assertion might fail, requires Element (V, 3) = 1
 bounded.adb:67:07: info: precondition proved
-bounded.adb:68:07: info: assertion proved
+bounded.adb:68:22: medium: assertion might fail, requires not Is_Empty (V)
 bounded.adb:68:26: info: precondition proved
-bounded.adb:69:07: info: assertion proved
 bounded.adb:69:22: info: precondition proved
+bounded.adb:69:22: medium: assertion might fail, requires Length (V) = 2
 bounded.adb:70:07: info: assertion proved
 bounded.adb:70:22: info: precondition proved
-bounded.adb:71:07: info: assertion proved
 bounded.adb:71:22: info: precondition proved
-bounded.adb:72:07: info: assertion proved
+bounded.adb:71:22: medium: assertion might fail, requires Element (V, 1) = 3
 bounded.adb:72:22: info: precondition proved
+bounded.adb:72:22: medium: assertion might fail, requires Element (V, 2) = 4
 bounded.adb:74:07: info: precondition proved
 bounded.adb:75:07: info: assertion proved
 bounded.adb:75:26: info: precondition proved
@@ -113,16 +113,16 @@ bounded.adb:84:07: info: assertion proved
 bounded.adb:84:22: info: precondition proved
 bounded.adb:86:07: info: assertion proved
 bounded.adb:86:22: info: precondition proved
-bounded.adb:87:07: info: assertion proved
 bounded.adb:87:22: info: precondition proved
+bounded.adb:87:22: medium: assertion might fail, requires Find_Index (V, 4) = 1
 bounded.adb:88:07: info: assertion proved
 bounded.adb:88:22: info: precondition proved
-bounded.adb:90:07: info: assertion proved
 bounded.adb:90:22: info: precondition proved
-bounded.adb:91:07: info: assertion proved
+bounded.adb:90:22: medium: assertion might fail, requires Reverse_Find_Index (V, 0) = No_Index
 bounded.adb:91:22: info: precondition proved
-bounded.adb:92:07: info: assertion proved
+bounded.adb:91:22: medium: assertion might fail, requires Reverse_Find_Index (V, 4) = 1
 bounded.adb:92:22: info: precondition proved
+bounded.adb:92:22: medium: assertion might fail, requires Reverse_Find_Index (V, 4, 2) = 1
 bounded.adb:94:07: info: assertion proved
 bounded.adb:94:22: info: precondition proved
 bounded.adb:95:07: info: assertion proved
@@ -133,7 +133,7 @@ bounded.adb:97:07: info: assertion proved
 bounded.adb:97:26: info: precondition proved
 bounded.adb:98:07: info: assertion proved
 bounded.adb:98:26: info: precondition proved
-bounded.adb:104:10: info: assertion proved
+bounded.adb:104:25: medium: assertion might fail, requires not Sort.Is_Sorted (V)
 bounded.adb:104:33: info: precondition proved
 bounded.adb:105:14: info: precondition proved
 bounded.adb:106:10: info: assertion proved
@@ -150,8 +150,8 @@ bounded.adb:111:10: info: assertion proved
 bounded.adb:111:29: info: precondition proved
 bounded.adb:114:07: info: precondition proved
 bounded.adb:114:30: info: precondition proved
-bounded.adb:115:07: info: assertion proved
 bounded.adb:115:22: info: precondition proved
+bounded.adb:115:22: medium: assertion might fail, requires First_To_Previous (V, 2) = Current_To_Last (V, 2)
 bounded.adb:115:47: info: precondition proved
 bounded.adb:115:49: info: precondition proved
 bounded.adb:117:07: info: assertion proved
@@ -171,14 +171,14 @@ indefinite_bounded.adb:16:07: info: precondition proved
 indefinite_bounded.adb:17:07: info: precondition proved
 indefinite_bounded.adb:18:07: info: assertion proved
 indefinite_bounded.adb:18:26: info: precondition proved
-indefinite_bounded.adb:19:07: info: assertion proved
 indefinite_bounded.adb:19:22: info: precondition proved
+indefinite_bounded.adb:19:22: medium: assertion might fail, requires Length (V) = 3
 indefinite_bounded.adb:20:07: info: assertion proved
 indefinite_bounded.adb:20:22: info: precondition proved
-indefinite_bounded.adb:21:07: info: assertion proved
 indefinite_bounded.adb:21:22: info: precondition proved
-indefinite_bounded.adb:22:07: info: assertion proved
+indefinite_bounded.adb:21:22: medium: assertion might fail, requires Element (V, 1) = 1
 indefinite_bounded.adb:22:22: info: precondition proved
+indefinite_bounded.adb:22:22: medium: assertion might fail, requires Element (V, 2) = 2
 indefinite_bounded.adb:23:07: info: assertion proved
 indefinite_bounded.adb:23:22: info: precondition proved
 indefinite_bounded.adb:25:07: info: precondition proved
@@ -189,18 +189,18 @@ indefinite_bounded.adb:28:22: info: precondition proved
 indefinite_bounded.adb:29:07: info: assertion proved
 indefinite_bounded.adb:29:22: info: precondition proved
 indefinite_bounded.adb:32:24: info: precondition proved
-indefinite_bounded.adb:34:10: info: assertion proved
+indefinite_bounded.adb:34:25: medium: assertion might fail, requires not Is_Empty (W)
 indefinite_bounded.adb:34:29: info: precondition proved
-indefinite_bounded.adb:35:10: info: assertion proved
 indefinite_bounded.adb:35:25: info: precondition proved
+indefinite_bounded.adb:35:25: medium: assertion might fail, requires Length (W) = 3
 indefinite_bounded.adb:36:10: info: assertion proved
 indefinite_bounded.adb:36:25: info: precondition proved
-indefinite_bounded.adb:37:10: info: assertion proved
 indefinite_bounded.adb:37:25: info: precondition proved
-indefinite_bounded.adb:38:10: info: assertion proved
+indefinite_bounded.adb:37:25: medium: assertion might fail, requires Element (W, 1) = 1
 indefinite_bounded.adb:38:25: info: precondition proved
-indefinite_bounded.adb:39:10: info: assertion proved
+indefinite_bounded.adb:38:25: medium: assertion might fail, requires Element (W, 2) = 2
 indefinite_bounded.adb:39:25: info: precondition proved
+indefinite_bounded.adb:39:25: medium: assertion might fail, requires Element (W, 3) = 3
 indefinite_bounded.adb:41:10: info: precondition proved
 indefinite_bounded.adb:42:10: info: assertion proved
 indefinite_bounded.adb:42:29: info: precondition proved
@@ -222,8 +222,8 @@ indefinite_bounded.adb:50:10: info: assertion proved
 indefinite_bounded.adb:50:25: info: precondition proved
 indefinite_bounded.adb:52:10: info: precondition proved
 indefinite_bounded.adb:52:21: info: precondition proved
-indefinite_bounded.adb:53:10: info: assertion proved
 indefinite_bounded.adb:53:25: info: precondition proved
+indefinite_bounded.adb:53:25: medium: assertion might fail, requires Is_Empty (W)
 indefinite_bounded.adb:54:10: info: assertion proved
 indefinite_bounded.adb:54:27: info: precondition proved
 indefinite_bounded.adb:54:29: info: precondition proved
@@ -235,23 +235,23 @@ indefinite_bounded.adb:59:22: info: precondition proved
 indefinite_bounded.adb:60:07: info: assertion proved
 indefinite_bounded.adb:60:22: info: precondition proved
 indefinite_bounded.adb:62:07: info: precondition proved
-indefinite_bounded.adb:63:07: info: assertion proved
 indefinite_bounded.adb:63:22: info: precondition proved
-indefinite_bounded.adb:64:07: info: assertion proved
+indefinite_bounded.adb:63:22: medium: assertion might fail, requires Element (V, 1) = 3
 indefinite_bounded.adb:64:22: info: precondition proved
-indefinite_bounded.adb:65:07: info: assertion proved
+indefinite_bounded.adb:64:22: medium: assertion might fail, requires Element (V, 2) = 4
 indefinite_bounded.adb:65:22: info: precondition proved
+indefinite_bounded.adb:65:22: medium: assertion might fail, requires Element (V, 3) = 1
 indefinite_bounded.adb:67:07: info: precondition proved
-indefinite_bounded.adb:68:07: info: assertion proved
+indefinite_bounded.adb:68:22: medium: assertion might fail, requires not Is_Empty (V)
 indefinite_bounded.adb:68:26: info: precondition proved
-indefinite_bounded.adb:69:07: info: assertion proved
 indefinite_bounded.adb:69:22: info: precondition proved
+indefinite_bounded.adb:69:22: medium: assertion might fail, requires Length (V) = 2
 indefinite_bounded.adb:70:07: info: assertion proved
 indefinite_bounded.adb:70:22: info: precondition proved
-indefinite_bounded.adb:71:07: info: assertion proved
 indefinite_bounded.adb:71:22: info: precondition proved
-indefinite_bounded.adb:72:07: info: assertion proved
+indefinite_bounded.adb:71:22: medium: assertion might fail, requires Element (V, 1) = 3
 indefinite_bounded.adb:72:22: info: precondition proved
+indefinite_bounded.adb:72:22: medium: assertion might fail, requires Element (V, 2) = 4
 indefinite_bounded.adb:74:07: info: precondition proved
 indefinite_bounded.adb:75:07: info: assertion proved
 indefinite_bounded.adb:75:26: info: precondition proved
@@ -273,16 +273,16 @@ indefinite_bounded.adb:84:07: info: assertion proved
 indefinite_bounded.adb:84:22: info: precondition proved
 indefinite_bounded.adb:86:07: info: assertion proved
 indefinite_bounded.adb:86:22: info: precondition proved
-indefinite_bounded.adb:87:07: info: assertion proved
 indefinite_bounded.adb:87:22: info: precondition proved
+indefinite_bounded.adb:87:22: medium: assertion might fail, requires Find_Index (V, 4) = 1
 indefinite_bounded.adb:88:07: info: assertion proved
 indefinite_bounded.adb:88:22: info: precondition proved
-indefinite_bounded.adb:90:07: info: assertion proved
 indefinite_bounded.adb:90:22: info: precondition proved
-indefinite_bounded.adb:91:07: info: assertion proved
+indefinite_bounded.adb:90:22: medium: assertion might fail, requires Reverse_Find_Index (V, 0) = No_Index
 indefinite_bounded.adb:91:22: info: precondition proved
-indefinite_bounded.adb:92:07: info: assertion proved
+indefinite_bounded.adb:91:22: medium: assertion might fail, requires Reverse_Find_Index (V, 4) = 1
 indefinite_bounded.adb:92:22: info: precondition proved
+indefinite_bounded.adb:92:22: medium: assertion might fail, requires Reverse_Find_Index (V, 4, 2) = 1
 indefinite_bounded.adb:94:07: info: assertion proved
 indefinite_bounded.adb:94:22: info: precondition proved
 indefinite_bounded.adb:95:07: info: assertion proved
@@ -293,7 +293,7 @@ indefinite_bounded.adb:97:07: info: assertion proved
 indefinite_bounded.adb:97:26: info: precondition proved
 indefinite_bounded.adb:98:07: info: assertion proved
 indefinite_bounded.adb:98:26: info: precondition proved
-indefinite_bounded.adb:104:10: info: assertion proved
+indefinite_bounded.adb:104:25: medium: assertion might fail, requires not Sort.Is_Sorted (V)
 indefinite_bounded.adb:104:33: info: precondition proved
 indefinite_bounded.adb:105:14: info: precondition proved
 indefinite_bounded.adb:106:10: info: assertion proved
@@ -310,8 +310,8 @@ indefinite_bounded.adb:111:10: info: assertion proved
 indefinite_bounded.adb:111:29: info: precondition proved
 indefinite_bounded.adb:114:07: info: precondition proved
 indefinite_bounded.adb:114:30: info: precondition proved
-indefinite_bounded.adb:115:07: info: assertion proved
 indefinite_bounded.adb:115:22: info: precondition proved
+indefinite_bounded.adb:115:22: medium: assertion might fail, requires First_To_Previous (V, 2) = Current_To_Last (V, 2)
 indefinite_bounded.adb:115:47: info: precondition proved
 indefinite_bounded.adb:115:49: info: precondition proved
 indefinite_bounded.adb:117:07: info: assertion proved
@@ -330,18 +330,18 @@ indefinite_bounded_tagged.adb:13:26: info: precondition proved
 indefinite_bounded_tagged.adb:14:07: info: assertion proved
 indefinite_bounded_tagged.adb:14:22: info: precondition proved
 indefinite_bounded_tagged.adb:16:07: info: precondition proved
-indefinite_bounded_tagged.adb:17:07: info: precondition proved
-indefinite_bounded_tagged.adb:18:07: info: precondition proved
-indefinite_bounded_tagged.adb:19:07: info: assertion proved
+indefinite_bounded_tagged.adb:17:07: medium: precondition might fail
+indefinite_bounded_tagged.adb:18:07: medium: precondition might fail
+indefinite_bounded_tagged.adb:19:22: medium: assertion might fail, requires not Is_Empty (V)
 indefinite_bounded_tagged.adb:19:26: info: precondition proved
-indefinite_bounded_tagged.adb:20:07: info: assertion proved
 indefinite_bounded_tagged.adb:20:22: info: precondition proved
+indefinite_bounded_tagged.adb:20:22: medium: assertion might fail, requires Length (V) = 3
 indefinite_bounded_tagged.adb:21:07: info: assertion proved
 indefinite_bounded_tagged.adb:21:22: info: precondition proved
-indefinite_bounded_tagged.adb:22:07: info: assertion proved
 indefinite_bounded_tagged.adb:22:22: info: precondition proved
-indefinite_bounded_tagged.adb:23:07: info: assertion proved
+indefinite_bounded_tagged.adb:22:22: medium: assertion might fail, requires Element (V, 1) = F(1)
 indefinite_bounded_tagged.adb:23:22: info: precondition proved
+indefinite_bounded_tagged.adb:23:22: medium: assertion might fail, requires Element (V, 2) = F(2)
 indefinite_bounded_tagged.adb:24:07: info: assertion proved
 indefinite_bounded_tagged.adb:24:22: info: precondition proved
 indefinite_bounded_tagged.adb:26:07: info: precondition proved
@@ -352,18 +352,18 @@ indefinite_bounded_tagged.adb:29:22: info: precondition proved
 indefinite_bounded_tagged.adb:30:07: info: assertion proved
 indefinite_bounded_tagged.adb:30:22: info: precondition proved
 indefinite_bounded_tagged.adb:33:24: info: precondition proved
-indefinite_bounded_tagged.adb:35:10: info: assertion proved
+indefinite_bounded_tagged.adb:35:25: medium: assertion might fail, requires not Is_Empty (W)
 indefinite_bounded_tagged.adb:35:29: info: precondition proved
-indefinite_bounded_tagged.adb:36:10: info: assertion proved
 indefinite_bounded_tagged.adb:36:25: info: precondition proved
+indefinite_bounded_tagged.adb:36:25: medium: assertion might fail, requires Length (W) = 3
 indefinite_bounded_tagged.adb:37:10: info: assertion proved
 indefinite_bounded_tagged.adb:37:25: info: precondition proved
-indefinite_bounded_tagged.adb:38:10: info: assertion proved
 indefinite_bounded_tagged.adb:38:25: info: precondition proved
-indefinite_bounded_tagged.adb:39:10: info: assertion proved
+indefinite_bounded_tagged.adb:38:25: medium: assertion might fail, requires Element (W, 1) = F(1)
 indefinite_bounded_tagged.adb:39:25: info: precondition proved
-indefinite_bounded_tagged.adb:40:10: info: assertion proved
+indefinite_bounded_tagged.adb:39:25: medium: assertion might fail, requires Element (W, 2) = F(2)
 indefinite_bounded_tagged.adb:40:25: info: precondition proved
+indefinite_bounded_tagged.adb:40:25: medium: assertion might fail, requires Element (W, 3) = F(3)
 indefinite_bounded_tagged.adb:42:10: info: precondition proved
 indefinite_bounded_tagged.adb:43:10: info: assertion proved
 indefinite_bounded_tagged.adb:43:29: info: precondition proved
@@ -385,8 +385,8 @@ indefinite_bounded_tagged.adb:51:10: info: assertion proved
 indefinite_bounded_tagged.adb:51:25: info: precondition proved
 indefinite_bounded_tagged.adb:53:10: info: precondition proved
 indefinite_bounded_tagged.adb:53:21: info: precondition proved
-indefinite_bounded_tagged.adb:54:10: info: assertion proved
 indefinite_bounded_tagged.adb:54:25: info: precondition proved
+indefinite_bounded_tagged.adb:54:25: medium: assertion might fail, requires Is_Empty (W)
 indefinite_bounded_tagged.adb:55:10: info: assertion proved
 indefinite_bounded_tagged.adb:55:27: info: precondition proved
 indefinite_bounded_tagged.adb:55:29: info: precondition proved
@@ -398,23 +398,23 @@ indefinite_bounded_tagged.adb:60:22: info: precondition proved
 indefinite_bounded_tagged.adb:61:07: info: assertion proved
 indefinite_bounded_tagged.adb:61:22: info: precondition proved
 indefinite_bounded_tagged.adb:63:07: info: precondition proved
-indefinite_bounded_tagged.adb:64:07: info: assertion proved
 indefinite_bounded_tagged.adb:64:22: info: precondition proved
-indefinite_bounded_tagged.adb:65:07: info: assertion proved
+indefinite_bounded_tagged.adb:64:22: medium: assertion might fail, requires Element (V, 1) = F(3)
 indefinite_bounded_tagged.adb:65:22: info: precondition proved
-indefinite_bounded_tagged.adb:66:07: info: assertion proved
-indefinite_bounded_tagged.adb:66:22: info: precondition proved
+indefinite_bounded_tagged.adb:65:22: medium: assertion might fail, requires Element (V, 2) = F(4)
+indefinite_bounded_tagged.adb:66:22: medium: assertion might fail, requires Element (V, 3) = F(1)
+indefinite_bounded_tagged.adb:66:22: medium: precondition might fail
 indefinite_bounded_tagged.adb:68:07: info: precondition proved
-indefinite_bounded_tagged.adb:69:07: info: assertion proved
+indefinite_bounded_tagged.adb:69:22: medium: assertion might fail, requires not Is_Empty (V)
 indefinite_bounded_tagged.adb:69:26: info: precondition proved
-indefinite_bounded_tagged.adb:70:07: info: assertion proved
 indefinite_bounded_tagged.adb:70:22: info: precondition proved
+indefinite_bounded_tagged.adb:70:22: medium: assertion might fail, requires Length (V) = 2
 indefinite_bounded_tagged.adb:71:07: info: assertion proved
 indefinite_bounded_tagged.adb:71:22: info: precondition proved
-indefinite_bounded_tagged.adb:72:07: info: assertion proved
 indefinite_bounded_tagged.adb:72:22: info: precondition proved
-indefinite_bounded_tagged.adb:73:07: info: assertion proved
+indefinite_bounded_tagged.adb:72:22: medium: assertion might fail, requires Element (V, 1) = F(3)
 indefinite_bounded_tagged.adb:73:22: info: precondition proved
+indefinite_bounded_tagged.adb:73:22: medium: assertion might fail, requires Element (V, 2) = F(4)
 indefinite_bounded_tagged.adb:75:07: info: precondition proved
 indefinite_bounded_tagged.adb:76:07: info: assertion proved
 indefinite_bounded_tagged.adb:76:26: info: precondition proved
@@ -434,18 +434,18 @@ indefinite_bounded_tagged.adb:84:07: info: assertion proved
 indefinite_bounded_tagged.adb:84:22: info: precondition proved
 indefinite_bounded_tagged.adb:85:07: info: assertion proved
 indefinite_bounded_tagged.adb:85:22: info: precondition proved
-indefinite_bounded_tagged.adb:87:07: info: assertion proved
 indefinite_bounded_tagged.adb:87:22: info: precondition proved
-indefinite_bounded_tagged.adb:88:07: info: assertion proved
+indefinite_bounded_tagged.adb:87:22: medium: assertion might fail, requires Find_Index (V, F(0)) = No_Index
 indefinite_bounded_tagged.adb:88:22: info: precondition proved
-indefinite_bounded_tagged.adb:89:07: info: assertion proved
+indefinite_bounded_tagged.adb:88:22: medium: assertion might fail, requires Find_Index (V, F(4)) = 1
 indefinite_bounded_tagged.adb:89:22: info: precondition proved
-indefinite_bounded_tagged.adb:91:07: info: assertion proved
+indefinite_bounded_tagged.adb:89:22: medium: assertion might fail, requires Find_Index (V, F(4), 2) = No_Index
 indefinite_bounded_tagged.adb:91:22: info: precondition proved
-indefinite_bounded_tagged.adb:92:07: info: assertion proved
+indefinite_bounded_tagged.adb:91:22: medium: assertion might fail, requires Reverse_Find_Index (V, F(0)) = No_Index
 indefinite_bounded_tagged.adb:92:22: info: precondition proved
-indefinite_bounded_tagged.adb:93:07: info: assertion proved
+indefinite_bounded_tagged.adb:92:22: medium: assertion might fail, requires Reverse_Find_Index (V, F(4)) = 1
 indefinite_bounded_tagged.adb:93:22: info: precondition proved
+indefinite_bounded_tagged.adb:93:22: medium: assertion might fail, requires Reverse_Find_Index (V, F(4), 2) = 1
 indefinite_bounded_tagged.adb:95:07: info: assertion proved
 indefinite_bounded_tagged.adb:95:22: info: precondition proved
 indefinite_bounded_tagged.adb:96:07: info: assertion proved
@@ -456,7 +456,7 @@ indefinite_bounded_tagged.adb:98:07: info: assertion proved
 indefinite_bounded_tagged.adb:98:26: info: precondition proved
 indefinite_bounded_tagged.adb:99:07: info: assertion proved
 indefinite_bounded_tagged.adb:99:26: info: precondition proved
-indefinite_bounded_tagged.adb:105:10: info: assertion proved
+indefinite_bounded_tagged.adb:105:25: medium: assertion might fail, requires not Sort.Is_Sorted (V)
 indefinite_bounded_tagged.adb:105:33: info: precondition proved
 indefinite_bounded_tagged.adb:106:14: info: precondition proved
 indefinite_bounded_tagged.adb:107:10: info: assertion proved
@@ -473,8 +473,8 @@ indefinite_bounded_tagged.adb:112:10: info: assertion proved
 indefinite_bounded_tagged.adb:112:29: info: precondition proved
 indefinite_bounded_tagged.adb:115:07: info: precondition proved
 indefinite_bounded_tagged.adb:115:30: info: precondition proved
-indefinite_bounded_tagged.adb:116:07: info: assertion proved
 indefinite_bounded_tagged.adb:116:22: info: precondition proved
+indefinite_bounded_tagged.adb:116:22: medium: assertion might fail, requires First_To_Previous (V, 2) = Current_To_Last (V, 2)
 indefinite_bounded_tagged.adb:116:47: info: precondition proved
 indefinite_bounded_tagged.adb:116:49: info: precondition proved
 indefinite_bounded_tagged.adb:118:07: info: assertion proved
@@ -501,10 +501,10 @@ indefinite_unbounded.adb:20:07: info: assertion proved
 indefinite_unbounded.adb:20:22: info: precondition proved
 indefinite_unbounded.adb:21:07: info: assertion proved
 indefinite_unbounded.adb:21:22: info: precondition proved
-indefinite_unbounded.adb:22:07: info: assertion proved
 indefinite_unbounded.adb:22:22: info: precondition proved
-indefinite_unbounded.adb:23:07: info: assertion proved
+indefinite_unbounded.adb:22:22: medium: assertion might fail, requires Element (V, 1) = 1
 indefinite_unbounded.adb:23:22: info: precondition proved
+indefinite_unbounded.adb:23:22: medium: assertion might fail, requires Element (V, 2) = 2
 indefinite_unbounded.adb:24:07: info: assertion proved
 indefinite_unbounded.adb:24:22: info: precondition proved
 indefinite_unbounded.adb:26:07: info: precondition proved
@@ -515,18 +515,18 @@ indefinite_unbounded.adb:29:22: info: precondition proved
 indefinite_unbounded.adb:30:07: info: assertion proved
 indefinite_unbounded.adb:30:22: info: precondition proved
 indefinite_unbounded.adb:33:24: info: precondition proved
-indefinite_unbounded.adb:35:10: info: assertion proved
+indefinite_unbounded.adb:35:25: medium: assertion might fail, requires not Is_Empty (W)
 indefinite_unbounded.adb:35:29: info: precondition proved
-indefinite_unbounded.adb:36:10: info: assertion proved
 indefinite_unbounded.adb:36:25: info: precondition proved
+indefinite_unbounded.adb:36:25: medium: assertion might fail, requires Length (W) = 3
 indefinite_unbounded.adb:37:10: info: assertion proved
 indefinite_unbounded.adb:37:25: info: precondition proved
-indefinite_unbounded.adb:38:10: info: assertion proved
 indefinite_unbounded.adb:38:25: info: precondition proved
-indefinite_unbounded.adb:39:10: info: assertion proved
+indefinite_unbounded.adb:38:25: medium: assertion might fail, requires Element (W, 1) = 1
 indefinite_unbounded.adb:39:25: info: precondition proved
-indefinite_unbounded.adb:40:10: info: assertion proved
+indefinite_unbounded.adb:39:25: medium: assertion might fail, requires Element (W, 2) = 2
 indefinite_unbounded.adb:40:25: info: precondition proved
+indefinite_unbounded.adb:40:25: medium: assertion might fail, requires Element (W, 3) = 3
 indefinite_unbounded.adb:42:10: info: precondition proved
 indefinite_unbounded.adb:43:10: info: assertion proved
 indefinite_unbounded.adb:43:29: info: precondition proved
@@ -540,16 +540,16 @@ indefinite_unbounded.adb:47:10: info: assertion proved
 indefinite_unbounded.adb:47:25: info: precondition proved
 indefinite_unbounded.adb:48:10: info: assertion proved
 indefinite_unbounded.adb:48:25: info: precondition proved
-indefinite_unbounded.adb:49:10: info: assertion proved
 indefinite_unbounded.adb:49:25: info: precondition proved
-indefinite_unbounded.adb:50:10: info: assertion proved
+indefinite_unbounded.adb:49:25: medium: assertion might fail, requires Element (W, 4) = 1
 indefinite_unbounded.adb:50:25: info: precondition proved
-indefinite_unbounded.adb:51:10: info: assertion proved
+indefinite_unbounded.adb:50:25: medium: assertion might fail, requires Element (W, 5) = 2
 indefinite_unbounded.adb:51:25: info: precondition proved
+indefinite_unbounded.adb:51:25: medium: assertion might fail, requires Element (W, 6) = 3
 indefinite_unbounded.adb:53:10: info: precondition proved
 indefinite_unbounded.adb:53:21: info: precondition proved
-indefinite_unbounded.adb:54:10: info: assertion proved
 indefinite_unbounded.adb:54:25: info: precondition proved
+indefinite_unbounded.adb:54:25: medium: assertion might fail, requires Is_Empty (W)
 indefinite_unbounded.adb:55:10: info: assertion proved
 indefinite_unbounded.adb:55:27: info: precondition proved
 indefinite_unbounded.adb:55:29: info: precondition proved
@@ -561,12 +561,12 @@ indefinite_unbounded.adb:60:22: info: precondition proved
 indefinite_unbounded.adb:61:07: info: assertion proved
 indefinite_unbounded.adb:61:22: info: precondition proved
 indefinite_unbounded.adb:63:07: info: precondition proved
-indefinite_unbounded.adb:64:07: info: assertion proved
 indefinite_unbounded.adb:64:22: info: precondition proved
-indefinite_unbounded.adb:65:07: info: assertion proved
+indefinite_unbounded.adb:64:22: medium: assertion might fail, requires Element (V, 1) = 3
 indefinite_unbounded.adb:65:22: info: precondition proved
-indefinite_unbounded.adb:66:07: info: assertion proved
+indefinite_unbounded.adb:65:22: medium: assertion might fail, requires Element (V, 2) = 4
 indefinite_unbounded.adb:66:22: info: precondition proved
+indefinite_unbounded.adb:66:22: medium: assertion might fail, requires Element (V, 3) = 1
 indefinite_unbounded.adb:68:07: info: precondition proved
 indefinite_unbounded.adb:69:07: info: assertion proved
 indefinite_unbounded.adb:69:26: info: precondition proved
@@ -574,10 +574,10 @@ indefinite_unbounded.adb:70:07: info: assertion proved
 indefinite_unbounded.adb:70:22: info: precondition proved
 indefinite_unbounded.adb:71:07: info: assertion proved
 indefinite_unbounded.adb:71:22: info: precondition proved
-indefinite_unbounded.adb:72:07: info: assertion proved
 indefinite_unbounded.adb:72:22: info: precondition proved
-indefinite_unbounded.adb:73:07: info: assertion proved
+indefinite_unbounded.adb:72:22: medium: assertion might fail, requires Element (V, 1) = 3
 indefinite_unbounded.adb:73:22: info: precondition proved
+indefinite_unbounded.adb:73:22: medium: assertion might fail, requires Element (V, 2) = 4
 indefinite_unbounded.adb:75:07: info: precondition proved
 indefinite_unbounded.adb:76:07: info: assertion proved
 indefinite_unbounded.adb:76:26: info: precondition proved
@@ -599,16 +599,16 @@ indefinite_unbounded.adb:85:07: info: assertion proved
 indefinite_unbounded.adb:85:22: info: precondition proved
 indefinite_unbounded.adb:87:07: info: assertion proved
 indefinite_unbounded.adb:87:22: info: precondition proved
-indefinite_unbounded.adb:88:07: info: assertion proved
 indefinite_unbounded.adb:88:22: info: precondition proved
+indefinite_unbounded.adb:88:22: medium: assertion might fail, requires Find_Index (V, 4) = 1
 indefinite_unbounded.adb:89:07: info: assertion proved
 indefinite_unbounded.adb:89:22: info: precondition proved
-indefinite_unbounded.adb:91:07: info: assertion proved
 indefinite_unbounded.adb:91:22: info: precondition proved
-indefinite_unbounded.adb:92:07: info: assertion proved
+indefinite_unbounded.adb:91:22: medium: assertion might fail, requires Reverse_Find_Index (V, 0) = No_Index
 indefinite_unbounded.adb:92:22: info: precondition proved
-indefinite_unbounded.adb:93:07: info: assertion proved
+indefinite_unbounded.adb:92:22: medium: assertion might fail, requires Reverse_Find_Index (V, 4) = 1
 indefinite_unbounded.adb:93:22: info: precondition proved
+indefinite_unbounded.adb:93:22: medium: assertion might fail, requires Reverse_Find_Index (V, 4, 2) = 1
 indefinite_unbounded.adb:95:07: info: assertion proved
 indefinite_unbounded.adb:95:22: info: precondition proved
 indefinite_unbounded.adb:96:07: info: assertion proved
@@ -619,7 +619,7 @@ indefinite_unbounded.adb:98:07: info: assertion proved
 indefinite_unbounded.adb:98:26: info: precondition proved
 indefinite_unbounded.adb:99:07: info: assertion proved
 indefinite_unbounded.adb:99:26: info: precondition proved
-indefinite_unbounded.adb:105:10: info: assertion proved
+indefinite_unbounded.adb:105:25: medium: assertion might fail, requires not Sort.Is_Sorted (V)
 indefinite_unbounded.adb:105:33: info: precondition proved
 indefinite_unbounded.adb:106:14: info: precondition proved
 indefinite_unbounded.adb:107:10: info: assertion proved
@@ -636,8 +636,8 @@ indefinite_unbounded.adb:112:10: info: assertion proved
 indefinite_unbounded.adb:112:29: info: precondition proved
 indefinite_unbounded.adb:115:07: info: precondition proved
 indefinite_unbounded.adb:115:30: info: precondition proved
-indefinite_unbounded.adb:116:07: info: assertion proved
 indefinite_unbounded.adb:116:22: info: precondition proved
+indefinite_unbounded.adb:116:22: medium: assertion might fail, requires First_To_Previous (V, 2) = Current_To_Last (V, 2)
 indefinite_unbounded.adb:116:47: info: precondition proved
 indefinite_unbounded.adb:116:49: info: precondition proved
 indefinite_unbounded.adb:119:22: info: precondition proved
@@ -658,16 +658,16 @@ indefinite_unbounded_tagged.adb:15:22: medium: assertion might fail, requires Ca
 indefinite_unbounded_tagged.adb:17:07: info: precondition proved
 indefinite_unbounded_tagged.adb:18:07: info: precondition proved
 indefinite_unbounded_tagged.adb:19:07: info: precondition proved
-indefinite_unbounded_tagged.adb:20:07: info: assertion proved
+indefinite_unbounded_tagged.adb:20:22: medium: assertion might fail, requires not Is_Empty (V)
 indefinite_unbounded_tagged.adb:20:26: info: precondition proved
-indefinite_unbounded_tagged.adb:21:07: info: assertion proved
 indefinite_unbounded_tagged.adb:21:22: info: precondition proved
+indefinite_unbounded_tagged.adb:21:22: medium: assertion might fail, requires Length (V) = 3
 indefinite_unbounded_tagged.adb:22:07: info: assertion proved
 indefinite_unbounded_tagged.adb:22:22: info: precondition proved
-indefinite_unbounded_tagged.adb:23:07: info: assertion proved
 indefinite_unbounded_tagged.adb:23:22: info: precondition proved
-indefinite_unbounded_tagged.adb:24:07: info: assertion proved
+indefinite_unbounded_tagged.adb:23:22: medium: assertion might fail, requires Element (V, 1) = F(1)
 indefinite_unbounded_tagged.adb:24:22: info: precondition proved
+indefinite_unbounded_tagged.adb:24:22: medium: assertion might fail, requires Element (V, 2) = F(2)
 indefinite_unbounded_tagged.adb:25:07: info: assertion proved
 indefinite_unbounded_tagged.adb:25:22: info: precondition proved
 indefinite_unbounded_tagged.adb:27:07: info: precondition proved
@@ -678,18 +678,18 @@ indefinite_unbounded_tagged.adb:30:22: info: precondition proved
 indefinite_unbounded_tagged.adb:31:07: info: assertion proved
 indefinite_unbounded_tagged.adb:31:22: info: precondition proved
 indefinite_unbounded_tagged.adb:34:24: info: precondition proved
-indefinite_unbounded_tagged.adb:36:10: info: assertion proved
+indefinite_unbounded_tagged.adb:36:25: medium: assertion might fail, requires not Is_Empty (W)
 indefinite_unbounded_tagged.adb:36:29: info: precondition proved
-indefinite_unbounded_tagged.adb:37:10: info: assertion proved
 indefinite_unbounded_tagged.adb:37:25: info: precondition proved
+indefinite_unbounded_tagged.adb:37:25: medium: assertion might fail, requires Length (W) = 3
 indefinite_unbounded_tagged.adb:38:10: info: assertion proved
 indefinite_unbounded_tagged.adb:38:25: info: precondition proved
-indefinite_unbounded_tagged.adb:39:10: info: assertion proved
 indefinite_unbounded_tagged.adb:39:25: info: precondition proved
-indefinite_unbounded_tagged.adb:40:10: info: assertion proved
+indefinite_unbounded_tagged.adb:39:25: medium: assertion might fail, requires Element (W, 1) = F(1)
 indefinite_unbounded_tagged.adb:40:25: info: precondition proved
-indefinite_unbounded_tagged.adb:41:10: info: assertion proved
+indefinite_unbounded_tagged.adb:40:25: medium: assertion might fail, requires Element (W, 2) = F(2)
 indefinite_unbounded_tagged.adb:41:25: info: precondition proved
+indefinite_unbounded_tagged.adb:41:25: medium: assertion might fail, requires Element (W, 3) = F(3)
 indefinite_unbounded_tagged.adb:43:10: info: precondition proved
 indefinite_unbounded_tagged.adb:44:10: info: assertion proved
 indefinite_unbounded_tagged.adb:44:29: info: precondition proved
@@ -703,16 +703,16 @@ indefinite_unbounded_tagged.adb:48:10: info: assertion proved
 indefinite_unbounded_tagged.adb:48:25: info: precondition proved
 indefinite_unbounded_tagged.adb:49:10: info: assertion proved
 indefinite_unbounded_tagged.adb:49:25: info: precondition proved
-indefinite_unbounded_tagged.adb:50:10: info: assertion proved
 indefinite_unbounded_tagged.adb:50:25: info: precondition proved
-indefinite_unbounded_tagged.adb:51:10: info: assertion proved
+indefinite_unbounded_tagged.adb:50:25: medium: assertion might fail, requires Element (W, 4) = F(1)
 indefinite_unbounded_tagged.adb:51:25: info: precondition proved
-indefinite_unbounded_tagged.adb:52:10: info: assertion proved
+indefinite_unbounded_tagged.adb:51:25: medium: assertion might fail, requires Element (W, 5) = F(2)
 indefinite_unbounded_tagged.adb:52:25: info: precondition proved
+indefinite_unbounded_tagged.adb:52:25: medium: assertion might fail, requires Element (W, 6) = F(3)
 indefinite_unbounded_tagged.adb:54:10: info: precondition proved
 indefinite_unbounded_tagged.adb:54:21: info: precondition proved
-indefinite_unbounded_tagged.adb:55:10: info: assertion proved
 indefinite_unbounded_tagged.adb:55:25: info: precondition proved
+indefinite_unbounded_tagged.adb:55:25: medium: assertion might fail, requires Is_Empty (W)
 indefinite_unbounded_tagged.adb:56:10: info: assertion proved
 indefinite_unbounded_tagged.adb:56:27: info: precondition proved
 indefinite_unbounded_tagged.adb:56:29: info: precondition proved
@@ -724,12 +724,12 @@ indefinite_unbounded_tagged.adb:61:22: info: precondition proved
 indefinite_unbounded_tagged.adb:62:07: info: assertion proved
 indefinite_unbounded_tagged.adb:62:22: info: precondition proved
 indefinite_unbounded_tagged.adb:64:07: info: precondition proved
-indefinite_unbounded_tagged.adb:65:07: info: assertion proved
 indefinite_unbounded_tagged.adb:65:22: info: precondition proved
-indefinite_unbounded_tagged.adb:66:07: info: assertion proved
+indefinite_unbounded_tagged.adb:65:22: medium: assertion might fail, requires Element (V, 1) = F(3)
 indefinite_unbounded_tagged.adb:66:22: info: precondition proved
-indefinite_unbounded_tagged.adb:67:07: info: assertion proved
-indefinite_unbounded_tagged.adb:67:22: info: precondition proved
+indefinite_unbounded_tagged.adb:66:22: medium: assertion might fail, requires Element (V, 2) = F(4)
+indefinite_unbounded_tagged.adb:67:22: medium: assertion might fail, requires Element (V, 3) = F(1)
+indefinite_unbounded_tagged.adb:67:22: medium: precondition might fail
 indefinite_unbounded_tagged.adb:69:07: info: precondition proved
 indefinite_unbounded_tagged.adb:70:07: info: assertion proved
 indefinite_unbounded_tagged.adb:70:26: info: precondition proved
@@ -737,10 +737,10 @@ indefinite_unbounded_tagged.adb:71:07: info: assertion proved
 indefinite_unbounded_tagged.adb:71:22: info: precondition proved
 indefinite_unbounded_tagged.adb:72:07: info: assertion proved
 indefinite_unbounded_tagged.adb:72:22: info: precondition proved
-indefinite_unbounded_tagged.adb:73:07: info: assertion proved
 indefinite_unbounded_tagged.adb:73:22: info: precondition proved
-indefinite_unbounded_tagged.adb:74:07: info: assertion proved
+indefinite_unbounded_tagged.adb:73:22: medium: assertion might fail, requires Element (V, 1) = F(3)
 indefinite_unbounded_tagged.adb:74:22: info: precondition proved
+indefinite_unbounded_tagged.adb:74:22: medium: assertion might fail, requires Element (V, 2) = F(4)
 indefinite_unbounded_tagged.adb:76:07: info: precondition proved
 indefinite_unbounded_tagged.adb:77:07: info: assertion proved
 indefinite_unbounded_tagged.adb:77:26: info: precondition proved
@@ -760,18 +760,18 @@ indefinite_unbounded_tagged.adb:85:07: info: assertion proved
 indefinite_unbounded_tagged.adb:85:22: info: precondition proved
 indefinite_unbounded_tagged.adb:86:07: info: assertion proved
 indefinite_unbounded_tagged.adb:86:22: info: precondition proved
-indefinite_unbounded_tagged.adb:88:07: info: assertion proved
 indefinite_unbounded_tagged.adb:88:22: info: precondition proved
-indefinite_unbounded_tagged.adb:89:07: info: assertion proved
+indefinite_unbounded_tagged.adb:88:22: medium: assertion might fail, requires Find_Index (V, F(0)) = No_Index
 indefinite_unbounded_tagged.adb:89:22: info: precondition proved
-indefinite_unbounded_tagged.adb:90:07: info: assertion proved
+indefinite_unbounded_tagged.adb:89:22: medium: assertion might fail, requires Find_Index (V, F(4)) = 1
 indefinite_unbounded_tagged.adb:90:22: info: precondition proved
-indefinite_unbounded_tagged.adb:92:07: info: assertion proved
+indefinite_unbounded_tagged.adb:90:22: medium: assertion might fail, requires Find_Index (V, F(4), 2) = No_Index
 indefinite_unbounded_tagged.adb:92:22: info: precondition proved
-indefinite_unbounded_tagged.adb:93:07: info: assertion proved
+indefinite_unbounded_tagged.adb:92:22: medium: assertion might fail, requires Reverse_Find_Index (V, F(0)) = No_Index
 indefinite_unbounded_tagged.adb:93:22: info: precondition proved
-indefinite_unbounded_tagged.adb:94:07: info: assertion proved
+indefinite_unbounded_tagged.adb:93:22: medium: assertion might fail, requires Reverse_Find_Index (V, F(4)) = 1
 indefinite_unbounded_tagged.adb:94:22: info: precondition proved
+indefinite_unbounded_tagged.adb:94:22: medium: assertion might fail, requires Reverse_Find_Index (V, F(4), 2) = 1
 indefinite_unbounded_tagged.adb:96:07: info: assertion proved
 indefinite_unbounded_tagged.adb:96:22: info: precondition proved
 indefinite_unbounded_tagged.adb:97:07: info: assertion proved
@@ -782,7 +782,7 @@ indefinite_unbounded_tagged.adb:99:07: info: assertion proved
 indefinite_unbounded_tagged.adb:99:26: info: precondition proved
 indefinite_unbounded_tagged.adb:100:07: info: assertion proved
 indefinite_unbounded_tagged.adb:100:26: info: precondition proved
-indefinite_unbounded_tagged.adb:106:10: info: assertion proved
+indefinite_unbounded_tagged.adb:106:25: medium: assertion might fail, requires not Sort.Is_Sorted (V)
 indefinite_unbounded_tagged.adb:106:33: info: precondition proved
 indefinite_unbounded_tagged.adb:107:14: info: precondition proved
 indefinite_unbounded_tagged.adb:108:10: info: assertion proved
