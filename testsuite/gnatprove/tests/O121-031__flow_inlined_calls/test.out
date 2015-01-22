@@ -1,0 +1,9 @@
+foo.adb:7:07: warning: initialization has no effect, in call inlined at foo.adb:26
+foo.adb:9:13: warning: unused assignment, in call inlined at foo.adb:26
+foo.adb:22:23: warning: unused initial value of "A"
+foo.adb:24:09: medium: missing dependency "null => A"
+foo.adb:24:26: medium: incorrect dependency "B => A"
+foo.adb:26:35: warning: unused assignment
+foo.adb:32:23: warning: unused initial value of "A"
+foo.adb:34:09: medium: missing dependency "null => A"
+foo.adb:34:26: medium: incorrect dependency "B => A"
