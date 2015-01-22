@@ -3617,62 +3617,8 @@ package body Flow.Control_Flow_Graph is
       pragma Unreferenced (Ctx);
 
       V : Flow_Graphs.Vertex_Id;
-
-      function Check_Prefix (N : Node_Id) return Traverse_Result;
-      --  If N is a 'Old attribute then issue a high check for every
-      --  variable that is part of the prefix of the 'Old and is not
-      --  an import.
-
-      ------------------
-      -- Check_Prefix --
-      ------------------
-
-      function Check_Prefix (N : Node_Id) return Traverse_Result is
-         Vars : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-      begin
-         if Nkind (N) = N_Attribute_Reference
-           and then Get_Attribute_Id (Attribute_Name (N)) = Attribute_Old
-         then
-            Vars := Get_Variable_Set
-              (N,
-               Scope                => FA.B_Scope,
-               Local_Constants      => FA.Local_Constants,
-               Fold_Functions       => False,
-               Use_Computed_Globals => True);
-
-            for Var of Vars loop
-               declare
-                  Initial_V : constant Flow_Graphs.Vertex_Id :=
-                    Get_Initial_Vertex (FA.CFG, Var);
-
-                  Atr       : constant V_Attributes :=
-                    FA.Atr.Element (Initial_V);
-
-                  Tmp       : Boolean;
-               begin
-                  if not Atr.Is_Import then
-                     Error_Msg_Flow
-                       (E          => Get_Direct_Mapping_Id (Var),
-                        Msg        => "& is not initialized when " &
-                          "'Old is evaluated",
-                        Kind       => High_Check_Kind,
-                        N          => N,
-                        Suppressed => Tmp,
-                        F1         => Var,
-                        Tag        => Uninitialized);
-                  end if;
-               end;
-            end loop;
-         end if;
-
-         return OK;
-      end Check_Prefix;
-
-      procedure Check_Uninit_Prefix_Of_Tick_Old is new
-        Traverse_Proc (Process => Check_Prefix);
-
    begin
-      --  We need to check for uninitialized variables.
+      --  We only need to check for uninitialized variables.
       Add_Vertex
         (FA,
          Direct_Mapping_Id (Post),
@@ -3691,13 +3637,6 @@ package body Flow.Control_Flow_Graph is
          V);
 
       CM.Include (Union_Id (Post), Trivial_Connection (V));
-
-      if not FA.Compute_Globals then
-         --  During the analysis phase we issue a high check when a
-         --  variable that serves as a prefix of a 'Old attribute is
-         --  NOT an import.
-         Check_Uninit_Prefix_Of_Tick_Old (Post);
-      end if;
    end Do_Postcondition;
 
    ----------------------------------

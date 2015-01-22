@@ -142,6 +142,13 @@ package Flow.Analysis is
    --
    --  Complexity is O(N^2)
 
+   procedure Check_Prefixes_Of_Attribute_Old (FA : in out Flow_Analysis_Graphs)
+     with Pre => FA.Kind = E_Subprogram_Body;
+   --  We issue a high check whenever a variable that serves as a
+   --  prefix of a 'Old attribute is NOT an import.
+   --
+   --  Complexity is O(N)
+
 private
 
    type Var_Use_Kind is (Use_Read, Use_Write, Use_Any);

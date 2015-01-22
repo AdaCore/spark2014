@@ -78,6 +78,23 @@ package body Flow.Analysis is
    --  because of computed globals) we just return S which is a useful
    --  fallback place to raise an error.
 
+   function Get_Initial_Vertex (G : Flow_Graphs.T;
+                                F : Flow_Id)
+                                return Flow_Graphs.Vertex_Id
+     with Pre  => F.Variant = Normal_Use,
+          Post => G.Get_Key
+            (Get_Initial_Vertex'Result).Variant in Initial_Value |
+                                                   Initial_Grouping;
+   --  Returns the vertex id which represents the initial value for F
+
+   function Get_Final_Vertex (G : Flow_Graphs.T;
+                              F : Flow_Id)
+                              return Flow_Graphs.Vertex_Id
+     with Pre  => F.Variant = Normal_Use,
+          Post => G.Get_Key
+            (Get_Final_Vertex'Result).Variant = Final_Value;
+   --  Returns the vertex id which represents the final value for F
+
    --------------------
    -- Error_Location --
    --------------------
@@ -281,6 +298,35 @@ package body Flow.Analysis is
             raise Why.Unexpected_Node;
       end case;
    end Find_Global;
+
+   ------------------------
+   -- Get_Initial_Vertex --
+   ------------------------
+
+   function Get_Initial_Vertex (G : Flow_Graphs.T;
+                                F : Flow_Id)
+                                return Flow_Graphs.Vertex_Id
+   is
+   begin
+      for V of G.Get_Collection (Flow_Graphs.All_Vertices) loop
+         if Change_Variant (G.Get_Key (V), Normal_Use) = F then
+            return V;
+         end if;
+      end loop;
+      raise Program_Error;
+   end Get_Initial_Vertex;
+
+   ----------------------
+   -- Get_Final_Vertex --
+   ----------------------
+
+   function Get_Final_Vertex (G : Flow_Graphs.T;
+                              F : Flow_Id)
+                              return Flow_Graphs.Vertex_Id
+   is
+   begin
+      return G.Get_Vertex (Change_Variant (F, Final_Value));
+   end Get_Final_Vertex;
 
    ------------------------
    -- First_Variable_Use --
@@ -3292,5 +3338,83 @@ package body Flow.Analysis is
          end loop;
       end;
    end Check_Initializes_Contract;
+
+   -------------------------------------
+   -- Check_Prefixes_Of_Attribute_Old --
+   -------------------------------------
+
+   procedure Check_Prefixes_Of_Attribute_Old
+     (FA : in out Flow_Analysis_Graphs)
+   is
+
+      function Check_Prefix (N : Node_Id) return Traverse_Result;
+      --  If N is a 'Old attribute then issue a high check for every
+      --  variable that is part of the prefix of the 'Old and is not
+      --  an import.
+
+      ------------------
+      -- Check_Prefix --
+      ------------------
+
+      function Check_Prefix (N : Node_Id) return Traverse_Result is
+         Vars : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      begin
+         if Nkind (N) = N_Attribute_Reference
+           and then Get_Attribute_Id (Attribute_Name (N)) = Attribute_Old
+         then
+            Vars := Get_Variable_Set
+              (N,
+               Scope                => FA.B_Scope,
+               Local_Constants      => FA.Local_Constants,
+               Fold_Functions       => False,
+               Use_Computed_Globals => True);
+
+            for Var of Vars loop
+               declare
+                  Initial_V : constant Flow_Graphs.Vertex_Id :=
+                    Get_Initial_Vertex (FA.CFG, Var);
+
+                  Atr       : constant V_Attributes :=
+                    FA.Atr.Element (Initial_V);
+               begin
+                  if not Atr.Is_Import then
+                     Error_Msg_Flow
+                       (FA         => FA,
+                        Msg        => "& is not initialized at " &
+                          "subprogram entry",
+                        Kind       => High_Check_Kind,
+                        N          => First_Variable_Use
+                          (N        => N,
+                           FA       => FA,
+                           Scope    => FA.B_Scope,
+                           Var      => Var,
+                           Precise  => False,
+                           Targeted => False),
+                        F1         => Var,
+                        Tag        => Uninitialized);
+                  end if;
+               end;
+            end loop;
+         end if;
+
+         return OK;
+      end Check_Prefix;
+
+      procedure Check_Prefix_Of_Tick_Old is new
+        Traverse_Proc (Process => Check_Prefix);
+
+      Postconditions : Node_Lists.List;
+
+   begin
+      for Refined in Boolean loop
+         Postconditions := Get_Postcondition_Expressions
+           (FA.Analyzed_Entity,
+            Refined);
+
+         for Postcondition of Postconditions loop
+            Check_Prefix_Of_Tick_Old (Postcondition);
+         end loop;
+      end loop;
+   end Check_Prefixes_Of_Attribute_Old;
 
 end Flow.Analysis;

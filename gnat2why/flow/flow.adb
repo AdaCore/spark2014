@@ -278,35 +278,6 @@ package body Flow is
       return Defining_Identifier (N);
    end Loop_Parameter_From_Loop;
 
-   ------------------------
-   -- Get_Initial_Vertex --
-   ------------------------
-
-   function Get_Initial_Vertex (G : Flow_Graphs.T;
-                                F : Flow_Id)
-                                return Flow_Graphs.Vertex_Id
-   is
-   begin
-      for V of G.Get_Collection (Flow_Graphs.All_Vertices) loop
-         if Change_Variant (G.Get_Key (V), Normal_Use) = F then
-            return V;
-         end if;
-      end loop;
-      raise Program_Error;
-   end Get_Initial_Vertex;
-
-   ----------------------
-   -- Get_Final_Vertex --
-   ----------------------
-
-   function Get_Final_Vertex (G : Flow_Graphs.T;
-                              F : Flow_Id)
-                              return Flow_Graphs.Vertex_Id
-   is
-   begin
-      return G.Get_Vertex (Change_Variant (F, Final_Value));
-   end Get_Final_Vertex;
-
    -----------------
    -- Print_Graph --
    -----------------
@@ -1333,6 +1304,7 @@ package body Flow is
                      Analysis.Check_Contracts (FA);
                   end if;
                   Analysis.Find_Use_Of_Uninitialized_Variables (FA);
+                  Analysis.Check_Prefixes_Of_Attribute_Old (FA);
                   Analysis.Find_Exports_Derived_From_Proof_Ins (FA);
                   Analysis.Analyse_Main (FA);
 
