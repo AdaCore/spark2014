@@ -644,6 +644,10 @@ package body Why.Atree.Modules is
       --  Other identifiers
 
       Old_Tag := NID ("old");
+      Def_Name :=
+        New_Identifier
+          (Symbol => NID ("def"),
+           Domain => EW_Term);
    end Initialize;
 
    -------------------------

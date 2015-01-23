@@ -176,7 +176,6 @@ package Why.Gen.Names is
       WNE_Bool_Xor,
       WNE_Check_Not_First,
       WNE_Check_Not_Last,
-      WNE_Def,
       WNE_Dummy,
       WNE_Dynamic_Property,
 

@@ -182,6 +182,7 @@ package Why.Atree.Modules is
    --  Other identifiers
 
    Old_Tag                   : Name_Id;
+   Def_Name                  : W_Identifier_Id;
    Return_Exc                : W_Name_Id;
 
    procedure Initialize;

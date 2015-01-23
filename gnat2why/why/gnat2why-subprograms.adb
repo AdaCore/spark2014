@@ -1524,7 +1524,7 @@ package body Gnat2Why.Subprograms is
          Emit (File.Cur_Theory,
                 Why.Gen.Binders.New_Function_Decl
                  (Domain  => EW_Prog,
-                  Name    => To_Ident (WNE_Def),
+                  Name    => Def_Name,
                   Binders => (1 => Unit_Param),
                   Labels  => Label_Set,
                   Post    => Post,
@@ -1827,7 +1827,7 @@ package body Gnat2Why.Subprograms is
          Emit (File.Cur_Theory,
                Why.Gen.Binders.New_Function_Decl
                  (Domain  => EW_Prog,
-                  Name    => To_Ident (WNE_Def),
+                  Name    => Def_Name,
                   Binders => (1 => Unit_Param),
                   Labels  => Label_Set,
                   Def     => +Why_Body));
@@ -2274,7 +2274,7 @@ package body Gnat2Why.Subprograms is
          Emit (File.Cur_Theory,
                Why.Gen.Binders.New_Function_Decl
                  (Domain  => EW_Prog,
-                  Name    => To_Ident (WNE_Def),
+                  Name    => Def_Name,
                   Binders => (1 => Unit_Param),
                   Labels  => Label_Set,
                   Post    => Post,

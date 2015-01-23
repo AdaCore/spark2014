@@ -553,7 +553,6 @@ package body Why.Gen.Names is
          when WNE_To_String            => return "to_string";
          when WNE_Of_String            => return "from_string";
          when WNE_Bool_Eq              => return "bool_eq";
-         when WNE_Def                  => return "def";
          when WNE_Dummy                => return "dummy";
          when WNE_Check_Not_First      => return "check_not_first";
          when WNE_Check_Not_Last       => return "check_not_last";
