@@ -171,12 +171,18 @@ package body Why.Gen.Scalars is
            New_Identifier (Name => "x", Typ => Ty);
          Def : W_Pred_Id := Why_Empty;
       begin
+
          if Is_Static then
             if Has_Predicates (E) then
                declare
                   Pred   : Node_Id := First (Static_Discrete_Predicate (E));
                begin
                   Def := False_Pred;
+
+                  --  The compiler has already prepared the static predicate
+                  --  in such a way that it is simply a list of ranges which
+                  --  represent the type
+
                   while Present (Pred) loop
                      declare
                         Rng   : constant Node_Id := Get_Range (Pred);
