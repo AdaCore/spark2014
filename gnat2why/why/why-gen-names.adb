@@ -527,7 +527,6 @@ package body Why.Gen.Names is
          when WNE_Of_Array             => return "of_array";
          when WNE_To_Base              => return "to_base";
          when WNE_Of_Base              => return "of_base";
-         when WNE_Ignore               => return "___ignore";
          when WNE_Range_Check_Fun      => return "range_check_";
          when WNE_Bool_And             => return "andb";
          when WNE_Bool_Or              => return "orb";

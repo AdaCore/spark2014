@@ -232,7 +232,6 @@ package Why.Gen.Names is
       WNE_Float_Pred,
       WNE_Float_Succ,
 
-      WNE_Ignore,
       WNE_Index_Dynamic_Property,
 
       --  Prefix for name of functions which extract the value of an extension
