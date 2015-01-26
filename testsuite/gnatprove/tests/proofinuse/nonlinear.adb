@@ -39,4 +39,11 @@ is
       pragma Assert (Res in -99 .. -Y);
    end Mult;
 
+   procedure Round (X, Y, Z : Positive_32; Res : out Natural_32) is
+   begin
+      pragma Assume (Y <= Z);
+      Res := (X * Y) / Z;
+      pragma Assert (Res <= X);
+   end Round;
+
 end Nonlinear;

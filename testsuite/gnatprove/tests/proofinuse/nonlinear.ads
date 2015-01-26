@@ -16,4 +16,7 @@ is
    --  from NA05-006 (example for teaching)
    procedure Mult (X, Y : Integer; Res : out Integer);
 
+   --  example for internal test
+   procedure Round (X, Y, Z : Positive_32; Res : out Natural_32);
+
 end Nonlinear;
