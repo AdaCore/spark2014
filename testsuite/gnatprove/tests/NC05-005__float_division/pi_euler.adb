@@ -1,6 +1,6 @@
 pragma SPARK_Mode;
 function Pi_Euler return Long_Float is
-   Index: Long_Integer;
+   Index: Integer;
    Pi, Erreur : Long_Float;
 begin
    Pi := 0.0;
