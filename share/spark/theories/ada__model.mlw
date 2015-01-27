@@ -88,10 +88,10 @@ module Static_Modular
   use _gnatprove_standard.Int_Division
 
   function attr__ATTRIBUTE_MODULUS : int
-
-  axiom coerce_axiom "bounded_type" :
+  axiom coerce_axiom :
     forall x  : int [to_int (of_int x)].
-      to_int (of_int x) = Int_Division.math_mod x attr__ATTRIBUTE_MODULUS
+      let y = Int_Division.math_mod x attr__ATTRIBUTE_MODULUS in
+       in_range y -> to_int (of_int x) = y
 end
 
 module Dynamic_Discrete
