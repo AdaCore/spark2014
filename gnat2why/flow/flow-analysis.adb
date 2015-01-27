@@ -34,7 +34,6 @@ with Stand;                use Stand;
 with Ghost;                use Ghost;
 
 with Why;
-with Gnat2Why_Args;
 
 with SPARK_Util;           use SPARK_Util;
 
@@ -200,24 +199,14 @@ package body Flow.Analysis is
       else
          pragma Assert (Nkind (First_Use) in N_Subprogram_Call);
 
-         if Gnat2Why_Args.Flow_Advanced_Debug then
-            Error_Msg_Flow
-              (FA   => FA,
-               Msg  => "called subprogram & requires GLOBAL " &
-                 "aspect to make state & visible",
-               N    => First_Use,
-               F1   => Direct_Mapping_Id (Entity (Name (First_Use))),
-               F2   => Var,
-               Kind => Error_Kind);
-         else
-            Error_Msg_Flow
-              (FA   => FA,
-               Msg  => "called subprogram & requires GLOBAL " &
-                 "aspect to make state visible",
-               N    => First_Use,
-               F1   => Direct_Mapping_Id (Entity (Name (First_Use))),
-               Kind => Error_Kind);
-         end if;
+         Error_Msg_Flow
+           (FA   => FA,
+            Msg  => "called subprogram & requires GLOBAL " &
+              "aspect to make state & visible",
+            N    => First_Use,
+            F1   => Direct_Mapping_Id (Entity (Name (First_Use))),
+            F2   => Var,
+            Kind => Error_Kind);
       end if;
    end Global_Required;
 
