@@ -1,0 +1,2 @@
+foo.adb:19:18: medium: missing dependency "Log_In => Log"
+foo.adb:19:18: medium: missing dependency "Log_In => Log_Size"
