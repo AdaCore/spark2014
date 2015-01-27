@@ -83,7 +83,7 @@ x86.adb:129:54: info: division check proved
 x86.adb:129:54: info: range check proved
 x86.adb:130:22: medium: assertion might fail, requires Unsigned_32(Memory(addr)) + (Unsigned_32(Memory(addr + 1)) * (2**8))) = (val rem 2**16
 x86.adb:131:71: info: division check proved
-x86.adb:132:07: info: assertion proved
+x86.adb:132:22: medium: assertion might fail, requires Unsigned_32(Memory(addr + 2)) + (Unsigned_32(Memory(addr + 3)) * (2**8))) = ((val / (2**16)) rem 2**16
 x86.adb:133:72: info: division check proved
 x86.adb:133:83: info: division check proved
 x86.adb:134:22: medium: assertion might fail, requires val rem 2**16) + (((val / (2**16)) rem 2**16) * 2**16) = val
