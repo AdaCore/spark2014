@@ -58,7 +58,8 @@ package body Why.Gen.Scalars is
       First      : W_Term_Id;
       Last       : W_Term_Id;
       Modulus    : W_Term_OId;
-      Small      : W_Term_OId);
+      Small      : W_Term_OId;
+      Is_Static  : Boolean);
    --  Define the attributes first, last, modulus, small for the given type.
 
    function Num_Constant (Ty : Entity_Id; N : Node_Id) return W_Term_Id;
@@ -74,8 +75,9 @@ package body Why.Gen.Scalars is
      (Theory : W_Theory_Declaration_Id;
       E      : Entity_Id)
    is
-      Why_Name  : constant W_Name_Id := To_Why_Type (E, Local => True);
-      Is_Static : constant Boolean := not Type_Is_Modeled_As_Int_Or_Real (E);
+      Why_Name         : constant W_Name_Id := To_Why_Type (E, Local => True);
+      Is_Static        : constant Boolean := not Type_Is_Modeled_As_Base (E);
+      Base_Type_In_Why : constant W_Type_Id := Type_Of_Node (Base_Type (E));
 
       function Pick_Clone return W_Module_Id;
       --  Choose the correct module to clone
@@ -124,7 +126,30 @@ package body Why.Gen.Scalars is
                2 => New_Clone_Substitution
                  (Kind      => EW_Function,
                   Orig_Name => To_Name (WNE_Attr_Last),
-                  Image     => To_Name (WNE_Attr_Last)))
+                  Image     => To_Name (WNE_Attr_Last)),
+               3 => New_Clone_Substitution
+                 (Kind      => EW_Predicate,
+                  Orig_Name => To_Name (WNE_Range_Pred),
+                  Image     => To_Name (WNE_Range_Pred)))
+            else (1 .. 0 => <>));
+         Discrete_Conv_Subst : constant W_Clone_Substitution_Array :=
+           (if not Is_Static then
+              (1 => New_Clone_Substitution
+                (Kind      => EW_Function,
+                 Orig_Name => New_Name (Symbol => NID ("to_base")),
+                 Image     =>
+                   To_Name
+                     (Conversion_Name
+                        (From => Base_Type_In_Why,
+                         To   => Base_Why_Type (E)))),
+               2 => New_Clone_Substitution
+                (Kind      => EW_Function,
+                 Orig_Name => New_Name (Symbol => NID ("of_base")),
+                 Image     =>
+                   To_Name
+                     (Conversion_Name
+                        (From => Base_Why_Type (E),
+                         To   => Base_Type_In_Why))))
             else (1 .. 0 => <>));
          Mod_Clone_Subst : constant W_Clone_Substitution_Array :=
            (if Has_Modular_Integer_Type (E) then
@@ -132,13 +157,6 @@ package body Why.Gen.Scalars is
                  (Kind      => EW_Function,
                   Orig_Name => To_Name (WNE_Attr_Modulus),
                   Image     => To_Name (WNE_Attr_Modulus)))
-            else (1 .. 0 => <>));
-         Range_Clone_Subst : constant W_Clone_Substitution_Array :=
-           (if Is_Static or else Is_Discrete_Type (E) then
-              (1 => New_Clone_Substitution
-               (Kind      => EW_Predicate,
-                Orig_Name => To_Name (WNE_Range_Pred),
-                Image     => To_Name (WNE_Range_Pred)))
             else (1 .. 0 => <>));
          Fixed_Clone_Subst : constant W_Clone_Substitution_Array :=
            (if Is_Fixed_Point_Type (E) then
@@ -156,8 +174,8 @@ package body Why.Gen.Scalars is
            Default_Clone_Subst &
            Round_Clone_Subst &
            Static_Clone_Subst &
+           Discrete_Conv_Subst &
            Mod_Clone_Subst &
-           Range_Clone_Subst &
            Fixed_Clone_Subst;
       end Compute_Clone_Subst;
 
@@ -225,17 +243,19 @@ package body Why.Gen.Scalars is
                                      Expr   => +Var);
                end;
             end if;
-         end if;
 
-         Emit (Theory,
-               Why.Gen.Binders.New_Function_Decl
-                 (Domain  => EW_Pred,
-                  Name    => To_Ident (WNE_Range_Pred),
-                  Def     => +Def,
-                  Labels  => Name_Id_Sets.Empty_Set,
-                  Binders =>
-                    (1 => Binder_Type'(B_Name => Var,
-                                       others => <>))));
+            --  Only emit range predicate if the type is static.
+
+            Emit (Theory,
+                  Why.Gen.Binders.New_Function_Decl
+                    (Domain  => EW_Pred,
+                     Name    => To_Ident (WNE_Range_Pred),
+                     Def     => +Def,
+                     Labels  => Name_Id_Sets.Empty_Set,
+                     Binders =>
+                       (1 => Binder_Type'(B_Name => Var,
+                                          others => <>))));
+         end if;
       end Generate_Range_Predicate;
 
       ----------------
@@ -277,69 +297,21 @@ package body Why.Gen.Scalars is
    --  Start of Declare_Scalar_Type
 
    begin
-      if not Has_Static_Scalar_Subtype (E) and then Has_Discrete_Type (E) then
-         declare
-            Why_Base_Type : constant W_Type_Id := EW_Abstract (Base_Type (E));
-
-            Default_Clone_Subst : constant W_Clone_Substitution_Id :=
-              New_Clone_Substitution
-                (Kind      => EW_Type_Subst,
-                 Orig_Name => New_Name (Symbol => NID ("base")),
-                 Image     => Why_Name);
-
-            To_Int_Clone_Subst : constant W_Clone_Substitution_Id :=
-              New_Clone_Substitution
-                (Kind      => EW_Function,
-                 Orig_Name => New_Name (Symbol => NID ("to_int_base")),
-                 Image     =>
-                   To_Name
-                     (Conversion_Name
-                        (From => Why_Base_Type,
-                         To   => EW_Int_Type)));
-
-            Of_Int_Clone_Subst : constant W_Clone_Substitution_Id :=
-              New_Clone_Substitution
-                (Kind      => EW_Function,
-                 Orig_Name => New_Name (Symbol => NID ("of_int_base")),
-                 Image     =>
-                   To_Name
-                     (Conversion_Name
-                        (To   => Why_Base_Type,
-                         From => EW_Int_Type)));
-         begin
-
-            --  declare the abstract type
-
-            Emit (Theory,
-                  New_Type_Decl
-                    (Name       => Why_Name,
-                     Labels     => Name_Id_Sets.Empty_Set,
-                     Definition => New_Transparent_Type_Definition
-                       (Domain          => EW_Term,
-                        Type_Definition => Why_Base_Type)));
-
-            --  clone the appropriate module
-
-            Emit (Theory,
-                  New_Clone_Declaration
-                    (Theory_Kind   => EW_Module,
-                     Clone_Kind    => EW_Export,
-                     As_Name       => No_Name,
-                     Origin        => Dynamic_Discrete,
-                     Substitutions =>
-                       Default_Clone_Subst & To_Int_Clone_Subst &
-                       Of_Int_Clone_Subst));
-
-            return;
-         end;
-      end if;
 
       --  declare the abstract type
+      --  if the type is dynamic, declare an alias of its base type
 
-      Emit (Theory,
-            New_Type_Decl
-              (Name => Why_Name,
-               Labels => Name_Id_Sets.To_Set (NID ("""bounded_type"""))));
+      if not Is_Static then
+         Emit (Theory,
+               New_Type_Decl
+                 (Name  => Why_Name,
+                  Alias => Base_Type_In_Why));
+      else
+         Emit (Theory,
+               New_Type_Decl
+                 (Name => Why_Name,
+                  Labels => Name_Id_Sets.Empty_Set));
+      end if;
 
       --  retrieve and declare the attributes first, last and modulus
 
@@ -369,7 +341,8 @@ package body Why.Gen.Scalars is
          First     => First,
          Last      => Last,
          Modulus   => Modul,
-         Small     => Small);
+         Small     => Small,
+         Is_Static => Is_Static);
 
       Generate_Range_Predicate;
 
@@ -393,7 +366,8 @@ package body Why.Gen.Scalars is
       First      : W_Term_Id;
       Last       : W_Term_Id;
       Modulus    : W_Term_OId;
-      Small      : W_Term_OId)
+      Small      : W_Term_OId;
+      Is_Static  : Boolean)
    is
       type Scalar_Attr is (S_First, S_Last, S_Modulus, S_Small);
 
@@ -410,11 +384,11 @@ package body Why.Gen.Scalars is
    begin
       for J in Attr_Values'Range loop
 
-         --  We force generation of first/last, but potentially skip
-         --  Modulus/Small
+         --  If Is_Static is True, force generation of first/last, but
+         --  potentially skip Modulus/Small
 
-         if J in S_First | S_Last or else
-           Attr_Values (J).Value /= Why_Empty
+         if (J in S_First | S_Last and then Is_Static)
+           or else Attr_Values (J).Value /= Why_Empty
          then
             Emit (Theory,
                   Why.Atree.Builders.New_Function_Decl

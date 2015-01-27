@@ -1016,9 +1016,7 @@ package body Gnat2Why.Expr is
             --  has dynamic bounds, we use directly the bound's expression.
             --  In this case, we only need to check the bounds.
 
-            if (not Is_Static_Subtype (N) and then Is_Discrete_Type (N))
-              or else Type_Is_Modeled_As_Int_Or_Real (N)
-            then
+            if Type_Is_Modeled_As_Base (N) then
                if Do_Check then
                   Assuming := New_Assume_Statement (Ada_Node => N,
                                                     Pre      => Precond,
@@ -2646,9 +2644,7 @@ package body Gnat2Why.Expr is
 
       --  Dynamic property of the type itself
 
-      if Is_Discrete_Type (Ty_Ext)
-        and then not Is_Static_Subtype (Ty_Ext)
-      then
+      if Type_Is_Modeled_As_Base (Ty_Ext) then
          T := +New_Dynamic_Property (Domain => EW_Pred,
                                      Ty     => Ty_Ext,
                                      Expr   => Expr);
@@ -9544,9 +9540,7 @@ package body Gnat2Why.Expr is
                   end;
                else
                   pragma Assert (Is_Scalar_Type (Ty));
-                  if Is_Discrete_Type (Ty)
-                    and then not Is_Static_Subtype (Ty)
-                  then
+                  if Type_Is_Modeled_As_Base (Ty) then
                      return New_Dynamic_Property (Domain => Domain,
                                                   Ty     => Ty,
                                                   Expr   => Var);

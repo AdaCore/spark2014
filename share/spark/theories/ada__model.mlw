@@ -10,7 +10,7 @@ module Discrete_Base
 
   use export "ada__model_th".Discrete_Base_Theory
 
-  type t "bounded_type"
+  type t 
 
   function attr__ATTRIBUTE_IMAGE int : __image
 
@@ -22,19 +22,15 @@ module Discrete_Base
     requires { attr__ATTRIBUTE_VALUE__pre_check x }
     ensures { true }
 
-  function to_int "bounded_type" t : int
+  function to_int  t : int
 
-  function of_int "bounded_type" int : t
+  function of_int  int : t
 
   val of_int (x : int) : t
     requires { true }
     ensures { to_int(result) = x }
 
   function user_eq  (x : t) (y : t) : bool
-
-  axiom inversion_axiom "bounded_type" :
-    forall x : t [to_int x].
-    of_int (to_int (x)) = x
 
   function dummy : t
 end
@@ -50,6 +46,10 @@ module Static_Discrete_Base
 
   clone export Discrete_Base
 
+  axiom inversion_axiom  :
+    forall x : t [to_int x].
+    of_int (to_int (x)) = x
+
   function first : int
 
   function last : int
@@ -62,13 +62,13 @@ module Static_Discrete_Base
     requires { n <> first }
     ensures { result = n }
 
-  predicate in_range "bounded_type" (x : int)
+  predicate in_range  (x : int)
 
   val range_check_ (n : int) : int
     requires { in_range n }
     ensures { result = n }
 
-  axiom range_axiom "bounded_type" :
+  axiom range_axiom  :
     forall x : t. in_range (to_int x)
 
   predicate dynamic_property "inline" (f l x : int) = in_range x
@@ -78,7 +78,7 @@ module Static_Discrete
   use import int.Int
   clone export Static_Discrete_Base
 
-  axiom coerce_axiom "bounded_type" :
+  axiom coerce_axiom  :
     forall x  : int [to_int (of_int x)].
       in_range x -> to_int (of_int x) = x
 end
@@ -88,6 +88,7 @@ module Static_Modular
   use _gnatprove_standard.Int_Division
 
   function attr__ATTRIBUTE_MODULUS : int
+
   axiom coerce_axiom :
     forall x  : int [to_int (of_int x)].
       let y = Int_Division.math_mod x attr__ATTRIBUTE_MODULUS in
@@ -97,40 +98,39 @@ end
 module Dynamic_Discrete
  use import "int".Int
 
- type base
+ type t
 
- function to_int_base base : int
- function of_int_base int : base
+ function to_base t : int
+ function of_base int : t
 
- function to_int "inline" (x : base) : int = to_int_base (x)
- function of_int "inline" (x : int) : base = of_int_base (x)
+ function to_int "inline" (x : t) : int = to_base x
+ function of_int "inline" (x : int) : t = of_base x
+
+  clone export Discrete_Base 
+      with type t = t, function of_int = of_int, function to_int = to_int
 
  predicate dynamic_property (first : int) (last : int) (x : int) =
     first <= x /\ x <= last
-
- function dummy : base
 end
 
 module Dynamic_Modular
   use import int.Int
-  use import ref.Ref
-  clone export Discrete_Base
-  use _gnatprove_standard.Int_Division
 
-  (* left uninterpreted, used for unconstrained arrays based on this index range *)
-  predicate in_range "bounded_type" (x : int)
+ type t
 
-  val first : ref int
+ function to_base t : int
+ function of_base int : t
 
-  val last : ref int
+ function to_int "inline" (x : t) : int = to_base x
+ function of_int "inline" (x : int) : t = of_base x
+
+  clone export Discrete_Base 
+      with type t = t, function of_int = of_int, function to_int = to_int
 
   function attr__ATTRIBUTE_MODULUS : int
 
-  axiom coerce_axiom "bounded_type" :
-    forall x  : int [to_int (of_int x)].
-      to_int (of_int x) = Int_Division.math_mod x attr__ATTRIBUTE_MODULUS
-
-  predicate dynamic_property "inline" (f l x : int) = in_range x
+ predicate dynamic_property (first : int) (last : int) (x : int) =
+    first <= x /\ x <= last
 end
 
 module Fixed_Point_Base
@@ -201,10 +201,6 @@ module Fixed_Point_Base
   function inv_small : __fixed
 
   function user_eq  (x : t) (y : t) : bool
-
-  axiom inversion_axiom :
-    forall x : t [to_fixed x].
-    of_fixed (to_fixed (x)) = x
 
   (* Helper predicate to define the result of operations on fixed-points.
      It is used with non-negative values for [num] and positive values for [den].
@@ -394,6 +390,10 @@ module Static_Fixed_Point
 
   clone export Fixed_Point_Base
 
+  axiom inversion_axiom :
+    forall x : t [to_fixed x].
+    of_fixed (to_fixed (x)) = x
+
   function first : __fixed
 
   function last : __fixed
@@ -424,13 +424,20 @@ module Dynamic_Fixed_Point
 
   use import "_gnatprove_standard".Main
   use import int.Int
-  use import ref.Ref
 
-  clone export Fixed_Point_Base
+ type t
 
-  val first : ref __fixed
+ function to_base t : __fixed
+ function of_base __fixed : t
 
-  val last : ref __fixed
+ function to_fixed "inline" (x : t) : __fixed = to_base (x)
+ function of_fixed "inline" (x : __fixed) : t = of_base (x)
+
+  clone export Fixed_Point_Base 
+      with type t = t, function of_fixed = of_fixed, function to_fixed = to_fixed
+
+ predicate dynamic_property (first : __fixed) (last : __fixed) (x : __fixed) =
+    first <= x /\ x <= last
 end
 
 module Floating_Point_Base
@@ -458,10 +465,6 @@ module Floating_Point_Base
     ensures  { to_real (result) = x }
 
   function user_eq  (x : t) (y : t) : bool
-
-  axiom inversion_axiom :
-    forall x : t [to_real x].
-      of_real (to_real(x)) = x
 
   (* Next and previous representable reals. The functions return respectively
      the representable real greater than or lower than the argument x, which
@@ -494,6 +497,10 @@ module Static_Floating_Point
 
   use import real.RealInfix
   clone export Floating_Point_Base
+
+  axiom inversion_axiom :
+    forall x : t [to_real x].
+      of_real (to_real(x)) = x
 
   function first  : real
 
@@ -529,12 +536,21 @@ end
 module Dynamic_Floating_Point
   (* The module that is used as basis for all "dynamic" floating-point types. *)
 
-  use import ref.Ref
-  clone export Floating_Point_Base
+  use import real.RealInfix
 
-  val first : ref real
+ type t
 
-  val last  : ref real
+ function to_base t : real
+ function of_base real : t
+
+ function to_real "inline" (x : t) : real = to_base x
+ function of_real "inline" (x : real) : t = of_base x
+
+  clone export Floating_Point_Base 
+      with type t = t, function of_real = of_real, function to_real = to_real
+
+ predicate dynamic_property (first : real) (last : real) (x : real) =
+    first <=. x /\ x <=. last
 end
 
 module Unconstrained_Private_Type

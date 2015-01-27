@@ -786,31 +786,19 @@ package body Why.Gen.Expr is
       W_Expr     : W_Expr_Id;
       Check_Kind : Range_Check_Kind) return W_Prog_Id is
    begin
-      if (not Is_Static_Subtype (Ty) and then Is_Discrete_Type (Ty))
-        or else Type_Is_Modeled_As_Int_Or_Real (Ty)
-      then
+      if Type_Is_Modeled_As_Base (Ty) then
          declare
             Expr : constant W_Expr_Id := New_Temp_For_Expr (W_Expr);
-            M : constant W_Module_Id :=
-              (if Is_Standard_Boolean_Type (Ty) then Boolean_Module
-               else E_Module (Ty));
-            T : W_Prog_Id;
+            T    : W_Prog_Id;
          begin
                T :=
                  New_Located_Assert
                    (Ada_Node => Ada_Node,
                     Reason   => To_VC_Kind (Check_Kind),
                     Pred     =>
-                       (if Is_Discrete_Type (Ty) then
                         +New_Dynamic_Property (Domain => EW_Prog,
                                                Ty     => Ty,
-                                               Expr   => Expr)
-                        else New_Call
-                          (Name   =>
-                               Prefix (M        => M,
-                                       W        => WNE_Range_Pred,
-                                       Ada_Node => Ty),
-                           Args   => (1 => Expr))),
+                                               Expr   => Expr),
                     Kind     => EW_Assert);
             return
               +Binding_For_Temp (Domain => EW_Prog,
@@ -1690,8 +1678,7 @@ package body Why.Gen.Expr is
       Params : Transformation_Params := Body_Params) return W_Expr_Id is
    begin
       if Attr in Attribute_First | Attribute_Last
-        and then ((not Is_Static_Subtype (Ty) and then Is_Discrete_Type (Ty))
-                  or else Type_Is_Modeled_As_Int_Or_Real (Ty))
+        and then Type_Is_Modeled_As_Base (Ty)
       then
          --  Use expression for dynamic bounds
 
@@ -1821,10 +1808,10 @@ package body Why.Gen.Expr is
    is
    begin
 
-      --  For now, only supports dynamic discrete types, unconstrained array
+      --  For now, only supports dynamic scalar types, unconstrained array
       --  types and record or private types with discriminants.
 
-      if Is_Discrete_Type (Ty) then
+      if Is_Scalar_Type (Ty) and then Type_Is_Modeled_As_Base (Ty) then
 
          pragma Assert (not Depends_On_Discriminant (Get_Range (Ty)));
 
@@ -1843,7 +1830,7 @@ package body Why.Gen.Expr is
                                          (Ada_Node => Ty,
                                           Domain   => Domain,
                                           Expr     => Expr,
-                                          To       => EW_Int_Type)),
+                                          To       => Base_Why_Type (Ty))),
                           Typ    => EW_Bool_Type);
       elsif Is_Array_Type (Ty) and then not Is_Static_Array_Type (Ty) then
          declare

@@ -31,7 +31,6 @@ with Errout;                 use Errout;
 with Namet;                  use Namet;
 with Nlists;                 use Nlists;
 with Sem_Disp;               use Sem_Disp;
-with Sem_Eval;               use Sem_Eval;
 with Sem_Util;               use Sem_Util;
 with Sinfo;                  use Sinfo;
 with Sinput;                 use Sinput;
@@ -247,8 +246,7 @@ package body Gnat2Why.Subprograms is
 
       procedure Assume_Constraints_For_Type (Ty : Entity_Id) is
       begin
-         if Is_Discrete_Type (Ty)
-           and then not Is_Static_Subtype (Ty)
+         if Type_Is_Modeled_As_Base (Ty)
            and then not Dyn_Types.Contains (Ty)
          then
             declare
@@ -406,7 +404,7 @@ package body Gnat2Why.Subprograms is
       procedure Include (Ty : Entity_Id) is
          Index : Node_Id;
       begin
-         if Is_Discrete_Type (Ty) and then not Is_Static_Subtype (Ty) then
+         if Type_Is_Modeled_As_Base (Ty) then
             Result.Include (Ty);
          elsif Is_Array_Type (Ty) and then not Is_Static_Array_Type (Ty) then
             Index := First_Index (Ty);
@@ -690,7 +688,7 @@ package body Gnat2Why.Subprograms is
                Ty    : constant Entity_Id :=
                  Unique_Entity (Etype (B.Main.Ada_Node));
                Guard : constant W_Pred_Id :=
-                 (if Is_Discrete_Type (Etype (B.Main.Ada_Node)) then
+                 (if Type_Is_Modeled_As_Base (Etype (B.Main.Ada_Node)) then
                   +New_Dynamic_Property (Domain => EW_Pred,
                                          Ty     => Ty,
                                          Expr   => +B.Main.B_Name)

@@ -562,15 +562,16 @@ package body Gnat2Why.Util is
       end if;
    end Is_Mutable_In_Why;
 
-   ------------------------------------
-   -- Type_Is_Modeled_As_Int_Or_Real --
-   ------------------------------------
+   -----------------------------
+   -- Type_Is_Modeled_As_Base --
+   -----------------------------
 
-   function Type_Is_Modeled_As_Int_Or_Real (T : Entity_Id) return Boolean is
+   function Type_Is_Modeled_As_Base (T : Entity_Id) return Boolean is
    begin
-      return SPARK_Definition.Loop_Entity_Set.Contains (T)
+      return (Is_Discrete_Type (T)
+              or else SPARK_Definition.Loop_Entity_Set.Contains (T))
         and then not Is_Static_Subtype (T);
-   end Type_Is_Modeled_As_Int_Or_Real;
+   end Type_Is_Modeled_As_Base;
 
    ------------------------
    -- Why_Type_Of_Entity --
