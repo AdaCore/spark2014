@@ -6,13 +6,13 @@ is
      (A : Int_Array;
       A_First, Length : Natural)
      return Boolean
-     with Convention => Ghost, Import, Global => Null;
+     with Ghost, Import, Global => Null;
 
    function Perm
      (A, B : Int_Array;
       A_First, Length : Natural)
      return Boolean
-     with Convention => Ghost, Import, Global => Null;
+     with Ghost, Import, Global => Null;
 
   procedure Mergesort
     (A       : in out Int_Array;
