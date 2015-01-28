@@ -1109,7 +1109,14 @@ package body Gnat2Why.Expr.Loops is
                                    (Sloc (Loop_Id))
                                  else ""))),
                             2 => Loop_Start,
-                            3 => Loop_Stmt))));
+                            3 => New_Comment
+                              (Comment =>
+                                   NID ("While loop translating the Ada loop"
+                                 & (if Sloc (Loop_Id) > 0 then
+                                      " from " & Build_Location_String
+                                     (Sloc (Loop_Id))
+                                   else ""))),
+                            4 => Loop_Stmt))));
 
       Loop_Try : constant W_Prog_Id :=
         New_Try_Block

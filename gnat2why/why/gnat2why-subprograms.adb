@@ -1980,10 +1980,23 @@ package body Gnat2Why.Subprograms is
          Others_Guard_Expr  => Others_Guard_Expr);
 
       Init_Prog := Sequence
-        ((1 => Assume,
-          2 => New_Ignore
-          (Prog => +Compute_Spec (Params, E, Name_Precondition, EW_Prog)),
-          3 => Precondition));
+        ((1 => New_Comment
+          (Comment => NID ("Declarations introduced by the compiler at the"
+           & " beginning of the subprogram"
+           & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
+             else ""))),
+          2 => Assume,
+          3 => New_Comment
+          (Comment => NID ("Check for RTE in the Pre of the subprogram"
+           & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
+             else ""))),
+          4 => New_Ignore
+            (Prog => +Compute_Spec (Params, E, Name_Precondition, EW_Prog)),
+          5 => New_Comment
+          (Comment => NID ("Assume Pre of the subprogram"
+           & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
+             else ""))),
+          6 => Precondition));
       Prog := Compute_Contract_Cases_Entry_Checks (E, Guard_Map);
 
       if Present (Body_N) and then Entity_Body_In_SPARK (E) then
@@ -2120,8 +2133,19 @@ package body Gnat2Why.Subprograms is
                  (Declarations (Body_N)));
             Why_Body := Sequence
               ((1 => Transform_All_Pragmas (Pre_Prags),
-                2 => Why_Body,
-                3 => Transform_All_Pragmas (Post_Prags)));
+                2 => New_Comment
+                  (Comment => NID ("Body of the subprogram"
+                   & (if Sloc (E) > 0 then
+                        " " & Build_Location_String (Sloc (E))
+                     else ""))),
+                3 => Why_Body,
+                4 => New_Comment
+                  (Comment => NID ("Check additional Posts and RTE in Post of"
+                   & " the subprogram"
+                   & (if Sloc (E) > 0 then
+                        " " & Build_Location_String (Sloc (E))
+                     else ""))),
+                5 => Transform_All_Pragmas (Post_Prags)));
          end;
 
          --  Refined_Post
@@ -2145,7 +2169,13 @@ package body Gnat2Why.Subprograms is
          --  check absence of runtime errors in Post and RTE + validity of
          --  contract cases
 
-         Why_Body := Sequence (Why_Body, Post_Check);
+         Why_Body := Sequence
+           ((1 => New_Comment
+                (Comment => NID ("Check additional Pres of the subprogram"
+                 & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
+                   else ""))),
+             2 => Why_Body,
+             3 => Post_Check));
 
          --  return the result variable, so that result = result_var in the
          --  postcondition
@@ -2221,7 +2251,14 @@ package body Gnat2Why.Subprograms is
                                                  Subp    => E);
          end;
 
-         Prog := Sequence (Assume, Prog);
+         Prog := Sequence
+           ((1 => New_Comment
+             (Comment => NID ("Assume dynamic property of params of the"
+              & " subprogram"
+              & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
+                else ""))),
+             2 => Assume,
+             3 => Prog));
       end if;
 
       --  We always need to add the int theory as
