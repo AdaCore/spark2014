@@ -30,6 +30,7 @@ with Atree;              use Atree;
 with Namet;              use Namet;
 with Nlists;             use Nlists;
 with Sinfo;              use Sinfo;
+with Sinput;             use Sinput;
 with Snames;             use Snames;
 with Uintp;              use Uintp;
 with VC_Kinds;           use VC_Kinds;
@@ -1050,17 +1051,41 @@ package body Gnat2Why.Expr.Loops is
       Loop_Ident : constant W_Name_Id := Loop_Exception_Name (Loop_Id);
       Loop_Inner : constant W_Prog_Id :=
         Sequence ((1 => Variant_Update,
-                   2 => Loop_End,
-                   3 => New_Conditional
+                   2 => New_Comment
+                     (Comment => NID ("Loop statements appearing after the"
+                      & " loop invariant"
+                      & (if Sloc (Loop_Id) > 0 then
+                           " of loop " & Build_Location_String (Sloc (Loop_Id))
+                        else ""))),
+                   3 => Loop_End,
+                   4 => New_Comment
+                     (Comment => NID ("Check for the exit condition and loop"
+                      & " statements appearing before the loop invariant"
+                      & (if Sloc (Loop_Id) > 0 then
+                           " of loop " & Build_Location_String (Sloc (Loop_Id))
+                        else ""))),
+                   5 => New_Conditional
                      (Condition => +Loop_Condition,
                       Then_Part => +Sequence (+Loop_Restart, +Variant_Check),
                       Else_Part => New_Raise (Name => Loop_Ident))));
 
       Loop_Body : constant W_Prog_Id :=
-        Sequence ((1 => New_Assume_Statement
-                          (Ada_Node => Empty, Post => Implicit_Invariant),
-                   2 => Invariant_Check,
-                   3 => Loop_Inner));
+        Sequence ((1 => New_Comment
+                   (Comment => NID ("Assume implicit invariants from the loop"
+                    & (if Sloc (Loop_Id) > 0 then
+                         " " & Build_Location_String (Sloc (Loop_Id))
+                      else ""))),
+                   2 => New_Assume_Statement
+                     (Ada_Node => Empty, Post => Implicit_Invariant),
+                   3 => New_Comment
+                     (Comment =>
+                          NID ("Check for absence of RTE in the invariant"
+                        & (if Sloc (Loop_Id) > 0 then
+                             " of loop " & Build_Location_String
+                            (Sloc (Loop_Id))
+                          else ""))),
+                   4 => Invariant_Check,
+                   5 => Loop_Inner));
 
       Loop_Stmt : constant W_Prog_Id :=
         New_While_Loop
@@ -1074,7 +1099,17 @@ package body Gnat2Why.Expr.Loops is
            Map    => Map_For_Loop_Entry (Loop_Id),
            Expr   => Create_Zero_Binding
                        (Vars => Variant_Tmps,
-                        Prog => Sequence (Loop_Start, Loop_Stmt)));
+                        Prog => Sequence
+                          ((1 => New_Comment
+                            (Comment =>
+                                 NID ("First unroling of the loop statements"
+                               & " appearing before the loop invariant"
+                               & (if Sloc (Loop_Id) > 0 then
+                                    " of loop " & Build_Location_String
+                                   (Sloc (Loop_Id))
+                                 else ""))),
+                            2 => Loop_Start,
+                            3 => Loop_Stmt))));
 
       Loop_Try : constant W_Prog_Id :=
         New_Try_Block
@@ -1083,9 +1118,15 @@ package body Gnat2Why.Expr.Loops is
                                          Def  => New_Void)));
    begin
       return
-        New_Conditional
-          (Condition => +Enter_Condition,
-           Then_Part => +Loop_Try);
+        Sequence
+          (New_Comment
+             (Comment => NID ("Translation of an Ada loop"
+              & (if Sloc (Loop_Id) > 0 then
+                   " from " & Build_Location_String (Sloc (Loop_Id))
+                else ""))),
+           New_Conditional
+             (Condition => +Enter_Condition,
+              Then_Part => +Loop_Try));
    end Wrap_Loop;
 
 end Gnat2Why.Expr.Loops;
