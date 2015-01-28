@@ -600,8 +600,10 @@ package body Flow.Control_Flow_Graph is
    --  Note we do not have this self-dependency here, because Z is *not*
    --  initialized at specification.
    --
-   --  Finally note that we never actually look into the nested package
-   --  body (unlike its spec).
+   --  Finally, we look into the nested package body when the package
+   --  declares no state abstractions. This is similar to what we do
+   --  for the package spec. Note that we only process the
+   --  declarations of the package's body.
 
    procedure Do_Pragma
      (N   : Node_Id;
@@ -3108,6 +3110,10 @@ package body Flow.Control_Flow_Graph is
       --     Initializes => (X => Y
       --  we return the node for => (N_Component_Association).
 
+      function Get_Declarations return List_Id;
+      --  Returns the List_Id that corresponds to the body's
+      --  declarations.
+
       Package_Spec : constant Entity_Id :=
         (case Nkind (N) is
             when N_Package_Body =>
@@ -3116,6 +3122,10 @@ package body Flow.Control_Flow_Graph is
                Corresponding_Spec_Of_Stub (N),
             when others =>
                raise Program_Error);
+
+      Abstract_State_Aspect : constant Node_Id :=
+        Get_Pragma (Package_Spec,
+                    Pragma_Abstract_State);
 
       Initializes_Aspect : constant Node_Id := Get_Pragma (Package_Spec,
                                                            Pragma_Initializes);
@@ -3146,62 +3156,132 @@ package body Flow.Control_Flow_Graph is
          raise Program_Error;
       end Find_Node;
 
+      ----------------------
+      -- Get_Declarations --
+      ----------------------
+
+      function Get_Declarations return List_Id is
+        (case Nkind (N) is
+            when N_Package_Body =>
+               Declarations (N),
+            when N_Package_Body_Stub =>
+               Declarations (Parent (Corresponding_Body (N))),
+            when others =>
+               raise Program_Error);
+
       V : Flow_Graphs.Vertex_Id;
 
    begin
 
-      --  If we have no initialize aspect, then the package elaboration
-      --  will have no observable effect in the enclosing package.
+      if Nkind (Parent (Parent (Package_Spec))) = N_Generic_Package_Declaration
+        and then not Is_Generic_Instance (Package_Spec)
+      then
+         --  We skip generic package bodies that do not belong to
+         --  instantiations.
+         Add_Vertex (FA, Direct_Mapping_Id (N), Null_Node_Attributes, V);
+         CM.Include (Union_Id (N), Trivial_Connection (V));
 
-      if DM.Is_Empty then
+         return;
+      end if;
+
+      if Present (Abstract_State_Aspect)
+        and then DM.Is_Empty
+      then
+         --  If we have an Abstract_State aspect and no Initializes
+         --  aspect, then the package elaboration will have no
+         --  observable effect on the enclosing package.
+
          Add_Vertex (FA, Direct_Mapping_Id (N), Null_Node_Attributes, V);
          CM.Include (Union_Id (N), Trivial_Connection (V));
          return;
       end if;
 
-      pragma Assert_And_Cut (not DM.Is_Empty);
+      if not Present (Abstract_State_Aspect) then
+         --  Traverse package body declarations.
+         declare
+            Body_Declarations : constant List_Id := Get_Declarations;
+         begin
+            Process_Statement_List (Body_Declarations, FA, CM, Ctx);
 
-      --  When we encounter the package body (or its stub), we know that
-      --  the package has been elaborated. We need to apply the initializes
-      --  aspect at this point.
+            Copy_Connections (CM,
+                              Dst => Union_Id (N),
+                              Src => Union_Id (Body_Declarations));
+         end;
+      end if;
 
-      declare
-         Verts          : Union_Lists.List := Union_Lists.Empty_List;
-         Initializes_CM : Graph_Connections;
-      begin
-         for C in DM.Iterate loop
-            declare
-               The_Out : constant Flow_Id := Dependency_Maps.Key (C);
-               The_Ins : constant Flow_Id_Sets.Set :=
-                 Dependency_Maps.Element (C);
+      if not DM.Is_Empty then
+         --  When we encounter the package body (or its stub) and
+         --  after we have created vertices for the variables in the
+         --  body's declarations, we know that the package has been
+         --  elaborated. We need to apply the Initializes aspect at
+         --  this point.
 
-               Init_Item : constant Node_Id :=
-                 Find_Node (Get_Direct_Mapping_Id (The_Out));
-            begin
-               Verts.Append (Union_Id (Init_Item));
+         declare
+            Verts          : Union_Lists.List := Union_Lists.Empty_List;
+            Initializes_CM : Graph_Connections;
+         begin
+            for C in DM.Iterate loop
+               declare
+                  The_Out : constant Flow_Id := Dependency_Maps.Key (C);
+                  The_Ins : constant Flow_Id_Sets.Set :=
+                    Dependency_Maps.Element (C);
 
-               Add_Vertex
-                 (FA,
-                  Direct_Mapping_Id (Init_Item),
-                  Make_Package_Initialization_Attributes
-                    (FA        => FA,
-                     The_State => The_Out,
-                     Inputs    => The_Ins,
-                     Scope     => FA.B_Scope,
-                     Loops     => Ctx.Current_Loops,
-                     E_Loc     => Init_Item),
-                  V);
-               CM.Include (Union_Id (Init_Item),
-                           Trivial_Connection (V));
-            end;
-         end loop;
+                  Init_Item : constant Node_Id :=
+                    Find_Node (Get_Direct_Mapping_Id (The_Out));
+               begin
+                  Verts.Append (Union_Id (Init_Item));
 
-         Join (FA    => FA,
-               CM    => CM,
-               Nodes => Verts,
-               Block => Initializes_CM);
-         CM.Include (Union_Id (N), Initializes_CM);
-      end;
+                  Add_Vertex
+                    (FA,
+                     Direct_Mapping_Id (Init_Item),
+                     Make_Package_Initialization_Attributes
+                       (FA        => FA,
+                        The_State => The_Out,
+                        Inputs    => The_Ins,
+                        Scope     => FA.B_Scope,
+                        Loops     => Ctx.Current_Loops,
+                        E_Loc     => Init_Item),
+                     V);
+                  CM.Include (Union_Id (Init_Item),
+                              Trivial_Connection (V));
+               end;
+            end loop;
+
+            Join (FA    => FA,
+                  CM    => CM,
+                  Nodes => Verts,
+                  Block => Initializes_CM);
+
+            if not Present (Abstract_State_Aspect) then
+               declare
+                  Body_Declarations : constant List_Id := Get_Declarations;
+               begin
+                  --  We connect the Declarations of the body to the
+                  --  Initializes_CM.
+                  Linkup
+                    (FA.CFG,
+                     CM (Union_Id (Body_Declarations)).Standard_Exits,
+                     CM (Verts.First_Element).Standard_Entry);
+
+                  --  We set the standard entry of N to the standard
+                  --  entry of the body's declarations and the
+                  --  standard exists of N to the standard exists of
+                  --  the last element in the Verts union list.
+                  CM.Include
+                    (Union_Id (N),
+                     Graph_Connections'
+                       (Standard_Entry => CM.Element
+                          (Union_Id (Body_Declarations)).Standard_Entry,
+                        Standard_Exits => CM.Element
+                          (Verts.Last_Element).Standard_Exits));
+               end;
+            else
+               --  Since we do not process any declarations all we
+               --  have to do is to connect N to the Initializes_CM.
+               CM.Include (Union_Id (N), Initializes_CM);
+            end if;
+         end;
+      end if;
 
    end Do_Package_Body_Or_Stub;
 
