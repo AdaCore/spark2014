@@ -2171,6 +2171,7 @@ Various kinds of ghost code are useful in different situations:
 * `Local ghost variables` are typically used to hold intermediate values during
   computation, which can then be referred to in assertion pragmas like loop
   invariants.
+* `Ghost types` are those types only useful for defining ghost variables.
 * `Ghost procedures` can be used to factor out common treatments on ghost
   variables. Ghost procedures should not have non-ghost outputs, either output
   parameters or global outputs.
@@ -2323,6 +2324,23 @@ The postcondition of ``Add_To_Total`` above expresses that ``Log_Size`` is
 incremented by one at each call, and that the current value of parameter
 ``Incr`` is appended to ``Log`` at each call (using :ref:`Attribute Old` and
 :ref:`Attribute Update`).
+
+.. _Ghost Types:
+
+Ghost Types
+^^^^^^^^^^^
+
+Ghost types can only be used to define ghost variables. For example, we can
+define ghost types ``Log_Type`` and ``Log_Size_Type`` that specialize the types
+``Integer_Array`` and ``Natural`` for ghost variables:
+
+.. code-block:: ada
+
+   subtype Log_Type is Integer_Array with Ghost;
+   subtype Log_Size_Type is Natural with Ghost;
+
+   Log      : Log_Type with Ghost;
+   Log_Size : Log_Size_Type with Ghost;
 
 Ghost Procedures
 ^^^^^^^^^^^^^^^^
