@@ -2268,7 +2268,7 @@ assertion:
 .. code-block:: ada
 
    procedure Add_To_Total (Incr : in Integer) is
-      Init_Total : Integer with Ghost := Total;
+      Init_Total : Integer := Total with Ghost;
    begin
       Total := Total + Incr;
       pragma Assert (Total = Init_Total + Incr);
@@ -2285,7 +2285,7 @@ argument is non-decreasing:
 
 .. code-block:: ada
 
-   Last_Incr : Integer with Ghost := Integer'First;
+   Last_Incr : Integer := Integer'First with Ghost;
 
    procedure Add_To_Total (Incr : in Integer) with
      Pre => Incr >= Last_Incr;
