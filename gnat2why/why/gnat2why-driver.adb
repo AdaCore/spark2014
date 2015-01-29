@@ -69,6 +69,7 @@ with Why.Types;                use Why.Types;
 
 with Common_Containers;        use Common_Containers;
 with GNATCOLL.JSON;            use GNATCOLL.JSON;
+with Gnat2Why.Annotate;        use Gnat2Why.Annotate;
 with Gnat2Why.Decls;           use Gnat2Why.Decls;
 with Gnat2Why.Error_Messages;  use Gnat2Why.Error_Messages;
 with Gnat2Why.External_Axioms; use Gnat2Why.External_Axioms;
@@ -410,6 +411,7 @@ package body Gnat2Why.Driver is
             Translate_Standard_Package;
             Translate_CUnit;
             Run_Gnatwhy3;
+            Generate_Useless_Pragma_Annotate_Warnings;
          end if;
 
       end if;

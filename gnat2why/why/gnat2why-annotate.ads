@@ -84,11 +84,12 @@ package Gnat2Why.Annotate is
    type Annotate_Kind is (Intentional, False_Positive);
 
    type Annotated_Range is record
-      Kind    : Annotate_Kind;
-      Pattern : String_Id;
-      Reason  : String_Id;
-      First   : Source_Ptr;
-      Last    : Source_Ptr;
+      Kind    : Annotate_Kind;       --  the kind of pragma Annotate
+      Pattern : String_Id;           --  the message pattern
+      Reason  : String_Id;           --  the user-provided reason for hiding
+      First   : Source_Ptr;          --  first source pointer
+      Last    : Source_Ptr;          --  last source pointer
+      Prgma   : Node_Id;             --  the pragma which this range belongs to
    end record;
 
    procedure Check_Is_Annotated
@@ -100,5 +101,10 @@ package Gnat2Why.Annotate is
    --  Annotate which applies to the message for this node. If so, set Found to
    --  True and fill in the Info record. Otherwise, Found is set to False and
    --  Info is uninitialized
+   --  This call also marks the corresponding pragma as covering a check.
+
+   procedure Generate_Useless_Pragma_Annotate_Warnings;
+   --  Should be called when all messages have been generated. Generates a
+   --  warning for all pragma Annotate which do not correspond to a check.
 
 end Gnat2Why.Annotate;

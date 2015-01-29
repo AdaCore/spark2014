@@ -1,0 +1,9 @@
+useless_annot.adb:3:04: this pragma does not correspond to any check
+useless_annot.adb:9:20: info: postcondition proved
+useless_annot.adb:13:16: info: overflow check proved
+useless_annot.adb:16:19: info: precondition proved
+useless_annot.adb:16:19: info: range check proved
+   compilation of useless_annot.adb failed
+
+
+gnatprove: error during flow analysis and proof

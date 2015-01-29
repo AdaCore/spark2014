@@ -381,27 +381,30 @@ package body Flow_Error_Messages is
       Editor_Cmd  : String;
       E           : Entity_Id;
       Place_First : Boolean) is
-      Kind   : constant Msg_Kind :=
+      Kind     : constant Msg_Kind :=
         (if Is_Proved then Info_Kind else Medium_Check_Kind);
-      Msg2   : constant String :=
+      Msg2     : constant String :=
         Compute_Message (Msg, N);
-      Suppr  : String_Id := No_String;
-      Slc    : constant Source_Ptr := Compute_Sloc (N, Place_First);
-      Msg_Id : Message_Id := No_Message_Id;
+      Suppr    : String_Id := No_String;
+      Slc      : constant Source_Ptr := Compute_Sloc (N, Place_First);
+      Msg_Id   : Message_Id := No_Message_Id;
+      Is_Annot : Boolean;
+      Info     : Annotated_Range;
    begin
+
+      --  The call to Check_Is_Annotated needs to happen on all paths, even
+      --  though we only need the info in the Check_Kind path. The reason is
+      --  that also in the Info_Kind case, we want to know whether the check
+      --  corresponds to a pragma Annotate.
+
+      Check_Is_Annotated (N, Msg, Is_Annot, Info);
       case Kind is
          when Check_Kind =>
-            declare
-               Is_Annot : Boolean;
-               Info     : Annotated_Range;
-            begin
-               Check_Is_Annotated (N, Msg, Is_Annot, Info);
-               if Is_Annot then
-                  Suppr := Info.Reason;
-               else
-                  Msg_Id := Print_Regular_Msg (Msg2, Slc, Kind);
-               end if;
-            end;
+            if Is_Annot then
+               Suppr := Info.Reason;
+            else
+               Msg_Id := Print_Regular_Msg (Msg2, Slc, Kind);
+            end if;
          when Info_Kind =>
             if Report_Mode /= GPR_Fail then
                Msg_Id := Print_Regular_Msg (Msg2, Slc, Kind);
