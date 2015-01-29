@@ -146,7 +146,7 @@ package body Gnat2Why.Annotate is
    procedure Generate_Useless_Pragma_Annotate_Warnings is
    begin
       for Prag of Pragma_Set loop
-         Error_Msg_N ("this pragma does not correspond to any check", Prag);
+         Error_Msg_N ("?no check message justified by this pragma", Prag);
       end loop;
    end Generate_Useless_Pragma_Annotate_Warnings;
 
