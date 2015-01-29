@@ -900,6 +900,11 @@ to users of the unit:
    :language: ada
    :lines: 10-16
 
+Pragmas ``Annotate`` of the form above that do not justify any check message
+are useless and result in a warning by |GNATprove|. Like other warnings emitted
+by |GNATprove|, this warning is treated like an error if the switch
+``--warnings=error`` is set.
+
 How to Manage Assumptions
 =========================
 
