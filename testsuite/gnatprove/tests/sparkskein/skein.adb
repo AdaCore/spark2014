@@ -254,8 +254,8 @@ is
       Dst_Index : Word_Count_T;
       Src_Index : U64;
    begin
-      pragma Annotate
-         (Gnatprove, False_Positive, " *Dst* might not be initialized", "");
+      --pragma Annotate
+      --   (Gnatprove, False_Positive, " *Dst* might not be initialized", "");
       Dst_Index := 0;
       Src_Index := Src_Offset;
       loop
@@ -337,8 +337,8 @@ is
          --  OK, since type-safety is later re-established by the proof system.
 
          KS (WCNT_512) := Skein_KS_Parity;
-         pragma Annotate (Gnatprove, False_Positive,
-                          "Ks* might not be initialized", "");
+         --pragma Annotate (Gnatprove, False_Positive,
+         --                 "Ks* might not be initialized", "");
 
          for I in I8 loop
             KS (I)    := Ctx.X (I);
