@@ -1,0 +1,14 @@
+main.adb:14:13: info: discriminant check proved
+main.adb:14:22: info: length check proved
+main.adb:14:25: info: length check proved
+main.adb:16:22: info: discriminant check proved
+main.adb:17:10: info: loop invariant initialization proved
+main.adb:17:10: info: loop invariant preservation proved
+main.adb:18:24: info: discriminant check proved
+main.adb:20:21: info: discriminant check proved
+main.adb:20:55: info: discriminant check proved
+main.adb:22:23: info: discriminant check proved
+main.adb:23:13: info: assertion proved
+main.adb:23:39: info: discriminant check proved
+main.adb:24:19: info: discriminant check proved
+main.adb:25:29: info: index check proved
