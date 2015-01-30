@@ -278,7 +278,7 @@ package body Flow_Error_Messages is
                Is_Annot : Boolean;
                Info     : Annotated_Range;
             begin
-               Check_Is_Annotated (N, Msg3, Is_Annot, Info);
+               Check_Is_Annotated (N, Msg3, True, Is_Annot, Info);
                if Is_Annot then
                   Suppr := Info.Reason;
                end if;
@@ -397,7 +397,8 @@ package body Flow_Error_Messages is
       --  that also in the Info_Kind case, we want to know whether the check
       --  corresponds to a pragma Annotate.
 
-      Check_Is_Annotated (N, Msg, Is_Annot, Info);
+      Check_Is_Annotated (N, Msg, Kind in Check_Kind, Is_Annot, Info);
+
       case Kind is
          when Check_Kind =>
             if Is_Annot then

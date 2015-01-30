@@ -95,16 +95,21 @@ package Gnat2Why.Annotate is
    procedure Check_Is_Annotated
      (Node  : Node_Id;
       Msg   : String;
+      Check : Boolean;
       Found : out Boolean;
       Info  : out Annotated_Range);
    --  for a given node and message string, search if there is a pragma
    --  Annotate which applies to the message for this node. If so, set Found to
    --  True and fill in the Info record. Otherwise, Found is set to False and
    --  Info is uninitialized
+
    --  This call also marks the corresponding pragma as covering a check.
+   --  If Check is True, the pragma is marked as covering a failing check,
+   --  otherwise it is marked as covering a proved check.
 
    procedure Generate_Useless_Pragma_Annotate_Warnings;
    --  Should be called when all messages have been generated. Generates a
-   --  warning for all pragma Annotate which do not correspond to a check.
+   --  warning for all pragma Annotate which do not correspond to a check,
+   --  or which covers only proved checks.
 
 end Gnat2Why.Annotate;

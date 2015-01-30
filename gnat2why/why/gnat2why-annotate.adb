@@ -48,6 +48,11 @@ package body Gnat2Why.Annotate is
    --  pragmas are encountered. At the end, only pragmas which don't cover a
    --  message will be in this set.
 
+   Proved_Pragma : Common_Containers.Node_Sets.Set :=
+     Common_Containers.Node_Sets.Empty_Set;
+   --  This set contains all pragma Annotate Nodes which correspond only to a
+   --  proved check.
+
    Annotations : Annot_Range_Vectors.Vector :=
      Annot_Range_Vectors.Empty_Vector;
    --  a sorted vector of ranges
@@ -100,6 +105,7 @@ package body Gnat2Why.Annotate is
    procedure Check_Is_Annotated
      (Node  : Node_Id;
       Msg   : String;
+      Check : Boolean;
       Found : out Boolean;
       Info  : out Annotated_Range)
    is
@@ -127,6 +133,31 @@ package body Gnat2Why.Annotate is
          then
             Info := E;
             Found := True;
+
+            --  deal with useless pragma Annotate
+            --  Check = False means a proved message
+
+            if not Check then
+
+               --  if this is the first check which corresponds to this pragma,
+               --  it possibly only corresponds to proved checks
+
+               if Pragma_Set.Contains (Info.Prgma) then
+                  Proved_Pragma.Include (Info.Prgma);
+               end if;
+
+            --  Check = True means a check message
+
+            else
+
+               --  a real check means the pragma is useful
+
+               Proved_Pragma.Exclude (Info.Prgma);
+            end if;
+
+            --  in all cases we have now encountered this pragma and can remove
+            --  it from pragma set
+
             Pragma_Set.Exclude (Info.Prgma);
             return;
 
@@ -147,6 +178,10 @@ package body Gnat2Why.Annotate is
    begin
       for Prag of Pragma_Set loop
          Error_Msg_N ("?no check message justified by this pragma", Prag);
+      end loop;
+      for Prag of Proved_Pragma loop
+         Error_Msg_N ("?only proved check messages justified by this pragma",
+                      Prag);
       end loop;
    end Generate_Useless_Pragma_Annotate_Warnings;
 

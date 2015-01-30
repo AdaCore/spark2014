@@ -3,3 +3,4 @@ useless_annot.adb:9:20: info: postcondition proved
 useless_annot.adb:13:16: info: overflow check proved
 useless_annot.adb:16:19: info: precondition proved
 useless_annot.adb:16:19: info: range check proved
+useless_annot.adb:17:04: warning: only proved check messages justified by this pragma
