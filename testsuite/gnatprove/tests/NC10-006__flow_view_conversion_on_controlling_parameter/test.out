@@ -1,2 +1,2 @@
-foo.adb:12:07: high: "extension of Log" is not initialized
-foo.adb:19:07: high: "extension of Log" is not initialized
+foo.adb:12:07: high: extension of "Log" is not initialized
+foo.adb:19:07: high: extension of "Log" is not initialized

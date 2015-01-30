@@ -2,16 +2,16 @@ list.adb:12:35: info: precondition proved
 list.adb:15:16: info: precondition proved
 list.adb:15:35: info: precondition proved
 list.adb:16:10: medium: precondition might fail
-list.adb:16:16: medium: "private part of S" might not be initialized
+list.adb:16:16: medium: private part of "S" might not be initialized
 list.adb:16:19: info: precondition proved
 list.adb:16:31: info: range check proved
 list.adb:19:17: info: precondition proved
 list.adb:19:36: info: precondition proved
 list.adb:20:10: medium: precondition might fail
 list.adb:20:23: medium: precondition might fail
-list.adb:20:28: medium: "private part of S" might not be initialized
+list.adb:20:28: medium: private part of "S" might not be initialized
 list.adb:21:10: medium: precondition might fail
-list.adb:21:15: medium: "private part of S" might not be initialized
+list.adb:21:15: medium: private part of "S" might not be initialized
 list.adb:22:54: medium: loop invariant might fail after first iteration, requires Element (Res, J) = Element (L, Last_Index (L) - J + 1)
 list.adb:22:54: medium: loop invariant might fail in first iteration, requires Element (Res, J) = Element (L, Last_Index (L) - J + 1)
 list.adb:22:54: medium: precondition might fail

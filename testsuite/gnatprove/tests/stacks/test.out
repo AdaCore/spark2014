@@ -10,7 +10,7 @@ main.adb:18:10: warning: no Global contract available for "Put_Line"
 main.adb:21:38: warning: assuming "Get_Line" has no effect on global items
 main.adb:21:38: warning: no Global contract available for "Get_Line"
 main.adb:26:40: medium: range check might fail
-main.adb:27:16: medium: "private part of S" might not be initialized
+main.adb:27:16: medium: private part of "S" might not be initialized
 main.adb:27:17: medium: precondition might fail
 main.adb:28:16: warning: assuming "Put_Line" has no effect on global items
 main.adb:28:16: warning: no Global contract available for "Put_Line"
@@ -20,7 +20,7 @@ main.adb:32:44: medium: range check might fail
 main.adb:33:16: warning: assuming "Get" has no effect on global items
 main.adb:33:16: warning: no Global contract available for "Get"
 main.adb:33:21: info: range check proved
-main.adb:34:16: medium: "private part of S" might not be initialized
+main.adb:34:16: medium: private part of "S" might not be initialized
 main.adb:34:17: medium: precondition might fail
 main.adb:35:16: warning: assuming "Put_Line" has no effect on global items
 main.adb:35:16: warning: no Global contract available for "Put_Line"

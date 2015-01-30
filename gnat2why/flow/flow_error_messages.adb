@@ -606,41 +606,58 @@ package body Flow_Error_Messages is
       R      : Unbounded_String := Null_Unbounded_String;
       Do_Sub : Boolean          := True;
       Quote  : Boolean;
+
+      procedure Append_Quote;
+      --  Append a quote on R if Quote is True
+
+      ------------------
+      -- Append_Quote --
+      ------------------
+
+      procedure Append_Quote is
+      begin
+         if Quote then
+            Append (R, """");
+         end if;
+      end Append_Quote;
+
    begin
       for Index in Positive range 1 .. Length (S) loop
          if Do_Sub and then Element (S, Index) in '&' | '#' | '%' then
             Quote := Element (S, Index) in '&' | '#';
-
-            if Quote then
-               Append (R, """");
-            end if;
 
             case F.Kind is
                when Null_Value =>
                   raise Program_Error;
 
                when Synthetic_Null_Export =>
+                  Append_Quote;
                   Append (R, "null");
 
                when Direct_Mapping | Record_Field =>
                   if Is_Private_Part (F) then
                      Append (R, "private part of ");
+                     Append_Quote;
                      Append (R, Flow_Id_To_String
                                (F'Update (Facet => Normal_Part)));
                   elsif Is_Extension (F) then
                      Append (R, "extension of ");
+                     Append_Quote;
                      Append (R, Flow_Id_To_String
                                (F'Update (Facet => Normal_Part)));
                   elsif Is_Bound (F) then
                      Append (R, "bounds of ");
+                     Append_Quote;
                      Append (R, Flow_Id_To_String
                                (F'Update (Facet => Normal_Part)));
                   else
+                     Append_Quote;
                      Append (R, Flow_Id_To_String (F));
                   end if;
 
                when Magic_String =>
                   --  ??? we may want to use __gnat_decode() here instead
+                  Append_Quote;
                   if F.Name.all = "__HEAP" then
                      Append (R, "the heap");
                   else
@@ -670,9 +687,7 @@ package body Flow_Error_Messages is
                   end if;
             end case;
 
-            if Quote then
-               Append (R, """");
-            end if;
+            Append_Quote;
 
             if Element (S, Index) = '#' then
                case F.Kind is

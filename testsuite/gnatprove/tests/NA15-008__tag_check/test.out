@@ -9,6 +9,6 @@ tag_check.adb:40:07: medium: tag check might fail
 tag_check.ads:7:14: warning: subprogram "Two" has no effect
 tag_check.ads:8:14: warning: subprogram "Three" has no effect
 tag_check.ads:12:22: high: "X.X" is not initialized in "Assign"
-tag_check.ads:12:22: high: "extension of X" is not initialized in "Assign"
+tag_check.ads:12:22: high: extension of "X" is not initialized in "Assign"
 tag_check.ads:12:22: warning: unused variable "X"
 tag_check.ads:12:39: warning: unused variable "Y"
