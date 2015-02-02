@@ -21,29 +21,28 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Ordered_Sets;
+with Ada.Text_IO;                use Ada.Text_IO;
+with Ada.Text_IO.Unbounded_IO;   use Ada.Text_IO.Unbounded_IO;
+with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Containers.Hashed_Sets;
-with Ada.Text_IO;                 use Ada.Text_IO;
-with Ada.Text_IO.Unbounded_IO;    use Ada.Text_IO.Unbounded_IO;
-with Ada.Strings.Unbounded;       use Ada.Strings.Unbounded;
 
-with AA_Util;                     use AA_Util;
-with ALI;                         use ALI;
-with Osint;                       use Osint;
-with Osint.C;                     use Osint.C;
-with Sem_Util;                    use Sem_Util;
-with Lib.Util;                    use Lib.Util;
-with Namet;                       use Namet;
+with AA_Util;                    use AA_Util;
+with ALI;                        use ALI;
+with Osint;                      use Osint;
+with Osint.C;                    use Osint.C;
+with Sem_Util;                   use Sem_Util;
+with Lib.Util;                   use Lib.Util;
+with Namet;                      use Namet;
 
-with Output;                      use Output;
+with Output;                     use Output;
 
 with Graph;
-with Flow_Utility;                use Flow_Utility;
+with Flow_Utility;               use Flow_Utility;
 
 with Gnat2Why_Args;
-with Gnat2Why.Nodes;              use Gnat2Why.Nodes;
+with Gnat2Why.Nodes;             use Gnat2Why.Nodes;
 
-with SPARK_Frame_Conditions;      use SPARK_Frame_Conditions;
+with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 
 package body Flow_Computed_Globals is
 
@@ -59,28 +58,6 @@ package body Flow_Computed_Globals is
 
    use type Flow_Id_Sets.Set;
    use type Name_Set.Set;
-
-   type Subprogram_Phase_1_Info is record
-      Subprogram        : Entity_Name;
-
-      Inputs_Proof      : Name_Set.Set;
-      Inputs            : Name_Set.Set;
-      Outputs           : Name_Set.Set;
-      Proof_Calls       : Name_Set.Set;
-      Definite_Calls    : Name_Set.Set;
-      Conditional_Calls : Name_Set.Set;
-      Local_Variables   : Name_Set.Set;
-   end record;
-
-   function Preceeds (A, B : Subprogram_Phase_1_Info) return Boolean
-   is (A.Subprogram.all < B.Subprogram.all);
-
-   package Info_Sets is new Ada.Containers.Ordered_Sets
-     (Element_Type => Subprogram_Phase_1_Info,
-      "<"          => Preceeds,
-      "="          => "=");
-
-   Info_Set : Info_Sets.Set;
 
    ----------------------------------------------------------------------
 
@@ -154,12 +131,6 @@ package body Flow_Computed_Globals is
    -----------------------
    -- Local subprograms --
    -----------------------
-
-   function To_Name (E : Entity_Id) return Entity_Name;
-   --  Takes an Entity_Id and returns the corresponding Entity_Name
-
-   function To_Name_Set (S : Node_Sets.Set) return Name_Set.Set;
-   --  Takes a set of Node_Ids and returns a set of Entity_Names
 
    procedure Print_Subprogram_Phase_1_Info (Info : Subprogram_Phase_1_Info);
    --  Prints all info related to a subprogram
@@ -362,46 +333,9 @@ package body Flow_Computed_Globals is
    -- GG_Write_Subprogram_Info --
    ------------------------------
 
-   procedure GG_Write_Subprogram_Info
-     (E                 : Entity_Id;
-      Inputs_Proof      : Node_Sets.Set;
-      Inputs            : Node_Sets.Set;
-      Outputs           : Node_Sets.Set;
-      Proof_Calls       : Node_Sets.Set;
-      Definite_Calls    : Node_Sets.Set;
-      Conditional_Calls : Node_Sets.Set;
-      Local_Variables   : Node_Sets.Set)
-   is
+   procedure GG_Write_Subprogram_Info (SI : Subprogram_Phase_1_Info) is
    begin
-      Info_Set.Insert ((To_Name (E),
-                        Inputs_Proof      => To_Name_Set (Inputs_Proof),
-                        Inputs            => To_Name_Set (Inputs),
-                        Outputs           => To_Name_Set (Outputs),
-                        Proof_Calls       => To_Name_Set (Proof_Calls),
-                        Definite_Calls    => To_Name_Set (Definite_Calls),
-                        Conditional_Calls => To_Name_Set (Conditional_Calls),
-                        Local_Variables   => To_Name_Set (Local_Variables)));
-   end GG_Write_Subprogram_Info;
-
-   procedure GG_Write_Subprogram_Info
-     (E                 : Entity_Id;
-      Inputs_Proof      : Name_Set.Set;
-      Inputs            : Name_Set.Set;
-      Outputs           : Name_Set.Set;
-      Proof_Calls       : Name_Set.Set;
-      Definite_Calls    : Name_Set.Set;
-      Conditional_Calls : Name_Set.Set;
-      Local_Variables   : Name_Set.Set)
-   is
-   begin
-      Info_Set.Insert ((To_Name (E),
-                        Inputs_Proof      => Inputs_Proof,
-                        Inputs            => Inputs,
-                        Outputs           => Outputs,
-                        Proof_Calls       => Proof_Calls,
-                        Definite_Calls    => Definite_Calls,
-                        Conditional_Calls => Conditional_Calls,
-                        Local_Variables   => Local_Variables));
+      Info_Set.Insert (SI);
    end GG_Write_Subprogram_Info;
 
    -----------------------
@@ -434,6 +368,16 @@ package body Flow_Computed_Globals is
 
       for Info of Info_Set loop
          Write_Info_Str ("GG S ");
+         case Info.Globals_Origin is
+            when UG =>
+               Write_Info_Str ("UG ");
+            when FA =>
+               Write_Info_Str ("FA ");
+            when XR =>
+               Write_Info_Str ("XR ");
+            when others =>
+               raise Program_Error;
+         end case;
          Write_Info_Str (Info.Subprogram.all);
          Write_Info_Terminate;
 
@@ -503,7 +447,7 @@ package body Flow_Computed_Globals is
       --  The info that we read look as follows:
       --
       --  GG AS test__state test__g
-      --  GG S test__proc
+      --  GG S FA test__proc
       --  GG VP test__proof_var
       --  GG VI test__g test__g2
       --  GG VO test__g
@@ -939,7 +883,7 @@ package body Flow_Computed_Globals is
                return;
             end if;
 
-            while (for some I in 1 .. 8 => Line_Found (I) = False) loop
+            while (for some I in 1 .. 8 => not Line_Found (I)) loop
                Check_GG_Format;
 
                if Length (Line) >= 6 and then
@@ -955,12 +899,23 @@ package body Flow_Computed_Globals is
                   Line_Found (1) := True;
 
                   declare
+                     GO : constant String :=
+                       Slice (Line,
+                              6,
+                              7);
+
                      EN : constant Entity_Name :=
                        new String'(Slice (Line,
-                                          6,
+                                          9,
                                           Length (Line)));
+
                   begin
                      New_Info.Subprogram := EN;
+                     New_Info.Globals_Origin :=
+                       (if GO = "UG" then UG
+                        elsif GO = "FA" then FA
+                        elsif GO = "XR" then XR
+                        else  raise Program_Error);
                      GG_Subprograms.Include (EN);
                   end;
 

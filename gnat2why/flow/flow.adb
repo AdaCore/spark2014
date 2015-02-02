@@ -79,6 +79,7 @@ package body Flow is
    ------------------------------------------------------------
 
    use Flow_Graphs;
+   use Info_Sets;
 
    Temp_String : Unbounded_String := Null_Unbounded_String;
 
@@ -103,7 +104,10 @@ package body Flow is
 
    procedure Build_Graphs_For_Compilation_Unit
      (Compute_Globals : Boolean;
-      FA_Graphs       : out Analysis_Maps.Map);
+      FA_Graphs       : out Analysis_Maps.Map;
+      Info_Set        : out Info_Sets.Set)
+     with Post => (if not Compute_Globals then
+                     Info_Set = Info_Sets.Empty_Set);
    --  Construct all flow graphs for the current compilation unit.
 
    -------------------------
@@ -996,10 +1000,6 @@ package body Flow is
                               Outdent;
                            end loop;
                         end if;
-
-                        GG_Write_Initialize;
-                        GG_Write_Package_Info (DM);
-                        GG_Write_Finalize;
                      else
                         if Gnat2Why_Args.Flow_Advanced_Debug then
                            Write_Str ("Refinement found: no");
@@ -1082,9 +1082,13 @@ package body Flow is
 
    procedure Build_Graphs_For_Compilation_Unit
      (Compute_Globals : Boolean;
-      FA_Graphs       : out Analysis_Maps.Map)
+      FA_Graphs       : out Analysis_Maps.Map;
+      Info_Set        : out Info_Sets.Set)
    is
    begin
+      --  Initialize the Info_Set to the empty set
+      Info_Set := Info_Sets.Empty_Set;
+
       for E of Entity_Set loop
          case Ekind (E) is
             when Subprogram_Kind =>
@@ -1111,9 +1115,6 @@ package body Flow is
                                              Scope,
                                              Depends_Contract);
                      begin
-                        --  Initialize ALI file for GG writing
-                        GG_Write_Initialize;
-
                         if Present (Global_Node)
                           or else Present (Depends_Node)
                         then
@@ -1122,9 +1123,10 @@ package body Flow is
                            --  to get that.
 
                            declare
-                              Proof_Ins : Flow_Id_Sets.Set;
-                              Reads     : Flow_Id_Sets.Set;
-                              Writes    : Flow_Id_Sets.Set;
+                              Proof_Ins       : Flow_Id_Sets.Set;
+                              Reads           : Flow_Id_Sets.Set;
+                              Writes          : Flow_Id_Sets.Set;
+                              Subprogram_Info : Subprogram_Phase_1_Info;
                            begin
                               Get_Globals (Subprogram => E,
                                            Scope      => Scope,
@@ -1133,8 +1135,9 @@ package body Flow is
                                            Reads      => Reads,
                                            Writes     => Writes);
 
-                              GG_Write_Subprogram_Info
-                                (E,
+                              Subprogram_Info := Subprogram_Phase_1_Info'
+                                (Subprogram        => To_Name (E),
+                                 Globals_Origin    => UG,
                                  Inputs_Proof      => To_Name_Set (Proof_Ins),
                                  Inputs            => To_Name_Set (Reads),
                                  Outputs           => To_Name_Set (Writes),
@@ -1142,15 +1145,18 @@ package body Flow is
                                  Definite_Calls    => Name_Set.Empty_Set,
                                  Conditional_Calls => Name_Set.Empty_Set,
                                  Local_Variables   => Name_Set.Empty_Set);
+
+                              Info_Set.Include (Subprogram_Info);
                            end;
 
                         else
                            --  Use (Yannick's) Computed Globals info
                            --  to add a GG entry on the ALI file.
                            declare
-                              Reads  : Name_Set.Set;
-                              Writes : Name_Set.Set;
-                              Calls  : Name_Set.Set;
+                              Reads           : Name_Set.Set;
+                              Writes          : Name_Set.Set;
+                              Calls           : Name_Set.Set;
+                              Subprogram_Info : Subprogram_Phase_1_Info;
                            begin
                               --  Collect the computed globals using
                               --  only info from the current
@@ -1160,8 +1166,9 @@ package body Flow is
                                                                 Writes,
                                                                 Calls);
 
-                              GG_Write_Subprogram_Info
-                                (E,
+                              Subprogram_Info := Subprogram_Phase_1_Info'
+                                (Subprogram        => To_Name (E),
+                                 Globals_Origin    => XR,
                                  Inputs_Proof      => Name_Set.Empty_Set,
                                  Inputs            => Reads,
                                  Outputs           => Writes,
@@ -1169,10 +1176,10 @@ package body Flow is
                                  Definite_Calls    => Name_Set.Empty_Set,
                                  Conditional_Calls => Calls,
                                  Local_Variables   => Name_Set.Empty_Set);
+
+                              Info_Set.Include (Subprogram_Info);
                            end;
                         end if;
-                        --  Finalize ALI file after GG Writing
-                        GG_Write_Finalize;
                      end;
                   end if;
                end if;
@@ -1238,6 +1245,7 @@ package body Flow is
 
    procedure Flow_Analyse_CUnit is
       Success : Boolean;
+      Unused  : Info_Sets.Set;
    begin
 
       --  Check that classwide contracts conform to the legality rules laid
@@ -1254,7 +1262,8 @@ package body Flow is
 
       --  Process entities and construct graphs if necessary
       Build_Graphs_For_Compilation_Unit (Compute_Globals => False,
-                                         FA_Graphs       => FA_Graphs);
+                                         FA_Graphs       => FA_Graphs,
+                                         Info_Set        => Unused);
 
       --  ??? Perform interprocedural analysis
 
@@ -1364,15 +1373,24 @@ package body Flow is
    -- Generate_Flow_Globals --
    ---------------------------
 
-   procedure Generate_Flow_Globals (GNAT_Root : Node_Id)
-   is
+   procedure Generate_Flow_Globals (GNAT_Root : Node_Id) is
       pragma Unreferenced (GNAT_Root);
+      Info_Set : Info_Sets.Set;
    begin
+      GG_Write_Initialize;
+
       --  Process entities and construct graphs if necessary
       Build_Graphs_For_Compilation_Unit (Compute_Globals => True,
-                                         FA_Graphs       => FA_Graphs);
+                                         FA_Graphs       => FA_Graphs,
+                                         Info_Set        => Info_Set);
 
-      GG_Write_Initialize;
+      --  Consider the subprogram info in case a graph was not
+      --  created.
+      if Info_Set /= Info_Sets.Empty_Set then
+         for S of Info_Set loop
+            GG_Write_Subprogram_Info (SI => S);
+         end loop;
+      end if;
 
       --  Writing Generated Globals to the ALI file
       for FA of FA_Graphs loop
@@ -1401,6 +1419,7 @@ package body Flow is
                Definite_Calls    : Node_Sets.Set;
                Conditional_Calls : Node_Sets.Set;
                Local_Variables   : Node_Sets.Set;
+               Subprogram_Info   : Subprogram_Phase_1_Info;
             begin
                Compute_Globals (FA,
                                 Inputs_Proof      => Inputs_Proof,
@@ -1434,15 +1453,35 @@ package body Flow is
                   Print_Node_Set (Local_Variables);
                end if;
 
-               GG_Write_Subprogram_Info
-                 (FA.Analyzed_Entity,
-                  Inputs_Proof      => Inputs_Proof,
-                  Inputs            => Inputs,
-                  Outputs           => Outputs,
-                  Proof_Calls       => Proof_Calls,
-                  Definite_Calls    => Definite_Calls,
-                  Conditional_Calls => Conditional_Calls,
-                  Local_Variables   => Local_Variables);
+               Subprogram_Info := Subprogram_Phase_1_Info'
+                 (Subprogram        => To_Name (FA.Analyzed_Entity),
+                  Globals_Origin    => Flow_Computed_Globals.FA,
+                  Inputs_Proof      => To_Name_Set (Inputs_Proof),
+                  Inputs            => To_Name_Set (Inputs),
+                  Outputs           => To_Name_Set (Outputs),
+                  Proof_Calls       => To_Name_Set (Proof_Calls),
+                  Definite_Calls    => To_Name_Set (Definite_Calls),
+                  Conditional_Calls => To_Name_Set (Conditional_Calls),
+                  Local_Variables   => To_Name_Set (Local_Variables));
+
+               GG_Write_Subprogram_Info (SI => Subprogram_Info);
+            end;
+         elsif FA.Kind = E_Package_Body then
+            --  Here we utilize the package's Refined_State aspect
+            declare
+               Refined_State_N : constant Node_Id :=
+                 Get_Pragma (FA.Analyzed_Entity,
+                             Pragma_Refined_State);
+
+               DM              : Dependency_Maps.Map;
+            begin
+               --  Sanity check that there is indeed a Refined_State
+               --  aspect. Note that if there wasn't one, then GG
+               --  would have been aborted earlier for this entity.
+               pragma Assert (Present (Refined_State_N));
+
+               DM := Parse_Refined_State (Refined_State_N);
+               GG_Write_Package_Info (DM);
             end;
          end if;
 

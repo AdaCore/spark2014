@@ -24,13 +24,14 @@
 --  This package implements writing, reading and computing global
 --  contracts.
 
-with Types;                use Types;
+with Types;                       use Types;
 
-with Common_Containers;    use Common_Containers;
+with Common_Containers;           use Common_Containers;
+with Ada.Containers.Ordered_Sets;
 
-with Flow_Types;           use Flow_Types;
-with Flow_Refinement;      use Flow_Refinement;
-with Flow_Dependency_Maps; use Flow_Dependency_Maps;
+with Flow_Types;                  use Flow_Types;
+with Flow_Refinement;             use Flow_Refinement;
+with Flow_Dependency_Maps;        use Flow_Dependency_Maps;
 
 package Flow_Computed_Globals is
 
@@ -106,7 +107,7 @@ package Flow_Computed_Globals is
    --  2) The second kind has to do with subprograms. For subprograms we
    --     store the following:
 
-   --       * the subprogram's name                                  (S)
+   --       * the subprogram's name and where the info comes from    (S)
    --       * the global variables read in proof contexts only       (VP)
    --       * the global variables read    (input)                   (VI)
    --       * the global variables written (output)                  (VO)
@@ -119,7 +120,7 @@ package Flow_Computed_Globals is
    --     afformentioned lines must be present (order does not matter).
 
    --     Example entry:
-   --       GG S test__proc
+   --       GG S FA test__proc
    --       GG VP test__proof_var
    --       GG VI test__g test__g2
    --       GG VO test__g
@@ -128,9 +129,59 @@ package Flow_Computed_Globals is
    --       GG CC test__proc_3
    --       GG LV test__proc__nested_proc__v
 
+   ----------------------------------------------------------------------
+
    type GG_Mode_T is (GG_No_Mode,
                       GG_Read_Mode,
                       GG_Write_Mode);
+
+   type Globals_Origin_T is (UG, FA, XR, NO);
+   --  UG = User Globals
+   --  FA = Flow Analysis
+   --  XR = xref
+   --  NO = No Origin (we should never get this)
+
+   type Subprogram_Phase_1_Info is record
+      Subprogram        : Entity_Name;
+      Globals_Origin    : Globals_Origin_T;
+
+      Inputs_Proof      : Name_Set.Set;
+      Inputs            : Name_Set.Set;
+      Outputs           : Name_Set.Set;
+      Proof_Calls       : Name_Set.Set;
+      Definite_Calls    : Name_Set.Set;
+      Conditional_Calls : Name_Set.Set;
+      Local_Variables   : Name_Set.Set;
+   end record;
+
+   Null_Subprogram_Info : constant Subprogram_Phase_1_Info :=
+     Subprogram_Phase_1_Info'(Subprogram        => Null_Entity_Name,
+                              Globals_Origin    => NO,
+                              Inputs_Proof      => Name_Set.Empty_Set,
+                              Inputs            => Name_Set.Empty_Set,
+                              Outputs           => Name_Set.Empty_Set,
+                              Proof_Calls       => Name_Set.Empty_Set,
+                              Definite_Calls    => Name_Set.Empty_Set,
+                              Conditional_Calls => Name_Set.Empty_Set,
+                              Local_Variables   => Name_Set.Empty_Set);
+
+   function Preceeds (A, B : Subprogram_Phase_1_Info) return Boolean
+   is (A.Subprogram.all < B.Subprogram.all);
+
+   package Info_Sets is new Ada.Containers.Ordered_Sets
+     (Element_Type => Subprogram_Phase_1_Info,
+      "<"          => Preceeds,
+      "="          => "=");
+
+   Info_Set : Info_Sets.Set;
+
+   ----------------------------------------------------------------------
+
+   function To_Name (E : Entity_Id) return Entity_Name;
+   --  Takes an Entity_Id and returns the corresponding Entity_Name
+
+   function To_Name_Set (S : Node_Sets.Set) return Name_Set.Set;
+   --  Takes a set of Node_Ids and returns a set of Entity_Names
 
    function GG_Mode return GG_Mode_T;
    --  Returns the current mode.
@@ -153,35 +204,14 @@ package Flow_Computed_Globals is
    --  appropriate view depending on the caller (as opposed to always
    --  returning the most refined view).
 
-   procedure GG_Write_Subprogram_Info
-     (E                 : Entity_Id;
-      Inputs_Proof      : Node_Sets.Set;
-      Inputs            : Node_Sets.Set;
-      Outputs           : Node_Sets.Set;
-      Proof_Calls       : Node_Sets.Set;
-      Definite_Calls    : Node_Sets.Set;
-      Conditional_Calls : Node_Sets.Set;
-      Local_Variables   : Node_Sets.Set)
+   procedure GG_Write_Subprogram_Info (SI : Subprogram_Phase_1_Info)
    with Pre  => GG_Mode = GG_Write_Mode,
         Post => GG_Mode = GG_Write_Mode;
    --  Records the information we need to later compute globals.
    --  Compute_Globals in Flow.Slice is used to produce the inputs.
 
-   procedure GG_Write_Subprogram_Info
-     (E                 : Entity_Id;
-      Inputs_Proof      : Name_Set.Set;
-      Inputs            : Name_Set.Set;
-      Outputs           : Name_Set.Set;
-      Proof_Calls       : Name_Set.Set;
-      Definite_Calls    : Name_Set.Set;
-      Conditional_Calls : Name_Set.Set;
-      Local_Variables   : Name_Set.Set)
-   with Pre  => GG_Mode = GG_Write_Mode,
-        Post => GG_Mode = GG_Write_Mode;
-   --  Same as above but uses Name_Set instead of Node_Sets.
-
    procedure GG_Write_Finalize
-   with Pre  => GG_Mode = GG_Write_Mode;
+   with Pre => GG_Mode = GG_Write_Mode;
    --  Appends all subprogram and package information to the ALI file.
 
    -------------------------
