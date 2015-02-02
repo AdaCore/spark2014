@@ -7,9 +7,9 @@
 package Q is
 
    -- TU: 2. An expression (or range) in |SPARK| occurring in certain contexts
-   --  (listed below) shall not have a variable input.  This means that
+   --  (listed below) shall not have a variable input. This means that
    --  such an expression shall not read a variable, nor shall it call a
-   --  function which (directly or indirectly) reads a variable.  These
+   --  function which (directly or indirectly) reads a variable. These
    --  contexts include:
    --   * a constraint excluding the range of a loop parameter
    --     specification where variables may be used in the expressions
@@ -21,7 +21,9 @@ package Q is
    --   * a Dynamic_Predicate or Type_Invariant aspect specification;
    --   * an indexing expresssion of an indexed_component or the discrete_range
    --     of a slice in an object renaming declaration which renames
-   --     part of that index or slice.
+   --     part of that index or slice;
+   --   * a generic actual parameter corresponding to a generic formal
+   --     object having mode **in**.
 
    type T is range 1 .. 10;
 

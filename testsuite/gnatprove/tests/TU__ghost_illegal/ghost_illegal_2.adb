@@ -4,10 +4,14 @@ package body Ghost_Illegal_2 is
    function Add_And_Double (X, Y : Integer) return Integer is
      --  TU: 12. A ghost entity shall only be referenced:
      --  * from within an assertion expression; or
-     --  * within the declaration or completion of a ghost entity
-     --    (e.g., from within the body of a ghost subprogram); or
+     --  * from within an aspect specification [(i.e., either an
+     --    ``aspect_specification`` or an aspect-specifying pragma)]; or
+     --  * within the declaration or completion of a
+     --    ghost entity (e.g., from within the body of a ghost subprogram); or
      --  * within a ghost statement; or
-     --  * within a ``with_clause``.
+     --  * within a ``with_clause`` or ``use_clause``; or
+     --  * within a renaming_declaration which either renames a ghost entity
+     --    or occurs within a ghost subprogram or package.
    begin
       return Add (X, Y) * 2;
    end Add_And_Double;
@@ -32,12 +36,16 @@ package body Ghost_Illegal_2 is
    function Is_Even (X : Integer) return Boolean is (X mod 2 = 0);
 
    procedure Ghost_Func_In_Flow_Exprpession (Par : in out Integer) is
-     --  TU: 12. A ghost entity shall only be referenced:
-     --  * from within an assertion expression; or
-     --  * within the declaration or completion of a ghost entity
-     --    (e.g., from within the body of a ghost subprogram); or
-     --  * within a ghost statement; or
-     --  * within a ``with_clause``.
+      --  TU: 12. A ghost entity shall only be referenced:
+      --  * from within an assertion expression; or
+      --  * from within an aspect specification [(i.e., either an
+      --    ``aspect_specification`` or an aspect-specifying pragma)]; or
+      --  * within the declaration or completion of a
+      --    ghost entity (e.g., from within the body of a ghost subprogram); or
+      --  * within a ghost statement; or
+      --  * within a ``with_clause`` or ``use_clause``; or
+      --  * within a renaming_declaration which either renames a ghost entity
+      --    or occurs within a ghost subprogram or package.
    begin
       if Is_Even (Par) then
          Par := 0;
