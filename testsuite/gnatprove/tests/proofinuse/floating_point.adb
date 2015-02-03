@@ -42,7 +42,7 @@ is
       pragma Assume (X < (1.6181**(N-2))/2.2360 + 1.0);
       pragma Assume (Y < (1.6181**(N-1))/2.2360 + 1.0);
       Res := X + Y;
-      pragma Assert (Res < (1.6181**N)/2.2360 + 1.0);
+      pragma Assert (Res < (1.6181**N)/2.2360 + 1.0);  --  to be checked if correct
    end Fibonacci;
 
    procedure Int_To_Float_Complex (X : Unsigned_16; Y : Float_32; Res : out Float_32) is
