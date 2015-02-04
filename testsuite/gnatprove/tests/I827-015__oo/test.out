@@ -15,6 +15,7 @@ instr-child.adb:15:39: medium: overflow check might fail
 instr-child.adb:15:46: info: division check proved
 instr-child.adb:16:32: medium: overflow check might fail
 instr-child.adb:16:39: info: division check proved
+instr-child.ads:7:14: warning: subprogram "Display_Value" has no effect
 instr.adb:7:18: medium: array index check might fail
 instr.adb:14:07: warning: assuming "New_Line" has no effect on global items
 instr.adb:14:07: warning: no Global contract available for "New_Line"
@@ -99,3 +100,9 @@ instr.adb:114:07: warning: no Global contract available for "Put"
 instr.adb:114:51: info: division check proved
 instr.adb:115:07: warning: assuming "Put" has no effect on global items
 instr.adb:115:07: warning: no Global contract available for "Put"
+instr.ads:19:14: warning: subprogram "Display_Value" has no effect
+instr.ads:29:14: warning: subprogram "Display_Value" has no effect
+instr.ads:45:14: warning: subprogram "Display_Value" has no effect
+instr.ads:54:14: warning: subprogram "Display_Value" has no effect
+instr.ads:65:14: warning: subprogram "Display_Value" has no effect
+instr.ads:80:14: warning: subprogram "Display_Value" has no effect
