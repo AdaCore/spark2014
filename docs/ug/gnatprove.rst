@@ -1834,73 +1834,39 @@ invariant is more likely to resemble the postcondition.
 Proving a Loop Invariant After the First Iteration
 --------------------------------------------------
 
-The last property of the loop invariant - that it is preservered during the
-entire loop [PRESERVE] - is now proved automatically by |GNATprove|. In
-fact, we have now arrived at a loop invariant which allows |GNATprove| to
-prove all checks for subprogram ``Search``.
+With the loop invariant given before, |GNATprove| also proves that the loop
+invariant of ``Search`` holds after the first iteration, which corresponds to
+property [PRESERVE]. In fact, we have now arrived at a loop invariant which
+allows |GNATprove| to prove all checks for subprogram ``Search``.
 
-As is shown by this example, once you have the [AFTER] and [INIT]
-properties right, the [PRESERVE] property is often straight-forward to
-prove. Conversely, trying to prove [PRESERVE] before [AFTER] and [INIT]
-will typically lead to futile and time-consuming sidetracks before you find
-a valid loop invariant. In summary, when proving loops it is strongly
-recommended to systematically get the [AFTER] and [INIT] properties proved,
-before worrying too much about [PRESERVE].
+This is not always the case. In general, when the loop invariant is not proved
+after the first iteration, the problem is that the loop invariant is not
+precise enough. The only information that |GNATprove| knows about the value of
+variables that are modified in the loop, at each loop iteration, is the
+information provided in the loop invariant. If the loop invariant is missing
+some crucial information about these variables, which is needed to prove the
+loop invariant after N iterations, |GNATprove| won't be able to prove that the
+loop invariant holds at each iteration.
 
-..
-    With the loop invariant given before, |GNATprove| now reports that the
-    loop invariant of ``Search`` may fail after the first iteration, which
-    corresponds to property [PRESERVE]. By instructing |GNATprove| to prove
-    checks progressively, as seen in :ref:`proving spark programs`, we even
-    get precise messages pointing to the parts of the loop invariant that
-    could not be proved:
+In loops that modify variables of composite types (records and arrays), it is
+usually necessary at this stage to add in the loop invariant some information
+about those parts of the modified variables which are not modified by the loop,
+or which are not modified in the first N iterations of the loop. Otherwise,
+|GNATprove| assumes that these parts may also be modified, which can prevent it
+from proving the preservation of the loop invariant. See :ref:`loop invariants`
+for an example where this is needed.
 
-    ..literalinclude:: examples/results/binary_search_precise.prove
-       :language: none
+In other cases, it may be necessary to guide the prover with intermediate
+assertions. A rule of thumb for deciding which properties to assert, and where
+to assert them, is to try to locate at which program point the prover does not
+success in proving the property of interest, and to restate other properties
+that are useful for the proof.
 
-    In general, the problem at this point is that the loop invariant is not
-    precise enough. The only information that |GNATprove| knows about the
-    value of variables that are modified in the loop, at each loop
-    iteration, is the information provided in the loop invariant. If the
-    loop invariant is missing some crucial information about these
-    variables, which is needed to prove the loop invariant after N
-    iterations, |GNATprove| won't be able to prove that the loop invariant
-    holds at each iteration.
-
-    In loops that modify variables of composite types (records and arrays),
-    it is usually necessary at this stage to add in the loop invariant some
-    information about those parts of the modified variables which are not
-    modified by the loop, or which are not modified in the first N
-    iterations of the loop. Otherwise, |GNATprove| assumes that these parts
-    may also be modified, which can prevent it from proving the
-    preservation of the loop invariant. See :ref:`loop invariants` for an
-    example where this is needed.
-
-    Here, there is nothing fundamental blocking |GNATprove| from proving
-    that the loop invariant holds after the first iteration. In those
-    cases, it may be necessary to guide the prover with intermediate
-    assertions. A rule of thumb for deciding which properties to assert,
-    and where to assert them, is to try to locate at which program point
-    the prover does not success in proving the property of interest, and to
-    restate other properties that are useful for the proof. Here, both
-    kinds of assertions are needed by |GNATprove|. Here is the
-    implementation of ``Search`` with intermediate assertions:
-
-    .. literalinclude:: examples/binary_search_final/binary_search.adb
-       :language: ada
-       :linenos:
-
-    |GNATprove| proves all checks on this code. As this example shows, it
-    can be difficult to come up with a good loop invariant that allows
-    proving automatically all checks in a subprogram. Although this example
-    is small, the difficulty comes here from the complex properties stated
-    by the user, which involve multiple quantifiers. In cases where the
-    difficulty is related to the size of the loop rather than the
-    complexity of the properties, it may be useful to factor the loop into
-    into local subprograms so that the subprograms' preconditions and
-    postconditions provide the intermediate assertions that are needed to
-    prove the loop invariant.
-
+In yet other cases, where the difficulty is related to the size of the loop
+rather than the complexity of the properties, it may be useful to factor the
+loop into into local subprograms so that the subprograms' preconditions and
+postconditions provide the intermediate assertions that are needed to prove the
+loop invariant.
 
 .. _Loop Patterns:
 
