@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2014, AdaCore                   --
+--                       Copyright (C) 2010-2015, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -10969,6 +10969,7 @@ package body Gnat2Why.Expr is
             | N_Procedure_Instantiation
             | N_Subprogram_Body
             | N_Subprogram_Declaration
+            | N_Use_Package_Clause
             | N_Validate_Unchecked_Conversion =>
             return New_Void;
 
