@@ -26,20 +26,21 @@
 with Ada.Containers.Hashed_Maps;
 with Unchecked_Deallocation;
 
-with Ada.Text_IO;            use Ada.Text_IO;
+with Ada.Text_IO;                use Ada.Text_IO;
 
 with Fname.UF;
 with Get_SPARK_Xrefs;
 with Lib;
 with Osint;
-with Sem_Aux;                use Sem_Aux;
-with Sem_Util;               use Sem_Util;
-with Snames;                 use Snames;
-with SPARK_Xrefs;            use SPARK_Xrefs;
+with Sem_Aux;                    use Sem_Aux;
+with Sem_Util;                   use Sem_Util;
+with Snames;                     use Snames;
+with SPARK_Xrefs;                use SPARK_Xrefs;
 with Uname;
 
-with Flow_Types;             use Flow_Types;
-with Flow_Utility;           use Flow_Utility;
+with Flow_Types;                 use Flow_Types;
+with Flow_Utility;               use Flow_Utility;
+with Flow_Computed_Globals;      use Flow_Computed_Globals;
 
 package body SPARK_Frame_Conditions is
 
@@ -564,6 +565,24 @@ package body SPARK_Frame_Conditions is
          Id_Map.Query_Element (C, For_All_Define_Sets'Access);
       end loop;
    end For_All_External_Objects;
+
+   -----------------------------
+   -- For_All_External_States --
+   -----------------------------
+
+   procedure For_All_External_States
+     (Process : not null access procedure (E : Entity_Name))
+   is
+   begin
+      for State_Name of GG_Get_All_State_Abstractions loop
+         --  Any state abstraction for which we do NOT have a
+         --  corresponding Entidy_Id is an External state abstraction.
+
+         if not Present (Find_Entity (State_Name)) then
+            Process (State_Name);
+         end if;
+      end loop;
+   end For_All_External_States;
 
    ---------------
    -- Free_SCCs --

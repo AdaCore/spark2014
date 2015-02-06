@@ -1643,4 +1643,18 @@ package body Flow_Computed_Globals is
       return Writes;
    end GG_Get_Writes;
 
+   -----------------------------------
+   -- GG_Get_All_State_Abstractions --
+   -----------------------------------
+
+   function GG_Get_All_State_Abstractions return Name_Set.Set is
+      Tmp : Name_Set.Set := Name_Set.Empty_Set;
+   begin
+      for S of State_Info_Set loop
+         Tmp.Include (S.State);
+      end loop;
+
+      return Tmp;
+   end GG_Get_All_State_Abstractions;
+
 end Flow_Computed_Globals;

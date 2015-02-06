@@ -299,6 +299,11 @@ package Flow_Computed_Globals is
                GG_Exist (E);
    --  Returns the set of all variables written.
 
+   function GG_Get_All_State_Abstractions return Name_Set.Set
+   with Pre => GG_Mode = GG_Read_Mode;
+   --  Returns a set of Entity_Names with all the state abstractions
+   --  that the Generated Globals know of.
+
 private
 
    Current_Mode : GG_Mode_T := GG_No_Mode;

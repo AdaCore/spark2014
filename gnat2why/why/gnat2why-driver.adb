@@ -609,13 +609,19 @@ package body Gnat2Why.Driver is
 
       Translate_List_Entities (Entity_List);
 
-      Complete_Subprograms (Entity_List);
-
       --  For all objects whose declaration is not visible (has not been
       --  translated to Why), we generate a dummy declaration. This must
       --  be done after translating above entities.
 
       For_All_External_Objects (Translate_External_Object'Access);
+
+      --  For all state abstractions whose declaration is not visible
+      --  (has not been translated to Why), we generate a dummy
+      --  declaration.
+
+      For_All_External_States (Translate_External_Object'Access);
+
+      Complete_Subprograms (Entity_List);
 
       --  Generate VCs for entities of unit. This must follow the generation of
       --  modules for entities, so that all completions for deferred constants
