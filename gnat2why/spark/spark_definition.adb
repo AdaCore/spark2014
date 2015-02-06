@@ -459,9 +459,21 @@ package body SPARK_Definition is
                --  declarations before the last invariant/variant.
 
                case Nkind (N) is
+                  when N_Full_Type_Declaration         |
+                       N_Private_Extension_Declaration |
+                       N_Private_Type_Declaration      |
+                       N_Protected_Type_Declaration    |
+                       N_Subtype_Declaration           |
+                       N_Task_Type_Declaration         =>
+                     declare
+                        E  : constant Entity_Id := Defining_Entity (N);
+                     begin
+                        if Is_Scalar_Type (E) then
+                           Loop_Entity_Set.Insert (E);
+                        end if;
+                     end;
                   when N_Object_Declaration =>
                      if Is_Scalar_Type (Etype (Defining_Entity (N))) then
-
                         --  Store scalar entities defined in loops before the
                         --  invariant in Loop_Entity_Set
 
@@ -479,6 +491,20 @@ package body SPARK_Definition is
                      if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
                         Error_Msg_N
                           ("nested loops before loop-invariant not yet "
+                             & "supported", N);
+                     end if;
+                  when N_Package_Declaration =>
+                     Violation_Detected := True;
+                     if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+                        Error_Msg_N
+                          ("nested packages before loop-invariant not yet "
+                             & "supported", N);
+                     end if;
+                  when N_Subprogram_Declaration | N_Subprogram_Body =>
+                     Violation_Detected := True;
+                     if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+                        Error_Msg_N
+                          ("nested subprograms before loop-invariant not yet "
                              & "supported", N);
                      end if;
 
