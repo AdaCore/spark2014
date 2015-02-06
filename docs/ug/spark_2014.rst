@@ -2722,7 +2722,8 @@ case because the user explicitly indicated that this case is not possible. Thus
 assertions (of which assumptions are a special kind) are executed at run time,
 but not if assertions are discarded during compilation. In the latter case,
 assumptions should be inspected carefully to ensure that the property assumed
-will indeed hold at run time.
+will indeed hold at run time. This inspection may be facilitated by passing a
+justification string as the second argument to pragma ``Assume``.
 
 .. _Pragma Assert_And_Cut:
 
