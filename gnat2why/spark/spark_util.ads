@@ -249,6 +249,9 @@ package SPARK_Util is
    --  Return the declaration node enclosing N, if any, by following the chain
    --  of Parent's links.
 
+   function Get_Enclosing_Unit (E : Entity_Id) return Entity_Id;
+   --  Return the entity of the package or subprogram enclosing E.
+
    function Get_Expression_Function (E : Entity_Id) return Node_Id;
    --  If E is the entity of an expression function, return the corresponding
    --  N_Expression_Function original node. Otherwise, return Empty.

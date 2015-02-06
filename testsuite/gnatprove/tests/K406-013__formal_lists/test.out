@@ -54,8 +54,8 @@ test_vdll.adb:62:04: info: assertion proved
 test_vdll.adb:62:19: info: precondition proved
 test_vdll.adb:62:47: info: precondition proved
 test_vdll.adb:62:61: info: precondition proved
-test_vdll.adb:65:04: info: assertion proved
 test_vdll.adb:65:19: info: precondition proved
+test_vdll.adb:65:19: medium: assertion might fail, requires Find (L1, 1, Next (L1, First (L1))) = No_Element
 test_vdll.adb:65:32: info: precondition proved
 test_vdll.adb:65:42: info: precondition proved
 test_vdll.adb:68:11: info: precondition proved
@@ -74,7 +74,7 @@ test_vdll.adb:75:04: info: assertion proved
 test_vdll.adb:75:19: info: precondition proved
 test_vdll.adb:75:36: info: precondition proved
 test_vdll.adb:75:46: info: precondition proved
-test_vdll.adb:76:04: info: assertion proved
+test_vdll.adb:76:19: medium: assertion might fail, requires Test_Element (L3, Next (L3, First (L3)), 3)
 test_vdll.adb:76:37: info: precondition proved
 test_vdll.adb:76:47: info: precondition proved
 test_vdll.adb:79:19: medium: assertion might fail, requires not Has_Element (L3, Next (L1, Next (L3, First (L3)
@@ -203,6 +203,6 @@ test_vdll.adb:191:43: info: precondition proved
 test_vdll.adb:191:53: info: precondition proved
 test_vdll.adb:193:04: info: precondition proved
 test_vdll.adb:196:07: medium: precondition might fail
-test_vdll.adb:199:04: info: precondition proved
+test_vdll.adb:199:04: medium: precondition might fail
 test_vdll.adb:205:12: medium: precondition might fail
 test_vdll.adb:212:12: medium: precondition might fail

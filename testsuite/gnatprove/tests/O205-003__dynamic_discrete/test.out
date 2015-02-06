@@ -1,0 +1,23 @@
+test_dynamic_property.adb:1:11: warning: subprogram "Test_Dynamic_Property" has no effect
+test_dynamic_property.adb:2:12: info: range check proved
+test_dynamic_property.adb:3:32: info: range check proved
+test_dynamic_property.adb:7:15: info: range check proved
+test_dynamic_property.adb:8:31: info: range check proved
+test_dynamic_property.adb:11:17: info: postcondition proved
+test_dynamic_property.adb:18:20: info: overflow check proved
+test_dynamic_property.adb:18:20: info: range check proved
+test_dynamic_property.adb:28:17: info: range check proved
+test_dynamic_property.adb:30:17: info: range check proved
+test_dynamic_property.adb:39:17: info: overflow check proved
+test_dynamic_property.adb:39:17: info: range check proved
+test_dynamic_property.adb:43:09: info: precondition proved
+test_dynamic_property.adb:44:04: info: assertion proved
+test_dynamic_property.adb:45:04: info: assertion proved
+test_dynamic_property.adb:45:19: info: precondition proved
+test_dynamic_property.adb:46:04: info: precondition proved
+test_dynamic_property.adb:47:04: info: assertion proved
+test_dynamic_property.adb:49:07: info: precondition proved
+test_dynamic_property.adb:49:24: info: range check proved
+test_dynamic_property.adb:50:07: info: assertion proved
+test_dynamic_property.adb:52:22: info: range check proved
+test_dynamic_property.adb:53:04: info: assertion proved

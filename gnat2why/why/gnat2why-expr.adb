@@ -193,13 +193,6 @@ package body Gnat2Why.Expr is
    --
    --  Nb_Of_Refs should be set to the number of such parameters in Ada_Call.
 
-   function Assume_Dynamic_Property_After_Call
-     (Params   : Transformation_Params;
-      Ada_Call : Node_Id;
-      Why_Call : W_Prog_Id)
-      return W_Prog_Id;
-   --  Assume the dynamic property of in out and out parameters after a call.
-
    function Is_Terminal_Node (N : Node_Id) return Boolean;
    --  Decide whether this is a node where we should put a pretty printing
    --  label, or if we should descend further. Basically, everything that's
@@ -881,56 +874,6 @@ package body Gnat2Why.Expr is
          return New_Void;
       end if;
    end Assume_Dynamic_Property;
-
-   ----------------------------------------
-   -- Assume_Dynamic_Property_After_Call --
-   ----------------------------------------
-
-   function Assume_Dynamic_Property_After_Call
-     (Params   : Transformation_Params;
-      Ada_Call : Node_Id;
-      Why_Call : W_Prog_Id)
-      return W_Prog_Id
-   is
-      T : W_Prog_Id := Why_Call;
-
-      procedure Dynamic_Prop_Of_Arg (Formal, Actual : Node_Id);
-      --  Assume the dynamic property of in or in out parameters
-
-      -----------------
-      -- Dynamic_Prop_Of_Arg --
-      -----------------
-
-      procedure Dynamic_Prop_Of_Arg (Formal, Actual : Node_Id) is
-         Expr_Actual : constant W_Expr_Id :=
-           Transform_Expr (Expr   => Actual,
-                           Domain => EW_Term,
-                           Params => Params);
-         --  Expression for the actual after the call. We do not need check.
-
-         Dyn_Prop    : constant W_Pred_Id :=
-           Compute_Dynamic_Property
-             (Expr     => Expr_Actual,
-              Ty       => Etype (Actual),
-              Only_Var => True);
-      begin
-         if Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter
-           and then Dyn_Prop /= True_Pred
-         then
-            T := Sequence
-              (T, New_Assume_Statement
-                 (Pre  => True_Pred,
-                  Post => Dyn_Prop));
-         end if;
-      end Dynamic_Prop_Of_Arg;
-
-      procedure Iterate_Call is new
-        Iterate_Call_Arguments (Dynamic_Prop_Of_Arg);
-   begin
-      Iterate_Call (Ada_Call);
-
-      return T;
-   end Assume_Dynamic_Property_After_Call;
 
    ------------------------------
    -- Assume_Of_Scalar_Subtype --
@@ -7849,7 +7792,7 @@ package body Gnat2Why.Expr is
                        (Expr     => Transform_Identifier
                             (Expr   => Lvalue,
                              Ent    => Lvalue,
-                             Domain => EW_Prog,
+                             Domain => EW_Term,
                              Params => Body_Params),
                         Ty       => Etype (Lvalue),
                         Only_Var => False));
@@ -9242,39 +9185,10 @@ package body Gnat2Why.Expr is
       end if;
 
       if Domain = EW_Prog then
-         declare
-            Tmp        : constant W_Expr_Id :=
-              New_Temp_For_Expr (T);
-            Dyn_Prop   : constant W_Pred_Id :=
-              Compute_Dynamic_Property
-                (Ty       => Etype (Subp),
-                 Expr     => Tmp,
-                 Only_Var => False);
-         begin
-
-            if Dyn_Prop /= True_Pred then
-
-               --  If the function returns a dynamic type and the call
-               --  is in the program domain, assume that the result
-               --  has the dynamic property.
-
-               T := Binding_For_Temp
-                 (Ada_Node => Expr,
-                  Domain   => Domain,
-                  Tmp      => Tmp,
-                  Context  => +Sequence
-                    (Left  => New_Assume_Statement
-                         (Ada_Node    => Expr,
-                          Pre         => True_Pred,
-                          Post        => +Dyn_Prop),
-                     Right => +Tmp));
-            end if;
-
-            if Present (Controlling_Argument (Expr)) then
-               T := +Sequence (Compute_Tag_Check (Expr, Params),
-                               +T);
-            end if;
-         end;
+         if Present (Controlling_Argument (Expr)) then
+            T := +Sequence (Compute_Tag_Check (Expr, Params),
+                            +T);
+         end if;
       end if;
 
       --  SPARK function cannot have side-effects
@@ -10940,9 +10854,6 @@ package body Gnat2Why.Expr is
                        EW_Unit_Type);
                end if;
 
-               Call := +Assume_Dynamic_Property_After_Call
-                 (Body_Params, Stmt_Or_Decl, +Call);
-
                Call :=
                  +Sequence (Compute_Tag_Check (Stmt_Or_Decl, Body_Params),
                             +Call);
@@ -11223,5 +11134,4 @@ package body Gnat2Why.Expr is
 
         (No_Return (E) and then Get_Abend_Kind (E) = Abnormal_Termination);
    end Why_Subp_Has_Precondition;
-
 end Gnat2Why.Expr;

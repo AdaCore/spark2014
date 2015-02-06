@@ -76,18 +76,18 @@ package body Gnat2Why.Subprograms is
 
    procedure Assign_Bounds_For_Dynamic_Types
      (Params    :        Transformation_Params;
-      Subp      :        Entity_Id;
+      Scope     :        Entity_Id;
       Assume    : in out W_Prog_Id;
       Dyn_Types : in out Node_Sets.Set;
       Objects   : in out Node_Sets.Set);
-   --  For each element of Dyn_Types not declared in Subp, add to Assume an
+   --  For each element of Dyn_Types not declared in Scope, add to Assume an
    --  updates of the corresponding bounds. If a dynamic type is a subtype or a
    --  derived type of a dynamic type, this type is added to Dyn_Types.
 
    procedure Assume_Dynamic_Property_For_Objects
      (Assume  : in out W_Prog_Id;
       Objects :        Node_Sets.Set;
-      Subp    :        Entity_Id);
+      Scope   :        Entity_Id);
    --  For each element of Objects, add to Assume an
    --  assumption of its dynamic property.
 
@@ -232,7 +232,7 @@ package body Gnat2Why.Subprograms is
 
    procedure Assign_Bounds_For_Dynamic_Types
      (Params    :        Transformation_Params;
-      Subp      :        Entity_Id;
+      Scope     :        Entity_Id;
       Assume    : in out W_Prog_Id;
       Dyn_Types : in out Node_Sets.Set;
       Objects   : in out Node_Sets.Set) is
@@ -267,7 +267,7 @@ package body Gnat2Why.Subprograms is
 
                --  No need to assume anything if Ty is declared in Subp
 
-               if Enclosing_Subprogram (Ty) = Subp then
+               if Get_Enclosing_Unit (Ty) = Scope then
                   return;
                end if;
 
@@ -338,7 +338,7 @@ package body Gnat2Why.Subprograms is
    procedure Assume_Dynamic_Property_For_Objects
      (Assume  : in out W_Prog_Id;
       Objects :        Node_Sets.Set;
-      Subp    :        Entity_Id) is
+      Scope   :        Entity_Id) is
    begin
       for Obj of Objects loop
 
@@ -346,7 +346,7 @@ package body Gnat2Why.Subprograms is
          --  subprogram.
 
          if not Ada_Ent_To_Why.Has_Element (Symbol_Table, Obj)
-           or else (Enclosing_Subprogram (Obj) = Subp
+           or else (Get_Enclosing_Unit (Obj) = Scope
                     and then not (Ekind (Obj) in E_In_Parameter
                                     | E_In_Out_Parameter | E_Out_Parameter))
          then
@@ -1518,6 +1518,34 @@ package body Gnat2Why.Subprograms is
       end if;
 
       declare
+         Used_Dyn_Types : Node_Sets.Set;
+         Used_Objects   : Node_Sets.Set;
+         Assume         : W_Prog_Id := New_Void;
+      begin
+         Collect_Dynamic_Types (W      => +Why_Body,
+                                Result => Used_Dyn_Types);
+         Collect_Objects (W      => +Why_Body,
+                          Result => Used_Objects);
+
+         --  Assume bounds of external dynamic types used in the program
+
+         Assign_Bounds_For_Dynamic_Types (Params    => Params,
+                                          Scope     => E,
+                                          Assume    => Assume,
+                                          Dyn_Types => Used_Dyn_Types,
+                                          Objects   => Used_Objects);
+
+         --  We assume that objects used in the program are in range, if
+         --  they are of a dynamic type
+
+         Assume_Dynamic_Property_For_Objects (Assume  => Assume,
+                                              Objects => Used_Objects,
+                                              Scope   => E);
+         Why_Body :=
+           Sequence (Assume, Why_Body);
+      end;
+
+      declare
          Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
       begin
          Label_Set.Include (NID ("W:diverges:N"));
@@ -2238,7 +2266,7 @@ package body Gnat2Why.Subprograms is
             --  Assume bounds of external dynamic types used in the program
 
             Assign_Bounds_For_Dynamic_Types (Params    => Params,
-                                             Subp      => E,
+                                             Scope     => E,
                                              Assume    => Assume,
                                              Dyn_Types => Used_Dyn_Types,
                                              Objects   => Used_Objects);
@@ -2248,7 +2276,7 @@ package body Gnat2Why.Subprograms is
 
             Assume_Dynamic_Property_For_Objects (Assume  => Assume,
                                                  Objects => Used_Objects,
-                                                 Subp    => E);
+                                                 Scope   => E);
          end;
 
          Prog := Sequence
@@ -2345,9 +2373,6 @@ package body Gnat2Why.Subprograms is
       if Ekind (E) = E_Procedure
         or else No_Return (E)
         or else not Is_Non_Recursive_Subprogram (E)
-        or else (not Has_Contracts (E, Name_Postcondition)
-                 and then not Has_Contracts (E, Name_Refined_Post)
-                 and then not Has_Contracts (E, Name_Contract_Cases))
       then
          return;
       end if;
@@ -2406,6 +2431,17 @@ package body Gnat2Why.Subprograms is
         (Left   =>
            +Compute_Spec (Params, E, Name_Postcondition, EW_Pred),
          Right  => +Compute_Contract_Cases_Postcondition (Params, E),
+         Domain => EW_Pred);
+
+      --  Add to post the dynamic property of the result.
+
+      Post :=
+        +New_And_Expr
+        (Left   => +Post,
+         Right  => +Compute_Dynamic_Property
+           (Expr     => +New_Result_Ident (Why_Type),
+            Ty       => Etype (E),
+            Only_Var => False),
          Domain => EW_Pred);
 
       if Is_Dispatching_Operation (E) then
@@ -2688,7 +2724,15 @@ package body Gnat2Why.Subprograms is
                                  (Domain => EW_Term,
                                   Name   => Logic_Id,
                                   Args   => Logic_Func_Args))),
-               Right  => +Post,
+               Right  =>
+                 +New_And_Expr
+                 (Left   =>
+                      +Compute_Dynamic_Property
+                    (Expr     => +New_Result_Ident (Why_Type),
+                     Ty       => Etype (E),
+                     Only_Var => False),
+                  Right  => +Post,
+                  Domain => EW_Pred),
                Domain => EW_Pred);
 
             Dispatch_Param_Post : W_Pred_Id;
@@ -2773,6 +2817,33 @@ package body Gnat2Why.Subprograms is
       --  Ekind (E) = E_Procedure
 
       else
+
+         --  Add to postcondition the dynamic property of mutable parameters
+
+         for I in Func_Why_Binders'Range loop
+            if Func_Why_Binders (I).Mutable then
+               declare
+                  Binder   : constant Binder_Type := Func_Why_Binders (I);
+                  Dyn_Prop : constant W_Pred_Id :=
+                    Compute_Dynamic_Property
+                      (Expr     => Transform_Identifier
+                         (Params   => Params,
+                          Expr     => Binder.Ada_Node,
+                          Ent      => Binder.Ada_Node,
+                          Domain   => EW_Pred),
+                       Ty       => Etype (Binder.Ada_Node),
+                       Only_Var => True);
+               begin
+                  if Dyn_Prop /= True_Pred then
+                     Post := +New_And_Expr
+                       (Left   => +Post,
+                        Right  => +Dyn_Prop,
+                        Domain => EW_Pred);
+                  end if;
+               end;
+            end if;
+         end loop;
+
          Emit
            (File.Cur_Theory,
             New_Function_Decl

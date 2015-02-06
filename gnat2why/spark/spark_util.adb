@@ -1077,6 +1077,29 @@ package body SPARK_Util is
       return Decl_N;
    end Get_Enclosing_Declaration;
 
+   ------------------------
+   -- Get_Enclosing_Unit --
+   ------------------------
+
+   function Get_Enclosing_Unit (E : Entity_Id) return Entity_Id is
+      S : Entity_Id;
+   begin
+      S := Scope (E);
+      loop
+         if No (S) then
+            return Empty;
+         elsif Ekind_In (S, E_Package, E_Package_Body,
+                      E_Generic_Package)
+         then
+            return S;
+         elsif Ekind (S) in Subprogram_Kind then
+            return S;
+         else
+            S := Scope (S);
+         end if;
+      end loop;
+   end Get_Enclosing_Unit;
+
    -----------------------------
    -- Get_Expression_Function --
    -----------------------------
