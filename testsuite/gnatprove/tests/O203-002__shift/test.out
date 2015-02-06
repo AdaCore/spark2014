@@ -1,3 +1,3 @@
-shift_range.adb:15:18: info: range check proved
-shift_range.adb:15:18: warning: assuming "Shift_Right" has no effect on global items
-shift_range.adb:15:18: warning: no Global contract available for "Shift_Right"
+shift_range.adb:16:18: info: range check proved
+shift_range.adb:16:18: warning: assuming "Shift_Right" has no effect on global items
+shift_range.adb:16:18: warning: no Global contract available for "Shift_Right"
