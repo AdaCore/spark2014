@@ -1,0 +1,3 @@
+my_package.adb:10:08: info: discriminant check proved
+my_package.adb:14:14: info: discriminant check proved
+my_package.adb:16:14: info: discriminant check proved
