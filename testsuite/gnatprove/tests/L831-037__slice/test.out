@@ -1,0 +1,39 @@
+lcp.adb:9:12: medium: overflow check might fail
+lcp.adb:10:17: info: overflow check proved
+lcp.adb:11:20: info: index check proved
+lcp.adb:11:20: info: overflow check proved
+lcp.adb:11:32: info: index check proved
+lcp.adb:11:32: info: overflow check proved
+lcp.adb:13:07: info: loop invariant initialization proved
+lcp.adb:13:30: medium: loop invariant might fail after first iteration, requires A (X .. X + L - 1) = A (Y..R9b)
+lcp.adb:13:30: medium: range check might fail
+lcp.adb:13:40: info: overflow check proved
+lcp.adb:13:44: info: overflow check proved
+lcp.adb:13:51: medium: range check might fail
+lcp.adb:13:61: info: overflow check proved
+lcp.adb:13:65: info: overflow check proved
+lcp.adb:14:07: info: loop variant proved
+lcp.adb:16:14: medium: overflow check might fail
+lcp.ads:7:06: medium: postcondition might fail
+lcp.ads:7:06: medium: range check might fail
+lcp.ads:7:16: info: overflow check proved
+lcp.ads:7:29: info: overflow check proved
+lcp.ads:7:36: medium: range check might fail
+lcp.ads:7:46: medium: overflow check might fail
+lcp.ads:7:59: medium: overflow check might fail
+lcp.ads:8:18: info: overflow check proved
+lcp.ads:8:40: info: overflow check proved
+lcp.ads:9:28: info: overflow check proved
+lcp.ads:9:50: info: overflow check proved
+lcp.ads:10:31: info: index check proved
+lcp.ads:10:31: info: overflow check proved
+lcp.ads:10:53: info: index check proved
+lcp.ads:10:53: info: overflow check proved
+lcp.ads:11:03: info: disjoint contract cases proved
+lcp.ads:12:10: info: index check proved
+lcp.ads:12:19: info: index check proved
+lcp.ads:12:22: info: contract case proved
+lcp.ads:13:22: medium: contract case might fail
+lcp.ads:13:45: info: overflow check proved
+lcp.ads:13:49: info: overflow check proved
+lcp.ads:14:22: info: contract case proved
