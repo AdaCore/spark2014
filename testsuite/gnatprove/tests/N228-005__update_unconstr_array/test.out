@@ -1,0 +1,37 @@
+update_checks_1.adb:9:09: medium: length check might fail
+update_checks_1.adb:14:09: medium: length check might fail
+update_checks_1.adb:14:23: medium: range check might fail
+update_checks_1.adb:19:09: medium: length check might fail
+update_checks_1.adb:26:09: medium: length check might fail
+update_checks_1.adb:29:04: warning: analyzing unreferenced procedure "P6"
+update_checks_1.adb:33:09: medium: length check might fail
+update_checks_1.adb:51:09: medium: length check might fail
+update_checks_1.adb:58:04: warning: analyzing unreferenced procedure "Test1"
+update_checks_1.adb:65:09: medium: length check might fail
+update_checks_1.adb:68:04: warning: analyzing unreferenced procedure "Test3"
+update_checks_1.adb:77:12: medium: length check might fail
+update_checks_1.adb:77:28: medium: range check might fail
+update_checks_1.adb:77:35: medium: range check might fail
+update_checks_1.adb:77:42: medium: range check might fail
+update_checks_1.adb:77:58: info: range check proved
+update_checks_1.adb:81:04: warning: analyzing unreferenced procedure "Test4"
+update_checks_1.adb:89:09: medium: length check might fail
+update_checks_1.adb:100:10: medium: array index check might fail
+update_checks_1.adb:107:18: info: length check proved
+update_checks_1.adb:107:21: info: length check proved
+update_checks_1.adb:107:21: info: range check proved
+update_checks_1.adb:114:21: medium: range check might fail
+update_checks_1.ads:25:19: medium: postcondition might fail, requires A = A'Old'update
+update_checks_1.ads:28:19: medium: postcondition might fail, requires A = A'Old'update
+update_checks_1.ads:28:39: info: range check proved
+update_checks_1.ads:31:19: medium: postcondition might fail, requires A = A'Old'update
+update_checks_1.ads:34:19: medium: postcondition might fail, requires A = A'Old'update
+update_checks_1.ads:38:14: medium: postcondition might fail, requires A = A'Old'update
+update_checks_1.ads:43:19: info: postcondition proved
+update_checks_1.ads:43:22: info: index check proved
+update_checks_1.ads:46:19: medium: postcondition might fail, requires A (1 .. I) = (1..I => New_Val)
+update_checks_1.ads:46:19: medium: range check might fail
+update_checks_1.ads:46:32: info: range check proved
+update_checks_1.ads:49:19: info: postcondition proved
+update_checks_1.ads:49:37: info: range check proved
+update_checks_1.ads:52:19: info: postcondition proved
