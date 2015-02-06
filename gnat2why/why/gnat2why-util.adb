@@ -568,9 +568,7 @@ package body Gnat2Why.Util is
 
    function Type_Is_Modeled_As_Base (T : Entity_Id) return Boolean is
    begin
-      return (Is_Discrete_Type (T)
-              or else SPARK_Definition.Loop_Entity_Set.Contains (T))
-        and then not Is_Static_Subtype (T);
+      return Is_Scalar_Type (T) and then not Is_Static_Subtype (T);
    end Type_Is_Modeled_As_Base;
 
    ------------------------
