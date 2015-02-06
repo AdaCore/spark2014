@@ -143,9 +143,9 @@ In order to extend Ada's support for specification of subprogram contracts
 1. The Global, Depends and Contract_Cases aspects may be
    specified for a subprogram with an ``aspect_specification``. More
    specifically, such aspect specifications are allowed in the same
-   contexts as Pre or Post aspect specifications except for two cases:
-   unlike Pre or Post, these aspects shall not be specified for a generic
-   subprogram but may be specified for an instance of a generic subprogram.
+   contexts as Pre or Post aspect specifications. [In particular,
+   these aspects may be specified for a generic subprogram but not
+   for an instance of a generic subprogram.]
 
 .. _etu-subprogram_contracts:
 
