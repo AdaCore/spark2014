@@ -108,9 +108,6 @@ module Dynamic_Discrete
 
   clone export Discrete_Base 
       with type t = t, function of_int = of_int, function to_int = to_int
-
- predicate dynamic_property (first : int) (last : int) (x : int) =
-    first <= x /\ x <= last
 end
 
 module Dynamic_Modular
@@ -128,9 +125,6 @@ module Dynamic_Modular
       with type t = t, function of_int = of_int, function to_int = to_int
 
   function attr__ATTRIBUTE_MODULUS : int
-
- predicate dynamic_property (first : int) (last : int) (x : int) =
-    first <= x /\ x <= last
 end
 
 module Fixed_Point_Base
@@ -435,9 +429,6 @@ module Dynamic_Fixed_Point
 
   clone export Fixed_Point_Base 
       with type t = t, function of_fixed = of_fixed, function to_fixed = to_fixed
-
- predicate dynamic_property (first : __fixed) (last : __fixed) (x : __fixed) =
-    first <= x /\ x <= last
 end
 
 module Floating_Point_Base
@@ -548,9 +539,6 @@ module Dynamic_Floating_Point
 
   clone export Floating_Point_Base 
       with type t = t, function of_real = of_real, function to_real = to_real
-
- predicate dynamic_property (first : real) (last : real) (x : real) =
-    first <=. x /\ x <=. last
 end
 
 module Unconstrained_Private_Type

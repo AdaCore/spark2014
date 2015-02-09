@@ -187,75 +187,93 @@ package body Why.Gen.Scalars is
          Ty  : constant W_Type_Id := Base_Why_Type (E);
          Var : constant W_Identifier_Id :=
            New_Identifier (Name => "x", Typ => Ty);
-         Def : W_Pred_Id := Why_Empty;
+         Def : W_Pred_Id := True_Pred;
+         Fst : constant W_Identifier_Id :=
+           New_Identifier
+             (Symbol => Get_Symbol (To_Ident (WNE_Attr_First)),
+              Domain => EW_Term,
+              Typ    => Ty);
+         Lst : constant W_Identifier_Id :=
+           New_Identifier
+             (Symbol => Get_Symbol (To_Ident (WNE_Attr_Last)),
+              Domain => EW_Term,
+              Typ    => Ty);
       begin
+         if Has_Predicates (E) then
+            declare
+               Pred   : Node_Id := First (Static_Discrete_Predicate (E));
+            begin
+               Def := False_Pred;
 
-         if Is_Static then
-            if Has_Predicates (E) then
-               declare
-                  Pred   : Node_Id := First (Static_Discrete_Predicate (E));
-               begin
-                  Def := False_Pred;
+               --  The compiler has already prepared the static predicate
+               --  in such a way that it is simply a list of ranges which
+               --  represent the type
 
-                  --  The compiler has already prepared the static predicate
-                  --  in such a way that it is simply a list of ranges which
-                  --  represent the type
+               while Present (Pred) loop
+                  declare
+                     Rng   : constant Node_Id := Get_Range (Pred);
+                     First : constant W_Term_Id :=
+                       Num_Constant (E, Low_Bound (Rng));
+                     Last  : constant W_Term_Id :=
+                       Num_Constant (E, High_Bound (Rng));
+                  begin
+                     Def :=
+                       +New_Or_Else_Expr
+                       (Domain => EW_Pred,
+                        Left   => +Def,
+                        Right  =>
+                          New_Range_Expr (Domain => EW_Pred,
+                                          Low    => +First,
+                                          High   => +Last,
+                                          Expr   => +Var));
+                     Next (Pred);
+                  end;
+               end loop;
+            end;
+         end if;
 
-                  while Present (Pred) loop
-                     declare
-                        Rng   : constant Node_Id := Get_Range (Pred);
-                        First : constant W_Term_Id :=
-                          Num_Constant (E, Low_Bound (Rng));
-                        Last  : constant W_Term_Id :=
-                          Num_Constant (E, High_Bound (Rng));
-                     begin
-                        Def :=
-                          +New_Or_Else_Expr
-                            (Domain => EW_Pred,
-                             Left   => +Def,
-                             Right  =>
-                               New_Range_Expr (Domain => EW_Pred,
-                                               Low    => +First,
-                                               High   => +Last,
-                                               Expr   => +Var));
-                        Next (Pred);
-                     end;
-                  end loop;
-               end;
+         --  For a static type with static predicates, the range constraints
+         --  are already included in the predicate's constraints.
+         --  Otherwise, add the range constraints to the predicate.
 
-            else
-               declare
-                  First : constant W_Identifier_Id :=
-                    New_Identifier
-                      (Symbol => Get_Symbol (To_Ident (WNE_Attr_First)),
-                       Domain => EW_Term,
-                       Typ    => Ty);
-                  Last : constant W_Identifier_Id :=
-                    New_Identifier
-                      (Symbol => Get_Symbol (To_Ident (WNE_Attr_Last)),
-                       Domain => EW_Term,
-                       Typ    => Ty);
-               begin
-                  Def :=
-                    +New_Range_Expr (Domain => EW_Pred,
-                                     Low    => +First,
-                                     High   => +Last,
-                                     Expr   => +Var);
-               end;
-            end if;
+         if not Is_Static or else not Has_Predicates (E) then
+            Def :=
+              +New_And_Expr
+              (Domain => EW_Pred,
+               Left   => +Def,
+               Right  =>
+                 +New_Range_Expr (Domain => EW_Pred,
+                                  Low    => +Fst,
+                                  High   => +Lst,
+                                  Expr   => +Var));
+         end if;
 
-            --  Only emit range predicate if the type is static.
+         --  Emit range predicate if the type is static, a dynamic_property
+         --  otherwise.
 
+         declare
+            Name           : constant W_Identifier_Id :=
+              (if Is_Static then To_Ident (WNE_Range_Pred)
+               else To_Ident (WNE_Dynamic_Property));
+            Static_Binders : constant Binder_Array :=
+              Binder_Array'(1 => Binder_Type'(B_Name => Var,
+                                              others => <>));
+            Binders        : constant Binder_Array :=
+              (if Is_Static then Static_Binders
+               else Binder_Array'(1 => Binder_Type'(B_Name => Fst,
+                                                    others => <>),
+                                  2 => Binder_Type'(B_Name => Lst,
+                                                    others => <>))
+               & Static_Binders);
+         begin
             Emit (Theory,
                   Why.Gen.Binders.New_Function_Decl
                     (Domain  => EW_Pred,
-                     Name    => To_Ident (WNE_Range_Pred),
+                     Name    => Name,
                      Def     => +Def,
                      Labels  => Name_Id_Sets.Empty_Set,
-                     Binders =>
-                       (1 => Binder_Type'(B_Name => Var,
-                                          others => <>))));
-         end if;
+                     Binders => Binders));
+         end;
       end Generate_Range_Predicate;
 
       ----------------
