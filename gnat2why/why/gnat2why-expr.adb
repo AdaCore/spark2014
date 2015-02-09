@@ -3035,6 +3035,9 @@ package body Gnat2Why.Expr is
          when N_Unchecked_Type_Conversion =>
             return Expected_Type_Of_Prefix (Expression (N));
 
+         when N_Type_Conversion =>
+            return Expected_Type_Of_Prefix (Expression (N));
+
          when N_Identifier | N_Expanded_Name =>
             declare
                Binder : constant Item_Type :=
