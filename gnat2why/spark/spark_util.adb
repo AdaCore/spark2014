@@ -838,7 +838,7 @@ package body SPARK_Util is
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Node_Lists.List
    is
-      C         : constant Node_Id := Contract (E);
+      C         : Node_Id := Contract (E);
       P         : Node_Id;
       Contracts : Node_Lists.List := Node_Lists.Empty_List;
 
@@ -873,18 +873,23 @@ package body SPARK_Util is
               Name_Contract_Cases    |
               Name_Initial_Condition =>
 
-            if Name = Name_Precondition then
+            if Name = Name_Refined_Post then
+               if Present (Get_Subprogram_Body (E)) then
+                  C := Contract (Defining_Entity (Specification
+                                 (Get_Subprogram_Body (E))));
+               else
+                  C := Empty;
+               end if;
+            end if;
+
+            if No (C) then
+               P := Empty;
+            elsif Name = Name_Precondition then
                P := Pre_Post_Conditions (C);
             elsif Name = Name_Postcondition then
                P := Pre_Post_Conditions (C);
             elsif Name = Name_Refined_Post then
-               if Present (Get_Subprogram_Body (E)) then
-                  P := Pre_Post_Conditions
-                    (Contract (Defining_Entity (Specification
-                     (Get_Subprogram_Body (E)))));
-               else
-                  P := Empty;
-               end if;
+               P := Pre_Post_Conditions (C);
             elsif Name = Name_Initial_Condition then
                P := Classifications (C);
             else
@@ -1458,8 +1463,14 @@ package body SPARK_Util is
    -----------------------------------
 
    function Get_Subprogram_Contract_Cases (E : Entity_Id) return Node_Id is
-      Prag : Node_Id := Contract_Test_Cases (Contract (E));
+      Prag : Node_Id;
    begin
+      if Present (Contract (E)) then
+         Prag := Contract_Test_Cases (Contract (E));
+      else
+         Prag := Empty;
+      end if;
+
       while Present (Prag) loop
          if Pragma_Name (Prag) = Name_Contract_Cases then
             return Prag;

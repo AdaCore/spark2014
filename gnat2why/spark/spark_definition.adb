@@ -2224,7 +2224,12 @@ package body SPARK_Definition is
 
          Mark_Subprogram_Specification (Get_Subprogram_Spec (E));
 
-         Prag := Pre_Post_Conditions (Contract (E));
+         if Present (Contract (E)) then
+            Prag := Pre_Post_Conditions (Contract (E));
+         else
+            Prag := Empty;
+         end if;
+
          while Present (Prag) loop
             Expr :=
               Get_Pragma_Arg (First (Pragma_Argument_Associations (Prag)));
