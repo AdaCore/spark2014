@@ -25,7 +25,6 @@
 
 with Atree;                  use Atree;
 with Einfo;                  use Einfo;
-with Sem_Eval;               use Sem_Eval;
 with Sem_Util;               use Sem_Util;
 with Sinfo;                  use Sinfo;
 with Uintp;                  use Uintp;
@@ -568,7 +567,7 @@ package body Gnat2Why.Util is
 
    function Type_Is_Modeled_As_Base (T : Entity_Id) return Boolean is
    begin
-      return Is_Scalar_Type (T) and then not Is_Static_Subtype (T);
+      return Is_Scalar_Type (T) and then not Has_Static_Scalar_Subtype (T);
    end Type_Is_Modeled_As_Base;
 
    ------------------------
