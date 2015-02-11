@@ -443,8 +443,6 @@ display.adb:150:32: info: range check proved, in call inlined at display.adb:280
 display.adb:184:18: medium: precondition might fail
 display.adb:235:49: medium: "Interfac.Output" might not be written
 display.adb:264:18: warning: statement has no effect
-display.adb:264:18: warning: unused assignment to "Interfac.Output"
-display.adb:271:21: warning: unused assignment to "Interfac.Output"
 display.adb:286:21: medium: precondition might fail
 display.ads:65:24: info: length check proved
 door.adb:88:22: info: postcondition proved
@@ -722,18 +720,6 @@ screen.adb:126:07: info: length check proved
 screen.adb:127:07: info: length check proved
 screen.adb:158:41: medium: "Interfac.Output" might not be written
 screen.adb:192:41: medium: "Interfac.Output" might not be written
-screen.adb:293:15: warning: unused assignment to "Interfac.Output"
-screen.adb:298:15: warning: unused assignment to "Interfac.Output"
-screen.adb:304:15: warning: unused assignment to "Interfac.Output"
-screen.adb:310:15: warning: unused assignment to "Interfac.Output"
-screen.adb:316:15: warning: unused assignment to "Interfac.Output"
-screen.adb:322:15: warning: unused assignment to "Interfac.Output"
-screen.adb:328:15: warning: unused assignment to "Interfac.Output"
-screen.adb:334:15: warning: unused assignment to "Interfac.Output"
-screen.adb:340:15: warning: unused assignment to "Interfac.Output"
-screen.adb:346:15: warning: unused assignment to "Interfac.Output"
-screen.adb:352:15: warning: unused assignment to "Interfac.Output"
-screen.adb:358:15: warning: unused assignment to "Interfac.Output"
 screen.adb:385:41: medium: "Interfac.Output" might not be written
 screen.adb:434:39: info: length check proved, in call inlined at screen.adb:591
 screen.adb:434:39: info: length check proved, in call inlined at screen.adb:597
@@ -787,27 +773,10 @@ screen.adb:535:33: info: length check proved, in call inlined at screen.adb:663
 screen.adb:537:37: medium: length check might fail, in call inlined at screen.adb:663
 screen.adb:537:40: medium: length check might fail, in call inlined at screen.adb:663
 screen.adb:537:40: medium: range check might fail, in call inlined at screen.adb:663
-screen.adb:578:18: warning: unused assignment to "Interfac.Output"
-screen.adb:584:18: warning: unused assignment to "Interfac.Output"
-screen.adb:591:18: warning: unused assignment to "Interfac.Output"
 screen.adb:591:49: info: range check proved
-screen.adb:597:18: warning: unused assignment to "Interfac.Output"
 screen.adb:597:49: info: range check proved
-screen.adb:603:18: warning: unused assignment to "Interfac.Output"
 screen.adb:603:49: info: range check proved
-screen.adb:609:18: warning: unused assignment to "Interfac.Output"
 screen.adb:609:49: info: range check proved
-screen.adb:615:18: warning: unused assignment to "Interfac.Output"
-screen.adb:621:18: warning: unused assignment to "Interfac.Output"
-screen.adb:627:18: warning: unused assignment to "Interfac.Output"
-screen.adb:633:18: warning: unused assignment to "Interfac.Output"
-screen.adb:639:18: warning: unused assignment to "Interfac.Output"
-screen.adb:645:18: warning: unused assignment to "Interfac.Output"
-screen.adb:651:18: warning: unused assignment to "Interfac.Output"
-screen.adb:657:18: warning: unused assignment to "Interfac.Output"
-screen.adb:719:15: warning: unused assignment to "Interfac.Output"
-screen.adb:724:15: warning: unused assignment to "Interfac.Output"
-screen.adb:730:15: warning: unused assignment to "Interfac.Output"
 screen.adb:757:41: medium: "Interfac.Output" might not be written
 screen.adb:782:40: info: length check proved, in call inlined at screen.adb:806
 screen.adb:782:40: info: length check proved, in call inlined at screen.adb:812
@@ -825,18 +794,8 @@ screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb
 screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:812
 screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:818
 screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:824
-screen.adb:800:18: warning: unused assignment to "Interfac.Output"
-screen.adb:806:18: warning: unused assignment to "Interfac.Output"
-screen.adb:812:18: warning: unused assignment to "Interfac.Output"
-screen.adb:818:18: warning: unused assignment to "Interfac.Output"
 screen.adb:888:18: medium: precondition might fail
-screen.adb:961:07: warning: unused assignment to "Interfac.Output"
-screen.adb:963:07: warning: unused assignment to "Interfac.Output"
-screen.adb:978:13: warning: unused assignment to "Interfac.Output"
-screen.adb:1002:13: warning: unused assignment to "Interfac.Output"
 screen.adb:1020:18: medium: precondition might fail
-screen.adb:1072:15: warning: unused assignment to "Interfac.Output"
-screen.adb:1087:07: warning: unused assignment to "Interfac.Output"
 screen.adb:1104:18: medium: precondition might fail
 stats.adb:49:57: info: overflow check proved
 stats.adb:64:51: info: overflow check proved
@@ -876,7 +835,6 @@ tismain.adb:1156:25: medium: precondition might fail
 tismain.adb:1162:26: medium: precondition might fail
 tismain.adb:1169:25: medium: precondition might fail
 tismain.adb:1208:13: info: precondition proved
-tismain.adb:1342:04: warning: unused assignment to "Screen.Output"
 tismain.adb:1346:07: info: loop invariant preservation proved
 tismain.adb:1346:07: medium: loop invariant might fail in first iteration
 tismain.adb:1359:22: medium: precondition might fail

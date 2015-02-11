@@ -1,6 +1,5 @@
 output_port_14.adb:17:22: info: postcondition proved
 output_port_14.adb:32:10: warning: statement has no effect
-output_port_14.adb:32:10: warning: unused assignment to "Output_Port"
 output_port_14.adb:32:23: warning: unused assignment to "Out_1"
 output_port_14.adb:33:34: warning: unused assignment to "Out_2"
 output_port_14.adb:35:34: warning: unused assignment to "Out_1"

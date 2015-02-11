@@ -1219,31 +1219,11 @@ package body Flow.Analysis is
 
    procedure Find_Ineffective_Statements (FA : in out Flow_Analysis_Graphs) is
 
-      function Is_Final_Use_Any_Export (V : Flow_Graphs.Vertex_Id)
-                                        return Boolean;
-      --  Checks if the given vertex V is a final-use vertex that is
-      --  also an export.
-
-      function Is_Final_Use_Unreferenced (V : Flow_Graphs.Vertex_Id)
-                                          return Boolean;
-      --  Checks if the given vertex V is a final-use vertex that
-      --  corresponds to a variable that is mentioned in a pragma
-      --  Unreferenced.
-
-      function Is_Any_Final_Use (V : Flow_Graphs.Vertex_Id)
-                                 return Boolean;
-      --  Checks if the given vertex V is a final-use vertex.
-
-      function Is_Dead_End (V : Flow_Graphs.Vertex_Id)
-                            return Boolean;
-      --  Checks if from the given vertex V it is impossible to reach the
-      --  end vertex.
-
-      function Other_Fields_Are_Ineffective (V : Flow_Graphs.Vertex_Id)
-                                             return Boolean;
-      --  This function returns True if V corresponds to an assignment
-      --  to a record field that has been introduced by a record split
-      --  and the rest of the fields are ineffective.
+      function Defines_Async_Reader_Var
+        (V : Flow_Graphs.Vertex_Id)
+         return Boolean;
+      --  Returns True if vertex V defines some variable that has
+      --  property Async_Readers set.
 
       function Find_Masking_Code
         (Ineffective_Statement : Flow_Graphs.Vertex_Id)
@@ -1255,44 +1235,59 @@ package body Flow.Analysis is
       --  of that set (and do not use it), render the vertex
       --  ineffective.
 
+      function Is_Any_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean;
+      --  Checks if the given vertex V is a final-use vertex.
+
+      function Is_Dead_End (V : Flow_Graphs.Vertex_Id) return Boolean;
+      --  Checks if from the given vertex V it is impossible to reach the
+      --  end vertex.
+
+      function Is_Final_Use_Any_Export (V : Flow_Graphs.Vertex_Id)
+                                        return Boolean;
+      --  Checks if the given vertex V is a final-use vertex that is
+      --  also an export.
+
+      function Is_Final_Use_Unreferenced (V : Flow_Graphs.Vertex_Id)
+                                          return Boolean;
+      --  Checks if the given vertex V is a final-use vertex that
+      --  corresponds to a variable that is mentioned in a pragma
+      --  Unreferenced.
+
+      function Other_Fields_Are_Ineffective (V : Flow_Graphs.Vertex_Id)
+                                             return Boolean;
+      --  This function returns True if V corresponds to an assignment
+      --  to a record field that has been introduced by a record split
+      --  and the rest of the fields are ineffective.
+
       function Skip_Any_Conversions (N : Node_Or_Entity_Id)
                                      return Node_Or_Entity_Id;
       --  Skips any conversions (unchecked or otherwise) and jumps to
       --  the actual object.
 
-      -----------------------------
-      -- Is_Final_Use_Any_Export --
-      -----------------------------
+      ------------------------------
+      -- Defines_Async_Reader_Var --
+      ------------------------------
 
-      function Is_Final_Use_Any_Export (V : Flow_Graphs.Vertex_Id)
-                                        return Boolean is
+      function Defines_Async_Reader_Var
+        (V : Flow_Graphs.Vertex_Id)
+         return Boolean
+      is
+         Vars_Defined : constant Flow_Id_Sets.Set :=
+           FA.Atr.Element (V).Variables_Defined;
       begin
-         return FA.PDG.Get_Key (V).Variant = Final_Value and then
-           FA.Atr.Element (V).Is_Export;
-      end Is_Final_Use_Any_Export;
+         for Var_Def of Vars_Defined loop
+            declare
+               Initial_Var : constant Flow_Id :=
+                 Change_Variant (Var_Def, Final_Value);
+            begin
+               if Has_Async_Readers (Initial_Var) then
+                  return True;
+               end if;
+            end;
+         end loop;
 
-      -------------------------------
-      -- Is_Final_Use_Unreferenced --
-      -------------------------------
-
-      function Is_Final_Use_Unreferenced (V : Flow_Graphs.Vertex_Id)
-                                          return Boolean is
-      begin
-         return FA.PDG.Get_Key (V).Variant = Final_Value and then
-           FA.Unreferenced_Vars.Contains
-             (Get_Direct_Mapping_Id (Change_Variant
-                                       (FA.PDG.Get_Key (V), Normal_Use)));
-      end Is_Final_Use_Unreferenced;
-
-      ----------------------
-      -- Is_Any_Final_Use --
-      ----------------------
-
-      function Is_Any_Final_Use (V : Flow_Graphs.Vertex_Id)
-                                 return Boolean is
-      begin
-         return FA.PDG.Get_Key (V).Variant = Final_Value;
-      end Is_Any_Final_Use;
+         return False;
+      end Defines_Async_Reader_Var;
 
       -----------------------
       -- Find_Masking_Code --
@@ -1337,33 +1332,21 @@ package body Flow.Analysis is
          return Mask;
       end Find_Masking_Code;
 
-      --------------------------
-      -- Skip_Any_Conversions --
-      --------------------------
+      ----------------------
+      -- Is_Any_Final_Use --
+      ----------------------
 
-      function Skip_Any_Conversions (N : Node_Or_Entity_Id)
-                                     return Node_Or_Entity_Id
-      is
-         P : Node_Or_Entity_Id := N;
+      function Is_Any_Final_Use (V : Flow_Graphs.Vertex_Id)
+                                 return Boolean is
       begin
-         loop
-            case Nkind (P) is
-               when N_Type_Conversion =>
-                  P := Expression (P);
-
-               when others =>
-                  return P;
-            end case;
-         end loop;
-      end Skip_Any_Conversions;
+         return FA.PDG.Get_Key (V).Variant = Final_Value;
+      end Is_Any_Final_Use;
 
       -----------------
       -- Is_Dead_End --
       -----------------
 
-      function Is_Dead_End (V : Flow_Graphs.Vertex_Id)
-                            return Boolean
-      is
+      function Is_Dead_End (V : Flow_Graphs.Vertex_Id) return Boolean is
          Dead_End : Boolean := True;
 
          procedure Visitor (V  : Flow_Graphs.Vertex_Id;
@@ -1390,6 +1373,52 @@ package body Flow.Analysis is
          return Dead_End or else
            not FA.CFG.Non_Trivial_Path_Exists (FA.Start_Vertex, V);
       end Is_Dead_End;
+
+      -----------------------------
+      -- Is_Final_Use_Any_Export --
+      -----------------------------
+
+      function Is_Final_Use_Any_Export (V : Flow_Graphs.Vertex_Id)
+                                        return Boolean
+      is
+      begin
+         return FA.PDG.Get_Key (V).Variant = Final_Value and then
+           FA.Atr.Element (V).Is_Export;
+      end Is_Final_Use_Any_Export;
+
+      -------------------------------
+      -- Is_Final_Use_Unreferenced --
+      -------------------------------
+
+      function Is_Final_Use_Unreferenced (V : Flow_Graphs.Vertex_Id)
+                                          return Boolean
+      is
+      begin
+         return FA.PDG.Get_Key (V).Variant = Final_Value and then
+           FA.Unreferenced_Vars.Contains
+             (Get_Direct_Mapping_Id (Change_Variant
+                                       (FA.PDG.Get_Key (V), Normal_Use)));
+      end Is_Final_Use_Unreferenced;
+
+      --------------------------
+      -- Skip_Any_Conversions --
+      --------------------------
+
+      function Skip_Any_Conversions (N : Node_Or_Entity_Id)
+                                     return Node_Or_Entity_Id
+      is
+         P : Node_Or_Entity_Id := N;
+      begin
+         loop
+            case Nkind (P) is
+               when N_Type_Conversion =>
+                  P := Expression (P);
+
+               when others =>
+                  return P;
+            end case;
+         end loop;
+      end Skip_Any_Conversions;
 
       ----------------------------------
       -- Other_Fields_Are_Ineffective --
@@ -1477,6 +1506,10 @@ package body Flow.Analysis is
                  --  from a record split, while the rest of the
                  --  fields are not ineffective.
                  Other_Fields_Are_Ineffective (V) and then
+
+                 --  Suppression for vertices that define a variable
+                 --  that has Async_Readers set.
+                 not Defines_Async_Reader_Var (V) and then
 
                  --  Suppression for vertices that relate to proof
                  not Atr.Is_Proof
