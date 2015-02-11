@@ -1,0 +1,6 @@
+project sCBE
+is
+   for Main use ("scbe_main.adb");
+   for Object_Dir use "obj";
+   for Source_Dirs use (".");
+end sCBE;
