@@ -3,7 +3,7 @@ test.adb:15:04: warning: analyzing unreferenced procedure "if_2"
 test.adb:24:04: warning: analyzing unreferenced procedure "if_3"
 test.adb:33:04: warning: analyzing unreferenced procedure "if_4"
 test.adb:40:04: warning: analyzing unreferenced procedure "case_1"
-// fa_pkg_body_test_cfg
+// fa_pkg_body_standard__test_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -17,7 +17,7 @@ digraph G {
     9 ->  2 [arrowType="normal"];
 }
 
-// fa_pkg_body_test_pdg
+// fa_pkg_body_standard__test_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -29,7 +29,7 @@ digraph G {
     1 ->  9 [arrowType="normal"];
 }
 
-// fa_subprogram_case_1_cfg
+// fa_subprogram_test__case_1_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -70,7 +70,7 @@ digraph G {
     21 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_case_1_pdg
+// fa_subprogram_test__case_1_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -108,7 +108,7 @@ digraph G {
     21 ->  9 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_if_1_cfg
+// fa_subprogram_test__if_1_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -141,7 +141,7 @@ digraph G {
     17 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_if_1_pdg
+// fa_subprogram_test__if_1_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -174,7 +174,7 @@ digraph G {
     17 ->  7 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_if_2_cfg
+// fa_subprogram_test__if_2_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -200,7 +200,7 @@ digraph G {
     14 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_if_2_pdg
+// fa_subprogram_test__if_2_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -225,7 +225,7 @@ digraph G {
     14 ->  7 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_if_3_cfg
+// fa_subprogram_test__if_3_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -248,7 +248,7 @@ digraph G {
     13 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_if_3_pdg
+// fa_subprogram_test__if_3_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -269,7 +269,7 @@ digraph G {
     13 ->  7 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_if_4_cfg
+// fa_subprogram_test__if_4_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -290,7 +290,7 @@ digraph G {
     12 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_if_4_pdg
+// fa_subprogram_test__if_4_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -309,7 +309,7 @@ digraph G {
     12 ->  7 [arrowType="normal",color="red"];
 }
 
-// gg_subprogram_case_1_cfg
+// gg_subprogram_test__case_1_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -350,7 +350,7 @@ digraph G {
     21 ->  2 [arrowType="normal"];
 }
 
-// gg_subprogram_case_1_pdg
+// gg_subprogram_test__case_1_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -388,7 +388,7 @@ digraph G {
     21 ->  9 [arrowType="normal",color="red"];
 }
 
-// gg_subprogram_if_1_cfg
+// gg_subprogram_test__if_1_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -421,7 +421,7 @@ digraph G {
     17 ->  2 [arrowType="normal"];
 }
 
-// gg_subprogram_if_1_pdg
+// gg_subprogram_test__if_1_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -454,7 +454,7 @@ digraph G {
     17 ->  7 [arrowType="normal",color="red"];
 }
 
-// gg_subprogram_if_2_cfg
+// gg_subprogram_test__if_2_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -480,7 +480,7 @@ digraph G {
     14 ->  2 [arrowType="normal"];
 }
 
-// gg_subprogram_if_2_pdg
+// gg_subprogram_test__if_2_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -505,7 +505,7 @@ digraph G {
     14 ->  7 [arrowType="normal",color="red"];
 }
 
-// gg_subprogram_if_3_cfg
+// gg_subprogram_test__if_3_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -528,7 +528,7 @@ digraph G {
     13 ->  2 [arrowType="normal"];
 }
 
-// gg_subprogram_if_3_pdg
+// gg_subprogram_test__if_3_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -549,7 +549,7 @@ digraph G {
     13 ->  7 [arrowType="normal",color="red"];
 }
 
-// gg_subprogram_if_4_cfg
+// gg_subprogram_test__if_4_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -570,7 +570,7 @@ digraph G {
     12 ->  2 [arrowType="normal"];
 }
 
-// gg_subprogram_if_4_pdg
+// gg_subprogram_test__if_4_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];

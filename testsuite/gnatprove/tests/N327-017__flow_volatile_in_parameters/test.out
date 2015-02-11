@@ -1,5 +1,5 @@
 types.adb:4:04: warning: analyzing unreferenced procedure "Test_01"
-// fa_pkg_body_types_cfg
+// fa_pkg_body_standard__types_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -15,7 +15,7 @@ digraph G {
     10 ->  2 [arrowType="normal"];
 }
 
-// fa_pkg_body_types_pdg
+// fa_pkg_body_standard__types_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -29,7 +29,7 @@ digraph G {
     1 ->  10 [arrowType="normal"];
 }
 
-// fa_subprogram_test_01_cfg
+// fa_subprogram_types__test_01_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -53,7 +53,7 @@ digraph G {
     14 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_01_pdg
+// fa_subprogram_types__test_01_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -76,7 +76,7 @@ digraph G {
     14 ->  9 [arrowType="normal",color="red"];
 }
 
-// gg_subprogram_test_01_cfg
+// gg_subprogram_types__test_01_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -100,7 +100,7 @@ digraph G {
     14 ->  2 [arrowType="normal"];
 }
 
-// gg_subprogram_test_01_pdg
+// gg_subprogram_types__test_01_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];

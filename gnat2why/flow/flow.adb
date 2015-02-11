@@ -54,6 +54,7 @@ with Namet;                         use Namet;
 with Nlists;                        use Nlists;
 with Osint;                         use Osint;
 with Output;                        use Output;
+with Sem_Util;                      use Sem_Util;
 with Sem_Ch7;                       use Sem_Ch7;
 with Sinfo;                         use Sinfo;
 with Snames;                        use Snames;
@@ -889,7 +890,7 @@ package body Flow is
       declare
          FA : Flow_Analysis_Graphs := Tmp;
       begin
-         Append (FA.Base_Filename, Get_Name_String (Chars (E)));
+         Append (FA.Base_Filename, Unique_Name (E));
 
          if Gnat2Why_Args.Flow_Advanced_Debug then
             Write_Str (Character'Val (8#33#) & "[32m" &

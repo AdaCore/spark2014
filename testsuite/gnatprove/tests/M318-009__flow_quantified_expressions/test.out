@@ -1,7 +1,7 @@
 test.adb:15:04: warning: analyzing unreferenced procedure "QE_2"
 test.adb:22:26: warning: statement has no effect
 test.adb:23:28: warning: unused assignment
-// fa_pkg_body_test_cfg
+// fa_pkg_body_standard__test_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -17,7 +17,7 @@ digraph G {
     9 ->  2 [arrowType="normal"];
 }
 
-// fa_pkg_body_test_pdg
+// fa_pkg_body_standard__test_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -31,7 +31,7 @@ digraph G {
     1 ->  9 [arrowType="normal"];
 }
 
-// fa_subprogram_qe_2_cfg
+// fa_subprogram_test__qe_2_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -92,7 +92,7 @@ digraph G {
     33 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_qe_2_pdg
+// fa_subprogram_test__qe_2_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -162,7 +162,7 @@ digraph G {
     32 ->  28 [arrowType="normal",color="red"];
 }
 
-// gg_subprogram_qe_2_cfg
+// gg_subprogram_test__qe_2_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -223,7 +223,7 @@ digraph G {
     33 ->  2 [arrowType="normal"];
 }
 
-// gg_subprogram_qe_2_pdg
+// gg_subprogram_test__qe_2_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];

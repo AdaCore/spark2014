@@ -1,6 +1,6 @@
 test.adb:2:04: warning: analyzing unreferenced procedure "Null_Statement"
 test.adb:2:14: warning: subprogram "Null_Statement" has no effect
-// fa_pkg_body_test_cfg
+// fa_pkg_body_standard__test_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -14,7 +14,7 @@ digraph G {
     9 ->  2 [arrowType="normal"];
 }
 
-// fa_pkg_body_test_pdg
+// fa_pkg_body_standard__test_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -26,7 +26,7 @@ digraph G {
     1 ->  9 [arrowType="normal"];
 }
 
-// fa_subprogram_null_statement_cfg
+// fa_subprogram_test__null_statement_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -40,7 +40,7 @@ digraph G {
     9 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_null_statement_pdg
+// fa_subprogram_test__null_statement_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -52,7 +52,7 @@ digraph G {
     1 ->  9 [arrowType="normal"];
 }
 
-// gg_subprogram_null_statement_cfg
+// gg_subprogram_test__null_statement_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -66,7 +66,7 @@ digraph G {
     9 ->  2 [arrowType="normal"];
 }
 
-// gg_subprogram_null_statement_pdg
+// gg_subprogram_test__null_statement_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];

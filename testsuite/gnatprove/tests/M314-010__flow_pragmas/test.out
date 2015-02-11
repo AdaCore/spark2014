@@ -1,5 +1,5 @@
 uninitialized.adb:6:26: high: "B" is not initialized
-// fa_pkg_body_uninitialized_cfg
+// fa_pkg_body_standard__uninitialized_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -17,7 +17,7 @@ digraph G {
     12 ->  2 [arrowType="normal"];
 }
 
-// fa_pkg_body_uninitialized_pdg
+// fa_pkg_body_standard__uninitialized_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -32,7 +32,7 @@ digraph G {
     7 ->  8 [arrowType="normal",color="red"];
 }
 
-// fa_pkg_body_vehicle_cfg
+// fa_pkg_body_standard__vehicle_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -62,7 +62,7 @@ digraph G {
     22 ->  2 [arrowType="normal"];
 }
 
-// fa_pkg_body_vehicle_pdg
+// fa_pkg_body_standard__vehicle_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -88,7 +88,7 @@ digraph G {
     14 ->  15 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_compare_cfg
+// fa_subprogram_uninitialized__compare_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -112,7 +112,7 @@ digraph G {
     14 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_compare_pdg
+// fa_subprogram_uninitialized__compare_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -134,7 +134,7 @@ digraph G {
     13 ->  14 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_halt_cfg
+// fa_subprogram_vehicle__halt_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -202,7 +202,7 @@ subgraph cluster2 {
     27 ->  13 [arrowType="normal"];
 }
 
-// fa_subprogram_halt_pdg
+// fa_subprogram_vehicle__halt_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -301,7 +301,7 @@ digraph G {
     27 ->  27 [arrowType="normal"];
 }
 
-// fa_subprogram_speed_is_valid_cfg
+// fa_subprogram_vehicle__speed_is_valid_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -327,7 +327,7 @@ digraph G {
     15 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_speed_is_valid_pdg
+// fa_subprogram_vehicle__speed_is_valid_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -350,7 +350,7 @@ digraph G {
     15 ->  11 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_state_update_cfg
+// fa_subprogram_vehicle__state_update_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -409,7 +409,7 @@ digraph G {
     26 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_state_update_pdg
+// fa_subprogram_vehicle__state_update_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -489,7 +489,7 @@ digraph G {
     26 ->  13 [arrowType="normal",color="red"];
 }
 
-// gg_subprogram_halt_cfg
+// gg_subprogram_vehicle__halt_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -565,7 +565,7 @@ subgraph cluster2 {
     30 ->  1 [arrowType="normal"];
 }
 
-// gg_subprogram_halt_pdg
+// gg_subprogram_vehicle__halt_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -661,7 +661,7 @@ digraph G {
     30 ->  31 [arrowType="normal",color="red"];
 }
 
-// gg_subprogram_speed_is_valid_cfg
+// gg_subprogram_vehicle__speed_is_valid_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -687,7 +687,7 @@ digraph G {
     14 ->  1 [arrowType="normal"];
 }
 
-// gg_subprogram_speed_is_valid_pdg
+// gg_subprogram_vehicle__speed_is_valid_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];

@@ -18,7 +18,7 @@ tests.adb:336:16: high: "H1.Content.Field" is not initialized
 tests.adb:413:21: medium: missing dependency "M => B"
 tests.adb:414:21: medium: missing dependency "O => A"
 tests.adb:497:21: medium: missing dependency "O1 => A"
-// fa_pkg_body_tests_cfg
+// fa_pkg_body_standard__tests_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -34,7 +34,7 @@ digraph G {
     20 ->  2 [arrowType="normal"];
 }
 
-// fa_pkg_body_tests_pdg
+// fa_pkg_body_standard__tests_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -48,7 +48,7 @@ digraph G {
     1 ->  20 [arrowType="normal"];
 }
 
-// fa_pkg_body_untangle_cfg
+// fa_pkg_body_standard__untangle_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -80,7 +80,7 @@ digraph G {
     19 ->  2 [arrowType="normal"];
 }
 
-// fa_pkg_body_untangle_pdg
+// fa_pkg_body_standard__untangle_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -155,37 +155,7 @@ digraph G {
     12 ->  11 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_f_cfg
-digraph G {
-   graph [splines=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X.X'initial\nVD: {X.X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'group'initial\n<VId: 7>",shape="plaintext"];
-    8 [label="X.X'final\nVU: {X.X}\n<VId: 8>",shape="plaintext",fontcolor="red"];
-    9 [label="X.D'initial\nVD: {X.D}\n<VId: 9>",shape="plaintext",fontcolor="purple"];
-    10 [label="X.D'final\nVU: {X.D}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="F'initial\nVD: {F}\n<VId: 11>",shape="plaintext",fontcolor="red"];
-    12 [label="F'final\nVU: {F}\n<VId: 12>",shape="plaintext",fontcolor="blue"];
-    15 [label="subtype S22b is t (x.d);\nVU: {X.D}\n<VId: 15>"];
-    16 [label="return (x.d);\nVU: {X.D}\nVD: {F}\n<VId: 16>"];
-
-    1 ->  15 [arrowType="normal"];
-    2 ->  3 [arrowType="normal"];
-    3 ->  8 [arrowType="normal"];
-    3 ->  10 [arrowType="normal"];
-    3 ->  12 [arrowType="normal"];
-    6 ->  1 [arrowType="normal"];
-    7 ->  6 [arrowType="normal"];
-    9 ->  1 [arrowType="normal"];
-    11 ->  1 [arrowType="normal"];
-    15 ->  16 [arrowType="normal"];
-    16 ->  2 [arrowType="normal"];
-}
-
-// fa_subprogram_f_get_item_c_cfg
+// fa_subprogram_tests__f_get_item_c_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -219,7 +189,7 @@ digraph G {
     18 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_f_get_item_c_pdg
+// fa_subprogram_tests__f_get_item_c_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -250,7 +220,7 @@ digraph G {
     18 ->  14 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_f_get_item_cfg
+// fa_subprogram_tests__f_get_item_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -279,7 +249,7 @@ digraph G {
     16 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_f_get_item_e_cfg
+// fa_subprogram_tests__f_get_item_e_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -313,7 +283,7 @@ digraph G {
     18 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_f_get_item_e_pdg
+// fa_subprogram_tests__f_get_item_e_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -344,7 +314,7 @@ digraph G {
     18 ->  14 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_f_get_item_pdg
+// fa_subprogram_tests__f_get_item_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -370,121 +340,7 @@ digraph G {
     16 ->  12 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_f_pdg
-digraph G {
-   graph [splines=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X.X'initial\nVD: {X.X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'group'initial\n<VId: 7>",shape="plaintext"];
-    8 [label="X.X'final\nVU: {X.X}\n<VId: 8>",shape="plaintext",fontcolor="red"];
-    9 [label="X.D'initial\nVD: {X.D}\n<VId: 9>",shape="plaintext",fontcolor="purple"];
-    10 [label="X.D'final\nVU: {X.D}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="F'initial\nVD: {F}\n<VId: 11>",shape="plaintext",fontcolor="red"];
-    12 [label="F'final\nVU: {F}\n<VId: 12>",shape="plaintext",fontcolor="blue"];
-    15 [label="subtype S22b is t (x.d);\nVU: {X.D}\n<VId: 15>"];
-    16 [label="return (x.d);\nVU: {X.D}\nVD: {F}\n<VId: 16>"];
-
-    1 ->  2 [arrowType="normal"];
-    1 ->  15 [arrowType="normal"];
-    1 ->  16 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    9 ->  10 [arrowType="normal",color="red"];
-    9 ->  15 [arrowType="normal",color="red"];
-    9 ->  16 [arrowType="normal",color="red"];
-    16 ->  12 [arrowType="normal",color="red"];
-}
-
-// fa_subprogram_id_cfg
-digraph G {
-   graph [splines=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="H.Content.Present'initial\nVD: {H.Content.Present}\n<VId: 6>",shape="plaintext",fontcolor="purple"];
-    7 [label="H'group'initial\n<VId: 7>",shape="plaintext"];
-    8 [label="H.Content.Present'final\nVU: {H.Content.Present}\n<VId: 8>",shape="plaintext",fontcolor="red"];
-    9 [label="H.Content.Field'initial\nVD: {H.Content.Field}\n<VId: 9>",shape="plaintext"];
-    10 [label="H.Content'group'initial\n<VId: 10>",shape="plaintext"];
-    11 [label="H.Content.Field'final\nVU: {H.Content.Field}\n<VId: 11>",shape="plaintext",fontcolor="red"];
-    12 [label="H.Present'initial\nVD: {H.Present}\n<VId: 12>",shape="plaintext",fontcolor="purple"];
-    13 [label="H.Present'final\nVU: {H.Present}\n<VId: 13>",shape="plaintext",fontcolor="red"];
-    14 [label="Id.Content.Present'initial\nVD: {Id.Content.Present}\n<VId: 14>",shape="plaintext",fontcolor="purple"];
-    15 [label="Id'group'initial\n<VId: 15>",shape="plaintext"];
-    16 [label="Id.Content.Present'final\nVU: {Id.Content.Present}\n<VId: 16>",shape="plaintext",fontcolor="blue"];
-    17 [label="Id.Content.Field'initial\nVD: {Id.Content.Field}\n<VId: 17>",shape="plaintext",fontcolor="red"];
-    18 [label="Id.Content'group'initial\n<VId: 18>",shape="plaintext"];
-    19 [label="Id.Content.Field'final\nVU: {Id.Content.Field}\n<VId: 19>",shape="plaintext",fontcolor="blue"];
-    20 [label="Id.Present'initial\nVD: {Id.Present}\n<VId: 20>",shape="plaintext",fontcolor="purple"];
-    21 [label="Id.Present'final\nVU: {Id.Present}\n<VId: 21>",shape="plaintext",fontcolor="blue"];
-    24 [label="subtype S16b is holder (h.present);\nVU: {H.Present}\n<VId: 24>"];
-    25 [label="return (h);\nVU: {H.Content.Present, H.Content.Field, H.Present}\nVD: {Id.Content.Present, Id.Content.Field, Id.Present}\n<VId: 25>"];
-
-    1 ->  24 [arrowType="normal"];
-    2 ->  3 [arrowType="normal"];
-    3 ->  8 [arrowType="normal"];
-    3 ->  11 [arrowType="normal"];
-    3 ->  13 [arrowType="normal"];
-    3 ->  16 [arrowType="normal"];
-    3 ->  19 [arrowType="normal"];
-    3 ->  21 [arrowType="normal"];
-    6 ->  1 [arrowType="normal"];
-    7 ->  10 [arrowType="normal"];
-    9 ->  1 [arrowType="normal"];
-    10 ->  9 [arrowType="normal"];
-    12 ->  1 [arrowType="normal"];
-    14 ->  1 [arrowType="normal"];
-    15 ->  18 [arrowType="normal"];
-    17 ->  1 [arrowType="normal"];
-    18 ->  17 [arrowType="normal"];
-    20 ->  1 [arrowType="normal"];
-    24 ->  25 [arrowType="normal"];
-    25 ->  2 [arrowType="normal"];
-}
-
-// fa_subprogram_id_pdg
-digraph G {
-   graph [splines=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="H.Content.Present'initial\nVD: {H.Content.Present}\n<VId: 6>",shape="plaintext",fontcolor="purple"];
-    7 [label="H'group'initial\n<VId: 7>",shape="plaintext"];
-    8 [label="H.Content.Present'final\nVU: {H.Content.Present}\n<VId: 8>",shape="plaintext",fontcolor="red"];
-    9 [label="H.Content.Field'initial\nVD: {H.Content.Field}\n<VId: 9>",shape="plaintext"];
-    10 [label="H.Content'group'initial\n<VId: 10>",shape="plaintext"];
-    11 [label="H.Content.Field'final\nVU: {H.Content.Field}\n<VId: 11>",shape="plaintext",fontcolor="red"];
-    12 [label="H.Present'initial\nVD: {H.Present}\n<VId: 12>",shape="plaintext",fontcolor="purple"];
-    13 [label="H.Present'final\nVU: {H.Present}\n<VId: 13>",shape="plaintext",fontcolor="red"];
-    14 [label="Id.Content.Present'initial\nVD: {Id.Content.Present}\n<VId: 14>",shape="plaintext",fontcolor="purple"];
-    15 [label="Id'group'initial\n<VId: 15>",shape="plaintext"];
-    16 [label="Id.Content.Present'final\nVU: {Id.Content.Present}\n<VId: 16>",shape="plaintext",fontcolor="blue"];
-    17 [label="Id.Content.Field'initial\nVD: {Id.Content.Field}\n<VId: 17>",shape="plaintext",fontcolor="red"];
-    18 [label="Id.Content'group'initial\n<VId: 18>",shape="plaintext"];
-    19 [label="Id.Content.Field'final\nVU: {Id.Content.Field}\n<VId: 19>",shape="plaintext",fontcolor="blue"];
-    20 [label="Id.Present'initial\nVD: {Id.Present}\n<VId: 20>",shape="plaintext",fontcolor="purple"];
-    21 [label="Id.Present'final\nVU: {Id.Present}\n<VId: 21>",shape="plaintext",fontcolor="blue"];
-    24 [label="subtype S16b is holder (h.present);\nVU: {H.Present}\n<VId: 24>"];
-    25 [label="return (h);\nVU: {H.Content.Present, H.Content.Field, H.Present}\nVD: {Id.Content.Present, Id.Content.Field, Id.Present}\n<VId: 25>"];
-
-    1 ->  2 [arrowType="normal"];
-    1 ->  24 [arrowType="normal"];
-    1 ->  25 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    6 ->  25 [arrowType="normal",color="red"];
-    9 ->  11 [arrowType="normal",color="red"];
-    9 ->  25 [arrowType="normal",color="red"];
-    12 ->  13 [arrowType="normal",color="red"];
-    12 ->  24 [arrowType="normal",color="red"];
-    12 ->  25 [arrowType="normal",color="red"];
-    25 ->  16 [arrowType="normal",color="red"];
-    25 ->  19 [arrowType="normal",color="red"];
-    25 ->  21 [arrowType="normal",color="red"];
-}
-
-// fa_subprogram_p_get_item_c_cfg
+// fa_subprogram_tests__p_get_item_c_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -518,7 +374,7 @@ digraph G {
     18 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_p_get_item_c_pdg
+// fa_subprogram_tests__p_get_item_c_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -549,7 +405,7 @@ digraph G {
     18 ->  14 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_p_get_item_cfg
+// fa_subprogram_tests__p_get_item_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -578,7 +434,7 @@ digraph G {
     16 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_p_get_item_e_cfg
+// fa_subprogram_tests__p_get_item_e_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -612,7 +468,7 @@ digraph G {
     18 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_p_get_item_e_pdg
+// fa_subprogram_tests__p_get_item_e_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -643,7 +499,7 @@ digraph G {
     18 ->  14 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_p_get_item_pdg
+// fa_subprogram_tests__p_get_item_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -669,7 +525,7 @@ digraph G {
     16 ->  12 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_p_mod_item_c_cfg
+// fa_subprogram_tests__p_mod_item_c_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -705,7 +561,7 @@ digraph G {
     19 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_p_mod_item_c_pdg
+// fa_subprogram_tests__p_mod_item_c_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -740,7 +596,7 @@ digraph G {
     19 ->  10 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_p_mod_item_cfg
+// fa_subprogram_tests__p_mod_item_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -769,7 +625,7 @@ digraph G {
     16 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_p_mod_item_e_cfg
+// fa_subprogram_tests__p_mod_item_e_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -819,7 +675,7 @@ subgraph cluster1 {
     23 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_p_mod_item_e_pdg
+// fa_subprogram_tests__p_mod_item_e_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -863,7 +719,7 @@ digraph G {
     23 ->  8 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_p_mod_item_pdg
+// fa_subprogram_tests__p_mod_item_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -888,7 +744,7 @@ digraph G {
     16 ->  10 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_01_cfg
+// fa_subprogram_tests__test_01_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -906,7 +762,7 @@ digraph G {
     12 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_01_e_cfg
+// fa_subprogram_tests__test_01_e_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -930,7 +786,7 @@ digraph G {
     16 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_01_e_pdg
+// fa_subprogram_tests__test_01_e_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -949,7 +805,7 @@ digraph G {
     16 ->  10 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_01_pdg
+// fa_subprogram_tests__test_01_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -964,7 +820,7 @@ digraph G {
     12 ->  7 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_02_cfg
+// fa_subprogram_tests__test_02_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -993,7 +849,7 @@ digraph G {
     17 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_02_pdg
+// fa_subprogram_tests__test_02_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -1019,7 +875,7 @@ digraph G {
     17 ->  12 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_03_cfg
+// fa_subprogram_tests__test_03_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -1043,7 +899,7 @@ digraph G {
     15 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_03_pdg
+// fa_subprogram_tests__test_03_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -1063,7 +919,7 @@ digraph G {
     15 ->  10 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_04_cfg
+// fa_subprogram_tests__test_04_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -1097,7 +953,7 @@ digraph G {
     19 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_04_pdg
+// fa_subprogram_tests__test_04_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -1128,7 +984,7 @@ digraph G {
     19 ->  14 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_05_cfg
+// fa_subprogram_tests__test_05_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -1189,7 +1045,7 @@ digraph G {
     32 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_05_pdg
+// fa_subprogram_tests__test_05_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -1244,7 +1100,7 @@ digraph G {
     32 ->  13 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_06_cfg
+// fa_subprogram_tests__test_06_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -1292,7 +1148,7 @@ digraph G {
     26 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_06_pdg
+// fa_subprogram_tests__test_06_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -1335,7 +1191,7 @@ digraph G {
     26 ->  13 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_07_cfg
+// fa_subprogram_tests__test_07_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -1395,7 +1251,7 @@ subgraph cluster1 {
     29 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_07_pdg
+// fa_subprogram_tests__test_07_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -1445,7 +1301,7 @@ digraph G {
     29 ->  13 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_08_cfg
+// fa_subprogram_tests__test_08_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -1505,7 +1361,7 @@ subgraph cluster1 {
     31 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_08_pdg
+// fa_subprogram_tests__test_08_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -1554,7 +1410,7 @@ digraph G {
     31 ->  13 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_09_cfg
+// fa_subprogram_tests__test_09_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -1661,7 +1517,7 @@ subgraph cluster1 {
     50 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_09_pdg
+// fa_subprogram_tests__test_09_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -1757,7 +1613,7 @@ digraph G {
     50 ->  13 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_10_cfg
+// fa_subprogram_tests__test_10_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -1868,7 +1724,7 @@ subgraph cluster1 {
     51 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_10_pdg
+// fa_subprogram_tests__test_10_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -1965,7 +1821,7 @@ digraph G {
     51 ->  22 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_11_cfg
+// fa_subprogram_tests__test_11_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -1996,7 +1852,7 @@ digraph G {
     18 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_11_pdg
+// fa_subprogram_tests__test_11_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -2023,7 +1879,7 @@ digraph G {
     18 ->  7 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_12_cfg
+// fa_subprogram_tests__test_12_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -2077,7 +1933,7 @@ subgraph cluster2 {
     24 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_12_pdg
+// fa_subprogram_tests__test_12_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -2114,7 +1970,7 @@ digraph G {
     24 ->  9 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_13_cfg
+// fa_subprogram_tests__test_13_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -2223,7 +2079,7 @@ digraph G {
     57 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_13_pdg
+// fa_subprogram_tests__test_13_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -2324,7 +2180,7 @@ digraph G {
     57 ->  17 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_14_cfg
+// fa_subprogram_tests__test_14_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -2356,7 +2212,7 @@ digraph G {
     18 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_14_pdg
+// fa_subprogram_tests__test_14_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -2387,7 +2243,95 @@ digraph G {
     18 ->  7 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_15_cfg
+// fa_subprogram_tests__test_15__id_cfg
+digraph G {
+   graph [splines=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    3 [label="end\n<VId: 3>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="H.Content.Present'initial\nVD: {H.Content.Present}\n<VId: 6>",shape="plaintext",fontcolor="purple"];
+    7 [label="H'group'initial\n<VId: 7>",shape="plaintext"];
+    8 [label="H.Content.Present'final\nVU: {H.Content.Present}\n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="H.Content.Field'initial\nVD: {H.Content.Field}\n<VId: 9>",shape="plaintext"];
+    10 [label="H.Content'group'initial\n<VId: 10>",shape="plaintext"];
+    11 [label="H.Content.Field'final\nVU: {H.Content.Field}\n<VId: 11>",shape="plaintext",fontcolor="red"];
+    12 [label="H.Present'initial\nVD: {H.Present}\n<VId: 12>",shape="plaintext",fontcolor="purple"];
+    13 [label="H.Present'final\nVU: {H.Present}\n<VId: 13>",shape="plaintext",fontcolor="red"];
+    14 [label="Id.Content.Present'initial\nVD: {Id.Content.Present}\n<VId: 14>",shape="plaintext",fontcolor="purple"];
+    15 [label="Id'group'initial\n<VId: 15>",shape="plaintext"];
+    16 [label="Id.Content.Present'final\nVU: {Id.Content.Present}\n<VId: 16>",shape="plaintext",fontcolor="blue"];
+    17 [label="Id.Content.Field'initial\nVD: {Id.Content.Field}\n<VId: 17>",shape="plaintext",fontcolor="red"];
+    18 [label="Id.Content'group'initial\n<VId: 18>",shape="plaintext"];
+    19 [label="Id.Content.Field'final\nVU: {Id.Content.Field}\n<VId: 19>",shape="plaintext",fontcolor="blue"];
+    20 [label="Id.Present'initial\nVD: {Id.Present}\n<VId: 20>",shape="plaintext",fontcolor="purple"];
+    21 [label="Id.Present'final\nVU: {Id.Present}\n<VId: 21>",shape="plaintext",fontcolor="blue"];
+    24 [label="subtype S16b is holder (h.present);\nVU: {H.Present}\n<VId: 24>"];
+    25 [label="return (h);\nVU: {H.Content.Present, H.Content.Field, H.Present}\nVD: {Id.Content.Present, Id.Content.Field, Id.Present}\n<VId: 25>"];
+
+    1 ->  24 [arrowType="normal"];
+    2 ->  3 [arrowType="normal"];
+    3 ->  8 [arrowType="normal"];
+    3 ->  11 [arrowType="normal"];
+    3 ->  13 [arrowType="normal"];
+    3 ->  16 [arrowType="normal"];
+    3 ->  19 [arrowType="normal"];
+    3 ->  21 [arrowType="normal"];
+    6 ->  1 [arrowType="normal"];
+    7 ->  10 [arrowType="normal"];
+    9 ->  1 [arrowType="normal"];
+    10 ->  9 [arrowType="normal"];
+    12 ->  1 [arrowType="normal"];
+    14 ->  1 [arrowType="normal"];
+    15 ->  18 [arrowType="normal"];
+    17 ->  1 [arrowType="normal"];
+    18 ->  17 [arrowType="normal"];
+    20 ->  1 [arrowType="normal"];
+    24 ->  25 [arrowType="normal"];
+    25 ->  2 [arrowType="normal"];
+}
+
+// fa_subprogram_tests__test_15__id_pdg
+digraph G {
+   graph [splines=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="H.Content.Present'initial\nVD: {H.Content.Present}\n<VId: 6>",shape="plaintext",fontcolor="purple"];
+    7 [label="H'group'initial\n<VId: 7>",shape="plaintext"];
+    8 [label="H.Content.Present'final\nVU: {H.Content.Present}\n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="H.Content.Field'initial\nVD: {H.Content.Field}\n<VId: 9>",shape="plaintext"];
+    10 [label="H.Content'group'initial\n<VId: 10>",shape="plaintext"];
+    11 [label="H.Content.Field'final\nVU: {H.Content.Field}\n<VId: 11>",shape="plaintext",fontcolor="red"];
+    12 [label="H.Present'initial\nVD: {H.Present}\n<VId: 12>",shape="plaintext",fontcolor="purple"];
+    13 [label="H.Present'final\nVU: {H.Present}\n<VId: 13>",shape="plaintext",fontcolor="red"];
+    14 [label="Id.Content.Present'initial\nVD: {Id.Content.Present}\n<VId: 14>",shape="plaintext",fontcolor="purple"];
+    15 [label="Id'group'initial\n<VId: 15>",shape="plaintext"];
+    16 [label="Id.Content.Present'final\nVU: {Id.Content.Present}\n<VId: 16>",shape="plaintext",fontcolor="blue"];
+    17 [label="Id.Content.Field'initial\nVD: {Id.Content.Field}\n<VId: 17>",shape="plaintext",fontcolor="red"];
+    18 [label="Id.Content'group'initial\n<VId: 18>",shape="plaintext"];
+    19 [label="Id.Content.Field'final\nVU: {Id.Content.Field}\n<VId: 19>",shape="plaintext",fontcolor="blue"];
+    20 [label="Id.Present'initial\nVD: {Id.Present}\n<VId: 20>",shape="plaintext",fontcolor="purple"];
+    21 [label="Id.Present'final\nVU: {Id.Present}\n<VId: 21>",shape="plaintext",fontcolor="blue"];
+    24 [label="subtype S16b is holder (h.present);\nVU: {H.Present}\n<VId: 24>"];
+    25 [label="return (h);\nVU: {H.Content.Present, H.Content.Field, H.Present}\nVD: {Id.Content.Present, Id.Content.Field, Id.Present}\n<VId: 25>"];
+
+    1 ->  2 [arrowType="normal"];
+    1 ->  24 [arrowType="normal"];
+    1 ->  25 [arrowType="normal"];
+    6 ->  8 [arrowType="normal",color="red"];
+    6 ->  25 [arrowType="normal",color="red"];
+    9 ->  11 [arrowType="normal",color="red"];
+    9 ->  25 [arrowType="normal",color="red"];
+    12 ->  13 [arrowType="normal",color="red"];
+    12 ->  24 [arrowType="normal",color="red"];
+    12 ->  25 [arrowType="normal",color="red"];
+    25 ->  16 [arrowType="normal",color="red"];
+    25 ->  19 [arrowType="normal",color="red"];
+    25 ->  21 [arrowType="normal",color="red"];
+}
+
+// fa_subprogram_tests__test_15_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -2449,7 +2393,7 @@ digraph G {
     33 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_15_pdg
+// fa_subprogram_tests__test_15_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -2503,7 +2447,63 @@ digraph G {
     33 ->  7 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_16_cfg
+// fa_subprogram_tests__test_16__f_cfg
+digraph G {
+   graph [splines=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    3 [label="end\n<VId: 3>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="X.X'initial\nVD: {X.X}\n<VId: 6>",shape="plaintext"];
+    7 [label="X'group'initial\n<VId: 7>",shape="plaintext"];
+    8 [label="X.X'final\nVU: {X.X}\n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="X.D'initial\nVD: {X.D}\n<VId: 9>",shape="plaintext",fontcolor="purple"];
+    10 [label="X.D'final\nVU: {X.D}\n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="F'initial\nVD: {F}\n<VId: 11>",shape="plaintext",fontcolor="red"];
+    12 [label="F'final\nVU: {F}\n<VId: 12>",shape="plaintext",fontcolor="blue"];
+    15 [label="subtype S22b is t (x.d);\nVU: {X.D}\n<VId: 15>"];
+    16 [label="return (x.d);\nVU: {X.D}\nVD: {F}\n<VId: 16>"];
+
+    1 ->  15 [arrowType="normal"];
+    2 ->  3 [arrowType="normal"];
+    3 ->  8 [arrowType="normal"];
+    3 ->  10 [arrowType="normal"];
+    3 ->  12 [arrowType="normal"];
+    6 ->  1 [arrowType="normal"];
+    7 ->  6 [arrowType="normal"];
+    9 ->  1 [arrowType="normal"];
+    11 ->  1 [arrowType="normal"];
+    15 ->  16 [arrowType="normal"];
+    16 ->  2 [arrowType="normal"];
+}
+
+// fa_subprogram_tests__test_16__f_pdg
+digraph G {
+   graph [splines=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="X.X'initial\nVD: {X.X}\n<VId: 6>",shape="plaintext"];
+    7 [label="X'group'initial\n<VId: 7>",shape="plaintext"];
+    8 [label="X.X'final\nVU: {X.X}\n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="X.D'initial\nVD: {X.D}\n<VId: 9>",shape="plaintext",fontcolor="purple"];
+    10 [label="X.D'final\nVU: {X.D}\n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="F'initial\nVD: {F}\n<VId: 11>",shape="plaintext",fontcolor="red"];
+    12 [label="F'final\nVU: {F}\n<VId: 12>",shape="plaintext",fontcolor="blue"];
+    15 [label="subtype S22b is t (x.d);\nVU: {X.D}\n<VId: 15>"];
+    16 [label="return (x.d);\nVU: {X.D}\nVD: {F}\n<VId: 16>"];
+
+    1 ->  2 [arrowType="normal"];
+    1 ->  15 [arrowType="normal"];
+    1 ->  16 [arrowType="normal"];
+    6 ->  8 [arrowType="normal",color="red"];
+    9 ->  10 [arrowType="normal",color="red"];
+    9 ->  15 [arrowType="normal",color="red"];
+    9 ->  16 [arrowType="normal",color="red"];
+    16 ->  12 [arrowType="normal",color="red"];
+}
+
+// fa_subprogram_tests__test_16_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -2560,7 +2560,7 @@ subgraph cluster2 {
     25 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_16_pdg
+// fa_subprogram_tests__test_16_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -2601,7 +2601,7 @@ digraph G {
     25 ->  7 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_17_cfg
+// fa_subprogram_tests__test_17_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -2692,7 +2692,7 @@ subgraph cluster2 {
     42 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_17_pdg
+// fa_subprogram_tests__test_17_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -2768,7 +2768,7 @@ digraph G {
     42 ->  9 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_18_cfg
+// fa_subprogram_tests__test_18_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -2811,7 +2811,7 @@ subgraph cluster1 {
     20 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_18_pdg
+// fa_subprogram_tests__test_18_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -2844,7 +2844,7 @@ digraph G {
     20 ->  7 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_19_cfg
+// fa_subprogram_tests__test_19_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -2910,7 +2910,7 @@ subgraph cluster1 {
     34 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_19_pdg
+// fa_subprogram_tests__test_19_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -2968,7 +2968,7 @@ digraph G {
     34 ->  14 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_20_cfg
+// fa_subprogram_tests__test_20_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -3060,7 +3060,7 @@ digraph G {
     46 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_20_pdg
+// fa_subprogram_tests__test_20_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -3143,7 +3143,7 @@ digraph G {
     46 ->  15 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_21_cfg
+// fa_subprogram_tests__test_21_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -3175,7 +3175,7 @@ digraph G {
     20 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_21_pdg
+// fa_subprogram_tests__test_21_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -3202,7 +3202,7 @@ digraph G {
     20 ->  10 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_22_cfg
+// fa_subprogram_tests__test_22_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -3238,7 +3238,7 @@ subgraph cluster1 {
     19 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_22_pdg
+// fa_subprogram_tests__test_22_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -3265,7 +3265,7 @@ digraph G {
     19 ->  10 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_23_cfg
+// fa_subprogram_tests__test_23_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -3298,7 +3298,7 @@ digraph G {
     18 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_23_pdg
+// fa_subprogram_tests__test_23_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -3327,7 +3327,7 @@ digraph G {
     17 ->  16 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_24_cfg
+// fa_subprogram_tests__test_24_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -3355,7 +3355,7 @@ digraph G {
     16 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_24_pdg
+// fa_subprogram_tests__test_24_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -3379,7 +3379,7 @@ digraph G {
     14 ->  13 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_25_cfg
+// fa_subprogram_tests__test_25_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -3431,7 +3431,7 @@ digraph G {
     27 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_25_pdg
+// fa_subprogram_tests__test_25_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -3478,7 +3478,7 @@ digraph G {
     27 ->  16 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_26_cfg
+// fa_subprogram_tests__test_26_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -3614,7 +3614,7 @@ digraph G {
     70 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_26_pdg
+// fa_subprogram_tests__test_26_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -3749,7 +3749,7 @@ digraph G {
     70 ->  24 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_27_cfg
+// fa_subprogram_tests__test_27_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -3799,7 +3799,7 @@ digraph G {
     28 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_27_pdg
+// fa_subprogram_tests__test_27_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -3849,7 +3849,7 @@ digraph G {
     28 ->  18 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_28_cfg
+// fa_subprogram_tests__test_28_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -3935,7 +3935,7 @@ subgraph cluster3 {
     37 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_28_pdg
+// fa_subprogram_tests__test_28_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -4006,7 +4006,7 @@ digraph G {
     37 ->  18 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_29_cfg
+// fa_subprogram_tests__test_29_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -4092,7 +4092,7 @@ subgraph cluster3 {
     36 ->  35 [arrowType="normal"];
 }
 
-// fa_subprogram_test_29_pdg
+// fa_subprogram_tests__test_29_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -4166,7 +4166,7 @@ digraph G {
     36 ->  35 [arrowType="normal",color="cornflowerblue"];
 }
 
-// fa_subprogram_test_30_cfg
+// fa_subprogram_tests__test_30_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -4371,7 +4371,7 @@ digraph G {
     94 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_30_pdg
+// fa_subprogram_tests__test_30_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -4560,7 +4560,193 @@ digraph G {
     94 ->  82 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_test_31_cfg
+// fa_subprogram_tests__test_31__test_31_in_cfg
+digraph G {
+   graph [splines=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    3 [label="end\n<VId: 3>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="W1.Y'initial\n(global)\nVD: {W1.Y}\n<VId: 6>",shape="plaintext"];
+    7 [label="W1'group'initial\n(global)\n<VId: 7>",shape="plaintext"];
+    8 [label="W1.Y'final\n(global)\nVU: {W1.Y}\n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="W1.X'initial\n(global)\nVD: {W1.X}\n<VId: 9>",shape="plaintext"];
+    10 [label="W1.X'final\n(global)\nVU: {W1.X}\n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="W1'Extensions'initial\n(global)\nVD: {W1'Extensions}\n<VId: 11>",shape="plaintext"];
+    12 [label="W1'Extensions'final\n(global)\nVU: {W1'Extensions}\n<VId: 12>",shape="plaintext",fontcolor="red"];
+    13 [label="O1'initial\n(global)\nVD: {O1}\n<VId: 13>",shape="plaintext",fontcolor="red"];
+    14 [label="O1'final\n(global)\nVU: {O1}\n<VId: 14>",shape="plaintext",fontcolor="blue"];
+    18 [label="Tmp'Extensions'initial\nVD: {Tmp'Extensions}\n<VId: 18>",shape="plaintext",fontcolor="red"];
+    19 [label="Tmp'group'initial\n<VId: 19>",shape="plaintext"];
+    20 [label="Tmp'Extensions'final\nVU: {Tmp'Extensions}\n<VId: 20>",shape="plaintext"];
+    21 [label="Tmp.Y'initial\nVD: {Tmp.Y}\n<VId: 21>",shape="plaintext",fontcolor="red"];
+    22 [label="Tmp.Y'final\nVU: {Tmp.Y}\n<VId: 22>",shape="plaintext"];
+    23 [label="Tmp.X'initial\nVD: {Tmp.X}\n<VId: 23>",shape="plaintext",fontcolor="red"];
+    24 [label="Tmp.X'final\nVU: {Tmp.X}\n<VId: 24>",shape="plaintext"];
+    25 [label="tmp : widget_t'class := w1;\nVU: {W1.Y, W1.X, W1'Extensions}\nVD: {Tmp.X, Tmp.Y, Tmp'Extensions}\n<VId: 25>"];
+    26 [label="o1 := hash__2 (tmp);\nVU: {Tmp.X, Tmp.Y, Tmp'Extensions}\nSC: {Hash}\nVD: {O1}\n<VId: 26>"];
+
+    1 ->  25 [arrowType="normal"];
+    2 ->  3 [arrowType="normal"];
+    3 ->  8 [arrowType="normal"];
+    3 ->  10 [arrowType="normal"];
+    3 ->  12 [arrowType="normal"];
+    3 ->  14 [arrowType="normal"];
+    3 ->  20 [arrowType="normal"];
+    3 ->  22 [arrowType="normal"];
+    3 ->  24 [arrowType="normal"];
+    6 ->  1 [arrowType="normal"];
+    7 ->  6 [arrowType="normal"];
+    7 ->  9 [arrowType="normal"];
+    7 ->  11 [arrowType="normal"];
+    9 ->  1 [arrowType="normal"];
+    11 ->  1 [arrowType="normal"];
+    13 ->  1 [arrowType="normal"];
+    18 ->  1 [arrowType="normal"];
+    19 ->  18 [arrowType="normal"];
+    19 ->  21 [arrowType="normal"];
+    19 ->  23 [arrowType="normal"];
+    21 ->  1 [arrowType="normal"];
+    23 ->  1 [arrowType="normal"];
+    25 ->  26 [arrowType="normal"];
+    26 ->  2 [arrowType="normal"];
+}
+
+// fa_subprogram_tests__test_31__test_31_in_pdg
+digraph G {
+   graph [splines=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="W1.Y'initial\n(global)\nVD: {W1.Y}\n<VId: 6>",shape="plaintext"];
+    7 [label="W1'group'initial\n(global)\n<VId: 7>",shape="plaintext"];
+    8 [label="W1.Y'final\n(global)\nVU: {W1.Y}\n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="W1.X'initial\n(global)\nVD: {W1.X}\n<VId: 9>",shape="plaintext"];
+    10 [label="W1.X'final\n(global)\nVU: {W1.X}\n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="W1'Extensions'initial\n(global)\nVD: {W1'Extensions}\n<VId: 11>",shape="plaintext"];
+    12 [label="W1'Extensions'final\n(global)\nVU: {W1'Extensions}\n<VId: 12>",shape="plaintext",fontcolor="red"];
+    13 [label="O1'initial\n(global)\nVD: {O1}\n<VId: 13>",shape="plaintext",fontcolor="red"];
+    14 [label="O1'final\n(global)\nVU: {O1}\n<VId: 14>",shape="plaintext",fontcolor="blue"];
+    18 [label="Tmp'Extensions'initial\nVD: {Tmp'Extensions}\n<VId: 18>",shape="plaintext",fontcolor="red"];
+    19 [label="Tmp'group'initial\n<VId: 19>",shape="plaintext"];
+    20 [label="Tmp'Extensions'final\nVU: {Tmp'Extensions}\n<VId: 20>",shape="plaintext"];
+    21 [label="Tmp.Y'initial\nVD: {Tmp.Y}\n<VId: 21>",shape="plaintext",fontcolor="red"];
+    22 [label="Tmp.Y'final\nVU: {Tmp.Y}\n<VId: 22>",shape="plaintext"];
+    23 [label="Tmp.X'initial\nVD: {Tmp.X}\n<VId: 23>",shape="plaintext",fontcolor="red"];
+    24 [label="Tmp.X'final\nVU: {Tmp.X}\n<VId: 24>",shape="plaintext"];
+    25 [label="tmp : widget_t'class := w1;\nVU: {W1.Y, W1.X, W1'Extensions}\nVD: {Tmp.X, Tmp.Y, Tmp'Extensions}\n<VId: 25>"];
+    26 [label="o1 := hash__2 (tmp);\nVU: {Tmp.X, Tmp.Y, Tmp'Extensions}\nSC: {Hash}\nVD: {O1}\n<VId: 26>"];
+
+    1 ->  2 [arrowType="normal"];
+    1 ->  25 [arrowType="normal"];
+    1 ->  26 [arrowType="normal"];
+    6 ->  8 [arrowType="normal",color="red"];
+    6 ->  25 [arrowType="normal",color="red"];
+    7 ->  6 [arrowType="normal"];
+    7 ->  9 [arrowType="normal"];
+    7 ->  11 [arrowType="normal"];
+    9 ->  10 [arrowType="normal",color="red"];
+    9 ->  25 [arrowType="normal",color="red"];
+    11 ->  12 [arrowType="normal",color="red"];
+    11 ->  25 [arrowType="normal",color="red"];
+    19 ->  18 [arrowType="normal"];
+    19 ->  21 [arrowType="normal"];
+    19 ->  23 [arrowType="normal"];
+    25 ->  20 [arrowType="normal",color="red"];
+    25 ->  22 [arrowType="normal",color="red"];
+    25 ->  24 [arrowType="normal",color="red"];
+    25 ->  26 [arrowType="normal",color="red"];
+    26 ->  14 [arrowType="normal",color="red"];
+}
+
+// fa_subprogram_tests__test_31__test_31_out_cfg
+digraph G {
+   graph [splines=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    3 [label="end\n<VId: 3>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="W1.Y'initial\n(global)\nVD: {W1.Y}\n<VId: 6>",shape="plaintext"];
+    7 [label="W1'group'initial\n(global)\n<VId: 7>",shape="plaintext"];
+    8 [label="W1.Y'final\n(global)\nVU: {W1.Y}\n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="W1.X'initial\n(global)\nVD: {W1.X}\n<VId: 9>",shape="plaintext"];
+    10 [label="W1.X'final\n(global)\nVU: {W1.X}\n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="W1'Extensions'initial\n(global)\nVD: {W1'Extensions}\n<VId: 11>",shape="plaintext"];
+    12 [label="W1'Extensions'final\n(global)\nVU: {W1'Extensions}\n<VId: 12>",shape="plaintext",fontcolor="red"];
+    13 [label="W2.Y'initial\n(global)\nVD: {W2.Y}\n<VId: 13>",shape="plaintext",fontcolor="red"];
+    14 [label="W2'group'initial\n(global)\n<VId: 14>",shape="plaintext"];
+    15 [label="W2.Y'final\n(global)\nVU: {W2.Y}\n<VId: 15>",shape="plaintext",fontcolor="blue"];
+    16 [label="W2.X'initial\n(global)\nVD: {W2.X}\n<VId: 16>",shape="plaintext",fontcolor="red"];
+    17 [label="W2.X'final\n(global)\nVU: {W2.X}\n<VId: 17>",shape="plaintext",fontcolor="blue"];
+    18 [label="W2'Extensions'initial\n(global)\nVD: {W2'Extensions}\n<VId: 18>",shape="plaintext",fontcolor="red"];
+    19 [label="W2'Extensions'final\n(global)\nVU: {W2'Extensions}\n<VId: 19>",shape="plaintext",fontcolor="blue"];
+    23 [label="widget_t'class(w2) := widget_t'class(w1);\nVU: {W1.X, W1.Y, W1'Extensions}\nVD: {W2'Extensions, W2.X, W2.Y}\n<VId: 23>"];
+
+    1 ->  23 [arrowType="normal"];
+    2 ->  3 [arrowType="normal"];
+    3 ->  8 [arrowType="normal"];
+    3 ->  10 [arrowType="normal"];
+    3 ->  12 [arrowType="normal"];
+    3 ->  15 [arrowType="normal"];
+    3 ->  17 [arrowType="normal"];
+    3 ->  19 [arrowType="normal"];
+    6 ->  1 [arrowType="normal"];
+    7 ->  6 [arrowType="normal"];
+    7 ->  9 [arrowType="normal"];
+    7 ->  11 [arrowType="normal"];
+    9 ->  1 [arrowType="normal"];
+    11 ->  1 [arrowType="normal"];
+    13 ->  1 [arrowType="normal"];
+    14 ->  13 [arrowType="normal"];
+    14 ->  16 [arrowType="normal"];
+    14 ->  18 [arrowType="normal"];
+    16 ->  1 [arrowType="normal"];
+    18 ->  1 [arrowType="normal"];
+    23 ->  2 [arrowType="normal"];
+}
+
+// fa_subprogram_tests__test_31__test_31_out_pdg
+digraph G {
+   graph [splines=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="W1.Y'initial\n(global)\nVD: {W1.Y}\n<VId: 6>",shape="plaintext"];
+    7 [label="W1'group'initial\n(global)\n<VId: 7>",shape="plaintext"];
+    8 [label="W1.Y'final\n(global)\nVU: {W1.Y}\n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="W1.X'initial\n(global)\nVD: {W1.X}\n<VId: 9>",shape="plaintext"];
+    10 [label="W1.X'final\n(global)\nVU: {W1.X}\n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="W1'Extensions'initial\n(global)\nVD: {W1'Extensions}\n<VId: 11>",shape="plaintext"];
+    12 [label="W1'Extensions'final\n(global)\nVU: {W1'Extensions}\n<VId: 12>",shape="plaintext",fontcolor="red"];
+    13 [label="W2.Y'initial\n(global)\nVD: {W2.Y}\n<VId: 13>",shape="plaintext",fontcolor="red"];
+    14 [label="W2'group'initial\n(global)\n<VId: 14>",shape="plaintext"];
+    15 [label="W2.Y'final\n(global)\nVU: {W2.Y}\n<VId: 15>",shape="plaintext",fontcolor="blue"];
+    16 [label="W2.X'initial\n(global)\nVD: {W2.X}\n<VId: 16>",shape="plaintext",fontcolor="red"];
+    17 [label="W2.X'final\n(global)\nVU: {W2.X}\n<VId: 17>",shape="plaintext",fontcolor="blue"];
+    18 [label="W2'Extensions'initial\n(global)\nVD: {W2'Extensions}\n<VId: 18>",shape="plaintext",fontcolor="red"];
+    19 [label="W2'Extensions'final\n(global)\nVU: {W2'Extensions}\n<VId: 19>",shape="plaintext",fontcolor="blue"];
+    23 [label="widget_t'class(w2) := widget_t'class(w1);\nVU: {W1.X, W1.Y, W1'Extensions}\nVD: {W2'Extensions, W2.X, W2.Y}\n<VId: 23>"];
+
+    1 ->  2 [arrowType="normal"];
+    1 ->  23 [arrowType="normal"];
+    6 ->  8 [arrowType="normal",color="red"];
+    6 ->  23 [arrowType="normal",color="red"];
+    7 ->  6 [arrowType="normal"];
+    7 ->  9 [arrowType="normal"];
+    7 ->  11 [arrowType="normal"];
+    9 ->  10 [arrowType="normal",color="red"];
+    9 ->  23 [arrowType="normal",color="red"];
+    11 ->  12 [arrowType="normal",color="red"];
+    11 ->  23 [arrowType="normal",color="red"];
+    14 ->  13 [arrowType="normal"];
+    14 ->  16 [arrowType="normal"];
+    14 ->  18 [arrowType="normal"];
+    23 ->  15 [arrowType="normal",color="red"];
+    23 ->  17 [arrowType="normal",color="red"];
+    23 ->  19 [arrowType="normal",color="red"];
+}
+
+// fa_subprogram_tests__test_31_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -4636,193 +4822,7 @@ subgraph cluster2 {
     33 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_test_31_in_cfg
-digraph G {
-   graph [splines=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="W1.Y'initial\n(global)\nVD: {W1.Y}\n<VId: 6>",shape="plaintext"];
-    7 [label="W1'group'initial\n(global)\n<VId: 7>",shape="plaintext"];
-    8 [label="W1.Y'final\n(global)\nVU: {W1.Y}\n<VId: 8>",shape="plaintext",fontcolor="red"];
-    9 [label="W1.X'initial\n(global)\nVD: {W1.X}\n<VId: 9>",shape="plaintext"];
-    10 [label="W1.X'final\n(global)\nVU: {W1.X}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="W1'Extensions'initial\n(global)\nVD: {W1'Extensions}\n<VId: 11>",shape="plaintext"];
-    12 [label="W1'Extensions'final\n(global)\nVU: {W1'Extensions}\n<VId: 12>",shape="plaintext",fontcolor="red"];
-    13 [label="O1'initial\n(global)\nVD: {O1}\n<VId: 13>",shape="plaintext",fontcolor="red"];
-    14 [label="O1'final\n(global)\nVU: {O1}\n<VId: 14>",shape="plaintext",fontcolor="blue"];
-    18 [label="Tmp'Extensions'initial\nVD: {Tmp'Extensions}\n<VId: 18>",shape="plaintext",fontcolor="red"];
-    19 [label="Tmp'group'initial\n<VId: 19>",shape="plaintext"];
-    20 [label="Tmp'Extensions'final\nVU: {Tmp'Extensions}\n<VId: 20>",shape="plaintext"];
-    21 [label="Tmp.Y'initial\nVD: {Tmp.Y}\n<VId: 21>",shape="plaintext",fontcolor="red"];
-    22 [label="Tmp.Y'final\nVU: {Tmp.Y}\n<VId: 22>",shape="plaintext"];
-    23 [label="Tmp.X'initial\nVD: {Tmp.X}\n<VId: 23>",shape="plaintext",fontcolor="red"];
-    24 [label="Tmp.X'final\nVU: {Tmp.X}\n<VId: 24>",shape="plaintext"];
-    25 [label="tmp : widget_t'class := w1;\nVU: {W1.Y, W1.X, W1'Extensions}\nVD: {Tmp.X, Tmp.Y, Tmp'Extensions}\n<VId: 25>"];
-    26 [label="o1 := hash__2 (tmp);\nVU: {Tmp.X, Tmp.Y, Tmp'Extensions}\nSC: {Hash}\nVD: {O1}\n<VId: 26>"];
-
-    1 ->  25 [arrowType="normal"];
-    2 ->  3 [arrowType="normal"];
-    3 ->  8 [arrowType="normal"];
-    3 ->  10 [arrowType="normal"];
-    3 ->  12 [arrowType="normal"];
-    3 ->  14 [arrowType="normal"];
-    3 ->  20 [arrowType="normal"];
-    3 ->  22 [arrowType="normal"];
-    3 ->  24 [arrowType="normal"];
-    6 ->  1 [arrowType="normal"];
-    7 ->  6 [arrowType="normal"];
-    7 ->  9 [arrowType="normal"];
-    7 ->  11 [arrowType="normal"];
-    9 ->  1 [arrowType="normal"];
-    11 ->  1 [arrowType="normal"];
-    13 ->  1 [arrowType="normal"];
-    18 ->  1 [arrowType="normal"];
-    19 ->  18 [arrowType="normal"];
-    19 ->  21 [arrowType="normal"];
-    19 ->  23 [arrowType="normal"];
-    21 ->  1 [arrowType="normal"];
-    23 ->  1 [arrowType="normal"];
-    25 ->  26 [arrowType="normal"];
-    26 ->  2 [arrowType="normal"];
-}
-
-// fa_subprogram_test_31_in_pdg
-digraph G {
-   graph [splines=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="W1.Y'initial\n(global)\nVD: {W1.Y}\n<VId: 6>",shape="plaintext"];
-    7 [label="W1'group'initial\n(global)\n<VId: 7>",shape="plaintext"];
-    8 [label="W1.Y'final\n(global)\nVU: {W1.Y}\n<VId: 8>",shape="plaintext",fontcolor="red"];
-    9 [label="W1.X'initial\n(global)\nVD: {W1.X}\n<VId: 9>",shape="plaintext"];
-    10 [label="W1.X'final\n(global)\nVU: {W1.X}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="W1'Extensions'initial\n(global)\nVD: {W1'Extensions}\n<VId: 11>",shape="plaintext"];
-    12 [label="W1'Extensions'final\n(global)\nVU: {W1'Extensions}\n<VId: 12>",shape="plaintext",fontcolor="red"];
-    13 [label="O1'initial\n(global)\nVD: {O1}\n<VId: 13>",shape="plaintext",fontcolor="red"];
-    14 [label="O1'final\n(global)\nVU: {O1}\n<VId: 14>",shape="plaintext",fontcolor="blue"];
-    18 [label="Tmp'Extensions'initial\nVD: {Tmp'Extensions}\n<VId: 18>",shape="plaintext",fontcolor="red"];
-    19 [label="Tmp'group'initial\n<VId: 19>",shape="plaintext"];
-    20 [label="Tmp'Extensions'final\nVU: {Tmp'Extensions}\n<VId: 20>",shape="plaintext"];
-    21 [label="Tmp.Y'initial\nVD: {Tmp.Y}\n<VId: 21>",shape="plaintext",fontcolor="red"];
-    22 [label="Tmp.Y'final\nVU: {Tmp.Y}\n<VId: 22>",shape="plaintext"];
-    23 [label="Tmp.X'initial\nVD: {Tmp.X}\n<VId: 23>",shape="plaintext",fontcolor="red"];
-    24 [label="Tmp.X'final\nVU: {Tmp.X}\n<VId: 24>",shape="plaintext"];
-    25 [label="tmp : widget_t'class := w1;\nVU: {W1.Y, W1.X, W1'Extensions}\nVD: {Tmp.X, Tmp.Y, Tmp'Extensions}\n<VId: 25>"];
-    26 [label="o1 := hash__2 (tmp);\nVU: {Tmp.X, Tmp.Y, Tmp'Extensions}\nSC: {Hash}\nVD: {O1}\n<VId: 26>"];
-
-    1 ->  2 [arrowType="normal"];
-    1 ->  25 [arrowType="normal"];
-    1 ->  26 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    6 ->  25 [arrowType="normal",color="red"];
-    7 ->  6 [arrowType="normal"];
-    7 ->  9 [arrowType="normal"];
-    7 ->  11 [arrowType="normal"];
-    9 ->  10 [arrowType="normal",color="red"];
-    9 ->  25 [arrowType="normal",color="red"];
-    11 ->  12 [arrowType="normal",color="red"];
-    11 ->  25 [arrowType="normal",color="red"];
-    19 ->  18 [arrowType="normal"];
-    19 ->  21 [arrowType="normal"];
-    19 ->  23 [arrowType="normal"];
-    25 ->  20 [arrowType="normal",color="red"];
-    25 ->  22 [arrowType="normal",color="red"];
-    25 ->  24 [arrowType="normal",color="red"];
-    25 ->  26 [arrowType="normal",color="red"];
-    26 ->  14 [arrowType="normal",color="red"];
-}
-
-// fa_subprogram_test_31_out_cfg
-digraph G {
-   graph [splines=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="W1.Y'initial\n(global)\nVD: {W1.Y}\n<VId: 6>",shape="plaintext"];
-    7 [label="W1'group'initial\n(global)\n<VId: 7>",shape="plaintext"];
-    8 [label="W1.Y'final\n(global)\nVU: {W1.Y}\n<VId: 8>",shape="plaintext",fontcolor="red"];
-    9 [label="W1.X'initial\n(global)\nVD: {W1.X}\n<VId: 9>",shape="plaintext"];
-    10 [label="W1.X'final\n(global)\nVU: {W1.X}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="W1'Extensions'initial\n(global)\nVD: {W1'Extensions}\n<VId: 11>",shape="plaintext"];
-    12 [label="W1'Extensions'final\n(global)\nVU: {W1'Extensions}\n<VId: 12>",shape="plaintext",fontcolor="red"];
-    13 [label="W2.Y'initial\n(global)\nVD: {W2.Y}\n<VId: 13>",shape="plaintext",fontcolor="red"];
-    14 [label="W2'group'initial\n(global)\n<VId: 14>",shape="plaintext"];
-    15 [label="W2.Y'final\n(global)\nVU: {W2.Y}\n<VId: 15>",shape="plaintext",fontcolor="blue"];
-    16 [label="W2.X'initial\n(global)\nVD: {W2.X}\n<VId: 16>",shape="plaintext",fontcolor="red"];
-    17 [label="W2.X'final\n(global)\nVU: {W2.X}\n<VId: 17>",shape="plaintext",fontcolor="blue"];
-    18 [label="W2'Extensions'initial\n(global)\nVD: {W2'Extensions}\n<VId: 18>",shape="plaintext",fontcolor="red"];
-    19 [label="W2'Extensions'final\n(global)\nVU: {W2'Extensions}\n<VId: 19>",shape="plaintext",fontcolor="blue"];
-    23 [label="widget_t'class(w2) := widget_t'class(w1);\nVU: {W1.X, W1.Y, W1'Extensions}\nVD: {W2'Extensions, W2.X, W2.Y}\n<VId: 23>"];
-
-    1 ->  23 [arrowType="normal"];
-    2 ->  3 [arrowType="normal"];
-    3 ->  8 [arrowType="normal"];
-    3 ->  10 [arrowType="normal"];
-    3 ->  12 [arrowType="normal"];
-    3 ->  15 [arrowType="normal"];
-    3 ->  17 [arrowType="normal"];
-    3 ->  19 [arrowType="normal"];
-    6 ->  1 [arrowType="normal"];
-    7 ->  6 [arrowType="normal"];
-    7 ->  9 [arrowType="normal"];
-    7 ->  11 [arrowType="normal"];
-    9 ->  1 [arrowType="normal"];
-    11 ->  1 [arrowType="normal"];
-    13 ->  1 [arrowType="normal"];
-    14 ->  13 [arrowType="normal"];
-    14 ->  16 [arrowType="normal"];
-    14 ->  18 [arrowType="normal"];
-    16 ->  1 [arrowType="normal"];
-    18 ->  1 [arrowType="normal"];
-    23 ->  2 [arrowType="normal"];
-}
-
-// fa_subprogram_test_31_out_pdg
-digraph G {
-   graph [splines=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="W1.Y'initial\n(global)\nVD: {W1.Y}\n<VId: 6>",shape="plaintext"];
-    7 [label="W1'group'initial\n(global)\n<VId: 7>",shape="plaintext"];
-    8 [label="W1.Y'final\n(global)\nVU: {W1.Y}\n<VId: 8>",shape="plaintext",fontcolor="red"];
-    9 [label="W1.X'initial\n(global)\nVD: {W1.X}\n<VId: 9>",shape="plaintext"];
-    10 [label="W1.X'final\n(global)\nVU: {W1.X}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="W1'Extensions'initial\n(global)\nVD: {W1'Extensions}\n<VId: 11>",shape="plaintext"];
-    12 [label="W1'Extensions'final\n(global)\nVU: {W1'Extensions}\n<VId: 12>",shape="plaintext",fontcolor="red"];
-    13 [label="W2.Y'initial\n(global)\nVD: {W2.Y}\n<VId: 13>",shape="plaintext",fontcolor="red"];
-    14 [label="W2'group'initial\n(global)\n<VId: 14>",shape="plaintext"];
-    15 [label="W2.Y'final\n(global)\nVU: {W2.Y}\n<VId: 15>",shape="plaintext",fontcolor="blue"];
-    16 [label="W2.X'initial\n(global)\nVD: {W2.X}\n<VId: 16>",shape="plaintext",fontcolor="red"];
-    17 [label="W2.X'final\n(global)\nVU: {W2.X}\n<VId: 17>",shape="plaintext",fontcolor="blue"];
-    18 [label="W2'Extensions'initial\n(global)\nVD: {W2'Extensions}\n<VId: 18>",shape="plaintext",fontcolor="red"];
-    19 [label="W2'Extensions'final\n(global)\nVU: {W2'Extensions}\n<VId: 19>",shape="plaintext",fontcolor="blue"];
-    23 [label="widget_t'class(w2) := widget_t'class(w1);\nVU: {W1.X, W1.Y, W1'Extensions}\nVD: {W2'Extensions, W2.X, W2.Y}\n<VId: 23>"];
-
-    1 ->  2 [arrowType="normal"];
-    1 ->  23 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    6 ->  23 [arrowType="normal",color="red"];
-    7 ->  6 [arrowType="normal"];
-    7 ->  9 [arrowType="normal"];
-    7 ->  11 [arrowType="normal"];
-    9 ->  10 [arrowType="normal",color="red"];
-    9 ->  23 [arrowType="normal",color="red"];
-    11 ->  12 [arrowType="normal",color="red"];
-    11 ->  23 [arrowType="normal",color="red"];
-    14 ->  13 [arrowType="normal"];
-    14 ->  16 [arrowType="normal"];
-    14 ->  18 [arrowType="normal"];
-    23 ->  15 [arrowType="normal",color="red"];
-    23 ->  17 [arrowType="normal",color="red"];
-    23 ->  19 [arrowType="normal",color="red"];
-}
-
-// fa_subprogram_test_31_pdg
+// fa_subprogram_tests__test_31_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -4885,7 +4885,7 @@ digraph G {
     33 ->  19 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_wibble_cfg
+// fa_subprogram_untangle__wibble_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -4913,7 +4913,7 @@ digraph G {
     15 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_wibble_pdg
+// fa_subprogram_untangle__wibble_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -4938,7 +4938,7 @@ digraph G {
     15 ->  11 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_zero_hi_cfg
+// fa_subprogram_untangle__zero_hi_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -4984,7 +4984,7 @@ digraph G {
     24 ->  23 [arrowType="normal"];
 }
 
-// fa_subprogram_zero_hi_pdg
+// fa_subprogram_untangle__zero_hi_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -5055,37 +5055,7 @@ digraph G {
 
 }
 
-// gg_subprogram_f_cfg
-digraph G {
-   graph [splines=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X.X'initial\nVD: {X.X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'group'initial\n<VId: 7>",shape="plaintext"];
-    8 [label="X.X'final\nVU: {X.X}\n<VId: 8>",shape="plaintext",fontcolor="red"];
-    9 [label="X.D'initial\nVD: {X.D}\n<VId: 9>",shape="plaintext",fontcolor="purple"];
-    10 [label="X.D'final\nVU: {X.D}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="F'initial\nVD: {F}\n<VId: 11>",shape="plaintext",fontcolor="red"];
-    12 [label="F'final\nVU: {F}\n<VId: 12>",shape="plaintext",fontcolor="blue"];
-    15 [label="subtype S22b is t (x.d);\nVU: {X.D}\n<VId: 15>"];
-    16 [label="return (x.d);\nVU: {X.D}\nVD: {F}\n<VId: 16>"];
-
-    1 ->  15 [arrowType="normal"];
-    2 ->  3 [arrowType="normal"];
-    3 ->  8 [arrowType="normal"];
-    3 ->  10 [arrowType="normal"];
-    3 ->  12 [arrowType="normal"];
-    6 ->  1 [arrowType="normal"];
-    7 ->  6 [arrowType="normal"];
-    9 ->  1 [arrowType="normal"];
-    11 ->  1 [arrowType="normal"];
-    15 ->  16 [arrowType="normal"];
-    16 ->  2 [arrowType="normal"];
-}
-
-// gg_subprogram_f_get_item_c_cfg
+// gg_subprogram_tests__f_get_item_c_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -5123,7 +5093,7 @@ digraph G {
     19 ->  1 [arrowType="normal"];
 }
 
-// gg_subprogram_f_get_item_c_pdg
+// gg_subprogram_tests__f_get_item_c_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -5157,7 +5127,7 @@ digraph G {
     18 ->  20 [arrowType="normal",color="red"];
 }
 
-// gg_subprogram_f_get_item_cfg
+// gg_subprogram_tests__f_get_item_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -5190,7 +5160,7 @@ digraph G {
     17 ->  1 [arrowType="normal"];
 }
 
-// gg_subprogram_f_get_item_e_cfg
+// gg_subprogram_tests__f_get_item_e_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -5228,7 +5198,7 @@ digraph G {
     19 ->  1 [arrowType="normal"];
 }
 
-// gg_subprogram_f_get_item_e_pdg
+// gg_subprogram_tests__f_get_item_e_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -5262,7 +5232,7 @@ digraph G {
     18 ->  20 [arrowType="normal",color="red"];
 }
 
-// gg_subprogram_f_get_item_pdg
+// gg_subprogram_tests__f_get_item_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -5291,33 +5261,7 @@ digraph G {
     16 ->  18 [arrowType="normal",color="red"];
 }
 
-// gg_subprogram_f_pdg
-digraph G {
-   graph [splines=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X.X'initial\nVD: {X.X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'group'initial\n<VId: 7>",shape="plaintext"];
-    8 [label="X.X'final\nVU: {X.X}\n<VId: 8>",shape="plaintext",fontcolor="red"];
-    9 [label="X.D'initial\nVD: {X.D}\n<VId: 9>",shape="plaintext",fontcolor="purple"];
-    10 [label="X.D'final\nVU: {X.D}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="F'initial\nVD: {F}\n<VId: 11>",shape="plaintext",fontcolor="red"];
-    12 [label="F'final\nVU: {F}\n<VId: 12>",shape="plaintext",fontcolor="blue"];
-    15 [label="subtype S22b is t (x.d);\nVU: {X.D}\n<VId: 15>"];
-    16 [label="return (x.d);\nVU: {X.D}\nVD: {F}\n<VId: 16>"];
-
-    1 ->  2 [arrowType="normal"];
-    1 ->  15 [arrowType="normal"];
-    1 ->  16 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    9 ->  10 [arrowType="normal",color="red"];
-    9 ->  15 [arrowType="normal",color="red"];
-    9 ->  16 [arrowType="normal",color="red"];
-    16 ->  12 [arrowType="normal",color="red"];
-}
-
-// gg_subprogram_id_cfg
+// gg_subprogram_tests__test_15__id_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -5365,7 +5309,7 @@ digraph G {
     25 ->  2 [arrowType="normal"];
 }
 
-// gg_subprogram_id_pdg
+// gg_subprogram_tests__test_15__id_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -5405,7 +5349,63 @@ digraph G {
     25 ->  21 [arrowType="normal",color="red"];
 }
 
-// gg_subprogram_test_18_cfg
+// gg_subprogram_tests__test_16__f_cfg
+digraph G {
+   graph [splines=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    3 [label="end\n<VId: 3>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="X.X'initial\nVD: {X.X}\n<VId: 6>",shape="plaintext"];
+    7 [label="X'group'initial\n<VId: 7>",shape="plaintext"];
+    8 [label="X.X'final\nVU: {X.X}\n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="X.D'initial\nVD: {X.D}\n<VId: 9>",shape="plaintext",fontcolor="purple"];
+    10 [label="X.D'final\nVU: {X.D}\n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="F'initial\nVD: {F}\n<VId: 11>",shape="plaintext",fontcolor="red"];
+    12 [label="F'final\nVU: {F}\n<VId: 12>",shape="plaintext",fontcolor="blue"];
+    15 [label="subtype S22b is t (x.d);\nVU: {X.D}\n<VId: 15>"];
+    16 [label="return (x.d);\nVU: {X.D}\nVD: {F}\n<VId: 16>"];
+
+    1 ->  15 [arrowType="normal"];
+    2 ->  3 [arrowType="normal"];
+    3 ->  8 [arrowType="normal"];
+    3 ->  10 [arrowType="normal"];
+    3 ->  12 [arrowType="normal"];
+    6 ->  1 [arrowType="normal"];
+    7 ->  6 [arrowType="normal"];
+    9 ->  1 [arrowType="normal"];
+    11 ->  1 [arrowType="normal"];
+    15 ->  16 [arrowType="normal"];
+    16 ->  2 [arrowType="normal"];
+}
+
+// gg_subprogram_tests__test_16__f_pdg
+digraph G {
+   graph [splines=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="X.X'initial\nVD: {X.X}\n<VId: 6>",shape="plaintext"];
+    7 [label="X'group'initial\n<VId: 7>",shape="plaintext"];
+    8 [label="X.X'final\nVU: {X.X}\n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="X.D'initial\nVD: {X.D}\n<VId: 9>",shape="plaintext",fontcolor="purple"];
+    10 [label="X.D'final\nVU: {X.D}\n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="F'initial\nVD: {F}\n<VId: 11>",shape="plaintext",fontcolor="red"];
+    12 [label="F'final\nVU: {F}\n<VId: 12>",shape="plaintext",fontcolor="blue"];
+    15 [label="subtype S22b is t (x.d);\nVU: {X.D}\n<VId: 15>"];
+    16 [label="return (x.d);\nVU: {X.D}\nVD: {F}\n<VId: 16>"];
+
+    1 ->  2 [arrowType="normal"];
+    1 ->  15 [arrowType="normal"];
+    1 ->  16 [arrowType="normal"];
+    6 ->  8 [arrowType="normal",color="red"];
+    9 ->  10 [arrowType="normal",color="red"];
+    9 ->  15 [arrowType="normal",color="red"];
+    9 ->  16 [arrowType="normal",color="red"];
+    16 ->  12 [arrowType="normal",color="red"];
+}
+
+// gg_subprogram_tests__test_18_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -5456,7 +5456,7 @@ subgraph cluster1 {
     23 ->  1 [arrowType="normal"];
 }
 
-// gg_subprogram_test_18_pdg
+// gg_subprogram_tests__test_18_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];

@@ -1,7 +1,7 @@
 test.adb:2:04: warning: analyzing unreferenced procedure "Compare_And_Swap"
 test.adb:14:04: warning: analyzing unreferenced procedure "Parallel_Block_Statements"
 test.adb:49:04: warning: analyzing unreferenced procedure "Nested_Block_Statements"
-// fa_pkg_body_test_cfg
+// fa_pkg_body_standard__test_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -15,7 +15,7 @@ digraph G {
     9 ->  2 [arrowType="normal"];
 }
 
-// fa_pkg_body_test_pdg
+// fa_pkg_body_standard__test_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -27,7 +27,7 @@ digraph G {
     1 ->  9 [arrowType="normal"];
 }
 
-// fa_subprogram_compare_and_swap_cfg
+// fa_subprogram_test__compare_and_swap_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -60,7 +60,7 @@ digraph G {
     19 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_compare_and_swap_pdg
+// fa_subprogram_test__compare_and_swap_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -95,7 +95,7 @@ digraph G {
     19 ->  9 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_nested_block_statements_cfg
+// fa_subprogram_test__nested_block_statements_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -133,7 +133,7 @@ digraph G {
     21 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_nested_block_statements_pdg
+// fa_subprogram_test__nested_block_statements_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -175,7 +175,7 @@ digraph G {
     20 ->  21 [arrowType="normal",color="red"];
 }
 
-// fa_subprogram_parallel_block_statements_cfg
+// fa_subprogram_test__parallel_block_statements_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -262,7 +262,7 @@ digraph G {
     50 ->  2 [arrowType="normal"];
 }
 
-// fa_subprogram_parallel_block_statements_pdg
+// fa_subprogram_test__parallel_block_statements_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -366,7 +366,7 @@ digraph G {
     48 ->  11 [arrowType="normal",color="red"];
 }
 
-// gg_subprogram_compare_and_swap_cfg
+// gg_subprogram_test__compare_and_swap_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -399,7 +399,7 @@ digraph G {
     19 ->  2 [arrowType="normal"];
 }
 
-// gg_subprogram_compare_and_swap_pdg
+// gg_subprogram_test__compare_and_swap_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -434,7 +434,7 @@ digraph G {
     19 ->  9 [arrowType="normal",color="red"];
 }
 
-// gg_subprogram_nested_block_statements_cfg
+// gg_subprogram_test__nested_block_statements_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -472,7 +472,7 @@ digraph G {
     21 ->  2 [arrowType="normal"];
 }
 
-// gg_subprogram_nested_block_statements_pdg
+// gg_subprogram_test__nested_block_statements_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -514,7 +514,7 @@ digraph G {
     20 ->  21 [arrowType="normal",color="red"];
 }
 
-// gg_subprogram_parallel_block_statements_cfg
+// gg_subprogram_test__parallel_block_statements_cfg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
@@ -601,7 +601,7 @@ digraph G {
     50 ->  2 [arrowType="normal"];
 }
 
-// gg_subprogram_parallel_block_statements_pdg
+// gg_subprogram_test__parallel_block_statements_pdg
 digraph G {
    graph [splines=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
