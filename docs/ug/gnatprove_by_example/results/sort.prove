@@ -21,7 +21,7 @@ sort.adb:35:22: medium: assertion might fail, requires Values = Set (Interm, Y, 
 sort.adb:35:31: info: precondition proved
 sort.adb:35:44: info: range check proved
 sort.adb:35:53: info: index check proved
-sort.adb:44:09: info: postcondition proved
+sort.adb:43:16: info: postcondition proved
 sort.adb:45:35: info: index check proved
 sort.adb:45:55: info: index check proved
 sort.adb:49:20: info: range check proved
