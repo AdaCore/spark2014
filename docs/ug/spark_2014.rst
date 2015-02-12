@@ -1215,7 +1215,7 @@ Aspect ``Async_Writers`` has an effect on |GNATprove|'s proof: two successive
 reads of such a variable may return different results. Aspect ``Async_Readers``
 has an effect on |GNATprove|'s flow analysis: an assignment to such a variable
 always has a potential effect, even if the value is never read in the program,
-since an external writer might actually read the value assigned.
+since an external reader might actually read the value assigned.
 
 These aspects are well suited to model respectively a sensor and a display, but
 not an input stream or an actuator, for which the act of reading or writing has
