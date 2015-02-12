@@ -1211,17 +1211,17 @@ different flavors of volatile variables:
 * Aspect ``Async_Readers`` indicates that the value of the variable may be read
   at any time (asynchronously) by hardware or software outside the program.
 
-Aspect ``Async_Writers`` has the following effect on |GNATprove|'s
-analysis: during proof, two successive reads of the same variable may
-return different results. On the other hand, ``Async_Readers`` only
-affects the way in which flow analysis is performed: an assignment to
-such a variable can *NOT* be ineffective (since an external writer
-might actually utilise it). Thus, these aspects are well suited to
-model respectively a sensor and a display, but not an input stream or
-an actuator, for which the act of reading or writing has an effect
-that should be reflected in the flow dependencies. Two more aspects
-are defined in |SPARK| to further refine the previous flavors of
-volatile variables:
+Aspect ``Async_Writers`` has an effect on |GNATprove|'s proof: two successive
+reads of such a variable may return different results. Aspect ``Async_Readers``
+has an effect on |GNATprove|'s flow analysis: an assignment to such a variable
+always has a potential effect, even if the value is never read in the program,
+since an external writer might actually read the value assigned.
+
+These aspects are well suited to model respectively a sensor and a display, but
+not an input stream or an actuator, for which the act of reading or writing has
+an effect that should be reflected in the flow dependencies. Two more aspects
+are defined in |SPARK| to further refine the previous flavors of volatile
+variables:
 
 * Aspect ``Effective_Reads`` indicates that reading the value of the variable
   has an effect (for example, removing a value from an input stream). It can
