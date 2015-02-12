@@ -39,6 +39,3 @@ default_init.ads:63:52: info: range check proved
 default_init.ads:85:39: info: precondition proved
 default_init.ads:92:64: info: precondition proved
 default_init.ads:98:20: info: discriminant check proved
-private_default.ads:2:09: medium: default initial condition might fail
-private_default.ads:4:09: medium: default initial condition might fail
-private_default.ads:6:09: medium: default initial condition might fail

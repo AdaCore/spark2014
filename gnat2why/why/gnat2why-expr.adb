@@ -2033,13 +2033,16 @@ package body Gnat2Why.Expr is
          Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
       end if;
 
-      --  Check for absence of runtime errors in Ty's default initial condition
+      --  If Ty's fullview is in SPARK,
+      --  check for absence of runtime errors in Ty's default initial condition
       --  and check that it is implied by the default initialization of Ty.
       --  Generate let x = any Ty in
       --        ignore__ (Def_Init_Cond (x));
       --        assert {Default_Init (x) -> Def_Init_Cond (x)}
 
-      if Has_Default_Init_Condition (Ty) then
+      if Has_Default_Init_Condition (Ty)
+        and then not Fullview_Not_In_SPARK (Ty)
+      then
          declare
             Default_Init_Subp : constant Entity_Id :=
               Get_Default_Init_Cond_Proc (Ty);

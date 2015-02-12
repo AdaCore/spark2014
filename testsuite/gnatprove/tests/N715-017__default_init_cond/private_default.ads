@@ -1,9 +1,9 @@
 package Private_Default with SPARK_Mode is
-   type Simple_Priv is private with --@DEFAULT_INITIAL_CONDITION:FAIL
+   type Simple_Priv is private with
      Default_Initial_Condition => Simple_Priv_Ok (Simple_Priv);
-   type Wrong_Priv is private with --@DEFAULT_INITIAL_CONDITION:FAIL
+   type Wrong_Priv is private with
      Default_Initial_Condition => Wrong_Priv_Ok (Wrong_Priv);
-   type Priv_With_Glob is private with --@DEFAULT_INITIAL_CONDITION:FAIL
+   type Priv_With_Glob is private with
      Default_Initial_Condition => Priv_With_Glob_Ok (Priv_With_Glob);
 
    function Simple_Priv_Ok (R : Simple_Priv) return Boolean;
