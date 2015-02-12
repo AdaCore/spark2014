@@ -2130,7 +2130,7 @@ package body Gnat2Why.Subprograms is
             procedure Get_Pre_Post_Pragmas (Decls : Node_Lists.List) is
             begin
                for Decl of Decls loop
-                  if Is_Pragma_Check (Decl, Name_Precondition) and then
+                  if Is_Pragma (Decl, Pragma_Precondition) and then
                     not From_Aspect_Specification (Decl)
                   then
                      Pre_Prags.Append (Decl);

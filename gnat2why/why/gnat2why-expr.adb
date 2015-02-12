@@ -9590,11 +9590,11 @@ package body Gnat2Why.Expr is
          when Pragma_Overflow_Mode =>
             return New_Void (Prag);
 
-         --  Unless Force is True to force the translation of pragma
-         --  Postcondition (for those pragmas declared in a subprogram body),
-         --  this pragma is translated elsewhere.
+         --  Unless Force is True to force the translation of pragmas
+         --  Precondition and Postcondition (for those pragmas declared in
+         --  a subprogram body), these pragmas are translated elsewhere.
 
-         when Pragma_Postcondition =>
+         when Pragma_Precondition | Pragma_Postcondition =>
             if Force then
                declare
                   Expr   : constant Node_Id :=
@@ -9710,7 +9710,6 @@ package body Gnat2Why.Expr is
               Pragma_Initial_Condition            |
               Pragma_Loop_Variant                 |
               Pragma_Part_Of                      |
-              Pragma_Precondition                 |
               Pragma_Refined_Depends              |
               Pragma_Refined_Global               |
               Pragma_Refined_Post                 |
