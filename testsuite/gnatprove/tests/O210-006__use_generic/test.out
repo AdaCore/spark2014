@@ -1,0 +1,4 @@
+main.adb:17:08: info: discriminant check proved, in instantiation at main.adb:22
+main.adb:17:20: info: length check proved, in instantiation at main.adb:22
+main.adb:26:04: high: "D.M_Array" is not initialized
+main.adb:26:04: info: precondition proved

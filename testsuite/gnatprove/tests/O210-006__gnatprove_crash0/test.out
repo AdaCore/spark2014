@@ -1,0 +1,2 @@
+main.adb:13:08: info: discriminant check proved, in call inlined at main.adb:20
+main.adb:13:20: info: length check proved, in call inlined at main.adb:20
