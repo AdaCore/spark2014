@@ -2,18 +2,18 @@ repr.adb:6:31: warning: unused initial value of "Unsorted"
 repr.adb:10:30: warning: "Values" is not modified, could be IN
 repr.adb:16:16: warning: unused assignment
 repr.adb:16:37: medium: range check might fail
+sorters.adb:15:12: info: postcondition proved
 sorters.adb:15:20: info: index check proved
 sorters.adb:15:37: info: index check proved
 sorters.adb:16:20: info: index check proved
 sorters.adb:16:37: info: index check proved
-sorters.adb:17:13: info: postcondition proved
 sorters.adb:18:51: info: index check proved
 sorters.adb:18:68: info: index check proved
 sorters.adb:22:29: info: index check proved
 sorters.adb:23:15: info: index check proved
 sorters.adb:23:29: info: index check proved
 sorters.adb:24:15: info: index check proved
-sorters.adb:36:11: info: postcondition proved
+sorters.adb:35:10: info: postcondition proved
 sorters.adb:37:39: info: index check proved
 sorters.adb:37:61: info: index check proved
 sorters.adb:41:22: info: range check proved

@@ -248,8 +248,8 @@ generic_float_tests.adb:338:14: warning: subprogram "Test_Floor_4" has no effect
 generic_float_tests.adb:338:14: warning: subprogram "Test_Floor_4" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:342:24: medium: assertion might fail, requires X < FT'floor, in instantiation at foo.ads:10
 generic_float_tests.adb:342:24: medium: assertion might fail, requires X < FT'floor, in instantiation at foo.ads:15
-generic_float_tests.adb:342:38: medium: overflow check might fail, in instantiation at foo.ads:10
-generic_float_tests.adb:342:38: medium: overflow check might fail, in instantiation at foo.ads:15
+generic_float_tests.adb:342:38: info: overflow check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:342:38: info: overflow check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:345:14: warning: subprogram "Test_Floor_5" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:345:14: warning: subprogram "Test_Floor_5" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:348:07: info: assertion proved, in instantiation at foo.ads:10
@@ -304,8 +304,8 @@ generic_float_tests.adb:398:21: medium: postcondition might fail, requires Y in 
 generic_float_tests.adb:398:21: medium: postcondition might fail, requires Y in X - 0.5 .. X + , in instantiation at foo.ads:15
 generic_float_tests.adb:398:26: info: overflow check proved, in instantiation at foo.ads:10
 generic_float_tests.adb:398:26: info: overflow check proved, in instantiation at foo.ads:15
-generic_float_tests.adb:398:37: medium: overflow check might fail, in instantiation at foo.ads:10
-generic_float_tests.adb:398:37: medium: overflow check might fail, in instantiation at foo.ads:15
+generic_float_tests.adb:398:37: info: overflow check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:398:37: info: overflow check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:406:21: info: postcondition proved, in instantiation at foo.ads:10
 generic_float_tests.adb:406:21: info: postcondition proved, in instantiation at foo.ads:15
 generic_float_tests.adb:421:21: info: postcondition proved, in instantiation at foo.ads:10

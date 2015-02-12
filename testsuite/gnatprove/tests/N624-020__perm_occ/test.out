@@ -63,7 +63,7 @@ sort.adb:34:22: medium: assertion might fail, requires Values = Set (Interm, Y, 
 sort.adb:34:31: info: precondition proved
 sort.adb:34:44: info: range check proved
 sort.adb:34:53: info: index check proved
-sort.adb:43:09: info: postcondition proved
+sort.adb:42:16: info: postcondition proved
 sort.adb:44:35: info: index check proved
 sort.adb:44:55: info: index check proved
 sort.adb:48:20: info: range check proved
