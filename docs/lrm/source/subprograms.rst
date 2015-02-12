@@ -979,7 +979,8 @@ Extensions_Visible Aspects
 .. centered:: **Static Semantics**
 
 2. Extensions_Visible is a Boolean-valued aspect which may be specified for a
-   subprogram. If directly specified, the aspect_definition shall be a static
+   noninstance subprogram or a generic subprogram.
+   If directly specified, the aspect_definition shall be a static
    [Boolean] expression. The aspect is inherited by an inherited primitive
    subprogram. If the aspect is neither inherited nor directly specified
    for a subprogram, then the aspect is False, except in the case of the
