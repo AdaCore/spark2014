@@ -31,6 +31,7 @@ docs/ug/loop_patterns/*/* no-precommit-check
 docs/ug/linear_search/*/* no-precommit-check
 docs/ug/lemmas/* no-precommit-check
 docs/ug/* no-precommit-check
+docs/booklet/* no-precommit-check
 trace_units_script/* no-precommit-check
 slides/*/* no-precommit-check
 slides/*/*/* no-precommit-check
