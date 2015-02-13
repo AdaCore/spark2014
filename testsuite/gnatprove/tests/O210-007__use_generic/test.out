@@ -1,0 +1,7 @@
+main.adb:18:13: info: discriminant check proved, in instantiation at main.adb:38
+main.adb:18:25: info: length check proved, in instantiation at main.adb:38
+main.adb:21:10: info: loop invariant initialization proved, in instantiation at main.adb:38
+main.adb:21:10: info: loop invariant preservation proved, in instantiation at main.adb:38
+main.adb:28:13: info: assertion proved, in instantiation at main.adb:38
+main.adb:29:19: info: discriminant check proved, in instantiation at main.adb:38
+main.adb:41:04: high: "B.M_Nodes" is not initialized
