@@ -1,5 +1,5 @@
 project Test is
    package Compiler is
-      for Default_Switches ("Ada") use ("-gnat12", "-nostdinc", "-I.");
+      for Default_Switches ("Ada") use ("-gnat12", "-nostdinc", "-I" & Test'Project_Dir);
    end Compiler;
 end Test;
