@@ -1,15 +1,15 @@
+sorters.adb:23:19: info: postcondition proved
 sorters.adb:24:15: info: index check proved
 sorters.adb:24:32: info: index check proved
 sorters.adb:25:19: info: index check proved
 sorters.adb:25:36: info: index check proved
-sorters.adb:26:12: info: postcondition proved
 sorters.adb:27:51: info: index check proved
 sorters.adb:27:68: info: index check proved
 sorters.adb:32:29: info: index check proved
 sorters.adb:33:15: info: index check proved
 sorters.adb:33:29: info: index check proved
 sorters.adb:34:15: info: index check proved
-sorters.adb:46:11: info: postcondition proved
+sorters.adb:45:10: info: postcondition proved
 sorters.adb:47:39: info: index check proved
 sorters.adb:47:61: info: index check proved
 sorters.adb:51:22: info: range check proved
