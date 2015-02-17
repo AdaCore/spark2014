@@ -1,0 +1,5 @@
+pre_post_exercise.adb:11:16: info: length check proved
+pre_post_exercise.adb:16:38: medium: range check might fail
+pre_post_exercise.adb:17:14: info: index check proved
+pre_post_exercise.adb:22:19: medium: array index check might fail
+pre_post_exercise.adb:23:38: info: range check proved
