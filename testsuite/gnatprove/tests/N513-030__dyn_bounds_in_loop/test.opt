@@ -1,1 +1,1 @@
-ALL XFAIL constants declared in loops in expr fun body
+ALL XFAIL problem with constants with variable input (O121-031)
