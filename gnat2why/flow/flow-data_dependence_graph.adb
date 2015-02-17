@@ -21,8 +21,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with SPARK_Util; use SPARK_Util;
-
 package body Flow.Data_Dependence_Graph is
 
    use type Flow_Id_Sets.Set;
@@ -34,77 +32,109 @@ package body Flow.Data_Dependence_Graph is
       FA.DDG := Flow_Graphs.Create (FA.CFG);
 
       for V_D of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
-         Combined_Defined :=
-           (if not FA.Compute_Globals
-            then FA.Atr.Element (V_D).Variables_Defined or
-                   FA.Atr.Element (V_D).Volatiles_Read
-            else FA.Atr.Element (V_D).Variables_Defined or
-                   FA.Atr.Element (V_D).Volatiles_Read or
-                   To_Flow_Id_Set (FA.Atr.Element (V_D).Subprograms_Called));
-         for Var of Combined_Defined loop
-            declare
-               procedure Visitor
-                 (V_U : Flow_Graphs.Vertex_Id;
-                  TV  : out Flow_Graphs.Simple_Traversal_Instruction);
-               --  For Var, check if there is a def-use link from V_D
-               --  to V_U. Stop traversal if node V_U also defined
-               --  Var.
+         if not FA.Atr.Element (V_D).Is_Exceptional_Path then
+            Combined_Defined :=
+              (if not FA.Compute_Globals
+               then FA.Atr.Element (V_D).Variables_Defined or
+                 FA.Atr.Element (V_D).Volatiles_Read
+               else FA.Atr.Element (V_D).Variables_Defined or
+                 FA.Atr.Element (V_D).Volatiles_Read or
+                 To_Flow_Id_Set (FA.Atr.Element (V_D).Subprograms_Called));
+            for Var of Combined_Defined loop
+               declare
+                  procedure Visitor
+                    (V_U : Flow_Graphs.Vertex_Id;
+                     TV  : out Flow_Graphs.Simple_Traversal_Instruction);
+                  --  For Var, check if there is a def-use link from V_D
+                  --  to V_U. Stop traversal if node V_U also defined
+                  --  Var.
 
-               procedure Visitor
-                 (V_U : Flow_Graphs.Vertex_Id;
-                  TV  : out Flow_Graphs.Simple_Traversal_Instruction)
-               is
-                  Atr : constant V_Attributes := FA.Atr (V_U);
-               begin
-                  if Atr.Variables_Used.Contains (Var) then
-                     FA.DDG.Add_Edge (V_D, V_U, EC_DDG);
-                  end if;
+                  function Edge_Selector (A, B : Flow_Graphs.Vertex_Id)
+                                         return Boolean;
+                  --  Check if we should go down the given edge based on
+                  --  colour.
 
-                  if Atr.Variables_Defined.Contains (Var)
-                    or Atr.Volatiles_Read.Contains (Var)
-                    or (FA.Compute_Globals
-                          and then Var.Kind = Direct_Mapping
-                          and then Atr.Subprograms_Called.Contains
-                                     (Get_Direct_Mapping_Id (Var)))
-                  then
-                     TV := Flow_Graphs.Skip_Children;
+                  -------------
+                  -- Visitor --
+                  -------------
 
-                  elsif Atr.Execution = Abnormal_Termination then
-                     TV := Flow_Graphs.Skip_Children;
-
-                  else
-                     TV := Flow_Graphs.Continue;
-                  end if;
-               end Visitor;
-            begin
-               --  Check for self-dependency (i.e. X := X + 1).
-               if FA.Atr.Element (V_D).Variables_Used.Contains (Var) then
-                  FA.DDG.Add_Edge (V_D, V_D, EC_DDG);
-               end if;
-
-               --  Flag all def-used chains rooted at V_D.
-               FA.CFG.DFS (Start         => V_D,
-                           Include_Start => False,
-                           Visitor       => Visitor'Access);
-
-               for Vol of FA.Atr.Element (V_D).Volatiles_Written loop
-                  declare
-                     V_Final : constant Flow_Graphs.Vertex_Id :=
-                       FA.CFG.Get_Vertex (Change_Variant (Vol, Final_Value));
+                  procedure Visitor
+                    (V_U : Flow_Graphs.Vertex_Id;
+                     TV  : out Flow_Graphs.Simple_Traversal_Instruction)
+                  is
+                     Atr : constant V_Attributes := FA.Atr (V_U);
                   begin
-                     if V_Final /= Flow_Graphs.Null_Vertex then
-                        --  If V_Final is null, then we're doing
-                        --  something involving a variable that has
-                        --  been missed out of the global
-                        --  annotation. We just ignore the connection
-                        --  in that case, and flow analysis sanity
-                        --  check will pick up the pieces later.
-                        FA.DDG.Add_Edge (V_D, V_Final, EC_DDG);
+                     if Atr.Variables_Used.Contains (Var) then
+                        FA.DDG.Add_Edge (V_D, V_U, EC_DDG);
                      end if;
-                  end;
-               end loop;
-            end;
-         end loop;
+
+                     if Atr.Is_Exceptional_Path then
+                        TV := Flow_Graphs.Skip_Children;
+
+                     elsif Atr.Variables_Defined.Contains (Var)
+                       or Atr.Volatiles_Read.Contains (Var)
+                       or (FA.Compute_Globals
+                             and then Var.Kind = Direct_Mapping
+                             and then Atr.Subprograms_Called.Contains
+                               (Get_Direct_Mapping_Id (Var)))
+                     then
+                        TV := Flow_Graphs.Skip_Children;
+
+                     else
+                        TV := Flow_Graphs.Continue;
+                     end if;
+                  end Visitor;
+
+                  -------------------
+                  -- Edge_Selector --
+                  -------------------
+
+                  function Edge_Selector (A, B : Flow_Graphs.Vertex_Id)
+                                         return Boolean
+                  is
+                  begin
+                     case FA.CFG.Edge_Colour (A, B) is
+                        when EC_Default | EC_Inf =>
+                           return True;
+                        when EC_Abend =>
+                           return False;
+                        when others =>
+                           raise Program_Error;
+                     end case;
+                  end Edge_Selector;
+
+               begin
+                  --  Check for self-dependency (i.e. X := X + 1).
+                  if FA.Atr.Element (V_D).Variables_Used.Contains (Var) then
+                     FA.DDG.Add_Edge (V_D, V_D, EC_DDG);
+                  end if;
+
+                  --  Flag all def-used chains rooted at V_D.
+                  FA.CFG.DFS (Start         => V_D,
+                              Include_Start => False,
+                              Visitor       => Visitor'Access,
+                              Edge_Selector => Edge_Selector'Access);
+
+                  for Vol of FA.Atr.Element (V_D).Volatiles_Written loop
+                     declare
+                        V_Final : constant Flow_Graphs.Vertex_Id :=
+                          FA.CFG.Get_Vertex (Change_Variant (Vol,
+                                                             Final_Value));
+                     begin
+                        if V_Final /= Flow_Graphs.Null_Vertex then
+                           --  If V_Final is null, then we're doing
+                           --  something involving a variable that has
+                           --  been missed out of the global
+                           --  annotation. We just ignore the connection
+                           --  in that case, and flow analysis sanity
+                           --  check will pick up the pieces later.
+                           FA.DDG.Add_Edge (V_D, V_Final, EC_DDG);
+                        end if;
+                     end;
+                  end loop;
+               end;
+            end loop;
+         end if;
       end loop;
    end Create;
 

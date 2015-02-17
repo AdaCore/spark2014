@@ -193,6 +193,10 @@ package body Flow is
       Indent;
 
       Format_Item ("Is_Null_Node", Boolean'Image (A.Is_Null_Node));
+      Format_Item ("Is_Exceptional_Branch",
+                   Boolean'Image (A.Is_Exceptional_Branch));
+      Format_Item ("Is_Exceptional_Path",
+                   Boolean'Image (A.Is_Exceptional_Path));
       Format_Item ("Is_Program_Node", Boolean'Image (A.Is_Program_Node));
       Format_Item ("Is_Proof", Boolean'Image (A.Is_Proof));
       Format_Item ("Is_Precondition", Boolean'Image (A.Is_Precondition));
@@ -317,10 +321,11 @@ package body Flow is
          V : Vertex_Id) return Node_Display_Info
       is
          Rv : Node_Display_Info := Node_Display_Info'
-           (Show   => True,
-            Shape  => Node_Shape_T'First,
-            Colour => Null_Unbounded_String,
-            Label  => Null_Unbounded_String);
+           (Show        => True,
+            Shape       => Node_Shape_T'First,
+            Colour      => Null_Unbounded_String,
+            Fill_Colour => Null_Unbounded_String,
+            Label       => Null_Unbounded_String);
 
          F : constant Flow_Id      := G.Get_Key (V);
          A : constant V_Attributes := M (V);
@@ -340,6 +345,10 @@ package body Flow is
       begin
          Temp_String := Null_Unbounded_String;
          Set_Special_Output (Add_To_Temp_String'Access);
+
+         if A.Is_Exceptional_Path then
+            Rv.Fill_Colour := To_Unbounded_String ("gold");
+         end if;
 
          if A.Is_Null_Node then
             Rv.Show := False;
@@ -713,6 +722,19 @@ package body Flow is
             Write_Str ("}");
          end if;
 
+         case A.Execution is
+            when Normal_Execution =>
+               null;
+            when Abnormal_Termination =>
+               Write_Str ("\nExecution: ABEND");
+            when Infinite_Loop =>
+               Write_Str ("\nExecution: INF");
+         end case;
+
+         if A.Is_Exceptional_Branch then
+            Write_Str ("\nExceptional_Branch");
+         end if;
+
          if A.Is_Proof then
             Write_Str ("\nPROOF");
          end if;
@@ -751,8 +773,18 @@ package body Flow is
          case Colour is
             when EC_Default =>
                null;
+
+            when EC_Abend =>
+               Rv.Colour := To_Unbounded_String ("gold");
+               Rv.Label  := To_Unbounded_String ("abend");
+
+            when EC_Inf =>
+               Rv.Colour := To_Unbounded_String ("chartreuse"); --  Hi Martin!
+               Rv.Label  := To_Unbounded_String ("inf");
+
             when EC_DDG =>
                Rv.Colour := To_Unbounded_String ("red");
+
             when EC_TDG =>
                Rv.Colour := To_Unbounded_String ("cornflowerblue");
          end case;
@@ -816,8 +848,6 @@ package body Flow is
       Tmp.No_Effects                   := False;
       Tmp.No_Errors_Or_Warnings        := True;
       Tmp.Direct_Calls                 := Node_Sets.Empty_Set;
-      Tmp.Edges_To_Remove              := Vertex_Pair_Sets.Empty_Set;
-      Tmp.Lead_To_Abnormal_Termination := Vertex_To_Natural_Maps.Empty_Map;
 
       if Compute_Globals then
          --  Generate Globals

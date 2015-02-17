@@ -234,6 +234,12 @@ package Graph is
                   G.Get_Vertex (V_2) /= Null_Vertex;
    --  Same as above but takes Vertex_Keys as parameters.
 
+   function Edge_Colour
+     (G        : T'Class;
+      V_1, V_2 : Vertex_Id) return Edge_Colours
+   with Pre => G.Edge_Exists (V_1, V_2);
+   --  Returns the edge colour of the given edge.
+
    procedure Add_Edge
      (G        : in out T'Class;
       V_1, V_2 : Vertex_Id;
@@ -286,8 +292,10 @@ package Graph is
    --  Complexity is O(N).
 
    procedure Copy_Edges
-     (G : in out T'Class;
-      O : T'Class);
+     (G             : in out T'Class;
+      O             : T'Class;
+      Edge_Selector : access function (A, B : Vertex_Id)
+                                       return Boolean := null);
    --  Copy all edges from graph O to graph G.
    --
    --  Complexity is O(N).
@@ -411,6 +419,8 @@ package Graph is
       Visitor       : access procedure
         (V  : Vertex_Id;
          TV : out Simple_Traversal_Instruction);
+      Edge_Selector : access function (A, B : Vertex_Id)
+                                       return Boolean := null;
       Reversed      : Boolean := False);
    --  Perform a depth-first search rooted at Start. If Include_Start
    --  is true, the first node visited is Start. If not, then Start is
@@ -535,10 +545,11 @@ package Graph is
    type Edge_Shape_T is (Edge_Normal);
 
    type Node_Display_Info is record
-      Show   : Boolean;
-      Shape  : Node_Shape_T;
-      Colour : Unbounded_String;
-      Label  : Unbounded_String;
+      Show        : Boolean;
+      Shape       : Node_Shape_T;
+      Colour      : Unbounded_String;
+      Fill_Colour : Unbounded_String;
+      Label       : Unbounded_String;
    end record;
 
    type Edge_Display_Info is record

@@ -1497,9 +1497,7 @@ package body Flow.Analysis is
                  --  Suppression for vertices that can lead to
                  --  abnormal termination and have had some of their
                  --  out edges removed.
-                 (not FA.Lead_To_Abnormal_Termination.Contains (V) or else
-                    FA.CFG.Out_Neighbour_Count (V) =
-                      FA.Lead_To_Abnormal_Termination.Element (V)) and then
+                 not Atr.Is_Exceptional_Branch and then
 
                  --  Suppression for vertices that correspond to
                  --  an assignment to a record field, that comes
@@ -1624,22 +1622,30 @@ package body Flow.Analysis is
 
       procedure Flag_Live (V  : Flow_Graphs.Vertex_Id;
                            TV : out Flow_Graphs.Simple_Traversal_Instruction);
-      --  Flag the given node as "live" and continue traversal if
-      --  appropriate.
+                           --  Flag the given node as "live".
+
+      function Edge_Selector (A, B : Flow_Graphs.Vertex_Id) return Boolean;
 
       procedure Flag_Live (V  : Flow_Graphs.Vertex_Id;
                            TV : out Flow_Graphs.Simple_Traversal_Instruction)
       is
-         Atr : constant V_Attributes := FA.Atr.Element (V);
       begin
          Dead_Code.Exclude (V);
-
-         if Atr.Execution /= Normal_Execution then
-            TV := Flow_Graphs.Skip_Children;
-         else
-            TV := Flow_Graphs.Continue;
-         end if;
+         TV := Flow_Graphs.Continue;
       end Flag_Live;
+
+      function Edge_Selector (A, B : Flow_Graphs.Vertex_Id) return Boolean
+      is
+      begin
+         case FA.CFG.Edge_Colour (A, B) is
+            when EC_Default =>
+               return True;
+            when EC_Abend | EC_Inf =>
+               return True;
+            when others =>
+               raise Program_Error;
+         end case;
+      end Edge_Selector;
 
    begin
       --  Guilty until proven innocent.
@@ -1659,7 +1665,8 @@ package body Flow.Analysis is
       --  Discover live code
       FA.CFG.DFS (Start         => FA.Start_Vertex,
                   Include_Start => True,
-                  Visitor       => Flag_Live'Access);
+                  Visitor       => Flag_Live'Access,
+                  Edge_Selector => Edge_Selector'Access);
 
       --  Anything remaining is dead
       for V of Dead_Code loop

@@ -246,10 +246,11 @@ package body Flow_Computed_Globals is
               when Null_Kind      => "");
 
          Rv : constant Node_Display_Info := Node_Display_Info'
-           (Show   => True,
-            Shape  => Shape,
-            Colour => Null_Unbounded_String,
-            Label  => To_Unbounded_String (Label));
+           (Show        => True,
+            Shape       => Shape,
+            Colour      => Null_Unbounded_String,
+            Fill_Colour => Null_Unbounded_String,
+            Label       => To_Unbounded_String (Label));
       begin
          return Rv;
       end NDI;

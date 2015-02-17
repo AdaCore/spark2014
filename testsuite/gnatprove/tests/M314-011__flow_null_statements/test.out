@@ -3,6 +3,7 @@ test.adb:2:14: warning: subprogram "Null_Statement" has no effect
 // fa_pkg_body_standard__test_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -17,6 +18,7 @@ digraph G {
 // fa_pkg_body_standard__test_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -29,6 +31,7 @@ digraph G {
 // fa_subprogram_test__null_statement_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -43,6 +46,7 @@ digraph G {
 // fa_subprogram_test__null_statement_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -55,6 +59,7 @@ digraph G {
 // gg_subprogram_test__null_statement_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -69,6 +74,7 @@ digraph G {
 // gg_subprogram_test__null_statement_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -81,6 +87,7 @@ digraph G {
 // test_Globals_Graph
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="test__null_statement'Ins",shape="box"];
     2 [label="test__null_statement'Outs",shape="box"];
     3 [label="test__null_statement'Proof_Ins",shape="box"];

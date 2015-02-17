@@ -214,6 +214,18 @@ package body Graph is
                           Get_Vertex (G, V_2));
    end Edge_Exists;
 
+   -----------------
+   -- Edge_Colour --
+   -----------------
+
+   function Edge_Colour
+     (G        : T'Class;
+      V_1, V_2 : Vertex_Id) return Edge_Colours
+   is
+   begin
+      return G.Vertices (V_1).Out_Neighbours (V_2).Colour;
+   end Edge_Colour;
+
    --------------
    -- Add_Edge --
    --------------
@@ -319,8 +331,11 @@ package body Graph is
    ------------------
 
    procedure Copy_Edges
-     (G : in out T'Class;
-      O : T'Class) is
+     (G             : in out T'Class;
+      O             : T'Class;
+      Edge_Selector : access function (A, B : Vertex_Id)
+                                       return Boolean := null)
+   is
    begin
       --  Sanity check the length of the two graphs.
       pragma Assert (G.Vertices.Length = O.Vertices.Length);
@@ -331,9 +346,11 @@ package body Graph is
                V_B : constant Valid_Vertex_Id := Key (C);
                Atr : constant Edge_Attributes := Element (C);
             begin
-               G.Add_Edge (V_A, V_B, Atr.Colour);
-               if Atr.Marked then
-                  G.Mark_Edge (V_A, V_B);
+               if Edge_Selector = null or else Edge_Selector (V_A, V_B) then
+                  G.Add_Edge (V_A, V_B, Atr.Colour);
+                  if Atr.Marked then
+                     G.Mark_Edge (V_A, V_B);
+                  end if;
                end if;
             end;
          end loop;
@@ -639,6 +656,8 @@ package body Graph is
       Visitor       : access procedure
         (V  : Vertex_Id;
          TV : out Simple_Traversal_Instruction);
+      Edge_Selector : access function (A, B : Vertex_Id)
+                                       return Boolean := null;
       Reversed      : Boolean := False)
    is
       type Bit_Field is array
@@ -647,6 +666,11 @@ package body Graph is
       Will_Visit : Bit_Field         := Bit_Field'(others => False);
       Stack      : Vertex_Index_List := VIL.Empty_Vector;
       TV         : Simple_Traversal_Instruction;
+
+      function Should_Visit (A : Vertex_Id;
+                             B : Vertex_Id)
+                             return Boolean;
+      --  Wrapper around Edge_Selector to deal with the null case.
 
       procedure Schedule_Vertex (V : Valid_Vertex_Id);
       --  Add V to the stack of vertices to visit and flag it as "to
@@ -677,7 +701,8 @@ package body Graph is
             --  neighbours instead of the out neighbours. No other
             --  difference.
             for Out_Node of G.Vertices (V).In_Neighbours loop
-               if not Will_Visit (Out_Node) then
+               if not Will_Visit (Out_Node) and then Should_Visit (V, Out_Node)
+               then
                   Schedule_Vertex (Out_Node);
                end if;
             end loop;
@@ -686,13 +711,35 @@ package body Graph is
                declare
                   Out_Node : constant Valid_Vertex_Id := Key (C);
                begin
-                  if not Will_Visit (Out_Node) then
+                  if not Will_Visit (Out_Node) and then
+                    Should_Visit (V, Out_Node)
+                  then
                      Schedule_Vertex (Out_Node);
                   end if;
                end;
             end loop;
          end if;
       end Schedule_Children;
+
+      ------------------
+      -- Should_Visit --
+      ------------------
+
+      function Should_Visit (A : Vertex_Id;
+                             B : Vertex_Id)
+                             return Boolean
+      is
+      begin
+         if Edge_Selector = null then
+            return True;
+         elsif Reversed then
+            return Edge_Selector (A => B,
+                                  B => A);
+         else
+            return Edge_Selector (A => A,
+                                  B => B);
+         end if;
+      end Should_Visit;
 
    begin
       --  Seed the stack with either the start node or all its
@@ -1369,6 +1416,7 @@ package body Graph is
 
       Put_Line (FD, "digraph G {");
       Put_Line (FD, "   graph [splines=True];");
+      Put_Line (FD, "   edge [labelfloat=True];");
 
       for C in Cluster_Id range 0 .. G.Clusters loop
          if C > 0 then
@@ -1407,6 +1455,11 @@ package body Graph is
                             & To_String (Info.Colour)
                             & """");
                   end if;
+                  if Info.Fill_Colour /= Null_Unbounded_String then
+                     Put (FD, ",style=filled,color="""
+                            & To_String (Info.Fill_Colour)
+                            & """");
+                  end if;
                   Put (FD, "];");
                   New_Line (FD);
                end if;
@@ -1438,6 +1491,8 @@ package body Graph is
                   end case;
                   if Info.Colour /= Null_Unbounded_String then
                      Put (FD, ",color=""" & To_String (Info.Colour) & """");
+                     Put (FD, ",fontcolor=""" &
+                            To_String (Info.Colour) & """");
                   end if;
                   if Info.Label /=  Null_Unbounded_String then
                      Put (FD, ",label=""" & Escape (Info.Label) & """");

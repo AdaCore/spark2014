@@ -21,6 +21,7 @@ tests.adb:497:21: medium: missing dependency "O1 => A"
 // fa_pkg_body_standard__tests_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -37,6 +38,7 @@ digraph G {
 // fa_pkg_body_standard__tests_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -51,6 +53,7 @@ digraph G {
 // fa_pkg_body_standard__untangle_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -83,6 +86,7 @@ digraph G {
 // fa_pkg_body_standard__untangle_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -106,12 +110,13 @@ digraph G {
     1 ->  13 [arrowType="normal"];
     1 ->  16 [arrowType="normal"];
     1 ->  19 [arrowType="normal"];
-    16 ->  15 [arrowType="normal",color="red"];
+    16 ->  15 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_pkg_spec_misc_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -137,6 +142,7 @@ digraph G {
 // fa_pkg_spec_misc_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -151,13 +157,14 @@ digraph G {
     1 ->  12 [arrowType="normal"];
     8 ->  7 [arrowType="normal"];
     8 ->  10 [arrowType="normal"];
-    12 ->  9 [arrowType="normal",color="red"];
-    12 ->  11 [arrowType="normal",color="red"];
+    12 ->  9 [arrowType="normal",color="red",fontcolor="red"];
+    12 ->  11 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__f_get_item_c_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -192,6 +199,7 @@ digraph G {
 // fa_subprogram_tests__f_get_item_c_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -208,21 +216,22 @@ digraph G {
 
     1 ->  2 [arrowType="normal"];
     1 ->  18 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    6 ->  18 [arrowType="normal",color="red"];
+    6 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  18 [arrowType="normal",color="red",fontcolor="red"];
     7 ->  6 [arrowType="normal"];
     7 ->  9 [arrowType="normal"];
     7 ->  11 [arrowType="normal"];
-    9 ->  10 [arrowType="normal",color="red"];
-    9 ->  18 [arrowType="normal",color="red"];
-    11 ->  12 [arrowType="normal",color="red"];
-    11 ->  18 [arrowType="normal",color="red"];
-    18 ->  14 [arrowType="normal",color="red"];
+    9 ->  10 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  18 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  12 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  18 [arrowType="normal",color="red",fontcolor="red"];
+    18 ->  14 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__f_get_item_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -252,6 +261,7 @@ digraph G {
 // fa_subprogram_tests__f_get_item_e_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -286,6 +296,7 @@ digraph G {
 // fa_subprogram_tests__f_get_item_e_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -302,21 +313,22 @@ digraph G {
 
     1 ->  2 [arrowType="normal"];
     1 ->  18 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    6 ->  18 [arrowType="normal",color="red"];
+    6 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  18 [arrowType="normal",color="red",fontcolor="red"];
     7 ->  6 [arrowType="normal"];
     7 ->  9 [arrowType="normal"];
     7 ->  11 [arrowType="normal"];
-    9 ->  10 [arrowType="normal",color="red"];
-    9 ->  18 [arrowType="normal",color="red"];
-    11 ->  12 [arrowType="normal",color="red"];
-    11 ->  18 [arrowType="normal",color="red"];
-    18 ->  14 [arrowType="normal",color="red"];
+    9 ->  10 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  18 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  12 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  18 [arrowType="normal",color="red",fontcolor="red"];
+    18 ->  14 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__f_get_item_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -331,18 +343,19 @@ digraph G {
 
     1 ->  2 [arrowType="normal"];
     1 ->  16 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    6 ->  16 [arrowType="normal",color="red"];
+    6 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  16 [arrowType="normal",color="red",fontcolor="red"];
     7 ->  6 [arrowType="normal"];
     7 ->  9 [arrowType="normal"];
-    9 ->  10 [arrowType="normal",color="red"];
-    9 ->  16 [arrowType="normal",color="red"];
-    16 ->  12 [arrowType="normal",color="red"];
+    9 ->  10 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  16 [arrowType="normal",color="red",fontcolor="red"];
+    16 ->  12 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__p_get_item_c_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -377,6 +390,7 @@ digraph G {
 // fa_subprogram_tests__p_get_item_c_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -393,21 +407,22 @@ digraph G {
 
     1 ->  2 [arrowType="normal"];
     1 ->  18 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    6 ->  18 [arrowType="normal",color="red"];
+    6 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  18 [arrowType="normal",color="red",fontcolor="red"];
     7 ->  6 [arrowType="normal"];
     7 ->  9 [arrowType="normal"];
     7 ->  11 [arrowType="normal"];
-    9 ->  10 [arrowType="normal",color="red"];
-    9 ->  18 [arrowType="normal",color="red"];
-    11 ->  12 [arrowType="normal",color="red"];
-    11 ->  18 [arrowType="normal",color="red"];
-    18 ->  14 [arrowType="normal",color="red"];
+    9 ->  10 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  18 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  12 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  18 [arrowType="normal",color="red",fontcolor="red"];
+    18 ->  14 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__p_get_item_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -437,6 +452,7 @@ digraph G {
 // fa_subprogram_tests__p_get_item_e_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -471,6 +487,7 @@ digraph G {
 // fa_subprogram_tests__p_get_item_e_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -487,21 +504,22 @@ digraph G {
 
     1 ->  2 [arrowType="normal"];
     1 ->  18 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    6 ->  18 [arrowType="normal",color="red"];
+    6 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  18 [arrowType="normal",color="red",fontcolor="red"];
     7 ->  6 [arrowType="normal"];
     7 ->  9 [arrowType="normal"];
     7 ->  11 [arrowType="normal"];
-    9 ->  10 [arrowType="normal",color="red"];
-    9 ->  18 [arrowType="normal",color="red"];
-    11 ->  12 [arrowType="normal",color="red"];
-    11 ->  18 [arrowType="normal",color="red"];
-    18 ->  14 [arrowType="normal",color="red"];
+    9 ->  10 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  18 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  12 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  18 [arrowType="normal",color="red",fontcolor="red"];
+    18 ->  14 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__p_get_item_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -516,18 +534,19 @@ digraph G {
 
     1 ->  2 [arrowType="normal"];
     1 ->  16 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    6 ->  16 [arrowType="normal",color="red"];
+    6 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  16 [arrowType="normal",color="red",fontcolor="red"];
     7 ->  6 [arrowType="normal"];
     7 ->  9 [arrowType="normal"];
-    9 ->  10 [arrowType="normal",color="red"];
-    9 ->  16 [arrowType="normal",color="red"];
-    16 ->  12 [arrowType="normal",color="red"];
+    9 ->  10 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  16 [arrowType="normal",color="red",fontcolor="red"];
+    16 ->  12 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__p_mod_item_c_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -564,6 +583,7 @@ digraph G {
 // fa_subprogram_tests__p_mod_item_c_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -582,23 +602,24 @@ digraph G {
     1 ->  2 [arrowType="normal"];
     1 ->  18 [arrowType="normal"];
     1 ->  19 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    6 ->  18 [arrowType="normal",color="red"];
+    6 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  18 [arrowType="normal",color="red",fontcolor="red"];
     7 ->  6 [arrowType="normal"];
     7 ->  9 [arrowType="normal"];
     7 ->  11 [arrowType="normal"];
-    9 ->  18 [arrowType="normal",color="red"];
-    11 ->  18 [arrowType="normal",color="red"];
-    13 ->  14 [arrowType="normal",color="red"];
-    13 ->  19 [arrowType="normal",color="red"];
-    18 ->  12 [arrowType="normal",color="red"];
-    18 ->  18 [arrowType="normal",color="red"];
-    19 ->  10 [arrowType="normal",color="red"];
+    9 ->  18 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  18 [arrowType="normal",color="red",fontcolor="red"];
+    13 ->  14 [arrowType="normal",color="red",fontcolor="red"];
+    13 ->  19 [arrowType="normal",color="red",fontcolor="red"];
+    18 ->  12 [arrowType="normal",color="red",fontcolor="red"];
+    18 ->  18 [arrowType="normal",color="red",fontcolor="red"];
+    19 ->  10 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__p_mod_item_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -628,6 +649,7 @@ digraph G {
 // fa_subprogram_tests__p_mod_item_e_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -678,6 +700,7 @@ subgraph cluster1 {
 // fa_subprogram_tests__p_mod_item_e_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -701,27 +724,28 @@ digraph G {
     1 ->  18 [arrowType="normal"];
     1 ->  22 [arrowType="normal"];
     1 ->  23 [arrowType="normal"];
-    6 ->  19 [arrowType="normal",color="red"];
+    6 ->  19 [arrowType="normal",color="red",fontcolor="red"];
     7 ->  6 [arrowType="normal"];
     7 ->  9 [arrowType="normal"];
     7 ->  11 [arrowType="normal"];
-    9 ->  19 [arrowType="normal",color="red"];
-    11 ->  19 [arrowType="normal",color="red"];
-    13 ->  14 [arrowType="normal",color="red"];
-    13 ->  21 [arrowType="normal",color="red"];
+    9 ->  19 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  19 [arrowType="normal",color="red",fontcolor="red"];
+    13 ->  14 [arrowType="normal",color="red",fontcolor="red"];
+    13 ->  21 [arrowType="normal",color="red",fontcolor="red"];
     18 ->  19 [arrowType="normal"];
     18 ->  20 [arrowType="normal"];
     18 ->  21 [arrowType="normal"];
-    19 ->  20 [arrowType="normal",color="cornflowerblue"];
-    20 ->  12 [arrowType="normal",color="red"];
-    21 ->  20 [arrowType="normal",color="cornflowerblue"];
-    22 ->  10 [arrowType="normal",color="red"];
-    23 ->  8 [arrowType="normal",color="red"];
+    19 ->  20 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
+    20 ->  12 [arrowType="normal",color="red",fontcolor="red"];
+    21 ->  20 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
+    22 ->  10 [arrowType="normal",color="red",fontcolor="red"];
+    23 ->  8 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__p_mod_item_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -736,17 +760,18 @@ digraph G {
 
     1 ->  2 [arrowType="normal"];
     1 ->  16 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
+    6 ->  8 [arrowType="normal",color="red",fontcolor="red"];
     7 ->  6 [arrowType="normal"];
     7 ->  9 [arrowType="normal"];
-    11 ->  12 [arrowType="normal",color="red"];
-    11 ->  16 [arrowType="normal",color="red"];
-    16 ->  10 [arrowType="normal",color="red"];
+    11 ->  12 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  16 [arrowType="normal",color="red",fontcolor="red"];
+    16 ->  10 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_01_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -765,6 +790,7 @@ digraph G {
 // fa_subprogram_tests__test_01_e_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -789,6 +815,7 @@ digraph G {
 // fa_subprogram_tests__test_01_e_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -801,13 +828,14 @@ digraph G {
 
     1 ->  2 [arrowType="normal"];
     1 ->  16 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    16 ->  10 [arrowType="normal",color="red"];
+    6 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    16 ->  10 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_01_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -817,12 +845,13 @@ digraph G {
 
     1 ->  2 [arrowType="normal"];
     1 ->  12 [arrowType="normal"];
-    12 ->  7 [arrowType="normal",color="red"];
+    12 ->  7 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_02_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -852,6 +881,7 @@ digraph G {
 // fa_subprogram_tests__test_02_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -866,18 +896,19 @@ digraph G {
 
     1 ->  2 [arrowType="normal"];
     1 ->  17 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    6 ->  17 [arrowType="normal",color="red"];
+    6 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  17 [arrowType="normal",color="red",fontcolor="red"];
     7 ->  6 [arrowType="normal"];
     7 ->  9 [arrowType="normal"];
-    9 ->  10 [arrowType="normal",color="red"];
-    9 ->  17 [arrowType="normal",color="red"];
-    17 ->  12 [arrowType="normal",color="red"];
+    9 ->  10 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  17 [arrowType="normal",color="red",fontcolor="red"];
+    17 ->  12 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_03_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -902,6 +933,7 @@ digraph G {
 // fa_subprogram_tests__test_03_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -914,14 +946,15 @@ digraph G {
 
     1 ->  2 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    6 ->  15 [arrowType="normal",color="red"];
-    15 ->  10 [arrowType="normal",color="red"];
+    6 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  15 [arrowType="normal",color="red",fontcolor="red"];
+    15 ->  10 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_04_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -956,6 +989,7 @@ digraph G {
 // fa_subprogram_tests__test_04_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -972,21 +1006,22 @@ digraph G {
 
     1 ->  2 [arrowType="normal"];
     1 ->  19 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    6 ->  19 [arrowType="normal",color="red"];
+    6 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  19 [arrowType="normal",color="red",fontcolor="red"];
     7 ->  6 [arrowType="normal"];
     7 ->  9 [arrowType="normal"];
     7 ->  11 [arrowType="normal"];
-    9 ->  10 [arrowType="normal",color="red"];
-    9 ->  19 [arrowType="normal",color="red"];
-    11 ->  12 [arrowType="normal",color="red"];
-    11 ->  19 [arrowType="normal",color="red"];
-    19 ->  14 [arrowType="normal",color="red"];
+    9 ->  10 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  19 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  12 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  19 [arrowType="normal",color="red",fontcolor="red"];
+    19 ->  14 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_05_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -1048,6 +1083,7 @@ digraph G {
 // fa_subprogram_tests__test_05_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -1079,30 +1115,31 @@ digraph G {
     1 ->  25 [arrowType="normal"];
     1 ->  31 [arrowType="normal"];
     1 ->  32 [arrowType="normal"];
-    6 ->  7 [arrowType="normal",color="red"];
-    6 ->  25 [arrowType="normal",color="red"];
-    8 ->  9 [arrowType="normal",color="red"];
-    8 ->  25 [arrowType="normal",color="red"];
-    10 ->  11 [arrowType="normal",color="red"];
-    10 ->  25 [arrowType="normal",color="red"];
+    6 ->  7 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  25 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  9 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  25 [arrowType="normal",color="red",fontcolor="red"];
+    10 ->  11 [arrowType="normal",color="red",fontcolor="red"];
+    10 ->  25 [arrowType="normal",color="red",fontcolor="red"];
     19 ->  18 [arrowType="normal"];
     19 ->  21 [arrowType="normal"];
     19 ->  23 [arrowType="normal"];
-    25 ->  20 [arrowType="normal",color="red"];
-    25 ->  22 [arrowType="normal",color="red"];
-    25 ->  24 [arrowType="normal",color="red"];
-    25 ->  31 [arrowType="normal",color="red"];
+    25 ->  20 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  22 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  24 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  31 [arrowType="normal",color="red",fontcolor="red"];
     27 ->  26 [arrowType="normal"];
     27 ->  29 [arrowType="normal"];
-    31 ->  28 [arrowType="normal",color="red"];
-    31 ->  30 [arrowType="normal",color="red"];
-    31 ->  32 [arrowType="normal",color="red"];
-    32 ->  13 [arrowType="normal",color="red"];
+    31 ->  28 [arrowType="normal",color="red",fontcolor="red"];
+    31 ->  30 [arrowType="normal",color="red",fontcolor="red"];
+    31 ->  32 [arrowType="normal",color="red",fontcolor="red"];
+    32 ->  13 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_06_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -1151,6 +1188,7 @@ digraph G {
 // fa_subprogram_tests__test_06_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -1175,25 +1213,26 @@ digraph G {
     1 ->  2 [arrowType="normal"];
     1 ->  25 [arrowType="normal"];
     1 ->  26 [arrowType="normal"];
-    6 ->  7 [arrowType="normal",color="red"];
-    6 ->  25 [arrowType="normal",color="red"];
-    8 ->  9 [arrowType="normal",color="red"];
-    8 ->  25 [arrowType="normal",color="red"];
-    10 ->  11 [arrowType="normal",color="red"];
-    10 ->  25 [arrowType="normal",color="red"];
+    6 ->  7 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  25 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  9 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  25 [arrowType="normal",color="red",fontcolor="red"];
+    10 ->  11 [arrowType="normal",color="red",fontcolor="red"];
+    10 ->  25 [arrowType="normal",color="red",fontcolor="red"];
     19 ->  18 [arrowType="normal"];
     19 ->  21 [arrowType="normal"];
     19 ->  23 [arrowType="normal"];
-    25 ->  20 [arrowType="normal",color="red"];
-    25 ->  22 [arrowType="normal",color="red"];
-    25 ->  24 [arrowType="normal",color="red"];
-    25 ->  26 [arrowType="normal",color="red"];
-    26 ->  13 [arrowType="normal",color="red"];
+    25 ->  20 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  22 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  24 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  26 [arrowType="normal",color="red",fontcolor="red"];
+    26 ->  13 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_07_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -1254,6 +1293,7 @@ subgraph cluster1 {
 // fa_subprogram_tests__test_07_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -1282,28 +1322,29 @@ digraph G {
     1 ->  25 [arrowType="normal"];
     1 ->  26 [arrowType="normal"];
     1 ->  29 [arrowType="normal"];
-    6 ->  7 [arrowType="normal",color="red"];
-    6 ->  25 [arrowType="normal",color="red"];
-    8 ->  9 [arrowType="normal",color="red"];
-    8 ->  25 [arrowType="normal",color="red"];
-    10 ->  11 [arrowType="normal",color="red"];
-    10 ->  25 [arrowType="normal",color="red"];
+    6 ->  7 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  25 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  9 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  25 [arrowType="normal",color="red",fontcolor="red"];
+    10 ->  11 [arrowType="normal",color="red",fontcolor="red"];
+    10 ->  25 [arrowType="normal",color="red",fontcolor="red"];
     19 ->  18 [arrowType="normal"];
     19 ->  21 [arrowType="normal"];
     19 ->  23 [arrowType="normal"];
-    25 ->  20 [arrowType="normal",color="red"];
-    25 ->  29 [arrowType="normal",color="red"];
+    25 ->  20 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  29 [arrowType="normal",color="red",fontcolor="red"];
     26 ->  27 [arrowType="normal"];
     26 ->  28 [arrowType="normal"];
-    28 ->  22 [arrowType="normal",color="red"];
-    28 ->  24 [arrowType="normal",color="red"];
-    28 ->  29 [arrowType="normal",color="red"];
-    29 ->  13 [arrowType="normal",color="red"];
+    28 ->  22 [arrowType="normal",color="red",fontcolor="red"];
+    28 ->  24 [arrowType="normal",color="red",fontcolor="red"];
+    28 ->  29 [arrowType="normal",color="red",fontcolor="red"];
+    29 ->  13 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_08_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -1364,6 +1405,7 @@ subgraph cluster1 {
 // fa_subprogram_tests__test_08_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -1392,27 +1434,28 @@ digraph G {
     1 ->  26 [arrowType="normal"];
     1 ->  28 [arrowType="normal"];
     1 ->  31 [arrowType="normal"];
-    6 ->  7 [arrowType="normal",color="red"];
-    6 ->  26 [arrowType="normal",color="red"];
-    8 ->  9 [arrowType="normal",color="red"];
-    8 ->  26 [arrowType="normal",color="red"];
-    10 ->  11 [arrowType="normal",color="red"];
-    10 ->  26 [arrowType="normal",color="red"];
+    6 ->  7 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  26 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  9 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  26 [arrowType="normal",color="red",fontcolor="red"];
+    10 ->  11 [arrowType="normal",color="red",fontcolor="red"];
+    10 ->  26 [arrowType="normal",color="red",fontcolor="red"];
     20 ->  19 [arrowType="normal"];
     20 ->  22 [arrowType="normal"];
     20 ->  24 [arrowType="normal"];
     28 ->  29 [arrowType="normal"];
     28 ->  30 [arrowType="normal"];
-    30 ->  21 [arrowType="normal",color="red"];
-    30 ->  23 [arrowType="normal",color="red"];
-    30 ->  25 [arrowType="normal",color="red"];
-    30 ->  31 [arrowType="normal",color="red"];
-    31 ->  13 [arrowType="normal",color="red"];
+    30 ->  21 [arrowType="normal",color="red",fontcolor="red"];
+    30 ->  23 [arrowType="normal",color="red",fontcolor="red"];
+    30 ->  25 [arrowType="normal",color="red",fontcolor="red"];
+    30 ->  31 [arrowType="normal",color="red",fontcolor="red"];
+    31 ->  13 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_09_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -1520,6 +1563,7 @@ subgraph cluster1 {
 // fa_subprogram_tests__test_09_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -1574,23 +1618,23 @@ digraph G {
     1 ->  43 [arrowType="normal"];
     1 ->  49 [arrowType="normal"];
     1 ->  50 [arrowType="normal"];
-    6 ->  7 [arrowType="normal",color="red"];
-    6 ->  25 [arrowType="normal",color="red"];
-    8 ->  9 [arrowType="normal",color="red"];
-    8 ->  25 [arrowType="normal",color="red"];
-    10 ->  11 [arrowType="normal",color="red"];
-    10 ->  25 [arrowType="normal",color="red"];
+    6 ->  7 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  25 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  9 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  25 [arrowType="normal",color="red",fontcolor="red"];
+    10 ->  11 [arrowType="normal",color="red",fontcolor="red"];
+    10 ->  25 [arrowType="normal",color="red",fontcolor="red"];
     19 ->  18 [arrowType="normal"];
     19 ->  21 [arrowType="normal"];
     19 ->  23 [arrowType="normal"];
-    25 ->  20 [arrowType="normal",color="red"];
-    25 ->  22 [arrowType="normal",color="red"];
-    25 ->  24 [arrowType="normal",color="red"];
-    25 ->  39 [arrowType="normal",color="red"];
-    25 ->  40 [arrowType="normal",color="red"];
-    25 ->  41 [arrowType="normal",color="red"];
-    25 ->  42 [arrowType="normal",color="red"];
-    25 ->  43 [arrowType="normal",color="red"];
+    25 ->  20 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  22 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  24 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  39 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  40 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  41 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  42 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  43 [arrowType="normal",color="red",fontcolor="red"];
     27 ->  26 [arrowType="normal"];
     27 ->  30 [arrowType="normal"];
     27 ->  32 [arrowType="normal"];
@@ -1598,24 +1642,25 @@ digraph G {
     28 ->  35 [arrowType="normal"];
     35 ->  34 [arrowType="normal"];
     35 ->  37 [arrowType="normal"];
-    39 ->  33 [arrowType="normal",color="red"];
-    40 ->  31 [arrowType="normal",color="red"];
-    40 ->  49 [arrowType="normal",color="red"];
-    41 ->  29 [arrowType="normal",color="red"];
-    41 ->  49 [arrowType="normal",color="red"];
-    42 ->  36 [arrowType="normal",color="red"];
-    43 ->  38 [arrowType="normal",color="red"];
+    39 ->  33 [arrowType="normal",color="red",fontcolor="red"];
+    40 ->  31 [arrowType="normal",color="red",fontcolor="red"];
+    40 ->  49 [arrowType="normal",color="red",fontcolor="red"];
+    41 ->  29 [arrowType="normal",color="red",fontcolor="red"];
+    41 ->  49 [arrowType="normal",color="red",fontcolor="red"];
+    42 ->  36 [arrowType="normal",color="red",fontcolor="red"];
+    43 ->  38 [arrowType="normal",color="red",fontcolor="red"];
     45 ->  44 [arrowType="normal"];
     45 ->  47 [arrowType="normal"];
-    49 ->  46 [arrowType="normal",color="red"];
-    49 ->  48 [arrowType="normal",color="red"];
-    49 ->  50 [arrowType="normal",color="red"];
-    50 ->  13 [arrowType="normal",color="red"];
+    49 ->  46 [arrowType="normal",color="red",fontcolor="red"];
+    49 ->  48 [arrowType="normal",color="red",fontcolor="red"];
+    49 ->  50 [arrowType="normal",color="red",fontcolor="red"];
+    50 ->  13 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_10_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -1727,6 +1772,7 @@ subgraph cluster1 {
 // fa_subprogram_tests__test_10_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -1781,24 +1827,24 @@ digraph G {
     1 ->  44 [arrowType="normal"];
     1 ->  50 [arrowType="normal"];
     1 ->  51 [arrowType="normal"];
-    6 ->  9 [arrowType="normal",color="red"];
-    6 ->  44 [arrowType="normal",color="red"];
+    6 ->  9 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  44 [arrowType="normal",color="red",fontcolor="red"];
     7 ->  6 [arrowType="normal"];
     7 ->  10 [arrowType="normal"];
     7 ->  12 [arrowType="normal"];
     8 ->  7 [arrowType="normal"];
     8 ->  15 [arrowType="normal"];
-    10 ->  11 [arrowType="normal",color="red"];
-    10 ->  43 [arrowType="normal",color="red"];
-    12 ->  13 [arrowType="normal",color="red"];
-    14 ->  16 [arrowType="normal",color="red"];
-    14 ->  41 [arrowType="normal",color="red"];
+    10 ->  11 [arrowType="normal",color="red",fontcolor="red"];
+    10 ->  43 [arrowType="normal",color="red",fontcolor="red"];
+    12 ->  13 [arrowType="normal",color="red",fontcolor="red"];
+    14 ->  16 [arrowType="normal",color="red",fontcolor="red"];
+    14 ->  41 [arrowType="normal",color="red",fontcolor="red"];
     15 ->  14 [arrowType="normal"];
     15 ->  17 [arrowType="normal"];
-    17 ->  18 [arrowType="normal",color="red"];
-    17 ->  40 [arrowType="normal",color="red"];
-    19 ->  20 [arrowType="normal",color="red"];
-    19 ->  42 [arrowType="normal",color="red"];
+    17 ->  18 [arrowType="normal",color="red",fontcolor="red"];
+    17 ->  40 [arrowType="normal",color="red",fontcolor="red"];
+    19 ->  20 [arrowType="normal",color="red",fontcolor="red"];
+    19 ->  42 [arrowType="normal",color="red",fontcolor="red"];
     28 ->  27 [arrowType="normal"];
     28 ->  31 [arrowType="normal"];
     28 ->  33 [arrowType="normal"];
@@ -1806,24 +1852,25 @@ digraph G {
     29 ->  36 [arrowType="normal"];
     36 ->  35 [arrowType="normal"];
     36 ->  38 [arrowType="normal"];
-    40 ->  39 [arrowType="normal",color="red"];
-    41 ->  37 [arrowType="normal",color="red"];
-    42 ->  34 [arrowType="normal",color="red"];
-    43 ->  32 [arrowType="normal",color="red"];
-    43 ->  50 [arrowType="normal",color="red"];
-    44 ->  30 [arrowType="normal",color="red"];
-    44 ->  50 [arrowType="normal",color="red"];
+    40 ->  39 [arrowType="normal",color="red",fontcolor="red"];
+    41 ->  37 [arrowType="normal",color="red",fontcolor="red"];
+    42 ->  34 [arrowType="normal",color="red",fontcolor="red"];
+    43 ->  32 [arrowType="normal",color="red",fontcolor="red"];
+    43 ->  50 [arrowType="normal",color="red",fontcolor="red"];
+    44 ->  30 [arrowType="normal",color="red",fontcolor="red"];
+    44 ->  50 [arrowType="normal",color="red",fontcolor="red"];
     46 ->  45 [arrowType="normal"];
     46 ->  48 [arrowType="normal"];
-    50 ->  47 [arrowType="normal",color="red"];
-    50 ->  49 [arrowType="normal",color="red"];
-    50 ->  51 [arrowType="normal",color="red"];
-    51 ->  22 [arrowType="normal",color="red"];
+    50 ->  47 [arrowType="normal",color="red",fontcolor="red"];
+    50 ->  49 [arrowType="normal",color="red",fontcolor="red"];
+    50 ->  51 [arrowType="normal",color="red",fontcolor="red"];
+    51 ->  22 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_11_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -1855,6 +1902,7 @@ digraph G {
 // fa_subprogram_tests__test_11_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -1873,15 +1921,16 @@ digraph G {
     1 ->  18 [arrowType="normal"];
     13 ->  12 [arrowType="normal"];
     13 ->  15 [arrowType="normal"];
-    17 ->  14 [arrowType="normal",color="red"];
-    17 ->  16 [arrowType="normal",color="red"];
-    17 ->  18 [arrowType="normal",color="red"];
-    18 ->  7 [arrowType="normal",color="red"];
+    17 ->  14 [arrowType="normal",color="red",fontcolor="red"];
+    17 ->  16 [arrowType="normal",color="red",fontcolor="red"];
+    17 ->  18 [arrowType="normal",color="red",fontcolor="red"];
+    18 ->  7 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_12_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -1936,6 +1985,7 @@ subgraph cluster2 {
 // fa_subprogram_tests__test_12_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -1961,18 +2011,19 @@ digraph G {
     1 ->  19 [arrowType="normal"];
     1 ->  23 [arrowType="normal"];
     1 ->  24 [arrowType="normal"];
-    6 ->  7 [arrowType="normal",color="red"];
-    6 ->  19 [arrowType="normal",color="red"];
-    19 ->  18 [arrowType="normal",color="red"];
-    19 ->  23 [arrowType="normal",color="red"];
-    23 ->  22 [arrowType="normal",color="red"];
-    23 ->  24 [arrowType="normal",color="red"];
-    24 ->  9 [arrowType="normal",color="red"];
+    6 ->  7 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  19 [arrowType="normal",color="red",fontcolor="red"];
+    19 ->  18 [arrowType="normal",color="red",fontcolor="red"];
+    19 ->  23 [arrowType="normal",color="red",fontcolor="red"];
+    23 ->  22 [arrowType="normal",color="red",fontcolor="red"];
+    23 ->  24 [arrowType="normal",color="red",fontcolor="red"];
+    24 ->  9 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_13_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -2082,6 +2133,7 @@ digraph G {
 // fa_subprogram_tests__test_13_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -2140,12 +2192,12 @@ digraph G {
     1 ->  50 [arrowType="normal"];
     1 ->  51 [arrowType="normal"];
     1 ->  52 [arrowType="normal"];
-    6 ->  7 [arrowType="normal",color="red"];
-    6 ->  50 [arrowType="normal",color="red"];
-    8 ->  9 [arrowType="normal",color="red"];
-    8 ->  50 [arrowType="normal",color="red"];
-    10 ->  11 [arrowType="normal",color="red"];
-    10 ->  51 [arrowType="normal",color="red"];
+    6 ->  7 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  50 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  9 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  50 [arrowType="normal",color="red",fontcolor="red"];
+    10 ->  11 [arrowType="normal",color="red",fontcolor="red"];
+    10 ->  51 [arrowType="normal",color="red",fontcolor="red"];
     23 ->  22 [arrowType="normal"];
     23 ->  25 [arrowType="normal"];
     23 ->  27 [arrowType="normal"];
@@ -2158,31 +2210,32 @@ digraph G {
     39 ->  41 [arrowType="normal"];
     45 ->  44 [arrowType="normal"];
     45 ->  47 [arrowType="normal"];
-    50 ->  53 [arrowType="normal",color="red"];
-    50 ->  26 [arrowType="normal",color="red"];
-    50 ->  28 [arrowType="normal",color="red"];
-    50 ->  52 [arrowType="normal",color="red"];
-    51 ->  53 [arrowType="normal",color="red"];
-    51 ->  24 [arrowType="normal",color="red"];
-    52 ->  57 [arrowType="normal",color="red"];
-    52 ->  40 [arrowType="normal",color="red"];
-    52 ->  42 [arrowType="normal",color="red"];
-    53 ->  54 [arrowType="normal",color="red"];
-    53 ->  56 [arrowType="normal",color="red"];
-    53 ->  33 [arrowType="normal",color="red"];
-    53 ->  35 [arrowType="normal",color="red"];
-    53 ->  37 [arrowType="normal",color="red"];
-    54 ->  55 [arrowType="normal",color="red"];
-    54 ->  46 [arrowType="normal",color="red"];
-    54 ->  48 [arrowType="normal",color="red"];
-    55 ->  13 [arrowType="normal",color="red"];
-    56 ->  15 [arrowType="normal",color="red"];
-    57 ->  17 [arrowType="normal",color="red"];
+    50 ->  53 [arrowType="normal",color="red",fontcolor="red"];
+    50 ->  26 [arrowType="normal",color="red",fontcolor="red"];
+    50 ->  28 [arrowType="normal",color="red",fontcolor="red"];
+    50 ->  52 [arrowType="normal",color="red",fontcolor="red"];
+    51 ->  53 [arrowType="normal",color="red",fontcolor="red"];
+    51 ->  24 [arrowType="normal",color="red",fontcolor="red"];
+    52 ->  57 [arrowType="normal",color="red",fontcolor="red"];
+    52 ->  40 [arrowType="normal",color="red",fontcolor="red"];
+    52 ->  42 [arrowType="normal",color="red",fontcolor="red"];
+    53 ->  54 [arrowType="normal",color="red",fontcolor="red"];
+    53 ->  56 [arrowType="normal",color="red",fontcolor="red"];
+    53 ->  33 [arrowType="normal",color="red",fontcolor="red"];
+    53 ->  35 [arrowType="normal",color="red",fontcolor="red"];
+    53 ->  37 [arrowType="normal",color="red",fontcolor="red"];
+    54 ->  55 [arrowType="normal",color="red",fontcolor="red"];
+    54 ->  46 [arrowType="normal",color="red",fontcolor="red"];
+    54 ->  48 [arrowType="normal",color="red",fontcolor="red"];
+    55 ->  13 [arrowType="normal",color="red",fontcolor="red"];
+    56 ->  15 [arrowType="normal",color="red",fontcolor="red"];
+    57 ->  17 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_14_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -2215,6 +2268,7 @@ digraph G {
 // fa_subprogram_tests__test_14_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -2236,16 +2290,17 @@ digraph G {
     1 ->  16 [arrowType="normal"];
     1 ->  17 [arrowType="normal"];
     1 ->  18 [arrowType="normal"];
-    16 ->  17 [arrowType="normal",color="red"];
-    17 ->  15 [arrowType="normal",color="red"];
-    17 ->  17 [arrowType="normal",color="red"];
-    17 ->  18 [arrowType="normal",color="red"];
-    18 ->  7 [arrowType="normal",color="red"];
+    16 ->  17 [arrowType="normal",color="red",fontcolor="red"];
+    17 ->  15 [arrowType="normal",color="red",fontcolor="red"];
+    17 ->  17 [arrowType="normal",color="red",fontcolor="red"];
+    17 ->  18 [arrowType="normal",color="red",fontcolor="red"];
+    18 ->  7 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_15__id_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -2294,6 +2349,7 @@ digraph G {
 // fa_subprogram_tests__test_15__id_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -2319,21 +2375,22 @@ digraph G {
     1 ->  2 [arrowType="normal"];
     1 ->  24 [arrowType="normal"];
     1 ->  25 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    6 ->  25 [arrowType="normal",color="red"];
-    9 ->  11 [arrowType="normal",color="red"];
-    9 ->  25 [arrowType="normal",color="red"];
-    12 ->  13 [arrowType="normal",color="red"];
-    12 ->  24 [arrowType="normal",color="red"];
-    12 ->  25 [arrowType="normal",color="red"];
-    25 ->  16 [arrowType="normal",color="red"];
-    25 ->  19 [arrowType="normal",color="red"];
-    25 ->  21 [arrowType="normal",color="red"];
+    6 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  25 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  11 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  25 [arrowType="normal",color="red",fontcolor="red"];
+    12 ->  13 [arrowType="normal",color="red",fontcolor="red"];
+    12 ->  24 [arrowType="normal",color="red",fontcolor="red"];
+    12 ->  25 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  16 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  19 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  21 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_15_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -2396,6 +2453,7 @@ digraph G {
 // fa_subprogram_tests__test_15_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -2433,23 +2491,24 @@ digraph G {
     1 ->  31 [arrowType="normal"];
     1 ->  32 [arrowType="normal"];
     1 ->  33 [arrowType="normal"];
-    17 ->  19 [arrowType="normal",color="red"];
-    17 ->  31 [arrowType="normal",color="red"];
-    20 ->  21 [arrowType="normal",color="red"];
-    20 ->  31 [arrowType="normal",color="red"];
-    22 ->  16 [arrowType="normal",color="red"];
-    22 ->  31 [arrowType="normal",color="red"];
-    31 ->  25 [arrowType="normal",color="red"];
-    31 ->  28 [arrowType="normal",color="red"];
-    31 ->  30 [arrowType="normal",color="red"];
-    31 ->  32 [arrowType="normal",color="red"];
-    31 ->  33 [arrowType="normal",color="red"];
-    33 ->  7 [arrowType="normal",color="red"];
+    17 ->  19 [arrowType="normal",color="red",fontcolor="red"];
+    17 ->  31 [arrowType="normal",color="red",fontcolor="red"];
+    20 ->  21 [arrowType="normal",color="red",fontcolor="red"];
+    20 ->  31 [arrowType="normal",color="red",fontcolor="red"];
+    22 ->  16 [arrowType="normal",color="red",fontcolor="red"];
+    22 ->  31 [arrowType="normal",color="red",fontcolor="red"];
+    31 ->  25 [arrowType="normal",color="red",fontcolor="red"];
+    31 ->  28 [arrowType="normal",color="red",fontcolor="red"];
+    31 ->  30 [arrowType="normal",color="red",fontcolor="red"];
+    31 ->  32 [arrowType="normal",color="red",fontcolor="red"];
+    31 ->  33 [arrowType="normal",color="red",fontcolor="red"];
+    33 ->  7 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_16__f_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -2480,6 +2539,7 @@ digraph G {
 // fa_subprogram_tests__test_16__f_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -2496,16 +2556,17 @@ digraph G {
     1 ->  2 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
     1 ->  16 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    9 ->  10 [arrowType="normal",color="red"];
-    9 ->  15 [arrowType="normal",color="red"];
-    9 ->  16 [arrowType="normal",color="red"];
-    16 ->  12 [arrowType="normal",color="red"];
+    6 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  10 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  15 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  16 [arrowType="normal",color="red",fontcolor="red"];
+    16 ->  12 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_16_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -2563,6 +2624,7 @@ subgraph cluster2 {
 // fa_subprogram_tests__test_16_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -2592,18 +2654,19 @@ digraph G {
     1 ->  23 [arrowType="normal"];
     1 ->  24 [arrowType="normal"];
     1 ->  25 [arrowType="normal"];
-    16 ->  15 [arrowType="normal",color="red"];
-    16 ->  23 [arrowType="normal",color="red"];
-    23 ->  21 [arrowType="normal",color="red"];
-    23 ->  25 [arrowType="normal",color="red"];
-    24 ->  19 [arrowType="normal",color="red"];
-    24 ->  25 [arrowType="normal",color="red"];
-    25 ->  7 [arrowType="normal",color="red"];
+    16 ->  15 [arrowType="normal",color="red",fontcolor="red"];
+    16 ->  23 [arrowType="normal",color="red",fontcolor="red"];
+    23 ->  21 [arrowType="normal",color="red",fontcolor="red"];
+    23 ->  25 [arrowType="normal",color="red",fontcolor="red"];
+    24 ->  19 [arrowType="normal",color="red",fontcolor="red"];
+    24 ->  25 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  7 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_17_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -2695,6 +2758,7 @@ subgraph cluster2 {
 // fa_subprogram_tests__test_17_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -2749,28 +2813,29 @@ digraph G {
     25 ->  31 [arrowType="normal"];
     34 ->  35 [arrowType="normal"];
     34 ->  36 [arrowType="normal"];
-    36 ->  17 [arrowType="normal",color="red"];
-    36 ->  19 [arrowType="normal",color="red"];
-    36 ->  21 [arrowType="normal",color="red"];
-    36 ->  37 [arrowType="normal",color="red"];
-    36 ->  38 [arrowType="normal",color="red"];
-    36 ->  39 [arrowType="normal",color="red"];
-    37 ->  30 [arrowType="normal",color="red"];
-    37 ->  41 [arrowType="normal",color="red"];
-    38 ->  28 [arrowType="normal",color="red"];
-    38 ->  41 [arrowType="normal",color="red"];
-    38 ->  42 [arrowType="normal",color="red"];
-    39 ->  26 [arrowType="normal",color="red"];
-    39 ->  41 [arrowType="normal",color="red"];
-    39 ->  42 [arrowType="normal",color="red"];
-    40 ->  32 [arrowType="normal",color="red"];
-    41 ->  7 [arrowType="normal",color="red"];
-    42 ->  9 [arrowType="normal",color="red"];
+    36 ->  17 [arrowType="normal",color="red",fontcolor="red"];
+    36 ->  19 [arrowType="normal",color="red",fontcolor="red"];
+    36 ->  21 [arrowType="normal",color="red",fontcolor="red"];
+    36 ->  37 [arrowType="normal",color="red",fontcolor="red"];
+    36 ->  38 [arrowType="normal",color="red",fontcolor="red"];
+    36 ->  39 [arrowType="normal",color="red",fontcolor="red"];
+    37 ->  30 [arrowType="normal",color="red",fontcolor="red"];
+    37 ->  41 [arrowType="normal",color="red",fontcolor="red"];
+    38 ->  28 [arrowType="normal",color="red",fontcolor="red"];
+    38 ->  41 [arrowType="normal",color="red",fontcolor="red"];
+    38 ->  42 [arrowType="normal",color="red",fontcolor="red"];
+    39 ->  26 [arrowType="normal",color="red",fontcolor="red"];
+    39 ->  41 [arrowType="normal",color="red",fontcolor="red"];
+    39 ->  42 [arrowType="normal",color="red",fontcolor="red"];
+    40 ->  32 [arrowType="normal",color="red",fontcolor="red"];
+    41 ->  7 [arrowType="normal",color="red",fontcolor="red"];
+    42 ->  9 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_18_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -2814,6 +2879,7 @@ subgraph cluster1 {
 // fa_subprogram_tests__test_18_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -2838,15 +2904,16 @@ digraph G {
     12 ->  14 [arrowType="normal"];
     17 ->  18 [arrowType="normal"];
     17 ->  19 [arrowType="normal"];
-    19 ->  13 [arrowType="normal",color="red"];
-    19 ->  15 [arrowType="normal",color="red"];
-    19 ->  20 [arrowType="normal",color="red"];
-    20 ->  7 [arrowType="normal",color="red"];
+    19 ->  13 [arrowType="normal",color="red",fontcolor="red"];
+    19 ->  15 [arrowType="normal",color="red",fontcolor="red"];
+    19 ->  20 [arrowType="normal",color="red",fontcolor="red"];
+    20 ->  7 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_19_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -2913,6 +2980,7 @@ subgraph cluster1 {
 // fa_subprogram_tests__test_19_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -2949,28 +3017,29 @@ digraph G {
     1 ->  29 [arrowType="normal"];
     1 ->  30 [arrowType="normal"];
     1 ->  34 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    6 ->  29 [arrowType="normal",color="red"];
-    9 ->  10 [arrowType="normal",color="red"];
-    9 ->  15 [arrowType="normal",color="red"];
-    9 ->  29 [arrowType="normal",color="red"];
-    11 ->  12 [arrowType="normal",color="red"];
-    11 ->  33 [arrowType="normal",color="red"];
-    29 ->  31 [arrowType="normal",color="red"];
+    6 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  29 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  10 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  15 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  29 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  12 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  33 [arrowType="normal",color="red",fontcolor="red"];
+    29 ->  31 [arrowType="normal",color="red",fontcolor="red"];
     30 ->  31 [arrowType="normal"];
     30 ->  32 [arrowType="normal"];
     30 ->  33 [arrowType="normal"];
-    31 ->  32 [arrowType="normal",color="cornflowerblue"];
-    32 ->  25 [arrowType="normal",color="red"];
-    32 ->  27 [arrowType="normal",color="red"];
-    32 ->  34 [arrowType="normal",color="red"];
-    33 ->  32 [arrowType="normal",color="cornflowerblue"];
-    34 ->  14 [arrowType="normal",color="red"];
+    31 ->  32 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
+    32 ->  25 [arrowType="normal",color="red",fontcolor="red"];
+    32 ->  27 [arrowType="normal",color="red",fontcolor="red"];
+    32 ->  34 [arrowType="normal",color="red",fontcolor="red"];
+    33 ->  32 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
+    34 ->  14 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_20_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -3063,6 +3132,7 @@ digraph G {
 // fa_subprogram_tests__test_20_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -3111,41 +3181,42 @@ digraph G {
     1 ->  44 [arrowType="normal"];
     1 ->  45 [arrowType="normal"];
     1 ->  46 [arrowType="normal"];
-    6 ->  7 [arrowType="normal",color="red"];
-    6 ->  27 [arrowType="normal",color="red"];
-    8 ->  9 [arrowType="normal",color="red"];
-    8 ->  27 [arrowType="normal",color="red"];
+    6 ->  7 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  27 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  9 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  27 [arrowType="normal",color="red",fontcolor="red"];
     21 ->  20 [arrowType="normal"];
     21 ->  23 [arrowType="normal"];
     21 ->  25 [arrowType="normal"];
-    27 ->  22 [arrowType="normal",color="red"];
-    27 ->  24 [arrowType="normal",color="red"];
-    27 ->  26 [arrowType="normal",color="red"];
-    27 ->  35 [arrowType="normal",color="red"];
+    27 ->  22 [arrowType="normal",color="red",fontcolor="red"];
+    27 ->  24 [arrowType="normal",color="red",fontcolor="red"];
+    27 ->  26 [arrowType="normal",color="red",fontcolor="red"];
+    27 ->  35 [arrowType="normal",color="red",fontcolor="red"];
     29 ->  28 [arrowType="normal"];
     29 ->  31 [arrowType="normal"];
     29 ->  33 [arrowType="normal"];
-    35 ->  30 [arrowType="normal",color="red"];
-    35 ->  32 [arrowType="normal",color="red"];
-    35 ->  34 [arrowType="normal",color="red"];
-    35 ->  43 [arrowType="normal",color="red"];
-    35 ->  44 [arrowType="normal",color="red"];
+    35 ->  30 [arrowType="normal",color="red",fontcolor="red"];
+    35 ->  32 [arrowType="normal",color="red",fontcolor="red"];
+    35 ->  34 [arrowType="normal",color="red",fontcolor="red"];
+    35 ->  43 [arrowType="normal",color="red",fontcolor="red"];
+    35 ->  44 [arrowType="normal",color="red",fontcolor="red"];
     37 ->  36 [arrowType="normal"];
     37 ->  39 [arrowType="normal"];
     37 ->  41 [arrowType="normal"];
-    43 ->  38 [arrowType="normal",color="red"];
-    43 ->  40 [arrowType="normal",color="red"];
-    43 ->  42 [arrowType="normal",color="red"];
-    43 ->  45 [arrowType="normal",color="red"];
-    43 ->  46 [arrowType="normal",color="red"];
-    44 ->  11 [arrowType="normal",color="red"];
-    45 ->  13 [arrowType="normal",color="red"];
-    46 ->  15 [arrowType="normal",color="red"];
+    43 ->  38 [arrowType="normal",color="red",fontcolor="red"];
+    43 ->  40 [arrowType="normal",color="red",fontcolor="red"];
+    43 ->  42 [arrowType="normal",color="red",fontcolor="red"];
+    43 ->  45 [arrowType="normal",color="red",fontcolor="red"];
+    43 ->  46 [arrowType="normal",color="red",fontcolor="red"];
+    44 ->  11 [arrowType="normal",color="red",fontcolor="red"];
+    45 ->  13 [arrowType="normal",color="red",fontcolor="red"];
+    46 ->  15 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_21_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -3178,6 +3249,7 @@ digraph G {
 // fa_subprogram_tests__test_21_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -3195,16 +3267,17 @@ digraph G {
     1 ->  2 [arrowType="normal"];
     1 ->  19 [arrowType="normal"];
     1 ->  20 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    6 ->  19 [arrowType="normal",color="red"];
-    19 ->  18 [arrowType="normal",color="red"];
-    19 ->  20 [arrowType="normal",color="red"];
-    20 ->  10 [arrowType="normal",color="red"];
+    6 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  19 [arrowType="normal",color="red",fontcolor="red"];
+    19 ->  18 [arrowType="normal",color="red",fontcolor="red"];
+    19 ->  20 [arrowType="normal",color="red",fontcolor="red"];
+    20 ->  10 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_22_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -3241,6 +3314,7 @@ subgraph cluster1 {
 // fa_subprogram_tests__test_22_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -3256,18 +3330,19 @@ digraph G {
 
     1 ->  2 [arrowType="normal"];
     1 ->  16 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    6 ->  17 [arrowType="normal",color="red"];
+    6 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  17 [arrowType="normal",color="red",fontcolor="red"];
     16 ->  17 [arrowType="normal"];
     16 ->  18 [arrowType="normal"];
     16 ->  19 [arrowType="normal"];
-    17 ->  19 [arrowType="normal",color="cornflowerblue"];
-    19 ->  10 [arrowType="normal",color="red"];
+    17 ->  19 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
+    19 ->  10 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_23_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -3301,6 +3376,7 @@ digraph G {
 // fa_subprogram_tests__test_23_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -3319,17 +3395,18 @@ digraph G {
     1 ->  11 [arrowType="normal"];
     1 ->  17 [arrowType="normal"];
     1 ->  18 [arrowType="normal"];
-    6 ->  7 [arrowType="normal",color="red"];
-    6 ->  17 [arrowType="normal",color="red"];
+    6 ->  7 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  17 [arrowType="normal",color="red",fontcolor="red"];
     13 ->  12 [arrowType="normal"];
     13 ->  15 [arrowType="normal"];
-    17 ->  14 [arrowType="normal",color="red"];
-    17 ->  16 [arrowType="normal",color="red"];
+    17 ->  14 [arrowType="normal",color="red",fontcolor="red"];
+    17 ->  16 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_24_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -3358,6 +3435,7 @@ digraph G {
 // fa_subprogram_tests__test_24_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -3376,12 +3454,13 @@ digraph G {
     1 ->  14 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
     1 ->  16 [arrowType="normal"];
-    14 ->  13 [arrowType="normal",color="red"];
+    14 ->  13 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_25_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -3434,6 +3513,7 @@ digraph G {
 // fa_subprogram_tests__test_25_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -3461,26 +3541,27 @@ digraph G {
     1 ->  25 [arrowType="normal"];
     1 ->  26 [arrowType="normal"];
     1 ->  27 [arrowType="normal"];
-    6 ->  7 [arrowType="normal",color="red"];
-    6 ->  25 [arrowType="normal",color="red"];
-    8 ->  10 [arrowType="normal",color="red"];
-    8 ->  26 [arrowType="normal",color="red"];
+    6 ->  7 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  25 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  10 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  26 [arrowType="normal",color="red",fontcolor="red"];
     9 ->  8 [arrowType="normal"];
     9 ->  11 [arrowType="normal"];
-    11 ->  12 [arrowType="normal",color="red"];
-    11 ->  26 [arrowType="normal",color="red"];
+    11 ->  12 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  26 [arrowType="normal",color="red",fontcolor="red"];
     21 ->  20 [arrowType="normal"];
     21 ->  23 [arrowType="normal"];
-    25 ->  22 [arrowType="normal",color="red"];
-    25 ->  24 [arrowType="normal",color="red"];
-    25 ->  27 [arrowType="normal",color="red"];
-    26 ->  14 [arrowType="normal",color="red"];
-    27 ->  16 [arrowType="normal",color="red"];
+    25 ->  22 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  24 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  27 [arrowType="normal",color="red",fontcolor="red"];
+    26 ->  14 [arrowType="normal",color="red",fontcolor="red"];
+    27 ->  16 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_26_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -3617,6 +3698,7 @@ digraph G {
 // fa_subprogram_tests__test_26_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -3695,63 +3777,64 @@ digraph G {
     1 ->  35 [arrowType="normal"];
     1 ->  42 [arrowType="normal"];
     1 ->  51 [arrowType="normal"];
-    6 ->  7 [arrowType="normal",color="red"];
-    6 ->  70 [arrowType="normal",color="red"];
-    6 ->  35 [arrowType="normal",color="red"];
-    8 ->  59 [arrowType="normal",color="red"];
-    8 ->  10 [arrowType="normal",color="red"];
-    8 ->  42 [arrowType="normal",color="red"];
-    8 ->  51 [arrowType="normal",color="red"];
+    6 ->  7 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  70 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  35 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  59 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  10 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  42 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  51 [arrowType="normal",color="red",fontcolor="red"];
     9 ->  8 [arrowType="normal"];
     9 ->  11 [arrowType="normal"];
     9 ->  13 [arrowType="normal"];
-    11 ->  59 [arrowType="normal",color="red"];
-    11 ->  12 [arrowType="normal",color="red"];
-    11 ->  42 [arrowType="normal",color="red"];
-    11 ->  51 [arrowType="normal",color="red"];
-    13 ->  59 [arrowType="normal",color="red"];
-    13 ->  14 [arrowType="normal",color="red"];
-    13 ->  70 [arrowType="normal",color="red"];
-    13 ->  51 [arrowType="normal",color="red"];
+    11 ->  59 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  12 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  42 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  51 [arrowType="normal",color="red",fontcolor="red"];
+    13 ->  59 [arrowType="normal",color="red",fontcolor="red"];
+    13 ->  14 [arrowType="normal",color="red",fontcolor="red"];
+    13 ->  70 [arrowType="normal",color="red",fontcolor="red"];
+    13 ->  51 [arrowType="normal",color="red",fontcolor="red"];
     31 ->  30 [arrowType="normal"];
     31 ->  33 [arrowType="normal"];
-    35 ->  61 [arrowType="normal",color="red"];
-    35 ->  32 [arrowType="normal",color="red"];
+    35 ->  61 [arrowType="normal",color="red",fontcolor="red"];
+    35 ->  32 [arrowType="normal",color="red",fontcolor="red"];
     38 ->  37 [arrowType="normal"];
     38 ->  40 [arrowType="normal"];
     45 ->  44 [arrowType="normal"];
     45 ->  47 [arrowType="normal"];
     45 ->  49 [arrowType="normal"];
-    51 ->  66 [arrowType="normal",color="red"];
-    51 ->  46 [arrowType="normal",color="red"];
-    51 ->  48 [arrowType="normal",color="red"];
+    51 ->  66 [arrowType="normal",color="red",fontcolor="red"];
+    51 ->  46 [arrowType="normal",color="red",fontcolor="red"];
+    51 ->  48 [arrowType="normal",color="red",fontcolor="red"];
     53 ->  55 [arrowType="normal"];
     53 ->  57 [arrowType="normal"];
     53 ->  52 [arrowType="normal"];
-    59 ->  54 [arrowType="normal",color="red"];
-    59 ->  69 [arrowType="normal",color="red"];
-    60 ->  61 [arrowType="normal",color="red"];
-    60 ->  34 [arrowType="normal",color="red"];
-    61 ->  16 [arrowType="normal",color="red"];
-    62 ->  64 [arrowType="normal",color="red"];
-    62 ->  41 [arrowType="normal",color="red"];
-    63 ->  64 [arrowType="normal",color="red"];
-    63 ->  39 [arrowType="normal",color="red"];
-    64 ->  18 [arrowType="normal",color="red"];
-    65 ->  66 [arrowType="normal",color="red"];
-    65 ->  50 [arrowType="normal",color="red"];
-    66 ->  20 [arrowType="normal",color="red"];
-    67 ->  58 [arrowType="normal",color="red"];
-    67 ->  69 [arrowType="normal",color="red"];
-    68 ->  56 [arrowType="normal",color="red"];
-    68 ->  69 [arrowType="normal",color="red"];
-    69 ->  22 [arrowType="normal",color="red"];
-    70 ->  24 [arrowType="normal",color="red"];
+    59 ->  54 [arrowType="normal",color="red",fontcolor="red"];
+    59 ->  69 [arrowType="normal",color="red",fontcolor="red"];
+    60 ->  61 [arrowType="normal",color="red",fontcolor="red"];
+    60 ->  34 [arrowType="normal",color="red",fontcolor="red"];
+    61 ->  16 [arrowType="normal",color="red",fontcolor="red"];
+    62 ->  64 [arrowType="normal",color="red",fontcolor="red"];
+    62 ->  41 [arrowType="normal",color="red",fontcolor="red"];
+    63 ->  64 [arrowType="normal",color="red",fontcolor="red"];
+    63 ->  39 [arrowType="normal",color="red",fontcolor="red"];
+    64 ->  18 [arrowType="normal",color="red",fontcolor="red"];
+    65 ->  66 [arrowType="normal",color="red",fontcolor="red"];
+    65 ->  50 [arrowType="normal",color="red",fontcolor="red"];
+    66 ->  20 [arrowType="normal",color="red",fontcolor="red"];
+    67 ->  58 [arrowType="normal",color="red",fontcolor="red"];
+    67 ->  69 [arrowType="normal",color="red",fontcolor="red"];
+    68 ->  56 [arrowType="normal",color="red",fontcolor="red"];
+    68 ->  69 [arrowType="normal",color="red",fontcolor="red"];
+    69 ->  22 [arrowType="normal",color="red",fontcolor="red"];
+    70 ->  24 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_27_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -3802,6 +3885,7 @@ digraph G {
 // fa_subprogram_tests__test_27_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -3833,25 +3917,26 @@ digraph G {
     7 ->  6 [arrowType="normal"];
     7 ->  9 [arrowType="normal"];
     7 ->  11 [arrowType="normal"];
-    11 ->  12 [arrowType="normal",color="red"];
-    11 ->  27 [arrowType="normal",color="red"];
-    11 ->  28 [arrowType="normal",color="red"];
-    24 ->  10 [arrowType="normal",color="red"];
-    24 ->  26 [arrowType="normal",color="red"];
-    24 ->  27 [arrowType="normal",color="red"];
-    24 ->  28 [arrowType="normal",color="red"];
-    25 ->  8 [arrowType="normal",color="red"];
-    25 ->  26 [arrowType="normal",color="red"];
-    25 ->  27 [arrowType="normal",color="red"];
-    25 ->  28 [arrowType="normal",color="red"];
-    26 ->  14 [arrowType="normal",color="red"];
-    27 ->  16 [arrowType="normal",color="red"];
-    28 ->  18 [arrowType="normal",color="red"];
+    11 ->  12 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  27 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  28 [arrowType="normal",color="red",fontcolor="red"];
+    24 ->  10 [arrowType="normal",color="red",fontcolor="red"];
+    24 ->  26 [arrowType="normal",color="red",fontcolor="red"];
+    24 ->  27 [arrowType="normal",color="red",fontcolor="red"];
+    24 ->  28 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  26 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  27 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  28 [arrowType="normal",color="red",fontcolor="red"];
+    26 ->  14 [arrowType="normal",color="red",fontcolor="red"];
+    27 ->  16 [arrowType="normal",color="red",fontcolor="red"];
+    28 ->  18 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_28_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -3938,6 +4023,7 @@ subgraph cluster3 {
 // fa_subprogram_tests__test_28_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -3978,37 +4064,38 @@ digraph G {
     7 ->  6 [arrowType="normal"];
     7 ->  9 [arrowType="normal"];
     7 ->  11 [arrowType="normal"];
-    11 ->  12 [arrowType="normal",color="red"];
-    11 ->  31 [arrowType="normal",color="red"];
-    11 ->  35 [arrowType="normal",color="red"];
-    24 ->  10 [arrowType="normal",color="red"];
-    24 ->  27 [arrowType="normal",color="red"];
-    24 ->  31 [arrowType="normal",color="red"];
-    24 ->  35 [arrowType="normal",color="red"];
-    25 ->  8 [arrowType="normal",color="red"];
-    25 ->  27 [arrowType="normal",color="red"];
-    25 ->  31 [arrowType="normal",color="red"];
-    25 ->  35 [arrowType="normal",color="red"];
+    11 ->  12 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  31 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  35 [arrowType="normal",color="red",fontcolor="red"];
+    24 ->  10 [arrowType="normal",color="red",fontcolor="red"];
+    24 ->  27 [arrowType="normal",color="red",fontcolor="red"];
+    24 ->  31 [arrowType="normal",color="red",fontcolor="red"];
+    24 ->  35 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  27 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  31 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  35 [arrowType="normal",color="red",fontcolor="red"];
     26 ->  27 [arrowType="normal"];
     26 ->  28 [arrowType="normal"];
     26 ->  29 [arrowType="normal"];
-    27 ->  29 [arrowType="normal",color="cornflowerblue"];
-    29 ->  14 [arrowType="normal",color="red"];
+    27 ->  29 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
+    29 ->  14 [arrowType="normal",color="red",fontcolor="red"];
     30 ->  31 [arrowType="normal"];
     30 ->  32 [arrowType="normal"];
     30 ->  33 [arrowType="normal"];
-    31 ->  33 [arrowType="normal",color="cornflowerblue"];
-    33 ->  16 [arrowType="normal",color="red"];
+    31 ->  33 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
+    33 ->  16 [arrowType="normal",color="red",fontcolor="red"];
     34 ->  35 [arrowType="normal"];
     34 ->  36 [arrowType="normal"];
     34 ->  37 [arrowType="normal"];
-    35 ->  37 [arrowType="normal",color="cornflowerblue"];
-    37 ->  18 [arrowType="normal",color="red"];
+    35 ->  37 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
+    37 ->  18 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_29_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -4095,6 +4182,7 @@ subgraph cluster3 {
 // fa_subprogram_tests__test_29_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -4135,40 +4223,41 @@ digraph G {
     7 ->  6 [arrowType="normal"];
     7 ->  9 [arrowType="normal"];
     7 ->  11 [arrowType="normal"];
-    11 ->  30 [arrowType="normal",color="red"];
-    13 ->  14 [arrowType="normal",color="red"];
-    13 ->  28 [arrowType="normal",color="red"];
-    15 ->  16 [arrowType="normal",color="red"];
-    15 ->  32 [arrowType="normal",color="red"];
-    17 ->  18 [arrowType="normal",color="red"];
-    17 ->  36 [arrowType="normal",color="red"];
-    23 ->  26 [arrowType="normal",color="red"];
-    24 ->  26 [arrowType="normal",color="red"];
+    11 ->  30 [arrowType="normal",color="red",fontcolor="red"];
+    13 ->  14 [arrowType="normal",color="red",fontcolor="red"];
+    13 ->  28 [arrowType="normal",color="red",fontcolor="red"];
+    15 ->  16 [arrowType="normal",color="red",fontcolor="red"];
+    15 ->  32 [arrowType="normal",color="red",fontcolor="red"];
+    17 ->  18 [arrowType="normal",color="red",fontcolor="red"];
+    17 ->  36 [arrowType="normal",color="red",fontcolor="red"];
+    23 ->  26 [arrowType="normal",color="red",fontcolor="red"];
+    24 ->  26 [arrowType="normal",color="red",fontcolor="red"];
     25 ->  26 [arrowType="normal"];
     25 ->  27 [arrowType="normal"];
     25 ->  28 [arrowType="normal"];
-    26 ->  27 [arrowType="normal",color="cornflowerblue"];
-    27 ->  30 [arrowType="normal",color="red"];
-    28 ->  27 [arrowType="normal",color="cornflowerblue"];
+    26 ->  27 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
+    27 ->  30 [arrowType="normal",color="red",fontcolor="red"];
+    28 ->  27 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
     29 ->  30 [arrowType="normal"];
     29 ->  31 [arrowType="normal"];
     29 ->  32 [arrowType="normal"];
-    30 ->  31 [arrowType="normal",color="cornflowerblue"];
-    31 ->  34 [arrowType="normal",color="red"];
-    32 ->  31 [arrowType="normal",color="cornflowerblue"];
+    30 ->  31 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
+    31 ->  34 [arrowType="normal",color="red",fontcolor="red"];
+    32 ->  31 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
     33 ->  34 [arrowType="normal"];
     33 ->  35 [arrowType="normal"];
     33 ->  36 [arrowType="normal"];
-    34 ->  35 [arrowType="normal",color="cornflowerblue"];
-    35 ->  8 [arrowType="normal",color="red"];
-    35 ->  10 [arrowType="normal",color="red"];
-    35 ->  12 [arrowType="normal",color="red"];
-    36 ->  35 [arrowType="normal",color="cornflowerblue"];
+    34 ->  35 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
+    35 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    35 ->  10 [arrowType="normal",color="red",fontcolor="red"];
+    35 ->  12 [arrowType="normal",color="red",fontcolor="red"];
+    36 ->  35 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
 }
 
 // fa_subprogram_tests__test_30_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -4374,6 +4463,7 @@ digraph G {
 // fa_subprogram_tests__test_30_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -4472,59 +4562,59 @@ digraph G {
     1 ->  92 [arrowType="normal"];
     1 ->  93 [arrowType="normal"];
     1 ->  94 [arrowType="normal"];
-    6 ->  87 [arrowType="normal",color="red"];
-    6 ->  88 [arrowType="normal",color="red"];
+    6 ->  87 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  88 [arrowType="normal",color="red",fontcolor="red"];
     7 ->  6 [arrowType="normal"];
     7 ->  9 [arrowType="normal"];
     7 ->  11 [arrowType="normal"];
-    9 ->  87 [arrowType="normal",color="red"];
-    9 ->  88 [arrowType="normal",color="red"];
-    11 ->  12 [arrowType="normal",color="red"];
-    11 ->  92 [arrowType="normal",color="red"];
-    13 ->  15 [arrowType="normal",color="red"];
-    13 ->  94 [arrowType="normal",color="red"];
+    9 ->  87 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  88 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  12 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  92 [arrowType="normal",color="red",fontcolor="red"];
+    13 ->  15 [arrowType="normal",color="red",fontcolor="red"];
+    13 ->  94 [arrowType="normal",color="red",fontcolor="red"];
     14 ->  13 [arrowType="normal"];
     14 ->  16 [arrowType="normal"];
     14 ->  18 [arrowType="normal"];
     14 ->  20 [arrowType="normal"];
-    16 ->  17 [arrowType="normal",color="red"];
-    16 ->  94 [arrowType="normal",color="red"];
-    18 ->  19 [arrowType="normal",color="red"];
-    18 ->  94 [arrowType="normal",color="red"];
-    20 ->  21 [arrowType="normal",color="red"];
-    20 ->  94 [arrowType="normal",color="red"];
+    16 ->  17 [arrowType="normal",color="red",fontcolor="red"];
+    16 ->  94 [arrowType="normal",color="red",fontcolor="red"];
+    18 ->  19 [arrowType="normal",color="red",fontcolor="red"];
+    18 ->  94 [arrowType="normal",color="red",fontcolor="red"];
+    20 ->  21 [arrowType="normal",color="red",fontcolor="red"];
+    20 ->  94 [arrowType="normal",color="red",fontcolor="red"];
     23 ->  22 [arrowType="normal"];
     23 ->  26 [arrowType="normal"];
     23 ->  28 [arrowType="normal"];
     24 ->  23 [arrowType="normal"];
     24 ->  31 [arrowType="normal"];
-    28 ->  29 [arrowType="normal",color="red"];
+    28 ->  29 [arrowType="normal",color="red",fontcolor="red"];
     31 ->  30 [arrowType="normal"];
     31 ->  33 [arrowType="normal"];
-    35 ->  38 [arrowType="normal",color="red"];
-    35 ->  93 [arrowType="normal",color="red"];
+    35 ->  38 [arrowType="normal",color="red",fontcolor="red"];
+    35 ->  93 [arrowType="normal",color="red",fontcolor="red"];
     36 ->  35 [arrowType="normal"];
     36 ->  39 [arrowType="normal"];
     36 ->  41 [arrowType="normal"];
     37 ->  36 [arrowType="normal"];
     37 ->  44 [arrowType="normal"];
-    39 ->  93 [arrowType="normal",color="red"];
-    39 ->  40 [arrowType="normal",color="red"];
-    41 ->  42 [arrowType="normal",color="red"];
-    43 ->  89 [arrowType="normal",color="red"];
-    43 ->  90 [arrowType="normal",color="red"];
-    43 ->  91 [arrowType="normal",color="red"];
-    43 ->  45 [arrowType="normal",color="red"];
+    39 ->  93 [arrowType="normal",color="red",fontcolor="red"];
+    39 ->  40 [arrowType="normal",color="red",fontcolor="red"];
+    41 ->  42 [arrowType="normal",color="red",fontcolor="red"];
+    43 ->  89 [arrowType="normal",color="red",fontcolor="red"];
+    43 ->  90 [arrowType="normal",color="red",fontcolor="red"];
+    43 ->  91 [arrowType="normal",color="red",fontcolor="red"];
+    43 ->  45 [arrowType="normal",color="red",fontcolor="red"];
     44 ->  43 [arrowType="normal"];
     44 ->  46 [arrowType="normal"];
-    46 ->  89 [arrowType="normal",color="red"];
-    46 ->  90 [arrowType="normal",color="red"];
-    46 ->  91 [arrowType="normal",color="red"];
-    46 ->  47 [arrowType="normal",color="red"];
+    46 ->  89 [arrowType="normal",color="red",fontcolor="red"];
+    46 ->  90 [arrowType="normal",color="red",fontcolor="red"];
+    46 ->  91 [arrowType="normal",color="red",fontcolor="red"];
+    46 ->  47 [arrowType="normal",color="red",fontcolor="red"];
     49 ->  53 [arrowType="normal"];
     49 ->  48 [arrowType="normal"];
     49 ->  51 [arrowType="normal"];
-    53 ->  54 [arrowType="normal",color="red"];
+    53 ->  54 [arrowType="normal",color="red",fontcolor="red"];
     56 ->  55 [arrowType="normal"];
     56 ->  58 [arrowType="normal"];
     56 ->  60 [arrowType="normal"];
@@ -4537,32 +4627,33 @@ digraph G {
     77 ->  76 [arrowType="normal"];
     77 ->  79 [arrowType="normal"];
     77 ->  81 [arrowType="normal"];
-    87 ->  32 [arrowType="normal",color="red"];
-    87 ->  34 [arrowType="normal",color="red"];
-    88 ->  25 [arrowType="normal",color="red"];
-    88 ->  27 [arrowType="normal",color="red"];
-    89 ->  8 [arrowType="normal",color="red"];
-    89 ->  10 [arrowType="normal",color="red"];
-    89 ->  92 [arrowType="normal",color="red"];
-    90 ->  50 [arrowType="normal",color="red"];
-    90 ->  52 [arrowType="normal",color="red"];
-    91 ->  57 [arrowType="normal",color="red"];
-    91 ->  59 [arrowType="normal",color="red"];
-    91 ->  61 [arrowType="normal",color="red"];
-    92 ->  64 [arrowType="normal",color="red"];
-    92 ->  66 [arrowType="normal",color="red"];
-    92 ->  68 [arrowType="normal",color="red"];
-    93 ->  71 [arrowType="normal",color="red"];
-    93 ->  73 [arrowType="normal",color="red"];
-    93 ->  75 [arrowType="normal",color="red"];
-    94 ->  78 [arrowType="normal",color="red"];
-    94 ->  80 [arrowType="normal",color="red"];
-    94 ->  82 [arrowType="normal",color="red"];
+    87 ->  32 [arrowType="normal",color="red",fontcolor="red"];
+    87 ->  34 [arrowType="normal",color="red",fontcolor="red"];
+    88 ->  25 [arrowType="normal",color="red",fontcolor="red"];
+    88 ->  27 [arrowType="normal",color="red",fontcolor="red"];
+    89 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    89 ->  10 [arrowType="normal",color="red",fontcolor="red"];
+    89 ->  92 [arrowType="normal",color="red",fontcolor="red"];
+    90 ->  50 [arrowType="normal",color="red",fontcolor="red"];
+    90 ->  52 [arrowType="normal",color="red",fontcolor="red"];
+    91 ->  57 [arrowType="normal",color="red",fontcolor="red"];
+    91 ->  59 [arrowType="normal",color="red",fontcolor="red"];
+    91 ->  61 [arrowType="normal",color="red",fontcolor="red"];
+    92 ->  64 [arrowType="normal",color="red",fontcolor="red"];
+    92 ->  66 [arrowType="normal",color="red",fontcolor="red"];
+    92 ->  68 [arrowType="normal",color="red",fontcolor="red"];
+    93 ->  71 [arrowType="normal",color="red",fontcolor="red"];
+    93 ->  73 [arrowType="normal",color="red",fontcolor="red"];
+    93 ->  75 [arrowType="normal",color="red",fontcolor="red"];
+    94 ->  78 [arrowType="normal",color="red",fontcolor="red"];
+    94 ->  80 [arrowType="normal",color="red",fontcolor="red"];
+    94 ->  82 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_31__test_31_in_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -4615,6 +4706,7 @@ digraph G {
 // fa_subprogram_tests__test_31__test_31_in_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -4640,28 +4732,29 @@ digraph G {
     1 ->  2 [arrowType="normal"];
     1 ->  25 [arrowType="normal"];
     1 ->  26 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    6 ->  25 [arrowType="normal",color="red"];
+    6 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  25 [arrowType="normal",color="red",fontcolor="red"];
     7 ->  6 [arrowType="normal"];
     7 ->  9 [arrowType="normal"];
     7 ->  11 [arrowType="normal"];
-    9 ->  10 [arrowType="normal",color="red"];
-    9 ->  25 [arrowType="normal",color="red"];
-    11 ->  12 [arrowType="normal",color="red"];
-    11 ->  25 [arrowType="normal",color="red"];
+    9 ->  10 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  25 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  12 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  25 [arrowType="normal",color="red",fontcolor="red"];
     19 ->  18 [arrowType="normal"];
     19 ->  21 [arrowType="normal"];
     19 ->  23 [arrowType="normal"];
-    25 ->  20 [arrowType="normal",color="red"];
-    25 ->  22 [arrowType="normal",color="red"];
-    25 ->  24 [arrowType="normal",color="red"];
-    25 ->  26 [arrowType="normal",color="red"];
-    26 ->  14 [arrowType="normal",color="red"];
+    25 ->  20 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  22 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  24 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  26 [arrowType="normal",color="red",fontcolor="red"];
+    26 ->  14 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_31__test_31_out_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -4708,6 +4801,7 @@ digraph G {
 // fa_subprogram_tests__test_31__test_31_out_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -4729,26 +4823,27 @@ digraph G {
 
     1 ->  2 [arrowType="normal"];
     1 ->  23 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    6 ->  23 [arrowType="normal",color="red"];
+    6 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  23 [arrowType="normal",color="red",fontcolor="red"];
     7 ->  6 [arrowType="normal"];
     7 ->  9 [arrowType="normal"];
     7 ->  11 [arrowType="normal"];
-    9 ->  10 [arrowType="normal",color="red"];
-    9 ->  23 [arrowType="normal",color="red"];
-    11 ->  12 [arrowType="normal",color="red"];
-    11 ->  23 [arrowType="normal",color="red"];
+    9 ->  10 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  23 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  12 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  23 [arrowType="normal",color="red",fontcolor="red"];
     14 ->  13 [arrowType="normal"];
     14 ->  16 [arrowType="normal"];
     14 ->  18 [arrowType="normal"];
-    23 ->  15 [arrowType="normal",color="red"];
-    23 ->  17 [arrowType="normal",color="red"];
-    23 ->  19 [arrowType="normal",color="red"];
+    23 ->  15 [arrowType="normal",color="red",fontcolor="red"];
+    23 ->  17 [arrowType="normal",color="red",fontcolor="red"];
+    23 ->  19 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_tests__test_31_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -4825,6 +4920,7 @@ subgraph cluster2 {
 // fa_subprogram_tests__test_31_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -4856,38 +4952,39 @@ digraph G {
     1 ->  2 [arrowType="normal"];
     1 ->  26 [arrowType="normal"];
     1 ->  30 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    6 ->  27 [arrowType="normal",color="red"];
-    6 ->  31 [arrowType="normal",color="red"];
+    6 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  27 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  31 [arrowType="normal",color="red",fontcolor="red"];
     7 ->  6 [arrowType="normal"];
     7 ->  9 [arrowType="normal"];
     7 ->  11 [arrowType="normal"];
-    9 ->  10 [arrowType="normal",color="red"];
-    9 ->  27 [arrowType="normal",color="red"];
-    9 ->  31 [arrowType="normal",color="red"];
-    11 ->  12 [arrowType="normal",color="red"];
-    11 ->  27 [arrowType="normal",color="red"];
-    11 ->  31 [arrowType="normal",color="red"];
+    9 ->  10 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  27 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  31 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  12 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  27 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  31 [arrowType="normal",color="red",fontcolor="red"];
     14 ->  13 [arrowType="normal"];
     14 ->  16 [arrowType="normal"];
     14 ->  18 [arrowType="normal"];
     26 ->  27 [arrowType="normal"];
     26 ->  28 [arrowType="normal"];
     26 ->  29 [arrowType="normal"];
-    27 ->  29 [arrowType="normal",color="cornflowerblue"];
-    29 ->  21 [arrowType="normal",color="red"];
+    27 ->  29 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
+    29 ->  21 [arrowType="normal",color="red",fontcolor="red"];
     30 ->  31 [arrowType="normal"];
     30 ->  32 [arrowType="normal"];
     30 ->  33 [arrowType="normal"];
-    31 ->  33 [arrowType="normal",color="cornflowerblue"];
-    33 ->  15 [arrowType="normal",color="red"];
-    33 ->  17 [arrowType="normal",color="red"];
-    33 ->  19 [arrowType="normal",color="red"];
+    31 ->  33 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
+    33 ->  15 [arrowType="normal",color="red",fontcolor="red"];
+    33 ->  17 [arrowType="normal",color="red",fontcolor="red"];
+    33 ->  19 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_untangle__wibble_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -4916,6 +5013,7 @@ digraph G {
 // fa_subprogram_untangle__wibble_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -4931,16 +5029,17 @@ digraph G {
     1 ->  2 [arrowType="normal"];
     1 ->  12 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
-    6 ->  7 [arrowType="normal",color="red"];
-    6 ->  15 [arrowType="normal",color="red"];
-    8 ->  9 [arrowType="normal",color="red"];
-    8 ->  12 [arrowType="normal",color="red"];
-    15 ->  11 [arrowType="normal",color="red"];
+    6 ->  7 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  15 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  9 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  12 [arrowType="normal",color="red",fontcolor="red"];
+    15 ->  11 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_untangle__zero_hi_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -4987,6 +5086,7 @@ digraph G {
 // fa_subprogram_untangle__zero_hi_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -5010,24 +5110,25 @@ digraph G {
     1 ->  2 [arrowType="normal"];
     1 ->  23 [arrowType="normal"];
     1 ->  24 [arrowType="normal"];
-    6 ->  9 [arrowType="normal",color="red"];
+    6 ->  9 [arrowType="normal",color="red",fontcolor="red"];
     7 ->  6 [arrowType="normal"];
     7 ->  10 [arrowType="normal"];
     7 ->  12 [arrowType="normal"];
-    10 ->  23 [arrowType="normal",color="red"];
-    12 ->  13 [arrowType="normal",color="red"];
-    14 ->  15 [arrowType="normal",color="red"];
-    16 ->  17 [arrowType="normal",color="red"];
-    16 ->  23 [arrowType="normal",color="red"];
-    18 ->  19 [arrowType="normal",color="red"];
-    18 ->  24 [arrowType="normal",color="red"];
-    23 ->  11 [arrowType="normal",color="red"];
-    23 ->  23 [arrowType="normal",color="red"];
+    10 ->  23 [arrowType="normal",color="red",fontcolor="red"];
+    12 ->  13 [arrowType="normal",color="red",fontcolor="red"];
+    14 ->  15 [arrowType="normal",color="red",fontcolor="red"];
+    16 ->  17 [arrowType="normal",color="red",fontcolor="red"];
+    16 ->  23 [arrowType="normal",color="red",fontcolor="red"];
+    18 ->  19 [arrowType="normal",color="red",fontcolor="red"];
+    18 ->  24 [arrowType="normal",color="red",fontcolor="red"];
+    23 ->  11 [arrowType="normal",color="red",fontcolor="red"];
+    23 ->  23 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // foo_Globals_Graph
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="foo__zero_widget__2'Ins",shape="box"];
     2 [label="foo__zero_widget__2'Outs",shape="box"];
     3 [label="foo__zero_widget__2'Proof_Ins",shape="box"];
@@ -5058,6 +5159,7 @@ digraph G {
 // gg_subprogram_tests__f_get_item_c_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -5096,6 +5198,7 @@ digraph G {
 // gg_subprogram_tests__f_get_item_c_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -5114,22 +5217,23 @@ digraph G {
 
     1 ->  2 [arrowType="normal"];
     1 ->  18 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    6 ->  18 [arrowType="normal",color="red"];
+    6 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  18 [arrowType="normal",color="red",fontcolor="red"];
     7 ->  6 [arrowType="normal"];
     7 ->  9 [arrowType="normal"];
     7 ->  11 [arrowType="normal"];
-    9 ->  10 [arrowType="normal",color="red"];
-    9 ->  18 [arrowType="normal",color="red"];
-    11 ->  12 [arrowType="normal",color="red"];
-    11 ->  18 [arrowType="normal",color="red"];
-    18 ->  14 [arrowType="normal",color="red"];
-    18 ->  20 [arrowType="normal",color="red"];
+    9 ->  10 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  18 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  12 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  18 [arrowType="normal",color="red",fontcolor="red"];
+    18 ->  14 [arrowType="normal",color="red",fontcolor="red"];
+    18 ->  20 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // gg_subprogram_tests__f_get_item_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -5163,6 +5267,7 @@ digraph G {
 // gg_subprogram_tests__f_get_item_e_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -5201,6 +5306,7 @@ digraph G {
 // gg_subprogram_tests__f_get_item_e_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -5219,22 +5325,23 @@ digraph G {
 
     1 ->  2 [arrowType="normal"];
     1 ->  18 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    6 ->  18 [arrowType="normal",color="red"];
+    6 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  18 [arrowType="normal",color="red",fontcolor="red"];
     7 ->  6 [arrowType="normal"];
     7 ->  9 [arrowType="normal"];
     7 ->  11 [arrowType="normal"];
-    9 ->  10 [arrowType="normal",color="red"];
-    9 ->  18 [arrowType="normal",color="red"];
-    11 ->  12 [arrowType="normal",color="red"];
-    11 ->  18 [arrowType="normal",color="red"];
-    18 ->  14 [arrowType="normal",color="red"];
-    18 ->  20 [arrowType="normal",color="red"];
+    9 ->  10 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  18 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  12 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  18 [arrowType="normal",color="red",fontcolor="red"];
+    18 ->  14 [arrowType="normal",color="red",fontcolor="red"];
+    18 ->  20 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // gg_subprogram_tests__f_get_item_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -5251,19 +5358,20 @@ digraph G {
 
     1 ->  2 [arrowType="normal"];
     1 ->  16 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    6 ->  16 [arrowType="normal",color="red"];
+    6 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  16 [arrowType="normal",color="red",fontcolor="red"];
     7 ->  6 [arrowType="normal"];
     7 ->  9 [arrowType="normal"];
-    9 ->  10 [arrowType="normal",color="red"];
-    9 ->  16 [arrowType="normal",color="red"];
-    16 ->  12 [arrowType="normal",color="red"];
-    16 ->  18 [arrowType="normal",color="red"];
+    9 ->  10 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  16 [arrowType="normal",color="red",fontcolor="red"];
+    16 ->  12 [arrowType="normal",color="red",fontcolor="red"];
+    16 ->  18 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // gg_subprogram_tests__test_15__id_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -5312,6 +5420,7 @@ digraph G {
 // gg_subprogram_tests__test_15__id_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -5337,21 +5446,22 @@ digraph G {
     1 ->  2 [arrowType="normal"];
     1 ->  24 [arrowType="normal"];
     1 ->  25 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    6 ->  25 [arrowType="normal",color="red"];
-    9 ->  11 [arrowType="normal",color="red"];
-    9 ->  25 [arrowType="normal",color="red"];
-    12 ->  13 [arrowType="normal",color="red"];
-    12 ->  24 [arrowType="normal",color="red"];
-    12 ->  25 [arrowType="normal",color="red"];
-    25 ->  16 [arrowType="normal",color="red"];
-    25 ->  19 [arrowType="normal",color="red"];
-    25 ->  21 [arrowType="normal",color="red"];
+    6 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  25 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  11 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  25 [arrowType="normal",color="red",fontcolor="red"];
+    12 ->  13 [arrowType="normal",color="red",fontcolor="red"];
+    12 ->  24 [arrowType="normal",color="red",fontcolor="red"];
+    12 ->  25 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  16 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  19 [arrowType="normal",color="red",fontcolor="red"];
+    25 ->  21 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // gg_subprogram_tests__test_16__f_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -5382,6 +5492,7 @@ digraph G {
 // gg_subprogram_tests__test_16__f_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -5398,16 +5509,17 @@ digraph G {
     1 ->  2 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
     1 ->  16 [arrowType="normal"];
-    6 ->  8 [arrowType="normal",color="red"];
-    9 ->  10 [arrowType="normal",color="red"];
-    9 ->  15 [arrowType="normal",color="red"];
-    9 ->  16 [arrowType="normal",color="red"];
-    16 ->  12 [arrowType="normal",color="red"];
+    6 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  10 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  15 [arrowType="normal",color="red",fontcolor="red"];
+    9 ->  16 [arrowType="normal",color="red",fontcolor="red"];
+    16 ->  12 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // gg_subprogram_tests__test_18_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -5459,6 +5571,7 @@ subgraph cluster1 {
 // gg_subprogram_tests__test_18_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -5487,17 +5600,18 @@ digraph G {
     12 ->  14 [arrowType="normal"];
     17 ->  18 [arrowType="normal"];
     17 ->  19 [arrowType="normal"];
-    17 ->  24 [arrowType="normal",color="red"];
-    19 ->  13 [arrowType="normal",color="red"];
-    19 ->  15 [arrowType="normal",color="red"];
-    19 ->  20 [arrowType="normal",color="red"];
-    20 ->  7 [arrowType="normal",color="red"];
-    20 ->  22 [arrowType="normal",color="red"];
+    17 ->  24 [arrowType="normal",color="red",fontcolor="red"];
+    19 ->  13 [arrowType="normal",color="red",fontcolor="red"];
+    19 ->  15 [arrowType="normal",color="red",fontcolor="red"];
+    19 ->  20 [arrowType="normal",color="red",fontcolor="red"];
+    20 ->  7 [arrowType="normal",color="red",fontcolor="red"];
+    20 ->  22 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // misc_Globals_Graph
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="foo__zero_widget__2'Ins",shape="box"];
     2 [label="foo__zero_widget__2'Outs",shape="box"];
     3 [label="foo__zero_widget__2'Proof_Ins",shape="box"];
@@ -5528,6 +5642,7 @@ digraph G {
 // other_Globals_Graph
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="foo__zero_widget__2'Ins",shape="box"];
     2 [label="foo__zero_widget__2'Outs",shape="box"];
     3 [label="foo__zero_widget__2'Proof_Ins",shape="box"];
@@ -5561,6 +5676,7 @@ digraph G {
 // tests_Globals_Graph
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="tests__f_get_item_e__w"];
     2 [label="tests__test_18__n"];
     3 [label="tests__test_16__f__x"];
@@ -5637,6 +5753,7 @@ digraph G {
 // untangle_Globals_Graph
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
 
 }
 

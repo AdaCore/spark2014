@@ -101,10 +101,11 @@ package body Flow_Tree_Utility is
          Print_Tree_Node (G.Get_Key (V));
          Cancel_Special_Output;
 
-         return (Show   => True,
-                 Shape  => Shape_Oval,
-                 Colour => To_Unbounded_String ("black"),
-                 Label  => Temp_String);
+         return (Show        => True,
+                 Shape       => Shape_Oval,
+                 Colour      => To_Unbounded_String ("black"),
+                 Fill_Colour => Null_Unbounded_String,
+                 Label       => Temp_String);
       end Node_Info;
 
       function Edge_Info (G      : T'Class;

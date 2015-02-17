@@ -254,15 +254,6 @@ package Flow is
       GG                     : Flow_Global_Generation_Info (Compute_Globals);
       --  Information for globals computation.
 
-      Edges_To_Remove       : Vertex_Pair_Sets.Set;
-      --  Set of vertex pairs between which we must not add edges
-      --  during the simplification of the graph.
-
-      Lead_To_Abnormal_Termination : Vertex_To_Natural_Maps.Map;
-      --  Mapping from vertices to number of neighbours. This is used
-      --  to suppress ineffective statement warnings related to
-      --  abnormal terminations.
-
       case Kind is
          when E_Subprogram_Body =>
             Is_Main : Boolean;

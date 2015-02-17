@@ -4,6 +4,7 @@ test.adb:23:28: warning: unused assignment
 // fa_pkg_body_standard__test_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -20,6 +21,7 @@ digraph G {
 // fa_pkg_body_standard__test_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -34,6 +36,7 @@ digraph G {
 // fa_subprogram_test__qe_2_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -95,6 +98,7 @@ digraph G {
 // fa_subprogram_test__qe_2_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -131,40 +135,41 @@ digraph G {
     1 ->  31 [arrowType="normal"];
     1 ->  32 [arrowType="normal"];
     1 ->  33 [arrowType="normal"];
-    6 ->  18 [arrowType="normal",color="red"];
-    8 ->  9 [arrowType="normal",color="red"];
-    8 ->  22 [arrowType="normal",color="red"];
-    10 ->  11 [arrowType="normal",color="red"];
-    10 ->  23 [arrowType="normal",color="red"];
-    12 ->  13 [arrowType="normal",color="red"];
-    12 ->  33 [arrowType="normal",color="red"];
-    18 ->  7 [arrowType="normal",color="red"];
-    18 ->  18 [arrowType="normal",color="red"];
-    18 ->  22 [arrowType="normal",color="red"];
-    18 ->  23 [arrowType="normal",color="red"];
-    18 ->  24 [arrowType="normal",color="red"];
-    18 ->  33 [arrowType="normal",color="red"];
-    19 ->  18 [arrowType="normal",color="red"];
+    6 ->  18 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  9 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  22 [arrowType="normal",color="red",fontcolor="red"];
+    10 ->  11 [arrowType="normal",color="red",fontcolor="red"];
+    10 ->  23 [arrowType="normal",color="red",fontcolor="red"];
+    12 ->  13 [arrowType="normal",color="red",fontcolor="red"];
+    12 ->  33 [arrowType="normal",color="red",fontcolor="red"];
+    18 ->  7 [arrowType="normal",color="red",fontcolor="red"];
+    18 ->  18 [arrowType="normal",color="red",fontcolor="red"];
+    18 ->  22 [arrowType="normal",color="red",fontcolor="red"];
+    18 ->  23 [arrowType="normal",color="red",fontcolor="red"];
+    18 ->  24 [arrowType="normal",color="red",fontcolor="red"];
+    18 ->  33 [arrowType="normal",color="red",fontcolor="red"];
+    19 ->  18 [arrowType="normal",color="red",fontcolor="red"];
     21 ->  18 [arrowType="normal"];
-    21 ->  20 [arrowType="normal",color="red"];
+    21 ->  20 [arrowType="normal",color="red",fontcolor="red"];
     21 ->  21 [arrowType="normal"];
     23 ->  24 [arrowType="normal"];
-    24 ->  7 [arrowType="normal",color="red"];
-    24 ->  24 [arrowType="normal",color="red"];
-    24 ->  33 [arrowType="normal",color="red"];
-    28 ->  26 [arrowType="normal",color="red"];
-    28 ->  28 [arrowType="normal",color="red"];
-    28 ->  33 [arrowType="normal",color="red"];
-    29 ->  28 [arrowType="normal",color="red"];
+    24 ->  7 [arrowType="normal",color="red",fontcolor="red"];
+    24 ->  24 [arrowType="normal",color="red",fontcolor="red"];
+    24 ->  33 [arrowType="normal",color="red",fontcolor="red"];
+    28 ->  26 [arrowType="normal",color="red",fontcolor="red"];
+    28 ->  28 [arrowType="normal",color="red",fontcolor="red"];
+    28 ->  33 [arrowType="normal",color="red",fontcolor="red"];
+    29 ->  28 [arrowType="normal",color="red",fontcolor="red"];
     31 ->  28 [arrowType="normal"];
-    31 ->  30 [arrowType="normal",color="red"];
+    31 ->  30 [arrowType="normal",color="red",fontcolor="red"];
     31 ->  31 [arrowType="normal"];
-    32 ->  28 [arrowType="normal",color="red"];
+    32 ->  28 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // gg_subprogram_test__qe_2_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -226,6 +231,7 @@ digraph G {
 // gg_subprogram_test__qe_2_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -262,40 +268,41 @@ digraph G {
     1 ->  31 [arrowType="normal"];
     1 ->  32 [arrowType="normal"];
     1 ->  33 [arrowType="normal"];
-    6 ->  18 [arrowType="normal",color="red"];
-    8 ->  9 [arrowType="normal",color="red"];
-    8 ->  22 [arrowType="normal",color="red"];
-    10 ->  11 [arrowType="normal",color="red"];
-    10 ->  23 [arrowType="normal",color="red"];
-    12 ->  13 [arrowType="normal",color="red"];
-    12 ->  33 [arrowType="normal",color="red"];
-    18 ->  7 [arrowType="normal",color="red"];
-    18 ->  18 [arrowType="normal",color="red"];
-    18 ->  22 [arrowType="normal",color="red"];
-    18 ->  23 [arrowType="normal",color="red"];
-    18 ->  24 [arrowType="normal",color="red"];
-    18 ->  33 [arrowType="normal",color="red"];
-    19 ->  18 [arrowType="normal",color="red"];
+    6 ->  18 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  9 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  22 [arrowType="normal",color="red",fontcolor="red"];
+    10 ->  11 [arrowType="normal",color="red",fontcolor="red"];
+    10 ->  23 [arrowType="normal",color="red",fontcolor="red"];
+    12 ->  13 [arrowType="normal",color="red",fontcolor="red"];
+    12 ->  33 [arrowType="normal",color="red",fontcolor="red"];
+    18 ->  7 [arrowType="normal",color="red",fontcolor="red"];
+    18 ->  18 [arrowType="normal",color="red",fontcolor="red"];
+    18 ->  22 [arrowType="normal",color="red",fontcolor="red"];
+    18 ->  23 [arrowType="normal",color="red",fontcolor="red"];
+    18 ->  24 [arrowType="normal",color="red",fontcolor="red"];
+    18 ->  33 [arrowType="normal",color="red",fontcolor="red"];
+    19 ->  18 [arrowType="normal",color="red",fontcolor="red"];
     21 ->  18 [arrowType="normal"];
-    21 ->  20 [arrowType="normal",color="red"];
+    21 ->  20 [arrowType="normal",color="red",fontcolor="red"];
     21 ->  21 [arrowType="normal"];
     23 ->  24 [arrowType="normal"];
-    24 ->  7 [arrowType="normal",color="red"];
-    24 ->  24 [arrowType="normal",color="red"];
-    24 ->  33 [arrowType="normal",color="red"];
-    28 ->  26 [arrowType="normal",color="red"];
-    28 ->  28 [arrowType="normal",color="red"];
-    28 ->  33 [arrowType="normal",color="red"];
-    29 ->  28 [arrowType="normal",color="red"];
+    24 ->  7 [arrowType="normal",color="red",fontcolor="red"];
+    24 ->  24 [arrowType="normal",color="red",fontcolor="red"];
+    24 ->  33 [arrowType="normal",color="red",fontcolor="red"];
+    28 ->  26 [arrowType="normal",color="red",fontcolor="red"];
+    28 ->  28 [arrowType="normal",color="red",fontcolor="red"];
+    28 ->  33 [arrowType="normal",color="red",fontcolor="red"];
+    29 ->  28 [arrowType="normal",color="red",fontcolor="red"];
     31 ->  28 [arrowType="normal"];
-    31 ->  30 [arrowType="normal",color="red"];
+    31 ->  30 [arrowType="normal",color="red",fontcolor="red"];
     31 ->  31 [arrowType="normal"];
-    32 ->  28 [arrowType="normal",color="red"];
+    32 ->  28 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // test_Globals_Graph
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="test__qe_2__B_2__temp_table"];
     2 [label="test__qe_2__table"];
     3 [label="test__qe_2'Ins",shape="box"];

@@ -73,7 +73,25 @@ package Flow_Types is
    subtype Exported_Global_Modes is Param_Mode
      range Mode_In_Out .. Mode_Out;
 
-   type Edge_Colours is (EC_Default, EC_DDG, EC_TDG);
+   type Edge_Colours is (EC_Default,
+                         --  Control-flow dependencies
+
+                         EC_Abend,
+                         --  For abnormal termination we need to add an
+                         --  edge, but it should not be traversed for the
+                         --  purpose of producing the DDG.
+
+                         EC_Inf,
+                         --  For infinite loops we do add an edge, but we
+                         --  do not want to traverse it for the purpose of
+                         --  finding dead code.
+
+                         EC_DDG,
+                         --  Data dependencies
+
+                         EC_TDG
+                         --  Transitive call dependencies
+                        );
 
    type Flow_Id_Kind is (Null_Value,
                          --  No reference or any entity or node
@@ -414,6 +432,14 @@ package Flow_Types is
       --  It should be noted that most vertices we construct will have
       --  this set to true.
 
+      Is_Exceptional_Branch : Boolean;
+      --  True for nodes which lead *into* an exceptional path, but are not
+      --  part of the path itself.
+
+      Is_Exceptional_Path : Boolean;
+      --  True for all nodes on execptional execution paths. We tend to
+      --  exclude these from analysis and sanity checking.
+
       Is_Proof            : Boolean;
       --  True if this vertex represents something in a proof context
       --  (ghost code, asserts, contracts, etc.)
@@ -544,6 +570,8 @@ package Flow_Types is
    Null_Attributes : constant V_Attributes :=
      V_Attributes'(Is_Null_Node                    => False,
                    Is_Program_Node                 => False,
+                   Is_Exceptional_Branch           => False,
+                   Is_Exceptional_Path             => False,
                    Is_Proof                        => False,
                    Is_Precondition                 => False,
                    Is_Postcondition                => False,

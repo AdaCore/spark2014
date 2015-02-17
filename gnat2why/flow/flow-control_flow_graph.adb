@@ -300,17 +300,17 @@ package body Flow.Control_Flow_Graph is
    --  graph, returning its Id.
 
    procedure Linkup
-     (CFG   : in out Flow_Graphs.T;
+     (FA    : in out Flow_Analysis_Graphs;
       Froms : Vertex_Sets.Set;
       To    : Flow_Graphs.Vertex_Id)
       with Pre => To /= Flow_Graphs.Null_Vertex;
    --  Link all vertices in Froms to the To vertex in the given graph.
 
    procedure Linkup
-     (CFG   : in out Flow_Graphs.T;
+     (FA    : in out Flow_Analysis_Graphs;
       From  : Flow_Graphs.Vertex_Id;
       To    : Flow_Graphs.Vertex_Id)
-      with Pre => From /= Flow_Graphs.Null_Vertex and
+      with Pre => From /= Flow_Graphs.Null_Vertex and then
                   To   /= Flow_Graphs.Null_Vertex;
    --  Link the From to the To vertex in the given graph.
 
@@ -779,19 +779,14 @@ package body Flow.Control_Flow_Graph is
    --  expression on an object declaration) and determines if we can to
    --  perform some meaningful record-field splitting.
 
+   procedure Mark_Exceptional_Paths (FA : in out Flow_Analysis_Graphs);
+   --  Set Is_Exceptional_Path on all vertices belonging to exceptional
+   --  control flow, and Is_Exceptional_branch on all vertices leading into
+   --  an exceptional path.
+
    procedure Prune_Exceptional_Paths (FA : in out Flow_Analysis_Graphs);
-   --  This procedure fulfils three purposes.
-   --
-   --  1) It removes:
-   --       *  all vertices that inevitably lead to a raise statement,
-   --          a statically-false assertion or a non-returning procedure
-   --       *  all vertices that follow a raise statement, a
-   --          statically-false assertion or a non-returning procedure
-   --          that are not otherwise reachable from the start vertex.
-   --
-   --  2) It populates the Edges_To_Remove set of FA.
-   --
-   --  3) It populates the Lead_To_Abnormal_Termination set of FA.
+   --  Delete all vertices from exceptional paths from the control flow
+   --  graph.
 
    procedure Simplify_CFG (FA : in out Flow_Analysis_Graphs);
    --  Remove all null vertices from the control flow graph.
@@ -854,22 +849,42 @@ package body Flow.Control_Flow_Graph is
    --  Linkup  --
    --------------
 
-   procedure Linkup (CFG   : in out Flow_Graphs.T;
+   procedure Linkup (FA    : in out Flow_Analysis_Graphs;
                      Froms : Vertex_Sets.Set;
                      To    : Flow_Graphs.Vertex_Id)
    is
    begin
       for From of Froms loop
-         CFG.Add_Edge (From, To, EC_Default);
+         Linkup (FA, From, To);
       end loop;
    end Linkup;
 
-   procedure Linkup (CFG   : in out Flow_Graphs.T;
+   procedure Linkup (FA    : in out Flow_Analysis_Graphs;
                      From  : Flow_Graphs.Vertex_Id;
                      To    : Flow_Graphs.Vertex_Id)
    is
+      Col : Edge_Colours := EC_Default;
+
+      function Get_Colour (V : Flow_Graphs.Vertex_Id) return Edge_Colours;
+      --  Produce the correct colour for outbound edges depending on the
+      --  execution kind of the given vertex.
+
+      ----------------
+      -- Get_Colour --
+      ----------------
+
+      function Get_Colour (V : Flow_Graphs.Vertex_Id) return Edge_Colours
+        is (case FA.Atr (V).Execution is
+               when Normal_Execution     => EC_Default,
+               when Abnormal_Termination => EC_Abend,
+               when Infinite_Loop        => EC_Inf);
    begin
-      CFG.Add_Edge (From, To, EC_Default);
+      if FA.Atr (From).Is_Parameter or FA.Atr (From).Is_Global_Parameter then
+         Col := Get_Colour (FA.CFG.Get_Vertex (FA.Atr (From).Call_Vertex));
+      elsif not FA.Atr (From).Is_Callsite then
+         Col := Get_Colour (From);
+      end if;
+      FA.CFG.Add_Edge (From, To, Col);
    end Linkup;
 
    ----------
@@ -891,7 +906,7 @@ package body Flow.Control_Flow_Graph is
       for P of Nodes loop
          if Present (Node_Id (Prev)) then
             --  Connect this statement to the previous one.
-            Linkup (FA.CFG,
+            Linkup (FA,
                     CM (Prev).Standard_Exits,
                     CM (P).Standard_Entry);
          else
@@ -960,7 +975,7 @@ package body Flow.Control_Flow_Graph is
                                           Corresponding_Grouping (F.Variant));
                      begin
                         Create_Record_Tree (P, Leaf_Atr, FA);
-                        Linkup (FA.CFG,
+                        Linkup (FA,
                                 FA.CFG.Get_Vertex (P),
                                 FA.CFG.Get_Vertex (F));
                      end;
@@ -982,7 +997,7 @@ package body Flow.Control_Flow_Graph is
 
                      if F.Kind = Record_Field then
                         Create_Record_Tree (Parent_Record (F), Leaf_Atr, FA);
-                        Linkup (FA.CFG,
+                        Linkup (FA,
                                 FA.CFG.Get_Vertex (Parent_Record (F)),
                                 FA.CFG.Get_Vertex (F));
                      end if;
@@ -1028,7 +1043,7 @@ package body Flow.Control_Flow_Graph is
             Change_Variant (F, Initial_Value),
             A,
             V);
-         Linkup (FA.CFG, V, FA.Start_Vertex);
+         Linkup (FA, V, FA.Start_Vertex);
 
          Create_Record_Tree (Change_Variant (F, Initial_Value),
                              A,
@@ -1043,7 +1058,7 @@ package body Flow.Control_Flow_Graph is
                                       Mode  => M,
                                       E_Loc => E),
             V);
-         Linkup (FA.CFG, FA.End_Vertex, V);
+         Linkup (FA, FA.End_Vertex, V);
 
          FA.All_Vars.Include (F);
       end Process;
@@ -1111,7 +1126,7 @@ package body Flow.Control_Flow_Graph is
             Change_Variant (F, Initial_Value),
             A,
             V);
-         Linkup (FA.CFG, V, FA.Start_Vertex);
+         Linkup (FA, V, FA.Start_Vertex);
 
          Create_Record_Tree (Change_Variant (F, Initial_Value),
                              A,
@@ -1126,7 +1141,7 @@ package body Flow.Control_Flow_Graph is
                F    => Change_Variant (F, Final_Value),
                Mode => Mode),
             V);
-         Linkup (FA.CFG, FA.End_Vertex, V);
+         Linkup (FA, FA.End_Vertex, V);
 
          FA.All_Vars.Include (F);
       end Process;
@@ -1349,7 +1364,7 @@ package body Flow.Control_Flow_Graph is
       V := Flow_Graphs.Null_Vertex;
       for W of Verts loop
          if V /= Flow_Graphs.Null_Vertex then
-            Linkup (FA.CFG, V, W);
+            Linkup (FA, V, W);
          end if;
          V := W;
       end loop;
@@ -1403,11 +1418,11 @@ package body Flow.Control_Flow_Graph is
             Direct_Mapping_Id (Alternative),
             Make_Aux_Vertex_Attributes (E_Loc => Alternative),
             V_Alter);
-         Linkup (FA.CFG, V, V_Alter);
+         Linkup (FA, V, V_Alter);
 
          --  We link V_Alter with its statements
          Process_Statement_List (Statements (Alternative), FA, CM, Ctx);
-         Linkup (FA.CFG,
+         Linkup (FA,
                  V_Alter,
                  CM (Union_Id (Statements (Alternative))).Standard_Entry);
          CM (Union_Id (N)).Standard_Exits.Union
@@ -1525,7 +1540,7 @@ package body Flow.Control_Flow_Graph is
 
       --  Link the entry vertex V (the extended return statement) to
       --  standard entry of its return_object_declarations.
-      Linkup (FA.CFG,
+      Linkup (FA,
               V,
               CM (Union_Id (Ret_Object_L)).Standard_Entry);
 
@@ -1557,14 +1572,14 @@ package body Flow.Control_Flow_Graph is
             Process_Statement_List (Statement_Sequence, FA, CM, Ctx);
             --  We link the standard exits of Ret_Object_L to the standard
             --  entry of the sequence of statements.
-            Linkup (FA.CFG,
+            Linkup (FA,
                     CM (Union_Id (Ret_Object_L)).Standard_Exits,
                     CM (Union_Id (Statement_Sequence)).Standard_Entry);
 
             --  We link the standard exits of the sequence of
             --  statements to the standard entry of the implicit
             --  return statement.
-            Linkup (FA.CFG,
+            Linkup (FA,
                     CM (Union_Id (Statement_Sequence)).Standard_Exits,
                     V);
          end;
@@ -1572,13 +1587,13 @@ package body Flow.Control_Flow_Graph is
          --  No sequence of statements is present. We link the
          --  standard exits of Ret_Object_L to the implicit return
          --  statement.
-         Linkup (FA.CFG,
+         Linkup (FA,
                  CM (Union_Id (Ret_Object_L)).Standard_Exits,
                  V);
       end if;
 
       --  We link the implicit return statement to the helper end vertex
-      Linkup (FA.CFG, V, FA.Helper_End_Vertex);
+      Linkup (FA, V, FA.Helper_End_Vertex);
 
    end Do_Extended_Return_Statement;
 
@@ -1638,7 +1653,7 @@ package body Flow.Control_Flow_Graph is
 
       --  We hang the if part off that.
       Process_Statement_List (If_Part, FA, CM, Ctx);
-      Linkup (FA.CFG, V, CM (Union_Id (If_Part)).Standard_Entry);
+      Linkup (FA, V, CM (Union_Id (If_Part)).Standard_Entry);
       CM (Union_Id (N)).Standard_Exits.Union
         (CM (Union_Id (If_Part)).Standard_Exits);
 
@@ -1695,10 +1710,10 @@ package body Flow.Control_Flow_Graph is
                   V);
                Ctx.Folded_Function_Checks (N).Insert
                  (Condition (Elsif_Statement));
-               Linkup (FA.CFG, V_Prev, V);
+               Linkup (FA, V_Prev, V);
 
                Process_Statement_List (Elsif_Body, FA, CM, Ctx);
-               Linkup (FA.CFG,
+               Linkup (FA,
                        V,
                        CM (Union_Id (Elsif_Body)).Standard_Entry);
                CM (Union_Id (N)).Standard_Exits.Union
@@ -1715,7 +1730,7 @@ package body Flow.Control_Flow_Graph is
 
       if Else_Part /= No_List then
          Process_Statement_List (Else_Part, FA, CM, Ctx);
-         Linkup (FA.CFG, V, CM (Union_Id (Else_Part)).Standard_Entry);
+         Linkup (FA, V, CM (Union_Id (Else_Part)).Standard_Entry);
          CM (Union_Id (N)).Standard_Exits.Union
            (CM (Union_Id (Else_Part)).Standard_Exits);
       else
@@ -1962,7 +1977,7 @@ package body Flow.Control_Flow_Graph is
 
             --  We now thread this at the back of the connection map
             --  for Statements (N). Sorry, this is really quite ugly.
-            Linkup (FA.CFG,
+            Linkup (FA,
                     CM (Union_Id (Statements (N))).Standard_Exits,
                     Faux_Exit_V);
             CM (Union_Id (Statements (N))).Standard_Exits :=
@@ -1974,8 +1989,8 @@ package body Flow.Control_Flow_Graph is
          end if;
 
          --  Loop the loop: V -> body -> V
-         Linkup (FA.CFG, V, CM (Union_Id (Statements (N))).Standard_Entry);
-         Linkup (FA.CFG, CM (Union_Id (Statements (N))).Standard_Exits, V);
+         Linkup (FA, V, CM (Union_Id (Statements (N))).Standard_Entry);
+         Linkup (FA, CM (Union_Id (Statements (N))).Standard_Exits, V);
       end Do_Loop;
 
       -------------------
@@ -2011,8 +2026,8 @@ package body Flow.Control_Flow_Graph is
          CM (Union_Id (N)).Standard_Exits.Include (V);
 
          --  Loop the loop: V -> body -> V
-         Linkup (FA.CFG, V, CM (Union_Id (Statements (N))).Standard_Entry);
-         Linkup (FA.CFG, CM (Union_Id (Statements (N))).Standard_Exits, V);
+         Linkup (FA, V, CM (Union_Id (Statements (N))).Standard_Entry);
+         Linkup (FA, CM (Union_Id (Statements (N))).Standard_Exits, V);
       end Do_While_Loop;
 
       -----------------
@@ -2075,8 +2090,8 @@ package body Flow.Control_Flow_Graph is
             CM (Union_Id (N)).Standard_Exits.Include (V);
 
             --  Loop the loop: V -> body -> V
-            Linkup (FA.CFG, V, CM (Union_Id (Statements (N))).Standard_Entry);
-            Linkup (FA.CFG, CM (Union_Id (Statements (N))).Standard_Exits, V);
+            Linkup (FA, V, CM (Union_Id (Statements (N))).Standard_Entry);
+            Linkup (FA, CM (Union_Id (Statements (N))).Standard_Exits, V);
 
             Fully_Initialized := Variables_Initialized_By_Loop (N);
 
@@ -2106,8 +2121,8 @@ package body Flow.Control_Flow_Graph is
             CM (Union_Id (N)).Standard_Exits.Include (V);
 
             --  Loop the loop: V -> body -> V
-            Linkup (FA.CFG, V, CM (Union_Id (Statements (N))).Standard_Entry);
-            Linkup (FA.CFG, CM (Union_Id (Statements (N))).Standard_Exits, V);
+            Linkup (FA, V, CM (Union_Id (Statements (N))).Standard_Entry);
+            Linkup (FA, CM (Union_Id (Statements (N))).Standard_Exits, V);
 
             Fully_Initialized := Flow_Id_Sets.Empty_Set;
          end if;
@@ -2565,7 +2580,7 @@ package body Flow.Control_Flow_Graph is
                  Update (Is_Program_Node => False),
                V);
 
-            Linkup (FA.CFG, V, CM (Union_Id (N)).Standard_Entry);
+            Linkup (FA, V, CM (Union_Id (N)).Standard_Entry);
             CM (Union_Id (N)).Standard_Entry := V;
          end;
       end if;
@@ -2947,7 +2962,7 @@ package body Flow.Control_Flow_Graph is
       V := Flow_Graphs.Null_Vertex;
       for W of Inits loop
          if V /= Flow_Graphs.Null_Vertex then
-            Linkup (FA.CFG, V, W);
+            Linkup (FA, V, W);
          end if;
          V := W;
       end loop;
@@ -3259,7 +3274,7 @@ package body Flow.Control_Flow_Graph is
                   --  We connect the Declarations of the body to the
                   --  Initializes_CM.
                   Linkup
-                    (FA.CFG,
+                    (FA,
                      CM (Union_Id (Body_Declarations)).Standard_Exits,
                      CM (Verts.First_Element).Standard_Entry);
 
@@ -3665,10 +3680,10 @@ package body Flow.Control_Flow_Graph is
                Graph_Connections'
                  (Standard_Entry => V,
                   Standard_Exits => Vertex_Sets.Empty_Set));
-            Linkup (FA.CFG, Prev, FA.Helper_End_Vertex);
             FA.Atr (V).Execution :=
               Get_Abend_Kind (Called_Procedure,
                               GG_Allowed => not FA.Compute_Globals);
+            Linkup (FA, Prev, FA.Helper_End_Vertex);
 
             --  We note down the vertex that we just connected to the
             --  Helper_End_Vertex. If this vertex lies within dead
@@ -3765,7 +3780,7 @@ package body Flow.Control_Flow_Graph is
                                      Standard_Exits => Empty_Set));
 
       --  Instead we link this vertex directly to the helper end vertex.
-      Linkup (FA.CFG, V, FA.Helper_End_Vertex);
+      Linkup (FA, V, FA.Helper_End_Vertex);
    end Do_Simple_Return_Statement;
 
    ----------------------------
@@ -3791,7 +3806,7 @@ package body Flow.Control_Flow_Graph is
         Present (Handled_Statement_Sequence (N))
       then
          Linkup
-           (FA.CFG,
+           (FA,
             CM (Union_Id (Declarations (N))).Standard_Exits,
             CM (Union_Id (Handled_Statement_Sequence (N))).Standard_Entry);
 
@@ -4322,7 +4337,7 @@ package body Flow.Control_Flow_Graph is
          begin
             for V of L loop
                if Prev /= Flow_Graphs.Null_Vertex then
-                  Linkup (FA.CFG, Prev, V);
+                  Linkup (FA, Prev, V);
                end if;
                Prev := V;
             end loop;
@@ -4345,7 +4360,7 @@ package body Flow.Control_Flow_Graph is
 
    function RHS_Split_Useful (N     : Node_Id;
                               Scope : Flow_Scope)
-                              return Boolean is
+                             return Boolean is
 
       function Rec (N : Node_Id) return Boolean;
       --  Recursive helper function.
@@ -4393,277 +4408,234 @@ package body Flow.Control_Flow_Graph is
         and then Rec (Expression (N));
    end RHS_Split_Useful;
 
+   ----------------------------
+   -- Mark_Exceptional_Paths --
+   ----------------------------
+
+   procedure Mark_Exceptional_Paths (FA : in out Flow_Analysis_Graphs)
+   is
+      --  Identification of exceptional paths is a bit tedious. We use a
+      --  number of simple DFS passes over the graph which will eventually
+      --  flag all vertices belonging to exceptional paths.
+      --
+      --  1. We need to detect dead code (which is again later detected by
+      --     flow-analysis). Detection of exceptional paths will also flag
+      --     dead code; since we don't want this we need to know what dead
+      --     code is so we can avoid flagging it.
+      --
+      --  2. We then note which vertices can be reached in a reversed DFS
+      --     search (but not crossing ABEND edges) - all remaining vertices
+      --     are necessarily exceptional.
+      --
+      --  3. We need to account for dead code in exceptional paths; we
+      --     perform another dead code detection but this time we don't
+      --     cross exceptional path vertices in the DFS. We flag all
+      --     vertices identified here that have not been identified in the
+      --     first step.
+      --
+      --  4. Finally, when we prune exceptional paths we might leave an if
+      --     statement with only a single exit: such a vertex consumes
+      --     variables but has no effect on the program. We set
+      --     Is_Exceptional_Branch on these vertices so we can ignore them
+      --     in flow-analysis.
+
+      Pathable : Vertex_Sets.Set := Vertex_Sets.Empty_Set;  -- Step 1
+      Live     : Vertex_Sets.Set := Vertex_Sets.Empty_Set;  -- Step 2
+      Dead     : Vertex_Sets.Set;                           -- Step 3
+
+      function Ignore_Abend_Edges (A, B : Flow_Graphs.Vertex_Id)
+                                   return Boolean;
+      --  Traverses all edges except ABEND edges.
+
+      procedure Mark_Pathable
+        (V  : Flow_Graphs.Vertex_Id;
+         TV : out Flow_Graphs.Simple_Traversal_Instruction);
+      --  Used in step 1 to populate `Pathable'.
+
+      procedure Mark_Live
+        (V  : Flow_Graphs.Vertex_Id;
+         TV : out Flow_Graphs.Simple_Traversal_Instruction);
+      --  Used in step 2 to populate `Live'.
+
+      procedure Mark_Dead
+        (V  : Flow_Graphs.Vertex_Id;
+         TV : out Flow_Graphs.Simple_Traversal_Instruction);
+      --  Used in step 2 to set Is_Exceptional_Path.
+
+      procedure Mark_Reachable
+        (V  : Flow_Graphs.Vertex_Id;
+         TV : out Flow_Graphs.Simple_Traversal_Instruction);
+      --  Used in step 3 to reduce `Dead'.
+
+      ------------------------
+      -- Ignore_Abend_Edges --
+      ------------------------
+
+      function Ignore_Abend_Edges (A, B : Flow_Graphs.Vertex_Id) return Boolean
+      is
+      begin
+         case FA.CFG.Edge_Colour (A, B) is
+            when EC_Default | EC_Inf => return True;
+            when EC_Abend            => return False;
+            when others              => raise Program_Error;
+         end case;
+      end Ignore_Abend_Edges;
+
+      -------------------
+      -- Mark_Pathable --
+      -------------------
+
+      procedure Mark_Pathable
+        (V  : Flow_Graphs.Vertex_Id;
+         TV : out Flow_Graphs.Simple_Traversal_Instruction)
+      is
+      begin
+         Pathable.Include (V);
+         if V = FA.End_Vertex then
+            TV := Flow_Graphs.Skip_Children;
+         else
+            TV := Flow_Graphs.Continue;
+         end if;
+      end Mark_Pathable;
+
+      ---------------
+      -- Mark_Live --
+      ---------------
+
+      procedure Mark_Live (V  : Flow_Graphs.Vertex_Id;
+                           TV : out Flow_Graphs.Simple_Traversal_Instruction)
+      is
+      begin
+         if V = FA.Start_Vertex then
+            TV := Flow_Graphs.Skip_Children;
+         else
+            Live.Include (V);
+            TV := Flow_Graphs.Continue;
+         end if;
+      end Mark_Live;
+
+      ---------------
+      -- Mark_Dead --
+      ---------------
+
+      procedure Mark_Dead (V  : Flow_Graphs.Vertex_Id;
+                           TV : out Flow_Graphs.Simple_Traversal_Instruction)
+      is
+      begin
+         if V = FA.End_Vertex then
+            TV := Flow_Graphs.Skip_Children;
+         else
+            if not Live.Contains (V) then
+               FA.Atr (V).Is_Exceptional_Path := True;
+            end if;
+            TV := Flow_Graphs.Continue;
+         end if;
+      end Mark_Dead;
+
+      --------------------
+      -- Mark_Reachable --
+      --------------------
+
+      procedure Mark_Reachable
+        (V  : Flow_Graphs.Vertex_Id;
+         TV : out Flow_Graphs.Simple_Traversal_Instruction)
+      is
+      begin
+         Dead.Exclude (V);
+         if V = FA.End_Vertex or FA.Atr.Element (V).Is_Exceptional_Path then
+            --  !!! .Element used here because of container bug
+            TV := Flow_Graphs.Skip_Children;
+         else
+            TV := Flow_Graphs.Continue;
+         end if;
+      end Mark_Reachable;
+
+   begin
+      --  (1) Detect all non-dead-code vertices and place them in set
+      --      `Pathable'.
+      FA.CFG.DFS (Start         => FA.Start_Vertex,
+                  Include_Start => True,
+                  Visitor       => Mark_Pathable'Access);
+
+      --  (2) In reverse, find reachable nodes (not crossing ABEND edges)
+      --      and place them in set `Live'.
+      FA.CFG.DFS (Start         => FA.End_Vertex,
+                  Include_Start => False,
+                  Visitor       => Mark_Live'Access,
+                  Edge_Selector => Ignore_Abend_Edges'Access,
+                  Reversed      => True);
+
+      --  (2) From start, flag all vertices reachable but not in set `Live'.
+      FA.CFG.DFS (Start         => FA.Start_Vertex,
+                  Include_Start => False,
+                  Visitor       => Mark_Dead'Access);
+
+      --  (3) From start, remove all vertices reachable from set `Dead'
+      --      (not crossing ABEND edges or exceptional paths).
+      Dead := Live;
+      FA.CFG.DFS (Start         => FA.Start_Vertex,
+                  Include_Start => False,
+                  Visitor       => Mark_Reachable'Access,
+                  Edge_Selector => Ignore_Abend_Edges'Access);
+
+      --  (3) We combine the above results with the ones from step 1.
+      for V of Dead loop
+         if Pathable.Contains (V) then
+            FA.Atr (V).Is_Exceptional_Path := True;
+         end if;
+      end loop;
+
+      --  (4) Flag all vertices that have an exceptional path as an out
+      --      neighbour.
+      for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         if FA.Atr (V).Is_Exceptional_Path then
+            for N of FA.CFG.Get_Collection (V, Flow_Graphs.In_Neighbours) loop
+               if not FA.Atr (N).Is_Exceptional_Path then
+                  FA.Atr (N).Is_Exceptional_Branch := True;
+               end if;
+            end loop;
+         end if;
+      end loop;
+   end Mark_Exceptional_Paths;
+
    -----------------------------
    -- Prune_Exceptional_Paths --
    -----------------------------
 
-   procedure Prune_Exceptional_Paths (FA : in out Flow_Analysis_Graphs) is
-
-      function Dead_Path_Exists
-        (From : Flow_Graphs.Vertex_Id;
-         To   : Flow_Graphs.Vertex_Id)
-         return Boolean;
-      --  Check if there exists a path between vertices From and To
-      --  that crosses a vertex which has an execution mode of either
-      --  Abnormal_Termination or Infinite_Loop.
-
-      function Is_Dead (V : Flow_Graphs.Vertex_Id) return Boolean;
-      --  Check if the given vertex cannot reach the helper end vertex
-      --  on normal execution or if the given vertex cannot be reached
-      --  from the start vertex on normal execution.
-
-      procedure Prune (V   : Flow_Graphs.Vertex_Id;
-                       Ins : out Flow_Graphs.Simple_Traversal_Instruction);
-      --  Helper subprogram for DFS traversal. This traversal sets the
-      --  Is_Null_Node flag of dead vertices.
-
-      procedure Populate_Lead_To_Abnormal_Termination
-        (V   : Flow_Graphs.Vertex_Id;
-         Ins : out Flow_Graphs.Simple_Traversal_Instruction);
-      --  Helper subprogram for DFS traversal. This traversal
-      --  populates the Lead_To_Abnormal_Termination field of FA.
-
-      procedure Populate_Edges_To_Remove
-        (From : Flow_Graphs.Vertex_Id;
-         Ins  : out Flow_Graphs.Simple_Traversal_Instruction);
-      --  Helper subprogram for DFS traversal. This traversal
-      --  populates the Edges_To_Remove field of FA.
-
-      ----------------------
-      -- Dead_Path_Exists --
-      ----------------------
-
-      function Dead_Path_Exists
-        (From : Flow_Graphs.Vertex_Id;
-         To   : Flow_Graphs.Vertex_Id)
-         return Boolean
-      is
-         Found_Dead_Path : Boolean := False;
-
-         procedure Test (V   : Flow_Graphs.Vertex_Id;
-                         Ins : out Flow_Graphs.Simple_Traversal_Instruction);
-         --  Helper subprogram for DFS traversal
-
-         ----------
-         -- Test --
-         ----------
-
-         procedure Test (V   : Flow_Graphs.Vertex_Id;
-                         Ins : out Flow_Graphs.Simple_Traversal_Instruction)
-         is
-         begin
-            if V = To then
-               Ins := Flow_Graphs.Skip_Children;
-
-            elsif FA.Atr (V).Execution in Abnormal_Termination |
-                                          Infinite_Loop
-            then
-               if FA.CFG.Non_Trivial_Path_Exists (V, To) then
-                  Found_Dead_Path := True;
-                  Ins := Flow_Graphs.Abort_Traversal;
-               else
-                  Ins := Flow_Graphs.Skip_Children;
-               end if;
-            else
-               Ins := Flow_Graphs.Continue;
-            end if;
-         end Test;
-
-      begin
-         FA.CFG.DFS (Start         => From,
-                     Include_Start => False,
-                     Visitor       => Test'Access);
-         return Found_Dead_Path;
-      end Dead_Path_Exists;
-
-      -------------
-      -- Is_Dead --
-      -------------
-
-      function Is_Dead (V : Flow_Graphs.Vertex_Id) return Boolean is
-         Dead_Going_Down : Boolean := True;
-         Dead_Going_Up   : Boolean := True;
-         Reversed        : Boolean;
-
-         procedure Test (V   : Flow_Graphs.Vertex_Id;
-                         Ins : out Flow_Graphs.Simple_Traversal_Instruction);
-         --  Helper subprogram for DFS traversal
-
-         ----------
-         -- Test --
-         ----------
-
-         procedure Test (V   : Flow_Graphs.Vertex_Id;
-                         Ins : out Flow_Graphs.Simple_Traversal_Instruction)
-         is
-            Destination : constant Flow_Graphs.Vertex_Id :=
-              (if Reversed
-               then FA.Start_Vertex
-               else FA.Helper_End_Vertex);
-         begin
-            if V = Destination then
-               if Reversed then
-                  Dead_Going_Up := False;
-               else
-                  Dead_Going_Down := False;
-               end if;
-               Ins := Flow_Graphs.Abort_Traversal;
-
-            elsif FA.Atr (V).Execution = Abnormal_Termination then
-               Ins := Flow_Graphs.Skip_Children;
-
-            elsif FA.Atr (V).Execution = Infinite_Loop then
-               declare
-                  F : constant Flow_Id := FA.CFG.Get_Key (V);
-               begin
-                  if F.Kind = Direct_Mapping
-                    and then Nkind (Get_Direct_Mapping_Id (F)) =
-                               N_Procedure_Call_Statement
-                  then
-                     Ins := Flow_Graphs.Skip_Children;
-                  else
-                     Ins := Flow_Graphs.Continue;
-                  end if;
-               end;
-
-            else
-               Ins := Flow_Graphs.Continue;
-            end if;
-         end Test;
-
-      begin
-         Reversed := False;
-         FA.CFG.DFS (Start         => V,
-                     Include_Start => True,
-                     Visitor       => Test'Access,
-                     Reversed      => Reversed);
-         Reversed := True;
-         FA.CFG.DFS (Start         => V,
-                     Include_Start => True,
-                     Visitor       => Test'Access,
-                     Reversed      => Reversed);
-         return Dead_Going_Down or Dead_Going_Up;
-      end Is_Dead;
-
-      -----------
-      -- Prune --
-      -----------
-
-      procedure Prune (V   : Flow_Graphs.Vertex_Id;
-                       Ins : out Flow_Graphs.Simple_Traversal_Instruction)
-      is
-      begin
-         if V = FA.Helper_End_Vertex then
-            Ins := Flow_Graphs.Skip_Children;
-         else
-            Ins := Flow_Graphs.Continue;
-
-            if Is_Dead (V) then
-               FA.Atr (V).Is_Null_Node := True;
-            end if;
-         end if;
-      end Prune;
-
-      -------------------------------------------
-      -- Populate_Lead_To_Abnormal_Termination --
-      -------------------------------------------
-
-      procedure Populate_Lead_To_Abnormal_Termination
-        (V   : Flow_Graphs.Vertex_Id;
-         Ins : out Flow_Graphs.Simple_Traversal_Instruction)
-      is
-         Number_Of_Out_Neighbours : constant Natural :=
-           FA.CFG.Out_Neighbour_Count (V);
-      begin
-         if V = FA.Helper_End_Vertex then
-            Ins := Flow_Graphs.Skip_Children;
-         else
-            Ins := Flow_Graphs.Continue;
-
-            if Number_Of_Out_Neighbours > 1
-              and then Dead_Path_Exists (V, FA.Helper_End_Vertex)
-            then
-               --  To add a vertex to the Lead_To_Abnormal_Termination
-               --  map it has to be some kind of flow control vertex
-               --  and it has to be able to lead to an abnormal
-               --  termination.
-               FA.Lead_To_Abnormal_Termination.Include
-                 (V, Number_Of_Out_Neighbours);
-            end if;
-         end if;
-      end Populate_Lead_To_Abnormal_Termination;
-
-      ------------------------------
-      -- Populate_Edges_To_Remove --
-      ------------------------------
-
-      procedure Populate_Edges_To_Remove
-        (From : Flow_Graphs.Vertex_Id;
-         Ins  : out Flow_Graphs.Simple_Traversal_Instruction)
-      is
-         procedure Test (To  : Flow_Graphs.Vertex_Id;
-                         Ins : out Flow_Graphs.Simple_Traversal_Instruction);
-         --  Helper subprogram for internal DFS traversal
-
-         ----------
-         -- Test --
-         ----------
-
-         procedure Test (To  : Flow_Graphs.Vertex_Id;
-                         Ins : out Flow_Graphs.Simple_Traversal_Instruction)
-         is
-            VP : constant Vertex_Pair := (From => From,
-                                          To   => To);
-         begin
-            if To = FA.Helper_End_Vertex then
-               Ins := Flow_Graphs.Skip_Children;
-            else
-               Ins := Flow_Graphs.Continue;
-            end if;
-
-            if FA.CFG.In_Neighbour_Count (To) > 1
-              and then not FA.CFG.Edge_Exists (From, To)
-              and then not Is_Dead (To)
-              and then Dead_Path_Exists (From, To)
-            then
-               FA.Edges_To_Remove.Include (VP);
-            end if;
-
-         end Test;
-
-      begin
-         if From = FA.Helper_End_Vertex then
-            Ins := Flow_Graphs.Skip_Children;
-         else
-            Ins := Flow_Graphs.Continue;
-
-            if FA.CFG.Out_Neighbour_Count (From) > 1
-              and then not Is_Dead (From)
-            then
-               FA.CFG.DFS (Start         => From,
-                           Include_Start => False,
-                           Visitor       => Test'Access);
-            end if;
-         end if;
-      end Populate_Edges_To_Remove;
-
+   procedure Prune_Exceptional_Paths (FA : in out Flow_Analysis_Graphs)
+   is
+      Dead : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
    begin
-      --  Set the Is_Null_Node field of dead vertices
-      FA.CFG.DFS (Start         => FA.Start_Vertex,
-                  Include_Start => False,
-                  Visitor       => Prune'Access);
+      for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         if FA.Atr (V).Is_Exceptional_Path then
+            Dead.Include (V);
+         end if;
+      end loop;
+      for V of Dead loop
+         FA.CFG.Clear_Vertex (V);
+         FA.Atr (V) := Null_Attributes'Update (Is_Null_Node => True);
+      end loop;
 
-      --  Populate the Lead_To_Abnormal_Termination field of FA
-      FA.CFG.DFS (Start         => FA.Start_Vertex,
-                  Include_Start => False,
-                  Visitor       =>
-                    Populate_Lead_To_Abnormal_Termination'Access);
-
-      --  Populate the Edges_To_Remove field of FA
-      FA.CFG.DFS (Start         => FA.Start_Vertex,
-                  Include_Start => False,
-                  Visitor       => Populate_Edges_To_Remove'Access);
-
+      --  Sometimes a subprogram is entirely exceptional. In this case we
+      --  need to make sure we can still reach the final vertex.
+      if not FA.CFG.Non_Trivial_Path_Exists (FA.Start_Vertex, FA.End_Vertex)
+      then
+         if not FA.Compute_Globals
+           and then (if FA.Kind = E_Subprogram_Body
+                     then Get_Abend_Kind (FA.Analyzed_Entity) in
+                       Normal_Execution | Infinite_Loop)
+         then
+            --  We warn about this, but only for packages or subprograms
+            --  not annotated with No_Return.
+            Error_Msg_Flow
+              (FA   => FA,
+               Msg  => "no paths in subprogram will return normally",
+               N    => FA.Analyzed_Entity,
+               Kind => High_Check_Kind,
+               Tag  => Missing_Return);
+         end if;
+         FA.CFG.Add_Edge (FA.Start_Vertex, FA.End_Vertex, EC_Default);
+      end if;
    end Prune_Exceptional_Paths;
 
    ------------------
@@ -4679,14 +4651,7 @@ package body Flow.Control_Flow_Graph is
                for B of FA.CFG.Get_Collection (V,
                                                Flow_Graphs.Out_Neighbours)
                loop
-                  declare
-                     VP : constant Vertex_Pair := (From => A,
-                                                   To   => B);
-                  begin
-                     if not FA.Edges_To_Remove.Contains (VP) then
-                        FA.CFG.Add_Edge (A, B, EC_Default);
-                     end if;
-                  end;
+                  FA.CFG.Add_Edge (A, B, EC_Default);
                end loop;
             end loop;
 
@@ -5491,19 +5456,19 @@ package body Flow.Control_Flow_Graph is
             Do_Subprogram_Or_Block (Body_N, FA, Connection_Map, The_Context);
 
             --  Connect up all the dots...
-            Linkup (FA.CFG,
+            Linkup (FA,
                     FA.Start_Vertex,
                     Precon_Block.Standard_Entry);
-            Linkup (FA.CFG,
+            Linkup (FA,
                     Precon_Block.Standard_Exits,
                     Connection_Map (Union_Id (Body_N)).Standard_Entry);
-            Linkup (FA.CFG,
+            Linkup (FA,
                     Connection_Map (Union_Id (Body_N)).Standard_Exits,
                     FA.Helper_End_Vertex);
-            Linkup (FA.CFG,
+            Linkup (FA,
                     FA.Helper_End_Vertex,
                     Postcon_Block.Standard_Entry);
-            Linkup (FA.CFG,
+            Linkup (FA,
                     Postcon_Block.Standard_Exits,
                     FA.End_Vertex);
 
@@ -5539,50 +5504,35 @@ package body Flow.Control_Flow_Graph is
                end if;
 
                Prev := Union_Id (Empty);
-               Linkup (FA.CFG,
+               Linkup (FA,
                        FA.Start_Vertex,
                        Connection_Map (UL.First_Element).Standard_Entry);
                for X of UL loop
                   if Prev /= Union_Id (Empty) then
-                     Linkup (FA.CFG,
+                     Linkup (FA,
                              Connection_Map (Prev).Standard_Exits,
                              Connection_Map (X).Standard_Entry);
                   end if;
                   Prev := X;
                end loop;
-               Linkup (FA.CFG,
+               Linkup (FA,
                        Connection_Map (UL.Last_Element).Standard_Exits,
                        FA.Helper_End_Vertex);
-               Linkup (FA.CFG,
+               Linkup (FA,
                        FA.Helper_End_Vertex,
                        Postcon_Block.Standard_Entry);
-               Linkup (FA.CFG,
+               Linkup (FA,
                        Postcon_Block.Standard_Exits,
                        FA.End_Vertex);
 
             end;
       end case;
 
-      --  Remove edges between non-returning subprograms which are
-      --  within dead code and the Helper_End_Vertex.
-      for V of The_Context.No_Return_Vertices loop
-         if not Flow_Graphs.Non_Trivial_Path_Exists (FA.CFG,
-                                                     FA.Start_Vertex,
-                                                     V)
-         then
-            Flow_Graphs.Remove_Edge (FA.CFG,
-                                     V,
-                                     FA.Helper_End_Vertex);
-         end if;
-      end loop;
-
-      --  Remove:
-      --    *  all vertices that inevitably lead to a raise statement,
-      --       a statically-false assertion or a non-returning procedure
-      --    *  all vertices that follow a raise statement, a
-      --       statically-false assertion or a non-returning procedure
-      --       that are not otherwise reachable from the start vertex
-      Prune_Exceptional_Paths (FA);
+      --  Label all vertices that are part of exceptional execution paths.
+      Mark_Exceptional_Paths (FA);
+      if False or True then
+         Prune_Exceptional_Paths (FA);
+      end if;
 
       --  Simplify graph by removing all null vertices.
       Simplify_CFG (FA);
@@ -5653,7 +5603,7 @@ package body Flow.Control_Flow_Graph is
                      Change_Variant (F, Initial_Value),
                      A,
                      V);
-                  Linkup (FA.CFG, V, FA.Start_Vertex);
+                  Linkup (FA, V, FA.Start_Vertex);
 
                   Create_Record_Tree (Change_Variant (F, Initial_Value),
                                       A,
@@ -5669,7 +5619,7 @@ package body Flow.Control_Flow_Graph is
                                                Mode  => Mode_In_Out,
                                                E_Loc => E),
                      V);
-                  Linkup (FA.CFG, FA.End_Vertex, V);
+                  Linkup (FA, FA.End_Vertex, V);
                end if;
             end;
          end loop;

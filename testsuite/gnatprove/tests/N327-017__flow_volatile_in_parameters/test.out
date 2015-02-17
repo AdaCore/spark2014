@@ -2,6 +2,7 @@ types.adb:4:04: warning: analyzing unreferenced procedure "Test_01"
 // fa_pkg_body_standard__types_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -18,6 +19,7 @@ digraph G {
 // fa_pkg_body_standard__types_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -32,6 +34,7 @@ digraph G {
 // fa_subprogram_types__test_01_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -56,6 +59,7 @@ digraph G {
 // fa_subprogram_types__test_01_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -69,16 +73,17 @@ digraph G {
     1 ->  2 [arrowType="normal"];
     1 ->  13 [arrowType="normal"];
     1 ->  14 [arrowType="normal"];
-    6 ->  7 [arrowType="normal",color="red"];
-    6 ->  13 [arrowType="normal",color="red"];
-    6 ->  14 [arrowType="normal",color="red"];
-    13 ->  9 [arrowType="normal",color="red"];
-    14 ->  9 [arrowType="normal",color="red"];
+    6 ->  7 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  13 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  14 [arrowType="normal",color="red",fontcolor="red"];
+    13 ->  9 [arrowType="normal",color="red",fontcolor="red"];
+    14 ->  9 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // gg_subprogram_types__test_01_cfg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
@@ -103,6 +108,7 @@ digraph G {
 // gg_subprogram_types__test_01_pdg
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
@@ -116,16 +122,17 @@ digraph G {
     1 ->  2 [arrowType="normal"];
     1 ->  13 [arrowType="normal"];
     1 ->  14 [arrowType="normal"];
-    6 ->  7 [arrowType="normal",color="red"];
-    6 ->  13 [arrowType="normal",color="red"];
-    6 ->  14 [arrowType="normal",color="red"];
-    13 ->  9 [arrowType="normal",color="red"];
-    14 ->  9 [arrowType="normal",color="red"];
+    6 ->  7 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  13 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  14 [arrowType="normal",color="red",fontcolor="red"];
+    13 ->  9 [arrowType="normal",color="red",fontcolor="red"];
+    14 ->  9 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // types_Globals_Graph
 digraph G {
    graph [splines=True];
+   edge [labelfloat=True];
     1 [label="types__test_01__o"];
     2 [label="types__test_01__i"];
     3 [label="types__test_01'Ins",shape="box"];
