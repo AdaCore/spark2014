@@ -5530,9 +5530,7 @@ package body Flow.Control_Flow_Graph is
 
       --  Label all vertices that are part of exceptional execution paths.
       Mark_Exceptional_Paths (FA);
-      if False or True then
-         Prune_Exceptional_Paths (FA);
-      end if;
+      Prune_Exceptional_Paths (FA);
 
       --  Simplify graph by removing all null vertices.
       Simplify_CFG (FA);
