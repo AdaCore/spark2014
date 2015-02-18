@@ -1,3 +1,3 @@
 from test_support import *
 
-gnatprove(opt=["-P", "scbe.gpr", "--warnings=error", "--report=all"])
+gnatprove(opt=["--warnings=error", "--report=all"])
