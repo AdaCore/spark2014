@@ -1,0 +1,1 @@
+ALL XFAIL Missing check of liskov on inherited

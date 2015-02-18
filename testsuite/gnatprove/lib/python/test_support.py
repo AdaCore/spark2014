@@ -183,10 +183,21 @@ def check_marks(strlist):
         elif 'precondition' in text or 'nonreturning' in text:
             if 'of main program' in text:
                 return 'PRECONDITION_MAIN'
+            elif 'True' in text:
+                return 'TRIVIAL_PRE'
+            elif 'class-wide' in text and 'overridden' in text:
+                return 'WEAKER_CLASSWIDE_PRE'
+            elif 'class-wide' in text:
+                return 'WEAKER_PRE'
             else:
                 return 'PRECONDITION'
         elif 'postcondition' in text:
-            return 'POSTCONDITION'
+            if 'class-wide' in text and 'overridden' in text:
+                return 'STRONGER_CLASSWIDE_POST'
+            elif 'class-wide' in text:
+                return 'STRONGER_POST'
+            else:
+                return 'POSTCONDITION'
         elif 'refined post' in text:
             return 'REFINED_POST'
         elif 'contract case' in text:
@@ -242,7 +253,12 @@ def check_marks(strlist):
                        "LOOP_INVARIANT",
                        "LOOP_VARIANT",
                        "ASSERT",
-                       "RAISE")
+                       "RAISE",
+                       "TRIVIAL_PRE",
+                       "WEAKER_PRE",
+                       "STRONGER_POST",
+                       "WEAKER_CLASSWIDE_PRE",
+                       "STRONGER_CLASSWIDE_POST")
 
     def is_negative_result(result):
         """Returns True if the given result corresponds to a negative one"""

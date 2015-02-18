@@ -1,0 +1,7 @@
+dispatch_in_contract.adb:5:20: info: overflow check proved
+dispatch_in_contract.adb:10:20: info: overflow check proved
+dispatch_in_contract.adb:11:20: info: overflow check proved
+dispatch_in_contract.adb:16:20: info: overflow check proved
+dispatch_in_contract.adb:17:20: info: overflow check proved
+dispatch_in_contract.ads:20:19: medium: class-wide precondition might be stronger than overridden one
+dispatch_in_contract.ads:28:19: medium: class-wide precondition might be stronger than overridden one
