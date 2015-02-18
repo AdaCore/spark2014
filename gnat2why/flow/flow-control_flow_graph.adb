@@ -263,19 +263,13 @@ package body Flow.Control_Flow_Graph is
       Folded_Function_Checks : Node_Graphs.Map;
       --  A set of nodes we need to separately check for uninitialized
       --  variables due to function folding.
-
-      No_Return_Vertices     : Vertex_Sets.Set;
-      --  A set of vertices that are linked directly to the
-      --  Helper_End_Vertex because they belong to a non-returning
-      --  procedure.
    end record;
 
    No_Context : constant Context :=
      Context'(Current_Loops          => Node_Sets.Empty_Set,
               Active_Loop            => Empty,
               Entry_References       => Node_Graphs.Empty_Map,
-              Folded_Function_Checks => Node_Graphs.Empty_Map,
-              No_Return_Vertices     => Vertex_Sets.Empty_Set);
+              Folded_Function_Checks => Node_Graphs.Empty_Map);
 
    ------------------------------------------------------------
    --  Local declarations
@@ -787,6 +781,11 @@ package body Flow.Control_Flow_Graph is
    procedure Prune_Exceptional_Paths (FA : in out Flow_Analysis_Graphs);
    --  Delete all vertices from exceptional paths from the control flow
    --  graph.
+
+   procedure Separate_Dead_Paths (FA : in out Flow_Analysis_Graphs);
+   --  Make sure dead code remains separate from the rest of the control
+   --  flow graph, so that the post-dominance frontier can be constructed
+   --  without errors.
 
    procedure Simplify_CFG (FA : in out Flow_Analysis_Graphs);
    --  Remove all null vertices from the control flow graph.
@@ -3684,11 +3683,6 @@ package body Flow.Control_Flow_Graph is
               Get_Abend_Kind (Called_Procedure,
                               GG_Allowed => not FA.Compute_Globals);
             Linkup (FA, Prev, FA.Helper_End_Vertex);
-
-            --  We note down the vertex that we just connected to the
-            --  Helper_End_Vertex. If this vertex lies within dead
-            --  code, then the edge will have to be removed.
-            Ctx.No_Return_Vertices.Include (Prev);
          else
             CM.Include
               (Union_Id (N),
@@ -4638,6 +4632,85 @@ package body Flow.Control_Flow_Graph is
       end if;
    end Prune_Exceptional_Paths;
 
+   -------------------------
+   -- Separate_Dead_Paths --
+   -------------------------
+
+   procedure Separate_Dead_Paths (FA : in out Flow_Analysis_Graphs)
+   is
+      Live : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+      Dead : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+
+      procedure Mark_Live (V  : Flow_Graphs.Vertex_Id;
+                           TV : out Flow_Graphs.Simple_Traversal_Instruction);
+      --  Populate `Live'.
+
+      procedure Mark_Dead (V  : Flow_Graphs.Vertex_Id;
+                           TV : out Flow_Graphs.Simple_Traversal_Instruction);
+      --  Populate `Dead' with all vertices not explicitly live.
+
+      ---------------
+      -- Mark_Live --
+      ---------------
+
+      procedure Mark_Live (V  : Flow_Graphs.Vertex_Id;
+                           TV : out Flow_Graphs.Simple_Traversal_Instruction)
+      is
+      begin
+         Live.Include (V);
+         if V = FA.End_Vertex then
+            TV := Flow_Graphs.Skip_Children;
+         else
+            TV := Flow_Graphs.Continue;
+         end if;
+      end Mark_Live;
+
+      ---------------
+      -- Mark_Dead --
+      ---------------
+
+      procedure Mark_Dead (V  : Flow_Graphs.Vertex_Id;
+                           TV : out Flow_Graphs.Simple_Traversal_Instruction)
+      is
+      begin
+         if not Live.Contains (V) then
+            Dead.Include (V);
+            TV := Flow_Graphs.Skip_Children;
+         elsif V = FA.Start_Vertex then
+            TV := Flow_Graphs.Skip_Children;
+         else
+            TV := Flow_Graphs.Continue;
+         end if;
+      end Mark_Dead;
+
+   begin
+      FA.CFG.DFS (Start         => FA.Start_Vertex,
+                  Include_Start => True,
+                  Visitor       => Mark_Live'Access);
+
+      FA.CFG.DFS (Start         => FA.End_Vertex,
+                  Include_Start => True,
+                  Visitor       => Mark_Dead'Access,
+                  Reversed      => True);
+
+      for Dead_V of Dead loop
+         declare
+            Live_Neighbours : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+         begin
+            for V of FA.CFG.Get_Collection (Dead_V,
+                                            Flow_Graphs.Out_Neighbours)
+            loop
+               if Live.Contains (V) then
+                  Live_Neighbours.Include (V);
+               end if;
+            end loop;
+            for Live_V of Live_Neighbours loop
+               FA.CFG.Remove_Edge (Dead_V, Live_V);
+            end loop;
+         end;
+      end loop;
+   end Separate_Dead_Paths;
+
    ------------------
    -- Simplify_CFG --
    ------------------
@@ -5531,6 +5604,10 @@ package body Flow.Control_Flow_Graph is
       --  Label all vertices that are part of exceptional execution paths.
       Mark_Exceptional_Paths (FA);
       Prune_Exceptional_Paths (FA);
+
+      --  Make sure we will be able to produce the post-dominance frontier
+      --  even if we have dead code remaining.
+      Separate_Dead_Paths (FA);
 
       --  Simplify graph by removing all null vertices.
       Simplify_CFG (FA);
