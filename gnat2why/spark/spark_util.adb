@@ -629,11 +629,12 @@ package body SPARK_Util is
          if Type_Based_On_External_Axioms (Typ) then
             Result := No_Default_Initialization;
 
-         --  If the type is private, it is fine if the implementation uses
-         --  mixed initialization. An error will be issued when analyzing the
-         --  implementation if it is in a SPARK part of the code.
+         --  If the type is private or class wide, it is fine if the
+         --  implementation uses mixed initialization. An error will be issued
+         --  when analyzing the implementation if it is in a SPARK part of the
+         --  code.
 
-         elsif Is_Private_Type (Typ) then
+         elsif Is_Private_Type (Typ) or else Is_Class_Wide_Type (Typ) then
             Result := No_Default_Initialization;
          end if;
       end if;
@@ -1402,6 +1403,21 @@ package body SPARK_Util is
       return N;
    end Get_Package_Spec;
 
+   --------------------------------------
+   -- Get_Specific_Type_From_Classwide --
+   --------------------------------------
+
+   function Get_Specific_Type_From_Classwide (E : Entity_Id) return Entity_Id
+   is
+      S : constant Entity_Id := Etype (E);
+   begin
+      if Is_Full_View (S) then
+         return Partial_View (S);
+      else
+         return S;
+      end if;
+   end Get_Specific_Type_From_Classwide;
+
    ----------------------------------------
    -- Get_Statement_And_Declaration_List --
    ----------------------------------------
@@ -2126,8 +2142,12 @@ package body SPARK_Util is
      (Rec  : Entity_Id;
       Comp : Entity_Id) return Entity_Id
    is
-      Cur_Comp : Entity_Id := First_Component_Or_Discriminant (Rec);
-
+      Specific_Rec : constant Entity_Id :=
+        (if Is_Class_Wide_Type (Rec) then
+              Get_Specific_Type_From_Classwide (Rec)
+         else Rec);
+      Cur_Comp     : Entity_Id :=
+        First_Component_Or_Discriminant (Specific_Rec);
    begin
       while Present (Cur_Comp) loop
          if Chars (Cur_Comp) = Chars (Comp) then

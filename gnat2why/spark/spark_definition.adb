@@ -2723,8 +2723,22 @@ package body SPARK_Definition is
 
          when E_Class_Wide_Type    |
               E_Class_Wide_Subtype =>
-            null;
 
+            --  Class wide types with a non SPARK root are not in SPARK.
+            --  Remark that the violation is always redundant for classwide
+            --  types implicitely declared on code with SPARK_Mode => On.
+            --  Still, it is necessary for preventing the usage of such
+            --  class wide types declared in withed packages without
+            --  SPARK_Mode.
+
+            declare
+               Specific_Type : constant Entity_Id :=
+                 Get_Specific_Type_From_Classwide (E);
+            begin
+               if not In_SPARK (Specific_Type) then
+                  Mark_Violation (E, From => Specific_Type);
+               end if;
+            end;
          when Access_Kind =>
             Mark_Violation ("access type", E);
 

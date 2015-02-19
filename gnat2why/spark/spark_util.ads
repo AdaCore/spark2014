@@ -589,4 +589,10 @@ package SPARK_Util is
    --     lied about contracts (as in, stated it has no outputs), then
    --     this is not a "new" failure.
 
+   function Get_Specific_Type_From_Classwide (E : Entity_Id) return Entity_Id
+   with
+     Pre => Is_Class_Wide_Type (E);
+   --  Returns the specific type associated with a class wide type.
+   --  If E's Etype is a fullview, returns its partial view instead.
+
 end SPARK_Util;
