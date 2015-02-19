@@ -1,6 +1,5 @@
 package body Bad_Account with
-  SPARK_Mode,
-  Refined_State => (State => Total, Prev_State => Last_Incr)
+  SPARK_Mode => Off
 is
    Total : Integer;
 

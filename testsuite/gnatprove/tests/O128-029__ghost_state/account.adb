@@ -1,6 +1,6 @@
 package body Account with
   SPARK_Mode,
-  Refined_State => (State => (Total, Last_Incr))
+  Refined_State => (State => Total, Prev_State => Last_Incr)
 is
    Total : Integer;
 
