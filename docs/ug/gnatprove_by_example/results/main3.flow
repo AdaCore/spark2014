@@ -1,5 +1,1 @@
-main3.adb:6:34: warning: unused global "Sensor.State"
-main3.adb:7:35: high: "Lights.State" is not written
-main3.adb:7:35: warning: unused global "Lights.State"
-main3.adb:8:08: medium: missing dependency "null => Sensor.State"
-main3.adb:8:42: medium: incorrect dependency "Lights.State => Sensor.State"
+no output
