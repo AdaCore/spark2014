@@ -143,6 +143,15 @@ different switches for compilation and verification:
 
   end My_Project;
 
+With the above project, compilation is done using the ``Compile`` default
+mode::
+
+  gprbuild -P my_project.gpr
+
+while formal verification is done using the ``Analyze`` mode::
+
+  gnatprove -P my_project.gpr -XMODE=Analyze
+
 .. _Running GNATprove from the Command Line:
 
 Running |GNATprove| from the Command Line
