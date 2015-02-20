@@ -116,9 +116,13 @@ package body Configuration is
    --  parse the "--proof" option into the two values "proof" and "lazy"
 
    procedure Set_RTS_Dir
-     (Config  : Command_Line_Configuration;
-      RTS_Dir : in out GNAT.Strings.String_Access);
-   --  interpret the string provided to --RTS and transform it into a full path
+     (Config    : Command_Line_Configuration;
+      Proj_Type : Project_Type;
+      RTS_Dir   : in out GNAT.Strings.String_Access);
+   --  if a runtime dir was defined, normalize it into an absolute path. To
+   --  find the runtime dir, we first look at the initial value of RTS which
+   --  contains the command-line argument of --RTS, if present. If it was not
+   --  present, look in the project file to find the Runtime attribute.
 
    Usage_Message : constant String :=
      "-Pproj [files] [switches] [-cargs switches]";
@@ -910,7 +914,7 @@ ASCII.LF;
       end if;
 
       Set_Proof_Mode (Config, Proof_Input.all, Proof,  Lazy);
-      Set_RTS_Dir (Config, RTS_Dir);
+      Set_RTS_Dir (Config, Tree.Root_Project, RTS_Dir);
 
       if Flow_Extra_Debug and not Debug then
          Abort_Msg (Config,
@@ -1094,12 +1098,26 @@ ASCII.LF;
    -----------------
 
    procedure Set_RTS_Dir
-     (Config  : Command_Line_Configuration;
-      RTS_Dir : in out GNAT.Strings.String_Access)
-   is
+     (Config    : Command_Line_Configuration;
+      Proj_Type : Project_Type;
+      RTS_Dir   : in out GNAT.Strings.String_Access)
+       is
    begin
       if RTS_Dir = null or else RTS_Dir.all = "" then
-         return;
+
+         --  commandline switch --RTS was not provided, but maybe something was
+         --  in the project file
+
+         if Has_Attribute (Proj_Type, Runtime_Attribute, "Ada") then
+            RTS_Dir :=
+              new String'(Attribute_Value
+                            (Proj_Type,
+                             Runtime_Attribute,
+                             "Ada",
+                             Default => ""));
+         else
+            return;
+         end if;
       end if;
 
       declare

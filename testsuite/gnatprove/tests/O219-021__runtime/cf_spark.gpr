@@ -1,0 +1,4 @@
+project Cf_Spark is
+  for Runtime ("Ada") use "my_rts";
+
+end Cf_Spark;

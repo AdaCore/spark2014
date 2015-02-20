@@ -73,8 +73,9 @@ package Configuration is
    Assumptions       : aliased Boolean;
    --  True if --ide-progress-bar switch is present. Generate information on
    --  progress for display in IDE.
-   RTS_Dir          : aliased GNAT.Strings.String_Access;
-   --  The RTS dir set by option --RTS
+   RTS_Dir           : aliased GNAT.Strings.String_Access;
+   --  The RTS dir set by option --RTS or by the project file via "Runtime"
+   --  attribute
    Limit_Line        : aliased GNAT.Strings.String_Access;
    --  Set to non-empty string when option --limit-line= was given
    Limit_Subp        : aliased GNAT.Strings.String_Access;
