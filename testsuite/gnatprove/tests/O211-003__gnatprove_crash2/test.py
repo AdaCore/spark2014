@@ -1,3 +1,3 @@
 from test_support import *
 
-gnatprove(opt=["--warnings=error", "--report=all"])
+gnatprove(opt=["-P", "test.gpr", "--warnings=error", "--report=all"])
