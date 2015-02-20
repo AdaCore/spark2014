@@ -1,4 +1,6 @@
-package body Tree_Logic is
+package body Tree_Logic
+   with SPARK_Mode => Off
+is
 
 
    procedure Insert
