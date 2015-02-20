@@ -7,7 +7,7 @@
 --                                 S p e c                                  --
 --                            (Compiler Version)                            --
 --                                                                          --
---          Copyright (C) 1992-2014, Free Software Foundation, Inc.         --
+--          Copyright (C) 1992-2015, Free Software Foundation, Inc.         --
 --                                                                          --
 -- This specification is derived from the Ada Reference Manual for use with --
 -- GNAT. The copyright notice above, and the license provisions that follow --
@@ -116,6 +116,9 @@ package System is
    subtype Interrupt_Priority is Any_Priority range 31 .. 31;
 
    Default_Priority : constant Priority := 15;
+
+   --  special boolean inserted for this test
+   Toto                      : constant Boolean := True;
 
 private
 
