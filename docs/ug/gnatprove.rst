@@ -253,9 +253,13 @@ not attempt proof.
 Setting Up the Runtime Library
 ------------------------------
 
-Just as other GNAT tools, |GNATprove| provides a ``--RTS=<runtime>`` switch
-which allows to select the runtime library to be used along with the project
-code.  |GNATprove| will search the runtime library in the following locations:
+Just as other GNAT tools, |GNATprove| provides a way to select the runtime
+library to be used along with the project code. To do this, you can either use
+the ``--RTS=<runtime>`` switch, or the ``for Runtime ("Ada") use "..."``
+attribute of the project file. Both are identical, and in the following
+explanation we assume the command line switch was used.
+
+|GNATprove| will search the runtime library in the following locations:
 
  * if the argument of the ``--RTS`` switch is a valid absolute or relative
    directory name, then this directory is interpreted as the runtime
@@ -302,11 +306,16 @@ compiler.
 Target Parameterization
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-By default, |GNATprove| assumes that the compilation target is
-the same as the host on which it is run, for setting target dependent
-values, such as endianness or sizes and alignments of standard types.
-If your target is not the same as the host on which you run |GNATprove|,
-you might need to add the following to your project file::
+By default, |GNATprove| assumes that the compilation target is the same as the
+host on which it is run, for setting target dependent values, such as
+endianness or sizes and alignments of standard types.  If your target is not
+the same as the host on which you run |GNATprove|, you have to tell
+|GNATprove| the specificities of your target.
+
+Note that the ``Target`` attribute of Project files is currently silently
+ignored.
+
+Instead, you need to add the following to your project file::
 
   project My_Project is
      [...]
