@@ -473,7 +473,9 @@ procedure Gnatprove is
      (Config_File : String;
       New_File    : String) return String
    is
-      Handle : File_Type;
+      Handle     : File_Type;
+      RTS_Set    : Boolean := False;
+      Target_Set : Boolean := False;
 
       procedure Copy_Replace_Line (Line : String);
       --  copy the given line over to Handle. If the line corresponds to the
@@ -486,11 +488,19 @@ procedure Gnatprove is
 
       procedure Copy_Replace_Line (Line : String) is
       begin
-         if String_Utils.Starts_With (Line, "--RUNTIME_LIBRARY_DIR") then
+         if RTS_Set and then
+           String_Utils.Starts_With (Line, "--RUNTIME_LIBRARY_DIR")
+         then
             Put_Line
               (Handle,
                " for Runtime_Library_Dir (""Ada"") use """ & RTS_Dir.all &
                  """;");
+         elsif Target_Set and then
+           String_Utils.Starts_With (Line, "--TARGET")
+         then
+            Put_Line
+              (Handle,
+               " for Target use """ & Target_Dir.all & """;");
          else
             Put_Line (Handle, Line);
          end if;
@@ -501,9 +511,18 @@ procedure Gnatprove is
       --  beginning of processing for Replace_Config_File_If_Needed);
 
    begin
-      if RTS_Dir = null or else RTS_Dir.all = "" then
+      if (RTS_Dir = null or else RTS_Dir.all = "") and then
+        (Target_Dir = null or else Target_Dir.all = "")
+      then
          return Config_File;
       end if;
+      if RTS_Dir /= null and then RTS_Dir.all /= "" then
+         RTS_Set := True;
+      end if;
+      if Target_Dir /= null and then Target_Dir.all /= "" then
+         Target_Set := True;
+      end if;
+
       Create (Handle, Out_File, New_File);
       Copy_File (Config_File);
       Close (Handle);

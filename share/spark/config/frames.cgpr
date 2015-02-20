@@ -1,5 +1,6 @@
 configuration project Gnat2why is
 --RUNTIME_LIBRARY_DIR
+--TARGET
    for Default_Language use "Ada";
    package Compiler is
       for Driver ("Ada") use "gnat2why";

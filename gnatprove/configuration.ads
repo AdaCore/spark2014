@@ -76,6 +76,8 @@ package Configuration is
    RTS_Dir           : aliased GNAT.Strings.String_Access;
    --  The RTS dir set by option --RTS or by the project file via "Runtime"
    --  attribute
+   Target_Dir        : GNAT.Strings.String_Access;
+   --  the attribute "target" of the project file, if set
    Limit_Line        : aliased GNAT.Strings.String_Access;
    --  Set to non-empty string when option --limit-line= was given
    Limit_Subp        : aliased GNAT.Strings.String_Access;

@@ -1,0 +1,4 @@
+project Cf_Spark is
+  for Target use "arm-eabi";
+
+end Cf_Spark;

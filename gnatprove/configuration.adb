@@ -124,6 +124,10 @@ package body Configuration is
    --  contains the command-line argument of --RTS, if present. If it was not
    --  present, look in the project file to find the Runtime attribute.
 
+   procedure Set_Target_Dir (Proj_Type : Project_Type);
+   --  if "Target" attribute is set in the project file, set the global
+   --  variable Target_Dir to its value, otherwise set that variable to "null".
+
    Usage_Message : constant String :=
      "-Pproj [files] [switches] [-cargs switches]";
 
@@ -915,6 +919,7 @@ ASCII.LF;
 
       Set_Proof_Mode (Config, Proof_Input.all, Proof,  Lazy);
       Set_RTS_Dir (Config, Tree.Root_Project, RTS_Dir);
+      Set_Target_Dir (Tree.Root_Project);
 
       if Flow_Extra_Debug and not Debug then
          Abort_Msg (Config,
@@ -1100,8 +1105,7 @@ ASCII.LF;
    procedure Set_RTS_Dir
      (Config    : Command_Line_Configuration;
       Proj_Type : Project_Type;
-      RTS_Dir   : in out GNAT.Strings.String_Access)
-       is
+      RTS_Dir   : in out GNAT.Strings.String_Access) is
    begin
       if RTS_Dir = null or else RTS_Dir.all = "" then
 
@@ -1145,6 +1149,19 @@ ASCII.LF;
          end if;
       end;
    end Set_RTS_Dir;
+
+   --------------------
+   -- Set_Target_Dir --
+   --------------------
+
+   procedure Set_Target_Dir (Proj_Type : Project_Type) is
+   begin
+      Target_Dir := null;
+      if Has_Attribute (Proj_Type, Target_Attribute) then
+         Target_Dir :=
+           new String'(Attribute_Value (Proj_Type, Target_Attribute));
+      end if;
+   end Set_Target_Dir;
 
    -----------------------
    -- SPARK_Report_File --
