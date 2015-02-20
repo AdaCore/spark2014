@@ -1,3 +1,3 @@
 from test_support import *
 
-prove_all(opt=["-P", "test.gpr", "--warnings=error", "--report=all"])
+prove_all(opt=["--warnings=error", "--report=all"])
