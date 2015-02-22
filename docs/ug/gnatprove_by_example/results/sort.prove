@@ -9,7 +9,7 @@ sort.adb:21:53: info: length check proved
 sort.adb:25:29: info: index check proved
 sort.adb:26:15: info: index check proved
 sort.adb:26:29: info: index check proved
-sort.adb:29:22: medium: assertion might fail, requires Values = Set (Init, X, Init (Y)
+sort.adb:29:07: info: assertion proved
 sort.adb:29:31: info: precondition proved
 sort.adb:29:42: info: range check proved
 sort.adb:29:51: info: index check proved
