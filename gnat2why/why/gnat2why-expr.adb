@@ -165,6 +165,13 @@ package body Gnat2Why.Expr is
    --  Return true whenever the Why declaration that corresponds to the given
    --  subprogram has a precondition.
 
+   function Declaration_Is_Associated_To_Parameter
+     (N : Node_Id) return Boolean
+   --  Returns True if N has a Related_Expression attribute associated to
+   --  a parameter entity.
+   with
+       Pre => Present (N);
+
    function Discrete_Choice_Is_Range (Choice : Node_Id) return Boolean;
    --  Return whether Choice is a range ("others" counts as a range)
 
@@ -3065,6 +3072,20 @@ package body Gnat2Why.Expr is
          return New_Void (Call);
       end if;
    end Compute_Tag_Check;
+
+   --------------------------------------------
+   -- Declaration_Is_Associated_To_Parameter --
+   --------------------------------------------
+
+   function Declaration_Is_Associated_To_Parameter
+     (N : Node_Id) return Boolean
+   is
+      (Nkind (N) in N_Entity
+        and then Ekind (N) in Type_Kind | E_Constant | E_Variable
+        and then Present (Related_Expression (N))
+        and then Nkind (Related_Expression (N)) in N_Entity
+        and then Ekind (Related_Expression (N)) in
+        E_In_Out_Parameter | E_In_Parameter | E_Out_Parameter);
 
    ------------------------------
    -- Discrete_Choice_Is_Range --
@@ -8130,12 +8151,7 @@ package body Gnat2Why.Expr is
       Result   : W_Prog_Id := New_Void;
    begin
       while Present (Cur_Decl)
-        and then Nkind (Cur_Decl) in N_Entity
-        and then Ekind (Cur_Decl) in Type_Kind | E_Constant | E_Variable
-        and then Present (Related_Expression (Cur_Decl))
-        and then Nkind (Related_Expression (Cur_Decl)) in N_Entity
-        and then Ekind (Related_Expression (Cur_Decl)) in
-        E_In_Out_Parameter | E_In_Parameter | E_Out_Parameter
+        and then Declaration_Is_Associated_To_Parameter (Cur_Decl)
       loop
          Next (Cur_Decl);
       end loop;
@@ -8157,12 +8173,7 @@ package body Gnat2Why.Expr is
       Result   : W_Prog_Id := New_Void;
    begin
       while  Present (Cur_Decl)
-        and then Nkind (Cur_Decl) in N_Entity
-        and then Ekind (Cur_Decl) in Type_Kind | E_Constant | E_Variable
-        and then Present (Related_Expression (Cur_Decl))
-        and then Nkind (Related_Expression (Cur_Decl)) in N_Entity
-        and then Ekind (Related_Expression (Cur_Decl)) in
-        E_In_Out_Parameter | E_In_Parameter | E_Out_Parameter
+        and then Declaration_Is_Associated_To_Parameter (Cur_Decl)
       loop
          Result := Sequence (Result, Transform_Declaration (Cur_Decl));
          Next (Cur_Decl);
