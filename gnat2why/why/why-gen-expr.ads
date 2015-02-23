@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2014, AdaCore                   --
+--                       Copyright (C) 2010-2015, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -245,7 +245,8 @@ package Why.Gen.Expr is
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Expr     : W_Expr_Id;
-      To       : W_Type_Id) return W_Expr_Id;
+      To       : W_Type_Id;
+      Force_No_Slide : Boolean := False) return W_Expr_Id;
    --  Returns the expression of type To that converts Expr of type From. No
    --  check is inserted in the conversion.
 

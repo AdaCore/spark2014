@@ -767,10 +767,10 @@ screen.adb:475:67: medium: range check might fail, in call inlined at screen.adb
 screen.adb:475:67: medium: range check might fail, in call inlined at screen.adb:657
 screen.adb:476:38: info: length check proved, in call inlined at screen.adb:651
 screen.adb:476:38: info: length check proved, in call inlined at screen.adb:657
-screen.adb:478:37: medium: length check might fail, in call inlined at screen.adb:651
-screen.adb:478:37: medium: length check might fail, in call inlined at screen.adb:657
-screen.adb:478:40: medium: length check might fail, in call inlined at screen.adb:651
-screen.adb:478:40: medium: length check might fail, in call inlined at screen.adb:657
+screen.adb:478:37: info: length check proved, in call inlined at screen.adb:651
+screen.adb:478:37: info: length check proved, in call inlined at screen.adb:657
+screen.adb:478:40: info: length check proved, in call inlined at screen.adb:651
+screen.adb:478:40: info: length check proved, in call inlined at screen.adb:657
 screen.adb:478:40: medium: range check might fail, in call inlined at screen.adb:651
 screen.adb:478:40: medium: range check might fail, in call inlined at screen.adb:657
 screen.adb:496:42: info: length check proved, in call inlined at screen.adb:615
@@ -783,8 +783,8 @@ screen.adb:517:33: medium: length check might fail, in call inlined at screen.ad
 screen.adb:517:36: medium: length check might fail, in call inlined at screen.adb:639
 screen.adb:517:36: medium: length check might fail, in call inlined at screen.adb:645
 screen.adb:535:33: info: length check proved, in call inlined at screen.adb:663
-screen.adb:537:37: medium: length check might fail, in call inlined at screen.adb:663
-screen.adb:537:40: medium: length check might fail, in call inlined at screen.adb:663
+screen.adb:537:37: info: length check proved, in call inlined at screen.adb:663
+screen.adb:537:40: info: length check proved, in call inlined at screen.adb:663
 screen.adb:537:40: medium: range check might fail, in call inlined at screen.adb:663
 screen.adb:578:18: warning: unused assignment to "Interfac.Output"
 screen.adb:584:18: warning: unused assignment to "Interfac.Output"
@@ -812,14 +812,14 @@ screen.adb:782:40: info: length check proved, in call inlined at screen.adb:806
 screen.adb:782:40: info: length check proved, in call inlined at screen.adb:812
 screen.adb:782:40: info: length check proved, in call inlined at screen.adb:818
 screen.adb:782:40: info: length check proved, in call inlined at screen.adb:824
-screen.adb:784:37: medium: length check might fail, in call inlined at screen.adb:806
-screen.adb:784:37: medium: length check might fail, in call inlined at screen.adb:812
-screen.adb:784:37: medium: length check might fail, in call inlined at screen.adb:818
-screen.adb:784:37: medium: length check might fail, in call inlined at screen.adb:824
-screen.adb:784:40: medium: length check might fail, in call inlined at screen.adb:806
-screen.adb:784:40: medium: length check might fail, in call inlined at screen.adb:812
-screen.adb:784:40: medium: length check might fail, in call inlined at screen.adb:818
-screen.adb:784:40: medium: length check might fail, in call inlined at screen.adb:824
+screen.adb:784:37: info: length check proved, in call inlined at screen.adb:806
+screen.adb:784:37: info: length check proved, in call inlined at screen.adb:812
+screen.adb:784:37: info: length check proved, in call inlined at screen.adb:818
+screen.adb:784:37: info: length check proved, in call inlined at screen.adb:824
+screen.adb:784:40: info: length check proved, in call inlined at screen.adb:806
+screen.adb:784:40: info: length check proved, in call inlined at screen.adb:812
+screen.adb:784:40: info: length check proved, in call inlined at screen.adb:818
+screen.adb:784:40: info: length check proved, in call inlined at screen.adb:824
 screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:806
 screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:812
 screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:818
