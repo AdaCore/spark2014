@@ -1,5 +1,5 @@
 test_vdll.adb:20:08: medium: precondition might fail
-test_vdll.adb:24:19: medium: assertion might fail, requires not Has_Element (L1, First (L1)
+test_vdll.adb:24:04: info: assertion proved
 test_vdll.adb:24:23: info: precondition proved
 test_vdll.adb:24:40: info: precondition proved
 test_vdll.adb:27:04: info: precondition proved
