@@ -1957,8 +1957,7 @@ package body Gnat2Why.Subprograms is
       --  subtype declarations. We need to take those into account.
 
       if Present (Body_N) and then Entity_Body_In_SPARK (E) then
-         Assume := Transform_Declarations_Not_From_Source
-           (Declarations (Body_N));
+         Assume := Transform_Declarations_For_Params (Declarations (Body_N));
       else
          Assume := New_Void;
       end if;
@@ -2089,7 +2088,7 @@ package body Gnat2Why.Subprograms is
 
          Why_Body :=
            Sequence
-             (Transform_Declarations_From_Source (Declarations (Body_N)),
+             (Transform_Declarations_For_Body (Declarations (Body_N)),
               Why_Body);
 
          --  Enclose the subprogram body in a try-block, so that return

@@ -8119,17 +8119,24 @@ package body Gnat2Why.Expr is
       return R;
    end Transform_Declarations_Block;
 
-   ----------------------------------------
-   -- Transform_Declarations_From_Source --
-   ----------------------------------------
+   -------------------------------------
+   -- Transform_Declarations_For_Body --
+   -------------------------------------
 
-   function Transform_Declarations_From_Source
+   function Transform_Declarations_For_Body
      (L : List_Id) return W_Prog_Id
    is
       Cur_Decl : Node_Id := First (L);
       Result   : W_Prog_Id := New_Void;
    begin
-      while Present (Cur_Decl) and then not Comes_From_Source (Cur_Decl) loop
+      while Present (Cur_Decl)
+        and then Nkind (Cur_Decl) in N_Entity
+        and then Ekind (Cur_Decl) in Type_Kind | E_Constant | E_Variable
+        and then Present (Related_Expression (Cur_Decl))
+        and then Nkind (Related_Expression (Cur_Decl)) in N_Entity
+        and then Ekind (Related_Expression (Cur_Decl)) in
+        E_In_Out_Parameter | E_In_Parameter | E_Out_Parameter
+      loop
          Next (Cur_Decl);
       end loop;
       while Present (Cur_Decl) loop
@@ -8137,24 +8144,31 @@ package body Gnat2Why.Expr is
          Next (Cur_Decl);
       end loop;
       return Result;
-   end Transform_Declarations_From_Source;
+   end Transform_Declarations_For_Body;
 
-   --------------------------------------------
-   -- Transform_Declarations_Not_From_Source --
-   --------------------------------------------
+   ---------------------------------------
+   -- Transform_Declarations_For_Params --
+   ---------------------------------------
 
-   function Transform_Declarations_Not_From_Source
+   function Transform_Declarations_For_Params
      (L : List_Id) return W_Prog_Id
    is
       Cur_Decl : Node_Id := First (L);
       Result   : W_Prog_Id := New_Void;
    begin
-      while Present (Cur_Decl) and then not Comes_From_Source (Cur_Decl) loop
+      while  Present (Cur_Decl)
+        and then Nkind (Cur_Decl) in N_Entity
+        and then Ekind (Cur_Decl) in Type_Kind | E_Constant | E_Variable
+        and then Present (Related_Expression (Cur_Decl))
+        and then Nkind (Related_Expression (Cur_Decl)) in N_Entity
+        and then Ekind (Related_Expression (Cur_Decl)) in
+        E_In_Out_Parameter | E_In_Parameter | E_Out_Parameter
+      loop
          Result := Sequence (Result, Transform_Declaration (Cur_Decl));
          Next (Cur_Decl);
       end loop;
       return Result;
-   end Transform_Declarations_Not_From_Source;
+   end Transform_Declarations_For_Params;
 
    -------------------------------
    -- Transform_Discrete_Choice --
