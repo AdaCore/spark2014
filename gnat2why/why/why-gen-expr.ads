@@ -244,7 +244,8 @@ package Why.Gen.Expr is
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Expr     : W_Expr_Id;
-      To       : W_Type_Id) return W_Expr_Id;
+      To       : W_Type_Id;
+      Force_No_Slide : Boolean := False) return W_Expr_Id;
    --  Returns the expression of type To that converts Expr of type From. No
    --  check is inserted in the conversion.
 

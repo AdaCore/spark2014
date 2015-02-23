@@ -841,6 +841,8 @@ package body Why.Gen.Records is
                --  synthesizes a value for extension components, and add an
                --  expression in To_Root_Field that copies the current field,
                --  when present in the root type.
+               --  Remark that, as array fields' bounds may depend on a
+               --  disriminant, we must force no sliding for the conversion.
 
                while Present (Field) loop
                   if not Is_Tag (Field) then
@@ -868,7 +870,8 @@ package body Why.Gen.Records is
                                    New_Record_Access
                                    (Name  => R_Field_Access,
                                     Field => Orig_Id,
-                                    Typ   => EW_Abstract (Etype (Orig)))));
+                                    Typ   => EW_Abstract (Etype (Orig))),
+                                Force_No_Slide => True));
 
                            Field_To_Index := Field_To_Index + 1;
                            To_Root_Field (Field_To_Index) :=
@@ -883,7 +886,8 @@ package body Why.Gen.Records is
                                    New_Record_Access
                                    (Name  => E_Field_Access,
                                     Field => Field_Id,
-                                    Typ   => EW_Abstract (Etype (Field)))));
+                                    Typ   => EW_Abstract (Etype (Field))),
+                                Force_No_Slide => True));
 
                            Seen.Include (Orig);
 

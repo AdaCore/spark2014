@@ -378,9 +378,9 @@ package body Why.Gen.Expr is
          for I in 1 .. Dim loop
             declare
                Low_From : constant Node_Id :=
-                 Get_Low_Bound (Nth_Index_Type (From_Ent, Dim));
+                 Get_Low_Bound (Nth_Index_Type (From_Ent, I));
                Low_To : constant Node_Id :=
-                 Get_Low_Bound (Nth_Index_Type (To_Ent, Dim));
+                 Get_Low_Bound (Nth_Index_Type (To_Ent, I));
             begin
                if not Is_Static_Expression (Low_From) or else
                  not Is_Static_Expression (Low_To) or else
@@ -401,7 +401,6 @@ package body Why.Gen.Expr is
         not Force_No_Slide and then Needs_Slide (From_Ent, To_Ent);
       Arr_Expr    : W_Expr_Id;
       T           : W_Expr_Id;
-      Arg_Ind     : Positive := 1;
 
       --  Beginning of processing for Insert_Array_Conversion
 
@@ -439,57 +438,76 @@ package body Why.Gen.Expr is
           (Expr,
            Need_Temp => Sliding or else not Is_Static_Array_Type (From_Ent));
 
-      if Is_Static_Array_Type (To_Ent) or else
-        Get_Type_Kind (To) = EW_Split
-      then
-         if Sliding then
-            declare
-               Args    : W_Expr_Array (1 .. 1 + 2 * Dim);
-            begin
-               Add_Map_Arg (Domain, Args, Arr_Expr, Arg_Ind);
-               for I in 1 .. Dim loop
-                  Add_Attr_Arg
-                    (Domain, Args, Arr_Expr,
-                     Attribute_First, Dim, Arg_Ind);
-                  Add_Attr_Arg
-                    (Domain, Args, To_Ent,
-                     Attribute_First, Dim, Arg_Ind);
-               end loop;
-               T := New_Call
-                 (Domain => Domain,
-                  Name   =>
-                    Prefix (M => Array_Modules (Dim),
-                            N => "slide"),
-                  Args   => Args,
-                  Typ    => To);
-            end;
-         elsif not Is_Static_Array_Type (From_Ent) and then
-           Get_Type_Kind (From) /= EW_Split
-         then
-            T :=
-              New_Call
-                (Domain => Domain,
-                 Name   =>
-                   Prefix (Ada_Node => From_Ent,
-                           M        => E_Module (From_Ent),
-                           W        => WNE_To_Array),
-                 Args => (1 => Arr_Expr),
-                 Typ  => To);
+      --  Add Sliding if needed.
 
-         --  No actual why call or conversion is inserted here, but we still
-         --  need to change the type of the Why AST node. We do that by adding
-         --  a dummy node
-
-         else
-            T := New_Label (Labels => Name_Id_Sets.Empty_Set,
-                            Def    => Arr_Expr,
-                            Domain => Domain,
-                            Typ    => To);
-         end if;
-      else
+      if Sliding then
          declare
-            Args     : W_Expr_Array (1 .. 2 * Dim + 1);
-            Arg_Ind  : Positive := 1;
+            Args      : W_Expr_Array (1 .. 1 + 2 * Dim);
+            Arg_Ind   : Positive := 1;
+            Need_Conv : constant Boolean := not Is_Static_Array_Type (To_Ent)
+              and then Get_Type_Kind (To) /= EW_Split;
+            Split_Typ : constant W_Type_Id :=
+              (if not Need_Conv then To
+               else EW_Split (To_Ent));
+         begin
+            Add_Map_Arg (Domain, Args, Arr_Expr, Arg_Ind);
+            for I in 1 .. Dim loop
+               Add_Attr_Arg
+                 (Domain, Args, Arr_Expr,
+                  Attribute_First, Dim, Arg_Ind);
+               Add_Attr_Arg
+                 (Domain, Args, To_Ent,
+                  Attribute_First, Dim, Arg_Ind);
+            end loop;
+            T := New_Call
+              (Domain => Domain,
+               Name   =>
+                 Prefix (M => Array_Modules (Dim),
+                         N => "slide"),
+               Args   => Args,
+               Typ    => Split_Typ);
+
+            if Need_Conv then
+
+               --  If from is in split form and not to, reconstruct the array.
+               --  Here, we must get attributes from the type as the slided
+               --  expression has no registered bounds. It is OK since
+               --  To must be constrained.
+
+               declare
+                  Args    : W_Expr_Array (1 .. 1 + 2 * Dim);
+                  Arg_Ind : Positive := 1;
+               begin
+                  Add_Map_Arg (Domain, Args, T, Arg_Ind);
+                  for I in 1 .. Dim loop
+                     Add_Attr_Arg
+                       (Domain, Args, To_Ent,
+                        Attribute_First, Dim, Arg_Ind);
+                     Add_Attr_Arg
+                       (Domain, Args, To_Ent,
+                        Attribute_Last, Dim, Arg_Ind);
+                  end loop;
+                  T :=
+                    New_Call
+                      (Domain => Domain,
+                       Name   =>
+                         Prefix (Ada_Node => To_Ent,
+                                 M        => E_Module (To_Ent),
+                                 W        => WNE_Of_Array),
+                       Args   => Args,
+                       Typ    => To);
+               end;
+            end if;
+         end;
+      elsif not Is_Static_Array_Type (To_Ent)
+        and then Get_Type_Kind (To) /= EW_Split
+      then
+
+         --  To is not in split form. Reconstruct array from base.
+
+         declare
+            Args    : W_Expr_Array (1 .. 1 + 2 * Dim);
+            Arg_Ind : Positive := 1;
          begin
             Add_Array_Arg (Domain, Args, Arr_Expr, Arg_Ind);
             T :=
@@ -499,9 +517,36 @@ package body Why.Gen.Expr is
                    Prefix (Ada_Node => To_Ent,
                            M        => E_Module (To_Ent),
                            W        => WNE_Of_Array),
-                 Args => Args,
-                 Typ  => To);
+                 Args   => Args,
+                 Typ    => To);
          end;
+
+      elsif Is_Static_Array_Type (From_Ent)
+        or else Get_Type_Kind (From) = EW_Split
+      then
+
+         --  Both are in split form.
+         --  No actual why call or conversion is inserted here, but we still
+         --  need to change the type of the Why AST node. We do that by adding
+         --  a dummy node
+
+            T := New_Label (Labels => Name_Id_Sets.Empty_Set,
+                            Def    => Arr_Expr,
+                            Domain => Domain,
+                            Typ    => To);
+      else
+
+         --  To is in split form but not From. Split From.
+
+         T :=
+           New_Call
+             (Domain => Domain,
+              Name   =>
+                Prefix (Ada_Node => To_Ent,
+                        M        => E_Module (From_Ent),
+                        W        => WNE_To_Array),
+              Args => (1 => Arr_Expr),
+              Typ  => To);
       end if;
 
       if Domain = EW_Prog and Need_Check then
@@ -1470,10 +1515,11 @@ package body Why.Gen.Expr is
    ------------------------------
 
    function Insert_Simple_Conversion
-     (Ada_Node : Node_Id := Empty;
-      Domain   : EW_Domain;
-      Expr     : W_Expr_Id;
-      To       : W_Type_Id) return W_Expr_Id
+     (Ada_Node       : Node_Id := Empty;
+      Domain         : EW_Domain;
+      Expr           : W_Expr_Id;
+      To             : W_Type_Id;
+      Force_No_Slide : Boolean := False) return W_Expr_Id
    is
       From : constant W_Type_Id := Get_Type (Expr);
    begin
@@ -1496,10 +1542,11 @@ package body Why.Gen.Expr is
                                           To       => To);
 
       elsif Is_Array_Conversion (To, From) then
-         return Insert_Array_Conversion (Domain   => Domain,
-                                         Ada_Node => Ada_Node,
-                                         Expr     => Expr,
-                                         To       => To);
+         return Insert_Array_Conversion (Domain         => Domain,
+                                         Ada_Node       => Ada_Node,
+                                         Expr           => Expr,
+                                         To             => To,
+                                         Force_No_Slide => Force_No_Slide);
 
       else
          return Insert_Scalar_Conversion (Domain   => Domain,

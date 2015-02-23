@@ -33,8 +33,8 @@ sorters.adb:87:10: info: loop invariant initialization proved
 sorters.adb:87:10: info: loop invariant preservation proved
 sorters.adb:89:26: info: index check proved
 sorters.adb:89:46: info: index check proved
+sorters.adb:91:10: info: loop invariant initialization proved
 sorters.adb:93:16: medium: loop invariant might fail after first iteration, requires Values (J) <= Values (J + 1)
-sorters.adb:93:16: medium: loop invariant might fail in first iteration, requires Values (J) <= Values (J + 1)
 sorters.adb:93:24: info: index check proved
 sorters.adb:93:40: info: index check proved
 sorters.adb:93:40: info: overflow check proved

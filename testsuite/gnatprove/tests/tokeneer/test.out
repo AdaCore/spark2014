@@ -882,8 +882,8 @@ screen.adb:500:67: medium: range check might fail, in call inlined at screen.adb
 screen.adb:500:67: medium: range check might fail, in call inlined at screen.adb:686
 screen.adb:501:38: info: length check proved, in call inlined at screen.adb:680
 screen.adb:501:38: info: length check proved, in call inlined at screen.adb:686
-screen.adb:503:37: medium: length check might fail, in call inlined at screen.adb:680
-screen.adb:503:37: medium: length check might fail, in call inlined at screen.adb:686
+screen.adb:503:37: info: length check proved, in call inlined at screen.adb:680
+screen.adb:503:37: info: length check proved, in call inlined at screen.adb:686
 screen.adb:503:40: info: length check proved, in call inlined at screen.adb:680
 screen.adb:503:40: info: length check proved, in call inlined at screen.adb:686
 screen.adb:503:40: medium: range check might fail, in call inlined at screen.adb:680
@@ -898,7 +898,7 @@ screen.adb:545:33: info: length check proved, in call inlined at screen.adb:674
 screen.adb:545:36: medium: length check might fail, in call inlined at screen.adb:668
 screen.adb:545:36: medium: length check might fail, in call inlined at screen.adb:674
 screen.adb:564:33: info: length check proved, in call inlined at screen.adb:692
-screen.adb:566:37: medium: length check might fail, in call inlined at screen.adb:692
+screen.adb:566:37: info: length check proved, in call inlined at screen.adb:692
 screen.adb:566:40: info: length check proved, in call inlined at screen.adb:692
 screen.adb:566:40: medium: range check might fail, in call inlined at screen.adb:692
 screen.adb:620:49: info: range check proved
@@ -909,10 +909,10 @@ screen.adb:816:40: info: length check proved, in call inlined at screen.adb:841
 screen.adb:816:40: info: length check proved, in call inlined at screen.adb:847
 screen.adb:816:40: info: length check proved, in call inlined at screen.adb:853
 screen.adb:816:40: info: length check proved, in call inlined at screen.adb:859
-screen.adb:818:37: medium: length check might fail, in call inlined at screen.adb:841
-screen.adb:818:37: medium: length check might fail, in call inlined at screen.adb:847
-screen.adb:818:37: medium: length check might fail, in call inlined at screen.adb:853
-screen.adb:818:37: medium: length check might fail, in call inlined at screen.adb:859
+screen.adb:818:37: info: length check proved, in call inlined at screen.adb:841
+screen.adb:818:37: info: length check proved, in call inlined at screen.adb:847
+screen.adb:818:37: info: length check proved, in call inlined at screen.adb:853
+screen.adb:818:37: info: length check proved, in call inlined at screen.adb:859
 screen.adb:818:40: info: length check proved, in call inlined at screen.adb:841
 screen.adb:818:40: info: length check proved, in call inlined at screen.adb:847
 screen.adb:818:40: info: length check proved, in call inlined at screen.adb:853
