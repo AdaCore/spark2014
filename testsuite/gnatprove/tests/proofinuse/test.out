@@ -50,7 +50,10 @@ floating_point.adb:65:32: info: range check proved
 floating_point.adb:66:16: info: division check proved
 floating_point.adb:66:16: info: overflow check proved
 floating_point.adb:66:28: info: range check proved
-floating_point.adb:75:07: info: assertion proved
+floating_point.adb:74:07: info: assertion proved
+floating_point.adb:83:38: info: overflow check proved
+floating_point.adb:84:16: medium: overflow check might fail
+nonlinear.adb:10:17: info: overflow check proved
 nonlinear.adb:10:17: info: overflow check proved
 nonlinear.adb:10:22: info: division check proved
 nonlinear.adb:10:22: info: range check proved

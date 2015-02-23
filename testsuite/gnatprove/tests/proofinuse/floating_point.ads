@@ -25,6 +25,9 @@ is
    procedure Int_To_Float_Simple (X : Unsigned_16; Res : out Float_32);
 
    --  from NC04-023 (industrial user)
-   function Float_to_Long_Float (X : Float) return Long_Float;
+   function Float_To_Long_Float (X : Float) return Long_Float;
+
+   --  from O220-024 (internal test)
+   procedure Float_Last (X, Y : Float; Res : out Float);
 
 end Floating_Point;

@@ -66,8 +66,7 @@ is
       Res := L / Float_32 (X);              --  @OVERFLOW_CHECK:PASS
    end Int_To_Float_Simple;
 
-   function Float_to_Long_Float (X : Float) return Long_Float
-   is
+   function Float_To_Long_Float (X : Float) return Long_Float is
       Tmp : Long_Float;
    begin
       pragma Assume (X >= Float'First and X <= Float'Last);
@@ -76,5 +75,13 @@ is
            (Tmp >= Long_Float (Float'First) and
             Tmp <= Long_Float (Float'Last));
       return Tmp;
-   end Float_to_Long_Float;
+   end Float_To_Long_Float;
+
+   procedure Float_Last (X, Y : Float; Res : out Float) is
+   begin
+      pragma Assume (Y <= 0.0);
+      pragma Assume (X <= Float'Last + Y);
+      Res := X - Y;  --  overflow check unprovable
+   end Float_Last;
+
 end Floating_Point;
