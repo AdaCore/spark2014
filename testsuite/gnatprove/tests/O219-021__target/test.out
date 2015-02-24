@@ -1,1 +1,3 @@
 gnatprove: Could not locate exec arm-eabi-gnatls
+warning: attribute "Target" of your project file is currently ignored by gnatprove
+warning: to specify target properties, specify option "-gnateT"  using "Builder.Global_Configuration_Switches"

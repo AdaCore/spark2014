@@ -126,7 +126,14 @@ package body Configuration is
 
    procedure Set_Target_Dir (Proj_Type : Project_Type);
    --  if "Target" attribute is set in the project file, set the global
-   --  variable Target_Dir to its value, otherwise set that variable to "null".
+   --  variable Target_Dir to its value, otherwise set that variable
+   --  to "null". Also, issue a warning if -gnateT is not set in
+   --  Builder.Global_Configuration_Switches
+
+   procedure Check_gnateT_Switch (Proj_Type : Project_Type);
+   --  Do the actual check and issue warning for the check mentioned in
+   --  Set_Target_Dir: if -gnateT is not set in
+   --  Builder.Global_Configuration_Switches
 
    Usage_Message : constant String :=
      "-Pproj [files] [switches] [-cargs switches]";
@@ -291,6 +298,42 @@ ASCII.LF;
       end if;
       GNAT.OS_Lib.OS_Exit (1);
    end Abort_Msg;
+
+   -------------------------
+   -- Check_gnateT_Switch --
+   -------------------------
+
+   procedure Check_gnateT_Switch (Proj_Type : Project_Type) is
+      Attr : constant Attribute_Pkg_List :=
+        Build ("Builder", "Global_Compilation_Switches");
+   begin
+
+      --  We check the conditions for *not* issuing the warning, in which
+      --  case we return. At the end of the procedure, the warning is issued
+      --  unconditionally.
+
+      if Has_Attribute (Proj_Type, Attr, "Ada") then
+         declare
+            Args : GNAT.Strings.String_List_Access :=
+              Attribute_Value (Proj_Type, Attr, "Ada");
+         begin
+            for Arg of Args.all loop
+               if String_Utils.Starts_With (Arg.all, "-gnateT=") then
+                  return;
+               end if;
+            end loop;
+            Free (Args);
+         end;
+      end if;
+      Put_Line
+        (Standard_Error,
+         "warning: attribute ""Target"" of your project file is currently " &
+           "ignored by gnatprove");
+      Put_Line
+        (Standard_Error,
+         "warning: to specify target properties, specify option ""-gnateT"" " &
+           " using ""Builder.Global_Configuration_Switches""");
+   end Check_gnateT_Switch;
 
    --------------
    -- Clean_Up --
@@ -1158,8 +1201,15 @@ ASCII.LF;
    begin
       Target_Dir := null;
       if Has_Attribute (Proj_Type, Target_Attribute) then
-         Target_Dir :=
-           new String'(Attribute_Value (Proj_Type, Target_Attribute));
+         declare
+            Targ : constant String :=
+              Attribute_Value (Proj_Type, Target_Attribute);
+         begin
+            if Targ /= "" then
+               Target_Dir := new String'(Targ);
+               Check_gnateT_Switch (Proj_Type);
+            end if;
+         end;
       end if;
    end Set_Target_Dir;
 

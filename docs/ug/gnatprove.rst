@@ -319,9 +319,9 @@ Instead, you need to add the following to your project file::
 
   project My_Project is
      [...]
-     package Compiler is
-        for Switches ("Ada") use ("-gnateT=" & My_Project'Project_Dir & "/target.atp");
-     end Compiler;
+     package Builder is
+        for Global_Compilation_Switches ("Ada") use ("-gnateT=" & My_Project'Project_Dir & "/target.atp");
+     end Builder;
   end My_Project;
 
 where ``target.atp`` is a file stored here in the same directory as the project
