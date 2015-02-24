@@ -1,0 +1,2 @@
+package_1.adb:11:29: medium: overflow check might fail
+package_1.adb:12:29: info: overflow check proved
