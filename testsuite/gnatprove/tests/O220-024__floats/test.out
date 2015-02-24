@@ -1,3 +1,4 @@
 test_pack.adb:7:32: medium: overflow check might fail
 test_pack.ads:12:43: info: overflow check proved
 test_pack.ads:14:42: info: overflow check proved
+wibble.adb:11:03: medium: precondition might fail
