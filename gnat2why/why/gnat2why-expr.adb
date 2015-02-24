@@ -1600,7 +1600,7 @@ package body Gnat2Why.Expr is
                              +New_Identifier
                              (Name   => Full_Name (Formal) & "__compl",
                               Domain => EW_Term,
-                              Typ    => EW_Abstract (Etype (Actual)));
+                              Typ    => EW_Abstract (Formal_Binder.Typ));
                         begin
 
                            if Formal_Binder.Fields.Present then
@@ -1646,7 +1646,7 @@ package body Gnat2Why.Expr is
                                   (Ada_Node => Actual,
                                    Domain   => EW_Prog,
                                    Name     => Tmp_Actual,
-                                   Ty       => Etype (Actual));
+                                   Ty       => Formal_Binder.Typ);
 
                               Arg_Cnt := Arg_Cnt + 1;
                            end if;
@@ -1657,7 +1657,7 @@ package body Gnat2Why.Expr is
                                   (Ada_Node => Actual,
                                    Domain   => EW_Prog,
                                    Name     => Tmp_Actual,
-                                   Ty       => Etype (Actual));
+                                   Ty       => Formal_Binder.Typ);
 
                               Arg_Cnt := Arg_Cnt + 1;
                            end if;
@@ -1668,7 +1668,7 @@ package body Gnat2Why.Expr is
                                   (Ada_Node => Actual,
                                    Domain   => EW_Prog,
                                    Name     => Tmp_Actual,
-                                   Ty       => Etype (Actual));
+                                   Ty       => Formal_Binder.Typ);
 
                               Arg_Cnt := Arg_Cnt + 1;
                            end if;
