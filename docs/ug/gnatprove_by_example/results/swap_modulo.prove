@@ -1,1 +1,1 @@
-swap_modulo.adb:6:14: medium: postcondition might fail
+swap_modulo.adb:6:14: info: postcondition proved
