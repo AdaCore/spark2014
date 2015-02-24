@@ -27,7 +27,4 @@ is
    --  from NC04-023 (industrial user)
    function Float_To_Long_Float (X : Float) return Long_Float;
 
-   --  from O220-024 (internal test)
-   procedure Float_Last (X, Y : Float; Res : out Float);
-
 end Floating_Point;

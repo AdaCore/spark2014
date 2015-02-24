@@ -4,7 +4,7 @@ is
 
    procedure PID_Update(Pid : in out PID_Obj; Measured : Float) is
    begin
-      Pid.Error := Pid.Desired - Measured;
+      Pid.Error := Pid.Desired - Measured;  --  @OVERFLOW_CHECK:FAIL
    end PID_Update;
 
 end Test_Pack;

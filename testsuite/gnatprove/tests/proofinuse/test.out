@@ -11,6 +11,8 @@ bitwise.adb:38:34: info: range check proved
 bitwise.adb:39:50: info: range check proved
 bitwise.adb:40:07: info: assertion proved
 bitwise.adb:51:07: info: assertion proved
+counter_examples.adb:8:38: info: overflow check proved
+counter_examples.adb:9:16: medium: overflow check might fail
 floating_point.adb:7:16: info: overflow check proved
 floating_point.adb:8:22: medium: assertion might fail, requires Res >=
 floating_point.adb:14:16: info: overflow check proved
@@ -51,8 +53,6 @@ floating_point.adb:66:16: info: division check proved
 floating_point.adb:66:16: info: overflow check proved
 floating_point.adb:66:28: info: range check proved
 floating_point.adb:74:07: info: assertion proved
-floating_point.adb:83:38: info: overflow check proved
-floating_point.adb:84:16: medium: overflow check might fail
 nonlinear.adb:10:17: info: overflow check proved
 nonlinear.adb:10:22: info: division check proved
 nonlinear.adb:10:22: info: range check proved

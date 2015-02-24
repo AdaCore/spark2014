@@ -77,11 +77,4 @@ is
       return Tmp;
    end Float_To_Long_Float;
 
-   procedure Float_Last (X, Y : Float; Res : out Float) is
-   begin
-      pragma Assume (Y <= 0.0);
-      pragma Assume (X <= Float'Last + Y);
-      Res := X - Y;  --  overflow check unprovable
-   end Float_Last;
-
 end Floating_Point;
