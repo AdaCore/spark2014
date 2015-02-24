@@ -196,7 +196,18 @@ postcondition was proved:
 .. literalinclude:: gnatprove_by_example/results/swap.prove
    :language: none
 
-.. prove Swap_Modulo once modulo arithmetic better supported?
+Let's now consider a well-known `in place` implementation of ``Swap`` that
+avoids introducing a temporary variable by using bitwise operations:
+
+.. literalinclude:: gnatprove_by_example/examples/swap_modulo.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| understands the bitwise operations on values of modular types, and
+it proves here that the postcondition of ``Swap_Modulo`` is proved:
+
+.. literalinclude:: gnatprove_by_example/results/swap_modulo.prove
+   :language: none
 
 |GNATprove|'s flow analysis issues warnings like the one on ``Swap_Bad``
 whenever it detects that some variables or statements are not used in the
