@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010-2015, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with System;
@@ -355,16 +355,6 @@ is
      Global => (Input  => TCP_Ticks,
                 In_Out => (Buffers.State, IP.State, IPCBs, TPCBs));
    pragma Inline (TCP_Fin);
-
-   procedure TCP_Syn (PCB : PCBs.PCB_Id; Err : out AIP.Err_T) with
-     Global => (Input  => TCP_Ticks,
-                In_Out => (Buffers.State, IP.State, IPCBs, TPCBs));
-   pragma Inline (TCP_Syn);
-
-   procedure TCP_Ack (PCB : PCBs.PCB_Id; Err : out AIP.Err_T) with
-     Global => (Input  => TCP_Ticks,
-                In_Out => (Buffers.State, IP.State, IPCBs, TPCBs));
-   pragma Inline (TCP_Ack);
 
    function Initial_Sequence_Number
      (Local_IP    : IPaddrs.IPaddr;
@@ -1619,16 +1609,6 @@ is
    begin
       TCP_Send_Control (PCB => PCB, Syn => False, Fin => True, Err => Err);
    end TCP_Fin;
-
-   procedure TCP_Syn (PCB : PCBs.PCB_Id; Err : out AIP.Err_T) is
-   begin
-      TCP_Send_Control (PCB => PCB, Syn => True, Fin => False, Err => Err);
-   end TCP_Syn;
-
-   procedure TCP_Ack (PCB : PCBs.PCB_Id; Err : out AIP.Err_T) is
-   begin
-      TCP_Send_Control (PCB => PCB, Syn => False, Fin => False, Err => Err);
-   end TCP_Ack;
 
    ---------------
    -- Setup_PCB --

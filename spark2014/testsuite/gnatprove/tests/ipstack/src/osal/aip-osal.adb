@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010-2015, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with System;
@@ -8,7 +8,6 @@ with System;
 with AIP.ARP;
 with AIP.Buffers;
 with AIP.Config;
-with AIP.IPaddrs;
 with AIP.Platform;
 with AIP.TCP;
 with AIP.UDP;
