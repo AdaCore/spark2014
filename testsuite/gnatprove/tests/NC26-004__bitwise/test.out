@@ -1,4 +1,4 @@
 x86.adb:7:07: info: assertion proved
-x86.adb:13:22: medium: assertion might fail, requires Val = ((AL_TEST and 16#00#) or Val
+x86.adb:13:07: info: assertion proved
 x86.ads:17:14: info: postcondition proved
 x86.ads:21:14: info: postcondition proved
