@@ -57,4 +57,10 @@ private package Flow.Analysis.Sanity is
    --  Sanity check all vertices if they mention a flow id that we do not
    --  know about.
 
+   procedure Check_Generated_Refined_Global
+     (FA   : in out Flow_Analysis_Graphs;
+      Sane :    out Boolean);
+   --  Checks if the generated Refined_Global contract is correct
+   --  with respect to the user-provided Global contract.
+
 end Flow.Analysis.Sanity;

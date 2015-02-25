@@ -56,7 +56,7 @@ package Flow_Utility is
      (N     : Node_Id;
       Scope : Flow_Scope)
       return Entity_Id
-   with Pre => Present (N);
+     with Pre => Present (N);
    --  Get the type of the given node. If the full view of the type
    --  is not visible from Scope, then we return the non-full view.
 
@@ -65,10 +65,12 @@ package Flow_Utility is
    --  Return true if the given subprogram has been annotated with a
    --  dependency relation.
 
-   procedure Get_Depends (Subprogram : Entity_Id;
-                          Scope      : Flow_Scope;
-                          Classwide  : Boolean;
-                          Depends    : out Dependency_Maps.Map)
+   procedure Get_Depends
+     (Subprogram           : Entity_Id;
+      Scope                : Flow_Scope;
+      Classwide            : Boolean;
+      Depends              : out Dependency_Maps.Map;
+      Use_Computed_Globals : Boolean := True)
      with Pre  => Ekind (Subprogram) in Subprogram_Kind and
                   Has_Depends (Subprogram),
           Post => (for all C in Depends.Iterate =>
@@ -82,7 +84,7 @@ package Flow_Utility is
    --     x -> {x, z}
    --     y -> {y, z}
    --
-   --  This procedure can deal with all forms the depends
+   --  This procedure can deal with all forms of the depends
    --  annotation. For each item in the dependency annotation, the LHS
    --  and RHS can be any of the following:
    --     * (x, y, z)     (an aggregate)
@@ -92,6 +94,10 @@ package Flow_Utility is
    --
    --  The + shorthand to mean "itself" is expanded away by the
    --  front-end and this procedure does not have to deal with it.
+   --
+   --  The Use_Computed_Globals flag is set to False during the
+   --  generation of globals phase. It prevents us from attempting to
+   --  use generated glboals before they have actually been produced.
 
    procedure Get_Globals (Subprogram             : Entity_Id;
                           Scope                  : Flow_Scope;
@@ -121,10 +127,11 @@ package Flow_Utility is
    --  If Globals_For_Proof is set then the calls to
    --  Get_Generated_Reads will not specify Include_Constants.
 
-   procedure Get_Proof_Globals (Subprogram : Entity_Id;
-                                Classwide  : Boolean;
-                                Reads      : out Flow_Id_Sets.Set;
-                                Writes     : out Flow_Id_Sets.Set)
+   procedure Get_Proof_Globals (Subprogram           : Entity_Id;
+                                Classwide            : Boolean;
+                                Reads                : out Flow_Id_Sets.Set;
+                                Writes               : out Flow_Id_Sets.Set;
+                                Use_Computed_Globals : Boolean := True)
      with Pre  => Ekind (Subprogram) in E_Procedure | E_Function,
           Post => (for all G of Reads  => G.Variant = In_View) and
                   (for all G of Writes => G.Variant = Out_View);
@@ -145,6 +152,13 @@ package Flow_Utility is
      with Pre => Ekind (Subprogram) in E_Procedure | E_Function;
    --  Returns True if Subprogram has a Global Output or In_Out contract,
    --  whether user-defined or generated.
+
+   function Rely_On_Generated_Global
+     (Subprogram : Entity_Id;
+      Scope      : Flow_Scope)
+      return Boolean;
+   --  Returns True if Scope has visibility of Subprogram's body and
+   --  Generated Globals will be produced for Subprogram.
 
    function Get_Function_Set (N : Node_Id) return Node_Sets.Set;
    --  Obtains all function calls used in an expression.
@@ -210,7 +224,7 @@ package Flow_Utility is
    --  quantifier under node N
 
    function Is_Null_Record (E : Entity_Id) return Boolean
-   with Pre => Nkind (E) in N_Entity;
+     with Pre => Nkind (E) in N_Entity;
    --  Checks if E is a record that contains no fields at all. If E is not
    --  a record we return False.
 
@@ -244,9 +258,9 @@ package Flow_Utility is
       Scope : Flow_Scope)
       return Flow_Id_Sets.Set
    is (Flatten_Variable (Direct_Mapping_Id (Unique_Entity (E)), Scope))
-   with Pre => Nkind (E) in N_Entity,
-        Post => (if not Is_Null_Record (E)
-                 then not Flatten_Variable'Result.Is_Empty);
+     with Pre  => Nkind (E) in N_Entity,
+          Post => (if not Is_Null_Record (E)
+                   then not Flatten_Variable'Result.Is_Empty);
    --  As above, but conveniently taking an Entity instead of a Flow_Id.
 
    subtype Valid_Assignment_Kinds is Node_Kind with Static_Predicate =>
@@ -259,8 +273,8 @@ package Flow_Utility is
                                N_Selected_Component;
 
    function Is_Valid_Assignment_Target (N : Node_Id) return Boolean
-   with Post => (if Is_Valid_Assignment_Target'Result
-                 then Nkind (N) in Valid_Assignment_Kinds);
+     with Post => (if Is_Valid_Assignment_Target'Result
+                   then Nkind (N) in Valid_Assignment_Kinds);
    --  Returns True if the tree under N is a combination of
    --  Valid_Assignment_Kinds only.
 
@@ -271,10 +285,10 @@ package Flow_Utility is
       Classwide          : out Boolean;
       Map_Root           : out Flow_Id;
       Seq                : out Node_Lists.List)
-   with Pre  => Is_Valid_Assignment_Target (N),
-        Post =>
-          Map_Root.Kind in Direct_Mapping | Record_Field and then
-          (for all X of Seq => Nkind (X) in Valid_Assignment_Kinds);
+     with Pre  => Is_Valid_Assignment_Target (N),
+          Post =>
+            Map_Root.Kind in Direct_Mapping | Record_Field and then
+            (for all X of Seq => Nkind (X) in Valid_Assignment_Kinds);
    --  Checks the assignment target N and determines a few basic
    --  properties.
    --
@@ -294,7 +308,7 @@ package Flow_Utility is
       Vars_Used            : out Flow_Id_Sets.Set;
       Vars_Proof           : out Flow_Id_Sets.Set;
       Partial_Definition   : out Boolean)
-     with Pre => Is_Valid_Assignment_Target (N),
+     with Pre  => Is_Valid_Assignment_Target (N),
           Post => (if not Is_Null_Record (Etype (N))
                    then not Vars_Defined.Is_Empty);
    --  Process the LHS of an assignment statement or an [in] out parameter,
@@ -338,10 +352,10 @@ package Flow_Utility is
       Expand_Synthesized_Constants : Boolean;
       Extensions_Irrelevant        : Boolean := True)
       return Flow_Id_Maps.Map
-   with Pre => Ekind (Get_Full_Type (N, Scope)) in Record_Kind | Private_Kind
-               and then Map_Root.Kind in Direct_Mapping | Record_Field
-               and then Nkind (Map_Type) in N_Entity
-               and then Ekind (Map_Type) in Type_Kind;
+     with Pre => Ekind (Get_Full_Type (N, Scope)) in Record_Kind | Private_Kind
+                 and then Map_Root.Kind in Direct_Mapping | Record_Field
+                 and then Nkind (Map_Type) in N_Entity
+                 and then Ekind (Map_Type) in Type_Kind;
    --  Process a record or aggregate N and return a map which can be used
    --  to work out which fields will depend on what inputs.
    --
@@ -368,8 +382,8 @@ package Flow_Utility is
       Use_Computed_Globals         : Boolean;
       Expand_Synthesized_Constants : Boolean)
       return Flow_Id_Sets.Set
-   with Pre => Nkind (N) = N_Selected_Component
-               or else Is_Tick_Update (N);
+     with Pre => Nkind (N) = N_Selected_Component
+                 or else Is_Tick_Update (N);
    --  Process a node describing one or more record fields and return a
    --  variable set with all variables referenced.
    --
@@ -464,15 +478,15 @@ package Flow_Utility is
    function Get_Type (F     : Flow_Id;
                       Scope : Flow_Scope)
                       return Entity_Id
-   with Pre  => F.Kind in Direct_Mapping | Record_Field and then
-                F.Facet = Normal_Part,
-        Post => Nkind (Get_Type'Result) in N_Entity;
+     with Pre  => F.Kind in Direct_Mapping | Record_Field and then
+                  F.Facet = Normal_Part,
+          Post => Nkind (Get_Type'Result) in N_Entity;
    --  Determine the type of a flow_id.
 
    function Extensions_Visible (E     : Entity_Id;
                                 Scope : Flow_Scope)
                                 return Boolean
-   with Pre => Ekind (E) in Object_Kind | E_Function | E_Abstract_State;
+     with Pre => Ekind (E) in Object_Kind | E_Function | E_Abstract_State;
    --  Checks if extensions are visible for this particular entity. Note
    --  that if we give it a function, then we always return false, since
    --  this refers to the return of the function, not if the subprogram's
@@ -484,20 +498,20 @@ package Flow_Utility is
    function Extensions_Visible (F     : Flow_Id;
                                 Scope : Flow_Scope)
                                 return Boolean
-   with Pre => (if F.Kind in Direct_Mapping | Record_Field
-                then Ekind (Get_Direct_Mapping_Id (F))
-                  in Object_Kind | E_Function | E_Abstract_State);
+     with Pre => (if F.Kind in Direct_Mapping | Record_Field
+                  then Ekind (Get_Direct_Mapping_Id (F))
+                    in Object_Kind | E_Function | E_Abstract_State);
    --  As above, but using a flow_id.
 
    function Search_Depends (Subprogram : Entity_Id;
                             Output     : Entity_Id;
                             Input      : Entity_Id := Empty)
                             return Node_Id
-   with Pre => Nkind (Subprogram) in N_Entity and then
-               Ekind (Subprogram) in Subprogram_Kind and then
-               Nkind (Output) in N_Entity and then
-               (if Present (Input) then Nkind (Input) in N_Entity),
-        Post => Present (Search_Depends'Result);
+     with Pre  => Nkind (Subprogram) in N_Entity and then
+                  Ekind (Subprogram) in Subprogram_Kind and then
+                  Nkind (Output) in N_Entity and then
+                  (if Present (Input) then Nkind (Input) in N_Entity),
+          Post => Present (Search_Depends'Result);
    --  Search the depends (or refined depends) of the given subprogram for
    --  the given output. If input is also given, search for that input in
    --  the dependency list for the given output.
@@ -506,10 +520,26 @@ package Flow_Utility is
    --  itself.
 
    function All_Components (E : Entity_Id) return Node_Lists.List
-   with Pre => Nkind (E) in N_Entity and then
-               Ekind (E) in Type_Kind;
+     with Pre => Nkind (E) in N_Entity and then
+                 Ekind (E) in Type_Kind;
    --  Obtain all components of the given entity E, similar to
    --  {First,Next}_Component_Or_Discriminant, with the difference that any
    --  components of private ancestors are included.
+
+   function Is_Non_Visible_Constituent
+     (F     : Flow_Id;
+      Scope : Flow_Scope)
+      return Boolean;
+   --  Returns True if F is not visible from Scope and is a
+   --  constituent of some state abstraction. This means that F will
+   --  have to be up projected.
+
+   function Up_Project_Constituent
+     (F     : Flow_Id;
+      Scope : Flow_Scope)
+      return Flow_Id
+     with Pre => Is_Non_Visible_Constituent (F, Scope);
+   --  Returns the Flow_Id of the closest enclosing state of F that
+   --  Is_Visible from Scope.
 
 end Flow_Utility;

@@ -25,18 +25,17 @@ with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
 with Ada.Characters.Latin_1;
 with Ada.Strings.Maps;
 
-with Sem_Util;   use Sem_Util;
-with Uintp;      use Uintp;
+with Sem_Util;               use Sem_Util;
+with Uintp;                  use Uintp;
 
-with Output;     use Output;
-with Treepr;     use Treepr;
+with Output;                 use Output;
+with Treepr;                 use Treepr;
 
 with Why;
 --  For the exceptions
 
---  with SPARK_Util; use SPARK_Util;
-with SPARK_Definition; use SPARK_Definition;
-with Common_Containers; use Common_Containers;
+with SPARK_Definition;       use SPARK_Definition;
+with Common_Containers;      use Common_Containers;
 
 with Graph;
 

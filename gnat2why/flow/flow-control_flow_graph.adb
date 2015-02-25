@@ -3613,10 +3613,11 @@ package body Flow.Control_Flow_Graph is
             D_Map : Dependency_Maps.Map;
             V     : Flow_Graphs.Vertex_Id;
          begin
-            Get_Depends (Subprogram => Called_Procedure,
-                         Scope      => FA.B_Scope,
-                         Classwide  => Is_Dispatching_Call (N),
-                         Depends    => D_Map);
+            Get_Depends (Subprogram           => Called_Procedure,
+                         Scope                => FA.B_Scope,
+                         Classwide            => Is_Dispatching_Call (N),
+                         Depends              => D_Map,
+                         Use_Computed_Globals => not FA.Compute_Globals);
             if D_Map.Contains (Null_Flow_Id)
               and then D_Map (Null_Flow_Id).Length >= 1
             then
@@ -4016,12 +4017,13 @@ package body Flow.Control_Flow_Graph is
    begin
       --  Obtain globals (either from contracts or the computed
       --  stuff).
-      Get_Globals (Subprogram   => Entity (Name (Callsite)),
-                   Scope        => FA.B_Scope,
-                   Classwide    => Is_Dispatching_Call (Callsite),
-                   Proof_Ins    => Proof_Reads,
-                   Reads        => Reads,
-                   Writes       => Writes);
+      Get_Globals (Subprogram           => Entity (Name (Callsite)),
+                   Scope                => FA.B_Scope,
+                   Classwide            => Is_Dispatching_Call (Callsite),
+                   Proof_Ins            => Proof_Reads,
+                   Reads                => Reads,
+                   Writes               => Writes,
+                   Use_Computed_Globals => not FA.Compute_Globals);
       Reads.Union (Proof_Reads);
 
       for R of Reads loop

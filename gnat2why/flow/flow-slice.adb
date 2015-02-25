@@ -263,6 +263,10 @@ package body Flow.Slice is
 
    end Compute_Dependency_Relation;
 
+   ---------------------
+   -- Compute_Globals --
+   ---------------------
+
    procedure Compute_Globals
      (FA                : Flow_Analysis_Graphs;
       Inputs_Proof      : out Node_Sets.Set;
@@ -547,7 +551,9 @@ package body Flow.Slice is
          Subs_Without_Contracts : Node_Sets.Set := Node_Sets.Empty_Set;
       begin
          for N of NS loop
-            if not Has_User_Supplied_Globals (N) then
+            if Rely_On_Generated_Global (N, FA.B_Scope)
+              or else not Has_User_Supplied_Globals (N)
+            then
                Subs_Without_Contracts.Include (N);
             end if;
          end loop;

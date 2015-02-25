@@ -1172,10 +1172,11 @@ package body SPARK_Frame_Conditions is
                   Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
                   Write_Ids : Flow_Types.Flow_Id_Sets.Set;
                begin
-                  Get_Proof_Globals (Subprogram => E,
-                                     Classwide  => True,
-                                     Reads      => Read_Ids,
-                                     Writes     => Write_Ids);
+                  Get_Proof_Globals (Subprogram           => E,
+                                     Classwide            => True,
+                                     Reads                => Read_Ids,
+                                     Writes               => Write_Ids,
+                                     Use_Computed_Globals => False);
                   Prop_Reads  := To_Ids (Flow_Types.To_Name_Set (Read_Ids));
                   Prop_Writes := To_Ids (Flow_Types.To_Name_Set (Write_Ids));
                end;

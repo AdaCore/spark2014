@@ -52,8 +52,8 @@ is
    --  parameters (E is allowed to have global parameters).
 
    function Is_Package_State (E : Entity_Id) return Boolean;
-   --  Returns true if E is declared in a package spec or body. Also
-   --  returns true for any abstract state.
+   --  Returns True if E is declared in a package spec or body. Also
+   --  returns True for any abstract state.
 
    function Get_Body (E : Entity_Id) return Entity_Id
      with Pre  => Ekind (E) in E_Function | E_Procedure,
@@ -83,17 +83,17 @@ is
    --  Checks if the given node is a 'Update node.
 
    function Component_Hash (E : Entity_Id) return Ada.Containers.Hash_Type
-   with Pre => Is_Initialized and then
-               Nkind (E) in N_Entity and then
-               Ekind (E) in E_Component | E_Discriminant;
+     with Pre => Is_Initialized and then
+                 Nkind (E) in N_Entity and then
+                 Ekind (E) in E_Component | E_Discriminant;
    --  Compute a suitable hash for the given record component.
 
    function Same_Component (C1, C2 : Entity_Id) return Boolean
-   with Pre => Is_Initialized and then
-               Nkind (C1) in N_Entity and then
-               Nkind (C2) in N_Entity and then
-               Ekind (C1) in E_Component | E_Discriminant  and then
-               Ekind (C2) in E_Component | E_Discriminant;
+     with Pre => Is_Initialized and then
+                 Nkind (C1) in N_Entity and then
+                 Nkind (C2) in N_Entity and then
+                 Ekind (C1) in E_Component | E_Discriminant  and then
+                 Ekind (C2) in E_Component | E_Discriminant;
    --  Given two record components, checks if one can be considered to be
    --  the `same' component (for purposes of flow analysis). For example a
    --  record might contain component x, and its derived record also
@@ -101,8 +101,8 @@ is
    --  function can be used to check for this equivalence.
 
    function Has_Extensions_Visible_Aspect (E : Entity_Id) return Boolean
-   with Pre => Nkind (E) in N_Entity and then
-               Ekind (E) in Subprogram_Kind;
+     with Pre => Nkind (E) in N_Entity and then
+                 Ekind (E) in Subprogram_Kind;
    --  Checks if extensions are visible for this subprogram.
 
    function Get_Full_Type_Without_Checking (N : Node_Id) return Entity_Id

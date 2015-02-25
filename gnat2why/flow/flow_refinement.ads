@@ -160,4 +160,15 @@ package Flow_Refinement is
    --  Then from the scope of Inner, X is not initialized at elaboration,
    --  but from the scope of Outer, it is.
 
+   function Mentions_State_With_Visible_Refinement
+     (N     : Node_Id;
+      Scope : Flow_Scope)
+      return Boolean;
+   --  Traverses the tree under N and returns True if it finds a state
+   --  abstraction whose refinement is visible from Scope.
+
+   function Refinement_Needed (E : Entity_Id) return Boolean
+     with Pre => Ekind (E) in Subprogram_Kind;
+   --  Returns True if a refinement is needed for E
+
 end Flow_Refinement;

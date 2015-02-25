@@ -44,6 +44,7 @@ with Flow_Classwide;             use Flow_Classwide;
 package body Flow_Utility is
 
    use type Flow_Id_Sets.Set;
+   use type Node_Sets.Set;
 
    ----------------------------------------------------------------------
    --  Debug
@@ -1047,29 +1048,62 @@ package body Flow_Utility is
    -- Get_Depends --
    -----------------
 
-   procedure Get_Depends (Subprogram : Entity_Id;
-                          Scope      : Flow_Scope;
-                          Classwide  : Boolean;
-                          Depends    : out Dependency_Maps.Map)
+   procedure Get_Depends
+     (Subprogram           : Entity_Id;
+      Scope                : Flow_Scope;
+      Classwide            : Boolean;
+      Depends              : out Dependency_Maps.Map;
+      Use_Computed_Globals : Boolean := True)
    is
       pragma Unreferenced (Classwide);
       --  For now we assume classwide globals are the same as the actual
       --  globals.
 
-      Tmp : Dependency_Maps.Map;
+      Tmp       : Dependency_Maps.Map;
+
+      Depends_N : constant Node_Id := Get_Contract_Node (Subprogram,
+                                                         Scope,
+                                                         Depends_Contract);
+
+      function Trimming_Required return Boolean;
+      --  Checks if the projected Depends constituents need to be
+      --  trimmed (based on a user-provided Refined_Global aspect).
+
+      -----------------------
+      -- Trimming_Required --
+      -----------------------
+
+      function Trimming_Required return Boolean is
+      begin
+         if Pragma_Name (Depends_N) = Name_Refined_Depends
+           or else not Mentions_State_With_Visible_Refinement (Depends_N,
+                                                               Scope)
+         then
+            --  No trimming required if:
+            --
+            --    a) there is a user-provided Refined_Depends
+            --
+            --    b) the Depends aspect does not mention state with visible
+            --       refinement
+            return False;
+         end if;
+
+         return True;
+      end Trimming_Required;
+
    begin
 
       ----------------------------------------------------------------------
       --  Step 1: parse the appropriate dependency relation.
       ----------------------------------------------------------------------
 
-      Tmp := Parse_Depends (Get_Contract_Node (Subprogram,
-                                               Scope,
-                                               Depends_Contract));
+      Tmp := Parse_Depends (Depends_N);
 
       ----------------------------------------------------------------------
       --  Step 2: expand out any abstract state for which the refinement is
-      --  visible, similar to what we do for globals.
+      --  visible, similar to what we do for globals. During this step we
+      --  also trim the generated refined depends according to the
+      --  user-provided refined_global contact.
       ----------------------------------------------------------------------
 
       Depends := Dependency_Maps.Empty_Map;
@@ -1084,14 +1118,71 @@ package body Flow_Utility is
                                        Scope))
                else Flow_Id_Sets.To_Set (Dependency_Maps.Key (C)));
 
-            D_Out : constant Flow_Id_Sets.Set :=
+            D_Out : Flow_Id_Sets.Set :=
               To_Flow_Id_Set (Down_Project
                                 (To_Node_Set (Dependency_Maps.Element (C)),
                                  Scope));
          begin
-            for I of D_In loop
-               Depends.Include (I, D_Out);
-            end loop;
+            if Trimming_Required then
+               --  Use the Refined_Global to trim the down projected
+               --  Depends.
+               declare
+                  All_Proof_Ins : Flow_Id_Sets.Set;
+                  All_Reads     : Flow_Id_Sets.Set;
+                  Unused        : Flow_Id_Sets.Set;
+
+                  Params        : Node_Sets.Set;
+                  E             : Entity_Id;
+               begin
+                  --  Start with collecting all global outputs and
+                  --  inputs
+                  Get_Globals (Subprogram           => Subprogram,
+                               Scope                => Scope,
+                               Classwide            => False,
+                               Proof_Ins            => All_Proof_Ins,
+                               Reads                => All_Reads,
+                               Writes               => Unused,
+                               Use_Computed_Globals => Use_Computed_Globals);
+
+                  --  Pupulate params (with the subprogram's formal
+                  --  parameters)
+                  E := First_Formal (Subprogram);
+                  while Present (E) loop
+                     Params.Include (E);
+                     E := Next_Formal (E);
+                  end loop;
+
+                  --  Add the formal parameters of mode "in [out]" so
+                  --  that we have the complete set of Proof_Ins and
+                  --  Reads.
+                  for Par of Params loop
+                     if Ekind (Par) in E_In_Parameter | E_In_Out_Parameter then
+                        declare
+                           F : constant Flow_Id := Direct_Mapping_Id (Par);
+                        begin
+                           All_Reads.Include (F);
+                           All_Proof_Ins.Include (F);
+                        end;
+                     end if;
+                  end loop;
+
+                  for I of D_In loop
+                     if I = Null_Flow_Id then
+                        D_Out := D_Out and Change_Variant (All_Proof_Ins,
+                                                           Normal_Use);
+                     else
+                        D_Out := D_Out and Change_Variant (All_Reads,
+                                                           Normal_Use);
+                     end if;
+                     Depends.Include (I, D_Out);
+                  end loop;
+               end;
+            else
+               --  Simply add the dependency as it is
+               for I of D_In loop
+                  Depends.Include (I, D_Out);
+               end loop;
+            end if;
          end;
       end loop;
 
@@ -1117,6 +1208,9 @@ package body Flow_Utility is
       Depends_Node : constant Node_Id := Get_Contract_Node (Subprogram,
                                                             Scope,
                                                             Depends_Contract);
+
+      Use_Generated_Globals : constant Boolean :=
+        Rely_On_Generated_Global (Subprogram, Scope);
    begin
       Proof_Ins := Flow_Id_Sets.Empty_Set;
       Reads     := Flow_Id_Sets.Empty_Set;
@@ -1131,7 +1225,9 @@ package body Flow_Utility is
          Write_Eol;
       end if;
 
-      if Present (Global_Node) then
+      if Present (Global_Node)
+        and then not Use_Generated_Globals
+      then
          if Debug_Trace_Get_Global then
             Indent;
             Write_Str ("using user annotation");
@@ -1301,7 +1397,80 @@ package body Flow_Utility is
             --  pragma Assert ((G_Proof and G_In) = Node_Sets.Empty_Set);
 
             ---------------------------------------------------------------
-            --  Step 4: Convert to a Flow_Id set.
+            --  Step 4: Trim constituents based on the Refined_Depends.
+            --  Only the Inputs are trimmed. Proof_Ins cannot be trimmed
+            --  since they do not appear in Refined_Depends and Outputs
+            --  cannot be trimmed since all constituents have to be
+            --  present in the Refined_Depends.
+            ---------------------------------------------------------------
+
+            declare
+
+               function Trimming_Required return Boolean;
+               --  Checks if the projected Global constituents need to
+               --  be trimmed (based on a user-provided
+               --  Refined_Depends aspect).
+
+               -----------------------
+               -- Trimming_Required --
+               -----------------------
+
+               function Trimming_Required return Boolean is
+               begin
+                  if No (Depends_Node)
+                    or else Pragma_Name (Global_Node) = Name_Refined_Global
+                    or else Pragma_Name (Depends_Node) /= Name_Refined_Depends
+                    or else not Mentions_State_With_Visible_Refinement
+                                  (Global_Node,
+                                   Scope)
+                  then
+                     --  No trimming required if there is:
+                     --
+                     --    a) no user-provided Depends contract
+                     --
+                     --    b) there is a user-provided Refined_Global
+                     --
+                     --    c) there is no user-provided Refined_Depends
+                     --
+                     --    d) the Global aspect does not mention state with
+                     --       visible refinement
+                     return False;
+                  end if;
+
+                  return True;
+               end Trimming_Required;
+
+               D_Map        : Dependency_Maps.Map;
+               All_Inputs_F : Flow_Id_Sets.Set     := Flow_Id_Sets.Empty_Set;
+               All_Inputs_N : Node_Sets.Set        := Node_Sets.Empty_Set;
+
+            begin
+               if Trimming_Required then
+                  --  Read the Refined_Depends aspect
+                  Get_Depends (Subprogram           => Subprogram,
+                               Scope                => Scope,
+                               Classwide            => Classwide,
+                               Depends              => D_Map,
+                               Use_Computed_Globals => Use_Computed_Globals);
+
+                  --  Gather all inputs
+                  for C in D_Map.Iterate loop
+                     All_Inputs_F := All_Inputs_F or
+                                       Dependency_Maps.Element (C);
+                  end loop;
+
+                  --  Convert set of Flow_Ids to a set of Node_Ids
+                  for F of All_Inputs_F loop
+                     All_Inputs_N.Include (Get_Direct_Mapping_Id (F));
+                  end loop;
+
+                  --  Do the trimming
+                  G_In := G_In and All_Inputs_N;
+               end if;
+            end;
+
+            ---------------------------------------------------------------
+            --  Step 5: Convert to a Flow_Id set.
             ---------------------------------------------------------------
 
             for V of G_Proof loop
@@ -1344,10 +1513,11 @@ package body Flow_Utility is
                Outdent;
                Outdent;
             end if;
-
          end;
 
-      elsif Present (Depends_Node) then
+      elsif Present (Depends_Node)
+        and then not Use_Generated_Globals
+      then
 
          --  If we have no global, but we do have a depends, we can
          --  reverse-engineer the global. This also solves the issue where
@@ -1366,10 +1536,11 @@ package body Flow_Utility is
             Params : Node_Sets.Set;
             E      : Entity_Id;
          begin
-            Get_Depends (Subprogram => Subprogram,
-                         Scope      => Scope,
-                         Classwide  => Classwide,
-                         Depends    => D_Map);
+            Get_Depends (Subprogram           => Subprogram,
+                         Scope                => Scope,
+                         Classwide            => Classwide,
+                         Depends              => D_Map,
+                         Use_Computed_Globals => Use_Computed_Globals);
 
             --  We need to make sure not to include our own parameters in
             --  the globals we produce here.
@@ -1596,10 +1767,11 @@ package body Flow_Utility is
    -- Get_Proof_Globals --
    -----------------------
 
-   procedure Get_Proof_Globals (Subprogram : Entity_Id;
-                                Classwide  : Boolean;
-                                Reads      : out Flow_Id_Sets.Set;
-                                Writes     : out Flow_Id_Sets.Set)
+   procedure Get_Proof_Globals (Subprogram           : Entity_Id;
+                                Classwide            : Boolean;
+                                Reads                : out Flow_Id_Sets.Set;
+                                Writes               : out Flow_Id_Sets.Set;
+                                Use_Computed_Globals : Boolean := True)
    is
       Proof_Ins : Flow_Id_Sets.Set;
       Tmp_In    : Flow_Id_Sets.Set;
@@ -1683,7 +1855,8 @@ package body Flow_Utility is
          Reads                  => Tmp_In,
          Writes                 => Tmp_Out,
          Consider_Discriminants => False,
-         Globals_For_Proof      => True);
+         Globals_For_Proof      => True,
+         Use_Computed_Globals   => Use_Computed_Globals);
 
       --  Merge the proof ins with the reads.
       Tmp_In.Union (Proof_Ins);
@@ -1735,6 +1908,34 @@ package body Flow_Utility is
                          Writes     => Write_Ids);
       return not Write_Ids.Is_Empty;
    end Has_Proof_Global_Writes;
+
+   ------------------------------
+   -- Rely_On_Generated_Global --
+   ------------------------------
+
+   function Rely_On_Generated_Global
+     (Subprogram : Entity_Id;
+      Scope      : Flow_Scope)
+      return Boolean
+   is
+      Body_N : constant Node_Id :=
+        (if Acts_As_Spec (SPARK_Util.Get_Subprogram_Body (Subprogram))
+         then Subprogram
+         else Get_Body (Subprogram));
+   begin
+      if Present (Body_N)
+        and then Entity_Body_In_SPARK (Subprogram)
+        and then Entity_Body_Valid_SPARK (Subprogram)
+        and then Is_Visible (Body_N, Scope)
+        and then Refinement_Needed (Subprogram)
+      then
+         return True;
+      end if;
+
+      --  If we reach here then we must not rely on the generated
+      --  globals.
+      return False;
+   end Rely_On_Generated_Global;
 
    ----------------------
    -- Get_Function_Set --
@@ -1864,10 +2065,12 @@ package body Flow_Utility is
             declare
                Depends : Dependency_Maps.Map;
             begin
-               Get_Depends (Subprogram => Subprogram,
-                            Scope      => Scope,
-                            Classwide  => Is_Dispatching_Call (Callsite),
-                            Depends    => Depends);
+               Get_Depends (Subprogram           => Subprogram,
+                            Scope                => Scope,
+                            Classwide            =>
+                              Is_Dispatching_Call (Callsite),
+                            Depends              => Depends,
+                            Use_Computed_Globals => Use_Computed_Globals);
                pragma Assert (Depends.Length in 1 .. 2);
                Used_Reads := Depends (Direct_Mapping_Id (Subprogram));
             end;
@@ -3171,5 +3374,58 @@ package body Flow_Utility is
 
       return L;
    end All_Components;
+
+   --------------------------------
+   -- Is_Non_Visible_Constituent --
+   --------------------------------
+
+   function Is_Non_Visible_Constituent
+     (F     : Flow_Id;
+      Scope : Flow_Scope)
+      return Boolean
+   is
+   begin
+      --  We can't possibly up-project something that does not
+      --  correspond to a direct mapping.
+      if F.Kind /= Direct_Mapping then
+         return False;
+      end if;
+
+      declare
+         N : constant Node_Id := Get_Direct_Mapping_Id (F);
+      begin
+         --  There is no point in up-projecting if any of the
+         --  following is True.
+         if not (Nkind (N) in N_Entity)
+           or else No (Encapsulating_State (N))
+           or else Is_Visible (N, Scope)
+         then
+            return False;
+         end if;
+
+         return True;
+      end;
+   end Is_Non_Visible_Constituent;
+
+   ----------------------------
+   -- Up_Project_Constituent --
+   ----------------------------
+
+   function Up_Project_Constituent
+     (F     : Flow_Id;
+      Scope : Flow_Scope)
+      return Flow_Id
+   is
+      Enclosing : Flow_Id;
+   begin
+      Enclosing := F;
+
+      while Is_Non_Visible_Constituent (Enclosing, Scope) loop
+         Enclosing := Direct_Mapping_Id
+           (Encapsulating_State (Get_Direct_Mapping_Id (Enclosing)));
+      end loop;
+
+      return Enclosing;
+   end Up_Project_Constituent;
 
 end Flow_Utility;

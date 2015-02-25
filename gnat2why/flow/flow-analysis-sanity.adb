@@ -503,6 +503,41 @@ package body Flow.Analysis.Sanity is
       Sane :    out Boolean)
    is
       Unused : Unbounded_String;
+
+      function Find_Aspect_To_Fix return String;
+      --  Returns a string that represents the aspect that needs to be
+      --  corrected.
+
+      ------------------------
+      -- Find_Aspect_To_Fix --
+      ------------------------
+
+      function Find_Aspect_To_Fix return String is
+      begin
+         case FA.Kind is
+            when E_Subprogram_Body =>
+               if Present (FA.Refined_Global_N) then
+                  return "Refined_Global";
+               elsif Present (FA.Global_N) then
+                  if Present (FA.Refined_Depends_N) then
+                     return "Refined_Depends";
+                  else
+                     return "Global";
+                  end if;
+               elsif Present (FA.Depends_N) then
+                  if Present (FA.Refined_Depends_N) then
+                     return "Refined_Depends";
+                  else
+                     return "Depends";
+                  end if;
+               else
+                  return "Global";
+               end if;
+            when others =>
+               return "Initializes";
+         end case;
+      end Find_Aspect_To_Fix;
+
    begin
       Sane := True;
 
@@ -513,14 +548,7 @@ package body Flow.Analysis.Sanity is
             All_Vars : constant Ordered_Flow_Id_Sets.Set :=
               To_Ordered_Flow_Id_Set (A.Variables_Used or A.Variables_Defined);
 
-            Aspect_To_Fix : constant String :=
-              (case FA.Kind is
-                  when E_Subprogram_Body =>
-                     (if Present (FA.Refined_Global_N) then "Refined_Global"
-                      elsif Present (FA.Global_N) then "Global"
-                      elsif Present (FA.Depends_N) then "Depends"
-                      else "Global"),
-                  when others            => "Initializes");
+            Aspect_To_Fix : constant String := Find_Aspect_To_Fix;
 
             SRM_Ref : constant String :=
               (case FA.Kind is
@@ -567,5 +595,217 @@ package body Flow.Analysis.Sanity is
          end;
       end loop;
    end Check_All_Variables_Known;
+
+   ------------------------------------
+   -- Check_Generated_Refined_Global --
+   ------------------------------------
+
+   procedure Check_Generated_Refined_Global
+     (FA   : in out Flow_Analysis_Graphs;
+      Sane :    out Boolean)
+   is
+
+      function Up_Project_Flow_Set
+        (FS      : Flow_Id_Sets.Set;
+         Variant : Flow_Id_Variant)
+        return Flow_Id_Sets.Set;
+         --  Up projects the elements of FS that can be up
+         --  projected. Elements that cannot be up projected are
+         --  simply copied over. The variant of all elements is also
+         --  set to Variant.
+
+      -------------------------
+      -- Up_Project_Flow_Set --
+      -------------------------
+
+      function Up_Project_Flow_Set
+        (FS      : Flow_Id_Sets.Set;
+         Variant : Flow_Id_Variant)
+         return Flow_Id_Sets.Set
+      is
+         Up_Projected_Set : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      begin
+         for F of FS loop
+            if Is_Non_Visible_Constituent (F, FA.S_Scope) then
+               declare
+                  State : constant Flow_Id :=
+                    Up_Project_Constituent (F, FA.S_Scope);
+               begin
+                  Up_Projected_Set.Include
+                    (Change_Variant (State, Variant));
+               end;
+            else
+               Up_Projected_Set.Include
+                 (Change_Variant (F, Variant));
+            end if;
+         end loop;
+
+         return Up_Projected_Set;
+      end Up_Project_Flow_Set;
+
+   begin  --  Check_Generated_Refined_Global
+
+      Sane := True;
+
+      if FA.Kind /= E_Subprogram_Body
+        or else No (FA.Global_N)
+        or else not FA.Is_Generative
+        or else Present (FA.Refined_Global_N)
+        or else not Mentions_State_With_Visible_Refinement (FA.Global_N,
+                                                            FA.B_Scope)
+      then
+         --  We have no work to do when:
+         --
+         --    1) we are not dealing with a subprogram
+         --
+         --    2) the user has not specified a Global aspect.
+         --
+         --    3) there is a user-provided Refined_Global contract
+         --       or the Global contract does not reference a state
+         --       abstraction with visible refinement.
+         return;
+      end if;
+
+      declare
+         User_Proof_Ins   : Flow_Id_Sets.Set;
+         User_Reads       : Flow_Id_Sets.Set;
+         User_Writes      : Flow_Id_Sets.Set;
+
+         Actual_Proof_Ins : Flow_Id_Sets.Set;
+         Actual_Reads     : Flow_Id_Sets.Set;
+         Actual_Writes    : Flow_Id_Sets.Set;
+      begin
+         --  Read the Global contract (user globals)
+         Get_Globals (Subprogram => FA.Analyzed_Entity,
+                      Scope      => FA.S_Scope,
+                      Classwide  => False,
+                      Proof_Ins  => User_Proof_Ins,
+                      Reads      => User_Reads,
+                      Writes     => User_Writes);
+
+         --  Read the Generated Globals (actual globals)
+         Get_Globals (Subprogram => FA.Analyzed_Entity,
+                      Scope      => FA.B_Scope,
+                      Classwide  => False,
+                      Proof_Ins  => Actual_Proof_Ins,
+                      Reads      => Actual_Reads,
+                      Writes     => Actual_Writes);
+
+         --  Up project actual globals
+         Actual_Writes    := Up_Project_Flow_Set (Actual_Writes, Out_View);
+         Actual_Reads     := Up_Project_Flow_Set (Actual_Reads, In_View);
+         Actual_Proof_Ins := Up_Project_Flow_Set (Actual_Proof_Ins,
+                                                  In_View);
+
+         --  Remove Reads from Proof_Ins
+         Actual_Proof_Ins := Actual_Proof_Ins - Actual_Reads;
+
+         --  Compare writes
+         for W of Actual_Writes loop
+            if not User_Writes.Contains (W) then
+               Sane := False;
+
+               Error_Msg_Flow
+                 (FA      => FA,
+                  Msg     => "& must be a global output of &",
+                  SRM_Ref => "6.1.4",
+                  N       => FA.Global_N,
+                  Kind    => Error_Kind,
+                  F1      => W,
+                  F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
+                  Tag     => Global_Missing);
+            end if;
+         end loop;
+
+         for W of User_Writes loop
+            if not Actual_Writes.Contains (W) then
+               --  Don't issue this error for state abstractions that
+               --  have a null refinement
+               declare
+                  E : constant Entity_Id := Get_Direct_Mapping_Id (W);
+               begin
+                  if Ekind (E) /= E_Abstract_State
+                    or else Has_Non_Null_Refinement (E)
+                  then
+                     Sane := False;
+
+                     Error_Msg_Flow
+                       (FA   => FA,
+                        Msg  => "global output & of & not written",
+                        N    => FA.Global_N,
+                        Kind => Error_Kind,
+                        F1   => W,
+                        F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
+                        Tag  => Global_Wrong);
+                  end if;
+               end;
+            end if;
+         end loop;
+
+         --  Compare reads
+         for R of Actual_Reads loop
+            if not User_Reads.Contains (R) then
+               Sane := False;
+
+               Error_Msg_Flow
+                 (FA      => FA,
+                  Msg     => "& must be a global input of &",
+                  SRM_Ref => "6.1.4",
+                  N       => FA.Global_N,
+                  Kind    => Error_Kind,
+                  F1      => R,
+                  F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
+                  Tag     => Global_Missing);
+            end if;
+         end loop;
+
+         for R of User_Reads loop
+            if not Actual_Reads.Contains (R) then
+               Sane := False;
+
+               Error_Msg_Flow
+                 (FA   => FA,
+                  Msg  => "global input & of & not read",
+                  N    => FA.Global_N,
+                  Kind => Error_Kind,
+                  F1   => R,
+                  F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
+                  Tag  => Global_Wrong);
+            end if;
+         end loop;
+
+         --  Compare Proof_Ins
+         for P of Actual_Proof_Ins loop
+            if not User_Proof_Ins.Contains (P) then
+               Sane := False;
+
+               Error_Msg_Flow
+                 (FA      => FA,
+                  Msg     => "& must be a global Proof_In of &",
+                  SRM_Ref => "6.1.4",
+                  N       => FA.Global_N,
+                  Kind    => Error_Kind,
+                  F1      => P,
+                  F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
+                  Tag     => Global_Missing);
+            end if;
+         end loop;
+
+         for P of User_Proof_Ins loop
+            if not Actual_Proof_Ins.Contains (P) then
+               Sane := False;
+
+               Error_Msg_Flow
+                 (FA   => FA,
+                  Msg  => "global Proof_In & of & not read",
+                  N    => FA.Global_N,
+                  Kind => Error_Kind,
+                  F1   => P,
+                  F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
+                  Tag  => Global_Wrong);
+            end if;
+         end loop;
+      end;
+   end Check_Generated_Refined_Global;
 
 end Flow.Analysis.Sanity;

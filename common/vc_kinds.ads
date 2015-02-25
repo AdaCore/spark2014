@@ -110,6 +110,12 @@ package VC_Kinds is
       Depends_Wrong,
       --  User provided an incorrect dependency
 
+      Global_Missing,
+      --  There is a variable missing from the Globals
+
+      Global_Wrong,
+      --  User provided a wrong global
+
       Export_Depends_On_Proof_In,
       --  A Proof_In variable has been used in the computation of an export
 

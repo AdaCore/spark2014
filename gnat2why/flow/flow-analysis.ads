@@ -129,7 +129,7 @@ package Flow.Analysis is
    --
    --  Complexity is O(N)
 
-   procedure Check_Contracts (FA : in out Flow_Analysis_Graphs);
+   procedure Check_Depends_Contract (FA : in out Flow_Analysis_Graphs);
    --  Check the given depends against the reality. If there is no
    --  depends aspect this procedure does nothing.
    --
@@ -162,7 +162,7 @@ private
    procedure Global_Required
      (FA  : in out Flow_Analysis_Graphs;
       Var : Flow_Id)
-   with Pre  => Var.Kind = Magic_String;
+     with Pre  => Var.Kind = Magic_String;
    --  Emit an error message that (the first call) introducing the
    --  global Var requires a global annotation.
 

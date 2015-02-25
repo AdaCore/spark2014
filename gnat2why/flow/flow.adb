@@ -871,8 +871,6 @@ package body Flow is
             Tmp.Depends_N := Get_Pragma (E, Pragma_Depends);
             Tmp.Global_N  := Get_Pragma (E, Pragma_Global);
 
-            Tmp.Is_Generative := No (Tmp.Depends_N) and No (Tmp.Global_N);
-
             declare
                Body_N : constant Node_Id :=
                  (if Acts_As_Spec (SPARK_Util.Get_Subprogram_Body (E))
@@ -884,6 +882,8 @@ package body Flow is
                Tmp.Refined_Global_N  := Get_Pragma (Body_N,
                                                     Pragma_Refined_Global);
             end;
+
+            Tmp.Is_Generative := Refinement_Needed (E);
 
             Tmp.Function_Side_Effects_Present := False;
 
@@ -1159,12 +1159,13 @@ package body Flow is
                               Writes          : Flow_Id_Sets.Set;
                               Subprogram_Info : Subprogram_Phase_1_Info;
                            begin
-                              Get_Globals (Subprogram => E,
-                                           Scope      => Scope,
-                                           Classwide  => False,
-                                           Proof_Ins  => Proof_Ins,
-                                           Reads      => Reads,
-                                           Writes     => Writes);
+                              Get_Globals (Subprogram           => E,
+                                           Scope                => Scope,
+                                           Classwide            => False,
+                                           Proof_Ins            => Proof_Ins,
+                                           Reads                => Reads,
+                                           Writes               => Writes,
+                                           Use_Computed_Globals => False);
 
                               Subprogram_Info := Subprogram_Phase_1_Info'
                                 (Subprogram        => To_Name (E),
@@ -1341,7 +1342,7 @@ package body Flow is
                         Analysis.Find_Ineffective_Statements (FA);
                      end if;
                      Analysis.Find_Dead_Code (FA);
-                     Analysis.Check_Contracts (FA);
+                     Analysis.Check_Depends_Contract (FA);
                   end if;
                   Analysis.Find_Use_Of_Uninitialized_Variables (FA);
                   Analysis.Check_Prefixes_Of_Attribute_Old (FA);

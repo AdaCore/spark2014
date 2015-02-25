@@ -81,9 +81,9 @@ package body Flow.Analysis is
                                 F : Flow_Id)
                                 return Flow_Graphs.Vertex_Id
      with Pre  => F.Variant = Normal_Use,
-          Post => G.Get_Key
-            (Get_Initial_Vertex'Result).Variant in Initial_Value |
-                                                   Initial_Grouping;
+          Post => Get_Initial_Vertex'Result = Flow_Graphs.Null_Vertex
+                    or else G.Get_Key (Get_Initial_Vertex'Result).Variant in
+                              Initial_Value | Initial_Grouping;
    --  Returns the vertex id which represents the initial value for F
 
    function Get_Final_Vertex (G : Flow_Graphs.T;
@@ -302,7 +302,9 @@ package body Flow.Analysis is
             return V;
          end if;
       end loop;
-      raise Program_Error;
+
+      --  We could not find F's initial vertex
+      return Flow_Graphs.Null_Vertex;
    end Get_Initial_Vertex;
 
    ----------------------
@@ -577,6 +579,7 @@ package body Flow.Analysis is
         (Sanity.Check_Function_Side_Effects'Access,
          Sanity.Check_Aliasing'Access,
          Sanity.Check_Variable_Free_Expressions'Access,
+         Sanity.Check_Generated_Refined_Global'Access,
          Sanity.Check_Illegal_Writes'Access,
          Sanity.Check_All_Variables_Known'Access);
    begin
@@ -2797,12 +2800,12 @@ package body Flow.Analysis is
 
    end Find_Impossible_To_Initialize_State;
 
-   ---------------------
-   -- Check_Contracts --
-   ---------------------
+   ----------------------------
+   -- Check_Depends_Contract --
+   ----------------------------
 
-   procedure Check_Contracts (FA : in out Flow_Analysis_Graphs)
-   is
+   procedure Check_Depends_Contract (FA : in out Flow_Analysis_Graphs) is
+
       User_Deps   : Dependency_Maps.Map;
       Actual_Deps : Dependency_Maps.Map;
 
@@ -2812,11 +2815,160 @@ package body Flow.Analysis is
          else
             FA.Analyzed_Entity);
 
-   begin --  Check_Contracts
+      Params      : Node_Sets.Set;
+      --  This set will hold all local parameters of the subprogram
+
+      function Message_Kind  (F : Flow_Id) return Msg_Kind;
+      --  Returns the severity of the message that we have to emit.
+      --
+      --  In the absence of a user-provided Global contract the
+      --  user-provided Depends contract is utilized to synthesize the
+      --  Globals. In this case and if F is a global variable then the
+      --  emitted messages are errors since users of the subprogram
+      --  will be assuming wrong Globals.
+      --
+      --  On the other hand, when there exists a user-provided Global
+      --  contract or when F is not a Global variable, emitted
+      --  messages are medium checks.
+
+      function Up_Project_Map
+        (DM : Dependency_Maps.Map)
+         return Dependency_Maps.Map;
+      --  Up projects the constituents that are mentioned in DM until
+      --  we have visibility of the enclosing state abstractions from
+      --  FA.S_Scope.
+      --
+      --  Example:
+      --     State1 => (Con1, Con2)
+      --     State2 => (Con3, Con4)
+      --
+      --     Original DM:
+      --       Con1 => (Con3, G)
+      --       Con3 => (Con4, G)
+      --       G    => Con3
+      --
+      --     Final DM:
+      --       State1 => (State1, State2, G)
+      --       State2 => (State2, G)
+      --       G      => State2
+      --
+      --  Notice that the self depence of State1 is an indirect
+      --  consequence of the fact that Con2 is not an Output. So there
+      --  is an implicit Con2 => Con2 dependence.
+
+      ------------------
+      -- Message_Kind --
+      ------------------
+
+      function Message_Kind (F : Flow_Id) return Msg_Kind is
+      begin
+         if No (FA.Global_N)
+           and then F.Kind = Direct_Mapping
+           and then not Params.Contains (Get_Direct_Mapping_Id (F))
+         then
+            return Error_Kind;
+         end if;
+
+         --  No need to raise an error
+         return Medium_Check_Kind;
+      end Message_Kind;
+
+      --------------------
+      -- Up_Project_Map --
+      --------------------
+
+      function Up_Project_Map
+        (DM : Dependency_Maps.Map)
+         return Dependency_Maps.Map
+      is
+         States_Written       : Node_Sets.Set       := Node_Sets.Empty_Set;
+         Constituents_Written : Node_Sets.Set       := Node_Sets.Empty_Set;
+         Up_Projected_Map     : Dependency_Maps.Map :=
+           Dependency_Maps.Empty_Map;
+
+      begin  --  Up_Project_Map
+
+         for C in DM.Iterate loop
+            declare
+               F_Out  : Flow_Id                   :=
+                 Dependency_Maps.Key (C);
+               F_Deps : constant Flow_Id_Sets.Set :=
+                 Dependency_Maps.Element (C);
+               AS     : Flow_Id;
+            begin
+               --  Add output
+               if Is_Non_Visible_Constituent (F_Out, FA.S_Scope) then
+                  AS := Up_Project_Constituent (F_Out, FA.S_Scope);
+
+                  --  Add closest enclosing abstract state to the map
+                  --  (if it is not already in it).
+                  if not Up_Projected_Map.Contains (AS) then
+                     Up_Projected_Map.Include (AS, Flow_Id_Sets.Empty_Set);
+                  end if;
+
+                  --  Taking some notes
+                  States_Written.Include (Get_Direct_Mapping_Id (AS));
+                  Constituents_Written.Include
+                    (Get_Direct_Mapping_Id (F_Out));
+                  F_Out := AS;
+               else
+                  --  Add output as it is
+                  Up_Projected_Map.Include (F_Out, Flow_Id_Sets.Empty_Set);
+               end if;
+
+               --  Add output's dependencies
+               for Dep of F_Deps loop
+                  if Is_Non_Visible_Constituent (Dep, FA.S_Scope) then
+                     AS := Up_Project_Constituent (Dep, FA.S_Scope);
+
+                     --  Add closest enclosing abstract state
+                     Up_Projected_Map (F_Out).Include (AS);
+                  else
+                     --  Add output as it is
+                     Up_Projected_Map (F_Out).Include (Dep);
+                  end if;
+               end loop;
+            end;
+         end loop;
+
+         --  If at least one constituent of a state abstraction has
+         --  not been written, then the state abstraction also depends
+         --  on itself.
+         for State of States_Written loop
+            declare
+               Constit_Elmt : Elmt_Id;
+               Constit_Id   : Entity_Id;
+               Keep_Going   : Boolean          := True;
+               AS           : constant Flow_Id := Direct_Mapping_Id (State);
+            begin
+               Constit_Elmt := First_Elmt (Refinement_Constituents (State));
+               while Present (Constit_Elmt)
+                 and then Keep_Going
+               loop
+                  Constit_Id := Node (Constit_Elmt);
+
+                  if not Constituents_Written.Contains (Constit_Id) then
+                     --  Abstract state also depends on itself
+                     Up_Projected_Map (AS).Include (AS);
+
+                     --  There is no need to check the rest of the
+                     --  constituents.
+                     Keep_Going := False;
+                  end if;
+
+                  Next_Elmt (Constit_Elmt);
+               end loop;
+            end;
+         end loop;
+
+         return Up_Projected_Map;
+      end Up_Project_Map;
+
+   begin  --  Check_Depends_Contract
 
       if No (FA.Depends_N) then
-         --  If the user has not specified a dependency relation we have no
-         --  work to do.
+         --  If the user has not specified a dependency relation we
+         --  have no work to do.
          return;
       end if;
 
@@ -2825,7 +2977,29 @@ package body Flow.Analysis is
                    Classwide  => False,
                    Depends    => User_Deps);
 
-      Actual_Deps := FA.Dependency_Map;
+      --  Populate the Params set
+      declare
+         E : Entity_Id;
+      begin
+         E := First_Formal (FA.Analyzed_Entity);
+         while Present (E) loop
+            Params.Include (E);
+            E := Next_Formal (E);
+         end loop;
+      end;
+
+      if FA.Is_Generative
+        and then No (FA.Refined_Depends_N)
+        and then Mentions_State_With_Visible_Refinement (FA.Depends_N,
+                                                         FA.B_Scope)
+      then
+         --  Use the abstract states versions of the dependencies
+         User_Deps   := Up_Project_Map (User_Deps);
+         Actual_Deps := Up_Project_Map (FA.Dependency_Map);
+      else
+         --  Use the down projected version of the dependencies
+         Actual_Deps := FA.Dependency_Map;
+      end if;
 
       if Debug_Trace_Depends then
          Print_Dependency_Map (User_Deps);
@@ -2845,9 +3019,11 @@ package body Flow.Analysis is
                --  ??? check quotation in errout.ads
                Error_Msg_Flow
                  (FA   => FA,
-                  Msg  => "missing dependency ""null => %""",
-                  N    => Depends_Location,
+                  Msg  => "incorrect dependency & is not an output of &",
+                  N    => Search_Depends (FA.Analyzed_Entity,
+                                          Get_Direct_Mapping_Id (F_Out)),
                   F1   => F_Out,
+                  F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
                   Tag  => Depends_Null,
                   Kind => Medium_Check_Kind);
             end if;
@@ -2860,7 +3036,8 @@ package body Flow.Analysis is
       for C in Actual_Deps.Iterate loop
          declare
             F_Out  : constant Flow_Id          := Dependency_Maps.Key (C);
-            A_Deps : constant Flow_Id_Sets.Set := Dependency_Maps.Element (C);
+            A_Deps : constant Flow_Id_Sets.Set :=
+              Dependency_Maps.Element (C);
             U_Deps : Flow_Id_Sets.Set;
 
             Missing_Deps : Ordered_Flow_Id_Sets.Set;
@@ -2883,8 +3060,9 @@ package body Flow.Analysis is
                Global_Required (FA, F_Out);
                Proceed_With_Analysis := False;
             else
-               --  ??? legality error, should be moved to frontend;
-               --  ??? possibly raise exception here
+               --  If the depends aspect is used to synthesize the
+               --  global aspect, then this is message will be an
+               --  error instead of a medium check.
                Error_Msg_Flow
                  (FA   => FA,
                   Msg  => "expected to see & on the left-hand-side of" &
@@ -2892,7 +3070,7 @@ package body Flow.Analysis is
                   N    => Depends_Location,
                   F1   => F_Out,
                   Tag  => Depends_Missing_Clause,
-                  Kind => High_Check_Kind);
+                  Kind => Message_Kind (F_Out));
                U_Deps := Flow_Id_Sets.Empty_Set;
             end if;
 
@@ -3006,12 +3184,10 @@ package body Flow.Analysis is
                         Kind => Medium_Check_Kind);
                   end if;
                end loop;
-
             end if;
-
          end;
       end loop;
-   end Check_Contracts;
+   end Check_Depends_Contract;
 
    --------------------------------
    -- Check_Initializes_Contract --

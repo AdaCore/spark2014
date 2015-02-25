@@ -34,6 +34,8 @@ with Output;                 use Output;
 with Sprint;                 use Sprint;
 with Treepr;                 use Treepr;
 
+with SPARK_Util;             use SPARK_Util;
+
 with Flow_Types;             use Flow_Types;
 with Flow_Debug;             use Flow_Debug;
 with Flow_Dependency_Maps;   use Flow_Dependency_Maps;
@@ -733,5 +735,102 @@ package body Flow_Refinement is
       end loop;
 
    end Is_Initialized_At_Elaboration;
+
+   --------------------------------------------
+   -- Mentions_State_With_Visible_Refinement --
+   --------------------------------------------
+
+   function Mentions_State_With_Visible_Refinement
+     (N     : Node_Id;
+      Scope : Flow_Scope)
+      return Boolean
+   is
+
+      Found_State_Abstraction : Boolean := False;
+
+      function Proc (N : Node_Id) return Traverse_Result;
+      --  Traversal procedure that sets Found_State_Abstraction to
+      --  True if we find a State Abstraction whose refinement is
+      --  visible from Scope.
+
+      ----------
+      -- Proc --
+      ----------
+
+      function Proc (N : Node_Id) return Traverse_Result is
+      begin
+         if Nkind (N) = N_Identifier
+           and then Ekind (Entity (N)) = E_Abstract_State
+           and then State_Refinement_Is_Visible (Entity (N), Scope)
+         then
+            Found_State_Abstraction := True;
+            return Abandon;
+         end if;
+
+         --  Keep looking...
+         return OK;
+      end Proc;
+
+      procedure Look_For_Abstract_State is new Traverse_Proc (Process => Proc);
+
+   begin
+      Look_For_Abstract_State (N);
+
+      return Found_State_Abstraction;
+   end Mentions_State_With_Visible_Refinement;
+
+   -----------------------
+   -- Refinement_Needed --
+   -----------------------
+
+   function Refinement_Needed (E : Entity_Id) return Boolean is
+      Body_N : constant Node_Id :=
+        (if Acts_As_Spec (SPARK_Util.Get_Subprogram_Body (E))
+         then E
+         else Get_Body (E));
+   begin
+      if Present (Body_N) then
+         declare
+            Depends_N         : constant Node_Id :=
+              Get_Pragma (E, Pragma_Depends);
+            Global_N          : constant Node_Id :=
+              Get_Pragma (E, Pragma_Global);
+
+            Refined_Depends_N : constant Node_Id :=
+              Get_Pragma (Body_N, Pragma_Refined_Depends);
+            Refined_Global_N  : constant Node_Id :=
+              Get_Pragma (Body_N, Pragma_Refined_Global);
+
+            B_Scope           : constant Flow_Scope :=
+              Get_Flow_Scope (Body_N);
+         begin
+            if (No (Global_N) and then No (Depends_N)) or else
+              --  1) Subprogram has no Global and no Depends aspect
+
+              (Present (Global_N) and then
+                 No (Refined_Global_N) and then
+                 No (Refined_Depends_N) and then
+                 Mentions_State_With_Visible_Refinement (Global_N,
+                                                         B_Scope)) or else
+              --  2) Subprogram has a Global that refers to a state
+              --     abstraction with visible refinement but has no
+              --     Refined_Global.
+
+              (Present (Depends_N) and then
+                 No (Refined_Depends_N) and then
+                 No (Refined_Global_N) and then
+                 Mentions_State_With_Visible_Refinement (Depends_N,
+                                                         B_Scope))
+              --  3) Subprogram has a Depends aspect that refers to a
+              --     state abstraction with visible refinement but has
+              --     no Refined_Depends.
+            then
+               return True;
+            end if;
+         end;
+      end if;
+
+      return False;
+   end Refinement_Needed;
 
 end Flow_Refinement;

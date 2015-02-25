@@ -153,16 +153,17 @@ package body Flow.Interprocedural is
          --  We have a dependency aspect, so we should use it.
 
          --  The implicit in parameter for out parameters of unconstrained
-         --  arrays and and discriminated types is dealt with transparently
+         --  arrays and discriminated types is dealt with transparently
          --  here. Such an input can easily be found in the graph as a
          --  Discr_Or_Bounds parameter.
          declare
             Deps : Dependency_Maps.Map;
          begin
-            Get_Depends (Subprogram => Called_Procedure,
-                         Scope      => Get_Flow_Scope (N),
-                         Classwide  => Is_Dispatching_Call (N),
-                         Depends    => Deps);
+            Get_Depends (Subprogram           => Called_Procedure,
+                         Scope                => Get_Flow_Scope (N),
+                         Classwide            => Is_Dispatching_Call (N),
+                         Depends              => Deps,
+                         Use_Computed_Globals => not FA.Compute_Globals);
             for C in Deps.Iterate loop
                declare
                   Output : constant Flow_Id := Dependency_Maps.Key (C);
