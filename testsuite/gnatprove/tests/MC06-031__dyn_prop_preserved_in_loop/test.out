@@ -3,7 +3,6 @@ dynamic_types.adb:6:31: warning: "From" is not modified, could be IN
 dynamic_types.adb:8:17: info: postcondition proved
 dynamic_types.adb:9:64: info: index check proved
 dynamic_types.adb:10:48: info: index check proved
-dynamic_types.adb:14:16: info: index check proved
 dynamic_types.adb:15:23: info: range check proved
 dynamic_types.adb:21:28: info: range check proved
 dynamic_types.adb:25:10: info: loop invariant initialization proved

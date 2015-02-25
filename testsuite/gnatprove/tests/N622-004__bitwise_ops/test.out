@@ -118,8 +118,6 @@ aco-math-very_longs.adb:292:44: info: index check proved
 aco-math-very_longs.adb:292:44: info: overflow check proved
 aco-math-very_longs.adb:304:15: info: range check proved
 aco-math-very_longs.adb:307:15: info: range check proved
-aco-math-very_longs.adb:307:93: info: overflow check proved
-aco-math-very_longs.adb:307:115: info: overflow check proved
 aco-math-very_longs.adb:326:19: info: postcondition proved
 aco-math-very_longs.adb:326:25: info: discriminant check proved
 aco-math-very_longs.adb:326:45: medium: array index check might fail
@@ -209,7 +207,7 @@ aco-math-very_longs.adb:437:128: medium: overflow check might fail
 aco-math-very_longs.adb:437:133: info: index check proved
 aco-math-very_longs.adb:456:14: info: range check proved
 aco-math-very_longs.adb:457:50: info: discriminant check proved
-aco-math-very_longs.adb:457:63: medium: array index check might fail
+aco-math-very_longs.adb:457:63: info: index check proved
 aco-math-very_longs.adb:461:34: info: discriminant check proved
 aco-math-very_longs.adb:461:49: medium: overflow check might fail
 aco-math-very_longs.adb:461:65: medium: array index check might fail
@@ -242,7 +240,7 @@ aco-math-very_longs.adb:496:41: info: discriminant check proved
 aco-math-very_longs.adb:496:56: medium: overflow check might fail
 aco-math-very_longs.adb:496:72: medium: array index check might fail
 aco-math-very_longs.adb:496:98: info: discriminant check proved
-aco-math-very_longs.adb:496:111: medium: array index check might fail
+aco-math-very_longs.adb:496:111: info: index check proved
 aco-math-very_longs.adb:497:17: info: discriminant check proved
 aco-math-very_longs.adb:497:32: medium: overflow check might fail
 aco-math-very_longs.adb:497:48: info: index check proved
