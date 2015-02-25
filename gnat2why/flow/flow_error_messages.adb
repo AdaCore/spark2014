@@ -271,20 +271,35 @@ package body Flow_Error_Messages is
       else
          Flow_Msgs_Set.Insert (Unb_Msg);
 
-         if Kind = Warning_Kind then
-            Suppr := Warning_Is_Suppressed (N, Msg3, F1, F2, F3);
-         elsif Kind in Check_Kind then
-            declare
-               Is_Annot : Boolean;
-               Info     : Annotated_Range;
-            begin
-               Check_Is_Annotated (N, Msg3, True, Is_Annot, Info);
-               if Is_Annot then
-                  Suppr := Info.Reason;
-               end if;
-            end;
-         end if;
-         Suppressed := Suppr /= No_String;
+         case Kind is
+            when Warning_Kind =>
+               Suppr := Warning_Is_Suppressed (N, Msg3, F1, F2, F3);
+               Suppressed := Suppr /= No_String;
+
+            when Info_Kind =>
+               Suppressed := Report_Mode = GPR_Fail;
+
+            when Check_Kind =>
+               declare
+                  Is_Annot : Boolean;
+                  Info     : Annotated_Range;
+               begin
+                  Check_Is_Annotated (N, Msg3, True, Is_Annot, Info);
+                  if Is_Annot then
+                     Suppr := Info.Reason;
+                  end if;
+               end;
+               Suppressed := Suppr /= No_String;
+
+            when Error_Kind =>
+               --  Set the error flag if we have an error message. Note
+               --  that warnings do not count as errors here, they should
+               --  not prevent us going to proof. The errout mechanism
+               --  already deals with the warnings-as-errors handling for
+               --  the whole unit.
+               Suppressed       := False;
+               Found_Flow_Error := True;
+         end case;
 
          --  Print the message except when it's suppressed.
          --  Additionally, if command line argument "--limit-line" was
@@ -304,15 +319,6 @@ package body Flow_Error_Messages is
             E         => E,
             Tracefile => Tracefile,
             Msg_Id    => Msg_Id);
-
-         --  Set the error flag if we have an error message. Note that
-         --  warnings do not count as errors here, they should not prevent
-         --  us going to proof. The errout mechanism already deals with the
-         --  warnings-as-errors handling for the whole unit.
-
-         if Kind = Error_Kind then
-            Found_Flow_Error := True;
-         end if;
       end if;
    end Error_Msg_Flow;
 
