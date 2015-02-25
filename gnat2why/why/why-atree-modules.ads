@@ -70,6 +70,7 @@ package Why.Atree.Modules is
    Integer_Module            : W_Module_Id;
    Int_Power_Module          : W_Module_Id;
    Int_Div_Module            : W_Module_Id;
+   Int_Bit_Module            : W_Module_Id;
    Int_Abs_Module            : W_Module_Id;
    Int_Minmax_Module         : W_Module_Id;
    Floating_Module           : W_Module_Id;
@@ -161,6 +162,9 @@ package Why.Atree.Modules is
 
    --  Identifiers of the Integer module
 
+   Integer_Bitwise_And       : W_Identifier_Id;
+   Integer_Bitwise_Or        : W_Identifier_Id;
+   Integer_Bitwise_Xor       : W_Identifier_Id;
    Integer_Div               : W_Identifier_Id;
    Euclid_Div                : W_Identifier_Id;
    Integer_Rem               : W_Identifier_Id;

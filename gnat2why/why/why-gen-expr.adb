@@ -1772,7 +1772,11 @@ package body Why.Gen.Expr is
                      Args   => (1 => +Left, 2 => +Right),
                      Typ    => Base);
       else
-         raise Program_Error;
+         return
+           New_Call (Domain => Domain,
+                     Name   => Integer_Bitwise_And,
+                     Args   => (1 => +Left, 2 => +Right),
+                     Typ    => EW_Int_Type);
       end if;
    end New_And_Expr;
 
@@ -2598,7 +2602,11 @@ package body Why.Gen.Expr is
                      Args   => (1 => +Left, 2 => +Right),
                      Typ    => Base);
       else
-         raise Program_Error;
+         return
+           New_Call (Domain => Domain,
+                     Name   => Integer_Bitwise_Or,
+                     Args   => (1 => +Left, 2 => +Right),
+                     Typ    => EW_Int_Type);
       end if;
    end New_Or_Expr;
 
@@ -2887,7 +2895,20 @@ package body Why.Gen.Expr is
                      Args   => (1 => +Left, 2 => +Right),
                      Typ    => Base);
       else
-         raise Program_Error;
+         declare
+            Id : constant W_Identifier_Id :=
+              (if Base = EW_Bool_Type then To_Ident (WNE_Bool_Xor)
+                 else Integer_Bitwise_Xor);
+         begin
+            return
+              New_Call
+                (Domain => Domain,
+                 Name   => Id,
+                 Args   => (1 => +Left, 2 => +Right),
+                 Typ    =>
+                   (if Base = EW_Bool_Type then EW_Bool_Type
+                    else EW_Int_Type));
+         end;
       end if;
    end New_Xor_Expr;
 
