@@ -26,6 +26,7 @@
 with Ada.Text_IO;               use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.SHA1;
+with GNATCOLL.Utils;
 
 with Call;                      use Call;
 with Output;                    use Output;
@@ -120,7 +121,7 @@ package body Gnat2Why_Args is
       elsif Token = Single_File_Name then
          Single_File := True;
 
-      elsif Starts_With (Token, Report_Mode_Name) and then
+      elsif GNATCOLL.Utils.Starts_With (Token, Report_Mode_Name) and then
         Token (Token'First + Report_Mode_Name'Length) = '='
       then
          declare
@@ -131,7 +132,7 @@ package body Gnat2Why_Args is
               Report_Mode_Type'Value (Token (Start .. Token'Last));
          end;
 
-      elsif Starts_With (Token, Warning_Mode_Name) and then
+      elsif GNATCOLL.Utils.Starts_With (Token, Warning_Mode_Name) and then
         Token (Token'First + Warning_Mode_Name'Length) = '='
       then
          declare
@@ -142,7 +143,7 @@ package body Gnat2Why_Args is
               Opt.Warning_Mode_Type'Value (Token (Start .. Token'Last));
          end;
 
-      elsif Starts_With (Token, Analyze_File_Name) and then
+      elsif GNATCOLL.Utils.Starts_With (Token, Analyze_File_Name) and then
         Token (Token'First + Analyze_File_Name'Length) = '='
       then
          declare
@@ -152,7 +153,7 @@ package body Gnat2Why_Args is
             Analyze_File.Append (Token (Start .. Token'Last));
          end;
 
-      elsif Starts_With (Token, Limit_Subp_Name) and then
+      elsif GNATCOLL.Utils.Starts_With (Token, Limit_Subp_Name) and then
         Token (Token'First + Limit_Subp_Name'Length) = '='
       then
          declare
@@ -162,7 +163,7 @@ package body Gnat2Why_Args is
             Limit_Subp := To_Unbounded_String (Token (Start .. Token'Last));
          end;
 
-      elsif Starts_With (Token, Limit_Line_Name) and then
+      elsif GNATCOLL.Utils.Starts_With (Token, Limit_Line_Name) and then
         Token (Token'First + Limit_Line_Name'Length) = '='
       then
          declare
@@ -172,7 +173,7 @@ package body Gnat2Why_Args is
             Limit_Line := To_Unbounded_String (Token (Start .. Token'Last));
          end;
 
-      elsif Starts_With (Token, Why3_Args_Name) and then
+      elsif GNATCOLL.Utils.Starts_With (Token, Why3_Args_Name) and then
         Token (Token'First + Why3_Args_Name'Length) = '='
       then
          declare
@@ -181,7 +182,7 @@ package body Gnat2Why_Args is
          begin
             Why3_Args.Append (Token (Start .. Token'Last));
          end;
-      elsif Starts_With (Token, Why3_Dir_Name) and then
+      elsif GNATCOLL.Utils.Starts_With (Token, Why3_Dir_Name) and then
         Token (Token'First + Why3_Dir_Name'Length) = '='
       then
          declare

@@ -318,7 +318,7 @@ ASCII.LF;
               Attribute_Value (Proj_Type, Attr, "Ada");
          begin
             for Arg of Args.all loop
-               if String_Utils.Starts_With (Arg.all, "-gnateT=") then
+               if GNATCOLL.Utils.Starts_With (Arg.all, "-gnateT=") then
                   return;
                end if;
             end loop;

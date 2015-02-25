@@ -124,6 +124,7 @@ with Configuration;           use Configuration;
 with GNAT.Directory_Operations.Iteration;
 with GNAT.OS_Lib;             use GNAT.OS_Lib;
 with GNATCOLL.JSON;           use GNATCOLL.JSON;
+with GNATCOLL.Utils;          use GNATCOLL.Utils;
 with Report_Database;         use Report_Database;
 with String_Utils;            use String_Utils;
 with VC_Kinds;
@@ -377,12 +378,12 @@ procedure SPARK_Report is
          begin
             if S = "--assumptions" then
                Assumptions := True;
-            elsif Starts_With (S, "--limit-subp=") then
+            elsif GNATCOLL.Utils.Starts_With (S, "--limit-subp=") then
 
                --  ??? FIXME --limit-subp currently ignored
 
                null;
-            elsif Starts_With (S, "--") then
+            elsif GNATCOLL.Utils.Starts_With (S, "--") then
                Abort_With_Message ("unknown option: " & S);
             elsif Source_Dirs = null then
                Source_Dirs := new String'(S);

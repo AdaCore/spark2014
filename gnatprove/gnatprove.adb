@@ -489,14 +489,14 @@ procedure Gnatprove is
       procedure Copy_Replace_Line (Line : String) is
       begin
          if RTS_Set and then
-           String_Utils.Starts_With (Line, "--RUNTIME_LIBRARY_DIR")
+           GNATCOLL.Utils.Starts_With (Line, "--RUNTIME_LIBRARY_DIR")
          then
             Put_Line
               (Handle,
                " for Runtime_Library_Dir (""Ada"") use """ & RTS_Dir.all &
                  """;");
          elsif Target_Set and then
-           String_Utils.Starts_With (Line, "--TARGET")
+           GNATCOLL.Utils.Starts_With (Line, "--TARGET")
          then
             Put_Line
               (Handle,

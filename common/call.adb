@@ -27,6 +27,7 @@ with Ada.IO_Exceptions;
 with Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with GNAT.Directory_Operations;
+with GNATCOLL.Utils;
 
 package body Call is
 
@@ -165,7 +166,7 @@ package body Call is
 
       procedure Print_Line (Line : String) is
       begin
-         if Is_Blank (Line) then
+         if GNATCOLL.Utils.Is_Blank_Line (Line) then
             First_Line_Skipped := False;
             Count_Non_Blank_Lines := 0;
             Ada.Text_IO.Put_Line (Line);

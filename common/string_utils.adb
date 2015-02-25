@@ -27,24 +27,6 @@ with Ada.Characters.Handling;
 
 package body String_Utils is
 
-   ---------------
-   -- Ends_With --
-   ---------------
-
-   function Ends_With (Str, Suffix : String) return Boolean
-   is
-   begin
-      if Suffix'Length > Str'Length then
-         return False;
-      end if;
-      for Index in reverse Suffix'First .. Suffix'Last loop
-         if Str (Str'Last - Suffix'Last + Index) /= Suffix (Index) then
-            return False;
-         end if;
-      end loop;
-      return True;
-   end Ends_With;
-
    ----------------------
    -- Capitalize_First --
    ----------------------
@@ -85,20 +67,6 @@ package body String_Utils is
       end if;
    end Int_Image;
 
-   --------------
-   -- Is_Blank --
-   --------------
-
-   function Is_Blank (C : Character) return Boolean is
-   begin
-      return C = ' ' or else C = ASCII.HT;
-   end Is_Blank;
-
-   function Is_Blank (S : String) return Boolean is
-   begin
-      return (for all J in S'Range => Is_Blank (S (J)));
-   end Is_Blank;
-
    ----------------------
    -- Lower_Case_First --
    ----------------------
@@ -108,22 +76,5 @@ package body String_Utils is
    begin
       S (S'First) := Ada.Characters.Handling.To_Lower (S (S'First));
    end Lower_Case_First;
-
-   -----------------
-   -- Starts_With --
-   -----------------
-
-   function Starts_With (Str, Prefix : String) return Boolean is
-   begin
-      if Str'Length < Prefix'Length then
-         return False;
-      end if;
-      for Index in Prefix'Range loop
-         if Str (Str'First + Index - Prefix'First) /= Prefix (Index) then
-            return False;
-         end if;
-      end loop;
-      return True;
-   end Starts_With;
 
 end String_Utils;
