@@ -2658,7 +2658,7 @@ package body Flow.Analysis is
       end if;
 
       --  If there is no enclosing package that introduces a state
-      --  abstraction then the is nothing to do here.
+      --  abstraction then there is nothing to do here.
 
       if not Enclosing_Package_Has_State (FA.Spec_Node) then
          return;
