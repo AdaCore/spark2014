@@ -1,0 +1,3 @@
+main.adb:14:08: info: discriminant check proved
+main.adb:14:17: info: length check proved
+main.adb:14:20: info: length check proved

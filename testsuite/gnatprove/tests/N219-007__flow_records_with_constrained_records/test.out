@@ -1,2 +1,1 @@
 foo.adb:27:04: warning: analyzing unreferenced procedure "Test_01_Ok"
-foo.adb:33:04: warning: analyzing unreferenced procedure "Test_02_Ok"

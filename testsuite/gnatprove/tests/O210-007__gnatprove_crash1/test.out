@@ -1,6 +1,14 @@
-main.adb:16:13: info: discriminant check proved, in call inlined at main.adb:37
-main.adb:16:25: info: length check proved, in call inlined at main.adb:37
-main.adb:19:10: info: loop invariant initialization proved, in call inlined at main.adb:37
-main.adb:19:10: info: loop invariant preservation proved, in call inlined at main.adb:37
-main.adb:26:13: info: assertion proved, in call inlined at main.adb:37
-main.adb:27:19: info: discriminant check proved, in call inlined at main.adb:37
+main.adb:16:13: info: discriminant check proved
+main.adb:16:22: info: length check proved
+main.adb:16:25: info: length check proved
+main.adb:18:22: info: discriminant check proved
+main.adb:19:10: info: loop invariant initialization proved
+main.adb:19:10: info: loop invariant preservation proved
+main.adb:20:24: info: discriminant check proved
+main.adb:22:19: info: discriminant check proved
+main.adb:22:53: info: discriminant check proved
+main.adb:25:23: info: discriminant check proved
+main.adb:26:13: info: assertion proved
+main.adb:26:39: info: discriminant check proved
+main.adb:27:19: info: discriminant check proved
+main.adb:27:29: info: index check proved
