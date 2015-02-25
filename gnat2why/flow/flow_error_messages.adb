@@ -25,23 +25,23 @@
 with Ada.Containers.Hashed_Sets;
 with Ada.Strings.Unbounded.Hash;
 
-with Atree;                      use Atree;
-with Csets;                      use Csets;
-with Einfo;                      use Einfo;
-with Errout;                     use Errout;
-with Erroutc;                    use Erroutc;
-with Namet;                      use Namet;
-with Sinfo;                      use Sinfo;
-with Sinput;                     use Sinput;
-with Stringt;                    use Stringt;
-
-with Assumption_Types;           use Assumption_Types;
-with Gnat2Why.Annotate;          use Gnat2Why.Annotate;
-with Gnat2Why.Assumptions;       use Gnat2Why.Assumptions;
-with Gnat2Why.Nodes;             use Gnat2Why.Nodes;
-with Gnat2Why_Args;              use Gnat2Why_Args;
-with SPARK_Util;                 use SPARK_Util;
-with String_Utils;               use String_Utils;
+with Assumption_Types;     use Assumption_Types;
+with Atree;                use Atree;
+with Csets;                use Csets;
+with Einfo;                use Einfo;
+with Errout;               use Errout;
+with Erroutc;              use Erroutc;
+with GNATCOLL.Utils;       use GNATCOLL.Utils;
+with Gnat2Why.Annotate;    use Gnat2Why.Annotate;
+with Gnat2Why.Assumptions; use Gnat2Why.Assumptions;
+with Gnat2Why.Nodes;       use Gnat2Why.Nodes;
+with Gnat2Why_Args;        use Gnat2Why_Args;
+with Namet;                use Namet;
+with Sinfo;                use Sinfo;
+with Sinput;               use Sinput;
+with SPARK_Util;           use SPARK_Util;
+with Stringt;              use Stringt;
+with String_Utils;         use String_Utils;
 
 package body Flow_Error_Messages is
 
@@ -184,7 +184,7 @@ package body Flow_Error_Messages is
                File := To_Unbounded_String (File_Name (Tmp));
                Line := Get_Physical_Line_Number (Tmp);
                Append (M, To_String (Context) &
-                         To_String (File) & ":" & Int_Image (Integer (Line)));
+                         To_String (File) & ":" & Image (Integer (Line), 1));
             end loop;
          end;
       end if;
@@ -258,7 +258,7 @@ package body Flow_Error_Messages is
            Get_Physical_Line_Number (Loc);
       begin
          return Gnat2Why_Args.Limit_Line = Null_Unbounded_String
-           or else File & ":" & Int_Image (Integer (Line)) =
+           or else File & ":" & Image (Integer (Line), 1) =
                      To_String (Gnat2Why_Args.Limit_Line);
       end Is_Specified_Line;
 
@@ -457,7 +457,7 @@ package body Flow_Error_Messages is
 
    function Fresh_Trace_File return String is
       Result : constant String :=
-        Unit_Name & "__flow__" & Int_Image (File_Counter) & ".trace";
+        Unit_Name & "__flow__" & Image (File_Counter, 1) & ".trace";
    begin
       File_Counter := File_Counter + 1;
       return Result;
@@ -585,7 +585,7 @@ package body Flow_Error_Messages is
             when Error_Kind        => "");
       Actual_Msg : constant String :=
         Prefix & Escape (Msg) & "!!" &
-        (if Ide_Mode then "'['#" & Int_Image (Integer (Id)) & "']"
+        (if Ide_Mode then "'['#" & Image (Integer (Id), 1) & "']"
          else "");
    begin
       Message_Id_Counter := Message_Id_Counter + 1;

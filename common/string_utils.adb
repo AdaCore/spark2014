@@ -53,20 +53,6 @@ package body String_Utils is
       return Result (Result'First + 1 .. Result'Last);
    end Hash_Image;
 
-   ---------------
-   -- Int_Image --
-   ---------------
-
-   function Int_Image (N : Integer) return String is
-      Result : constant String := Integer'Image (N);
-   begin
-      if N >= 0 then
-         return Result (Result'First + 1 .. Result'Last);
-      else
-         return Result;
-      end if;
-   end Int_Image;
-
    ----------------------
    -- Lower_Case_First --
    ----------------------

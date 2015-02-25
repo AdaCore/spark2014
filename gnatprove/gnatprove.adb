@@ -88,7 +88,7 @@ procedure Gnatprove is
    type Gnatprove_Step is (GS_ALI, GS_Gnat2Why);
 
    function Step_Image (S : Gnatprove_Step) return String is
-      (Int_Image (Gnatprove_Step'Pos (S) + 1));
+      (Image (Gnatprove_Step'Pos (S) + 1, Min_Width => 1));
 
    procedure Call_Gprbuild
       (Project_File : String;
@@ -193,7 +193,7 @@ procedure Gnatprove is
       end if;
 
       if Parallel > 1 then
-         Args.Prepend ("-j" & Int_Image (Parallel));
+         Args.Prepend ("-j" & Image (Parallel, Min_Width => 1));
       end if;
 
       if Continue_On_Error then
@@ -358,7 +358,7 @@ procedure Gnatprove is
    begin
       if Timeout /= 0 then
          Args.Append ("--timeout");
-         Args.Append (Int_Image (Timeout));
+         Args.Append (Image (Timeout, 1));
       end if;
 
       --  The steps option is passed to alt-ergo via the why3.conf file. We
@@ -367,7 +367,7 @@ procedure Gnatprove is
 
       if Steps /= 0 then
          Args.Append ("--steps");
-         Args.Append (Int_Image (Steps));
+         Args.Append (Image (Steps, 1));
       end if;
       Args.Append ("--socket");
       Args.Append (Socket_Name.all);
@@ -387,7 +387,7 @@ procedure Gnatprove is
       end if;
 
       Args.Append ("-j");
-      Args.Append (Int_Image (Parallel));
+      Args.Append (Image (Parallel, 1));
 
       if Limit_Line /= null and then Limit_Line.all /= "" then
          Args.Append ("--limit-line");
@@ -658,7 +658,7 @@ procedure Gnatprove is
          if Steps /= 0 then
             Put_Keyval ("command",
                         Altergo_Command & " -steps-bound " &
-                          Int_Image (Steps));
+                          Image (Steps, 1));
          else
             Put_Keyval ("command", Altergo_Command);
          end if;
@@ -680,7 +680,7 @@ procedure Gnatprove is
          Start_Section ("prover");
          if Steps /= 0 then
             Put_Keyval ("command",
-                        Command & " --rlimit=" & Int_Image (Steps * 10) &
+                        Command & " --rlimit=" & Image (Steps * 10, 1) &
                         " %f");
          else
             Put_Keyval ("command", Command & " %f");
@@ -715,7 +715,7 @@ procedure Gnatprove is
          Start_Section ("prover");
          if Steps /= 0 then
             Put_Keyval ("command",
-                        Command & " --rlimit=" & Int_Image (Steps) & " %f");
+                        Command & " --rlimit=" & Image (Steps, 1) & " %f");
          else
             Put_Keyval ("command", Command & " %f");
          end if;
@@ -763,7 +763,7 @@ procedure Gnatprove is
       begin
          Put (File, Key);
          Put (File, " = ");
-         Put_Line (File, Int_Image (Value));
+         Put_Line (File, Image (Value, 1));
       end Put_Keyval;
 
       -------------------
@@ -903,7 +903,7 @@ procedure Gnatprove is
    begin
       Ada.Directories.Set_Directory (Proj_Type.Object_Dir.Display_Full_Name);
       Args.Append ("-j");
-      Args.Append (Int_Image (Parallel));
+      Args.Append (Image (Parallel, 1));
       Args.Append ("--socket");
       Args.Append (Socket_Name.all);
       Id := Non_Blocking_Spawn ("why3server", Args);

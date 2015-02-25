@@ -23,9 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with GNATCOLL.Utils;      use GNATCOLL.Utils;
+with Gnat2Why.Util;       use Gnat2Why.Util;
 with Stand;               use Stand;
-with String_Utils;        use String_Utils;
-
 with SPARK_Definition;    use SPARK_Definition;
 with SPARK_Util;          use SPARK_Util;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
@@ -34,7 +34,6 @@ with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Conversions;     use Why.Conversions;
 with Why.Types;           use Why.Types;
 with Why.Inter;           use Why.Inter;
-with Gnat2Why.Util;       use Gnat2Why.Util;
 
 package body Why.Gen.Names is
 
@@ -51,7 +50,7 @@ package body Why.Gen.Names is
 
    function Append_Num (S : String; Count : Positive) return String is
    begin
-      return (if Count = 1 then S else S & "_" & Int_Image (Count));
+      return (if Count = 1 then S else S & "_" & Image (Count, 1));
    end Append_Num;
 
    function Append_Num (S : String; Count : Uint) return String is

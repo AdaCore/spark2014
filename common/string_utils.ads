@@ -53,7 +53,4 @@ package String_Utils is
    function Hash_Image (N : Ada.Containers.Hash_Type) return String;
    --  Generate a string from an hash, without the leading space.
 
-   function Int_Image (N : Integer) return String;
-   --  Generate a string from an Integer, without the leading space.
-
 end String_Utils;

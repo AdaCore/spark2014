@@ -25,12 +25,11 @@
 
 with Atree;              use Atree;
 with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
+with GNATCOLL.Utils;     use GNATCOLL.Utils;
 with Sinfo;              use Sinfo;
 with Stand;              use Stand;
-
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Names;      use Why.Gen.Names;
-with String_Utils;       use String_Utils;
 
 package body Why.Atree.Modules is
 
@@ -944,14 +943,14 @@ package body Why.Atree.Modules is
                                return W_Identifier_Id is
    begin
       return Create_Modular_Operator (Typ, NID ("rotate_left_" &
-                                        Int_Image (Integer (n))));
+                                        Image (Integer (n), 1)));
    end Create_Modular_Rl_Const;
 
    function Create_Modular_Rr_Const (Typ : W_Type_Id; n : Int)
                                return W_Identifier_Id is
    begin
       return Create_Modular_Operator (Typ, NID ("rotate_right_" &
-                                        Int_Image (Integer (n))));
+                                        Image (Integer (n), 1)));
    end Create_Modular_Rr_Const;
 
    function Create_Modular_ToInt (Typ : W_Type_Id) return W_Identifier_Id is

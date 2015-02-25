@@ -27,6 +27,7 @@ with AA_Util;              use AA_Util;
 with Assumption_Types;     use Assumption_Types;
 with Csets;                use Csets;
 with Elists;               use Elists;
+with GNATCOLL.Utils;       use GNATCOLL.Utils;
 with Gnat2Why.Assumptions; use Gnat2Why.Assumptions;
 with Lib;                  use Lib;
 with Nlists;               use Nlists;
@@ -786,7 +787,7 @@ package body Gnat2Why.Nodes is
       --  ??? Probably need to change this code to take M412-032 into account
 
       return
-        "GP_Subp:" & Base_Sloc_File (B) & ":" & Int_Image (B.Line);
+        "GP_Subp:" & Base_Sloc_File (B) & ":" & Image (B.Line, 1);
    end Subp_Location;
 
    ------------------

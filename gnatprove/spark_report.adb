@@ -433,8 +433,8 @@ procedure SPARK_Report is
                   if Stat.Analysis in Flow_Analysis | Flow_And_Proof then
                      Put (Handle,
                           " flow analyzed ("
-                          & Int_Image (Stat.Flow_Errors) & " errors and "
-                          & Int_Image (Stat.Flow_Warnings) & " warnings)");
+                          & Image (Stat.Flow_Errors, 1) & " errors and "
+                          & Image (Stat.Flow_Warnings, 1) & " warnings)");
                   end if;
 
                   if Stat.Analysis = Flow_And_Proof then
@@ -445,7 +445,7 @@ procedure SPARK_Report is
                      if Stat.VC_Count = Stat.VC_Proved then
                         Put (Handle,
                              " proved ("
-                             & Int_Image (Stat.VC_Count) & " checks)");
+                             & Image (Stat.VC_Count, 1) & " checks)");
                      else
                         Put (Handle,
                              " not proved," & Stat.VC_Proved'Img
@@ -462,8 +462,8 @@ procedure SPARK_Report is
                         Put_Line (Handle,
                                   "    " &
                                   Ada.Strings.Unbounded.To_String (Msg.File) &
-                                    ":" & Int_Image (Msg.Line) & ":" &
-                                    Int_Image (Msg.Column) & ": " &
+                                    ":" & Image (Msg.Line, 1) & ":" &
+                                    Image (Msg.Column, 1) & ": " &
                                     Ada.Strings.Unbounded.To_String
                                     (Msg.Reason));
                      end loop;
@@ -495,9 +495,9 @@ procedure SPARK_Report is
       begin
          Put_Line (Handle,
                    "in unit " & Unit_Name (Unit) & ", "
-                   & Int_Image (Num_Subps_SPARK (Unit))
+                   & Image (Num_Subps_SPARK (Unit), 1)
                    & " subprograms and packages out of "
-                   & Int_Image (Num_Subps (Unit)) & " analyzed");
+                   & Image (Num_Subps (Unit), 1) & " analyzed");
          Iter_Unit_Subps (Unit, For_Each_Subp'Access, Ordered => True);
 
       end For_Each_Unit;
@@ -532,7 +532,7 @@ procedure SPARK_Report is
          end if;
          Append (UB, Base_Sloc_File (S));
          Append (UB, ":");
-         Append (UB, Int_Image (S.Line));
+         Append (UB, Image (S.Line, 1));
       end loop;
       return To_String (UB);
    end To_String;

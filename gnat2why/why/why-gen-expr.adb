@@ -24,26 +24,28 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings.Unbounded;   use Ada.Strings.Unbounded;
+with Ada.Strings.Fixed;
 with Ada.Text_IO;
-
 with Aspects;                 use Aspects;
 with Atree;                   use Atree;
 with Checks;                  use Checks;
 with Einfo;                   use Einfo;
 with Errout;                  use Errout;
+with GNATCOLL.Utils;          use GNATCOLL.Utils;
+with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
+with Gnat2Why.Expr;           use Gnat2Why.Expr;
+with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
 with Nlists;                  use Nlists;
 with Sem_Eval;                use Sem_Eval;
 with Sem_Util;                use Sem_Util;
 with Sinfo;                   use Sinfo;
 with Sinput;                  use Sinput;
+with SPARK_Definition;        use SPARK_Definition;
+with SPARK_Util;              use SPARK_Util;
 with Stand;                   use Stand;
 with String_Utils;            use String_Utils;
 with Uintp;                   use Uintp;
 with Urealp;                  use Urealp;
-
-with SPARK_Definition;        use SPARK_Definition;
-with SPARK_Util;              use SPARK_Util;
-
 with Why.Atree.Accessors;     use Why.Atree.Accessors;
 with Why.Atree.Tables;        use Why.Atree.Tables;
 with Why.Atree.Modules;       use Why.Atree.Modules;
@@ -54,12 +56,6 @@ with Why.Gen.Preds;           use Why.Gen.Preds;
 with Why.Gen.Progs;           use Why.Gen.Progs;
 with Why.Gen.Records;         use Why.Gen.Records;
 with Why.Inter;               use Why.Inter;
-
-with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
-with Gnat2Why.Expr;           use Gnat2Why.Expr;
-with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
-
-with Ada.Strings.Fixed;
 
 package body Why.Gen.Expr is
 
@@ -2184,9 +2180,9 @@ package body Why.Gen.Expr is
          begin
             Append (Buf, File);
             Append (Buf, ':');
-            Append (Buf, Int_Image (Integer (Line)));
+            Append (Buf, Image (Integer (Line), 1));
             Append (Buf, ':');
-            Append (Buf, Int_Image (Integer (Column)));
+            Append (Buf, Image (Integer (Column), 1));
             exit when Instantiation_Location (Slc) = No_Location;
             Append (Buf, ':');
             if Comes_From_Inlined_Body (Slc) then
@@ -2665,7 +2661,7 @@ package body Why.Gen.Expr is
          Used_Node := Right_Opnd (Original_Node (N));
       end if;
 
-      return NID (Pretty_Ada_Tag & ":" & Int_Image (Integer (Used_Node)));
+      return NID (Pretty_Ada_Tag & ":" & Image (Integer (Used_Node), 1));
    end New_Sub_VC_Marker;
 
    --------------------
@@ -2857,7 +2853,7 @@ package body Why.Gen.Expr is
       Location_Lab : Name_Id;
    begin
       Set.Include (NID ("GP_Reason:" & VC_Kind'Image (Reason)));
-      Set.Include (NID ("GP_Id:" & Int_Image (Integer (Id))));
+      Set.Include (NID ("GP_Id:" & Image (Integer (Id), 1)));
 
       Location_Lab := New_Located_Label
         (N, Left_Most => Locate_On_First_Token (Reason));
