@@ -149,6 +149,11 @@ package Flow.Analysis is
    --
    --  Complexity is O(N)
 
+   procedure Check_Aliasing (FA : in out Flow_Analysis_Graphs);
+   --  Check each procedure call for aliasing.
+   --
+   --  Complexity is O(N^2)
+
 private
 
    type Var_Use_Kind is (Use_Read, Use_Write, Use_Any);

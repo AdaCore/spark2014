@@ -69,31 +69,6 @@ package body Flow.Analysis.Sanity is
       end if;
    end Check_Function_Side_Effects;
 
-   --------------------
-   -- Check_Aliasing --
-   --------------------
-
-   procedure Check_Aliasing
-     (FA   : in out Flow_Analysis_Graphs;
-      Sane :    out Boolean)
-   is
-   begin
-      Sane := True;
-
-      if FA.Aliasing_Present then
-         if Gnat2Why_Args.Debug_Mode then
-            Error_Msg_Flow
-              (FA   => FA,
-               Msg  => "flow analysis of & abandoned due to aliasing",
-               N    => FA.Analyzed_Entity,
-               Kind => Error_Kind,
-               F1   => Direct_Mapping_Id (FA.Analyzed_Entity));
-         end if;
-
-         Sane := False;
-      end if;
-   end Check_Aliasing;
-
    -------------------------------------
    -- Check_Variable_Free_Expressions --
    -------------------------------------

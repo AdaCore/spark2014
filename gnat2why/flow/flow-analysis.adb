@@ -38,6 +38,8 @@ with Why;
 with SPARK_Util;           use SPARK_Util;
 
 with Flow.Analysis.Sanity;
+with Flow.Analysis.Antialiasing;
+
 with Flow_Debug;           use Flow_Debug;
 with Flow_Error_Messages;  use Flow_Error_Messages;
 with Flow_Tree_Utility;    use Flow_Tree_Utility;
@@ -577,7 +579,6 @@ package body Flow.Analysis is
 
       Sanity_Checks : constant Sanity_Checks_T :=
         (Sanity.Check_Function_Side_Effects'Access,
-         Sanity.Check_Aliasing'Access,
          Sanity.Check_Variable_Free_Expressions'Access,
          Sanity.Check_Generated_Refined_Global'Access,
          Sanity.Check_Illegal_Writes'Access,
@@ -3621,5 +3622,28 @@ package body Flow.Analysis is
          end loop;
       end loop;
    end Check_Prefixes_Of_Attribute_Old;
+
+   --------------------
+   -- Check_Aliasing --
+   --------------------
+
+   procedure Check_Aliasing (FA : in out Flow_Analysis_Graphs)
+   is
+   begin
+      for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         declare
+            Atr : constant V_Attributes := FA.Atr.Element (V);
+         begin
+            if Atr.Is_Program_Node
+              and not Atr.Is_Exceptional_Path
+              and Atr.Is_Callsite
+            then
+               Antialiasing.Check_Procedure_Call
+                 (FA => FA,
+                  N  => Get_Direct_Mapping_Id (FA.CFG.Get_Key (V)));
+            end if;
+         end;
+      end loop;
+   end Check_Aliasing;
 
 end Flow.Analysis;

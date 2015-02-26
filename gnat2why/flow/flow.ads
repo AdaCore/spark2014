@@ -231,10 +231,6 @@ package Flow is
       --  This string follows the convention that we use for naming the
       --  .dot and .pdf files.
 
-      Aliasing_Present       : Boolean;
-      --  True if this subprogram introduces (bad)
-      --  aliasing. Subsequent analysis is then meaningless.
-
       Dependency_Map         : Dependency_Maps.Map;
       --  A map of all the dependencies.
 

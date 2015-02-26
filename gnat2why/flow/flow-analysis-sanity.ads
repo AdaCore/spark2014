@@ -33,12 +33,6 @@ private package Flow.Analysis.Sanity is
    --  analysis.
    --  In debug mode we emit an error message that analysis is aborted here.
 
-   procedure Check_Aliasing
-     (FA   : in out Flow_Analysis_Graphs;
-      Sane :    out Boolean);
-   --  Make sure no aliasing has been flagged during analysis.
-   --  In debug mode we emit an error message that analysis is aborted here.
-
    procedure Check_Variable_Free_Expressions
      (FA   : in out Flow_Analysis_Graphs;
       Sane :    out Boolean);

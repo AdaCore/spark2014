@@ -843,7 +843,6 @@ package body Flow is
       Tmp.Unmodified_Vars              := Node_Sets.Empty_Set;
       Tmp.Unreferenced_Vars            := Node_Sets.Empty_Set;
       Tmp.Loops                        := Node_Sets.Empty_Set;
-      Tmp.Aliasing_Present             := False;
       Tmp.Dependency_Map               := Dependency_Maps.Empty_Map;
       Tmp.No_Effects                   := False;
       Tmp.No_Errors_Or_Warnings        := True;
@@ -1344,6 +1343,7 @@ package body Flow is
                      Analysis.Find_Dead_Code (FA);
                      Analysis.Check_Depends_Contract (FA);
                   end if;
+                  Analysis.Check_Aliasing (FA);
                   Analysis.Find_Use_Of_Uninitialized_Variables (FA);
                   Analysis.Check_Prefixes_Of_Attribute_Old (FA);
                   Analysis.Find_Exports_Derived_From_Proof_Ins (FA);
@@ -1368,6 +1368,7 @@ package body Flow is
                      Analysis.Find_Dead_Code (FA);
                      Analysis.Find_Impossible_To_Initialize_State (FA);
                   end if;
+                  Analysis.Check_Aliasing (FA);
                   Analysis.Find_Non_Elaborated_State_Abstractions (FA);
                   Analysis.Find_Use_Of_Uninitialized_Variables (FA);
                   Analysis.Check_Initializes_Contract (FA);

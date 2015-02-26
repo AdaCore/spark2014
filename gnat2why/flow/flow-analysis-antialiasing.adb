@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                    F L O W . A N T I A L I A S I N G                     --
+--           F L O W . A N A L Y S I S . A N T I A L I A S I N G            --
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
@@ -35,7 +35,7 @@ with Flow_Classwide;      use Flow_Classwide;
 with Flow_Utility;        use Flow_Utility;
 with Flow_Error_Messages; use Flow_Error_Messages;
 
-package body Flow.Antialiasing is
+package body Flow.Analysis.Antialiasing is
 
    Trace_Antialiasing : constant Boolean := False;
    --  Enable this for gratuitous tracing output for aliasing
@@ -612,7 +612,7 @@ package body Flow.Antialiasing is
             return;
 
          when Possible_Aliasing | Definite_Aliasing =>
-            FA.Aliasing_Present := True;
+            null;
 
          when No_Aliasing =>
             Append (Msg, "non-aliasing of ");
@@ -836,4 +836,4 @@ package body Flow.Antialiasing is
 
    end Check_Procedure_Call;
 
-end Flow.Antialiasing;
+end Flow.Analysis.Antialiasing;

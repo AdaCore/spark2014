@@ -42,7 +42,6 @@ with SPARK_Definition;                   use SPARK_Definition;
 with Why;
 with Gnat2Why.Nodes;                     use Gnat2Why.Nodes;
 
-with Flow.Antialiasing;                  use Flow.Antialiasing;
 with Flow.Control_Flow_Graph.Utility;    use Flow.Control_Flow_Graph.Utility;
 with Flow_Classwide;                     use Flow_Classwide;
 with Flow_Error_Messages;                use Flow_Error_Messages;
@@ -4256,15 +4255,6 @@ package body Flow.Control_Flow_Graph is
          when N_Pragma =>
             Do_Pragma (N, FA, CM, Ctx);
          when N_Procedure_Call_Statement =>
-            --  Check for aliasing first
-            if not FA.Compute_Globals then
-               --  ??? We will get errors during flow analysis - to be
-               --  investigated if there are issues here if we produce
-               --  useless contracts?
-               Check_Procedure_Call (FA, N);
-            end if;
-
-            --  Then process the procedure call
             Do_Procedure_Call_Statement (N, FA, CM, Ctx);
          when N_Simple_Return_Statement =>
             Do_Simple_Return_Statement (N, FA, CM, Ctx);
@@ -5618,6 +5608,7 @@ package body Flow.Control_Flow_Graph is
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          FA.Direct_Calls.Union (FA.Atr (V).Subprograms_Called);
       end loop;
+      pragma Assert (for all E of FA.Direct_Calls => Nkind (E) in N_Entity);
 
       --  In GG mode, we assemble a list of globals and subprograms
       --  now (and retroactively make some initial and final

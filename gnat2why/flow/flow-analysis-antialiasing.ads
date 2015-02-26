@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                    F L O W . A N T I A L I A S I N G                     --
+--           F L O W . A N A L Y S I S . A N T I A L I A S I N G            --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -25,23 +25,17 @@
 
 with Sinfo; use Sinfo;
 
-package Flow.Antialiasing is
+package Flow.Analysis.Antialiasing is
 
    procedure Check_Procedure_Call
      (FA : in out Flow_Analysis_Graphs;
       N  : Node_Id)
    with
-     Pre  => Nkind (N) = N_Procedure_Call_Statement,
-     Post => (if FA'Old.Aliasing_Present then FA.Aliasing_Present);
+     Pre  => Nkind (N) = N_Procedure_Call_Statement;
    --  This procedure looks at a procedure call statement and
    --  determines if it introduces aliasing that matters: for example
    --  aliasing between in parameters is OK, but aliasing between two
    --  out parameters is not.
-   --
-   --  If aliasing is detected two actions are taken:
-   --     * A flow error is emitted
-   --     * The flag Introduces_Aliasing is set to True (otherwise its
-   --       value is not changed)
    --
    --  This procedure is aware of globals, both computed by gnat2why
    --  and specified. The following checks are performed:
@@ -50,4 +44,4 @@ package Flow.Antialiasing is
    --     * Is there potential aliasing between a computed global and
    --       abstract state
 
-end Flow.Antialiasing;
+end Flow.Analysis.Antialiasing;

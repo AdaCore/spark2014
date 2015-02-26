@@ -1,34 +1,29 @@
 test.adb:103:30: warning: "Y" is not modified, could be IN
 test.adb:113:04: warning: analyzing unreferenced procedure "Test_01"
-test.adb:113:14: flow analysis of "Test_01" abandoned due to aliasing
 test.adb:116:14: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
+test.adb:116:14: warning: unused assignment to "X"
 test.adb:119:04: warning: analyzing unreferenced procedure "Test_02"
 test.adb:125:04: warning: analyzing unreferenced procedure "Test_03"
-test.adb:125:14: flow analysis of "Test_03" abandoned due to aliasing
 test.adb:128:14: high: formal parameter "X" and global "Global_RA" are aliased (SPARK RM 6.4.2)
+test.adb:128:14: warning: unused assignment to "Global_RA"
 test.adb:131:23: warning: "X" is not modified, could be IN
-test.adb:138:14: flow analysis of "Test_05" abandoned due to aliasing
+test.adb:138:23: warning: "X" is not modified, could be IN
 test.adb:142:19: high: formal parameters "Y" and "Z" are aliased (SPARK RM 6.4.2)
 test.adb:145:04: warning: analyzing unreferenced procedure "Test_06"
-test.adb:145:14: flow analysis of "Test_06" abandoned due to aliasing
 test.adb:148:14: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
 test.adb:151:04: warning: analyzing unreferenced procedure "Test_07"
 test.adb:155:17: warning: unused assignment to "Y"
 test.adb:158:04: warning: analyzing unreferenced procedure "Test_08"
-test.adb:158:14: flow analysis of "Test_08" abandoned due to aliasing
 test.adb:162:14: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
 test.adb:165:04: warning: analyzing unreferenced procedure "Test_09"
-test.adb:165:14: flow analysis of "Test_09" abandoned due to aliasing
 test.adb:168:15: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
 test.adb:171:04: warning: analyzing unreferenced procedure "Test_10"
 test.adb:174:15: info: non-aliasing of formal parameters "X" and "Y" proved
 test.adb:177:04: warning: analyzing unreferenced procedure "Test_11"
 test.adb:180:15: info: non-aliasing of formal parameters "X" and "Y" proved
 test.adb:183:04: warning: analyzing unreferenced procedure "Test_12"
-test.adb:183:14: flow analysis of "Test_12" abandoned due to aliasing
 test.adb:186:15: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
 test.adb:189:04: warning: analyzing unreferenced procedure "Test_13"
-test.adb:189:14: flow analysis of "Test_13" abandoned due to aliasing
 test.adb:193:15: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 test.adb:196:04: warning: analyzing unreferenced procedure "Test_14"
 test.adb:206:04: warning: analyzing unreferenced procedure "Slice_01"
@@ -36,31 +31,24 @@ test.adb:209:23: info: non-aliasing of formal parameters "X" and "Y" proved
 test.adb:212:04: warning: analyzing unreferenced procedure "Slice_02"
 test.adb:213:24: warning: "B" is not modified, could be IN
 test.adb:219:04: warning: analyzing unreferenced procedure "Slice_03"
-test.adb:219:14: flow analysis of "Slice_03" abandoned due to aliasing
 test.adb:223:23: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 test.adb:226:04: warning: analyzing unreferenced procedure "Slice_04"
-test.adb:226:14: flow analysis of "Slice_04" abandoned due to aliasing
 test.adb:230:23: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 test.adb:233:04: warning: analyzing unreferenced procedure "Slice_05"
-test.adb:233:14: flow analysis of "Slice_05" abandoned due to aliasing
 test.adb:238:23: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 test.adb:241:04: warning: analyzing unreferenced procedure "Slice_06"
-test.adb:241:14: flow analysis of "Slice_06" abandoned due to aliasing
 test.adb:244:23: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
 test.adb:247:04: warning: analyzing unreferenced procedure "Slice_07"
-test.adb:247:14: flow analysis of "Slice_07" abandoned due to aliasing
 test.adb:251:23: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 test.adb:252:23: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 test.adb:253:23: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
+test.adb:254:36: warning: unused assignment to "Tmp"
 test.adb:256:23: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 test.adb:259:04: warning: analyzing unreferenced procedure "Slice_08"
-test.adb:259:14: flow analysis of "Slice_08" abandoned due to aliasing
 test.adb:263:23: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 test.adb:270:04: warning: analyzing unreferenced procedure "UCC_01"
-test.adb:270:14: flow analysis of "UCC_01" abandoned due to aliasing
 test.adb:273:14: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
 test.adb:276:04: warning: analyzing unreferenced procedure "UCC_02"
-test.adb:276:14: flow analysis of "UCC_02" abandoned due to aliasing
 test.adb:279:15: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
 test.adb:282:04: warning: analyzing unreferenced procedure "UCC_03"
 test.adb:285:15: info: non-aliasing of formal parameters "X" and "Y" proved
@@ -69,7 +57,3 @@ test.adb:291:15: info: non-aliasing of formal parameters "X" and "Y" proved
 test.adb:317:15: info: non-aliasing of formal parameters "A" and "B" proved
 test.adb:332:04: warning: analyzing unreferenced procedure "Test_TC_1"
 test.adb:338:04: warning: analyzing unreferenced procedure "Test_TC_2"
-   compilation of test.adb failed
-
-
-gnatprove: error during analysis of data and information flow
