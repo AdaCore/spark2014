@@ -21,18 +21,19 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Errout;         use Errout;
-with Nlists;         use Nlists;
-with Sem_Eval;       use Sem_Eval;
-with Sem_Util;       use Sem_Util;
+with Nlists;              use Nlists;
+with Sem_Eval;            use Sem_Eval;
+with Sem_Util;            use Sem_Util;
 
-with Output;         use Output;
-with Sprint;         use Sprint;
+with Output;              use Output;
+with Sprint;              use Sprint;
 
 with Why;
+with VC_Kinds;            use VC_Kinds;
 
-with Flow_Classwide; use Flow_Classwide;
-with Flow_Utility;   use Flow_Utility;
+with Flow_Classwide;      use Flow_Classwide;
+with Flow_Utility;        use Flow_Utility;
+with Flow_Error_Messages; use Flow_Error_Messages;
 
 package body Flow.Antialiasing is
 
@@ -40,13 +41,17 @@ package body Flow.Antialiasing is
    --  Enable this for gratuitous tracing output for aliasing
    --  detection.
 
-   type Aliasing_Check_Result is (No_Aliasing,
+   type Aliasing_Check_Result is (Impossible,
+                                  No_Aliasing,
                                   Possible_Aliasing,
                                   Definite_Aliasing);
 
+   subtype Non_Obvious_Aliasing_Check_Result is Aliasing_Check_Result
+     range No_Aliasing .. Definite_Aliasing;
+
    function Check_Range (AL, AH : Node_Id;
                          BL, BH : Node_Id)
-                         return Aliasing_Check_Result;
+                         return Non_Obvious_Aliasing_Check_Result;
    --  Checks two ranges for potential overlap.
 
    function Aliasing (A,        B        : Node_Id;
@@ -63,19 +68,18 @@ package body Flow.Antialiasing is
    --  others: it is a scalar in parameter.
 
    procedure Check_Node_Against_Node
-     (A, B                : Node_Or_Entity_Id;
-      A_Formal            : Entity_Id;
-      B_Formal            : Entity_Id;
-      Introduces_Aliasing : in out Boolean)
+     (FA       : in out Flow_Analysis_Graphs;
+      A, B     : Node_Or_Entity_Id;
+      A_Formal : Entity_Id;
+      B_Formal : Entity_Id)
    with Pre => Present (A_Formal);
    --  Checks the two nodes for aliasing and issues an error message
    --  if appropriate. The formal for B can be Empty, in which case we
    --  assume it is a global.
 
    procedure Check_Parameter_Against_Parameters_And_Globals
-     (Scope               : Flow_Scope;
-      Actual              : Node_Id;
-      Introduces_Aliasing : in out Boolean);
+     (FA     : in out Flow_Analysis_Graphs;
+      Actual : Node_Id);
    --  Checks the given actual against all other parameters and
    --  globals.
 
@@ -85,7 +89,7 @@ package body Flow.Antialiasing is
 
    function Check_Range (AL, AH : Node_Id;
                          BL, BH : Node_Id)
-                         return Aliasing_Check_Result
+                         return Non_Obvious_Aliasing_Check_Result
    is
       function LT (A, B : Node_Id) return Boolean;
       --  Return true iff A < B.
@@ -319,13 +323,13 @@ package body Flow.Antialiasing is
             Write_Str ("   -> A is not interesting");
             Write_Eol;
          end if;
-         return No_Aliasing;
+         return Impossible;
       elsif not Is_Interesting (Nkind (B)) then
          if Trace_Antialiasing then
             Write_Str ("   -> B is not interesting");
             Write_Eol;
          end if;
-         return No_Aliasing;
+         return Impossible;
       end if;
 
       if Cannot_Alias (Formal_A) then
@@ -333,13 +337,13 @@ package body Flow.Antialiasing is
             Write_Str ("   -> A does not require aa checking");
             Write_Eol;
          end if;
-         return No_Aliasing;
+         return Impossible;
       elsif Present (Formal_B) and then Cannot_Alias (Formal_B) then
          if Trace_Antialiasing then
             Write_Str ("   -> B does not require aa checking");
             Write_Eol;
          end if;
-         return No_Aliasing;
+         return Impossible;
       end if;
 
       --  Ok, so both nodes might potentially alias. We now need to
@@ -362,13 +366,13 @@ package body Flow.Antialiasing is
             Write_Str ("   -> root of A is not interesting");
             Write_Eol;
          end if;
-         return No_Aliasing;
+         return Impossible;
       elsif not Is_Root (Nkind (Ptr_B)) then
          if Trace_Antialiasing then
             Write_Str ("   -> root of B is not interesting");
             Write_Eol;
          end if;
-         return No_Aliasing;
+         return Impossible;
       end if;
 
       --  A quick sanity check. If the root nodes refer to different
@@ -379,7 +383,7 @@ package body Flow.Antialiasing is
             Write_Str ("   -> different root entities");
             Write_Eol;
          end if;
-         return No_Aliasing;
+         return Impossible;
       end if;
 
       --  Ok, we now know that the root nodes refer to the same
@@ -590,45 +594,65 @@ package body Flow.Antialiasing is
    -----------------------------
 
    procedure Check_Node_Against_Node
-     (A, B                : Node_Or_Entity_Id;
-      A_Formal            : Entity_Id;
-      B_Formal            : Entity_Id;
-      Introduces_Aliasing : in out Boolean)
+     (FA       : in out Flow_Analysis_Graphs;
+      A, B     : Node_Or_Entity_Id;
+      A_Formal : Entity_Id;
+      B_Formal : Entity_Id)
    is
       Msg : Unbounded_String               := Null_Unbounded_String;
       Tmp : constant Aliasing_Check_Result := Aliasing (A,
                                                         B,
                                                         A_Formal,
                                                         B_Formal);
+      B_Node : Node_Id;
    begin
-      if Tmp = No_Aliasing then
-         --  Nothing to do here.
-         return;
-      end if;
-      Introduces_Aliasing := True;
+
+      case Tmp is
+         when Impossible =>
+            return;
+
+         when Possible_Aliasing | Definite_Aliasing =>
+            FA.Aliasing_Present := True;
+
+         when No_Aliasing =>
+            Append (Msg, "non-aliasing of ");
+      end case;
 
       Append (Msg, "formal parameter");
       if Present (B_Formal) then
          Append (Msg, "s & and &");
-         Error_Msg_Node_2 := B_Formal;
+         B_Node := B_Formal;
       else
          --  ??? maybe have a special message for generated globals
          Append (Msg, " & and global &");
-         Error_Msg_Node_2 := B;
+         B_Node := B;
       end if;
+
       case Tmp is
          when Possible_Aliasing =>
-            Append (Msg, " might");
+            Append (Msg, " might be aliased");
 
          when Definite_Aliasing =>
-            Append (Msg, " must not");
+            Append (Msg, " are aliased");
 
-         when others =>
-            raise Program_Error;
+         when Impossible | No_Aliasing =>
+            Append (Msg, " proved");
       end case;
-      Append (Msg, " be aliased!");
 
-      Error_Msg_NE (To_String (Msg), A, A_Formal);
+      Error_Msg_Flow (FA      => FA,
+                      Msg     => To_String (Msg),
+                      Kind    =>
+                        (case Tmp is
+                            when Impossible | No_Aliasing => Info_Kind,
+                            when Possible_Aliasing        => Medium_Check_Kind,
+                            when Definite_Aliasing        => High_Check_Kind),
+                      N       => A,
+                      F1      => Direct_Mapping_Id (A_Formal),
+                      F2      => Direct_Mapping_Id (B_Node),
+                      Tag     => Aliasing,
+                      SRM_Ref => (if Tmp = No_Aliasing
+                                  then ""
+                                  else "6.4.2"));
    end Check_Node_Against_Node;
 
    ----------------------------------------------------
@@ -636,9 +660,8 @@ package body Flow.Antialiasing is
    ----------------------------------------------------
 
    procedure Check_Parameter_Against_Parameters_And_Globals
-     (Scope               : Flow_Scope;
-      Actual              : Node_Id;
-      Introduces_Aliasing : in out Boolean)
+     (FA     : in out Flow_Analysis_Graphs;
+      Actual : Node_Id)
    is
       Formal : Entity_Id;
       Call   : Node_Id;
@@ -703,11 +726,11 @@ package body Flow.Antialiasing is
                --  We only check for aliasing if at least one of the
                --  parameters is an out paramter.
                Check_Node_Against_Node
-                 (A => Actual,
-                  B => Other,
+                 (FA       => FA,
+                  A        => Actual,
+                  B        => Other,
                   A_Formal => Formal,
-                  B_Formal => Other_Formal,
-                  Introduces_Aliasing => Introduces_Aliasing);
+                  B_Formal => Other_Formal);
             end if;
 
             P := Next (P);
@@ -722,7 +745,7 @@ package body Flow.Antialiasing is
          Writes      : Flow_Id_Sets.Set;
       begin
          Get_Globals (Subprogram => Entity (Name (Call)),
-                      Scope      => Scope,
+                      Scope      => FA.B_Scope,
                       Classwide  => Is_Dispatching_Call (Call),
                       Proof_Ins  => Proof_Reads,
                       Reads      => Reads,
@@ -735,11 +758,11 @@ package body Flow.Antialiasing is
                   case R.Kind is
                      when Direct_Mapping =>
                         Check_Node_Against_Node
-                          (A => Actual,
-                           B => Get_Direct_Mapping_Id (R),
+                          (FA       => FA,
+                           A        => Actual,
+                           B        => Get_Direct_Mapping_Id (R),
                            A_Formal => Formal,
-                           B_Formal => Empty,
-                           Introduces_Aliasing => Introduces_Aliasing);
+                           B_Formal => Empty);
                      when Magic_String =>
                         --  If we don't have a name for the global, by
                         --  definition we can't possibly reference it in a
@@ -755,11 +778,11 @@ package body Flow.Antialiasing is
             case W.Kind is
                when Direct_Mapping =>
                   Check_Node_Against_Node
-                    (A => Actual,
-                     B => Get_Direct_Mapping_Id (W),
+                    (FA       => FA,
+                     A        => Actual,
+                     B        => Get_Direct_Mapping_Id (W),
                      A_Formal => Formal,
-                     B_Formal => Empty,
-                     Introduces_Aliasing => Introduces_Aliasing);
+                     B_Formal => Empty);
                when Magic_String =>
                   --  If we don't have a name for the global, by
                   --  definition we can't possibly reference it in a
@@ -778,10 +801,9 @@ package body Flow.Antialiasing is
    --------------------------
 
    procedure Check_Procedure_Call
-     (N                   : Node_Id;
-      Introduces_Aliasing : in out Boolean)
+     (FA : in out Flow_Analysis_Graphs;
+      N  : Node_Id)
    is
-      Scope : constant Flow_Scope := Get_Flow_Scope (N);
    begin
 
       --  Check out and in out parameters against other parameters and
@@ -803,10 +825,7 @@ package body Flow.Antialiasing is
             Find_Actual (Actual, Formal, Call);
             pragma Assert (Call = N);
 
-            Check_Parameter_Against_Parameters_And_Globals
-              (Scope,
-               Actual,
-               Introduces_Aliasing);
+            Check_Parameter_Against_Parameters_And_Globals (FA, Actual);
 
             P := Next (P);
          end loop;

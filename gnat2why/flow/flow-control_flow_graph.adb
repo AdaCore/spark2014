@@ -4261,7 +4261,7 @@ package body Flow.Control_Flow_Graph is
                --  ??? We will get errors during flow analysis - to be
                --  investigated if there are issues here if we produce
                --  useless contracts?
-               Check_Procedure_Call (N, FA.Aliasing_Present);
+               Check_Procedure_Call (FA, N);
             end if;
 
             --  Then process the procedure call

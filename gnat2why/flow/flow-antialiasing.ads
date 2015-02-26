@@ -28,9 +28,11 @@ with Sinfo; use Sinfo;
 package Flow.Antialiasing is
 
    procedure Check_Procedure_Call
-     (N                   : Node_Id;
-      Introduces_Aliasing : in out Boolean)
-   with Pre => Nkind (N) = N_Procedure_Call_Statement;
+     (FA : in out Flow_Analysis_Graphs;
+      N  : Node_Id)
+   with
+     Pre  => Nkind (N) = N_Procedure_Call_Statement,
+     Post => (if FA'Old.Aliasing_Present then FA.Aliasing_Present);
    --  This procedure looks at a procedure call statement and
    --  determines if it introduces aliasing that matters: for example
    --  aliasing between in parameters is OK, but aliasing between two

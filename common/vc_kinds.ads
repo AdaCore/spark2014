@@ -92,6 +92,9 @@ package VC_Kinds is
      (Empty_Tag,
       --  Used when a tag is not specified
 
+      Aliasing,
+      --  Used for aliasing checks
+
       Dead_Code,
       --  Statement is never reached
 

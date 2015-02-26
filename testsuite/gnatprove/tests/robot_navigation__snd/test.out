@@ -209,6 +209,7 @@ algorithm.adb:681:32: medium: overflow check might fail
 algorithm.adb:681:57: medium: overflow check might fail
 algorithm.adb:681:109: info: division check proved
 algorithm.adb:681:109: info: overflow check proved
+algorithm.adb:684:42: info: non-aliasing of formal parameters "gapVec" and "laserscan" proved
 algorithm.adb:704:07: info: assertion proved
 algorithm.adb:710:19: info: discriminant check proved
 algorithm.adb:710:22: info: precondition proved

@@ -1,2 +1,3 @@
 primitives.adb:10:19: info: discriminant check proved
+primitives.adb:10:19: info: non-aliasing of formal parameters "Branch" and "Iterator" proved
 primitives.adb:11:19: info: discriminant check proved
