@@ -1765,7 +1765,11 @@ package body Why.Gen.Expr is
    begin
       if Base = EW_Bool_Type then
          return New_And_Expr (Left, Right, Domain);
-      elsif Base in EW_BitVector_8_Type .. EW_BitVector_64_Type then
+      elsif Base = EW_BitVector_8_Type or else
+        Base = EW_BitVector_16_Type or else
+        Base = EW_BitVector_32_Type or else
+        Base = EW_BitVector_64_Type
+      then
          return
            New_Call (Domain => Domain,
                      Name   => Create_Modular_And (Base),
@@ -2595,7 +2599,11 @@ package body Why.Gen.Expr is
    begin
       if Base = EW_Bool_Type then
          return New_Or_Expr (Left, Right, Domain);
-      elsif Base in EW_BitVector_8_Type .. EW_BitVector_64_Type then
+      elsif Base = EW_BitVector_8_Type or else
+        Base = EW_BitVector_16_Type or else
+        Base = EW_BitVector_32_Type or else
+        Base = EW_BitVector_64_Type
+      then
          return
            New_Call (Domain => Domain,
                      Name   => Create_Modular_Or (Base),
@@ -2888,7 +2896,11 @@ package body Why.Gen.Expr is
                Left   => Or_Expr,
                Right  => Not_Both_Expr);
          end;
-      elsif Base in EW_BitVector_8_Type .. EW_BitVector_64_Type then
+      elsif Base = EW_BitVector_8_Type or else
+        Base = EW_BitVector_16_Type or else
+        Base = EW_BitVector_32_Type or else
+        Base = EW_BitVector_64_Type
+      then
          return
            New_Call (Domain => Domain,
                      Name   => Create_Modular_Xor (Base),
