@@ -306,12 +306,17 @@ procedure Gnatprove is
    -----------------------
 
    function Compute_Why3_Args return String_Lists.List is
-      Args : String_Lists.List := String_Lists.Empty_List;
+      Args    : String_Lists.List := String_Lists.Empty_List;
+      Why3_VF : constant Virtual_File :=
+        (if Why3_Config_File /= null and then
+            Why3_Config_File.all /= ""
+         then Create (Filesystem_String (Why3_Config_File.all))
+         else No_File);
       Gnatwhy3_Conf : constant String :=
-        (if Why3_Config_File /= null
-         and then Why3_Config_File.all /= ""
-         then
-            Compose (+Get_Current_Dir.Full_Name, Why3_Config_File.all)
+        (if Why3_VF /= No_File then
+           (if Is_Absolute_Path (Why3_VF)
+            then Why3_Config_File.all
+            else Compose (+Get_Current_Dir.Full_Name, Why3_Config_File.all))
          else "");
       ---------------------------
       --  Prepare_Why3_Manual  --

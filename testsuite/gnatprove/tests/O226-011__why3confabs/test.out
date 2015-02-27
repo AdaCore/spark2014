@@ -1,0 +1,2 @@
+main.adb:5:20: info: postcondition proved
+main.adb:8:11: info: overflow check proved
