@@ -25,6 +25,7 @@
 --  the rest of flow analysis is performed.
 
 with Sinfo;               use Sinfo;
+with Elists;              use Elists;
 
 with Why;
 with Gnat2Why_Args;
@@ -642,13 +643,17 @@ package body Flow.Analysis.Sanity is
       end if;
 
       declare
-         User_Proof_Ins   : Flow_Id_Sets.Set;
-         User_Reads       : Flow_Id_Sets.Set;
-         User_Writes      : Flow_Id_Sets.Set;
+         User_Proof_Ins             : Flow_Id_Sets.Set;
+         User_Reads                 : Flow_Id_Sets.Set;
+         User_Writes                : Flow_Id_Sets.Set;
 
-         Actual_Proof_Ins : Flow_Id_Sets.Set;
-         Actual_Reads     : Flow_Id_Sets.Set;
-         Actual_Writes    : Flow_Id_Sets.Set;
+         Actual_Proof_Ins           : Flow_Id_Sets.Set;
+         Actual_Reads               : Flow_Id_Sets.Set;
+         Actual_Writes              : Flow_Id_Sets.Set;
+
+         Projected_Actual_Proof_Ins : Flow_Id_Sets.Set;
+         Projected_Actual_Reads     : Flow_Id_Sets.Set;
+         Projected_Actual_Writes    : Flow_Id_Sets.Set;
       begin
          --  Read the Global contract (user globals)
          Get_Globals (Subprogram => FA.Analyzed_Entity,
@@ -667,16 +672,19 @@ package body Flow.Analysis.Sanity is
                       Writes     => Actual_Writes);
 
          --  Up project actual globals
-         Actual_Writes    := Up_Project_Flow_Set (Actual_Writes, Out_View);
-         Actual_Reads     := Up_Project_Flow_Set (Actual_Reads, In_View);
-         Actual_Proof_Ins := Up_Project_Flow_Set (Actual_Proof_Ins,
-                                                  In_View);
+         Projected_Actual_Writes    := Up_Project_Flow_Set (Actual_Writes,
+                                                            Out_View);
+         Projected_Actual_Reads     := Up_Project_Flow_Set (Actual_Reads,
+                                                            In_View);
+         Projected_Actual_Proof_Ins := Up_Project_Flow_Set (Actual_Proof_Ins,
+                                                            In_View);
 
          --  Remove Reads from Proof_Ins
-         Actual_Proof_Ins := Actual_Proof_Ins - Actual_Reads;
+         Projected_Actual_Proof_Ins := Projected_Actual_Proof_Ins -
+                                         Projected_Actual_Reads;
 
          --  Compare writes
-         for W of Actual_Writes loop
+         for W of Projected_Actual_Writes loop
             if not User_Writes.Contains (W) then
                Sane := False;
 
@@ -693,7 +701,7 @@ package body Flow.Analysis.Sanity is
          end loop;
 
          for W of User_Writes loop
-            if not Actual_Writes.Contains (W) then
+            if not Projected_Actual_Writes.Contains (W) then
                --  Don't issue this error for state abstractions that
                --  have a null refinement
                declare
@@ -718,7 +726,7 @@ package body Flow.Analysis.Sanity is
          end loop;
 
          --  Compare reads
-         for R of Actual_Reads loop
+         for R of Projected_Actual_Reads loop
             if not User_Reads.Contains (R) then
                Sane := False;
 
@@ -735,22 +743,82 @@ package body Flow.Analysis.Sanity is
          end loop;
 
          for R of User_Reads loop
-            if not Actual_Reads.Contains (R) then
-               Sane := False;
+            declare
+               function State_Partially_Written
+                 (F : Flow_Id)
+                  return Boolean;
+               --  Returns True if F represents a state abstraction
+               --  that is partially written.
 
-               Error_Msg_Flow
-                 (FA   => FA,
-                  Msg  => "global input & of & not read",
-                  N    => FA.Global_N,
-                  Kind => Error_Kind,
-                  F1   => R,
-                  F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
-                  Tag  => Global_Wrong);
-            end if;
+               function State_Partially_Written
+                 (F : Flow_Id)
+                  return Boolean
+               is
+                  E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+               begin
+                  --  Trivially False when we are not dealing with a
+                  --  state abstraction.
+                  if Ekind (E) /= E_Abstract_State then
+                     return False;
+                  end if;
+
+                  declare
+                     Ptr                 : Elmt_Id;
+                     Constit             : Flow_Id;
+                     Writes_At_Least_One : Boolean := False;
+                     One_Is_Missing      : Boolean := False;
+                  begin
+                     Ptr := First_Elmt (Refinement_Constituents (E));
+                     while Present (Ptr) loop
+                        --  Check that at least one constituent is written
+                        if Nkind (Node (Ptr)) /= N_Null then
+                           Constit := Direct_Mapping_Id (Node (Ptr),
+                                                         Out_View);
+
+                           if Actual_Writes.Contains (Constit) then
+                              Writes_At_Least_One := True;
+                           end if;
+
+                           if not Actual_Writes.Contains (Constit) then
+                              One_Is_Missing := True;
+                           end if;
+                        end if;
+
+                        Ptr := Next_Elmt (Ptr);
+                     end loop;
+
+                     if Writes_At_Least_One
+                       and then One_Is_Missing
+                     then
+                        return True;
+                     end if;
+                  end;
+
+                  return False;
+               end State_Partially_Written;
+
+            begin
+               if not Projected_Actual_Reads.Contains (R)
+                 and then not State_Partially_Written (R)
+                 --  Don't issue this error if we are dealing with a
+                 --  partially written state abstraction.
+               then
+                  Sane := False;
+
+                  Error_Msg_Flow
+                    (FA   => FA,
+                     Msg  => "global input & of & not read",
+                     N    => FA.Global_N,
+                     Kind => Error_Kind,
+                     F1   => R,
+                     F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
+                     Tag  => Global_Wrong);
+               end if;
+            end;
          end loop;
 
          --  Compare Proof_Ins
-         for P of Actual_Proof_Ins loop
+         for P of Projected_Actual_Proof_Ins loop
             if not User_Proof_Ins.Contains (P) then
                Sane := False;
 
@@ -767,7 +835,7 @@ package body Flow.Analysis.Sanity is
          end loop;
 
          for P of User_Proof_Ins loop
-            if not Actual_Proof_Ins.Contains (P) then
+            if not Projected_Actual_Proof_Ins.Contains (P) then
                Sane := False;
 
                Error_Msg_Flow
