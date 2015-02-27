@@ -277,7 +277,7 @@ the ``--RTS`` switch, specify it also when running gnatls.
 For example, if you are using ``powerpc-vxworks-gnatmake`` as your builder and
 ``--RTS=kernel``, you can use::
 
-    powerpc-vxworks-gnatls -v --RTS=kernel | grep adainclude
+    powerpc-vxworks-gnatls -v --RTS=kernel | grep adalib
 
 to find where the rts-kernel directory is located and then copy this directory
 to the |GNATprove| installation, under::
