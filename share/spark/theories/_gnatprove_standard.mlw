@@ -34,10 +34,6 @@ module Integer
   use export "_gnatprove_standard_th".Integer
 end
 
-module Int_Bitwise
-  use export "_gnatprove_standard_th".Bitwise
-end
-
 module Int_Power
   use export int.Power
 end

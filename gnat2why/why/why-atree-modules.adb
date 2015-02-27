@@ -203,9 +203,6 @@ package body Why.Atree.Modules is
       Int_Div_Module :=
         New_Module (File => Gnatprove_Standard_File,
                     Name => NID ("Int_Division"));
-      Int_Bit_Module :=
-        New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("Int_Bitwise"));
       Int_Minmax_Module :=
         New_Module (File => Gnatprove_Standard_File,
                     Name => NID ("Int_Minmax"));
@@ -518,21 +515,6 @@ package body Why.Atree.Modules is
                         Infix  => True);
 
       --  identifiers of Integer module
-      Integer_Bitwise_And :=
-        New_Identifier (Module => Int_Bit_Module,
-                        Domain => EW_Term,
-                        Symbol => NID ("bitwise_and"),
-                        Typ    => EW_Int_Type);
-      Integer_Bitwise_Or :=
-        New_Identifier (Module => Int_Bit_Module,
-                        Domain => EW_Term,
-                        Symbol => NID ("bitwise_or"),
-                        Typ    => EW_Int_Type);
-      Integer_Bitwise_Xor :=
-        New_Identifier (Module => Int_Bit_Module,
-                        Domain => EW_Term,
-                        Symbol => NID ("bitwise_xor"),
-                        Typ    => EW_Int_Type);
       Integer_Div :=
         New_Identifier (Module => Int_Div_Module,
                         Domain => EW_Term,

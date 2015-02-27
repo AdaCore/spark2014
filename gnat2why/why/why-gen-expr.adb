@@ -1763,9 +1763,7 @@ package body Why.Gen.Expr is
        Domain      : EW_Domain;
        Base        : W_Type_Id) return W_Expr_Id is
    begin
-      if Base = EW_Bool_Type then
-         return New_And_Expr (Left, Right, Domain);
-      elsif Base = EW_BitVector_8_Type or else
+      if Base = EW_BitVector_8_Type or else
         Base = EW_BitVector_16_Type or else
         Base = EW_BitVector_32_Type or else
         Base = EW_BitVector_64_Type
@@ -1775,12 +1773,25 @@ package body Why.Gen.Expr is
                      Name   => Create_Modular_And (Base),
                      Args   => (1 => +Left, 2 => +Right),
                      Typ    => Base);
+      elsif Base = EW_Bool_Type then
+         return New_And_Expr (Left, Right, Domain);
       else
-         return
-           New_Call (Domain => Domain,
-                     Name   => Integer_Bitwise_And,
-                     Args   => (1 => +Left, 2 => +Right),
-                     Typ    => EW_Int_Type);
+         declare
+            Left2  : constant W_Expr_Id :=
+              (if Base = EW_Int_Type then
+                  Insert_Simple_Conversion (Domain => Domain,
+                                            Expr   => Left,
+                                            To     => EW_Bool_Type)
+               else Left);
+            Right2  : constant W_Expr_Id :=
+              (if Base = EW_Int_Type then
+                  Insert_Simple_Conversion (Domain => Domain,
+                                            Expr   => Right,
+                                            To     => EW_Bool_Type)
+               else Right);
+         begin
+            return New_And_Expr (Left2, Right2, Domain);
+         end;
       end if;
    end New_And_Expr;
 
@@ -2597,9 +2608,7 @@ package body Why.Gen.Expr is
        Domain      : EW_Domain;
        Base        : W_Type_Id) return W_Expr_Id is
    begin
-      if Base = EW_Bool_Type then
-         return New_Or_Expr (Left, Right, Domain);
-      elsif Base = EW_BitVector_8_Type or else
+      if Base = EW_BitVector_8_Type or else
         Base = EW_BitVector_16_Type or else
         Base = EW_BitVector_32_Type or else
         Base = EW_BitVector_64_Type
@@ -2609,12 +2618,25 @@ package body Why.Gen.Expr is
                      Name   => Create_Modular_Or (Base),
                      Args   => (1 => +Left, 2 => +Right),
                      Typ    => Base);
+      elsif Base = EW_Bool_Type then
+         return New_Or_Expr (Left, Right, Domain);
       else
-         return
-           New_Call (Domain => Domain,
-                     Name   => Integer_Bitwise_Or,
-                     Args   => (1 => +Left, 2 => +Right),
-                     Typ    => EW_Int_Type);
+         declare
+            Left2  : constant W_Expr_Id :=
+              (if Base = EW_Int_Type then
+                  Insert_Simple_Conversion (Domain => Domain,
+                                            Expr   => Left,
+                                            To     => EW_Bool_Type)
+               else Left);
+            Right2  : constant W_Expr_Id :=
+              (if Base = EW_Int_Type then
+                  Insert_Simple_Conversion (Domain => Domain,
+                                            Expr   => Right,
+                                            To     => EW_Bool_Type)
+               else Right);
+         begin
+            return New_Or_Expr (Left2, Right2, Domain);
+         end;
       end if;
    end New_Or_Expr;
 
@@ -2882,21 +2904,7 @@ package body Why.Gen.Expr is
        Base        : W_Type_Id) return W_Expr_Id is
 
    begin
-      if Domain = EW_Pred and then Base = EW_Bool_Type then
-         declare
-            Or_Expr : constant W_Expr_Id := New_Or_Expr (Left, Right, Domain);
-            Both_Expr : constant W_Expr_Id :=
-              New_And_Expr (Left, Right, Domain);
-            Not_Both_Expr : constant W_Expr_Id :=
-              New_Not (Domain => Domain, Right => Both_Expr);
-         begin
-            return New_Connection
-              (Domain => Domain,
-               Op     => EW_And,
-               Left   => Or_Expr,
-               Right  => Not_Both_Expr);
-         end;
-      elsif Base = EW_BitVector_8_Type or else
+      if Base = EW_BitVector_8_Type or else
         Base = EW_BitVector_16_Type or else
         Base = EW_BitVector_32_Type or else
         Base = EW_BitVector_64_Type
@@ -2906,20 +2914,35 @@ package body Why.Gen.Expr is
                      Name   => Create_Modular_Xor (Base),
                      Args   => (1 => +Left, 2 => +Right),
                      Typ    => Base);
+
       else
          declare
-            Id : constant W_Identifier_Id :=
-              (if Base = EW_Bool_Type then To_Ident (WNE_Bool_Xor)
-                 else Integer_Bitwise_Xor);
+            Left2  : constant W_Expr_Id :=
+              (if Base = EW_Int_Type then
+                  Insert_Simple_Conversion (Domain => Domain,
+                                            Expr   => Left,
+                                            To     => EW_Bool_Type)
+               else Left);
+            Right2  : constant W_Expr_Id :=
+              (if Base = EW_Int_Type then
+                  Insert_Simple_Conversion (Domain => Domain,
+                                            Expr   => Right,
+                                            To     => EW_Bool_Type)
+               else Right);
+            Or_Expr : constant W_Expr_Id :=
+              New_Or_Expr (Left2, Right2, Domain);
+            Both_Expr : constant W_Expr_Id :=
+              New_And_Expr (Left2, Right2, Domain);
+            Not_Both_Expr : constant W_Expr_Id :=
+              (if Domain = EW_Pred then
+                  New_Not (Domain => Domain, Right => Both_Expr)
+               else
+                  New_Call (Domain => Domain,
+                            Name   => Bool_Not,
+                            Args   => (1 => Both_Expr),
+                            Typ    => EW_Bool_Type));
          begin
-            return
-              New_Call
-                (Domain => Domain,
-                 Name   => Id,
-                 Args   => (1 => +Left, 2 => +Right),
-                 Typ    =>
-                   (if Base = EW_Bool_Type then EW_Bool_Type
-                    else EW_Int_Type));
+            return New_And_Expr (Or_Expr, Not_Both_Expr, Domain);
          end;
       end if;
    end New_Xor_Expr;
