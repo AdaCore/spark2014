@@ -279,10 +279,15 @@ For example, if you are using ``powerpc-vxworks-gnatmake`` as your builder and
 
     powerpc-vxworks-gnatls -v --RTS=kernel | grep adalib
 
-to find where the rts-kernel directory is located and then copy this directory
-to the |GNATprove| installation, under::
+This command will give you a directory of the form::
 
-    spark-prefix/share/spark/runtimes
+    <runtime_dir>/adalib
+
+You need to copy the ``<runtime-dir>`` directory to the |GNATprove|
+installation, under ``<spark-install>/share/spark/runtimes``, for example
+using this bash command::
+
+    cp -pr <runtime-dir> <spark-install>/libexec/share/spark/runtimes
 
 .. _implementation_defined:
 
