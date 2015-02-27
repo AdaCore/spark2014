@@ -797,10 +797,10 @@ use abstract state ``State`` in their data and flow dependencies, for example:
      Global  => (In_Out => State),
      Depends => (State =>+ Incr);
 
-Then, unless they are not in |SPARK|, the implementations of ``Init_Total`` and
-``Add_To_Total`` need to define refined data and flow dependencies introduced
-respectively by ``Refined_Global`` and ``Refined_Depends``, which give the
-precise dependencies for these subprograms in terms of concrete variables:
+Then, the implementations of ``Init_Total`` and ``Add_To_Total`` can
+define refined data and flow dependencies introduced respectively by
+``Refined_Global`` and ``Refined_Depends``, which give the precise
+dependencies for these subprograms in terms of concrete variables:
 
 .. code-block:: ada
 
@@ -825,11 +825,15 @@ Here, the refined dependencies are the same as the abstract ones where
 particular when the abstract state is refined into multiple concrete variables
 (see :ref:`State Abstraction`). |GNATprove| checks that:
 
-* the concrete global inputs are a subset of the abstract global inputs
-* the concrete global outputs are a subset of the abstract global outputs
-* between the abstract and the concrete view, the outputs that are not also
-  inputs represent exactly the same global data
-* the concrete flow dependencies are a subset of the abstract flow dependencies
+* each abstract global input has at least one of its constituents
+  mentioned by the concrete global inputs
+* each abstract global in_out has at least one of its constituents
+  mentioned with mode input and one with mode output (or at least one
+  constituent with mode in_out)
+* each abstract global output has to have all its constituents
+  mentioned by the concrete global outputs
+* the concrete flow dependencies are a subset of the abstract flow
+  dependencies
 
 |GNATprove| uses the abstract contract (data and flow dependencies) of
 ``Init_Total`` and ``Add_To_Total`` when analyzing calls outside package

@@ -1139,6 +1139,17 @@ The body of the unit is the same as before:
 subprograms, including ``Call_Add`` and ``Call_Swap``, based on the completed
 contracts for ``Add`` and ``Swap``.
 
+Leaving out refined Data and Flow Dependencies
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+|GNATprove| is able to synthesize refined Data and Flow Dependencies
+based on user-provided Data and Flow dependencies and user-provided
+Refined_State aspects. The philosophy is very similar to the
+generation of the Data and Flow dependencies since all user-provided
+contracts are utilized to make the synthesized ones as accurate as
+possible and since callers of a subprogram get the contracts that
+correspond to their visibility of the callee.
+
 Precise Generation for |SPARK| Subprograms
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
