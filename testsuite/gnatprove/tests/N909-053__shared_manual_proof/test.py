@@ -47,7 +47,7 @@ whyconf.write('build_commands = "cp %f %f.built"' + os.linesep)
 
 whyconf.close()
 
-Run(["gnatprove", "-Ptest.gpr",
+prove_all(opt=[
      "--limit-line=test_if.ads:5:37:VC_OVERFLOW_CHECK",
      "--prover=Qoc",
      "--why3-conf=test.whyconf"])
