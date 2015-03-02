@@ -9418,7 +9418,7 @@ package body Gnat2Why.Expr is
       T           : W_Expr_Id;
    begin
 
-      --  /!\ it is assumed that rotate call are only valid on actual
+      --  /!\ it is assumed that rotate calls are only valid on actual
       --  unsigned_8/16/32/64 types with the corresponding 'Size /!\
       pragma Assert (Args'Length = 2);
 
@@ -9430,66 +9430,31 @@ package body Gnat2Why.Expr is
          Name_S : constant String := Name_Buffer (1 .. Name_Len);
       begin
 
-         --  We only deal with rotation by a literal (smtlib v2 restriction).
-         --  If we have a rotation by a constant, convert the constant to
-         --  bitvector (modulo the nb of bits) and call the appropriate
-         --  function.
-         if Ada.Strings.Equal_Case_Insensitive
-           (Name_S, Get_Name_String (Name_Rotate_Left)) and then
-           Get_Kind (+Arg2) = W_Integer_Constant
-         then
-            declare
-               val : constant Int :=
-                 (UI_To_Int (Get_Value (W_Integer_Constant_Id (Arg2))))
-               mod Nb_Of_Bits;
-            begin
-               T := New_Call (Domain => EW_Term,
-                              Name   => Create_Modular_Rl_Const (Typ, val),
-                              Args   => (1 => Arg1),
-                              Typ    => Typ);
-            end;
-         elsif Ada.Strings.Equal_Case_Insensitive
-              (Name_S, Get_Name_String (Name_Rotate_Right)) and then
-              Get_Kind (+Arg2) = W_Integer_Constant
-         then
-            declare
-               val : constant Int :=
-                 (UI_To_Int (Get_Value (W_Integer_Constant_Id (Arg2))))
-               mod Nb_Of_Bits;
-            begin
-               T := New_Call (Domain => EW_Term,
-                              Name   => Create_Modular_Rr_Const (Typ, val),
-                              Args   => (1 => Arg1),
-                              Typ    => Typ);
-            end;
-         else
-            --  else, translate to an axiomatized, uninterpreted function
-            T := New_Call
-              (Domain => EW_Term,
-               Name   => (if Ada.Strings.Equal_Case_Insensitive
-                          (Name_S, Get_Name_String (Name_Shift_Right)) then
-                             Create_Modular_Lsr (Typ)
-                          elsif Ada.Strings.Equal_Case_Insensitive (Name_S,
-                            Get_Name_String (Name_Shift_Right_Arithmetic)) then
-                             Create_Modular_Asr (Typ)
-                          elsif Ada.Strings.Equal_Case_Insensitive
-                            (Name_S, Get_Name_String (Name_Shift_Left)) then
-                               Create_Modular_Lsl (Typ)
-                          elsif Ada.Strings.Equal_Case_Insensitive
-                            (Name_S, Get_Name_String (Name_Rotate_Left))  then
-                               Create_Modular_Rl_Var (Typ)
-                          elsif Ada.Strings.Equal_Case_Insensitive
-                            (Name_S, Get_Name_String (Name_Rotate_Right))  then
-                               Create_Modular_Rr_Var (Typ)
-                          else
-                             raise Program_Error),
-               Args   => (1 => Arg1,
-                          2 => Insert_Simple_Conversion
-                            (Domain => EW_Term,
-                             Expr => Arg2,
-                             To => Typ)),
-               Typ    => Typ);
-         end if;
+         T := New_Call
+           (Domain => EW_Term,
+            Name   => (if Ada.Strings.Equal_Case_Insensitive
+                       (Name_S, Get_Name_String (Name_Shift_Right)) then
+                          Create_Modular_Lsr (Typ)
+                       elsif Ada.Strings.Equal_Case_Insensitive (Name_S,
+                         Get_Name_String (Name_Shift_Right_Arithmetic)) then
+                          Create_Modular_Asr (Typ)
+                       elsif Ada.Strings.Equal_Case_Insensitive
+                         (Name_S, Get_Name_String (Name_Shift_Left)) then
+                            Create_Modular_Lsl (Typ)
+                       elsif Ada.Strings.Equal_Case_Insensitive
+                         (Name_S, Get_Name_String (Name_Rotate_Left))  then
+                            Create_Modular_Rl (Typ)
+                       elsif Ada.Strings.Equal_Case_Insensitive
+                         (Name_S, Get_Name_String (Name_Rotate_Right))  then
+                            Create_Modular_Rr (Typ)
+                       else
+                          raise Program_Error),
+            Args   => (1 => Arg1,
+                       2 => Insert_Simple_Conversion
+                         (Domain => EW_Term,
+                          Expr => Arg2,
+                          To => Typ)),
+            Typ    => Typ);
       end;
 
       --  SPARK function cannot have side-effects

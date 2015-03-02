@@ -245,18 +245,14 @@ package Why.Atree.Modules is
    function Create_Modular_Asr      (Typ : W_Type_Id) return W_Identifier_Id;
    function Create_Modular_ToInt    (Typ : W_Type_Id) return W_Identifier_Id;
    function Create_Modular_OfInt    (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Rl_Var   (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Rr_Var   (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Rl       (Typ : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Rr       (Typ : W_Type_Id) return W_Identifier_Id;
 
    --  Create_Modular_Modulus will return an ew_int with 2 ** size of Typ
    --  (from the why3 theory). It is used for the interpretation of the Mod
    --  attribute for unsigned_8/16/32/64 since the attribute modulus is not
    --  present for these types.
    function Create_Modular_Modulus (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Rl_Const     (Typ : W_Type_Id; n : Int)
-                                   return W_Identifier_Id;
-   function Create_Modular_Rr_Const     (Typ : W_Type_Id; n : Int)
-                                   return W_Identifier_Id;
 
    function Create_Modular_Converter (From, To : W_Type_Id)
                                       return W_Identifier_Id;

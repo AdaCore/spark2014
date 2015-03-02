@@ -25,7 +25,6 @@
 
 with Atree;              use Atree;
 with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
-with GNATCOLL.Utils;     use GNATCOLL.Utils;
 with Sinfo;              use Sinfo;
 with Stand;              use Stand;
 with Why.Atree.Builders; use Why.Atree.Builders;
@@ -909,31 +908,17 @@ package body Why.Atree.Modules is
       return Create_Modular_Operator (Typ, NID ("asr"));
    end Create_Modular_Asr;
 
-   function Create_Modular_Rl_Var (Typ : W_Type_Id)
+   function Create_Modular_Rl (Typ : W_Type_Id)
                                    return W_Identifier_Id is
    begin
-      return Create_Modular_Operator (Typ, NID ("rotate_left_n"));
-   end Create_Modular_Rl_Var;
+      return Create_Modular_Operator (Typ, NID ("rotate_left"));
+   end Create_Modular_Rl;
 
-   function Create_Modular_Rr_Var (Typ : W_Type_Id)
+   function Create_Modular_Rr (Typ : W_Type_Id)
                                    return W_Identifier_Id is
    begin
-      return Create_Modular_Operator (Typ, NID ("rotate_right_n"));
-   end Create_Modular_Rr_Var;
-
-   function Create_Modular_Rl_Const (Typ : W_Type_Id; n : Int)
-                               return W_Identifier_Id is
-   begin
-      return Create_Modular_Operator (Typ, NID ("rotate_left_" &
-                                        Image (Integer (n), 1)));
-   end Create_Modular_Rl_Const;
-
-   function Create_Modular_Rr_Const (Typ : W_Type_Id; n : Int)
-                               return W_Identifier_Id is
-   begin
-      return Create_Modular_Operator (Typ, NID ("rotate_right_" &
-                                        Image (Integer (n), 1)));
-   end Create_Modular_Rr_Const;
+      return Create_Modular_Operator (Typ, NID ("rotate_right"));
+   end Create_Modular_Rr;
 
    function Create_Modular_ToInt (Typ : W_Type_Id) return W_Identifier_Id is
    begin
