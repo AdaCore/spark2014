@@ -3442,6 +3442,7 @@ package body SPARK_Definition is
               Pragma_Ada_2012                     |
               Pragma_Annotate                     |
               Pragma_Check_Policy                 |
+              Pragma_Ignore_Pragma                |
               Pragma_Inline_Always                |
               Pragma_Linker_Section               |
               Pragma_No_Elaboration_Code_All      |

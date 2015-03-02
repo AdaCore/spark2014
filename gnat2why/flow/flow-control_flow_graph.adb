@@ -4845,6 +4845,7 @@ package body Flow.Control_Flow_Graph is
               Pragma_Ada_2012                     |
               Pragma_Annotate                     |
               Pragma_Check_Policy                 |
+              Pragma_Ignore_Pragma                |
               Pragma_Inline_Always                |
               Pragma_Inspection_Point             |
               Pragma_Linker_Section               |
