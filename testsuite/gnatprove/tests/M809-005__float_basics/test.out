@@ -38,8 +38,8 @@ generic_float_tests.adb:83:16: medium: overflow check might fail, in instantiati
 generic_float_tests.adb:83:16: medium: overflow check might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:90:45: medium: postcondition might fail, requires Inverse_Reciprocal'Result = A, in instantiation at foo.ads:10
 generic_float_tests.adb:90:45: medium: postcondition might fail, requires Inverse_Reciprocal'Result = A, in instantiation at foo.ads:15
+generic_float_tests.adb:93:18: info: division check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:93:18: medium: divide by zero might fail, in instantiation at foo.ads:10
-generic_float_tests.adb:93:18: medium: divide by zero might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:93:18: medium: overflow check might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:93:18: medium: overflow check might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:93:25: info: division check proved, in instantiation at foo.ads:10
@@ -406,22 +406,22 @@ generic_interval_tests.adb:138:21: medium: postcondition might fail, requires Z 
 generic_interval_tests.adb:138:21: medium: postcondition might fail, requires Z in 10.0 .. , in instantiation at bar.ads:8
 generic_interval_tests.adb:141:14: info: overflow check proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:141:14: info: overflow check proved, in instantiation at bar.ads:8
+generic_interval_tests.adb:147:21: info: postcondition proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:147:21: info: postcondition proved, in instantiation at bar.ads:8
-generic_interval_tests.adb:147:21: medium: postcondition might fail, requires Z > X, in instantiation at bar.ads:12
 generic_interval_tests.adb:150:14: info: overflow check proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:150:14: info: overflow check proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:156:21: medium: postcondition might fail, requires Z > X, in instantiation at bar.ads:12
 generic_interval_tests.adb:156:21: medium: postcondition might fail, requires Z > X, in instantiation at bar.ads:8
 generic_interval_tests.adb:159:15: info: overflow check proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:159:15: info: overflow check proved, in instantiation at bar.ads:8
+generic_interval_tests.adb:159:22: info: overflow check proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:159:22: info: overflow check proved, in instantiation at bar.ads:8
-generic_interval_tests.adb:159:22: medium: overflow check might fail, in instantiation at bar.ads:12
 generic_interval_tests.adb:165:21: medium: postcondition might fail, requires Z >= X, in instantiation at bar.ads:12
 generic_interval_tests.adb:165:21: medium: postcondition might fail, requires Z >= X, in instantiation at bar.ads:8
 generic_interval_tests.adb:168:15: info: overflow check proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:168:15: info: overflow check proved, in instantiation at bar.ads:8
+generic_interval_tests.adb:168:22: info: overflow check proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:168:22: info: overflow check proved, in instantiation at bar.ads:8
-generic_interval_tests.adb:168:22: medium: overflow check might fail, in instantiation at bar.ads:12
 generic_interval_tests.adb:178:21: info: postcondition proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:178:21: info: postcondition proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:181:07: info: assertion proved, in instantiation at bar.ads:12
