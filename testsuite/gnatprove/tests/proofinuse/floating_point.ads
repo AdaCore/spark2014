@@ -27,4 +27,13 @@ is
    --  from NC04-023 (industrial user)
    function Float_To_Long_Float (X : Float) return Long_Float;
 
+   C : constant := 10.0;
+   type T is range 0 .. 1_000_000;
+
+   procedure Incr_By_Const (State : in out Float_32;
+                            X     : T)
+   with Pre => X < T'Last and
+               State in 0.0 | C .. Float_32 (X) * C,
+        Post => State in C .. Float_32 (X + 1) * C;
+
 end Floating_Point;

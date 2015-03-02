@@ -53,6 +53,12 @@ floating_point.adb:66:16: info: division check proved
 floating_point.adb:66:16: info: overflow check proved
 floating_point.adb:66:28: info: range check proved
 floating_point.adb:74:07: info: assertion proved
+floating_point.adb:84:22: info: overflow check proved
+floating_point.ads:36:46: info: range check proved
+floating_point.ads:36:49: info: overflow check proved
+floating_point.ads:37:17: medium: postcondition might fail, requires State in C .. Float_32 (X + 1) * C
+floating_point.ads:37:43: info: range check proved
+floating_point.ads:37:48: info: overflow check proved
 nonlinear.adb:10:17: info: overflow check proved
 nonlinear.adb:10:22: info: division check proved
 nonlinear.adb:10:22: info: range check proved

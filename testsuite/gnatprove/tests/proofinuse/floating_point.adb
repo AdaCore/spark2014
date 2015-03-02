@@ -77,4 +77,11 @@ is
       return Tmp;
    end Float_To_Long_Float;
 
+   procedure Incr_By_Const (State : in out Float_32;
+                            X     : T)
+   is
+   begin
+      State := State + C;  -- ok
+   end Incr_By_Const;
+
 end Floating_Point;
