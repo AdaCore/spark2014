@@ -913,6 +913,10 @@ Tool Limitations
 
 #. Inheriting the same subprogram from multiple interfaces is not supported.
 
+#. Formal object parameters of generics of an unconstrained record type with
+   per-object constrained fields are badly supported by the tool and may
+   result in crashes in some cases.
+
 Legality Rules
 --------------
 
