@@ -253,11 +253,12 @@ rules) to procedure ``Whatever``:
    :language: ada
    :linenos:
 
-|GNATprove| correctly detects the two incorrect calls and issues error
+|GNATprove| correctly detects the two incorrect calls and issues high check
 messages:
 
 .. literalinclude:: gnatprove_by_example/results/check_aliasing.flow
    :language: none
+   :lines: 3,5
 
 .. _Raising Exceptions and Other Error Signaling Mechanisms:
 
