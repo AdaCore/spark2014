@@ -1,6 +1,3 @@
---  test check_aliasing.adb should not generate errors after NB12-007, so the following
---  line should be removed after NB12-007 is fixed.
-check_aliasing.adb
 illegal_update.adb
 --  test gen_refined_global.adb should be fixed by O303-022
 gen_refined_global.adb
