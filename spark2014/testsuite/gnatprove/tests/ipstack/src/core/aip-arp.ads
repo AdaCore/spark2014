@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010-2015, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 --  RFC826 - Address Resolution Protocol
@@ -68,7 +68,7 @@ private
      (Nid                : NIF.Netif_Id;
       Netif_MAC_Addr_Ptr : System.Address;
       Buf                : Buffers.Buffer_Id)
-   --  Process ARP packet in Buf received on interface Nid. Netif_MAC_Address
+   --  Process ARP packet in Buf received on interface Nid. Netif_MAC_Addr_Ptr
    --  designates Nid's hardware address.
    with
      Global => (In_Out => (Buffers.State, State));
