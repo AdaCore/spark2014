@@ -1139,17 +1139,6 @@ The body of the unit is the same as before:
 subprograms, including ``Call_Add`` and ``Call_Swap``, based on the completed
 contracts for ``Add`` and ``Swap``.
 
-Leaving out refined Data and Flow Dependencies
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-|GNATprove| is able to synthesize refined Data and Flow Dependencies
-based on user-provided Data and Flow dependencies and user-provided
-Refined_State aspects. The philosophy is very similar to the
-generation of the Data and Flow dependencies since all user-provided
-contracts are utilized to make the synthesized ones as accurate as
-possible and since callers of a subprogram get the contracts that
-correspond to their visibility of the callee.
-
 Precise Generation for |SPARK| Subprograms
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1166,8 +1155,8 @@ path-sensitive flow analysis to track data flows in the subprogram body:
    of the subprogram; and
  * all outputs are considered to potentially depend on all inputs.
 
-Case 1: No Abstract State
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Case 1: No State Abstraction
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Take for example a procedure ``Set_Global`` without contract which initializes
 a global variable ``V`` and is called in a number of contexts:
@@ -1219,11 +1208,12 @@ given by the user for ``Set_Global_Conditionally``:
      Global  => (Output => V),
      Depends => (V => X)
 
-Case 2: Some Abstract State
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Case 2: State Abstraction Without Dependencies
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In the presence of abstract state declared by the user, |GNATprove| generates
-data and flow dependencies which take abstract state into account.
+If abstract state is declared by the user but no dependencies are specified on
+subprogram declarations, then |GNATprove| generates data and flow dependencies
+which take abstract state into account.
 
 For example, take unit ``Gen_Global`` previously seen, where an abstract state
 ``State`` is defined for package ``Gen_Abstract_Global``, and refined into
@@ -1247,6 +1237,37 @@ given by the user for ``Set_Global_Conditionally``:
 
 .. literalinclude:: gnatprove_by_example/results/gen_abstract_global.flow
    :language: none
+
+Case 3: State Abstraction Without Refined Dependencies
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If abstract state is declared by the user and abstract dependencies are
+specified on subprogram declarations, but no refined dependencies are specified
+on subprogram implementations (as described :ref:`State Abstraction and
+Dependencies`), then |GNATprove| generates refined data and flow dependencies
+for subprogram implementations.
+
+For example, take unit ``Gen_Abstract_Global`` previously seen, where only
+abstract data and flow dependencies are specified:
+
+.. literalinclude:: gnatprove_by_example/examples/gen_refined_global.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: gnatprove_by_example/examples/gen_refined_global.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| gives the same results on this unit as before: it issues warnings
+for the possible error in ``Set_Global_Twice`` and it verifies the contract
+given by the user for ``Set_Global_Conditionally``:
+
+.. literalinclude:: gnatprove_by_example/results/gen_refined_global.flow
+   :language: none
+
+Note that although abstract and refined dependencies are the same here, this is
+not always the case, and |GNATprove| will use the more precise generated
+dependencies to analyze calls to subprograms inside the unit.
 
 .. _Coarse Generation for non-SPARK Subprograms:
 
