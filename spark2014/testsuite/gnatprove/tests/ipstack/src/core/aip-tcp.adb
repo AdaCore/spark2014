@@ -3012,8 +3012,8 @@ is
 
       --  Probe segment
 
-      Buf   : Buffers.Buffer_Id;
-      Thdr  : System.Address;
+      Buf       : Buffers.Buffer_Id;
+      Thdr      : System.Address;
       Probe_Fin : Boolean;
 
    begin
@@ -3022,7 +3022,6 @@ is
          QBuf := Buffers.Head_Packet (TPCBs (PCB).Send_Queue);
       end if;
 
-      Buf := Buffers.NOBUF;
       if QBuf /= Buffers.NOBUF then
          TCP_Seg_Len (QBuf, QLen);
          pragma Assert (QLen > 0);
