@@ -263,7 +263,7 @@ very_longs.adb:569:11: info: range check proved
 very_longs.adb:570:19: info: discriminant check proved
 very_longs.adb:570:32: info: index check proved
 very_longs.adb:570:51: info: discriminant check proved
-very_longs.adb:570:64: medium: array index check might fail
+very_longs.adb:570:64: info: index check proved
 very_longs.ads:14:20: info: postcondition proved
 very_longs.ads:21:34: info: overflow check proved
 very_longs.ads:46:18: info: postcondition proved

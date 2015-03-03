@@ -270,7 +270,7 @@ aco-math-very_longs.adb:537:11: info: range check proved
 aco-math-very_longs.adb:538:19: info: discriminant check proved
 aco-math-very_longs.adb:538:32: info: index check proved
 aco-math-very_longs.adb:538:51: info: discriminant check proved
-aco-math-very_longs.adb:538:64: medium: array index check might fail
+aco-math-very_longs.adb:538:64: info: index check proved
 aco-math-very_longs.adb:552:07: info: precondition proved
 aco-math-very_longs.adb:553:36: info: precondition proved
 aco-math-very_longs.adb:554:20: info: discriminant check proved

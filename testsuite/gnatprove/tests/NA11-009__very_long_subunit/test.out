@@ -132,7 +132,7 @@ very_longs-divide.adb:239:08: info: range check proved
 very_longs-divide.adb:240:16: info: discriminant check proved
 very_longs-divide.adb:240:29: info: index check proved
 very_longs-divide.adb:240:48: info: discriminant check proved
-very_longs-divide.adb:240:61: medium: array index check might fail
+very_longs-divide.adb:240:61: info: index check proved
 very_longs.adb:59:13: info: discriminant check proved
 very_longs.adb:59:26: info: length check proved
 very_longs.adb:59:29: info: length check proved

@@ -2843,6 +2843,52 @@ package body Gnat2Why.Subprograms is
             end if;
          end loop;
 
+         --  Add to postcondition the dynamic property of global output
+
+         declare
+            Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
+            Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
+            Write_Names : Name_Set.Set;
+         begin
+            Flow_Utility.Get_Proof_Globals (Subprogram => E,
+                                            Classwide  => True,
+                                            Reads      => Read_Ids,
+                                            Writes     => Write_Ids);
+            Write_Names := Flow_Types.To_Name_Set (Write_Ids);
+
+            for Name of Write_Names loop
+               declare
+                  Entity : constant Entity_Id := Find_Entity (Name);
+               begin
+                  if Present (Entity)
+                    and then not (Ekind (Entity) = E_Abstract_State)
+                    and then Entity_In_SPARK (Entity)
+                  then
+                     declare
+                        Dyn_Prop : constant W_Pred_Id :=
+                          Compute_Dynamic_Property
+                            (Expr     => Transform_Identifier
+                               (Params   => Params,
+                                Expr     => Entity,
+                                Ent      => Entity,
+                                Domain   => EW_Pred),
+                             Ty       => Etype (Entity),
+                             Only_Var => True);
+                     begin
+                        if Dyn_Prop /= True_Pred then
+                           Post := +New_And_Expr
+                             (Left   => +Post,
+                              Right  => +Dyn_Prop,
+                              Domain => EW_Pred);
+                        end if;
+                     end;
+
+                  end if;
+
+               end;
+            end loop;
+         end;
+
          Emit
            (File.Cur_Theory,
             New_Function_Decl

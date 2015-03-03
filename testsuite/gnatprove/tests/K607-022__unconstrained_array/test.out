@@ -157,14 +157,14 @@ simple_unc_arrays.ads:88:49: info: discriminant check proved
 simple_unc_arrays.ads:88:53: medium: array index check might fail
 simple_unc_arrays.ads:96:17: medium: postcondition might fail
 simple_unc_arrays.ads:96:52: info: discriminant check proved
-simple_unc_arrays.ads:96:56: medium: array index check might fail
+simple_unc_arrays.ads:96:56: info: index check proved
 simple_unc_arrays.ads:96:63: info: discriminant check proved
+simple_unc_arrays.ads:96:68: info: index check proved
 simple_unc_arrays.ads:96:68: info: overflow check proved
-simple_unc_arrays.ads:96:68: medium: array index check might fail
 simple_unc_arrays.ads:98:47: info: discriminant check proved
 simple_unc_arrays.ads:98:55: info: index check proved
 simple_unc_arrays.ads:98:61: info: discriminant check proved
-simple_unc_arrays.ads:98:65: medium: array index check might fail
+simple_unc_arrays.ads:98:65: info: index check proved
 simple_unc_arrays.ads:112:57: info: discriminant check proved
 simple_unc_arrays.ads:112:61: info: index check proved
 simple_unc_arrays.ads:116:18: info: postcondition proved
