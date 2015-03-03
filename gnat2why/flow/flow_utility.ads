@@ -160,6 +160,13 @@ package Flow_Utility is
    --  Returns True if Scope has visibility of Subprogram's body and
    --  Generated Globals will be produced for Subprogram.
 
+   function Rely_On_Generated_Depends
+     (Subprogram : Entity_Id;
+      Scope      : Flow_Scope)
+      return Boolean;
+   --  Returns True if Scope has visibility of Subprogram's body and
+   --  a Generated Depends will be produced for Subprogram.
+
    function Get_Function_Set (N : Node_Id) return Node_Sets.Set;
    --  Obtains all function calls used in an expression.
 

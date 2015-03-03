@@ -3593,10 +3593,14 @@ package body Flow.Control_Flow_Graph is
                                       Out_List,
                                       FA, CM, Ctx);
 
-      --  Process globals. If we generate globals we only do this if we
-      --  have a user contract.
-      if not FA.Compute_Globals or else
-        Has_User_Supplied_Globals (Called_Procedure)
+      --  We process globals when:
+      --     * the globals have already been generated or
+      --     * when the user has supplied them and we don't have to rely
+      --       on the generated ones
+      if not FA.Compute_Globals
+        or else (Has_User_Supplied_Globals (Called_Procedure)
+                   and then not Rely_On_Generated_Global (Called_Procedure,
+                                                          FA.B_Scope))
       then
          Process_Subprogram_Globals (N,
                                      In_List, Out_List,
@@ -3604,10 +3608,18 @@ package body Flow.Control_Flow_Graph is
       end if;
 
       --  A magic null export is needed when:
-      --    * there is a Depends => (null => ...);
+      --    * there is a usable Depends => (null => ...);
       --    * the subprogram has no exports
-      if Has_Depends (Called_Procedure) then
-         --  Check if there exists a Depends => (null => ...)
+      --
+      --  Notice that we can only use the Depends when it:
+      --    * does not need to be refined or
+      --    * it has already been refined
+      if Has_Depends (Called_Procedure)
+        and then (not FA.Compute_Globals
+                    or else not Rely_On_Generated_Global (Called_Procedure,
+                                                          FA.B_Scope))
+      then
+         --  Check if there exists a usable Depends => (null => ...)
          declare
             D_Map : Dependency_Maps.Map;
             V     : Flow_Graphs.Vertex_Id;
@@ -3634,26 +3646,24 @@ package body Flow.Control_Flow_Graph is
                Out_List.Append (V);
             end if;
          end;
-      else
+      elsif Out_List.Is_Empty then
          --  Check if there are no exports
-         if Out_List.Is_Empty then
-            declare
-               V : Flow_Graphs.Vertex_Id;
-            begin
-               Add_Vertex
-                 (FA,
-                  Make_Global_Attributes
-                    (FA                           => FA,
-                     Call_Vertex                  => N,
-                     Global                       => Change_Variant
-                       (Null_Export_Flow_Id, Out_View),
-                     Discriminants_Or_Bounds_Only => False,
-                     Loops                        => Ctx.Current_Loops,
-                     E_Loc                        => N),
-                  V);
-               Out_List.Append (V);
-            end;
-         end if;
+         declare
+            V : Flow_Graphs.Vertex_Id;
+         begin
+            Add_Vertex
+              (FA,
+               Make_Global_Attributes
+                 (FA                           => FA,
+                  Call_Vertex                  => N,
+                  Global                       => Change_Variant
+                    (Null_Export_Flow_Id, Out_View),
+                  Discriminants_Or_Bounds_Only => False,
+                  Loops                        => Ctx.Current_Loops,
+                  E_Loc                        => N),
+               V);
+            Out_List.Append (V);
+         end;
       end if;
 
       --  We now build the connection map for this sequence.

@@ -1107,65 +1107,67 @@ package body Flow_Utility is
       ----------------------------------------------------------------------
 
       Depends := Dependency_Maps.Empty_Map;
-      for C in Tmp.Iterate loop
+      if Trimming_Required then
+         --  Use the Refined_Global to trim the down projected
+         --  Depends.
          declare
-            D_In  : constant Flow_Id_Sets.Set :=
-              (if Present (Dependency_Maps.Key (C))
-               then To_Flow_Id_Set (Down_Project
-                                      (Node_Sets.To_Set
-                                         (Get_Direct_Mapping_Id
-                                            (Dependency_Maps.Key (C))),
-                                       Scope))
-               else Flow_Id_Sets.To_Set (Dependency_Maps.Key (C)));
+            All_Proof_Ins : Flow_Id_Sets.Set;
+            All_Reads     : Flow_Id_Sets.Set;
+            Unused        : Flow_Id_Sets.Set;
 
-            D_Out : Flow_Id_Sets.Set :=
-              To_Flow_Id_Set (Down_Project
-                                (To_Node_Set (Dependency_Maps.Element (C)),
-                                 Scope));
+            Params        : Node_Sets.Set;
+            E             : Entity_Id;
          begin
-            if Trimming_Required then
-               --  Use the Refined_Global to trim the down projected
-               --  Depends.
+            --  Start with collecting all global outputs and
+            --  inputs
+            Get_Globals (Subprogram           => Subprogram,
+                         Scope                => Scope,
+                         Classwide            => False,
+                         Proof_Ins            => All_Proof_Ins,
+                         Reads                => All_Reads,
+                         Writes               => Unused,
+                         Use_Computed_Globals => Use_Computed_Globals);
+
+            --  Pupulate params (with the subprogram's formal
+            --  parameters)
+            E := First_Formal (Subprogram);
+            while Present (E) loop
+               Params.Include (E);
+               E := Next_Formal (E);
+            end loop;
+
+            --  Add the formal parameters of mode "in [out]" so
+            --  that we have the complete set of Proof_Ins and
+            --  Reads.
+            for Par of Params loop
+               if Ekind (Par) in E_In_Parameter | E_In_Out_Parameter then
+                  declare
+                     F : constant Flow_Id := Direct_Mapping_Id (Par);
+                  begin
+                     All_Reads.Include (F);
+                     All_Proof_Ins.Include (F);
+                  end;
+               end if;
+            end loop;
+
+            for C in Tmp.Iterate loop
                declare
-                  All_Proof_Ins : Flow_Id_Sets.Set;
-                  All_Reads     : Flow_Id_Sets.Set;
-                  Unused        : Flow_Id_Sets.Set;
+                  D_In  : constant Flow_Id_Sets.Set :=
+                    (if Present (Dependency_Maps.Key (C)) then
+                        To_Flow_Id_Set (Down_Project
+                                          (Node_Sets.To_Set
+                                             (Get_Direct_Mapping_Id
+                                                (Dependency_Maps.Key (C))),
+                                           Scope))
+                     else
+                        Flow_Id_Sets.To_Set (Dependency_Maps.Key (C)));
 
-                  Params        : Node_Sets.Set;
-                  E             : Entity_Id;
+                  D_Out : Flow_Id_Sets.Set :=
+                    To_Flow_Id_Set (Down_Project
+                                      (To_Node_Set
+                                         (Dependency_Maps.Element (C)),
+                                       Scope));
                begin
-                  --  Start with collecting all global outputs and
-                  --  inputs
-                  Get_Globals (Subprogram           => Subprogram,
-                               Scope                => Scope,
-                               Classwide            => False,
-                               Proof_Ins            => All_Proof_Ins,
-                               Reads                => All_Reads,
-                               Writes               => Unused,
-                               Use_Computed_Globals => Use_Computed_Globals);
-
-                  --  Pupulate params (with the subprogram's formal
-                  --  parameters)
-                  E := First_Formal (Subprogram);
-                  while Present (E) loop
-                     Params.Include (E);
-                     E := Next_Formal (E);
-                  end loop;
-
-                  --  Add the formal parameters of mode "in [out]" so
-                  --  that we have the complete set of Proof_Ins and
-                  --  Reads.
-                  for Par of Params loop
-                     if Ekind (Par) in E_In_Parameter | E_In_Out_Parameter then
-                        declare
-                           F : constant Flow_Id := Direct_Mapping_Id (Par);
-                        begin
-                           All_Reads.Include (F);
-                           All_Proof_Ins.Include (F);
-                        end;
-                     end if;
-                  end loop;
-
                   for I of D_In loop
                      if I = Null_Flow_Id then
                         D_Out := D_Out and Change_Variant (All_Proof_Ins,
@@ -1177,15 +1179,35 @@ package body Flow_Utility is
                      Depends.Include (I, D_Out);
                   end loop;
                end;
-            else
-               --  Simply add the dependency as it is
+            end loop;
+         end;
+
+      else
+         --  Simply add the dependencies as they are
+         for C in Tmp.Iterate loop
+            declare
+               D_In  : constant Flow_Id_Sets.Set :=
+                 (if Present (Dependency_Maps.Key (C)) then
+                     To_Flow_Id_Set (Down_Project
+                                       (Node_Sets.To_Set
+                                          (Get_Direct_Mapping_Id
+                                             (Dependency_Maps.Key (C))),
+                                        Scope))
+                  else
+                     Flow_Id_Sets.To_Set (Dependency_Maps.Key (C)));
+
+               D_Out : constant Flow_Id_Sets.Set :=
+                 To_Flow_Id_Set (Down_Project
+                                   (To_Node_Set
+                                      (Dependency_Maps.Element (C)),
+                                    Scope));
+            begin
                for I of D_In loop
                   Depends.Include (I, D_Out);
                end loop;
-            end if;
-         end;
-      end loop;
-
+            end;
+         end loop;
+      end if;
    end Get_Depends;
 
    -----------------
@@ -1936,6 +1958,48 @@ package body Flow_Utility is
       --  globals.
       return False;
    end Rely_On_Generated_Global;
+
+   -------------------------------
+   -- Rely_On_Generated_Depends --
+   -------------------------------
+
+   function Rely_On_Generated_Depends
+     (Subprogram : Entity_Id;
+      Scope      : Flow_Scope)
+      return Boolean
+   is
+      Body_N : constant Node_Id :=
+        (if Acts_As_Spec (SPARK_Util.Get_Subprogram_Body (Subprogram))
+         then Subprogram
+         else Get_Body (Subprogram));
+   begin
+      if Rely_On_Generated_Global (Subprogram, Scope) then
+         if Present (Body_N) then
+            declare
+               Depends_N         : constant Node_Id :=
+                 Get_Pragma (Subprogram, Pragma_Depends);
+
+               Refined_Depends_N : constant Node_Id :=
+                 Get_Pragma (Body_N, Pragma_Refined_Depends);
+
+               B_Scope           : constant Flow_Scope :=
+                 Get_Flow_Scope (Body_N);
+            begin
+               if Present (Depends_N)
+                 and then No (Refined_Depends_N)
+                 and then Mentions_State_With_Visible_Refinement (Depends_N,
+                                                                  B_Scope)
+               then
+                  return True;
+               end if;
+            end;
+         end if;
+      end if;
+
+      --  If we reach here then we must not rely on the generated
+      --  depends.
+      return False;
+   end Rely_On_Generated_Depends;
 
    ----------------------
    -- Get_Function_Set --

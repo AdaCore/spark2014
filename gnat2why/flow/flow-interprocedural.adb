@@ -149,8 +149,14 @@ package body Flow.Interprocedural is
       end Add_TD_Edge;
 
    begin
-      if Has_Depends (Called_Procedure) then
-         --  We have a dependency aspect, so we should use it.
+      if Has_Depends (Called_Procedure)
+        and then (not FA.Compute_Globals
+                    or else not Rely_On_Generated_Global (Called_Procedure,
+                                                          FA.B_Scope))
+      then
+         --  We have a dependency aspect, so we should use it if:
+         --     a) we have already synthesized it's refined version
+         --     b) we don't need to rely on its refined version
 
          --  The implicit in parameter for out parameters of unconstrained
          --  arrays and discriminated types is dealt with transparently
@@ -160,7 +166,7 @@ package body Flow.Interprocedural is
             Deps : Dependency_Maps.Map;
          begin
             Get_Depends (Subprogram           => Called_Procedure,
-                         Scope                => Get_Flow_Scope (N),
+                         Scope                => FA.B_Scope,
                          Classwide            => Is_Dispatching_Call (N),
                          Depends              => Deps,
                          Use_Computed_Globals => not FA.Compute_Globals);
@@ -196,7 +202,7 @@ package body Flow.Interprocedural is
          begin
             --  Collect all the globals first.
             Get_Globals (Subprogram             => Called_Procedure,
-                         Scope                  => Get_Flow_Scope (N),
+                         Scope                  => FA.B_Scope,
                          Classwide              => Is_Dispatching_Call (N),
                          Proof_Ins              => Proof_Ins,
                          Reads                  => Inputs,
