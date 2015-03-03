@@ -28,18 +28,20 @@ package body Flow.Data_Dependence_Graph is
 
    procedure Create (FA : in out Flow_Analysis_Graphs) is
       Combined_Defined : Flow_Id_Sets.Set;
+      Atr_Def          : V_Attributes;
    begin
       FA.DDG := Flow_Graphs.Create (FA.CFG);
 
       for V_D of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          if not FA.Atr.Element (V_D).Is_Exceptional_Path then
+            Atr_Def          := FA.Atr.Element (V_D);
             Combined_Defined :=
               (if not FA.Compute_Globals
-               then FA.Atr.Element (V_D).Variables_Defined or
-                 FA.Atr.Element (V_D).Volatiles_Read
-               else FA.Atr.Element (V_D).Variables_Defined or
-                 FA.Atr.Element (V_D).Volatiles_Read or
-                 To_Flow_Id_Set (FA.Atr.Element (V_D).Subprograms_Called));
+               then Atr_Def.Variables_Defined or
+                    Atr_Def.Volatiles_Read
+               else Atr_Def.Variables_Defined or
+                    Atr_Def.Volatiles_Read or
+                    To_Flow_Id_Set (Atr_Def.Subprograms_Called));
             for Var of Combined_Defined loop
                declare
                   procedure Visitor
@@ -72,11 +74,30 @@ package body Flow.Data_Dependence_Graph is
                         TV := Flow_Graphs.Skip_Children;
 
                      elsif Atr.Variables_Defined.Contains (Var)
-                       or Atr.Volatiles_Read.Contains (Var)
-                       or (FA.Compute_Globals
-                             and then Var.Kind = Direct_Mapping
-                             and then Atr.Subprograms_Called.Contains
-                               (Get_Direct_Mapping_Id (Var)))
+                       or else Atr.Volatiles_Read.Contains (Var)
+                     then
+                        if (Atr_Def.Is_Parameter
+                            or Atr_Def.Is_Global_Parameter)
+                          and then (Atr.Is_Parameter
+                                    or Atr.Is_Global_Parameter)
+                          and then Atr_Def.Call_Vertex = Atr.Call_Vertex
+                        then
+                           --  We have a definite order in which we assign
+                           --  out parameters in flow, but this is just an
+                           --  assumption which means we might get an
+                           --  incorrect graph when aliasing is present.
+                           --  Here we allow multiple out vertices from the
+                           --  same procedure call to flow into the same
+                           --  variable.
+                           TV := Flow_Graphs.Continue;
+                        else
+                           TV := Flow_Graphs.Skip_Children;
+                        end if;
+
+                     elsif FA.Compute_Globals
+                       and then Var.Kind = Direct_Mapping
+                       and then Atr.Subprograms_Called.Contains
+                       (Get_Direct_Mapping_Id (Var))
                      then
                         TV := Flow_Graphs.Skip_Children;
 

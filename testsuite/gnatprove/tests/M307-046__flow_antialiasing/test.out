@@ -1,11 +1,9 @@
 test.adb:103:30: warning: "Y" is not modified, could be IN
 test.adb:113:04: warning: analyzing unreferenced procedure "Test_01"
 test.adb:116:14: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
-test.adb:116:14: warning: unused assignment to "X"
 test.adb:119:04: warning: analyzing unreferenced procedure "Test_02"
 test.adb:125:04: warning: analyzing unreferenced procedure "Test_03"
 test.adb:128:14: high: formal parameter "X" and global "Global_RA" are aliased (SPARK RM 6.4.2)
-test.adb:128:14: warning: unused assignment to "Global_RA"
 test.adb:131:23: warning: "X" is not modified, could be IN
 test.adb:138:23: warning: "X" is not modified, could be IN
 test.adb:142:19: high: formal parameters "Y" and "Z" are aliased (SPARK RM 6.4.2)

@@ -1,6 +1,7 @@
-foo.adb:6:14: medium: missing dependency "X => X"
-foo.adb:7:09: expected to see "X" on the left-hand-side of a dependency relation
-foo.adb:21:14: medium: incorrect dependency "X => X"
+foo.adb:21:14: medium: missing dependency "X => X"
+foo.adb:22:09: expected to see "X" on the left-hand-side of a dependency relation
+foo.adb:42:14: medium: missing dependency "X => X"
+foo.adb:43:09: expected to see "X" on the left-hand-side of a dependency relation
    compilation of foo.adb failed
 
 
