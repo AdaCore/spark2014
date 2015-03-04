@@ -19,7 +19,9 @@ is
    procedure Fibonacci (N : Positive; X, Y : Float_32; Res : out Float_32);
 
    --  from NC01-041 (industrial user)
-   procedure Int_To_Float_Complex (X : Unsigned_16; Y : Float_32; Res : out Float_32);
+   procedure Int_To_Float_Complex (X : Unsigned_16;
+                                   Y : Float_32;
+                                   Res : out Float_32);
 
    --  from NC03-013 (industrial user)
    procedure Int_To_Float_Simple (X : Unsigned_16; Res : out Float_32);
@@ -30,6 +32,7 @@ is
    C : constant := 10.0;
    type T is range 0 .. 1_000_000;
 
+   --  from O227-007 (industrial user)
    procedure Incr_By_Const (State : in out Float_32;
                             X     : T)
    with Pre => X < T'Last and
