@@ -20,7 +20,7 @@ is
       if X then
          Set_Global;
       else
-         V := False;
+         Set_Global;
       end if;
    end Set_Global_Conditionally;
 

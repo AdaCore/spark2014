@@ -1,3 +1,2 @@
 gen_refined_global.adb:14:07: warning: statement has no effect
 gen_refined_global.adb:14:07: warning: unused assignment to "V"
-gen_refined_global.ads:12:06: "Gen_Refined_Global.State" must be a global input of "Set_Global_Conditionally" (SPARK RM 6.1.4)
