@@ -5,7 +5,7 @@ GNATPRJ_FLAGS=
 else
 
 ifeq ($(TARGET),powerpc-elf)
-RTSFLAG=--RTS=powerpc-elf/zfp-prep
+RTSFLAG=--RTS=zfp-prep
 GCC_PREFIX=$(TARGET)-
 ZFP_VARIANT=powerpc-elf-qemu
 
