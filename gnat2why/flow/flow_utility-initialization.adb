@@ -160,9 +160,7 @@ package body Flow_Utility.Initialization is
    begin
       case F.Kind is
          when Direct_Mapping =>
-            return Default_Initialization (Typ,
-                                           Flow_Scop,
-                                           Explicit_Only) =
+            return Default_Initialization (Typ, Explicit_Only) =
                      Full_Default_Initialization
               or else (Full_Typ /= Typ
                          and then Is_Default_Initialized
@@ -179,9 +177,7 @@ package body Flow_Utility.Initialization is
                return True;
 
             else
-               return Default_Initialization (Typ,
-                                              Flow_Scop,
-                                              Explicit_Only) =
+               return Default_Initialization (Typ, Explicit_Only) =
                         Full_Default_Initialization
                  or else (Full_Typ /= Typ
                             and then Is_Default_Initialized

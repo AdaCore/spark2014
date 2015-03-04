@@ -12,8 +12,8 @@ list.adb:20:23: medium: precondition might fail
 list.adb:20:28: medium: private part of "S" might not be initialized
 list.adb:21:10: medium: precondition might fail
 list.adb:21:15: medium: private part of "S" might not be initialized
+list.adb:22:10: info: loop invariant initialization proved
 list.adb:22:54: medium: loop invariant might fail after first iteration, requires Element (Res, J) = Element (L, Last_Index (L) - J + 1)
-list.adb:22:54: medium: loop invariant might fail in first iteration, requires Element (Res, J) = Element (L, Last_Index (L) - J + 1)
 list.adb:22:54: medium: precondition might fail
 list.adb:22:68: info: range check proved
 list.adb:22:73: info: precondition proved

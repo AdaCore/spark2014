@@ -224,7 +224,63 @@ package body Flow_Refinement is
                         S : Flow_Scope)
                         return Boolean
    is
-      Target_Scope : constant Flow_Scope := Get_Flow_Scope (N);
+
+      function Get_Appropriate_Node return Node_Id;
+      --  For something like the following
+      --
+      --     type Foo is new Wibble;
+      --
+      --  When we call Is_Visible on Foo, we need to check if the
+      --  full view of Wibble Is_Visible instead.
+
+      -------------------------------
+      -- Get_Appropriate_Node_Node --
+      -------------------------------
+
+      function Get_Appropriate_Node return Node_Id is
+      begin
+         --  If we are not dealing with a Type_Kind then we return N
+         if not (Nkind (N) in N_Entity
+                   and then Ekind (N) in Type_Kind)
+         then
+            return N;
+         end if;
+
+         declare
+            Type_Def : constant Node_Id :=
+              (if Present (Original_Node (Parent (N))) then
+                  Type_Definition (Original_Node (Parent (N)))
+               else
+                  Type_Definition (Parent (N)));
+
+            E        : Entity_Id;
+         begin
+            if Nkind (Type_Def) = N_Derived_Type_Definition then
+               declare
+                  Subtype_Ind : constant Node_Id :=
+                    Subtype_Indication (Type_Def);
+               begin
+                  if Present (Subtype_Mark (Subtype_Ind)) then
+                     E := Etype (Subtype_Mark (Subtype_Ind));
+                  else
+                     E := Etype (Subtype_Ind);
+                  end if;
+
+                  if Ekind (E) in Private_Kind then
+                     return Full_View (E);
+                  else
+                     return E;
+                  end if;
+               end;
+            end if;
+         end;
+
+         --  If we reach here then we return N
+         return N;
+      end Get_Appropriate_Node;
+
+      Target_Scope : constant Flow_Scope :=
+        Get_Flow_Scope (Get_Appropriate_Node);
    begin
       return Is_Visible (Target_Scope, S);
    end Is_Visible;

@@ -42,8 +42,6 @@ with Why.Atree.Tables;                   use Why.Atree.Tables;
 
 with Common_Containers;                  use Common_Containers;
 
-with Flow_Refinement;                    use Flow_Refinement;
-
 package SPARK_Util is
 
    ----------------------------------------------------------------------
@@ -185,7 +183,6 @@ package SPARK_Util is
 
    function Default_Initialization
      (Typ           : Entity_Id;
-      Flow_Scop     : Flow_Scope := Null_Flow_Scope;
       Explicit_Only : Boolean    := False)
       return Default_Initialization_Kind;
    --  Determine default initialization kind that applies to a particular
@@ -196,11 +193,6 @@ package SPARK_Util is
    --  If Explicit_Only is True then do not consider whether
    --  Has_Default_Init_Cond or Has_Inherited_Default_Init_Cond are
    --  True for this type.
-   --
-   --  If Flow_Scop is provided then also consider visibility. For
-   --  example, if a type is fully initialized but its initialization
-   --  happens in a non visible section then this type will be
-   --  reported as uninitialized.
 
    ---------------
    -- Utilities --
