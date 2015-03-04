@@ -1,2 +1,3 @@
 from test_support import *
-prove_all()
+# proof crashes on possible aliased parameters (O303-015)
+do_flow()
