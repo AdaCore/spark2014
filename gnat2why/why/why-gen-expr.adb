@@ -61,6 +61,14 @@ package body Why.Gen.Expr is
 
    Pretty_Ada_Tag : constant String := "GP_Pretty_Ada";
 
+   function Args_For_Scalar_Dynamic_Property
+     (Ty     : Entity_Id;
+      Expr   : W_Expr_Id) return W_Expr_Array
+   with
+       Pre => Is_Scalar_Type (Ty) and then Type_Is_Modeled_As_Base (Ty);
+   --  Computes the arguments to be used for a call to the dynamic property
+   --  of a scalar type.
+
    function Insert_Single_Conversion
      (Ada_Node : Node_Id;
       Domain   : EW_Domain;
@@ -83,6 +91,41 @@ package body Why.Gen.Expr is
    --  only the abstract fixed-point type allows it.
 
    Temp_Names_Map : Why_Node_Maps.Map := Why_Node_Maps.Empty_Map;
+
+   --------------------------------------
+   -- Args_For_Scalar_Dynamic_Property --
+   --------------------------------------
+
+   function Args_For_Scalar_Dynamic_Property
+     (Ty     : Entity_Id;
+      Expr   : W_Expr_Id) return W_Expr_Array
+   is
+
+      Why_Type_For_Bounds : constant W_Type_Id :=
+        (if Is_Modular_Integer_Type (Ty) then EW_Int_Type
+         else Base_Why_Type (Ty));
+   begin
+      return (1 => Insert_Simple_Conversion
+              (Domain   => EW_Term,
+               Expr     => New_Attribute_Expr
+                 (Ty     => Ty,
+                  Attr   => Attribute_First,
+                  Params => Body_Params),
+               To       => Why_Type_For_Bounds),
+              2 => Insert_Simple_Conversion
+                (Domain   => EW_Term,
+                 Expr     => New_Attribute_Expr
+                   (Ty     => Ty,
+                    Attr   => Attribute_Last,
+                    Params => Body_Params),
+                 To       => Why_Type_For_Bounds),
+              3 =>
+                Insert_Simple_Conversion
+                  (Ada_Node => Ty,
+                   Domain   => EW_Term,
+                   Expr     => Expr,
+                   To       => Base_Why_Type (Ty)));
+   end Args_For_Scalar_Dynamic_Property;
 
    ----------------------
    -- Binding_For_Temp --
@@ -835,15 +878,14 @@ package body Why.Gen.Expr is
             Expr : constant W_Expr_Id := New_Temp_For_Expr (W_Expr);
             T    : W_Prog_Id;
          begin
-               T :=
-                 New_Located_Assert
-                   (Ada_Node => Ada_Node,
-                    Reason   => To_VC_Kind (Check_Kind),
-                    Pred     =>
-                        +New_Dynamic_Property (Domain => EW_Prog,
-                                               Ty     => Ty,
-                                               Expr   => Expr),
-                    Kind     => EW_Assert);
+            T := +New_VC_Call (Domain   => EW_Prog,
+                               Ada_Node => Ada_Node,
+                               Name     =>
+                                 Range_Check_Name (Ty, Check_Kind),
+                               Progs    =>
+                                 Args_For_Scalar_Dynamic_Property (Ty, Expr),
+                               Reason   => To_VC_Kind (Check_Kind),
+                               Typ      => Get_Type (W_Expr));
             return
               +Binding_For_Temp (Domain => EW_Prog,
                                  Tmp    => Expr,
@@ -1977,42 +2019,7 @@ package body Why.Gen.Expr is
          return New_Call (Domain => Domain,
                           Name   => Dynamic_Prop_Name (Ty),
                           Args   =>
-                            (if Has_Modular_Integer_Type (Ty) then
-                                 (1 => Insert_Simple_Conversion
-                                  (Domain   => EW_Term,
-                                   Expr     => New_Attribute_Expr
-                                     (Ty     => Ty,
-                                      Attr   => Attribute_First,
-                                      Params => Body_Params),
-                                   To       => EW_Int_Type),
-                                  2 => Insert_Simple_Conversion
-                                    (Domain   => EW_Term,
-                                     Expr     => New_Attribute_Expr
-                                       (Ty     => Ty,
-                                        Attr   => Attribute_Last,
-                                        Params => Body_Params),
-                                     To       => EW_Int_Type),
-                                  3 =>
-                                    Insert_Simple_Conversion
-                                      (Ada_Node => Ty,
-                                       Domain   => Domain,
-                                       Expr     => Expr,
-                                       To       => Base_Why_Type (Ty)))
-                             else
-                               (1 => New_Attribute_Expr
-                                    (Ty     => Ty,
-                                     Attr   => Attribute_First,
-                                     Params => Body_Params),
-                                2 => New_Attribute_Expr
-                                  (Ty     => Ty,
-                                   Attr   => Attribute_Last,
-                                   Params => Body_Params),
-                                3 =>
-                                  Insert_Simple_Conversion
-                                    (Ada_Node => Ty,
-                                     Domain   => Domain,
-                                     Expr     => Expr,
-                                     To       => Base_Why_Type (Ty)))),
+                            Args_For_Scalar_Dynamic_Property (Ty, Expr),
                           Typ    => EW_Bool_Type);
       elsif Is_Array_Type (Ty) and then not Is_Static_Array_Type (Ty) then
          declare

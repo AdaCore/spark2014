@@ -142,11 +142,11 @@ package body Why.Gen.Scalars is
                   Orig_Name => To_Name (WNE_Range_Pred),
                   Image     => To_Name (WNE_Range_Pred)))
             else (1 .. 0 => <>));
-         Discrete_Conv_Subst : constant W_Clone_Substitution_Array :=
+         Dynamic_Conv_Subst : constant W_Clone_Substitution_Array :=
            (if not Is_Static then
               (1 => New_Clone_Substitution
                 (Kind      => EW_Function,
-                 Orig_Name => New_Name (Symbol => NID ("to_base")),
+                 Orig_Name => New_Name (Symbol => NID ("base_to_rep")),
                  Image     =>
                    To_Name
                      (Conversion_Name
@@ -154,12 +154,25 @@ package body Why.Gen.Scalars is
                          To   => Base_Why_Type (E)))),
                2 => New_Clone_Substitution
                 (Kind      => EW_Function,
-                 Orig_Name => New_Name (Symbol => NID ("of_base")),
+                 Orig_Name => New_Name (Symbol => NID ("base_of_rep")),
                  Image     =>
                    To_Name
                      (Conversion_Name
                         (From => Base_Why_Type (E),
-                         To   => Base_Type_In_Why))))
+                         To   => Base_Type_In_Why))),
+               3 => New_Clone_Substitution
+                 (Kind      => EW_Predicate,
+                  Orig_Name => To_Name (WNE_Dynamic_Property),
+                  Image     => To_Name (WNE_Dynamic_Property)))
+            else (1 .. 0 => <>));
+         Discr_Dynamic_Conv_Subst : constant W_Clone_Substitution_Array :=
+           (if not Is_Static and then Is_Discrete_Type (E) then
+              (1 => New_Clone_Substitution
+                (Kind      => EW_Function,
+                 Orig_Name => New_Name (Symbol => NID ("base_rep_to_int")),
+                 Image     => New_Name
+                   (Symbol => NID ("rep_to_int"),
+                    Module => E_Module (Base_Type (E)))))
             else (1 .. 0 => <>));
          Mod_Clone_Subst : constant W_Clone_Substitution_Array :=
            (if Has_Modular_Integer_Type (E) and then Is_Static and then
@@ -193,11 +206,12 @@ package body Why.Gen.Scalars is
          --  substitution to replace the default one.
 
          return
-              Default_Clone_Subst &
-              Rep_Type_Clone_Substitution &
+           Default_Clone_Subst &
+           Rep_Type_Clone_Substitution &
            Round_Clone_Subst &
            Static_Clone_Subst &
-           Discrete_Conv_Subst &
+           Dynamic_Conv_Subst &
+           Discr_Dynamic_Conv_Subst &
            Mod_Clone_Subst &
            Range_Int_Clone_Subst &
            Fixed_Clone_Subst;

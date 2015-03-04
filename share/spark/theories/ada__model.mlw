@@ -9,6 +9,8 @@ module Discrete_Base
 
   type rep_type
 
+  function rep_to_int rep_type : int
+
   function bool_eq (x : rep_type) (y : rep_type) : bool =
     if x = y then True else False
 
@@ -58,8 +60,6 @@ module Static_Discrete_Base
   axiom inversion_axiom  :
     forall x : t [to_rep x].
     of_rep (to_rep (x)) = x
-
-  function rep_to_int rep_type : int
 
   val check_not_last (n : rep_type) : rep_type
     requires { rep_to_int n <> last }
@@ -270,17 +270,35 @@ module Dynamic_Discrete
   type rep_type
   type t
 
-  function to_base t : rep_type
-  function of_base rep_type : t
+  (* To be instantiated with functions from the Ada base type *)
+  function base_to_rep t : rep_type
+  function base_of_rep rep_type : t
+  function base_rep_to_int (x : rep_type) : int
 
-  function to_rep "inline" (x : t) : rep_type = to_base x
-  function of_rep "inline" (x : rep_type) : t = of_base x
+  function to_rep "inline" (x : t) : rep_type = base_to_rep x
+  function of_rep "inline" (x : rep_type) : t = base_of_rep x
+  function rep_to_int "inline" (x : rep_type) : int = base_rep_to_int x
 
   clone export Discrete_Base
       with type t = t,
       type rep_type = rep_type,
       function of_rep = of_rep,
-      function to_rep = to_rep
+      function to_rep = to_rep,
+      function rep_to_int = rep_to_int
+
+  predicate dynamic_property (first last : int) (n : rep_type)
+
+  val check_not_last (first last : int) (n : rep_type) : rep_type
+    requires { rep_to_int n <> last }
+    ensures { result = n }
+
+  val check_not_first (first last : int) (n : rep_type) : rep_type
+    requires { rep_to_int n <> first }
+    ensures { result = n }
+
+  val range_check_ (first last : int) (n : rep_type) : rep_type
+    requires { dynamic_property first last n }
+    ensures { result = n /\ dynamic_property first last n }
 end
 
 module Fixed_Point_Base
@@ -577,14 +595,28 @@ module Dynamic_Fixed_Point
 
  type t
 
- function to_base t : __fixed
- function of_base __fixed : t
+ function base_to_rep t : __fixed
+ function base_of_rep __fixed : t
 
- function to_fixed "inline" (x : t) : __fixed = to_base (x)
- function of_fixed "inline" (x : __fixed) : t = of_base (x)
+ function to_fixed "inline" (x : t) : __fixed = base_to_rep x
+ function of_fixed "inline" (x : __fixed) : t = base_of_rep x
 
   clone export Fixed_Point_Base
       with type t = t, function of_fixed = of_fixed, function to_fixed = to_fixed
+
+  predicate dynamic_property (first last n : __fixed)
+
+  val check_not_last (first last n : __fixed) : __fixed
+    requires { n <> last }
+    ensures { result = n }
+
+  val check_not_first (first last n : __fixed) : __fixed
+    requires { n <> first }
+    ensures { result = n }
+
+  val range_check_ (first last n : __fixed) : __fixed
+    requires { dynamic_property first last n }
+    ensures { result = n /\ dynamic_property first last n}
 end
 
 module Floating_Point_Base
@@ -687,14 +719,28 @@ module Dynamic_Floating_Point
 
  type t
 
- function to_base t : real
- function of_base real : t
+ function base_to_rep t : real
+ function base_of_rep real : t
 
- function to_real "inline" (x : t) : real = to_base x
- function of_real "inline" (x : real) : t = of_base x
+ function to_real "inline" (x : t) : real = base_to_rep x
+ function of_real "inline" (x : real) : t = base_of_rep x
 
   clone export Floating_Point_Base
       with type t = t, function of_real = of_real, function to_real = to_real
+
+  predicate dynamic_property (first last n : real)
+
+  val check_not_last (first last n : real) : real
+    requires { n <> last }
+    ensures { result = n }
+
+  val check_not_first (first last n : real) : real
+    requires { n <> first }
+    ensures { result = n }
+
+  val range_check_ (first last n : real) : real
+    requires { dynamic_property first last n }
+    ensures { result = n /\ dynamic_property first last n }
 end
 
 module Unconstrained_Private_Type
