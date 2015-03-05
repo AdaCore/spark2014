@@ -100,10 +100,6 @@ package body Why.Gen.Expr is
      (Ty     : Entity_Id;
       Expr   : W_Expr_Id) return W_Expr_Array
    is
-
-      Why_Type_For_Bounds : constant W_Type_Id :=
-        (if Is_Modular_Integer_Type (Ty) then EW_Int_Type
-         else Base_Why_Type (Ty));
    begin
       return (1 => Insert_Simple_Conversion
               (Domain   => EW_Term,
@@ -111,14 +107,14 @@ package body Why.Gen.Expr is
                  (Ty     => Ty,
                   Attr   => Attribute_First,
                   Params => Body_Params),
-               To       => Why_Type_For_Bounds),
+               To       => Base_Why_Type (Ty)),
               2 => Insert_Simple_Conversion
                 (Domain   => EW_Term,
                  Expr     => New_Attribute_Expr
                    (Ty     => Ty,
                     Attr   => Attribute_Last,
                     Params => Body_Params),
-                 To       => Why_Type_For_Bounds),
+                 To       => Base_Why_Type (Ty)),
               3 =>
                 Insert_Simple_Conversion
                   (Ada_Node => Ty,

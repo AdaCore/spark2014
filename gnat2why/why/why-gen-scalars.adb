@@ -231,10 +231,9 @@ package body Why.Gen.Scalars is
          --  in the case of modular types first and last are integers
          --  in the why3 theory (and not bv), so we need to insert proper
          --  convertion / type specification for these attributes
-         Bnd_Type : constant W_Type_Id := (if Why_Type_Is_BitVector (Ty) then
-                                             EW_Int_Type
-                                          else
-                                             Ty);
+         Bnd_Type : constant W_Type_Id :=
+           (if Is_Static and then Why_Type_Is_BitVector (Ty) then EW_Int_Type
+            else Ty);
          Fst : constant W_Identifier_Id :=
            New_Identifier
              (Symbol => Get_Symbol (To_Ident (WNE_Attr_First)),

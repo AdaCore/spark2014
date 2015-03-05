@@ -78,7 +78,7 @@ module Static_Discrete_Base
   axiom range_axiom :
     forall x : t. in_range (to_rep x)
 
-  predicate dynamic_property "inline" (f l : int) (x : rep_type) = in_range x
+  predicate dynamic_property "inline" (f l x : rep_type) = in_range x
 end
 
 module Static_Discrete
@@ -286,17 +286,17 @@ module Dynamic_Discrete
       function to_rep = to_rep,
       function rep_to_int = rep_to_int
 
-  predicate dynamic_property (first last : int) (n : rep_type)
+  predicate dynamic_property (first last n : rep_type)
 
-  val check_not_last (first last : int) (n : rep_type) : rep_type
-    requires { rep_to_int n <> last }
+  val check_not_last (first last n : rep_type) : rep_type
+    requires { n <> last }
     ensures { result = n }
 
-  val check_not_first (first last : int) (n : rep_type) : rep_type
-    requires { rep_to_int n <> first }
+  val check_not_first (first last n : rep_type) : rep_type
+    requires { n <> first }
     ensures { result = n }
 
-  val range_check_ (first last : int) (n : rep_type) : rep_type
+  val range_check_ (first last n : rep_type) : rep_type
     requires { dynamic_property first last n }
     ensures { result = n /\ dynamic_property first last n }
 end
