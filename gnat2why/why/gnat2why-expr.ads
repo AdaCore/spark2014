@@ -44,24 +44,20 @@ package Gnat2Why.Expr is
    function Assignment_Of_Obj_Decl (N : Node_Id) return W_Prog_Id;
    --  Generate an assignment from an object declaration
 
-   function Assume_Of_Scalar_Subtype
+   function Check_Scalar_Subtype
      (Params   : Transformation_Params;
       N        : Entity_Id;
-      Base     : Entity_Id;
-      Do_Check : Boolean) return W_Prog_Id;
-   --  Generate an assumption that relates the constant bounds of the scalar
-   --  subtype to their dynamic value. If Do_Check=True, also generate a
+      Base     : Entity_Id) return W_Prog_Id;
+   --  Generate checks for the bounds of a subtype as well as a
    --  range check that the range_constraint is compatible with the subtype.
    --  Returns the empty program if N is a scalar subtype with a static
    --  range_constraint.
 
-   function Assume_Of_Subtype_Indication
+   function Check_Subtype_Indication
      (Params   : Transformation_Params;
       N        : Node_Id;
-      Sub_Type : Entity_Id;
-      Do_Check : Boolean) return W_Prog_Id;
-   --  Generate an assumption that relates the constant bounds of the scalar
-   --  subtype Sub_Typ to their dynamic value. If Do_Check=True, also generate
+      Sub_Type : Entity_Id) return W_Prog_Id;
+   --  Generate checks for bounds of the range_constraint in Sub_Typ as well as
    --  a range check that the range_constraint in Sub_Typ is compatible with
    --  the subtype. Returns the empty program if N is not a scalar subtype,
    --  or is a scalar subtype with a static range_constraint.

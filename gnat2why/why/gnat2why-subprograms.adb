@@ -74,14 +74,13 @@ package body Gnat2Why.Subprograms is
    -- Local Subprograms --
    -----------------------
 
-   procedure Assign_Bounds_For_Dynamic_Types
+   procedure Collect_Bounds_For_Dynamic_Types
      (Params    :        Transformation_Params;
       Scope     :        Entity_Id;
-      Assume    : in out W_Prog_Id;
       Dyn_Types : in out Node_Sets.Set;
       Objects   : in out Node_Sets.Set);
-   --  For each element of Dyn_Types not declared in Scope, add to Assume an
-   --  updates of the corresponding bounds. If a dynamic type is a subtype or a
+   --  For each element of Dyn_Types not declared in Scope, add to Objects
+   --  every object used for the bounds. If a dynamic type is a subtype or a
    --  derived type of a dynamic type, this type is added to Dyn_Types.
 
    procedure Assume_Dynamic_Property_For_Objects
@@ -226,25 +225,24 @@ package body Gnat2Why.Subprograms is
 
    end Add_Dependencies_For_Effects;
 
-   -------------------------------------
-   -- Assume_Bounds_For_Dynamic_Types --
-   -------------------------------------
+   --------------------------------------
+   -- Collect_Bounds_For_Dynamic_Types --
+   --------------------------------------
 
-   procedure Assign_Bounds_For_Dynamic_Types
+   procedure Collect_Bounds_For_Dynamic_Types
      (Params    :        Transformation_Params;
       Scope     :        Entity_Id;
-      Assume    : in out W_Prog_Id;
       Dyn_Types : in out Node_Sets.Set;
       Objects   : in out Node_Sets.Set) is
 
-      procedure Assume_Constraints_For_Type (Ty : Entity_Id);
+      procedure Collect_Constraints_For_Type (Ty : Entity_Id);
       --  Calls itself recursively on the parent type used in Ty's declaration
       --  Adds affectations to the bounds of Ty to Assume
       --  Collects objects and types from bounds of Ty
 
       Input_Set : Node_Sets.Set;
 
-      procedure Assume_Constraints_For_Type (Ty : Entity_Id) is
+      procedure Collect_Constraints_For_Type (Ty : Entity_Id) is
       begin
          if Type_Is_Modeled_As_Base (Ty)
            and then not Dyn_Types.Contains (Ty)
@@ -263,7 +261,7 @@ package body Gnat2Why.Subprograms is
                --  The constraints for Ty's parent type should be assumed
                --  before the constraints for Ty
 
-               Assume_Constraints_For_Type (Base);
+               Collect_Constraints_For_Type (Base);
 
                --  No need to assume anything if Ty is declared in Subp
 
@@ -290,16 +288,6 @@ package body Gnat2Why.Subprograms is
                                      EW_Term, Params);
                   New_Types : Node_Sets.Set;
                begin
-
-                  --  Assuming the value of Ty's bounds
-
-                  Assume := Sequence (Left  => Assume,
-                                      Right => Assume_Of_Scalar_Subtype
-                                        (Params   => Params,
-                                         N        => Ty,
-                                         Base     => Base,
-                                         Do_Check => False));
-
                   --  Add Ty to the set of already handled types
 
                   Dyn_Types.Include (Ty);
@@ -314,12 +302,12 @@ package body Gnat2Why.Subprograms is
                   Collect_Dynamic_Types (+High_Expr, New_Types);
 
                   for E of New_Types loop
-                     Assume_Constraints_For_Type (E);
+                     Collect_Constraints_For_Type (E);
                   end loop;
                end;
             end;
          end if;
-      end Assume_Constraints_For_Type;
+      end Collect_Constraints_For_Type;
 
    begin
       Node_Sets.Move (Input_Set, Dyn_Types);
@@ -327,9 +315,9 @@ package body Gnat2Why.Subprograms is
       --  Add affectations to the ranges of elements of Dyn_Types to Assume
 
       for E of Input_Set loop
-         Assume_Constraints_For_Type (E);
+         Collect_Constraints_For_Type (E);
       end loop;
-   end Assign_Bounds_For_Dynamic_Types;
+   end Collect_Bounds_For_Dynamic_Types;
 
    -----------------------------------------
    -- Assume_Dynamic_Property_For_Objects --
@@ -1527,13 +1515,13 @@ package body Gnat2Why.Subprograms is
          Collect_Objects (W      => +Why_Body,
                           Result => Used_Objects);
 
-         --  Assume bounds of external dynamic types used in the program
+         --  Collect objects refered in bounds of external dynamic types used
+         --  in the program.
 
-         Assign_Bounds_For_Dynamic_Types (Params    => Params,
-                                          Scope     => E,
-                                          Assume    => Assume,
-                                          Dyn_Types => Used_Dyn_Types,
-                                          Objects   => Used_Objects);
+         Collect_Bounds_For_Dynamic_Types (Params    => Params,
+                                           Scope     => E,
+                                           Dyn_Types => Used_Dyn_Types,
+                                           Objects   => Used_Objects);
 
          --  We assume that objects used in the program are in range, if
          --  they are of a dynamic type
@@ -2262,11 +2250,11 @@ package body Gnat2Why.Subprograms is
             Collect_Objects (W      => +Prog,
                              Result => Used_Objects);
 
-            --  Assume bounds of external dynamic types used in the program
+            --  Collect object refered in bounds of external dynamic types used
+            --  in the program
 
-            Assign_Bounds_For_Dynamic_Types (Params    => Params,
+            Collect_Bounds_For_Dynamic_Types (Params    => Params,
                                              Scope     => E,
-                                             Assume    => Assume,
                                              Dyn_Types => Used_Dyn_Types,
                                              Objects   => Used_Objects);
 
