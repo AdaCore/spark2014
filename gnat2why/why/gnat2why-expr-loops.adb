@@ -477,9 +477,10 @@ package body Gnat2Why.Expr.Loops is
                                        Record_From_Split_Form (Binder, True),
                                     when Func    => raise Program_Error);
                         Dyn_Prop := Compute_Dynamic_Property
-                          (Expr     => Expr,
-                           Ty       => Etype (N),
-                           Only_Var => True);
+                          (Expr        => Expr,
+                           Ty          => Etype (N),
+                           Only_Var    => True,
+                           Initialized => False);
 
                         if Dyn_Prop /= True_Pred then
                            Dyn_Types_Inv :=

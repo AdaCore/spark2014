@@ -1,4 +1,5 @@
 test_dynamic_property.adb:1:11: warning: subprogram "Test_Dynamic_Property" has no effect
+test_dynamic_property.adb:4:37: info: range check proved
 test_dynamic_property.adb:5:12: info: range check proved
 test_dynamic_property.adb:6:29: info: range check proved
 test_dynamic_property.adb:10:15: info: range check proved
@@ -6,7 +7,7 @@ test_dynamic_property.adb:11:07: info: initialization of "X" proved
 test_dynamic_property.adb:11:07: info: initialization of "Y" proved
 test_dynamic_property.adb:11:28: info: initialization of "X" proved
 test_dynamic_property.adb:11:28: info: range check proved
-test_dynamic_property.adb:15:17: medium: postcondition might fail, requires X >=
+test_dynamic_property.adb:15:17: info: postcondition proved
 test_dynamic_property.adb:21:15: info: overflow check proved
 test_dynamic_property.adb:22:20: info: overflow check proved
 test_dynamic_property.adb:22:20: info: range check proved

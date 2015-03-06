@@ -1,11 +1,11 @@
-procedure Test_Dynamic_Property (C : Float) with
-  SPARK_Mode,
-  Pre => C in 1.0 .. 100.0
-is
+procedure Test_Dynamic_Property (D : Float) with SPARK_Mode,
+  Pre => D in 1.0 .. 100.0 is
+   subtype Pos_Static_Float is Float range 1.0 .. 100.0;
+   C : constant Pos_Static_Float := D; -- This indirection to D is needed so that we know D's range to check Nested
    subtype Pos_Dynamic_Float is Float range 1.0 .. C;
    X : Pos_Dynamic_Float := C;
 
-   package Nested with Initializes => (Y => (X, C))
+   package Nested with Initializes => (Y => X)
    is
       subtype Dynamic_Float is Float range 0.0 .. C;
       Y : Dynamic_Float := X; --@RANGE_CHECK:PASS

@@ -332,6 +332,9 @@ package body Gnat2Why.Subprograms is
 
          --  No need to assume anything if Obj is a local object of the
          --  subprogram.
+         --  For now, we only assume initialization of in and in out
+         --  parameters. We can do better when we use flow analysis to compute
+         --  read and written objects.
 
          if not Ada_Ent_To_Why.Has_Element (Symbol_Table, Obj)
            or else (Get_Enclosing_Unit (Obj) = Scope
@@ -360,7 +363,9 @@ package body Gnat2Why.Subprograms is
                Assume :=
                  Sequence ((1 => Assume,
                             2 => Assume_Dynamic_Property
-                              (Expr, Etype (Obj), False)));
+                              (Expr, Etype (Obj), False,
+                               Ekind (Obj) in E_In_Parameter
+                                   | E_In_Out_Parameter)));
             end;
          else
             Assume :=
@@ -369,7 +374,9 @@ package body Gnat2Why.Subprograms is
                            (+To_Why_Id
                               (E => Obj,
                                Typ => Why_Type_Of_Entity (Obj)),
-                            Etype (Obj), False)));
+                            Etype (Obj), False,
+                            Ekind (Obj) in E_In_Parameter
+                                | E_In_Out_Parameter)));
          end if;
       end loop;
    end Assume_Dynamic_Property_For_Objects;
@@ -2426,9 +2433,10 @@ package body Gnat2Why.Subprograms is
         +New_And_Expr
         (Left   => +Post,
          Right  => +Compute_Dynamic_Property
-           (Expr     => +New_Result_Ident (Why_Type),
-            Ty       => Etype (E),
-            Only_Var => False),
+           (Expr        => +New_Result_Ident (Why_Type),
+            Ty          => Etype (E),
+            Only_Var    => False,
+            Initialized => True),
          Domain => EW_Pred);
 
       if Is_Dispatching_Operation (E) then
@@ -2715,9 +2723,10 @@ package body Gnat2Why.Subprograms is
                  +New_And_Expr
                  (Left   =>
                       +Compute_Dynamic_Property
-                    (Expr     => +New_Result_Ident (Why_Type),
-                     Ty       => Etype (E),
-                     Only_Var => False),
+                    (Expr        => +New_Result_Ident (Why_Type),
+                     Ty          => Etype (E),
+                     Only_Var    => False,
+                     Initialized => True),
                   Right  => +Post,
                   Domain => EW_Pred),
                Domain => EW_Pred);
@@ -2819,7 +2828,8 @@ package body Gnat2Why.Subprograms is
                           Ent      => Binder.Ada_Node,
                           Domain   => EW_Pred),
                        Ty       => Etype (Binder.Ada_Node),
-                       Only_Var => True);
+                       Only_Var => True,
+                       Initialized => True);
                begin
                   if Dyn_Prop /= True_Pred then
                      Post := +New_And_Expr
@@ -2855,13 +2865,14 @@ package body Gnat2Why.Subprograms is
                      declare
                         Dyn_Prop : constant W_Pred_Id :=
                           Compute_Dynamic_Property
-                            (Expr     => Transform_Identifier
+                            (Expr        => Transform_Identifier
                                (Params   => Params,
                                 Expr     => Entity,
                                 Ent      => Entity,
                                 Domain   => EW_Pred),
-                             Ty       => Etype (Entity),
-                             Only_Var => True);
+                             Ty          => Etype (Entity),
+                             Only_Var    => True,
+                             Initialized => True);
                      begin
                         if Dyn_Prop /= True_Pred then
                            Post := +New_And_Expr

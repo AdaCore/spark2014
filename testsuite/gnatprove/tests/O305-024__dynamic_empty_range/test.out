@@ -1,0 +1,12 @@
+empty_range_as_global.adb:1:11: warning: subprogram "Empty_Range_AS_Global" has no effect
+empty_range_as_global.adb:3:12: info: range check proved
+empty_range_as_global.adb:6:14: info: initialization of "E" proved
+empty_range_as_global.adb:10:12: medium: range check might fail
+empty_range_as_global.adb:13:04: info: precondition proved
+empty_range_in_loop.adb:1:11: warning: subprogram "Empty_Range_In_Loop" has no effect
+empty_range_in_loop.adb:3:12: info: range check proved
+empty_range_in_loop.adb:4:12: info: range check proved
+empty_range_in_loop.adb:4:45: medium: overflow check might fail
+empty_range_in_loop.adb:8:12: medium: range check might fail
+empty_range_in_loop.adb:12:33: info: overflow check proved
+empty_range_in_loop.adb:12:33: medium: range check might fail

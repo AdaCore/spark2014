@@ -910,12 +910,13 @@ package body Gnat2Why.Expr is
    -----------------------------
 
    function Assume_Dynamic_Property
-     (Expr     : W_Expr_Id;
-      Ty       : Entity_Id;
-      Only_Var : Boolean) return W_Prog_Id
+     (Expr        : W_Expr_Id;
+      Ty          : Entity_Id;
+      Only_Var    : Boolean;
+      Initialized : Boolean) return W_Prog_Id
    is
       T : constant W_Pred_Id :=
-        Compute_Dynamic_Property (Expr, Ty, Only_Var);
+        Compute_Dynamic_Property (Expr, Ty, Only_Var, Initialized);
    begin
       if T /= True_Pred then
          return New_Assume_Statement (Ada_Node => Ty,
@@ -2622,9 +2623,10 @@ package body Gnat2Why.Expr is
    ------------------------------
 
    function Compute_Dynamic_Property
-     (Expr     : W_Expr_Id;
-      Ty       : Entity_Id;
-      Only_Var : Boolean) return W_Pred_Id
+     (Expr        : W_Expr_Id;
+      Ty          : Entity_Id;
+      Only_Var    : Boolean;
+      Initialized : Boolean) return W_Pred_Id
    is
 
       T : W_Pred_Id;
@@ -2639,9 +2641,51 @@ package body Gnat2Why.Expr is
       --  Dynamic property of the type itself
 
       if Type_Is_Modeled_As_Base (Ty_Ext) then
-         T := +New_Dynamic_Property (Domain => EW_Pred,
-                                     Ty     => Ty_Ext,
-                                     Expr   => Expr);
+         T := +New_Dynamic_Property (Domain      => EW_Pred,
+                                     Ty          => Ty_Ext,
+                                     Expr        => Expr);
+
+         --  If a scalar variable is not initialized, then its dynamic property
+         --  may be false. As initialization is checked separately by flow
+         --  analysis, we can assume that the variable is in bound as long as
+         --  it does not introduce any unsoundness (the range is not empty).
+
+         if T /= True_Pred and then not Initialized then
+            declare
+               Why_Rep_Type : constant W_Type_Id := Base_Why_Type (Ty_Ext);
+               Le_Op        : constant W_Identifier_Id :=
+                 (if Why_Rep_Type = EW_Real_Type then Real_Infix_Le
+                  elsif Why_Type_Is_BitVector (Why_Rep_Type) then
+                       Create_Modular_Le (Why_Rep_Type)
+                  else Int_Infix_Le);
+               First        : constant W_Expr_Id :=
+                 Insert_Simple_Conversion
+                   (Domain   => EW_Term,
+                    Expr     => New_Attribute_Expr
+                      (Ty     => Ty,
+                       Attr   => Attribute_First,
+                       Params => Body_Params),
+                    To       => Why_Rep_Type);
+               Last        : constant W_Expr_Id :=
+                 Insert_Simple_Conversion
+                   (Domain   => EW_Term,
+                    Expr     => New_Attribute_Expr
+                      (Ty     => Ty,
+                       Attr   => Attribute_Last,
+                       Params => Body_Params),
+                    To       => Why_Rep_Type);
+               Fst_Le_Last : constant W_Pred_Id :=
+                 New_Call (Name     => Le_Op,
+                           Typ     => EW_Bool_Type,
+                           Args    => (First, Last));
+            begin
+               T := +W_Expr_Id'(New_Conditional
+                                (Domain      => EW_Pred,
+                                 Condition   => +Fst_Le_Last,
+                                 Then_Part   => +T,
+                                 Typ         => EW_Bool_Type));
+            end;
+         end if;
       elsif not Only_Var
         and then Is_Array_Type (Ty_Ext)
         and then not Is_Static_Array_Type (Ty_Ext)
@@ -2785,7 +2829,7 @@ package body Gnat2Why.Expr is
             T_Comp :=
               +Compute_Dynamic_Property
                 (New_Array_Access (Empty, Expr, Indices, EW_Term),
-                 Component_Type (Ty_Ext), False);
+                 Component_Type (Ty_Ext), False, Initialized);
 
             --  If elements of an array have default discriminants and are not
             --  constrained then 'Constrained returns false on them.
@@ -2889,7 +2933,8 @@ package body Gnat2Why.Expr is
                   end if;
 
                   T_Comp :=
-                    Compute_Dynamic_Property (R_Acc, Etype (Field), False);
+                    Compute_Dynamic_Property
+                      (R_Acc, Etype (Field), False, Initialized);
 
                   --  If fields of a record have default discriminants and are
                   --  not constrained then 'Constrained returns false on them.
@@ -7954,6 +7999,7 @@ package body Gnat2Why.Expr is
                or else Actions_Entity_Set.Contains (Defining_Entity (Decl)));
 
             R := Assignment_Of_Obj_Decl (Decl);
+
             if not Is_Partial_View (Defining_Identifier (Decl)) then
                declare
                   Lvalue : Entity_Id := Defining_Identifier (Decl);
@@ -7965,13 +8011,14 @@ package body Gnat2Why.Expr is
                   R := Sequence
                     (R,
                      Assume_Dynamic_Property
-                       (Expr     => Transform_Identifier
+                       (Expr        => Transform_Identifier
                             (Expr   => Lvalue,
                              Ent    => Lvalue,
                              Domain => EW_Term,
                              Params => Body_Params),
-                        Ty       => Etype (Lvalue),
-                        Only_Var => False));
+                        Ty          => Etype (Lvalue),
+                        Only_Var    => False,
+                        Initialized => False));
                end;
             end if;
 
