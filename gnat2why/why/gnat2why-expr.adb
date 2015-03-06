@@ -887,225 +887,6 @@ package body Gnat2Why.Expr is
       end if;
    end Assume_Dynamic_Property;
 
-   ----------------------------------------
-   -- Assume_Dynamic_Property_After_Call --
-   ----------------------------------------
-
-   function Assume_Dynamic_Property_After_Call
-     (Params   : Transformation_Params;
-      Ada_Call : Node_Id;
-      Why_Call : W_Prog_Id)
-      return W_Prog_Id
-   is
-      T : W_Prog_Id := Why_Call;
-
-      procedure Dynamic_Prop_Of_Arg (Formal, Actual : Node_Id);
-      --  Assume the dynamic property of in or in out parameters
-
-      -----------------
-      -- Dynamic_Prop_Of_Arg --
-      -----------------
-
-      procedure Dynamic_Prop_Of_Arg (Formal, Actual : Node_Id) is
-         Expr_Actual : constant W_Expr_Id :=
-           Transform_Expr (Expr   => Actual,
-                           Domain => EW_Term,
-                           Params => Params);
-         --  Expression for the actual after the call. We do not need check.
-
-         Dyn_Prop    : constant W_Pred_Id :=
-           Compute_Dynamic_Property
-             (Expr     => Expr_Actual,
-              Ty       => Etype (Actual),
-              Only_Var => True);
-      begin
-         if Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter
-           and then Dyn_Prop /= True_Pred
-         then
-            T := Sequence
-              (T, New_Assume_Statement
-                 (Pre  => True_Pred,
-                  Post => Dyn_Prop));
-         end if;
-      end Dynamic_Prop_Of_Arg;
-
-      procedure Iterate_Call is new
-        Iterate_Call_Arguments (Dynamic_Prop_Of_Arg);
-   begin
-      Iterate_Call (Ada_Call);
-
-      return T;
-   end Assume_Dynamic_Property_After_Call;
-
-   ------------------------------
-   -- Assume_Of_Scalar_Subtype --
-   ------------------------------
-
-   function Assume_Of_Scalar_Subtype
-     (Params   : Transformation_Params;
-      N        : Entity_Id;
-      Base     : Entity_Id;
-      Do_Check : Boolean) return W_Prog_Id
-   is
-   begin
-      --  If the range is not static, we need to generate a check that
-      --  the subtype declaration is valid; otherwise, the frontend has
-      --  done it for us already
-
-      if Is_OK_Static_Range (Get_Range (N)) then
-         return New_Void;
-      else
-         declare
-            Rng              : constant Node_Id := Get_Range (N);
-            Why_Base         : constant W_Type_Id := Base_Why_Type (N);
-            Why_Base_EW      : constant EW_Type := Get_EW_Type (N);
-            Low_Expr         : constant W_Term_Id :=
-              +Transform_Expr (Low_Bound (Rng), Why_Base, EW_Term, Params);
-            High_Expr        : constant W_Term_Id :=
-              +Transform_Expr (High_Bound (Rng), Why_Base, EW_Term, Params);
-            First_Term       : constant W_Term_Id :=
-              +New_Attribute_Expr (N, Attribute_First, Params);
-            Last_Term        : constant W_Term_Id :=
-              +New_Attribute_Expr (N, Attribute_Last, Params);
-            Rel_First        : constant W_Pred_Id :=
-              New_Relation
-                (Op_Type  => EW_Bool,
-                 Left     => +Low_Expr,
-                 Right    => +First_Term,
-                 Op       => EW_Eq);
-            Rel_Last         : constant W_Pred_Id :=
-              New_Relation
-                (Op_Type  => EW_Bool,
-                 Left     => +High_Expr,
-                 Right    => +Last_Term,
-                 Op       => EW_Eq);
-            First_In_Range   : constant W_Pred_Id :=
-              New_Relation
-                (Op_Type  => Why_Base_EW,
-                 Left     => +Low_Expr,
-                 Right    => +New_Attribute_Expr
-                   (Base, Attribute_First, Params),
-                 Op       => EW_Ge);
-            Last_In_Range    : constant W_Pred_Id :=
-              New_Relation
-                (Op_Type  => Why_Base_EW,
-                 Left     => +High_Expr,
-                 Right    => +New_Attribute_Expr
-                   (Base, Attribute_Last, Params),
-                 Op       => EW_Le);
-            First_Le_Last    : constant W_Pred_Id :=
-              New_Relation
-                (Op_Type  => Why_Base_EW,
-                 Left     => +Low_Expr,
-                 Right    => +High_Expr,
-                 Op       => EW_Le);
-            Precond          : constant W_Pred_Id :=
-              +New_Connection
-              (Op     => EW_Imply,
-               Left   => +First_Le_Last,
-               Right  =>
-                 +New_And_Expr
-                 (Domain => EW_Pred,
-                  Left   => +First_In_Range,
-                  Right => +Last_In_Range));
-            Postcond        : constant W_Pred_Id :=
-              +New_And_Expr (Domain => EW_Pred,
-                             Left   => +Rel_First,
-                             Right  => +Rel_Last);
-            Assuming : W_Prog_Id;
-
-         begin
-
-            --  If the scalar subtype is modeled as "int" or "real", or if it
-            --  has dynamic bounds, we use directly the bound's expression.
-            --  In this case, we only need to check the bounds.
-
-            if (not Is_Static_Subtype (N) and then Is_Discrete_Type (N))
-              or else Type_Is_Modeled_As_Int_Or_Real (N)
-            then
-               if Do_Check then
-                  Assuming := New_Assume_Statement (Ada_Node => N,
-                                                    Pre      => Precond,
-                                                    Post     => True_Pred);
-                  Assuming := +New_VC_Expr (Ada_Node => N,
-                                            Domain   => EW_Prog,
-                                            Reason   => VC_Range_Check,
-                                            Expr     => +Assuming);
-
-                  if Comes_From_Source (Low_Bound (Rng)) then
-                     Assuming := Sequence
-                       (New_Ignore
-                          (Ada_Node => N,
-                           Prog     => +Transform_Expr
-                             (Low_Bound (Rng), Why_Base, EW_Prog, Params)),
-                        Assuming);
-                  end if;
-
-                  if Comes_From_Source (High_Bound (Rng)) then
-                     Assuming := Sequence
-                       (New_Ignore
-                          (Ada_Node => N,
-                           Prog     => +Transform_Expr
-                             (High_Bound (Rng), Why_Base, EW_Prog, Params)),
-                        Assuming);
-                  end if;
-
-                  return +New_VC_Expr (Ada_Node => N,
-                                       Domain   => EW_Prog,
-                                       Reason   => VC_Range_Check,
-                                       Expr     => +Assuming);
-               else
-                  return New_Void;
-               end if;
-
-            --  Scalar subtype is modeled as abstract type, with constants for
-            --  the bounds. Generate assumptions that relate these constants to
-            --  their value.
-
-            else
-               if Do_Check then
-                  Assuming := New_Assume_Statement (Ada_Node => N,
-                                                    Pre      => Precond,
-                                                    Post     => Postcond);
-                  return +New_VC_Expr (Ada_Node => N,
-                                       Domain   => EW_Prog,
-                                       Reason   => VC_Range_Check,
-                                       Expr     => +Assuming);
-
-               else
-                  Assuming :=
-                    New_Assume_Statement
-                      (Ada_Node => N,
-                       Post     => +New_And_Expr (Domain => EW_Pred,
-                                                  Left   => +Precond,
-                                                  Right  => +Postcond));
-                  return Assuming;
-               end if;
-            end if;
-         end;
-      end if;
-   end Assume_Of_Scalar_Subtype;
-
-   ----------------------------------
-   -- Assume_Of_Subtype_Indication --
-   ----------------------------------
-
-   function Assume_Of_Subtype_Indication
-     (Params   : Transformation_Params;
-      N        : Node_Id;
-      Sub_Type : Entity_Id;
-      Do_Check : Boolean) return W_Prog_Id is
-   begin
-      if Is_Scalar_Type (Sub_Type) then
-         return Assume_Of_Scalar_Subtype (Params   => Params,
-                                          N        => Sub_Type,
-                                          Base     => Etype (Subtype_Mark (N)),
-                                          Do_Check => Do_Check);
-      else
-         return New_Void;
-      end if;
-   end Assume_Of_Subtype_Indication;
-
    -------------------------------
    -- Bind_From_Mapping_In_Expr --
    -------------------------------
@@ -1377,6 +1158,148 @@ package body Gnat2Why.Expr is
             Typ         => Get_Type (Then_Expr));
       end if;
    end Case_Expr_Of_Ada_Node;
+
+   --------------------------
+   -- Check_Scalar_Subtype --
+   --------------------------
+
+   function Check_Scalar_Subtype
+     (Params   : Transformation_Params;
+      N        : Entity_Id;
+      Base     : Entity_Id) return W_Prog_Id
+   is
+   begin
+      --  If the range is not static, we need to generate a check that
+      --  the subtype declaration is valid; otherwise, the frontend has
+      --  done it for us already
+
+      if Is_OK_Static_Range (Get_Range (N)) then
+         return New_Void;
+      else
+
+         pragma Assert (Type_Is_Modeled_As_Base (N));
+
+         declare
+            Rng              : constant Node_Id := Get_Range (N);
+            Why_Base         : constant W_Type_Id := Base_Why_Type (N);
+            Le               : constant W_Identifier_Id :=
+              (if Why_Base = EW_Real_Type then Real_Infix_Le
+               elsif Why_Type_Is_BitVector (Why_Base) then
+                    Create_Modular_Le (Why_Base)
+               else Int_Infix_Le);
+            Low_Expr         : constant W_Term_Id :=
+              +Transform_Expr (Low_Bound (Rng), Why_Base, EW_Term, Params);
+            High_Expr        : constant W_Term_Id :=
+              +Transform_Expr (High_Bound (Rng), Why_Base, EW_Term, Params);
+            First_In_Range   : constant W_Pred_Id :=
+              New_Call
+                (Name =>
+                   (if Why_Base = EW_Real_Type then Real_Infix_Ge
+                    elsif Why_Type_Is_BitVector (Why_Base) then
+                         Create_Modular_Ge (Why_Base)
+                    else Int_Infix_Ge),
+                 Typ  => EW_Bool_Type,
+                 Args => (+Low_Expr,
+                          (if Why_Type_Is_BitVector (Why_Base) then
+                              Insert_Simple_Conversion (Domain => EW_Term,
+                                                        Expr   =>
+                                                          New_Attribute_Expr
+                                                            (Base,
+                                                             Attribute_First,
+                                                             Params),
+                                                        To     => Why_Base)
+                           else
+                              +New_Attribute_Expr
+                             (Base, Attribute_First, Params))));
+            Last_In_Range    : constant W_Pred_Id :=
+              New_Call
+                (Name => Le,
+                 Typ  => EW_Bool_Type,
+                 Args => (+High_Expr,
+                          (if Why_Type_Is_BitVector (Why_Base) then
+                              Insert_Simple_Conversion (Domain => EW_Term,
+                                                        Expr   =>
+                                                          New_Attribute_Expr
+                                                            (Base,
+                                                             Attribute_Last,
+                                                             Params),
+                                                        To     => Why_Base)
+                           else
+                              +New_Attribute_Expr
+                             (Base, Attribute_Last, Params))));
+            First_Le_Last    : constant W_Pred_Id :=
+              New_Call
+                (Name => Le,
+                 Typ  => EW_Bool_Type,
+                 Args => (+Low_Expr, +High_Expr));
+            Precond          : constant W_Pred_Id :=
+              +New_Connection
+              (Op     => EW_Imply,
+               Left   => +First_Le_Last,
+               Right  =>
+                 +New_And_Expr
+                 (Domain => EW_Pred,
+                  Left   => +First_In_Range,
+                  Right => +Last_In_Range));
+
+            Check_Range      : W_Prog_Id;
+         begin
+
+            --  We need to check both that the range is OK (either
+            --  empty or contained in the range's type) and that there cannot
+            --  be any runtime errors during the computation of the bounds.
+            --  If the range bounds where computed by the frontend, we assume
+            --  that they are correct.
+
+            Check_Range :=
+              +New_VC_Expr (Ada_Node => N,
+                            Domain   => EW_Prog,
+                            Reason   => VC_Range_Check,
+                            Expr     =>
+                              +New_Assume_Statement (Ada_Node => N,
+                                                     Pre      => Precond,
+                                                     Post     => True_Pred));
+
+            if Comes_From_Source (Low_Bound (Rng)) then
+               Check_Range := Sequence
+                 (New_Ignore
+                    (Ada_Node => N,
+                     Prog     => +Transform_Expr
+                       (Low_Bound (Rng), Why_Base, EW_Prog, Params)),
+                  Check_Range);
+            end if;
+
+            if Comes_From_Source (High_Bound (Rng)) then
+               Check_Range := Sequence
+                 (New_Ignore
+                    (Ada_Node => N,
+                     Prog     => +Transform_Expr
+                       (High_Bound (Rng), Why_Base, EW_Prog, Params)),
+                  Check_Range);
+            end if;
+
+            return Check_Range;
+         end;
+      end if;
+   end Check_Scalar_Subtype;
+
+   ------------------------------
+   -- Check_Subtype_Indication --
+   ------------------------------
+
+   function Check_Subtype_Indication
+     (Params   : Transformation_Params;
+      N        : Node_Id;
+      Sub_Type : Entity_Id) return W_Prog_Id is
+   begin
+      if Is_Scalar_Type (Sub_Type) then
+         return Check_Scalar_Subtype (Params   => Params,
+                                      N        => Sub_Type,
+                                      Base     => Etype (Subtype_Mark (N)));
+      else
+         return New_Void;
+      end if;
+   end Check_Subtype_Indication;
 
    -----------------------
    -- Compute_Call_Args --
@@ -4909,11 +4832,10 @@ package body Gnat2Why.Expr is
         and then Nkind (N) = N_Subtype_Indication
       then
          R := +Sequence
-                (Assume_Of_Subtype_Indication (Params   => Params,
-                                               N        => N,
-                                               Sub_Type => Etype (N),
-                                               Do_Check => True),
-                 +R);
+           (Check_Subtype_Indication (Params   => Params,
+                                      N        => N,
+                                      Sub_Type => Etype (N)),
+            +R);
       end if;
 
       return R;
@@ -7811,11 +7733,10 @@ package body Gnat2Why.Expr is
                if Entity_In_SPARK (Ent) then
                   case Ekind (Ent) is
                   when Scalar_Kind =>
-                     R := Assume_Of_Scalar_Subtype
+                     R := Check_Scalar_Subtype
                             (Params   => Body_Params,
                              N        => Ent,
-                             Base     => Base,
-                             Do_Check => True);
+                             Base     => Base);
 
                   when Array_Kind =>
                      declare
@@ -7830,13 +7751,14 @@ package body Gnat2Why.Expr is
                         Index := First_Index (Ent);
                         while Present (Index) loop
                            if Nkind (Index) = N_Subtype_Indication then
-                              R := Sequence
-                                     (Assume_Of_Subtype_Indication
-                                       (Params   => Body_Params,
-                                        N        => Index,
-                                        Sub_Type => Etype (Index),
-                                        Do_Check => Comes_From_Source (Index)),
-                                      R);
+                              if Comes_From_Source (Index) then
+                                 R := Sequence
+                                   (Check_Subtype_Indication
+                                      (Params   => Body_Params,
+                                       N        => Index,
+                                       Sub_Type => Etype (Index)),
+                                    R);
+                              end if;
                            end if;
 
                            Next (Index);
@@ -7851,13 +7773,14 @@ package body Gnat2Why.Expr is
                            Index := First_Index (Ent);
                            Index_Base := First_Index (Base);
                            while Present (Index) loop
-                              R := Sequence
-                                     (Assume_Of_Scalar_Subtype
-                                       (Params   => Body_Params,
-                                        N        => Etype (Index),
-                                        Base     => Etype (Index_Base),
-                                        Do_Check => Comes_From_Source (Index)),
-                                      R);
+                              if Comes_From_Source (Index) then
+                                 R := Sequence
+                                   (Check_Scalar_Subtype
+                                      (Params   => Body_Params,
+                                       N        => Etype (Index),
+                                       Base     => Etype (Index_Base)),
+                                    R);
+                              end if;
                               Next (Index);
                               Next (Index_Base);
                            end loop;
@@ -7882,14 +7805,14 @@ package body Gnat2Why.Expr is
 
                            if Present (Typ)
                              and then Nkind (Typ) = N_Subtype_Indication
+                             and then Comes_From_Source (Typ)
                            then
                               R := Sequence
-                                     (Assume_Of_Subtype_Indication
-                                        (Params   => Body_Params,
-                                         N        => Typ,
-                                         Sub_Type => Etype (Comp),
-                                         Do_Check => Comes_From_Source (Typ)),
-                                      R);
+                                (Check_Subtype_Indication
+                                   (Params   => Body_Params,
+                                    N        => Typ,
+                                    Sub_Type => Etype (Comp)),
+                                 R);
                            end if;
                            Next_Component (Comp);
                         end loop;
@@ -8008,10 +7931,9 @@ package body Gnat2Why.Expr is
            and then Present (Index_Type)
          then
             R := +Sequence
-              (Assume_Of_Scalar_Subtype (Params   => Params,
-                                         N        => Choice_Type,
-                                         Base     => Index_Type,
-                                         Do_Check => True),
+              (Check_Scalar_Subtype (Params   => Params,
+                                     N        => Choice_Type,
+                                     Base     => Index_Type),
                +R);
          end if;
 

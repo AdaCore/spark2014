@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2014, AdaCore                   --
+--                       Copyright (C) 2010-2015, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -763,12 +763,11 @@ package body Gnat2Why.Expr.Loops is
                if Nkind (Loop_Range) = N_Subtype_Indication then
                   Entire_Loop :=
                     Sequence
-                      (Assume_Of_Subtype_Indication
+                      (Check_Subtype_Indication
                          (Params   => Body_Params,
                           N        => Loop_Range,
                           Sub_Type =>
-                            Etype (Defining_Identifier (LParam_Spec)),
-                          Do_Check => True),
+                            Etype (Defining_Identifier (LParam_Spec))),
                        Entire_Loop);
                end if;
 
