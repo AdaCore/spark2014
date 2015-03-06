@@ -197,6 +197,7 @@ decimal_fixed.ads:17:14: warning: subprogram "Test_Divide" has no effect
 decimal_fixed.ads:20:14: warning: subprogram "Test_Type_Conversion" has no effect
 decimal_fixed.ads:23:14: warning: subprogram "Test_Compare" has no effect
 dynamic_fixed.adb:6:18: info: range check proved
+dynamic_fixed.adb:6:40: info: range check proved
 dynamic_fixed.adb:7:19: info: range check proved
 dynamic_fixed.adb:9:25: medium: assertion might fail, requires Integer (T'Last) = I
 dynamic_fixed.adb:10:10: info: assertion proved

@@ -1037,6 +1037,29 @@ package body Gnat2Why.Expr is
                   Assuming := New_Assume_Statement (Ada_Node => N,
                                                     Pre      => Precond,
                                                     Post     => True_Pred);
+                  Assuming := +New_VC_Expr (Ada_Node => N,
+                                            Domain   => EW_Prog,
+                                            Reason   => VC_Range_Check,
+                                            Expr     => +Assuming);
+
+                  if Comes_From_Source (Low_Bound (Rng)) then
+                     Assuming := Sequence
+                       (New_Ignore
+                          (Ada_Node => N,
+                           Prog     => +Transform_Expr
+                             (Low_Bound (Rng), Why_Base, EW_Prog, Params)),
+                        Assuming);
+                  end if;
+
+                  if Comes_From_Source (High_Bound (Rng)) then
+                     Assuming := Sequence
+                       (New_Ignore
+                          (Ada_Node => N,
+                           Prog     => +Transform_Expr
+                             (High_Bound (Rng), Why_Base, EW_Prog, Params)),
+                        Assuming);
+                  end if;
+
                   return +New_VC_Expr (Ada_Node => N,
                                        Domain   => EW_Prog,
                                        Reason   => VC_Range_Check,

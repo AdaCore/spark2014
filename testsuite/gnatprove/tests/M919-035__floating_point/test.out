@@ -1,4 +1,5 @@
 dynamic_float.adb:6:18: info: range check proved
+dynamic_float.adb:6:40: info: range check proved
 dynamic_float.adb:7:19: info: range check proved
 dynamic_float.adb:9:10: info: assertion proved
 dynamic_float.adb:9:35: info: range check proved

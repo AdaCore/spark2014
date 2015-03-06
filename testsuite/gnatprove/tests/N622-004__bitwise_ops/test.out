@@ -118,6 +118,8 @@ aco-math-very_longs.adb:292:44: info: index check proved
 aco-math-very_longs.adb:292:44: info: overflow check proved
 aco-math-very_longs.adb:304:15: info: range check proved
 aco-math-very_longs.adb:307:15: info: range check proved
+aco-math-very_longs.adb:307:93: info: overflow check proved
+aco-math-very_longs.adb:307:115: info: overflow check proved
 aco-math-very_longs.adb:326:19: info: postcondition proved
 aco-math-very_longs.adb:326:25: info: discriminant check proved
 aco-math-very_longs.adb:326:45: medium: array index check might fail

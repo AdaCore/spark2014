@@ -3,21 +3,27 @@ do_checks.adb:6:14: warning: subprogram "Do_Length_Check" has no effect
 do_checks.adb:7:14: warning: subprogram "Do_Discriminant_Check" has no effect
 do_checks.adb:17:24: medium: range check might fail
 do_checks.adb:23:24: info: range check proved
+do_checks.adb:23:57: medium: overflow check might fail
 do_checks.adb:31:16: medium: range check might fail
 do_checks.adb:38:16: info: range check proved
+do_checks.adb:38:48: medium: overflow check might fail
 do_checks.adb:47:21: medium: range check might fail
 do_checks.adb:53:21: info: range check proved
 do_checks.adb:61:16: medium: range check might fail
 do_checks.adb:67:16: info: range check proved
+do_checks.adb:67:61: medium: overflow check might fail
 do_checks.adb:74:17: medium: range check might fail
 do_checks.adb:78:17: info: range check proved
 do_checks.adb:78:50: medium: overflow check might fail
 do_checks.adb:86:19: medium: range check might fail
 do_checks.adb:94:19: info: range check proved
+do_checks.adb:94:51: medium: overflow check might fail
 do_checks.adb:103:16: medium: range check might fail
 do_checks.adb:109:16: info: range check proved
+do_checks.adb:109:65: medium: overflow check might fail
 do_checks.adb:137:25: medium: range check might fail
 do_checks.adb:150:25: info: range check proved
+do_checks.adb:150:57: medium: overflow check might fail
 do_checks.adb:162:39: medium: length check might fail
 do_checks.adb:162:39: medium: range check might fail
 do_checks.adb:168:38: info: length check proved

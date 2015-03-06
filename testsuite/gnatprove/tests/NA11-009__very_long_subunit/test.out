@@ -1,5 +1,7 @@
 very_longs-divide.adb:15:12: info: range check proved
 very_longs-divide.adb:19:12: info: range check proved
+very_longs-divide.adb:20:48: info: overflow check proved
+very_longs-divide.adb:20:64: info: overflow check proved
 very_longs-divide.adb:61:13: info: discriminant check proved
 very_longs-divide.adb:61:26: info: length check proved
 very_longs-divide.adb:61:29: info: length check proved

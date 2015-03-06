@@ -5,6 +5,7 @@ dynamic_ranges.adb:18:07: info: assertion proved
 dynamic_ranges.adb:19:29: info: length check proved
 dynamic_ranges.adb:23:15: info: range check proved
 dynamic_ranges.adb:24:15: info: range check proved
+dynamic_ranges.adb:24:49: info: overflow check proved
 dynamic_ranges.adb:25:38: info: overflow check proved
 dynamic_ranges.adb:25:38: info: range check proved
 dynamic_ranges.adb:26:15: info: range check proved
