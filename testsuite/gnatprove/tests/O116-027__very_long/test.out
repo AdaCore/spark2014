@@ -2,26 +2,40 @@ very_longs-divide.adb:15:12: info: range check proved
 very_longs-divide.adb:19:12: info: range check proved
 very_longs-divide.adb:20:48: info: overflow check proved
 very_longs-divide.adb:20:64: info: overflow check proved
+very_longs-divide.adb:36:13: info: initialization of "Get_Shift_Distance" proved
+very_longs-divide.adb:47:14: info: initialization of "Distance" proved
+very_longs-divide.adb:52:30: info: initialization of "Result.Long_Digits" proved
 very_longs-divide.adb:61:13: info: discriminant check proved
+very_longs-divide.adb:61:13: info: initialization of "R118b" proved
 very_longs-divide.adb:61:26: info: length check proved
+very_longs-divide.adb:61:29: info: initialization of "R118b" proved
 very_longs-divide.adb:61:29: info: length check proved
 very_longs-divide.adb:63:22: info: discriminant check proved
 very_longs-divide.adb:64:44: info: discriminant check proved
 very_longs-divide.adb:64:57: info: index check proved
+very_longs-divide.adb:64:64: info: initialization of "Overflow_Mask" proved
 very_longs-divide.adb:65:16: info: discriminant check proved
 very_longs-divide.adb:65:29: info: index check proved
+very_longs-divide.adb:65:32: info: initialization of "Result.Long_Digits" proved
 very_longs-divide.adb:65:52: info: discriminant check proved
 very_longs-divide.adb:65:65: info: index check proved
 very_longs-divide.adb:66:16: info: discriminant check proved
 very_longs-divide.adb:66:29: info: index check proved
+very_longs-divide.adb:66:35: info: initialization of "Result.Long_Digits" proved
 very_longs-divide.adb:66:41: info: discriminant check proved
 very_longs-divide.adb:66:54: info: index check proved
+very_longs-divide.adb:66:60: info: initialization of "Old_Overflow" proved
+very_longs-divide.adb:67:26: info: initialization of "New_Overflow" proved
 very_longs-divide.adb:69:13: info: discriminant check proved
 very_longs-divide.adb:69:32: info: discriminant check proved
 very_longs-divide.adb:69:44: info: index check proved
+very_longs-divide.adb:69:51: info: initialization of "Result.Long_Digits" proved
+very_longs-divide.adb:69:54: info: initialization of "Old_Overflow" proved
 very_longs-divide.adb:82:22: info: discriminant check proved
+very_longs-divide.adb:82:34: info: initialization of "R122b" proved
 very_longs-divide.adb:83:44: info: discriminant check proved
 very_longs-divide.adb:83:57: info: index check proved
+very_longs-divide.adb:83:64: info: initialization of "Overflow_Mask" proved
 very_longs-divide.adb:84:16: info: discriminant check proved
 very_longs-divide.adb:84:29: info: index check proved
 very_longs-divide.adb:84:52: info: discriminant check proved
@@ -30,9 +44,13 @@ very_longs-divide.adb:85:16: info: discriminant check proved
 very_longs-divide.adb:85:29: info: index check proved
 very_longs-divide.adb:85:41: info: discriminant check proved
 very_longs-divide.adb:85:54: info: index check proved
+very_longs-divide.adb:85:60: info: initialization of "Old_Overflow" proved
+very_longs-divide.adb:86:26: info: initialization of "New_Overflow" proved
 very_longs-divide.adb:100:30: info: discriminant check proved
+very_longs-divide.adb:100:42: info: initialization of "R124b" proved
 very_longs-divide.adb:101:32: info: discriminant check proved
 very_longs-divide.adb:101:45: info: index check proved
+very_longs-divide.adb:101:52: info: initialization of "Overflow_Mask" proved
 very_longs-divide.adb:102:16: info: discriminant check proved
 very_longs-divide.adb:102:29: info: index check proved
 very_longs-divide.adb:102:53: info: discriminant check proved
@@ -41,6 +59,9 @@ very_longs-divide.adb:103:16: info: discriminant check proved
 very_longs-divide.adb:103:29: info: index check proved
 very_longs-divide.adb:104:18: info: discriminant check proved
 very_longs-divide.adb:104:31: info: index check proved
+very_longs-divide.adb:104:48: info: initialization of "Old_Overflow" proved
+very_longs-divide.adb:105:26: info: initialization of "New_Overflow" proved
+very_longs-divide.adb:111:49: info: initialization of "Q_Hat" proved
 very_longs-divide.adb:113:28: info: overflow check proved
 very_longs-divide.adb:119:29: info: discriminant check proved
 very_longs-divide.adb:119:44: info: index check proved
@@ -48,47 +69,72 @@ very_longs-divide.adb:119:44: info: overflow check proved
 very_longs-divide.adb:119:66: info: discriminant check proved
 very_longs-divide.adb:119:81: info: overflow check proved
 very_longs-divide.adb:119:85: info: index check proved
+very_longs-divide.adb:120:16: info: initialization of "Temporary_Digit" proved
 very_longs-divide.adb:120:32: medium: divide by zero might fail
 very_longs-divide.adb:120:48: info: discriminant check proved
 very_longs-divide.adb:120:61: info: index check proved
+very_longs-divide.adb:123:16: info: initialization of "Temporary_Digit" proved
 very_longs-divide.adb:123:32: medium: divide by zero might fail
 very_longs-divide.adb:123:50: info: discriminant check proved
 very_longs-divide.adb:123:63: info: index check proved
+very_longs-divide.adb:126:10: info: initialization of "Q_Hat" proved
 very_longs-divide.adb:127:32: info: discriminant check proved
 very_longs-divide.adb:127:47: info: index check proved
+very_longs-divide.adb:128:18: info: initialization of "R_Hat" proved
 very_longs-divide.adb:128:40: info: discriminant check proved
 very_longs-divide.adb:128:56: info: overflow check proved
 very_longs-divide.adb:128:61: info: index check proved
+very_longs-divide.adb:130:19: info: initialization of "Q_Hat" proved
+very_longs-divide.adb:131:19: info: initialization of "R_Hat" proved
 very_longs-divide.adb:131:41: info: discriminant check proved
 very_longs-divide.adb:131:54: info: index check proved
+very_longs-divide.adb:133:10: info: initialization of "R_Hat" proved
+very_longs-divide.adb:135:13: info: initialization of "Q_Hat" proved
 very_longs-divide.adb:136:35: info: discriminant check proved
 very_longs-divide.adb:136:50: info: index check proved
+very_longs-divide.adb:137:21: info: initialization of "R_Hat" proved
 very_longs-divide.adb:137:43: info: discriminant check proved
 very_longs-divide.adb:137:59: info: overflow check proved
 very_longs-divide.adb:137:64: info: index check proved
+very_longs-divide.adb:139:22: info: initialization of "Q_Hat" proved
+very_longs-divide.adb:147:53: info: initialization of "Current_Borrow" proved
 very_longs-divide.adb:157:11: info: range check proved
+very_longs-divide.adb:157:56: info: initialization of "R127b" proved
 very_longs-divide.adb:158:43: info: discriminant check proved
 very_longs-divide.adb:158:56: info: index check proved
+very_longs-divide.adb:158:74: info: initialization of "Carry" proved
+very_longs-divide.adb:159:31: info: initialization of "Product" proved
+very_longs-divide.adb:161:29: info: initialization of "Product" proved
 very_longs-divide.adb:162:28: info: discriminant check proved
 very_longs-divide.adb:162:43: info: overflow check proved
 very_longs-divide.adb:162:59: medium: array index check might fail
+very_longs-divide.adb:163:16: info: initialization of "Temporary_Digit" proved
+very_longs-divide.adb:163:34: info: initialization of "Current_Borrow" proved
 very_longs-divide.adb:169:11: info: discriminant check proved
 very_longs-divide.adb:169:26: info: overflow check proved
 very_longs-divide.adb:169:42: info: index check proved
 very_longs-divide.adb:170:34: info: discriminant check proved
 very_longs-divide.adb:170:49: info: overflow check proved
 very_longs-divide.adb:170:65: info: index check proved
+very_longs-divide.adb:170:73: info: initialization of "Temporary_Digit" proved
+very_longs-divide.adb:170:92: info: initialization of "Current_Borrow" proved
 very_longs-divide.adb:170:108: info: range check proved
+very_longs-divide.adb:171:28: info: initialization of "Future_Borrow" proved
 very_longs-divide.adb:175:24: info: discriminant check proved
 very_longs-divide.adb:175:39: info: overflow check proved
 very_longs-divide.adb:175:39: medium: array index check might fail
+very_longs-divide.adb:175:48: info: initialization of "Carry" proved
+very_longs-divide.adb:175:56: info: initialization of "Current_Borrow" proved
 very_longs-divide.adb:180:08: info: discriminant check proved
 very_longs-divide.adb:180:23: info: index check proved
 very_longs-divide.adb:180:23: info: overflow check proved
 very_longs-divide.adb:181:31: info: discriminant check proved
 very_longs-divide.adb:181:46: info: index check proved
 very_longs-divide.adb:181:46: info: overflow check proved
+very_longs-divide.adb:181:54: info: initialization of "Carry" proved
+very_longs-divide.adb:181:63: info: initialization of "Current_Borrow" proved
 very_longs-divide.adb:181:79: info: range check proved
+very_longs-divide.adb:182:25: info: initialization of "Future_Borrow" proved
 very_longs-divide.adb:194:15: info: discriminant check proved
 very_longs-divide.adb:194:28: medium: array index check might fail
 very_longs-divide.adb:194:40: medium: range check might fail
@@ -97,46 +143,87 @@ very_longs-divide.adb:198:31: info: index check proved
 very_longs-divide.adb:198:45: info: discriminant check proved
 very_longs-divide.adb:198:58: info: index check proved
 very_longs-divide.adb:200:14: info: range check proved
+very_longs-divide.adb:200:59: info: initialization of "R129b" proved
 very_longs-divide.adb:201:34: info: discriminant check proved
 very_longs-divide.adb:201:49: info: overflow check proved
 very_longs-divide.adb:201:65: medium: array index check might fail
 very_longs-divide.adb:202:34: info: discriminant check proved
 very_longs-divide.adb:202:47: info: index check proved
+very_longs-divide.adb:202:65: info: initialization of "Carry" proved
 very_longs-divide.adb:203:14: info: discriminant check proved
 very_longs-divide.adb:203:29: info: overflow check proved
 very_longs-divide.adb:203:45: info: index check proved
+very_longs-divide.adb:203:68: info: initialization of "Sum" proved
+very_longs-divide.adb:204:34: info: initialization of "Sum" proved
 very_longs-divide.adb:206:11: info: discriminant check proved
 very_longs-divide.adb:206:26: info: index check proved
 very_longs-divide.adb:206:26: info: overflow check proved
 very_longs-divide.adb:206:35: info: discriminant check proved
 very_longs-divide.adb:206:50: info: overflow check proved
 very_longs-divide.adb:206:50: medium: array index check might fail
+very_longs-divide.adb:206:72: info: initialization of "Carry" proved
 very_longs-divide.adb:211:12: info: discriminant check proved
+very_longs-divide.adb:211:12: info: initialization of "R132b" proved
 very_longs-divide.adb:211:26: info: length check proved
+very_longs-divide.adb:211:29: info: initialization of "R132b" proved
 very_longs-divide.adb:211:29: info: length check proved
 very_longs-divide.adb:212:13: info: discriminant check proved
+very_longs-divide.adb:212:13: info: initialization of "R136b" proved
 very_longs-divide.adb:212:26: info: length check proved
+very_longs-divide.adb:212:29: info: initialization of "R136b" proved
 very_longs-divide.adb:212:29: info: length check proved
 very_longs-divide.adb:215:09: medium: range check might fail
 very_longs-divide.adb:216:25: info: range check proved
+very_longs-divide.adb:216:27: info: initialization of "N" proved
 very_longs-divide.adb:219:22: info: precondition proved
 very_longs-divide.adb:219:48: info: discriminant check proved
 very_longs-divide.adb:219:61: info: index check proved
+very_longs-divide.adb:219:61: info: initialization of "N" proved
 very_longs-divide.adb:220:04: info: precondition proved
+very_longs-divide.adb:220:33: info: initialization of "Shift_Distance" proved
 very_longs-divide.adb:221:09: info: discriminant check proved
+very_longs-divide.adb:222:15: info: initialization of "V.Long_Digits" proved
+very_longs-divide.adb:222:18: info: initialization of "Shift_Distance" proved
 very_longs-divide.adb:225:08: info: range check proved
+very_longs-divide.adb:225:49: info: initialization of "M" proved
+very_longs-divide.adb:225:51: info: initialization of "R139b" proved
 very_longs-divide.adb:225:51: info: overflow check proved
+very_longs-divide.adb:227:07: info: initialization of "N" proved
+very_longs-divide.adb:227:07: info: initialization of "U.Long_Digits" proved
+very_longs-divide.adb:227:07: info: initialization of "V.Long_Digits" proved
 very_longs-divide.adb:227:07: info: precondition proved
 very_longs-divide.adb:227:10: info: range check proved
+very_longs-divide.adb:230:07: info: initialization of "N" proved
+very_longs-divide.adb:230:07: info: initialization of "Q_Hat" proved
+very_longs-divide.adb:230:07: info: initialization of "U.Long_Digits" proved
+very_longs-divide.adb:230:07: info: initialization of "V.Long_Digits" proved
 very_longs-divide.adb:230:10: info: range check proved
+very_longs-divide.adb:233:07: info: initialization of "Current_Borrow" proved
+very_longs-divide.adb:233:07: info: initialization of "N" proved
+very_longs-divide.adb:233:07: info: initialization of "Q_Hat" proved
+very_longs-divide.adb:233:07: info: initialization of "Quotient.Long_Digits" proved
+very_longs-divide.adb:233:07: info: initialization of "U.Long_Digits" proved
+very_longs-divide.adb:233:07: info: initialization of "V.Long_Digits" proved
 very_longs-divide.adb:233:10: info: range check proved
 very_longs-divide.adb:239:08: info: range check proved
+very_longs-divide.adb:239:53: info: initialization of "N" proved
+very_longs-divide.adb:239:53: info: initialization of "R141b" proved
 very_longs-divide.adb:240:16: info: discriminant check proved
 very_longs-divide.adb:240:29: info: index check proved
+very_longs-divide.adb:240:44: info: initialization of "Remainder.Long_Digits" proved
+very_longs-divide.adb:240:47: info: initialization of "U.Long_Digits" proved
 very_longs-divide.adb:240:48: info: discriminant check proved
 very_longs-divide.adb:240:61: info: index check proved
+very_longs-divide.adb:242:16: info: initialization of "Remainder.Long_Digits" proved
+very_longs-divide.adb:242:27: info: initialization of "Shift_Distance" proved
+very_longs.adb:33:54: info: initialization of "Digit" proved
+very_longs.adb:33:73: info: initialization of "Valid" proved
+very_longs.adb:50:28: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:50:52: info: initialization of "Carry" proved
 very_longs.adb:59:13: info: discriminant check proved
+very_longs.adb:59:13: info: initialization of "R9b" proved
 very_longs.adb:59:26: info: length check proved
+very_longs.adb:59:29: info: initialization of "R9b" proved
 very_longs.adb:59:29: info: length check proved
 very_longs.adb:61:17: info: discriminant check proved
 very_longs.adb:65:10: info: loop invariant initialization proved
@@ -146,15 +233,26 @@ very_longs.adb:68:10: info: loop invariant preservation proved
 very_longs.adb:69:14: info: discriminant check proved
 very_longs.adb:69:36: info: discriminant check proved
 very_longs.adb:70:16: info: discriminant check proved
+very_longs.adb:70:37: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:70:43: info: discriminant check proved
 very_longs.adb:72:35: info: discriminant check proved
 very_longs.adb:72:48: info: index check proved
 very_longs.adb:73:35: info: discriminant check proved
 very_longs.adb:73:48: info: index check proved
+very_longs.adb:74:21: info: initialization of "L_Digit" proved
+very_longs.adb:74:31: info: initialization of "R_Digit" proved
+very_longs.adb:74:41: info: initialization of "Carry" proved
+very_longs.adb:75:33: info: initialization of "Sum" proved
 very_longs.adb:76:16: info: discriminant check proved
 very_longs.adb:76:29: info: index check proved
+very_longs.adb:76:32: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:76:50: info: initialization of "Sum" proved
+very_longs.adb:83:28: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:83:52: info: initialization of "Borrow" proved
 very_longs.adb:92:13: info: discriminant check proved
+very_longs.adb:92:13: info: initialization of "R19b" proved
 very_longs.adb:92:26: info: length check proved
+very_longs.adb:92:29: info: initialization of "R19b" proved
 very_longs.adb:92:29: info: length check proved
 very_longs.adb:94:17: info: discriminant check proved
 very_longs.adb:98:10: info: loop invariant initialization proved
@@ -164,49 +262,86 @@ very_longs.adb:101:10: info: loop invariant preservation proved
 very_longs.adb:102:14: info: discriminant check proved
 very_longs.adb:102:36: info: discriminant check proved
 very_longs.adb:103:16: info: discriminant check proved
+very_longs.adb:103:37: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:103:43: info: discriminant check proved
 very_longs.adb:105:38: info: discriminant check proved
 very_longs.adb:105:51: info: index check proved
 very_longs.adb:106:38: info: discriminant check proved
 very_longs.adb:106:51: info: index check proved
+very_longs.adb:107:25: info: initialization of "L_Digit" proved
+very_longs.adb:107:35: info: initialization of "R_Digit" proved
+very_longs.adb:107:46: info: initialization of "Borrow" proved
+very_longs.adb:108:14: info: initialization of "Difference" proved
 very_longs.adb:113:10: info: assertion proved
+very_longs.adb:113:29: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:113:35: info: discriminant check proved
+very_longs.adb:113:47: info: initialization of "R23b" proved
 very_longs.adb:114:16: info: discriminant check proved
 very_longs.adb:114:29: info: index check proved
+very_longs.adb:114:32: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:114:50: info: initialization of "Difference" proved
 very_longs.adb:133:07: info: assertion proved
 very_longs.adb:134:13: info: discriminant check proved
 very_longs.adb:134:26: info: length check proved
 very_longs.adb:134:29: info: length check proved
+very_longs.adb:136:20: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:136:26: info: discriminant check proved
+very_longs.adb:136:38: info: initialization of "R27b" proved
 very_longs.adb:137:16: info: discriminant check proved
 very_longs.adb:137:29: info: index check proved
+very_longs.adb:137:36: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:137:45: info: initialization of "Temp" proved
 very_longs.adb:137:50: info: division check proved
 very_longs.adb:137:50: info: range check proved
+very_longs.adb:138:18: info: initialization of "Temp" proved
 very_longs.adb:138:23: info: division check proved
+very_longs.adb:140:14: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:154:13: info: discriminant check proved
+very_longs.adb:154:13: info: initialization of "R32b" proved
 very_longs.adb:154:26: info: length check proved
+very_longs.adb:154:29: info: initialization of "R32b" proved
 very_longs.adb:154:29: info: length check proved
+very_longs.adb:157:16: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:157:22: info: discriminant check proved
 very_longs.adb:157:34: info: range check proved
 very_longs.adb:158:29: info: range check proved
 very_longs.adb:161:10: info: loop invariant initialization proved
 very_longs.adb:161:10: info: loop invariant preservation proved
 very_longs.adb:162:26: info: overflow check proved
+very_longs.adb:162:28: info: initialization of "String_Index" proved
 very_longs.adb:162:41: info: overflow check proved
 very_longs.adb:162:45: info: division check proved
+very_longs.adb:162:59: info: initialization of "Index" proved
 very_longs.adb:163:10: info: loop invariant initialization proved
 very_longs.adb:163:10: info: loop invariant preservation proved
+very_longs.adb:163:32: info: initialization of "String_Index" proved
 very_longs.adb:164:10: info: loop invariant initialization proved
 very_longs.adb:164:10: info: loop invariant preservation proved
+very_longs.adb:164:32: info: initialization of "Index" proved
+very_longs.adb:164:41: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:164:47: info: discriminant check proved
 very_longs.adb:166:31: info: index check proved
+very_longs.adb:166:31: info: initialization of "String_Index" proved
+very_longs.adb:167:31: info: initialization of "String_Index" proved
 very_longs.adb:167:44: info: index check proved
 very_longs.adb:167:44: info: overflow check proved
+very_longs.adb:168:18: info: initialization of "H_Okay" proved
+very_longs.adb:168:29: info: initialization of "L_Okay" proved
 very_longs.adb:172:10: info: assertion proved
+very_longs.adb:172:24: info: initialization of "Index" proved
+very_longs.adb:172:33: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:172:39: info: discriminant check proved
+very_longs.adb:172:51: info: initialization of "R35b" proved
 very_longs.adb:173:16: info: discriminant check proved
 very_longs.adb:173:29: info: index check proved
+very_longs.adb:173:36: info: initialization of "Index" proved
+very_longs.adb:173:36: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:173:44: info: initialization of "H_Digit" proved
+very_longs.adb:173:54: info: initialization of "L_Digit" proved
+very_longs.adb:174:20: info: initialization of "Index" proved
+very_longs.adb:175:19: info: initialization of "Index" proved
 very_longs.adb:175:25: info: range check proved
+very_longs.adb:176:26: info: initialization of "String_Index" proved
 very_longs.adb:176:39: info: overflow check proved
 very_longs.adb:188:25: info: discriminant check proved
 very_longs.adb:189:14: info: discriminant check proved
@@ -217,6 +352,7 @@ very_longs.adb:193:14: info: discriminant check proved
 very_longs.adb:193:27: info: index check proved
 very_longs.adb:193:33: info: discriminant check proved
 very_longs.adb:193:46: info: index check proved
+very_longs.adb:199:14: info: initialization of "Result" proved
 very_longs.adb:205:17: info: precondition proved
 very_longs.adb:211:21: info: precondition proved
 very_longs.adb:217:21: info: precondition proved
@@ -232,8 +368,10 @@ very_longs.adb:233:33: info: index check proved
 very_longs.adb:234:28: info: range check proved
 very_longs.adb:237:10: info: loop invariant initialization proved
 very_longs.adb:237:10: info: loop invariant preservation proved
+very_longs.adb:239:29: info: initialization of "Digit_Count" proved
 very_longs.adb:240:26: info: discriminant check proved
 very_longs.adb:240:40: info: index check proved
+very_longs.adb:243:11: info: initialization of "Digit_Count" proved
 very_longs.adb:258:13: info: discriminant check proved
 very_longs.adb:258:26: info: length check proved
 very_longs.adb:258:29: info: length check proved
@@ -242,8 +380,15 @@ very_longs.adb:261:35: info: discriminant check proved
 very_longs.adb:261:48: info: index check proved
 very_longs.adb:262:35: info: discriminant check proved
 very_longs.adb:262:48: info: index check proved
+very_longs.adb:263:21: info: initialization of "L_Digit" proved
+very_longs.adb:263:31: info: initialization of "R_Digit" proved
+very_longs.adb:263:41: info: initialization of "Carry" proved
+very_longs.adb:264:33: info: initialization of "Sum" proved
 very_longs.adb:265:16: info: discriminant check proved
 very_longs.adb:265:29: info: index check proved
+very_longs.adb:265:32: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:265:50: info: initialization of "Sum" proved
+very_longs.adb:267:14: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:278:13: info: discriminant check proved
 very_longs.adb:278:26: info: length check proved
 very_longs.adb:278:29: info: length check proved
@@ -252,8 +397,15 @@ very_longs.adb:281:38: info: discriminant check proved
 very_longs.adb:281:51: info: index check proved
 very_longs.adb:282:38: info: discriminant check proved
 very_longs.adb:282:51: info: index check proved
+very_longs.adb:283:25: info: initialization of "L_Digit" proved
+very_longs.adb:283:35: info: initialization of "R_Digit" proved
+very_longs.adb:283:46: info: initialization of "Borrow" proved
+very_longs.adb:284:14: info: initialization of "Difference" proved
 very_longs.adb:289:16: info: discriminant check proved
 very_longs.adb:289:29: info: index check proved
+very_longs.adb:289:32: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:289:50: info: initialization of "Difference" proved
+very_longs.adb:291:14: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:308:13: info: discriminant check proved
 very_longs.adb:308:26: info: length check proved
 very_longs.adb:308:29: info: length check proved
@@ -264,13 +416,24 @@ very_longs.adb:314:51: info: index check proved
 very_longs.adb:315:38: info: discriminant check proved
 very_longs.adb:315:51: info: index check proved
 very_longs.adb:316:18: info: overflow check proved
+very_longs.adb:316:29: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:316:35: info: discriminant check proved
+very_longs.adb:316:47: info: initialization of "R94b" proved
+very_longs.adb:317:40: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:317:46: info: discriminant check proved
 very_longs.adb:317:61: info: overflow check proved
 very_longs.adb:317:65: info: index check proved
+very_longs.adb:318:28: info: initialization of "L_Digit" proved
+very_longs.adb:318:38: info: initialization of "R_Digit" proved
+very_longs.adb:318:49: info: initialization of "T_Digit" proved
+very_longs.adb:318:59: info: initialization of "Carry" proved
 very_longs.adb:319:22: info: discriminant check proved
 very_longs.adb:319:37: info: overflow check proved
 very_longs.adb:319:41: info: index check proved
+very_longs.adb:319:46: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:319:64: info: initialization of "Temp" proved
+very_longs.adb:320:39: info: initialization of "Temp" proved
+very_longs.adb:324:14: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:337:13: info: discriminant check proved
 very_longs.adb:337:26: info: length check proved
 very_longs.adb:337:29: info: length check proved
@@ -280,21 +443,47 @@ very_longs.adb:343:39: info: discriminant check proved
 very_longs.adb:343:52: info: index check proved
 very_longs.adb:344:39: info: discriminant check proved
 very_longs.adb:344:52: info: index check proved
+very_longs.adb:345:38: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:345:44: info: discriminant check proved
 very_longs.adb:345:59: info: overflow check proved
 very_longs.adb:345:63: info: index check proved
+very_longs.adb:346:26: info: initialization of "L_Digit" proved
+very_longs.adb:346:36: info: initialization of "R_Digit" proved
+very_longs.adb:346:47: info: initialization of "T_Digit" proved
+very_longs.adb:346:57: info: initialization of "Carry" proved
 very_longs.adb:347:19: info: discriminant check proved
 very_longs.adb:347:34: info: overflow check proved
 very_longs.adb:347:38: info: index check proved
+very_longs.adb:347:43: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:347:61: info: initialization of "Temp" proved
+very_longs.adb:348:37: info: initialization of "Temp" proved
 very_longs.adb:350:16: info: discriminant check proved
 very_longs.adb:350:38: info: index check proved
 very_longs.adb:350:38: info: overflow check proved
+very_longs.adb:350:43: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:350:61: info: initialization of "Carry" proved
+very_longs.adb:352:14: info: initialization of "Result.Long_Digits" proved
+very_longs.ads:12:13: info: initialization of "Make_From_Natural.Long_Digits" proved
 very_longs.ads:14:20: info: postcondition proved
+very_longs.ads:17:36: info: initialization of "Result.Long_Digits" proved
+very_longs.ads:18:36: info: initialization of "Valid" proved
 very_longs.ads:21:34: info: overflow check proved
+very_longs.ads:24:13: info: initialization of "Olt" proved
+very_longs.ads:27:13: info: initialization of "Ole" proved
+very_longs.ads:30:13: info: initialization of "Ogt" proved
+very_longs.ads:33:13: info: initialization of "Oge" proved
+very_longs.ads:37:13: info: initialization of "Is_Zero" proved
+very_longs.ads:40:13: info: initialization of "Number_Of_Digits" proved
+very_longs.ads:43:13: info: initialization of "ModAdd.Long_Digits" proved
 very_longs.ads:46:18: info: postcondition proved
+very_longs.ads:49:13: info: initialization of "ModSubtract.Long_Digits" proved
 very_longs.ads:52:18: info: postcondition proved
+very_longs.ads:55:13: info: initialization of "ModMultiply.Long_Digits" proved
 very_longs.ads:58:18: info: postcondition proved
+very_longs.ads:61:13: info: initialization of "Omultiply.Long_Digits" proved
 very_longs.ads:62:19: info: postcondition proved
+very_longs.ads:67:22: info: initialization of "Quotient.Long_Digits" proved
+very_longs.ads:68:22: info: initialization of "Remainder.Long_Digits" proved
 very_longs.ads:75:37: info: overflow check proved
 very_longs.ads:90:26: info: discriminant check proved
 very_longs.ads:90:54: info: discriminant check proved

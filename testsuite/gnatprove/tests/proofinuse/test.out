@@ -1,31 +1,52 @@
 bitwise.adb:6:53: info: range check proved
 bitwise.adb:7:07: info: assertion proved
+bitwise.adb:7:22: info: initialization of "Res" proved
 bitwise.adb:14:07: info: assertion proved
+bitwise.adb:14:29: info: initialization of "Res" proved
 bitwise.adb:20:07: info: assertion proved
+bitwise.adb:20:22: info: initialization of "Res" proved
 bitwise.adb:20:30: info: division check proved
+bitwise.adb:21:27: info: initialization of "Res" proved
 bitwise.adb:22:07: info: assertion proved
+bitwise.adb:22:22: info: initialization of "Res" proved
 bitwise.adb:22:30: info: division check proved
 bitwise.adb:32:07: info: assertion proved
+bitwise.adb:32:26: info: initialization of "YY" proved
 bitwise.adb:33:07: info: assertion proved
+bitwise.adb:33:26: info: initialization of "XX" proved
 bitwise.adb:38:34: info: range check proved
 bitwise.adb:39:50: info: range check proved
 bitwise.adb:40:07: info: assertion proved
+bitwise.adb:41:35: info: initialization of "FstHalf" proved
+bitwise.adb:42:50: info: initialization of "SndHalf" proved
 bitwise.adb:51:07: info: assertion proved
+bitwise.adb:51:22: info: initialization of "Res" proved
+bitwise.ads:7:37: info: initialization of "Res" proved
+bitwise.ads:10:46: info: initialization of "Res" proved
+bitwise.ads:13:45: info: initialization of "Res" proved
+bitwise.ads:19:45: info: initialization of "FstHalf" proved
+bitwise.ads:19:54: info: initialization of "SndHalf" proved
+bitwise.ads:22:62: info: initialization of "Res" proved
 counter_examples.adb:8:38: info: overflow check proved
 counter_examples.adb:9:16: medium: overflow check might fail
+counter_examples.ads:8:40: info: initialization of "Res" proved
 floating_point.adb:8:16: info: overflow check proved
+floating_point.adb:9:22: info: initialization of "Res" proved
 floating_point.adb:9:22: medium: assertion might fail, requires Res >=
 floating_point.adb:16:16: info: overflow check proved
 floating_point.adb:16:22: info: overflow check proved
+floating_point.adb:17:22: info: initialization of "Res" proved
 floating_point.adb:17:22: medium: assertion might fail, requires Res >= X
 floating_point.adb:26:24: info: overflow check proved
 floating_point.adb:27:16: medium: overflow check might fail
 floating_point.adb:27:20: info: overflow check proved
 floating_point.adb:28:07: medium: assertion might fail
+floating_point.adb:28:22: info: initialization of "Res" proved
 floating_point.adb:38:24: info: division check proved
 floating_point.adb:38:24: info: overflow check proved
 floating_point.adb:39:16: info: division check proved
 floating_point.adb:39:16: medium: overflow check might fail
+floating_point.adb:40:22: info: initialization of "Res" proved
 floating_point.adb:40:22: medium: assertion might fail, requires Res < Threshold
 floating_point.adb:47:33: medium: overflow check might fail
 floating_point.adb:47:41: info: division check proved
@@ -36,6 +57,7 @@ floating_point.adb:48:41: info: division check proved
 floating_point.adb:48:41: info: overflow check proved
 floating_point.adb:48:49: info: overflow check proved
 floating_point.adb:49:16: medium: overflow check might fail
+floating_point.adb:50:22: info: initialization of "Res" proved
 floating_point.adb:50:22: medium: assertion might fail, requires Res < (1.6181**N)/2.2360 +
 floating_point.adb:50:35: medium: overflow check might fail
 floating_point.adb:50:39: info: division check proved
@@ -44,7 +66,10 @@ floating_point.adb:50:47: info: overflow check proved
 floating_point.adb:63:24: info: range check proved
 floating_point.adb:63:27: info: division check proved
 floating_point.adb:63:27: info: overflow check proved
+floating_point.adb:64:10: info: initialization of "Res" proved
+floating_point.adb:65:17: info: initialization of "Res" proved
 floating_point.adb:65:21: info: overflow check proved
+floating_point.adb:67:14: info: initialization of "Res" proved
 floating_point.adb:67:18: info: division check proved
 floating_point.adb:67:18: medium: overflow check might fail
 floating_point.adb:75:07: info: assertion proved
@@ -53,7 +78,17 @@ floating_point.adb:76:16: info: division check proved
 floating_point.adb:76:16: info: overflow check proved
 floating_point.adb:76:28: info: range check proved
 floating_point.adb:85:07: info: assertion proved
+floating_point.adb:86:13: info: initialization of "Tmp" proved
+floating_point.adb:88:14: info: initialization of "Tmp" proved
 floating_point.adb:96:22: info: overflow check proved
+floating_point.ads:7:39: info: initialization of "Res" proved
+floating_point.ads:10:40: info: initialization of "Res" proved
+floating_point.ads:13:50: info: initialization of "Res" proved
+floating_point.ads:16:44: info: initialization of "Res" proved
+floating_point.ads:19:56: info: initialization of "Res" proved
+floating_point.ads:24:36: info: initialization of "Res" proved
+floating_point.ads:27:52: info: initialization of "Res" proved
+floating_point.ads:30:13: info: initialization of "Float_To_Long_Float" proved
 floating_point.ads:39:46: info: range check proved
 floating_point.ads:39:49: info: overflow check proved
 floating_point.ads:40:17: medium: postcondition might fail, requires State in C .. Float_32 (X + 1) * C
@@ -62,12 +97,15 @@ floating_point.ads:40:48: info: overflow check proved
 nonlinear.adb:10:17: info: overflow check proved
 nonlinear.adb:10:22: info: division check proved
 nonlinear.adb:10:22: info: range check proved
+nonlinear.adb:11:22: info: initialization of "Res" proved
 nonlinear.adb:11:22: medium: assertion might fail, requires Res <= X
 nonlinear.adb:18:22: info: division check proved
+nonlinear.adb:19:22: info: initialization of "Res" proved
 nonlinear.adb:19:22: medium: assertion might fail, requires Res <= X
 nonlinear.adb:25:16: info: division check proved
 nonlinear.adb:25:16: info: range check proved
 nonlinear.adb:26:22: medium: assertion might fail, requires Res * Y) / Res = Y
+nonlinear.adb:26:23: info: initialization of "Res" proved
 nonlinear.adb:26:27: info: overflow check proved
 nonlinear.adb:26:32: info: division check proved
 nonlinear.adb:32:07: info: assertion proved
@@ -79,13 +117,21 @@ nonlinear.adb:32:46: medium: overflow check might fail
 nonlinear.adb:32:51: info: overflow check proved
 nonlinear.adb:38:16: info: overflow check proved
 nonlinear.adb:38:20: info: overflow check proved
+nonlinear.adb:39:22: info: initialization of "Res" proved
 nonlinear.adb:39:22: medium: assertion might fail, requires Res in -99 .. -Y
 nonlinear.adb:39:36: info: overflow check proved
 nonlinear.adb:45:17: medium: overflow check might fail
 nonlinear.adb:45:22: info: division check proved
 nonlinear.adb:45:22: medium: range check might fail
+nonlinear.adb:46:22: info: initialization of "Res" proved
 nonlinear.adb:46:22: medium: assertion might fail, requires Res <= X
+nonlinear.ads:7:43: info: initialization of "Res" proved
+nonlinear.ads:8:53: info: initialization of "Res" proved
+nonlinear.ads:11:42: info: initialization of "Res" proved
 nonlinear.ads:14:14: warning: subprogram "Power" has no effect
+nonlinear.ads:17:36: info: initialization of "Res" proved
+nonlinear.ads:20:44: info: initialization of "Res" proved
+quantifiers.adb:7:16: info: initialization of "All_Zero" proved
 quantifiers.adb:8:17: info: postcondition proved
 quantifiers.adb:10:37: info: length check proved
 quantifiers.adb:16:07: medium: assertion might fail

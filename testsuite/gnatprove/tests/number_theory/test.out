@@ -1,10 +1,20 @@
 number_theory.adb:18:17: info: range check proved
 number_theory.adb:19:16: info: loop invariant initialization proved
 number_theory.adb:19:16: info: loop invariant preservation proved
+number_theory.adb:19:38: info: initialization of "Old" proved
 number_theory.adb:19:50: info: range check proved
+number_theory.adb:19:59: info: initialization of "Oldest" proved
 number_theory.adb:19:74: info: range check proved
+number_theory.adb:21:26: info: initialization of "Oldest" proved
+number_theory.adb:22:26: info: initialization of "Old" proved
+number_theory.adb:23:26: info: initialization of "Old" proved
 number_theory.adb:23:30: medium: overflow check might fail
+number_theory.adb:23:32: info: initialization of "Temp" proved
+number_theory.adb:25:23: info: initialization of "Old" proved
+number_theory.adb:27:14: info: initialization of "Result" proved
 number_theory.adb:33:09: info: length check proved
+number_theory.adb:47:14: info: initialization of "Lookup_Table" proved
+number_theory.ads:17:13: info: initialization of "Fib" proved
 number_theory.ads:20:32: info: range check proved
 number_theory.ads:20:37: medium: overflow check might fail
 number_theory.ads:20:45: info: range check proved
@@ -14,5 +24,7 @@ number_theory.ads:23:43: medium: overflow check might fail
 number_theory.ads:23:47: info: division check proved
 number_theory.ads:23:47: info: overflow check proved
 number_theory.ads:23:55: info: overflow check proved
+number_theory.ads:26:13: info: initialization of "Fibonacci" proved
 number_theory.ads:27:19: info: postcondition proved
+number_theory.ads:30:13: info: initialization of "Fibonacci2" proved
 number_theory.ads:31:19: medium: postcondition might fail, requires Fibonacci2'Result = Fib(N)

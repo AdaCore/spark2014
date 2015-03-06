@@ -30,9 +30,14 @@ gnatprove: error during flow analysis and proof
 
 Do not issue any compilation warnings, stop at flow warnings treated as errors:
 -------------------------------------------------------------------------------
+p.adb:1:14: info: initialization of "Y" proved
 p.adb:14:04: warning: statement has no effect
+p.adb:14:07: info: initialization of "X" proved
 p.adb:15:09: warning: unused assignment
+p.adb:15:12: info: initialization of "X" proved
+p.adb:17:09: info: initialization of "X" proved
 p.adb:18:04: info: assertion proved
+p.adb:18:19: info: initialization of "X" proved
    compilation of p.adb failed
 
 
@@ -40,26 +45,41 @@ gnatprove: error during flow analysis and proof
 
 Issue all compilation warnings, issue flow warnings and continue:
 -----------------------------------------------------------------
+p.adb:1:14: info: initialization of "Y" proved
 p.adb:2:09: warning: type "M" is not referenced
 p.adb:2:19: warning: suspicious "mod" value, was ** intended?
 p.adb:7:04: warning: variable "Z2" is not referenced
 p.adb:12:04: warning: "X" is not modified, could be declared constant
 p.adb:14:04: warning: statement has no effect
+p.adb:14:07: info: initialization of "X" proved
 p.adb:15:09: warning: unused assignment
+p.adb:15:12: info: initialization of "X" proved
+p.adb:17:09: info: initialization of "X" proved
 p.adb:18:04: info: assertion proved
+p.adb:18:19: info: initialization of "X" proved
 
 Do not issue all compilation warnings, do not issue flow warnings and continue:
 ------------------------------------------------------------------------
+p.adb:1:14: info: initialization of "Y" proved
 p.adb:2:19: warning: suspicious "mod" value, was ** intended?
 p.adb:14:04: warning: statement has no effect
+p.adb:14:07: info: initialization of "X" proved
 p.adb:15:09: warning: unused assignment
+p.adb:15:12: info: initialization of "X" proved
+p.adb:17:09: info: initialization of "X" proved
 p.adb:18:04: info: assertion proved
+p.adb:18:19: info: initialization of "X" proved
 
 Do not issue any compilation warnings, issue flow warnings and continue:
 ------------------------------------------------------------------------
+p.adb:1:14: info: initialization of "Y" proved
 p.adb:14:04: warning: statement has no effect
+p.adb:14:07: info: initialization of "X" proved
 p.adb:15:09: warning: unused assignment
+p.adb:15:12: info: initialization of "X" proved
+p.adb:17:09: info: initialization of "X" proved
 p.adb:18:04: info: assertion proved
+p.adb:18:19: info: initialization of "X" proved
 
 Issue all compilation warnings, do not issue flow warnings and continue:
 ------------------------------------------------------------------------
@@ -106,9 +126,14 @@ gnatprove: error during flow analysis and proof
 
 Do not issue any compilation warnings, stop at flow warnings treated as errors:
 -------------------------------------------------------------------------------
+p.adb:1:14: info: initialization of "Y" proved[#2]
 p.adb:14:04: warning: statement has no effect[#0]
+p.adb:14:07: info: initialization of "X" proved[#3]
 p.adb:15:09: warning: unused assignment[#1]
-p.adb:18:04: info: assertion proved[#2]
+p.adb:15:12: info: initialization of "X" proved[#4]
+p.adb:17:09: info: initialization of "X" proved[#5]
+p.adb:18:04: info: assertion proved[#7]
+p.adb:18:19: info: initialization of "X" proved[#6]
    compilation of p.adb failed
 
 
@@ -116,26 +141,41 @@ gnatprove: error during flow analysis and proof
 
 Issue all compilation warnings, issue flow warnings and continue:
 -----------------------------------------------------------------
+p.adb:1:14: info: initialization of "Y" proved[#2]
 p.adb:2:09: warning: type "M" is not referenced
 p.adb:2:19: warning: suspicious "mod" value, was ** intended?
 p.adb:7:04: warning: variable "Z2" is not referenced
 p.adb:12:04: warning: "X" is not modified, could be declared constant
 p.adb:14:04: warning: statement has no effect[#0]
+p.adb:14:07: info: initialization of "X" proved[#3]
 p.adb:15:09: warning: unused assignment[#1]
-p.adb:18:04: info: assertion proved[#2]
+p.adb:15:12: info: initialization of "X" proved[#4]
+p.adb:17:09: info: initialization of "X" proved[#5]
+p.adb:18:04: info: assertion proved[#7]
+p.adb:18:19: info: initialization of "X" proved[#6]
 
 Do not issue all compilation warnings, do not issue flow warnings and continue:
 ------------------------------------------------------------------------
+p.adb:1:14: info: initialization of "Y" proved[#2]
 p.adb:2:19: warning: suspicious "mod" value, was ** intended?
 p.adb:14:04: warning: statement has no effect[#0]
+p.adb:14:07: info: initialization of "X" proved[#3]
 p.adb:15:09: warning: unused assignment[#1]
-p.adb:18:04: info: assertion proved[#2]
+p.adb:15:12: info: initialization of "X" proved[#4]
+p.adb:17:09: info: initialization of "X" proved[#5]
+p.adb:18:04: info: assertion proved[#7]
+p.adb:18:19: info: initialization of "X" proved[#6]
 
 Do not issue any compilation warnings, issue flow warnings and continue:
 ------------------------------------------------------------------------
+p.adb:1:14: info: initialization of "Y" proved[#2]
 p.adb:14:04: warning: statement has no effect[#0]
+p.adb:14:07: info: initialization of "X" proved[#3]
 p.adb:15:09: warning: unused assignment[#1]
-p.adb:18:04: info: assertion proved[#2]
+p.adb:15:12: info: initialization of "X" proved[#4]
+p.adb:17:09: info: initialization of "X" proved[#5]
+p.adb:18:04: info: assertion proved[#7]
+p.adb:18:19: info: initialization of "X" proved[#6]
 
 Issue all compilation warnings, do not issue flow warnings and continue:
 ------------------------------------------------------------------------
@@ -150,10 +190,15 @@ p.adb:2:19: warning: suspicious "mod" value, was ** intended?
 
 Do not issue any compilation warnings, do not issue flow warnings and continue:
 -------------------------------------------------------------------------------
+p.adb:1:14: info: initialization of "Y" proved
 p.adb:2:19: warning: suspicious "mod" value, was ** intended?
 p.adb:14:04: warning: statement has no effect
+p.adb:14:07: info: initialization of "X" proved
 p.adb:15:09: warning: unused assignment
+p.adb:15:12: info: initialization of "X" proved
+p.adb:17:09: info: initialization of "X" proved
 p.adb:18:04: info: assertion proved
+p.adb:18:19: info: initialization of "X" proved
 Analyzed 1 units
 in unit p, 1 subprograms and packages out of 1 analyzed
   P at p.adb:1 flow analyzed (0 errors and 2 warnings) and proved (1 checks)

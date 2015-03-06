@@ -1,14 +1,29 @@
+main.adb:8:37: info: initialization of "The_Sink" proved
 skp-subjects.adb:7:06: info: length check proved
+skp-subjects.adb:7:17: info: initialization of "Null_Trap.Dst_Subject" proved
+skp-subjects.adb:7:17: info: initialization of "Null_Trap.Dst_Vector" proved
 skp-subjects.adb:12:06: info: length check proved
+skp-subjects.adb:12:17: info: initialization of "Null_Event.Dst_Subject" proved
+skp-subjects.adb:12:17: info: initialization of "Null_Event.Dst_Vector" proved
+skp-subjects.adb:12:17: info: initialization of "Null_Event.Handover" proved
+skp-subjects.adb:12:17: info: initialization of "Null_Event.Send_IPI" proved
 skp-subjects.adb:39:70: info: length check proved
+skp-subjects.adb:65:30: info: initialization of "Null_Event_Table" proved
 skp-subjects.adb:91:47: info: length check proved
 skp-subjects.adb:128:47: info: length check proved
 skp-subjects.adb:160:47: info: length check proved
+skp-subjects.adb:196:30: info: initialization of "Null_Trap_Table" proved
 skp-subjects.adb:197:47: info: length check proved
 skp-subjects.adb:233:46: info: length check proved
 skp-subjects.adb:292:47: info: length check proved
 skp-subjects.adb:323:46: info: length check proved
+skp-subjects.adb:381:21: info: initialization of "Null_Trap.Dst_Subject" proved
+skp-subjects.adb:381:21: info: initialization of "Null_Trap.Dst_Vector" proved
 skp-subjects.adb:382:47: info: length check proved
+skp-subjects.adb:388:21: info: initialization of "Null_Event.Dst_Subject" proved
+skp-subjects.adb:388:21: info: initialization of "Null_Event.Dst_Vector" proved
+skp-subjects.adb:388:21: info: initialization of "Null_Event.Handover" proved
+skp-subjects.adb:388:21: info: initialization of "Null_Event.Send_IPI" proved
 skp-subjects.adb:399:07: info: assertion proved
 skp-subjects.adb:401:07: info: assertion proved
 skp-subjects.adb:413:23: info: refined post proved
@@ -27,6 +42,11 @@ skp-subjects.adb:433:07: info: assertion proved
 skp-subjects.adb:435:50: info: division check proved
 skp-subjects.adb:436:07: info: assertion proved
 skp-subjects.adb:438:50: info: division check proved
+skp-subjects.ads:44:13: info: initialization of "Get_PML4_Address" proved
 skp-subjects.ads:49:17: info: postcondition proved
 skp-subjects.ads:49:42: info: division check proved
+skp-subjects.ads:51:13: info: initialization of "Get_Event.Dst_Subject" proved
+skp-subjects.ads:51:13: info: initialization of "Get_Event.Dst_Vector" proved
+skp-subjects.ads:51:13: info: initialization of "Get_Event.Handover" proved
+skp-subjects.ads:51:13: info: initialization of "Get_Event.Send_IPI" proved
 skp-subjects.ads:57:17: medium: postcondition might fail, requires Get_Event'Result.Dst_Subject /= Subject_Id

@@ -1,4 +1,7 @@
+uninitialized.adb:6:22: info: initialization of "A" proved
 uninitialized.adb:6:26: high: "B" is not initialized
+uninitialized.ads:5:33: info: initialization of "A" proved
+vehicle.ads:16:13: info: initialization of "Speed_Is_Valid" proved
 // fa_pkg_body_standard__uninitialized_cfg
 digraph G {
    graph [splines=True];

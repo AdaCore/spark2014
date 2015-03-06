@@ -1,7 +1,17 @@
 calculate.adb:6:17: info: precondition proved
+calculate.ads:7:37: info: initialization of "Value" proved
+processing.adb:19:10: info: initialization of "Local_Value" proved
 processing.adb:19:62: info: overflow check proved
 processing.adb:22:18: info: overflow check proved
+processing.adb:22:20: info: initialization of "Local_Value" proved
 processing.adb:23:31: info: overflow check proved
+processing.adb:23:33: info: initialization of "Local_Value" proved
 processing.adb:24:17: info: overflow check proved
 processing.adb:24:17: info: range check proved
+processing.adb:24:19: info: initialization of "Local_Value" proved
 processing.ads:5:26: warning: no procedure exists that can initialize abstract state "Processing.State"
+processing.ads:7:34: info: initialization of "Value" proved
+raw_data.adb:12:04: info: initialization of "Last_Read" proved
+raw_data.adb:30:40: info: initialization of "Last_Read" proved
+raw_data.ads:6:13: info: initialization of "Data_Is_Valid" proved
+raw_data.ads:9:13: info: initialization of "Get_Value" proved

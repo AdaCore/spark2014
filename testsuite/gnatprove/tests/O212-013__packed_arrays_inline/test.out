@@ -1,3 +1,6 @@
+main.adb:12:30: info: initialization of "D.M_Array" proved
 main.adb:14:08: info: discriminant check proved
+main.adb:14:08: info: initialization of "R6b" proved
 main.adb:14:17: info: length check proved
+main.adb:14:20: info: initialization of "R6b" proved
 main.adb:14:20: info: length check proved

@@ -1,21 +1,42 @@
+dic_of_cont.adb:4:45: info: initialization of "R2b" proved
 dic_of_cont.adb:4:45: info: precondition proved
+dic_of_cont.adb:5:45: info: initialization of "R5b" proved
 dic_of_cont.adb:5:45: info: precondition proved
 dic_of_cont.adb:10:07: info: assertion proved
 dic_of_cont.adb:10:29: info: precondition proved
+dic_of_cont.adb:10:40: info: initialization of private part of "Dlli" proved
 dic_of_cont.adb:11:07: info: assertion proved
 dic_of_cont.adb:12:07: info: assertion proved
 dic_of_cont.adb:12:29: info: precondition proved
+dic_of_cont.adb:12:40: info: initialization of private part of "Dhama" proved
 dic_of_cont.adb:13:07: info: assertion proved
 dic_of_cont.adb:14:07: info: assertion proved
 dic_of_cont.adb:14:29: info: precondition proved
+dic_of_cont.adb:14:40: info: initialization of private part of "Dhase" proved
 dic_of_cont.adb:15:07: info: assertion proved
 dic_of_cont.adb:16:07: info: assertion proved
 dic_of_cont.adb:16:29: info: precondition proved
+dic_of_cont.adb:16:40: info: initialization of private part of "Dorma" proved
 dic_of_cont.adb:17:07: info: assertion proved
 dic_of_cont.adb:18:07: info: assertion proved
 dic_of_cont.adb:18:29: info: precondition proved
+dic_of_cont.adb:18:40: info: initialization of private part of "Dorse" proved
 dic_of_cont.adb:19:07: info: assertion proved
 dic_of_cont.adb:20:07: info: assertion proved
 dic_of_cont.adb:20:29: info: precondition proved
+dic_of_cont.adb:20:40: info: initialization of private part of "Dfove" proved
 dic_of_cont.adb:21:07: info: assertion proved
+dic_of_cont.ads:10:13: info: initialization of "Hash" proved
+dic_of_cont.ads:11:12: info: initialization of "Oeq" proved
+dic_of_cont.ads:13:12: info: initialization of "Equivalent_Keys" proved
+dic_of_cont.ads:13:12: info: initialization of "Hash" proved
+dic_of_cont.ads:13:12: info: initialization of "Oeq" proved
+dic_of_cont.ads:18:12: info: initialization of "Equivalent_Elements" proved
+dic_of_cont.ads:18:12: info: initialization of "Hash" proved
+dic_of_cont.ads:18:12: info: initialization of "Oeq" proved
+dic_of_cont.ads:22:12: info: initialization of "Oeq" proved
+dic_of_cont.ads:22:12: info: initialization of "Olt" proved
+dic_of_cont.ads:25:12: info: initialization of "Oeq" proved
+dic_of_cont.ads:25:12: info: initialization of "Olt" proved
+dic_of_cont.ads:27:12: info: initialization of "Oeq" proved
 dic_of_cont.ads:31:14: warning: subprogram "Main" has no effect

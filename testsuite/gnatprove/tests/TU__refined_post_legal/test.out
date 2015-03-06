@@ -1,3 +1,4 @@
+refined_post_legal.adb:9:29: info: initialization of "Par2" proved
 refined_post_legal.adb:9:29: info: refined post proved
 refined_post_legal.adb:9:40: info: overflow check proved
 refined_post_legal.adb:12:19: medium: overflow check might fail
@@ -5,5 +6,8 @@ refined_post_legal.adb:17:29: info: refined post proved
 refined_post_legal.adb:17:47: info: overflow check proved
 refined_post_legal.adb:20:18: medium: overflow check might fail
 refined_post_legal.ads:3:26: warning: no procedure exists that can initialize abstract state "Refined_Post_Legal.State"
+refined_post_legal.ads:6:20: info: initialization of "Par2" proved
+refined_post_legal.ads:8:21: info: initialization of "Par2" proved
 refined_post_legal.ads:8:21: info: postcondition proved
+refined_post_legal.ads:10:13: info: initialization of "Func" proved
 refined_post_legal.ads:12:21: info: postcondition proved

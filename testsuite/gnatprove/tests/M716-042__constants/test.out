@@ -1,14 +1,23 @@
+const_in_loop.adb:1:26: info: initialization of "Z" proved
 const_in_loop.adb:2:04: warning: initialization has no effect
+const_in_loop.adb:7:33: info: initialization of "Z" proved
 const_in_loop.adb:8:17: info: range check proved
+const_in_loop.adb:8:42: info: initialization of "X" proved
 const_in_loop.adb:10:09: warning: statement has no effect
+const_in_loop.adb:10:12: info: initialization of "Z" proved
 const_in_loop.adb:11:15: warning: unused assignment
 const_in_loop.adb:13:12: warning: unused assignment
+const_in_loop.adb:14:24: info: initialization of "V1" proved
 const_in_loop.adb:14:24: medium: assertion might fail, requires V1 = V2
+const_in_loop.adb:14:29: info: initialization of "V2" proved
 const_in_loop.adb:15:09: info: loop invariant initialization proved
 const_in_loop.adb:15:09: info: loop invariant preservation proved
+const_in_loop.adb:15:32: info: initialization of "V1" proved
 dynamic_in_loop.adb:6:17: info: range check proved
+dynamic_in_loop.adb:6:42: info: initialization of "C" proved
 dynamic_in_loop.adb:7:09: warning: initialization has no effect
 dynamic_in_loop.adb:7:18: info: range check proved
 dynamic_in_loop.adb:9:09: info: loop invariant initialization proved
 dynamic_in_loop.adb:9:09: info: loop invariant preservation proved
+dynamic_in_loop.adb:9:32: info: initialization of "X" proved
 dynamic_in_loop.adb:10:16: medium: overflow check might fail

@@ -1,2 +1,11 @@
+async_globals.adb:10:21: info: initialization of "X" proved
+async_globals.adb:17:22: info: initialization of "X" proved
+async_globals.adb:18:22: info: initialization of "Y" proved
+async_globals.adb:24:22: info: initialization of "X" proved
 async_globals.adb:24:22: medium: assertion might fail, requires X = Y
+async_globals.adb:24:26: info: initialization of "Y" proved
+async_globals.adb:27:22: info: initialization of "X" proved
+async_globals.adb:28:22: info: initialization of "Y" proved
+async_globals.adb:34:22: info: initialization of "X" proved
 async_globals.adb:34:22: medium: assertion might fail, requires X = Y
+async_globals.adb:34:26: info: initialization of "Y" proved

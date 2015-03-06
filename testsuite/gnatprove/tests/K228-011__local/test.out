@@ -1,3 +1,7 @@
+localcst.adb:16:14: info: initialization of "X" proved
+localcst.ads:3:13: info: initialization of "Cst" proved
 localcst.ads:4:20: info: postcondition proved
+localcst.ads:6:13: info: initialization of "Id" proved
 localcst.ads:7:20: info: postcondition proved
+localcst.ads:9:13: info: initialization of "Glob" proved
 localcst.ads:10:20: info: postcondition proved

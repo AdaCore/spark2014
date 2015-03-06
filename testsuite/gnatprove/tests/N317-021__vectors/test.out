@@ -1,972 +1,1506 @@
 bounded.adb:10:07: info: precondition proved
+bounded.adb:10:14: info: initialization of private part of "V" proved
 bounded.adb:11:07: info: assertion proved
 bounded.adb:11:22: info: precondition proved
+bounded.adb:11:32: info: initialization of private part of "V" proved
 bounded.adb:12:07: info: assertion proved
+bounded.adb:12:22: info: initialization of private part of "V" proved
 bounded.adb:12:24: info: precondition proved
 bounded.adb:12:26: info: precondition proved
 bounded.adb:13:07: info: assertion proved
 bounded.adb:13:22: info: precondition proved
+bounded.adb:13:32: info: initialization of private part of "V" proved
 bounded.adb:15:07: info: precondition proved
+bounded.adb:15:15: info: initialization of private part of "V" proved
 bounded.adb:16:07: info: precondition proved
+bounded.adb:16:15: info: initialization of private part of "V" proved
 bounded.adb:17:07: info: precondition proved
+bounded.adb:17:15: info: initialization of private part of "V" proved
 bounded.adb:18:07: info: assertion proved
 bounded.adb:18:26: info: precondition proved
+bounded.adb:18:36: info: initialization of private part of "V" proved
 bounded.adb:19:07: info: assertion proved
 bounded.adb:19:22: info: precondition proved
+bounded.adb:19:30: info: initialization of private part of "V" proved
 bounded.adb:20:07: info: assertion proved
 bounded.adb:20:22: info: precondition proved
+bounded.adb:20:32: info: initialization of private part of "V" proved
 bounded.adb:21:07: info: assertion proved
 bounded.adb:21:22: info: precondition proved
+bounded.adb:21:31: info: initialization of private part of "V" proved
 bounded.adb:22:07: info: assertion proved
 bounded.adb:22:22: info: precondition proved
+bounded.adb:22:31: info: initialization of private part of "V" proved
 bounded.adb:23:07: info: assertion proved
 bounded.adb:23:22: info: precondition proved
+bounded.adb:23:31: info: initialization of private part of "V" proved
 bounded.adb:25:07: info: precondition proved
+bounded.adb:25:25: info: initialization of private part of "V" proved
 bounded.adb:27:07: info: assertion proved
 bounded.adb:27:26: info: precondition proved
+bounded.adb:27:36: info: initialization of private part of "V" proved
 bounded.adb:28:07: info: assertion proved
 bounded.adb:28:22: info: precondition proved
+bounded.adb:28:30: info: initialization of private part of "V" proved
 bounded.adb:29:07: info: assertion proved
 bounded.adb:29:22: info: precondition proved
+bounded.adb:29:32: info: initialization of private part of "V" proved
+bounded.adb:32:10: info: initialization of private part of "W" proved
 bounded.adb:32:24: info: precondition proved
+bounded.adb:32:30: info: initialization of private part of "V" proved
 bounded.adb:34:10: info: assertion proved
 bounded.adb:34:29: info: precondition proved
+bounded.adb:34:39: info: initialization of private part of "W" proved
 bounded.adb:35:10: info: assertion proved
 bounded.adb:35:25: info: precondition proved
+bounded.adb:35:33: info: initialization of private part of "W" proved
 bounded.adb:36:10: info: assertion proved
 bounded.adb:36:25: info: precondition proved
+bounded.adb:36:35: info: initialization of private part of "W" proved
 bounded.adb:37:10: info: assertion proved
 bounded.adb:37:25: info: precondition proved
+bounded.adb:37:34: info: initialization of private part of "W" proved
 bounded.adb:38:10: info: assertion proved
 bounded.adb:38:25: info: precondition proved
+bounded.adb:38:34: info: initialization of private part of "W" proved
 bounded.adb:39:10: info: assertion proved
 bounded.adb:39:25: info: precondition proved
+bounded.adb:39:34: info: initialization of private part of "W" proved
 bounded.adb:41:10: info: precondition proved
+bounded.adb:41:18: info: initialization of private part of "W" proved
+bounded.adb:41:21: info: initialization of private part of "V" proved
 bounded.adb:42:10: info: assertion proved
 bounded.adb:42:29: info: precondition proved
+bounded.adb:42:39: info: initialization of private part of "W" proved
 bounded.adb:43:10: info: assertion proved
 bounded.adb:43:25: info: precondition proved
+bounded.adb:43:33: info: initialization of private part of "W" proved
 bounded.adb:44:10: info: assertion proved
 bounded.adb:44:25: info: precondition proved
+bounded.adb:44:35: info: initialization of private part of "W" proved
 bounded.adb:45:10: info: assertion proved
 bounded.adb:45:25: info: precondition proved
+bounded.adb:45:34: info: initialization of private part of "W" proved
 bounded.adb:46:10: info: assertion proved
 bounded.adb:46:25: info: precondition proved
+bounded.adb:46:34: info: initialization of private part of "W" proved
 bounded.adb:47:10: info: assertion proved
 bounded.adb:47:25: info: precondition proved
+bounded.adb:47:34: info: initialization of private part of "W" proved
 bounded.adb:48:10: info: assertion proved
 bounded.adb:48:25: info: precondition proved
+bounded.adb:48:34: info: initialization of private part of "W" proved
 bounded.adb:49:10: info: assertion proved
 bounded.adb:49:25: info: precondition proved
+bounded.adb:49:34: info: initialization of private part of "W" proved
 bounded.adb:50:10: info: assertion proved
 bounded.adb:50:25: info: precondition proved
+bounded.adb:50:34: info: initialization of private part of "W" proved
 bounded.adb:52:10: info: precondition proved
+bounded.adb:52:18: info: initialization of private part of "W" proved
 bounded.adb:52:21: info: precondition proved
 bounded.adb:53:10: info: assertion proved
 bounded.adb:53:25: info: precondition proved
+bounded.adb:53:35: info: initialization of private part of "W" proved
 bounded.adb:54:10: info: assertion proved
+bounded.adb:54:25: info: initialization of private part of "W" proved
 bounded.adb:54:27: info: precondition proved
 bounded.adb:54:29: info: precondition proved
 bounded.adb:57:07: info: precondition proved
+bounded.adb:57:24: info: initialization of private part of "V" proved
 bounded.adb:58:07: info: assertion proved
 bounded.adb:58:22: info: precondition proved
+bounded.adb:58:31: info: initialization of private part of "V" proved
 bounded.adb:59:07: info: assertion proved
 bounded.adb:59:22: info: precondition proved
+bounded.adb:59:31: info: initialization of private part of "V" proved
 bounded.adb:60:07: info: assertion proved
 bounded.adb:60:22: info: precondition proved
+bounded.adb:60:31: info: initialization of private part of "V" proved
 bounded.adb:62:07: info: precondition proved
+bounded.adb:62:13: info: initialization of private part of "V" proved
 bounded.adb:63:07: info: assertion proved
 bounded.adb:63:22: info: precondition proved
+bounded.adb:63:31: info: initialization of private part of "V" proved
 bounded.adb:64:07: info: assertion proved
 bounded.adb:64:22: info: precondition proved
+bounded.adb:64:31: info: initialization of private part of "V" proved
 bounded.adb:65:07: info: assertion proved
 bounded.adb:65:22: info: precondition proved
+bounded.adb:65:31: info: initialization of private part of "V" proved
 bounded.adb:67:07: info: precondition proved
+bounded.adb:67:20: info: initialization of private part of "V" proved
 bounded.adb:68:07: info: assertion proved
 bounded.adb:68:26: info: precondition proved
+bounded.adb:68:36: info: initialization of private part of "V" proved
 bounded.adb:69:07: info: assertion proved
 bounded.adb:69:22: info: precondition proved
+bounded.adb:69:30: info: initialization of private part of "V" proved
 bounded.adb:70:07: info: assertion proved
 bounded.adb:70:22: info: precondition proved
+bounded.adb:70:32: info: initialization of private part of "V" proved
 bounded.adb:71:07: info: assertion proved
 bounded.adb:71:22: info: precondition proved
+bounded.adb:71:31: info: initialization of private part of "V" proved
 bounded.adb:72:07: info: assertion proved
 bounded.adb:72:22: info: precondition proved
+bounded.adb:72:31: info: initialization of private part of "V" proved
 bounded.adb:74:07: info: precondition proved
+bounded.adb:74:25: info: initialization of private part of "V" proved
 bounded.adb:75:07: info: assertion proved
 bounded.adb:75:26: info: precondition proved
+bounded.adb:75:36: info: initialization of private part of "V" proved
 bounded.adb:76:07: info: assertion proved
 bounded.adb:76:22: info: precondition proved
+bounded.adb:76:30: info: initialization of private part of "V" proved
 bounded.adb:77:07: info: assertion proved
 bounded.adb:77:22: info: precondition proved
+bounded.adb:77:32: info: initialization of private part of "V" proved
 bounded.adb:78:07: info: assertion proved
 bounded.adb:78:22: info: precondition proved
+bounded.adb:78:31: info: initialization of private part of "V" proved
 bounded.adb:79:07: info: assertion proved
 bounded.adb:79:22: info: precondition proved
+bounded.adb:79:31: info: initialization of private part of "V" proved
 bounded.adb:81:07: info: assertion proved
 bounded.adb:81:22: info: precondition proved
+bounded.adb:81:35: info: initialization of private part of "V" proved
 bounded.adb:82:07: info: assertion proved
 bounded.adb:82:22: info: precondition proved
+bounded.adb:82:34: info: initialization of private part of "V" proved
 bounded.adb:83:07: info: assertion proved
 bounded.adb:83:22: info: precondition proved
+bounded.adb:83:37: info: initialization of private part of "V" proved
 bounded.adb:84:07: info: assertion proved
 bounded.adb:84:22: info: precondition proved
+bounded.adb:84:36: info: initialization of private part of "V" proved
 bounded.adb:86:07: info: assertion proved
 bounded.adb:86:22: info: precondition proved
+bounded.adb:86:34: info: initialization of private part of "V" proved
 bounded.adb:87:07: info: assertion proved
 bounded.adb:87:22: info: precondition proved
+bounded.adb:87:34: info: initialization of private part of "V" proved
 bounded.adb:88:07: info: assertion proved
 bounded.adb:88:22: info: precondition proved
+bounded.adb:88:34: info: initialization of private part of "V" proved
 bounded.adb:90:07: info: assertion proved
 bounded.adb:90:22: info: precondition proved
+bounded.adb:90:42: info: initialization of private part of "V" proved
 bounded.adb:91:07: info: assertion proved
 bounded.adb:91:22: info: precondition proved
+bounded.adb:91:42: info: initialization of private part of "V" proved
 bounded.adb:92:07: info: assertion proved
 bounded.adb:92:22: info: precondition proved
+bounded.adb:92:42: info: initialization of private part of "V" proved
 bounded.adb:94:07: info: assertion proved
 bounded.adb:94:22: info: precondition proved
+bounded.adb:94:32: info: initialization of private part of "V" proved
 bounded.adb:95:07: info: assertion proved
 bounded.adb:95:26: info: precondition proved
+bounded.adb:95:36: info: initialization of private part of "V" proved
 bounded.adb:96:07: info: assertion proved
 bounded.adb:96:22: info: precondition proved
+bounded.adb:96:35: info: initialization of private part of "V" proved
 bounded.adb:97:07: info: assertion proved
 bounded.adb:97:26: info: precondition proved
+bounded.adb:97:39: info: initialization of private part of "V" proved
 bounded.adb:98:07: info: assertion proved
 bounded.adb:98:26: info: precondition proved
+bounded.adb:98:39: info: initialization of private part of "V" proved
+bounded.adb:101:19: info: initialization of "Lt" proved
+bounded.adb:102:18: info: initialization of "Olt" proved
 bounded.adb:104:10: info: assertion proved
 bounded.adb:104:33: info: precondition proved
+bounded.adb:104:45: info: initialization of private part of "V" proved
 bounded.adb:105:14: info: precondition proved
+bounded.adb:105:21: info: initialization of private part of "V" proved
 bounded.adb:106:10: info: assertion proved
 bounded.adb:106:29: info: precondition proved
+bounded.adb:106:39: info: initialization of private part of "V" proved
 bounded.adb:107:10: info: assertion proved
 bounded.adb:107:25: info: precondition proved
+bounded.adb:107:33: info: initialization of private part of "V" proved
 bounded.adb:108:10: info: assertion proved
 bounded.adb:108:25: info: precondition proved
+bounded.adb:108:35: info: initialization of private part of "V" proved
 bounded.adb:109:25: info: precondition proved
 bounded.adb:109:25: medium: assertion might fail, requires Element (V, 1) = 3
+bounded.adb:109:34: info: initialization of private part of "V" proved
 bounded.adb:110:25: info: precondition proved
 bounded.adb:110:25: medium: assertion might fail, requires Element (V, 2) = 4
+bounded.adb:110:34: info: initialization of private part of "V" proved
 bounded.adb:111:10: info: assertion proved
 bounded.adb:111:29: info: precondition proved
+bounded.adb:111:41: info: initialization of private part of "V" proved
 bounded.adb:114:07: info: precondition proved
+bounded.adb:114:24: info: initialization of private part of "V" proved
 bounded.adb:114:30: info: precondition proved
+bounded.adb:114:39: info: initialization of private part of "V" proved
 bounded.adb:115:07: info: assertion proved
 bounded.adb:115:22: info: precondition proved
 bounded.adb:115:47: info: precondition proved
 bounded.adb:115:49: info: precondition proved
+bounded.adb:115:66: info: initialization of private part of "V" proved
 bounded.adb:117:07: info: assertion proved
 bounded.adb:117:22: info: precondition proved
+bounded.adb:117:32: info: initialization of private part of "V" proved
 bounded.adb:119:37: medium: assertion might fail, requires false
+bounded.ads:6:12: info: initialization of "Oeq" proved
 bounded.ads:13:14: warning: subprogram "Test" has no effect
 indefinite_bounded.adb:10:07: info: precondition proved
+indefinite_bounded.adb:10:14: info: initialization of private part of "V" proved
 indefinite_bounded.adb:11:07: info: assertion proved
 indefinite_bounded.adb:11:22: info: precondition proved
+indefinite_bounded.adb:11:32: info: initialization of private part of "V" proved
 indefinite_bounded.adb:12:07: info: assertion proved
+indefinite_bounded.adb:12:22: info: initialization of private part of "V" proved
 indefinite_bounded.adb:12:24: info: precondition proved
 indefinite_bounded.adb:12:26: info: precondition proved
 indefinite_bounded.adb:13:07: info: assertion proved
 indefinite_bounded.adb:13:22: info: precondition proved
+indefinite_bounded.adb:13:32: info: initialization of private part of "V" proved
 indefinite_bounded.adb:15:07: info: precondition proved
+indefinite_bounded.adb:15:15: info: initialization of private part of "V" proved
 indefinite_bounded.adb:16:07: info: precondition proved
+indefinite_bounded.adb:16:15: info: initialization of private part of "V" proved
 indefinite_bounded.adb:17:07: info: precondition proved
+indefinite_bounded.adb:17:15: info: initialization of private part of "V" proved
 indefinite_bounded.adb:18:07: info: assertion proved
 indefinite_bounded.adb:18:26: info: precondition proved
+indefinite_bounded.adb:18:36: info: initialization of private part of "V" proved
 indefinite_bounded.adb:19:07: info: assertion proved
 indefinite_bounded.adb:19:22: info: precondition proved
+indefinite_bounded.adb:19:30: info: initialization of private part of "V" proved
 indefinite_bounded.adb:20:07: info: assertion proved
 indefinite_bounded.adb:20:22: info: precondition proved
+indefinite_bounded.adb:20:32: info: initialization of private part of "V" proved
 indefinite_bounded.adb:21:07: info: assertion proved
 indefinite_bounded.adb:21:22: info: precondition proved
+indefinite_bounded.adb:21:31: info: initialization of private part of "V" proved
 indefinite_bounded.adb:22:07: info: assertion proved
 indefinite_bounded.adb:22:22: info: precondition proved
+indefinite_bounded.adb:22:31: info: initialization of private part of "V" proved
 indefinite_bounded.adb:23:07: info: assertion proved
 indefinite_bounded.adb:23:22: info: precondition proved
+indefinite_bounded.adb:23:31: info: initialization of private part of "V" proved
 indefinite_bounded.adb:25:07: info: precondition proved
+indefinite_bounded.adb:25:25: info: initialization of private part of "V" proved
 indefinite_bounded.adb:27:07: info: assertion proved
 indefinite_bounded.adb:27:26: info: precondition proved
+indefinite_bounded.adb:27:36: info: initialization of private part of "V" proved
 indefinite_bounded.adb:28:07: info: assertion proved
 indefinite_bounded.adb:28:22: info: precondition proved
+indefinite_bounded.adb:28:30: info: initialization of private part of "V" proved
 indefinite_bounded.adb:29:07: info: assertion proved
 indefinite_bounded.adb:29:22: info: precondition proved
+indefinite_bounded.adb:29:32: info: initialization of private part of "V" proved
 indefinite_bounded.adb:32:24: info: precondition proved
+indefinite_bounded.adb:32:30: info: initialization of private part of "V" proved
 indefinite_bounded.adb:34:10: info: assertion proved
 indefinite_bounded.adb:34:29: info: precondition proved
+indefinite_bounded.adb:34:39: info: initialization of private part of "W" proved
 indefinite_bounded.adb:35:10: info: assertion proved
 indefinite_bounded.adb:35:25: info: precondition proved
+indefinite_bounded.adb:35:33: info: initialization of private part of "W" proved
 indefinite_bounded.adb:36:10: info: assertion proved
 indefinite_bounded.adb:36:25: info: precondition proved
+indefinite_bounded.adb:36:35: info: initialization of private part of "W" proved
 indefinite_bounded.adb:37:10: info: assertion proved
 indefinite_bounded.adb:37:25: info: precondition proved
+indefinite_bounded.adb:37:34: info: initialization of private part of "W" proved
 indefinite_bounded.adb:38:10: info: assertion proved
 indefinite_bounded.adb:38:25: info: precondition proved
+indefinite_bounded.adb:38:34: info: initialization of private part of "W" proved
 indefinite_bounded.adb:39:10: info: assertion proved
 indefinite_bounded.adb:39:25: info: precondition proved
+indefinite_bounded.adb:39:34: info: initialization of private part of "W" proved
 indefinite_bounded.adb:41:10: info: precondition proved
+indefinite_bounded.adb:41:18: info: initialization of private part of "W" proved
+indefinite_bounded.adb:41:21: info: initialization of private part of "V" proved
 indefinite_bounded.adb:42:10: info: assertion proved
 indefinite_bounded.adb:42:29: info: precondition proved
+indefinite_bounded.adb:42:39: info: initialization of private part of "W" proved
 indefinite_bounded.adb:43:10: info: assertion proved
 indefinite_bounded.adb:43:25: info: precondition proved
+indefinite_bounded.adb:43:33: info: initialization of private part of "W" proved
 indefinite_bounded.adb:44:10: info: assertion proved
 indefinite_bounded.adb:44:25: info: precondition proved
+indefinite_bounded.adb:44:35: info: initialization of private part of "W" proved
 indefinite_bounded.adb:45:10: info: assertion proved
 indefinite_bounded.adb:45:25: info: precondition proved
+indefinite_bounded.adb:45:34: info: initialization of private part of "W" proved
 indefinite_bounded.adb:46:10: info: assertion proved
 indefinite_bounded.adb:46:25: info: precondition proved
+indefinite_bounded.adb:46:34: info: initialization of private part of "W" proved
 indefinite_bounded.adb:47:10: info: assertion proved
 indefinite_bounded.adb:47:25: info: precondition proved
+indefinite_bounded.adb:47:34: info: initialization of private part of "W" proved
 indefinite_bounded.adb:48:10: info: assertion proved
 indefinite_bounded.adb:48:25: info: precondition proved
+indefinite_bounded.adb:48:34: info: initialization of private part of "W" proved
 indefinite_bounded.adb:49:10: info: assertion proved
 indefinite_bounded.adb:49:25: info: precondition proved
+indefinite_bounded.adb:49:34: info: initialization of private part of "W" proved
 indefinite_bounded.adb:50:10: info: assertion proved
 indefinite_bounded.adb:50:25: info: precondition proved
+indefinite_bounded.adb:50:34: info: initialization of private part of "W" proved
 indefinite_bounded.adb:52:10: info: precondition proved
+indefinite_bounded.adb:52:18: info: initialization of private part of "W" proved
 indefinite_bounded.adb:52:21: info: precondition proved
 indefinite_bounded.adb:53:10: info: assertion proved
 indefinite_bounded.adb:53:25: info: precondition proved
+indefinite_bounded.adb:53:35: info: initialization of private part of "W" proved
 indefinite_bounded.adb:54:10: info: assertion proved
+indefinite_bounded.adb:54:25: info: initialization of private part of "W" proved
 indefinite_bounded.adb:54:27: info: precondition proved
 indefinite_bounded.adb:54:29: info: precondition proved
 indefinite_bounded.adb:57:07: info: precondition proved
+indefinite_bounded.adb:57:24: info: initialization of private part of "V" proved
 indefinite_bounded.adb:58:07: info: assertion proved
 indefinite_bounded.adb:58:22: info: precondition proved
+indefinite_bounded.adb:58:31: info: initialization of private part of "V" proved
 indefinite_bounded.adb:59:07: info: assertion proved
 indefinite_bounded.adb:59:22: info: precondition proved
+indefinite_bounded.adb:59:31: info: initialization of private part of "V" proved
 indefinite_bounded.adb:60:07: info: assertion proved
 indefinite_bounded.adb:60:22: info: precondition proved
+indefinite_bounded.adb:60:31: info: initialization of private part of "V" proved
 indefinite_bounded.adb:62:07: info: precondition proved
+indefinite_bounded.adb:62:13: info: initialization of private part of "V" proved
 indefinite_bounded.adb:63:07: info: assertion proved
 indefinite_bounded.adb:63:22: info: precondition proved
+indefinite_bounded.adb:63:31: info: initialization of private part of "V" proved
 indefinite_bounded.adb:64:07: info: assertion proved
 indefinite_bounded.adb:64:22: info: precondition proved
+indefinite_bounded.adb:64:31: info: initialization of private part of "V" proved
 indefinite_bounded.adb:65:07: info: assertion proved
 indefinite_bounded.adb:65:22: info: precondition proved
+indefinite_bounded.adb:65:31: info: initialization of private part of "V" proved
 indefinite_bounded.adb:67:07: info: precondition proved
+indefinite_bounded.adb:67:20: info: initialization of private part of "V" proved
 indefinite_bounded.adb:68:07: info: assertion proved
 indefinite_bounded.adb:68:26: info: precondition proved
+indefinite_bounded.adb:68:36: info: initialization of private part of "V" proved
 indefinite_bounded.adb:69:07: info: assertion proved
 indefinite_bounded.adb:69:22: info: precondition proved
+indefinite_bounded.adb:69:30: info: initialization of private part of "V" proved
 indefinite_bounded.adb:70:07: info: assertion proved
 indefinite_bounded.adb:70:22: info: precondition proved
+indefinite_bounded.adb:70:32: info: initialization of private part of "V" proved
 indefinite_bounded.adb:71:07: info: assertion proved
 indefinite_bounded.adb:71:22: info: precondition proved
+indefinite_bounded.adb:71:31: info: initialization of private part of "V" proved
 indefinite_bounded.adb:72:07: info: assertion proved
 indefinite_bounded.adb:72:22: info: precondition proved
+indefinite_bounded.adb:72:31: info: initialization of private part of "V" proved
 indefinite_bounded.adb:74:07: info: precondition proved
+indefinite_bounded.adb:74:25: info: initialization of private part of "V" proved
 indefinite_bounded.adb:75:07: info: assertion proved
 indefinite_bounded.adb:75:26: info: precondition proved
+indefinite_bounded.adb:75:36: info: initialization of private part of "V" proved
 indefinite_bounded.adb:76:07: info: assertion proved
 indefinite_bounded.adb:76:22: info: precondition proved
+indefinite_bounded.adb:76:30: info: initialization of private part of "V" proved
 indefinite_bounded.adb:77:07: info: assertion proved
 indefinite_bounded.adb:77:22: info: precondition proved
+indefinite_bounded.adb:77:32: info: initialization of private part of "V" proved
 indefinite_bounded.adb:78:07: info: assertion proved
 indefinite_bounded.adb:78:22: info: precondition proved
+indefinite_bounded.adb:78:31: info: initialization of private part of "V" proved
 indefinite_bounded.adb:79:07: info: assertion proved
 indefinite_bounded.adb:79:22: info: precondition proved
+indefinite_bounded.adb:79:31: info: initialization of private part of "V" proved
 indefinite_bounded.adb:81:07: info: assertion proved
 indefinite_bounded.adb:81:22: info: precondition proved
+indefinite_bounded.adb:81:35: info: initialization of private part of "V" proved
 indefinite_bounded.adb:82:07: info: assertion proved
 indefinite_bounded.adb:82:22: info: precondition proved
+indefinite_bounded.adb:82:34: info: initialization of private part of "V" proved
 indefinite_bounded.adb:83:07: info: assertion proved
 indefinite_bounded.adb:83:22: info: precondition proved
+indefinite_bounded.adb:83:37: info: initialization of private part of "V" proved
 indefinite_bounded.adb:84:07: info: assertion proved
 indefinite_bounded.adb:84:22: info: precondition proved
+indefinite_bounded.adb:84:36: info: initialization of private part of "V" proved
 indefinite_bounded.adb:86:07: info: assertion proved
 indefinite_bounded.adb:86:22: info: precondition proved
+indefinite_bounded.adb:86:34: info: initialization of private part of "V" proved
 indefinite_bounded.adb:87:07: info: assertion proved
 indefinite_bounded.adb:87:22: info: precondition proved
+indefinite_bounded.adb:87:34: info: initialization of private part of "V" proved
 indefinite_bounded.adb:88:07: info: assertion proved
 indefinite_bounded.adb:88:22: info: precondition proved
+indefinite_bounded.adb:88:34: info: initialization of private part of "V" proved
 indefinite_bounded.adb:90:07: info: assertion proved
 indefinite_bounded.adb:90:22: info: precondition proved
+indefinite_bounded.adb:90:42: info: initialization of private part of "V" proved
 indefinite_bounded.adb:91:07: info: assertion proved
 indefinite_bounded.adb:91:22: info: precondition proved
+indefinite_bounded.adb:91:42: info: initialization of private part of "V" proved
 indefinite_bounded.adb:92:07: info: assertion proved
 indefinite_bounded.adb:92:22: info: precondition proved
+indefinite_bounded.adb:92:42: info: initialization of private part of "V" proved
 indefinite_bounded.adb:94:07: info: assertion proved
 indefinite_bounded.adb:94:22: info: precondition proved
+indefinite_bounded.adb:94:32: info: initialization of private part of "V" proved
 indefinite_bounded.adb:95:07: info: assertion proved
 indefinite_bounded.adb:95:26: info: precondition proved
+indefinite_bounded.adb:95:36: info: initialization of private part of "V" proved
 indefinite_bounded.adb:96:07: info: assertion proved
 indefinite_bounded.adb:96:22: info: precondition proved
+indefinite_bounded.adb:96:35: info: initialization of private part of "V" proved
 indefinite_bounded.adb:97:07: info: assertion proved
 indefinite_bounded.adb:97:26: info: precondition proved
+indefinite_bounded.adb:97:39: info: initialization of private part of "V" proved
 indefinite_bounded.adb:98:07: info: assertion proved
 indefinite_bounded.adb:98:26: info: precondition proved
+indefinite_bounded.adb:98:39: info: initialization of private part of "V" proved
+indefinite_bounded.adb:101:19: info: initialization of "Lt" proved
+indefinite_bounded.adb:102:18: info: initialization of "Olt" proved
 indefinite_bounded.adb:104:10: info: assertion proved
 indefinite_bounded.adb:104:33: info: precondition proved
+indefinite_bounded.adb:104:45: info: initialization of private part of "V" proved
 indefinite_bounded.adb:105:14: info: precondition proved
+indefinite_bounded.adb:105:21: info: initialization of private part of "V" proved
 indefinite_bounded.adb:106:10: info: assertion proved
 indefinite_bounded.adb:106:29: info: precondition proved
+indefinite_bounded.adb:106:39: info: initialization of private part of "V" proved
 indefinite_bounded.adb:107:10: info: assertion proved
 indefinite_bounded.adb:107:25: info: precondition proved
+indefinite_bounded.adb:107:33: info: initialization of private part of "V" proved
 indefinite_bounded.adb:108:10: info: assertion proved
 indefinite_bounded.adb:108:25: info: precondition proved
+indefinite_bounded.adb:108:35: info: initialization of private part of "V" proved
 indefinite_bounded.adb:109:25: info: precondition proved
 indefinite_bounded.adb:109:25: medium: assertion might fail, requires Element (V, 1) = 3
+indefinite_bounded.adb:109:34: info: initialization of private part of "V" proved
 indefinite_bounded.adb:110:25: info: precondition proved
 indefinite_bounded.adb:110:25: medium: assertion might fail, requires Element (V, 2) = 4
+indefinite_bounded.adb:110:34: info: initialization of private part of "V" proved
 indefinite_bounded.adb:111:10: info: assertion proved
 indefinite_bounded.adb:111:29: info: precondition proved
+indefinite_bounded.adb:111:41: info: initialization of private part of "V" proved
 indefinite_bounded.adb:114:07: info: precondition proved
+indefinite_bounded.adb:114:24: info: initialization of private part of "V" proved
 indefinite_bounded.adb:114:30: info: precondition proved
+indefinite_bounded.adb:114:39: info: initialization of private part of "V" proved
 indefinite_bounded.adb:115:07: info: assertion proved
 indefinite_bounded.adb:115:22: info: precondition proved
 indefinite_bounded.adb:115:47: info: precondition proved
 indefinite_bounded.adb:115:49: info: precondition proved
+indefinite_bounded.adb:115:66: info: initialization of private part of "V" proved
 indefinite_bounded.adb:117:07: info: assertion proved
 indefinite_bounded.adb:117:22: info: precondition proved
+indefinite_bounded.adb:117:32: info: initialization of private part of "V" proved
 indefinite_bounded.adb:119:37: medium: assertion might fail, requires false
 indefinite_bounded.ads:6:04: warning: in instantiation at a-cfinve.ads:240
 indefinite_bounded.ads:6:04: warning: in instantiation at a-coboho.ads:102
 indefinite_bounded.ads:6:04: warning: pragma "No_Strict_Aliasing" ignored in flow analysis (not yet supported)
+indefinite_bounded.ads:6:12: info: initialization of "Oeq" proved
 indefinite_bounded.ads:14:14: warning: subprogram "Test" has no effect
+indefinite_bounded_tagged.adb:6:13: info: initialization of "F.C" proved
+indefinite_bounded_tagged.adb:6:13: info: initialization of extension of "F" proved
 indefinite_bounded_tagged.adb:11:07: info: precondition proved
+indefinite_bounded_tagged.adb:11:14: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:12:07: info: assertion proved
 indefinite_bounded_tagged.adb:12:22: info: precondition proved
+indefinite_bounded_tagged.adb:12:32: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:13:07: info: assertion proved
+indefinite_bounded_tagged.adb:13:22: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:13:24: info: precondition proved
 indefinite_bounded_tagged.adb:13:26: info: precondition proved
 indefinite_bounded_tagged.adb:14:07: info: assertion proved
 indefinite_bounded_tagged.adb:14:22: info: precondition proved
+indefinite_bounded_tagged.adb:14:32: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:16:07: info: precondition proved
+indefinite_bounded_tagged.adb:16:15: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:17:07: info: precondition proved
+indefinite_bounded_tagged.adb:17:15: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:18:07: info: precondition proved
+indefinite_bounded_tagged.adb:18:15: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:19:07: info: assertion proved
 indefinite_bounded_tagged.adb:19:26: info: precondition proved
+indefinite_bounded_tagged.adb:19:36: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:20:07: info: assertion proved
 indefinite_bounded_tagged.adb:20:22: info: precondition proved
+indefinite_bounded_tagged.adb:20:30: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:21:07: info: assertion proved
 indefinite_bounded_tagged.adb:21:22: info: precondition proved
+indefinite_bounded_tagged.adb:21:32: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:22:07: info: assertion proved
 indefinite_bounded_tagged.adb:22:22: info: precondition proved
+indefinite_bounded_tagged.adb:22:31: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:23:07: info: assertion proved
 indefinite_bounded_tagged.adb:23:22: info: precondition proved
+indefinite_bounded_tagged.adb:23:31: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:24:07: info: assertion proved
 indefinite_bounded_tagged.adb:24:22: info: precondition proved
+indefinite_bounded_tagged.adb:24:31: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:26:07: info: precondition proved
+indefinite_bounded_tagged.adb:26:25: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:28:07: info: assertion proved
 indefinite_bounded_tagged.adb:28:26: info: precondition proved
+indefinite_bounded_tagged.adb:28:36: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:29:07: info: assertion proved
 indefinite_bounded_tagged.adb:29:22: info: precondition proved
+indefinite_bounded_tagged.adb:29:30: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:30:07: info: assertion proved
 indefinite_bounded_tagged.adb:30:22: info: precondition proved
+indefinite_bounded_tagged.adb:30:32: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:33:24: info: precondition proved
+indefinite_bounded_tagged.adb:33:30: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:35:10: info: assertion proved
 indefinite_bounded_tagged.adb:35:29: info: precondition proved
+indefinite_bounded_tagged.adb:35:39: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:36:10: info: assertion proved
 indefinite_bounded_tagged.adb:36:25: info: precondition proved
+indefinite_bounded_tagged.adb:36:33: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:37:10: info: assertion proved
 indefinite_bounded_tagged.adb:37:25: info: precondition proved
+indefinite_bounded_tagged.adb:37:35: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:38:10: info: assertion proved
 indefinite_bounded_tagged.adb:38:25: info: precondition proved
+indefinite_bounded_tagged.adb:38:34: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:39:10: info: assertion proved
 indefinite_bounded_tagged.adb:39:25: info: precondition proved
+indefinite_bounded_tagged.adb:39:34: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:40:10: info: assertion proved
 indefinite_bounded_tagged.adb:40:25: info: precondition proved
+indefinite_bounded_tagged.adb:40:34: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:42:10: info: precondition proved
+indefinite_bounded_tagged.adb:42:18: info: initialization of private part of "W" proved
+indefinite_bounded_tagged.adb:42:21: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:43:10: info: assertion proved
 indefinite_bounded_tagged.adb:43:29: info: precondition proved
+indefinite_bounded_tagged.adb:43:39: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:44:10: info: assertion proved
 indefinite_bounded_tagged.adb:44:25: info: precondition proved
+indefinite_bounded_tagged.adb:44:33: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:45:10: info: assertion proved
 indefinite_bounded_tagged.adb:45:25: info: precondition proved
+indefinite_bounded_tagged.adb:45:35: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:46:10: info: assertion proved
 indefinite_bounded_tagged.adb:46:25: info: precondition proved
+indefinite_bounded_tagged.adb:46:34: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:47:10: info: assertion proved
 indefinite_bounded_tagged.adb:47:25: info: precondition proved
+indefinite_bounded_tagged.adb:47:34: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:48:10: info: assertion proved
 indefinite_bounded_tagged.adb:48:25: info: precondition proved
+indefinite_bounded_tagged.adb:48:34: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:49:10: info: assertion proved
 indefinite_bounded_tagged.adb:49:25: info: precondition proved
+indefinite_bounded_tagged.adb:49:34: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:50:10: info: assertion proved
 indefinite_bounded_tagged.adb:50:25: info: precondition proved
+indefinite_bounded_tagged.adb:50:34: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:51:10: info: assertion proved
 indefinite_bounded_tagged.adb:51:25: info: precondition proved
+indefinite_bounded_tagged.adb:51:34: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:53:10: info: precondition proved
+indefinite_bounded_tagged.adb:53:18: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:53:21: info: precondition proved
 indefinite_bounded_tagged.adb:54:10: info: assertion proved
 indefinite_bounded_tagged.adb:54:25: info: precondition proved
+indefinite_bounded_tagged.adb:54:35: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:55:10: info: assertion proved
+indefinite_bounded_tagged.adb:55:25: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:55:27: info: precondition proved
 indefinite_bounded_tagged.adb:55:29: info: precondition proved
 indefinite_bounded_tagged.adb:58:07: info: precondition proved
+indefinite_bounded_tagged.adb:58:24: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:59:07: info: assertion proved
 indefinite_bounded_tagged.adb:59:22: info: precondition proved
+indefinite_bounded_tagged.adb:59:31: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:60:07: info: assertion proved
 indefinite_bounded_tagged.adb:60:22: info: precondition proved
+indefinite_bounded_tagged.adb:60:31: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:61:07: info: assertion proved
 indefinite_bounded_tagged.adb:61:22: info: precondition proved
+indefinite_bounded_tagged.adb:61:31: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:63:07: info: precondition proved
+indefinite_bounded_tagged.adb:63:13: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:64:07: info: assertion proved
 indefinite_bounded_tagged.adb:64:22: info: precondition proved
+indefinite_bounded_tagged.adb:64:31: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:65:07: info: assertion proved
 indefinite_bounded_tagged.adb:65:22: info: precondition proved
+indefinite_bounded_tagged.adb:65:31: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:66:07: info: assertion proved
 indefinite_bounded_tagged.adb:66:22: info: precondition proved
+indefinite_bounded_tagged.adb:66:31: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:68:07: info: precondition proved
+indefinite_bounded_tagged.adb:68:20: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:69:07: info: assertion proved
 indefinite_bounded_tagged.adb:69:26: info: precondition proved
+indefinite_bounded_tagged.adb:69:36: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:70:07: info: assertion proved
 indefinite_bounded_tagged.adb:70:22: info: precondition proved
+indefinite_bounded_tagged.adb:70:30: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:71:07: info: assertion proved
 indefinite_bounded_tagged.adb:71:22: info: precondition proved
+indefinite_bounded_tagged.adb:71:32: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:72:07: info: assertion proved
 indefinite_bounded_tagged.adb:72:22: info: precondition proved
+indefinite_bounded_tagged.adb:72:31: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:73:07: info: assertion proved
 indefinite_bounded_tagged.adb:73:22: info: precondition proved
+indefinite_bounded_tagged.adb:73:31: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:75:07: info: precondition proved
+indefinite_bounded_tagged.adb:75:25: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:76:07: info: assertion proved
 indefinite_bounded_tagged.adb:76:26: info: precondition proved
+indefinite_bounded_tagged.adb:76:36: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:77:07: info: assertion proved
 indefinite_bounded_tagged.adb:77:22: info: precondition proved
+indefinite_bounded_tagged.adb:77:30: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:78:07: info: assertion proved
 indefinite_bounded_tagged.adb:78:22: info: precondition proved
+indefinite_bounded_tagged.adb:78:32: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:79:07: info: assertion proved
 indefinite_bounded_tagged.adb:79:22: info: precondition proved
+indefinite_bounded_tagged.adb:79:31: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:80:07: info: assertion proved
 indefinite_bounded_tagged.adb:80:22: info: precondition proved
+indefinite_bounded_tagged.adb:80:31: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:82:07: info: assertion proved
 indefinite_bounded_tagged.adb:82:22: info: precondition proved
+indefinite_bounded_tagged.adb:82:35: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:83:07: info: assertion proved
 indefinite_bounded_tagged.adb:83:22: info: precondition proved
+indefinite_bounded_tagged.adb:83:34: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:84:07: info: assertion proved
 indefinite_bounded_tagged.adb:84:22: info: precondition proved
+indefinite_bounded_tagged.adb:84:37: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:85:07: info: assertion proved
 indefinite_bounded_tagged.adb:85:22: info: precondition proved
+indefinite_bounded_tagged.adb:85:36: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:87:07: info: assertion proved
 indefinite_bounded_tagged.adb:87:22: info: precondition proved
+indefinite_bounded_tagged.adb:87:34: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:88:07: info: assertion proved
 indefinite_bounded_tagged.adb:88:22: info: precondition proved
+indefinite_bounded_tagged.adb:88:34: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:89:07: info: assertion proved
 indefinite_bounded_tagged.adb:89:22: info: precondition proved
+indefinite_bounded_tagged.adb:89:34: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:91:07: info: assertion proved
 indefinite_bounded_tagged.adb:91:22: info: precondition proved
+indefinite_bounded_tagged.adb:91:42: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:92:07: info: assertion proved
 indefinite_bounded_tagged.adb:92:22: info: precondition proved
+indefinite_bounded_tagged.adb:92:42: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:93:07: info: assertion proved
 indefinite_bounded_tagged.adb:93:22: info: precondition proved
+indefinite_bounded_tagged.adb:93:42: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:95:07: info: assertion proved
 indefinite_bounded_tagged.adb:95:22: info: precondition proved
+indefinite_bounded_tagged.adb:95:32: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:96:07: info: assertion proved
 indefinite_bounded_tagged.adb:96:26: info: precondition proved
+indefinite_bounded_tagged.adb:96:36: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:97:07: info: assertion proved
 indefinite_bounded_tagged.adb:97:22: info: precondition proved
+indefinite_bounded_tagged.adb:97:35: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:98:07: info: assertion proved
 indefinite_bounded_tagged.adb:98:26: info: precondition proved
+indefinite_bounded_tagged.adb:98:39: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:99:07: info: assertion proved
 indefinite_bounded_tagged.adb:99:26: info: precondition proved
+indefinite_bounded_tagged.adb:99:39: info: initialization of private part of "V" proved
+indefinite_bounded_tagged.adb:102:19: info: initialization of "Lt" proved
+indefinite_bounded_tagged.adb:103:18: info: initialization of "Olt" proved
 indefinite_bounded_tagged.adb:105:10: info: assertion proved
 indefinite_bounded_tagged.adb:105:33: info: precondition proved
+indefinite_bounded_tagged.adb:105:45: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:106:14: info: precondition proved
+indefinite_bounded_tagged.adb:106:21: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:107:10: info: assertion proved
 indefinite_bounded_tagged.adb:107:29: info: precondition proved
+indefinite_bounded_tagged.adb:107:39: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:108:10: info: assertion proved
 indefinite_bounded_tagged.adb:108:25: info: precondition proved
+indefinite_bounded_tagged.adb:108:33: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:109:10: info: assertion proved
 indefinite_bounded_tagged.adb:109:25: info: precondition proved
+indefinite_bounded_tagged.adb:109:35: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:110:25: info: precondition proved
 indefinite_bounded_tagged.adb:110:25: medium: assertion might fail, requires Element (V, 1) = F(3)
+indefinite_bounded_tagged.adb:110:34: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:111:25: info: precondition proved
 indefinite_bounded_tagged.adb:111:25: medium: assertion might fail, requires Element (V, 2) = F(4)
+indefinite_bounded_tagged.adb:111:34: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:112:10: info: assertion proved
 indefinite_bounded_tagged.adb:112:29: info: precondition proved
+indefinite_bounded_tagged.adb:112:41: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:115:07: info: precondition proved
+indefinite_bounded_tagged.adb:115:24: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:115:30: info: precondition proved
+indefinite_bounded_tagged.adb:115:39: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:116:07: info: assertion proved
 indefinite_bounded_tagged.adb:116:22: info: precondition proved
 indefinite_bounded_tagged.adb:116:47: info: precondition proved
 indefinite_bounded_tagged.adb:116:49: info: precondition proved
+indefinite_bounded_tagged.adb:116:66: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:118:07: info: assertion proved
 indefinite_bounded_tagged.adb:118:22: info: precondition proved
+indefinite_bounded_tagged.adb:118:32: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:120:37: medium: assertion might fail, requires false
 indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:240
 indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-coboho.ads:102
 indefinite_bounded_tagged.ads:12:04: warning: pragma "No_Strict_Aliasing" ignored in flow analysis (not yet supported)
+indefinite_bounded_tagged.ads:12:12: info: initialization of "Oeq" proved
 indefinite_bounded_tagged.ads:20:14: warning: subprogram "Test" has no effect
 indefinite_unbounded.adb:10:07: info: precondition proved
+indefinite_unbounded.adb:10:14: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:11:07: info: assertion proved
 indefinite_unbounded.adb:11:22: info: precondition proved
+indefinite_unbounded.adb:11:32: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:12:07: info: assertion proved
+indefinite_unbounded.adb:12:22: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:12:24: info: precondition proved
 indefinite_unbounded.adb:12:26: info: precondition proved
 indefinite_unbounded.adb:14:22: info: precondition proved
 indefinite_unbounded.adb:14:22: medium: assertion might fail, requires Capacity (V) = 2
+indefinite_unbounded.adb:14:32: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:16:07: info: precondition proved
+indefinite_unbounded.adb:16:15: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:17:07: info: precondition proved
+indefinite_unbounded.adb:17:15: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:18:07: info: precondition proved
+indefinite_unbounded.adb:18:15: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:19:07: info: assertion proved
 indefinite_unbounded.adb:19:26: info: precondition proved
+indefinite_unbounded.adb:19:36: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:20:07: info: assertion proved
 indefinite_unbounded.adb:20:22: info: precondition proved
+indefinite_unbounded.adb:20:30: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:21:07: info: assertion proved
 indefinite_unbounded.adb:21:22: info: precondition proved
+indefinite_unbounded.adb:21:32: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:22:07: info: assertion proved
 indefinite_unbounded.adb:22:22: info: precondition proved
+indefinite_unbounded.adb:22:31: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:23:07: info: assertion proved
 indefinite_unbounded.adb:23:22: info: precondition proved
+indefinite_unbounded.adb:23:31: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:24:07: info: assertion proved
 indefinite_unbounded.adb:24:22: info: precondition proved
+indefinite_unbounded.adb:24:31: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:26:07: info: precondition proved
+indefinite_unbounded.adb:26:25: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:28:07: info: assertion proved
 indefinite_unbounded.adb:28:26: info: precondition proved
+indefinite_unbounded.adb:28:36: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:29:07: info: assertion proved
 indefinite_unbounded.adb:29:22: info: precondition proved
+indefinite_unbounded.adb:29:30: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:30:07: info: assertion proved
 indefinite_unbounded.adb:30:22: info: precondition proved
+indefinite_unbounded.adb:30:32: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:33:24: info: precondition proved
+indefinite_unbounded.adb:33:30: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:35:10: info: assertion proved
 indefinite_unbounded.adb:35:29: info: precondition proved
+indefinite_unbounded.adb:35:39: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:36:10: info: assertion proved
 indefinite_unbounded.adb:36:25: info: precondition proved
+indefinite_unbounded.adb:36:33: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:37:10: info: assertion proved
 indefinite_unbounded.adb:37:25: info: precondition proved
+indefinite_unbounded.adb:37:35: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:38:10: info: assertion proved
 indefinite_unbounded.adb:38:25: info: precondition proved
+indefinite_unbounded.adb:38:34: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:39:10: info: assertion proved
 indefinite_unbounded.adb:39:25: info: precondition proved
+indefinite_unbounded.adb:39:34: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:40:10: info: assertion proved
 indefinite_unbounded.adb:40:25: info: precondition proved
+indefinite_unbounded.adb:40:34: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:42:10: info: precondition proved
+indefinite_unbounded.adb:42:18: info: initialization of private part of "W" proved
+indefinite_unbounded.adb:42:21: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:43:10: info: assertion proved
 indefinite_unbounded.adb:43:29: info: precondition proved
+indefinite_unbounded.adb:43:39: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:44:10: info: assertion proved
 indefinite_unbounded.adb:44:25: info: precondition proved
+indefinite_unbounded.adb:44:33: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:45:10: info: assertion proved
 indefinite_unbounded.adb:45:25: info: precondition proved
+indefinite_unbounded.adb:45:35: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:46:10: info: assertion proved
 indefinite_unbounded.adb:46:25: info: precondition proved
+indefinite_unbounded.adb:46:34: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:47:10: info: assertion proved
 indefinite_unbounded.adb:47:25: info: precondition proved
+indefinite_unbounded.adb:47:34: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:48:10: info: assertion proved
 indefinite_unbounded.adb:48:25: info: precondition proved
+indefinite_unbounded.adb:48:34: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:49:10: info: assertion proved
 indefinite_unbounded.adb:49:25: info: precondition proved
+indefinite_unbounded.adb:49:34: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:50:10: info: assertion proved
 indefinite_unbounded.adb:50:25: info: precondition proved
+indefinite_unbounded.adb:50:34: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:51:10: info: assertion proved
 indefinite_unbounded.adb:51:25: info: precondition proved
+indefinite_unbounded.adb:51:34: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:53:10: info: precondition proved
+indefinite_unbounded.adb:53:18: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:53:21: info: precondition proved
 indefinite_unbounded.adb:54:10: info: assertion proved
 indefinite_unbounded.adb:54:25: info: precondition proved
+indefinite_unbounded.adb:54:35: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:55:10: info: assertion proved
+indefinite_unbounded.adb:55:25: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:55:27: info: precondition proved
 indefinite_unbounded.adb:55:29: info: precondition proved
 indefinite_unbounded.adb:58:07: info: precondition proved
+indefinite_unbounded.adb:58:24: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:59:07: info: assertion proved
 indefinite_unbounded.adb:59:22: info: precondition proved
+indefinite_unbounded.adb:59:31: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:60:07: info: assertion proved
 indefinite_unbounded.adb:60:22: info: precondition proved
+indefinite_unbounded.adb:60:31: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:61:07: info: assertion proved
 indefinite_unbounded.adb:61:22: info: precondition proved
+indefinite_unbounded.adb:61:31: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:63:07: info: precondition proved
+indefinite_unbounded.adb:63:13: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:64:07: info: assertion proved
 indefinite_unbounded.adb:64:22: info: precondition proved
+indefinite_unbounded.adb:64:31: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:65:07: info: assertion proved
 indefinite_unbounded.adb:65:22: info: precondition proved
+indefinite_unbounded.adb:65:31: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:66:07: info: assertion proved
 indefinite_unbounded.adb:66:22: info: precondition proved
+indefinite_unbounded.adb:66:31: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:68:07: info: precondition proved
+indefinite_unbounded.adb:68:20: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:69:07: info: assertion proved
 indefinite_unbounded.adb:69:26: info: precondition proved
+indefinite_unbounded.adb:69:36: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:70:07: info: assertion proved
 indefinite_unbounded.adb:70:22: info: precondition proved
+indefinite_unbounded.adb:70:30: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:71:07: info: assertion proved
 indefinite_unbounded.adb:71:22: info: precondition proved
+indefinite_unbounded.adb:71:32: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:72:07: info: assertion proved
 indefinite_unbounded.adb:72:22: info: precondition proved
+indefinite_unbounded.adb:72:31: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:73:07: info: assertion proved
 indefinite_unbounded.adb:73:22: info: precondition proved
+indefinite_unbounded.adb:73:31: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:75:07: info: precondition proved
+indefinite_unbounded.adb:75:25: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:76:07: info: assertion proved
 indefinite_unbounded.adb:76:26: info: precondition proved
+indefinite_unbounded.adb:76:36: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:77:07: info: assertion proved
 indefinite_unbounded.adb:77:22: info: precondition proved
+indefinite_unbounded.adb:77:30: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:78:07: info: assertion proved
 indefinite_unbounded.adb:78:22: info: precondition proved
+indefinite_unbounded.adb:78:32: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:79:07: info: assertion proved
 indefinite_unbounded.adb:79:22: info: precondition proved
+indefinite_unbounded.adb:79:31: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:80:07: info: assertion proved
 indefinite_unbounded.adb:80:22: info: precondition proved
+indefinite_unbounded.adb:80:31: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:82:07: info: assertion proved
 indefinite_unbounded.adb:82:22: info: precondition proved
+indefinite_unbounded.adb:82:35: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:83:07: info: assertion proved
 indefinite_unbounded.adb:83:22: info: precondition proved
+indefinite_unbounded.adb:83:34: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:84:07: info: assertion proved
 indefinite_unbounded.adb:84:22: info: precondition proved
+indefinite_unbounded.adb:84:37: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:85:07: info: assertion proved
 indefinite_unbounded.adb:85:22: info: precondition proved
+indefinite_unbounded.adb:85:36: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:87:07: info: assertion proved
 indefinite_unbounded.adb:87:22: info: precondition proved
+indefinite_unbounded.adb:87:34: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:88:07: info: assertion proved
 indefinite_unbounded.adb:88:22: info: precondition proved
+indefinite_unbounded.adb:88:34: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:89:07: info: assertion proved
 indefinite_unbounded.adb:89:22: info: precondition proved
+indefinite_unbounded.adb:89:34: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:91:07: info: assertion proved
 indefinite_unbounded.adb:91:22: info: precondition proved
+indefinite_unbounded.adb:91:42: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:92:07: info: assertion proved
 indefinite_unbounded.adb:92:22: info: precondition proved
+indefinite_unbounded.adb:92:42: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:93:07: info: assertion proved
 indefinite_unbounded.adb:93:22: info: precondition proved
+indefinite_unbounded.adb:93:42: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:95:07: info: assertion proved
 indefinite_unbounded.adb:95:22: info: precondition proved
+indefinite_unbounded.adb:95:32: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:96:07: info: assertion proved
 indefinite_unbounded.adb:96:26: info: precondition proved
+indefinite_unbounded.adb:96:36: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:97:07: info: assertion proved
 indefinite_unbounded.adb:97:22: info: precondition proved
+indefinite_unbounded.adb:97:35: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:98:07: info: assertion proved
 indefinite_unbounded.adb:98:26: info: precondition proved
+indefinite_unbounded.adb:98:39: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:99:07: info: assertion proved
 indefinite_unbounded.adb:99:26: info: precondition proved
+indefinite_unbounded.adb:99:39: info: initialization of private part of "V" proved
+indefinite_unbounded.adb:102:19: info: initialization of "Lt" proved
+indefinite_unbounded.adb:103:18: info: initialization of "Olt" proved
 indefinite_unbounded.adb:105:10: info: assertion proved
 indefinite_unbounded.adb:105:33: info: precondition proved
+indefinite_unbounded.adb:105:45: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:106:14: info: precondition proved
+indefinite_unbounded.adb:106:21: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:107:10: info: assertion proved
 indefinite_unbounded.adb:107:29: info: precondition proved
+indefinite_unbounded.adb:107:39: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:108:10: info: assertion proved
 indefinite_unbounded.adb:108:25: info: precondition proved
+indefinite_unbounded.adb:108:33: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:109:10: info: assertion proved
 indefinite_unbounded.adb:109:25: info: precondition proved
+indefinite_unbounded.adb:109:35: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:110:25: info: precondition proved
 indefinite_unbounded.adb:110:25: medium: assertion might fail, requires Element (V, 1) = 3
+indefinite_unbounded.adb:110:34: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:111:25: info: precondition proved
 indefinite_unbounded.adb:111:25: medium: assertion might fail, requires Element (V, 2) = 4
+indefinite_unbounded.adb:111:34: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:112:10: info: assertion proved
 indefinite_unbounded.adb:112:29: info: precondition proved
+indefinite_unbounded.adb:112:41: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:115:07: info: precondition proved
+indefinite_unbounded.adb:115:24: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:115:30: info: precondition proved
+indefinite_unbounded.adb:115:39: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:116:07: info: assertion proved
 indefinite_unbounded.adb:116:22: info: precondition proved
 indefinite_unbounded.adb:116:47: info: precondition proved
 indefinite_unbounded.adb:116:49: info: precondition proved
+indefinite_unbounded.adb:116:66: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:119:22: info: precondition proved
 indefinite_unbounded.adb:119:22: medium: assertion might fail, requires Capacity (V) = 10
+indefinite_unbounded.adb:119:32: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:121:37: medium: assertion might fail, requires false
 indefinite_unbounded.ads:8:04: warning: in instantiation at a-cfinve.ads:240
 indefinite_unbounded.ads:8:04: warning: in instantiation at a-coboho.ads:102
 indefinite_unbounded.ads:8:04: warning: pragma "No_Strict_Aliasing" ignored in flow analysis (not yet supported)
+indefinite_unbounded.ads:8:12: info: initialization of "Oeq" proved
 indefinite_unbounded.ads:16:14: warning: subprogram "Test" has no effect
+indefinite_unbounded_tagged.adb:6:13: info: initialization of "F.C" proved
+indefinite_unbounded_tagged.adb:6:13: info: initialization of extension of "F" proved
 indefinite_unbounded_tagged.adb:11:07: info: precondition proved
+indefinite_unbounded_tagged.adb:11:14: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:12:07: info: assertion proved
 indefinite_unbounded_tagged.adb:12:22: info: precondition proved
+indefinite_unbounded_tagged.adb:12:32: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:13:07: info: assertion proved
+indefinite_unbounded_tagged.adb:13:22: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:13:24: info: precondition proved
 indefinite_unbounded_tagged.adb:13:26: info: precondition proved
 indefinite_unbounded_tagged.adb:15:22: info: precondition proved
 indefinite_unbounded_tagged.adb:15:22: medium: assertion might fail, requires Capacity (V) = 2
+indefinite_unbounded_tagged.adb:15:32: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:17:07: info: precondition proved
+indefinite_unbounded_tagged.adb:17:15: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:18:07: info: precondition proved
+indefinite_unbounded_tagged.adb:18:15: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:19:07: info: precondition proved
+indefinite_unbounded_tagged.adb:19:15: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:20:07: info: assertion proved
 indefinite_unbounded_tagged.adb:20:26: info: precondition proved
+indefinite_unbounded_tagged.adb:20:36: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:21:07: info: assertion proved
 indefinite_unbounded_tagged.adb:21:22: info: precondition proved
+indefinite_unbounded_tagged.adb:21:30: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:22:07: info: assertion proved
 indefinite_unbounded_tagged.adb:22:22: info: precondition proved
+indefinite_unbounded_tagged.adb:22:32: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:23:07: info: assertion proved
 indefinite_unbounded_tagged.adb:23:22: info: precondition proved
+indefinite_unbounded_tagged.adb:23:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:24:07: info: assertion proved
 indefinite_unbounded_tagged.adb:24:22: info: precondition proved
+indefinite_unbounded_tagged.adb:24:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:25:07: info: assertion proved
 indefinite_unbounded_tagged.adb:25:22: info: precondition proved
+indefinite_unbounded_tagged.adb:25:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:27:07: info: precondition proved
+indefinite_unbounded_tagged.adb:27:25: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:29:07: info: assertion proved
 indefinite_unbounded_tagged.adb:29:26: info: precondition proved
+indefinite_unbounded_tagged.adb:29:36: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:30:07: info: assertion proved
 indefinite_unbounded_tagged.adb:30:22: info: precondition proved
+indefinite_unbounded_tagged.adb:30:30: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:31:07: info: assertion proved
 indefinite_unbounded_tagged.adb:31:22: info: precondition proved
+indefinite_unbounded_tagged.adb:31:32: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:34:24: info: precondition proved
+indefinite_unbounded_tagged.adb:34:30: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:36:10: info: assertion proved
 indefinite_unbounded_tagged.adb:36:29: info: precondition proved
+indefinite_unbounded_tagged.adb:36:39: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:37:10: info: assertion proved
 indefinite_unbounded_tagged.adb:37:25: info: precondition proved
+indefinite_unbounded_tagged.adb:37:33: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:38:10: info: assertion proved
 indefinite_unbounded_tagged.adb:38:25: info: precondition proved
+indefinite_unbounded_tagged.adb:38:35: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:39:10: info: assertion proved
 indefinite_unbounded_tagged.adb:39:25: info: precondition proved
+indefinite_unbounded_tagged.adb:39:34: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:40:10: info: assertion proved
 indefinite_unbounded_tagged.adb:40:25: info: precondition proved
+indefinite_unbounded_tagged.adb:40:34: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:41:10: info: assertion proved
 indefinite_unbounded_tagged.adb:41:25: info: precondition proved
+indefinite_unbounded_tagged.adb:41:34: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:43:10: info: precondition proved
+indefinite_unbounded_tagged.adb:43:18: info: initialization of private part of "W" proved
+indefinite_unbounded_tagged.adb:43:21: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:44:10: info: assertion proved
 indefinite_unbounded_tagged.adb:44:29: info: precondition proved
+indefinite_unbounded_tagged.adb:44:39: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:45:10: info: assertion proved
 indefinite_unbounded_tagged.adb:45:25: info: precondition proved
+indefinite_unbounded_tagged.adb:45:33: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:46:10: info: assertion proved
 indefinite_unbounded_tagged.adb:46:25: info: precondition proved
+indefinite_unbounded_tagged.adb:46:35: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:47:10: info: assertion proved
 indefinite_unbounded_tagged.adb:47:25: info: precondition proved
+indefinite_unbounded_tagged.adb:47:34: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:48:10: info: assertion proved
 indefinite_unbounded_tagged.adb:48:25: info: precondition proved
+indefinite_unbounded_tagged.adb:48:34: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:49:10: info: assertion proved
 indefinite_unbounded_tagged.adb:49:25: info: precondition proved
+indefinite_unbounded_tagged.adb:49:34: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:50:10: info: assertion proved
 indefinite_unbounded_tagged.adb:50:25: info: precondition proved
+indefinite_unbounded_tagged.adb:50:34: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:51:10: info: assertion proved
 indefinite_unbounded_tagged.adb:51:25: info: precondition proved
+indefinite_unbounded_tagged.adb:51:34: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:52:10: info: assertion proved
 indefinite_unbounded_tagged.adb:52:25: info: precondition proved
+indefinite_unbounded_tagged.adb:52:34: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:54:10: info: precondition proved
+indefinite_unbounded_tagged.adb:54:18: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:54:21: info: precondition proved
 indefinite_unbounded_tagged.adb:55:10: info: assertion proved
 indefinite_unbounded_tagged.adb:55:25: info: precondition proved
+indefinite_unbounded_tagged.adb:55:35: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:56:10: info: assertion proved
+indefinite_unbounded_tagged.adb:56:25: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:56:27: info: precondition proved
 indefinite_unbounded_tagged.adb:56:29: info: precondition proved
 indefinite_unbounded_tagged.adb:59:07: info: precondition proved
+indefinite_unbounded_tagged.adb:59:24: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:60:07: info: assertion proved
 indefinite_unbounded_tagged.adb:60:22: info: precondition proved
+indefinite_unbounded_tagged.adb:60:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:61:07: info: assertion proved
 indefinite_unbounded_tagged.adb:61:22: info: precondition proved
+indefinite_unbounded_tagged.adb:61:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:62:07: info: assertion proved
 indefinite_unbounded_tagged.adb:62:22: info: precondition proved
+indefinite_unbounded_tagged.adb:62:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:64:07: info: precondition proved
+indefinite_unbounded_tagged.adb:64:13: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:65:07: info: assertion proved
 indefinite_unbounded_tagged.adb:65:22: info: precondition proved
+indefinite_unbounded_tagged.adb:65:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:66:07: info: assertion proved
 indefinite_unbounded_tagged.adb:66:22: info: precondition proved
+indefinite_unbounded_tagged.adb:66:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:67:07: info: assertion proved
 indefinite_unbounded_tagged.adb:67:22: info: precondition proved
+indefinite_unbounded_tagged.adb:67:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:69:07: info: precondition proved
+indefinite_unbounded_tagged.adb:69:20: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:70:07: info: assertion proved
 indefinite_unbounded_tagged.adb:70:26: info: precondition proved
+indefinite_unbounded_tagged.adb:70:36: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:71:07: info: assertion proved
 indefinite_unbounded_tagged.adb:71:22: info: precondition proved
+indefinite_unbounded_tagged.adb:71:30: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:72:07: info: assertion proved
 indefinite_unbounded_tagged.adb:72:22: info: precondition proved
+indefinite_unbounded_tagged.adb:72:32: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:73:07: info: assertion proved
 indefinite_unbounded_tagged.adb:73:22: info: precondition proved
+indefinite_unbounded_tagged.adb:73:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:74:07: info: assertion proved
 indefinite_unbounded_tagged.adb:74:22: info: precondition proved
+indefinite_unbounded_tagged.adb:74:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:76:07: info: precondition proved
+indefinite_unbounded_tagged.adb:76:25: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:77:07: info: assertion proved
 indefinite_unbounded_tagged.adb:77:26: info: precondition proved
+indefinite_unbounded_tagged.adb:77:36: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:78:07: info: assertion proved
 indefinite_unbounded_tagged.adb:78:22: info: precondition proved
+indefinite_unbounded_tagged.adb:78:30: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:79:07: info: assertion proved
 indefinite_unbounded_tagged.adb:79:22: info: precondition proved
+indefinite_unbounded_tagged.adb:79:32: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:80:07: info: assertion proved
 indefinite_unbounded_tagged.adb:80:22: info: precondition proved
+indefinite_unbounded_tagged.adb:80:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:81:07: info: assertion proved
 indefinite_unbounded_tagged.adb:81:22: info: precondition proved
+indefinite_unbounded_tagged.adb:81:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:83:07: info: assertion proved
 indefinite_unbounded_tagged.adb:83:22: info: precondition proved
+indefinite_unbounded_tagged.adb:83:35: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:84:07: info: assertion proved
 indefinite_unbounded_tagged.adb:84:22: info: precondition proved
+indefinite_unbounded_tagged.adb:84:34: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:85:07: info: assertion proved
 indefinite_unbounded_tagged.adb:85:22: info: precondition proved
+indefinite_unbounded_tagged.adb:85:37: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:86:07: info: assertion proved
 indefinite_unbounded_tagged.adb:86:22: info: precondition proved
+indefinite_unbounded_tagged.adb:86:36: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:88:07: info: assertion proved
 indefinite_unbounded_tagged.adb:88:22: info: precondition proved
+indefinite_unbounded_tagged.adb:88:34: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:89:07: info: assertion proved
 indefinite_unbounded_tagged.adb:89:22: info: precondition proved
+indefinite_unbounded_tagged.adb:89:34: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:90:07: info: assertion proved
 indefinite_unbounded_tagged.adb:90:22: info: precondition proved
+indefinite_unbounded_tagged.adb:90:34: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:92:07: info: assertion proved
 indefinite_unbounded_tagged.adb:92:22: info: precondition proved
+indefinite_unbounded_tagged.adb:92:42: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:93:07: info: assertion proved
 indefinite_unbounded_tagged.adb:93:22: info: precondition proved
+indefinite_unbounded_tagged.adb:93:42: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:94:07: info: assertion proved
 indefinite_unbounded_tagged.adb:94:22: info: precondition proved
+indefinite_unbounded_tagged.adb:94:42: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:96:07: info: assertion proved
 indefinite_unbounded_tagged.adb:96:22: info: precondition proved
+indefinite_unbounded_tagged.adb:96:32: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:97:07: info: assertion proved
 indefinite_unbounded_tagged.adb:97:26: info: precondition proved
+indefinite_unbounded_tagged.adb:97:36: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:98:07: info: assertion proved
 indefinite_unbounded_tagged.adb:98:22: info: precondition proved
+indefinite_unbounded_tagged.adb:98:35: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:99:07: info: assertion proved
 indefinite_unbounded_tagged.adb:99:26: info: precondition proved
+indefinite_unbounded_tagged.adb:99:39: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:100:07: info: assertion proved
 indefinite_unbounded_tagged.adb:100:26: info: precondition proved
+indefinite_unbounded_tagged.adb:100:39: info: initialization of private part of "V" proved
+indefinite_unbounded_tagged.adb:103:19: info: initialization of "Lt" proved
+indefinite_unbounded_tagged.adb:104:18: info: initialization of "Olt" proved
 indefinite_unbounded_tagged.adb:106:10: info: assertion proved
 indefinite_unbounded_tagged.adb:106:33: info: precondition proved
+indefinite_unbounded_tagged.adb:106:45: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:107:14: info: precondition proved
+indefinite_unbounded_tagged.adb:107:21: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:108:10: info: assertion proved
 indefinite_unbounded_tagged.adb:108:29: info: precondition proved
+indefinite_unbounded_tagged.adb:108:39: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:109:10: info: assertion proved
 indefinite_unbounded_tagged.adb:109:25: info: precondition proved
+indefinite_unbounded_tagged.adb:109:33: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:110:10: info: assertion proved
 indefinite_unbounded_tagged.adb:110:25: info: precondition proved
+indefinite_unbounded_tagged.adb:110:35: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:111:25: info: precondition proved
 indefinite_unbounded_tagged.adb:111:25: medium: assertion might fail, requires Element (V, 1) = F(3)
+indefinite_unbounded_tagged.adb:111:34: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:112:25: info: precondition proved
 indefinite_unbounded_tagged.adb:112:25: medium: assertion might fail, requires Element (V, 2) = F(4)
+indefinite_unbounded_tagged.adb:112:34: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:113:10: info: assertion proved
 indefinite_unbounded_tagged.adb:113:29: info: precondition proved
+indefinite_unbounded_tagged.adb:113:41: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:116:07: info: precondition proved
+indefinite_unbounded_tagged.adb:116:24: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:116:30: info: precondition proved
+indefinite_unbounded_tagged.adb:116:39: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:117:07: info: assertion proved
 indefinite_unbounded_tagged.adb:117:22: info: precondition proved
 indefinite_unbounded_tagged.adb:117:47: info: precondition proved
 indefinite_unbounded_tagged.adb:117:49: info: precondition proved
+indefinite_unbounded_tagged.adb:117:66: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:120:22: info: precondition proved
 indefinite_unbounded_tagged.adb:120:22: medium: assertion might fail, requires Capacity (V) = 10
+indefinite_unbounded_tagged.adb:120:32: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:122:37: medium: assertion might fail, requires false
 indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:240
 indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-coboho.ads:102
 indefinite_unbounded_tagged.ads:14:04: warning: pragma "No_Strict_Aliasing" ignored in flow analysis (not yet supported)
+indefinite_unbounded_tagged.ads:14:12: info: initialization of "Oeq" proved
 indefinite_unbounded_tagged.ads:22:14: warning: subprogram "Test" has no effect
 unbounded.adb:10:07: info: precondition proved
+unbounded.adb:10:14: info: initialization of private part of "V" proved
 unbounded.adb:11:07: info: assertion proved
 unbounded.adb:11:22: info: precondition proved
+unbounded.adb:11:32: info: initialization of private part of "V" proved
 unbounded.adb:12:07: info: assertion proved
+unbounded.adb:12:22: info: initialization of private part of "V" proved
 unbounded.adb:12:24: info: precondition proved
 unbounded.adb:12:26: info: precondition proved
 unbounded.adb:14:22: info: precondition proved
 unbounded.adb:14:22: medium: assertion might fail, requires Capacity (V) = 2
+unbounded.adb:14:32: info: initialization of private part of "V" proved
 unbounded.adb:16:07: info: precondition proved
+unbounded.adb:16:15: info: initialization of private part of "V" proved
 unbounded.adb:17:07: info: precondition proved
+unbounded.adb:17:15: info: initialization of private part of "V" proved
 unbounded.adb:18:07: info: precondition proved
+unbounded.adb:18:15: info: initialization of private part of "V" proved
 unbounded.adb:19:07: info: assertion proved
 unbounded.adb:19:26: info: precondition proved
+unbounded.adb:19:36: info: initialization of private part of "V" proved
 unbounded.adb:20:07: info: assertion proved
 unbounded.adb:20:22: info: precondition proved
+unbounded.adb:20:30: info: initialization of private part of "V" proved
 unbounded.adb:21:07: info: assertion proved
 unbounded.adb:21:22: info: precondition proved
+unbounded.adb:21:32: info: initialization of private part of "V" proved
 unbounded.adb:22:07: info: assertion proved
 unbounded.adb:22:22: info: precondition proved
+unbounded.adb:22:31: info: initialization of private part of "V" proved
 unbounded.adb:23:07: info: assertion proved
 unbounded.adb:23:22: info: precondition proved
+unbounded.adb:23:31: info: initialization of private part of "V" proved
 unbounded.adb:24:07: info: assertion proved
 unbounded.adb:24:22: info: precondition proved
+unbounded.adb:24:31: info: initialization of private part of "V" proved
 unbounded.adb:26:07: info: precondition proved
+unbounded.adb:26:25: info: initialization of private part of "V" proved
 unbounded.adb:28:07: info: assertion proved
 unbounded.adb:28:26: info: precondition proved
+unbounded.adb:28:36: info: initialization of private part of "V" proved
 unbounded.adb:29:07: info: assertion proved
 unbounded.adb:29:22: info: precondition proved
+unbounded.adb:29:30: info: initialization of private part of "V" proved
 unbounded.adb:30:07: info: assertion proved
 unbounded.adb:30:22: info: precondition proved
+unbounded.adb:30:32: info: initialization of private part of "V" proved
+unbounded.adb:33:10: info: initialization of private part of "W" proved
 unbounded.adb:33:24: info: precondition proved
+unbounded.adb:33:30: info: initialization of private part of "V" proved
 unbounded.adb:35:10: info: assertion proved
 unbounded.adb:35:29: info: precondition proved
+unbounded.adb:35:39: info: initialization of private part of "W" proved
 unbounded.adb:36:10: info: assertion proved
 unbounded.adb:36:25: info: precondition proved
+unbounded.adb:36:33: info: initialization of private part of "W" proved
 unbounded.adb:37:10: info: assertion proved
 unbounded.adb:37:25: info: precondition proved
+unbounded.adb:37:35: info: initialization of private part of "W" proved
 unbounded.adb:38:10: info: assertion proved
 unbounded.adb:38:25: info: precondition proved
+unbounded.adb:38:34: info: initialization of private part of "W" proved
 unbounded.adb:39:10: info: assertion proved
 unbounded.adb:39:25: info: precondition proved
+unbounded.adb:39:34: info: initialization of private part of "W" proved
 unbounded.adb:40:10: info: assertion proved
 unbounded.adb:40:25: info: precondition proved
+unbounded.adb:40:34: info: initialization of private part of "W" proved
 unbounded.adb:42:10: info: precondition proved
+unbounded.adb:42:18: info: initialization of private part of "W" proved
+unbounded.adb:42:21: info: initialization of private part of "V" proved
 unbounded.adb:43:10: info: assertion proved
 unbounded.adb:43:29: info: precondition proved
+unbounded.adb:43:39: info: initialization of private part of "W" proved
 unbounded.adb:44:10: info: assertion proved
 unbounded.adb:44:25: info: precondition proved
+unbounded.adb:44:33: info: initialization of private part of "W" proved
 unbounded.adb:45:10: info: assertion proved
 unbounded.adb:45:25: info: precondition proved
+unbounded.adb:45:35: info: initialization of private part of "W" proved
 unbounded.adb:46:10: info: assertion proved
 unbounded.adb:46:25: info: precondition proved
+unbounded.adb:46:34: info: initialization of private part of "W" proved
 unbounded.adb:47:10: info: assertion proved
 unbounded.adb:47:25: info: precondition proved
+unbounded.adb:47:34: info: initialization of private part of "W" proved
 unbounded.adb:48:10: info: assertion proved
 unbounded.adb:48:25: info: precondition proved
+unbounded.adb:48:34: info: initialization of private part of "W" proved
 unbounded.adb:49:10: info: assertion proved
 unbounded.adb:49:25: info: precondition proved
+unbounded.adb:49:34: info: initialization of private part of "W" proved
 unbounded.adb:50:10: info: assertion proved
 unbounded.adb:50:25: info: precondition proved
+unbounded.adb:50:34: info: initialization of private part of "W" proved
 unbounded.adb:51:10: info: assertion proved
 unbounded.adb:51:25: info: precondition proved
+unbounded.adb:51:34: info: initialization of private part of "W" proved
 unbounded.adb:53:10: info: precondition proved
+unbounded.adb:53:18: info: initialization of private part of "W" proved
 unbounded.adb:53:21: info: precondition proved
 unbounded.adb:54:10: info: assertion proved
 unbounded.adb:54:25: info: precondition proved
+unbounded.adb:54:35: info: initialization of private part of "W" proved
 unbounded.adb:55:10: info: assertion proved
+unbounded.adb:55:25: info: initialization of private part of "W" proved
 unbounded.adb:55:27: info: precondition proved
 unbounded.adb:55:29: info: precondition proved
 unbounded.adb:58:07: info: precondition proved
+unbounded.adb:58:24: info: initialization of private part of "V" proved
 unbounded.adb:59:07: info: assertion proved
 unbounded.adb:59:22: info: precondition proved
+unbounded.adb:59:31: info: initialization of private part of "V" proved
 unbounded.adb:60:07: info: assertion proved
 unbounded.adb:60:22: info: precondition proved
+unbounded.adb:60:31: info: initialization of private part of "V" proved
 unbounded.adb:61:07: info: assertion proved
 unbounded.adb:61:22: info: precondition proved
+unbounded.adb:61:31: info: initialization of private part of "V" proved
 unbounded.adb:63:07: info: precondition proved
+unbounded.adb:63:13: info: initialization of private part of "V" proved
 unbounded.adb:64:07: info: assertion proved
 unbounded.adb:64:22: info: precondition proved
+unbounded.adb:64:31: info: initialization of private part of "V" proved
 unbounded.adb:65:07: info: assertion proved
 unbounded.adb:65:22: info: precondition proved
+unbounded.adb:65:31: info: initialization of private part of "V" proved
 unbounded.adb:66:07: info: assertion proved
 unbounded.adb:66:22: info: precondition proved
+unbounded.adb:66:31: info: initialization of private part of "V" proved
 unbounded.adb:68:07: info: precondition proved
+unbounded.adb:68:20: info: initialization of private part of "V" proved
 unbounded.adb:69:07: info: assertion proved
 unbounded.adb:69:26: info: precondition proved
+unbounded.adb:69:36: info: initialization of private part of "V" proved
 unbounded.adb:70:07: info: assertion proved
 unbounded.adb:70:22: info: precondition proved
+unbounded.adb:70:30: info: initialization of private part of "V" proved
 unbounded.adb:71:07: info: assertion proved
 unbounded.adb:71:22: info: precondition proved
+unbounded.adb:71:32: info: initialization of private part of "V" proved
 unbounded.adb:72:07: info: assertion proved
 unbounded.adb:72:22: info: precondition proved
+unbounded.adb:72:31: info: initialization of private part of "V" proved
 unbounded.adb:73:07: info: assertion proved
 unbounded.adb:73:22: info: precondition proved
+unbounded.adb:73:31: info: initialization of private part of "V" proved
 unbounded.adb:75:07: info: precondition proved
+unbounded.adb:75:25: info: initialization of private part of "V" proved
 unbounded.adb:76:07: info: assertion proved
 unbounded.adb:76:26: info: precondition proved
+unbounded.adb:76:36: info: initialization of private part of "V" proved
 unbounded.adb:77:07: info: assertion proved
 unbounded.adb:77:22: info: precondition proved
+unbounded.adb:77:30: info: initialization of private part of "V" proved
 unbounded.adb:78:07: info: assertion proved
 unbounded.adb:78:22: info: precondition proved
+unbounded.adb:78:32: info: initialization of private part of "V" proved
 unbounded.adb:79:07: info: assertion proved
 unbounded.adb:79:22: info: precondition proved
+unbounded.adb:79:31: info: initialization of private part of "V" proved
 unbounded.adb:80:07: info: assertion proved
 unbounded.adb:80:22: info: precondition proved
+unbounded.adb:80:31: info: initialization of private part of "V" proved
 unbounded.adb:82:07: info: assertion proved
 unbounded.adb:82:22: info: precondition proved
+unbounded.adb:82:35: info: initialization of private part of "V" proved
 unbounded.adb:83:07: info: assertion proved
 unbounded.adb:83:22: info: precondition proved
+unbounded.adb:83:34: info: initialization of private part of "V" proved
 unbounded.adb:84:07: info: assertion proved
 unbounded.adb:84:22: info: precondition proved
+unbounded.adb:84:37: info: initialization of private part of "V" proved
 unbounded.adb:85:07: info: assertion proved
 unbounded.adb:85:22: info: precondition proved
+unbounded.adb:85:36: info: initialization of private part of "V" proved
 unbounded.adb:87:07: info: assertion proved
 unbounded.adb:87:22: info: precondition proved
+unbounded.adb:87:34: info: initialization of private part of "V" proved
 unbounded.adb:88:07: info: assertion proved
 unbounded.adb:88:22: info: precondition proved
+unbounded.adb:88:34: info: initialization of private part of "V" proved
 unbounded.adb:89:07: info: assertion proved
 unbounded.adb:89:22: info: precondition proved
+unbounded.adb:89:34: info: initialization of private part of "V" proved
 unbounded.adb:91:07: info: assertion proved
 unbounded.adb:91:22: info: precondition proved
+unbounded.adb:91:42: info: initialization of private part of "V" proved
 unbounded.adb:92:07: info: assertion proved
 unbounded.adb:92:22: info: precondition proved
+unbounded.adb:92:42: info: initialization of private part of "V" proved
 unbounded.adb:93:07: info: assertion proved
 unbounded.adb:93:22: info: precondition proved
+unbounded.adb:93:42: info: initialization of private part of "V" proved
 unbounded.adb:95:07: info: assertion proved
 unbounded.adb:95:22: info: precondition proved
+unbounded.adb:95:32: info: initialization of private part of "V" proved
 unbounded.adb:96:07: info: assertion proved
 unbounded.adb:96:26: info: precondition proved
+unbounded.adb:96:36: info: initialization of private part of "V" proved
 unbounded.adb:97:07: info: assertion proved
 unbounded.adb:97:22: info: precondition proved
+unbounded.adb:97:35: info: initialization of private part of "V" proved
 unbounded.adb:98:07: info: assertion proved
 unbounded.adb:98:26: info: precondition proved
+unbounded.adb:98:39: info: initialization of private part of "V" proved
 unbounded.adb:99:07: info: assertion proved
 unbounded.adb:99:26: info: precondition proved
+unbounded.adb:99:39: info: initialization of private part of "V" proved
+unbounded.adb:102:19: info: initialization of "Lt" proved
+unbounded.adb:103:18: info: initialization of "Olt" proved
 unbounded.adb:105:10: info: assertion proved
 unbounded.adb:105:33: info: precondition proved
+unbounded.adb:105:45: info: initialization of private part of "V" proved
 unbounded.adb:106:14: info: precondition proved
+unbounded.adb:106:21: info: initialization of private part of "V" proved
 unbounded.adb:107:10: info: assertion proved
 unbounded.adb:107:29: info: precondition proved
+unbounded.adb:107:39: info: initialization of private part of "V" proved
 unbounded.adb:108:10: info: assertion proved
 unbounded.adb:108:25: info: precondition proved
+unbounded.adb:108:33: info: initialization of private part of "V" proved
 unbounded.adb:109:10: info: assertion proved
 unbounded.adb:109:25: info: precondition proved
+unbounded.adb:109:35: info: initialization of private part of "V" proved
 unbounded.adb:110:25: info: precondition proved
 unbounded.adb:110:25: medium: assertion might fail, requires Element (V, 1) = 3
+unbounded.adb:110:34: info: initialization of private part of "V" proved
 unbounded.adb:111:25: info: precondition proved
 unbounded.adb:111:25: medium: assertion might fail, requires Element (V, 2) = 4
+unbounded.adb:111:34: info: initialization of private part of "V" proved
 unbounded.adb:112:10: info: assertion proved
 unbounded.adb:112:29: info: precondition proved
+unbounded.adb:112:41: info: initialization of private part of "V" proved
 unbounded.adb:115:07: info: precondition proved
+unbounded.adb:115:24: info: initialization of private part of "V" proved
 unbounded.adb:115:30: info: precondition proved
+unbounded.adb:115:39: info: initialization of private part of "V" proved
 unbounded.adb:116:07: info: assertion proved
 unbounded.adb:116:22: info: precondition proved
 unbounded.adb:116:47: info: precondition proved
 unbounded.adb:116:49: info: precondition proved
+unbounded.adb:116:66: info: initialization of private part of "V" proved
 unbounded.adb:119:22: info: precondition proved
 unbounded.adb:119:22: medium: assertion might fail, requires Capacity (V) = 10
+unbounded.adb:119:32: info: initialization of private part of "V" proved
 unbounded.adb:121:37: medium: assertion might fail, requires false
+unbounded.ads:8:12: info: initialization of "Oeq" proved
 unbounded.ads:15:14: warning: subprogram "Test" has no effect

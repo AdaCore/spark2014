@@ -1,78 +1,122 @@
+arithmetic.adb:6:13: info: initialization of "Minus_I" proved
 arithmetic.adb:7:19: info: postcondition proved
 arithmetic.adb:7:38: info: overflow check proved
 arithmetic.adb:10:16: medium: overflow check might fail
+arithmetic.adb:13:13: info: initialization of "Negation_I" proved
 arithmetic.adb:14:19: info: postcondition proved
 arithmetic.adb:14:39: info: overflow check proved
 arithmetic.adb:17:14: medium: overflow check might fail
+arithmetic.adb:20:13: info: initialization of "Multiply_A" proved
 arithmetic.adb:21:19: info: postcondition proved
 arithmetic.adb:21:41: info: overflow check proved
 arithmetic.adb:24:16: medium: overflow check might fail
 arithmetic.adb:27:04: warning: analyzing unreferenced function "Multiply_B"
+arithmetic.adb:27:13: info: initialization of "Multiply_B" proved
 arithmetic.adb:32:11: info: range check proved
+arithmetic.adb:33:15: info: initialization of "R" proved
 arithmetic.adb:33:17: info: overflow check proved
 arithmetic.adb:34:10: info: loop invariant initialization proved
 arithmetic.adb:34:10: info: loop invariant preservation proved
+arithmetic.adb:34:33: info: initialization of "R" proved
 arithmetic.adb:34:48: info: overflow check proved
+arithmetic.adb:37:14: info: initialization of "R" proved
+arithmetic.adb:40:13: info: initialization of "Multiply_C" proved
 arithmetic.adb:45:14: info: overflow check proved
 arithmetic.adb:45:14: info: range check proved
+arithmetic.adb:46:14: info: initialization of "R" proved
 arithmetic.adb:59:22: medium: assertion might fail, requires Double_A * Double_B /= C
 arithmetic.adb:59:31: medium: overflow check might fail
+arithmetic.adb:59:45: info: initialization of "C" proved
 arithmetic.adb:71:22: medium: assertion might fail, requires A * B /= C
 arithmetic.adb:71:24: medium: overflow check might fail
+arithmetic.adb:71:31: info: initialization of "C" proved
+arithmetic.adb:75:13: info: initialization of "Plus" proved
 arithmetic.adb:76:21: medium: overflow check might fail
 arithmetic.adb:77:19: info: postcondition proved
 arithmetic.adb:77:35: info: overflow check proved
 arithmetic.adb:83:14: info: range check proved
+arithmetic.adb:84:32: info: initialization of "R" proved
 arithmetic.adb:84:32: info: overflow check proved
 arithmetic.adb:85:13: info: loop invariant initialization proved
 arithmetic.adb:85:13: info: loop invariant preservation proved
+arithmetic.adb:85:36: info: initialization of "R" proved
 arithmetic.adb:85:42: info: overflow check proved
 arithmetic.adb:88:14: info: range check proved
+arithmetic.adb:89:32: info: initialization of "R" proved
 arithmetic.adb:89:32: info: overflow check proved
 arithmetic.adb:90:13: info: loop invariant initialization proved
 arithmetic.adb:90:13: info: loop invariant preservation proved
+arithmetic.adb:90:36: info: initialization of "R" proved
 arithmetic.adb:90:42: info: overflow check proved
+arithmetic.adb:93:14: info: initialization of "R" proved
+arithmetic.adb:96:13: info: initialization of "Halve_A" proved
 arithmetic.adb:97:19: info: postcondition proved
 arithmetic.adb:103:07: info: assertion proved
+arithmetic.adb:106:20: info: initialization of "R" proved
 arithmetic.adb:107:10: info: loop invariant initialization proved
 arithmetic.adb:107:10: info: loop invariant preservation proved
+arithmetic.adb:107:33: info: initialization of "R" proved
+arithmetic.adb:109:14: info: initialization of "R" proved
+arithmetic.adb:112:13: info: initialization of "Halve_B" proved
 arithmetic.adb:113:19: medium: postcondition might fail, requires Halve_B'Result + Halve_B'Result = N  or Halve_B'Result + Halve_B'Result + 1 = N
 arithmetic.adb:119:07: info: assertion proved
+arithmetic.adb:122:20: info: initialization of "R" proved
 arithmetic.adb:123:10: info: loop invariant initialization proved
 arithmetic.adb:123:10: medium: loop invariant might fail after first iteration
+arithmetic.adb:124:17: info: initialization of "R" proved
+arithmetic.adb:126:14: info: initialization of "R" proved
+arithmetic.adb:129:13: info: initialization of "Halve_C" proved
 arithmetic.adb:130:19: info: postcondition proved
 arithmetic.adb:136:07: info: assertion proved
+arithmetic.adb:139:20: info: initialization of "R" proved
 arithmetic.adb:140:10: info: loop invariant initialization proved
 arithmetic.adb:140:10: info: loop invariant preservation proved
+arithmetic.adb:140:33: info: initialization of "R" proved
+arithmetic.adb:144:14: info: initialization of "R" proved
+arithmetic.adb:147:13: info: initialization of "Halve_D" proved
 arithmetic.adb:148:19: medium: postcondition might fail, requires Halve_D'Result = N / 2
 arithmetic.adb:148:38: info: division check proved
+arithmetic.adb:155:20: info: initialization of "R" proved
 arithmetic.adb:156:10: info: loop invariant initialization proved
 arithmetic.adb:156:10: info: loop invariant preservation proved
+arithmetic.adb:156:33: info: initialization of "R" proved
+arithmetic.adb:160:14: info: initialization of "R" proved
+arithmetic.adb:163:13: info: initialization of "Abs_Test_A" proved
 arithmetic.adb:164:19: info: postcondition proved
 arithmetic.adb:164:39: info: overflow check proved
 arithmetic.adb:169:24: info: range check proved
 arithmetic.adb:171:24: medium: overflow check might fail
 arithmetic.adb:171:24: medium: range check might fail
+arithmetic.adb:173:14: info: initialization of "R" proved
+arithmetic.adb:176:13: info: initialization of "Abs_Test_B" proved
 arithmetic.adb:178:19: info: postcondition proved
 arithmetic.adb:178:39: info: overflow check proved
 arithmetic.adb:183:24: info: range check proved
 arithmetic.adb:185:24: info: overflow check proved
 arithmetic.adb:185:24: info: range check proved
+arithmetic.adb:187:14: info: initialization of "R" proved
+arithmetic.adb:190:13: info: initialization of "Abs_Test_C" proved
 arithmetic.adb:191:19: info: postcondition proved
 arithmetic.adb:191:39: info: overflow check proved
 arithmetic.adb:194:14: medium: overflow check might fail
 arithmetic.adb:194:14: medium: range check might fail
+arithmetic.adb:197:13: info: initialization of "Test_Mod_A" proved
 arithmetic.adb:198:19: medium: postcondition might fail, requires Test_Mod_A'Result = N
 arithmetic.adb:201:16: info: division check proved
+arithmetic.adb:204:13: info: initialization of "Test_Mod_B" proved
 arithmetic.adb:205:19: medium: postcondition might fail, requires Test_Mod_B'Result = N
 arithmetic.adb:208:16: info: division check proved
+arithmetic.adb:211:13: info: initialization of "Test_Mod_C" proved
 arithmetic.adb:215:19: medium: postcondition might fail, requires Test_Mod_C'Result = A
 arithmetic.adb:218:16: info: division check proved
 arithmetic.adb:223:04: warning: analyzing unreferenced function "Test_Div_A"
+arithmetic.adb:223:13: info: initialization of "Test_Div_A" proved
 arithmetic.adb:226:36: medium: assertion might fail, requires N / 10 < 0
 arithmetic.adb:226:38: info: division check proved
+arithmetic.adb:230:13: info: initialization of "Test_Rem_A" proved
 arithmetic.adb:234:19: medium: postcondition might fail, requires Test_Rem_A'Result = A
 arithmetic.adb:237:16: info: division check proved
+arithmetic.adb:240:13: info: initialization of "Test_Rem_B" proved
 arithmetic.adb:244:19: info: postcondition proved
 arithmetic.adb:244:39: medium: overflow check might fail
 arithmetic.adb:244:45: info: division check proved
@@ -80,6 +124,7 @@ arithmetic.adb:244:45: medium: overflow check might fail
 arithmetic.adb:244:50: info: overflow check proved
 arithmetic.adb:244:55: info: overflow check proved
 arithmetic.adb:247:16: info: division check proved
+arithmetic.adb:250:13: info: initialization of "Test_Rem_C" proved
 arithmetic.adb:254:41: medium: overflow check might fail
 arithmetic.adb:257:17: info: overflow check proved
 arithmetic.adb:257:22: medium: divide by zero might fail
@@ -89,11 +134,13 @@ arithmetic.adb:266:22: medium: assertion might fail, requires 101 rem A /= 0
 arithmetic.adb:266:26: info: division check proved
 arithmetic.adb:277:22: medium: assertion might fail, requires 100 rem A /= 0
 arithmetic.adb:277:26: info: division check proved
+arithmetic.adb:282:13: info: initialization of "IsPositive" proved
 arithmetic.adb:283:19: info: postcondition proved
 arithmetic.adb:288:29: info: range check proved
 arithmetic.adb:288:34: info: overflow check proved
 arithmetic.adb:288:42: info: overflow check proved
 arithmetic.adb:288:47: info: division check proved
+arithmetic.adb:291:13: info: initialization of "IsPositive_Wrong" proved
 arithmetic.adb:293:06: medium: postcondition might fail
 arithmetic.adb:298:29: info: range check proved
 arithmetic.adb:298:34: info: overflow check proved

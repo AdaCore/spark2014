@@ -1,3 +1,4 @@
+p.adb:3:13: info: initialization of "Id" proved
 p.adb:4:19: info: postcondition proved
 p.adb:4:29: info: overflow check proved
 p.adb:15:09: info: overflow check proved
@@ -15,3 +16,4 @@ p.adb:45:10: info: loop invariant initialization proved
 p.adb:45:10: info: loop invariant preservation proved
 p.adb:54:13: info: overflow check proved
 p.adb:54:18: info: overflow check proved
+p.ads:1:10: info: initialization of "P" proved

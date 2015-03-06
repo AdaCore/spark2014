@@ -1,3 +1,6 @@
+skein-trace.adb:42:41: info: initialization of "Debug_None" proved
+skein.adb:70:13: info: initialization of "To_LittleEndian" proved
+skein.adb:81:32: info: initialization of "Dst" proved
 skein.adb:113:19: medium: postcondition might fail
 skein.adb:218:04: info: no contextual analysis of "To_LittleEndian" (multiple returns)
 skein.adb:238:14: info: range check proved
@@ -7,7 +10,9 @@ skein.adb:241:44: medium: array index check might fail
 skein.adb:242:35: info: range check proved
 skein.adb:242:49: info: range check proved
 skein.adb:262:15: medium: array index check might fail
+skein.adb:262:26: info: initialization of "Dst_Index" proved
 skein.adb:262:26: medium: "Dst" might not be initialized
+skein.adb:263:22: info: initialization of "Src_Index" proved
 skein.adb:263:22: medium: array index check might fail
 skein.adb:264:44: medium: array index check might fail
 skein.adb:265:44: medium: array index check might fail
@@ -16,65 +21,299 @@ skein.adb:267:44: medium: array index check might fail
 skein.adb:268:44: medium: array index check might fail
 skein.adb:269:44: medium: array index check might fail
 skein.adb:270:44: medium: array index check might fail
+skein.adb:272:20: info: initialization of "Dst_Index" proved
+skein.adb:274:23: info: initialization of "Dst_Index" proved
 skein.adb:274:33: medium: range check might fail
+skein.adb:275:23: info: initialization of "Src_Index" proved
 skein.adb:339:24: medium: "KS" might not be initialized, in call inlined at skein.adb:619
+skein.adb:344:23: info: initialization of "KS" proved, in call inlined at skein.adb:619
+skein.adb:346:30: info: initialization of "KS" proved, in call inlined at skein.adb:619
 skein.adb:358:26: info: length check proved, in call inlined at skein.adb:621
+skein.adb:360:32: info: initialization of "W0" proved, in call inlined at skein.adb:621
+skein.adb:360:39: info: initialization of "W1" proved, in call inlined at skein.adb:621
 skein.adb:367:25: info: length check proved, in call inlined at skein.adb:637
+skein.adb:374:31: info: initialization of "W" proved, in call inlined at skein.adb:637
+skein.adb:374:39: info: initialization of "KS" proved, in call inlined at skein.adb:637
+skein.adb:375:30: info: initialization of "X" proved, in call inlined at skein.adb:637
+skein.adb:375:49: info: initialization of "TS" proved, in call inlined at skein.adb:637
+skein.adb:376:30: info: initialization of "X" proved, in call inlined at skein.adb:637
+skein.adb:376:49: info: initialization of "TS" proved, in call inlined at skein.adb:637
+skein.adb:400:38: info: initialization of "C168b" proved, in call inlined at skein.adb:583
+skein.adb:400:38: info: initialization of "C179b" proved, in call inlined at skein.adb:592
 skein.adb:400:45: info: division check proved, in call inlined at skein.adb:583
 skein.adb:400:45: info: division check proved, in call inlined at skein.adb:592
+skein.adb:403:56: info: initialization of "C168b" proved, in call inlined at skein.adb:583
+skein.adb:403:56: info: initialization of "C179b" proved, in call inlined at skein.adb:592
 skein.adb:403:58: info: division check proved, in call inlined at skein.adb:583
 skein.adb:403:58: info: division check proved, in call inlined at skein.adb:592
+skein.adb:404:57: info: initialization of "C168b" proved, in call inlined at skein.adb:583
+skein.adb:404:57: info: initialization of "C179b" proved, in call inlined at skein.adb:592
 skein.adb:404:64: info: division check proved, in call inlined at skein.adb:583
 skein.adb:404:64: info: division check proved, in call inlined at skein.adb:592
+skein.adb:405:52: info: initialization of "C168b" proved, in call inlined at skein.adb:583
+skein.adb:405:52: info: initialization of "C179b" proved, in call inlined at skein.adb:592
 skein.adb:599:41: info: length check proved, in call inlined at skein.adb:647
+skein.adb:606:47: info: initialization of "X" proved, in call inlined at skein.adb:647
+skein.adb:606:57: info: initialization of "W" proved, in call inlined at skein.adb:647
 skein.adb:623:10: medium: precondition might fail
+skein.adb:625:42: info: initialization of "Src_Offset" proved
+skein.adb:644:10: info: initialization of "KS" proved
+skein.adb:644:10: info: initialization of "TS" proved
+skein.adb:644:10: info: initialization of "X" proved
+skein.adb:654:20: info: initialization of "J" proved
+skein.adb:656:15: info: initialization of "J" proved
 skein.adb:656:17: medium: range check might fail
+skein.adb:658:24: info: initialization of "Src_Offset" proved
 skein.adb:695:09: info: length check proved
 skein.adb:703:38: info: length check proved
 skein.adb:706:07: medium: precondition might fail
+skein.adb:707:29: info: initialization of "Ctx.B" proved
+skein.adb:707:29: info: initialization of "Ctx.H.Byte_Count" proved
+skein.adb:707:29: info: initialization of "Ctx.H.Hash_Bit_Len" proved
+skein.adb:707:29: info: initialization of "Ctx.H.Tweak_Words.Bit_Pad" proved
+skein.adb:707:29: info: initialization of "Ctx.H.Tweak_Words.Byte_Count_LSB" proved
+skein.adb:707:29: info: initialization of "Ctx.H.Tweak_Words.Byte_Count_MSB" proved
+skein.adb:707:29: info: initialization of "Ctx.H.Tweak_Words.Field_Type" proved
+skein.adb:707:29: info: initialization of "Ctx.H.Tweak_Words.Final_Block" proved
+skein.adb:707:29: info: initialization of "Ctx.H.Tweak_Words.First_Block" proved
+skein.adb:707:29: info: initialization of "Ctx.H.Tweak_Words.Reserved" proved
+skein.adb:707:29: info: initialization of "Ctx.H.Tweak_Words.Tree_Level" proved
+skein.adb:707:29: info: initialization of "Ctx.X" proved
+skein.adb:708:61: info: initialization of "Cfg" proved
 skein.adb:708:61: info: length check proved
 skein.adb:752:25: medium: range check might fail
+skein.adb:754:26: info: initialization of "Dst" proved
 skein.adb:754:30: medium: range check might fail
+skein.adb:756:26: info: initialization of "Src" proved
+skein.adb:759:28: info: initialization of "Dst" proved
+skein.adb:759:36: info: initialization of "Src" proved
 skein.adb:759:36: medium: array index check might fail
+skein.adb:761:26: info: initialization of "Dst" proved
+skein.adb:761:33: info: initialization of "Final_Dst" proved
+skein.adb:761:46: info: initialization of "Src" proved
+skein.adb:761:53: info: initialization of "Final_Src" proved
+skein.adb:763:23: info: initialization of "Dst" proved
 skein.adb:763:27: medium: range check might fail
+skein.adb:764:23: info: initialization of "Src" proved
+skein.adb:778:11: info: initialization of "Msg_Byte_Count" proved
 skein.adb:782:42: medium: range check might fail
 skein.adb:784:13: medium: precondition might fail
+skein.adb:784:28: info: initialization of "Current_Msg_Offset" proved
+skein.adb:784:48: info: initialization of "N" proved
+skein.adb:785:35: info: initialization of "Msg_Byte_Count" proved
+skein.adb:785:52: info: initialization of "N" proved
+skein.adb:786:35: info: initialization of "Current_Msg_Offset" proved
+skein.adb:786:56: info: initialization of "N" proved
 skein.adb:789:13: medium: precondition might fail
+skein.adb:791:35: info: initialization of "Tmp_B" proved
+skein.adb:800:13: info: initialization of "Msg_Byte_Count" proved
+skein.adb:803:29: info: initialization of "Msg_Byte_Count" proved
 skein.adb:803:49: info: division check proved
 skein.adb:803:49: info: range check proved
 skein.adb:805:13: medium: precondition might fail
+skein.adb:808:35: info: initialization of "Current_Msg_Offset" proved
+skein.adb:809:35: info: initialization of "Block_Count" proved
+skein.adb:812:29: info: initialization of "Block_Count" proved
+skein.adb:814:35: info: initialization of "Msg_Byte_Count" proved
+skein.adb:814:56: info: initialization of "Bytes_Hashed" proved
+skein.adb:816:35: info: initialization of "Current_Msg_Offset" proved
+skein.adb:816:56: info: initialization of "Bytes_Hashed" proved
 skein.adb:824:07: medium: precondition might fail
+skein.adb:824:22: info: initialization of "Current_Msg_Offset" proved
+skein.adb:824:42: info: initialization of "Msg_Byte_Count" proved
 skein.adb:865:14: info: range check proved, in call inlined at skein.adb:900
+skein.adb:866:18: info: initialization of "Local_Ctx.H.Byte_Count" proved, in call inlined at skein.adb:900
+skein.adb:866:29: info: initialization of "R218b" proved, in call inlined at skein.adb:900
 skein.adb:869:13: info: loop invariant preservation proved, in call inlined at skein.adb:900
 skein.adb:869:13: medium: loop invariant might fail in first iteration, in call inlined at skein.adb:900
+skein.adb:870:16: info: initialization of "Local_Ctx.H.Hash_Bit_Len" proved, in call inlined at skein.adb:900
+skein.adb:871:27: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:900
+skein.adb:871:27: info: initialization of "Local_Ctx.H.Byte_Count" proved, in call inlined at skein.adb:900
+skein.adb:871:27: info: initialization of "Local_Ctx.H.Hash_Bit_Len" proved, in call inlined at skein.adb:900
+skein.adb:871:27: info: initialization of "Local_Ctx.H.Tweak_Words.Bit_Pad" proved, in call inlined at skein.adb:900
+skein.adb:871:27: info: initialization of "Local_Ctx.H.Tweak_Words.Byte_Count_LSB" proved, in call inlined at skein.adb:900
+skein.adb:871:27: info: initialization of "Local_Ctx.H.Tweak_Words.Byte_Count_MSB" proved, in call inlined at skein.adb:900
+skein.adb:871:27: info: initialization of "Local_Ctx.H.Tweak_Words.Field_Type" proved, in call inlined at skein.adb:900
+skein.adb:871:27: info: initialization of "Local_Ctx.H.Tweak_Words.Final_Block" proved, in call inlined at skein.adb:900
+skein.adb:871:27: info: initialization of "Local_Ctx.H.Tweak_Words.First_Block" proved, in call inlined at skein.adb:900
+skein.adb:871:27: info: initialization of "Local_Ctx.H.Tweak_Words.Reserved" proved, in call inlined at skein.adb:900
+skein.adb:871:27: info: initialization of "Local_Ctx.H.Tweak_Words.Tree_Level" proved, in call inlined at skein.adb:900
+skein.adb:871:27: info: initialization of "Local_Ctx.X" proved, in call inlined at skein.adb:900
+skein.adb:873:16: info: initialization of "Local_Ctx.H.Byte_Count" proved, in call inlined at skein.adb:900
+skein.adb:874:50: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:900
+skein.adb:874:50: info: initialization of "Local_Ctx.H.Byte_Count" proved, in call inlined at skein.adb:900
+skein.adb:874:50: info: initialization of "Local_Ctx.H.Hash_Bit_Len" proved, in call inlined at skein.adb:900
+skein.adb:874:50: info: initialization of "Local_Ctx.H.Tweak_Words.Bit_Pad" proved, in call inlined at skein.adb:900
+skein.adb:874:50: info: initialization of "Local_Ctx.H.Tweak_Words.Byte_Count_LSB" proved, in call inlined at skein.adb:900
+skein.adb:874:50: info: initialization of "Local_Ctx.H.Tweak_Words.Byte_Count_MSB" proved, in call inlined at skein.adb:900
+skein.adb:874:50: info: initialization of "Local_Ctx.H.Tweak_Words.Field_Type" proved, in call inlined at skein.adb:900
+skein.adb:874:50: info: initialization of "Local_Ctx.H.Tweak_Words.Final_Block" proved, in call inlined at skein.adb:900
+skein.adb:874:50: info: initialization of "Local_Ctx.H.Tweak_Words.First_Block" proved, in call inlined at skein.adb:900
+skein.adb:874:50: info: initialization of "Local_Ctx.H.Tweak_Words.Reserved" proved, in call inlined at skein.adb:900
+skein.adb:874:50: info: initialization of "Local_Ctx.H.Tweak_Words.Tree_Level" proved, in call inlined at skein.adb:900
+skein.adb:874:50: info: initialization of "Local_Ctx.X" proved, in call inlined at skein.adb:900
+skein.adb:876:29: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:900
+skein.adb:883:26: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:926
+skein.adb:883:35: info: initialization of "C222b" proved, in call inlined at skein.adb:926
 skein.adb:883:43: info: range check proved, in call inlined at skein.adb:926
+skein.adb:884:26: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:926
+skein.adb:884:48: info: initialization of "C222b" proved, in call inlined at skein.adb:926
 skein.adb:884:61: info: range check proved, in call inlined at skein.adb:926
+skein.adb:885:26: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:926
+skein.adb:885:48: info: initialization of "C222b" proved, in call inlined at skein.adb:926
 skein.adb:885:61: info: range check proved, in call inlined at skein.adb:926
+skein.adb:886:26: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:926
+skein.adb:886:48: info: initialization of "C222b" proved, in call inlined at skein.adb:926
 skein.adb:886:61: info: range check proved, in call inlined at skein.adb:926
+skein.adb:887:26: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:926
+skein.adb:887:48: info: initialization of "C222b" proved, in call inlined at skein.adb:926
 skein.adb:887:61: info: range check proved, in call inlined at skein.adb:926
+skein.adb:888:26: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:926
+skein.adb:888:48: info: initialization of "C222b" proved, in call inlined at skein.adb:926
 skein.adb:888:61: info: range check proved, in call inlined at skein.adb:926
+skein.adb:889:26: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:926
+skein.adb:889:48: info: initialization of "C222b" proved, in call inlined at skein.adb:926
 skein.adb:889:61: info: range check proved, in call inlined at skein.adb:926
+skein.adb:890:26: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:926
+skein.adb:890:48: info: initialization of "C222b" proved, in call inlined at skein.adb:926
 skein.adb:890:61: info: range check proved, in call inlined at skein.adb:926
 skein.adb:896:12: medium: length check might fail
+skein.adb:899:11: info: initialization of "Local_Ctx.H.Byte_Count" proved
+skein.adb:903:16: info: initialization of "Local_Ctx.B" proved
+skein.adb:904:29: info: initialization of "Local_Ctx.H.Byte_Count" proved
 skein.adb:906:07: medium: precondition might fail
+skein.adb:906:51: info: initialization of "Local_Ctx.B" proved
+skein.adb:906:51: info: initialization of "Local_Ctx.H.Byte_Count" proved
+skein.adb:906:51: info: initialization of "Local_Ctx.H.Hash_Bit_Len" proved
+skein.adb:906:51: info: initialization of "Local_Ctx.H.Tweak_Words.Bit_Pad" proved
+skein.adb:906:51: info: initialization of "Local_Ctx.H.Tweak_Words.Byte_Count_LSB" proved
+skein.adb:906:51: info: initialization of "Local_Ctx.H.Tweak_Words.Byte_Count_MSB" proved
+skein.adb:906:51: info: initialization of "Local_Ctx.H.Tweak_Words.Field_Type" proved
+skein.adb:906:51: info: initialization of "Local_Ctx.H.Tweak_Words.Final_Block" proved
+skein.adb:906:51: info: initialization of "Local_Ctx.H.Tweak_Words.First_Block" proved
+skein.adb:906:51: info: initialization of "Local_Ctx.H.Tweak_Words.Reserved" proved
+skein.adb:906:51: info: initialization of "Local_Ctx.H.Tweak_Words.Tree_Level" proved
+skein.adb:906:51: info: initialization of "Local_Ctx.X" proved
+skein.adb:907:51: info: initialization of "Tmp_B" proved
+skein.adb:910:51: info: initialization of "Tmp_Byte_Count_Add" proved
+skein.adb:914:22: info: initialization of "Local_Ctx.H.Hash_Bit_Len" proved
 skein.adb:914:52: info: division check proved
 skein.adb:914:52: medium: range check might fail
 skein.adb:919:44: info: length check proved
+skein.adb:920:12: info: initialization of "Local_Ctx.X" proved
+skein.adb:922:27: info: initialization of "Byte_Count" proved
 skein.adb:922:44: info: division check proved
+skein.adb:926:23: info: initialization of "Blocks_Done" proved
+skein.adb:935:19: info: initialization of "Local_Ctx.B" proved
 skein.adb:936:10: medium: precondition might fail
+skein.adb:936:54: info: initialization of "Local_Ctx.B" proved
+skein.adb:936:54: info: initialization of "Local_Ctx.H.Byte_Count" proved
+skein.adb:936:54: info: initialization of "Local_Ctx.H.Hash_Bit_Len" proved
+skein.adb:936:54: info: initialization of "Local_Ctx.H.Tweak_Words.Bit_Pad" proved
+skein.adb:936:54: info: initialization of "Local_Ctx.H.Tweak_Words.Byte_Count_LSB" proved
+skein.adb:936:54: info: initialization of "Local_Ctx.H.Tweak_Words.Byte_Count_MSB" proved
+skein.adb:936:54: info: initialization of "Local_Ctx.H.Tweak_Words.Field_Type" proved
+skein.adb:936:54: info: initialization of "Local_Ctx.H.Tweak_Words.Final_Block" proved
+skein.adb:936:54: info: initialization of "Local_Ctx.H.Tweak_Words.First_Block" proved
+skein.adb:936:54: info: initialization of "Local_Ctx.H.Tweak_Words.Reserved" proved
+skein.adb:936:54: info: initialization of "Local_Ctx.H.Tweak_Words.Tree_Level" proved
+skein.adb:936:54: info: initialization of "Local_Ctx.X" proved
+skein.adb:937:54: info: initialization of "Tmp_B" proved
+skein.adb:943:15: info: initialization of "Byte_Count" proved
+skein.adb:943:29: info: initialization of "Blocks_Done" proved
+skein.adb:944:14: info: initialization of "N" proved
 skein.adb:949:10: medium: precondition might fail
+skein.adb:950:29: info: initialization of "Hash" proved
+skein.adb:951:29: info: initialization of "Blocks_Done" proved
+skein.adb:952:29: info: initialization of "Local_Ctx.X" proved
+skein.adb:953:29: info: initialization of "N" proved
+skein.adb:963:25: info: initialization of "X" proved
+skein.adb:965:25: info: initialization of "Blocks_Done" proved
 skein.adb:965:37: medium: range check might fail
+skein.adb:966:20: info: initialization of "Blocks_Done" proved
+skein.adb:966:35: info: initialization of "Blocks_Required" proved
 skein.adb:981:07: medium: precondition might fail
+skein.adb:981:32: info: initialization of "Ctx.B" proved
+skein.adb:981:32: info: initialization of "Ctx.H.Byte_Count" proved
+skein.adb:981:32: info: initialization of "Ctx.H.Hash_Bit_Len" proved
+skein.adb:981:32: info: initialization of "Ctx.H.Tweak_Words.Bit_Pad" proved
+skein.adb:981:32: info: initialization of "Ctx.H.Tweak_Words.Byte_Count_LSB" proved
+skein.adb:981:32: info: initialization of "Ctx.H.Tweak_Words.Byte_Count_MSB" proved
+skein.adb:981:32: info: initialization of "Ctx.H.Tweak_Words.Field_Type" proved
+skein.adb:981:32: info: initialization of "Ctx.H.Tweak_Words.Final_Block" proved
+skein.adb:981:32: info: initialization of "Ctx.H.Tweak_Words.First_Block" proved
+skein.adb:981:32: info: initialization of "Ctx.H.Tweak_Words.Reserved" proved
+skein.adb:981:32: info: initialization of "Ctx.H.Tweak_Words.Tree_Level" proved
+skein.adb:981:32: info: initialization of "Ctx.X" proved
 skein.adb:984:07: info: precondition proved
+skein.adb:984:32: info: initialization of "Ctx.B" proved
+skein.adb:984:32: info: initialization of "Ctx.H.Byte_Count" proved
+skein.adb:984:32: info: initialization of "Ctx.H.Hash_Bit_Len" proved
+skein.adb:984:32: info: initialization of "Ctx.H.Tweak_Words.Bit_Pad" proved
+skein.adb:984:32: info: initialization of "Ctx.H.Tweak_Words.Byte_Count_LSB" proved
+skein.adb:984:32: info: initialization of "Ctx.H.Tweak_Words.Byte_Count_MSB" proved
+skein.adb:984:32: info: initialization of "Ctx.H.Tweak_Words.Field_Type" proved
+skein.adb:984:32: info: initialization of "Ctx.H.Tweak_Words.Final_Block" proved
+skein.adb:984:32: info: initialization of "Ctx.H.Tweak_Words.First_Block" proved
+skein.adb:984:32: info: initialization of "Ctx.H.Tweak_Words.Reserved" proved
+skein.adb:984:32: info: initialization of "Ctx.H.Tweak_Words.Tree_Level" proved
+skein.adb:984:32: info: initialization of "Ctx.X" proved
+skein.adb:986:14: info: initialization of "Result" proved
 skein.adb:1007:12: medium: precondition might fail
 skein.ads:126:21: info: length check proved
 skein.ads:129:21: info: length check proved
 skein.ads:132:21: info: length check proved
 skein.ads:138:21: info: length check proved
+skein.ads:146:13: info: initialization of "Hash_Bit_Len_Of" proved
+skein.ads:149:13: info: initialization of "Byte_Count_Of" proved
+skein.ads:152:30: info: initialization of "Ctx.B" proved
+skein.ads:152:30: info: initialization of "Ctx.H.Byte_Count" proved
+skein.ads:152:30: info: initialization of "Ctx.H.Hash_Bit_Len" proved
+skein.ads:152:30: info: initialization of "Ctx.H.Tweak_Words.Bit_Pad" proved
+skein.ads:152:30: info: initialization of "Ctx.H.Tweak_Words.Byte_Count_LSB" proved
+skein.ads:152:30: info: initialization of "Ctx.H.Tweak_Words.Byte_Count_MSB" proved
+skein.ads:152:30: info: initialization of "Ctx.H.Tweak_Words.Field_Type" proved
+skein.ads:152:30: info: initialization of "Ctx.H.Tweak_Words.Final_Block" proved
+skein.ads:152:30: info: initialization of "Ctx.H.Tweak_Words.First_Block" proved
+skein.ads:152:30: info: initialization of "Ctx.H.Tweak_Words.Reserved" proved
+skein.ads:152:30: info: initialization of "Ctx.H.Tweak_Words.Tree_Level" proved
+skein.ads:152:30: info: initialization of "Ctx.X" proved
 skein.ads:155:19: medium: postcondition might fail
+skein.ads:155:36: info: initialization of "Ctx.B" proved
+skein.ads:155:36: info: initialization of "Ctx.H.Byte_Count" proved
+skein.ads:155:36: info: initialization of "Ctx.H.Hash_Bit_Len" proved
+skein.ads:155:36: info: initialization of "Ctx.H.Tweak_Words.Bit_Pad" proved
+skein.ads:155:36: info: initialization of "Ctx.H.Tweak_Words.Byte_Count_LSB" proved
+skein.ads:155:36: info: initialization of "Ctx.H.Tweak_Words.Byte_Count_MSB" proved
+skein.ads:155:36: info: initialization of "Ctx.H.Tweak_Words.Field_Type" proved
+skein.ads:155:36: info: initialization of "Ctx.H.Tweak_Words.Final_Block" proved
+skein.ads:155:36: info: initialization of "Ctx.H.Tweak_Words.First_Block" proved
+skein.ads:155:36: info: initialization of "Ctx.H.Tweak_Words.Reserved" proved
+skein.ads:155:36: info: initialization of "Ctx.H.Tweak_Words.Tree_Level" proved
+skein.ads:155:36: info: initialization of "Ctx.X" proved
 skein.ads:168:20: medium: postcondition might fail
+skein.ads:173:31: info: initialization of "Hash" proved
 skein.ads:178:47: info: division check proved
+skein.ads:181:13: info: initialization of "Skein_512_Hash" proved
 skein.ads:191:14: warning: subprogram "Set_Debug_Flags" has no effect
 skein.ads:196:14: warning: subprogram "Show_Msg_8" has no effect
+skein.ads:332:38: info: initialization of "Null_Tweak_Value.Bit_Pad" proved
+skein.ads:332:38: info: initialization of "Null_Tweak_Value.Byte_Count_LSB" proved
+skein.ads:332:38: info: initialization of "Null_Tweak_Value.Byte_Count_MSB" proved
+skein.ads:332:38: info: initialization of "Null_Tweak_Value.Field_Type" proved
+skein.ads:332:38: info: initialization of "Null_Tweak_Value.Final_Block" proved
+skein.ads:332:38: info: initialization of "Null_Tweak_Value.First_Block" proved
+skein.ads:332:38: info: initialization of "Null_Tweak_Value.Reserved" proved
+skein.ads:332:38: info: initialization of "Null_Tweak_Value.Tree_Level" proved
+skein.ads:346:30: info: initialization of "Null_Context_Header.Byte_Count" proved
+skein.ads:346:30: info: initialization of "Null_Context_Header.Hash_Bit_Len" proved
+skein.ads:346:30: info: initialization of "Null_Context_Header.Tweak_Words.Bit_Pad" proved
+skein.ads:346:30: info: initialization of "Null_Context_Header.Tweak_Words.Byte_Count_LSB" proved
+skein.ads:346:30: info: initialization of "Null_Context_Header.Tweak_Words.Byte_Count_MSB" proved
+skein.ads:346:30: info: initialization of "Null_Context_Header.Tweak_Words.Field_Type" proved
+skein.ads:346:30: info: initialization of "Null_Context_Header.Tweak_Words.Final_Block" proved
+skein.ads:346:30: info: initialization of "Null_Context_Header.Tweak_Words.First_Block" proved
+skein.ads:346:30: info: initialization of "Null_Context_Header.Tweak_Words.Reserved" proved
+skein.ads:346:30: info: initialization of "Null_Context_Header.Tweak_Words.Tree_Level" proved
 skein.ads:347:52: info: length check proved
 skein.ads:348:52: info: length check proved

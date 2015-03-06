@@ -1,5 +1,15 @@
 maxandsum.adb:11:10: info: loop invariant initialization proved
 maxandsum.adb:11:10: info: loop invariant preservation proved
+maxandsum.adb:11:33: info: initialization of "Sum" proved
+maxandsum.adb:11:50: info: initialization of "Max" proved
+maxandsum.adb:12:17: info: initialization of "Sum" proved
 maxandsum.adb:12:21: info: overflow check proved
+maxandsum.adb:13:13: info: initialization of "Max" proved
+maxandsum.adb:16:25: info: initialization of "Sum" proved
 maxandsum.adb:16:25: medium: assertion might fail, requires Sum <= I * Max
+maxandsum.adb:16:36: info: initialization of "Max" proved
+maxandsum.ads:11:43: info: initialization of "Sum" proved
+maxandsum.ads:11:62: info: initialization of "Max" proved
+maxandsum.ads:12:19: info: initialization of "Sum" proved
 maxandsum.ads:12:19: info: postcondition proved
+maxandsum.ads:12:30: info: initialization of "Max" proved

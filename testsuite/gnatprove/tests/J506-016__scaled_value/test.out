@@ -1,3 +1,4 @@
 sv.adb:9:33: info: division check proved
 sv.adb:9:33: medium: range check might fail
+sv.ads:10:13: info: initialization of "Scale" proved
 sv.ads:15:14: medium: postcondition might fail, requires Scale'Result <= Capacity

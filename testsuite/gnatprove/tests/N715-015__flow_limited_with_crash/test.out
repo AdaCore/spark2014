@@ -1,0 +1,5 @@
+parent-child_1.adb:9:40: info: initialization of "H_State" proved
+parent.adb:11:41: info: initialization of "H_State" proved
+parent.adb:12:55: info: initialization of "Child_1.State" proved
+scheduler.adb:5:36: info: initialization of "Parent.State" proved
+scheduler.adb:6:44: info: initialization of "Child_1.State" proved

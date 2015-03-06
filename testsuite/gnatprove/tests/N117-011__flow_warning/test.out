@@ -1,0 +1,7 @@
+device.adb:10:04: info: initialization of "OldX" proved
+device.adb:25:04: info: initialization of "Register" proved
+device.adb:32:33: info: initialization of "Register" proved
+device.adb:46:13: info: initialization of "RawValue" proved
+device.adb:77:23: info: initialization of "OK" proved
+device.ads:11:23: info: initialization of "OK" proved
+device.ads:15:13: info: initialization of "Last_Written" proved

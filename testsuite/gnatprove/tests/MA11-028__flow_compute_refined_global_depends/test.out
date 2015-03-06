@@ -1,31 +1,86 @@
+bad_refinement.adb:5:04: info: initialization of "X" proved
+bad_refinement.adb:5:07: info: initialization of "Y" proved
+bad_refinement.adb:5:10: info: initialization of "Z" proved
 bad_refinement.adb:50:12: "Z" must be listed in the Refined_Depends aspect of "Liar8" (SPARK RM 6.1.4(13))
 bad_refinement.ads:6:11: "Bad_Refinement.State2" must be a global input of "Liar" (SPARK RM 6.1.4)
 bad_refinement.ads:6:11: global input "Bad_Refinement.State" of "Liar" not read
 bad_refinement.ads:9:11: "Bad_Refinement.State" must be a global input of "Liar2" (SPARK RM 6.1.4)
 bad_refinement.ads:12:11: "Bad_Refinement.State" must be a global output of "Liar3" (SPARK RM 6.1.4)
 bad_refinement.ads:12:11: global input "Bad_Refinement.State" of "Liar3" not read
+bad_refinement.ads:14:13: info: initialization of "Liar4" proved
 bad_refinement.ads:15:28: medium: missing dependency "Liar4'Result => Bad_Refinement.State2"
+bad_refinement.ads:17:21: info: initialization of "I" proved
 bad_refinement.ads:19:23: medium: missing dependency "Bad_Refinement.State2 => Bad_Refinement.State2"
 bad_refinement.ads:21:14: medium: incorrect dependency "I => Bad_Refinement.State"
+bad_refinement.ads:21:21: info: initialization of "I" proved
+bad_refinement.ads:21:24: info: initialization of "J" proved
 bad_refinement.ads:25:14: medium: incorrect dependency "I => Bad_Refinement.State"
+bad_refinement.ads:25:21: info: initialization of "I" proved
+bad_refinement.ads:25:24: info: initialization of "J" proved
+bad_refinement.ads:33:14: info: initialization of "X" proved
+bad_refinement.ads:33:21: info: initialization of "I" proved
 bad_refinement.ads:34:11: expected to see "Bad_Refinement.State" on the left-hand-side of a dependency relation
 bad_refinement.ads:35:23: medium: incorrect dependency "Bad_Refinement.State2" is not an output of "Liar9"
+lots_of_tests.adb:6:04: info: initialization of "A" proved
+lots_of_tests.adb:6:07: info: initialization of "B" proved
+lots_of_tests.adb:6:10: info: initialization of "C" proved
+lots_of_tests.adb:6:13: info: initialization of "D" proved
 lots_of_tests.adb:40:07: "A" must be listed in the Refined_Global aspect of "Internal_User_Of_G_BAD" (SPARK RM 6.1.4(13))
+lots_of_tests.adb:51:40: info: initialization of "G2" proved
+lots_of_tests.adb:70:41: info: initialization of "G2" proved
 lots_of_tests.adb:83:07: "A" must be listed in the Refined_Depends aspect of "Internal_User_Of_G_D_BAD" (SPARK RM 6.1.4(13))
+lots_of_tests.adb:88:41: info: initialization of "C" proved
+lots_of_tests.adb:88:44: info: initialization of "D" proved
 lots_of_tests.adb:103:49: warning: unused global "B"
+lots_of_tests.adb:104:42: info: initialization of "C" proved
+lots_of_tests.adb:104:45: info: initialization of "D" proved
+lots_of_tests.adb:113:42: info: initialization of "G1" proved
 lots_of_tests.adb:132:07: "C" must be listed in the Refined_Depends aspect of "Internal_User_Of_RG_D_BAD" (SPARK RM 6.1.4(13))
+lots_of_tests.adb:147:40: info: initialization of "G1" proved
 lots_of_tests.adb:154:44: warning: "C" is not modified, could be INPUT
+lots_of_tests.adb:155:40: info: initialization of "G1" proved
+lots_of_tests.adb:173:40: info: initialization of "B" proved
 lots_of_tests.adb:183:07: high: "A" is not initialized
 lots_of_tests.adb:207:07: "A" must be listed in the Refined_Global aspect of "Internal_User_Of_RG_RD_BAD" (SPARK RM 6.1.4(13))
+lots_of_tests.ads:5:04: info: initialization of "G1" proved
+lots_of_tests.ads:5:08: info: initialization of "G2" proved
+lots_of_tests.ads:7:28: info: initialization of "X" proved
+lots_of_tests.ads:9:48: info: initialization of "X" proved
+lots_of_tests.ads:12:49: info: initialization of "X" proved
 lots_of_tests.ads:13:23: medium: missing dependency "X => G1"
 lots_of_tests.ads:13:23: medium: missing dependency "X => Lots_Of_Tests.State"
 lots_of_tests.ads:13:23: medium: missing dependency "X => Lots_Of_Tests.State2"
+lots_of_tests.ads:25:14: info: initialization of "G2" proved
+lots_of_tests.ads:25:32: info: initialization of "Y" proved
+lots_of_tests.ads:29:52: info: initialization of "Y" proved
 lots_of_tests.ads:34:11: "Lots_Of_Tests.State2" must be a global input of "Internal_User_Of_Dep_BAD" (SPARK RM 6.1.4)
 lots_of_tests.ads:34:11: global input "G1" of "Internal_User_Of_Dep_BAD" not read
+lots_of_tests.ads:37:19: info: initialization of "X" proved
+lots_of_tests.ads:39:33: info: initialization of "G2" proved
+lots_of_tests.ads:43:39: info: initialization of "X" proved
+lots_of_tests.ads:57:14: info: initialization of "C" proved
+lots_of_tests.ads:57:14: info: initialization of "D" proved
 lots_of_tests.ads:70:14: warning: unused global "B"
+lots_of_tests.ads:73:35: info: initialization of "G1" proved
+lots_of_tests.ads:82:14: info: initialization of "G1" proved
+lots_of_tests.ads:96:14: info: initialization of "B" proved
+lots_of_tests.ads:105:14: info: initialization of "A" proved
+lots_of_tests.ads:105:14: info: initialization of "B" proved
 refinement_needed.adb:14:17: medium: overflow check might fail
 refinement_needed.ads:5:27: warning: no procedure exists that can initialize abstract state "Refinement_Needed.State"
 refinement_needed.ads:5:34: warning: no procedure exists that can initialize abstract state "Refinement_Needed.State2"
+refinement_needed.ads:9:13: info: initialization of "Foo" proved
+refinement_needed.ads:12:13: info: initialization of "Bar" proved
+refinement_needed.ads:15:13: info: initialization of "Hmmm" proved
+user.ads:4:36: info: initialization of "X" proved
+user.ads:7:14: info: initialization of "Lots_Of_Tests.State3" proved
+user.ads:10:40: info: initialization of "Y" proved
+user.ads:12:32: info: initialization of "G2" proved
+user.ads:14:14: info: initialization of "G2" proved
+user.ads:14:27: info: initialization of "X" proved
+user.ads:18:14: info: initialization of "Lots_Of_Tests.State2" proved
+user.ads:24:35: info: initialization of "G1" proved
+user.ads:30:32: info: initialization of "G1" proved
    compilation of bad_refinement.adb failed
    compilation of lots_of_tests.adb failed
 

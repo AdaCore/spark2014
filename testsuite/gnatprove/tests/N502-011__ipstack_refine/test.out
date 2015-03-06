@@ -1,3 +1,5 @@
+aip-ip.adb:9:04: info: initialization of "Default_Router" proved
+aip-ip.adb:10:04: info: initialization of "IP_Serial" proved
 aip-ip.adb:13:36: warning: unused global "Default_Router"
 aip-ip.adb:13:55: warning: unused global "UDP.State"
 aip-ip.adb:14:36: warning: "IP_Serial" is not modified, could be INPUT

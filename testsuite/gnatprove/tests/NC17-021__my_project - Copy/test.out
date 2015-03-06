@@ -3,3 +3,7 @@ pre_post_exercise.adb:16:38: medium: range check might fail
 pre_post_exercise.adb:17:14: info: index check proved
 pre_post_exercise.adb:22:19: medium: array index check might fail
 pre_post_exercise.adb:23:38: info: range check proved
+pre_post_exercise.ads:10:13: info: initialization of "Is_Full" proved
+pre_post_exercise.ads:19:34: info: initialization of "Stack" proved
+pre_post_exercise.ads:19:41: info: initialization of "Stack_Pointer" proved
+pre_post_exercise.ads:28:19: info: initialization of "X" proved

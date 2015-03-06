@@ -1,3 +1,4 @@
-
 subnat.adb:11:14: info: range check proved
+subnat.ads:2:13: info: initialization of "F" proved
 subnat.ads:3:20: info: postcondition proved
+subnat.ads:5:13: info: initialization of "G" proved

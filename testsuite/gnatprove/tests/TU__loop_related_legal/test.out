@@ -5,5 +5,6 @@ loop_related_legal.adb:11:10: info: loop invariant preservation proved
 loop_related_legal.adb:25:15: warning: unused assignment
 loop_related_legal.adb:26:13: info: loop invariant initialization proved
 loop_related_legal.adb:26:13: info: loop invariant preservation proved
+loop_related_legal.adb:26:42: info: initialization of "X" proved
 loop_related_legal.adb:27:13: info: loop variant proved
 loop_related_legal.adb:29:21: info: range check proved

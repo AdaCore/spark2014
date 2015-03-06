@@ -1,14 +1,25 @@
+main.adb:13:07: info: initialization of "Branch.M_Nodes" proved
 main.adb:16:13: info: discriminant check proved
+main.adb:16:13: info: initialization of "R6b" proved
 main.adb:16:22: info: length check proved
+main.adb:16:25: info: initialization of "R6b" proved
 main.adb:16:25: info: length check proved
+main.adb:18:16: info: initialization of "Branch.M_Nodes" proved
 main.adb:18:22: info: discriminant check proved
+main.adb:18:30: info: initialization of "R9b" proved
 main.adb:19:10: info: loop invariant initialization proved
 main.adb:19:10: info: loop invariant preservation proved
+main.adb:20:18: info: initialization of "Branch.M_Nodes" proved
 main.adb:20:24: info: discriminant check proved
 main.adb:22:19: info: discriminant check proved
+main.adb:22:42: info: initialization of "Branch.M_Nodes" proved
 main.adb:22:53: info: discriminant check proved
+main.adb:25:17: info: initialization of "Branch.M_Nodes" proved
 main.adb:25:23: info: discriminant check proved
 main.adb:26:13: info: assertion proved
+main.adb:26:33: info: initialization of "Branch.M_Nodes" proved
 main.adb:26:39: info: discriminant check proved
+main.adb:26:47: info: initialization of "R11b" proved
 main.adb:27:19: info: discriminant check proved
 main.adb:27:29: info: index check proved
+main.adb:27:32: info: initialization of "Branch.M_Nodes" proved

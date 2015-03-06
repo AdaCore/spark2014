@@ -1,7 +1,11 @@
+main.adb:5:37: info: initialization of "The_Sink" proved
 main.adb:10:40: info: length check proved
+main.adb:12:13: info: initialization of "With_Postcondition" proved
 main.adb:17:17: info: postcondition proved
+main.adb:23:13: info: initialization of "With_Invariant" proved
 main.adb:28:17: info: postcondition proved
 main.adb:31:07: info: assertion proved
+main.adb:35:13: info: initialization of "With_Spoon_Feeding" proved
 main.adb:40:17: info: postcondition proved
 main.adb:43:07: info: assertion proved
 main.adb:44:07: info: assertion proved

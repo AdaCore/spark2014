@@ -1,1 +1,2 @@
+foo.adb:13:41: info: initialization of "Length" proved
 foo.adb:13:49: warning: unused global "Data"

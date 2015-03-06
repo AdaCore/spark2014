@@ -1,13 +1,27 @@
+list.adb:12:26: info: initialization of "R1b" proved
 list.adb:12:35: info: precondition proved
+list.adb:14:07: info: initialization of "Res.Elements" proved
+list.adb:14:07: info: initialization of "Res.Elements_Ptr" proved
+list.adb:14:07: info: initialization of "Res.Last" proved
+list.adb:14:07: info: initialization of private part of "Res" proved
+list.adb:14:14: info: initialization of private part of "Res" proved
+list.adb:15:16: info: initialization of "R4b" proved
 list.adb:15:16: info: precondition proved
+list.adb:15:35: info: initialization of "R5b" proved
 list.adb:15:35: info: precondition proved
 list.adb:16:10: medium: precondition might fail
 list.adb:16:16: medium: private part of "S" might not be initialized
 list.adb:16:19: info: precondition proved
 list.adb:16:31: info: range check proved
+list.adb:19:17: info: initialization of "R7b" proved
 list.adb:19:17: info: precondition proved
+list.adb:19:36: info: initialization of "R8b" proved
 list.adb:19:36: info: precondition proved
 list.adb:20:10: medium: precondition might fail
+list.adb:20:18: info: initialization of "Res.Elements" proved
+list.adb:20:18: info: initialization of "Res.Elements_Ptr" proved
+list.adb:20:18: info: initialization of "Res.Last" proved
+list.adb:20:18: info: initialization of private part of "Res" proved
 list.adb:20:23: medium: precondition might fail
 list.adb:20:28: medium: private part of "S" might not be initialized
 list.adb:21:10: medium: precondition might fail
@@ -15,11 +29,21 @@ list.adb:21:15: medium: private part of "S" might not be initialized
 list.adb:22:10: info: loop invariant initialization proved
 list.adb:22:54: medium: loop invariant might fail after first iteration, requires Element (Res, J) = Element (L, Last_Index (L) - J + 1)
 list.adb:22:54: medium: precondition might fail
+list.adb:22:63: info: initialization of "Res.Elements" proved
+list.adb:22:63: info: initialization of "Res.Elements_Ptr" proved
+list.adb:22:63: info: initialization of "Res.Last" proved
+list.adb:22:63: info: initialization of private part of "Res" proved
 list.adb:22:68: info: range check proved
 list.adb:22:73: info: precondition proved
 list.adb:22:85: info: precondition proved
 list.adb:22:104: info: range check proved
+list.ads:7:13: info: initialization of "Eq" proved
+list.ads:8:12: info: initialization of "Oeq" proved
 list.ads:8:12: medium: range check might fail
+list.ads:11:13: info: initialization of "Reverse_List.Elements" proved
+list.ads:11:13: info: initialization of "Reverse_List.Elements_Ptr" proved
+list.ads:11:13: info: initialization of "Reverse_List.Last" proved
+list.ads:11:13: info: initialization of private part of "Reverse_List" proved
 list.ads:12:14: info: postcondition proved
 list.ads:12:28: info: precondition proved
 list.ads:12:47: info: precondition proved
@@ -52,6 +76,11 @@ stack.adb:21:19: info: index check proved
 stack.adb:32:08: info: discriminant check proved
 stack.adb:32:17: info: discriminant check proved
 stack.adb:32:22: info: range check proved
+stack.ads:10:16: info: initialization of "To" proved
+stack.ads:11:16: info: initialization of "To_But_Top" proved
+stack.ads:13:16: info: initialization of "Is_Full" proved
+stack.ads:14:16: info: initialization of "Is_Empty" proved
+stack.ads:18:13: info: initialization of "Top" proved
 stack.ads:23:14: info: precondition proved
 stack.ads:23:14: medium: postcondition might fail
 stack.ads:27:14: info: postcondition proved

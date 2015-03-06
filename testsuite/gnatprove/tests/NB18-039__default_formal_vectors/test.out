@@ -1,4 +1,8 @@
 bounded.adb:8:07: info: precondition proved
+bounded.adb:8:15: info: initialization of private part of "V" proved
 bounded.adb:9:07: info: precondition proved
+bounded.adb:9:15: info: initialization of private part of "V" proved
 bounded.adb:10:07: medium: precondition might fail
+bounded.adb:10:15: info: initialization of private part of "V" proved
+bounded.ads:7:12: info: initialization of "Oeq" proved
 bounded.ads:12:14: warning: subprogram "Test" has no effect

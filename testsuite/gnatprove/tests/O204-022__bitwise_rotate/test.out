@@ -1,3 +1,4 @@
 test_rotate.adb:13:14: info: postcondition proved
+test_rotate.adb:8:13: info: initialization of "R" proved
 test_rotate.adb:19:39: info: range check proved
 test_rotate.adb:25:09: info: precondition proved

@@ -1,2 +1,4 @@
+a.ads:3:13: info: initialization of "Any" proved
 a.ads:4:20: info: postcondition proved
 b.adb:7:04: info: assertion proved
+b.adb:7:19: info: initialization of "X" proved

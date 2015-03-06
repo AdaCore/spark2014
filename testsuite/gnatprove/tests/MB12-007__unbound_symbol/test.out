@@ -1,17 +1,32 @@
 pupils.adb:20:08: info: length check proved
 pupils.adb:25:49: medium: array index check might fail
+pupils.adb:26:15: info: initialization of "Subject_Scores" proved
+pupils.adb:27:23: info: initialization of "Success" proved
 pupils.adb:29:43: info: index check proved
+pupils.adb:30:46: info: initialization of "Subject_Scores" proved
+pupils.adb:32:09: info: initialization of "Success" proved
 pupils.adb:33:46: info: range check proved
 pupils.adb:34:26: info: index check proved
 pupils.adb:35:26: info: index check proved
 pupils.adb:36:26: info: index check proved
 pupils.ads:40:17: info: length check proved
+pupils.ads:40:28: info: initialization of "Null_Participation.Score" proved
+pupils.ads:40:28: info: initialization of "Null_Participation.Studying" proved
 pupils.ads:46:46: info: length check proved
+pupils.ads:58:28: info: initialization of "Null_Name" proved
+pupils.ads:60:28: info: initialization of "Null_Results" proved
+pupils.ads:76:32: info: initialization of "MaxPupils" proved
 pupils.ads:76:32: info: length check proved
+pupils.ads:76:43: info: initialization of "Null_Pupil.Forename" proved
+pupils.ads:76:43: info: initialization of "Null_Pupil.Form" proved
+pupils.ads:76:43: info: initialization of "Null_Pupil.Scores" proved
+pupils.ads:76:43: info: initialization of "Null_Pupil.Surname" proved
+pupils.ads:99:44: info: initialization of "Success" proved
 pupils.ads:102:16: medium: postcondition might fail
 pupils.ads:102:25: info: range check proved
 pupils.ads:103:35: info: index check proved
 pupils.ads:103:60: info: index check proved
+pupils.ads:104:20: info: initialization of "Success" proved
 pupils.ads:107:39: info: length check proved
 pupils.ads:109:39: info: length check proved
 pupils.ads:112:39: info: length check proved

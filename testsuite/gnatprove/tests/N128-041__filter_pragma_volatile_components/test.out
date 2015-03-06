@@ -1,4 +1,13 @@
 foo.adb:14:11: info: range check proved
+foo.adb:14:30: info: initialization of "A_LB" proved
+foo.adb:14:30: info: initialization of "R1b" proved
+foo.adb:14:38: info: initialization of "A_UB" proved
+foo.adb:14:38: info: initialization of "R2b" proved
 foo.adb:15:21: info: index check proved
+foo.adb:16:19: info: initialization of "Total" proved
 foo.adb:16:25: medium: overflow check might fail
+foo.adb:16:27: info: initialization of "Item" proved
+foo.adb:18:12: info: initialization of "Total" proved
+foo.ads:19:35: info: initialization of "S" proved
+foo.ads:21:21: info: initialization of "S" proved
 foo.ads:21:21: medium: postcondition might fail, requires S <= 100

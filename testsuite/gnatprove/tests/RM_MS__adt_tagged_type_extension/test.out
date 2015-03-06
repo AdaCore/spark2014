@@ -3,4 +3,10 @@ stacks_14-monitored_14.adb:12:44: info: length check proved
 stacks_14-monitored_14.adb:19:25: medium: array index check might fail
 stacks_14-monitored_14.adb:20:54: medium: overflow check might fail
 stacks_14-monitored_14.adb:25:30: medium: array index check might fail
+stacks_14-monitored_14.ads:7:20: info: initialization of "S.Monitor_Vector" proved
+stacks_14-monitored_14.ads:7:20: info: initialization of "S.Next_Identity_Value" proved
+stacks_14-monitored_14.ads:7:20: info: initialization of "S.Stack_Pointer" proved
+stacks_14-monitored_14.ads:7:20: info: initialization of "S.Stack_Vector" proved
 stacks_14-monitored_14.ads:8:11: medium: incorrect dependency "null => S"
+stacks_14-monitored_14.ads:15:13: info: initialization of "Top_Identity" proved
+stacks_14-monitored_14.ads:16:13: info: initialization of "Next_Identity" proved

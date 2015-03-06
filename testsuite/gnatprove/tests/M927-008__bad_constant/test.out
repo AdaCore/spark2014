@@ -1,2 +1,3 @@
+bad_constant.adb:3:13: info: initialization of "Ident" proved
 bad_constant.adb:4:49: medium: overflow check might fail
 bad_constant.adb:4:49: medium: range check might fail

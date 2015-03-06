@@ -1,12 +1,26 @@
+precise.adb:6:09: info: initialization of "X" proved
 precise.adb:6:11: info: overflow check proved
+precise.adb:6:13: info: initialization of "Y" proved
 precise.adb:7:04: info: assertion proved
+precise.adb:7:19: info: initialization of "Z" proved
+precise.adb:8:09: info: initialization of "X" proved
 precise.adb:8:11: info: overflow check proved
+precise.adb:8:13: info: initialization of "Y" proved
 precise.adb:9:04: info: assertion proved
+precise.adb:9:19: info: initialization of "Z" proved
+precise.adb:10:09: info: initialization of "X" proved
 precise.adb:10:11: info: overflow check proved
+precise.adb:10:13: info: initialization of "Y" proved
+precise.adb:11:19: info: initialization of "Z" proved
 precise.adb:11:19: medium: assertion might fail, requires Z in 3.39999 ..
+precise.adb:12:09: info: initialization of "X" proved
 precise.adb:12:11: info: division check proved
 precise.adb:12:11: info: overflow check proved
+precise.adb:12:13: info: initialization of "Y" proved
+precise.adb:13:19: info: initialization of "Z" proved
 precise.adb:13:19: medium: assertion might fail, requires Z in 24.99999 ..
+test_18.adb:2:20: info: initialization of "Z" proved
+test_18.adb:4:16: info: initialization of "Z" proved
 test_18.adb:4:16: medium: postcondition might fail, requires Z >= X
 test_18.adb:7:12: info: overflow check proved
 test_18.adb:7:19: info: overflow check proved
@@ -15,4 +29,6 @@ test_float.adb:8:24: info: overflow check proved
 test_float.adb:11:14: info: overflow check proved
 test_float.adb:11:14: info: range check proved
 test_float.adb:16:04: info: precondition proved
+test_float.adb:16:16: info: initialization of "X" proved
 test_float.adb:17:04: info: assertion proved
+test_float.adb:17:19: info: initialization of "X" proved

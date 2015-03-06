@@ -1,3 +1,4 @@
 main.adb:4:16: medium: postcondition might fail, requires A = B
 main.adb:7:16: medium: overflow check might fail
 main.adb:7:23: info: division check proved
+test.ads:6:13: info: initialization of "Equivalent" proved

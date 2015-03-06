@@ -3,13 +3,17 @@ concat.adb:4:28: info: length check proved, in call inlined at concat.adb:34
 concat.adb:4:28: info: range check proved, in call inlined at concat.adb:34
 concat.adb:4:30: info: range check proved, in call inlined at concat.adb:34
 concat.adb:6:07: info: assertion proved, in call inlined at concat.adb:34
+concat.adb:6:22: info: initialization of "D" proved, in call inlined at concat.adb:34
 concat.adb:7:07: info: assertion proved, in call inlined at concat.adb:34
+concat.adb:7:22: info: initialization of "D" proved, in call inlined at concat.adb:34
 concat.adb:11:17: info: range check proved, in call inlined at concat.adb:35
 concat.adb:11:29: info: length check proved, in call inlined at concat.adb:35
 concat.adb:11:29: info: range check proved, in call inlined at concat.adb:35
 concat.adb:11:31: info: range check proved, in call inlined at concat.adb:35
 concat.adb:13:07: info: assertion proved, in call inlined at concat.adb:35
+concat.adb:13:22: info: initialization of "D" proved, in call inlined at concat.adb:35
 concat.adb:14:07: info: assertion proved, in call inlined at concat.adb:35
+concat.adb:14:22: info: initialization of "D" proved, in call inlined at concat.adb:35
 concat.adb:17:14: warning: subprogram "Three" has no effect
 concat.adb:20:14: medium: overflow check might fail
 concat.adb:20:24: medium: overflow check might fail
@@ -28,18 +32,23 @@ concat_left.adb:4:14: warning: subprogram "One" has no effect
 concat_left.adb:9:19: info: range check proved
 concat_left.adb:11:07: info: assertion proved
 concat_left.adb:12:07: info: assertion proved
+concat_left.adb:12:22: info: initialization of "Z" proved
 concat_left.adb:12:26: info: index check proved
 concat_left.adb:13:07: info: assertion proved
 concat_left.adb:17:18: info: length check proved, in call inlined at concat_left.adb:36
 concat_left.adb:17:18: info: range check proved, in call inlined at concat_left.adb:36
 concat_left.adb:17:20: info: range check proved, in call inlined at concat_left.adb:36
 concat_left.adb:19:07: info: assertion proved, in call inlined at concat_left.adb:36
+concat_left.adb:19:22: info: initialization of "Z" proved, in call inlined at concat_left.adb:36
 concat_left.adb:20:07: info: assertion proved, in call inlined at concat_left.adb:36
+concat_left.adb:20:22: info: initialization of "Z" proved, in call inlined at concat_left.adb:36
 concat_left.adb:24:19: info: length check proved, in call inlined at concat_left.adb:37
 concat_left.adb:24:19: info: range check proved, in call inlined at concat_left.adb:37
 concat_left.adb:24:21: info: range check proved, in call inlined at concat_left.adb:37
 concat_left.adb:26:07: info: assertion proved, in call inlined at concat_left.adb:37
+concat_left.adb:26:22: info: initialization of "Z" proved, in call inlined at concat_left.adb:37
 concat_left.adb:27:07: info: assertion proved, in call inlined at concat_left.adb:37
+concat_left.adb:27:22: info: initialization of "Z" proved, in call inlined at concat_left.adb:37
 concat_left.adb:30:13: info: length check proved
 concat_left.adb:31:14: info: length check proved
 concat_left.adb:35:07: info: precondition proved
@@ -48,8 +57,10 @@ concat_right.adb:4:14: warning: subprogram "One" has no effect
 concat_right.adb:8:19: info: range check proved
 concat_right.adb:10:07: info: assertion proved
 concat_right.adb:11:07: info: assertion proved
+concat_right.adb:11:22: info: initialization of "Z" proved
 concat_right.adb:11:26: info: index check proved
 concat_right.adb:11:40: info: index check proved
+concat_right.adb:12:22: info: initialization of "Z" proved
 concat_right.adb:12:22: medium: assertion might fail, requires Z (Z'Last) = X
 concat_right.adb:12:26: info: index check proved
 concat_right.adb:13:07: info: assertion proved
@@ -57,12 +68,16 @@ concat_right.adb:17:16: info: range check proved, in call inlined at concat_righ
 concat_right.adb:17:27: info: length check proved, in call inlined at concat_right.adb:36
 concat_right.adb:17:27: info: range check proved, in call inlined at concat_right.adb:36
 concat_right.adb:19:07: info: assertion proved, in call inlined at concat_right.adb:36
+concat_right.adb:19:22: info: initialization of "Z" proved, in call inlined at concat_right.adb:36
 concat_right.adb:20:07: info: assertion proved, in call inlined at concat_right.adb:36
+concat_right.adb:20:22: info: initialization of "Z" proved, in call inlined at concat_right.adb:36
 concat_right.adb:24:17: info: range check proved, in call inlined at concat_right.adb:37
 concat_right.adb:24:28: info: length check proved, in call inlined at concat_right.adb:37
 concat_right.adb:24:28: info: range check proved, in call inlined at concat_right.adb:37
 concat_right.adb:26:07: info: assertion proved, in call inlined at concat_right.adb:37
+concat_right.adb:26:22: info: initialization of "Z" proved, in call inlined at concat_right.adb:37
 concat_right.adb:27:07: info: assertion proved, in call inlined at concat_right.adb:37
+concat_right.adb:27:22: info: initialization of "Z" proved, in call inlined at concat_right.adb:37
 concat_right.adb:30:13: info: length check proved
 concat_right.adb:31:14: info: length check proved
 concat_right.adb:35:07: info: precondition proved

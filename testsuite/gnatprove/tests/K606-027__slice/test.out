@@ -1,7 +1,9 @@
 fb20a00.adb:9:07: info: range check proved
 fb20a00.adb:10:07: info: range check proved
+fb20a00.adb:15:16: info: initialization of "Upper_Case" proved
 fb20a00.adb:18:10: info: range check proved
 fb20a00.adb:25:24: medium: "Ret" might not be initialized
+fb20a00.adb:25:38: info: initialization of "Pos" proved
 fb20a00.adb:25:38: info: range check proved
 fb20a00.adb:27:24: medium: "Ret" might not be initialized
 fb20a00.adb:30:18: medium: "Ret" might not be initialized
@@ -9,11 +11,19 @@ fb20a00.adb:34:15: info: length check proved
 fb20a00.adb:34:18: medium: length check might fail
 fb20a00.adb:35:15: info: length check proved
 fb20a00.adb:35:18: medium: length check might fail
+fb20a00.adb:37:15: info: initialization of "Pos" proved
+fb20a00.adb:37:22: info: initialization of "New_Str" proved
 fb20a00.adb:37:34: medium: overflow check might fail
+fb20a00.adb:37:35: info: initialization of "New_Sub" proved
 fb20a00.adb:37:49: medium: overflow check might fail
 fb20a00.adb:39:11: medium: range check might fail
 fb20a00.adb:39:31: medium: overflow check might fail
 fb20a00.adb:39:46: medium: overflow check might fail
+fb20a00.adb:42:17: info: initialization of "Pos" proved
 fb20a00.adb:42:21: medium: overflow check might fail
+fb20a00.adb:45:12: info: initialization of "Pos" proved
+fb20a00.adb:45:18: info: initialization of "New_Str" proved
 fb20a00.adb:45:30: medium: overflow check might fail
+fb20a00.adb:45:31: info: initialization of "New_Sub" proved
 fb20a00.adb:45:45: medium: overflow check might fail
+fb20a00.ads:43:13: info: initialization of "Find" proved

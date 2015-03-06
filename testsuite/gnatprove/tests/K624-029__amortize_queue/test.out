@@ -1,27 +1,48 @@
+amortized_queue.adb:5:07: info: initialization of private part of "Result" proved
+amortized_queue.adb:6:20: info: initialization of "R3b" proved
 amortized_queue.adb:6:20: info: precondition proved
+amortized_queue.adb:6:42: info: initialization of "R4b" proved
 amortized_queue.adb:6:42: info: precondition proved
 amortized_queue.adb:7:12: medium: precondition might fail
+amortized_queue.adb:7:20: info: initialization of private part of "Result" proved
 amortized_queue.adb:7:28: info: precondition proved
 amortized_queue.adb:7:43: medium: range check might fail
+amortized_queue.adb:9:20: info: initialization of "R6b" proved
 amortized_queue.adb:9:20: info: precondition proved
+amortized_queue.adb:9:43: info: initialization of "R7b" proved
 amortized_queue.adb:9:43: info: precondition proved
 amortized_queue.adb:10:12: medium: precondition might fail
+amortized_queue.adb:10:20: info: initialization of private part of "Result" proved
 amortized_queue.adb:10:28: info: precondition proved
 amortized_queue.adb:10:44: medium: range check might fail
+amortized_queue.adb:17:07: info: initialization of private part of "Result" proved
 amortized_queue.adb:18:09: medium: precondition might fail
+amortized_queue.adb:18:17: info: initialization of private part of "Result" proved
+amortized_queue.adb:19:20: info: initialization of "R11b" proved
 amortized_queue.adb:19:20: info: precondition proved
+amortized_queue.adb:19:43: info: initialization of "R12b" proved
 amortized_queue.adb:19:43: info: precondition proved
 amortized_queue.adb:20:12: medium: precondition might fail
+amortized_queue.adb:20:20: info: initialization of private part of "Result" proved
 amortized_queue.adb:20:28: info: precondition proved
 amortized_queue.adb:20:44: medium: range check might fail
+amortized_queue.adb:27:07: info: initialization of private part of "Result" proved
+amortized_queue.adb:28:20: info: initialization of "R16b" proved
 amortized_queue.adb:28:20: info: precondition proved
+amortized_queue.adb:28:42: info: initialization of "R17b" proved
 amortized_queue.adb:28:42: info: precondition proved
 amortized_queue.adb:29:12: medium: precondition might fail
+amortized_queue.adb:29:20: info: initialization of private part of "Result" proved
 amortized_queue.adb:29:28: info: precondition proved
 amortized_queue.adb:29:43: medium: range check might fail
 amortized_queue.adb:31:09: medium: precondition might fail
+amortized_queue.adb:31:17: info: initialization of private part of "Result" proved
+amortized_queue.adb:37:26: info: initialization of "R28b" proved, in call inlined at amortized_queue.adb:55
+amortized_queue.adb:37:26: info: initialization of "R35b" proved, in call inlined at amortized_queue.adb:66
 amortized_queue.adb:37:26: info: precondition proved, in call inlined at amortized_queue.adb:55
 amortized_queue.adb:37:26: info: precondition proved, in call inlined at amortized_queue.adb:66
+amortized_queue.adb:37:48: info: initialization of "R29b" proved, in call inlined at amortized_queue.adb:55
+amortized_queue.adb:37:48: info: initialization of "R36b" proved, in call inlined at amortized_queue.adb:66
 amortized_queue.adb:37:48: info: precondition proved, in call inlined at amortized_queue.adb:55
 amortized_queue.adb:37:48: info: precondition proved, in call inlined at amortized_queue.adb:66
 amortized_queue.adb:38:10: medium: precondition might fail, in call inlined at amortized_queue.adb:55
@@ -30,27 +51,51 @@ amortized_queue.adb:38:25: medium: precondition might fail, in call inlined at a
 amortized_queue.adb:38:25: medium: precondition might fail, in call inlined at amortized_queue.adb:66
 amortized_queue.adb:38:40: info: range check proved, in call inlined at amortized_queue.adb:55
 amortized_queue.adb:38:40: info: range check proved, in call inlined at amortized_queue.adb:66
+amortized_queue.adb:43:07: info: initialization of private part of "RevRear" proved
 amortized_queue.adb:43:27: info: precondition proved
 amortized_queue.adb:45:07: info: precondition proved
+amortized_queue.adb:45:25: info: initialization of private part of "RevRear" proved
+amortized_queue.adb:46:14: info: initialization of private part of "RevRear" proved
+amortized_queue.adb:51:07: info: initialization of private part of "Result.Front" proved
+amortized_queue.adb:51:07: info: initialization of private part of "Result.Rear" proved
 amortized_queue.adb:51:42: info: discriminant check proved
 amortized_queue.adb:51:42: info: precondition proved
 amortized_queue.adb:52:41: info: discriminant check proved
 amortized_queue.adb:52:41: info: precondition proved
 amortized_queue.adb:53:09: info: precondition proved
+amortized_queue.adb:53:22: info: initialization of private part of "Result.Front" proved
 amortized_queue.adb:54:12: info: precondition proved
+amortized_queue.adb:54:20: info: initialization of private part of "Result.Front" proved
 amortized_queue.adb:54:36: info: precondition proved
+amortized_queue.adb:54:44: info: initialization of private part of "Result.Rear" proved
+amortized_queue.adb:55:28: info: initialization of private part of "Result.Front" proved
+amortized_queue.adb:55:42: info: initialization of private part of "Result.Rear" proved
+amortized_queue.adb:62:07: info: initialization of private part of "Result.Front" proved
+amortized_queue.adb:62:07: info: initialization of private part of "Result.Rear" proved
 amortized_queue.adb:62:42: info: discriminant check proved
 amortized_queue.adb:62:42: info: precondition proved
 amortized_queue.adb:63:41: info: discriminant check proved
 amortized_queue.adb:63:41: info: precondition proved
 amortized_queue.adb:64:09: info: precondition proved
+amortized_queue.adb:64:17: info: initialization of private part of "Result.Rear" proved
 amortized_queue.adb:65:12: info: precondition proved
+amortized_queue.adb:65:20: info: initialization of private part of "Result.Front" proved
 amortized_queue.adb:65:36: info: precondition proved
+amortized_queue.adb:65:44: info: initialization of private part of "Result.Rear" proved
+amortized_queue.adb:66:28: info: initialization of private part of "Result.Front" proved
+amortized_queue.adb:66:42: info: initialization of private part of "Result.Rear" proved
 amortized_queue.adb:73:14: info: precondition proved
+amortized_queue.ads:10:13: info: initialization of "Eq" proved
+amortized_queue.ads:13:12: info: initialization of "Oeq" proved
+amortized_queue.ads:17:13: info: initialization of private part of "Oconcat" proved
+amortized_queue.ads:18:13: info: initialization of private part of "Oconcat__2" proved
+amortized_queue.ads:19:13: info: initialization of private part of "Oconcat__3" proved
+amortized_queue.ads:30:13: info: initialization of "Inv" proved
 amortized_queue.ads:31:07: info: precondition proved
 amortized_queue.ads:31:27: info: precondition proved
 amortized_queue.ads:32:26: info: precondition proved
 amortized_queue.ads:32:46: info: precondition proved
+amortized_queue.ads:35:13: info: initialization of "Is_Model" proved
 amortized_queue.ads:36:07: info: precondition proved
 amortized_queue.ads:36:26: info: precondition proved
 amortized_queue.ads:36:44: info: precondition proved
@@ -69,12 +114,16 @@ amortized_queue.ads:41:29: medium: range check might fail
 amortized_queue.ads:41:40: info: precondition proved
 amortized_queue.ads:42:14: info: precondition proved
 amortized_queue.ads:42:32: info: range check proved
+amortized_queue.ads:44:13: info: initialization of private part of "Model" proved
 amortized_queue.ads:46:14: medium: postcondition might fail, requires Is_Model (Q, Model'result)
+amortized_queue.ads:48:13: info: initialization of "Front" proved
 amortized_queue.ads:49:31: info: precondition proved
 amortized_queue.ads:50:14: info: postcondition proved
 amortized_queue.ads:50:31: info: precondition proved
 amortized_queue.ads:51:17: info: precondition proved
 amortized_queue.ads:51:31: info: precondition proved
+amortized_queue.ads:53:13: info: initialization of private part of "Tail.Front" proved
+amortized_queue.ads:53:13: info: initialization of private part of "Tail.Rear" proved
 amortized_queue.ads:54:31: info: precondition proved
 amortized_queue.ads:55:14: medium: postcondition might fail
 amortized_queue.ads:56:23: info: precondition proved
@@ -84,6 +133,8 @@ amortized_queue.ads:57:19: info: precondition proved
 amortized_queue.ads:57:21: info: precondition proved
 amortized_queue.ads:57:43: info: precondition proved
 amortized_queue.ads:57:57: info: precondition proved
+amortized_queue.ads:59:13: info: initialization of private part of "Enqueue.Front" proved
+amortized_queue.ads:59:13: info: initialization of private part of "Enqueue.Rear" proved
 amortized_queue.ads:61:25: info: precondition proved
 amortized_queue.ads:61:44: info: precondition proved
 amortized_queue.ads:62:14: medium: postcondition might fail

@@ -1,2 +1,7 @@
+switch.adb:24:19: info: initialization of "Convert_To_Reading" proved
 switch.adb:34:32: info: length check proved
 switch.adb:39:34: info: length check proved
+switch.adb:56:26: info: initialization of "A" proved
+switch.adb:57:26: info: initialization of "B" proved
+switch.adb:58:26: info: initialization of "C" proved
+switch.ads:7:13: info: initialization of "ReadValue" proved

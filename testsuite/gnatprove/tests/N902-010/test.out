@@ -3,10 +3,15 @@ a_stack_no_spark_contracts_with_body.adb:19:16: info: range check proved
 a_stack_no_spark_contracts_with_body.adb:20:12: info: index check proved
 a_stack_no_spark_contracts_with_body.adb:25:18: info: index check proved
 a_stack_no_spark_contracts_with_body.adb:26:16: info: range check proved
+a_stack_no_spark_contracts_with_body.ads:6:13: info: initialization of "Is_Empty" proved
+a_stack_no_spark_contracts_with_body.ads:7:13: info: initialization of "Is_Full" proved
+a_stack_no_spark_contracts_with_body.ads:8:13: info: initialization of "Top" proved
+a_stack_no_spark_contracts_with_body.ads:14:19: info: initialization of "It" proved
 main.adb:4:11: medium: "a_stack_no_spark_contracts_with_body.sp" might not be initialized after elaboration of main program "Main"
 main.adb:4:11: medium: "a_stack_no_spark_contracts_with_body.vec" might not be initialized after elaboration of main program "Main"
 main.adb:5:43: info: length check proved
 main.adb:7:04: info: precondition proved
+main.adb:7:19: info: initialization of "My_Array" proved
 main.adb:7:19: warning: unused assignment to "My_Array"
 reverser_using_a_stack_with_body.adb:9:10: info: precondition proved
 reverser_using_a_stack_with_body.adb:13:10: info: precondition proved

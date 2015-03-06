@@ -28,6 +28,7 @@ discr.adb:72:07: info: assertion proved
 discr.adb:73:07: info: assertion proved
 discr.adb:77:48: medium: overflow check might fail
 discr.adb:77:48: medium: range check might fail
+discr.adb:80:16: info: initialization of "F" proved
 discr.adb:80:53: info: range check proved
 discr.adb:83:46: medium: precondition might fail
 discr.adb:92:09: info: discriminant check proved
@@ -42,7 +43,9 @@ discr.adb:108:10: info: discriminant check proved
 discr.adb:114:12: info: discriminant check proved
 discr.adb:115:12: medium: discriminant check might fail
 discr.adb:120:34: info: discriminant check proved
+discr.adb:122:26: info: initialization of private part of "D" proved
 discr.adb:127:12: medium: discriminant check might fail
+discr.adb:130:26: info: initialization of private part of "D" proved
 discr.adb:135:12: info: discriminant check proved
 discr.adb:139:07: info: precondition proved
 discr.adb:140:07: info: precondition proved
@@ -52,9 +55,11 @@ discr.adb:146:34: info: discriminant check proved
 discr.adb:150:07: info: assertion proved
 discr.adb:151:07: info: assertion proved
 discr.adb:152:17: info: discriminant check proved
+discr.adb:152:20: info: initialization of private part of "D1" proved
 discr.adb:153:22: medium: assertion might fail, requires not H.Content'constrained
 discr.adb:154:07: info: assertion proved
 discr.adb:155:17: info: discriminant check proved
+discr.adb:155:20: info: initialization of private part of "D2" proved
 discr.adb:156:07: info: assertion proved
 discr.adb:157:07: info: assertion proved
 discr.ads:8:14: warning: subprogram "R1" has no effect

@@ -8,3 +8,17 @@ foo.adb:65:09: procedure "Nr_Test_03" is marked as No_Return
 
 
 gnatprove: error during generation of Global contracts
+main1.adb:5:31: info: initialization of "Lights.State" proved
+main1.adb:13:13: info: initialization of "Lights.State" proved
+main2.adb:5:31: info: initialization of "Lights.State" proved
+main2.adb:12:10: info: initialization of "Lights.State" proved
+main3.adb:7:31: info: initialization of "Lights.State" proved
+main3.adb:25:13: info: initialization of "Old" proved
+main3.adb:25:20: info: initialization of "V" proved
+main3.adb:26:20: info: initialization of "V" proved
+main3.adb:36:04: info: initialization of "Lights.State" proved
+main4.adb:7:31: info: initialization of "Lights.State" proved
+main4.adb:25:13: info: initialization of "Old" proved
+main4.adb:25:20: info: initialization of "V" proved
+main4.adb:26:20: info: initialization of "V" proved
+main4.adb:36:04: info: initialization of "Lights.State" proved

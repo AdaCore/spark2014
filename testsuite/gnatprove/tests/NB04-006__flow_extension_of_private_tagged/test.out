@@ -1,0 +1,5 @@
+base.ads:3:13: info: initialization of "Make.A" proved
+derived.adb:7:14: info: initialization of "R.B" proved
+derived.adb:7:14: info: initialization of private part of "R" proved
+derived.ads:6:24: info: initialization of "Make.B" proved
+derived.ads:6:24: info: initialization of private part of "Make" proved

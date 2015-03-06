@@ -1,2 +1,4 @@
 scbe_main.adb:5:32: info: length check proved
+scbe_main.adb:7:37: info: initialization of "Var_B" proved
 unchecked.adb:14:22: info: length check proved
+unchecked.ads:17:13: info: initialization of "Convert_To_A.M_Int" proved

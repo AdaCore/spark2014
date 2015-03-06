@@ -1,10 +1,21 @@
 p2.adb:18:10: info: loop invariant initialization proved
 p2.adb:18:10: info: loop invariant preservation proved
+p2.adb:19:13: info: initialization of "Lower" proved
 p2.adb:19:19: info: overflow check proved
+p2.adb:20:34: info: initialization of "Upper" proved
 p2.adb:20:41: info: overflow check proved
+p2.adb:23:20: info: initialization of "Upper" proved
+p2.adb:23:28: info: initialization of "Lower" proved
+p2.adb:25:22: info: initialization of "Lower" proved
+p2.adb:25:30: info: initialization of "Upper" proved
 p2.adb:25:37: info: division check proved
+p2.adb:27:13: info: initialization of "Halfway" proved
 p2.adb:27:21: info: overflow check proved
+p2.adb:28:22: info: initialization of "Halfway" proved
+p2.adb:30:22: info: initialization of "Halfway" proved
+p2.adb:34:14: info: initialization of "Lower" proved
 p2.ads:4:04: info: assertion proved
+p2.ads:10:13: info: initialization of "Sqrt" proved
 p2.ads:11:19: info: postcondition proved
 p2.ads:11:32: info: overflow check proved
 p2.ads:12:37: medium: overflow check might fail

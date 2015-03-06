@@ -1,0 +1,11 @@
+pack-inner.adb:5:04: info: initialization of "Inner_Body_Var" proved
+pack-inner.adb:8:42: info: initialization of "Inner_Body_Var" proved
+pack-inner.adb:8:58: info: initialization of "Inner_Var" proved
+pack.adb:5:04: info: initialization of "A" proved
+pack.adb:5:07: info: initialization of "B" proved
+pack.adb:20:07: info: initialization of "Inner_Var" proved
+pack.adb:20:07: info: initialization of "Var" proved
+pack.adb:32:04: info: initialization of "B" proved
+pack.ads:5:04: info: initialization of "Var" proved
+pack.ads:7:14: info: initialization of "A" proved
+pack.ads:7:14: info: initialization of "B" proved

@@ -1,49 +1,66 @@
 binary_fixed.adb:7:12: info: overflow check proved
 binary_fixed.adb:7:12: info: range check proved
 binary_fixed.adb:8:07: info: assertion proved
+binary_fixed.adb:8:78: info: initialization of "Z" proved
 binary_fixed.adb:10:07: info: assertion proved
+binary_fixed.adb:10:22: info: initialization of "Z" proved
 binary_fixed.adb:17:14: info: overflow check proved
 binary_fixed.adb:17:14: info: range check proved
 binary_fixed.adb:18:07: info: assertion proved
+binary_fixed.adb:18:74: info: initialization of "Z" proved
 binary_fixed.adb:19:14: info: overflow check proved
 binary_fixed.adb:19:14: info: range check proved
 binary_fixed.adb:20:07: info: assertion proved
+binary_fixed.adb:20:22: info: initialization of "Z" proved
 binary_fixed.adb:22:07: info: assertion proved
+binary_fixed.adb:22:22: info: initialization of "Z" proved
 binary_fixed.adb:30:14: info: overflow check proved
 binary_fixed.adb:30:14: info: range check proved
 binary_fixed.adb:31:07: info: assertion proved
+binary_fixed.adb:31:22: info: initialization of "Z" proved
 binary_fixed.adb:32:14: info: overflow check proved
 binary_fixed.adb:32:14: info: range check proved
 binary_fixed.adb:33:07: info: assertion proved
+binary_fixed.adb:33:22: info: initialization of "Z" proved
 binary_fixed.adb:35:07: info: assertion proved
+binary_fixed.adb:35:22: info: initialization of "Z" proved
 binary_fixed.adb:43:14: info: overflow check proved
 binary_fixed.adb:43:14: info: range check proved
 binary_fixed.adb:44:07: info: assertion proved
+binary_fixed.adb:44:22: info: initialization of "Z" proved
 binary_fixed.adb:44:28: info: overflow check proved
 binary_fixed.adb:45:14: info: overflow check proved
 binary_fixed.adb:45:14: info: range check proved
 binary_fixed.adb:46:07: info: assertion proved
+binary_fixed.adb:46:22: info: initialization of "Z" proved
 binary_fixed.adb:46:28: info: overflow check proved
 binary_fixed.adb:47:14: info: overflow check proved
 binary_fixed.adb:47:14: info: range check proved
+binary_fixed.adb:47:16: info: initialization of "Two" proved
 binary_fixed.adb:48:07: info: assertion proved
+binary_fixed.adb:48:22: info: initialization of "Z" proved
 binary_fixed.adb:48:28: info: overflow check proved
+binary_fixed.adb:49:12: info: initialization of "Two" proved
 binary_fixed.adb:49:16: info: overflow check proved
 binary_fixed.adb:49:16: info: range check proved
 binary_fixed.adb:50:07: info: assertion proved
+binary_fixed.adb:50:22: info: initialization of "Z" proved
 binary_fixed.adb:50:28: info: overflow check proved
 binary_fixed.adb:53:14: info: overflow check proved
 binary_fixed.adb:53:14: info: range check proved
 binary_fixed.adb:54:07: info: assertion proved
+binary_fixed.adb:54:22: info: initialization of "Z" proved
 binary_fixed.adb:54:28: info: overflow check proved
 binary_fixed.adb:64:17: info: division check proved
 binary_fixed.adb:64:17: info: overflow check proved
 binary_fixed.adb:64:17: info: range check proved
 binary_fixed.adb:65:10: info: assertion proved
+binary_fixed.adb:65:25: info: initialization of "Z" proved
 binary_fixed.adb:67:14: info: division check proved
 binary_fixed.adb:67:14: info: overflow check proved
 binary_fixed.adb:67:14: info: range check proved
 binary_fixed.adb:68:07: info: assertion proved
+binary_fixed.adb:68:22: info: initialization of "Z" proved
 binary_fixed.adb:68:32: info: overflow check proved
 binary_fixed.adb:69:14: info: division check proved
 binary_fixed.adb:69:14: info: overflow check proved
@@ -52,14 +69,17 @@ binary_fixed.adb:70:07: info: assertion proved
 binary_fixed.adb:70:29: info: overflow check proved
 binary_fixed.adb:70:33: info: overflow check proved
 binary_fixed.adb:70:48: info: overflow check proved
+binary_fixed.adb:70:50: info: initialization of "Z" proved
 binary_fixed.adb:70:52: info: overflow check proved
 binary_fixed.adb:71:14: info: division check proved
 binary_fixed.adb:71:14: info: overflow check proved
 binary_fixed.adb:71:14: info: range check proved
+binary_fixed.adb:71:16: info: initialization of "Two" proved
 binary_fixed.adb:72:07: info: assertion proved
 binary_fixed.adb:72:29: info: overflow check proved
 binary_fixed.adb:72:33: info: overflow check proved
 binary_fixed.adb:72:48: info: overflow check proved
+binary_fixed.adb:72:50: info: initialization of "Z" proved
 binary_fixed.adb:72:52: info: overflow check proved
 binary_fixed.adb:90:22: info: range check proved
 binary_fixed.adb:93:16: info: range check proved
@@ -70,8 +90,11 @@ binary_fixed.adb:94:27: info: range check proved
 binary_fixed.adb:95:22: info: overflow check proved
 binary_fixed.adb:95:26: info: overflow check proved
 binary_fixed.adb:95:26: info: range check proved
+binary_fixed.adb:97:17: info: initialization of "Y1" proved
 binary_fixed.adb:97:17: info: range check proved
+binary_fixed.adb:98:17: info: initialization of "Y2" proved
 binary_fixed.adb:98:17: info: range check proved
+binary_fixed.adb:99:17: info: initialization of "Y3" proved
 binary_fixed.adb:99:17: info: range check proved
 binary_fixed.adb:102:16: medium: range check might fail
 binary_fixed.adb:103:16: medium: range check might fail
@@ -79,7 +102,10 @@ binary_fixed.adb:103:25: info: overflow check proved
 binary_fixed.adb:104:23: info: overflow check proved
 binary_fixed.adb:104:27: info: overflow check proved
 binary_fixed.adb:104:27: medium: range check might fail
+binary_fixed.adb:106:17: info: initialization of "Z1" proved
 binary_fixed.adb:106:17: medium: range check might fail
+binary_fixed.adb:107:17: info: initialization of "Z2" proved
+binary_fixed.adb:108:17: info: initialization of "Z3" proved
 binary_fixed.adb:115:10: info: assertion proved
 binary_fixed.adb:116:10: info: assertion proved
 binary_fixed.adb:116:27: info: overflow check proved
@@ -100,49 +126,66 @@ binary_fixed.ads:23:14: warning: subprogram "Test_Compare" has no effect
 decimal_fixed.adb:7:12: info: overflow check proved
 decimal_fixed.adb:7:12: info: range check proved
 decimal_fixed.adb:8:07: info: assertion proved
+decimal_fixed.adb:8:78: info: initialization of "Z" proved
 decimal_fixed.adb:10:07: info: assertion proved
+decimal_fixed.adb:10:22: info: initialization of "Z" proved
 decimal_fixed.adb:17:14: info: overflow check proved
 decimal_fixed.adb:17:14: info: range check proved
 decimal_fixed.adb:18:07: info: assertion proved
+decimal_fixed.adb:18:74: info: initialization of "Z" proved
 decimal_fixed.adb:19:14: info: overflow check proved
 decimal_fixed.adb:19:14: info: range check proved
 decimal_fixed.adb:20:07: info: assertion proved
+decimal_fixed.adb:20:22: info: initialization of "Z" proved
 decimal_fixed.adb:22:07: info: assertion proved
+decimal_fixed.adb:22:22: info: initialization of "Z" proved
 decimal_fixed.adb:30:14: info: overflow check proved
 decimal_fixed.adb:30:14: info: range check proved
 decimal_fixed.adb:31:07: info: assertion proved
+decimal_fixed.adb:31:22: info: initialization of "Z" proved
 decimal_fixed.adb:32:14: info: overflow check proved
 decimal_fixed.adb:32:14: info: range check proved
 decimal_fixed.adb:33:07: info: assertion proved
+decimal_fixed.adb:33:22: info: initialization of "Z" proved
 decimal_fixed.adb:35:07: info: assertion proved
+decimal_fixed.adb:35:22: info: initialization of "Z" proved
 decimal_fixed.adb:43:14: info: overflow check proved
 decimal_fixed.adb:43:14: info: range check proved
 decimal_fixed.adb:44:07: info: assertion proved
+decimal_fixed.adb:44:22: info: initialization of "Z" proved
 decimal_fixed.adb:44:28: info: overflow check proved
 decimal_fixed.adb:45:14: info: overflow check proved
 decimal_fixed.adb:45:14: info: range check proved
 decimal_fixed.adb:46:07: info: assertion proved
+decimal_fixed.adb:46:22: info: initialization of "Z" proved
 decimal_fixed.adb:46:28: info: overflow check proved
 decimal_fixed.adb:47:14: info: overflow check proved
 decimal_fixed.adb:47:14: info: range check proved
+decimal_fixed.adb:47:16: info: initialization of "Two" proved
 decimal_fixed.adb:48:07: info: assertion proved
+decimal_fixed.adb:48:22: info: initialization of "Z" proved
 decimal_fixed.adb:48:28: info: overflow check proved
+decimal_fixed.adb:49:12: info: initialization of "Two" proved
 decimal_fixed.adb:49:16: info: overflow check proved
 decimal_fixed.adb:49:16: info: range check proved
 decimal_fixed.adb:50:07: info: assertion proved
+decimal_fixed.adb:50:22: info: initialization of "Z" proved
 decimal_fixed.adb:50:28: info: overflow check proved
 decimal_fixed.adb:53:14: info: overflow check proved
 decimal_fixed.adb:53:14: info: range check proved
 decimal_fixed.adb:54:07: info: assertion proved
+decimal_fixed.adb:54:22: info: initialization of "Z" proved
 decimal_fixed.adb:54:28: info: overflow check proved
 decimal_fixed.adb:64:17: info: division check proved
 decimal_fixed.adb:64:17: info: overflow check proved
 decimal_fixed.adb:64:17: info: range check proved
 decimal_fixed.adb:65:10: info: assertion proved
+decimal_fixed.adb:65:25: info: initialization of "Z" proved
 decimal_fixed.adb:67:14: info: division check proved
 decimal_fixed.adb:67:14: info: overflow check proved
 decimal_fixed.adb:67:14: info: range check proved
 decimal_fixed.adb:68:07: info: assertion proved
+decimal_fixed.adb:68:22: info: initialization of "Z" proved
 decimal_fixed.adb:68:32: info: overflow check proved
 decimal_fixed.adb:69:14: info: division check proved
 decimal_fixed.adb:69:14: info: overflow check proved
@@ -151,14 +194,17 @@ decimal_fixed.adb:70:07: info: assertion proved
 decimal_fixed.adb:70:29: info: overflow check proved
 decimal_fixed.adb:70:33: info: overflow check proved
 decimal_fixed.adb:70:48: info: overflow check proved
+decimal_fixed.adb:70:50: info: initialization of "Z" proved
 decimal_fixed.adb:70:52: info: overflow check proved
 decimal_fixed.adb:71:14: info: division check proved
 decimal_fixed.adb:71:14: info: overflow check proved
 decimal_fixed.adb:71:14: info: range check proved
+decimal_fixed.adb:71:16: info: initialization of "Two" proved
 decimal_fixed.adb:72:07: info: assertion proved
 decimal_fixed.adb:72:29: info: overflow check proved
 decimal_fixed.adb:72:33: info: overflow check proved
 decimal_fixed.adb:72:48: info: overflow check proved
+decimal_fixed.adb:72:50: info: initialization of "Z" proved
 decimal_fixed.adb:72:52: info: overflow check proved
 decimal_fixed.adb:90:22: info: range check proved
 decimal_fixed.adb:93:16: info: range check proved
@@ -169,8 +215,11 @@ decimal_fixed.adb:94:27: info: range check proved
 decimal_fixed.adb:95:22: info: overflow check proved
 decimal_fixed.adb:95:26: info: overflow check proved
 decimal_fixed.adb:95:26: info: range check proved
+decimal_fixed.adb:97:17: info: initialization of "Y1" proved
 decimal_fixed.adb:97:17: info: range check proved
+decimal_fixed.adb:98:17: info: initialization of "Y2" proved
 decimal_fixed.adb:98:17: info: range check proved
+decimal_fixed.adb:99:17: info: initialization of "Y3" proved
 decimal_fixed.adb:99:17: info: range check proved
 decimal_fixed.adb:102:16: medium: range check might fail
 decimal_fixed.adb:103:16: medium: range check might fail
@@ -178,7 +227,10 @@ decimal_fixed.adb:103:25: info: overflow check proved
 decimal_fixed.adb:104:23: info: overflow check proved
 decimal_fixed.adb:104:27: info: overflow check proved
 decimal_fixed.adb:104:27: medium: range check might fail
+decimal_fixed.adb:106:17: info: initialization of "Z1" proved
 decimal_fixed.adb:106:17: medium: range check might fail
+decimal_fixed.adb:107:17: info: initialization of "Z2" proved
+decimal_fixed.adb:108:17: info: initialization of "Z3" proved
 decimal_fixed.adb:115:10: info: assertion proved
 decimal_fixed.adb:116:10: info: assertion proved
 decimal_fixed.adb:116:27: info: overflow check proved

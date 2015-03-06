@@ -1,14 +1,27 @@
 test.adb:7:04: warning: analyzing unreferenced function "Uninitialized_1"
+test.adb:7:13: info: initialization of "Uninitialized_1" proved
 test.adb:16:14: medium: "Y" might not be initialized
+test.adb:16:18: info: initialization of "X" proved
+test.adb:23:13: info: initialization of "Uninitialized_2" proved
 test.adb:38:04: warning: analyzing unreferenced procedure "Uninitialized_3"
 test.adb:38:51: medium: "C" might not be initialized in "Uninitialized_3"
 test.adb:56:04: warning: analyzing unreferenced procedure "Uninitialized_4"
 test.adb:56:31: medium: "Export" might not be initialized in "Uninitialized_4"
+test.adb:62:18: info: initialization of "A" proved
+test.adb:64:22: info: initialization of "B" proved
+test.adb:64:26: info: initialization of "A" proved
+test.adb:65:35: info: initialization of "B" proved
+test.adb:65:40: info: initialization of "A" proved
+test.adb:66:24: info: initialization of "B" proved
+test.adb:67:29: info: initialization of "B" proved
 test.adb:76:04: warning: analyzing unreferenced procedure "Uninitialized_5"
 test.adb:76:31: medium: "A" might not be initialized in "Uninitialized_5"
 test.adb:79:21: high: "C" is not initialized
+test.adb:79:21: info: initialization of "R8b" proved
 test.adb:80:15: high: "A" is not initialized
 test.adb:88:04: warning: analyzing unreferenced procedure "Ineffective_Statements_1"
+test.adb:90:30: info: initialization of "R11b" proved
+test.adb:90:35: info: initialization of "R12b" proved
 test.adb:92:12: warning: unused assignment
 test.adb:101:04: warning: analyzing unreferenced procedure "Ineffective_Statements_2"
 test.adb:101:40: warning: unused initial value of "A"
@@ -16,13 +29,23 @@ test.adb:101:43: warning: unused initial value of "B"
 test.adb:103:07: warning: statement has no effect
 test.adb:104:12: warning: unused assignment
 test.adb:106:12: warning: unused assignment
+test.adb:116:40: info: initialization of "Export" proved
+test.adb:120:36: info: initialization of "Temp" proved
+test.adb:128:37: info: initialization of "Temp" proved
 test.adb:135:07: warning: statement has no effect
 test.adb:135:07: warning: unused assignment to "Temp"
+test.adb:137:17: info: initialization of "Temp" proved
 test.adb:144:14: warning: subprogram "Ineffective_Statements_4" has no effect
+test.adb:147:16: info: initialization of "Factorial" proved
 test.adb:163:14: warning: subprogram "Unused_Variables_1" has no effect
+test.adb:173:25: info: initialization of "Unused" proved, in instantiation at test.adb:176
+test.adb:185:13: info: initialization of "Unused_Variables_2" proved
 test.adb:185:39: warning: unused variable "Par2"
 test.adb:187:13: warning: unused variable "Z"
+test.adb:189:16: info: initialization of "Return_X" proved
 test.adb:190:29: warning: unused global "Y"
+test.adb:199:14: info: initialization of "X" proved
+test.adb:199:14: info: initialization of "Y" proved
 test.adb:208:14: warning: subprogram "Unreachable_Code_1" has no effect
 test.adb:213:12: warning: this statement is never reached
 test.adb:217:15: warning: this statement is never reached

@@ -1,1 +1,2 @@
+renam.ads:4:14: info: initialization of "X" proved
 renam.ads:5:33: medium: postcondition might fail, requires X = X'old

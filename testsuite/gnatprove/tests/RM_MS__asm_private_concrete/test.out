@@ -4,3 +4,4 @@ stack_14.adb:19:15: medium: array index check might fail
 stack_14.adb:20:26: info: range check proved
 stack_14.ads:3:27: warning: no procedure exists that can initialize abstract state "Stack_14.S_State"
 stack_14.ads:3:36: warning: no procedure exists that can initialize abstract state "Stack_14.Pointer_State"
+stack_14.ads:8:18: info: initialization of "X" proved

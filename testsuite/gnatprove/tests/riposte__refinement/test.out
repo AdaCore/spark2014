@@ -1,2 +1,4 @@
+refinement.adb:4:04: info: initialization of "High_Reading" proved
 refinement.adb:12:30: info: refined post proved
+refinement.ads:7:13: info: initialization of "Get_Highest_Reading" proved
 refinement.ads:14:22: info: postcondition proved

@@ -1,2 +1,4 @@
+forall.ads:4:13: info: initialization of "Get_Zero" proved
 forall.ads:6:20: info: postcondition proved
+forall.ads:8:13: info: initialization of "Has_Zero" proved
 forall.ads:10:20: medium: postcondition might fail, requires Has_Zero'Result = 0

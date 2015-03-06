@@ -1,1 +1,6 @@
+initial_condition_legal.adb:4:04: info: initialization of "Flag" proved
 initial_condition_legal.ads:19:08: info: initial condition proved
+initial_condition_legal.ads:19:29: info: initialization of "Var" proved
+initial_condition_legal.ads:19:41: info: initialization of "Flag" proved
+initial_condition_legal.ads:21:04: info: initialization of "Var" proved
+initial_condition_legal.ads:23:13: info: initialization of "F1" proved

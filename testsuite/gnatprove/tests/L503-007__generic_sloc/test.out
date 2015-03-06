@@ -6,6 +6,8 @@ gen2.adb:5:29: medium: assertion might fail, requires T'Last = X, in instantiati
 gen2.adb:5:29: medium: assertion might fail, requires T'Last = X, in instantiation at gen.adb:5, in instantiation at main.adb:6
 gen2.ads:4:14: warning: subprogram "B" has no effect, in instantiation at gen.adb:5, in instantiation at main.adb:5
 gen2.ads:4:14: warning: subprogram "B" has no effect, in instantiation at gen.adb:5, in instantiation at main.adb:6
+main.adb:10:09: info: initialization of "X" proved
+main.adb:11:09: info: initialization of "Y" proved
 gen2.adb:1:14: Generic unit is not analyzed
    compilation of gen2.adb failed
 

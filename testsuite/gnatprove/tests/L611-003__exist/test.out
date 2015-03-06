@@ -1,9 +1,13 @@
 stack.adb:4:30: info: precondition proved
 stack.adb:6:12: info: index check proved
+stack.adb:6:17: info: initialization of "N" proved
 stack.adb:7:12: medium: precondition might fail
 stack.adb:13:10: info: loop invariant initialization proved
 stack.adb:13:10: info: loop invariant preservation proved
 stack.adb:14:30: info: index check proved
+stack.ads:13:13: info: initialization of "Last_Element" proved
+stack.ads:15:13: info: initialization of "Valid" proved
+stack.ads:17:13: info: initialization of "Size" proved
 stack.ads:19:12: info: postcondition proved
 stack.ads:22:38: info: precondition proved
 stack.ads:23:12: info: postcondition proved

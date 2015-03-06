@@ -1,4 +1,10 @@
+other.ads:4:14: info: initialization of "X" proved
+other.ads:4:14: info: initialization of "Y" proved
+other.ads:6:13: info: initialization of "Get_X" proved
+other.ads:8:13: info: initialization of "Get_Y" proved
 test.adb:9:04: warning: analyzing unreferenced procedure "Test_01"
+test.adb:9:14: info: initialization of "other.x" proved
+test.adb:9:14: info: initialization of "other.y" proved
 test.adb:20:12: called subprogram "Initialise" requires GLOBAL aspect to make state "other.x" visible
 test.adb:20:12: called subprogram "Initialise" requires GLOBAL aspect to make state "other.y" visible
 test.adb:28:12: called subprogram "Initialise" requires GLOBAL aspect to make state "other.x" visible
@@ -7,6 +13,7 @@ test.adb:31:14: warning: "Z" is not modified, could be INPUT
 test.adb:31:14: warning: unused global "Z"
 test.adb:38:14: warning: subprogram "Test_03_C" has no effect
 test.adb:46:04: warning: analyzing unreferenced procedure "Test_04"
+test.adb:46:14: info: initialization of "Z" proved
 test.adb:57:17: called subprogram "Get_X" requires GLOBAL aspect to make state "other.x" visible
 test.adb:65:12: called subprogram "Initialise" requires GLOBAL aspect to make state "other.x" visible
 test.adb:65:12: called subprogram "Initialise" requires GLOBAL aspect to make state "other.y" visible

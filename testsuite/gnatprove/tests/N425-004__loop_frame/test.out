@@ -1,2 +1,4 @@
+loopframe.adb:15:14: info: initialization of "V" proved
+loopframe.ads:11:13: info: initialization of "Get" proved
 loopframe.ads:12:39: medium: postcondition might fail, requires A (Get'result)
 loopframe.ads:12:45: info: index check proved

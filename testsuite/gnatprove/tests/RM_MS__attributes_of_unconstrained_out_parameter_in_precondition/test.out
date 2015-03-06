@@ -1,5 +1,7 @@
 p.adb:6:09: info: length check proved
+p.ads:8:20: info: initialization of "X" proved
 p.ads:10:19: info: postcondition proved
 p.ads:11:40: info: index check proved
 p.ads:12:44: info: index check proved
+p.ads:13:28: info: initialization of "X" proved
 p.ads:13:31: info: index check proved

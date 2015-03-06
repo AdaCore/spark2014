@@ -1,4 +1,6 @@
 b.adb:3:11: medium: "A" might not be initialized after elaboration of main program "Main"
 b.adb:7:04: info: assertion proved
+b.adb:7:19: info: initialization of "Tmp" proved
 b.adb:3:11: medium: "A" might not be initialized after elaboration of main program "Main"
+b.adb:7:19: info: initialization of "Tmp" proved
 b.adb:7:19: medium: assertion might fail, requires Tmp = A.a

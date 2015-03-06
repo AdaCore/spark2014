@@ -5,14 +5,17 @@ arrays_multidim.adb:46:22: medium: assertion might fail, requires X (5, 5) = 11
 arrays_multidim.adb:52:22: info: postcondition proved
 arrays_multidim.adb:60:22: info: postcondition proved
 arrays_multidim.adb:68:22: info: postcondition proved
+arrays_multidim.adb:76:13: info: initialization of "Tuple_Test" proved
 arrays_multidim.adb:80:19: info: postcondition proved
 arrays_multidim.adb:94:22: medium: postcondition might fail, requires A(I, J) = V
 arrays_multidim.adb:104:22: medium: postcondition might fail, requires A(I, J) = 17
 arrays_multidim.adb:113:22: medium: postcondition might fail, requires A(I, J) = A(J, I)
 arrays_multidim.adb:124:22: medium: postcondition might fail, requires A(I, J) /= 23
 arrays_multidim.adb:135:22: medium: postcondition might fail, requires A /= A'old
+arrays_multidim.adb:141:18: info: initialization of "Tmp" proved
 arrays_multidim.adb:151:22: medium: postcondition might fail, requires A(I, J, K) = V
 arrays_multidim.adb:162:22: medium: postcondition might fail, requires A(I, J, K) = 17
 arrays_multidim.adb:171:22: medium: postcondition might fail, requires A(I, J, K) = A(J, I, K)
 arrays_multidim.adb:182:22: medium: postcondition might fail, requires A(I, J, K) /= 23
 arrays_multidim.adb:194:22: medium: postcondition might fail, requires A /= A'old
+arrays_multidim.adb:200:21: info: initialization of "Tmp" proved

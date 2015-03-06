@@ -1,2 +1,9 @@
+test_equal.adb:14:13: info: initialization of "Oeq" proved
+test_equal.adb:22:46: info: initialization of "Content_X.Content" proved
+test_equal.adb:23:46: info: initialization of "Content_Y.Content" proved
 test_equal.adb:25:04: info: assertion proved
+test_equal.adb:25:19: info: initialization of "Content_X.Content" proved
+test_equal.adb:25:31: info: initialization of "Content_Y.Content" proved
+test_equal.adb:26:19: info: initialization of "X.Content.Content" proved
 test_equal.adb:26:19: medium: assertion might fail, requires X /= Y
+test_equal.adb:26:24: info: initialization of "Y.Content.Content" proved

@@ -1,2 +1,9 @@
+refined_depends_legal.adb:11:04: info: initialization of "A" proved
+refined_depends_legal.adb:11:07: info: initialization of "B" proved
+refined_depends_legal.adb:11:10: info: initialization of "C" proved
+refined_depends_legal.adb:11:13: info: initialization of "D" proved
+refined_depends_legal.adb:17:42: info: initialization of "C" proved
+refined_depends_legal.adb:17:45: info: initialization of "D" proved
 refined_depends_legal.adb:24:20: medium: overflow check might fail
 refined_depends_legal.adb:25:20: medium: overflow check might fail
+refined_depends_legal.ads:7:18: info: initialization of "Par2" proved

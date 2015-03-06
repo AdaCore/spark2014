@@ -1,22 +1,46 @@
+enums.adb:9:13: info: initialization of "Enum_Equals" proved
 enums.adb:10:19: info: postcondition proved
+enums.adb:16:13: info: initialization of "Enum_Equals_Broken_A" proved
 enums.adb:19:22: medium: postcondition might fail, requires Enum_Equals_Broken_A'Result = (A = B
+enums.adb:23:14: info: initialization of "Tmp" proved
+enums.adb:26:13: info: initialization of "Enum_Equals_Broken_B" proved
 enums.adb:27:19: medium: postcondition might fail, requires Enum_Equals_Broken_B'Result = (A = B
+enums.adb:33:13: info: initialization of "Enum_Equals_Subtype" proved
 enums.adb:36:19: info: postcondition proved
+enums.adb:42:13: info: initialization of "Enum_LT_5" proved
 enums.adb:43:19: info: postcondition proved
+enums.adb:63:14: info: initialization of "R" proved
+enums.adb:66:13: info: initialization of "Enum_LT_5_Broken_A" proved
 enums.adb:67:19: medium: postcondition might fail, requires Enum_LT_5_Broken_A'Result = (A < Elem_5
+enums.adb:85:14: info: initialization of "R" proved
+enums.adb:88:13: info: initialization of "Is_Subenum" proved
 enums.adb:89:19: info: postcondition proved
+enums.adb:102:14: info: initialization of "R" proved
+enums.adb:105:13: info: initialization of "Tick_Pos" proved
 enums.adb:106:19: info: postcondition proved
 enums.adb:106:41: info: range check proved
+enums.adb:138:14: info: initialization of "R" proved
+enums.adb:142:39: info: initialization of "Result" proved
+enums.adb:143:39: info: initialization of "Success" proved
 enums.adb:145:22: info: postcondition proved
+enums.adb:145:26: info: initialization of "Success" proved
+enums.adb:145:39: info: initialization of "Result" proved
 enums.adb:145:66: info: range check proved
 enums.adb:152:33: info: range check proved
 enums.adb:152:39: info: range check proved
+enums.adb:159:13: info: initialization of "Next_A" proved
 enums.adb:160:19: info: postcondition proved
 enums.adb:167:27: info: range check proved
 enums.adb:167:34: info: range check proved
+enums.adb:171:14: info: initialization of "R" proved
+enums.adb:174:13: info: initialization of "Next_B" proved
 enums.adb:175:19: info: postcondition proved
 enums.adb:176:71: info: range check proved
+enums.adb:187:14: info: initialization of "R" proved
+enums.adb:190:13: info: initialization of "Succ_A" proved
 enums.adb:191:19: info: postcondition proved
 enums.adb:191:50: info: range check proved
 enums.adb:194:29: medium: range check might fail
 enums.adb:197:04: warning: analyzing unreferenced function "Subtypes_Broken"
+enums.adb:197:13: info: initialization of "Subtypes_Broken" proved
+enums.adb:206:14: info: initialization of "Tmp.F" proved

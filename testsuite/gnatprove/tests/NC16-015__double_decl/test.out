@@ -6,11 +6,24 @@ controller.adb:9:04: violation of pragma SPARK_Mode at line 1
 controller.adb:9:04: violation of pragma SPARK_Mode at line 1
 tetris.adb:9:21: info: length check proved
 tetris.adb:9:32: info: length check proved
+tetris.adb:41:16: info: initialization of "Xnew" proved
+tetris.adb:42:23: info: initialization of "Xnew" proved
 tetris.adb:42:28: info: range check proved
+tetris.adb:45:16: info: initialization of "Xnew" proved
+tetris.adb:46:23: info: initialization of "Xnew" proved
 tetris.adb:46:28: info: range check proved
+tetris.adb:48:32: info: initialization of "Ynew" proved
 tetris.adb:48:36: info: range check proved
+tetris.adb:52:22: info: initialization of "Xnew" proved
+tetris.adb:53:22: info: initialization of "Ynew" proved
+tetris.ads:45:13: info: initialization of "New_Board" proved
+tetris.ads:47:13: info: initialization of "New_Piece.Kind" proved
+tetris.ads:47:13: info: initialization of "New_Piece.X" proved
+tetris.ads:47:13: info: initialization of "New_Piece.Y" proved
 tetris.ads:53:31: warning: "P" is not modified, could be IN
 tetris.ads:53:31: warning: unused variable "P"
+tetris.ads:59:13: info: initialization of "is_valid_move" proved
+tetris.ads:63:13: info: initialization of "is_empty_cell" proved
    compilation of controller.adb failed
 
 

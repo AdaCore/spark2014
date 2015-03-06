@@ -1,4 +1,7 @@
+main.adb:6:12: info: initialization of "X" proved
 typeinv.adb:6:17: medium: range check might fail
 typeinv.adb:12:14: info: division check proved
+typeinv.ads:5:13: info: initialization of "Is_Valid" proved
+typeinv.ads:7:13: info: initialization of "New_T" proved
 typeinv.ads:12:09: warning: type invariant ignored (not yet supported)
 typeinv.ads:15:10: info: division check proved

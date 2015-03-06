@@ -3,8 +3,13 @@ pricing.adb:18:10: info: loop invariant initialization proved
 pricing.adb:18:10: info: loop invariant preservation proved
 pricing.adb:19:21: info: range check proved
 pricing.adb:19:56: info: overflow check proved
+pricing.adb:20:16: info: initialization of "Total" proved
 pricing.adb:20:44: info: index check proved
+pricing.adb:21:28: info: initialization of "Total" proved
+pricing.adb:23:14: info: initialization of "Total" proved
+pricing.ads:19:13: info: initialization of "Price_Of_Item" proved
 pricing.ads:20:14: info: postcondition proved
+pricing.ads:27:13: info: initialization of "Price_Of_Basket" proved
 pricing.ads:28:14: info: postcondition proved
 pricing.ads:28:23: info: range check proved
 pricing.ads:29:62: info: index check proved
@@ -12,10 +17,12 @@ sat.adb:14:12: info: range check proved
 sat.adb:19:12: info: overflow check proved
 sat.adb:20:12: info: overflow check proved
 sat.adb:20:12: info: range check proved
+sat.ads:14:13: info: initialization of "Add" proved
 sat.ads:15:06: info: complete contract cases proved
 sat.ads:15:06: info: disjoint contract cases proved
 sat.ads:15:41: info: contract case proved
 sat.ads:16:41: info: contract case proved
+sat.ads:18:13: info: initialization of "Mult" proved
 sat.ads:19:06: info: complete contract cases proved
 sat.ads:19:06: info: disjoint contract cases proved
 sat.ads:19:27: info: overflow check proved

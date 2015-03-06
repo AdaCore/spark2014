@@ -1,16 +1,27 @@
+queue.adb:6:07: info: initialization of private part of "R" proved
 queue.adb:6:19: info: precondition proved
 queue.adb:8:07: info: precondition proved
+queue.adb:8:20: info: initialization of private part of "R" proved
+queue.adb:9:14: info: initialization of private part of "R" proved
+queue.adb:13:07: info: initialization of private part of "R" proved
 queue.adb:13:19: info: precondition proved
 queue.adb:15:07: info: precondition proved
+queue.adb:15:16: info: initialization of private part of "R" proved
+queue.adb:16:14: info: initialization of private part of "R" proved
 queue.adb:21:14: info: precondition proved
+queue.ads:19:13: info: initialization of "Eq" proved
+queue.ads:22:12: info: initialization of "Oeq" proved
+queue.ads:26:13: info: initialization of "Front" proved
 queue.ads:27:19: info: precondition proved
 queue.ads:28:19: info: postcondition proved
 queue.ads:28:19: info: precondition proved
+queue.ads:30:13: info: initialization of private part of "Tail" proved
 queue.ads:31:19: info: precondition proved
 queue.ads:32:19: info: postcondition proved
 queue.ads:32:19: info: precondition proved
 queue.ads:32:46: info: precondition proved
 queue.ads:32:68: info: precondition proved
+queue.ads:34:13: info: initialization of private part of "Enqueue" proved
 queue.ads:35:19: info: precondition proved
 queue.ads:36:19: info: postcondition proved
 queue.ads:36:19: info: precondition proved

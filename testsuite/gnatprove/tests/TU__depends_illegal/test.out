@@ -38,7 +38,9 @@ depends_illegal_3.adb:13:33: warning: unused initial value of "X"
 depends_illegal_3.adb:15:11: medium: missing dependency "null => X"
 depends_illegal_3.adb:15:24: medium: incorrect dependency "X => X"
 depends_illegal_3.adb:15:38: medium: incorrect dependency "Par1 => Par2"
+depends_illegal_3.adb:23:18: info: initialization of "Par1" proved
 depends_illegal_3.adb:23:24: high: "Par2" is not initialized in "P2"
+depends_illegal_3.adb:29:33: info: initialization of "X" proved
 depends_illegal_3.adb:33:15: high: "Par2" is not initialized
 depends_illegal_3.adb:34:15: high: "Par2" is not initialized
 depends_illegal_3.adb:38:14: medium: missing dependency "Par2 => Par2"
@@ -52,6 +54,8 @@ depends_illegal_3.adb:43:33: warning: unused global "Y"
 depends_illegal_3.adb:44:11: medium: incorrect dependency "null => Par2"
 depends_illegal_3.adb:44:11: medium: incorrect dependency "null => Y"
 depends_illegal_3.adb:60:07: "X" must be listed in the Depends aspect of "P4" (SPARK RM 6.1.4(13))
+depends_illegal_3.adb:65:18: info: initialization of "P2" proved
+depends_illegal_3.adb:73:33: info: initialization of "G_Var2" proved
 depends_illegal_3.adb:75:23: medium: missing dependency "P2 => G_Var1"
 depends_illegal_3.adb:75:23: medium: missing dependency "P2 => G_Var3"
 depends_illegal_3.adb:75:23: medium: missing dependency "P2 => P3"
@@ -64,6 +68,7 @@ depends_illegal_3.adb:77:23: medium: missing dependency "G_Var2 => P3"
 depends_illegal_3.adb:78:23: medium: missing dependency "G_Var3 => G_Var1"
 depends_illegal_3.adb:78:23: medium: missing dependency "G_Var3 => P1"
 depends_illegal_3.adb:78:23: medium: missing dependency "G_Var3 => P3"
+depends_illegal_3.adb:93:13: info: initialization of "F1" proved
 depends_illegal_3.adb:98:11: medium: incorrect dependency "null => Par1"
 depends_illegal_3.adb:98:25: medium: missing dependency "F1'Result => Par1"
    compilation of depends_illegal_3.adb failed
@@ -71,6 +76,7 @@ depends_illegal_3.adb:98:25: medium: missing dependency "F1'Result => Par1"
 
 gnatprove: error during flow analysis and proof
 depends_illegal_4.adb:7:14: warning: "Y" is not modified, could be INPUT
+depends_illegal_4.adb:8:18: info: initialization of "Par2" proved
 depends_illegal_4.adb:15:23: medium: missing dependency "Par2 => Y"
 depends_illegal_4.adb:16:41: medium: incorrect dependency "Par3 => Y"
 depends_illegal_4.adb:17:23: medium: missing dependency "Y => Y"

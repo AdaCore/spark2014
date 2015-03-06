@@ -1,20 +1,45 @@
 kmp.adb:6:29: info: length check proved
 kmp.adb:11:23: info: overflow check proved
+kmp.adb:12:16: info: initialization of "I" proved
 kmp.adb:12:39: info: overflow check proved
 kmp.adb:13:13: info: loop invariant initialization proved
 kmp.adb:13:13: medium: loop invariant might fail after first iteration
+kmp.adb:14:17: info: initialization of "J" proved
+kmp.adb:14:34: info: initialization of "I" proved
 kmp.adb:16:17: medium: loop invariant might fail after first iteration, requires P (I - J .. J) = P (0..R12b)
 kmp.adb:16:17: medium: loop invariant might fail in first iteration, requires P (I - J .. J) = P (0..R12b)
 kmp.adb:16:17: medium: range check might fail
+kmp.adb:16:20: info: initialization of "I" proved
+kmp.adb:16:22: info: initialization of "R8b" proved
 kmp.adb:16:22: medium: overflow check might fail
+kmp.adb:16:24: info: initialization of "J" proved
+kmp.adb:16:29: info: initialization of "J" proved
+kmp.adb:16:29: info: initialization of "R9b" proved
 kmp.adb:16:34: medium: range check might fail
+kmp.adb:16:42: info: initialization of "J" proved
+kmp.adb:16:44: info: initialization of "R12b" proved
 kmp.adb:16:44: medium: overflow check might fail
+kmp.adb:17:19: info: initialization of "I" proved
 kmp.adb:17:19: medium: array index check might fail
 kmp.adb:17:27: info: index check proved
+kmp.adb:17:27: info: initialization of "J" proved
+kmp.adb:18:21: info: initialization of "I" proved
 kmp.adb:18:23: info: overflow check proved
+kmp.adb:19:21: info: initialization of "J" proved
 kmp.adb:19:23: medium: overflow check might fail
 kmp.adb:20:22: info: index check proved
+kmp.adb:20:25: info: initialization of "I" proved
+kmp.adb:20:25: info: initialization of "Next" proved
+kmp.adb:20:28: info: initialization of "J" proved
+kmp.adb:21:19: info: initialization of "J" proved
+kmp.adb:22:21: info: initialization of "I" proved
 kmp.adb:22:23: info: overflow check proved
 kmp.adb:23:22: info: index check proved
+kmp.adb:23:25: info: initialization of "I" proved
+kmp.adb:23:25: info: initialization of "Next" proved
+kmp.adb:25:21: info: initialization of "Next" proved
 kmp.adb:25:27: info: index check proved
+kmp.adb:25:27: info: initialization of "J" proved
+kmp.adb:29:14: info: initialization of "Next" proved
+kmp.ads:7:13: info: initialization of "Init_Next" proved
 kmp.ads:9:17: info: postcondition proved

@@ -1,1 +1,7 @@
+test.adb:12:15: info: initialization of "Temp" proved, in instantiation at test.adb:15
+test.adb:12:15: info: initialization of "Temp" proved, in instantiation at test.adb:16
 test.adb:18:04: warning: analyzing unreferenced procedure "Call_Both"
+test.adb:61:41: info: initialization of "Temp" proved
+test.adb:111:44: info: initialization of "Has_Apple" proved
+test.adb:170:13: info: initialization of "Found_None" proved
+test.adb:172:13: info: initialization of "Fruits_To_Fruits_And_Weapons" proved

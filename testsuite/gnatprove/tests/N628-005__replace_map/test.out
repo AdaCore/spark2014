@@ -12,6 +12,10 @@ replacement.adb:10:65: medium: assertion might fail, requires A (Element (D, C))
 replacement.adb:10:68: info: precondition proved
 replacement.adb:10:68: medium: array index check might fail
 replacement.adb:10:86: info: precondition proved
+replacement.ads:9:13: info: initialization of "Lt_Integer" proved
+replacement.ads:10:13: info: initialization of "Eq_Integer" proved
+replacement.ads:11:12: info: initialization of "Oeq" proved
+replacement.ads:11:12: info: initialization of "Olt" proved
 replacement.ads:20:13: info: precondition proved
 replacement.ads:21:14: info: precondition proved
 replacement.ads:21:35: info: precondition proved

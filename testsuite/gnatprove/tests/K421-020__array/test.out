@@ -4,3 +4,4 @@ p.adb:15:16: medium: range check might fail
 p.adb:17:13: medium: "Tmp3" might not be initialized
 p.adb:18:13: medium: "Tmp4" might not be initialized
 p.adb:19:13: medium: "Tmp5" might not be initialized
+p.adb:22:16: info: initialization of "Tmp1" proved

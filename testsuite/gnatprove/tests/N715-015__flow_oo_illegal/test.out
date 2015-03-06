@@ -1,24 +1,87 @@
+illegal_1.adb:11:14: info: initialization of "E.X" proved
+illegal_1.adb:11:14: info: initialization of "E.Y" proved
+illegal_1.adb:20:14: info: initialization of "E.X" proved
+illegal_1.adb:20:14: info: initialization of "E.Y" proved
+illegal_1.adb:31:14: info: initialization of "E.X" proved
+illegal_1.adb:31:14: info: initialization of "E.Y" proved
+illegal_1.adb:41:14: info: initialization of "E.Object_Y.X" proved
+illegal_1.adb:41:14: info: initialization of "E.Object_Y.Y" proved
+illegal_1.adb:41:14: info: initialization of private part of "E" proved
+illegal_1.adb:51:14: info: initialization of "E.Object_Y.X" proved
+illegal_1.adb:51:14: info: initialization of "E.Object_Y.Y" proved
+illegal_1.adb:51:14: info: initialization of private part of "E" proved
+illegal_1.adb:63:14: info: initialization of "E.Object_Y.X" proved
+illegal_1.adb:63:14: info: initialization of "E.Object_Y.Y" proved
+illegal_1.adb:63:14: info: initialization of private part of "E" proved
 illegal_1.ads:13:13: class-wide proof_in "G" must also be a class-wide (proof) input of overridden subprogram "New_Object" at root.ads:14 (SPARK RM 6.1.6)
+illegal_1.ads:13:13: info: initialization of "New_Object.X" proved
+illegal_1.ads:13:13: info: initialization of "New_Object.Y" proved
+illegal_1.ads:16:13: info: initialization of "New_Object__2.X" proved
+illegal_1.ads:16:13: info: initialization of "New_Object__2.Y" proved
 illegal_1.ads:19:13: class-wide input "G" must also be a class-wide input of overridden subprogram "New_Object_From_State" at root.ads:18 (SPARK RM 6.1.6)
+illegal_1.ads:19:13: info: initialization of "New_Object_From_State.X" proved
+illegal_1.ads:19:13: info: initialization of "New_Object_From_State.Y" proved
+illegal_1.ads:22:13: info: initialization of "New_P_Object.Object_Y.X" proved
+illegal_1.ads:22:13: info: initialization of "New_P_Object.Object_Y.Y" proved
+illegal_1.ads:22:13: info: initialization of private part of "New_P_Object" proved
+illegal_1.ads:25:13: info: initialization of "New_P_Object__2.Object_Y.X" proved
+illegal_1.ads:25:13: info: initialization of "New_P_Object__2.Object_Y.Y" proved
+illegal_1.ads:25:13: info: initialization of private part of "New_P_Object__2" proved
 illegal_1.ads:28:13: class-wide input "G" must also be a class-wide input of overridden subprogram "New_P_Object_From_State" at root.ads:25 (SPARK RM 6.1.6)
+illegal_1.ads:28:13: info: initialization of "New_P_Object_From_State.Object_Y.X" proved
+illegal_1.ads:28:13: info: initialization of "New_P_Object_From_State.Object_Y.Y" proved
+illegal_1.ads:28:13: info: initialization of private part of "New_P_Object_From_State" proved
 illegal_1.ads:31:14: class-wide in_out "G" must also be a class-wide input of overridden subprogram "New_Object_And_Update_Global_Outputs" at root.ads:28 (SPARK RM 6.1.6)
 illegal_1.ads:31:14: class-wide in_out "G" must also be a class-wide output of overridden subprogram "New_Object_And_Update_Global_Outputs" at root.ads:28 (SPARK RM 6.1.6)
+illegal_1.ads:31:52: info: initialization of "O.X" proved
+illegal_1.ads:31:52: info: initialization of "O.Y" proved
 illegal_1.ads:34:14: class-wide output "G" must also be a class-wide output of overridden subprogram "Update_Global_Based_On_Object" at root.ads:31 (SPARK RM 6.1.6)
+illegal_1.ads:34:14: info: initialization of "G" proved
    compilation of illegal_1.adb failed
 
 
 gnatprove: error during flow analysis and proof
+root.adb:4:04: info: initialization of "Counter" proved
 root.adb:11:29: info: overflow check proved
+root.adb:43:40: info: initialization of "Counter" proved
+root.ads:14:13: info: initialization of "New_Object.X" proved
+root.ads:16:13: info: initialization of "New_Object__2.X" proved
+root.ads:18:13: info: initialization of "New_Object_From_State.X" proved
+root.ads:21:13: info: initialization of "New_P_Object.Object_X.X" proved
+root.ads:23:13: info: initialization of "New_P_Object__2.Object_X.X" proved
+root.ads:25:13: info: initialization of "New_P_Object_From_State.Object_X.X" proved
+root.ads:28:52: info: initialization of "O.X" proved
+root.ads:41:28: info: initialization of "Default_Object.X" proved
+simple_illegal_with_contracts.adb:50:13: info: initialization of "IO" proved
+simple_illegal_with_contracts.ads:19:34: info: initialization of "O" proved
 simple_illegal_with_contracts.ads:25:14: class-wide input "PI" must also be a class-wide input of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
+simple_illegal_with_contracts.ads:28:32: info: initialization of "O" proved
 simple_illegal_with_contracts.ads:34:14: class-wide in_out "I" must also be a class-wide output of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
+simple_illegal_with_contracts.ads:37:34: info: initialization of "O" proved
 simple_illegal_with_contracts.ads:43:14: class-wide output "I" must also be a class-wide output of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
+simple_illegal_with_contracts.ads:45:35: info: initialization of "I" proved
+simple_illegal_with_contracts.ads:45:38: info: initialization of "IO" proved
+simple_illegal_with_contracts.ads:45:42: info: initialization of "O" proved
+simple_illegal_with_contracts.ads:54:35: info: initialization of "IO" proved
+simple_illegal_with_contracts.ads:54:39: info: initialization of "O" proved
+simple_illegal_with_contracts.ads:62:34: info: initialization of "O" proved
    compilation of simple_illegal_with_contracts.adb failed
 
 
 gnatprove: error during flow analysis and proof
+simple_illegal_without_contracts.adb:50:13: info: initialization of "IO" proved
+simple_illegal_without_contracts.ads:15:14: info: initialization of "O" proved
 simple_illegal_without_contracts.ads:21:14: class-wide input "PI" must also be a class-wide input of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
+simple_illegal_without_contracts.ads:21:14: info: initialization of "O" proved
 simple_illegal_without_contracts.ads:27:14: class-wide in_out "I" must also be a class-wide output of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
+simple_illegal_without_contracts.ads:27:14: info: initialization of "O" proved
 simple_illegal_without_contracts.ads:33:14: class-wide output "I" must also be a class-wide output of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
+simple_illegal_without_contracts.ads:33:14: info: initialization of "I" proved
+simple_illegal_without_contracts.ads:33:14: info: initialization of "IO" proved
+simple_illegal_without_contracts.ads:33:14: info: initialization of "O" proved
+simple_illegal_without_contracts.ads:39:14: info: initialization of "IO" proved
+simple_illegal_without_contracts.ads:39:14: info: initialization of "O" proved
+simple_illegal_without_contracts.ads:45:14: info: initialization of "O" proved
    compilation of simple_illegal_without_contracts.adb failed
 
 

@@ -1,0 +1,2 @@
+pa.adb:6:14: info: initialization of "V.X" proved
+pa.ads:5:13: info: initialization of "F.X" proved

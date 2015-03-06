@@ -1,3 +1,4 @@
 p.adb:4:14: medium: overflow check might fail
 p.ads:3:14: info: postcondition proved
+p.ads:5:13: info: initialization of "Add_One" proved
 p.ads:5:56: medium: overflow check might fail

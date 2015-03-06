@@ -1,4 +1,8 @@
+cursor_location.adb:12:56: info: initialization of "Other_Side" proved
+cursor_location.adb:15:13: info: initialization of "None_Available" proved
 cursor_location.adb:16:07: medium: assertion might fail
 cursor_location.adb:17:11: info: postcondition proved
+cursor_location.ads:8:13: info: initialization of "Change_Side" proved
+cursor_location.ads:13:13: info: initialization of "Fulfill_Condition" proved
 cursor_location.ads:18:09: medium: postcondition might fail
 cursor_location.ads:27:09: info: postcondition proved

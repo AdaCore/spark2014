@@ -22,3 +22,4 @@ counters.adb:31:14: info: discriminant check proved
 counters.adb:31:21: info: discriminant check proved
 counters.adb:31:24: medium: overflow check might fail
 counters.adb:42:15: info: discriminant check proved
+counters.ads:14:13: info: initialization of "Value" proved

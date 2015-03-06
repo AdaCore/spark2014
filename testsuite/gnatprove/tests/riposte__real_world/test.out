@@ -1,9 +1,14 @@
+real_world.adb:10:13: info: initialization of "Example_A" proved
 real_world.adb:11:19: info: postcondition proved
+real_world.adb:36:14: info: initialization of "R" proved
+real_world.adb:40:13: info: initialization of "Simplifier_Problems" proved
 real_world.adb:44:07: info: assertion proved
 real_world.adb:45:21: info: range check proved
+real_world.adb:48:13: info: initialization of "K616_030_A" proved
 real_world.adb:56:24: medium: overflow check might fail
 real_world.adb:56:51: medium: overflow check might fail
 real_world.adb:57:22: info: postcondition proved
+real_world.adb:63:13: info: initialization of "K616_030_B" proved
 real_world.adb:71:21: medium: overflow check might fail
 real_world.adb:71:48: medium: overflow check might fail
 real_world.adb:72:19: info: postcondition proved

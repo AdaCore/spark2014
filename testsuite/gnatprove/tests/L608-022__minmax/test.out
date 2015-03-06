@@ -1,29 +1,57 @@
+minmax.adb:22:28: info: initialization of "Min" proved
+minmax.adb:22:33: info: initialization of "Max" proved
 minmax.adb:29:07: info: assertion proved
+minmax.adb:29:22: info: initialization of "Min" proved
 minmax.adb:30:07: info: assertion proved
+minmax.adb:30:22: info: initialization of "Max" proved
+minmax.adb:34:28: info: initialization of "Min" proved
+minmax.adb:34:33: info: initialization of "Max" proved
 minmax.adb:39:11: warning: unused assignment
 minmax.adb:40:11: warning: unused assignment
 minmax.adb:41:07: info: assertion proved
+minmax.adb:41:22: info: initialization of "Min" proved
 minmax.adb:42:07: info: assertion proved
+minmax.adb:42:22: info: initialization of "Max" proved
 minmax.adb:46:07: info: assertion proved
+minmax.adb:46:22: info: initialization of "Min" proved
 minmax.adb:47:07: info: assertion proved
+minmax.adb:47:22: info: initialization of "Max" proved
+minmax.adb:51:28: info: initialization of "MinT" proved
+minmax.adb:51:34: info: initialization of "MaxT" proved
 minmax.adb:56:12: warning: unused assignment
 minmax.adb:56:16: info: range check proved
 minmax.adb:57:12: warning: unused assignment
 minmax.adb:57:16: info: range check proved
 minmax.adb:58:07: info: assertion proved
+minmax.adb:58:22: info: initialization of "MinT" proved
 minmax.adb:59:07: info: assertion proved
+minmax.adb:59:22: info: initialization of "MaxT" proved
 minmax.adb:64:16: info: range check proved
 minmax.adb:64:27: medium: overflow check might fail
 minmax.adb:65:16: medium: range check might fail
 minmax.adb:65:24: medium: overflow check might fail
 minmax.adb:66:07: info: assertion proved
+minmax.adb:66:22: info: initialization of "MinT" proved
 minmax.adb:67:07: info: assertion proved
+minmax.adb:67:22: info: initialization of "MaxT" proved
 minmax.adb:67:31: info: overflow check proved
+minmax.adb:71:28: info: initialization of "MinE" proved
+minmax.adb:71:34: info: initialization of "MaxE" proved
 minmax.adb:78:07: info: assertion proved
+minmax.adb:78:22: info: initialization of "MinE" proved
 minmax.adb:79:07: info: assertion proved
+minmax.adb:79:22: info: initialization of "MaxE" proved
 minmax.adb:83:04: info: precondition proved
+minmax.adb:83:15: info: initialization of "X" proved
+minmax.adb:83:18: info: initialization of "Y" proved
 minmax.adb:84:04: info: precondition proved
+minmax.adb:84:09: info: initialization of "X" proved
 minmax.adb:84:09: info: range check proved
+minmax.adb:84:12: info: initialization of "Y" proved
 minmax.adb:84:12: info: range check proved
 minmax.adb:85:04: info: precondition proved
+minmax.adb:85:09: info: initialization of "V" proved
+minmax.adb:85:12: info: initialization of "W" proved
 minmax.adb:86:04: info: precondition proved
+minmax.adb:86:09: info: initialization of "AA" proved
+minmax.adb:86:13: info: initialization of "CC" proved

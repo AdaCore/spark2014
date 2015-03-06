@@ -4,7 +4,9 @@ p.adb:18:14: info: length check proved
 p.adb:24:12: info: length check proved
 p.adb:30:12: info: length check proved
 p.adb:36:12: info: length check proved
+p.adb:40:16: info: initialization of "Zero" proved
 p.adb:43:12: info: length check proved
+p.adb:47:16: info: initialization of "Zero" proved
 p.adb:50:12: info: length check proved
 p.ads:2:14: warning: subprogram "Proc" has no effect
 p.ads:3:14: warning: subprogram "Proc2" has no effect

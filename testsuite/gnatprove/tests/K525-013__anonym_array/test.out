@@ -2,6 +2,9 @@ p.adb:1:11: warning: subprogram "P" has no effect
 p.adb:2:04: info: assertion proved
 p.adb:3:36: info: length check proved
 p.adb:5:07: info: index check proved
+p.adb:5:10: info: initialization of "X" proved
 p.adb:6:07: info: index check proved
+p.adb:6:10: info: initialization of "X" proved
 p.adb:7:04: info: assertion proved
+p.adb:7:34: info: initialization of "X" proved
 p.adb:7:37: info: index check proved

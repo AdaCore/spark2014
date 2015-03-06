@@ -1,5 +1,8 @@
+flight_manager.adb:9:16: info: initialization of "My_Abs" proved
 flight_manager.adb:10:07: info: no contextual analysis of "My_Abs" (multiple returns)
 flight_manager.adb:13:20: medium: overflow check might fail
 flight_manager.adb:21:33: medium: overflow check might fail
+flight_manager.adb:22:14: info: initialization of "Max" proved
+flight_manager.ads:5:13: info: initialization of "Set_Engine_Speed" proved
 flight_manager.ads:6:19: warning: unused variable "Position_Y"
 flight_manager.ads:6:51: warning: unused variable "Target_Y"

@@ -2,14 +2,20 @@ record_discr.adb:5:07: info: assertion proved
 record_discr.adb:6:11: info: discriminant check proved
 record_discr.adb:8:14: info: discriminant check proved
 record_discr.adb:10:14: info: discriminant check proved
+record_discr.adb:21:16: info: initialization of "Bad.Content" proved
+record_discr.adb:21:16: info: initialization of private part of "Bad" proved
 record_discr.adb:22:07: warning: analyzing unreferenced function "Bad"
 record_discr.adb:24:17: medium: discriminant check might fail
 record_discr.adb:24:28: medium: discriminant check might fail
 record_discr.adb:29:53: info: range check proved
 record_discr.adb:31:36: info: discriminant check proved
 record_discr.adb:31:44: info: discriminant check proved
+record_discr.adb:31:44: info: initialization of private part of "Result" proved
+record_discr.adb:32:55: info: initialization of "Result1.Content" proved
+record_discr.adb:32:55: info: initialization of private part of "Result1" proved
 record_discr.adb:34:30: info: discriminant check proved
 record_discr.adb:34:43: info: index check proved
+record_discr.adb:35:17: info: initialization of private part of "Result1_Base" proved
 record_discr.adb:38:39: info: range check proved
 record_discr.adb:39:33: info: discriminant check proved
 record_discr.adb:39:33: info: length check proved
@@ -17,6 +23,8 @@ record_discr.adb:39:33: info: range check proved
 record_discr.adb:47:46: info: discriminant check proved
 record_discr.adb:47:56: info: range check proved
 record_discr.adb:47:76: info: length check proved
+record_discr.adb:49:27: info: initialization of "Init.To_Search" proved
+record_discr.ads:13:13: info: initialization of private part of "Search_Upto_3" proved
 record_discr.ads:14:14: info: postcondition proved
 record_discr.ads:15:18: info: precondition proved
 record_discr.ads:16:32: info: discriminant check proved
@@ -24,10 +32,12 @@ record_discr.ads:16:44: info: index check proved
 record_discr.ads:16:44: info: precondition proved
 record_discr.ads:17:52: info: discriminant check proved
 record_discr.ads:17:64: info: index check proved
+record_discr.ads:20:13: info: initialization of private part of "Search" proved
 record_discr.ads:22:14: info: postcondition proved
 record_discr.ads:22:46: info: index check proved
 record_discr.ads:22:46: info: precondition proved
 record_discr.ads:23:50: info: index check proved
+record_discr.ads:25:13: info: initialization of private part of "Search_Upto" proved
 record_discr.ads:26:14: info: postcondition proved
 record_discr.ads:27:18: info: precondition proved
 record_discr.ads:28:32: info: discriminant check proved

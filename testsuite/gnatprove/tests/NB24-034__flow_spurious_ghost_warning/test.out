@@ -9,24 +9,33 @@ sorters.adb:30:29: info: index check proved
 sorters.adb:31:15: info: index check proved
 sorters.adb:31:29: info: index check proved
 sorters.adb:32:15: info: index check proved
+sorters.adb:32:21: info: initialization of "Temp" proved
+sorters.adb:33:28: info: initialization of "Values_Old" proved
+sorters.adb:38:13: info: initialization of "Index_Of_Minimum" proved
 sorters.adb:40:19: info: postcondition proved
 sorters.adb:42:45: info: index check proved
 sorters.adb:42:67: info: index check proved
 sorters.adb:46:22: info: range check proved
 sorters.adb:48:10: info: loop invariant initialization proved
 sorters.adb:48:10: info: loop invariant preservation proved
+sorters.adb:49:13: info: initialization of "Min" proved
 sorters.adb:50:50: info: overflow check proved
 sorters.adb:51:25: info: index check proved
 sorters.adb:51:43: info: index check proved
 sorters.adb:53:42: info: index check proved
+sorters.adb:53:42: info: initialization of "Min" proved
 sorters.adb:54:20: info: range check proved
+sorters.adb:57:14: info: initialization of "Min" proved
 sorters.adb:67:50: info: overflow check proved
 sorters.adb:68:22: info: length check proved
 sorters.adb:68:25: info: length check proved
 sorters.adb:69:22: info: precondition proved
 sorters.adb:69:40: info: range check proved
+sorters.adb:71:13: info: initialization of "Smallest" proved
 sorters.adb:72:13: info: precondition proved
 sorters.adb:73:29: info: range check proved
+sorters.adb:74:29: info: initialization of "Smallest" proved
+sorters.adb:77:61: info: initialization of "Values_Last" proved
 sorters.adb:79:10: info: loop invariant initialization proved
 sorters.adb:79:10: info: loop invariant preservation proved
 sorters.adb:80:10: info: loop invariant initialization proved

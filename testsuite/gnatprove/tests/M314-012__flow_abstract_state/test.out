@@ -1,8 +1,25 @@
+nested_pkg.adb:6:13: info: initialization of "G" proved
+nested_pkg.adb:13:16: info: initialization of "H" proved
+nested_pkg.adb:19:07: info: initialization of "Foo" proved
+nested_pkg.adb:20:07: info: initialization of "Bar" proved
+nested_pkg.adb:26:16: info: initialization of "F" proved
 nested_pkg.adb:28:17: warning: subprogram "Wibble" has no effect
 nested_pkg.adb:43:17: warning: subprogram "Test" has no effect
 nested_pkg.adb:56:14: warning: subprogram "Test" has no effect
 nested_pkg.ads:2:26: warning: no procedure exists that can initialize abstract state "Nested_Pkg.Foobar"
 stack_asm.adb:38:40: high: "The_Stack" is not initialized
 stack_asm.adb:38:40: warning: unused global "The_Stack"
+stack_asm.adb:38:51: info: initialization of "The_Ptr" proved
+stack_asm.adb:45:39: info: initialization of "The_Ptr" proved
+stack_asm.ads:7:12: info: initialization of "Is_Empty" proved
+stack_asm.ads:10:12: info: initialization of "Top" proved
+stack_asm.ads:20:20: info: initialization of "The_Ptr" proved
+stack_asm.ads:24:20: info: initialization of "The_Ptr" proved
+test.adb:7:41: info: initialization of "Stack_ASM.State" proved
+test.adb:13:23: info: initialization of "I" proved
+test.adb:20:23: info: initialization of "I" proved
 test.adb:21:41: high: "Stack_ASM.State" is not initialized
 test.adb:24:21: high: "Stack_ASM.State" is not initialized
+test.adb:27:23: info: initialization of "I" proved
+test.adb:28:41: info: initialization of "Stack_ASM.State" proved
+test.adb:32:21: info: initialization of "Stack_ASM.State" proved

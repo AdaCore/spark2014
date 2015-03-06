@@ -1,1 +1,2 @@
+user_of_types_and_subtypes_legal.ads:6:13: info: initialization of "Same_As_Next" proved
 user_of_types_and_subtypes_legal.ads:8:06: info: postcondition proved

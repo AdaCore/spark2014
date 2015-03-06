@@ -1,0 +1,2 @@
+crash.adb:25:23: info: initialization of "R" proved
+crash.adb:36:23: info: initialization of "B" proved

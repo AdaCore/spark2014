@@ -1,3 +1,5 @@
 p.ads:10:14: medium: postcondition might fail
+p.ads:12:13: info: initialization of "P" proved
 p.ads:15:20: medium: postcondition might fail, requires P'Result = 8
+p.ads:17:13: info: initialization of "Q" proved
 p.ads:20:20: info: postcondition proved

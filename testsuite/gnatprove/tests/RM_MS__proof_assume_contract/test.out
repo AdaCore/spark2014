@@ -1,0 +1,2 @@
+input_port.adb:18:21: info: initialization of "Input_Value" proved
+input_port.ads:5:29: info: initialization of "Input_Value" proved

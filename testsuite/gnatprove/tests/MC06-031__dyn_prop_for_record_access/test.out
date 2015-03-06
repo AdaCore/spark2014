@@ -1,4 +1,6 @@
 dynamic_types.adb:4:15: info: range check proved
+dynamic_types.adb:13:16: info: initialization of "Search_Range.From" proved
+dynamic_types.adb:13:16: info: initialization of "Search_Range.Result" proved
 dynamic_types.adb:18:17: info: postcondition proved
 dynamic_types.adb:20:35: info: index check proved
 dynamic_types.adb:22:49: info: index check proved
@@ -10,11 +12,20 @@ dynamic_types.adb:29:47: info: range check proved
 dynamic_types.adb:33:28: info: range check proved
 dynamic_types.adb:38:10: info: loop invariant initialization proved
 dynamic_types.adb:38:10: info: loop invariant preservation proved
+dynamic_types.adb:39:37: info: initialization of "From" proved
 dynamic_types.adb:39:42: info: overflow check proved
 dynamic_types.adb:39:52: info: index check proved
 dynamic_types.adb:40:17: info: precondition proved
+dynamic_types.adb:40:31: info: initialization of "From" proved
 dynamic_types.adb:40:31: info: range check proved
+dynamic_types.adb:41:20: info: initialization of "Tmp.Result" proved
+dynamic_types.adb:42:18: info: initialization of "Tmp.From" proved
+dynamic_types.adb:43:13: info: initialization of "Result" proved
+dynamic_types.adb:44:20: info: initialization of "Result" proved
+dynamic_types.adb:46:13: info: initialization of "From" proved
+dynamic_types.adb:49:21: info: initialization of "From" proved
 dynamic_types.adb:49:26: info: overflow check proved
 dynamic_types.adb:49:26: info: range check proved
+dynamic_types.ads:4:13: info: initialization of "Search" proved
 dynamic_types.ads:6:14: info: postcondition proved
 dynamic_types.ads:7:58: info: index check proved

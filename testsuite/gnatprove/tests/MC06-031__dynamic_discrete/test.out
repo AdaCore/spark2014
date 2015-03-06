@@ -2,6 +2,7 @@ dynamic_ranges.adb:7:20: info: range check proved
 dynamic_ranges.adb:15:34: info: range check proved
 dynamic_ranges.adb:17:07: info: assertion proved
 dynamic_ranges.adb:18:07: info: assertion proved
+dynamic_ranges.adb:19:29: info: initialization of "A2" proved
 dynamic_ranges.adb:19:29: info: length check proved
 dynamic_ranges.adb:23:15: info: range check proved
 dynamic_ranges.adb:24:15: info: range check proved
@@ -9,11 +10,14 @@ dynamic_ranges.adb:24:49: info: overflow check proved
 dynamic_ranges.adb:25:38: info: overflow check proved
 dynamic_ranges.adb:25:38: info: range check proved
 dynamic_ranges.adb:26:15: info: range check proved
+dynamic_ranges.adb:26:39: info: initialization of "C" proved
+dynamic_ranges.adb:28:16: info: initialization of "Nested" proved
 dynamic_ranges.adb:32:46: info: overflow check proved
 dynamic_ranges.adb:33:17: info: postcondition proved
 dynamic_ranges.adb:34:60: info: index check proved
 dynamic_ranges.adb:35:61: info: index check proved
 dynamic_ranges.adb:41:43: info: index check proved
+dynamic_ranges.adb:43:19: info: initialization of "E" proved
 dynamic_ranges.adb:44:26: info: range check proved
 dynamic_ranges.adb:47:13: info: loop invariant initialization proved
 dynamic_ranges.adb:47:13: info: loop invariant preservation proved
@@ -33,8 +37,13 @@ dynamic_ranges.adb:72:10: info: loop invariant initialization proved
 dynamic_ranges.adb:72:10: info: loop invariant preservation proved
 dynamic_ranges.adb:73:45: info: index check proved
 dynamic_ranges.ads:9:04: info: range check proved
+dynamic_ranges.ads:9:46: info: initialization of "C" proved
+dynamic_ranges.ads:9:46: info: initialization of "R3s" proved
+dynamic_ranges.ads:11:13: info: initialization of "Resize" proved
+dynamic_ranges.ads:14:13: info: initialization of "Search" proved
 dynamic_ranges.ads:15:14: info: postcondition proved
 dynamic_ranges.ads:17:25: info: index check proved
+dynamic_ranges.ads:19:13: info: initialization of "Search_0" proved
 dynamic_ranges.ads:20:47: info: overflow check proved
 dynamic_ranges.ads:21:14: info: postcondition proved
 dynamic_ranges.ads:22:52: info: index check proved

@@ -1,6 +1,13 @@
+sm_using_case_expression.adb:14:40: info: initialization of "State" proved
+sm_using_case_expression.adb:23:40: info: initialization of "State" proved
 sm_using_case_expression.adb:41:07: medium: assertion might fail
 sm_using_case_expression.adb:54:18: medium: assertion might fail, requires My_SM(State2, Trigger) /= Invalid_State or (for some Idx in Invalid_Transition_Array_T'Range => Invalid_Transition_Array(Idx).Initial_State = State2 and Invalid_Transition_Array(Idx).Trigger = Trigger
+sm_using_case_expression.ads:12:13: info: initialization of "Get_State" proved
+sm_using_case_expression.ads:17:17: info: initialization of "State" proved
 sm_using_case_expression.ads:17:17: info: postcondition proved
 sm_using_case_expression.ads:39:63: info: length check proved
 sm_using_case_expression.ads:58:21: info: postcondition proved
+sm_using_case_expression.ads:58:22: info: initialization of "State" proved
+sm_using_case_expression.ads:61:13: info: initialization of "My_SM" proved
 sm_using_case_expression.ads:96:21: info: postcondition proved
+sm_using_case_expression.ads:100:13: info: initialization of "Is_Final_State" proved

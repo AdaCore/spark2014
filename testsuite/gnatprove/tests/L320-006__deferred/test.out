@@ -1,6 +1,11 @@
+p.adb:10:28: info: initialization of "X2.X" proved
+pack.adb:4:13: info: initialization of "Query_X1_Bis" proved
 pack.adb:5:14: info: postcondition proved
+pack.adb:9:13: info: initialization of "Query_X2_Bis" proved
 pack.adb:10:14: info: postcondition proved
+pack.ads:9:13: info: initialization of "Query_X1" proved
 pack.ads:10:14: info: postcondition proved
+pack.ads:12:13: info: initialization of "Query_X2" proved
 pack.ads:13:14: info: postcondition proved
 user.adb:2:11: warning: subprogram "User" has no effect
 user.adb:5:07: info: assertion proved

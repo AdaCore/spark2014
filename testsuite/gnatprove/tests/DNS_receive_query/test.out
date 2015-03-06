@@ -1,15 +1,29 @@
 parse.adb:12:20: info: precondition proved
 parse.adb:17:17: medium: discriminant check might fail
+parse.adb:25:12: info: initialization of "Opcode" proved
 parse.adb:33:17: medium: discriminant check might fail
 parse.adb:42:17: medium: discriminant check might fail
 parse.adb:47:18: info: precondition proved
+parse.adb:48:10: info: initialization of "Qdcount" proved
+parse.adb:50:42: info: initialization of "Qdcount" proved
 parse.adb:50:42: info: range check proved
 parse.adb:52:17: medium: discriminant check might fail
 parse.adb:57:16: info: precondition proved
+parse.adb:58:10: info: initialization of "Count" proved
 parse.adb:59:17: medium: discriminant check might fail
 parse.adb:63:16: info: precondition proved
+parse.adb:64:10: info: initialization of "Count" proved
 parse.adb:65:17: medium: discriminant check might fail
 parse.adb:69:16: info: precondition proved
+parse.adb:70:10: info: initialization of "Count" proved
 parse.adb:71:17: medium: discriminant check might fail
 parse.adb:75:14: medium: discriminant check might fail
+parse.adb:75:47: info: initialization of "Header.ID" proved
+parse.adb:75:47: info: initialization of "Header.OPCODE" proved
+parse.adb:75:47: info: initialization of "Header.QDCOUNT" proved
+parse.ads:16:27: info: initialization of "Result.Header.ID" proved
+parse.ads:16:27: info: initialization of "Result.Header.OPCODE" proved
+parse.ads:16:27: info: initialization of "Result.Header.QDCOUNT" proved
 util.adb:7:36: info: index check proved
+util.ads:5:13: info: initialization of "Extract_Unsigned_16" proved
+util.ads:11:13: info: initialization of "Extract_Bits_Of_Octet" proved

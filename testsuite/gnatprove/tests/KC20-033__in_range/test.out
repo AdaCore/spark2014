@@ -1,3 +1,8 @@
+p.adb:8:13: info: initialization of "Ident" proved
+p.adb:16:13: info: initialization of "Ident__2" proved
+p.adb:24:13: info: initialization of "Ident__3" proved
+p.adb:32:13: info: initialization of "Ident__4" proved
+p.adb:40:13: info: initialization of "Ident__5" proved
 p.adb:48:19: info: precondition proved
 p.adb:49:19: info: precondition proved
 p.adb:50:19: info: precondition proved

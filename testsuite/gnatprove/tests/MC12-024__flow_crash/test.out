@@ -1,3 +1,11 @@
+p.adb:24:07: info: initialization of "Full_S.A" proved
+p.adb:24:07: info: initialization of "Full_S.B" proved
+p.ads:25:34: info: initialization of "Full_S.A" proved
+p.ads:25:34: info: initialization of "Full_S.B" proved
+p.ads:25:42: info: initialization of "Raw_S" proved
+p.ads:27:22: info: initialization of "Full_S.A" proved
+p.ads:27:22: info: initialization of "Full_S.B" proved
+p.ads:28:22: info: initialization of "Raw_S" proved
 p.ads:32:41: warning: unused initial value of "Raw_S"
 p.ads:33:11: medium: missing dependency "null => Raw_S"
 p.ads:33:32: medium: incorrect dependency "Raw_S => Raw_S"

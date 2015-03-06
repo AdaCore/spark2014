@@ -1,6 +1,10 @@
 p.adb:4:15: medium: overflow check might fail
 p.adb:9:15: medium: overflow check might fail
+p.ads:2:13: info: initialization of "F1" proved
 p.ads:3:27: medium: overflow check might fail
+p.ads:5:13: info: initialization of "F2" proved
+p.ads:8:13: info: initialization of "F3" proved
 p.ads:9:27: medium: overflow check might fail
 p.ads:11:54: medium: overflow check might fail
+p.ads:13:13: info: initialization of "F4" proved
 p.ads:16:54: medium: overflow check might fail

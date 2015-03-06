@@ -1,7 +1,15 @@
 array_comparison.adb:8:07: info: assertion proved
+array_comparison.adb:8:22: info: initialization of "X" proved
+array_comparison.adb:8:26: info: initialization of "Y" proved
 array_comparison.adb:9:07: info: assertion proved
+array_comparison.adb:9:22: info: initialization of "X" proved
 array_comparison.adb:9:22: info: range check proved
+array_comparison.adb:9:35: info: initialization of "Z" proved
 array_comparison.adb:9:35: info: range check proved
+array_comparison.adb:10:22: info: initialization of "X" proved
 array_comparison.adb:10:22: medium: assertion might fail, requires X > Z
+array_comparison.adb:10:26: info: initialization of "Z" proved
+array_comparison.adb:11:22: info: initialization of "X" proved
 array_comparison.adb:11:22: medium: assertion might fail, requires X < Z
+array_comparison.adb:11:26: info: initialization of "Z" proved
 array_comparison.ads:5:14: warning: subprogram "P" has no effect

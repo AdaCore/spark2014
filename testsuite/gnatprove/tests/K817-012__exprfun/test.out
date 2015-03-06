@@ -1,3 +1,4 @@
+exprfun.ads:3:13: info: initialization of "Div" proved
 exprfun.ads:3:55: medium: divide by zero might fail
 exprfun.ads:3:55: medium: overflow check might fail
 exprfun.ads:5:14: warning: subprogram "P" has no effect

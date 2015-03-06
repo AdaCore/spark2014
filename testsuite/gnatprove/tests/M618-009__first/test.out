@@ -1,3 +1,8 @@
+pkg_a.adb:5:13: info: initialization of "Do_Something" proved
 pkg_a.adb:5:61: info: overflow check proved
 pkg_a.adb:10:09: medium: precondition might fail
 pkg_a.ads:3:08: medium: initial condition might fail
+pkg_a.ads:3:29: info: initialization of "X" proved
+pkg_a.ads:3:33: info: initialization of "Y" proved
+pkg_a.ads:8:04: info: initialization of "X" proved
+pkg_a.ads:9:04: info: initialization of "Y" proved

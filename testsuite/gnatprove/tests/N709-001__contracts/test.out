@@ -1,14 +1,27 @@
 main.adb:10:04: info: assertion proved
+main.adb:10:19: info: initialization of "X1.C1" proved
+main.adb:11:04: info: initialization of "X1.C1" proved
 main.adb:11:06: info: precondition proved
 main.adb:12:04: info: assertion proved
+main.adb:12:23: info: initialization of "X1.C1" proved
 main.adb:15:04: info: assertion proved
+main.adb:15:19: info: initialization of "X2.C1" proved
+main.adb:15:19: info: initialization of "X2.C2" proved
+main.adb:16:04: info: initialization of "X2.C1" proved
+main.adb:16:04: info: initialization of "X2.C2" proved
 main.adb:16:06: medium: precondition might fail
 main.adb:17:04: info: assertion proved
+main.adb:17:23: info: initialization of "X2.C1" proved
+main.adb:17:23: info: initialization of "X2.C2" proved
 main.adb:19:04: warning: assuming "Put_Line" has no effect on global items
 main.adb:19:04: warning: no Global contract available for "Put_Line"
 unit1.adb:12:20: info: overflow check proved
+unit1.ads:9:22: info: initialization of "X.C1" proved
+unit1.ads:12:20: info: initialization of "X.C1" proved
 unit1.ads:12:20: info: postcondition is stronger than class-wide postcondition
 unit1.ads:12:20: info: postcondition proved
+unit1.ads:14:13: info: initialization of "Is_Max" proved
+unit1.ads:18:13: info: initialization of "Is_Zero" proved
 unit1.ads:30:20: info: precondition is weaker than class-wide precondition
 unit1.ads:31:29: medium: precondition might fail
 unit1.ads:32:20: info: postcondition proved
@@ -16,17 +29,31 @@ unit1.ads:32:20: medium: postcondition might be weaker than class-wide postcondi
 unit1.ads:32:36: info: overflow check proved
 unit2.adb:13:12: info: precondition proved
 unit2.adb:14:20: medium: overflow check might fail
+unit2.ads:11:22: info: initialization of "X.C1" proved
+unit2.ads:11:22: info: initialization of "X.C2" proved
+unit2.ads:12:14: info: initialization of "X.C1" proved
 unit2.ads:12:14: info: postcondition is stronger than class-wide postcondition
 unit2.ads:12:14: info: postcondition proved
+unit2.ads:12:32: info: initialization of "X.C2" proved
+unit2.ads:14:13: info: initialization of "Is_Max" proved
+unit2.ads:17:13: info: initialization of "Is_Zero" proved
 unit2.ads:23:14: medium: postcondition might be weaker than class-wide postcondition
 unit2.ads:23:14: medium: postcondition might fail
 unit2.ads:23:30: info: overflow check proved
 unit2.ads:23:59: medium: overflow check might fail
 unit3.adb:13:12: medium: precondition might fail
 unit3.adb:14:20: medium: overflow check might fail
+unit3.ads:11:22: info: initialization of "X.C1" proved
+unit3.ads:11:22: info: initialization of "X.C2" proved
+unit3.ads:11:22: info: initialization of "X.C3" proved
 unit3.ads:12:20: info: class-wide postcondition is stronger than overridden one
+unit3.ads:13:20: info: initialization of "X.C1" proved
 unit3.ads:13:20: info: postcondition is stronger than class-wide postcondition
 unit3.ads:13:20: medium: postcondition might fail
+unit3.ads:13:38: info: initialization of "X.C2" proved
+unit3.ads:13:56: info: initialization of "X.C3" proved
+unit3.ads:15:13: info: initialization of "Is_Max" proved
+unit3.ads:18:13: info: initialization of "Is_Zero" proved
 unit3.ads:24:20: medium: class-wide precondition might be stronger than overridden one
 unit3.ads:25:20: medium: class-wide postcondition might be weaker than overridden one
 unit3.ads:25:36: medium: overflow check might fail

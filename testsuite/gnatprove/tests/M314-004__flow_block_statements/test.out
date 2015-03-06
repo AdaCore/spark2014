@@ -1,6 +1,15 @@
 test.adb:2:04: warning: analyzing unreferenced procedure "Compare_And_Swap"
+test.adb:9:40: info: initialization of "Temp" proved
 test.adb:14:04: warning: analyzing unreferenced procedure "Parallel_Block_Statements"
+test.adb:23:21: info: initialization of "temp1" proved
+test.adb:24:21: info: initialization of "temp2" proved
+test.adb:32:21: info: initialization of "temp1" proved
+test.adb:33:21: info: initialization of "temp2" proved
+test.adb:41:21: info: initialization of "temp1" proved
+test.adb:42:21: info: initialization of "temp2" proved
 test.adb:49:04: warning: analyzing unreferenced procedure "Nested_Block_Statements"
+test.adb:57:22: info: initialization of "temp" proved
+test.adb:59:19: info: initialization of "temp" proved
 // fa_pkg_body_standard__test_cfg
 digraph G {
    graph [splines=True];

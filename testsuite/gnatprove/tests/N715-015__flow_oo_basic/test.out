@@ -1,23 +1,172 @@
+tests.adb:14:13: info: initialization of "F_Get_Item" proved
+tests.adb:15:13: info: initialization of "F_Get_Item_C" proved
+tests.adb:16:13: info: initialization of "F_Get_Item_E" proved
+tests.adb:19:28: info: initialization of "B" proved
+tests.adb:22:28: info: initialization of "B" proved
+tests.adb:25:28: info: initialization of "B" proved
+tests.adb:100:23: info: initialization of "N" proved
 tests.adb:111:25: warning: unused variable "Obj"
+tests.adb:112:25: info: initialization of "N" proved
 tests.adb:114:09: medium: missing dependency "null => Obj"
+tests.adb:122:23: info: initialization of "N" proved
+tests.adb:131:23: info: initialization of "N" proved
+tests.adb:140:23: info: initialization of "N" proved
+tests.adb:151:23: info: initialization of "N" proved
 tests.adb:153:09: medium: incorrect dependency "null => C"
 tests.adb:153:21: medium: missing dependency "N => C"
+tests.adb:159:35: info: initialization of "Obj.X" proved
+tests.adb:159:35: info: initialization of "Obj.Y" proved
+tests.adb:161:12: info: initialization of "Tmp.X" proved
+tests.adb:161:12: info: initialization of "Tmp.Y" proved
+tests.adb:166:23: info: initialization of "N" proved
 tests.adb:168:09: medium: incorrect dependency "null => C"
 tests.adb:168:21: medium: missing dependency "N => C"
+tests.adb:175:22: info: initialization of "Obj.X" proved
+tests.adb:175:22: info: initialization of "Obj.Y" proved
+tests.adb:180:23: info: initialization of "N" proved
 tests.adb:182:09: medium: incorrect dependency "null => A"
 tests.adb:182:09: medium: incorrect dependency "null => B"
 tests.adb:182:21: medium: missing dependency "N => A"
 tests.adb:182:21: medium: missing dependency "N => B"
+tests.adb:191:12: info: initialization of "Obj.Round" proved
+tests.adb:191:12: info: initialization of "Obj.X" proved
+tests.adb:191:12: info: initialization of "Obj.Y" proved
+tests.adb:196:23: info: initialization of "N" proved
+tests.adb:209:12: info: initialization of "Obj.Round" proved
+tests.adb:209:12: info: initialization of "Obj.X" proved
+tests.adb:209:12: info: initialization of "Obj.Y" proved
+tests.adb:215:23: info: initialization of "N" proved
 tests.adb:217:09: medium: incorrect dependency "null => C"
 tests.adb:217:21: medium: missing dependency "N => C"
+tests.adb:224:27: info: initialization of "Obj.Round" proved
+tests.adb:224:27: info: initialization of "Obj.X" proved
+tests.adb:224:27: info: initialization of "Obj.Y" proved
+tests.adb:225:36: info: initialization of "Tmp.B.X" proved
+tests.adb:225:36: info: initialization of "Tmp.B.Y" proved
+tests.adb:227:12: info: initialization of "Tmp2.X" proved
+tests.adb:227:12: info: initialization of "Tmp2.Y" proved
+tests.adb:233:23: info: initialization of "N" proved
+tests.adb:239:35: info: initialization of "Obj.B.X" proved
+tests.adb:239:35: info: initialization of "Obj.B.Y" proved
+tests.adb:241:12: info: initialization of "Tmp.X" proved
+tests.adb:241:12: info: initialization of "Tmp.Y" proved
+tests.adb:245:23: info: initialization of "N" proved
+tests.adb:251:12: info: initialization of "Tmp.X" proved
+tests.adb:251:12: info: initialization of "Tmp.Y" proved
+tests.adb:256:23: info: initialization of "Y" proved
+tests.adb:267:24: info: initialization of "Tmp1.F" proved
+tests.adb:269:12: info: initialization of "Tmp2.F" proved
+tests.adb:276:23: info: initialization of "X" proved
+tests.adb:277:23: info: initialization of "Y" proved
+tests.adb:278:23: info: initialization of "Z" proved
 tests.adb:280:21: medium: missing dependency "X => C"
 tests.adb:281:21: medium: missing dependency "Y => A"
 tests.adb:281:21: medium: missing dependency "Y => B"
 tests.adb:282:21: medium: missing dependency "Z => A"
+tests.adb:291:35: info: initialization of "Obj.X" proved
+tests.adb:291:35: info: initialization of "Obj.Y" proved
+tests.adb:292:25: info: initialization of "Obj.Round" proved
+tests.adb:292:25: info: initialization of "Obj.X" proved
+tests.adb:292:25: info: initialization of "Obj.Y" proved
+tests.adb:293:35: info: initialization of "Tmp.B.X" proved
+tests.adb:293:35: info: initialization of "Tmp.B.Y" proved
+tests.adb:295:25: info: initialization of "Tmp2.X" proved
+tests.adb:295:25: info: initialization of "Tmp2.Y" proved
+tests.adb:296:25: info: initialization of "Tmp.B.Round" proved
+tests.adb:297:25: info: initialization of "Tmp.A.Y" proved
+tests.adb:301:23: info: initialization of "X" proved
+tests.adb:315:13: info: initialization of "A" proved
+tests.adb:316:16: info: initialization of "A" proved
+tests.adb:320:23: info: initialization of "X" proved
+tests.adb:333:16: info: initialization of "Id.Content.Field" proved
 tests.adb:336:16: high: "H1.Content.Field" is not initialized
+tests.adb:340:23: info: initialization of "R" proved
+tests.adb:351:16: info: initialization of "F" proved
+tests.adb:356:15: info: initialization of "B.X" proved
+tests.adb:360:23: info: initialization of "N" proved
+tests.adb:361:23: info: initialization of "M" proved
+tests.adb:375:25: info: initialization of "Tmp.X" proved
+tests.adb:375:25: info: initialization of "Tmp.Y" proved
+tests.adb:375:25: info: initialization of private part of "Tmp" proved
+tests.adb:376:12: info: initialization of "Tmp2.W.X" proved
+tests.adb:376:12: info: initialization of "Tmp2.W.Y" proved
+tests.adb:376:12: info: initialization of private part of "Tmp2.W" proved
+tests.adb:377:22: info: initialization of "Tmp2.W.X" proved
+tests.adb:377:22: info: initialization of "Tmp2.W.Y" proved
+tests.adb:381:23: info: initialization of "N" proved
+tests.adb:387:12: info: initialization of "Tmp.X" proved
+tests.adb:387:12: info: initialization of "Tmp.Y" proved
+tests.adb:393:23: info: initialization of "B" proved
+tests.adb:402:18: info: initialization of "X.Field" proved
+tests.adb:402:18: info: initialization of private part of "X" proved
+tests.adb:408:23: info: initialization of "N" proved
+tests.adb:409:23: info: initialization of "M" proved
+tests.adb:410:23: info: initialization of "O" proved
 tests.adb:413:21: medium: missing dependency "M => B"
 tests.adb:414:21: medium: missing dependency "O => A"
+tests.adb:419:45: info: initialization of "X.Round" proved
+tests.adb:419:45: info: initialization of "X.X" proved
+tests.adb:419:45: info: initialization of "X.Y" proved
+tests.adb:420:43: info: initialization of "Y.X" proved
+tests.adb:420:43: info: initialization of "Y.Y" proved
+tests.adb:422:12: info: initialization of "Y.X" proved
+tests.adb:422:12: info: initialization of "Y.Y" proved
+tests.adb:422:12: info: initialization of extension of "Y" proved
+tests.adb:423:12: info: initialization of "Z.X" proved
+tests.adb:424:12: info: initialization of "Z.Round" proved
+tests.adb:428:23: info: initialization of "N" proved
+tests.adb:435:12: info: initialization of extension of "Tmp" proved
+tests.adb:439:23: info: initialization of "N" proved
+tests.adb:478:23: info: initialization of "M" proved
+tests.adb:479:23: info: initialization of "N" proved
+tests.adb:486:12: info: initialization of "X.X" proved
+tests.adb:486:12: info: initialization of "X.Y" proved
+tests.adb:491:23: info: initialization of "O1" proved
+tests.adb:492:23: info: initialization of "O2" proved
+tests.adb:493:23: info: initialization of "O3" proved
+tests.adb:494:23: info: initialization of "O4" proved
+tests.adb:495:23: info: initialization of "O5" proved
 tests.adb:497:21: medium: missing dependency "O1 => A"
+tests.adb:516:13: info: initialization of "X.X" proved
+tests.adb:516:13: info: initialization of "X.Y" proved
+tests.adb:520:13: info: initialization of "Y.X" proved
+tests.adb:520:13: info: initialization of "Y.Y" proved
+tests.adb:523:13: info: initialization of "Z.X" proved
+tests.adb:523:13: info: initialization of "Z.Y" proved
+tests.adb:523:13: info: initialization of extension of "Z" proved
+tests.adb:527:13: info: initialization of "ZZ.X" proved
+tests.adb:527:13: info: initialization of "ZZ.Y" proved
+tests.adb:527:13: info: initialization of extension of "ZZ" proved
+tests.adb:534:23: info: initialization of "O1" proved
+tests.adb:535:23: info: initialization of "O2" proved
+tests.adb:536:23: info: initialization of "O3" proved
+tests.adb:554:23: info: initialization of "O1" proved
+tests.adb:555:23: info: initialization of "O2" proved
+tests.adb:556:23: info: initialization of "O3" proved
+tests.adb:594:23: info: initialization of "E.X" proved
+tests.adb:594:23: info: initialization of "E.Y" proved
+tests.adb:594:23: info: initialization of extension of "E" proved
+tests.adb:595:23: info: initialization of "F.X" proved
+tests.adb:595:23: info: initialization of "F.Y" proved
+tests.adb:595:23: info: initialization of extension of "F" proved
+tests.adb:596:23: info: initialization of "G.X" proved
+tests.adb:596:23: info: initialization of "G.Y" proved
+tests.adb:596:23: info: initialization of extension of "G" proved
+tests.adb:597:23: info: initialization of "H.X" proved
+tests.adb:597:23: info: initialization of "H.Y" proved
+tests.adb:597:23: info: initialization of extension of "H" proved
+tests.adb:613:23: info: initialization of "W2.X" proved
+tests.adb:613:23: info: initialization of "W2.Y" proved
+tests.adb:613:23: info: initialization of extension of "W2" proved
+tests.adb:614:23: info: initialization of "O1" proved
+tests.adb:620:33: info: initialization of "O1" proved
+tests.adb:624:16: info: initialization of "Tmp.X" proved
+tests.adb:624:16: info: initialization of "Tmp.Y" proved
+tests.adb:624:16: info: initialization of extension of "Tmp" proved
+tests.adb:629:33: info: initialization of "W2.X" proved
+tests.adb:629:33: info: initialization of "W2.Y" proved
+tests.adb:629:33: info: initialization of extension of "W2" proved
+untangle.adb:33:13: info: initialization of "Wibble" proved
 // fa_pkg_body_standard__tests_cfg
 digraph G {
    graph [splines=True];

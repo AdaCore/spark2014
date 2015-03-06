@@ -1,0 +1,2 @@
+c43209a.adb:13:07: info: initialization of "Y" proved
+c43209a.adb:13:16: info: initialization of "X.A" proved

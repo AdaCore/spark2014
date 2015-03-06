@@ -1,6 +1,10 @@
 p.adb:15:62: medium: overflow check might fail
 p.adb:15:62: medium: range check might fail
+p.adb:16:30: info: initialization of "L" proved
 p.adb:16:30: info: range check proved
 p.adb:22:38: medium: overflow check might fail
 p.adb:22:38: medium: range check might fail
+p.adb:23:30: info: initialization of "L" proved
 p.adb:23:30: medium: range check might fail
+p.ads:4:38: info: initialization of "Z" proved
+p.ads:7:38: info: initialization of "Z" proved

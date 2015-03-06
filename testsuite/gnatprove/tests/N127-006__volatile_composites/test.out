@@ -1,1 +1,10 @@
+legal.adb:48:33: info: initialization of "R1b" proved
 legal.adb:48:33: medium: range check might fail
+legal.adb:80:12: info: initialization of "Tmp" proved
+legal.ads:56:19: info: initialization of "X" proved
+legal.ads:60:32: info: initialization of "V1" proved
+legal.ads:64:19: info: initialization of "X" proved
+legal.ads:72:19: info: initialization of "X" proved
+legal.ads:75:21: info: initialization of "X" proved
+legal.ads:83:19: info: initialization of "X" proved
+legal.ads:89:20: info: initialization of "X" proved

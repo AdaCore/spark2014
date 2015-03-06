@@ -1,48 +1,66 @@
+funcs.adb:7:13: info: initialization of "F3" proved
+funcs.adb:9:13: info: initialization of "F4" proved
+funcs.adb:21:13: info: initialization of "G3" proved
 funcs.adb:21:17: warning: unused variable "X"
+funcs.adb:23:13: info: initialization of "G4" proved
 funcs.adb:23:17: warning: unused variable "X"
+funcs.adb:38:13: info: initialization of "P4" proved
+funcs.adb:53:13: info: initialization of "Q4" proved
 funcs.adb:53:58: info: postcondition proved
 funcs.adb:61:04: warning: analyzing unreferenced procedure "Test"
 funcs.adb:64:07: info: assertion proved
 funcs.adb:65:09: warning: unused assignment
 funcs.adb:65:20: info: assertion proved
+funcs.adb:65:35: info: initialization of "Y" proved
 funcs.adb:66:07: info: assertion proved
 funcs.adb:67:09: warning: unused assignment
 funcs.adb:67:20: info: assertion proved
+funcs.adb:67:35: info: initialization of "Y" proved
 funcs.adb:68:07: info: assertion proved
 funcs.adb:69:09: warning: unused assignment
 funcs.adb:69:20: info: assertion proved
+funcs.adb:69:35: info: initialization of "Y" proved
 funcs.adb:70:07: info: assertion proved
 funcs.adb:71:09: warning: unused assignment
 funcs.adb:71:20: info: assertion proved
+funcs.adb:71:35: info: initialization of "Y" proved
 funcs.adb:72:07: info: assertion proved
 funcs.adb:73:09: warning: unused assignment
 funcs.adb:73:20: info: assertion proved
+funcs.adb:73:35: info: initialization of "Y" proved
 funcs.adb:77:07: info: assertion proved
 funcs.adb:78:09: warning: unused assignment
 funcs.adb:78:20: info: assertion proved
+funcs.adb:78:35: info: initialization of "Y" proved
 funcs.adb:79:07: info: assertion proved
 funcs.adb:80:09: warning: unused assignment
 funcs.adb:80:20: info: assertion proved
+funcs.adb:80:35: info: initialization of "Y" proved
 funcs.adb:81:07: info: assertion proved
 funcs.adb:82:09: warning: unused assignment
 funcs.adb:82:20: info: assertion proved
+funcs.adb:82:35: info: initialization of "Y" proved
 funcs.adb:83:07: info: assertion proved
 funcs.adb:84:09: warning: unused assignment
 funcs.adb:84:20: info: assertion proved
+funcs.adb:84:35: info: initialization of "Y" proved
 funcs.adb:85:07: info: assertion proved
 funcs.adb:86:09: warning: unused assignment
 funcs.adb:86:20: info: assertion proved
+funcs.adb:86:35: info: initialization of "Y" proved
 funcs.adb:90:07: info: assertion proved
 funcs.adb:90:22: info: precondition proved
 funcs.adb:91:09: warning: unused assignment
 funcs.adb:91:12: info: precondition proved
 funcs.adb:91:20: info: assertion proved
+funcs.adb:91:35: info: initialization of "Y" proved
 funcs.adb:91:39: info: precondition proved
 funcs.adb:94:07: info: assertion proved
 funcs.adb:94:22: info: precondition proved
 funcs.adb:95:09: warning: unused assignment
 funcs.adb:95:12: info: precondition proved
 funcs.adb:95:20: info: assertion proved
+funcs.adb:95:35: info: initialization of "Y" proved
 funcs.adb:95:39: info: precondition proved
 funcs.adb:96:07: info: assertion proved
 funcs.adb:96:22: info: precondition proved
@@ -50,18 +68,32 @@ funcs.adb:96:31: info: precondition proved
 funcs.adb:97:09: warning: unused assignment
 funcs.adb:97:12: info: precondition proved
 funcs.adb:97:20: info: assertion proved
+funcs.adb:97:35: info: initialization of "Y" proved
 funcs.adb:97:39: info: precondition proved
 funcs.adb:101:07: info: assertion proved
 funcs.adb:102:09: warning: unused assignment
 funcs.adb:102:20: info: assertion proved
+funcs.adb:102:35: info: initialization of "Y" proved
 funcs.adb:105:07: info: assertion proved
 funcs.adb:106:09: warning: unused assignment
 funcs.adb:106:20: info: assertion proved
+funcs.adb:106:35: info: initialization of "Y" proved
 funcs.adb:107:07: info: assertion proved
 funcs.adb:108:09: warning: unused assignment
 funcs.adb:108:20: info: assertion proved
+funcs.adb:108:35: info: initialization of "Y" proved
+funcs.ads:2:13: info: initialization of "F1" proved
+funcs.ads:3:13: info: initialization of "F2" proved
+funcs.ads:4:13: info: initialization of "F5" proved
+funcs.ads:8:13: info: initialization of "G1" proved
 funcs.ads:8:17: warning: unused variable "X"
+funcs.ads:9:13: info: initialization of "G2" proved
 funcs.ads:9:17: warning: unused variable "X"
+funcs.ads:10:13: info: initialization of "G5" proved
 funcs.ads:10:17: warning: unused variable "X"
+funcs.ads:14:13: info: initialization of "P2" proved
+funcs.ads:15:13: info: initialization of "P5" proved
+funcs.ads:19:13: info: initialization of "Q2" proved
 funcs.ads:19:58: info: postcondition proved
+funcs.ads:20:13: info: initialization of "Q5" proved
 funcs.ads:20:58: info: postcondition proved

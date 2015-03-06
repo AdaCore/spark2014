@@ -1,4 +1,7 @@
 assign_arr_out.adb:8:12: info: length check proved, in call inlined at assign_arr_out.adb:13
 c330002_0.adb:5:09: medium: length check might fail
 c330002_0.adb:10:09: medium: length check might fail
+c330002_0.ads:7:28: info: initialization of "A" proved
+c330002_0.ads:9:33: info: initialization of "A" proved
+c330002_0.ads:10:14: info: initialization of "A" proved
 c330002_0.ads:10:14: info: postcondition proved

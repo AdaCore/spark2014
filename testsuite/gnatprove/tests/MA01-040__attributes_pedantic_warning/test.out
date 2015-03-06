@@ -9,3 +9,13 @@ pedantic.adb:56:15: warning: attribute "Size" has an implementation-defined valu
 pedantic.adb:62:15: warning: attribute "Size" has an implementation-defined value
 pedantic.ads:12:29: warning: attribute "Alignment" has an implementation-defined value
 pedantic.ads:15:30: warning: attribute "Alignment" has an implementation-defined value
+pedantic.ads:17:13: info: initialization of "Alignment_Of" proved
+pedantic.ads:19:13: info: initialization of "Alignment_Of_R" proved
+pedantic.ads:21:13: info: initialization of "Address_Of_V" proved
+pedantic.ads:24:13: info: initialization of "Order_Of_R" proved
+pedantic.ads:26:13: info: initialization of "CS_Of_A" proved
+pedantic.ads:28:13: info: initialization of "First_Bit_Of_F1" proved
+pedantic.ads:30:13: info: initialization of "Last_Bit_Of_F1" proved
+pedantic.ads:32:13: info: initialization of "Position_Of_F1" proved
+pedantic.ads:34:13: info: initialization of "Size_Of_A" proved
+pedantic.ads:36:13: info: initialization of "Size_Of_V" proved

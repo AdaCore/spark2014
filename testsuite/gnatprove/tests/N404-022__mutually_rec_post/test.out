@@ -1,6 +1,8 @@
 rec_post.adb:2:56: info: division check proved
 rec_post.adb:3:55: info: division check proved
+rec_post.ads:2:13: info: initialization of "Is_Even" proved
 rec_post.ads:3:14: info: postcondition proved
 rec_post.ads:3:56: info: range check proved
+rec_post.ads:4:13: info: initialization of "Is_Odd" proved
 rec_post.ads:5:14: info: postcondition proved
 rec_post.ads:5:58: info: range check proved

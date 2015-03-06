@@ -1,7 +1,15 @@
+p.adb:8:13: info: initialization of "CF1" proved
+p.adb:9:13: info: initialization of "CF2" proved
+p.adb:10:13: info: initialization of "CF3" proved
+p.adb:11:13: info: initialization of "CF4" proved
 p.adb:13:14: warning: subprogram "P1" has no effect
 p.adb:21:14: warning: subprogram "P2" has no effect
 p.adb:29:14: warning: subprogram "P3" has no effect
 p.adb:37:14: warning: subprogram "P4" has no effect
+p.ads:2:13: info: initialization of "F1" proved
+p.ads:3:13: info: initialization of "F2" proved
+p.ads:4:13: info: initialization of "F3" proved
+p.ads:5:13: info: initialization of "F4" proved
 Analyzed 1 units
 in unit p, 13 subprograms and packages out of 13 analyzed
   P at p.ads:1 flow analyzed (0 errors and 0 warnings) and proved (0 checks)

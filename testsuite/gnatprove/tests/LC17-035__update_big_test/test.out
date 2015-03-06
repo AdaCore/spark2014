@@ -1,94 +1,294 @@
 ar.adb:61:14: info: range check proved
 ar.adb:66:14: info: range check proved
+ar.adb:68:10: info: initialization of "J" proved
+ar.adb:68:13: info: initialization of "F" proved
 ar.adb:81:14: info: range check proved
 ar.adb:86:14: info: range check proved
+ar.adb:88:10: info: initialization of "J" proved
+ar.adb:88:13: info: initialization of "F" proved
 ar.adb:98:07: warning: unused assignment
 ar.adb:100:05: info: assertion proved
+ar.adb:100:32: info: initialization of "T" proved
 ar.adb:104:14: info: range check proved
 ar.adb:109:14: info: range check proved
+ar.adb:111:10: info: initialization of "J" proved
+ar.adb:111:13: info: initialization of "F" proved
 ar.adb:121:07: warning: unused assignment
 ar.adb:123:05: info: assertion proved
+ar.adb:123:32: info: initialization of "T" proved
 ar.adb:127:14: info: range check proved
 ar.adb:132:14: info: range check proved
+ar.adb:134:10: info: initialization of "J" proved
+ar.adb:134:13: info: initialization of "F" proved
 ar.adb:144:07: warning: unused assignment
 ar.adb:149:14: info: range check proved
 ar.adb:151:05: info: assertion proved
+ar.adb:151:32: info: initialization of "T" proved
+ar.adb:151:71: info: initialization of "J" proved
 ar.adb:155:14: info: range check proved
+ar.adb:157:10: info: initialization of "J" proved
+ar.adb:157:13: info: initialization of "F" proved
 ar.adb:167:07: warning: unused assignment
 ar.adb:172:14: info: range check proved
 ar.adb:174:05: info: assertion proved
+ar.adb:174:32: info: initialization of "T" proved
+ar.adb:174:71: info: initialization of "J" proved
 ar.adb:178:14: info: range check proved
+ar.adb:180:10: info: initialization of "J" proved
+ar.adb:180:13: info: initialization of "F" proved
+ar.adb:209:10: info: initialization of "A" proved
+ar.adb:217:10: info: initialization of "A" proved
+ar.adb:225:10: info: initialization of "A" proved
+ar.adb:233:10: info: initialization of "A" proved
+ar.adb:234:13: info: initialization of "A" proved
+ar.adb:235:10: info: initialization of "A" proved
+ar.adb:236:13: info: initialization of "A" proved
+ar.adb:237:13: info: initialization of "A" proved
 ar.adb:237:18: medium: range check might fail
+ar.adb:238:10: info: initialization of "A" proved
+ar.adb:239:11: info: initialization of "A" proved
+ar.adb:240:10: info: initialization of "A" proved
 ar.adb:241:18: medium: range check might fail
+ar.adb:241:20: info: initialization of "A" proved
+ar.adb:242:10: info: initialization of "A" proved
+ar.adb:243:13: info: initialization of "A" proved
 ar.adb:243:18: medium: range check might fail
+ar.adb:244:10: info: initialization of "A" proved
+ar.adb:252:10: info: initialization of "A" proved
+ar.adb:253:13: info: initialization of "A" proved
+ar.adb:254:10: info: initialization of "A" proved
+ar.adb:255:13: info: initialization of "A" proved
+ar.adb:256:13: info: initialization of "A" proved
 ar.adb:256:18: medium: range check might fail
+ar.adb:257:10: info: initialization of "A" proved
+ar.adb:258:11: info: initialization of "A" proved
+ar.adb:259:10: info: initialization of "A" proved
 ar.adb:260:18: medium: range check might fail
+ar.adb:260:20: info: initialization of "A" proved
+ar.adb:261:10: info: initialization of "A" proved
+ar.adb:262:13: info: initialization of "A" proved
 ar.adb:262:18: medium: range check might fail
+ar.adb:263:10: info: initialization of "A" proved
+ar.adb:271:10: info: initialization of "A" proved
+ar.adb:272:13: info: initialization of "A" proved
+ar.adb:273:10: info: initialization of "A" proved
+ar.adb:274:13: info: initialization of "A" proved
+ar.adb:275:13: info: initialization of "A" proved
 ar.adb:275:18: medium: range check might fail
+ar.adb:276:10: info: initialization of "A" proved
+ar.adb:277:11: info: initialization of "A" proved
+ar.adb:278:10: info: initialization of "A" proved
 ar.adb:279:18: medium: range check might fail
+ar.adb:279:20: info: initialization of "A" proved
+ar.adb:280:10: info: initialization of "A" proved
+ar.adb:281:13: info: initialization of "A" proved
 ar.adb:281:18: medium: range check might fail
+ar.adb:282:10: info: initialization of "A" proved
+ar.adb:290:10: info: initialization of "A" proved
+ar.adb:291:13: info: initialization of "A" proved
+ar.adb:292:10: info: initialization of "A" proved
+ar.adb:293:13: info: initialization of "A" proved
+ar.adb:294:13: info: initialization of "A" proved
 ar.adb:294:18: medium: range check might fail
+ar.adb:295:10: info: initialization of "A" proved
+ar.adb:296:11: info: initialization of "A" proved
+ar.adb:297:10: info: initialization of "A" proved
 ar.adb:298:18: medium: range check might fail
+ar.adb:298:20: info: initialization of "A" proved
+ar.adb:299:10: info: initialization of "A" proved
+ar.adb:300:13: info: initialization of "A" proved
 ar.adb:300:18: medium: range check might fail
+ar.adb:301:10: info: initialization of "A" proved
+ar.adb:309:14: info: initialization of "A" proved
+ar.adb:310:13: info: initialization of "A" proved
+ar.adb:311:13: info: initialization of "A" proved
+ar.adb:312:13: info: initialization of "A" proved
+ar.adb:313:10: info: initialization of "A" proved
+ar.adb:314:10: info: initialization of "A" proved
+ar.adb:315:10: info: initialization of "A" proved
+ar.adb:316:10: info: initialization of "A" proved
+ar.adb:317:13: info: initialization of "A" proved
+ar.adb:318:10: info: initialization of "A" proved
+ar.adb:326:14: info: initialization of "A" proved
+ar.adb:327:13: info: initialization of "A" proved
+ar.adb:328:13: info: initialization of "A" proved
+ar.adb:329:13: info: initialization of "A" proved
+ar.adb:330:10: info: initialization of "A" proved
+ar.adb:331:10: info: initialization of "A" proved
+ar.adb:332:10: info: initialization of "A" proved
+ar.adb:333:10: info: initialization of "A" proved
+ar.adb:334:13: info: initialization of "A" proved
+ar.adb:335:10: info: initialization of "A" proved
+ar.adb:343:14: info: initialization of "A" proved
+ar.adb:344:13: info: initialization of "A" proved
+ar.adb:345:13: info: initialization of "A" proved
+ar.adb:346:13: info: initialization of "A" proved
+ar.adb:347:10: info: initialization of "A" proved
+ar.adb:348:10: info: initialization of "A" proved
+ar.adb:349:10: info: initialization of "A" proved
+ar.adb:350:10: info: initialization of "A" proved
+ar.adb:351:13: info: initialization of "A" proved
+ar.adb:352:10: info: initialization of "A" proved
+ar.adb:360:14: info: initialization of "A" proved
+ar.adb:361:13: info: initialization of "A" proved
+ar.adb:362:13: info: initialization of "A" proved
+ar.adb:363:13: info: initialization of "A" proved
+ar.adb:364:10: info: initialization of "A" proved
+ar.adb:365:10: info: initialization of "A" proved
+ar.adb:366:10: info: initialization of "A" proved
+ar.adb:367:10: info: initialization of "A" proved
+ar.adb:368:13: info: initialization of "A" proved
+ar.adb:369:10: info: initialization of "A" proved
 ar.adb:451:19: info: range check proved
 ar.adb:456:14: info: range check proved
+ar.adb:458:18: info: initialization of "J_Next" proved
+ar.adb:458:21: info: initialization of "F" proved
 ar.adb:471:19: info: range check proved
 ar.adb:476:14: info: range check proved
+ar.adb:478:18: info: initialization of "J_Next" proved
+ar.adb:478:21: info: initialization of "F" proved
 ar.adb:488:07: warning: unused assignment
 ar.adb:490:28: medium: assertion might fail, requires A = T'update
+ar.adb:490:32: info: initialization of "T" proved
 ar.adb:494:19: info: range check proved
 ar.adb:499:14: info: range check proved
+ar.adb:501:18: info: initialization of "J_Next" proved
+ar.adb:501:21: info: initialization of "F" proved
 ar.adb:511:07: warning: unused assignment
 ar.adb:513:28: medium: assertion might fail, requires A = T'update
+ar.adb:513:32: info: initialization of "T" proved
 ar.adb:517:19: info: range check proved
 ar.adb:522:14: info: range check proved
+ar.adb:524:18: info: initialization of "J_Next" proved
+ar.adb:524:21: info: initialization of "F" proved
 ar.adb:534:07: warning: unused assignment
 ar.adb:539:19: info: range check proved
 ar.adb:541:05: medium: assertion might fail
+ar.adb:541:32: info: initialization of "T" proved
+ar.adb:541:90: info: initialization of "J_Next" proved
 ar.adb:545:14: info: range check proved
+ar.adb:547:18: info: initialization of "J_Next" proved
+ar.adb:547:21: info: initialization of "F" proved
 ar.adb:557:07: warning: unused assignment
 ar.adb:562:19: info: range check proved
 ar.adb:564:05: medium: assertion might fail
+ar.adb:564:32: info: initialization of "T" proved
+ar.adb:564:90: info: initialization of "J_Next" proved
 ar.adb:568:14: info: range check proved
+ar.adb:570:18: info: initialization of "J_Next" proved
+ar.adb:570:21: info: initialization of "F" proved
+ar.adb:624:13: info: initialization of "A" proved
 ar.adb:751:19: info: range check proved
 ar.adb:756:14: info: range check proved
+ar.adb:758:21: info: initialization of "K_Next" proved
+ar.adb:758:24: info: initialization of "F" proved
 ar.adb:771:19: info: range check proved
 ar.adb:776:14: info: range check proved
+ar.adb:778:21: info: initialization of "K_Next" proved
+ar.adb:778:24: info: initialization of "F" proved
 ar.adb:788:07: warning: unused assignment
 ar.adb:790:28: medium: assertion might fail, requires A = T'update
+ar.adb:790:32: info: initialization of "T" proved
 ar.adb:794:19: info: range check proved
 ar.adb:799:14: info: range check proved
+ar.adb:801:21: info: initialization of "K_Next" proved
+ar.adb:801:24: info: initialization of "F" proved
 ar.adb:811:07: warning: unused assignment
 ar.adb:813:28: medium: assertion might fail, requires A = T'update
+ar.adb:813:32: info: initialization of "T" proved
 ar.adb:817:19: info: range check proved
 ar.adb:822:14: info: range check proved
+ar.adb:824:21: info: initialization of "K_Next" proved
+ar.adb:824:24: info: initialization of "F" proved
 ar.adb:834:07: warning: unused assignment
 ar.adb:839:19: info: range check proved
 ar.adb:841:05: medium: assertion might fail
+ar.adb:841:32: info: initialization of "T" proved
+ar.adb:841:112: info: initialization of "K_Next" proved
 ar.adb:845:14: info: range check proved
+ar.adb:847:21: info: initialization of "K_Next" proved
+ar.adb:847:24: info: initialization of "F" proved
 ar.adb:857:07: warning: unused assignment
 ar.adb:862:19: info: range check proved
 ar.adb:864:05: medium: assertion might fail
+ar.adb:864:32: info: initialization of "T" proved
+ar.adb:864:112: info: initialization of "K_Next" proved
 ar.adb:868:14: info: range check proved
+ar.adb:870:21: info: initialization of "K_Next" proved
+ar.adb:870:24: info: initialization of "F" proved
+ar.adb:982:10: info: initialization of "A" proved
+ar.adb:983:13: info: initialization of "A" proved
+ar.adb:984:16: info: initialization of "A" proved
 ar.adb:1218:14: info: range check proved
+ar.adb:1220:13: info: initialization of "Temp" proved
 ar.adb:1228:14: info: range check proved
+ar.adb:1230:13: info: initialization of "Temp" proved
 ar.adb:1238:14: info: range check proved
+ar.adb:1240:13: info: initialization of "Temp" proved
 ar.adb:1343:17: info: range check proved
+ar.adb:1345:16: info: initialization of "Temp" proved
 ar.adb:1353:17: info: range check proved
+ar.adb:1355:16: info: initialization of "Temp" proved
 ar.adb:1363:17: info: range check proved
+ar.adb:1365:16: info: initialization of "Temp" proved
 ar.adb:1373:17: info: range check proved
+ar.adb:1375:16: info: initialization of "Temp" proved
 ar.adb:1529:20: info: range check proved
+ar.adb:1531:19: info: initialization of "Temp" proved
 ar.adb:1539:20: info: range check proved
+ar.adb:1541:19: info: initialization of "Temp" proved
 ar.adb:1549:20: info: range check proved
+ar.adb:1551:19: info: initialization of "Temp" proved
 ar.adb:1559:20: info: range check proved
+ar.adb:1561:19: info: initialization of "Temp" proved
 ar.adb:1740:14: info: range check proved
+ar.adb:1742:19: info: initialization of "Temp" proved
 ar.adb:1750:14: info: range check proved
+ar.adb:1752:19: info: initialization of "Temp" proved
 ar.adb:1760:14: info: range check proved
+ar.adb:1762:19: info: initialization of "Temp" proved
 ar.adb:1770:14: info: range check proved
+ar.adb:1772:19: info: initialization of "Temp" proved
 ar.adb:1781:20: info: range check proved
+ar.adb:1782:13: info: initialization of "Temp" proved
 ar.adb:1791:20: info: range check proved
+ar.adb:1792:13: info: initialization of "Temp" proved
 ar.adb:1801:20: info: range check proved
+ar.adb:1802:13: info: initialization of "Temp" proved
 ar.adb:1811:20: info: range check proved
+ar.adb:1812:13: info: initialization of "Temp" proved
+ar.adb:1897:16: info: initialization of "Temp.F1" proved
+ar.adb:1897:16: info: initialization of "Temp.G1" proved
+ar.adb:1907:16: info: initialization of "Temp.F1" proved
+ar.adb:1907:16: info: initialization of "Temp.G1" proved
+ar.adb:1917:16: info: initialization of "Temp.F1" proved
+ar.adb:1917:16: info: initialization of "Temp.G1" proved
+ar.adb:1927:16: info: initialization of "Temp.F1" proved
+ar.adb:1927:16: info: initialization of "Temp.G1" proved
+ar.adb:1937:13: info: initialization of "Temp.F1" proved
+ar.adb:1937:13: info: initialization of "Temp.G1" proved
+ar.adb:1947:13: info: initialization of "Temp.F1" proved
+ar.adb:1947:13: info: initialization of "Temp.G1" proved
+ar.adb:1957:13: info: initialization of "Temp.F1" proved
+ar.adb:1957:13: info: initialization of "Temp.G1" proved
+ar.adb:1967:13: info: initialization of "Temp.F1" proved
+ar.adb:1967:13: info: initialization of "Temp.G1" proved
+ar.adb:2040:16: info: initialization of "Temp" proved
+ar.adb:2050:16: info: initialization of "Temp" proved
+ar.adb:2060:16: info: initialization of "Temp" proved
+ar.adb:2070:16: info: initialization of "Temp" proved
+ar.adb:2747:10: info: initialization of "A" proved
+ar.adb:2748:13: info: initialization of "A" proved
+ar.adb:2749:16: info: initialization of "A" proved
+ar.adb:2758:10: info: initialization of "A" proved
+ar.adb:2759:13: info: initialization of "A" proved
+ar.adb:2760:16: info: initialization of "A" proved
+ar.adb:2769:10: info: initialization of "A" proved
+ar.adb:2770:13: info: initialization of "A" proved
+ar.adb:2771:16: info: initialization of "A" proved
+ar.adb:2780:10: info: initialization of "A" proved
+ar.adb:2781:13: info: initialization of "A" proved
+ar.adb:2782:16: info: initialization of "A" proved
 ar.ads:137:22: info: postcondition proved
 ar.ads:142:22: info: postcondition proved
 ar.ads:147:22: info: postcondition proved
@@ -114,19 +314,100 @@ ar.ads:194:107: info: range check proved
 ar.ads:194:171: info: range check proved
 ar.ads:194:288: info: range check proved
 ar.ads:199:22: info: postcondition proved
+ar.ads:202:14: info: initialization of "A" proved
 ar.ads:204:22: info: postcondition proved
+ar.ads:204:44: info: initialization of "A" proved
+ar.ads:207:14: info: initialization of "A" proved
+ar.ads:209:22: info: initialization of "A" proved
 ar.ads:209:22: info: postcondition proved
+ar.ads:209:43: info: initialization of "A" proved
+ar.ads:209:64: info: initialization of "A" proved
+ar.ads:209:85: info: initialization of "A" proved
+ar.ads:209:106: info: initialization of "A" proved
+ar.ads:209:128: info: initialization of "A" proved
+ar.ads:209:149: info: initialization of "A" proved
+ar.ads:209:170: info: initialization of "A" proved
+ar.ads:209:191: info: initialization of "A" proved
+ar.ads:209:212: info: initialization of "A" proved
+ar.ads:212:14: info: initialization of "A" proved
 ar.ads:214:22: info: postcondition proved
+ar.ads:214:44: info: initialization of "A" proved
+ar.ads:217:14: info: initialization of "A" proved
 ar.ads:219:22: info: postcondition proved
+ar.ads:219:59: info: initialization of "A" proved
+ar.ads:219:84: info: initialization of "A" proved
+ar.ads:222:14: info: initialization of "A" proved
+ar.ads:224:22: info: initialization of "A" proved
 ar.ads:224:22: info: postcondition proved
+ar.ads:224:43: info: initialization of "A" proved
+ar.ads:224:64: info: initialization of "A" proved
+ar.ads:224:85: info: initialization of "A" proved
+ar.ads:224:106: info: initialization of "A" proved
+ar.ads:224:128: info: initialization of "A" proved
+ar.ads:224:149: info: initialization of "A" proved
+ar.ads:224:170: info: initialization of "A" proved
+ar.ads:224:191: info: initialization of "A" proved
+ar.ads:224:212: info: initialization of "A" proved
+ar.ads:227:14: info: initialization of "A" proved
 ar.ads:229:22: info: postcondition proved
+ar.ads:229:44: info: initialization of "A" proved
+ar.ads:232:14: info: initialization of "A" proved
 ar.ads:234:43: medium: postcondition might fail, requires A(N) = 0
+ar.ads:234:44: info: initialization of "A" proved
+ar.ads:237:14: info: initialization of "A" proved
+ar.ads:239:22: info: initialization of "A" proved
 ar.ads:239:22: medium: postcondition might fail
+ar.ads:239:43: info: initialization of "A" proved
+ar.ads:239:64: info: initialization of "A" proved
+ar.ads:239:85: info: initialization of "A" proved
+ar.ads:239:106: info: initialization of "A" proved
+ar.ads:239:128: info: initialization of "A" proved
+ar.ads:239:149: info: initialization of "A" proved
+ar.ads:239:170: info: initialization of "A" proved
+ar.ads:239:191: info: initialization of "A" proved
+ar.ads:239:212: info: initialization of "A" proved
+ar.ads:242:14: info: initialization of "A" proved
+ar.ads:244:22: info: initialization of "A" proved
 ar.ads:244:22: medium: postcondition might fail
+ar.ads:244:40: info: initialization of "A" proved
+ar.ads:244:58: info: initialization of "A" proved
+ar.ads:244:76: info: initialization of "A" proved
+ar.ads:244:94: info: initialization of "A" proved
+ar.ads:244:113: info: initialization of "A" proved
+ar.ads:244:131: info: initialization of "A" proved
+ar.ads:244:149: info: initialization of "A" proved
+ar.ads:244:167: info: initialization of "A" proved
+ar.ads:244:185: info: initialization of "A" proved
+ar.ads:247:14: info: initialization of "A" proved
 ar.ads:249:22: info: postcondition proved
+ar.ads:249:44: info: initialization of "A" proved
+ar.ads:252:14: info: initialization of "A" proved
 ar.ads:254:43: medium: postcondition might fail, requires A(N) = B(11-N)
+ar.ads:254:44: info: initialization of "A" proved
+ar.ads:257:14: info: initialization of "A" proved
+ar.ads:259:22: info: initialization of "A" proved
 ar.ads:259:22: medium: postcondition might fail
+ar.ads:259:43: info: initialization of "A" proved
+ar.ads:259:64: info: initialization of "A" proved
+ar.ads:259:85: info: initialization of "A" proved
+ar.ads:259:106: info: initialization of "A" proved
+ar.ads:259:128: info: initialization of "A" proved
+ar.ads:259:149: info: initialization of "A" proved
+ar.ads:259:170: info: initialization of "A" proved
+ar.ads:259:191: info: initialization of "A" proved
+ar.ads:259:212: info: initialization of "A" proved
+ar.ads:262:14: info: initialization of "A" proved
+ar.ads:264:22: info: initialization of "A" proved
 ar.ads:264:22: medium: postcondition might fail
+ar.ads:264:44: info: initialization of "A" proved
+ar.ads:264:65: info: initialization of "A" proved
+ar.ads:264:86: info: initialization of "A" proved
+ar.ads:264:107: info: initialization of "A" proved
+ar.ads:264:128: info: initialization of "A" proved
+ar.ads:264:149: info: initialization of "A" proved
+ar.ads:264:170: info: initialization of "A" proved
+ar.ads:264:191: info: initialization of "A" proved
+ar.ads:264:212: info: initialization of "A" proved
 ar.ads:272:22: info: postcondition proved
 ar.ads:277:22: medium: postcondition might fail
 ar.ads:282:22: medium: postcondition might fail, requires A = A'Old'update
@@ -163,10 +444,14 @@ ar.ads:344:437: info: range check proved
 ar.ads:349:22: info: postcondition proved
 ar.ads:355:22: info: postcondition proved
 ar.ads:361:22: info: postcondition proved
+ar.ads:364:14: info: initialization of "A" proved
 ar.ads:366:22: info: postcondition proved
+ar.ads:366:65: info: initialization of "A" proved
 ar.ads:371:22: info: postcondition proved
 ar.ads:376:22: info: postcondition proved
+ar.ads:379:14: info: initialization of "A" proved
 ar.ads:381:22: info: postcondition proved
+ar.ads:381:65: info: initialization of "A" proved
 ar.ads:389:22: info: postcondition proved
 ar.ads:394:22: medium: postcondition might fail
 ar.ads:399:22: medium: postcondition might fail, requires A = A'Old'update
@@ -224,8 +509,12 @@ ar.ads:538:22: info: postcondition proved
 ar.ads:544:22: medium: postcondition might fail
 ar.ads:550:22: medium: postcondition might fail
 ar.ads:555:22: info: postcondition proved
+ar.ads:558:14: info: initialization of "A" proved
 ar.ads:560:22: info: postcondition proved
+ar.ads:560:86: info: initialization of "A" proved
+ar.ads:563:14: info: initialization of "A" proved
 ar.ads:566:22: info: postcondition proved
+ar.ads:566:86: info: initialization of "A" proved
 ar.ads:574:22: info: postcondition proved
 ar.ads:579:22: medium: postcondition might fail
 ar.ads:584:22: medium: postcondition might fail, requires A = A'Old'update
@@ -251,15 +540,35 @@ ar.ads:693:22: info: postcondition proved
 ar.ads:701:22: info: postcondition proved
 ar.ads:706:22: info: postcondition proved
 ar.ads:711:22: info: postcondition proved
+ar.ads:714:14: info: initialization of "R.F1" proved
+ar.ads:714:14: info: initialization of "R.G1" proved
+ar.ads:716:22: info: initialization of "R.F1" proved
 ar.ads:716:22: info: postcondition proved
+ar.ads:716:40: info: initialization of "R.G1" proved
+ar.ads:719:14: info: initialization of "R.F1" proved
+ar.ads:719:14: info: initialization of "R.G1" proved
+ar.ads:721:22: info: initialization of "R.F1" proved
+ar.ads:721:22: info: initialization of "R.G1" proved
 ar.ads:721:22: info: postcondition proved
 ar.ads:727:22: info: postcondition proved
 ar.ads:727:51: info: range check proved
 ar.ads:727:67: info: range check proved
 ar.ads:733:22: info: postcondition proved
 ar.ads:739:22: info: postcondition proved
+ar.ads:742:14: info: initialization of "R.F1" proved
+ar.ads:742:14: info: initialization of "R.G1" proved
+ar.ads:744:22: info: initialization of "R.F1" proved
+ar.ads:744:22: info: initialization of "R.G1" proved
 ar.ads:744:22: info: postcondition proved
+ar.ads:747:14: info: initialization of "R.F1" proved
+ar.ads:747:14: info: initialization of "R.G1" proved
+ar.ads:749:22: info: initialization of "R.F1" proved
 ar.ads:749:22: info: postcondition proved
+ar.ads:749:41: info: initialization of "R.G1" proved
+ar.ads:752:14: info: initialization of "R.F1" proved
+ar.ads:752:14: info: initialization of "R.G1" proved
+ar.ads:754:22: info: initialization of "R.F1" proved
+ar.ads:754:22: info: initialization of "R.G1" proved
 ar.ads:754:22: info: postcondition proved
 ar.ads:762:22: info: postcondition proved
 ar.ads:767:22: info: postcondition proved
@@ -404,8 +713,21 @@ ar.ads:1475:22: info: postcondition proved
 ar.ads:1481:22: info: postcondition proved
 ar.ads:1487:22: medium: postcondition might fail, requires R = R'Old'update
 ar.ads:1493:22: info: postcondition proved
+ar.ads:1496:14: info: initialization of "R.S1" proved
+ar.ads:1496:14: info: initialization of "R.T1" proved
 ar.ads:1498:22: info: postcondition proved
+ar.ads:1498:44: info: initialization of "R.S1" proved
+ar.ads:1498:70: info: initialization of "R.T1" proved
+ar.ads:1501:14: info: initialization of "R.S1" proved
+ar.ads:1501:14: info: initialization of "R.T1" proved
 ar.ads:1503:22: info: postcondition proved
+ar.ads:1503:44: info: initialization of "R.S1" proved
+ar.ads:1503:70: info: initialization of "R.S1" proved
+ar.ads:1503:88: info: initialization of "R.T1" proved
+ar.ads:1506:14: info: initialization of "R.S1" proved
+ar.ads:1506:14: info: initialization of "R.T1" proved
+ar.ads:1508:22: info: initialization of "R.S1" proved
+ar.ads:1508:22: info: initialization of "R.T1" proved
 ar.ads:1508:22: info: postcondition proved
 ar.ads:1516:22: info: postcondition proved
 ar.ads:1521:22: medium: postcondition might fail
@@ -440,9 +762,21 @@ ar.ads:1673:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:1679:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:1685:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:1691:22: medium: postcondition might fail, requires A = A'Old'update
+ar.ads:1694:14: info: initialization of "A" proved
 ar.ads:1697:22: info: postcondition proved
+ar.ads:1697:44: info: initialization of "A" proved
+ar.ads:1697:139: info: initialization of "A" proved
+ar.ads:1700:14: info: initialization of "A" proved
 ar.ads:1703:22: info: postcondition proved
+ar.ads:1703:59: info: initialization of "A" proved
+ar.ads:1703:121: info: initialization of "A" proved
+ar.ads:1703:154: info: initialization of "A" proved
+ar.ads:1703:180: info: initialization of "A" proved
+ar.ads:1706:14: info: initialization of "A" proved
+ar.ads:1709:22: info: initialization of "A" proved
 ar.ads:1709:22: medium: postcondition might fail, requires A = B'update
+ar.ads:1712:14: info: initialization of "A" proved
+ar.ads:1715:22: info: initialization of "A" proved
 ar.ads:1715:22: medium: postcondition might fail, requires A = B'update
 ar.ads:1723:22: info: postcondition proved
 ar.ads:1728:22: medium: postcondition might fail

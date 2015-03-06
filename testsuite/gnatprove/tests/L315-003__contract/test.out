@@ -1,12 +1,17 @@
+math.adb:6:14: info: initialization of "Res" proved
 math.adb:6:18: info: overflow check proved
 math.adb:6:23: medium: overflow check might fail
 math.adb:6:30: info: overflow check proved
+math.adb:7:17: info: initialization of "Res" proved
 math.adb:7:21: info: overflow check proved
+math.adb:9:14: info: initialization of "Res" proved
+math.ads:3:13: info: initialization of "Sqrt" proved
 math.ads:5:14: info: postcondition proved
 math.ads:6:06: info: complete contract cases proved
 math.ads:6:06: info: disjoint contract cases proved
 math.ads:6:31: info: contract case proved
 math.ads:7:31: info: contract case proved
+math.ads:9:13: info: initialization of "Bad" proved
 math.ads:11:14: info: postcondition proved
 math.ads:12:06: info: complete contract cases proved
 math.ads:12:06: info: disjoint contract cases proved

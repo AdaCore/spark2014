@@ -1,4 +1,5 @@
 useless_annot.adb:3:04: warning: no check message justified by this pragma
+useless_annot.adb:7:13: info: initialization of "Posit" proved
 useless_annot.adb:9:20: info: postcondition proved
 useless_annot.adb:13:16: info: overflow check proved
 useless_annot.adb:16:19: info: precondition proved

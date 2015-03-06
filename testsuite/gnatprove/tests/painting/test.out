@@ -3,4 +3,8 @@ p.adb:8:10: info: loop invariant preservation proved
 p.adb:10:55: medium: range check might fail
 p.adb:21:07: info: precondition proved
 p.ads:18:14: info: postcondition proved
+p.ads:21:13: info: initialization of "Get_Plain.X" proved
+p.ads:21:13: info: initialization of "Get_Plain.Y" proved
+p.ads:23:13: info: initialization of "Plain_Is_Dot" proved
+p.ads:26:13: info: initialization of "Some_Plain_Is_Dot" proved
 p.ads:33:14: info: postcondition proved

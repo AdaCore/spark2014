@@ -1,4 +1,8 @@
+dyn.adb:2:13: info: initialization of "F" proved
 dyn.adb:3:04: info: range check proved
+dyn.adb:3:16: info: initialization of "R1b" proved
+dyn.adb:3:21: info: initialization of "R2b" proved
 dyn.adb:3:27: info: length check proved
+dyn.adb:3:30: info: initialization of "R3b" proved
 dyn.adb:3:30: info: overflow check proved
 dyn.adb:3:30: info: range check proved

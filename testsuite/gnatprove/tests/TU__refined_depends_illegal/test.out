@@ -8,7 +8,11 @@ refined_depends_illegal.adb:69:14: constituent "Z" is missing in output list
 refined_depends_illegal.adb:69:14: output state "State2" must be replaced by all its constituents in dependence refinement
 refined_depends_illegal.adb:79:48: duplicate use of item "W"
 refined_depends_illegal.adb:87:48: cannot mix null and non-null dependency items
+refined_depends_illegal_2.adb:5:04: info: initialization of "X" proved
+refined_depends_illegal_2.adb:5:07: info: initialization of "Y" proved
 refined_depends_illegal_2.adb:11:18: "Y" must be listed in the Refined_Depends aspect of "P1" (SPARK RM 6.1.4(13))
+refined_depends_illegal_2.adb:16:42: info: initialization of "X" proved
+refined_depends_illegal_2.adb:16:45: info: initialization of "Y" proved
 refined_depends_illegal_2.adb:18:31: medium: missing dependency "Y => Par"
    compilation of refined_depends_illegal_2.adb failed
 

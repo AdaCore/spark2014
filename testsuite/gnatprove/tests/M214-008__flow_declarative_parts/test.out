@@ -1,11 +1,26 @@
 test.adb:10:14: warning: subprogram "Tons_Of_Types" has no effect
+test.adb:24:44: info: initialization of "Bad_Constant" proved
+test.adb:25:44: info: initialization of "Ugly_Constant" proved
 test.adb:30:07: warning: analyzing unreferenced procedure "Nested"
 test.adb:30:17: warning: subprogram "Nested" has no effect
 test.adb:43:04: warning: analyzing unreferenced procedure "Test_01"
+test.adb:44:23: info: initialization of "L" proved
+test.adb:55:24: info: initialization of "B" proved
+test.adb:61:12: info: initialization of "Tmp" proved
 test.adb:66:24: warning: unused initial value of "A"
+test.adb:67:24: info: initialization of "B" proved
 test.adb:69:09: medium: missing dependency "null => A"
 test.adb:69:26: medium: incorrect dependency "B => A"
+test.adb:78:24: info: initialization of "S" proved
+test.adb:86:24: info: initialization of "A" proved
 test.adb:90:33: high: "A" is not initialized
+test.adb:93:12: info: initialization of "Tmp" proved
+test.adb:96:24: info: initialization of "A" proved
 test.adb:100:31: high: "A" is not initialized
+test.adb:101:41: info: initialization of "C" proved
+test.adb:111:24: info: initialization of "A" proved
+test.adb:112:24: info: initialization of "B" proved
 test.adb:122:24: warning: unused initial value of "A"
+test.adb:123:24: info: initialization of "B" proved
 test.adb:133:24: warning: unused initial value of "A"
+test.adb:134:24: info: initialization of "B" proved

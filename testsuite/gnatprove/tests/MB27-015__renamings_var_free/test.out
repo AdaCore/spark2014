@@ -10,6 +10,11 @@ q.adb:79:26: renamed index cannot depend on "V" (SPARK RM 4.4(2))
 q.adb:81:26: renamed index cannot depend on "V" (SPARK RM 4.4(2))
 q.adb:85:26: renamed index cannot depend on "V" (SPARK RM 4.4(2))
 q.adb:87:26: renamed index cannot depend on "V" (SPARK RM 4.4(2))
+q.ads:38:13: info: initialization of "Get_V" proved
+q.ads:41:13: info: initialization of "Get_P" proved
+q.ads:43:13: info: initialization of "Get_Arr" proved
+q.ads:46:13: info: initialization of "Get_Arr_P1" proved
+q.ads:48:13: info: initialization of "Get_Arr_P2" proved
 r.ads:24:25: renamed index cannot depend on "V" (SPARK RM 4.4(2))
    compilation of p.ads failed
    compilation of q.adb failed

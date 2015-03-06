@@ -1,5 +1,7 @@
-
 find.adb:6:10: info: loop invariant initialization proved
 find.adb:6:10: info: loop invariant preservation proved
+find.adb:6:33: info: initialization of "Res" proved
+find.adb:12:14: info: initialization of "Res" proved
+find.ads:3:13: info: initialization of "Find" proved
 find.ads:4:20: info: postcondition proved
 find.ads:5:42: info: index check proved

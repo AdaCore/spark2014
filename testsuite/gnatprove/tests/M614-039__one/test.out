@@ -1,13 +1,22 @@
+unconstr.adb:8:13: info: initialization of "Equality" proved
 unconstr.adb:9:20: info: postcondition proved
+unconstr.adb:17:13: info: initialization of "Constr_Call" proved
 unconstr.adb:18:20: info: postcondition proved
 unconstr.adb:22:31: info: length check proved
 unconstr.adb:23:33: info: length check proved
+unconstr.adb:25:22: info: initialization of "S" proved
+unconstr.adb:25:25: info: initialization of "S2" proved
+unconstr.adb:26:14: info: initialization of "B" proved
+unconstr.adb:29:13: info: initialization of "Unconstr_Call" proved
 unconstr.adb:30:20: info: postcondition proved
 unconstr.adb:44:14: info: length check proved, in call inlined at unconstr.adb:49
 unconstr.adb:47:04: warning: analyzing unreferenced procedure "Constr_Return_Call"
 unconstr.adb:47:14: warning: subprogram "Constr_Return_Call" has no effect
 unconstr.adb:52:13: info: index check proved
+unconstr.adb:52:16: info: initialization of "S" proved
+unconstr.adb:56:13: info: initialization of "Unconstr_Return" proved
 unconstr.adb:57:20: info: postcondition proved
 unconstr.adb:61:07: info: range check proved
 unconstr.adb:61:30: info: length check proved
+unconstr.adb:63:14: info: initialization of "S" proved
 unconstr.ads:3:14: warning: subprogram "P" has no effect

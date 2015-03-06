@@ -1,10 +1,21 @@
+divide.adb:7:13: info: initialization of "R" proved
 divide.adb:8:10: info: loop invariant initialization proved
 divide.adb:8:10: info: loop invariant preservation proved
+divide.adb:8:33: info: initialization of "Q" proved
 divide.adb:8:40: info: overflow check proved
+divide.adb:8:42: info: initialization of "R" proved
 divide.adb:9:50: info: overflow check proved
 divide.adb:9:54: info: overflow check proved
+divide.adb:11:15: info: initialization of "Q" proved
 divide.adb:11:17: info: overflow check proved
+divide.adb:12:15: info: initialization of "R" proved
 divide.adb:12:17: info: overflow check proved
+divide.ads:2:41: info: initialization of "Q" proved
+divide.ads:2:44: info: initialization of "R" proved
 divide.ads:4:21: info: postcondition proved
+divide.ads:4:25: info: initialization of "Q" proved
 divide.ads:4:27: info: overflow check proved
 divide.ads:4:31: info: overflow check proved
+divide.ads:4:33: info: initialization of "R" proved
+divide.ads:4:44: info: initialization of "R" proved
+divide.ads:4:59: info: initialization of "R" proved

@@ -15,8 +15,10 @@ ar.adb:39:04: warning: analyzing unreferenced procedure "Test4"
 ar.adb:43:15: info: index check proved
 ar.adb:43:25: info: range check proved
 ar.adb:52:04: warning: analyzing unreferenced procedure "Test5"
+ar.adb:52:21: info: initialization of "A" proved
 ar.adb:55:18: info: length check proved
 ar.adb:55:45: medium: range check might fail
+ar.adb:56:13: info: initialization of "A" proved
 ar.adb:64:04: warning: analyzing unreferenced procedure "Test6"
 ar.adb:68:21: medium: length check might fail
 ar.adb:68:24: info: range check proved

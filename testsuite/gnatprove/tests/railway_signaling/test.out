@@ -2,17 +2,27 @@ trains.adb:9:14: info: postcondition proved
 trains.adb:9:28: info: range check proved
 trains.adb:10:48: info: index check proved
 trains.adb:28:11: info: range check proved
+trains.adb:28:40: info: initialization of "R4b" proved
 trains.adb:33:10: info: loop invariant initialization proved
 trains.adb:33:10: info: loop invariant preservation proved
 trains.adb:35:47: info: index check proved
+trains.adb:53:40: info: initialization of "Cur_Position.Pos_Begin" proved
+trains.adb:53:40: info: initialization of "Cur_Position.Track_Begin" proved
+trains.adb:53:40: info: initialization of "Cur_Position.Track_End" proved
 trains.adb:57:10: info: assertion proved
 trains.adb:58:25: medium: assertion might fail, requires (Previous_Tracks_On_Orange_Or_Red)
 trains.adb:59:10: info: assertion proved
 trains.adb:65:25: medium: assertion might fail, requires (Previous_Tracks_On_Orange_Or_Red)
+trains.adb:69:49: info: initialization of "Cur_Position.Track_End" proved
 trains.adb:72:10: info: assertion proved
 trains.adb:73:10: info: assertion proved
+trains.adb:81:41: info: initialization of "Cur_Position.Pos_Begin" proved
+trains.adb:81:41: info: initialization of "Cur_Position.Track_Begin" proved
+trains.adb:81:41: info: initialization of "Cur_Position.Track_End" proved
+trains.adb:83:16: info: initialization of "Prev" proved
 trains.adb:84:39: info: index check proved
 trains.adb:86:16: info: precondition proved
+trains.adb:86:37: info: initialization of "Prev" proved
 trains.adb:86:37: info: range check proved
 trains.adb:89:13: info: loop invariant initialization proved
 trains.adb:89:13: medium: loop invariant might fail after first iteration
@@ -29,8 +39,10 @@ trains.adb:110:36: info: index check proved
 trains.adb:110:70: info: index check proved
 trains.adb:112:10: info: assertion proved
 trains.adb:113:10: info: assertion proved
+trains.adb:135:22: info: initialization of "Prev" proved
 trains.adb:136:45: info: index check proved
 trains.adb:138:37: info: index check proved
+trains.adb:138:43: info: initialization of "Prev" proved
 trains.adb:141:19: info: loop invariant initialization proved
 trains.adb:141:19: info: loop invariant preservation proved
 trains.adb:143:68: info: range check proved
@@ -48,6 +60,10 @@ trains.ads:48:12: info: length check proved
 trains.ads:49:12: info: length check proved
 trains.ads:50:12: info: length check proved
 trains.ads:51:12: info: length check proved
+trains.ads:55:13: info: initialization of "No_Track_Precedes_Itself" proved
+trains.ads:80:13: info: initialization of "Entering_A_Track" proved
+trains.ads:85:13: info: initialization of "Inside_A_Track" proved
+trains.ads:91:13: info: initialization of "One_Train_At_Most_Per_Track" proved
 trains.ads:92:16: info: range check proved
 trains.ads:93:19: info: range check proved
 trains.ads:95:25: info: index check proved
@@ -58,9 +74,14 @@ trains.ads:97:25: info: index check proved
 trains.ads:97:55: info: index check proved
 trains.ads:98:25: info: index check proved
 trains.ads:98:55: info: index check proved
+trains.ads:110:13: info: initialization of "Occupied_Tracks_On_Red" proved
 trains.ads:111:16: info: range check proved
 trains.ads:112:33: info: index check proved
 trains.ads:113:33: info: index check proved
+trains.ads:116:13: info: initialization of "Get_Previous_Track" proved
+trains.ads:124:13: info: initialization of "Get_Other_Previous_Track" proved
+trains.ads:135:13: info: initialization of "Is_Previous_Track" proved
+trains.ads:144:13: info: initialization of "Previous_Tracks_On_Orange_Or_Red" proved
 trains.ads:145:16: info: range check proved
 trains.ads:147:45: info: index check proved
 trains.ads:148:31: info: index check proved
@@ -68,4 +89,10 @@ trains.ads:148:59: info: index check proved
 trains.ads:151:51: info: index check proved
 trains.ads:152:31: info: index check proved
 trains.ads:152:65: info: index check proved
+trains.ads:155:13: info: initialization of "Safe_Signaling" proved
+trains.ads:168:13: info: initialization of "Moving_Inside_Current_Tracks" proved
+trains.ads:175:13: info: initialization of "Moving_To_A_New_Track" proved
+trains.ads:183:13: info: initialization of "Moving_Away_From_Current_Track" proved
+trains.ads:191:13: info: initialization of "Valid_Move" proved
+trains.ads:220:07: info: initialization of "Result" proved
 trains.ads:228:14: medium: postcondition might fail

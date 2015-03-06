@@ -1,53 +1,82 @@
 for_loops.adb:9:04: warning: assuming "Put_Line" has no effect on global items
 for_loops.adb:9:04: warning: no Global contract available for "Put_Line"
+for_loops.adb:14:24: info: initialization of "R2b" proved
 for_loops.adb:16:10: info: loop invariant preservation proved
 for_loops.adb:16:33: medium: loop invariant might fail in first iteration, requires Sum_Of (Counter)'Loop_Entry (Test1) > 0
+for_loops.adb:16:49: info: initialization of "Counter" proved
 for_loops.adb:18:10: warning: assuming "Put_Line" has no effect on global items
 for_loops.adb:18:10: warning: no Global contract available for "Put_Line"
+for_loops.adb:25:29: info: initialization of "R5b" proved
 for_loops.adb:29:10: info: loop invariant preservation proved
 for_loops.adb:29:33: medium: loop invariant might fail in first iteration, requires Sum_Of (Counter)'Loop_Entry (Test2) < 0
+for_loops.adb:29:49: info: initialization of "Counter" proved
 for_loops.adb:32:10: warning: assuming "Put_Line" has no effect on global items
 for_loops.adb:32:10: warning: no Global contract available for "Put_Line"
+for_loops.adb:40:30: info: initialization of "R8b" proved
+for_loops.adb:40:38: info: initialization of "Counter" proved
+for_loops.adb:42:28: info: initialization of "R10b" proved
 for_loops.adb:44:13: info: loop invariant initialization proved
 for_loops.adb:44:13: info: loop invariant preservation proved
+for_loops.adb:44:43: info: initialization of "Counter" proved
 for_loops.adb:46:13: warning: assuming "Put_Line" has no effect on global items
 for_loops.adb:46:13: warning: no Global contract available for "Put_Line"
+for_loops.adb:55:30: info: initialization of "R13b" proved
+for_loops.adb:55:38: info: initialization of "Counter" proved
+for_loops.adb:57:28: info: initialization of "R15b" proved
 for_loops.adb:59:13: warning: assuming "Put_Line" has no effect on global items
 for_loops.adb:59:13: warning: no Global contract available for "Put_Line"
 for_loops.adb:61:13: info: loop invariant initialization proved
 for_loops.adb:61:13: info: loop invariant preservation proved
+for_loops.adb:61:43: info: initialization of "Counter" proved
 optional.adb:10:04: warning: assuming "Put_Line" has no effect on global items
 optional.adb:10:04: warning: no Global contract available for "Put_Line"
 optional.adb:13:35: info: length check proved
 optional.adb:17:10: info: loop invariant initialization proved
 optional.adb:17:10: info: loop invariant preservation proved
+optional.adb:17:35: info: initialization of "TA" proved
+optional.adb:19:21: info: initialization of "TA" proved
 optional.adb:24:46: info: length check proved
 optional.adb:27:11: medium: array index check might fail
+optional.adb:27:26: info: initialization of "TA" proved
 optional.adb:31:13: info: loop invariant initialization proved
 optional.adb:31:36: medium: loop invariant might fail after first iteration, requires TA'Loop_Entry (Outer, Inner) = 0
+optional.adb:31:38: info: initialization of "TA" proved
 optional.adb:35:07: warning: assuming "Put_Line" has no effect on global items
 optional.adb:35:07: warning: no Global contract available for "Put_Line"
 utils.adb:10:29: info: range check proved
 utils.adb:10:34: medium: overflow check might fail
+utils.ads:2:13: info: initialization of "Sum_Of" proved
 while_loops.adb:9:04: warning: assuming "Put_Line" has no effect on global items
 while_loops.adb:9:04: warning: no Global contract available for "Put_Line"
+while_loops.adb:14:29: info: initialization of "Counter" proved
 while_loops.adb:16:10: warning: assuming "Put_Line" has no effect on global items
 while_loops.adb:16:10: warning: no Global contract available for "Put_Line"
 while_loops.adb:18:10: info: loop invariant initialization proved
 while_loops.adb:18:10: info: loop invariant preservation proved
+while_loops.adb:18:49: info: initialization of "Counter" proved
+while_loops.adb:20:21: info: initialization of "Counter" proved
 while_loops.adb:20:29: medium: overflow check might fail
+while_loops.adb:27:29: info: initialization of "Counter" proved
 while_loops.adb:32:10: info: loop invariant preservation proved
 while_loops.adb:32:33: medium: loop invariant might fail in first iteration, requires Sum_Of (Counter)'Loop_Entry (Test2) < 0
+while_loops.adb:32:49: info: initialization of "Counter" proved
 while_loops.adb:35:10: warning: assuming "Put_Line" has no effect on global items
 while_loops.adb:35:10: warning: no Global contract available for "Put_Line"
+while_loops.adb:36:21: info: initialization of "Counter" proved
 while_loops.adb:36:29: info: overflow check proved
+while_loops.adb:44:30: info: initialization of "Counter" proved
 while_loops.adb:48:13: info: loop invariant initialization proved
 while_loops.adb:48:13: info: loop invariant preservation proved
+while_loops.adb:48:43: info: initialization of "Counter" proved
 while_loops.adb:50:13: warning: assuming "Put_Line" has no effect on global items
 while_loops.adb:50:13: warning: no Global contract available for "Put_Line"
+while_loops.adb:53:21: info: initialization of "Counter" proved
 while_loops.adb:53:29: medium: overflow check might fail
+while_loops.adb:61:30: info: initialization of "Counter" proved
 while_loops.adb:65:13: info: loop invariant initialization proved
 while_loops.adb:65:13: info: loop invariant preservation proved
+while_loops.adb:65:43: info: initialization of "Counter" proved
 while_loops.adb:67:13: warning: assuming "Put_Line" has no effect on global items
 while_loops.adb:67:13: warning: no Global contract available for "Put_Line"
+while_loops.adb:70:21: info: initialization of "Counter" proved
 while_loops.adb:70:29: info: overflow check proved

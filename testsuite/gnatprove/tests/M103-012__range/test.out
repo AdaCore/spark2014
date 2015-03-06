@@ -1,2 +1,3 @@
+p.adb:7:17: info: initialization of "T" proved, in call inlined at p.adb:14
 p.adb:7:17: medium: range check might fail, in call inlined at p.adb:14
 p.adb:12:26: info: length check proved

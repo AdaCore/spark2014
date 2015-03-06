@@ -1,4 +1,5 @@
 concat.adb:4:14: info: length check proved
+concat.adb:5:14: info: initialization of "X" proved
 concat.adb:5:14: info: range check proved
 concat.adb:5:26: info: length check proved
 concat.adb:5:26: info: range check proved

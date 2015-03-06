@@ -1,12 +1,20 @@
 lists.adb:3:21: info: precondition proved
 lists.adb:5:13: info: precondition proved
+lists.adb:5:29: info: initialization of "C" proved
 lists.adb:6:10: info: loop invariant initialization proved
 lists.adb:6:10: info: loop invariant preservation proved
 lists.adb:7:13: info: precondition proved
 lists.adb:7:27: info: precondition proved
+lists.adb:7:49: info: initialization of "C" proved
 lists.adb:7:55: info: precondition proved
 lists.adb:8:13: info: precondition proved
+lists.adb:8:25: info: initialization of "C" proved
+lists.adb:9:20: info: initialization of "C" proved
 lists.adb:11:10: info: precondition proved
+lists.adb:11:19: info: initialization of "C" proved
+lists.ads:4:13: info: initialization of "My_Eq" proved
+lists.ads:6:12: info: initialization of "Oeq" proved
+lists.ads:8:15: info: initialization of "Search" proved
 lists.ads:9:06: info: complete contract cases proved
 lists.ads:9:06: info: disjoint contract cases proved
 lists.ads:10:10: info: precondition proved
@@ -20,6 +28,7 @@ lists.ads:11:54: info: precondition proved
 lists.ads:12:21: info: precondition proved
 lists.ads:12:35: info: precondition proved
 lists.ads:12:75: info: precondition proved
+lists.ads:14:15: info: initialization of "Search2" proved
 lists.ads:15:16: info: postcondition proved
 lists.ads:15:20: info: precondition proved
 lists.ads:16:09: info: precondition proved

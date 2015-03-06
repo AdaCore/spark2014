@@ -1,9 +1,11 @@
 int_list.adb:4:07: info: precondition proved
 int_list.adb:8:24: info: precondition proved
 int_list.adb:10:13: info: precondition proved
+int_list.adb:10:29: info: initialization of "C" proved
 int_list.adb:11:10: info: loop invariant initialization proved
 int_list.adb:11:10: info: loop invariant preservation proved
 int_list.adb:12:13: info: precondition proved
+int_list.adb:12:40: info: initialization of "C" proved
 int_list.adb:13:13: info: precondition proved
 int_list.adb:13:26: info: precondition proved
 int_list.adb:14:13: info: precondition proved
@@ -15,9 +17,14 @@ int_list.adb:17:20: info: precondition proved
 int_list.adb:18:20: info: precondition proved
 int_list.adb:18:37: info: precondition proved
 int_list.adb:19:10: info: precondition proved
+int_list.adb:19:30: info: initialization of "C" proved
 int_list.adb:19:33: info: precondition proved
+int_list.adb:19:45: info: initialization of "C" proved
 int_list.adb:19:48: info: range check proved
 int_list.adb:20:10: info: precondition proved
+int_list.adb:20:19: info: initialization of "C" proved
+int_list.ads:8:13: info: initialization of "My_Eq" proved
+int_list.ads:10:12: info: initialization of "Oeq" proved
 int_list.ads:15:14: info: precondition proved
 int_list.ads:17:08: info: postcondition proved
 int_list.ads:17:08: info: precondition proved

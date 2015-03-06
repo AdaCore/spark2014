@@ -1,19 +1,83 @@
+actuator.adb:14:41: info: initialization of "Output_Ext" proved
+actuator.adb:22:41: info: initialization of "Output_Ext" proved
+advancebutton-raw.ads:7:20: info: initialization of "Pressed" proved
+advancebutton.adb:10:04: info: initialization of "AdvanceMode" proved
+advancebutton.adb:11:04: info: initialization of "AdvPressed" proved
+advancebutton.adb:12:04: info: initialization of "AdvTimer" proved
+advancebutton.adb:18:41: info: initialization of "AdvanceMode" proved
+advancebutton.adb:26:41: info: initialization of "AdvanceMode" proved
+advancebutton.adb:54:10: info: initialization of "PressedNow" proved
+advancebutton.adb:54:29: info: initialization of "PressedBefore" proved
+advancebutton.adb:56:24: info: initialization of "TimePressed" proved
+advancebutton.adb:69:41: info: initialization of "AdvPressed" proved
+advancebutton.adb:82:21: info: initialization of "StillPressed" proved
+advancebutton.adb:84:10: info: initialization of "StillPressed" proved
+advancebutton.adb:85:13: info: initialization of "TimeNow" proved
 advancebutton.adb:86:34: info: range check proved
+advancebutton.adb:98:41: info: initialization of "AdvPressed" proved
+advancebutton.adb:105:21: info: initialization of "Pressed" proved
+advancebutton.adb:106:21: info: initialization of "Pressed" proved
+advancebutton.ads:25:13: info: initialization of "CurrentMode" proved
+advancebutton.ads:36:27: info: initialization of "Result" proved
+advancebutton.ads:44:26: info: initialization of "Result" proved
+advancebutton.ads:54:26: info: initialization of "Result" proved
+clock.ads:7:19: info: initialization of "Time" proved
+display.adb:13:41: info: initialization of "Output_Ext" proved
+heatingsystem_dfa.adb:16:39: info: initialization of "Actuator.Outputs" proved
+heatingsystem_dfa.adb:17:38: info: initialization of "Display.Outputs" proved
+heatingsystem_dfa.adb:18:40: info: initialization of "Indicator.Outputs" proved
+heatingsystem_dfa.adb:55:40: info: initialization of "Display.Outputs" proved
 heatingsystem_dfa.adb:65:20: info: division check proved
 heatingsystem_dfa.adb:66:23: info: division check proved
 heatingsystem_dfa.adb:66:42: info: division check proved
 heatingsystem_dfa.adb:68:38: info: length check proved
 heatingsystem_dfa.adb:68:44: info: division check proved
+heatingsystem_dfa.adb:69:39: info: initialization of "Hour" proved
 heatingsystem_dfa.adb:69:44: info: division check proved
 heatingsystem_dfa.adb:70:46: info: division check proved
+heatingsystem_dfa.adb:71:39: info: initialization of "Minute" proved
 heatingsystem_dfa.adb:71:46: info: division check proved
+heatingsystem_dfa.adb:72:22: info: initialization of "TheDisplay" proved
+heatingsystem_dfa.adb:95:16: info: initialization of "SlowAdvance" proved
 heatingsystem_dfa.adb:96:49: info: division check proved
+heatingsystem_dfa.adb:100:16: info: initialization of "ChangeToFastMode" proved
+heatingsystem_dfa.adb:106:16: info: initialization of "FastAdvance" proved
 heatingsystem_dfa.adb:107:54: info: division check proved
+heatingsystem_dfa.adb:111:16: info: initialization of "ChangeToSlowMode" proved
 heatingsystem_dfa.adb:124:22: info: postcondition proved
 heatingsystem_dfa.adb:124:48: info: division check proved
 heatingsystem_dfa.adb:127:30: info: division check proved
+heatingsystem_dfa.adb:135:40: info: initialization of "Display.Outputs" proved
+heatingsystem_dfa.adb:158:23: info: initialization of "Timer" proved
+heatingsystem_dfa.adb:163:23: info: initialization of "Timer" proved
 heatingsystem_dfa.adb:166:32: info: index check proved
+heatingsystem_dfa.adb:166:32: info: initialization of "SwitchPosition" proved
+heatingsystem_dfa.adb:167:33: info: initialization of "Timer" proved
 heatingsystem_dfa.adb:168:23: info: index check proved
+heatingsystem_dfa.adb:168:23: info: initialization of "SwitchPosition" proved
+heatingsystem_dfa.adb:168:39: info: initialization of "SwitchPosition" proved
+heatingsystem_dfa.adb:168:42: info: initialization of "Timer" proved
+heatingsystem_dfa.adb:171:22: info: initialization of "Timer" proved
+heatingsystem_dfa.adb:180:43: info: initialization of "Indicator.Outputs" proved
+heatingsystem_dfa.adb:181:42: info: initialization of "Actuator.Outputs" proved
 heatingsystem_dfa.adb:201:44: medium: "Actuator.Outputs" might not be written
 heatingsystem_dfa.adb:214:44: medium: "Actuator.Outputs" might not be written
+heatingsystem_dfa.adb:227:16: info: initialization of "IsBetween" proved
+heatingsystem_dfa.adb:237:45: info: initialization of "Actuator.Outputs" proved
+heatingsystem_dfa.adb:238:46: info: initialization of "Indicator.Outputs" proved
+heatingsystem_dfa.adb:263:17: info: initialization of "CurrentTime" proved
+heatingsystem_dfa.adb:266:12: info: initialization of "ModeSetting" proved
+heatingsystem_dfa.adb:272:37: info: initialization of "CurrentTime" proved
+heatingsystem_dfa.adb:279:07: info: initialization of "AboveTemp" proved
+heatingsystem_dfa.adb:279:07: info: initialization of "MayOperate" proved
 heatingsystem_dfa.adb:288:28: info: length check proved
+heatingsystem_dfa.adb:294:07: info: initialization of "ClockOffset" proved
+heatingsystem_dfa.adb:294:07: info: initialization of "OnOffTime" proved
+heatingsystem_dfa.adb:295:07: info: initialization of "ClockOffset" proved
+heatingsystem_dfa.adb:295:07: info: initialization of "HeatingIsOn" proved
+heatingsystem_dfa.adb:295:07: info: initialization of "OnOffTime" proved
+indicator.adb:14:41: info: initialization of "Output_Ext" proved
+indicator.adb:22:41: info: initialization of "Output_Ext" proved
+modeswitch.ads:6:20: info: initialization of "Value" proved
+programswitch.ads:6:20: info: initialization of "Value" proved
+thermostat.ads:16:25: info: initialization of "Result" proved

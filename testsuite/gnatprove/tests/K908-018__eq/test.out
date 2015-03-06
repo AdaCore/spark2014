@@ -1,2 +1,4 @@
+pack.ads:10:13: info: initialization of "Equal" proved
 pack.ads:11:19: info: postcondition proved
+pack.ads:13:13: info: initialization of "Equal__2" proved
 pack.ads:14:19: info: postcondition proved

@@ -1,6 +1,12 @@
+foo.adb:6:19: info: initialization of "N" proved
+foo.adb:13:19: info: initialization of "N" proved
 foo.adb:21:14: medium: missing dependency "X => X"
+foo.adb:21:23: info: initialization of "N" proved
 foo.adb:22:09: expected to see "X" on the left-hand-side of a dependency relation
+foo.adb:28:26: info: initialization of "N" proved
+foo.adb:35:26: info: initialization of "N" proved
 foo.adb:42:14: medium: missing dependency "X => X"
+foo.adb:42:30: info: initialization of "N" proved
 foo.adb:43:09: expected to see "X" on the left-hand-side of a dependency relation
    compilation of foo.adb failed
 

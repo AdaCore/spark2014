@@ -1,2 +1,3 @@
+main.adb:5:09: info: initialization of "Var" proved
 p.adb:4:40: medium: overflow check might fail
 p.ads:5:09: warning: dynamic type predicate ignored (not yet supported)

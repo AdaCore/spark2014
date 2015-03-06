@@ -1,22 +1,52 @@
 search.adb:19:10: info: range check proved
 search.adb:20:24: medium: assertion might fail, requires Found = 0 and not Found1 and not Found2) or else (Found = 1 and (Found1 or Found2)) or else (Found = 2 and Found1 and Found2
+search.adb:20:25: info: initialization of "Found" proved
+search.adb:20:43: info: initialization of "Found1" proved
+search.adb:20:58: info: initialization of "Found2" proved
+search.adb:23:24: info: initialization of "Found1" proved
 search.adb:23:24: medium: assertion might fail, requires Found1 = False or else Found2 = false
+search.adb:23:47: info: initialization of "Found2" proved
 search.adb:24:24: medium: assertion might fail, requires not Found1 or else Table(Index1) = Value1
+search.adb:24:28: info: initialization of "Found1" proved
+search.adb:24:49: info: initialization of "Index1" proved
 search.adb:24:49: medium: array index check might fail
 search.adb:25:24: medium: assertion might fail, requires not Found2 or else Table(Index2) = Value2
+search.adb:25:28: info: initialization of "Found2" proved
+search.adb:25:49: info: initialization of "Index2" proved
 search.adb:25:49: medium: array index check might fail
 search.adb:26:09: info: assertion proved
+search.adb:26:24: info: initialization of "Found" proved
+search.adb:27:16: info: initialization of "Found1" proved
+search.adb:30:21: info: initialization of "Found" proved
 search.adb:30:27: info: overflow check proved
 search.adb:31:12: info: assertion proved
+search.adb:31:27: info: initialization of "Found1" proved
+search.adb:31:43: info: initialization of "Index1" proved
 search.adb:32:12: info: assertion proved
+search.adb:32:27: info: initialization of "Found" proved
+search.adb:34:16: info: initialization of "Found2" proved
+search.adb:37:21: info: initialization of "Found" proved
 search.adb:37:27: info: overflow check proved
 search.adb:38:12: info: assertion proved
+search.adb:38:27: info: initialization of "Found2" proved
+search.adb:38:43: info: initialization of "Index2" proved
 search.adb:39:12: info: assertion proved
+search.adb:39:27: info: initialization of "Found" proved
+search.adb:41:19: info: initialization of "Found" proved
 search.adb:53:19: info: index check proved
 search.adb:53:51: info: index check proved
+search.ads:9:06: info: initialization of "Found1" proved
+search.ads:10:06: info: initialization of "Found2" proved
+search.ads:11:06: info: initialization of "Index1" proved
+search.ads:12:06: info: initialization of "Index2" proved
 search.ads:13:25: medium: postcondition might fail
+search.ads:13:29: info: initialization of "Found1" proved
+search.ads:13:50: info: initialization of "Index1" proved
 search.ads:13:50: medium: array index check might fail
+search.ads:14:29: info: initialization of "Found2" proved
+search.ads:14:50: info: initialization of "Index2" proved
 search.ads:14:50: medium: array index check might fail
+search.ads:16:12: info: initialization of "Check_Index" proved
 search.ads:24:25: info: postcondition proved
 search.ads:24:53: info: index check proved
 search.ads:25:55: info: index check proved

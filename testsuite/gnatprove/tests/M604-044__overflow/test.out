@@ -6,3 +6,4 @@ misovattr.adb:8:07: info: assertion proved
 misovattr.adb:8:35: medium: range check might fail
 misovattr.adb:9:07: info: assertion proved
 misovattr.adb:9:35: medium: range check might fail
+misovattr.ads:7:13: info: initialization of "Range_Check_Error" proved

@@ -1,19 +1,51 @@
 harness.adb:3:11: warning: subprogram "Harness" has no effect
 harness.adb:10:04: info: precondition proved
+harness.adb:10:10: info: initialization of "R.Data" proved
+harness.adb:10:10: info: initialization of "R.First" proved
+harness.adb:10:10: info: initialization of "R.Length" proved
 harness.adb:11:04: info: precondition proved
+harness.adb:11:10: info: initialization of "R.Data" proved
+harness.adb:11:10: info: initialization of "R.First" proved
+harness.adb:11:10: info: initialization of "R.Length" proved
 harness.adb:12:04: info: precondition proved
+harness.adb:12:09: info: initialization of "R.Data" proved
+harness.adb:12:09: info: initialization of "R.First" proved
+harness.adb:12:09: info: initialization of "R.Length" proved
+harness.adb:13:19: info: initialization of "H" proved
 harness.adb:13:19: medium: assertion might fail, requires H = X
 harness.adb:14:04: info: precondition proved
+harness.adb:14:10: info: initialization of "R.Data" proved
+harness.adb:14:10: info: initialization of "R.First" proved
+harness.adb:14:10: info: initialization of "R.Length" proved
 harness.adb:15:04: info: precondition proved
+harness.adb:15:09: info: initialization of "R.Data" proved
+harness.adb:15:09: info: initialization of "R.First" proved
+harness.adb:15:09: info: initialization of "R.Length" proved
+harness.adb:16:19: info: initialization of "H" proved
 harness.adb:16:19: medium: assertion might fail, requires H = Y
 harness.adb:17:04: info: precondition proved
+harness.adb:17:09: info: initialization of "R.Data" proved
+harness.adb:17:09: info: initialization of "R.First" proved
+harness.adb:17:09: info: initialization of "R.Length" proved
+harness.adb:18:19: info: initialization of "H" proved
 harness.adb:18:19: medium: assertion might fail, requires H = Z
 ring_buf.adb:9:29: info: length check proved
 ring_buf.adb:15:36: info: division check proved
 ring_buf.adb:16:28: info: range check proved
 ring_buf.adb:23:32: info: division check proved
 ring_buf.adb:24:28: info: range check proved
+ring_buf.ads:35:13: info: initialization of "Is_Full" proved
+ring_buf.ads:37:13: info: initialization of "Is_Empty" proved
+ring_buf.ads:39:21: info: initialization of "R.Data" proved
+ring_buf.ads:39:21: info: initialization of "R.First" proved
+ring_buf.ads:39:21: info: initialization of "R.Length" proved
 ring_buf.ads:40:19: info: postcondition proved
+ring_buf.ads:40:30: info: initialization of "R.Data" proved
+ring_buf.ads:40:30: info: initialization of "R.First" proved
+ring_buf.ads:40:30: info: initialization of "R.Length" proved
+ring_buf.ads:42:13: info: initialization of "Head" proved
 ring_buf.ads:47:19: info: postcondition proved
+ring_buf.ads:49:43: info: initialization of "Element" proved
 ring_buf.ads:52:15: info: postcondition proved
 ring_buf.ads:52:52: info: precondition proved
+ring_buf.ads:52:67: info: initialization of "Element" proved

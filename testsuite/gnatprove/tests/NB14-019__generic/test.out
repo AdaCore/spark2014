@@ -1,1 +1,6 @@
+gen.ads:4:04: info: initialization of "Y" proved, in instantiation at user.adb:7
+gen.ads:6:14: info: initialization of "Y" proved, in instantiation at user.adb:7
+user.adb:7:26: info: initialization of "X" proved
+user.adb:9:10: info: initialization of "Y" proved
 user.adb:10:19: medium: assertion might fail, requires not X
+user.adb:10:23: info: initialization of "X" proved

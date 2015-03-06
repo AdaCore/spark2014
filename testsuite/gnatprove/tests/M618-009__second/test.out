@@ -1,3 +1,5 @@
 pkg_a.adb:5:61: info: overflow check proved
 pkg_a.adb:9:06: warning: unused assignment
 pkg_a.adb:9:09: medium: precondition might fail
+pkg_a.ads:6:04: info: initialization of "X" proved
+pkg_a.ads:9:13: info: initialization of "Do_Something" proved

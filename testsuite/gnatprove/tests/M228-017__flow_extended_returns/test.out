@@ -1,3 +1,12 @@
+extended_returns.adb:7:07: info: initialization of "Result.A" proved
 extended_returns.adb:7:07: medium: "Result.B" might not be initialized
 extended_returns.adb:7:07: medium: "Result.C" might not be initialized
 extended_returns.adb:7:07: medium: "Result.D" might not be initialized
+extended_returns.adb:22:07: info: initialization of "X" proved
+extended_returns.adb:35:07: info: initialization of "Retarded_Var" proved
+extended_returns.ads:17:13: info: initialization of "Init_Record.A" proved
+extended_returns.ads:17:13: info: initialization of "Init_Record.B" proved
+extended_returns.ads:17:13: info: initialization of "Init_Record.C" proved
+extended_returns.ads:17:13: info: initialization of "Init_Record.D" proved
+extended_returns.ads:21:13: info: initialization of "Ret_Int" proved
+extended_returns.ads:24:13: info: initialization of "Simple_Extended" proved

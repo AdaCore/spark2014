@@ -1,2 +1,5 @@
+ext_pack.adb:5:04: info: initialization of "Step" proved
 ext_pack.adb:9:14: medium: overflow check might fail
 ext_pack.adb:10:20: medium: overflow check might fail
+ext_pack.ads:6:04: info: initialization of "C" proved
+pack.ads:7:04: info: initialization of "N" proved

@@ -1,4 +1,5 @@
 unreferenced_unmodified.adb:6:04: warning: analyzing unreferenced function "Return_5"
+unreferenced_unmodified.adb:6:13: info: initialization of "Return_5" proved
 unreferenced_unmodified.adb:6:23: warning: unused variable "X"
 unreferenced_unmodified.adb:6:26: warning: unused variable "Y"
 unreferenced_unmodified.adb:6:40: warning: unused variable "Rec"

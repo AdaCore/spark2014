@@ -1,5 +1,10 @@
+assert_loop_14.adb:7:16: info: initialization of "I" proved
 assert_loop_14.adb:8:10: info: loop invariant initialization proved
 assert_loop_14.adb:8:10: info: loop invariant preservation proved
+assert_loop_14.adb:10:46: info: initialization of "I" proved
 assert_loop_14.adb:10:54: info: index check proved
+assert_loop_14.adb:11:15: info: initialization of "I" proved
 assert_loop_14.adb:11:17: info: range check proved
+assert_loop_14.adb:14:17: info: initialization of "I" proved
+assert_loop_14.ads:7:13: info: initialization of "Value_present" proved
 assert_loop_14.ads:8:19: info: postcondition proved

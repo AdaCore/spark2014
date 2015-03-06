@@ -1,0 +1,23 @@
+double_list.adb:16:04: info: initialization of "Memory" proved, in instantiation at list_handler.adb:11
+double_list.adb:17:04: info: initialization of "Count" proved, in instantiation at list_handler.adb:11
+double_list.adb:18:04: info: initialization of "Free_List" proved, in instantiation at list_handler.adb:11
+double_list.adb:19:04: info: initialization of "Free" proved, in instantiation at list_handler.adb:11
+double_list.adb:23:40: info: initialization of "Memory" proved, in instantiation at list_handler.adb:11
+double_list.adb:23:48: info: initialization of "Count" proved, in instantiation at list_handler.adb:11
+double_list.adb:23:55: info: initialization of "Free_List" proved, in instantiation at list_handler.adb:11
+double_list.adb:23:66: info: initialization of "Free" proved, in instantiation at list_handler.adb:11
+double_list.adb:25:26: info: initialization of "Count" proved, in instantiation at list_handler.adb:11
+double_list.adb:36:28: info: initialization of "Free_List" proved, in instantiation at list_handler.adb:11
+double_list.adb:63:30: info: initialization of "New_Pointer" proved, in instantiation at list_handler.adb:11
+double_list.adb:64:54: info: initialization of "New_Pointer" proved, in instantiation at list_handler.adb:11
+double_list.adb:65:41: info: initialization of "New_Pointer" proved, in instantiation at list_handler.adb:11
+double_list.ads:9:26: info: initialization of "Count" proved, in instantiation at list_handler.adb:11
+double_list.ads:18:16: info: initialization of "Count" proved, in instantiation at list_handler.adb:11
+double_list.ads:22:29: info: initialization of "Status" proved, in instantiation at list_handler.adb:11
+double_list.ads:27:13: info: initialization of "Back.Pointer" proved, in instantiation at list_handler.adb:11
+double_list.ads:31:13: info: initialization of "Size" proved, in instantiation at list_handler.adb:11
+list_handler.adb:24:13: info: initialization of "Current" proved
+list_handler.adb:25:56: info: initialization of "Current" proved
+list_handler.adb:26:20: info: initialization of "Status" proved
+list_handler.adb:26:54: info: initialization of "Current" proved
+list_handler.adb:27:21: info: initialization of "Current" proved

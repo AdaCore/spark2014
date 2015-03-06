@@ -1,14 +1,21 @@
 arrays.adb:21:50: info: length check proved
+arrays.adb:48:13: info: initialization of "Contains_A" proved
 arrays.adb:51:18: info: postcondition proved
+arrays.adb:57:13: info: initialization of "Contains_B" proved
 arrays.adb:62:22: medium: postcondition might fail, requires Contains_B'Result = S (C)
+arrays.adb:68:13: info: initialization of "Is_Id_1" proved
 arrays.adb:71:19: info: postcondition proved
+arrays.adb:77:13: info: initialization of "Is_Id_2" proved
 arrays.adb:80:19: medium: postcondition might fail, requires Is_Id_2'Result = (M (C) = C
 arrays.adb:94:07: info: assertion proved
+arrays.adb:94:26: info: initialization of "C_Old" proved
 arrays.adb:104:22: medium: assertion might fail, requires C = 'a'
 arrays.adb:112:22: medium: assertion might fail, requires M ('a') = 'a'
 arrays.adb:120:22: medium: assertion might fail, requires M (Elem_0) = Elem_0
 arrays.adb:128:22: medium: assertion might fail, requires MM ('a') (Elem_0) = Elem_1
+arrays.adb:131:22: info: initialization of "M" proved
 arrays.adb:136:07: info: assertion proved
+arrays.adb:136:22: info: initialization of "M" proved
 arrays.adb:144:22: medium: assertion might fail, requires R.Exists
 arrays.adb:146:07: info: assertion proved
 arrays.adb:148:22: medium: assertion might fail, requires R.A(1) = 5
@@ -22,19 +29,30 @@ arrays.adb:161:16: info: index check proved
 arrays.adb:170:07: info: assertion proved
 arrays.adb:170:31: info: index check proved
 arrays.adb:178:07: medium: assertion might fail
+arrays.adb:182:13: info: initialization of "Single_Char_Set" proved
 arrays.adb:183:19: info: postcondition proved
 arrays.adb:191:10: info: loop invariant initialization proved
 arrays.adb:191:10: info: loop invariant preservation proved
 arrays.adb:191:41: info: range check proved
+arrays.adb:192:57: info: initialization of "R" proved
 arrays.adb:192:57: medium: "R" might not be initialized
+arrays.adb:194:14: info: initialization of "R" proved
+arrays.adb:197:13: info: initialization of "Single_Char_Set_Broken" proved
 arrays.adb:199:22: medium: postcondition might fail, requires Single_Char_Set_Broken'Result (I) = (I > C
 arrays.adb:206:10: info: loop invariant initialization proved
 arrays.adb:206:10: info: loop invariant preservation proved
 arrays.adb:206:41: info: range check proved
+arrays.adb:207:57: info: initialization of "R" proved
 arrays.adb:207:57: medium: "R" might not be initialized
+arrays.adb:209:14: info: initialization of "R" proved
+arrays.adb:218:22: info: initialization of "A" proved
 arrays.adb:218:22: medium: assertion might fail, requires A ('A')
 arrays.adb:227:07: info: assertion proved
+arrays.adb:227:22: info: initialization of "A" proved
+arrays.adb:236:22: info: initialization of "A" proved
 arrays.adb:236:22: medium: assertion might fail, requires A ('A')
 arrays.adb:245:07: info: assertion proved
+arrays.adb:245:22: info: initialization of "A" proved
 arrays.adb:253:22: info: length check proved
+arrays.adb:254:22: info: initialization of "A" proved
 arrays.adb:254:22: medium: assertion might fail, requires A = Random_Array (5)

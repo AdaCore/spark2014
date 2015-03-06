@@ -1,0 +1,7 @@
+aggregates.adb:16:20: info: initialization of "Output.C1.X" proved
+aggregates.adb:16:20: info: initialization of "Output.C1.Y" proved
+aggregates.adb:16:20: info: initialization of "Output.C1.Z" proved
+aggregates.adb:16:20: info: initialization of "Output.C2.X" proved
+aggregates.adb:16:20: info: initialization of "Output.C2.Y" proved
+aggregates.adb:16:20: info: initialization of "Output.C2.Z" proved
+aggregates.adb:26:23: info: initialization of "Output.C2.X" proved

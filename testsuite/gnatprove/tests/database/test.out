@@ -1,9 +1,24 @@
 database.adb:39:07: warning: initialization has no effect
 database.adb:40:35: info: length check proved
+database.adb:40:46: info: initialization of "No_Account_Link.Available" proved
+database.adb:40:46: info: initialization of "No_Account_Link.Next" proved
+database.adb:40:46: info: initialization of "No_Account_Link.Prev" proved
+database.adb:44:16: info: initialization of "Some_Available" proved
+database.adb:47:16: info: initialization of "Is_Available" proved
+database.adb:50:42: info: initialization of "Account" proved
 database.adb:53:17: info: postcondition proved
+database.adb:53:35: info: initialization of "Account" proved
+database.adb:55:31: info: initialization of "Account" proved
 database.adb:61:17: info: postcondition proved
+database.adb:66:16: info: initialization of "Num_Available" proved
 database.adb:106:52: info: length check proved
+database.adb:106:63: info: initialization of "No_Account_Rec.Account" proved
+database.adb:106:63: info: initialization of "No_Account_Rec.Owner_Id" proved
+database.adb:106:63: info: initialization of "No_Account_Rec.Owner_Name" proved
 database.adb:110:46: info: length check proved
+database.adb:110:57: info: initialization of "No_Account_Balance.Account" proved
+database.adb:110:57: info: initialization of "No_Account_Balance.Value.Currency" proved
+database.adb:110:57: info: initialization of "No_Account_Balance.Value.Raw" proved
 database.adb:123:21: info: range check proved
 database.adb:124:17: info: index check proved
 database.adb:125:36: info: index check proved
@@ -12,17 +27,36 @@ database.adb:136:35: info: index check proved
 database.adb:142:44: info: index check proved
 database.adb:153:13: info: loop invariant initialization proved
 database.adb:153:13: info: loop invariant preservation proved
+database.adb:153:36: info: initialization of "Count" proved
+database.adb:155:25: info: initialization of "Count" proved
 database.adb:155:31: info: overflow check proved
+database.adb:158:17: info: initialization of "Count" proved
 database.adb:174:30: info: range check proved, in call inlined at database.adb:183
+database.adb:176:23: info: initialization of "Links" proved, in call inlined at database.adb:183
+database.adb:177:53: info: initialization of "Tmp_Prev" proved, in call inlined at database.adb:183
+database.adb:178:53: info: initialization of "Tmp_Next" proved, in call inlined at database.adb:183
 database.adb:252:19: info: precondition proved
+database.adb:255:56: info: initialization of "Account" proved
+database.adb:259:37: info: initialization of "Account" proved
 database.adb:273:10: info: precondition proved
 database.adb:284:22: info: precondition proved
 database.adb:297:17: info: precondition proved
 database.adb:303:42: info: precondition proved
 database.adb:315:27: info: precondition proved
 database.adb:321:42: info: precondition proved
+database.ads:32:13: info: initialization of "Existing" proved
+database.ads:34:13: info: initialization of "Belongs_To" proved
+database.ads:39:13: info: initialization of "Num_Accounts" proved
+database.ads:41:13: info: initialization of "Max_Account_Reached" proved
+database.ads:43:13: info: initialization of "Currency" proved
+database.ads:47:13: info: initialization of "Balance.Currency" proved
+database.ads:47:13: info: initialization of "Balance.Raw" proved
+database.ads:62:07: info: initialization of "Account" proved
 database.ads:65:14: info: postcondition proved
+database.ads:65:24: info: initialization of "Account" proved
+database.ads:66:37: info: initialization of "Account" proved
 database.ads:67:41: info: precondition proved
+database.ads:67:50: info: initialization of "Account" proved
 database.ads:88:41: info: precondition proved
 database.ads:107:14: info: precondition proved
 database.ads:108:14: info: postcondition proved
@@ -38,5 +72,10 @@ identity.ads:10:36: info: length check proved
 identity.ads:19:30: info: length check proved
 money.adb:6:33: info: range check proved
 money.adb:9:33: info: range check proved
+money.ads:25:13: info: initialization of "Is_Empty" proved
+money.ads:30:13: info: initialization of "Oadd.Currency" proved
+money.ads:30:13: info: initialization of "Oadd.Raw" proved
 money.ads:33:14: info: postcondition proved
+money.ads:35:13: info: initialization of "Osubtract.Currency" proved
+money.ads:35:13: info: initialization of "Osubtract.Raw" proved
 money.ads:38:14: info: postcondition proved

@@ -1,1 +1,3 @@
+swap_add_14.adb:9:20: info: initialization of "Temporary" proved
 swap_add_14.adb:12:38: medium: overflow check might fail
+swap_add_14.ads:12:13: info: initialization of "Add" proved

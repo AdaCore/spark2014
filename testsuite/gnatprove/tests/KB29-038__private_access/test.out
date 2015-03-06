@@ -1,1 +1,2 @@
 q.adb:6:14: medium: range check might fail
+q.adb:8:12: info: initialization of "Tmp" proved

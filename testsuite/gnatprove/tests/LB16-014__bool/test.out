@@ -1,3 +1,6 @@
+data.ads:8:13: info: initialization of "Is_Nat32" proved
+data.ads:10:13: info: initialization of "Get_Min_Nat32" proved
+data.ads:13:13: info: initialization of "Create_Type.Min_Nat32" proved
 data.ads:14:18: info: postcondition proved
 data.ads:15:24: info: precondition proved
 data.ads:33:24: info: discriminant check proved

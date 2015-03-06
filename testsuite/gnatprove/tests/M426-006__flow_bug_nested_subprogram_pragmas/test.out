@@ -1,1 +1,11 @@
+t3q5.adb:6:16: info: initialization of "Find_Smallest" proved
+t3q5.adb:20:33: info: initialization of "K" proved
+t3q5.adb:24:34: info: initialization of "K" proved
+t3q5.adb:30:67: info: initialization of "K" proved
+t3q5.adb:34:17: info: initialization of "K" proved
 t3q5.adb:46:10: warning: initialization has no effect
+t3q5.adb:49:46: info: initialization of "Temp" proved
+t3q5.adb:50:34: info: initialization of "T_Old" proved
+t3q5.adb:56:13: info: initialization of "Key" proved
+t3q5.adb:57:39: info: initialization of "Key" proved
+t3q5.ads:11:13: info: initialization of "Ordered" proved

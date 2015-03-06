@@ -1,13 +1,32 @@
 conv.adb:11:14: info: overflow check proved, in call inlined at conv.adb:15
+conv.adb:15:10: info: initialization of "X" proved
 conv.adb:15:10: info: range check proved
 conv.adb:16:04: info: assertion proved
+conv.adb:16:19: info: initialization of "Y" proved
+ident.adb:10:14: info: initialization of "X" proved
+ident.adb:30:14: info: initialization of "X" proved
+ident.adb:43:25: info: initialization of "X" proved
+ident.adb:44:22: info: initialization of "Res" proved
 ident.adb:44:22: medium: assertion might fail, requires Res = X
+ident.adb:44:28: info: initialization of "X" proved
 ident.adb:46:07: info: assertion proved
+ident.adb:46:22: info: initialization of "Res" proved
+ident.adb:46:28: info: initialization of "X" proved
 ident.adb:48:07: info: assertion proved
+ident.adb:48:22: info: initialization of "Res" proved
+ident.adb:48:28: info: initialization of "X" proved
+ident.adb:50:20: info: initialization of "X" proved
 ident.adb:50:20: info: range check proved
+ident.adb:51:22: info: initialization of "Y" proved
 ident.adb:51:22: medium: assertion might fail, requires Y = 9
+ident.adb:52:21: info: initialization of "X" proved
 ident.adb:52:21: info: range check proved
 ident.adb:53:07: info: assertion proved
+ident.adb:53:22: info: initialization of "Y" proved
+ident.adb:54:18: info: initialization of "X" proved
 ident.adb:54:18: info: range check proved
 ident.adb:55:07: info: assertion proved
+ident.adb:55:22: info: initialization of "Y" proved
+ident.ads:4:13: info: initialization of "Id_Public" proved
+ident.ads:5:44: info: initialization of "Y" proved
 ident.ads:6:14: warning: subprogram "Test" has no effect

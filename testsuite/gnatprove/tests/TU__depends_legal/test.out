@@ -1,3 +1,18 @@
+depends_legal_2.adb:14:04: info: initialization of "Rec1.A" proved
+depends_legal_2.adb:14:04: info: initialization of "Rec1.B" proved
+depends_legal_2.adb:14:04: info: initialization of "Rec1.X" proved
+depends_legal_2.adb:14:04: info: initialization of "Rec1.Y" proved
+depends_legal_2.adb:14:04: info: initialization of "Rec1.Z" proved
+depends_legal_2.adb:17:18: info: initialization of "Par1.A" proved
+depends_legal_2.adb:17:18: info: initialization of "Par1.B" proved
+depends_legal_2.adb:17:18: info: initialization of "Par1.X" proved
+depends_legal_2.adb:17:18: info: initialization of "Par1.Y" proved
+depends_legal_2.adb:17:18: info: initialization of "Par1.Z" proved
+depends_legal_2.adb:37:33: info: initialization of "Rec1.A" proved
+depends_legal_2.adb:37:33: info: initialization of "Rec1.B" proved
+depends_legal_2.adb:37:33: info: initialization of "Rec1.X" proved
+depends_legal_2.adb:37:33: info: initialization of "Rec1.Y" proved
+depends_legal_2.adb:37:33: info: initialization of "Rec1.Z" proved
 depends_legal_2.adb:43:15: info: discriminant check proved
 depends_legal_2.adb:45:15: info: discriminant check proved
 depends_legal_2.adb:48:12: medium: discriminant check might fail

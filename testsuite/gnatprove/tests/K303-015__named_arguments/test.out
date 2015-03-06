@@ -1,11 +1,17 @@
 substract.adb:4:20: medium: overflow check might fail
 substract.adb:10:20: medium: overflow check might fail
 substract.adb:10:29: medium: overflow check might fail
+substract.ads:2:13: info: initialization of "Sub" proved
 substract.ads:3:20: info: postcondition proved
 substract.ads:3:40: info: overflow check proved
+substract.ads:5:13: info: initialization of "SubSimp" proved
 substract.ads:6:20: info: postcondition proved
 substract.ads:6:44: info: overflow check proved
+substract.ads:8:13: info: initialization of "OppSub" proved
 substract.ads:9:20: info: postcondition proved
 substract.ads:9:44: info: overflow check proved
+substract.ads:11:13: info: initialization of "SubInv" proved
 substract.ads:12:20: info: postcondition proved
 substract.ads:12:43: info: overflow check proved
+substract.ads:14:13: info: initialization of "Add3" proved
+substract.ads:16:13: info: initialization of "AddPart" proved

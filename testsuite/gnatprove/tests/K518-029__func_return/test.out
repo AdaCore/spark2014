@@ -3,3 +3,8 @@ func_return.adb:17:16: medium: range check might fail
 func_return.adb:22:17: medium: range check might fail
 func_return.adb:27:14: medium: range check might fail
 func_return.adb:27:16: medium: range check might fail
+func_return.ads:7:13: info: initialization of "FI" proved
+func_return.ads:8:13: info: initialization of "FN" proved
+func_return.ads:9:13: info: initialization of "FT" proved
+func_return.ads:10:13: info: initialization of "FNT" proved
+func_return.ads:11:13: info: initialization of "FS" proved

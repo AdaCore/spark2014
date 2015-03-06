@@ -1,38 +1,64 @@
+com_map.ads:47:13: info: initialization of "Contains" proved
+deceleration_curve.adb:36:13: info: initialization of "speed" proved
 deceleration_curve.adb:37:10: info: assertion proved
 deceleration_curve.adb:39:10: medium: assertion might fail
+deceleration_curve.adb:39:47: info: initialization of "speed" proved
 deceleration_curve.adb:40:10: medium: assertion might fail
 deceleration_curve.adb:40:34: info: division check proved
 deceleration_curve.adb:40:34: info: overflow check proved
+deceleration_curve.adb:40:35: info: initialization of "speed" proved
 deceleration_curve.adb:40:48: info: division check proved
 deceleration_curve.adb:40:48: info: overflow check proved
 deceleration_curve.adb:42:14: medium: assertion might fail, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) <= Speed_t(Acceleration) / speed
 deceleration_curve.adb:43:38: info: division check proved
 deceleration_curve.adb:43:38: medium: overflow check might fail
+deceleration_curve.adb:43:40: info: initialization of "speed" proved
 deceleration_curve.adb:45:14: medium: assertion might fail, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) * Speed_t(Distance_Resolution) <= (Speed_t(Acceleration) / speed) * Distance_Resolution
 deceleration_curve.adb:47:39: info: division check proved
 deceleration_curve.adb:47:39: medium: overflow check might fail
+deceleration_curve.adb:47:41: info: initialization of "speed" proved
 deceleration_curve.adb:47:48: medium: overflow check might fail
 deceleration_curve.adb:49:48: info: division check proved
 deceleration_curve.adb:49:48: medium: overflow check might fail
+deceleration_curve.adb:49:50: info: initialization of "speed" proved
 deceleration_curve.adb:50:12: medium: overflow check might fail
 deceleration_curve.adb:52:10: medium: assertion might fail
+deceleration_curve.adb:54:47: info: initialization of "delta_speed" proved
+deceleration_curve.adb:58:19: info: initialization of "speed" proved
 deceleration_curve.adb:58:25: info: overflow check proved
+deceleration_curve.adb:58:27: info: initialization of "delta_speed" proved
+deceleration_curve.adb:60:22: info: initialization of "distance" proved
 deceleration_curve.adb:60:31: medium: overflow check might fail
+deceleration_curve.adb:63:14: info: initialization of "distance" proved
 deceleration_curve.adb:69:36: info: division check proved
 deceleration_curve.adb:69:36: info: range check proved
 deceleration_curve.adb:81:09: info: precondition proved
+deceleration_curve.adb:84:47: info: initialization of "end_point" proved
 deceleration_curve.adb:84:47: medium: "Braking_Curve.curve" might not be initialized
+deceleration_curve.adb:84:50: info: initialization of "location" proved
+deceleration_curve.adb:85:44: info: initialization of "Braking_Curve.curve" proved
+deceleration_curve.adb:85:44: info: initialization of "end_point" proved
+deceleration_curve.adb:85:47: info: initialization of "speed" proved
+deceleration_curve.adb:87:53: info: initialization of "end_point" proved
+deceleration_curve.adb:89:13: info: initialization of "speed" proved
 deceleration_curve.adb:89:19: medium: overflow check might fail
 deceleration_curve.adb:89:21: warning: assuming "Sqrt" has no effect on global items
 deceleration_curve.adb:89:21: warning: no Global contract available for "Sqrt"
 deceleration_curve.adb:89:32: medium: overflow check might fail
 deceleration_curve.adb:90:13: medium: overflow check might fail
 deceleration_curve.adb:90:29: medium: overflow check might fail
+deceleration_curve.adb:90:53: info: initialization of "location" proved
 deceleration_curve.adb:91:13: medium: overflow check might fail
 deceleration_curve.adb:91:46: info: division check proved
 deceleration_curve.adb:91:46: info: overflow check proved
+deceleration_curve.adb:92:13: info: initialization of "speed" proved
 deceleration_curve.adb:96:36: info: overflow check proved
 deceleration_curve.adb:96:36: info: range check proved
+deceleration_curve.adb:98:42: info: initialization of "Braking_Curve.curve" proved
+deceleration_curve.adb:98:45: info: initialization of "location" proved
+deceleration_curve.adb:99:39: info: initialization of "Braking_Curve.curve" proved
+deceleration_curve.adb:99:42: info: initialization of "speed" proved
+deceleration_curve.adb:106:09: info: initialization of "R44b" proved
 deceleration_curve.adb:106:09: medium: precondition might fail
 deceleration_curve.adb:107:10: warning: assuming "Put" has no effect on global items
 deceleration_curve.adb:107:10: warning: no Global contract available for "Put"
@@ -44,38 +70,58 @@ deceleration_curve.adb:110:12: medium: precondition might fail
 deceleration_curve.adb:111:10: warning: assuming "New_Line" has no effect on global items
 deceleration_curve.adb:111:10: warning: no Global contract available for "New_Line"
 deceleration_curve.ads:27:06: info: precondition proved
+deceleration_curve.ads:60:13: info: initialization of "Distance_To_Speed" proved
+deceleration_curve.ads:74:13: info: initialization of "Curve_Index_From_Location" proved
+deceleration_curve.ads:80:32: info: initialization of "Braking_Curve.curve" proved
+deceleration_curve.ads:80:32: info: initialization of "Braking_Curve.end_point" proved
 deceleration_curve.ads:84:14: warning: subprogram "Print_Curve" has no effect
 deceleration_curve_test.adb:6:31: info: precondition proved
 deceleration_curve_test.adb:15:19: medium: assertion might fail, requires Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000
 deceleration_curve_test.adb:15:19: medium: precondition might fail
+deceleration_curve_test.adb:15:37: info: initialization of "initial_speed" proved
 deceleration_curve_test.adb:17:04: info: precondition proved
+deceleration_curve_test.adb:17:22: info: initialization of "target.location" proved
+deceleration_curve_test.adb:17:22: info: initialization of "target.speed" proved
+deceleration_curve_test.adb:17:22: info: initialization of "target.supervise" proved
+deceleration_curve_test.adb:18:16: info: initialization of "braking_curve.curve" proved
+deceleration_curve_test.adb:18:16: info: initialization of "braking_curve.end_point" proved
 example.adb:4:13: info: overflow check proved
 example.adb:5:20: info: overflow check proved
+example.ads:2:13: info: initialization of "Saturated_Sum" proved
 example.ads:5:14: info: postcondition proved
 sec_3_13_2_monitoring_inputs.adb:31:27: info: precondition proved
 sec_3_13_2_monitoring_inputs.adb:32:61: medium: range check might fail
 sec_3_13_2_monitoring_inputs.adb:37:27: info: precondition proved
 sec_3_13_2_monitoring_inputs.adb:38:61: medium: range check might fail
+sec_3_13_2_monitoring_inputs.ads:55:13: info: initialization of "Is_Valid_Deceleration_Model" proved
 sec_3_13_2_monitoring_inputs.ads:70:15: info: length check proved
 sec_3_13_2_monitoring_inputs.ads:164:15: info: length check proved
 sec_3_13_2_monitoring_inputs.ads:169:15: info: length check proved
+sec_3_13_2_monitoring_inputs.ads:174:13: info: initialization of "Is_Valid_Kdry_rst" proved
+sec_3_13_2_monitoring_inputs.ads:179:13: info: initialization of "Kdry_rst" proved
 sec_3_13_2_monitoring_inputs.ads:183:08: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:184:24: info: precondition proved
 sec_3_13_2_monitoring_inputs.ads:185:58: medium: range check might fail
+sec_3_13_2_monitoring_inputs.ads:190:13: info: initialization of "Is_Valid_Kwet_rst" proved
+sec_3_13_2_monitoring_inputs.ads:195:13: info: initialization of "Kwet_rst" proved
 sec_3_13_2_monitoring_inputs.ads:199:08: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:200:24: info: precondition proved
 sec_3_13_2_monitoring_inputs.ads:201:58: medium: range check might fail
+sec_3_13_2_monitoring_inputs.ads:211:13: info: initialization of "Is_Valid_Kn" proved
 sec_3_13_2_monitoring_inputs.ads:243:46: info: precondition proved
 sec_3_13_2_monitoring_inputs.ads:247:14: warning: subprogram "dummy" has no effect
+sec_3_13_4_gradient_accel_decel.ads:26:13: info: initialization of "A_gradient" proved
 sec_3_13_4_gradient_accel_decel.ads:26:24: warning: unused variable "d"
 sec_3_13_6_deceleration.adb:26:37: info: precondition proved
 sec_3_13_6_deceleration.adb:26:37: medium: range check might fail
 sec_3_13_6_deceleration.adb:27:71: medium: range check might fail
+sec_3_13_6_deceleration.ads:34:13: info: initialization of "A_brake_emergency" proved
 sec_3_13_6_deceleration.ads:34:43: warning: unused variable "d"
 sec_3_13_6_deceleration.ads:39:06: info: postcondition proved
 sec_3_13_6_deceleration.ads:40:37: info: precondition proved
 sec_3_13_6_deceleration.ads:40:37: medium: range check might fail
 sec_3_13_6_deceleration.ads:41:71: medium: range check might fail
+sec_3_13_6_deceleration.ads:44:13: info: initialization of "A_brake_safe" proved
 sec_3_13_6_deceleration.ads:45:23: info: precondition proved
 sec_3_13_6_deceleration.ads:46:23: medium: overflow check might fail
 sec_3_13_6_deceleration.ads:46:26: info: precondition proved
@@ -86,13 +132,30 @@ sec_3_13_6_deceleration.ads:46:59: info: precondition proved
 sec_3_13_6_deceleration.ads:47:22: medium: overflow check might fail
 sec_3_13_6_deceleration.ads:47:22: medium: range check might fail
 sec_3_13_6_deceleration.ads:47:30: medium: precondition might fail
+sec_3_13_6_deceleration.ads:51:13: info: initialization of "A_safe" proved
 sec_3_13_6_deceleration.ads:52:26: info: range check proved
 sec_3_13_6_deceleration.ads:52:26: medium: overflow check might fail
 sec_3_13_8_targets_decel_curves.adb:24:07: medium: precondition might fail
+sec_3_13_8_targets_decel_curves.ads:48:13: info: initialization of "Is_Valid_Target" proved
+sec_3_13_8_targets_decel_curves.ads:70:32: info: initialization of "Braking_Curve.curve" proved
+sec_3_13_8_targets_decel_curves.ads:70:32: info: initialization of "Braking_Curve.end_point" proved
+section_3_5_3.adb:35:16: info: initialization of "connection_attemps" proved
+section_3_5_3.adb:41:35: info: initialization of "connection_attemps" proved
 section_3_5_3.adb:41:54: info: overflow check proved
+section_3_5_3.ads:55:13: info: initialization of "Authorize_New_Communication_Session" proved
 section_3_5_3.ads:70:14: warning: subprogram "Initiate_Communication_Session" has no effect
 section_3_5_3.ads:77:14: medium: postcondition might fail, requires Contains(Connections, destination)
 section_3_5_3.ads:82:14: warning: subprogram "Contact_RBC" has no effect
+section_4_6.ads:56:13: info: initialization of "condition_1" proved
+section_4_6.ads:59:13: info: initialization of "condition_5" proved
+section_4_6.ads:65:13: info: initialization of "condition_6" proved
+section_4_6.ads:70:13: info: initialization of "condition_10" proved
+section_4_6.ads:75:13: info: initialization of "condition_50" proved
+section_4_6.ads:84:13: info: initialization of "condition_transition_SB_to_SH" proved
+section_4_6.ads:87:13: info: initialization of "condition_transition_SB_to_FS" proved
+section_4_6.ads:90:13: info: initialization of "condition_transition_SB_to_IS" proved
+section_4_6.ads:94:13: info: initialization of "disjoint_condition_transitions" proved
+section_4_6.ads:102:13: info: initialization of "transition" proved
 section_4_6.ads:102:24: warning: unused variable "mode"
 section_4_6.ads:105:06: medium: contract cases might not be complete
 section_4_6.ads:105:06: medium: contract cases might not be disjoint
@@ -104,89 +167,187 @@ step_function.adb:31:27: medium: assertion might fail, requires X >= SFun.Step(j
 step_function.adb:31:42: info: index check proved
 step_function.adb:32:61: info: index check proved
 step_function.adb:32:61: info: overflow check proved
+step_function.adb:44:50: info: initialization of "R8b" proved
 step_function.adb:45:10: info: loop invariant initialization proved
 step_function.adb:45:10: info: loop invariant preservation proved
 step_function.adb:47:34: info: index check proved
+step_function.adb:48:16: info: initialization of "min" proved
 step_function.adb:48:33: info: index check proved
 step_function.adb:49:10: info: loop invariant initialization proved
 step_function.adb:49:10: info: loop invariant preservation proved
 step_function.adb:51:31: info: index check proved
+step_function.adb:53:18: info: initialization of "min" proved
 step_function.adb:53:34: info: index check proved
+step_function.adb:56:37: info: initialization of "min" proved
+step_function.adb:70:14: info: initialization of "min" proved
 step_function.adb:78:17: info: range check proved
 step_function.adb:95:52: info: length check proved
 step_function.adb:96:07: info: assertion proved
 step_function.adb:99:10: info: loop invariant initialization proved
 step_function.adb:99:10: info: loop invariant preservation proved
+step_function.adb:99:33: info: initialization of "i1" proved
+step_function.adb:99:45: info: initialization of "i2" proved
+step_function.adb:99:57: info: initialization of "im" proved
 step_function.adb:100:10: info: loop invariant initialization proved
 step_function.adb:100:10: info: loop invariant preservation proved
+step_function.adb:100:33: info: initialization of "i1" proved
 step_function.adb:101:10: info: loop invariant initialization proved
 step_function.adb:101:10: info: loop invariant preservation proved
+step_function.adb:101:33: info: initialization of "i2" proved
 step_function.adb:102:10: info: loop invariant initialization proved
 step_function.adb:102:10: info: loop invariant preservation proved
+step_function.adb:102:33: info: initialization of "i1" proved
+step_function.adb:102:38: info: initialization of "i2" proved
 step_function.adb:103:10: info: loop invariant initialization proved
 step_function.adb:103:10: info: loop invariant preservation proved
+step_function.adb:103:33: info: initialization of "im" proved
 step_function.adb:104:10: info: loop invariant initialization proved
 step_function.adb:104:10: info: loop invariant preservation proved
+step_function.adb:105:13: info: initialization of "i1" proved
+step_function.adb:105:24: info: initialization of "i2" proved
+step_function.adb:105:35: info: initialization of "im" proved
+step_function.adb:108:17: info: initialization of "scan_sfun1" proved
+step_function.adb:108:32: info: initialization of "scan_sfun2" proved
 step_function.adb:115:10: info: loop invariant initialization proved
 step_function.adb:115:10: info: loop invariant preservation proved
+step_function.adb:115:33: info: initialization of "scan_sfun1" proved
+step_function.adb:115:47: info: initialization of "scan_sfun2" proved
 step_function.adb:118:10: info: loop invariant initialization proved
 step_function.adb:118:10: info: loop invariant preservation proved
+step_function.adb:118:49: info: initialization of "im" proved
+step_function.adb:119:35: info: initialization of "Merge.Step" proved
 step_function.adb:119:47: info: index check proved
 step_function.adb:119:74: info: index check proved
 step_function.adb:120:10: info: loop invariant initialization proved
 step_function.adb:120:10: medium: loop invariant might fail after first iteration
+step_function.adb:122:20: info: initialization of "scan_sfun1" proved
+step_function.adb:122:36: info: initialization of "Merge.Step" proved
+step_function.adb:122:47: info: initialization of "im" proved
 step_function.adb:122:49: info: index check proved
+step_function.adb:122:76: info: initialization of "i1" proved
+step_function.adb:124:20: info: initialization of "scan_sfun2" proved
 step_function.adb:124:49: info: index check proved
+step_function.adb:124:76: info: initialization of "i2" proved
 step_function.adb:128:10: info: loop invariant initialization proved
 step_function.adb:128:10: medium: loop invariant might fail after first iteration
+step_function.adb:129:33: info: initialization of "scan_sfun1" proved
+step_function.adb:129:59: info: initialization of "i1" proved
+step_function.adb:130:34: info: initialization of "im" proved
 step_function.adb:131:30: info: index check proved
+step_function.adb:131:45: info: initialization of "Merge.Step" proved
 step_function.adb:131:56: info: index check proved
 step_function.adb:132:10: info: loop invariant initialization proved
 step_function.adb:132:10: medium: loop invariant might fail after first iteration
+step_function.adb:133:33: info: initialization of "scan_sfun2" proved
+step_function.adb:133:59: info: initialization of "i2" proved
+step_function.adb:134:34: info: initialization of "im" proved
 step_function.adb:135:30: info: index check proved
+step_function.adb:135:45: info: initialization of "Merge.Step" proved
 step_function.adb:135:56: info: index check proved
 step_function.adb:138:10: info: loop invariant initialization proved
 step_function.adb:138:10: info: loop invariant preservation proved
+step_function.adb:139:29: info: initialization of "im" proved
+step_function.adb:140:15: info: initialization of "Merge.Step" proved
 step_function.adb:140:26: info: index check proved
 step_function.adb:141:19: info: precondition proved
 step_function.adb:141:47: info: index check proved
 step_function.adb:142:17: info: precondition proved
 step_function.adb:142:45: info: index check proved
+step_function.adb:144:13: info: initialization of "scan_sfun1" proved
+step_function.adb:144:28: info: initialization of "scan_sfun2" proved
+step_function.adb:146:27: info: initialization of "i1" proved
+step_function.adb:146:54: info: initialization of "i2" proved
+step_function.adb:147:41: info: initialization of "Merge.Step" proved
+step_function.adb:147:41: info: initialization of "im" proved
+step_function.adb:147:55: info: initialization of "i1" proved
 step_function.adb:149:22: info: precondition proved
 step_function.adb:150:22: info: precondition proved
+step_function.adb:150:39: info: initialization of "Merge.Step" proved
+step_function.adb:150:50: info: initialization of "im" proved
+step_function.adb:151:39: info: initialization of "i1" proved
+step_function.adb:151:43: info: initialization of "scan_sfun1" proved
+step_function.adb:153:30: info: initialization of "i1" proved
+step_function.adb:154:41: info: initialization of "Merge.Step" proved
+step_function.adb:154:41: info: initialization of "im" proved
+step_function.adb:154:55: info: initialization of "i2" proved
 step_function.adb:156:22: info: precondition proved
 step_function.adb:157:22: info: precondition proved
+step_function.adb:157:39: info: initialization of "Merge.Step" proved
+step_function.adb:157:50: info: initialization of "im" proved
+step_function.adb:158:39: info: initialization of "i2" proved
+step_function.adb:158:43: info: initialization of "scan_sfun2" proved
+step_function.adb:161:41: info: initialization of "Merge.Step" proved
+step_function.adb:161:41: info: initialization of "im" proved
+step_function.adb:161:55: info: initialization of "i1" proved
 step_function.adb:163:22: info: precondition proved
 step_function.adb:164:22: info: precondition proved
+step_function.adb:164:39: info: initialization of "Merge.Step" proved
+step_function.adb:164:50: info: initialization of "im" proved
+step_function.adb:165:39: info: initialization of "i1" proved
+step_function.adb:165:43: info: initialization of "scan_sfun1" proved
+step_function.adb:166:39: info: initialization of "i2" proved
+step_function.adb:166:43: info: initialization of "scan_sfun2" proved
+step_function.adb:170:38: info: initialization of "Merge.Step" proved
+step_function.adb:170:38: info: initialization of "im" proved
+step_function.adb:170:52: info: initialization of "i1" proved
 step_function.adb:172:19: info: precondition proved
 step_function.adb:173:19: info: precondition proved
+step_function.adb:173:36: info: initialization of "Merge.Step" proved
+step_function.adb:173:47: info: initialization of "im" proved
+step_function.adb:174:36: info: initialization of "i1" proved
+step_function.adb:174:40: info: initialization of "scan_sfun1" proved
+step_function.adb:177:41: info: initialization of "Merge.Step" proved
+step_function.adb:177:41: info: initialization of "im" proved
+step_function.adb:177:55: info: initialization of "i2" proved
 step_function.adb:179:22: info: precondition proved
 step_function.adb:180:22: info: precondition proved
+step_function.adb:180:39: info: initialization of "Merge.Step" proved
+step_function.adb:180:50: info: initialization of "im" proved
+step_function.adb:181:36: info: initialization of "i2" proved
+step_function.adb:181:40: info: initialization of "scan_sfun2" proved
+step_function.adb:185:13: info: initialization of "scan_sfun1" proved
+step_function.adb:185:27: info: initialization of "scan_sfun2" proved
+step_function.adb:186:19: info: initialization of "im" proved
 step_function.adb:186:22: info: range check proved
 step_function.adb:187:13: info: assertion proved
+step_function.adb:187:44: info: initialization of "im" proved
+step_function.adb:188:30: info: initialization of "Merge.Step" proved
 step_function.adb:188:42: info: index check proved
 step_function.adb:188:69: info: index check proved
 step_function.adb:189:13: warning: statement has no effect
+step_function.adb:189:16: info: initialization of "im" proved
+step_function.adb:190:31: info: initialization of "Merge.Step" proved
 step_function.adb:190:31: medium: assertion might fail, requires Merge.Step(Im-2).Delimiter < Merge.Step(Im-1).Delimiter
+step_function.adb:190:42: info: initialization of "im" proved
 step_function.adb:190:44: info: index check proved
 step_function.adb:190:73: info: index check proved
+step_function.adb:197:37: info: initialization of "im" proved
+step_function.ads:39:13: info: initialization of "Min" proved
 step_function.ads:40:17: info: postcondition proved
+step_function.ads:42:13: info: initialization of "Is_Valid" proved
 step_function.ads:46:24: info: index check proved
 step_function.ads:46:24: info: overflow check proved
 step_function.ads:46:50: info: index check proved
+step_function.ads:48:13: info: initialization of "Has_Same_Delimiters" proved
 step_function.ads:52:23: info: index check proved
 step_function.ads:52:49: info: index check proved
+step_function.ads:54:13: info: initialization of "Get_Value" proved
 step_function.ads:56:12: info: postcondition proved
 step_function.ads:58:27: info: index check proved
 step_function.ads:59:36: info: index check proved
 step_function.ads:60:50: info: index check proved
+step_function.ads:66:13: info: initialization of "Minimum_Until_Point" proved
 step_function.ads:72:06: info: postcondition proved
 step_function.ads:73:28: info: index check proved
 step_function.ads:74:50: info: index check proved
 step_function.ads:78:26: info: index check proved
 step_function.ads:80:53: info: index check proved
 step_function.ads:86:06: info: postcondition proved
+step_function.ads:95:32: info: initialization of "Merge.Number_Of_Delimiters" proved
+step_function.ads:95:32: info: initialization of "Merge.Step" proved
 step_function.ads:101:04: medium: postcondition might fail
+step_function.ads:101:13: info: initialization of "Merge.Number_Of_Delimiters" proved
+step_function.ads:101:13: info: initialization of "Merge.Step" proved
 step_function.ads:106:30: info: index check proved
 step_function.ads:106:56: info: index check proved
 step_function.ads:111:30: info: index check proved
@@ -201,37 +362,81 @@ step_function_test.adb:14:15: info: length check proved
 step_function_test.adb:21:15: info: length check proved
 step_function_test.adb:31:15: info: length check proved
 step_function_test.adb:41:04: info: assertion proved
+step_function_test.adb:41:28: info: initialization of "SFun1.Number_Of_Delimiters" proved
+step_function_test.adb:41:28: info: initialization of "SFun1.Step" proved
 step_function_test.adb:42:04: info: assertion proved
+step_function_test.adb:42:28: info: initialization of "SFun2.Number_Of_Delimiters" proved
+step_function_test.adb:42:28: info: initialization of "SFun2.Step" proved
 step_function_test.adb:43:04: info: assertion proved
+step_function_test.adb:43:42: info: initialization of "sfun3.Number_Of_Delimiters" proved
+step_function_test.adb:43:42: info: initialization of "sfun3.Step" proved
 step_function_test.adb:44:04: info: assertion proved
+step_function_test.adb:44:42: info: initialization of "sfun4.Number_Of_Delimiters" proved
+step_function_test.adb:44:42: info: initialization of "sfun4.Step" proved
 step_function_test.adb:46:04: info: assertion proved
 step_function_test.adb:46:19: info: precondition proved
+step_function_test.adb:46:29: info: initialization of "SFun1.Number_Of_Delimiters" proved
+step_function_test.adb:46:29: info: initialization of "SFun1.Step" proved
 step_function_test.adb:47:04: info: assertion proved
 step_function_test.adb:47:19: info: precondition proved
+step_function_test.adb:47:29: info: initialization of "SFun1.Number_Of_Delimiters" proved
+step_function_test.adb:47:29: info: initialization of "SFun1.Step" proved
 step_function_test.adb:48:04: info: assertion proved
 step_function_test.adb:48:19: info: precondition proved
+step_function_test.adb:48:29: info: initialization of "SFun1.Number_Of_Delimiters" proved
+step_function_test.adb:48:29: info: initialization of "SFun1.Step" proved
 step_function_test.adb:49:04: info: assertion proved
 step_function_test.adb:49:19: info: precondition proved
+step_function_test.adb:49:29: info: initialization of "SFun1.Number_Of_Delimiters" proved
+step_function_test.adb:49:29: info: initialization of "SFun1.Step" proved
 step_function_test.adb:50:04: info: assertion proved
 step_function_test.adb:50:19: info: precondition proved
+step_function_test.adb:50:29: info: initialization of "SFun1.Number_Of_Delimiters" proved
+step_function_test.adb:50:29: info: initialization of "SFun1.Step" proved
 step_function_test.adb:51:04: info: assertion proved
 step_function_test.adb:51:19: info: precondition proved
+step_function_test.adb:51:29: info: initialization of "SFun1.Number_Of_Delimiters" proved
+step_function_test.adb:51:29: info: initialization of "SFun1.Step" proved
 step_function_test.adb:54:04: info: assertion proved
+step_function_test.adb:54:39: info: initialization of "SFun1.Number_Of_Delimiters" proved
+step_function_test.adb:54:39: info: initialization of "SFun1.Step" proved
+step_function_test.adb:54:46: info: initialization of "SFun2.Number_Of_Delimiters" proved
+step_function_test.adb:54:46: info: initialization of "SFun2.Step" proved
 step_function_test.adb:56:04: info: precondition proved
+step_function_test.adb:56:22: info: initialization of "sfun3.Number_Of_Delimiters" proved
+step_function_test.adb:56:22: info: initialization of "sfun3.Step" proved
+step_function_test.adb:56:29: info: initialization of "sfun4.Number_Of_Delimiters" proved
+step_function_test.adb:56:29: info: initialization of "sfun4.Step" proved
 step_function_test.adb:61:22: info: precondition proved
 step_function_test.adb:61:22: medium: assertion might fail, requires Get_Value(sfun_merge, i) = Min(Get_Value(sfun3, i), Get_Value(sfun4, i)
+step_function_test.adb:61:32: info: initialization of "sfun_merge.Number_Of_Delimiters" proved
+step_function_test.adb:61:32: info: initialization of "sfun_merge.Step" proved
 step_function_test.adb:62:28: info: precondition proved
+step_function_test.adb:62:38: info: initialization of "sfun3.Number_Of_Delimiters" proved
+step_function_test.adb:62:38: info: initialization of "sfun3.Step" proved
 step_function_test.adb:62:49: info: precondition proved
+step_function_test.adb:62:59: info: initialization of "sfun4.Number_Of_Delimiters" proved
+step_function_test.adb:62:59: info: initialization of "sfun4.Step" proved
 step_function_test.adb:65:04: info: assertion proved
 step_function_test.adb:65:19: info: precondition proved
+step_function_test.adb:65:39: info: initialization of "sfun4.Number_Of_Delimiters" proved
+step_function_test.adb:65:39: info: initialization of "sfun4.Step" proved
 step_function_test.adb:66:19: info: precondition proved
 step_function_test.adb:66:19: medium: assertion might fail, requires Minimum_Until_Point(sfun4, 5) =
+step_function_test.adb:66:39: info: initialization of "sfun4.Number_Of_Delimiters" proved
+step_function_test.adb:66:39: info: initialization of "sfun4.Step" proved
 step_function_test.adb:67:19: info: precondition proved
 step_function_test.adb:67:19: medium: assertion might fail, requires Minimum_Until_Point(sfun_merge, 11) =
+step_function_test.adb:67:39: info: initialization of "sfun_merge.Number_Of_Delimiters" proved
+step_function_test.adb:67:39: info: initialization of "sfun_merge.Step" proved
 units.adb:24:29: info: overflow check proved
 units.adb:24:39: info: division check proved
 units.adb:24:39: info: overflow check proved
 units.adb:29:38: medium: overflow check might fail
 units.adb:29:48: info: division check proved
 units.adb:29:48: info: overflow check proved
+units.ads:35:13: info: initialization of "Is_Valid_Speed_km_per_h" proved
+units.ads:38:13: info: initialization of "m_per_s_From_km_per_h" proved
+units.ads:49:13: info: initialization of "Is_Valid_Speed" proved
 units.ads:51:20: info: precondition proved
+units.ads:53:13: info: initialization of "km_per_h_From_m_per_s" proved

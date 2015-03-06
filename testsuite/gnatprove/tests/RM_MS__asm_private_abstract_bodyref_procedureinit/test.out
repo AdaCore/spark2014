@@ -2,4 +2,7 @@ stack_14.adb:17:26: medium: range check might fail
 stack_14.adb:18:10: info: index check proved
 stack_14.adb:26:15: medium: array index check might fail
 stack_14.adb:27:26: info: range check proved
+stack_14.adb:31:41: info: initialization of "Pointer" proved
+stack_14.adb:31:50: info: initialization of "S" proved
 stack_14.adb:35:12: info: length check proved
+stack_14.ads:8:18: info: initialization of "X" proved

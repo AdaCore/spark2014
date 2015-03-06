@@ -4,5 +4,21 @@ dynamic_float.adb:7:19: info: range check proved
 dynamic_float.adb:9:10: info: assertion proved
 dynamic_float.adb:9:35: info: range check proved
 dynamic_float.adb:10:10: info: assertion proved
+zero_and_min.adb:10:49: info: initialization of "C1b" proved, in call inlined at zero_and_min.adb:26
+zero_and_min.adb:10:52: info: initialization of "C2b" proved, in call inlined at zero_and_min.adb:26
+zero_and_min.adb:11:49: info: initialization of "C2b" proved, in call inlined at zero_and_min.adb:26
+zero_and_min.adb:11:52: info: initialization of "C1b" proved, in call inlined at zero_and_min.adb:26
+zero_and_min.adb:13:10: info: initialization of "X" proved, in call inlined at zero_and_min.adb:26
+zero_and_min.adb:13:15: info: initialization of "Y" proved, in call inlined at zero_and_min.adb:26
 zero_and_min.adb:14:10: info: assertion proved, in call inlined at zero_and_min.adb:26
+zero_and_min.adb:14:36: info: initialization of "C1b" proved, in call inlined at zero_and_min.adb:26
+zero_and_min.adb:14:39: info: initialization of "C2b" proved, in call inlined at zero_and_min.adb:26
+zero_and_min.adb:26:04: info: initialization of "Zero_Neg" proved
+zero_and_min.adb:26:04: info: initialization of "Zero_Plus" proved
+zero_and_unchecked.adb:12:10: info: initialization of "C1b" proved, in call inlined at zero_and_unchecked.adb:27
+zero_and_unchecked.adb:12:14: info: initialization of "C2b" proved, in call inlined at zero_and_unchecked.adb:27
+zero_and_unchecked.adb:13:20: info: initialization of "C2b" proved, in call inlined at zero_and_unchecked.adb:27
 zero_and_unchecked.adb:14:22: info: division check proved, in call inlined at zero_and_unchecked.adb:27
+zero_and_unchecked.adb:14:31: info: initialization of "C1b" proved, in call inlined at zero_and_unchecked.adb:27
+zero_and_unchecked.adb:27:04: info: initialization of "Zero_Neg" proved
+zero_and_unchecked.adb:27:04: info: initialization of "Zero_Plus" proved

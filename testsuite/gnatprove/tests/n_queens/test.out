@@ -6,18 +6,25 @@ queen.adb:16:68: info: range check proved
 queen.adb:21:20: info: length check proved
 queen.adb:24:10: info: loop invariant initialization proved
 queen.adb:24:10: info: loop invariant preservation proved
+queen.adb:25:50: info: initialization of "R" proved
 queen.adb:25:53: info: index check proved
 queen.adb:25:60: info: index check proved
+queen.adb:26:16: info: initialization of "R" proved
 queen.adb:29:10: info: loop invariant initialization proved
 queen.adb:29:10: info: loop invariant preservation proved
+queen.adb:30:46: info: initialization of "R" proved
 queen.adb:30:49: info: index check proved
 queen.adb:30:56: info: index check proved
+queen.adb:31:16: info: initialization of "R" proved
+queen.adb:33:14: info: initialization of "R" proved
 queen.adb:41:10: info: loop invariant initialization proved
 queen.adb:41:10: info: loop invariant preservation proved
 queen.adb:43:46: info: index check proved
 queen.adb:43:65: info: index check proved
 queen.adb:49:13: info: precondition proved
 queen.adb:51:13: info: precondition proved
+queen.ads:7:13: info: initialization of "Consistent_Index" proved
+queen.ads:13:13: info: initialization of "Consistent" proved
 queen.ads:16:18: info: index check proved
 queen.ads:16:27: info: index check proved
 queen.ads:17:27: info: index check proved
@@ -30,6 +37,7 @@ queen.ads:25:38: info: range check proved
 queen.ads:26:14: info: postcondition proved
 queen.ads:27:42: info: index check proved
 queen.ads:27:54: info: index check proved
+queen.ads:30:12: info: initialization of "Copy_Until" proved
 queen.ads:31:16: info: postcondition proved
 queen.ads:31:69: info: index check proved
 queen.ads:31:76: info: index check proved

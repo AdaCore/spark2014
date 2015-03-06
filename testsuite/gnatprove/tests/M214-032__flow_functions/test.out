@@ -1,2 +1,9 @@
 test.adb:3:04: warning: analyzing unreferenced function "Random_Number"
+test.adb:3:13: info: initialization of "Random_Number" proved
+test.adb:6:14: info: initialization of "N" proved
+test.adb:9:13: info: initialization of "Multiple_Returns" proved
+test.adb:18:13: info: initialization of "Is_Prime" proved
 test.adb:28:04: warning: analyzing unreferenced function "Ext_Return_01"
+test.adb:28:13: info: initialization of "Ext_Return_01" proved
+test.adb:30:07: info: initialization of "R" proved
+test.adb:35:13: info: initialization of "No_Return" proved

@@ -1,6 +1,8 @@
-
+test.ads:14:13: info: initialization of "F1" proved
 test.ads:16:20: info: postcondition proved
+test.ads:18:13: info: initialization of "F2" proved
 test.ads:20:20: info: postcondition proved
+test.ads:22:13: info: initialization of "F3" proved
 test.ads:24:20: info: postcondition proved
 test.ads:27:20: info: postcondition proved
 test.ads:30:20: info: postcondition proved

@@ -1,2 +1,6 @@
+casing.adb:10:14: info: initialization of "Res" proved
+casing.adb:22:14: info: initialization of "Res" proved
+casing.ads:4:13: info: initialization of "F" proved
 casing.ads:6:10: info: postcondition proved
+casing.ads:15:13: info: initialization of "G" proved
 casing.ads:17:10: info: postcondition proved

@@ -1,5 +1,8 @@
 loops.adb:5:07: info: loop invariant initialization proved
 loops.adb:5:07: info: loop invariant preservation proved
+loops.adb:5:30: info: initialization of "Count" proved
+loops.adb:8:19: info: initialization of "Count" proved
 loops.adb:8:25: info: overflow check proved
 loops.adb:9:10: info: loop invariant initialization proved
 loops.adb:9:10: info: loop invariant preservation proved
+loops.adb:9:33: info: initialization of "Count" proved

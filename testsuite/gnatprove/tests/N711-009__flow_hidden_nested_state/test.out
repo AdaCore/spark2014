@@ -1,3 +1,4 @@
+p.adb:9:16: info: initialization of "Foo" proved
 p.adb:11:07: medium: "Pr_Var" needs to be a constituent of some state abstraction
 p.adb:17:07: medium: "GN" needs to be a constituent of some state abstraction
 p.adb:19:42: medium: overflow check might fail
@@ -5,3 +6,4 @@ p.adb:24:22: medium: assertion might fail, requires G = 0 + Nest(Nest.foo)
 p.adb:24:28: info: overflow check proved
 p.adb:25:16: medium: overflow check might fail
 p.ads:2:26: warning: no procedure exists that can initialize abstract state "P.State"
+p.ads:4:13: info: initialization of "Add" proved

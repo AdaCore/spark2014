@@ -1,1 +1,8 @@
+power_14.adb:10:07: info: initialization of "State" proved
+power_14.adb:12:23: info: initialization of "Level" proved
+power_14.adb:21:07: info: initialization of "State" proved
+power_14.adb:23:23: info: initialization of "Level" proved
+power_14.adb:55:16: info: initialization of "Level_A" proved
 power_14.adb:55:24: medium: overflow check might fail
+power_14.adb:55:26: info: initialization of "Level_B" proved
+power_14.ads:7:25: info: initialization of "Level" proved

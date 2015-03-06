@@ -1,1 +1,3 @@
+fail.ads:14:13: info: initialization of "Eq" proved
+fail.ads:15:12: info: initialization of "Oeq" proved
 fail.ads:15:12: medium: range check might fail

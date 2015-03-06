@@ -4,3 +4,4 @@ context.adb:13:14: warning: subprogram "Instr" has no effect
 context_b.adb:1:11: warning: subprogram "Context_B" has no effect
 context_b.adb:10:17: warning: subprogram "Check_Cond" has no effect, in instantiation at context_b.adb:24
 context_b.adb:18:10: info: assertion proved, in instantiation at context_b.adb:24
+context_b.adb:22:13: info: initialization of "Greater_Than_Zero" proved

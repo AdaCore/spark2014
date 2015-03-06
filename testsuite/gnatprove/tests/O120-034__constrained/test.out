@@ -1,7 +1,11 @@
 constrained_attribute.adb:4:26: info: discriminant check proved
+constrained_attribute.adb:4:26: info: initialization of "A.F" proved
 constrained_attribute.adb:6:07: info: assertion proved
 constrained_attribute.adb:7:07: info: assertion proved
+constrained_attribute.adb:7:38: info: initialization of "B.F" proved
 constrained_attribute.adb:8:07: info: assertion proved
 constrained_attribute.adb:9:22: medium: assertion might fail, requires not Is_Constrained (A)
+constrained_attribute.adb:9:42: info: initialization of "A.F" proved
+constrained_attribute.ads:6:13: info: initialization of "Is_Constrained" proved
 constrained_attribute.ads:7:12: info: postcondition proved
 constrained_attribute.ads:9:14: warning: subprogram "Test" has no effect

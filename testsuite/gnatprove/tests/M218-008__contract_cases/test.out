@@ -3,19 +3,25 @@ subprograms.adb:17:21: info: division check proved
 subprograms.adb:17:21: info: overflow check proved
 subprograms.adb:33:16: info: overflow check proved
 subprograms.adb:38:18: info: overflow check proved
+subprograms.ads:2:13: info: initialization of "F1" proved
 subprograms.ads:3:11: medium: contract cases might not be complete
 subprograms.ads:3:39: info: contract case proved
+subprograms.ads:6:13: info: initialization of "F1bis" proved
 subprograms.ads:8:11: info: complete contract cases proved
 subprograms.ads:8:39: info: contract case proved
+subprograms.ads:10:13: info: initialization of "F2" proved
 subprograms.ads:11:11: medium: contract cases might not be complete
 subprograms.ads:11:39: medium: contract case might fail
+subprograms.ads:14:13: info: initialization of "F2bis" proved
 subprograms.ads:16:11: info: complete contract cases proved
 subprograms.ads:16:39: info: contract case proved
+subprograms.ads:18:13: info: initialization of "F3" proved
 subprograms.ads:19:11: info: complete contract cases proved
 subprograms.ads:19:11: medium: contract cases might not be disjoint
 subprograms.ads:19:40: medium: contract case might fail
 subprograms.ads:20:40: info: contract case proved
 subprograms.ads:21:40: medium: contract case might fail
+subprograms.ads:24:13: info: initialization of "F3bis" proved
 subprograms.ads:26:11: info: complete contract cases proved
 subprograms.ads:26:11: info: disjoint contract cases proved
 subprograms.ads:26:39: info: contract case proved

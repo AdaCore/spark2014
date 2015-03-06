@@ -1,1 +1,4 @@
+init.adb:6:16: info: initialization of "Get" proved
+init.adb:15:18: info: initialization of "A" proved
 init.adb:15:23: medium: range check might fail
+init.adb:17:17: info: initialization of "A" proved

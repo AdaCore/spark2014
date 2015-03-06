@@ -1,14 +1,21 @@
+arrays.adb:6:15: info: initialization of "S" proved
 arrays.adb:6:17: medium: overflow check might fail
+arrays.adb:8:14: info: initialization of "S" proved
 arrays.adb:15:19: info: division check proved
+arrays.adb:16:18: info: initialization of "C" proved
 arrays.adb:16:20: medium: overflow check might fail
+arrays.adb:19:14: info: initialization of "C" proved
 arrays.adb:23:17: info: overflow check proved
 arrays.adb:23:17: info: range check proved
+arrays.ads:4:13: info: initialization of "Sum" proved
 arrays.ads:5:14: medium: postcondition might fail, requires Sum'Result >= X'length
 arrays.ads:6:06: medium: contract cases might not be complete
 arrays.ads:6:06: medium: contract cases might not be disjoint
 arrays.ads:6:38: info: contract case proved
 arrays.ads:7:52: info: index check proved
 arrays.ads:7:60: info: contract case proved
+arrays.ads:19:13: info: initialization of "Count_Even" proved
 arrays.ads:20:14: medium: postcondition might fail, requires Count_Even'Result <= X'length
 arrays.ads:21:06: medium: contract cases might not be complete
 arrays.ads:21:38: info: contract case proved
+arrays.ads:31:13: info: initialization of "Count_Odd" proved

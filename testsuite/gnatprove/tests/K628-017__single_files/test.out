@@ -3,10 +3,15 @@ s.adb:6:09: info: loop invariant preservation proved
 s.adb:7:33: info: index check proved
 s.adb:24:09: info: loop invariant initialization proved
 s.adb:24:09: info: loop invariant preservation proved
+s.adb:25:27: info: initialization of "Dest" proved
 s.adb:25:27: medium: "Dest" might not be initialized
 s.adb:25:33: info: index check proved
+s.adb:25:38: info: initialization of "Src_Old" proved
 s.adb:25:47: info: index check proved
 s.adb:27:34: info: index check proved
 s.adb:27:48: info: index check proved
+s.ads:7:12: info: initialization of "Contains" proved
 s.ads:8:13: info: postcondition proved
+s.ads:11:19: info: initialization of "Dest" proved
 s.ads:12:13: info: postcondition proved
+s.ads:12:41: info: initialization of "Dest" proved

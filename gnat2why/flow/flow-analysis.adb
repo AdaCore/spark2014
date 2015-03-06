@@ -33,8 +33,11 @@ with Snames;               use Snames;
 with Stand;                use Stand;
 with Ghost;                use Ghost;
 
+with Output;               use Output;
+
 with Why;
 
+with VC_Kinds;             use VC_Kinds;
 with SPARK_Util;           use SPARK_Util;
 
 with Flow.Analysis.Sanity;
@@ -45,12 +48,13 @@ with Flow_Error_Messages;  use Flow_Error_Messages;
 with Flow_Tree_Utility;    use Flow_Tree_Utility;
 with Flow_Utility;         use Flow_Utility;
 
-with VC_Kinds;             use VC_Kinds;
-
 package body Flow.Analysis is
 
-   Debug_Trace_Depends : constant Boolean := False;
+   Debug_Trace_Depends     : constant Boolean := False;
    --  Enable this to show the specified and computed dependency relation.
+
+   Debug_Trace_Check_Reads : constant Boolean := False;
+   --  Enable this to show in/unin status of each vertex/variable examines.
 
    use type Ada.Containers.Count_Type;
    use type Flow_Graphs.Vertex_Id;
@@ -1701,11 +1705,9 @@ package body Flow.Analysis is
          To        : Flow_Graphs.Vertex_Id;
          Var       : Flow_Id;
          V_Allowed : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex);
-      --  Write a trace file for the error message at E_Loc with the
-      --  given Tag. The trace will mark the path From -> To which
-      --  does not define Var. If V_Allowed is set, then the path that
-      --  we return is allowed to contain V_Allowed even if V_Allowed
-      --  does set Var.
+      --  Write a trace file that marks the path From -> To which does not
+      --  define Var. If V_Allowed is set, then the path that we return is
+      --  allowed to contain V_Allowed even if V_Allowed does set Var.
 
       procedure Might_Be_Defined_In_Other_Path
         (V_Initial : Flow_Graphs.Vertex_Id;
@@ -1715,6 +1717,23 @@ package body Flow.Analysis is
       --  Sets Found when the variable corresponding to V_Initial is
       --  defined on a path that lead to V_Use. V_Error is the vertex
       --  where the message should be emitted.
+
+      procedure Emit_Message (Var              : Flow_Id;
+                              Vertex           : Flow_Graphs.Vertex_Id;
+                              Is_Initialized   : Boolean;
+                              Is_Uninitialized : Boolean)
+      with Pre => Is_Initialized or Is_Uninitialized;
+      --  Produces an appropriately worded info/low/high message for the
+      --  given variable Var at the given location Vertex.
+      --
+      --  Is_Initialized should be set if there is at least one sensible
+      --  read.
+      --
+      --  Is_Uninitialized should be set if there is at least one read from
+      --  an uninitialized variable.
+      --
+      --  They can be both set, in which case we're most likely going to
+      --  produce a medium check, but this is not always the case in loops.
 
       -------------------------------
       -- Mark_Definition_Free_Path --
@@ -2034,267 +2053,208 @@ package body Flow.Analysis is
          end if;
       end Might_Be_Defined_In_Other_Path;
 
+      ------------------
+      -- Emit_Message --
+      ------------------
+
+      procedure Emit_Message (Var              : Flow_Id;
+                              Vertex           : Flow_Graphs.Vertex_Id;
+                              Is_Initialized   : Boolean;
+                              Is_Uninitialized : Boolean)
+      is
+         type Msg_Kind is (Init, Unknown, Err);
+
+         V_Key       : constant Flow_Id      := FA.PDG.Get_Key (Vertex);
+         V_Atr       : constant V_Attributes := FA.Atr.Element (Vertex);
+
+         V_Initial   : constant Flow_Graphs.Vertex_Id :=
+           FA.PDG.Get_Vertex (Change_Variant (Var, Initial_Value));
+         Atr_Initial : constant V_Attributes := FA.Atr.Element (V_Initial);
+
+         Kind        : Msg_Kind :=
+           (if Is_Initialized and Is_Uninitialized then Unknown
+            elsif Is_Initialized                   then Init
+            else                                        Err);
+
+         N   : Node_Id           := V_Atr.Error_Location;
+         Msg : Unbounded_String;
+
+         V_Error           : Flow_Graphs.Vertex_Id;
+         V_Goal            : Flow_Graphs.Vertex_Id;
+         V_Allowed         : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
+
+         Is_Final_Use : constant Boolean := V_Key.Variant = Final_Value;
+         Is_Global    : constant Boolean := Atr_Initial.Is_Global;
+
+      begin
+         case Kind is
+            when Unknown | Err =>
+               declare
+                  Defined_Elsewhere : Boolean;
+               begin
+                  Might_Be_Defined_In_Other_Path
+                    (V_Initial => V_Initial,
+                     V_Use     => Vertex,
+                     Found     => Defined_Elsewhere,
+                     V_Error   => V_Error);
+                  if not Defined_Elsewhere then
+                     --  Upgrade check to high if a more detailed path
+                     --  analysis shows we can't feasibly set it.
+                     Kind := Err;
+                  end if;
+               end;
+            when others =>
+               V_Error := Vertex;
+         end case;
+
+         case Kind is
+            when Init =>
+               Msg := To_Unbounded_String ("initialization of & proved");
+            when Unknown =>
+               Msg := To_Unbounded_String ("& might not be ");
+            when Err =>
+               Msg := To_Unbounded_String ("& is not ");
+         end case;
+
+         case Kind is
+            when Unknown | Err =>
+               if Has_Async_Readers (Var) then
+                  Append (Msg, "written");
+               else
+                  Append (Msg, "initialized");
+               end if;
+               if Is_Final_Use and not Is_Global then
+                  Append (Msg, " in &");
+               end if;
+            when others =>
+               null;
+         end case;
+
+         if not Is_Final_Use then
+            V_Goal    := V_Error;
+            V_Allowed := Vertex;
+            N         := First_Variable_Use
+              (N        => Error_Location (FA.PDG,
+                                           FA.Atr,
+                                           V_Error),
+               FA       => FA,
+               Scope    => FA.B_Scope,
+               Var      => Var,
+               Precise  => True,
+               Targeted => True);
+         elsif Is_Global then
+            V_Goal := FA.Helper_End_Vertex;
+            N      := Find_Global (FA.Analyzed_Entity, Var);
+         else
+            V_Goal := V_Error;
+         end if;
+
+         Error_Msg_Flow
+           (FA        => FA,
+            Tracefile => To_String (Tracefile),
+            Msg       => To_String (Msg),
+            N         => N,
+            F1        => Var,
+            F2        => Direct_Mapping_Id (FA.Analyzed_Entity),
+            Tag       => Uninitialized,
+            Kind      => (case Kind is
+                          when Init    => Info_Kind,
+                          when Unknown => Medium_Check_Kind,
+                          when Err     => High_Check_Kind),
+            Vertex    => Vertex);
+         if Kind /= Init then
+            Mark_Definition_Free_Path
+              (From      => FA.Start_Vertex,
+               To        => V_Goal,
+               Var       => Var,
+               V_Allowed => V_Allowed);
+         end if;
+      end Emit_Message;
+
+      V_Atr            : V_Attributes;
+      V_Key            : Flow_Id;
+      Def_Atr          : V_Attributes;
+      Def_Key          : Flow_Id;
+      Var_Atr          : V_Attributes;
+      Is_Uninitialized : Boolean;
+      Is_Initialized   : Boolean;
+
    begin --  Find_Use_Of_Uninitialized_Variables
-      for V_Initial of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
 
-         --  We loop through all vertices, finding the ones that
-         --  represent initial values that are not initialized.
+      --  We look at all vartices (except for exceptional ones or the
+      --  synthetic null output)...
+      for V of FA.DDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         V_Key := FA.PDG.Get_Key (V);
+         V_Atr := FA.Atr.Element (V);
+         if not V_Atr.Is_Exceptional_Path
+           and then (if V_Key.Variant = Final_Value
+                     then V_Atr.Is_Export and then not Synthetic (V_Key))
+         then
+            --  For each variable read...
+            for Var_Read of V_Atr.Variables_Used loop
+               Is_Uninitialized := False;
+               Is_Initialized   := False;
+               Var_Atr          := FA.Atr.Element
+                 (FA.PDG.Get_Vertex (Change_Variant
+                                       (Var_Read, Initial_Value)));
 
-         declare
-            Key_I : constant Flow_Id      := FA.PDG.Get_Key (V_Initial);
-            Atr_I : constant V_Attributes := FA.Atr.Element (V_Initial);
-         begin
-            if Key_I.Variant = Initial_Value
-              and then not Atr_I.Is_Initialized
-            then
-
-               --  V_Initial is a vertex of an uninitialized initial value
-               --  Key_I     is its flow_id
-               --  Atr_I     are its attributes
-
-               --  We now look at all its out neighbours in the PDG
-               --  (these are vertices using (or depending on) this
-               --  uninitialized initial value).
-
-               for V_Use of FA.PDG.Get_Collection (V_Initial,
-                                                   Flow_Graphs.Out_Neighbours)
-               loop
-                  declare
-                     Key_U : constant Flow_Id      := FA.PDG.Get_Key (V_Use);
-                     Atr_U : constant V_Attributes := FA.Atr.Element (V_Use);
-
-                     Action : constant String := (if Has_Async_Readers (Key_I)
-                                                  then "written"
-                                                  else "initialized");
-
-                     Defined_Elsewhere : Boolean;
-                     V_Error           : Flow_Graphs.Vertex_Id;
-                  begin
-
-                     --  Get a name for a new trace file
-                     Tracefile := To_Unbounded_String (Fresh_Trace_File);
-
-                     --  V_Use is a vertex that depends on V_Initial
-                     --  Key_U is its flow_id
-                     --  Atr_U are its attributes
-
-                     --  There are a number of places an uninitialized
-                     --  value might be used, we issue slightly
-                     --  different error messages depending on what
-                     --  V_Use represents.
-
-                     Might_Be_Defined_In_Other_Path
-                       (V_Initial => V_Initial,
-                        V_Use     => V_Use,
-                        Found     => Defined_Elsewhere,
-                        V_Error   => V_Error);
-
-                     if Key_U.Variant = Final_Value then
-
-                        --  This is a final value vertex; this
-                        --  suggests there is a path in the CFG that
-                        --  never sets the variable.
-
-                        if not (Is_Abstract_State (Key_U) and then
-                                  Ekind (FA.Analyzed_Entity) in E_Package |
-                                                                E_Package_Body)
-                        then
-
-                           --  If the final vertex corresponds to a
-                           --  state abstraction and we are analyzing
-                           --  a package then we do not consider this
-                           --  to be an issue as state abstractions do
-                           --  not have to always be initialized after
-                           --  a package's elaboration.
-
-                           if Atr_U.Is_Global then
-                              if Defined_Elsewhere then
-                                 Error_Msg_Flow
-                                   (FA        => FA,
-                                    Tracefile => To_String (Tracefile),
-                                    Msg       => "& might not be " & Action,
-                                    N         => Find_Global
-                                      (FA.Analyzed_Entity, Key_I),
-                                    F1        => Key_I,
-                                    Tag       => Uninitialized,
-                                    Kind      => Medium_Check_Kind,
-                                    Vertex    => V_Use);
-                              else
-                                 Error_Msg_Flow
-                                   (FA        => FA,
-                                    Tracefile => To_String (Tracefile),
-                                    Msg       => "& is not " & Action,
-                                    N         => Find_Global
-                                      (FA.Analyzed_Entity, Key_I),
-                                    F1        => Key_I,
-                                    Tag       => Uninitialized,
-                                    Kind      => High_Check_Kind,
-                                    Vertex    => V_Use);
-                              end if;
-                              Mark_Definition_Free_Path
-                                (From => FA.Start_Vertex,
-                                 To   => FA.Helper_End_Vertex,
-                                 Var  => Change_Variant (Key_I, Normal_Use));
-
-                           elsif Atr_U.Is_Function_Return then
-
-                              --  This is actually a totally different
-                              --  error. It means we have a path where we
-                              --  do not return from the function.
-
-                              if not FA.Last_Statement_Is_Raise then
-
-                                 --  We only issue this error when the
-                                 --  last statement is not a raise
-                                 --  statement.
-
-                                 Error_Msg_Flow
-                                   (FA        => FA,
-                                    Tracefile => To_String (Tracefile),
-                                    Msg       =>
-                                      (if Defined_Elsewhere
-                                       then "possibly missing return "
-                                               & "statement in &"
-                                       else "missing return "
-                                               & "statement in &"),
-                                    N         =>
-                                      Error_Location (FA.PDG,
-                                                      FA.Atr,
-                                                      FA.Start_Vertex),
-                                    F1        => Direct_Mapping_Id
-                                      (FA.Analyzed_Entity),
-                                    Tag       => Missing_Return,
-                                    Kind      => (if Defined_Elsewhere
-                                                  then Warning_Kind
-                                                  else Error_Kind),
-                                    Vertex    => V_Use);
-                                 Mark_Definition_Free_Path
-                                   (From => FA.Start_Vertex,
-                                    To   => FA.Helper_End_Vertex,
-                                    Var  => Change_Variant (Key_I,
-                                                            Normal_Use));
-                              end if;
-
-                           elsif Atr_U.Is_Export then
-
-                              --  As we don't have a global, but an
-                              --  export, it means we must be dealing
-                              --  with a parameter.
-
-                              if Defined_Elsewhere then
-                                 Error_Msg_Flow
-                                   (FA        => FA,
-                                    Tracefile => To_String (Tracefile),
-                                    Msg       => "& might not be " & Action &
-                                      " in &",
-                                    N         => First_Variable_Use
-                                      (N        =>  Error_Location (FA.PDG,
-                                                                    FA.Atr,
-                                                                    V_Error),
-                                       FA       => FA,
-                                       Scope    => FA.B_Scope,
-                                       Var      => Key_I,
-                                       Precise  => True,
-                                       Targeted => True),
-                                    F1        => Key_I,
-                                    F2        => Direct_Mapping_Id
-                                      (FA.Analyzed_Entity),
-                                    Tag       => Uninitialized,
-                                    Kind      => Medium_Check_Kind,
-                                    Vertex    => V_Use);
-                              else
-                                 Error_Msg_Flow
-                                   (FA        => FA,
-                                    Tracefile => To_String (Tracefile),
-                                    Msg       => "& is not " & Action &
-                                      " in &",
-                                    N         => First_Variable_Use
-                                      (N        =>  Error_Location (FA.PDG,
-                                                                    FA.Atr,
-                                                                    V_Error),
-                                       FA       => FA,
-                                       Scope    => FA.B_Scope,
-                                       Var      => Key_I,
-                                       Precise  => True,
-                                       Targeted => True),
-                                    F1        => Key_I,
-                                    F2        => Direct_Mapping_Id
-                                      (FA.Analyzed_Entity),
-                                    Tag       => Uninitialized,
-                                    Kind      => High_Check_Kind,
-                                    Vertex    => V_Use);
-                              end if;
-                              Mark_Definition_Free_Path
-                                (From      => FA.Start_Vertex,
-                                 To        => V_Error,
-                                 Var       => Change_Variant (Key_I,
-                                                              Normal_Use),
-                                 V_Allowed => V_Use);
-
-                           else
-
-                              --  We are dealing with a local variable,
-                              --  so we don't care if there is a path
-                              --  where it is not set.
-
-                              null;
-                           end if;
-
-                        end if;
-
-                     else
-
-                        --  V_Use is not a final vertex.
-
-                        if Defined_Elsewhere then
-                           Error_Msg_Flow
-                             (FA        => FA,
-                              Tracefile => To_String (Tracefile),
-                              Msg       => "& might not be " & Action,
-                              N         => First_Variable_Use
-                                (N        =>  Error_Location (FA.PDG,
-                                                              FA.Atr,
-                                                              V_Error),
-                                 FA       => FA,
-                                 Scope    => FA.B_Scope,
-                                 Var      => Key_I,
-                                 Precise  => True,
-                                 Targeted => True),
-                              F1        => Key_I,
-                              Tag       => Uninitialized,
-                              Kind      => Medium_Check_Kind,
-                              Vertex    => V_Use);
+               if not Var_Atr.Is_Initialized
+                 and then (if Ekind (FA.Analyzed_Entity) in
+                             E_Package | E_Package_Body
+                           then not Is_Abstract_State (Var_Read))
+               then
+                  --  ... we check the in neighbours in the DDG and see if
+                  --  they define it. We record initialized / uninitialized
+                  --  reads accordingly.
+                  --
+                  --  Note we skip this check for abstract state iff we
+                  --  analyze a package, since its OK to leave some state
+                  --  uninitialized (Check_Initializes_Contract will pick
+                  --  this up).
+                  for V_Def of FA.DDG.Get_Collection
+                    (V, Flow_Graphs.In_Neighbours)
+                  loop
+                     Def_Atr := FA.Atr.Element (V_Def);
+                     Def_Key := FA.DDG.Get_Key (V_Def);
+                     if Def_Key.Variant = Initial_Value
+                       and then Change_Variant (Def_Key, Normal_Use) = Var_Read
+                     then
+                        --  We're using the initial value.
+                        if Def_Atr.Is_Initialized then
+                           Is_Initialized   := True;
                         else
-                           Error_Msg_Flow
-                             (FA        => FA,
-                              Tracefile => To_String (Tracefile),
-                              Msg       => "& is not " & Action,
-                              N         => First_Variable_Use
-                                (N        =>  Error_Location (FA.PDG,
-                                                              FA.Atr,
-                                                              V_Error),
-                                 FA       => FA,
-                                 Scope    => FA.B_Scope,
-                                 Var      => Key_I,
-                                 Precise  => True,
-                                 Targeted => True),
-                              F1        => Key_I,
-                              Tag       => Uninitialized,
-                              Kind      => High_Check_Kind,
-                              Vertex    => V_Use);
+                           Is_Uninitialized := True;
                         end if;
-                        Mark_Definition_Free_Path
-                          (From      => FA.Start_Vertex,
-                           To        => V_Error,
-                           Var       => Change_Variant (Key_I, Normal_Use),
-                           V_Allowed => V_Use);
-
+                     elsif Def_Atr.Variables_Defined.Contains (Var_Read)
+                       or else Def_Atr.Volatiles_Read.Contains (Var_Read)
+                     then
+                        --  We're using a previously written value.
+                        Is_Initialized := True;
                      end if;
-                  end;
-               end loop;
-            end if;
-         end;
+                  end loop;
+
+                  --  Some useful debug output before we issue the message.
+                  if Debug_Trace_Check_Reads then
+                     Write_Str ("@" & FA.DDG.Vertex_To_Natural (V)'Img);
+                     if Is_Initialized then
+                        Write_Str (" INIT");
+                     end if;
+                     if Is_Uninitialized then
+                        Write_Str (" DIRTY");
+                     end if;
+                     Write_Str (" :");
+                     Print_Flow_Id (Var_Read);
+                  end if;
+
+                  Emit_Message (Var              => Var_Read,
+                                Vertex           => V,
+                                Is_Initialized   => Is_Initialized,
+                                Is_Uninitialized => Is_Uninitialized);
+               end if;
+            end loop;
+         end if;
       end loop;
+
    end Find_Use_Of_Uninitialized_Variables;
 
    --------------------------

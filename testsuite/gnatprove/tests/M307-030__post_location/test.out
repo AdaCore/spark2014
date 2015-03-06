@@ -1,1 +1,5 @@
+p.adb:2:17: info: initialization of "X" proved
+p.adb:2:20: info: initialization of "Y" proved
+p.adb:3:14: info: initialization of "X" proved
 p.adb:3:14: medium: postcondition might fail
+p.adb:5:14: info: initialization of "Y" proved

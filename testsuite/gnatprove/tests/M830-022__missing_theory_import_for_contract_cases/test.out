@@ -1,3 +1,7 @@
+state_machine.adb:16:12: info: initialization of "State_A" proved
+state_machine.adb:18:12: info: initialization of "State_B" proved
+state_machine.adb:20:12: info: initialization of "State_C" proved
+state_machine.adb:22:12: info: initialization of "State_D" proved
 state_machine.adb:25:08: info: disjoint contract cases proved
 state_machine.adb:25:35: info: contract case proved
 state_machine.adb:26:35: info: contract case proved

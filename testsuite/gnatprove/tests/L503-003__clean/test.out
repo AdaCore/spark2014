@@ -1,8 +1,20 @@
 natural_set.adb:8:34: info: length check proved
 natural_set.adb:17:31: info: range check proved
 natural_set.adb:18:16: info: index check proved
+natural_set.ads:6:13: info: initialization of "Valid" proved
+natural_set.ads:9:13: info: initialization of "Members" proved
 natural_set.ads:11:06: info: postcondition proved
+natural_set.ads:13:13: info: initialization of "Full" proved
+natural_set.ads:15:22: info: initialization of "S.Len" proved
+natural_set.ads:15:22: info: initialization of "S.M" proved
 natural_set.ads:16:19: info: postcondition proved
+natural_set.ads:16:26: info: initialization of "S.Len" proved
+natural_set.ads:16:26: info: initialization of "S.M" proved
+natural_set.ads:16:47: info: initialization of "S.Len" proved
+natural_set.ads:16:47: info: initialization of "S.M" proved
+natural_set.ads:16:73: info: initialization of "S.Len" proved
+natural_set.ads:16:73: info: initialization of "S.M" proved
+natural_set.ads:18:13: info: initialization of "Contains" proved
 natural_set.ads:25:14: medium: postcondition might fail, requires Contains (S, Value)
 natural_set.ads:45:16: info: range check proved
 natural_set.ads:45:57: info: index check proved
@@ -12,8 +24,20 @@ natural_set.ads:52:47: info: index check proved
 natural_set.adb:8:34: info: length check proved
 natural_set.adb:17:31: info: range check proved
 natural_set.adb:18:16: info: index check proved
+natural_set.ads:6:13: info: initialization of "Valid" proved
+natural_set.ads:9:13: info: initialization of "Members" proved
 natural_set.ads:11:06: info: postcondition proved
+natural_set.ads:13:13: info: initialization of "Full" proved
+natural_set.ads:15:22: info: initialization of "S.Len" proved
+natural_set.ads:15:22: info: initialization of "S.M" proved
 natural_set.ads:16:19: info: postcondition proved
+natural_set.ads:16:26: info: initialization of "S.Len" proved
+natural_set.ads:16:26: info: initialization of "S.M" proved
+natural_set.ads:16:47: info: initialization of "S.Len" proved
+natural_set.ads:16:47: info: initialization of "S.M" proved
+natural_set.ads:16:73: info: initialization of "S.Len" proved
+natural_set.ads:16:73: info: initialization of "S.M" proved
+natural_set.ads:18:13: info: initialization of "Contains" proved
 natural_set.ads:25:14: medium: postcondition might fail, requires Contains (S, Value)
 natural_set.ads:45:16: info: range check proved
 natural_set.ads:45:57: info: index check proved

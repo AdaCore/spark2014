@@ -1,15 +1,71 @@
+fruit-priv_child.adb:34:18: info: initialization of "Fruit_Salads" proved
+fruit-priv_child.adb:36:18: info: initialization of "Money" proved
+fruit-priv_child.adb:37:18: info: initialization of "Money" proved
+fruit-priv_child.adb:41:18: info: initialization of "Money" proved
+fruit-priv_child.ads:15:13: info: initialization of "Get_Price_Of_Apple" proved
+fruit-priv_child.ads:18:13: info: initialization of "Get_Price_Of_Orange" proved
+fruit-priv_child.ads:21:46: info: initialization of "Profit" proved
+fruit-priv_child.ads:25:04: info: initialization of "Extra_Cost" proved
+fruit-pub_child.adb:27:23: info: initialization of "Fruit_Salads_Made" proved
+fruit-pub_child.adb:28:24: info: initialization of "Fruit_Salads_Made" proved
 fruit-pub_child.adb:36:30: warning: unused global "Fruit.Fruits"
+fruit-pub_child.ads:5:37: info: initialization of "Fruit_Salads_Made" proved
+fruit-pub_child.ads:13:13: info: initialization of "Price_Of_Fruit_Salad" proved
 fruit-pub_child.ads:13:13: warning: unused global "Apples"
 fruit-pub_child.ads:13:13: warning: unused global "Oranges"
 fruit-pub_child.ads:13:13: warning: unused global "Priv_Child.Price_Related_Stuff"
+fruit-pub_child.ads:17:04: info: initialization of "Apples_In_Fruit_Salad" proved
+fruit-pub_child.ads:19:04: info: initialization of "Oranges_In_Fruit_Salad" proved
+fruit.ads:5:13: info: initialization of "Number_Of_Apples" proved
+fruit.ads:8:13: info: initialization of "Number_Of_Oranges" proved
+fruit.ads:21:13: info: initialization of "Number_Of_Fruits" proved
+fruit.ads:37:04: info: initialization of "Apples" proved
+fruit.ads:40:04: info: initialization of "Oranges" proved
+fruit.ads:43:04: info: initialization of "Price_Of_Apple" proved
+fruit.ads:46:04: info: initialization of "Price_Of_Orange" proved
+levels.adb:42:23: info: initialization of "A" proved
 levels.adb:50:27: warning: no procedure exists that can initialize abstract state "Nested_1.Abs_1"
+levels.adb:53:16: info: initialization of "Read_Partial_1" proved
+levels.adb:56:16: info: initialization of "Read_Partial_1_Inner" proved
+levels.adb:59:26: info: initialization of "A" proved
+levels.adb:61:20: info: initialization of "A" proved
+levels.adb:63:28: info: initialization of "X" proved
+levels.adb:80:23: info: initialization of "A" proved
+levels.adb:98:30: info: initialization of "X2" proved
+levels.adb:101:19: info: initialization of "Read_Partial_2" proved
+levels.adb:109:10: info: initialization of "X2" proved
+levels.adb:110:10: info: initialization of "Y2" proved
+levels.adb:137:25: info: initialization of "A" proved
+levels.adb:149:24: info: initialization of "Tmp" proved
+levels.adb:150:15: info: initialization of "X" proved
+levels.adb:150:19: info: initialization of "Tmp" proved
+levels.adb:157:25: info: initialization of "A" proved
 levels.ads:2:26: warning: no procedure exists that can initialize abstract state "Levels.Abs_0"
+levels.ads:5:13: info: initialization of "Read_Partial_0" proved
+levels.ads:8:13: info: initialization of "Read_Partial_Combined" proved
+levels.ads:11:13: info: initialization of "Wibble_0" proved
 levels.ads:14:14: warning: subprogram "Post_Test_01" has no effect
 levels.ads:18:14: warning: subprogram "Post_Test_02" has no effect
+levels.ads:22:23: info: initialization of "A" proved
+levels.ads:25:25: info: initialization of "X" proved
 par-priv.adb:13:04: warning: analyzing unreferenced procedure "Test"
+par-priv.adb:13:14: info: initialization of "D" proved
 par-priv.ads:4:27: warning: no procedure exists that can initialize abstract state "Priv.Private_Child_State"
+par-priv.ads:9:14: info: initialization of "E" proved
+par-priv.ads:11:13: info: initialization of "H" proved
+par-priv.ads:15:13: info: initialization of "I" proved
 par-priv2.ads:4:27: warning: no procedure exists that can initialize abstract state "Priv2.More_Private_State"
+par-priv2.ads:9:14: info: initialization of "D2" proved
+par-priv2.ads:11:13: info: initialization of "K" proved
 par-pub.adb:14:04: warning: analyzing unreferenced procedure "Test"
+par-pub.adb:14:14: info: initialization of "A" proved
+par-pub.ads:6:13: info: initialization of "F" proved
+par-pub.ads:8:14: info: initialization of "A" proved
+par-pub.ads:15:13: info: initialization of "G" proved
 par.adb:16:04: warning: analyzing unreferenced function "Wibble"
 par.adb:29:04: warning: analyzing unreferenced procedure "Test_1"
+par.adb:29:14: info: initialization of "Z" proved
 par.adb:37:04: warning: analyzing unreferenced procedure "Test_2"
+par.adb:37:14: info: initialization of "Z" proved
+par.ads:7:14: info: initialization of "Z" proved
+par.ads:15:13: info: initialization of "Wibble" proved

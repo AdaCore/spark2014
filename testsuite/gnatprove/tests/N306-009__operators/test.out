@@ -1,4 +1,10 @@
+inst_ext_ax.ads:5:12: info: initialization of "Oeq" proved
+inst_ext_ax.ads:7:12: info: initialization of "Oeq" proved
+inst_ext_ax.ads:30:13: info: initialization of "AddThree" proved
 inst_ext_ax.ads:31:10: medium: overflow check might fail
 inst_ext_ax.ads:31:14: medium: overflow check might fail
+inst_ext_ax.ads:33:12: info: initialization of "Add" proved
 inst_ext_ax.ads:33:12: medium: range check might fail
+inst_ext_ax.ads:34:12: info: initialization of "Add" proved
+inst_ext_ax.ads:34:12: info: initialization of "Add2" proved
 inst_ext_ax.ads:34:12: medium: range check might fail

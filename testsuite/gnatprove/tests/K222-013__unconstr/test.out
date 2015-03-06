@@ -2,11 +2,15 @@ unconstr.adb:5:09: info: length check proved
 unconstr.adb:8:04: warning: analyzing unreferenced procedure "Q"
 unconstr.adb:8:14: warning: subprogram "Q" has no effect
 unconstr.adb:11:07: info: precondition proved
+unconstr.adb:12:22: info: initialization of "A" proved
 unconstr.adb:12:22: medium: assertion might fail, requires A (0) = 1
 unconstr.adb:15:04: warning: analyzing unreferenced procedure "R"
 unconstr.adb:15:14: warning: subprogram "R" has no effect
 unconstr.adb:18:07: info: precondition proved
 unconstr.adb:18:15: info: range check proved
+unconstr.adb:19:22: info: initialization of "A" proved
 unconstr.adb:19:22: medium: assertion might fail, requires A (0) = 1
+unconstr.ads:7:17: info: initialization of "X" proved
 unconstr.ads:9:20: info: postcondition proved
+unconstr.ads:9:21: info: initialization of "X" proved
 unconstr.ads:9:25: info: index check proved

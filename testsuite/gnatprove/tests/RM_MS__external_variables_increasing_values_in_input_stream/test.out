@@ -1,4 +1,16 @@
+inc.adb:39:15: info: initialization of "Tmp" proved
 inc.adb:51:19: info: non-aliasing of formal parameters "V" and "Valid" proved
+inc.adb:52:10: info: initialization of "Result.Valid" proved
 inc.adb:53:22: info: non-aliasing of formal parameters "V" and "Valid" proved
+inc.ads:11:13: info: initialization of "First" proved
+inc.ads:14:13: info: initialization of "Second" proved
+inc.ads:19:13: info: initialization of "Is_Valid" proved
+inc.ads:24:13: info: initialization of "Is_Increasing" proved
+inc.ads:27:25: info: initialization of "Result.First" proved
+inc.ads:27:25: info: initialization of "Result.Second" proved
+inc.ads:27:25: info: initialization of "Result.Valid" proved
 inc.ads:29:21: info: postcondition proved
 inc.ads:29:48: info: precondition proved
+inc.ads:29:63: info: initialization of "Result.First" proved
+inc.ads:29:63: info: initialization of "Result.Second" proved
+inc.ads:29:63: info: initialization of "Result.Valid" proved

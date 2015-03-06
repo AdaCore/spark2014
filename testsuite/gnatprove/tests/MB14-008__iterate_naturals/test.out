@@ -1,6 +1,9 @@
+test_iterable.ads:13:13: info: initialization of "My_First" proved
+test_iterable.ads:15:13: info: initialization of "My_Has_Element" proved
 test_iterable.ads:16:16: info: discriminant check proved
+test_iterable.ads:17:13: info: initialization of "My_Next" proved
 test_iterable.ads:18:52: info: overflow check proved
+test_iterable.ads:19:13: info: initialization of "All_Zeros" proved
 test_iterable.ads:20:07: info: precondition proved
 test_iterable.ads:20:32: info: discriminant check proved
 test_iterable.ads:20:42: info: index check proved
-

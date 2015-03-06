@@ -1,0 +1,13 @@
+logger.adb:39:38: info: initialization of "Tmp" proved
+logger.adb:42:51: info: initialization of "R4b" proved
+logger.adb:42:70: info: initialization of "R5b" proved
+logger.adb:45:43: info: initialization of "R8b" proved
+logger.adb:46:52: info: initialization of "R11b" proved
+logger.adb:49:20: info: initialization of "Result" proved
+logger.ads:28:13: info: initialization of "Log_Size" proved
+logger.ads:33:13: info: initialization of "Make_Entry.EstimatedGroundVelocity" proved
+logger.ads:33:13: info: initialization of "Make_Entry.EstimatedGroundVelocityIsAvailable" proved
+logger.ads:33:13: info: initialization of "Make_Entry.Millisecs" proved
+logger.ads:33:13: info: initialization of "Make_Entry.NGClickTime" proved
+logger.ads:33:13: info: initialization of "Make_Entry.NGRotations" proved
+logger.ads:47:13: info: initialization of "Log_Content" proved

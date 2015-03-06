@@ -9,57 +9,106 @@ part.adb:24:27: info: index check proved
 part.adb:26:10: info: index check proved
 part.adb:26:19: info: index check proved
 part.adb:27:10: info: index check proved
+part.adb:27:16: info: initialization of "Tmp" proved
 part.adb:35:28: info: range check proved, in call inlined at part.adb:72
 part.adb:35:28: info: range check proved, in call inlined at part.adb:79
 part.adb:36:28: info: range check proved, in call inlined at part.adb:79
 part.adb:36:28: medium: range check might fail, in call inlined at part.adb:72
+part.adb:38:13: info: initialization of "First" proved, in call inlined at part.adb:72
+part.adb:38:13: info: initialization of "First" proved, in call inlined at part.adb:79
+part.adb:38:22: info: initialization of "Last" proved, in call inlined at part.adb:72
+part.adb:38:22: info: initialization of "Last" proved, in call inlined at part.adb:79
+part.adb:39:24: info: initialization of "First" proved, in call inlined at part.adb:72
+part.adb:39:24: info: initialization of "First" proved, in call inlined at part.adb:79
 part.adb:39:24: medium: array index check might fail, in call inlined at part.adb:72
 part.adb:39:24: medium: array index check might fail, in call inlined at part.adb:79
+part.adb:40:22: info: initialization of "First" proved, in call inlined at part.adb:72
+part.adb:40:22: info: initialization of "First" proved, in call inlined at part.adb:79
 part.adb:40:28: info: overflow check proved, in call inlined at part.adb:72
 part.adb:40:28: medium: overflow check might fail, in call inlined at part.adb:79
 part.adb:42:13: medium: precondition might fail, in call inlined at part.adb:72
 part.adb:42:13: medium: precondition might fail, in call inlined at part.adb:79
+part.adb:42:22: info: initialization of "First" proved, in call inlined at part.adb:72
+part.adb:42:22: info: initialization of "First" proved, in call inlined at part.adb:79
+part.adb:42:29: info: initialization of "Last" proved, in call inlined at part.adb:72
+part.adb:42:29: info: initialization of "Last" proved, in call inlined at part.adb:79
+part.adb:43:21: info: initialization of "Last" proved, in call inlined at part.adb:72
+part.adb:43:21: info: initialization of "Last" proved, in call inlined at part.adb:79
 part.adb:43:26: medium: range check might fail, in call inlined at part.adb:72
 part.adb:43:26: medium: range check might fail, in call inlined at part.adb:79
 part.adb:45:33: medium: loop invariant might fail after first iteration, requires Same_Set (A'Loop_Entry, A), in call inlined at part.adb:72
 part.adb:45:33: medium: loop invariant might fail after first iteration, requires Same_Set (A'Loop_Entry, A), in call inlined at part.adb:79
 part.adb:45:33: medium: loop invariant might fail in first iteration, requires Same_Set (A'Loop_Entry, A), in call inlined at part.adb:72
 part.adb:45:33: medium: loop invariant might fail in first iteration, requires Same_Set (A'Loop_Entry, A), in call inlined at part.adb:79
+part.adb:45:44: info: initialization of "R14b" proved, in call inlined at part.adb:72
+part.adb:45:44: info: initialization of "R42b" proved, in call inlined at part.adb:79
 part.adb:47:32: medium: overflow check might fail, in call inlined at part.adb:72
 part.adb:47:32: medium: overflow check might fail, in call inlined at part.adb:79
+part.adb:48:27: info: initialization of "Num_Part" proved, in call inlined at part.adb:72
+part.adb:48:27: info: initialization of "Num_Part" proved, in call inlined at part.adb:79
 part.adb:48:27: medium: "NP" might not be initialized, in call inlined at part.adb:72
 part.adb:48:27: medium: "NP" might not be initialized, in call inlined at part.adb:79
 part.adb:48:31: info: range check proved, in call inlined at part.adb:72
 part.adb:48:31: info: range check proved, in call inlined at part.adb:79
+part.adb:49:10: info: initialization of "First" proved, in call inlined at part.adb:72
+part.adb:49:10: info: initialization of "First" proved, in call inlined at part.adb:79
+part.adb:49:34: info: initialization of "Last" proved, in call inlined at part.adb:72
+part.adb:49:34: info: initialization of "Last" proved, in call inlined at part.adb:79
 part.adb:52:35: medium: overflow check might fail, in call inlined at part.adb:72
 part.adb:52:35: medium: overflow check might fail, in call inlined at part.adb:79
+part.adb:53:30: info: initialization of "NP" proved, in call inlined at part.adb:72
+part.adb:53:30: info: initialization of "NP" proved, in call inlined at part.adb:79
+part.adb:53:30: info: initialization of "Num_Part" proved, in call inlined at part.adb:72
+part.adb:53:30: info: initialization of "Num_Part" proved, in call inlined at part.adb:79
+part.adb:53:33: info: initialization of "First" proved, in call inlined at part.adb:72
+part.adb:53:33: info: initialization of "First" proved, in call inlined at part.adb:79
 part.adb:68:33: info: range check proved
+part.adb:72:10: info: initialization of "Num_Part" proved
 part.adb:72:10: info: range check proved
 part.adb:72:10: medium: array index check might fail
 part.adb:72:10: medium: range check might fail
+part.adb:72:30: info: initialization of "Last_Index" proved
+part.adb:72:30: info: initialization of "R14b" proved
 part.adb:72:47: info: index check proved
+part.adb:79:07: info: initialization of "Num_Part" proved
 part.adb:79:07: info: range check proved
 part.adb:79:07: medium: array index check might fail
+part.adb:79:27: info: initialization of "Last_Index" proved
+part.adb:79:27: info: initialization of "R42b" proved
+part.ads:7:13: info: initialization of "Mem" proved
 part.ads:8:41: info: index check proved
+part.ads:10:13: info: initialization of "Subset" proved
 part.ads:11:42: info: index check proved
+part.ads:13:13: info: initialization of "Same_Set" proved
+part.ads:16:13: info: initialization of "Disjoint" proved
 part.ads:17:47: info: index check proved
+part.ads:21:13: info: initialization of "Ascending" proved
 part.ads:23:41: info: overflow check proved
 part.ads:23:51: info: index check proved
 part.ads:23:61: info: index check proved
 part.ads:23:61: info: overflow check proved
+part.ads:25:13: info: initialization of "Is_Partition" proved
 part.ads:29:44: info: index check proved
+part.ads:31:13: info: initialization of "Disjoint_Or_Subset" proved
+part.ads:34:13: info: initialization of "Get_Part" proved
 part.ads:38:27: info: range check proved
 part.ads:38:44: info: index check proved
 part.ads:39:12: info: range check proved
 part.ads:39:20: info: index check proved
 part.ads:39:31: info: index check proved
+part.ads:45:07: info: initialization of "NP" proved
+part.ads:46:07: info: initialization of "Num_Part" proved
 part.ads:51:08: medium: postcondition might fail
+part.ads:51:25: info: initialization of "NP" proved
 part.ads:51:25: medium: range check might fail
 part.ads:51:50: medium: overflow check might fail
+part.ads:51:52: info: initialization of "Num_Part" proved
 part.ads:51:61: medium: overflow check might fail
 part.ads:54:45: medium: overflow check might fail
+part.ads:54:47: info: initialization of "Num_Part" proved
 part.ads:54:56: info: overflow check proved
 part.ads:56:16: info: precondition proved
+part.ads:56:29: info: initialization of "NP" proved
 part.ads:56:29: info: range check proved
 part.ads:56:54: medium: overflow check might fail
 part.ads:56:65: info: overflow check proved

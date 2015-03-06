@@ -8,14 +8,20 @@ p.adb:14:32: info: precondition proved
 p.adb:16:07: info: precondition proved
 p.adb:16:18: warning: unused assignment to "Cu"
 p.adb:17:07: info: precondition proved
+p.adb:17:18: info: initialization of "Nxt" proved
+p.adb:17:23: info: initialization of "E" proved
+p.adb:21:07: info: initialization of private part of "L_In" proved
 p.adb:21:31: info: precondition proved
 p.adb:23:07: info: precondition proved
 p.adb:24:07: info: assertion proved
 p.adb:24:22: info: precondition proved
 p.adb:24:41: info: precondition proved
+p.adb:24:50: info: initialization of private part of "L_In" proved
 p.adb:25:07: info: precondition proved
 p.adb:31:07: info: precondition proved
 p.adb:32:07: info: precondition proved
+p.ads:7:13: info: initialization of "My_Eq" proved
+p.ads:10:12: info: initialization of "Oeq" proved
 p.ads:15:13: info: precondition proved
 p.ads:16:07: info: precondition proved
 p.ads:17:14: info: postcondition proved

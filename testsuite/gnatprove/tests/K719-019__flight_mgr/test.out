@@ -9,6 +9,10 @@ flight_manager.adb:36:21: medium: "Result.X_Speed" might not be initialized
 flight_manager.adb:36:53: medium: overflow check might fail
 flight_manager.adb:37:21: medium: "Result.Y_Speed" might not be initialized
 flight_manager.adb:37:53: medium: overflow check might fail
+flight_manager.adb:39:14: info: initialization of "Result.X_Speed" proved
+flight_manager.adb:39:14: info: initialization of "Result.Y_Speed" proved
+flight_manager.ads:7:13: info: initialization of "Set_Engine_Speed.X_Speed" proved
+flight_manager.ads:7:13: info: initialization of "Set_Engine_Speed.Y_Speed" proved
 flight_manager.ads:10:17: medium: postcondition might fail
 flight_manager.ads:10:30: medium: overflow check might fail
 flight_manager.ads:10:65: medium: overflow check might fail

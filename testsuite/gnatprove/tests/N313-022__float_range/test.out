@@ -1,3 +1,4 @@
+fr.adb:10:14: info: initialization of "Z" proved
 fr.adb:12:09: warning: unused assignment
 fr.adb:12:14: info: overflow check proved
 fr.adb:13:14: info: overflow check proved
@@ -7,6 +8,7 @@ fr.adb:15:14: info: overflow check proved
 fr.adb:15:20: info: overflow check proved
 fr.adb:15:24: info: overflow check proved
 fr.adb:15:24: medium: range check might fail
+fr.adb:18:14: info: initialization of "Z" proved
 fr.adb:20:09: warning: unused assignment
 fr.adb:20:14: info: overflow check proved
 fr.adb:21:14: info: overflow check proved
@@ -14,11 +16,13 @@ fr.adb:21:14: info: range check proved
 fr.adb:22:14: info: overflow check proved
 fr.adb:22:20: info: overflow check proved
 fr.adb:22:20: medium: range check might fail
+fr.adb:25:14: info: initialization of "Z" proved
 fr.adb:27:09: warning: unused assignment
 fr.adb:27:17: info: overflow check proved
 fr.adb:27:17: info: range check proved
 fr.adb:28:17: info: overflow check proved
 fr.adb:28:17: medium: range check might fail
+fr.adb:31:14: info: initialization of "Z" proved
 fr.adb:33:09: warning: unused assignment
 fr.adb:33:14: info: division check proved
 fr.adb:33:14: info: overflow check proved
@@ -26,7 +30,13 @@ fr.adb:33:14: info: range check proved
 fr.adb:34:14: info: division check proved
 fr.adb:34:14: info: overflow check proved
 fr.adb:34:14: medium: range check might fail
+fr.adb:41:04: info: initialization of "X" proved
+fr.adb:41:04: info: initialization of "Y" proved
 fr.adb:41:04: info: precondition proved
+fr.adb:43:04: info: initialization of "X" proved
 fr.adb:43:04: info: precondition proved
+fr.adb:45:04: info: initialization of "X" proved
 fr.adb:45:04: info: precondition proved
+fr.adb:47:04: info: initialization of "X" proved
+fr.adb:47:04: info: initialization of "Y" proved
 fr.adb:47:04: info: precondition proved

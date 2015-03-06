@@ -1,2 +1,4 @@
-
+expr.adb:6:14: info: initialization of "R" proved
+expr.ads:2:13: info: initialization of "Echo" proved
 expr.ads:3:17: info: postcondition proved
+expr.ads:5:13: info: initialization of "Echo2" proved

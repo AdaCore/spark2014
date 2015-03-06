@@ -2,8 +2,16 @@ natural_set.adb:9:34: info: length check proved
 natural_set.adb:17:31: info: range check proved
 natural_set.adb:18:16: info: index check proved
 natural_set.adb:19:10: info: assertion proved
+natural_set.ads:19:13: info: initialization of "Valid" proved
+natural_set.ads:21:13: info: initialization of "Members" proved
 natural_set.ads:22:19: info: postcondition proved
+natural_set.ads:25:13: info: initialization of "Full" proved
+natural_set.ads:27:22: info: initialization of "S.Len" proved
+natural_set.ads:27:22: info: initialization of "S.M" proved
 natural_set.ads:28:19: info: postcondition proved
+natural_set.ads:28:26: info: initialization of "S.Len" proved
+natural_set.ads:28:26: info: initialization of "S.M" proved
+natural_set.ads:32:13: info: initialization of "Contains" proved
 natural_set.ads:39:19: info: postcondition proved
 natural_set.ads:59:16: info: range check proved
 natural_set.ads:59:57: info: index check proved

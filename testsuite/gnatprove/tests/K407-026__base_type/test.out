@@ -6,3 +6,11 @@ base_type.adb:25:28: info: range check proved
 base_type.adb:30:22: info: range check proved
 base_type.adb:35:22: info: range check proved
 base_type.adb:40:22: info: range check proved
+base_type.ads:4:13: info: initialization of "Add1" proved
+base_type.ads:7:13: info: initialization of "Add2" proved
+base_type.ads:12:13: info: initialization of "Add3" proved
+base_type.ads:15:13: info: initialization of "Add4" proved
+base_type.ads:20:13: info: initialization of "Add5" proved
+base_type.ads:23:13: info: initialization of "Add6" proved
+base_type.ads:28:13: info: initialization of "Add7" proved
+base_type.ads:31:13: info: initialization of "Add8" proved

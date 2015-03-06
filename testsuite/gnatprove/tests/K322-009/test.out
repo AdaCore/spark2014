@@ -1,3 +1,4 @@
+pack.adb:21:11: info: initialization of "X" proved
 pack.ads:8:19: medium: postcondition might fail, requires X = X'old
 pack.ads:11:19: medium: postcondition might fail, requires X = X'old
 pack.ads:13:14: warning: subprogram "P3" has no effect

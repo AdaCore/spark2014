@@ -1,0 +1,3 @@
+p.adb:10:18: info: initialization of "To_Int" proved
+p.adb:10:21: info: initialization of "Val" proved
+p.adb:11:14: info: initialization of "Val" proved

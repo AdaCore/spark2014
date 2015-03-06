@@ -1,27 +1,51 @@
 list.adb:15:35: info: precondition proved
 list.adb:16:35: info: precondition proved
+list.adb:18:07: info: initialization of "Res.Elements" proved
+list.adb:18:07: info: initialization of "Res.Elements_Ptr" proved
+list.adb:18:07: info: initialization of "Res.Last" proved
+list.adb:18:07: info: initialization of private part of "Res" proved
+list.adb:18:14: info: initialization of private part of "Res" proved
 list.adb:19:07: info: precondition proved
+list.adb:19:14: info: initialization of "Res.Elements" proved
+list.adb:19:14: info: initialization of "Res.Elements_Ptr" proved
+list.adb:19:14: info: initialization of "Res.Last" proved
+list.adb:19:14: info: initialization of private part of "Res" proved
+list.adb:21:16: info: initialization of "First" proved
+list.adb:21:25: info: initialization of "Last" proved
 list.adb:22:10: info: precondition proved
+list.adb:22:16: info: initialization of "S" proved
 list.adb:22:19: info: precondition proved
 list.adb:22:31: info: range check proved
 list.adb:23:10: info: loop invariant initialization proved
 list.adb:23:10: info: loop invariant preservation proved
+list.adb:25:23: info: initialization of "S" proved
 list.adb:25:35: info: overflow check proved
+list.adb:25:37: info: initialization of "First" proved
 list.adb:25:43: info: overflow check proved
 list.adb:28:35: info: overflow check proved
 list.adb:28:43: info: index check proved
 list.adb:28:43: info: overflow check proved
 list.adb:28:50: info: precondition proved
 list.adb:28:62: info: range check proved
+list.adb:31:17: info: initialization of "First" proved
+list.adb:31:26: info: initialization of "Last" proved
 list.adb:32:10: info: loop invariant initialization proved
 list.adb:32:10: info: loop invariant preservation proved
 list.adb:34:22: info: precondition proved
+list.adb:34:30: info: initialization of "Res.Elements" proved
+list.adb:34:30: info: initialization of "Res.Elements_Ptr" proved
+list.adb:34:30: info: initialization of "Res.Last" proved
+list.adb:34:30: info: initialization of private part of "Res" proved
 list.adb:34:40: info: overflow check proved
+list.adb:34:42: info: initialization of "First" proved
+list.adb:36:23: info: initialization of "S" proved
+list.adb:36:33: info: initialization of "Last" proved
 list.adb:36:38: info: overflow check proved
 list.adb:36:42: info: overflow check proved
 list.adb:38:39: info: overflow check proved
 list.adb:38:43: info: overflow check proved
 list.adb:39:34: info: index check proved
+list.adb:39:50: info: initialization of "S" proved
 list.adb:39:64: info: index check proved
 list.adb:41:40: info: overflow check proved
 list.adb:42:20: info: precondition proved
@@ -31,8 +55,20 @@ list.adb:42:56: info: overflow check proved
 list.adb:42:60: info: overflow check proved
 list.adb:42:60: info: range check proved
 list.adb:43:10: info: precondition proved
+list.adb:43:18: info: initialization of "Res.Elements" proved
+list.adb:43:18: info: initialization of "Res.Elements_Ptr" proved
+list.adb:43:18: info: initialization of "Res.Last" proved
+list.adb:43:18: info: initialization of private part of "Res" proved
 list.adb:43:23: info: precondition proved
+list.adb:43:28: info: initialization of "S" proved
 list.adb:44:10: info: precondition proved
+list.adb:44:15: info: initialization of "S" proved
+list.ads:8:13: info: initialization of "Eq" proved
+list.ads:9:12: info: initialization of "Oeq" proved
+list.ads:12:13: info: initialization of "Reverse_List.Elements" proved
+list.ads:12:13: info: initialization of "Reverse_List.Elements_Ptr" proved
+list.ads:12:13: info: initialization of "Reverse_List.Last" proved
+list.ads:12:13: info: initialization of private part of "Reverse_List" proved
 list.ads:13:14: info: postcondition proved
 list.ads:13:28: info: precondition proved
 list.ads:13:47: info: precondition proved
@@ -49,8 +85,16 @@ stack.adb:17:22: info: range check proved
 stack.adb:18:19: info: index check proved
 stack.adb:29:22: info: range check proved
 stack.adb:37:28: info: length check proved
+stack.adb:38:14: info: initialization of "E.Content" proved
+stack.adb:38:14: info: initialization of "E.Top" proved
+stack.ads:11:16: info: initialization of "To" proved
 stack.ads:12:17: info: postcondition proved
+stack.ads:17:13: info: initialization of "Is_Full" proved
+stack.ads:19:13: info: initialization of "Is_Empty" proved
+stack.ads:22:13: info: initialization of "Empty_Stack.Content" proved
+stack.ads:22:13: info: initialization of "Empty_Stack.Top" proved
 stack.ads:23:14: info: postcondition proved
+stack.ads:25:13: info: initialization of "Top" proved
 stack.ads:27:14: info: postcondition proved
 stack.ads:27:41: info: index check proved
 stack.ads:31:14: info: postcondition proved

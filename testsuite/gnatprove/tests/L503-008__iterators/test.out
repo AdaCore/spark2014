@@ -1,6 +1,12 @@
 p.adb:25:13: info: precondition proved
+p.adb:26:14: info: initialization of "C" proved
+p.adb:27:18: info: initialization of "Sum" proved
 p.adb:27:22: medium: overflow check might fail
 p.adb:27:32: medium: precondition might fail
+p.adb:27:44: info: initialization of "C" proved
 p.adb:28:19: medium: precondition might fail
+p.adb:28:29: info: initialization of "C" proved
+p.ads:13:13: info: initialization of "My_Eq" proved
+p.ads:15:12: info: initialization of "Oeq" proved
 p.ads:18:14: warning: subprogram "Iter_Over_Lists" has no effect
 p.ads:20:14: warning: subprogram "Quant_Over_Lists" has no effect

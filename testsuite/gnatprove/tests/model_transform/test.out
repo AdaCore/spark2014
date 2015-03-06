@@ -1,21 +1,52 @@
 model.adb:61:10: info: loop invariant initialization proved
 model.adb:61:10: info: loop invariant preservation proved
 model.adb:63:36: info: index check proved
+model.adb:64:20: info: initialization of "AV" proved
 model.adb:64:41: info: range check proved
+model.adb:66:35: info: initialization of "AV" proved
 model.adb:71:10: info: loop invariant initialization proved
 model.adb:71:10: info: loop invariant preservation proved
 model.adb:73:62: info: index check proved
+model.adb:74:20: info: initialization of "AV" proved
+model.adb:74:28: info: initialization of "CFV" proved
 model.adb:74:56: info: range check proved
 model.adb:76:60: info: index check proved
 model.adb:77:54: info: range check proved
+model.adb:79:20: info: initialization of "CFV" proved
+model.adb:81:18: info: initialization of "CFV" proved
+model.adb:85:25: info: initialization of "Act.Owned_Action_Data" proved
+model.adb:85:25: info: initialization of "Act.Owned_Flow_Data" proved
+model.adb:85:30: info: initialization of "AV" proved
+model.adb:86:23: info: initialization of "Act.Owned_Action_Data" proved
+model.adb:86:23: info: initialization of "Act.Owned_Flow_Data" proved
+model.adb:86:28: info: initialization of "CFV" proved
+model.adb:87:14: info: initialization of "Act.Owned_Action_Data" proved
+model.adb:87:14: info: initialization of "Act.Owned_Flow_Data" proved
+model.ads:15:13: info: initialization of "Name" proved
+model.ads:30:13: info: initialization of "From" proved
+model.ads:32:13: info: initialization of "To" proved
 model.ads:37:14: info: postcondition proved
 model.ads:41:14: info: postcondition proved
+model.ads:55:13: info: initialization of "Owned_State" proved
+model.ads:57:13: info: initialization of "Owned_Transition" proved
 model.ads:64:14: info: postcondition proved
 model.ads:69:14: info: postcondition proved
 model.ads:83:06: info: length check proved
+model.ads:83:17: info: initialization of "No_UML_Action.Name_Data" proved
+model.ads:85:13: info: initialization of "Name__2" proved
 model.ads:100:06: info: length check proved
+model.ads:100:17: info: initialization of "No_UML_Control_Flow.From_Data" proved
+model.ads:100:17: info: initialization of "No_UML_Control_Flow.To_Data" proved
+model.ads:104:13: info: initialization of "From__2" proved
+model.ads:106:13: info: initialization of "To__2" proved
 model.ads:111:14: info: postcondition proved
 model.ads:115:14: info: postcondition proved
+model.ads:126:28: info: initialization of "No_UML_Action_Vector" proved
+model.ads:127:26: info: initialization of "No_UML_Control_Flow_Vector" proved
+model.ads:132:13: info: initialization of "Owned_Action" proved
+model.ads:134:13: info: initialization of "Owned_Flow" proved
 model.ads:141:14: info: postcondition proved
 model.ads:147:14: info: postcondition proved
+model.ads:160:13: info: initialization of "Transform.Owned_Action_Data" proved
+model.ads:160:13: info: initialization of "Transform.Owned_Flow_Data" proved
 model.ads:163:06: info: postcondition proved

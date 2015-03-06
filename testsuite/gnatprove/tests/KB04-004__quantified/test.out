@@ -1,6 +1,7 @@
 data.adb:18:10: info: loop invariant initialization proved
 data.adb:18:10: info: loop invariant preservation proved
 data.adb:18:67: info: index check proved
+data.adb:18:76: info: initialization of "X_Old" proved
 data.adb:18:82: info: index check proved
 data.adb:20:60: info: index check proved
 data.adb:20:71: info: index check proved

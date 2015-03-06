@@ -1,6 +1,11 @@
+dir.adb:3:13: info: initialization of "Normalize_Pathname" proved
 dir.adb:5:07: warning: unused initial value of "Directory"
 dir.adb:6:07: warning: unused variable "Resolve_Links"
+dir.adb:16:13: info: initialization of "Test" proved
 dir.adb:18:07: warning: unused initial value of "Directory"
+dir.adb:23:13: info: initialization of "Is_Valid" proved
 dir.adb:23:23: warning: unused initial value of "Name"
 dir.adb:33:13: info: range check proved
+dir.adb:36:28: info: initialization of "Value" proved
 dir.adb:36:28: info: length check proved
+dir.ads:3:13: info: initialization of "Full_Name" proved

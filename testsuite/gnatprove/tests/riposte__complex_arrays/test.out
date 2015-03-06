@@ -7,21 +7,35 @@ complex_arrays.adb:75:22: medium: postcondition might fail, requires A(I) = A(J)
 complex_arrays.adb:87:22: medium: postcondition might fail, requires A(I)(J) /= 23
 complex_arrays.adb:99:22: medium: postcondition might fail, requires A(I) /= A(23)
 complex_arrays.adb:112:22: medium: postcondition might fail, requires A /= A'old
+complex_arrays.adb:118:18: info: initialization of "Tmp" proved
 complex_arrays.adb:126:22: medium: postcondition might fail, requires A /= A'old
+complex_arrays.adb:132:15: info: initialization of "Tmp" proved
+complex_arrays.adb:141:13: info: initialization of "Create_Step_Array" proved
 complex_arrays.adb:142:19: info: postcondition proved
 complex_arrays.adb:150:26: info: length check proved
 complex_arrays.adb:152:11: info: range check proved
+complex_arrays.adb:153:17: info: initialization of "Tmp" proved
 complex_arrays.adb:154:10: info: loop invariant initialization proved
 complex_arrays.adb:154:10: info: loop invariant preservation proved
 complex_arrays.adb:155:22: info: range check proved
+complex_arrays.adb:156:32: info: initialization of "Tmp" proved
 complex_arrays.adb:156:37: info: index check proved
 complex_arrays.adb:160:11: info: range check proved
+complex_arrays.adb:161:17: info: initialization of "Tmp" proved
 complex_arrays.adb:162:10: info: loop invariant initialization proved
 complex_arrays.adb:162:10: info: loop invariant preservation proved
 complex_arrays.adb:163:21: info: range check proved
+complex_arrays.adb:164:31: info: initialization of "Tmp" proved
 complex_arrays.adb:164:36: info: index check proved
 complex_arrays.adb:165:36: info: index check proved
+complex_arrays.adb:168:14: info: initialization of "Tmp" proved
+complex_arrays.adb:171:13: info: initialization of "Use_Step_Array" proved
 complex_arrays.adb:172:19: info: postcondition proved
+complex_arrays.adb:180:13: info: initialization of "Step" proved
+complex_arrays.adb:181:18: info: initialization of "C" proved
 complex_arrays.adb:181:20: info: range check proved
 complex_arrays.adb:184:10: info: loop invariant initialization proved
 complex_arrays.adb:184:10: info: loop invariant preservation proved
+complex_arrays.adb:186:32: info: initialization of "Step" proved
+complex_arrays.adb:188:33: info: initialization of "C" proved
+complex_arrays.adb:193:14: info: initialization of "C" proved

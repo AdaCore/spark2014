@@ -1,4 +1,7 @@
 main.adb:22:38: info: discriminant check proved
 main.adb:23:38: info: discriminant check proved
 main.adb:25:07: info: discriminant check proved
+main.adb:25:10: info: initialization of "U2.B_Only" proved
+main.adb:25:10: info: initialization of "U2.Common" proved
+main.adb:26:10: info: initialization of "U0.Common" proved
 main.adb:26:10: medium: discriminant check might fail

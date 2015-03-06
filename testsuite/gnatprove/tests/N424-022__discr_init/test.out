@@ -1,3 +1,5 @@
 discr_init.adb:8:33: info: length check proved
 discr_init.adb:18:05: info: discriminant check proved
+discr_init.adb:18:13: info: initialization of "X.Arr" proved
+discr_init.adb:18:16: info: initialization of "Y.Arr" proved
 discr_init.adb:18:17: info: discriminant check proved

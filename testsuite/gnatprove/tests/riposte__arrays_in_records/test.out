@@ -18,10 +18,20 @@ arrays_in_records.adb:163:07: info: assertion proved
 arrays_in_records.adb:171:22: medium: postcondition might fail, requires A.First_Array(I) /= 23
 arrays_in_records.adb:178:07: info: assertion proved
 arrays_in_records.adb:185:22: medium: postcondition might fail, requires A /= A'old
+arrays_in_records.adb:191:28: info: initialization of "Tmp" proved
 arrays_in_records.adb:198:22: medium: postcondition might fail, requires A /= A'old
+arrays_in_records.adb:204:27: info: initialization of "Tmp" proved
 arrays_in_records.adb:212:22: medium: postcondition might fail, requires A /= A'old
+arrays_in_records.adb:219:29: info: initialization of "Tmp" proved
+arrays_in_records.adb:220:29: info: initialization of "Tmp" proved
 arrays_in_records.adb:228:22: medium: postcondition might fail, requires A /= A'old
+arrays_in_records.adb:235:28: info: initialization of "Tmp" proved
+arrays_in_records.adb:236:28: info: initialization of "Tmp" proved
 arrays_in_records.adb:243:22: medium: postcondition might fail
+arrays_in_records.adb:249:28: info: initialization of "Tmp" proved
 arrays_in_records.adb:255:22: medium: postcondition might fail
+arrays_in_records.adb:261:28: info: initialization of "Tmp" proved
 arrays_in_records.adb:267:22: medium: postcondition might fail, requires A /= A'old
+arrays_in_records.adb:273:28: info: initialization of "Tmp" proved
 arrays_in_records.adb:280:22: medium: postcondition might fail, requires A /= A'old
+arrays_in_records.adb:286:28: info: initialization of "Tmp" proved

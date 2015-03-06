@@ -1,6 +1,19 @@
+loopvariant.adb:8:10: info: initialization of "I" proved
+loopvariant.adb:9:10: info: initialization of "J" proved
+loopvariant.adb:10:15: info: initialization of "J" proved
 loopvariant.adb:10:17: info: overflow check proved
+loopvariant.adb:13:15: info: initialization of "I" proved
 loopvariant.adb:13:17: info: overflow check proved
 loopvariant.adb:15:07: info: loop variant proved
+loopvariant.adb:15:41: info: initialization of "I" proved
+loopvariant.adb:15:57: info: initialization of "J" proved
+loopvariant.adb:19:10: info: initialization of "I" proved
+loopvariant.adb:20:10: info: initialization of "J" proved
+loopvariant.adb:21:15: info: initialization of "J" proved
 loopvariant.adb:21:17: info: overflow check proved
+loopvariant.adb:24:15: info: initialization of "I" proved
 loopvariant.adb:24:17: info: overflow check proved
 loopvariant.adb:26:07: medium: loop variant might fail
+loopvariant.adb:26:41: info: initialization of "I" proved
+loopvariant.adb:26:57: info: initialization of "J" proved
+loopvariant.adb:27:17: info: initialization of "I" proved

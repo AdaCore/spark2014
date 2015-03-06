@@ -1,2 +1,7 @@
+no_separate_spec.adb:13:33: info: initialization of "B" proved
+no_separate_spec.adb:14:14: info: initialization of "B" proved
 no_separate_spec.adb:14:14: info: postcondition proved
+no_separate_spec.adb:23:07: info: initialization of "B" proved
+no_separate_spec.ads:4:28: info: initialization of "B" proved
+no_separate_spec.ads:5:14: info: initialization of "B" proved
 no_separate_spec.ads:5:14: info: postcondition proved

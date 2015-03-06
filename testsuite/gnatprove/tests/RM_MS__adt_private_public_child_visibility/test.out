@@ -1,0 +1,5 @@
+parent_14-private_child_b_14.ads:4:13: info: initialization of "H" proved
+parent_14-public_child_a_14.ads:4:12: info: initialization of "G" proved
+parent_14-public_child_b_14.ads:4:13: info: initialization of "H" proved
+parent_14.ads:4:13: info: initialization of "F" proved
+parent_14.ads:5:13: info: initialization of "G" proved

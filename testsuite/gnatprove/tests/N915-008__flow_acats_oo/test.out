@@ -2,36 +2,195 @@ c3900050.ads:55:33: warning: assuming "Time_Of" has no effect on global items
 c3900050.ads:55:33: warning: no Global contract available for "Time_Of"
 c3900050.ads:57:33: warning: assuming "Time_Of" has no effect on global items
 c3900050.ads:57:33: warning: no Global contract available for "Time_Of"
+c3900050.ads:84:13: info: initialization of "Get_Time" proved
+c3900050.ads:86:13: info: initialization of "Get_Display" proved
+c3900050.ads:88:13: info: initialization of "Initial_Values_Okay" proved
+c3900050.ads:91:13: info: initialization of "Bad_Final_Values" proved
+c3900050.ads:97:43: info: initialization of "Default_Time" proved
+c3900051.ads:67:13: info: initialization of "Get_Level" proved
+c3900051.ads:69:13: info: initialization of "Initial_Values_Okay" proved
+c3900051.ads:73:13: info: initialization of "Bad_Final_Values" proved
+c3900052.ads:74:13: info: initialization of "Initial_Values_Okay" proved
+c3900052.ads:78:13: info: initialization of "Bad_Final_Values" proved
 c3900053.adb:95:11: medium: "Display_Count_For" might not be initialized after elaboration of main program "C3900053"
+c3900053.adb:108:38: info: initialization of "Alarm" proved
+c3900053.adb:112:18: info: initialization of "Alarm" proved
+c3900053.adb:114:31: info: initialization of "Alarm" proved
+c3900053.adb:137:38: info: initialization of "Low_Alarm" proved
+c3900053.adb:141:18: info: initialization of "Low_Alarm" proved
+c3900053.adb:143:31: info: initialization of "Low_Alarm" proved
+c3900053.adb:166:38: info: initialization of "Medium_Alarm" proved
+c3900053.adb:170:18: info: initialization of "Medium_Alarm" proved
+c3900053.adb:172:31: info: initialization of "Medium_Alarm" proved
 c3900060.ads:57:33: warning: assuming "Time_Of" has no effect on global items
 c3900060.ads:57:33: warning: no Global contract available for "Time_Of"
 c3900060.ads:59:33: warning: assuming "Time_Of" has no effect on global items
 c3900060.ads:59:33: warning: no Global contract available for "Time_Of"
+c3900060.ads:86:13: info: initialization of "Get_Time" proved
+c3900060.ads:88:13: info: initialization of "Get_Display" proved
+c3900060.ads:90:13: info: initialization of "Initial_Values_Okay" proved
+c3900060.ads:93:13: info: initialization of "Bad_Final_Values" proved
+c3900060.ads:99:43: info: initialization of "Default_Time" proved
+c3900061.ads:68:13: info: initialization of "Get_Level" proved
+c3900061.ads:70:13: info: initialization of "Initial_Values_Okay" proved
+c3900061.ads:74:13: info: initialization of "Bad_Final_Values" proved
+c3900062.ads:77:13: info: initialization of "Initial_Values_Okay" proved
+c3900062.ads:81:13: info: initialization of "Bad_Final_Values" proved
 c3900063.adb:94:11: medium: "Display_Count_For" might not be initialized after elaboration of main program "C3900063"
+c3900063.adb:113:38: info: initialization of "Medium_Alarm.Action_Officer" proved
+c3900063.adb:113:38: info: initialization of private part of "Medium_Alarm" proved
+c3900063.adb:117:18: info: initialization of "Medium_Alarm.Action_Officer" proved
+c3900063.adb:117:18: info: initialization of private part of "Medium_Alarm" proved
+c3900063.adb:119:31: info: initialization of "Medium_Alarm.Action_Officer" proved
+c3900063.adb:119:31: info: initialization of private part of "Medium_Alarm" proved
+c392004.adb:14:12: info: initialization of "C13b" proved, in call inlined at c392004.adb:33
+c392004.adb:14:12: info: initialization of "C17b" proved, in call inlined at c392004.adb:36
+c392004.adb:14:12: info: initialization of "C21b" proved, in call inlined at c392004.adb:40
+c392004.adb:14:12: info: initialization of "C25b" proved, in call inlined at c392004.adb:43
+c392004.adb:14:12: info: initialization of "C29b" proved, in call inlined at c392004.adb:47
+c392004.adb:14:12: info: initialization of "C33b" proved, in call inlined at c392004.adb:50
+c392004.adb:14:12: info: initialization of "C37b" proved, in call inlined at c392004.adb:54
+c392004.adb:14:12: info: initialization of "C41b" proved, in call inlined at c392004.adb:57
+c392004.adb:14:12: info: initialization of "C5b" proved, in call inlined at c392004.adb:26
+c392004.adb:14:12: info: initialization of "C9b" proved, in call inlined at c392004.adb:29
+c392004.adb:15:22: info: initialization of "C10b" proved, in call inlined at c392004.adb:29
+c392004.adb:15:22: info: initialization of "C14b" proved, in call inlined at c392004.adb:33
+c392004.adb:15:22: info: initialization of "C18b" proved, in call inlined at c392004.adb:36
+c392004.adb:15:22: info: initialization of "C22b" proved, in call inlined at c392004.adb:40
+c392004.adb:15:22: info: initialization of "C26b" proved, in call inlined at c392004.adb:43
+c392004.adb:15:22: info: initialization of "C30b" proved, in call inlined at c392004.adb:47
+c392004.adb:15:22: info: initialization of "C34b" proved, in call inlined at c392004.adb:50
+c392004.adb:15:22: info: initialization of "C38b" proved, in call inlined at c392004.adb:54
+c392004.adb:15:22: info: initialization of "C42b" proved, in call inlined at c392004.adb:57
+c392004.adb:15:22: info: initialization of "C6b" proved, in call inlined at c392004.adb:26
+c392004.adb:26:18: info: initialization of "My_Car.Convertible" proved
+c392004.adb:29:14: info: initialization of "Your_Car.Convertible" proved
+c392004.adb:33:14: info: initialization of "My_Car.Convertible" proved
+c392004.adb:36:18: info: initialization of "My_Car.Convertible" proved
+c392004.adb:40:18: info: initialization of "My_Car.Convertible" proved
+c392004.adb:42:10: info: initialization of "My_Car.Convertible" proved
+c392004.adb:42:10: info: initialization of private part of "My_Car" proved
+c392004.adb:43:18: info: initialization of "My_Car.Convertible" proved
+c392004.adb:47:18: info: initialization of "Your_Car.Convertible" proved
+c392004.adb:49:10: info: initialization of "Your_Car.Convertible" proved
+c392004.adb:49:10: info: initialization of private part of "Your_Car" proved
+c392004.adb:50:18: info: initialization of "Your_Car.Convertible" proved
+c392004.adb:54:14: info: initialization of "My_Car.Convertible" proved
+c392004.adb:56:10: info: initialization of "My_Car.Convertible" proved
+c392004.adb:56:10: info: initialization of private part of "My_Car" proved
+c392004.adb:57:14: info: initialization of "My_Car.Convertible" proved
+c392004_1.ads:56:22: info: initialization of "The_Vehicle.Engine_On" proved
 c392004_1.ads:57:22: warning: unused initial value of "The_Vehicle"
+c392004_2.ads:12:21: info: initialization of "The_Car.Convertible" proved
+c392004_2.ads:12:21: info: initialization of private part of "The_Car" proved
+c392004_2.ads:16:21: info: initialization of "The_Limo.Convertible" proved
+c392004_2.ads:16:21: info: initialization of private part of "The_Limo" proved
 c392008.adb:57:17: high: "B_Acct.Current_Balance" is not initialized
 c392008.adb:58:17: high: "C_Acct.Current_Balance" is not initialized
 c392008.adb:58:17: high: "C_Acct.Overdraft_Fee" is not initialized
 c392008.adb:59:17: high: "IC_Acct.Current_Balance" is not initialized
 c392008.adb:59:17: high: "IC_Acct.Overdraft_Fee" is not initialized
 c392008.adb:59:17: high: "IC_Acct.Rate" is not initialized
+c392008.adb:61:08: info: initialization of "B_Acct.Current_Balance" proved
+c392008.adb:62:08: info: initialization of "C_Acct.Current_Balance" proved
+c392008.adb:63:08: info: initialization of "IC_Acct.Current_Balance" proved
+c392008.adb:69:21: info: initialization of "B_Acct.Current_Balance" proved
+c392008.adb:70:21: info: initialization of "C_Acct.Current_Balance" proved
+c392008.adb:70:21: info: initialization of "C_Acct.Overdraft_Fee" proved
+c392008.adb:71:21: info: initialization of "IC_Acct.Current_Balance" proved
+c392008.adb:71:21: info: initialization of "IC_Acct.Overdraft_Fee" proved
+c392008.adb:71:21: info: initialization of "IC_Acct.Rate" proved
+c392008.adb:74:08: info: initialization of "B_Acct.Current_Balance" proved
+c392008.adb:75:08: info: initialization of "C_Acct.Current_Balance" proved
+c392008.adb:76:08: info: initialization of "IC_Acct.Current_Balance" proved
+c392008.adb:82:34: info: initialization of "B_Acct.Current_Balance" proved
+c392008.adb:83:34: info: initialization of "C_Acct.Current_Balance" proved
+c392008.adb:83:34: info: initialization of "C_Acct.Overdraft_Fee" proved
+c392008.adb:84:34: info: initialization of "IC_Acct.Current_Balance" proved
+c392008.adb:84:34: info: initialization of "IC_Acct.Overdraft_Fee" proved
+c392008.adb:84:34: info: initialization of "IC_Acct.Rate" proved
+c392008.adb:88:08: info: initialization of "B_Acct.Current_Balance" proved
+c392008.adb:89:08: info: initialization of "C_Acct.Current_Balance" proved
+c392008.adb:90:08: info: initialization of "IC_Acct.Current_Balance" proved
+c392008_0.adb:33:48: info: initialization of "Interest_On_Account" proved
+c392008_0.adb:39:28: info: initialization of "Initial_Deposit" proved
+c392008_0.ads:156:14: info: initialization of "Balance" proved
 c392008_0.ads:159:30: warning: unused initial value of "A"
+c392008_1.adb:12:28: info: initialization of "Initial_Deposit" proved
+c392008_1.adb:13:28: info: initialization of "Check_Guarantee" proved
 c392008_1.ads:17:20: warning: unused initial value of "A"
+c392008_2.adb:12:57: info: initialization of "Interest_On_Account" proved
+c392008_2.adb:19:28: info: initialization of "Initial_Deposit" proved
 c392008_2.ads:24:14: class-wide input "Current_Rate" must also be a class-wide input of overridden subprogram "Open" at c392008_1.ads:17 (SPARK RM 6.1.6)
 cc1311a.adb:86:25: warning: subprogram "D281B" has no effect, in instantiation at cc1311a.adb:387
 cc1311a.adb:117:25: warning: subprogram "D237B" has no effect, in instantiation at cc1311a.adb:396
+cc1311a.adb:134:14: info: initialization of "DEFAULT_VALUE.DAY" proved, in instantiation at cc1311a.adb:396
+cc1311a.adb:134:14: info: initialization of "DEFAULT_VALUE.MONTH" proved, in instantiation at cc1311a.adb:396
+cc1311a.adb:134:14: info: initialization of "DEFAULT_VALUE.YEAR" proved, in instantiation at cc1311a.adb:396
+cc1311a.adb:136:45: info: initialization of "DEFAULT_VALUE.DAY" proved, in instantiation at cc1311a.adb:396
+cc1311a.adb:136:45: info: initialization of "DEFAULT_VALUE.MONTH" proved, in instantiation at cc1311a.adb:396
+cc1311a.adb:136:45: info: initialization of "DEFAULT_VALUE.YEAR" proved, in instantiation at cc1311a.adb:396
 cc1311a.adb:153:25: warning: subprogram "D293B" has no effect, in instantiation at cc1311a.adb:405
 cc1311a.adb:180:26: warning: subprogram "D305B" has no effect, in instantiation at cc1311a.adb:414
+cc1311a.adb:196:14: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:414
 cc1311a.adb:215:26: warning: subprogram "D261B" has no effect, in instantiation at cc1311a.adb:423
+cc1311a.adb:230:11: info: initialization of "DEFAULT_VALUE.DAY" proved, in instantiation at cc1311a.adb:423
+cc1311a.adb:230:11: info: initialization of "DEFAULT_VALUE.MONTH" proved, in instantiation at cc1311a.adb:423
+cc1311a.adb:230:11: info: initialization of "DEFAULT_VALUE.YEAR" proved, in instantiation at cc1311a.adb:423
+cc1311a.adb:232:14: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:423
+cc1311a.adb:234:49: info: initialization of "DEFAULT_VALUE.DAY" proved, in instantiation at cc1311a.adb:423
+cc1311a.adb:234:49: info: initialization of "DEFAULT_VALUE.MONTH" proved, in instantiation at cc1311a.adb:423
+cc1311a.adb:234:49: info: initialization of "DEFAULT_VALUE.YEAR" proved, in instantiation at cc1311a.adb:423
 cc1311a.adb:251:26: warning: subprogram "D317B" has no effect, in instantiation at cc1311a.adb:432
+cc1311a.adb:266:18: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:432
 cc1311a.adb:284:25: warning: subprogram "D273B" has no effect, in instantiation at cc1311a.adb:442
+cc1311a.adb:318:18: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:445
 cc1311a.adb:323:26: warning: subprogram "D275B" has no effect, in instantiation at cc1311a.adb:446
+cc1311a.adb:331:14: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:446
+cc1311a.adb:346:14: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:447
+cc1311a.adb:354:18: info: initialization of "C443B" proved, in instantiation at cc1311a.adb:442
+cc1311a.adb:359:21: info: initialization of "C454B" proved, in call inlined at cc1311a.adb:330, in instantiation at cc1311a.adb:446
 cc1311a.adb:362:15: warning: subprogram "D201B" has no effect
+cc1311a.adb:371:18: info: initialization of "C349B" proved, in instantiation at cc1311a.adb:387
+cc1311a.adb:371:18: info: initialization of "C368B" proved, in instantiation at cc1311a.adb:396
+cc1311a.adb:371:18: info: initialization of "C386B" proved, in instantiation at cc1311a.adb:405
 cc1311a.adb:375:16: warning: subprogram "D329B" has no effect
+cc1311a.adb:383:21: info: initialization of "C402B" proved, in call inlined at cc1311a.adb:194, in instantiation at cc1311a.adb:414
+cc1311a.adb:383:21: info: initialization of "C417B" proved, in call inlined at cc1311a.adb:230, in instantiation at cc1311a.adb:423
+cc1311a.adb:383:21: info: initialization of "C432B" proved, in call inlined at cc1311a.adb:265, in instantiation at cc1311a.adb:432
 cc1311a.adb:387:16: warning: subprogram "NEW_PROC_WITH_3D_FUNCR" has no effect
+cc1311a.adb:392:48: info: initialization of "TODAY.DAY" proved
+cc1311a.adb:392:48: info: initialization of "TODAY.MONTH" proved
+cc1311a.adb:392:48: info: initialization of "TODAY.YEAR" proved
+cc1311a.adb:401:48: info: initialization of "TODAY.DAY" proved
+cc1311a.adb:401:48: info: initialization of "TODAY.MONTH" proved
+cc1311a.adb:401:48: info: initialization of "TODAY.YEAR" proved
+cc1311a.adb:405:16: info: initialization of "NEW_FUNC_WITH_3D_FUNCR" proved
+cc1311a.adb:410:48: info: initialization of "TODAY.DAY" proved
+cc1311a.adb:410:48: info: initialization of "TODAY.MONTH" proved
+cc1311a.adb:410:48: info: initialization of "TODAY.YEAR" proved
 cc1311a.adb:414:16: warning: subprogram "NEW_PROC_WITH_3D_PROCR" has no effect
+cc1311a.adb:419:48: info: initialization of "TODAY.DAY" proved
+cc1311a.adb:419:48: info: initialization of "TODAY.MONTH" proved
+cc1311a.adb:419:48: info: initialization of "TODAY.YEAR" proved
+cc1311a.adb:428:47: info: initialization of "TODAY.DAY" proved
+cc1311a.adb:428:47: info: initialization of "TODAY.MONTH" proved
+cc1311a.adb:428:47: info: initialization of "TODAY.YEAR" proved
+cc1311a.adb:432:15: info: initialization of "NEW_FUNC_WITH_3D_PROCR" proved
+cc1311a.adb:437:48: info: initialization of "TODAY.DAY" proved
+cc1311a.adb:437:48: info: initialization of "TODAY.MONTH" proved
+cc1311a.adb:437:48: info: initialization of "TODAY.YEAR" proved
+cc1311a.adb:441:16: info: initialization of "NFUNC1R" proved
 cc1311a.adb:443:16: warning: subprogram "NPROC1R" has no effect
+cc1311a.adb:445:16: info: initialization of "NFUNC2R" proved
 cc1311a.adb:447:16: warning: subprogram "NPROC2R" has no effect
+report.ads:112:15: info: initialization of "IDENT_INT" proved
+report.ads:117:15: info: initialization of "IDENT_CHAR" proved
+report.ads:123:15: info: initialization of "IDENT_WIDE_CHAR" proved
+report.ads:129:15: info: initialization of "IDENT_BOOL" proved
+report.ads:134:15: info: initialization of "IDENT_STR" proved
+report.ads:139:15: info: initialization of "IDENT_WIDE_STR" proved
+report.ads:144:15: info: initialization of "EQUAL" proved
    compilation of c392008_2.adb failed
 
 

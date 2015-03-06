@@ -1,4 +1,6 @@
 my_shift.adb:7:07: info: assertion proved
+my_shift.adb:7:26: info: initialization of "Z_Old" proved
 my_shift.adb:7:32: info: division check proved
 my_shift.adb:9:07: info: assertion proved
+my_shift.adb:9:26: info: initialization of "Z_Old" proved
 my_shift.adb:9:32: info: division check proved

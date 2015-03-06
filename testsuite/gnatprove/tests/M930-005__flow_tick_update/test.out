@@ -1,0 +1,8 @@
+foo.adb:20:23: info: initialization of "D" proved
+foo.adb:20:26: info: initialization of "E" proved
+foo.adb:20:29: info: initialization of "F" proved
+foo.adb:28:14: info: initialization of "Tmp.X" proved
+foo.adb:30:12: info: initialization of "Tmp.X" proved
+foo.adb:31:12: info: initialization of "Tmp.Y" proved
+foo.adb:32:12: info: initialization of "Tmp.Z" proved
+foo.adb:37:23: info: initialization of "W" proved

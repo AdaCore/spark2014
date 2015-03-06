@@ -3,17 +3,26 @@ p.adb:8:25: info: length check proved
 p.adb:8:47: info: length check proved
 p.adb:11:07: info: loop invariant initialization proved
 p.adb:11:07: info: loop invariant preservation proved
+p.adb:12:10: info: initialization of "X" proved
 p.adb:12:10: info: range check proved
+p.adb:12:32: info: initialization of "X" proved
 p.adb:12:32: info: range check proved
 p.adb:14:10: info: loop invariant initialization proved
 p.adb:14:10: info: loop invariant preservation proved
+p.adb:15:13: info: initialization of "X" proved
 p.adb:15:13: info: range check proved
+p.adb:15:35: info: initialization of "X" proved
 p.adb:15:35: info: range check proved
 p.adb:17:13: info: loop invariant initialization proved
 p.adb:17:13: info: loop invariant preservation proved
+p.adb:18:16: info: initialization of "X" proved
 p.adb:18:16: info: range check proved
+p.adb:18:38: info: initialization of "X" proved
 p.adb:18:38: info: range check proved
+p.adb:20:39: info: initialization of "X" proved
 p.adb:21:16: info: loop invariant initialization proved
 p.adb:21:16: info: loop invariant preservation proved
+p.adb:22:19: info: initialization of "X" proved
 p.adb:22:19: info: range check proved
+p.adb:22:41: info: initialization of "X" proved
 p.adb:22:41: info: range check proved

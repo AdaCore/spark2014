@@ -1,2 +1,4 @@
 base-annex.adb:4:16: info: overflow check proved
+base-annex.ads:2:13: info: initialization of "Mul" proved
 base.adb:6:19: info: precondition proved
+base.ads:2:13: info: initialization of "Double" proved

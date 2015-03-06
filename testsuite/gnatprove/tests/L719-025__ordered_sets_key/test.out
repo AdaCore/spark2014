@@ -1,5 +1,13 @@
 p.adb:4:27: info: precondition proved
 p.adb:6:07: info: precondition proved
+p.adb:6:22: info: initialization of "E" proved
+p.ads:7:13: info: initialization of "My_Eq" proved
+p.ads:10:13: info: initialization of "My_Inf" proved
+p.ads:13:12: info: initialization of "Oeq" proved
+p.ads:13:12: info: initialization of "Olt" proved
+p.ads:19:13: info: initialization of "Key" proved
+p.ads:21:12: info: initialization of "Key" proved
+p.ads:21:12: info: initialization of "Olt" proved
 p.ads:26:20: info: precondition proved
 p.ads:27:14: info: postcondition proved
 p.ads:27:14: info: precondition proved

@@ -1,1 +1,3 @@
+p.adb:1:14: info: initialization of "X" proved
 p.adb:8:04: info: assertion proved
+p.adb:8:19: info: initialization of "X" proved

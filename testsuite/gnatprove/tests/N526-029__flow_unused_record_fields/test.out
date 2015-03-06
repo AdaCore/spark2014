@@ -1,0 +1,3 @@
+foo.adb:9:13: info: initialization of "Wibble.X" proved
+foo.adb:9:13: info: initialization of "Wibble.Y" proved
+foo.adb:22:14: info: initialization of "Tmp.X" proved

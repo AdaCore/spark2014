@@ -1,17 +1,33 @@
 p.adb:9:13: info: loop invariant preservation proved
 p.adb:9:36: medium: loop invariant might fail in first iteration, requires F'Loop_Entry = Saved
+p.adb:9:51: info: initialization of "Saved" proved
 partition_refinement.adb:11:43: info: precondition proved
+partition_refinement.adb:11:55: info: initialization of "R1b" proved
 partition_refinement.adb:12:20: info: precondition proved
+partition_refinement.adb:13:13: info: initialization of "P_Elem.Count" proved
+partition_refinement.adb:13:34: info: initialization of "P_Elem.Last" proved
+partition_refinement.adb:13:48: info: initialization of "P_Elem.First" proved
+partition_refinement.adb:14:43: info: initialization of "P_Elem.First" proved
 partition_refinement.adb:14:56: info: range check proved
+partition_refinement.adb:14:58: info: initialization of "P_Elem.Count" proved
+partition_refinement.adb:15:43: info: initialization of "P_Elem.Last" proved
 partition_refinement.adb:17:47: info: precondition proved
 partition_refinement.adb:17:47: medium: range check might fail
+partition_refinement.adb:19:22: info: initialization of "P_Prime.First" proved
+partition_refinement.adb:19:29: info: initialization of "R3b" proved
+partition_refinement.adb:19:39: info: initialization of "P_Prime.Last" proved
+partition_refinement.adb:19:46: info: initialization of "R4b" proved
+partition_refinement.adb:20:24: info: initialization of "P_Prime_Index" proved
 partition_refinement.adb:21:16: info: loop invariant initialization proved
 partition_refinement.adb:21:16: info: loop invariant preservation proved
 partition_refinement.adb:21:47: info: range check proved
+partition_refinement.adb:21:64: info: initialization of "P_Prime.First" proved
 partition_refinement.adb:21:88: info: index check proved
+partition_refinement.adb:21:93: info: initialization of "P_Prime_Index" proved
 partition_refinement.adb:22:16: info: loop invariant initialization proved
 partition_refinement.adb:22:16: info: loop invariant preservation proved
 partition_refinement.adb:22:47: info: range check proved
+partition_refinement.adb:22:69: info: initialization of "P_Prime.First" proved
 partition_refinement.adb:22:92: info: index check proved
 partition_refinement.adb:22:110: info: index check proved
 partition_refinement.adb:23:16: info: loop invariant initialization proved
@@ -20,4 +36,6 @@ partition_refinement.adb:23:47: info: range check proved
 partition_refinement.adb:23:66: info: overflow check proved
 partition_refinement.adb:23:89: info: index check proved
 partition_refinement.adb:23:107: info: index check proved
+partition_refinement.ads:20:13: info: initialization of "Eq_Interval" proved
+partition_refinement.ads:21:12: info: initialization of "Oeq" proved
 partition_refinement.ads:32:07: warning: "P" is not modified, could be IN

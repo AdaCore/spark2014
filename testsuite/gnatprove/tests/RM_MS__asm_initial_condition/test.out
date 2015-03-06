@@ -1,3 +1,5 @@
+stack_14.adb:12:04: info: initialization of "S" proved
+stack_14.adb:13:04: info: initialization of "Pointer" proved
 stack_14.adb:24:39: info: index check proved
 stack_14.adb:31:26: info: range check proved
 stack_14.adb:32:10: info: index check proved
@@ -5,5 +7,10 @@ stack_14.adb:40:15: info: index check proved
 stack_14.adb:41:26: info: range check proved
 stack_14.adb:47:16: info: length check proved
 stack_14.ads:5:08: info: initial condition proved
+stack_14.ads:5:29: info: initialization of "Pointer" proved
+stack_14.ads:8:13: info: initialization of "Is_Empty" proved
+stack_14.ads:11:13: info: initialization of "Is_Full" proved
+stack_14.ads:14:13: info: initialization of "Top" proved
 stack_14.ads:21:21: info: postcondition proved
 stack_14.ads:21:21: info: precondition proved
+stack_14.ads:23:19: info: initialization of "X" proved

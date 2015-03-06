@@ -3,9 +3,16 @@ p.adb:6:07: info: precondition proved
 p.adb:10:27: info: precondition proved
 p.adb:12:07: info: precondition proved
 p.adb:13:07: info: precondition proved
+p.adb:13:21: info: initialization of "E" proved
 p.adb:18:10: info: precondition proved
 p.adb:19:10: info: precondition proved
 p.adb:21:10: info: precondition proved
+p.ads:8:13: info: initialization of "My_Eq" proved
+p.ads:11:13: info: initialization of "My_Eq__2" proved
+p.ads:14:13: info: initialization of "Hash" proved
+p.ads:16:12: info: initialization of "Equivalent_Keys" proved
+p.ads:16:12: info: initialization of "Hash" proved
+p.ads:16:12: info: initialization of "Oeq" proved
 p.ads:21:13: info: precondition proved
 p.ads:21:32: info: precondition proved
 p.ads:22:14: info: postcondition proved

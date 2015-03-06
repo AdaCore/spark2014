@@ -1,3 +1,4 @@
+broken.adb:12:13: info: initialization of "Found_None" proved
 broken.adb:18:04: warning: call appears in assertion expression
 broken.adb:18:04: warning: in instantiation at broken.ads:6
 broken.adb:18:04: warning: no contextual analysis of "Is_Empty"

@@ -1,9 +1,15 @@
 replacement.adb:7:07: info: precondition proved
 replacement.adb:8:07: info: assertion proved
 replacement.adb:8:22: info: precondition proved
+replacement.adb:8:35: info: initialization of private part of "D_Old" proved
 replacement.adb:8:44: info: precondition proved
 replacement.adb:9:22: info: precondition proved
+replacement.adb:9:35: info: initialization of private part of "D_Old" proved
 replacement.adb:9:44: info: precondition proved
 replacement.adb:9:44: medium: assertion might fail, requires Key (D_Old, C) = Key (D, C)
 replacement.adb:9:61: info: precondition proved
+replacement.ads:8:13: info: initialization of "Lt_Integer" proved
+replacement.ads:9:13: info: initialization of "Eq_Integer" proved
+replacement.ads:10:12: info: initialization of "Oeq" proved
+replacement.ads:10:12: info: initialization of "Olt" proved
 replacement.ads:19:13: info: precondition proved

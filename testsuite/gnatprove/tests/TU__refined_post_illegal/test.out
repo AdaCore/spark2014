@@ -14,11 +14,19 @@ refined_post_illegal.adb:17:11: aspect "Refined_Post" cannot apply to a stand al
 refined_post_illegal.adb:35:11: aspect "Refined_Post" must apply to the body of a subprogram declared in a package specification
 refined_post_illegal.adb:52:11: aspect "Refined_Post" cannot apply to a stand alone expression function
 refined_post_illegal.ads:11:11: incorrect placement of aspect "Refined_Post"
+refined_post_illegal_2.adb:5:27: info: initialization of "Par" proved
 refined_post_illegal_2.adb:5:27: info: refined post proved
 refined_post_illegal_2.adb:20:22: medium: assertion might fail, requires not Temp
+refined_post_illegal_2.adb:20:26: info: initialization of "Temp" proved
+refined_post_illegal_2.adb:26:27: info: initialization of "Par3" proved
 refined_post_illegal_2.adb:26:27: info: refined post proved
 refined_post_illegal_2.adb:33:23: medium: overflow check might fail
 refined_post_illegal_2.adb:35:23: medium: overflow check might fail
+refined_post_illegal_2.ads:4:18: info: initialization of "Par" proved
+refined_post_illegal_2.ads:10:19: info: initialization of "Par" proved
 refined_post_illegal_2.ads:10:19: medium: postcondition might fail, requires Par >= 10
+refined_post_illegal_2.ads:13:13: info: initialization of "F1" proved
 refined_post_illegal_2.ads:15:14: warning: subprogram "Calls_F1" has no effect
+refined_post_illegal_2.ads:18:41: info: initialization of "Par3" proved
+refined_post_illegal_2.ads:33:19: info: initialization of "Par3" proved
 refined_post_illegal_2.ads:33:19: medium: postcondition might fail, requires Par3 > 101

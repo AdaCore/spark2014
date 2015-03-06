@@ -1,3 +1,4 @@
 pairs_14-additional_14.adb:7:42: medium: overflow check might fail
 pairs_14-additional_14.adb:8:42: medium: overflow check might fail
 pairs_14.adb:5:23: medium: overflow check might fail
+pairs_14.ads:8:13: info: initialization of "Sum" proved

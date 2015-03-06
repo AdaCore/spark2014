@@ -1,14 +1,33 @@
+outer.adb:7:10: info: initialization of "Used" proved
+outer.adb:9:19: info: initialization of "F" proved
+outer.adb:15:10: info: initialization of "Nested_Var" proved
+outer.adb:16:10: info: initialization of "Nested_Var2" proved
 outer.adb:18:51: medium: overflow check might fail
 outer.adb:18:65: medium: overflow check might fail
+outer.adb:22:18: info: initialization of "Nested.State" proved
+outer.adb:22:18: info: initialization of "Used" proved
+outer.adb:29:10: info: initialization of "Used" proved
 outer.adb:30:10: warning: initialization has no effect
+outer.adb:32:19: info: initialization of "F" proved
 outer.adb:36:10: warning: initialization has no effect
 outer.adb:39:51: medium: overflow check might fail
 outer.adb:39:65: medium: overflow check might fail
 outer.adb:41:22: warning: unused assignment
 outer.adb:45:18: high: "Nested_Var2" is not initialized
+outer.adb:45:18: info: initialization of "Nested_Var" proved
+outer.adb:45:18: info: initialization of "Used" proved
 outer.adb:57:10: info: assertion proved, in instantiation at outer.adb:60
+outer.adb:57:25: info: initialization of "Unused" proved, in instantiation at outer.adb:60
+outer.adb:69:10: info: initialization of "Used" proved
+outer.adb:71:19: info: initialization of "F" proved
 outer.adb:75:10: warning: initialization has no effect
 outer.adb:76:10: warning: initialization has no effect
 outer.adb:78:51: medium: overflow check might fail
 outer.adb:78:65: medium: overflow check might fail
+outer.adb:84:18: info: initialization of "Nested_Var" proved
+outer.adb:84:18: info: initialization of "Nested_Var2" proved
+outer.adb:84:18: info: initialization of "Used" proved
+outer.ads:2:17: info: initialization of "X" proved
+outer.ads:4:18: info: initialization of "X" proved
 outer.ads:6:14: warning: subprogram "P3" has no effect
+outer.ads:8:18: info: initialization of "X" proved

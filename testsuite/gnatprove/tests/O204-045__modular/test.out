@@ -1,10 +1,15 @@
 simple1_zstspark.adb:7:33: info: range check proved
 simple1_zstspark.adb:13:07: info: assertion proved
+simple1_zstspark.adb:13:32: info: initialization of "SaveRSP" proved
 simple1_zstspark.adb:42:21: warning: unused assignment
 simple1_zstspark.adb:103:07: info: assertion proved
+simple1_zstspark.adb:103:32: info: initialization of "SaveRSP" proved
 simple1_zstspark.adb:106:07: info: assertion proved
+simple1_zstspark.adb:106:33: info: initialization of "SaveRSP" proved
 simple1_zstspark.adb:107:07: info: assertion proved
+simple1_zstspark.adb:107:32: info: initialization of "SaveRSP" proved
 simple1_zstspark.adb:108:07: info: assertion proved
+simple1_zstspark.adb:108:32: info: initialization of "SaveRSP" proved
 simple1_zstspark.ads:14:40: warning: "RDI" is not modified, could be INPUT
 simple1_zstspark.ads:14:58: warning: "RSI" is not modified, could be INPUT
 simple1_zstspark.ads:15:32: warning: unused initial value of "SignFlag"
@@ -79,112 +84,160 @@ x86.adb:453:42: info: division check proved
 x86.adb:453:53: info: division check proved
 x86.adb:453:53: info: range check proved
 x86.adb:485:10: info: assertion proved
+x86.adb:490:24: info: initialization of "Val1" proved
+x86.adb:490:31: info: initialization of "Val2" proved
+x86.adb:491:35: info: initialization of "Val1" proved
+x86.adb:491:54: info: initialization of "Val2" proved
 x86.adb:509:10: info: assertion proved
+x86.adb:514:24: info: initialization of "Val1" proved
+x86.adb:514:31: info: initialization of "Val2" proved
+x86.adb:515:35: info: initialization of "Val1" proved
+x86.adb:515:54: info: initialization of "Val2" proved
+x86.ads:36:27: info: initialization of "Exit_Called" proved
 x86.ads:37:14: info: postcondition proved
+x86.ads:37:15: info: initialization of "Exit_Called" proved
+x86.ads:45:13: info: initialization of "AL" proved
 x86.ads:47:14: info: postcondition proved
 x86.ads:47:41: info: range check proved
 x86.ads:51:14: info: postcondition proved
+x86.ads:53:13: info: initialization of "AH" proved
 x86.ads:55:14: info: postcondition proved
 x86.ads:55:72: info: division check proved
 x86.ads:59:14: info: postcondition proved
+x86.ads:62:13: info: initialization of "AX" proved
 x86.ads:64:14: info: postcondition proved
 x86.ads:64:42: info: range check proved
 x86.ads:68:14: info: postcondition proved
+x86.ads:70:13: info: initialization of "EAX" proved
 x86.ads:72:16: info: postcondition proved
 x86.ads:72:45: info: range check proved
 x86.ads:76:16: info: postcondition proved
+x86.ads:84:13: info: initialization of "CL" proved
 x86.ads:86:14: info: postcondition proved
 x86.ads:86:41: info: range check proved
 x86.ads:90:14: info: postcondition proved
+x86.ads:92:13: info: initialization of "CH" proved
 x86.ads:94:14: info: postcondition proved
 x86.ads:94:72: info: division check proved
 x86.ads:98:14: info: postcondition proved
+x86.ads:101:13: info: initialization of "CX" proved
 x86.ads:103:14: info: postcondition proved
 x86.ads:103:42: info: range check proved
 x86.ads:107:14: info: postcondition proved
+x86.ads:109:13: info: initialization of "ECX" proved
 x86.ads:111:16: info: postcondition proved
 x86.ads:111:45: info: range check proved
 x86.ads:115:16: info: postcondition proved
+x86.ads:123:13: info: initialization of "DL" proved
 x86.ads:125:14: info: postcondition proved
 x86.ads:125:41: info: range check proved
 x86.ads:129:14: info: postcondition proved
+x86.ads:131:13: info: initialization of "DH" proved
 x86.ads:133:14: info: postcondition proved
 x86.ads:133:72: info: division check proved
 x86.ads:137:14: info: postcondition proved
+x86.ads:140:13: info: initialization of "DX" proved
 x86.ads:142:14: info: postcondition proved
 x86.ads:142:42: info: range check proved
 x86.ads:146:14: info: postcondition proved
+x86.ads:148:13: info: initialization of "EDX" proved
 x86.ads:150:16: info: postcondition proved
 x86.ads:150:45: info: range check proved
 x86.ads:154:16: info: postcondition proved
+x86.ads:162:13: info: initialization of "BL" proved
 x86.ads:164:14: info: postcondition proved
 x86.ads:164:41: info: range check proved
 x86.ads:168:14: info: postcondition proved
+x86.ads:170:13: info: initialization of "BH" proved
 x86.ads:172:14: info: postcondition proved
 x86.ads:172:72: info: division check proved
 x86.ads:176:14: info: postcondition proved
+x86.ads:179:13: info: initialization of "BX" proved
 x86.ads:181:14: info: postcondition proved
 x86.ads:181:42: info: range check proved
 x86.ads:185:14: info: postcondition proved
+x86.ads:187:13: info: initialization of "EBX" proved
 x86.ads:189:16: info: postcondition proved
 x86.ads:189:45: info: range check proved
 x86.ads:193:16: info: postcondition proved
+x86.ads:202:13: info: initialization of "SP" proved
 x86.ads:204:14: info: postcondition proved
 x86.ads:204:42: info: range check proved
 x86.ads:208:14: info: postcondition proved
+x86.ads:210:13: info: initialization of "ESP" proved
 x86.ads:212:16: info: postcondition proved
 x86.ads:212:45: info: range check proved
 x86.ads:216:16: info: postcondition proved
+x86.ads:225:13: info: initialization of "BP" proved
 x86.ads:227:14: info: postcondition proved
 x86.ads:227:42: info: range check proved
 x86.ads:231:14: info: postcondition proved
+x86.ads:233:13: info: initialization of "EBP" proved
 x86.ads:235:16: info: postcondition proved
 x86.ads:235:45: info: range check proved
 x86.ads:239:16: info: postcondition proved
+x86.ads:248:13: info: initialization of "SI" proved
 x86.ads:250:14: info: postcondition proved
 x86.ads:250:42: info: range check proved
 x86.ads:254:14: info: postcondition proved
+x86.ads:256:13: info: initialization of "ESI" proved
 x86.ads:258:16: info: postcondition proved
 x86.ads:258:45: info: range check proved
 x86.ads:262:16: info: postcondition proved
+x86.ads:271:13: info: initialization of "DI" proved
 x86.ads:273:14: info: postcondition proved
 x86.ads:273:42: info: range check proved
 x86.ads:277:14: info: postcondition proved
+x86.ads:279:13: info: initialization of "EDI" proved
 x86.ads:281:16: info: postcondition proved
 x86.ads:281:45: info: range check proved
 x86.ads:285:16: info: postcondition proved
+x86.ads:294:13: info: initialization of "R8L" proved
 x86.ads:296:14: info: postcondition proved
 x86.ads:296:41: info: range check proved
 x86.ads:300:14: info: postcondition proved
+x86.ads:309:13: info: initialization of "R9L" proved
 x86.ads:311:14: info: postcondition proved
 x86.ads:311:41: info: range check proved
 x86.ads:315:14: info: postcondition proved
+x86.ads:324:13: info: initialization of "R10L" proved
 x86.ads:326:14: info: postcondition proved
 x86.ads:326:43: info: range check proved
 x86.ads:330:14: info: postcondition proved
+x86.ads:339:13: info: initialization of "R11L" proved
 x86.ads:341:14: info: postcondition proved
 x86.ads:341:43: info: range check proved
 x86.ads:345:14: info: postcondition proved
+x86.ads:354:13: info: initialization of "R12L" proved
 x86.ads:356:14: info: postcondition proved
 x86.ads:356:43: info: range check proved
 x86.ads:360:14: info: postcondition proved
+x86.ads:369:13: info: initialization of "R13L" proved
 x86.ads:371:14: info: postcondition proved
 x86.ads:371:43: info: range check proved
 x86.ads:375:14: info: postcondition proved
+x86.ads:384:13: info: initialization of "R14L" proved
 x86.ads:386:14: info: postcondition proved
 x86.ads:386:43: info: range check proved
 x86.ads:390:14: info: postcondition proved
+x86.ads:399:13: info: initialization of "R15L" proved
 x86.ads:401:14: info: postcondition proved
 x86.ads:401:43: info: range check proved
 x86.ads:405:14: info: postcondition proved
 x86.ads:410:48: info: length check proved
+x86.ads:412:13: info: initialization of "ReadMem8" proved
 x86.ads:414:14: info: postcondition proved
+x86.ads:418:13: info: initialization of "ReadMem16" proved
 x86.ads:420:14: info: postcondition proved
+x86.ads:425:13: info: initialization of "ReadMem32" proved
 x86.ads:427:14: info: postcondition proved
 x86.ads:435:14: medium: postcondition might fail
+x86.ads:445:13: info: initialization of "ReadMem64" proved
 x86.ads:447:14: info: postcondition proved
 x86.ads:455:14: medium: postcondition might fail
+x86.ads:474:13: info: initialization of "SignedLT_32" proved
 x86.ads:475:14: info: postcondition proved
+x86.ads:478:13: info: initialization of "SignedLTE_32" proved
 x86.ads:479:14: info: postcondition proved
 x86.ads:488:14: info: postcondition proved
 x86.ads:494:14: info: postcondition proved

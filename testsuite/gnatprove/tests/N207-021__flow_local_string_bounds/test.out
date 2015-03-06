@@ -1,0 +1,2 @@
+foo.adb:2:16: info: initialization of "B" proved
+foo.adb:3:16: info: initialization of "C" proved

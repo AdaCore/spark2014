@@ -1,3 +1,4 @@
+modular.adb:5:13: info: initialization of "Add_Byte_C" proved
 modular.adb:7:23: medium: postcondition might fail, requires Add_Byte_C'Result = A + B mod 256
 modular.adb:7:61: medium: overflow check might fail
 modular.adb:7:66: info: division check proved

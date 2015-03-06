@@ -1,1 +1,4 @@
 used.adb:6:17: medium: overflow check might fail
+used.adb:10:14: info: initialization of "Res" proved
+used.ads:2:13: info: initialization of "Absolu" proved
+user.ads:2:36: info: initialization of "res" proved

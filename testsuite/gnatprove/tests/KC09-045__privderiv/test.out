@@ -1,1 +1,3 @@
+c74211b.adb:5:19: info: initialization of "Lt1_Value_2" proved
 c74211b.adb:28:10: warning: analyzing unreferenced function "U"
+c74211b.adb:28:19: info: initialization of "U" proved

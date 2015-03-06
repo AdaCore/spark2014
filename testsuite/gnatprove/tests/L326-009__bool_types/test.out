@@ -2,5 +2,12 @@ p.adb:6:04: warning: statement has no effect
 p.adb:6:04: warning: unused assignment to "B1"
 p.adb:6:04: warning: unused assignment to "B2"
 p.adb:8:04: info: precondition proved
+pack.adb:6:26: info: initialization of "B1" proved
+pack.ads:7:04: info: initialization of "B1" proved
+pack.ads:11:04: info: initialization of "B2" proved
+pack.ads:15:14: info: initialization of "B1" proved
 test.adb:6:10: warning: unused assignment to "B1"
 test.adb:56:13: warning: unused assignment
+test.ads:5:14: info: initialization of "B1" proved
+test.ads:11:13: info: initialization of "My_B1" proved
+test.ads:12:13: info: initialization of "My_B2" proved

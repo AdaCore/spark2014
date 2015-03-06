@@ -1,2 +1,21 @@
+people.adb:4:04: info: initialization of "Today" proved
+people.adb:7:40: info: initialization of "Today" proved
+people.ads:15:13: info: initialization of "New_Person.Alive" proved
+people.ads:15:13: info: initialization of "New_Person.DOB" proved
+people.ads:15:13: info: initialization of "New_Person.Name" proved
+people.ads:20:13: info: initialization of "New_Person__2.Alive" proved
+people.ads:20:13: info: initialization of "New_Person__2.DOB" proved
+people.ads:20:13: info: initialization of "New_Person__2.Name" proved
+people.ads:23:13: info: initialization of "Get_Name" proved
+people.ads:27:13: info: initialization of "Get_DOB" proved
+people.ads:31:13: info: initialization of "Is_Alive" proved
+simple_oo_with_contracts.adb:26:21: info: initialization of "R1b" proved
+simple_oo_with_contracts.ads:12:34: info: initialization of "G4" proved
+simple_oo_with_contracts.ads:22:34: info: initialization of "G4" proved
+simple_oo_with_contracts.ads:31:34: info: initialization of "G4" proved
 simple_oo_with_contracts.ads:38:14: warning: subprogram "Do_Stuff" has no effect
+simple_oo_without_contracts.adb:26:21: info: initialization of "R1b" proved
+simple_oo_without_contracts.ads:8:14: info: initialization of "G4" proved
+simple_oo_without_contracts.ads:15:14: info: initialization of "G4" proved
+simple_oo_without_contracts.ads:22:14: info: initialization of "G4" proved
 simple_oo_without_contracts.ads:29:14: warning: subprogram "Do_Stuff" has no effect

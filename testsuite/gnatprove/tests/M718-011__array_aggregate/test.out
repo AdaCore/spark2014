@@ -1,5 +1,8 @@
 simple.adb:4:34: info: length check proved
 simple.adb:4:54: medium: overflow check might fail
+simple.adb:6:14: info: initialization of "Arr" proved
+simple.adb:7:14: info: initialization of "Arr" proved
+simple.ads:7:13: info: initialization of "Foo" proved
 simple.ads:8:17: info: postcondition proved
 simple.ads:8:40: info: length check proved
 simple.ads:8:69: info: overflow check proved

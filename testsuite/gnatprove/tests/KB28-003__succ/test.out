@@ -2,6 +2,9 @@ p.adb:6:23: info: range check proved
 p.adb:6:30: info: range check proved
 p.adb:12:23: info: range check proved
 p.adb:12:30: info: range check proved
+p.ads:4:13: info: initialization of "Id_Not_A" proved
 p.ads:6:20: info: postcondition proved
+p.ads:8:13: info: initialization of "Id_Not_D" proved
 p.ads:10:20: info: postcondition proved
+p.ads:12:13: info: initialization of "Id_Gen" proved
 p.ads:13:20: info: postcondition proved

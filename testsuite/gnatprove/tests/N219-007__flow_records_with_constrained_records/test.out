@@ -1,1 +1,2 @@
 foo.adb:27:04: warning: analyzing unreferenced procedure "Test_01_Ok"
+foo.adb:36:08: info: initialization of "R6b" proved

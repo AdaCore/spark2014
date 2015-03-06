@@ -1,6 +1,10 @@
 odometer.adb:22:20: info: overflow check proved
 odometer.adb:22:40: info: overflow check proved
+odometer.ads:6:14: info: initialization of "Trip" proved
 odometer.ads:7:20: info: postcondition proved
+odometer.ads:7:21: info: initialization of "Trip" proved
+odometer.ads:9:13: info: initialization of "Read_Trip" proved
+odometer.ads:10:13: info: initialization of "Read_Total" proved
 odometer.ads:14:21: info: postcondition proved
 odometer.ads:14:37: info: overflow check proved
 odometer.ads:14:68: info: overflow check proved

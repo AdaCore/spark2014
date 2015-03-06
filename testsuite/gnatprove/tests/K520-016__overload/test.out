@@ -1,4 +1,8 @@
+over.adb:16:25: info: initialization of "Z" proved
 over.adb:18:07: info: assertion proved
+over.adb:18:22: info: initialization of "Y" proved
+over.ads:3:13: info: initialization of "F" proved
 over.ads:4:20: info: postcondition proved
+over.ads:5:13: info: initialization of "F__2" proved
 over.ads:5:16: warning: unused variable "Z"
 over.ads:7:14: warning: subprogram "G" has no effect

@@ -1,3 +1,4 @@
+p.ads:10:12: info: initialization of "Sum" proved
 p.ads:12:31: medium: range check might fail
 p.ads:12:36: medium: overflow check might fail
 p.ads:12:41: medium: array index check might fail

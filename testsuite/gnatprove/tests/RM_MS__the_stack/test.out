@@ -1,3 +1,5 @@
+the_stack_14.adb:25:04: info: initialization of "S" proved
+the_stack_14.adb:26:04: info: initialization of "Pointer" proved
 the_stack_14.adb:37:39: medium: array index check might fail
 the_stack_14.adb:44:26: medium: range check might fail
 the_stack_14.adb:45:10: info: index check proved
@@ -5,3 +7,7 @@ the_stack_14.adb:53:15: medium: array index check might fail
 the_stack_14.adb:54:26: info: range check proved
 the_stack_14.adb:62:10: medium: array index check might fail
 the_stack_14.adb:68:16: info: length check proved
+the_stack_14.ads:18:13: info: initialization of "Is_Empty" proved
+the_stack_14.ads:21:13: info: initialization of "Is_Full" proved
+the_stack_14.ads:24:13: info: initialization of "Top" proved
+the_stack_14.ads:30:18: info: initialization of "X" proved

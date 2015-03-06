@@ -1,7 +1,12 @@
+flight_manager.adb:15:13: info: initialization of "C4b" proved, in call inlined at flight_manager.adb:42
+flight_manager.adb:15:13: info: initialization of "C7b" proved, in call inlined at flight_manager.adb:43
 flight_manager.adb:16:21: medium: overflow check might fail, in call inlined at flight_manager.adb:42
 flight_manager.adb:16:21: medium: overflow check might fail, in call inlined at flight_manager.adb:43
+flight_manager.adb:16:23: info: initialization of "C4b" proved, in call inlined at flight_manager.adb:42
+flight_manager.adb:16:23: info: initialization of "C7b" proved, in call inlined at flight_manager.adb:43
 flight_manager.adb:16:43: info: division check proved, in call inlined at flight_manager.adb:42
 flight_manager.adb:16:43: info: division check proved, in call inlined at flight_manager.adb:43
+flight_manager.adb:20:16: info: initialization of "My_Abs" proved
 flight_manager.adb:23:20: medium: overflow check might fail
 flight_manager.adb:42:21: medium: "Result.X_Speed" might not be initialized
 flight_manager.adb:42:56: medium: overflow check might fail
@@ -9,6 +14,8 @@ flight_manager.adb:43:21: medium: "Result.Y_Speed" might not be initialized
 flight_manager.adb:43:56: medium: overflow check might fail
 flight_manager.adb:45:14: medium: "Result.X_Speed" might not be initialized
 flight_manager.adb:45:14: medium: "Result.Y_Speed" might not be initialized
+flight_manager.ads:7:13: info: initialization of "Set_Engine_Speed.X_Speed" proved
+flight_manager.ads:7:13: info: initialization of "Set_Engine_Speed.Y_Speed" proved
 flight_manager.ads:11:14: medium: postcondition might fail
 flight_manager.ads:11:27: medium: overflow check might fail
 flight_manager.ads:11:62: medium: overflow check might fail

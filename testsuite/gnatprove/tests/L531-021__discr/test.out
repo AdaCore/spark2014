@@ -3,10 +3,22 @@ basic.adb:13:17: medium: discriminant check might fail
 basic.adb:17:17: info: discriminant check proved
 basic.adb:18:22: info: discriminant check proved
 basic.ads:45:14: warning: subprogram "P" has no effect
+conv.adb:5:13: info: initialization of "Id.A_Field" proved
+conv.adb:5:13: info: initialization of "Id.Base" proved
+conv.adb:5:13: info: initialization of "Id.C_Field1" proved
+conv.adb:5:13: info: initialization of "Id.C_Field2" proved
 conv.adb:6:20: info: postcondition proved
 conv.adb:15:17: info: discriminant check proved
 conv.adb:17:17: info: discriminant check proved
+conv.adb:17:21: info: initialization of "X.A_Field" proved
+conv.adb:17:21: info: initialization of "X.Base" proved
 conv.adb:19:07: info: assertion proved
+conv.adb:19:26: info: initialization of "X.A_Field" proved
+conv.adb:19:26: info: initialization of "X.Base" proved
+conv.adb:19:35: info: initialization of "Y.A_Field" proved
+conv.adb:19:35: info: initialization of "Y.Base" proved
+conv.adb:19:35: info: initialization of "Y.C_Field1" proved
+conv.adb:19:35: info: initialization of "Y.C_Field2" proved
 conv.ads:3:14: warning: subprogram "P" has no effect
 special.adb:7:07: info: assertion proved
 special.adb:8:08: info: discriminant check proved
@@ -16,14 +28,17 @@ special.ads:11:14: warning: subprogram "T" has no effect
 subty.adb:4:16: info: discriminant check proved
 subty.adb:6:07: info: assertion proved
 subty.adb:7:07: info: assertion proved
+subty.adb:7:22: info: initialization of "Z.Base" proved
 subty.adb:7:23: info: discriminant check proved
 subty.adb:8:07: info: assertion proved
+subty.adb:8:22: info: initialization of "Z.A_Field" proved
 subty.adb:8:23: info: discriminant check proved
 subty.adb:9:07: info: assertion proved
 subty.adb:11:08: info: discriminant check proved
 subty.adb:11:21: info: discriminant check proved
 subty.adb:11:30: medium: overflow check might fail
 subty.adb:12:07: info: assertion proved
+subty.adb:12:22: info: initialization of "Z.A_Field" proved
 subty.adb:12:23: info: discriminant check proved
 subty.adb:12:35: info: discriminant check proved
 subty.adb:12:44: info: overflow check proved

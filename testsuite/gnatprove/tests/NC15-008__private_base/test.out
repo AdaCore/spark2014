@@ -1,3 +1,9 @@
+notag_base.ads:6:13: info: initialization of "Sum" proved
+notag_base.ads:8:13: info: initialization of "Create.C" proved
 notag_base.ads:9:14: info: postcondition proved
 notag_ext.adb:8:07: info: assertion proved
+notag_ext.adb:8:28: info: initialization of "A" proved
+notag_ext.adb:8:41: info: initialization of "B" proved
+notag_ext.ads:8:13: info: initialization of "Sum" proved
+notag_ext.ads:10:13: info: initialization of "Create" proved
 notag_ext.ads:12:14: warning: subprogram "Test" has no effect

@@ -1,4 +1,12 @@
 initialization_warnings.adb:7:21: medium: "An_Arr" might not be initialized
+initialization_warnings.adb:17:12: info: initialization of "An_Arr" proved
 initialization_warnings.adb:17:12: medium: "An_Arr" might not be initialized
 initialization_warnings.adb:23:16: medium: "A" might not be initialized
+initialization_warnings.adb:33:12: info: initialization of "A" proved
 initialization_warnings.adb:33:12: medium: "A" might not be initialized
+initialization_warnings.ads:9:29: info: initialization of "An_Arr" proved
+initialization_warnings.ads:11:31: info: initialization of "An_Arr" proved
+initialization_warnings.ads:11:53: info: initialization of "X" proved
+initialization_warnings.ads:14:32: info: initialization of "A" proved
+initialization_warnings.ads:17:33: info: initialization of "A" proved
+initialization_warnings.ads:17:36: info: initialization of "V" proved

@@ -3,8 +3,11 @@ p.adb:6:07: info: precondition proved
 p.adb:10:27: info: precondition proved
 p.adb:12:07: info: precondition proved
 p.adb:13:07: info: precondition proved
+p.adb:13:18: info: initialization of "E" proved
 p.adb:19:07: info: precondition proved
 p.adb:21:07: info: precondition proved
+p.ads:9:13: info: initialization of "My_Eq" proved
+p.ads:12:12: info: initialization of "Oeq" proved
 p.ads:17:13: info: precondition proved
 p.ads:18:06: info: precondition proved
 p.ads:18:36: info: precondition proved

@@ -1,2 +1,4 @@
 over.adb:7:20: medium: overflow check might fail
 over.adb:7:25: info: range check proved
+over.adb:11:14: info: initialization of "Res" proved
+over.ads:4:13: info: initialization of "F" proved

@@ -3,6 +3,7 @@ test.adb:15:04: warning: analyzing unreferenced procedure "if_2"
 test.adb:24:04: warning: analyzing unreferenced procedure "if_3"
 test.adb:33:04: warning: analyzing unreferenced procedure "if_4"
 test.adb:40:04: warning: analyzing unreferenced procedure "case_1"
+test.adb:40:38: info: initialization of "Par2" proved
 // fa_pkg_body_standard__test_cfg
 digraph G {
    graph [splines=True];

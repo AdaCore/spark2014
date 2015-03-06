@@ -1,2 +1,2 @@
-
+enum.ads:5:13: info: initialization of "Sunday" proved
 enum.ads:6:20: info: postcondition proved

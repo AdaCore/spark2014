@@ -3,3 +3,8 @@ stacks_14.adb:17:42: medium: range check might fail
 stacks_14.adb:18:23: info: index check proved
 stacks_14.adb:23:28: medium: array index check might fail
 stacks_14.adb:24:42: info: range check proved
+stacks_14.ads:14:13: info: initialization of "Is_Empty" proved
+stacks_14.ads:15:13: info: initialization of "Is_Full" proved
+stacks_14.ads:17:20: info: initialization of "S.Stack_Pointer" proved
+stacks_14.ads:17:20: info: initialization of "S.Stack_Vector" proved
+stacks_14.ads:19:36: info: initialization of "X" proved

@@ -1,9 +1,20 @@
+dynamic_in_post.adb:3:16: info: initialization of "Get_Last" proved
+dynamic_in_post.adb:3:16: info: initialization of "Get_Last" proved, in call inlined at dynamic_in_post.adb:35
 dynamic_in_post.adb:3:57: info: range check proved
 dynamic_in_post.adb:3:57: info: range check proved, in call inlined at dynamic_in_post.adb:35
+dynamic_in_post.adb:7:32: info: initialization of "X" proved, in call inlined at dynamic_in_post.adb:35
 dynamic_in_post.adb:7:35: medium: assertion might fail, requires Get_Last (X) = Get_Last (Y), in call inlined at dynamic_in_post.adb:35
+dynamic_in_post.adb:7:47: info: initialization of "Y" proved, in call inlined at dynamic_in_post.adb:35
 dynamic_in_post.adb:10:14: warning: subprogram "Test_2" has no effect
+dynamic_in_post.adb:11:16: info: initialization of "Get_Last" proved
 dynamic_in_post.adb:12:22: info: postcondition proved
 dynamic_in_post.adb:12:40: info: range check proved
+dynamic_in_post.adb:19:32: info: initialization of "X" proved
+dynamic_in_post.adb:20:32: info: initialization of "Y" proved
+dynamic_in_post.adb:22:22: info: initialization of "A" proved
 dynamic_in_post.adb:22:22: medium: assertion might fail, requires A = B
+dynamic_in_post.adb:22:26: info: initialization of "B" proved
 dynamic_in_post.adb:29:13: info: range check proved, in call inlined at dynamic_in_post.adb:37
+dynamic_in_post.adb:29:36: info: initialization of "X" proved, in call inlined at dynamic_in_post.adb:37
 dynamic_in_post.adb:30:10: info: assertion proved, in call inlined at dynamic_in_post.adb:37
+dynamic_in_post.adb:30:25: info: initialization of "X" proved, in call inlined at dynamic_in_post.adb:37

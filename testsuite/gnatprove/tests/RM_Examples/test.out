@@ -3,14 +3,23 @@ update_examples.ads:30:19: info: postcondition proved
 update_examples.ads:38:19: info: postcondition proved
 update_examples.ads:54:19: info: postcondition proved
 update_examples.ads:69:08: medium: postcondition might fail, requires NA = NA'Old'update
+loop_var_loop_invar.adb:7:10: info: initialization of "I" proved
 loop_var_loop_invar.adb:8:07: info: loop invariant initialization proved
 loop_var_loop_invar.adb:8:07: info: loop invariant preservation proved
+loop_var_loop_invar.adb:8:30: info: initialization of "R" proved
 loop_var_loop_invar.adb:8:39: info: overflow check proved
 loop_var_loop_invar.adb:8:44: info: overflow check proved
+loop_var_loop_invar.adb:8:46: info: initialization of "I" proved
 loop_var_loop_invar.adb:9:07: info: loop variant proved
+loop_var_loop_invar.adb:9:41: info: initialization of "I" proved
+loop_var_loop_invar.adb:10:41: info: initialization of "R" proved
+loop_var_loop_invar.adb:11:12: info: initialization of "R" proved
 loop_var_loop_invar.adb:11:14: info: range check proved
+loop_var_loop_invar.adb:11:16: info: initialization of "I" proved
+loop_var_loop_invar.adb:12:12: info: initialization of "I" proved
 loop_var_loop_invar.adb:12:14: info: range check proved
 reverse_ord.adb:7:19: info: postcondition proved
+reverse_ord.adb:15:36: info: initialization of "Temp" proved
 reverse_ord.adb:16:10: info: loop invariant initialization proved
 reverse_ord.adb:16:10: info: loop invariant preservation proved
 reverse_ord.adb:19:19: info: index check proved
@@ -20,16 +29,21 @@ reverse_ord.adb:20:51: info: index check proved
 reverse_ord.adb:24:21: info: index check proved
 reverse_ord.adb:24:40: info: index check proved
 up_timer.adb:14:36: info: overflow check proved
+up_timer.ads:10:13: info: initialization of "Get" proved
+f.adb:1:10: info: initialization of "F" proved
 f.adb:3:16: info: postcondition proved
 f.adb:10:16: info: range check proved
 f.adb:10:38: info: overflow check proved
+f.adb:11:10: info: initialization of "Valid" proved
 f.adb:11:36: info: index check proved
 f.adb:11:36: info: overflow check proved
 f.adb:13:26: info: range check proved
 f.adb:13:37: info: index check proved
 f.adb:13:37: info: overflow check proved
 f.adb:21:04: info: assertion proved
+f.adb:21:30: info: initialization of "Valid" proved
 f.adb:21:41: medium: "Control_Char" might not be initialized
+f.adb:33:07: info: initialization of "Valid" proved
 f.adb:34:12: medium: "Control_Char" might not be initialized
 param_1_illegal.adb:5:28: medium: "X" might not be initialized in "Param_1_Illegal"
 param_1_illegal.adb:9:10: info: index check proved
@@ -41,8 +55,33 @@ anti_aliasing.adb:62:16: writable actual for "X" overlaps with actual for "Y"
 
 gnatprove: error during generation of Global contracts
 gnatprove: error during generation of Global contracts
+refined_global_examples.adb:6:04: info: initialization of "A" proved
+refined_global_examples.adb:7:04: info: initialization of "B" proved
+refined_global_examples.adb:14:40: info: initialization of "B" proved
+refined_global_examples.adb:23:40: info: initialization of "A" proved
+refined_global_examples.adb:41:41: info: initialization of "A" proved
+refined_global_examples.adb:41:44: info: initialization of "B" proved
+refined_global_examples.adb:48:12: info: initialization of "A" proved
+refined_global_examples.adb:54:40: info: initialization of "Z" proved
+refined_global_examples.adb:72:41: info: initialization of "X" proved
+refined_global_examples.adb:72:44: info: initialization of "Y" proved
 refined_global_examples.ads:3:31: warning: no procedure exists that can initialize abstract state "Refined_Global_Examples.S2"
+refined_global_examples.ads:6:04: info: initialization of "V1" proved
+refined_global_examples.ads:14:20: info: initialization of "Result" proved
+refined_global_examples.ads:25:32: info: initialization of "V1" proved
+refined_depends_examples.adb:6:04: info: initialization of "A" proved
+refined_depends_examples.adb:7:04: info: initialization of "B" proved
+refined_depends_examples.adb:14:41: info: initialization of "B" proved
+refined_depends_examples.adb:27:41: info: initialization of "A" proved
+refined_depends_examples.adb:48:42: info: initialization of "A" proved
+refined_depends_examples.adb:48:45: info: initialization of "B" proved
+refined_depends_examples.adb:61:41: info: initialization of "Z" proved
+refined_depends_examples.adb:80:42: info: initialization of "X" proved
+refined_depends_examples.adb:80:45: info: initialization of "Y" proved
 refined_depends_examples.ads:3:31: warning: no procedure exists that can initialize abstract state "Refined_Depends_Examples.S2"
+refined_depends_examples.ads:6:04: info: initialization of "V1" proved
+refined_depends_examples.ads:16:20: info: initialization of "Result" proved
+refined_depends_examples.ads:30:33: info: initialization of "V1" proved
 stacks_1.adb:16:27: info: refined post proved
 stacks_1.adb:17:44: info: range check proved
 stacks_1.adb:23:30: info: range check proved
@@ -50,8 +89,13 @@ stacks_1.adb:24:18: info: index check proved
 stacks_1.adb:28:27: medium: refined postcondition might fail
 stacks_1.adb:34:33: info: range check proved
 stacks_1.adb:38:64: info: index check proved
+stacks_1.ads:6:13: info: initialization of "Is_Empty" proved
+stacks_1.ads:9:13: info: initialization of "Is_Full" proved
 stacks_1.ads:14:19: info: postcondition proved
 stacks_1.ads:17:19: info: postcondition proved
+stacks_1.ads:19:13: info: initialization of "Top" proved
+stacks_2.adb:7:04: info: initialization of "A_Pointer" proved
+stacks_2.adb:8:04: info: initialization of "A_Vector" proved
 stacks_2.adb:8:31: info: length check proved
 stacks_2.adb:15:29: info: refined post proved
 stacks_2.adb:25:29: info: refined post proved
@@ -62,18 +106,47 @@ stacks_2.adb:41:17: info: index check proved
 stacks_2.adb:46:29: info: refined post proved
 stacks_2.adb:51:30: medium: range check might fail
 stacks_2.adb:54:46: info: index check proved
+stacks_2.ads:6:13: info: initialization of "Is_Empty" proved
+stacks_2.ads:10:13: info: initialization of "Is_Full" proved
 stacks_2.ads:17:21: info: postcondition proved
 stacks_2.ads:21:16: info: postcondition proved
+stacks_2.ads:23:13: info: initialization of "Top" proved
+externals.adb:36:25: info: initialization of "Press" proved
 externals.adb:36:31: medium: overflow check might fail
+externals.adb:36:33: info: initialization of "Temp" proved
 externals.adb:36:38: medium: overflow check might fail
+externals.adb:40:54: info: initialization of "Main_Display.State" proved
+externals.adb:41:59: info: initialization of "Secondary_Display.State" proved
+externals.adb:52:04: info: initialization of "Saved_Value" proved
 externals.adb:54:04: high: "Out_Reg" is not written in "Externals"
 externals.adb:76:41: medium: "Out_Reg" might not be written
 externals.adb:91:20: warning: unused assignment
 externals.adb:94:13: warning: statement has no effect
+externals.adb:94:23: info: initialization of "Status" proved
+externals.ads:10:20: info: initialization of "Combined_Value" proved
+externals.ads:24:13: info: initialization of "Last_Value_Sent" proved
+hal.adb:76:20: info: initialization of "Current_Status" proved
+hal.adb:78:13: info: initialization of "Next_Byte" proved
+hal.adb:94:41: info: initialization of "Write_FIFO" proved
+hal.adb:102:41: info: initialization of "Control" proved
+hal.adb:111:41: info: initialization of "Control" proved
+hal.adb:127:10: info: initialization of "Watch_Dog_OK" proved
+hal.ads:27:24: info: initialization of "A_Byte" proved
+hal.ads:35:44: info: initialization of "Found" proved
+hal.ads:44:31: info: initialization of "A_Byte" proved
+hal.ads:69:30: info: initialization of "Result" proved
 inter_unit_elaboration_examples.adb:8:14: medium: overflow check might fail
 intra_unit_elaboration_order_examples.adb:3:50: medium: overflow check might fail
 intra_unit_elaboration_order_examples.adb:20:17: info: overflow check proved
 intra_unit_elaboration_order_examples.adb:35:14: medium: overflow check might fail
+intra_unit_elaboration_order_examples.adb:42:07: info: initialization of "X" proved
+intra_unit_elaboration_order_examples.ads:12:04: info: initialization of "X" proved
+intra_unit_elaboration_order_examples.ads:17:04: info: initialization of "Y" proved
 intra_unit_elaboration_order_examples.ads:20:19: info: postcondition proved
+intra_unit_elaboration_order_examples.ads:26:13: info: initialization of "F" proved
+intra_unit_elaboration_order_examples.ads:27:13: info: initialization of "G" proved
 intra_unit_elaboration_order_examples.ads:27:50: medium: overflow check might fail
 initialization_and_elaboration.ads:8:08: medium: initial condition might fail
+initialization_and_elaboration.ads:8:29: info: initialization of "V" proved
+initialization_and_elaboration.ads:10:04: info: initialization of "V" proved
+initialization_and_elaboration.ads:15:13: info: initialization of "Get_It" proved

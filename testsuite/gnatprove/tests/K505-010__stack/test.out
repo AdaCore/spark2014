@@ -1,3 +1,6 @@
+error.ads:5:13: info: initialization of "Get_Current" proved
+error.ads:7:14: info: initialization of "MyState" proved
+error.ads:9:14: info: initialization of "MyState" proved
 stacks.adb:10:08: info: discriminant check proved
 stacks.adb:10:17: info: discriminant check proved
 stacks.adb:10:22: medium: overflow check might fail
@@ -7,11 +10,15 @@ stacks.adb:11:16: medium: array index check might fail
 stacks.adb:21:08: info: discriminant check proved
 stacks.adb:21:17: info: discriminant check proved
 stacks.adb:21:22: info: range check proved
+stacks.ads:13:13: info: initialization of "Is_Empty" proved
+stacks.ads:15:13: info: initialization of "Is_Full" proved
+stacks.ads:17:13: info: initialization of "Size" proved
 stacks.ads:20:14: medium: precondition is stronger than the default class-wide precondition of True
 stacks.ads:21:14: info: postcondition proved
 stacks.ads:21:34: info: overflow check proved
 stacks.ads:24:25: medium: precondition is stronger than the default class-wide precondition of True
 stacks.ads:25:26: info: postcondition proved
+stacks.ads:27:13: info: initialization of "Peer" proved
 stacks.ads:28:13: medium: precondition is stronger than the default class-wide precondition of True
 stacks.ads:37:50: info: discriminant check proved
 stacks.ads:43:50: info: discriminant check proved

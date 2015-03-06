@@ -1,2 +1,5 @@
+p.adb:2:13: info: initialization of "Id" proved
 p.adb:3:09: info: range check proved
+p.adb:3:30: info: initialization of "T_First" proved
+p.adb:3:41: info: initialization of "T_Last" proved
 p.adb:4:13: medium: range check might fail

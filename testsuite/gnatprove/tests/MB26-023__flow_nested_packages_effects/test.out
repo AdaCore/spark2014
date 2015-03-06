@@ -1,7 +1,46 @@
+flo_review_tests.adb:6:23: info: initialization of "Y" proved
+flo_review_tests.adb:16:10: info: initialization of "M" proved
+flo_review_tests.adb:16:25: info: initialization of "N" proved
+flo_review_tests.adb:19:14: info: initialization of "M" proved
+flo_review_tests.adb:23:23: info: initialization of "Y" proved
+flo_review_tests.adb:32:10: info: initialization of "M" proved
+flo_review_tests.adb:32:25: info: initialization of "N" proved
+flo_review_tests.adb:35:14: info: initialization of "M" proved
+flo_review_tests.adb:39:23: info: initialization of "Y" proved
+flo_review_tests.adb:49:10: info: initialization of "M" proved
 flo_review_tests.adb:49:25: high: "N" is not initialized
+flo_review_tests.adb:52:14: info: initialization of "M" proved
 flo_review_tests.adb:52:17: medium: overflow check might fail
 flo_review_tests.adb:55:14: warning: subprogram "Test_04" has no effect
+flo_review_tests.adb:62:10: info: initialization of "M" proved
+flo_review_tests.adb:69:23: info: initialization of "Z" proved
+flo_review_tests.adb:79:19: info: initialization of "Wibble" proved
 flo_review_tests.adb:91:13: high: "Y" is not initialized in "P5_Inner"
+flo_review_tests.adb:95:47: info: initialization of "X" proved
+flo_review_tests.adb:96:55: info: initialization of "Y" proved
+flo_review_tests.adb:113:20: info: initialization of "P5_Outer.State" proved
+flo_review_tests.adb:116:23: info: initialization of "Z" proved
+flo_review_tests.adb:123:19: info: initialization of "Get_State" proved
+flo_review_tests.adb:129:10: info: initialization of "X" proved
+flo_review_tests.adb:133:13: info: initialization of "Y" proved
+flo_review_tests.adb:148:20: info: initialization of "P6_Outer.State" proved
+init.ads:5:04: info: initialization of "Var" proved
+outer.adb:12:04: info: initialization of "Foo" proved
+outer.adb:15:30: info: initialization of "Foo" proved
+outer.adb:22:07: info: initialization of "X" proved
+outer.adb:27:10: info: initialization of "Nested_In_Spec_Var" proved
+outer.adb:30:16: info: initialization of "Get_Inner_State" proved
+outer.adb:45:10: info: initialization of "Deep_Var" proved
+outer.adb:47:19: info: initialization of "Get_Deep_State" proved
+outer.adb:54:10: info: initialization of "Deep_Ref" proved
+outer.adb:60:07: info: initialization of "Y" proved
+outer.adb:60:36: info: initialization of "Deep_Var" proved
 outer.adb:60:46: medium: overflow check might fail
+outer.adb:61:07: info: initialization of "Z" proved
+outer.adb:66:12: info: initialization of "X" proved
 outer.adb:66:14: info: overflow check proved
+outer.adb:73:07: info: initialization of "Y" proved
+outer.adb:73:10: info: initialization of "Z" proved
+outer.adb:79:07: info: initialization of "W" proved
+outer.adb:85:16: info: initialization of "Add" proved
 outer.adb:85:58: medium: overflow check might fail

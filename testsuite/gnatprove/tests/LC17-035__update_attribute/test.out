@@ -1,24 +1,56 @@
 arrays.adb:4:34: info: length check proved
+arrays.adb:6:14: info: initialization of "Arr" proved
+arrays.adb:7:14: info: initialization of "Arr" proved
+arrays.adb:8:14: info: initialization of "Arr" proved
 arrays.adb:8:26: info: overflow check proved
+arrays.adb:9:14: info: initialization of "Arr" proved
+arrays.adb:32:14: info: initialization of "Arr" proved
+arrays.adb:33:14: info: initialization of "Arr" proved
+arrays.adb:34:14: info: initialization of "Arr" proved
+arrays.adb:35:14: info: initialization of "Arr" proved
+arrays.adb:36:14: info: initialization of "Arr" proved
+arrays.adb:47:14: info: initialization of "Arr" proved
+arrays.adb:48:14: info: initialization of "Arr" proved
+arrays.adb:54:14: info: initialization of "Arr" proved
+arrays.adb:55:14: info: initialization of "Arr" proved
+arrays.adb:56:14: info: initialization of "Arr" proved
+arrays.adb:57:14: info: initialization of "Arr" proved
 arrays.adb:62:21: info: length check proved
+arrays.adb:63:12: info: initialization of "A" proved
 arrays.adb:68:21: info: length check proved
+arrays.adb:69:12: info: initialization of "A" proved
+arrays.adb:77:15: info: initialization of "Tmp" proved
+arrays.adb:83:14: info: initialization of "Arr" proved
+arrays.adb:84:14: info: initialization of "Arr" proved
+arrays.adb:85:14: info: initialization of "Arr" proved
 arrays.adb:90:10: info: index check proved
 arrays.ads:5:34: info: length check proved
+arrays.ads:12:13: info: initialization of "F1" proved
 arrays.ads:14:19: info: postcondition proved
 arrays.ads:15:31: info: length check proved
 arrays.ads:16:51: info: overflow check proved
 arrays.ads:23:19: info: postcondition proved
 arrays.ads:31:19: info: postcondition proved
+arrays.ads:34:13: info: initialization of "F2" proved
 arrays.ads:35:19: info: postcondition proved
+arrays.ads:38:13: info: initialization of "F3" proved
 arrays.ads:39:19: info: postcondition proved
+arrays.ads:44:13: info: initialization of "F4" proved
 arrays.ads:45:19: info: postcondition proved
+arrays.ads:48:13: info: initialization of "F5" proved
 arrays.ads:49:19: info: postcondition proved
+arrays.ads:52:13: info: initialization of "F6" proved
 arrays.ads:53:19: info: postcondition proved
+arrays.ads:56:29: info: initialization of "A" proved
+arrays.ads:57:19: info: initialization of "A" proved
 arrays.ads:57:19: info: postcondition proved
 arrays.ads:57:32: info: length check proved
+arrays.ads:60:30: info: initialization of "A" proved
+arrays.ads:61:19: info: initialization of "A" proved
 arrays.ads:61:19: info: postcondition proved
 arrays.ads:61:32: info: length check proved
 arrays.ads:65:19: info: postcondition proved
+arrays.ads:68:13: info: initialization of "Swap_Fun" proved
 arrays.ads:69:19: info: postcondition proved
 arrays.ads:75:19: medium: postcondition might fail, requires A = A'Old'update
 records.adb:21:27: medium: range check might fail

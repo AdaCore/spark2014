@@ -5,27 +5,35 @@ main.adb:9:04: warning: no Global contract available for "Get"
 main.adb:9:09: medium: range check might fail
 main.adb:10:04: warning: assuming "Skip_Line" has no effect on global items
 main.adb:10:04: warning: no Global contract available for "Skip_Line"
+main.adb:13:38: info: initialization of "Max" proved
+main.adb:14:18: info: initialization of "Max_Cst" proved
 main.adb:18:10: warning: assuming "Put_Line" has no effect on global items
 main.adb:18:10: warning: no Global contract available for "Put_Line"
 main.adb:21:38: warning: assuming "Get_Line" has no effect on global items
 main.adb:21:38: warning: no Global contract available for "Get_Line"
+main.adb:26:40: info: initialization of "Cmd" proved
 main.adb:26:40: medium: range check might fail
 main.adb:27:16: medium: private part of "S" might not be initialized
 main.adb:27:17: medium: precondition might fail
 main.adb:28:16: warning: assuming "Put_Line" has no effect on global items
 main.adb:28:16: warning: no Global contract available for "Put_Line"
+main.adb:29:16: info: initialization of private part of "S" proved
 main.adb:30:16: warning: assuming "New_Line" has no effect on global items
 main.adb:30:16: warning: no Global contract available for "New_Line"
 main.adb:32:44: medium: range check might fail
 main.adb:33:16: warning: assuming "Get" has no effect on global items
 main.adb:33:16: warning: no Global contract available for "Get"
+main.adb:33:21: info: initialization of "Cmd" proved
 main.adb:33:21: info: range check proved
 main.adb:34:16: medium: private part of "S" might not be initialized
 main.adb:34:17: medium: precondition might fail
+main.adb:34:33: info: initialization of "V" proved
 main.adb:35:16: warning: assuming "Put_Line" has no effect on global items
 main.adb:35:16: warning: no Global contract available for "Put_Line"
+main.adb:36:16: info: initialization of private part of "S" proved
 main.adb:37:16: warning: assuming "New_Line" has no effect on global items
 main.adb:37:16: warning: no Global contract available for "New_Line"
+main.adb:39:19: info: initialization of "Cmd" proved
 stacks.adb:11:08: info: discriminant check proved
 stacks.adb:11:17: info: discriminant check proved
 stacks.adb:11:22: medium: overflow check might fail
@@ -38,17 +46,22 @@ stacks.adb:21:22: info: range check proved
 stacks.adb:26:07: warning: assuming "Put" has no effect on global items
 stacks.adb:26:07: warning: no Global contract available for "Put"
 stacks.adb:27:30: info: discriminant check proved
+stacks.adb:27:30: info: initialization of "R5b" proved
 stacks.adb:28:10: warning: assuming "Put" has no effect on global items
 stacks.adb:28:10: warning: no Global contract available for "Put"
 stacks.adb:28:31: info: discriminant check proved
 stacks.adb:28:38: medium: array index check might fail
 stacks.adb:30:07: warning: assuming "Put" has no effect on global items
 stacks.adb:30:07: warning: no Global contract available for "Put"
+stacks.ads:8:13: info: initialization of "Is_Empty" proved
+stacks.ads:18:13: info: initialization of "Is_Full" proved
+stacks.ads:24:13: info: initialization of "Size" proved
 stacks.ads:27:14: medium: precondition is stronger than the default class-wide precondition of True
 stacks.ads:28:14: info: postcondition proved
 stacks.ads:28:34: info: overflow check proved
 stacks.ads:47:14: medium: precondition is stronger than the default class-wide precondition of True
 stacks.ads:48:14: info: postcondition proved
+stacks.ads:66:13: info: initialization of "Peer" proved
 stacks.ads:67:13: medium: precondition is stronger than the default class-wide precondition of True
 stacks.ads:69:14: warning: subprogram "Print" has no effect
 stacks.ads:78:50: info: discriminant check proved

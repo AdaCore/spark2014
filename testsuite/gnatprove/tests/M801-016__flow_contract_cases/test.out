@@ -1,4 +1,12 @@
+contract_cases.adb:7:22: info: initialization of "Num_Out" proved
 contract_cases.adb:8:31: high: "Num_Out" is not initialized
+contract_cases.adb:8:47: info: initialization of "Num_Out" proved
 contract_cases.adb:9:31: high: "Num_Out" is not initialized
+contract_cases.adb:9:47: info: initialization of "Num_Out" proved
+contract_cases.adb:10:47: info: initialization of "Num_Out" proved
+contract_cases.adb:18:33: info: initialization of "Y" proved
 contract_cases.adb:19:31: high: "Y" is not initialized
+contract_cases.adb:19:41: info: initialization of "Y" proved
 contract_cases.adb:20:31: high: "Y" is not initialized
+contract_cases.adb:20:41: info: initialization of "Y" proved
+contract_cases.adb:21:41: info: initialization of "Y" proved

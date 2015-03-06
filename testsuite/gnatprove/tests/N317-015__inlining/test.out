@@ -1,4 +1,13 @@
 array_arith.adb:12:12: medium: "X" might not be initialized
+array_arith.adb:13:12: info: initialization of "X" proved
+array_arith.adb:14:12: info: initialization of "X" proved
+array_arith.adb:15:12: info: initialization of "X" proved
+array_arith.adb:16:12: info: initialization of "X" proved
+array_arith.adb:17:12: info: initialization of "X" proved
+array_arith.adb:18:12: info: initialization of "X" proved
+array_arith.adb:19:12: info: initialization of "X" proved
+array_arith.adb:20:12: info: initialization of "X" proved
+array_arith.adb:21:13: info: initialization of "X" proved
 array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:32
 array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:33
 array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:34
@@ -9,47 +18,138 @@ array_arith.adb:29:19: info: overflow check proved, in call inlined at array_ari
 array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:39
 array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:40
 array_arith.adb:29:19: info: overflow check proved, in call inlined at array_arith.adb:41
+array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:32
+array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:33
+array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:34
+array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:35
+array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:36
+array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:37
+array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:38
+array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:39
+array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:40
+array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:41
 array_arith.adb:32:12: medium: "X" might not be initialized
+array_arith.adb:33:12: info: initialization of "X" proved
+array_arith.adb:34:12: info: initialization of "X" proved
+array_arith.adb:35:12: info: initialization of "X" proved
+array_arith.adb:36:12: info: initialization of "X" proved
+array_arith.adb:37:12: info: initialization of "X" proved
+array_arith.adb:38:12: info: initialization of "X" proved
+array_arith.adb:39:12: info: initialization of "X" proved
+array_arith.adb:40:12: info: initialization of "X" proved
+array_arith.adb:41:13: info: initialization of "X" proved
+array_arith.adb:46:16: info: initialization of "Ident" proved
 array_arith.adb:50:15: medium: "X" might not be initialized, in call inlined at array_arith.adb:66
+array_arith.adb:50:18: info: initialization of "One" proved, in call inlined at array_arith.adb:66
+array_arith.adb:51:15: info: initialization of "X" proved, in call inlined at array_arith.adb:66
+array_arith.adb:51:18: info: initialization of "One" proved, in call inlined at array_arith.adb:66
+array_arith.adb:52:15: info: initialization of "X" proved, in call inlined at array_arith.adb:66
+array_arith.adb:52:18: info: initialization of "One" proved, in call inlined at array_arith.adb:66
+array_arith.adb:53:15: info: initialization of "X" proved, in call inlined at array_arith.adb:66
+array_arith.adb:53:18: info: initialization of "One" proved, in call inlined at array_arith.adb:66
+array_arith.adb:54:15: info: initialization of "X" proved, in call inlined at array_arith.adb:66
+array_arith.adb:54:18: info: initialization of "One" proved, in call inlined at array_arith.adb:66
+array_arith.adb:55:15: info: initialization of "X" proved, in call inlined at array_arith.adb:66
+array_arith.adb:55:18: info: initialization of "One" proved, in call inlined at array_arith.adb:66
+array_arith.adb:56:15: info: initialization of "X" proved, in call inlined at array_arith.adb:66
+array_arith.adb:56:18: info: initialization of "One" proved, in call inlined at array_arith.adb:66
+array_arith.adb:57:15: info: initialization of "X" proved, in call inlined at array_arith.adb:66
+array_arith.adb:57:18: info: initialization of "One" proved, in call inlined at array_arith.adb:66
+array_arith.adb:58:15: info: initialization of "X" proved, in call inlined at array_arith.adb:66
+array_arith.adb:58:18: info: initialization of "One" proved, in call inlined at array_arith.adb:66
+array_arith.adb:59:16: info: initialization of "X" proved, in call inlined at array_arith.adb:66
+array_arith.adb:59:19: info: initialization of "One" proved, in call inlined at array_arith.adb:66
 array_arith.adb:63:19: medium: overflow check might fail
 array_arith.adb:63:19: medium: range check might fail
+array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at array_arith.adb:77
+array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at array_arith.adb:78
+array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at array_arith.adb:79
+array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at array_arith.adb:80
+array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at array_arith.adb:81
+array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at array_arith.adb:82
+array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at array_arith.adb:83
+array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at array_arith.adb:84
+array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at array_arith.adb:85
 array_arith.adb:73:12: medium: "X" might not be initialized, in call inlined at array_arith.adb:76
+array_arith.ads:8:20: info: initialization of "X" proved
 array_arith.ads:9:14: info: postcondition proved
+array_arith.ads:9:35: info: initialization of "X" proved
+array_arith.ads:11:21: info: initialization of "X" proved
 array_arith.ads:12:14: info: postcondition proved
+array_arith.ads:12:35: info: initialization of "X" proved
+array_arith.ads:14:21: info: initialization of "X" proved
+array_arith.ads:15:35: info: initialization of "X" proved
 array_arith.ads:15:35: medium: postcondition might fail, requires X(J) = Natural(J) + 1
+array_arith.ads:17:20: info: initialization of "X" proved
 array_arith.ads:18:14: info: postcondition proved
+array_arith.ads:18:35: info: initialization of "X" proved
+ident.adb:15:12: info: initialization of "X" proved, in call inlined at ident.adb:54
+ident.adb:35:12: info: initialization of "X" proved, in call inlined at ident.adb:52
+ident.adb:43:25: info: initialization of "X" proved
+ident.adb:44:22: info: initialization of "Res" proved
 ident.adb:44:22: medium: assertion might fail, requires Res = X
+ident.adb:44:28: info: initialization of "X" proved
+ident.adb:45:26: info: initialization of "X" proved
 ident.adb:46:07: info: assertion proved
+ident.adb:46:22: info: initialization of "Res" proved
+ident.adb:46:28: info: initialization of "X" proved
+ident.adb:47:23: info: initialization of "X" proved
 ident.adb:48:07: info: assertion proved
+ident.adb:48:22: info: initialization of "Res" proved
+ident.adb:48:28: info: initialization of "X" proved
+ident.adb:50:20: info: initialization of "X" proved
+ident.adb:51:22: info: initialization of "Y" proved
 ident.adb:51:22: medium: assertion might fail, requires Y = 9
 ident.adb:53:07: info: assertion proved
+ident.adb:53:22: info: initialization of "Y" proved
 ident.adb:55:07: info: assertion proved
+ident.adb:55:22: info: initialization of "Y" proved
+ident.ads:4:13: info: initialization of "Id_Public" proved
+ident.ads:5:44: info: initialization of "Y" proved
 ident.ads:6:14: warning: subprogram "Test" has no effect
 incr_expr_fun.adb:4:62: medium: overflow check might fail
 incr_expr_fun.adb:6:63: medium: overflow check might fail
+incr_expr_fun.adb:8:13: info: initialization of "Incr_Body" proved
 incr_expr_fun.adb:8:58: medium: overflow check might fail
+incr_expr_fun.adb:10:13: info: initialization of "Incr_Body_Body" proved
 incr_expr_fun.adb:11:63: medium: overflow check might fail
 incr_expr_fun.adb:16:07: info: assertion proved
+incr_expr_fun.adb:16:32: info: initialization of "X" proved
 incr_expr_fun.adb:16:39: info: overflow check proved
 incr_expr_fun.adb:17:07: info: assertion proved
+incr_expr_fun.adb:17:36: info: initialization of "X" proved
 incr_expr_fun.adb:17:43: info: overflow check proved
 incr_expr_fun.adb:18:07: info: assertion proved
+incr_expr_fun.adb:18:37: info: initialization of "X" proved
 incr_expr_fun.adb:18:44: info: overflow check proved
 incr_expr_fun.adb:19:07: info: assertion proved
+incr_expr_fun.adb:19:37: info: initialization of "X" proved
 incr_expr_fun.adb:19:44: info: overflow check proved
 incr_expr_fun.adb:20:07: info: assertion proved
+incr_expr_fun.adb:20:33: info: initialization of "X" proved
 incr_expr_fun.adb:20:40: info: overflow check proved
 incr_expr_fun.adb:21:07: info: assertion proved
+incr_expr_fun.adb:21:38: info: initialization of "X" proved
 incr_expr_fun.adb:21:45: info: overflow check proved
 incr_expr_fun.adb:22:07: info: assertion proved
+incr_expr_fun.adb:22:38: info: initialization of "X" proved
 incr_expr_fun.adb:22:45: info: overflow check proved
 incr_expr_fun.adb:23:07: info: assertion proved
+incr_expr_fun.adb:23:33: info: initialization of "X" proved
 incr_expr_fun.adb:23:40: info: overflow check proved
 incr_expr_fun.adb:24:07: info: assertion proved
+incr_expr_fun.adb:24:38: info: initialization of "X" proved
 incr_expr_fun.adb:24:45: info: overflow check proved
+incr_expr_fun.ads:4:13: info: initialization of "Incr_Pub" proved
 incr_expr_fun.ads:4:57: medium: overflow check might fail
+incr_expr_fun.ads:6:13: info: initialization of "Incr_Pub_Pub" proved
 incr_expr_fun.ads:7:61: medium: overflow check might fail
+incr_expr_fun.ads:9:13: info: initialization of "Incr_Pub_Priv" proved
+incr_expr_fun.ads:11:13: info: initialization of "Incr_Pub_Body" proved
 incr_expr_fun.ads:13:14: warning: subprogram "Test" has no effect
 incr_expr_fun.ads:15:62: medium: overflow check might fail
+incr_expr_fun.ads:17:13: info: initialization of "Incr_Priv" proved
 incr_expr_fun.ads:17:58: medium: overflow check might fail
+incr_expr_fun.ads:19:13: info: initialization of "Incr_Priv_Priv" proved
 incr_expr_fun.ads:20:63: medium: overflow check might fail
+incr_expr_fun.ads:22:13: info: initialization of "Incr_Priv_Body" proved

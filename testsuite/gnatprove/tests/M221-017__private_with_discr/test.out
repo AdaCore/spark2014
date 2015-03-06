@@ -1,3 +1,6 @@
+p.ads:21:13: info: initialization of "My_Capacity" proved
 p.ads:22:17: info: postcondition proved
+p.ads:24:13: info: initialization of private part of "Identity1" proved
 p.ads:25:17: info: postcondition proved
+p.ads:27:13: info: initialization of "Identity2" proved
 p.ads:28:17: info: postcondition proved

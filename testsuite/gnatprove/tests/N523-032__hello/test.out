@@ -1,3 +1,4 @@
+hello.adb:10:13: info: initialization of "To_Caml_Char" proved
 hello.adb:14:14: info: index check proved
 hello.adb:14:34: info: index check proved
 hello.adb:15:20: info: index check proved
@@ -8,6 +9,7 @@ hello.adb:18:15: info: index check proved
 hello.adb:18:35: info: index check proved
 hello.adb:20:15: info: index check proved
 hello.adb:20:35: info: index check proved
+hello.adb:24:13: info: initialization of "To_Caml_Char2" proved
 hello.adb:29:20: info: index check proved
 hello.adb:29:40: info: index check proved
 hello.adb:30:23: info: index check proved
@@ -18,24 +20,35 @@ hello.adb:33:18: info: index check proved
 hello.adb:33:38: info: index check proved
 hello.adb:35:18: info: index check proved
 hello.adb:35:38: info: index check proved
+hello.adb:39:13: info: initialization of "To_Camel_Case" proved
 hello.adb:41:08: info: postcondition proved
 hello.adb:45:08: info: precondition proved
 hello.adb:53:07: info: range check proved
 hello.adb:53:48: info: length check proved
+hello.adb:58:13: info: initialization of "To_Up" proved
+hello.adb:59:36: info: initialization of "Ret" proved
+hello.adb:61:36: info: initialization of "Ret" proved
 hello.adb:64:10: info: assertion proved
 hello.adb:65:10: info: assertion proved
 hello.adb:66:10: info: assertion proved
+hello.adb:66:32: info: initialization of "Ret" proved
 hello.adb:67:10: info: loop invariant initialization proved
 hello.adb:67:33: info: precondition proved
 hello.adb:67:33: medium: loop invariant might fail after first iteration, requires To_Caml_Char2 (Str, Ret, Idx)
+hello.adb:67:53: info: initialization of "Ret" proved
 hello.adb:68:10: info: loop invariant initialization proved
 hello.adb:68:10: info: loop invariant preservation proved
+hello.adb:70:32: info: initialization of "Ret" proved
 hello.adb:70:37: info: index check proved
 hello.adb:70:47: info: index check proved
 hello.adb:81:07: info: assertion proved
+hello.adb:83:14: info: initialization of "Ret" proved
 hello.adb:113:18: warning: assuming "Put_Line" has no effect on global items
 hello.adb:113:18: warning: no Global contract available for "Put_Line"
+hello.adb:113:29: info: initialization of "Hello" proved
 hello.adb:113:35: info: range check proved
+hello.adb:113:37: info: initialization of "Prefix" proved
 hello.adb:113:44: medium: range check might fail
 hello.adb:113:66: medium: range check might fail
+hello.ads:8:14: info: initialization of "G_Lang_Level" proved
 hello.ads:10:14: warning: subprogram "Say_Hello" has no effect

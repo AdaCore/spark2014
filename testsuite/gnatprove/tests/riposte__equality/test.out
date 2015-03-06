@@ -1,2 +1,4 @@
+equality.adb:11:13: info: initialization of "L611_019_Reduced_Testcase" proved
 equality.adb:18:22: info: postcondition proved
+equality.adb:24:13: info: initialization of "L611_019_Reduced_Testcase_2" proved
 equality.adb:32:22: info: postcondition proved

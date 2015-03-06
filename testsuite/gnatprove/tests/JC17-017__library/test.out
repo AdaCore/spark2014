@@ -1,3 +1,4 @@
 p.adb:3:04: info: assertion proved
 p.adb:3:21: medium: overflow check might fail
+p.ads:1:10: info: initialization of "P" proved
 p.ads:3:16: info: postcondition proved

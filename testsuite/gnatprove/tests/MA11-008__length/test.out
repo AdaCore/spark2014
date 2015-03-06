@@ -1,2 +1,4 @@
 kmp.adb:6:29: info: length check proved
+kmp.adb:9:14: info: initialization of "Next" proved
+kmp.ads:7:13: info: initialization of "Init_Next" proved
 kmp.ads:9:17: info: postcondition proved

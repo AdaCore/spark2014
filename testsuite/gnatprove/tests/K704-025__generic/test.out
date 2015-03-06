@@ -1,1 +1,3 @@
+gen.ads:5:13: info: initialization of "Echo" proved, in instantiation at p.adb:4
 p.adb:9:04: info: assertion proved
+p.adb:9:19: info: initialization of "X" proved

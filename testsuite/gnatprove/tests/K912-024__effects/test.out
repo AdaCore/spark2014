@@ -1,1 +1,4 @@
+pack.ads:4:14: info: initialization of "Get_X" proved
+pack.ads:6:14: info: initialization of "X_Is_Positive" proved
+pack.ads:8:14: info: initialization of "Greater_Than_X" proved
 using.ads:5:14: warning: subprogram "P" has no effect

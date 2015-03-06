@@ -1,4 +1,6 @@
 sub.adb:1:16: warning: unused initial value of "X"
 sub.adb:4:04: info: no contextual analysis of "Doit" (multiple returns)
+sub.adb:4:20: info: initialization of "X" proved
 sub.adb:1:16: warning: unused initial value of "X"
 sub.adb:4:04: info: no contextual analysis of "Doit" (multiple returns)
+sub.adb:4:20: info: initialization of "X" proved

@@ -2,3 +2,5 @@ over.adb:7:20: medium: overflow check might fail
 over.adb:7:25: medium: range check might fail
 over.adb:9:19: medium: overflow check might fail
 over.adb:9:19: medium: range check might fail
+over.adb:11:14: info: initialization of "Res" proved
+over.ads:4:13: info: initialization of "F" proved

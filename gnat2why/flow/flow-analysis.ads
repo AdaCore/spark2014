@@ -81,22 +81,9 @@ package Flow.Analysis is
 
    procedure Find_Use_Of_Uninitialized_Variables
      (FA : in out Flow_Analysis_Graphs);
-   --  Find all instances where uninitialized variables are used. If a
-   --  variable is always uninitialized then raise an Error, otherwise
-   --  raise a Warning.
-   --
-   --                               Algorithm
-   --  * Find a vertex (USE) that has an edge from a 'Initial vertex going in
-   --    it.
-   --  * In the CFG graph starting from USE, perform a DFS in reverse and stop
-   --    upon finding a vertex (DEF) that defines the variable associated with
-   --    the 'Initial vertex.
-   --  * If DEF does not exist then issue an Error. Else, if DEF exists:
-   --    - if there exists a route in the CFG from Start -> DEF that does not
-   --      cross USE, then issue a Warning
-   --    - else if USE does NOT have an arrow coming in from the Start vertex
-   --      (in the PDG graph) then issue a Warning
-   --    - else issue an Error.
+   --  Check all variables read (explicit and implicit) and issue either
+   --  info messages or med/high checks depending on wheather the variable
+   --  is initialized.
    --
    --  Complexity is O(N^2)
 

@@ -1,1 +1,3 @@
 ml_bits.adb:10:40: info: length check proved
+ml_bits.adb:11:14: info: initialization of "Result" proved
+ml_bits.ads:20:12: info: initialization of "Buffer_4bit_To_Int32" proved

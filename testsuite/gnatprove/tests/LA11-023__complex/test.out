@@ -1,2 +1,5 @@
+bar.ads:11:13: info: initialization of "Im" proved, in instantiation at foo.ads:19
+bar.ads:12:13: info: initialization of "Im__2" proved, in instantiation at foo.ads:19
 toto.adb:5:04: warning: analyzing unreferenced function "Exp"
+toto.adb:5:13: info: initialization of "Exp" proved
 toto.adb:5:18: warning: unused initial value of "X"

@@ -1,3 +1,4 @@
+extended_returns.adb:7:07: info: initialization of "Result.A" proved
 extended_returns.adb:7:07: medium: "Result.B" might not be initialized
 extended_returns.adb:7:07: medium: "Result.C" might not be initialized
 extended_returns.adb:7:07: medium: "Result.D" might not be initialized
@@ -5,5 +6,9 @@ extended_returns.adb:8:16: info: discriminant check proved
 extended_returns.adb:11:19: info: discriminant check proved
 extended_returns.adb:13:19: info: discriminant check proved
 extended_returns.adb:14:19: info: discriminant check proved
+extended_returns.ads:15:13: info: initialization of "Init.A" proved
+extended_returns.ads:15:13: info: initialization of "Init.B" proved
+extended_returns.ads:15:13: info: initialization of "Init.C" proved
+extended_returns.ads:15:13: info: initialization of "Init.D" proved
 extended_returns.ads:17:20: info: postcondition proved
 extended_returns.ads:17:31: info: discriminant check proved

@@ -1,11 +1,18 @@
 very_longs.adb:11:13: info: discriminant check proved
 very_longs.adb:11:26: info: length check proved
 very_longs.adb:11:29: info: length check proved
+very_longs.adb:13:20: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:13:26: info: discriminant check proved
+very_longs.adb:13:38: info: initialization of "R4b" proved
 very_longs.adb:14:16: info: discriminant check proved
 very_longs.adb:14:29: info: index check proved
+very_longs.adb:14:36: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:14:45: info: initialization of "Temp" proved
 very_longs.adb:14:50: info: division check proved
 very_longs.adb:14:50: info: range check proved
+very_longs.adb:15:18: info: initialization of "Temp" proved
 very_longs.adb:15:23: info: division check proved
 very_longs.adb:17:07: info: assertion proved
+very_longs.adb:18:14: info: initialization of "Result.Long_Digits" proved
+very_longs.ads:12:13: info: initialization of "Make_From_Natural.Long_Digits" proved
 very_longs.ads:13:19: info: postcondition proved

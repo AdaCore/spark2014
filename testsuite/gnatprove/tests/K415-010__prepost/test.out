@@ -1,2 +1,6 @@
 prepost.adb:5:07: info: assertion proved
 prepost.adb:16:22: medium: assertion might fail, requires Z = 0
+prepost.ads:3:13: info: initialization of "Is_Zero" proved
+prepost.ads:6:13: info: initialization of "F" proved
+prepost.ads:9:13: info: initialization of "Fun_Is_Zero" proved
+prepost.ads:11:13: info: initialization of "G" proved

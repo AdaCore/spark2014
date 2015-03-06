@@ -26,10 +26,14 @@ const.ads:9:24: info: length check proved
 const.ads:10:27: info: length check proved
 const.ads:12:24: info: length check proved
 const.ads:13:27: info: length check proved
+const.ads:22:13: info: initialization of "FI" proved
 const.ads:24:30: info: overflow check proved
 const.ads:24:35: info: overflow check proved
+const.ads:26:13: info: initialization of "FK" proved
 const.ads:28:30: info: overflow check proved
 const.ads:28:35: info: overflow check proved
+const.ads:30:13: info: initialization of "FM" proved
 const.ads:32:30: info: overflow check proved
 const.ads:32:39: info: overflow check proved
+const.ads:37:32: info: initialization of "O" proved
 const.ads:39:14: warning: subprogram "Test" has no effect

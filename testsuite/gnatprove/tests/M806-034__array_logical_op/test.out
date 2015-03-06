@@ -1,42 +1,67 @@
+array_logical_ops.adb:9:35: info: initialization of "X" proved
 array_logical_ops.adb:9:37: info: length check proved
+array_logical_ops.adb:9:41: info: initialization of "Y" proved
 array_logical_ops.adb:11:07: info: assertion proved
 array_logical_ops.adb:12:07: info: assertion proved
+array_logical_ops.adb:12:50: info: initialization of "R1" proved
 array_logical_ops.adb:12:54: info: index check proved
 array_logical_ops.adb:13:07: info: assertion proved
+array_logical_ops.adb:13:51: info: initialization of "R1" proved
 array_logical_ops.adb:13:55: info: index check proved
 array_logical_ops.adb:14:07: info: assertion proved
+array_logical_ops.adb:14:47: info: initialization of "R1" proved
 array_logical_ops.adb:14:51: info: index check proved
+array_logical_ops.adb:22:35: info: initialization of "X" proved
 array_logical_ops.adb:22:37: info: length check proved
+array_logical_ops.adb:22:40: info: initialization of "V" proved
 array_logical_ops.adb:24:07: info: assertion proved
 array_logical_ops.adb:25:07: info: assertion proved
+array_logical_ops.adb:25:53: info: initialization of "R2" proved
 array_logical_ops.adb:25:57: info: index check proved
 array_logical_ops.adb:26:07: info: assertion proved
+array_logical_ops.adb:26:56: info: initialization of "R2" proved
 array_logical_ops.adb:26:60: info: index check proved
+array_logical_ops.adb:34:35: info: initialization of "V" proved
 array_logical_ops.adb:34:37: info: length check proved
 array_logical_ops.adb:34:37: info: range check proved
+array_logical_ops.adb:34:41: info: initialization of "X" proved
 array_logical_ops.adb:36:07: info: assertion proved
 array_logical_ops.adb:37:07: info: assertion proved
+array_logical_ops.adb:37:53: info: initialization of "R3" proved
 array_logical_ops.adb:37:57: info: index check proved
 array_logical_ops.adb:38:07: info: assertion proved
+array_logical_ops.adb:38:56: info: initialization of "R3" proved
 array_logical_ops.adb:38:60: info: index check proved
+array_logical_ops.adb:44:35: info: initialization of "Z" proved
 array_logical_ops.adb:44:37: info: length check proved
+array_logical_ops.adb:44:41: info: initialization of "W" proved
 array_logical_ops.adb:46:07: info: assertion proved
 array_logical_ops.adb:47:07: info: assertion proved
+array_logical_ops.adb:47:47: info: initialization of "R4" proved
 array_logical_ops.adb:47:51: info: index check proved
 array_logical_ops.adb:53:35: info: range check proved
+array_logical_ops.adb:53:39: info: initialization of "Y" proved
 array_logical_ops.adb:55:07: info: assertion proved
 array_logical_ops.adb:56:07: info: assertion proved
+array_logical_ops.adb:56:46: info: initialization of "R5" proved
 array_logical_ops.adb:56:50: info: index check proved
 array_logical_ops.adb:57:07: info: assertion proved
+array_logical_ops.adb:57:47: info: initialization of "R5" proved
 array_logical_ops.adb:57:51: info: index check proved
 array_logical_ops.adb:58:07: info: assertion proved
+array_logical_ops.adb:59:53: info: initialization of "R5" proved
 array_logical_ops.adb:59:57: info: index check proved
 array_logical_ops.adb:60:07: info: assertion proved
+array_logical_ops.adb:60:51: info: initialization of "R5" proved
 array_logical_ops.adb:60:55: info: index check proved
+array_logical_ops.adb:65:34: info: initialization of "Y" proved
 array_logical_ops.adb:65:36: medium: length check might fail
+array_logical_ops.adb:73:35: info: initialization of "V" proved
 array_logical_ops.adb:73:37: info: length check proved
 array_logical_ops.adb:73:37: medium: range check might fail
+array_logical_ops.adb:73:41: info: initialization of "W" proved
 array_logical_ops.adb:74:35: medium: range check might fail
+array_logical_ops.adb:74:39: info: initialization of "V" proved
 array_logical_ops.ads:12:14: warning: subprogram "Test_Ok1" has no effect
 array_logical_ops.ads:14:14: warning: subprogram "Test_Ok2" has no effect
 array_logical_ops.ads:16:14: warning: subprogram "Test_Ok3" has no effect

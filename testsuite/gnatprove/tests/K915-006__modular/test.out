@@ -1,5 +1,11 @@
 pack.adb:27:22: info: division check proved
+pack.ads:5:13: info: initialization of "Next" proved
 pack.ads:6:19: info: postcondition proved
+pack.ads:8:13: info: initialization of "Next1" proved
 pack.ads:10:19: info: postcondition proved
+pack.ads:12:13: info: initialization of "Next255" proved
 pack.ads:14:19: info: postcondition proved
+pack.ads:16:13: info: initialization of "Minus" proved
 pack.ads:18:19: info: postcondition proved
+pack.ads:20:13: info: initialization of "Subst" proved
+pack.ads:21:13: info: initialization of "Test_Div" proved

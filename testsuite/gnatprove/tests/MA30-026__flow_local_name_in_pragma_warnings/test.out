@@ -1,0 +1,5 @@
+q.adb:8:17: info: initialization of "KS" proved
+q.adb:16:17: info: initialization of "KS" proved
+q.ads:8:04: info: initialization of "Glob" proved
+q.ads:10:21: info: initialization of "KS" proved
+q.ads:13:21: info: initialization of "KS" proved

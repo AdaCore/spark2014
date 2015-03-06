@@ -1,2 +1,3 @@
+div_one.ads:3:13: info: initialization of "F" proved
 div_one.ads:4:20: medium: postcondition might fail, requires F'Result / A = 1
 div_one.ads:4:30: info: division check proved

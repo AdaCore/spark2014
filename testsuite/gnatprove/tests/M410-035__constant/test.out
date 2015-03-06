@@ -3,3 +3,7 @@ main.adb:6:07: info: assertion proved, in call inlined at main.adb:12
 main.adb:9:04: info: assertion proved
 main.adb:10:04: info: assertion proved
 main.adb:11:04: info: assertion proved
+p.ads:5:13: info: initialization of "F" proved
+p.ads:6:13: info: initialization of "K" proved
+p.ads:7:13: info: initialization of "H" proved
+p.ads:12:13: info: initialization of "G" proved

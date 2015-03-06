@@ -1,7 +1,11 @@
+patience.adb:12:13: info: initialization of "I" proved
 patience.adb:13:10: info: loop invariant initialization proved
 patience.adb:13:10: info: loop invariant preservation proved
+patience.adb:13:33: info: initialization of "I" proved
 patience.adb:14:10: info: loop invariant initialization proved
 patience.adb:14:10: info: loop invariant preservation proved
+patience.adb:20:13: info: initialization of "Pred" proved
+patience.adb:22:31: info: initialization of "I" proved
 patience.adb:22:32: info: index check proved
 patience.adb:22:32: info: overflow check proved
 patience.adb:22:50: info: index check proved
@@ -11,12 +15,18 @@ patience.adb:24:28: info: index check proved
 patience.adb:27:26: info: index check proved
 patience.adb:27:35: info: overflow check proved
 patience.adb:29:39: info: index check proved
+patience.adb:29:39: info: initialization of "I" proved
 patience.adb:30:34: info: index check proved
+patience.adb:30:34: info: initialization of "I" proved
+patience.adb:30:37: info: initialization of "StackISize" proved
 patience.adb:30:48: medium: array index check might fail
+patience.adb:31:36: info: initialization of "TopStackI" proved
 patience.adb:31:36: medium: array index check might fail
 patience.adb:32:12: medium: assertion might fail
+patience.adb:32:32: info: initialization of "TopStackI" proved
 patience.adb:33:12: medium: assertion might fail
 patience.adb:35:31: info: index check proved
+patience.adb:35:31: info: initialization of "TopStackI" proved
 patience.adb:36:28: info: index check proved
 patience.adb:37:34: info: index check proved
 patience.adb:38:30: info: index check proved
@@ -27,29 +37,54 @@ patience.adb:39:38: info: index check proved
 patience.adb:39:52: info: index check proved
 patience.adb:39:63: info: index check proved
 patience.adb:40:28: info: index check proved
+patience.adb:40:41: info: initialization of "I" proved
 patience.adb:40:64: info: index check proved
+patience.adb:40:77: info: initialization of "StackISize" proved
+patience.adb:42:20: info: initialization of "TopStackI" proved
+patience.adb:43:17: info: initialization of "I" proved
 patience.adb:43:19: info: overflow check proved
 patience.adb:46:16: info: index check proved
+patience.adb:46:21: info: initialization of "Idx" proved
+patience.adb:47:20: info: initialization of "Idx" proved
 patience.adb:47:24: info: overflow check proved
 patience.adb:47:24: info: range check proved
 patience.adb:48:15: info: index check proved
+patience.adb:48:20: info: initialization of "Idx" proved
+patience.adb:48:23: info: initialization of "Pred" proved
 patience.adb:48:23: medium: range check might fail
+patience.adb:49:10: info: initialization of "I" proved
 patience.adb:53:40: info: range check proved
 patience.adb:54:26: info: index check proved
+patience.adb:54:29: info: initialization of "I" proved
 patience.adb:55:22: info: index check proved
+patience.adb:55:28: info: initialization of "I" proved
+patience.adb:55:31: info: initialization of "Idx" proved
 patience.adb:55:31: info: range check proved
 patience.adb:56:24: info: index check proved
+patience.adb:56:29: info: initialization of "Idx" proved
+patience.adb:56:32: info: initialization of "I" proved
 patience.adb:56:32: info: range check proved
 patience.adb:57:25: info: index check proved
+patience.adb:57:30: info: initialization of "Idx" proved
+patience.adb:62:40: info: initialization of "I" proved
 patience.adb:62:40: medium: array index check might fail
 patience.adb:63:26: info: index check proved
+patience.adb:63:29: info: initialization of "I" proved
+patience.adb:63:32: info: initialization of "StackISize" proved
 patience.adb:63:43: medium: range check might fail
 patience.adb:64:22: info: index check proved
 patience.adb:64:25: medium: array index check might fail
+patience.adb:64:37: info: initialization of "I" proved
+patience.adb:64:37: info: initialization of "StackISize" proved
+patience.adb:64:40: info: initialization of "Idx" proved
 patience.adb:64:40: info: range check proved
 patience.adb:65:24: info: index check proved
+patience.adb:65:29: info: initialization of "Idx" proved
+patience.adb:65:32: info: initialization of "I" proved
 patience.adb:65:32: info: range check proved
 patience.adb:66:25: info: index check proved
+patience.adb:66:30: info: initialization of "Idx" proved
+patience.adb:66:33: info: initialization of "StackISize" proved
 patience.adb:70:07: info: assertion proved
 patience.adb:80:13: medium: assertion might fail, requires S.StackSizes(I) >= 1
 patience.adb:80:26: info: index check proved
@@ -105,10 +140,35 @@ patience.adb:132:39: info: index check proved
 patience.adb:132:56: info: index check proved
 patience.adb:146:10: info: loop invariant initialization proved
 patience.adb:146:10: info: loop invariant preservation proved
+patience.adb:146:33: info: initialization of "S.NumElts" proved
 patience.adb:146:47: info: overflow check proved
 patience.adb:147:10: info: loop invariant initialization proved
 patience.adb:147:10: info: loop invariant preservation proved
+patience.adb:147:37: info: initialization of "S.NumElts" proved
+patience.adb:147:37: info: initialization of "S.NumStacks" proved
+patience.adb:147:37: info: initialization of "S.PosHeight" proved
+patience.adb:147:37: info: initialization of "S.PosStack" proved
+patience.adb:147:37: info: initialization of "S.Preds" proved
+patience.adb:147:37: info: initialization of "S.StackSizes" proved
+patience.adb:147:37: info: initialization of "S.Stacks" proved
+patience.adb:147:37: info: initialization of "S.Values" proved
 patience.adb:148:10: info: precondition proved
+patience.adb:148:28: info: initialization of "S.NumElts" proved
+patience.adb:148:28: info: initialization of "S.NumStacks" proved
+patience.adb:148:28: info: initialization of "S.PosHeight" proved
+patience.adb:148:28: info: initialization of "S.PosStack" proved
+patience.adb:148:28: info: initialization of "S.Preds" proved
+patience.adb:148:28: info: initialization of "S.StackSizes" proved
+patience.adb:148:28: info: initialization of "S.Stacks" proved
+patience.adb:148:28: info: initialization of "S.Values" proved
+patience.adb:150:14: info: initialization of "S.NumElts" proved
+patience.adb:150:14: info: initialization of "S.NumStacks" proved
+patience.adb:150:14: info: initialization of "S.PosHeight" proved
+patience.adb:150:14: info: initialization of "S.PosStack" proved
+patience.adb:150:14: info: initialization of "S.Preds" proved
+patience.adb:150:14: info: initialization of "S.StackSizes" proved
+patience.adb:150:14: info: initialization of "S.Stacks" proved
+patience.adb:150:14: info: initialization of "S.Values" proved
 patience.ads:33:37: info: length check proved
 patience.ads:35:38: info: length check proved
 patience.ads:36:39: info: length check proved
@@ -116,6 +176,7 @@ patience.ads:36:50: info: length check proved
 patience.ads:37:38: info: length check proved
 patience.ads:38:38: info: length check proved
 patience.ads:39:38: info: length check proved
+patience.ads:41:13: info: initialization of "Inv" proved
 patience.ads:51:26: info: index check proved
 patience.ads:54:26: info: index check proved
 patience.ads:57:45: info: index check proved
@@ -167,6 +228,14 @@ patience.ads:103:39: info: index check proved
 patience.ads:103:56: info: index check proved
 patience.ads:113:14: medium: postcondition might fail
 patience.ads:113:43: info: index check proved
+patience.ads:115:13: info: initialization of "PlayGame.NumElts" proved
+patience.ads:115:13: info: initialization of "PlayGame.NumStacks" proved
+patience.ads:115:13: info: initialization of "PlayGame.PosHeight" proved
+patience.ads:115:13: info: initialization of "PlayGame.PosStack" proved
+patience.ads:115:13: info: initialization of "PlayGame.Preds" proved
+patience.ads:115:13: info: initialization of "PlayGame.StackSizes" proved
+patience.ads:115:13: info: initialization of "PlayGame.Stacks" proved
+patience.ads:115:13: info: initialization of "PlayGame.Values" proved
 patience.ads:118:14: info: postcondition proved
 test_patience.adb:9:07: warning: assuming "Put_Line" has no effect on global items
 test_patience.adb:9:07: warning: no Global contract available for "Put_Line"
@@ -177,6 +246,7 @@ test_patience.adb:10:56: medium: range check might fail, in call inlined at test
 test_patience.adb:12:10: warning: assuming "Put" has no effect on global items
 test_patience.adb:12:10: warning: no Global contract available for "Put"
 test_patience.adb:12:18: medium: range check might fail, in call inlined at test_patience.adb:51
+test_patience.adb:12:31: info: initialization of "Input" proved, in call inlined at test_patience.adb:51
 test_patience.adb:12:33: info: index check proved, in call inlined at test_patience.adb:51
 test_patience.adb:14:07: warning: assuming "Put_Line" has no effect on global items
 test_patience.adb:14:07: warning: no Global contract available for "Put_Line"
@@ -187,27 +257,41 @@ test_patience.adb:20:07: warning: no Global contract available for "Put_Line"
 test_patience.adb:21:07: warning: assuming "Put_Line" has no effect on global items
 test_patience.adb:21:07: warning: no Global contract available for "Put_Line"
 test_patience.adb:21:36: medium: range check might fail, in call inlined at test_patience.adb:53
+test_patience.adb:21:54: info: initialization of "S.NumElts" proved, in call inlined at test_patience.adb:53
 test_patience.adb:22:07: warning: assuming "Put" has no effect on global items
 test_patience.adb:22:07: warning: no Global contract available for "Put"
+test_patience.adb:23:21: info: initialization of "S.NumElts" proved, in call inlined at test_patience.adb:53
+test_patience.adb:23:31: info: initialization of "R63b" proved, in call inlined at test_patience.adb:53
 test_patience.adb:24:10: warning: assuming "Put" has no effect on global items
 test_patience.adb:24:10: warning: no Global contract available for "Put"
 test_patience.adb:24:18: medium: range check might fail, in call inlined at test_patience.adb:53
+test_patience.adb:24:31: info: initialization of "S.Values" proved, in call inlined at test_patience.adb:53
 test_patience.adb:26:07: warning: assuming "Put_Line" has no effect on global items
 test_patience.adb:26:07: warning: no Global contract available for "Put_Line"
 test_patience.adb:27:07: warning: assuming "Put_Line" has no effect on global items
 test_patience.adb:27:07: warning: no Global contract available for "Put_Line"
 test_patience.adb:27:38: medium: range check might fail, in call inlined at test_patience.adb:53
+test_patience.adb:27:56: info: initialization of "S.NumStacks" proved, in call inlined at test_patience.adb:53
+test_patience.adb:28:21: info: initialization of "S.NumStacks" proved, in call inlined at test_patience.adb:53
+test_patience.adb:28:33: info: initialization of "R68b" proved, in call inlined at test_patience.adb:53
+test_patience.adb:30:33: info: initialization of "S.StackSizes" proved, in call inlined at test_patience.adb:53
 test_patience.adb:33:13: warning: assuming "Put" has no effect on global items
 test_patience.adb:33:13: warning: no Global contract available for "Put"
 test_patience.adb:33:26: medium: range check might fail, in call inlined at test_patience.adb:53
 test_patience.adb:33:47: medium: range check might fail, in call inlined at test_patience.adb:53
 test_patience.adb:33:62: medium: range check might fail, in call inlined at test_patience.adb:53
+test_patience.adb:33:80: info: initialization of "S.StackSizes" proved, in call inlined at test_patience.adb:53
 test_patience.adb:33:97: medium: range check might fail, in call inlined at test_patience.adb:53
+test_patience.adb:34:27: info: initialization of "S.StackSizes" proved, in call inlined at test_patience.adb:53
+test_patience.adb:34:43: info: initialization of "R73b" proved, in call inlined at test_patience.adb:53
+test_patience.adb:35:23: info: initialization of "S.Stacks" proved, in call inlined at test_patience.adb:53
 test_patience.adb:36:16: warning: assuming "Put" has no effect on global items
 test_patience.adb:36:16: warning: no Global contract available for "Put"
 test_patience.adb:36:24: medium: range check might fail, in call inlined at test_patience.adb:53
+test_patience.adb:36:42: info: initialization of "Idx" proved, in call inlined at test_patience.adb:53
 test_patience.adb:36:47: medium: range check might fail, in call inlined at test_patience.adb:53
 test_patience.adb:36:55: medium: range check might fail, in call inlined at test_patience.adb:53
+test_patience.adb:36:68: info: initialization of "S.Values" proved, in call inlined at test_patience.adb:53
 test_patience.adb:36:77: medium: array index check might fail, in call inlined at test_patience.adb:53
 test_patience.adb:38:13: warning: assuming "Put_Line" has no effect on global items
 test_patience.adb:38:13: warning: no Global contract available for "Put_Line"
@@ -216,3 +300,4 @@ test_patience.adb:41:07: warning: no Global contract available for "Put_Line"
 test_patience.adb:50:04: warning: assuming "Put_Line" has no effect on global items
 test_patience.adb:50:04: warning: no Global contract available for "Put_Line"
 test_patience.adb:52:09: info: precondition proved
+test_patience.adb:52:18: info: initialization of "Input" proved

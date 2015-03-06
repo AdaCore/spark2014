@@ -1,3 +1,5 @@
+object.ads:4:13: info: initialization of "Has_Stored_Area" proved
+object.ads:6:13: info: initialization of "Get_Stored_Area" proved
 object.ads:7:13: medium: precondition is stronger than the default class-wide precondition of True
 object.ads:14:20: info: postcondition proved
 object.ads:15:31: info: precondition proved
@@ -6,9 +8,14 @@ rectangle.adb:6:34: medium: overflow check might fail
 rectangle.adb:6:34: medium: range check might fail
 rectangle.adb:8:20: medium: precondition might fail
 rectangle.ads:6:14: medium: postcondition might fail
+rectangle.ads:6:40: info: initialization of "Result" proved
 window.adb:5:32: info: overflow check proved
 window.adb:5:32: medium: range check might fail
+window.adb:18:07: info: initialization of "Rec" proved
+window.adb:19:07: info: initialization of "Rec" proved
+window.adb:20:24: info: initialization of "Rec" proved
 window.adb:21:07: medium: precondition might fail
+window.adb:21:13: info: initialization of "Rec" proved
 window.ads:11:16: info: postcondition proved
 window.ads:11:44: info: overflow check proved
 window.ads:15:16: medium: postcondition might fail, requires Obj.Has_Stored_Area

@@ -53,46 +53,73 @@ partition_refinement.adb:59:101: medium: range check might fail
 partition_refinement.adb:59:113: info: precondition proved
 partition_refinement.adb:59:125: medium: range check might fail
 partition_refinement.adb:59:138: medium: array index check might fail
+partition_refinement.adb:72:15: info: initialization of "Tmp" proved
 partition_refinement.adb:86:29: medium: precondition might fail
 partition_refinement.adb:87:28: info: precondition proved
+partition_refinement.adb:87:42: info: initialization of "I" proved
+partition_refinement.adb:92:22: info: initialization of "P_Elem.First" proved
+partition_refinement.adb:92:37: info: initialization of "P_Elem.Count" proved
+partition_refinement.adb:93:29: info: initialization of "P_Elem.First" proved
 partition_refinement.adb:93:42: info: range check proved
+partition_refinement.adb:93:44: info: initialization of "P_Elem.Count" proved
+partition_refinement.adb:96:34: info: initialization of "A_Old" proved
+partition_refinement.adb:96:63: info: initialization of "J" proved
+partition_refinement.adb:96:74: info: initialization of "I" proved
+partition_refinement.adb:99:16: info: initialization of "I" proved
+partition_refinement.adb:99:19: info: initialization of "J" proved
 partition_refinement.adb:100:22: medium: assertion might fail, requires A = A_Update
+partition_refinement.adb:100:26: info: initialization of "A_Update" proved
 partition_refinement.adb:102:22: info: precondition proved
 partition_refinement.adb:102:44: medium: precondition might fail
+partition_refinement.adb:102:60: info: initialization of "I" proved
 partition_refinement.adb:102:67: medium: precondition might fail
+partition_refinement.adb:102:83: info: initialization of "J" proved
 partition_refinement.adb:102:91: medium: assertion might fail, requires A (Element (D, C)) = Key (D, C)
 partition_refinement.adb:102:94: medium: precondition might fail
 partition_refinement.adb:102:112: medium: precondition might fail
 partition_refinement.adb:105:44: info: precondition proved
 partition_refinement.adb:105:44: medium: assertion might fail, requires Contains (D, A(J)
 partition_refinement.adb:106:07: medium: precondition might fail
+partition_refinement.adb:106:21: info: initialization of "I" proved
+partition_refinement.adb:106:25: info: initialization of "I" proved
 partition_refinement.adb:107:07: info: assertion proved
+partition_refinement.adb:107:26: info: initialization of "A_Update" proved
 partition_refinement.adb:109:22: info: precondition proved
 partition_refinement.adb:109:44: medium: precondition might fail
+partition_refinement.adb:109:60: info: initialization of "I" proved
 partition_refinement.adb:109:67: medium: precondition might fail
+partition_refinement.adb:109:83: info: initialization of "J" proved
 partition_refinement.adb:109:91: medium: assertion might fail, requires A (Element (D, C)) = Key (D, C)
 partition_refinement.adb:109:94: medium: precondition might fail
 partition_refinement.adb:109:112: medium: precondition might fail
 partition_refinement.adb:110:22: info: precondition proved
 partition_refinement.adb:110:44: medium: precondition might fail
+partition_refinement.adb:110:59: info: initialization of "I" proved
 partition_refinement.adb:110:67: medium: assertion might fail, requires A (Element (D, C)) = Key (D, C)
 partition_refinement.adb:110:70: medium: precondition might fail
 partition_refinement.adb:110:88: medium: precondition might fail
 partition_refinement.adb:111:07: medium: precondition might fail
+partition_refinement.adb:111:21: info: initialization of "J" proved
+partition_refinement.adb:111:25: info: initialization of "J" proved
 partition_refinement.adb:112:07: info: assertion proved
+partition_refinement.adb:112:26: info: initialization of "A_Update" proved
 partition_refinement.adb:114:22: info: precondition proved
 partition_refinement.adb:114:44: medium: precondition might fail
+partition_refinement.adb:114:60: info: initialization of "I" proved
 partition_refinement.adb:114:67: medium: precondition might fail
+partition_refinement.adb:114:83: info: initialization of "J" proved
 partition_refinement.adb:114:91: medium: assertion might fail, requires A (Element (D, C)) = Key (D, C)
 partition_refinement.adb:114:94: medium: precondition might fail
 partition_refinement.adb:114:112: medium: precondition might fail
 partition_refinement.adb:115:22: info: precondition proved
 partition_refinement.adb:115:44: medium: precondition might fail
+partition_refinement.adb:115:59: info: initialization of "I" proved
 partition_refinement.adb:115:67: medium: assertion might fail, requires A (Element (D, C)) = Key (D, C)
 partition_refinement.adb:115:70: medium: precondition might fail
 partition_refinement.adb:115:88: medium: precondition might fail
 partition_refinement.adb:116:22: info: precondition proved
 partition_refinement.adb:116:44: medium: precondition might fail
+partition_refinement.adb:116:59: info: initialization of "J" proved
 partition_refinement.adb:116:67: medium: assertion might fail, requires A (Element (D, C)) = Key (D, C)
 partition_refinement.adb:116:70: medium: precondition might fail
 partition_refinement.adb:116:88: medium: precondition might fail
@@ -100,79 +127,135 @@ partition_refinement.adb:117:22: info: precondition proved
 partition_refinement.adb:117:40: medium: assertion might fail, requires A (Element (D, C)) = Key (D, C)
 partition_refinement.adb:117:43: medium: precondition might fail
 partition_refinement.adb:117:61: medium: precondition might fail
+partition_refinement.adb:119:23: info: initialization of "P_Elem.Count" proved
 partition_refinement.adb:119:36: medium: range check might fail
 partition_refinement.adb:120:07: info: precondition proved
+partition_refinement.adb:120:29: info: initialization of "I" proved
+partition_refinement.adb:120:33: info: initialization of "P_Elem.Count" proved
+partition_refinement.adb:120:33: info: initialization of "P_Elem.First" proved
+partition_refinement.adb:120:33: info: initialization of "P_Elem.Last" proved
 partition_refinement.adb:122:07: info: assertion proved
+partition_refinement.adb:122:26: info: initialization of "A_Update" proved
+partition_refinement.adb:124:85: info: initialization of "J" proved
+partition_refinement.adb:124:98: info: initialization of "I" proved
+partition_refinement.adb:124:106: info: initialization of "A_Old" proved
 partition_refinement.adb:143:43: info: precondition proved
+partition_refinement.adb:143:55: info: initialization of "R32b" proved
 partition_refinement.adb:149:20: medium: precondition might fail
+partition_refinement.adb:150:13: info: initialization of "P_Elem.Count" proved
+partition_refinement.adb:150:34: info: initialization of "P_Elem.Last" proved
+partition_refinement.adb:150:48: info: initialization of "P_Elem.First" proved
+partition_refinement.adb:151:43: info: initialization of "P_Elem.First" proved
 partition_refinement.adb:151:56: medium: range check might fail
+partition_refinement.adb:151:58: info: initialization of "P_Elem.Count" proved
+partition_refinement.adb:152:43: info: initialization of "P_Elem.Last" proved
+partition_refinement.adb:154:28: info: initialization of "P_Elem.First" proved
+partition_refinement.adb:154:43: info: initialization of "P_Elem.Count" proved
 partition_refinement.adb:154:56: medium: range check might fail
 partition_refinement.adb:157:13: medium: precondition might fail
+partition_refinement.adb:157:36: info: initialization of "P_Elem.Count" proved
+partition_refinement.adb:157:36: info: initialization of "P_Elem.First" proved
+partition_refinement.adb:157:36: info: initialization of "P_Elem.Last" proved
 partition_refinement.adb:160:53: info: precondition proved
 partition_refinement.adb:162:50: info: precondition proved
 partition_refinement.adb:162:50: medium: range check might fail
 partition_refinement.adb:163:16: medium: precondition might fail
+partition_refinement.adb:163:27: info: initialization of "P_Prime.Count" proved
+partition_refinement.adb:163:27: info: initialization of "P_Prime.First" proved
+partition_refinement.adb:163:27: info: initialization of "P_Prime.Last" proved
 partition_refinement.adb:164:31: info: precondition proved
 partition_refinement.adb:164:31: medium: assertion might fail, requires Length (P) = Save_Length + 1
+partition_refinement.adb:164:44: info: initialization of "Save_Length" proved
 partition_refinement.adb:164:56: medium: overflow check might fail
 partition_refinement.adb:165:16: info: assertion proved
+partition_refinement.adb:165:31: info: initialization of "P_Prime_Index" proved
 partition_refinement.adb:165:64: info: precondition proved
 partition_refinement.adb:165:64: medium: range check might fail
 partition_refinement.adb:167:31: info: precondition proved
+partition_refinement.adb:167:43: info: initialization of "P_Prime_Index" proved
+partition_refinement.adb:167:60: info: initialization of "P_Prime.Count" proved
+partition_refinement.adb:167:60: info: initialization of "P_Prime.First" proved
+partition_refinement.adb:167:60: info: initialization of "P_Prime.Last" proved
+partition_refinement.adb:174:33: info: initialization of "P_Prime.First" proved
+partition_refinement.adb:174:40: info: initialization of "R36b" proved
+partition_refinement.adb:174:50: info: initialization of "P_Prime.Last" proved
+partition_refinement.adb:174:57: info: initialization of "R37b" proved
+partition_refinement.adb:175:27: info: initialization of "P_Prime_Index" proved
 partition_refinement.adb:176:50: medium: range check might fail
+partition_refinement.adb:176:67: info: initialization of "P_Prime.First" proved
 partition_refinement.adb:176:89: medium: loop invariant might fail after first iteration, requires F(K) = P_Prime_Index
 partition_refinement.adb:176:89: medium: loop invariant might fail in first iteration, requires F(K) = P_Prime_Index
 partition_refinement.adb:176:91: medium: array index check might fail
+partition_refinement.adb:176:96: info: initialization of "P_Prime_Index" proved
 partition_refinement.adb:177:19: info: loop invariant initialization proved
 partition_refinement.adb:177:50: medium: range check might fail
+partition_refinement.adb:177:72: info: initialization of "P_Prime.First" proved
 partition_refinement.adb:177:93: medium: loop invariant might fail after first iteration, requires F(K) = F_Loop_Entry(K)
 partition_refinement.adb:177:95: info: index check proved
+partition_refinement.adb:177:100: info: initialization of "F_Loop_Entry" proved
 partition_refinement.adb:177:113: medium: array index check might fail
 partition_refinement.adb:178:19: info: loop invariant initialization proved
 partition_refinement.adb:178:50: medium: range check might fail
 partition_refinement.adb:178:69: medium: overflow check might fail
 partition_refinement.adb:178:90: medium: loop invariant might fail after first iteration, requires F(K) = F_Loop_Entry(K)
 partition_refinement.adb:178:92: info: index check proved
+partition_refinement.adb:178:97: info: initialization of "F_Loop_Entry" proved
 partition_refinement.adb:178:110: medium: array index check might fail
 partition_refinement.adb:183:39: medium: range check might fail
+partition_refinement.adb:183:56: info: initialization of "P_Prime.First" proved
+partition_refinement.adb:183:73: info: initialization of "P_Prime.Last" proved
 partition_refinement.adb:183:89: medium: assertion might fail, requires F(K) = Partition_Index'Base (Length (P)) - 1
 partition_refinement.adb:183:91: medium: array index check might fail
 partition_refinement.adb:183:118: info: precondition proved
 partition_refinement.adb:184:39: medium: range check might fail
+partition_refinement.adb:184:61: info: initialization of "P_Prime.First" proved
 partition_refinement.adb:184:82: medium: assertion might fail, requires F(K) in 0 .. Partition_Index'Base (Length (P)) - 1
 partition_refinement.adb:184:84: medium: array index check might fail
 partition_refinement.adb:184:117: info: precondition proved
 partition_refinement.adb:185:39: medium: range check might fail
+partition_refinement.adb:185:56: info: initialization of "P_Prime.Last" proved
 partition_refinement.adb:185:90: medium: assertion might fail, requires F(K) in 0 .. Partition_Index'Base (Length (P)) - 1
 partition_refinement.adb:185:92: medium: array index check might fail
 partition_refinement.adb:185:125: info: precondition proved
 partition_refinement.adb:188:39: medium: range check might fail
+partition_refinement.adb:188:56: info: initialization of "P_Elem.First" proved
+partition_refinement.adb:188:72: info: initialization of "P_Elem.Last" proved
 partition_refinement.adb:188:87: medium: assertion might fail, requires Element (P, F(K)) = P_Elem
 partition_refinement.adb:188:87: medium: precondition might fail
 partition_refinement.adb:188:101: medium: array index check might fail
+partition_refinement.adb:188:107: info: initialization of "P_Elem.Count" proved
 partition_refinement.adb:189:39: medium: range check might fail
+partition_refinement.adb:189:56: info: initialization of "P_Elem.First" proved
+partition_refinement.adb:189:72: info: initialization of "P_Elem.Last" proved
 partition_refinement.adb:189:87: medium: assertion might fail, requires K in Element (P, F(K)).First .. Element (P, F(K)).Last
 partition_refinement.adb:189:92: medium: precondition might fail
 partition_refinement.adb:189:106: info: index check proved
 partition_refinement.adb:189:119: medium: precondition might fail
 partition_refinement.adb:189:133: medium: array index check might fail
 partition_refinement.adb:190:39: medium: range check might fail
+partition_refinement.adb:190:56: info: initialization of "P_Prime.First" proved
+partition_refinement.adb:190:73: info: initialization of "P_Prime.Last" proved
 partition_refinement.adb:190:89: medium: assertion might fail, requires Element (P, F(K)) = P_Prime
 partition_refinement.adb:190:89: medium: precondition might fail
 partition_refinement.adb:190:103: medium: array index check might fail
+partition_refinement.adb:190:109: info: initialization of "P_Prime.Count" proved
 partition_refinement.adb:191:39: medium: range check might fail
+partition_refinement.adb:191:56: info: initialization of "P_Prime.First" proved
+partition_refinement.adb:191:73: info: initialization of "P_Prime.Last" proved
 partition_refinement.adb:191:89: medium: assertion might fail, requires K in Element (P, F(K)).First .. Element (P, F(K)).Last
 partition_refinement.adb:191:94: medium: precondition might fail
 partition_refinement.adb:191:108: info: index check proved
 partition_refinement.adb:191:121: medium: precondition might fail
 partition_refinement.adb:191:135: medium: array index check might fail
 partition_refinement.adb:194:39: medium: range check might fail
+partition_refinement.adb:194:61: info: initialization of "P_Elem.First" proved
 partition_refinement.adb:194:81: medium: assertion might fail, requires K in Element (P, F(K)).First .. Element (P, F(K)).Last
 partition_refinement.adb:194:86: medium: precondition might fail
 partition_refinement.adb:194:100: info: index check proved
 partition_refinement.adb:194:113: medium: precondition might fail
 partition_refinement.adb:194:127: medium: array index check might fail
 partition_refinement.adb:197:39: medium: range check might fail
+partition_refinement.adb:197:56: info: initialization of "P_Prime.Last" proved
 partition_refinement.adb:197:90: medium: assertion might fail, requires K in Element (P, F(K)).First .. Element (P, F(K)).Last
 partition_refinement.adb:197:95: medium: precondition might fail
 partition_refinement.adb:197:109: info: index check proved
@@ -222,15 +305,21 @@ partition_refinement.adb:213:157: medium: assertion might fail, requires F(L) = 
 partition_refinement.adb:213:159: medium: array index check might fail
 partition_refinement.adb:235:39: info: precondition proved
 partition_refinement.adb:242:13: info: precondition proved
+partition_refinement.adb:242:29: info: initialization of "C" proved
 partition_refinement.adb:244:25: info: precondition proved
 partition_refinement.adb:244:25: medium: assertion might fail, requires Has_Element (D, (Find (D_Old, Element (X, C)
 partition_refinement.adb:244:42: info: precondition proved
+partition_refinement.adb:244:48: info: initialization of private part of "D_Old" proved
 partition_refinement.adb:244:55: medium: precondition might fail
+partition_refinement.adb:244:67: info: initialization of "C" proved
 partition_refinement.adb:246:25: info: precondition proved
 partition_refinement.adb:246:38: medium: precondition might fail
+partition_refinement.adb:246:50: info: initialization of "C" proved
 partition_refinement.adb:247:10: medium: precondition might fail
 partition_refinement.adb:247:34: medium: precondition might fail
+partition_refinement.adb:247:46: info: initialization of "C" proved
 partition_refinement.adb:248:10: medium: precondition might fail
+partition_refinement.adb:248:19: info: initialization of "C" proved
 partition_refinement.adb:251:10: info: loop invariant initialization proved
 partition_refinement.adb:251:10: info: loop invariant preservation proved
 partition_refinement.adb:251:33: info: precondition proved
@@ -249,6 +338,7 @@ partition_refinement.adb:255:54: medium: precondition might fail
 partition_refinement.adb:255:72: medium: precondition might fail
 partition_refinement.adb:257:10: info: loop invariant initialization proved
 partition_refinement.adb:257:33: info: precondition proved
+partition_refinement.adb:257:46: info: initialization of private part of "D_Old" proved
 partition_refinement.adb:257:55: info: precondition proved
 partition_refinement.adb:257:55: medium: loop invariant might fail after first iteration, requires Has_Element (D, C)
 partition_refinement.adb:258:33: info: precondition proved
@@ -256,6 +346,7 @@ partition_refinement.adb:258:51: info: precondition proved
 partition_refinement.adb:258:51: medium: loop invariant might fail after first iteration, requires Has_Element (D, (Find (D_Old, Element (X, C)
 partition_refinement.adb:258:51: medium: loop invariant might fail in first iteration, requires Has_Element (D, (Find (D_Old, Element (X, C)
 partition_refinement.adb:258:68: info: precondition proved
+partition_refinement.adb:258:74: info: initialization of private part of "D_Old" proved
 partition_refinement.adb:258:81: medium: precondition might fail
 partition_refinement.adb:260:55: medium: loop invariant might fail after first iteration, requires F(J) in 0 .. Partition_Index'Base (Length (P)) - 1
 partition_refinement.adb:260:55: medium: loop invariant might fail in first iteration, requires F(J) in 0 .. Partition_Index'Base (Length (P)) - 1
@@ -273,6 +364,14 @@ partition_refinement.adb:262:153: medium: loop invariant might fail after first 
 partition_refinement.adb:262:153: medium: loop invariant might fail in first iteration, requires F(K) = J
 partition_refinement.adb:262:155: medium: array index check might fail
 partition_refinement.adb:268:07: medium: precondition might fail
+partition_refinement.ads:15:13: info: initialization of "Eq_Positive" proved
+partition_refinement.ads:16:12: info: initialization of "Oeq" proved
+partition_refinement.ads:22:13: info: initialization of "Lt_Positive" proved
+partition_refinement.ads:23:13: info: initialization of "Eq_Index" proved
+partition_refinement.ads:24:12: info: initialization of "Oeq" proved
+partition_refinement.ads:24:12: info: initialization of "Olt" proved
+partition_refinement.ads:38:13: info: initialization of "Eq_Interval" proved
+partition_refinement.ads:39:12: info: initialization of "Oeq" proved
 partition_refinement.ads:57:17: medium: overflow check might fail
 partition_refinement.ads:57:19: info: precondition proved
 partition_refinement.ads:57:33: info: precondition proved

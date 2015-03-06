@@ -1,3 +1,10 @@
+refined_global_legal.adb:9:04: info: initialization of "Var" proved
+refined_global_legal.adb:9:09: info: initialization of "Var2" proved
+refined_global_legal.adb:9:15: info: initialization of "Var3" proved
+refined_global_legal.adb:9:21: info: initialization of "Var4" proved
+refined_global_legal.adb:14:41: info: initialization of "Var" proved
+refined_global_legal.adb:14:46: info: initialization of "Var2" proved
+refined_global_legal.adb:14:52: info: initialization of "Var3" proved
 refined_global_legal.adb:19:20: medium: overflow check might fail
 refined_global_legal.adb:20:20: medium: overflow check might fail
 refined_global_legal.adb:21:20: medium: overflow check might fail

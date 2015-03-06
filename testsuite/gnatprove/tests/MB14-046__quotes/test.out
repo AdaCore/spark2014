@@ -1,3 +1,4 @@
 bug5.adb:11:21: medium: assertion might fail, requires P ("abcd")
 bug5.ads:3:14: warning: subprogram "Test" has no effect
+bug5.ads:4:13: info: initialization of "P" proved
 bug5.ads:4:16: warning: unused initial value of "X"

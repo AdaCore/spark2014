@@ -1,2 +1,6 @@
+no_inlining.adb:6:16: info: initialization of "Recurse" proved
 no_inlining.adb:13:20: warning: call to recursive subprogram cannot be inlined
+no_inlining.adb:15:17: info: initialization of "Tmp" proved
+no_inlining.ads:5:30: info: initialization of "Res" proved
+no_inlining.ads:6:14: info: initialization of "Res" proved
 no_inlining.ads:6:14: medium: postcondition might fail, requires Res = true

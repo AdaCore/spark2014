@@ -4,3 +4,4 @@ protectedfloat.adb:17:24: info: division check proved
 protectedfloat.adb:17:24: medium: overflow check might fail
 protectedfloat.adb:20:21: info: division check proved
 protectedfloat.adb:20:21: info: overflow check proved
+protectedfloat.ads:10:13: info: initialization of "protectedRealDivide" proved

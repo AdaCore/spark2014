@@ -1,5 +1,7 @@
 alias.adb:4:24: info: division check proved
 alias.adb:4:24: info: range check proved
 alias.adb:9:14: medium: precondition might fail
+alias.ads:8:13: info: initialization of "Get_Content" proved
+alias.ads:13:13: info: initialization of "Add" proved
 alias.ads:14:14: info: postcondition proved
 alias.ads:14:27: medium: precondition might fail

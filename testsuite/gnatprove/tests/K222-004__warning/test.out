@@ -1,2 +1,5 @@
+pack.adb:9:14: info: initialization of "B" proved
+pack.adb:17:10: info: initialization of "B" proved
+pack.ads:2:13: info: initialization of "F" proved
 pack.ads:3:19: medium: postcondition might fail, requires not F'result
 pack.ads:4:14: warning: subprogram "P" has no effect

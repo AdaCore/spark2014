@@ -36,13 +36,16 @@ logic.adb:84:22: medium: assertion might fail, requires not (A or B) = (not A an
 logic.adb:87:04: warning: analyzing unreferenced procedure "Contraposition"
 logic.adb:90:07: info: assertion proved
 logic.adb:91:07: info: assertion proved
+logic.adb:95:13: info: initialization of "XOR_Test_A" proved
 logic.adb:96:19: info: postcondition proved
+logic.adb:109:14: info: initialization of "R" proved
 logic.adb:112:04: warning: analyzing unreferenced procedure "XOR_Test_B"
 logic.adb:115:07: info: assertion proved
 logic.adb:116:07: info: assertion proved
 logic.adb:118:07: info: assertion proved
 logic.adb:119:07: info: assertion proved
 logic.adb:125:22: info: postcondition proved
+logic.adb:131:13: info: initialization of "Equivalence_Test_3" proved
 logic.adb:132:19: info: postcondition proved
 logic.adb:139:04: warning: analyzing unreferenced procedure "Implies_Test_1"
 logic.adb:142:22: medium: assertion might fail, requires if (if A then B) then C) =  (if A then if B then C else true else true

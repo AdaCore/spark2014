@@ -1,9 +1,15 @@
 aggregate.adb:5:14: info: length check proved
 aggregate.adb:5:28: info: division check proved
 aggregate.adb:5:45: info: overflow check proved
+aggregate.adb:6:18: info: initialization of "Agg" proved
 aggregate.adb:6:26: info: overflow check proved
+aggregate.adb:7:12: info: initialization of "Agg" proved
 aggregate.ads:6:09: info: length check proved
+aggregate.ads:8:30: info: initialization of "K" proved
+aggregate.ads:10:21: info: initialization of "K" proved
 aggregate.ads:10:21: info: postcondition proved
+aggregate.ads:10:40: info: initialization of "K" proved
+aggregate.ads:10:60: info: initialization of "K" proved
 arr_aggregate.adb:6:18: info: length check proved
 arr_aggregate.adb:8:18: info: length check proved
 arr_aggregate.adb:16:18: info: length check proved
@@ -57,10 +63,12 @@ arr_aggregate.ads:49:45: info: length check proved
 arr_aggregate.ads:49:55: info: length check proved
 rec_aggregate.ads:24:18: warning: unused initial value of "R"
 rec_aggregate.ads:26:14: info: postcondition proved
+rec_aggregate.ads:29:13: info: initialization of "F1.X" proved
 rec_aggregate.ads:31:14: info: postcondition proved
 rec_aggregate.ads:37:18: warning: unused initial value of "R"
 rec_aggregate.ads:39:14: info: postcondition proved
 rec_aggregate.ads:39:47: info: overflow check proved
 rec_aggregate.ads:45:18: warning: unused initial value of "R"
 rec_aggregate.ads:47:14: info: postcondition proved
+rec_aggregate.ads:53:13: info: initialization of "Ignore" proved
 rec_aggregate.ads:53:21: warning: unused variable "R"

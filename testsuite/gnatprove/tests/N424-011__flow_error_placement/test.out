@@ -1,3 +1,4 @@
+assignment_error.adb:1:29: info: initialization of "X" proved
 assignment_error.adb:4:09: high: "X" is not initialized
 assignment_error.adb:4:11: medium: overflow check might fail
 longest_common_prefix.adb:8:15: medium: overflow check might fail
@@ -10,4 +11,6 @@ longest_common_prefix.adb:10:35: info: overflow check proved
 longest_common_prefix.adb:12:15: high: "L" is not initialized
 longest_common_prefix.adb:12:17: info: overflow check proved
 longest_common_prefix.adb:14:14: medium: "L" might not be initialized
+longest_common_prefix.ads:6:04: info: initialization of "A" proved
 longest_common_prefix.ads:6:28: info: length check proved
+longest_common_prefix.ads:8:13: info: initialization of "LCP" proved

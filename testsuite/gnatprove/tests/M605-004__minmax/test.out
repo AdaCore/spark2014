@@ -1,3 +1,5 @@
 minmax.adb:3:04: warning: analyzing unreferenced procedure "P"
+minmax.adb:4:17: info: initialization of "C" proved
+minmax.adb:6:17: info: initialization of "Z" proved
 minmax.adb:9:09: warning: unused assignment
 minmax.adb:11:09: warning: unused assignment

@@ -1,13 +1,24 @@
 q.adb:14:19: info: range check proved
 q.adb:14:27: info: division check proved
 q.adb:14:27: info: overflow check proved
+q.adb:16:10: info: initialization of "X" proved
+q.adb:17:15: info: initialization of "X" proved
 q.adb:17:17: info: overflow check proved
 q.adb:20:07: info: assertion proved
+q.adb:20:22: info: initialization of "X" proved
+q.adb:21:12: info: initialization of "X" proved
 q.adb:21:14: info: division check proved
 q.adb:21:14: medium: overflow check might fail
+q.adb:23:10: info: initialization of "X" proved
 q.adb:24:29: info: range check proved
+q.adb:25:13: info: initialization of "X" proved
 q.adb:26:29: info: range check proved
+q.adb:28:31: info: initialization of "X" proved
 q.adb:28:31: info: range check proved
+q.ads:11:17: info: initialization of "Value" proved
+test.adb:16:19: info: initialization of "Value" proved
 test.adb:16:19: medium: assertion might fail, requires Value in -0.0001 .. +
+test.adb:22:19: info: initialization of "Value" proved
 test.adb:22:19: medium: assertion might fail, requires Value in -0.0015 .. -
+test.adb:28:19: info: initialization of "Value" proved
 test.adb:28:19: medium: assertion might fail, requires Value >=

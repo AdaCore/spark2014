@@ -1,12 +1,17 @@
+p.adb:8:13: info: initialization of "Ident" proved
 p.adb:13:35: info: overflow check proved
 p.adb:13:42: medium: overflow check might fail
+p.adb:16:13: info: initialization of "Ident__2" proved
 p.adb:21:31: info: range check proved
 p.adb:21:38: medium: range check might fail
+p.adb:24:13: info: initialization of "Ident__3" proved
 p.adb:29:18: info: range check proved
 p.adb:29:29: info: overflow check proved
 p.adb:29:36: info: overflow check proved
+p.adb:32:13: info: initialization of "Ident__4" proved
 p.adb:37:19: info: range check proved
 p.adb:37:31: info: overflow check proved
 p.adb:37:38: info: overflow check proved
+p.adb:40:13: info: initialization of "Ident__5" proved
 p.adb:45:31: info: overflow check proved
 p.adb:45:38: medium: overflow check might fail

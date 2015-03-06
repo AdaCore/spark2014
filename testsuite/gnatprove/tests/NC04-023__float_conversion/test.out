@@ -1,1 +1,2 @@
+type_conversion.ads:5:13: info: initialization of "Float_to_Long_Float" proved
 type_conversion.ads:9:20: info: postcondition proved

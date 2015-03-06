@@ -1,3 +1,5 @@
+discrimrec.adb:8:13: info: initialization of "Convert_Bit_64_To_Bit_32.Ignore_32a" proved
+discrimrec.adb:8:13: info: initialization of "Convert_Bit_64_To_Bit_32.Value_32" proved
 discrimrec.adb:9:24: info: discriminant check proved
 discrimrec.adb:11:53: info: discriminant check proved
 discrimrec.adb:11:63: info: division check proved
@@ -5,8 +7,12 @@ discrimrec.adb:11:63: info: range check proved
 discrimrec.adb:16:14: info: discriminant check proved
 discrimrec.adb:17:14: info: discriminant check proved
 discrimrec.adb:17:40: info: discriminant check proved
+discrimrec.adb:17:40: info: initialization of "RAX.Value_64" proved
+discrimrec.adb:18:11: info: initialization of "EAX.Value_32" proved
 discrimrec.adb:18:14: info: discriminant check proved
 discrimrec.adb:19:17: info: discriminant check proved
+discrimrec.ads:35:29: info: initialization of "RAX.Value_64" proved
 discrimrec.ads:36:16: info: postcondition proved
+discrimrec.ads:36:17: info: initialization of "RAX.Value_64" proved
 discrimrec.ads:36:20: info: discriminant check proved
 main.adb:3:11: medium: "RAX" might not be initialized after elaboration of main program "Main"

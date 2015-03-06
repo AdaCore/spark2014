@@ -1,8 +1,13 @@
 r.adb:6:20: info: division check proved
 r.adb:7:08: info: assertion proved
 r.adb:7:25: info: overflow check proved
+r.adb:7:27: info: initialization of "H" proved
 r.adb:8:08: info: assertion proved
 r.adb:8:31: info: overflow check proved
+r.adb:8:33: info: initialization of "H" proved
+r.adb:9:28: info: initialization of "H" proved
+r.adb:9:28: info: initialization of "R2b" proved
 r.adb:10:11: info: assertion proved
 r.adb:11:15: info: index check proved
 r.adb:11:15: info: overflow check proved
+r.adb:11:20: info: initialization of "H" proved

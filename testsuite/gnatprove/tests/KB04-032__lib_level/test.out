@@ -1,1 +1,2 @@
+f.adb:1:10: info: initialization of "F" proved
 p.adb:6:19: medium: assertion might fail, requires (F)

@@ -1,74 +1,144 @@
 fib.adb:7:11: info: range check proved
 fib.adb:8:10: info: loop invariant initialization proved
 fib.adb:8:10: info: loop invariant preservation proved
+fib.adb:8:33: info: initialization of "b" proved
+fib.adb:8:38: info: initialization of "a" proved
+fib.adb:9:15: info: initialization of "a" proved
+fib.adb:10:15: info: initialization of "a" proved
 fib.adb:10:17: medium: overflow check might fail
+fib.adb:10:19: info: initialization of "b" proved
+fib.adb:11:15: info: initialization of "t" proved
+fib.adb:13:14: info: initialization of "a" proved
 fib.adb:20:15: warning: unused assignment
 fib.adb:21:15: warning: unused assignment
 fib.adb:26:09: warning: unused assignment
 fib.adb:28:10: medium: loop invariant might fail after first iteration
 fib.adb:28:10: medium: loop invariant might fail in first iteration
+fib.adb:28:33: info: initialization of "a1" proved
 fib.adb:28:38: info: precondition proved
+fib.adb:28:48: info: initialization of "i" proved
+fib.adb:29:25: info: initialization of "b1" proved
 fib.adb:29:30: info: precondition proved
 fib.adb:29:42: medium: range check might fail
+fib.adb:31:38: info: initialization of "copy_n1" proved
 fib.adb:32:10: info: loop variant proved
+fib.adb:33:16: info: initialization of "a1" proved
 fib.adb:33:19: medium: overflow check might fail
+fib.adb:33:21: info: initialization of "b1" proved
+fib.adb:34:16: info: initialization of "a1" proved
 fib.adb:34:19: info: overflow check proved
 fib.adb:34:19: info: range check proved
+fib.adb:34:21: info: initialization of "b1" proved
 fib.adb:35:19: info: range check proved
 fib.adb:36:12: warning: unused assignment
+fib.adb:36:15: info: initialization of "i" proved
 fib.adb:36:17: info: overflow check proved
 fib.adb:38:09: warning: unused assignment
 fib.adb:40:10: medium: loop invariant might fail after first iteration
 fib.adb:40:10: medium: loop invariant might fail in first iteration
+fib.adb:40:33: info: initialization of "a2" proved
 fib.adb:40:38: info: precondition proved
+fib.adb:40:48: info: initialization of "i" proved
+fib.adb:41:25: info: initialization of "b2" proved
 fib.adb:41:30: info: precondition proved
 fib.adb:41:42: medium: range check might fail
+fib.adb:43:38: info: initialization of "copy_n2" proved
 fib.adb:44:10: info: loop variant proved
+fib.adb:45:16: info: initialization of "a2" proved
 fib.adb:45:19: medium: overflow check might fail
+fib.adb:45:21: info: initialization of "b2" proved
+fib.adb:46:16: info: initialization of "a2" proved
 fib.adb:46:19: info: overflow check proved
 fib.adb:46:19: info: range check proved
+fib.adb:46:21: info: initialization of "b2" proved
 fib.adb:47:19: info: range check proved
 fib.adb:48:12: warning: unused assignment
+fib.adb:48:15: info: initialization of "i" proved
 fib.adb:48:17: info: overflow check proved
+fib.adb:50:10: info: initialization of "a1" proved
+fib.adb:51:16: info: initialization of "a1" proved
+fib.adb:55:10: info: initialization of "a2" proved
+fib.adb:56:16: info: initialization of "a2" proved
 fib.adb:66:11: info: range check proved
 fib.adb:67:17: medium: overflow check might fail
 fib.adb:67:17: medium: range check might fail
+fib.adb:67:19: info: initialization of "p" proved
+fib.adb:69:14: info: initialization of "p" proved
 fib.adb:75:11: info: range check proved
+fib.adb:76:33: info: initialization of "p1" proved
 fib.adb:76:33: medium: loop invariant might fail after first iteration, requires p1 = Factorial(i - 1)
 fib.adb:76:33: medium: loop invariant might fail in first iteration, requires p1 = Factorial(i - 1)
 fib.adb:76:38: info: precondition proved
 fib.adb:77:18: medium: overflow check might fail
 fib.adb:77:18: medium: range check might fail
+fib.adb:77:20: info: initialization of "p1" proved
 fib.adb:80:11: info: range check proved
+fib.adb:81:33: info: initialization of "p2" proved
 fib.adb:81:33: medium: loop invariant might fail after first iteration, requires p2 = Factorial(i - 1)
 fib.adb:81:33: medium: loop invariant might fail in first iteration, requires p2 = Factorial(i - 1)
 fib.adb:81:38: info: precondition proved
 fib.adb:82:18: medium: overflow check might fail
 fib.adb:82:18: medium: range check might fail
+fib.adb:82:20: info: initialization of "p2" proved
+fib.adb:93:14: info: initialization of "k1" proved
 fib.adb:94:10: info: loop invariant initialization proved
 fib.adb:94:33: medium: loop invariant might fail after first iteration, requires a1 ** n1 = p1 * (b1 ** k1
+fib.adb:94:44: info: initialization of "p1" proved
+fib.adb:94:50: info: initialization of "b1" proved
+fib.adb:94:56: info: initialization of "k1" proved
 fib.adb:95:10: info: loop variant proved
+fib.adb:95:44: info: initialization of "k1" proved
+fib.adb:96:14: info: initialization of "k1" proved
 fib.adb:96:17: info: division check proved
+fib.adb:97:28: info: initialization of "p1" proved
 fib.adb:97:28: medium: assertion might fail, requires p1 * (b1 * b1) ** (k1 / 2) = a1 ** n1
+fib.adb:97:34: info: initialization of "b1" proved
+fib.adb:97:47: info: initialization of "k1" proved
 fib.adb:97:50: info: division check proved
+fib.adb:98:19: info: initialization of "k1" proved
 fib.adb:98:22: info: division check proved
+fib.adb:99:19: info: initialization of "b1" proved
 fib.adb:99:22: medium: overflow check might fail
 fib.adb:101:13: info: assertion proved
+fib.adb:101:29: info: initialization of "p1" proved
+fib.adb:101:34: info: initialization of "b1" proved
+fib.adb:101:48: info: initialization of "k1" proved
 fib.adb:101:51: info: range check proved
+fib.adb:102:19: info: initialization of "k1" proved
 fib.adb:102:22: info: range check proved
+fib.adb:103:19: info: initialization of "b1" proved
 fib.adb:103:22: medium: overflow check might fail
+fib.adb:103:24: info: initialization of "p1" proved
+fib.adb:109:14: info: initialization of "k2" proved
 fib.adb:110:10: medium: loop invariant might fail after first iteration
 fib.adb:110:10: medium: loop invariant might fail in first iteration
+fib.adb:110:44: info: initialization of "p2" proved
+fib.adb:110:50: info: initialization of "b2" proved
+fib.adb:110:56: info: initialization of "k2" proved
+fib.adb:110:69: info: initialization of "k1" proved
 fib.adb:112:10: info: loop variant proved
+fib.adb:112:44: info: initialization of "k2" proved
+fib.adb:113:14: info: initialization of "k2" proved
 fib.adb:113:17: info: division check proved
+fib.adb:114:28: info: initialization of "p2" proved
 fib.adb:114:28: medium: assertion might fail, requires p2 * (b2 * b2) ** (k2 / 2) = a2 ** n2
+fib.adb:114:34: info: initialization of "b2" proved
+fib.adb:114:47: info: initialization of "k2" proved
 fib.adb:114:50: info: division check proved
+fib.adb:115:19: info: initialization of "k2" proved
 fib.adb:115:22: info: division check proved
+fib.adb:116:19: info: initialization of "b2" proved
 fib.adb:116:22: medium: overflow check might fail
 fib.adb:118:13: info: assertion proved
+fib.adb:118:29: info: initialization of "p2" proved
+fib.adb:118:34: info: initialization of "b2" proved
+fib.adb:118:48: info: initialization of "k2" proved
 fib.adb:118:51: info: range check proved
+fib.adb:120:19: info: initialization of "k2" proved
 fib.adb:120:22: info: range check proved
+fib.adb:121:19: info: initialization of "b2" proved
 fib.adb:121:22: medium: overflow check might fail
+fib.adb:121:24: info: initialization of "p2" proved
 fib.adb:130:11: info: range check proved
 fib.adb:131:13: info: index check proved
 fib.adb:131:22: info: index check proved
@@ -105,9 +175,19 @@ fib.adb:158:13: info: index check proved
 fib.adb:158:16: medium: "A2" might not be initialized
 fib.adb:158:24: info: index check proved
 fib.adb:158:24: info: overflow check proved
+fib.ads:6:13: info: initialization of "Fibonacci" proved
 fib.ads:14:14: info: postcondition proved
+fib.ads:17:13: info: initialization of "Factorial" proved
+fib.ads:23:48: info: initialization of "p1" proved
+fib.ads:23:52: info: initialization of "p2" proved
 fib.ads:25:14: info: postcondition proved
+fib.ads:25:15: info: initialization of "p1" proved
+fib.ads:25:20: info: initialization of "p2" proved
+fib.ads:29:65: info: initialization of "p1" proved
+fib.ads:29:69: info: initialization of "p2" proved
 fib.ads:33:14: medium: postcondition might fail, requires p1 = p2
+fib.ads:33:15: info: initialization of "p1" proved
+fib.ads:33:20: info: initialization of "p2" proved
 fib.ads:36:41: medium: "A1" might not be initialized in "ArrayPartitionedTransferSC"
 fib.ads:36:45: medium: "A2" might not be initialized in "ArrayPartitionedTransferSC"
 fib.ads:41:50: info: index check proved

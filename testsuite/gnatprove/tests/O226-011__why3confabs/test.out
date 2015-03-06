@@ -1,2 +1,4 @@
+main.adb:4:13: info: initialization of "F" proved
 main.adb:5:20: info: postcondition proved
+main.adb:8:09: info: initialization of "X" proved
 main.adb:8:11: info: overflow check proved

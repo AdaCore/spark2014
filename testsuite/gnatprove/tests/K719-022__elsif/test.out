@@ -1,3 +1,4 @@
-
+minus.ads:2:13: info: initialization of "Minus" proved
 minus.ads:4:14: info: postcondition proved
+minus.ads:6:13: info: initialization of "Minus2" proved
 minus.ads:8:14: info: postcondition proved

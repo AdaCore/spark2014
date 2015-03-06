@@ -1,0 +1,2 @@
+port.adb:8:12: info: initialization of "Tmp.F1" proved
+port.ads:18:20: info: initialization of "X" proved

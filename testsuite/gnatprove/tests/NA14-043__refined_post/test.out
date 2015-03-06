@@ -5,11 +5,22 @@ pf.adb:13:25: info: refined post proved
 pf.adb:13:48: info: division check proved
 pf.adb:16:16: info: division check proved
 pf.adb:20:25: info: refined post proved
+pf.adb:20:26: info: initialization of "B" proved
 pf.adb:23:14: info: division check proved
 pf.adb:24:07: info: assertion proved
+pf.adb:24:22: info: initialization of "B" proved
 pf.adb:24:28: info: division check proved
 pf.adb:25:07: info: assertion proved
+pf.adb:25:22: info: initialization of "B" proved
 pf.adb:26:07: info: assertion proved
+pf.adb:26:22: info: initialization of "B" proved
+pf.ads:4:13: info: initialization of "Prf_Public" proved
 pf.ads:5:17: info: postcondition proved
 pf.ads:5:39: info: division check proved
+pf.ads:7:13: info: initialization of "Prf_Hidden" proved
+pf.ads:9:36: info: initialization of "B" proved
 pf.ads:10:17: info: postcondition proved
+pf.ads:10:18: info: initialization of "B" proved
+pfmain.adb:4:11: info: initialization of "The_Sink" proved
+pfmain.adb:10:13: info: initialization of "A" proved
+pfmain.adb:11:21: info: initialization of "B" proved

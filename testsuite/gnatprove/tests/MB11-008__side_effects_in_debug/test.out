@@ -1,4 +1,16 @@
 p.adb:16:14: medium: overflow check might fail
 p.adb:24:14: medium: overflow check might fail
+p.adb:34:12: info: initialization of "L" proved
+p.adb:35:14: info: initialization of "L" proved
+p.adb:43:12: info: initialization of "L" proved
+p.adb:44:14: info: initialization of "L" proved
+p.ads:8:13: info: initialization of "F1" proved
+p.ads:10:13: info: initialization of "F2" proved
 p2.adb:9:14: medium: overflow check might fail
 p2.adb:17:14: medium: overflow check might fail
+p2.adb:27:12: info: initialization of "L" proved
+p2.adb:28:14: info: initialization of "L" proved
+p2.adb:36:12: info: initialization of "L" proved
+p2.adb:37:14: info: initialization of "L" proved
+p2.ads:8:13: info: initialization of "F1" proved
+p2.ads:10:13: info: initialization of "F2" proved

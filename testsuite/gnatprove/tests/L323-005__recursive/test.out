@@ -1,9 +1,12 @@
 p.adb:6:08: info: assertion proved
+p.ads:2:14: info: initialization of "Id" proved
 p.ads:3:15: info: postcondition proved
 p.ads:3:53: info: range check proved
 p.ads:3:56: info: overflow check proved
+p.ads:5:14: info: initialization of "Bad" proved
 p.ads:7:15: warning: subprogram "Use_Bad" has no effect
 p.ads:7:36: info: postcondition proved
+p.ads:9:14: info: initialization of "Down" proved
 p.ads:10:38: info: range check proved
 p.ads:10:43: medium: overflow check might fail
 p.ads:12:15: warning: subprogram "Use_Down" has no effect

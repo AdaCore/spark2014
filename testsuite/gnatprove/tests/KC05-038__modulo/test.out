@@ -1,6 +1,14 @@
 p.adb:1:11: warning: subprogram "P" has no effect
 p.adb:6:24: medium: range check might fail
 p.adb:7:24: medium: range check might fail
+p.adb:8:24: info: initialization of "U" proved
+p.adb:8:28: info: initialization of "V" proved
+p.adb:9:23: info: initialization of "U" proved
 p.adb:9:25: info: range check proved
+p.adb:9:27: info: initialization of "V" proved
+p.adb:10:22: info: initialization of "U" proved
 p.adb:10:22: info: range check proved
+p.adb:11:22: info: initialization of "V" proved
 p.adb:11:22: info: range check proved
+p.adb:12:25: info: initialization of "A" proved
+p.adb:12:29: info: initialization of "B" proved

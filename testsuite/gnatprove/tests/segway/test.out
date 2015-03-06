@@ -1,10 +1,19 @@
+segway.adb:38:41: info: initialization of "Status" proved
+segway.adb:38:49: info: initialization of "Speed" proved
+segway.adb:40:30: info: initialization of "Status" proved
 segway.adb:40:30: info: refined post proved
+segway.adb:40:49: info: initialization of "Speed" proved
 segway.adb:62:31: info: range check proved
 segway.adb:66:31: info: range check proved
 segway.adb:89:10: info: loop invariant initialization proved
 segway.adb:89:10: info: loop invariant preservation proved
 segway.adb:91:13: info: precondition proved
 segway.adb:93:13: info: precondition proved
+segway.ads:16:13: info: initialization of "Current_Status" proved
+segway.ads:19:13: info: initialization of "Current_Speed" proved
+segway.ads:22:13: info: initialization of "Speed_Is_Valid" proved
+segway.ads:35:22: info: initialization of "Speed" proved
+segway.ads:35:22: info: initialization of "Status" proved
 segway.ads:35:22: info: postcondition proved
 segway.ads:42:22: info: postcondition proved
 segway.ads:48:22: info: postcondition proved

@@ -1,3 +1,13 @@
 casper.adb:4:17: medium: overflow check might fail
 casper.adb:8:27: medium: overflow check might fail
 casper.adb:11:07: info: assertion proved
+casper.adb:11:22: info: initialization of "Tmp" proved
+casper.adb:19:07: info: initialization of "Nested_Hidden_Var" proved
+casper.ads:4:04: info: initialization of "G1" proved
+casper.ads:4:08: info: initialization of "G2" proved
+casper.ads:6:04: info: initialization of "Ghost_G1" proved
+casper.ads:9:26: info: initialization of "Par" proved
+casper.ads:14:17: info: initialization of "Par" proved
+casper.ads:17:34: info: initialization of "Ghost_G1" proved
+casper.ads:24:07: info: initialization of "Nested_Global" proved
+casper.ads:26:16: info: initialization of "Is_OK" proved

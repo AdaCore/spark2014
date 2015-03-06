@@ -1,1 +1,8 @@
+power_14-source_a_14.adb:5:04: info: initialization of "S" proved
+power_14-source_a_14.ads:6:20: info: initialization of "Level" proved
+power_14-source_b_14.adb:5:04: info: initialization of "S" proved
+power_14-source_b_14.ads:6:20: info: initialization of "Level" proved
+power_14.adb:19:16: info: initialization of "Level_A" proved
 power_14.adb:19:24: medium: overflow check might fail
+power_14.adb:19:26: info: initialization of "Level_B" proved
+power_14.ads:7:25: info: initialization of "Level" proved

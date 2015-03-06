@@ -1,2 +1,5 @@
+foo.adb:1:16: info: initialization of "X" proved
 foo.adb:8:14: medium: overflow check might fail
 foo.adb:16:14: medium: overflow check might fail
+foo.adb:22:04: info: initialization of "X" proved
+foo.adb:23:04: info: initialization of "X" proved
