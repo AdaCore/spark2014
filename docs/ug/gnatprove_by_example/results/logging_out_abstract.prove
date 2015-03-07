@@ -1,1 +1,4 @@
+logging_out_abstract.adb:5:04: info: initialization of "Total" proved
+logging_out_abstract.adb:6:04: info: initialization of "Log_Out" proved
+logging_out_abstract.adb:9:53: info: initialization of "Log_Out" proved
 logging_out_abstract.adb:13:22: medium: overflow check might fail

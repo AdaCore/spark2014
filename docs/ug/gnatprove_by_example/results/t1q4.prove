@@ -1,8 +1,14 @@
+t1q4.adb:17:21: info: initialization of "Local_Root" proved
 t1q4.adb:17:32: info: overflow check proved
 t1q4.adb:17:37: info: overflow check proved
 t1q4.adb:17:51: info: overflow check proved
+t1q4.adb:19:24: info: initialization of "Local_Root" proved
 t1q4.adb:19:35: info: overflow check proved
 t1q4.adb:22:10: info: loop invariant initialization proved
 t1q4.adb:22:10: info: loop invariant preservation proved
+t1q4.adb:23:13: info: initialization of "Local_Root" proved
+t1q4.adb:28:24: info: initialization of "Local_Root" proved
 t1q4.adb:28:24: info: range check proved
+t1q4.ads:5:37: info: initialization of "Root" proved
 t1q4.ads:6:19: info: postcondition proved
+t1q4.ads:6:20: info: initialization of "Root" proved

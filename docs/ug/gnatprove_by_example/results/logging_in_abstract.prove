@@ -1,4 +1,6 @@
 logging_in_abstract.adb:5:04: warning: variable "Log_In" is read but never assigned
+logging_in_abstract.adb:8:04: info: initialization of "Log" proved
 logging_in_abstract.adb:8:32: info: length check proved
+logging_in_abstract.adb:9:04: info: initialization of "Log_Size" proved
 logging_in_abstract.adb:16:28: medium: overflow check might fail
 logging_in_abstract.adb:17:12: medium: array index check might fail

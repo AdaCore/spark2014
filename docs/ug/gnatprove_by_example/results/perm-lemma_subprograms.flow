@@ -1,2 +1,5 @@
+perm-lemma_subprograms.adb:21:18: info: initialization of "Result" proved
+perm-lemma_subprograms.adb:22:14: info: initialization of "Result" proved
 perm-lemma_subprograms.ads:3:14: warning: subprogram "Occ_Eq" has no effect
+perm-lemma_subprograms.ads:7:13: info: initialization of "Set" proved
 perm-lemma_subprograms.ads:14:14: warning: subprogram "Occ_Set" has no effect

@@ -11,3 +11,6 @@ functional_proved.ads:11:28: info: contract case proved
 functional_proved.ads:16:28: info: contract case proved
 functional_proved.ads:21:36: info: contract case proved
 functional_proved.ads:29:14: info: postcondition proved
+functional_proved.ads:33:13: info: initialization of "Invariant" proved
+functional_proved.ads:35:13: info: initialization of "Max_Value_Seen" proved
+functional_proved.ads:37:13: info: initialization of "Second_Max_Value_Seen" proved

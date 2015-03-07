@@ -1,3 +1,4 @@
+only_data_dependencies.adb:13:12: info: initialization of "Tmp" proved
 only_data_dependencies.ads:18:18: medium: missing dependency "X => V"
 only_data_dependencies.ads:18:18: medium: missing dependency "X => X"
 only_data_dependencies.ads:18:26: medium: missing dependency "Y => V"

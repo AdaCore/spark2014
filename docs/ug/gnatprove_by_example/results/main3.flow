@@ -1,1 +1,5 @@
-no output
+main3.adb:7:35: info: initialization of "Lights.State" proved
+main3.adb:23:13: info: initialization of "Old" proved
+main3.adb:23:20: info: initialization of "V" proved
+main3.adb:24:20: info: initialization of "V" proved
+main3.adb:33:04: info: initialization of "Lights.State" proved

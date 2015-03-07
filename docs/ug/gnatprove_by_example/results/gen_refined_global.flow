@@ -1,2 +1,5 @@
 gen_refined_global.adb:14:07: warning: statement has no effect
 gen_refined_global.adb:14:07: warning: unused assignment to "V"
+gen_refined_global.ads:5:14: info: initialization of "V" proved
+gen_refined_global.ads:8:14: info: initialization of "V" proved
+gen_refined_global.ads:11:14: info: initialization of "V" proved

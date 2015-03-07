@@ -1,1 +1,2 @@
 volatile_or_not.adb:9:09: warning: unused assignment
+volatile_or_not.adb:9:12: info: initialization of "Tmp" proved

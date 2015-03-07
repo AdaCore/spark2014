@@ -1,1 +1,2 @@
 only_data_dependencies.adb:6:14: medium: overflow check might fail
+only_data_dependencies.adb:13:12: info: initialization of "Tmp" proved

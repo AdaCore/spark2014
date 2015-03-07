@@ -1,1 +1,2 @@
 abnormal_terminations.adb:11:10: info: raise statement proved unreachable
+abnormal_terminations.ads:8:27: info: initialization of "G1" proved

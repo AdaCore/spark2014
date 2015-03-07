@@ -1,1 +1,2 @@
+no_return_a.adb:2:24: info: initialization of "Y" proved
 no_return_a.adb:17:11: info: division check proved

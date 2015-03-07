@@ -1,1 +1,2 @@
 swap.adb:4:14: info: postcondition proved
+swap.adb:9:09: info: initialization of "Tmp" proved

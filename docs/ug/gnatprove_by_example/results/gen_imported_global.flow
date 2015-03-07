@@ -1,2 +1,4 @@
 gen_imported_global.adb:12:07: warning: statement has no effect
 gen_imported_global.adb:12:07: warning: unused assignment to "V"
+gen_imported_global.adb:17:36: info: initialization of "V" proved
+gen_imported_global.ads:10:14: info: initialization of "V" proved

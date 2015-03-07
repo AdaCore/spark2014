@@ -1,2 +1,14 @@
+sort.adb:29:45: info: initialization of "Init" proved
 sort.adb:30:14: warning: unused assignment
+sort.adb:32:21: info: initialization of "Temp" proved
+sort.adb:35:36: info: initialization of "Interm" proved
+sort.adb:35:47: info: initialization of "Init" proved
+sort.adb:39:13: info: initialization of "Index_Of_Minimum" proved
+sort.adb:51:38: info: initialization of "Min" proved
+sort.adb:55:13: info: initialization of "Min" proved
+sort.adb:59:14: info: initialization of "Min" proved
 sort.adb:69:17: warning: subprogram "Prove_Swap_Perm" has no effect
+sort.adb:91:13: info: initialization of "Smallest" proved
+sort.adb:98:29: info: initialization of "Smallest" proved
+sort.adb:101:30: info: initialization of "Previous" proved
+sort.adb:101:57: info: initialization of "Smallest" proved

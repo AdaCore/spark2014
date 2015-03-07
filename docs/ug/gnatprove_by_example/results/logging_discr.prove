@@ -2,4 +2,6 @@ logging_discr.adb:10:23: info: discriminant check proved
 logging_discr.adb:16:17: info: discriminant check proved
 logging_discr.adb:16:31: info: discriminant check proved
 logging_discr.adb:16:31: info: index check proved
+logging_discr.ads:21:13: info: initialization of "Log_Size" proved
+logging_discr.ads:23:13: info: initialization of "Last_Entry" proved
 logging_discr.ads:24:48: info: discriminant check proved

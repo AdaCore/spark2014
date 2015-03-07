@@ -1,11 +1,17 @@
 my_find.adb:4:19: info: precondition proved
 my_find.adb:7:10: info: precondition proved
+my_find.adb:7:26: info: initialization of "Cu" proved
 my_find.adb:8:07: info: loop invariant initialization proved
 my_find.adb:8:07: info: loop invariant preservation proved
 my_find.adb:8:34: info: precondition proved
 my_find.adb:8:44: info: precondition proved
+my_find.adb:8:66: info: initialization of "Cu" proved
 my_find.adb:10:10: info: precondition proved
+my_find.adb:10:22: info: initialization of "Cu" proved
+my_find.adb:11:17: info: initialization of "Cu" proved
 my_find.adb:14:07: info: precondition proved
+my_find.adb:14:16: info: initialization of "Cu" proved
+my_find.ads:3:10: info: initialization of "My_Find" proved
 my_find.ads:5:03: info: complete contract cases proved
 my_find.ads:5:03: info: disjoint contract cases proved
 my_find.ads:6:06: info: precondition proved

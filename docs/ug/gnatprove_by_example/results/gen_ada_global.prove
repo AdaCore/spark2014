@@ -1,1 +1,2 @@
+gen_ada_global.adb:20:28: info: initialization of "V" proved
 gen_ada_global.adb:25:10: high: "V" is not initialized

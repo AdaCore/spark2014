@@ -1,1 +1,3 @@
-no output
+increment_local.adb:13:04: info: initialization of "X" proved
+increment_local.adb:14:04: info: initialization of "X" proved
+increment_local.adb:15:19: info: initialization of "X" proved

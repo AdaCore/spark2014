@@ -1,1 +1,5 @@
-no output
+functional_imported.adb:7:04: info: initialization of "Max" proved
+functional_imported.adb:10:04: info: initialization of "Snd" proved
+functional_imported.ads:38:13: info: initialization of "Invariant" proved
+functional_imported.ads:40:13: info: initialization of "Max_Value_Seen" proved
+functional_imported.ads:42:13: info: initialization of "Second_Max_Value_Seen" proved

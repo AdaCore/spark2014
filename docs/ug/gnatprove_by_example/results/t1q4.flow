@@ -1,1 +1,6 @@
-no output
+t1q4.adb:17:21: info: initialization of "Local_Root" proved
+t1q4.adb:19:24: info: initialization of "Local_Root" proved
+t1q4.adb:23:13: info: initialization of "Local_Root" proved
+t1q4.adb:28:24: info: initialization of "Local_Root" proved
+t1q4.ads:5:37: info: initialization of "Root" proved
+t1q4.ads:6:20: info: initialization of "Root" proved

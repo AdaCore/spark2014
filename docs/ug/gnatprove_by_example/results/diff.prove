@@ -1,2 +1,3 @@
+diff.adb:1:36: info: initialization of "Z" proved
 diff.adb:6:11: info: overflow check proved
 diff.adb:6:11: info: range check proved
