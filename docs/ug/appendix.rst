@@ -133,6 +133,9 @@ like this::
 ``--why3-conf=<file>``. Any prover name configured in this configuration file
 can be used as an argument to switch ``--prover``.
 
+Note that using this mechanism, you cannot replace the definitions provided
+with the SPARK tools for the provers ``altergo`` and ``cvc4``.
+
 If more than one prover is specified, the provers are tried in order on each
 VC, until one of them succeeds or all fail. Interactive provers cannot be
 combined with other provers, so must appear on their own.
