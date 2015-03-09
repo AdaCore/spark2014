@@ -39,7 +39,9 @@ stackp.ads:61:20: medium: class-wide postcondition might be weaker than overridd
 stackp.ads:61:20: medium: postcondition might fail, requires Get_Model (S) = Get_Model (S)'Old & (1 => E)
 stackp.ads:61:54: info: range check proved
 stackp.ads:65:04: medium: type "Stack_Root" is not fully initialized
+stackp.ads:71:04: medium: type "Stack" is not fully initialized
 stackp.ads:73:15: info: range check proved
+stackp.ads:77:04: medium: type "Buffer" is not fully initialized
 stackp.ads:82:13: info: initialization of "Wraps_Around" proved
 stackp.ads:84:13: info: initialization of "Last" proved
 stackp.ads:85:55: info: range check proved

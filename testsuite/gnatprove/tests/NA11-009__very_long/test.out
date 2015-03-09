@@ -44,7 +44,6 @@ very_longs.adb:112:07: info: assertion proved
 very_longs.adb:113:13: info: discriminant check proved
 very_longs.adb:113:26: info: length check proved
 very_longs.adb:113:29: info: length check proved
-very_longs.adb:115:20: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:115:26: info: discriminant check proved
 very_longs.adb:115:38: info: initialization of "R26b" proved
 very_longs.adb:116:16: info: discriminant check proved
@@ -61,7 +60,6 @@ very_longs.adb:133:13: info: initialization of "R31b" proved
 very_longs.adb:133:26: info: length check proved
 very_longs.adb:133:29: info: initialization of "R31b" proved
 very_longs.adb:133:29: info: length check proved
-very_longs.adb:136:16: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:136:22: info: discriminant check proved
 very_longs.adb:136:34: info: range check proved
 very_longs.adb:137:29: info: range check proved
@@ -70,7 +68,6 @@ very_longs.adb:139:10: info: loop invariant preservation proved
 very_longs.adb:140:13: info: initialization of "String_Index" proved
 very_longs.adb:140:37: info: overflow check proved
 very_longs.adb:140:37: medium: range check might fail
-very_longs.adb:140:39: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:140:45: info: discriminant check proved
 very_longs.adb:140:63: info: overflow check proved
 very_longs.adb:140:65: info: initialization of "Index" proved
@@ -166,7 +163,6 @@ very_longs.adb:288:51: info: index check proved
 very_longs.adb:289:38: info: discriminant check proved
 very_longs.adb:289:51: info: index check proved
 very_longs.adb:290:18: info: overflow check proved
-very_longs.adb:290:29: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:290:35: info: discriminant check proved
 very_longs.adb:290:47: info: initialization of "R92b" proved
 very_longs.adb:291:40: info: initialization of "Result.Long_Digits" proved

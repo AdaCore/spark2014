@@ -49,14 +49,6 @@ package Flow_Utility is
    --  try our best to get a direct mapping, resorting to the magic
    --  string only as a last resort.
 
-   function Get_Full_Type
-     (N     : Node_Id;
-      Scope : Flow_Scope)
-      return Entity_Id
-     with Pre => Present (N);
-   --  Get the type of the given node. If the full view of the type
-   --  is not visible from Scope, then we return the non-full view.
-
    function Has_Depends (Subprogram : Entity_Id) return Boolean
      with Pre => Ekind (Subprogram) in Subprogram_Kind;
    --  Return true if the given subprogram has been annotated with a
@@ -485,7 +477,15 @@ package Flow_Utility is
      with Pre  => F.Kind in Direct_Mapping | Record_Field and then
                   F.Facet = Normal_Part,
           Post => Nkind (Get_Type'Result) in N_Entity;
-   --  Determine the type of a flow_id.
+   --  Determine the type of a flow_id from Scope.
+
+   function Get_Full_Type
+     (N     : Node_Id;
+      Scope : Flow_Scope)
+      return Entity_Id
+     with Pre => Present (N);
+   --  Get the type of the given node. If the full view of the type
+   --  is not visible from Scope, then we return the non-full view.
 
    function Extensions_Visible (E     : Entity_Id;
                                 Scope : Flow_Scope)

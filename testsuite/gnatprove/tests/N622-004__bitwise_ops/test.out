@@ -45,7 +45,6 @@ aco-math-very_longs.adb:83:50: info: initialization of "Difference" proved
 aco-math-very_longs.adb:100:13: info: discriminant check proved
 aco-math-very_longs.adb:100:26: info: length check proved
 aco-math-very_longs.adb:100:29: info: length check proved
-aco-math-very_longs.adb:102:20: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:102:26: info: discriminant check proved
 aco-math-very_longs.adb:102:38: info: initialization of "R26B" proved
 aco-math-very_longs.adb:103:16: info: discriminant check proved
@@ -62,7 +61,6 @@ aco-math-very_longs.adb:119:13: info: initialization of "R31B" proved
 aco-math-very_longs.adb:119:26: info: length check proved
 aco-math-very_longs.adb:119:29: info: initialization of "R31B" proved
 aco-math-very_longs.adb:119:29: info: length check proved
-aco-math-very_longs.adb:122:23: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:122:29: info: discriminant check proved
 aco-math-very_longs.adb:122:41: info: range check proved
 aco-math-very_longs.adb:123:29: info: range check proved
@@ -70,7 +68,6 @@ aco-math-very_longs.adb:125:10: info: loop invariant preservation proved
 aco-math-very_longs.adb:125:32: info: initialization of "String_Index" proved
 aco-math-very_longs.adb:125:32: medium: loop invariant might fail in first iteration, requires String_Index = 2 * Result.Long_Digits'last - Index + 1
 aco-math-very_longs.adb:125:58: info: overflow check proved
-aco-math-very_longs.adb:125:61: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:125:67: info: discriminant check proved
 aco-math-very_longs.adb:125:85: info: overflow check proved
 aco-math-very_longs.adb:125:87: info: initialization of "Index" proved
@@ -151,7 +148,6 @@ aco-math-very_longs.adb:256:55: info: index check proved
 aco-math-very_longs.adb:257:42: info: discriminant check proved
 aco-math-very_longs.adb:257:55: info: index check proved
 aco-math-very_longs.adb:258:18: medium: overflow check might fail
-aco-math-very_longs.adb:258:29: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:258:35: info: discriminant check proved
 aco-math-very_longs.adb:258:47: info: initialization of "R82B" proved
 aco-math-very_longs.adb:259:44: info: initialization of "Result.Long_Digits" proved

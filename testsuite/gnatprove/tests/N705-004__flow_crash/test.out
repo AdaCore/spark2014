@@ -20,7 +20,6 @@ very_longs.adb:89:46: info: initialization of "Borrow" proved
 very_longs.adb:90:14: info: initialization of "Difference" proved
 very_longs.adb:95:32: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:95:50: info: initialization of "Difference" proved
-very_longs.adb:114:20: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:114:38: info: initialization of "R28b" proved
 very_longs.adb:115:36: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:115:45: info: initialization of "Temp" proved
@@ -28,9 +27,7 @@ very_longs.adb:116:18: info: initialization of "Temp" proved
 very_longs.adb:118:14: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:131:13: info: initialization of "R33b" proved
 very_longs.adb:131:29: info: initialization of "R33b" proved
-very_longs.adb:134:23: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:137:32: info: initialization of "String_Index" proved
-very_longs.adb:137:61: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:137:87: info: initialization of "Index" proved
 very_longs.adb:139:31: info: initialization of "String_Index" proved
 very_longs.adb:140:31: info: initialization of "String_Index" proved
@@ -58,7 +55,6 @@ very_longs.adb:230:14: info: initialization of "Difference" proved
 very_longs.adb:235:32: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:235:50: info: initialization of "Difference" proved
 very_longs.adb:237:14: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:261:29: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:261:47: info: initialization of "R84b" proved
 very_longs.adb:262:40: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:263:28: info: initialization of "L_Digit" proved

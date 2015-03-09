@@ -1,0 +1,2 @@
+foo.adb:14:12: info: initialization of "All_1.E" proved
+foo.ads:2:23: info: initialization of "X" proved

@@ -1,8 +1,5 @@
 list.adb:12:26: info: initialization of "R1b" proved
 list.adb:12:35: info: precondition proved
-list.adb:14:07: info: initialization of "Res.Elements" proved
-list.adb:14:07: info: initialization of "Res.Elements_Ptr" proved
-list.adb:14:07: info: initialization of "Res.Last" proved
 list.adb:14:07: info: initialization of private part of "Res" proved
 list.adb:14:14: info: initialization of private part of "Res" proved
 list.adb:15:16: info: initialization of "R4b" proved
@@ -18,9 +15,6 @@ list.adb:19:17: info: precondition proved
 list.adb:19:36: info: initialization of "R8b" proved
 list.adb:19:36: info: precondition proved
 list.adb:20:10: medium: precondition might fail
-list.adb:20:18: info: initialization of "Res.Elements" proved
-list.adb:20:18: info: initialization of "Res.Elements_Ptr" proved
-list.adb:20:18: info: initialization of "Res.Last" proved
 list.adb:20:18: info: initialization of private part of "Res" proved
 list.adb:20:23: medium: precondition might fail
 list.adb:20:28: medium: private part of "S" might not be initialized
@@ -29,9 +23,6 @@ list.adb:21:15: medium: private part of "S" might not be initialized
 list.adb:22:10: info: loop invariant initialization proved
 list.adb:22:54: medium: loop invariant might fail after first iteration, requires Element (Res, J) = Element (L, Last_Index (L) - J + 1)
 list.adb:22:54: medium: precondition might fail
-list.adb:22:63: info: initialization of "Res.Elements" proved
-list.adb:22:63: info: initialization of "Res.Elements_Ptr" proved
-list.adb:22:63: info: initialization of "Res.Last" proved
 list.adb:22:63: info: initialization of private part of "Res" proved
 list.adb:22:68: info: range check proved
 list.adb:22:73: info: precondition proved
@@ -40,9 +31,6 @@ list.adb:22:104: info: range check proved
 list.ads:7:13: info: initialization of "Eq" proved
 list.ads:8:12: info: initialization of "Oeq" proved
 list.ads:8:12: medium: range check might fail
-list.ads:11:13: info: initialization of "Reverse_List.Elements" proved
-list.ads:11:13: info: initialization of "Reverse_List.Elements_Ptr" proved
-list.ads:11:13: info: initialization of "Reverse_List.Last" proved
 list.ads:11:13: info: initialization of private part of "Reverse_List" proved
 list.ads:12:14: info: postcondition proved
 list.ads:12:28: info: precondition proved

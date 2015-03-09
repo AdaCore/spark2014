@@ -131,8 +131,8 @@ package Flow_Types is
                              The_Bounds       --  for unconstrained arrays
                              );
    --  Not all things can be represented by just X. For example a
-   --  discriminated private type might need X'Hidden and X.D. Most flow_id
-   --  objects will describe the Normal_Part.
+   --  discriminated private type might need X'Private_Part and
+   --  X.D. Most flow_id objects will describe the Normal_Part.
    --
    --  Flo's note on naming: I did want to use the name "aspect", but this
    --  is perhaps asking for confusion; hence I went for "facet".

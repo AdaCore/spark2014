@@ -31,8 +31,7 @@ package body Flow_Utility.Initialization is
    -- Get_Default_Initialization --
    --------------------------------
 
-   function Get_Default_Initialization (F : Flow_Id) return Node_Id
-   is
+   function Get_Default_Initialization (F : Flow_Id) return Node_Id is
       function Get_Component_From_Aggregate (A : Node_Id;
                                              C : Node_Id)
                                              return Node_Id;
@@ -148,22 +147,32 @@ package body Flow_Utility.Initialization is
 
    function Is_Default_Initialized
      (F             : Flow_Id;
-      Flow_Scop     : Flow_Scope := Null_Flow_Scope;
-      Explicit_Only : Boolean    := False)
+      Explicit_Only : Boolean := False)
       return Boolean
    is
-      Typ      : constant Node_Id := Get_Direct_Mapping_Id (F);
-      Full_Typ : constant Node_Id := Get_Full_Type (Typ, Flow_Scop);
+
+      function Call_Default_Initialization return Boolean;
+      --  Calls Default_Initialization on the type of F
+
+      ---------------------------------
+      -- Call_Default_Initialization --
+      ---------------------------------
+
+      function Call_Default_Initialization return Boolean is
+         Typ : Node_Id := Get_Direct_Mapping_Id (F);
+      begin
+         if not (Ekind (Typ) in Type_Kind) then
+            Typ := Etype (Typ);
+         end if;
+
+         return Default_Initialization (Typ, Explicit_Only) =
+                  Full_Default_Initialization;
+      end Call_Default_Initialization;
+
    begin
       case F.Kind is
          when Direct_Mapping =>
-            return Default_Initialization (Typ, Explicit_Only) =
-                     Full_Default_Initialization
-              or else (Full_Typ /= Typ
-                         and then Is_Default_Initialized
-                                    (Direct_Mapping_Id (Full_Typ),
-                                     Flow_Scop,
-                                     Explicit_Only));
+            return Call_Default_Initialization;
 
          when Record_Field =>
             if Is_Discriminant (F) then
@@ -174,13 +183,7 @@ package body Flow_Utility.Initialization is
                return True;
 
             else
-               return Default_Initialization (Typ, Explicit_Only) =
-                        Full_Default_Initialization
-                 or else (Full_Typ /= Typ
-                            and then Is_Default_Initialized
-                                       (Direct_Mapping_Id (Full_Typ),
-                                        Flow_Scop,
-                                        Explicit_Only));
+               return Call_Default_Initialization;
 
             end if;
 

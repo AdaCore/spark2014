@@ -11,7 +11,7 @@ rectangle.ads:6:14: medium: postcondition might fail
 rectangle.ads:6:40: info: initialization of "Result" proved
 window.adb:5:32: info: overflow check proved
 window.adb:5:32: medium: range check might fail
-window.adb:18:07: info: initialization of "Rec" proved
+window.adb:18:07: high: "Rec" is not initialized
 window.adb:19:07: info: initialization of "Rec" proved
 window.adb:20:24: info: initialization of "Rec" proved
 window.adb:21:07: medium: precondition might fail

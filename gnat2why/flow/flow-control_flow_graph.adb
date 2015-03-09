@@ -3905,12 +3905,11 @@ package body Flow.Control_Flow_Graph is
          --  Issue a warning if the declared type promised to be
          --  default initialized but is not.
 
-         if Has_Default_Init_Cond (Typ)
+         if (not Is_Private_Type (Typ)
+               or else No (Full_View (Typ)))
            and then not Fullview_Not_In_SPARK (Typ)
-           and then Is_Default_Initialized (Direct_Mapping_Id (Typ),
-                                            Get_Flow_Scope (Typ))
+           and then Is_Default_Initialized (Direct_Mapping_Id (Typ))
            and then not Is_Default_Initialized (Direct_Mapping_Id (Typ),
-                                                Get_Flow_Scope (Typ),
                                                 Explicit_Only => True)
          then
             Error_Msg_Flow

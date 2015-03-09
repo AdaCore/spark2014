@@ -33,13 +33,10 @@ package Flow_Utility.Initialization is
 
    function Is_Default_Initialized
      (F             : Flow_Id;
-      Flow_Scop     : Flow_Scope := Null_Flow_Scope;
-      Explicit_Only : Boolean    := False)
+      Explicit_Only : Boolean := False)
       return Boolean;
    --  As above, but can also return True if we can't actually get a node
    --  which is the default-initialized expression.
-   --
-   --  Visibility is respected iff Flow_Scop is not a Null_Flow_Scope.
    --
    --  Default_Initial_Condition aspects are ignored iff Explicit_Only
    --  is set.

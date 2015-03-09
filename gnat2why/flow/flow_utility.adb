@@ -35,6 +35,7 @@ with Nlists;                     use Nlists;
 with Output;                     use Output;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Definition;           use SPARK_Definition;
+with Sem_Aux;                    use Sem_Aux;
 with Sprint;                     use Sprint;
 with Treepr;                     use Treepr;
 with Why;
@@ -152,9 +153,10 @@ package body Flow_Utility is
    -- Get_Type --
    --------------
 
-   function Get_Type (F     : Flow_Id;
-                      Scope : Flow_Scope)
-                      return Entity_Id
+   function Get_Type
+     (F     : Flow_Id;
+      Scope : Flow_Scope)
+      return Entity_Id
    is
       E : Entity_Id;
    begin
@@ -166,20 +168,61 @@ package body Flow_Utility is
          when others =>
             raise Program_Error;
       end case;
-      if Ekind (E) in Private_Kind then
-         if Is_Visible (Full_View (E), Scope) and then
-           not Is_Itype (Full_View (E))
-         then
-            return Full_View (E);
-         else
-            return E;
-         end if;
-      elsif Ekind (E) in Type_Kind then
-         return E;
-      else
-         return Get_Full_Type (E, Scope);
-      end if;
+      return Get_Full_Type (E, Scope);
    end Get_Type;
+
+   -------------------
+   -- Get_Full_Type --
+   -------------------
+
+   function Get_Full_Type
+     (N     : Node_Id;
+      Scope : Flow_Scope)
+      return Entity_Id
+   is
+      --  T will be assigned the type of N
+      T : Entity_Id :=
+
+        (if Nkind (N) in N_Entity
+           and then Ekind (N) in Type_Kind
+         then
+            --  If N is of Type_Kind then T is N
+            N
+         elsif Present (Etype (N)) then
+            --  If Etype is Present then use that
+            Etype (N)
+         elsif Present (Defining_Identifier (N)) then
+            --  N can be some kind of type declaration
+            Defining_Identifier (N)
+         else
+            --  We don't expect to get any other kind of node
+            raise Program_Error);
+   begin
+      --  When dealing with a state abstraction just return T
+      if Nkind (N) in N_Entity and then Ekind (N) = E_Abstract_State then
+         return T;
+      end if;
+
+      while Present (Full_View (T))
+        and then Is_Visible (Full_View (T), Scope)
+        and then Full_View (T) /= T
+      loop
+         T := Full_View (T);
+      end loop;
+
+      --  We do not want to return an Itype so we recurse on either
+      --  the Root_Type (if it is different from T) or the
+      --  Associated_Node_For_Itype.
+      if Is_Itype (T) then
+         if Root_Type (T) /= T then
+            T := Get_Full_Type (Root_Type (T), Scope);
+         else
+            T := Get_Full_Type (Associated_Node_For_Itype (T), Scope);
+         end if;
+      end if;
+
+      return T;
+   end Get_Full_Type;
 
    --------------------------------
    -- Untangle_Record_Assignment --
@@ -2602,7 +2645,40 @@ package body Flow_Utility is
       Ids                  : Flow_Id_Sets.Set;
       Classwide            : Boolean;
 
-      Contains_Non_Visible : Boolean := False;
+      Contains_Non_Visible : Boolean       := False;
+      Root_Components      : Node_Sets.Set := Node_Sets.Empty_Set;
+
+      function Get_Root_Component (N : Node_Id) return Node_Id;
+      --  Returns N's equilavent component of the root type. If this
+      --  is not available then N's Original_Record_Component is
+      --  returned instead.
+
+      ------------------------
+      -- Get_Root_Component --
+      ------------------------
+
+      function Get_Root_Component (N : Node_Id) return Node_Id is
+         ORC : constant Node_Id := Original_Record_Component (N);
+      begin
+         --  Nothing to compare against. We fall back to N's
+         --  Original_Record_Component.
+         if Root_Components.Is_Empty then
+            return ORC;
+         end if;
+
+         --  If Same_Component is True for one of the Root_Components
+         --  then return that instead.
+         for Comp of Root_Components loop
+            if Same_Component (ORC, Comp) then
+               return Comp;
+            end if;
+         end loop;
+
+         --  No Same_Component found. Fall back to N's
+         --  Original_Record_Component.
+         return ORC;
+      end Get_Root_Component;
+
    begin
       if Debug_Trace_Flatten then
          Write_Str ("Flatten: ");
@@ -2623,7 +2699,7 @@ package body Flow_Utility is
       T         := Get_Type (F, Scope);
       Classwide := Ekind (T) in Class_Wide_Kind;
       while Ekind (T) in Class_Wide_Kind loop
-         T := Get_Full_Type (T, Scope);
+         T := Get_Full_Type (Etype (T), Scope);
       end loop;
 
       if Debug_Trace_Flatten then
@@ -2631,6 +2707,33 @@ package body Flow_Utility is
          Sprint_Node_Inline (T);
          Write_Str (" (" & Ekind (T)'Img & ")");
          Write_Eol;
+      end if;
+
+      --  If we are dealing with a derived type then we want to get to
+      --  the root and then Populate the Root_Components set. However,
+      --  we don't want to consider Itypes.
+      if Is_Derived_Type (T) then
+         declare
+            Root : Node_Id := T;
+         begin
+            while (Is_Derived_Type (Root)
+                     or else Is_Itype (Root))
+              and then Etype (Root) /= Root
+            loop
+               Root := Etype (Root);
+            end loop;
+
+            --  Make sure we have the Full_View
+            while Is_Private_Type (Root)
+              and then Present (Full_View (Root))
+            loop
+               Root := Full_View (Root);
+            end loop;
+
+            for Comp of All_Components (Root) loop
+               Root_Components.Include (Original_Record_Component (Comp));
+            end loop;
+         end;
       end if;
 
       case Ekind (T) is
@@ -2642,8 +2745,10 @@ package body Flow_Utility is
 
             if Has_Discriminants (T) then
                for Ptr of All_Components (T) loop
-                  if Is_Visible (Original_Record_Component (Ptr), Scope) then
+                  if Is_Visible (Get_Root_Component (Ptr), Scope) then
                      Ids.Include (Add_Component (F, Ptr));
+                  else
+                     Contains_Non_Visible := True;
                   end if;
                end loop;
                Ids.Include (F'Update (Facet => Private_Part));
@@ -2663,7 +2768,7 @@ package body Flow_Utility is
             Ids := Flow_Id_Sets.Empty_Set;
 
             for Ptr of All_Components (T) loop
-               if Is_Visible (Original_Record_Component (Ptr), Scope) then
+               if Is_Visible (Get_Root_Component (Ptr), Scope) then
                   Ids.Union (Flatten_Variable (Add_Component (F, Ptr),
                                                Scope));
                else
@@ -2703,32 +2808,6 @@ package body Flow_Utility is
 
       return Ids;
    end Flatten_Variable;
-
-   -------------------
-   -- Get_Full_Type --
-   -------------------
-
-   function Get_Full_Type
-     (N     : Node_Id;
-      Scope : Flow_Scope)
-      return Entity_Id
-   is
-      T : Entity_Id := Etype (N);
-   begin
-      if Nkind (N) in N_Entity and then Ekind (N) = E_Abstract_State then
-         return T;
-      end if;
-
-      while Present (Full_View (T))
-        and then Is_Visible (Full_View (T), Scope)
-        and then not Is_Itype (Full_View (T))
-        and then Full_View (T) /= T
-      loop
-         T := Full_View (T);
-      end loop;
-
-      return T;
-   end Get_Full_Type;
 
    --------------------------------
    -- Is_Valid_Assignment_Target --
@@ -3393,8 +3472,7 @@ package body Flow_Utility is
    -- All_Components --
    --------------------
 
-   function All_Components (E : Entity_Id) return Node_Lists.List
-   is
+   function All_Components (E : Entity_Id) return Node_Lists.List is
       Ptr : Entity_Id;
       T   : Entity_Id          := E;
       L   : Node_Lists.List    := Node_Lists.Empty_List;
@@ -3421,6 +3499,14 @@ package body Flow_Utility is
       end Up;
 
    begin
+      if not (Is_Record_Type (E)
+                or else Is_Incomplete_Or_Private_Type (E)
+                or else Has_Discriminants (E))
+      then
+         --  No components or discriminants to return
+         return L;
+      end if;
+
       loop
          Ptr := First_Component_Or_Discriminant (T);
          while Present (Ptr) loop

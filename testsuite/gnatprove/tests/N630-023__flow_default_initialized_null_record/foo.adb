@@ -1,11 +1,10 @@
-package body Foo
-is
+package body Foo is
 
    type Empty_Rec2 (D : Positive := 1) is null record;
    type My_Array2 is array (Positive range <>) of Empty_Rec2;
    type Non_Init2 is record
       E : My_Array2 (1 .. 100);
-      F : Natural;
+      F : Natural := 0;
    end record;
 
    procedure Test_01 (X : out Boolean)
