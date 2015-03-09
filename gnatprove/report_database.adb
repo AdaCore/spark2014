@@ -205,9 +205,9 @@ package body Report_Database is
       Update_Subp_Entry (Unit, Subp, Process'Access);
    end Add_SPARK_Status;
 
-   ---------------------
-   -- Add_Flow_Result --
-   ---------------------
+   ----------------------------
+   -- Add_Suppressed_Warning --
+   ----------------------------
 
    procedure Add_Suppressed_Warning
      (Unit   : Unit_Type;
@@ -232,8 +232,6 @@ package body Report_Database is
                                 Line   => Line,
                                 Column => Column));
       end Process;
-
-   --  Start of Add_Flow_Result
 
    begin
       Update_Subp_Entry (Unit, Subp, Process'Access);

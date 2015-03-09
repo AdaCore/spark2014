@@ -217,6 +217,9 @@ procedure SPARK_Report is
                   File   => Get (Get (Result, "file")),
                   Line   => Get (Get (Result, "line")),
                   Column => Get (Get (Result, "col")));
+            elsif Severe = "info" then
+               --  Ignore flow info messages for now.
+               null;
             else
                Add_Flow_Result
                  (Unit  => Unit,
