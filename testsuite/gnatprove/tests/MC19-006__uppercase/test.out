@@ -1,1 +1,3 @@
+base.adb:5.13: info: initialization of "P" proved
 base.adb:5:50: medium: overflow check might fail
+base.adb:7.12: info: initialization of "X" proved
