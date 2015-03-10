@@ -2427,18 +2427,6 @@ package body Gnat2Why.Subprograms is
          Right  => +Compute_Contract_Cases_Postcondition (Params, E),
          Domain => EW_Pred);
 
-      --  Add to post the dynamic property of the result.
-
-      Post :=
-        +New_And_Expr
-        (Left   => +Post,
-         Right  => +Compute_Dynamic_Property
-           (Expr        => +New_Result_Ident (Why_Type),
-            Ty          => Etype (E),
-            Only_Var    => False,
-            Initialized => True),
-         Domain => EW_Pred);
-
       if Is_Dispatching_Operation (E) then
          Dispatch_Pre :=
            Get_Dispatching_Contract (Params, E, Name_Precondition);
@@ -2463,6 +2451,12 @@ package body Gnat2Why.Subprograms is
              (E, Domain => EW_Term, Local => False, Selector => Refine);
          Guard   : constant W_Pred_Id :=
            Compute_Guard_Formula (Logic_Func_Binders);
+         --  Dynamic property of the result.
+         Dynamic_Prop_Result : constant W_Pred_Id := Compute_Dynamic_Property
+           (Expr        => +New_Result_Ident (Why_Type),
+            Ty          => Etype (E),
+            Only_Var    => False,
+            Initialized => True);
 
          procedure Emit_Post_Axiom
            (Suffix : String;
@@ -2478,36 +2472,43 @@ package body Gnat2Why.Subprograms is
            (Suffix : String;
             Id     : W_Identifier_Id;
             Pre, Post : W_Pred_Id) is
+            Complete_Post : constant W_Pred_Id :=
+              +New_And_Expr
+              (Left   => +Post,
+               Right  => +Dynamic_Prop_Result,
+               Domain => EW_Pred);
          begin
-            Emit
-              (File.Cur_Theory,
-               New_Guarded_Axiom
-                 (Ada_Node => Empty,
-                  Name     => NID (Short_Name (E) & "__" & Suffix),
-                  Binders  => Logic_Why_Binders,
-                  Triggers =>
-                    New_Triggers
-                      (Triggers =>
-                           (1 => New_Trigger
-                              (Terms =>
-                                 (1 => New_Call
-                                      (Domain  => EW_Term,
-                                       Name    => Id,
-                                       Binders => Logic_Why_Binders))))),
-                  Pre      =>
-                    +New_And_Expr (Left   => +Guard,
-                                   Right  => +Pre,
-                                   Domain => EW_Pred),
-                  Def      =>
-                    +New_Typed_Binding
+            if not Is_True_Boolean (+Complete_Post) then
+               Emit
+                 (File.Cur_Theory,
+                  New_Guarded_Axiom
                     (Ada_Node => Empty,
-                     Domain   => EW_Pred,
-                     Name     => +New_Result_Ident (Why_Type),
-                     Def      => New_Call
-                       (Domain  => EW_Term,
-                        Name    => Id,
-                        Binders => Logic_Why_Binders),
-                     Context  => +Post)));
+                     Name     => NID (Short_Name (E) & "__" & Suffix),
+                     Binders  => Logic_Why_Binders,
+                     Triggers =>
+                       New_Triggers
+                         (Triggers =>
+                              (1 => New_Trigger
+                                 (Terms =>
+                                    (1 => New_Call
+                                         (Domain  => EW_Term,
+                                          Name    => Id,
+                                          Binders => Logic_Why_Binders))))),
+                     Pre      =>
+                       +New_And_Expr (Left   => +Guard,
+                                      Right  => +Pre,
+                                      Domain => EW_Pred),
+                     Def      =>
+                       +New_Typed_Binding
+                       (Ada_Node => Empty,
+                        Domain   => EW_Pred,
+                        Name     => +New_Result_Ident (Why_Type),
+                        Def      => New_Call
+                          (Domain  => EW_Term,
+                           Name    => Id,
+                           Binders => Logic_Why_Binders),
+                        Context  => +Complete_Post)));
+            end if;
          end Emit_Post_Axiom;
 
          --  beginning of processing of Generate_Axiom_For_Post
@@ -2702,67 +2703,194 @@ package body Gnat2Why.Subprograms is
             Refine_Logic_Id     : constant W_Identifier_Id :=
               To_Why_Id
                 (E, Domain => EW_Term, Local => False, Selector => Refine);
+            Dynamic_Prop_Result : constant W_Pred_Id :=
+              +Compute_Dynamic_Property
+              (Expr        => +New_Result_Ident (Why_Type),
+               Ty          => Etype (E),
+               Only_Var    => False,
+               Initialized => True);
 
-            --  Each function has in its postcondition that its result is
-            --  equal to the application of the corresponding logic function
-            --  to the same arguments.
+            function Create_Function_Decl
+              (Logic_Id : W_Identifier_Id;
+               Prog_Id  : W_Identifier_Id;
+               Pre      : W_Pred_Id;
+               Post     : W_Pred_Id) return W_Declaration_Id;
+            --  create the function declaration with the given Logic_Id,
+            --  Prog_Id, Pre and Post.
 
-            Param_Post          : constant W_Pred_Id :=
-              +New_And_Expr
-              (Left   =>
-                 New_Call
-                   (Name   => Why_Eq,
-                    Domain => EW_Pred,
-                    Typ    => EW_Bool_Type,
-                    Args   => (+New_Result_Ident (Why_Type),
-                               New_Call
-                                 (Domain => EW_Term,
-                                  Name   => Logic_Id,
-                                  Args   => Logic_Func_Args))),
-               Right  =>
+            --------------------------
+            -- Create_Function_Decl --
+            --------------------------
+
+            function Create_Function_Decl
+              (Logic_Id : W_Identifier_Id;
+               Prog_Id  : W_Identifier_Id;
+               Pre      : W_Pred_Id;
+               Post     : W_Pred_Id) return W_Declaration_Id
+            is
+               --  Each function has in its postcondition that its result is
+               --  equal to the application of the corresponding logic function
+               --  to the same arguments.
+
+               Param_Post : constant W_Pred_Id :=
                  +New_And_Expr
                  (Left   =>
-                      +Compute_Dynamic_Property
-                    (Expr        => +New_Result_Ident (Why_Type),
-                     Ty          => Etype (E),
-                     Only_Var    => False,
-                     Initialized => True),
-                  Right  => +Post,
-                  Domain => EW_Pred),
-               Domain => EW_Pred);
-
-            Dispatch_Param_Post : W_Pred_Id;
-            Refine_Param_Post   : W_Pred_Id;
-
-         begin
-            Emit
-              (File.Cur_Theory,
-               New_Function_Decl
+                    New_Call
+                      (Name   => Why_Eq,
+                       Domain => EW_Pred,
+                       Typ    => EW_Bool_Type,
+                       Args   => (+New_Result_Ident (Why_Type),
+                                  New_Call
+                                    (Domain => EW_Term,
+                                     Name   => Logic_Id,
+                                     Args   => Logic_Func_Args))),
+                  Right  =>
+                    +New_And_Expr
+                    (Left   => +Dynamic_Prop_Result,
+                     Right  => +Post,
+                     Domain => EW_Pred),
+                  Domain => EW_Pred);
+            begin
+               return New_Function_Decl
                  (Domain      => EW_Prog,
                   Name        => Prog_Id,
                   Binders     => Func_Why_Binders,
                   Return_Type => EW_Abstract (Etype (E)),
                   Labels      => Name_Id_Sets.Empty_Set,
                   Pre         => Pre,
-                  Post        => Param_Post));
+                  Post        => Param_Post);
+            end Create_Function_Decl;
+         begin
+            Emit
+              (File.Cur_Theory,
+               Create_Function_Decl (Logic_Id => Logic_Id,
+                                     Prog_Id  => Prog_Id,
+                                     Pre      => Pre,
+                                     Post     => Post));
 
             if Is_Dispatching_Operation (E) then
-               Dispatch_Param_Post :=
-                 +New_And_Expr
-                 (Left   =>
-                    New_Call
-                      (Domain => EW_Pred,
-                       Name   => Why_Eq,
-                       Typ    => EW_Bool_Type,
-                       Args =>
-                         (+New_Result_Ident (Why_Type),
-                          New_Call
-                            (Domain  => EW_Term,
-                             Name    => Dispatch_Logic_Id,
-                             Args    => Logic_Func_Args))),
-                  Right  => +Dispatch_Post,
-                  Domain => EW_Pred);
+               Emit
+                 (File.Cur_Theory,
+                  New_Namespace_Declaration
+                    (Name    => NID (To_String (WNE_Dispatch_Module)),
+                     Declarations =>
+                       (1 => Create_Function_Decl
+                            (Logic_Id => Dispatch_Logic_Id,
+                             Prog_Id  => Prog_Id,
+                             Pre      => Dispatch_Pre,
+                             Post     => Dispatch_Post))));
+            end if;
+            if Has_Contracts (E, Name_Refined_Post) then
+               Emit
+                 (File.Cur_Theory,
+                  New_Namespace_Declaration
+                    (Name    => NID (To_String (WNE_Refine_Module)),
+                     Declarations =>
+                       (1 => Create_Function_Decl
+                            (Logic_Id => Refine_Logic_Id,
+                             Prog_Id  => Prog_Id,
+                             Pre      => Pre,
+                             Post     => Refined_Post))));
+            end if;
+         end;
 
+      --  Ekind (E) = E_Procedure
+
+      else
+         declare
+            Dynamic_Prop_Effects : W_Pred_Id := True_Pred;
+         begin
+
+            --  Compute the dynamic property of mutable parameters
+
+            for I in Func_Why_Binders'Range loop
+               if Func_Why_Binders (I).Mutable then
+                  declare
+                     Binder   : constant Binder_Type := Func_Why_Binders (I);
+                     Dyn_Prop : constant W_Pred_Id :=
+                       Compute_Dynamic_Property
+                         (Expr     => Transform_Identifier
+                            (Params   => Params,
+                             Expr     => Binder.Ada_Node,
+                             Ent      => Binder.Ada_Node,
+                             Domain   => EW_Pred),
+                          Ty       => Etype (Binder.Ada_Node),
+                          Only_Var => True,
+                          Initialized => True);
+                  begin
+                     if Dyn_Prop /= True_Pred then
+                        Dynamic_Prop_Effects := +New_And_Expr
+                          (Left   => +Dynamic_Prop_Effects,
+                           Right  => +Dyn_Prop,
+                           Domain => EW_Pred);
+                     end if;
+                  end;
+               end if;
+            end loop;
+
+            --  Compute the dynamic property of global output
+
+            declare
+               Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
+               Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
+               Write_Names : Name_Set.Set;
+            begin
+               Flow_Utility.Get_Proof_Globals (Subprogram => E,
+                                               Classwide  => True,
+                                               Reads      => Read_Ids,
+                                               Writes     => Write_Ids);
+               Write_Names := Flow_Types.To_Name_Set (Write_Ids);
+
+               for Name of Write_Names loop
+                  declare
+                     Entity : constant Entity_Id := Find_Entity (Name);
+                  begin
+                     if Present (Entity)
+                       and then not (Ekind (Entity) = E_Abstract_State)
+                       and then Entity_In_SPARK (Entity)
+                     then
+                        declare
+                           Dyn_Prop : constant W_Pred_Id :=
+                             Compute_Dynamic_Property
+                               (Expr        => Transform_Identifier
+                                  (Params   => Params,
+                                   Expr     => Entity,
+                                   Ent      => Entity,
+                                   Domain   => EW_Pred),
+                                Ty          => Etype (Entity),
+                                Only_Var    => True,
+                                Initialized => True);
+                        begin
+                           if Dyn_Prop /= True_Pred then
+                              Dynamic_Prop_Effects := +New_And_Expr
+                                (Left   => +Dynamic_Prop_Effects,
+                                 Right  => +Dyn_Prop,
+                                 Domain => EW_Pred);
+                           end if;
+                        end;
+
+                     end if;
+
+                  end;
+               end loop;
+            end;
+
+            Emit
+              (File.Cur_Theory,
+               New_Function_Decl
+                 (Domain      => EW_Prog,
+                  Name        => Prog_Id,
+                  Binders     => Func_Why_Binders,
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Return_Type => EW_Unit_Type,
+                  Effects     => Effects,
+                  Pre         => Pre,
+                  Post        => +New_And_Expr
+                    (Left   => +Post,
+                     Right  => +Dynamic_Prop_Effects,
+                     Domain => EW_Pred)));
+
+            if Is_Dispatching_Operation (E) then
                Emit
                  (File.Cur_Theory,
                   New_Namespace_Declaration
@@ -2772,28 +2900,16 @@ package body Gnat2Why.Subprograms is
                             (Domain      => EW_Prog,
                              Name        => Prog_Id,
                              Binders     => Func_Why_Binders,
-                             Return_Type => EW_Abstract (Etype (E)),
                              Labels      => Name_Id_Sets.Empty_Set,
+                             Return_Type => EW_Unit_Type,
+                             Effects     => Effects,
                              Pre         => Dispatch_Pre,
-                             Post        => Dispatch_Param_Post))));
+                             Post        => +New_And_Expr
+                               (Left   => +Dispatch_Post,
+                                Right  => +Dynamic_Prop_Effects,
+                                Domain => EW_Pred)))));
             end if;
             if Has_Contracts (E, Name_Refined_Post) then
-               Refine_Param_Post :=
-                 +New_And_Expr
-                 (Left   =>
-                    New_Call
-                      (Domain => EW_Pred,
-                       Name   => Why_Eq,
-                       Typ    => EW_Bool_Type,
-                       Args   =>
-                         (1 => +New_Result_Ident (Why_Type),
-                          2 =>
-                            New_Call
-                              (Domain  => EW_Term,
-                               Name    => Refine_Logic_Id,
-                               Args    => Logic_Func_Args))),
-                  Right  => +Refined_Post,
-                  Domain => EW_Pred);
                Emit
                  (File.Cur_Theory,
                   New_Namespace_Declaration
@@ -2803,135 +2919,16 @@ package body Gnat2Why.Subprograms is
                             (Domain      => EW_Prog,
                              Name        => Prog_Id,
                              Binders     => Func_Why_Binders,
-                             Return_Type => EW_Abstract (Etype (E)),
                              Labels      => Name_Id_Sets.Empty_Set,
+                             Return_Type => EW_Unit_Type,
+                             Effects     => Effects,
                              Pre         => Pre,
-                             Post        => Refine_Param_Post))));
+                             Post        => +New_And_Expr
+                               (Left   => +Refined_Post,
+                                Right  => +Dynamic_Prop_Effects,
+                                Domain => EW_Pred)))));
             end if;
          end;
-
-      --  Ekind (E) = E_Procedure
-
-      else
-
-         --  Add to postcondition the dynamic property of mutable parameters
-
-         for I in Func_Why_Binders'Range loop
-            if Func_Why_Binders (I).Mutable then
-               declare
-                  Binder   : constant Binder_Type := Func_Why_Binders (I);
-                  Dyn_Prop : constant W_Pred_Id :=
-                    Compute_Dynamic_Property
-                      (Expr     => Transform_Identifier
-                         (Params   => Params,
-                          Expr     => Binder.Ada_Node,
-                          Ent      => Binder.Ada_Node,
-                          Domain   => EW_Pred),
-                       Ty       => Etype (Binder.Ada_Node),
-                       Only_Var => True,
-                       Initialized => True);
-               begin
-                  if Dyn_Prop /= True_Pred then
-                     Post := +New_And_Expr
-                       (Left   => +Post,
-                        Right  => +Dyn_Prop,
-                        Domain => EW_Pred);
-                  end if;
-               end;
-            end if;
-         end loop;
-
-         --  Add to postcondition the dynamic property of global output
-
-         declare
-            Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
-            Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
-            Write_Names : Name_Set.Set;
-         begin
-            Flow_Utility.Get_Proof_Globals (Subprogram => E,
-                                            Classwide  => True,
-                                            Reads      => Read_Ids,
-                                            Writes     => Write_Ids);
-            Write_Names := Flow_Types.To_Name_Set (Write_Ids);
-
-            for Name of Write_Names loop
-               declare
-                  Entity : constant Entity_Id := Find_Entity (Name);
-               begin
-                  if Present (Entity)
-                    and then not (Ekind (Entity) = E_Abstract_State)
-                    and then Entity_In_SPARK (Entity)
-                  then
-                     declare
-                        Dyn_Prop : constant W_Pred_Id :=
-                          Compute_Dynamic_Property
-                            (Expr        => Transform_Identifier
-                               (Params   => Params,
-                                Expr     => Entity,
-                                Ent      => Entity,
-                                Domain   => EW_Pred),
-                             Ty          => Etype (Entity),
-                             Only_Var    => True,
-                             Initialized => True);
-                     begin
-                        if Dyn_Prop /= True_Pred then
-                           Post := +New_And_Expr
-                             (Left   => +Post,
-                              Right  => +Dyn_Prop,
-                              Domain => EW_Pred);
-                        end if;
-                     end;
-
-                  end if;
-
-               end;
-            end loop;
-         end;
-
-         Emit
-           (File.Cur_Theory,
-            New_Function_Decl
-              (Domain      => EW_Prog,
-               Name        => Prog_Id,
-               Binders     => Func_Why_Binders,
-               Labels      => Name_Id_Sets.Empty_Set,
-               Return_Type => EW_Unit_Type,
-               Effects     => Effects,
-               Pre         => Pre,
-               Post        => Post));
-
-         if Is_Dispatching_Operation (E) then
-            Emit
-              (File.Cur_Theory,
-               New_Namespace_Declaration
-                 (Name    => NID (To_String (WNE_Dispatch_Module)),
-                  Declarations =>
-                    (1 => New_Function_Decl
-                         (Domain      => EW_Prog,
-                          Name        => Prog_Id,
-                          Binders     => Func_Why_Binders,
-                          Labels      => Name_Id_Sets.Empty_Set,
-                          Return_Type => EW_Unit_Type,
-                          Effects     => Effects,
-                          Pre         => Dispatch_Pre,
-                          Post        => Dispatch_Post))));
-         end if;
-         if Has_Contracts (E, Name_Refined_Post) then
-            Emit
-              (File.Cur_Theory,
-               New_Namespace_Declaration
-                 (Name    => NID (To_String (WNE_Refine_Module)),
-                  Declarations =>
-                    (1 => New_Function_Decl
-                         (Domain      => EW_Prog,
-                          Name        => Prog_Id,
-                          Binders     => Func_Why_Binders,
-                          Labels      => Name_Id_Sets.Empty_Set,
-                          Return_Type => EW_Unit_Type,
-                          Effects     => Effects,
-                          Pre         => Pre,
-                          Post        => Refined_Post))));
-         end if;
       end if;
 
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);

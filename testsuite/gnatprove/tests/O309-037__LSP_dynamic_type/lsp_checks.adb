@@ -63,7 +63,9 @@ procedure LSP_Checks (C : Natural) with SPARK_Mode is
    R1 : Root'Class := Root'(F1 => 0);
    R2 : Root'Class := Child'(F1 => C, F2 => 0);
 begin
+   Nested.Glob := 0;
    Do_Something (R1);
+   pragma Assert (Glob = 0);
    Do_Something (R2);
    pragma Assert (Glob = C);
 end;
