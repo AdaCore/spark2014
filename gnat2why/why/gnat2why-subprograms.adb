@@ -74,33 +74,6 @@ package body Gnat2Why.Subprograms is
    -- Local Subprograms --
    -----------------------
 
-   procedure Collect_Bounds_For_Dynamic_Types
-     (Params    :        Transformation_Params;
-      Scope     :        Entity_Id;
-      Dyn_Types : in out Node_Sets.Set;
-      Objects   : in out Node_Sets.Set);
-   --  For each element of Dyn_Types not declared in Scope, add to Objects
-   --  every object used for the bounds. If a dynamic type is a subtype or a
-   --  derived type of a dynamic type, this type is added to Dyn_Types.
-
-   procedure Assume_Dynamic_Property_For_Objects
-     (Assume  : in out W_Prog_Id;
-      Objects :        Node_Sets.Set;
-      Scope   :        Entity_Id);
-   --  For each element of Objects, add to Assume an
-   --  assumption of its dynamic property.
-
-   procedure Collect_Objects (W : Why_Node_Id; Result : in out Node_Sets.Set);
-   --  Given a Why node, collects the set of external objects that are
-   --  referenced in this node.
-
-   procedure Collect_Dynamic_Types
-     (W : Why_Node_Id; Result : in out Node_Sets.Set);
-   --  Given a Why node, collects the set of external dynamic types
-   --  that are referenced in this node.
-   --  For now, it only collects types that are either unconstrained arrays or
-   --  dynamic discrete.
-
    function Compute_Args
      (E       : Entity_Id;
       Binders : Binder_Array) return W_Expr_Array;
@@ -153,6 +126,22 @@ package body Gnat2Why.Subprograms is
    --  Returns the postcondition corresponding to the Contract_Cases pragma for
    --  subprogram E (if any), to be used in the postcondition of the program
    --  function.
+
+   function Compute_Dynamic_Property_For_Inputs
+     (W           : Why_Node_Id;
+      Params      : Transformation_Params;
+      Scope       : Node_Id := Empty;
+      Initialized : Boolean := False) return W_Prog_Id;
+   --  Given a Why node, collects the set of external dynamic objects
+   --  that are referenced in this node.
+   --  Returns an assumption including the dynamic property of every such
+   --  object.
+
+   function Compute_Dynamic_Property_For_Effects
+     (E      : Entity_Id;
+      Params : Transformation_Params) return W_Pred_Id;
+   --  Returns an assumption including the dynamic property of every object
+   --  modified by a subprogram.
 
    function Compute_Effects
      (E             : Entity_Id;
@@ -225,213 +214,6 @@ package body Gnat2Why.Subprograms is
 
    end Add_Dependencies_For_Effects;
 
-   --------------------------------------
-   -- Collect_Bounds_For_Dynamic_Types --
-   --------------------------------------
-
-   procedure Collect_Bounds_For_Dynamic_Types
-     (Params    :        Transformation_Params;
-      Scope     :        Entity_Id;
-      Dyn_Types : in out Node_Sets.Set;
-      Objects   : in out Node_Sets.Set) is
-
-      procedure Collect_Constraints_For_Type (Ty : Entity_Id);
-      --  Calls itself recursively on the parent type used in Ty's declaration
-      --  Adds affectations to the bounds of Ty to Assume
-      --  Collects objects and types from bounds of Ty
-
-      Input_Set : Node_Sets.Set;
-
-      procedure Collect_Constraints_For_Type (Ty : Entity_Id) is
-      begin
-         if Type_Is_Modeled_As_Base (Ty)
-           and then not Dyn_Types.Contains (Ty)
-         then
-            declare
-               --  Type used in the declaration of Ty
-               Base : constant Node_Id :=
-                 (if Is_Itype (Ty) and then not Itype_Has_Declaration (Ty) then
-                       Etype (Ty)
-                  elsif Nkind (Parent (Ty)) = N_Subtype_Declaration then
-                       Etype (Subtype_Mark (Subtype_Indication (Parent (Ty))))
-                  else Etype (Subtype_Mark
-                    (Subtype_Indication (Type_Definition (Parent (Ty))))));
-            begin
-
-               --  The constraints for Ty's parent type should be assumed
-               --  before the constraints for Ty
-
-               Collect_Constraints_For_Type (Base);
-
-               --  No need to assume anything if Ty is declared in Subp
-
-               if Get_Enclosing_Unit (Ty) = Scope then
-                  return;
-               end if;
-
-               --  Do not assume the bounds of a type that depends on a
-               --  discriminant.
-               --  ??? are there other cases ?
-
-               if Depends_On_Discriminant (Get_Range (Ty))
-               then
-                  return;
-               end if;
-
-               declare
-                  Rng       : constant Node_Id := Get_Range (Ty);
-                  Low_Expr  : constant W_Term_Id :=
-                    +Transform_Expr (Low_Bound (Rng), Base_Why_Type (Ty),
-                                     EW_Term, Params);
-                  High_Expr : constant W_Term_Id :=
-                    +Transform_Expr (High_Bound (Rng), Base_Why_Type (Ty),
-                                     EW_Term, Params);
-                  New_Types : Node_Sets.Set;
-               begin
-                  --  Add Ty to the set of already handled types
-
-                  Dyn_Types.Include (Ty);
-
-                  --  Extend Objects with objects that appear in Rng and
-                  --  Dyn_Types with their types
-
-                  Collect_Objects (+Low_Expr, Objects);
-                  Collect_Objects (+High_Expr, Objects);
-
-                  Collect_Dynamic_Types (+Low_Expr, New_Types);
-                  Collect_Dynamic_Types (+High_Expr, New_Types);
-
-                  for E of New_Types loop
-                     Collect_Constraints_For_Type (E);
-                  end loop;
-               end;
-            end;
-         end if;
-      end Collect_Constraints_For_Type;
-
-   begin
-      Node_Sets.Move (Input_Set, Dyn_Types);
-
-      --  Add affectations to the ranges of elements of Dyn_Types to Assume
-
-      for E of Input_Set loop
-         Collect_Constraints_For_Type (E);
-      end loop;
-   end Collect_Bounds_For_Dynamic_Types;
-
-   -----------------------------------------
-   -- Assume_Dynamic_Property_For_Objects --
-   -----------------------------------------
-
-   procedure Assume_Dynamic_Property_For_Objects
-     (Assume  : in out W_Prog_Id;
-      Objects :        Node_Sets.Set;
-      Scope   :        Entity_Id) is
-   begin
-      for Obj of Objects loop
-
-         --  No need to assume anything if Obj is a local object of the
-         --  subprogram.
-         --  For now, we only assume initialization of in and in out
-         --  parameters. We can do better when we use flow analysis to compute
-         --  read and written objects.
-
-         if not Ada_Ent_To_Why.Has_Element (Symbol_Table, Obj)
-           or else (Get_Enclosing_Unit (Obj) = Scope
-                    and then not (Ekind (Obj) in E_In_Parameter
-                                    | E_In_Out_Parameter | E_Out_Parameter))
-         then
-            null;
-         elsif Is_Mutable_In_Why (Obj) then
-            declare
-               Binder : constant Item_Type :=
-                 Ada_Ent_To_Why.Element (Symbol_Table, Obj);
-               Expr   : constant W_Expr_Id :=
-                 (case Binder.Kind is
-                     when Regular => New_Deref
-                    (Ada_Node => Obj,
-                     Right    => Binder.Main.B_Name,
-                     Typ      => Get_Typ (Binder.Main.B_Name)),
-                     when UCArray => New_Deref
-                    (Ada_Node => Obj,
-                     Right    => Binder.Content.B_Name,
-                     Typ      => Get_Typ (Binder.Content.B_Name)),
-                     when DRecord => Record_From_Split_Form (Binder, True),
-                     when Func    => raise Program_Error);
-            begin
-
-               Assume :=
-                 Sequence ((1 => Assume,
-                            2 => Assume_Dynamic_Property
-                              (Expr, Etype (Obj), False,
-                               Ekind (Obj) in E_In_Parameter
-                                   | E_In_Out_Parameter)));
-            end;
-         else
-            Assume :=
-              Sequence ((1 => Assume,
-                         2 => Assume_Dynamic_Property
-                           (+To_Why_Id
-                              (E => Obj,
-                               Typ => Why_Type_Of_Entity (Obj)),
-                            Etype (Obj), False,
-                            Ekind (Obj) in E_In_Parameter
-                                | E_In_Out_Parameter)));
-         end if;
-      end loop;
-   end Assume_Dynamic_Property_For_Objects;
-
-   ---------------------------
-   -- Collect_Dynamic_Types --
-   ---------------------------
-
-   procedure Collect_Dynamic_Types (W      :     Why_Node_Id;
-                                    Result : in out Node_Sets.Set) is
-
-      procedure Include (Ty : Entity_Id);
-      --  Collects dynamic discrete types relevant for Ty
-      --  If Ty is a dynamic discrete type, add it to Result.
-      --  If Ty is an unconstrained array type, add its index types if they are
-      --  dynamic.
-
-      Includes : constant Node_Sets.Set := Compute_Ada_Node_Set (W);
-
-      procedure Include (Ty : Entity_Id) is
-         Index : Node_Id;
-      begin
-         if Type_Is_Modeled_As_Base (Ty) then
-            Result.Include (Ty);
-         elsif Is_Array_Type (Ty) and then not Is_Static_Array_Type (Ty) then
-            Index := First_Index (Ty);
-            while Present (Index) loop
-               Include (Etype (Index));
-               Next_Index (Index);
-            end loop;
-         end if;
-      end Include;
-   begin
-      for E of Includes loop
-         if Nkind (E) in N_Entity and then Is_Type (E) then
-            Include (E);
-         end if;
-      end loop;
-   end Collect_Dynamic_Types;
-
-   ---------------------
-   -- Collect_Objects --
-   ---------------------
-
-   procedure Collect_Objects (W      :     Why_Node_Id;
-                              Result : in out Node_Sets.Set) is
-      Includes : constant Node_Sets.Set := Compute_Ada_Node_Set (W);
-   begin
-      for E of Includes loop
-         if Nkind (E) in N_Entity and then Is_Object (E) then
-            Result.Include (E);
-         end if;
-      end loop;
-   end Collect_Objects;
-
    ------------------
    -- Compute_Args --
    ------------------
@@ -484,6 +266,146 @@ package body Gnat2Why.Subprograms is
             return Binders;
          end if;
    end Compute_Binders;
+
+   -----------------------------------------
+   -- Compute_Dynamic_Property_For_Inputs --
+   -----------------------------------------
+
+   function Compute_Dynamic_Property_For_Inputs
+     (W           : Why_Node_Id;
+      Params      : Transformation_Params;
+      Scope       : Node_Id := Empty;
+      Initialized : Boolean := False) return W_Prog_Id
+   is
+      Includes            : constant Node_Sets.Set := Compute_Ada_Node_Set (W);
+      Dynamic_Prop_Inputs : W_Prog_Id := New_Void;
+   begin
+      for Obj of Includes loop
+
+         --  No need to assume anything if Obj is a local object of the
+         --  subprogram.
+         --  For now, we only assume initialization of in and in out
+         --  parameters. We can do better when we use flow analysis to compute
+         --  read and written objects.
+
+         if not (Nkind (Obj) in N_Entity)
+           or else not Is_Object (Obj)
+           or else not Ada_Ent_To_Why.Has_Element (Symbol_Table, Obj)
+           or else (Get_Enclosing_Unit (Obj) = Scope
+                    and then not (Ekind (Obj) in E_In_Parameter
+                                    | E_In_Out_Parameter | E_Out_Parameter))
+         then
+            null;
+         elsif Is_Mutable_In_Why (Obj) then
+            Dynamic_Prop_Inputs := Sequence
+              (Dynamic_Prop_Inputs,
+               Assume_Dynamic_Property
+                 (Expr        => Transform_Identifier
+                      (Params   => Params,
+                       Expr     => Obj,
+                       Ent      => Obj,
+                       Domain   => EW_Term),
+                  Ty          => Etype (Obj),
+                  Only_Var    => False,
+                  Initialized => Initialized or else
+                  Ekind (Obj) in E_In_Parameter
+                      | E_In_Out_Parameter));
+         else
+            Dynamic_Prop_Inputs := Sequence
+              (Dynamic_Prop_Inputs,
+               Assume_Dynamic_Property
+                 (+To_Why_Id
+                      (E => Obj,
+                       Typ => Why_Type_Of_Entity (Obj)),
+                  Etype (Obj), False,
+                  Initialized or else
+                  Ekind (Obj) in E_In_Parameter
+                      | E_In_Out_Parameter));
+         end if;
+      end loop;
+      return Dynamic_Prop_Inputs;
+   end Compute_Dynamic_Property_For_Inputs;
+
+   function Compute_Dynamic_Property_For_Effects
+     (E      : Entity_Id;
+      Params : Transformation_Params) return W_Pred_Id
+   is
+      Func_Why_Binders     : constant Binder_Array :=
+        To_Binder_Array (Compute_Binders (E, EW_Prog));
+      Dynamic_Prop_Effects : W_Pred_Id := True_Pred;
+   begin
+
+      --  Compute the dynamic property of mutable parameters
+
+      for I in Func_Why_Binders'Range loop
+         if Func_Why_Binders (I).Mutable then
+            declare
+               Binder   : constant Binder_Type := Func_Why_Binders (I);
+               Dyn_Prop : constant W_Pred_Id :=
+                 Compute_Dynamic_Property
+                   (Expr     => Transform_Identifier
+                      (Params   => Params,
+                       Expr     => Binder.Ada_Node,
+                       Ent      => Binder.Ada_Node,
+                       Domain   => EW_Term),
+                    Ty       => Etype (Binder.Ada_Node),
+                    Only_Var => True,
+                    Initialized => True);
+            begin
+               Dynamic_Prop_Effects := +New_And_Expr
+                 (Left   => +Dynamic_Prop_Effects,
+                  Right  => +Dyn_Prop,
+                  Domain => EW_Pred);
+            end;
+         end if;
+      end loop;
+
+      --  Compute the dynamic property of global output
+
+      declare
+         Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
+         Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
+         Write_Names : Name_Set.Set;
+      begin
+         Flow_Utility.Get_Proof_Globals (Subprogram => E,
+                                         Classwide  => True,
+                                         Reads      => Read_Ids,
+                                         Writes     => Write_Ids);
+         Write_Names := Flow_Types.To_Name_Set (Write_Ids);
+
+         for Name of Write_Names loop
+            declare
+               Entity : constant Entity_Id := Find_Entity (Name);
+            begin
+               if Present (Entity)
+                 and then not (Ekind (Entity) = E_Abstract_State)
+                 and then Entity_In_SPARK (Entity)
+               then
+                  declare
+                     Dyn_Prop : constant W_Pred_Id :=
+                       Compute_Dynamic_Property
+                         (Expr        => Transform_Identifier
+                            (Params   => Params,
+                             Expr     => Entity,
+                             Ent      => Entity,
+                             Domain   => EW_Term),
+                          Ty          => Etype (Entity),
+                          Only_Var    => True,
+                          Initialized => True);
+                  begin
+                     Dynamic_Prop_Effects := +New_And_Expr
+                       (Left   => +Dynamic_Prop_Effects,
+                        Right  => +Dyn_Prop,
+                        Domain => EW_Pred);
+                  end;
+
+               end if;
+
+            end;
+         end loop;
+      end;
+      return Dynamic_Prop_Effects;
+   end Compute_Dynamic_Property_For_Effects;
 
    ---------------------
    -- Compute_Effects --
@@ -1512,33 +1434,15 @@ package body Gnat2Why.Subprograms is
          Why_Body := Transform_Declarations_Block (Vis_Decls, Why_Body);
       end if;
 
-      declare
-         Used_Dyn_Types : Node_Sets.Set;
-         Used_Objects   : Node_Sets.Set;
-         Assume         : W_Prog_Id := New_Void;
-      begin
-         Collect_Dynamic_Types (W      => +Why_Body,
-                                Result => Used_Dyn_Types);
-         Collect_Objects (W      => +Why_Body,
-                          Result => Used_Objects);
+      --  We assume that objects used in the program are in range, if
+      --  they are of a dynamic type
 
-         --  Collect objects refered in bounds of external dynamic types used
-         --  in the program.
-
-         Collect_Bounds_For_Dynamic_Types (Params    => Params,
-                                           Scope     => E,
-                                           Dyn_Types => Used_Dyn_Types,
-                                           Objects   => Used_Objects);
-
-         --  We assume that objects used in the program are in range, if
-         --  they are of a dynamic type
-
-         Assume_Dynamic_Property_For_Objects (Assume  => Assume,
-                                              Objects => Used_Objects,
-                                              Scope   => E);
-         Why_Body :=
-           Sequence (Assume, Why_Body);
-      end;
+      Why_Body :=
+        Sequence
+          (Compute_Dynamic_Property_For_Inputs (W      => +Why_Body,
+                                                Params => Params,
+                                                Scope  => E),
+           Why_Body);
 
       declare
          Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
@@ -1576,12 +1480,12 @@ package body Gnat2Why.Subprograms is
       Classwide_Post_List : Node_Lists.List;
       Post_List           : Node_Lists.List;
 
-      Inherited_Pre_Spec  : W_Pred_Id;
-      Classwide_Pre_Spec  : W_Pred_Id;
-      Pre_Spec            : W_Pred_Id;
-      Inherited_Post_Spec : W_Pred_Id;
-      Classwide_Post_Spec : W_Pred_Id;
-      Post_Spec           : W_Pred_Id;
+      Inherited_Pre_Spec   : W_Pred_Id;
+      Classwide_Pre_Spec   : W_Pred_Id;
+      Pre_Spec             : W_Pred_Id;
+      Inherited_Post_Spec  : W_Pred_Id;
+      Classwide_Post_Spec  : W_Pred_Id;
+      Post_Spec            : W_Pred_Id;
 
       Inherited_Pre_Assume  : W_Prog_Id;
       Classwide_Pre_Check   : W_Prog_Id;
@@ -1720,12 +1624,11 @@ package body Gnat2Why.Subprograms is
             Kind     => EW_Assert);
 
          Weaker_Pre := Sequence
-           ((1 => Why_Body,
-             2 => New_Comment (Comment =>
+           ((1 => New_Comment (Comment =>
                                NID ("Checking that precondition is"
                                   & " implied by class-wide precondition")),
-             3 => Classwide_Pre_Assume,
-             4 => Pre_Check));
+             2 => Classwide_Pre_Assume,
+             3 => Pre_Check));
 
          Weaker_Pre :=
            New_Abstract_Expr (Expr => Weaker_Pre, Post => True_Pred);
@@ -2246,40 +2149,15 @@ package body Gnat2Why.Subprograms is
       --  Generate assumptions for dynamic types used in the program.
 
       if Present (Body_N) and then Entity_Body_In_SPARK (E) then
-         Assume := New_Void;
-
-         declare
-            Used_Dyn_Types : Node_Sets.Set;
-            Used_Objects   : Node_Sets.Set;
-         begin
-            Collect_Dynamic_Types (W      => +Prog,
-                                   Result => Used_Dyn_Types);
-            Collect_Objects (W      => +Prog,
-                             Result => Used_Objects);
-
-            --  Collect object refered in bounds of external dynamic types used
-            --  in the program
-
-            Collect_Bounds_For_Dynamic_Types (Params    => Params,
-                                             Scope     => E,
-                                             Dyn_Types => Used_Dyn_Types,
-                                             Objects   => Used_Objects);
-
-            --  We assume that objects used in the program are in range, if
-            --  they are of a dynamic type
-
-            Assume_Dynamic_Property_For_Objects (Assume  => Assume,
-                                                 Objects => Used_Objects,
-                                                 Scope   => E);
-         end;
-
          Prog := Sequence
            ((1 => New_Comment
              (Comment => NID ("Assume dynamic property of params of the"
               & " subprogram"
               & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
                 else ""))),
-             2 => Assume,
+             2 => Compute_Dynamic_Property_For_Inputs (W      => +Prog,
+                                                       Params => Params,
+                                                       Scope  => E),
              3 => Prog));
       end if;
 
@@ -2798,82 +2676,9 @@ package body Gnat2Why.Subprograms is
 
       else
          declare
-            Dynamic_Prop_Effects : W_Pred_Id := True_Pred;
+            Dynamic_Prop_Effects : constant W_Pred_Id :=
+              Compute_Dynamic_Property_For_Effects (E, Params);
          begin
-
-            --  Compute the dynamic property of mutable parameters
-
-            for I in Func_Why_Binders'Range loop
-               if Func_Why_Binders (I).Mutable then
-                  declare
-                     Binder   : constant Binder_Type := Func_Why_Binders (I);
-                     Dyn_Prop : constant W_Pred_Id :=
-                       Compute_Dynamic_Property
-                         (Expr     => Transform_Identifier
-                            (Params   => Params,
-                             Expr     => Binder.Ada_Node,
-                             Ent      => Binder.Ada_Node,
-                             Domain   => EW_Pred),
-                          Ty       => Etype (Binder.Ada_Node),
-                          Only_Var => True,
-                          Initialized => True);
-                  begin
-                     if Dyn_Prop /= True_Pred then
-                        Dynamic_Prop_Effects := +New_And_Expr
-                          (Left   => +Dynamic_Prop_Effects,
-                           Right  => +Dyn_Prop,
-                           Domain => EW_Pred);
-                     end if;
-                  end;
-               end if;
-            end loop;
-
-            --  Compute the dynamic property of global output
-
-            declare
-               Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
-               Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
-               Write_Names : Name_Set.Set;
-            begin
-               Flow_Utility.Get_Proof_Globals (Subprogram => E,
-                                               Classwide  => True,
-                                               Reads      => Read_Ids,
-                                               Writes     => Write_Ids);
-               Write_Names := Flow_Types.To_Name_Set (Write_Ids);
-
-               for Name of Write_Names loop
-                  declare
-                     Entity : constant Entity_Id := Find_Entity (Name);
-                  begin
-                     if Present (Entity)
-                       and then not (Ekind (Entity) = E_Abstract_State)
-                       and then Entity_In_SPARK (Entity)
-                     then
-                        declare
-                           Dyn_Prop : constant W_Pred_Id :=
-                             Compute_Dynamic_Property
-                               (Expr        => Transform_Identifier
-                                  (Params   => Params,
-                                   Expr     => Entity,
-                                   Ent      => Entity,
-                                   Domain   => EW_Pred),
-                                Ty          => Etype (Entity),
-                                Only_Var    => True,
-                                Initialized => True);
-                        begin
-                           if Dyn_Prop /= True_Pred then
-                              Dynamic_Prop_Effects := +New_And_Expr
-                                (Left   => +Dynamic_Prop_Effects,
-                                 Right  => +Dyn_Prop,
-                                 Domain => EW_Pred);
-                           end if;
-                        end;
-
-                     end if;
-
-                  end;
-               end loop;
-            end;
 
             Emit
               (File.Cur_Theory,
