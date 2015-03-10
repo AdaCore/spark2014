@@ -1,8 +1,11 @@
 test_dynamic_property.adb:1:11: warning: subprogram "Test_Dynamic_Property" has no effect
 test_dynamic_property.adb:4:37: info: range check proved
 test_dynamic_property.adb:5:12: info: range check proved
+test_dynamic_property.adb:5:52: info: initialization of "C" proved
+test_dynamic_property.adb:6:29: info: initialization of "C" proved
 test_dynamic_property.adb:6:29: info: range check proved
 test_dynamic_property.adb:10:15: info: range check proved
+test_dynamic_property.adb:10:51: info: initialization of "C" proved
 test_dynamic_property.adb:11:07: info: initialization of "X" proved
 test_dynamic_property.adb:11:07: info: initialization of "Y" proved
 test_dynamic_property.adb:11:28: info: initialization of "X" proved
@@ -22,20 +25,25 @@ test_dynamic_property.adb:47:15: info: range check proved
 test_dynamic_property.adb:51:09: info: precondition proved
 test_dynamic_property.adb:52:04: info: assertion proved
 test_dynamic_property.adb:52:19: info: initialization of "X" proved
+test_dynamic_property.adb:52:24: info: initialization of "C" proved
 test_dynamic_property.adb:53:04: info: assertion proved
 test_dynamic_property.adb:53:19: info: precondition proved
+test_dynamic_property.adb:53:40: info: initialization of "C" proved
 test_dynamic_property.adb:54:04: info: precondition proved
 test_dynamic_property.adb:54:15: info: initialization of "X" proved
 test_dynamic_property.adb:55:04: info: assertion proved
 test_dynamic_property.adb:55:19: info: initialization of "X" proved
+test_dynamic_property.adb:55:24: info: initialization of "C" proved
 test_dynamic_property.adb:56:13: info: initialization of "Y" proved
 test_dynamic_property.adb:57:07: info: precondition proved
 test_dynamic_property.adb:57:24: info: initialization of "Y" proved
 test_dynamic_property.adb:57:24: info: range check proved
 test_dynamic_property.adb:58:07: info: assertion proved
 test_dynamic_property.adb:58:28: info: initialization of "Y" proved
+test_dynamic_property.adb:58:34: info: initialization of "C" proved
 test_dynamic_property.adb:60:10: info: precondition proved
 test_dynamic_property.adb:60:22: info: initialization of "X" proved
 test_dynamic_property.adb:60:22: info: range check proved
 test_dynamic_property.adb:61:04: info: assertion proved
 test_dynamic_property.adb:61:19: info: initialization of "X" proved
+test_dynamic_property.adb:61:24: info: initialization of "C" proved
