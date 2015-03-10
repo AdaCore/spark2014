@@ -39,11 +39,11 @@ dic2.ads:20:28: info: range check proved
 dic2.ads:23:28: info: range check proved
 dic3.adb:7:07: info: initialization of "X" proved
 dic3.adb:8:07: info: initialization of "Y" proved
-dic3.adb:10:22: medium: assertion might fail, requires Integer (X) = Y
+dic3.adb:10:07: info: assertion proved
 dic3.adb:10:31: info: initialization of "X" proved
 dic3.adb:10:45: info: initialization of "Y" proved
 dic3.ads:2:09: info: default initial condition proved
-dic3.ads:5:09: medium: default initial condition might fail
+dic3.ads:5:09: info: default initial condition proved
 dic3.ads:8:13: info: initialization of "To_Int" proved
 dic3.ads:10:13: info: initialization of "To_Int" proved
 dic3.ads:12:14: warning: subprogram "Test" has no effect
