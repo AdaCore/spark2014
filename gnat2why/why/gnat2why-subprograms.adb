@@ -1573,6 +1573,13 @@ package body Gnat2Why.Subprograms is
         (Ada_Node => E,
          Effects  => +Compute_Effects (E, Global_Params => True));
 
+      Call_Effects := Sequence
+        (Call_Effects,
+         New_Assume_Statement
+           (Ada_Node    => E,
+            Pre         => True_Pred,
+            Post        => Compute_Dynamic_Property_For_Effects (E, Params)));
+
       --  If E has a class-wide precondition, check that it cannot raise a
       --  run-time error in an empty context.
 
@@ -1728,6 +1735,13 @@ package body Gnat2Why.Subprograms is
           4 => Stronger_Post,
           5 => Classwide_Post_RTE,
           6 => Stronger_Classwide_Post));
+
+      --  Assume dynamic property of inputs before the checks
+
+      Why_Body := Sequence
+        (Compute_Dynamic_Property_For_Inputs (W           => +Why_Body,
+                                              Params      => Params),
+         Why_Body);
 
       --  Declare a global variable to hold the result of a function
 
