@@ -1,10 +1,10 @@
 aip-ip.adb:9:04: info: initialization of "Default_Router" proved
 aip-ip.adb:10:04: info: initialization of "IP_Serial" proved
-aip-ip.adb:13:36: warning: unused global "Default_Router"
-aip-ip.adb:13:55: warning: unused global "UDP.State"
+aip-ip.adb:13:36: low: unused global "Default_Router" (SPARK RM 6.1.4(13))
+aip-ip.adb:13:55: low: unused global "UDP.State" (SPARK RM 6.1.4(13))
+aip-ip.adb:14:36: low: unused global "IP_Serial" (SPARK RM 6.1.4(13))
 aip-ip.adb:14:36: warning: "IP_Serial" is not modified, could be INPUT
-aip-ip.adb:14:36: warning: unused global "IP_Serial"
+aip-ip.adb:14:50: low: unused global "TCP.State" (SPARK RM 6.1.4(13))
 aip-ip.adb:14:50: warning: "TCP.State" is not modified, could be INPUT
-aip-ip.adb:14:50: warning: unused global "TCP.State"
 aip-ip.ads:9:24: warning: unused variable "Netif"
 aip-ip.ads:9:41: warning: unused variable "Buf"

@@ -8,7 +8,7 @@ nested_pkg.adb:43:17: warning: subprogram "Test" has no effect
 nested_pkg.adb:56:14: warning: subprogram "Test" has no effect
 nested_pkg.ads:2:26: warning: no procedure exists that can initialize abstract state "Nested_Pkg.Foobar"
 stack_asm.adb:38:40: high: "The_Stack" is not initialized
-stack_asm.adb:38:40: warning: unused global "The_Stack"
+stack_asm.adb:38:40: low: unused global "The_Stack" (SPARK RM 6.1.4(13))
 stack_asm.adb:38:51: info: initialization of "The_Ptr" proved
 stack_asm.adb:45:39: info: initialization of "The_Ptr" proved
 stack_asm.ads:7:12: info: initialization of "Is_Empty" proved

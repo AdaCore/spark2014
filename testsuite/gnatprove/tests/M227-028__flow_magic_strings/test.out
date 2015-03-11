@@ -9,8 +9,8 @@ test.adb:20:12: called subprogram "Initialise" requires GLOBAL aspect to make st
 test.adb:20:12: called subprogram "Initialise" requires GLOBAL aspect to make state "other.y" visible
 test.adb:28:12: called subprogram "Initialise" requires GLOBAL aspect to make state "other.x" visible
 test.adb:28:12: called subprogram "Initialise" requires GLOBAL aspect to make state "other.y" visible
+test.adb:31:14: low: unused global "Z" (SPARK RM 6.1.4(13))
 test.adb:31:14: warning: "Z" is not modified, could be INPUT
-test.adb:31:14: warning: unused global "Z"
 test.adb:38:14: warning: subprogram "Test_03_C" has no effect
 test.adb:46:04: warning: analyzing unreferenced procedure "Test_04"
 test.adb:46:14: info: initialization of "Z" proved

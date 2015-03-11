@@ -48,12 +48,12 @@ depends_illegal_3.adb:38:14: medium: missing dependency "Y => Y"
 depends_illegal_3.adb:38:18: warning: unused variable "Par1"
 depends_illegal_3.adb:38:35: warning: "Par2" is not modified, could be IN
 depends_illegal_3.adb:38:35: warning: unused variable "Par2"
-depends_illegal_3.adb:42:33: warning: unused global "X"
+depends_illegal_3.adb:42:33: low: unused global "X" (SPARK RM 6.1.4(13))
+depends_illegal_3.adb:43:33: low: unused global "Y" (SPARK RM 6.1.4(13))
 depends_illegal_3.adb:43:33: warning: "Y" is not modified, could be INPUT
-depends_illegal_3.adb:43:33: warning: unused global "Y"
 depends_illegal_3.adb:44:11: medium: incorrect dependency "null => Par2"
 depends_illegal_3.adb:44:11: medium: incorrect dependency "null => Y"
-depends_illegal_3.adb:60:07: "X" must be listed in the Depends aspect of "P4" (SPARK RM 6.1.4(13))
+depends_illegal_3.adb:60:07: "X" must be listed in the Depends aspect of "P4" (SPARK RM 6.1.4(12))
 depends_illegal_3.adb:65:18: info: initialization of "P2" proved
 depends_illegal_3.adb:73:33: info: initialization of "G_Var2" proved
 depends_illegal_3.adb:75:23: medium: missing dependency "P2 => G_Var1"
@@ -80,8 +80,8 @@ depends_illegal_4.adb:8:18: info: initialization of "Par2" proved
 depends_illegal_4.adb:15:23: medium: missing dependency "Par2 => Y"
 depends_illegal_4.adb:16:41: medium: incorrect dependency "Par3 => Y"
 depends_illegal_4.adb:17:23: medium: missing dependency "Y => Y"
-depends_illegal_4.adb:32:07: "X" must be listed in the Depends aspect of "P2" (SPARK RM 6.1.4(13))
-depends_illegal_4.adb:44:15: "Y" must be listed in the Depends aspect of "P3" (SPARK RM 6.1.4(13))
+depends_illegal_4.adb:32:07: "X" must be listed in the Depends aspect of "P2" (SPARK RM 6.1.4(12))
+depends_illegal_4.adb:44:15: "Y" must be listed in the Depends aspect of "P3" (SPARK RM 6.1.4(12))
    compilation of depends_illegal_4.adb failed
 
 

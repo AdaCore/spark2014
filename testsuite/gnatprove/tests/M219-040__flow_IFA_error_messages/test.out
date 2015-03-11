@@ -43,7 +43,7 @@ test.adb:185:13: info: initialization of "Unused_Variables_2" proved
 test.adb:185:39: warning: unused variable "Par2"
 test.adb:187:13: warning: unused variable "Z"
 test.adb:189:16: info: initialization of "Return_X" proved
-test.adb:190:29: warning: unused global "Y"
+test.adb:190:29: low: unused global "Y" (SPARK RM 6.1.4(13))
 test.adb:199:14: info: initialization of "X" proved
 test.adb:199:14: info: initialization of "Y" proved
 test.adb:208:14: warning: subprogram "Unreachable_Code_1" has no effect

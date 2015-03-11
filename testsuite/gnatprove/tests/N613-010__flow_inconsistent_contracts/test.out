@@ -1,4 +1,4 @@
-foo.adb:11:07: "G" must be listed in the Depends aspect of "P" (SPARK RM 6.1.4(13))
+foo.adb:11:07: "G" must be listed in the Depends aspect of "P" (SPARK RM 6.1.4(12))
 foo.adb:14:04: warning: analyzing unreferenced procedure "Test_01"
 foo.adb:14:14: info: initialization of "H" proved
    compilation of foo.adb failed

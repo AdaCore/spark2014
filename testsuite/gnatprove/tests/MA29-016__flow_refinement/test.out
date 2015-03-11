@@ -8,12 +8,12 @@ fruit-priv_child.ads:21:46: info: initialization of "Profit" proved
 fruit-priv_child.ads:25:04: info: initialization of "Extra_Cost" proved
 fruit-pub_child.adb:27:23: info: initialization of "Fruit_Salads_Made" proved
 fruit-pub_child.adb:28:24: info: initialization of "Fruit_Salads_Made" proved
-fruit-pub_child.adb:36:30: warning: unused global "Fruit.Fruits"
+fruit-pub_child.adb:36:30: low: unused global "Fruit.Fruits" (SPARK RM 6.1.4(13))
 fruit-pub_child.ads:5:37: info: initialization of "Fruit_Salads_Made" proved
 fruit-pub_child.ads:13:13: info: initialization of "Price_Of_Fruit_Salad" proved
-fruit-pub_child.ads:13:13: warning: unused global "Apples"
-fruit-pub_child.ads:13:13: warning: unused global "Oranges"
-fruit-pub_child.ads:13:13: warning: unused global "Priv_Child.Price_Related_Stuff"
+fruit-pub_child.ads:13:13: low: unused global "Apples" (SPARK RM 6.1.4(13))
+fruit-pub_child.ads:13:13: low: unused global "Oranges" (SPARK RM 6.1.4(13))
+fruit-pub_child.ads:13:13: low: unused global "Priv_Child.Price_Related_Stuff" (SPARK RM 6.1.4(13))
 fruit-pub_child.ads:17:04: info: initialization of "Apples_In_Fruit_Salad" proved
 fruit-pub_child.ads:19:04: info: initialization of "Oranges_In_Fruit_Salad" proved
 fruit.ads:5:13: info: initialization of "Number_Of_Apples" proved

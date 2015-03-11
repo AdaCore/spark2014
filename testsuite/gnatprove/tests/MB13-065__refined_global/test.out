@@ -1,4 +1,4 @@
-pack.adb:11:16: "B" must be listed in the Refined_Global aspect of "Update_Content" (SPARK RM 6.1.4(13))
+pack.adb:11:16: "B" must be listed in the Refined_Global aspect of "Update_Content" (SPARK RM 6.1.4(12))
 pack.ads:4:21: warning: no procedure exists that can initialize abstract state "Pack.Content"
    compilation of pack.adb failed
 

@@ -3,5 +3,5 @@ test.adb:7:23: info: initialization of "Y" proved
 test.adb:16:04: warning: analyzing unreferenced procedure "Test_02"
 test.adb:17:23: info: initialization of "Y" proved
 test.adb:23:23: info: initialization of "Y" proved
-test.adb:24:20: warning: unused global "Z"
+test.adb:24:20: low: unused global "Z" (SPARK RM 6.1.4(13))
 test.adb:32:23: info: initialization of "Y" proved

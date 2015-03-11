@@ -3,8 +3,8 @@ test.adb:12:15: warning: unused assignment
 test.adb:15:14: info: initialization of "Temp" proved
 test.adb:26:13: info: initialization of "Temp" proved
 test.adb:27:25: info: initialization of "Temp" proved
-test.adb:95:22: "Z" must be listed in the Global aspect of "Check_Contract_7" (SPARK RM 6.1.4(13))
-test.adb:105:20: "Z" must be listed in the Global aspect of "Check_Contract_8" (SPARK RM 6.1.4(13))
+test.adb:95:22: "Z" must be listed in the Global aspect of "Check_Contract_7" (SPARK RM 6.1.4(12))
+test.adb:105:20: "Z" must be listed in the Global aspect of "Check_Contract_8" (SPARK RM 6.1.4(12))
 test.ads:5:13: info: initialization of "Check_Contract_1" proved
 test.ads:12:54: info: initialization of "Z" proved
 test.ads:15:24: medium: missing dependency "Y => Y"

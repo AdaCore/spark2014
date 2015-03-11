@@ -21,16 +21,16 @@ global_illegal_2.adb:43:35: item already appears as input of subprogram "P3"
 global_illegal_2.adb:44:35: global item "Y" cannot have mode In_Out or Output
 global_illegal_2.adb:44:35: item already appears as input of subprogram "P3"
 global_illegal_2.adb:60:21: global item cannot denote a constant
-global_illegal_3.adb:32:19: "Y" must be listed in the Global aspect of "P1" (SPARK RM 6.1.4(13))
-global_illegal_3.adb:43:09: "X" must be a global output of "P2" (SPARK RM 6.1.4)
-global_illegal_3.adb:53:07: "X" must be listed in the Global aspect of "P3" (SPARK RM 6.1.4(13))
+global_illegal_3.adb:32:19: "Y" must be listed in the Global aspect of "P1" (SPARK RM 6.1.4(12))
+global_illegal_3.adb:43:09: "X" must be a global output of "P2" (SPARK RM 6.1.4(15))
+global_illegal_3.adb:53:07: "X" must be listed in the Global aspect of "P3" (SPARK RM 6.1.4(12))
 global_illegal_3.adb:57:14: warning: subprogram "P4" has no effect
-global_illegal_3.adb:80:32: warning: unused global "X"
+global_illegal_3.adb:80:32: low: unused global "X" (SPARK RM 6.1.4(13))
 global_illegal_3.adb:81:32: high: "Y" is not initialized
-global_illegal_3.adb:81:32: warning: unused global "Y"
+global_illegal_3.adb:81:32: low: unused global "Y" (SPARK RM 6.1.4(13))
+global_illegal_3.adb:82:32: low: unused global "Z" (SPARK RM 6.1.4(13))
 global_illegal_3.adb:82:32: warning: "Z" is not modified, could be INPUT
-global_illegal_3.adb:82:32: warning: unused global "Z"
-global_illegal_3.adb:105:09: "X" must be a global output of "P6" (SPARK RM 6.1.4)
+global_illegal_3.adb:105:09: "X" must be a global output of "P6" (SPARK RM 6.1.4(15))
 global_illegal_3.adb:115:34: info: initialization of "Y" proved
 global_illegal_3.adb:116:34: export "Y" must not depend on Proof_In "X" (SPARK RM 6.1.4(17))
 global_illegal_3.adb:124:14: warning: subprogram "P8" has no effect

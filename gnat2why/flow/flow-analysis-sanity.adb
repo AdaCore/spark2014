@@ -452,7 +452,7 @@ package body Flow.Analysis.Sanity is
                         Error_Msg_Flow
                           (FA      => FA,
                            Msg     => "& must be a global output of &",
-                           SRM_Ref => "6.1.4",
+                           SRM_Ref => "6.1.4(15)",
                            N       => Error_Location (FA.PDG, FA.Atr, V),
                            Kind    => Error_Kind,
                            F1      => (if A.Is_Parameter
@@ -528,7 +528,7 @@ package body Flow.Analysis.Sanity is
 
             SRM_Ref : constant String :=
               (case FA.Kind is
-                  when E_Subprogram_Body => "6.1.4(13)",
+                  when E_Subprogram_Body => "6.1.4(12)",
                   when others            => "7.1.5(12)");
 
             F : Flow_Id;

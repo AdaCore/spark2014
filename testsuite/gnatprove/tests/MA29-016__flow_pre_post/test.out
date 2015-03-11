@@ -4,10 +4,10 @@ foo.ads:4:25: info: initialization of "C" proved
 foo.ads:4:32: info: initialization of "A" proved
 foo.ads:4:32: info: initialization of "B" proved
 foo.ads:9:13: info: initialization of "F3" proved
-foo.ads:9:46: warning: unused global "Foo.State"
+foo.ads:9:46: low: unused global "Foo.State" (SPARK RM 6.1.4(13))
 foo.ads:11:13: info: initialization of "F3_Totally_Unused" proved
-foo.ads:11:13: warning: unused global "C"
-foo.ads:11:61: warning: unused global "Foo.State"
+foo.ads:11:13: low: unused global "C" (SPARK RM 6.1.4(13))
+foo.ads:11:61: low: unused global "Foo.State" (SPARK RM 6.1.4(13))
 foo.ads:13:13: info: initialization of "F4" proved
 foo.ads:15:13: info: initialization of "Get_A" proved
 foo.ads:19:04: info: initialization of "C" proved
