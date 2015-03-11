@@ -1,0 +1,1 @@
+ALL XFAIL Assertion_Policy should be ignored in GNATprove mode

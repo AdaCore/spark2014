@@ -1,0 +1,7 @@
+foo.adb:12:21: medium: array index check might fail
+foo.adb:12:21: medium: overflow check might fail
+foo.adb:12:34: info: division check proved
+foo.adb:12:34: medium: range check might fail
+foo.adb:13:27: info: division check proved
+foo.adb:13:27: info: range check proved
+foo.ads:10:13: info: initialization of "Bit_Set" proved

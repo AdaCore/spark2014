@@ -1,0 +1,3 @@
+pragma SPARK_Mode (On);
+pragma Overflow_Mode (General => Strict, Assertions => Eliminated);
+pragma Assertion_Policy (DISABLE);
