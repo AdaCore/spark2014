@@ -585,7 +585,11 @@ package Why.Sinfo is
    --  File_Name     Name_Id
    --  Subst         W_Custom_Substitution_List
    --
-   --  ??? What do these do?
+   --  This node stands for an existing piece of Why3 code which will be
+   --  inserted in the generated file. It contains the name of the file where
+   --  the code can be found as well as a substitution from Name_Ids to Why3
+   --  nodes which will be applied to the content of the file before the
+   --  insertion.
    --
    --  ------------
    --  -- W_File --
