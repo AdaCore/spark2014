@@ -1,4 +1,8 @@
+summation.adb:11:15: info: initialization of "S" proved
 summation.adb:11:17: info: overflow check proved
 summation.adb:13:10: info: loop invariant initialization proved
 summation.adb:13:10: info: loop invariant preservation proved
+summation.adb:13:33: info: initialization of "S" proved
+summation.ads:14:30: info: initialization of "S" proved
+summation.ads:15:14: info: initialization of "S" proved
 summation.ads:15:14: info: postcondition proved

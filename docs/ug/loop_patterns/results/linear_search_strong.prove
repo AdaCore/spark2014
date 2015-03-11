@@ -1,11 +1,17 @@
 find.adb:15:11: info: range check proved
+find.adb:18:20: info: initialization of "Free_Slot" proved
 find.adb:22:10: info: loop invariant initialization proved
 find.adb:22:10: info: loop invariant preservation proved
+find.adb:23:13: info: initialization of "Free_Slot" proved
 find.adb:25:25: info: index check proved
 find.adb:35:11: info: range check proved
+find.adb:38:20: info: initialization of "Free_Slot" proved
 find.adb:42:10: info: loop invariant initialization proved
 find.adb:42:10: info: loop invariant preservation proved
+find.adb:43:13: info: initialization of "Free_Slot" proved
 find.adb:45:25: info: index check proved
+find.adb:53:13: info: initialization of "Free_Slot" proved
+find.ads:25:13: info: initialization of "Find_Slot" proved
 find.ads:28:14: info: postcondition proved
 find.ads:29:37: info: index check proved
 find.ads:34:27: info: index check proved

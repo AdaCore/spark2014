@@ -1,5 +1,6 @@
 validation.adb:15:10: info: loop invariant initialization proved
 validation.adb:15:10: info: loop invariant preservation proved
 validation.adb:17:57: info: index check proved
+validation.ads:9:13: info: initialization of "Is_Valid" proved
 validation.ads:15:14: info: postcondition proved
 validation.ads:16:56: info: index check proved

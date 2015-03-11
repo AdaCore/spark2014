@@ -1,5 +1,6 @@
 init.adb:12:10: info: loop invariant initialization proved
 init.adb:12:10: info: loop invariant preservation proved
+init.adb:13:44: info: initialization of "A" proved
 init.adb:13:44: medium: "A" might not be initialized
 init.adb:13:47: info: index check proved
 init.ads:12:34: medium: "A" might not be initialized in "Default_Initialize"
