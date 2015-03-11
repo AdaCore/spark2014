@@ -1567,6 +1567,12 @@ package body Gnat2Why.Subprograms is
         +Compute_Spec (Params, Classwide_Post_List, EW_Pred);
       Post_Spec := +Compute_Spec (Params, Post_List, EW_Pred);
 
+      --  Compute the effect of a call of the subprogram.
+
+      Call_Effects := New_Havoc_Statement
+        (Ada_Node => E,
+         Effects  => +Compute_Effects (E, Global_Params => True));
+
       --  If E has a class-wide precondition, check that it cannot raise a
       --  run-time error in an empty context.
 
@@ -1637,7 +1643,6 @@ package body Gnat2Why.Subprograms is
       --  If E has a specific postcondition, check that it is stronger than the
       --  dispatching one. To that end, perform equivalent effects of call in
       --  context of precondition for static call.
-
       --  Skip this check if the dispatching postcondition is the default True
       --  postcondition.
 
@@ -1649,10 +1654,6 @@ package body Gnat2Why.Subprograms is
          Pre_Assume :=
            New_Assume_Statement (Post =>
              Get_Static_Call_Contract (Params, E, Name_Precondition));
-
-         Call_Effects := New_Havoc_Statement
-           (Ada_Node => E,
-            Effects  => +Compute_Effects (E, Global_Params => True));
 
          Post_Assume := New_Assume_Statement (Post => Post_Spec);
 
@@ -1691,6 +1692,9 @@ package body Gnat2Why.Subprograms is
            +Compute_Spec (Params, Classwide_Post_List, EW_Prog);
          Classwide_Post_RTE :=
            New_Abstract_Expr (Expr => Classwide_Post_RTE, Post => True_Pred);
+         Classwide_Post_RTE := Sequence
+           ((1 => Call_Effects,
+             2 => Classwide_Post_RTE));
 
          if Is_Overriding_Subprogram (E) then
             Classwide_Post_Assume :=
@@ -1707,8 +1711,9 @@ package body Gnat2Why.Subprograms is
               ((1 => New_Comment (Comment =>
                                NID ("Checking that inherited postcondition is"
                                   & " implied by class-wide postcondition")),
-                2 => Classwide_Post_Assume,
-                3 => Inherited_Post_Check));
+                2 => Call_Effects,
+                3 => Classwide_Post_Assume,
+                4 => Inherited_Post_Check));
 
             Stronger_Classwide_Post :=
               New_Abstract_Expr
