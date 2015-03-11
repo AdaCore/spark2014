@@ -39,4 +39,19 @@ is
                State in 0.0 | C .. Float_32 (X) * C,
         Post => State in C .. Float_32 (X + 1) * C;
 
+   Rsqrt_Low : constant Float := 0.00001;
+   Rsqrt_Err : constant Float := 0.005;
+
+   --  Quake3's method of computing a good approximation of 1/sqrt(x). This
+   --  is extremely difficult to verify, I have included it here as
+   --  something to aim for.
+   --
+   --  See http://en.wikipedia.org/wiki/Fast_inverse_square_root for more
+   --  information.
+   function Approximate_Inverse_Square_Root (X : Float) return Float
+   with Pre  => X >= Rsqrt_Low,
+        Post => (Approximate_Inverse_Square_Root'Result *
+                 Approximate_Inverse_Square_Root'Result)
+                * X
+                  in 1.0 - Rsqrt_Err .. 1.0 + Rsqrt_Err;
 end Floating_Point;

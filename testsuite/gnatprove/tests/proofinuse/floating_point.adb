@@ -1,3 +1,5 @@
+with Ada.Unchecked_Conversion;
+
 package body Floating_Point with
   SPARK_Mode
 is
@@ -95,5 +97,28 @@ is
    begin
       State := State + C;
    end Incr_By_Const;
+
+   --  I have manually verified this; there should be no RTE and the
+   --  postcondition will hold. A hand-coded smtlib instance takes around
+   --  30 minutes on a modern solver.
+   function Approximate_Inverse_Square_Root (X : Float) return Float
+   is
+      function To_Float is new Ada.Unchecked_Conversion (Source => Integer,
+                                                         Target => Float);
+      function To_Int is new Ada.Unchecked_Conversion (Source => Float,
+                                                       Target => Integer);
+      I          : Integer;
+      Y          : Float;
+      X2         : constant Float := X * 0.5;
+      Threehalfs : constant Float := 1.5;
+   begin
+      I := To_Int (X);
+      I := 16#5F3759DF# - (I / 2);
+      Y := To_Float (I);
+      Y := Y * (Threehalfs - (X2 * (Y * Y)));
+      --  Y := Y * (Threehalfs - (X2 * (Y * Y)));
+      --  Second iteration can be enabled for more precision.
+      return Y;
+   end Approximate_Inverse_Square_Root;
 
 end Floating_Point;
