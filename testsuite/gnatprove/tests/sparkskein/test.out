@@ -66,7 +66,7 @@ skein.adb:656:17: info: range check proved
 skein.adb:658:24: info: initialization of "Src_Offset" proved
 skein.adb:695:09: info: length check proved
 skein.adb:703:38: info: length check proved
-skein.adb:706:07: medium: precondition might fail
+skein.adb:706:07: info: precondition proved
 skein.adb:707:29: info: initialization of "Ctx.B" proved
 skein.adb:707:29: info: initialization of "Ctx.H.Byte_Count" proved
 skein.adb:707:29: info: initialization of "Ctx.H.Hash_Bit_Len" proved
@@ -198,7 +198,7 @@ skein.adb:907:51: info: initialization of "Tmp_B" proved
 skein.adb:910:51: info: initialization of "Tmp_Byte_Count_Add" proved
 skein.adb:914:22: info: initialization of "Local_Ctx.H.Hash_Bit_Len" proved
 skein.adb:914:52: info: division check proved
-skein.adb:914:52: medium: range check might fail
+skein.adb:914:52: info: range check proved
 skein.adb:919:44: info: length check proved
 skein.adb:920:12: info: initialization of "Local_Ctx.X" proved
 skein.adb:922:27: info: initialization of "Byte_Count" proved

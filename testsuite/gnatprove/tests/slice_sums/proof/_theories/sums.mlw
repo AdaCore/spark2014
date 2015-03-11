@@ -74,27 +74,38 @@ module Sums__vector
  use import "int".Int
  use import "_gnatprove_standard".Main
  use        "_gnatprove_standard".Integer
- use        "_gnatprove_standard".Array__1
  use import Standard__integer
  use import Sums__index
  use import Sums__vector_element
+ use        Array__Int
 
  predicate index_dynamic_property (first : int) (last : int) (x : int) =
       first <= x /\ x <= last
 
  (* Clone of the model module for unconstrained arrays *)
+ type component_type  =
+  Sums__vector_element.vector_element
+
+ function index_1_id
+   (x : int)  :int =
+  x
+
  clone export "ada__model".Unconstr_Array with
- type component_type = Sums__vector_element.vector_element,
- type base_type = Standard__integer.integer,
- function to_int = Standard__integer.to_rep,
+ type map = Array__Int.map component_type,
+ function array_bool_eq = Array__Int.bool_eq,
+ type index_base_type = Standard__integer.integer,
+ type index_rep_type = int,
+ function to_rep = Standard__integer.to_rep,
+ function rep_to_int = index_1_id,
  predicate in_range_base = Standard__integer.in_range,
- predicate index_dynamic_property = index_dynamic_property
+ predicate index_dynamic_property = index_dynamic_property,
+ predicate index_rep_le = Int.(<=)
 
  type vector  = __t
 
  (* Helper function *)
  function _get "inline" (v : vector) (i : int) : int =
-   	  Sums__vector_element.to_rep (Array__1.get (to_array v) i)
+   	  Sums__vector_element.to_rep (Array__Int.get (to_array v) i)
 end
 
 module Sums__slice_bounds

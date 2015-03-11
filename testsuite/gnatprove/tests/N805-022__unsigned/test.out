@@ -118,5 +118,5 @@ x86.ads:80:13: info: initialization of "ReadMem16" proved
 x86.ads:82:14: info: postcondition proved
 x86.ads:87:13: info: initialization of "ReadMem32" proved
 x86.ads:89:14: info: postcondition proved
-x86.ads:97:14: medium: postcondition might fail
+x86.ads:97:14: info: postcondition proved
 x86.ads:110:14: info: postcondition proved

@@ -46,6 +46,7 @@ with Why.Atree.Accessors;  use Why.Atree.Accessors;
 with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Atree.Mutators;   use Why.Atree.Mutators;
 with Why.Atree.Modules;    use Why.Atree.Modules;
+with Why.Gen.Arrays;       use Why.Gen.Arrays;
 with Why.Gen.Decl;         use Why.Gen.Decl;
 with Why.Gen.Names;        use Why.Gen.Names;
 with Why.Gen.Binders;      use Why.Gen.Binders;
@@ -1453,6 +1454,28 @@ package body Gnat2Why.External_Axioms is
                         Mutable => Ekind (E) in Object_Kind and then
                         Is_Mutable_In_Why (E));
                   end if;
+               end;
+            end if;
+
+            --  check if there is a declaration of an array type
+
+            if Comes_From_Source (N) and then
+              Nkind (N) in
+              N_Full_Type_Declaration     | N_Private_Extension_Declaration |
+              N_Private_Type_Declaration  | N_Protected_Type_Declaration    |
+              N_Subtype_Declaration       | N_Task_Type_Declaration
+              and then
+                Is_Array_Type (Defining_Identifier (N))
+            then
+               --  in which case, check if we need to create it,
+               --  and do it if so.
+               declare
+                  File : Why_Section :=
+                    Why_Sections (Dispatch_Entity (Defining_Identifier (N)));
+               begin
+                  Create_Rep_Array_Theory_If_Needed
+                    (File => File,
+                     E    => Defining_Identifier (N));
                end;
             end if;
 

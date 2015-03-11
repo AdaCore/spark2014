@@ -31,6 +31,7 @@ with Ada.Containers.Vectors;
 with Ada.Strings.Hash;
 
 with Types; use Types;
+with Namet; use Namet;
 
 --  This package contains a few common types (and expression functions)
 --  which are used throughout gnat2why (frame conditions, flow and why
@@ -99,5 +100,8 @@ package Common_Containers is
       Hash            => Name_Hash,
       Equivalent_Keys => Name_Equal,
       "="             => Name_Equal);
+
+   function Name_Id_Hash (N : Name_Id) return Ada.Containers.Hash_Type is
+     (Ada.Containers.Hash_Type (N));
 
 end Common_Containers;

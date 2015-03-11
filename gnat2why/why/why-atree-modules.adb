@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers;     use Ada.Containers;
-with Ada.Containers.Hashed_Maps;
 with Atree;              use Atree;
 with Common_Containers;  use Common_Containers;
 with Einfo;              use Einfo;
@@ -35,6 +34,7 @@ with Sinfo;              use Sinfo;
 with SPARK_Util;         use SPARK_Util;
 with Stand;              use Stand;
 with Why.Atree.Builders; use Why.Atree.Builders;
+with Why.Gen.Arrays;     use Why.Gen.Arrays;
 with Why.Inter;          use Why.Inter;
 
 package body Why.Atree.Modules is
@@ -48,7 +48,6 @@ package body Why.Atree.Modules is
    procedure Init_Int_Minmax_Module;
    procedure Init_Floating_Module;
    procedure Init_Boolean_Module;
-   procedure Init_Array_Modules;
    procedure Init_BV_Modules;
    procedure Init_BV_Conv_Modules;
 
@@ -181,6 +180,20 @@ package body Why.Atree.Modules is
       RealInfix := New_Module (File => Real_File, Name => NID ("RealInfix"));
       Ref_Module := New_Module (File => Ref_File, Name => NID ("Ref"));
 
+      Array_Modules :=
+        (1 =>
+           New_Module (File => Gnatprove_Standard_File,
+                       Name => NID ("Array__1")),
+         2 =>
+           New_Module (File => Gnatprove_Standard_File,
+                       Name => NID ("Array__2")),
+         3 =>
+           New_Module (File => Gnatprove_Standard_File,
+                       Name => NID ("Array__3")),
+         4 =>
+           New_Module (File => Gnatprove_Standard_File,
+                       Name => NID ("Array__4")));
+
       --  builtin Why types
 
       EW_Bool_Type :=
@@ -212,7 +225,6 @@ package body Why.Atree.Modules is
       Init_Int_Minmax_Module;
       Init_Floating_Module;
       Init_Boolean_Module;
-      Init_Array_Modules;
       Init_BV_Modules;
       Init_BV_Conv_Modules;
 
@@ -493,90 +505,91 @@ package body Why.Atree.Modules is
    -- Init_Array_Modules --
    ------------------------
 
-   procedure Init_Array_Modules is
-      M : constant array (1 .. 4) of W_Module_Id :=
-        (1 =>
-           New_Module
-             (File => Gnatprove_Standard_File,
-              Name => NID ("Array__1")),
-         2 =>
-           New_Module
-             (File => Gnatprove_Standard_File,
-              Name => NID ("Array__2")),
-         3 =>
-           New_Module
-             (File => Gnatprove_Standard_File,
-              Name => NID ("Array__3")),
-         4 =>
-           New_Module
-             (File => Gnatprove_Standard_File,
-              Name => NID ("Array__4")));
+   function Init_Array_Module (Module : W_Module_Id) return M_Array_Type
+   is
+      M_Array : M_Array_Type;
+      Ty : constant W_Type_Id :=
+        New_Type (Type_Kind  => EW_Builtin,
+                  Name       => New_Name (Symbol => NID ("map"),
+                                          Module => Module),
+                  Is_Mutable => False);
    begin
-      for I in M'Range loop
-         M_Arrays (I).Module := M (I);
-         M_Arrays (I).Ty :=
-           New_Type (Type_Kind  => EW_Builtin,
-                     Name       => New_Name (Symbol => NID ("map"),
-                                             Module => M (I)),
-                     Is_Mutable => False);
-         M_Arrays (I).Get :=
-           New_Identifier (Module => M (I),
-                           Domain => EW_Term,
-                           Symbol => NID ("get"),
-                           Typ    => EW_Unit_Type);
-         M_Arrays (I).Set :=
-           New_Identifier (Module => M (I),
-                           Domain => EW_Term,
-                           Symbol => NID ("set"),
-                           Typ    => M_Arrays (I).Ty);
-         M_Arrays (I).Bool_Eq :=
-           New_Identifier (Module => M (I),
-                           Domain => EW_Term,
-                           Symbol => NID ("bool_eq"),
-                           Typ    => EW_Bool_Type);
-         M_Arrays (I).Slide :=
-           New_Identifier (Module => M (I),
-                           Domain => EW_Term,
-                           Symbol => NID ("slide"),
-                           Typ    => M_Arrays (I).Ty);
-      end loop;
-      M_Array_1.Module := M (1);
+      M_Array.Module := Module;
+
+      M_Array.Ty := Ty;
+      M_Array.Get :=
+        New_Identifier (Module => Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("get"),
+                        Typ    => EW_Unit_Type);
+      M_Array.Set :=
+        New_Identifier (Module => Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("set"),
+                        Typ    => Ty);
+      M_Array.Bool_Eq :=
+        New_Identifier (Module => Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("bool_eq"),
+                        Typ    => EW_Bool_Type);
+      M_Array.Slide :=
+        New_Identifier (Module => Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("slide"),
+                        Typ    => Ty);
+
+      return M_Array;
+   end Init_Array_Module;
+
+   function Init_Array_1_Module (Module : W_Module_Id) return M_Array_1_Type
+   is
+      M_Array_1 : M_Array_1_Type;
+      Ty : constant W_Type_Id :=
+        New_Type (Type_Kind  => EW_Builtin,
+                  Name       => New_Name (Symbol => NID ("map"),
+                                          Module => Module),
+                  Is_Mutable => False);
+   begin
+
+      M_Array_1.Module := Module;
       M_Array_1.Concat :=
-        New_Identifier (Module => M (1),
+        New_Identifier (Module => Module,
                         Domain => EW_Term,
                         Symbol => NID ("concat"),
-                        Typ    => M_Arrays (1).Ty);
+                        Typ    => Ty);
       M_Array_1.Compare :=
-        New_Identifier (Module => M (1),
+        New_Identifier (Module => Module,
                         Domain => EW_Term,
                         Symbol => NID ("compare"),
                         Typ    => EW_Int_Type);
       M_Array_1.Xorb :=
-        New_Identifier (Module => M (1),
+        New_Identifier (Module => Module,
                         Domain => EW_Term,
                         Symbol => NID ("xorb"),
-                        Typ    => M_Arrays (1).Ty);
+                        Typ    => Ty);
       M_Array_1.Andb :=
-        New_Identifier (Module => M (1),
+        New_Identifier (Module => Module,
                         Domain => EW_Term,
                         Symbol => NID ("andb"),
-                        Typ    => M_Arrays (1).Ty);
+                        Typ    => Ty);
       M_Array_1.Orb :=
-        New_Identifier (Module => M (1),
+        New_Identifier (Module => Module,
                         Domain => EW_Term,
                         Symbol => NID ("orb"),
-                        Typ    => M_Arrays (1).Ty);
+                        Typ    => Ty);
       M_Array_1.Notb :=
-        New_Identifier (Module => M (1),
+        New_Identifier (Module => Module,
                         Domain => EW_Term,
                         Symbol => NID ("notb"),
-                        Typ    => M_Arrays (1).Ty);
+                        Typ    => Ty);
       M_Array_1.Singleton :=
-        New_Identifier (Module => M (1),
+        New_Identifier (Module => Module,
                         Domain => EW_Term,
                         Symbol => NID ("singleton"),
-                        Typ    => M_Arrays (1).Ty);
-   end Init_Array_Modules;
+                        Typ    => Ty);
+
+      return M_Array_1;
+   end Init_Array_1_Module;
 
    -------------------------
    -- Init_Boolean_Module --
@@ -1742,7 +1755,7 @@ package body Why.Atree.Modules is
                     (Symbol => NID ("to_array"),
                      Module => M,
                      Domain => EW_Term,
-                     Typ    => M_Arrays (Ar_Dim).Ty));
+                     Typ    => Get_Array_Theory (E).Ty));
                Insert_Symbol
                  (E, WNE_Of_Array,
                   New_Identifier
@@ -1777,9 +1790,6 @@ package body Why.Atree.Modules is
                      Base_Range_Str : constant String :=
                        (if Dim = 1 then "in_range_base"
                         else "in_range_base_" & Image (Dim, 1));
-                     Base_Ty_Str : constant String :=
-                       (if Dim = 1 then "base_type"
-                        else "base_type_" & Image (Dim, 1));
                      Index_Str : constant String :=
                        (if Dim = 1 then "index_dynamic_property"
                         else "index_dynamic_property_" & Image (Dim, 1));
@@ -1819,13 +1829,6 @@ package body Why.Atree.Modules is
                            Module => M,
                            Domain => EW_Term,
                            Typ    => EW_Bool_Type));
-                     Insert_Symbol
-                       (E, WNE_Base_Type (Dim),
-                        New_Identifier
-                          (Symbol => NID (Base_Ty_Str),
-                           Module => M,
-                           Domain => EW_Term,
-                           Typ    => EW_Int_Type));
                      Insert_Symbol
                        (E, WNE_Index_Dynamic_Property (Dim),
                         New_Identifier

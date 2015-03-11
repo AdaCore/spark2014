@@ -361,6 +361,14 @@ package Gnat2Why.Util is
    --  @return the actual name used for that entity in Why3 (as opposed to the
    --    name of the module)
 
+   function Nth_Index_Rep_Type_No_Bool (E : Entity_Id; Dim : Positive)
+                                        return W_Type_Id;
+   --  @param E an array type entity
+   --  @param Dim specifies a dimension
+   --  @return the argument E in the special case where E is a string literal
+   --    subtype; otherwise the rep type of the index entity which corresponds
+   --    to the selected dimension or ew_int_id if it is bool
+
    function Type_Of_Node (N : Node_Id) return Entity_Id;
    --  @param N any node
    --  @return the type of the node; if N is already a type, return that,

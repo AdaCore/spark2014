@@ -38,6 +38,7 @@ with Why.Atree.Builders;     use Why.Atree.Builders;
 with Why.Atree.Modules;      use Why.Atree.Modules;
 with Why.Conversions;        use Why.Conversions;
 with Why.Gen.Expr;           use Why.Gen.Expr;
+with Why.Inter;              use Why.Inter;
 with Why.Types;              use Why.Types;
 
 package body Gnat2Why.Util is
@@ -678,6 +679,20 @@ package body Gnat2Why.Util is
    begin
       return Avoid_Why3_Keyword (Get_Name_String (Chars (E)));
    end Short_Name;
+
+   --------------------------------
+   -- Nth_Index_Rep_Type_No_Bool --
+   --------------------------------
+
+   function Nth_Index_Rep_Type_No_Bool (E : Entity_Id; Dim : Positive)
+                                        return W_Type_Id
+   is
+      Typ : constant Node_Id := Nth_Index_Type (E, Dim);
+   begin
+      return (if Typ = E
+              then EW_Int_Type
+              else Base_Why_Type_No_Bool (Typ));
+   end Nth_Index_Rep_Type_No_Bool;
 
    -----------------------------
    -- Type_Is_Modeled_As_Base --

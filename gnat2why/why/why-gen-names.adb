@@ -675,10 +675,6 @@ package body Why.Gen.Names is
               WNE_Of_Base |
               WNE_To_Rep |
               WNE_Of_Rep |
-              WNE_Base_Type |
-              WNE_Base_Type_2 |
-              WNE_Base_Type_3 |
-              WNE_Base_Type_4 |
               WNE_Index_Dynamic_Property |
               WNE_Index_Dynamic_Property_2 |
               WNE_Index_Dynamic_Property_3 |
@@ -885,18 +881,6 @@ package body Why.Gen.Names is
          when 2 => WNE_Attr_Length_2,
          when 3 => WNE_Attr_Length_3,
          when 4 => WNE_Attr_Length_4,
-         when others => raise Program_Error);
-
-   ----------------------
-   -- WNE_To_Base_Type --
-   ----------------------
-
-   function WNE_Base_Type (I : Integer) return Why_Name_Enum is
-     (case I is
-         when 1 => WNE_Base_Type,
-         when 2 => WNE_Base_Type_2,
-         when 3 => WNE_Base_Type_3,
-         when 4 => WNE_Base_Type_4,
          when others => raise Program_Error);
 
    --------------------------------

@@ -179,10 +179,6 @@ package Why.Gen.Names is
       WNE_Attr_Small,
 
       WNE_Attr_Value,
-      WNE_Base_Type,
-      WNE_Base_Type_2,
-      WNE_Base_Type_3,
-      WNE_Base_Type_4,
       WNE_Bool_Eq,
       WNE_Check_Not_First,
       WNE_Check_Not_Last,
@@ -341,10 +337,6 @@ package Why.Gen.Names is
 
    function WNE_To_Int (I : Integer) return Why_Name_Enum;
    --  wrapper function for the enumeration literals WNE_To_Int_X
-   --  @param I an index between 1 and 4 selectind the dimension
-
-   function WNE_Base_Type (I : Integer) return Why_Name_Enum;
-   --  wrapper function for the enumeration literals WNE_Base_Type_X
    --  @param I an index between 1 and 4 selectind the dimension
 
    function WNE_Array_Base_Range_Pred (I : Integer) return Why_Name_Enum;

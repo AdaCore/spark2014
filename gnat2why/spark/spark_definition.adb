@@ -1010,6 +1010,66 @@ package body SPARK_Definition is
                   end if;
                end;
 
+               --  Restrict array conversions to the cases where either:
+               --  - corresponding indices have modular types of the same size,
+               --  - both don't have a modular type.
+
+               declare
+                  Target_Index : Node_Id :=
+                    First_Index (MUT (Etype (N)));
+                  Source_Index : Node_Id :=
+                    First_Index (MUT (Etype (Expression (N))));
+                  Dim : constant Positive :=
+                    Positive (Number_Dimensions (MUT (Etype (N))));
+               begin
+                  for I in 1 .. Dim loop
+
+                     if
+                       Has_Modular_Integer_Type (Etype (Target_Index)) and
+                       Has_Modular_Integer_Type (Etype (Source_Index))
+                     then
+
+                        if Esize (Etype (Target_Index)) /=
+                          Esize (Etype (Source_Index))
+                        then
+
+                           Violation_Detected := True;
+                           if Emit_Messages and then SPARK_Pragma_Is (Opt.On)
+                           then
+                              Error_Msg_N
+                              ("conversion between array types that have "
+                              & "an modular index is only supported when "
+                              & "the size of the target array index type is "
+                              & "equal to the size of the source array index "
+                              & "type",
+                              N);
+                           end if;
+                           exit;
+                        end if;
+
+                     elsif
+                       Has_Modular_Integer_Type (Etype (Target_Index)) or else
+                       Has_Modular_Integer_Type (Etype (Source_Index))
+                     then
+
+                        Violation_Detected := True;
+                        if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+                           Error_Msg_N
+                             ("conversion between array types where one type "
+                              & "has a modular index while the other a "
+                              & "non modular index is not yet supported",
+                              N);
+                        end if;
+                        exit;
+
+                     end if;
+
+                     Target_Index := Next_Index (Target_Index);
+                     Source_Index := Next_Index (Source_Index);
+
+                  end loop;
+               end;
+
             elsif Has_Fixed_Point_Type (Etype (N))
                     and then
                   Has_Fixed_Point_Type (Etype (Expression (N)))

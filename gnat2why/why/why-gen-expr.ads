@@ -41,6 +41,8 @@ with Why.Sinfo;           use Why.Sinfo;
 
 with Gnat2Why.Util;       use Gnat2Why.Util;
 
+with Uintp;               use Uintp;
+
 package Why.Gen.Expr is
 
    function Is_False_Boolean (P : W_Expr_Id) return Boolean;
@@ -178,19 +180,42 @@ package Why.Gen.Expr is
    --  Build an expression (Low <= Expr and then Expr <= High), all
    --  comparisons being in Base_Type (int or real)
 
-   function New_Int_Add
+   function New_Discrete_Add
      (Domain : EW_Domain;
       Left   : W_Expr_Id;
-      Right  : W_Expr_Id) return W_Expr_Id;
-   --  Function to build Left + Right with integer addition; will convert Left
-   --  and Right to "int" if necessary
+      Right  : W_Expr_Id;
+      Typ    : W_Type_Id := Why_Empty) return W_Expr_Id;
+   --  @param Left Right the operand of the operation.
+   --  @return an addition in either the representation type of Typ or
+   --          the representation type of left if Typ is left empty; This
+   --          type should either be ew_int_type or a bitvector; Will
+   --          do the appropriate convertion for left and right.
+   --  beware that there is no modulo operation inserted when dealing
+   --  with modulars.
 
-   function New_Int_Substract
+   function New_Discrete_Substract
      (Domain : EW_Domain;
       Left   : W_Expr_Id;
-      Right  : W_Expr_Id) return W_Expr_Id;
-   --  Function to build Left - Right with integer addition; will convert Left
-   --  and Right to "int" if necessary
+      Right  : W_Expr_Id;
+      Typ    : W_Type_Id := Why_Empty) return W_Expr_Id;
+   --  @param Typ the type of the operation
+   --  @param Left Right the operand of the operation.
+   --  @return a substraction in either the representation type of Typ or
+   --          the representation type of left if Typ is left empty; This
+   --          type should either be ew_int_type or a bitvector; Will
+   --          do the appropriate convertion for left and right.
+   --  beware that there is no modulo operation inserted when dealing
+   --  with modulars.
+
+   function New_Discrete_Constant
+     (Ada_Node : Node_Id := Empty;
+      Value    : Uint;
+      Typ      : W_Type_Id)
+      return W_Expr_Id;
+   --  @param Value the value of the constant
+   --  @param Typ the type of the constant
+   --  @return a modular constant if Typ satisfies Why_Type_Is_BitVector
+   --          or an integer constant in all other cases.
 
    function New_Dynamic_Property
      (Domain : EW_Domain;
@@ -208,6 +233,13 @@ package Why.Gen.Expr is
       W_Expr     : W_Expr_Id;
       Check_Kind : Range_Check_Kind) return W_Prog_Id;
    --  Returns the Why program that does range checking on W_Expr, for type Ty.
+
+   function Insert_Conversion_To_Rep_No_Bool
+     (Domain : EW_Domain;
+      Expr : W_Expr_Id)
+      return W_Expr_Id;
+   --  Convert argument to representation type or ew_int_id if expr is of
+   --  type Bool.
 
    function Do_Index_Check
      (Ada_Node   : Node_Id;

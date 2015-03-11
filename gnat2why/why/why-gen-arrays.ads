@@ -23,13 +23,16 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Snames;              use Snames;
 with Einfo;               use Einfo;
+with Gnat2Why.Util;       use Gnat2Why.Util;
+with Namet;               use Namet;
+with Snames;              use Snames;
 with Types;               use Types;
 with Why.Ids;             use Why.Ids;
 with Why.Sinfo;           use Why.Sinfo;
 
 with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Gen.Expr;        use Why.Gen.Expr;
 
 package Why.Gen.Arrays is
@@ -224,7 +227,9 @@ package Why.Gen.Arrays is
 
    function Build_Length_Expr
      (Domain : EW_Domain;
-      First, Last : W_Expr_Id) return W_Expr_Id;
+      First, Last : W_Expr_Id;
+      Typ         : W_Type_Id := EW_Int_Type)
+      return W_Expr_Id;
    --  Given the terms for first and last, build the expression
    --    if first <= last then last - first + 1 else 0
 
@@ -287,9 +292,31 @@ package Why.Gen.Arrays is
    --  return a call to the concat function in Why array theory
 
    function New_Singleton_Call
-     (Domain : EW_Domain;
+     (Typ    : Node_Id;
+      Domain : EW_Domain;
       Elt    : W_Expr_Id;
       Pos    : W_Expr_Id) return W_Expr_Id;
    --  return a call to the singleton function in Why array theory
+
+   function Get_Array_Theory_Name (E : Entity_Id) return Name_Id;
+   --  @param E the entity of type array
+   --  @return A name of the form "Array(_(Int|BV8|BV16|BV32|BV64))*"
+   --          of the theory associated to the array type E.
+   --          The name is the key to this theory in M_Array(_1) hash maps.
+
+   procedure Create_Rep_Array_Theory_If_Needed (File : in out Why_Section;
+                                                E : Entity_Id);
+   --  Check if the Array theory of the representation type of E has already
+   --  been created. If not create it.
+   --  @param File the current why file
+   --  @param E the entity of type array
+
+   function Get_Array_Theory (E : Entity_Id) return M_Array_Type;
+   --  Return the m_array_type containing the theory of the type of E
+   --  @param E the entity of type array
+
+   function Get_Array_Theory_1 (E : Entity_Id) return M_Array_1_Type;
+   --  Return the m_array_1_type containing the theory of the type of E
+   --  @param E the entity of type array
 
 end Why.Gen.Arrays;

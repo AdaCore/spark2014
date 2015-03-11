@@ -266,53 +266,67 @@ end
   the old and new value of first
 
 *)
+theory Array__Index
+  type t
+
+  predicate le t t
+  predicate lt t t
+  predicate gt t t
+
+  function  add t t : t
+  function  sub t t : t
+
+  function one : t
+end
+
 theory Array__1
 
-  use import int.Int
   use import bool.Bool
+
+  clone Array__Index as I1
 
   type map 'a
 
-  function get (map 'a) int : 'a
-  function set (map 'a) int 'a : map 'a
+  function get (map 'a) I1.t : 'a
+  function set (map 'a) I1.t 'a : map 'a
 
   axiom Select_eq :
-    forall m : map 'a. forall i : int.
+    forall m : map 'a. forall i : I1.t.
     forall a : 'a [set m i a].  get (set m i a) i = a
 
   axiom Select_neq :
-    forall m : map 'a. forall i j : int.
+    forall m : map 'a. forall i j : I1.t.
     forall a : 'a [get (set m i a) j| set m i a, get m j].
     i <> j -> get (set m i a) j = get m j
 
-  function bool_eq (map 'a) int int (map 'a) int int : bool
+  function bool_eq (map 'a) I1.t I1.t (map 'a) I1.t I1.t : bool
 
    axiom T__ada_array___equal_def:
      forall a:map 'a.
-     forall af : int. forall al : int.
+     forall af : I1.t. forall al : I1.t.
      forall b:map 'a.
-     forall bf : int. forall bl : int [bool_eq a af al b bf bl].
-         ((if af <= al then al - af + 1 = bl - bf + 1 else bf > bl)
-          /\ (forall i:int[get a i].
-                af <= i <= al ->
-                (get a i = get b (bf - af + i))))
+     forall bf : I1.t. forall bl : I1.t [bool_eq a af al b bf bl].
+         ((if I1.le af al then I1.add (I1.sub al af) I1.one = I1.add (I1.sub bl bf) I1.one else I1.gt bf bl)
+          /\ (forall i:I1.t[get a i].
+                (I1.le af i /\ I1.le i al) ->
+                (get a i = get b (I1.add (I1.sub bf af) i))))
          <-> bool_eq a af al b bf bl = True
 
-  function slide (map 'a) int int : map 'a
+  function slide (map 'a) I1.t I1.t : map 'a
 
   axiom slide_eq :
     forall a : map 'a.
-    forall first : int
+    forall first : I1.t
       [slide a first first].
       slide a first first = a
 
   axiom slide_def :
     forall a : map 'a.
-    forall old_first : int.
-    forall new_first : int.
-    forall i : int
+    forall old_first : I1.t.
+    forall new_first : I1.t.
+    forall i : I1.t
       [get (slide a old_first new_first) i].
-      get (slide a old_first new_first) i = get a (i - (new_first - old_first))
+      get (slide a old_first new_first) i = get a (I1.sub i (I1.sub new_first old_first))
 
   (* Concatenation is only defined for one-dimensional arrays; it appends a
      map to another. We do not really care about the valid ranges of the
@@ -321,160 +335,191 @@ theory Array__1
      interested in the second argument, a shift must be made depending on the
      original "first" value. *)
 
-  function concat (map 'a) int int (map 'a) int int : map 'a
+  function concat (map 'a) I1.t I1.t (map 'a) I1.t I1.t : map 'a
 
   axiom concat_def :
     forall a b : map 'a.
-    forall a_first a_last b_first b_last : int.
-    forall i : int [get (concat a a_first a_last b b_first b_last) i].
-      (a_first <= i <= a_last ->
+    forall a_first a_last b_first b_last : I1.t.
+    forall i : I1.t [get (concat a a_first a_last b b_first b_last) i].
+      ((I1.le a_first i /\ I1.le i a_last) ->
           get (concat a a_first a_last b b_first b_last) i = get a i)
-          /\
-      (i > a_last ->
-        get (concat a a_first a_last b b_first b_last) i = get b (i-a_last + b_first - 1))
+         /\
+      ((I1.gt i a_last) ->
+        get (concat a a_first a_last b b_first b_last) i = get b (I1.add (I1.sub i a_last) (I1.sub b_first I1.one)))
 
    (* Comparison between arrays. Only defined for arrays of discrete.  *)
 
-   function compare (map 'a) int int (map 'a) int int : int
+   function compare (map 'a) I1.t I1.t (map 'a) I1.t I1.t : int
 
    (* Logical operators on arrays. Only defined for arrays of boolean. *)
 
-   function xorb (map 'a) int int (map 'a) int int : map 'a
-   function andb (map 'a) int int (map 'a) int int : map 'a
-   function orb (map 'a) int int (map 'a) int int : map 'a
-   function notb (map 'a) int int : map 'a
+   function xorb (map 'a) I1.t I1.t (map 'a) I1.t I1.t : map 'a
+   function andb (map 'a) I1.t I1.t (map 'a) I1.t I1.t : map 'a
+   function orb (map 'a) I1.t I1.t (map 'a) I1.t I1.t : map 'a
+   function notb (map 'a) I1.t I1.t : map 'a
 
    (* a singleton array is the array which is defined only at the given
    position, and yields the given value. *)
 
-   function singleton 'a int : map 'a
+   function singleton 'a I1.t : map 'a
 
    axiom singleton_def :
     forall v : 'a.
-    forall i : int  [get (singleton v i) i].
+    forall i : I1.t  [get (singleton v i) i].
       get (singleton v i) i = v
 end
 
 theory Array__2
-  use import int.Int
   use import bool.Bool
+
+  clone Array__Index as I1
+  clone Array__Index as I2
 
   type map 'a
 
-  function get (map 'a) int int : 'a
-  function set (map 'a) int int 'a : map 'a
+  function get (map 'a) I1.t I2.t : 'a
+  function set (map 'a) I1.t I2.t 'a : map 'a
 
   axiom Select_eq :
     forall m : map 'a.
-    forall i j : int.
+    forall i : I1.t.
+    forall j : I2.t.
     forall a : 'a [set m i j a].  get (set m i j a) i j = a
 
   axiom Select_neq :
     forall m : map 'a.
-    forall i j i2 j2 : int.
+    forall i i2 : I1.t.
+    forall j j2 : I2.t.
     forall a : 'a [get (set m i j a) i2 j2| set m i j a, get m i2 j2].
     not (i = i2 /\ j = j2) -> get (set m i j a) i2 j2 = get m i2 j2
 
-  function bool_eq (map 'a) int int int int (map 'a) int int int int : bool
+  function bool_eq (map 'a) I1.t I1.t I2.t I2.t (map 'a) I1.t I1.t I2.t I2.t : bool
 
    axiom T__ada_array___equal_def:
      forall a:map 'a.
-     forall af al af2 al2 : int.
+     forall af al : I1.t.
+     forall af2 al2 : I2.t.
      forall b:map 'a.
-     forall bf bl bf2 bl2 : int [bool_eq a af al af2 al2 b bf bl bf2 bl2].
-         ((if af <= al then al - af + 1 = bl - bf + 1 else bf > bl) /\
-          (if af2 <= al2 then al2 - af2 + 1 = bl2 - bf2 + 1 else bf2 > bl2) /\
-          (forall i j:int[get a i j].
-                af <= i <= al ->
-                af2 <= j <= al2 ->
-                (get a i j = get b (bf - af + i) (bf2 - af2 + j))))
+     forall bf bl : I1.t.
+     forall bf2 bl2 : I2.t [bool_eq a af al af2 al2 b bf bl bf2 bl2].
+         ((if I1.le af al then I1.add (I1.sub al af) I1.one = I1.add (I1.sub bl bf) I1.one else I1.gt bf bl) /\
+          (if I2.le af2 al2 then I2.add (I2.sub al2 af2) I2.one = I2.add (I2.sub bl2 bf2) I2.one else I2.gt bf2 bl2) /\
+          (forall i : I1.t. forall j : I2.t[get a i j].
+                (I1.le af i /\ I1.le i al) ->
+                (I2.le af2 j /\ I2.le j al2) ->
+                (get a i j = get b (I1.add (I1.sub bf af) i) (I2.add (I2.sub bf2 af2) j))))
          <-> bool_eq a af al af2 al2 b bf bl bf2 bl2 = True
 
-  function slide (map 'a) int int int int : map 'a
+  function slide (map 'a) I1.t I1.t I2.t I2.t : map 'a
 
   axiom slide_def :
     forall a : map 'a.
-    forall old_first old_first_2 : int.
-    forall new_first new_first_2 : int.
-    forall i j : int
+    forall new_first    old_first   : I1.t.
+    forall new_first_2  old_first_2 : I2.t.
+    forall i : I1.t.
+    forall j : I2.t
       [get (slide a old_first new_first old_first_2 new_first_2) i j].
       get (slide a old_first new_first old_first_2 new_first_2) i j =
-        get a (i - (new_first - old_first)) (j - (new_first_2 - old_first_2))
+        get a (I1.sub i (I1.sub new_first old_first)) (I2.sub j (I2.sub new_first_2 old_first_2))
 end
 
 theory Array__3
-  use import int.Int
   use import bool.Bool
+
+  clone Array__Index as I1
+  clone Array__Index as I2
+  clone Array__Index as I3
 
   type map 'a
 
-  function get (map 'a) int int int : 'a
-  function set (map 'a) int int int 'a : map 'a
+  function get (map 'a) I1.t I2.t I3.t : 'a
+  function set (map 'a) I1.t I2.t I3.t 'a : map 'a
 
   axiom Select_eq :
     forall m : map 'a.
-    forall i j k : int.
+    forall i : I1.t.
+    forall j : I2.t.
+    forall k : I3.t.
     forall a : 'a [set m i j k a].  get (set m i j k a) i j k = a
 
   axiom Select_neq :
     forall m : map 'a.
-    forall i j k i2 j2 k2 : int.
+    forall i i2 : I1.t.
+    forall j j2 : I2.t.
+    forall k k2 : I3.t.
     forall a : 'a [get (set m i j k a) i2 j2 k2| set m i j k a, get m i2 j2 k2].
     not (i = i2 /\ j = j2 /\ k = k2) ->
       get (set m i j k a) i2 j2 k2 = get m i2 j2 k2
 
   function bool_eq (map 'a)
-    int int int int int int (map 'a) int int int int int int : bool
+    I1.t I1.t I2.t I2.t I3.t I3.t (map 'a) I1.t I1.t I2.t I2.t I3.t I3.t : bool
 
    axiom T__ada_array___equal_def:
      forall a:map 'a.
-     forall af al af2 al2 af3 al3 : int.
+     forall af al   : I1.t.
+     forall af2 al2 : I2.t.
+     forall af3 al3 : I3.t.
      forall b:map 'a.
-     forall bf bl bf2 bl2 bf3 bl3 : int
+     forall bf bl   : I1.t.
+     forall bf2 bl2 : I2.t.
+     forall bf3 bl3 : I3.t
       [bool_eq a af al af2 al2 af3 al3 b bf bl bf2 bl2 bf3 bl3].
-         ((if af <= al then al - af + 1 = bl - bf + 1 else bf > bl) /\
-          (if af2 <= al2 then al2 - af2 + 1 = bl2 - bf2 + 1 else bf2 > bl2) /\
-          (if af3 <= al3 then al3 - af3 + 1 = bl3 - bf3 + 1 else bf3 > bl3) /\
-          (forall i j k:int[get a i j k].
-                af <= i <= al ->
-                af2 <= j <= al2 ->
-                af3 <= k <= al3 ->
-                (get a i j k = get b (bf - af + i) (bf2 - af2 + j) (bf3 - af3 + k))))
+         ((if I1.le af  al  then I1.add (I1.sub al  af)  I1.one = I1.add (I1.sub bl  bf)  I1.one else I1.gt bf  bl) /\
+          (if I2.le af2 al2 then I2.add (I2.sub al2 af2) I2.one = I2.add (I2.sub bl2 bf2) I2.one else I2.gt bf2 bl2) /\
+          (if I3.le af3 al3 then I3.add (I3.sub al3 af3) I3.one = I3.add (I3.sub bl3 bf3) I3.one else I3.gt bf3 bl3) /\
+          (forall i : I1.t. forall j : I2.t. forall k : I3.t[get a i j k].
+                (I1.le af i  /\ I1.le i al ) ->
+                (I2.le af2 j /\ I2.le j al2) ->
+                (I3.le af3 k /\ I3.le k al3) ->
+                (get a i j k = get b (I1.add (I1.sub bf af) i) (I2.add (I2.sub bf2 af2) j) (I3.add (I3.sub bf3 af3) k))))
          <-> bool_eq a af al af2 al2 af3 al3 b bf bl bf2 bl2 bf3 bl3 = True
 
-  function slide (map 'a) int int int int int int : map 'a
+  function slide (map 'a) I1.t I1.t I2.t I2.t I3.t I3.t : map 'a
 
   axiom slide_def :
     forall a : map 'a.
-    forall old_first old_first_2 old_first_3 : int.
-    forall new_first new_first_2 new_first_3 : int.
-    forall i j k : int
+    forall old_first   new_first   : I1.t.
+    forall old_first_2 new_first_2 : I2.t.
+    forall old_first_3 new_first_3 : I3.t.
+    forall i : I1.t.
+    forall j : I2.t.
+    forall k : I3.t
       [get (slide a old_first new_first old_first_2 new_first_2
                     old_first_3 new_first_3) i j k].
       get (slide a old_first new_first old_first_2 new_first_2
                    old_first_3 new_first_3) i j k =
-        get a (i - (new_first - old_first))
-              (j - (new_first_2 - old_first_2))
-              (k - (new_first_3 - old_first_3))
+        get a (I1.sub i (I1.sub new_first old_first))
+              (I2.sub j (I2.sub new_first_2 old_first_2))
+              (I3.sub k (I3.sub new_first_3 old_first_3))
 end
 
 theory Array__4
-  use import int.Int
   use import bool.Bool
+
+  clone Array__Index as I1
+  clone Array__Index as I2
+  clone Array__Index as I3
+  clone Array__Index as I4
 
   type map 'a
 
-  function get (map 'a) int int int int : 'a
-  function set (map 'a) int int int int 'a : map 'a
+  function get (map 'a) I1.t I2.t I3.t I4.t : 'a
+  function set (map 'a) I1.t I2.t I3.t I4.t 'a : map 'a
 
   axiom Select_eq :
     forall m : map 'a.
-    forall i j k l : int.
+    forall i : I1.t.
+    forall j : I2.t.
+    forall k : I3.t.
+    forall l : I4.t.
     forall a : 'a [set m i j k l a].  get (set m i j k l a) i j k l = a
 
   axiom Select_neq :
     forall m : map 'a.
-    forall i j k l i2 j2 k2 l2 : int.
+    forall i i2 : I1.t.
+    forall j j2 : I2.t.
+    forall k k2 : I3.t.
+    forall l l2 : I4.t.
     forall a : 'a
       [get (set m i j k l a) i2 j2 k2 l2|
        set m i j k l a, get m i2 j2 k2 l2].
@@ -482,41 +527,52 @@ theory Array__4
       get (set m i j k l a) i2 j2 k2 l2 = get m i2 j2 k2 l2
 
   function bool_eq (map 'a)
-    int int int int int int int int (map 'a) int int int int int int int int : bool
+    I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t (map 'a) I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t : bool
 
    axiom T__ada_array___equal_def:
      forall a:map 'a.
-     forall af al af2 al2 af3 al3 af4 al4 : int.
+     forall af al   : I1.t.
+     forall af2 al2 : I2.t.
+     forall af3 al3 : I3.t.
+     forall af4 al4 : I4.t.
      forall b:map 'a.
-     forall bf bl bf2 bl2 bf3 bl3 bf4 bl4 : int
+     forall bf bl   : I1.t.
+     forall bf2 bl2 : I2.t.
+     forall bf3 bl3 : I3.t.
+     forall bf4 bl4 : I4.t
       [bool_eq a af al af2 al2 af3 al3 af4 al4 b bf bl bf2 bl2 bf3 bl3 bf4 bl4].
-         ((if af <= al then al - af + 1 = bl - bf + 1 else bf > bl) /\
-          (if af2 <= al2 then al2 - af2 + 1 = bl2 - bf2 + 1 else bf2 > bl2) /\
-          (if af3 <= al3 then al3 - af3 + 1 = bl3 - bf3 + 1 else bf3 > bl3) /\
-          (if af4 <= al4 then al4 - af4 + 1 = bl4 - bf4 + 1 else bf4 > bl4) /\
-          (forall i j k l:int[get a i j k l].
-                af <= i <= al ->
-                af2 <= j <= al2 ->
-                af3 <= k <= al3 ->
-                af4 <= l <= al4 ->
-                (get a i j k l = get b (bf - af + i) (bf2 - af2 + j) (bf3 - af3 + k) (bf4 - af4 + l))))
+         ((if I1.le af  al  then I1.add (I1.sub al  af)  I1.one = I1.add (I1.sub bl  bf)  I1.one else I1.gt bf  bl) /\
+          (if I2.le af2 al2 then I2.add (I2.sub al2 af2) I2.one = I2.add (I2.sub bl2 bf2) I2.one else I2.gt bf2 bl2) /\
+          (if I3.le af3 al3 then I3.add (I3.sub al3 af3) I3.one = I3.add (I3.sub bl3 bf3) I3.one else I3.gt bf3 bl3) /\
+          (if I4.le af4 al4 then I4.add (I4.sub al4 af4) I4.one = I4.add (I4.sub bl4 bf4) I4.one else I4.gt bf4 bl4) /\
+          (forall i : I1.t. forall j : I2.t. forall k : I3.t. forall l : I4.t[get a i j k l].
+                (I1.le af i  /\ I1.le i al ) ->
+                (I2.le af2 j /\ I2.le j al2) ->
+                (I3.le af3 k /\ I3.le k al3) ->
+                (I4.le af4 l /\ I4.le l al4) ->
+                (get a i j k l = get b (I1.add (I1.sub bf af) i) (I2.add (I2.sub bf2 af2) j) (I3.add (I3.sub bf3 af3) k) (I4.add (I4.sub bf4 af4) l))))
          <-> bool_eq a af al af2 al2 af3 al3 af4 al4 b bf bl bf2 bl2 bf3 bl3 bf4 bl4 = True
 
-  function slide (map 'a) int int int int int int int int : map 'a
+  function slide (map 'a) I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t : map 'a
 
   axiom slide_def :
     forall a : map 'a.
-    forall old_first old_first_2 old_first_3 old_first_4 : int.
-    forall new_first new_first_2 new_first_3 new_first_4 : int.
-    forall i j k l : int
+    forall old_first   new_first   : I1.t.
+    forall old_first_2 new_first_2 : I2.t.
+    forall old_first_3 new_first_3 : I3.t.
+    forall old_first_4 new_first_4 : I4.t.
+    forall i : I1.t.
+    forall j : I2.t.
+    forall k : I3.t.
+    forall l : I4.t
       [get (slide a old_first new_first old_first_2 new_first_2
                     old_first_3 new_first_3 old_first_4 new_first_4) i j k l].
       get (slide a old_first new_first old_first_2 new_first_2
                    old_first_3 new_first_3 old_first_4 new_first_4) i j k l =
-        get a (i - (new_first - old_first))
-              (j - (new_first_2 - old_first_2))
-              (k - (new_first_3 - old_first_3))
-              (l - (new_first_4 - old_first_4))
+        get a (I1.sub i (I1.sub new_first old_first))
+              (I2.sub j (I2.sub new_first_2 old_first_2))
+              (I3.sub k (I3.sub new_first_3 old_first_3))
+              (I4.sub l (I4.sub new_first_4 old_first_4))
 end
 
 module BitVectorAda
@@ -538,7 +594,7 @@ module BitVectorAda
   function bool_ge (x: t) (y: t) : bool = uge x y
 
   use import int.Int
-  constant one : t
+  function one : t
 
   function (*) t t : t
 
@@ -573,7 +629,7 @@ module BitVector8
     predicate ugt = ugt,
     predicate uge = uge,
     function ( * ) = mul,
-    constant one = one
+    function one = one
 
   val of_int_ (i : int) : t
     requires{ int_in_range i }
@@ -598,7 +654,7 @@ module BitVector16
     predicate ugt = ugt,
     predicate uge = uge,
     function ( * ) = mul,
-    constant one = one
+    function one = one
 
   val of_int_ (i : int) : t
     requires{ int_in_range i }
@@ -623,7 +679,7 @@ module BitVector32
     predicate ugt = ugt,
     predicate uge = uge,
     function ( * ) = mul,
-    constant one = one
+    function one = one
 
   val of_int_ (i : int) : t
     requires{ int_in_range i }
@@ -648,7 +704,7 @@ module BitVector64
     predicate ugt = ugt,
     predicate uge = uge,
     function ( * ) = mul,
-    constant one = one
+    function one = one
 
   val of_int_ (i : int) : t
     requires{ int_in_range i }

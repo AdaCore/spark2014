@@ -49,9 +49,6 @@ package Why.Types is
    function Present (N : Why_Node_Id) return Boolean is (N /= Why_Empty);
    --  Returns True if N is not the empty node, False otherwise
 
-   function Name_Hash (N : Name_Id) return Ada.Containers.Hash_Type is
-     (Ada.Containers.Hash_Type (N));
-
    package Name_Id_Sets is new Ada.Containers.Ordered_Sets
      (Element_Type        => Name_Id,
       "<"                 => "<",

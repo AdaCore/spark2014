@@ -217,6 +217,11 @@ package body Gnat2Why.Types is
          return;
 
       else
+
+         if Is_Array_Type (E) then
+            Create_Rep_Array_Theory_If_Needed (File, E);
+         end if;
+
          New_Theory := True;
 
          Open_Theory

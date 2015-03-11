@@ -55,21 +55,6 @@ package Why.Gen.Progs is
      (Ada_Node : Node_Id := Empty;
       Effects  : W_Effects_Id) return W_Prog_Id;
 
-   function New_For_Loop
-     (Ada_Node   : Node_Id;
-      Loop_Index : W_Identifier_Id;
-      Low        : W_Identifier_Id;
-      High       : W_Identifier_Id;
-      Invariant  : W_Pred_Id;
-      Loop_Body  : W_Prog_Id) return W_Prog_Id;
-   --  Generate a for loop in Why. Use an encoding of the following form:
-   --  let i = ref start in
-   --  while in_range(!i) do
-   --    ..
-   --    i := !i + 1;
-   --  done
-   --  Low and High are identifiers that represent the bounds of the range
-
    function New_Ignore (Ada_Node : Node_Id := Empty; Prog : W_Prog_Id)
       return W_Prog_Id;
    --   Build the program "ignore(prog)" of return type "unit".

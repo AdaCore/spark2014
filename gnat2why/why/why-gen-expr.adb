@@ -43,11 +43,10 @@ with Sinput;                  use Sinput;
 with SPARK_Util;              use SPARK_Util;
 with Stand;                   use Stand;
 with String_Utils;            use String_Utils;
-with Uintp;                   use Uintp;
 with Urealp;                  use Urealp;
 with Why.Atree.Accessors;     use Why.Atree.Accessors;
-with Why.Atree.Tables;        use Why.Atree.Tables;
 with Why.Atree.Modules;       use Why.Atree.Modules;
+with Why.Atree.Tables;        use Why.Atree.Tables;
 with Why.Conversions;         use Why.Conversions;
 with Why.Gen.Arrays;          use Why.Gen.Arrays;
 with Why.Gen.Names;           use Why.Gen.Names;
@@ -476,7 +475,7 @@ package body Why.Gen.Expr is
             end loop;
             T := New_Call
               (Domain => Domain,
-               Name   => M_Arrays (Dim).Slide,
+               Name   => Get_Array_Theory (To_Ent).Slide,
                Args   => Args,
                Typ    => Split_Typ);
 
@@ -735,6 +734,21 @@ package body Why.Gen.Expr is
       return Result;
    end Insert_Record_Conversion;
 
+   --------------------------------------
+   -- Insert_Conversion_To_Rep_No_Bool --
+   --------------------------------------
+
+   function Insert_Conversion_To_Rep_No_Bool (Domain : EW_Domain;
+                                              Expr : W_Expr_Id)
+                                              return W_Expr_Id
+   is
+      Rep_Typ : constant W_Type_Id := Base_Why_Type_No_Bool (Expr);
+   begin
+      return Insert_Simple_Conversion (Domain => Domain,
+                                       Expr   => Expr,
+                                       To     => Rep_Typ);
+   end Insert_Conversion_To_Rep_No_Bool;
+
    --------------------
    -- Do_Index_Check --
    --------------------
@@ -748,21 +762,19 @@ package body Why.Gen.Expr is
       Tmp        : constant W_Expr_Id :=
         New_Temp_For_Expr (W_Expr);
       First_Expr : constant W_Expr_Id :=
-        Insert_Simple_Conversion (Domain => EW_Term,
-                                  Expr   => Get_Array_Attr
-                                    (Domain => EW_Term,
-                                     Expr   => Arr_Expr,
-                                     Attr   => Attribute_First,
-                                     Dim    => Dim),
-                                  To     => EW_Int_Type);
+        Insert_Conversion_To_Rep_No_Bool (Domain => EW_Term,
+                                          Expr   => Get_Array_Attr
+                                            (Domain => EW_Term,
+                                             Expr   => Arr_Expr,
+                                             Attr   => Attribute_First,
+                                             Dim    => Dim));
       Last_Expr  : constant W_Expr_Id :=
-        Insert_Simple_Conversion (Domain => EW_Term,
-                                  Expr   => Get_Array_Attr
-                                    (Domain => EW_Term,
-                                     Expr   => Arr_Expr,
-                                     Attr   => Attribute_Last,
-                                     Dim    => Dim),
-                                  To     => EW_Int_Type);
+        Insert_Conversion_To_Rep_No_Bool (Domain => EW_Term,
+                                          Expr   => Get_Array_Attr
+                                            (Domain => EW_Term,
+                                             Expr   => Arr_Expr,
+                                             Attr   => Attribute_Last,
+                                             Dim    => Dim));
       T : W_Prog_Id;
    begin
       T := New_Located_Assert (Ada_Node => Ada_Node,
@@ -2119,49 +2131,46 @@ package body Why.Gen.Expr is
          begin
             for Count in 0 .. Dim - 1 loop
                declare
+                  W_Typ      : constant W_Type_Id :=
+                    Nth_Index_Rep_Type_No_Bool (E   => Ty,
+                                                Dim => Count + 1);
                   First_Expr : constant W_Expr_Id :=
-                    Get_Array_Attr (Domain => Domain,
-                                    Ty     => Ty,
-                                    Attr   => Attribute_First,
-                                    Dim    => Count + 1);
+                    Insert_Simple_Conversion (Domain => Domain,
+                                              Expr   => Get_Array_Attr
+                                                (Domain => Domain,
+                                                 Ty     => Ty,
+                                                 Attr   => Attribute_First,
+                                                 Dim    => Count + 1),
+                                              To     => W_Typ);
                   Last_Expr : constant W_Expr_Id :=
-                    Get_Array_Attr (Domain => Domain,
-                                    Ty     => Ty,
-                                    Attr   => Attribute_Last,
-                                    Dim    => Count + 1);
+                    Insert_Simple_Conversion (Domain => Domain,
+                                              Expr   => Get_Array_Attr
+                                                (Domain => Domain,
+                                                 Ty     => Ty,
+                                                 Attr   => Attribute_Last,
+                                                 Dim    => Count + 1),
+                                              To     => W_Typ);
+                  F_Expr    : constant W_Expr_Id :=
+                    Insert_Simple_Conversion (Domain => Domain,
+                                              Expr   => Get_Array_Attr
+                                                (Domain => Domain,
+                                                 Expr   => Expr,
+                                                 Attr   => Attribute_First,
+                                                 Dim    => Count + 1),
+                                              To     => W_Typ);
+                  L_Expr : constant W_Expr_Id :=
+                    Insert_Simple_Conversion (Domain => Domain,
+                                              Expr   => Get_Array_Attr
+                                                (Domain => Domain,
+                                                 Expr   => Expr,
+                                                 Attr   => Attribute_Last,
+                                                 Dim    => Count + 1),
+                                              To     => W_Typ);
                begin
-                  Args (4 * Count + 1) :=
-                    Insert_Simple_Conversion
-                      (Ada_Node => Ty,
-                       Domain   => Domain,
-                       Expr     => First_Expr,
-                       To       => EW_Int_Type);
-                  Args (4 * Count + 2) :=
-                    Insert_Simple_Conversion
-                      (Ada_Node => Ty,
-                       Domain   => Domain,
-                       Expr     => Last_Expr,
-                       To       => EW_Int_Type);
-                  Args (4 * Count + 3) :=
-                    Insert_Simple_Conversion
-                      (Ada_Node => Ty,
-                       Domain   => Domain,
-                       Expr     => Get_Array_Attr
-                         (Domain => Domain,
-                          Expr   => Expr,
-                          Attr   => Attribute_First,
-                          Dim    => Count + 1),
-                       To       => EW_Int_Type);
-                  Args (4 * Count + 4) :=
-                    Insert_Simple_Conversion
-                      (Ada_Node => Ty,
-                       Domain   => Domain,
-                       Expr     => Get_Array_Attr
-                         (Domain => Domain,
-                          Expr   => Expr,
-                          Attr   => Attribute_Last,
-                          Dim    => Count + 1),
-                       To       => EW_Int_Type);
+                  Args (4 * Count + 1) := First_Expr;
+                  Args (4 * Count + 2) := Last_Expr;
+                  Args (4 * Count + 3) := F_Expr;
+                  Args (4 * Count + 4) := L_Expr;
                end;
             end loop;
 
@@ -2191,58 +2200,95 @@ package body Why.Gen.Expr is
       end if;
    end New_Dynamic_Property;
 
-   -----------------
-   -- New_Int_Add --
-   -----------------
+   ----------------------
+   -- New_Discrete_Add --
+   ----------------------
 
-   function New_Int_Add
+   function New_Discrete_Add
      (Domain : EW_Domain;
       Left   : W_Expr_Id;
-      Right  : W_Expr_Id) return W_Expr_Id is
+      Right  : W_Expr_Id;
+      Typ    : W_Type_Id := Why_Empty) return W_Expr_Id
+   is
+      Rep_Type : constant W_Type_Id :=
+        (if Typ = Why_Empty
+         then Base_Why_Type (Get_Type (Left))
+         else Base_Why_Type (Typ));
+      Op : constant W_Identifier_Id :=
+        (if Rep_Type = EW_Int_Type
+         then Int_Infix_Add
+         else MF_BVs (Rep_Type).Add);
    begin
+      pragma Assert (Rep_Type = EW_Int_Type or eLse
+                     Why_Type_Is_BitVector (Rep_Type));
+
       return
         New_Call
           (Domain => Domain,
-           Name   => Int_Infix_Add,
-           Typ    => EW_Int_Type,
+           Name   => Op,
+           Typ    => Rep_Type,
            Args => (1 =>
                       Insert_Scalar_Conversion
                         (Domain => Domain,
                          Expr   => Left,
-                         To     => EW_Int_Type),
+                         To     => Rep_Type),
                     2 =>
                       Insert_Scalar_Conversion
                         (Domain => Domain,
                          Expr   => Right,
-                         To     => EW_Int_Type)));
-   end New_Int_Add;
+                         To     => Rep_Type)));
+   end New_Discrete_Add;
 
-   -----------------------
-   -- New_Int_Substract --
-   -----------------------
+   ----------------------------
+   -- New_Discrete_Substract --
+   ----------------------------
 
-   function New_Int_Substract
+   function New_Discrete_Substract
      (Domain : EW_Domain;
       Left   : W_Expr_Id;
-      Right  : W_Expr_Id) return W_Expr_Id is
+      Right  : W_Expr_Id;
+      Typ    : W_Type_Id := Why_Empty) return W_Expr_Id
+   is
+      Rep_Type : constant W_Type_Id :=
+        (if Typ = Why_Empty
+         then Base_Why_Type (Get_Type (Left))
+         else Base_Why_Type (Typ));
+      Op : constant W_Identifier_Id :=
+        (if Rep_Type = EW_Int_Type
+         then Int_Infix_Subtr
+         else MF_BVs (Rep_Type).Sub);
    begin
+      pragma Assert (Rep_Type = EW_Int_Type or eLse
+                     Why_Type_Is_BitVector (Rep_Type));
+
       return
         New_Call
           (Domain => Domain,
-           Name   => Int_Infix_Subtr,
-           Typ    => EW_Int_Type,
-           Args   =>
-             (1 =>
-                Insert_Scalar_Conversion
-                  (Domain => Domain,
-                   Expr   => Left,
-                   To     => EW_Int_Type),
-              2 =>
-                Insert_Scalar_Conversion
-                  (Domain => Domain,
-                   Expr   => Right,
-                   To     => EW_Int_Type)));
-   end New_Int_Substract;
+           Name   => Op,
+           Typ    => Rep_Type,
+           Args => (1 =>
+                      Insert_Scalar_Conversion
+                        (Domain => Domain,
+                         Expr   => Left,
+                         To     => Rep_Type),
+                    2 =>
+                      Insert_Scalar_Conversion
+                        (Domain => Domain,
+                         Expr   => Right,
+                         To     => Rep_Type)));
+   end New_Discrete_Substract;
+
+   ---------------------------
+   -- New_Discrete_Constant --
+   ---------------------------
+
+   function New_Discrete_Constant
+     (Ada_Node : Node_Id := Empty;
+      Value    : Uint;
+      Typ      : W_Type_Id) return W_Expr_Id is
+     (if Why_Type_Is_BitVector (Typ)
+      then New_Modular_Constant (Ada_Node, Value, Typ)
+      else New_Integer_Constant (Ada_Node, Value));
 
    -----------------------
    -- New_Located_Label --

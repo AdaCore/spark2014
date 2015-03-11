@@ -180,6 +180,10 @@ package Why.Inter is
    --  @return EW_Int_Type if the Base_Why_Type of N is EW_Bool_Type, otherwise
    --    return the Base_Why_Type
 
+   function Base_Why_Type_No_Bool (Typ : W_Type_Id) return W_Type_Id;
+
+   function Base_Why_Type_No_Bool (Expr : W_Expr_Id) return W_Type_Id;
+
    function Is_Record_Conversion (Left, Right : W_Type_Id) return Boolean;
 
    function Is_Array_Conversion (Left, Right : W_Type_Id) return Boolean;

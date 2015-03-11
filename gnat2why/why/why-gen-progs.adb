@@ -23,10 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Uintp;                   use Uintp;
-
 with Why.Conversions;         use Why.Conversions;
-with Why.Atree.Modules;      use Why.Atree.Modules;
+with Why.Atree.Modules;       use Why.Atree.Modules;
 with Why.Atree.Mutators;      use Why.Atree.Mutators;
 with Why.Atree.Properties;    use Why.Atree.Properties;
 with Why.Atree.Tables;        use Why.Atree.Tables;
@@ -87,80 +85,6 @@ package body Why.Gen.Progs is
            Effects  => Effects,
            Return_Type => EW_Unit_Type);
    end New_Havoc_Statement;
-
-   ------------------
-   -- New_For_Loop --
-   ------------------
-
-   function New_For_Loop
-     (Ada_Node   : Node_Id;
-      Loop_Index : W_Identifier_Id;
-      Low        : W_Identifier_Id;
-      High       : W_Identifier_Id;
-      Invariant  : W_Pred_Id;
-      Loop_Body  : W_Prog_Id) return W_Prog_Id
-   is
-      Index_Deref  : constant W_Prog_Id :=
-                       New_Deref
-                         (Ada_Node => Ada_Node,
-                          Right    => Loop_Index);
-      Addition     : constant W_Prog_Id :=
-        +New_Int_Add (Domain => EW_Prog,
-                     Left   => +Index_Deref,
-                     Right  =>
-                       New_Integer_Constant
-                         (Ada_Node => Ada_Node,
-                          Value    => Uint_1));
-      Incr_Stmt    : constant W_Prog_Id :=
-                       New_Assignment
-                         (Ada_Node => Ada_Node,
-                          Name     => Loop_Index,
-                          Value    => Addition);
-      Loop_Cond    : constant W_Prog_Id  :=
-        New_Call (Ada_Node => Ada_Node,
-                  Name     => Int_Infix_Le,
-                  Typ      => EW_Bool_Type,
-                  Args     => (+Index_Deref, +High));
-      Loop_Content : constant W_Prog_Id :=
-                       New_Statement_Sequence
-                         (Ada_Node   => Ada_Node,
-                          Statements => (1 => Loop_Body, 2 => Incr_Stmt));
-      Enriched_Inv : constant W_Pred_Id :=
-                       New_Connection
-                         (Op     => EW_Or,
-                          Left   => +Invariant,
-                          Right  =>
-                            New_Range_Expr
-                              (Domain => EW_Pred,
-                               Low    => +Low,
-                               High   =>
-                                 New_Call
-                                   (Domain => EW_Term,
-                                    Name => Int_Infix_Add,
-                                    Args => (1 => +High,
-                                             2 =>
-                                               New_Integer_Constant
-                                                 (Value => Uint_1)),
-                                    Typ  => EW_Int_Type),
-                               Expr => +Loop_Index));
-   begin
-      return
-        New_Binding_Ref
-          (Ada_Node => Ada_Node,
-           Name     => Loop_Index,
-           Def      => +Low,
-           Context  =>
-             New_While_Loop
-                (Ada_Node     => Ada_Node,
-                 Condition    => Loop_Cond,
-                 Invariants   =>
-                   (1 => +New_VC_Expr
-                      (Ada_Node => Ada_Node,
-                       Expr     => +Enriched_Inv,
-                       Reason   => VC_Loop_Invariant,
-                       Domain   => EW_Pred)),
-                 Loop_Content => Loop_Content));
-   end New_For_Loop;
 
    ----------------
    -- New_Ignore --

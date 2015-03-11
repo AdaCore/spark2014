@@ -37,16 +37,16 @@ with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util;             use SPARK_Util;
 
-with Flow_Utility;
-
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Atree.Traversal; use Why.Atree.Traversal;
 with Why.Conversions;     use Why.Conversions;
+with Why.Gen.Expr;        use Why.Gen.Expr;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Uintp;
+with Flow_Utility;
 
 ---------------
 -- Why.Inter --
@@ -433,6 +433,19 @@ package body Why.Inter is
          return E;
       end if;
    end Base_Why_Type_No_Bool;
+
+   function Base_Why_Type_No_Bool (Typ : W_Type_Id) return W_Type_Id is
+      Kind : constant W_Type_Id := Base_Why_Type (Typ);
+   begin
+      if Kind = EW_Bool_Type then
+         return EW_Int_Type;
+      else
+         return Kind;
+      end if;
+   end Base_Why_Type_No_Bool;
+
+   function Base_Why_Type_No_Bool (Expr : W_Expr_Id) return W_Type_Id is
+      (Base_Why_Type_No_Bool (Get_Type (Expr)));
 
    ------------------
    -- Close_Theory --

@@ -2382,7 +2382,7 @@ package body Gnat2Why.Subprograms is
         (File        => File.File,
          Theory      => File.Cur_Theory,
          Phase       => Generate_Logic,
-         Gen_Marker   => False,
+         Gen_Marker  => False,
          Ref_Allowed => True);
 
       --  We fill the map of parameters, so that in the pre and post, we use

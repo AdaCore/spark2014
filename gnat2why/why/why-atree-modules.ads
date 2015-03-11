@@ -23,9 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada;              use Ada;
 with SPARK_Definition; use SPARK_Definition;
 with Why.Ids;          use Why.Ids;
 with Why.Gen.Names;    use Why.Gen.Names;
+with Ada.Containers.Hashed_Maps;
+with Common_Containers;
 
 package Why.Atree.Modules is
    --  This package helps with Why modules. Today, it is only a list of
@@ -64,6 +67,8 @@ package Why.Atree.Modules is
    EW_BitVector_32_Type : W_Type_Id;
    EW_BitVector_64_Type : W_Type_Id;
    EW_Unit_Type         : W_Type_Id;
+
+   Array_Modules             : W_Module_Array (1 .. Max_Array_Dimensions);
 
    --  Modules of file "ada__model.mlw"
 
@@ -265,8 +270,22 @@ package Why.Atree.Modules is
    M_Int_Minmax : M_Int_Minmax_Type;
    M_Floating   : M_Floating_Type;
    M_Boolean    : M_Boolean_Type;
-   M_Arrays     : array (1 .. 4) of M_Array_Type;
-   M_Array_1    : M_Array_1_Type;
+
+   package Name_Id_Array_Map is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Name_Id,
+      Element_Type    => M_Array_Type,
+      Hash            => Common_Containers.Name_Id_Hash,
+      Equivalent_Keys => "=");
+
+   M_Arrays : Name_Id_Array_Map.Map;
+
+   package Name_Id_Array_1_Map is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Name_Id,
+      Element_Type    => M_Array_1_Type,
+      Hash            => Common_Containers.Name_Id_Hash,
+      Equivalent_Keys => "=");
+
+   M_Arrays_1 : Name_Id_Array_1_Map.Map;
 
    M_BV_Conv_32_64 : M_BV_Conv_Type;
    M_BV_Conv_16_64 : M_BV_Conv_Type;
@@ -342,5 +361,8 @@ package Why.Atree.Modules is
 
    procedure Insert_Extra_Module (N : Node_Id; M : W_Module_Id);
    --  After a call to this procedure, E_Module (N) will return M.
+
+   function Init_Array_Module (Module : W_Module_Id) return M_Array_Type;
+   function Init_Array_1_Module (Module : W_Module_Id) return M_Array_1_Type;
 
 end Why.Atree.Modules;
