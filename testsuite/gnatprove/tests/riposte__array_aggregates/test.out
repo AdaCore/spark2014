@@ -167,7 +167,7 @@ array_aggregates.adb:453:25: info: initialization of "X" proved
 array_aggregates.adb:453:38: info: length check proved
 array_aggregates.adb:456:33: info: initialization of "X" proved
 array_aggregates.adb:461:21: info: length check proved
-array_aggregates.adb:463:24: medium: assertion might fail, requires X = Char_SetChar_Set'(others => N = N)
+array_aggregates.adb:462:07: info: assertion proved
 array_aggregates.adb:463:25: info: initialization of "X" proved
 array_aggregates.adb:463:38: info: length check proved
 stack.ads:35:54: info: length check proved

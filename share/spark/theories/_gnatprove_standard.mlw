@@ -566,7 +566,7 @@ module BitVectorAda
 end
 
 module BitVector8
-  use export bitvec.BV8
+  use export bitvec.BitVector8
 
   clone export BitVectorAda with
     type t = t,
@@ -591,7 +591,7 @@ module BitVector8
 end
 
 module BitVector16
-  use export bitvec.BV16
+  use export bitvec.BitVector16
 
   clone export BitVectorAda with
     type t = t,
@@ -616,7 +616,7 @@ module BitVector16
 end
 
 module BitVector32
-  use export bitvec.BV32
+  use export bitvec.BitVector32
 
   clone export BitVectorAda with
     type t = t,
@@ -641,7 +641,7 @@ module BitVector32
 end
 
 module BitVector64
-  use export bitvec.BV64
+  use export bitvec.BitVector64
 
   clone export BitVectorAda with
     type t = t,
@@ -668,47 +668,47 @@ end
 module BVConv_32_64
   use export bitvec.BVConverter_32_64
 
-  val range_check_ (f l x : BV64.t) : BV64.t
-    requires { (BV64.ule f x) /\ (BV64.ule x l) }
+  val range_check_ (f l x : BitVector64.t) : BitVector64.t
+    requires { (BitVector64.ule f x) /\ (BitVector64.ule x l) }
     ensures { result = x }
 end
 
 module BVConv_16_64
   use export bitvec.BVConverter_16_64
 
-  val range_check_ (f l x : BV64.t) : BV64.t
-    requires { (BV64.ule f x) /\ (BV64.ule x l) }
+  val range_check_ (f l x : BitVector64.t) : BitVector64.t
+    requires { (BitVector64.ule f x) /\ (BitVector64.ule x l) }
     ensures { result = x }
 end
 
 module BVConv_8_64
   use export bitvec.BVConverter_8_64
 
-  val range_check_ (f l x : BV64.t) : BV64.t
-    requires { (BV64.ule f x) /\ (BV64.ule x l) }
+  val range_check_ (f l x : BitVector64.t) : BitVector64.t
+    requires { (BitVector64.ule f x) /\ (BitVector64.ule x l) }
     ensures { result = x }
 end
 
 module BVConv_16_32
   use export bitvec.BVConverter_16_32
 
-  val range_check_ (f l x : BV32.t) : BV32.t
-    requires { (BV32.ule f x) /\ (BV32.ule x l) }
+  val range_check_ (f l x : BitVector32.t) : BitVector32.t
+    requires { (BitVector32.ule f x) /\ (BitVector32.ule x l) }
     ensures { result = x }
 end
 
 module BVConv_8_32
   use export bitvec.BVConverter_8_32
 
-  val range_check_ (f l x : BV32.t) : BV32.t
-    requires { (BV32.ule f x) /\ (BV32.ule x l) }
+  val range_check_ (f l x : BitVector32.t) : BitVector32.t
+    requires { (BitVector32.ule f x) /\ (BitVector32.ule x l) }
     ensures { result = x }
 end
 
 module BVConv_8_16
   use export bitvec.BVConverter_8_16
 
-  val range_check_ (f l x : BV16.t) : BV16.t
-    requires { (BV16.ule f x) /\ (BV16.ule x l) }
+  val range_check_ (f l x : BitVector16.t) : BitVector16.t
+    requires { (BitVector16.ule f x) /\ (BitVector16.ule x l) }
     ensures { result = x }
 end

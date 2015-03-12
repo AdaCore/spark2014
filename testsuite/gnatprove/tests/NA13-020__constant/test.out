@@ -24,7 +24,7 @@ skp-subjects.adb:388:21: info: initialization of "Null_Event.Dst_Subject" proved
 skp-subjects.adb:388:21: info: initialization of "Null_Event.Dst_Vector" proved
 skp-subjects.adb:388:21: info: initialization of "Null_Event.Handover" proved
 skp-subjects.adb:388:21: info: initialization of "Null_Event.Send_IPI" proved
-skp-subjects.adb:402:13: medium: assertion might fail, requires Subject_Specs (Subject).Event_Table (Event).Dst_Subject /= Subject
+skp-subjects.adb:399:07: info: assertion proved
 skp-subjects.adb:413:23: info: refined post proved
 skp-subjects.adb:413:48: info: division check proved
 skp-subjects.adb:416:07: info: assertion proved

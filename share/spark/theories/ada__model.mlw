@@ -857,7 +857,7 @@ module Array_Int_Rep_Comparison_Axiom
 end
 
 module Array_BV8_Rep_Comparison_Axiom
-  use import bitvec.BV8
+  use import bitvec.BitVector8
 
   clone export Array_Comparison_Axiom with
   type rep_type = t,
@@ -866,7 +866,7 @@ module Array_BV8_Rep_Comparison_Axiom
 end
 
 module Array_BV16_Rep_Comparison_Axiom
-  use import bitvec.BV16
+  use import bitvec.BitVector16
 
   clone export Array_Comparison_Axiom with
   type rep_type = t,
@@ -875,7 +875,7 @@ module Array_BV16_Rep_Comparison_Axiom
 end
 
 module Array_BV32_Rep_Comparison_Axiom
-  use import bitvec.BV32
+  use import bitvec.BitVector32
 
   clone export Array_Comparison_Axiom with
   type rep_type = t,
@@ -884,7 +884,7 @@ module Array_BV32_Rep_Comparison_Axiom
 end
 
 module Array_BV64_Rep_Comparison_Axiom
-  use import bitvec.BV64
+  use import bitvec.BitVector64
 
   clone export Array_Comparison_Axiom with
   type rep_type = t,

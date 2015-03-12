@@ -11,7 +11,7 @@ x86.adb:16:44: info: division check proved
 x86.adb:16:44: info: range check proved
 x86.adb:17:22: medium: assertion might fail, requires Unsigned_32(XCX(0)) + (Unsigned_32(XCX(1)) * (2**8))) = (val rem 2**16
 x86.adb:18:61: info: division check proved
-x86.adb:19:22: medium: assertion might fail, requires Unsigned_32(XCX(2)) + (Unsigned_32(XCX(3)) * (2**8))) = ((val / (2**16)) rem 2**16
+x86.adb:19:07: info: assertion proved
 x86.adb:20:62: info: division check proved
 x86.adb:20:73: info: division check proved
 x86.adb:21:07: info: assertion proved
@@ -35,7 +35,7 @@ x86.adb:47:44: info: division check proved
 x86.adb:47:44: info: range check proved
 x86.adb:48:22: medium: assertion might fail, requires Unsigned_32(XSI(0)) + (Unsigned_32(XSI(1)) * (2**8))) = (val rem 2**16
 x86.adb:49:61: info: division check proved
-x86.adb:50:22: medium: assertion might fail, requires Unsigned_32(XSI(2)) + (Unsigned_32(XSI(3)) * (2**8))) = ((val / (2**16)) rem 2**16
+x86.adb:50:07: info: assertion proved
 x86.adb:51:62: info: division check proved
 x86.adb:51:73: info: division check proved
 x86.adb:52:07: info: assertion proved
@@ -59,7 +59,7 @@ x86.adb:78:44: info: division check proved
 x86.adb:78:44: info: range check proved
 x86.adb:79:22: medium: assertion might fail, requires Unsigned_32(XDI(0)) + (Unsigned_32(XDI(1)) * (2**8))) = (val rem 2**16
 x86.adb:80:61: info: division check proved
-x86.adb:81:22: medium: assertion might fail, requires Unsigned_32(XDI(2)) + (Unsigned_32(XDI(3)) * (2**8))) = ((val / (2**16)) rem 2**16
+x86.adb:81:07: info: assertion proved
 x86.adb:82:62: info: division check proved
 x86.adb:82:73: info: division check proved
 x86.adb:83:07: info: assertion proved
@@ -103,15 +103,15 @@ x86.ads:18:48: info: length check proved
 x86.ads:20:31: info: length check proved
 x86.ads:22:13: info: initialization of "ECX" proved
 x86.ads:24:16: info: postcondition proved
-x86.ads:31:16: medium: postcondition might fail
+x86.ads:31:16: info: postcondition proved
 x86.ads:38:31: info: length check proved
 x86.ads:40:13: info: initialization of "ESI" proved
 x86.ads:42:16: info: postcondition proved
-x86.ads:49:16: medium: postcondition might fail
+x86.ads:49:16: info: postcondition proved
 x86.ads:56:31: info: length check proved
 x86.ads:58:13: info: initialization of "EDI" proved
 x86.ads:60:16: info: postcondition proved
-x86.ads:67:16: medium: postcondition might fail
+x86.ads:67:16: info: postcondition proved
 x86.ads:74:13: info: initialization of "ReadMem8" proved
 x86.ads:76:14: info: postcondition proved
 x86.ads:80:13: info: initialization of "ReadMem16" proved

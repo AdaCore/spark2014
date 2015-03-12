@@ -49,4 +49,4 @@ skp-subjects.ads:51:13: info: initialization of "Get_Event.Dst_Subject" proved
 skp-subjects.ads:51:13: info: initialization of "Get_Event.Dst_Vector" proved
 skp-subjects.ads:51:13: info: initialization of "Get_Event.Handover" proved
 skp-subjects.ads:51:13: info: initialization of "Get_Event.Send_IPI" proved
-skp-subjects.ads:57:17: medium: postcondition might fail, requires Get_Event'Result.Dst_Subject /= Subject_Id
+skp-subjects.ads:57:17: info: postcondition proved
