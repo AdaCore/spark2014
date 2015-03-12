@@ -5,3 +5,11 @@ foo.adb:12:34: medium: range check might fail
 foo.adb:13:27: info: division check proved
 foo.adb:13:27: info: range check proved
 foo.ads:10:13: info: initialization of "Bit_Set" proved
+foo.ads:19:12: info: division check proved
+foo.ads:19:35: info: range check proved
+foo.ads:21:10: info: postcondition proved
+foo.ads:22:23: info: index check proved
+foo.ads:22:36: info: division check proved
+foo.ads:22:36: medium: range check might fail
+foo.ads:23:29: info: division check proved
+foo.ads:23:29: info: range check proved
