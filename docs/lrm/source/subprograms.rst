@@ -394,6 +394,16 @@ follow the grammar of ``global_specification``
 3. A ``null_global_specification`` indicates that the subprogram does not
    reference any ``global_item`` directly or indirectly.
 
+.. _tu-fa-global_aspects-04:
+
+4. If a subprogram's Global aspect is not otherwise specified and either
+
+   * the subprogram's Pure aspect is True; or
+
+   * a Pure_Function pragma applies to the subprogram
+
+   then a Global aspect of *null* is implicitly specified for the subprogram.
+
 .. _etu-global_aspects-ss:
 
 .. centered:: **Name Resolution Rules**
