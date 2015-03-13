@@ -1,23 +1,11 @@
 Generic Units
 =============
 
-Any generic unit is in |SPARK|, regardless of whether it contains
-constructs that are not normally in |SPARK|.  [Analysis is not
-performed on a generic unit; a generic unit generates no verification
-conditions].
-
-Generic Declarations
---------------------
-
-No additions or restrictions on the declaration but the declaration
-has to be in |SPARK| in order that it may be instantiated in |SPARK|.
-
-Generic Bodies
---------------
-
-No additions or restrictions on the body but the body has to be in
-|SPARK| in order that it may be instantiated in |SPARK|.
-
+Enforcement of |SPARK|'s rules within a generic unit is not
+guaranteed. Violations might not be reported until an
+instance of the generic unit is analyzed. 
+If an instance of a generic unit occurs within another generic unit,
+this principle is applied recursively.
 
 Generic Instantiation
 ---------------------
@@ -41,8 +29,9 @@ of the same generic which passes in, for example, Standard.Integer,
 might be in |SPARK|.]
 
 [Ada has a rule that legality rules are not enforced in an
-instance body. No such rule applies to the restrictions defining
-which Ada constructs are in |SPARK|. For example, a goto statement
+instance body (and, in some cases, in the private part of an
+instance of a generic package). No such rule applies to the restrictions
+defining which Ada constructs are in |SPARK|. For example, a goto statement
 in an instance body would cause the instantiation to not be in |SPARK|.]
 
 [Consider the problem of correctly specifying the Global and Depends
