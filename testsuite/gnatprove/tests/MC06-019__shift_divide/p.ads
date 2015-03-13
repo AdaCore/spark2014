@@ -7,9 +7,9 @@ is
    --  Very simple test cases showing use of contracts
    --  on imported, intrinsic functions, such as U.Shift_Right
    procedure Op1 (A : in out U.U32)
-     with Post => A = A'Old / 4;
+     with Post => A = A'Old / 4; --@POSTCONDITION:PASS
 
    procedure Op2 (A : in out U.U32)
-     with Post => A = A'Old / (2 ** 17);
+     with Post => A = A'Old / (2 ** 17); --@POSTCONDITION:PASS
 
 end P;
