@@ -169,6 +169,7 @@ aco-math-very_longs.adb:261:46: info: initialization of "Result.Long_Digits" pro
 aco-math-very_longs.adb:261:64: info: initialization of "Temp" proved
 aco-math-very_longs.adb:262:63: info: initialization of "Temp" proved
 aco-math-very_longs.adb:266:14: info: initialization of "Result.Long_Digits" proved
+aco-math-very_longs.adb:271:42: medium: overflow check might fail
 aco-math-very_longs.adb:279:13: info: discriminant check proved
 aco-math-very_longs.adb:279:26: info: length check proved
 aco-math-very_longs.adb:279:29: info: length check proved
@@ -202,6 +203,8 @@ aco-math-very_longs.adb:304:15: info: range check proved
 aco-math-very_longs.adb:307:15: info: range check proved
 aco-math-very_longs.adb:307:93: info: overflow check proved
 aco-math-very_longs.adb:307:115: info: overflow check proved
+aco-math-very_longs.adb:316:36: info: overflow check proved
+aco-math-very_longs.adb:316:58: info: overflow check proved
 aco-math-very_longs.adb:323:16: info: initialization of "Get_MSD" proved
 aco-math-very_longs.adb:326:19: info: postcondition proved
 aco-math-very_longs.adb:326:25: info: discriminant check proved

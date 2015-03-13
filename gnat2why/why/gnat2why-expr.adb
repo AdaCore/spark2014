@@ -1955,7 +1955,7 @@ package body Gnat2Why.Expr is
 
                      Binds (I) :=
                        Transform_Expr
-                         (Domain        => EW_Term,
+                         (Domain        => EW_Prog,
                           Params        => Params,
                           Expr          => Node (Elmt),
                           Expected_Type => EW_Abstract (Etype (Field)));
