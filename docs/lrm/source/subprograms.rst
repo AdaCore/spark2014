@@ -398,7 +398,9 @@ follow the grammar of ``global_specification``
 
 4. If a subprogram's Global aspect is not otherwise specified and either
 
-   * the subprogram's Pure aspect is True; or
+   * the subprogram is a library-level subprogram declared in a library
+     unit that is declared pure (i.e., a subprogram to which the
+     implementation permissions of Ada RM 10.2.1 apply); or
 
    * a Pure_Function pragma applies to the subprogram
 
