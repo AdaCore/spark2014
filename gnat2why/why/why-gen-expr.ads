@@ -312,6 +312,7 @@ package Why.Gen.Expr is
 
    function New_Attribute_Expr
      (Ty     : Entity_Id;
+      Domain : EW_Domain;
       Attr   : Supported_Attribute_Id;
       Params : Transformation_Params := Body_Params) return W_Expr_Id;
 

@@ -1243,12 +1243,13 @@ package body Gnat2Why.Expr is
                                                         Expr   =>
                                                           New_Attribute_Expr
                                                             (Base,
+                                                             EW_Term,
                                                              Attribute_First,
                                                              Params),
                                                         To     => Why_Base)
                            else
                               +New_Attribute_Expr
-                             (Base, Attribute_First, Params))));
+                             (Base, EW_Term, Attribute_First, Params))));
             Last_In_Range    : constant W_Pred_Id :=
               New_Call
                 (Name => Le,
@@ -1259,12 +1260,13 @@ package body Gnat2Why.Expr is
                                                         Expr   =>
                                                           New_Attribute_Expr
                                                             (Base,
+                                                             EW_Term,
                                                              Attribute_Last,
                                                              Params),
                                                         To     => Why_Base)
                            else
                               +New_Attribute_Expr
-                             (Base, Attribute_Last, Params))));
+                             (Base, EW_Term, Attribute_Last, Params))));
             First_Le_Last    : constant W_Pred_Id :=
               New_Call
                 (Name => Le,
@@ -2260,15 +2262,17 @@ package body Gnat2Why.Expr is
                       (Domain => EW_Pred,
                        Low    => Insert_Simple_Conversion
                          (Domain => EW_Term,
-                          Expr   => Get_Array_Attr (Ty   => Ty_Ext,
-                                                    Attr => Attribute_First,
-                                                    Dim  => I),
+                          Expr   => Get_Array_Attr (Domain => EW_Term,
+                                                    Ty     => Ty_Ext,
+                                                    Attr   => Attribute_First,
+                                                    Dim    => I),
                           To     => EW_Int_Type),
                        High   => Insert_Simple_Conversion
                          (Domain => EW_Term,
-                          Expr   => Get_Array_Attr (Ty   => Ty_Ext,
-                                                    Attr => Attribute_Last,
-                                                    Dim  => I),
+                          Expr   => Get_Array_Attr (Domain => EW_Term,
+                                                    Ty     => Ty_Ext,
+                                                    Attr   => Attribute_Last,
+                                                    Dim    => I),
                           To     => EW_Int_Type),
                        Expr   => Indices (I)),
                   Domain => EW_Pred);
@@ -2662,6 +2666,7 @@ package body Gnat2Why.Expr is
                    (Domain   => EW_Term,
                     Expr     => New_Attribute_Expr
                       (Ty     => Ty,
+                       Domain => EW_Term,
                        Attr   => Attribute_First,
                        Params => Body_Params),
                     To       => Why_Rep_Type);
@@ -2670,6 +2675,7 @@ package body Gnat2Why.Expr is
                    (Domain   => EW_Term,
                     Expr     => New_Attribute_Expr
                       (Ty     => Ty,
+                       Domain => EW_Term,
                        Attr   => Attribute_Last,
                        Params => Body_Params),
                     To       => Why_Rep_Type);
@@ -4056,7 +4062,7 @@ package body Gnat2Why.Expr is
                   --  duplicates of those done in One_Level_Update.
 
                   Prefix_Expr : constant W_Expr_Id :=
-                    +Transform_Expr (Domain        => EW_Term,
+                    +Transform_Expr (Domain        => EW_Pterm,
                                      Expr          => Prefix (N),
                                      Expected_Type => Prefix_Type,
                                      Params        => Body_Params);
@@ -4099,7 +4105,7 @@ package body Gnat2Why.Expr is
                    (Ada_Node => Ada_Node,
                     Domain   => EW_Prog,
                     Name     =>
-                      Transform_Expr (Left_Side, EW_Term, Body_Params),
+                      Transform_Expr (Left_Side, EW_Pterm, Body_Params),
                     Ty       => Ty),
                Ty       => Ty);
          end if;
@@ -5959,6 +5965,7 @@ package body Gnat2Why.Expr is
 
             else
                First := New_Attribute_Expr (Etype (Rng),
+                                            EW_Term,
                                             Attribute_First,
                                             Params);
 
@@ -6823,7 +6830,7 @@ package body Gnat2Why.Expr is
             Check : W_Pred_Id := True_Pred;
             Lval  : constant W_Expr_Id :=
               New_Temp_For_Expr
-                (Transform_Expr (Lvalue, EW_Term, Body_Params), True);
+                (Transform_Expr (Lvalue, EW_Pterm, Body_Params), True);
             Dim   : constant Positive :=
               Positive (Number_Dimensions (Get_Ada_Node (+L_Type)));
          begin
@@ -6866,7 +6873,7 @@ package body Gnat2Why.Expr is
             Check : W_Expr_Id := +True_Pred;
             Lval  : constant W_Expr_Id :=
               New_Temp_For_Expr
-                (Transform_Expr (Lvalue, EW_Term, Body_Params), True);
+                (Transform_Expr (Lvalue, EW_Pterm, Body_Params), True);
             Discr : Node_Id := SPARK_Util.First_Discriminant (Ty);
             D_Ty  : constant Entity_Id :=
               (if Fullview_Not_In_SPARK (Ty) then
@@ -6922,7 +6929,7 @@ package body Gnat2Why.Expr is
          declare
             Lval  : constant W_Expr_Id :=
               New_Temp_For_Expr
-                (Transform_Expr (Lvalue, EW_Term, Body_Params), True);
+                (Transform_Expr (Lvalue, EW_Pterm, Body_Params), True);
             Pred : constant W_Pred_Id :=
               New_Call
                 (Name => Why_Eq,
@@ -7174,9 +7181,10 @@ package body Gnat2Why.Expr is
                      if Nkind (Var) in N_Identifier | N_Expanded_Name
                        and then Is_Type (Entity (Var))
                      then
-                        T := Get_Array_Attr (Ty   => Entity (Var),
-                                             Attr => Attr_Id,
-                                             Dim  =>
+                        T := Get_Array_Attr (Domain => Domain,
+                                             Ty     => Entity (Var),
+                                             Attr   => Attr_Id,
+                                             Dim    =>
                                                Positive (UI_To_Int (Dim)));
 
                      --  Object'First
@@ -7198,7 +7206,8 @@ package body Gnat2Why.Expr is
                      end if;
 
                   when Discrete_Kind | Real_Kind =>
-                     T := New_Attribute_Expr (Etype (Var), Attr_Id, Params);
+                     T := New_Attribute_Expr
+                       (Etype (Var), Domain, Attr_Id, Params);
 
                   when others =>
 
@@ -7234,7 +7243,7 @@ package body Gnat2Why.Expr is
             end Loop_Entry;
 
          when Attribute_Modulus =>
-            T := New_Attribute_Expr (Etype (Var), Attr_Id);
+            T := New_Attribute_Expr (Etype (Var), Domain, Attr_Id);
 
          when Attribute_Mod =>
             declare
@@ -7254,35 +7263,39 @@ package body Gnat2Why.Expr is
                           Insert_Simple_Conversion
                             (Domain => EW_Term,
                              Expr   =>
-                               New_Call (Ada_Node => Expr,
-                                    Domain   => Domain,
-                                    Name     => Create_Modular_Rem (Arg_BTyp),
-                                    Args     =>
-                                      (1 => Transform_Expr (Arg,
-                                       Arg_BTyp,
-                                       Domain,
-                                       Params),
-                                       2 =>
-                                         (if Get_EW_Type (Var) = EW_Builtin
-                                          then
-                               --  if we're builtin, i.e., not abstract,
-                               --  we use standard modulus from why theory
-                                             Insert_Simple_Conversion
-                                            (Domain => EW_Term,
-                                             Expr   => +Create_Modular_Modulus
-                                               (Base_Why_Type (Var)),
-                                             To     => Arg_BTyp)
-                                          else
-                                          --  else, use the attribute
-                                             New_Attribute_Expr
-                                            (Etype (Var), Attribute_Modulus))),
-                                         Typ   => Arg_BTyp),
+                               New_Call
+                                 (Ada_Node => Expr,
+                                  Domain   => Domain,
+                                  Name     => Create_Modular_Rem (Arg_BTyp),
+                                  Args     =>
+                                    (1 => Transform_Expr (Arg,
+                                     Arg_BTyp,
+                                     Domain,
+                                     Params),
+                                     2 =>
+                                       (if Get_EW_Type (Var) = EW_Builtin
+                                        then
+                                    --  if we're builtin, i.e., not abstract,
+                                    --  we use standard modulus from why theory
+                                           Insert_Simple_Conversion
+                                          (Domain => EW_Term,
+                                           Expr   => +Create_Modular_Modulus
+                                             (Base_Why_Type (Var)),
+                                           To     => Arg_BTyp)
+                                        else
+                                        --  else, use the attribute
+                                           New_Attribute_Expr
+                                          (Etype (Var),
+                                           Domain, Attribute_Modulus))),
+                                  Typ   => Arg_BTyp),
                              To => Target_Type);
                      else
+
                         --  in the case where the argument's type size is
                         --  bigger than the type doing the modulo, simply
                         --  convert since Arg is then necessary smaller than
                         --  var's modulus.
+
                         T := Insert_Simple_Conversion (Domain => EW_Term,
                                                        Expr   =>
                                                          Transform_Expr
@@ -7316,7 +7329,7 @@ package body Gnat2Why.Expr is
                                     Insert_Simple_Conversion
                                    (Domain => EW_Term,
                                     Expr   => New_Attribute_Expr
-                                      (Etype (Var), Attribute_Modulus),
+                                      (Etype (Var), Domain, Attribute_Modulus),
                                        To     => EW_Int_Type))),
                                  Typ   => EW_Int_Type),
                      To   => Target_Type);
@@ -7329,7 +7342,7 @@ package body Gnat2Why.Expr is
             T := New_Call (Ada_Node => Expr,
                            Domain   => Domain,
                            Name     => +New_Attribute_Expr
-                             (Etype (Var), Attr_Id),
+                             (Etype (Var), Domain, Attr_Id),
                            Args     =>
                              (1 => Transform_Expr (First (Expressions (Expr)),
                                                    Base_Why_Type (Var),
@@ -7346,7 +7359,7 @@ package body Gnat2Why.Expr is
               and then Present (Entity (Var))
               and then Ekind (Entity (Var)) in Type_Kind
             then
-               T := New_Attribute_Expr (Entity (Var), Attr_Id);
+               T := New_Attribute_Expr (Entity (Var), Domain, Attr_Id);
             else
                Ada.Text_IO.Put_Line ("[Transform_Attr] id ="
                                      & Attribute_Id'Image (Attr_Id));
@@ -7363,7 +7376,7 @@ package body Gnat2Why.Expr is
                                            Domain,
                                            Params);
                Func    : constant W_Identifier_Id :=
-                           +New_Attribute_Expr (Etype (Var), Attr_Id);
+                           +New_Attribute_Expr (Etype (Var), Domain, Attr_Id);
             begin
                T :=
                  New_Call
@@ -7721,12 +7734,13 @@ package body Gnat2Why.Expr is
       Low_Type := First_Subtype (Root_Type (Base_Type (Return_Type)));
 
       if Is_Static_Array_Type (Low_Type) then
-         First_Expr := Get_Array_Attr (Low_Type, Attribute_First, 1);
+         First_Expr := Get_Array_Attr (Domain, Low_Type, Attribute_First, 1);
 
       elsif Is_Component_Left then
          First_Expr :=
            New_Attribute_Expr
-             (Nth_Index_Type (Return_Type, 1), Attribute_First, Body_Params);
+             (Nth_Index_Type (Return_Type, 1),
+              Domain, Attribute_First, Body_Params);
 
       else
          First_Expr := Get_Array_Attr (Domain, Left_Expr, Attribute_First, 1);
@@ -7826,8 +7840,8 @@ package body Gnat2Why.Expr is
             declare
                Right_First : constant W_Expr_Id :=
                  (if Is_Component_Right then
-                       New_Attribute_Expr
-                    (Nth_Index_Type (Return_Type, 1), Attribute_First,
+                     New_Attribute_Expr
+                    (Nth_Index_Type (Return_Type, 1), Domain, Attribute_First,
                      Body_Params)
                   else
                      Get_Array_Attr (Domain, Right_Expr, Attribute_First, 1));
@@ -7880,7 +7894,7 @@ package body Gnat2Why.Expr is
                Right_First : constant W_Expr_Id :=
                  (if Is_Component_Right then
                        New_Attribute_Expr
-                    (Nth_Index_Type (Return_Type, 1), Attribute_First,
+                    (Nth_Index_Type (Return_Type, 1), Domain, Attribute_First,
                      Body_Params)
                   else Get_Array_Attr
                     (Domain, Right_Expr, Attribute_First, 1));

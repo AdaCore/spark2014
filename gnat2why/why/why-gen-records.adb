@@ -1099,7 +1099,8 @@ package body Why.Gen.Records is
                    New_Record_Access
                      (Name => +R_Ident,
                       Field =>
-                        +New_Attribute_Expr (Root, Attribute_Constrained),
+                        +New_Attribute_Expr
+                        (Root, EW_Term, Attribute_Constrained),
                       Typ   => EW_Bool_Type));
 
             To_Index := To_Index + 1;
@@ -1107,7 +1108,7 @@ package body Why.Gen.Records is
               New_Field_Association
                 (Domain => EW_Term,
                  Field  =>
-                   +New_Attribute_Expr (Root, Attribute_Constrained),
+                   +New_Attribute_Expr (Root, EW_Term, Attribute_Constrained),
                  Value  =>
                    New_Record_Access
                      (Name  => +A_Ident,
@@ -1126,7 +1127,8 @@ package body Why.Gen.Records is
             To_Root_Aggr (To_Index) :=
               New_Field_Association
                 (Domain => EW_Term,
-                 Field  => +New_Attribute_Expr (Root, Attribute_Constrained),
+                 Field  => +New_Attribute_Expr
+                   (Root, EW_Term, Attribute_Constrained),
                  Value  => +True_Term);
          end if;
 
@@ -1144,14 +1146,15 @@ package body Why.Gen.Records is
                  Value  =>
                    New_Record_Access
                      (Name  => +R_Ident,
-                      Field => +New_Attribute_Expr (Root, Attribute_Tag),
+                      Field => +New_Attribute_Expr
+                        (Root, EW_Term, Attribute_Tag),
                       Typ   => EW_Int_Type));
 
             To_Index := To_Index + 1;
             To_Root_Aggr (To_Index) :=
               New_Field_Association
                 (Domain => EW_Term,
-                 Field  => +New_Attribute_Expr (Root, Attribute_Tag),
+                 Field  => +New_Attribute_Expr (Root, EW_Term, Attribute_Tag),
                  Value  =>
                    New_Record_Access
                      (Name  => +A_Ident,
@@ -2502,8 +2505,9 @@ package body Why.Gen.Records is
          return New_Call
            (Ada_Node => Ada_Node,
             Name     => +New_Attribute_Expr
-              (Ty   => Ty,
-               Attr => Attribute_Constrained),
+              (Ty     => Ty,
+               Domain => Domain,
+               Attr   => Attribute_Constrained),
             Args     => (1 => Name),
             Domain   => Domain,
             Typ      => EW_Bool_Type);
@@ -2536,8 +2540,9 @@ package body Why.Gen.Records is
                    New_Field_Association
                  (Domain => Domain,
                   Field  => +New_Attribute_Expr
-                    (Ty   => Ty,
-                     Attr => Attribute_Constrained),
+                    (Ty     => Ty,
+                     Domain => Domain,
+                     Attr   => Attribute_Constrained),
                   Value  => Value)),
             Typ      => Get_Type (Name));
       else
@@ -2561,8 +2566,9 @@ package body Why.Gen.Records is
       return New_Call
         (Ada_Node => Ada_Node,
          Name     => +New_Attribute_Expr
-           (Ty   => Ty,
-            Attr => Attribute_Tag),
+           (Ty     => Ty,
+            Domain => Domain,
+            Attr   => Attribute_Tag),
          Args     => (1 => Name),
          Domain   => Domain,
          Typ      => EW_Int_Type);
@@ -2636,8 +2642,9 @@ package body Why.Gen.Records is
       if not Is_Constrained (Ty) and then Has_Defaulted_Discriminants (Ty) then
          Associations (Index) := New_Field_Association
            (Domain   => EW_Term,
-            Field    => +New_Attribute_Expr (Ty   => Ty,
-                                             Attr => Attribute_Constrained),
+            Field    => +New_Attribute_Expr (Ty     => Ty,
+                                             Domain => EW_Term,
+                                             Attr   => Attribute_Constrained),
             Value    => A (Index));
          Index := Index + 1;
       end if;
@@ -2647,8 +2654,9 @@ package body Why.Gen.Records is
       if Is_Tagged_Type (Ty) then
          Associations (Index) := New_Field_Association
            (Domain   => EW_Term,
-            Field    => +New_Attribute_Expr (Ty   => Ty,
-                                             Attr => Attribute_Tag),
+            Field    => +New_Attribute_Expr (Ty     => Ty,
+                                             Domain => EW_Term,
+                                             Attr   => Attribute_Tag),
             Value    => A (Index));
          Index := Index + 1;
       end if;

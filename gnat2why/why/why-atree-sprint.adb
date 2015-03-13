@@ -305,7 +305,7 @@ package body Why.Atree.Sprint is
          end;
       else
          case Get_Domain (+Node) is
-         when EW_Term | EW_Pred =>
+         when EW_Term | EW_Pred | EW_Pterm =>
             Print_Node (+Name);
             P (O, " ");
             Print_List (+Args, " ");
@@ -842,7 +842,7 @@ package body Why.Atree.Sprint is
       Def         : constant W_Expr_Id := Get_Def (Node);
    begin
       case Get_Domain (+Node) is
-         when EW_Term =>
+         when EW_Term | EW_Pterm =>
             P (O, "function ");
 
             Print_Node (+Name);

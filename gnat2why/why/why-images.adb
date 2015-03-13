@@ -377,13 +377,13 @@ package body Why.Images is
    begin
       case Value is
          when EW_True =>
-            if Domain in EW_Prog | EW_Term then
+            if Domain in EW_Prog | EW_Term | EW_Pterm then
                P (O, "True");
             else
                P (O, "true");
             end if;
          when EW_False =>
-            if Domain in EW_Prog | EW_Term then
+            if Domain in EW_Prog | EW_Term | EW_Pterm then
                P (O, "False");
             else
                P (O, "false");
@@ -423,6 +423,8 @@ package body Why.Images is
             P (O, "[predicate]");
          when EW_Prog =>
             P (O, "[program]");
+         when EW_Pterm =>
+            P (O, "[program term]");
       end case;
    end P;
 

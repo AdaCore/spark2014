@@ -130,7 +130,7 @@ package body Why.Gen.Arrays is
    begin
       Args (Arg_Ind) :=
         Insert_Scalar_Conversion
-          (Domain, Empty, Get_Array_Attr (Ty, Attr, Dim), EW_Int_Type);
+          (Domain, Empty, Get_Array_Attr (Domain, Ty, Attr, Dim), EW_Int_Type);
       Arg_Ind := Arg_Ind + 1;
    end Add_Attr_Arg;
 
@@ -305,8 +305,8 @@ package body Why.Gen.Arrays is
       return
         Build_Length_Expr
           (Domain,
-           Get_Array_Attr (Ty, Attribute_First, Dim),
-           Get_Array_Attr (Ty, Attribute_Last, Dim));
+           Get_Array_Attr (Domain, Ty, Attribute_First, Dim),
+           Get_Array_Attr (Domain, Ty, Attribute_Last, Dim));
    end Build_Length_Expr;
 
    -----------------------
@@ -795,7 +795,8 @@ package body Why.Gen.Arrays is
    --------------------
 
    function Get_Array_Attr
-     (Ty     : Entity_Id;
+     (Domain : EW_Domain;
+      Ty     : Entity_Id;
       Attr   : Attribute_Id;
       Dim    : Positive) return W_Expr_Id is
    begin
@@ -807,6 +808,7 @@ package body Why.Gen.Arrays is
             return Insert_Simple_Conversion
               (Domain   => EW_Term,
                Expr     => New_Attribute_Expr (Ty     => Index_Type,
+                                               Domain => Domain,
                                                Attr   => Attr,
                                                Params => Body_Params),
                To       => EW_Int_Type);
@@ -832,7 +834,7 @@ package body Why.Gen.Arrays is
       --  If the type is constrained, just use the type information
 
       if Is_Static_Array_Type (Ty) then
-         return Get_Array_Attr (Ty, Attr, Dim);
+         return Get_Array_Attr (Domain, Ty, Attr, Dim);
 
       --  if the object is a split object, look up the required expressions in
       --  the symbol table

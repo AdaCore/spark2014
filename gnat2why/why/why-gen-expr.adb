@@ -105,6 +105,7 @@ package body Why.Gen.Expr is
               (Domain   => EW_Term,
                Expr     => New_Attribute_Expr
                  (Ty     => Ty,
+                  Domain => EW_Term,
                   Attr   => Attribute_First,
                   Params => Body_Params),
                To       => Base_Why_Type (Ty)),
@@ -112,6 +113,7 @@ package body Why.Gen.Expr is
                 (Domain   => EW_Term,
                  Expr     => New_Attribute_Expr
                    (Ty     => Ty,
+                    Domain => EW_Term,
                     Attr   => Attribute_Last,
                     Params => Body_Params),
                  To       => Base_Why_Type (Ty)),
@@ -1409,6 +1411,7 @@ package body Why.Gen.Expr is
                                       (Domain   => EW_Term,
                                        Expr     => New_Attribute_Expr
                                          (Ty     => Range_Type,
+                                          Domain => EW_Prog,
                                           Attr   => Attribute_First,
                                           Params => Body_Params),
                                        To       => Cur),
@@ -1416,6 +1419,7 @@ package body Why.Gen.Expr is
                                       (Domain   => EW_Term,
                                        Expr     => New_Attribute_Expr
                                          (Ty     => Range_Type,
+                                          Domain => EW_Prog,
                                           Attr   => Attribute_Last,
                                           Params => Body_Params),
                                        To       => Cur),
@@ -1865,8 +1869,11 @@ package body Why.Gen.Expr is
 
    function New_Attribute_Expr
      (Ty     : Entity_Id;
+      Domain : EW_Domain;
       Attr   : Supported_Attribute_Id;
       Params : Transformation_Params := Body_Params) return W_Expr_Id is
+      Subdomain : constant EW_Domain :=
+        (if Domain in EW_Prog | EW_Pterm then EW_Pterm else EW_Term);
    begin
       if Attr in Attribute_First | Attribute_Last
         and then Type_Is_Modeled_As_Base (Ty)
@@ -1880,9 +1887,9 @@ package body Why.Gen.Expr is
                else Base_Why_Type (Ty));
          begin
             if Attr = Attribute_First then
-               return Transform_Expr (Low_Bound (Rng), BT, EW_Term, Params);
+               return Transform_Expr (Low_Bound (Rng), BT, Subdomain, Params);
             else
-               return Transform_Expr (High_Bound (Rng), BT, EW_Term, Params);
+               return Transform_Expr (High_Bound (Rng), BT, Subdomain, Params);
             end if;
          end;
 
@@ -2025,11 +2032,13 @@ package body Why.Gen.Expr is
             for Count in 0 .. Dim - 1 loop
                declare
                   First_Expr : constant W_Expr_Id :=
-                    Get_Array_Attr (Ty     => Ty,
+                    Get_Array_Attr (Domain => Domain,
+                                    Ty     => Ty,
                                     Attr   => Attribute_First,
                                     Dim    => Count + 1);
                   Last_Expr : constant W_Expr_Id :=
-                    Get_Array_Attr (Ty     => Ty,
+                    Get_Array_Attr (Domain => Domain,
+                                    Ty     => Ty,
                                     Attr   => Attribute_Last,
                                     Dim    => Count + 1);
                begin
