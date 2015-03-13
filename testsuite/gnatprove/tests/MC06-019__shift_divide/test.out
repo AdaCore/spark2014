@@ -1,0 +1,4 @@
+p.ads:10:19: info: postcondition proved
+p.ads:10:29: info: division check proved
+p.ads:13:19: info: postcondition proved
+p.ads:13:29: info: division check proved
