@@ -1359,7 +1359,7 @@ package body Why.Gen.Expr is
       --  for a range check of a modular type, int for a  range check of a
       --  discrete type).
 
-      --  1. If From is an abstract type, convert it to type int, __fixed or
+      --  1. If From is an abstract type, convert it to type int, __fixed,
       --     real, or bitvector_?.
 
       if Get_Type_Kind (From) = EW_Abstract then

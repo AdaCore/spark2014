@@ -216,8 +216,9 @@ package Why.Atree.Modules is
 
    --  Modular identifiers constructors
    --  (to deal with modulus dependency in a simple way)
-   function Create_Modular_Operator (Typ : W_Type_Id; Symbol : Name_Id)
-                                     return W_Identifier_Id;
+   function Create_Modular_Operator
+     (Typ    : W_Type_Id;
+      Symbol : Name_Id) return W_Identifier_Id;
    function Create_Modular_Rem      (Typ : W_Type_Id) return W_Identifier_Id;
    function Create_Modular_Div      (Typ : W_Type_Id) return W_Identifier_Id;
    function Create_Modular_Mul      (Typ : W_Type_Id) return W_Identifier_Id;
@@ -254,10 +255,10 @@ package Why.Atree.Modules is
    --  present for these types.
    function Create_Modular_Modulus (Typ : W_Type_Id) return W_Identifier_Id;
 
-   function Create_Modular_Converter (From, To : W_Type_Id)
-                                      return W_Identifier_Id;
-   function Create_Modular_Converter_Range_Check (From, To : W_Type_Id)
-                                                  return W_Identifier_Id;
+   function Create_Modular_Converter
+     (From, To : W_Type_Id) return W_Identifier_Id;
+   function Create_Modular_Converter_Range_Check
+     (From, To : W_Type_Id) return W_Identifier_Id;
 
    procedure Initialize;
    --  Call this procedure before using any of the entities in this package.

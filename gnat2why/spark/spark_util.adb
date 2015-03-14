@@ -2024,36 +2024,6 @@ package body SPARK_Util is
       return Get_Enclosing (N, N_Loop_Statement);
    end Innermost_Enclosing_Loop;
 
-   ---------------------------------
-   -- Is_Accepted_Shift_Or_Rotate --
-   ---------------------------------
-
-   function Is_Accepted_Shift_Or_Rotate (Subp : Entity_Id) return Boolean is
-   begin
-
-      Get_Unqualified_Decoded_Name_String (Chars (Subp));
-
-      declare
-         Name : constant String := Name_Buffer (1 .. Name_Len);
-      begin
-         return Is_Intrinsic_Subprogram (Subp) and then
-           Is_Modular_Integer_Type (Etype (Subp)) and then
-           Modulus (Etype (Subp)) <= UI_Expon (2, 64) and then
-           not Has_Contracts (Subp, Name_Precondition) and then
-           not Has_Contracts (Subp, Name_Postcondition) and then
-           (Equal_Case_Insensitive
-              (Name, Get_Name_String (Name_Shift_Right)) or
-                Equal_Case_Insensitive
-              (Name,  Get_Name_String (Name_Shift_Right_Arithmetic)) or
-                Equal_Case_Insensitive
-              (Name, Get_Name_String (Name_Shift_Left)) or
-                Equal_Case_Insensitive
-              (Name, Get_Name_String (Name_Rotate_Left)) or
-                Equal_Case_Insensitive
-              (Name, Get_Name_String (Name_Rotate_Right)));
-      end;
-   end Is_Accepted_Shift_Or_Rotate;
-
    -----------------------------------------------
    -- Is_Access_To_External_Axioms_Discriminant --
    -----------------------------------------------
@@ -2341,6 +2311,50 @@ package body SPARK_Util is
              "GP_Subp:" & To_String (Gnat2Why_Args.Limit_Subp) =
              SPARK_Util.Subp_Location (E);
    end Is_Requested_Subprogram;
+
+   -------------------------------
+   -- Is_Simple_Shift_Or_Rotate --
+   -------------------------------
+
+   function Is_Simple_Shift_Or_Rotate (E : Entity_Id) return Boolean is
+
+      --  Define a convenient short hand for the test below
+      function ECI (Left, Right : String) return Boolean
+        renames Equal_Case_Insensitive;
+
+   begin
+      Get_Unqualified_Decoded_Name_String (Chars (E));
+
+      declare
+         Name : constant String := Name_Buffer (1 .. Name_Len);
+      begin
+         return  --  return True iff...
+
+           --  it is an intrinsic
+           Is_Intrinsic_Subprogram (E)
+
+           --  for a modular type with modulus no greater than 2 ** 64
+           and then Is_Modular_Integer_Type (Etype (E))
+           and then Modulus (Etype (E)) <= UI_Expon (2, 64)
+
+           --  without functional contract
+           and then not Has_Contracts (E, Name_Precondition)
+           and then not Has_Contracts (E, Name_Postcondition)
+           and then not Has_Contracts (E, Name_Contract_Cases)
+
+           --  which corresponds to a shift or rotate
+           and then
+             (ECI (Name, Get_Name_String (Name_Shift_Right))
+                or else
+              ECI (Name,  Get_Name_String (Name_Shift_Right_Arithmetic))
+                or else
+              ECI (Name, Get_Name_String (Name_Shift_Left))
+                or else
+              ECI (Name, Get_Name_String (Name_Rotate_Left))
+                or else
+              ECI (Name, Get_Name_String (Name_Rotate_Right)));
+      end;
+   end Is_Simple_Shift_Or_Rotate;
 
    ---------------------------------------------
    -- Is_Single_Precision_Floating_Point_Type --

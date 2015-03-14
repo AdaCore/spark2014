@@ -174,11 +174,12 @@ package body Why.Gen.Scalars is
                     Module => E_Module (Base_Type (E)))))
             else (1 .. 0 => <>));
          Mod_Clone_Subst : constant W_Clone_Substitution_Array :=
-           (if Has_Modular_Integer_Type (E) and then Is_Static and then
-            Modulus (E) /= UI_Expon (2, 8) and then
-            Modulus (E) /= UI_Expon (2, 16) and then
-            Modulus (E) /= UI_Expon (2, 32) and then
-            Modulus (E) /= UI_Expon (2, 64)
+           (if Is_Static
+              and then Has_Modular_Integer_Type (E)
+              and then Modulus (E) /= UI_Expon (2, 8)
+              and then Modulus (E) /= UI_Expon (2, 16)
+              and then Modulus (E) /= UI_Expon (2, 32)
+              and then Modulus (E) /= UI_Expon (2, 64)
             then
                 (1 => New_Clone_Substitution
                  (Kind      => EW_Function,
@@ -186,7 +187,7 @@ package body Why.Gen.Scalars is
                   Image     => To_Name (WNE_Attr_Modulus)))
             else (1 .. 0 => <>));
          Range_Int_Clone_Subst : constant W_Clone_Substitution_Array :=
-           (if Is_Static and Has_Modular_Integer_Type (E) then
+           (if Is_Static and then Has_Modular_Integer_Type (E) then
                 (1 => New_Clone_Substitution
                  (Kind      => EW_Predicate,
                   Orig_Name => To_Name (WNE_Range_Pred_BV_Int),
@@ -358,26 +359,26 @@ package body Why.Gen.Scalars is
          if Is_Static then
             if Has_Modular_Integer_Type (E) then
                declare
-                  modulus_val : constant Uint := Modulus (E);
-                  typ : constant W_Type_Id := Base_Why_Type (E);
+                  Modulus_Val : constant Uint := Modulus (E);
+                  Typ : constant W_Type_Id := Base_Why_Type (E);
                begin
-                  return (if typ = EW_BitVector_8_Type then
-                            (if UI_Lt (modulus_val, UI_Expon (2, 8)) then
+                  return (if Typ = EW_BitVector_8_Type then
+                            (if UI_Lt (Modulus_Val, UI_Expon (2, 8)) then
                                   Static_Modular_lt8
                              else
                                 Static_Modular_8)
-                          elsif typ = EW_BitVector_16_Type then
-                            (if UI_Lt (modulus_val, UI_Expon (2, 16)) then
+                          elsif Typ = EW_BitVector_16_Type then
+                            (if UI_Lt (Modulus_Val, UI_Expon (2, 16)) then
                                   Static_Modular_lt16
                              else
                                 Static_Modular_16)
-                          elsif typ = EW_BitVector_32_Type then
-                            (if UI_Lt (modulus_val, UI_Expon (2, 32)) then
+                          elsif Typ = EW_BitVector_32_Type then
+                            (if UI_Lt (Modulus_Val, UI_Expon (2, 32)) then
                                   Static_Modular_lt32
                              else
                                 Static_Modular_32)
-                          elsif typ = EW_BitVector_64_Type then
-                            (if UI_Lt (modulus_val, UI_Expon (2, 64)) then
+                          elsif Typ = EW_BitVector_64_Type then
+                            (if UI_Lt (Modulus_Val, UI_Expon (2, 64)) then
                                   Static_Modular_lt64
                              else
                                 Static_Modular_64)

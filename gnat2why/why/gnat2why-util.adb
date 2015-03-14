@@ -728,14 +728,14 @@ package body Gnat2Why.Util is
       Binder : constant Item_Type := Ada_Ent_To_Why.Element (Symbol_Table, E);
    begin
       case Binder.Kind is
-      when Regular =>
-         return Get_Typ (Binder.Main.B_Name);
-      when UCArray =>
-         return Get_Typ (Binder.Content.B_Name);
-      when Func =>
-         return Get_Typ (Binder.For_Logic.B_Name);
-      when DRecord =>
-         return EW_Abstract (Binder.Typ);
+         when Regular =>
+            return Get_Typ (Binder.Main.B_Name);
+         when UCArray =>
+            return Get_Typ (Binder.Content.B_Name);
+         when Func =>
+            return Get_Typ (Binder.For_Logic.B_Name);
+         when DRecord =>
+            return EW_Abstract (Binder.Typ);
       end case;
    end Why_Type_Of_Entity;
 
@@ -745,10 +745,10 @@ package body Gnat2Why.Util is
 
    function Why_Type_Is_BitVector (Typ : W_Type_Id) return Boolean is
    begin
-      return Typ = EW_BitVector_8_Type or else
-        Typ = EW_BitVector_16_Type or else
-        Typ = EW_BitVector_32_Type or else
-        Typ = EW_BitVector_64_Type;
+      return Typ = EW_BitVector_8_Type
+        or else Typ = EW_BitVector_16_Type
+        or else Typ = EW_BitVector_32_Type
+        or else Typ = EW_BitVector_64_Type;
    end Why_Type_Is_BitVector;
 
 begin

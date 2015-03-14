@@ -423,6 +423,20 @@ package body Why.Inter is
       return Base_Why_Type (Base_Why_Type (Left), Base_Why_Type (Right));
    end Base_Why_Type;
 
+   ---------------------------
+   -- Base_Why_Type_No_Bool --
+   ---------------------------
+
+   function Base_Why_Type_No_Bool (N : Node_Id) return W_Type_Id is
+      E : constant W_Type_Id := Base_Why_Type (N);
+   begin
+      if E = EW_Bool_Type then
+         return EW_Int_Type;
+      else
+         return E;
+      end if;
+   end Base_Why_Type_No_Bool;
+
    ------------------
    -- Close_Theory --
    ------------------

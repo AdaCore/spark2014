@@ -771,11 +771,12 @@ package body Why.Atree.Modules is
    end Initialize;
 
    --------------------------------------
-   -- Modular identifiers constructors --
+   -- Modular Identifiers Constructors --
    --------------------------------------
 
-   function Create_Modular_Operator (Typ : W_Type_Id; Symbol : Name_Id)
-                                     return W_Identifier_Id is
+   function Create_Modular_Operator
+     (Typ    : W_Type_Id;
+      Symbol : Name_Id) return W_Identifier_Id is
    begin
       return New_Identifier (Module =>
                                (if Typ = EW_BitVector_8_Type then
@@ -966,8 +967,8 @@ package body Why.Atree.Modules is
               else raise Program_Error);
    end Create_Modular_Modulus;
 
-   function Create_Modular_Converter (From, To : W_Type_Id)
-                                      return W_Identifier_Id
+   function Create_Modular_Converter
+     (From, To : W_Type_Id) return W_Identifier_Id
    is
       Module : W_Module_Id;
       Symbol : Name_Id;
@@ -1041,8 +1042,8 @@ package body Why.Atree.Modules is
                              Typ => To);
    end Create_Modular_Converter;
 
-   function Create_Modular_Converter_Range_Check (From, To : W_Type_Id)
-                                                  return W_Identifier_Id
+   function Create_Modular_Converter_Range_Check
+     (From, To : W_Type_Id) return W_Identifier_Id
    is
    begin
       return New_Identifier (Module =>

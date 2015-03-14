@@ -100,6 +100,10 @@ package body Gnat2Why.Driver is
    --  If Current_Unit_Only is set then we do not pull in the ALIs of
    --  dependent units.
 
+   function Is_Translated_Subprogram (E : Entity_Id) return Boolean;
+   --  @param E Subprogram entity.
+   --  @return True iff subprogram E needs to be translated into Why3.
+
    procedure Translate_CUnit;
    --  Translates the current compilation unit into Why
 
@@ -481,6 +485,36 @@ package body Gnat2Why.Driver is
       end case;
    end Is_Back_End_Switch;
 
+   ------------------------------
+   -- Is_Translated_Subprogram --
+   ------------------------------
+
+   function Is_Translated_Subprogram (E : Entity_Id) return Boolean is
+      (Entity_In_SPARK (E)
+
+       --  Ignore inlined subprograms. Either these are not analyzed
+       --  (when referenced and analysis was not specifically requested
+       --  for them), in which case it's safer to skip a declaration
+       --  which could be called. Or they are analyzed, but there is
+       --  no call to them anyway, so skipping the declaration is safe.
+
+       and then not Is_Local_Subprogram_Always_Inlined (E)
+
+       --  Ignore predicate functions and invariant procedures
+
+       and then not Subprogram_Is_Ignored_For_Proof (E)
+
+       --  Subprograms entities of actual parameter of generic packages with
+       --  external axioms are only needed for check of runtime errors.
+
+       and then not (Is_Generic_Actual_Subprogram (E)
+                       and then
+                     Entity_In_External_Axioms (E))
+
+       --  Ignore simple shifts and rotates
+
+       and then not Is_Simple_Shift_Or_Rotate (E));
+
    --------------------
    -- Print_Why_File --
    --------------------
@@ -559,12 +593,12 @@ package body Gnat2Why.Driver is
       begin
          for E of List_Entities loop
             if Ekind (E) in Subprogram_Kind
-              and then Entity_In_SPARK (E)
-              and then not Is_Local_Subprogram_Always_Inlined (E)
-              and then not Subprogram_Is_Ignored_For_Proof (E)
+              and then Is_Translated_Subprogram (E)
+
+              --  Axioms for a SPARK expression function are issued in the same
+              --  module as the function declaration.
               and then (not (Present (Get_Expression_Function (E)))
                         or else not Entity_Body_In_SPARK (E))
-              and then not Is_Accepted_Shift_Or_Rotate (E)
             then
                declare
                   Compl_File : Why_Section :=
@@ -745,35 +779,10 @@ package body Gnat2Why.Driver is
             Translate_Abstract_State (File, E);
             Generate_Empty_Axiom_Theory (File, E);
 
+         --  Generate a logic function for Ada functions
+
          when Subprogram_Kind =>
-            if Entity_In_SPARK (E)
-
-              --  Ignore inlined subprograms. Either these are not analyzed
-              --  (when referenced and analysis was not specifically requested
-              --  for them), in which case it's safer to skip a declaration
-              --  which could be called. Or they are analyzed, but there is
-              --  no call to them anyway, so skipping the declaration is safe.
-
-              and then not Is_Local_Subprogram_Always_Inlined (E)
-
-              --  Ignore predicate functions and invariant procedures
-
-              and then not Subprogram_Is_Ignored_For_Proof (E)
-
-              --  Subprograms entities of actual parameter of generic packages
-              --  with external axioms are only needed for check of runtime
-              --  errors.
-
-              and then not (Is_Generic_Actual_Subprogram (E) and then
-                            Entity_In_External_Axioms (E))
-
-              -- ignore shifts and rotates
-
-              and then not Is_Accepted_Shift_Or_Rotate (E)
-            then
-
-               --  Generate a logic function for Ada functions
-
+            if Is_Translated_Subprogram (E) then
                Translate_Subprogram_Spec (File, E);
             end if;
 

@@ -175,6 +175,9 @@ package Why.Inter is
    --  used for comparisons, conversions etc. Examples are EW_Real_Type
    --  for standard__float, and the Root_Record_Type for record types.
 
+   function Base_Why_Type_No_Bool (N : Node_Id) return W_Type_Id;
+   --  Return the Base_Why_Type of N if not EW_Bool_Type, or else EW_Int_Type
+
    function Is_Record_Conversion (Left, Right : W_Type_Id) return Boolean;
 
    function Is_Array_Conversion (Left, Right : W_Type_Id) return Boolean;

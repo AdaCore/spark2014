@@ -400,18 +400,13 @@ package body Gnat2Why.Expr.Loops is
 
       pragma Assert (not In_Loop_Initial_Statements);
 
-      if Present (Scheme) and then
-        not Present (Condition (Scheme)) and then
-        Present (Loop_Parameter_Specification (Scheme))
+      if Present (Scheme)
+        and then not Present (Condition (Scheme))
+        and then Present (Loop_Parameter_Specification (Scheme))
       then
          Loop_Param_Ent  :=
            Defining_Identifier (Loop_Parameter_Specification (Scheme));
-         Loop_Index_Type := (if Is_Modular_Integer_Type
-                             (Etype (Loop_Param_Ent))
-                             then
-                                Base_Why_Type (Loop_Param_Ent)
-                             else
-                                EW_Int_Type);
+         Loop_Index_Type := Base_Why_Type_No_Bool (Loop_Param_Ent);
          Loop_Index      := To_Why_Id (E      => Loop_Param_Ent,
                                        Domain => EW_Prog,
                                        Typ    => Loop_Index_Type);
@@ -663,10 +658,10 @@ package body Gnat2Why.Expr.Loops is
                     Typ      => Loop_Index_Type);
                Update_Op    : constant W_Identifier_Id :=
                  (if Why_Type_Is_BitVector (Loop_Index_Type) then
-                      (if Is_Reverse then
-                            Create_Modular_Sub (Loop_Index_Type)
-                       else
-                          Create_Modular_Add (Loop_Index_Type))
+                    (if Is_Reverse then
+                       Create_Modular_Sub (Loop_Index_Type)
+                     else
+                       Create_Modular_Add (Loop_Index_Type))
                   else
                     (if Is_Reverse then Int_Infix_Subtr
                      else Int_Infix_Add));
@@ -716,10 +711,10 @@ package body Gnat2Why.Expr.Loops is
                  (if Is_Reverse then Low_Ident else High_Ident);
                Exit_Cmp     : constant W_Identifier_Id :=
                  (if Why_Type_Is_BitVector (Loop_Index_Type) then
-                      (if Is_Reverse then Create_Modular_Ge (Loop_Index_Type)
-                       else Create_Modular_Le (Loop_Index_Type))
+                    (if Is_Reverse then Create_Modular_Ge (Loop_Index_Type)
+                     else Create_Modular_Le (Loop_Index_Type))
                   else
-                     (if Is_Reverse then Int_Infix_Ge else Int_Infix_Le));
+                    (if Is_Reverse then Int_Infix_Ge else Int_Infix_Le));
                Exit_Cond    : constant W_Expr_Id :=
                  New_Call (Domain => EW_Prog,
                            Name   => Exit_Cmp,
