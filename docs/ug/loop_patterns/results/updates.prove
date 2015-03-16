@@ -1,5 +1,6 @@
+update.adb:12:13: medium: array index check might fail
 update.adb:13:10: info: loop invariant initialization proved
 update.adb:13:10: info: loop invariant preservation proved
-update.adb:14:49: info: index check proved
-update.ads:15:15: info: postcondition proved
-update.ads:15:57: info: index check proved
+update.adb:14:49: medium: array index check might fail
+update.ads:9:15: info: postcondition proved
+update.ads:9:57: medium: array index check might fail

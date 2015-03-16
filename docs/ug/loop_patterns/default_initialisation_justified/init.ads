@@ -1,13 +1,7 @@
+with Loop_Types; use Loop_Types;
 package Init
   with SPARK_Mode
 is
-   Max_Seq_Length : constant Natural := 1000;
-
-   subtype Index_T is Natural range 1 .. Max_Seq_Length;
-
-   subtype Component_T is Positive;
-
-   type Arr_T is array (Index_T range <>) of Component_T;
 
    procedure Default_Initialize (A : out Arr_T; Init_Val : in Component_T) with
      --  every element of the output array has been initialized:
