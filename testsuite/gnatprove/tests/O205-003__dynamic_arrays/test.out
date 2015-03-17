@@ -1,0 +1,53 @@
+dynamic_array.adb:1:11: warning: subprogram "Dynamic_Array" has no effect
+dynamic_array.adb:2:12: info: range check proved
+dynamic_array.adb:18:13: info: initialization of "New_Holder.Content" proved
+dynamic_array.adb:19:14: info: postcondition proved
+dynamic_array.adb:25:37: info: length check proved
+dynamic_array.adb:25:66: info: range check proved
+dynamic_array.adb:27:37: info: length check proved
+dynamic_array.adb:27:37: info: range check proved
+dynamic_array.adb:27:66: info: range check proved
+dynamic_array.adb:31:13: info: initialization of "Increment" proved
+dynamic_array.adb:32:24: info: discriminant check proved
+dynamic_array.adb:32:38: info: discriminant check proved
+dynamic_array.adb:32:42: info: overflow check proved
+dynamic_array.adb:32:52: info: discriminant check proved
+dynamic_array.adb:33:17: info: discriminant check proved
+dynamic_array.adb:33:31: info: discriminant check proved
+dynamic_array.adb:33:35: info: overflow check proved
+dynamic_array.adb:33:45: info: discriminant check proved
+dynamic_array.adb:35:22: info: discriminant check proved
+dynamic_array.adb:35:42: info: length check proved
+dynamic_array.adb:35:42: info: range check proved
+dynamic_array.adb:35:72: info: range check proved
+dynamic_array.adb:37:04: info: assertion proved
+dynamic_array.adb:39:07: info: loop invariant initialization proved
+dynamic_array.adb:39:07: medium: loop invariant might fail after first iteration
+dynamic_array.adb:40:37: info: initialization of "H.Content" proved
+dynamic_array.adb:40:38: info: discriminant check proved
+dynamic_array.adb:40:48: info: index check proved
+dynamic_array.adb:41:11: info: discriminant check proved
+dynamic_array.adb:41:21: info: index check proved
+dynamic_array.adb:41:23: info: discriminant check proved
+dynamic_array.adb:41:54: info: discriminant check proved
+dynamic_array.adb:41:64: info: index check proved
+dynamic_array.adb:42:07: info: loop invariant initialization proved
+dynamic_array.adb:42:07: info: loop invariant preservation proved
+dynamic_array.adb:43:37: info: initialization of "H.Content" proved
+dynamic_array.adb:43:38: info: discriminant check proved
+dynamic_array.adb:43:48: info: index check proved
+dynamic_array.adb:46:31: info: initialization of "HH.Content" proved
+dynamic_array.adb:46:33: info: discriminant check proved
+dynamic_array.adb:46:43: info: index check proved
+dynamic_array.adb:50:18: info: initialization of "R.F1" proved
+dynamic_array.adb:50:19: info: discriminant check proved
+dynamic_array.adb:52:18: info: initialization of "R.F2" proved
+dynamic_array.adb:52:19: info: discriminant check proved
+dynamic_array.adb:55:13: info: initialization of "F" proved
+dynamic_array.adb:56:18: info: initialization of "F" proved
+dynamic_array.adb:56:20: info: overflow check proved
+dynamic_array.adb:59:11: info: discriminant check proved
+dynamic_array.adb:59:24: info: discriminant check proved
+dynamic_array.adb:59:24: info: initialization of "H.Content" proved
+dynamic_array.adb:59:45: info: initialization of "F" proved
+dynamic_array.adb:59:45: info: range check proved
