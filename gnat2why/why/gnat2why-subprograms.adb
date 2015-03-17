@@ -619,6 +619,57 @@ package body Gnat2Why.Subprograms is
                   Left   => +Pred,
                   Right  => +Guard);
             end;
+         else
+
+            --  Add to guard the dynamic property of logic parameters.
+
+            declare
+               Ada_Node : constant Node_Id :=
+                 (case B.Kind is
+                     when Regular => B.Main.Ada_Node,
+                     when DRecord =>
+                    (if B.Fields.Present then B.Fields.Binder.Ada_Node
+                     else B.Discrs.Binder.Ada_Node),
+                     when UCArray => B.Content.Ada_Node,
+                     when Func    => raise Program_Error);
+               Dyn_Prop : constant W_Pred_Id :=
+                 (if Present (Ada_Node) then
+                       Compute_Dynamic_Property
+                    (Expr        => Transform_Identifier
+                         (Params   => Logic_Params,
+                          Expr     => Ada_Node,
+                          Ent      => Ada_Node,
+                          Domain   => EW_Term),
+                     Ty          => Etype (Ada_Node),
+                     Only_Var    => True,
+                     Initialized => True)
+                  else True_Pred);
+            begin
+               if No (Ada_Node) then
+                  declare
+                     K    : constant Item_Enum := B.Kind;
+                     Name : constant W_Identifier_Id :=
+                       B.Main.B_Name;
+                     Ty   : constant W_Type_Id := Get_Typ (Name);
+                  begin
+
+                     --  If there is no Ada_Node associated to the binder then
+                     --  it must be either the unit binder or a binder for
+                     --  a variable referenced for effects only.
+
+                     pragma Assert
+                       (K = Regular
+                        and then (Ty in
+                              Type_Of_Heap | EW_Private_Type | EW_Unit_Type));
+                  end;
+               end if;
+
+               Pred :=
+                 +New_And_Then_Expr
+                 (Domain => EW_Pred,
+                  Left   => +Pred,
+                  Right  => +Dyn_Prop);
+            end;
          end if;
       end loop;
       return Pred;

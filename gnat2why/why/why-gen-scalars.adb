@@ -165,7 +165,7 @@ package body Why.Gen.Scalars is
                   Image     => To_Name (WNE_Dynamic_Property)))
             else (1 .. 0 => <>));
          Discr_Dynamic_Conv_Subst : constant W_Clone_Substitution_Array :=
-           (if not Is_Static and then Is_Discrete_Type (E) then
+           (if not Is_Static and then Has_Discrete_Type (E) then
               (1 => New_Clone_Substitution
                 (Kind      => EW_Function,
                  Orig_Name => New_Name (Symbol => NID ("base_rep_to_int")),
