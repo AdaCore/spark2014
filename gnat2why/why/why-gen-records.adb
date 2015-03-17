@@ -38,7 +38,6 @@ with VC_Kinds;            use VC_Kinds;
 with Common_Containers;   use Common_Containers;
 
 with Gnat2Why.Expr;       use Gnat2Why.Expr;
-with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;

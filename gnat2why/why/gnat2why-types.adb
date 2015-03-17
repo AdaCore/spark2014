@@ -55,8 +55,6 @@ with Why.Inter;           use Why.Inter;
 with Why.Sinfo;           use Why.Sinfo;
 with Why.Types;           use Why.Types;
 
-with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
-
 package body Gnat2Why.Types is
 
    ------------------------------

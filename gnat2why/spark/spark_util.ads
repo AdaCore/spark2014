@@ -23,24 +23,25 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with AA_Util;                            use AA_Util;
+with AA_Util;               use AA_Util;
 with Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Ordered_Sets;
 with Ada.Containers.Vectors;
-with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
-with Atree;                              use Atree;
-with Einfo;                              use Einfo;
-with Impunit;                            use Impunit;
-with Lib;                                use Lib;
-with Namet;                              use Namet;
-with Sinfo;                              use Sinfo;
-with Snames;                             use Snames;
-with Types;                              use Types;
-
-with Why.Atree.Tables;                   use Why.Atree.Tables;
-
-with Common_Containers;                  use Common_Containers;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Atree;                 use Atree;
+with Common_Containers;     use Common_Containers;
+with Einfo;                 use Einfo;
+with Impunit;               use Impunit;
+with Lib;                   use Lib;
+with Namet;                 use Namet;
+with Sem_Util;              use Sem_Util;
+with Sinfo;                 use Sinfo;
+with Sinput;                use Sinput;
+with Snames;                use Snames;
+with Types;                 use Types;
+with Uintp;                 use Uintp;
+with Why.Atree.Tables;      use Why.Atree.Tables;
 
 package SPARK_Util is
 
@@ -237,6 +238,12 @@ package SPARK_Util is
    --  Return True if the subprogram in argument has the given kind of
    --  contract, False otherwise.
 
+   function Has_User_Defined_Eq (E : Entity_Id) return Entity_Id
+     with Pre => Ekind (E) in Type_Kind;
+   --  @param E a type entity
+   --  @return the entity of the primitive equality function of the type
+   --    entity, if it exists; otherwise return the empty node
+
    function Get_Enclosing_Declaration (N : Node_Id) return Node_Id;
    --  Return the declaration node enclosing N, if any, by following the chain
    --  of Parent's links.
@@ -281,6 +288,26 @@ package SPARK_Util is
 
    function Get_Subprogram_Contract_Cases (E : Entity_Id) return Node_Id;
    --  Return the pragma Contract_Cases for E, if any
+
+   function Get_Low_Bound (E : Entity_Id) return Node_Id;
+   --  @param E an index subtype or string literal subtype
+   --  @return its low bound
+
+   function Get_Range (N : Node_Id) return Node_Id
+      with Post =>
+         (Present (Low_Bound (Get_Range'Result)) and then
+            Present (High_Bound (Get_Range'Result)));
+   --  @param N more or less any node which has some kind of range, e.g. a
+   --  scalar type entity or occurrence, a variable of such type, the type
+   --  declaration or a subtype indication.
+   --  @return the N_Range node of such a node
+   --  @exception Program_Error if N is not of appropriate kind (doesn't have a
+   --  range)
+
+   function Get_Return_Object_Entity (Stmt : Node_Id) return Entity_Id
+     with Pre => Nkind (Stmt) = N_Extended_Return_Statement;
+   --  @param Stmt an extended return statement
+   --  @return the corresponding return object
 
    function Expression_Functions_All_The_Way (E : Entity_Id) return Boolean;
    --  Given the entity E for a function, determine whether E is an expression
@@ -327,6 +354,11 @@ package SPARK_Util is
    --  . machine_mantissa = 53
    --  . machine_emax = 2**10
    --  . machine_emin = 3 - machine_emax
+
+   function Is_Pragma_Assert_And_Cut (N : Node_Id) return Boolean
+     with Pre => (Nkind (N) = N_Pragma);
+   --  @param N a pragma Node
+   --  @return True iff the pragma is a pragma Assert_And_Cut
 
    function Package_Has_External_Axioms (E : Entity_Id) return Boolean with
      Pre  => Ekind_In (E, E_Package, E_Generic_Package);
@@ -395,6 +427,18 @@ package SPARK_Util is
    function Count_Fields (E : Entity_Id) return Natural;
    --  count the number of normal fields in a record type Typ
 
+   function Nth_Index_Type (E : Entity_Id; Dim : Positive) return Node_Id
+     with Pre => Is_Array_Type (E);
+   --  @param E an array type entity
+   --  @param D specifies a dimension
+   --  @return the argument E in the special case where E is a string literal
+   --    subtype; otherwise the index type entity which corresponds to the
+   --    selected dimension
+
+   function Nth_Index_Type (E : Entity_Id; Dim : Uint) return Node_Id
+     with Pre => Is_Array_Type (E);
+   --  same as above, but with Uint instead of positive
+
    function Count_Non_Inherited_Discriminants
      (Assocs : List_Id) return Natural;
    --  Counts the number of discriminants in the list of component associations
@@ -453,6 +497,11 @@ package SPARK_Util is
    --  Returns True if E is a toplevel entity, only enclosed in package specs
    --  or in the declaration part of package bodies.
 
+   function Is_Quantified_Loop_Param (E : Entity_Id) return Boolean
+     with Pre => (Ekind (E) = E_Loop_Parameter);
+   --  @param E an entity with kind Loop_Parameter
+   --  @return True iff E has been introduced by a quantified expression
+
    function Is_Unchecked_Conversion_Instance (E : Entity_Id) return Boolean;
    --  Returns whether E is an instance of Ada.Unchecked_Conversion
 
@@ -492,6 +541,23 @@ package SPARK_Util is
    function Is_In_Analyzed_Files (E : Entity_Id) return Boolean;
    --  Returns true if E belongs to one of the entities that correspond
    --  to the files that are to be analyzed.
+
+   function Is_Static_Array_Type (E : Entity_Id) return Boolean
+   is (Is_Array_Type (E)
+       and then Is_Constrained (E)
+       and then Has_Static_Array_Bounds (E))
+   with Pre => (Ekind (E) in Type_Kind);
+   --  @param E a type entity
+   --  @return True if the type entity corresponds to a static constrained
+   --    array type
+
+   function Static_Array_Length (E : Entity_Id; Dim : Positive) return Uint
+     with Pre => Is_Static_Array_Type (E);
+   --  @param E a type entity which corresponds to a static constrained array
+   --    type
+   --  @param Dim the selected dimension of the array type
+   --  @return the static length of the selected dimension of the array type as
+   --    an integer
 
    function Get_Cursor_Type_In_Iterable_Aspect
      (Typ : Entity_Id) return Entity_Id;
@@ -590,5 +656,101 @@ package SPARK_Util is
      Pre => Is_Class_Wide_Type (E);
    --  Returns the specific type associated with a class wide type.
    --  If E's Etype is a fullview, returns its partial view instead.
+
+   function Subp_Location (E : Entity_Id) return String
+     with Pre => (Ekind (E) in Subprogram_Kind | E_Package);
+   --  @param E a subprogram or package entity
+   --  @return a string of the form GP_Subp:foo.ads:12, where this is the file
+   --    and line where this subprogram or package is declared. Tihs allows to
+   --    identify the subprogram by it's source position and is used e.g. for
+   --    the --limit-subp opion of gnatprove.
+
+   function Full_Name (N : Entity_Id) return String
+     with Pre => (Nkind (N) in N_Entity);
+   --  @param N an entity
+   --  @return its full name, as used in Why
+
+   function Full_Name_Is_Not_Unique_Name (N : Entity_Id) return Boolean;
+   --  The full name of an entity is based on its unique name in nearly all
+   --  cases, so that this name can be used e.g. to retrieve completion
+   --  theories. In a few cases which require special handling
+   --  (currently Standard_Boolean and Universal_Fixed), the full name is hard
+   --  coded for Why, so should not be used as a representative of the entity.
+   --  @param N an entity
+   --  @return True iff the Full Name as computed by Full_Name does not
+   --    correspond to the type name used in Why
+
+   function Subprogram_Full_Source_Name (E : Entity_Id) return String;
+   --  For a subprogram entity, return its scoped name, e.g. for subprogram
+   --  Nested in
+   --
+   --    package body P is
+   --       procedure Lib_Level is
+   --          procedure Nested is
+   --     ....
+   --  return P.Lib_Level.Nested. Casing of names is taken as it appears in the
+   --  source.
+   --  @param E a subprogram entity
+   --  @return it's fully scoped name as it appears in the source
+
+   function Source_Name (E : Entity_Id) return String;
+   --  @param E an entity
+   --  @return the unscoped name of the entity as it appears in the source
+
+   function Spec_File_Name (N : Node_Id) return String;
+   --  @param N any node
+   --  @return the name of the spec file of the unit which contains the node,
+   --    if it exists, otherwise the body file. Also, we return the file name
+   --    of the instance, not the generic.
+
+   function Body_File_Name (N : Node_Id) return String;
+   --  @param N any node
+   --  @return Same as [Spec_File_Name], but always return the file name of the
+   --    body, if there is one.
+
+   function File_Name (Loc : Source_Ptr) return String is
+     (Get_Name_String (File_Name
+                       (Get_Source_File_Index (Loc))));
+   --  @param Loc any source pointer
+   --  @return the file name of the source pointer (will return the file of the
+   --    generic in case of instances)
+
+   function Spec_File_Name_Without_Suffix (N : Node_Id) return String;
+   --  @param any node
+   --  @return same as Spec_File_Name but without the suffix.
+
+   function String_Of_Node (N : Node_Id) return String;
+   --  @param any expression node
+   --  @return the node as pretty printed Ada code, limited to 50 chars
+
+   function In_Main_Unit_Body (N : Node_Id) return Boolean;
+   --  @param N any node
+   --  @return True iff N is in the body of the currently analyzed unit
+
+   function In_Main_Unit_Spec (N : Node_Id) return Boolean;
+   --  @param N any node
+   --  @return True iff N is in the spec of the currently analyzed unit
+
+   function Is_In_Current_Unit (N : Node_Id) return Boolean;
+   --  @param N any node
+   --  @return True iff N is in the body or spec of the currently analyzed unit
+
+   function Translate_Location (Loc : Source_Ptr) return Source_Ptr is
+     (if Instantiation_Location (Loc) /= No_Location then
+           Instantiation_Location (Loc)
+      else
+         Loc);
+   --  ??? What is this function used for? It's strange to go only one level up
+   --  @param Loc any source pointer
+   --  @return if the source location has been instantiated, return the
+   --    instance location, otherwise Loc itself
+
+   generic
+      with procedure Handle_Argument (Formal, Actual : Node_Id);
+   procedure Iterate_Call_Arguments (Call : Node_Id);
+   --  Call "Handle_Argument" for each pair Formal/Actual of a function or
+   --  procedure call.
+   --  @param Call a node which corresponds to a function or procedure call. It
+   --    must have a "Name" field and a "Parameter_Associations" field.
 
 end SPARK_Util;

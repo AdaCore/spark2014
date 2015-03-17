@@ -51,7 +51,6 @@ with SPARK_Util;             use SPARK_Util;
 with Gnat2Why_Args;
 with Gnat2Why.Annotate;      use Gnat2Why.Annotate;
 with Gnat2Why.Assumptions;   use Gnat2Why.Assumptions;
-with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
 
 package body SPARK_Definition is
 

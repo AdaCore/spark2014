@@ -76,7 +76,6 @@ with Why.Gen.Preds;          use Why.Gen.Preds;
 
 with Gnat2Why.Decls;         use Gnat2Why.Decls;
 with Gnat2Why.Expr.Loops;    use Gnat2Why.Expr.Loops;
-with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
 with Gnat2Why.Subprograms;   use Gnat2Why.Subprograms;
 with SPARK_Definition;       use SPARK_Definition;
 

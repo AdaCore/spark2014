@@ -24,26 +24,23 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers;      use Ada.Containers;
-
+with Ada.Directories;
+with Ada.Direct_IO;
+with Ada.Strings.Unbounded;
 with Errout;              use Errout;
+with GNAT.Regpat;
+with GNAT.OS_Lib;         use GNAT.OS_Lib;
+with Gnat2Why_Args;
+with Gnat2Why.Util;       use Gnat2Why.Util;
 with Namet;               use Namet;
+with SPARK_Util;          use SPARK_Util;
 with String_Utils;        use String_Utils;
 with Uintp;               use Uintp;
-
-with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Ids;             use Why.Ids;
 with Why.Images;          use Why.Images;
 with Why.Conversions;     use Why.Conversions;
-
-with Ada.Directories;
-with Ada.Direct_IO;
-with GNAT.Regpat;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
-with Ada.Strings.Unbounded;
-
-with Gnat2Why_Args;
 
 package body Why.Atree.Sprint is
 

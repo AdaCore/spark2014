@@ -51,7 +51,6 @@ with Why.Inter;           use Why.Inter;
 with Why.Types;           use Why.Types;
 
 with Gnat2Why.Expr;       use Gnat2Why.Expr;
-with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 
 package body Gnat2Why.Decls is
 

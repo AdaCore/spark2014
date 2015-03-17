@@ -21,28 +21,23 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Text_IO;                use Ada.Text_IO;
-with Ada.Text_IO.Unbounded_IO;   use Ada.Text_IO.Unbounded_IO;
-with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
+with AA_Util;                  use AA_Util;
+with Ada.Text_IO;              use Ada.Text_IO;
+with Ada.Text_IO.Unbounded_IO; use Ada.Text_IO.Unbounded_IO;
+with Ada.Strings.Unbounded;    use Ada.Strings.Unbounded;
 with Ada.Containers.Hashed_Sets;
-
-with AA_Util;                    use AA_Util;
-with ALI;                        use ALI;
-with Osint;                      use Osint;
-with Osint.C;                    use Osint.C;
-with Sem_Util;                   use Sem_Util;
-with Lib.Util;                   use Lib.Util;
-with Namet;                      use Namet;
-
-with Output;                     use Output;
-
-with Graph;
-with Flow_Utility;               use Flow_Utility;
-
+with ALI;                      use ALI;
+with Flow_Utility;             use Flow_Utility;
 with Gnat2Why_Args;
-with Gnat2Why.Nodes;             use Gnat2Why.Nodes;
-
-with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
+with Graph;
+with Namet;                    use Namet;
+with Osint;                    use Osint;
+with Osint.C;                  use Osint.C;
+with Output;                   use Output;
+with Sem_Util;                 use Sem_Util;
+with Lib.Util;                 use Lib.Util;
+with SPARK_Frame_Conditions;   use SPARK_Frame_Conditions;
+with SPARK_Util;               use SPARK_Util;
 
 package body Flow_Computed_Globals is
 

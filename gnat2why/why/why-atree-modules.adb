@@ -23,14 +23,23 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Hashed_Maps;
 with Atree;              use Atree;
-with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
+with Common_Containers;  use Common_Containers;
 with Sinfo;              use Sinfo;
+with SPARK_Util;         use SPARK_Util;
 with Stand;              use Stand;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Names;      use Why.Gen.Names;
 
 package body Why.Atree.Modules is
+
+   package Ada_To_Why is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Why_Node_Id,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
 
    Entity_Modules : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    Axiom_Modules  : Ada_To_Why.Map := Ada_To_Why.Empty_Map;

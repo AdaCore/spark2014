@@ -23,13 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Gnat2Why.Util;     use Gnat2Why.Util;
 with Why.Atree.Modules; use Why.Atree.Modules;
 with Why.Conversions;   use Why.Conversions;
 with Why.Gen.Expr;      use Why.Gen.Expr;
 with Why.Gen.Names;     use Why.Gen.Names;
 with Why.Inter;         use Why.Inter;
-
-with Gnat2Why.Nodes;
 
 package body Why.Gen.Binders is
 
@@ -113,7 +112,7 @@ package body Why.Gen.Binders is
                                               Binders => Binders);
       Equality : W_Pred_Id;
       Node_Name : constant String := (if Ada_Node /= Empty then
-                                         Gnat2Why.Nodes.Short_Name (Ada_Node)
+                                         Short_Name (Ada_Node)
                                       else "");
       Axiom_Name : constant String := (if Node_Name /= "" then
                                           Node_Name & "__"
@@ -156,8 +155,7 @@ package body Why.Gen.Binders is
                      (Left  => Left,
                       Right => Def);
       Axiom_Name : constant String :=
-        (if Ada_Node /= Empty then
-            Gnat2Why.Nodes.Short_Name (Ada_Node) & "__"
+        (if Ada_Node /= Empty then Short_Name (Ada_Node) & "__"
          else "") & Def_Axiom;
    begin
       return New_Guarded_Axiom

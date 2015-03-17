@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with GNATCOLL.Utils;      use GNATCOLL.Utils;
-with Gnat2Why.Util;       use Gnat2Why.Util;
 with Stand;               use Stand;
 with SPARK_Definition;    use SPARK_Definition;
 with SPARK_Util;          use SPARK_Util;

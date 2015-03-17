@@ -31,7 +31,6 @@ with Sinfo;               use Sinfo;
 with Stand;               use Stand;
 with Uintp;               use Uintp;
 
-with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 with Gnat2Why.Types;      use Gnat2Why.Types;
 with Gnat2Why.Util;       use Gnat2Why.Util;
 with SPARK_Util;          use SPARK_Util;

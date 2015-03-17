@@ -47,7 +47,6 @@ with Why.Inter;           use Why.Inter;
 with Why.Sinfo;           use Why.Sinfo;
 with Why.Types;           use Why.Types;
 
-with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 with Gnat2Why.Util;       use Gnat2Why.Util;
 
 package body Why.Gen.Scalars is

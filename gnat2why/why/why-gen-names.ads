@@ -27,16 +27,14 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Atree;                 use Atree;
 with Einfo;                 use Einfo;
+with Gnat2Why.Util;         use Gnat2Why.Util;
 with Namet;                 use Namet;
 with Snames;                use Snames;
 with Types;                 use Types;
 with Uintp;                 use Uintp;
 with Why.Ids;               use Why.Ids;
 with Why.Sinfo;             use Why.Sinfo;
-
 with Why.Types;
-
-with Gnat2Why.Nodes;        use Gnat2Why.Nodes;
 
 package Why.Gen.Names is
    --  This package provides ways to manipulate subprogram names and

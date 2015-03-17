@@ -39,7 +39,6 @@ with VC_Kinds;            use VC_Kinds;
 with Why.Ids;             use Why.Ids;
 with Why.Sinfo;           use Why.Sinfo;
 
-with Gnat2Why.Nodes;      use Gnat2Why.Nodes;
 with Gnat2Why.Util;       use Gnat2Why.Util;
 
 package Why.Gen.Expr is

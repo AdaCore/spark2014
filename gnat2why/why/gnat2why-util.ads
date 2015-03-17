@@ -25,21 +25,17 @@
 
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Indefinite_Doubly_Linked_Lists;
-with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
-
---  Utilities for the transformation phase
-
-with Namet;                  use Namet;
-with Types;                  use Types;
-
-with Common_Containers;      use Common_Containers;
-
-with Why.Atree.Tables;       use Why.Atree.Tables;
-with Why.Gen.Binders;        use Why.Gen.Binders;
-with Why.Ids;                use Why.Ids;
-with Why.Sinfo;              use Why.Sinfo;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Common_Containers;     use Common_Containers;
+with Namet;                 use Namet;
+with Types;                 use Types;
+with Uintp;                 use Uintp;
+with VC_Kinds;              use VC_Kinds;
+with Why.Atree.Tables;      use Why.Atree.Tables;
+with Why.Gen.Binders;       use Why.Gen.Binders;
+with Why.Ids;               use Why.Ids;
+with Why.Sinfo;             use Why.Sinfo;
 with Why.Types;
-with Uintp;                  use Uintp;
 
 package Gnat2Why.Util is
 
@@ -326,5 +322,58 @@ package Gnat2Why.Util is
    function BitVector_Type_Size (Typ : W_Type_Id) return Uint;
    --  Return the size in bit of bitvector type Typ.
    --  raise an exception if Typ is not a bitvector type
+
+   procedure Add_To_Graph (Map : in out Node_Graphs.Map; From, To : Node_Id);
+   --  Add the relation From -> To in the given graph
+   --  @param Map a graph
+   --  @param From the node from which the relation starts
+   --  @param To the node to which the relation goes
+
+   function Get_Graph_Closure
+     (Map  : Node_Graphs.Map;
+      From : Node_Sets.Set) return Node_Sets.Set;
+   --  @param Map the graph
+   --  @param From the node to start from
+   --  @return the set of nodes reachable from the node From in the graph Map
+
+   function Avoid_Why3_Keyword (S : String) return String;
+   --  @param S any string
+   --  @return a string which is safe tu use as an identifier in Why3, i.e. is
+   --    lowercase and does not correspond to a keyword
+
+   function Short_Name (E : Entity_Id) return String;
+   --  @param E any entity
+   --  @return the actual name used for that entity in Why3 (as opposed to the
+   --    name of the module)
+
+   function Type_Of_Node (N : Node_Id) return Entity_Id;
+   --  @param N any node
+   --  @return the type of the node; if N is already a type, return that,
+   --    otherwise return the Etype. Also, if the most underlying full view of
+   --    a private type is in SPARK, that one is returned instead of the
+   --    private type.
+
+   type Range_Check_Kind is
+     (RCK_Overflow,
+      RCK_Range,
+      RCK_Length,
+      RCK_Index,
+      RCK_Range_Not_First,
+      RCK_Range_Not_Last,
+      RCK_Overflow_Not_First,
+      RCK_Overflow_Not_Last);
+
+   function To_VC_Kind (R : Range_Check_Kind) return VC_Kind
+   is
+     (case R is
+         when RCK_Overflow           => VC_Overflow_Check,
+         when RCK_Range              => VC_Range_Check,
+         when RCK_Length             => VC_Length_Check,
+         when RCK_Index              => VC_Index_Check,
+         when RCK_Range_Not_First    => VC_Range_Check,
+         when RCK_Range_Not_Last     => VC_Range_Check,
+         when RCK_Overflow_Not_First => VC_Overflow_Check,
+         when RCK_Overflow_Not_Last  => VC_Overflow_Check);
+   --  to convert a Range_Check_Kind to a VC_Kind
 
 end Gnat2Why.Util;

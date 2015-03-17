@@ -73,7 +73,6 @@ with Gnat2Why.Annotate;        use Gnat2Why.Annotate;
 with Gnat2Why.Decls;           use Gnat2Why.Decls;
 with Gnat2Why.Error_Messages;  use Gnat2Why.Error_Messages;
 with Gnat2Why.External_Axioms; use Gnat2Why.External_Axioms;
-with Gnat2Why.Nodes;           use Gnat2Why.Nodes;
 with Gnat2Why_Args;
 with Gnat2Why.Assumptions;     use Gnat2Why.Assumptions;
 with Gnat2Why.Subprograms;     use Gnat2Why.Subprograms;

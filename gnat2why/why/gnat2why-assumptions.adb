@@ -27,7 +27,6 @@
 with Ada.Containers.Hashed_Maps;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Atree;                 use Atree;
-with Gnat2Why.Nodes;        use Gnat2Why.Nodes;
 with Sinput;                use Sinput;
 with Snames;                use Snames;
 with SPARK_Util;            use SPARK_Util;

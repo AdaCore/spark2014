@@ -40,7 +40,6 @@ pragma Unreferenced (Flow_Debug);
 with SPARK_Util;                         use SPARK_Util;
 with SPARK_Definition;                   use SPARK_Definition;
 with Why;
-with Gnat2Why.Nodes;                     use Gnat2Why.Nodes;
 
 with Flow.Control_Flow_Graph.Utility;    use Flow.Control_Flow_Graph.Utility;
 with Flow_Classwide;                     use Flow_Classwide;

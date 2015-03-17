@@ -34,7 +34,6 @@ with Erroutc;              use Erroutc;
 with GNATCOLL.Utils;       use GNATCOLL.Utils;
 with Gnat2Why.Annotate;    use Gnat2Why.Annotate;
 with Gnat2Why.Assumptions; use Gnat2Why.Assumptions;
-with Gnat2Why.Nodes;       use Gnat2Why.Nodes;
 with Gnat2Why_Args;        use Gnat2Why_Args;
 with Namet;                use Namet;
 with Sinfo;                use Sinfo;

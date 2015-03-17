@@ -23,16 +23,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;               use Types;
-with VC_Kinds;            use VC_Kinds;
-
-with Why.Atree.Builders;  use Why.Atree.Builders;
-with Why.Ids;             use Why.Ids;
-with Why.Sinfo;           use Why.Sinfo;
-with Why.Types;           use Why.Types;
-with Why.Gen.Preds;       use Why.Gen.Preds;
-
-with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
+with Gnat2Why.Util;      use Gnat2Why.Util;
+with Types;              use Types;
+with VC_Kinds;           use VC_Kinds;
+with Why.Atree.Builders; use Why.Atree.Builders;
+with Why.Ids;            use Why.Ids;
+with Why.Sinfo;          use Why.Sinfo;
+with Why.Types;          use Why.Types;
+with Why.Gen.Preds;      use Why.Gen.Preds;
 
 package Why.Gen.Progs is
 

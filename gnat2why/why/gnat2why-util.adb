@@ -25,16 +25,15 @@
 
 with Atree;                  use Atree;
 with Einfo;                  use Einfo;
-with Sem_Util;               use Sem_Util;
-with Sinfo;                  use Sinfo;
-
-with SPARK_Definition;
-with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
-with SPARK_Util;             use SPARK_Util;
-
 with Flow_Types;
 with Flow_Utility;
-
+with Gnat2Why.Expr;          use Gnat2Why.Expr;
+with Sem_Util;               use Sem_Util;
+with Sinfo;                  use Sinfo;
+with SPARK_Definition;       use SPARK_Definition;
+with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
+with SPARK_Util;             use SPARK_Util;
+with String_Utils;           use String_Utils;
 with Why.Atree.Accessors;    use Why.Atree.Accessors;
 with Why.Atree.Builders;     use Why.Atree.Builders;
 with Why.Atree.Modules;      use Why.Atree.Modules;
@@ -43,10 +42,9 @@ with Why.Gen.Expr;           use Why.Gen.Expr;
 with Why.Inter;              use Why.Inter;
 with Why.Types;              use Why.Types;
 
-with Gnat2Why.Expr;          use Gnat2Why.Expr;
-with Gnat2Why.Nodes;         use Gnat2Why.Nodes;
-
 package body Gnat2Why.Util is
+
+   Why3_Keywords : String_Utils.String_Sets.Set;
 
    --------------------
    -- Ada_Ent_To_Why --
@@ -260,50 +258,67 @@ package body Gnat2Why.Util is
 
    end Ada_Ent_To_Why;
 
-   -------------------------------------
-   -- Expression_Depends_On_Variables --
-   -------------------------------------
+   ------------------
+   -- Add_To_Graph --
+   ------------------
 
-   function Expression_Depends_On_Variables (N : Node_Id) return Boolean is
+   procedure Add_To_Graph (Map : in out Node_Graphs.Map; From, To : Node_Id) is
 
-      Variable_Reference_Seen : Boolean := False;
+      procedure Add_To_Set (Ignored : Node_Id; Set : in out Node_Sets.Set);
+      --  Add entity To to set Set
 
-      function Is_Variable_Reference (N : Node_Id) return Traverse_Result;
-      --  Attempt to find a variable reference in N
+      ----------------
+      -- Add_To_Set --
+      ----------------
 
-      procedure Search_Variable_Reference is
-        new Traverse_Proc (Is_Variable_Reference);
-
-      ---------------------------
-      -- Is_Variable_Reference --
-      ---------------------------
-
-      function Is_Variable_Reference (N : Node_Id) return Traverse_Result is
+      procedure Add_To_Set (Ignored : Node_Id; Set : in out Node_Sets.Set)
+      is
+         pragma Unreferenced (Ignored);
       begin
-         if Nkind_In (N, N_Identifier, N_Expanded_Name)
-           and then Present (Entity (N))
-           and then
-             (case Ekind (Entity (N)) is
-                 when Object_Kind     => Is_Mutable_In_Why (Entity (N)),
-                 when Subprogram_Kind =>
-                    Flow_Utility.Has_Proof_Global_Reads (Entity (N),
-                                                         Classwide => True),
-                 when others          => False)
-         then
-            Variable_Reference_Seen := True;
-            return Abandon;
+         Set.Include (To);
+      end Add_To_Set;
 
-         --  Continue the traversal
-
-         else
-            return OK;
-         end if;
-      end Is_Variable_Reference;
+   --  Start of processing for Add_To_Graph
 
    begin
-      Search_Variable_Reference (N);
-      return Variable_Reference_Seen;
-   end Expression_Depends_On_Variables;
+      if Map.Contains (From) then
+         Map.Update_Element (Map.Find (From), Add_To_Set'Access);
+      else
+         declare
+            S : Node_Sets.Set;
+         begin
+            S.Include (To);
+            Map.Insert (From, S);
+         end;
+      end if;
+   end Add_To_Graph;
+
+   ------------------------
+   -- Avoid_Why3_Keyword --
+   ------------------------
+
+   function Avoid_Why3_Keyword (S : String) return String is
+      S_Copy : String := S;
+   begin
+      Lower_Case_First (S_Copy);
+      if Why3_Keywords.Contains (S_Copy) then
+         return S_Copy & "__";
+      else
+         return S_Copy;
+      end if;
+   end Avoid_Why3_Keyword;
+   -------------------------
+   -- BitVector_Type_Size --
+   -------------------------
+
+   function BitVector_Type_Size (Typ : W_Type_Id) return Uint is
+   begin
+      return (if Typ = EW_BitVector_8_Type then Uint_8
+              elsif Typ = EW_BitVector_16_Type then Uint_16
+              elsif Typ = EW_BitVector_32_Type then Uint_32
+              elsif Typ = EW_BitVector_64_Type then Uint_64
+              else raise Program_Error);
+   end BitVector_Type_Size;
 
    ------------------
    -- Compute_Spec --
@@ -374,6 +389,51 @@ package body Gnat2Why.Util is
       return Result;
    end Create_Zero_Binding;
 
+   -------------------------------------
+   -- Expression_Depends_On_Variables --
+   -------------------------------------
+
+   function Expression_Depends_On_Variables (N : Node_Id) return Boolean is
+
+      Variable_Reference_Seen : Boolean := False;
+
+      function Is_Variable_Reference (N : Node_Id) return Traverse_Result;
+      --  Attempt to find a variable reference in N
+
+      procedure Search_Variable_Reference is
+        new Traverse_Proc (Is_Variable_Reference);
+
+      ---------------------------
+      -- Is_Variable_Reference --
+      ---------------------------
+
+      function Is_Variable_Reference (N : Node_Id) return Traverse_Result is
+      begin
+         if Nkind_In (N, N_Identifier, N_Expanded_Name)
+           and then Present (Entity (N))
+           and then
+             (case Ekind (Entity (N)) is
+                 when Object_Kind     => Is_Mutable_In_Why (Entity (N)),
+                 when Subprogram_Kind =>
+                    Flow_Utility.Has_Proof_Global_Reads (Entity (N),
+                                                         Classwide => True),
+                 when others          => False)
+         then
+            Variable_Reference_Seen := True;
+            return Abandon;
+
+         --  Continue the traversal
+
+         else
+            return OK;
+         end if;
+      end Is_Variable_Reference;
+
+   begin
+      Search_Variable_Reference (N);
+      return Variable_Reference_Seen;
+   end Expression_Depends_On_Variables;
+
    ------------------------------
    -- Get_Dispatching_Contract --
    ------------------------------
@@ -402,6 +462,57 @@ package body Gnat2Why.Util is
       return +Get_Dispatching_Contract (Params, E, Kind, EW_Pred);
    end Get_Dispatching_Contract;
 
+   -----------------------
+   -- Get_Graph_Closure --
+   -----------------------
+
+   function Get_Graph_Closure
+     (Map  : Node_Graphs.Map;
+      From : Node_Sets.Set) return Node_Sets.Set
+   is
+      use Node_Sets;
+      Result   : Set;
+      Work_Set : Set;
+      First    : Cursor;
+      Cur_Node : Node_Id;
+
+      procedure Update_Work_Set (Ignored : Node_Id; New_Set : Set);
+      --  Update sets Result and Work_Set by adding those nodes from New_Set
+      --  that have not been encountered yet.
+
+      ---------------------
+      -- Update_Work_Set --
+      ---------------------
+
+      procedure Update_Work_Set (Ignored : Node_Id; New_Set : Set) is
+         pragma Unreferenced (Ignored);
+      begin
+         for N of New_Set loop
+            if not Result.Contains (N) then
+               Result.Include (N);
+               Work_Set.Include (N);
+            end if;
+         end loop;
+      end Update_Work_Set;
+
+   begin
+      Work_Set := From;
+      Result := From;
+
+      while not Work_Set.Is_Empty loop
+         First := Work_Set.First;
+         Cur_Node := Element (First);
+         Work_Set.Delete (First);
+
+         if Map.Contains (Cur_Node) then
+            Node_Graphs.Query_Element (Position => Map.Find (Cur_Node),
+                                       Process  => Update_Work_Set'Access);
+         end if;
+      end loop;
+
+      return Result;
+   end Get_Graph_Closure;
+
    ------------------------------
    -- Get_Static_Call_Contract --
    ------------------------------
@@ -429,9 +540,9 @@ package body Gnat2Why.Util is
       return +Get_Static_Call_Contract (Params, E, Kind, EW_Pred);
    end Get_Static_Call_Contract;
 
-   --------------------
-   -- Init_Why_Files --
-   --------------------
+   -----------------------
+   -- Init_Why_Sections --
+   -----------------------
 
    procedure Init_Why_Sections is
       Body_Prefix : constant String := Unit_Name;
@@ -472,18 +583,6 @@ package body Gnat2Why.Util is
    begin
       Ada_Ent_To_Why.Insert (Symbol_Table, E, I);
    end Insert_Item;
-
-   -------------------------
-   -- Make_Empty_Why_File --
-   -------------------------
-
-   function Make_Empty_Why_Section (Kind : Why_Section_Enum)
-                                    return Why_Section is
-   begin
-      return Why_Section'(File       => New_File,
-                          Kind       => Kind,
-                          Cur_Theory => Why.Types.Why_Empty);
-   end Make_Empty_Why_Section;
 
    --------------------------------
    -- Is_Locally_Defined_In_Loop --
@@ -560,6 +659,28 @@ package body Gnat2Why.Util is
       end if;
    end Is_Mutable_In_Why;
 
+   -------------------------
+   -- Make_Empty_Why_File --
+   -------------------------
+
+   function Make_Empty_Why_Section (Kind : Why_Section_Enum)
+                                    return Why_Section is
+   begin
+      return Why_Section'(File       => New_File,
+                          Kind       => Kind,
+                          Cur_Theory => Why.Types.Why_Empty);
+   end Make_Empty_Why_Section;
+
+   ----------------
+   -- Short_Name --
+   ----------------
+
+   function Short_Name (E : Entity_Id) return String
+   is
+   begin
+      return Avoid_Why3_Keyword (Get_Name_String (Chars (E)));
+   end Short_Name;
+
    -----------------------------
    -- Type_Is_Modeled_As_Base --
    -----------------------------
@@ -568,6 +689,36 @@ package body Gnat2Why.Util is
    begin
       return Is_Scalar_Type (T) and then not Has_Static_Scalar_Subtype (T);
    end Type_Is_Modeled_As_Base;
+
+   ------------------
+   -- Type_Of_Node --
+   ------------------
+
+   function Type_Of_Node (N : Node_Id) return Entity_Id is
+      T : Entity_Id;
+   begin
+      if Nkind (N) in N_Entity then
+         if Ekind (N) in Type_Kind then
+            T := N;
+         else
+            T := Etype (N);
+         end if;
+      elsif Nkind (N) in N_Identifier | N_Expanded_Name then
+         T := Etype (Entity (N));
+      else
+         T := Etype (N);
+      end if;
+
+      --  The type of a node is either its most underlying type, or else the
+      --  special private type in all other cases, represented in the AST by
+      --  its type.
+
+      if not Fullview_Not_In_SPARK (T) then
+         return MUT (T);
+      else
+         return T;
+      end if;
+   end Type_Of_Node;
 
    ------------------------
    -- Why_Type_Of_Entity --
@@ -600,17 +751,74 @@ package body Gnat2Why.Util is
         Typ = EW_BitVector_64_Type;
    end Why_Type_Is_BitVector;
 
-   -------------------------
-   -- BitVector_Type_Size --
-   -------------------------
-
-   function BitVector_Type_Size (Typ : W_Type_Id) return Uint is
-   begin
-      return (if Typ = EW_BitVector_8_Type then Uint_8
-              elsif Typ = EW_BitVector_16_Type then Uint_16
-              elsif Typ = EW_BitVector_32_Type then Uint_32
-              elsif Typ = EW_BitVector_64_Type then Uint_64
-              else raise Program_Error);
-   end BitVector_Type_Size;
-
+begin
+   Why3_Keywords.Include ("as");
+   Why3_Keywords.Include ("abstract");
+   Why3_Keywords.Include ("absurd");
+   Why3_Keywords.Include ("any");
+   Why3_Keywords.Include ("assert");
+   Why3_Keywords.Include ("assume");
+   Why3_Keywords.Include ("axiom");
+   Why3_Keywords.Include ("begin");
+   Why3_Keywords.Include ("bool");
+   Why3_Keywords.Include ("check");
+   Why3_Keywords.Include ("clone");
+   Why3_Keywords.Include ("coinductive");
+   Why3_Keywords.Include ("constant");
+   Why3_Keywords.Include ("do");
+   Why3_Keywords.Include ("done");
+   Why3_Keywords.Include ("downto");
+   Why3_Keywords.Include ("else");
+   Why3_Keywords.Include ("end");
+   Why3_Keywords.Include ("epsilon");
+   Why3_Keywords.Include ("exception");
+   Why3_Keywords.Include ("exists");
+   Why3_Keywords.Include ("export");
+   Why3_Keywords.Include ("false");
+   Why3_Keywords.Include ("for");
+   Why3_Keywords.Include ("forall");
+   Why3_Keywords.Include ("fun");
+   Why3_Keywords.Include ("function");
+   Why3_Keywords.Include ("ghost");
+   Why3_Keywords.Include ("goal");
+   Why3_Keywords.Include ("if");
+   Why3_Keywords.Include ("import");
+   Why3_Keywords.Include ("in");
+   Why3_Keywords.Include ("inductive");
+   Why3_Keywords.Include ("int");
+   Why3_Keywords.Include ("invariant");
+   Why3_Keywords.Include ("lemma");
+   Why3_Keywords.Include ("let");
+   Why3_Keywords.Include ("loop");
+   Why3_Keywords.Include ("match");
+   Why3_Keywords.Include ("meta");
+   Why3_Keywords.Include ("model");
+   Why3_Keywords.Include ("module");
+   Why3_Keywords.Include ("mutable");
+   Why3_Keywords.Include ("namespace");
+   Why3_Keywords.Include ("not");
+   Why3_Keywords.Include ("old");
+   Why3_Keywords.Include ("predicate");
+   Why3_Keywords.Include ("private");
+   Why3_Keywords.Include ("prop");
+   Why3_Keywords.Include ("private");
+   Why3_Keywords.Include ("raise");
+   Why3_Keywords.Include ("raises");
+   Why3_Keywords.Include ("reads");
+   Why3_Keywords.Include ("rec");
+   Why3_Keywords.Include ("real");
+   Why3_Keywords.Include ("result");
+   Why3_Keywords.Include ("then");
+   Why3_Keywords.Include ("theory");
+   Why3_Keywords.Include ("to");
+   Why3_Keywords.Include ("try");
+   Why3_Keywords.Include ("true");
+   Why3_Keywords.Include ("type");
+   Why3_Keywords.Include ("unit");
+   Why3_Keywords.Include ("use");
+   Why3_Keywords.Include ("val");
+   Why3_Keywords.Include ("variant");
+   Why3_Keywords.Include ("while");
+   Why3_Keywords.Include ("with");
+   Why3_Keywords.Include ("writes");
 end Gnat2Why.Util;

@@ -52,7 +52,6 @@ with Why.Gen.Preds;      use Why.Gen.Preds;
 with Why.Gen.Records;    use Why.Gen.Records;
 with Why.Inter;          use Why.Inter;
 
-with Gnat2Why.Nodes;     use Gnat2Why.Nodes;
 with Gnat2Why.Util;      use Gnat2Why.Util;
 with Einfo; use Einfo;
 

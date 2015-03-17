@@ -41,7 +41,6 @@ with SPARK_Util;           use SPARK_Util;
 with Flow_Error_Messages;  use Flow_Error_Messages;
 
 with Gnat2Why.Assumptions; use Gnat2Why.Assumptions;
-with Gnat2Why.Nodes;       use Gnat2Why.Nodes;
 
 package body Gnat2Why.Error_Messages is
 

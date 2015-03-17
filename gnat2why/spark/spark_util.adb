@@ -23,29 +23,34 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings;                        use Ada.Strings;
+with Ada.Strings;               use Ada.Strings;
 with Ada.Strings.Equal_Case_Insensitive;
-
-with Fname;                              use Fname;
-with Nlists;                             use Nlists;
-with Sem_Aux;                            use Sem_Aux;
-with Sem_Disp;                           use Sem_Disp;
-with Sem_Util;                           use Sem_Util;
-with Exp_Util;                           use Exp_Util;
-with Sinput;                             use Sinput;
-with Stand;                              use Stand;
-with Treepr;                             use Treepr;
-with Uintp;                              use Uintp;
-
-with Flow_Types;                         use Flow_Types;
-with Flow_Utility;                       use Flow_Utility;
-
+with Assumption_Types;          use Assumption_Types;
+with Csets;                     use Csets;
+with Elists;                    use Elists;
+with Flow_Types;                use Flow_Types;
+with Flow_Utility;              use Flow_Utility;
+with Fname;                     use Fname;
+with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with Gnat2Why_Args;
-with Gnat2Why.Nodes;                     use Gnat2Why.Nodes;
-
-with GNAT.Directory_Operations;          use GNAT.Directory_Operations;
+with Gnat2Why.Assumptions;      use Gnat2Why.Assumptions;
+with GNATCOLL.Utils;            use GNATCOLL.Utils;
+with Nlists;                    use Nlists;
+with Sem_Aux;                   use Sem_Aux;
+with Sem_Disp;                  use Sem_Disp;
+with Sem_Eval;                  use Sem_Eval;
+with Exp_Util;                  use Exp_Util;
+with Pprint;                    use Pprint;
+with Stand;                     use Stand;
+with Stringt;                   use Stringt;
+with String_Utils;              use String_Utils;
+with Treepr;                    use Treepr;
+with Urealp;                    use Urealp;
 
 package body SPARK_Util is
+
+   function Is_Main_Cunit (N : Node_Id) return Boolean;
+   function Is_Spec_Unit_Of_Main_Unit (N : Node_Id) return Boolean;
 
    ------------------
    -- Global State --
@@ -66,13 +71,6 @@ package body SPARK_Util is
    begin
       Classwide_To_Tagged_Entities.Insert (Classwide, Ty);
    end Add_Classwide_To_Tagged;
-
-   --------------------------
-   -- Corresponding_Tagged --
-   --------------------------
-
-   function Corresponding_Tagged (Classwide : Entity_Id) return Entity_Id is
-      (Classwide_To_Tagged_Entities.Element (Classwide));
 
    -------------------------------
    -- Add_Full_And_Partial_View --
@@ -290,6 +288,28 @@ package body SPARK_Util is
       end loop;
    end Append;
 
+   --------------------
+   -- Body_File_Name --
+   --------------------
+
+   function Body_File_Name (N : Node_Id) return String is
+      CU       : Node_Id := Enclosing_Comp_Unit_Node (N);
+      Switch   : Boolean := False;
+   begin
+      case Nkind (Unit (CU)) is
+         when N_Package_Body    |
+              N_Subprogram_Body |
+              N_Subunit         =>
+            null;
+         when others =>
+            Switch := True;
+      end case;
+      if Switch and then Present (Library_Unit (CU)) then
+         CU := Library_Unit (CU);
+      end if;
+      return File_Name (Sloc (CU));
+   end Body_File_Name;
+
    --------------------------------
    -- Check_Needed_On_Conversion --
    --------------------------------
@@ -316,6 +336,13 @@ package body SPARK_Util is
 
       return True;
    end Check_Needed_On_Conversion;
+
+   --------------------------
+   -- Corresponding_Tagged --
+   --------------------------
+
+   function Corresponding_Tagged (Classwide : Entity_Id) return Entity_Id is
+     (Classwide_To_Tagged_Entities.Element (Classwide));
 
    ------------------
    -- Count_Fields --
@@ -651,96 +678,22 @@ package body SPARK_Util is
       return Result;
    end Default_Initialization;
 
-   ----------------------------------
-   -- Get_Default_Init_Cond_Pragma --
-   ----------------------------------
+   -------------------------------
+   -- Entity_In_External_Axioms --
+   -------------------------------
 
-   function Get_Default_Init_Cond_Pragma (Typ : Entity_Id) return Node_Id is
-      Par : Entity_Id := Typ;
+   function Entity_In_External_Axioms (E : Entity_Id) return Boolean is
    begin
-      while Has_Default_Init_Cond (Par)
-        or else Has_Inherited_Default_Init_Cond (Par)
-      loop
-         if Has_Default_Init_Cond (Par) then
-            return Get_Pragma (Typ, Pragma_Default_Initial_Condition);
-         elsif Is_Private_Type (Par) and then Etype (Par) = Par then
-            Par := Etype (Full_View (Par));
-         else
-            Par := Etype (Par);
-         end if;
-      end loop;
+      --  ??? Ideally this should be a precondition of the function, and it
+      --  should only be called on non Empty entities
 
-      --  We should not reach here
-
-      raise Program_Error;
-   end Get_Default_Init_Cond_Pragma;
-
-   --------------------------
-   -- Is_In_Analyzed_Files --
-   --------------------------
-
-   function Is_In_Analyzed_Files (E : Entity_Id) return Boolean
-   is
-      Encl_Unit : Node_Id := Enclosing_Comp_Unit_Node (E);
-   begin
-
-      --  Encl_Unit is supposed to be the node of the unit which contains
-      --  E. But the call to Enclosing_Comp_Unit_Node may return the subunit
-      --  instead of the compilation unit. We rectify this now:
-
-      if Nkind (Unit (Encl_Unit)) = N_Subunit then
-         Encl_Unit := Library_Unit (Encl_Unit);
-      end if;
-
-      --  if the entity is not in the
-      --  compilation unit that is currently being analyzed then return false.
-
-      if Cunit (Main_Unit) /= Encl_Unit
-        and then Library_Unit (Cunit (Main_Unit)) /= Encl_Unit
-      then
+      if No (E) then
          return False;
       end if;
 
-      --  If option -u was not present, or an empty files list has been
-      --  provided then all entities that are in the compilation unit that
-      --  is currently being analyzed must be analyzed.
-
-      if not Gnat2Why_Args.Single_File or else
-        Gnat2Why_Args.Analyze_File.Is_Empty
-      then
-         return True;
-      end if;
-
-      declare
-         Spec_Prefix : constant String := Spec_File_Name (E);
-         Body_Prefix : constant String := Body_File_Name (E);
-      begin
-         for A_File of Gnat2Why_Args.Analyze_File loop
-            declare
-               Filename : constant String := File_Name (A_File);
-            begin
-               if Equal_Case_Insensitive (Filename, Body_Prefix)
-                 or else Equal_Case_Insensitive (Filename, Spec_Prefix)
-               then
-                  return True;
-               end if;
-            end;
-         end loop;
-         return False;
-      end;
-   end Is_In_Analyzed_Files;
-
-   -----------------------------
-   -- Is_Requested_Subprogram --
-   -----------------------------
-
-   function Is_Requested_Subprogram (E : Entity_Id) return Boolean is
-   begin
-      return Ekind (E) in Subprogram_Kind
-               and then
-             "GP_Subp:" & To_String (Gnat2Why_Args.Limit_Subp) =
-             Gnat2Why.Nodes.Subp_Location (E);
-   end Is_Requested_Subprogram;
+      return Present
+        (Containing_Package_With_Ext_Axioms (E));
+   end Entity_In_External_Axioms;
 
    --------------------------------------
    -- Expression_Functions_All_The_Way --
@@ -927,33 +880,6 @@ package body SPARK_Util is
       end case;
    end Find_Contracts;
 
-   -------------------
-   -- Has_Contracts --
-   -------------------
-
-   function Has_Contracts
-     (E         : Entity_Id;
-      Name      : Name_Id;
-      Classwide : Boolean := False;
-      Inherited : Boolean := False) return Boolean
-   is
-      Contracts : Node_Lists.List;
-   begin
-      if Classwide or Inherited then
-         if Classwide then
-            Contracts := Find_Contracts (E, Name, Classwide => True);
-         end if;
-         if Contracts.Is_Empty and Inherited then
-            Contracts :=
-              Find_Contracts (E, Name, Inherited => True);
-         end if;
-      else
-         Contracts := Find_Contracts (E, Name);
-      end if;
-
-      return not Contracts.Is_Empty;
-   end Has_Contracts;
-
    ------------------------
    -- First_Discriminant --
    ------------------------
@@ -971,62 +897,50 @@ package body SPARK_Util is
       return Comp_Id;
    end First_Discriminant;
 
-   -------------------------------
-   -- Has_User_Supplied_Globals --
-   -------------------------------
+   ---------------
+   -- Full_Name --
+   ---------------
 
-   function Has_User_Supplied_Globals (E : Entity_Id) return Boolean
-   is (Present (Get_Pragma (E, Pragma_Global)) or else
-         Present (Get_Pragma (E, Pragma_Depends)));
-
-   -------------------
-   -- Has_No_Output --
-   -------------------
-
-   function Has_No_Output
-     (E          : Entity_Id;
-      GG_Allowed : Boolean) return Boolean
-   is
-      Params : constant List_Id :=
-                 Parameter_Specifications (Get_Subprogram_Spec (E));
-      Param  : Node_Id;
-
-      Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
-      Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
-      Write_Names : Name_Set.Set;
-
+   function Full_Name (N : Entity_Id) return String is
    begin
-      --  Consider output parameters
+      --  In special cases, return a fixed name. These cases should match those
+      --  for which Full_Name_Is_Not_Unique_Name returns True.
 
-      Param := First (Params);
-      while Present (Param) loop
-         case Formal_Kind'(Ekind (Defining_Identifier (Param))) is
-            when E_Out_Parameter | E_In_Out_Parameter =>
-               return False;
-            when E_In_Parameter =>
-               null;
-         end case;
-         Next (Param);
-      end loop;
-
-      --  Consider output globals
-
-      if GG_Allowed or else Has_User_Supplied_Globals (E) then
-         Flow_Utility.Get_Proof_Globals (Subprogram => E,
-                                         Classwide  => True,
-                                         Reads      => Read_Ids,
-                                         Writes     => Write_Ids);
-         Write_Names := Flow_Types.To_Name_Set (Write_Ids);
-
-         if not Write_Names.Is_Empty then
-            return False;
+      if Full_Name_Is_Not_Unique_Name (N) then
+         if Is_Standard_Boolean_Type (N) then
+            return "bool";
+         elsif N = Universal_Fixed then
+            return "real";
+         else
+            raise Program_Error;
          end if;
+
+      --  In the general case, return a name based on the Unique_Name
+
+      else
+         declare
+            S : String := Unique_Name (N);
+         begin
+
+            --  In Why3, enumeration literals need to be upper case. Why2
+            --  doesn't care, so we enforce upper case here
+
+            if Ekind (N) = E_Enumeration_Literal then
+               Capitalize_First (S);
+            end if;
+            return S;
+         end;
       end if;
+   end Full_Name;
 
-      --  No output found
+   ----------------------------------
+   -- Full_Name_Is_Not_Unique_Name --
+   ----------------------------------
 
-      return True;
-   end Has_No_Output;
+   function Full_Name_Is_Not_Unique_Name (N : Entity_Id) return Boolean is
+   begin
+      return Is_Standard_Boolean_Type (N) or else N = Universal_Fixed;
+   end Full_Name_Is_Not_Unique_Name;
 
    --------------------
    -- Get_Abend_Kind --
@@ -1053,6 +967,30 @@ package body SPARK_Util is
    begin
       return Etype (Get_Iterable_Type_Primitive (Typ, Name_First));
    end Get_Cursor_Type_In_Iterable_Aspect;
+
+   ----------------------------------
+   -- Get_Default_Init_Cond_Pragma --
+   ----------------------------------
+
+   function Get_Default_Init_Cond_Pragma (Typ : Entity_Id) return Node_Id is
+      Par : Entity_Id := Typ;
+   begin
+      while Has_Default_Init_Cond (Par)
+        or else Has_Inherited_Default_Init_Cond (Par)
+      loop
+         if Has_Default_Init_Cond (Par) then
+            return Get_Pragma (Typ, Pragma_Default_Initial_Condition);
+         elsif Is_Private_Type (Par) and then Etype (Par) = Par then
+            Par := Etype (Full_View (Par));
+         else
+            Par := Etype (Par);
+         end if;
+      end loop;
+
+      --  We should not reach here
+
+      raise Program_Error;
+   end Get_Default_Init_Cond_Pragma;
 
    --------------------------------
    -- Get_Default_Init_Cond_Proc --
@@ -1115,34 +1053,6 @@ package body SPARK_Util is
       end loop;
    end Get_Enclosing_Unit;
 
-   -----------------------------
-   -- Get_Expression_Function --
-   -----------------------------
-
-   function Get_Expression_Function (E : Entity_Id) return Node_Id is
-      Decl_N : constant Node_Id := Parent (Get_Subprogram_Spec (E));
-      Body_N : constant Node_Id := Get_Subprogram_Body (E);
-      Orig_N : Node_Id;
-   begin
-      --  Get the original node either from the declaration for E, or from the
-      --  subprogram body for E, which may be different if E is attached to a
-      --  subprogram declaration.
-
-      if Present (Original_Node (Decl_N))
-        and then Original_Node (Decl_N) /= Decl_N
-      then
-         Orig_N := Original_Node (Decl_N);
-      else
-         Orig_N := Original_Node (Body_N);
-      end if;
-
-      if Nkind (Orig_N) = N_Expression_Function then
-         return Orig_N;
-      else
-         return Empty;
-      end if;
-   end Get_Expression_Function;
-
    -----------------------------------
    -- Get_Expr_From_Check_Only_Proc --
    -----------------------------------
@@ -1176,6 +1086,34 @@ package body SPARK_Util is
 
       return Empty;
    end Get_Expr_From_Check_Only_Proc;
+
+   -----------------------------
+   -- Get_Expression_Function --
+   -----------------------------
+
+   function Get_Expression_Function (E : Entity_Id) return Node_Id is
+      Decl_N : constant Node_Id := Parent (Get_Subprogram_Spec (E));
+      Body_N : constant Node_Id := Get_Subprogram_Body (E);
+      Orig_N : Node_Id;
+   begin
+      --  Get the original node either from the declaration for E, or from the
+      --  subprogram body for E, which may be different if E is attached to a
+      --  subprogram declaration.
+
+      if Present (Original_Node (Decl_N))
+        and then Original_Node (Decl_N) /= Decl_N
+      then
+         Orig_N := Original_Node (Decl_N);
+      else
+         Orig_N := Original_Node (Body_N);
+      end if;
+
+      if Nkind (Orig_N) = N_Expression_Function then
+         return Orig_N;
+      else
+         return Empty;
+      end if;
+   end Get_Expression_Function;
 
    ---------------------------------------------
    -- Get_Flat_Statement_And_Declaration_List --
@@ -1366,6 +1304,19 @@ package body SPARK_Util is
       end if;
    end Get_Global_Items;
 
+   -------------------
+   -- Get_Low_Bound --
+   -------------------
+
+   function Get_Low_Bound (E : Entity_Id) return Node_Id is
+   begin
+      if Ekind (E) = E_String_Literal_Subtype then
+         return String_Literal_Low_Bound (E);
+      else
+         return Low_Bound (Scalar_Range (E));
+      end if;
+   end Get_Low_Bound;
+
    ----------------------
    -- Get_Package_Body --
    ----------------------
@@ -1412,6 +1363,60 @@ package body SPARK_Util is
       return N;
    end Get_Package_Spec;
 
+   ---------------
+   -- Get_Range --
+   ---------------
+
+   function Get_Range (N : Node_Id) return Node_Id is
+   begin
+      case Nkind (N) is
+         when N_Range                           |
+              N_Real_Range_Specification        |
+              N_Signed_Integer_Type_Definition  |
+              N_Modular_Type_Definition         |
+              N_Floating_Point_Definition       |
+              N_Ordinary_Fixed_Point_Definition |
+              N_Decimal_Fixed_Point_Definition  =>
+            return N;
+
+         when N_Subtype_Indication =>
+            return Range_Expression (Constraint (N));
+
+         when N_Identifier | N_Expanded_Name =>
+            return Get_Range (Entity (N));
+
+         when N_Defining_Identifier =>
+            case Ekind (N) is
+               when Scalar_Kind =>
+                  return Get_Range (Scalar_Range (N));
+
+               when Object_Kind =>
+                  return Get_Range (Scalar_Range (Etype (N)));
+
+               when others =>
+                  raise Program_Error;
+            end case;
+
+         when others =>
+            raise Program_Error;
+      end case;
+   end Get_Range;
+
+   -----------------------
+   -- Get_Return_Object --
+   -----------------------
+
+   function Get_Return_Object_Entity (Stmt : Node_Id) return Entity_Id is
+      Decl : Node_Id := First (Return_Object_Declarations (Stmt));
+   begin
+      while Present (Decl) loop
+         exit when
+           Is_Return_Object (Defining_Identifier (Decl));
+         Next (Decl);
+      end loop;
+      pragma Assert (Present (Decl));
+      return Defining_Identifier (Decl);
+   end Get_Return_Object_Entity;
    --------------------------------------
    -- Get_Specific_Type_From_Classwide --
    --------------------------------------
@@ -1558,6 +1563,33 @@ package body SPARK_Util is
       return N;
    end Get_Subprogram_Spec;
 
+   -------------------
+   -- Has_Contracts --
+   -------------------
+
+   function Has_Contracts
+     (E         : Entity_Id;
+      Name      : Name_Id;
+      Classwide : Boolean := False;
+      Inherited : Boolean := False) return Boolean
+   is
+      Contracts : Node_Lists.List;
+   begin
+      if Classwide or Inherited then
+         if Classwide then
+            Contracts := Find_Contracts (E, Name, Classwide => True);
+         end if;
+         if Contracts.Is_Empty and Inherited then
+            Contracts :=
+              Find_Contracts (E, Name, Inherited => True);
+         end if;
+      else
+         Contracts := Find_Contracts (E, Name);
+      end if;
+
+      return not Contracts.Is_Empty;
+   end Has_Contracts;
+
    --------------------------------
    -- Has_Default_Init_Condition --
    --------------------------------
@@ -1573,6 +1605,55 @@ package body SPARK_Util is
          return False;
       end if;
    end Has_Default_Init_Condition;
+
+   -------------------
+   -- Has_No_Output --
+   -------------------
+
+   function Has_No_Output
+     (E          : Entity_Id;
+      GG_Allowed : Boolean) return Boolean
+   is
+      Params : constant List_Id :=
+                 Parameter_Specifications (Get_Subprogram_Spec (E));
+      Param  : Node_Id;
+
+      Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
+      Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
+      Write_Names : Name_Set.Set;
+
+   begin
+      --  Consider output parameters
+
+      Param := First (Params);
+      while Present (Param) loop
+         case Formal_Kind'(Ekind (Defining_Identifier (Param))) is
+            when E_Out_Parameter | E_In_Out_Parameter =>
+               return False;
+            when E_In_Parameter =>
+               null;
+         end case;
+         Next (Param);
+      end loop;
+
+      --  Consider output globals
+
+      if GG_Allowed or else Has_User_Supplied_Globals (E) then
+         Flow_Utility.Get_Proof_Globals (Subprogram => E,
+                                         Classwide  => True,
+                                         Reads      => Read_Ids,
+                                         Writes     => Write_Ids);
+         Write_Names := Flow_Types.To_Name_Set (Write_Ids);
+
+         if not Write_Names.Is_Empty then
+            return False;
+         end if;
+      end if;
+
+      --  No output found
+
+      return True;
+   end Has_No_Output;
 
    -------------------------------
    -- Has_Static_Scalar_Subtype --
@@ -1605,6 +1686,131 @@ package body SPARK_Util is
            and then Is_Static_Expression (Type_High_Bound (Under_T));
       end if;
    end Has_Static_Scalar_Subtype;
+
+   -------------------------
+   -- Has_User_Defined_Eq --
+   -------------------------
+
+   function Has_User_Defined_Eq (E : Entity_Id) return Entity_Id is
+      Prim : Elmt_Id;
+      Op   : Entity_Id;
+   begin
+
+      Prim := First_Elmt (Collect_Primitive_Operations (E));
+      while Present (Prim) loop
+         Op := Node (Prim);
+
+         if Chars (Op) = Name_Op_Eq
+           and then Etype (Op) = Standard_Boolean
+           and then Etype (First_Formal (Op)) = E
+           and then Etype (Next_Formal (First_Formal (Op))) = E
+         then
+            return Op;
+         end if;
+
+         Next_Elmt (Prim);
+      end loop;
+
+      return Empty;
+   end Has_User_Defined_Eq;
+
+   -------------------------------
+   -- Has_User_Supplied_Globals --
+   -------------------------------
+
+   function Has_User_Supplied_Globals (E : Entity_Id) return Boolean
+   is (Present (Get_Pragma (E, Pragma_Global)) or else
+         Present (Get_Pragma (E, Pragma_Depends)));
+
+   -----------------------
+   -- In_Main_Unit_Body --
+   -----------------------
+
+   function In_Main_Unit_Body (N : Node_Id) return Boolean is
+      CU   : constant Node_Id := Enclosing_Comp_Unit_Node (N);
+      Root : Node_Id;
+
+   begin
+      if No (CU) then
+         return False;
+      end if;
+
+      Root := Unit (CU);
+
+      case Nkind (Root) is
+         when N_Package_Body    |
+              N_Subprogram_Body =>
+
+            return Is_Main_Cunit (Root);
+
+         --  The only way a node in a subunit can be seen is when this subunit
+         --  is part of the main unit.
+
+         when N_Subunit =>
+            return True;
+
+         when N_Package_Declaration            |
+              N_Generic_Package_Declaration    |
+              N_Subprogram_Declaration         |
+              N_Generic_Subprogram_Declaration =>
+
+            return False;
+
+         when N_Package_Renaming_Declaration           |
+              N_Generic_Package_Renaming_Declaration   |
+              N_Subprogram_Renaming_Declaration        |
+              N_Generic_Function_Renaming_Declaration  |
+              N_Generic_Procedure_Renaming_Declaration =>
+
+            return False;
+
+         when others =>
+            raise Program_Error;
+      end case;
+   end In_Main_Unit_Body;
+
+   -----------------------
+   -- In_Main_Unit_Spec --
+   -----------------------
+
+   function In_Main_Unit_Spec (N : Node_Id) return Boolean is
+      CU   : constant Node_Id := Enclosing_Comp_Unit_Node (N);
+      Root : Node_Id;
+
+   begin
+      if No (CU) then
+         return False;
+      end if;
+
+      Root := Unit (CU);
+
+      case Nkind (Root) is
+         when N_Package_Body    |
+              N_Subprogram_Body |
+              N_Subunit         =>
+
+            return False;
+
+         when N_Package_Declaration            |
+              N_Generic_Package_Declaration    |
+              N_Subprogram_Declaration         |
+              N_Generic_Subprogram_Declaration =>
+
+            return Is_Main_Cunit (Root)
+              or else Is_Spec_Unit_Of_Main_Unit (Root);
+
+         when N_Package_Renaming_Declaration           |
+              N_Generic_Package_Renaming_Declaration   |
+              N_Subprogram_Renaming_Declaration        |
+              N_Generic_Function_Renaming_Declaration  |
+              N_Generic_Procedure_Renaming_Declaration =>
+
+            return False;
+
+         when others =>
+            raise Program_Error;
+      end case;
+   end In_Main_Unit_Spec;
 
    -----------------------------
    -- In_Private_Declarations --
@@ -1659,106 +1865,35 @@ package body SPARK_Util is
       raise Program_Error;
    end Innermost_Enclosing_Loop;
 
-   ---------------------------------------------
-   -- Is_Double_Precision_Floating_Point_Type --
-   ---------------------------------------------
-
-   function Is_Double_Precision_Floating_Point_Type
-     (E : Entity_Id) return Boolean is
-   begin
-      return Is_Floating_Point_Type (E)
-        and then Machine_Radix_Value (E) = Uint_2
-        and then Machine_Mantissa_Value (E) = UI_From_Int (53)
-        and then Machine_Emax_Value (E) = Uint_2 ** Uint_10
-        and then Machine_Emin_Value (E) = Uint_3 - (Uint_2 ** Uint_10);
-   end Is_Double_Precision_Floating_Point_Type;
-
-   ------------------
-   -- Is_Full_View --
-   ------------------
-
-   function Is_Full_View (E : Entity_Id) return Boolean is
-      (Full_To_Partial_Entities.Contains (E));
-
-   ----------------------------------------
-   -- Is_Local_Subprogram_Always_Inlined --
-   ----------------------------------------
-
-   function Is_Local_Subprogram_Always_Inlined
-     (E : Entity_Id) return Boolean is
-   begin
-      --  A subprogram always inlined should have Body_To_Inline set and flag
-      --  Is_Inlined_Always set to True.
-
-      return Ekind_In (E, E_Function, E_Procedure)
-        and then Present (Get_Subprogram_Decl (E))
-        and then Present (Body_To_Inline (Get_Subprogram_Decl (E)))
-        and then Is_Inlined_Always (E);
-   end Is_Local_Subprogram_Always_Inlined;
-
-   ------------------------------
-   -- Is_Overriding_Subprogram --
-   ------------------------------
-
-   function Is_Overriding_Subprogram (E : Entity_Id) return Boolean is
-      Inherited : constant Subprogram_List := Inherited_Subprograms (E);
-   begin
-      return Inherited'Length > 0;
-   end Is_Overriding_Subprogram;
-
-   ---------------------------------------------
-   -- Is_Single_Precision_Floating_Point_Type --
-   ---------------------------------------------
-
-   function Is_Single_Precision_Floating_Point_Type
-     (E : Entity_Id) return Boolean is
-   begin
-      return Is_Floating_Point_Type (E)
-        and then Machine_Radix_Value (E) = Uint_2
-        and then Machine_Mantissa_Value (E) = Uint_24
-        and then Machine_Emax_Value (E) = Uint_2 ** Uint_7
-        and then Machine_Emin_Value (E) = Uint_3 - (Uint_2 ** Uint_7);
-   end Is_Single_Precision_Floating_Point_Type;
-
-   ------------------------------
-   -- Is_Standard_Boolean_Type --
-   ------------------------------
-
-   function Is_Standard_Boolean_Type (N : Node_Id) return Boolean is
-   begin
-      return N = Standard_Boolean or else
-        (Nkind (N) in N_Entity and then
-         Ekind (N) = E_Enumeration_Subtype and then
-         Etype (N) = Standard_Boolean and then
-         Scalar_Range (N) = Scalar_Range (Etype (N)));
-   end Is_Standard_Boolean_Type;
-
    ---------------------------------
-   -- Package_Has_External_Axioms --
+   -- Is_Accepted_Shift_Or_Rotate --
    ---------------------------------
 
-   function Package_Has_External_Axioms (E : Entity_Id) return Boolean
-   is
+   function Is_Accepted_Shift_Or_Rotate (Subp : Entity_Id) return Boolean is
    begin
-      return Has_Annotate_Pragma_For_External_Axiomatization (E);
-   end Package_Has_External_Axioms;
 
-   -------------------------------
-   -- Entity_In_External_Axioms --
-   -------------------------------
+      Get_Unqualified_Decoded_Name_String (Chars (Subp));
 
-   function Entity_In_External_Axioms (E : Entity_Id) return Boolean is
-   begin
-      --  ??? Ideally this should be a precondition of the function, and it
-      --  should only be called on non Empty entities
-
-      if No (E) then
-         return False;
-      end if;
-
-      return Present
-        (Containing_Package_With_Ext_Axioms (E));
-   end Entity_In_External_Axioms;
+      declare
+         Name : constant String := Name_Buffer (1 .. Name_Len);
+      begin
+         return Is_Intrinsic_Subprogram (Subp) and then
+           Is_Modular_Integer_Type (Etype (Subp)) and then
+           Modulus (Etype (Subp)) <= UI_Expon (2, 64) and then
+           not Has_Contracts (Subp, Name_Precondition) and then
+           not Has_Contracts (Subp, Name_Postcondition) and then
+           (Equal_Case_Insensitive
+              (Name, Get_Name_String (Name_Shift_Right)) or
+                Equal_Case_Insensitive
+              (Name,  Get_Name_String (Name_Shift_Right_Arithmetic)) or
+                Equal_Case_Insensitive
+              (Name, Get_Name_String (Name_Shift_Left)) or
+                Equal_Case_Insensitive
+              (Name, Get_Name_String (Name_Rotate_Left)) or
+                Equal_Case_Insensitive
+              (Name, Get_Name_String (Name_Rotate_Right)));
+      end;
+   end Is_Accepted_Shift_Or_Rotate;
 
    -----------------------------------------------
    -- Is_Access_To_External_Axioms_Discriminant --
@@ -1773,6 +1908,20 @@ package body SPARK_Util is
         and then Is_External_Axioms_Discriminant (E);
    end Is_Access_To_External_Axioms_Discriminant;
 
+   ---------------------------------------------
+   -- Is_Double_Precision_Floating_Point_Type --
+   ---------------------------------------------
+
+   function Is_Double_Precision_Floating_Point_Type
+     (E : Entity_Id) return Boolean is
+   begin
+      return Is_Floating_Point_Type (E)
+        and then Machine_Radix_Value (E) = Uint_2
+        and then Machine_Mantissa_Value (E) = UI_From_Int (53)
+        and then Machine_Emax_Value (E) = Uint_2 ** Uint_10
+        and then Machine_Emin_Value (E) = Uint_3 - (Uint_2 ** Uint_10);
+   end Is_Double_Precision_Floating_Point_Type;
+
    -------------------------------------
    -- Is_External_Axioms_Discriminant --
    -------------------------------------
@@ -1783,6 +1932,13 @@ package body SPARK_Util is
    begin
       return Type_Based_On_External_Axioms (Etype (Typ));
    end Is_External_Axioms_Discriminant;
+
+   ------------------
+   -- Is_Full_View --
+   ------------------
+
+   function Is_Full_View (E : Entity_Id) return Boolean is
+      (Full_To_Partial_Entities.Contains (E));
 
    -----------------------------
    -- Is_Ignored_Pragma_Check --
@@ -1807,6 +1963,99 @@ package body SPARK_Util is
              Is_Predicate_Function_Call (Get_Pragma_Arg (Arg2));
    end Is_Ignored_Pragma_Check;
 
+   --------------------------
+   -- Is_In_Analyzed_Files --
+   --------------------------
+
+   function Is_In_Analyzed_Files (E : Entity_Id) return Boolean
+   is
+      Encl_Unit : Node_Id := Enclosing_Comp_Unit_Node (E);
+   begin
+
+      --  Encl_Unit is supposed to be the node of the unit which contains
+      --  E. But the call to Enclosing_Comp_Unit_Node may return the subunit
+      --  instead of the compilation unit. We rectify this now:
+
+      if Nkind (Unit (Encl_Unit)) = N_Subunit then
+         Encl_Unit := Library_Unit (Encl_Unit);
+      end if;
+
+      --  if the entity is not in the
+      --  compilation unit that is currently being analyzed then return false.
+
+      if Cunit (Main_Unit) /= Encl_Unit
+        and then Library_Unit (Cunit (Main_Unit)) /= Encl_Unit
+      then
+         return False;
+      end if;
+
+      --  If option -u was not present, or an empty files list has been
+      --  provided then all entities that are in the compilation unit that
+      --  is currently being analyzed must be analyzed.
+
+      if not Gnat2Why_Args.Single_File or else
+        Gnat2Why_Args.Analyze_File.Is_Empty
+      then
+         return True;
+      end if;
+
+      declare
+         Spec_Prefix : constant String := Spec_File_Name (E);
+         Body_Prefix : constant String := Body_File_Name (E);
+      begin
+         for A_File of Gnat2Why_Args.Analyze_File loop
+            declare
+               Filename : constant String := File_Name (A_File);
+            begin
+               if Equal_Case_Insensitive (Filename, Body_Prefix)
+                 or else Equal_Case_Insensitive (Filename, Spec_Prefix)
+               then
+                  return True;
+               end if;
+            end;
+         end loop;
+         return False;
+      end;
+   end Is_In_Analyzed_Files;
+
+   ------------------------
+   -- Is_In_Current_Unit --
+   ------------------------
+
+   function Is_In_Current_Unit (N : Node_Id) return Boolean is
+      Real_Node : constant Node_Id :=
+        (if Is_Itype (N) then Associated_Node_For_Itype (N) else N);
+   begin
+
+      --  ??? Should be made more efficient
+
+      return In_Main_Unit_Spec (Real_Node) or else
+        In_Main_Unit_Body (Real_Node);
+   end Is_In_Current_Unit;
+
+   ----------------------------------------
+   -- Is_Local_Subprogram_Always_Inlined --
+   ----------------------------------------
+
+   function Is_Local_Subprogram_Always_Inlined
+     (E : Entity_Id) return Boolean is
+   begin
+      --  A subprogram always inlined should have Body_To_Inline set and flag
+      --  Is_Inlined_Always set to True.
+
+      return Ekind_In (E, E_Function, E_Procedure)
+        and then Present (Get_Subprogram_Decl (E))
+        and then Present (Body_To_Inline (Get_Subprogram_Decl (E)))
+        and then Is_Inlined_Always (E);
+   end Is_Local_Subprogram_Always_Inlined;
+
+   -------------------
+   -- Is_Main_Cunit --
+   -------------------
+
+   function Is_Main_Cunit (N : Node_Id) return Boolean is
+     (Get_Cunit_Unit_Number (Parent (N)) = Main_Unit);
+
    ----------------------
    -- Is_Others_Choice --
    ----------------------
@@ -1816,6 +2065,16 @@ package body SPARK_Util is
       return List_Length (Choices) = 1
         and then Nkind (First (Choices)) = N_Others_Choice;
    end Is_Others_Choice;
+
+   ------------------------------
+   -- Is_Overriding_Subprogram --
+   ------------------------------
+
+   function Is_Overriding_Subprogram (E : Entity_Id) return Boolean is
+      Inherited : constant Subprogram_List := Inherited_Subprograms (E);
+   begin
+      return Inherited'Length > 0;
+   end Is_Overriding_Subprogram;
 
    ---------------------
    -- Is_Partial_View --
@@ -1843,6 +2102,21 @@ package body SPARK_Util is
         (Chars (Get_Pragma_Arg (First (Pragma_Argument_Associations (N)))))
       = "gnatprove");
 
+   ------------------------------
+   -- Is_Pragma_Assert_And_Cut --
+   ------------------------------
+
+   function Is_Pragma_Assert_And_Cut (N : Node_Id) return Boolean
+   is
+      Orig : constant Node_Id := Original_Node (N);
+   begin
+      return
+        (Present (Orig) and then
+         Nkind (Orig) = N_Pragma and then
+         Get_Name_String (Chars (Pragma_Identifier (Orig))) =
+           "assert_and_cut");
+   end Is_Pragma_Assert_And_Cut;
+
    ---------------------
    -- Is_Pragma_Check --
    ---------------------
@@ -1860,6 +2134,66 @@ package body SPARK_Util is
    function Is_Predicate_Function_Call (N : Node_Id) return Boolean is
      (Nkind (N) = N_Function_Call
       and then Is_Predicate_Function (Entity (Name (N))));
+
+   ------------------------------
+   -- Is_Quantified_Loop_Param --
+   ------------------------------
+
+   function Is_Quantified_Loop_Param (E : Entity_Id) return Boolean is
+   begin
+      return
+        (Present (Scope (E)) and then
+         Present (Parent (Scope (E))) and then
+         Nkind (Parent (Scope (E))) = N_Quantified_Expression);
+   end Is_Quantified_Loop_Param;
+
+   -----------------------------
+   -- Is_Requested_Subprogram --
+   -----------------------------
+
+   function Is_Requested_Subprogram (E : Entity_Id) return Boolean is
+   begin
+      return Ekind (E) in Subprogram_Kind
+               and then
+             "GP_Subp:" & To_String (Gnat2Why_Args.Limit_Subp) =
+             SPARK_Util.Subp_Location (E);
+   end Is_Requested_Subprogram;
+
+   ---------------------------------------------
+   -- Is_Single_Precision_Floating_Point_Type --
+   ---------------------------------------------
+
+   function Is_Single_Precision_Floating_Point_Type
+     (E : Entity_Id) return Boolean is
+   begin
+      return Is_Floating_Point_Type (E)
+        and then Machine_Radix_Value (E) = Uint_2
+        and then Machine_Mantissa_Value (E) = Uint_24
+        and then Machine_Emax_Value (E) = Uint_2 ** Uint_7
+        and then Machine_Emin_Value (E) = Uint_3 - (Uint_2 ** Uint_7);
+   end Is_Single_Precision_Floating_Point_Type;
+
+   -------------------------------
+   -- Is_Spec_Unit_Of_Main_Unit --
+   -------------------------------
+
+   function Is_Spec_Unit_Of_Main_Unit (N : Node_Id) return Boolean is
+     (Present (Corresponding_Body (N))
+       and then Is_Main_Cunit
+        (Unit (Enclosing_Comp_Unit_Node (Corresponding_Body (N)))));
+
+   ------------------------------
+   -- Is_Standard_Boolean_Type --
+   ------------------------------
+
+   function Is_Standard_Boolean_Type (N : Node_Id) return Boolean is
+   begin
+      return N = Standard_Boolean or else
+        (Nkind (N) in N_Entity and then
+         Ekind (N) = E_Enumeration_Subtype and then
+         Etype (N) = Standard_Boolean and then
+         Scalar_Range (N) = Scalar_Range (Etype (N)));
+   end Is_Standard_Boolean_Type;
 
    ------------------------
    -- Is_Toplevel_Entity --
@@ -1892,6 +2226,77 @@ package body SPARK_Util is
 
       return True;
    end Is_Toplevel_Entity;
+
+   --------------------------------------
+   -- Is_Unchecked_Conversion_Instance --
+   --------------------------------------
+
+   function Is_Unchecked_Conversion_Instance (E : Entity_Id) return Boolean is
+      Conv : Entity_Id := Empty;
+   begin
+      if Present (Associated_Node (E))
+        and then Present (Parent (Associated_Node (E)))
+      then
+         Conv := Generic_Parent (Parent (Associated_Node (E)));
+      end if;
+
+      return Present (Conv)
+        and then Chars (Conv) = Name_Unchecked_Conversion
+        and then Is_Predefined_File_Name
+          (Unit_File_Name (Get_Source_Unit (Conv)))
+        and then Is_Intrinsic_Subprogram (Conv);
+   end Is_Unchecked_Conversion_Instance;
+
+   ----------------------------
+   -- Iterate_Call_Arguments --
+   ----------------------------
+
+   procedure Iterate_Call_Arguments (Call : Node_Id)
+   is
+      Params     : constant List_Id := Parameter_Associations (Call);
+      Cur_Formal : Node_Id := First_Entity (Entity (Name (Call)));
+      Cur_Actual : Node_Id := First (Params);
+      In_Named   : Boolean := False;
+   begin
+      --  We have to deal with named arguments, but the frontend has
+      --  done some work for us. All unnamed arguments come first and
+      --  are given as-is, while named arguments are wrapped into a
+      --  N_Parameter_Association. The field First_Named_Actual of the
+      --  function or procedure call points to the first named argument,
+      --  that should be inserted after the last unnamed one. Each
+      --  Named Actual then points to a Next_Named_Actual. These
+      --  pointers point directly to the actual, but Next_Named_Actual
+      --  pointers are attached to the N_Parameter_Association, so to
+      --  get the next actual from the current one, we need to follow
+      --  the Parent pointer.
+      --
+      --  The Boolean In_Named states how to obtain the next actual:
+      --  either follow the Next pointer, or the Next_Named_Actual of
+      --  the parent.
+      --  We start by updating the Cur_Actual and In_Named variables for
+      --  the first parameter.
+
+      if Nkind (Cur_Actual) = N_Parameter_Association then
+         In_Named := True;
+         Cur_Actual := First_Named_Actual (Call);
+      end if;
+
+      while Present (Cur_Formal) and then Present (Cur_Actual) loop
+         Handle_Argument (Cur_Formal, Cur_Actual);
+         Cur_Formal := Next_Formal (Cur_Formal);
+
+         if In_Named then
+            Cur_Actual := Next_Named_Actual (Parent (Cur_Actual));
+         else
+            Next (Cur_Actual);
+
+            if Nkind (Cur_Actual) = N_Parameter_Association then
+               In_Named := True;
+               Cur_Actual := First_Named_Actual (Call);
+            end if;
+         end if;
+      end loop;
+   end Iterate_Call_Arguments;
 
    --------------------------------
    -- Lexicographic_Entity_Order --
@@ -2009,6 +2414,31 @@ package body SPARK_Util is
       return Ekind (Typ);
    end MUT_Kind;
 
+   --------------------
+   -- Nth_Index_Type --
+   --------------------
+
+   function Nth_Index_Type (E : Entity_Id; Dim : Uint) return Node_Id
+   is
+      Cur   : Int := 1;
+      Index : Node_Id := First_Index (E);
+   begin
+      if Ekind (E) = E_String_Literal_Subtype then
+         return E;
+      end if;
+      while Cur /= Dim loop
+         Cur := Cur + 1;
+         Next_Index (Index);
+      end loop;
+      return Etype (Index);
+   end Nth_Index_Type;
+
+   function Nth_Index_Type (E : Entity_Id; Dim : Positive) return Node_Id
+   is
+   begin
+      return Nth_Index_Type (E, UI_From_Int (Int (Dim)));
+   end Nth_Index_Type;
+
    -----------------------
    -- Number_Components --
    -----------------------
@@ -2052,6 +2482,16 @@ package body SPARK_Util is
       end loop;
       return Count;
    end Number_Discriminants;
+
+   ---------------------------------
+   -- Package_Has_External_Axioms --
+   ---------------------------------
+
+   function Package_Has_External_Axioms (E : Entity_Id) return Boolean
+   is
+   begin
+      return Has_Annotate_Pragma_For_External_Axiomatization (E);
+   end Package_Has_External_Axioms;
 
    ------------------
    -- Partial_View --
@@ -2169,6 +2609,197 @@ package body SPARK_Util is
       return Empty;
    end Search_Component_By_Name;
 
+   -----------------
+   -- Source_Name --
+   -----------------
+
+   function Source_Name (E : Entity_Id) return String is
+
+      function Short_Name (E : Entity_Id) return String;
+      --  Returns the uncapitalized unqualified name for entity E
+
+      ----------------
+      -- Short_Name --
+      ----------------
+
+      function Short_Name (E : Entity_Id) return String is
+      begin
+         Get_Unqualified_Name_String (Chars (E));
+         return Name_Buffer (1 .. Name_Len);
+      end Short_Name;
+
+      Name : String := Short_Name (E);
+      Loc  : Source_Ptr := Sloc (E);
+      Buf  : Source_Buffer_Ptr;
+
+   --  Start of Source_Name
+
+   begin
+      if Name /= "" and then Loc >= First_Source_Ptr then
+         Buf := Source_Text (Get_Source_File_Index (Loc));
+
+         --  Copy characters from source while they match (modulo
+         --  capitalization) the name of the entity.
+
+         for Idx in Name'Range loop
+            exit when not Identifier_Char (Buf (Loc))
+              or else Fold_Lower (Buf (Loc)) /= Name (Idx);
+            Name (Idx) := Buf (Loc);
+            Loc := Loc + 1;
+         end loop;
+      end if;
+
+      return Name;
+   end Source_Name;
+
+   --------------------
+   -- Spec_File_Name --
+   --------------------
+
+   function Spec_File_Name (N : Node_Id) return String
+   is
+      CU : Node_Id := Enclosing_Comp_Unit_Node (N);
+   begin
+      case Nkind (Unit (CU)) is
+         when N_Package_Body | N_Subunit =>
+            CU := Library_Unit (CU);
+         when others =>
+            null;
+      end case;
+      return File_Name (Sloc (CU));
+   end Spec_File_Name;
+
+   -----------------------------------
+   -- Spec_File_Name_Without_Suffix --
+   -----------------------------------
+
+   function Spec_File_Name_Without_Suffix (N : Node_Id) return String is
+      (File_Name_Without_Suffix (Spec_File_Name (N)));
+
+   -------------------------
+   -- Static_Array_Length --
+   -------------------------
+
+   function Static_Array_Length (E : Entity_Id; Dim : Positive) return Uint is
+      F_Index : constant Entity_Id := Nth_Index_Type (E, Dim);
+   begin
+      if Ekind (F_Index) = E_String_Literal_Subtype then
+         return String_Literal_Length (F_Index);
+      else
+         declare
+            Rng   : constant Node_Id := Get_Range (F_Index);
+            First : constant Uint := Expr_Value (Low_Bound (Rng));
+            Last  : constant Uint := Expr_Value (High_Bound (Rng));
+         begin
+            if Last >= First then
+               return Last - First + Uint_1;
+            else
+               return Uint_0;
+            end if;
+         end;
+      end if;
+   end Static_Array_Length;
+
+   --------------------
+   -- String_Of_Node --
+   --------------------
+
+   function String_Of_Node (N : Node_Id) return String
+   is
+
+      function Real_Image (U : Ureal) return String;
+      function String_Image (S : String_Id) return String;
+      function Ident_Image (Expr        : Node_Id;
+                            Orig_Expr   : Node_Id;
+                            Expand_Type : Boolean)
+                            return String;
+
+      function Node_To_String is new
+        Expression_Image (Real_Image, String_Image, Ident_Image);
+      --  The actual printing function
+
+      -----------------
+      -- Ident_Image --
+      -----------------
+
+      function Ident_Image (Expr        : Node_Id;
+                            Orig_Expr   : Node_Id;
+                            Expand_Type : Boolean)
+                            return String
+      is
+         pragma Unreferenced (Orig_Expr, Expand_Type);
+      begin
+         if Nkind (Expr) = N_Defining_Identifier then
+            return Source_Name (Expr);
+         elsif Present (Entity (Expr)) then
+            return Source_Name (Entity (Expr));
+         else
+            return Get_Name_String (Chars (Expr));
+         end if;
+      end Ident_Image;
+
+      ----------------
+      -- Real_Image --
+      ----------------
+
+      function Real_Image (U : Ureal) return String is
+      begin
+         pragma Unreferenced (U);
+         --  ??? still to be done
+         return "";
+      end Real_Image;
+
+      ------------------
+      -- String_Image --
+      ------------------
+
+      function String_Image (S : String_Id) return String is
+      begin
+         Name_Len := 0;
+         Add_Char_To_Name_Buffer ('"');
+         Add_String_To_Name_Buffer (S);
+         Add_Char_To_Name_Buffer ('"');
+         return Name_Buffer (1 .. Name_Len);
+      end String_Image;
+
+   begin
+      return Node_To_String (N, "");
+   end String_Of_Node;
+
+   -------------------
+   -- Subp_Location --
+   -------------------
+
+   function Subp_Location (E : Entity_Id) return String
+   is
+      S : constant Subp_Type := Entity_To_Subp (E);
+      B : constant Base_Sloc := Subp_Sloc (S).First_Element;
+   begin
+
+      --  ??? Probably need to change this code to take M412-032 into account
+
+      return
+        "GP_Subp:" & Base_Sloc_File (B) & ":" & Image (B.Line, 1);
+   end Subp_Location;
+
+   ---------------------------------
+   -- Subprogram_Full_Source_Name --
+   ---------------------------------
+
+   function Subprogram_Full_Source_Name (E : Entity_Id) return String
+   is
+      Name : constant String := Source_Name (E);
+   begin
+      if Has_Fully_Qualified_Name (E)
+        or else Scope (E) = Standard_Standard
+      then
+         return Name;
+      else
+         return Subprogram_Full_Source_Name (Unique_Entity (Scope (E))) &
+           "." & Name;
+      end if;
+   end Subprogram_Full_Source_Name;
+
    -------------------------------------
    -- Subprogram_Is_Ignored_For_Proof --
    -------------------------------------
@@ -2224,51 +2855,5 @@ package body SPARK_Util is
          end if;
       end loop;
    end Underlying_External_Axioms_Type;
-
-   --------------------------------------
-   -- Is_Unchecked_Conversion_Instance --
-   --------------------------------------
-
-   function Is_Unchecked_Conversion_Instance (E : Entity_Id) return Boolean is
-      Conv : Entity_Id := Empty;
-   begin
-      if Present (Associated_Node (E))
-        and then Present (Parent (Associated_Node (E)))
-      then
-         Conv := Generic_Parent (Parent (Associated_Node (E)));
-      end if;
-
-      return Present (Conv)
-        and then Chars (Conv) = Name_Unchecked_Conversion
-        and then Is_Predefined_File_Name
-          (Unit_File_Name (Get_Source_Unit (Conv)))
-        and then Is_Intrinsic_Subprogram (Conv);
-   end Is_Unchecked_Conversion_Instance;
-
-   function Is_Accepted_Shift_Or_Rotate (Subp : Entity_Id) return Boolean is
-   begin
-
-      Get_Unqualified_Decoded_Name_String (Chars (Subp));
-
-      declare
-         Name : constant String := Name_Buffer (1 .. Name_Len);
-      begin
-         return Is_Intrinsic_Subprogram (Subp) and then
-           Is_Modular_Integer_Type (Etype (Subp)) and then
-           Modulus (Etype (Subp)) <= UI_Expon (2, 64) and then
-           not Has_Contracts (Subp, Name_Precondition) and then
-           not Has_Contracts (Subp, Name_Postcondition) and then
-           (Equal_Case_Insensitive
-              (Name, Get_Name_String (Name_Shift_Right)) or
-                Equal_Case_Insensitive
-              (Name,  Get_Name_String (Name_Shift_Right_Arithmetic)) or
-                Equal_Case_Insensitive
-              (Name, Get_Name_String (Name_Shift_Left)) or
-                Equal_Case_Insensitive
-              (Name, Get_Name_String (Name_Rotate_Left)) or
-                Equal_Case_Insensitive
-              (Name, Get_Name_String (Name_Rotate_Right)));
-      end;
-   end Is_Accepted_Shift_Or_Rotate;
 
 end SPARK_Util;
