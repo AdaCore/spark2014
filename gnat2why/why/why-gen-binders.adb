@@ -23,12 +23,22 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Gnat2Why.Util;     use Gnat2Why.Util;
-with Why.Atree.Modules; use Why.Atree.Modules;
-with Why.Conversions;   use Why.Conversions;
-with Why.Gen.Expr;      use Why.Gen.Expr;
-with Why.Gen.Names;     use Why.Gen.Names;
-with Why.Inter;         use Why.Inter;
+with Atree;               use Atree;
+with Einfo;               use Einfo;
+with Sem_Util;            use Sem_Util;
+with Sinfo;               use Sinfo;
+with Snames;              use Snames;
+
+with SPARK_Util;          use SPARK_Util;
+
+with Gnat2Why.Util;       use Gnat2Why.Util;
+with Why.Atree.Modules;   use Why.Atree.Modules;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Conversions;     use Why.Conversions;
+with Why.Gen.Expr;        use Why.Gen.Expr;
+with Why.Gen.Names;       use Why.Gen.Names;
+with Why.Gen.Records;     use Why.Gen.Records;
+with Why.Inter;           use Why.Inter;
 
 package body Why.Gen.Binders is
 
@@ -40,7 +50,47 @@ package body Why.Gen.Binders is
    function New_Expr_Array
      (Domain  : EW_Domain;
       Binders : Binder_Array)
-     return W_Expr_Array;
+      return W_Expr_Array;
+
+   ----------------------------
+   -- Get_Ada_Node_From_Item --
+   ----------------------------
+
+   function Get_Ada_Node_From_Item (B : Item_Type) return Node_Id is
+   begin
+      case B.Kind is
+         when Regular =>
+            return B.Main.Ada_Node;
+         when DRecord =>
+            if B.Fields.Present then
+               return B.Fields.Binder.Ada_Node;
+            else
+               return B.Discrs.Binder.Ada_Node;
+            end if;
+         when UCArray =>
+            return B.Content.Ada_Node;
+         when Func    =>
+            raise Program_Error;
+      end case;
+   end Get_Ada_Node_From_Item;
+
+   ----------------------------
+   -- Get_Why_Type_From_Item --
+   ----------------------------
+
+   function Get_Why_Type_From_Item (B : Item_Type) return W_Type_Id is
+   begin
+      case B.Kind is
+         when Regular =>
+            return Get_Typ (B.Main.B_Name);
+         when DRecord =>
+            return EW_Abstract (B.Typ);
+         when UCArray =>
+            return Get_Typ (B.Content.B_Name);
+         when Func =>
+            return Get_Typ (B.For_Logic.B_Name);
+      end case;
+   end Get_Why_Type_From_Item;
 
    -----------------------
    -- Item_Array_Length --
@@ -71,6 +121,175 @@ package body Why.Gen.Binders is
       end loop;
       return Count;
    end Item_Array_Length;
+
+   -------------------------
+   -- Mk_Item_From_Entity --
+   -------------------------
+
+   function Mk_Item_Of_Entity
+     (E           : Entity_Id;
+      Local       : Boolean := False;
+      In_Fun_Decl : Boolean := False)
+      return Item_Type
+   is
+      Use_Ty  : constant Entity_Id :=
+        (if not In_Fun_Decl and then Ekind (E) in Object_Kind
+         and then Present (Actual_Subtype (E))
+         and then Entity_In_SPARK (Actual_Subtype (E)) then
+            Actual_Subtype (E) else Etype (E));
+      --  If we are not in a function declaration, we use the actual subtype
+      --  for the parameter if one is provided.
+
+      Ty       : constant Entity_Id :=
+        (if Ekind (Use_Ty) in Type_Kind
+         and then not Fullview_Not_In_SPARK (Use_Ty)
+         then MUT (Use_Ty) else Use_Ty);
+      --  We use the most underlying subtype if it is in spark.
+
+   begin
+      if Entity_In_SPARK (Ty)
+        and then Is_Array_Type (Ty)
+        and then not Is_Static_Array_Type (Ty)
+        and then Is_Mutable_In_Why (E)
+      then
+
+         --  Binders for mutable unconstrained array parameters and objects are
+         --  declared in split form to preserve the bounds through loops and
+         --  procedure calls. That is:
+         --    A : UCArray (Index range <>);
+         --  should be translated as:
+         --    a : ref __split, a__first : Index'Base, a__last : Index'Base
+         --  and
+         --    procedure P (A : in out UCArray);
+         --  should be translated as:
+         --    val p (a : ref __split, a__first : rep, a__last : rep)
+
+         declare
+            Typ    : constant W_Type_Id := EW_Split (Ty);
+            Name   : constant W_Identifier_Id :=
+              To_Why_Id (E => E, Typ => Typ, Local => Local);
+            Binder : constant Binder_Type :=
+              Binder_Type'(Ada_Node => E,
+                           B_Name   => Name,
+                           B_Ent    => null,
+                           Mutable  => Is_Mutable_In_Why (E));
+            Dim    : constant Positive := Positive (Number_Dimensions (Ty));
+            Bounds : Array_Bounds;
+            Index  : Node_Id := First_Index (Ty);
+         begin
+            for D in 1 .. Dim loop
+               declare
+                  Index_Typ : constant W_Type_Id :=
+                    (if In_Fun_Decl
+                     and then Use_Base_Type_For_Type (Etype (Index)) then
+                        Base_Why_Type (Etype (Index))
+                     else EW_Abstract (Base_Type (Etype (Index))));
+               begin
+                  Bounds (D).First :=
+                    Attr_Append (Name, Attribute_First, D, Index_Typ);
+                  Bounds (D).Last :=
+                    Attr_Append (Name, Attribute_Last, D, Index_Typ);
+                  Next_Index (Index);
+               end;
+            end loop;
+
+            return (Kind    => UCArray,
+                    Content => Binder,
+                    Dim     => Dim,
+                    Bounds  => Bounds);
+         end;
+      elsif Entity_In_SPARK (Ty)
+        and then Is_Record_Type (Ty)
+        and then Is_Mutable_In_Why (E)
+      then
+         declare
+            Name   : constant W_Identifier_Id :=
+              To_Why_Id (E => E, Local => Local);
+            --  This name does not correspond to a given declaration (thus, we
+            --  don't give it a type). It is only used to prefix generic names
+            --  of elements of the record.
+
+            Result   : Item_Type :=
+              (Kind   => DRecord,
+               Typ    => Ty,
+               others => <>);
+            Unconstr : constant Boolean :=
+              not Is_Constrained (Ty) and then
+              Has_Defaulted_Discriminants (Ty);
+         begin
+            if Count_Fields (Ty) > 0 or else Is_Tagged_Type (Ty) then
+               Result.Fields :=
+                 (Present => True,
+                  Binder  =>
+                    Binder_Type'(Ada_Node => E,
+                                 B_Name   =>
+                                   Field_Append
+                                     (Base => Name,
+                                      Typ  =>
+                                        Field_Type_For_Fields (Ty)),
+                                 B_Ent    => null,
+                                 Mutable  => True));
+            end if;
+
+            if Number_Discriminants (Ty) > 0 then
+               Result.Discrs :=
+                 (Present => True,
+                  Binder  =>
+                    Binder_Type'(Ada_Node => E,
+                                 B_Name   =>
+                                   Discr_Append
+                                     (Base => Name,
+                                      Typ  =>
+                                        Field_Type_For_Discriminants (Ty)),
+                                 B_Ent    => null,
+                                 Mutable  => Unconstr));
+            end if;
+
+            if Unconstr then
+               Result.Constr :=
+                 (Present => True,
+                  Id      =>
+                    Attr_Append (Base     => Name,
+                                 A        => Attribute_Constrained,
+                                 Count    => 1,
+                                 Typ      => EW_Bool_Type));
+            end if;
+
+            if Is_Tagged_Type (Ty) then
+               Result.Tag :=
+                 (Present => True,
+                  Id      =>
+                    Attr_Append (Base     => Name,
+                                 A        => Attribute_Tag,
+                                 Count    => 1,
+                                 Typ      => EW_Int_Type));
+            end if;
+
+            return Result;
+         end;
+      else
+         declare
+            Typ    : constant W_Type_Id :=
+              (if Ekind (E) = E_Abstract_State then EW_Private_Type
+               elsif Ekind (E) = E_Loop_Parameter then
+                    Base_Why_Type_No_Bool (Ty)
+               elsif In_Fun_Decl and then Use_Why_Base_Type (E) then
+                    Base_Why_Type (Ty)
+               else EW_Abstract (Ty));
+            --  For loop parameters, we use the Why3 representation type.
+
+            Name   : constant W_Identifier_Id :=
+              To_Why_Id (E => E, Typ => Typ, Local => Local);
+            Binder : constant Binder_Type :=
+              Binder_Type'(Ada_Node => E,
+                           B_Name   => Name,
+                           B_Ent    => null,
+                           Mutable  => Is_Mutable_In_Why (E));
+         begin
+            return (Regular, Binder);
+         end;
+      end if;
+   end Mk_Item_Of_Entity;
 
    -----------------
    -- New_Binders --
@@ -453,6 +672,38 @@ package body Why.Gen.Binders is
          end;
       end if;
    end New_Universal_Quantif;
+
+   ----------------------
+   -- Reconstruct_Item --
+   ----------------------
+
+   function Reconstruct_Item
+     (E           : Item_Type;
+      Ref_Allowed : Boolean := True) return W_Expr_Id
+   is
+      T           : W_Expr_Id;
+      Needs_Deref : Boolean := False;
+   begin
+      case E.Kind is
+         when Func => raise Program_Error;
+         when Regular =>
+            T := +E.Main.B_Name;
+            Needs_Deref := E.Main.Mutable;
+         when UCArray =>
+            T := +E.Content.B_Name;
+            Needs_Deref := E.Content.Mutable;
+         when DRecord =>
+            T := Record_From_Split_Form (E, Ref_Allowed);
+      end case;
+
+      if Ref_Allowed and then Needs_Deref then
+         T := New_Deref (Ada_Node => Get_Ada_Node (+T),
+                         Right    => +T,
+                         Typ      => Get_Type (T));
+      end if;
+
+      return T;
+   end Reconstruct_Item;
 
    ---------------------
    -- To_Binder_Array --

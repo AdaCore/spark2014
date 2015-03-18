@@ -74,7 +74,6 @@ with Why.Gen.Records;        use Why.Gen.Records;
 with Why.Gen.Terms;          use Why.Gen.Terms;
 with Why.Gen.Preds;          use Why.Gen.Preds;
 
-with Gnat2Why.Decls;         use Gnat2Why.Decls;
 with Gnat2Why.Expr.Loops;    use Gnat2Why.Expr.Loops;
 with Gnat2Why.Subprograms;   use Gnat2Why.Subprograms;
 with SPARK_Definition;       use SPARK_Definition;
@@ -842,17 +841,7 @@ package body Gnat2Why.Expr is
             Binder          : constant Item_Type :=
               Ada_Ent_To_Why.Element (Symbol_Table, Lvalue);
             L_Deref         : constant W_Expr_Id :=
-              (case Binder.Kind is
-                  when Regular =>
-                    New_Deref (Ada_Node => N,
-                               Right    => Binder.Main.B_Name,
-                               Typ      => Get_Typ (Binder.Main.B_Name)),
-                  when UCArray =>
-                    New_Deref (Ada_Node => N,
-                               Right    => Binder.Content.B_Name,
-                               Typ      => Get_Typ (Binder.Content.B_Name)),
-                  when DRecord => Record_From_Split_Form (Binder, True),
-                  when Func    => raise Program_Error);
+              Reconstruct_Item (Binder, Ref_Allowed => True);
 
             Constrained_Ty  : constant Entity_Id :=
               Etype (Defining_Identifier (N));
@@ -3154,15 +3143,7 @@ package body Gnat2Why.Expr is
                Binder : constant Item_Type :=
                  Ada_Ent_To_Why.Element (Symbol_Table, Entity (N));
             begin
-               case Binder.Kind is
-                  when Regular =>
-                     return Get_Typ (Binder.Main.B_Name);
-                  when UCArray =>
-                     return Get_Typ (Binder.Content.B_Name);
-                  when DRecord =>
-                     return EW_Abstract (Binder.Typ);
-                  when Func    => raise Program_Error;
-               end case;
+               return Get_Why_Type_From_Item (Binder);
             end;
          when N_Slice =>
             return Type_Of_Node (Unique_Entity (Etype (N)));

@@ -198,7 +198,9 @@ package Why.Gen.Records is
    --  Reconstructs a complete record from an item in split form.
 
    function Record_From_Split_Form
-     (A : W_Expr_Array; Ty  : Entity_Id)
+     (Ada_Node : Node_Id := Empty;
+      A        : W_Expr_Array;
+      Ty       : Entity_Id)
       return W_Expr_Id;
    --  Reconstructs a complete record of type Ty from an array of expressions
    --  representing a split form. A should contain first the fields, then the

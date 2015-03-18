@@ -308,6 +308,12 @@ package Why.Gen.Names is
                          Count : Positive;
                          Typ   : W_Type_Id) return W_Identifier_Id;
 
+   function Discr_Append (Base  : W_Identifier_Id;
+                          Typ   : W_Type_Id) return W_Identifier_Id;
+
+   function Field_Append (Base  : W_Identifier_Id;
+                          Typ   : W_Type_Id) return W_Identifier_Id;
+
    function To_String (W : Why_Name_Enum) return String;
 
    function To_Ident (W        : Why_Name_Enum;

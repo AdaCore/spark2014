@@ -34,12 +34,10 @@ with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util;             use SPARK_Util;
 with String_Utils;           use String_Utils;
-with Why.Atree.Accessors;    use Why.Atree.Accessors;
 with Why.Atree.Builders;     use Why.Atree.Builders;
 with Why.Atree.Modules;      use Why.Atree.Modules;
 with Why.Conversions;        use Why.Conversions;
 with Why.Gen.Expr;           use Why.Gen.Expr;
-with Why.Inter;              use Why.Inter;
 with Why.Types;              use Why.Types;
 
 package body Gnat2Why.Util is
@@ -720,6 +718,28 @@ package body Gnat2Why.Util is
       end if;
    end Type_Of_Node;
 
+   ----------------------------
+   -- Use_Base_Type_For_Type --
+   ----------------------------
+
+   function Use_Base_Type_For_Type (E : Entity_Id) return Boolean
+   is
+   begin
+      return Is_Scalar_Type (E) and then
+        not Is_Standard_Boolean_Type (E);
+   end Use_Base_Type_For_Type;
+
+   -----------------------
+   -- Use_Why_Base_Type --
+   -----------------------
+
+   function Use_Why_Base_Type (E : Entity_Id) return Boolean is
+      Ty : constant Entity_Id := Etype (E);
+   begin
+      return not Is_Mutable_In_Why (E) and then
+        Use_Base_Type_For_Type (Ty);
+   end Use_Why_Base_Type;
+
    ------------------------
    -- Why_Type_Of_Entity --
    ------------------------
@@ -727,16 +747,7 @@ package body Gnat2Why.Util is
    function Why_Type_Of_Entity (E : Entity_Id) return W_Type_Id is
       Binder : constant Item_Type := Ada_Ent_To_Why.Element (Symbol_Table, E);
    begin
-      case Binder.Kind is
-         when Regular =>
-            return Get_Typ (Binder.Main.B_Name);
-         when UCArray =>
-            return Get_Typ (Binder.Content.B_Name);
-         when Func =>
-            return Get_Typ (Binder.For_Logic.B_Name);
-         when DRecord =>
-            return EW_Abstract (Binder.Typ);
-      end case;
+      return Get_Why_Type_From_Item (Binder);
    end Why_Type_Of_Entity;
 
    ---------------------------

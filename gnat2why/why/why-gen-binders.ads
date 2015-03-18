@@ -218,4 +218,37 @@ package Why.Gen.Binders is
    function Unit_Param return Binder_Type;
    --  return a dummy binder for a single argument of type unit
 
+   function Mk_Item_Of_Entity
+     (E           : Entity_Id;
+      Local       : Boolean := False;
+      In_Fun_Decl : Boolean := False)
+     return Item_Type;
+   --  Create an Item from an Entity
+   --  @param E Ada Entity to be translated into an item.
+   --  @param Local do not prefix names.
+   --  @param In_Fun_Decl Use the type expected in function declaration for
+   --  parameters of subprograms (Do not use Actual_Subtype; use
+   --  representation type for scalars...).
+   --  @return an Item representing the Entity E.
+
+   function Get_Ada_Node_From_Item (B : Item_Type) return Node_Id;
+   --  Get the Ada Node of an item.
+   --  @param B item whose Ada node we querry.
+   --  @return the ada node that produced the binder. If the node is empty,
+   --  then either B is the unit binder or it is a binder for effects only.
+
+   function Get_Why_Type_From_Item (B : Item_Type) return W_Type_Id;
+   --  Get the why type of an item.
+   --  @param B item whose type we querry.
+   --  @return the type of the expression that can be reconstructed from B.
+
+   function Reconstruct_Item
+     (E           : Item_Type;
+      Ref_Allowed : Boolean := True) return W_Expr_Id;
+   --  Create an expression out of an item. It does not havoc the content
+   --  of volatile objects.
+   --  @param E item to be reconstructed.
+   --  @param Ref_Allowed use dereference for variables.
+   --  @return an Item representing the Entity E.
+
 end Why.Gen.Binders;

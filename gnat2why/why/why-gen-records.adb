@@ -2610,8 +2610,11 @@ package body Why.Gen.Records is
    -- Record_From_Split_Form --
    ----------------------------
 
-   function Record_From_Split_Form (A : W_Expr_Array; Ty  : Entity_Id)
-                                    return W_Expr_Id
+   function Record_From_Split_Form
+     (Ada_Node : Node_Id := Empty;
+      A        : W_Expr_Array;
+      Ty       : Entity_Id)
+      return W_Expr_Id
    is
       Associations : W_Field_Association_Array (A'Range);
       Index        : Positive := A'First;
@@ -2662,8 +2665,9 @@ package body Why.Gen.Records is
       end if;
 
       return New_Record_Aggregate
-           (Associations => Associations,
-            Typ          => EW_Abstract (Ty));
+        (Ada_Node     => Ada_Node,
+         Associations => Associations,
+         Typ          => EW_Abstract (Ty));
    end Record_From_Split_Form;
 
    function Record_From_Split_Form (I : Item_Type; Ref_Allowed : Boolean)
@@ -2717,7 +2721,7 @@ package body Why.Gen.Records is
 
       pragma Assert (Index = Values'Last + 1);
 
-      return Record_From_Split_Form (Values, Ty);
+      return Record_From_Split_Form (E, Values, Ty);
    end Record_From_Split_Form;
 
 end Why.Gen.Records;

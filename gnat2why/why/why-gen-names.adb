@@ -105,7 +105,7 @@ package body Why.Gen.Names is
                          Ada_Node : Node_Id := Empty) return W_Identifier_Id is
    begin
       return
-        Append_Num (S        => Base & "_" & To_String (Attr_To_Why_Name (A)),
+        Append_Num (S        => Base & "__" & To_String (Attr_To_Why_Name (A)),
                     Count    => Count,
                     Typ      => Typ,
                     Module  => Module,
@@ -315,6 +315,23 @@ package body Why.Gen.Names is
       end if;
    end Convert_To;
 
+   ------------------
+   -- Discr_Append --
+   ------------------
+
+   function Discr_Append (Base  : W_Identifier_Id;
+                          Typ   : W_Type_Id) return W_Identifier_Id is
+   begin
+      return
+        Append_Num
+          (S        => Get_Name_String (Get_Symbol (+Base))
+           & To_String (WNE_Rec_Split_Discrs),
+           Count    => 1,
+           Typ      => Typ,
+           Module   => Get_Module (Base),
+           Ada_Node => Get_Ada_Node (+Base));
+   end Discr_Append;
+
    -----------------------
    -- Dynamic_Prop_Name --
    -----------------------
@@ -332,6 +349,23 @@ package body Why.Gen.Names is
                         W        => WNE_Dynamic_Property);
       end if;
    end Dynamic_Prop_Name;
+
+   ------------------
+   -- Field_Append --
+   ------------------
+
+   function Field_Append (Base  : W_Identifier_Id;
+                          Typ   : W_Type_Id) return W_Identifier_Id is
+   begin
+      return
+        Append_Num
+          (S        => Get_Name_String (Get_Symbol (+Base))
+           & To_String (WNE_Rec_Split_Fields),
+           Count    => 1,
+           Typ      => Typ,
+           Module   => Get_Module (Base),
+           Ada_Node => Get_Ada_Node (+Base));
+   end Field_Append;
 
    ----------------------
    -- Float_Round_Name --

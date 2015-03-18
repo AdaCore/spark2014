@@ -56,7 +56,6 @@ with Why.Conversions;      use Why.Conversions;
 
 with Gnat2Why.Expr;        use Gnat2Why.Expr;
 with Gnat2Why.Util;        use Gnat2Why.Util;
-with Gnat2Why.Decls;       use Gnat2Why.Decls;
 with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
 
 with Ada.Containers.Doubly_Linked_Lists;

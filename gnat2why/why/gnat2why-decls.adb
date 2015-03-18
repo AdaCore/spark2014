@@ -28,13 +28,10 @@ with GNAT.Source_Info;
 with Atree;               use Atree;
 with Einfo;               use Einfo;
 with Namet;               use Namet;
-with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
 with Sinput;              use Sinput;
-with Snames;              use Snames;
 with String_Utils;        use String_Utils;
 
-with SPARK_Definition;    use SPARK_Definition;
 with SPARK_Util;          use SPARK_Util;
 
 with Why.Ids;             use Why.Ids;
@@ -46,7 +43,6 @@ with Why.Gen.Decl;        use Why.Gen.Decl;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Binders;     use Why.Gen.Binders;
 with Why.Gen.Expr;        use Why.Gen.Expr;
-with Why.Gen.Records;     use Why.Gen.Records;
 with Why.Inter;           use Why.Inter;
 with Why.Types;           use Why.Types;
 
@@ -61,152 +57,6 @@ package body Gnat2Why.Decls is
    with Pre => Nkind (E) in N_Entity;
    --  Returns true if the given entity should be included in the
    --  counter-example model.
-
-   function Mk_Item_Of_Entity
-     (E    : Entity_Id) return Item_Type;
-
-   -------------------------
-   -- Mk_Item_From_Entity --
-   -------------------------
-
-   function Mk_Item_Of_Entity
-     (E    : Entity_Id)
-     return Item_Type
-   is
-      Use_Ty : constant Entity_Id :=
-        (if Ekind (E) in Object_Kind and then Present (Actual_Subtype (E))
-         and then Entity_In_SPARK (Actual_Subtype (E)) then
-            Actual_Subtype (E) else Etype (E));
-      --  We use the actual subtype for the parameter if one is provided
-
-      Ty : constant Entity_Id :=
-        (if Ekind (Use_Ty) in Type_Kind
-         and then not Fullview_Not_In_SPARK (Use_Ty)
-         then MUT (Use_Ty) else Use_Ty);
-      --  We use the most underlying subtype if it is in spark.
-   begin
-      if Entity_In_SPARK (Ty)
-        and then Is_Array_Type (Ty)
-        and then not Is_Static_Array_Type (Ty)
-      then
-         declare
-            Typ    : constant W_Type_Id := EW_Split (Ty);
-            Name   : constant W_Identifier_Id :=
-              To_Why_Id (E => E, Typ => Typ);
-            Binder : constant Binder_Type :=
-              Binder_Type'(Ada_Node => E,
-                           B_Name   => Name,
-                           B_Ent    => null,
-                           Mutable  => Is_Mutable_In_Why (E));
-            Result : Item_Type :=
-              (Kind    => UCArray,
-               Content => Binder,
-               Dim     => Natural (Number_Dimensions (Ty)),
-               Bounds  => (others => <>));
-            Index  : Node_Id := First_Index (Ty);
-         begin
-            for D in 1 .. Result.Dim loop
-               Result.Bounds (D).First :=
-                 Attr_Append (Name, Attribute_First, D,
-                              EW_Abstract (Base_Type (Etype (Index))));
-               Result.Bounds (D).Last :=
-                 Attr_Append (Name, Attribute_Last, D,
-                              EW_Abstract (Base_Type (Etype (Index))));
-               Next_Index (Index);
-            end loop;
-            return Result;
-         end;
-      elsif Entity_In_SPARK (Ty)
-        and then Is_Record_Type (Ty)
-      then
-         declare
-            Result   : Item_Type :=
-              (Kind   => DRecord,
-               Typ    => Ty,
-               others => <>);
-            Unconstr : constant Boolean :=
-              not Is_Constrained (Ty) and then
-              Has_Defaulted_Discriminants (Ty);
-         begin
-            if Count_Fields (Ty) > 0 or else Is_Tagged_Type (Ty) then
-               Result.Fields :=
-                 (Present => True,
-                  Binder  =>
-                    Binder_Type'(Ada_Node => E,
-                                 B_Name   =>
-                                   New_Identifier
-                                     (Ada_Node => E,
-                                      Domain   => EW_Term,
-                                      Name     =>
-                                        To_String (WNE_Rec_Split_Fields),
-                                      Module   => E_Module (E),
-                                      Typ      =>
-                                        Field_Type_For_Fields (Ty)),
-                                 B_Ent    => null,
-                                 Mutable  => True));
-            end if;
-
-            if Number_Discriminants (Ty) > 0 then
-               Result.Discrs :=
-                 (Present => True,
-                  Binder  =>
-                    Binder_Type'(Ada_Node => E,
-                                 B_Name   =>
-                                   New_Identifier
-                                     (Ada_Node => E,
-                                      Domain   => EW_Term,
-                                      Name     =>
-                                        To_String (WNE_Rec_Split_Discrs),
-                                      Module   => E_Module (E),
-                                      Typ      =>
-                                        Field_Type_For_Discriminants (Ty)),
-                                 B_Ent    => null,
-                                 Mutable  => Unconstr));
-            end if;
-
-            if Unconstr then
-               Result.Constr :=
-                 (Present => True,
-                  Id      => New_Identifier
-                    (Ada_Node => E,
-                     Domain   => EW_Term,
-                     Name     => To_String (WNE_Attr_Constrained),
-                     Module   => E_Module (E),
-                     Typ      => EW_Bool_Type));
-            end if;
-
-            if Is_Tagged_Type (Ty) then
-               Result.Tag :=
-                 (Present => True,
-                  Id      => New_Identifier
-                    (Ada_Node => E,
-                     Domain   => EW_Term,
-                     Name     => To_String (WNE_Attr_Tag),
-                     Module   => E_Module (E),
-                     Typ      => EW_Int_Type));
-            end if;
-
-            return Result;
-         end;
-      else
-         declare
-            Typ    : constant W_Type_Id :=
-              (if Ekind (E) = E_Abstract_State then EW_Private_Type
-               elsif Ekind (E) = E_Loop_Parameter then
-                  Base_Why_Type_No_Bool (E)
-               else EW_Abstract (Ty));
-            Name   : constant W_Identifier_Id :=
-              To_Why_Id (E => E, Typ => Typ);
-            Binder : constant Binder_Type :=
-              Binder_Type'(Ada_Node => E,
-                           B_Name   => Name,
-                           B_Ent    => null,
-                           Mutable  => Is_Mutable_In_Why (E));
-         begin
-            return (Regular, Binder);
-         end;
-      end if;
-   end Mk_Item_Of_Entity;
 
    ------------------------------
    -- Translate_Abstract_State --
@@ -605,27 +455,5 @@ package body Gnat2Why.Decls is
                     Kind           => Definition_Theory,
                     Defined_Entity => E);
    end Translate_Variable;
-
-   ----------------------------
-   -- Use_Base_Type_For_Type --
-   ----------------------------
-
-   function Use_Base_Type_For_Type (E : Entity_Id) return Boolean
-   is
-   begin
-      return Is_Scalar_Type (E) and then
-        not Is_Boolean_Type (E);
-   end Use_Base_Type_For_Type;
-
-   -----------------------
-   -- Use_Why_Base_Type --
-   -----------------------
-
-   function Use_Why_Base_Type (E : Entity_Id) return Boolean is
-      Ty : constant Entity_Id := Etype (E);
-   begin
-      return not Is_Mutable_In_Why (E) and then
-        Use_Base_Type_For_Type (Ty);
-   end Use_Why_Base_Type;
 
 end Gnat2Why.Decls;

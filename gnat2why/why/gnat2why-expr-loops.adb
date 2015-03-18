@@ -49,7 +49,6 @@ with Why.Gen.Expr;       use Why.Gen.Expr;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Progs;      use Why.Gen.Progs;
 with Why.Gen.Preds;      use Why.Gen.Preds;
-with Why.Gen.Records;    use Why.Gen.Records;
 with Why.Inter;          use Why.Inter;
 
 with Gnat2Why.Util;      use Gnat2Why.Util;
@@ -457,19 +456,7 @@ package body Gnat2Why.Expr.Loops is
                      then
                         Binder := Ada_Ent_To_Why.Element
                           (Symbol_Table, N);
-                        Expr := (case Binder.Kind is
-                                    when Regular =>
-                                       New_Deref (Right => Binder.Main.B_Name,
-                                                  Typ   => Get_Type
-                                                    (+Binder.Main.B_Name)),
-                                    when UCArray =>
-                                       New_Deref (Right =>
-                                                     Binder.Content.B_Name,
-                                                  Typ   => Get_Type
-                                                    (+Binder.Content.B_Name)),
-                                    when DRecord =>
-                                       Record_From_Split_Form (Binder, True),
-                                    when Func    => raise Program_Error);
+                        Expr := Reconstruct_Item (Binder, Ref_Allowed => True);
                         Dyn_Prop := Compute_Dynamic_Property
                           (Expr        => Expr,
                            Ty          => Etype (N),
