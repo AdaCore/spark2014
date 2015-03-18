@@ -1,0 +1,2 @@
+inits.adb:5:04: info: initialization of "X" proved
+inits.ads:8:04: warning: initialization has no effect
