@@ -2169,7 +2169,7 @@ package body Flow.Control_Flow_Graph is
                case Valid is
                   when True =>
                      Var : Flow_Id;
-                     D   : Entity_Lists.Vector;
+                     D   : Entity_Vectors.Vector;
                   when False =>
                      null;
                end case;
@@ -2235,7 +2235,7 @@ package body Flow.Control_Flow_Graph is
          is
             F : Flow_Id;
             T : Entity_Id;
-            L : Entity_Lists.Vector;
+            L : Entity_Vectors.Vector;
          begin
             --  First, is this really an array access?
             if Nkind (N) /= N_Indexed_Component then
@@ -2277,7 +2277,7 @@ package body Flow.Control_Flow_Graph is
 
             --  Extract indices (and make sure they are simple and
             --  distinct).
-            L := Entity_Lists.Empty_Vector;
+            L := Entity_Vectors.Empty_Vector;
             declare
                Ptr         : Node_Id := First (Expressions (N));
                Index_Ptr   : Node_Id := First_Index (T);

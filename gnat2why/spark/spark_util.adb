@@ -2020,31 +2020,8 @@ package body SPARK_Util is
    ------------------------------
 
    function Innermost_Enclosing_Loop (N : Node_Id) return Node_Id is
-      Cur : Node_Id := N;
-
    begin
-      while Present (Cur) loop
-         if Nkind (Cur) = N_Loop_Statement then
-            return Cur;
-
-         --  Prevent the search from going too far
-
-         elsif Nkind_In (Cur, N_Entry_Body,
-                              N_Package_Body,
-                              N_Package_Declaration,
-                              N_Protected_Body,
-                              N_Subprogram_Body,
-                              N_Task_Body)
-         then
-            raise Program_Error;
-         end if;
-
-         Cur := Parent (Cur);
-      end loop;
-
-      --  Should not be reachable
-
-      raise Program_Error;
+      return Get_Enclosing (N, N_Loop_Statement);
    end Innermost_Enclosing_Loop;
 
    ---------------------------------
@@ -3025,22 +3002,6 @@ package body SPARK_Util is
    function Subprogram_Is_Ignored_For_Proof (E : Entity_Id) return Boolean is
      (Is_Predicate_Function (E) or else Is_Invariant_Procedure (E)
           or else Is_Default_Init_Cond_Procedure (E));
-
-   ---------------------------
-   -- To_Ordered_Entity_Set --
-   ---------------------------
-
-   function To_Ordered_Entity_Set
-     (S : Node_Sets.Set) return Ordered_Entity_Sets.Set
-   is
-      OS : Ordered_Entity_Sets.Set;
-   begin
-      for X of S loop
-         pragma Assert (Nkind (X) in N_Entity);
-         OS.Include (X);
-      end loop;
-      return OS;
-   end To_Ordered_Entity_Set;
 
    -----------------------------------
    -- Type_Based_On_External_Axioms --

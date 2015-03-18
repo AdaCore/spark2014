@@ -175,7 +175,7 @@ package body Flow_Types is
                       Variant     => Variant,
                       Node        => Empty,
                       Facet       => Facet,
-                      Component   => Entity_Lists.Empty_Vector);
+                      Component   => Entity_Vectors.Empty_Vector);
       P : Node_Id;
    begin
       P := N;
@@ -217,7 +217,7 @@ package body Flow_Types is
               Variant     => F.Variant,
               Node        => F.Node,
               Facet       => F.Facet,
-              Component   => Entity_Lists.Empty_Vector);
+              Component   => Entity_Vectors.Empty_Vector);
 
       if F.Kind = Record_Field then
          Tmp.Component := F.Component;

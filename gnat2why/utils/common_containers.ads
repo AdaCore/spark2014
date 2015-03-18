@@ -6,8 +6,8 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---               Copyright (C) 2014, Altran UK Limited                      --
---               Copyright (C) 2014, AdaCore                                --
+--               Copyright (C) 2014-2015, Altran UK Limited                 --
+--               Copyright (C) 2014-2015, AdaCore                           --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -27,6 +27,7 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Ordered_Sets;
+with Ada.Containers.Vectors;
 with Ada.Strings.Hash;
 
 with Types; use Types;
@@ -41,6 +42,10 @@ package Common_Containers is
    --  Standard list of nodes. It is often more convenient to use these,
    --  compared to List_Id in the GNAT frontend as a Node_Id can be in
    --  any number of these lists, while it can be only in one List_Id.
+
+   package Entity_Vectors is new Ada.Containers.Vectors
+     (Index_Type   => Positive,
+      Element_Type => Entity_Id);
 
    function Node_Hash (X : Node_Id) return Ada.Containers.Hash_Type
    is (Ada.Containers.Hash_Type (X));

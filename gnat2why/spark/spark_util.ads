@@ -26,8 +26,6 @@
 with AA_Util;               use AA_Util;
 with Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
-with Ada.Containers.Ordered_Sets;
-with Ada.Containers.Vectors;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Atree;                 use Atree;
 with Common_Containers;     use Common_Containers;
@@ -75,19 +73,6 @@ package SPARK_Util is
      (Left, Right : Entity_Id) return Boolean;
    --  Ordering for entities based on their unique name. Returns true
    --  if Left is considered to be "less than" Right.
-
-   package Entity_Lists is new Ada.Containers.Vectors
-     (Index_Type   => Positive,
-      Element_Type => Entity_Id);
-
-   package Ordered_Entity_Sets is new Ada.Containers.Ordered_Sets
-     (Element_Type => Entity_Id,
-      "<"          => Lexicographic_Entity_Order,
-      "="          => "=");
-
-   function To_Ordered_Entity_Set
-     (S : Node_Sets.Set) return Ordered_Entity_Sets.Set;
-   --  Convert a hashed node set into an ordered node set.
 
    package Unbounded_String_Lists is new Ada.Containers.Doubly_Linked_Lists
      (Element_Type => Unbounded_String);
