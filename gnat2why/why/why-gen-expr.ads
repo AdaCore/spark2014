@@ -315,6 +315,13 @@ package Why.Gen.Expr is
       Domain : EW_Domain;
       Attr   : Supported_Attribute_Id;
       Params : Transformation_Params := Body_Params) return W_Expr_Id;
+   --  Compute an expression for a type attribute Ty'Attr.
+   --  @param Ty The entity for the Ada type.
+   --  @param Domain The domain of the returned expression.
+   --  @param Attr The querried type attribute.
+   --  @param Params The parameters used for the transformation of bound
+   --  expressions.
+   --  @return The translated type attribute into Why3.
 
    function Get_Type (E : W_Expr_Id) return W_Type_Id;
    --  extract the type of a given expression

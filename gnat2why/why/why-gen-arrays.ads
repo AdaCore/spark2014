@@ -263,6 +263,10 @@ package Why.Gen.Arrays is
    --  Get the expression for the attribute (first/last) of the array.
    --  For constrained arrays, this refers to the introduced constant,
    --  for unconstrained arrays this is translated to a field access.
+   --  @param Domain The domain of the returned expression.
+   --  @param Expr The Why3 expression for the array object.
+   --  @param Attr The querried array attribute.
+   --  @return The translated array attribute into Why3.
 
    function Get_Array_Attr
      (Domain : EW_Domain;
@@ -271,6 +275,10 @@ package Why.Gen.Arrays is
       Dim    : Positive) return W_Expr_Id;
    --  Same as Get_Array_Attr, can be used when the type is already known.
    --  On unconstrained array types, return bounds used to constrain the index.
+   --  @param Domain The domain of the returned expression.
+   --  @param Ty The entity for the Ada array type.
+   --  @param Attr The querried array type attribute.
+   --  @return The translated array type attribute into Why3.
 
    function New_Concat_Call
      (Domain : EW_Domain;
