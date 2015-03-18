@@ -1,0 +1,2 @@
+inits.adb:5:04: info: initialization of "X" proved
+inits.adb:6:04: high: "Y" is not initialized in "Inits"
