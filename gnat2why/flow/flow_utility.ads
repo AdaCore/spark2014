@@ -25,20 +25,17 @@
 --  throughout flow analysis.
 
 with Ada.Containers;
-
-with Types;                use Types;
-with Einfo;                use Einfo;
-with Sem_Util;             use Sem_Util;
-with Snames;               use Snames;
-with Sinfo;                use Sinfo;
 with Atree;                use Atree;
-
 with Common_Containers;    use Common_Containers;
-
+with Einfo;                use Einfo;
 with Flow_Dependency_Maps; use Flow_Dependency_Maps;
 with Flow_Refinement;      use Flow_Refinement;
-with Flow_Tree_Utility;    use Flow_Tree_Utility;
 with Flow_Types;           use Flow_Types;
+with Sem_Util;             use Sem_Util;
+with Sinfo;                use Sinfo;
+with Snames;               use Snames;
+with SPARK_Util;           use SPARK_Util;
+with Types;                use Types;
 
 use type Ada.Containers.Count_Type;
 

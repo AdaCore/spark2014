@@ -45,7 +45,6 @@ with Flow.Analysis.Antialiasing;
 
 with Flow_Debug;           use Flow_Debug;
 with Flow_Error_Messages;  use Flow_Error_Messages;
-with Flow_Tree_Utility;    use Flow_Tree_Utility;
 with Flow_Utility;         use Flow_Utility;
 
 package body Flow.Analysis is

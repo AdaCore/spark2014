@@ -21,13 +21,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ghost;             use Ghost;
-with Sinfo;             use Sinfo;
-
+with Flow_Utility; use Flow_Utility;
+with Ghost;        use Ghost;
+with Sinfo;        use Sinfo;
 with Why;
-
-with Flow_Tree_Utility; use Flow_Tree_Utility;
-with Flow_Utility;      use Flow_Utility;
 
 package body Flow.Control_Flow_Graph.Utility is
 

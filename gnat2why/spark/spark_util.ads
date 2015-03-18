@@ -152,6 +152,22 @@ package SPARK_Util is
    --  Returns true if E belongs to one of the entities that correspond
    --  to the files that are to be analyzed.
 
+   function Is_Package_State (E : Entity_Id) return Boolean;
+   --  Returns True if E is declared in a package spec or body. Also
+   --  returns True for any abstract state.
+
+   function Has_Volatile (E : Entity_Id) return Boolean
+     with Pre => Nkind (E) in N_Entity;
+   --  Checks if the given entity is volatile.
+
+   function Has_Volatile_Aspect (E : Entity_Id;
+                                 A : Pragma_Id)
+                                 return Boolean
+     with Pre => Has_Volatile (E) and
+                 A in Pragma_Async_Readers    | Pragma_Async_Writers |
+                      Pragma_Effective_Writes | Pragma_Effective_Reads;
+   --  Checks if the given entity (or its type) has the specified aspect.
+
    --------------------------------------
    -- Queries related to Type Entities --
    --------------------------------------
@@ -415,6 +431,11 @@ package SPARK_Util is
    --  of type From to an expression of type To. Currently a very coarse
    --  approximation to rule out obvious cases.
 
+   function Get_Full_Type_Without_Checking (N : Node_Id) return Entity_Id
+     with Pre => Present (N);
+   --  Get the type of the given entity. This function looks through
+   --  private types and should be used with extreme care.
+
    -----------------------------------
    -- Queries Related to Subprogams --
    -----------------------------------
@@ -560,6 +581,16 @@ package SPARK_Util is
    --  Goes through a subprogram containing only a pragma Check (Expr) and
    --  returns Expr. Returns Empty if there is no such pragma.
 
+   function Get_Procedure_Specification (E : Entity_Id) return Node_Id
+     with Pre  => Ekind (E) = E_Procedure,
+          Post => Nkind (Get_Procedure_Specification'Result) =
+                    N_Procedure_Specification;
+
+   function Might_Be_Main (E : Entity_Id) return Boolean
+     with Pre => Ekind (E) in Subprogram_Kind;
+   --  Returns True if E is a library level subprogram without formal
+   --  parameters (E is allowed to have global parameters).
+
    ---------------------------------
    -- Queries Related to Packages --
    ---------------------------------
@@ -591,6 +622,11 @@ package SPARK_Util is
      Pre  => Ekind_In (E, E_Package, E_Generic_Package);
    --  Return whether E is a package with External Axioms
 
+   function Has_Extensions_Visible_Aspect (E : Entity_Id) return Boolean
+     with Pre => Nkind (E) in N_Entity and then
+                 Ekind (E) in Subprogram_Kind;
+   --  Checks if extensions are visible for this subprogram.
+
    -------------------------------
    --  Queries for Pragma Nodes --
    -------------------------------
@@ -620,6 +656,12 @@ package SPARK_Util is
       Reads  : out Node_Sets.Set;
       Writes : out Node_Sets.Set);
    --  Returns the set of input and output items in Global pragma P
+
+   function Get_Body (E : Entity_Id) return Entity_Id
+     with Pre  => Ekind (E) in E_Function | E_Procedure,
+          Post => (not Present (Get_Body'Result))
+                     or else Ekind (Get_Body'Result) = E_Subprogram_Body;
+   --  Fetches the body entity for a subprogram with a spec and a body.
 
    ---------------------------------
    -- Queries for Arbitrary Nodes --
@@ -666,6 +708,10 @@ package SPARK_Util is
    function Innermost_Enclosing_Loop (N : Node_Id) return Node_Id;
    --  Returns the innermost loop enclosing N
 
+   function Get_Enclosing (N : Node_Id; K : Node_Kind) return Node_Id
+     with Post => Nkind (Get_Enclosing'Result) = K;
+   --  Returns the first parent P of N where Nkind (P) = K.
+
    ----------------------------------
    -- Queries for Particular Nodes --
    ----------------------------------
@@ -709,6 +755,11 @@ package SPARK_Util is
    --  procedure call.
    --  @param Call a node which corresponds to a function or procedure call. It
    --    must have a "Name" field and a "Parameter_Associations" field.
+
+   function Is_Tick_Update (N : Node_Id) return Boolean
+   is (Nkind (N) = N_Attribute_Reference  and then
+         Get_Attribute_Id (Attribute_Name (N)) = Attribute_Update);
+   --  Checks if the given node is a 'Update node.
 
    ------------------
    -- Misc queries --

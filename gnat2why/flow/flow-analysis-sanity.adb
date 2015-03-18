@@ -23,19 +23,14 @@
 
 --  This package implements a variety of sanity checks that are run before
 --  the rest of flow analysis is performed.
-
-with Sinfo;               use Sinfo;
 with Elists;              use Elists;
-
-with Why;
-with Gnat2Why_Args;
-with SPARK_Util;
-
 with Flow_Error_Messages; use Flow_Error_Messages;
-with Flow_Tree_Utility;   use Flow_Tree_Utility;
 with Flow_Utility;        use Flow_Utility;
-
+with Gnat2Why_Args;
+with Sinfo;               use Sinfo;
+with SPARK_Util;          use SPARK_Util;
 with VC_Kinds;            use VC_Kinds;
+with Why;
 
 package body Flow.Analysis.Sanity is
 

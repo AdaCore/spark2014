@@ -44,7 +44,6 @@ with Why;
 with Flow.Control_Flow_Graph.Utility;    use Flow.Control_Flow_Graph.Utility;
 with Flow_Classwide;                     use Flow_Classwide;
 with Flow_Error_Messages;                use Flow_Error_Messages;
-with Flow_Tree_Utility;                  use Flow_Tree_Utility;
 with Flow_Utility.Initialization;        use Flow_Utility.Initialization;
 with Flow_Utility;                       use Flow_Utility;
 

@@ -958,6 +958,35 @@ package body SPARK_Util is
       end if;
    end Get_Abend_Kind;
 
+   --------------
+   -- Get_Body --
+   --------------
+
+   function Get_Body (E : Entity_Id) return Entity_Id
+   is
+      Body_N : constant Node_Id := Sem_Util.Get_Subprogram_Body (E);
+
+      Ptr : Node_Id;
+   begin
+      if No (Body_N) or else Nkind (Body_N) /= N_Subprogram_Body then
+         return Empty;
+      end if;
+
+      if Acts_As_Spec (Body_N) then
+         return Empty;
+      end if;
+
+      Ptr := Specification (Body_N);
+      pragma Assert (Present (Ptr)
+                       and then Nkind (Ptr) in N_Subprogram_Specification);
+
+      Ptr := Defining_Unit_Name (Ptr);
+      pragma Assert (Present (Ptr)
+                       and then Nkind (Ptr) in N_Entity);
+
+      return Ptr;
+   end Get_Body;
+
    ----------------------------------------
    -- Get_Cursor_Type_In_Iterable_Aspect --
    ----------------------------------------
@@ -1012,6 +1041,20 @@ package body SPARK_Util is
    begin
       return Etype (Get_Iterable_Type_Primitive (Typ, Name_First));
    end Get_Element_Type_In_Iterable_Aspect;
+
+   -------------------
+   -- Get_Enclosing --
+   -------------------
+
+   function Get_Enclosing (N : Node_Id; K : Node_Kind) return Node_Id
+   is
+      Ptr : Node_Id := N;
+   begin
+      while Present (Ptr) and then Nkind (Ptr) /= K loop
+         Ptr := Parent (Ptr);
+      end loop;
+      return Ptr;
+   end Get_Enclosing;
 
    -------------------------------
    -- Get_Enclosing_Declaration --
@@ -1188,6 +1231,26 @@ package body SPARK_Util is
       return Formal;
    end Get_Formal_From_Actual;
 
+   ------------------------------------
+   -- Get_Full_Type_Without_Checking --
+   ------------------------------------
+
+   function Get_Full_Type_Without_Checking (N : Node_Id) return Entity_Id is
+      T : constant Entity_Id := Etype (N);
+   begin
+      if Nkind (N) in N_Entity and then Ekind (N) = E_Abstract_State then
+         return T;
+      else
+         pragma Assert (Nkind (T) in N_Entity);
+         pragma Assert (Is_Type (T));
+         if Present (Full_View (T)) then
+            return Full_View (T);
+         else
+            return T;
+         end if;
+      end if;
+   end Get_Full_Type_Without_Checking;
+
    ----------------------
    -- Get_Global_Items --
    ----------------------
@@ -1362,6 +1425,24 @@ package body SPARK_Util is
 
       return N;
    end Get_Package_Spec;
+
+   ---------------------------------
+   -- Get_Procedure_Specification --
+   ---------------------------------
+
+   function Get_Procedure_Specification (E : Entity_Id) return Node_Id is
+      N : Node_Id;
+   begin
+      N := Parent (E);
+      case Nkind (N) is
+         when N_Defining_Program_Unit_Name =>
+            return Parent (N);
+         when N_Procedure_Specification =>
+            return N;
+         when others =>
+            raise Program_Error;
+      end case;
+   end Get_Procedure_Specification;
 
    ---------------
    -- Get_Range --
@@ -1606,6 +1687,16 @@ package body SPARK_Util is
       end if;
    end Has_Default_Init_Condition;
 
+   -----------------------------------
+   -- Has_Extensions_Visible_Aspect --
+   -----------------------------------
+
+   function Has_Extensions_Visible_Aspect (E : Entity_Id) return Boolean
+   is
+   begin
+      return Present (Get_Pragma (E, Pragma_Extensions_Visible));
+   end Has_Extensions_Visible_Aspect;
+
    -------------------
    -- Has_No_Output --
    -------------------
@@ -1721,6 +1812,97 @@ package body SPARK_Util is
    function Has_User_Supplied_Globals (E : Entity_Id) return Boolean
    is (Present (Get_Pragma (E, Pragma_Global)) or else
          Present (Get_Pragma (E, Pragma_Depends)));
+
+   ------------------
+   -- Has_Volatile --
+   ------------------
+
+   function Has_Volatile (E : Entity_Id) return Boolean is
+   begin
+      case Ekind (E) is
+         when E_Abstract_State =>
+            return Is_External_State (E);
+         when others =>
+            return Is_Effectively_Volatile (E);
+      end case;
+   end Has_Volatile;
+
+   -------------------------
+   -- Has_Volatile_Aspect --
+   -------------------------
+
+   function Has_Volatile_Aspect (E : Entity_Id;
+                                 A : Pragma_Id)
+                                 return Boolean
+   is
+      function Has_Specific_Aspect (E : Entity_Id;
+                                    A : Pragma_Id)
+                                    return Boolean
+      is (case A is
+            when Pragma_Async_Readers =>
+               Async_Readers_Enabled (E),
+            when Pragma_Async_Writers =>
+               Async_Writers_Enabled (E),
+            when Pragma_Effective_Reads =>
+               Effective_Reads_Enabled (E),
+            when Pragma_Effective_Writes =>
+               Effective_Writes_Enabled (E),
+            when others =>
+               raise Why.Unexpected_Node);
+   begin
+      case Ekind (E) is
+         when E_Abstract_State =>
+            case A is
+               when Pragma_Async_Writers =>
+                  return Async_Writers_Enabled (E);
+               when Pragma_Effective_Reads =>
+                  return Effective_Reads_Enabled (E);
+               when Pragma_Async_Readers =>
+                  return Async_Readers_Enabled (E);
+               when Pragma_Effective_Writes =>
+                  return Effective_Writes_Enabled (E);
+               when others =>
+                  raise Program_Error;
+            end case;
+
+         when E_In_Parameter =>
+            case A is
+               when Pragma_Async_Writers =>
+                  return True;
+               when Pragma_Async_Readers    |
+                    Pragma_Effective_Reads  |
+                    Pragma_Effective_Writes =>
+                  return False;
+               when others =>
+                  raise Program_Error;
+            end case;
+
+         when E_Out_Parameter =>
+            case A is
+               when Pragma_Async_Writers | Pragma_Effective_Reads =>
+                  return False;
+               when Pragma_Async_Readers | Pragma_Effective_Writes =>
+                  return True;
+               when others =>
+                  raise Program_Error;
+            end case;
+
+         when E_In_Out_Parameter =>
+            return True;
+
+         when E_Variable =>
+            return Has_Specific_Aspect (E, A);
+
+         when E_Constant =>
+            --  SRM 7.1.3(6): A constant, a discriminant or a loop
+            --  parameter shall not be Volatile.
+            return False;
+
+         when others =>
+            Print_Tree_Node (E);
+            raise Why.Unexpected_Node;
+      end case;
+   end Has_Volatile_Aspect;
 
    -----------------------
    -- In_Main_Unit_Body --
@@ -2076,6 +2258,30 @@ package body SPARK_Util is
       return Inherited'Length > 0;
    end Is_Overriding_Subprogram;
 
+   ----------------------
+   -- Is_Package_State --
+   ----------------------
+
+   function Is_Package_State (E : Entity_Id) return Boolean is
+   begin
+      case Ekind (E) is
+         when E_Abstract_State =>
+            return True;
+
+         when E_Variable =>
+            case Ekind (Scope (E)) is
+               when E_Package =>
+                  return True;
+
+               when others =>
+                  return False;
+            end case;
+
+         when others =>
+            return False;
+      end case;
+   end Is_Package_State;
+
    ---------------------
    -- Is_Partial_View --
    ---------------------
@@ -2374,6 +2580,18 @@ package body SPARK_Util is
              Root_Record_Component (Assoc);
       end;
    end Matching_Component_Association;
+
+   -------------------
+   -- Might_Be_Main --
+   -------------------
+
+   function Might_Be_Main (E : Entity_Id) return Boolean is
+   begin
+      return (Scope_Depth_Value (E) = Uint_1 or else
+                (Is_Generic_Instance (E) and then
+                   Scope_Depth_Value (E) = Uint_2))
+        and then No (First_Formal (E));
+   end Might_Be_Main;
 
    ---------
    -- MUT --

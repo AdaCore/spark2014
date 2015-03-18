@@ -39,7 +39,6 @@ with SPARK_Util;             use SPARK_Util;
 with Flow_Types;             use Flow_Types;
 with Flow_Debug;             use Flow_Debug;
 with Flow_Dependency_Maps;   use Flow_Dependency_Maps;
-with Flow_Tree_Utility;      use Flow_Tree_Utility;
 
 with Why;
 

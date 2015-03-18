@@ -26,20 +26,18 @@ with Ada.Containers.Hashed_Sets;
 
 with Elists;                     use Elists;
 with Errout;                     use Errout;
-with Namet;                      use Namet;
-with Nlists;                     use Nlists;
-with Output;                     use Output;
-with Sprint;                     use Sprint;
-with Treepr;                     use Treepr;
-
-with Why;
-with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
-with SPARK_Definition;           use SPARK_Definition;
-with SPARK_Util;                 use SPARK_Util;
-
+with Flow_Tree_Utility;          use Flow_Tree_Utility;
 with Flow_Debug;                 use Flow_Debug;
 with Flow_Computed_Globals;      use Flow_Computed_Globals;
 with Flow_Classwide;             use Flow_Classwide;
+with Namet;                      use Namet;
+with Nlists;                     use Nlists;
+with Output;                     use Output;
+with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
+with SPARK_Definition;           use SPARK_Definition;
+with Sprint;                     use Sprint;
+with Treepr;                     use Treepr;
+with Why;
 
 package body Flow_Utility is
 
