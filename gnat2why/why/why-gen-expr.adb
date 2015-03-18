@@ -869,32 +869,17 @@ package body Why.Gen.Expr is
      (Ada_Node   : Node_Id;
       Ty         : Entity_Id;
       W_Expr     : W_Expr_Id;
-      Check_Kind : Range_Check_Kind) return W_Prog_Id is
+      Check_Kind : Range_Check_Kind) return W_Prog_Id
+   is
+      W_Type : constant W_Type_Id := Get_Type (W_Expr);
+
    begin
-      if Type_Is_Modeled_As_Base (Ty) then
-         declare
-            Expr : constant W_Expr_Id := New_Temp_For_Expr (W_Expr);
-            T    : W_Prog_Id;
-         begin
-            T := +New_VC_Call (Domain   => EW_Prog,
-                               Ada_Node => Ada_Node,
-                               Name     =>
-                                 Range_Check_Name (Ty, Check_Kind),
-                               Progs    =>
-                                 Args_For_Scalar_Dynamic_Property (Ty, Expr),
-                               Reason   => To_VC_Kind (Check_Kind),
-                               Typ      => Get_Type (W_Expr));
-            return
-              +Binding_For_Temp (Domain => EW_Prog,
-                                 Tmp    => Expr,
-                                 Context => +Sequence (T, +Expr));
-         end;
-      elsif Is_Modular_Integer_Type (Ty) and then
-        Get_Type (W_Expr) = EW_Int_Type
-      then
-            --  in case we have a range check between an int expression and
-            --  a range from bitvectors, do the range check on the int side
-         return +New_VC_Call (Domain   => EW_Prog,
+      --  in case we have a range check between an int expression and
+      --  a range from bitvectors, do the range check on the int side
+
+      if Is_Modular_Integer_Type (Ty) then
+         if W_Type = EW_Int_Type then
+            return +New_VC_Call (Domain   => EW_Prog,
                               Ada_Node => Ada_Node,
                               Name     =>
                                 Prefix (M        => E_Module (Ty),
@@ -903,14 +888,82 @@ package body Why.Gen.Expr is
                               Progs    => (1 => +W_Expr),
                               Reason   => To_VC_Kind (Check_Kind),
                               Typ      => Get_Type (W_Expr));
-      else
-         return +New_VC_Call (Domain   => EW_Prog,
+
+         else
+            pragma Assert (Why_Type_Is_BitVector (W_Type));
+
+            if BitVector_Type_Size (W_Type) <= Esize (Ty) then
+               return +New_VC_Call (Domain   => EW_Prog,
                               Ada_Node => Ada_Node,
                               Name     =>
                                 Range_Check_Name (Ty, Check_Kind),
                               Progs    => (1 => +W_Expr),
                               Reason   => To_VC_Kind (Check_Kind),
                               Typ      => Get_Type (W_Expr));
+
+      --  2.2 If Range_Type is modular, we need to check before converting
+      --      in the case where Cur is modular with base type of size greater
+      --      than the size of range_type base type.
+
+            else
+               return +New_VC_Call (Domain   => EW_Prog,
+                                 Ada_Node => Ada_Node,
+                                 Name     =>
+                                   Create_Modular_Converter_Range_Check
+                                     (W_Type, Base_Why_Type (Ty)),
+                                 Progs    =>
+                                   (1 => Insert_Simple_Conversion
+                                      (Domain   => EW_Term,
+                                       Expr     => New_Attribute_Expr
+                                         (Ty     => Ty,
+                                          Domain => EW_Prog,
+                                          Attr   => Attribute_First,
+                                          Params => Body_Params),
+                                       To       => W_Type),
+                                    2 => Insert_Simple_Conversion
+                                      (Domain   => EW_Term,
+                                       Expr     => New_Attribute_Expr
+                                         (Ty     => Ty,
+                                          Domain => EW_Prog,
+                                          Attr   => Attribute_Last,
+                                          Params => Body_Params),
+                                       To       => W_Type),
+                                    3 => +W_Expr),
+                                 Reason   => To_VC_Kind (Check_Kind),
+                                 Typ      => W_Type);
+            end if;
+         end if;
+
+      else
+
+         if Type_Is_Modeled_As_Base (Ty) then
+            declare
+               Expr : constant W_Expr_Id := New_Temp_For_Expr (W_Expr);
+               T    : W_Prog_Id;
+            begin
+               T := +New_VC_Call (Domain   => EW_Prog,
+                                  Ada_Node => Ada_Node,
+                                  Name     =>
+                                    Range_Check_Name (Ty, Check_Kind),
+                                  Progs    =>
+                                   Args_For_Scalar_Dynamic_Property (Ty, Expr),
+                                  Reason   => To_VC_Kind (Check_Kind),
+                                  Typ      => Get_Type (W_Expr));
+               return
+                 +Binding_For_Temp (Domain => EW_Prog,
+                                    Tmp    => Expr,
+                                    Context => +Sequence (T, +Expr));
+            end;
+
+         else
+            return +New_VC_Call (Domain   => EW_Prog,
+                              Ada_Node => Ada_Node,
+                              Name     =>
+                                Range_Check_Name (Ty, Check_Kind),
+                              Progs    => (1 => +W_Expr),
+                              Reason   => To_VC_Kind (Check_Kind),
+                              Typ      => Get_Type (W_Expr));
+         end if;
       end if;
    end Do_Range_Check;
 
@@ -1370,147 +1423,147 @@ package body Why.Gen.Expr is
                                              Expr     => Result);
       end if;
 
-      --  2. Possibly perform the range check, if applicable on Cur. A special
-      --     case is that range checks on boolean variables are performed after
-      --     their conversion to int.
-
-      if Present (Range_Type)
-        and then not Range_Check_Applied
-        and then (Base_Why_Type (Range_Type) = Cur or else
-                      (Why_Type_Is_BitVector (Base_Why_Type (Range_Type))
-                       and then Cur = EW_Int_Type))
-        and then From /= EW_Bool_Type
-      then
-         Range_Check_Applied := True;
-
-         Result := +Do_Range_Check (Ada_Node   => Ada_Node,
-                                    Ty         => Range_Type,
-                                    W_Expr     => Result,
-                                    Check_Kind => Check_Kind);
-      end if;
-
-      --  2.2 If Range_Type is modular, we need to check before converting
-      --      in the case where Cur is modular with base type of size greater
-      --      than the size of range_type base type.
-
-      if Present (Range_Type)
-        and then not Range_Check_Applied
-        and then Why_Type_Is_BitVector (Base_Why_Type (Range_Type))
-        and then Why_Type_Is_BitVector (Cur)
-        and then UI_Gt (BitVector_Type_Size (Cur), Esize (Range_Type))
-      then
-         Range_Check_Applied := True;
-
-         Result := +New_VC_Call (Domain   => EW_Prog,
-                                 Ada_Node => Ada_Node,
-                                 Name     =>
-                                   Create_Modular_Converter_Range_Check
-                                     (Cur, Base_Why_Type (Range_Type)),
-                                 Progs    =>
-                                   (1 => Insert_Simple_Conversion
-                                      (Domain   => EW_Term,
-                                       Expr     => New_Attribute_Expr
-                                         (Ty     => Range_Type,
-                                          Domain => EW_Prog,
-                                          Attr   => Attribute_First,
-                                          Params => Body_Params),
-                                       To       => Cur),
-                                    2 => Insert_Simple_Conversion
-                                      (Domain   => EW_Term,
-                                       Expr     => New_Attribute_Expr
-                                         (Ty     => Range_Type,
-                                          Domain => EW_Prog,
-                                          Attr   => Attribute_Last,
-                                          Params => Body_Params),
-                                       To       => Cur),
-                                    3 => +Result),
-                                 Reason   => To_VC_Kind (Check_Kind),
-                                 Typ      => Get_Type (Result));
-      end if;
-
-      --  3. If From and To do not share the same base type (bool, int, __fixed
-      --     bitvector_? or real), convert from one to the other.
+      --  2. If From is a fixed-point type or a modular type, and To does not
+      --     share the same base type (__fixed or bitvector_?), possibly
+      --     convert to a suitable intermediate type.
 
       if Base_Why_Type (From) /= Base_Why_Type (To) then
-         declare
-            Shadow_From : W_Type_Id := Cur;
-            Shadow_To   : W_Type_Id := Base_Why_Type (To);
-            Fixed_Type  : Entity_Id;
 
-         begin
-            --  3.1. If From is a fixed-point type, retrieve the corresponding
-            --       abstract type, for which conversion to int/real is
-            --       defined.
+         --  2.1. If From is a fixed-point type, convert to int or real
+         --       depending on To.
 
-            if Base_Why_Type (From) = EW_Fixed_Type then
-               Fixed_Type :=
+         if Base_Why_Type (From) = EW_Fixed_Type then
+            declare
+               --  Corresponding abstract type, for which conversion to
+               --  int or real is defined.
+               Fixed_Type : constant Entity_Id :=
                  (if Nkind (Ada_Node) in N_Type_Conversion
                                        | N_Qualified_Expression
                   then
                      Etype (Expression (Ada_Node))
                   else
                      Etype (Ada_Node));
-               Shadow_From := EW_Abstract (Fixed_Type);
+
+               Shadow_From : constant W_Type_Id := EW_Abstract (Fixed_Type);
+               Shadow_To   : constant W_Type_Id :=
+                 (if Why_Type_Is_BitVector (Base_Why_Type (To)) then
+                    EW_Int_Type
+                  else
+                    Base_Why_Type (To));
+
+            begin
                pragma Assert (Get_Type_Kind (Shadow_From) = EW_Abstract);
 
-            --  3.2. If To is a fixed-point type, retrieve the corresponding
-            --       abstract type, for which conversion from int/real is
-            --       defined.
+               Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
+                                                   Domain   => Domain,
+                                                   From     => Shadow_From,
+                                                   To       => Shadow_To,
+                                                   Expr     => Result);
+               Cur := Shadow_To;
+            end;
 
-            elsif Base_Why_Type (To) = EW_Fixed_Type then
-               Fixed_Type :=
+         --  2.2. If From is a modular type and To is not, insert a convertion
+         --       to int since we only support direct convertion from bitvector
+         --       to int or other bitvector types.
+
+         elsif Why_Type_Is_BitVector (Base_Why_Type (From))
+           and then not (Why_Type_Is_BitVector (Base_Why_Type (To)))
+         then
+            Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
+                                                Domain   => Domain,
+                                                To       => EW_Int_Type,
+                                                Expr     => Result);
+            Cur := EW_Int_Type;
+
+         --  2.3. If To is a modular type and From is not, insert a convertion
+         --       to int since we only support direct convertion to bitvector
+         --       from int or other bitvector types. The case of From being
+         --       a fixed-point type is already treated in 2.1, so the
+         --       remaining cases here are floating-point types and signed
+         --       integer types. For both, the convertion to int is correctly
+         --       getting at the value on which to perform the range check
+         --       (obviously this includes rounding when From is a real type,
+         --       to the nearest integer and away from zero if exactly halfway
+         --       between two integers, see Ada RM 4.6(33)).
+
+         elsif Why_Type_Is_BitVector (Base_Why_Type (To))
+           and then not (Why_Type_Is_BitVector (Base_Why_Type (From)))
+         then
+            Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
+                                                Domain   => Domain,
+                                                To       => EW_Int_Type,
+                                                Expr     => Result);
+            Cur := EW_Int_Type;
+         end if;
+      end if;
+
+      --  3. Possibly perform the range check, if applicable on Cur. A special
+      --     case is that range checks on boolean variables are performed after
+      --     their conversion to int. Another special case is that range checks
+      --     on modular types are always performed at this point, as any
+      --     necessary to int has already occurred in 2.
+
+      if Present (Range_Type)
+        and then not Range_Check_Applied
+        and then From /= EW_Bool_Type
+        and then (Base_Why_Type (Range_Type) = Cur
+                   or else
+                  Has_Modular_Integer_Type (Range_Type))
+      then
+         Range_Check_Applied := True;
+         Result := +Do_Range_Check (Ada_Node   => Ada_Node,
+                                    Ty         => Range_Type,
+                                    W_Expr     => Result,
+                                    Check_Kind => Check_Kind);
+      end if;
+
+      --  4. If From and To do not share the same base type (bool, int, __fixed
+      --     bitvector_? or real), convert from one to the other.
+
+      if Base_Why_Type (From) /= Base_Why_Type (To) then
+
+         --  4.1. If To is a fixed-point type, convert from int or real
+         --       depending on From.
+
+         if Base_Why_Type (To) = EW_Fixed_Type then
+            declare
+               --  Corresponding abstract type, for which conversion to
+               --  int or real is defined.
+               Fixed_Type : constant Entity_Id :=
                  (if Nkind (Parent (Ada_Node)) in N_Type_Conversion
                                                 | N_Qualified_Expression
                   then
-                    Etype (Parent (Ada_Node))
+                     Etype (Parent (Ada_Node))
                   else
-                    Etype (Ada_Node));
-               Shadow_To := EW_Abstract (Fixed_Type);
+                     Etype (Ada_Node));
+
+               Shadow_From : constant W_Type_Id := Cur;
+               Shadow_To   : constant W_Type_Id := EW_Abstract (Fixed_Type);
+
+            begin
                pragma Assert (Get_Type_Kind (Shadow_To) = EW_Abstract);
-            end if;
 
-            --  3.3. If To (resp. From) is a modular type and From (resp. To)
-            --       is not, insert a convertion to int since we only support
-            --       direct convertion from modular to int.
-
-            if (Why_Type_Is_BitVector (Base_Why_Type (From)) and then
-                  not (Why_Type_Is_BitVector (Base_Why_Type (To))))
-              or else
-                (Why_Type_Is_BitVector (Base_Why_Type (To)) and then
-                   not (Why_Type_Is_BitVector (Base_Why_Type (From))))
-            then
                Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
                                                    Domain   => Domain,
-                                                   To       => EW_Int_Type,
+                                                   From     => Shadow_From,
+                                                   To       => Shadow_To,
                                                    Expr     => Result);
-               Shadow_From := EW_Int_Type;
+               Cur := Base_Why_Type (To);
+            end;
 
-               --  3.3.1 If we have a convertion from int to modular,
-               --        do the range check before the convertion.
-               if Present (Range_Type)
-                 and then not Range_Check_Applied
-                 and then Why_Type_Is_BitVector (Base_Why_Type (Range_Type))
-               then
-                  Range_Check_Applied := True;
+         --  4.2. Otherwise simply convert from Cur to To
 
-                  Result := +Do_Range_Check (Ada_Node   => Ada_Node,
-                                             Ty         => Range_Type,
-                                             W_Expr     => Result,
-                                             Check_Kind => Check_Kind);
-
-               end if;
-            end if;
-
-            Cur := Base_Why_Type (To);
+         else
             Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
                                                 Domain   => Domain,
-                                                From     => Shadow_From,
-                                                To       => Shadow_To,
+                                                From     => Cur,
+                                                To       => Base_Why_Type (To),
                                                 Expr     => Result);
-         end;
+            Cur := Base_Why_Type (To);
+         end if;
       end if;
 
-      --  4. When converting to a floating-point type, always perform
+      --  5. When converting to a floating-point type, always perform
       --     a rounding operation.
 
       if Present (Round_Func) then
@@ -1521,7 +1574,7 @@ package body Why.Gen.Expr is
                              Typ      => EW_Real_Type);
       end if;
 
-      --  5. Possibly perform the range check, if not already applied
+      --  6. Possibly perform the range check, if not already applied
 
       if Present (Range_Type)
         and then not Range_Check_Applied
@@ -1535,7 +1588,7 @@ package body Why.Gen.Expr is
                                     Check_Kind => Check_Kind);
       end if;
 
-      --  6. If To is an abstract type, convert from int, __fixed or real to it
+      --  7. If To is an abstract type, convert from int, __fixed or real to it
 
       if Get_Type_Kind (To) = EW_Abstract then
          Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
