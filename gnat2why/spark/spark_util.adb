@@ -962,7 +962,7 @@ package body SPARK_Util is
    -- Get_Body --
    --------------
 
-   function Get_Body (E : Entity_Id) return Entity_Id
+   function Get_Body_Entity (E : Entity_Id) return Entity_Id
    is
       Body_N : constant Node_Id := Sem_Util.Get_Subprogram_Body (E);
 
@@ -985,7 +985,7 @@ package body SPARK_Util is
                        and then Nkind (Ptr) in N_Entity);
 
       return Ptr;
-   end Get_Body;
+   end Get_Body_Entity;
 
    ----------------------------------------
    -- Get_Cursor_Type_In_Iterable_Aspect --

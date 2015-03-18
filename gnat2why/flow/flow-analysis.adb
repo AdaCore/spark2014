@@ -262,8 +262,9 @@ package body Flow.Analysis is
             Haystack_B := Get_Pragma (S, Pragma_Initializes);
 
          when others =>
-            if Present (Get_Body (S)) then
-               Haystack_A := Get_Pragma (Get_Body (S), Pragma_Refined_Global);
+            if Present (Get_Body_Entity (S)) then
+               Haystack_A :=
+                 Get_Pragma (Get_Body_Entity (S), Pragma_Refined_Global);
             else
                Haystack_A := Empty;
             end if;

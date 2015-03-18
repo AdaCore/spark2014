@@ -421,7 +421,7 @@ package body Flow_Refinement is
                                               S : Flow_Scope)
                                               return Boolean
    is
-      Body_E : constant Entity_Id := Get_Body (E);
+      Body_E : constant Entity_Id := Get_Body_Entity (E);
    begin
       if not Present (S) then
          --  From the standard scope we won't be able to see much...
@@ -468,7 +468,7 @@ package body Flow_Refinement is
       N      : Node_Id := Empty;
    begin
       if Subprogram_Refinement_Is_Visible (E, S) then
-         Body_E := Get_Body (E);
+         Body_E := Get_Body_Entity (E);
          pragma Assert (Present (Body_E));
 
          N := Get_Pragma
@@ -842,7 +842,7 @@ package body Flow_Refinement is
       Body_N : constant Node_Id :=
         (if Acts_As_Spec (SPARK_Util.Get_Subprogram_Body (E))
          then E
-         else Get_Body (E));
+         else Get_Body_Entity (E));
    begin
       if Present (Body_N) then
          declare

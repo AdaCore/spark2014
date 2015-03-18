@@ -873,7 +873,7 @@ package body Flow is
                Body_N : constant Node_Id :=
                  (if Acts_As_Spec (SPARK_Util.Get_Subprogram_Body (E))
                   then E
-                  else Get_Body (E));
+                  else Get_Body_Entity (E));
             begin
                Tmp.Refined_Depends_N := Get_Pragma (Body_N,
                                                     Pragma_Refined_Depends);

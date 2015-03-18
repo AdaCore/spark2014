@@ -642,10 +642,10 @@ package SPARK_Util is
       Writes : out Node_Sets.Set);
    --  Returns the set of input and output items in Global pragma P
 
-   function Get_Body (E : Entity_Id) return Entity_Id
+   function Get_Body_Entity (E : Entity_Id) return Entity_Id
      with Pre  => Ekind (E) in E_Function | E_Procedure,
-          Post => (not Present (Get_Body'Result))
-                     or else Ekind (Get_Body'Result) = E_Subprogram_Body;
+          Post => (not Present (Get_Body_Entity'Result))
+                    or else Ekind (Get_Body_Entity'Result) = E_Subprogram_Body;
    --  Fetches the body entity for a subprogram with a spec and a body.
 
    ---------------------------------
