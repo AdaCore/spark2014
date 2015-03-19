@@ -212,13 +212,13 @@ package body Why.Inter is
          pragma Unreferenced (Node);
       begin
          if Typ = EW_BitVector_8_Type then
-            State.S.Include (+BitVector_8_Module);
+            State.S.Include (+M_BVs (BV8).Module);
          elsif Typ = EW_BitVector_16_Type then
-            State.S.Include (+BitVector_16_Module);
+            State.S.Include (+M_BVs (BV16).Module);
          elsif Typ = EW_BitVector_32_Type then
-            State.S.Include (+BitVector_32_Module);
+            State.S.Include (+M_BVs (BV32).Module);
          elsif Typ = EW_BitVector_64_Type then
-            State.S.Include (+BitVector_64_Module);
+            State.S.Include (+M_BVs (BV64).Module);
          else
             raise Unexpected_Node;
          end if;
@@ -350,7 +350,6 @@ package body Why.Inter is
    begin
       if Module = Int_Module
         or else Module = RealInfix
-        or else Module = Main_Module
       then
          Use_Kind2 := EW_Import;
       end if;
@@ -539,7 +538,7 @@ package body Why.Inter is
    --  Start of Close_Theory
 
    begin
-      Add_With_Clause (P, Main_Module, EW_Import);
+      Add_With_Clause (P, M_Main.Module, EW_Import);
 
       case Kind is
          --  case 1: a standalone theory with no imports
@@ -1220,7 +1219,7 @@ package body Why.Inter is
    function To_Why_Type (T : String) return W_Type_Id is
    begin
       if T = SPARK_Xrefs.Name_Of_Heap_Variable then
-         return Type_Of_Heap;
+         return M_Main.Type_Of_Heap;
       else
          return EW_Private_Type;
       end if;

@@ -101,11 +101,11 @@ package body Why.Gen.Scalars is
            Is_Double_Precision_Floating_Point_Type (E);
          Round_Id : constant W_Identifier_Id :=
            (if Is_Single_Precision_Floating_Point_Type (E) then
-                 Floating_Round_Single
+                 M_Floating.Round_Single
             elsif Is_Double_Precision_Floating_Point_Type (E) then
-                 Floating_Round_Double
+                 M_Floating.Round_Double
             else
-               Floating_Round);
+               M_Floating.Round);
          Default_Clone_Subst : constant W_Clone_Substitution_Id :=
            New_Clone_Substitution
              (Kind      => EW_Type_Subst,

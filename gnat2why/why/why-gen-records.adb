@@ -2267,7 +2267,7 @@ package body Why.Gen.Records is
                  New_Field_Association
                    (Domain   => Domain,
                     Field    => Prefix (E_Module (Ty), WNE_Rec_Extension),
-                    Value    => +To_Ident (WNE_Null_Extension));
+                    Value    => +M_Main.Null_Extension);
             end if;
 
             Assoc := New_Field_Association

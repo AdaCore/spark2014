@@ -638,7 +638,7 @@ package body Why.Gen.Arrays is
       if Und_Ent = Standard_String then
          declare
             Dummy_Ident : constant W_Identifier_Id :=
-              New_Identifier (Name => "x", Typ => String_Image_Type);
+              New_Identifier (Name => "x", Typ => M_Main.String_Image_Type);
             Str_Typ     : constant W_Type_Id :=
               New_Named_Type (Name => Why3_Type_Name);
             Dummy_Ident2 : constant W_Identifier_Id :=
@@ -669,7 +669,7 @@ package body Why.Gen.Arrays is
                           Mutable  => False,
                           B_Ent    => null,
                           B_Name   => Dummy_Ident2)),
-                     Return_Type => String_Image_Type));
+                     Return_Type => M_Main.String_Image_Type));
          end;
       end if;
 
@@ -930,9 +930,7 @@ package body Why.Gen.Arrays is
       Ty_Entity : constant Entity_Id := Get_Ada_Node (+Why_Ty);
       Dimension : constant Pos := Number_Dimensions (Ty_Entity);
       Name      : constant W_Identifier_Id :=
-        Prefix (Ada_Node => Ty_Entity,
-                M => Array_Modules (Positive (Dimension)),
-                W => WNE_Array_Access);
+        M_Arrays (Positive (Dimension)).Get;
       Elts     : W_Expr_Id;
       Ret_Ty   : constant W_Type_Id :=
         Type_Of_Node (Component_Type (Unique_Entity (Ty_Entity)));
@@ -969,8 +967,7 @@ package body Why.Gen.Arrays is
       Ty_Entity : constant Entity_Id := Get_Ada_Node (+W_Ty);
       Dimension : constant Pos := Number_Dimensions (Ty_Entity);
       Name      : constant W_Identifier_Id :=
-        Prefix (M => Array_Modules (Positive (Dimension)),
-                W => WNE_Array_Update);
+        M_Arrays (Positive (Dimension)).Set;
    begin
       if Is_Static_Array_Type (Ty_Entity) or else
         Get_Type_Kind (W_Ty) = EW_Split
@@ -1029,10 +1026,7 @@ package body Why.Gen.Arrays is
       return
         New_Call
           (Domain   => Domain,
-           Name     =>
-             Prefix
-               (M        => Array_Modules (1),
-                W        => WNE_Array_Concat),
+           Name     => M_Array_1.Concat,
            Args     => Args,
            Typ      => Typ);
    end New_Concat_Call;
@@ -1081,10 +1075,7 @@ package body Why.Gen.Arrays is
       return
         New_Call
           (Domain   => Domain,
-           Name     =>
-             Prefix
-               (M        => Array_Modules (1),
-                W        => WNE_Array_Singleton),
+           Name     => M_Array_1.Singleton,
            Args     => (1 => Elt, 2 => Pos));
    end New_Singleton_Call;
 

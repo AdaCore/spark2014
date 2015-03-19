@@ -454,7 +454,6 @@ package body Gnat2Why.Expr is
      (Op        : N_Op_Compare;
       Left      : W_Expr_Id;
       Right     : W_Expr_Id;
-      Left_Type : Entity_Id;
       Domain    : EW_Domain;
       Ada_Node  : Node_Id) return W_Expr_Id;
    --  Translate a comparison on arrays into a Why expression
@@ -526,7 +525,7 @@ package body Gnat2Why.Expr is
          --  modulo on bitvectors.
 
          elsif Why_Type_Is_BitVector (BV_Type) then
-            return New_Call (Name   => Create_Modular_Rem (BV_Type),
+            return New_Call (Name   => MF_BVs (BV_Type).Urem,
                              Domain => Domain,
                              Args   => (1 => T,
                                         2 => New_Modular_Constant
@@ -538,7 +537,7 @@ package body Gnat2Why.Expr is
          --  integers.
 
          else
-            return New_Call (Name   => Integer_Math_Mod,
+            return New_Call (Name   => M_Int_Div.Math_Mod,
                              Domain => Domain,
                              Args   => (1 => T,
                                         2 => New_Integer_Constant
@@ -1208,7 +1207,7 @@ package body Gnat2Why.Expr is
             Le               : constant W_Identifier_Id :=
               (if Why_Base = EW_Real_Type then Real_Infix_Le
                elsif Why_Type_Is_BitVector (Why_Base) then
-                 Create_Modular_Le (Why_Base)
+                    MF_BVs (Why_Base).Ule
                else Int_Infix_Le);
             Low_Expr         : constant W_Term_Id :=
               +Transform_Expr (Low_Bound (Rng), Why_Base, EW_Term, Params);
@@ -1219,7 +1218,7 @@ package body Gnat2Why.Expr is
                 (Name =>
                    (if Why_Base = EW_Real_Type then Real_Infix_Ge
                     elsif Why_Type_Is_BitVector (Why_Base) then
-                      Create_Modular_Ge (Why_Base)
+                      MF_BVs (Why_Base).Uge
                     else Int_Infix_Ge),
                  Typ  => EW_Bool_Type,
                  Args => (+Low_Expr,
@@ -2644,7 +2643,7 @@ package body Gnat2Why.Expr is
                Le_Op        : constant W_Identifier_Id :=
                  (if Why_Rep_Type = EW_Real_Type then Real_Infix_Le
                   elsif Why_Type_Is_BitVector (Why_Rep_Type) then
-                    Create_Modular_Le (Why_Rep_Type)
+                    MF_BVs (Why_Rep_Type).Ule
                   else Int_Infix_Le);
                First        : constant W_Expr_Id :=
                  Insert_Simple_Conversion
@@ -4195,7 +4194,6 @@ package body Gnat2Why.Expr is
                  (Op        => Op,
                   Left      => Left,
                   Right     => Right,
-                  Left_Type => Left_Type,
                   Domain    => Domain,
                   Ada_Node  => Ada_Node);
             else
@@ -4245,7 +4243,7 @@ package body Gnat2Why.Expr is
                      elsif Op = N_Op_Ne then
                         T :=
                           New_Call (Domain => Domain,
-                                    Name   => Bool_Not,
+                                    Name   => M_Boolean.Notb,
                                     Args   => (1 => T),
                                     Typ    => EW_Bool_Type);
                      end if;
@@ -4278,7 +4276,7 @@ package body Gnat2Why.Expr is
                  (if Typ = EW_Int_Type then
                     Int_Unary_Minus
                   elsif Why_Type_Is_BitVector (Typ) then
-                    Create_Modular_Neg (Typ)
+                    MF_BVs (Typ).Neg
                   elsif Typ = EW_Fixed_Type then
                     Fixed_Unary_Minus
                   else Real_Unary_Minus);
@@ -4332,13 +4330,13 @@ package body Gnat2Why.Expr is
                  (if Op = N_Op_Add then
                     (if Base = EW_Int_Type then Int_Infix_Add
                      elsif Why_Type_Is_BitVector (Base) then
-                       Create_Modular_Add (Base)
+                       MF_BVs (Base).Add
                      elsif Base = EW_Fixed_Type then Fixed_Infix_Add
                      else Real_Infix_Add)
                   else
                     (if Base = EW_Int_Type then Int_Infix_Subtr
                      elsif Why_Type_Is_BitVector (Base) then
-                       Create_Modular_Sub (Base)
+                          MF_BVs (Base).Sub
                      elsif Base = EW_Fixed_Type then Fixed_Infix_Subtr
                      else Real_Infix_Subtr));
             begin
@@ -4434,7 +4432,7 @@ package body Gnat2Why.Expr is
                      Name : constant W_Identifier_Id :=
                        (if Base = EW_Int_Type then Int_Infix_Mult
                         elsif Why_Type_Is_BitVector (Base) then
-                          Create_Modular_Mul (Base)
+                          MF_BVs (Base).Mult
                         elsif Base = EW_Fixed_Type then Fixed_Infix_Mult
                         else Real_Infix_Mult);
                   begin
@@ -4530,10 +4528,10 @@ package body Gnat2Why.Expr is
                Name  : W_Identifier_Id;
             begin
                Name := (if Why_Type_Is_BitVector (Base) then
-                          Create_Modular_Rem (Base)
+                          MF_BVs (Base).Urem
                         elsif Op = N_Op_Rem then
-                          Integer_Rem
-                        else Integer_Mod);
+                          M_Int_Div.Rem_Id
+                        else M_Int_Div.Mod_Id);
 
                Name := (if Domain = EW_Prog then
                           To_Program_Space (Name)
@@ -4599,7 +4597,7 @@ package body Gnat2Why.Expr is
                        New_Call
                          (Ada_Node => Ada_Node,
                        Domain   => Domain,
-                       Name     => New_Identifier (Name => "notb"),
+                       Name     => M_Boolean.Notb,
                        Args     =>
                          (1 => Insert_Simple_Conversion
                             (Ada_Node => Ada_Node,
@@ -6404,7 +6402,6 @@ package body Gnat2Why.Expr is
      (Op        : N_Op_Compare;
       Left      : W_Expr_Id;
       Right     : W_Expr_Id;
-      Left_Type : Entity_Id;
       Domain    : EW_Domain;
       Ada_Node  : Node_Id) return W_Expr_Id
    is
@@ -6422,13 +6419,7 @@ package body Gnat2Why.Expr is
         New_Call
           (Ada_Node => Ada_Node,
            Domain   => Subdomain,
-           Name     =>
-             Prefix
-               (Ada_Node => Left_Type,
-                M        =>
-                  Array_Modules
-                    (Positive (Number_Dimensions (Type_Of_Node (Left_Type)))),
-                W        => WNE_Array_Compare),
+           Name     => M_Array_1.Compare,
            Args     => Args,
            Typ      => EW_Int_Type);
       T := Binding_For_Temp (Domain  => Domain,
@@ -6475,11 +6466,8 @@ package body Gnat2Why.Expr is
           (Ada_Node => Ada_Node,
            Domain   => Subdomain,
            Name     =>
-             Prefix
-               (M        =>
-                  Array_Modules
-                    (Positive (Number_Dimensions (Type_Of_Node (Left_Type)))),
-                W        => WNE_Bool_Eq),
+             M_Arrays (Positive (Number_Dimensions (Type_Of_Node (Left_Type))))
+               .Bool_Eq,
            Args     => Args,
            Typ      => EW_Bool_Type);
       T := Binding_For_Temp (Domain  => Domain,
@@ -6498,7 +6486,7 @@ package body Gnat2Why.Expr is
       elsif Op = N_Op_Ne then
          T :=
            New_Call (Domain => Domain,
-                     Name   => Bool_Not,
+                     Name   => M_Boolean.Notb,
                      Args   => (1 => T),
                      Typ    => EW_Bool_Type);
       end if;
@@ -6525,11 +6513,12 @@ package body Gnat2Why.Expr is
       Arg_Ind   : Positive := 1;
       Left_Expr : constant W_Expr_Id := New_Temp_For_Expr (Left);
       Right_Expr : constant W_Expr_Id := New_Temp_For_Expr (Right);
-      W_Op      : constant Why_Name_Enum :=
+      W_Op      : constant W_Identifier_Id :=
         (case Op is
-            when N_Op_And => WNE_Bool_And,
-            when N_Op_Or  => WNE_Bool_Or,
-            when others   => WNE_Bool_Xor);
+            when N_Op_And => M_Array_1.Andb,
+            when N_Op_Or  => M_Array_1.Orb,
+            when N_Op_Xor  => M_Array_1.Xorb,
+            when others => raise Program_Error);
 
       Left_Length  : constant W_Expr_Id :=
         Build_Length_Expr (Domain => EW_Term, Expr => Left_Expr, Dim => 1);
@@ -6598,11 +6587,7 @@ package body Gnat2Why.Expr is
         New_Call
           (Ada_Node => Ada_Node,
            Domain   => Subdomain,
-           Name     =>
-             Prefix
-               (M        =>
-                  Array_Modules (1),
-                W        => W_Op),
+           Name     => W_Op,
            Args     => Args);
 
       if Do_Check then
@@ -6622,7 +6607,7 @@ package body Gnat2Why.Expr is
          --  boolean.
 
          if not Is_Standard_Boolean_Type (Component_Type (Left_Type)) and then
-           W_Op = WNE_Bool_Xor
+           W_Op = M_Array_1.Xorb
          then
             T :=  +Sequence (New_Ignore (Prog =>
                      New_Located_Assert (Ada_Node,
@@ -6714,10 +6699,7 @@ package body Gnat2Why.Expr is
         New_Call
           (Ada_Node => Ada_Node,
            Domain   => Subdomain,
-           Name     =>
-             Prefix
-               (M => Array_Modules (1),
-                N => "notb"),
+           Name     => M_Array_1.Notb,
            Args     => Args);
 
       if Do_Check then
@@ -7059,9 +7041,9 @@ package body Gnat2Why.Expr is
                   W_Type : constant W_Type_Id := Base_Why_Type (Etype (Var));
                   Op     : constant W_Identifier_Id :=
                     (if Attr_Id = Attribute_Succ then
-                        Create_Modular_Add (W_Type)
+                         MF_BVs (W_Type).Add
                      else
-                        Create_Modular_Sub (W_Type));
+                         MF_BVs (W_Type).Sub);
                   Old    : W_Expr_Id;
                   Offset : constant W_Expr_Id :=
                     New_Modular_Constant (Typ => W_Type,
@@ -7251,11 +7233,12 @@ package body Gnat2Why.Expr is
                         --  the modulus valus from Why3 theory.
 
                         if Get_EW_Type (Var) = EW_Builtin then
-                           Mod_Expr := Insert_Simple_Conversion
-                                         (Domain => EW_Term,
-                                          Expr   => +Create_Modular_Modulus
-                                                      (Base_Why_Type (Var)),
-                                          To     => Arg_BTyp);
+                           Mod_Expr :=
+                             Insert_Simple_Conversion
+                               (Domain => EW_Term,
+                                Expr   =>
+                                  +MF_BVs (Base_Why_Type (Var)).Two_Power_Size,
+                                To     => Arg_BTyp);
 
                         --  Otherwise, we retrieve the value of the Modulus
                         --  attribute.
@@ -7271,8 +7254,7 @@ package body Gnat2Why.Expr is
                                 Expr   =>
                                   New_Call (Ada_Node => Expr,
                                             Domain   => Domain,
-                                            Name     =>
-                                              Create_Modular_Rem (Arg_BTyp),
+                                            Name     => MF_BVs (Arg_BTyp).Urem,
                                             Args     =>
                                               (1 => Arg_Expr,
                                                2 => Mod_Expr),
@@ -7300,7 +7282,7 @@ package body Gnat2Why.Expr is
                      Expr   =>
                        New_Call (Ada_Node => Expr,
                            Domain   => Domain,
-                           Name     => Integer_Mod,
+                           Name     => M_Int_Div.Mod_Id,
                            Args     =>
                              (1 => Transform_Expr (Arg,
                               EW_Int_Type,
@@ -7310,8 +7292,8 @@ package body Gnat2Why.Expr is
                                 (if Get_EW_Type (Var) = EW_Builtin then
                                  --  if we're builtin, i.e., not abstract,
                                  --  we use standard modulus from why theory
-                                        +Create_Modular_Modulus
-                                   (Base_Why_Type (Var))
+                                    +MF_BVs (Base_Why_Type (Var)).
+                                   Two_Power_Size
                                  else
                                  --  else we refer to the attribute modulus
                                     Insert_Simple_Conversion
@@ -7437,12 +7419,12 @@ package body Gnat2Why.Expr is
                                         Params);
                Func : constant W_Identifier_Id :=
                              (if Attr_Id = Attribute_Ceiling then
-                                 Floating_Ceil
+                                 M_Floating.Ceil
                               elsif Attr_Id = Attribute_Floor then
-                                 Floating_Floor
+                                 M_Floating.Floor
                               elsif Attr_Id = Attribute_Rounding then
-                                Floating_Round
-                              else Floating_Truncate);
+                                M_Floating.Round
+                              else M_Floating.Truncate);
             begin
                T := New_Call (Ada_Node => Expr,
                               Domain   => Domain,
@@ -7467,10 +7449,10 @@ package body Gnat2Why.Expr is
                                  Params);
                Func : constant W_Identifier_Id :=
                  (if Is_Discrete_Type (Ada_Ty) then
-                      (if Attr_Id = Attribute_Min then Integer_Min
-                       else Integer_Max)
-                  else (if Attr_Id = Attribute_Min then Floating_Min
-                        else Floating_Max));
+                      (if Attr_Id = Attribute_Min then M_Int_Minmax.Min
+                       else M_Int_Minmax.Max)
+                  else (if Attr_Id = Attribute_Min then M_Floating.Min
+                        else M_Floating.Max));
             begin
                T := New_Call (Ada_Node => Expr,
                               Domain   => Domain,
@@ -7564,39 +7546,39 @@ package body Gnat2Why.Expr is
            Ty = EW_Bool_Type
          then
             case Op is
-               when N_Op_Gt => return Int_Bool_Gt;
-               when N_Op_Lt => return Int_Bool_Lt;
-               when N_Op_Eq => return Int_Bool_Eq;
-               when N_Op_Ne => return Int_Bool_Ne;
-               when N_Op_Ge => return Int_Bool_Ge;
-               when N_Op_Le => return Int_Bool_Le;
+               when N_Op_Gt => return M_Integer.Bool_Gt;
+               when N_Op_Lt => return M_Integer.Bool_Lt;
+               when N_Op_Eq => return M_Integer.Bool_Eq;
+               when N_Op_Ne => return M_Integer.Bool_Ne;
+               when N_Op_Ge => return M_Integer.Bool_Ge;
+               when N_Op_Le => return M_Integer.Bool_Le;
             end case;
          elsif Ty = EW_Real_Type then
             case Op is
-               when N_Op_Gt => return Real_Bool_Gt;
-               when N_Op_Lt => return Real_Bool_Lt;
-               when N_Op_Eq => return Real_Bool_Eq;
-               when N_Op_Ne => return Real_Bool_Ne;
-               when N_Op_Ge => return Real_Bool_Ge;
-               when N_Op_Le => return Real_Bool_Le;
+               when N_Op_Gt => return M_Floating.Bool_Gt;
+               when N_Op_Lt => return M_Floating.Bool_Lt;
+               when N_Op_Eq => return M_Floating.Bool_Eq;
+               when N_Op_Ne => return M_Floating.Bool_Ne;
+               when N_Op_Ge => return M_Floating.Bool_Ge;
+               when N_Op_Le => return M_Floating.Bool_Le;
             end case;
          elsif Ty = EW_Bool_Type then
             case Op is
-               when N_Op_Gt => return Bool_Bool_Gt;
-               when N_Op_Lt => return Bool_Bool_Lt;
-               when N_Op_Eq => return Bool_Bool_Eq;
-               when N_Op_Ne => return Bool_Bool_Ne;
-               when N_Op_Ge => return Bool_Bool_Ge;
-               when N_Op_Le => return Bool_Bool_Le;
+               when N_Op_Gt => return M_Boolean.Bool_Gt;
+               when N_Op_Lt => return M_Boolean.Bool_Lt;
+               when N_Op_Eq => return M_Boolean.Bool_Eq;
+               when N_Op_Ne => return M_Boolean.Bool_Ne;
+               when N_Op_Ge => return M_Boolean.Bool_Ge;
+               when N_Op_Le => return M_Boolean.Bool_Le;
             end case;
          elsif Why_Type_Is_BitVector (Ty) then
             case Op is
-               when N_Op_Gt => return Create_Modular_Bool_Gt  (Ty);
-               when N_Op_Lt => return Create_Modular_Bool_Lt  (Ty);
-               when N_Op_Eq => return Create_Modular_Bool_Eq  (Ty);
-               when N_Op_Ne => return Create_Modular_Bool_Neq (Ty);
-               when N_Op_Ge => return Create_Modular_Bool_Ge  (Ty);
-               when N_Op_Le => return Create_Modular_Bool_Le  (Ty);
+               when N_Op_Gt => return MF_BVs (Ty).Bool_Gt;
+               when N_Op_Lt => return MF_BVs (Ty).Bool_Lt;
+               when N_Op_Eq => return MF_BVs (Ty).Bool_Eq;
+               when N_Op_Ne => return MF_BVs (Ty).Bool_Ne;
+               when N_Op_Ge => return MF_BVs (Ty).Bool_Ge;
+               when N_Op_Le => return MF_BVs (Ty).Bool_Le;
             end case;
          elsif Op in N_Op_Eq | N_Op_Ne then
             return
@@ -7631,12 +7613,12 @@ package body Gnat2Why.Expr is
          end case;
       elsif Why_Type_Is_BitVector (Ty) then
          case Op is
-            when N_Op_Gt => return Create_Modular_Gt (Ty);
-            when N_Op_Lt => return Create_Modular_Lt (Ty);
+            when N_Op_Gt => return MF_BVs (Ty).Ugt;
+            when N_Op_Lt => return MF_BVs (Ty).Ult;
             when N_Op_Eq => return Why_Eq;
             when N_Op_Ne => return Why_Neq;
-            when N_Op_Ge => return Create_Modular_Ge (Ty);
-            when N_Op_Le => return Create_Modular_Le (Ty);
+            when N_Op_Ge => return MF_BVs (Ty).Uge;
+            when N_Op_Le => return MF_BVs (Ty).Ule;
          end case;
       elsif Op = N_Op_Eq then
          return Why_Eq;
@@ -7781,9 +7763,7 @@ package body Gnat2Why.Expr is
          T :=
            New_Call
              (Domain => Domain,
-              Name   =>
-                Prefix (M => Array_Modules (1),
-                        W => WNE_Array_Slide),
+              Name   => M_Arrays (1).Slide,
               Args   =>
                 (1 => T,
                  2 => Get_Array_Attr (Domain, Left_Expr, Attribute_First, 1),
@@ -8861,7 +8841,7 @@ package body Gnat2Why.Expr is
                begin
                   T := New_Call (Ada_Node => Expr,
                                  Domain   => Domain,
-                                 Name     => Create_Modular_Not (Base),
+                                 Name     => MF_BVs (Base).BW_Not,
                                  Args     => (1 => Transform_Expr
                                                      (Right_Opnd (Expr),
                                                       Base,
@@ -9480,7 +9460,7 @@ package body Gnat2Why.Expr is
                         pragma Assert (E.Fields.Binder.Mutable);
 
                         T := +Sequence
-                          (New_Call (Name => Havoc_Fun,
+                          (New_Call (Name => M_Main.Havoc_Fun,
                                      Args => (1 => +E.Fields.Binder.B_Name)),
                            +T);
                      end if;
@@ -9494,7 +9474,7 @@ package body Gnat2Why.Expr is
                         declare
                            Havoc_Discr      : constant W_Prog_Id :=
                              New_Call
-                               (Name => Havoc_Fun,
+                               (Name => M_Main.Havoc_Fun,
                                 Args => (1 => +E.Discrs.Binder.B_Name));
                            Havoc_Discr_Cond : constant W_Expr_Id :=
                              New_Conditional
@@ -9542,7 +9522,7 @@ package body Gnat2Why.Expr is
       then
          pragma Assert (Is_Mutable_In_Why (Ent));
          pragma Assert (Params.Ref_Allowed);
-         T := +Sequence (Left  => New_Call (Name => Havoc_Fun,
+         T := +Sequence (Left  => New_Call (Name => M_Main.Havoc_Fun,
                                             Args => (1 => T)),
                          Right => New_Deref (Ada_Node => Get_Ada_Node (+T),
                                              Right    => +T,
@@ -9683,7 +9663,8 @@ package body Gnat2Why.Expr is
                   else
                      declare
                         M : constant W_Module_Id :=
-                          (if Is_Standard_Boolean_Type (Ty) then Boolean_Module
+                          (if Is_Standard_Boolean_Type (Ty) then
+                                M_Boolean.Module
                            else E_Module (Ty));
                      begin
                         return
@@ -9754,7 +9735,7 @@ package body Gnat2Why.Expr is
             Result := New_Call
               (Ada_Node => Expr,
                Domain   => Domain,
-               Name     => New_Identifier (Name => "notb"),
+               Name     => M_Boolean.Notb,
                Args     => (1 => Result),
                Typ      => EW_Bool_Type);
 
@@ -10869,17 +10850,17 @@ package body Gnat2Why.Expr is
            (Domain => EW_Term,
             Name   =>
               (if ECI (Name_S, Get_Name_String (Name_Shift_Right)) then
-                 Create_Modular_Lsr (Typ)
+                 MF_BVs (Typ).Lsr
                elsif ECI (Name_S,
                           Get_Name_String (Name_Shift_Right_Arithmetic))
                then
-                 Create_Modular_Asr (Typ)
+                  MF_BVs (Typ).Asr
                elsif ECI (Name_S, Get_Name_String (Name_Shift_Left)) then
-                 Create_Modular_Lsl (Typ)
+                  MF_BVs (Typ).Lsl
                elsif ECI (Name_S, Get_Name_String (Name_Rotate_Left)) then
-                 Create_Modular_Rl (Typ)
+                  MF_BVs (Typ).Rotate_Left
                elsif ECI (Name_S, Get_Name_String (Name_Rotate_Right)) then
-                 Create_Modular_Rr (Typ)
+                  MF_BVs (Typ).Rotate_Right
                else
                  raise Program_Error),
             Args   => (1 => Arg1,
@@ -11059,7 +11040,7 @@ package body Gnat2Why.Expr is
                Raise_Stmt  : constant W_Prog_Id :=
                  New_Raise
                    (Ada_Node => Stmt_Or_Decl,
-                    Name     => Return_Exc,
+                    Name     => M_Main.Return_Exc,
                     Typ      => EW_Unit_Type);
                Result_Stmt : W_Prog_Id;
             begin
@@ -11090,7 +11071,7 @@ package body Gnat2Why.Expr is
                Raise_Stmt  : constant W_Prog_Id :=
                  New_Raise
                    (Ada_Node => Stmt_Or_Decl,
-                    Name     => Return_Exc);
+                    Name     => M_Main.Return_Exc);
                Expr        : W_Prog_Id :=
                  Transform_Statements_And_Declarations
                    (Return_Object_Declarations (Stmt_Or_Decl));

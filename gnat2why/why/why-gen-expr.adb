@@ -498,9 +498,7 @@ package body Why.Gen.Expr is
             end loop;
             T := New_Call
               (Domain => Domain,
-               Name   =>
-                 Prefix (M => Array_Modules (Dim),
-                         N => "slide"),
+               Name   => M_Arrays (Dim).Slide,
                Args   => Args,
                Typ    => Split_Typ);
 
@@ -1725,7 +1723,7 @@ package body Why.Gen.Expr is
       Eq_Str   : constant String :=
         (if Use_Predef then "bool_eq" else "user_eq");
       Module   : constant W_Module_Id :=
-        (if Is_Boolean_Type (Typ) then Boolean_Module else E_Module (Typ));
+        (if Is_Boolean_Type (Typ) then M_Boolean.Module else E_Module (Typ));
       Eq_Id    : constant W_Identifier_Id :=
         New_Identifier (Module   => Module,
                         Name     => Eq_Str,
@@ -1807,7 +1805,7 @@ package body Why.Gen.Expr is
                                 Right  => +Right);
       else
          return New_Call (Domain => Domain,
-                          Name   => To_Ident (WNE_Bool_And),
+                          Name   => M_Boolean.Andb,
                           Args   => (1 => +Left, 2 => +Right),
                           Typ    => EW_Bool_Type);
       end if;
@@ -1835,14 +1833,14 @@ package body Why.Gen.Expr is
          declare
             Result : W_Expr_Id :=
               New_Call (Domain => Domain,
-                        Name   => To_Ident (WNE_Bool_And),
+                        Name   => M_Boolean.Andb,
                         Args   => (1 => +Conjuncts (Conjuncts'First),
                                    2 => +Conjuncts (Conjuncts'First + 1)),
                         Typ    => EW_Bool_Type);
          begin
             for K in Conjuncts'First + 2 .. Conjuncts'Last loop
                Result := New_Call (Domain => Domain,
-                                   Name   => To_Ident (WNE_Bool_And),
+                                   Name   => M_Boolean.Andb,
                                    Args   => (1 => Result,
                                               2 => +Conjuncts (K)),
                                    Typ    => EW_Bool_Type);
@@ -1865,7 +1863,7 @@ package body Why.Gen.Expr is
       then
          return
            New_Call (Domain => Domain,
-                     Name   => Create_Modular_And (Base),
+                     Name   => MF_BVs (Base).BW_And,
                      Args   => (1 => +Left, 2 => +Right),
                      Typ    => Base);
       elsif Base = EW_Bool_Type then
@@ -1968,7 +1966,7 @@ package body Why.Gen.Expr is
       else
          declare
             M : constant W_Module_Id :=
-              (if Is_Standard_Boolean_Type (Ty) then Boolean_Module
+              (if Is_Standard_Boolean_Type (Ty) then M_Boolean.Module
                else E_Module (Ty));
             T : W_Expr_Id;
             BT : constant W_Type_Id :=
@@ -1990,7 +1988,7 @@ package body Why.Gen.Expr is
                   when Attribute_Length =>
                      EW_Int_Type,
                   when Attribute_Image =>
-                     String_Image_Type,
+                     M_Main.String_Image_Type,
                   when Attribute_Constrained =>
                      EW_Bool_Type,
                   when Attribute_Size =>
@@ -2623,7 +2621,7 @@ package body Why.Gen.Expr is
                                 Domain => Domain);
       else
          return New_Call (Domain => Domain,
-                          Name   => To_Ident (WNE_Bool_Or),
+                          Name   => M_Boolean.Orb,
                           Args   => (1 => +Left, 2 => +Right),
                           Typ    => EW_Bool_Type);
       end if;
@@ -2651,13 +2649,13 @@ package body Why.Gen.Expr is
          declare
             Result : W_Expr_Id :=
               New_Call (Domain => Domain,
-                        Name   => To_Ident (WNE_Bool_Or),
+                        Name   => M_Boolean.Orb,
                         Args   => (1 => +Conjuncts (Conjuncts'First),
                                    2 => +Conjuncts (Conjuncts'First + 1)));
          begin
             for K in Conjuncts'First + 2 .. Conjuncts'Last loop
                Result := New_Call (Domain => Domain,
-                                   Name   => To_Ident (WNE_Bool_Or),
+                                   Name   => M_Boolean.Orb,
                                    Args   => (1 => Result,
                                               2 => +Conjuncts (K)),
                                    Typ    => EW_Bool_Type);
@@ -2680,7 +2678,7 @@ package body Why.Gen.Expr is
       then
          return
            New_Call (Domain => Domain,
-                     Name   => Create_Modular_Or (Base),
+                     Name   => MF_BVs (Base).BW_Or,
                      Args   => (1 => +Left, 2 => +Right),
                      Typ    => Base);
       elsif Base = EW_Bool_Type then
@@ -2771,7 +2769,7 @@ package body Why.Gen.Expr is
       Ty : constant W_Type_Id := Get_Type (Low);
       Le : constant W_Identifier_Id :=
         (if Ty = EW_Int_Type or else Ty = EW_Fixed_Type then Int_Infix_Le
-         elsif Why_Type_Is_BitVector (Ty) then Create_Modular_Le (Ty)
+         elsif Why_Type_Is_BitVector (Ty) then MF_BVs (Ty).Ule
          else Real_Infix_Le);
    begin
       return
@@ -2976,7 +2974,7 @@ package body Why.Gen.Expr is
       then
          return
            New_Call (Domain => Domain,
-                     Name   => Create_Modular_Xor (Base),
+                     Name   => MF_BVs (Base).BW_Xor,
                      Args   => (1 => +Left, 2 => +Right),
                      Typ    => Base);
 
@@ -3003,7 +3001,7 @@ package body Why.Gen.Expr is
                   New_Not (Domain => Domain, Right => Both_Expr)
                else
                   New_Call (Domain => Domain,
-                            Name   => Bool_Not,
+                            Name   => M_Boolean.Notb,
                             Args   => (1 => Both_Expr),
                             Typ    => EW_Bool_Type));
          begin

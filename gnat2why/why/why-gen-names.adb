@@ -168,30 +168,26 @@ package body Why.Gen.Names is
                   --  Only certain conversions are OK
 
                   if From = EW_Int_Type and then To = EW_Real_Type then
-                     return Floating_Real_Of_Int;
+                     return M_Floating.Real_Of_Int;
 
                   --  Conversions from real to int in Ada round to the nearest
                   --  integer, and away from zero in case of tie, exactly like
                   --  'Rounding attribute.
 
                   elsif From = EW_Real_Type and then To = EW_Int_Type then
-                     return Floating_Round;
+                     return M_Floating.Round;
                   elsif From = EW_Bool_Type and then To = EW_Int_Type then
-                     return Prefix (Ada_Node => Standard_Boolean,
-                                    M        => Boolean_Module,
-                                    W        => WNE_To_Int);
+                     return M_Boolean.To_Int;
                   elsif From = EW_Int_Type and then To = EW_Bool_Type then
-                     return Prefix (Ada_Node => Standard_Boolean,
-                                    M        => Boolean_Module,
-                                    W        => WNE_Of_Int);
+                     return M_Boolean.Of_Int;
                   elsif Why_Type_Is_BitVector (From) and then
                     To = EW_Int_Type
                   then
-                     return Create_Modular_ToInt (From);
+                     return MF_BVs (From).To_Int;
                   elsif From = EW_Int_Type and then
                     Why_Type_Is_BitVector (To)
                   then
-                     return Create_Modular_OfInt (To);
+                     return MF_BVs (To).Of_Int;
                   elsif Why_Type_Is_BitVector (From) and then
                     Why_Type_Is_BitVector (To)
                   then
@@ -341,7 +337,7 @@ package body Why.Gen.Names is
    begin
       if Is_Standard_Boolean_Type (Ty) then
          return Prefix (Ada_Node => Standard_Boolean,
-                        M        => Boolean_Module,
+                        M        => M_Boolean.Module,
                         W        => WNE_Dynamic_Property);
       else
          return Prefix (Ada_Node => Ty,
@@ -385,11 +381,11 @@ package body Why.Gen.Names is
    function New_Abs (Kind : W_Type_Id) return W_Identifier_Id is
    begin
       if Kind = EW_Real_Type then
-         return Floating_Abs_Real;
+         return M_Floating.Abs_Real;
       elsif Kind = EW_Int_Type or else Kind = EW_Fixed_Type then
-         return Integer_Abs;
+         return M_Int_Abs.Abs_Id;
       elsif Why_Type_Is_BitVector (Kind) then
-         return Create_Modular_Abs (Kind);
+         return MF_BVs (Kind).BV_Abs;
       else
          raise Not_Implemented;
       end if;
@@ -402,11 +398,11 @@ package body Why.Gen.Names is
    function New_Division (Kind : W_Type_Id) return W_Identifier_Id is
    begin
       if Kind = EW_Real_Type then
-         return Floating_Div_Real;
+         return M_Floating.Div_Real;
       elsif Kind = EW_Int_Type then
-         return Integer_Div;
+         return M_Int_Div.Div;
       elsif Why_Type_Is_BitVector (Kind) then
-         return Create_Modular_Div (Kind);
+         return MF_BVs (Kind).Udiv;
       elsif Kind = EW_Fixed_Type then
          raise Program_Error;
       else
@@ -421,11 +417,11 @@ package body Why.Gen.Names is
    function New_Exp (Kind : W_Type_Id) return W_Identifier_Id is
    begin
       if Kind = EW_Real_Type then
-         return Floating_Power;
+         return M_Floating.Power;
       elsif Kind = EW_Int_Type then
-         return Integer_Power;
+         return M_Int_Power.Power;
       elsif Why_Type_Is_BitVector (Kind) then
-         return Create_Modular_Power (Kind);
+         return MF_BVs (Kind).Power;
       elsif Kind = EW_Fixed_Type then
          raise Program_Error;
       else
@@ -612,9 +608,6 @@ package body Why.Gen.Names is
          when WNE_Of_Rep               => return "of_rep";
          when WNE_Range_Check_Fun      => return "range_check_";
          when WNE_Range_Check_Fun_BV_Int => return "range_check_int_";
-         when WNE_Bool_And             => return "andb";
-         when WNE_Bool_Or              => return "orb";
-         when WNE_Bool_Xor             => return "xorb";
          when WNE_Fixed_Point_Div      => return "fxp_div";
          when WNE_Fixed_Point_Mult     => return "fxp_mult";
          when WNE_Fixed_Point_Div_Int  => return "fxp_div_int";
@@ -623,16 +616,10 @@ package body Why.Gen.Names is
          when WNE_Float_Round_Tmp      => return "round_real_tmp";
          when WNE_Float_Pred           => return "prev_representable";
          when WNE_Float_Succ           => return "next_representable";
-         when WNE_Array_Access         => return "get";
          when WNE_Base_Type            => return "base_type";
          when WNE_Array_Elts           => return "elts";
          when WNE_Array_Base_Range_Pred => return "in_range_base";
-         when WNE_Array_Update         => return "set";
-         when WNE_Array_Compare        => return "compare";
          when WNE_Array_Component_Type => return "component_type";
-         when WNE_Array_Concat         => return "concat";
-         when WNE_Array_Singleton      => return "singleton";
-         when WNE_Array_Slide          => return "slide";
          when WNE_Array_Type           => return "__t";
          when WNE_To_String            => return "to_string";
          when WNE_Of_String            => return "from_string";
@@ -661,7 +648,6 @@ package body Why.Gen.Names is
          when WNE_Rec_Comp_Prefix      => return "rec__";
          when WNE_Extract_Prefix       => return "extract__";
          when WNE_Ancestor_Prefix      => return "extract_anc__";
-         when WNE_Null_Extension       => return "__null_ext__";
          when WNE_Hide_Extension       => return "hide_ext__";
          when WNE_Hide_Ancestor        => return "hide_anc__";
          when WNE_Dispatch_Module      => return "Dispatch";
@@ -751,22 +737,31 @@ package body Why.Gen.Names is
      (Ty : Entity_Id;
       R  : Range_Check_Kind) return W_Identifier_Id
    is
-      Name : constant Why_Name_Enum :=
-        (case R is
-            when RCK_Range_Not_First | RCK_Overflow_Not_First =>
-               WNE_Check_Not_First,
-            when RCK_Range_Not_Last | RCK_Overflow_Not_Last =>
-               WNE_Check_Not_Last,
-            when others        => WNE_Range_Check_Fun);
    begin
       if Is_Standard_Boolean_Type (Ty) then
-         return Prefix (Ada_Node => Standard_Boolean,
-                        M        => Boolean_Module,
-                        W        => Name);
+         case R is
+            when RCK_Range_Not_First | RCK_Overflow_Not_First =>
+               return M_Boolean.Check_Not_First;
+            when RCK_Range_Not_Last | RCK_Overflow_Not_Last =>
+               return M_Boolean.Check_Not_First;
+            when others =>
+               return M_Boolean.Range_Check;
+         end case;
       else
-         return Prefix (Ada_Node => Ty,
-                        M        => E_Module (Ty),
-                        W        => Name);
+         declare
+            Name : constant Why_Name_Enum :=
+              (case R is
+                  when RCK_Range_Not_First | RCK_Overflow_Not_First =>
+                     WNE_Check_Not_First,
+                  when RCK_Range_Not_Last | RCK_Overflow_Not_Last =>
+                     WNE_Check_Not_Last,
+                  when others        => WNE_Range_Check_Fun);
+
+         begin
+            return Prefix (Ada_Node => Ty,
+                           M        => E_Module (Ty),
+                           W        => Name);
+         end;
       end if;
    end Range_Check_Name;
 
@@ -779,7 +774,7 @@ package body Why.Gen.Names is
    begin
       if Is_Standard_Boolean_Type (Ty) then
          return Prefix (Ada_Node => Standard_Boolean,
-                        M        => Boolean_Module,
+                        M        => M_Boolean.Module,
                         W        => WNE_Range_Pred);
       else
          return Prefix (Ada_Node => Ty,

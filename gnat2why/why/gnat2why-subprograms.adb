@@ -616,7 +616,9 @@ package body Gnat2Why.Subprograms is
                      pragma Assert
                        (K = Regular
                         and then (Ty in
-                              Type_Of_Heap | EW_Private_Type | EW_Unit_Type));
+                              M_Main.Type_Of_Heap |
+                              EW_Private_Type |
+                              EW_Unit_Type));
                   end;
                end if;
 
@@ -1862,7 +1864,7 @@ package body Gnat2Why.Subprograms is
             Raise_Stmt : constant W_Prog_Id :=
               New_Raise
                 (Ada_Node => Body_N,
-                 Name     => Return_Exc);
+                 Name     => M_Main.Return_Exc);
          begin
             Why_Body :=
               New_Try_Block
@@ -1870,7 +1872,7 @@ package body Gnat2Why.Subprograms is
                  Handler =>
                    (1 =>
                           New_Handler
-                      (Name => Return_Exc,
+                      (Name => M_Main.Return_Exc,
                        Def  => New_Void)));
          end;
 

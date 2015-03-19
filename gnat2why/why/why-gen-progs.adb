@@ -172,7 +172,7 @@ package body Why.Gen.Progs is
       Call : constant W_Prog_Id :=
         New_Call
           (Ada_Node => Ada_Node,
-           Name     => Ignore_Id,
+           Name     => M_Main.Ignore_Id,
            Args     => (1 => +Prog));
    begin
       return New_Abstract_Expr (Expr => Call, Post => True_Pred);

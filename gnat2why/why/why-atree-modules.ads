@@ -54,9 +54,9 @@ package Why.Atree.Modules is
 
    EW_Bool_Type         : W_Type_Id;
    EW_Int_Type          : W_Type_Id;
-   EW_Fixed_Type        : W_Type_Id;
-   EW_Private_Type      : W_Type_Id;
+   EW_Private_Type      : W_Type_Id;         --  alias of Main.Private_Type
    EW_Prop_Type         : W_Type_Id;
+   EW_Fixed_Type        : W_Type_Id;         --  alias of Main.Fixed_Type
    EW_Real_Type         : W_Type_Id;
    EW_BitVector_8_Type  : W_Type_Id;
    EW_BitVector_16_Type : W_Type_Id;
@@ -66,25 +66,12 @@ package Why.Atree.Modules is
 
    --  Modules of "_gnatprove_standard.mlw"
 
-   Main_Module               : W_Module_Id;
-   Integer_Module            : W_Module_Id;
-   Int_Power_Module          : W_Module_Id;
-   Int_Div_Module            : W_Module_Id;
-   Int_Abs_Module            : W_Module_Id;
-   Int_Minmax_Module         : W_Module_Id;
-   Floating_Module           : W_Module_Id;
-   Boolean_Module            : W_Module_Id;
-   BitVector_8_Module        : W_Module_Id;
-   BitVector_16_Module       : W_Module_Id;
-   BitVector_32_Module       : W_Module_Id;
-   BitVector_64_Module       : W_Module_Id;
    BVConv_32_64_Module       : W_Module_Id;
    BVConv_16_64_Module       : W_Module_Id;
    BVConv_8_64_Module        : W_Module_Id;
    BVConv_16_32_Module       : W_Module_Id;
    BVConv_8_32_Module        : W_Module_Id;
    BVConv_8_16_Module        : W_Module_Id;
-   Array_Modules             : W_Module_Array (1 .. Max_Array_Dimensions);
 
    --  Modules of file "ada__model.mlw"
 
@@ -123,11 +110,173 @@ package Why.Atree.Modules is
 
    --  Identifiers of the Main module
 
-   String_Image_Type         : W_Type_Id;
-   Type_Of_Heap              : W_Type_Id;
-   Havoc_Fun                 : W_Identifier_Id;
-   Ignore_Id                 : W_Identifier_Id;
-   Bool_Not                  : W_Identifier_Id;
+   type M_Main_Type is record
+      Module            : W_Module_Id;
+      Ignore_Id         : W_Identifier_Id;
+      Private_Type      : W_Type_Id;
+      Null_Extension    : W_Identifier_Id;
+      Fixed_Type        : W_Type_Id;
+      Bool_Not          : W_Identifier_Id;
+      Return_Exc        : W_Name_Id;
+      String_Image_Type : W_Type_Id;
+      Type_Of_Heap      : W_Type_Id;
+      Havoc_Fun         : W_Identifier_Id;
+   end record;
+
+   type M_Integer_Type is record
+      Module  : W_Module_Id;
+      Bool_Eq : W_Identifier_Id;
+      Bool_Ne : W_Identifier_Id;
+      Bool_Le : W_Identifier_Id;
+      Bool_Lt : W_Identifier_Id;
+      Bool_Ge : W_Identifier_Id;
+      Bool_Gt : W_Identifier_Id;
+   end record;
+
+   type M_Int_Power_Type is record
+      Module : W_Module_Id;
+      Power  : W_Identifier_Id;
+   end record;
+
+   type M_Int_Div_Type is record
+      Module   : W_Module_Id;
+      Div      : W_Identifier_Id;
+      Euclid   : W_Identifier_Id;
+      Rem_Id   : W_Identifier_Id;
+      Mod_Id   : W_Identifier_Id;
+      Math_Mod : W_Identifier_Id;
+   end record;
+
+   type M_Int_Abs_Type is record
+      Module : W_Module_Id;
+      Abs_Id : W_Identifier_Id;
+   end record;
+
+   type M_Int_Minmax_Type is record
+      Module : W_Module_Id;
+      Min  : W_Identifier_Id;
+      Max  : W_Identifier_Id;
+   end record;
+
+   type M_Floating_Type is record
+      Module       : W_Module_Id;
+      Bool_Eq      : W_Identifier_Id;
+      Bool_Ne      : W_Identifier_Id;
+      Bool_Le      : W_Identifier_Id;
+      Bool_Lt      : W_Identifier_Id;
+      Bool_Ge      : W_Identifier_Id;
+      Bool_Gt      : W_Identifier_Id;
+      Max          : W_Identifier_Id;
+      Min          : W_Identifier_Id;
+      Round_Single : W_Identifier_Id;
+      Round_Double : W_Identifier_Id;
+      Real_Of_Int  : W_Identifier_Id;
+      Round        : W_Identifier_Id;
+      Div_Real     : W_Identifier_Id;
+      Abs_Real     : W_Identifier_Id;
+      Ceil         : W_Identifier_Id;
+      Floor        : W_Identifier_Id;
+      Power        : W_Identifier_Id;
+      Truncate     : W_Identifier_Id;
+   end record;
+
+   type M_Boolean_Type is record
+      Module          : W_Module_Id;
+      Bool_Eq         : W_Identifier_Id;
+      Bool_Ne         : W_Identifier_Id;
+      Bool_Le         : W_Identifier_Id;
+      Bool_Lt         : W_Identifier_Id;
+      Bool_Ge         : W_Identifier_Id;
+      Bool_Gt         : W_Identifier_Id;
+      Andb            : W_Identifier_Id;
+      Orb             : W_Identifier_Id;
+      Xorb            : W_Identifier_Id;
+      Notb            : W_Identifier_Id;
+      To_Int          : W_Identifier_Id;
+      Of_Int          : W_Identifier_Id;
+      Range_Check     : W_Identifier_Id;
+      Check_Not_First : W_Identifier_Id;
+      Check_Not_Last  : W_Identifier_Id;
+   end record;
+
+   type M_Array_Type is record
+      Module  : W_Module_Id;
+      Ty      : W_Type_Id;
+      Get     : W_Identifier_Id;
+      Set     : W_Identifier_Id;
+      Bool_Eq : W_Identifier_Id;
+      Slide   : W_Identifier_Id;
+   end record;
+
+   --  symbols which only exist for one-dimensional arrays
+
+   type M_Array_1_Type is record
+      Module    : W_Module_Id;         --  copy of M_Arrays (1).Module
+      Concat    : W_Identifier_Id;
+      Compare   : W_Identifier_Id;
+      Xorb      : W_Identifier_Id;
+      Andb      : W_Identifier_Id;
+      Orb       : W_Identifier_Id;
+      Notb      : W_Identifier_Id;
+      Singleton : W_Identifier_Id;
+   end record;
+
+   type M_BV_Type is record
+      Module         : W_Module_Id;
+      T              : W_Type_Id;
+      Ult            : W_Identifier_Id;
+      Ule            : W_Identifier_Id;
+      Ugt            : W_Identifier_Id;
+      Uge            : W_Identifier_Id;
+      Bool_Eq        : W_Identifier_Id;
+      Bool_Ne        : W_Identifier_Id;
+      Bool_Le        : W_Identifier_Id;
+      Bool_Lt        : W_Identifier_Id;
+      Bool_Ge        : W_Identifier_Id;
+      Bool_Gt        : W_Identifier_Id;
+      One            : W_Identifier_Id;
+      Add            : W_Identifier_Id;
+      Sub            : W_Identifier_Id;
+      Neg            : W_Identifier_Id;
+      Mult           : W_Identifier_Id;
+      Power          : W_Identifier_Id;
+      To_Int         : W_Identifier_Id;
+      Of_Int         : W_Identifier_Id;
+      Udiv           : W_Identifier_Id;
+      Urem           : W_Identifier_Id;
+      BW_And         : W_Identifier_Id;
+      BW_Or          : W_Identifier_Id;
+      BW_Xor         : W_Identifier_Id;
+      BW_Not         : W_Identifier_Id;
+      BV_Abs         : W_Identifier_Id;
+      Lsl            : W_Identifier_Id;
+      Lsr            : W_Identifier_Id;
+      Asr            : W_Identifier_Id;
+      Rotate_Left    : W_Identifier_Id;
+      Rotate_Right   : W_Identifier_Id;
+      Two_Power_Size : W_Identifier_Id;
+   end record;
+
+   M_Main       : M_Main_Type;
+   M_Integer    : M_Integer_Type;
+   M_Int_Power  : M_Int_Power_Type;
+   M_Int_Div    : M_Int_Div_Type;
+   M_Int_Abs    : M_Int_Abs_Type;
+   M_Int_Minmax : M_Int_Minmax_Type;
+   M_Floating   : M_Floating_Type;
+   M_Boolean    : M_Boolean_Type;
+   M_Arrays     : array (1 .. 4) of M_Array_Type;
+   M_Array_1    : M_Array_1_Type;
+
+   type BV_Kind is (BV8, BV16, BV32, BV64);
+
+   M_BVs        : array (BV_Kind) of M_BV_Type;
+
+   function MF_BVs (T : W_Type_Id) return M_BV_Type;
+   --  same as M_BVs but can be used with a bitvector type in W_Type_Id format
+   --  @param T a bitvector type as Why tree node
+   --  @return the corresponding Why module record
+
    --  builtin unary minus
 
    Int_Unary_Minus           : W_Identifier_Id;
@@ -158,52 +307,6 @@ package Why.Atree.Modules is
    Real_Infix_Gt             : W_Identifier_Id;
    Real_Infix_Ge             : W_Identifier_Id;
 
-   --  Identifiers of the Integer module
-
-   Integer_Div               : W_Identifier_Id;
-   Euclid_Div                : W_Identifier_Id;
-   Integer_Rem               : W_Identifier_Id;
-   Integer_Mod               : W_Identifier_Id;
-   Integer_Power             : W_Identifier_Id;
-   Integer_Math_Mod          : W_Identifier_Id;
-   Integer_Max               : W_Identifier_Id;
-   Integer_Min               : W_Identifier_Id;
-   Integer_Abs               : W_Identifier_Id;
-
-   Int_Bool_Eq               : W_Identifier_Id;
-   Int_Bool_Lt               : W_Identifier_Id;
-   Int_Bool_Le               : W_Identifier_Id;
-   Int_Bool_Ne               : W_Identifier_Id;
-   Int_Bool_Gt               : W_Identifier_Id;
-   Int_Bool_Ge               : W_Identifier_Id;
-
-   Floating_Div_Real         : W_Identifier_Id;
-   Floating_Abs_Real         : W_Identifier_Id;
-   Floating_Ceil             : W_Identifier_Id;
-   Floating_Floor            : W_Identifier_Id;
-   Floating_Power            : W_Identifier_Id;
-   Floating_Real_Of_Int      : W_Identifier_Id;
-   Floating_Round            : W_Identifier_Id;
-   Floating_Truncate         : W_Identifier_Id;
-   Floating_Max              : W_Identifier_Id;
-   Floating_Min              : W_Identifier_Id;
-   Floating_Round_Single     : W_Identifier_Id;
-   Floating_Round_Double     : W_Identifier_Id;
-
-   Real_Bool_Eq               : W_Identifier_Id;
-   Real_Bool_Lt               : W_Identifier_Id;
-   Real_Bool_Le               : W_Identifier_Id;
-   Real_Bool_Ne               : W_Identifier_Id;
-   Real_Bool_Gt               : W_Identifier_Id;
-   Real_Bool_Ge               : W_Identifier_Id;
-
-   Bool_Bool_Eq               : W_Identifier_Id;
-   Bool_Bool_Lt               : W_Identifier_Id;
-   Bool_Bool_Le               : W_Identifier_Id;
-   Bool_Bool_Ne               : W_Identifier_Id;
-   Bool_Bool_Gt               : W_Identifier_Id;
-   Bool_Bool_Ge               : W_Identifier_Id;
-
    To_String_Id               : W_Identifier_Id;
    Of_String_Id               : W_Identifier_Id;
 
@@ -211,48 +314,6 @@ package Why.Atree.Modules is
 
    Old_Tag                   : Name_Id;
    Def_Name                  : W_Identifier_Id;
-   Return_Exc                : W_Name_Id;
-
-   --  Modular identifiers constructors
-   --  (to deal with modulus dependency in a simple way)
-   function Create_Modular_Operator
-     (Typ    : W_Type_Id;
-      Symbol : Name_Id) return W_Identifier_Id;
-   function Create_Modular_Rem      (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Div      (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Mul      (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Add      (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Sub      (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Neg      (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_And      (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Or       (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Xor      (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Not      (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Ge       (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Gt       (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Le       (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Lt       (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Bool_Ge  (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Bool_Gt  (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Bool_Le  (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Bool_Lt  (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Bool_Eq  (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Bool_Neq (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Abs      (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Power    (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Lsl      (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Lsr      (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Asr      (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_ToInt    (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_OfInt    (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Rl       (Typ : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Rr       (Typ : W_Type_Id) return W_Identifier_Id;
-
-   --  Create_Modular_Modulus will return an ew_int with 2 ** size of Typ
-   --  (from the why3 theory). It is used for the interpretation of the Mod
-   --  attribute for unsigned_8/16/32/64 since the attribute modulus is not
-   --  present for these types.
-   function Create_Modular_Modulus (Typ : W_Type_Id) return W_Identifier_Id;
 
    function Create_Modular_Converter
      (From, To : W_Type_Id) return W_Identifier_Id;

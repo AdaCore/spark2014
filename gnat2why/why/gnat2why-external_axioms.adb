@@ -1315,22 +1315,22 @@ package body Gnat2Why.External_Axioms is
                         M : constant W_Module_Id :=
                           (case Get_Type_Kind (F_W_Type) is
                               when EW_Builtin =>
-                             (if F_W_Type = EW_Bool_Type then Boolean_Module
+                             (if F_W_Type = EW_Bool_Type then M_Boolean.Module
                               elsif F_W_Type = EW_Fixed_Type then
-                                 Integer_Module
+                                 M_Integer.Module
                               elsif F_W_Type = EW_Int_Type then
-                                 Integer_Module
+                                 M_Integer.Module
                               elsif F_W_Type = EW_Real_Type then
-                                 Floating_Module
+                                 M_Floating.Module
                               elsif F_W_Type = EW_BitVector_8_Type then
-                                 BitVector_8_Module
+                                 M_BVs (BV8).Module
                               elsif F_W_Type = EW_BitVector_16_Type then
-                                 BitVector_16_Module
+                                 M_BVs (BV16).Module
                               elsif F_W_Type = EW_BitVector_32_Type then
-                                 BitVector_32_Module
+                                 M_BVs (BV32).Module
                               elsif F_W_Type = EW_BitVector_64_Type then
-                                 BitVector_64_Module
-                              else Main_Module),
+                                 M_BVs (BV64).Module
+                              else M_Main.Module),
                               when EW_Abstract | EW_Split =>
                                  E_Module (Get_Ada_Node (+F_W_Type)));
                      begin

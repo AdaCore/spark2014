@@ -1,8 +1,6 @@
 module Main
   (* the module of references is needed in all modules *)
   use export ref.Ref
-  (* dito for boolean functions *)
-  use export bool.Bool
   use export "_gnatprove_standard_th".Main_Main
 
   (* exception used to simulate return statements *)
@@ -196,7 +194,7 @@ module Floating
 end
 
 module Boolean
-  use import bool.Bool
+  use export bool.Bool
   use export bool.Ite
   use import int.Int
   use import Main

@@ -646,9 +646,9 @@ package body Gnat2Why.Expr.Loops is
                Update_Op    : constant W_Identifier_Id :=
                  (if Why_Type_Is_BitVector (Loop_Index_Type) then
                     (if Is_Reverse then
-                       Create_Modular_Sub (Loop_Index_Type)
-                     else
-                       Create_Modular_Add (Loop_Index_Type))
+                       MF_BVs (Loop_Index_Type).Sub
+                       else
+                          MF_BVs (Loop_Index_Type).Add)
                   else
                     (if Is_Reverse then Int_Infix_Subtr
                      else Int_Infix_Add));
@@ -698,8 +698,8 @@ package body Gnat2Why.Expr.Loops is
                  (if Is_Reverse then Low_Ident else High_Ident);
                Exit_Cmp     : constant W_Identifier_Id :=
                  (if Why_Type_Is_BitVector (Loop_Index_Type) then
-                    (if Is_Reverse then Create_Modular_Ge (Loop_Index_Type)
-                     else Create_Modular_Le (Loop_Index_Type))
+                    (if Is_Reverse then MF_BVs (Loop_Index_Type).Uge
+                     else MF_BVs (Loop_Index_Type).Ule)
                   else
                     (if Is_Reverse then Int_Infix_Ge else Int_Infix_Le));
                Exit_Cond    : constant W_Expr_Id :=

@@ -144,16 +144,10 @@ package Why.Gen.Names is
 
    type Why_Name_Enum is
      (
-      WNE_Array_Access,
       WNE_Array_Base_Range_Pred,
-      WNE_Array_Compare,
       WNE_Array_Component_Type,
-      WNE_Array_Concat,
       WNE_Array_Elts,
-      WNE_Array_Singleton,
-      WNE_Array_Slide,
       WNE_Array_Type,
-      WNE_Array_Update,
       WNE_Attr_Constrained,
       WNE_Attr_First,
       WNE_Attr_Image,
@@ -168,10 +162,7 @@ package Why.Gen.Names is
 
       WNE_Attr_Value,
       WNE_Base_Type,
-      WNE_Bool_And,
       WNE_Bool_Eq,
-      WNE_Bool_Or,
-      WNE_Bool_Xor,
       WNE_Check_Not_First,
       WNE_Check_Not_Last,
       WNE_Dummy,
@@ -197,9 +188,6 @@ package Why.Gen.Names is
 
       --  Name of constant tag value for a tagged type
       WNE_Tag,  --  __tag
-
-      --  Null extension for creating a value of a specific tagged type
-      WNE_Null_Extension,  --  __null_ext__
 
       --  Name of the function aggregating the extension components and the
       --  special extension field rec__ext__ in the derived type, to generate
