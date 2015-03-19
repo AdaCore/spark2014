@@ -1222,35 +1222,15 @@ package body Gnat2Why.Expr is
                     else Int_Infix_Ge),
                  Typ  => EW_Bool_Type,
                  Args => (+Low_Expr,
-                          (if Why_Type_Is_BitVector (Why_Base) then
-                             Insert_Simple_Conversion
-                               (Domain => EW_Term,
-                                Expr   =>
-                                  New_Attribute_Expr (Base,
-                                                      EW_Term,
-                                                      Attribute_First,
-                                                      Params),
-                                To     => Why_Base)
-                           else
-                             +New_Attribute_Expr
-                               (Base, EW_Term, Attribute_First, Params))));
+                          +New_Attribute_Expr
+                            (Base, EW_Term, Attribute_First, Params)));
             Last_In_Range    : constant W_Pred_Id :=
               New_Call
                 (Name => Le,
                  Typ  => EW_Bool_Type,
                  Args => (+High_Expr,
-                          (if Why_Type_Is_BitVector (Why_Base) then
-                             Insert_Simple_Conversion
-                               (Domain => EW_Term,
-                                Expr   =>
-                                  New_Attribute_Expr (Base,
-                                                      EW_Term,
-                                                      Attribute_Last,
-                                                      Params),
-                                To     => Why_Base)
-                           else
                              +New_Attribute_Expr
-                               (Base, EW_Term, Attribute_Last, Params))));
+                               (Base, EW_Term, Attribute_Last, Params)));
             First_Le_Last    : constant W_Pred_Id :=
               New_Call
                 (Name => Le,
@@ -10829,9 +10809,6 @@ package body Gnat2Why.Expr is
                                            elsif Nb_Of_Bits = 64 then
                                               EW_BitVector_64_Type
                                            else raise Program_Error);
-      --  for modular types with modulus bigger than 64,
-      --  transform_function_call is called (filtered through
-      --  Is_Accepted_Shift_Or_Rotate).
       T           : W_Expr_Id;
 
    begin

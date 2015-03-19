@@ -84,14 +84,7 @@ package Why.Atree.Modules is
    Static_Modular_lt16       : W_Module_Id;
    Static_Modular_lt32       : W_Module_Id;
    Static_Modular_lt64       : W_Module_Id;
-   Dynamic_Modular_8         : W_Module_Id;
-   Dynamic_Modular_16        : W_Module_Id;
-   Dynamic_Modular_32        : W_Module_Id;
-   Dynamic_Modular_64        : W_Module_Id;
-   Dynamic_Modular_lt8       : W_Module_Id;
-   Dynamic_Modular_lt16      : W_Module_Id;
-   Dynamic_Modular_lt32      : W_Module_Id;
-   Dynamic_Modular_lt64      : W_Module_Id;
+   Dynamic_Modular           : W_Module_Id;
    Dynamic_Discrete          : W_Module_Id;
    Static_Fixed_Point        : W_Module_Id;
    Dynamic_Fixed_Point       : W_Module_Id;

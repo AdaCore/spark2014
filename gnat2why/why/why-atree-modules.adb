@@ -220,38 +220,10 @@ package body Why.Atree.Modules is
         New_Module
           (File => Ada_Model_File,
            Name => NID ("Static_Discrete"));
-      Dynamic_Modular_lt8 :=
+      Dynamic_Modular :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Dynamic_Modular_lt8"));
-      Dynamic_Modular_lt16 :=
-        New_Module
-          (File => Ada_Model_File,
-           Name => NID ("Dynamic_Modular_lt16"));
-      Dynamic_Modular_lt32 :=
-        New_Module
-          (File => Ada_Model_File,
-           Name => NID ("Dynamic_Modular_lt32"));
-      Dynamic_Modular_lt64 :=
-        New_Module
-          (File => Ada_Model_File,
-           Name => NID ("Dynamic_Modular_lt64"));
-      Dynamic_Modular_8 :=
-        New_Module
-          (File => Ada_Model_File,
-           Name => NID ("Dynamic_Modular_8"));
-      Dynamic_Modular_16 :=
-        New_Module
-          (File => Ada_Model_File,
-           Name => NID ("Dynamic_Modular_16"));
-      Dynamic_Modular_32 :=
-        New_Module
-          (File => Ada_Model_File,
-           Name => NID ("Dynamic_Modular_32"));
-      Dynamic_Modular_64 :=
-        New_Module
-          (File => Ada_Model_File,
-           Name => NID ("Dynamic_Modular_64"));
+           Name => NID ("Dynamic_Modular"));
       Dynamic_Discrete :=
         New_Module
           (File => Ada_Model_File,

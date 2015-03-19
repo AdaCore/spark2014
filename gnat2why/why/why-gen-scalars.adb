@@ -164,15 +164,6 @@ package body Why.Gen.Scalars is
                   Orig_Name => To_Name (WNE_Dynamic_Property),
                   Image     => To_Name (WNE_Dynamic_Property)))
             else (1 .. 0 => <>));
-         Discr_Dynamic_Conv_Subst : constant W_Clone_Substitution_Array :=
-           (if not Is_Static and then Has_Discrete_Type (E) then
-              (1 => New_Clone_Substitution
-                (Kind      => EW_Function,
-                 Orig_Name => New_Name (Symbol => NID ("base_rep_to_int")),
-                 Image     => New_Name
-                   (Symbol => NID ("rep_to_int"),
-                    Module => E_Module (Base_Type (E)))))
-            else (1 .. 0 => <>));
          Mod_Clone_Subst : constant W_Clone_Substitution_Array :=
            (if Is_Static
               and then Has_Modular_Integer_Type (E)
@@ -187,11 +178,17 @@ package body Why.Gen.Scalars is
                   Image     => To_Name (WNE_Attr_Modulus)))
             else (1 .. 0 => <>));
          Range_Int_Clone_Subst : constant W_Clone_Substitution_Array :=
-           (if Is_Static and then Has_Modular_Integer_Type (E) then
-                (1 => New_Clone_Substitution
-                 (Kind      => EW_Predicate,
-                  Orig_Name => To_Name (WNE_Range_Pred_BV_Int),
-                  Image     => To_Name (WNE_Range_Pred_BV_Int)))
+           (if Has_Modular_Integer_Type (E) then
+                (if Is_Static then
+                     (1 => New_Clone_Substitution
+                      (Kind      => EW_Predicate,
+                       Orig_Name => To_Name (WNE_Range_Pred_BV_Int),
+                       Image     => To_Name (WNE_Range_Pred_BV_Int)))
+                 else
+                     (1 => New_Clone_Substitution
+                      (Kind      => EW_Predicate,
+                       Orig_Name => To_Name (WNE_Dynamic_Property_BV_Int),
+                       Image     => To_Name (WNE_Dynamic_Property_BV_Int))))
             else (1 .. 0 => <>));
          Fixed_Clone_Subst : constant W_Clone_Substitution_Array :=
            (if Is_Fixed_Point_Type (E) then
@@ -211,7 +208,6 @@ package body Why.Gen.Scalars is
            Round_Clone_Subst &
            Static_Clone_Subst &
            Dynamic_Conv_Subst &
-           Discr_Dynamic_Conv_Subst &
            Mod_Clone_Subst &
            Range_Int_Clone_Subst &
            Fixed_Clone_Subst;
@@ -228,32 +224,24 @@ package body Why.Gen.Scalars is
          Var : constant W_Identifier_Id :=
            New_Identifier (Name => "x", Typ => Ty);
          Def : W_Pred_Id := True_Pred;
-         --  in the case of modular types first and last are integers
-         --  in the why3 theory (and not bv), so we need to insert proper
-         --  convertion / type specification for these attributes
-         Bnd_Type : constant W_Type_Id :=
-           (if Is_Static and then Why_Type_Is_BitVector (Ty) then EW_Int_Type
-            else Ty);
          Fst : constant W_Identifier_Id :=
            New_Identifier
-             (Symbol => Get_Symbol (To_Ident (WNE_Attr_First)),
+             (Symbol =>
+                 (if Has_Modular_Integer_Type (E) and Ty = EW_Int_Type then
+                     NID ("first_int")
+                  else
+                     Get_Symbol (To_Ident (WNE_Attr_First))),
               Domain => EW_Term,
-              Typ    => Bnd_Type);
+              Typ    => Ty);
          Lst : constant W_Identifier_Id :=
            New_Identifier
-             (Symbol => Get_Symbol (To_Ident (WNE_Attr_Last)),
+             (Symbol =>
+                (if Has_Modular_Integer_Type (E) and Ty = EW_Int_Type then
+                      NID ("last_int")
+                 else
+                    Get_Symbol (To_Ident (WNE_Attr_Last))),
               Domain => EW_Term,
-              Typ    => Bnd_Type);
-         Fst_Expr : constant W_Expr_Id :=
-           Insert_Simple_Conversion
-             (Domain => EW_Term,
-              Expr   => +Fst,
-              To     => Ty);
-         Lst_Expr : constant W_Expr_Id :=
-           Insert_Simple_Conversion
-             (Domain => EW_Term,
-              Expr   => +Lst,
-              To     => Ty);
+              Typ    => Ty);
       begin
          if Has_Predicates (E) then
             declare
@@ -311,8 +299,8 @@ package body Why.Gen.Scalars is
                Left   => +Def,
                Right  =>
                  +New_Range_Expr (Domain => EW_Pred,
-                                  Low    => Fst_Expr,
-                                  High   => Lst_Expr,
+                                  Low    => +Fst,
+                                  High   => +Lst,
                                   Expr   => +Var));
          end if;
 
@@ -394,7 +382,9 @@ package body Why.Gen.Scalars is
                return Static_Floating_Point;
             end if;
          else
-            if Has_Discrete_Type (E) then
+            if Has_Modular_Integer_Type (E) then
+               return Dynamic_Modular;
+            elsif Has_Discrete_Type (E) then
                return Dynamic_Discrete;
             elsif Has_Fixed_Point_Type (E) then
                return Dynamic_Fixed_Point;
@@ -493,6 +483,33 @@ package body Why.Gen.Scalars is
          Small     => Small,
          Is_Static => Is_Static);
 
+      --  define first_int and last_int for static modular types
+
+      if Is_Static and then Is_Modular_Integer_Type (E) then
+         Emit (Theory,
+               Why.Atree.Builders.New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        => New_Identifier
+                    (Name => "first_int",
+                     Typ  => EW_Int_Type),
+                  Binders     => (1 .. 0 => <>),
+                  Return_Type => EW_Int_Type,
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Def         => New_Integer_Constant
+                    (Value => Expr_Value (Low_Bound (Rng)))));
+         Emit (Theory,
+               Why.Atree.Builders.New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        => New_Identifier
+                    (Name => "last_int",
+                     Typ  => EW_Int_Type),
+                  Binders     => (1 .. 0 => <>),
+                  Return_Type => EW_Int_Type,
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Def         => New_Integer_Constant
+                    (Value => Expr_Value (High_Bound (Rng)))));
+      end if;
+
       Generate_Range_Predicate (Name => (if Is_Static
                                          then WNE_Range_Pred
                                          else WNE_Dynamic_Property));
@@ -547,10 +564,7 @@ package body Why.Gen.Scalars is
                      Name        =>
                        To_Ident (Attr_To_Why_Name (Attr_Values (J).Attr_Id)),
                      Binders     => (1 .. 0 => <>),
-                     Return_Type => (if Attr_Values (J).Value = Why_Empty then
-                                        Base_Type
-                                     else
-                                        Get_Type (+Attr_Values (J).Value)),
+                     Return_Type => Base_Type,
                      Labels      => Name_Id_Sets.Empty_Set,
                      Def         => W_Expr_Id (Attr_Values (J).Value)));
          end if;
@@ -563,7 +577,11 @@ package body Why.Gen.Scalars is
 
    function Num_Constant (Ty : Entity_Id; N : Node_Id) return W_Term_Id is
    begin
-      if Is_Discrete_Type (Ty) then
+      if Is_Modular_Integer_Type (Ty) then
+         return New_Modular_Constant
+           (Value => Expr_Value (N),
+            Typ => Base_Why_Type (Ty));
+      elsif Is_Discrete_Type (Ty) then
          return New_Integer_Constant (Value => Expr_Value (N));
       elsif Is_Fixed_Point_Type (Ty) then
          return New_Fixed_Constant (Value => Expr_Value (N));

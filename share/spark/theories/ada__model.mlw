@@ -9,8 +9,6 @@ module Discrete_Base
 
   type rep_type
 
-  function rep_to_int rep_type : int
-
   function bool_eq (x : rep_type) (y : rep_type) : bool =
     if x = y then True else False
 
@@ -47,26 +45,21 @@ module Static_Discrete_Base
      even though this might correspond to dynamic types in Ada. *)
 
   clone export Discrete_Base
-  use import int.Int
 
-  (* first and last are ints since, even for bitvectors we want to do
-     the range checks with ints when converting from int to some
-     bitvector type. We then need a to_int function for check_not_last
-     and check_not_first *)
-  function first : int
+  function first : rep_type
 
-  function last  : int
+  function last  : rep_type
 
   axiom inversion_axiom  :
     forall x : t [to_rep x].
     of_rep (to_rep (x)) = x
 
   val check_not_last (n : rep_type) : rep_type
-    requires { rep_to_int n <> last }
+    requires { n <> last }
     ensures { result = n }
 
   val check_not_first (n : rep_type) : rep_type
-    requires { rep_to_int n <> first }
+    requires { n <> first }
     ensures { result = n }
 
   predicate in_range (x : rep_type)
@@ -84,11 +77,8 @@ end
 module Static_Discrete
   use import int.Int
 
-  function rep_to_int "inline" (x : int) : int = x
-
   clone export Static_Discrete_Base with
-    type rep_type = int,
-    function rep_to_int = rep_to_int
+    type rep_type = int
 
   axiom coerce_axiom :
     forall x  : int [to_rep (of_rep x)].
@@ -104,6 +94,8 @@ module Static_Modular_Base
      the range check directly in int. *)
   predicate in_range_int int
 
+  function rep_to_int rep_type : int
+
   function to_int (x : t) : int = rep_to_int (to_rep x) (* used for modular indexed arrays cloning *)
 
   val range_check_int_ (n : int) : int
@@ -111,7 +103,7 @@ module Static_Modular_Base
     ensures { result = n }
 
   axiom range_int_axiom :
-    forall x : t. in_range_int (rep_to_int (to_rep x))
+    forall x : t. in_range_int (to_int x)
 
   predicate dynamic_property_int "inline" (f l x : int) = in_range_int x
 end
@@ -255,18 +247,15 @@ module Dynamic_Discrete
   (* To be instantiated with functions from the Ada base type *)
   function base_to_rep t : rep_type
   function base_of_rep rep_type : t
-  function base_rep_to_int (x : rep_type) : int
 
   function to_rep "inline" (x : t) : rep_type = base_to_rep x
   function of_rep "inline" (x : rep_type) : t = base_of_rep x
-  function rep_to_int "inline" (x : rep_type) : int = base_rep_to_int x
 
   clone export Discrete_Base
       with type t = t,
       type rep_type = rep_type,
       function of_rep = of_rep,
-      function to_rep = to_rep,
-      function rep_to_int = rep_to_int
+      function to_rep = to_rep
 
   predicate dynamic_property (first last n : rep_type)
 
@@ -281,6 +270,20 @@ module Dynamic_Discrete
   val range_check_ (first last n : rep_type) : rep_type
     requires { dynamic_property first last n }
     ensures { result = n /\ dynamic_property first last n }
+end
+
+module Dynamic_Modular
+  use import int.Int
+
+  clone export Dynamic_Discrete
+
+  (* for conversions from int to bitvectors, we need to be able to
+     check the dynamic property directly in int. *)
+  predicate dynamic_property_int (first last n : int)
+
+  val range_check_int_ (first last n : int) : int
+    requires { dynamic_property_int first last n }
+    ensures { result = n /\ dynamic_property_int first last n}
 end
 
 module Fixed_Point_Base

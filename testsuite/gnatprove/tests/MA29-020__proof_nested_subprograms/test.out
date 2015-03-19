@@ -50,7 +50,7 @@ skein.adb:102:26: info: initialization of "Local_Ctx.B" proved, in call inlined 
 skein.adb:102:26: warning: unused assignment, in call inlined at skein.adb:125
 skein.adb:102:59: info: initialization of "C18b" proved, in call inlined at skein.adb:125
 skein.adb:102:72: info: range check proved, in call inlined at skein.adb:125
-skein.adb:107:12: info: length check proved
+skein.adb:107:12: medium: length check might fail
 skein.adb:109:43: warning: unused assignment
 skein.adb:110:07: warning: statement has no effect
 skein.adb:110:11: info: initialization of "Local_Ctx.H.Byte_Count" proved
@@ -102,6 +102,6 @@ skein.ads:269:52: info: length check proved
 Analyzed 1 units
 in unit skein, 3 subprograms and packages out of 3 analyzed
   Skein at skein.ads:6 flow analyzed (0 errors and 0 warnings) and proved (6 checks)
-  Skein.Skein_512_Final at skein.ads:131 flow analyzed (0 errors and 15 warnings) and not proved, 17 checks out of 21 proved
+  Skein.Skein_512_Final at skein.ads:131 flow analyzed (0 errors and 15 warnings) and not proved, 16 checks out of 21 proved
   Skein.Zero_Pad at skein.adb:60 flow analyzed (0 errors and 0 warnings) and proved (1 checks)
 
