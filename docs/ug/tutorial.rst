@@ -6,7 +6,8 @@
 
 This chapter describes a simple use of the |SPARK| toolset on a program written
 completely in |SPARK|, within the GPS integrated development environment. All
-the tools may also be run from the command-line, see :ref:`command line`.
+the tools may also be run from the command-line, see :ref:`Command Line
+Invocation`.
 
 Writing |SPARK| Programs
 ========================

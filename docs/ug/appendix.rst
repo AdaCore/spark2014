@@ -4,10 +4,10 @@
 Appendix
 ********
 
-.. _command line:
+.. _Command Line Invocation:
 
-Command-line Options
-====================
+Command Line Invocation
+=======================
 
 |GNATprove| is executed with the following command line::
 
@@ -146,11 +146,11 @@ Sharing Libraries of Theorems
 When |GNATprove| is used with a manual prover, the user can provide libraries
 of theorems to use during the proof process.
 
-To do so, the user will need to set a proof directory (see
-:ref:`Project_Attributes` for more details on this directory).  The user needs
-to create a folder with the same name as the chosen manual prover (the casing
-of the name is the same as the one passed to the switch ``--prover``) and put
-the library sources inside this folder.
+To do so, the user will need to set a proof directory (see :ref:`Project
+Attributes` for more details on this directory).  The user needs to create a
+folder with the same name as the chosen manual prover (the casing of the name
+is the same as the one passed to the switch ``--prover``) and put the library
+sources inside this folder.
 
 Finally, some additional fields need to be added to the prover configuration
 in the Why3 configuration file (a basic example of prover configuration can
@@ -220,7 +220,7 @@ For this to work:
 
 - replace the version by your Coq version (e.g. ``version = "8.4pl3"``)
 
-.. _Project_Attributes:
+.. _Project Attributes:
 
 Project Attributes
 ==================

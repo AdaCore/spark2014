@@ -96,10 +96,10 @@ Setting Up a Project File
 Basic Project Set Up
 ^^^^^^^^^^^^^^^^^^^^
 
-If not already done, create a GNAT project file (`.gpr`), as documented in
-the GNAT User's Guide, section `GNAT Project Manager`. See also
-:ref:`Project_Attributes` for optional project attributes to specify the
-proof directory and other |GNATprove| switches in the project file directly.
+If not already done, create a GNAT project file (`.gpr`), as documented in the
+GNAT User's Guide, section `GNAT Project Manager`. See also :ref:`Project
+Attributes` for optional project attributes to specify the proof directory and
+other |GNATprove| switches in the project file directly.
 
 Note that you can use the project wizard from GPS to create a project file
 interactively, via the menu :menuselection:`Project --> New...` See in
@@ -161,9 +161,9 @@ Running |GNATprove| from the Command Line
 
     gnatprove -P <project-file.gpr>
 
-In the appendix, section :ref:`command line`, you can find an exhaustive list
-of switches; here we only give an overview over the most common uses. Note that
-|GNATprove| cannot be run without a project file.
+In the appendix, section :ref:`Command Line Invocation`, you can find an
+exhaustive list of switches; here we only give an overview over the most common
+uses. Note that |GNATprove| cannot be run without a project file.
 
 When given a list of files, each of which contains a compilation unit,
 |GNATprove| will analyze those units (including bodies and subunits)
@@ -508,7 +508,7 @@ analysed condition, either:
 
 * It is the first time the prover is used on the condition then a file
   (containing the condition as input to the specified prover) is created in the
-  project's proof directory (see :ref:`Project_Attributes`). |GNATprove|
+  project's proof directory (see :ref:`Project Attributes`). |GNATprove|
   outputs a message concerning this condition indicating the file that was
   created. The created file should be edited by the user in order to prove the
   condition.
@@ -623,6 +623,8 @@ check messages and information messages.
 
 * Information messages are issued for proved checks in some modes of
   |GNATprove|.
+
+.. _Effect of Mode on Output:
 
 Effect of Mode on Output
 ------------------------
@@ -775,20 +777,76 @@ The following table shows all flow analysis messages, (E)rrors,
    Certain messages emitted by flow analysis are classified as errors
    and consequently cannot be suppressed or justified.
 
-.. _How to Suppress or Justify Messages:
+.. _How to Use GNATprove in a Team:
 
-How to Suppress or Justify Messages
-===================================
+How to Use |GNATprove| in a Team
+================================
 
-Like every sound and complete verification tool, |GNATprove| may issue false
-alarms. A first step is to identify the type of message:
+The most common use of |GNATprove| is as part of a regular quality control or
+quality assurance activity inside a team. Usually, |GNATprove| is run every
+night on the current codebase, and during the day by developers either on their
+computer or on servers. For both nightly and daily runs, |GNATprove| results
+need to be shared between team members, either for viewing results or to
+compare new results with the shared results. These various processes are
+supported by specific ways to run |GNATprove| and share its results.
+
+In all cases, the source code should not be shared directly (say, on a shared
+drive) between developers, as this is bound to cause problems with file access
+rights and concurrent accesses. Rather, the typical usage is for each user to
+do a check out of the sources/environment, and use therefore her own
+version/copy of sources and project files, instead of physically sharing
+sources across all users.
+
+The project file should also always specify a local, non shared, user writable
+directory as object directory (whether explicitly or implicitly, as the absence
+of an explicit object directory means the project file directory is used as
+object directory).
+
+Possible Workflows
+------------------
+
+Multiple workflows allow to use |GNATprove| in a team:
+
+1. |GNATprove| is run on a server or locally, and no warnings or check messages
+   should be issued. Typically this is achieved by suppressing spurious
+   warnings and justifying unproved check messages.
+2. |GNATprove| is run on a server or locally, and textual results are shared in
+   Configuration Management.
+3. |GNATprove| is run on a server, and textual results are sent to a third-party
+   qualimetry tool (like GNATdashboard, SonarQube, SQUORE, etc.)
+4. |GNATprove| is run on a server or locally, and the |GNATprove| session files
+   are shared in Configuration Management.
+
+In all workflows (but critically for the first workflow), messages can
+suppressed or justified. Indeed, like every sound and complete verification
+tool, |GNATprove| may issue false alarms. A first step is to identify the type
+of message:
 
 * warnings can be suppressed, see :ref:`Suppressing Warnings`
 * check messages can be justified, see :ref:`Justifying Check Messages`
 
-Check messages from proof may in fact correspond to provable checks, which
-require interacting with |GNATprove| to find the correct contracts and/or
-analysis switches, see :ref:`How to Investigate Unproved Checks`.
+Check messages from proof may also correspond to provable checks, which require
+interacting with |GNATprove| to find the correct contracts and/or analysis
+switches, see :ref:`How to Investigate Unproved Checks`.
+
+The textual output in workflow 3 corresponds to the compiler-like output
+generated by |GNATprove| and controlled with switches ``--report`` and
+``--warnings`` (see :ref:`Command Line Invocation`). By default messages are
+issued only for unproved checks and warnings.
+
+The textual output in workflow 2 comprises this compiler-like output, and
+possibly additional output generated by |GNATprove| in file ``gnatprove.out``
+(see :ref:`Effect of Mode on Output` and :ref:`Managing Assumptions`).
+
+Workflow 4 requires sharing session files used by |GNATprove| to record the
+state of formal verification on each source package. This is achieved by
+specifying in the :ref:`Project Attributes` the ``Proof_Dir`` proof directory,
+and sharing this directory under Configuration Management. To avoid conflicts,
+it is recommended that developers do not push their local changes to this
+directory in Configuration Management, but instead periodically retrieve an
+updated version of the directory. For example, a nightly run on a server, or a
+dedicated team member, can be responsible for updating the proof directory with
+the latest version generated by |GNATprove|.
 
 .. _Suppressing Warnings:
 
@@ -948,8 +1006,10 @@ property assumed may be used to prove more than one check. Thus, indirect
 justifications with pragma ``Assume`` should be inspected with even more care
 than direct justifications with pragma ``Annotate``.
 
-How to Manage Assumptions
-=========================
+.. _Managing Assumptions:
+
+Managing Assumptions
+--------------------
 
 Because |GNATprove| analyzes separately subprograms and packages, its results
 depend on assumptions about unanalyzed subprograms and packages. For example,
@@ -2024,8 +2084,8 @@ Investigating Prover Shortcomings
 The last step is to investigate if the prover would find a proof given enough
 time [TIMEOUT] or if another prover can find a proof [PROVER]. To that end,
 |GNATprove| provides options ``--timeout`` and ``--prover``, usable either from
-the command-line (see :ref:`command line`) or inside GPS (see :ref:`Running
-GNATprove from GPS`).
+the command-line (see :ref:`Command Line Invocation`) or inside GPS (see
+:ref:`Running GNATprove from GPS`).
 
 Note that for the above experiments, it is quite convenient to use the
 :menuselection:`SPARK --> Prove Line` or :menuselection:`SPARK --> Prove
