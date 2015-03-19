@@ -2584,7 +2584,18 @@ package body SPARK_Definition is
          --  Discrete and floating-point types are always in SPARK
 
          when Integer_Kind | Float_Kind | Enumeration_Kind =>
-            null;
+
+            --  Don't accept modulars with modulus greater than 2 ** 64
+
+            if Is_Modular_Integer_Type (E) and then
+              UI_Gt (Modulus (E), UI_Expon (2, 64))
+            then
+               Violation_Detected := True;
+               if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+                  Error_Msg_N ("Modular types of modulus greater than 2 ** 64 "
+                               & "are not yet supported", E);
+               end if;
+            end if;
 
          when Fixed_Point_Kind =>
             declare

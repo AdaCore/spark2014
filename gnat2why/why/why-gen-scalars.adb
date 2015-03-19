@@ -383,7 +383,7 @@ package body Why.Gen.Scalars is
                              else
                                 Static_Modular_64)
                           else
-                             Static_Modular_Default);
+                             raise Program_Error);
                end;
             elsif Has_Discrete_Type (E) then
                return Static_Discrete;
@@ -464,7 +464,7 @@ package body Why.Gen.Scalars is
                          else
                             Why_Empty)
                       else
-                            New_Integer_Constant (Value => Modulus_Val));
+                            raise Program_Error);
          end;
       end if;
 

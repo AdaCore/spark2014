@@ -242,10 +242,6 @@ package body Why.Atree.Modules is
 
       --  modules of "ada__model" file
 
-      Static_Modular_Default :=
-        New_Module
-          (File => Ada_Model_File,
-           Name => NID ("Static_Modular_Default"));
       Static_Modular_lt8 :=
         New_Module
           (File => Ada_Model_File,

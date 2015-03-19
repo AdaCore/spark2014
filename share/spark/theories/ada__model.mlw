@@ -116,24 +116,6 @@ module Static_Modular_Base
   predicate dynamic_property_int "inline" (f l x : int) = in_range_int x
 end
 
-module Static_Modular_Default
-
-  function rep_to_int "inline" (x : int) : int = x
-
-  clone export Static_Modular_Base with
-    type rep_type = int,
-    function rep_to_int = rep_to_int
-
-  function attr__ATTRIBUTE_MODULUS : int
-
-  use _gnatprove_standard.Int_Division
-
-  axiom coerce_axiom :
-    forall x : int [to_rep (of_rep x)].
-      let y = Int_Division.math_mod x attr__ATTRIBUTE_MODULUS in
-        in_range y -> to_rep (of_rep x) = y
-end
-
 module Static_Modular_lt64
   use _gnatprove_standard.BitVector64
   type rep_type = BitVector64.t

@@ -2333,9 +2333,8 @@ package body SPARK_Util is
            --  it is an intrinsic
            Is_Intrinsic_Subprogram (E)
 
-           --  for a modular type with modulus no greater than 2 ** 64
+           --  modular type
            and then Is_Modular_Integer_Type (Etype (E))
-           and then Modulus (Etype (E)) <= UI_Expon (2, 64)
 
            --  without functional contract
            and then not Has_Contracts (E, Name_Precondition)

@@ -89,7 +89,6 @@ package Why.Atree.Modules is
    --  Modules of file "ada__model.mlw"
 
    Static_Discrete           : W_Module_Id;
-   Static_Modular_Default    : W_Module_Id;
    Static_Modular_8          : W_Module_Id;
    Static_Modular_16         : W_Module_Id;
    Static_Modular_32         : W_Module_Id;

@@ -530,7 +530,7 @@ package body Gnat2Why.Expr is
                              Domain => Domain,
                              Args   => (1 => T,
                                         2 => New_Modular_Constant
-                                               (Value => Modulus (E),
+                                               (Value => Modulus_Val,
                                                 Typ   => BV_Type)),
                              Typ    => BV_Type);
 
@@ -542,7 +542,7 @@ package body Gnat2Why.Expr is
                              Domain => Domain,
                              Args   => (1 => T,
                                         2 => New_Integer_Constant
-                                               (Value => Modulus (E))),
+                                               (Value => Modulus_Val)),
                              Typ    => EW_Int_Type);
          end if;
 
