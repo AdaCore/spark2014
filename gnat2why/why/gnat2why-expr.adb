@@ -486,7 +486,10 @@ package body Gnat2Why.Expr is
      (Expr   : Node_Id;
       Domain : EW_Domain;
       Params : Transformation_Params) return W_Expr_Id;
-   --  Transform shift or rotate calls
+   --  @param Expr a call where the callee is a shift or rotate subprogram
+   --  @param Domain the domain in which the translation happens
+   --  @param Params the translation parameters
+   --  @return the Why expression corresponding the the shift or rotate
 
    function Has_Visibility_On_Refined
      (Expr : Node_Id;
@@ -10850,8 +10853,8 @@ package body Gnat2Why.Expr is
       T           : W_Expr_Id;
 
    begin
-      --  /!\ it is assumed that rotate calls are only valid on actual
-      --  unsigned_8/16/32/64 types with the corresponding 'Size /!\
+      --  ??? it is assumed that rotate calls are only valid on actual
+      --  unsigned_8/16/32/64 types with the corresponding 'Size
 
       Get_Unqualified_Decoded_Name_String (Chars (Subp));
 
