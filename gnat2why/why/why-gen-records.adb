@@ -1683,10 +1683,73 @@ package body Why.Gen.Records is
       --  Get the empty record case out of the way
 
       if Count_Why_Record_Fields (E) = 0 then
-         Emit (Theory,
-               New_Type_Decl
-                 (Name => Ty_Name,
-                  Labels => Name_Id_Sets.Empty_Set));
+
+         --  Declare type for the empty record. If the type is not a root,
+         --  then it is an alias of its root type.
+
+         if Is_Root then
+            Emit (Theory,
+                  New_Type_Decl
+                    (Name  => Ty_Name,
+                     Labels => Name_Id_Sets.Empty_Set));
+         else
+            Emit (Theory,
+                  New_Type_Decl
+                    (Name  => Ty_Name,
+                     Alias => EW_Abstract (Root)));
+         end if;
+
+         --  Conversion functions are identity.
+
+         if not Is_Root then
+            declare
+               R_Ident : constant W_Identifier_Id :=
+                 New_Identifier (Name => "r", Typ => EW_Abstract (Root));
+            begin
+               Emit
+                 (Theory,
+                  New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        => To_Ident (WNE_To_Base),
+                     Binders     => R_Binder,
+                     Labels      => Name_Id_Sets.To_Set (NID ("inline")),
+                     Return_Type => EW_Abstract (Root),
+                     Def         => +A_Ident));
+               Emit
+                 (Theory,
+                  New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        => To_Ident (WNE_Of_Base),
+                     Binders     => Binder_Array'(1 => (B_Name => R_Ident,
+                                                        others => <>)),
+                     Labels      => Name_Id_Sets.To_Set (NID ("inline")),
+                     Return_Type => Abstr_Ty,
+                     Def         => +R_Ident));
+            end;
+         end if;
+
+         --  Equality function returns always true.
+
+         declare
+            B_Ident  : constant W_Identifier_Id :=
+              New_Identifier (Name => "b", Typ => Abstr_Ty);
+         begin
+
+            Emit
+              (Theory,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        => To_Ident (WNE_Bool_Eq),
+                  Binders     =>
+                    R_Binder &
+                    Binder_Array'(1 =>
+                                      Binder_Type'(B_Name => B_Ident,
+                                                   others => <>)),
+                  Return_Type => +EW_Bool_Type,
+                  Labels      => Name_Id_Sets.To_Set (NID ("inline")),
+                  Def         => +True_Term));
+         end;
+
          return;
       end if;
 
@@ -2106,6 +2169,15 @@ package body Why.Gen.Records is
          Reason   => VC_Discriminant_Check,
          Typ      => Get_Type (+Expr));
    end Insert_Subtype_Discriminant_Check;
+
+   ---------------------------------
+   -- Is_Empty_Record_Type_In_Why --
+   ---------------------------------
+
+   function Is_Empty_Record_Type_In_Why (E : Entity_Id) return Boolean is
+   begin
+      return Count_Why_Record_Fields (E) = 0;
+   end Is_Empty_Record_Type_In_Why;
 
    ---------------------------
    -- New_Ada_Record_Access --

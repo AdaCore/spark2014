@@ -201,6 +201,7 @@ package body Why.Gen.Binders is
       elsif Entity_In_SPARK (Ty)
         and then Is_Record_Type (Ty)
         and then Is_Mutable_In_Why (E)
+        and then not Is_Empty_Record_Type_In_Why (Ty)
       then
          declare
             Name   : constant W_Identifier_Id :=

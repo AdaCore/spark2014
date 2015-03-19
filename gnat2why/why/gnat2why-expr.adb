@@ -8429,25 +8429,41 @@ package body Gnat2Why.Expr is
             begin
                if Is_Record_Type (Expr_Type) then
                   pragma Assert (Is_Empty_List (Expressions (Expr)));
-                  declare
-                     Assocs : constant W_Field_Association_Array :=
-                       Transform_Record_Component_Associations
-                         (Domain,
-                          Expr_Type,
-                          Component_Associations (Expr),
-                          Local_Params);
-                     Num_Discrs : constant Natural :=
-                       Count_Non_Inherited_Discriminants
-                         (Component_Associations (Expr));
-                  begin
-                     T :=
-                       New_Ada_Record_Aggregate
-                         (Domain       => Domain,
-                          Discr_Assocs => Assocs (1 .. Num_Discrs),
-                          Field_Assocs =>
-                            Assocs (Num_Discrs + 1 .. Assocs'Last),
-                          Ty           => Expr_Type);
-                  end;
+
+                  --  If the type is an empty record in Why (no tag, no field,
+                  --  no discriminant), we use the dummy node of the root type
+                  --  here.
+
+                  if Is_Empty_Record_Type_In_Why (Expr_Type) then
+
+                     return +New_Identifier
+                       (Ada_Node  => Expr,
+                        Name      => To_String (WNE_Dummy),
+                        Module    =>
+                          E_Module
+                            (Unique_Entity (Root_Record_Type (Expr_Type))),
+                        Typ       => EW_Abstract (Expr_Type));
+                  else
+                     declare
+                        Assocs : constant W_Field_Association_Array :=
+                          Transform_Record_Component_Associations
+                            (Domain,
+                             Expr_Type,
+                             Component_Associations (Expr),
+                             Local_Params);
+                        Num_Discrs : constant Natural :=
+                          Count_Non_Inherited_Discriminants
+                            (Component_Associations (Expr));
+                     begin
+                        T :=
+                          New_Ada_Record_Aggregate
+                            (Domain       => Domain,
+                             Discr_Assocs => Assocs (1 .. Num_Discrs),
+                             Field_Assocs =>
+                               Assocs (Num_Discrs + 1 .. Assocs'Last),
+                             Ty           => Expr_Type);
+                     end;
+                  end if;
                else
                   pragma Assert
                     (Is_Array_Type (Expr_Type) or else
@@ -10691,7 +10707,10 @@ package body Gnat2Why.Expr is
           or else Number_Components (Typ) = Integer (List_Length (Assocs)));
 
       Association := Nlists.First (Assocs);
-      pragma Assert (Present (Association));
+
+      if No (Association) then
+         return (1 .. 0 => <>);
+      end if;
 
       --  Start with the first component
       CL := Choices (Association);

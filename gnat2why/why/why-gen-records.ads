@@ -215,4 +215,11 @@ package Why.Gen.Records is
      (Count_Fields (E) > 0 or else Is_Tagged_Type (E));
    --  Type of the top-level Why3 field for fields of E.
 
+   function Is_Empty_Record_Type_In_Why (E : Entity_Id) return Boolean with
+     Pre => Is_Record_Type (E);
+   --  Checks wether an Ada record type will be translated to an empty Why
+   --  record.
+   --  @param E the Ada record type
+   --  @return whether the translation of E will be a record type or not.
+
 end Why.Gen.Records;

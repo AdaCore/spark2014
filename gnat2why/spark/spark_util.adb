@@ -391,7 +391,9 @@ package body SPARK_Util is
 
    begin
       Association := Nlists.First (Assocs);
-      pragma Assert (Present (Association));
+      if No (Association) then
+         return 0;
+      end if;
 
       CL := Choices (Association);
       Choice := First (CL);
