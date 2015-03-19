@@ -4,6 +4,12 @@ gen_func.ads:12:08: medium: missing dependency "null => External", in instantiat
 gen_func.ads:12:08: medium: missing dependency "null => Inner", in instantiation at main.adb:16
 gen_func.ads:14:17: medium: incorrect dependency "Func_Inst_1r'Result => External", in instantiation at main.adb:16
 gen_func.ads:15:13: medium: incorrect dependency "Func_Inst_1r'Result => Inner", in instantiation at main.adb:16
+gen_func.ads:19:33: info: postcondition proved, in instantiation at main.adb:16
+gen_func.ads:20:09: info: complete contract cases proved, in instantiation at main.adb:16
+gen_func.ads:20:09: info: disjoint contract cases proved, in instantiation at main.adb:16
+gen_func.ads:20:39: info: contract case proved, in instantiation at main.adb:16
+gen_func.ads:21:39: info: contract case proved, in instantiation at main.adb:16
+gen_func.ads:22:39: info: contract case proved, in instantiation at main.adb:16
 gen_func_pragmas.ads:9:18: low: unused global "External" (SPARK RM 6.1.4(13)), in instantiation at main.adb:20
 gen_func_pragmas.ads:10:14: low: unused global "Inner" (SPARK RM 6.1.4(13)), in instantiation at main.adb:20
 gen_func_pragmas.ads:12:01: medium: missing dependency "null => External", in instantiation at main.adb:20
@@ -115,3 +121,11 @@ pack_gen_pragmas.ads:18:04: medium: missing dependency "null => External", in in
 pack_gen_pragmas.ads:18:04: medium: missing dependency "null => Inner", in instantiation at main.adb:46
 pack_gen_pragmas.ads:18:04: medium: missing dependency "null => Pack_Inner", in instantiation at main.adb:46
 pack_gen_pragmas.ads:26:04: info: initialization of "Pack_Inner" proved
+pack_refs.adb:4:21: medium: overflow check might fail, in instantiation at main_refs.adb:5
+pack_refs.ads:12:31: info: postcondition proved, in instantiation at main_refs.adb:5
+pack_refs.ads:12:40: info: overflow check proved, in instantiation at main_refs.adb:5
+pack_refs.ads:13:11: info: complete contract cases proved, in instantiation at main_refs.adb:5
+pack_refs.ads:13:11: info: disjoint contract cases proved, in instantiation at main_refs.adb:5
+pack_refs.ads:13:41: info: contract case proved, in instantiation at main_refs.adb:5
+pack_refs.ads:14:41: info: contract case proved, in instantiation at main_refs.adb:5
+pack_refs.ads:15:41: info: contract case proved, in instantiation at main_refs.adb:5

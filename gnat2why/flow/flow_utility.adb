@@ -39,6 +39,7 @@ with Sem_Aux;                    use Sem_Aux;
 with Sprint;                     use Sprint;
 with Treepr;                     use Treepr;
 with Why;
+with Gnat2Why.Util;
 
 package body Flow_Utility is
 
@@ -1857,45 +1858,50 @@ package body Flow_Utility is
       begin
          case F.Kind is
             when Direct_Mapping =>
-               case Ekind (Get_Direct_Mapping_Id (F)) is
-                  when E_Abstract_State =>
-                     Ptr := First_Elmt (Refinement_Constituents
-                                          (Get_Direct_Mapping_Id (F)));
-                     while Present (Ptr) loop
-                        --  We simply ignore the null refinement, it is
-                        --  treated as if it was not present.
-                        if Nkind (Node (Ptr)) /= N_Null then
-                           Tmp.Union (Expand (Direct_Mapping_Id (Node (Ptr),
-                                                                 F.Variant)));
-                        end if;
-                        Ptr := Next_Elmt (Ptr);
-                     end loop;
-
-                     Ptr := First_Elmt (Part_Of_Constituents
-                                          (Get_Direct_Mapping_Id (F)));
-                     while Present (Ptr) loop
-                        --  Part_of cannot include a null refinement.
+               if Ekind (Get_Direct_Mapping_Id (F)) = E_Abstract_State then
+                  Ptr := First_Elmt (Refinement_Constituents
+                                       (Get_Direct_Mapping_Id (F)));
+                  while Present (Ptr) loop
+                     --  We simply ignore the null refinement, it is
+                     --  treated as if it was not present.
+                     if Nkind (Node (Ptr)) /= N_Null then
                         Tmp.Union (Expand (Direct_Mapping_Id (Node (Ptr),
                                                               F.Variant)));
-                        Ptr := Next_Elmt (Ptr);
-                     end loop;
-
-                     if Tmp.Is_Empty then
-                        --  If we can't refine this state (maybe the body
-                        --  is not in SPARK, or simply not implemented or
-                        --  there is a null refinement) then we use the
-                        --  abstract state itself.
-                        Tmp.Insert (F);
                      end if;
+                     Ptr := Next_Elmt (Ptr);
+                  end loop;
 
-                  when E_In_Parameter =>
-                     --  For proof we exclude formal parameters of
-                     --  mode "In" from the set of globals.
-                     null;
+                  Ptr := First_Elmt (Part_Of_Constituents
+                                       (Get_Direct_Mapping_Id (F)));
+                  while Present (Ptr) loop
+                     --  Part_of cannot include a null refinement.
+                     Tmp.Union (Expand (Direct_Mapping_Id (Node (Ptr),
+                                                           F.Variant)));
+                     Ptr := Next_Elmt (Ptr);
+                  end loop;
 
-                  when others =>
+                  if Tmp.Is_Empty then
+                     --  If we can't refine this state (maybe the body
+                     --  is not in SPARK, or simply not implemented or
+                     --  there is a null refinement) then we use the
+                     --  abstract state itself.
                      Tmp.Insert (F);
-               end case;
+                  end if;
+
+               --  Entities translated as constants in Why3 should not be
+               --  considered as effects for proof. This includes in particular
+               --  formal parameters of mode IN.
+
+               elsif not
+                 Gnat2Why.Util.Is_Mutable_In_Why (Get_Direct_Mapping_Id (F))
+               then
+                  null;
+
+               --  Otherwise the effect is significant for proof, keep it
+
+               else
+                  Tmp.Insert (F);
+               end if;
 
             when Magic_String =>
                Tmp.Insert (F);
