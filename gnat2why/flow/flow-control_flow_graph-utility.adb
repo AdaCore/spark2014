@@ -312,7 +312,7 @@ package body Flow.Control_Flow_Graph.Utility is
       Scope      : constant Flow_Scope := Get_Flow_Scope (Call_Vertex);
       Ext_Relevant_To_Formal : constant Boolean :=
         Has_Extensions_Visible_Aspect (Subprogram) or else
-        Ekind (Get_Full_Type (Formal, Scope)) in Class_Wide_Kind;
+        Ekind (Get_Type (Formal, Scope)) in Class_Wide_Kind;
 
       A          : V_Attributes        := Null_Attributes;
       Tmp_Used   : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;

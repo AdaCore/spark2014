@@ -251,10 +251,11 @@ package SPARK_Util is
    --  type. Types defined in axiomatized units (such as formal containers) and
    --  private types are treated specially, so that they are either considered
    --  as having full default initialized, or no default initialization.
-   --
-   --  If Explicit_Only is True then do not consider whether
-   --  Has_Default_Init_Cond or Has_Inherited_Default_Init_Cond are
-   --  True for this type.
+   --  @param Typ The type that for which we need to determine initialization.
+   --  @param Explicit_Only If True then do not consider attributes
+   --    Has_Default_Init_Cond and Has_Inherited_Default_Init_Cond for this
+   --    type.
+   --  @return the Default_Initialization_Kind of Typ
 
    function Get_Low_Bound (E : Entity_Id) return Node_Id;
    --  @param E an index subtype or string literal subtype

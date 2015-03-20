@@ -1179,10 +1179,10 @@ package body Flow.Control_Flow_Graph is
       Classwide       : Boolean;
       Map_Root        : Flow_Id;
       To_Cw           : constant Boolean :=
-        Ekind (Get_Full_Type (Name (N),
-                              FA.B_Scope)) in Class_Wide_Kind
-        and then Ekind (Get_Full_Type (Expression (N),
-                                       FA.B_Scope)) not in Class_Wide_Kind;
+        Ekind (Get_Type (Name (N),
+                         FA.B_Scope)) in Class_Wide_Kind
+        and then Ekind (Get_Type (Expression (N),
+                                  FA.B_Scope)) not in Class_Wide_Kind;
 
    begin
 
@@ -1218,8 +1218,7 @@ package body Flow.Control_Flow_Graph is
             M := Untangle_Record_Assignment
               (Expression (N),
                Map_Root                     => Map_Root,
-               Map_Type                     => Get_Full_Type (Name (N),
-                                                              FA.B_Scope),
+               Map_Type                     => Get_Type (Name (N), FA.B_Scope),
                Scope                        => FA.B_Scope,
                Local_Constants              => FA.Local_Constants,
                Fold_Functions               => True,
@@ -1227,7 +1226,7 @@ package body Flow.Control_Flow_Graph is
                Expand_Synthesized_Constants => False);
 
             Missing := Flatten_Variable (Map_Root, FA.B_Scope);
-            if Ekind (Get_Full_Type (Name (N), FA.B_Scope)) in Class_Wide_Kind
+            if Ekind (Get_Type (Name (N), FA.B_Scope)) in Class_Wide_Kind
               and then Map_Root.Kind = Direct_Mapping
             then
                Missing.Include (Map_Root'Update (Facet => Extension_Part));
@@ -2263,13 +2262,11 @@ package body Flow.Control_Flow_Graph is
                when N_Identifier | N_Expanded_Name =>
                   F := Direct_Mapping_Id
                     (Unique_Entity (Entity (Prefix (N))));
-                  T := Get_Full_Type (Entity (Prefix (N)),
-                                      FA.B_Scope);
+                  T := Get_Type (Entity (Prefix (N)), FA.B_Scope);
 
                when N_Selected_Component =>
                   F := Record_Field_Id (Prefix (N));
-                  T := Get_Full_Type (Etype (Prefix (N)),
-                                      FA.B_Scope);
+                  T := Get_Type (Etype (Prefix (N)), FA.B_Scope);
 
                when others =>
                   raise Program_Error;
@@ -2773,10 +2770,10 @@ package body Flow.Control_Flow_Graph is
 
       else
          --  We have a variable declaration with an initialization.
-         To_Cw := Ekind (Get_Full_Type (Defining_Identifier (N),
-                                        FA.B_Scope)) in Class_Wide_Kind
-           and then Ekind (Get_Full_Type (Expression (N),
-                                          FA.B_Scope)) not in Class_Wide_Kind;
+         To_Cw := Ekind (Get_Type (Defining_Identifier (N),
+                                   FA.B_Scope)) in Class_Wide_Kind
+           and then Ekind (Get_Type (Expression (N),
+                                     FA.B_Scope)) not in Class_Wide_Kind;
 
          declare
             Var_Def : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
@@ -2797,7 +2794,7 @@ package body Flow.Control_Flow_Graph is
                      Map_Root                     =>
                        Direct_Mapping_Id (Defining_Identifier (N)),
                      Map_Type                     =>
-                       Get_Full_Type (Defining_Identifier (N), FA.B_Scope),
+                       Get_Type (Defining_Identifier (N), FA.B_Scope),
                      Scope                        => FA.B_Scope,
                      Local_Constants              => FA.Local_Constants,
                      Fold_Functions               => True,
@@ -4359,7 +4356,7 @@ package body Flow.Control_Flow_Graph is
       --  Recursive helper function.
 
       function Rec (N : Node_Id) return Boolean is
-         T : constant Entity_Id := Get_Full_Type (N, Scope);
+         T : constant Entity_Id := Get_Type (N, Scope);
       begin
          if Ekind (T) not in Record_Kind
            or else Is_Tagged_Type (T)
@@ -4392,9 +4389,11 @@ package body Flow.Control_Flow_Graph is
       end Rec;
 
       T : constant Entity_Id :=
-        Get_Full_Type ((if Nkind (N) = N_Assignment_Statement
-                        then Name (N)
-                        else Defining_Identifier (N)), Scope);
+        Get_Type ((if Nkind (N) = N_Assignment_Statement then
+                      Name (N)
+                   else
+                      Defining_Identifier (N)),
+                  Scope);
    begin
       return Ekind (T) not in Class_Wide_Kind
         and then not Is_Tagged_Type (T)

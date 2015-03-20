@@ -263,13 +263,13 @@ package body Flow_Types is
             return False;
 
          when Direct_Mapping =>
-            T := Get_Full_Type (F.Node, Scope);
+            T := Get_Type (F.Node, Scope);
 
          when Record_Field =>
             if F.Facet /= Normal_Part then
                return False;
             else
-               T := Get_Full_Type (F.Component.Last_Element, Scope);
+               T := Get_Type (F.Component.Last_Element, Scope);
             end if;
       end case;
 

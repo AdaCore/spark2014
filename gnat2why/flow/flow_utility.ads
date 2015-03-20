@@ -217,7 +217,7 @@ package Flow_Utility is
 
    function Quantified_Variables (N : Node_Id) return Flow_Id_Sets.Set;
    --  Return the set of entire variables which are introduced in a
-   --  quantifier under node N
+   --  quantifier under node N.
 
    function Is_Null_Record (E : Entity_Id) return Boolean
      with Pre => Nkind (E) in N_Entity;
@@ -232,7 +232,7 @@ package Flow_Utility is
                            Record_Field |
                            Magic_String |
                            Synthetic_Null_Export;
-   --  The idea is to take a flow id F and split it up into all relevant
+   --  The idea is to take a Flow_Id F and split it up into all relevant
    --  parts. For example, we might take X.Y and produce X.Y.A and X.Y.B,
    --  or just X.Y (if we can't se the private part of X.Y's type).
    --
@@ -244,10 +244,14 @@ package Flow_Utility is
    --  element in the result.
    --
    --  For private types we just return F. For private types with
-   --  discriminant C we return F.C and F'Hidden.
+   --  discriminant C we return F.C and F'Private_Part.
    --
    --  For tagged types T we just return all components as usual. For
    --  classwide types we also return T'Extension and T'Tag.
+   --  @param F is the Flow_Id who's parts we need to gather
+   --  @param Scope is the scope relative to which we will return the
+   --    parts
+   --  @return all parts of F that are visible from Scope.
 
    function Flatten_Variable
      (E     : Entity_Id;
@@ -257,7 +261,7 @@ package Flow_Utility is
      with Pre  => Nkind (E) in N_Entity,
           Post => (if not Is_Null_Record (E)
                    then not Flatten_Variable'Result.Is_Empty);
-   --  As above, but conveniently taking an Entity instead of a Flow_Id.
+   --  As above, but conveniently taking an Entity_Id instead of a Flow_Id
 
    subtype Valid_Assignment_Kinds is Node_Kind with Static_Predicate =>
      Valid_Assignment_Kinds in N_Identifier                |
@@ -348,7 +352,7 @@ package Flow_Utility is
       Expand_Synthesized_Constants : Boolean;
       Extensions_Irrelevant        : Boolean := True)
       return Flow_Id_Maps.Map
-     with Pre => Ekind (Get_Full_Type (N, Scope)) in Record_Kind | Private_Kind
+     with Pre => Ekind (Get_Type (N, Scope)) in Record_Kind | Private_Kind
                  and then Map_Root.Kind in Direct_Mapping | Record_Field
                  and then Nkind (Map_Type) in N_Entity
                  and then Ekind (Map_Type) in Type_Kind;
@@ -471,21 +475,29 @@ package Flow_Utility is
    --  note that if a function returns inside a loop, the name of the
    --  function will be "written to" and will be returned here.
 
-   function Get_Type (F     : Flow_Id;
-                      Scope : Flow_Scope)
-                      return Entity_Id
+   function Get_Type
+     (F     : Flow_Id;
+      Scope : Flow_Scope)
+      return Entity_Id
      with Pre  => F.Kind in Direct_Mapping | Record_Field and then
                   F.Facet = Normal_Part,
           Post => Nkind (Get_Type'Result) in N_Entity;
-   --  Determine the type of a flow_id from Scope.
+   --  @param F is the Flow_Id who's type we need to retrieve
+   --  @param Scope is the scope relative to which we retrieve the type
+   --  @return the entity corresponding to the type of F. If the full view
+   --    of the type is not visible from Scope, then we return the non-full
+   --    view.
 
-   function Get_Full_Type
+   function Get_Type
      (N     : Node_Id;
       Scope : Flow_Scope)
       return Entity_Id
      with Pre => Present (N);
-   --  Get the type of the given node. If the full view of the type
-   --  is not visible from Scope, then we return the non-full view.
+   --  @param N is the node who's type we need to retrieve
+   --  @param Scope is the scope relative to which we retrieve the type
+   --  @return the entity corresponding to the type of N. If the full view
+   --    of the type is not visible from Scope, then we return the non-full
+   --    view.
 
    function Extensions_Visible (E     : Entity_Id;
                                 Scope : Flow_Scope)
@@ -529,6 +541,9 @@ package Flow_Utility is
    --  Obtain all components of the given entity E, similar to
    --  {First,Next}_Component_Or_Discriminant, with the difference that any
    --  components of private ancestors are included.
+   --  @param E a type entity
+   --  @return all component and discriminants of the type or the empty list
+   --    if none exists
 
    function Is_Non_Visible_Constituent
      (F     : Flow_Id;

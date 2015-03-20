@@ -169,14 +169,14 @@ package body Flow_Utility is
          when others =>
             raise Program_Error;
       end case;
-      return Get_Full_Type (E, Scope);
+      return Get_Type (E, Scope);
    end Get_Type;
 
-   -------------------
-   -- Get_Full_Type --
-   -------------------
+   --------------
+   -- Get_Type --
+   --------------
 
-   function Get_Full_Type
+   function Get_Type
      (N     : Node_Id;
       Scope : Flow_Scope)
       return Entity_Id
@@ -216,14 +216,14 @@ package body Flow_Utility is
       --  Associated_Node_For_Itype.
       if Is_Itype (T) then
          if Root_Type (T) /= T then
-            T := Get_Full_Type (Root_Type (T), Scope);
+            T := Get_Type (Root_Type (T), Scope);
          else
-            T := Get_Full_Type (Associated_Node_For_Itype (T), Scope);
+            T := Get_Type (Associated_Node_For_Itype (T), Scope);
          end if;
       end if;
 
       return T;
-   end Get_Full_Type;
+   end Get_Type;
 
    --------------------------------
    -- Untangle_Record_Assignment --
@@ -267,7 +267,7 @@ package body Flow_Utility is
              Map_Root                     => Map_Root,
              Map_Type                     => (if Present (Map_Type)
                                               then Map_Type
-                                              else Get_Full_Type (N, Scope)),
+                                              else Get_Type (N, Scope)),
              Scope                        => Scope,
              Local_Constants              => Local_Constants,
              Fold_Functions               => Fold_Functions,
@@ -343,7 +343,7 @@ package body Flow_Utility is
          Output : Flow_Id;
          Inputs : Flow_Id_Sets.Set;
       begin
-         case Ekind (Get_Full_Type (Component, Scope)) is
+         case Ekind (Get_Type (Component, Scope)) is
             when Record_Kind =>
                Tmp := Recurse_On (Input, F);
 
@@ -533,10 +533,8 @@ package body Flow_Utility is
             end if;
 
             declare
-               T_From : constant Entity_Id :=
-                 Get_Full_Type (Expression (N), Scope);
-               T_To   : constant Entity_Id :=
-                 Get_Full_Type (N, Scope);
+               T_From : constant Entity_Id := Get_Type (Expression (N), Scope);
+               T_To   : constant Entity_Id := Get_Type (N, Scope);
 
                --  To_Class_Wide : constant Boolean :=
                --    Ekind (T_To) in Class_Wide_Kind;
@@ -639,7 +637,7 @@ package body Flow_Utility is
                      F      : Flow_Id;
 
                      Class_Wide_Conversion : constant Boolean :=
-                       (Ekind (Get_Full_Type (N, Scope)) not in Class_Wide_Kind
+                       (Ekind (Get_Type (N, Scope)) not in Class_Wide_Kind
                           and then Ekind (Map_Type) in Class_Wide_Kind);
                   begin
                      M := Recurse_On (Prefix (N),
@@ -658,7 +656,7 @@ package body Flow_Utility is
 
                            F := Add_Component (Map_Root, Entity (Output));
 
-                           if Ekind (Get_Full_Type (Entity (Output), Scope))
+                           if Ekind (Get_Type (Entity (Output), Scope))
                              in Record_Kind
                            then
                               for C in Recurse_On (Input, F).Iterate loop
@@ -969,7 +967,7 @@ package body Flow_Utility is
                            Write_Eol;
                         end if;
 
-                        if Ekind (Get_Full_Type (E, Scope)) in Record_Kind
+                        if Ekind (Get_Type (E, Scope)) in Record_Kind
                         then
                            --  Composite update
 
@@ -2250,7 +2248,7 @@ package body Flow_Utility is
                        (Actual,
                         Consider_Extensions =>
                           Has_Extensions_Visible_Aspect (Subprogram) or else
-                          Ekind (Get_Full_Type (Formal, Scope))
+                          Ekind (Get_Type (Formal, Scope))
                             in Class_Wide_Kind));
                end if;
 
@@ -2428,7 +2426,7 @@ package body Flow_Utility is
 
                   return OK;
 
-               elsif Ekind (Get_Full_Type (N, Scope)) in Record_Kind then
+               elsif Ekind (Get_Type (N, Scope)) in Record_Kind then
 
                   --  We use Untangle_Record_Assignment as this can deal
                   --  with view conversions.
@@ -2439,8 +2437,7 @@ package body Flow_Utility is
                        (N,
                         Map_Root                     =>
                           Direct_Mapping_Id (Etype (N)),
-                        Map_Type                     =>
-                          Get_Full_Type (N, Scope),
+                        Map_Type                     => Get_Type (N, Scope),
                         Scope                        => Scope,
                         Local_Constants              => Local_Constants,
                         Fold_Functions               => Fold_Functions,
@@ -2464,8 +2461,7 @@ package body Flow_Utility is
             when N_Attribute_Reference =>
                case Get_Attribute_Id (Attribute_Name (N)) is
                   when Attribute_Update =>
-                     if Reduced or Is_Tagged_Type (Get_Full_Type (N, Scope))
-                     then
+                     if Reduced or Is_Tagged_Type (Get_Type (N, Scope)) then
                         --  !!! Precise analysis is disabled for tagged types
                         return OK;
                      else
@@ -2658,6 +2654,9 @@ package body Flow_Utility is
       --  Returns N's equilavent component of the root type. If this
       --  is not available then N's Original_Record_Component is
       --  returned instead.
+      --  @param N is the component who's equivalent we are looking for
+      --  @return the equivalent component of the root type if one exists
+      --    or the Original_Record_Component of N otherwise.
 
       ------------------------
       -- Get_Root_Component --
@@ -2705,7 +2704,7 @@ package body Flow_Utility is
       T         := Get_Type (F, Scope);
       Classwide := Ekind (T) in Class_Wide_Kind;
       while Ekind (T) in Class_Wide_Kind loop
-         T := Get_Full_Type (Etype (T), Scope);
+         T := Get_Type (Etype (T), Scope);
       end loop;
 
       if Debug_Trace_Flatten then
@@ -3295,8 +3294,7 @@ package body Flow_Utility is
    -- Freeze_Loop_Info --
    ----------------------
 
-   procedure Freeze_Loop_Info
-   is
+   procedure Freeze_Loop_Info is
    begin
       pragma Assert (not Loop_Info_Frozen);
       Loop_Info_Frozen := True;
@@ -3306,8 +3304,7 @@ package body Flow_Utility is
    -- Loop_Writes_Known --
    -----------------------
 
-   function Loop_Writes_Known (E : Entity_Id) return Boolean
-   is
+   function Loop_Writes_Known (E : Entity_Id) return Boolean is
    begin
       return Loop_Info_Frozen and then Loop_Info.Contains (E);
    end Loop_Writes_Known;
@@ -3316,8 +3313,7 @@ package body Flow_Utility is
    -- Get_Loop_Writes --
    ---------------------
 
-   function Get_Loop_Writes (E : Entity_Id) return Flow_Id_Sets.Set
-   is
+   function Get_Loop_Writes (E : Entity_Id) return Flow_Id_Sets.Set is
    begin
       return Loop_Info (E);
    end Get_Loop_Writes;
@@ -3326,11 +3322,12 @@ package body Flow_Utility is
    -- Extensions_Visible --
    ------------------------
 
-   function Extensions_Visible (E     : Entity_Id;
-                                Scope : Flow_Scope)
-                                return Boolean
+   function Extensions_Visible
+     (E     : Entity_Id;
+      Scope : Flow_Scope)
+      return Boolean
    is
-      T : constant Entity_Id := Get_Full_Type (E, Scope);
+      T : constant Entity_Id := Get_Type (E, Scope);
    begin
       return Ekind (E) in Formal_Kind
         and then Is_Tagged_Type (T)
