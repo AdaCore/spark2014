@@ -1,0 +1,89 @@
+full.adb:9:16: info: overflow check proved
+full.adb:14:12: info: precondition proved
+full.ads:7:13: info: initialization of "Id" proved
+full.ads:9:13: info: initialization of "Bump" proved
+full.ads:11:20: info: postcondition proved
+full.ads:11:36: info: overflow check proved
+full.ads:16:22: info: postcondition proved
+my_pack.adb:15:07: info: precondition proved
+my_pack.ads:7:13: info: initialization of "Id" proved
+my_pack.ads:16:22: info: postcondition proved
+my_pack.ads:16:36: info: overflow check proved
+  Full at full.ads:1 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
+
+  Full.Bump at full.ads:9 flow analyzed (0 errors and 0 warnings) and proved (3 checks)
+
+  Full.Id at full.ads:7 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
+
+  Full.Use_Bump at full.ads:13 flow analyzed (0 errors and 0 warnings) and proved (2 checks)
+
+  My_Pack at my_pack.ads:1 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
+
+  My_Pack.Bump at my_pack.ads:9 skipped
+
+  My_Pack.Id at my_pack.ads:7 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
+
+  My_Pack.Use_Bump at my_pack.ads:13 flow analyzed (0 errors and 0 warnings) and proved (3 checks)
+
+  absence of run-time errors of Full.Id
+
+  absence of run-time errors of Full.Id
+
+  absence of run-time errors of My_Pack.Bump
+
+  absence of run-time errors of My_Pack.Bump
+
+  absence of run-time errors of My_Pack.Id
+
+  absence of run-time errors of My_Pack.Id
+
+  effects on parameters and Global variables of Full.Bump
+
+  effects on parameters and Global variables of Full.Bump
+
+  effects on parameters and Global variables of Full.Bump
+
+  effects on parameters and Global variables of Full.Id
+
+  effects on parameters and Global variables of Full.Id
+
+  effects on parameters and Global variables of Full.Id
+
+  effects on parameters and Global variables of My_Pack.Bump
+
+  effects on parameters and Global variables of My_Pack.Bump
+
+  effects on parameters and Global variables of My_Pack.Bump
+
+  effects on parameters and Global variables of My_Pack.Id
+
+  effects on parameters and Global variables of My_Pack.Id
+
+  effects on parameters and Global variables of My_Pack.Id
+
+  the postcondition of My_Pack.Bump
+
+  the postcondition of My_Pack.Bump
+
+Analyzed 2 units
+
+absence of run-time errors of Full.Bump fully established
+
+absence of run-time errors of Full.Use_Bump depends on
+
+absence of run-time errors of My_Pack.Use_Bump depends on
+
+effects on parameters and Global variables of Full.Use_Bump depends on
+
+effects on parameters and Global variables of My_Pack.Use_Bump depends on
+
+in unit full, 4 subprograms and packages out of 4 analyzed
+
+in unit my_pack, 3 subprograms and packages out of 4 analyzed
+
+the postcondition of Full.Bump fully established
+
+the postcondition of Full.Use_Bump depends on
+
+the postcondition of My_Pack.Use_Bump depends on
+
