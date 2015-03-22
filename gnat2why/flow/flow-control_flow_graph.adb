@@ -4809,6 +4809,7 @@ package body Flow.Control_Flow_Graph is
               Pragma_Unsuppress                   |
               Pragma_Volatile                     |
               Pragma_Volatile_Components          |
+              Pragma_Volatile_Full_Access         |
 
          --  Group 1b - RM Table 16.2, SPARK language-defined pragmas marked
          --  "Yes", whose effect on flow analysis is taken care of somewhere
