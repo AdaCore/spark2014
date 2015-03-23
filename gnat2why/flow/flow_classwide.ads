@@ -40,9 +40,9 @@ package Flow_Classwide is
                                         Valid : out Boolean)
    with Pre => Nkind (E) in N_Entity and then
                Ekind (E) in Subprogram_Kind;
-   --  Checks the classwide contracts of the given subprogram. If not Valid
-   --  then some error messages will have been issued. If the subprogram
-   --  does not a controlling parameter or result, this check procedure
-   --  does nothing.
+   --  Checks the classwide contracts of the given subprogram. If not
+   --  Valid then some error messages will have been issued. If the
+   --  subprogram does not have a controlling parameter or result,
+   --  this check procedure does nothing.
 
 end Flow_Classwide;
