@@ -337,8 +337,7 @@ package body Flow_Classwide is
                end loop;
             end;
 
-            --  ... and the function symbol if we're dealing with a
-            --  function.
+            --  ... and the function symbol if we're dealing with a function.
             if Ekind (E) = E_Function then
                Outputs.Include (Direct_Mapping_Id (E));
             end if;

@@ -97,7 +97,7 @@ package body Flow.Control_Flow_Graph is
    --        GRAPH            CM
    --    0. [X := X - 1]      Ass_1 -> (0, {0})
    --
-   --  (Where "0." is the vertex id of the node for "x := x - 1".) Each
+   --  (Where "0." is the vertex id of the node for "X := X - 1".) Each
    --  connection map captures a single entry vertex (0 in our example) and
    --  a set of exit vertices ({0} in our example). Read this as "control
    --  flow for the node Ass_1 is as follows: control goes into this vertex
@@ -187,7 +187,7 @@ package body Flow.Control_Flow_Graph is
    procedure Copy_Connections (CM  : in out Connection_Maps.Map;
                                Dst : Union_Id;
                                Src : Union_Id);
-   --  Creats the connection map for Dst and copies all fields from Src to
+   --  Creates the connection map for Dst and copies all fields from Src to
    --  it.
 
    -------------
@@ -210,7 +210,7 @@ package body Flow.Control_Flow_Graph is
    --                      null                        => W);
    --
    --  If such a function is used, we do not want W to flow into the final
-   --  result of whatever it is doing, however this is difficult as
+   --  result of whatever it is doing, however, this is difficult as
    --  functions are not really processed separately. Instead we are just
    --  interested in the "set of variables" present in an expression. So
    --  instead we have a parameter in Get_Variable_Set (Fold_Functions)
@@ -364,7 +364,7 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
       with Pre => Nkind (N) = N_Case_Statement;
-   --  The CFG that we generate for case statements look like
+   --  The CFG that we generate for case statements looks like
    --  the following:
    --
    --                       case
@@ -3333,8 +3333,7 @@ package body Flow.Control_Flow_Graph is
             PAA : constant Node_Id := First (Pragma_Argument_Associations (N));
 
             function Was_Assertion return Boolean;
-            --  Checks if this pragma is a rewritten assert
-            --  pragma.
+            --  Checks if this pragma is a rewritten assert pragma.
 
             function Is_Statically_False return Boolean;
             --  Checks if the rewritten assertion has a
