@@ -42,7 +42,7 @@ package Flow_Classwide is
                Ekind (E) in Subprogram_Kind;
    --  Checks the classwide contracts of the given subprogram. If not
    --  Valid then some error messages will have been issued. If the
-   --  subprogram does not have a controlling parameter or result,
+   --  subprogram does not have a controlling parameter nor a result,
    --  this check procedure does nothing.
 
 end Flow_Classwide;
