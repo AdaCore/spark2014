@@ -864,175 +864,215 @@ package body Why.Gen.Expr is
       Check_Kind : Range_Check_Kind) return W_Prog_Id
    is
       W_Type : constant W_Type_Id := Get_Type (W_Expr);
+      Result : W_Prog_Id;
+      W_Fun  : W_Identifier_Id;  --  range checking function
 
    begin
-         --  in case we have a range check between an int expression and
-         --  a range from bitvectors, do the range check on the int side
+      --  When the range check comes from a modular type, either the expression
+      --  is a bitvector and we apply the check on the largest bitvector type
+      --  involved, or the expression is an int and we need to apply the check
+      --  on int, as we don't know that the value of the expression fits in a
+      --  bitvector.
 
       if Is_Modular_Integer_Type (Ty) then
+         W_Fun := Prefix (M        => E_Module (Ty),
+                          W        => WNE_Range_Check_Fun_BV_Int,
+                          Ada_Node => Ty);
+
+         --  The type of expression is int, so we apply the range check on int
 
          if W_Type = EW_Int_Type then
 
+            --  If the bounds are dynamic, we need to retrieve them for the
+            --  check.
+
             if Type_Is_Modeled_As_Base (Ty) then
                declare
-                  Expr : constant W_Expr_Id := New_Temp_For_Expr (W_Expr);
-                  T    : W_Prog_Id;
+                  --  Convert first and last bounds from bitvector to int
+                  W_First : constant W_Expr_Id :=
+                    Insert_Simple_Conversion
+                      (Ada_Node => Ty,
+                       Domain   => EW_Term,
+                       Expr     =>
+                         New_Attribute_Expr (Ty     => Ty,
+                                             Domain => EW_Term,
+                                             Attr   => Attribute_First,
+                                             Params => Body_Params),
+                       To       => EW_Int_Type);
+                  W_Last : constant W_Expr_Id :=
+                    Insert_Simple_Conversion
+                      (Ada_Node => Ty,
+                       Domain   => EW_Term,
+                       Expr     =>
+                         New_Attribute_Expr (Ty     => Ty,
+                                             Domain => EW_Term,
+                                             Attr   => Attribute_Last,
+                                             Params => Body_Params),
+                       To       => EW_Int_Type);
+
+                  --  Range check on int returns an int. To avoid converting it
+                  --  back to bitvector which is harder for automatic provers,
+                  --  save the bitvector value in a temporary to return later.
+                  W_Tmp     : constant W_Expr_Id := New_Temp_For_Expr (W_Expr);
+                  W_Int_Tmp : constant W_Expr_Id :=
+                    Insert_Simple_Conversion (Ada_Node => Ty,
+                                              Domain   => EW_Term,
+                                              Expr     => W_Tmp,
+                                              To       => EW_Int_Type);
                begin
-                  T := +New_VC_Call (Domain   => EW_Prog,
-                                     Ada_Node => Ada_Node,
-                                     Name     =>
-                                       New_Identifier (Name   =>
-                                                        "range_check_int_",
-                                                      Module =>
-                                                        E_Module (Ty),
-                                                      Typ    =>
-                                                     EW_Int_Type),
-                                     Progs    =>
-                                       (1 => Insert_Simple_Conversion
-                                          (Ada_Node => Ty,
-                                           Domain   => EW_Term,
-                                           Expr     =>
-                                             New_Attribute_Expr
-                                               (Ty     => Ty,
-                                                Domain => EW_Term,
-                                                Attr   => Attribute_First,
-                                                Params => Body_Params),
-                                           To       => EW_Int_Type),
-                                        2 => Insert_Simple_Conversion
-                                          (Ada_Node => Ty,
-                                           Domain   => EW_Term,
-                                           Expr     =>
-                                             New_Attribute_Expr
-                                               (Ty     => Ty,
-                                                Domain => EW_Term,
-                                                Attr   => Attribute_Last,
-                                                Params => Body_Params),
-                                           To       => EW_Int_Type),
-                                        3 =>
-                                          Insert_Simple_Conversion
-                                            (Ada_Node => Ty,
-                                             Domain   => EW_Term,
-                                             Expr     => Expr,
-                                             To       => EW_Int_Type)),
-                                     Reason   => To_VC_Kind (Check_Kind),
-                                     Typ      => Get_Type (W_Expr));
-                  return
-                    +Binding_For_Temp (Domain => EW_Prog,
-                                       Tmp    => Expr,
-                                       Context => +Sequence (T, +Expr));
+                  Result :=
+                    +New_VC_Call (Domain   => EW_Prog,
+                                  Ada_Node => Ada_Node,
+                                  Name     => W_Fun,
+                                  Progs    => (1 => W_First,
+                                               2 => W_Last,
+                                               3 => W_Int_Tmp),
+                                  Reason   => To_VC_Kind (Check_Kind),
+                                  Typ      => Get_Type (W_Expr));
+                  Result :=
+                    +Binding_For_Temp (Domain  => EW_Prog,
+                                       Tmp     => W_Tmp,
+                                       Context => +Sequence (Result, +W_Tmp));
                end;
+
+            --  If the bounds are static, the range checking function knows
+            --  them, simply call it.
+
             else
-               return +New_VC_Call (Domain   => EW_Prog,
-                                    Ada_Node => Ada_Node,
-                                    Name     =>
-                                      Prefix (M        => E_Module (Ty),
-                                              W        =>
-                                                WNE_Range_Check_Fun_BV_Int,
-                                              Ada_Node => Ty),
-                                    Progs    => (1 => +W_Expr),
-                                    Reason   => To_VC_Kind (Check_Kind),
-                                    Typ      => Get_Type (W_Expr));
+               Result := +New_VC_Call (Domain   => EW_Prog,
+                                       Ada_Node => Ada_Node,
+                                       Name     => W_Fun,
+                                       Progs    => (1 => +W_Expr),
+                                       Reason   => To_VC_Kind (Check_Kind),
+                                       Typ      => Get_Type (W_Expr));
             end if;
+
+         --  The type of expression is bitvector, so we apply the range check
+         --  on the largest bitvector type involved.
 
          else
             pragma Assert (Why_Type_Is_BitVector (W_Type));
 
+            W_Fun := Range_Check_Name (Ty, Check_Kind);
+
+            --  If the bounds are dynamic, we need to retrieve them for the
+            --  check, by calling Args_For_Scalar_Dynamic_Property.
+
             if Type_Is_Modeled_As_Base (Ty) then
                declare
-                  Expr : constant W_Expr_Id := New_Temp_For_Expr (W_Expr);
-                  T    : W_Prog_Id;
+                  W_Tmp  : constant W_Expr_Id := New_Temp_For_Expr (W_Expr);
+                  W_Args : constant W_Expr_Array :=
+                    Args_For_Scalar_Dynamic_Property (Ty, W_Tmp);
                begin
-                  T := +New_VC_Call (Domain   => EW_Prog,
-                                     Ada_Node => Ada_Node,
-                                     Name     =>
-                                        Range_Check_Name (Ty, Check_Kind),
-                                     Progs    =>
-                                         Args_For_Scalar_Dynamic_Property
-                                       (Ty, Expr),
-                                     Reason   => To_VC_Kind (Check_Kind),
-                                     Typ      => Get_Type (W_Expr));
-                  return
-                    +Binding_For_Temp (Domain => EW_Prog,
-                                       Tmp    => Expr,
-                                       Context => +Sequence (T, +Expr));
+                  Result :=
+                    +New_VC_Call (Domain   => EW_Prog,
+                                  Ada_Node => Ada_Node,
+                                  Name     => W_Fun,
+                                  Progs    => W_Args,
+                                  Reason   => To_VC_Kind (Check_Kind),
+                                  Typ      => Get_Type (W_Expr));
+                  Result :=
+                    +Binding_For_Temp (Domain  => EW_Prog,
+                                       Tmp     => W_Tmp,
+                                       Context => +Sequence (Result, +W_Tmp));
                end;
-            else
 
-               if BitVector_Type_Size (W_Type) <= Esize (Ty) then
-                  return +New_VC_Call (Domain   => EW_Prog,
+            --  If the bounds are static, the range checking function knows
+            --  them.
+
+            --  When converting from a bitvector of a smaller size, the
+            --  expression can be safely converted to the target bitvector
+            --  and the range check performed in the target bitvector.
+
+            elsif BitVector_Type_Size (W_Type) <= Esize (Ty) then
+               Result := +New_VC_Call (Domain   => EW_Prog,
                                        Ada_Node => Ada_Node,
-                                       Name     =>
-                                         Range_Check_Name (Ty, Check_Kind),
+                                       Name     => W_Fun,
                                        Progs    => (1 => +W_Expr),
                                        Reason   => To_VC_Kind (Check_Kind),
                                        Typ      => Get_Type (W_Expr));
 
-               --  If Range_Type is modular, we need to check before converting
-               --  in the case where Cur is modular with base type of size
-               --  greater than the size of range_type base type.
+            --  When converting to a bitvector of a stricly smaller size, the
+            --  range check must be performed on the expression before it is
+            --  converted to the target bitvector. Instead, convert the bounds
+            --  of the target type to the larger source bitvector.
 
-               else
-                  return +New_VC_Call (Domain   => EW_Prog,
-                                       Ada_Node => Ada_Node,
-                                       Name     =>
-                                         Create_Modular_Converter_Range_Check
-                                           (W_Type, Base_Why_Type (Ty)),
-                                       Progs    =>
-                                         (1 => Insert_Simple_Conversion
-                                            (Domain   => EW_Term,
-                                             Expr     => New_Attribute_Expr
-                                               (Ty     => Ty,
-                                                Domain => EW_Prog,
-                                                Attr   => Attribute_First,
-                                                Params => Body_Params),
-                                             To       => W_Type),
-                                          2 => Insert_Simple_Conversion
-                                            (Domain   => EW_Term,
-                                             Expr     => New_Attribute_Expr
-                                               (Ty     => Ty,
-                                                Domain => EW_Prog,
-                                                Attr   => Attribute_Last,
-                                                Params => Body_Params),
-                                             To       => W_Type),
-                                          3 => +W_Expr),
-                                       Reason   => To_VC_Kind (Check_Kind),
-                                       Typ      => W_Type);
-               end if;
+            else
+               declare
+                  W_First : constant W_Expr_Id :=
+                    Insert_Simple_Conversion
+                      (Domain   => EW_Term,
+                       Expr     =>
+                         New_Attribute_Expr (Ty     => Ty,
+                                             Domain => EW_Prog,
+                                             Attr   => Attribute_First,
+                                             Params => Body_Params),
+                       To       => W_Type);
+                  W_Last : constant W_Expr_Id :=
+                    Insert_Simple_Conversion
+                      (Domain   => EW_Term,
+                       Expr     =>
+                         New_Attribute_Expr (Ty     => Ty,
+                                             Domain => EW_Prog,
+                                             Attr   => Attribute_Last,
+                                             Params => Body_Params),
+                       To       => W_Type);
+               begin
+                  W_Fun := Create_Modular_Converter_Range_Check
+                             (W_Type, Base_Why_Type (Ty));
+                  Result := +New_VC_Call (Domain   => EW_Prog,
+                                          Ada_Node => Ada_Node,
+                                          Name     => W_Fun,
+                                          Progs    => (1 => W_First,
+                                                       2 => W_Last,
+                                                       3 => +W_Expr),
+                                          Reason   => To_VC_Kind (Check_Kind),
+                                          Typ      => W_Type);
+               end;
             end if;
          end if;
 
+      --  Range check does not come from a modular type. Everything is done in
+      --  the representation type, either int for scalar and fixed-point types
+      --  or real for floating-point types.
+
       else
+         W_Fun := Range_Check_Name (Ty, Check_Kind);
+
+         --  If the bounds are dynamic, we need to retrieve them for the check,
+         --  by calling Args_For_Scalar_Dynamic_Property.
 
          if Type_Is_Modeled_As_Base (Ty) then
             declare
-               Expr : constant W_Expr_Id := New_Temp_For_Expr (W_Expr);
-               T    : W_Prog_Id;
+               W_Tmp : constant W_Expr_Id := New_Temp_For_Expr (W_Expr);
+               W_Args : constant W_Expr_Array :=
+                 Args_For_Scalar_Dynamic_Property (Ty, W_Tmp);
             begin
-               T := +New_VC_Call (Domain   => EW_Prog,
-                                  Ada_Node => Ada_Node,
-                                  Name     =>
-                                    Range_Check_Name (Ty, Check_Kind),
-                                  Progs    =>
-                                    Args_For_Scalar_Dynamic_Property
-                                      (Ty, Expr),
-                                  Reason   => To_VC_Kind (Check_Kind),
-                                  Typ      => Get_Type (W_Expr));
-               return
-                 +Binding_For_Temp (Domain => EW_Prog,
-                                    Tmp    => Expr,
-                                    Context => +Sequence (T, +Expr));
+               Result := +New_VC_Call (Domain   => EW_Prog,
+                                       Ada_Node => Ada_Node,
+                                       Name     => W_Fun,
+                                       Progs    => W_Args,
+                                       Reason   => To_VC_Kind (Check_Kind),
+                                       Typ      => Get_Type (W_Expr));
+               Result :=
+                 +Binding_For_Temp (Domain  => EW_Prog,
+                                    Tmp     => W_Tmp,
+                                    Context => +Sequence (Result, +W_Tmp));
             end;
 
+         --  If the bounds are static, the range checking function knows them
+
          else
-            return +New_VC_Call (Domain   => EW_Prog,
-                                 Ada_Node => Ada_Node,
-                                 Name     =>
-                                   Range_Check_Name (Ty, Check_Kind),
-                                 Progs    => (1 => +W_Expr),
-                                 Reason   => To_VC_Kind (Check_Kind),
-                                 Typ      => Get_Type (W_Expr));
+            Result := +New_VC_Call (Domain   => EW_Prog,
+                                    Ada_Node => Ada_Node,
+                                    Name     => W_Fun,
+                                    Progs    => (1 => +W_Expr),
+                                    Reason   => To_VC_Kind (Check_Kind),
+                                    Typ      => Get_Type (W_Expr));
          end if;
       end if;
+
+      return Result;
    end Do_Range_Check;
 
    ------------------------------
