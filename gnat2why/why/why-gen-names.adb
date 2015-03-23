@@ -39,6 +39,12 @@ package body Why.Gen.Names is
    function Uint_To_Positive (U : Uint) return Positive;
    --  Limited version of conversion that only works for 1 to 4
 
+   function Get_Modular_Converter
+     (From, To : W_Type_Id) return W_Identifier_Id;
+   --  @param From the BV type to convert from
+   --  @param To the BV type to convert to
+   --  @return the conversion function from BV From to BV To
+
    Pre_Computed_Idents : array (Why_Name_Enum) of W_Identifier_Id :=
      (others => Why_Empty);
    --  This array is used to precompute all fixed idents.
@@ -191,7 +197,7 @@ package body Why.Gen.Names is
                   elsif Why_Type_Is_BitVector (From) and then
                     Why_Type_Is_BitVector (To)
                   then
-                     return Create_Modular_Converter (From, To);
+                     return Get_Modular_Converter (From, To);
                   --  Either the two objects are of the same type
                   --  (in which case the conversion is useless) or
                   --  they are of incompatible types
@@ -373,6 +379,88 @@ package body Why.Gen.Names is
                      M        => E_Module (Ty),
                      W        => WNE_Float_Round);
    end Float_Round_Name;
+
+   ---------------------------
+   -- Get_Modular_Converter --
+   ---------------------------
+
+   function Get_Modular_Converter
+     (From, To : W_Type_Id) return W_Identifier_Id is
+   begin
+      if From = EW_BitVector_8_Type then
+
+         if To = EW_BitVector_16_Type then
+            return M_BV_Conv_8_16.To_Big;
+         elsif To = EW_BitVector_32_Type then
+            return M_BV_Conv_8_32.To_Big;
+         elsif To = EW_BitVector_64_Type then
+            return M_BV_Conv_8_64.To_Big;
+         else
+            raise Program_Error;
+         end if;
+
+      elsif From = EW_BitVector_16_Type then
+
+         if To = EW_BitVector_8_Type then
+            return M_BV_Conv_8_16.To_Small;
+         elsif To = EW_BitVector_32_Type then
+            return M_BV_Conv_16_32.To_Big;
+         elsif To = EW_BitVector_64_Type then
+            return M_BV_Conv_16_64.To_Big;
+         else
+            raise Program_Error;
+         end if;
+
+      elsif From = EW_BitVector_32_Type then
+
+         if To = EW_BitVector_8_Type then
+            return M_BV_Conv_8_32.To_Small;
+         elsif To = EW_BitVector_16_Type then
+            return M_BV_Conv_16_32.To_Small;
+         elsif To = EW_BitVector_64_Type then
+            return M_BV_Conv_32_64.To_Big;
+         else
+            raise Program_Error;
+         end if;
+
+      elsif From = EW_BitVector_64_Type then
+
+         if To = EW_BitVector_8_Type then
+            return M_BV_Conv_8_64.To_Small;
+         elsif To = EW_BitVector_16_Type then
+            return M_BV_Conv_16_64.To_Small;
+         elsif To = EW_BitVector_32_Type then
+            return M_BV_Conv_32_64.To_Small;
+         else
+            raise Program_Error;
+         end if;
+
+      else
+         raise Program_Error;
+      end if;
+   end Get_Modular_Converter;
+
+   function Get_Modular_Converter_Range_Check
+     (From, To : W_Type_Id) return W_Identifier_Id is
+   begin
+      if From = EW_BitVector_16_Type then
+         return M_BV_Conv_8_16.Range_Check;
+      elsif From = EW_BitVector_32_Type then
+         if To = EW_BitVector_8_Type then
+            return M_BV_Conv_8_32.Range_Check;
+         else
+            return M_BV_Conv_16_32.Range_Check;
+         end if;
+      else
+         if To = EW_BitVector_8_Type then
+            return M_BV_Conv_8_64.Range_Check;
+         elsif To = EW_BitVector_16_Type then
+            return M_BV_Conv_16_64.Range_Check;
+         else
+            return M_BV_Conv_32_64.Range_Check;
+         end if;
+      end if;
+   end Get_Modular_Converter_Range_Check;
 
    -------------
    -- New_Abs --

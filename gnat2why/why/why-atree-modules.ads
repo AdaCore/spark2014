@@ -64,15 +64,6 @@ package Why.Atree.Modules is
    EW_BitVector_64_Type : W_Type_Id;
    EW_Unit_Type         : W_Type_Id;
 
-   --  Modules of "_gnatprove_standard.mlw"
-
-   BVConv_32_64_Module       : W_Module_Id;
-   BVConv_16_64_Module       : W_Module_Id;
-   BVConv_8_64_Module        : W_Module_Id;
-   BVConv_16_32_Module       : W_Module_Id;
-   BVConv_8_32_Module        : W_Module_Id;
-   BVConv_8_16_Module        : W_Module_Id;
-
    --  Modules of file "ada__model.mlw"
 
    Static_Discrete           : W_Module_Id;
@@ -101,7 +92,7 @@ package Why.Atree.Modules is
    Standard_Array_Logical_Ax     : W_Module_Id;
    Subtype_Array_Logical_Ax      : W_Module_Id;
 
-   --  Identifiers of the Main module
+   --  modules of the _gnatprove_standard.mlw file
 
    type M_Main_Type is record
       Module            : W_Module_Id;
@@ -192,6 +183,8 @@ package Why.Atree.Modules is
       Check_Not_Last  : W_Identifier_Id;
    end record;
 
+   --  symbols common to all arrays
+
    type M_Array_Type is record
       Module  : W_Module_Id;
       Ty      : W_Type_Id;
@@ -250,6 +243,13 @@ package Why.Atree.Modules is
       Two_Power_Size : W_Identifier_Id;
    end record;
 
+   type M_BV_Conv_Type is record
+      Module      : W_Module_Id;
+      To_Big      : W_Identifier_Id;
+      To_Small    : W_Identifier_Id;
+      Range_Check : W_Identifier_Id;
+   end record;
+
    M_Main       : M_Main_Type;
    M_Integer    : M_Integer_Type;
    M_Int_Power  : M_Int_Power_Type;
@@ -260,6 +260,13 @@ package Why.Atree.Modules is
    M_Boolean    : M_Boolean_Type;
    M_Arrays     : array (1 .. 4) of M_Array_Type;
    M_Array_1    : M_Array_1_Type;
+
+   M_BV_Conv_32_64 : M_BV_Conv_Type;
+   M_BV_Conv_16_64 : M_BV_Conv_Type;
+   M_BV_Conv_8_64  : M_BV_Conv_Type;
+   M_BV_Conv_16_32 : M_BV_Conv_Type;
+   M_BV_Conv_8_32  : M_BV_Conv_Type;
+   M_BV_Conv_8_16  : M_BV_Conv_Type;
 
    type BV_Kind is (BV8, BV16, BV32, BV64);
 
@@ -307,11 +314,6 @@ package Why.Atree.Modules is
 
    Old_Tag                   : Name_Id;
    Def_Name                  : W_Identifier_Id;
-
-   function Create_Modular_Converter
-     (From, To : W_Type_Id) return W_Identifier_Id;
-   function Create_Modular_Converter_Range_Check
-     (From, To : W_Type_Id) return W_Identifier_Id;
 
    procedure Initialize;
    --  Call this procedure before using any of the entities in this package.

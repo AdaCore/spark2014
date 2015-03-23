@@ -327,4 +327,10 @@ package Why.Gen.Names is
 
    function Convert_From (Kind : W_Type_Id) return Why_Name_Enum;
 
+   function Get_Modular_Converter_Range_Check
+     (From, To : W_Type_Id) return W_Identifier_Id;
+   --  @param From the BV type to convert from
+   --  @param To the BV type to convert to
+   --  @return the appropriate range check function
+
 end Why.Gen.Names;

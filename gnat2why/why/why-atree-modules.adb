@@ -45,6 +45,7 @@ package body Why.Atree.Modules is
    procedure Init_Boolean_Module;
    procedure Init_Array_Modules;
    procedure Init_BV_Modules;
+   procedure Init_BV_Conv_Modules;
 
    package Ada_To_Why is new Ada.Containers.Hashed_Maps
      (Key_Type        => Node_Id,
@@ -129,24 +130,6 @@ package body Why.Atree.Modules is
       Int_Module := New_Module (File => Int_File, Name => NID ("Int"));
       RealInfix := New_Module (File => Real_File, Name => NID ("RealInfix"));
       Ref_Module := New_Module (File => Ref_File, Name => NID ("Ref"));
-      BVConv_32_64_Module  :=
-        New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("BVConv_32_64"));
-      BVConv_16_64_Module  :=
-        New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("BVConv_16_64"));
-      BVConv_8_64_Module  :=
-        New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("BVConv_8_64"));
-      BVConv_16_32_Module  :=
-        New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("BVConv_16_32"));
-      BVConv_8_32_Module  :=
-        New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("BVConv_8_32"));
-      BVConv_8_16_Module  :=
-        New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("BVConv_8_16"));
 
       --  builtin Why types
 
@@ -181,6 +164,7 @@ package body Why.Atree.Modules is
       Init_Boolean_Module;
       Init_Array_Modules;
       Init_BV_Modules;
+      Init_BV_Conv_Modules;
 
       --  modules of "ada__model" file
 
@@ -634,6 +618,130 @@ package body Why.Atree.Modules is
                         Symbol => NID ("check_not_last"),
                         Typ    => EW_Int_Type);
    end Init_Boolean_Module;
+
+   --------------------------
+   -- Init_BV_Conv_Modules --
+   --------------------------
+
+   procedure Init_BV_Conv_Modules is
+      M : W_Module_Id;
+   begin
+      M := New_Module (File => Gnatprove_Standard_File,
+                       Name => NID ("BVConv_32_64"));
+      M_BV_Conv_32_64 :=
+        M_BV_Conv_Type'(Module => M,
+                        To_Big =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symbol => NID ("toBig"),
+                                          Typ => EW_BitVector_64_Type),
+                        To_Small =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symbol => NID ("toSmall"),
+                                          Typ => EW_BitVector_32_Type),
+                        Range_Check =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symbol => NID ("range_check_"),
+                                          Typ => EW_BitVector_64_Type));
+      M := New_Module (File => Gnatprove_Standard_File,
+                       Name => NID ("BVConv_16_64"));
+      M_BV_Conv_16_64 :=
+        M_BV_Conv_Type'(Module => M,
+                        To_Big =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symbol => NID ("toBig"),
+                                          Typ => EW_BitVector_64_Type),
+                        To_Small =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symbol => NID ("toSmall"),
+                                          Typ => EW_BitVector_16_Type),
+                        Range_Check =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symbol => NID ("range_check_"),
+                                          Typ => EW_BitVector_64_Type));
+      M := New_Module (File => Gnatprove_Standard_File,
+                       Name => NID ("BVConv_8_64"));
+      M_BV_Conv_8_64 :=
+        M_BV_Conv_Type'(Module => M,
+                        To_Big =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symbol => NID ("toBig"),
+                                          Typ => EW_BitVector_64_Type),
+                        To_Small =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symbol => NID ("toSmall"),
+                                          Typ => EW_BitVector_8_Type),
+                        Range_Check =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symbol => NID ("range_check_"),
+                                          Typ => EW_BitVector_64_Type));
+      M := New_Module (File => Gnatprove_Standard_File,
+                       Name => NID ("BVConv_16_32"));
+      M_BV_Conv_16_32 :=
+        M_BV_Conv_Type'(Module => M,
+                        To_Big =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symbol => NID ("toBig"),
+                                          Typ => EW_BitVector_32_Type),
+                        To_Small =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symbol => NID ("toSmall"),
+                                          Typ => EW_BitVector_16_Type),
+                        Range_Check =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symbol => NID ("range_check_"),
+                                          Typ => EW_BitVector_32_Type));
+      M := New_Module (File => Gnatprove_Standard_File,
+                       Name => NID ("BVConv_8_32"));
+      M_BV_Conv_8_32 :=
+        M_BV_Conv_Type'(Module => M,
+                        To_Big =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symbol => NID ("toBig"),
+                                          Typ => EW_BitVector_32_Type),
+                        To_Small =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symbol => NID ("toSmall"),
+                                          Typ => EW_BitVector_8_Type),
+                        Range_Check =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symbol => NID ("range_check_"),
+                                          Typ => EW_BitVector_32_Type));
+      M := New_Module (File => Gnatprove_Standard_File,
+                       Name => NID ("BVConv_8_16"));
+      M_BV_Conv_8_16 :=
+        M_BV_Conv_Type'(Module => M,
+                        To_Big =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symbol => NID ("toBig"),
+                                          Typ => EW_BitVector_16_Type),
+                        To_Small =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symbol => NID ("toSmall"),
+                                          Typ => EW_BitVector_8_Type),
+                        Range_Check =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symbol => NID ("range_check_"),
+                                          Typ => EW_BitVector_16_Type));
+
+   end Init_BV_Conv_Modules;
 
    ---------------------
    -- Init_BV_Modules --
@@ -1103,106 +1211,6 @@ package body Why.Atree.Modules is
       EW_Fixed_Type := M_Main.Fixed_Type;
       EW_Private_Type := M_Main.Private_Type;
    end Init_Main_Module;
-
-   function Create_Modular_Converter
-     (From, To : W_Type_Id) return W_Identifier_Id
-   is
-      Module : W_Module_Id;
-      Symbol : Name_Id;
-   begin
-      if From = EW_BitVector_8_Type then
-
-         Symbol := NID ("toBig");
-
-         if To = EW_BitVector_16_Type then
-            Module := BVConv_8_16_Module;
-         elsif To = EW_BitVector_32_Type then
-            Module := BVConv_8_32_Module;
-         elsif To = EW_BitVector_64_Type then
-            Module := BVConv_8_64_Module;
-         else
-            raise Program_Error;
-         end if;
-
-      elsif From = EW_BitVector_16_Type then
-
-         if To = EW_BitVector_8_Type then
-            Module := BVConv_8_16_Module;
-            Symbol := NID ("toSmall");
-         elsif To = EW_BitVector_32_Type then
-            Module := BVConv_16_32_Module;
-            Symbol := NID ("toBig");
-         elsif To = EW_BitVector_64_Type then
-            Module := BVConv_16_64_Module;
-            Symbol := NID ("toBig");
-         else
-            raise Program_Error;
-         end if;
-
-      elsif From = EW_BitVector_32_Type then
-
-         if To = EW_BitVector_8_Type then
-            Module := BVConv_8_32_Module;
-            Symbol := NID ("toSmall");
-         elsif To = EW_BitVector_16_Type then
-            Module := BVConv_16_32_Module;
-            Symbol := NID ("toSmall");
-         elsif To = EW_BitVector_64_Type then
-            Module := BVConv_32_64_Module;
-            Symbol := NID ("toBig");
-         else
-            raise Program_Error;
-         end if;
-
-      elsif From = EW_BitVector_64_Type then
-
-         if To = EW_BitVector_8_Type then
-            Module := BVConv_8_64_Module;
-            Symbol := NID ("toSmall");
-         elsif To = EW_BitVector_16_Type then
-            Module := BVConv_16_64_Module;
-            Symbol := NID ("toSmall");
-         elsif To = EW_BitVector_32_Type then
-            Module := BVConv_32_64_Module;
-            Symbol := NID ("toSmall");
-         else
-            raise Program_Error;
-         end if;
-
-      else
-         raise Program_Error;
-      end if;
-
-      return New_Identifier (Module => Module,
-                             Domain => EW_Term,
-                             Symbol => Symbol,
-                             Typ => To);
-   end Create_Modular_Converter;
-
-   function Create_Modular_Converter_Range_Check
-     (From, To : W_Type_Id) return W_Identifier_Id
-   is
-   begin
-      return New_Identifier (Module =>
-                               (if From = EW_BitVector_16_Type then
-                                   --  To = EW_BitVector_8_Type
-                                   BVConv_8_16_Module
-                                elsif From = EW_BitVector_32_Type then
-                                  (if To = EW_BitVector_8_Type then
-                                        BVConv_8_32_Module
-                                   else --  To = EW_BitVector_16_Type
-                                      BVConv_16_32_Module)
-                                else --  From = EW_BitVector_64_Type
-                                  (if To = EW_BitVector_8_Type then
-                                        BVConv_8_64_Module
-                                   elsif To = EW_BitVector_16_Type then
-                                      BVConv_16_64_Module
-                                   else --  To = EW_BitVector_32_Type
-                                      BVConv_32_64_Module)),
-                             Domain => EW_Term,
-                             Symbol => NID ("range_check_"),
-                             Typ => To);
-   end Create_Modular_Converter_Range_Check;
 
    -------------------------
    -- Insert_Extra_Module --

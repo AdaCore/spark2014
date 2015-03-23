@@ -1018,7 +1018,7 @@ package body Why.Gen.Expr is
                                              Params => Body_Params),
                        To       => W_Type);
                begin
-                  W_Fun := Create_Modular_Converter_Range_Check
+                  W_Fun := Get_Modular_Converter_Range_Check
                              (W_Type, Base_Why_Type (Ty));
                   Result := +New_VC_Call (Domain   => EW_Prog,
                                           Ada_Node => Ada_Node,
