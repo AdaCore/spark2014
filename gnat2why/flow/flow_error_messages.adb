@@ -55,7 +55,7 @@ package body Flow_Error_Messages is
    --  to not emit duplicate messages.
 
    function Msg_Kind_To_String (Kind : Msg_Kind) return String;
-   --  transform the msg kind into a string, for the JSON output
+   --  Transform the msg kind into a string, for the JSON output.
 
    type Message_Id is new Integer;
    --  type used to identify a message issued by gnat2why
@@ -67,9 +67,9 @@ package body Flow_Error_Messages is
       F2   : Flow_Id := Null_Flow_Id;
       F3   : Flow_Id := Null_Flow_Id)
       return String;
-   --  This function does:
-   --    * add more precise location for generics and inlining
-   --    * substitute flow nodes
+   --  This function:
+   --    * adds more precise location for generics and inlining
+   --    * substitutes flow nodes
 
    function Compute_Sloc
      (N           : Node_Id;
@@ -95,7 +95,7 @@ package body Flow_Error_Messages is
       F2  : Flow_Id := Null_Flow_Id;
       F3  : Flow_Id := Null_Flow_Id)
      return String_Id;
-   --  Check if the warning for the given node, message and flow Id is
+   --  Check if the warning for the given node, message and flow id is
    --  suppressed. If the function returns No_String, the warning is not
    --  suppressed. If it returns Null_String_Id the warning is suppressed,
    --  but no reason has been given. Otherwise, the String_Id of the reason
@@ -105,11 +105,11 @@ package body Flow_Error_Messages is
      (Msg  : String;
       Slc  : Source_Ptr;
       Kind : Msg_Kind) return Message_Id;
-   --  print a regular error, warning or info message using the frontend
-   --  mechanism. return an Id which can be used to identify this message.
+   --  Print a regular error, warning or info message using the frontend
+   --  mechanism. Return an Id which can be used to identify this message.
 
    Flow_Msgs : GNATCOLL.JSON.JSON_Array;
-   --  This will hold all of the emitted flow messages in JSON format
+   --  This will hold all of the emitted flow messages in JSON format.
 
    Proof_Msgs : GNATCOLL.JSON.JSON_Array;
 
