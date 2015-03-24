@@ -1348,7 +1348,7 @@ viewed as an Ada program) should be unaffected by this transformation. [This
 transformation might affect the performance characteristics of the program
 (e.g., due to no longer evaluating provably true assertions), but that
 is not what we are talking about here. In rare cases, it might be necessary
-to make a small change additional change after the removals
+to make a small additional change after the removals
 (e.g., adding an Elaborate_Body pragma) in order to avoid producing a
 library package that no longer needs a body (see Ada RM 7.2(4)).
 
