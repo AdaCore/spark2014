@@ -831,7 +831,7 @@ package body Why.Gen.Names is
             when RCK_Range_Not_First | RCK_Overflow_Not_First =>
                return M_Boolean.Check_Not_First;
             when RCK_Range_Not_Last | RCK_Overflow_Not_Last =>
-               return M_Boolean.Check_Not_First;
+               return M_Boolean.Check_Not_Last;
             when others =>
                return M_Boolean.Range_Check;
          end case;
