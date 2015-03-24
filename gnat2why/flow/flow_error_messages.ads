@@ -81,7 +81,7 @@ package Flow_Error_Messages is
    with Pre => (if Present (F2) then Present (F1)) and
                (if Present (F3) then Present (F2));
    --  Output a message attached to the given node with a substitution
-   --  using F1 and F2. It also adds a JSON entry in the "unit.flow" file
+   --  using F1, F2 and F3. It also adds a JSON entry in the "unit.flow" file
    --  for the given entity E.
    --
    --  The substitution characters used are slightly different from the
