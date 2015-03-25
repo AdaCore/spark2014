@@ -145,7 +145,7 @@ package Flow is
                                 E_Package |
                                 E_Package_Body;
 
-   --  !!! This should be a variant record, but O325-005 and AI12-0047 make
+   --  ??? This should be a variant record, but O325-005 and AI12-0047 make
    --      this difficult.
    type Flow_Global_Generation_Info is record
       Aborted     : Boolean;
