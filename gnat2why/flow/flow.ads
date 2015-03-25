@@ -145,21 +145,16 @@ package Flow is
                                 E_Package |
                                 E_Package_Body;
 
-   type Flow_Global_Generation_Info (Present : Boolean) is record
-      case Present is
-         when True =>
-            Aborted     : Boolean;
-            --  Set if graph creation, processing or analysis raised some
-            --  error; or if the entity should not be analyzed in the first
-            --  place.
+   --  !!! This should be a variant record, but O325-005 and AI12-0047 make
+   --      this difficult.
+   type Flow_Global_Generation_Info is record
+      Aborted     : Boolean;
+      --  Set if graph creation, processing or analysis raised some error;
+      --  or if the entity should not be analyzed in the first place.
 
-            Globals     : Node_Sets.Set;
-            --  All obvious globals (non-local variables or parameters that
-            --  are not subprogram parameters of the analyzed entity).
-
-         when False =>
-            null;
-      end case;
+      Globals     : Node_Sets.Set;
+      --  All obvious globals (non-local variables or parameters that are
+      --  not subprogram parameters of the analyzed entity).
    end record;
 
    type Flow_Analysis_Graphs_Root
@@ -247,7 +242,7 @@ package Flow is
       Direct_Calls          : Node_Sets.Set;
       --  All subprograms called
 
-      GG                     : Flow_Global_Generation_Info (Compute_Globals);
+      GG                    : Flow_Global_Generation_Info;
       --  Information for globals computation.
 
       case Kind is

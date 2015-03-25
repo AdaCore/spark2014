@@ -249,13 +249,15 @@ package body Flow is
 
    function Is_Valid (X : Flow_Analysis_Graphs_Root)
                       return Boolean
-   is (case X.Kind is
-          when E_Subprogram_Body =>
-             Ekind (X.Analyzed_Entity) in E_Function | E_Procedure,
-          when E_Package =>
-             Ekind (X.Analyzed_Entity) = E_Package,
-          when E_Package_Body =>
-             Ekind (X.Analyzed_Entity) = E_Package_Body
+   is ((case X.Kind is
+        when E_Subprogram_Body =>
+          Ekind (X.Analyzed_Entity) in E_Function | E_Procedure,
+        when E_Package =>
+          Ekind (X.Analyzed_Entity) = E_Package,
+        when E_Package_Body =>
+            Ekind (X.Analyzed_Entity) = E_Package_Body)
+       and then (if not X.Compute_Globals then not X.GG.Aborted and
+                                               X.GG.Globals.Is_Empty)
       );
 
    -------------------------------
@@ -910,10 +912,8 @@ package body Flow is
             raise Why.Not_SPARK;
       end case;
 
-      if Compute_Globals then
-         Tmp.GG.Aborted := False;
-         Tmp.GG.Globals := Node_Sets.Empty_Set;
-      end if;
+      Tmp.GG.Aborted := False;
+      Tmp.GG.Globals := Node_Sets.Empty_Set;
 
       declare
          FA : Flow_Analysis_Graphs := Tmp;
