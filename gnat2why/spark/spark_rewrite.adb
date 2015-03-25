@@ -234,7 +234,7 @@ package body SPARK_Rewrite is
             when N_Subprogram_Call =>
                Rewrite_Call (N);
 
-            --  Recursively call the tree rewriting procedure on subunits
+            --  Recursively call the tree rewriting procedure on subunits.
 
             when N_Body_Stub =>
                Rewrite_Nodes (Unit (Library_Unit (N)));
