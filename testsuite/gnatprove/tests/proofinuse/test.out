@@ -125,9 +125,9 @@ nonlinear.adb:26:23: info: initialization of "Res" proved
 nonlinear.adb:26:27: info: overflow check proved
 nonlinear.adb:26:32: info: division check proved
 nonlinear.adb:32:07: info: assertion proved
-nonlinear.adb:32:24: medium: overflow check might fail
-nonlinear.adb:32:29: medium: overflow check might fail
-nonlinear.adb:32:33: medium: overflow check might fail
+nonlinear.adb:32:24: info: overflow check proved
+nonlinear.adb:32:29: info: overflow check proved
+nonlinear.adb:32:33: info: overflow check proved
 nonlinear.adb:32:38: info: range check proved
 nonlinear.adb:32:46: medium: overflow check might fail
 nonlinear.adb:32:51: info: overflow check proved
@@ -138,7 +138,7 @@ nonlinear.adb:39:22: medium: assertion might fail, requires Res in -99 .. -Y
 nonlinear.adb:39:36: info: overflow check proved
 nonlinear.adb:45:17: medium: overflow check might fail
 nonlinear.adb:45:22: info: division check proved
-nonlinear.adb:45:22: medium: range check might fail
+nonlinear.adb:45:22: info: range check proved
 nonlinear.adb:46:22: info: initialization of "Res" proved
 nonlinear.adb:46:22: medium: assertion might fail, requires Res <= X
 nonlinear.ads:7:43: info: initialization of "Res" proved

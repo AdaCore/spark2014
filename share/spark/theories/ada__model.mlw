@@ -56,17 +56,17 @@ module Static_Discrete_Base
 
   val check_not_last (n : rep_type) : rep_type
     requires { n <> last }
-    ensures { result = n }
+    ensures { result = n /\ n <> last}
 
   val check_not_first (n : rep_type) : rep_type
     requires { n <> first }
-    ensures { result = n }
+    ensures { result = n /\ n <> first}
 
   predicate in_range (x : rep_type)
 
   val range_check_ (n : rep_type) : rep_type
     requires { in_range n }
-    ensures { result = n }
+    ensures { result = n /\ in_range n}
 
   axiom range_axiom :
     forall x : t. in_range (to_rep x)
@@ -100,7 +100,7 @@ module Static_Modular_Base
 
   val range_check_int_ (n : int) : int
     requires { in_range_int n }
-    ensures { result = n }
+    ensures { result = n /\ in_range_int n }
 
   axiom range_int_axiom :
     forall x : t. in_range_int (to_int x)
@@ -261,11 +261,11 @@ module Dynamic_Discrete
 
   val check_not_last (first last n : rep_type) : rep_type
     requires { n <> last }
-    ensures { result = n }
+    ensures { result = n /\ n <> last }
 
   val check_not_first (first last n : rep_type) : rep_type
     requires { n <> first }
-    ensures { result = n }
+    ensures { result = n /\ n <> first }
 
   val range_check_ (first last n : rep_type) : rep_type
     requires { dynamic_property first last n }

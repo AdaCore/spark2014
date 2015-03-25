@@ -62,5 +62,5 @@ power_and_sum.ads:5:35: info: initialization of "Result" proved
 power_and_sum.ads:6:14: info: postcondition proved
 power_and_sum.ads:6:18: info: initialization of "Result" proved
 power_and_sum.ads:8:42: info: initialization of "Result" proved
-power_and_sum.ads:9:14: info: postcondition proved
+power_and_sum.ads:9:14: medium: postcondition might fail, requires 6 * Result = N * (N+1) * (N+2
 power_and_sum.ads:9:18: info: initialization of "Result" proved

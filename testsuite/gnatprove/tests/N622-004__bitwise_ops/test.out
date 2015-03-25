@@ -152,14 +152,14 @@ aco-math-very_longs.adb:258:35: info: discriminant check proved
 aco-math-very_longs.adb:258:47: info: initialization of "R82B" proved
 aco-math-very_longs.adb:259:44: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:259:50: info: discriminant check proved
-aco-math-very_longs.adb:259:65: medium: overflow check might fail
+aco-math-very_longs.adb:259:65: info: overflow check proved
 aco-math-very_longs.adb:259:69: info: index check proved
 aco-math-very_longs.adb:260:28: info: initialization of "L_Digit" proved
 aco-math-very_longs.adb:260:38: info: initialization of "R_Digit" proved
 aco-math-very_longs.adb:260:49: info: initialization of "T_Digit" proved
 aco-math-very_longs.adb:260:59: info: initialization of "Carry" proved
 aco-math-very_longs.adb:261:22: info: discriminant check proved
-aco-math-very_longs.adb:261:37: medium: overflow check might fail
+aco-math-very_longs.adb:261:37: info: overflow check proved
 aco-math-very_longs.adb:261:41: info: index check proved
 aco-math-very_longs.adb:261:46: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:261:64: info: initialization of "Temp" proved
@@ -290,7 +290,7 @@ aco-math-very_longs.adb:410:91: info: initialization of "Old_Overflow" proved
 aco-math-very_longs.adb:411:29: info: initialization of "New_Overflow" proved
 aco-math-very_longs.adb:417:55: info: initialization of "Q_Hat" proved
 aco-math-very_longs.adb:423:53: info: discriminant check proved
-aco-math-very_longs.adb:423:68: medium: overflow check might fail
+aco-math-very_longs.adb:423:68: info: overflow check proved
 aco-math-very_longs.adb:423:72: medium: array index check might fail
 aco-math-very_longs.adb:423:98: info: discriminant check proved
 aco-math-very_longs.adb:423:114: medium: overflow check might fail
@@ -308,7 +308,7 @@ aco-math-very_longs.adb:431:54: info: discriminant check proved
 aco-math-very_longs.adb:431:69: medium: array index check might fail
 aco-math-very_longs.adb:431:83: info: initialization of "R_Hat" proved
 aco-math-very_longs.adb:431:109: info: discriminant check proved
-aco-math-very_longs.adb:431:125: medium: overflow check might fail
+aco-math-very_longs.adb:431:125: info: overflow check proved
 aco-math-very_longs.adb:431:130: medium: array index check might fail
 aco-math-very_longs.adb:432:22: info: initialization of "Q_Hat" proved
 aco-math-very_longs.adb:433:22: info: initialization of "R_Hat" proved
@@ -320,7 +320,7 @@ aco-math-very_longs.adb:437:57: info: discriminant check proved
 aco-math-very_longs.adb:437:72: info: index check proved
 aco-math-very_longs.adb:437:86: info: initialization of "R_Hat" proved
 aco-math-very_longs.adb:437:112: info: discriminant check proved
-aco-math-very_longs.adb:437:128: medium: overflow check might fail
+aco-math-very_longs.adb:437:128: info: overflow check proved
 aco-math-very_longs.adb:437:133: info: index check proved
 aco-math-very_longs.adb:438:25: info: initialization of "Q_Hat" proved
 aco-math-very_longs.adb:446:59: info: initialization of "Current_Borrow" proved
@@ -337,25 +337,25 @@ aco-math-very_longs.adb:461:65: medium: array index check might fail
 aco-math-very_longs.adb:461:74: info: initialization of "Temporary_Digit" proved
 aco-math-very_longs.adb:461:92: info: initialization of "Current_Borrow" proved
 aco-math-very_longs.adb:466:14: info: discriminant check proved
-aco-math-very_longs.adb:466:29: medium: overflow check might fail
+aco-math-very_longs.adb:466:29: info: overflow check proved
 aco-math-very_longs.adb:466:45: info: index check proved
 aco-math-very_longs.adb:467:45: info: discriminant check proved
-aco-math-very_longs.adb:467:60: medium: overflow check might fail
+aco-math-very_longs.adb:467:60: info: overflow check proved
 aco-math-very_longs.adb:467:76: info: index check proved
 aco-math-very_longs.adb:467:84: info: initialization of "Temporary_Digit" proved
 aco-math-very_longs.adb:467:103: info: initialization of "Current_Borrow" proved
 aco-math-very_longs.adb:467:119: info: range check proved
 aco-math-very_longs.adb:468:31: info: initialization of "Future_Borrow" proved
 aco-math-very_longs.adb:472:31: info: discriminant check proved
-aco-math-very_longs.adb:472:46: medium: overflow check might fail
+aco-math-very_longs.adb:472:46: info: overflow check proved
 aco-math-very_longs.adb:472:50: info: index check proved
 aco-math-very_longs.adb:472:59: info: initialization of "Carry" proved
 aco-math-very_longs.adb:472:67: info: initialization of "Current_Borrow" proved
 aco-math-very_longs.adb:477:11: info: discriminant check proved
-aco-math-very_longs.adb:477:26: medium: overflow check might fail
+aco-math-very_longs.adb:477:26: info: overflow check proved
 aco-math-very_longs.adb:477:30: info: index check proved
 aco-math-very_longs.adb:477:68: info: discriminant check proved
-aco-math-very_longs.adb:477:83: medium: overflow check might fail
+aco-math-very_longs.adb:477:83: info: overflow check proved
 aco-math-very_longs.adb:477:87: info: index check proved
 aco-math-very_longs.adb:477:95: info: initialization of "Carry" proved
 aco-math-very_longs.adb:477:104: info: initialization of "Current_Borrow" proved
@@ -377,15 +377,15 @@ aco-math-very_longs.adb:496:98: info: discriminant check proved
 aco-math-very_longs.adb:496:111: info: index check proved
 aco-math-very_longs.adb:496:129: info: initialization of "Carry" proved
 aco-math-very_longs.adb:497:17: info: discriminant check proved
-aco-math-very_longs.adb:497:32: medium: overflow check might fail
+aco-math-very_longs.adb:497:32: info: overflow check proved
 aco-math-very_longs.adb:497:48: info: index check proved
 aco-math-very_longs.adb:497:71: info: initialization of "Sum" proved
 aco-math-very_longs.adb:498:61: info: initialization of "Sum" proved
 aco-math-very_longs.adb:500:14: info: discriminant check proved
-aco-math-very_longs.adb:500:29: medium: overflow check might fail
+aco-math-very_longs.adb:500:29: info: overflow check proved
 aco-math-very_longs.adb:500:33: info: index check proved
 aco-math-very_longs.adb:500:42: info: discriminant check proved
-aco-math-very_longs.adb:500:57: medium: overflow check might fail
+aco-math-very_longs.adb:500:57: info: overflow check proved
 aco-math-very_longs.adb:500:61: info: index check proved
 aco-math-very_longs.adb:500:83: info: initialization of "Carry" proved
 aco-math-very_longs.adb:505:15: info: discriminant check proved

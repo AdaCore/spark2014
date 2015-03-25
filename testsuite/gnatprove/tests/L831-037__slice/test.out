@@ -29,7 +29,7 @@ lcp.ads:7:16: info: overflow check proved
 lcp.ads:7:29: info: overflow check proved
 lcp.ads:7:36: medium: range check might fail
 lcp.ads:7:46: medium: overflow check might fail
-lcp.ads:7:59: medium: overflow check might fail
+lcp.ads:7:59: info: overflow check proved
 lcp.ads:8:18: info: overflow check proved
 lcp.ads:8:40: info: overflow check proved
 lcp.ads:9:28: info: overflow check proved

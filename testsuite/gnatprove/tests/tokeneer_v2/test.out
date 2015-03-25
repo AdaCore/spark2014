@@ -869,10 +869,10 @@ cert-attr.adb:40:09: medium: range check might fail
 cert-attr.adb:47:43: info: initialization of "LocalUser" proved
 cert-attr.adb:47:43: info: length check proved
 cert-attr.adb:47:46: info: initialization of "FullString" proved
-cert-attr.adb:47:46: medium: length check might fail
+cert-attr.adb:47:46: info: length check proved
 cert-attr.adb:49:23: info: initialization of "FullString" proved
 cert-attr.adb:49:23: info: length check proved
-cert-attr.adb:49:23: medium: range check might fail
+cert-attr.adb:49:23: info: range check proved
 cert-attr.adb:52:14: info: initialization of "LocalUser" proved
 cert-attr.ads:55:13: info: initialization of "ExtractUser" proved
 cert-attr.ads:66:13: info: initialization of "TheBaseCert.Issuer.ID" proved
@@ -970,10 +970,10 @@ cert.adb:65:09: medium: range check might fail
 cert.adb:71:43: info: initialization of "LocalUser" proved
 cert.adb:71:43: info: length check proved
 cert.adb:71:46: info: initialization of "FullString" proved
-cert.adb:71:46: medium: length check might fail
+cert.adb:71:46: info: length check proved
 cert.adb:73:23: info: initialization of "FullString" proved
 cert.adb:73:23: info: length check proved
-cert.adb:73:23: medium: range check might fail
+cert.adb:73:23: info: range check proved
 cert.adb:76:14: info: initialization of "LocalUser" proved
 cert.adb:116:14: info: initialization of "LocalRawData.DataLength" proved
 cert.adb:116:14: info: initialization of "LocalRawData.RawData" proved
@@ -1992,10 +1992,10 @@ enrolment.adb:67:63: medium: range check might fail
 enrolment.adb:71:40: info: initialization of "Result" proved
 enrolment.adb:71:40: info: length check proved
 enrolment.adb:71:43: info: initialization of "TheDesc" proved
-enrolment.adb:71:43: medium: length check might fail
+enrolment.adb:71:43: info: length check proved
 enrolment.adb:73:23: info: initialization of "TheDesc" proved
 enrolment.adb:73:23: info: length check proved
-enrolment.adb:73:23: medium: range check might fail
+enrolment.adb:73:23: info: range check proved
 enrolment.adb:75:17: info: initialization of "Result" proved
 enrolment.adb:93:35: info: initialization of "KeyAdded" proved
 enrolment.adb:94:35: info: initialization of "Description" proved
@@ -2151,16 +2151,16 @@ keystore.adb:118:20: info: length check proved, in call inlined at keystore.adb:
 keystore.adb:118:20: info: length check proved, in call inlined at keystore.adb:694
 keystore.adb:118:20: info: length check proved, in call inlined at keystore.adb:762
 keystore.adb:118:20: info: length check proved, in call inlined at keystore.adb:847
-keystore.adb:118:20: medium: range check might fail, in call inlined at keystore.adb:268
-keystore.adb:118:20: medium: range check might fail, in call inlined at keystore.adb:276
-keystore.adb:118:20: medium: range check might fail, in call inlined at keystore.adb:284
-keystore.adb:118:20: medium: range check might fail, in call inlined at keystore.adb:347
-keystore.adb:118:20: medium: range check might fail, in call inlined at keystore.adb:355
-keystore.adb:118:20: medium: range check might fail, in call inlined at keystore.adb:363
-keystore.adb:118:20: medium: range check might fail, in call inlined at keystore.adb:542
-keystore.adb:118:20: medium: range check might fail, in call inlined at keystore.adb:694
-keystore.adb:118:20: medium: range check might fail, in call inlined at keystore.adb:762
-keystore.adb:118:20: medium: range check might fail, in call inlined at keystore.adb:847
+keystore.adb:118:20: info: range check proved, in call inlined at keystore.adb:268
+keystore.adb:118:20: info: range check proved, in call inlined at keystore.adb:276
+keystore.adb:118:20: info: range check proved, in call inlined at keystore.adb:284
+keystore.adb:118:20: info: range check proved, in call inlined at keystore.adb:347
+keystore.adb:118:20: info: range check proved, in call inlined at keystore.adb:355
+keystore.adb:118:20: info: range check proved, in call inlined at keystore.adb:363
+keystore.adb:118:20: info: range check proved, in call inlined at keystore.adb:542
+keystore.adb:118:20: info: range check proved, in call inlined at keystore.adb:694
+keystore.adb:118:20: info: range check proved, in call inlined at keystore.adb:762
+keystore.adb:118:20: info: range check proved, in call inlined at keystore.adb:847
 keystore.adb:121:14: info: initialization of "Result" proved, in call inlined at keystore.adb:268
 keystore.adb:121:14: info: initialization of "Result" proved, in call inlined at keystore.adb:276
 keystore.adb:121:14: info: initialization of "Result" proved, in call inlined at keystore.adb:284
@@ -3088,10 +3088,10 @@ userentry.adb:456:16: info: initialization of "AchievedFARDescription" proved
 userentry.adb:476:15: medium: range check might fail
 userentry.adb:482:45: info: length check proved
 userentry.adb:482:48: info: initialization of "FullString" proved
-userentry.adb:482:48: medium: length check might fail
+userentry.adb:482:48: info: length check proved
 userentry.adb:484:26: info: initialization of "FullString" proved
 userentry.adb:484:26: info: length check proved
-userentry.adb:484:26: medium: range check might fail
+userentry.adb:484:26: info: range check proved
 userentry.adb:493:10: info: initialization of "Result" proved
 userentry.adb:495:17: info: initialization of "Result" proved
 userentry.adb:514:13: info: initialization of "TheTemplate.RequiredMaxFAR" proved

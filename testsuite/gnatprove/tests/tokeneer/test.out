@@ -1604,11 +1604,11 @@ enrolment.adb:74:43: info: initialization of "TheDesc" proved, in call inlined a
 enrolment.adb:74:43: info: initialization of "TheDesc" proved, in call inlined at enrolment.adb:223
 enrolment.adb:74:43: info: initialization of "TheDesc" proved, in call inlined at enrolment.adb:241
 enrolment.adb:74:43: info: initialization of "TheDesc" proved, in call inlined at enrolment.adb:272
-enrolment.adb:74:43: medium: length check might fail, in call inlined at enrolment.adb:219
-enrolment.adb:74:43: medium: length check might fail, in call inlined at enrolment.adb:221
-enrolment.adb:74:43: medium: length check might fail, in call inlined at enrolment.adb:223
-enrolment.adb:74:43: medium: length check might fail, in call inlined at enrolment.adb:241
-enrolment.adb:74:43: medium: length check might fail, in call inlined at enrolment.adb:272
+enrolment.adb:74:43: info: length check proved, in call inlined at enrolment.adb:219
+enrolment.adb:74:43: info: length check proved, in call inlined at enrolment.adb:221
+enrolment.adb:74:43: info: length check proved, in call inlined at enrolment.adb:223
+enrolment.adb:74:43: info: length check proved, in call inlined at enrolment.adb:241
+enrolment.adb:74:43: info: length check proved, in call inlined at enrolment.adb:272
 enrolment.adb:76:23: info: initialization of "TheDesc" proved, in call inlined at enrolment.adb:219
 enrolment.adb:76:23: info: initialization of "TheDesc" proved, in call inlined at enrolment.adb:221
 enrolment.adb:76:23: info: initialization of "TheDesc" proved, in call inlined at enrolment.adb:223
@@ -1619,11 +1619,11 @@ enrolment.adb:76:23: info: length check proved, in call inlined at enrolment.adb
 enrolment.adb:76:23: info: length check proved, in call inlined at enrolment.adb:223
 enrolment.adb:76:23: info: length check proved, in call inlined at enrolment.adb:241
 enrolment.adb:76:23: info: length check proved, in call inlined at enrolment.adb:272
-enrolment.adb:76:23: medium: range check might fail, in call inlined at enrolment.adb:219
-enrolment.adb:76:23: medium: range check might fail, in call inlined at enrolment.adb:221
-enrolment.adb:76:23: medium: range check might fail, in call inlined at enrolment.adb:223
-enrolment.adb:76:23: medium: range check might fail, in call inlined at enrolment.adb:241
-enrolment.adb:76:23: medium: range check might fail, in call inlined at enrolment.adb:272
+enrolment.adb:76:23: info: range check proved, in call inlined at enrolment.adb:219
+enrolment.adb:76:23: info: range check proved, in call inlined at enrolment.adb:221
+enrolment.adb:76:23: info: range check proved, in call inlined at enrolment.adb:223
+enrolment.adb:76:23: info: range check proved, in call inlined at enrolment.adb:241
+enrolment.adb:76:23: info: range check proved, in call inlined at enrolment.adb:272
 enrolment.adb:78:17: info: initialization of "Result" proved, in call inlined at enrolment.adb:219
 enrolment.adb:78:17: info: initialization of "Result" proved, in call inlined at enrolment.adb:221
 enrolment.adb:78:17: info: initialization of "Result" proved, in call inlined at enrolment.adb:223
@@ -1861,25 +1861,25 @@ keystore.adb:119:20: info: length check proved, in call inlined at keystore.adb:
 keystore.adb:119:20: info: length check proved, in call inlined at keystore.adb:731
 keystore.adb:119:20: info: length check proved, in call inlined at keystore.adb:801
 keystore.adb:119:20: info: length check proved, in call inlined at keystore.adb:891
-keystore.adb:119:20: medium: range check might fail, in call inlined at keystore.adb:274
-keystore.adb:119:20: medium: range check might fail, in call inlined at keystore.adb:283
-keystore.adb:119:20: medium: range check might fail, in call inlined at keystore.adb:292
-keystore.adb:119:20: medium: range check might fail, in call inlined at keystore.adb:357, in call inlined at keystore.adb:431, in call inlined at keystore.adb:612
-keystore.adb:119:20: medium: range check might fail, in call inlined at keystore.adb:357, in call inlined at keystore.adb:431, in call inlined at keystore.adb:715
-keystore.adb:119:20: medium: range check might fail, in call inlined at keystore.adb:357, in call inlined at keystore.adb:496, in call inlined at keystore.adb:565
-keystore.adb:119:20: medium: range check might fail, in call inlined at keystore.adb:357, in call inlined at keystore.adb:496, in call inlined at keystore.adb:786
-keystore.adb:119:20: medium: range check might fail, in call inlined at keystore.adb:367, in call inlined at keystore.adb:431, in call inlined at keystore.adb:612
-keystore.adb:119:20: medium: range check might fail, in call inlined at keystore.adb:367, in call inlined at keystore.adb:431, in call inlined at keystore.adb:715
-keystore.adb:119:20: medium: range check might fail, in call inlined at keystore.adb:367, in call inlined at keystore.adb:496, in call inlined at keystore.adb:565
-keystore.adb:119:20: medium: range check might fail, in call inlined at keystore.adb:367, in call inlined at keystore.adb:496, in call inlined at keystore.adb:786
-keystore.adb:119:20: medium: range check might fail, in call inlined at keystore.adb:377, in call inlined at keystore.adb:431, in call inlined at keystore.adb:612
-keystore.adb:119:20: medium: range check might fail, in call inlined at keystore.adb:377, in call inlined at keystore.adb:431, in call inlined at keystore.adb:715
-keystore.adb:119:20: medium: range check might fail, in call inlined at keystore.adb:377, in call inlined at keystore.adb:496, in call inlined at keystore.adb:565
-keystore.adb:119:20: medium: range check might fail, in call inlined at keystore.adb:377, in call inlined at keystore.adb:496, in call inlined at keystore.adb:786
-keystore.adb:119:20: medium: range check might fail, in call inlined at keystore.adb:561
-keystore.adb:119:20: medium: range check might fail, in call inlined at keystore.adb:731
-keystore.adb:119:20: medium: range check might fail, in call inlined at keystore.adb:801
-keystore.adb:119:20: medium: range check might fail, in call inlined at keystore.adb:891
+keystore.adb:119:20: info: range check proved, in call inlined at keystore.adb:274
+keystore.adb:119:20: info: range check proved, in call inlined at keystore.adb:283
+keystore.adb:119:20: info: range check proved, in call inlined at keystore.adb:292
+keystore.adb:119:20: info: range check proved, in call inlined at keystore.adb:357, in call inlined at keystore.adb:431, in call inlined at keystore.adb:612
+keystore.adb:119:20: info: range check proved, in call inlined at keystore.adb:357, in call inlined at keystore.adb:431, in call inlined at keystore.adb:715
+keystore.adb:119:20: info: range check proved, in call inlined at keystore.adb:357, in call inlined at keystore.adb:496, in call inlined at keystore.adb:565
+keystore.adb:119:20: info: range check proved, in call inlined at keystore.adb:357, in call inlined at keystore.adb:496, in call inlined at keystore.adb:786
+keystore.adb:119:20: info: range check proved, in call inlined at keystore.adb:367, in call inlined at keystore.adb:431, in call inlined at keystore.adb:612
+keystore.adb:119:20: info: range check proved, in call inlined at keystore.adb:367, in call inlined at keystore.adb:431, in call inlined at keystore.adb:715
+keystore.adb:119:20: info: range check proved, in call inlined at keystore.adb:367, in call inlined at keystore.adb:496, in call inlined at keystore.adb:565
+keystore.adb:119:20: info: range check proved, in call inlined at keystore.adb:367, in call inlined at keystore.adb:496, in call inlined at keystore.adb:786
+keystore.adb:119:20: info: range check proved, in call inlined at keystore.adb:377, in call inlined at keystore.adb:431, in call inlined at keystore.adb:612
+keystore.adb:119:20: info: range check proved, in call inlined at keystore.adb:377, in call inlined at keystore.adb:431, in call inlined at keystore.adb:715
+keystore.adb:119:20: info: range check proved, in call inlined at keystore.adb:377, in call inlined at keystore.adb:496, in call inlined at keystore.adb:565
+keystore.adb:119:20: info: range check proved, in call inlined at keystore.adb:377, in call inlined at keystore.adb:496, in call inlined at keystore.adb:786
+keystore.adb:119:20: info: range check proved, in call inlined at keystore.adb:561
+keystore.adb:119:20: info: range check proved, in call inlined at keystore.adb:731
+keystore.adb:119:20: info: range check proved, in call inlined at keystore.adb:801
+keystore.adb:119:20: info: range check proved, in call inlined at keystore.adb:891
 keystore.adb:122:14: info: initialization of "Result" proved, in call inlined at keystore.adb:274
 keystore.adb:122:14: info: initialization of "Result" proved, in call inlined at keystore.adb:283
 keystore.adb:122:14: info: initialization of "Result" proved, in call inlined at keystore.adb:292
@@ -2641,10 +2641,10 @@ userentry.adb:508:12: medium: range check might fail, in call inlined at userent
 userentry.adb:514:42: info: initialization of "Result" proved, in call inlined at userentry.adb:526
 userentry.adb:514:42: info: length check proved, in call inlined at userentry.adb:526
 userentry.adb:514:45: info: initialization of "FullString" proved, in call inlined at userentry.adb:526
-userentry.adb:514:45: medium: length check might fail, in call inlined at userentry.adb:526
+userentry.adb:514:45: info: length check proved, in call inlined at userentry.adb:526
 userentry.adb:516:23: info: initialization of "FullString" proved, in call inlined at userentry.adb:526
 userentry.adb:516:23: info: length check proved, in call inlined at userentry.adb:526
-userentry.adb:516:23: medium: range check might fail, in call inlined at userentry.adb:526
+userentry.adb:516:23: info: range check proved, in call inlined at userentry.adb:526
 userentry.adb:528:14: info: initialization of "Result" proved
 userentry.adb:547:13: info: initialization of "TheTemplate.RequiredMaxFAR" proved
 userentry.adb:547:42: info: initialization of "MaxFAR" proved

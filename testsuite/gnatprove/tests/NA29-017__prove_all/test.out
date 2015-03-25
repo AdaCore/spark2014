@@ -4,7 +4,7 @@ sorting.adb:30:18: medium: overflow check might fail
 sorting.adb:30:37: medium: overflow check might fail
 sorting.adb:31:15: info: postcondition proved
 sorting.adb:31:24: info: range check proved
-sorting.adb:32:38: medium: overflow check might fail
+sorting.adb:32:38: info: overflow check proved
 sorting.adb:33:16: info: index check proved
 sorting.adb:33:32: medium: overflow check might fail
 sorting.adb:33:36: info: index check proved
@@ -30,7 +30,7 @@ sorting.adb:47:37: info: index check proved
 sorting.adb:47:37: info: overflow check proved
 sorting.adb:48:07: info: assertion proved
 sorting.adb:49:18: info: range check proved
-sorting.adb:50:41: medium: overflow check might fail
+sorting.adb:50:41: info: overflow check proved
 sorting.adb:50:46: info: overflow check proved
 sorting.adb:51:19: info: index check proved
 sorting.adb:51:35: medium: overflow check might fail
@@ -40,10 +40,10 @@ sorting.adb:52:45: medium: overflow check might fail
 sorting.adb:52:50: info: overflow check proved
 sorting.adb:53:19: info: index check proved
 sorting.adb:53:38: info: index check proved
-sorting.adb:68:40: medium: overflow check might fail
+sorting.adb:68:40: info: overflow check proved
 sorting.adb:68:50: medium: overflow check might fail
 sorting.adb:68:70: medium: overflow check might fail
-sorting.adb:69:17: medium: overflow check might fail
+sorting.adb:69:17: info: overflow check proved
 sorting.adb:69:51: medium: overflow check might fail
 sorting.adb:70:61: medium: overflow check might fail
 sorting.adb:73:37: info: overflow check proved
@@ -58,10 +58,10 @@ sorting.adb:86:11: info: initialization of "I" proved
 sorting.adb:86:28: info: initialization of "J" proved
 sorting.adb:87:23: info: range check proved
 sorting.adb:87:33: info: overflow check proved
-sorting.adb:88:41: medium: overflow check might fail
+sorting.adb:88:41: info: overflow check proved
 sorting.adb:88:53: info: range check proved
 sorting.adb:89:28: info: range check proved
-sorting.adb:89:44: medium: overflow check might fail
+sorting.adb:89:44: info: overflow check proved
 sorting.adb:89:51: info: overflow check proved
 sorting.adb:89:64: info: overflow check proved
 sorting.adb:89:64: info: range check proved
@@ -105,11 +105,11 @@ sorting.adb:108:05: info: precondition proved
 sorting.adb:108:18: info: range check proved
 sorting.adb:108:34: info: overflow check proved
 sorting.adb:126:19: medium: overflow check might fail
-sorting.adb:127:33: medium: overflow check might fail
-sorting.adb:127:33: medium: range check might fail
+sorting.adb:127:33: info: overflow check proved
+sorting.adb:127:33: info: range check proved
 sorting.adb:127:37: info: overflow check proved
 sorting.adb:127:49: info: range check proved
-sorting.adb:127:65: medium: overflow check might fail
+sorting.adb:127:65: info: overflow check proved
 sorting.adb:127:69: info: overflow check proved
 sorting.adb:127:71: info: initialization of "L" proved
 sorting.adb:128:61: medium: loop invariant might fail after first iteration, requires L >= 1
@@ -121,24 +121,24 @@ sorting.adb:135:40: info: initialization of "L" proved
 sorting.adb:135:42: medium: overflow check might fail
 sorting.adb:137:22: medium: overflow check might fail
 sorting.adb:137:26: medium: overflow check might fail
-sorting.adb:138:36: medium: overflow check might fail
+sorting.adb:138:36: info: overflow check proved
 sorting.adb:138:36: medium: range check might fail
 sorting.adb:138:40: info: overflow check proved
 sorting.adb:138:44: info: overflow check proved
-sorting.adb:138:56: medium: range check might fail
+sorting.adb:138:56: info: range check proved
 sorting.adb:138:64: medium: overflow check might fail
 sorting.adb:138:76: medium: overflow check might fail
 sorting.adb:138:80: info: overflow check proved
 sorting.adb:138:84: info: overflow check proved
 sorting.adb:140:22: medium: overflow check might fail
 sorting.adb:140:35: info: overflow check proved
-sorting.adb:141:36: info: overflow check proved
-sorting.adb:141:40: medium: overflow check might fail
+sorting.adb:141:36: medium: overflow check might fail
+sorting.adb:141:40: info: overflow check proved
 sorting.adb:141:40: medium: range check might fail
 sorting.adb:141:44: info: overflow check proved
 sorting.adb:141:56: info: range check proved
 sorting.adb:141:72: info: overflow check proved
-sorting.adb:141:76: medium: overflow check might fail
+sorting.adb:141:76: info: overflow check proved
 sorting.adb:141:80: info: overflow check proved
 sorting.adb:142:64: medium: loop invariant might fail after first iteration, requires L >= 1
 sorting.adb:145:25: info: initialization of "I" proved
@@ -162,11 +162,11 @@ sorting.adb:149:24: info: initialization of "K" proved
 sorting.adb:154:19: medium: overflow check might fail
 sorting.adb:154:23: medium: overflow check might fail
 sorting.adb:155:14: medium: assertion might fail, requires Sorted (A, A_First + J * L * 2, Natural'min)
-sorting.adb:155:33: medium: overflow check might fail
+sorting.adb:155:33: info: overflow check proved
 sorting.adb:155:33: medium: range check might fail
 sorting.adb:155:37: info: overflow check proved
 sorting.adb:155:41: info: overflow check proved
-sorting.adb:155:53: medium: range check might fail
+sorting.adb:155:53: info: range check proved
 sorting.adb:155:61: medium: overflow check might fail
 sorting.adb:155:73: medium: overflow check might fail
 sorting.adb:155:77: info: overflow check proved

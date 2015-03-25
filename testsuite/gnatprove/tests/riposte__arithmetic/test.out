@@ -85,8 +85,8 @@ arithmetic.adb:163:13: info: initialization of "Abs_Test_A" proved
 arithmetic.adb:164:19: info: postcondition proved
 arithmetic.adb:164:39: info: overflow check proved
 arithmetic.adb:169:24: info: range check proved
+arithmetic.adb:171:24: info: range check proved
 arithmetic.adb:171:24: medium: overflow check might fail
-arithmetic.adb:171:24: medium: range check might fail
 arithmetic.adb:173:14: info: initialization of "R" proved
 arithmetic.adb:176:13: info: initialization of "Abs_Test_B" proved
 arithmetic.adb:178:19: info: postcondition proved
@@ -98,8 +98,8 @@ arithmetic.adb:187:14: info: initialization of "R" proved
 arithmetic.adb:190:13: info: initialization of "Abs_Test_C" proved
 arithmetic.adb:191:19: info: postcondition proved
 arithmetic.adb:191:39: info: overflow check proved
+arithmetic.adb:194:14: info: range check proved
 arithmetic.adb:194:14: medium: overflow check might fail
-arithmetic.adb:194:14: medium: range check might fail
 arithmetic.adb:197:13: info: initialization of "Test_Mod_A" proved
 arithmetic.adb:198:19: medium: postcondition might fail, requires Test_Mod_A'Result = N
 arithmetic.adb:201:16: info: division check proved

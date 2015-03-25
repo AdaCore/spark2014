@@ -101,12 +101,12 @@ sec_3_13_2_monitoring_inputs.ads:174:13: info: initialization of "Is_Valid_Kdry_
 sec_3_13_2_monitoring_inputs.ads:179:13: info: initialization of "Kdry_rst" proved
 sec_3_13_2_monitoring_inputs.ads:183:08: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:184:24: info: precondition proved
-sec_3_13_2_monitoring_inputs.ads:185:58: medium: range check might fail
+sec_3_13_2_monitoring_inputs.ads:185:58: info: range check proved
 sec_3_13_2_monitoring_inputs.ads:190:13: info: initialization of "Is_Valid_Kwet_rst" proved
 sec_3_13_2_monitoring_inputs.ads:195:13: info: initialization of "Kwet_rst" proved
 sec_3_13_2_monitoring_inputs.ads:199:08: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:200:24: info: precondition proved
-sec_3_13_2_monitoring_inputs.ads:201:58: medium: range check might fail
+sec_3_13_2_monitoring_inputs.ads:201:58: info: range check proved
 sec_3_13_2_monitoring_inputs.ads:211:13: info: initialization of "Is_Valid_Kn" proved
 sec_3_13_2_monitoring_inputs.ads:243:46: info: precondition proved
 sec_3_13_2_monitoring_inputs.ads:247:14: warning: subprogram "dummy" has no effect
@@ -120,7 +120,7 @@ sec_3_13_6_deceleration.ads:34:43: warning: unused variable "d"
 sec_3_13_6_deceleration.ads:39:06: info: postcondition proved
 sec_3_13_6_deceleration.ads:40:37: info: precondition proved
 sec_3_13_6_deceleration.ads:40:37: medium: range check might fail
-sec_3_13_6_deceleration.ads:41:71: medium: range check might fail
+sec_3_13_6_deceleration.ads:41:71: info: range check proved
 sec_3_13_6_deceleration.ads:44:13: info: initialization of "A_brake_safe" proved
 sec_3_13_6_deceleration.ads:45:23: info: precondition proved
 sec_3_13_6_deceleration.ads:46:23: medium: overflow check might fail

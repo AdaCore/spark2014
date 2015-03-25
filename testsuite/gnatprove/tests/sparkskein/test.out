@@ -93,7 +93,7 @@ skein.adb:761:33: info: initialization of "Final_Dst" proved
 skein.adb:761:46: info: initialization of "Src" proved
 skein.adb:761:53: info: initialization of "Final_Src" proved
 skein.adb:763:23: info: initialization of "Dst" proved
-skein.adb:763:27: medium: range check might fail
+skein.adb:763:27: info: range check proved
 skein.adb:764:23: info: initialization of "Src" proved
 skein.adb:778:11: info: initialization of "Msg_Byte_Count" proved
 skein.adb:782:42: medium: range check might fail

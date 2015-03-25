@@ -24,9 +24,9 @@ a.adb:26:22: info: precondition proved
 a.adb:28:10: info: initialization of "R" proved
 a.adb:29:18: info: overflow check proved
 a.adb:29:23: info: division check proved
-a.adb:29:23: info: overflow check proved
+a.adb:29:23: medium: overflow check might fail
 a.adb:29:25: info: initialization of "R" proved
-a.adb:32:14: medium: overflow check might fail
+a.adb:32:14: info: overflow check proved
 a.adb:32:18: info: initialization of "R" proved
 a.ads:3:13: info: initialization of "Pgcd" proved
 a.ads:7:07: info: postcondition proved

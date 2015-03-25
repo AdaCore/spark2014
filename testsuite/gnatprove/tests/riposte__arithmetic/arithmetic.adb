@@ -191,7 +191,7 @@ is
      with Post => Abs_Test_C'Result = abs (N)
    is
    begin
-      return abs (N);  --  @OVERFLOW_CHECK:FAIL @RANGE_CHECK:FAIL
+      return abs (N);  --  @OVERFLOW_CHECK:FAIL
    end Abs_Test_C;
 
    function Test_Mod_A (N: in Byte) return Byte

@@ -10,8 +10,8 @@ p.adb:12:41: info: initialization of "J" proved
 p.adb:19:10: info: initialization of "J" proved
 p.adb:19:12: medium: overflow check might fail
 p.adb:19:14: info: initialization of "K" proved
+p.adb:20:14: info: overflow check proved
 p.adb:20:14: medium: array index check might fail
-p.adb:20:14: medium: overflow check might fail
 p.adb:20:19: info: initialization of "J" proved
 p.adb:20:19: info: initialization of "K" proved
 p.adb:20:19: medium: "Tab" might not be initialized

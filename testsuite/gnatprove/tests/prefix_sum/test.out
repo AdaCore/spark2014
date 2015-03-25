@@ -308,8 +308,8 @@ prefixsum_general.adb:87:10: info: loop variant proved
 prefixsum_general.adb:87:44: info: initialization of "Space" proved
 prefixsum_general.adb:89:19: info: initialization of "Space" proved
 prefixsum_general.adb:89:25: medium: overflow check might fail
-prefixsum_general.adb:89:29: medium: overflow check might fail
-prefixsum_general.adb:89:29: medium: range check might fail
+prefixsum_general.adb:89:29: info: overflow check proved
+prefixsum_general.adb:89:29: info: range check proved
 prefixsum_general.adb:90:16: info: initialization of "Right" proved
 prefixsum_general.adb:91:13: info: loop variant proved
 prefixsum_general.adb:91:47: info: initialization of "Right" proved

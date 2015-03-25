@@ -28,8 +28,8 @@ minmax.adb:59:07: info: assertion proved
 minmax.adb:59:22: info: initialization of "MaxT" proved
 minmax.adb:64:16: info: range check proved
 minmax.adb:64:27: medium: overflow check might fail
-minmax.adb:65:16: medium: range check might fail
-minmax.adb:65:24: medium: overflow check might fail
+minmax.adb:65:16: info: range check proved
+minmax.adb:65:24: info: overflow check proved
 minmax.adb:66:07: info: assertion proved
 minmax.adb:66:22: info: initialization of "MinT" proved
 minmax.adb:67:07: info: assertion proved
