@@ -202,7 +202,7 @@ package body Gnat2Why.Driver is
          Directly_Scanned => True);
       Free (Text);
 
-      --  If Current_Unit_Only is set then we do NOT load the withed
+      --  If Current_Unit_Only is set then we do NOT load the with'ed
       --  ALI files.
       if Current_Unit_Only then
          declare

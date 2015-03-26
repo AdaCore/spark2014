@@ -2743,7 +2743,7 @@ package body SPARK_Definition is
             --  Remark that the violation is always redundant for classwide
             --  types implicitely declared on code with SPARK_Mode => On.
             --  Still, it is necessary for preventing the usage of such
-            --  class wide types declared in withed packages without
+            --  class wide types declared in with'ed packages without
             --  SPARK_Mode.
 
             declare

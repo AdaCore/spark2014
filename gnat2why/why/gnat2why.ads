@@ -80,7 +80,7 @@
 --  3. WF_Context          subprogram specs and aggregates
 --  4. WF_Main             subprogram bodies for VC generation
 
---  Each SPARK entity defined in unit U or in one of the withed specs is
+--  Each SPARK entity defined in unit U or in one of the with'ed specs is
 --  transformed into a set of Why3 declarations in the sections above. These
 --  declarations are grouped in theories or modules, so that the context used
 --  for generating VCs for a given module is minimized, which leads to smaller
