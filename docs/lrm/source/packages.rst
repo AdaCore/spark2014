@@ -1498,11 +1498,10 @@ as it is used purely for static analysis purposes and is not executed.
 Abstract_State, Package Hierarchy and Part_Of
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In order to avoid aliasing-related problems (see :ref:
-`anti-aliasing`), SPARK 2014 must ensure that if a given piece of
-state (either a variable or a state abstraction) is going to be a
-constituent of a given state abstraction, that relationship must be
-known at the point where the constituent is declared.
+In order to avoid aliasing-related problems (see :ref:`anti-aliasing`), |SPARK|
+must ensure that if a given piece of state (either a variable or a state
+abstraction) is going to be a constituent of a given state abstraction, that
+relationship must be known at the point where the constituent is declared.
 
 For a variable declared immediately within a package body, this is not
 a problem.  The state refinement in which the variable is specified as
