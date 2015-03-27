@@ -1,0 +1,1 @@
+ALL XFAIL SPARK_Mode on generic formals
