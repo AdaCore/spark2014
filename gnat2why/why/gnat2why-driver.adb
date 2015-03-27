@@ -360,7 +360,7 @@ package body Gnat2Why.Driver is
 
       Rewrite_All_Compilation_Units;
 
-      --  Mark all compilation units with "in SPARK / not in SPARK" marks, in
+      --  Mark all compilation units as "in SPARK / not in SPARK", in
       --  the same order that they were processed by the frontend. Bodies
       --  are not included, except for the main unit itself, which always
       --  comes last.
