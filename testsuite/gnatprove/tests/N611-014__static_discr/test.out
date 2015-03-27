@@ -205,6 +205,6 @@ static_discr.ads:29:28: info: discriminant check proved
 static_discr.ads:29:36: info: discriminant check proved
 static_discr.ads:29:52: info: index check proved
 static_discr.ads:31:13: info: initialization of "Search_Array" proved
-static_discr.ads:33:14: medium: postcondition might fail
+static_discr.ads:33:14: info: postcondition proved
 static_discr.ads:35:48: info: index check proved
 static_discr.ads:36:42: info: index check proved

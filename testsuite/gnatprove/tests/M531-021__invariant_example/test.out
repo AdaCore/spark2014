@@ -10,7 +10,7 @@ p2.adb:25:22: info: initialization of "Lower" proved
 p2.adb:25:30: info: initialization of "Upper" proved
 p2.adb:25:37: info: division check proved
 p2.adb:27:13: info: initialization of "Halfway" proved
-p2.adb:27:21: info: overflow check proved
+p2.adb:27:21: medium: overflow check might fail
 p2.adb:28:22: info: initialization of "Halfway" proved
 p2.adb:30:22: info: initialization of "Halfway" proved
 p2.adb:34:14: info: initialization of "Lower" proved

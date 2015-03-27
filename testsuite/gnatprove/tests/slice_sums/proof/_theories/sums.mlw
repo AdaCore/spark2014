@@ -161,16 +161,17 @@ module Sums__sum
 
  (* Logic complete function for sum *)
  function sum__logic
-   (x : vector) (bounds : slice_bounds)  :integer
+   (x : vector) (bounds : slice_bounds)  :int
 
  (* Helper function *)
  function _sum "inline" (x : vector) (bounds : slice_bounds)  :int =
-   	  Standard__integer.to_rep (sum__logic x bounds)
+   	  sum__logic x bounds
 
  (* Axiom for defining the sum function *)
  axiom sum_def:
     forall v : vector, b : slice_bounds
       [sum__logic v b].
+      Standard__integer.in_range (sum__logic v b) /\
       (* Case of the empty slice *)
       (_rec__lo b > _rec__hi b -> _sum v b = 0) /\
 
@@ -197,7 +198,7 @@ module Sums__sum
                  _sum v b = _sum v b1 + _sum v b2)))
 
  (* Program partial function with a precondition for sum *)
- val sum (x : vector) (bounds : slice_bounds)  :integer
+ val sum (x : vector) (bounds : slice_bounds)  :int
   requires { _rec__lo bounds > _rec__hi bounds \/
              first x <= _rec__lo bounds /\ _rec__hi bounds <= last x }
   ensures  { result = sum__logic x bounds }

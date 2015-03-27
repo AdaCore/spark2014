@@ -1,7 +1,7 @@
 tab.adb:6:16: info: initialization of "Prev" proved
 tab.adb:6:49: medium: range check might fail
+tab.adb:9:10: info: loop invariant initialization proved
 tab.adb:9:10: info: loop invariant preservation proved
-tab.adb:9:10: medium: loop invariant might fail in first iteration
 tab.adb:10:21: info: range check proved
 tab.adb:11:22: info: index check proved
 tab.adb:12:28: medium: range check might fail

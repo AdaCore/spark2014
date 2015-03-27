@@ -9,6 +9,8 @@ module Discrete_Base
 
   type rep_type
 
+  type __split = rep_type
+
   function bool_eq (x : rep_type) (y : rep_type) : bool =
     if x = y then True else False
 

@@ -39,7 +39,7 @@ perm.ads:28:27: info: index check proved
 perm.ads:30:46: info: index check proved
 perm.ads:30:54: info: index check proved
 perm.ads:32:14: warning: subprogram "Occ_Set" has no effect
-perm.ads:35:08: medium: postcondition might fail
+perm.ads:35:08: info: postcondition proved
 perm.ads:35:19: info: index check proved
 perm.ads:35:32: info: precondition proved
 perm.ads:36:31: info: precondition proved

@@ -245,8 +245,8 @@ prefixsum_expanded.ads:53:17: info: precondition proved
 prefixsum_expanded.ads:55:08: info: postcondition proved
 prefixsum_general.adb:9:13: info: initialization of "Space" proved
 prefixsum_general.adb:10:18: info: initialization of "Space" proved
+prefixsum_general.adb:12:10: info: loop invariant initialization proved
 prefixsum_general.adb:12:10: medium: loop invariant might fail after first iteration
-prefixsum_general.adb:12:10: medium: loop invariant might fail in first iteration
 prefixsum_general.adb:13:22: info: division check proved
 prefixsum_general.adb:13:26: info: initialization of "Space" proved
 prefixsum_general.adb:17:26: info: initialization of "Left" proved

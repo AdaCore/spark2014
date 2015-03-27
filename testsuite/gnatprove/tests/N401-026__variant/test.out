@@ -5,8 +5,8 @@ loop_tutorial.adb:11:35: info: overflow check proved
 loop_tutorial.adb:11:40: medium: overflow check might fail
 loop_tutorial.adb:11:56: info: overflow check proved
 loop_tutorial.adb:21:20: info: overflow check proved
-loop_tutorial.adb:27:10: info: loop invariant initialization proved
-loop_tutorial.adb:27:10: info: loop invariant preservation proved
+loop_tutorial.adb:27:10: medium: loop invariant might fail after first iteration
+loop_tutorial.adb:27:10: medium: loop invariant might fail in first iteration
 loop_tutorial.adb:27:33: info: initialization of "Lower" proved
 loop_tutorial.adb:28:37: info: initialization of "Upper" proved
 loop_tutorial.adb:30:43: medium: overflow check might fail

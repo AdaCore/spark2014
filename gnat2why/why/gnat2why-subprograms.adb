@@ -700,7 +700,7 @@ package body Gnat2Why.Subprograms is
                       B_Name   =>
                         New_Identifier
                           (Name => Full_Name (Entity),
-                           Typ  => EW_Abstract (Etype (Entity))),
+                           Typ  => Type_Of_Node (Etype (Entity))),
                       B_Ent    => null,
                       Mutable  => False));
                else
@@ -1377,7 +1377,7 @@ package body Gnat2Why.Subprograms is
 
       Result_Name :=
         New_Identifier
-             (Name => Name & "__result", Typ => EW_Abstract (Etype (E)));
+             (Name => Name & "__result", Typ => Type_Of_Node (Etype (E)));
 
       Params :=
         (File        => File.File,
@@ -1602,7 +1602,7 @@ package body Gnat2Why.Subprograms is
                Labels =>
                  Name_Id_Sets.To_Set
                    (NID ("""GP_Ada_Name:" & Source_Name (E) & "'Result""")),
-               Ref_Type => EW_Abstract (Etype (E))));
+               Ref_Type => Type_Of_Node (Etype (E))));
       end if;
 
       --  add declarations for 'Old variables
@@ -1703,7 +1703,7 @@ package body Gnat2Why.Subprograms is
       Reset_Map_For_Old;
       Result_Name :=
         New_Identifier
-             (Name => Name & "__result", Typ => EW_Abstract (Etype (E)));
+             (Name => Name & "__result", Typ => Type_Of_Node (Etype (E)));
       Result_Var :=
         (if Ekind (E) = E_Function then
               New_Deref
@@ -1840,7 +1840,7 @@ package body Gnat2Why.Subprograms is
                   Labels =>
                     Name_Id_Sets.To_Set
                       (NID ("""GP_Ada_Name:" & Source_Name (E) & "'Result""")),
-                  Ref_Type => EW_Abstract (Etype (E))));
+                  Ref_Type => Type_Of_Node (Etype (E))));
          end if;
 
          --  Translate statements in the body of the subp
@@ -2121,7 +2121,7 @@ package body Gnat2Why.Subprograms is
          return;
       end if;
 
-      Why_Type := EW_Abstract (Etype (E));
+      Why_Type := Type_Of_Node (Etype (E));
 
       --  If the function has a postcondition is not mutually recursive
       --  and is not annotated with No_Return, then generate an axiom:
@@ -2431,7 +2431,7 @@ package body Gnat2Why.Subprograms is
 
       if Ekind (E) = E_Function then
 
-         Why_Type := EW_Abstract (Etype (E));
+         Why_Type := Type_Of_Node (Etype (E));
 
          declare
             Logic_Why_Binders   : constant Binder_Array :=
@@ -2498,7 +2498,7 @@ package body Gnat2Why.Subprograms is
                  (Domain      => EW_Prog,
                   Name        => Prog_Id,
                   Binders     => Func_Why_Binders,
-                  Return_Type => EW_Abstract (Etype (E)),
+                  Return_Type => Type_Of_Node (Etype (E)),
                   Labels      => Name_Id_Sets.Empty_Set,
                   Pre         => Pre,
                   Post        => Param_Post);
@@ -2766,7 +2766,7 @@ package body Gnat2Why.Subprograms is
             --      forall x:natural. x = of_int (to_int(largest_int) + 1)
 
             Ty_Ent  : constant Entity_Id := Unique_Entity (Etype (E));
-            Equ_Ty  : constant W_Type_Id := EW_Abstract (Ty_Ent);
+            Equ_Ty  : constant W_Type_Id := Type_Of_Node (Ty_Ent);
             Guard   : constant W_Pred_Id :=
                Compute_Guard_Formula (Logic_Func_Binders);
          begin
@@ -2830,7 +2830,7 @@ package body Gnat2Why.Subprograms is
                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       if Ekind (E) = E_Function then
-         Why_Type := EW_Abstract (Etype (E));
+         Why_Type := Type_Of_Node (Etype (E));
 
          declare
             Logic_Why_Binders : constant Binder_Array :=

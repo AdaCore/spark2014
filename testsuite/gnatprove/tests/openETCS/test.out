@@ -234,10 +234,10 @@ step_function.adb:103:18: info: initialization of "im" proved
 step_function.adb:103:24: info: initialization of "i1" proved
 step_function.adb:103:29: info: initialization of "i2" proved
 step_function.adb:106:10: info: loop invariant initialization proved
-step_function.adb:106:10: info: loop invariant preservation proved
 step_function.adb:107:16: info: initialization of "im" proved
 step_function.adb:107:28: info: initialization of "Merge.Step" proved
 step_function.adb:107:28: medium: "Merge.Step" might not be initialized
+step_function.adb:107:28: medium: loop invariant might fail after first iteration, requires Merge.Step(0).Delimiter = Function_Range'first
 step_function.adb:108:10: info: loop invariant initialization proved
 step_function.adb:109:32: info: initialization of "scan_sfun1" proved
 step_function.adb:110:16: info: initialization of "Merge.Step" proved

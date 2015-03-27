@@ -15,7 +15,7 @@ module Ada__containers__formal_hashed_sets__generic_keys__witness
     (forall e : Ada__containers__formal_hashed_sets__element_type.base_type
  [Ada__containers__formal_hashed_sets__witness.witness e].
   Ada__containers__formal_hashed_sets__witness.witness e =
-  witness (Ada__containers__formal_hashed_sets__generic_keys__key_type.to_base (Ada__containers__formal_hashed_sets__generic_keys__key.key e)))
+  witness (Ada__containers__formal_hashed_sets__generic_keys__key.key e))
 end
 
 module Ada__containers__formal_hashed_sets__generic_keys__key__2
@@ -30,10 +30,10 @@ module Ada__containers__formal_hashed_sets__generic_keys__key__2
   use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__cursor
   use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__element
 
-  function key__2__logic "inline" (co:set) (cu:cursor) : Ada__containers__formal_hashed_sets__generic_keys__key_type.key_type =
-  Ada__containers__formal_hashed_sets__generic_keys__key.key (Ada__containers__formal_hashed_sets__element_type.to_base (element__logic co cu))
+  function key__2__logic "inline" (co:set) (cu:cursor) : Ada__containers__formal_hashed_sets__generic_keys__key_type.base_type =
+  Ada__containers__formal_hashed_sets__generic_keys__key.key (element__logic co cu)
 
-  val key__2 (co:set) (cu:cursor) : Ada__containers__formal_hashed_sets__generic_keys__key_type.key_type
+  val key__2 (co:set) (cu:cursor) : Ada__containers__formal_hashed_sets__generic_keys__key_type.base_type
      requires { position co cu > 0 }
      ensures  { result = key__2__logic co cu }
 end
@@ -65,10 +65,10 @@ module Ada__containers__formal_hashed_sets__generic_keys__element
   use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__element
   use import "ada__containers__formal_hashed_sets".Ada__containers__formal_hashed_sets__find
 
-  function element__logic "inline" (co:set) (k:Ada__containers__formal_hashed_sets__generic_keys__key_type.base_type) : Ada__containers__formal_hashed_sets__element_type.element_type =
+  function element__logic "inline" (co:set) (k:Ada__containers__formal_hashed_sets__generic_keys__key_type.base_type) : Ada__containers__formal_hashed_sets__element_type.base_type =
 Ada__containers__formal_hashed_sets__element.element__logic co (find_ co (witness k))
 
-  val element (co:set) (k:Ada__containers__formal_hashed_sets__generic_keys__key_type.base_type) : Ada__containers__formal_hashed_sets__element_type.element_type
+  val element (co:set) (k:Ada__containers__formal_hashed_sets__generic_keys__key_type.base_type) : Ada__containers__formal_hashed_sets__element_type.base_type
      requires { position co (find_ co (witness k)) > 0 }
      ensures  { result = element__logic co k }
 end

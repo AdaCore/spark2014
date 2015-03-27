@@ -35,15 +35,15 @@ module Ada__containers__formal_hashed_maps__length
   use Ada__containers__count_type
   use import Ada__containers__formal_hashed_maps__map
 
-  function length__logic map : Ada__containers__count_type.count_type
+  function length__logic map : int
 
   function length_ "inline" (co : map) : int =
-    Ada__containers__count_type.to_rep (length__logic co)
+    length__logic co
 
   axiom length_range:
     forall co:map [length__logic co]. 0 <= length_ co <= capacity co
 
-  val length (co : map) :  Ada__containers__count_type.count_type
+  val length (co : map) :  int
      ensures { result = length__logic co }
 end
 
@@ -126,9 +126,12 @@ module Ada__containers__formal_hashed_maps__key
   use import Ada__containers__formal_hashed_maps__length
   use import Ada__containers__formal_hashed_maps__cursor
 
-  function key__logic map cursor : Ada__containers__formal_hashed_maps__key_type.key_type
+  function key__logic map cursor : Ada__containers__formal_hashed_maps__key_type.base_type
 
-  val key (co:map) (cu:cursor) : Ada__containers__formal_hashed_maps__key_type.key_type
+  axiom key__range:
+    forall co:map, cu:cursor. Ada__containers__formal_hashed_maps__key_type.valid (key__logic co cu)
+
+  val key (co:map) (cu:cursor) : Ada__containers__formal_hashed_maps__key_type.base_type
      requires { position co cu > 0 }
      ensures  { result = key__logic co cu }
 end
@@ -140,9 +143,12 @@ module Ada__containers__formal_hashed_maps__element
   use import Ada__containers__formal_hashed_maps__map
   use import Ada__containers__formal_hashed_maps__cursor
 
-  function element__logic map cursor : Ada__containers__formal_hashed_maps__element_type.element_type
+  function element__logic map cursor : Ada__containers__formal_hashed_maps__element_type.base_type
 
-  val element (co:map) (cu:cursor) : Ada__containers__formal_hashed_maps__element_type.element_type
+  axiom element__range:
+    forall co:map, cu:cursor. Ada__containers__formal_hashed_maps__element_type.valid (element__logic co cu)
+
+  val element (co:map) (cu:cursor) : Ada__containers__formal_hashed_maps__element_type.base_type
      requires { position co cu > 0 }
      ensures  { result = element__logic co cu }
 end
@@ -224,13 +230,13 @@ module Ada__containers__formal_hashed_maps__find
     (((cu = (no_element  : cursor)) /\
       (forall cun:cursor.
         ((position co cun > 0) ->
-         ((witness (Ada__containers__formal_hashed_maps__key_type.to_base (key__logic co cun))) <> i)))) \/
+         ((witness (key__logic co cun)) <> i)))) \/
      ((position co cu > 0) /\
-      (((witness (Ada__containers__formal_hashed_maps__key_type.to_base (key__logic co cu))) = i) /\
+      (((witness (key__logic co cu)) = i) /\
        (forall cun:cursor.
          ((position co cun > 0) ->
           ((cu <> cun) ->
-           ((witness (Ada__containers__formal_hashed_maps__key_type.to_base (key__logic co cun))) <> i)))))))
+           ((witness (key__logic co cun)) <> i)))))))
 
   axiom Find_find_val:
     (forall co:map.
@@ -255,10 +261,10 @@ module Ada__containers__formal_hashed_maps__element__2
   use import Ada__containers__formal_hashed_maps__element
   use import Ada__containers__formal_hashed_maps__find
 
-  function element__2__logic "inline" (co:map) (k:Ada__containers__formal_hashed_maps__key_type.base_type) : Ada__containers__formal_hashed_maps__element_type.element_type =
+  function element__2__logic "inline" (co:map) (k:Ada__containers__formal_hashed_maps__key_type.base_type) : Ada__containers__formal_hashed_maps__element_type.base_type =
 element__logic co (find_ co (witness k))
 
-  val element__2 (co:map) (k:Ada__containers__formal_hashed_maps__key_type.base_type) : Ada__containers__formal_hashed_maps__element_type.element_type
+  val element__2 (co:map) (k:Ada__containers__formal_hashed_maps__key_type.base_type) : Ada__containers__formal_hashed_maps__element_type.base_type
      requires { position co (find_ co (witness k)) > 0 }
      ensures  { result = element__2__logic co k }
 end
@@ -386,8 +392,8 @@ module Ada__containers__formal_hashed_maps__replace
   predicate replace (co1:map) (k:Ada__containers__formal_hashed_maps__key_type.base_type) (e:Ada__containers__formal_hashed_maps__element_type.base_type) (co2:map) =
     (position co1 (find_ co1 (witness k)) > 0 /\
       length_ co1 = length_ co2 /\
-       Ada__containers__formal_hashed_maps__key_type.to_base (key__logic co2 (find_ co1 (witness k))) = k /\
-       Ada__containers__formal_hashed_maps__element_type.to_base (element__logic co2 (find_ co1 (witness k))) = e /\
+       key__logic co2 (find_ co1 (witness k)) = k /\
+       element__logic co2 (find_ co1 (witness k)) = e /\
         (forall cun:cursor [position co2 cun | position co1 cun]. position co2 cun = position co1 cun) /\
          (forall cun:cursor [key__logic co2 cun | key__logic co1 cun].
            position co1 cun > 0 /\ not cun = find_ co1 (witness k) ->
@@ -445,7 +451,7 @@ module Ada__containers__formal_hashed_maps__replace_element
   axiom replace_element_element_in:
     forall co1 co2:map, cu:cursor, e:Ada__containers__formal_hashed_maps__element_type.base_type
       [replace_element co1 cu e co2].
-      replace_element co1 cu e co2 -> Ada__containers__formal_hashed_maps__element_type.to_base (element__logic co2 cu) = e
+      replace_element co1 cu e co2 -> element__logic co2 cu = e
 
   axiom replace_element_element_ext:
     forall co1 co2:map, cu cun:cursor, e:Ada__containers__formal_hashed_maps__element_type.base_type
@@ -486,7 +492,7 @@ module Ada__containers__formal_hashed_maps__insert
   axiom insert_length_:
     forall co1 co2:map,  k:Ada__containers__formal_hashed_maps__key_type.base_type, e:Ada__containers__formal_hashed_maps__element_type.base_type
       [insert co1 k e co2].
-      insert co1 k e co2 -> length_ co1 + 1 = length_ co2 /\ find_ co1 (witness k) = no_element /\ Ada__containers__formal_hashed_maps__key_type.to_base (key__logic co2 (find_ co2 (witness k))) = k /\ Ada__containers__formal_hashed_maps__element_type.to_base (element__logic co2 (find_ co2 (witness k))) = e
+      insert co1 k e co2 -> length_ co1 + 1 = length_ co2 /\ find_ co1 (witness k) = no_element /\ key__logic co2 (find_ co2 (witness k)) = k /\ element__logic co2 (find_ co2 (witness k)) = e
 
   axiom insert_capacity:
     forall co1 co2:map,  k:Ada__containers__formal_hashed_maps__key_type.base_type, e:Ada__containers__formal_hashed_maps__element_type.base_type
@@ -608,7 +614,7 @@ module Ada__containers__formal_hashed_maps__delete
 
   axiom delete_position_range:
     forall co1 co2:map, cu:cursor [delete co1 cu co2].
-      delete co1 cu co2 -> position co2 cu = 0 /\ 0 < position co1 cu /\ find_ co2 (witness (Ada__containers__formal_hashed_maps__key_type.to_base (key__logic co1 cu))) = no_element
+      delete co1 cu co2 -> position co2 cu = 0 /\ 0 < position co1 cu /\ find_ co2 (witness (key__logic co1 cu)) = no_element
 
   axiom delete_position_next:
     forall co1 co2:map, cu:cursor [delete co1 cu co2].
@@ -633,7 +639,7 @@ module Ada__containers__formal_hashed_maps__delete
   axiom delete_find :
     forall co1:map, co2:map, cu:cursor, w:real [delete co1 cu co2,
      find_ co1 w| delete co1 cu co2, find_ co2 w].
-     delete co1 cu co2 -> not witness (Ada__containers__formal_hashed_maps__key_type.to_base (key__logic co1 cu)) = w -> find_ co1 w = find_ co2 w
+     delete co1 cu co2 -> not witness (key__logic co1 cu) = w -> find_ co1 w = find_ co2 w
 
   val delete (co:ref map) (e : Ada__containers__formal_hashed_maps__key_type.base_type) : unit
      requires { find_ !co (witness e) <> no_element }
@@ -756,9 +762,9 @@ module Ada__containers__formal_hashed_maps__strict_equal
     ((forall cu:cursor [position co1 cu | position co2 cu].
        position co1 cu = position co2 cu) /\
      (forall cu:cursor [key__logic co1 cu | key__logic co2 cu]. position co1 cu > 0 ->
-        Ada__containers__formal_hashed_maps__key_type.to_base (key__logic co1 cu) = Ada__containers__formal_hashed_maps__key_type.to_base (key__logic co2 cu)) /\
+        key__logic co1 cu = key__logic co2 cu) /\
      (forall cu:cursor [element__logic co1 cu | element__logic co2 cu]. position co1 cu > 0 ->
-        Ada__containers__formal_hashed_maps__element_type.to_base (element__logic co1 cu) = Ada__containers__formal_hashed_maps__element_type.to_base (element__logic co2 cu))) <->  strict_equal__logic co1 co2 = True
+        element__logic co1 cu = element__logic co2 cu)) <->  strict_equal__logic co1 co2 = True
 
   axiom strict_equal_length_:
     forall co1 co2 : map [strict_equal__logic co1 co2].
@@ -790,15 +796,16 @@ module Ada__containers__formal_hashed_maps__Oeq__2
   axiom oeq__2_key:
    forall co1 co2 : map [oeq__2__logic co1 co2]. oeq__2__logic co1 co2 = True ->
    forall cu1:cursor [key__logic co1 cu1]. position co1 cu1 > 0 ->
-	let cu2 = find_ co2 (witness (Ada__containers__formal_hashed_maps__key_type.to_base (key__logic co1 cu1))) in
-          Ada__containers__formal_hashed_maps__oeq.oeq (Ada__containers__formal_hashed_maps__element_type.to_base (element__logic co2 cu2)) (Ada__containers__formal_hashed_maps__element_type.to_base (element__logic co1 cu1)) = True
+	let cu2 = find_ co2 (witness (key__logic co1 cu1)) in
+          position co2 cu2 > 0 /\
+          Ada__containers__formal_hashed_maps__oeq.oeq (element__logic co2 cu2) (element__logic co1 cu1) = True
 
   axiom oeq__2_inv:
    forall co1 co2 : map [oeq__2__logic co1 co2]. oeq__2__logic co1 co2 <> True ->
    (length_ co1 <> length_ co2 \/
    exists e : real. position co1 (find_ co1 e) > 0 /\
          (find_ co2 e = no_element \/ position co2 (find_ co2 e) > 0 /\
-          Ada__containers__formal_hashed_maps__oeq.oeq (Ada__containers__formal_hashed_maps__element_type.to_base (element__logic co2 (find_ co2 e))) (Ada__containers__formal_hashed_maps__element_type.to_base (element__logic co1 (find_ co1 e))) <> True))
+          Ada__containers__formal_hashed_maps__oeq.oeq (element__logic co2 (find_ co2 e)) (element__logic co1 (find_ co1 e)) <> True))
 
   axiom oeq__2_sym :
   forall e1 e2 : map [oeq__2__logic e1 e2].
@@ -860,9 +867,9 @@ end
 module Ada__containers__formal_hashed_maps__default_modulus
   use Ada__containers__hash_type
 
- function default_modulus__logic (cap : int): Ada__containers__hash_type.hash_type
+ function default_modulus__logic (cap : int): Ada__containers__hash_type.rep_type
 
- val default_modulus  (cap:int) : Ada__containers__hash_type.hash_type
+ val default_modulus  (cap:int) : Ada__containers__hash_type.rep_type
      ensures { result = default_modulus__logic cap }
 
 end
@@ -875,11 +882,11 @@ module Ada__containers__formal_hashed_maps__equivalent_keys__2
   use import Ada__containers__formal_hashed_maps__key
 
   function equivalent_keys__2__logic (co1:map) (cu1:cursor) (co2:map) (cu2:cursor) : bool =
-  Ada__containers__formal_hashed_maps__equivalent_keys.equivalent_keys (Ada__containers__formal_hashed_maps__key_type.to_base (key__logic co1 cu1))  (Ada__containers__formal_hashed_maps__key_type.to_base (key__logic co2 cu2))
+  Ada__containers__formal_hashed_maps__equivalent_keys.equivalent_keys (key__logic co1 cu1)  (key__logic co2 cu2)
 
  val equivalent_keys__2  (co1:map) (cu1:cursor) (co2:map) (cu2:cursor) : bool
 	ensures { result =
-  Ada__containers__formal_hashed_maps__equivalent_keys.equivalent_keys (Ada__containers__formal_hashed_maps__key_type.to_base (key__logic co1 cu1))  (Ada__containers__formal_hashed_maps__key_type.to_base (key__logic co2 cu2))  }
+  Ada__containers__formal_hashed_maps__equivalent_keys.equivalent_keys (key__logic co1 cu1) (key__logic co2 cu2)  }
 end
 
 module Ada__containers__formal_hashed_maps__equivalent_keys__3
@@ -890,11 +897,11 @@ module Ada__containers__formal_hashed_maps__equivalent_keys__3
   use import Ada__containers__formal_hashed_maps__key
 
   function equivalent_keys__3__logic (co1:map) (cu1:cursor) (e2 : Ada__containers__formal_hashed_maps__key_type.base_type) : bool =
-  Ada__containers__formal_hashed_maps__equivalent_keys.equivalent_keys (Ada__containers__formal_hashed_maps__key_type.to_base (key__logic co1 cu1))  e2
+  Ada__containers__formal_hashed_maps__equivalent_keys.equivalent_keys (key__logic co1 cu1)  e2
 
  val equivalent_keys__3  (co1:map) (cu1:cursor) (e2 : Ada__containers__formal_hashed_maps__key_type.base_type) : bool
 	ensures { result =
-  Ada__containers__formal_hashed_maps__equivalent_keys.equivalent_keys (Ada__containers__formal_hashed_maps__key_type.to_base (key__logic co1 cu1))  e2  }
+  Ada__containers__formal_hashed_maps__equivalent_keys.equivalent_keys (key__logic co1 cu1)  e2  }
 end
 
 module Ada__containers__formal_hashed_maps__equivalent_keys__4
@@ -905,11 +912,11 @@ module Ada__containers__formal_hashed_maps__equivalent_keys__4
   use import Ada__containers__formal_hashed_maps__key
 
   function equivalent_keys__4__logic (e1 : Ada__containers__formal_hashed_maps__key_type.base_type) (co2:map) (cu2:cursor) : bool =
-  Ada__containers__formal_hashed_maps__equivalent_keys.equivalent_keys e1 (Ada__containers__formal_hashed_maps__key_type.to_base (key__logic co2 cu2))
+  Ada__containers__formal_hashed_maps__equivalent_keys.equivalent_keys e1 (key__logic co2 cu2)
 
  val equivalent_keys__4  (e1 : Ada__containers__formal_hashed_maps__key_type.base_type) (co2:map) (cu2:cursor) : bool
 	ensures { result =
-  Ada__containers__formal_hashed_maps__equivalent_keys.equivalent_keys e1 (Ada__containers__formal_hashed_maps__key_type.to_base (key__logic co2 cu2))  }
+  Ada__containers__formal_hashed_maps__equivalent_keys.equivalent_keys e1 (key__logic co2 cu2)  }
 end
 
 module Ada__containers__formal_hashed_maps__clear

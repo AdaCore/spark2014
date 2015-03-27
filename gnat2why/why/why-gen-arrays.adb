@@ -470,7 +470,7 @@ package body Why.Gen.Arrays is
                                To_Name
                                  (Conversion_Name
                                     (From =>
-                                          Type_Of_Node
+                                          EW_Abstract
                                        (Component_Type (Und_Ent)),
                                      To   => base))))));
             end;
@@ -495,7 +495,7 @@ package body Why.Gen.Arrays is
                                To_Name
                                  (Conversion_Name
                                     (From =>
-                                           Type_Of_Node
+                                           EW_Abstract
                                        (Component_Type (Und_Ent)),
                                      To   => +Int_Type))))));
          end if;
@@ -538,7 +538,7 @@ package body Why.Gen.Arrays is
                            Image     =>
                              To_Name
                                (Conversion_Name
-                             (From => +Type_Of_Node (Component_Type (Und_Ent)),
+                             (From => +EW_Abstract (Component_Type (Und_Ent)),
                               To   => +Int_Type))))));
          end if;
       end if;
@@ -573,7 +573,7 @@ package body Why.Gen.Arrays is
             Ind_Ty : constant Entity_Id := Etype (Index);
             B_Ty   : constant Entity_Id := Base_Type (Ind_Ty);
             B_Type : constant W_Type_Id :=
-              +Type_Of_Node (B_Ty);
+              +EW_Abstract (B_Ty);
          begin
             Subst (Cursor) :=
               New_Clone_Substitution
@@ -716,7 +716,7 @@ package body Why.Gen.Arrays is
                                To_Name
                                  (Conversion_Name
                                     (From =>
-                                          Type_Of_Node
+                                          EW_Abstract
                                        (Component_Type (Und_Ent)),
                                      To   => base))))));
             end;
@@ -741,7 +741,7 @@ package body Why.Gen.Arrays is
                                To_Name
                                  (Conversion_Name
                                     (From =>
-                                           Type_Of_Node
+                                           EW_Abstract
                                        (Component_Type (Und_Ent)),
                                      To   => +Int_Type))))));
          end if;
@@ -784,7 +784,7 @@ package body Why.Gen.Arrays is
                            Orig_Name => To_Name (WNE_To_Int),
                            Image     =>
                              To_Name (Conversion_Name
-                             (From => +Type_Of_Node (Component_Type (Und_Ent)),
+                             (From => +EW_Abstract (Component_Type (Und_Ent)),
                               To   => +Int_Type))))));
          end if;
       end if;
@@ -933,7 +933,7 @@ package body Why.Gen.Arrays is
         M_Arrays (Positive (Dimension)).Get;
       Elts     : W_Expr_Id;
       Ret_Ty   : constant W_Type_Id :=
-        Type_Of_Node (Component_Type (Unique_Entity (Ty_Entity)));
+        EW_Abstract (Component_Type (Unique_Entity (Ty_Entity)));
    begin
       if Is_Static_Array_Type (Ty_Entity) or else
         Get_Type_Kind (Why_Ty) = EW_Split

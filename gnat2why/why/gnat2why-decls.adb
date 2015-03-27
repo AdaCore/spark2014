@@ -101,7 +101,7 @@ package body Gnat2Why.Decls is
      (File : in out Why_Section;
       E    : Entity_Id)
    is
-      Typ    : constant W_Type_Id  := EW_Abstract (Etype (E));
+      Typ    : constant W_Type_Id  := Type_Of_Node (Etype (E));
       Labels : Name_Id_Sets.Set    := Name_Id_Sets.Empty_Set;
    begin
       --  Start with opening the theory to define, as the creation of a
@@ -144,7 +144,7 @@ package body Gnat2Why.Decls is
      (File : in out Why_Section;
       E    : Entity_Id)
    is
-      Typ    : constant W_Type_Id := EW_Abstract (Etype (E));
+      Typ    : constant W_Type_Id := Type_Of_Node (Etype (E));
       Decl   : constant Node_Id := Parent (E);
       Def    : W_Term_Id;
 

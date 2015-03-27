@@ -245,9 +245,9 @@ step_function.adb:135:30: info: index check proved
 step_function.adb:135:45: info: initialization of "Merge.Step" proved
 step_function.adb:135:56: info: index check proved
 step_function.adb:138:10: info: loop invariant initialization proved
-step_function.adb:138:10: info: loop invariant preservation proved
 step_function.adb:139:29: info: initialization of "im" proved
 step_function.adb:140:15: info: initialization of "Merge.Step" proved
+step_function.adb:140:15: medium: loop invariant might fail after first iteration, requires Merge.Step(i).Value = Min(Get_Value(SFun1, Merge.Step(i).Delimiter), Get_Value(SFun2, Merge.Step(i).Delimiter)
 step_function.adb:140:26: info: index check proved
 step_function.adb:141:19: info: precondition proved
 step_function.adb:141:47: info: index check proved
@@ -316,8 +316,8 @@ step_function.adb:188:42: info: index check proved
 step_function.adb:188:69: info: index check proved
 step_function.adb:189:13: warning: statement has no effect
 step_function.adb:189:16: info: initialization of "im" proved
+step_function.adb:190:16: info: assertion proved
 step_function.adb:190:31: info: initialization of "Merge.Step" proved
-step_function.adb:190:31: medium: assertion might fail, requires Merge.Step(Im-2).Delimiter < Merge.Step(Im-1).Delimiter
 step_function.adb:190:42: info: initialization of "im" proved
 step_function.adb:190:44: info: index check proved
 step_function.adb:190:73: info: index check proved

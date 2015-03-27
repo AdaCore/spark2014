@@ -35,15 +35,15 @@ module Ada__containers__formal_hashed_sets__length
   use Ada__containers__count_type
   use import Ada__containers__formal_hashed_sets__set
 
-  function length__logic set : Ada__containers__count_type.count_type
+  function length__logic set : int
 
   function length_ "inline" (co : set) : int =
-    Ada__containers__count_type.to_rep (length__logic co)
+    length__logic co
 
   axiom length_range:
     forall co:set [length__logic co]. 0 <= length_ co <= capacity co
 
-  val length (co : set) :  Ada__containers__count_type.count_type
+  val length (co : set) : int
      ensures { result = length__logic co }
 end
 
@@ -126,9 +126,12 @@ module Ada__containers__formal_hashed_sets__element
   use import Ada__containers__formal_hashed_sets__length
   use import Ada__containers__formal_hashed_sets__cursor
 
-  function element__logic set cursor : Ada__containers__formal_hashed_sets__element_type.element_type
+  function element__logic set cursor : Ada__containers__formal_hashed_sets__element_type.base_type
 
-  val element (co:set) (cu:cursor) : Ada__containers__formal_hashed_sets__element_type.element_type
+  axiom element__range:
+    forall co:set, cu:cursor. Ada__containers__formal_hashed_sets__element_type.valid (element__logic co cu)
+
+  val element (co:set) (cu:cursor) : Ada__containers__formal_hashed_sets__element_type.base_type
      requires { position co cu > 0 }
      ensures  { result = element__logic co cu }
 end
@@ -211,13 +214,13 @@ module Ada__containers__formal_hashed_sets__find
     (((cu = (no_element  : cursor)) /\
       (forall cun:cursor.
         ((position co cun > 0) ->
-         ((witness (Ada__containers__formal_hashed_sets__element_type.to_base (element__logic co cun))) <> i)))) \/
+         ((witness (element__logic co cun)) <> i)))) \/
      ((position co cu > 0) /\
-      (((witness (Ada__containers__formal_hashed_sets__element_type.to_base (element__logic co cu))) = i) /\
+      (((witness (element__logic co cu)) = i) /\
        (forall cun:cursor.
          ((position co cun > 0) ->
           ((cu <> cun) ->
-           ((witness (Ada__containers__formal_hashed_sets__element_type.to_base (element__logic co cun))) <> i)))))))
+           ((witness (element__logic co cun)) <> i)))))))
 
   axiom Find_find_val:
     (forall co:set.
@@ -342,7 +345,7 @@ module Ada__containers__formal_hashed_sets__replace
   predicate replace (co1:set) (e:Ada__containers__formal_hashed_sets__element_type.base_type) (co2:set) =
     (position co1 (find_ co1 (witness e)) > 0 /\
       length_ co1 = length_ co2 /\
-       Ada__containers__formal_hashed_sets__element_type.to_base (element__logic co2 (find_ co1 (witness e))) = e /\
+       element__logic co2 (find_ co1 (witness e)) = e /\
         (forall cun:cursor [position co2 cun | position co1 cun]. position co2 cun = position co1 cun) /\
          (forall cun:cursor [element__logic co2 cun | element__logic co1 cun].
            position co1 cun > 0 /\ not cun = find_ co1 (witness e) ->
@@ -390,7 +393,7 @@ module Ada__containers__formal_hashed_sets__replace_element
   axiom replace_element_element_in:
     forall co1 co2:set, cu:cursor, e:Ada__containers__formal_hashed_sets__element_type.base_type
       [replace_element co1 cu e co2].
-      replace_element co1 cu e co2 -> Ada__containers__formal_hashed_sets__element_type.to_base (element__logic co2 cu) = e /\ find_ co2 (witness  e) = cu
+      replace_element co1 cu e co2 -> element__logic co2 cu = e /\ find_ co2 (witness  e) = cu
 
   axiom replace_element_element_ext:
     forall co1 co2:set, cu cun:cursor, e:Ada__containers__formal_hashed_sets__element_type.base_type
@@ -430,7 +433,7 @@ module Ada__containers__formal_hashed_sets__insert
   axiom insert_length_:
     forall co1 co2:set,  e:Ada__containers__formal_hashed_sets__element_type.base_type
       [insert co1 e co2].
-      insert co1 e co2 -> length_ co1 + 1 = length_ co2 /\ find_ co1 (witness e) = no_element /\ Ada__containers__formal_hashed_sets__element_type.to_base (element__logic co2 (find_ co2 (witness e))) = e
+      insert co1 e co2 -> length_ co1 + 1 = length_ co2 /\ find_ co1 (witness e) = no_element /\ element__logic co2 (find_ co2 (witness e)) = e
 
   axiom insert_capacity:
     forall co1 co2:set, e:Ada__containers__formal_hashed_sets__element_type.base_type
@@ -543,7 +546,7 @@ module Ada__containers__formal_hashed_sets__delete
 
   axiom delete_position_range:
     forall co1 co2:set, cu:cursor [delete co1 cu co2].
-      delete co1 cu co2 -> position co2 cu = 0 /\ 0 < position co1 cu /\ find_ co2 (witness (Ada__containers__formal_hashed_sets__element_type.to_base (element__logic co1 cu))) = no_element
+      delete co1 cu co2 -> position co2 cu = 0 /\ 0 < position co1 cu /\ find_ co2 (witness (element__logic co1 cu)) = no_element
 
   axiom delete_position_next:
     forall co1 co2:set, cu:cursor [delete co1 cu co2].
@@ -560,7 +563,7 @@ module Ada__containers__formal_hashed_sets__delete
   axiom delete_find :
     forall co1:set, co2:set, cu:cursor, w:real [delete co1 cu co2,
      find_ co1 w| delete co1 cu co2, find_ co2 w].
-     delete co1 cu co2 -> not witness (Ada__containers__formal_hashed_sets__element_type.to_base (element__logic co1 cu)) = w -> find_ co1 w = find_ co2 w
+     delete co1 cu co2 -> not witness (element__logic co1 cu) = w -> find_ co1 w = find_ co2 w
 
   val delete (co:ref set) (e : Ada__containers__formal_hashed_sets__element_type.base_type) : unit
      requires { find_ !co (witness e) <> no_element }
@@ -639,7 +642,7 @@ module Ada__containers__formal_hashed_sets__to_set
 
   axiom to_set__def:
   forall e : Ada__containers__formal_hashed_sets__element_type.base_type [to_set__logic e].
-    length_ (to_set__logic e) = 1 /\ Ada__containers__formal_hashed_sets__element_type.to_base (element__logic (to_set__logic e) (first__logic (to_set__logic e))) = e
+    length_ (to_set__logic e) = 1 /\ element__logic (to_set__logic e) (first__logic (to_set__logic e)) = e
 
  val  to_set  (e: Ada__containers__formal_hashed_sets__element_type.base_type) : set
      ensures { result = to_set__logic e }
@@ -702,7 +705,7 @@ module Ada__containers__formal_hashed_sets__strict_equal
     ((forall cu:cursor [position co1 cu | position co2 cu].
        position co1 cu = position co2 cu) /\
      (forall cu:cursor [element__logic co1 cu | element__logic co2 cu]. position co1 cu > 0 ->
-        Ada__containers__formal_hashed_sets__element_type.to_base (element__logic co1 cu) = Ada__containers__formal_hashed_sets__element_type.to_base (element__logic co2 cu))) <->  strict_equal__logic co1 co2 = True
+        element__logic co1 cu = element__logic co2 cu)) <->  strict_equal__logic co1 co2 = True
 
   axiom strict_equal_length_:
     forall co1 co2 : set [strict_equal__logic co1 co2].
@@ -733,15 +736,16 @@ module Ada__containers__formal_hashed_sets__Oeq__2
   axiom oeq__2_element:
    forall co1 co2 : set [oeq__2__logic co1 co2]. oeq__2__logic co1 co2 = True ->
    forall cu1 : cursor [element__logic co1 cu1]. position co1 cu1 > 0 ->
-	let cu2 = find_ co2 (witness (Ada__containers__formal_hashed_sets__element_type.to_base (element__logic co1 cu1))) in
-          Ada__containers__formal_hashed_sets__oeq.oeq (Ada__containers__formal_hashed_sets__element_type.to_base (element__logic co2 cu2)) (Ada__containers__formal_hashed_sets__element_type.to_base (element__logic co1 cu1)) = True
+	let cu2 = find_ co2 (witness (element__logic co1 cu1)) in
+          position co2 cu2 > 0 /\
+          Ada__containers__formal_hashed_sets__oeq.oeq (element__logic co2 cu2) (element__logic co1 cu1) = True
 
   axiom oeq__2_inv:
    forall co1 co2 : set [oeq__2__logic co1 co2]. oeq__2__logic co1 co2 <> True ->
    (length_ co1 <> length_ co2 \/
    exists e : real. position co1 (find_ co1 e) > 0 /\
          (find_ co2 e = no_element \/ position co2 (find_ co2 e) > 0 /\
-          Ada__containers__formal_hashed_sets__oeq.oeq (Ada__containers__formal_hashed_sets__element_type.to_base (element__logic co2 (find_ co2 e))) (Ada__containers__formal_hashed_sets__element_type.to_base (element__logic co1 (find_ co1 e))) <> True))
+          Ada__containers__formal_hashed_sets__oeq.oeq (element__logic co2 (find_ co2 e)) (element__logic co1 (find_ co1 e)) <> True))
 
   axiom oeq__2_sym :
   forall e1 e2 : set [oeq__2__logic e1 e2].
@@ -1023,10 +1027,10 @@ module Ada__containers__formal_hashed_sets__capacity
   use import Ada__containers__formal_hashed_sets__set
   use import Ada__containers__formal_hashed_sets__length
 
-  function capacity__logic (co : set) : Ada__containers__count_type.count_type = rec__capacity (__split_discrs co)
+  function capacity__logic (co : set) : int = Ada__containers__count_type.to_rep (rec__capacity (__split_discrs co))
 
-  val capacity (co : set) : Ada__containers__count_type.count_type
-    ensures { result = rec__capacity (__split_discrs co) }
+  val capacity (co : set) : int
+    ensures { result = Ada__containers__count_type.to_rep (rec__capacity (__split_discrs co)) }
 end
 
 module Ada__containers__formal_hashed_sets__reserve_capacity
@@ -1042,9 +1046,9 @@ end
 module Ada__containers__formal_hashed_sets__default_modulus
   use Ada__containers__hash_type
 
- function default_modulus__logic (cap : int): Ada__containers__hash_type.hash_type
+ function default_modulus__logic (cap : int): Ada__containers__hash_type.rep_type
 
- val default_modulus  (cap:int) : Ada__containers__hash_type.hash_type
+ val default_modulus  (cap:int) : Ada__containers__hash_type.rep_type
      ensures { result = default_modulus__logic cap }
 
 end
@@ -1057,11 +1061,11 @@ module Ada__containers__formal_hashed_sets__equivalent_elements__2
   use import Ada__containers__formal_hashed_sets__element
 
   function equivalent_elements__2__logic (co1:set) (cu1:cursor) (co2:set) (cu2:cursor) : bool =
-  Ada__containers__formal_hashed_sets__equivalent_elements.equivalent_elements (Ada__containers__formal_hashed_sets__element_type.to_base (element__logic co1 cu1))  (Ada__containers__formal_hashed_sets__element_type.to_base (element__logic co2 cu2))
+  Ada__containers__formal_hashed_sets__equivalent_elements.equivalent_elements (element__logic co1 cu1) (element__logic co2 cu2)
 
  val equivalent_elements__2  (co1:set) (cu1:cursor) (co2:set) (cu2:cursor) : bool
 	ensures { result =
-  Ada__containers__formal_hashed_sets__equivalent_elements.equivalent_elements (Ada__containers__formal_hashed_sets__element_type.to_base (element__logic co1 cu1))  (Ada__containers__formal_hashed_sets__element_type.to_base (element__logic co2 cu2))  }
+  Ada__containers__formal_hashed_sets__equivalent_elements.equivalent_elements (element__logic co1 cu1) (element__logic co2 cu2)  }
 end
 
 module Ada__containers__formal_hashed_sets__equivalent_elements__3
@@ -1072,11 +1076,11 @@ module Ada__containers__formal_hashed_sets__equivalent_elements__3
   use import Ada__containers__formal_hashed_sets__element
 
   function equivalent_elements__3__logic (co1:set) (cu1:cursor) (e2 : Ada__containers__formal_hashed_sets__element_type.base_type) : bool =
-  Ada__containers__formal_hashed_sets__equivalent_elements.equivalent_elements (Ada__containers__formal_hashed_sets__element_type.to_base (element__logic co1 cu1))  e2
+  Ada__containers__formal_hashed_sets__equivalent_elements.equivalent_elements (element__logic co1 cu1)  e2
 
  val equivalent_elements__3  (co1:set) (cu1:cursor) (e2 : Ada__containers__formal_hashed_sets__element_type.base_type) : bool
 	ensures { result =
-  Ada__containers__formal_hashed_sets__equivalent_elements.equivalent_elements (Ada__containers__formal_hashed_sets__element_type.to_base (element__logic co1 cu1))  e2  }
+  Ada__containers__formal_hashed_sets__equivalent_elements.equivalent_elements (element__logic co1 cu1)  e2  }
 end
 
 module Ada__containers__formal_hashed_sets__equivalent_elements__4
@@ -1087,11 +1091,11 @@ module Ada__containers__formal_hashed_sets__equivalent_elements__4
   use import Ada__containers__formal_hashed_sets__element
 
   function equivalent_elements__4__logic (e1 : Ada__containers__formal_hashed_sets__element_type.base_type) (co2:set) (cu2:cursor) : bool =
-  Ada__containers__formal_hashed_sets__equivalent_elements.equivalent_elements e1 (Ada__containers__formal_hashed_sets__element_type.to_base (element__logic co2 cu2))
+  Ada__containers__formal_hashed_sets__equivalent_elements.equivalent_elements e1 (element__logic co2 cu2)
 
  val equivalent_elements__4__logic  (e1 : Ada__containers__formal_hashed_sets__element_type.base_type) (co2:set) (cu2:cursor) : bool
 	ensures { result =
-  Ada__containers__formal_hashed_sets__equivalent_elements.equivalent_elements e1 (Ada__containers__formal_hashed_sets__element_type.to_base (element__logic co2 cu2))  }
+  Ada__containers__formal_hashed_sets__equivalent_elements.equivalent_elements e1 (element__logic co2 cu2)  }
 end
 
 module Ada__containers__formal_hashed_sets__clear

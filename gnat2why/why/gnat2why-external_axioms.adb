@@ -442,7 +442,9 @@ package body Gnat2Why.External_Axioms is
                                 (Generic_Name) & "__" & Short_Name (Formal)
                                 & "\." & In_Range_Name),
                               To       => W_Any_Node_Id
-                                (Range_Pred_Name (Actual)));
+                                (Range_Pred_Name
+                                     (if Type_Is_Modeled_As_Base (Actual) then
+                                             Base_Type (Actual) else Actual)));
                         else
                            Subst (Subst_Cur + 1) := New_Custom_Substitution
                              (Domain   => EW_Prog,
@@ -869,7 +871,7 @@ package body Gnat2Why.External_Axioms is
 
             return Base_Why_Type (Unique_Entity (Ty));
          else
-            return EW_Abstract (Ty);
+            return Type_Of_Node (Ty);
          end if;
       end Get_Logic_Type_Of_Ada_Type;
 
@@ -898,7 +900,7 @@ package body Gnat2Why.External_Axioms is
 
             if Ekind (Formal) = E_Generic_In_Parameter then
                declare
-                  Typ  : constant W_Type_Id  := EW_Abstract (Etype (Formal));
+                  Typ  : constant W_Type_Id  := Type_Of_Node (Etype (Formal));
                   Def  : W_Term_Id;
                   Params             : constant Transformation_Params :=
                     (File        => TFile.File,
@@ -1002,7 +1004,7 @@ package body Gnat2Why.External_Axioms is
                      New_Type_Decl
                        (Name  =>
                             New_Name (Symbol => NID (Short_Name (Formal))),
-                        Alias => EW_Abstract (Actual)));
+                        Alias => Type_Of_Node (Actual)));
                end if;
 
                if Ekind (Actual) in E_Record_Type and then
@@ -1091,7 +1093,7 @@ package body Gnat2Why.External_Axioms is
                      Raw_Binders        : constant Item_Array :=
                        Compute_Subprogram_Parameters  (Actual, EW_Term);
                      Why_Type           : constant W_Type_Id :=
-                       EW_Abstract (Etype (Actual));
+                       Type_Of_Node (Etype (Actual));
                      Logic_Why_Binders  : constant Binder_Array :=
                        To_Binder_Array ((if Raw_Binders'Length = 0 then
                                             (1 => (Regular, Unit_Param))
@@ -1175,7 +1177,7 @@ package body Gnat2Why.External_Axioms is
                          (Get_Subprogram_Spec (Actual));
                      A_Param : Node_Id := First (A_Params);
                      A_Type : constant W_Type_Id :=
-                       EW_Abstract (Etype (Actual));
+                       Type_Of_Node (Etype (Actual));
                      Binders : Binder_Array
                        (1 .. Integer (List_Length (F_Params)));
                      Args    : W_Expr_Array
@@ -1193,7 +1195,7 @@ package body Gnat2Why.External_Axioms is
                            A_Type : constant W_Type_Id :=
                              (if Use_Why_Base_Type (A_Id) then
                               +Base_Why_Type (Unique_Entity (Etype (A_Id)))
-                              else EW_Abstract (Etype (A_Id)));
+                              else Type_Of_Node (Etype (A_Id)));
                            F_Id   : constant Node_Id :=
                              Defining_Identifier (F_Param);
                            F_Type : constant W_Type_Id :=
@@ -1407,7 +1409,7 @@ package body Gnat2Why.External_Axioms is
                          (Ada_Node => E,
                           Name     => Name,
                           Module   => E_Module (E),
-                          Typ      => EW_Abstract (Etype (E))),
+                          Typ      => Type_Of_Node (Etype (E))),
                        B_Ent    => null,
                        Ada_Node => E,
                        Mutable  => False));
@@ -1444,7 +1446,7 @@ package body Gnat2Why.External_Axioms is
                   else
                      Insert_Entity
                        (E,
-                        To_Why_Id (E, Typ => EW_Abstract (Etype (E)),
+                        To_Why_Id (E, Typ => Type_Of_Node (Etype (E)),
                                    Domain => EW_Term),
                         Mutable => Ekind (E) in Object_Kind and then
                         Is_Mutable_In_Why (E));

@@ -33,8 +33,8 @@ module Ada__containers__formal_vectors__generic_sorting__is_sorted
         (forall i1 i2 : int [element__logic v i1, element__logic v i2].
            length_ v >= i1 > i2 > 0 ->
              not Ada__containers__formal_vectors__generic_sorting__olt.olt
-               (Ada__containers__formal_vectors__element_type.to_base (element__logic v i1))
-               (Ada__containers__formal_vectors__element_type.to_base (element__logic v i2)))
+               (element__logic v i1)
+               (element__logic v i2))
 
   val is_sorted (v : vector) : bool
     ensures { result = is_sorted__logic v }

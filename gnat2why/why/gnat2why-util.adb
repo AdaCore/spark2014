@@ -711,7 +711,7 @@ package body Gnat2Why.Util is
       --  special private type in all other cases, represented in the AST by
       --  its type.
 
-      if not Fullview_Not_In_SPARK (T) then
+      if Ekind (T) in Type_Kind and then not Fullview_Not_In_SPARK (T) then
          return MUT (T);
       else
          return T;
@@ -728,6 +728,17 @@ package body Gnat2Why.Util is
       return Is_Scalar_Type (E) and then
         not Is_Standard_Boolean_Type (E);
    end Use_Base_Type_For_Type;
+
+   -----------------------------
+   -- Use_Split_From_For_Type --
+   -----------------------------
+
+   function Use_Split_From_For_Type (E : Entity_Id) return Boolean is
+   begin
+      return not Fullview_Not_In_SPARK (E) and then
+        Has_Discrete_Type (E) and then
+        not Is_Standard_Boolean_Type (MUT (E));
+   end Use_Split_From_For_Type;
 
    -----------------------
    -- Use_Why_Base_Type --

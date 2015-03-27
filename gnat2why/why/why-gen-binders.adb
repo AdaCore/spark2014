@@ -276,7 +276,7 @@ package body Why.Gen.Binders is
                     Base_Why_Type_No_Bool (Ty)
                elsif In_Fun_Decl and then Use_Why_Base_Type (E) then
                     Base_Why_Type (Ty)
-               else EW_Abstract (Ty));
+               else Type_Of_Node (Ty));
             --  For loop parameters, we use the Why3 representation type.
 
             Name   : constant W_Identifier_Id :=

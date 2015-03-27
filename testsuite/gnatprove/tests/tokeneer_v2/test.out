@@ -469,7 +469,7 @@ auditlog.adb:1595:53: info: range check proved
 auditlog.adb:1598:47: info: range check proved
 auditlog.adb:1607:10: info: initialization of "OldAlarm" proved
 auditlog.adb:1611:10: info: precondition proved
-auditlog.adb:1619:07: info: precondition proved
+auditlog.adb:1619:07: medium: precondition might fail
 auditlog.ads:33:13: info: initialization of "Valid_NumberLogEntries" proved
 auditlog.ads:60:22: info: initialization of "CurrentLogFile" proved
 auditlog.ads:60:22: info: initialization of "LogFileEntries" proved

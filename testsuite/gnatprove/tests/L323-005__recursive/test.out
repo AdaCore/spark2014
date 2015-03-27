@@ -10,6 +10,6 @@ p.ads:9:14: info: initialization of "Down" proved
 p.ads:10:38: info: range check proved
 p.ads:10:43: medium: overflow check might fail
 p.ads:12:15: warning: subprogram "Use_Down" has no effect
-p.ads:14:15: medium: postcondition might fail, requires Down (X) = Down (X - 1) + 1
+p.ads:14:15: info: postcondition proved
 p.ads:14:34: info: range check proved
 p.ads:14:39: medium: overflow check might fail

@@ -4,10 +4,10 @@ pck.adb:17:27: info: division check proved
 pck.adb:17:27: info: range check proved
 pck.adb:31:15: info: initialization of "V_Hi" proved
 pck.adb:31:20: info: overflow check proved
-pck.adb:31:20: medium: range check might fail
+pck.adb:31:20: info: range check proved
 pck.adb:32:15: info: initialization of "V_Lo" proved
+pck.adb:32:20: info: range check proved
 pck.adb:32:20: medium: overflow check might fail
-pck.adb:32:20: medium: range check might fail
 pck.adb:33:15: info: initialization of "V_Hi" proved
 pck.adb:33:20: medium: overflow check might fail
 pck.adb:33:22: info: initialization of "V_Lo" proved
@@ -23,7 +23,7 @@ pck.adb:49:20: info: initialization of "V_Hi" proved
 pck.adb:49:25: medium: overflow check might fail
 pck.adb:49:25: medium: range check might fail
 pck.adb:49:27: info: initialization of "Result_Hi" proved
-pck.adb:49:37: medium: overflow check might fail
+pck.adb:49:37: info: overflow check proved
 pck.adb:51:20: info: initialization of "Result_Hi" proved
 pck.adb:51:30: info: overflow check proved
 pck.adb:51:30: info: range check proved
@@ -31,7 +31,7 @@ pck.adb:56:10: info: initialization of "V_Lo" proved
 pck.adb:56:15: info: overflow check proved
 pck.adb:56:17: info: initialization of "Remainder" proved
 pck.adb:56:27: medium: overflow check might fail
-pck.adb:56:37: medium: overflow check might fail
+pck.adb:56:37: info: overflow check proved
 pck.adb:56:51: info: division check proved
 pck.adb:56:56: medium: divide by zero might fail
 pck.adb:56:56: medium: range check might fail

@@ -377,7 +377,7 @@ package body Why.Inter is
       Kind : constant EW_Type := Get_Type_Kind (W);
    begin
       case Kind is
-         when EW_Abstract =>
+         when EW_Abstract | EW_Split =>
             return Base_Why_Type (Get_Ada_Node (+W));
          when others =>
             return W;
@@ -768,7 +768,7 @@ package body Why.Inter is
             if MUT (N) = N then
                return New_Kind_Base_Type (N, Kind);
             else
-               return EW_Abstract (MUT (N));
+               return EW_Abstract_Shared (MUT (N), Kind);
             end if;
          else
             return New_Kind_Base_Type (N, Kind);
@@ -1256,6 +1256,10 @@ package body Why.Inter is
         and then Ekind (Entity (N)) not in E_Discriminant | E_Component
       then
          return Why_Type_Of_Entity (Entity (N));
+      elsif Ekind (E) in Type_Kind
+        and then Use_Split_From_For_Type (E)
+      then
+         return EW_Split (E);
       else
          return EW_Abstract (E);
       end if;

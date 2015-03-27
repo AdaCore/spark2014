@@ -5,7 +5,7 @@ pupils.adb:27:23: info: initialization of "Success" proved
 pupils.adb:29:43: info: index check proved
 pupils.adb:30:46: info: initialization of "Subject_Scores" proved
 pupils.adb:32:09: info: initialization of "Success" proved
-pupils.adb:33:46: info: range check proved
+pupils.adb:33:46: medium: range check might fail
 pupils.adb:34:26: info: index check proved
 pupils.adb:35:26: info: index check proved
 pupils.adb:36:26: info: index check proved
@@ -30,5 +30,5 @@ pupils.ads:104:20: info: initialization of "Success" proved
 pupils.ads:107:39: info: length check proved
 pupils.ads:109:39: info: length check proved
 pupils.ads:112:39: info: length check proved
-pupils.ads:116:38: info: index check proved
+pupils.ads:116:38: medium: array index check might fail
 pupils.ads:122:68: info: index check proved

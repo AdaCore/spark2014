@@ -65,7 +65,8 @@ package body Why.Gen.Expr is
      (Ty     : Entity_Id;
       Expr   : W_Expr_Id) return W_Expr_Array
    with
-       Pre => Is_Scalar_Type (Ty) and then Type_Is_Modeled_As_Base (Ty);
+       Pre => Is_Scalar_Type (Ty) and then
+         (Type_Is_Modeled_As_Base (Ty) or else Use_Base_Type_For_Type (Ty));
    --  Computes the arguments to be used for a call to the dynamic property
    --  of a scalar type.
 
@@ -683,7 +684,7 @@ package body Why.Gen.Expr is
                     and then Do_Overflow_Check (Parent (Ada_Node))
                   then
                      True
-                  else Get_Type_Kind (To) = EW_Abstract
+                  else Get_Type_Kind (To) in EW_Abstract | EW_Split
                     and then Has_Predicates (Get_Ada_Node (+To)))
                else False);
 
@@ -863,7 +864,10 @@ package body Why.Gen.Expr is
       W_Expr     : W_Expr_Id;
       Check_Kind : Range_Check_Kind) return W_Prog_Id
    is
-      W_Type : constant W_Type_Id := Get_Type (W_Expr);
+      W_Type : constant W_Type_Id :=
+        (if Get_Type_Kind (Get_Type (W_Expr)) = EW_Split
+         then Base_Why_Type (Get_Ada_Node (+Get_Type (W_Expr)))
+         else Get_Type (W_Expr));
       Result : W_Prog_Id;
       W_Fun  : W_Identifier_Id;  --  range checking function
 
@@ -1688,8 +1692,10 @@ package body Why.Gen.Expr is
         and then not Range_Check_Applied
       then
          pragma Assert (Base_Why_Type (Range_Type) = Cur
-                          or else
-                        Base_Why_Type (Range_Type) = EW_Bool_Type);
+                        or else Base_Why_Type (Range_Type) = EW_Bool_Type
+                        or else (Get_Type_Kind (Cur) = EW_Split
+                          and then Base_Why_Type (Get_Ada_Node (+Cur)) =
+                            Base_Why_Type (Range_Type)));
          Result := +Do_Range_Check (Ada_Node   => Ada_Node,
                                     Ty         => Range_Type,
                                     W_Expr     => Result,
@@ -1780,15 +1786,24 @@ package body Why.Gen.Expr is
       From     : W_Type_Id;
       To       : W_Type_Id;
       Expr     : W_Expr_Id) return W_Expr_Id is
+      From_Base : constant W_Type_Id :=
+        (if Get_Type_Kind (From) = EW_Split
+         then Base_Why_Type (Get_Ada_Node (+From))
+         else From);
+      To_Base   : constant W_Type_Id :=
+        (if Get_Type_Kind (To) = EW_Split
+         then Base_Why_Type (Get_Ada_Node (+To))
+         else To);
    begin
-      if Eq_Base (From, To) then
+      if Eq_Base (From_Base, To_Base) then
          return Expr;
       end if;
 
       return
         New_Call (Domain   => Domain,
                   Ada_Node => Ada_Node,
-                  Name     => Conversion_Name (From => From, To => To),
+                  Name     => Conversion_Name
+                    (From => From_Base, To => To_Base),
                   Args     => (1 => +Expr),
                   Typ      => To);
    end Insert_Single_Conversion;
@@ -1827,7 +1842,7 @@ package body Why.Gen.Expr is
       Left, Right      : W_Expr_Id;
       Force_Predefined : Boolean := False)
       return W_Expr_Id is
-      Why_Type : constant W_Type_Id := EW_Abstract (Typ);
+      Why_Type : constant W_Type_Id := Type_Of_Node (Typ);
       Use_Predef : constant Boolean :=
         Force_Predefined or else not Present (Has_User_Defined_Eq (Typ));
       Eq_Str   : constant String :=
@@ -2208,7 +2223,10 @@ package body Why.Gen.Expr is
       --  For now, only supports dynamic scalar types, unconstrained array
       --  types and record or private types with discriminants.
 
-      if Is_Scalar_Type (Ty) and then Type_Is_Modeled_As_Base (Ty) then
+      if Is_Scalar_Type (Ty)
+        and then (Type_Is_Modeled_As_Base (Ty)
+                  or else Use_Base_Type_For_Type (Ty))
+      then
 
          pragma Assert (not Depends_On_Discriminant (Get_Range (Ty)));
 
@@ -2908,7 +2926,10 @@ package body Why.Gen.Expr is
       Low, High : W_Expr_Id;
       Expr      : W_Expr_Id) return W_Expr_Id
    is
-      Ty : constant W_Type_Id := Get_Type (Low);
+      Ty : constant W_Type_Id :=
+        (if Get_Type_Kind (Get_Type (Low)) = EW_Split
+         then Base_Why_Type (Get_Ada_Node (+Get_Type (Low)))
+         else Get_Type (Low));
       Le : constant W_Identifier_Id :=
         (if Ty = EW_Int_Type or else Ty = EW_Fixed_Type then Int_Infix_Le
          elsif Why_Type_Is_BitVector (Ty) then MF_BVs (Ty).Ule

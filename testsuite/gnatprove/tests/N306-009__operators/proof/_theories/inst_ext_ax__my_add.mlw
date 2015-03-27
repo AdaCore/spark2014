@@ -4,11 +4,11 @@ module Inst_ext_ax__my_add__add_wrap
  use        Inst_ext_ax__int100
 
  function add_wrap 
-   (i1 : int) (i2 : int)  :Inst_ext_ax__int100.int100 = Inst_ext_ax__my_add__add.add i1 i2
+   (i1 : int) (i2 : int)  :Inst_ext_ax__int100.__split = Inst_ext_ax__my_add__add.add i1 i2
 
  val add_wrap 
-   (i1 : int) (i2 : int)  :Inst_ext_ax__int100.int100
+   (i1 : int) (i2 : int)  :Inst_ext_ax__int100.__split
   requires { true }
-  ensures { result = add_wrap i1 i2 }
+  ensures { result = add_wrap i1 i2 /\ Inst_ext_ax__int100.in_range (result) }
 
 end

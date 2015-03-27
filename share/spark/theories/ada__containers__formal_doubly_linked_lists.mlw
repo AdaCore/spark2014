@@ -22,15 +22,15 @@ module Ada__containers__formal_doubly_linked_lists__length
   use Ada__containers__count_type
   use import Ada__containers__formal_doubly_linked_lists__list
 
-  function length__logic list : Ada__containers__count_type.count_type
+  function length__logic list : int
 
   function length_ "inline" (co : list) : int =
-    Ada__containers__count_type.to_rep (length__logic co)
+    length__logic co
 
   axiom length_range:
     forall co:list [length__logic co]. 0 <= length_ co <= capacity co
 
-  val length (co : list) :  Ada__containers__count_type.count_type
+  val length (co : list) :  int
      ensures { result = length__logic co }
 end
 
@@ -233,9 +233,12 @@ module Ada__containers__formal_doubly_linked_lists__element
   use import Ada__containers__formal_doubly_linked_lists__length
   use import Ada__containers__formal_doubly_linked_lists__cursor
 
-  function element__logic list cursor : Ada__containers__formal_doubly_linked_lists__element_type.element_type
+  function element__logic list cursor : Ada__containers__formal_doubly_linked_lists__element_type.base_type
 
-  val element (co:list) (cu:cursor) : Ada__containers__formal_doubly_linked_lists__element_type.element_type
+  axiom element_range:
+    forall l : list, cu : cursor. Ada__containers__formal_doubly_linked_lists__element_type.valid (element__logic l cu)
+
+  val element (co:list) (cu:cursor) : Ada__containers__formal_doubly_linked_lists__element_type.base_type
      requires { position co cu > 0 }
      ensures  { result = element__logic co cu }
 end
@@ -250,10 +253,10 @@ module Ada__containers__formal_doubly_linked_lists__first_element
   use import Ada__containers__formal_doubly_linked_lists__first
   use import Ada__containers__formal_doubly_linked_lists__element
 
-  function first_element__logic (co:list) : Ada__containers__formal_doubly_linked_lists__element_type.element_type
+  function first_element__logic (co:list) : Ada__containers__formal_doubly_linked_lists__element_type.base_type
 = element__logic co (first__logic co)
 
-  val first_element (co:list) : Ada__containers__formal_doubly_linked_lists__element_type.element_type
+  val first_element (co:list) : Ada__containers__formal_doubly_linked_lists__element_type.base_type
      requires { length_ co > 0 }
      ensures  { result = element__logic co (first__logic co) }
 end
@@ -268,10 +271,10 @@ module Ada__containers__formal_doubly_linked_lists__last_element
   use import Ada__containers__formal_doubly_linked_lists__last
   use import Ada__containers__formal_doubly_linked_lists__element
 
-  function last_element__logic (co:list) : Ada__containers__formal_doubly_linked_lists__element_type.element_type
+  function last_element__logic (co:list) : Ada__containers__formal_doubly_linked_lists__element_type.base_type
 = element__logic co (last__logic co)
 
-  val last_element (co:list) : Ada__containers__formal_doubly_linked_lists__element_type.element_type
+  val last_element (co:list) : Ada__containers__formal_doubly_linked_lists__element_type.base_type
      requires { length_ co > 0 }
      ensures  { result = element__logic co (last__logic co) }
 end
@@ -373,17 +376,17 @@ module Ada__containers__formal_doubly_linked_lists__find
   axiom find_not:
     forall co:list, e:Ada__containers__formal_doubly_linked_lists__element_type.base_type, cu : cursor [findfirst co e, element__logic co cu].
 	findfirst co e = no_element -> position co cu > 0 ->
-	Ada__containers__formal_doubly_linked_lists__oeq.oeq (Ada__containers__formal_doubly_linked_lists__element_type.to_base (element__logic co cu)) e = False
+	Ada__containers__formal_doubly_linked_lists__oeq.oeq (element__logic co cu) e = False
 
   axiom find_yes:
     forall co:list, e:Ada__containers__formal_doubly_linked_lists__element_type.base_type, cu : cursor [findfirst co e, element__logic co cu].
 	0 < position co cu < position co (findfirst co e) ->
-	Ada__containers__formal_doubly_linked_lists__oeq.oeq (Ada__containers__formal_doubly_linked_lists__element_type.to_base (element__logic co cu)) e = False
+	Ada__containers__formal_doubly_linked_lists__oeq.oeq (element__logic co cu) e = False
 
   axiom find_element:
     forall co:list, e:Ada__containers__formal_doubly_linked_lists__element_type.base_type [findfirst co e].
 	0 < position co (findfirst co e) ->
-	Ada__containers__formal_doubly_linked_lists__oeq.oeq (Ada__containers__formal_doubly_linked_lists__element_type.to_base (element__logic co (findfirst co e))) e = True
+	Ada__containers__formal_doubly_linked_lists__oeq.oeq (element__logic co (findfirst co e)) e = True
 
   function find__logic (l : list) (e : Ada__containers__formal_doubly_linked_lists__element_type.base_type) (cu : cursor) : cursor =
     if cu = no_element then (findfirst l e) else (findfirst (current_to_last__logic l cu) e)
@@ -449,17 +452,17 @@ module Ada__containers__formal_doubly_linked_lists__reverse_find
   axiom rev_find_not:
     forall co:list, e:Ada__containers__formal_doubly_linked_lists__element_type.base_type, cu : cursor [findlast co e, element__logic co cu].
 	findlast co e = no_element -> position co cu > 0 ->
-	Ada__containers__formal_doubly_linked_lists__oeq.oeq (Ada__containers__formal_doubly_linked_lists__element_type.to_base (element__logic co cu)) e = False
+	Ada__containers__formal_doubly_linked_lists__oeq.oeq (element__logic co cu) e = False
 
   axiom rev_find_yes:
     forall co:list, e:Ada__containers__formal_doubly_linked_lists__element_type.base_type, cu : cursor [findlast co e, element__logic co cu].
 	position co (findlast co e) < position co cu <= length_ co ->
-	Ada__containers__formal_doubly_linked_lists__oeq.oeq (Ada__containers__formal_doubly_linked_lists__element_type.to_base (element__logic co cu)) e = False
+	Ada__containers__formal_doubly_linked_lists__oeq.oeq (element__logic co cu) e = False
 
   axiom rev_find_element:
     forall co:list, e:Ada__containers__formal_doubly_linked_lists__element_type.base_type [findlast co e].
 	0 < position co (findlast co e) ->
-	Ada__containers__formal_doubly_linked_lists__oeq.oeq (Ada__containers__formal_doubly_linked_lists__element_type.to_base (element__logic co (findlast co e))) e = True
+	Ada__containers__formal_doubly_linked_lists__oeq.oeq (element__logic co (findlast co e)) e = True
 
   function reverse_find__logic (l : list) (e : Ada__containers__formal_doubly_linked_lists__element_type.base_type) (cu : cursor) : cursor =
     if cu = no_element then (findlast l e) else (findlast (first_to_current__logic l cu) e)
@@ -485,7 +488,7 @@ module Ada__containers__formal_doubly_linked_lists__strict_equal
     ((forall cu:cursor [position co1 cu | position co2 cu].
        position co1 cu = position co2 cu) /\
      (forall cu:cursor [element__logic co1 cu | element__logic co2 cu]. position co1 cu > 0 ->
-        Ada__containers__formal_doubly_linked_lists__element_type.to_base (element__logic co1 cu) = Ada__containers__formal_doubly_linked_lists__element_type.to_base (element__logic co2 cu))) <->  strict_equal__logic co1 co2 = True
+        element__logic co1 cu = element__logic co2 cu)) <->  strict_equal__logic co1 co2 = True
 
   axiom strict_equal_length_:
     forall co1 co2 : list [strict_equal__logic co1 co2].
@@ -514,13 +517,13 @@ module Ada__containers__formal_doubly_linked_lists__Oeq__2
    forall co1 co2 : list [oeq__2__logic co1 co2]. oeq__2__logic co1 co2 = True ->
    forall cu1 : cursor [element__logic co1 cu1]. position co1 cu1 > 0 ->
 	exists cu2 : cursor. position co2 cu2 = position co1 cu1 /\
-          Ada__containers__formal_doubly_linked_lists__oeq.oeq (Ada__containers__formal_doubly_linked_lists__element_type.to_base (element__logic co2 cu2)) (Ada__containers__formal_doubly_linked_lists__element_type.to_base (element__logic co1 cu1)) = True
+          Ada__containers__formal_doubly_linked_lists__oeq.oeq (element__logic co2 cu2) (element__logic co1 cu1) = True
 
   axiom oeq__2_inv:
    forall co1 co2 : list [oeq__2__logic co1 co2]. oeq__2__logic co1 co2 <> True ->
    (length_ co1 <> length_ co2 \/
-   exists i : int. 0<i<=length_ co1 /\ Ada__containers__formal_doubly_linked_lists__oeq.oeq (Ada__containers__formal_doubly_linked_lists__element_type.to_base (element__logic co1 (position_inv co1 i)))
-       (Ada__containers__formal_doubly_linked_lists__element_type.to_base (element__logic co2 (position_inv co2 i)))=False)
+   exists i : int. 0<i<=length_ co1 /\ Ada__containers__formal_doubly_linked_lists__oeq.oeq (element__logic co1 (position_inv co1 i))
+       (element__logic co2 (position_inv co2 i))=False)
 
   axiom oeq__2_sym :
   forall e1 e2 : list [oeq__2__logic e1 e2].
@@ -569,7 +572,7 @@ module Ada__containers__formal_doubly_linked_lists__replace_element
   axiom replace_element_element_in:
     forall co1 co2:list, cu:cursor, e:Ada__containers__formal_doubly_linked_lists__element_type.base_type
       [replace_element co1 cu e co2].
-      replace_element co1 cu e co2 -> Ada__containers__formal_doubly_linked_lists__element_type.to_base (element__logic co2 cu) = e
+      replace_element co1 cu e co2 -> element__logic co2 cu = e
 
   axiom replace_element_element_ext:
     forall co1 co2:list, cu cun:cursor, e:Ada__containers__formal_doubly_linked_lists__element_type.base_type
@@ -654,12 +657,12 @@ module Ada__containers__formal_doubly_linked_lists__insert
   axiom insert_new:
     forall co1 co2:list, cu:cursor, e:Ada__containers__formal_doubly_linked_lists__element_type.base_type [insert co1 cu e co2].
       insert co1 cu e co2 -> position co1 cu > 0 ->
-      (position co1 (previous__logic co2 cu) = 0 /\ Ada__containers__formal_doubly_linked_lists__element_type.to_base (element__logic co2 (previous__logic co2 cu)) = e)
+      (position co1 (previous__logic co2 cu) = 0 /\ element__logic co2 (previous__logic co2 cu) = e)
 
   axiom insert_new_no_element:
     forall co1 co2:list, e:Ada__containers__formal_doubly_linked_lists__element_type.base_type [insert co1 no_element e co2].
       insert co1 no_element e co2 ->
-        position co1 (last__logic co2) = 0 /\ Ada__containers__formal_doubly_linked_lists__element_type.to_base (element__logic co2 (last__logic co2)) = e
+        position co1 (last__logic co2) = 0 /\ element__logic co2 (last__logic co2) = e
 
   axiom insert_position_before:
     forall co1 co2:list, cu cun:cursor, e:Ada__containers__formal_doubly_linked_lists__element_type.base_type
@@ -1081,7 +1084,7 @@ module Ada__containers__formal_doubly_linked_lists__splice__2
                            /\ position !source !p > 0}
      writes     { target, source, p }
      reads      { target, source, p }
-     ensures { insert (old !target) cu (Ada__containers__formal_doubly_linked_lists__element_type.to_base (element__logic (old !source) (old !p))) !target /\
+     ensures { insert (old !target) cu (element__logic (old !source) (old !p)) !target /\
                          delete (old !source) (old !p) !source /\
                         first_inserted (old !target) cu !target !p  }
 end
@@ -1105,7 +1108,7 @@ module Ada__containers__formal_doubly_linked_lists__splice__3
      reads      { co }
      ensures { exists interm : list.
                        delete (old !co) p  interm /\
-                       insert interm before (Ada__containers__formal_doubly_linked_lists__element_type.to_base (element__logic (old !co) p)) !co }
+                       insert interm before (element__logic (old !co) p) !co }
 end
 
 module Ada__containers__formal_doubly_linked_lists__has_element

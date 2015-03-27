@@ -167,8 +167,8 @@ partition_refinement.adb:164:31: info: precondition proved
 partition_refinement.adb:164:31: medium: assertion might fail, requires Length (P) = Save_Length + 1
 partition_refinement.adb:164:44: info: initialization of "Save_Length" proved
 partition_refinement.adb:164:56: info: overflow check proved
+partition_refinement.adb:165:16: info: assertion proved
 partition_refinement.adb:165:31: info: initialization of "P_Prime_Index" proved
-partition_refinement.adb:165:31: medium: assertion might fail, requires P_Prime_Index = Partition_Index (Length (P)) - 1
 partition_refinement.adb:165:64: info: precondition proved
 partition_refinement.adb:165:64: medium: range check might fail
 partition_refinement.adb:167:31: info: precondition proved
@@ -193,15 +193,15 @@ partition_refinement.adb:177:93: medium: loop invariant might fail after first i
 partition_refinement.adb:177:93: medium: loop invariant might fail in first iteration, requires F(K) = F_Loop_Entry(K)
 partition_refinement.adb:177:95: info: index check proved
 partition_refinement.adb:177:100: info: initialization of "F_Loop_Entry" proved
-partition_refinement.adb:177:113: info: index check proved
-partition_refinement.adb:178:50: info: range check proved
+partition_refinement.adb:177:113: medium: array index check might fail
+partition_refinement.adb:178:50: medium: range check might fail
 partition_refinement.adb:178:69: medium: overflow check might fail
 partition_refinement.adb:178:90: medium: loop invariant might fail after first iteration, requires F(K) = F_Loop_Entry(K)
 partition_refinement.adb:178:90: medium: loop invariant might fail in first iteration, requires F(K) = F_Loop_Entry(K)
 partition_refinement.adb:178:92: info: index check proved
 partition_refinement.adb:178:97: info: initialization of "F_Loop_Entry" proved
 partition_refinement.adb:178:110: medium: array index check might fail
-partition_refinement.adb:183:39: medium: range check might fail
+partition_refinement.adb:183:39: info: range check proved
 partition_refinement.adb:183:56: info: initialization of "P_Prime.First" proved
 partition_refinement.adb:183:73: info: initialization of "P_Prime.Last" proved
 partition_refinement.adb:183:89: medium: assertion might fail, requires F(K) = Partition_Index'Base (Length (P)) - 1
@@ -210,12 +210,12 @@ partition_refinement.adb:183:118: info: precondition proved
 partition_refinement.adb:184:39: info: range check proved
 partition_refinement.adb:184:61: info: initialization of "P_Prime.First" proved
 partition_refinement.adb:184:82: medium: assertion might fail, requires F(K) in 0 .. Partition_Index'Base (Length (P)) - 1
-partition_refinement.adb:184:84: info: index check proved
+partition_refinement.adb:184:84: medium: array index check might fail
 partition_refinement.adb:184:117: info: precondition proved
 partition_refinement.adb:185:39: info: range check proved
 partition_refinement.adb:185:56: info: initialization of "P_Prime.Last" proved
 partition_refinement.adb:185:90: medium: assertion might fail, requires F(K) in 0 .. Partition_Index'Base (Length (P)) - 1
-partition_refinement.adb:185:92: info: index check proved
+partition_refinement.adb:185:92: medium: array index check might fail
 partition_refinement.adb:185:125: info: precondition proved
 partition_refinement.adb:188:39: medium: range check might fail
 partition_refinement.adb:188:56: info: initialization of "P_Elem.First" proved
@@ -232,14 +232,14 @@ partition_refinement.adb:189:92: medium: precondition might fail
 partition_refinement.adb:189:106: info: index check proved
 partition_refinement.adb:189:119: medium: precondition might fail
 partition_refinement.adb:189:133: medium: array index check might fail
-partition_refinement.adb:190:39: medium: range check might fail
+partition_refinement.adb:190:39: info: range check proved
 partition_refinement.adb:190:56: info: initialization of "P_Prime.First" proved
 partition_refinement.adb:190:73: info: initialization of "P_Prime.Last" proved
 partition_refinement.adb:190:89: medium: assertion might fail, requires Element (P, F(K)) = P_Prime
 partition_refinement.adb:190:89: medium: precondition might fail
 partition_refinement.adb:190:103: medium: array index check might fail
 partition_refinement.adb:190:109: info: initialization of "P_Prime.Count" proved
-partition_refinement.adb:191:39: medium: range check might fail
+partition_refinement.adb:191:39: info: range check proved
 partition_refinement.adb:191:56: info: initialization of "P_Prime.First" proved
 partition_refinement.adb:191:73: info: initialization of "P_Prime.Last" proved
 partition_refinement.adb:191:89: medium: assertion might fail, requires K in Element (P, F(K)).First .. Element (P, F(K)).Last
@@ -247,35 +247,37 @@ partition_refinement.adb:191:94: medium: precondition might fail
 partition_refinement.adb:191:108: info: index check proved
 partition_refinement.adb:191:121: medium: precondition might fail
 partition_refinement.adb:191:135: medium: array index check might fail
-partition_refinement.adb:194:39: info: range check proved
+partition_refinement.adb:194:39: medium: range check might fail
 partition_refinement.adb:194:61: info: initialization of "P_Elem.First" proved
 partition_refinement.adb:194:81: medium: assertion might fail, requires K in Element (P, F(K)).First .. Element (P, F(K)).Last
 partition_refinement.adb:194:86: medium: precondition might fail
 partition_refinement.adb:194:100: info: index check proved
 partition_refinement.adb:194:113: medium: precondition might fail
-partition_refinement.adb:194:127: info: index check proved
+partition_refinement.adb:194:127: medium: array index check might fail
 partition_refinement.adb:197:39: info: range check proved
 partition_refinement.adb:197:56: info: initialization of "P_Prime.Last" proved
 partition_refinement.adb:197:90: medium: assertion might fail, requires K in Element (P, F(K)).First .. Element (P, F(K)).Last
 partition_refinement.adb:197:95: medium: precondition might fail
 partition_refinement.adb:197:109: info: index check proved
 partition_refinement.adb:197:122: medium: precondition might fail
-partition_refinement.adb:197:136: info: index check proved
+partition_refinement.adb:197:136: medium: array index check might fail
 partition_refinement.adb:199:67: medium: range check might fail
-partition_refinement.adb:199:84: info: precondition proved
+partition_refinement.adb:199:84: medium: precondition might fail
 partition_refinement.adb:199:96: info: range check proved
-partition_refinement.adb:199:108: info: precondition proved
-partition_refinement.adb:199:120: info: range check proved
+partition_refinement.adb:199:96: medium: range check might fail
+partition_refinement.adb:199:108: medium: precondition might fail
+partition_refinement.adb:199:120: medium: range check might fail
 partition_refinement.adb:199:131: medium: assertion might fail, requires F(L) = K
 partition_refinement.adb:199:133: medium: array index check might fail
 partition_refinement.adb:200:39: medium: range check might fail
-partition_refinement.adb:200:56: info: precondition proved
+partition_refinement.adb:200:56: medium: precondition might fail
 partition_refinement.adb:200:68: info: range check proved
-partition_refinement.adb:200:80: info: precondition proved
-partition_refinement.adb:200:92: info: range check proved
+partition_refinement.adb:200:68: medium: range check might fail
+partition_refinement.adb:200:80: medium: precondition might fail
+partition_refinement.adb:200:92: medium: range check might fail
 partition_refinement.adb:200:103: medium: assertion might fail, requires F(L) = J
 partition_refinement.adb:200:105: medium: array index check might fail
-partition_refinement.adb:201:46: info: overflow check proved
+partition_refinement.adb:201:46: medium: overflow check might fail
 partition_refinement.adb:201:75: info: precondition proved
 partition_refinement.adb:201:103: medium: range check might fail
 partition_refinement.adb:201:120: medium: precondition might fail
@@ -300,8 +302,9 @@ partition_refinement.adb:213:65: info: precondition proved
 partition_refinement.adb:213:93: medium: range check might fail
 partition_refinement.adb:213:110: info: precondition proved
 partition_refinement.adb:213:122: info: range check proved
+partition_refinement.adb:213:122: medium: range check might fail
 partition_refinement.adb:213:134: info: precondition proved
-partition_refinement.adb:213:146: info: range check proved
+partition_refinement.adb:213:146: medium: range check might fail
 partition_refinement.adb:213:157: medium: assertion might fail, requires F(L) = K
 partition_refinement.adb:213:159: medium: array index check might fail
 partition_refinement.adb:235:39: info: precondition proved

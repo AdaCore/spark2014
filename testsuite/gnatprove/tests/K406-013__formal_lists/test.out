@@ -269,7 +269,7 @@ test_vdll.adb:174:19: medium: assertion might fail, requires Find (L4, 4, No_Ele
 test_vdll.adb:174:25: info: initialization of private part of "L4" proved
 test_vdll.adb:174:47: info: precondition proved
 test_vdll.adb:182:12: medium: precondition might fail
-test_vdll.adb:183:18: medium: precondition might fail
+test_vdll.adb:183:18: info: precondition proved
 test_vdll.adb:183:28: info: initialization of private part of "L1" proved
 test_vdll.adb:184:28: info: precondition proved
 test_vdll.adb:184:35: info: initialization of private part of "L4" proved
@@ -291,7 +291,7 @@ test_vdll.adb:193:04: info: precondition proved
 test_vdll.adb:193:11: info: initialization of private part of "L1" proved
 test_vdll.adb:196:07: medium: precondition might fail
 test_vdll.adb:196:15: info: initialization of private part of "L1" proved
-test_vdll.adb:199:04: medium: precondition might fail
+test_vdll.adb:199:04: info: precondition proved
 test_vdll.adb:199:20: info: initialization of private part of "L2" proved
 test_vdll.adb:199:34: info: initialization of private part of "L1" proved
 test_vdll.adb:205:12: medium: precondition might fail

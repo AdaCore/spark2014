@@ -289,7 +289,7 @@ algorithm.adb:589:07: info: assertion proved
 algorithm.adb:596:10: info: initialization of "iNumLPs" proved
 algorithm.adb:601:07: info: assertion proved
 algorithm.adb:605:67: medium: overflow check might fail
-algorithm.adb:605:101: info: range check proved
+algorithm.adb:605:101: medium: range check might fail
 algorithm.adb:605:103: info: initialization of "iNumLPs" proved
 algorithm.adb:605:111: info: division check proved
 algorithm.adb:608:07: info: assertion proved

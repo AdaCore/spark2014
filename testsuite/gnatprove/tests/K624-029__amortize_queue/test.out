@@ -140,9 +140,9 @@ amortized_queue.adb:74:31: info: range check proved
 amortized_queue.adb:74:36: info: precondition proved
 amortized_queue.adb:74:53: info: range check proved
 amortized_queue.adb:75:10: info: loop invariant initialization proved
+amortized_queue.adb:75:10: info: loop invariant preservation proved
 amortized_queue.adb:76:33: info: precondition proved
 amortized_queue.adb:77:15: info: precondition proved
-amortized_queue.adb:77:15: medium: loop invariant might fail after first iteration, requires Element (Front, Last_Index (Front) + Idx - I) = Element (Rear, I)
 amortized_queue.adb:77:31: info: precondition proved
 amortized_queue.adb:77:50: info: overflow check proved
 amortized_queue.adb:77:56: info: overflow check proved
@@ -224,8 +224,8 @@ amortized_queue.ads:23:66: info: precondition proved
 amortized_queue.ads:23:82: info: range check proved
 amortized_queue.ads:24:13: info: initialization of private part of "Oconcat__2" proved
 amortized_queue.ads:25:27: info: precondition proved
-amortized_queue.ads:26:14: info: postcondition proved
 amortized_queue.ads:26:14: info: precondition proved
+amortized_queue.ads:26:14: medium: postcondition might fail
 amortized_queue.ads:26:40: info: precondition proved
 amortized_queue.ads:27:15: info: precondition proved
 amortized_queue.ads:28:34: info: precondition proved

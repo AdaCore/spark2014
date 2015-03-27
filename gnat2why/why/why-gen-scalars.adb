@@ -76,7 +76,7 @@ package body Why.Gen.Scalars is
    is
       Why_Name         : constant W_Name_Id := To_Why_Type (E, Local => True);
       Is_Static        : constant Boolean := not Type_Is_Modeled_As_Base (E);
-      Base_Type_In_Why : constant W_Type_Id := Type_Of_Node (Base_Type (E));
+      Base_Type_In_Why : constant W_Type_Id := EW_Abstract (Base_Type (E));
 
       function Pick_Clone return W_Module_Id;
       --  Choose the correct module to clone

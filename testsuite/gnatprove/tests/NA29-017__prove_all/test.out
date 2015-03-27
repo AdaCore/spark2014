@@ -122,19 +122,19 @@ sorting.adb:135:42: medium: overflow check might fail
 sorting.adb:137:22: medium: overflow check might fail
 sorting.adb:137:26: medium: overflow check might fail
 sorting.adb:138:36: info: overflow check proved
-sorting.adb:138:36: medium: range check might fail
+sorting.adb:138:36: info: range check proved
 sorting.adb:138:40: info: overflow check proved
 sorting.adb:138:44: info: overflow check proved
 sorting.adb:138:56: info: range check proved
 sorting.adb:138:64: medium: overflow check might fail
-sorting.adb:138:76: medium: overflow check might fail
+sorting.adb:138:76: info: overflow check proved
 sorting.adb:138:80: info: overflow check proved
 sorting.adb:138:84: info: overflow check proved
 sorting.adb:140:22: medium: overflow check might fail
 sorting.adb:140:35: info: overflow check proved
-sorting.adb:141:36: medium: overflow check might fail
+sorting.adb:141:36: info: overflow check proved
 sorting.adb:141:40: info: overflow check proved
-sorting.adb:141:40: medium: range check might fail
+sorting.adb:141:40: info: range check proved
 sorting.adb:141:44: info: overflow check proved
 sorting.adb:141:56: info: range check proved
 sorting.adb:141:72: info: overflow check proved
@@ -163,12 +163,12 @@ sorting.adb:154:19: medium: overflow check might fail
 sorting.adb:154:23: medium: overflow check might fail
 sorting.adb:155:14: medium: assertion might fail, requires Sorted (A, A_First + J * L * 2, Natural'min)
 sorting.adb:155:33: info: overflow check proved
-sorting.adb:155:33: medium: range check might fail
+sorting.adb:155:33: info: range check proved
 sorting.adb:155:37: info: overflow check proved
 sorting.adb:155:41: info: overflow check proved
 sorting.adb:155:53: info: range check proved
 sorting.adb:155:61: medium: overflow check might fail
-sorting.adb:155:73: medium: overflow check might fail
+sorting.adb:155:73: info: overflow check proved
 sorting.adb:155:77: info: overflow check proved
 sorting.adb:155:79: info: initialization of "L" proved
 sorting.adb:155:81: info: overflow check proved

@@ -21,8 +21,8 @@ copy.adb:110:22: info: precondition proved
 copy.adb:113:22: info: precondition proved
 copy.adb:122:13: info: precondition proved
 copy.adb:124:13: info: precondition proved
-copy.adb:133:07: info: loop invariant initialization proved
 copy.adb:133:07: medium: loop invariant might fail after first iteration
+copy.adb:133:07: medium: loop invariant might fail in first iteration
 copy.adb:140:10: info: precondition proved
 copy.adb:142:10: info: precondition proved
 copy.adb:151:09: info: initialization of "Last" proved

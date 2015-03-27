@@ -11,8 +11,8 @@ module Ada__containers__formal_doubly_linked_lists__generic_sorting__is_sorted
 
   axiom is_sorted__def:
   forall co : list. is_sorted__logic co = True <-> (forall cu1 cu2 : cursor [element__logic co cu1, element__logic co cu2].
-         position co cu1 >  position co cu2 > 0 -> not Ada__containers__formal_doubly_linked_lists__generic_sorting__olt.olt (Ada__containers__formal_doubly_linked_lists__element_type.to_base (element__logic co cu1))
-(Ada__containers__formal_doubly_linked_lists__element_type.to_base (element__logic co cu2)) = True)
+         position co cu1 >  position co cu2 > 0 -> not Ada__containers__formal_doubly_linked_lists__generic_sorting__olt.olt (element__logic co cu1)
+(element__logic co cu2) = True)
 
   val is_sorted (co : list) : bool
      ensures  { result = is_sorted__logic co }

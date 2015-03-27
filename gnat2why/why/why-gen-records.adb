@@ -2227,7 +2227,7 @@ package body Why.Gen.Records is
          else Unique_Entity (Root_Record_Type (Ty)));
       Call_Id   : constant W_Identifier_Id := To_Why_Id (Field, Rec => Rec);
       Ret_Ty    : constant W_Type_Id :=
-        Type_Of_Node (Search_Component_By_Name (Ty, Field));
+        EW_Abstract (Etype (Search_Component_By_Name (Ty, Field)));
       Top_Field : constant W_Expr_Id :=
         (if Ekind (Field) = E_Discriminant then
               New_Discriminants_Access (Ada_Node, Domain, Name, Ty)
