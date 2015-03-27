@@ -2106,7 +2106,7 @@ package body Gnat2Why.Subprograms is
       Post               : W_Pred_Id;
       Dispatch_Pre       : W_Pred_Id;
       Dispatch_Post      : W_Pred_Id;
-      Refined_Post        : W_Pred_Id;
+      Refined_Post       : W_Pred_Id;
       Why_Type           : W_Type_Id := Why_Empty;
    begin
 
