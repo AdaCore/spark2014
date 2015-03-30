@@ -8,6 +8,8 @@ import sys
 import re
 import glob
 import json
+from gnatpython import fileutils
+from gnatpython.env import Env
 from test_util import sort_key_for_errors
 
 max_steps = 200
@@ -360,31 +362,6 @@ def gcc(src, opt=["-c"]):
     print_sorted(str.splitlines(process.out))
 
 
-def gnat2why(src, opt=None):
-    """Invoke gnat2why
-
-    PARAMETERS
-      src: source file to process
-      opt: additional options to pass to gnat2why
-
-    First call gcc on source file to produce ALI file.
-    """
-    cmd = ["gnat2why"]
-    cmd += to_list(opt)
-    cmd += [src]
-    process = Run(cmd)
-    if process.status:
-        print process.out
-
-    elif quick_mode():
-        if os.path.exists("test.out"):
-            cat("test.out", True)
-
-    # Otherwise, print the command output sorted
-    else:
-        print_sorted(str.splitlines(process.out))
-
-
 def altergo(src, timeout=10, opt=None):
     """Invoke alt-ergo with why3-cpulimit wrapper
 
@@ -393,26 +370,16 @@ def altergo(src, timeout=10, opt=None):
       timeout: timeout passed to why3-cpulimit
       opt: additional command line options for alt-ergo
     """
+    # add libexec/spark/bin to the PATH
+    installdir = os.path.dirname(os.path.dirname(fileutils.which('gnatprove')))
+    bindir = os.path.join(installdir, 'libexec', 'spark', 'bin')
+    Env().add_path(bindir)
+    # run alt-ergo
     cmd = ["alt-ergo", "-steps-bound", "20000"]
     cmd += to_list(opt)
     cmd += [src]
     process = Run(cmd)
     print process.out
-
-
-def why(src, opt=None):
-    """Invoke why
-
-    PARAMETERS
-      src: source file to process
-      opt: additional options to pass to why
-    """
-    cmd = ["why"]
-    cmd += to_list(opt)
-    cmd += [src]
-    process = Run(cmd)
-    if process.status:
-        print process.out
 
 
 def gnatprove_(opt=["-P", "test.gpr"]):
