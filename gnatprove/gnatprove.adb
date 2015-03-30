@@ -341,9 +341,8 @@ procedure Gnatprove is
                4 => new String'("--proof-dir"),
                5 => new String'(Proof_Dir.all)));
          Res : Boolean;
-         Old_Dir : constant String := Current_Directory;
-         Gnatwhy3 : constant String := Compose (Compose (Prefix, "bin"),
-                                                "gnatwhy3");
+         Old_Dir  : constant String := Current_Directory;
+         Gnatwhy3 : constant String := Compose (Libexec_Bin_Dir, "gnatwhy3");
       begin
          Set_Directory  (Main_Subdir.all);
          GNAT.OS_Lib.Spawn (Program_Name => Gnatwhy3,
