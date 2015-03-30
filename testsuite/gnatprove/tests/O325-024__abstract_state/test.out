@@ -1,0 +1,17 @@
+stabilizer_pack.adb:21:22: medium: overflow check might fail
+stabilizer_pack.adb:21:34: medium: overflow check might fail
+stabilizer_pack.adb:21:44: medium: overflow check might fail
+stabilizer_pack.adb:21:51: medium: overflow check might fail
+stabilizer_pack.adb:22:32: medium: overflow check might fail
+stabilizer_pack.adb:23:09: medium: overflow check might fail
+stabilizer_pack.adb:23:19: medium: overflow check might fail
+stabilizer_pack.adb:23:26: medium: overflow check might fail
+stabilizer_pack.ads:16:04: info: initialization of "Temperature" proved
+stabilizer_pack.ads:18:04: info: initialization of "Pressure" proved
+stabilizer_pack.ads:20:04: info: initialization of "Asl" proved
+stabilizer_pack.ads:22:04: info: initialization of "Asl_Raw" proved
+stabilizer_pack.ads:24:04: info: initialization of "Asl_Long" proved
+stabilizer_pack.ads:28:04: info: initialization of "Asl_Err_Deadband" proved
+stabilizer_pack.ads:30:04: info: initialization of "Asl_Alpha" proved
+stabilizer_pack.ads:32:04: info: initialization of "Asl_Alpha_Long" proved
+stabilizer_pack.ads:37:14: warning: subprogram "Stabilizer_Alt_Hold_Update" has no effect

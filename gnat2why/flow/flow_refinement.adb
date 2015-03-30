@@ -451,8 +451,7 @@ package body Flow_Refinement is
       -- Expand --
       ------------
 
-      function Expand (E : Entity_Id) return Node_Sets.Set
-      is
+      function Expand (E : Entity_Id) return Node_Sets.Set is
          Tmp : Node_Sets.Set := Node_Sets.Empty_Set;
          Ptr : Elmt_Id;
          Hs  : Boolean := False;

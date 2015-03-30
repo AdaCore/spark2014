@@ -576,14 +576,75 @@ package body Flow.Analysis.Sanity is
       Sane :    out Boolean)
    is
 
+      function Extended_Set_Contains
+        (F  : Flow_Id;
+         FS : Flow_Id_Sets.Set)
+         return Boolean;
+      --  Checks if F is either directly contained in FS or if F is a
+      --  state abstraction that encloses an element of FS.
+      --  The purpose of this function is to allow user contracts to
+      --  mention either a state abstraction, or the constituents
+      --  thereof when both are visible.
+      --  @param F is the Flow_Id that we look for
+      --  @param FS is the Flow_Set in which we look
+      --  @return whether FS contains F or a contituent of F
+
       function Up_Project_Flow_Set
         (FS      : Flow_Id_Sets.Set;
          Variant : Flow_Id_Variant)
         return Flow_Id_Sets.Set;
-         --  Up projects the elements of FS that can be up
-         --  projected. Elements that cannot be up projected are
-         --  simply copied over. The variant of all elements is also
-         --  set to Variant.
+      --  Up projects the elements of FS that can be up
+      --  projected. Elements that cannot be up projected are simply
+      --  copied across. The variant of all elements is also set to
+      --  Variant.
+      --  @param FS is the Flow_Id_Set that will be up projected
+      --  @param Variant is the Flow_Id_Variant that all Flow_Ids will have
+      --  @return the up projected version of FS
+
+      ---------------------------
+      -- Extended_Set_Contains --
+      ---------------------------
+
+      function Extended_Set_Contains
+        (F  : Flow_Id;
+         FS : Flow_Id_Sets.Set)
+         return Boolean
+      is
+      begin
+         --  Return True if F is directly contained in FS
+         if FS.Contains (F) then
+            return True;
+         end if;
+
+         --  Check if F is a state abstraction that encloses a
+         --  constituent mentioned in FS.
+
+         --  If F does not represent a state abstraction then return
+         --  False.
+         if not Is_Abstract_State (F) then
+            return False;
+         end if;
+
+         declare
+            State : constant Node_Id := Get_Direct_Mapping_Id (F);
+         begin
+            for Constit of FS loop
+               if Constit.Kind in Direct_Mapping | Record_Field then
+                  declare
+                     N : constant Node_Id := Get_Direct_Mapping_Id (Constit);
+                  begin
+                     if Present (Encapsulating_State (N))
+                       and then Encapsulating_State (N) = State
+                     then
+                        return True;
+                     end if;
+                  end;
+               end if;
+            end loop;
+         end;
+
+         return False;
+      end Extended_Set_Contains;
 
       -------------------------
       -- Up_Project_Flow_Set --
@@ -696,7 +757,7 @@ package body Flow.Analysis.Sanity is
          end loop;
 
          for W of User_Writes loop
-            if not Projected_Actual_Writes.Contains (W) then
+            if not Extended_Set_Contains (W, Projected_Actual_Writes) then
                --  Don't issue this error for state abstractions that
                --  have a null refinement
                declare
@@ -793,7 +854,7 @@ package body Flow.Analysis.Sanity is
                end State_Partially_Written;
 
             begin
-               if not Projected_Actual_Reads.Contains (R)
+               if not Extended_Set_Contains (R, Projected_Actual_Reads)
                  and then not State_Partially_Written (R)
                  --  Don't issue this error if we are dealing with a
                  --  partially written state abstraction.
@@ -830,7 +891,7 @@ package body Flow.Analysis.Sanity is
          end loop;
 
          for P of User_Proof_Ins loop
-            if not Projected_Actual_Proof_Ins.Contains (P) then
+            if not Extended_Set_Contains (P, Projected_Actual_Proof_Ins) then
                Sane := False;
 
                Error_Msg_Flow
