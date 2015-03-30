@@ -76,10 +76,10 @@ install-all:
 	$(MAKE) install
 	$(MAKE) -C why3 install_spark2014
 	$(MAKE) -C alt-ergo install
-	# Move internal binaries to libexec/spark/bin like the nighty build
-	# does, as gnatwhy3 expects this relative location to find the Why3
-	# installation files in share. Do this for all internal binaries
-	# even if not strictly needed.
+        # Move internal binaries to libexec/spark/bin like the nighty build
+        # does, as gnatwhy3 expects this relative location to find the Why3
+        # installation files in share. Do this for all internal binaries
+        # even if not strictly needed.
 	mkdir -p install/libexec/spark/bin
 	$(MV) install/bin/why3server install/libexec/spark/bin
 	$(MV) install/bin/gnatwhy3 install/libexec/spark/bin
