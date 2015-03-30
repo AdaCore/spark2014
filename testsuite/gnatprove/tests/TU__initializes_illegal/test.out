@@ -2,14 +2,14 @@ initializes_illegal.adb:5:11: aspect "Initializes" must apply to a package decla
 initializes_illegal.ads:11:36: cannot mix null and non-null initialization items
 initializes_illegal.ads:17:12: package "Incorrect_Placement" requires state refinement
 initializes_illegal_2.ads:6:08: aspect "Abstract_State" cannot come after aspect "Initializes"
-initializes_illegal_3.ads:22:30: initialization item must denote variable or state
+initializes_illegal_3.ads:22:30: initialization item must denote object or state
 initializes_illegal_3.ads:24:27: initialization item "PrivVar" must appear in the visible declarations of package "Initializes_Illegal_3"
 initializes_illegal_3.ads:26:30: initialization item "SS" must appear in the visible declarations of package "Initializes_Illegal_3"
 initializes_illegal_3.ads:28:30: initialization item "XX" must appear in the visible declarations of package "Initializes_Illegal_3"
-initializes_illegal_3.ads:30:34: input item "Rec" cannot denote a visible variable or state of package "Initializes_Illegal_3" (SPARK RM 7.1.5(4))
-initializes_illegal_3.ads:30:39: input item "S2" cannot denote a visible variable or state of package "Initializes_Illegal_3" (SPARK RM 7.1.5(4))
-initializes_illegal_3.ads:30:46: input item "SS" cannot denote a visible variable or state of package "Initializes_Illegal_3" (SPARK RM 7.1.5(4))
-initializes_illegal_3.ads:30:54: input item "XX" cannot denote a visible variable or state of package "Initializes_Illegal_3" (SPARK RM 7.1.5(4))
+initializes_illegal_3.ads:30:34: input item "Rec" cannot denote a visible object or state of package "Initializes_Illegal_3"
+initializes_illegal_3.ads:30:39: input item "S2" cannot denote a visible object or state of package "Initializes_Illegal_3"
+initializes_illegal_3.ads:30:46: input item "SS" cannot denote a visible object or state of package "Initializes_Illegal_3"
+initializes_illegal_3.ads:30:54: input item "XX" cannot denote a visible object or state of package "Initializes_Illegal_3"
 initializes_illegal_3.ads:34:45: duplicate input item
 initializes_illegal_3.ads:34:49: duplicate input item
 initializes_illegal_3.ads:49:04: "PrivVar" is declared in the private part of package "Initializes_Illegal_3"
@@ -34,7 +34,7 @@ initializes_illegal_4.ads:52:32: info: initialization of "G_Var2" proved
 initializes_illegal_4.ads:64:07: info: initialization of "A" proved
 initializes_illegal_4.ads:64:22: "G_Var" must be listed in the Initializes aspect of "Pac4" (SPARK RM 7.1.5(12))
 initializes_illegal_4.ads:64:22: info: initialization of "G_Var" proved
-   compilation of initializes_illegal_4.adb failed
+compilation of initializes_illegal_4.adb failed
 
 
 gnatprove: error during flow analysis and proof

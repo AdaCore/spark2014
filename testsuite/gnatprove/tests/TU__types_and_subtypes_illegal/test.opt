@@ -1,0 +1,1 @@
+ALL XFAIL problem in flow analysis on constants in contracts (O121-031)
