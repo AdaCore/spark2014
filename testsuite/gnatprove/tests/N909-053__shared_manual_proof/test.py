@@ -1,32 +1,10 @@
 from test_support import *
 from gnatpython.ex import Run
+from gnatpython import fileutils
 
-def which(program):
-    import os
-    def is_exe(fpath):
-        return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
-
-    if os.name != 'posix':
-        program = program + ".exe"
-    fpath, fname = os.path.split(program)
-    if fpath:
-        if is_exe(program):
-            return program
-    else:
-        for path in os.environ["PATH"].split(os.pathsep):
-            path = path.strip('"')
-            exe_file = os.path.join(path, program)
-            if is_exe(exe_file):
-                return exe_file
-
-    return None
-
-binpath = os.path.dirname(which("gnatprove"))
-share_path = os.path.join(os.path.dirname(binpath),
-                          "share")
-driver_path = os.path.join(os.path.join(os.path.join(share_path, "why3"),
-                                        "drivers"),
-                           "coq.drv")
+installdir = os.path.dirname(os.path.dirname(fileutils.which('gnatprove')))
+driverdir = os.path.join(installdir, 'share', 'why3', 'drivers')
+driverfile = os.path.join(driverdir, 'coq.drv')
 
 # create why3 configuration file
 whyconf = open('test.whyconf', 'w')
@@ -36,7 +14,7 @@ whyconf.write('magic = 14')
 whyconf.write(os.linesep)
 whyconf.write('[prover]' + os.linesep)
 whyconf.write('command = "echo %f"' + os.linesep)
-whyconf.write('driver = "' + driver_path + '"' + os.linesep)
+whyconf.write('driver = "' + driverfile + '"' + os.linesep)
 whyconf.write('in_place = false' + os.linesep)
 whyconf.write('interactive = true' + os.linesep)
 whyconf.write('name = "Qoc"' + os.linesep)
