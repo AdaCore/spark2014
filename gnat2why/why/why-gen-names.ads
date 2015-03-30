@@ -25,13 +25,10 @@
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
-with Atree;                 use Atree;
-with Einfo;                 use Einfo;
 with Gnat2Why.Util;         use Gnat2Why.Util;
 with Namet;                 use Namet;
 with Snames;                use Snames;
 with Types;                 use Types;
-with Uintp;                 use Uintp;
 with Why.Ids;               use Why.Ids;
 with Why.Sinfo;             use Why.Sinfo;
 with Why.Types;
@@ -60,10 +57,6 @@ package Why.Gen.Names is
    function Dynamic_Prop_Name
      (Ty : Entity_Id) return W_Identifier_Id;
    --  Return the name of the "dynamic_property" predicate for the type
-
-   function Float_Round_Name (Ty : Entity_Id) return W_Identifier_Id
-   with Pre => Ekind (Ty) in Real_Kind;
-   --  Returns the name of the floating-point rounding operation for type Ty
 
    function Range_Check_Name
      (Ty : Entity_Id; R : Range_Check_Kind) return W_Identifier_Id;
@@ -142,17 +135,40 @@ package Why.Gen.Names is
 
    Keep_On_Simp : constant String := "keep_on_simp";
 
+   --  The following enumeration is used for two things:
+   --    * a simple enumeration of strings, accessed using the "To_String"
+   --      function below. In practice, many of these strings are used to build
+   --      Why identifiers. To_String is also used in various *Append
+   --      functions.
+   --    * as a way to identify Why3 identifiers that belong to specific Ada
+   --      entities, accessed using the E_Symb function in Why.Atree.Modules.
+   --  Note that the first way of these is considered deprecated, instead use
+   --  the E_Symb function if possible (and register the required symbols using
+   --  Insert_Symbols in Why.Atree.Modules)
+
    type Why_Name_Enum is
      (
       WNE_Array_Base_Range_Pred,
+      WNE_Array_Base_Range_Pred_2,
+      WNE_Array_Base_Range_Pred_3,
+      WNE_Array_Base_Range_Pred_4,
       WNE_Array_Component_Type,
       WNE_Array_Elts,
       WNE_Array_Type,
       WNE_Attr_Constrained,
       WNE_Attr_First,
+      WNE_Attr_First_2,
+      WNE_Attr_First_3,
+      WNE_Attr_First_4,
       WNE_Attr_Image,
       WNE_Attr_Last,
+      WNE_Attr_Last_2,
+      WNE_Attr_Last_3,
+      WNE_Attr_Last_4,
       WNE_Attr_Length,
+      WNE_Attr_Length_2,
+      WNE_Attr_Length_3,
+      WNE_Attr_Length_4,
       WNE_Attr_Modulus,
       WNE_Attr_Tag,
       WNE_Attr_Size,
@@ -163,6 +179,9 @@ package Why.Gen.Names is
 
       WNE_Attr_Value,
       WNE_Base_Type,
+      WNE_Base_Type_2,
+      WNE_Base_Type_3,
+      WNE_Base_Type_4,
       WNE_Bool_Eq,
       WNE_Check_Not_First,
       WNE_Check_Not_Last,
@@ -220,6 +239,9 @@ package Why.Gen.Names is
       WNE_Float_Succ,
 
       WNE_Index_Dynamic_Property,
+      WNE_Index_Dynamic_Property_2,
+      WNE_Index_Dynamic_Property_3,
+      WNE_Index_Dynamic_Property_4,
 
       --  Prefix for name of functions which extract the value of an extension
       --  component from the extension field of a value of the root type.
@@ -237,9 +259,6 @@ package Why.Gen.Names is
       --  refined version (refined_post) of a subprogram.
       WNE_Refine_Module,  --  Dispatch
 
-      --  Suffix for name of logic functions
-      WNE_Logic_Fun_Suffix,  --  __logic
-
       WNE_Of_Array,
       WNE_Of_Base,
       WNE_Of_Rep,
@@ -247,7 +266,6 @@ package Why.Gen.Names is
       WNE_Of_Fixed,
       WNE_Of_Real,
       WNE_Of_BitVector,
-      WNE_Of_String,
       WNE_Range_Check_Fun,
       WNE_Range_Check_Fun_BV_Int, --  for convertion from int to bitvector
       WNE_Rec_Split_Discrs,
@@ -258,32 +276,15 @@ package Why.Gen.Names is
       WNE_To_Base,
       WNE_To_Rep,
       WNE_To_Int,
+      WNE_To_Int_2,
+      WNE_To_Int_3,
+      WNE_To_Int_4,
       WNE_To_Fixed,
       WNE_To_Real,
-      WNE_To_BitVector,
-      WNE_To_String
+      WNE_To_BitVector
      );
 
    function Attr_To_Why_Name (A : Attribute_Id) return Why_Name_Enum;
-
-   function Append_Num (S        : String;
-                        Count    : Positive;
-                        Module   : W_Module_Id := Why.Types.Why_Empty;
-                        Typ      : W_Type_Id := Why.Types.Why_Empty;
-                        Ada_Node : Node_Id := Empty)
-                        return W_Identifier_Id;
-
-   function Append_Num (W : Why_Name_Enum; Count : Positive)
-                        return W_Identifier_Id;
-
-   function Append_Num (W : Why_Name_Enum; Count : Uint)
-                        return W_Identifier_Id;
-
-   function Append_Num (P, W : Why_Name_Enum; Count : Positive)
-                        return W_Identifier_Id;
-
-   function Append_Num (S : String; Count : Positive) return String;
-   function Append_Num (S : String; Count : Uint) return String;
 
    function Attr_Append (Base     : String;
                          A        : Attribute_Id;
@@ -312,6 +313,40 @@ package Why.Gen.Names is
    function To_Name (W : Why_Name_Enum) return W_Name_Id;
    function To_Name (I : W_Identifier_Id) return W_Name_Id;
 
+   function To_Local (Name : W_Identifier_Id) return W_Identifier_Id;
+   function To_Local (Name : W_Identifier_Id) return W_Name_Id;
+   --  @param Name a possibly fully qualified identifier
+   --  @return the identifier or name where the module component has been
+   --    removed
+
+   function WNE_Attr_First (I : Integer) return Why_Name_Enum;
+   --  wrapper function for the enumeration literals WNE_Attr_First_X
+   --  @param I an index between 1 and 4 selecting the dimension
+
+   function WNE_Attr_Last (I : Integer) return Why_Name_Enum;
+   --  wrapper function for the enumeration literals WNE_Attr_Last_X
+   --  @param I an index between 1 and 4 selectind the dimension
+
+   function WNE_Attr_Length (I : Integer) return Why_Name_Enum;
+   --  wrapper function for the enumeration literals WNE_Attr_Last_X
+   --  @param I an index between 1 and 4 selectind the dimension
+
+   function WNE_To_Int (I : Integer) return Why_Name_Enum;
+   --  wrapper function for the enumeration literals WNE_To_Int_X
+   --  @param I an index between 1 and 4 selectind the dimension
+
+   function WNE_Base_Type (I : Integer) return Why_Name_Enum;
+   --  wrapper function for the enumeration literals WNE_Base_Type_X
+   --  @param I an index between 1 and 4 selectind the dimension
+
+   function WNE_Array_Base_Range_Pred (I : Integer) return Why_Name_Enum;
+   --  wrapper function for the enumeration literals WNE_Array_Base_Range_Pred
+   --  @param I an index between 1 and 4 selectind the dimension
+
+   function WNE_Index_Dynamic_Property (I : Integer) return Why_Name_Enum;
+   --  wrapper function for the enumeration literals WNE_Index_Dynamic_Property
+   --  @param I an index between 1 and 4 selectind the dimension
+
    function Remove_Prefix (I : W_Identifier_Id) return W_Identifier_Id;
 
    function Prefix (M        : W_Module_Id;
@@ -323,8 +358,6 @@ package Why.Gen.Names is
    function Prefix (M        : W_Module_Id;
                     N        : String;
                     Ada_Node : Node_Id := Empty) return W_Identifier_Id;
-
-   function Convert_To (Kind : W_Type_Id) return Why_Name_Enum;
 
    function Convert_From (Kind : W_Type_Id) return Why_Name_Enum;
 

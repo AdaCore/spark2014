@@ -80,10 +80,6 @@ package body Why.Inter is
    --  If Force = True, we also force B to be different from Left or Right,
    --  even in the case Left = Right.
 
-   function Get_EW_Term_Type (N : Node_Id) return W_Type_Id;
-   --  If the node is of some scalar type, return the corresponding Why
-   --  representation type. Otherwise return the empty node.
-
    function EW_Abstract_Shared
      (N    : Node_Id;
       Kind : EW_Type) return W_Type_Id
@@ -187,6 +183,7 @@ package body Why.Inter is
          elsif Node = Real_Unary_Minus then
             State.S.Include (+RealInfix);
          end if;
+         State.Control := Abandon_Children;
       end Identifier_Pre_Op;
 
       -----------------------------

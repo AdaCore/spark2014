@@ -546,7 +546,7 @@ package body Gnat2Why.Expr is
 
       elsif Is_Floating_Point_Type (E) then
          return New_Call (Domain   => Domain,
-                          Name     => Float_Round_Name (E),
+                          Name     => E_Symb (E, WNE_Float_Round),
                           Args     => (1 => T),
                           Typ      => EW_Real_Type);
 
@@ -3222,9 +3222,7 @@ package body Gnat2Why.Expr is
    begin
       return New_VC_Call (Domain   => EW_Prog,
                           Ada_Node => Ada_Node,
-                          Name     => Prefix (M        => E_Module (Base),
-                                              W        => WNE_Range_Check_Fun,
-                                              Ada_Node => Base),
+                          Name     => E_Symb (Base, WNE_Range_Check_Fun),
                           Progs    => (1 => +T),
                           Reason   => VC_Overflow_Check,
                           Typ      => Get_Type (T));
@@ -4409,20 +4407,13 @@ package body Gnat2Why.Expr is
                   To       => R_Type);
 
                if Is_Fixed_Point_Type (Return_Type) then
-                  declare
-                     Name : constant W_Identifier_Id :=
-                       Prefix (Ada_Node => Return_Type,
-                               M        => E_Module (Return_Type),
-                               W        => Oper);
-                  begin
-                     T := New_Call (Ada_Node => Ada_Node,
-                                    Domain   => Domain,
-                                    Name     => Name,
-                                    Args     =>
-                                      (1 => L_Why,
-                                       2 => R_Why),
-                                    Typ      => Base);
-                  end;
+                  T := New_Call (Ada_Node => Ada_Node,
+                                 Domain   => Domain,
+                                 Name     => E_Symb (Return_Type, Oper),
+                                 Args     =>
+                                   (1 => L_Why,
+                                    2 => R_Why),
+                                 Typ      => Base);
                else
                   declare
                      Name : constant W_Identifier_Id :=
@@ -4475,9 +4466,7 @@ package body Gnat2Why.Expr is
 
                Name :=
                  (if Is_Fixed_Point_Type (Return_Type) then
-                       Prefix (Ada_Node => Return_Type,
-                               M        => E_Module (Return_Type),
-                               W        => Oper)
+                       E_Symb (Return_Type, Oper)
                   else
                      New_Division (Base));
 
@@ -7015,15 +7004,11 @@ package body Gnat2Why.Expr is
 
             if Ekind (Etype (Var)) in Float_Kind then
                declare
-                  Oper : constant Why_Name_Enum :=
+                  Oper : constant W_Identifier_Id :=
                     (if Attr_Id = Attribute_Pred then
-                       WNE_Float_Pred
+                        E_Symb (Etype (Var), WNE_Float_Pred)
                      else
-                       WNE_Float_Succ);
-                  Name : constant W_Identifier_Id :=
-                    Prefix (M        => E_Module (Etype (Var)),
-                            W        => Oper,
-                            Ada_Node => Expr);
+                       E_Symb (Etype (Var), WNE_Float_Succ));
                   Arg : constant W_Expr_Id :=
                     Transform_Expr (First (Expressions (Expr)),
                                     EW_Real_Type,
@@ -7032,7 +7017,7 @@ package body Gnat2Why.Expr is
                begin
                   T := New_Call (Ada_Node => Expr,
                                  Domain   => Domain,
-                                 Name     => Name,
+                                 Name     => Oper,
                                  Args     => (1 => Arg),
                                  Typ      => EW_Real_Type);
                end;
@@ -7345,8 +7330,7 @@ package body Gnat2Why.Expr is
                      else
                         declare
                            Name : constant W_Identifier_Id :=
-                             Prefix (M        => E_Module (Etype (Var)),
-                                     W        => WNE_Attr_Object_Size);
+                             E_Symb (Etype (Var), WNE_Attr_Object_Size);
                            Arg  : constant W_Expr_Id :=
                              Transform_Expr (Var, Domain, Params);
                         begin
@@ -9703,10 +9687,7 @@ package body Gnat2Why.Expr is
                   declare
                      Call : constant W_Expr_Id :=
                        New_Call (Domain => Domain,
-                                 Name =>
-                                   Prefix (M        => E_Module (Ty),
-                                           W        => WNE_Range_Pred,
-                                           Ada_Node => Ty),
+                                 Name => E_Symb (Ty, WNE_Range_Pred),
                                  Args =>
                                    Prepare_Args_For_Subtype_Check (Ty, Var),
                                  Typ  => EW_Bool_Type);
@@ -9733,17 +9714,14 @@ package body Gnat2Why.Expr is
                                                   Expr   => Var);
                   else
                      declare
-                        M : constant W_Module_Id :=
+                        Name : constant W_Identifier_Id :=
                           (if Is_Standard_Boolean_Type (Ty) then
-                                M_Boolean.Module
-                           else E_Module (Ty));
+                                M_Boolean.Range_Pred
+                           else E_Symb (Ty, WNE_Range_Pred));
                      begin
                         return
                           New_Call (Domain => Domain,
-                                    Name =>
-                                      Prefix (M        => M,
-                                              W        => WNE_Range_Pred,
-                                              Ada_Node => Ty),
+                                    Name => Name,
                                     Args => (1 => Var),
                                     Typ  => EW_Bool_Type);
                      end;

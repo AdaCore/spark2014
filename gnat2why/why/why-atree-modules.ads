@@ -25,6 +25,7 @@
 
 with SPARK_Definition; use SPARK_Definition;
 with Why.Ids;          use Why.Ids;
+with Why.Gen.Names;    use Why.Gen.Names;
 
 package Why.Atree.Modules is
    --  This package helps with Why modules. Today, it is only a list of
@@ -181,6 +182,12 @@ package Why.Atree.Modules is
       Range_Check     : W_Identifier_Id;
       Check_Not_First : W_Identifier_Id;
       Check_Not_Last  : W_Identifier_Id;
+      First           : W_Identifier_Id;
+      Last            : W_Identifier_Id;
+      Value           : W_Identifier_Id;
+      Image           : W_Identifier_Id;
+      Range_Pred      : W_Identifier_Id;
+      Dynamic_Prop    : W_Identifier_Id;
    end record;
 
    --  symbols common to all arrays
@@ -323,6 +330,13 @@ package Why.Atree.Modules is
    --  Full_Name (E). Memoization may be used. Returns empty when it is called
    --  with a node which is not an entity, and no module is known for this
    --  entity.
+
+   function E_Symb (E : Entity_Id; S : Why_Name_Enum)
+                    return W_Identifier_Id;
+   --  return the symbol which corresponds to [S] in the Why3 module which
+   --  corresponds to E
+   --  @param E the Ada type entity
+   --  @param S a symbol which is allowed for that type entity
 
    function E_Axiom_Module (E : Entity_Id) return W_Module_Id;
 

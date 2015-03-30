@@ -88,10 +88,7 @@ package body Why.Gen.Arrays is
          Args (Arg_Ind) :=
            New_Call
              (Domain => Domain,
-              Name   =>
-                Prefix (Ada_Node => Ty,
-                        M        => E_Module (Ty),
-                        W        => WNE_To_Array),
+              Name   => E_Symb (Ty, WNE_To_Array),
               Args => (1 => Expr));
       end if;
       Arg_Ind := Arg_Ind + 1;
@@ -174,10 +171,7 @@ package body Why.Gen.Arrays is
       return
         New_Call
           (Domain => Domain,
-           Name   =>
-             Prefix (Ada_Node => Ty_Ent,
-                     M        => E_Module (Ty_Ent),
-                     W        => WNE_Of_Array),
+           Name   => E_Symb (Ty_Ent, WNE_Of_Array),
            Args   => Args,
            Typ    => EW_Abstract (Ty_Ent));
    end Array_Convert_From_Base;
@@ -197,10 +191,7 @@ package body Why.Gen.Arrays is
       return
         New_Call
           (Domain => Domain,
-           Name   =>
-             Prefix (Ada_Node => Target,
-                     M        => E_Module (Target),
-                     W        => WNE_Of_Array),
+           Name   => E_Symb (Target, WNE_Of_Array),
            Args   => (1 => Ar, 2 => First_Int, 3 => Last_Int),
            Typ    => EW_Abstract (Target));
    end Array_Convert_From_Base;
@@ -222,10 +213,7 @@ package body Why.Gen.Arrays is
       return
         New_Call
           (Domain => Domain,
-           Name   =>
-             Prefix (Ada_Node => Ty_Ent,
-                     M        => E_Module (Ty_Ent),
-                     W        => WNE_Of_Array),
+           Name   => E_Symb (Ty_Ent, WNE_Of_Array),
            Args   => Args,
            Typ    => EW_Abstract (Ty_Ent));
    end Array_Convert_From_Base;
@@ -244,10 +232,7 @@ package body Why.Gen.Arrays is
       return
         New_Call
           (Domain => Domain,
-           Name   =>
-             Prefix (Ada_Node => Ty_Ent,
-                     M        => E_Module (Ty_Ent),
-                     W        => WNE_To_Array),
+           Name   => E_Symb (Ty_Ent, WNE_To_Array),
            Args   => (1 => +Ar),
            Typ    => EW_Split (Ty_Ent));
    end Array_Convert_To_Base;
@@ -344,8 +329,7 @@ package body Why.Gen.Arrays is
 
       procedure Declare_Attribute
         (Kind      : Why_Name_Enum;
-         Value     : Uint;
-         Dim_Count : Positive);
+         Value     : Uint);
 
       -----------------------
       -- Declare_Attribute --
@@ -353,11 +337,9 @@ package body Why.Gen.Arrays is
 
       procedure Declare_Attribute
         (Kind      : Why_Name_Enum;
-         Value     : Uint;
-         Dim_Count : Positive)
+         Value     : Uint)
       is
-         Attr_Name : constant W_Name_Id :=
-           To_Name (Append_Num (Kind, Dim_Count));
+         Attr_Name : constant W_Name_Id := To_Local (E_Symb (Und_Ent, Kind));
       begin
             Emit (Theory,
                   Why.Atree.Builders.New_Function_Decl
@@ -388,10 +370,9 @@ package body Why.Gen.Arrays is
             Low : constant Uint :=
               Expr_Value (String_Literal_Low_Bound (Und_Ent));
          begin
-            Declare_Attribute (WNE_Attr_First, Low, 1);
-            Declare_Attribute (WNE_Attr_Last,
-                               String_Literal_Length (Und_Ent) - Low + 1,
-                               1);
+            Declare_Attribute (WNE_Attr_First (1), Low);
+            Declare_Attribute (WNE_Attr_Last (1),
+                               String_Literal_Length (Und_Ent) - Low + 1);
          end;
       else
          declare
@@ -401,12 +382,10 @@ package body Why.Gen.Arrays is
                declare
                   Rng   : constant Node_Id := Get_Range (Index);
                begin
-                  Declare_Attribute (WNE_Attr_First,
-                                     Expr_Value (Low_Bound (Rng)),
-                                     Count);
-                  Declare_Attribute (WNE_Attr_Last,
-                                     Expr_Value (High_Bound (Rng)),
-                                     Count);
+                  Declare_Attribute (WNE_Attr_First (Count),
+                                     Expr_Value (Low_Bound (Rng)));
+                  Declare_Attribute (WNE_Attr_Last (Count),
+                                     Expr_Value (High_Bound (Rng)));
                   Count := Count + 1;
                   Next_Index (Index);
                end;
@@ -465,7 +444,8 @@ package body Why.Gen.Arrays is
                         2 =>
                           New_Clone_Substitution
                             (Kind      => EW_Function,
-                             Orig_Name => To_Name (WNE_To_Rep),
+                             Orig_Name =>
+                               To_Local (E_Symb (Und_Ent, WNE_To_Rep)),
                              Image     =>
                                To_Name
                                  (Conversion_Name
@@ -490,7 +470,8 @@ package body Why.Gen.Arrays is
                         2 =>
                           New_Clone_Substitution
                             (Kind      => EW_Function,
-                             Orig_Name => To_Name (WNE_To_Rep),
+                             Orig_Name =>
+                               To_Local (E_Symb (Und_Ent, WNE_To_Rep)),
                              Image     =>
                                To_Name
                                  (Conversion_Name
@@ -534,7 +515,7 @@ package body Why.Gen.Arrays is
                                (Component_Type (Und_Ent))),
                         2 => New_Clone_Substitution
                           (Kind      => EW_Function,
-                           Orig_Name => To_Name (WNE_To_Int),
+                           Orig_Name => New_Name (Symbol => NID ("to_int")),
                            Image     =>
                              To_Name
                                (Conversion_Name
@@ -578,14 +559,15 @@ package body Why.Gen.Arrays is
             Subst (Cursor) :=
               New_Clone_Substitution
                 (Kind      => EW_Type_Subst,
-                 Orig_Name => To_Name (Append_Num (WNE_Base_Type, Dim_Count)),
+                 Orig_Name =>
+                   To_Local (E_Symb (Und_Ent, WNE_Base_Type (Dim_Count))),
                  Image     => Ident_Of_Ada_Type (B_Ty));
             Cursor := Cursor + 1;
             Subst (Cursor) :=
               New_Clone_Substitution
                 (Kind      => EW_Function,
                  Orig_Name =>
-                   To_Name (Append_Num (WNE_To_Int, Dim_Count)),
+                   To_Local (E_Symb (Und_Ent, WNE_To_Int (Dim_Count))),
                  Image     =>
                    To_Name (Conversion_Name (From => +B_Type,
                                              To => +Int_Type)));
@@ -594,27 +576,23 @@ package body Why.Gen.Arrays is
               New_Clone_Substitution
                 (Kind      => EW_Predicate,
                  Orig_Name =>
-                   To_Name (Append_Num (WNE_Array_Base_Range_Pred, Dim_Count)),
+                   To_Local
+                     (E_Symb (Und_Ent, WNE_Array_Base_Range_Pred (Dim_Count))),
                  Image     =>
-                  (if Is_Modular_Integer_Type (B_Ty) then
-                        To_Name (Prefix (Ada_Node => B_Ty,
-                                         M        => E_Module (B_Ty),
-                                         W        => WNE_Range_Pred_BV_Int))
-                 else
-                    To_Name (Range_Pred_Name (B_Ty))));
+                   (if Is_Modular_Integer_Type (B_Ty) then
+                         To_Name (E_Symb (B_Ty, WNE_Range_Pred_BV_Int))
+                    else
+                       To_Name (Range_Pred_Name (B_Ty))));
             Cursor := Cursor + 1;
             Subst (Cursor) :=
               New_Clone_Substitution
                 (Kind      => EW_Predicate,
                  Orig_Name =>
-                   To_Name
-                     (Append_Num (WNE_Index_Dynamic_Property, Dim_Count)),
+                   To_Local (E_Symb (Und_Ent,
+                     WNE_Index_Dynamic_Property (Dim_Count))),
                  Image     =>
                    (if Is_Modular_Integer_Type (B_Ty) then
-                         To_Name (Prefix (Ada_Node => B_Ty,
-                                          M        => E_Module (B_Ty),
-                                          W        =>
-                                            WNE_Dynamic_Property_BV_Int))
+                         To_Name (E_Symb (B_Ty, WNE_Dynamic_Property_BV_Int))
                       else
                        To_Name (Dynamic_Prop_Name (Ind_Ty))));
             Cursor := Cursor + 1;
@@ -647,7 +625,7 @@ package body Why.Gen.Arrays is
             Emit (Theory,
                   Why.Gen.Binders.New_Function_Decl
                     (Domain      => EW_Term,
-                     Name        => To_Ident (WNE_To_String),
+                     Name        => To_Local (To_String_Id),
                      Labels      => Name_Id_Sets.Empty_Set,
                      Binders     =>
                        (1 =>
@@ -660,7 +638,7 @@ package body Why.Gen.Arrays is
             Emit (Theory,
                   Why.Gen.Binders.New_Function_Decl
                     (Domain      => EW_Term,
-                     Name        => To_Ident (WNE_Of_String),
+                     Name        => To_Local (Of_String_Id),
                      Labels      => Name_Id_Sets.Empty_Set,
                      Binders     =>
                        (1 =>
@@ -711,7 +689,8 @@ package body Why.Gen.Arrays is
                         2 =>
                           New_Clone_Substitution
                             (Kind      => EW_Function,
-                             Orig_Name => To_Name (WNE_To_Rep),
+                             Orig_Name =>
+                               To_Local (E_Symb (Und_Ent, WNE_To_Rep)),
                              Image     =>
                                To_Name
                                  (Conversion_Name
@@ -736,7 +715,8 @@ package body Why.Gen.Arrays is
                         2 =>
                           New_Clone_Substitution
                             (Kind      => EW_Function,
-                             Orig_Name => To_Name (WNE_To_Rep),
+                             Orig_Name =>
+                               To_Local (E_Symb (Und_Ent, WNE_To_Rep)),
                              Image     =>
                                To_Name
                                  (Conversion_Name
@@ -781,7 +761,8 @@ package body Why.Gen.Arrays is
                                (Component_Type (Und_Ent))),
                         2 => New_Clone_Substitution
                           (Kind      => EW_Function,
-                           Orig_Name => To_Name (WNE_To_Int),
+                           Orig_Name =>
+                             To_Local (E_Symb (Und_Ent, WNE_To_Int)),
                            Image     =>
                              To_Name (Conversion_Name
                              (From => +EW_Abstract (Component_Type (Und_Ent)),
@@ -847,20 +828,21 @@ package body Why.Gen.Arrays is
                                 Attr,
                                 Dim);
       else
-         return
-           New_Call
-             (Domain => Domain,
-              Name   =>
-                Prefix
-                  (Ada_Node => Ty,
-                   M        => E_Module (Ty),
-                   N        =>
-                     Append_Num
-                       (To_String
-                          (Attr_To_Why_Name (Attr)),
-                        Dim)),
-              Args   => (1 => Expr),
-              Typ    => EW_Int_Type);
+         declare
+            Enum : constant Why_Name_Enum :=
+              (case Attr is
+                  when Attribute_First => WNE_Attr_First (Dim),
+                  when Attribute_Last => WNE_Attr_Last (Dim),
+                  when Attribute_Length => WNE_Attr_Length (Dim),
+                  when others => raise Program_Error);
+         begin
+            return
+              New_Call
+                (Domain => Domain,
+                 Name   =>  E_Symb (Ty, Enum),
+                 Args   => (1 => Expr),
+                 Typ    => EW_Int_Type);
+         end;
       end if;
    end Get_Array_Attr;
 
@@ -984,10 +966,7 @@ package body Why.Gen.Arrays is
             Args      : constant W_Expr_Array :=
               (1 => New_Call
                  (Domain => Domain,
-                  Name   =>
-                    Prefix (Ada_Node => Ty_Entity,
-                            M        => E_Module (Ty_Entity),
-                            W        => WNE_To_Array),
+                  Name   => E_Symb (Ty_Entity, WNE_To_Array),
                   Args   => (1 => +Ar)))
               & Index & (1 => +Value);
             Array_Upd : constant W_Expr_Id :=

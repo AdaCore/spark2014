@@ -611,10 +611,7 @@ package body Gnat2Why.Subprograms is
                   +New_Dynamic_Property (Domain => EW_Pred,
                                          Ty     => Ty,
                                          Expr   => +B.Main.B_Name)
-                  else New_Call (Name =>
-                                     Prefix (M        => E_Module (Ty),
-                                             W        => WNE_Range_Pred,
-                                             Ada_Node => Ty),
+                  else New_Call (Name => E_Symb (Ty, WNE_Range_Pred),
                                  Args => (1 => +B.Main.B_Name)));
             begin
                Pred :=

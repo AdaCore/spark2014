@@ -520,10 +520,7 @@ package body Why.Gen.Expr is
                   T :=
                     New_Call
                       (Domain => Domain,
-                       Name   =>
-                         Prefix (Ada_Node => To_Ent,
-                                 M        => E_Module (To_Ent),
-                                 W        => WNE_Of_Array),
+                       Name   => E_Symb (To_Ent, WNE_Of_Array),
                        Args   => Args,
                        Typ    => To);
                end;
@@ -543,10 +540,7 @@ package body Why.Gen.Expr is
             T :=
               New_Call
                 (Domain => Domain,
-                 Name   =>
-                   Prefix (Ada_Node => To_Ent,
-                           M        => E_Module (To_Ent),
-                           W        => WNE_Of_Array),
+                 Name   => E_Symb (To_Ent, WNE_Of_Array),
                  Args   => Args,
                  Typ    => To);
          end;
@@ -571,10 +565,7 @@ package body Why.Gen.Expr is
          T :=
            New_Call
              (Domain => Domain,
-              Name   =>
-                Prefix (Ada_Node => To_Ent,
-                        M        => E_Module (From_Ent),
-                        W        => WNE_To_Array),
+              Name   => E_Symb (From_Ent, WNE_To_Array),
               Args => (1 => Arr_Expr),
               Typ  => To);
       end if;
@@ -696,8 +687,7 @@ package body Why.Gen.Expr is
             Round_Func : constant W_Identifier_Id :=
               (if Nkind (Ada_Node) = N_Type_Conversion
                  and then Ekind (Ada_Type) in Float_Kind
-               then
-                  Float_Round_Name (Ada_Type)
+               then E_Symb (Ada_Type, WNE_Float_Round)
                else Why_Empty);
 
          begin
@@ -2088,45 +2078,34 @@ package body Why.Gen.Expr is
             when others =>
                raise Program_Error;
          end case;
+      elsif Is_Standard_Boolean_Type (Ty) then
+         case Attr is
+            when Attribute_First => return +M_Boolean.First;
+            when Attribute_Last  => return +M_Boolean.Last;
+            when Attribute_Image => return +M_Boolean.Image;
+            when Attribute_Value => return +M_Boolean.Value;
+            when others =>
+               raise Program_Error;
+         end case;
       else
-         declare
-            M : constant W_Module_Id :=
-              (if Is_Standard_Boolean_Type (Ty) then M_Boolean.Module
-               else E_Module (Ty));
-            T : W_Expr_Id;
-            BT : constant W_Type_Id :=
-              (case Attr is
-                  when Attribute_First
-                    | Attribute_Last
-               =>
-                 (if Is_Standard_Boolean_Type (Ty)
-                  then
-                       EW_Int_Type
-                  else Base_Why_Type (Ty)),
-                  when Attribute_Modulus
-                     | Attribute_Value
-                     =>
-                     (if Is_Standard_Boolean_Type (Ty) then
-                        EW_Int_Type
-                      else Base_Why_Type (Ty)),
-                  when Attribute_Length =>
-                     EW_Int_Type,
-                  when Attribute_Image =>
-                     M_Main.String_Image_Type,
-                  when Attribute_Constrained =>
-                     EW_Bool_Type,
-                  when Attribute_Size =>
-                     EW_Int_Type,
-                  when Attribute_Tag =>
-                     EW_Int_Type);
-         begin
-            T := +Prefix (Ada_Node => Ty,
-                          M        => M,
-                          W        => Attr_To_Why_Name (Attr),
-                          Typ      => BT);
-
-            return T;
-         end;
+         case Attr is
+            when Attribute_First       => return +E_Symb (Ty, WNE_Attr_First);
+            when Attribute_Last        => return +E_Symb (Ty, WNE_Attr_Last);
+            when Attribute_Modulus     =>
+               return +E_Symb (Ty, WNE_Attr_Modulus);
+            when Attribute_Constrained =>
+               return +E_Symb (Ty, WNE_Attr_Constrained);
+            when Attribute_Size        =>
+               return +E_Symb (Ty, WNE_Attr_Size);
+            when Attribute_Tag         =>
+               return +E_Symb (Ty, WNE_Attr_Tag);
+            when Attribute_Image       =>
+               return +E_Symb (Ty, WNE_Attr_Image);
+            when Attribute_Value       =>
+               return +E_Symb (Ty, WNE_Attr_Value);
+            when others =>
+               raise Program_Error;
+         end case;
       end if;
    end New_Attribute_Expr;
 

@@ -23,8 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Atree;               use Atree;
 with GNATCOLL.Utils;      use GNATCOLL.Utils;
-with Stand;               use Stand;
 with SPARK_Definition;    use SPARK_Definition;
 with SPARK_Util;          use SPARK_Util;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
@@ -36,9 +36,6 @@ with Why.Inter;           use Why.Inter;
 
 package body Why.Gen.Names is
 
-   function Uint_To_Positive (U : Uint) return Positive;
-   --  Limited version of conversion that only works for 1 to 4
-
    function Get_Modular_Converter
      (From, To : W_Type_Id) return W_Identifier_Id;
    --  @param From the BV type to convert from
@@ -49,6 +46,15 @@ package body Why.Gen.Names is
      (others => Why_Empty);
    --  This array is used to precompute all fixed idents.
 
+   function Append_Num (S        : String;
+                        Count    : Positive;
+                        Module   : W_Module_Id := Why.Types.Why_Empty;
+                        Typ      : W_Type_Id := Why.Types.Why_Empty;
+                        Ada_Node : Node_Id := Empty)
+                        return W_Identifier_Id;
+
+   function Append_Num (S : String; Count : Positive) return String;
+
    ----------------------
    -- Append_Num --
    ----------------------
@@ -56,11 +62,6 @@ package body Why.Gen.Names is
    function Append_Num (S : String; Count : Positive) return String is
    begin
       return (if Count = 1 then S else S & "_" & Image (Count, 1));
-   end Append_Num;
-
-   function Append_Num (S : String; Count : Uint) return String is
-   begin
-      return Append_Num (S, Uint_To_Positive (Count));
    end Append_Num;
 
    function Append_Num (S        : String;
@@ -76,27 +77,6 @@ package body Why.Gen.Names is
          Module  =>  Module,
          Ada_Node => Ada_Node,
          Typ      => Typ);
-   end Append_Num;
-
-   function Append_Num (W : Why_Name_Enum; Count : Positive)
-                        return W_Identifier_Id
-   is
-   begin
-      return Append_Num (To_String (W), Count);
-   end Append_Num;
-
-   function Append_Num (W : Why_Name_Enum; Count : Uint)
-                        return W_Identifier_Id
-   is
-   begin
-      return Append_Num (W, Uint_To_Positive (Count));
-   end Append_Num;
-
-   function Append_Num (P, W : Why_Name_Enum; Count : Positive)
-                        return W_Identifier_Id
-   is
-   begin
-      return Append_Num (To_String (P) & "." & To_String (W), Count);
    end Append_Num;
 
    -----------------
@@ -142,13 +122,7 @@ package body Why.Gen.Names is
       case A is
          when Attribute_Constrained => return WNE_Attr_Constrained;
          when Attribute_First       => return WNE_Attr_First;
-         when Attribute_Image       => return WNE_Attr_Image;
          when Attribute_Last        => return WNE_Attr_Last;
-         when Attribute_Modulus     => return WNE_Attr_Modulus;
-         when Attribute_Length      => return WNE_Attr_Length;
-         when Attribute_Value       => return WNE_Attr_Value;
-         when Attribute_Small       => return WNE_Attr_Small;
-         when Attribute_Size        => return WNE_Attr_Size;
          when Attribute_Tag         => return WNE_Attr_Tag;
          when others =>
             raise Program_Error;
@@ -217,14 +191,9 @@ package body Why.Gen.Names is
                      then
                         --  if we're converting from the representation type
                         --  of a discrete kind
-                        return Prefix (Ada_Node => A,
-                                       M => E_Module (A),
-                                       W => WNE_Of_Rep);
+                        return E_Symb (A, WNE_Of_Rep);
                      else
-                        return
-                          Prefix (Ada_Node => A,
-                                  M        => E_Module (A),
-                                  W        => Convert_From (From));
+                        return E_Symb (A, Convert_From (From));
                      end if;
                   end;
             end case;
@@ -241,14 +210,19 @@ package body Why.Gen.Names is
                      then
                         --  if we're converting to the representation type
                         --  of a discrete kind
-                        return Prefix (Ada_Node => A,
-                                       M => E_Module (A),
-                                       W => WNE_To_Rep);
+                        return E_Symb (A, WNE_To_Rep);
                      else
-                        return
-                          Prefix (Ada_Node => A,
-                                  M        => E_Module (A),
-                                  W => Convert_To (To));
+                        if To = EW_Int_Type then
+                           return E_Symb (A, WNE_To_Int);
+                        elsif To = EW_Fixed_Type then
+                           return E_Symb (A, WNE_To_Fixed);
+                        elsif To = EW_Real_Type then
+                           return E_Symb (A, WNE_To_Real);
+                        elsif Why_Type_Is_BitVector (To) then
+                           return E_Symb (A, WNE_To_BitVector);
+                        else
+                           raise Program_Error;
+                        end if;
                      end if;
                   end;
 
@@ -264,15 +238,9 @@ package body Why.Gen.Names is
                         else Root_Record_Type (From_Node));
                   begin
                      if From_Base = From_Node then
-                        return
-                          Prefix (Ada_Node => To_Node,
-                                  M        => E_Module (To_Node),
-                                  W        => WNE_Of_Base);
+                        return E_Symb (To_Node, WNE_Of_Base);
                      else
-                        return
-                          Prefix (Ada_Node => From_Node,
-                                  M        => E_Module (From_Node),
-                                  W        => WNE_To_Base);
+                        return E_Symb (From_Node, WNE_To_Base);
                      end if;
                   end;
             end case;
@@ -297,25 +265,6 @@ package body Why.Gen.Names is
          raise Why.Not_Implemented;
       end if;
    end Convert_From;
-
-   ----------------
-   -- Convert_To --
-   ----------------
-
-   function Convert_To (Kind : W_Type_Id) return Why_Name_Enum is
-   begin
-      if Kind = EW_Int_Type then
-         return WNE_To_Int;
-      elsif Kind = EW_Fixed_Type then
-         return WNE_To_Fixed;
-      elsif Kind = EW_Real_Type then
-         return WNE_To_Real;
-      elsif Why_Type_Is_BitVector (Kind) then
-         return WNE_To_BitVector;
-      else
-         raise Why.Not_Implemented;
-      end if;
-   end Convert_To;
 
    ------------------
    -- Discr_Append --
@@ -342,13 +291,9 @@ package body Why.Gen.Names is
    is
    begin
       if Is_Standard_Boolean_Type (Ty) then
-         return Prefix (Ada_Node => Standard_Boolean,
-                        M        => M_Boolean.Module,
-                        W        => WNE_Dynamic_Property);
+         return M_Boolean.Dynamic_Prop;
       else
-         return Prefix (Ada_Node => Ty,
-                        M        => E_Module (Ty),
-                        W        => WNE_Dynamic_Property);
+         return E_Symb (Ty, WNE_Dynamic_Property);
       end if;
    end Dynamic_Prop_Name;
 
@@ -368,17 +313,6 @@ package body Why.Gen.Names is
            Module   => Get_Module (Base),
            Ada_Node => Get_Ada_Node (+Base));
    end Field_Append;
-
-   ----------------------
-   -- Float_Round_Name --
-   ----------------------
-
-   function Float_Round_Name (Ty : Entity_Id) return W_Identifier_Id is
-   begin
-      return Prefix (Ada_Node => Ty,
-                     M        => E_Module (Ty),
-                     W        => WNE_Float_Round);
-   end Float_Round_Name;
 
    ---------------------------
    -- Get_Modular_Converter --
@@ -675,57 +609,15 @@ package body Why.Gen.Names is
    is
    begin
       case W is
-         when WNE_Range_Pred           => return "in_range";
-         when WNE_Range_Pred_BV_Int    => return "in_range_int";
-         when WNE_Dynamic_Property     => return "dynamic_property";
-         when WNE_Dynamic_Property_BV_Int => return "dynamic_property_int";
-         when WNE_Index_Dynamic_Property  => return "index_dynamic_property";
-         when WNE_To_Int               => return "to_int";
-         when WNE_Of_Int               => return "of_int";
-         when WNE_To_Fixed             => return "to_fixed";
-         when WNE_Of_Fixed             => return "of_fixed";
-         when WNE_To_Real              => return "to_real";
-         when WNE_Of_Real              => return "of_real";
-         when WNE_To_BitVector         => return "to_int";
-         when WNE_Of_BitVector         => return "of_int";
-         when WNE_To_Array             => return "to_array";
-         when WNE_Of_Array             => return "of_array";
-         when WNE_To_Base              => return "to_base";
-         when WNE_Of_Base              => return "of_base";
-         when WNE_To_Rep               => return "to_rep";
-         when WNE_Of_Rep               => return "of_rep";
-         when WNE_Range_Check_Fun      => return "range_check_";
          when WNE_Range_Check_Fun_BV_Int => return "range_check_int_";
-         when WNE_Fixed_Point_Div      => return "fxp_div";
-         when WNE_Fixed_Point_Mult     => return "fxp_mult";
-         when WNE_Fixed_Point_Div_Int  => return "fxp_div_int";
-         when WNE_Fixed_Point_Mult_Int => return "fxp_mult_int";
-         when WNE_Float_Round          => return "round_real";
-         when WNE_Float_Round_Tmp      => return "round_real_tmp";
-         when WNE_Float_Pred           => return "prev_representable";
-         when WNE_Float_Succ           => return "next_representable";
-         when WNE_Base_Type            => return "base_type";
          when WNE_Array_Elts           => return "elts";
-         when WNE_Array_Base_Range_Pred => return "in_range_base";
          when WNE_Array_Component_Type => return "component_type";
          when WNE_Array_Type           => return "__t";
-         when WNE_To_String            => return "to_string";
-         when WNE_Of_String            => return "from_string";
          when WNE_Bool_Eq              => return "bool_eq";
          when WNE_Dummy                => return "dummy";
-         when WNE_Check_Not_First      => return "check_not_first";
-         when WNE_Check_Not_Last       => return "check_not_last";
          when WNE_Attr_Constrained     => return "attr__constrained";
          when WNE_Attr_First           => return "first";
          when WNE_Attr_Last            => return "last";
-         when WNE_Attr_Length          => return "length";
-         when WNE_Attr_Image           =>
-            return "attr__" & Attribute_Id'Image (Attribute_Image);
-         when WNE_Attr_Modulus         =>
-            return "attr__" & Attribute_Id'Image (Attribute_Modulus);
-         when WNE_Attr_Small           => return "inv_small";
-         when WNE_Attr_Value           =>
-            return "attr__" & Attribute_Id'Image (Attribute_Value);
          when WNE_Rec_Split_Discrs     => return "__split_discrs";
          when WNE_Rec_Split_Fields     => return "__split_fields";
          when WNE_Attr_Tag             => return "attr__tag";
@@ -740,10 +632,75 @@ package body Why.Gen.Names is
          when WNE_Hide_Ancestor        => return "hide_anc__";
          when WNE_Dispatch_Module      => return "Dispatch";
          when WNE_Refine_Module        => return "Refine";
-         when WNE_Logic_Fun_Suffix     => return "__logic";
          when WNE_Tag                  => return "__tag";
-         when WNE_Attr_Size            => return "attr__size";
-         when WNE_Attr_Object_Size     => return "object__size";
+
+         --  please use these only in conjunction with E_Symb function
+
+         when WNE_Attr_Size |
+              WNE_Attr_First_2 |
+              WNE_Attr_First_3 |
+              WNE_Attr_First_4 |
+              WNE_Attr_Last_2  |
+              WNE_Attr_Last_3  |
+              WNE_Attr_Last_4  |
+              WNE_Attr_Length |
+              WNE_Attr_Length_2 |
+              WNE_Attr_Length_3 |
+              WNE_Attr_Length_4 |
+              WNE_Attr_Image  |
+              WNE_Attr_Value |
+              WNE_Float_Round_Tmp |
+              WNE_Float_Round |
+              WNE_Float_Pred |
+              WNE_Float_Succ |
+              WNE_Attr_Modulus |
+              WNE_Fixed_Point_Div |
+              WNE_Fixed_Point_Div_Int |
+              WNE_Fixed_Point_Mult |
+              WNE_Fixed_Point_Mult_Int |
+              WNE_Attr_Small |
+              WNE_Attr_Object_Size |
+              WNE_Check_Not_First |
+              WNE_Check_Not_Last  |
+              WNE_Range_Check_Fun |
+              WNE_Range_Pred |
+              WNE_Range_Pred_BV_Int |
+              WNE_Dynamic_Property |
+              WNE_Dynamic_Property_BV_Int |
+              WNE_To_Int |
+              WNE_To_Int_2 |
+              WNE_To_Int_3 |
+              WNE_To_Int_4 |
+              WNE_Of_Int |
+              WNE_Of_Fixed |
+              WNE_Of_Real |
+              WNE_Of_BitVector |
+              WNE_To_Fixed |
+              WNE_To_Real |
+              WNE_To_BitVector |
+              WNE_To_Array |
+              WNE_Of_Array |
+              WNE_To_Base |
+              WNE_Of_Base |
+              WNE_To_Rep |
+              WNE_Of_Rep |
+              WNE_Base_Type |
+              WNE_Base_Type_2 |
+              WNE_Base_Type_3 |
+              WNE_Base_Type_4 |
+              WNE_Index_Dynamic_Property |
+              WNE_Index_Dynamic_Property_2 |
+              WNE_Index_Dynamic_Property_3 |
+              WNE_Index_Dynamic_Property_4 |
+              WNE_Array_Base_Range_Pred |
+              WNE_Array_Base_Range_Pred_2 |
+              WNE_Array_Base_Range_Pred_3 |
+              WNE_Array_Base_Range_Pred_4
+
+            =>
+
+            raise Program_Error;
+
       end case;
    end To_String;
 
@@ -772,6 +729,28 @@ package body Why.Gen.Names is
          return New_Identifier (Ada_Node => Ada_Node, Name => To_String (W));
       end if;
    end To_Ident;
+
+   --------------
+   -- To_Local --
+   --------------
+
+   function To_Local (Name : W_Identifier_Id) return W_Name_Id is
+   begin
+      return New_Name (Ada_Node => Get_Ada_Node (+Name),
+                       Symbol   => Get_Symbol (Name),
+                       Module   => Why_Empty);
+   end To_Local;
+
+   function To_Local (Name : W_Identifier_Id) return W_Identifier_Id is
+   begin
+      return
+        New_Identifier
+          (Ada_Node => Get_Ada_Node (+Name),
+           Symbol   => Get_Symbol (Name),
+           Domain   => Get_Domain (+Name),
+           Module   => Why_Empty,
+           Typ      => Get_Typ (Name));
+   end To_Local;
 
    -------------
    -- To_Name --
@@ -847,9 +826,7 @@ package body Why.Gen.Names is
                   when others        => WNE_Range_Check_Fun);
 
          begin
-            return Prefix (Ada_Node => Ty,
-                           M        => E_Module (Ty),
-                           W        => Name);
+            return E_Symb (Ty, Name);
          end;
       end if;
    end Range_Check_Name;
@@ -862,13 +839,9 @@ package body Why.Gen.Names is
    is
    begin
       if Is_Standard_Boolean_Type (Ty) then
-         return Prefix (Ada_Node => Standard_Boolean,
-                        M        => M_Boolean.Module,
-                        W        => WNE_Range_Pred);
+         return M_Boolean.Range_Pred;
       else
-         return Prefix (Ada_Node => Ty,
-                        M        => E_Module (Ty),
-                        W        => WNE_Range_Pred);
+         return E_Symb (Ty, WNE_Range_Pred);
       end if;
    end Range_Pred_Name;
 
@@ -886,24 +859,88 @@ package body Why.Gen.Names is
          Module => Get_Module (Name));
    end To_Program_Space;
 
+   -------------------------------
+   -- WNE_Array_Base_Range_Pred --
+   -------------------------------
+
+   function WNE_Array_Base_Range_Pred (I : Integer) return Why_Name_Enum is
+     (case I is
+         when 1 => WNE_Array_Base_Range_Pred,
+         when 2 => WNE_Array_Base_Range_Pred_2,
+         when 3 => WNE_Array_Base_Range_Pred_3,
+         when 4 => WNE_Array_Base_Range_Pred_4,
+         when others => raise Program_Error);
+
+   --------------------
+   -- WNE_Attr_First --
+   --------------------
+
+   function WNE_Attr_First (I : Integer) return Why_Name_Enum is
+     (case I is
+         when 1 => WNE_Attr_First,
+         when 2 => WNE_Attr_First_2,
+         when 3 => WNE_Attr_First_3,
+         when 4 => WNE_Attr_First_4,
+         when others => raise Program_Error);
+
+   -------------------
+   -- WNE_Attr_Last --
+   -------------------
+
+   function WNE_Attr_Last (I : Integer) return Why_Name_Enum is
+     (case I is
+         when 1 => WNE_Attr_Last,
+         when 2 => WNE_Attr_Last_2,
+         when 3 => WNE_Attr_Last_3,
+         when 4 => WNE_Attr_Last_4,
+         when others => raise Program_Error);
+
+   ---------------------
+   -- WNE_Attr_Length --
+   ---------------------
+
+   function WNE_Attr_Length (I : Integer) return Why_Name_Enum is
+     (case I is
+         when 1 => WNE_Attr_Length,
+         when 2 => WNE_Attr_Length_2,
+         when 3 => WNE_Attr_Length_3,
+         when 4 => WNE_Attr_Length_4,
+         when others => raise Program_Error);
+
    ----------------------
-   -- Uint_To_Positive --
+   -- WNE_To_Base_Type --
    ----------------------
 
-   function Uint_To_Positive (U : Uint) return Positive
-   is
-   begin
-      if U = Uint_1 then
-         return 1;
-      elsif U = Uint_2 then
-         return 2;
-      elsif U = Uint_3 then
-         return 3;
-      elsif U = Uint_4 then
-         return 4;
-      else
-         raise Program_Error;
-      end if;
-   end Uint_To_Positive;
+   function WNE_Base_Type (I : Integer) return Why_Name_Enum is
+     (case I is
+         when 1 => WNE_Base_Type,
+         when 2 => WNE_Base_Type_2,
+         when 3 => WNE_Base_Type_3,
+         when 4 => WNE_Base_Type_4,
+         when others => raise Program_Error);
+
+   --------------------------------
+   -- WNE_Index_Dynamic_Property --
+   --------------------------------
+
+   function WNE_Index_Dynamic_Property (I : Integer) return Why_Name_Enum is
+     (case I is
+         when 1 => WNE_Index_Dynamic_Property,
+         when 2 => WNE_Index_Dynamic_Property_2,
+         when 3 => WNE_Index_Dynamic_Property_3,
+         when 4 => WNE_Index_Dynamic_Property_4,
+         when others => raise Program_Error);
+
+   ----------------
+   -- WNE_To_Int --
+   ----------------
+
+   function WNE_To_Int (I : Integer) return Why_Name_Enum is
+     (case I is
+         when 1 => WNE_To_Int,
+         when 2 => WNE_To_Int_2,
+         when 3 => WNE_To_Int_3,
+         when 4 => WNE_To_Int_4,
+         when others => raise Program_Error);
 
 end Why.Gen.Names;

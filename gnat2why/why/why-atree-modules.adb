@@ -23,14 +23,19 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers;     use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Atree;              use Atree;
 with Common_Containers;  use Common_Containers;
+with Einfo;              use Einfo;
+with GNATCOLL.Utils;     use GNATCOLL.Utils;
+with Gnat2Why.Util;      use Gnat2Why.Util;
+with Sem_Util;           use Sem_Util;
 with Sinfo;              use Sinfo;
 with SPARK_Util;         use SPARK_Util;
 with Stand;              use Stand;
 with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Gen.Names;      use Why.Gen.Names;
+with Why.Inter;          use Why.Inter;
 
 package body Why.Atree.Modules is
 
@@ -47,6 +52,11 @@ package body Why.Atree.Modules is
    procedure Init_BV_Modules;
    procedure Init_BV_Conv_Modules;
 
+   procedure Insert_Why_Symbols (E : Entity_Id);
+   --  For the type entity E, add all the Why symbols which can be used for
+   --  that type in Why to the symbol map
+   --  @param E the entity for which symbols should be created
+
    package Ada_To_Why is new Ada.Containers.Hashed_Maps
      (Key_Type        => Node_Id,
       Element_Type    => Why_Node_Id,
@@ -54,6 +64,23 @@ package body Why.Atree.Modules is
       Equivalent_Keys => "=",
       "="             => "=");
 
+   type Why_Symb is record
+      Entity : Entity_Id;
+      Symb   : Why_Name_Enum;
+   end record;
+
+   function Hash (Key : Why_Symb) return Ada.Containers.Hash_Type
+   is (3 * Ada.Containers.Hash_Type (Key.Entity) +
+         5 * Ada.Containers.Hash_Type (Why_Name_Enum'Pos (Key.Symb)));
+
+   package Why_Symb_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Why_Symb,
+      Element_Type    => W_Identifier_Id,
+      Hash            => Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
+
+   Why_Symb_Map : Why_Symb_Maps.Map := Why_Symb_Maps.Empty_Map;
    Entity_Modules : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    Axiom_Modules  : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
 
@@ -63,7 +90,9 @@ package body Why.Atree.Modules is
 
    function E_Module (E : Entity_Id) return W_Module_Id is
       use Ada_To_Why;
-      C : constant Cursor := Entity_Modules.Find (E);
+      E2 : constant Entity_Id :=
+        (if Nkind (E) in N_Entity then Unique_Entity (E) else E);
+      C  : constant Cursor := Entity_Modules.Find (E2);
    begin
       if Has_Element (C) then
          return W_Module_Id (Element (C));
@@ -75,13 +104,37 @@ package body Why.Atree.Modules is
                  File     => No_Name,
                  Name     => NID (Full_Name (E)));
          begin
-            Entity_Modules.Insert (E, Why_Node_Id (M));
+            Entity_Modules.Insert (E2, Why_Node_Id (M));
             return M;
          end;
       else
          return Why_Empty;
       end if;
    end E_Module;
+
+   ------------
+   -- E_Symb --
+   ------------
+
+   function E_Symb (E : Entity_Id;
+                    S : Why_Name_Enum) return W_Identifier_Id
+   is
+      use Why_Symb_Maps;
+      E2 : constant Entity_Id := Unique_Entity (E);
+      Key : constant Why_Symb :=  Why_Symb'(Entity => E2, Symb => S);
+      C : constant Cursor := Why_Symb_Map.Find (Key);
+   begin
+      if Has_Element (C) then
+         declare
+            Tmp : constant W_Identifier_Id := Element (C);
+         begin
+            return Tmp;
+         end;
+      else
+         Insert_Why_Symbols (E2);
+         return Why_Symb_Map.Element (Key);
+      end if;
+   end E_Symb;
 
    --------------------
    -- E_Axiom_Module --
@@ -617,6 +670,38 @@ package body Why.Atree.Modules is
                         Domain => EW_Term,
                         Symbol => NID ("check_not_last"),
                         Typ    => EW_Int_Type);
+      M_Boolean.First :=
+        New_Identifier (Domain => EW_Term,
+                        Module => M,
+                        Symbol => NID ("first"),
+                        Typ    => EW_Int_Type);
+      M_Boolean.Last :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symbol => NID ("last"),
+                        Typ    => EW_Int_Type);
+      M_Boolean.Range_Pred :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symbol => NID ("in_range"),
+                        Typ    => EW_Bool_Type);
+      M_Boolean.Dynamic_Prop :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symbol => NID ("dynamic_property"),
+                        Typ    => EW_Bool_Type);
+      M_Boolean.Image :=
+        New_Identifier
+          (Symbol => NID ("attr__ATTRIBUTE_IMAGE"),
+           Module => M,
+           Domain => EW_Term,
+           Typ    => M_Main.String_Image_Type);
+      M_Boolean.Value :=
+        New_Identifier
+          (Symbol => NID ("attr__ATTRIBUTE_VALUE"),
+           Module => M,
+           Domain => EW_Term,
+           Typ    => EW_Bool_Type);
    end Init_Boolean_Module;
 
    --------------------------
@@ -1220,6 +1305,513 @@ package body Why.Atree.Modules is
    begin
       Entity_Modules.Insert (N, Why_Node_Id (M));
    end Insert_Extra_Module;
+
+   ------------------------
+   -- Insert_Why_Symbols --
+   ------------------------
+
+   procedure Insert_Why_Symbols (E : Entity_Id) is
+
+      procedure Insert_Symbol (E : Entity_Id;
+                               W : Why_Name_Enum;
+                               I : W_Identifier_Id);
+   --  For the key (E, W), add the symbol I to the symbol map
+   --  @param E the entity part of the key
+   --  @param W the symbol part of the key
+   --  @param I the identifier to be added
+
+      -------------------
+      -- Insert_Symbol --
+      -------------------
+
+      procedure Insert_Symbol (E : Entity_Id;
+                               W : Why_Name_Enum;
+                               I : W_Identifier_Id) is
+      begin
+         Why_Symb_Map.Insert (Why_Symb'(E, W), I);
+      end Insert_Symbol;
+
+      M  : constant W_Module_Id := E_Module (E);
+      Ty : constant W_Type_Id := EW_Abstract (E);
+
+      --  beginning of processing for Insert_Why_Symbols
+
+   begin
+
+      --  symbols for scalar types
+
+      if Is_Scalar_Type (Unique_Entity (E)) then
+         declare
+            Base : constant W_Type_Id :=
+              Get_EW_Term_Type (E);
+         begin
+            Insert_Symbol
+              (E, WNE_Attr_Image,
+               New_Identifier
+                 (Symbol => NID ("attr__ATTRIBUTE_IMAGE"),
+                  Module => M,
+                  Domain => EW_Term,
+                  Typ    => M_Main.String_Image_Type));
+            Insert_Symbol
+              (E, WNE_Attr_Value,
+               New_Identifier
+                 (Symbol => NID ("attr__ATTRIBUTE_VALUE"),
+                  Module => M,
+                  Domain => EW_Term,
+                  Typ    => Base));
+            Insert_Symbol
+              (E, WNE_Check_Not_First,
+               New_Identifier
+                 (Symbol => NID ("check_not_first"),
+                  Module => M,
+                  Domain => EW_Term,
+                  Typ    => Base));
+            Insert_Symbol
+              (E, WNE_Check_Not_Last,
+               New_Identifier
+                 (Symbol => NID ("check_not_last"),
+                  Module => M,
+                  Domain => EW_Term,
+                  Typ    => Base));
+            Insert_Symbol
+              (E, WNE_Range_Check_Fun,
+               New_Identifier
+                 (Symbol => NID ("range_check_"),
+                  Module => M,
+                  Domain => EW_Term,
+                  Typ    => Base));
+            Insert_Symbol
+              (E, WNE_Dynamic_Property,
+               New_Identifier
+                 (Symbol => NID ("dynamic_property"),
+                  Module => M,
+                  Domain => EW_Term,
+                  Typ    => EW_Bool_Type));
+            Insert_Symbol
+              (E, WNE_To_Rep,
+               New_Identifier
+                 (Module => M,
+                  Domain => EW_Term,
+                  Symbol => NID ("to_rep"),
+                  Typ    => Base));
+            Insert_Symbol
+              (E, WNE_Of_Rep,
+               New_Identifier
+                 (Module => M,
+                  Domain => EW_Term,
+                  Symbol => NID ("of_rep"),
+                  Typ    => Ty));
+
+            --  symbols for static scalar types
+
+            if not Type_Is_Modeled_As_Base (E) then
+               Insert_Symbol
+                 (E, WNE_Attr_First,
+                  New_Identifier
+                    (Symbol => NID ("first"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => Base));
+               Insert_Symbol
+                 (E, WNE_Attr_Last,
+                  New_Identifier
+                    (Symbol => NID ("last"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => Base));
+               Insert_Symbol
+                 (E, WNE_Range_Pred,
+                  New_Identifier
+                    (Module => M,
+                     Domain => EW_Term,
+                     Symbol => NID ("in_range"),
+                     Typ    => EW_Bool_Type));
+            end if;
+
+            --  symbols for modular types
+
+            if Has_Modular_Integer_Type (E) then
+               declare
+                  To_Int : constant W_Identifier_Id :=
+                    New_Identifier
+                      (Symbol => NID ("to_int"),
+                       Module => M,
+                       Domain => EW_Term,
+                       Typ    => EW_Int_Type);
+               begin
+                  Insert_Symbol (E, WNE_To_Int, To_Int);
+                  Insert_Symbol (E, WNE_To_BitVector, To_Int);
+                  Insert_Symbol
+                    (E, WNE_Of_BitVector,
+                     New_Identifier
+                       (Symbol => NID ("of_int"),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => Base));
+                  Insert_Symbol
+                    (E, WNE_Dynamic_Property_BV_Int,
+                     New_Identifier
+                       (Symbol => NID ("dynamic_property_int"),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => EW_Bool_Type));
+                  Insert_Symbol
+                    (E, WNE_Attr_Modulus,
+                     New_Identifier
+                       (Symbol => NID ("attr__ATTRIBUTE_MODULUS"),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => Base));
+               end;
+            end if;
+
+            --  symbols for modular static types
+
+            if Has_Modular_Integer_Type (E)
+              and then not Type_Is_Modeled_As_Base (E)
+            then
+               Insert_Symbol
+                 (E, WNE_Range_Pred_BV_Int,
+                  New_Identifier
+                    (Module => M,
+                     Domain => EW_Term,
+                     Symbol => NID ("in_range_int"),
+                     Typ    => EW_Bool_Type));
+            end if;
+
+            --  symbols for fixed point types
+
+            if Is_Fixed_Point_Type (E) then
+               Insert_Symbol
+                 (E, WNE_Attr_Small,
+                  New_Identifier
+                    (Symbol => NID ("inv_small"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => Base));
+               Insert_Symbol
+                 (E, WNE_To_Fixed,
+                  New_Identifier
+                    (Symbol => NID ("to_fixed"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Fixed_Type));
+               Insert_Symbol
+                 (E, WNE_Of_Fixed,
+                  New_Identifier
+                    (Symbol => NID ("of_fixed"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => Ty));
+               Insert_Symbol
+                 (E, WNE_To_Int,
+                  New_Identifier
+                    (Symbol => NID ("to_int"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Int_Type));
+               Insert_Symbol
+                 (E, WNE_Of_Int,
+                  New_Identifier
+                    (Symbol => NID ("of_int"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => Base));
+               Insert_Symbol
+                 (E, WNE_Fixed_Point_Mult,
+                  New_Identifier
+                    (Symbol => NID ("fxp_mult"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Fixed_Type));
+               Insert_Symbol
+                 (E, WNE_Fixed_Point_Mult_Int,
+                  New_Identifier
+                    (Symbol => NID ("fxp_mult_int"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Fixed_Type));
+               Insert_Symbol
+                 (E, WNE_Fixed_Point_Div,
+                  New_Identifier
+                    (Symbol => NID ("fxp_div"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Fixed_Type));
+               Insert_Symbol
+                 (E, WNE_Fixed_Point_Div_Int,
+                  New_Identifier
+                    (Symbol => NID ("fxp_div_int"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Fixed_Type));
+               Insert_Symbol
+                 (E, WNE_To_Real,
+                  New_Identifier
+                    (Symbol => NID ("to_real"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Real_Type));
+               Insert_Symbol
+                 (E, WNE_Of_Real,
+                  New_Identifier
+                    (Symbol => NID ("of_real"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Fixed_Type));
+            end if;
+            if Is_Floating_Point_Type (E) then
+               Insert_Symbol
+                 (E, WNE_To_Real,
+                  New_Identifier
+                    (Symbol => NID ("to_real"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Real_Type));
+               Insert_Symbol
+                 (E, WNE_Of_Real,
+                  New_Identifier
+                    (Symbol => NID ("of_real"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => Ty));
+               Insert_Symbol
+                 (E, WNE_Float_Round_Tmp,
+                  New_Identifier
+                    (Symbol => NID ("round_real_tmp"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Real_Type));
+               Insert_Symbol
+                 (E, WNE_Float_Round,
+                  New_Identifier
+                    (Symbol => NID ("round_real"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Real_Type));
+               Insert_Symbol
+                 (E, WNE_Float_Pred,
+                  New_Identifier
+                    (Symbol => NID ("prev_representable"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Real_Type));
+               Insert_Symbol
+                 (E, WNE_Float_Succ,
+                  New_Identifier
+                    (Symbol => NID ("next_representable"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Real_Type));
+            end if;
+         end;
+
+      --  symbols for record types
+
+      elsif Is_Record_Type (Unique_Entity (E)) then
+         declare
+            Root    : constant Entity_Id :=
+              Unique_Entity (Root_Record_Type (E));
+            Root_Ty : constant W_Type_Id :=
+              New_Named_Type (To_Why_Type (Root));
+         begin
+            Insert_Symbol
+              (E, WNE_Attr_Size,
+               New_Identifier
+                 (Symbol => NID ("attr__size"),
+                  Module => M,
+                  Domain => EW_Term,
+                  Typ    => EW_Int_Type));
+            Insert_Symbol
+              (E, WNE_Attr_Object_Size,
+               New_Identifier
+                 (Symbol => NID ("object__size"),
+                  Module => M,
+                  Domain => EW_Term,
+                  Typ    => EW_Int_Type));
+            Insert_Symbol
+              (E, WNE_Range_Check_Fun,
+               New_Identifier
+                 (Symbol => NID ("range_check_"),
+                  Module => M,
+                  Domain => EW_Term,
+                  Typ    => Root_Ty));
+            Insert_Symbol
+              (E, WNE_Range_Pred,
+               New_Identifier
+                 (Module => M,
+                  Domain => EW_Term,
+                  Symbol => NID ("in_range"),
+                  Typ    => EW_Bool_Type));
+            Insert_Symbol
+              (E, WNE_To_Base,
+               New_Identifier
+                 (Symbol => NID ("to_base"),
+                  Module => M,
+                  Domain => EW_Term,
+                  Typ    => Root_Ty));
+            Insert_Symbol
+              (E, WNE_Of_Base,
+               New_Identifier
+                 (Symbol => NID ("of_base"),
+                  Module => M,
+                  Domain => EW_Term,
+                  Typ    => Ty));
+            if Is_Tagged_Type (E) then
+               Insert_Symbol
+                 (E, WNE_Attr_Tag,
+                  New_Identifier
+                    (Symbol => NID ("attr__tag"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Int_Type));
+            end if;
+
+            if (not Is_Constrained (E)
+                and then Has_Defaulted_Discriminants (E))
+              or else
+                (not Is_Constrained (Root)
+                 and then Has_Defaulted_Discriminants (Root))
+            then
+               Insert_Symbol
+                 (E, WNE_Attr_Constrained,
+                  New_Identifier
+                    (Symbol => NID ("attr__constrained"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Bool_Type));
+            end if;
+         end;
+
+      --  symbols for array types
+
+      elsif Is_Array_Type (E) then
+         declare
+            Ar_Dim : constant Integer := Integer (Number_Dimensions (E));
+         begin
+            Insert_Symbol
+              (E, WNE_Attr_Size,
+               New_Identifier
+                 (Symbol => NID ("attr__size"),
+                  Module => M,
+                  Domain => EW_Term,
+                  Typ    => EW_Int_Type));
+            Insert_Symbol
+              (E, WNE_Attr_Object_Size,
+               New_Identifier
+                 (Symbol => NID ("object__size"),
+                  Module => M,
+                  Domain => EW_Term,
+                  Typ    => EW_Int_Type));
+            Insert_Symbol
+              (E, WNE_Dynamic_Property,
+               New_Identifier
+                 (Symbol => NID ("dynamic_property"),
+                  Module => M,
+                  Domain => EW_Term,
+                  Typ    => EW_Bool_Type));
+            Insert_Symbol
+              (E, WNE_To_Array,
+               New_Identifier
+                 (Symbol => NID ("to_array"),
+                  Module => M,
+                  Domain => EW_Term,
+                  Typ    => M_Arrays (Ar_Dim).Ty));
+            Insert_Symbol
+              (E, WNE_Of_Array,
+               New_Identifier
+                 (Symbol => NID ("of_array"),
+                  Module => M,
+                  Domain => EW_Term,
+                  Typ    => Ty));
+            if Ar_Dim = 1 and then
+              Is_Discrete_Type (Component_Type (E))
+            then
+               Insert_Symbol
+                 (E, WNE_To_Rep,
+                  New_Identifier
+                    (Module => M,
+                     Domain => EW_Term,
+                     Symbol => NID ("to_rep"),
+                     Typ    => EW_Abstract (Component_Type (E))));
+            end if;
+            for Dim in 1 .. Ar_Dim loop
+               declare
+                  First_Str : constant String :=
+                    (if Dim = 1 then "first"
+                     else "first_" & Image (Dim, 1));
+                  Last_Str  : constant String :=
+                    (if Dim = 1 then "last" else "last_" & Image (Dim, 1));
+                  Length_Str : constant String :=
+                    (if Dim = 1 then "length"
+                     else "length_" & Image (Dim, 1));
+                  Int_Str : constant String :=
+                    (if Dim = 1 then "to_int"
+                     else "to_int_" & Image (Dim, 1));
+                  Base_Range_Str : constant String :=
+                    (if Dim = 1 then "in_range_base"
+                     else "in_range_base_" & Image (Dim, 1));
+                  Base_Ty_Str : constant String :=
+                    (if Dim = 1 then "base_type"
+                     else "base_type_" & Image (Dim, 1));
+                  Index_Str : constant String :=
+                    (if Dim = 1 then "index_dynamic_property"
+                     else "index_dynamic_property_" & Image (Dim, 1));
+               begin
+                  Insert_Symbol
+                    (E, WNE_Attr_First (Dim),
+                     New_Identifier
+                       (Symbol => NID (First_Str),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => EW_Int_Type));
+                  Insert_Symbol
+                    (E, WNE_Attr_Last (Dim),
+                     New_Identifier
+                       (Symbol => NID (Last_Str),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => EW_Int_Type));
+                  Insert_Symbol
+                    (E, WNE_Attr_Length (Dim),
+                     New_Identifier
+                       (Symbol => NID (Length_Str),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => EW_Int_Type));
+                  Insert_Symbol
+                    (E, WNE_To_Int (Dim),
+                     New_Identifier
+                       (Symbol => NID (Int_Str),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => EW_Int_Type));
+                  Insert_Symbol
+                    (E, WNE_Array_Base_Range_Pred (Dim),
+                     New_Identifier
+                       (Symbol => NID (Base_Range_Str),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => EW_Bool_Type));
+                  Insert_Symbol
+                    (E, WNE_Base_Type (Dim),
+                     New_Identifier
+                       (Symbol => NID (Base_Ty_Str),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => EW_Int_Type));
+                  Insert_Symbol
+                    (E, WNE_Index_Dynamic_Property (Dim),
+                     New_Identifier
+                       (Symbol => NID (Index_Str),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => EW_Bool_Type));
+               end;
+            end loop;
+         end;
+      end if;
+   end Insert_Why_Symbols;
 
    ------------
    -- MF_BVs --

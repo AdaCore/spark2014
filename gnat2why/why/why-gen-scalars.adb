@@ -28,7 +28,6 @@ with Namet;               use Namet;
 with Nlists;              use Nlists;
 with Sem_Eval;            use Sem_Eval;
 with Sinfo;               use Sinfo;
-with Snames;              use Snames;
 with Uintp;               use Uintp;
 with Urealp;              use Urealp;
 
@@ -53,6 +52,7 @@ package body Why.Gen.Scalars is
 
    procedure Define_Scalar_Attributes
      (Theory     : W_Theory_Declaration_Id;
+      E          : Entity_Id;
       Base_Type  : W_Type_Id;
       First      : W_Term_Id;
       Last       : W_Term_Id;
@@ -123,7 +123,7 @@ package body Why.Gen.Scalars is
            (if Has_Round_Real then
               (1 => New_Clone_Substitution
                    (Kind      => EW_Function,
-                    Orig_Name => To_Name (WNE_Float_Round_Tmp),
+                    Orig_Name => To_Local (E_Symb (E, WNE_Float_Round_Tmp)),
                     Image     => To_Name (Round_Id)))
             else (1 .. 0 => <>));
          Static_Clone_Subst : constant W_Clone_Substitution_Array :=
@@ -138,8 +138,8 @@ package body Why.Gen.Scalars is
                   Image     => To_Name (WNE_Attr_Last)),
                3 => New_Clone_Substitution
                  (Kind      => EW_Predicate,
-                  Orig_Name => To_Name (WNE_Range_Pred),
-                  Image     => To_Name (WNE_Range_Pred)))
+                  Orig_Name => To_Local (E_Symb (E, WNE_Range_Pred)),
+                  Image     => To_Local (E_Symb (E, WNE_Range_Pred))))
             else (1 .. 0 => <>));
          Dynamic_Conv_Subst : constant W_Clone_Substitution_Array :=
            (if not Is_Static then
@@ -161,8 +161,8 @@ package body Why.Gen.Scalars is
                          To   => Base_Type_In_Why))),
                3 => New_Clone_Substitution
                  (Kind      => EW_Predicate,
-                  Orig_Name => To_Name (WNE_Dynamic_Property),
-                  Image     => To_Name (WNE_Dynamic_Property)))
+                  Orig_Name => To_Local (E_Symb (E, WNE_Dynamic_Property)),
+                  Image     => To_Local (E_Symb (E, WNE_Dynamic_Property))))
             else (1 .. 0 => <>));
          Mod_Clone_Subst : constant W_Clone_Substitution_Array :=
            (if Is_Static
@@ -174,28 +174,32 @@ package body Why.Gen.Scalars is
             then
                 (1 => New_Clone_Substitution
                  (Kind      => EW_Function,
-                  Orig_Name => To_Name (WNE_Attr_Modulus),
-                  Image     => To_Name (WNE_Attr_Modulus)))
+                  Orig_Name => To_Local (E_Symb (E, WNE_Attr_Modulus)),
+                  Image     => To_Local (E_Symb (E, WNE_Attr_Modulus))))
             else (1 .. 0 => <>));
          Range_Int_Clone_Subst : constant W_Clone_Substitution_Array :=
            (if Has_Modular_Integer_Type (E) then
                 (if Is_Static then
                      (1 => New_Clone_Substitution
                       (Kind      => EW_Predicate,
-                       Orig_Name => To_Name (WNE_Range_Pred_BV_Int),
-                       Image     => To_Name (WNE_Range_Pred_BV_Int)))
+                       Orig_Name =>
+                         To_Local (E_Symb (E, WNE_Range_Pred_BV_Int)),
+                       Image     =>
+                         To_Local (E_Symb (E, WNE_Range_Pred_BV_Int))))
                  else
                      (1 => New_Clone_Substitution
                       (Kind      => EW_Predicate,
-                       Orig_Name => To_Name (WNE_Dynamic_Property_BV_Int),
-                       Image     => To_Name (WNE_Dynamic_Property_BV_Int))))
+                       Orig_Name =>
+                         To_Local (E_Symb (E, WNE_Dynamic_Property_BV_Int)),
+                       Image     =>
+                         To_Local (E_Symb (E, WNE_Dynamic_Property_BV_Int)))))
             else (1 .. 0 => <>));
          Fixed_Clone_Subst : constant W_Clone_Substitution_Array :=
            (if Is_Fixed_Point_Type (E) then
                 (1 => New_Clone_Substitution
                  (Kind      => EW_Function,
-                  Orig_Name => To_Name (WNE_Attr_Small),
-                  Image     => To_Name (WNE_Attr_Small)))
+                  Orig_Name => To_Local (E_Symb (E, WNE_Attr_Small)),
+                  Image     => To_Local (E_Symb (E, WNE_Attr_Small))))
             else (1 .. 0 => <>));
       begin
 
@@ -322,7 +326,7 @@ package body Why.Gen.Scalars is
             Emit (Theory,
                   Why.Gen.Binders.New_Function_Decl
                     (Domain  => EW_Pred,
-                     Name    => To_Ident (Name),
+                     Name    => To_Local (E_Symb (E, Name)),
                      Def     => +Def,
                      Labels  => Name_Id_Sets.Empty_Set,
                      Binders => Binders));
@@ -476,6 +480,7 @@ package body Why.Gen.Scalars is
 
       Define_Scalar_Attributes
         (Theory    => Theory,
+         E         => E,
          Base_Type => Base_Why_Type (E),
          First     => First,
          Last      => Last,
@@ -530,45 +535,56 @@ package body Why.Gen.Scalars is
 
    procedure Define_Scalar_Attributes
      (Theory     : W_Theory_Declaration_Id;
+      E          : Entity_Id;
       Base_Type  : W_Type_Id;
       First      : W_Term_Id;
       Last       : W_Term_Id;
       Modulus    : W_Term_OId;
       Small      : W_Term_OId;
-      Is_Static  : Boolean)
-   is
-      type Scalar_Attr is (S_First, S_Last, S_Modulus, S_Small);
-
-      type Attr_Info is record
-         Attr_Id : Attribute_Id;
-         Value   : W_Term_Id;
-      end record;
-
-      Attr_Values : constant array (Scalar_Attr) of Attr_Info :=
-                      (S_First   => (Attribute_First, First),
-                       S_Last    => (Attribute_Last, Last),
-                       S_Modulus => (Attribute_Modulus, Modulus),
-                       S_Small   => (Attribute_Small, Small));
+      Is_Static  : Boolean) is
    begin
-      for J in Attr_Values'Range loop
-
-         --  If Is_Static is True, force generation of first/last, but
-         --  potentially skip Modulus/Small
-
-         if (J in S_First | S_Last and then Is_Static)
-           or else Attr_Values (J).Value /= Why_Empty
-         then
-            Emit (Theory,
-                  Why.Atree.Builders.New_Function_Decl
-                    (Domain      => EW_Term,
-                     Name        =>
-                       To_Ident (Attr_To_Why_Name (Attr_Values (J).Attr_Id)),
-                     Binders     => (1 .. 0 => <>),
-                     Return_Type => Base_Type,
-                     Labels      => Name_Id_Sets.Empty_Set,
-                     Def         => W_Expr_Id (Attr_Values (J).Value)));
-         end if;
-      end loop;
+      if Is_Static then
+         Emit (Theory,
+               Why.Atree.Builders.New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        =>
+                    To_Local (E_Symb (E, WNE_Attr_First)),
+                  Binders     => (1 .. 0 => <>),
+                  Return_Type => Base_Type,
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Def         => +First));
+         Emit (Theory,
+               Why.Atree.Builders.New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        =>
+                    To_Local (E_Symb (E, WNE_Attr_Last)),
+                  Binders     => (1 .. 0 => <>),
+                  Return_Type => Base_Type,
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Def         => +Last));
+      end if;
+      if Modulus /= Why_Empty then
+         Emit (Theory,
+               Why.Atree.Builders.New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        =>
+                    To_Local (E_Symb (E, WNE_Attr_Modulus)),
+                  Binders     => (1 .. 0 => <>),
+                  Return_Type => Base_Type,
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Def         => +Modulus));
+      end if;
+      if Small /= Why_Empty then
+         Emit (Theory,
+               Why.Atree.Builders.New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        =>
+                    To_Local (E_Symb (E, WNE_Attr_Small)),
+                  Binders     => (1 .. 0 => <>),
+                  Return_Type => Base_Type,
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Def         => +Small));
+      end if;
    end Define_Scalar_Attributes;
 
    ------------------

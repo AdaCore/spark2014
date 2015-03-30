@@ -194,6 +194,10 @@ package Why.Inter is
    function Get_EW_Type (T : Node_Id) return EW_Type;
    --  Return the EW_Type of the given entity
 
+   function Get_EW_Term_Type (N : Node_Id) return W_Type_Id;
+   --  If the node is of some scalar type, return the corresponding Why
+   --  representation type. Otherwise return the empty node.
+
    function Eq_Base (Left, Right : W_Type_Id) return Boolean;
    --  Equality of type ids
 

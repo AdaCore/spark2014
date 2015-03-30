@@ -447,7 +447,7 @@ package body Why.Gen.Records is
          Emit (Theory,
                New_Function_Decl
                  (Domain      => EW_Term,
-                  Name        => To_Ident (WNE_Attr_Size),
+                  Name        => To_Local (E_Symb (E, WNE_Attr_Size)),
                   Labels      => Name_Id_Sets.Empty_Set,
                   Return_Type => EW_Int_Type));
 
@@ -456,7 +456,7 @@ package body Why.Gen.Records is
          Emit (Theory,
                New_Function_Decl
                  (Domain      => EW_Term,
-                  Name        => To_Ident (WNE_Attr_Object_Size),
+                  Name        => To_Local (E_Symb (E, WNE_Attr_Object_Size)),
                   Binders     => R_Binder,
                   Labels      => Name_Id_Sets.Empty_Set,
                   Return_Type => EW_Int_Type));
@@ -496,8 +496,6 @@ package body Why.Gen.Records is
          From_Binder     : constant Binder_Array :=
            (1 => (B_Name => R_Ident,
                   others => <>));
-         From_Ident     : constant W_Identifier_Id := To_Ident (WNE_Of_Base);
-
       begin
          pragma Assert (Is_Tagged_Type (E) or else
                           (Num_E_Fields <= Num_Root_Fields and then
@@ -962,7 +960,7 @@ package body Why.Gen.Records is
            (Theory,
             New_Function_Decl
               (Domain      => EW_Term,
-               Name        => To_Ident (WNE_To_Base),
+               Name        => To_Local (E_Symb (E, WNE_To_Base)),
                Binders     => R_Binder,
                Labels      => Name_Id_Sets.Empty_Set,
                Return_Type => EW_Abstract (Root),
@@ -973,7 +971,7 @@ package body Why.Gen.Records is
            (Theory,
             New_Function_Decl
               (Domain      => EW_Term,
-               Name        => From_Ident,
+               Name        => To_Local (E_Symb (E, WNE_Of_Base)),
                Binders     => From_Binder,
                Labels      => Name_Id_Sets.Empty_Set,
                Return_Type => Abstr_Ty,
@@ -1726,7 +1724,7 @@ package body Why.Gen.Records is
                  (Theory,
                   New_Function_Decl
                     (Domain      => EW_Term,
-                     Name        => To_Ident (WNE_To_Base),
+                     Name        => To_Local (E_Symb (E, WNE_To_Base)),
                      Binders     => R_Binder,
                      Labels      => Name_Id_Sets.To_Set (NID ("inline")),
                      Return_Type => EW_Abstract (Root),
@@ -1735,7 +1733,7 @@ package body Why.Gen.Records is
                  (Theory,
                   New_Function_Decl
                     (Domain      => EW_Term,
-                     Name        => To_Ident (WNE_Of_Base),
+                     Name        => To_Local (E_Symb (E, WNE_Of_Base)),
                      Binders     => Binder_Array'(1 => (B_Name => R_Ident,
                                                         others => <>)),
                      Labels      => Name_Id_Sets.To_Set (NID ("inline")),
@@ -1809,7 +1807,7 @@ package body Why.Gen.Records is
                  (Theory,
                   New_Function_Decl
                     (Domain      => EW_Term,
-                     Name        => To_Ident (WNE_To_Base),
+                     Name        => To_Local (E_Symb (E, WNE_To_Base)),
                      Binders     => R_Binder,
                      Labels      => Name_Id_Sets.Empty_Set,
                      Return_Type => Abstr_Ty,
@@ -1818,7 +1816,7 @@ package body Why.Gen.Records is
                  (Theory,
                   New_Function_Decl
                     (Domain      => EW_Term,
-                     Name        => To_Ident (WNE_Of_Base),
+                     Name        => To_Local (E_Symb (E, WNE_Of_Base)),
                      Binders     => R_Binder,
                      Labels      => Name_Id_Sets.Empty_Set,
                      Return_Type => Abstr_Ty,
@@ -1951,17 +1949,17 @@ package body Why.Gen.Records is
       Emit (Theory,
             New_Function_Decl
               (Domain      => EW_Pred,
-               Name        => To_Ident (WNE_Range_Pred),
+               Name        => To_Local (E_Symb (E, WNE_Range_Pred)),
                Labels      => Name_Id_Sets.Empty_Set,
                Binders     => R_Binder,
                Def         => +Check_Pred));
       Pre_Cond :=
-        New_Call (Name   => To_Ident (WNE_Range_Pred),
+        New_Call (Name   => To_Local (E_Symb (E, WNE_Range_Pred)),
                   Args   => Args);
       Emit (Theory,
             New_Function_Decl
               (Domain      => EW_Prog,
-               Name        => To_Ident (WNE_Range_Check_Fun),
+               Name        => To_Local (E_Symb (E, WNE_Range_Check_Fun)),
                Binders     => R_Binder,
                Labels      => Name_Id_Sets.Empty_Set,
                Return_Type => Root_Abstr,
@@ -2379,8 +2377,7 @@ package body Why.Gen.Records is
                  Expr
                else
                  New_Call (Domain => EW_Term,
-                           Name =>
-                             Prefix (E_Module (Anc_Ty), WNE_To_Base),
+                           Name => E_Symb (Anc_Ty, WNE_To_Base),
                            Args => (1 => Expr)));
          begin
             Assoc := New_Field_Association

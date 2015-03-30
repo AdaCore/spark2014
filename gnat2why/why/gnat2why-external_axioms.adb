@@ -1028,7 +1028,8 @@ package body Gnat2Why.External_Axioms is
                        (TFile.Cur_Theory,
                         New_Function_Decl
                           (Domain      => EW_Term,
-                           Name        => To_Ident (WNE_To_Base),
+                           Name        =>
+                             To_Local (E_Symb (Actual, WNE_To_Base)),
                            Binders     => R_Binder,
                            Labels      => Name_Id_Sets.Empty_Set,
                            Return_Type => F_Ty,
@@ -1037,7 +1038,8 @@ package body Gnat2Why.External_Axioms is
                        (TFile.Cur_Theory,
                         New_Function_Decl
                           (Domain      => EW_Term,
-                           Name        => To_Ident (WNE_Of_Base),
+                           Name        =>
+                             To_Local (E_Symb (Actual, WNE_Of_Base)),
                            Binders     => R_Binder,
                            Labels      => Name_Id_Sets.Empty_Set,
                            Return_Type => F_Ty,
@@ -1430,7 +1432,7 @@ package body Gnat2Why.External_Axioms is
                   E : constant Entity_Id := Defining_Entity (N);
                   Name : constant String := Short_Name (E);
                   Logic_Name : constant String :=
-                    Name & To_String (WNE_Logic_Fun_Suffix);
+                    Name & "__logic";
                begin
                   if Ekind (E) = E_Function then
                      Ada_Ent_To_Why.Insert
