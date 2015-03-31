@@ -1955,8 +1955,12 @@ package body Gnat2Why.Subprograms is
                 (Ada_Node => Get_Location_For_Aspect (E, Name_Refined_Post),
                  Expr => Why_Body,
                  Reason => VC_Refined_Post,
-                 Post =>
-                     +Compute_Spec (Params, E, Name_Refined_Post, EW_Pred));
+                 Post => +New_And_Expr
+                   (Left   => +Compute_Spec
+                      (Params, E, Name_Refined_Post, EW_Pred),
+                    Right  => +Compute_Dynamic_Property_For_Effects
+                    (E, Params),
+                    Domain => EW_Pred));
          end if;
 
          --  check absence of runtime errors in Post and RTE + validity of
