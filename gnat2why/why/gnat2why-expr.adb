@@ -1810,8 +1810,8 @@ package body Gnat2Why.Expr is
                --  otherwise, use its Component_Type default value.
 
                T_Comp := +Compute_Default_Check
-                  (Ty     => Component_Type (Ty_Ext),
-                   Params => Params);
+                 (Ty     => Component_Type (Ty_Ext),
+                  Params => Params);
             end if;
 
             if T_Comp /= New_Void then
@@ -9434,6 +9434,23 @@ package body Gnat2Why.Expr is
                      pragma Assert (Is_Mutable_In_Why (Ent));
                      pragma Assert (Params.Ref_Allowed);
 
+                     --  Assume dynamic property of the object after the havoc.
+
+                     declare
+                        Dyn_Prop : constant W_Pred_Id :=
+                          Compute_Dynamic_Property
+                            (Expr        => +E.Fields.Binder.B_Name,
+                             Ty          => E.Typ,
+                             Only_Var    => True,
+                             Initialized => True);
+                     begin
+                        if Dyn_Prop /= True_Pred then
+                           T := +Sequence
+                             (New_Assume_Statement (Post => Dyn_Prop),
+                              +T);
+                        end if;
+                     end;
+
                      --  Havoc the reference for fields
 
                      if E.Fields.Present then
@@ -9502,11 +9519,33 @@ package body Gnat2Why.Expr is
       then
          pragma Assert (Is_Mutable_In_Why (Ent));
          pragma Assert (Params.Ref_Allowed);
-         T := +Sequence (Left  => New_Call (Name => M_Main.Havoc_Fun,
-                                            Args => (1 => T)),
-                         Right => New_Deref (Ada_Node => Get_Ada_Node (+T),
-                                             Right    => +T,
-                                             Typ      => Get_Type (T)));
+
+         declare
+            Deref    : constant W_Expr_Id :=
+              New_Deref (Ada_Node => Get_Ada_Node (+T),
+                         Right    => +T,
+                         Typ      => Get_Type (T));
+            Dyn_Prop : constant W_Pred_Id :=
+              Compute_Dynamic_Property
+                (Expr        => +Deref,
+                 Ty          => Etype (Ent),
+                 Only_Var    => True,
+                 Initialized => True);
+            Havoc    : W_Prog_Id :=
+              New_Call (Name => M_Main.Havoc_Fun,
+                        Args => (1 => T));
+         begin
+            if Dyn_Prop /= True_Pred then
+
+               --  Assume dynamic property of the object after the havoc.
+
+               Havoc := +Sequence
+                 (Havoc, New_Assume_Statement (Post => Dyn_Prop));
+            end if;
+
+            T := +Sequence (Left  => Havoc,
+                            Right => +Deref);
+         end;
 
       elsif Is_Mutable_In_Why (Ent)
         and then Params.Ref_Allowed
