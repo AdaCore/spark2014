@@ -999,7 +999,7 @@ package body Why.Atree.Modules is
       M_Floating.Bool_Ne :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("bool_ne"),
+                        Symbol => NID ("bool_neq"),
                         Typ    => EW_Bool_Type);
       M_Floating.Bool_Le :=
         New_Identifier (Module => M,
