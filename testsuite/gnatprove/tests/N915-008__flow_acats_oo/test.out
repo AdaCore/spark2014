@@ -122,18 +122,18 @@ c392008_1.ads:17:20: warning: unused initial value of "A"
 c392008_2.adb:12:57: info: initialization of "Interest_On_Account" proved
 c392008_2.adb:19:28: info: initialization of "Initial_Deposit" proved
 c392008_2.ads:24:14: class-wide input "Current_Rate" must also be a class-wide input of overridden subprogram "Open" at c392008_1.ads:17 (SPARK RM 6.1.6)
-cc1311a.adb:86:25: warning: subprogram "D281B" has no effect, in instantiation at cc1311a.adb:387
-cc1311a.adb:117:25: warning: subprogram "D237B" has no effect, in instantiation at cc1311a.adb:396
+cc1311a.adb:86:25: warning: subprogram "D297B" has no effect, in instantiation at cc1311a.adb:387
+cc1311a.adb:117:25: warning: subprogram "D253B" has no effect, in instantiation at cc1311a.adb:396
 cc1311a.adb:134:14: info: initialization of "DEFAULT_VALUE.DAY" proved, in instantiation at cc1311a.adb:396
 cc1311a.adb:134:14: info: initialization of "DEFAULT_VALUE.MONTH" proved, in instantiation at cc1311a.adb:396
 cc1311a.adb:134:14: info: initialization of "DEFAULT_VALUE.YEAR" proved, in instantiation at cc1311a.adb:396
 cc1311a.adb:136:45: info: initialization of "DEFAULT_VALUE.DAY" proved, in instantiation at cc1311a.adb:396
 cc1311a.adb:136:45: info: initialization of "DEFAULT_VALUE.MONTH" proved, in instantiation at cc1311a.adb:396
 cc1311a.adb:136:45: info: initialization of "DEFAULT_VALUE.YEAR" proved, in instantiation at cc1311a.adb:396
-cc1311a.adb:153:25: warning: subprogram "D293B" has no effect, in instantiation at cc1311a.adb:405
-cc1311a.adb:180:26: warning: subprogram "D305B" has no effect, in instantiation at cc1311a.adb:414
+cc1311a.adb:153:25: warning: subprogram "D309B" has no effect, in instantiation at cc1311a.adb:405
+cc1311a.adb:180:26: warning: subprogram "D321B" has no effect, in instantiation at cc1311a.adb:414
 cc1311a.adb:196:14: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:414
-cc1311a.adb:215:26: warning: subprogram "D261B" has no effect, in instantiation at cc1311a.adb:423
+cc1311a.adb:215:26: warning: subprogram "D277B" has no effect, in instantiation at cc1311a.adb:423
 cc1311a.adb:230:11: info: initialization of "DEFAULT_VALUE.DAY" proved, in instantiation at cc1311a.adb:423
 cc1311a.adb:230:11: info: initialization of "DEFAULT_VALUE.MONTH" proved, in instantiation at cc1311a.adb:423
 cc1311a.adb:230:11: info: initialization of "DEFAULT_VALUE.YEAR" proved, in instantiation at cc1311a.adb:423
@@ -141,23 +141,23 @@ cc1311a.adb:232:14: info: initialization of "RESULTS" proved, in instantiation a
 cc1311a.adb:234:49: info: initialization of "DEFAULT_VALUE.DAY" proved, in instantiation at cc1311a.adb:423
 cc1311a.adb:234:49: info: initialization of "DEFAULT_VALUE.MONTH" proved, in instantiation at cc1311a.adb:423
 cc1311a.adb:234:49: info: initialization of "DEFAULT_VALUE.YEAR" proved, in instantiation at cc1311a.adb:423
-cc1311a.adb:251:26: warning: subprogram "D317B" has no effect, in instantiation at cc1311a.adb:432
+cc1311a.adb:251:26: warning: subprogram "D333B" has no effect, in instantiation at cc1311a.adb:432
 cc1311a.adb:266:18: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:432
-cc1311a.adb:284:25: warning: subprogram "D273B" has no effect, in instantiation at cc1311a.adb:442
+cc1311a.adb:284:25: warning: subprogram "D289B" has no effect, in instantiation at cc1311a.adb:442
 cc1311a.adb:318:18: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:445
-cc1311a.adb:323:26: warning: subprogram "D275B" has no effect, in instantiation at cc1311a.adb:446
+cc1311a.adb:323:26: warning: subprogram "D291B" has no effect, in instantiation at cc1311a.adb:446
 cc1311a.adb:331:14: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:446
 cc1311a.adb:346:14: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:447
-cc1311a.adb:354:18: info: initialization of "C443B" proved, in instantiation at cc1311a.adb:442
-cc1311a.adb:359:21: info: initialization of "C454B" proved, in call inlined at cc1311a.adb:330, in instantiation at cc1311a.adb:446
-cc1311a.adb:362:15: warning: subprogram "D201B" has no effect
-cc1311a.adb:371:18: info: initialization of "C349B" proved, in instantiation at cc1311a.adb:387
-cc1311a.adb:371:18: info: initialization of "C368B" proved, in instantiation at cc1311a.adb:396
-cc1311a.adb:371:18: info: initialization of "C386B" proved, in instantiation at cc1311a.adb:405
-cc1311a.adb:375:16: warning: subprogram "D329B" has no effect
-cc1311a.adb:383:21: info: initialization of "C402B" proved, in call inlined at cc1311a.adb:194, in instantiation at cc1311a.adb:414
-cc1311a.adb:383:21: info: initialization of "C417B" proved, in call inlined at cc1311a.adb:230, in instantiation at cc1311a.adb:423
-cc1311a.adb:383:21: info: initialization of "C432B" proved, in call inlined at cc1311a.adb:265, in instantiation at cc1311a.adb:432
+cc1311a.adb:354:18: info: initialization of "C459B" proved, in instantiation at cc1311a.adb:442
+cc1311a.adb:359:21: info: initialization of "C470B" proved, in call inlined at cc1311a.adb:330, in instantiation at cc1311a.adb:446
+cc1311a.adb:362:15: warning: subprogram "D209B" has no effect
+cc1311a.adb:371:18: info: initialization of "C365B" proved, in instantiation at cc1311a.adb:387
+cc1311a.adb:371:18: info: initialization of "C384B" proved, in instantiation at cc1311a.adb:396
+cc1311a.adb:371:18: info: initialization of "C402B" proved, in instantiation at cc1311a.adb:405
+cc1311a.adb:375:16: warning: subprogram "D345B" has no effect
+cc1311a.adb:383:21: info: initialization of "C418B" proved, in call inlined at cc1311a.adb:194, in instantiation at cc1311a.adb:414
+cc1311a.adb:383:21: info: initialization of "C433B" proved, in call inlined at cc1311a.adb:230, in instantiation at cc1311a.adb:423
+cc1311a.adb:383:21: info: initialization of "C448B" proved, in call inlined at cc1311a.adb:265, in instantiation at cc1311a.adb:432
 cc1311a.adb:387:16: warning: subprogram "NEW_PROC_WITH_3D_FUNCR" has no effect
 cc1311a.adb:392:48: info: initialization of "TODAY.DAY" proved
 cc1311a.adb:392:48: info: initialization of "TODAY.MONTH" proved
@@ -191,7 +191,7 @@ report.ads:129:15: info: initialization of "IDENT_BOOL" proved
 report.ads:134:15: info: initialization of "IDENT_STR" proved
 report.ads:139:15: info: initialization of "IDENT_WIDE_STR" proved
 report.ads:144:15: info: initialization of "EQUAL" proved
-   compilation of c392008_2.adb failed
+compilation of c392008_2.adb failed
 
 
 gnatprove: error during analysis of data and information flow
