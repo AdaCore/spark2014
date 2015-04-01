@@ -38,9 +38,11 @@ default_init.adb:58:10: info: initialization of "G.F" proved
 default_init.adb:60:10: info: assertion proved
 default_init.adb:60:25: info: initialization of "G.F" proved
 default_init.adb:65:07: info: default initial condition proved
+default_init.adb:65:07: info: initialization of "D1.F" proved
 default_init.adb:66:07: info: default initial condition proved
 default_init.adb:67:07: info: initialization of "D3.F" proved
 default_init.adb:68:07: info: default initial condition proved
+default_init.adb:69:07: info: initialization of "D5.F" proved
 default_init.adb:69:07: medium: default initial condition might fail
 default_init.adb:71:07: info: assertion proved
 default_init.adb:71:22: info: initialization of "D1.F" proved

@@ -2900,6 +2900,10 @@ package body Flow.Control_Flow_Graph is
       declare
          Typ  : Node_Id;
          Expr : Node_Id;
+
+         Variables_Used       : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+         Components_Of_Type   : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+         Components_Of_Object : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
       begin
          Typ := Etype (Defining_Identifier (N));
 
@@ -2911,10 +2915,42 @@ package body Flow.Control_Flow_Graph is
               (Default_Init_Cond_Procedure (Typ));
 
             if Present (Expr) then
-               --  Note that default initial conditions make use of the
-               --  type mark, i.e. Foo (T) > 2; so if we declare X : T we
-               --  need to replace T with X to produce the correct default
-               --  initial condition.
+               --  Note that default initial conditions can make use of
+               --  the type mark. For example
+               --
+               --     type T is private
+               --       with Default_Initial_Condition => Foo (T) > 2;
+               --
+               --  When an object of that type is later declared
+               --
+               --     X : T;
+               --
+               --  we need to replace all occurrences of T with X (and
+               --  all components of T with all components of X)
+               --  to produce the correct default initial condition.
+               Variables_Used := Get_Variable_Set
+                 (Expr,
+                  Scope                => FA.B_Scope,
+                  Local_Constants      => FA.Local_Constants,
+                  Fold_Functions       => True,
+                  Use_Computed_Globals => not FA.Compute_Globals);
+
+               --  Calculate components of Type and Object
+               Components_Of_Type   :=
+                 Flatten_Variable (First_Entity
+                                     (Default_Init_Cond_Procedure (Typ)),
+                                   FA.B_Scope);
+               Components_Of_Object :=
+                 Flatten_Variable (Defining_Identifier (N), FA.B_Scope);
+
+               --  Replace components if needed
+               if (for some Comp of Components_Of_Type =>
+                     Variables_Used.Contains (Comp))
+               then
+                  Variables_Used := Variables_Used - Components_Of_Type;
+                  Variables_Used.Union (Components_Of_Object);
+               end if;
+
                Add_Vertex
                  (FA,
                   Make_Sink_Vertex_Attributes
@@ -2923,12 +2959,7 @@ package body Flow.Control_Flow_Graph is
                        (Of_This   => First_Entity (Default_Init_Cond_Procedure
                                                    (Typ)),
                         With_This => Defining_Identifier (N),
-                        The_Set   => Get_Variable_Set
-                          (Expr,
-                           Scope                => FA.B_Scope,
-                           Local_Constants      => FA.Local_Constants,
-                           Fold_Functions       => True,
-                           Use_Computed_Globals => not FA.Compute_Globals)),
+                        The_Set   => Variables_Used),
                      Sub_Called => Get_Function_Set (Expr),
                      Is_Proof   => True,
                      Is_DIC     => True,
