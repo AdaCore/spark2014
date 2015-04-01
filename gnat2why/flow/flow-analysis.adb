@@ -2182,7 +2182,7 @@ package body Flow.Analysis is
 
    begin --  Find_Use_Of_Uninitialized_Variables
 
-      --  We look at all vartices (except for exceptional ones or the
+      --  We look at all vertices (except for exceptional ones or the
       --  synthetic null output)...
       for V of FA.DDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          V_Key := FA.PDG.Get_Key (V);
