@@ -1,0 +1,15 @@
+Library project Test is
+  for Object_Dir use "obj";
+  for Languages use ("Ada");
+  for Source_Dirs use (".");
+
+  for Library_Name use "add";
+  for Library_Dir use "lib";
+  for Library_Kind use "static";
+   for Library_Interface use ("types",
+                              "config",
+                              "imu_pack",
+                              "maths_pack",
+                              "safety_pack",
+                              "Sensfusion6_Pack");
+end Test;
