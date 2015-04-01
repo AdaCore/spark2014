@@ -84,6 +84,8 @@ install-all:
 	$(MV) install/bin/why3server install/libexec/spark/bin
 	$(MV) install/bin/gnatwhy3 install/libexec/spark/bin
 	$(MV) install/bin/alt-ergo install/libexec/spark/bin
+        # It is ok for developers to not have a local build of CVC4. In that
+        # case we don't want to have an error to be issued.
 	$(MV) install/bin/cvc4 install/libexec/spark/bin 2> /dev/null || true
 
 install:
