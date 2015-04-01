@@ -743,6 +743,7 @@ package body Why.Gen.Names is
          when WNE_Logic_Fun_Suffix     => return "__logic";
          when WNE_Tag                  => return "__tag";
          when WNE_Attr_Size            => return "attr__size";
+         when WNE_Attr_Object_Size     => return "object__size";
       end case;
    end To_String;
 
