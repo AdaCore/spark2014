@@ -84,7 +84,7 @@ install-all:
 	$(MV) install/bin/why3server install/libexec/spark/bin
 	$(MV) install/bin/gnatwhy3 install/libexec/spark/bin
 	$(MV) install/bin/alt-ergo install/libexec/spark/bin
-	$(MV) install/bin/cvc4 install/libexec/spark/bin
+	$(MV) install/bin/cvc4 install/libexec/spark/bin 2> /dev/null || true
 
 install:
 	mkdir -p $(INSTALLDIR)/bin $(CONFIGDIR) $(THEORIESDIR)
