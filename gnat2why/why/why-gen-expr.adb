@@ -2130,39 +2130,6 @@ package body Why.Gen.Expr is
       end if;
    end New_Attribute_Expr;
 
-   function New_Object_Attribute_Expr
-     (Obj    : Node_Id;
-      Domain : EW_Domain;
-      Attr   : Supported_Attribute_Id;
-      Params : Transformation_Params := Body_Params) return W_Expr_Id
-   is
-   begin
-      case Attr is
-         when Attribute_Size =>
-
-            if Known_Esize (Etype (Obj)) then
-               return New_Integer_Constant (Parent (Obj),
-                                            Esize (Etype (Obj)));
-            else
-               declare
-                  Name : constant W_Identifier_Id :=
-                    Prefix (M        => E_Module (Etype (Obj)),
-                            W        => WNE_Attr_Object_Size);
-                  Arg  : constant W_Expr_Id :=
-                    Transform_Expr (Obj, Domain, Params);
-               begin
-                  return New_Call (Ada_Node => Parent (Obj),
-                                   Domain   => Domain,
-                                   Name     => Name,
-                                   Args     => (1 => Arg),
-                                   Typ      => EW_Int_Type);
-               end;
-            end if;
-         when others =>
-            raise Program_Error;
-      end case;
-   end New_Object_Attribute_Expr;
-
    --------------------
    -- New_Comparison --
    --------------------

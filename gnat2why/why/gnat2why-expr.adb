@@ -7339,7 +7339,24 @@ package body Gnat2Why.Expr is
                      T := New_Attribute_Expr (Entity (Var), Domain, Attr_Id);
 
                   when Object_Kind =>
-                     T := New_Object_Attribute_Expr (Var, Domain, Attr_Id);
+                     if Known_Esize (Etype (Var)) then
+                        return New_Integer_Constant (Expr,
+                                                     Esize (Etype (Var)));
+                     else
+                        declare
+                           Name : constant W_Identifier_Id :=
+                             Prefix (M        => E_Module (Etype (Var)),
+                                     W        => WNE_Attr_Object_Size);
+                           Arg  : constant W_Expr_Id :=
+                             Transform_Expr (Var, Domain, Params);
+                        begin
+                           return New_Call (Ada_Node => Parent (Var),
+                                            Domain   => Domain,
+                                            Name     => Name,
+                                            Args     => (1 => Arg),
+                                            Typ      => EW_Int_Type);
+                        end;
+                     end if;
 
                   when others =>
                      Ada.Text_IO.Put_Line ("[Transform_Attr] kind ="

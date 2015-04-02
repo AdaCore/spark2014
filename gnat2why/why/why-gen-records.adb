@@ -235,11 +235,8 @@ package body Why.Gen.Records is
       Theory  : W_Theory_Declaration_Id;
       E       : Entity_Id)
    is
-      procedure Declare_Size_Attribute;
-      --  Declare functions for the Size attribute
-
-      procedure Declare_Tag_Attribute;
-      --  Declare function for the Tag attribute
+      procedure Declare_Attributes;
+      --  Declare functions for the record attributes
 
       procedure Declare_Record_Type;
       --  declare the record type
@@ -429,12 +426,22 @@ package body Why.Gen.Records is
                                         To_String (WNE_Rec_Ancestor_Suffix));
       end Extract_Ancestor_Fun;
 
-      ----------------------------
-      -- Declare_Size_Attribute --
-      ----------------------------
+      ------------------------
+      -- Declare_Attributes --
+      ------------------------
 
-      procedure Declare_Size_Attribute is
+      procedure Declare_Attributes is
       begin
+         --  The static tag for the type is defined as a logic constant
+         if Is_Tagged_Type (E) then
+            Emit (Theory,
+                  New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        => To_Ident (WNE_Tag),
+                     Labels      => Name_Id_Sets.Empty_Set,
+                     Return_Type => EW_Int_Type));
+         end if;
+
          --  The size is defined as a logic constant
 
          Emit (Theory,
@@ -460,25 +467,7 @@ package body Why.Gen.Records is
          --  exact value; for Type'Size it is contant but for Obj'Size
          --  it depends on the discriminant.
 
-      end Declare_Size_Attribute;
-
-      ---------------------------
-      -- Declare_Tag_Attribute --
-      ---------------------------
-
-      procedure Declare_Tag_Attribute is
-      begin
-         --  The static tag for the type is defined as a logic constant
-
-         if Is_Tagged_Type (E) then
-            Emit (Theory,
-                  New_Function_Decl
-                    (Domain      => EW_Term,
-                     Name        => To_Ident (WNE_Tag),
-                     Labels      => Name_Id_Sets.Empty_Set,
-                     Return_Type => EW_Int_Type));
-         end if;
-      end Declare_Tag_Attribute;
+      end Declare_Attributes;
 
       ----------------------------------
       -- Declare_Extraction_Functions --
@@ -1777,7 +1766,7 @@ package body Why.Gen.Records is
                   Def         => +True_Term));
          end;
 
-         Declare_Size_Attribute;
+         Declare_Attributes;
 
          return;
       end if;
@@ -1869,8 +1858,7 @@ package body Why.Gen.Records is
 
       Declare_Protected_Access_Functions;
       Declare_Equality_Function;
-      Declare_Size_Attribute;
-      Declare_Tag_Attribute;
+      Declare_Attributes;
 
       if not Is_Root
         and then Has_Discriminants (E)
