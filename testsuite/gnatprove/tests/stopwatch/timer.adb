@@ -29,9 +29,11 @@ is
       Display.Initialize; -- ensure we get 0 on the screen at start up
       loop
          -- wait until user allows clock to run
+         -- calling procedure Suspend_Until_True which is Potentially_Blocking
          Ada.Synchronous_Task_Control.Suspend_Until_True (Operate);
          Ada.Synchronous_Task_Control.Set_True (Operate);
          -- once running, count the seconds
+         -- calling Ada.Real_Time.Clock which is a Volatile_Function
          Release_Time := Ada.Real_Time.Clock;
          Release_Time := Release_Time + Period;
          delay until Release_Time;
