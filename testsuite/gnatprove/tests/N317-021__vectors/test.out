@@ -1,3 +1,4 @@
+bounded.adb:8:07: info: initialization of private part of "V" proved
 bounded.adb:10:07: info: precondition proved
 bounded.adb:10:14: info: initialization of private part of "V" proved
 bounded.adb:11:07: info: assertion proved
@@ -1255,6 +1256,7 @@ indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-coboho.ads
 indefinite_unbounded_tagged.ads:14:04: warning: pragma "No_Strict_Aliasing" ignored in flow analysis (not yet supported)
 indefinite_unbounded_tagged.ads:14:12: info: initialization of "Oeq" proved
 indefinite_unbounded_tagged.ads:22:14: warning: subprogram "Test" has no effect
+unbounded.adb:8:07: info: initialization of private part of "V" proved
 unbounded.adb:10:07: info: precondition proved
 unbounded.adb:10:14: info: initialization of private part of "V" proved
 unbounded.adb:11:07: info: assertion proved

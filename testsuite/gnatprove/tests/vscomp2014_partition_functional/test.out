@@ -308,6 +308,7 @@ partition_refinement.adb:213:146: medium: range check might fail
 partition_refinement.adb:213:157: medium: assertion might fail, requires F(L) = K
 partition_refinement.adb:213:159: medium: array index check might fail
 partition_refinement.adb:235:39: info: precondition proved
+partition_refinement.adb:238:07: info: initialization of private part of "D_Old" proved
 partition_refinement.adb:242:13: info: precondition proved
 partition_refinement.adb:242:29: info: initialization of "C" proved
 partition_refinement.adb:244:25: info: precondition proved

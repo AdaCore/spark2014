@@ -1,6 +1,7 @@
 list.adb:17:35: info: precondition proved
 list.adb:18:35: info: precondition proved
 list.adb:20:07: info: initialization of private part of "Res" proved
+list.adb:20:14: info: initialization of private part of "Res" proved
 list.adb:22:16: info: initialization of "First" proved
 list.adb:22:25: info: initialization of "Last" proved
 list.adb:23:10: medium: precondition might fail
@@ -56,8 +57,10 @@ list.ads:16:64: info: precondition proved
 list.ads:16:79: info: overflow check proved
 list.ads:16:83: info: overflow check proved
 list.ads:16:83: info: range check proved
+main.adb:5:04: info: initialization of private part of "L" proved
 main.adb:9:15: medium: precondition might fail
 main.adb:9:24: info: initialization of private part of "L" proved
+main.adb:13:07: info: initialization of private part of "Rev_L" proved
 main.adb:13:42: info: initialization of private part of "L" proved
 main.adb:16:29: medium: precondition might fail
 main.adb:16:39: info: initialization of private part of "Rev_L" proved

@@ -14,3 +14,4 @@ sum_elem.ads:28:64: info: precondition proved
 sum_elem.ads:28:76: info: range check proved
 sum_elem.ads:28:87: info: precondition proved
 sum_elem.ads:28:99: info: range check proved
+sum_elem.ads:30:04: info: initialization of private part of "P" proved

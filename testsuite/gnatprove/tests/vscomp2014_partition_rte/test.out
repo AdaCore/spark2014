@@ -159,6 +159,7 @@ partition_refinement.adb:149:39: info: initialization of "P_Prime.Last" proved
 partition_refinement.adb:149:46: info: initialization of "R27b" proved
 partition_refinement.adb:150:24: info: initialization of "P_Prime_Index" proved
 partition_refinement.adb:167:39: info: precondition proved
+partition_refinement.adb:170:07: info: initialization of private part of "D_Old" proved
 partition_refinement.adb:174:13: info: precondition proved
 partition_refinement.adb:174:29: info: initialization of "C" proved
 partition_refinement.adb:179:25: info: precondition proved

@@ -1,7 +1,13 @@
+dic_of_cont.adb:3:07: info: initialization of private part of "Dlli" proved
+dic_of_cont.adb:4:07: info: initialization of private part of "Dhama" proved
 dic_of_cont.adb:4:45: info: initialization of "R2b" proved
 dic_of_cont.adb:4:45: info: precondition proved
+dic_of_cont.adb:5:07: info: initialization of private part of "Dhase" proved
 dic_of_cont.adb:5:45: info: initialization of "R5b" proved
 dic_of_cont.adb:5:45: info: precondition proved
+dic_of_cont.adb:6:07: info: initialization of private part of "Dorma" proved
+dic_of_cont.adb:7:07: info: initialization of private part of "Dorse" proved
+dic_of_cont.adb:8:07: info: initialization of private part of "Dfove" proved
 dic_of_cont.adb:10:07: info: assertion proved
 dic_of_cont.adb:10:29: info: precondition proved
 dic_of_cont.adb:10:40: info: initialization of private part of "Dlli" proved
