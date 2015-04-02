@@ -1812,17 +1812,18 @@ package body Gnat2Why.Subprograms is
          Params.Phase := Generate_Contract_For_Body;
 
          --  Translate contract of E. A No_Return subprogram, from the inside,
-         --  has postcondition false, but the precondition is unchanged
+         --  has postcondition true as non termination verification is done by
+         --  the frontend, but the precondition is unchanged
 
          if No_Return (E) then
-            Post := False_Pred;
+            Post := True_Pred;
          else
             Params.Gen_Marker := True;
             Post := Get_Static_Call_Contract (Params, E, Name_Postcondition);
             Params.Gen_Marker := False;
-         end if;
 
-         Post := +New_VC_Expr (Post_N, +Post, VC_Postcondition, EW_Pred);
+            Post := +New_VC_Expr (Post_N, +Post, VC_Postcondition, EW_Pred);
+         end if;
 
          --  Set the phase to Generate_VCs_For_Body from now on, so that
          --  occurrences of X'Old are properly translated as reference to
