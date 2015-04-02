@@ -7334,15 +7334,18 @@ package body Gnat2Why.Expr is
             if Nkind (Var) in N_Has_Entity
               and then Present (Entity (Var))
             then
-               if Ekind (Entity (Var)) in Type_Kind then
-                  T := New_Attribute_Expr (Entity (Var), Domain, Attr_Id);
-               elsif Ekind (Entity (Var)) in Object_Kind then
-                  T := New_Object_Attribute_Expr (Var, Domain, Attr_Id);
-               else
-                  Ada.Text_IO.Put_Line ("[Transform_Attr] kind ="
-                                        & Node_Kind'Image (Nkind (Var)));
-                  raise Not_Implemented;
-               end if;
+               case Ekind (Entity (Var)) is
+                  when Type_Kind =>
+                     T := New_Attribute_Expr (Entity (Var), Domain, Attr_Id);
+
+                  when Object_Kind =>
+                     T := New_Object_Attribute_Expr (Var, Domain, Attr_Id);
+
+                  when others =>
+                     Ada.Text_IO.Put_Line ("[Transform_Attr] kind ="
+                                           & Node_Kind'Image (Nkind (Var)));
+                     raise Not_Implemented;
+               end case;
             else
                Ada.Text_IO.Put_Line ("[Transform_Attr] id ="
                                      & Attribute_Id'Image (Attr_Id));

@@ -2159,7 +2159,7 @@ package body Why.Gen.Expr is
                end;
             end if;
          when others =>
-            raise Not_Implemented;
+            raise Program_Error;
       end case;
    end New_Object_Attribute_Expr;
 
