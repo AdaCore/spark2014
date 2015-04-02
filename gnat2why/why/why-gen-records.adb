@@ -470,226 +470,6 @@ package body Why.Gen.Records is
       end Declare_Attributes;
 
       ----------------------------------
-      -- Declare_Extraction_Functions --
-      ----------------------------------
-
-      procedure Declare_Extraction_Functions_For_Ancestor;
-      --  This is only called when the current tagged type has a private
-      --  ancestor, so that the components of the root type are invisible
-      --  in the current type.
-      --
-      --  For each component <comp> of the root type, declare a function
-      --  extract__anc__<comp> to extract the value of the component from the
-      --  ancestor field of a value of current type. Also declare a function
-      --  hide_ext__ to generate the ancestor field of the current type based
-      --  on the root components including its special extension field.
-      --
-      --  Note that we currently do not generate the axioms stating that
-      --  extraction and hiding are inverse functions.
-
-      procedure Declare_Extraction_Functions_For_Extension;
-      --  For each extension component <comp> of the current type (i.e.
-      --  a component that is not in the root type), declare a function
-      --  extract__<comp> to extract the value of the component from the
-      --  extension field of a value of root type. Also declare a function
-      --  extract__ext__ to extract the value of the extension part for the
-      --  current type, and a function hide_ext__ to generate the extension
-      --  field of the root type based on the extension components and special
-      --  extension field rec__ext__ of the current type.
-      --
-      --  Note that we currently do not generate the axioms stating that
-      --  extraction and hiding are inverse functions, in the sense that:
-      --
-      --    root.rec_ext__ = hide_ext__ (extract__comp1 root.rec_ext__,
-      --                                 extract__comp2 root.rec_ext__,
-      --                                 ...
-      --                                 extract__ext__ root.rec_ext__)
-      --
-      --  and for every extension component <comp> or the special extension
-      --  component rec_ext__:
-      --
-      --    cur.comp = extract__comp (hide_ext__ (..., cur.comp, ...))
-      --
-      --  Previously, we generated axioms in Declare_Conversion_Functions that
-      --  stated that converting back and forth between the current type and
-      --  its root type is the identity in both directions. The axiom going
-      --  from root to derived to root was incorrect in the case that the
-      --  derived type had a constrained discriminant. These axioms are no
-      --  longer generated.
-
-      procedure Declare_Extraction_Functions
-        (Components  : Node_Lists.List;
-         Is_Ancestor : Boolean);
-      --  Shared implementation for the two kinds of extraction functions, for
-      --  ancestor components and extension components.
-      --  @param Components The list of components to hide
-      --  @param Is_Ancestor True if generating extraction functions for the
-      --     ancestor component, False for the extension component
-
-      procedure Declare_Extraction_Functions
-        (Components  : Node_Lists.List;
-         Is_Ancestor : Boolean)
-      is
-         X_Ident : constant W_Identifier_Id :=
-           New_Identifier (Name => "x", Typ => EW_Private_Type);
-         Binder : constant Binder_Array :=
-           (1 => (B_Name => X_Ident,
-                  others => <>));
-         Hide_Name : constant Why_Name_Enum :=
-           (if Is_Ancestor then WNE_Hide_Ancestor else WNE_Hide_Extension);
-         Extract_Func : constant W_Identifier_Id :=
-           (if Is_Ancestor then
-               Extract_Ancestor_Fun
-            else
-               Extract_Extension_Fun);
-
-      begin
-         for Field of Components loop
-            --  function extract__<comp> (x : __private) : <typ>
-            --    or
-            --  function extract_anc__<comp> (x : __private) : <typ>
-            Emit (Theory,
-                  New_Function_Decl
-                    (Domain      => EW_Term,
-                     Name        => Extract_Fun (Field, Is_Ancestor),
-                     Binders     => Binder,
-                     Labels      => Name_Id_Sets.Empty_Set,
-                     Return_Type => EW_Abstract (Etype (Field))));
-         end loop;
-
-         if not Is_Ancestor then
-            --  function extract__ext__ (x : __private) : __private
-            Emit (Theory,
-                  New_Function_Decl
-                    (Domain      => EW_Term,
-                     Name        => Extract_Func,
-                     Binders     => Binder,
-                     Labels      => Name_Id_Sets.Empty_Set,
-                     Return_Type => EW_Private_Type));
-         end if;
-
-         declare
-            Num_Hide_Params : constant Natural :=
-              (if Is_Ancestor then
-                  1
-               else
-                  Natural (Components.Length)
-                  + 1  --  for the extension field of the current type
-                  + (if Has_Private_Ancestor (E) then 1 else 0));
-
-            Binder : Binder_Array (1 .. Num_Hide_Params);
-            Index  : Natural := 0;
-
-         begin
-            --  the complete root object is argument to the hide function to
-            --  generate the ancestor field in the current type
-
-            if Is_Ancestor then
-               Binder (1) :=
-                 (B_Name =>
-                    New_Identifier (Name => Short_Name (Root),
-                                    Typ => EW_Abstract (Root)),
-                  others => <>);
-
-            --  the hide function to generate an extension field in the root
-            --  type takes as arguments all components of the root type not
-            --  present in the root type, plus the special extension and
-            --  ancestor components, if present.
-
-            else
-               for Field of Components loop
-                  Index := Index + 1;
-                  Binder (Index) :=
-                    (B_Name =>
-                       New_Identifier (Name => Short_Name (Field),
-                                       Typ => EW_Abstract (Etype (Field))),
-                     others => <>);
-               end loop;
-
-               --  the extension field in the current type is also part of the
-               --  extension field in the root type
-
-               Index := Index + 1;
-               Binder (Index) :=
-                 (B_Name =>
-                    New_Identifier (Name => To_String (WNE_Rec_Extension),
-                                    Typ => EW_Private_Type),
-                  others => <>);
-
-               --  the ancestor field in the current type is also part of
-               --  the extension field in the root type, as some components
-               --  of intermediate derived types may be represented in the
-               --  ancestor field
-
-               if Has_Private_Ancestor (E) then
-                  Index := Index + 1;
-                  Binder (Index) :=
-                    (B_Name =>
-                       New_Identifier (Name => To_String (WNE_Rec_Ancestor),
-                                       Typ => EW_Private_Type),
-                     others => <>);
-               end if;
-            end if;
-
-            --  function hide__ext__ (comp1 : typ1; .. ; x : __private)
-            --                       : __private
-            --    or
-            --  function hide__anc__ (root : __private) : __private
-            Emit (Theory,
-                  New_Function_Decl
-                    (Domain      => EW_Term,
-                     Name        => To_Ident (Hide_Name),
-                     Binders     => Binder,
-                     Labels      => Name_Id_Sets.Empty_Set,
-                     Return_Type => EW_Private_Type));
-         end;
-      end Declare_Extraction_Functions;
-
-      -----------------------------------------------
-      -- Declare_Extraction_Functions_For_Ancestor --
-      -----------------------------------------------
-
-      procedure Declare_Extraction_Functions_For_Ancestor is
-         Field : Entity_Id;
-         Comps : Node_Lists.List;
-      begin
-         Field := First_Component (Root);
-
-         while Present (Field) loop
-            if not Is_Tag (Field) then
-               Comps.Append (Field);
-            end if;
-            Next_Component (Field);
-         end loop;
-
-         Declare_Extraction_Functions (Components  => Comps,
-                                       Is_Ancestor => True);
-      end Declare_Extraction_Functions_For_Ancestor;
-
-      ------------------------------------------------
-      -- Declare_Extraction_Functions_For_Extension --
-      ------------------------------------------------
-
-      procedure Declare_Extraction_Functions_For_Extension is
-         Field : Entity_Id;
-         Comps : Node_Lists.List;
-      begin
-         Field := First_Component (E);
-
-         while Present (Field) loop
-            if not Is_Tag (Field)
-              and then No (Root_Record_Component (Field))
-            then
-               Comps.Append (Field);
-            end if;
-            Next_Component (Field);
-         end loop;
-
-         Declare_Extraction_Functions (Components  => Comps,
-                                       Is_Ancestor => False);
-      end Declare_Extraction_Functions_For_Extension;
-
-      ----------------------------------
       -- Declare_Conversion_Functions --
       ----------------------------------
 
@@ -1202,6 +982,226 @@ package body Why.Gen.Records is
                    (Associations => From_Root_Aggr)));
 
       end Declare_Conversion_Functions;
+
+      ----------------------------------
+      -- Declare_Extraction_Functions --
+      ----------------------------------
+
+      procedure Declare_Extraction_Functions_For_Ancestor;
+      --  This is only called when the current tagged type has a private
+      --  ancestor, so that the components of the root type are invisible
+      --  in the current type.
+      --
+      --  For each component <comp> of the root type, declare a function
+      --  extract__anc__<comp> to extract the value of the component from the
+      --  ancestor field of a value of current type. Also declare a function
+      --  hide_ext__ to generate the ancestor field of the current type based
+      --  on the root components including its special extension field.
+      --
+      --  Note that we currently do not generate the axioms stating that
+      --  extraction and hiding are inverse functions.
+
+      procedure Declare_Extraction_Functions_For_Extension;
+      --  For each extension component <comp> of the current type (i.e.
+      --  a component that is not in the root type), declare a function
+      --  extract__<comp> to extract the value of the component from the
+      --  extension field of a value of root type. Also declare a function
+      --  extract__ext__ to extract the value of the extension part for the
+      --  current type, and a function hide_ext__ to generate the extension
+      --  field of the root type based on the extension components and special
+      --  extension field rec__ext__ of the current type.
+      --
+      --  Note that we currently do not generate the axioms stating that
+      --  extraction and hiding are inverse functions, in the sense that:
+      --
+      --    root.rec_ext__ = hide_ext__ (extract__comp1 root.rec_ext__,
+      --                                 extract__comp2 root.rec_ext__,
+      --                                 ...
+      --                                 extract__ext__ root.rec_ext__)
+      --
+      --  and for every extension component <comp> or the special extension
+      --  component rec_ext__:
+      --
+      --    cur.comp = extract__comp (hide_ext__ (..., cur.comp, ...))
+      --
+      --  Previously, we generated axioms in Declare_Conversion_Functions that
+      --  stated that converting back and forth between the current type and
+      --  its root type is the identity in both directions. The axiom going
+      --  from root to derived to root was incorrect in the case that the
+      --  derived type had a constrained discriminant. These axioms are no
+      --  longer generated.
+
+      procedure Declare_Extraction_Functions
+        (Components  : Node_Lists.List;
+         Is_Ancestor : Boolean);
+      --  Shared implementation for the two kinds of extraction functions, for
+      --  ancestor components and extension components.
+      --  @param Components The list of components to hide
+      --  @param Is_Ancestor True if generating extraction functions for the
+      --     ancestor component, False for the extension component
+
+      procedure Declare_Extraction_Functions
+        (Components  : Node_Lists.List;
+         Is_Ancestor : Boolean)
+      is
+         X_Ident : constant W_Identifier_Id :=
+           New_Identifier (Name => "x", Typ => EW_Private_Type);
+         Binder : constant Binder_Array :=
+           (1 => (B_Name => X_Ident,
+                  others => <>));
+         Hide_Name : constant Why_Name_Enum :=
+           (if Is_Ancestor then WNE_Hide_Ancestor else WNE_Hide_Extension);
+         Extract_Func : constant W_Identifier_Id :=
+           (if Is_Ancestor then
+               Extract_Ancestor_Fun
+            else
+               Extract_Extension_Fun);
+
+      begin
+         for Field of Components loop
+            --  function extract__<comp> (x : __private) : <typ>
+            --    or
+            --  function extract_anc__<comp> (x : __private) : <typ>
+            Emit (Theory,
+                  New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        => Extract_Fun (Field, Is_Ancestor),
+                     Binders     => Binder,
+                     Labels      => Name_Id_Sets.Empty_Set,
+                     Return_Type => EW_Abstract (Etype (Field))));
+         end loop;
+
+         if not Is_Ancestor then
+            --  function extract__ext__ (x : __private) : __private
+            Emit (Theory,
+                  New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        => Extract_Func,
+                     Binders     => Binder,
+                     Labels      => Name_Id_Sets.Empty_Set,
+                     Return_Type => EW_Private_Type));
+         end if;
+
+         declare
+            Num_Hide_Params : constant Natural :=
+              (if Is_Ancestor then
+                  1
+               else
+                  Natural (Components.Length)
+                  + 1  --  for the extension field of the current type
+                  + (if Has_Private_Ancestor (E) then 1 else 0));
+
+            Binder : Binder_Array (1 .. Num_Hide_Params);
+            Index  : Natural := 0;
+
+         begin
+            --  the complete root object is argument to the hide function to
+            --  generate the ancestor field in the current type
+
+            if Is_Ancestor then
+               Binder (1) :=
+                 (B_Name =>
+                    New_Identifier (Name => Short_Name (Root),
+                                    Typ => EW_Abstract (Root)),
+                  others => <>);
+
+            --  the hide function to generate an extension field in the root
+            --  type takes as arguments all components of the root type not
+            --  present in the root type, plus the special extension and
+            --  ancestor components, if present.
+
+            else
+               for Field of Components loop
+                  Index := Index + 1;
+                  Binder (Index) :=
+                    (B_Name =>
+                       New_Identifier (Name => Short_Name (Field),
+                                       Typ => EW_Abstract (Etype (Field))),
+                     others => <>);
+               end loop;
+
+               --  the extension field in the current type is also part of the
+               --  extension field in the root type
+
+               Index := Index + 1;
+               Binder (Index) :=
+                 (B_Name =>
+                    New_Identifier (Name => To_String (WNE_Rec_Extension),
+                                    Typ => EW_Private_Type),
+                  others => <>);
+
+               --  the ancestor field in the current type is also part of
+               --  the extension field in the root type, as some components
+               --  of intermediate derived types may be represented in the
+               --  ancestor field
+
+               if Has_Private_Ancestor (E) then
+                  Index := Index + 1;
+                  Binder (Index) :=
+                    (B_Name =>
+                       New_Identifier (Name => To_String (WNE_Rec_Ancestor),
+                                       Typ => EW_Private_Type),
+                     others => <>);
+               end if;
+            end if;
+
+            --  function hide__ext__ (comp1 : typ1; .. ; x : __private)
+            --                       : __private
+            --    or
+            --  function hide__anc__ (root : __private) : __private
+            Emit (Theory,
+                  New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        => To_Ident (Hide_Name),
+                     Binders     => Binder,
+                     Labels      => Name_Id_Sets.Empty_Set,
+                     Return_Type => EW_Private_Type));
+         end;
+      end Declare_Extraction_Functions;
+
+      -----------------------------------------------
+      -- Declare_Extraction_Functions_For_Ancestor --
+      -----------------------------------------------
+
+      procedure Declare_Extraction_Functions_For_Ancestor is
+         Field : Entity_Id;
+         Comps : Node_Lists.List;
+      begin
+         Field := First_Component (Root);
+
+         while Present (Field) loop
+            if not Is_Tag (Field) then
+               Comps.Append (Field);
+            end if;
+            Next_Component (Field);
+         end loop;
+
+         Declare_Extraction_Functions (Components  => Comps,
+                                       Is_Ancestor => True);
+      end Declare_Extraction_Functions_For_Ancestor;
+
+      ------------------------------------------------
+      -- Declare_Extraction_Functions_For_Extension --
+      ------------------------------------------------
+
+      procedure Declare_Extraction_Functions_For_Extension is
+         Field : Entity_Id;
+         Comps : Node_Lists.List;
+      begin
+         Field := First_Component (E);
+
+         while Present (Field) loop
+            if not Is_Tag (Field)
+              and then No (Root_Record_Component (Field))
+            then
+               Comps.Append (Field);
+            end if;
+            Next_Component (Field);
+         end loop;
+
+         Declare_Extraction_Functions (Components  => Comps,
+                                       Is_Ancestor => False);
+      end Declare_Extraction_Functions_For_Extension;
 
       -------------------------------
       -- Declare_Equality_Function --
