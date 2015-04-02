@@ -126,12 +126,19 @@ package body Gnat2Why.Subprograms is
    function Compute_Dynamic_Property_For_Inputs
      (W           : Why_Node_Id;
       Params      : Transformation_Params;
-      Scope       : Node_Id := Empty;
-      Initialized : Boolean := False) return W_Prog_Id;
+      Scope       : Entity_Id;
+      Initialized : Boolean := False) return W_Prog_Id
+   with
+       Pre => Ekind (Scope) in E_Procedure | E_Function | E_Package;
    --  Given a Why node, collects the set of external dynamic objects
    --  that are referenced in this node.
-   --  Returns an assumption including the dynamic property of every such
-   --  object.
+   --  @param W Why node from which we collect entities
+   --  @param Params Transformation parameters used to transform the objects
+   --  @param Scope Entity of the enclosing unit for the Why code. It is used
+   --  to determine if objects are local/initialized.
+   --  @param Initialized Assume global out to be initialized at this point.
+   --  @result an assumption including the dynamic property of every external
+   --  dynamic objects that are referenced in W.
 
    function Compute_Dynamic_Property_For_Effects
      (E      : Entity_Id;
@@ -270,26 +277,62 @@ package body Gnat2Why.Subprograms is
    function Compute_Dynamic_Property_For_Inputs
      (W           : Why_Node_Id;
       Params      : Transformation_Params;
-      Scope       : Node_Id := Empty;
+      Scope       : Entity_Id;
       Initialized : Boolean := False) return W_Prog_Id
    is
+      Read_Ids : Flow_Types.Flow_Id_Sets.Set;
+
+      function Is_Initialized (Obj : Entity_Id) return Boolean with
+        Pre => not Is_Declared_In_Unit (Obj, Scope)
+        and then Is_Mutable_In_Why (Obj);
+      --  Returns True if Obj is always initialized in the scope of Scope.
+
+      function Is_Initialized (Obj : Entity_Id) return Boolean is
+      begin
+         if not Initialized
+           and then Ekind (Scope) in E_Function | E_Procedure
+         then
+
+            --  Inside a subprogram, global variables may be uninitialized if
+            --  they do not occur as reads of the subprogram.
+
+            return (Get_Enclosing_Unit (Obj) = Scope
+                    and then Ekind (Obj) /= E_Out_Parameter)
+              or else Read_Ids.Contains (Direct_Mapping_Id (Obj));
+         else
+
+            --  Every global variable referenced inside a package elaboration
+            --  must be initialized.
+
+            return True;
+         end if;
+      end Is_Initialized;
+
       Includes            : constant Node_Sets.Set := Compute_Ada_Node_Set (W);
       Dynamic_Prop_Inputs : W_Prog_Id := New_Void;
    begin
+      --  Collect global variables read in scope if it is a subprogam
+
+      if Ekind (Scope) in E_Function | E_Procedure then
+         declare
+            Write_Ids  : Flow_Types.Flow_Id_Sets.Set;
+         begin
+            Flow_Utility.Get_Proof_Globals (Subprogram => Scope,
+                                            Classwide  => True,
+                                            Reads      => Read_Ids,
+                                            Writes     => Write_Ids);
+         end;
+      end if;
+
       for Obj of Includes loop
 
          --  No need to assume anything if Obj is a local object of the
-         --  subprogram.
-         --  For now, we only assume initialization of in and in out
-         --  parameters. We can do better when we use flow analysis to compute
-         --  read and written objects.
+         --  unit.
 
          if not (Nkind (Obj) in N_Entity)
            or else not Is_Object (Obj)
            or else not Ada_Ent_To_Why.Has_Element (Symbol_Table, Obj)
-           or else (Get_Enclosing_Unit (Obj) = Scope
-                    and then not (Ekind (Obj) in E_In_Parameter
-                                    | E_In_Out_Parameter | E_Out_Parameter))
+           or else Is_Declared_In_Unit (Obj, Scope)
          then
             null;
          elsif Is_Mutable_In_Why (Obj) then
@@ -303,20 +346,17 @@ package body Gnat2Why.Subprograms is
                        Domain   => EW_Term),
                   Ty          => Etype (Obj),
                   Only_Var    => False,
-                  Initialized => Initialized or else
-                  Ekind (Obj) in E_In_Parameter
-                      | E_In_Out_Parameter));
+                  Initialized => Is_Initialized (Obj)));
          else
             Dynamic_Prop_Inputs := Sequence
               (Dynamic_Prop_Inputs,
                Assume_Dynamic_Property
-                 (+To_Why_Id
+                 (Expr        => +To_Why_Id
                       (E => Obj,
                        Typ => Why_Type_Of_Entity (Obj)),
-                  Etype (Obj), False,
-                  Initialized or else
-                  Ekind (Obj) in E_In_Parameter
-                      | E_In_Out_Parameter));
+                  Ty          => Etype (Obj),
+                  Only_Var    => False,
+                  Initialized => True));
          end if;
       end loop;
       return Dynamic_Prop_Inputs;
@@ -1588,8 +1628,9 @@ package body Gnat2Why.Subprograms is
       --  Assume dynamic property of inputs before the checks
 
       Why_Body := Sequence
-        (Compute_Dynamic_Property_For_Inputs (W           => +Why_Body,
-                                              Params      => Params),
+        (Compute_Dynamic_Property_For_Inputs (W      => +Why_Body,
+                                              Params => Params,
+                                              Scope  => E),
          Why_Body);
 
       --  Declare a global variable to hold the result of a function

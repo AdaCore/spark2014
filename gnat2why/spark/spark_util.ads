@@ -662,6 +662,10 @@ package SPARK_Util is
    function Get_Enclosing_Unit (E : Entity_Id) return Entity_Id;
    --  Return the entity of the package or subprogram enclosing E.
 
+   function Is_Declared_In_Unit (E : Entity_Id; Scope : Entity_Id)
+                                 return Boolean;
+   --  Returns True if E is declared directly in Scope.
+
    function Spec_File_Name_Without_Suffix (N : Node_Id) return String;
    --  @param any node
    --  @return same as Spec_File_Name but without the suffix.

@@ -2146,6 +2146,20 @@ package body SPARK_Util is
         and then Is_External_Axioms_Discriminant (E);
    end Is_Access_To_External_Axioms_Discriminant;
 
+   -------------------------
+   -- Is_Declared_In_Unit --
+   -------------------------
+
+   function Is_Declared_In_Unit (E : Entity_Id; Scope : Entity_Id)
+                                 return Boolean is
+   begin
+      --  Parameters of subprograms cannot be local to a unit.
+
+      return Get_Enclosing_Unit (E) = Scope
+        and then not (Ekind (E) in E_In_Parameter
+                          | E_In_Out_Parameter | E_Out_Parameter);
+   end Is_Declared_In_Unit;
+
    ---------------------------------------------
    -- Is_Double_Precision_Floating_Point_Type --
    ---------------------------------------------
