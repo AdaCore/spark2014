@@ -24,7 +24,7 @@ ng.adb:65:23: medium: overflow check might fail
 ng.adb:65:25: info: initialization of "D2" proved
 ng.adb:65:29: medium: overflow check might fail
 ng.adb:65:37: info: division check proved
-ng.adb:65:37: info: range check proved
+ng.adb:65:37: medium: range check might fail
 ng.adb:65:40: info: initialization of "T1" proved
 ng.adb:65:43: info: overflow check proved
 ng.adb:65:45: info: initialization of "T2" proved
