@@ -1,6 +1,6 @@
 sqrt.adb:18:21: info: overflow check proved
-sqrt.adb:22:10: info: loop invariant initialization proved
 sqrt.adb:22:10: info: loop invariant preservation proved
+sqrt.adb:22:10: medium: loop invariant might fail in first iteration
 sqrt.adb:22:38: info: initialization of "Lower" proved
 sqrt.adb:23:41: info: initialization of "Upper" proved
 sqrt.adb:27:20: info: initialization of "Lower" proved
