@@ -5404,7 +5404,7 @@ package body Flow.Control_Flow_Graph is
             end loop;
             for Refined in Boolean loop
                declare
-                  Postconditions : Node_Lists.List :=
+                  Postconditions : constant Node_Lists.List :=
                     Get_Postcondition_Expressions (FA.Analyzed_Entity,
                                                    Refined);
                begin
@@ -5427,7 +5427,7 @@ package body Flow.Control_Flow_Graph is
               (Private_Declarations (Spec_N), FA, Connection_Map, The_Context);
             --  Look into initial conditions
             declare
-               Postconditions : Node_Lists.List :=
+               Postconditions : constant Node_Lists.List :=
                  Get_Postcondition_Expressions (FA.Analyzed_Entity,
                                                 False);
             begin
@@ -5455,7 +5455,7 @@ package body Flow.Control_Flow_Graph is
 
             --  Look into initial conditions
             declare
-               Postconditions : Node_Lists.List :=
+               Postconditions : constant Node_Lists.List :=
                  Get_Postcondition_Expressions (Spec_Entity
                                                   (FA.Analyzed_Entity),
                                                 False);
