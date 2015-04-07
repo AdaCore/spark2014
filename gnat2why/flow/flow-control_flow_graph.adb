@@ -2956,8 +2956,8 @@ package body Flow.Control_Flow_Graph is
                   Make_Sink_Vertex_Attributes
                     (FA         => FA,
                      Var_Use    => Replace_Flow_Ids
-                       (Of_This   => First_Entity (Default_Init_Cond_Procedure
-                                                   (Typ)),
+                       (Of_This   => First_Entity
+                                       (Default_Init_Cond_Procedure (Typ)),
                         With_This => Defining_Identifier (N),
                         The_Set   => Variables_Used),
                      Sub_Called => Get_Function_Set (Expr),
@@ -3931,9 +3931,17 @@ package body Flow.Control_Flow_Graph is
 
          --  Issue a warning if the declared type promised to be
          --  default initialized but is not.
+         --
+         --  We do not issue this warning:
+         --    * during the global generation phase,
+         --    * when dealing with an internal type (this is fine
+         --      since we will get a warning on the type that comes from
+         --      source anyway).
 
-         if (not Is_Private_Type (Typ)
-               or else No (Full_View (Typ)))
+         if not FA.Compute_Globals
+           and then Comes_From_Source (Typ)
+           and then (not Is_Private_Type (Typ)
+                       or else No (Full_View (Typ)))
            and then not Fullview_Not_In_SPARK (Typ)
            and then Is_Default_Initialized (Direct_Mapping_Id (Typ))
            and then not Is_Default_Initialized (Direct_Mapping_Id (Typ),

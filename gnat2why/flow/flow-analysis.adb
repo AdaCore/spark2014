@@ -2065,24 +2065,24 @@ package body Flow.Analysis is
       is
          type Msg_Kind is (Init, Unknown, Err);
 
-         V_Key       : constant Flow_Id      := FA.PDG.Get_Key (Vertex);
-         V_Atr       : constant V_Attributes := FA.Atr.Element (Vertex);
+         V_Key        : constant Flow_Id      := FA.PDG.Get_Key (Vertex);
+         V_Atr        : constant V_Attributes := FA.Atr.Element (Vertex);
 
-         V_Initial   : constant Flow_Graphs.Vertex_Id :=
+         V_Initial    : constant Flow_Graphs.Vertex_Id :=
            FA.PDG.Get_Vertex (Change_Variant (Var, Initial_Value));
-         Atr_Initial : constant V_Attributes := FA.Atr.Element (V_Initial);
+         Atr_Initial  : constant V_Attributes := FA.Atr.Element (V_Initial);
 
-         Kind        : Msg_Kind :=
+         Kind         : Msg_Kind :=
            (if Is_Initialized and Is_Uninitialized then Unknown
             elsif Is_Initialized                   then Init
             else                                        Err);
 
-         N   : Node_Id           := V_Atr.Error_Location;
-         Msg : Unbounded_String;
+         N            : Node_Id           := V_Atr.Error_Location;
+         Msg          : Unbounded_String;
 
-         V_Error           : Flow_Graphs.Vertex_Id;
-         V_Goal            : Flow_Graphs.Vertex_Id;
-         V_Allowed         : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
+         V_Error      : Flow_Graphs.Vertex_Id;
+         V_Goal       : Flow_Graphs.Vertex_Id;
+         V_Allowed    : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
 
          Is_Final_Use : constant Boolean := V_Key.Variant = Final_Value;
          Is_Global    : constant Boolean := Atr_Initial.Is_Global;
