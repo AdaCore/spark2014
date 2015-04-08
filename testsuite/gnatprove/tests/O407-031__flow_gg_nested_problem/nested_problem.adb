@@ -1,9 +1,8 @@
 package body Nested_Problem is
    procedure P (X : in out Integer) is
       procedure Increase_And_Recurse
-        with Pre => True;
-
-      procedure Increase_And_Recurse is
+        with Pre => True  --  Contract prevents inlining
+      is
       begin
          X := X + 1;
          P (X);

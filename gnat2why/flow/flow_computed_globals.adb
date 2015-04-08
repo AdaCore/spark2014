@@ -21,23 +21,23 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with AA_Util;                  use AA_Util;
-with Ada.Text_IO;              use Ada.Text_IO;
-with Ada.Text_IO.Unbounded_IO; use Ada.Text_IO.Unbounded_IO;
-with Ada.Strings.Unbounded;    use Ada.Strings.Unbounded;
+with AA_Util;                    use AA_Util;
+with Ada.Text_IO;                use Ada.Text_IO;
+with Ada.Text_IO.Unbounded_IO;   use Ada.Text_IO.Unbounded_IO;
+with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Containers.Hashed_Sets;
-with ALI;                      use ALI;
-with Flow_Utility;             use Flow_Utility;
+with ALI;                        use ALI;
+with Flow_Utility;               use Flow_Utility;
 with Gnat2Why_Args;
 with Graph;
-with Namet;                    use Namet;
-with Osint;                    use Osint;
-with Osint.C;                  use Osint.C;
-with Output;                   use Output;
-with Sem_Util;                 use Sem_Util;
-with Lib.Util;                 use Lib.Util;
-with SPARK_Frame_Conditions;   use SPARK_Frame_Conditions;
-with SPARK_Util;               use SPARK_Util;
+with Namet;                      use Namet;
+with Osint;                      use Osint;
+with Osint.C;                    use Osint.C;
+with Output;                     use Output;
+with Sem_Util;                   use Sem_Util;
+with Lib.Util;                   use Lib.Util;
+with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
+with SPARK_Util;                 use SPARK_Util;
 
 package body Flow_Computed_Globals is
 
@@ -404,6 +404,10 @@ package body Flow_Computed_Globals is
          Write_Info_Str ("GG LV");
          Write_Name_Set (Info.Local_Variables);
          Write_Info_Terminate;
+
+         Write_Info_Str ("GG LS");
+         Write_Name_Set (Info.Local_Subprograms);
+         Write_Info_Terminate;
       end loop;
 
       Close_Output_Library_Info;
@@ -451,6 +455,7 @@ package body Flow_Computed_Globals is
       --  GG CD test__proc_2 test__proc__nested_proc
       --  GG CC test__proc_3
       --  GG LV test__proc__nested_proc__v
+      --  GG LS test__proc__nested_proc
 
       procedure Remove_Edges_To_Local_Variables;
       --  Removes edges between subprograms and their local variables
@@ -750,7 +755,7 @@ package body Flow_Computed_Globals is
          ------------------
 
          procedure Parse_Record is
-            type Line_Found_T is array (1 .. 8) of Boolean;
+            type Line_Found_T is array (1 .. 9) of Boolean;
             --  This array represents whether we have found a line
             --  of the following format while populating the record.
             --  The order is as follow:
@@ -763,6 +768,7 @@ package body Flow_Computed_Globals is
             --  array slot 6 is True if we have found "GG CD *"
             --  array slot 7 is True if we have found "GG CC *"
             --  array slot 8 is True if we have found "GG LV *"
+            --  array slot 9 is True if we have found "GG LS *"
 
             Line_Found : Line_Found_T := Line_Found_T'(others => False);
             --  Initially we haven't found anything
@@ -879,7 +885,7 @@ package body Flow_Computed_Globals is
                return;
             end if;
 
-            while (for some I in 1 .. 8 => not Line_Found (I)) loop
+            while (for some I in 1 .. 9 => not Line_Found (I)) loop
                Check_GG_Format;
 
                if Length (Line) >= 6 and then
@@ -976,6 +982,14 @@ package body Flow_Computed_Globals is
                      New_Info.Local_Variables := Get_Names_From_Line;
                      All_Globals.Union (Get_Names_From_Line);
 
+                  elsif Slice (Line, 4, 5) = "LS" then
+                     if Line_Found (9) then
+                        raise Program_Error;
+                     end if;
+
+                     Line_Found (9) := True;
+                     New_Info.Local_Subprograms := Get_Names_From_Line;
+
                   else
                      --  Unexpected type of line. Something is wrong
                      --  with the ALI file.
@@ -990,7 +1004,7 @@ package body Flow_Computed_Globals is
                --  Go to the next line
                if not End_Of_File (ALI_File) then
                   Get_Line (ALI_File, Line);
-               elsif (for some I in 1 .. 8 => Line_Found (I) = False) then
+               elsif (for some I in 1 .. 9 => Line_Found (I) = False) then
                   --  We reached the end of the file and our New_Info
                   --  is not yet complete. Something is missing from
                   --  the ALI file.
@@ -1034,9 +1048,10 @@ package body Flow_Computed_Globals is
          procedure Remove_Local_Variables_From_Set
            (Start : Vertex_Id;
             Info  : Subprogram_Phase_1_Info);
-         --  Removes all edges starting from Start and leading to a
-         --  local variable or a variable that is local to any of the
-         --  subprograms called by this subprogram.
+         --  Removes all edges starting from Start and leading to:
+         --    * this subprogram's local variables,
+         --    * local variables of called subprograms which do not
+         --      enclose this subprogram
 
          -------------------------------------
          -- Remove_Local_Variables_From_Set --
@@ -1046,34 +1061,38 @@ package body Flow_Computed_Globals is
            (Start : Vertex_Id;
             Info  : Subprogram_Phase_1_Info)
          is
-            G                      : Global_Id;
-            VS                     : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
-            All_Subprograms_Called : Name_Set.Set := Name_Set.Empty_Set;
-            All_Local_Variables    : Name_Set.Set := Info.Local_Variables;
+            G                   : Global_Id;
+            VS                  : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+            All_Subs_Called     : Name_Set.Set    := Name_Set.Empty_Set;
+            All_Local_Variables : Name_Set.Set    := Info.Local_Variables;
          begin
             for V of Global_Graph.Get_Collection (Start, Out_Neighbours) loop
                if Global_Graph.Get_Key (V).Kind in Proof_Ins_Kind |
                                                    Ins_Kind       |
                                                    Outs_Kind
                then
-                  All_Subprograms_Called.Include
-                    (Global_Graph.Get_Key (V).Name);
+                  All_Subs_Called.Include (Global_Graph.Get_Key (V).Name);
                end if;
             end loop;
 
-            for I of Info_Set loop
-               if (for some Callee of All_Subprograms_Called =>
-                     I.Subprogram.all = Callee.all)
-               then
-                  All_Local_Variables.Union (I.Local_Variables);
+            for Sub_Called of All_Subs_Called loop
+               if GG_Subprograms.Contains (Sub_Called) then
+                  for I of Info_Set loop
+                     if I.Subprogram = Sub_Called then
+                        if not I.Local_Subprograms.Contains (Info.Subprogram)
+                        then
+                           All_Local_Variables.Union (I.Local_Variables);
+                        end if;
+                        exit;
+                     end if;
+                  end loop;
                end if;
             end loop;
 
             for V of Global_Graph.Get_Collection (Start, Out_Neighbours) loop
                G := Global_Graph.Get_Key (V);
 
-               if (for some N of All_Local_Variables => N.all = G.Name.all)
-               then
+               if All_Local_Variables.Contains (G.Name) then
                   VS.Include (V);
                end if;
             end loop;
@@ -1226,6 +1245,8 @@ package body Flow_Computed_Globals is
          All_Subprograms.Union (Info.Definite_Calls);
          --  Add all subprograms mentioned in the conditional calls
          All_Subprograms.Union (Info.Conditional_Calls);
+         --  Add all local subprograms
+         All_Subprograms.Union (Info.Local_Subprograms);
       end loop;
 
       --  Populated the All_Other_Subprograms set

@@ -60,7 +60,8 @@ package Flow.Slice is
       Proof_Calls       : out Node_Sets.Set;
       Definite_Calls    : out Node_Sets.Set;
       Conditional_Calls : out Node_Sets.Set;
-      Local_Variables   : out Node_Sets.Set)
+      Local_Variables   : out Node_Sets.Set;
+      Local_Subprograms : out Node_Sets.Set)
    with Pre => (FA.Compute_Globals and then
                   FA.Is_Generative and then
                   not FA.GG.Aborted),
@@ -75,5 +76,20 @@ package Flow.Slice is
    --  subprogram.
    --
    --  Complexity is O(N)
+   --  @param FA is the flow graph for which we compute globals
+   --  @param Inputs_Proof is the set of global variables read exclusively
+   --    in proof contexts
+   --  @param Inputs is the set global variables read (does not include
+   --    variables read in proof contexts)
+   --  @param Outputs is the set of global variables written (there can
+   --    be an overlap with the Input but not with the Input_Proof)
+   --  @param Proof_Calls is the set of subprograms called exclusively
+   --    in proof contexts
+   --  @param Definite_Calls is the set of subprograms definitely called
+   --  @param Conditionl_Calls is the set of subprograms conditionally
+   --    called
+   --  @param Local_Variables is the set of local variables (this set
+   --    also contains formal paramaters)
+   --  @param Local_Subprograms is the set of all nested subprograms
 
 end Flow.Slice;

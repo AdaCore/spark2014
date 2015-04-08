@@ -1,0 +1,2 @@
+nested_problem.adb:7:17: medium: overflow check might fail
+nested_problem.adb:12:10: info: precondition proved

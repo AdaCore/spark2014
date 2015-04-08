@@ -115,6 +115,7 @@ package Flow_Computed_Globals is
    --       * the subprograms that are called definitely             (CD)
    --       * the subprograms that are called conditionally          (CC)
    --       * the local variables of the subprogram                  (LV)
+   --       * the local subprograms of the subprogram                (LS)
 
    --     For an entry of the second kind to be complete/correct all of the
    --     afformentioned lines must be present (order does not matter).
@@ -128,6 +129,7 @@ package Flow_Computed_Globals is
    --       GG CD test__proc_2 test__proc__nested_proc
    --       GG CC test__proc_3
    --       GG LV test__proc__nested_proc__v
+   --       GG LS test__proc__nested_proc__nested_proc
 
    ----------------------------------------------------------------------
 
@@ -152,6 +154,7 @@ package Flow_Computed_Globals is
       Definite_Calls    : Name_Set.Set;
       Conditional_Calls : Name_Set.Set;
       Local_Variables   : Name_Set.Set;
+      Local_Subprograms : Name_Set.Set;
    end record;
 
    Null_Subprogram_Info : constant Subprogram_Phase_1_Info :=
@@ -163,7 +166,8 @@ package Flow_Computed_Globals is
                               Proof_Calls       => Name_Set.Empty_Set,
                               Definite_Calls    => Name_Set.Empty_Set,
                               Conditional_Calls => Name_Set.Empty_Set,
-                              Local_Variables   => Name_Set.Empty_Set);
+                              Local_Variables   => Name_Set.Empty_Set,
+                              Local_Subprograms => Name_Set.Empty_Set);
 
    function Preceeds (A, B : Subprogram_Phase_1_Info) return Boolean
    is (A.Subprogram.all < B.Subprogram.all);
