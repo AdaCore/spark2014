@@ -15,5 +15,3 @@ is
 begin
    null;
 end Main;
-
-

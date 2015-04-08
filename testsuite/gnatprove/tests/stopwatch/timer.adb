@@ -7,21 +7,17 @@ package body Timer with
 is
 
    Operate    : Ada.Synchronous_Task_Control.Suspension_Object;
-   TimingLoop : TT;
 
-   procedure StartClock
-   is
-   begin
-      Ada.Synchronous_Task_Control.Set_True (Operate);
-   end StartClock;
+   task TimingLoop with
+     Global  => (Output => Oper_State,
+                 In_Out => Display.State,
+                 Input  => Ada.Real_Time.Clock_Time),
+     Depends => (Oper_State    => null,
+                 Display.State =>+ null,
+                 null          => Ada.Real_Time.Clock_Time),
+     Priority => TuningData.TimerPriority;
 
-   procedure StopClock
-   is
-   begin
-      Ada.Synchronous_Task_Control.Set_False (Operate);
-   end StopClock;
-
-   task body TT is
+   task body TimingLoop is
       Release_Time : Ada.Real_Time.Time;
       Period : constant Ada.Real_Time.Time_Span :=
         TuningData.TimerPeriod;
@@ -40,5 +36,18 @@ is
          -- each time round, update the display
          Display.AddSecond;
       end loop;
-   end TT;
+   end TimingLoop;
+
+   procedure StartClock
+   is
+   begin
+      Ada.Synchronous_Task_Control.Set_True (Operate);
+   end StartClock;
+
+   procedure StopClock
+   is
+   begin
+      Ada.Synchronous_Task_Control.Set_False (Operate);
+   end StopClock;
+
 end Timer;

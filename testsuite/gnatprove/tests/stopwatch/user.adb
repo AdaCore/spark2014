@@ -4,9 +4,26 @@ package body User with
   SPARK_Mode,
   Refined_State => (Button_State => Buttons)
 is
-   Buttons : PT;
+   protected Buttons is
+      pragma Interrupt_Priority (TuningData.UserPriority);
 
-   protected body PT is
+      procedure StartClock with
+        Global  => (Output => Timer.Oper_State),
+        Depends => (Timer.Oper_State => null),
+        Attach_Handler => 1;
+
+      procedure StopClock with
+        Global  => (Output => Timer.Oper_State),
+        Depends => (Timer.Oper_State => null),
+        Attach_Handler => 2;
+
+      procedure ResetClock with
+        Global  => (In_Out => Display.State),
+        Depends => (Display.State =>+ null),
+        Attach_Handler => 3;
+   end Buttons;
+
+   protected body Buttons is
       procedure StartClock
       is
       begin
@@ -24,5 +41,5 @@ is
       begin
          Display.Initialize;
       end ResetClock;
-   end PT;
+   end Buttons;
 end User;
