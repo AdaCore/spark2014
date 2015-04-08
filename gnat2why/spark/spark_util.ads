@@ -214,6 +214,11 @@ package SPARK_Util is
    --  Returns whether type T has a scalar subtype with statically known
    --  bounds. This included looking past private types.
 
+   function Is_Null_Range (T : Entity_Id) return Boolean;
+   --  @param T a type entity
+   --  @returns True iff T is a scalar type whose range is statically know to
+   --     be empty
+
    --  The following type lists all possible forms of default initialization
    --  that may apply to a type.
 

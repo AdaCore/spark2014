@@ -2308,6 +2308,24 @@ package body SPARK_Util is
    function Is_Main_Cunit (N : Node_Id) return Boolean is
      (Get_Cunit_Unit_Number (Parent (N)) = Main_Unit);
 
+   -------------------
+   -- Is_Null_Range --
+   -------------------
+
+   function Is_Null_Range (T : Entity_Id) return Boolean is
+   begin
+      if not Is_Discrete_Type (T)
+        or else not Has_Static_Scalar_Subtype (T)
+      then
+         return False;
+      end if;
+      declare
+         Rng : constant Node_Id := Scalar_Range (T);
+      begin
+         return (Expr_Value (Low_Bound (Rng)) > Expr_Value (High_Bound (Rng)));
+      end;
+   end Is_Null_Range;
+
    ----------------------
    -- Is_Others_Choice --
    ----------------------
