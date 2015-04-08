@@ -55,6 +55,8 @@ package body Why.Gen.Names is
 
    function Append_Num (S : String; Count : Positive) return String;
 
+   function Convert_From (Kind : W_Type_Id) return Why_Name_Enum;
+
    ----------------------
    -- Append_Num --
    ----------------------
@@ -573,20 +575,6 @@ package body Why.Gen.Names is
       return New_Identifier (Name => "result", Typ => Typ);
    end New_Result_Ident;
 
-   -------------------
-   -- Remove_Prefix --
-   -------------------
-
-   function Remove_Prefix (I : W_Identifier_Id) return W_Identifier_Id is
-   begin
-      return New_Identifier
-        (Ada_Node => Get_Ada_Node (+I),
-         Domain   => EW_Term,
-         Symbol   => Get_Symbol (I),
-         Module   => Why.Types.Why_Empty,
-         Typ      => Get_Typ (I));
-   end Remove_Prefix;
-
    --------------
    -- To_Exprs --
    --------------
@@ -784,17 +772,6 @@ package body Why.Gen.Names is
          Name     => To_String (W),
          Ada_Node => Ada_Node,
          Typ      => Typ);
-   end Prefix;
-
-   function Prefix (M        : W_Module_Id;
-                    N        : String;
-                    Ada_Node : Node_Id := Empty) return W_Identifier_Id
-   is
-   begin
-      return New_Identifier
-        (Module => M,
-         Name     => N,
-         Ada_Node => Ada_Node);
    end Prefix;
 
    ----------------------

@@ -340,7 +340,7 @@ package body Gnat2Why.Decls is
                Emit
                  (File.Cur_Theory,
                   New_Global_Ref_Declaration
-                    (Name     => Remove_Prefix (Var.Fields.Binder.B_Name),
+                    (Name     => To_Local (Var.Fields.Binder.B_Name),
                      Labels   => Labels,
                      Ref_Type => Get_Typ (Var.Fields.Binder.B_Name)));
             end if;
@@ -353,7 +353,7 @@ package body Gnat2Why.Decls is
                   Emit
                     (File.Cur_Theory,
                      New_Global_Ref_Declaration
-                       (Name     => Remove_Prefix (Var.Discrs.Binder.B_Name),
+                       (Name     => To_Local (Var.Discrs.Binder.B_Name),
                         Labels   => Labels,
                         Ref_Type => Get_Typ (Var.Discrs.Binder.B_Name)));
                else
@@ -362,7 +362,7 @@ package body Gnat2Why.Decls is
                      Why.Atree.Builders.New_Function_Decl
                        (Domain      => EW_Term,
                         Name        =>
-                          Remove_Prefix (Var.Discrs.Binder.B_Name),
+                          To_Local (Var.Discrs.Binder.B_Name),
                         Binders     => (1 .. 0 => <>),
                         Labels      => Labels,
                         Return_Type => Get_Typ (Var.Discrs.Binder.B_Name)));
@@ -377,7 +377,7 @@ package body Gnat2Why.Decls is
                     (File.Cur_Theory,
                      Why.Atree.Builders.New_Function_Decl
                        (Domain      => EW_Term,
-                        Name        => Remove_Prefix (Var.Constr.Id),
+                        Name        => To_Local (Var.Constr.Id),
                         Binders     => (1 .. 0 => <>),
                         Labels      => Labels,
                         Return_Type => Get_Typ (Var.Constr.Id)));
@@ -391,7 +391,7 @@ package body Gnat2Why.Decls is
                     (File.Cur_Theory,
                      Why.Atree.Builders.New_Function_Decl
                        (Domain      => EW_Term,
-                        Name        => Remove_Prefix (Var.Tag.Id),
+                        Name        => To_Local (Var.Tag.Id),
                         Binders     => (1 .. 0 => <>),
                         Labels      => Labels,
                         Return_Type => Get_Typ (Var.Tag.Id)));
@@ -404,7 +404,7 @@ package body Gnat2Why.Decls is
             Emit
               (File.Cur_Theory,
                New_Global_Ref_Declaration
-                 (Name     => Remove_Prefix (Var.Content.B_Name),
+                 (Name     => To_Local (Var.Content.B_Name),
                   Labels   => Labels,
                   Ref_Type => Get_Typ (Var.Content.B_Name)));
 
@@ -422,7 +422,7 @@ package body Gnat2Why.Decls is
                     (File.Cur_Theory,
                      Why.Atree.Builders.New_Function_Decl
                        (Domain      => EW_Term,
-                        Name        => Remove_Prefix (Var.Bounds (D).First),
+                        Name        => To_Local (Var.Bounds (D).First),
                         Binders     => (1 .. 0 => <>),
                         Labels      => Labels,
                         Return_Type => Ty_First));
@@ -430,7 +430,7 @@ package body Gnat2Why.Decls is
                     (File.Cur_Theory,
                      Why.Atree.Builders.New_Function_Decl
                        (Domain      => EW_Term,
-                        Name        => Remove_Prefix (Var.Bounds (D).Last),
+                        Name        => To_Local (Var.Bounds (D).Last),
                         Binders     => (1 .. 0 => <>),
                         Labels      => Labels,
                         Return_Type => Ty_Last));
@@ -443,7 +443,7 @@ package body Gnat2Why.Decls is
             Emit
               (File.Cur_Theory,
                New_Global_Ref_Declaration
-                 (Name     => Remove_Prefix (Var.Main.B_Name),
+                 (Name     => To_Local (Var.Main.B_Name),
                   Labels   => Labels,
                   Ref_Type => Get_Typ (Var.Main.B_Name)));
          when Func =>

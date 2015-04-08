@@ -1177,8 +1177,9 @@ package body Why.Inter is
             if Local then
                return New_Identifier (Name => Name);
             else
-               return Prefix (New_Module (File => No_Name, Name => NID (Obj)),
-                              Name);
+               return New_Identifier
+                 (Module => New_Module (File => No_Name, Name => NID (Obj)),
+                  Name   => Name);
             end if;
          end;
       end if;

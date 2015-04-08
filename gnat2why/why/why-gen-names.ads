@@ -347,19 +347,11 @@ package Why.Gen.Names is
    --  wrapper function for the enumeration literals WNE_Index_Dynamic_Property
    --  @param I an index between 1 and 4 selectind the dimension
 
-   function Remove_Prefix (I : W_Identifier_Id) return W_Identifier_Id;
-
    function Prefix (M        : W_Module_Id;
                     W        : Why_Name_Enum;
                     Ada_Node : Node_Id := Empty;
                     Typ      : W_Type_Id := Why.Types.Why_Empty)
                     return W_Identifier_Id;
-
-   function Prefix (M        : W_Module_Id;
-                    N        : String;
-                    Ada_Node : Node_Id := Empty) return W_Identifier_Id;
-
-   function Convert_From (Kind : W_Type_Id) return Why_Name_Enum;
 
    function Get_Modular_Converter_Range_Check
      (From, To : W_Type_Id) return W_Identifier_Id;

@@ -312,35 +312,19 @@ package body Why.Gen.Expr is
          To_Ent : Entity_Id) return W_Prog_Id
       is
          Check   : W_Pred_Id;
-         Args    : W_Expr_Array (1 .. 2 * Dim);
-         Arg_Ind : Positive := 1;
       begin
 
-         if not Is_Static_Array_Type (To_Ent) then
+         --  ??? This seems to be true in the current code, see the call site
+         --  below
 
-            --  For dynamic types, use dynamic_property instead of range_check
+         pragma Assert (not Is_Static_Array_Type (To_Ent));
 
-            Check := +New_Dynamic_Property
-              (Domain => EW_Prog,
-               Ty     => To_Ent,
-               Expr   => Expr);
+         --  For dynamic types, use dynamic_property instead of range_check
 
-         else
-
-            for I in 1 .. Dim loop
-               Add_Attr_Arg
-                 (EW_Prog, Args, Expr, Attribute_First, I, Arg_Ind);
-               Add_Attr_Arg
-                 (EW_Prog, Args, Expr, Attribute_Last, I, Arg_Ind);
-            end loop;
-            Check :=
-              New_Call (Name   =>
-                          Prefix (Ada_Node => To_Ent,
-                                  M        => E_Module (To_Ent),
-                                  N        => "range_check"),
-                        Args   => Args,
-                        Typ    => EW_Abstract (To_Ent));
-         end if;
+         Check := +New_Dynamic_Property
+           (Domain => EW_Prog,
+            Ty     => To_Ent,
+            Expr   => Expr);
 
          return New_Located_Assert (Ada_Node,
                                     Check,
