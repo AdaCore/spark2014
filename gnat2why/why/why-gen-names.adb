@@ -598,29 +598,29 @@ package body Why.Gen.Names is
    begin
       case W is
          when WNE_Range_Check_Fun_BV_Int => return "range_check_int_";
-         when WNE_Array_Elts           => return "elts";
-         when WNE_Array_Component_Type => return "component_type";
-         when WNE_Array_Type           => return "__t";
-         when WNE_Bool_Eq              => return "bool_eq";
-         when WNE_Dummy                => return "dummy";
-         when WNE_Attr_Constrained     => return "attr__constrained";
-         when WNE_Attr_First           => return "first";
-         when WNE_Attr_Last            => return "last";
-         when WNE_Rec_Split_Discrs     => return "__split_discrs";
-         when WNE_Rec_Split_Fields     => return "__split_fields";
-         when WNE_Attr_Tag             => return "attr__tag";
-         when WNE_Rec_Extension        => return "rec__ext__";
-         when WNE_Rec_Extension_Suffix => return "ext__";
-         when WNE_Rec_Ancestor_Suffix  => return "anc__";
-         when WNE_Rec_Ancestor         => return "rec__anc__";
-         when WNE_Rec_Comp_Prefix      => return "rec__";
-         when WNE_Extract_Prefix       => return "extract__";
-         when WNE_Ancestor_Prefix      => return "extract_anc__";
-         when WNE_Hide_Extension       => return "hide_ext__";
-         when WNE_Hide_Ancestor        => return "hide_anc__";
-         when WNE_Dispatch_Module      => return "Dispatch";
-         when WNE_Refine_Module        => return "Refine";
-         when WNE_Tag                  => return "__tag";
+         when WNE_Array_Elts             => return "elts";
+         when WNE_Array_Component_Type   => return "component_type";
+         when WNE_Array_Type             => return "__t";
+         when WNE_Bool_Eq                => return "bool_eq";
+         when WNE_Dummy                  => return "dummy";
+         when WNE_Attr_Constrained       => return "attr__constrained";
+         when WNE_Attr_First             => return "first";
+         when WNE_Attr_Last              => return "last";
+         when WNE_Rec_Split_Discrs       => return "__split_discrs";
+         when WNE_Rec_Split_Fields       => return "__split_fields";
+         when WNE_Attr_Tag               => return "attr__tag";
+         when WNE_Rec_Extension          => return "rec__ext__";
+         when WNE_Rec_Extension_Suffix   => return "ext__";
+         when WNE_Rec_Ancestor_Suffix    => return "anc__";
+         when WNE_Rec_Ancestor           => return "rec__anc__";
+         when WNE_Rec_Comp_Prefix        => return "rec__";
+         when WNE_Extract_Prefix         => return "extract__";
+         when WNE_Ancestor_Prefix        => return "extract_anc__";
+         when WNE_Hide_Extension         => return "hide_ext__";
+         when WNE_Hide_Ancestor          => return "hide_anc__";
+         when WNE_Dispatch_Module        => return "Dispatch";
+         when WNE_Refine_Module          => return "Refine";
+         when WNE_Tag                    => return "__tag";
 
          --  please use these only in conjunction with E_Symb function
 

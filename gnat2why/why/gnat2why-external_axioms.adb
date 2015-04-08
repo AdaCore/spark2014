@@ -308,7 +308,7 @@ package body Gnat2Why.External_Axioms is
       To_Base_Name   : constant String := "to_base";
       Of_Base_Name   : constant String := "of_base";
       In_Range_Name  : constant String := "valid";
-      Subst_Cur : Integer := 1;
+      Subst_Cur : Positive := 1;
 
       ----------------------------------
       -- Compute_Substitution_Package --

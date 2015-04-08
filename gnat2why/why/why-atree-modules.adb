@@ -125,11 +125,7 @@ package body Why.Atree.Modules is
       C : constant Cursor := Why_Symb_Map.Find (Key);
    begin
       if Has_Element (C) then
-         declare
-            Tmp : constant W_Identifier_Id := Element (C);
-         begin
-            return Tmp;
-         end;
+         return Element (C);
       else
          Insert_Why_Symbols (E2);
          return Why_Symb_Map.Element (Key);
@@ -515,7 +511,7 @@ package body Why.Atree.Modules is
              (File => Gnatprove_Standard_File,
               Name => NID ("Array__4")));
    begin
-      for I in 1 .. 4 loop
+      for I in M'Range loop
          M_Arrays (I).Module := M (I);
          M_Arrays (I).Ty :=
            New_Type (Type_Kind  => EW_Builtin,
@@ -1687,7 +1683,7 @@ package body Why.Atree.Modules is
 
       elsif Is_Array_Type (E) then
          declare
-            Ar_Dim : constant Integer := Integer (Number_Dimensions (E));
+            Ar_Dim : constant Positive := Positive (Number_Dimensions (E));
          begin
             Insert_Symbol
               (E, WNE_Attr_Size,

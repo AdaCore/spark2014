@@ -47,9 +47,9 @@ package Why.Atree.Modules is
 
    --  the Why standard library
 
-   Int_Module                : W_Module_Id;
-   RealInfix                 : W_Module_Id;
-   Ref_Module                : W_Module_Id;
+   Int_Module : W_Module_Id;
+   RealInfix  : W_Module_Id;
+   Ref_Module : W_Module_Id;
 
    --  basic Why types
 
@@ -67,31 +67,31 @@ package Why.Atree.Modules is
 
    --  Modules of file "ada__model.mlw"
 
-   Static_Discrete           : W_Module_Id;
-   Static_Modular_8          : W_Module_Id;
-   Static_Modular_16         : W_Module_Id;
-   Static_Modular_32         : W_Module_Id;
-   Static_Modular_64         : W_Module_Id;
-   Static_Modular_lt8        : W_Module_Id;
-   Static_Modular_lt16       : W_Module_Id;
-   Static_Modular_lt32       : W_Module_Id;
-   Static_Modular_lt64       : W_Module_Id;
-   Dynamic_Modular           : W_Module_Id;
-   Dynamic_Discrete          : W_Module_Id;
-   Static_Fixed_Point        : W_Module_Id;
-   Dynamic_Fixed_Point       : W_Module_Id;
-   Static_Floating_Point     : W_Module_Id;
-   Dynamic_Floating_Point    : W_Module_Id;
+   Static_Discrete        : W_Module_Id;
+   Static_Modular_8       : W_Module_Id;
+   Static_Modular_16      : W_Module_Id;
+   Static_Modular_32      : W_Module_Id;
+   Static_Modular_64      : W_Module_Id;
+   Static_Modular_lt8     : W_Module_Id;
+   Static_Modular_lt16    : W_Module_Id;
+   Static_Modular_lt32    : W_Module_Id;
+   Static_Modular_lt64    : W_Module_Id;
+   Dynamic_Modular        : W_Module_Id;
+   Dynamic_Discrete       : W_Module_Id;
+   Static_Fixed_Point     : W_Module_Id;
+   Dynamic_Fixed_Point    : W_Module_Id;
+   Static_Floating_Point  : W_Module_Id;
+   Dynamic_Floating_Point : W_Module_Id;
 
-   Constr_Arrays                 : W_Module_Array (1 .. Max_Array_Dimensions);
-   Unconstr_Arrays               : W_Module_Array (1 .. Max_Array_Dimensions);
-   Array_Int_Rep_Comparison_Ax   : W_Module_Id;
-   Array_BV8_Rep_Comparison_Ax   : W_Module_Id;
-   Array_BV16_Rep_Comparison_Ax  : W_Module_Id;
-   Array_BV32_Rep_Comparison_Ax  : W_Module_Id;
-   Array_BV64_Rep_Comparison_Ax  : W_Module_Id;
-   Standard_Array_Logical_Ax     : W_Module_Id;
-   Subtype_Array_Logical_Ax      : W_Module_Id;
+   Constr_Arrays                : W_Module_Array (1 .. Max_Array_Dimensions);
+   Unconstr_Arrays              : W_Module_Array (1 .. Max_Array_Dimensions);
+   Array_Int_Rep_Comparison_Ax  : W_Module_Id;
+   Array_BV8_Rep_Comparison_Ax  : W_Module_Id;
+   Array_BV16_Rep_Comparison_Ax : W_Module_Id;
+   Array_BV32_Rep_Comparison_Ax : W_Module_Id;
+   Array_BV64_Rep_Comparison_Ax : W_Module_Id;
+   Standard_Array_Logical_Ax    : W_Module_Id;
+   Subtype_Array_Logical_Ax     : W_Module_Id;
 
    --  modules of the _gnatprove_standard.mlw file
 
@@ -139,8 +139,8 @@ package Why.Atree.Modules is
 
    type M_Int_Minmax_Type is record
       Module : W_Module_Id;
-      Min  : W_Identifier_Id;
-      Max  : W_Identifier_Id;
+      Min    : W_Identifier_Id;
+      Max    : W_Identifier_Id;
    end record;
 
    type M_Floating_Type is record
@@ -277,7 +277,7 @@ package Why.Atree.Modules is
 
    type BV_Kind is (BV8, BV16, BV32, BV64);
 
-   M_BVs        : array (BV_Kind) of M_BV_Type;
+   M_BVs : array (BV_Kind) of M_BV_Type;
 
    function MF_BVs (T : W_Type_Id) return M_BV_Type;
    --  same as M_BVs but can be used with a bitvector type in W_Type_Id format
@@ -314,8 +314,8 @@ package Why.Atree.Modules is
    Real_Infix_Gt             : W_Identifier_Id;
    Real_Infix_Ge             : W_Identifier_Id;
 
-   To_String_Id               : W_Identifier_Id;
-   Of_String_Id               : W_Identifier_Id;
+   To_String_Id              : W_Identifier_Id;
+   Of_String_Id              : W_Identifier_Id;
 
    --  Other identifiers
 
