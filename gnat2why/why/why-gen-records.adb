@@ -1337,8 +1337,7 @@ package body Why.Gen.Records is
                Name        => New_Identifier (Name => "user_eq"),
                Return_Type => EW_Bool_Type,
                Binders     => R_Binder &
-                 Binder_Array'(1                   =>
-                                   Binder_Type'(B_Name => B_Ident,
+                 Binder_Array'(1 => Binder_Type'(B_Name => B_Ident,
                                                 others => <>)),
                Labels      => Name_Id_Sets.Empty_Set));
       end Declare_Equality_Function;
@@ -1797,9 +1796,8 @@ package body Why.Gen.Records is
                   Name        => To_Ident (WNE_Bool_Eq),
                   Binders     =>
                     R_Binder &
-                    Binder_Array'(1 =>
-                                      Binder_Type'(B_Name => B_Ident,
-                                                   others => <>)),
+                    Binder_Array'(1 => Binder_Type'(B_Name => B_Ident,
+                                                    others => <>)),
                   Return_Type => +EW_Bool_Type,
                   Labels      => Name_Id_Sets.To_Set (NID ("inline")),
                   Def         => +True_Term));
