@@ -3,12 +3,15 @@ module Ada__containers__formal_doubly_linked_lists__list
   use import "_gnatprove_standard".Main
   use Ada__containers__count_type
 
-  type list = __private
-
   type __split_discrs = {rec__capacity : Ada__containers__count_type.count_type}
 
-  function __split_discrs list : __split_discrs
+  type __split_fields = { rec__main__ : __private }
 
+  type list = { __split_discrs : __split_discrs; __split_fields : __split_fields }
+
+  predicate list_inv "inline" (l : list) =
+     l = { __split_discrs = { rec__capacity = l.__split_discrs.rec__capacity }; __split_fields = { rec__main__ = l.__split_fields.rec__main__ } }
+ 
    function capacity  (co : list) : int =
           Ada__containers__count_type.to_rep (rec__capacity (__split_discrs (co)))
 
@@ -41,7 +44,9 @@ module Ada__containers__formal_doubly_linked_lists__cursor
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__length
 
-  type cursor = __private
+  type __split_fields = { rec__main__ : __private }
+
+  type cursor = { __split_fields : __split_fields }
 
   function dummy : cursor
 
@@ -314,7 +319,7 @@ module Ada__containers__formal_doubly_linked_lists__first_to_previous
 
   val first_to_previous (co:list) (cu:cursor) : list
      requires { cu = no_element \/ position co cu > 0 }
-     ensures  { result = first_to_previous__logic co cu }
+     ensures  { result = first_to_previous__logic co cu /\ list_inv result }
 end
 
 module Ada__containers__formal_doubly_linked_lists__current_to_last
@@ -352,7 +357,7 @@ module Ada__containers__formal_doubly_linked_lists__current_to_last
 
   val current_to_last (co:list) (cu:cursor) : list
      requires { cu = no_element \/ position co cu > 0 }
-     ensures  { result = current_to_last__logic co cu }
+     ensures  { result = current_to_last__logic co cu /\ list_inv result }
 end
 
 module Ada__containers__formal_doubly_linked_lists__find
@@ -581,11 +586,17 @@ module Ada__containers__formal_doubly_linked_lists__replace_element
       replace_element co1 cu e co2 -> cu <> cun -> position co1 cun > 0 ->
         element__logic co2 cun = element__logic co1 cun
 
-  val replace_element (co:ref list) (cu:cursor) (e:Ada__containers__formal_doubly_linked_lists__element_type.base_type) : unit
-     requires { position !co cu > 0 }
+  val replace_element (co:ref Ada__containers__formal_doubly_linked_lists__list.__split_fields) (cap : Ada__containers__formal_doubly_linked_lists__list.__split_discrs) (cu:cursor) (e:Ada__containers__formal_doubly_linked_lists__element_type.base_type) : unit
+     requires { let rec_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !co;
+                              Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+                   position rec_co cu > 0 }
      writes     { co }
      reads      { co }
-     ensures { replace_element (old !co) cu e !co }
+     ensures { let rec_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = (old !co);
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+                  replace_element old_co cu e rec_co }
 end
 
 module Ada__containers__formal_doubly_linked_lists__reverse_elements
@@ -621,9 +632,13 @@ module Ada__containers__formal_doubly_linked_lists__reverse_elements
       reverse_elements co1 co2 -> position co1 cun > 0 ->
         element__logic co2 cun = element__logic co1 cun
 
-  val reverse_elements (co:ref list) : unit
+  val reverse_elements (co:ref Ada__containers__formal_doubly_linked_lists__list.__split_fields) (cap : Ada__containers__formal_doubly_linked_lists__list.__split_discrs) : unit
      writes     { co }
-     ensures { reverse_elements !co (old !co) }
+     ensures { let rec_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = (old !co);
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+                  reverse_elements rec_co old_co }
 end
 
 module Ada__containers__formal_doubly_linked_lists__insert
@@ -719,13 +734,19 @@ module Ada__containers__formal_doubly_linked_lists__insert
 	 exists nl : list [insert li1 cu e nl].
     		(insert li1 cu e nl /\ insert_mult nl cu e (c - 1) li2)
 
-  val insert (co:ref list) (cu:cursor) (e:Ada__containers__formal_doubly_linked_lists__element_type.base_type)
+  val insert (co:ref Ada__containers__formal_doubly_linked_lists__list.__split_fields) (cap : Ada__containers__formal_doubly_linked_lists__list.__split_discrs) (cu:cursor) (e:Ada__containers__formal_doubly_linked_lists__element_type.base_type)
                                              (c : int) : unit
-     requires { length_ !co + c <= capacity !co
-                         /\ (position !co cu > 0 \/ cu = no_element) }
+     requires { let rec_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+               length_ rec_co + c <= capacity rec_co
+                         /\ (position rec_co cu > 0 \/ cu = no_element) }
      writes     { co }
      reads      { co }
-     ensures { insert_mult (old !co) cu e c !co }
+     ensures { let rec_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = (old !co);
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+                  insert_mult old_co cu e c rec_co }
 end
 
 module Ada__containers__formal_doubly_linked_lists__insert__2
@@ -744,14 +765,20 @@ module Ada__containers__formal_doubly_linked_lists__insert__2
              length_ co1 = 0 /\ p = first__logic co2 \/
              position co1 cu > 0 /\ position co2 p = position co1 cu
 
-  val insert__2 (co:ref list) (cu:cursor) (e:Ada__containers__formal_doubly_linked_lists__element_type.base_type) (p:ref cursor)
+  val insert__2 (co:ref Ada__containers__formal_doubly_linked_lists__list.__split_fields) (cap : Ada__containers__formal_doubly_linked_lists__list.__split_discrs) (cu:cursor) (e:Ada__containers__formal_doubly_linked_lists__element_type.base_type) (p:ref cursor)
                                              (c : int) : unit
-     requires { length_ !co + c <= capacity !co
-                         /\ (position !co cu > 0 \/ cu = no_element) }
+     requires { let rec_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+                   length_ rec_co + c <= capacity rec_co
+                         /\ (position rec_co cu > 0 \/ cu = no_element) }
      writes     { co, p }
      reads      { co }
-     ensures { insert_mult (old !co) cu e c !co /\
-            first_inserted (old !co) cu !co !p }
+     ensures { let rec_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = (old !co);
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+                  insert_mult old_co cu e c rec_co /\
+            first_inserted old_co cu rec_co !p }
 end
 
 module Ada__containers__formal_doubly_linked_lists__insert__3
@@ -784,14 +811,20 @@ module Ada__containers__formal_doubly_linked_lists__insert__3
          Ada__containers__formal_doubly_linked_lists__element_type.valid e /\
     		(insert li1 cu e nl /\ insert_3_mult nl cu (c - 1) li2)
 
-  val insert__3 (co:ref list) (cu:cursor)  (p:ref cursor)
+  val insert__3 (co:ref Ada__containers__formal_doubly_linked_lists__list.__split_fields) (cap : Ada__containers__formal_doubly_linked_lists__list.__split_discrs) (cu:cursor) (p:ref cursor)
                                              (c : int) : unit
-     requires { length_ !co + c <= capacity !co
-                         /\ (position !co cu > 0 \/ cu = no_element) }
+     requires { let rec_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+                   length_ rec_co + c <= capacity rec_co
+                         /\ (position rec_co cu > 0 \/ cu = no_element) }
      writes     { co, p }
      reads      { co }
-     ensures { insert_3_mult (old !co) cu c !co /\
-            first_inserted (old !co) cu !co !p }
+     ensures { let rec_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = (old !co);
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+                  insert_3_mult old_co cu c rec_co /\
+            first_inserted old_co cu rec_co !p }
 end
 
 module Ada__containers__formal_doubly_linked_lists__prepend
@@ -804,12 +837,18 @@ module Ada__containers__formal_doubly_linked_lists__prepend
   use import Ada__containers__formal_doubly_linked_lists__first
   use import Ada__containers__formal_doubly_linked_lists__insert
 
-  val prepend (co:ref list) (e:Ada__containers__formal_doubly_linked_lists__element_type.base_type)
+  val prepend (co:ref Ada__containers__formal_doubly_linked_lists__list.__split_fields) (cap : Ada__containers__formal_doubly_linked_lists__list.__split_discrs) (e:Ada__containers__formal_doubly_linked_lists__element_type.base_type)
                                              (c : int) : unit
-     requires { length_ !co + c <= capacity !co }
+     requires { let rec_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+                   length_ rec_co + c <= capacity rec_co }
      writes     { co }
      reads      { co }
-     ensures { insert_mult (old !co) (first__logic (old !co)) e c !co }
+     ensures { let rec_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = (old !co);
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+               insert_mult old_co (first__logic old_co) e c rec_co }
 end
 
 module Ada__containers__formal_doubly_linked_lists__append
@@ -822,13 +861,18 @@ module Ada__containers__formal_doubly_linked_lists__append
   use import Ada__containers__formal_doubly_linked_lists__no_element
   use import Ada__containers__formal_doubly_linked_lists__insert
 
-   val append (co:ref list) (e:Ada__containers__formal_doubly_linked_lists__element_type.base_type)
+   val append (co:ref Ada__containers__formal_doubly_linked_lists__list.__split_fields) (cap : Ada__containers__formal_doubly_linked_lists__list.__split_discrs) (e:Ada__containers__formal_doubly_linked_lists__element_type.base_type)
                                              (c : int) : unit
-     requires { length_ !co + c <= capacity !co }
+     requires { let rec_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+                   length_ rec_co + c <= capacity rec_co }
      writes     { co }
      reads      { co }
-     ensures { insert_mult (old !co) no_element e
-                             c !co }
+     ensures { let rec_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = (old !co);
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+               insert_mult old_co no_element e c rec_co }
 end
 
 module Ada__containers__formal_doubly_linked_lists__delete
@@ -902,11 +946,17 @@ module Ada__containers__formal_doubly_linked_lists__delete
                   (position li1 cu = length_ li1 \/
                     position li1 cu < length_ li1 /\ delete_mult nl (next__logic li1 cu) (c - 1) li2))
 
-  val delete (co:ref list) (cu:ref cursor) (c : int) : unit
-     requires { position !co !cu > 0 }
+  val delete (co:ref Ada__containers__formal_doubly_linked_lists__list.__split_fields) (cap : Ada__containers__formal_doubly_linked_lists__list.__split_discrs) (cu:ref cursor) (c : int) : unit
+     requires {  let rec_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+                   position rec_co !cu > 0 }
      writes     { co, cu }
      reads      { co }
-     ensures { delete_mult (old !co) (old !cu) c !co /\ !cu = no_element}
+     ensures { let rec_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = old !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+                   delete_mult old_co (old !cu) c rec_co /\ !cu = no_element }
 end
 
 module Ada__containers__formal_doubly_linked_lists__delete_first
@@ -918,10 +968,14 @@ module Ada__containers__formal_doubly_linked_lists__delete_first
   use import Ada__containers__formal_doubly_linked_lists__first
   use import Ada__containers__formal_doubly_linked_lists__delete
 
-  val delete_first (co:ref list)  (c : int) : unit
+  val delete_first (co:ref Ada__containers__formal_doubly_linked_lists__list.__split_fields) (cap : Ada__containers__formal_doubly_linked_lists__list.__split_discrs) (c : int) : unit
      writes     { co }
      reads      { co }
-     ensures { if length_ !co > 0 then delete_mult (old !co) (first__logic (old !co)) c !co else !co = (old !co) }
+     ensures { let rec_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = old !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+               (if length_ old_co > 0 then delete_mult old_co (first__logic old_co) c rec_co else rec_co = old_co)  }
 end
 
 module Ada__containers__formal_doubly_linked_lists__delete_last
@@ -933,10 +987,14 @@ module Ada__containers__formal_doubly_linked_lists__delete_last
   use import Ada__containers__formal_doubly_linked_lists__last
   use import Ada__containers__formal_doubly_linked_lists__delete
 
-  val delete_last (co:ref list) (c : int) : unit
+  val delete_last (co:ref Ada__containers__formal_doubly_linked_lists__list.__split_fields) (cap : Ada__containers__formal_doubly_linked_lists__list.__split_discrs) (c : int) : unit
      writes     { co }
      reads      { co }
-     ensures { if length_ !co > 0 then delete_mult (old !co) (last__logic (old !co)) c !co else !co = (old !co) }
+     ensures { let rec_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = old !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+               (if length_ old_co > 0 then delete_mult old_co (last__logic old_co) c rec_co else rec_co = old_co) }
 end
 
 module Ada__containers__formal_doubly_linked_lists__swap_links
@@ -982,11 +1040,17 @@ module Ada__containers__formal_doubly_linked_lists__swap_links
      position co1 cu2 = position co2 cu1 /\
      position co1 cu1 > 0 /\ position co1 cu2 > 0
 
-  val swap_links (co:ref list) (cu1 cu2 : cursor) : unit
-    requires { position !co cu1 > 0 /\ position !co cu2 > 0 }
+  val swap_links (co:ref Ada__containers__formal_doubly_linked_lists__list.__split_fields) (cap : Ada__containers__formal_doubly_linked_lists__list.__split_discrs) (cu1 cu2 : cursor) : unit
+    requires { let rec_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+                  position rec_co cu1 > 0 /\ position rec_co cu2 > 0 }
      writes     { co }
-     ensures { (cu1 = cu2 /\ !co = old !co) \/
-                         (cu1 <> cu2 /\ swap_links (old !co) cu1 cu2 !co) }
+     ensures { let rec_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = old !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+               (cu1 = cu2 /\ rec_co = old_co) \/
+                         (cu1 <> cu2 /\ swap_links old_co cu1 cu2 rec_co) }
 end
 
 module Ada__containers__formal_doubly_linked_lists__swap
@@ -1031,11 +1095,17 @@ module Ada__containers__formal_doubly_linked_lists__swap
      element__logic co1 cu2 = element__logic co2 cu1 /\
      position co1 cu1 > 0 /\ position co1 cu2 > 0
 
-  val swap (co:ref list) (cu1 cu2 : cursor) : unit
-    requires { position !co cu1 > 0 /\ position !co cu2 > 0 }
+  val swap (co:ref Ada__containers__formal_doubly_linked_lists__list.__split_fields) (cap : Ada__containers__formal_doubly_linked_lists__list.__split_discrs) (cu1 cu2 : cursor) : unit
+    requires { let rec_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+                  position rec_co cu1 > 0 /\ position rec_co cu2 > 0 }
      writes     { co }
-     ensures { (cu1 = cu2 /\ !co = old !co) \/
-                         (cu1 <> cu2 /\ swap (old !co) cu1 cu2 !co) }
+     ensures { let rec_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = old !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+               (cu1 = cu2 /\ rec_co = old_co) \/
+                         (cu1 <> cu2 /\ swap old_co cu1 cu2 rec_co) }
 end
 
 module Ada__containers__formal_doubly_linked_lists__splice
@@ -1053,15 +1123,26 @@ module Ada__containers__formal_doubly_linked_lists__splice
   use import Ada__containers__formal_doubly_linked_lists__Oeq__2
   use import Ada__containers__formal_doubly_linked_lists__strict_equal
 
-  val splice (target:ref list) (cu:cursor) (source:ref list) : unit
-     requires { capacity !target >= (length_ !target) + (length_ !source)
-                           /\ (position !target cu > 0 \/ cu = no_element)}
+  val splice (target:ref Ada__containers__formal_doubly_linked_lists__list.__split_fields) (t_cap : Ada__containers__formal_doubly_linked_lists__list.__split_discrs) (cu:cursor) (source:ref Ada__containers__formal_doubly_linked_lists__list.__split_fields) (s_cap : Ada__containers__formal_doubly_linked_lists__list.__split_discrs) : unit
+     requires { let rec_t = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !target;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = t_cap}  in
+                let rec_s = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !source;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = s_cap}  in
+                  capacity rec_t >= (length_ rec_t) + (length_ rec_s) /\ (position rec_t cu > 0 \/ cu = no_element)}
      writes     { target, source }
      reads      { target, source }
-     ensures {length_ !target = (length_ (old !target)) + (length_ (old !source)) /\
-                         length_ !source = 0 /\ strict_equal__logic (current_to_last__logic !target cu) (current_to_last__logic (old !target) cu) = True /\
-                         strict_equal__logic (first_to_previous__logic (old !target) cu) (first_to_current__logic !target (previous__logic (old !target) cu)) = True /\
-                         oeq__2__logic (old !source) (current_to_last__logic (first_to_previous__logic !target cu) (next__logic !target (previous__logic (old !target) cu))) = True }
+     ensures {  let rec_t = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !target;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = t_cap}  in
+                let rec_s = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !source;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = s_cap}  in
+                let old_t = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = old !target;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = t_cap}  in
+                let old_s = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = old !source;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = s_cap}  in
+                  length_ rec_t = (length_ old_t) + (length_ old_s) /\
+                         length_ rec_s = 0 /\ strict_equal__logic (current_to_last__logic rec_t cu) (current_to_last__logic old_t cu) = True /\
+                         strict_equal__logic (first_to_previous__logic old_t cu) (first_to_current__logic rec_t (previous__logic old_t cu)) = True /\
+                         oeq__2__logic old_s (current_to_last__logic (first_to_previous__logic rec_t cu) (next__logic rec_t (previous__logic old_t cu))) = True }
 end
 
 module Ada__containers__formal_doubly_linked_lists__splice__2
@@ -1077,16 +1158,27 @@ module Ada__containers__formal_doubly_linked_lists__splice__2
   use import Ada__containers__formal_doubly_linked_lists__insert__2
   use import Ada__containers__formal_doubly_linked_lists__delete
 
-  val splice__2 (target:ref list) (cu:cursor) (source:ref list)
-                                (p:ref cursor) : unit
-     requires { capacity !target >= (length_ !target) + (length_ !source)
-                           /\ (position !target cu > 0 \/ cu = no_element)
-                           /\ position !source !p > 0}
+  val splice__2  (target:ref Ada__containers__formal_doubly_linked_lists__list.__split_fields) (t_cap : Ada__containers__formal_doubly_linked_lists__list.__split_discrs) (cu:cursor) (source:ref Ada__containers__formal_doubly_linked_lists__list.__split_fields) (s_cap : Ada__containers__formal_doubly_linked_lists__list.__split_discrs) (p:ref cursor) : unit
+     requires { let rec_t = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !target;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = t_cap}  in
+                let rec_s = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !source;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = s_cap}  in
+                  capacity rec_t >= (length_ rec_t) + (length_ rec_s)
+                           /\ (position rec_t cu > 0 \/ cu = no_element)
+                           /\ position rec_s !p > 0}
      writes     { target, source, p }
      reads      { target, source, p }
-     ensures { insert (old !target) cu (element__logic (old !source) (old !p)) !target /\
-                         delete (old !source) (old !p) !source /\
-                        first_inserted (old !target) cu !target !p  }
+     ensures {  let rec_t = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !target;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = t_cap}  in
+                let rec_s = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !source;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = s_cap}  in
+                let old_t = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = old !target;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = t_cap}  in
+                let old_s = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = old !source;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = s_cap}  in
+                  insert old_t cu (element__logic old_s (old !p)) rec_t /\
+                         delete old_s (old !p) rec_s /\
+                        first_inserted old_t cu rec_t !p }
 end
 
 module Ada__containers__formal_doubly_linked_lists__splice__3
@@ -1101,14 +1193,20 @@ module Ada__containers__formal_doubly_linked_lists__splice__3
   use import Ada__containers__formal_doubly_linked_lists__insert
   use import Ada__containers__formal_doubly_linked_lists__delete
 
-  val splice__3 (co:ref list) (before:cursor) (p:cursor) : unit
-     requires { capacity !co >= 2*(length_ !co)
-                           /\ (position !co before > 0 \/ before = no_element) }
+  val splice__3 (co:ref Ada__containers__formal_doubly_linked_lists__list.__split_fields) (cap : Ada__containers__formal_doubly_linked_lists__list.__split_discrs) (before:cursor) (p:cursor) : unit
+     requires { let rec_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+                  capacity rec_co >= 2*(length_ rec_co)
+                           /\ (position rec_co before > 0 \/ before = no_element) }
      writes     { co }
      reads      { co }
-     ensures { exists interm : list.
-                       delete (old !co) p  interm /\
-                       insert interm before (element__logic (old !co) p) !co }
+     ensures { let rec_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = old !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+                  exists interm : list.
+                       delete old_co p  interm /\
+                       insert interm before (element__logic old_co p) rec_co }
 end
 
 module Ada__containers__formal_doubly_linked_lists__has_element
@@ -1157,9 +1255,11 @@ module Ada__containers__formal_doubly_linked_lists__clear
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__length
 
-  val clear (co:ref list) : unit
+  val clear (co:ref Ada__containers__formal_doubly_linked_lists__list.__split_fields) (cap : Ada__containers__formal_doubly_linked_lists__list.__split_discrs) : unit
      writes     { co }
-     ensures { length_ !co = 0 /\ capacity !co = capacity (old !co) }
+     ensures { let rec_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !co;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+                 length_ rec_co = 0 }
 end
 
 module Ada__containers__formal_doubly_linked_lists__assign
@@ -1169,11 +1269,15 @@ module Ada__containers__formal_doubly_linked_lists__assign
   use import Ada__containers__formal_doubly_linked_lists__length
   use import Ada__containers__formal_doubly_linked_lists__Oeq__2
 
-  val assign (target:ref list) (source:list) : unit
-     requires { capacity !target >= length_ source }
+  val assign (target:ref Ada__containers__formal_doubly_linked_lists__list.__split_fields) (cap : Ada__containers__formal_doubly_linked_lists__list.__split_discrs) (source:list) : unit
+     requires { let rec_t = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !target;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+                 capacity rec_t >= length_ source }
      writes     { target }
      reads      { target }
-     ensures { oeq__2__logic !target source = True }
+     ensures { let rec_t = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !target;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
+                 oeq__2__logic rec_t source = True }
 end
 
 module Ada__containers__formal_doubly_linked_lists__move
@@ -1183,11 +1287,21 @@ module Ada__containers__formal_doubly_linked_lists__move
   use import Ada__containers__formal_doubly_linked_lists__length
   use import Ada__containers__formal_doubly_linked_lists__Oeq__2
 
-  val move (target:ref list) (source:ref list) : unit
-     requires { capacity !target >= length_ !source }
+  val move (target:ref Ada__containers__formal_doubly_linked_lists__list.__split_fields) (t_cap : Ada__containers__formal_doubly_linked_lists__list.__split_discrs) (source:ref Ada__containers__formal_doubly_linked_lists__list.__split_fields) (s_cap : Ada__containers__formal_doubly_linked_lists__list.__split_discrs) : unit
+     requires { let rec_t = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !target;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = t_cap}  in
+                let rec_s = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !source;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = s_cap}  in
+                  capacity rec_t >= length_ rec_s }
      writes     { target, source }
-     reads      { target, source }
-     ensures { oeq__2__logic !target (old !source) = True /\ length_ !source = 0 }
+     reads      { source }
+     ensures { let rec_t = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !target;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = t_cap}  in
+               let rec_s = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !source;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = s_cap}  in
+               let old_s = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = old !source;
+                             Ada__containers__formal_doubly_linked_lists__list.__split_discrs = s_cap}  in
+                  oeq__2__logic rec_t old_s = True /\ length_ rec_s = 0 }
 end
 
 module Ada__containers__formal_doubly_linked_lists__copy
@@ -1207,5 +1321,5 @@ module Ada__containers__formal_doubly_linked_lists__copy
 
   val copy (co: list) (cap:int) : list
      requires { cap = 0 \/ cap >= capacity co}
-     ensures { result = copy__logic co cap }
+     ensures { result = copy__logic co cap /\ list_inv result }
 end

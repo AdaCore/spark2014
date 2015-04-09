@@ -16,11 +16,14 @@ module Ada__containers__formal_ordered_sets__set
   use Ada__containers__hash_type
   use Ada__containers__count_type
 
-  type set = __private
-
   type __split_discrs = {rec__capacity : Ada__containers__count_type.count_type}
 
-  function __split_discrs set : __split_discrs
+  type __split_fields = { rec__main__ : __private }
+
+  type set = { __split_discrs : __split_discrs; __split_fields : __split_fields }
+
+  predicate set_inv "inline" (l : set) =
+     l = { __split_discrs = { rec__capacity = l.__split_discrs.rec__capacity }; __split_fields = { rec__main__ = l.__split_fields.rec__main__ } }
 
    function capacity  (co : set) : int =
           Ada__containers__count_type.to_rep (rec__capacity (__split_discrs co))
@@ -54,7 +57,9 @@ module Ada__containers__formal_ordered_sets__cursor
   use import Ada__containers__formal_ordered_sets__set
   use import Ada__containers__formal_ordered_sets__length
 
-  type cursor = __private
+  type __split_fields = { rec__main__ : __private }
+
+  type cursor = { __split_fields : __split_fields }
 
   function dummy : cursor
 
@@ -453,7 +458,7 @@ module Ada__containers__formal_ordered_sets__first_to_previous
 
   val first_to_previous (co:set) (cu:cursor) : set
      requires { cu = no_element \/ position co cu > 0 }
-     ensures  { result = first_to_previous__logic co cu }
+     ensures  { result = first_to_previous__logic co cu /\ set_inv result }
 end
 
 module Ada__containers__formal_ordered_sets__current_to_last
@@ -509,7 +514,7 @@ module Ada__containers__formal_ordered_sets__current_to_last
 
   val current_to_last (co:set) (cu:cursor) : set
      requires { cu = no_element \/ position co cu > 0 }
-     ensures  { result = current_to_last__logic co cu }
+     ensures  { result = current_to_last__logic co cu /\ set_inv result }
 end
 
 module Ada__containers__formal_ordered_sets__replace
@@ -536,11 +541,17 @@ module Ada__containers__formal_ordered_sets__replace
           (forall w:real [find_ co1 w | find_ co2 w]. find_ co1 w = find_ co2 w)) /\
      capacity co1 = capacity co2
 
-  val replace (co :ref set) (e:Ada__containers__formal_ordered_sets__element_type.base_type) : unit
-     requires { find_ !co (witness e) <> no_element }
+  val replace (co:ref Ada__containers__formal_ordered_sets__set.__split_fields) (cap : Ada__containers__formal_ordered_sets__set.__split_discrs) (e:Ada__containers__formal_ordered_sets__element_type.base_type) : unit
+     requires { let rec_co = {Ada__containers__formal_ordered_sets__set.__split_fields = !co;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+                   find_ rec_co (witness e) <> no_element }
      writes { co }
      reads { co }
-     ensures { replace (old !co) e !co }
+     ensures { let rec_co = {Ada__containers__formal_ordered_sets__set.__split_fields = !co;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_ordered_sets__set.__split_fields = old !co;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+                   replace old_co e rec_co }
 end
 
 module Ada__containers__formal_ordered_sets__replace_element
@@ -592,11 +603,17 @@ module Ada__containers__formal_ordered_sets__replace_element
        replace_element co1 cu e co2 -> not witness e = w ->
        find_ co1 w = find_ co2 w
 
-  val replace_element (co:ref set) (cu:cursor) (e:Ada__containers__formal_ordered_sets__element_type.base_type) : unit
-     requires { position !co cu > 0 /\ (find_ !co (witness e) = no_element \/ find_ !co (witness e) = cu) }
+  val replace_element (co:ref Ada__containers__formal_ordered_sets__set.__split_fields) (cap : Ada__containers__formal_ordered_sets__set.__split_discrs) (cu:cursor) (e:Ada__containers__formal_ordered_sets__element_type.base_type) : unit
+     requires { let rec_co = {Ada__containers__formal_ordered_sets__set.__split_fields = !co;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+                   position rec_co cu > 0 /\ (find_ rec_co (witness e) = no_element \/ find_ rec_co (witness e) = cu) }
      writes     { co }
      reads      { co }
-     ensures { replace_element (old !co) cu e !co }
+     ensures { let rec_co = {Ada__containers__formal_ordered_sets__set.__split_fields = !co;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_ordered_sets__set.__split_fields = old !co;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+                   replace_element old_co cu e rec_co }
 end
 
 module Ada__containers__formal_ordered_sets__insert
@@ -662,12 +679,18 @@ module Ada__containers__formal_ordered_sets__insert
      [insert co1 e co2, find_ co1 w| insert co1 e co2, find_ co2 w].
      insert co1 e co2 -> not witness e = w -> find_ co1 w = find_ co2 w
 
-  val insert (co:ref set) (e:Ada__containers__formal_ordered_sets__element_type.base_type)  (p:ref cursor) (inserted : ref bool) : unit
-     requires { length_ !co < capacity !co }
+  val insert (co:ref Ada__containers__formal_ordered_sets__set.__split_fields) (cap : Ada__containers__formal_ordered_sets__set.__split_discrs) (e:Ada__containers__formal_ordered_sets__element_type.base_type)  (p:ref cursor) (inserted : ref bool) : unit
+     requires { let rec_co = {Ada__containers__formal_ordered_sets__set.__split_fields = !co;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+                   length_ rec_co < capacity rec_co }
      writes     { co, p, inserted }
      reads      { co }
-     ensures { (!inserted = True <-> find_(old  !co) (witness e) = no_element) /\ !p = find_ !co (witness e) /\
-                          if !inserted = True then (insert (old !co) e !co)
+     ensures { let rec_co = {Ada__containers__formal_ordered_sets__set.__split_fields = !co;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_ordered_sets__set.__split_fields = old !co;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+                   (!inserted = True <-> find_ old_co (witness e) = no_element) /\ !p = find_ rec_co (witness e) /\
+                          if !inserted = True then (insert old_co e rec_co)
                                                                  else (!co = old !co) }
 end
 
@@ -683,11 +706,17 @@ module Ada__containers__formal_ordered_sets__insert__2
   use import Ada__containers__formal_ordered_sets__insert
   use import Ada__containers__formal_ordered_sets__find
 
-  val insert__2 (co:ref set) (e:Ada__containers__formal_ordered_sets__element_type.base_type) : unit
-     requires { length_ !co < capacity !co /\ find_ !co (witness e) = no_element }
+  val insert__2 (co:ref Ada__containers__formal_ordered_sets__set.__split_fields) (cap : Ada__containers__formal_ordered_sets__set.__split_discrs) (e:Ada__containers__formal_ordered_sets__element_type.base_type) : unit
+     requires { let rec_co = {Ada__containers__formal_ordered_sets__set.__split_fields = !co;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+                   length_ rec_co < capacity rec_co /\ find_ rec_co (witness e) = no_element }
      writes     { co }
      reads      { co }
-     ensures { insert (old !co) e !co }
+     ensures { let rec_co = {Ada__containers__formal_ordered_sets__set.__split_fields = !co;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_ordered_sets__set.__split_fields = old !co;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+                   insert old_co e rec_co }
 end
 
 module Ada__containers__formal_ordered_sets__delete
@@ -751,11 +780,17 @@ module Ada__containers__formal_ordered_sets__delete
      find_ co1 w| delete co1 cu co2, find_ co2 w].
      delete co1 cu co2 -> not witness (element__logic co1 cu) = w -> find_ co1 w = find_ co2 w
 
-  val delete (co:ref set) (e : Ada__containers__formal_ordered_sets__element_type.base_type) : unit
-     requires { find_ !co (witness e) <> no_element }
+  val delete (co:ref Ada__containers__formal_ordered_sets__set.__split_fields) (cap : Ada__containers__formal_ordered_sets__set.__split_discrs) (e : Ada__containers__formal_ordered_sets__element_type.base_type) : unit
+     requires { let rec_co = {Ada__containers__formal_ordered_sets__set.__split_fields = !co;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+                   find_ rec_co (witness e) <> no_element }
      writes     { co }
      reads      { co }
-     ensures { delete (old !co) (find_ (old !co) (witness e)) !co }
+     ensures { let rec_co = {Ada__containers__formal_ordered_sets__set.__split_fields = !co;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_ordered_sets__set.__split_fields = old !co;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+                   delete old_co (find_ old_co (witness e)) rec_co }
 end
 
 module Ada__containers__formal_ordered_sets__delete__2
@@ -767,11 +802,17 @@ module Ada__containers__formal_ordered_sets__delete__2
   use import Ada__containers__formal_ordered_sets__no_element
   use import Ada__containers__formal_ordered_sets__delete
 
-  val delete__2 (co:ref set) (cu:ref cursor) : unit
-     requires { position !co !cu > 0 }
+  val delete__2 (co:ref Ada__containers__formal_ordered_sets__set.__split_fields) (cap : Ada__containers__formal_ordered_sets__set.__split_discrs) (cu:ref cursor) : unit
+     requires { let rec_co = {Ada__containers__formal_ordered_sets__set.__split_fields = !co;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+                   position rec_co !cu > 0 }
      writes     { co, cu }
      reads      { co }
-     ensures { delete (old !co) (old !cu) !co /\ !cu = no_element}
+     ensures { let rec_co = {Ada__containers__formal_ordered_sets__set.__split_fields = !co;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_ordered_sets__set.__split_fields = old !co;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+                   delete old_co (old !cu) rec_co /\ !cu = no_element}
  end
 
 module Ada__containers__formal_ordered_sets__delete_first
@@ -784,10 +825,14 @@ module Ada__containers__formal_ordered_sets__delete_first
   use import Ada__containers__formal_ordered_sets__first
   use import Ada__containers__formal_ordered_sets__delete
 
-  val delete__first (co:ref set) : unit
+  val delete__first (co:ref Ada__containers__formal_ordered_sets__set.__split_fields) (cap : Ada__containers__formal_ordered_sets__set.__split_discrs) : unit
      writes     { co }
      reads      { co }
-     ensures { if length_ (old !co) = 0 then !co = (old !co) else delete (old !co) (first__logic (old !co)) !co }
+     ensures { let rec_co = {Ada__containers__formal_ordered_sets__set.__split_fields = !co;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_ordered_sets__set.__split_fields = old !co;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+                   if length_ old_co = 0 then !co = (old !co) else delete old_co (first__logic old_co) rec_co }
  end
 
 module Ada__containers__formal_ordered_sets__delete_last
@@ -800,10 +845,14 @@ module Ada__containers__formal_ordered_sets__delete_last
   use import Ada__containers__formal_ordered_sets__last
   use import Ada__containers__formal_ordered_sets__delete
 
-  val delete__last (co:ref set) : unit
+  val delete__last (co:ref Ada__containers__formal_ordered_sets__set.__split_fields) (cap : Ada__containers__formal_ordered_sets__set.__split_discrs) : unit
      writes     { co }
      reads      { co }
-     ensures { if length_ (old !co) = 0 then !co = (old !co) else delete (old !co) (last__logic (old !co)) !co }
+     ensures { let rec_co = {Ada__containers__formal_ordered_sets__set.__split_fields = !co;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_ordered_sets__set.__split_fields = old !co;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+                   if length_ old_co = 0 then !co = (old !co) else delete old_co (last__logic old_co) rec_co }
  end
 
 module Ada__containers__formal_ordered_sets__include
@@ -819,12 +868,18 @@ module Ada__containers__formal_ordered_sets__include
   use import Ada__containers__formal_ordered_sets__insert
   use import Ada__containers__formal_ordered_sets__find
 
-  val include (co:ref set) (e :Ada__containers__formal_ordered_sets__element_type.base_type) : unit
-     requires {  length_ !co  < capacity !co}
+  val include (co:ref Ada__containers__formal_ordered_sets__set.__split_fields) (cap : Ada__containers__formal_ordered_sets__set.__split_discrs) (e :Ada__containers__formal_ordered_sets__element_type.base_type) : unit
+     requires { let rec_co = {Ada__containers__formal_ordered_sets__set.__split_fields = !co;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+                   length_ rec_co  < capacity rec_co}
      writes     { co }
      reads      { co }
-     ensures { if find_ (old !co) (witness e) <> no_element then replace (old !co) e !co
-                         else insert (old !co) e !co  }
+     ensures { let rec_co = {Ada__containers__formal_ordered_sets__set.__split_fields = !co;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_ordered_sets__set.__split_fields = old !co;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+                   if find_ old_co (witness e) <> no_element then replace old_co e rec_co
+                         else insert old_co e rec_co  }
 end
 
 module Ada__containers__formal_ordered_sets__exclude
@@ -839,11 +894,15 @@ module Ada__containers__formal_ordered_sets__exclude
   use import Ada__containers__formal_ordered_sets__delete
   use import Ada__containers__formal_ordered_sets__find
 
-  val exclude (co:ref set) (e :Ada__containers__formal_ordered_sets__element_type.base_type) : unit
+  val exclude (co:ref Ada__containers__formal_ordered_sets__set.__split_fields) (cap : Ada__containers__formal_ordered_sets__set.__split_discrs) (e :Ada__containers__formal_ordered_sets__element_type.base_type) : unit
      writes     { co }
      reads      { co }
-     ensures { if find_ (old !co) (witness e) = no_element then  old !co = !co
-                         else delete (old !co) (find_ (old !co) (witness e)) !co  }
+     ensures { let rec_co = {Ada__containers__formal_ordered_sets__set.__split_fields = !co;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_ordered_sets__set.__split_fields = old !co;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+                   if find_ old_co (witness e) = no_element then  old !co = !co
+                         else delete old_co (find_ old_co (witness e)) rec_co  }
 end
 
 module Ada__containers__formal_ordered_sets__to_set
@@ -863,7 +922,7 @@ module Ada__containers__formal_ordered_sets__to_set
     length_ (to_set__logic e) = 1 /\ element__logic (to_set__logic e) (first__logic (to_set__logic e)) = e
 
  val  to_set  (e: Ada__containers__formal_ordered_sets__element_type.base_type) : set
-     ensures { result = to_set__logic e }
+     ensures { result = to_set__logic e /\ set_inv result }
 end
 
 module Ada__containers__formal_ordered_sets__has_element
@@ -1033,10 +1092,14 @@ module Ada__containers__formal_ordered_sets__intersection
       is_inter s1 s2 (intersection s1 s2) /\
        length_ (intersection s1 s2) = length_ (intersection s2 s1)
 
-  val intersection (co1: ref set) (co2:set) :unit
+  val intersection (co1:ref Ada__containers__formal_ordered_sets__set.__split_fields) (cap : Ada__containers__formal_ordered_sets__set.__split_discrs) (co2:set) :unit
      reads { co1 }
      writes { co1 }
-     ensures { !co1 = intersection (old !co1) co2 /\ capacity !co1 = capacity (old !co1) }
+     ensures { let rec_co1 = {Ada__containers__formal_ordered_sets__set.__split_fields = !co1;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+               let old_co1 = {Ada__containers__formal_ordered_sets__set.__split_fields = old !co1;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+                   rec_co1 = intersection old_co1 co2 }
 end
 
 module Ada__containers__formal_ordered_sets__intersection__2
@@ -1049,7 +1112,7 @@ module Ada__containers__formal_ordered_sets__intersection__2
   function intersection__2__logic "inline" (co1 co2 : set) : set = intersection co1 co2
 
   val intersection__2 (co1 co2 : set) : set
-    ensures { result = intersection co1 co2 }
+    ensures { result = intersection co1 co2 /\ set_inv result }
 end
 
 module Ada__containers__formal_ordered_sets__union
@@ -1075,11 +1138,17 @@ module Ada__containers__formal_ordered_sets__union
   axiom union_is_union :
     forall s1:set. forall s2:set [union s1 s2]. is_union s1 s2 (union s1 s2)
 
-  val union (co1: ref set) (co2:set) :unit
-     requires { length_ (union !co1 co2) <= capacity !co1}
+  val union (co1:ref Ada__containers__formal_ordered_sets__set.__split_fields) (cap : Ada__containers__formal_ordered_sets__set.__split_discrs)(co2:set) :unit
+     requires { let rec_co1 = {Ada__containers__formal_ordered_sets__set.__split_fields = !co1;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+                   length_ (union rec_co1 co2) <= capacity rec_co1}
      reads { co1 }
      writes { co1 }
-     ensures { !co1 = union (old !co1) co2 /\ capacity !co1 = capacity (old !co1) }
+     ensures { let rec_co1 = {Ada__containers__formal_ordered_sets__set.__split_fields = !co1;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+               let old_co1 = {Ada__containers__formal_ordered_sets__set.__split_fields = old !co1;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+                   rec_co1 = union old_co1 co2 }
 end
 
 module Ada__containers__formal_ordered_sets__union__2
@@ -1098,7 +1167,7 @@ module Ada__containers__formal_ordered_sets__union__2
 
   val union__2 (co1 co2 : set) : set
     requires { length_ (union co1 co2) <=  Ada__containers__count_type.last }
-    ensures { result = union co1 co2 }
+    ensures { result = union co1 co2 /\ set_inv result }
 end
 
 module Ada__containers__formal_ordered_sets__difference
@@ -1125,10 +1194,14 @@ module Ada__containers__formal_ordered_sets__difference
     forall s1:set.
      forall s2:set [difference s1 s2]. is_diff s1 s2 (difference s1 s2)
 
-  val difference (co1: ref set) (co2:set) :unit
+  val difference (co1:ref Ada__containers__formal_ordered_sets__set.__split_fields) (cap : Ada__containers__formal_ordered_sets__set.__split_discrs) (co2:set) :unit
      reads { co1 }
      writes { co1 }
-     ensures { !co1 = difference (old !co1) co2 /\ capacity !co1 = capacity (old !co1) }
+     ensures { let rec_co1 = {Ada__containers__formal_ordered_sets__set.__split_fields = !co1;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+               let old_co1 = {Ada__containers__formal_ordered_sets__set.__split_fields = old !co1;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+                   rec_co1 = difference old_co1 co2 }
 end
 
 module Ada__containers__formal_ordered_sets__difference__2
@@ -1141,7 +1214,7 @@ module Ada__containers__formal_ordered_sets__difference__2
   function difference__2__logic "inline" (co1 co2 : set) : set = difference co1 co2
 
   val difference__2 (co1 co2 : set) : set
-    ensures { result = difference co1 co2 }
+    ensures { result = difference co1 co2 /\ set_inv result }
 end
 
 module Ada__containers__formal_ordered_sets__symmetric_difference
@@ -1174,11 +1247,17 @@ module Ada__containers__formal_ordered_sets__symmetric_difference
      forall s2:set [symmetric_difference s1 s2].
       is_sdiff s1 s2 (symmetric_difference s1 s2)
 
-  val symmetric_difference (co1: ref set) (co2:set) :unit
-     requires { length_ (symmetric_difference !co1 co2) <= capacity !co1}
+  val symmetric_difference (co1:ref Ada__containers__formal_ordered_sets__set.__split_fields) (cap : Ada__containers__formal_ordered_sets__set.__split_discrs) (co2:set) :unit
+     requires { let rec_co1 = {Ada__containers__formal_ordered_sets__set.__split_fields = !co1;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+                   length_ (symmetric_difference rec_co1 co2) <= capacity rec_co1}
      reads { co1 }
      writes { co1 }
-     ensures { !co1 = symmetric_difference (old !co1) co2 /\ capacity !co1 = capacity (old !co1) }
+     ensures { let rec_co1 = {Ada__containers__formal_ordered_sets__set.__split_fields = !co1;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+               let old_co1 = {Ada__containers__formal_ordered_sets__set.__split_fields = old !co1;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+                   rec_co1 = symmetric_difference old_co1 co2 }
 end
 
 module Ada__containers__formal_ordered_sets__symmetric_difference__2
@@ -1199,7 +1278,7 @@ module Ada__containers__formal_ordered_sets__symmetric_difference__2
   val symmetric_difference__2 (co1 co2 : set) : set
     requires { length_ (symmetric_difference co1 co2) <=
     Ada__containers__count_type.last }
-    ensures { result = symmetric_difference co1 co2 }
+    ensures { result = symmetric_difference co1 co2 /\ set_inv result }
 end
 
 module Ada__containers__formal_ordered_sets__is_subset
@@ -1261,8 +1340,8 @@ module Ada__containers__formal_ordered_sets__reserve_capacity
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_ordered_sets__set
 
-  val reserve_capacity (co : ref set) (c :  int) : unit
-    requires { capacity !co >= c }
+  val reserve_capacity (co:ref Ada__containers__formal_ordered_sets__set.__split_fields) (cap : Ada__containers__formal_ordered_sets__set.__split_discrs) (c :  int) : unit
+    requires { Ada__containers__count_type.to_rep (cap.rec__capacity) >= c }
     ensures { !co = old !co }
 end
 
@@ -1286,9 +1365,11 @@ module Ada__containers__formal_ordered_sets__clear
   use import Ada__containers__formal_ordered_sets__set
   use import Ada__containers__formal_ordered_sets__length
 
-  val clear (co:ref set) : unit
+  val clear (co:ref Ada__containers__formal_ordered_sets__set.__split_fields) (cap : Ada__containers__formal_ordered_sets__set.__split_discrs) : unit
      writes     { co }
-     ensures { length_ !co = 0 /\ capacity !co = capacity (old !co) }
+     ensures { let rec_co = {Ada__containers__formal_ordered_sets__set.__split_fields = !co;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+                   length_ rec_co = 0 }
 end
 
 module Ada__containers__formal_ordered_sets__assign
@@ -1298,11 +1379,13 @@ module Ada__containers__formal_ordered_sets__assign
   use import Ada__containers__formal_ordered_sets__length
   use import Ada__containers__formal_ordered_sets__Oeq__2
 
-  val assign (target:ref set) (source:set) : unit
-     requires { capacity !target >= length_ source }
+  val assign (target:ref Ada__containers__formal_ordered_sets__set.__split_fields) (cap : Ada__containers__formal_ordered_sets__set.__split_discrs) (source:set) : unit
+     requires { Ada__containers__count_type.to_rep (cap.rec__capacity) >= length_ source }
      writes     { target }
      reads      { target }
-     ensures { oeq__2__logic !target source = True }
+     ensures { let rec_t = {Ada__containers__formal_ordered_sets__set.__split_fields = !target;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
+                   oeq__2__logic rec_t source = True }
 end
 
 module Ada__containers__formal_ordered_sets__move
@@ -1312,11 +1395,19 @@ module Ada__containers__formal_ordered_sets__move
   use import Ada__containers__formal_ordered_sets__length
   use import Ada__containers__formal_ordered_sets__Oeq__2
 
-  val move (target:ref set) (source:ref set) : unit
-     requires { capacity !target >= length_ !source }
+  val move (target:ref Ada__containers__formal_ordered_sets__set.__split_fields) (t_cap : Ada__containers__formal_ordered_sets__set.__split_discrs) (source:ref Ada__containers__formal_ordered_sets__set.__split_fields) (s_cap : Ada__containers__formal_ordered_sets__set.__split_discrs) : unit
+     requires { let rec_s = {Ada__containers__formal_ordered_sets__set.__split_fields = !source;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = s_cap}  in
+                   Ada__containers__count_type.to_rep (t_cap.rec__capacity) >= length_ rec_s }
      writes     { target, source }
      reads      { target, source }
-     ensures { oeq__2__logic !target (old !source) = True /\ length_ !source = 0 }
+     ensures { let rec_t = {Ada__containers__formal_ordered_sets__set.__split_fields = !target;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = t_cap}  in
+               let rec_s = {Ada__containers__formal_ordered_sets__set.__split_fields = !source;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = s_cap}  in
+               let old_s = {Ada__containers__formal_ordered_sets__set.__split_fields = old !source;
+                              Ada__containers__formal_ordered_sets__set.__split_discrs = s_cap}  in
+                   oeq__2__logic rec_t old_s = True /\ length_ rec_s = 0 }
 end
 
 module Ada__containers__formal_ordered_sets__copy
@@ -1336,5 +1427,5 @@ module Ada__containers__formal_ordered_sets__copy
 
   val copy (co: set) (cap:int) : set
      requires { cap = 0 \/ cap >= capacity co}
-     ensures { result = copy__logic co cap }
+     ensures { result = copy__logic co cap /\ set_inv result }
 end

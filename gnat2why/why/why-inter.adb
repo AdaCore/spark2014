@@ -396,9 +396,7 @@ package body Why.Inter is
          --  expected to be noop, so the base type is taken to be the same
          --  as the type in that case.
 
-         if Fullview_Not_In_SPARK (Typ) then
-            return EW_Abstract (Get_First_Ancestor_In_SPARK (Typ));
-         elsif Has_Record_Type (Typ) then
+         if Fullview_Not_In_SPARK (Typ) or else Has_Record_Type (Typ) then
             return EW_Abstract (Root_Record_Type (Typ));
          else
             return EW_Abstract (Typ);
@@ -761,7 +759,7 @@ package body Why.Inter is
       elsif Ekind (N) in Private_Kind
         or else Has_Private_Declaration (N)
       then
-         if Entity_In_SPARK (N) and then not Fullview_Not_In_SPARK (N) then
+         if Entity_In_SPARK (N) then
             if MUT (N) = N then
                return New_Kind_Base_Type (N, Kind);
             else
@@ -1111,11 +1109,10 @@ package body Why.Inter is
             Field : constant String :=
               To_String (WNE_Rec_Comp_Prefix) & Get_Name_String (Chars (E));
             Ada_N : constant Node_Id :=
-              (if Rec = Empty then
-                  Unique_Entity (Scope (E)) else Rec);
+              (if Rec = Empty then MUT (Scope (E)) else Rec);
             Module : constant W_Module_Id :=
               E_Module (if Rec = Empty and Ekind (E) = E_Discriminant then
-                             Unique_Entity (Root_Record_Type (Ada_N))
+                             Root_Record_Type (Ada_N)
                         else Ada_N);
          begin
             if Local then

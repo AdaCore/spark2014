@@ -71,8 +71,18 @@ package body SPARK_Util is
    -----------------------------
 
    procedure Add_Classwide_To_Tagged (Classwide, Ty : Entity_Id) is
+      Typ : Entity_Id := Ty;
    begin
-      Classwide_To_Tagged_Entities.Insert (Classwide, Ty);
+
+      --  Use partial view for type with fullview not in SPARK
+
+      if Full_To_Partial_Entities.Contains (Ty)
+        and then Fullview_Not_In_SPARK (Full_To_Partial_Entities.Element (Ty))
+      then
+         Typ := Full_To_Partial_Entities.Element (Ty);
+      end if;
+
+      Classwide_To_Tagged_Entities.Insert (Classwide, Typ);
    end Add_Classwide_To_Tagged;
 
    -------------------------------
@@ -120,7 +130,7 @@ package body SPARK_Util is
                return False;
             end if;
 
-            Ancestor_Typ  := Underlying_Type (Etype (Ancestor_Part (N)));
+            Ancestor_Typ  := MUT (Etype (Ancestor_Part (N)));
             Ancestor_Comp := First_Component_Or_Discriminant (Ancestor_Typ);
 
             while Present (Ancestor_Comp) loop
@@ -148,7 +158,7 @@ package body SPARK_Util is
          end loop;
       end Skip_Ancestor_And_Generated_Components;
 
-      Typ         : constant Entity_Id := Underlying_Type (Etype (N));
+      Typ         : constant Entity_Id := MUT (Etype (N));
       Assocs      : List_Id;
       Component   : Entity_Id;
       Association : Node_Id;
@@ -340,45 +350,28 @@ package body SPARK_Util is
       return True;
    end Check_Needed_On_Conversion;
 
+   -----------------------------------
+   -- Component_Is_Visible_In_SPARK --
+   -----------------------------------
+
+   function Component_Is_Visible_In_SPARK (E : Entity_Id) return Boolean is
+      O : constant Entity_Id := Original_Record_Component (E);
+      Original_Record : constant Entity_Id := Scope (O);
+   begin
+      if Ekind (E) in E_Discriminant then
+         return True;
+      else
+         return Entity_In_SPARK (Original_Record)
+           and then not Fullview_Not_In_SPARK (Original_Record);
+      end if;
+   end Component_Is_Visible_In_SPARK;
+
    --------------------------
    -- Corresponding_Tagged --
    --------------------------
 
    function Corresponding_Tagged (Classwide : Entity_Id) return Entity_Id is
      (Classwide_To_Tagged_Entities.Element (Classwide));
-
-   ------------------
-   -- Count_Fields --
-   ------------------
-
-   function Count_Fields (E : Entity_Id) return Natural is
-      Field : Entity_Id := First_Component (E);
-      Count : Natural := 0;
-   begin
-      while Present (Field) loop
-         if not Is_Tag (Field) then
-            Count := Count + 1;
-         end if;
-         Next_Component (Field);
-      end loop;
-
-      --  Add one field for record types with a private ancestor, whose
-      --  components are not visible.
-
-      if Has_Private_Ancestor (E) then
-         Count := Count + 1;
-      end if;
-
-      --  Add one field for tagged types to represent the unknown extension
-      --  components. The field for the tag itself is stored directly in the
-      --  Why3 record.
-
-      if Is_Tagged_Type (E) then
-         Count := Count + 1;
-      end if;
-
-      return Count;
-   end Count_Fields;
 
    ---------------------------------------
    -- Count_Non_Inherited_Discriminants --
@@ -420,6 +413,89 @@ package body SPARK_Util is
 
       return Count;
    end Count_Non_Inherited_Discriminants;
+
+   ------------------------------
+   -- Count_Why_Regular_Fields --
+   ------------------------------
+
+   function Count_Why_Regular_Fields (E : Entity_Id) return Natural is
+      Field : Entity_Id;
+      Count : Natural := 0;
+   begin
+      if Is_Record_Type (E) then
+         Field := First_Component (E);
+         while Present (Field) loop
+            if not Is_Tag (Field)
+              and then Component_Is_Visible_In_SPARK (Field)
+            then
+               Count := Count + 1;
+            end if;
+            Next_Component (Field);
+         end loop;
+      end if;
+
+      --  Add one field for private types whose components are not visible.
+
+      if Is_Private_Type (E) then
+         Count := Count + 1;
+      end if;
+
+      --  Add one field for tagged types to represent the unknown extension
+      --  components. The field for the tag itself is stored directly in the
+      --  Why3 record.
+
+      if Is_Tagged_Type (E) then
+         Count := Count + 1;
+
+         --  Add one field for record types with a private ancestor, whose
+         --  components are not visible.
+
+         if Has_Private_Ancestor_Or_Root (E) then
+            Count := Count + 1;
+         end if;
+      end if;
+
+      return Count;
+   end Count_Why_Regular_Fields;
+
+   --------------------------------
+   -- Count_Why_Top_Level_Fields --
+   --------------------------------
+
+   function Count_Why_Top_Level_Fields (E : Entity_Id) return Natural is
+      Count : Natural := 0;
+   begin
+      --  Store discriminants in a separate sub-record field, so that
+      --  subprograms that cannot modify discriminants are passed this
+      --  sub-record by copy instead of by reference (with the split version
+      --  of the record).
+
+      if Number_Discriminants (E) > Natural'(0) then
+         Count := Count + 1;
+      end if;
+
+      --  Store components in a separate sub-record field. This includes:
+      --    . visible components of the type
+      --    . invisible components and discriminants of a private ancestor
+      --    . invisible components of a derived type
+
+      if Count_Why_Regular_Fields (E) > 0 then
+         Count := Count + 1;
+      end if;
+
+      --  Directly store the attr__constrained and __tag fields in the record,
+      --  as these fields cannot be modified after object creation.
+
+      if not Is_Constrained (E) and then Has_Defaulted_Discriminants (E) then
+         Count := Count + 1;
+      end if;
+
+      if Is_Tagged_Type (E) then
+         Count := Count + 1;
+      end if;
+
+      return Count;
+   end Count_Why_Top_Level_Fields;
 
    ----------------------------
    -- Default_Initialization --
@@ -1855,6 +1931,27 @@ package body SPARK_Util is
       return True;
    end Has_No_Output;
 
+   ----------------------------------
+   -- Has_Private_Ancestor_Or_Root --
+   ----------------------------------
+
+   function Has_Private_Ancestor_Or_Root (E : Entity_Id) return Boolean is
+   begin
+      if not Is_Tagged_Type (E) then
+         return False;
+      end if;
+
+      if Has_Private_Ancestor (E) then
+         return True;
+      end if;
+
+      declare
+         Root : constant Entity_Id := Root_Record_Type (E);
+      begin
+         return E /= Root and then Fullview_Not_In_SPARK (Root);
+      end;
+   end Has_Private_Ancestor_Or_Root;
+
    -----------------------------------
    -- Has_Static_Discrete_Predicate --
    -----------------------------------
@@ -2744,10 +2841,15 @@ package body SPARK_Util is
       Typ : Entity_Id := T;
    begin
       loop
-         --  For types in packages with external axioms, do not consider the
-         --  underlying type.
+         --  For types whose ultimate fullview is not in SPARK, fullviews are
+         --  not translated.
 
-         if Entity_In_External_Axioms (Typ) then
+         if not Entity_In_SPARK (Typ) or else Fullview_Not_In_SPARK (Typ) then
+
+            if Is_Full_View (Typ) then
+               Typ := Partial_View (Typ);
+            end if;
+
             return Typ;
          elsif Ekind (Typ) in Private_Kind then
             Typ := Underlying_Type (Typ);
@@ -2866,7 +2968,7 @@ package body SPARK_Util is
    ---------------------------
 
    function Root_Record_Component (E : Entity_Id) return Entity_Id is
-      Rec_Type : constant Entity_Id := Unique_Entity (Scope (E));
+      Rec_Type : constant Entity_Id := MUT (Scope (E));
       Root     : constant Entity_Id := Root_Record_Type (Rec_Type);
 
    begin
@@ -2931,14 +3033,29 @@ package body SPARK_Util is
    ----------------------
 
    function Root_Record_Type (E : Entity_Id) return Entity_Id is
-      Result : Entity_Id := E;
-
+      Result   : Entity_Id := Empty;
+      Ancestor : Entity_Id := E;
    begin
       --  Climb the type derivation chain with Root_Type, applying
-      --  Underlying_Type to pass private type boundaries.
+      --  Underlying_Type or Get_First_Ancestor_In_SPARK to pass private type
+      --  boundaries.
 
-      while Underlying_Type (Root_Type (Result)) /= Result loop
-         Result := Underlying_Type (Root_Type (Result));
+      while Ancestor /= Result loop
+         pragma Assert (Entity_In_SPARK (Ancestor));
+
+         Result := Ancestor;
+         Ancestor := Root_Type (Result);
+
+         if not Entity_In_SPARK (Ancestor) then
+            pragma Assert (Fullview_Not_In_SPARK (Result));
+            Ancestor := Result;
+         end if;
+
+         if Fullview_Not_In_SPARK (Ancestor) then
+            Ancestor := Get_First_Ancestor_In_SPARK (Ancestor);
+         else
+            Ancestor := Underlying_Type (Ancestor);
+         end if;
       end loop;
 
       return Result;

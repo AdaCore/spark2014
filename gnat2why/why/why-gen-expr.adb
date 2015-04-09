@@ -40,7 +40,6 @@ with Sem_Eval;                use Sem_Eval;
 with Sem_Util;                use Sem_Util;
 with Sinfo;                   use Sinfo;
 with Sinput;                  use Sinput;
-with SPARK_Definition;        use SPARK_Definition;
 with SPARK_Util;              use SPARK_Util;
 with Stand;                   use Stand;
 with String_Utils;            use String_Utils;
@@ -605,17 +604,9 @@ package body Why.Gen.Expr is
 
    begin
 
-      if Is_Private_Conversion (From, To) then
-         --  No conversion is needed between private types, but a discriminant
-         --  check may be needed.
-
-         T := Insert_Private_Conversion (Domain     => Domain,
-                                         Ada_Node   => Ada_Node,
-                                         Expr       => T,
-                                         To         => To,
-                                         Need_Check => Check_Needed);
-
-      elsif Is_Record_Conversion (From, To) then
+      if Is_Private_Conversion (From, To)
+        or else Is_Record_Conversion (From, To)
+      then
          --  Conversion between record types need to go through their common
          --  root record type. A discriminant check may be needed. Currently
          --  perform it on all discriminant record types, as the flag
@@ -686,46 +677,6 @@ package body Why.Gen.Expr is
 
       return T;
    end Insert_Checked_Conversion;
-
-   -------------------------------
-   -- Insert_Private_Conversion --
-   -------------------------------
-
-   function Insert_Private_Conversion
-     (Ada_Node   : Node_Id;
-      Domain     : EW_Domain;
-      Expr       : W_Expr_Id;
-      To         : W_Type_Id;
-      Need_Check : Boolean := False) return W_Expr_Id
-   is
-      From       : constant W_Type_Id := Get_Type (Expr);
-
-      L : constant Node_Id := Get_Ada_Node (+From);
-      R : constant Node_Id := Get_Ada_Node (+To);
-
-      pragma Assert (Get_First_Ancestor_In_SPARK (L) =
-                       Get_First_Ancestor_In_SPARK (R));
-
-   begin
-      --  When From = To and no check needs to be inserted, do nothing
-
-      if not Need_Check
-        or else To = From
-        or else not Has_Discriminants (L)
-        or else Get_First_Ancestor_In_SPARK (L) = R
-      then
-         return Expr;
-      end if;
-
-      --  No need for a conversion as private types have in fact the same type.
-      --  We only output the checks.
-
-      if Domain = EW_Prog and Need_Check then
-         return +Insert_Subtype_Discriminant_Check (Ada_Node, R, +Expr);
-      end if;
-
-      return Expr;
-   end Insert_Private_Conversion;
 
    ------------------------------
    -- Insert_Record_Conversion --
@@ -1708,13 +1659,9 @@ package body Why.Gen.Expr is
          return Expr;
       end if;
 
-      if Is_Private_Conversion (To, From) then
-         return Insert_Private_Conversion (Domain     => Domain,
-                                           Ada_Node   => Ada_Node,
-                                           Expr       => Expr,
-                                           To         => To);
-
-      elsif Is_Record_Conversion (To, From) then
+      if Is_Private_Conversion (To, From)
+        or else Is_Record_Conversion (To, From)
+      then
          return Insert_Record_Conversion (Domain   => Domain,
                                           Ada_Node => Ada_Node,
                                           Expr     => Expr,
@@ -2226,14 +2173,12 @@ package body Why.Gen.Expr is
       elsif Has_Discriminants (Ty) and then Is_Constrained (Ty) then
          declare
             Base_Expr : constant W_Expr_Id :=
-              (if Is_Record_Type (Ty) then
-                    Insert_Single_Conversion (Domain   => EW_Term,
-                                              Ada_Node => Ty,
-                                              To       =>
-                                                EW_Abstract
-                                                  (Root_Record_Type (Ty)),
-                                              Expr     => Expr)
-               else Expr);
+              Insert_Single_Conversion (Domain   => EW_Term,
+                                        Ada_Node => Ty,
+                                        To       =>
+                                          EW_Abstract
+                                            (Root_Record_Type (Ty)),
+                                        Expr     => Expr);
          begin
             return New_Call
               (Name   => Range_Pred_Name (Ty),

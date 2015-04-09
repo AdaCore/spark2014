@@ -41,12 +41,7 @@ package Why.Gen.Records is
       Theory  : W_Theory_Declaration_Id;
       E       : Entity_Id);
    --  Emit all necessary Why3 declarations to support Ada records. This also
-   --  supports variant records.
-
-   procedure Declare_Private_Type
-     (Theory : W_Theory_Declaration_Id;
-      E      : Entity_Id);
-   --  Make the necessary declarations for a private type
+   --  supports variant records and private types.
 
    function New_Ada_Record_Access
      (Ada_Node : Node_Id;
@@ -211,15 +206,7 @@ package Why.Gen.Records is
    --  Type of the top-level Why3 field for discriminants of E.
 
    function Field_Type_For_Fields (E : Entity_Id) return W_Type_Id with
-     Pre => Ekind (E) in Type_Kind and then
-     (Count_Fields (E) > 0 or else Is_Tagged_Type (E));
+     Pre => Ekind (E) in Type_Kind and then Count_Why_Regular_Fields (E) > 0;
    --  Type of the top-level Why3 field for fields of E.
-
-   function Is_Empty_Record_Type_In_Why (E : Entity_Id) return Boolean with
-     Pre => Is_Record_Type (E);
-   --  Checks wether an Ada record type will be translated to an empty Why
-   --  record.
-   --  @param E the Ada record type
-   --  @return whether the translation of E will be a record type or not.
 
 end Why.Gen.Records;

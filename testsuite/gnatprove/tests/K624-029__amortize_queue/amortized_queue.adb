@@ -10,6 +10,7 @@ package body Amortized_Queue is pragma SPARK_Mode (On);
               (for all I in 1 .. Idx =>
                    Element (Result, I) = Element (Left, I));
          end loop;
+         pragma Assert (Integer (Length (Result)) = Last_Index (Left));
          for Idx in 1 .. Last_Index (Right) loop
             Append (Result, Element (Right, Idx));
             pragma Loop_Invariant(Integer (Length (Result)) = Last_Index (Left) + Idx);

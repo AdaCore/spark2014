@@ -140,11 +140,8 @@ package body Why.Gen.Binders is
       --  If we are not in a function declaration, we use the actual subtype
       --  for the parameter if one is provided.
 
-      Ty       : constant Entity_Id :=
-        (if Ekind (Use_Ty) in Type_Kind
-         and then not Fullview_Not_In_SPARK (Use_Ty)
-         then MUT (Use_Ty) else Use_Ty);
-      --  We use the most underlying subtype if it is in spark.
+      Ty      : constant Entity_Id :=
+        (if Ekind (Use_Ty) in Type_Kind then MUT (Use_Ty) else Use_Ty);
 
    begin
       if Entity_In_SPARK (Ty)
@@ -199,9 +196,13 @@ package body Why.Gen.Binders is
                     Bounds  => Bounds);
          end;
       elsif Entity_In_SPARK (Ty)
-        and then Is_Record_Type (Ty)
+        and then (Is_Record_Type (Ty) or else Is_Private_Type (Ty))
         and then Is_Mutable_In_Why (E)
-        and then not Is_Empty_Record_Type_In_Why (Ty)
+        and then Count_Why_Top_Level_Fields (Ty) > 0
+        and then (not Fullview_Not_In_SPARK (Ty)
+                  or else Get_First_Ancestor_In_SPARK (Ty) /= Ty
+                  or else Count_Why_Top_Level_Fields (Ty) > 1)
+                  --  Do not use split form for completely private types.
       then
          declare
             Name   : constant W_Identifier_Id :=
@@ -218,7 +219,7 @@ package body Why.Gen.Binders is
               not Is_Constrained (Ty) and then
               Has_Defaulted_Discriminants (Ty);
          begin
-            if Count_Fields (Ty) > 0 or else Is_Tagged_Type (Ty) then
+            if Count_Why_Regular_Fields (Ty) > 0 then
                Result.Fields :=
                  (Present => True,
                   Binder  =>

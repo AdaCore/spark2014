@@ -1,9 +1,4 @@
-controller.adb:9:04: "Generator" is not allowed in SPARK
-controller.adb:9:04: "State" is not allowed in SPARK
-controller.adb:9:04: instantiation error at a-nudira.ads:69
-controller.adb:9:04: instantiation error at a-nudira.ads:71
-controller.adb:9:04: violation of pragma SPARK_Mode at line 1
-controller.adb:9:04: violation of pragma SPARK_Mode at line 1
+controller.adb:28:40: medium: range check might fail
 tetris.adb:9:21: info: length check proved
 tetris.adb:9:32: info: length check proved
 tetris.adb:41:16: info: initialization of "Xnew" proved
@@ -24,7 +19,3 @@ tetris.ads:53:31: warning: "P" is not modified, could be IN
 tetris.ads:53:31: warning: unused variable "P"
 tetris.ads:59:13: info: initialization of "is_valid_move" proved
 tetris.ads:63:13: info: initialization of "is_empty_cell" proved
-   compilation of controller.adb failed
-
-
-gnatprove: error during flow analysis and proof

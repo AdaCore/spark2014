@@ -725,9 +725,22 @@ package body Gnat2Why.Driver is
                         or else No (Full_View (E))
                         or else Fullview_Not_In_SPARK (E))
             then
-               Translate_Type (File, E, New_Theory);
-               if New_Theory then
-                  Generate_Type_Completion (Compl_File, E);
+
+               --  Full views that are themeselves private types should not be
+               --  considered in SPARK if the underlying type is not in SPARK,
+               --  otherwise we end up with two definitions for the same
+               --  private type.
+
+               if Is_Private_Type (E)
+                 and then Is_Full_View (E)
+                 and then Fullview_Not_In_SPARK (E)
+               then
+                  null;
+               else
+                  Translate_Type (File, E, New_Theory);
+                  if New_Theory then
+                     Generate_Type_Completion (Compl_File, E);
+                  end if;
                end if;
             end if;
 

@@ -120,7 +120,7 @@ package body Why.Atree.Modules is
                     S : Why_Name_Enum) return W_Identifier_Id
    is
       use Why_Symb_Maps;
-      E2 : constant Entity_Id := Unique_Entity (E);
+      E2 : constant Entity_Id := MUT (E);
       Key : constant Why_Symb :=  Why_Symb'(Entity => E2, Symb => S);
       C : constant Cursor := Why_Symb_Map.Find (Key);
    begin
@@ -1336,7 +1336,7 @@ package body Why.Atree.Modules is
 
       --  symbols for scalar types
 
-      if Is_Scalar_Type (Unique_Entity (E)) then
+      if Is_Scalar_Type (E) then
          declare
             Base : constant W_Type_Id :=
               Get_EW_Term_Type (E);
@@ -1604,10 +1604,12 @@ package body Why.Atree.Modules is
 
       --  symbols for record types
 
-      elsif Is_Record_Type (Unique_Entity (E)) then
+      elsif Is_Record_Type (E)
+        or else Fullview_Not_In_SPARK (E)
+      then
          declare
             Root    : constant Entity_Id :=
-              Unique_Entity (Root_Record_Type (E));
+              Root_Record_Type (E);
             Root_Ty : constant W_Type_Id :=
               New_Named_Type (To_Why_Type (Root));
          begin

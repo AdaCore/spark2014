@@ -16,11 +16,14 @@ module Ada__containers__formal_ordered_maps__map
   use Ada__containers__hash_type
   use Ada__containers__count_type
 
-  type map = __private
-
   type __split_discrs = {rec__capacity : Ada__containers__count_type.count_type}
 
-  function __split_discrs map : __split_discrs
+  type __split_fields = { rec__main__ : __private }
+
+  type map = { __split_discrs : __split_discrs; __split_fields : __split_fields }
+
+  predicate map_inv "inline" (l : map) =
+     l = { __split_discrs = { rec__capacity = l.__split_discrs.rec__capacity }; __split_fields = { rec__main__ = l.__split_fields.rec__main__ } }
 
    function capacity  (co : map) : int =
           Ada__containers__count_type.to_rep (rec__capacity (__split_discrs co))
@@ -53,7 +56,9 @@ module Ada__containers__formal_ordered_maps__cursor
   use import Ada__containers__formal_ordered_maps__map
   use import Ada__containers__formal_ordered_maps__length
 
-  type cursor = __private
+  type __split_fields = { rec__main__ : __private }
+
+  type cursor = { __split_fields : __split_fields }
 
   function dummy : cursor
 
@@ -527,7 +532,7 @@ module Ada__containers__formal_ordered_maps__first_to_previous
 
   val first_to_previous (co:map) (cu:cursor) : map
      requires { cu = no_element \/ position co cu > 0 }
-     ensures  { result = first_to_previous__logic co cu }
+     ensures  { result = first_to_previous__logic co cu /\ map_inv result}
 end
 
 module Ada__containers__formal_ordered_maps__current_to_last
@@ -589,7 +594,7 @@ module Ada__containers__formal_ordered_maps__current_to_last
 
   val current_to_last (co:map) (cu:cursor) : map
      requires { cu = no_element \/ position co cu > 0 }
-     ensures  { result = current_to_last__logic co cu }
+     ensures  { result = current_to_last__logic co cu /\ map_inv result }
 end
 
 module Ada__containers__formal_ordered_maps__replace
@@ -622,11 +627,17 @@ module Ada__containers__formal_ordered_maps__replace
           (forall w:real [find_ co1 w | find_ co2 w]. find_ co1 w = find_ co2 w)) /\
      capacity co1 = capacity co2
 
-  val replace (co :ref map) (k:Ada__containers__formal_ordered_maps__key_type.base_type) (e:Ada__containers__formal_ordered_maps__element_type.base_type) : unit
-     requires { find_ !co (witness k) <> no_element }
+  val replace (co:ref Ada__containers__formal_ordered_maps__map.__split_fields) (cap : Ada__containers__formal_ordered_maps__map.__split_discrs) (k:Ada__containers__formal_ordered_maps__key_type.base_type) (e:Ada__containers__formal_ordered_maps__element_type.base_type) : unit
+     requires { let rec_co = {Ada__containers__formal_ordered_maps__map.__split_fields = !co;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+                   find_ rec_co (witness k) <> no_element }
      writes { co }
      reads { co }
-     ensures { replace (old !co) k e !co }
+     ensures { let rec_co = {Ada__containers__formal_ordered_maps__map.__split_fields = !co;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_ordered_maps__map.__split_fields = old !co;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+                   replace old_co k e rec_co }
 end
 
 module Ada__containers__formal_ordered_maps__replace_element
@@ -686,11 +697,17 @@ module Ada__containers__formal_ordered_maps__replace_element
      | replace_element co1 cu e co2, find_ co1 w].
        replace_element co1 cu e co2 -> find_ co1 w = find_ co2 w
 
-  val replace_element (co:ref map) (cu:cursor) (e:Ada__containers__formal_ordered_maps__element_type.base_type) : unit
-     requires { position !co cu > 0 }
+  val replace_element (co:ref Ada__containers__formal_ordered_maps__map.__split_fields) (cap : Ada__containers__formal_ordered_maps__map.__split_discrs) (cu:cursor) (e:Ada__containers__formal_ordered_maps__element_type.base_type) : unit
+     requires { let rec_co = {Ada__containers__formal_ordered_maps__map.__split_fields = !co;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+                   position rec_co cu > 0 }
      writes     { co }
      reads      { co }
-     ensures { replace_element (old !co) cu e !co }
+     ensures { let rec_co = {Ada__containers__formal_ordered_maps__map.__split_fields = !co;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_ordered_maps__map.__split_fields = old !co;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+                   replace_element old_co cu e rec_co }
 end
 
 module Ada__containers__formal_ordered_maps__insert
@@ -766,12 +783,18 @@ module Ada__containers__formal_ordered_maps__insert
      [insert co1 k e co2, find_ co1 w| insert co1 k e co2, find_ co2 w].
       insert co1 k e co2 -> not witness k = w -> find_ co1 w = find_ co2 w
 
-  val insert (co:ref map) (k:Ada__containers__formal_ordered_maps__key_type.base_type) (e:Ada__containers__formal_ordered_maps__element_type.base_type)  (p:ref cursor) (inserted : ref bool) : unit
-     requires { length_ !co < capacity !co }
+  val insert (co:ref Ada__containers__formal_ordered_maps__map.__split_fields) (cap : Ada__containers__formal_ordered_maps__map.__split_discrs) (k:Ada__containers__formal_ordered_maps__key_type.base_type) (e:Ada__containers__formal_ordered_maps__element_type.base_type)  (p:ref cursor) (inserted : ref bool) : unit
+     requires { let rec_co = {Ada__containers__formal_ordered_maps__map.__split_fields = !co;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+                   length_ rec_co < capacity rec_co }
      writes     { co, p, inserted }
      reads      { co }
-     ensures { (!inserted = True <-> find_(old  !co) (witness k) = no_element) /\ !p = find_ !co (witness k) /\
-                          if !inserted = True then (insert (old !co) k e !co)
+     ensures { let rec_co = {Ada__containers__formal_ordered_maps__map.__split_fields = !co;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_ordered_maps__map.__split_fields = old !co;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+                   (!inserted = True <-> find_ old_co (witness k) = no_element) /\ !p = find_ rec_co (witness k) /\
+                          if !inserted = True then (insert old_co k e rec_co)
                                                                  else (!co = old !co) }
 end
 
@@ -787,11 +810,17 @@ module Ada__containers__formal_ordered_maps__insert__2
   use import Ada__containers__formal_ordered_maps__insert
   use import Ada__containers__formal_ordered_maps__find
 
-  val insert__2 (co:ref map)  (k:Ada__containers__formal_ordered_maps__key_type.base_type) (e:Ada__containers__formal_ordered_maps__element_type.base_type) : unit
-     requires { length_ !co < capacity !co /\ find_ !co (witness k) = no_element }
+  val insert__2 (co:ref Ada__containers__formal_ordered_maps__map.__split_fields) (cap : Ada__containers__formal_ordered_maps__map.__split_discrs)  (k:Ada__containers__formal_ordered_maps__key_type.base_type) (e:Ada__containers__formal_ordered_maps__element_type.base_type) : unit
+     requires { let rec_co = {Ada__containers__formal_ordered_maps__map.__split_fields = !co;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+                   length_ rec_co < capacity rec_co /\ find_ rec_co (witness k) = no_element }
      writes     { co }
      reads      { co }
-     ensures { insert (old !co) k e !co }
+     ensures { let rec_co = {Ada__containers__formal_ordered_maps__map.__split_fields = !co;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_ordered_maps__map.__split_fields = old !co;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+                   insert old_co k e rec_co }
 end
 
 module Ada__containers__formal_ordered_maps__delete
@@ -864,11 +893,17 @@ module Ada__containers__formal_ordered_maps__delete
      find_ co1 w| delete co1 cu co2, find_ co2 w].
      delete co1 cu co2 -> not witness (key__logic co1 cu) = w -> find_ co1 w = find_ co2 w
 
-  val delete (co:ref map) (e : Ada__containers__formal_ordered_maps__key_type.base_type) : unit
-     requires { find_ !co (witness e) <> no_element }
+  val delete (co:ref Ada__containers__formal_ordered_maps__map.__split_fields) (cap : Ada__containers__formal_ordered_maps__map.__split_discrs) (e : Ada__containers__formal_ordered_maps__key_type.base_type) : unit
+     requires { let rec_co = {Ada__containers__formal_ordered_maps__map.__split_fields = !co;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+                   find_ rec_co (witness e) <> no_element }
      writes     { co }
      reads      { co }
-     ensures { delete (old !co) (find_ (old !co) (witness e)) !co }
+     ensures { let rec_co = {Ada__containers__formal_ordered_maps__map.__split_fields = !co;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_ordered_maps__map.__split_fields = old !co;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+                   delete old_co (find_ old_co (witness e)) rec_co }
 end
 
 module Ada__containers__formal_ordered_maps__delete__2
@@ -880,11 +915,17 @@ module Ada__containers__formal_ordered_maps__delete__2
   use import Ada__containers__formal_ordered_maps__no_element
   use import Ada__containers__formal_ordered_maps__delete
 
-  val delete__2 (co:ref map) (cu:ref cursor) : unit
-     requires { position !co !cu > 0 }
+  val delete__2 (co:ref Ada__containers__formal_ordered_maps__map.__split_fields) (cap : Ada__containers__formal_ordered_maps__map.__split_discrs) (cu:ref cursor) : unit
+     requires { let rec_co = {Ada__containers__formal_ordered_maps__map.__split_fields = !co;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+                   position rec_co !cu > 0 }
      writes     { co, cu }
      reads      { co }
-     ensures { delete (old !co) (old !cu) !co /\ !cu = no_element}
+     ensures { let rec_co = {Ada__containers__formal_ordered_maps__map.__split_fields = !co;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_ordered_maps__map.__split_fields = old !co;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+                   delete old_co (old !cu) rec_co /\ !cu = no_element}
  end
 
 module Ada__containers__formal_ordered_maps__delete_first
@@ -897,10 +938,14 @@ module Ada__containers__formal_ordered_maps__delete_first
   use import Ada__containers__formal_ordered_maps__first
   use import Ada__containers__formal_ordered_maps__delete
 
-  val delete__first (co:ref map) : unit
+  val delete__first (co:ref Ada__containers__formal_ordered_maps__map.__split_fields) (cap : Ada__containers__formal_ordered_maps__map.__split_discrs) : unit
      writes     { co }
      reads      { co }
-     ensures { if length_ (old !co) = 0 then !co = (old !co) else delete (old !co) (first__logic (old !co)) !co }
+     ensures { let rec_co = {Ada__containers__formal_ordered_maps__map.__split_fields = !co;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_ordered_maps__map.__split_fields = old !co;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+                   if length_ old_co = 0 then !co = (old !co) else delete old_co (first__logic old_co) rec_co }
  end
 
 module Ada__containers__formal_ordered_maps__delete_last
@@ -913,10 +958,14 @@ module Ada__containers__formal_ordered_maps__delete_last
   use import Ada__containers__formal_ordered_maps__last
   use import Ada__containers__formal_ordered_maps__delete
 
-  val delete__last (co:ref map) : unit
+  val delete__last (co:ref Ada__containers__formal_ordered_maps__map.__split_fields) (cap : Ada__containers__formal_ordered_maps__map.__split_discrs) : unit
      writes     { co }
      reads      { co }
-     ensures { if length_ (old !co) = 0 then !co = (old !co) else delete (old !co) (last__logic (old !co)) !co }
+     ensures { let rec_co = {Ada__containers__formal_ordered_maps__map.__split_fields = !co;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_ordered_maps__map.__split_fields = old !co;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+                   if length_ old_co = 0 then !co = (old !co) else delete old_co (last__logic old_co) rec_co }
  end
 
 module Ada__containers__formal_ordered_maps__include
@@ -932,12 +981,18 @@ module Ada__containers__formal_ordered_maps__include
   use import Ada__containers__formal_ordered_maps__insert
   use import Ada__containers__formal_ordered_maps__find
 
-  val include (co:ref map) (k :Ada__containers__formal_ordered_maps__key_type.base_type) (e :Ada__containers__formal_ordered_maps__element_type.base_type) : unit
-     requires {  length_ !co  < capacity !co}
+  val include (co:ref Ada__containers__formal_ordered_maps__map.__split_fields) (cap : Ada__containers__formal_ordered_maps__map.__split_discrs) (k :Ada__containers__formal_ordered_maps__key_type.base_type) (e :Ada__containers__formal_ordered_maps__element_type.base_type) : unit
+     requires {  let rec_co = {Ada__containers__formal_ordered_maps__map.__split_fields = !co;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+                   length_ rec_co  < capacity rec_co}
      writes     { co }
      reads      { co }
-     ensures { if find_ (old !co) (witness k) <> no_element then replace (old !co) k e !co
-                         else insert (old !co) k e !co  }
+     ensures { let rec_co = {Ada__containers__formal_ordered_maps__map.__split_fields = !co;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_ordered_maps__map.__split_fields = old !co;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+                   if find_ old_co (witness k) <> no_element then replace old_co k e rec_co
+                         else insert old_co k e rec_co  }
 end
 
 module Ada__containers__formal_ordered_maps__exclude
@@ -952,11 +1007,15 @@ module Ada__containers__formal_ordered_maps__exclude
   use import Ada__containers__formal_ordered_maps__delete
   use import Ada__containers__formal_ordered_maps__find
 
-  val exclude (co:ref map) (e :Ada__containers__formal_ordered_maps__key_type.base_type) : unit
+  val exclude (co:ref Ada__containers__formal_ordered_maps__map.__split_fields) (cap : Ada__containers__formal_ordered_maps__map.__split_discrs) (e :Ada__containers__formal_ordered_maps__key_type.base_type) : unit
      writes     { co }
      reads      { co }
-     ensures { if find_ (old !co) (witness e) = no_element then  old !co = !co
-                         else delete (old !co) (find_ (old !co) (witness e)) !co  }
+     ensures { let rec_co = {Ada__containers__formal_ordered_maps__map.__split_fields = !co;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+               let old_co = {Ada__containers__formal_ordered_maps__map.__split_fields = old !co;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+                   if find_ old_co (witness e) = no_element then  old !co = !co
+                         else delete old_co (find_ old_co (witness e)) rec_co  }
 end
 
 module Ada__containers__formal_ordered_maps__has_element
@@ -1120,8 +1179,8 @@ module Ada__containers__formal_ordered_maps__reserve_capacity
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_ordered_maps__map
 
-  val reserve_capacity (co : ref map) (c :  int) : unit
-    requires { capacity !co >= c }
+  val reserve_capacity (co:ref Ada__containers__formal_ordered_maps__map.__split_fields) (cap : Ada__containers__formal_ordered_maps__map.__split_discrs) (c :  int) : unit
+    requires { Ada__containers__count_type.to_rep cap.rec__capacity >= c }
     ensures { !co = old !co }
 end
 
@@ -1146,9 +1205,11 @@ module Ada__containers__formal_ordered_maps__clear
   use import Ada__containers__formal_ordered_maps__map
   use import Ada__containers__formal_ordered_maps__length
 
-  val clear (co:ref map) : unit
+  val clear (co:ref Ada__containers__formal_ordered_maps__map.__split_fields) (cap : Ada__containers__formal_ordered_maps__map.__split_discrs) : unit
      writes     { co }
-     ensures { length_ !co = 0 /\ capacity !co = capacity (old !co) }
+     ensures { let rec_co = {Ada__containers__formal_ordered_maps__map.__split_fields = !co;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+                   length_ rec_co = 0 }
 end
 
 module Ada__containers__formal_ordered_maps__assign
@@ -1158,11 +1219,13 @@ module Ada__containers__formal_ordered_maps__assign
   use import Ada__containers__formal_ordered_maps__length
   use import Ada__containers__formal_ordered_maps__Oeq__2
 
-  val assign (target:ref map) (source:map) : unit
-     requires { capacity !target >= length_ source }
+  val assign (target:ref Ada__containers__formal_ordered_maps__map.__split_fields) (cap : Ada__containers__formal_ordered_maps__map.__split_discrs) (source:map) : unit
+     requires { Ada__containers__count_type.to_rep (cap.rec__capacity) >= length_ source }
      writes     { target }
      reads      { target }
-     ensures { oeq__2__logic !target source = True }
+     ensures { let rec_t = {Ada__containers__formal_ordered_maps__map.__split_fields = !target;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = cap}  in
+                   oeq__2__logic rec_t source = True }
 end
 
 module Ada__containers__formal_ordered_maps__move
@@ -1172,11 +1235,19 @@ module Ada__containers__formal_ordered_maps__move
   use import Ada__containers__formal_ordered_maps__length
   use import Ada__containers__formal_ordered_maps__Oeq__2
 
-  val move (target:ref map) (source:ref map) : unit
-     requires { capacity !target >= length_ !source }
+  val move (target:ref Ada__containers__formal_ordered_maps__map.__split_fields) (t_cap : Ada__containers__formal_ordered_maps__map.__split_discrs) (source:ref Ada__containers__formal_ordered_maps__map.__split_fields) (s_cap : Ada__containers__formal_ordered_maps__map.__split_discrs) : unit
+     requires { let rec_s = {Ada__containers__formal_ordered_maps__map.__split_fields = !source;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = s_cap}  in
+                   Ada__containers__count_type.to_rep (t_cap.rec__capacity) >= length_ rec_s }
      writes     { target, source }
      reads      { target, source }
-     ensures { oeq__2__logic !target (old !source) = True /\ length_ !source = 0 }
+     ensures { let rec_s = {Ada__containers__formal_ordered_maps__map.__split_fields = !source;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = s_cap}  in
+               let rec_t = {Ada__containers__formal_ordered_maps__map.__split_fields = !target;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = t_cap}  in
+               let old_s = {Ada__containers__formal_ordered_maps__map.__split_fields = old !source;
+                              Ada__containers__formal_ordered_maps__map.__split_discrs = s_cap}  in
+                   oeq__2__logic rec_t old_s = True /\ length_ rec_s = 0 }
 end
 
 module Ada__containers__formal_ordered_maps__copy
@@ -1196,5 +1267,5 @@ module Ada__containers__formal_ordered_maps__copy
 
   val copy (co: map) (cap:int) : map
      requires { cap = 0 \/ cap >= capacity co}
-     ensures { result = copy__logic co cap }
+     ensures { result = copy__logic co cap /\ map_inv result }
 end

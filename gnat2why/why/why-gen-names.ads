@@ -192,6 +192,10 @@ package Why.Gen.Names is
       --  Prefix for Why3 field names corresponding to record components
       WNE_Rec_Comp_Prefix,
 
+      --  Name of the Why3 field representing invisible private components in
+      --  a private type.
+      WNE_Rec_Main,  --  rec__main__
+
       --  Name of the Why3 field representing extension components in a tagged
       --  type or a class-wide type.
       WNE_Rec_Extension,  --  rec__ext__
@@ -199,6 +203,9 @@ package Why.Gen.Names is
       --  Name of the Why3 field representing invisible ancestor components in
       --  record with a private ancestor.
       WNE_Rec_Ancestor,  --  rec__anc__
+
+      --  Suffix of the above main field, to be used in related functions
+      WNE_Rec_Main_Suffix,  --  main__
 
       --  Suffix of the above extension field, to be used in related functions
       WNE_Rec_Extension_Suffix,  --  ext__

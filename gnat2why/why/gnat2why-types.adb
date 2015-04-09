@@ -154,8 +154,6 @@ package body Gnat2Why.Types is
    begin
       if Is_Standard_Boolean_Type (E) then
          return Get_Name (EW_Bool_Type);
-      elsif Fullview_Not_In_SPARK (E) then
-         return Get_Name (EW_Private_Type);
       else
          return To_Why_Type (E);
       end if;
@@ -182,7 +180,6 @@ package body Gnat2Why.Types is
       procedure Translate_Underlying_Type
         (Theory : W_Theory_Declaration_Id;
          E      : Entity_Id) is
-
       begin
          case Ekind (E) is
             when Scalar_Kind =>
@@ -199,7 +196,9 @@ package body Gnat2Why.Types is
                                    EW_Export, With_Completion => False);
 
             when Private_Kind =>
-               Declare_Private_Type (Theory, E);
+               pragma Assert (Fullview_Not_In_SPARK (E));
+               pragma Assert (not Entity_In_SPARK (Underlying_Type (E)));
+               Declare_Ada_Record (File, Theory, E);
 
             when others =>
                Ada.Text_IO.Put_Line ("[Translate_Underlying_Type] ekind ="
@@ -230,7 +229,7 @@ package body Gnat2Why.Types is
               else "")
             & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-         Translate_Underlying_Type (File.Cur_Theory, E);
+         Translate_Underlying_Type (File.Cur_Theory, MUT (E));
 
          --  We declare a default value for all types, in principle.
          --  Cloned subtypes are a special case, they do not need such a

@@ -2804,7 +2804,7 @@ package body Gnat2Why.Subprograms is
             --    axiom f__def:
             --      forall x:natural. x = of_int (to_int(largest_int) + 1)
 
-            Ty_Ent  : constant Entity_Id := Unique_Entity (Etype (E));
+            Ty_Ent  : constant Entity_Id := Etype (E);
             Equ_Ty  : constant W_Type_Id := Type_Of_Node (Ty_Ent);
             Guard   : constant W_Pred_Id :=
                Compute_Guard_Formula (Logic_Func_Binders);

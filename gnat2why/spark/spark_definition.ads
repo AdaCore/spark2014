@@ -116,9 +116,8 @@ package SPARK_Definition is
 
    function Get_First_Ancestor_In_SPARK (E : Entity_Id) return Entity_Id with
      Pre  => Fullview_Not_In_SPARK (E),
-     Post => Fullview_Not_In_SPARK (Get_First_Ancestor_In_SPARK'Result);
-   --  Returns the first type with Fullview_Not_In_SPARK in the ancestors of
-   --  E.
+     Post => Entity_In_SPARK (Get_First_Ancestor_In_SPARK'Result);
+   --  Returns the first type in SPARK in the ancestors of E.
 
    function Get_SPARK_JSON return JSON_Array;
    --  should be called after marking is finished. Returns the result of

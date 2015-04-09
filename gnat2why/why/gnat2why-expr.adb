@@ -1735,8 +1735,7 @@ package body Gnat2Why.Expr is
       --  If Ty's fullview is in SPARK, go to its underlying type to check its
       --  kind.
 
-      Ty_Ext : constant Entity_Id :=
-        (if Fullview_Not_In_SPARK (Ty) then Ty else MUT (Ty));
+      Ty_Ext : constant Entity_Id := MUT (Ty);
       Checks : W_Prog_Id := New_Void;
    begin
       if Is_Scalar_Type (Ty_Ext) then
@@ -1941,25 +1940,23 @@ package body Gnat2Why.Expr is
 
                   --  Add new Equality tmp = result.discr to Post
 
-                  if Is_Record_Type (Ty_Ext) then
-                     Post := +New_And_Then_Expr
-                       (Left   => +Post,
-                        Right  => New_Comparison
-                          (Symbol => Why_Eq,
-                           Left   => +Tmps (I),
-                           Right  => Insert_Simple_Conversion
-                             (Domain => EW_Term,
-                              Expr   => New_Ada_Record_Access
-                                (Ada_Node => Empty,
-                                 Domain   => EW_Term,
-                                 Name     =>
-                                   +New_Result_Ident (EW_Abstract (Ty_Ext)),
-                                 Field    => Field,
-                                 Ty       => Ty_Ext),
-                              To     => Type_Of_Node (Etype (Field))),
-                           Domain => EW_Pred),
-                        Domain => EW_Pred);
-                  end if;
+                  Post := +New_And_Then_Expr
+                    (Left   => +Post,
+                     Right  => New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => +Tmps (I),
+                        Right  => Insert_Simple_Conversion
+                          (Domain => EW_Term,
+                           Expr   => New_Ada_Record_Access
+                             (Ada_Node => Empty,
+                              Domain   => EW_Term,
+                              Name     =>
+                                +New_Result_Ident (EW_Abstract (Ty_Ext)),
+                              Field    => Field,
+                              Ty       => Ty_Ext),
+                           To     => Type_Of_Node (Etype (Field))),
+                        Domain => EW_Pred),
+                     Domain => EW_Pred);
                end if;
                Next_Discriminant (Field);
                I := I + 1;
@@ -1971,45 +1968,47 @@ package body Gnat2Why.Expr is
             --        default_check (Etype (Field1))) <otherwise>
             --  /\ ..
 
-            if Is_Record_Type (Ty_Ext) then
+            if Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
                Field := First_Component (Ty_Ext);
 
                while Present (Field) loop
+                  if Component_Is_Visible_In_SPARK (Field) then
 
-                  if Present (Expression (Parent (Field))) then
+                     if Present (Expression (Parent (Field))) then
 
-                     --  if Field has a default expression, use it.
+                        --  if Field has a default expression, use it.
 
-                     T_Comp := Transform_Expr
-                       (Expr          => Expression (Parent (Field)),
-                        Expected_Type => Type_Of_Node (Etype (Field)),
-                        Domain        => EW_Prog,
-                        Params        => Params);
-                  else
+                        T_Comp := Transform_Expr
+                          (Expr          => Expression (Parent (Field)),
+                           Expected_Type => Type_Of_Node (Etype (Field)),
+                           Domain        => EW_Prog,
+                           Params        => Params);
+                     else
 
-                     --  otherwise, use its Field's Etype default value.
+                        --  otherwise, use its Field's Etype default value.
 
-                     T_Comp :=
-                       +Compute_Default_Check (Etype (Field), Params);
-                  end if;
+                        T_Comp :=
+                          +Compute_Default_Check (Etype (Field), Params);
+                     end if;
 
-                  if T_Comp /= New_Void then
+                     if T_Comp /= New_Void then
 
-                     --  Check values of record fields only if they are in the
-                     --  proper variant part.
+                        --  Check values of record fields only if they are in
+                        --  the proper variant part.
 
-                     T_Comp  := New_Conditional
-                       (Domain      => EW_Prog,
-                        Condition   => New_Ada_Record_Check_For_Field
-                          (Empty, EW_Prog, +Tmp_Exp, Field, Ty_Ext),
-                        Then_Part   =>
-                          +New_Ignore
-                            (Ada_Node => Etype (Field),
-                             Prog     => +T_Comp));
+                        T_Comp  := New_Conditional
+                          (Domain      => EW_Prog,
+                           Condition   => New_Ada_Record_Check_For_Field
+                             (Empty, EW_Prog, +Tmp_Exp, Field, Ty_Ext),
+                           Then_Part   =>
+                             +New_Ignore
+                             (Ada_Node => Etype (Field),
+                              Prog     => +T_Comp));
 
-                     Checks := Sequence
-                       (Left  => Checks,
-                        Right => +T_Comp);
+                        Checks := Sequence
+                          (Left  => Checks,
+                           Right => +T_Comp);
+                     end if;
                   end if;
 
                   Next_Component (Field);
@@ -2036,7 +2035,7 @@ package body Gnat2Why.Expr is
             --  Generate the bindings if we have some fields to check
             --  or if we need to check the bindings themselves.
 
-            if Checks /= New_Void or else not Is_Constrained (Ty) then
+            if Checks /= New_Void or else not Is_Constrained (Ty_Ext) then
                for I in 1 .. Discrs loop
                   Checks := +New_Typed_Binding
                     (Domain   => EW_Prog,
@@ -2057,7 +2056,7 @@ package body Gnat2Why.Expr is
       --        assert {Default_Init (x) -> Def_Init_Cond (x)}
 
       if Has_Default_Init_Condition (Ty)
-        and then not Fullview_Not_In_SPARK (Ty)
+        and then not Is_Private_Type (Ty_Ext)
       then
          declare
             Default_Init_Subp : constant Entity_Id :=
@@ -2109,8 +2108,8 @@ package body Gnat2Why.Expr is
                          (Expr           => Insert_Simple_Conversion
                             (Domain   => EW_Term,
                              Expr     => +Binder.Main.B_Name,
-                             To       => Type_Of_Node (Ty)),
-                          Ty             => Ty,
+                             To       => Type_Of_Node (Ty_Ext)),
+                          Ty             => Ty_Ext,
                           Params         => Params,
                           Skip_Last_Cond => True);
                      Def_Init_Check  : constant W_Expr_Id :=
@@ -2160,8 +2159,7 @@ package body Gnat2Why.Expr is
       Params         : Transformation_Params;
       Skip_Last_Cond : Boolean := False) return W_Pred_Id is
 
-      Ty_Ext     : constant Entity_Id :=
-        (if Fullview_Not_In_SPARK (Ty) then Ty else MUT (Ty));
+      Ty_Ext     : constant Entity_Id := MUT (Ty);
       Tmp        : constant W_Expr_Id := New_Temp_For_Expr (Expr);
       Assumption : W_Expr_Id := +True_Pred;
    begin
@@ -2303,15 +2301,11 @@ package body Gnat2Why.Expr is
          Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
          declare
-            Root_Ty : constant Entity_Id :=
-              (if Fullview_Not_In_SPARK (Ty_Ext) then
-                    Get_First_Ancestor_In_SPARK (Ty_Ext)
-               else Ty_Ext);
             R_Expr  : constant W_Expr_Id :=
               Insert_Simple_Conversion (Ada_Node => Ty,
                                         Domain   => EW_Term,
                                         Expr     => Tmp,
-                                        To       => EW_Abstract (Root_Ty));
+                                        To       => EW_Abstract (Ty_Ext));
             --  Expression that should be used for the access
 
             Discrs  : constant Natural := Number_Discriminants (Ty_Ext);
@@ -2365,7 +2359,7 @@ package body Gnat2Why.Expr is
                   Binds (I) := Insert_Simple_Conversion
                     (Domain => EW_Term,
                      Expr   => New_Ada_Record_Access
-                       (Empty, EW_Term, R_Expr, Field, Root_Ty),
+                       (Empty, EW_Term, R_Expr, Field, Ty_Ext),
                      To     => Type_Of_Node (Etype (Field)));
 
                   --  As discriminants may occur in bounds of types of other
@@ -2456,55 +2450,56 @@ package body Gnat2Why.Expr is
             --   default_init (<Expr>.rec__field1, Etype (Field1))) <otherwise>
             --  /\ ..
 
-            if Is_Record_Type (Ty_Ext) then
+            if Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
                Field := First_Component (Ty_Ext);
 
                while Present (Field) loop
+                  if Component_Is_Visible_In_SPARK (Field) then
+                     if Present (Expression (Parent (Field))) then
 
-                  if Present (Expression (Parent (Field))) then
+                        --  if Field has a default expression, use it.
+                        --   <Expr>.rec__field1 = Field1.default
 
-                     --  if Field has a default expression, use it.
-                     --   <Expr>.rec__field1 = Field1.default
+                        T_Comp := New_Comparison
+                          (Symbol => Why_Eq,
+                           Left   => Insert_Simple_Conversion
+                             (Domain => EW_Term,
+                              Expr   => New_Ada_Record_Access
+                                (Empty, EW_Term, Tmp, Field, Ty_Ext),
+                              To     => Type_Of_Node (Etype (Field))),
+                           Right  => Transform_Expr
+                             (Expr          => Expression (Parent (Field)),
+                              Expected_Type => Type_Of_Node (Etype (Field)),
+                              Domain        => EW_Term,
+                              Params        => Params),
+                           Domain => EW_Pred);
+                     else
 
-                     T_Comp := New_Comparison
-                       (Symbol => Why_Eq,
-                        Left   => Insert_Simple_Conversion
-                          (Domain => EW_Term,
-                           Expr   => New_Ada_Record_Access
+                        --  otherwise, use its Field's Etype default value.
+                        --   default_init (<Expr>.rec__field1, Etype (Field1)))
+
+                        T_Comp := +Compute_Default_Init
+                          (New_Ada_Record_Access
                              (Empty, EW_Term, Tmp, Field, Ty_Ext),
-                           To     => Type_Of_Node (Etype (Field))),
-                        Right  => Transform_Expr
-                          (Expr          => Expression (Parent (Field)),
-                           Expected_Type => Type_Of_Node (Etype (Field)),
-                           Domain        => EW_Term,
-                           Params        => Params),
-                        Domain => EW_Pred);
-                  else
+                           Etype (Field), Params);
+                     end if;
 
-                     --  otherwise, use its Field's Etype default value.
-                     --   default_init (<Expr>.rec__field1, Etype (Field1)))
+                     if T_Comp /= +True_Pred then
 
-                     T_Comp := +Compute_Default_Init
-                       (New_Ada_Record_Access
-                          (Empty, EW_Term, Tmp, Field, Ty_Ext),
-                        Etype (Field), Params);
-                  end if;
+                        --  Assume values of record fields only if they are in
+                        --  the proper variant part.
 
-                  if T_Comp /= +True_Pred then
+                        T_Comp  := New_Conditional
+                          (Domain      => EW_Pred,
+                           Condition   => New_Ada_Record_Check_For_Field
+                             (Empty, EW_Term, Tmp, Field, Ty_Ext),
+                           Then_Part   => T_Comp);
 
-                     --  Assume values of record fields only if they are in the
-                     --  proper variant part.
-
-                     T_Comp  := New_Conditional
-                       (Domain      => EW_Pred,
-                        Condition   => New_Ada_Record_Check_For_Field
-                          (Empty, EW_Term, Tmp, Field, Ty_Ext),
-                        Then_Part   => T_Comp);
-
-                     Assumption := New_And_Then_Expr
-                       (Left   => Assumption,
-                        Right  => T_Comp,
-                        Domain => EW_Pred);
+                        Assumption := New_And_Then_Expr
+                          (Left   => Assumption,
+                           Right  => T_Comp,
+                           Domain => EW_Pred);
+                     end if;
                   end if;
 
                   Next_Component (Field);
@@ -2614,8 +2609,7 @@ package body Gnat2Why.Expr is
       --  If Ty's fullview is in SPARK, go to its underlying type to check its
       --  kind.
 
-      Ty_Ext : constant Entity_Id :=
-        (if Fullview_Not_In_SPARK (Ty) then Ty else MUT (Ty));
+      Ty_Ext : constant Entity_Id := MUT (Ty);
    begin
 
       --  Dynamic property of the type itself
@@ -2645,7 +2639,7 @@ package body Gnat2Why.Expr is
                  Insert_Simple_Conversion
                    (Domain   => EW_Term,
                     Expr     => New_Attribute_Expr
-                      (Ty     => Ty,
+                      (Ty     => Ty_Ext,
                        Domain => EW_Term,
                        Attr   => Attribute_First,
                        Params => Body_Params),
@@ -2654,7 +2648,7 @@ package body Gnat2Why.Expr is
                  Insert_Simple_Conversion
                    (Domain   => EW_Term,
                     Expr     => New_Attribute_Expr
-                      (Ty     => Ty,
+                      (Ty     => Ty_Ext,
                        Domain => EW_Term,
                        Attr   => Attribute_Last,
                        Params => Body_Params),
@@ -2744,7 +2738,7 @@ package body Gnat2Why.Expr is
             end;
          end if;
 
-      elsif (not Only_Var or else Is_Private_Type (Ty_Ext))
+      elsif not Only_Var
         and then Has_Discriminants (Ty_Ext)
         and then Is_Constrained (Ty_Ext)
       then
@@ -2876,15 +2870,11 @@ package body Gnat2Why.Expr is
          Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
          declare
-            Root_Ty : constant Entity_Id :=
-              (if Fullview_Not_In_SPARK (Ty_Ext) then
-                    Get_First_Ancestor_In_SPARK (Ty_Ext)
-               else Ty_Ext);
             R_Expr  : constant W_Expr_Id :=
               Insert_Simple_Conversion (Ada_Node => Ty,
                                         Domain   => EW_Term,
                                         Expr     => Expr,
-                                        To       => EW_Abstract (Root_Ty));
+                                        To       => EW_Abstract (Ty_Ext));
             Discrs  : constant Natural := Number_Discriminants (Ty_Ext);
             Field   : Node_Id := First_Component_Or_Discriminant (Ty_Ext);
             T_Comp  : W_Pred_Id;
@@ -2903,7 +2893,7 @@ package body Gnat2Why.Expr is
                then
 
                   R_Acc := New_Ada_Record_Access
-                    (Empty, EW_Term, R_Expr, Field, Root_Ty);
+                    (Empty, EW_Term, R_Expr, Field, Ty_Ext);
 
                   if Ekind (Field) = E_Discriminant then
                      Tmps (I) := New_Temp_Identifier
@@ -4064,7 +4054,7 @@ package body Gnat2Why.Expr is
       declare
          Ty : constant Entity_Id := Etype (Lvalue);
       begin
-         if Is_Record_Type (Ty) then
+         if Has_Record_Type (Ty) or else Is_Private_Type (Ty) then
             Right_Side :=
               +New_Is_Constrained_Update
               (Ada_Node => Ada_Node,
@@ -4110,17 +4100,30 @@ package body Gnat2Why.Expr is
                            Name     => Tmp,
                            Ty       => Binder.Typ));
                   end if;
-                  if Binder.Discrs.Present
-                    and then Binder.Discrs.Binder.Mutable
-                  then
-                     Res := Sequence
-                       (Res, New_Assignment
-                          (Ada_Node => Ada_Node,
-                           Name     => Binder.Discrs.Binder.B_Name,
-                           Value    => +New_Discriminants_Access
-                             (Domain   => EW_Prog,
-                              Name     => Tmp,
-                              Ty       => Binder.Typ)));
+                  if Binder.Discrs.Present then
+                     if Binder.Discrs.Binder.Mutable then
+                        Res := Sequence
+                          (Res, New_Assignment
+                             (Ada_Node => Ada_Node,
+                              Name     => Binder.Discrs.Binder.B_Name,
+                              Value    => +New_Discriminants_Access
+                                (Domain   => EW_Prog,
+                                 Name     => Tmp,
+                                 Ty       => Binder.Typ)));
+                     else
+                        Res := Sequence
+                          (Res, New_Assume_Statement
+                             (Ada_Node    => Ada_Node,
+                              Pre         => True_Pred,
+                              Post        => +New_Comparison
+                                (Symbol => Why_Eq,
+                                 Left   => +Binder.Discrs.Binder.B_Name,
+                                 Right  => +New_Discriminants_Access
+                                   (Domain   => EW_Term,
+                                    Name     => Tmp,
+                                    Ty       => Binder.Typ),
+                                 Domain => EW_Pred)));
+                     end if;
                   end if;
                   return +Binding_For_Temp (Ada_Node => Ada_Node,
                                             Domain   => EW_Prog,
@@ -8447,7 +8450,7 @@ package body Gnat2Why.Expr is
                   --  no discriminant), we use the dummy node of the root type
                   --  here.
 
-                  if Is_Empty_Record_Type_In_Why (Expr_Type) then
+                  if Count_Why_Top_Level_Fields (Expr_Type) = 0 then
 
                      return +New_Identifier
                        (Ada_Node  => Expr,
@@ -8535,7 +8538,12 @@ package body Gnat2Why.Expr is
                  Number_Discriminants (Anc_Ty);
                pragma Assert (if Has_Private_Ancestor (Anc_Ty)
                               then Has_Private_Ancestor (Expr_Type));
-               Anc_Num_Fields : constant Natural := Count_Fields (Anc_Ty) - 1;
+               Anc_Num_Fields : constant Natural :=
+                 Count_Why_Regular_Fields (Expr_Type) - Assocs'Length - 1;
+
+               --  The number of missing fields from the aggregate minus the
+               --  extension.
+
                Anc_Discr_Assocs : W_Field_Association_Array
                                     (1 .. Anc_Num_Discrs);
                Anc_Field_Assocs : W_Field_Association_Array

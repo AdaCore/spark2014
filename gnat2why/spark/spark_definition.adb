@@ -2455,7 +2455,13 @@ package body SPARK_Definition is
             else
                Mark_Entity (Underlying_Type (E));
                if not Entity_In_SPARK (Underlying_Type (E)) then
-                  Entities_Fullview_Not_In_SPARK.Insert (E, E);
+                  declare
+                     Ancestor : constant Entity_Id :=
+                       (if Entity_In_SPARK (Etype (E)) then Etype (E)
+                        else E);
+                  begin
+                     Entities_Fullview_Not_In_SPARK.Insert (E, Ancestor);
+                  end;
                end if;
             end if;
 
@@ -2783,17 +2789,6 @@ package body SPARK_Definition is
                end loop;
             end;
 
-            --  Full views that are themeselves private types should not be
-            --  considered in SPARK if the underlying type is not in SPARK,
-            --  otherwise we end up with two definitions for the same private
-            --  type.
-
-            if Is_Full_View (E)
-              and then not In_SPARK (MUT (E))
-            then
-               Mark_Violation (E, From => MUT (E));
-            end if;
-
          when others =>
             raise Program_Error;
          end case;
@@ -2854,19 +2849,23 @@ package body SPARK_Definition is
                and then Is_Itype (E) then
                     Associated_Node_For_Itype (E) else Parent (E));
          begin
-            if In_Private_Declarations (Decl) then
+            if Present (Parent (Decl))
+              and then Nkind (Parent (Decl)) = N_Package_Specification
+            then
                declare
                   Pack_Decl : constant Node_Id := Parent (Parent (Decl));
                begin
-                  pragma Assert
-                    (Nkind (Pack_Decl) = N_Package_Declaration);
 
-                  Current_SPARK_Pragma :=
-                    SPARK_Aux_Pragma (Defining_Entity (Pack_Decl));
+                  pragma Assert (Nkind (Pack_Decl) = N_Package_Declaration);
+
+                  if In_Private_Declarations (Decl) then
+                     Current_SPARK_Pragma :=
+                       SPARK_Aux_Pragma (Defining_Entity (Pack_Decl));
+                  else
+                     Current_SPARK_Pragma :=
+                       SPARK_Pragma (Defining_Entity (Pack_Decl));
+                  end if;
                end;
-
-            else
-               null;
             end if;
          end;
       end if;

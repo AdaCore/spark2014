@@ -328,13 +328,37 @@ package SPARK_Util is
    --  Return whether Association matches Component
 
    function Number_Components (Typ : Entity_Id) return Natural;
-   --  Count the number of components in record type Typ
+   --  Count the number of components in an Ada record type Typ
 
    function Number_Discriminants (Typ : Entity_Id) return Natural;
-   --  Count the number of discriminants in record type Typ
+   --  Count the number of discriminants in an Ada record type Typ
 
-   function Count_Fields (E : Entity_Id) return Natural;
-   --  count the number of normal fields in a record type Typ
+   function Count_Why_Top_Level_Fields (E : Entity_Id) return Natural;
+   --  Number of elements in the complete record type. It should contain:
+   --    - A field __split_discrs for discriminants if E has at list one
+   --    - A field __split_fields for components if E has at list one
+   --      regular field (use Count_Why_Regular_Fields)
+   --    - A field attr__constrained if E's discriminants have defaults
+   --    - A field __tag if E is tagged
+   --  Note that tagged types have always at least one component, for the
+   --  components of possible extensions.
+
+   function Count_Why_Regular_Fields (E : Entity_Id) return Natural;
+   --  Number of regular fields in a record type Typ. It includes:
+   --    - A field per component of E visible in SPARK
+   --     (use Component_Is_Visible_In_SPARK)
+   --    - A field for the private part of E if E is a private type
+   --    - A field for the extensions of E if E is tagged
+   --    - A field for the private components of E's private ancestors if E is
+   --      tagged and has pivate ancestors (use Has_Private_Ancestor_Or_Root)
+
+   function Component_Is_Visible_In_SPARK (E : Entity_Id) return Boolean;
+   --  Returns True on components of Records which are declared in a scope
+   --  with SPARK_Mode On.
+
+   function Has_Private_Ancestor_Or_Root (E : Entity_Id) return Boolean;
+   --  Returns True on taged types with a private ancestor or a private root
+   --  with fullview not in SPARK
 
    function Nth_Index_Type (E : Entity_Id; Dim : Positive) return Node_Id
      with Pre => Is_Array_Type (E);
