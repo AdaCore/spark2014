@@ -448,7 +448,7 @@ package body Why.Gen.Records is
          Emit (Theory,
                New_Function_Decl
                  (Domain      => EW_Term,
-                  Name        => To_Local (E_Symb (E, WNE_Attr_Size)),
+                  Name        => To_Local (E_Symb (E, WNE_Attr_Value_Size)),
                   Labels      => Name_Id_Sets.Empty_Set,
                   Return_Type => EW_Int_Type));
 
@@ -469,7 +469,7 @@ package body Why.Gen.Records is
               New_Integer_Constant (Value => Uint_0);
 
             Value_Size_Fun : constant W_Expr_Id :=
-              New_Call (Name     => To_Local (E_Symb (E, WNE_Attr_Size)),
+              New_Call (Name     => To_Local (E_Symb (E, WNE_Attr_Value_Size)),
                         Domain   => EW_Term,
                         Typ      => EW_Int_Type);
 
@@ -1338,7 +1338,7 @@ package body Why.Gen.Records is
                Return_Type => EW_Bool_Type,
                Binders     => R_Binder &
                  Binder_Array'(1 => Binder_Type'(B_Name => B_Ident,
-                                                others => <>)),
+                                                 others => <>)),
                Labels      => Name_Id_Sets.Empty_Set));
       end Declare_Equality_Function;
 

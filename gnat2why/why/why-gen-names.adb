@@ -624,8 +624,8 @@ package body Why.Gen.Names is
 
          --  please use these only in conjunction with E_Symb function
 
-         when WNE_Attr_Size |
-              WNE_Attr_Object_Size |
+         when WNE_Attr_Object_Size |
+              WNE_Attr_Value_Size |
               WNE_Attr_First_2 |
               WNE_Attr_First_3 |
               WNE_Attr_First_4 |

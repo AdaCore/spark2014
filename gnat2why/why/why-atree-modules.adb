@@ -1612,7 +1612,7 @@ package body Why.Atree.Modules is
               New_Named_Type (To_Why_Type (Root));
          begin
             Insert_Symbol
-              (E, WNE_Attr_Size,
+              (E, WNE_Attr_Value_Size,
                New_Identifier
                  (Symbol => NID ("value__size"),
                   Module => M,
@@ -1686,7 +1686,7 @@ package body Why.Atree.Modules is
             Ar_Dim : constant Positive := Positive (Number_Dimensions (E));
          begin
             Insert_Symbol
-              (E, WNE_Attr_Size,
+              (E, WNE_Attr_Value_Size,
                New_Identifier
                  (Symbol => NID ("value__size"),
                   Module => M,
