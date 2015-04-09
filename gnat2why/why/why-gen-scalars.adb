@@ -247,7 +247,7 @@ package body Why.Gen.Scalars is
               Domain => EW_Term,
               Typ    => Ty);
       begin
-         if Has_Predicates (E) then
+         if Has_Static_Discrete_Predicate (E) then
             declare
                Pred   : Node_Id := First (Static_Discrete_Predicate (E));
             begin
@@ -296,7 +296,9 @@ package body Why.Gen.Scalars is
          --  are already included in the predicate's constraints.
          --  Otherwise, add the range constraints to the predicate.
 
-         if not Is_Static or else not Has_Predicates (E) then
+         if not Is_Static
+           or else not Has_Static_Discrete_Predicate (E)
+         then
             Def :=
               +New_And_Expr
               (Domain => EW_Pred,

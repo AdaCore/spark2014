@@ -1855,6 +1855,18 @@ package body SPARK_Util is
       return True;
    end Has_No_Output;
 
+   -----------------------------------
+   -- Has_Static_Discrete_Predicate --
+   -----------------------------------
+
+   function Has_Static_Discrete_Predicate (E : Entity_Id) return Boolean is
+   begin
+      return
+        Is_Discrete_Type (E)
+        and then Has_Predicates (E)
+        and then Present (Static_Discrete_Predicate (E));
+   end Has_Static_Discrete_Predicate;
+
    -------------------------------
    -- Has_Static_Scalar_Subtype --
    -------------------------------

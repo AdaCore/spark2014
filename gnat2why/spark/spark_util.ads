@@ -403,6 +403,10 @@ package SPARK_Util is
    --  @return the static length of the selected dimension of the array type as
    --    an integer
 
+   function Has_Static_Discrete_Predicate (E : Entity_Id) return Boolean;
+   --  @param E a type entity
+   --  @return True if the type is a discrete type with a static predicate
+
    function Get_Cursor_Type_In_Iterable_Aspect
      (Typ : Entity_Id) return Entity_Id;
    --  Returns the cursor type implied by an Iterable aspect over the type Typ

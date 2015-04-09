@@ -2510,9 +2510,8 @@ package body SPARK_Definition is
          end if;
 
          if Has_Predicates (E) then
-            if not Is_Discrete_Type (E)
-              or else No (Static_Discrete_Predicate (E))
-            then
+            if not Has_Static_Discrete_Predicate (E) then
+
                --  Only issue a warning about unsupported dynamic predicate on
                --  a type that has explicit predicates, not on a type that only
                --  inherits them.
@@ -2520,8 +2519,16 @@ package body SPARK_Definition is
                if Has_Rep_Item (E, Name_Predicate, Check_Parents => False)
                  and then Emit_Messages and then SPARK_Pragma_Is (Opt.On)
                then
-                  Error_Msg_N
-                    ("?dynamic type predicate ignored (not yet supported)", E);
+                  if not Is_Discrete_Type (E) then
+                     Error_Msg_N
+                       ("?type predicate on non-discrete type ignored" &
+                          " (not yet supported)",
+                        E);
+                  else
+                     Error_Msg_N
+                       ("?dynamic type predicate ignored (not yet supported)",
+                        E);
+                  end if;
                end if;
             else
                declare
