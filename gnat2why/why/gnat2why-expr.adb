@@ -7319,6 +7319,23 @@ package body Gnat2Why.Expr is
             if Nkind (Var) in N_Has_Entity
               and then Present (Entity (Var))
             then
+               --  For arrays and records we do not know the exact value of
+               --  attribute size, which is decided by the back-end when
+               --  generating executable code. Instead, we generate call to an
+               --  uninterpreted function, either:
+               --
+               --  * "value__size", which corresponds to
+               --  ** Type'Size in Ada
+               --  ** Type'Value_Size in GNAT
+               --  ** RM_Size field in GNAT AST
+               --
+               --  or
+               --
+               --  * "object__size", which corresponds to
+               --  ** Object'Size in Ada
+               --  ** Type'Object_Size in GNAT
+               --  ** Esize field in GNAT AST
+
                case Ekind (Entity (Var)) is
                   when Type_Kind =>
                      T := New_Attribute_Expr (Entity (Var), Domain, Attr_Id);
