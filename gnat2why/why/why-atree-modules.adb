@@ -1614,7 +1614,7 @@ package body Why.Atree.Modules is
             Insert_Symbol
               (E, WNE_Attr_Size,
                New_Identifier
-                 (Symbol => NID ("attr__size"),
+                 (Symbol => NID ("value__size"),
                   Module => M,
                   Domain => EW_Term,
                   Typ    => EW_Int_Type));
@@ -1688,7 +1688,7 @@ package body Why.Atree.Modules is
             Insert_Symbol
               (E, WNE_Attr_Size,
                New_Identifier
-                 (Symbol => NID ("attr__size"),
+                 (Symbol => NID ("value__size"),
                   Module => M,
                   Domain => EW_Term,
                   Typ    => EW_Int_Type));

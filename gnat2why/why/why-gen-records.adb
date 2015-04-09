@@ -31,6 +31,7 @@ with Nlists;              use Nlists;
 with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
 with Snames;              use Snames;
+with Uintp;               use Uintp;
 
 with SPARK_Definition;    use SPARK_Definition;
 with VC_Kinds;            use VC_Kinds;
@@ -442,7 +443,7 @@ package body Why.Gen.Records is
                      Return_Type => EW_Int_Type));
          end if;
 
-         --  The size is defined as a logic constant
+         --  The value size is defined as a logic constant
 
          Emit (Theory,
                New_Function_Decl
@@ -461,11 +462,51 @@ package body Why.Gen.Records is
                   Labels      => Name_Id_Sets.Empty_Set,
                   Return_Type => EW_Int_Type));
 
-         --  ??? We can easily put here axioms that say
-         --  attr__size >= 0 and object__size >= 0 (which is known for sure).
-         --  Alternatively, we could ask the front end about the
-         --  exact value; for Type'Size it is contant but for Obj'Size
-         --  it depends on the discriminant.
+         --  Both value size and object size are non-negative
+
+         declare
+            Zero : constant W_Expr_Id :=
+              New_Integer_Constant (Value => Uint_0);
+
+            Value_Size_Fun : constant W_Expr_Id :=
+              New_Call (Name     => To_Local (E_Symb (E, WNE_Attr_Size)),
+                        Domain   => EW_Term,
+                        Typ      => EW_Int_Type);
+
+            Value_Size_Axiom : constant W_Pred_Id :=
+              +New_Comparison (Symbol => Int_Infix_Ge,
+                               Left   => Value_Size_Fun,
+                               Right  => Zero,
+                               Domain => EW_Term);
+
+            Object_Size_Fun : constant W_Expr_Id :=
+              New_Call (Name     =>
+                          To_Local (E_Symb (E, WNE_Attr_Object_Size)),
+                        Args     => (1 => +A_Ident),
+                        Domain   => EW_Term,
+                        Typ      => EW_Int_Type);
+
+            Object_Size_Pred : constant W_Pred_Id :=
+              +New_Comparison (Symbol => Int_Infix_Ge,
+                               Left   => Object_Size_Fun,
+                               Right  => Zero,
+                               Domain => EW_Term);
+
+            Object_Size_Axiom : constant W_Pred_Id :=
+              New_Universal_Quantif (Binders => R_Binder,
+                                     Pred    => Object_Size_Pred);
+
+         begin
+            Emit (Theory,
+                  New_Axiom (Ada_Node => E,
+                             Name     => NID ("value__size_axiom"),
+                             Def      => Value_Size_Axiom));
+
+            Emit (Theory,
+                  New_Axiom (Ada_Node => E,
+                             Name     => NID ("object__size_axiom"),
+                             Def      => Object_Size_Axiom));
+         end;
 
       end Declare_Attributes;
 

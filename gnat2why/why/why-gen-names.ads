@@ -170,9 +170,9 @@ package Why.Gen.Names is
       WNE_Attr_Length_3,
       WNE_Attr_Length_4,
       WNE_Attr_Modulus,
-      WNE_Attr_Tag,
-      WNE_Attr_Size,
       WNE_Attr_Object_Size,
+      WNE_Attr_Size,
+      WNE_Attr_Tag,
 
       --  Integer value of the inverse of the "small" of a fixed-point type
       WNE_Attr_Small,

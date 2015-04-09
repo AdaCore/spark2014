@@ -625,6 +625,7 @@ package body Why.Gen.Names is
          --  please use these only in conjunction with E_Symb function
 
          when WNE_Attr_Size |
+              WNE_Attr_Object_Size |
               WNE_Attr_First_2 |
               WNE_Attr_First_3 |
               WNE_Attr_First_4 |
@@ -647,7 +648,6 @@ package body Why.Gen.Names is
               WNE_Fixed_Point_Mult |
               WNE_Fixed_Point_Mult_Int |
               WNE_Attr_Small |
-              WNE_Attr_Object_Size |
               WNE_Check_Not_First |
               WNE_Check_Not_Last  |
               WNE_Range_Check_Fun |

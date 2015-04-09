@@ -1001,9 +1001,16 @@ module Unconstr_Array
   predicate dynamic_property (range_first range_last f1 l1 : int) =
     I1.dynamic_property range_first range_last f1 l1
 
-  function attr__size : int
+  function value__size : int
 
   function object__size (a : __split) : int
+
+  axiom value__size_axiom :
+    value__size >= 0
+
+  axiom object__size_axiom :
+    forall a : __split.
+    object__size (a) >= 0
 
   function bool_eq (x : __t) (y : __t) : bool =
     Array__1.bool_eq
@@ -1076,9 +1083,16 @@ module Unconstr_Array_2
   predicate dynamic_property (range_first1 range_last1 f1 l1 range_first2 range_last2 f2 l2 : int) =
     I1.dynamic_property range_first1 range_last1 f1 l1 /\ I2.dynamic_property range_first2 range_last2 f2 l2
 
-  function attr__size : int
+  function value__size : int
 
   function object__size (a : __split) : int
+
+  axiom value__size_axiom :
+    value__size >= 0
+
+  axiom object__size_axiom :
+    forall a : __split.
+    object__size (a) >= 0
 
   function user_eq (x : __t) (y : __t) : bool
   function bool_eq (x : __t) (y : __t) : bool =
@@ -1173,9 +1187,16 @@ module Unconstr_Array_3
   predicate dynamic_property (range_first1 range_last1 f1 l1 range_first2 range_last2 f2 l2 range_first3 range_last3 f3 l3 : int) =
     I1.dynamic_property range_first1 range_last1 f1 l1 /\ I2.dynamic_property range_first2 range_last2 f2 l2 /\ I3.dynamic_property range_first3 range_last3 f3 l3
 
-  function attr__size : int
+  function value__size : int
 
   function object__size (a : __split) : int
+
+  axiom value__size_axiom :
+    value__size >= 0
+
+  axiom object__size_axiom :
+    forall a : __split.
+    object__size (a) >= 0
 
   function user_eq (x : __t) (y : __t) : bool
 
@@ -1294,9 +1315,16 @@ module Unconstr_Array_4
     I1.dynamic_property range_first1 range_last1 f1 l1 /\ I2.dynamic_property range_first2 range_last2 f2 l2 /\
     I3.dynamic_property range_first3 range_last3 f3 l3 /\ I4.dynamic_property range_first4 range_last4 f4 l4
 
-  function attr__size : int
+  function value__size : int
 
   function object__size (a : __split) : int
+
+  axiom value__size_axiom :
+    value__size >= 0
+
+  axiom object__size_axiom :
+    forall a : __split.
+    object__size (a) >= 0
 
   function user_eq (x : __t) (y : __t) : bool
 
@@ -1331,9 +1359,16 @@ module Constr_Array
 
   function dummy : __t
 
-  function attr__size : int
+  function value__size : int
 
   function object__size (a : __t) : int
+
+  axiom value__size_axiom :
+    value__size >= 0
+
+  axiom object__size_axiom :
+    forall a : __t.
+    object__size (a) >= 0
 
   function user_eq (x : __t) (y : __t) : bool
   function bool_eq (x : __t) (y : __t) : bool =
@@ -1361,9 +1396,16 @@ module Constr_Array_2
 
   function dummy : __t
 
-  function attr__size : int
+  function value__size : int
 
   function object__size (a : __t) : int
+
+  axiom value__size_axiom :
+    value__size >= 0
+
+  axiom object__size_axiom :
+    forall a : __t.
+    object__size (a) >= 0
 
   function user_eq (x : __t) (y : __t) : bool
   function bool_eq (x : __t) (y : __t) : bool =
@@ -1394,9 +1436,16 @@ module Constr_Array_3
 
   function dummy : __t
 
-  function attr__size : int
+  function value__size : int
 
   function object__size (a : __t) : int
+
+  axiom value__size_axiom :
+    value__size >= 0
+
+  axiom object__size_axiom :
+    forall a : __t.
+    object__size (a) >= 0
 
   function user_eq (x : __t) (y : __t) : bool
   function bool_eq (x : __t) (y : __t) : bool =
@@ -1430,9 +1479,16 @@ module Constr_Array_4
 
   function dummy : __t
 
-  function attr__size : int
+  function value__size : int
 
   function object__size (a : __t) : int
+
+  axiom value__size_axiom :
+    value__size >= 0
+
+  axiom object__size_axiom :
+    forall a : __t.
+    object__size (a) >= 0
 
   function user_eq (x : __t) (y : __t) : bool
   function bool_eq (x : __t) (y : __t) : bool =
