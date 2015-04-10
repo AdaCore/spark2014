@@ -24,6 +24,7 @@
 with Ada.Text_IO;
 
 with Elists;               use Elists;
+with Errout;               use Errout;
 with Namet;                use Namet;
 with Nlists;               use Nlists;
 with Sem_Util;             use Sem_Util;
@@ -1587,11 +1588,18 @@ package body Flow.Analysis is
 
                   elsif Nkind (N) = N_Object_Declaration then
                      if not Constant_Present (N) then
+                        Get_Name_String (Chars (Defining_Identifier (N)));
+                        Adjust_Name_Case (Sloc (N));
                         Error_Msg_Flow
                           (FA        => FA,
                            Tracefile => Tracefile,
-                           Msg       => "initialization has no effect",
+                           Msg       => "initialization of " &
+                             Name_Buffer (1 .. Name_Len) &
+                             " is not mentioned in contract #",
                            N         => Error_Location (FA.PDG, FA.Atr, V),
+                           F1        =>
+                             Direct_Mapping_Id (
+                               Pragma_Identifier (FA.Initializes_N)),
                            Tag       => Tag,
                            Kind      => Warning_Kind,
                            Vertex    => V);

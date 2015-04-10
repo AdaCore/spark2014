@@ -1,2 +1,4 @@
-inits.adb:5:04: info: initialization of "X" proved
-inits.ads:8:04: warning: initialization has no effect
+inits_aspect.adb:5:04: info: initialization of "X" proved
+inits_aspect.ads:8:04: warning: initialization of Y is not mentioned in contract "Initializes" at line 4
+inits_pragma.adb:6:04: info: initialization of "X" proved
+inits_pragma.ads:9:04: warning: initialization of Y is not mentioned in contract "Initializes" at line 6
