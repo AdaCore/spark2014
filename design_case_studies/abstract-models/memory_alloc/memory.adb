@@ -34,7 +34,7 @@ package body Memory is
          (for all J in Valid_Address'Range =>
             (if Slots (J).Freed then Model_F'Result.Contains (J)))
            and then
-        --  The model and the concrete free list match in order
+         --  The model and the concrete free list match in order
          (for all E in Model_F'Result.Iterate =>
             (if Next (Model_F'Result, E) /= No_Element then
                Next (Element (Model_F'Result, E)) =

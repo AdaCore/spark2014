@@ -1,3 +1,5 @@
+design_case_studies/*/*/* no-precommit-check
+design_case_studies/*/* no-precommit-check
 docs/lrm/code/*/*/* no-precommit-check
 docs/lrm/code/*/*/*/* no-precommit-check
 docs/lrm/source/* no-precommit-check

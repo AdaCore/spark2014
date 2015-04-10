@@ -7,8 +7,8 @@ is
    range 1 .. Max_Stack_Size;
    type Vector is array (Index_Range) of Integer;
 
-   S: Vector;                              -- Declaration of constituents
-   Pointer: Pointer_Range;
+   S : Vector;                              -- Declaration of constituents
+   Pointer : Pointer_Range;
 
    -- The proof functions Head, Tail, Is_Empty and Is_Full all need user defined
    -- rules as we cannot use the functions directly in the refined
