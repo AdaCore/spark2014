@@ -80,19 +80,28 @@ floating_point.adb:78:28: info: range check proved
 floating_point.adb:87:07: info: assertion proved
 floating_point.adb:88:13: info: initialization of "Tmp" proved
 floating_point.adb:90:14: info: initialization of "Tmp" proved
-floating_point.adb:98:22: info: overflow check proved
-floating_point.adb:112:40: info: overflow check proved
-floating_point.adb:116:25: medium: overflow check might fail
-floating_point.adb:116:28: info: initialization of "I" proved
-floating_point.adb:116:30: info: division check proved
-floating_point.adb:117:22: info: initialization of "I" proved
-floating_point.adb:118:12: info: initialization of "Y" proved
-floating_point.adb:118:14: medium: overflow check might fail
-floating_point.adb:118:28: medium: overflow check might fail
-floating_point.adb:118:31: info: initialization of "X2" proved
-floating_point.adb:118:34: medium: overflow check might fail
-floating_point.adb:118:39: medium: overflow check might fail
-floating_point.adb:121:14: info: initialization of "Y" proved
+floating_point.adb:98:67: info: range check proved
+floating_point.adb:98:70: info: overflow check proved
+floating_point.adb:99:22: info: overflow check proved
+floating_point.adb:100:22: medium: assertion might fail, requires State in C .. Float_32 (X + 1) * C
+floating_point.adb:100:48: info: range check proved
+floating_point.adb:100:53: info: overflow check proved
+floating_point.adb:114:40: info: overflow check proved
+floating_point.adb:119:25: medium: overflow check might fail
+floating_point.adb:119:28: info: initialization of "I" proved
+floating_point.adb:119:30: info: division check proved
+floating_point.adb:120:22: info: initialization of "I" proved
+floating_point.adb:121:12: info: initialization of "Y" proved
+floating_point.adb:121:14: medium: overflow check might fail
+floating_point.adb:121:28: medium: overflow check might fail
+floating_point.adb:121:31: info: initialization of "X2" proved
+floating_point.adb:121:34: medium: overflow check might fail
+floating_point.adb:121:39: medium: overflow check might fail
+floating_point.adb:124:22: medium: assertion might fail, requires Y * Y) * X in 1.0 - 0.005 .. 1.0 +
+floating_point.adb:124:23: info: initialization of "Y" proved
+floating_point.adb:124:25: medium: overflow check might fail
+floating_point.adb:124:30: medium: overflow check might fail
+floating_point.adb:125:14: info: initialization of "Y" proved
 floating_point.ads:7:39: info: initialization of "Res" proved
 floating_point.ads:10:40: info: initialization of "Res" proved
 floating_point.ads:13:50: info: initialization of "Res" proved
@@ -101,15 +110,7 @@ floating_point.ads:19:56: info: initialization of "Res" proved
 floating_point.ads:24:36: info: initialization of "Res" proved
 floating_point.ads:27:52: info: initialization of "Res" proved
 floating_point.ads:30:13: info: initialization of "Float_To_Long_Float" proved
-floating_point.ads:39:46: info: range check proved
-floating_point.ads:39:49: info: overflow check proved
-floating_point.ads:40:17: medium: postcondition might fail, requires State in C .. Float_32 (X + 1) * C
-floating_point.ads:40:43: info: range check proved
-floating_point.ads:40:48: info: overflow check proved
-floating_point.ads:51:13: info: initialization of "Approximate_Inverse_Square_Root" proved
-floating_point.ads:53:17: medium: postcondition might fail, requires Approximate_Inverse_Square_Root'Result * Approximate_Inverse_Square_Root'Result) * X in 1.0 - Rsqrt_Err .. 1.0 + Rsqrt_Err
-floating_point.ads:53:57: medium: overflow check might fail
-floating_point.ads:55:17: medium: overflow check might fail
+floating_point.ads:45:13: info: initialization of "Approximate_Inverse_Square_Root" proved
 nonlinear.adb:10:17: info: overflow check proved
 nonlinear.adb:10:22: info: division check proved
 nonlinear.adb:10:22: info: range check proved

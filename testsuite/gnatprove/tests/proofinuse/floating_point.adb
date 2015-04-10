@@ -95,12 +95,14 @@ is
                             X     : T)
    is
    begin
+      pragma Assume (X < T'Last and State in 0.0 | C .. Float_32 (X) * C);
       State := State + C;
+      pragma Assert (State in C .. Float_32 (X + 1) * C);
    end Incr_By_Const;
 
    --  I have manually verified this; there should be no RTE and the
    --  postcondition will hold. A hand-coded smtlib instance takes around
-   --  30 minutes on a modern solver.
+   --  30 minutes on a modern solver. (Florian)
    function Approximate_Inverse_Square_Root (X : Float) return Float
    is
       function To_Float is new Ada.Unchecked_Conversion (Source => Integer,
@@ -112,12 +114,14 @@ is
       X2         : constant Float := X * 0.5;
       Threehalfs : constant Float := 1.5;
    begin
+      pragma Assume (X >= 0.00001);
       I := To_Int (X);
       I := 16#5F3759DF# - (I / 2);
       Y := To_Float (I);
       Y := Y * (Threehalfs - (X2 * (Y * Y)));
       --  Y := Y * (Threehalfs - (X2 * (Y * Y)));
       --  Second iteration can be enabled for more precision.
+      pragma Assert ((Y * Y) * X in 1.0 - 0.005 .. 1.0 + 0.005);
       return Y;
    end Approximate_Inverse_Square_Root;
 

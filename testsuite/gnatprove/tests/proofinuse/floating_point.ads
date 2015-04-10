@@ -34,13 +34,7 @@ is
 
    --  from O227-007 (industrial user)
    procedure Incr_By_Const (State : in out Float_32;
-                            X     : T)
-   with Pre => X < T'Last and
-               State in 0.0 | C .. Float_32 (X) * C,
-        Post => State in C .. Float_32 (X + 1) * C;
-
-   Rsqrt_Low : constant Float := 0.00001;
-   Rsqrt_Err : constant Float := 0.005;
+                            X     : T);
 
    --  Quake3's method of computing a good approximation of 1/sqrt(x). This
    --  is extremely difficult to verify, I have included it here as
@@ -48,10 +42,5 @@ is
    --
    --  See http://en.wikipedia.org/wiki/Fast_inverse_square_root for more
    --  information.
-   function Approximate_Inverse_Square_Root (X : Float) return Float
-   with Pre  => X >= Rsqrt_Low,
-        Post => (Approximate_Inverse_Square_Root'Result *
-                 Approximate_Inverse_Square_Root'Result)
-                * X
-                  in 1.0 - Rsqrt_Err .. 1.0 + Rsqrt_Err;
+   function Approximate_Inverse_Square_Root (X : Float) return Float;
 end Floating_Point;
