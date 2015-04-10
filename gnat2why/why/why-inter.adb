@@ -756,27 +756,15 @@ package body Why.Inter is
       elsif Ekind (N) in E_Class_Wide_Type | E_Class_Wide_Subtype then
          return EW_Abstract_Shared (Corresponding_Tagged (N), Kind);
 
-      elsif Ekind (N) in Private_Kind
-        or else Has_Private_Declaration (N)
-      then
-         if Entity_In_SPARK (N) then
-            if MUT (N) = N then
-               return New_Kind_Base_Type (N, Kind);
-            else
-               return EW_Abstract_Shared (MUT (N), Kind);
-            end if;
-         else
-            return New_Kind_Base_Type (N, Kind);
-         end if;
-
-      elsif not Entity_In_SPARK (N) then
+      elsif Ekind (N) in Type_Kind and then MUT (N) /= N then
+         return EW_Abstract_Shared (MUT (N), Kind);
+      elsif Entity_In_SPARK (N) then
+         return New_Kind_Base_Type (N, Kind);
+      else
 
          --  This can happen for globals
 
          return EW_Private_Type;
-
-      else
-         return New_Kind_Base_Type (N, Kind);
       end if;
    end EW_Abstract_Shared;
 
@@ -1109,7 +1097,7 @@ package body Why.Inter is
             Field : constant String :=
               To_String (WNE_Rec_Comp_Prefix) & Get_Name_String (Chars (E));
             Ada_N : constant Node_Id :=
-              (if Rec = Empty then MUT (Scope (E)) else Rec);
+              MUT (if Rec = Empty then Scope (E) else Rec);
             Module : constant W_Module_Id :=
               E_Module (if Rec = Empty and Ekind (E) = E_Discriminant then
                              Root_Record_Type (Ada_N)

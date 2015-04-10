@@ -142,7 +142,6 @@ package body Why.Gen.Binders is
 
       Ty      : constant Entity_Id :=
         (if Ekind (Use_Ty) in Type_Kind then MUT (Use_Ty) else Use_Ty);
-
    begin
       if Entity_In_SPARK (Ty)
         and then Is_Array_Type (Ty)

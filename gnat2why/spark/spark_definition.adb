@@ -2445,24 +2445,33 @@ package body SPARK_Definition is
                Is_Private_Entity_Mode_Off (E))
             then
                Entities_Fullview_Not_In_SPARK.Insert (E, E);
-               Entity_Set.Include (Underlying_Type (E));
-            elsif Etype (E) /= E and then
-              Fullview_Not_In_SPARK (Etype (E))
+               Discard_Underlying_Type (E);
+            elsif Etype (E) /= E and then Fullview_Not_In_SPARK (Etype (E))
             then
                Entities_Fullview_Not_In_SPARK.Insert
                  (E, Entities_Fullview_Not_In_SPARK.Element (Etype (E)));
-               Entity_Set.Include (Underlying_Type (E));
+               Discard_Underlying_Type (E);
             else
-               Mark_Entity (Underlying_Type (E));
-               if not Entity_In_SPARK (Underlying_Type (E)) then
-                  declare
-                     Ancestor : constant Entity_Id :=
-                       (if Entity_In_SPARK (Etype (E)) then Etype (E)
-                        else E);
-                  begin
-                     Entities_Fullview_Not_In_SPARK.Insert (E, Ancestor);
-                  end;
-               end if;
+               declare
+                  Utype : constant Entity_Id :=
+                    (if Present (Full_View (E)) then Full_View (E)
+                     else Underlying_Type (E));
+                  --  Mark the fullview of the type if present before the
+                  --  underlying type as this underlying type may not be in
+                  --  SPARK.
+               begin
+                  Mark_Entity (Utype);
+                  if not Entity_In_SPARK (Utype) then
+                     Entities_Fullview_Not_In_SPARK.Insert
+                       (E, (if Entity_In_SPARK (Etype (E)) then Etype (E)
+                        else E));
+                     Discard_Underlying_Type (E);
+                  elsif Fullview_Not_In_SPARK (Utype) then
+                     Entities_Fullview_Not_In_SPARK.Insert
+                       (E, Get_First_Ancestor_In_SPARK (Utype));
+                        Discard_Underlying_Type (E);
+                  end if;
+               end;
             end if;
 
             --  If the type has a Default_Initial_Condition aspect, store the

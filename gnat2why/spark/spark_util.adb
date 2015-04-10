@@ -91,7 +91,7 @@ package body SPARK_Util is
 
    procedure Add_Full_And_Partial_View (Full, Partial : Entity_Id) is
    begin
-      Full_To_Partial_Entities.Insert (Full, Partial);
+      Full_To_Partial_Entities.Include (Full, Partial);
    end Add_Full_And_Partial_View;
 
    ------------------------------------
@@ -168,7 +168,7 @@ package body SPARK_Util is
    --  Start of Aggregate_Is_Fully_Initialized
 
    begin
-      if Is_Record_Type (Typ) then
+      if Is_Record_Type (Typ) or else Is_Private_Type (Typ) then
          pragma Assert (Is_Empty_List (Expressions (N)));
 
          Assocs      := Component_Associations (N);
@@ -862,6 +862,21 @@ package body SPARK_Util is
 
       return Result;
    end Default_Initialization;
+
+   -----------------------------
+   -- Discard_Underlying_Type --
+   -----------------------------
+
+   procedure Discard_Underlying_Type (T : Entity_Id) is
+      U : constant Entity_Id := Underlying_Type (T);
+   begin
+      if U /= T then
+         Entity_Set.Include (U);
+         if not Is_Full_View (U) then
+            Add_Full_And_Partial_View (U, T);
+         end if;
+      end if;
+   end Discard_Underlying_Type;
 
    -------------------------------
    -- Entity_In_External_Axioms --
@@ -2841,18 +2856,22 @@ package body SPARK_Util is
       Typ : Entity_Id := T;
    begin
       loop
-         --  For types whose ultimate fullview is not in SPARK, fullviews are
-         --  not translated.
-
-         if not Entity_In_SPARK (Typ) or else Fullview_Not_In_SPARK (Typ) then
-
+         if Entity_Set.Contains (Typ) and then not Entity_In_SPARK (Typ) then
             if Is_Full_View (Typ) then
                Typ := Partial_View (Typ);
+            else
+               return Typ;
             end if;
-
-            return Typ;
+         elsif Fullview_Not_In_SPARK (Typ) then
+            if Entity_In_SPARK (Full_View (Typ)) then
+               Typ := Full_View (Typ);
+               pragma Assert (Fullview_Not_In_SPARK (Typ));
+            else
+               return Typ;
+            end if;
          elsif Ekind (Typ) in Private_Kind then
             Typ := Underlying_Type (Typ);
+            pragma Assert (Entity_In_SPARK (Typ));
          else
             return Typ;
          end if;

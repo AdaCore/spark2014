@@ -90,6 +90,9 @@ package SPARK_Util is
    --  Store the correspondance between the Full and Partial views of the same
    --  entity, for deferred constants and private types.
 
+   procedure Discard_Underlying_Type (T : Entity_Id);
+   --  Mark T's underlying type as seen and store T as its partial view.
+
    function Is_Full_View (E : Entity_Id) return Boolean;
    --  Return whether E is the full view of another entity
 
@@ -161,7 +164,7 @@ package SPARK_Util is
      Pre => Ekind (T) in Type_Kind;
    --  Returns the "most underlying type" of a type T, following the chain of
    --  underlying types for private types, up to a non-private type. If T is
-   --  not private, it simply returns it. E. As a special case, return the
+   --  not private, it simply returns it. As a special case, return the
    --  first type in a package with external axioms found.
 
    function MUT_Kind (T : Entity_Id) return Entity_Kind with

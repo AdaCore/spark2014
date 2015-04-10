@@ -2813,8 +2813,8 @@ package body Gnat2Why.Expr is
             --  If elements of an array have default discriminants and are not
             --  constrained then 'Constrained returns false on them.
 
-            if Has_Defaulted_Discriminants (Component_Type (Ty_Ext))
-              and then not Is_Constrained (Component_Type (Ty_Ext))
+            if Has_Defaulted_Discriminants (MUT (Component_Type (Ty_Ext)))
+              and then not Is_Constrained (MUT (Component_Type (Ty_Ext)))
             then
                T_Comp := New_And_Expr
                  (Left   => +T_Comp,
@@ -2914,8 +2914,8 @@ package body Gnat2Why.Expr is
                   --  If fields of a record have default discriminants and are
                   --  not constrained then 'Constrained returns false on them.
 
-                  if Has_Defaulted_Discriminants (Etype (Field))
-                    and then not Is_Constrained (Etype (Field))
+                  if Has_Defaulted_Discriminants (MUT (Etype (Field)))
+                    and then not Is_Constrained (MUT (Etype (Field)))
                   then
                      T_Comp := +New_And_Expr
                        (Left   => +T_Comp,
@@ -4681,10 +4681,7 @@ package body Gnat2Why.Expr is
                --  For private types, functions are declared in the first
                --  ancestor only
 
-               Rec_Ty  : constant Entity_Id :=
-                 (if Fullview_Not_In_SPARK (Ty) then
-                       Get_First_Ancestor_In_SPARK (Ty)
-                  else Unique_Entity (Ty));
+               Rec_Ty  : constant Entity_Id := MUT (Ty);
                R_Expr  : constant W_Expr_Id :=
                  Insert_Simple_Conversion (Ada_Node => N,
                                            Domain   => EW_Term,

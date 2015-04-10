@@ -726,14 +726,13 @@ package body Gnat2Why.Driver is
                         or else Fullview_Not_In_SPARK (E))
             then
 
-               --  Full views that are themeselves private types should not be
-               --  considered in SPARK if the underlying type is not in SPARK,
+               --  Partial views of private types should not be
+               --  translated if the underlying type is not in SPARK,
                --  otherwise we end up with two definitions for the same
                --  private type.
 
-               if Is_Private_Type (E)
-                 and then Is_Full_View (E)
-                 and then Fullview_Not_In_SPARK (E)
+               if Fullview_Not_In_SPARK (E)
+                 and then Entity_In_SPARK (Full_View (E))
                then
                   null;
                else

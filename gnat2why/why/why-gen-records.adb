@@ -1019,6 +1019,9 @@ package body Why.Gen.Records is
                       Typ   => EW_Int_Type));
          end if;
 
+         pragma Assert (To_Root_Aggr'Last = To_Index);
+         pragma Assert (From_Root_Aggr'Last = From_Index);
+
          Emit
            (Theory,
             New_Function_Decl
@@ -1333,7 +1336,7 @@ package body Why.Gen.Records is
                      else To_Why_Id (Comp, Rec => Root));
                   Comparison : constant W_Pred_Id :=
                     +New_Ada_Equality
-                    (Typ    => Unique_Entity (Etype (Comp)),
+                    (Typ    => MUT (Etype (Comp)),
                      Domain => EW_Pred,
                      Left   =>
                        New_Record_Access
