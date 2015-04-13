@@ -1,0 +1,13 @@
+use_private_types.adb:5:07: medium: precondition might fail
+use_private_types.adb:9:07: info: precondition proved
+use_private_types.adb:17:07: info: assertion proved
+use_private_types.adb:18:07: info: precondition proved
+use_private_types.adb:22:07: medium: precondition might fail
+use_private_types.ads:17:14: info: postcondition proved
+use_private_types.ads:20:14: info: postcondition proved
+use_private_types.ads:23:14: info: postcondition proved
+use_private_types.ads:26:14: info: postcondition proved
+use_private_types.ads:29:14: info: postcondition proved
+use_private_types.ads:31:13: info: initialization of "D_Zero" proved
+use_private_types.ads:33:13: info: initialization of "D_Zero__2" proved
+use_private_types.ads:33:21: warning: unused variable "S"
