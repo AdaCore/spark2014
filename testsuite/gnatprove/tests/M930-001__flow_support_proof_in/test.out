@@ -19,7 +19,7 @@ proof_in_illegal.ads:11:13: info: initialization of "Warning_Proof_In_Not_Used" 
 gnatprove: error during flow analysis and proof
 proof_in_illegal_2.adb:5:04: info: initialization of "Body_Var" proved
 proof_in_illegal_2.adb:8:42: export "X" must not depend on Proof_In "Body_Var" (SPARK RM 6.1.4(17))
-proof_in_illegal_2.adb:10:07: warning: initialization has no effect
+proof_in_illegal_2.adb:10:07: warning: initialization of Temp has no effect
 proof_in_illegal_2.adb:27:12: info: initialization of "Temp" proved
    compilation of proof_in_illegal_2.adb failed
 

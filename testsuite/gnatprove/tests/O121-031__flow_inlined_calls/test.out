@@ -1,4 +1,4 @@
-foo.adb:7:07: warning: initialization has no effect, in call inlined at foo.adb:26
+foo.adb:7:07: warning: initialization of Tmp_A has no effect, in call inlined at foo.adb:26
 foo.adb:9:13: warning: unused assignment, in call inlined at foo.adb:26
 foo.adb:9:16: info: initialization of "Tmp_A" proved, in call inlined at foo.adb:26
 foo.adb:9:16: info: initialization of "Tmp_A" proved, in call inlined at foo.adb:44

@@ -198,11 +198,11 @@ package body Tests is
         Depends => (N    => null,
                     null => (A, B, C))
    is
-      pragma Warnings (Off, "initialization has no effect");
+      pragma Warnings (Off, "initialization of Obj has no effect");
       Obj : Nice_Widget_T := (X     => A,
                               Y     => B,
                               Round => C);
-      pragma Warnings (On, "initialization has no effect");
+      pragma Warnings (On, "initialization of Obj has no effect");
    begin
       --  Clear everything
       Zero_Widget (Obj);
@@ -505,9 +505,9 @@ package body Tests is
       --  extensions.
       X  : Widget_T := (X => A,
                         Y => 0);
-      pragma Warnings (Off, "initialization has no effect");
+      pragma Warnings (Off, "initialization of Y has no effect");
       Y  : Widget_T       := W;
-      pragma Warnings (On, "initialization has no effect");
+      pragma Warnings (On, "initialization of Y has no effect");
       Z  : Widget_T'Class := W'Update (X => 0);
 
       ZZ : Widget_T'Class := Widget_T'Class (W);

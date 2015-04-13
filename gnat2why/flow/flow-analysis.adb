@@ -1588,21 +1588,51 @@ package body Flow.Analysis is
 
                   elsif Nkind (N) = N_Object_Declaration then
                      if not Constant_Present (N) then
+
                         Get_Name_String (Chars (Defining_Identifier (N)));
                         Adjust_Name_Case (Sloc (N));
-                        Error_Msg_Flow
-                          (FA        => FA,
-                           Tracefile => Tracefile,
-                           Msg       => "initialization of " &
-                             Name_Buffer (1 .. Name_Len) &
-                             " is not mentioned in contract #",
-                           N         => Error_Location (FA.PDG, FA.Atr, V),
-                           F1        =>
-                             Direct_Mapping_Id (
-                               Pragma_Identifier (FA.Initializes_N)),
-                           Tag       => Tag,
-                           Kind      => Warning_Kind,
-                           Vertex    => V);
+
+                        case FA.Kind is
+                        when E_Package_Body =>
+                           declare
+                              Initializes : constant Flow_Id :=
+                                (if FA.Initializes_N /= Empty
+                                 then Direct_Mapping_Id (
+                                   Pragma_Identifier (FA.Initializes_N))
+                                 else Null_Flow_Id);
+                           begin
+
+                              Error_Msg_Flow
+                                (FA        => FA,
+                                 Tracefile => Tracefile,
+                                 Msg       => "initialization of " &
+                                   Name_Buffer (1 .. Name_Len) &
+                                   " is not mentioned in contract" &
+                                 (if Initializes = Null_Flow_Id
+                                    then "" else " #"),
+                                 N         =>
+                                   Error_Location (FA.PDG, FA.Atr, V),
+                                 F1        => Initializes,
+                                 Tag       => Tag,
+                                 Kind      => Warning_Kind,
+                                 Vertex    => V);
+                           end;
+
+                           when others =>
+
+                              Error_Msg_Flow
+                                (FA        => FA,
+                                 Tracefile => Tracefile,
+                                 Msg       => "initialization of " &
+                                   Name_Buffer (1 .. Name_Len) &
+                                   " has no effect",
+                                 N         =>
+                                    Error_Location (FA.PDG, FA.Atr, V),
+                                 Tag       => Tag,
+                                 Kind      => Warning_Kind,
+                                 Vertex    => V);
+                        end case;
+
                      end if;
                      --  This warning is ignored for local constants.
 

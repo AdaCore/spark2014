@@ -112,7 +112,7 @@ evoting.adb:233:24: info: initialization of "winners" proved
 evoting.adb:236:24: info: initialization of "winners" proved
 evoting.adb:237:13: info: initialization of "latest_highest_score" proved
 evoting.adb:239:24: info: initialization of "winners" proved
-evoting.adb:244:10: warning: initialization has no effect
+evoting.adb:244:10: warning: initialization of Init_Winners has no effect
 evoting.adb:244:46: info: initialization of "winners" proved
 evoting.adb:247:13: info: loop invariant initialization proved
 evoting.adb:247:13: info: loop invariant preservation proved

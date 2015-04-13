@@ -22,8 +22,8 @@ power_and_sum.adb:25:22: medium: assertion might fail, requires 2*TotalSum = N*(
 power_and_sum.adb:25:24: info: initialization of "TotalSum" proved
 power_and_sum.adb:26:17: info: initialization of "TotalSum" proved
 power_and_sum.adb:26:17: medium: range check might fail
-power_and_sum.adb:31:07: warning: initialization has no effect
-power_and_sum.adb:33:07: warning: initialization has no effect
+power_and_sum.adb:31:07: warning: initialization of J has no effect
+power_and_sum.adb:33:07: warning: initialization of InnerSum has no effect
 power_and_sum.adb:35:13: info: initialization of "I" proved
 power_and_sum.adb:36:10: info: loop invariant initialization proved
 power_and_sum.adb:36:33: medium: loop invariant might fail after first iteration, requires 6*TotalSum = (I-1)*I*(I+1

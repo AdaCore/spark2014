@@ -1,6 +1,6 @@
 main.adb:3:11: info: initialization of "Global" proved
 main.adb:4:22: info: range check proved
-main.adb:6:04: warning: initialization has no effect
+main.adb:6:04: warning: initialization of Z has no effect
 main.adb:6:13: info: range check proved
 main.adb:7:14: info: range check proved
 main.adb:13:06: warning: unused assignment
