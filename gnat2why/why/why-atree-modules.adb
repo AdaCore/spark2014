@@ -1375,7 +1375,16 @@ package body Why.Atree.Modules is
          M  : constant W_Module_Id := E_Module (E);
          Ty : constant W_Type_Id := EW_Abstract (E);
       begin
-         --  symbols for scalar types
+
+         Insert_Symbol
+           (E, WNE_Bool_Eq,
+            New_Identifier
+              (Symbol => NID ("bool_eq"),
+               Module => M,
+               Domain => EW_Term,
+               Typ    => EW_Bool_Type));
+
+      --  symbols for scalar types
 
          if Is_Scalar_Type (E) then
             declare
@@ -1763,6 +1772,13 @@ package body Why.Atree.Modules is
                      Module => M,
                      Domain => EW_Term,
                      Typ    => Ty));
+               Insert_Symbol
+                 (E, WNE_Array_Elts,
+                  New_Identifier
+                    (Symbol => NID ("elts"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => Get_Array_Theory (E).Ty));
                if Ar_Dim = 1 and then
                  Is_Discrete_Type (Component_Type (E))
                then

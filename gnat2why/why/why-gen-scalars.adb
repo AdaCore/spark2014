@@ -130,12 +130,12 @@ package body Why.Gen.Scalars is
            (if Is_Static then
               (1 => New_Clone_Substitution
                    (Kind      => EW_Function,
-                    Orig_Name => To_Name (WNE_Attr_First),
-                    Image     => To_Name (WNE_Attr_First)),
+                    Orig_Name => To_Local (E_Symb (E, WNE_Attr_First)),
+                    Image     => To_Local (E_Symb (E, WNE_Attr_First))),
                2 => New_Clone_Substitution
                  (Kind      => EW_Function,
-                  Orig_Name => To_Name (WNE_Attr_Last),
-                  Image     => To_Name (WNE_Attr_Last)),
+                  Orig_Name => To_Local (E_Symb (E, WNE_Attr_Last)),
+                  Image     => To_Local (E_Symb (E, WNE_Attr_Last))),
                3 => New_Clone_Substitution
                  (Kind      => EW_Predicate,
                   Orig_Name => To_Local (E_Symb (E, WNE_Range_Pred)),
@@ -228,24 +228,31 @@ package body Why.Gen.Scalars is
          Var : constant W_Identifier_Id :=
            New_Identifier (Name => "x", Typ => Ty);
          Def : W_Pred_Id := True_Pred;
+
+         --  the names of fst and last must be "first_int/last_int" in the case
+         --  where we deal with a modular type and the base type is "int", and
+         --  should be simply "first/last" in the case of a static type. In
+         --  the dynamic case, we don't care about the name, because we bind
+         --  it directly above, so we pick "first_int/last_int" too.
+
          Fst : constant W_Identifier_Id :=
-           New_Identifier
-             (Symbol =>
-                 (if Has_Modular_Integer_Type (E) and Ty = EW_Int_Type then
-                     NID ("first_int")
-                  else
-                     Get_Symbol (To_Ident (WNE_Attr_First))),
-              Domain => EW_Term,
-              Typ    => Ty);
+           (if not Is_Static or else
+              (Has_Modular_Integer_Type (E) and Ty = EW_Int_Type)
+            then
+               New_Identifier
+              (Symbol => NID ("first_int"),
+               Domain => EW_Term,
+               Typ    => Ty)
+            else To_Local (E_Symb (E, WNE_Attr_First)));
          Lst : constant W_Identifier_Id :=
-           New_Identifier
-             (Symbol =>
-                (if Has_Modular_Integer_Type (E) and Ty = EW_Int_Type then
-                      NID ("last_int")
-                 else
-                    Get_Symbol (To_Ident (WNE_Attr_Last))),
-              Domain => EW_Term,
-              Typ    => Ty);
+           (if not Is_Static or else
+              (Has_Modular_Integer_Type (E) and Ty = EW_Int_Type)
+            then
+               New_Identifier
+              (Symbol => NID ("last_int"),
+               Domain => EW_Term,
+               Typ    => Ty)
+            else To_Local (E_Symb (E, WNE_Attr_Last)));
       begin
          if Has_Static_Discrete_Predicate (E) then
             declare

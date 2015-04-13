@@ -4203,11 +4203,7 @@ package body Gnat2Why.Expr is
                        New_Call
                          (Ada_Node => Ada_Node,
                           Domain   => Subdomain,
-                          Name     =>
-                            Prefix
-                              (Ada_Node => Get_Ada_Node (+BT),
-                               M        => E_Module (Get_Ada_Node (+BT)),
-                               W        => WNE_Bool_Eq),
+                          Name     => E_Symb (Get_Ada_Node (+BT), WNE_Bool_Eq),
                           Args     => (1 => Insert_Simple_Conversion
                                        (Ada_Node => Ada_Node,
                                         Domain   => Subdomain,
@@ -6593,15 +6589,11 @@ package body Gnat2Why.Expr is
                         Name   => Why_Eq,
                         Args   =>
                           (1 =>
-                               +Prefix
-                             (M =>
-                                  E_Module (Component_Type (Left_Type)),
-                              W => WNE_Attr_First),
+                               +E_Symb (Component_Type (Left_Type),
+                                        WNE_Attr_First),
                            2 =>
-                             +Prefix
-                             (M =>
-                                  E_Module (Component_Type (Left_Type)),
-                              W => WNE_Attr_Last))),
+                               +E_Symb (Component_Type (Left_Type),
+                                        WNE_Attr_Last))),
                      Right  =>
                        New_Call
                          (Domain => EW_Pred,
@@ -6611,10 +6603,8 @@ package body Gnat2Why.Expr is
                             (1 => New_Discrete_Constant (Value => Uint_1,
                                                          Typ   => Index_Type),
                              2 =>
-                               +Prefix
-                               (M =>
-                                    E_Module (Component_Type (Left_Type)),
-                                W => WNE_Attr_Last))),
+                               +E_Symb (Component_Type (Left_Type),
+                                        WNE_Attr_Last))),
                      Domain => EW_Pred)));
    begin
       Add_Array_Arg (Subdomain, Args, Left_Expr, Arg_Ind);
@@ -6719,16 +6709,9 @@ package body Gnat2Why.Expr is
                 Name   => Int_Infix_Lt,
                 Typ    => EW_Bool_Type,
                 Args   =>
-                  (1 =>
-                         +Prefix
-                     (M =>
-                          E_Module (Component_Type (Right_Type)),
-                      W => WNE_Attr_First),
+                  (1 => +E_Symb (Component_Type (Right_Type), WNE_Attr_First),
                    2 =>
-                     +Prefix
-                     (M =>
-                          E_Module (Component_Type (Right_Type)),
-                      W => WNE_Attr_Last))));
+                     +E_Symb (Component_Type (Right_Type), WNE_Attr_Last))));
    begin
       Add_Array_Arg (Subdomain, Args, Right_Expr, Arg_Ind);
 

@@ -598,10 +598,8 @@ package body Why.Gen.Names is
    begin
       case W is
          when WNE_Range_Check_Fun_BV_Int => return "range_check_int_";
-         when WNE_Array_Elts             => return "elts";
          when WNE_Array_Component_Type   => return "component_type";
          when WNE_Array_Type             => return "__t";
-         when WNE_Bool_Eq                => return "bool_eq";
          when WNE_Dummy                  => return "dummy";
          when WNE_Attr_Constrained       => return "attr__constrained";
          when WNE_Attr_First             => return "first";
@@ -626,7 +624,8 @@ package body Why.Gen.Names is
 
          --  please use these only in conjunction with E_Symb function
 
-         when WNE_Attr_Object_Size |
+         when WNE_Array_Elts |
+              WNE_Attr_Object_Size |
               WNE_Attr_Value_Size |
               WNE_Attr_Address |
               WNE_Attr_First_2 |
@@ -682,7 +681,8 @@ package body Why.Gen.Names is
               WNE_Array_Base_Range_Pred |
               WNE_Array_Base_Range_Pred_2 |
               WNE_Array_Base_Range_Pred_3 |
-              WNE_Array_Base_Range_Pred_4
+              WNE_Array_Base_Range_Pred_4 |
+              WNE_Bool_Eq
 
             =>
 

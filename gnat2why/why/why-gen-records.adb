@@ -1456,7 +1456,7 @@ package body Why.Gen.Records is
            (Theory,
             New_Function_Decl
               (Domain      => EW_Term,
-               Name        => To_Ident (WNE_Bool_Eq),
+               Name        => To_Local (E_Symb (E, WNE_Bool_Eq)),
                Binders     =>
                  R_Binder &
                Binder_Array'(1 =>
@@ -1959,7 +1959,7 @@ package body Why.Gen.Records is
               (Theory,
                New_Function_Decl
                  (Domain      => EW_Term,
-                  Name        => To_Ident (WNE_Bool_Eq),
+                  Name        => To_Local (E_Symb (E, WNE_Bool_Eq)),
                   Binders     =>
                     R_Binder &
                     Binder_Array'(1 => Binder_Type'(B_Name => B_Ident,

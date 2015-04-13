@@ -1382,9 +1382,7 @@ package body Why.Gen.Arrays is
                    (1 =>
                           New_Field_Association
                       (Domain => Domain,
-                       Field  => Prefix (Ada_Node => Ty_Entity,
-                                         M        => E_Module (Ty_Entity),
-                                         W        => WNE_Array_Elts),
+                       Field  => E_Symb (Ty_Entity, WNE_Array_Elts),
                        Value  => Array_Upd)),
                  Typ     => W_Ty);
          end;
