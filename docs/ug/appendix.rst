@@ -459,6 +459,18 @@ entire instance is Off. Similarly, such an ignored SPARK_Mode specification
 could not violate the preceding rule that a SPARK_Mode specification
 shall only apply to a (section of a) library-level entity.]
 
+If SPARK_Mode is off in the visible part of a library unit package, then
+SPARK_Mode shall be off for the visible part of any visible child unit of
+the package.
+If SPARK_Mode is off in the private part of a library unit package, then
+SPARK_Mode shall be off for the visible part  of any private child unit of
+the package.
+If SPARK_Mode is off in the private part of a library unit package, then
+SPARK_Mode shall be off in any subsequent sections of any child unit
+of the package.
+[These rules express the general "Off shall not enclose On" principle
+as it applies to child units.]
+
 SPARK_Mode is an implementation-defined Ada aspect; it is not (strictly
 speaking) part of the |SPARK| language. It is used to notionally transform
 programs which would otherwise not be in |SPARK| so that they can
