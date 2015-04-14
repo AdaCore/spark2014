@@ -7539,6 +7539,9 @@ package body Gnat2Why.Expr is
                end;
             end if;
 
+         when Attribute_Address =>
+            T := +E_Symb (Entity (Var), WNE_Attr_Address);
+
          when others =>
             Ada.Text_IO.Put_Line ("[Transform_Attr] id ="
                                   & Attribute_Id'Image (Attr_Id));

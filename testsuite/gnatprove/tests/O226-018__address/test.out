@@ -1,0 +1,28 @@
+utils.ads:10:53: info: range check proved
+worker_pack.adb:13:26: warning: assuming "XQueue_Create" has no effect on global items
+worker_pack.adb:13:26: warning: no Global contract available for "XQueue_Create"
+worker_pack.adb:13:91: info: division check proved
+worker_pack.adb:38:20: warning: assuming "XQueue_Receive" has no effect on global items
+worker_pack.adb:38:20: warning: no Global contract available for "XQueue_Receive"
+worker_pack.adb:38:49: info: initialization of "Work.Arg" proved
+worker_pack.adb:38:49: info: initialization of "Work.Func" proved
+worker_pack.adb:40:16: info: initialization of "Res" proved
+worker_pack.adb:44:18: info: initialization of "Work.Func" proved
+worker_pack.adb:46:34: info: initialization of "Work.Arg" proved
+worker_pack.adb:48:41: info: initialization of "Work.Arg" proved
+worker_pack.adb:58:07: warning: initialization of Work has no effect
+worker_pack.adb:59:07: warning: initialization of Res has no effect
+worker_pack.adb:76:14: warning: assuming "XQueue_Send" has no effect on global items
+worker_pack.adb:76:14: warning: no Global contract available for "XQueue_Send"
+worker_pack.adb:76:40: info: initialization of "Work.Arg" proved
+worker_pack.adb:76:40: info: initialization of "Work.Func" proved
+worker_pack.adb:78:10: info: initialization of "Res" proved
+worker_pack.adb:89:07: warning: assuming "Worker_Function" has no effect on global items
+worker_pack.adb:89:07: warning: no Global contract available for "Worker_Function"
+worker_pack.adb:96:07: warning: assuming "Worker_Function" has no effect on global items
+worker_pack.adb:96:07: warning: no Global contract available for "Worker_Function"
+worker_pack.ads:26:13: info: initialization of "Worker_Test" proved
+worker_pack.ads:29:14: warning: subprogram "Worker_Loop" has no effect
+worker_pack.ads:32:13: info: initialization of "Worker_Schedule" proved
+worker_pack.ads:35:14: warning: subprogram "Log_Run_Worker" has no effect
+worker_pack.ads:37:14: warning: subprogram "Neo_Pixel_Ring_Worker" has no effect

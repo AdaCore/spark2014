@@ -130,6 +130,7 @@ package body Gnat2Why.Decls is
                Binders     => (1 .. 0 => <>),
                Labels      => Labels,
                Return_Type => Typ));
+
       Insert_Entity (E, To_Why_Id (E, Typ => Typ));
       Close_Theory (File,
                     Kind => Definition_Theory,
@@ -450,6 +451,14 @@ package body Gnat2Why.Decls is
             raise Program_Error;
       end case;
       Insert_Item (E, Var);
+
+      Emit (File.Cur_Theory,
+            Why.Atree.Builders.New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => To_Local (E_Symb (E, WNE_Attr_Address)),
+               Binders     => (1 .. 0 => <>),
+               Labels      => Labels,
+               Return_Type => EW_Int_Type));
 
       Close_Theory (File,
                     Kind           => Definition_Theory,
