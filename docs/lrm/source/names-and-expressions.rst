@@ -140,9 +140,8 @@ free from side-effects only retrieves or computes a value.
    function which (directly or indirectly) reads a variable.  These
    contexts include:
 
-    * a constraint excluding the range of a loop parameter
-      specification where variables may be used in the expressions
-      defining the range (see :ref:`subtype_declarations`);
+    * a constraint other than the range of a loop parameter
+      specification (see :ref:`subtype_declarations`);
 
     * the default_expression of a component declaration (see
       :ref:`record_types`);

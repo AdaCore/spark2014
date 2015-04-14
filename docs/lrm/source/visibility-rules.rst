@@ -19,14 +19,7 @@ No extensions or restrictions.
 Overriding Indicators
 ~~~~~~~~~~~~~~~~~~~~~
 
-.. centered:: **Legality Rules**
-
-.. _tu-overriding_indicators-01:
-
-1. Tagged types are not currently permitted in |SPARK| and therefore
-   neither are overriding indicators permitted.
-
-.. _etu-overriding_indicators-01:
+No extensions or restrictions.
 
 Use Clauses
 -----------
@@ -51,19 +44,10 @@ Object Renaming Declarations
 
 .. _tu-object_renaming_declarations-01:
 
-1. An ``object_renaming_declaration`` for an entire object or a
-   component of a record introduces a static alias of the renamed
-   object. As the alias is static, in |SPARK| analysis it is replaced
-   by the renamed object.  This scheme works over multiple levels of
-   renaming.
-
-.. _tu-object_renaming_declarations-02:
-
-2. In an ``object_renaming_declaration`` which renames the result of a
-   function the name of the declaration denotes a read only variable
-   which is assigned the value of the function result from the
-   elaboration of the ``object_renaming_declaration``. This read only
-   variable is used in |SPARK| analysis.
+1. An expression or range occurring as part of an
+   ``object_renaming_declaration`` shall not have a variable input.
+   [This rule can apply to an index of an indexed_component and the range
+   of a slice.]
 
 
 .. _etu-object_renaming_declarations:

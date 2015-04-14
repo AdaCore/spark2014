@@ -7,20 +7,19 @@ are used for verification, particularly involving loop statements.
 Simple and Compound Statements - Sequences of Statements
 --------------------------------------------------------
 
-|SPARK| restricts statements tha`t complicate verification, and excludes statements
-related to tasking and synchronization.
+|SPARK| excludes certain kinds of statements that complicate verification.
 
 .. centered:: **Legality Rules**
 
 .. _tu-nt-simple_and_compound_statements-01:
 
-1. A ``simple_statement`` shall not be a ``goto_statement``, an ``entry_call_statement``,
-   a ``requeue_statement``, a ``delay_statement``, an ``abort_statement``,
-   or a ``code_statement``.
+1. A ``simple_statement`` shall not be a ``goto_statement``,
+   a ``requeue_statement``, an ``abort_statement``, or a ``code_statement``.
 
 .. _tu-nt-simple_and_compound_statements-02:
 
-2. A ``compound_statement`` shall not be an ``accept_statement`` or a ``select_statement``.
+2. A ``compound_statement`` shall not be an ``accept_statement``
+   or a ``select_statement``.
 
 .. _tu-nt-simple_and_compound_statements-03:
 
@@ -28,9 +27,6 @@ related to tasking and synchronization.
    statement are in |SPARK|.
 
 .. _etu-simple_and_compound_statements:
-
-.. todo: Adding Ravenscar support would allow some of the tasking statements
-         such as ``entry_call_statement``, and ``delay_statement``.
 
 Assignment Statements
 ---------------------

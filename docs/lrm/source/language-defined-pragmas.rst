@@ -86,6 +86,7 @@ Assume_No_Invalid_Values      Yes
 Async_Readers		      Yes
 Async_Writers		      Yes
 Contract_Cases     	      Yes
+Default_Initial_Condition     Yes
 Depends		 	      Yes
 Effective_Reads		      Yes
 Effective_Writes	      Yes
@@ -102,6 +103,7 @@ Refined_Global	 	      Yes
 Refined_Post 	 	      Yes
 Refined_State 	 	      Yes
 SPARK_Mode         	      Yes                    Language defined but implementation dependent
+Volatile_Function             Yes
 ============================= ====================== =================================================
 
 GNAT Implementation-Defined Pragmas

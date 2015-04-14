@@ -91,6 +91,7 @@ Async_Readers		      Yes
 Async_Writers		      Yes
 Contract_Cases     	      Yes
 Depends		 	      Yes
+Default_Initial_Condition     Yes
 Effective_Reads		      Yes
 Effective_Writes	      Yes
 Extensions_Visible            Yes
@@ -103,6 +104,7 @@ Refined_Global	 	      Yes
 Refined_Post		      Yes
 Refined_State 	 	      Yes
 SPARK_Mode		      Yes		     Language defined but implementation dependent
+Volatile_Function             Yes
 ============================= ====================== =================================================
 
 .. _etu-language_defined_aspects:

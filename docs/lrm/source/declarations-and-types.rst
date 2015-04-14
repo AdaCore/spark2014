@@ -27,10 +27,13 @@ A type is said to *define full default initialization* if it is
 
   * an array type whose element type defines default initialization; or
 
-  * a record type or type extension each of whose ``component_declarations``
-    either includes a ``default_expression`` or has a type which defines full
-    default initialization and, in the case of a type extension, is
-    an extension of a type which defines full default initialization; or
+  * a record type, type extension, or protected type each of whose
+    ``component_declarations`` either includes a ``default_expression`` or
+    has a type which defines full default initialization and, in the case of
+    a type extension, is an extension of a type which defines full default
+    initialization; or
+
+  * a task type; or
 
   * a private type whose Default_Initial_Condition aspect is specified to be a
     *Boolean_*\ ``expression``.
@@ -52,17 +55,11 @@ Type Declarations
 
 .. _tu-sf-type_declarations-01:
 
-1. The following type declarations are not permitted in |SPARK|
-
-   * ``task_type_declaration``,
-   * ``protected_type_declaration``, and
-   * ``access_type_definition``.
+1. Access type declarations are not permitted in |SPARK|.
+   [This follows from the rule forbidding use of the Ada reserved
+   word **access**, which also disallows all forms of anonymous access types.]
 
 .. _etu-type_declarations:
-
-[``Task_type_declarations`` and ``protected_type_declarations`` will
-be included when |SPARK| is extended to cover some of the Ada tasking
-features.]
 
 .. _subtype_declarations:
 
@@ -130,10 +127,17 @@ Objects and Named Numbers
 Object Declarations
 ~~~~~~~~~~~~~~~~~~~
 
+The Boolean aspect Constant_After_Elaboration may be specified as part of
+the declaration of a library level variable.
+A variable whose Constant_After_Elaboration aspect is True, or any part
+thereof, is said to be "constant after elaboration".
+[The Constant_After_Elaboration aspect indicates that the variable will not
+be modfied after execution of the main subprogram begins.]
+
 A constant is a *constant with variable inputs* if its initialization
 expression depends on:
 
-  * A variable or parameter
+  * A variable or parameter; or
 
   * Another *constant with variable inputs*
 
@@ -242,9 +246,9 @@ non-discriminant scalar parts (e.g., an array of null records),
 the preceding "at least one elementary" wording means that the component
 is ignored for purposes of this rule.]
 
-[The enforcement of this rule requires looking at the ``full_type_declaration``
-of a ``private_type`` declaration. This is inconsistent with SPARK's usual
-"everything you need to know should be in the specification" design.]
+[The enforcement of this rule may require looking at the
+``full_type_declaration`` of a ``private_type`` declaration if the
+private type's Default_Initial_Condition aspect is not specified.]
 
 .. todo: Consider introducing some mechanism to optionally provide the needed
          information as part of the specification of a private type.
@@ -311,6 +315,8 @@ behavior. Therefore, the following rules are applied in |SPARK|.
 .. _tu-access_types-01:
 
 1. All forms of access type and parameter declarations are prohibited.
+   [This follows from the rule forbidding use of the Ada reserved
+   word **access**.]
 
 .. _tu-access_types-02:
 

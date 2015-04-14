@@ -63,6 +63,10 @@ themselves records.
    * the visible state of any packages declared immediately within
      the private part or body of P.
 
+3. The preceding two rules notwithstanding, an object whose Part_Of aspect
+   refers to a task or protected unit is not (directly) part of the
+   visible state or hidden state of any package (see TBD).
+
 .. _etu-abstract_state:
 
 .. _external_state:
@@ -97,8 +101,10 @@ whether a read or write is always significant.
 A type is said to be *effectively volatile* if it is either
 a volatile type, an array type whose Volatile_Component
 aspect is True, or an array type whose component type is
-effectively volatile. An *effectively volatile object* is a
-volatile object or is of an effectively volatile type.
+effectively volatile, a protected type, or a descendant of
+the type Ada.Synchronous_Task_Control.Suspension_Object.
+An *effectively volatile object* is a volatile object or an object
+of an effectively volatile type.
 
 External state is an effectively volatile object or a state abstraction which
 represents one or more effectively volatile objects (or it could be a null state
@@ -119,6 +125,13 @@ defined:
 
 These properties may be specified for an effectively volatile object
 as Boolean aspects or as external properties of an external state abstraction.
+
+The Boolean aspect Volatile_Function may be specified as part of the
+(explicit) initial declaration of a function. A function whose
+Volatile_Function aspect is True is said to be a *volatile function*.
+A protected function is also defined to be a *volatile function*.
+[Unlike non-volatile functions, two calls to a volatile function with all
+inputs equal need not return the same result.]
 
 .. centered:: **Legality Rules**
 
@@ -218,6 +231,12 @@ as Boolean aspects or as external properties of an external state abstraction.
     need not be initialized before being read although explicit
     initialization is permitted. [The external state might be
     initialized by an external writer.]
+
+.. _tu-fa-external_state-15:
+
+15. A subprogram whose Volatile_Function aspect is True shall not override
+    an inherited primitive operation of a tagged type whose
+    Volatile_Function aspect is False. [The reverse is allowed.]
 
 .. _etu-external_state-ss:
 
@@ -338,11 +357,12 @@ Async_Writers aspect specification.
 
 .. _tu-fe-external_state_variables-09:
 
-9. An effectively volatile object shall not be a ``global_item`` of a function.
+9. An effectively volatile object shall not be a ``global_item`` of a
+   non-volatile function.
 
 .. _tu-fe-nt-external_state_variables-10:
 
-10. A function shall not have a formal parameter of an effectively
+10. A non-volatile function shall not have a formal parameter of an effectively
     volatile type.
 
 .. _tu-fe-external_state_variables-11:
@@ -384,11 +404,22 @@ Async_Writers aspect specification.
    * the actual parameter in a procedure call of which the corresponding
      formal parameter is of a non-scalar effectively volatile type; or
 
+   * the (protected) prefix of a name denoting a protected operation; or
+
+   * the return expression of a ``simple_return_statement`` which applies
+     to a volatile function; or
+
+   * the initial value expression of the ``extended_return_object_declaration``
+     of an ``extended_return_statement`` which applies to a
+     volatile function; or
+
    * the prefix of a ``slice``, ``selected_component``, ``indexed_component``,
      or ``attribute_reference`` which is itself a name occurring in a
      non-interfering context; or
 
    * the expression of a type conversion occurring in a non-interfering context.
+
+   The same restrictions also apply to a call to a volatile function.
 
 .. _etu-external_state_variables-lr:
 
@@ -473,7 +504,7 @@ shall follow the grammar of ``abstract_state_list`` given below.
   option_list              ::= option { , option }
   option                   ::= simple_option
                              | name_value_option
-  simple_option            ::= Ghost
+  simple_option            ::= Ghost | Synchronous
   name_value_option        ::= Part_Of => abstract_state
                              | External [=> external_property_list]
   external_property_list   ::= external_property
@@ -562,7 +593,12 @@ shall follow the grammar of ``abstract_state_list`` given below.
 .. _tu-fe-abstract_state_aspects-10:
 
 10. A state abstraction for which the ``simple_option`` Ghost is
-    specified is said to be a ghost state abstraction.
+    specified is said to be a ghost state abstraction. A state
+    abstraction for which the ``simple_option`` Synchronous is
+    specified is said to be a synchronized state abstraction.
+    [The name "Synchronous" is used instead of "Synchronized"
+    to avoid unnecessary complications associated with the use of an
+    Ada reserved word.]
 
 .. _etu-abstract_state_aspects-ss:
 
@@ -1069,22 +1105,31 @@ where
     a ghost variable or a ghost state abstraction. [The reverse situation
     (i.e., a ghost constituent of a non-ghost state abstraction) is permitted.]
 
+.. _tu-fe-refined_state_aspects-13:
+
+13. A ``constituent`` of a synchronized state abstraction shall be
+    either a synchronized object or another synchronized state abstraction.
+    A ``constituent`` of a non-synchronized state abstraction shall be
+    either a non-synchronized variable, a non-synchronized state abstraction,
+    a constant, or variable which is constant after elaboration.
+    [TBD: Do we need the latter rule?]
+
 .. _etu-refined_state_aspects-lr:
 
 .. centered:: **Static Semantics**
 
-.. _tu-fe-refined_state_aspects-13:
+.. _tu-fe-refined_state_aspects-14:
 
-13. A Refined_State aspect of a ``package_body`` completes the
+14. A Refined_State aspect of a ``package_body`` completes the
     declaration of the state abstractions occurring in the
     corresponding ``package_specification`` and defines the objects
     and each subordinate state abstraction that are the
     ``constituents`` of the *abstract_*\ ``state_names`` declared in
     the ``package_specification``.
 
-.. _tu-fe-refined_state_aspects-14:
+.. _tu-fe-refined_state_aspects-15:
 
-14. A **null** ``constituent_list`` indicates that the named abstract
+15. A **null** ``constituent_list`` indicates that the named abstract
     state has no constituents and termed a *null_refinement*. The
     state abstraction does not represent any actual state at
     all. [This feature may be useful to minimize changes to Global and
@@ -1099,14 +1144,14 @@ There are no dynamic semantics associated with Refined_State aspect.
 
 .. centered:: **Verification Rules**
 
-.. _tu-fe-refined_state_aspects-15:
-
-15. Each ``constituent`` that is a constant shall be a constant *with
-    variable inputs*.
-
 .. _tu-fe-refined_state_aspects-16:
 
-16. If the Async_Writers aspect of a state abstraction is True and the
+16. Each ``constituent`` that is a constant shall be a constant *with
+    variable inputs*.
+
+.. _tu-fe-refined_state_aspects-17:
+
+17. If the Async_Writers aspect of a state abstraction is True and the
     Async_Writers aspect of a constituent of that state abstraction is
     False, then after the elaboration of the (possibly implicit) body
     of the package which declares the abstraction, the constituent
@@ -1189,6 +1234,9 @@ state abstractions whose refinements are visible at the point of the
 subprogram_body are replaced with references to [some or all of the]
 constituents of those abstractions.
 
+See section :ref:`global-aspects` regarding how the rules given in this
+section apply to protected operations and to task bodies.
+
 The Refined_Global aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is Refined_Global and the ``aspect_definition``
 shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
@@ -1205,7 +1253,8 @@ shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
 .. _tu-fe-refined_global_aspects-02:
 
 2. A Refined_Global aspect is permitted on a body_stub (if one is
-   present) or subprogram body if and only if it has a declaration in the
+   present), subprogram body, entry body, or task body if and only if
+   the stub or body is the completion of declaration occurring in the
    specification of an enclosing package, the declaration has a
    Global aspect which denotes a state abstraction declared by the package and
    the refinement of the state abstraction is visible.
@@ -1330,6 +1379,9 @@ except that references to state abstractions, whose refinements are visible at
 the point of the subprogram_body, are replaced with references to [some or all of
 the] constituents of those abstractions.
 
+See section :ref:`global-aspects` regarding how the rules given in this
+section apply to protected operations and to task bodies.
+
 The Refined_Depends aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is Refined_Depends and the ``aspect_definition``
 shall follow the grammar of ``dependency_relation`` in :ref:`depends-aspects`.
@@ -1346,7 +1398,8 @@ shall follow the grammar of ``dependency_relation`` in :ref:`depends-aspects`.
 .. _tu-fe-refined_depends_aspects-02:
 
 2. A Refined_Depends aspect is permitted on a body_stub (if one is
-   present) or subprogram body if and only if it has a declaration in the
+   present), subprogram body, entry body, or task body if and only if
+   the stub or body is the completion of a declaration in the
    specification of an enclosing package and the declaration has a
    Depends aspect which denotes a state abstraction declared by the package and
    the refinement of the state abstraction is visible.
@@ -1526,6 +1579,10 @@ the package body.
 
 This mechanism is also used in the case of the visible state of a
 private child unit (or a public descendant thereof).
+
+The Part_Of aspect can also be used in a different way to indicate
+that an object [or state abstraction ???] is to be treated as though it
+were declared within a protected unit or task unit (see TBD).
 
 .. centered:: **Static Semantics**
 
@@ -1916,9 +1973,10 @@ be a Boolean ``expression``.
 .. _tu-fe-refined_postcondition_aspects-01:
 
 1. A Refined_Post aspect may only appear on a body_stub (if one is
-   present) or the body (if no stub is present) of a subprogram which is
-   declared in the specification of a package, its abstract view. If the
-   subprogram declaration in the visible part has no explicit postcondition, a
+   present) or the body (if no stub is present) of a subprogram or
+   entry which is declared in the specification of a package,
+   its abstract view. If the
+   initial declaration in the visible part has no explicit postcondition, a
    postcondition of True is assumed for the abstract view.
 
 .. _tu-cbatu-refined_postcondition_aspects-02:
@@ -1954,15 +2012,14 @@ be a Boolean ``expression``.
 
 .. _tu-fe-refined_postcondition_aspects-07:
 
-7. When a subprogram with a Refined Postcondition is called; first
-   the subprogram is evaluated. The Refined Postcondition is evaluated
+7. When a subprogram or entry with a Refined Postcondition is called,
+   the Refined Postcondition is evaluated
    immediately before the evaluation of the postcondition or, if there is no
    postcondition, immediately before the point at which a postcondition would
    have been evaluated. If the Refined Postcondition evaluates to
-   True then the postcondition is evaluated as described in the Ada
-   RM. If either the Refined Postcondition or the postcondition
-   do not evaluate to True then the exception Assertions.Assertion_Error is
-   raised.
+   False, the the exceptions Assertion.Assertion_Error is raised.
+   Otherwise, the postcondition is then evaluated and checked
+   as described in the Ada RM.
 
 .. _etu-refined_postcondition_aspects-ds:
 
@@ -2039,7 +2096,7 @@ used here for brevity of the example.
      |SPARK| Toolset.  Its usefulness and exact semantics are still to be
      determined.
 
-.. Text commented out until decision on Refined_Pre is finalised.
+.. Text commented out until decision on Refined_Pre is finalized.
    A subprogram declared in the specification of a package may have a Refined
    Precondition aspect applied to its body or body stub. The Refined
    Precondition may be used to restate a precondition given on the declaration

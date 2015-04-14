@@ -338,8 +338,9 @@ Global Aspects
 A Global aspect of a subprogram lists the global items whose values
 are used or affected by a call of the subprogram.
 
-The Global aspect may only be specified for the initial declaration of a
-subprogram (which may be a declaration, a body or a body stub).
+The Global aspect shall only be specified for the initial declaration of a
+subprogram (which may be a declaration, a body or a body stub), of a
+protected entry, or of a task unit.
 The implementation of a subprogram body must be consistent with the
 subprogram's Global aspect.
 
@@ -350,6 +351,26 @@ details.
 The Global aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is Global and the ``aspect_definition`` must
 follow the grammar of ``global_specification``
+
+For purposes of the rules concerning the Global, Depends, Refined_Global, and
+Refined_Depends aspects, when any of these aspects are specified for a
+task unit the task unit's body is considered to be the body of a
+nonreturning procedure and the current instance of the task unit is
+considered to be a formal parameter (of that notional procedure)
+of mode **in out**. [Because a task (even a
+discriminated task) is effectively a constant, one might think that a
+mode of **in** would make more sense. However, the current instance of
+a task unit is, strictly speaking, a variable; for example, it may be
+passed as an actual **out** or **in out** mode parameter in a call.]
+
+Similarly, for purposes of the rules concerning the Global, Refined_Global,
+Depends, and Refined_Depends aspects as they apply to protected operations,
+the current instance of the enclosing protected unit is considered to be
+a formal parameter (of mode **in** for a protected function, of mode
+**in out** otherwise) and a protected entry is considered to be
+a protected procedure. [For example, rules which refer to the
+"subprogram body" refer, in the case of a protected entry, to the
+entry body.]
 
 .. centered:: **Syntax**
 
@@ -424,7 +445,8 @@ follow the grammar of ``global_specification``
 .. _tu-fe-global_aspects-05:
 
 5. The Global aspect may only be specified for the initial declaration of a
-   subprogram (which may be a declaration, a body or a body stub).
+   subprogram (which may be a declaration, a body or a body stub), of a
+   protected entry, or of a task unit.
 
 .. _tu-fe-global_aspects-06:
 
@@ -609,7 +631,9 @@ context is that the input value(s) of *Y* may affect:
 
 * the exit value of *X*; and
 * the intermediate values of *X* if it is an external state
-  (see section  :ref:`external_state`).
+  (see section  :ref:`external_state`), or if the subprogram
+  is a nonreturning procedure [, possibly the notional nonreturning
+  procedure corresponding to a task body].
 
 This is written *X => Y*. As in UML, the entity at the tail of the
 arrow depends on the entity at the head of the arrow.
@@ -622,6 +646,9 @@ notation denoting self-dependence is useful here, X =>+ **null**.
 Note that a Refined_Depends aspect may be applied to a subprogram body when
 using state abstraction; see section :ref:`refined-depends-aspect` for further
 details.
+
+See section :ref:`global-aspects` regarding how the rules given in this
+section apply to protected operations and to task bodies.
 
 The Depends aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is Depends and the ``aspect_definition`` must follow
@@ -670,7 +697,8 @@ where
 .. _tu-fe-depends_aspects-02:
 
 2. The Depends aspect shall only be specified for the initial declaration of a
-   subprogram (which may be a declaration, a body or a body stub).
+   subprogram (which may be a declaration, a body or a body stub), of a
+   protected entry, or of a task unit.
 
 .. _tu-fe-depends_aspects-03:
 
@@ -1437,8 +1465,8 @@ library package that no longer needs a body (see Ada RM 7.2(4)).
    The value specified for the Ghost assertion policy in an
    Assertion_Policy pragma shall be either Check or Ignore.
    [In other words, implementation-defined assertion policy values
-   are not permitted.] The Assertion_Policy in effect at any point
-   of a SPARK program shall be either Check or Ignore.
+   are not permitted.] The Ghost assertion policy in effect at any
+   point of a SPARK program shall be either Check or Ignore.
 
 .. _tu-fe-ghost_entities-08:
 
@@ -1546,23 +1574,32 @@ library package that no longer needs a body (see Ada RM 7.2(4)).
     expression (e.g., Pre for a precondition expression, Assert for the
     argument of an Assert pragma) shall [also] be Ignore.
 
+.. _tu-fe-ghost_entities-19:
+
+19. A task or protected type shall not be a ghost type.
+    A synchronized object shall not be a ghost object.
+    [Note that any object with a task or protected part is
+    a synchronized object; see TBD].
+    A synchronized state abstraction shall not be a ghost state abstraction
+    (see TBD).
+
 .. _etu-ghost_entities-lr:
 
 .. centered:: **Verification Rules**
 
-.. _tu-fe-ghost_entities-19:
+.. _tu-fe-ghost_entities-20:
 
-19. A ghost procedure shall not have a non-ghost [global] output.
+20. A ghost procedure shall not have a non-ghost [global] output.
 
-.. _tu-cbatu-ghost_entities-20:
+.. _tu-cbatu-ghost_entities-21:
 
-20. An output of a non-ghost subprogram other than a ghost global
+21. An output of a non-ghost subprogram other than a ghost global
     shall not depend on a ghost input. [It is intended that this follows
     as a consequence of other rules.]
 
-.. _tu-fe-ghost_entities-21:
+.. _tu-fe-ghost_entities-22:
 
-21. A ghost procedure shall not have an effectively volatile global input
+22. A ghost procedure shall not have an effectively volatile global input
     with the properties Async_Writers or Effective_Reads set to True.
     [This rule says, in effect, that ghost procedures are
     subject to the same restrictions as non-ghost functions with respect
@@ -1572,9 +1609,9 @@ library package that no longer needs a body (see Ada RM 7.2(4)).
     Effective_Reads set to True. [In other words, a ghost statement is
     subject to effectively the same restrictions as a ghost procedure.]
 
-.. _tu-fe-ghost_entities-22:
+.. _tu-fe-ghost_entities-23:
 
-22. If the Ghost assertion policy in effect at the point of the declaration
+23. If the Ghost assertion policy in effect at the point of the declaration
     of a ghost variable or ghost state abstraction is Check, then the Ghost
     assertion policy in effect at the point of any call to a procedure
     for which that variable or state abstraction is a global output shall
