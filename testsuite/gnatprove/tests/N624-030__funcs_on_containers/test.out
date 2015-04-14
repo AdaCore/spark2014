@@ -52,7 +52,7 @@ find_map.ads:13:13: info: initialization of "Equivalent_Keys" proved
 find_map.ads:15:12: info: initialization of "Equivalent_Keys" proved
 find_map.ads:15:12: info: initialization of "Hash" proved
 find_map.ads:15:12: info: initialization of "Oeq" proved
-find_map.ads:24:30: info: initialization of "R56s" proved
+find_map.ads:24:30: info: initialization of "R52s" proved
 find_map.ads:24:30: info: precondition proved
 find_map.ads:26:13: info: initialization of private part of "Find_All" proved
 find_map.ads:27:14: info: postcondition proved

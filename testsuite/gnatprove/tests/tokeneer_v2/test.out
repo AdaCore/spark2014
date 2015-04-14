@@ -469,7 +469,7 @@ auditlog.adb:1595:53: info: range check proved
 auditlog.adb:1598:47: info: range check proved
 auditlog.adb:1607:10: info: initialization of "OldAlarm" proved
 auditlog.adb:1611:10: info: precondition proved
-auditlog.adb:1619:07: medium: precondition might fail
+auditlog.adb:1619:07: info: precondition proved
 auditlog.ads:33:13: info: initialization of "Valid_NumberLogEntries" proved
 auditlog.ads:60:22: info: initialization of "CurrentLogFile" proved
 auditlog.ads:60:22: info: initialization of "LogFileEntries" proved
@@ -1595,34 +1595,34 @@ display.adb:123:41: info: length check proved, in call inlined at display.adb:18
 display.adb:123:41: info: length check proved, in call inlined at display.adb:280
 display.adb:128:11: info: range check proved, in call inlined at display.adb:188
 display.adb:128:11: info: range check proved, in call inlined at display.adb:280
-display.adb:128:37: info: initialization of "C29b.Top.Len" proved, in call inlined at display.adb:188
+display.adb:128:37: info: initialization of "C27b.Top.Len" proved, in call inlined at display.adb:188
 display.adb:128:37: info: initialization of "TheMsg.Top.Len" proved, in call inlined at display.adb:280
-display.adb:128:47: info: initialization of "R42b" proved, in call inlined at display.adb:280
+display.adb:128:47: info: initialization of "R40b" proved, in call inlined at display.adb:280
 display.adb:129:10: info: loop invariant initialization proved, in call inlined at display.adb:188
 display.adb:129:10: info: loop invariant initialization proved, in call inlined at display.adb:280
 display.adb:129:10: info: loop invariant preservation proved, in call inlined at display.adb:188
 display.adb:129:10: info: loop invariant preservation proved, in call inlined at display.adb:280
-display.adb:130:38: info: initialization of "C29b.Top.Len" proved, in call inlined at display.adb:188
+display.adb:130:38: info: initialization of "C27b.Top.Len" proved, in call inlined at display.adb:188
 display.adb:130:38: info: initialization of "TheMsg.Top.Len" proved, in call inlined at display.adb:280
-display.adb:131:33: info: initialization of "C29b.Bottom.Len" proved, in call inlined at display.adb:188
-display.adb:131:33: info: initialization of "C29b.Bottom.Text" proved, in call inlined at display.adb:188
-display.adb:131:33: info: initialization of "C29b.Top.Text" proved, in call inlined at display.adb:188
+display.adb:131:33: info: initialization of "C27b.Bottom.Len" proved, in call inlined at display.adb:188
+display.adb:131:33: info: initialization of "C27b.Bottom.Text" proved, in call inlined at display.adb:188
+display.adb:131:33: info: initialization of "C27b.Top.Text" proved, in call inlined at display.adb:188
 display.adb:131:33: info: initialization of "TheMsg.Bottom.Len" proved, in call inlined at display.adb:280
 display.adb:131:33: info: initialization of "TheMsg.Bottom.Text" proved, in call inlined at display.adb:280
 display.adb:131:33: info: initialization of "TheMsg.Top.Text" proved, in call inlined at display.adb:280
-display.adb:131:48: info: initialization of "C29b.Bottom.Len" proved, in call inlined at display.adb:188
-display.adb:131:48: info: initialization of "C29b.Bottom.Text" proved, in call inlined at display.adb:188
-display.adb:131:48: info: initialization of "C29b.Top.Len" proved, in call inlined at display.adb:188
-display.adb:131:48: info: initialization of "C29b.Top.Text" proved, in call inlined at display.adb:188
+display.adb:131:48: info: initialization of "C27b.Bottom.Len" proved, in call inlined at display.adb:188
+display.adb:131:48: info: initialization of "C27b.Bottom.Text" proved, in call inlined at display.adb:188
+display.adb:131:48: info: initialization of "C27b.Top.Len" proved, in call inlined at display.adb:188
+display.adb:131:48: info: initialization of "C27b.Top.Text" proved, in call inlined at display.adb:188
 display.adb:131:48: info: initialization of "TheMsg.Bottom.Len" proved, in call inlined at display.adb:280
 display.adb:131:48: info: initialization of "TheMsg.Bottom.Text" proved, in call inlined at display.adb:280
 display.adb:131:48: info: initialization of "TheMsg.Top.Len" proved, in call inlined at display.adb:280
 display.adb:131:48: info: initialization of "TheMsg.Top.Text" proved, in call inlined at display.adb:280
 display.adb:132:25: info: initialization of "Result.Text" proved, in call inlined at display.adb:188
 display.adb:132:25: info: initialization of "Result.Text" proved, in call inlined at display.adb:280
-display.adb:132:28: info: initialization of "C29b.Top.Text" proved, in call inlined at display.adb:188
+display.adb:132:28: info: initialization of "C27b.Top.Text" proved, in call inlined at display.adb:188
 display.adb:132:28: info: initialization of "TheMsg.Top.Text" proved, in call inlined at display.adb:280
-display.adb:134:21: info: initialization of "C29b.Top.Len" proved, in call inlined at display.adb:188
+display.adb:134:21: info: initialization of "C27b.Top.Len" proved, in call inlined at display.adb:188
 display.adb:134:21: info: initialization of "TheMsg.Top.Len" proved, in call inlined at display.adb:280
 display.adb:137:30: info: index check proved, in call inlined at display.adb:188
 display.adb:137:30: info: index check proved, in call inlined at display.adb:280
@@ -1648,25 +1648,25 @@ display.adb:140:32: info: range check proved, in call inlined at display.adb:188
 display.adb:140:32: info: range check proved, in call inlined at display.adb:280
 display.adb:143:11: info: range check proved, in call inlined at display.adb:188
 display.adb:143:11: info: range check proved, in call inlined at display.adb:280
-display.adb:143:37: info: initialization of "C29b.Bottom.Len" proved, in call inlined at display.adb:188
+display.adb:143:37: info: initialization of "C27b.Bottom.Len" proved, in call inlined at display.adb:188
 display.adb:143:37: info: initialization of "TheMsg.Bottom.Len" proved, in call inlined at display.adb:280
-display.adb:143:50: info: initialization of "R44b" proved, in call inlined at display.adb:280
+display.adb:143:50: info: initialization of "R42b" proved, in call inlined at display.adb:280
 display.adb:144:10: info: loop invariant initialization proved, in call inlined at display.adb:188
 display.adb:144:10: info: loop invariant initialization proved, in call inlined at display.adb:280
 display.adb:144:10: info: loop invariant preservation proved, in call inlined at display.adb:188
 display.adb:144:10: info: loop invariant preservation proved, in call inlined at display.adb:280
-display.adb:145:38: info: initialization of "C29b.Bottom.Len" proved, in call inlined at display.adb:188
+display.adb:145:38: info: initialization of "C27b.Bottom.Len" proved, in call inlined at display.adb:188
 display.adb:145:38: info: initialization of "TheMsg.Bottom.Len" proved, in call inlined at display.adb:280
-display.adb:146:33: info: initialization of "C29b.Bottom.Text" proved, in call inlined at display.adb:188
-display.adb:146:33: info: initialization of "C29b.Top.Len" proved, in call inlined at display.adb:188
-display.adb:146:33: info: initialization of "C29b.Top.Text" proved, in call inlined at display.adb:188
+display.adb:146:33: info: initialization of "C27b.Bottom.Text" proved, in call inlined at display.adb:188
+display.adb:146:33: info: initialization of "C27b.Top.Len" proved, in call inlined at display.adb:188
+display.adb:146:33: info: initialization of "C27b.Top.Text" proved, in call inlined at display.adb:188
 display.adb:146:33: info: initialization of "TheMsg.Bottom.Text" proved, in call inlined at display.adb:280
 display.adb:146:33: info: initialization of "TheMsg.Top.Len" proved, in call inlined at display.adb:280
 display.adb:146:33: info: initialization of "TheMsg.Top.Text" proved, in call inlined at display.adb:280
-display.adb:146:48: info: initialization of "C29b.Bottom.Len" proved, in call inlined at display.adb:188
-display.adb:146:48: info: initialization of "C29b.Bottom.Text" proved, in call inlined at display.adb:188
-display.adb:146:48: info: initialization of "C29b.Top.Len" proved, in call inlined at display.adb:188
-display.adb:146:48: info: initialization of "C29b.Top.Text" proved, in call inlined at display.adb:188
+display.adb:146:48: info: initialization of "C27b.Bottom.Len" proved, in call inlined at display.adb:188
+display.adb:146:48: info: initialization of "C27b.Bottom.Text" proved, in call inlined at display.adb:188
+display.adb:146:48: info: initialization of "C27b.Top.Len" proved, in call inlined at display.adb:188
+display.adb:146:48: info: initialization of "C27b.Top.Text" proved, in call inlined at display.adb:188
 display.adb:146:48: info: initialization of "TheMsg.Bottom.Len" proved, in call inlined at display.adb:280
 display.adb:146:48: info: initialization of "TheMsg.Bottom.Text" proved, in call inlined at display.adb:280
 display.adb:146:48: info: initialization of "TheMsg.Top.Len" proved, in call inlined at display.adb:280
@@ -1681,20 +1681,20 @@ display.adb:148:38: info: initialization of "Result.Len" proved, in call inlined
 display.adb:148:38: info: initialization of "Result.Len" proved, in call inlined at display.adb:280
 display.adb:148:38: info: initialization of "Result.Text" proved, in call inlined at display.adb:188
 display.adb:148:38: info: initialization of "Result.Text" proved, in call inlined at display.adb:280
-display.adb:148:41: info: initialization of "C29b.Bottom.Text" proved, in call inlined at display.adb:188
+display.adb:148:41: info: initialization of "C27b.Bottom.Text" proved, in call inlined at display.adb:188
 display.adb:148:41: info: initialization of "TheMsg.Bottom.Text" proved, in call inlined at display.adb:280
 display.adb:150:21: info: initialization of "Result.Len" proved, in call inlined at display.adb:188
 display.adb:150:21: info: initialization of "Result.Len" proved, in call inlined at display.adb:280
 display.adb:150:32: info: range check proved, in call inlined at display.adb:188
 display.adb:150:32: info: range check proved, in call inlined at display.adb:280
-display.adb:150:34: info: initialization of "C29b.Bottom.Len" proved, in call inlined at display.adb:188
+display.adb:150:34: info: initialization of "C27b.Bottom.Len" proved, in call inlined at display.adb:188
 display.adb:150:34: info: initialization of "TheMsg.Bottom.Len" proved, in call inlined at display.adb:280
 display.adb:152:14: info: initialization of "Result.Len" proved, in call inlined at display.adb:188
 display.adb:152:14: info: initialization of "Result.Len" proved, in call inlined at display.adb:280
 display.adb:152:14: info: initialization of "Result.Text" proved, in call inlined at display.adb:188
 display.adb:152:14: info: initialization of "Result.Text" proved, in call inlined at display.adb:280
 display.adb:184:18: medium: precondition might fail
-display.adb:188:32: info: initialization of "C30b.Text" proved
+display.adb:188:32: info: initialization of "C28b.Text" proved
 display.adb:235:49: medium: "Interfac.Output" might not be written
 display.adb:264:18: warning: statement has no effect
 display.adb:266:36: info: initialization of "TheMsg.Top.Len" proved
@@ -1705,8 +1705,8 @@ display.adb:273:50: info: initialization of "TheMsg.Bottom.Len" proved
 display.adb:273:50: info: initialization of "TheMsg.Bottom.Text" proved
 display.adb:275:24: info: initialization of "TopWritten" proved
 display.adb:275:39: info: initialization of "BottomWritten" proved
-display.adb:280:57: info: initialization of "C37b.Len" proved
-display.adb:280:57: info: initialization of "C37b.Text" proved
+display.adb:280:57: info: initialization of "C35b.Len" proved
+display.adb:280:57: info: initialization of "C35b.Text" proved
 display.adb:285:17: info: initialization of "Written" proved
 display.adb:286:21: medium: precondition might fail
 display.adb:305:42: info: initialization of "CurrentDisplay" proved
