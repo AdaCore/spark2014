@@ -63,9 +63,9 @@ themselves records.
    * the visible state of any packages declared immediately within
      the private part or body of P.
 
-3. The preceding two rules notwithstanding, an object whose Part_Of aspect
-   refers to a task or protected unit is not (directly) part of the
-   visible state or hidden state of any package (see TBD).
+3. The preceding two rules notwithstanding, an object or state abstraction
+   whose Part_Of aspect refers to a task or protected unit is not (directly)
+   part of the visible state or hidden state of any package (see TBD).
 
 .. _etu-abstract_state:
 
@@ -584,11 +584,11 @@ shall follow the grammar of ``abstract_state_list`` given below.
 
 .. _tu-fe-abstract_state_aspects-09:
 
-9. A state abstraction which is declared with an ``option_list`` that includes
-   a Part_Of ``name_value_option`` indicates that it is a constituent (see
-   :ref:`state_refinement`) exclusively of the state abstraction
-   denoted by the ``abstract_state`` of the ``name_value_option`` (see
-   :ref:`package_hierarchy`).
+9. If a state abstraction which is declared with an ``option_list`` that
+   includes a Part_Of ``name_value_option`` whose ``name`` denote a state
+   abstraction, this indicates that it is a constituent (see
+   :ref:`state_refinement`) of the denoted state abstraction.
+   [Alternatively, the name may denote a task or protected unit (see TBD).]
 
 .. _tu-fe-abstract_state_aspects-10:
 
@@ -1581,7 +1581,7 @@ This mechanism is also used in the case of the visible state of a
 private child unit (or a public descendant thereof).
 
 The Part_Of aspect can also be used in a different way to indicate
-that an object [or state abstraction ???] is to be treated as though it
+that an object or state abstraction is to be treated as though it
 were declared within a protected unit or task unit (see TBD).
 
 .. centered:: **Static Semantics**
@@ -1593,7 +1593,8 @@ were declared within a protected unit or task unit (see TBD).
    aspect specification applied to a variable declaration or a Part_Of
    specification aspect applied to a generic package instantiation. The
    Part_Of indicator shall denote the *encapsulating* state abstraction
-   of which the declaration is a constituent.
+   of which the declaration is a constituent, or shall denote a
+   task or protected unit (see TBD).
 
 .. _etu-abstract_state_package_hierarchy_and_part_of-ss:
 
@@ -1628,7 +1629,9 @@ were declared within a protected unit or task unit (see TBD).
 
 .. _tu-cbatu-abstract_state_package_hierarchy_and_part_of-05:
 
-5. No other declarations shall have a Part_Of indicator.
+5. No other declarations shall have a Part_Of indicator which denotes
+   a state abstraction. [Other declarations may have a Part_Of indicator
+   which denotes a task or protected unit (see TBD).]
 
 .. _tu-fe-abstract_state_package_hierarchy_and_part_of-06:
 
