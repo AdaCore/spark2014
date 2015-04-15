@@ -561,8 +561,8 @@ package body Gnat2Why.Expr is
 
    function Assignment_Of_Obj_Decl (N : Node_Id) return W_Prog_Id
    is
-      Lvalue   : Entity_Id := Defining_Identifier (N);
-      Rexpr    : constant Node_Id := Expression (N);
+      Lvalue : Entity_Id := Defining_Identifier (N);
+      Rexpr  : constant Node_Id := Expression (N);
    begin
 
       --  In our Why translation, all objects are declared at top-level.
