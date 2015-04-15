@@ -2431,6 +2431,29 @@ package body SPARK_Definition is
          --  marked here.
 
          when Private_Kind =>
+            if Is_Record_Type (E) then
+               declare
+                  Field : Node_Id := First_Entity (E);
+               begin
+                  while Present (Field) loop
+                     if Component_Is_Visible_In_SPARK (Field) then
+                        if Ekind (Field) in Object_Kind then
+                           Mark_Entity (Etype (Field));
+                        end if;
+
+                        --  Mark defaults of record fields
+
+                        if Ekind (Field) in E_Component
+                          and then Present (Expression (Parent (Field)))
+                        then
+                           Mark (Expression (Parent (Field)));
+                        end if;
+                     end if;
+
+                     Next_Entity (Field);
+                  end loop;
+               end;
+            end if;
 
             --  When a private type is defined in a package with external
             --  axioms or in a private part with SPARK_Mode => Off, we do not
@@ -2449,7 +2472,7 @@ package body SPARK_Definition is
             elsif Etype (E) /= E and then Fullview_Not_In_SPARK (Etype (E))
             then
                Entities_Fullview_Not_In_SPARK.Insert
-                 (E, Entities_Fullview_Not_In_SPARK.Element (Etype (E)));
+                 (E, Etype (E));
                Discard_Underlying_Type (E);
             else
                declare

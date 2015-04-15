@@ -1698,6 +1698,7 @@ package body SPARK_Util is
       pragma Assert (Present (Decl));
       return Defining_Identifier (Decl);
    end Get_Return_Object_Entity;
+
    --------------------------------------
    -- Get_Specific_Type_From_Classwide --
    --------------------------------------
@@ -1951,6 +1952,7 @@ package body SPARK_Util is
    ----------------------------------
 
    function Has_Private_Ancestor_Or_Root (E : Entity_Id) return Boolean is
+      Ancestor : Entity_Id := E;
    begin
       if not Is_Tagged_Type (E) then
          return False;
@@ -1960,11 +1962,23 @@ package body SPARK_Util is
          return True;
       end if;
 
-      declare
-         Root : constant Entity_Id := Root_Record_Type (E);
-      begin
-         return E /= Root and then Fullview_Not_In_SPARK (Root);
-      end;
+      if not Fullview_Not_In_SPARK (E) then
+         return False;
+      end if;
+
+      --  Go to the first new type in E's hierarchy
+
+      while Ekind (Ancestor) in Subtype_Kind loop
+         pragma Assert (Fullview_Not_In_SPARK (Ancestor));
+         pragma Assert (Ancestor /= Get_First_Ancestor_In_SPARK (Ancestor));
+         Ancestor := Get_First_Ancestor_In_SPARK (Ancestor);
+      end loop;
+
+      --  Return True if it has an ancestor whose fullview is not in SPARK
+
+      return Get_First_Ancestor_In_SPARK (Ancestor) /= Ancestor
+        and then Fullview_Not_In_SPARK
+          (Get_First_Ancestor_In_SPARK (Ancestor));
    end Has_Private_Ancestor_Or_Root;
 
    -----------------------------------
@@ -3036,7 +3050,7 @@ package body SPARK_Util is
                declare
                   Old_Type : constant Entity_Id := Cur_Type;
                begin
-                  Cur_Type := Unique_Entity (Etype (Cur_Type));
+                  Cur_Type := MUT (Etype (Cur_Type));
                   pragma Assert (Cur_Type /= Old_Type);
                   Comp := Search_Component_By_Name (Cur_Type, Comp);
                end;

@@ -360,7 +360,7 @@ package SPARK_Util is
    --  with SPARK_Mode On.
 
    function Has_Private_Ancestor_Or_Root (E : Entity_Id) return Boolean;
-   --  Returns True on taged types with a private ancestor or a private root
+   --  Returns True on taged types with a private ancestor or an ancestor
    --  with fullview not in SPARK
 
    function Nth_Index_Type (E : Entity_Id; Dim : Positive) return Node_Id

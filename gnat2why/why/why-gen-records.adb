@@ -883,9 +883,7 @@ package body Why.Gen.Records is
 
                if Is_Private_Type (Root) then
                   Field_To_Index := Field_To_Index + 1;
-                  if Is_Tagged_Type (Root) then
-                     pragma Assert (Has_Private_Ancestor_Or_Root (E));
-
+                  if Has_Private_Ancestor_Or_Root (E) then
                      To_Root_Field (Field_To_Index) :=
                        New_Field_Association
                          (Domain => EW_Term,
