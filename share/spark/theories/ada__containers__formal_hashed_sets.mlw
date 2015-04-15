@@ -1107,7 +1107,7 @@ module Ada__containers__formal_hashed_sets__reserve_capacity
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_hashed_sets__set
 
-  val reserve_capacity (co:ref Ada__containers__formal_hashed_sets__set.__split_fields) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (c :  int) : unit
+  val reserve_capacity (co:ref Ada__containers__formal_hashed_sets__set.__split_fields) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (c : int) : unit
     requires { Ada__containers__count_type.to_rep cap.rec__capacity >= c }
     ensures { !co = old !co }
 end

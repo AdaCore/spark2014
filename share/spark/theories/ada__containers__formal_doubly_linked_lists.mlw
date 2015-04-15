@@ -33,7 +33,7 @@ module Ada__containers__formal_doubly_linked_lists__length
   axiom length_range:
     forall co:list [length__logic co]. 0 <= length_ co <= capacity co
 
-  val length (co : list) :  int
+  val length (co : list) : int
      ensures { result = length__logic co }
 end
 

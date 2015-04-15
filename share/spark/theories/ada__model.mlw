@@ -34,7 +34,7 @@ module Discrete_Base
     requires { true }
     ensures { to_rep(result) = x }
 
-  function user_eq  (x : t) (y : t) : bool
+  function user_eq (x : t) (y : t) : bool
 
   function dummy : t
 end
@@ -355,7 +355,7 @@ module Fixed_Point_Base
    *)
   function inv_small : __fixed
 
-  function user_eq  (x : t) (y : t) : bool
+  function user_eq (x : t) (y : t) : bool
 
   (* Helper predicate to define the result of operations on fixed-points.
      It is used with non-negative values for [num] and positive values for [den].
@@ -531,7 +531,6 @@ module Fixed_Point_Base
   function to_real __fixed : real
 
   function of_real real : __fixed
-
 end
 
 module Static_Fixed_Point
@@ -551,7 +550,7 @@ module Static_Fixed_Point
 
   function first : __fixed
 
-  function last : __fixed
+  function last  : __fixed
 
   val check_not_last (n : __fixed) : __fixed
     requires { n <> last }
@@ -580,13 +579,13 @@ module Dynamic_Fixed_Point
   use import "_gnatprove_standard".Main
   use import int.Int
 
- type t
+  type t
 
- function base_to_rep t : __fixed
- function base_of_rep __fixed : t
+  function base_to_rep t : __fixed
+  function base_of_rep __fixed : t
 
- function to_fixed "inline" (x : t) : __fixed = base_to_rep x
- function of_fixed "inline" (x : __fixed) : t = base_of_rep x
+  function to_fixed "inline" (x : t) : __fixed = base_to_rep x
+  function of_fixed "inline" (x : __fixed) : t = base_of_rep x
 
   clone export Fixed_Point_Base
       with type t = t, function of_fixed = of_fixed, function to_fixed = to_fixed
@@ -630,7 +629,7 @@ module Floating_Point_Base
     requires { true }
     ensures  { to_real (result) = x }
 
-  function user_eq  (x : t) (y : t) : bool
+  function user_eq (x : t) (y : t) : bool
 
   (* Next and previous representable reals. The functions return respectively
      the representable real greater than or lower than the argument x, which
@@ -655,7 +654,7 @@ module Floating_Point_Base
     requires { attr__ATTRIBUTE_VALUE__pre_check x }
     ensures { true }
 
-  function dummy :t
+  function dummy : t
 end
 
 module Static_Floating_Point
@@ -668,7 +667,7 @@ module Static_Floating_Point
     forall x : t [to_real x].
       of_real (to_real(x)) = x
 
-  function first  : real
+  function first : real
 
   function last  : real
 
@@ -689,9 +688,9 @@ module Static_Floating_Point
     requires { n <> first }
     ensures { result = n }
 
-  predicate in_range  (x : real)
+  predicate in_range (x : real)
 
-  val range_check_ (n : real)  :real
+  val range_check_ (n : real) : real
     requires { in_range n }
     ensures { result = n }
 
@@ -738,7 +737,7 @@ module Unconstrained_Private_Type
 
    function to_base "inline" (x : t) : t = x
    function of_base "inline" (x : t) : t = x
- end
+end
 
 module Constrained_Private_Type
   (* The module that is used as basis for constrained subtypes or derived types
@@ -750,9 +749,9 @@ module Constrained_Private_Type
    function to_base t : base_type
    function of_base base_type : t
 
-   axiom inversion_axiom:
+   axiom inversion_axiom :
       forall x : t [of_base (to_base x)]. of_base (to_base x) = x
- end
+end
 
 (* The following modules are templates for unconstrained and constrained array
 types. Only the one for one dimension is commented, the others are very similar *)
@@ -798,7 +797,6 @@ module Index_Type
   predicate dynamic_property (range_first : int) (range_last : int) (low : int) (high : int) =
     in_range_base low /\ in_range_base high /\
        (high >= low -> (index_dynamic_property range_first range_last low /\ index_dynamic_property range_first range_last high))
-
 end
 
 module Array_Comparison_Axiom
@@ -822,7 +820,7 @@ module Array_Comparison_Axiom
           Array__1.bool_eq a a_first a_last b b_first b_last = True) /\
       (Array__1.compare a a_first a_last b b_first b_last < 0 <->
          exists i j : int. i <= a_last /\ j < b_last /\
-             (Array__1.bool_eq a a_first  i b b_first j = True /\
+             (Array__1.bool_eq a a_first i b b_first j = True /\
              (i = a_last \/
                    i < a_last /\
                        rep_lt (to_rep (Array__1.get a (i + 1))) (to_rep (Array__1.get b (j + 1)))))) /\
@@ -831,7 +829,6 @@ module Array_Comparison_Axiom
              (Array__1.bool_eq a a_first j b b_first i = True /\
              (i = b_last \/ i < b_last /\
                        rep_gt (to_rep (Array__1.get a (j + 1))) (to_rep (Array__1.get b (i + 1))))))
-
 end
 
 module Array_Int_Rep_Comparison_Axiom
@@ -879,7 +876,6 @@ module Array_BV64_Rep_Comparison_Axiom
   predicate rep_gt = ugt
 end
 
-
 module Array_Generic_Op_Axiom
   use import int.Int
   use "_gnatprove_standard".Array__1
@@ -890,7 +886,7 @@ module Array_Generic_Op_Axiom
    function array_op (Array__1.map component_type) int int (Array__1.map component_type) int int : Array__1.map component_type
    function base_op bool bool : bool
 
-   axiom op_def:
+   axiom op_def :
     forall a b : Array__1.map component_type.
     forall a_first a_last b_first b_last : int.
     forall i : int [Array__1.get (array_op a a_first a_last b b_first b_last) i].
@@ -927,7 +923,7 @@ module Array_Logical_Op_Generic_Axioms
      function array_op = Array__1.xorb,
      function base_op = xorb
 
-   axiom notb_def:
+   axiom notb_def :
     forall a : Array__1.map component_type.
     forall a_first a_last : int.
     forall i : int [Array__1.get (Array__1.notb a a_first a_last) i].
@@ -979,7 +975,7 @@ module Unconstr_Array
     type      base          = base_type,
     function  to_int        = to_int,
     predicate in_range_base = in_range_base,
-    predicate index_dynamic_property  = index_dynamic_property
+    predicate index_dynamic_property = index_dynamic_property
 
   type __split = Array__1.map component_type
 
@@ -1044,19 +1040,19 @@ module Unconstr_Array_2
     type      base          = base_type,
     function  to_int        = to_int,
     predicate in_range_base = in_range_base,
-    predicate index_dynamic_property      = index_dynamic_property
+    predicate index_dynamic_property = index_dynamic_property
 
   clone Index_Type as I2 with
     type      base          = base_type_2,
     function  to_int        = to_int_2,
     predicate in_range_base = in_range_base_2,
-    predicate index_dynamic_property      = index_dynamic_property_2
+    predicate index_dynamic_property = index_dynamic_property_2
 
   type __split = Array__2.map component_type
   type __t =
-    { elts     : __split;
-      rt       : I1.t;
-      rt_2     : I2.t
+    { elts : __split;
+      rt   : I1.t;
+      rt_2 : I2.t
     }
 
   function to_array (a : __t) : __split =
@@ -1094,13 +1090,14 @@ module Unconstr_Array_2
     forall a : __split.
     object__size (a) >= 0
 
-  function user_eq (x : __t) (y : __t) : bool
   function bool_eq (x : __t) (y : __t) : bool =
     Array__2.bool_eq
       x.elts (to_int (I1.first x.rt)) (to_int (I1.last x.rt))
              (to_int_2 (I2.first x.rt_2)) (to_int_2 (I2.last x.rt_2))
       y.elts (to_int (I1.first y.rt)) (to_int (I1.last y.rt))
              (to_int_2 (I2.first y.rt_2)) (to_int_2 (I2.last y.rt_2))
+
+  function user_eq (x : __t) (y : __t) : bool
 
   function dummy : __t
 end
@@ -1133,26 +1130,26 @@ module Unconstr_Array_3
     type      base          = base_type,
     function  to_int        = to_int,
     predicate in_range_base = in_range_base,
-    predicate index_dynamic_property      = index_dynamic_property
+    predicate index_dynamic_property = index_dynamic_property
 
   clone Index_Type as I2 with
     type      base          = base_type_2,
     function  to_int        = to_int_2,
     predicate in_range_base = in_range_base_2,
-    predicate index_dynamic_property      = index_dynamic_property_2
+    predicate index_dynamic_property = index_dynamic_property_2
 
   clone Index_Type as I3 with
     type      base          = base_type_3,
     function  to_int        = to_int_3,
     predicate in_range_base = in_range_base_3,
-    predicate index_dynamic_property      = index_dynamic_property_3
+    predicate index_dynamic_property = index_dynamic_property_3
 
   type __split = Array__3.map component_type
   type __t =
-    { elts     : __split;
-      rt       : I1.t;
-      rt_2     : I2.t;
-      rt_3     : I3.t
+    { elts : __split;
+      rt   : I1.t;
+      rt_2 : I2.t;
+      rt_3 : I3.t
     }
 
   function to_array (a : __t) : __split =
@@ -1198,8 +1195,6 @@ module Unconstr_Array_3
     forall a : __split.
     object__size (a) >= 0
 
-  function user_eq (x : __t) (y : __t) : bool
-
   function bool_eq (x : __t) (y : __t) : bool =
     Array__3.bool_eq
       x.elts (to_int (I1.first x.rt))   (to_int (I1.last x.rt))
@@ -1208,6 +1203,8 @@ module Unconstr_Array_3
       y.elts (to_int (I1.first y.rt))   (to_int (I1.last y.rt))
              (to_int_2 (I2.first y.rt_2)) (to_int_2 (I2.last y.rt_2))
              (to_int_3 (I3.first y.rt_3)) (to_int_3 (I3.last y.rt_3))
+
+  function user_eq (x : __t) (y : __t) : bool
 
   function dummy : __t
 end
@@ -1245,34 +1242,34 @@ module Unconstr_Array_4
     type      base          = base_type,
     function  to_int        = to_int,
     predicate in_range_base = in_range_base,
-    predicate index_dynamic_property      = index_dynamic_property
+    predicate index_dynamic_property = index_dynamic_property
 
   clone Index_Type as I2 with
     type      base          = base_type_2,
     function  to_int        = to_int_2,
     predicate in_range_base = in_range_base_2,
-    predicate index_dynamic_property      = index_dynamic_property_2
+    predicate index_dynamic_property = index_dynamic_property_2
 
   clone Index_Type as I3 with
     type      base          = base_type_3,
     function  to_int        = to_int_3,
     predicate in_range_base = in_range_base_3,
-    predicate index_dynamic_property      = index_dynamic_property_3
+    predicate index_dynamic_property = index_dynamic_property_3
 
   clone Index_Type as I4 with
     type      base          = base_type_4,
     function  to_int        = to_int_4,
     predicate in_range_base = in_range_base_4,
-    predicate index_dynamic_property      = index_dynamic_property_4
+    predicate index_dynamic_property = index_dynamic_property_4
 
   type __split = Array__4.map component_type
 
   type __t =
-    { elts     : __split;
-      rt       : I1.t;
-      rt_2     : I2.t;
-      rt_3     : I3.t;
-      rt_4     : I4.t
+    { elts : __split;
+      rt   : I1.t;
+      rt_2 : I2.t;
+      rt_3 : I3.t;
+      rt_4 : I4.t
     }
 
   function to_array (a : __t) : __split =
@@ -1326,8 +1323,6 @@ module Unconstr_Array_4
     forall a : __split.
     object__size (a) >= 0
 
-  function user_eq (x : __t) (y : __t) : bool
-
   function bool_eq (x : __t) (y : __t) : bool =
     Array__4.bool_eq
       x.elts (to_int (I1.first x.rt))   (to_int (I1.last x.rt))
@@ -1338,6 +1333,8 @@ module Unconstr_Array_4
              (to_int_2 (I2.first y.rt_2)) (to_int_2 (I2.last y.rt_2))
              (to_int_3 (I3.first y.rt_3)) (to_int_3 (I3.last y.rt_3))
              (to_int_4 (I4.first y.rt_4)) (to_int_4 (I4.last y.rt_4))
+
+  function user_eq (x : __t) (y : __t) : bool
 
   function dummy : __t
 end
@@ -1353,9 +1350,9 @@ module Constr_Array
 
   type __t = Array__1.map component_type
 
-  function to_array  (a : __t) : Array__1.map component_type = a
+  function to_array (a : __t) : Array__1.map component_type = a
 
-  function of_array  (a : Array__1.map component_type) : __t = a
+  function of_array (a : Array__1.map component_type) : __t = a
 
   function dummy : __t
 
@@ -1370,10 +1367,11 @@ module Constr_Array
     forall a : __t.
     object__size (a) >= 0
 
-  function user_eq (x : __t) (y : __t) : bool
   function bool_eq (x : __t) (y : __t) : bool =
     Array__1.bool_eq x first last
                      y first last
+
+  function user_eq (x : __t) (y : __t) : bool
 end
 
 module Constr_Array_2
@@ -1390,9 +1388,9 @@ module Constr_Array_2
 
   type __t = Array__2.map component_type
 
-  function to_array  (a : __t) : Array__2.map component_type = a
+  function to_array (a : __t) : Array__2.map component_type = a
 
-  function of_array  (a : Array__2.map component_type) : __t = a
+  function of_array (a : Array__2.map component_type) : __t = a
 
   function dummy : __t
 
@@ -1407,10 +1405,11 @@ module Constr_Array_2
     forall a : __t.
     object__size (a) >= 0
 
-  function user_eq (x : __t) (y : __t) : bool
   function bool_eq (x : __t) (y : __t) : bool =
     Array__2.bool_eq x first last first_2 last_2
                      y first last first_2 last_2
+
+  function user_eq (x : __t) (y : __t) : bool
 end
 
 module Constr_Array_3
@@ -1430,9 +1429,9 @@ module Constr_Array_3
 
   type __t = Array__3.map component_type
 
-  function to_array  (a : __t) : Array__3.map component_type = a
+  function to_array (a : __t) : Array__3.map component_type = a
 
-  function of_array  (a : Array__3.map component_type) : __t = a
+  function of_array (a : Array__3.map component_type) : __t = a
 
   function dummy : __t
 
@@ -1447,10 +1446,11 @@ module Constr_Array_3
     forall a : __t.
     object__size (a) >= 0
 
-  function user_eq (x : __t) (y : __t) : bool
   function bool_eq (x : __t) (y : __t) : bool =
     Array__3.bool_eq x first last first_2 last_2 first_3 last_3
                      y first last first_2 last_2 first_3 last_3
+
+  function user_eq (x : __t) (y : __t) : bool
 end
 
 module Constr_Array_4
@@ -1473,9 +1473,9 @@ module Constr_Array_4
 
   type __t = Array__4.map component_type
 
-  function to_array  (a : __t) : Array__4.map component_type = a
+  function to_array (a : __t) : Array__4.map component_type = a
 
-  function of_array  (a : Array__4.map component_type) : __t = a
+  function of_array (a : Array__4.map component_type) : __t = a
 
   function dummy : __t
 
@@ -1490,8 +1490,9 @@ module Constr_Array_4
     forall a : __t.
     object__size (a) >= 0
 
-  function user_eq (x : __t) (y : __t) : bool
   function bool_eq (x : __t) (y : __t) : bool =
     Array__4.bool_eq x first last first_2 last_2 first_3 last_3 first_4 last_4
                      y first last first_2 last_2 first_3 last_3 first_4 last_4
+
+  function user_eq (x : __t) (y : __t) : bool
 end
