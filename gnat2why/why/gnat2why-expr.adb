@@ -577,7 +577,7 @@ package body Gnat2Why.Expr is
       --  let var_name__assume = <rexpr> in
       --    assume (var_name = var_name_assume);
 
-      --  Some objects have two declarations, e.g. the partial and full view of
+      --  Some objects have two declarations, i.e. the partial and full view of
       --  a package level object. In this case, we always use the type of the
       --  partial view.
 
