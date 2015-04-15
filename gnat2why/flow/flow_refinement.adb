@@ -513,7 +513,7 @@ package body Flow_Refinement is
       N          : Node_Id;
 
       Target_Ent : constant Entity_Id :=
-        (if Present (Encapsulating_State (E)) and
+        (if Present (Encapsulating_State (E)) and then
             Scope (E) = Scope (Encapsulating_State (E))
          then Encapsulating_State (E)
          else Unique_Entity (E));
