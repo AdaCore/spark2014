@@ -66,7 +66,7 @@ module Ada__containers__formal_doubly_linked_lists__cursor
     forall co:list, cu:cursor [position co cu].
           position co cu > 0 -> position_inv co (position co cu) = cu
 
-  function bool_eq cursor cursor : bool
+  function bool_eq "inline" (c1:cursor) (c2:cursor) : bool = c1 = c2
   function user_eq cursor cursor : bool
 end
 

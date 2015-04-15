@@ -384,23 +384,26 @@ package body Why.Inter is
    function Base_Why_Type (N : Node_Id) return W_Type_Id is
 
       E   : constant W_Type_Id := Get_EW_Term_Type (N);
-      Typ : constant Entity_Id := Etype (N);
+      Typ : Entity_Id :=
+        (if Nkind (N) in N_Entity and then Ekind (N) in Type_Kind then N
+         else Etype (N));
    begin
       if E = Why_Empty then
 
-         --  For a record type, we take as base type its root type, in order
-         --  to allow conversions between all types that derive from it.
+         --  For record or private types, go through subtypes to get the base
+         --  type.
 
-         --  Record in units with external axiomatization may have a root
-         --  type not in SPARK. Conversions between these record types is
-         --  expected to be noop, so the base type is taken to be the same
-         --  as the type in that case.
+         loop
+            Typ := MUT (Typ);
 
-         if Fullview_Not_In_SPARK (Typ) or else Has_Record_Type (Typ) then
-            return EW_Abstract (Root_Record_Type (Typ));
-         else
-            return EW_Abstract (Typ);
-         end if;
+            if Ekind (Typ) in Record_Kind | Private_Kind
+              and then Ekind (Typ) in SPARK_Util.Subtype_Kind
+            then
+               Typ := Etype (Typ);
+            else
+               return EW_Abstract (Typ);
+            end if;
+         end loop;
       else
          return E;
       end if;

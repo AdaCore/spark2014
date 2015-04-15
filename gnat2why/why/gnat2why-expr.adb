@@ -4202,11 +4202,13 @@ package body Gnat2Why.Expr is
                     Base_Why_Type (Left_Type, Right_Type);
 
                begin
-                  if Is_Record_Type (Left_Type) then
+                  if Has_Record_Type (Left_Type)
+                    or else Fullview_Not_In_SPARK (Left_Type)
+                  then
                      pragma Assert (Root_Record_Type (Left_Type) =
                                       Root_Record_Type (Right_Type));
                      pragma Assert (Root_Record_Type (Left_Type) =
-                                      Get_Ada_Node (+BT));
+                                      Root_Record_Type (Get_Ada_Node (+BT)));
                      T :=
                        New_Call
                          (Ada_Node => Ada_Node,
@@ -8524,7 +8526,7 @@ package body Gnat2Why.Expr is
                  (if Ekind (Prefix_Ty) in E_Record_Subtype |
                                           E_Record_Subtype_With_Private
                   then
-                    Unique_Entity (Etype (Prefix_Ty))
+                    MUT (Etype (Prefix_Ty))
                   else
                     Prefix_Ty);
 

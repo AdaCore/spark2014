@@ -18,9 +18,9 @@ use_private_attributes.adb:27:41: info: initialization of "R" proved
 use_private_attributes.adb:28:41: info: initialization of "F" proved
 use_private_attributes.adb:32:22: medium: assertion might fail, requires not (C1 = C2)
 use_private_attributes.adb:33:22: medium: assertion might fail, requires C1.F = C2.F
-use_private_attributes.adb:34:07: info: assertion proved
 use_private_attributes.adb:34:22: info: initialization of "RC" proved
 use_private_attributes.adb:34:22: info: initialization of extension of "RC" proved
+use_private_attributes.adb:34:22: medium: assertion might fail, requires not (RC = FC)
 use_private_attributes.adb:34:28: info: initialization of "FC" proved
 use_private_attributes.adb:34:28: info: initialization of extension of "FC" proved
 use_private_attributes.adb:35:07: info: assertion proved

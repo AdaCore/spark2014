@@ -34,7 +34,7 @@ private_a.adb:76:28: info: initialization of "Dst.Exists" proved
 private_a.adb:76:28: info: initialization of "Dst.The_Stack" proved
 private_a.adb:80:13: info: initialization of "Dst.Exists" proved
 private_a.adb:80:13: info: initialization of "Dst.The_Stack" proved
-private_a.adb:80:13: medium: postcondition might fail, requires Dst = Optional_StackOptional_Stack'(Exists => Src = Stack.null_stack), (The_Stack => Src)
+private_a.adb:80:13: info: postcondition proved
 private_a.adb:85:24: info: initialization of "Dst.The_Stack" proved
 private_a.adb:91:28: info: initialization of "X" proved
 private_a.adb:96:07: info: assertion proved
