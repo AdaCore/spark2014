@@ -943,7 +943,7 @@ package body SPARK_Frame_Conditions is
          --  Fill Scope_Entities : build entity representatives for all scopes
          --  in this ALI file.
 
-         --  Fill Scope_Specs : build a correspondance table between body and
+         --  Fill Scope_Specs : build a correspondence table between body and
          --  spec scope for the same entity.
 
          for F in SPARK_File_Table.First .. SPARK_File_Table.Last loop
@@ -1267,7 +1267,7 @@ package body SPARK_Frame_Conditions is
 
       Propagate_Error_For_Missing_Scope := not Ignore_Errors;
 
-      --  Declare missing scopes, which occurs for generic instanciations (see
+      --  Declare missing scopes, which occurs for generic instantiations (see
       --  K523-007) until a proper treatment of generics. We take into account
       --  all subprograms called.
 

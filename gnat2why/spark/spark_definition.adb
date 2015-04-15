@@ -806,7 +806,7 @@ package body SPARK_Definition is
             declare
                E : constant Entity_Id := Defining_Entity (N);
             begin
-               --  Store correspondance from completions of deferred constants,
+               --  Store correspondence from completions of deferred constants,
                --  so that Is_Full_View can be used for dealing correctly with
                --  deferred constants, when the public part of the package is
                --  marked as SPARK_Mode On, and the private part of the package
@@ -1097,7 +1097,7 @@ package body SPARK_Definition is
                BT : constant Entity_Id := Base_Type (E);
 
             begin
-               --  Store correspondance from completions of private types, so
+               --  Store correspondence from completions of private types, so
                --  that Is_Full_View can be used for dealing correctly with
                --  private types, when the public part of the package is marked
                --  as SPARK_Mode On, and the private part of the package is

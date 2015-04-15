@@ -87,7 +87,7 @@ package SPARK_Util is
    --  @return the corresponding return object
 
    procedure Add_Full_And_Partial_View (Full, Partial : Entity_Id);
-   --  Store the correspondance between the Full and Partial views of the same
+   --  Store the correspondence between the Full and Partial views of the same
    --  entity, for deferred constants and private types.
 
    procedure Discard_Underlying_Type (T : Entity_Id);
@@ -276,7 +276,7 @@ package SPARK_Util is
    --    entity, if it exists; otherwise return the empty node
 
    procedure Add_Classwide_To_Tagged (Classwide, Ty : Entity_Id);
-   --  Store the correspondance between a classwide type and the specific
+   --  Store the correspondence between a classwide type and the specific
    --  corresponding type.
 
    function Corresponding_Tagged (Classwide : Entity_Id) return Entity_Id;

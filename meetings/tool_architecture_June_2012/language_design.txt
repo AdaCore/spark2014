@@ -161,6 +161,6 @@ need for more complex data refinement?
 Trevor: If we can define the abstract view, we don't have a good way to
   refine that down.
 Yannick: This is purely on the logical side.
-Rod: specify the retrieve relation for the correspondance.
+Rod: specify the retrieve relation for the correspondence.
 
 AI: Trevor to complete the language design doc with actual proposal.
