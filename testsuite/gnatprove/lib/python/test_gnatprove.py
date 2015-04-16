@@ -37,8 +37,16 @@ def run_testsuite(test_driver):
     if options.inverse_prover:
         os.environ["inverse_prover"] = "true"
 
-    test_list = [t for t in filter_list('tests/*', options.run_test)
-                 if os.path.isdir(t)]
+    if options.exact_name:
+        test_name = os.path.join('tests/', options.run_test)
+        if os.path.isdir(test_name):
+            test_list = [test_name]
+        else:
+            print 'error: test \'' + options.run_test + '\' not found'
+            exit(1)
+    else:
+        test_list = [t for t in filter_list('tests/*', options.run_test)
+                     if os.path.isdir(t)]
 
     # Various files needed or created by the testsuite
     setup_result_dir(options)
@@ -78,17 +86,19 @@ def __parse_options():
     m = Main(add_targets_options=False)
     add_mainloop_options(m, extended_options=True)
     add_run_test_options(m)
-    m.add_option("--diffs", dest="view_diffs", action="store_true",
-                 default=False, help="show diffs on stdout")
-    m.add_option("--quick", dest="quick_run", action="store_true",
-                 default=False, help="perform a quick run (no proofs)")
     m.add_option("--debug", dest="debug", action="store_true",
                  default=False, help="output debugging information")
-    m.add_option("--vc-timeout", dest="vc_timeout", action="store",
-                 type="int", help="set timeout for prover")
+    m.add_option("--diffs", dest="view_diffs", action="store_true",
+                 default=False, help="show diffs on stdout")
+    m.add_option("--exact", dest="exact_name", action="store_true",
+                 default=False, help="provide exact name of test (not regexp)")
     m.add_option("--inverse-prover", dest="inverse_prover",
                  action="store_true",
                  default=False, help="inverse order of default provers")
+    m.add_option("--quick", dest="quick_run", action="store_true",
+                 default=False, help="perform a quick run (no proofs)")
+    m.add_option("--vc-timeout", dest="vc_timeout", action="store",
+                 type="int", help="set timeout for prover")
     m.parse_args()
 
     if m.args:
