@@ -120,7 +120,7 @@ package body Why.Atree.Modules is
    is
       use Why_Symb_Maps;
       E2 : constant Entity_Id :=
-        (if Is_Type (E) then MUT (E) else E);
+        (if Is_Type (E) then Retysp (E) else E);
       Key : constant Why_Symb :=  Why_Symb'(Entity => E2, Symb => S);
       C : constant Cursor := Why_Symb_Map.Find (Key);
    begin
@@ -1655,7 +1655,7 @@ package body Why.Atree.Modules is
             --  symbols for record types
 
          elsif Is_Record_Type (E)
-           or else Fullview_Not_In_SPARK (E)
+           or else Full_View_Not_In_SPARK (E)
          then
             declare
                Root    : constant Entity_Id :=

@@ -28,6 +28,7 @@ with Ada.Containers.Hashed_Maps;
 with Elists;              use Elists;
 with Namet;               use Namet;
 with Nlists;              use Nlists;
+with Sem_Aux;             use Sem_Aux;
 with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
 with Snames;              use Snames;
@@ -500,7 +501,10 @@ package body Why.Gen.Records is
       ----------------------------------
 
       procedure Declare_Conversion_Functions is
-         Num_Discrs      : constant Natural := Number_Discriminants (E);
+         Num_Discrs      : constant Natural :=
+           (if Has_Discriminants (E) then
+              Natural (Number_Discriminants (E))
+            else 0);
          Num_E_Fields    : constant Natural := Count_Why_Regular_Fields (E);
          Num_Root_Fields : constant Natural := Count_Why_Regular_Fields (Root);
          Is_Mutable_E    : constant Boolean :=
@@ -1334,7 +1338,7 @@ package body Why.Gen.Records is
                      else To_Why_Id (Comp, Rec => Root));
                   Comparison : constant W_Pred_Id :=
                     +New_Ada_Equality
-                    (Typ    => MUT (Etype (Comp)),
+                    (Typ    => Retysp (Etype (Comp)),
                      Domain => EW_Pred,
                      Left   =>
                        New_Record_Access
@@ -1582,7 +1586,10 @@ package body Why.Gen.Records is
       -------------------------
 
       procedure Declare_Record_Type is
-         Num_Discrs : constant Natural := Number_Discriminants (E);
+         Num_Discrs : constant Natural :=
+           (if Has_Discriminants (E) then
+              Natural (Number_Discriminants (E))
+            else 0);
          Num_Fields : constant Natural := Count_Why_Regular_Fields (E);
          Is_Mutable : constant Boolean :=
            (not Is_Constrained (E)
@@ -1849,7 +1856,7 @@ package body Why.Gen.Records is
             then Component_List (Record_Extension_Part (Def_Node))
             else Empty);
          Ancestor_Type : constant Entity_Id :=
-           (if Fullview_Not_In_SPARK (E) then Get_First_Ancestor_In_SPARK (E)
+           (if Full_View_Not_In_SPARK (E) then Get_First_Ancestor_In_SPARK (E)
             else Underlying_Type (Etype (E)));
 
       --  Start of Init_Component_Info
@@ -2007,7 +2014,7 @@ package body Why.Gen.Records is
             --  root type, we need to define the conversion functions; in all
             --  other cases, they are already there.
 
-            if Root_Record_Type (Clone) = MUT (Clone) then
+            if Root_Record_Type (Clone) = Retysp (Clone) then
                Emit
                  (Theory,
                   New_Function_Decl
@@ -2085,7 +2092,10 @@ package body Why.Gen.Records is
         +New_Named_Type (Name => Root_Name);
       A_Ident    : constant W_Identifier_Id :=
         New_Identifier (Name => "a", Typ => Root_Abstr);
-      Num_Discr  : constant Natural := Number_Discriminants (E);
+      Num_Discr  : constant Natural :=
+        (if Has_Discriminants (E) then
+           Natural (Number_Discriminants (E))
+         else 0);
       R_Access   : constant W_Expr_Id :=
         New_Record_Access (Name  => +A_Ident,
                            Field =>
@@ -2329,7 +2339,10 @@ package body Why.Gen.Records is
       return W_Expr_Id
    is
       Num_All    : constant Natural := Count_Why_Top_Level_Fields (Ty);
-      Num_Discr  : constant Natural := Number_Discriminants (Ty);
+      Num_Discr  : constant Natural :=
+        (if Has_Discriminants (Ty) then
+           Natural (Number_Discriminants (Ty))
+         else 0);
       Num_Fields : constant Natural := Count_Why_Regular_Fields (Ty);
       Assoc      : W_Field_Association_Id;
       Assocs     : W_Field_Association_Array (1 .. Num_All);
@@ -2747,7 +2760,10 @@ package body Why.Gen.Records is
      (Check_Ty : Entity_Id;
       Expr     : W_Expr_Id) return W_Expr_Array
    is
-      Num_Discr : constant Natural := Number_Discriminants (Check_Ty);
+      Num_Discr : constant Natural :=
+        (if Has_Discriminants (Check_Ty) then
+           Natural (Number_Discriminants (Check_Ty))
+         else 0);
       Args      : W_Expr_Array (1 .. Num_Discr + 1);
       Count     : Natural := 1;
       Discr     : Entity_Id := First_Discriminant (Check_Ty);
@@ -2797,7 +2813,7 @@ package body Why.Gen.Records is
 
       --  Store association for the top-level field for discriminants
 
-      if Number_Discriminants (Ty) > 0 then
+      if Has_Discriminants (Ty) then
          Associations (Index) := New_Field_Association
            (Domain   => EW_Term,
             Field    => Prefix (E_Module (Ty), WNE_Rec_Split_Discrs),

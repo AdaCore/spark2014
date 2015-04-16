@@ -25,7 +25,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Maps;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Atree;                 use Atree;
 with Sinput;                use Sinput;
 with Snames;                use Snames;

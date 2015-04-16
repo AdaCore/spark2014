@@ -329,7 +329,7 @@ package body Why.Inter is
 
       if With_Completion
         and then Nkind (N) in N_Entity
-        and then not Entity_In_External_Axioms (N)
+        and then not Entity_In_Ext_Axioms (N)
       then
          Add_With_Clause (P, E_Axiom_Module (N), Use_Kind);
       end if;
@@ -394,7 +394,7 @@ package body Why.Inter is
          --  type.
 
          loop
-            Typ := MUT (Typ);
+            Typ := Retysp (Typ);
 
             if Ekind (Typ) in Record_Kind | Private_Kind
               and then Ekind (Typ) in SPARK_Util.Subtype_Kind
@@ -483,7 +483,7 @@ package body Why.Inter is
       begin
          for N of S loop
             if not (Nkind (N) in N_Entity)
-              or else not Entity_In_External_Axioms (N)
+              or else not Entity_In_Ext_Axioms (N)
             then
                Add_With_Clause (P,
                                 E_Axiom_Module (N),
@@ -670,7 +670,7 @@ package body Why.Inter is
                return WF_Pure;
 
             elsif Ekind (E) = E_Discriminant
-              and then Is_External_Axioms_Discriminant (E)
+              and then Is_Ext_Axioms_Discriminant (E)
             then
                return WF_Context;
             else
@@ -760,7 +760,7 @@ package body Why.Inter is
      (N    : Node_Id;
       Kind : EW_Type) return W_Type_Id is
    begin
-      if Is_Standard_Boolean_Type (N) then
+      if Nkind (N) in N_Entity and then Is_Standard_Boolean_Type (N) then
          return EW_Bool_Type;
 
       elsif N = Universal_Fixed then
@@ -770,10 +770,10 @@ package body Why.Inter is
       --  types.
 
       elsif Ekind (N) in E_Class_Wide_Type | E_Class_Wide_Subtype then
-         return EW_Abstract_Shared (Corresponding_Tagged (N), Kind);
+         return EW_Abstract_Shared (Specific_Tagged (N), Kind);
 
-      elsif Ekind (N) in Type_Kind and then MUT (N) /= N then
-         return EW_Abstract_Shared (MUT (N), Kind);
+      elsif Ekind (N) in Type_Kind and then Retysp (N) /= N then
+         return EW_Abstract_Shared (Retysp (N), Kind);
       elsif Entity_In_SPARK (N) then
          return New_Kind_Base_Type (N, Kind);
       else
@@ -887,10 +887,10 @@ package body Why.Inter is
             end if;
 
          when Private_Kind =>
-            if Fullview_Not_In_SPARK (Ty) then
+            if Full_View_Not_In_SPARK (Ty) then
                return Why_Empty;
             else
-               return Get_EW_Term_Type (MUT (Ty));
+               return Get_EW_Term_Type (Retysp (Ty));
             end if;
 
          when others =>
@@ -915,8 +915,8 @@ package body Why.Inter is
    function Is_Private_Conversion (Left, Right : W_Type_Id) return Boolean
    is (Get_Type_Kind (Base_Why_Type (Left)) in EW_Abstract | EW_Split
        and then Get_Type_Kind (Base_Why_Type (Right)) in EW_Abstract | EW_Split
-       and then Fullview_Not_In_SPARK (Get_Ada_Node (+Left))
-       and then Fullview_Not_In_SPARK (Get_Ada_Node (+Right)));
+       and then Full_View_Not_In_SPARK (Get_Ada_Node (+Left))
+       and then Full_View_Not_In_SPARK (Get_Ada_Node (+Right)));
 
    --------------------------
    -- Is_Record_Conversion --
@@ -1113,7 +1113,7 @@ package body Why.Inter is
             Field : constant String :=
               To_String (WNE_Rec_Comp_Prefix) & Get_Name_String (Chars (E));
             Ada_N : constant Node_Id :=
-              MUT (if Rec = Empty then Scope (E) else Rec);
+              Retysp (if Rec = Empty then Scope (E) else Rec);
             Module : constant W_Module_Id :=
               E_Module (if Rec = Empty and Ekind (E) = E_Discriminant then
                              Root_Record_Type (Ada_N)
@@ -1200,7 +1200,7 @@ package body Why.Inter is
       --  types.
 
       if Ekind (E) in E_Class_Wide_Type | E_Class_Wide_Subtype then
-         return To_Why_Type (Corresponding_Tagged (E), Local);
+         return To_Why_Type (Specific_Tagged (E), Local);
 
       elsif Local then
          return New_Name (Ada_Node => E, Symbol => NID (Suffix));

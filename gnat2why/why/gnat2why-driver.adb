@@ -509,7 +509,7 @@ package body Gnat2Why.Driver is
 
        and then not (Is_Generic_Actual_Subprogram (E)
                        and then
-                     Entity_In_External_Axioms (E))
+                     Entity_In_Ext_Axioms (E))
 
        --  Ignore simple shifts and rotates
 
@@ -723,7 +723,7 @@ package body Gnat2Why.Driver is
             if Entity_In_SPARK (E)
               and then (Is_Full_View (E)
                         or else No (Full_View (E))
-                        or else Fullview_Not_In_SPARK (E))
+                        or else Full_View_Not_In_SPARK (E))
             then
 
                --  Partial views of private types should not be
@@ -731,7 +731,7 @@ package body Gnat2Why.Driver is
                --  otherwise we end up with two definitions for the same
                --  private type.
 
-               if Fullview_Not_In_SPARK (E)
+               if Full_View_Not_In_SPARK (E)
                  and then Entity_In_SPARK (Full_View (E))
                then
                   null;
@@ -804,7 +804,7 @@ package body Gnat2Why.Driver is
          --  Given to the handler for packages with an associated theory
 
          when E_Package =>
-            if Entity_In_External_Axioms (E) then
+            if Entity_In_Ext_Axioms (E) then
                Translate_Package_With_External_Axioms (E);
             else
 

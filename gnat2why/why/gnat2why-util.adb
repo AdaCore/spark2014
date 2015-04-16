@@ -306,6 +306,7 @@ package body Gnat2Why.Util is
          return S_Copy;
       end if;
    end Avoid_Why3_Keyword;
+
    -------------------------
    -- BitVector_Type_Size --
    -------------------------
@@ -644,8 +645,7 @@ package body Gnat2Why.Util is
       --  We special case any volatile with async writers: they are always
       --  mutable (even if they are, for example, in parameters).
 
-      elsif Flow_Types.Has_Async_Writers
-        (Flow_Types.Direct_Mapping_Id (N))
+      elsif Flow_Types.Has_Async_Writers (Flow_Types.Direct_Mapping_Id (N))
       then
 
          return True;
@@ -729,7 +729,7 @@ package body Gnat2Why.Util is
       --  its type.
 
       if Ekind (T) in Type_Kind then
-         return MUT (T);
+         return Retysp (T);
       else
          return T;
       end if;
@@ -753,7 +753,7 @@ package body Gnat2Why.Util is
    function Use_Split_From_For_Type (E : Entity_Id) return Boolean is
    begin
       return Has_Discrete_Type (E) and then
-        not Is_Standard_Boolean_Type (MUT (E));
+        not Is_Standard_Boolean_Type (Retysp (E));
    end Use_Split_From_For_Type;
 
    -----------------------

@@ -53,6 +53,7 @@ with Namet;                         use Namet;
 with Nlists;                        use Nlists;
 with Osint;                         use Osint;
 with Output;                        use Output;
+with Sem_Aux;                       use Sem_Aux;
 with Sem_Util;                      use Sem_Util;
 with Sem_Ch7;                       use Sem_Ch7;
 with Sinfo;                         use Sinfo;
@@ -859,7 +860,7 @@ package body Flow is
 
       case Ekind (E) is
          when Subprogram_Kind =>
-            Tmp.B_Scope := Get_Flow_Scope (SPARK_Util.Get_Subprogram_Body (E));
+            Tmp.B_Scope := Get_Flow_Scope (Subprogram_Body (E));
             Tmp.S_Scope := Get_Flow_Scope (E);
 
             Append (Tmp.Base_Filename, "subprogram_");
@@ -872,10 +873,7 @@ package body Flow is
             Tmp.Global_N  := Get_Pragma (E, Pragma_Global);
 
             declare
-               Body_N : constant Node_Id :=
-                 (if Acts_As_Spec (SPARK_Util.Get_Subprogram_Body (E))
-                  then E
-                  else Get_Body_Entity (E));
+               Body_N : constant Node_Id := Subprogram_Body_Entity (E);
             begin
                Tmp.Refined_Depends_N := Get_Pragma (Body_N,
                                                     Pragma_Refined_Depends);
@@ -1546,7 +1544,7 @@ package body Flow is
    -----------------------------
 
    function Last_Statement_Is_Raise (E : Entity_Id) return Boolean is
-      The_Body       : constant Node_Id := SPARK_Util.Get_Subprogram_Body (E);
+      The_Body       : constant Node_Id := Subprogram_Body (E);
       Last_Statement : constant Node_Id :=
         Last (Statements (Handled_Statement_Sequence (The_Body)));
    begin

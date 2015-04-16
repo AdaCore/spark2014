@@ -158,7 +158,7 @@ package body SPARK_Definition is
    Bodies_Valid_SPARK : Node_Sets.Set;
    --  Entities for which the body contains no SPARK violations.
 
-   Entities_Fullview_Not_In_SPARK : Node_Maps.Map;
+   Full_Views_Not_In_SPARK : Node_Maps.Map;
    --  Maps type entities in SPARK whose fullview was declared in a private
    --  part with SPARK_Mode => Off or a subtype or derived type of such an
    --  entity to its first ancester in SPARK.
@@ -181,8 +181,11 @@ package body SPARK_Definition is
    function Entity_Body_Valid_SPARK (E : Entity_Id) return Boolean is
      (Bodies_Valid_SPARK.Contains (E));
 
-   function Fullview_Not_In_SPARK (E : Entity_Id) return Boolean is
-     (Entities_Fullview_Not_In_SPARK.Contains (E));
+   function Full_View_Not_In_SPARK (E : Entity_Id) return Boolean is
+     (Full_Views_Not_In_SPARK.Contains (E));
+
+   procedure Discard_Underlying_Type (T : Entity_Id);
+   --  Mark T's underlying type as seen and store T as its partial view.
 
    -----------------------
    -- Syntactic queries --
@@ -294,6 +297,21 @@ package body SPARK_Definition is
    --  The most underlying type for type Id should be in SPARK, otherwise mark
    --  node N as not in SPARK.
 
+   -----------------------------
+   -- Discard_Underlying_Type --
+   -----------------------------
+
+   procedure Discard_Underlying_Type (T : Entity_Id) is
+      U : constant Entity_Id := Underlying_Type (T);
+   begin
+      if U /= T then
+         Entity_Set.Include (U);
+         if not Is_Full_View (U) then
+            Set_Partial_View (U, T);
+         end if;
+      end if;
+   end Discard_Underlying_Type;
+
    ----------------------------------
    -- Generate_Output_In_Out_SPARK --
    ----------------------------------
@@ -328,7 +346,7 @@ package body SPARK_Definition is
    ---------------------------------
 
    function Get_First_Ancestor_In_SPARK (E : Entity_Id) return Entity_Id is
-     (Entities_Fullview_Not_In_SPARK.Element (E));
+     (Full_Views_Not_In_SPARK.Element (E));
 
    --------------------
    -- Get_SPARK_JSON --
@@ -816,7 +834,7 @@ package body SPARK_Definition is
                if Ekind (E) = E_Constant
                  and then Present (Full_View (E))
                then
-                  Add_Full_And_Partial_View (Full_View (E), E);
+                  Set_Partial_View (Full_View (E), E);
                end if;
 
                Mark_Object_Declaration (N);
@@ -924,7 +942,7 @@ package body SPARK_Definition is
             --  full view is not in SPARK.
 
             if not Is_Private_Type (Etype (Prefix (N)))
-              or else In_SPARK (MUT (Etype (Prefix (N))))
+              or else In_SPARK (Retysp (Etype (Prefix (N))))
             then
                Mark_Most_Underlying_Type_In_SPARK (Etype (Prefix (N)), N);
             elsif Ekind (Entity (Selector_Name (N))) /= E_Discriminant then
@@ -953,10 +971,21 @@ package body SPARK_Definition is
               and then not Comes_From_Source (Original_Node (N))
             then
                null;
+
+            --  In GNATprove_Mode, a separate declaration is generated
+            --  before the body for a subprogram if not defined by the
+            --  user, unless the subprogram defines a unit. So in general
+            --  Mark_Subprogram_Declaration is always called on the declaration
+            --  before Mark_Subprogram_Body is called on the body. In the
+            --  remaining cases where a subprogram unit body does not have
+            --  a prior declaration, call Mark_Subprogram_Declaration on the
+            --  subprogram body.
+
             else
                if Acts_As_Spec (N) then
                   Mark_Subprogram_Declaration (N);
                end if;
+
                Mark_Subprogram_Body (N);
             end if;
 
@@ -979,7 +1008,7 @@ package body SPARK_Definition is
 
             declare
                E      : constant Entity_Id := Defining_Entity (N);
-               Body_N : constant Node_Id := SPARK_Util.Get_Subprogram_Body (E);
+               Body_N : constant Node_Id := Subprogram_Body (E);
             begin
                if Present (Get_Expression_Function (E))
                  and then not Comes_From_Source (Original_Node (Body_N))
@@ -995,9 +1024,9 @@ package body SPARK_Definition is
             if Has_Array_Type (Etype (N)) then
                declare
                   Target_Comp_Typ : constant Entity_Id :=
-                    MUT (Component_Type (MUT (Etype (N))));
+                    Retysp (Component_Type (Retysp (Etype (N))));
                   Source_Comp_Typ : constant Entity_Id :=
-                    MUT (Component_Type (MUT (Etype (Expression (N)))));
+                    Retysp (Component_Type (Retysp (Etype (Expression (N)))));
                begin
                   if Target_Comp_Typ /= Source_Comp_Typ then
                      Violation_Detected := True;
@@ -1016,11 +1045,11 @@ package body SPARK_Definition is
 
                declare
                   Target_Index : Node_Id :=
-                    First_Index (MUT (Etype (N)));
+                    First_Index (Retysp (Etype (N)));
                   Source_Index : Node_Id :=
-                    First_Index (MUT (Etype (Expression (N))));
+                    First_Index (Retysp (Etype (Expression (N))));
                   Dim : constant Positive :=
-                    Positive (Number_Dimensions (MUT (Etype (N))));
+                    Positive (Number_Dimensions (Retysp (Etype (N))));
                begin
                   for I in 1 .. Dim loop
 
@@ -1166,8 +1195,9 @@ package body SPARK_Definition is
 
                if Ekind (E) in Private_Kind
                  and then Present (Full_View (E))
+                 and then not Is_Full_View (Full_View (E)) -- ??? why needed?
                then
-                  Add_Full_And_Partial_View (Full_View (E), E);
+                  Set_Partial_View (Full_View (E), E);
                end if;
 
                --  Fill in the map between classwide types and their
@@ -1180,7 +1210,7 @@ package body SPARK_Definition is
                  and then Is_Tagged_Type (E)
                then
                   Mark_Entity (Class_Wide_Type (E));
-                  Add_Classwide_To_Tagged (Class_Wide_Type (E), E);
+                  Set_Specific_Tagged (Class_Wide_Type (E), E);
                end if;
 
                Mark_Entity (E);
@@ -1818,7 +1848,7 @@ package body SPARK_Definition is
                            and then Convention (E) not in Convention_Ada)
                           or else Is_Internal_File_Name (File))
               and then No (Get_Pragma (E, Pragma_Global))
-              and then not Entity_In_External_Axioms (E)
+              and then not Entity_In_Ext_Axioms (E)
               and then not Is_Pure (E)
             then
                Error_Msg_NE
@@ -1986,19 +2016,18 @@ package body SPARK_Definition is
                      --  formals to check for runtime errors.
 
                      Mark_Subprogram_Declaration (Decl);
-                     Mark_Subprogram_Body
-                       (SPARK_Util.Get_Subprogram_Body (Id));
+                     Mark_Subprogram_Body (Subprogram_Body (Id));
 
                      --  Add the subprogram entity and its parameters to the
                      --  list of entities to be translated.
 
                      if Present (Parameter_Specifications
-                                 (Get_Subprogram_Spec (Id)))
+                                 (Subprogram_Specification (Id)))
                      then
                         declare
                            Param_Spec : Node_Id :=
                              First (Parameter_Specifications
-                                    (Get_Subprogram_Spec (Id)));
+                                    (Subprogram_Specification (Id)));
                         begin
                            while Present (Param_Spec) loop
                               Entity_List.Append
@@ -2096,7 +2125,7 @@ package body SPARK_Definition is
          --  Only mark types in SPARK or not, and mark all subprograms in
          --  SPARK, but none should be scheduled for translation into Why3.
 
-         if Entity_In_External_Axioms (E) then
+         if Entity_In_Ext_Axioms (E) then
 
             --  If Id is a package instance, mark its actual parameters
 
@@ -2281,7 +2310,7 @@ package body SPARK_Definition is
 
       begin
 
-         Mark_Subprogram_Specification (Get_Subprogram_Spec (E));
+         Mark_Subprogram_Specification (Subprogram_Specification (E));
 
          if Present (Contract (E)) then
             Prag := Pre_Post_Conditions (Contract (E));
@@ -2296,7 +2325,7 @@ package body SPARK_Definition is
             Prag := Next_Pragma (Prag);
          end loop;
 
-         Prag := Get_Subprogram_Contract_Cases (E);
+         Prag := Get_Pragma (E, Pragma_Contract_Cases);
          if Present (Prag) then
             declare
                Aggr           : constant Node_Id :=
@@ -2482,7 +2511,7 @@ package body SPARK_Definition is
                         raise Program_Error;
                   end case;
 
-                  Add_Classwide_To_Tagged (E, Unique_Entity (Ty));
+                  Set_Specific_Tagged (E, Unique_Entity (Ty));
                end;
             end if;
 
@@ -2524,15 +2553,14 @@ package body SPARK_Definition is
             --  type or of types whose fullview is not in SPARK.
 
             if Etype (E) = E and then
-              (Entity_In_External_Axioms (E) or else
+              (Entity_In_Ext_Axioms (E) or else
                Is_Private_Entity_Mode_Off (E))
             then
-               Entities_Fullview_Not_In_SPARK.Insert (E, E);
+               Full_Views_Not_In_SPARK.Insert (E, E);
                Discard_Underlying_Type (E);
-            elsif Etype (E) /= E and then Fullview_Not_In_SPARK (Etype (E))
+            elsif Etype (E) /= E and then Full_View_Not_In_SPARK (Etype (E))
             then
-               Entities_Fullview_Not_In_SPARK.Insert
-                 (E, Etype (E));
+               Full_Views_Not_In_SPARK.Insert (E, Etype (E));
                Discard_Underlying_Type (E);
             else
                declare
@@ -2545,12 +2573,12 @@ package body SPARK_Definition is
                begin
                   Mark_Entity (Utype);
                   if not Entity_In_SPARK (Utype) then
-                     Entities_Fullview_Not_In_SPARK.Insert
+                     Full_Views_Not_In_SPARK.Insert
                        (E, (if Entity_In_SPARK (Etype (E)) then Etype (E)
                         else E));
                      Discard_Underlying_Type (E);
-                  elsif Fullview_Not_In_SPARK (Utype) then
-                     Entities_Fullview_Not_In_SPARK.Insert
+                  elsif Full_View_Not_In_SPARK (Utype) then
+                     Full_Views_Not_In_SPARK.Insert
                        (E, Get_First_Ancestor_In_SPARK (Utype));
                         Discard_Underlying_Type (E);
                   end if;
@@ -2871,7 +2899,7 @@ package body SPARK_Definition is
             --  non-SPARK type should be disallowed here
 
             declare
-               Disc : Entity_Id := SPARK_Util.First_Discriminant (E);
+               Disc : Entity_Id := First_Discriminant (E);
             begin
                while Present (Disc) loop
                   if not In_SPARK (Etype (Disc)) then
@@ -2898,7 +2926,7 @@ package body SPARK_Definition is
 
       --  For entities in external axioms, mark the package entity.
 
-      if Entity_In_External_Axioms (E) then
+      if Entity_In_Ext_Axioms (E) then
          declare
             Pack : constant Entity_Id :=
               Containing_Package_With_Ext_Axioms (E);
@@ -3029,7 +3057,7 @@ package body SPARK_Definition is
       --  axioms are handled by a specific mechanism and thus should not be
       --  translated.
 
-      if not Entity_In_External_Axioms (E) then
+      if not Entity_In_Ext_Axioms (E) then
          Entity_List.Append (E);
       end if;
 
@@ -3269,7 +3297,7 @@ package body SPARK_Definition is
 
       --  Do not analyze bodies for packages with external axioms
 
-      if Entity_In_External_Axioms (Id) then
+      if Entity_In_Ext_Axioms (Id) then
          return;
       end if;
 
@@ -3325,7 +3353,7 @@ package body SPARK_Definition is
       else
          Current_SPARK_Pragma := SPARK_Pragma (Id);
 
-         if Entity_In_External_Axioms (Id) then
+         if Entity_In_Ext_Axioms (Id) then
             Mark_Entity (Id);
             Specs_In_SPARK.Include (Id);
          end if;
@@ -3333,7 +3361,7 @@ package body SPARK_Definition is
 
       --  Nothing more to do for packages with external axiomatization
 
-      if Entity_In_External_Axioms (Id) then
+      if Entity_In_Ext_Axioms (Id) then
          return;
       end if;
 
@@ -4193,7 +4221,7 @@ package body SPARK_Definition is
 
    procedure Mark_Most_Underlying_Type_In_SPARK (Id : Entity_Id; N : Node_Id)
    is
-      Typ : constant Entity_Id := MUT (Id);
+      Typ : constant Entity_Id := Retysp (Id);
    begin
       if not In_SPARK (Typ) then
          Mark_Violation (N, From => Typ);

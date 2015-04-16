@@ -141,7 +141,8 @@ package body Why.Gen.Binders is
       --  for the parameter if one is provided.
 
       Ty      : constant Entity_Id :=
-        (if Ekind (Use_Ty) in Type_Kind then MUT (Use_Ty) else Use_Ty);
+        (if Ekind (Use_Ty) in Type_Kind then Retysp (Use_Ty) else Use_Ty);
+
    begin
       if Entity_In_SPARK (Ty)
         and then Is_Array_Type (Ty)
@@ -198,7 +199,7 @@ package body Why.Gen.Binders is
         and then (Is_Record_Type (Ty) or else Is_Private_Type (Ty))
         and then Is_Mutable_In_Why (E)
         and then Count_Why_Top_Level_Fields (Ty) > 0
-        and then (not Fullview_Not_In_SPARK (Ty)
+        and then (not Full_View_Not_In_SPARK (Ty)
                   or else Get_First_Ancestor_In_SPARK (Ty) /= Ty
                   or else Count_Why_Top_Level_Fields (Ty) > 1)
                   --  Do not use split form for completely private types.
@@ -232,7 +233,7 @@ package body Why.Gen.Binders is
                                  Mutable  => True));
             end if;
 
-            if Number_Discriminants (Ty) > 0 then
+            if Has_Discriminants (Ty) then
                Result.Discrs :=
                  (Present => True,
                   Binder  =>

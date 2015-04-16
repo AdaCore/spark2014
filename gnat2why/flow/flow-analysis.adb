@@ -27,6 +27,7 @@ with Elists;               use Elists;
 with Errout;               use Errout;
 with Namet;                use Namet;
 with Nlists;               use Nlists;
+with Sem_Aux;              use Sem_Aux;
 with Sem_Util;             use Sem_Util;
 with Sinfo;                use Sinfo;
 with Sinput;               use Sinput;
@@ -263,9 +264,10 @@ package body Flow.Analysis is
             Haystack_B := Get_Pragma (S, Pragma_Initializes);
 
          when others =>
-            if Present (Get_Body_Entity (S)) then
+            if Present (Subprogram_Body_Entity (S)) then
                Haystack_A :=
-                 Get_Pragma (Get_Body_Entity (S), Pragma_Refined_Global);
+                 Get_Pragma (Subprogram_Body_Entity (S),
+                             Pragma_Refined_Global);
             else
                Haystack_A := Empty;
             end if;

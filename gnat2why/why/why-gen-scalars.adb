@@ -27,6 +27,7 @@ with Atree;               use Atree;
 with Namet;               use Namet;
 with Nlists;              use Nlists;
 with Sem_Eval;            use Sem_Eval;
+with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
 with Uintp;               use Uintp;
 with Urealp;              use Urealp;

@@ -23,18 +23,18 @@
 
 with Ada.Strings;
 with Ada.Strings.Hash;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
-with Namet;             use Namet;
-with Sem_Util;          use Sem_Util;
-with Snames;            use Snames;
-
-with Output;            use Output;
-with Errout;            use Errout;
+with Errout;                use Errout;
+with Namet;                 use Namet;
+with Output;                use Output;
+with Sem_Util;              use Sem_Util;
+with Snames;                use Snames;
 
 with Why;
 
-with Flow_Utility;      use Flow_Utility;
-with Flow_Tree_Utility; use Flow_Tree_Utility;
+with Flow_Tree_Utility;     use Flow_Tree_Utility;
+with Flow_Utility;          use Flow_Utility;
 
 package body Flow_Types is
 
@@ -322,7 +322,7 @@ package body Flow_Types is
             return True;
          when others =>
             return Is_Volatile (F) and then
-              Has_Volatile_Aspect (Get_Direct_Mapping_Id (F),
+              Has_Volatile_Flavor (Get_Direct_Mapping_Id (F),
                                    Pragma_Async_Readers);
       end case;
    end Has_Async_Readers;
@@ -338,7 +338,7 @@ package body Flow_Types is
             return False;
          when others =>
             return Is_Volatile (F) and then
-              Has_Volatile_Aspect (Get_Direct_Mapping_Id (F),
+              Has_Volatile_Flavor (Get_Direct_Mapping_Id (F),
                                    Pragma_Async_Writers);
       end case;
    end Has_Async_Writers;
@@ -354,7 +354,7 @@ package body Flow_Types is
             return False;
          when others =>
             return Is_Volatile (F) and then
-              Has_Volatile_Aspect (Get_Direct_Mapping_Id (F),
+              Has_Volatile_Flavor (Get_Direct_Mapping_Id (F),
                                    Pragma_Effective_Reads);
       end case;
    end Has_Effective_Reads;
@@ -370,7 +370,7 @@ package body Flow_Types is
             return True;
          when others =>
             return Is_Volatile (F) and then
-              Has_Volatile_Aspect (Get_Direct_Mapping_Id (F),
+              Has_Volatile_Flavor (Get_Direct_Mapping_Id (F),
                                    Pragma_Effective_Writes);
       end case;
    end Has_Effective_Writes;

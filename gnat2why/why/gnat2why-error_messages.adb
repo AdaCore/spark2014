@@ -251,7 +251,8 @@ package body Gnat2Why.Error_Messages is
             if Nkind (Node) in N_Function_Call | N_Procedure_Call_Statement
               and then No_Return (Entity (Name (Node)))
               and then
-                Get_Abend_Kind (Entity (Name (Node))) = Abnormal_Termination
+                Get_Execution_Kind (Entity (Name (Node))) =
+                Abnormal_Termination
             then
                return
                  "call to nonreturning subprogram might be executed";
@@ -446,7 +447,8 @@ package body Gnat2Why.Error_Messages is
             if Nkind (Node) in N_Function_Call | N_Procedure_Call_Statement
               and then No_Return (Entity (Name (Node)))
               and then
-                Get_Abend_Kind (Entity (Name (Node))) = Abnormal_Termination
+                Get_Execution_Kind (Entity (Name (Node))) =
+                Abnormal_Termination
             then
                return "call to nonreturning procedure never executed";
             else

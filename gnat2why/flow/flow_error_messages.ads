@@ -23,7 +23,6 @@
 
 --  This package provides mechanisms for emitting errors and warnings.
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Flow;                  use Flow;
 with Flow_Types;            use Flow_Types;
 with GNATCOLL.JSON;         use GNATCOLL.JSON;

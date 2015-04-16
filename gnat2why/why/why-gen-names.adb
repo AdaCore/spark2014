@@ -235,7 +235,7 @@ package body Why.Gen.Names is
                      From_Node : constant Node_Id := Get_Ada_Node (+From);
                      To_Node   : constant Node_Id := Get_Ada_Node (+To);
                      From_Base : constant Node_Id :=
-                       (if Fullview_Not_In_SPARK (From_Node) then
+                       (if Full_View_Not_In_SPARK (From_Node) then
                              Get_First_Ancestor_In_SPARK (From_Node)
                         else Root_Record_Type (From_Node));
                   begin

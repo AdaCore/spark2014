@@ -1838,7 +1838,7 @@ package body Flow_Utility is
       Proof_Ins : Flow_Id_Sets.Set;
       Tmp_In    : Flow_Id_Sets.Set;
       Tmp_Out   : Flow_Id_Sets.Set;
-      Body_E    : constant Entity_Id := Get_Body_Entity (Subprogram);
+      Body_E    : constant Entity_Id := Subprogram_Body_Entity (Subprogram);
 
       function Expand (F : Flow_Id) return Flow_Id_Sets.Set;
       --  If F represents abstract state, return the set of all its
@@ -1985,10 +1985,7 @@ package body Flow_Utility is
       Scope      : Flow_Scope)
       return Boolean
    is
-      Body_N : constant Node_Id :=
-        (if Acts_As_Spec (SPARK_Util.Get_Subprogram_Body (Subprogram))
-         then Subprogram
-         else Get_Body_Entity (Subprogram));
+      Body_N : constant Node_Id := Subprogram_Body_Entity (Subprogram);
    begin
       if Present (Body_N)
         and then Entity_Body_In_SPARK (Subprogram)
@@ -2013,10 +2010,7 @@ package body Flow_Utility is
       Scope      : Flow_Scope)
       return Boolean
    is
-      Body_N : constant Node_Id :=
-        (if Acts_As_Spec (SPARK_Util.Get_Subprogram_Body (Subprogram))
-         then Subprogram
-         else Get_Body_Entity (Subprogram));
+      Body_N : constant Node_Id := Subprogram_Body_Entity (Subprogram);
    begin
       if Rely_On_Generated_Global (Subprogram, Scope) then
          if Present (Body_N) then
@@ -3449,10 +3443,7 @@ package body Flow_Utility is
 
    begin
       declare
-         Body_N : constant Node_Id :=
-           (if Acts_As_Spec (SPARK_Util.Get_Subprogram_Body (Subprogram))
-            then Subprogram
-            else Get_Body_Entity (Subprogram));
+         Body_N : constant Node_Id := Subprogram_Body_Entity (Subprogram);
       begin
          Depends_Contract := Get_Pragma (Body_N, Pragma_Refined_Depends);
       end;

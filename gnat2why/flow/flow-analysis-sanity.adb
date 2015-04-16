@@ -23,14 +23,18 @@
 
 --  This package implements a variety of sanity checks that are run before
 --  the rest of flow analysis is performed.
+
 with Elists;              use Elists;
-with Flow_Error_Messages; use Flow_Error_Messages;
-with Flow_Utility;        use Flow_Utility;
-with Gnat2Why_Args;
+with Sem_Aux;             use Sem_Aux;
 with Sinfo;               use Sinfo;
+
+with Gnat2Why_Args;
 with SPARK_Util;          use SPARK_Util;
 with VC_Kinds;            use VC_Kinds;
 with Why;
+
+with Flow_Error_Messages; use Flow_Error_Messages;
+with Flow_Utility;        use Flow_Utility;
 
 package body Flow.Analysis.Sanity is
 
@@ -323,7 +327,7 @@ package body Flow.Analysis.Sanity is
 
       case FA.Kind is
          when E_Subprogram_Body =>
-            Entry_Node := SPARK_Util.Get_Subprogram_Body (FA.Analyzed_Entity);
+            Entry_Node := Subprogram_Body (FA.Analyzed_Entity);
             pragma Assert (Nkind (Entry_Node) = N_Subprogram_Body);
             Check_Expressions (Entry_Node);
 

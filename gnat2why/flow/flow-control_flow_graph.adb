@@ -26,28 +26,29 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Errout;
 with Namet;                              use Namet;
 with Nlists;                             use Nlists;
+with Sem_Aux;                            use Sem_Aux;
 with Sem_Eval;                           use Sem_Eval;
 with Sem_Util;                           use Sem_Util;
 with Sinfo;                              use Sinfo;
 with Snames;                             use Snames;
 with Stand;                              use Stand;
-
 with Treepr;                             use Treepr;
+
+with VC_Kinds;                           use VC_Kinds;
+
+with SPARK_Definition;                   use SPARK_Definition;
+with SPARK_Util;                         use SPARK_Util;
+
+with Why;
 
 with Flow_Debug;                         use Flow_Debug;
 pragma Unreferenced (Flow_Debug);
 
-with SPARK_Util;                         use SPARK_Util;
-with SPARK_Definition;                   use SPARK_Definition;
-with Why;
-
 with Flow.Control_Flow_Graph.Utility;    use Flow.Control_Flow_Graph.Utility;
 with Flow_Classwide;                     use Flow_Classwide;
 with Flow_Error_Messages;                use Flow_Error_Messages;
-with Flow_Utility.Initialization;        use Flow_Utility.Initialization;
 with Flow_Utility;                       use Flow_Utility;
-
-with VC_Kinds;                           use VC_Kinds;
+with Flow_Utility.Initialization;        use Flow_Utility.Initialization;
 
 package body Flow.Control_Flow_Graph is
 
@@ -3715,8 +3716,8 @@ package body Flow.Control_Flow_Graph is
                  (Standard_Entry => V,
                   Standard_Exits => Vertex_Sets.Empty_Set));
             FA.Atr (V).Execution :=
-              Get_Abend_Kind (Called_Procedure,
-                              GG_Allowed => not FA.Compute_Globals);
+              Get_Execution_Kind (Called_Procedure,
+                                  After_GG => not FA.Compute_Globals);
             Linkup (FA, Prev, FA.Helper_End_Vertex);
          else
             CM.Include
@@ -3942,7 +3943,7 @@ package body Flow.Control_Flow_Graph is
            and then Comes_From_Source (Typ)
            and then (not Is_Private_Type (Typ)
                        or else No (Full_View (Typ)))
-           and then not Fullview_Not_In_SPARK (Typ)
+           and then not Full_View_Not_In_SPARK (Typ)
            and then Is_Default_Initialized (Direct_Mapping_Id (Typ))
            and then not Is_Default_Initialized (Direct_Mapping_Id (Typ),
                                                 Explicit_Only => True)
@@ -4652,7 +4653,7 @@ package body Flow.Control_Flow_Graph is
       then
          if not FA.Compute_Globals
            and then (if FA.Kind = E_Subprogram_Body
-                     then Get_Abend_Kind (FA.Analyzed_Entity) in
+                     then Get_Execution_Kind (FA.Analyzed_Entity) in
                        Normal_Execution | Infinite_Loop)
          then
             --  We warn about this, but only for packages or subprograms
@@ -5108,9 +5109,9 @@ package body Flow.Control_Flow_Graph is
 
       case FA.Kind is
          when E_Subprogram_Body =>
-            Body_N        :=
-              SPARK_Util.Get_Subprogram_Body (FA.Analyzed_Entity);
-            Preconditions := Get_Precondition_Expressions (FA.Analyzed_Entity);
+            Body_N          := Subprogram_Body (FA.Analyzed_Entity);
+            Preconditions   :=
+              Get_Precondition_Expressions (FA.Analyzed_Entity);
 
             if Acts_As_Spec (Body_N) then
                Subprogram_Spec := Defining_Unit_Name (Specification (Body_N));

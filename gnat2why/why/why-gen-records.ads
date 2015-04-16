@@ -25,12 +25,14 @@
 
 with Atree;              use Atree;
 with Einfo;              use Einfo;
-with SPARK_Util;         use SPARK_Util;
 with Types;              use Types;
+
+with SPARK_Util;         use SPARK_Util;
+with Gnat2Why.Util;      use Gnat2Why.Util;
+
 with Why.Gen.Binders;    use Why.Gen.Binders;
 with Why.Ids;            use Why.Ids;
 with Why.Sinfo;          use Why.Sinfo;
-with Gnat2Why.Util;      use Gnat2Why.Util;
 
 package Why.Gen.Records is
    --  This package encapsulates the encoding of Ada records into Why. This
@@ -202,7 +204,7 @@ package Why.Gen.Records is
    --  discriminants, the 'Constrained attribute and the 'Tag attribute.
 
    function Field_Type_For_Discriminants (E : Entity_Id) return W_Type_Id with
-     Pre => Ekind (E) in Type_Kind and then Number_Discriminants (E) > 0;
+     Pre => Ekind (E) in Type_Kind and then Has_Discriminants (E);
    --  Type of the top-level Why3 field for discriminants of E.
 
    function Field_Type_For_Fields (E : Entity_Id) return W_Type_Id with

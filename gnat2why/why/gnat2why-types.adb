@@ -32,6 +32,7 @@ with GNAT.Source_Info;
 with Atree;               use Atree;
 with Einfo;               use Einfo;
 with Namet;               use Namet;
+with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
 with Sinput;              use Sinput;
 with Stand;               use Stand;
@@ -65,7 +66,7 @@ package body Gnat2Why.Types is
      (File       : in out Why_Section;
       E          : Entity_Id)
    is
-      Eq   : Entity_Id := Has_User_Defined_Eq (E);
+      Eq   : Entity_Id := Get_User_Defined_Eq (E);
       Ty   : constant W_Type_Id := EW_Abstract (E);
    begin
       Open_Theory
@@ -192,11 +193,11 @@ package body Gnat2Why.Types is
                Declare_Ada_Record (File, Theory, E);
 
             when E_Class_Wide_Type | E_Class_Wide_Subtype =>
-               Add_Use_For_Entity (File, Corresponding_Tagged (E),
+               Add_Use_For_Entity (File, Specific_Tagged (E),
                                    EW_Export, With_Completion => False);
 
             when Private_Kind =>
-               pragma Assert (Fullview_Not_In_SPARK (E));
+               pragma Assert (Full_View_Not_In_SPARK (E));
                pragma Assert (not Entity_In_SPARK (Underlying_Type (E)));
                Declare_Ada_Record (File, Theory, E);
 
@@ -234,7 +235,7 @@ package body Gnat2Why.Types is
               else "")
             & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-         Translate_Underlying_Type (File.Cur_Theory, MUT (E));
+         Translate_Underlying_Type (File.Cur_Theory, Retysp (E));
 
          --  We declare a default value for all types, in principle.
          --  Cloned subtypes are a special case, they do not need such a

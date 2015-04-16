@@ -23,6 +23,7 @@
 
 with Why;
 
+with Sem_Aux;      use Sem_Aux;
 with Sem_Util;     use Sem_Util;
 with Sinfo;        use Sinfo;
 
@@ -568,7 +569,7 @@ package body Flow.Slice is
          end;
 
          Gather_Local_Variables_And_Subprograms
-           (SPARK_Util.Get_Subprogram_Body (FA.Analyzed_Entity));
+           (Subprogram_Body (FA.Analyzed_Entity));
       end Get_Local_Variables_And_Subprograms;
 
       -----------------------------------

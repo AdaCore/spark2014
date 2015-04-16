@@ -30,6 +30,7 @@ with Einfo;                  use Einfo;
 with Errout;                 use Errout;
 with Namet;                  use Namet;
 with Nlists;                 use Nlists;
+with Sem_Aux;                use Sem_Aux;
 with Sem_Disp;               use Sem_Disp;
 with Sem_Util;               use Sem_Util;
 with Sinfo;                  use Sinfo;
@@ -228,7 +229,7 @@ package body Gnat2Why.Subprograms is
       Cnt    : Integer := 1;
       Result : W_Expr_Array (1 .. Binders'Last);
       Ada_Binders : constant List_Id :=
-        Parameter_Specifications (Get_Subprogram_Spec (E));
+        Parameter_Specifications (Subprogram_Specification (E));
       Arg_Length  : constant Nat := List_Length (Ada_Binders);
 
    begin
@@ -536,7 +537,7 @@ package body Gnat2Why.Subprograms is
       if Global_Params then
          declare
             Params : constant List_Id :=
-              Parameter_Specifications (Get_Subprogram_Spec (E));
+              Parameter_Specifications (Subprogram_Specification (E));
             Param  : Node_Id;
          begin
             Param := First (Params);
@@ -765,7 +766,7 @@ package body Gnat2Why.Subprograms is
 
    function Compute_Raw_Binders (E : Entity_Id) return Item_Array is
       Params : constant List_Id :=
-                 Parameter_Specifications (Get_Subprogram_Spec (E));
+                 Parameter_Specifications (Subprogram_Specification (E));
       Result : Item_Array (1 .. Integer (List_Length (Params)));
       Param  : Node_Id;
       Count  : Integer;
@@ -813,7 +814,8 @@ package body Gnat2Why.Subprograms is
       Others_Guard_Ident : out W_Identifier_Id;
       Others_Guard_Expr  : out W_Expr_Id)
    is
-      Prag          : constant Node_Id := Get_Subprogram_Contract_Cases (E);
+      Prag          : constant Node_Id :=
+        Get_Pragma (E, Pragma_Contract_Cases);
       Aggr          : Node_Id;
       Contract_Case : Node_Id;
       Case_Guard    : Node_Id;
@@ -903,7 +905,8 @@ package body Gnat2Why.Subprograms is
      (E         : Entity_Id;
       Guard_Map : Ada_To_Why_Ident.Map) return W_Prog_Id
    is
-      Prag          : constant Node_Id := Get_Subprogram_Contract_Cases (E);
+      Prag          : constant Node_Id :=
+        Get_Pragma (E, Pragma_Contract_Cases);
       Aggr          : Node_Id;
       Contract_Case : Node_Id;
       Case_Guard    : Node_Id;
@@ -1049,7 +1052,8 @@ package body Gnat2Why.Subprograms is
       Guard_Map          : Ada_To_Why_Ident.Map;
       Others_Guard_Ident : W_Identifier_Id) return W_Prog_Id
    is
-      Prag          : constant Node_Id := Get_Subprogram_Contract_Cases (E);
+      Prag          : constant Node_Id :=
+        Get_Pragma (E, Pragma_Contract_Cases);
       Aggr          : Node_Id;
       Contract_Case : Node_Id;
       Case_Guard    : Node_Id;
@@ -1167,7 +1171,8 @@ package body Gnat2Why.Subprograms is
      (Params : Transformation_Params;
       E      : Entity_Id) return W_Pred_Id
    is
-      Prag          : constant Node_Id := Get_Subprogram_Contract_Cases (E);
+      Prag          : constant Node_Id :=
+        Get_Pragma (E, Pragma_Contract_Cases);
       Aggr          : Node_Id;
       Contract_Case : Node_Id;
       Case_Guard    : Node_Id;
@@ -1684,7 +1689,7 @@ package body Gnat2Why.Subprograms is
       Name      : constant String := Full_Name (E);
       Params    : Transformation_Params;
 
-      Body_N    : constant Node_Id := SPARK_Util.Get_Subprogram_Body (E);
+      Body_N    : constant Node_Id := Subprogram_Body (E);
       Post_N    : Node_Id;
       Assume    : W_Prog_Id;
       Init_Prog : W_Prog_Id;
@@ -2412,7 +2417,9 @@ package body Gnat2Why.Subprograms is
       --  For a subprogram reporting an error, the precondition at call site
       --  should be "False", so that calling it is an error.
 
-      if No_Return (E) and then Get_Abend_Kind (E) = Abnormal_Termination then
+      if No_Return (E)
+        and then Get_Execution_Kind (E) = Abnormal_Termination
+      then
          Pre := False_Pred;
 
          if Is_Dispatching_Operation (E) then
@@ -2947,9 +2954,9 @@ package body Gnat2Why.Subprograms is
 
       procedure Relocate_Symbols (Overridden : Entity_Id) is
          From_Params : constant List_Id :=
-           Parameter_Specifications (Get_Subprogram_Spec (Overridden));
+           Parameter_Specifications (Subprogram_Specification (Overridden));
          To_Params   : constant List_Id :=
-           Parameter_Specifications (Get_Subprogram_Spec (E));
+           Parameter_Specifications (Subprogram_Specification (E));
          From_Param  : Node_Id;
          To_Param    : Node_Id;
 

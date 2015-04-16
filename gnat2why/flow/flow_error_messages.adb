@@ -23,6 +23,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Sets;
+with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Strings.Unbounded.Hash;
 
 with Assumption_Types;           use Assumption_Types;

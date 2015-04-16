@@ -337,7 +337,7 @@ package body Gnat2Why.External_Axioms is
 
                if Ekind (Actual) in E_Class_Wide_Type | E_Class_Wide_Subtype
                then
-                  Actual := Corresponding_Tagged (Actual);
+                  Actual := Specific_Tagged (Actual);
                end if;
 
                if Ekind (Formal) in Type_Kind then
@@ -721,7 +721,7 @@ package body Gnat2Why.External_Axioms is
             --  generic itself.
 
             if Ekind (E) = E_Package and then
-              Package_Has_External_Axioms (E)
+              Package_Has_Ext_Axioms (E)
             then
                Result := List_Of_Entity.Empty_List;
                Found := True;
@@ -1169,7 +1169,7 @@ package body Gnat2Why.External_Axioms is
                   declare
                      F_Params : constant List_Id :=
                        Parameter_Specifications
-                         (Get_Subprogram_Spec (Formal));
+                         (Subprogram_Specification (Formal));
                      F_Param : Node_Id := First (F_Params);
                      F_Type : constant W_Type_Id :=
                        Get_Logic_Type_Of_Ada_Type
@@ -1177,7 +1177,7 @@ package body Gnat2Why.External_Axioms is
                           False);
                      A_Params : constant List_Id :=
                        Parameter_Specifications
-                         (Get_Subprogram_Spec (Actual));
+                         (Subprogram_Specification (Actual));
                      A_Param : Node_Id := First (A_Params);
                      A_Type : constant W_Type_Id :=
                        Type_Of_Node (Etype (Actual));
@@ -1285,7 +1285,7 @@ package body Gnat2Why.External_Axioms is
                declare
                   F_Params : constant List_Id :=
                     Parameter_Specifications
-                      (Get_Subprogram_Spec (Formal));
+                      (Subprogram_Specification (Formal));
                   F_Param  : Node_Id := First (F_Params);
                   F_Type   : constant Entity_Id :=
                     Get_Actual_Type_Of_Ada_Generic_Type (Etype (Formal));

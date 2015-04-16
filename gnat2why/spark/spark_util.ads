@@ -24,203 +24,26 @@
 ------------------------------------------------------------------------------
 
 with AA_Util;               use AA_Util;
-with Ada.Containers;
-with Ada.Containers.Doubly_Linked_Lists;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Atree;                 use Atree;
-with Common_Containers;     use Common_Containers;
 with Einfo;                 use Einfo;
 with Impunit;               use Impunit;
 with Lib;                   use Lib;
 with Namet;                 use Namet;
-with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with Snames;                use Snames;
 with Types;                 use Types;
 with Uintp;                 use Uintp;
+
+with Common_Containers;     use Common_Containers;
+
 with Why.Atree.Tables;      use Why.Atree.Tables;
 
 package SPARK_Util is
 
-   ----------------------------------------------------------------------
-   --  Utility types related to entities and nodes
-   ----------------------------------------------------------------------
-
-   subtype Subtype_Kind is Entity_Kind with
-     Static_Predicate => Subtype_Kind in E_Enumeration_Subtype
-                                       | E_Signed_Integer_Subtype
-                                       | E_Modular_Integer_Subtype
-                                       | E_Ordinary_Fixed_Point_Subtype
-                                       | E_Decimal_Fixed_Point_Subtype
-                                       | E_Floating_Point_Subtype
-                                       | E_Access_Subtype
-                                       | E_Array_Subtype
-                                       | E_String_Subtype
-                                       | E_String_Literal_Subtype
-                                       | E_Class_Wide_Subtype
-                                       | E_Record_Subtype
-                                       | E_Record_Subtype_With_Private
-                                       | E_Private_Subtype
-                                       | E_Limited_Private_Subtype
-                                       | E_Incomplete_Subtype
-                                       | E_Protected_Subtype
-                                       | E_Task_Subtype;
-
-   use type Ada.Containers.Count_Type;
-
-   function Lexicographic_Entity_Order
-     (Left, Right : Entity_Id) return Boolean;
-   --  Ordering for entities based on their unique name. Returns true
-   --  if Left is considered to be "less than" Right.
-
-   package Unbounded_String_Lists is new Ada.Containers.Doubly_Linked_Lists
-     (Element_Type => Unbounded_String);
-
-   ---------------------------------
-   -- Queries related to entities --
-   ---------------------------------
-
-   function Get_Return_Object_Entity (Stmt : Node_Id) return Entity_Id
-     with Pre => Nkind (Stmt) = N_Extended_Return_Statement;
-   --  @param Stmt an extended return statement
-   --  @return the corresponding return object
-
-   procedure Add_Full_And_Partial_View (Full, Partial : Entity_Id);
-   --  Store the correspondence between the Full and Partial views of the same
-   --  entity, for deferred constants and private types.
-
-   procedure Discard_Underlying_Type (T : Entity_Id);
-   --  Mark T's underlying type as seen and store T as its partial view.
-
-   function Is_Full_View (E : Entity_Id) return Boolean;
-   --  Return whether E is the full view of another entity
-
-   function Is_Partial_View (E : Entity_Id) return Boolean;
-   --  Return whether E is the partial view of another entity
-
-   function Entity_In_External_Axioms (E : Entity_Id) return Boolean;
-   --  Return whether an entity E is declared in a package with external axioms
-
-   function Partial_View (E : Entity_Id) return Entity_Id;
-   --  Return the partial view for entity E
-
-   function Full_Name (N : Entity_Id) return String
-     with Pre => (Nkind (N) in N_Entity);
-   --  @param N an entity
-   --  @return its full name, as used in Why
-
-   function Full_Name_Is_Not_Unique_Name (N : Entity_Id) return Boolean;
-   --  The full name of an entity is based on its unique name in nearly all
-   --  cases, so that this name can be used e.g. to retrieve completion
-   --  theories. In a few cases which require special handling
-   --  (currently Standard_Boolean and Universal_Fixed), the full name is hard
-   --  coded for Why, so should not be used as a representative of the entity.
-   --  @param N an entity
-   --  @return True iff the Full Name as computed by Full_Name does not
-   --    correspond to the type name used in Why
-
-   function Source_Name (E : Entity_Id) return String;
-   --  @param E an entity
-   --  @return the unscoped name of the entity as it appears in the source
-
-   function Is_Toplevel_Entity (E : Entity_Id) return Boolean;
-   --  Returns True if E is a toplevel entity, only enclosed in package specs
-   --  or in the declaration part of package bodies.
-
-   function Is_Quantified_Loop_Param (E : Entity_Id) return Boolean
-     with Pre => (Ekind (E) = E_Loop_Parameter);
-   --  @param E an entity with kind Loop_Parameter
-   --  @return True iff E has been introduced by a quantified expression
-
-   function Analysis_Requested (E : Entity_Id) return Boolean;
-   --  Returns true if entity E has to be analyzed.
-
-   function Is_In_Analyzed_Files (E : Entity_Id) return Boolean;
-   --  Returns true if E belongs to one of the entities that correspond
-   --  to the files that are to be analyzed.
-
-   function Is_Package_State (E : Entity_Id) return Boolean;
-   --  Returns True if E is declared in a package spec or body. Also
-   --  returns True for any abstract state.
-
-   function Has_Volatile (E : Entity_Id) return Boolean
-     with Pre => Nkind (E) in N_Entity;
-   --  Checks if the given entity is volatile.
-
-   function Has_Volatile_Aspect (E : Entity_Id;
-                                 A : Pragma_Id)
-                                 return Boolean
-     with Pre => Has_Volatile (E) and
-                 A in Pragma_Async_Readers    | Pragma_Async_Writers |
-                      Pragma_Effective_Writes | Pragma_Effective_Reads;
-   --  Checks if the given entity (or its type) has the specified aspect.
-
-   --------------------------------------
-   -- Queries related to Type Entities --
-   --------------------------------------
-
-   function MUT (T : Entity_Id) return Entity_Id with
-     Pre => Ekind (T) in Type_Kind;
-   --  Returns the "most underlying type" of a type T, following the chain of
-   --  underlying types for private types, up to a non-private type. If T is
-   --  not private, it simply returns it. As a special case, return the
-   --  first type in a package with external axioms found.
-
-   function MUT_Kind (T : Entity_Id) return Entity_Kind with
-     Pre => Ekind (T) in Type_Kind;
-   --  Returns the entity kind of the "most underlying type" of a type T.
-   --  This is not the same as Ekind (MUT (T)), because MUT (T) may still
-   --  be a private type for those types defined in a unit with an external
-   --  axiomatization.
-
-   --  The following functions provide wrappers for the query functions
-   --  in Einfo, that apply the query on the most underlying type of its
-   --  argument, hence skipping all layers of pivate types. To avoid confusion,
-   --  the wrapper for function Einfo.Is_Such_And_Such_Type is called
-   --  Has_Such_And_Such_Type.
-
-   function Has_Access_Type (T : Entity_Id) return Boolean is
-     (MUT_Kind (T) in Access_Kind);
-
-   function Has_Array_Type (T : Entity_Id) return Boolean is
-     (MUT_Kind (T) in Array_Kind);
-
-   function Has_Composite_Type (T : Entity_Id) return Boolean is
-     (MUT_Kind (T) in Composite_Kind);
-
-   function Has_Discrete_Type (T : Entity_Id) return Boolean is
-     (MUT_Kind (T) in Discrete_Kind);
-
-   function Has_Enumeration_Type (T : Entity_Id) return Boolean is
-     (MUT_Kind (T) in Enumeration_Kind);
-
-   function Has_Modular_Integer_Type (T : Entity_Id) return Boolean is
-     (MUT_Kind (T) in Modular_Integer_Kind);
-
-   function Has_Record_Type (T : Entity_Id) return Boolean is
-     (MUT_Kind (T) in Record_Kind);
-
-   function Has_Scalar_Type (T : Entity_Id) return Boolean is
-     (MUT_Kind (T) in Scalar_Kind);
-
-   function Has_Signed_Integer_Type (T : Entity_Id) return Boolean is
-     (MUT_Kind (T) in Signed_Integer_Kind);
-
-   function Has_Fixed_Point_Type (T : Entity_Id) return Boolean is
-     (MUT_Kind (T) in Fixed_Point_Kind);
-
-   function Has_Floating_Point_Type (T : Entity_Id) return Boolean is
-     (MUT_Kind (T) in Float_Kind);
-
-   function Has_Static_Scalar_Subtype (T : Entity_Id) return Boolean;
-   --  Returns whether type T has a scalar subtype with statically known
-   --  bounds. This included looking past private types.
-
-   function Is_Null_Range (T : Entity_Id) return Boolean;
-   --  @param T a type entity
-   --  @returns True iff T is a scalar type whose range is statically know to
-   --     be empty
+   ---------------------------------------------------
+   --  Utility types related to entities and nodes  --
+   ---------------------------------------------------
 
    --  The following type lists all possible forms of default initialization
    --  that may apply to a type.
@@ -251,122 +74,377 @@ package SPARK_Util is
       --  This value reflects a type where none of its content is fully
       --  default initialized.
 
+   type Execution_Kind_T is
+     (Normal_Execution,      --  regular subprogram
+      Abnormal_Termination,  --  No_Return, no output
+      Infinite_Loop);        --  No_Return, some output
+   --  Expected kind of execution for a called procedure. This does not apply
+   --  to main procedures, which should not be called.
+   --
+   --  Please be *exceptionally* alert when adding elements to this type,
+   --  as many checks simply check for one of the options (and do not
+   --  explicitly make sure all cases are considered).
+
+   subtype Subtype_Kind is Entity_Kind with
+     Static_Predicate => Subtype_Kind in E_Enumeration_Subtype
+                                       | E_Signed_Integer_Subtype
+                                       | E_Modular_Integer_Subtype
+                                       | E_Ordinary_Fixed_Point_Subtype
+                                       | E_Decimal_Fixed_Point_Subtype
+                                       | E_Floating_Point_Subtype
+                                       | E_Access_Subtype
+                                       | E_Array_Subtype
+                                       | E_String_Subtype
+                                       | E_String_Literal_Subtype
+                                       | E_Class_Wide_Subtype
+                                       | E_Record_Subtype
+                                       | E_Record_Subtype_With_Private
+                                       | E_Private_Subtype
+                                       | E_Limited_Private_Subtype
+                                       | E_Incomplete_Subtype
+                                       | E_Protected_Subtype
+                                       | E_Task_Subtype;
+
+   ------------------------------
+   -- Extra tables on entities --
+   ------------------------------
+
+   --  The information provided by the frontend is not always sufficient. For
+   --  GNATprove, we need in particular:
+
+   --  - the link from the full view to the partial view for private types and
+   --    deferred constants (the GNAT tree only contains the opposite link in
+   --    Full_View)
+   --  - the link from a classwide type to the corresponding specific tagged
+   --    type
+
+   --  We store this additional information in extra tables during the SPARK
+   --  checking phase, so that it's available during flow analysis and proof.
+
+   procedure Set_Partial_View (E, V : Entity_Id);
+   --  Create a link from the full view to the partial view of an entity.
+   --  @param E full view of private type or deferred constant
+   --  @param V partial view of the same private type or deferred constant
+
+   function Partial_View (E : Entity_Id) return Entity_Id;
+   --  @param E type or constant
+   --  @return if E is the full view of a private type or deferred constant,
+   --    return the partial view for entity E, otherwise Empty
+
+   function Is_Full_View (E : Entity_Id) return Boolean;
+   --  @param E type or constant
+   --  @return True iff E is the full view of a private type or deferred
+   --     constant
+
+   function Is_Partial_View (E : Entity_Id) return Boolean;
+   --  @param E type or constant
+   --  @return True iff E is the partial view of a private type or deferred
+   --     constant
+
+   procedure Set_Specific_Tagged (E, V : Entity_Id);
+   --  Create a link from the classwide type to its specific tagged type
+   --  in SPARK, which can be either V or its partial view if the full view of
+   --  V is not in SPARK.
+   --  @param E classwide type
+   --  @param V specific tagged type corresponding to the classwide type E
+
+   function Specific_Tagged (E : Entity_Id) return Entity_Id;
+   --  @param E classwide type
+   --  @return the specific tagged type corresponding to classwide type E
+
+   ------------------------------------------------
+   -- Queries related to external axiomatization --
+   ------------------------------------------------
+
+   --  Units for which External_Axiomatization is specified have their
+   --  translation into Why3 defined manually, so much of the treatments in
+   --  gnat2why have to be adopted for the entities defined in such units.
+   --  Currently, only the (generic) formal containers in the standard library
+   --  are using this mechanism.
+
+   function Entity_In_Ext_Axioms (E : Entity_Id) return Boolean;
+   --  @param E any entity
+   --  @return True iff E is declared in a package with external axiomatization
+
+   function Is_Access_To_Ext_Axioms_Discriminant
+     (N : Node_Id) return Boolean
+     with Pre => Nkind (N) = N_Selected_Component;
+   --  @param N selected component node
+   --  @return True iff the selector is a discriminant of a type defined in
+   --     a package with external axiomatization.
+
+   function Is_Ext_Axioms_Discriminant (E : Entity_Id) return Boolean
+     with Pre => Ekind (E) = E_Discriminant;
+   --  @param E discriminant
+   --  @return True iff E is the discriminant of a type defined in a package
+   --     with external axiomatization.
+
+   function Package_Has_Ext_Axioms (E : Entity_Id) return Boolean
+     with Pre => Ekind_In (E, E_Package, E_Generic_Package);
+   --  @param E (possibly generic) package
+   --  @return True iff E is a package with external axiomatization
+
+   function Type_Based_On_Ext_Axioms (E : Entity_Id) return Boolean;
+   --  @param E type
+   --  @return True iff E is a private type defined in a package with external
+   --     axiomatization, or a subtype/derived type from such a type.
+
+   function Underlying_Ext_Axioms_Type (E : Entity_Id) return Entity_Id;
+   --  @param E type
+   --  @return if E is a private type defined in a package with external
+   --     axiomatization, or a subtype/derived type from such a type, return
+   --     that type, otherwise Empty.
+
+   ---------------------------------------------
+   -- Queries related to representative types --
+   ---------------------------------------------
+
+   --  A type may be in SPARK even if its most underlying type (the one
+   --  obtained by following the chain of Underlying_Type) is not in SPARK.
+   --  In the simplest case, a private type may have its partial view in SPARK
+   --  and its full view not in SPARK. In other cases, such a private type will
+   --  be found on the chain of type derivation and subtyping from the most
+   --  underlying type to the current type.
+
+   --  Even when the most underlying type of a type T is in SPARK, we may not
+   --  want to use it for translating T into Why3, when it is defined in a unit
+   --  which is externally axiomatized. In such a case, we also want to stop at
+   --  the first type in the chain of type derivation and subtyping that is
+   --  externally axiomatized.
+
+   --  The "Representative Type in SPARK" (Retysp for short) of a type T is
+   --  the type that represents T in the translation into Why3. It is the most
+   --  underlying type of T when it is in SPARK and not externally axiomatized,
+   --  or the first private type on the chain of Underlying_Type links at the
+   --  boundary between SPARK and non-SPARK, or the first private type on the
+   --  chain of Underlying_Type links inside an externally axiomatized unit.
+   --  For non-private types, Retysp is the identity.
+
+   function Retysp (T : Entity_Id) return Entity_Id
+     with Pre => Ekind (T) in Type_Kind;
+   --  @param T any type
+   --  @return the "Representative Type in SPARK" of type T
+
+   function Retysp_Kind (T : Entity_Id) return Entity_Kind
+     with Pre => Ekind (T) in Type_Kind;
+   --  @param T any type
+   --  @return the entity kind of the "Representative Type in SPARK" of type T.
+   --     This is not the same as Ekind (Retysp (T)), because Retysp (T) may
+   --     be a private type, and we're interested here in the underlying kind
+   --     of type.
+
+   --  The following functions provide wrappers for the query functions in
+   --  Einfo, that apply the query on the "Representative Type in SPARK" of its
+   --  argument, hence skipping all layers of pivate types. To avoid confusion,
+   --  the wrapper for function Einfo.Is_Such_And_Such_Type is called
+   --  Has_Such_And_Such_Type.
+
+   function Has_Access_Type (T : Entity_Id) return Boolean is
+     (Retysp_Kind (T) in Access_Kind);
+
+   function Has_Array_Type (T : Entity_Id) return Boolean is
+     (Retysp_Kind (T) in Array_Kind);
+
+   function Has_Composite_Type (T : Entity_Id) return Boolean is
+     (Retysp_Kind (T) in Composite_Kind);
+
+   function Has_Discrete_Type (T : Entity_Id) return Boolean is
+     (Retysp_Kind (T) in Discrete_Kind);
+
+   function Has_Enumeration_Type (T : Entity_Id) return Boolean is
+     (Retysp_Kind (T) in Enumeration_Kind);
+
+   function Has_Modular_Integer_Type (T : Entity_Id) return Boolean is
+     (Retysp_Kind (T) in Modular_Integer_Kind);
+
+   function Has_Record_Type (T : Entity_Id) return Boolean is
+     (Retysp_Kind (T) in Record_Kind);
+
+   function Has_Scalar_Type (T : Entity_Id) return Boolean is
+     (Retysp_Kind (T) in Scalar_Kind);
+
+   function Has_Signed_Integer_Type (T : Entity_Id) return Boolean is
+     (Retysp_Kind (T) in Signed_Integer_Kind);
+
+   function Has_Fixed_Point_Type (T : Entity_Id) return Boolean is
+     (Retysp_Kind (T) in Fixed_Point_Kind);
+
+   function Has_Floating_Point_Type (T : Entity_Id) return Boolean is
+     (Retysp_Kind (T) in Float_Kind);
+
+   function Has_Static_Scalar_Subtype (T : Entity_Id) return Boolean;
+   --  Returns whether type T has a scalar subtype with statically known
+   --  bounds. This included looking past private types.
+
+   ---------------------------------
+   -- Queries related to entities --
+   ---------------------------------
+
+   function Analysis_Requested (E : Entity_Id) return Boolean;
+   --  @param E subprogram or package
+   --  @return True iff subprogram or package E must be analyzed, because it
+   --     belongs to one of the analyzed units, and either the complete unit is
+   --     analyzed, or E is the specific subprogram/package whose analysis was
+   --     requested.
+
+   function Full_Name (E : Entity_Id) return String
+     with Pre => Nkind (E) in N_Entity;
+   --  @param E any entity
+   --  @return the name to use for E in Why3
+
+   function Full_Name_Is_Not_Unique_Name (E : Entity_Id) return Boolean;
+   --  In almost all cases, the name to use for an entity in Why3 is based on
+   --  its unique name in GNAT AST, so that this name can be used everywhere
+   --  to refer to the entity (for example to retrieve completion theories).
+   --  A few cases require special handling because their name is predefined
+   --  in Why3. This concerns currently only Standard_Boolean and its full
+   --  subtypes and Universal_Fixed.
+   --  @param E any entity
+   --  @return True iff the name to use in Why3 (returned by Full_Name) does
+   --     not correspond to unique name in GNAT AST.
+
+   function Has_Volatile (E : Entity_Id) return Boolean;
+   --  @param E an abstract state or object
+   --  @return True iff E is an external state or a volatile object
+
+   function Has_Volatile_Flavor
+     (E : Entity_Id;
+      A : Pragma_Id) return Boolean
+     with Pre => Has_Volatile (E) and then
+                 A in Pragma_Async_Readers
+                    | Pragma_Async_Writers
+                    | Pragma_Effective_Reads
+                    | Pragma_Effective_Writes;
+   --  @param E an external state or a volatile object
+   --  @return True iff E has the specified flavor A of volatility, either
+   --     directly or through its type.
+
+   function Is_In_Analyzed_Files (E : Entity_Id) return Boolean;
+   --  @param E any entity
+   --  @return True iff E is contained in a file that should be analyzed
+
+   function Is_Package_State (E : Entity_Id) return Boolean;
+   --  @param E any entity
+   --  @return True iff E is an abstract state or a package level variable
+
+   function Is_Quantified_Loop_Param (E : Entity_Id) return Boolean
+     with Pre => Ekind (E) = E_Loop_Parameter;
+   --  @param E loop parameter
+   --  @return True iff E has been introduced by a quantified expression
+
+   function Source_Name (E : Entity_Id) return String;
+   --  @param E any entity
+   --  @return The unscoped name of E as it appears in the source code
+
+   ------------------------------
+   -- Queries related to types --
+   ------------------------------
+
+   function Check_Needed_On_Conversion (From, To : Entity_Id) return Boolean;
+   --  @param From type of expression to be converted, which should be a Retysp
+   --  @param To target type of the conversion, which should be a Retysp
+   --  @return whether a check may be needed when converting an expression
+   --     of type From to type To. Currently a very coarse approximation
+   --     to rule out obvious cases.
+
+   function Component_Is_Visible_In_SPARK (E : Entity_Id) return Boolean;
+   --  @param E component
+   --  @return True iff the component E should be visible in the translation
+   --     into Why3, i.e. it is a discriminant (which cannot be hidden in
+   --     SPARK) or the full view of the enclosing record is in SPARK.
+
+   function Count_Non_Inherited_Discriminants
+     (Assocs : List_Id) return Natural;
+   --  @param Assocs list of component associations
+   --  @return the number of discriminants used as choices in Assocs, ignoring
+   --     those that are inherited from a parent type
+
+   --  ??? Add a precondition to Count_Why_Regular_Fields and
+   --  Count_Why_Top_Level_Fields that Retysp (E) = E ?
+
+   function Count_Why_Regular_Fields (E : Entity_Id) return Natural;
+   --  @param E record type or private type whose most underlying type is
+   --     a record type. E should be a "Representative Type in SPARK".
+   --  @return the number of regular fields in the record representing E into
+   --     Why3, which contains:
+   --     - A field per component of E visible in SPARK
+   --       (use Component_Is_Visible_In_SPARK)
+   --     - A field for the private part of E if E is a private type
+   --     - A field for the extensions of E if E is tagged
+   --     - A field for the private components of E's private ancestors if E is
+   --       tagged and has private ancestors (use Has_Private_Ancestor_Or_Root)
+
+   function Count_Why_Top_Level_Fields (E : Entity_Id) return Natural;
+   --  @param E record type or private type whose most underlying type is
+   --     a record type. E should be a "Representative Type in SPARK".
+   --  @return the number of top-level fields in the record representing E into
+   --     Why3, which contains:
+   --     - A field __split_discrs for discriminants if E has at list one
+   --     - A field __split_fields for regular fields if E has at list one
+   --       (use Count_Why_Regular_Fields)
+   --     - A field attr__constrained if E's discriminants have default values
+   --     - A field __tag if E is tagged
+
    function Default_Initialization
      (Typ           : Entity_Id;
-      Explicit_Only : Boolean    := False)
-      return Default_Initialization_Kind;
-   --  Determine default initialization kind that applies to a particular
-   --  type. Types defined in axiomatized units (such as formal containers) and
-   --  private types are treated specially, so that they are either considered
-   --  as having full default initialized, or no default initialization.
-   --  @param Typ The type that for which we need to determine initialization.
+      Explicit_Only : Boolean := False) return Default_Initialization_Kind;
+   --  Determine default initialization kind that applies to a particular type.
+   --  Types defined in units with external axiomatization (such as formal
+   --  containers) and private types are treated specially, so that they are
+   --  either considered as having full default initialization, or no default
+   --  initialization.
+   --  @param Typ any type
    --  @param Explicit_Only If True then do not consider attributes
    --    Has_Default_Init_Cond and Has_Inherited_Default_Init_Cond for this
    --    type.
    --  @return the Default_Initialization_Kind of Typ
 
-   function Get_Low_Bound (E : Entity_Id) return Node_Id;
-   --  @param E an index subtype or string literal subtype
-   --  @return its low bound
+   function Get_Full_Type_Without_Checking (N : Node_Id) return Entity_Id
+     with Pre => Present (N);
+   --  Get the type of the given entity. This function looks through
+   --  private types and should be used with extreme care.
+   --  ??? This function should probably be removed. Its comment says it
+   --  applies to entities, while it may be called from flow on entities or
+   --  nodes of record type.
 
-   function Has_User_Defined_Eq (E : Entity_Id) return Entity_Id
-     with Pre => Ekind (E) in Type_Kind;
-   --  @param E a type entity
-   --  @return the entity of the primitive equality function of the type
-   --    entity, if it exists; otherwise return the empty node
-
-   procedure Add_Classwide_To_Tagged (Classwide, Ty : Entity_Id);
-   --  Store the correspondence between a classwide type and the specific
-   --  corresponding type.
-
-   function Corresponding_Tagged (Classwide : Entity_Id) return Entity_Id;
-   --  Returns the specific tagged type corresponding to a classwide type
-
-   function Is_Single_Precision_Floating_Point_Type
-     (E : Entity_Id) return Boolean;
-   --  Return whether E is a single precision floating point type,
-   --  characterized by:
-   --  . machine_radix = 2
-   --  . machine_mantissa = 24
-   --  . machine_emax = 2**7
-   --  . machine_emin = 3 - machine_emax
-
-   function Is_Double_Precision_Floating_Point_Type
-     (E : Entity_Id) return Boolean;
-   --  Return whether E is a double precision floating point type,
-   --  characterized by:
-   --  . machine_radix = 2
-   --  . machine_mantissa = 53
-   --  . machine_emax = 2**10
-   --  . machine_emin = 3 - machine_emax
-
-   function Type_Based_On_External_Axioms (E : Entity_Id) return Boolean;
-   --  Return whether a private type E is defined in the private part of a
-   --  package with external axioms, or it is a subtype or derived type
-   --  ultimately based on such a type.
-
-   function Underlying_External_Axioms_Type (E : Entity_Id) return Entity_Id;
-   --  Return the underlying (private) base type declared in a package with
-   --  external axioms of a private type E, if any
-
-   function Root_Record_Type (E : Entity_Id) return Entity_Id;
-   --  Given a record type (or private type whose implementation is a record
-   --  type, etc.), return the root type, including traversing private types.
-
-   function Root_Record_Component (E : Entity_Id) return Entity_Id;
-   --  Given a component or discriminant of a record (sub-)type, return the
-   --  corresponding component or discriminant of the root type, if any. This
-   --  is the identity when E is the component of a root type.
-
-   function Search_Component_By_Name
-     (Rec  : Entity_Id;
-      Comp : Entity_Id) return Entity_Id;
-   --  Given a record type entity and a component/discriminant entity, search
-   --  in Rec a component/discriminant entity with the same name. Returns Empty
-   --  if no such component is found.
-
-   function Matching_Component_Association
-     (Component   : Entity_Id;
-      Association : Node_Id) return Boolean;
-   --  Return whether Association matches Component
-
-   function Number_Components (Typ : Entity_Id) return Natural;
-   --  Count the number of components in an Ada record type Typ
-
-   function Number_Discriminants (Typ : Entity_Id) return Natural;
-   --  Count the number of discriminants in an Ada record type Typ
-
-   function Count_Why_Top_Level_Fields (E : Entity_Id) return Natural;
-   --  Number of elements in the complete record type. It should contain:
-   --    - A field __split_discrs for discriminants if E has at list one
-   --    - A field __split_fields for components if E has at list one
-   --      regular field (use Count_Why_Regular_Fields)
-   --    - A field attr__constrained if E's discriminants have defaults
-   --    - A field __tag if E is tagged
-   --  Note that tagged types have always at least one component, for the
-   --  components of possible extensions.
-
-   function Count_Why_Regular_Fields (E : Entity_Id) return Natural;
-   --  Number of regular fields in a record type Typ. It includes:
-   --    - A field per component of E visible in SPARK
-   --     (use Component_Is_Visible_In_SPARK)
-   --    - A field for the private part of E if E is a private type
-   --    - A field for the extensions of E if E is tagged
-   --    - A field for the private components of E's private ancestors if E is
-   --      tagged and has pivate ancestors (use Has_Private_Ancestor_Or_Root)
-
-   function Component_Is_Visible_In_SPARK (E : Entity_Id) return Boolean;
-   --  Returns True on components of Records which are declared in a scope
-   --  with SPARK_Mode On.
+   function Get_Specific_Type_From_Classwide (E : Entity_Id) return Entity_Id
+     with Pre => Is_Class_Wide_Type (E);
+   --  Returns the specific type associated with a class wide type.
+   --  If E's Etype is a fullview, returns its partial view instead.
+   --  ??? This should make the mechanism with the extra table
+   --  Specific_Tagged_Types redundant, except the detection that a type is
+   --  a full view is currently not available soon enough.
 
    function Has_Private_Ancestor_Or_Root (E : Entity_Id) return Boolean;
-   --  Returns True on taged types with a private ancestor or an ancestor
-   --  with fullview not in SPARK
+   --  @param E any type
+   --  @return True iff E is a tagged type whose translation into Why3 requires
+   --     the use of an ancestor field, to denote invisible fieds from an
+   --     ancestor at the Why3 level (due either to a private ancestor or
+   --     a root type whose full view not in SPARK).
+
+   function Has_Static_Discrete_Predicate (E : Entity_Id) return Boolean;
+   --  @param E any type
+   --  @return True iff E is a discrete type with a static predicate
+
+   function Is_Null_Range (T : Entity_Id) return Boolean;
+   --  @param T any type
+   --  @returns True iff T is a scalar type whose range is statically known to
+   --     be empty
+
+   function Is_Standard_Boolean_Type (E : Entity_Id) return Boolean;
+   --  @param E type
+   --  @return True if we can determine that E is Standard_Boolean or a subtype
+   --    of Standard_Boolean which also ranges over False .. True
+
+   function Is_Static_Array_Type (E : Entity_Id) return Boolean;
+   --  @param E any type
+   --  @return True iff E is a constrained array type with statically known
+   --     bounds
 
    function Nth_Index_Type (E : Entity_Id; Dim : Positive) return Node_Id
      with Pre => Is_Array_Type (E);
-   --  @param E an array type entity
-   --  @param D specifies a dimension
+   --  @param E array type
+   --  @param D dimension
    --  @return the argument E in the special case where E is a string literal
    --    subtype; otherwise the index type entity which corresponds to the
    --    selected dimension
@@ -375,179 +453,58 @@ package SPARK_Util is
      with Pre => Is_Array_Type (E);
    --  same as above, but with Uint instead of positive
 
-   function Count_Non_Inherited_Discriminants
-     (Assocs : List_Id) return Natural;
-   --  Counts the number of discriminants in the list of component associations
-   --  Assocs.
+   function Root_Record_Type (E : Entity_Id) return Entity_Id;
+   --  Given a record type (or private type whose implementation is a record
+   --  type, etc.), return the root type, including traversing private types.
+   --  ??? Need to update comment to reflect dependence on Retysp of root by
+   --  calling Full_View_Not_In_SPARK.
 
-   function First_Discriminant (Id : E) return E
-     with Pre =>
-       (Is_Record_Type (Id) or else Is_Incomplete_Or_Private_Type (Id));
-   --  Get the first discriminant of the record type entity [Id]. Contrary
-   --  to Sem_Aux.First_Discriminant, it does not skip hidden stored
-   --  discriminants.
+   function Root_Record_Component (E : Entity_Id) return Entity_Id;
+   --  Given a component or discriminant of a record (sub-)type, return the
+   --  corresponding component or discriminant of the root type, if any. This
+   --  is the identity when E is the component of a root type.
+   --  ??? Same update needed as for Root_Record_Type
 
-   function Is_External_Axioms_Discriminant (E : Entity_Id) return Boolean
-   with
-     Pre => Ekind (E) = E_Discriminant;
-
-   function Is_Access_To_External_Axioms_Discriminant
-     (N : Node_Id) return Boolean
-   with
-     Pre => Nkind (N) = N_Selected_Component;
-
-   function Get_Specific_Type_From_Classwide (E : Entity_Id) return Entity_Id
-   with
-     Pre => Is_Class_Wide_Type (E);
-   --  Returns the specific type associated with a class wide type.
-   --  If E's Etype is a fullview, returns its partial view instead.
-
-   function Has_Default_Init_Condition (E : Entity_Id) return Boolean with
-     Pre => Is_Type (E);
-
-   function Get_Default_Init_Cond_Proc (E : Entity_Id) return Entity_Id with
-     Pre => Is_Type (E) and then Has_Default_Init_Condition (E);
-   --  Return the default initial condition procedure for a type E
-
-   function Is_Standard_Boolean_Type (N : Node_Id) return Boolean;
-   --  Returns True if N is a sybtype of Standard_Boolean with the same
-   --  Scalar_Range
-
-   function Is_Static_Array_Type (E : Entity_Id) return Boolean
-   is (Is_Array_Type (E)
-       and then Is_Constrained (E)
-       and then Has_Static_Array_Bounds (E))
-   with Pre => (Ekind (E) in Type_Kind);
-   --  @param E a type entity
-   --  @return True if the type entity corresponds to a static constrained
-   --    array type
+   function Search_Component_By_Name
+     (Rec  : Entity_Id;
+      Comp : Entity_Id) return Entity_Id;
+   --  Given a record type entity and a component/discriminant entity, search
+   --  in Rec a component/discriminant entity with the same name. Returns Empty
+   --  if no such component is found.
 
    function Static_Array_Length (E : Entity_Id; Dim : Positive) return Uint
      with Pre => Is_Static_Array_Type (E);
-   --  @param E a type entity which corresponds to a static constrained array
-   --    type
-   --  @param Dim the selected dimension of the array type
-   --  @return the static length of the selected dimension of the array type as
-   --    an integer
+   --  @param E constrained array type with statically known bounds
+   --  @param Dim dimension
+   --  @return the static length of dimension Dim of E
 
-   function Has_Static_Discrete_Predicate (E : Entity_Id) return Boolean;
-   --  @param E a type entity
-   --  @return True if the type is a discrete type with a static predicate
-
-   function Get_Cursor_Type_In_Iterable_Aspect
-     (Typ : Entity_Id) return Entity_Id;
-   --  Returns the cursor type implied by an Iterable aspect over the type Typ
-
-   function Get_Element_Type_In_Iterable_Aspect
-     (Typ : Entity_Id) return Entity_Id;
-   --  Returns the element type implied by an Iterable aspect over the type Typ
-
-   function Get_Default_Init_Cond_Pragma (Typ : Entity_Id) return Node_Id with
-     Pre => Has_Default_Init_Cond (Typ) or else
-            Has_Inherited_Default_Init_Cond (Typ);
-   --  Returns the unanalyzed pragma Default_Initial_Condition applying to a
-   --  type.
-
-   function Check_Needed_On_Conversion (From, To : Entity_Id) return Boolean;
-   --  Returns whether a check may be needed when converting an expression
-   --  of type From to an expression of type To. Currently a very coarse
-   --  approximation to rule out obvious cases.
-
-   function Get_Full_Type_Without_Checking (N : Node_Id) return Entity_Id
-     with Pre => Present (N);
-   --  Get the type of the given entity. This function looks through
-   --  private types and should be used with extreme care.
-
-   -----------------------------------
-   -- Queries Related to Subprogams --
-   -----------------------------------
+   ------------------------------------
+   -- Queries related to subprograms --
+   ------------------------------------
 
    function Find_Contracts
      (E         : Entity_Id;
       Name      : Name_Id;
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Node_Lists.List
-   with
-     Pre => Ekind (E) in Subprogram_Kind | E_Package and then
-             not (Classwide and Inherited);
-   --  Walk the Contract node attached to E and return the pragma matching
-   --  Name.
+     with Pre => Ekind (E) in Subprogram_Kind | E_Package and then
+                 not (Classwide and Inherited);
+   --  @param E subprogram or package
+   --  @param Name contract name
+   --  @param Classwide True when asking for the classwide version of contract
+   --  @param Inherited True when asking only for inherited contracts
+   --  @return the list of pragma nodes of E for contract Name
 
-   function Has_Contracts
-     (E         : Entity_Id;
-      Name      : Name_Id;
-      Classwide : Boolean := False;
-      Inherited : Boolean := False) return Boolean
-   with Pre => Ekind (E) in Subprogram_Kind | E_Package;
-   --  Return True if the subprogram in argument has the given kind of
-   --  contract, False otherwise.
+   function Get_Execution_Kind
+     (E        : Entity_Id;
+      After_GG : Boolean := True) return Execution_Kind_T
+     with Pre => Ekind (E) = E_Procedure and then No_Return (E);
+   --  @param E procedure for which No_Return is specified
+   --  @param After_GG True if this call is made after generation of globals,
+   --     so we can query the globals computed for E if not specified by the
+   --     user.
+   --  @return the kind of execution for E
 
-   function Get_Expression_Function (E : Entity_Id) return Node_Id;
-   --  If E is the entity of an expression function, return the corresponding
-   --  N_Expression_Function original node. Otherwise, return Empty.
-
-   function Get_Subprogram_Body (E : Entity_Id) return Node_Id;
-   --  Return the N_Subprogram_Body node for a subprogram entity E, if
-   --  available. Otherwise, return Empty.
-
-   function Get_Subprogram_Spec (E : Entity_Id) return Node_Id;
-   --  Return the N_Specification node for a subprogram entity E
-
-   function Get_Subprogram_Decl (E : Entity_Id) return Node_Id;
-   --  Return the N_Subprogram_Declaration node for a subprogram entity E, if
-   --  any. Otherwise, return Empty, in particular in the case of a subprogram
-   --  body acting as declaration.
-
-   function Get_Subprogram_Contract_Cases (E : Entity_Id) return Node_Id;
-   --  Return the pragma Contract_Cases for E, if any
-
-   function Expression_Functions_All_The_Way (E : Entity_Id) return Boolean;
-   --  Given the entity E for a function, determine whether E is an expression
-   --  function that only calls expression functions, directly or indirectly.
-
-   function Is_Overriding_Subprogram (E : Entity_Id) return Boolean;
-   --  Returns True if E is an overriding subprogram
-
-   function Is_Simple_Shift_Or_Rotate (E : Entity_Id) return Boolean;
-   --  @param E Subprogram entity.
-   --  @return True iff Subp is an intrisic shift or rotate for a modular type
-   --     of modulus smaller or equal to 2 ** 64, with no functional contract
-   --     (precondition, postcondition or contract cases).
-
-   function Is_Unchecked_Conversion_Instance (E : Entity_Id) return Boolean;
-   --  Returns whether E is an instance of Ada.Unchecked_Conversion
-
-   function Subprogram_Full_Source_Name (E : Entity_Id) return String;
-   --  For a subprogram entity, return its scoped name, e.g. for subprogram
-   --  Nested in
-   --
-   --    package body P is
-   --       procedure Lib_Level is
-   --          procedure Nested is
-   --     ....
-   --  return P.Lib_Level.Nested. Casing of names is taken as it appears in the
-   --  source.
-   --  @param E a subprogram entity
-   --  @return it's fully scoped name as it appears in the source
-
-   function Subp_Location (E : Entity_Id) return String
-     with Pre => (Ekind (E) in Subprogram_Kind | E_Package);
-   --  @param E a subprogram or package entity
-   --  @return a string of the form GP_Subp:foo.ads:12, where this is the file
-   --    and line where this subprogram or package is declared. Tihs allows to
-   --    identify the subprogram by it's source position and is used e.g. for
-   --    the --limit-subp opion of gnatprove.
-
-   type Execution_Kind_T is (Normal_Execution,
-                             Abnormal_Termination,
-                             Infinite_Loop);
-   --  Please be *exceptionally* alert when adding elements to this type,
-   --  as many checks simlpy check for one of the options (and do not
-   --  explicitly make sure all cases are considered).
-
-   function Get_Abend_Kind
-     (E          : Entity_Id;
-      GG_Allowed : Boolean := True) return Execution_Kind_T;
    --  Infer how the Called_Procedure abnormally ends. If a subprogram
    --  has an output, we assume that it contains an infinite loop. If it
    --  does not, we assume its a thinly veiled wrapper around an
@@ -572,33 +529,11 @@ package SPARK_Util is
    --     lied about contracts (as in, stated it has no outputs), then
    --     this is not a "new" failure.
 
-   function Has_No_Output
-     (E          : Entity_Id;
-      GG_Allowed : Boolean) return Boolean
-   with
-     Pre => Nkind (E) in N_Entity and then Ekind (E) = E_Procedure;
-   --  Returns True if procedure E has no output (parameter or global).
-   --  Otherwise, or if we don't know for sure, we return False.
-   --
-   --  If GG_Allowed is False, then we will not query generated globals. This
-   --  is useful before generated globals are computed.
-
-   function Has_User_Supplied_Globals (E : Entity_Id) return Boolean
-     with Pre => Nkind (E) in N_Entity and then Ekind (E) in Subprogram_Kind;
-   --  Return true if the given subprogram has been annotated with a global
-   --  (or depends) contract.
-
-   function Subprogram_Is_Ignored_For_Proof (E : Entity_Id) return Boolean with
-     Pre => Ekind (E) in E_Procedure | E_Function;
-   --  Returns true on subprograms that are not translated to Why.
-
-   function Is_Requested_Subprogram (E : Entity_Id) return Boolean;
-   --  Returns true if entity E is the one whose analysis was specifically
-   --  requested, so it should be analyzed even if otherwise inlined.
-
-   function Is_Local_Subprogram_Always_Inlined (E : Entity_Id) return Boolean;
-   --  Returns True if E is a local subprogram that is always inlined by the
-   --  frontend in GNATprove mode.
+   function Get_Expression_Function (E : Entity_Id) return Node_Id;
+   --  @param E subprogram
+   --  @return if E is the entity for an expression function, return the
+   --     corresponding N_Expression_Function original node. Otherwise,
+   --     return Empty.
 
    function Get_Expr_From_Check_Only_Proc (E : Entity_Id) return Node_Id with
      Pre => Ekind (E) = E_Procedure;
@@ -610,13 +545,73 @@ package SPARK_Util is
           Post => Nkind (Get_Procedure_Specification'Result) =
                     N_Procedure_Specification;
 
+   function Has_Contracts
+     (E         : Entity_Id;
+      Name      : Name_Id;
+      Classwide : Boolean := False;
+      Inherited : Boolean := False) return Boolean
+   with Pre => Ekind (E) in Subprogram_Kind | E_Package;
+   --  @param E subprogram or package
+   --  @param Name contract name
+   --  @param Classwide True when asking for the classwide version of contract
+   --  @param Inherited True when asking only for inherited contracts
+   --  @return True iff there is at least one contract Name for E
+
+   function Has_User_Supplied_Globals (E : Entity_Id) return Boolean
+     with Pre => Nkind (E) in N_Entity and then Ekind (E) in Subprogram_Kind;
+   --  Return true if the given subprogram has been annotated with a global
+   --  (or depends) contract.
+
+   function Is_Local_Subprogram_Always_Inlined (E : Entity_Id) return Boolean;
+   --  Returns True if E is a local subprogram that is always inlined by the
+   --  frontend in GNATprove mode.
+
+   function Is_Requested_Subprogram (E : Entity_Id) return Boolean;
+   --  Returns true if entity E is the one whose analysis was specifically
+   --  requested, so it should be analyzed even if otherwise inlined.
+
+   function Is_Simple_Shift_Or_Rotate (E : Entity_Id) return Boolean;
+   --  @param E Subprogram entity.
+   --  @return True iff Subp is an intrisic shift or rotate for a modular type
+   --     of modulus smaller or equal to 2 ** 64, with no functional contract
+   --     (precondition, postcondition or contract cases).
+
+   function Is_Unchecked_Conversion_Instance (E : Entity_Id) return Boolean;
+   --  @param E subprogram
+   --  @return True iff E is an instance of Ada.Unchecked_Conversion
+
    function Might_Be_Main (E : Entity_Id) return Boolean
      with Pre => Ekind (E) in Subprogram_Kind;
    --  Returns True if E is a library level subprogram without formal
    --  parameters (E is allowed to have global parameters).
 
+   function Subprogram_Full_Source_Name (E : Entity_Id) return String;
+   --  For a subprogram entity, return its scoped name, e.g. for subprogram
+   --  Nested in
+   --
+   --    package body P is
+   --       procedure Lib_Level is
+   --          procedure Nested is
+   --     ....
+   --  return P.Lib_Level.Nested. Casing of names is taken as it appears in the
+   --  source.
+   --  @param E subprogram
+   --  @return the fully scoped name of E as it appears in the source
+
+   function Subprogram_Is_Ignored_For_Proof (E : Entity_Id) return Boolean with
+     Pre => Ekind (E) in E_Procedure | E_Function;
+   --  Returns true on subprograms that are not translated to Why.
+
+   function Subp_Location (E : Entity_Id) return String
+     with Pre => Ekind (E) in Subprogram_Kind | E_Package;
+   --  @param E subprogram or package
+   --  @return a string of the form GP_Subp:foo.ads:12 pointing to the file
+   --    and line where this subprogram or package is declared. This allows to
+   --    identify the subprogram or package by its source position and is
+   --    used e.g. for the --limit-subp switch of GNATprove.
+
    ---------------------------------
-   -- Queries Related to Packages --
+   -- Queries related to packages --
    ---------------------------------
 
    function Get_Package_Spec (E : Entity_Id) return Node_Id with
@@ -642,18 +637,14 @@ package SPARK_Util is
    --  Returns whether Decl belongs to the list of private declarations of a
    --  package.
 
-   function Package_Has_External_Axioms (E : Entity_Id) return Boolean with
-     Pre  => Ekind_In (E, E_Package, E_Generic_Package);
-   --  Return whether E is a package with External Axioms
-
    function Has_Extensions_Visible_Aspect (E : Entity_Id) return Boolean
      with Pre => Nkind (E) in N_Entity and then
                  Ekind (E) in Subprogram_Kind;
    --  Checks if extensions are visible for this subprogram.
 
-   -------------------------------
-   --  Queries for Pragma Nodes --
-   -------------------------------
+   --------------------------------
+   -- Queries related to pragmas --
+   --------------------------------
 
    function Is_Pragma (N : Node_Id; Name : Pragma_Id) return Boolean;
    --  Returns whether N is a pragma of the given kind
@@ -681,14 +672,8 @@ package SPARK_Util is
       Writes : out Node_Sets.Set);
    --  Returns the set of input and output items in Global pragma P
 
-   function Get_Body_Entity (E : Entity_Id) return Entity_Id
-     with Pre  => Ekind (E) in E_Function | E_Procedure,
-          Post => (not Present (Get_Body_Entity'Result))
-                    or else Ekind (Get_Body_Entity'Result) = E_Subprogram_Body;
-   --  Fetches the body entity for a subprogram with a spec and a body.
-
    ---------------------------------
-   -- Queries for Arbitrary Nodes --
+   -- Queries for arbitrary nodes --
    ---------------------------------
 
    function Get_Enclosing_Declaration (N : Node_Id) return Node_Id;
@@ -741,7 +726,7 @@ package SPARK_Util is
    --  Returns the first parent P of N where Nkind (P) = K.
 
    ----------------------------------
-   -- Queries for Particular Nodes --
+   -- Queries for particular nodes --
    ----------------------------------
 
    function Get_Range (N : Node_Id) return Node_Id
@@ -756,14 +741,9 @@ package SPARK_Util is
    --  range)
 
    function Aggregate_Is_Fully_Initialized (N : Node_Id) return Boolean;
-   --  Return whether aggregate or an extension aggregate N is fully
-   --  initialized. For the aggregate extension, this only deals with
-   --  the extension components.
-
-   function All_Aggregates_Are_Fully_Initialized
-     (N : Node_Id) return Boolean;
-   --  Return whether all aggregates in node N (recursively) are fully
-   --  initialized.
+   --  @param N aggregate or an extension aggregate
+   --  @return whether N is fully initialized. For the aggregate extension,
+   --      this only deals with the extension components.
 
    function Is_Predicate_Function_Call (N : Node_Id) return Boolean;
    --  Returns whether N is a call to a frontend-generated predicate function
@@ -789,9 +769,19 @@ package SPARK_Util is
          Get_Attribute_Id (Attribute_Name (N)) = Attribute_Update);
    --  Checks if the given node is a 'Update node.
 
-   ------------------
-   -- Misc queries --
-   ------------------
+   ---------------------------------
+   -- Misc operations and queries --
+   ---------------------------------
+
+   procedure Append
+     (To    : in out Node_Lists.List;
+      Elmts : Node_Lists.List);
+   --  Append all elements from list Elmts to the list To
+
+   procedure Append
+     (To    : in out Why_Node_Lists.List;
+      Elmts : Why_Node_Lists.List);
+   --  Append all elements from list Elmts to the list To
 
    function Lowercase_Has_Element_Name return String;
    --  Return the name of the function Has_Element in formal containers
@@ -810,16 +800,6 @@ package SPARK_Util is
    function Location_In_Standard_Library (Loc : Source_Ptr) return Boolean;
    --  Returns True if location Loc is in a unit of the standard library, as
    --  computed by Unit_In_Standard_Library.
-
-   procedure Append
-     (To    : in out Node_Lists.List;
-      Elmts : Node_Lists.List);
-   --  Append all elements from list Elmts to the list To
-
-   procedure Append
-     (To    : in out Why_Node_Lists.List;
-      Elmts : Why_Node_Lists.List);
-   --  Append all elements from list Elmts to the list To
 
    function Get_Statement_And_Declaration_List
      (Stmts : List_Id) return Node_Lists.List;

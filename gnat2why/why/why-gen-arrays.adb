@@ -635,7 +635,7 @@ package body Why.Gen.Arrays is
                declare
                   Rng    : constant Node_Id := Get_Range (Index);
                   R_Ty : constant W_Type_Id := Base_Why_Type_No_Bool
-                    (Base_Type (MUT (Etype (Index))));
+                    (Base_Type (Retysp (Etype (Index))));
                begin
                   Declare_Attribute (WNE_Attr_First (Count),
                                      Expr_Value (Low_Bound (Rng)),
@@ -1463,9 +1463,9 @@ package body Why.Gen.Arrays is
    function Get_Array_Theory_Name (E : Entity_Id) return Name_Id is
       Name : Unbounded_String := To_Unbounded_String ("Array_");
       Type_Name : Unbounded_String;
-      Index : Node_Id := First_Index (MUT (Etype (E)));
+      Index : Node_Id := First_Index (Retysp (Etype (E)));
       Dim : constant Positive :=
-        Positive (Number_Dimensions (MUT (Etype (E))));
+        Positive (Number_Dimensions (Retysp (Etype (E))));
    begin
       for I in 1 .. Dim loop
          if Has_Modular_Integer_Type (Etype (Index)) then
@@ -1502,7 +1502,7 @@ package body Why.Gen.Arrays is
                                       Name : Name_Id;
                                       Module : out W_Module_Id)
    is
-      Typ : constant Entity_Id := MUT (Etype (E));
+      Typ : constant Entity_Id := Retysp (Etype (E));
 
       Dim : constant Positive :=
         Positive (Number_Dimensions (Typ));
@@ -1533,7 +1533,7 @@ package body Why.Gen.Arrays is
 
             Subst (I * 7 + 1 .. I * 7 + 7) := Prepare_Indices_Substitutions
               (File.Cur_Theory,
-               MUT (Etype (Index)),
+               Retysp (Etype (Index)),
                "I" & Image (I + 1, 1));
 
             Index := Next_Index (Index);
@@ -1576,7 +1576,7 @@ package body Why.Gen.Arrays is
       M_Arrays.Include (Key      => Name,
                         New_Item => Init_Array_Module (Module));
 
-      if Number_Dimensions (MUT (Etype (E))) = 1 then
+      if Number_Dimensions (Retysp (Etype (E))) = 1 then
          M_Arrays_1.Include (Key      => Name,
                              New_Item => Init_Array_1_Module (Module));
       end if;

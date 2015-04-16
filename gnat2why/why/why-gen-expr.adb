@@ -26,24 +26,29 @@
 with Ada.Strings.Unbounded;   use Ada.Strings.Unbounded;
 with Ada.Strings.Fixed;
 with Ada.Text_IO;
+
 with Aspects;                 use Aspects;
 with Atree;                   use Atree;
 with Checks;                  use Checks;
 with Einfo;                   use Einfo;
 with Errout;                  use Errout;
-with GNATCOLL.Utils;          use GNATCOLL.Utils;
-with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
-with Gnat2Why.Expr;           use Gnat2Why.Expr;
-with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
 with Nlists;                  use Nlists;
+with Sem_Aux;                 use Sem_Aux;
 with Sem_Eval;                use Sem_Eval;
 with Sem_Util;                use Sem_Util;
 with Sinfo;                   use Sinfo;
 with Sinput;                  use Sinput;
-with SPARK_Util;              use SPARK_Util;
 with Stand;                   use Stand;
-with String_Utils;            use String_Utils;
 with Urealp;                  use Urealp;
+
+with GNATCOLL.Utils;          use GNATCOLL.Utils;
+with SPARK_Util;              use SPARK_Util;
+with String_Utils;            use String_Utils;
+
+with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
+with Gnat2Why.Expr;           use Gnat2Why.Expr;
+with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
+
 with Why.Atree.Accessors;     use Why.Atree.Accessors;
 with Why.Atree.Modules;       use Why.Atree.Modules;
 with Why.Atree.Tables;        use Why.Atree.Tables;
@@ -1297,7 +1302,7 @@ package body Why.Gen.Expr is
 
          --  Reach through a non-private type in order to query its kind
 
-         Check_Type := MUT (Check_Type);
+         Check_Type := Retysp (Check_Type);
 
          --  If the target type is a constrained array, we have a length check.
 
@@ -1777,7 +1782,7 @@ package body Why.Gen.Expr is
       return W_Expr_Id is
       Why_Type : constant W_Type_Id := Type_Of_Node (Typ);
       Use_Predef : constant Boolean :=
-        Force_Predefined or else not Present (Has_User_Defined_Eq (Typ));
+        Force_Predefined or else not Present (Get_User_Defined_Eq (Typ));
       Eq_Str   : constant String :=
         (if Use_Predef then "bool_eq" else "user_eq");
       Module   : constant W_Module_Id :=

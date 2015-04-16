@@ -1728,7 +1728,7 @@ package body Gnat2Why.Expr is
       --  If Ty's fullview is in SPARK, go to its underlying type to check its
       --  kind.
 
-      Ty_Ext : constant Entity_Id := MUT (Ty);
+      Ty_Ext : constant Entity_Id := Retysp (Ty);
       Checks : W_Prog_Id := New_Void;
    begin
       if Is_Scalar_Type (Ty_Ext) then
@@ -1841,13 +1841,14 @@ package body Gnat2Why.Expr is
             --  Post used for the assignment of tmp_exp
 
             Discrs  : constant Natural :=
-              SPARK_Util.Number_Discriminants (Ty_Ext);
+              (if Has_Discriminants (Ty_Ext) then
+                 Natural (Number_Discriminants (Ty_Ext))
+               else 0);
             Tmps    : W_Identifier_Array (1 .. Discrs);
             Binds   : W_Expr_Array (1 .. Discrs);
             --  Arrays to store the bindings for discriminants
 
-            Field   : Node_Id :=
-              SPARK_Util.First_Discriminant (Ty_Ext);
+            Field   : Node_Id := First_Discriminant (Ty_Ext);
             Elmt    : Elmt_Id :=
               (if Has_Discriminants (Ty_Ext)
                and then Is_Constrained (Ty_Ext) then
@@ -2048,12 +2049,14 @@ package body Gnat2Why.Expr is
       --        ignore__ (Def_Init_Cond (x));
       --        assert {Default_Init (x) -> Def_Init_Cond (x)}
 
-      if Has_Default_Init_Condition (Ty)
+      if (Has_Default_Init_Cond (Ty)
+            or else
+          Has_Inherited_Default_Init_Cond (Ty))
         and then not Is_Private_Type (Ty_Ext)
       then
          declare
             Default_Init_Subp : constant Entity_Id :=
-              Get_Default_Init_Cond_Proc (Ty);
+              Default_Init_Cond_Procedure (Ty);
             Default_Init_Expr : constant Node_Id :=
               Get_Expr_From_Check_Only_Proc (Default_Init_Subp);
             Binders           : constant Item_Array :=
@@ -2152,7 +2155,7 @@ package body Gnat2Why.Expr is
       Params         : Transformation_Params;
       Skip_Last_Cond : Boolean := False) return W_Pred_Id is
 
-      Ty_Ext     : constant Entity_Id := MUT (Ty);
+      Ty_Ext     : constant Entity_Id := Retysp (Ty);
       Tmp        : constant W_Expr_Id := New_Temp_For_Expr (Expr);
       Assumption : W_Expr_Id := +True_Pred;
    begin
@@ -2301,13 +2304,15 @@ package body Gnat2Why.Expr is
                                         To       => EW_Abstract (Ty_Ext));
             --  Expression that should be used for the access
 
-            Discrs  : constant Natural := Number_Discriminants (Ty_Ext);
+            Discrs  : constant Natural :=
+              (if Has_Discriminants (Ty_Ext) then
+                 Natural (Number_Discriminants (Ty_Ext))
+               else 0);
             Tmps    : W_Identifier_Array (1 .. Discrs);
             Binds   : W_Expr_Array (1 .. Discrs);
             --  Arrays to store the bindings for discriminants
 
-            Field   : Node_Id :=
-              SPARK_Util.First_Discriminant (Ty_Ext);
+            Field   : Node_Id := First_Discriminant (Ty_Ext);
             Elmt    : Elmt_Id :=
               (if Has_Discriminants (Ty_Ext)
                and then Is_Constrained (Ty_Ext) then
@@ -2517,10 +2522,14 @@ package body Gnat2Why.Expr is
       --  If Skip_Last_Cond is False, assume the default initial condition for
       --  Ty.
 
-      if not Skip_Last_Cond and then Has_Default_Init_Condition (Ty) then
+      if not Skip_Last_Cond
+        and then (Has_Default_Init_Cond (Ty)
+                    or else
+                  Has_Inherited_Default_Init_Cond (Ty))
+      then
          declare
             Default_Init_Subp : constant Entity_Id :=
-              Get_Default_Init_Cond_Proc (Ty);
+              Default_Init_Cond_Procedure (Ty);
             Default_Init_Expr : constant Node_Id :=
               Get_Expr_From_Check_Only_Proc (Default_Init_Subp);
             Binders           : constant Item_Array :=
@@ -2602,7 +2611,7 @@ package body Gnat2Why.Expr is
       --  If Ty's fullview is in SPARK, go to its underlying type to check its
       --  kind.
 
-      Ty_Ext : constant Entity_Id := MUT (Ty);
+      Ty_Ext : constant Entity_Id := Retysp (Ty);
    begin
 
       --  Dynamic property of the type itself
@@ -2803,8 +2812,8 @@ package body Gnat2Why.Expr is
             --  If elements of an array have default discriminants and are not
             --  constrained then 'Constrained returns false on them.
 
-            if Has_Defaulted_Discriminants (MUT (Component_Type (Ty_Ext)))
-              and then not Is_Constrained (MUT (Component_Type (Ty_Ext)))
+            if Has_Defaulted_Discriminants (Retysp (Component_Type (Ty_Ext)))
+              and then not Is_Constrained (Retysp (Component_Type (Ty_Ext)))
             then
                T_Comp := New_And_Expr
                  (Left   => +T_Comp,
@@ -2865,7 +2874,10 @@ package body Gnat2Why.Expr is
                                         Domain   => EW_Term,
                                         Expr     => Expr,
                                         To       => EW_Abstract (Ty_Ext));
-            Discrs  : constant Natural := Number_Discriminants (Ty_Ext);
+            Discrs  : constant Natural :=
+              (if Has_Discriminants (Ty_Ext) then
+                 Natural (Number_Discriminants (Ty_Ext))
+               else 0);
             Field   : Node_Id := First_Component_Or_Discriminant (Ty_Ext);
             T_Comp  : W_Pred_Id;
             T_Guard : W_Pred_Id;
@@ -2904,8 +2916,8 @@ package body Gnat2Why.Expr is
                   --  If fields of a record have default discriminants and are
                   --  not constrained then 'Constrained returns false on them.
 
-                  if Has_Defaulted_Discriminants (MUT (Etype (Field)))
-                    and then not Is_Constrained (MUT (Etype (Field)))
+                  if Has_Defaulted_Discriminants (Retysp (Etype (Field)))
+                    and then not Is_Constrained (Retysp (Etype (Field)))
                   then
                      T_Comp := +New_And_Expr
                        (Left   => +T_Comp,
@@ -3288,7 +3300,7 @@ package body Gnat2Why.Expr is
                      --  composite parameters.
 
                      Need_Check_On_Fetch : constant Boolean :=
-                       (if Ekind (MUT (Etype (Formal)))
+                       (if Ekind (Retysp (Etype (Formal)))
                         in Scalar_Kind
                         then
                            Ekind (Formal) /= E_Out_Parameter
@@ -3329,7 +3341,7 @@ package body Gnat2Why.Expr is
                      --  parameters.
 
                      Need_Check_On_Store : constant Boolean :=
-                       (if Ekind (MUT (Etype (Formal)))
+                       (if Ekind (Retysp (Etype (Formal)))
                         in Scalar_Kind
                         then
                            Ekind (Formal) /= E_In_Parameter
@@ -4193,7 +4205,7 @@ package body Gnat2Why.Expr is
 
                begin
                   if Has_Record_Type (Left_Type)
-                    or else Fullview_Not_In_SPARK (Left_Type)
+                    or else Full_View_Not_In_SPARK (Left_Type)
                   then
                      pragma Assert (Root_Record_Type (Left_Type) =
                                       Root_Record_Type (Right_Type));
@@ -4669,7 +4681,7 @@ package body Gnat2Why.Expr is
                --  For private types, functions are declared in the first
                --  ancestor only
 
-               Rec_Ty  : constant Entity_Id := MUT (Ty);
+               Rec_Ty  : constant Entity_Id := Retysp (Ty);
                R_Expr  : constant W_Expr_Id :=
                  Insert_Simple_Conversion (Ada_Node => N,
                                            Domain   => EW_Term,
@@ -6854,9 +6866,9 @@ package body Gnat2Why.Expr is
             Lval  : constant W_Expr_Id :=
               New_Temp_For_Expr
                 (Transform_Expr (Lvalue, EW_Pterm, Body_Params), True);
-            Discr : Node_Id := SPARK_Util.First_Discriminant (Ty);
+            Discr : Node_Id := First_Discriminant (Ty);
             D_Ty  : constant Entity_Id :=
-              (if Fullview_Not_In_SPARK (Ty) then
+              (if Full_View_Not_In_SPARK (Ty) then
                     Get_First_Ancestor_In_SPARK (Ty)
                else Ty);
          begin
@@ -8108,7 +8120,7 @@ package body Gnat2Why.Expr is
                Base : Entity_Id := Get_Base_Type (Decl);
             begin
                if Present (Base) then
-                  Base := MUT (Base);
+                  Base := Retysp (Base);
                end if;
 
                if Entity_In_SPARK (Ent) then
@@ -8590,7 +8602,7 @@ package body Gnat2Why.Expr is
                  (if Ekind (Prefix_Ty) in E_Record_Subtype |
                                           E_Record_Subtype_With_Private
                   then
-                    MUT (Etype (Prefix_Ty))
+                    Retysp (Etype (Prefix_Ty))
                   else
                     Prefix_Ty);
 
@@ -8601,7 +8613,9 @@ package body Gnat2Why.Expr is
                                  Params);
                Tmp : constant W_Expr_Id := New_Temp_For_Expr (Anc_Expr);
                Anc_Num_Discrs : constant Natural :=
-                 Number_Discriminants (Anc_Ty);
+                 (if Has_Discriminants (Anc_Ty) then
+                    Natural (Number_Discriminants (Anc_Ty))
+                  else 0);
                pragma Assert (if Has_Private_Ancestor (Anc_Ty)
                               then Has_Private_Ancestor (Expr_Type));
                Anc_Num_Fields : constant Natural :=
@@ -10577,7 +10591,7 @@ package body Gnat2Why.Expr is
                         Typ  => Index_Base);
       Quant_Type : constant Entity_Id :=
         (if not Over_Range and then Of_Present (Iterator_Specification (Expr))
-         then Get_Cursor_Type_In_Iterable_Aspect (Etype (Range_E))
+         then Get_Cursor_Type (Etype (Range_E))
          else Etype (Index_Ent));
       Quant_Base : constant W_Type_Id :=
         (if Over_Range then Index_Base else Type_Of_Node (Quant_Type));
@@ -10805,11 +10819,15 @@ package body Gnat2Why.Expr is
       Component   : Entity_Id;
       Association : Node_Id;
       Field_Assoc :
-        W_Field_Association_Array (1 .. Integer (Components_Count (Assocs)));
+        W_Field_Association_Array (1 .. Components_Count (Assocs));
+      Num_Discr   : constant Integer :=
+        (if Has_Discriminants (Typ) then
+           Natural (Number_Discriminants (Typ))
+         else 0);
       Discr_Assoc :
-        W_Field_Association_Array (1 .. Number_Discriminants (Typ));
+        W_Field_Association_Array (1 .. Num_Discr);
       Result      :
-        W_Field_Association_Array (1 .. Integer (Components_Count (Assocs)));
+        W_Field_Association_Array (1 .. Components_Count (Assocs));
       Field_Index : Positive := 1;
       Discr_Index : Positive := 1;
       CL          : List_Id;
@@ -10826,7 +10844,7 @@ package body Gnat2Why.Expr is
       pragma Assert
         (In_Attribute_Update
           or else Is_Tagged_Type (Typ)
-          or else Number_Components (Typ) = Integer (List_Length (Assocs)));
+          or else Number_Components (Typ) = List_Length (Assocs));
 
       Association := Nlists.First (Assocs);
 
@@ -11224,7 +11242,7 @@ package body Gnat2Why.Expr is
                  Transform_Statements_And_Declarations
                    (Return_Object_Declarations (Stmt_Or_Decl));
                Ret_Obj     : constant Entity_Id :=
-                 Get_Return_Object_Entity (Stmt_Or_Decl);
+                 Get_Return_Object (Stmt_Or_Decl);
                Obj_Deref   : constant W_Prog_Id :=
                  +Insert_Simple_Conversion
                    (Domain => EW_Prog,
@@ -11570,11 +11588,11 @@ package body Gnat2Why.Expr is
    begin
       return (not Dispatch and Has_Precondition) or else
         Has_Classwide_Or_Inherited_Precondition or else
-        Entity_In_External_Axioms (E) or else
+        Entity_In_Ext_Axioms (E) or else
 
         --  E is an error signaling subprogram, for which an implicit
         --  precondition of False is used.
 
-        (No_Return (E) and then Get_Abend_Kind (E) = Abnormal_Termination);
+        (No_Return (E) and then Get_Execution_Kind (E) = Abnormal_Termination);
    end Why_Subp_Has_Precondition;
 end Gnat2Why.Expr;
