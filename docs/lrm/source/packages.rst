@@ -130,7 +130,7 @@ The Boolean aspect Volatile_Function may be specified as part of the
 (explicit) initial declaration of a function. A function whose
 Volatile_Function aspect is True is said to be a *volatile function*.
 A protected function is also defined to be a *volatile function*.
-[Unlike non-volatile functions, two calls to a volatile function with all
+[Unlike nonvolatile functions, two calls to a volatile function with all
 inputs equal need not return the same result.]
 
 .. centered:: **Legality Rules**
@@ -357,12 +357,12 @@ Async_Writers aspect specification.
 
 .. _tu-fe-external_state_variables-09:
 
-9. An effectively volatile object shall not be a ``global_item`` of a
-   non-volatile function.
+9. A ``global_item`` of a nonvolatile function shall not denote either
+   an effectively volatile object or an external state abstraction.
 
 .. _tu-fe-nt-external_state_variables-10:
 
-10. A non-volatile function shall not have a formal parameter of an effectively
+10. A nonvolatile function shall not have a formal parameter of an effectively
     volatile type.
 
 .. _tu-fe-external_state_variables-11:

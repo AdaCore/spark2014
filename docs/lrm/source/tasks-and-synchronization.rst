@@ -129,7 +129,7 @@ synchronized interface types are in |SPARK|.
 12. The end of a task body shall not be reachable. [This follows from
     from Ravenscar's No_Task_Termination restriction.]
 
-13. A non-volatile function shall not contain a delay statement,
+13. A nonvolatile function shall not contain a delay statement,
     a call to Suspend_Until_True, a call a protected entry,
     a call a volatile function, or a call (directly or via dispatching)
     a subprogram which contains such a construct.
