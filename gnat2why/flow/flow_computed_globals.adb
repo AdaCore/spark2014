@@ -62,7 +62,7 @@ package body Flow_Computed_Globals is
    end record;
 
    function Preceeds (A, B : State_Phase_1_Info) return Boolean
-   is (A.State.all < B.State.all);
+   is (A.State.Id < B.State.Id);
 
    package State_Info_Sets is new Ada.Containers.Ordered_Sets
      (Element_Type => State_Phase_1_Info,
@@ -97,7 +97,7 @@ package body Flow_Computed_Globals is
    end record;
 
    function "=" (Left, Right : Global_Id) return Boolean is
-      (Left.Kind = Right.Kind and then Left.Name.all = Right.Name.all);
+      (Left.Kind = Right.Kind and then Left.Name.Id = Right.Name.Id);
    --  Equality for Global_Id
 
    Null_Global_Id : constant Global_Id :=
@@ -134,13 +134,6 @@ package body Flow_Computed_Globals is
                                  G        : T);
    --  Writes a dot and pdf file for the Global_Graph
 
-   -------------
-   -- To_Name --
-   -------------
-
-   function To_Name (E : Entity_Id) return Entity_Name
-   is (new String'(Unique_Name (E)));
-
    -----------------
    -- To_Name_Set --
    -----------------
@@ -149,7 +142,7 @@ package body Flow_Computed_Globals is
       Rv : Name_Set.Set := Name_Set.Empty_Set;
    begin
       for E of S loop
-         Rv.Insert (To_Name (E));
+         Rv.Insert (To_Entity_Name (E));
       end loop;
       return Rv;
    end To_Name_Set;
@@ -160,41 +153,41 @@ package body Flow_Computed_Globals is
 
    procedure Print_Subprogram_Phase_1_Info (Info : Subprogram_Phase_1_Info) is
    begin
-      Write_Line ("Subprogram " & Info.Subprogram.all);
+      Write_Line ("Subprogram " & Info.Subprogram.S.all);
 
       Write_Line ("Proof_Ins        :");
       for Name of Info.Inputs_Proof loop
-         Write_Line ("   " & Name.all);
+         Write_Line ("   " & Name.S.all);
       end loop;
 
       Write_Line ("Inputs           :");
       for Name of Info.Inputs loop
-         Write_Line ("   " & Name.all);
+         Write_Line ("   " & Name.S.all);
       end loop;
 
       Write_Line ("Outputs          :");
       for Name of Info.Outputs loop
-         Write_Line ("   " & Name.all);
+         Write_Line ("   " & Name.S.all);
       end loop;
 
       Write_Line ("Proof calls      :");
       for Name of Info.Proof_Calls loop
-         Write_Line ("   " & Name.all);
+         Write_Line ("   " & Name.S.all);
       end loop;
 
       Write_Line ("Definite calls   :");
       for Name of Info.Definite_Calls loop
-         Write_Line ("   " & Name.all);
+         Write_Line ("   " & Name.S.all);
       end loop;
 
       Write_Line ("Conditional calls:");
       for Name of Info.Conditional_Calls loop
-         Write_Line ("   " & Name.all);
+         Write_Line ("   " & Name.S.all);
       end loop;
 
       Write_Line ("Local variables  :");
       for Name of Info.Local_Variables loop
-         Write_Line ("   " & Name.all);
+         Write_Line ("   " & Name.S.all);
       end loop;
    end Print_Subprogram_Phase_1_Info;
 
@@ -234,10 +227,10 @@ package body Flow_Computed_Globals is
 
          Label : constant String :=
            (case G_Id.Kind is
-              when Proof_Ins_Kind => G_Id.Name.all & "'Proof_Ins",
-              when Ins_Kind       => G_Id.Name.all & "'Ins",
-              when Outs_Kind      => G_Id.Name.all & "'Outs",
-              when Variable_Kind  => G_Id.Name.all,
+              when Proof_Ins_Kind => G_Id.Name.S.all & "'Proof_Ins",
+              when Ins_Kind       => G_Id.Name.S.all & "'Ins",
+              when Outs_Kind      => G_Id.Name.S.all & "'Outs",
+              when Variable_Kind  => G_Id.Name.S.all,
               when Null_Kind      => "");
 
          Rv : constant Node_Display_Info := Node_Display_Info'
@@ -311,7 +304,7 @@ package body Flow_Computed_Globals is
       for S in DM.Iterate loop
          declare
             State        : constant Entity_Name :=
-              To_Name (Get_Direct_Mapping_Id (Dependency_Maps.Key (S)));
+              To_Entity_Name (Get_Direct_Mapping_Id (Dependency_Maps.Key (S)));
 
             Constituents : constant Name_Set.Set :=
               To_Name_Set (To_Node_Set (Dependency_Maps.Element (S)));
@@ -351,13 +344,13 @@ package body Flow_Computed_Globals is
       begin
          for N of S loop
             Write_Info_Char (' ');
-            Write_Info_Str (N.all);
+            Write_Info_Str (N.S.all);
          end loop;
       end Write_Name_Set;
    begin
       for State_Info of State_Info_Set loop
          Write_Info_Str ("GG AS ");
-         Write_Info_Str (State_Info.State.all);
+         Write_Info_Str (State_Info.State.S.all);
          Write_Name_Set (State_Info.Constituents);
          Write_Info_Terminate;
       end loop;
@@ -374,7 +367,7 @@ package body Flow_Computed_Globals is
             when others =>
                raise Program_Error;
          end case;
-         Write_Info_Str (Info.Subprogram.all);
+         Write_Info_Str (Info.Subprogram.S.all);
          Write_Info_Terminate;
 
          Write_Info_Str ("GG VP");
@@ -605,7 +598,7 @@ package body Flow_Computed_Globals is
                      Nam := (if F.Kind in Direct_Mapping |
                                           Record_Field
                              then
-                                To_Name (Get_Direct_Mapping_Id (F))
+                                To_Entity_Name (Get_Direct_Mapping_Id (F))
                              elsif F.Kind = Magic_String then
                                 F.Name
                              else
@@ -704,7 +697,7 @@ package body Flow_Computed_Globals is
                begin
                   for F of FS loop
                      Nam := (if F.Kind in Direct_Mapping | Record_Field then
-                                To_Name (Get_Direct_Mapping_Id (F))
+                                To_Entity_Name (Get_Direct_Mapping_Id (F))
                              elsif F.Kind = Magic_String then
                                 F.Name
                              else
@@ -830,7 +823,7 @@ package body Flow_Computed_Globals is
 
                   declare
                      EN : constant Entity_Name :=
-                       new String'(Slice (Line,
+                       To_Entity_Name (Slice (Line,
                                           Start_Of_Word,
                                           End_Of_Word));
                   begin
@@ -867,7 +860,7 @@ package body Flow_Computed_Globals is
                      End_Of_Word := End_Of_Word - 1;
                   end if;
 
-                  State := new String'(Slice (Line,
+                  State := To_Entity_Name (Slice (Line,
                                               Start_Of_Word,
                                               End_Of_Word));
 
@@ -907,7 +900,7 @@ package body Flow_Computed_Globals is
                               7);
 
                      EN : constant Entity_Name :=
-                       new String'(Slice (Line,
+                       To_Entity_Name (Slice (Line,
                                           9,
                                           Length (Line)));
 
@@ -1218,8 +1211,6 @@ package body Flow_Computed_Globals is
 
       if Debug_Print_Info_Sets_Read then
          --  Print all GG related info gathered from the ALI files.
-         Write_Line ("GG info as read from ALI files:");
-
          for Info of Info_Set loop
             Write_Eol;
             Print_Subprogram_Phase_1_Info (Info);
@@ -1227,11 +1218,11 @@ package body Flow_Computed_Globals is
 
          for State_Info of State_Info_Set loop
             Write_Eol;
-            Write_Line ("Abstract state " & State_Info.State.all);
+            Write_Line ("Abstract state " & State_Info.State.S.all);
 
             Write_Line ("Constituents     :");
             for Name of State_Info.Constituents loop
-               Write_Line ("   " & Name.all);
+               Write_Line ("   " & Name.S.all);
             end loop;
          end loop;
       end if;
@@ -1285,9 +1276,9 @@ package body Flow_Computed_Globals is
    --------------
 
    function GG_Exist (E : Entity_Id) return Boolean is
-      Name : constant Entity_Name := new String'(Unique_Name (E));
+      Name : constant Entity_Name := To_Entity_Name (E);
    begin
-      return (for some Info of Info_Set => Name.all = Info.Subprogram.all);
+      return (for some Info of Info_Set => Name.Id = Info.Subprogram.Id);
    end GG_Exist;
 
    -----------------------
@@ -1296,7 +1287,7 @@ package body Flow_Computed_Globals is
 
    function GG_Has_Refinement (EN : Entity_Name) return Boolean is
    begin
-      return (for some S of State_Info_Set => S.State.all = EN.all);
+      return (for some S of State_Info_Set => S.State.Id = EN.Id);
    end GG_Has_Refinement;
 
    -----------------------
@@ -1306,7 +1297,7 @@ package body Flow_Computed_Globals is
    function GG_Is_Constituent (EN : Entity_Name) return Boolean is
    begin
       return (for some S of State_Info_Set =>
-                (for some C of S.Constituents => EN.all = C.all));
+                (for some C of S.Constituents => EN.Id = C.Id));
    end GG_Is_Constituent;
 
    -------------------------
@@ -1316,7 +1307,7 @@ package body Flow_Computed_Globals is
    function GG_Get_Constituents (EN : Entity_Name) return Name_Set.Set is
    begin
       for S of State_Info_Set loop
-         if S.State.all = EN.all then
+         if S.State.Id = EN.Id then
             return S.Constituents;
          end if;
       end loop;
@@ -1332,7 +1323,7 @@ package body Flow_Computed_Globals is
    begin
       for S of State_Info_Set loop
          for C of S.Constituents loop
-            if EN.all = C.all then
+            if EN.Id = C.Id then
                return S.State;
             end if;
          end loop;
@@ -1385,7 +1376,8 @@ package body Flow_Computed_Globals is
       --  The above 3 sets will contain the most refined views of
       --  their respective globals.
 
-      Subprogram_Name : constant Entity_Name := new String'(Unique_Name (E));
+      Subprogram_Name : constant Entity_Name :=
+        To_Entity_Name (E);
       --  Holds the Entity_Name of the subprogram
 
       G_Proof_Ins     : constant Global_Id :=

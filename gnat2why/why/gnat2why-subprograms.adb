@@ -525,7 +525,7 @@ package body Gnat2Why.Subprograms is
             else
                Effects_Append_To_Writes
                  (Eff,
-                  To_Why_Id (Obj => Name.all, Local => False));
+                  To_Why_Id (Obj => Name.S.all, Local => False));
             end if;
          end;
       end loop;
@@ -580,7 +580,7 @@ package body Gnat2Why.Subprograms is
             else
                Effects_Append_To_Reads
                  (Eff,
-                  To_Why_Id (Obj => Name.all, Local => False));
+                  To_Why_Id (Obj => Name.S.all, Local => False));
             end if;
          end;
       end loop;
@@ -739,7 +739,7 @@ package body Gnat2Why.Subprograms is
                         New_Identifier
                           (Name => Full_Name (Entity),
                            Typ  => Type_Of_Node (Etype (Entity))),
-                      B_Ent    => null,
+                      B_Ent    => Null_Entity_Name,
                       Mutable  => False));
                else
                   Result (Count) :=
@@ -747,8 +747,8 @@ package body Gnat2Why.Subprograms is
                      (Ada_Node => Empty,
                       B_Name   =>
                         New_Identifier
-                          (Name => R.all,
-                           Typ  => To_Why_Type (R.all)),
+                          (Name => R.S.all,
+                           Typ  => To_Why_Type (R.S.all)),
                       B_Ent    => R,
                       Mutable  => False));
                end if;
@@ -2199,7 +2199,7 @@ package body Gnat2Why.Subprograms is
                Ada_Ent_To_Why.Insert (Symbol_Table,
                                       Unique_Entity (A),
                                       Binder);
-            elsif Binder.Main.B_Ent /= null then
+            elsif Binder.Main.B_Ent /= Null_Entity_Name then
 
                --  if there is no Ada_Node, this is a binder generated
                --  from an effect; we add the parameter in the name
@@ -2683,7 +2683,7 @@ package body Gnat2Why.Subprograms is
               Expr     => T,
               To       => Get_Typ (Binder.B_Name));
       else
-         Id := To_Why_Id (Binder.B_Ent.all, Local => False);
+         Id := To_Why_Id (Binder.B_Ent.S.all, Local => False);
 
          if Ref_Allowed then
             T := New_Deref (Right => Id,
@@ -2762,7 +2762,7 @@ package body Gnat2Why.Subprograms is
                Ada_Ent_To_Why.Insert (Symbol_Table,
                                       Unique_Entity (A),
                                       Binder);
-            elsif Binder.Main.B_Ent /= null then
+            elsif Binder.Main.B_Ent /= Null_Entity_Name then
 
                --  if there is no Ada_Node, this in a binder generated from
                --  an effect; we add the parameter in the name map using its
@@ -2860,7 +2860,7 @@ package body Gnat2Why.Subprograms is
       is
         (Binder_Type'(B_Name   =>
                         To_Why_Id (E, Typ => Why_Type, Domain => Domain),
-                      B_Ent    => null,
+                      B_Ent    => Null_Entity_Name,
                       Ada_Node => E,
                       Mutable  => False));
 

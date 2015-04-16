@@ -664,18 +664,18 @@ package body Flow_Error_Messages is
                when Magic_String =>
                   --  ??? we may want to use __gnat_decode() here instead
                   Append_Quote;
-                  if F.Name.all = "__HEAP" then
+                  if F.Name.S.all = "__HEAP" then
                      Append (R, "the heap");
                   else
                      declare
-                        Index : Positive := F.Name.all'First;
+                        Index : Positive := F.Name.S.all'First;
                      begin
                         --  Replace __ with . in the magic string.
-                        while Index <= F.Name.all'Last loop
-                           case F.Name.all (Index) is
+                        while Index <= F.Name.S.all'Last loop
+                           case F.Name.S.all (Index) is
                               when '_' =>
-                                 if Index < F.Name.all'Last and then
-                                   F.Name.all (Index + 1) = '_'
+                                 if Index < F.Name.S.all'Last and then
+                                   F.Name.S.all (Index + 1) = '_'
                                  then
                                     Append (R, ".");
                                     Index := Index + 2;
@@ -685,7 +685,7 @@ package body Flow_Error_Messages is
                                  end if;
 
                               when others =>
-                                 Append (R, F.Name.all (Index));
+                                 Append (R, F.Name.S.all (Index));
                                  Index := Index + 1;
                            end case;
                         end loop;

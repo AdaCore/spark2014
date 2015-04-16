@@ -28,8 +28,7 @@ with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Ordered_Sets;
 with Ada.Containers.Vectors;
-with Ada.Strings.Hash;
-
+with Ada.Strings.Unbounded;
 with Types; use Types;
 with Namet; use Namet;
 
@@ -77,16 +76,24 @@ package Common_Containers is
       "="             => Node_Sets."=");
    --  Maps of nodes to sets of nodes
 
-   type Entity_Name is new String_Ptr;
-   --  Unique name representing an entity
+   type Entity_Name is record
+      Id : Integer;
+      S  : Ada.Strings.Unbounded.String_Access;
+   end record;
+
+   function To_Entity_Name (S : String) return Entity_Name;
+
+   function To_Entity_Name (E : Entity_Id) return Entity_Name;
+
+   function To_String (E : Entity_Name) return String;
 
    function Name_Equal (Left, Right : Entity_Name) return Boolean is
-      (Left.all = Right.all);
+      (Left.Id = Right.Id);
 
-   Null_Entity_Name : constant Entity_Name := null;
+   Null_Entity_Name : constant Entity_Name := Entity_Name'(Id => 0, S => null);
 
    function Name_Hash (E : Entity_Name) return Ada.Containers.Hash_Type is
-      (Ada.Strings.Hash (E.all));
+      (Ada.Containers.Hash_Type (E.Id));
 
    package Name_Set is new Ada.Containers.Hashed_Sets
      (Element_Type        => Entity_Name,

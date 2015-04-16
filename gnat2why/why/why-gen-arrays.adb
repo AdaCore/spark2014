@@ -993,7 +993,7 @@ package body Why.Gen.Arrays is
                           Binder_Type'(
                           Ada_Node => Empty,
                           Mutable  => False,
-                          B_Ent    => null,
+                          B_Ent    => Null_Entity_Name,
                           B_Name   => Dummy_Ident)),
                      Return_Type => Str_Typ));
             Emit (Theory,
@@ -1006,7 +1006,7 @@ package body Why.Gen.Arrays is
                           Binder_Type'(
                           Ada_Node => Empty,
                           Mutable  => False,
-                          B_Ent    => null,
+                          B_Ent    => Null_Entity_Name,
                           B_Name   => Dummy_Ident2)),
                      Return_Type => M_Main.String_Image_Type));
          end;

@@ -1164,7 +1164,7 @@ package body Flow is
                                            Use_Computed_Globals => False);
 
                               Subprogram_Info := Subprogram_Phase_1_Info'
-                                (Subprogram        => To_Name (E),
+                                (Subprogram        => To_Entity_Name (E),
                                  Globals_Origin    => UG,
                                  Inputs_Proof      => To_Name_Set (Proof_Ins),
                                  Inputs            => To_Name_Set (Reads),
@@ -1196,7 +1196,7 @@ package body Flow is
                                                                 Calls);
 
                               Subprogram_Info := Subprogram_Phase_1_Info'
-                                (Subprogram        => To_Name (E),
+                                (Subprogram        => To_Entity_Name (E),
                                  Globals_Origin    => XR,
                                  Inputs_Proof      => Name_Set.Empty_Set,
                                  Inputs            => Reads,
@@ -1491,7 +1491,7 @@ package body Flow is
                end if;
 
                Subprogram_Info := Subprogram_Phase_1_Info'
-                 (Subprogram        => To_Name (FA.Analyzed_Entity),
+                 (Subprogram        => To_Entity_Name (FA.Analyzed_Entity),
                   Globals_Origin    => Flow_Computed_Globals.FA,
                   Inputs_Proof      => To_Name_Set (Inputs_Proof),
                   Inputs            => To_Name_Set (Inputs),

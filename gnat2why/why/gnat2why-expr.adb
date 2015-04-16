@@ -1891,7 +1891,7 @@ package body Gnat2Why.Expr is
                         (Regular, Main =>
                              (Ada_Node => Field,
                               B_Name   => Tmps (I),
-                              B_Ent    => null,
+                              B_Ent    => Null_Entity_Name,
                               Mutable  => False)));
 
                      --  and entities of discrimiants of the base type for
@@ -1903,7 +1903,7 @@ package body Gnat2Why.Expr is
                            (Regular, Main =>
                                 (Ada_Node => Base_Field,
                                  B_Name   => Tmps (I),
-                                 B_Ent    => null,
+                                 B_Ent    => Null_Entity_Name,
                                  Mutable  => False)));
                      end if;
                   end;
@@ -2214,7 +2214,7 @@ package body Gnat2Why.Expr is
                begin
                   Vars (I) := Binder_Type'(Ada_Node => Empty,
                                            B_Name   => Tmp,
-                                           B_Ent    => null,
+                                           B_Ent    => Null_Entity_Name,
                                            Mutable  => False);
                   Indices (I) := +Tmp;
                end;
@@ -2382,7 +2382,7 @@ package body Gnat2Why.Expr is
                         (Regular, Main =>
                              (Ada_Node => Field,
                               B_Name   => Tmps (I),
-                              B_Ent    => null,
+                              B_Ent    => Null_Entity_Name,
                               Mutable  => False)));
 
                      --  and entities of discrimiants of the base type for
@@ -2394,7 +2394,7 @@ package body Gnat2Why.Expr is
                            (Regular, Main =>
                                 (Ada_Node => Base_Field,
                                  B_Name   => Tmps (I),
-                                 B_Ent    => null,
+                                 B_Ent    => Null_Entity_Name,
                                  Mutable  => False)));
                      end if;
                   end;
@@ -2778,7 +2778,7 @@ package body Gnat2Why.Expr is
                  (Typ => Base_Why_Type_No_Bool (Index));
                Vars (I) := Binder_Type'(Ada_Node => Empty,
                                         B_Name   => Tmp,
-                                        B_Ent    => null,
+                                        B_Ent    => Null_Entity_Name,
                                         Mutable  => False);
                Indices (I) := +Tmp;
                Range_Expr := +New_And_Expr
@@ -2907,7 +2907,7 @@ package body Gnat2Why.Expr is
                                             (Regular, Main =>
                                                (Ada_Node => Field,
                                                 B_Name   => Tmps (I),
-                                                B_Ent    => null,
+                                                B_Ent    => Null_Entity_Name,
                                                 Mutable   => False)));
                   end if;
 
@@ -5385,7 +5385,7 @@ package body Gnat2Why.Expr is
                B     : constant Binder_Type :=
                  (Ada_Node => Empty,
                   B_Name   => Ident,
-                  B_Ent    => null,
+                  B_Ent    => Null_Entity_Name,
                   Mutable  => False);
             begin
                Call_Params (Cnt) := B;
@@ -6364,7 +6364,7 @@ package body Gnat2Why.Expr is
               (B_Name => New_Temp_Identifier
                  (Typ => Nth_Index_Rep_Type_No_Bool (E   => Typ,
                                                      Dim => J)),
-               B_Ent  => null,
+               B_Ent  => Null_Entity_Name,
                others => <>);
             Indexes (J) := +Binders (J).B_Name;
          end loop;

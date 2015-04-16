@@ -268,7 +268,7 @@ package body Why.Inter is
       for Var of S loop
          if not (Is_Heap_Variable (Var)) then
             declare
-               S : constant String := Capitalize_First (Var.all);
+               S : constant String := Capitalize_First (Var.S.all);
             begin
                Add_With_Clause (T,
                                 New_Module (File => No_Name, Name => NID (S)),

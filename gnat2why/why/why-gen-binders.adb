@@ -174,7 +174,7 @@ package body Why.Gen.Binders is
             Binder : constant Binder_Type :=
               Binder_Type'(Ada_Node => E,
                            B_Name   => Name,
-                           B_Ent    => null,
+                           B_Ent    => Null_Entity_Name,
                            Mutable  => Is_Mutable_In_Why (E));
             Dim    : constant Positive := Positive (Number_Dimensions (Ty));
             Bounds : Array_Bounds;
@@ -235,7 +235,7 @@ package body Why.Gen.Binders is
                                      (Base => Name,
                                       Typ  =>
                                         Field_Type_For_Fields (Ty)),
-                                 B_Ent    => null,
+                                 B_Ent    => Null_Entity_Name,
                                  Mutable  => True));
             end if;
 
@@ -249,7 +249,7 @@ package body Why.Gen.Binders is
                                      (Base => Name,
                                       Typ  =>
                                         Field_Type_For_Discriminants (Ty)),
-                                 B_Ent    => null,
+                                 B_Ent    => Null_Entity_Name,
                                  Mutable  => Unconstr));
             end if;
 
@@ -291,7 +291,7 @@ package body Why.Gen.Binders is
             Binder : constant Binder_Type :=
               Binder_Type'(Ada_Node => E,
                            B_Name   => Name,
-                           B_Ent    => null,
+                           B_Ent    => Null_Entity_Name,
                            Mutable  => Is_Mutable_In_Why (E));
          begin
             return (Regular, Binder);
@@ -779,7 +779,7 @@ package body Why.Gen.Binders is
       return
         (B_Name   =>
            New_Identifier (Name => "__void_param", Typ => EW_Unit_Type),
-         B_Ent    => null,
+         B_Ent    => Null_Entity_Name,
          Mutable  => False,
          Ada_Node => Empty);
    end Unit_Param;

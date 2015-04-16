@@ -131,7 +131,7 @@ package body Flow_Types is
          when Direct_Mapping | Record_Field =>
             return Ada.Strings.Hash (Unique_Name (N.Node));
          when Magic_String =>
-            return Ada.Strings.Hash (N.Name.all);
+            return Name_Hash (N.Name);
       end case;
    end Hash;
 
@@ -592,7 +592,7 @@ package body Flow_Types is
             end loop;
 
          when Magic_String =>
-            Append (R, F.Name.all);
+            Append (R, To_String (F.Name));
       end case;
 
       if F.Kind in Direct_Mapping | Record_Field then
@@ -696,7 +696,7 @@ package body Flow_Types is
             when Direct_Mapping | Record_Field =>
                declare
                   E_Name : constant Entity_Name :=
-                    new String'(Unique_Name (X.Node));
+                    To_Entity_Name (X.Node);
                begin
                   N.Include (E_Name);
                end;

@@ -170,7 +170,7 @@ package Flow_Computed_Globals is
                               Local_Subprograms => Name_Set.Empty_Set);
 
    function Preceeds (A, B : Subprogram_Phase_1_Info) return Boolean
-   is (A.Subprogram.all < B.Subprogram.all);
+   is (A.Subprogram.Id < B.Subprogram.Id);
 
    package Info_Sets is new Ada.Containers.Ordered_Sets
      (Element_Type => Subprogram_Phase_1_Info,
@@ -180,9 +180,6 @@ package Flow_Computed_Globals is
    Info_Set : Info_Sets.Set;
 
    ----------------------------------------------------------------------
-
-   function To_Name (E : Entity_Id) return Entity_Name;
-   --  Takes an Entity_Id and returns the corresponding Entity_Name
 
    function To_Name_Set (S : Node_Sets.Set) return Name_Set.Set;
    --  Takes a set of Node_Ids and returns a set of Entity_Names

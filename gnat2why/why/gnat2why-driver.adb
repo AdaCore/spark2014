@@ -754,11 +754,7 @@ package body Gnat2Why.Driver is
             --  We need to fill the set of translated object entities, so that
             --  we do not generate a dummy declaration for those
 
-            declare
-               Ent_Name : constant Entity_Name := new String'(Unique_Name (E));
-            begin
-               Translated_Object_Entities.Include (Ent_Name);
-            end;
+            Translated_Object_Entities.Include (To_Entity_Name (E));
 
             --  Constants and variables are translated differently
 

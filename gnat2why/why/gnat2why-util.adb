@@ -570,7 +570,7 @@ package body Gnat2Why.Util is
                              Item_Type'(Regular,
                                Binder_Type'(
                                  B_Name   => Name,
-                                 B_Ent    => null,
+                                 B_Ent    => Null_Entity_Name,
                                  Ada_Node => E,
                                  Mutable  => Mutable)));
    end Insert_Entity;

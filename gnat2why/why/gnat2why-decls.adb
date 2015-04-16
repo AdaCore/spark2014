@@ -262,10 +262,10 @@ package body Gnat2Why.Decls is
       Open_Theory
         (File,
          Module =>
-           New_Module (Name => NID (Capitalize_First (E.all)),
+           New_Module (Name => NID (Capitalize_First (E.S.all)),
                        File => No_Name),
          Comment =>
-           "Module declaring the external object """ & E.all &
+           "Module declaring the external object """ & E.S.all &
            ","" created in " & GNAT.Source_Info.Enclosing_Entity);
 
       Add_With_Clause (File.Cur_Theory, Ref_Module, EW_Import, EW_Module);
@@ -273,7 +273,7 @@ package body Gnat2Why.Decls is
       Emit
         (File.Cur_Theory,
          New_Global_Ref_Declaration
-           (Name     => To_Why_Id (E.all, Local => True),
+           (Name     => To_Why_Id (E.S.all, Local => True),
             Labels   => Name_Id_Sets.Empty_Set,
             Ref_Type => EW_Private_Type));
 

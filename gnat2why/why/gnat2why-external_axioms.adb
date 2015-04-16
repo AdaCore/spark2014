@@ -60,6 +60,8 @@ with Gnat2Why.Util;        use Gnat2Why.Util;
 with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
 
 with Ada.Containers.Doubly_Linked_Lists;
+with Common_Containers; use Common_Containers;
+
 package body Gnat2Why.External_Axioms is
 
    package List_Of_Entity is new
@@ -1214,7 +1216,7 @@ package body Gnat2Why.External_Axioms is
                            Binders (Count) :=
                              (Ada_Node => F_Id,
                               B_Name   => Name,
-                              B_Ent    => null,
+                              B_Ent    => Null_Entity_Name,
                               Mutable  => False);
 
                            Args (Count) := Insert_Simple_Conversion
@@ -1345,7 +1347,7 @@ package body Gnat2Why.External_Axioms is
                         Binders (Count) :=
                           (Ada_Node => F_Id,
                            B_Name   => Name,
-                           B_Ent    => null,
+                           B_Ent    => Null_Entity_Name,
                            Mutable  => False);
 
                         if Count = Integer (List_Length (F_Params)) then
@@ -1413,7 +1415,7 @@ package body Gnat2Why.External_Axioms is
                           Name     => Name,
                           Module   => E_Module (E),
                           Typ      => Type_Of_Node (Etype (E))),
-                       B_Ent    => null,
+                       B_Ent    => Null_Entity_Name,
                        Ada_Node => E,
                        Mutable  => False));
 
