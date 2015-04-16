@@ -132,7 +132,7 @@ the declaration of a library level variable.
 A variable whose Constant_After_Elaboration aspect is True, or any part
 thereof, is said to be "constant after elaboration".
 [The Constant_After_Elaboration aspect indicates that the variable will not
-be modfied after execution of the main subprogram begins.]
+be modified after execution of the main subprogram begins.]
 
 A constant is a *constant with variable inputs* if its initialization
 expression depends on:
