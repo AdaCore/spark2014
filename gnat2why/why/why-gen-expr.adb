@@ -821,9 +821,7 @@ package body Why.Gen.Expr is
       --  bitvector.
 
       if Is_Modular_Integer_Type (Ty) then
-         W_Fun := Prefix (M        => E_Module (Ty),
-                          W        => WNE_Range_Check_Fun_BV_Int,
-                          Ada_Node => Ty);
+         W_Fun := E_Symb (Ty, WNE_Range_Check_Fun_BV_Int);
 
          --  The type of expression is int, so we apply the range check on int
 

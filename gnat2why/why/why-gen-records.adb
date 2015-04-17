@@ -343,10 +343,7 @@ package body Why.Gen.Records is
       function New_Extension_Component_Expr (Ty : Entity_Id) return W_Expr_Id
       is
       begin
-         return +Prefix (Ada_Node => Ty,
-                         M        => E_Module (Ty),
-                         W        => WNE_Rec_Extension,
-                         Typ      => EW_Private_Type);
+         return +E_Symb (Ty, WNE_Rec_Extension);
       end New_Extension_Component_Expr;
 
       function New_Main_Component_Expr (Ty : Entity_Id) return W_Expr_Id;
@@ -356,10 +353,7 @@ package body Why.Gen.Records is
       function New_Main_Component_Expr (Ty : Entity_Id) return W_Expr_Id
       is
       begin
-         return +Prefix (Ada_Node => Ty,
-                         M        => E_Module (Ty),
-                         W        => WNE_Rec_Main,
-                         Typ      => EW_Private_Type);
+         return +E_Symb (Ty, WNE_Rec_Main);
       end New_Main_Component_Expr;
 
       -----------------
@@ -424,7 +418,7 @@ package body Why.Gen.Records is
             Emit (Theory,
                   New_Function_Decl
                     (Domain      => EW_Term,
-                     Name        => To_Ident (WNE_Tag),
+                     Name        => To_Local (E_Symb (E, WNE_Tag)),
                      Labels      => Name_Id_Sets.Empty_Set,
                      Return_Type => EW_Int_Type));
          end if;
@@ -737,8 +731,8 @@ package body Why.Gen.Records is
                                    Args =>
                                      (1 => New_Record_Access
                                         (Name  => E_Field_Access,
-                                         Field => To_Ident (WNE_Rec_Ancestor),
-                                         Typ   => EW_Private_Type))))
+                                         Field => To_Local
+                                           (E_Symb (E, WNE_Rec_Ancestor))))))
                               else
                                 Why_Default_Value
                                   (Domain => EW_Term,
@@ -759,7 +753,7 @@ package body Why.Gen.Records is
                   From_Root_Field (Field_From_Index) :=
                     New_Field_Association
                     (Domain => EW_Term,
-                     Field  => To_Ident (WNE_Rec_Extension),
+                     Field  => To_Local (E_Symb (E, WNE_Rec_Extension)),
                      Value  =>
                        +W_Term_Id'(New_Call
                                      (Name => Extract_Extension_Fun,
@@ -800,7 +794,7 @@ package body Why.Gen.Records is
                      Args (Index) :=
                        New_Record_Access
                        (Name  => E_Field_Access,
-                        Field => To_Ident (WNE_Rec_Extension),
+                        Field => To_Local (E_Symb (E, WNE_Rec_Extension)),
                         Typ   => EW_Private_Type);
 
                      pragma Assert (Num_Args - Index in 0 .. 2);
@@ -810,7 +804,7 @@ package body Why.Gen.Records is
                         Args (Index) :=
                           New_Record_Access
                             (Name  => E_Field_Access,
-                             Field => To_Ident (WNE_Rec_Main),
+                             Field => To_Local (E_Symb (E, WNE_Rec_Main)),
                              Typ   => EW_Private_Type);
                      end if;
 
@@ -821,8 +815,7 @@ package body Why.Gen.Records is
                         Args (Index) :=
                           New_Record_Access
                             (Name  => E_Field_Access,
-                             Field => To_Ident (WNE_Rec_Ancestor),
-                             Typ   => EW_Private_Type);
+                             Field => To_Local (E_Symb (E, WNE_Rec_Ancestor)));
                      end if;
 
                      pragma Assert (Index = Num_Args);
@@ -847,10 +840,11 @@ package body Why.Gen.Records is
                   From_Root_Field (Field_From_Index) :=
                     New_Field_Association
                       (Domain => EW_Term,
-                       Field  => To_Ident (WNE_Rec_Ancestor),
+                       Field  => To_Local (E_Symb (E, WNE_Rec_Ancestor)),
                        Value  => New_Call (Domain => EW_Term,
                                            Name =>
-                                             To_Ident (WNE_Hide_Ancestor),
+                                             To_Local
+                                               (E_Symb (E, WNE_Hide_Ancestor)),
                                            Args => (1 => +R_Ident)));
                end if;
 
@@ -862,7 +856,7 @@ package body Why.Gen.Records is
                      From_Root_Field (Field_From_Index) :=
                        New_Field_Association
                          (Domain => EW_Term,
-                          Field  => To_Ident (WNE_Rec_Main),
+                          Field  => To_Local (E_Symb (E, WNE_Rec_Main)),
                           Value  =>
                             +W_Term_Id'(New_Call
                             (Name => Extract_Main_Fun (Is_Ancestor => False),
@@ -876,7 +870,7 @@ package body Why.Gen.Records is
                      From_Root_Field (Field_From_Index) :=
                        New_Field_Association
                          (Domain => EW_Term,
-                          Field  => To_Ident (WNE_Rec_Main),
+                          Field  => To_Local (E_Symb (E, WNE_Rec_Main)),
                           Value  => New_Record_Access
                                   (Name  => R_Field_Access,
                                    Field =>
@@ -898,7 +892,8 @@ package body Why.Gen.Records is
                              Args =>
                                (1 => New_Record_Access
                                   (Name  => E_Field_Access,
-                                   Field => To_Ident (WNE_Rec_Ancestor),
+                                   Field =>
+                                      To_Local (E_Symb (E, WNE_Rec_Ancestor)),
                                    Typ   => EW_Private_Type)))));
                   else
                      To_Root_Field (Field_To_Index) :=
@@ -907,7 +902,8 @@ package body Why.Gen.Records is
                           Field  => +New_Main_Component_Expr (Root),
                           Value  => New_Record_Access
                                   (Name  => E_Field_Access,
-                                   Field => To_Ident (WNE_Rec_Main),
+                                   Field =>
+                                     To_Local (E_Symb (E, WNE_Rec_Main)),
                                    Typ   => EW_Private_Type));
                   end if;
                end if;
@@ -1001,7 +997,7 @@ package body Why.Gen.Records is
             From_Root_Aggr (From_Index) :=
               New_Field_Association
                 (Domain => EW_Term,
-                 Field  => To_Ident (WNE_Attr_Tag),
+                 Field  => To_Local (E_Symb (E, WNE_Attr_Tag)),
                  Value  =>
                    New_Record_Access
                      (Name  => +R_Ident,
@@ -1017,7 +1013,7 @@ package body Why.Gen.Records is
                  Value  =>
                    New_Record_Access
                      (Name  => +A_Ident,
-                      Field => To_Ident (WNE_Attr_Tag),
+                      Field => To_Local (E_Symb (E, WNE_Attr_Tag)),
                       Typ   => EW_Int_Type));
          end if;
 
@@ -1115,8 +1111,9 @@ package body Why.Gen.Records is
          Binder       : constant Binder_Array :=
            (1 => (B_Name => X_Ident,
                   others => <>));
-         Hide_Name    : constant Why_Name_Enum :=
-           (if Is_Ancestor then WNE_Hide_Ancestor else WNE_Hide_Extension);
+         Hide_Name    : constant W_Identifier_Id :=
+           (if Is_Ancestor then To_Local (E_Symb (E, WNE_Hide_Ancestor)) else
+               To_Ident (WNE_Hide_Extension));
          Extract_Func : constant W_Identifier_Id :=
            (if Is_Ancestor then
                Extract_Ancestor_Fun
@@ -1208,9 +1205,7 @@ package body Why.Gen.Records is
 
                Index := Index + 1;
                Binder (Index) :=
-                 (B_Name =>
-                    New_Identifier (Name => To_String (WNE_Rec_Extension),
-                                    Typ => EW_Private_Type),
+                 (B_Name => To_Local (E_Symb (E, WNE_Rec_Extension)),
                   others => <>);
 
                --  the ancestor field in the current type is also part of
@@ -1221,9 +1216,7 @@ package body Why.Gen.Records is
                if Has_Private_Ancestor_Or_Root (E) then
                   Index := Index + 1;
                   Binder (Index) :=
-                    (B_Name =>
-                       New_Identifier (Name => To_String (WNE_Rec_Ancestor),
-                                       Typ => EW_Private_Type),
+                    (B_Name => To_Local (E_Symb (E, WNE_Rec_Ancestor)),
                      others => <>);
                end if;
 
@@ -1233,9 +1226,7 @@ package body Why.Gen.Records is
                if Needs_Main then
                   Index := Index + 1;
                   Binder (Index) :=
-                    (B_Name =>
-                       New_Identifier (Name => To_String (WNE_Rec_Main),
-                                       Typ => EW_Private_Type),
+                    (B_Name => To_Local (E_Symb (E, WNE_Rec_Main)),
                      others => <>);
                end if;
             end if;
@@ -1247,7 +1238,7 @@ package body Why.Gen.Records is
             Emit (Theory,
                   New_Function_Decl
                     (Domain      => EW_Term,
-                     Name        => To_Ident (Hide_Name),
+                     Name        => Hide_Name,
                      Binders     => Binder,
                      Labels      => Name_Id_Sets.Empty_Set,
                      Return_Type => EW_Private_Type));
@@ -1399,11 +1390,11 @@ package body Why.Gen.Records is
                  (Symbol => Why_Eq,
                   Left   => New_Record_Access
                     (Name  => A_Access,
-                     Field => To_Ident (WNE_Rec_Ancestor),
+                     Field => To_Local (E_Symb (E, WNE_Rec_Ancestor)),
                      Typ   => EW_Private_Type),
                   Right  => New_Record_Access
                     (Name  => B_Access,
-                     Field => To_Ident (WNE_Rec_Ancestor),
+                     Field => To_Local (E_Symb (E, WNE_Rec_Ancestor)),
                      Typ   => EW_Private_Type),
                   Domain => EW_Pred);
             begin
@@ -1440,11 +1431,11 @@ package body Why.Gen.Records is
                  (Symbol => Why_Eq,
                   Left   => New_Record_Access
                     (Name  => A_Access,
-                     Field => To_Ident (WNE_Rec_Main),
+                     Field => To_Local (E_Symb (E, WNE_Rec_Main)),
                      Typ   => EW_Private_Type),
                   Right  => New_Record_Access
                     (Name  => B_Access,
-                     Field => To_Ident (WNE_Rec_Main),
+                     Field => To_Local (E_Symb (E, WNE_Rec_Main)),
                      Typ   => EW_Private_Type),
                   Domain => EW_Pred);
             begin
@@ -1680,9 +1671,7 @@ package body Why.Gen.Records is
 
             if Is_Private_Type (E) then
                Binders_F (Index) :=
-                 (B_Name =>
-                    New_Identifier (Name => To_String (WNE_Rec_Main),
-                                    Typ  => EW_Private_Type),
+                 (B_Name => To_Local (E_Symb (E, WNE_Rec_Main)),
                   others => <>);
                Index := Index + 1;
             end if;
@@ -1692,9 +1681,7 @@ package body Why.Gen.Records is
 
             if Has_Private_Ancestor_Or_Root (E) then
                Binders_F (Index) :=
-                 (B_Name =>
-                    New_Identifier (Name => To_String (WNE_Rec_Ancestor),
-                                    Typ  => EW_Private_Type),
+                 (B_Name => To_Local (E_Symb (E, WNE_Rec_Ancestor)),
                   others => <>);
                Index := Index + 1;
             end if;
@@ -1704,9 +1691,7 @@ package body Why.Gen.Records is
 
             if Is_Tagged_Type (E) then
                Binders_F (Index) :=
-                 (B_Name =>
-                    New_Identifier (Name => To_String (WNE_Rec_Extension),
-                                    Typ  => EW_Private_Type),
+                 (B_Name => To_Local (E_Symb (E, WNE_Rec_Extension)),
                   others => <>);
                Index := Index + 1;
             end if;
@@ -1747,9 +1732,7 @@ package body Why.Gen.Records is
 
          if Is_Tagged_Type (E) then
             Binders_A (Index_All) :=
-              (B_Name =>
-                 New_Identifier (Name => To_String (WNE_Attr_Tag),
-                                 Typ  => EW_Int_Type),
+              (B_Name => To_Local (E_Symb (E, WNE_Attr_Tag)),
                others => <>);
             Index_All := Index_All + 1;
          end if;
@@ -2369,7 +2352,7 @@ package body Why.Gen.Records is
                All_Field_Assocs (Num_Fields) :=
                  New_Field_Association
                    (Domain   => Domain,
-                    Field    => Prefix (E_Module (Ty), WNE_Rec_Extension),
+                    Field    => E_Symb (Ty, WNE_Rec_Extension),
                     Value    => +M_Main.Null_Extension);
             end if;
 
@@ -2391,8 +2374,8 @@ package body Why.Gen.Records is
       if Is_Tagged_Type (Ty) then
          Assoc := New_Field_Association
            (Domain   => Domain,
-            Field    => Prefix (E_Module (Ty), WNE_Attr_Tag),
-            Value    => +Prefix (E_Module (Ty), WNE_Tag));
+            Field    => E_Symb (Ty, WNE_Attr_Tag),
+            Value    => +E_Symb (Ty, WNE_Tag));
          Index := Index + 1;
          Assocs (Index) := Assoc;
       end if;
@@ -2472,11 +2455,10 @@ package body Why.Gen.Records is
          begin
             Assoc := New_Field_Association
               (Domain   => Domain,
-               Field    => Prefix (E_Module (Ty), WNE_Rec_Ancestor),
+               Field    => E_Symb (Ty, WNE_Rec_Ancestor),
                Value    =>
                  New_Call (Domain => EW_Term,
-                           Name =>
-                             Prefix (E_Module (Ty), WNE_Hide_Ancestor),
+                           Name => E_Symb (Ty, WNE_Hide_Ancestor),
                            Args => (1 => Root_Expr)));
 
             Field_Index := Field_Index + 1;

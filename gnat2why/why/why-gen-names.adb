@@ -597,30 +597,24 @@ package body Why.Gen.Names is
    is
    begin
       case W is
-         when WNE_Range_Check_Fun_BV_Int => return "range_check_int_";
          when WNE_Array_Component_Type   => return "component_type";
          when WNE_Array_Type             => return "__t";
          when WNE_Dummy                  => return "dummy";
          when WNE_Attr_Constrained       => return "attr__constrained";
          when WNE_Attr_First             => return "first";
          when WNE_Attr_Last              => return "last";
+         when WNE_Attr_Tag               => return "attr__tag";
          when WNE_Rec_Split_Discrs       => return "__split_discrs";
          when WNE_Rec_Split_Fields       => return "__split_fields";
-         when WNE_Attr_Tag               => return "attr__tag";
-         when WNE_Rec_Extension          => return "rec__ext__";
          when WNE_Rec_Extension_Suffix   => return "ext__";
          when WNE_Rec_Ancestor_Suffix    => return "anc__";
-         when WNE_Rec_Ancestor           => return "rec__anc__";
          when WNE_Rec_Comp_Prefix        => return "rec__";
-         when WNE_Rec_Main               => return "rec__main__";
          when WNE_Rec_Main_Suffix        => return "main__";
          when WNE_Extract_Prefix         => return "extract__";
          when WNE_Ancestor_Prefix        => return "extract_anc__";
          when WNE_Hide_Extension         => return "hide_ext__";
-         when WNE_Hide_Ancestor          => return "hide_anc__";
          when WNE_Dispatch_Module        => return "Dispatch";
          when WNE_Refine_Module          => return "Refine";
-         when WNE_Tag                    => return "__tag";
 
          --  please use these only in conjunction with E_Symb function
 
@@ -655,6 +649,7 @@ package body Why.Gen.Names is
               WNE_Range_Check_Fun |
               WNE_Range_Pred |
               WNE_Range_Pred_BV_Int |
+              WNE_Range_Check_Fun_BV_Int |
               WNE_Dynamic_Property |
               WNE_Dynamic_Property_BV_Int |
               WNE_To_Int |
@@ -682,7 +677,12 @@ package body Why.Gen.Names is
               WNE_Array_Base_Range_Pred_2 |
               WNE_Array_Base_Range_Pred_3 |
               WNE_Array_Base_Range_Pred_4 |
-              WNE_Bool_Eq
+              WNE_Bool_Eq |
+              WNE_Rec_Extension |
+              WNE_Rec_Main |
+              WNE_Tag  |
+              WNE_Rec_Ancestor |
+              WNE_Hide_Ancestor
 
             =>
 

@@ -1508,6 +1508,13 @@ package body Why.Atree.Modules is
                            Module => M,
                            Domain => EW_Term,
                            Typ    => Base));
+                     Insert_Symbol
+                       (E, WNE_Range_Check_Fun_BV_Int,
+                        New_Identifier
+                          (Symbol => NID ("range_check_int_"),
+                           Module => M,
+                           Domain => EW_Term,
+                           Typ    => EW_Int_Type));
                   end;
                end if;
 
@@ -1705,6 +1712,13 @@ package body Why.Atree.Modules is
                      Module => M,
                      Domain => EW_Term,
                      Typ    => Ty));
+               Insert_Symbol
+                 (E, WNE_Rec_Main,
+                  New_Identifier
+                    (Symbol => NID ("rec__main__"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Private_Type));
                if Is_Tagged_Type (E) then
                   Insert_Symbol
                     (E, WNE_Attr_Tag,
@@ -1713,6 +1727,37 @@ package body Why.Atree.Modules is
                         Module => M,
                         Domain => EW_Term,
                         Typ    => EW_Int_Type));
+                  Insert_Symbol
+                    (E, WNE_Tag,
+                     New_Identifier
+                       (Symbol => NID ("__tag"),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => EW_Int_Type));
+                  Insert_Symbol
+                    (E, WNE_Rec_Extension,
+                     New_Identifier
+                       (Symbol => NID ("rec__ext__"),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => EW_Private_Type));
+               end if;
+
+               if Has_Private_Ancestor_Or_Root (E) then
+                  Insert_Symbol
+                    (E, WNE_Rec_Ancestor,
+                     New_Identifier
+                       (Symbol => NID ("rec__anc__"),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => EW_Private_Type));
+                  Insert_Symbol
+                    (E, WNE_Hide_Ancestor,
+                     New_Identifier
+                       (Symbol => NID ("hide_anc__"),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => EW_Private_Type));
                end if;
 
                if (not Is_Constrained (E)
