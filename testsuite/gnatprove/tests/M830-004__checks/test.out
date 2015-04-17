@@ -25,9 +25,9 @@ do_checks.adb:137:25: medium: range check might fail
 do_checks.adb:150:25: info: range check proved
 do_checks.adb:150:57: medium: overflow check might fail
 do_checks.adb:162:39: medium: length check might fail
-do_checks.adb:162:39: medium: range check might fail
+do_checks.adb:162:40: medium: range check might fail
 do_checks.adb:168:38: info: length check proved
-do_checks.adb:168:38: info: range check proved
+do_checks.adb:168:39: info: range check proved
 do_checks.adb:168:67: medium: overflow check might fail
 do_checks.adb:211:32: warning: "Y" is not modified, could be IN
 do_checks.adb:213:21: info: length check proved

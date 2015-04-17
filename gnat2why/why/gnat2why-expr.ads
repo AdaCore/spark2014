@@ -44,14 +44,13 @@ package Gnat2Why.Expr is
    function Assignment_Of_Obj_Decl (N : Node_Id) return W_Prog_Id;
    --  Generate an assignment from an object declaration
 
-   function Check_Scalar_Subtype
+   function Check_Scalar_Range
      (Params   : Transformation_Params;
       N        : Entity_Id;
       Base     : Entity_Id) return W_Prog_Id;
-   --  Generate checks for the bounds of a subtype as well as a
+   --  Generate checks for the bounds of a range as well as a
    --  range check that the range_constraint is compatible with the subtype.
-   --  Returns the empty program if N is a scalar subtype with a static
-   --  range_constraint.
+   --  Returns the empty program if N has a static range_constraint.
 
    function Check_Subtype_Indication
      (Params   : Transformation_Params;
@@ -158,7 +157,6 @@ package Gnat2Why.Expr is
    function Transform_Discrete_Choices
      (Choices      : List_Id;
       Choice_Type  : Entity_Id;
-      Index_Type   : Entity_Id;
       Matched_Expr : W_Expr_Id;
       Cond_Domain  : EW_Domain;
       Params       : Transformation_Params) return W_Expr_Id;
