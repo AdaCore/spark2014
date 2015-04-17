@@ -2573,14 +2573,20 @@ package body Why.Gen.Expr is
 
          when N_Assignment_Statement =>
             declare
-               I_Name : constant Name_Id := Chars (Defining_Identifier
-                                                   (Node_It));
-               Name_Str : constant String :=
-                 (if I_Name /= No_Name and then I_Name /= Error_Name then
-                     Get_Name_String (I_Name) & "_"
-                  else "");
+               Obj : constant Entity_Id :=
+                 Get_Enclosing_Object (Name (Node_It));
+               Obj_Name : Name_Id;
+
             begin
-               Buf := Name_Str & "assign" & Label_Append (Buf);
+               Buf := "assign" & Label_Append (Buf);
+
+               if Present (Obj) then
+                  Obj_Name := Chars (Obj);
+
+                  if Obj_Name /= No_Name and then Obj_Name /= Error_Name then
+                     Buf := Get_Name_String (Obj_Name) & "_" & Buf;
+                  end if;
+               end if;
             end;
 
          when N_Block_Statement =>
