@@ -17,20 +17,19 @@ All_Calls_Remote	      No
 Asynchronous       	      No
 Atomic          	      Yes
 Atomic_Components  	      Yes
-Attach_Handler     	      No                     No tasking
+Attach_Handler     	      Yes
 Bit_Order		      Yes
 Coding			      Yes
 Component_Size		      Yes
 Constant_Indexing	      No
 Convention         	      Yes
-CPU             	      No		     No tasking
+CPU             	      Yes
 Default_Component_Value	      Yes
 Default_Iterator	      No
 Default_Storage_Pool	      No
 Default_Value		      Yes
 Default_Storage_Pool   	      No		     No access types
-Detect_Blocking	  	      No		     No tasking
-Dispatching_Domain 	      No		     No tasking
+Dispatching_Domain 	      No		     Ravenscar
 Dynamic_Predicate             No
 Elaborate_Body     	      Yes
 Export             	      Yes
@@ -41,8 +40,8 @@ Import             	      Yes
 Independent        	      Yes
 Independent_Components 	      Yes
 Inline             	      Yes
-Interrupt_Handler  	      No		     No tasking
-Interrupt_Priority 	      No		     No tasking
+Interrupt_Handler  	      Yes
+Interrupt_Priority 	      Yes
 Iterator_Element	      No
 Layout (record)		      Yes
 Link_Name     	      	      Yes
@@ -55,21 +54,21 @@ Pre'Class		      Yes
 Post			      Yes
 Post'Class		      Yes
 Preelaborate       	      Yes
-Priority  	  	      No		     No tasking
+Priority  	  	      True
 Pure               	      Yes
-Relative_Deadline	      No		     No tasking
+Relative_Deadline	      Yes
 Remote_Call_Interface	      No
 Remote_Types		      No
-Shared_Passive		      No		     No tasking
+Shared_Passive		      No
 Size (object)		      Yes
 Size (subtype)		      Yes
 Small			      Yes
 Static_Predicate	      Yes
 Storage_Pool		      No		     No access types
 Storage_Size (access)         No		     No access types
-Storage_Size (task)	      No		     No tasking
+Storage_Size (task)	      Yes
 Stream_Size  		      No		     No streams
-Synchronization		      No		     No tasking
+Synchronization		      Yes
 Type_Invariant		      No
 Type_Invariant'Class	      No
 Unchecked_Union		      No
@@ -137,15 +136,15 @@ X'Alignment	    		      Warn		     Warning in pedantic mode
 S'Base				      Yes
 S'Bit_Order	    		      Warn		     Warning in pedantic mode
 P'Body_Version 			      Yes
-T'Callable	    		      No		     No tasking
-E'Caller	    		      No	             No tasking
+T'Callable	    		      Yes
+E'Caller	    		      Yes
 S'Ceiling	    		      Yes
 S'Class				      Yes
 X'Component_Size    		      Warn     		     Warning in pedantic mode
 S'Compose	    		      No
 A'Constrained			      Yes
 S'Copy_Sign	    		      Yes
-E'Count				      No		     No tasking
+E'Count				      No
 S'Definite	    		      Yes
 S'Delta				      Yes
 S'Denorm	    		      Yes
@@ -162,7 +161,7 @@ S'Fore				      Yes
 S'Fraction	    		      No
 X'Has_Same_Storage  		      No
 E'Identity	    		      No
-T'Identity	    		      No		     No tasking
+T'Identity	    		      Yes
 S'Image				      Yes
 S'Class'Input			      No		     No streams
 S'Input				      No		     No streams
@@ -202,7 +201,7 @@ D'Partition_Id			      Yes
 S'Pos				      Yes
 R.C'Position			      Warn                   Warning in pedantic mode
 S'Pred				      Yes
-P'Priority	   		      No		     No tasking
+P'Priority	   		      No
 A'Range				      Yes
 S'Range				      Yes
 A'Range(N)	   		      Yes
@@ -221,12 +220,12 @@ X'Size				      Warn     		     Warning in pedantic
 S'Small				      Yes
 S'Storage_Pool			      No		     No access types
 S'Storage_Size			      No		     No access types
-T'Storage_Size			      No		     No tasking
+T'Storage_Size			      Yes
 S'Stream_Size			      No		     No streams
 S'Succ				      Yes
 S'Tag				      No		     No tags
 X'Tag				      No		     No tags
-T'Terminated			      No		     No tasking
+T'Terminated			      Yes
 S'Truncation			      Yes
 S'Unbiased_Rounding 		      Yes
 X'Unchecked_Access  		      No		     No access types or aliases

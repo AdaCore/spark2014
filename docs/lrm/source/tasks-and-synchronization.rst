@@ -1,3 +1,5 @@
+.. _tasks-and-synchronization:
+
 Tasks and Synchronization
 =========================
 
@@ -17,7 +19,10 @@ These rules statically eliminate the possibility of erroneous concurrent
 access to shared data (i.e., "data races").
  
 Tagged task types, tagged protected types, and the various forms of
-synchronized interface types are in |SPARK|.
+synchronized interface types are in |SPARK|. Subject to the restrictions
+of Ravenscar, delay statements and protected procedure handlers are
+in |SPARK|. The attributes Callable, Caller, Identity and Terminated
+are in |SPARK|.
 
 .. centered:: **Static Semantics**
 
@@ -26,7 +31,7 @@ synchronized interface types are in |SPARK|.
     an array type whose element type yields synchronized objects,
     an undiscriminated type (or a discriminated type
     whose discriminants lack default values) all of whose
-    non-discriminant component types
+    nondiscriminant component types
     (including, in the case of a type extension, inherited components),
     yield synchronized objects, or it is a descendant of the type
     Ada.Synchronous_Task_Control.Suspension_Object;
@@ -37,7 +42,8 @@ synchronized interface types are in |SPARK|.
 
   * an atomic object; or
 
-  * a variable which is "constant after elaboration" (see TBD); or
+  * a variable which is "constant after elaboration" (see section 
+    :ref:`object-declarations`); or
 
   * a constant.
 
@@ -54,6 +60,9 @@ synchronized interface types are in |SPARK|.
    enclosing compilation unit.] Similarly, the use of task or protected units
    also requires a Partition_Elaboration_Policy of Sequential. [This
    is to prevent race conditions during library unit elaboration.]
+   Similarly, the use of any subprogram which references the
+   predefined state abstraction Ada.Tasking_Identification.Tasking_State
+   (described below) as a global requires the Ravenscar Profile.
 
 3. A ''global_item'' occurring in a Global aspect specification of a
    task unit or of a protected operation shall not denote an object
@@ -129,13 +138,23 @@ synchronized interface types are in |SPARK|.
 12. The end of a task body shall not be reachable. [This follows from
     from Ravenscar's No_Task_Termination restriction.]
 
-13. A nonvolatile function shall not contain a delay statement,
-    a call to Suspend_Until_True, a call a protected entry,
-    a call a volatile function, or a call (directly or via dispatching)
-    a subprogram which contains such a construct.
+13. A nonvolatile function shall not be potentially blocking.
+    [Strictly speaking this rule is already implied by other rules of |SPARK|,
+    notably the rule that a nonvolatile function cannot depend on a volatile
+    input.]
+    [A dispatching call which statically denotes a primitive subprogram
+    of a tagged type T is a potentially blocking operation if
+    the corresponding primitive operation of any descendant of T is
+    potentially blocking.]
 
-14. The following language-defined functions are defined to be
-    volatile functions:
+14. The package Ada.Task_Identification declares a synchronized
+    external state abstraction named Tasking_State. The Async_Readers
+    and Async_Writers aspects of this state abstraction are True,
+    and its Effective_Reads and Effective_Writes aspects are false.
+    For each of the the following language-defined functions, the
+    Volatile_Function aspect of the function is defined to be True
+    and the Global aspect of the function specifies that the
+    Tasking_State state abstraction is referenced as an In_Out global.
 
   * Ada.Real_Time.Clock
 
@@ -157,6 +176,10 @@ synchronized interface types are in |SPARK|.
 
   [Functions already excluded by Ravenscar, such as Ada.Calendar.Clock, are
   not on this list.]
+
+15. For purposes of determining global inputs and outputs, a delay
+    statement is considered to require the state abstraction
+    Ada.Task_Identification.Tasking_State as both an input and an output.
 
 15. Preconditions are added to suprogram specifications as needed in order
     to avoid the failure of language-defined runtime checks for the

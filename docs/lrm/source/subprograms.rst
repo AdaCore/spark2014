@@ -94,7 +94,7 @@ Preconditions and Postconditions
 
 .. centered:: **Verification Rules**
 
-For a call on a non-dispatching operation,
+For a call on a nondispatching operation,
 a proof obligation is introduced (as
 for any run-time check) to ensure that the specific precondition
 check associated with the statically denoted callee will succeed.
@@ -1086,11 +1086,11 @@ Extensions_Visible Aspects
    components which must be initialized in order to meet these requirements
    depends on the Extensions_Visible aspect of the callee.
    If the aspect is False, then that set of components is the
-   [statically known] set of non-discriminant components of T.
-   If the aspect is True, then this set is the set of non-discriminant
+   [statically known] set of nondiscriminant components of T.
+   If the aspect is True, then this set is the set of nondiscriminant
    components of the specific type associated with the tag of the
    corresponding actual parameter. [In general, this is not statically known.
-   This set will always include the non-discriminant components of T, but
+   This set will always include the nondiscriminant components of T, but
    it may also include additional components.]
 
 #. [To put it another way, if the applicable Extensions_Visible aspect
@@ -1579,9 +1579,9 @@ library package that no longer needs a body (see Ada RM 7.2(4)).
 19. A task or protected type shall not be a ghost type.
     A synchronized object shall not be a ghost object.
     [Note that any object with a task or protected part is
-    a synchronized object; see TBD].
+    a synchronized object; see section :ref:`tasks-and-synchronization`).]
     A synchronized state abstraction shall not be a ghost state abstraction
-    (see TBD).
+    (see :ref:`abstract-state-aspect`).
 
 .. _etu-ghost_entities-lr:
 

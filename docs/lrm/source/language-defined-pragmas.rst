@@ -19,13 +19,13 @@ Assertion_Policy	      Yes
 Asynchronous       	      No
 Atomic          	      Yes
 Atomic_Components  	      Yes
-Attach_Handler     	      No		     No tasking
+Attach_Handler     	      Yes
 Convention         	      Yes
-CPU             	      No		     No tasking
+CPU             	      Yes
 Default_Storage_Pool   	      No		     No access types
-Detect_Blocking	  	      No		     No tasking
+Detect_Blocking	  	      Yes
 Discard_Names 	  	      No
-Dispatching_Domain 	      No		     No tasking
+Dispatching_Domain 	      No		     Ravenscar
 Elaborate          	      Yes
 Elaborate_All      	      Yes
 Elaborate_Body     	      Yes
@@ -35,33 +35,33 @@ Independent        	      Yes
 Independent_Components 	      Yes
 Inline             	      Yes
 Inspection_Point   	      Yes
-Interrupt_Handler  	      No		     No tasking
-Interrupt_Priority 	      No		     No tasking
+Interrupt_Handler  	      Yes
+Interrupt_Priority 	      Yes
 Linker_Options     	      Yes
 List               	      Yes
-Locking_Policy    	      No		     No tasking
+Locking_Policy    	      Yes
 No_Return          	      Yes
 Normalize_Scalars  	      Yes
 Optimize           	      Yes
 Pack              	      Yes
 Page               	      Yes
-Partition_Elaboration_Policy  Yes
+Partition_Elaboration_Policy  Yes                    Ravenscar
 Preelaborable_Initialization  Yes
 Preelaborate       	      Yes
-Priority  	  	      No		     No tasking
-Priority_Specific_Dispatching No  		     No tasking
+Priority  	  	      Yes
+Priority_Specific_Dispatching No                     Ravenscar
 Profile            	      Yes
 Pure               	      Yes
-Queuing_Policy 	 	      No		     No Tasking
-Relative_Deadline  	      No		     No Tasking
+Queuing_Policy 	 	      Yes                    Ravenscar
+Relative_Deadline  	      Yes
 Remote_Call_Interface 	      No		     Distributed systems
 Remote_Types 	 	      No		     Distributed systems
 Restrictions 	 	      Yes
 Reviewable         	      Yes
 Shared_Passive     	      No                     Distributed systems
-Storage_Size 	 	      No		     No tasking
+Storage_Size 	 	      Yes/No                 tasks, not access types
 Suppress           	      Yes
-Task_Dispatching_Policy       No		     No tasking
+Task_Dispatching_Policy       No		     Ravenscar
 Unchecked_Union	 	      No
 Unsuppress 	  	      Yes
 Volatile           	      Yes

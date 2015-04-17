@@ -65,7 +65,8 @@ themselves records.
 
 3. The preceding two rules notwithstanding, an object or state abstraction
    whose Part_Of aspect refers to a task or protected unit is not (directly)
-   part of the visible state or hidden state of any package (see TBD).
+   part of the visible state or hidden state of any package (see section
+   :ref:`tasks-and-synchronization`).
 
 .. _etu-abstract_state:
 
@@ -588,7 +589,8 @@ shall follow the grammar of ``abstract_state_list`` given below.
    includes a Part_Of ``name_value_option`` whose ``name`` denote a state
    abstraction, this indicates that it is a constituent (see
    :ref:`state_refinement`) of the denoted state abstraction.
-   [Alternatively, the name may denote a task or protected unit (see TBD).]
+   [Alternatively, the name may denote a task or protected unit (see section
+   ref:`tasks-and-synchronization`).]
 
 .. _tu-fe-abstract_state_aspects-10:
 
@@ -1582,7 +1584,8 @@ private child unit (or a public descendant thereof).
 
 The Part_Of aspect can also be used in a different way to indicate
 that an object or state abstraction is to be treated as though it
-were declared within a protected unit or task unit (see TBD).
+were declared within a protected unit or task unit (see section
+:ref:`tasks-and-synchronization`).
 
 .. centered:: **Static Semantics**
 
@@ -1594,7 +1597,7 @@ were declared within a protected unit or task unit (see TBD).
    specification aspect applied to a generic package instantiation. The
    Part_Of indicator shall denote the *encapsulating* state abstraction
    of which the declaration is a constituent, or shall denote a
-   task or protected unit (see TBD).
+   task or protected unit (see section :ref:`tasks-and-synchronization`).
 
 .. _etu-abstract_state_package_hierarchy_and_part_of-ss:
 
@@ -1631,7 +1634,8 @@ were declared within a protected unit or task unit (see TBD).
 
 5. No other declarations shall have a Part_Of indicator which denotes
    a state abstraction. [Other declarations may have a Part_Of indicator
-   which denotes a task or protected unit (see TBD).]
+   which denotes a task or protected unit (see section
+   :ref:`tasks-and-synchronization`).]
 
 .. _tu-fe-abstract_state_package_hierarchy_and_part_of-06:
 
