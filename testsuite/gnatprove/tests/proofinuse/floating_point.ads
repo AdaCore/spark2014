@@ -43,4 +43,12 @@ is
    --  See http://en.wikipedia.org/wiki/Fast_inverse_square_root for more
    --  information.
    function Approximate_Inverse_Square_Root (X : Float) return Float;
+
+   subtype Coord is Float range -4096.0 .. 4096.0;
+
+   procedure Angle_Between (A_X, A_Y : Coord;
+                            B_X, B_Y : Coord;
+                            C_X, C_Y : Coord;
+                            Res      : out Float);
+
 end Floating_Point;

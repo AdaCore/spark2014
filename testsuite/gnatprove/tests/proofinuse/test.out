@@ -102,6 +102,39 @@ floating_point.adb:124:23: info: initialization of "Y" proved
 floating_point.adb:124:25: medium: overflow check might fail
 floating_point.adb:124:30: medium: overflow check might fail
 floating_point.adb:125:14: info: initialization of "Y" proved
+floating_point.adb:133:40: info: overflow check proved
+floating_point.adb:134:40: info: overflow check proved
+floating_point.adb:135:40: info: overflow check proved
+floating_point.adb:136:40: info: overflow check proved
+floating_point.adb:138:37: info: initialization of "Vec_BA_X" proved
+floating_point.adb:138:46: medium: overflow check might fail
+floating_point.adb:138:48: info: initialization of "Vec_BC_X" proved
+floating_point.adb:138:57: medium: overflow check might fail
+floating_point.adb:139:37: info: initialization of "Vec_BA_Y" proved
+floating_point.adb:139:46: medium: overflow check might fail
+floating_point.adb:139:48: info: initialization of "Vec_BC_Y" proved
+floating_point.adb:142:15: info: overflow check proved
+floating_point.adb:142:22: medium: overflow check might fail
+floating_point.adb:142:27: medium: overflow check might fail
+floating_point.adb:142:34: info: overflow check proved
+floating_point.adb:142:41: medium: overflow check might fail
+floating_point.adb:145:15: info: overflow check proved
+floating_point.adb:145:22: medium: overflow check might fail
+floating_point.adb:145:27: medium: overflow check might fail
+floating_point.adb:145:34: info: overflow check proved
+floating_point.adb:145:41: medium: overflow check might fail
+floating_point.adb:147:22: info: initialization of "Length_BA" proved
+floating_point.adb:148:22: info: initialization of "Length_BC" proved
+floating_point.adb:149:14: info: initialization of "BA_Dot_BC" proved
+floating_point.adb:149:24: medium: divide by zero might fail
+floating_point.adb:149:24: medium: overflow check might fail
+floating_point.adb:149:27: info: initialization of "Length_BA" proved
+floating_point.adb:149:37: medium: overflow check might fail
+floating_point.adb:149:39: info: initialization of "Length_BC" proved
+floating_point.adb:150:22: info: initialization of "Res" proved
+floating_point.adb:150:22: medium: assertion might fail, requires Res in -1.00001 ..
+floating_point.adb:151:22: info: initialization of "Res" proved
+floating_point.adb:151:22: medium: assertion might fail, requires Res in -1.0 ..
 floating_point.ads:7:39: info: initialization of "Res" proved
 floating_point.ads:10:40: info: initialization of "Res" proved
 floating_point.ads:13:50: info: initialization of "Res" proved
@@ -111,6 +144,7 @@ floating_point.ads:24:36: info: initialization of "Res" proved
 floating_point.ads:27:52: info: initialization of "Res" proved
 floating_point.ads:30:13: info: initialization of "Float_To_Long_Float" proved
 floating_point.ads:45:13: info: initialization of "Approximate_Inverse_Square_Root" proved
+floating_point.ads:52:29: info: initialization of "Res" proved
 nonlinear.adb:10:17: info: overflow check proved
 nonlinear.adb:10:22: info: division check proved
 nonlinear.adb:10:22: info: range check proved

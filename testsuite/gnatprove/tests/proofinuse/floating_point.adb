@@ -1,7 +1,7 @@
 with Ada.Unchecked_Conversion;
+with Ada.Numerics.Elementary_Functions;
 
-package body Floating_Point with
-  SPARK_Mode
+package body Floating_Point with SPARK_Mode
 is
    --  CBMC can trivially show this is true
    procedure Range_Add (X : Float_32; Res : out Float_32) is
@@ -124,5 +124,31 @@ is
       pragma Assert ((Y * Y) * X in 1.0 - 0.005 .. 1.0 + 0.005);
       return Y;
    end Approximate_Inverse_Square_Root;
+
+   procedure Angle_Between (A_X, A_Y : Coord;
+                            B_X, B_Y : Coord;
+                            C_X, C_Y : Coord;
+                            Res      : out Float)
+   is
+      Vec_BA_X : constant Float := A_X - B_X;
+      Vec_BA_Y : constant Float := A_Y - B_Y;
+      Vec_BC_X : constant Float := C_X - B_X;
+      Vec_BC_Y : constant Float := C_Y - B_Y;
+
+      BA_Dot_BC : constant Float := Vec_BA_X * Vec_BC_X +
+                                    Vec_BA_Y * Vec_BC_Y;
+
+      Length_BA : constant Float := Ada.Numerics.Elementary_Functions.Sqrt
+        ((B_X - A_X) ** 2 + (B_Y - A_Y) ** 2);
+
+      Length_BC : constant Float := Ada.Numerics.Elementary_Functions.Sqrt
+        ((B_X - C_X) ** 2 + (B_Y - C_Y) ** 2);
+   begin
+      pragma Assume (Length_BA > 0.001);
+      pragma Assume (Length_BC > 0.001);
+      Res := BA_Dot_BC / (Length_BA * Length_BC);
+      pragma Assert (Res in -1.00001 .. 1.00001);  -- true
+      pragma Assert (Res in -1.0 .. 1.0);          -- probably not
+   end Angle_Between;
 
 end Floating_Point;
