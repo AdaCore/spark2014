@@ -877,11 +877,15 @@ package body SPARK_Util is
             Rec_Part : Node_Id := Empty;
 
          begin
-            --  If Typ is an Itype, it may not have an Parent field pointing to
-            --  a corresponding declaration. In that case, there is no record
-            --  extension part to check for default initialization.
+            --  If Typ is an Itype, it may not have an Parent field pointing
+            --  to a corresponding declaration. In that case, there is no
+            --  record extension part to check for default initialization.
+            --  Similarly, if the corresponding declaration is not a full
+            --  type declaration, there is no extension part to check.
 
-            if Present (Parent (Typ)) then
+            if Present (Parent (Typ))
+              and then Nkind (Parent (Typ)) = N_Full_Type_Declaration
+            then
                Type_Def := Type_Definition (Parent (Typ));
                Rec_Part := Record_Extension_Part (Type_Def);
             end if;
