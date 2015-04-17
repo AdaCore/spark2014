@@ -873,9 +873,19 @@ package body SPARK_Util is
 
       elsif Is_Derived_Type (Typ) then
          declare
-            Type_Def : constant Node_Id := Type_Definition (Parent (Typ));
-            Rec_Part : constant Node_Id := Record_Extension_Part (Type_Def);
+            Type_Def : Node_Id := Empty;
+            Rec_Part : Node_Id := Empty;
+
          begin
+            --  If Typ is an Itype, it may not have an Parent field pointing to
+            --  a corresponding declaration. In that case, there is no record
+            --  extension part to check for default initialization.
+
+            if Present (Parent (Typ)) then
+               Type_Def := Type_Definition (Parent (Typ));
+               Rec_Part := Record_Extension_Part (Type_Def);
+            end if;
+
             if Present (Rec_Part)
               and then not Null_Present (Rec_Part)
             then
