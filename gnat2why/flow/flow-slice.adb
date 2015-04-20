@@ -559,7 +559,8 @@ package body Flow.Slice is
             E := First_Formal (FA.Analyzed_Entity);
 
             while Present (E) loop
-               if Present (Full_View (E)) then
+               if Ekind (E) = E_Constant and then Present (Full_View (E))
+               then
                   Local_Vars.Include (Full_View (E));
                else
                   Local_Vars.Include (E);
