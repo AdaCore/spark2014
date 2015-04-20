@@ -80,7 +80,8 @@ package body SPARK_Util is
       (Present (Partial_View (E)));
 
    function Is_Partial_View (E : Entity_Id) return Boolean is
-      (Present (Full_View (E)));
+     ((Is_Type (E) or else Ekind (E) = E_Constant) and then
+      Present (Full_View (E)));
 
    Specific_Tagged_Types : Node_Maps.Map;
    --  Map from classwide types to the corresponding specific tagged type
