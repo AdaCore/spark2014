@@ -1116,7 +1116,11 @@ package body Gnat2Why.Expr is
       Match_Domain : constant EW_Domain :=
          (if Domain = EW_Pred then EW_Term else Domain);
       Cond_Domain  : constant EW_Domain :=
-         (if Domain = EW_Term then EW_Pred else Domain);
+        (if Domain = EW_Term then EW_Pred
+         elsif Domain = EW_Prog then EW_Pterm
+         else Domain);
+      --  As the choices must be static, we do not need to generate checks
+      --  for them.
 
       Cases        : constant List_Id := Alternatives (N);
       First_Case   : constant Node_Id := First (Cases);
@@ -1146,7 +1150,7 @@ package body Gnat2Why.Expr is
                  Condition =>
                    Transform_Discrete_Choices
                      (Choices      => Discrete_Choices (Cur_Case),
-                      Choice_Type  => Etype (Expr),
+                      Choice_Type  => Empty,
                       Matched_Expr => Matched_Expr,
                       Cond_Domain  => Cond_Domain,
                       Params       => Params),
@@ -1159,7 +1163,7 @@ package body Gnat2Why.Expr is
             Condition   =>
               Transform_Discrete_Choices
                 (Choices      => Discrete_Choices (First_Case),
-                 Choice_Type  => Etype (Expr),
+                 Choice_Type  => Empty,
                  Matched_Expr => Matched_Expr,
                  Cond_Domain  => Cond_Domain,
                  Params       => Params),
@@ -1180,17 +1184,20 @@ package body Gnat2Why.Expr is
       Base     : Entity_Id) return W_Prog_Id
    is
    begin
-      pragma Assert ((Present (Base) and then Ekind (Base) in Type_Kind)
-                       or else Ekind (N) in Type_Kind);
+      --  If either the base type or the range is not static, we need to
+      --  generate a check that the subtype declaration is valid; otherwise,
+      --  the frontend has done it for us already.
 
-      if Is_OK_Static_Range (Get_Range (N)) then
+      if Is_OK_Static_Range (Get_Range (N))
+        and then (No (Base) or else Has_Static_Scalar_Subtype (Base))
+      then
          return New_Void;
       else
          declare
             Rng              : constant Node_Id := Get_Range (N);
             Why_Base         : constant W_Type_Id :=
-              (if Present (Base) then Base_Why_Type (Base)
-               else Base_Why_Type (N));
+              (if Is_Type (N) then Base_Why_Type (N)
+               else Base_Why_Type (Base));
             Le               : constant W_Identifier_Id :=
               (if Why_Base = EW_Real_Type then Real_Infix_Le
                elsif Why_Type_Is_BitVector (Why_Base) then
@@ -8331,7 +8338,8 @@ package body Gnat2Why.Expr is
          --  choice belongs to the given subtype.
 
          if Domain = EW_Prog
-           and then not Is_OK_Static_Expression (Choice)
+           and then (not Is_OK_Static_Expression (Choice)
+                     or else not Has_Static_Scalar_Subtype (Choice_Type))
          then
             pragma Assert (Present (Choice_Type));
             R := +Sequence

@@ -47,10 +47,17 @@ package Gnat2Why.Expr is
    function Check_Scalar_Range
      (Params   : Transformation_Params;
       N        : Entity_Id;
-      Base     : Entity_Id) return W_Prog_Id;
+      Base     : Entity_Id) return W_Prog_Id with
+   Pre => (if No (Base) then Is_Type (N));
    --  Generate checks for the bounds of a range as well as a
    --  range check that the range_constraint is compatible with the subtype.
-   --  Returns the empty program if N has a static range_constraint.
+   --  Returns the empty program if both Base and N have a static
+   --  range_constraint.
+   --  @param Params transformation parameters
+   --  @param N calling Get_Range on N should get the range to check.
+   --  @param Base type against which N's bounds should be checked if any.
+   --  @return a program that checks that no error can appear while computing
+   --  N's bounds and that, if N is not empty, they are in Base's range.
 
    function Check_Subtype_Indication
      (Params   : Transformation_Params;
