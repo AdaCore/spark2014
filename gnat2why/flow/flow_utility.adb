@@ -150,7 +150,7 @@ package body Flow_Utility is
       return Magic_String_Id (Name, View);
    end Get_Flow_Id;
 
-      ----------------
+   ----------------
    -- Initialize --
    ----------------
 
