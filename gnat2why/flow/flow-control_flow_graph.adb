@@ -4652,12 +4652,11 @@ package body Flow.Control_Flow_Graph is
       if not FA.CFG.Non_Trivial_Path_Exists (FA.Start_Vertex, FA.End_Vertex)
       then
          if not FA.Compute_Globals
-           and then (if FA.Kind = E_Subprogram_Body
-                     then Get_Execution_Kind (FA.Analyzed_Entity) in
-                       Normal_Execution | Infinite_Loop)
+           and then FA.Kind = E_Subprogram_Body
+           and then not No_Return (FA.Analyzed_Entity)
          then
-            --  We warn about this, but only for packages or subprograms
-            --  not annotated with No_Return.
+            --  We warn about this, but only for subprograms not
+            --  annotated with No_Return.
             Error_Msg_Flow
               (FA   => FA,
                Msg  => "no paths in subprogram will return normally",

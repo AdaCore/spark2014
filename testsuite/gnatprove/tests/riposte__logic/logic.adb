@@ -47,16 +47,12 @@ is
 
       --  We will need the extra asserts to avoid introducing false facts.
 
-      pragma Assert (not (F = F));  --  @ASSERT:FAIL
-
       pragma Assert_And_Cut (True);
       pragma Assert (F = T);        --  @ASSERT:FAIL
 
       pragma Assert_And_Cut (True);
       pragma Assert (T = F);        --  @ASSERT:FAIL
 
-      pragma Assert_And_Cut (True);
-      pragma Assert (not (T = T));  --  @ASSERT:FAIL
       null;
    end Equivalence_Test;
 

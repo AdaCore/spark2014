@@ -22,6 +22,8 @@ generic_float_tests.adb:57:24: medium: overflow check might fail, in instantiati
 generic_float_tests.adb:57:24: medium: overflow check might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:57:28: medium: assertion might fail, requires X + Y > X, in instantiation at foo.ads:10
 generic_float_tests.adb:57:28: medium: assertion might fail, requires X + Y > X, in instantiation at foo.ads:15
+generic_float_tests.adb:62:14: high: no paths in subprogram will return normally, in instantiation at foo.ads:10
+generic_float_tests.adb:62:14: high: no paths in subprogram will return normally, in instantiation at foo.ads:15
 generic_float_tests.adb:62:14: warning: subprogram "Smooth" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:62:14: warning: subprogram "Smooth" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:66:22: medium: assertion might fail, requires false, in instantiation at foo.ads:10

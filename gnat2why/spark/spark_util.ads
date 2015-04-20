@@ -498,8 +498,8 @@ package SPARK_Util is
    function Get_Execution_Kind
      (E        : Entity_Id;
       After_GG : Boolean := True) return Execution_Kind_T
-     with Pre => Ekind (E) = E_Procedure and then No_Return (E);
-   --  @param E procedure for which No_Return is specified
+     with Pre => Ekind (E) = E_Procedure;
+   --  @param E is a procedure
    --  @param After_GG True if this call is made after generation of globals,
    --     so we can query the globals computed for E if not specified by the
    --     user.
