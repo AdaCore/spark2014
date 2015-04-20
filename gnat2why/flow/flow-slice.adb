@@ -525,24 +525,34 @@ package body Flow.Slice is
             return Traverse_Result
          is
          begin
-            if Nkind (N) = N_Object_Declaration then
-               if Present (Full_View (Defining_Entity (N))) then
-                  Local_Vars.Include (Full_View (Defining_Entity (N)));
-               else
-                  Local_Vars.Include (Defining_Entity (N));
-               end if;
-            end if;
+            case Nkind (N) is
+               when N_Object_Declaration =>
+                  declare
+                     E : constant Entity_Id := Defining_Entity (N);
+                  begin
+                     if Ekind (E) = E_Constant and then Present (Full_View (E))
+                     then
+                        Local_Vars.Include (Full_View (E));
+                     else
+                        Local_Vars.Include (E);
+                     end if;
+                  end;
 
-            if Nkind (N) = N_Subprogram_Declaration
-              and then Defining_Entity (N) /= FA.Analyzed_Entity
-            then
-               Local_Subs.Include (Defining_Entity (N));
-            elsif Nkind (N) = N_Subprogram_Body
-              and then Acts_As_Spec (N)
-              and then Defining_Entity (N) /= FA.Analyzed_Entity
-            then
-               Local_Subs.Include (Defining_Entity (N));
-            end if;
+               when N_Subprogram_Declaration =>
+                  if Defining_Entity (N) /= FA.Analyzed_Entity then
+                     Local_Subs.Include (Defining_Entity (N));
+                  end if;
+
+               when N_Subprogram_Body =>
+                  if Acts_As_Spec (N) and then
+                    Defining_Entity (N) /= FA.Analyzed_Entity
+                  then
+                     Local_Subs.Include (Defining_Entity (N));
+                  end if;
+
+               when others =>
+                  null;
+            end case;
 
             return OK;
          end Get_Object_Or_Subprogram_Declaration;
