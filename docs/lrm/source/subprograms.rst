@@ -1516,13 +1516,19 @@ library package that no longer needs a body (see Ada RM 7.2(4)).
     which specifies an aspect of a non-ghost entity except in the
     following cases:
 
-    * the reference occurs within an assertion expression; or
+    * the reference occurs within an assertion expression which is
+      not a predicate expression; or
 
     * the specified aspect is either Global, Depends,
       Refined_Global, Refined_Depends, Initializes, or Refined_State.
       [For example, the Global aspect of a non-ghost subprogram might
       refer to a ghost variable.]
     
+   [Predicate expressions are excluded because predicates participate
+   in membership tests; no Assertion_Policy pragma has any effect on
+   this participation. In the case of a Static_Predicate expression,
+   there are also other reasons (e.g., case statements).]
+
 .. _tu-fe-ghost_entities-13:
 
 13. An **out** or **in out** mode actual parameter in a call to a ghost
