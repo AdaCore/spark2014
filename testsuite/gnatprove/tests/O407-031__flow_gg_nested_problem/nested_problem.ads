@@ -1,3 +1,3 @@
 package Nested_Problem is
-   procedure P (X : in out Integer);
+   procedure Level_1 (N : in out Integer);
 end Nested_Problem;
