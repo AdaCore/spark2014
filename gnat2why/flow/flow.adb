@@ -22,7 +22,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Characters.Latin_1;
-with Ada.Strings.Hash;
 with Ada.Strings.Maps;
 with Ada.Strings;                   use Ada.Strings;
 
@@ -128,12 +127,11 @@ package body Flow is
 
    function Vertex_Pair_Hash
      (VD : Vertex_Pair)
-      return Ada.Containers.Hash_Type
-   is
+      return Ada.Containers.Hash_Type is
+      use Ada.Containers;
    begin
-      --  Concatenate the hashes of the two vertices and hash that
-      return Ada.Strings.Hash (Flow_Graphs.Vertex_Hash (VD.To)'Img
-                                 & Flow_Graphs.Vertex_Hash (VD.From)'Img);
+      return 3 * Flow_Graphs.Vertex_Hash (VD.To) + 5 *
+        Flow_Graphs.Vertex_Hash (VD.From);
    end Vertex_Pair_Hash;
 
    ------------------------

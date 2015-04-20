@@ -22,7 +22,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings;
-with Ada.Strings.Hash;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Errout;                use Errout;
@@ -129,7 +128,7 @@ package body Flow_Types is
          when Synthetic_Null_Export =>
             return 1;
          when Direct_Mapping | Record_Field =>
-            return Ada.Strings.Hash (Unique_Name (N.Node));
+            return Ada.Containers.Hash_Type (N.Node);
          when Magic_String =>
             return Name_Hash (N.Name);
       end case;
