@@ -30,7 +30,7 @@ Default_Storage_Pool	      No
 Default_Value		      Yes
 Default_Storage_Pool   	      No		     No access types
 Dispatching_Domain 	      No		     Ravenscar
-Dynamic_Predicate             No
+Dynamic_Predicate             Yes
 Elaborate_Body     	      Yes
 Export             	      Yes
 External_Name		      Yes

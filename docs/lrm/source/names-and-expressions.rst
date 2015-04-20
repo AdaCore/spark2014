@@ -163,9 +163,9 @@ free from side-effects only retrieves or computes a value.
 [An expression in one of these contexts may read a constant
 which is initialized with the value of a variable.]
 
-[The Dynamic_Predicate/Type_Invariant rule is redundant because no use of
-either of those aspects is currently in |SPARK|. This rule is added
-in anticipation of the possible relaxation of those restrictions.]
+[The Type_Invariant rule is redundant because no use of this aspect is
+currently in |SPARK|. This rule is added in anticipation of a possible
+relaxation of this restriction.]
 
 .. _update-expressions:
 

@@ -97,29 +97,39 @@ No restrictions or extensions.
 Subtype Predicates
 ~~~~~~~~~~~~~~~~~~
 
-Static predicates are in |SPARK| but dynamic predicates are not in
-|SPARK|.
+Static predicates are in |SPARK|. Dynamic predicates are also in
+|SPARK|, but are subject to some restrictions.
 
-.. centered:: **Legality Rules**
+.. centered:: **Verification Rules**
 
 .. _tu-sf-subtype_predicates-01:
 
-1. A Dynamic_Predicate aspect shall not occur in an aspect specification.
+1. A Dynamic_Predicate expression shall not have a variable input.
 
 .. _etu-subtype_predicates-01:
 
-[Eventually |SPARK| may include uses of the Dynamic_Predicate aspect,
-subject to the restriction that the predicate expression cannot take
-any variables as inputs. This is needed to ensure that if a value
-belonged to a subtype in the past, then the value will still belong
-to the subtype in the future. Predicates for composite types might also
-be restricted to disallow dependencies on nondiscriminant components
-(but allow dependencies on discriminants and array bounds) in order to
-avoid cases where modifying a subcomponent can violate the subtype
-predicate of an enclosing object.]
+.. _tu-sf-subtype_predicates-02:
 
-.. todo:: Add the Dynamic_Predicate aspect to SPARK 2014. To be completed
-          in a post-Release 1 version of this document.
+2. If a Dynamic_Predicate applies to the subtype of a composite object,
+   then a proof obligation is generated to ensure that the object
+   satisifies its predicate immediately after any subcomponent or slice
+   of the given object is either
+
+  * the target of an assignment statement or;
+
+  * an actual parameter of mode **out** or **in out** in a call.
+
+  [These proof obligations do not correspond to any run-time check. Roughly
+  speaking, if object X is of subtype S, then proof obligations are
+  generated as if an implicitly generated
+
+     pragma Assert (X in S);
+
+  were present immediately after any assignment statement or call which
+  updates a subcomponent (or slice) of X.]
+
+.. _etu-subtype_predicates-02:
+
 
 Objects and Named Numbers
 -------------------------
