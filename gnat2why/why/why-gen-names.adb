@@ -678,6 +678,7 @@ package body Why.Gen.Names is
               WNE_Array_Base_Range_Pred_3 |
               WNE_Array_Base_Range_Pred_4 |
               WNE_Bool_Eq |
+              WNE_Dispatch_Eq |
               WNE_Rec_Extension |
               WNE_Rec_Main |
               WNE_Tag  |

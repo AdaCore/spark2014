@@ -77,8 +77,8 @@ amortized_queue.adb:34:13: info: loop invariant preservation proved
 amortized_queue.adb:34:36: info: precondition proved
 amortized_queue.adb:34:45: info: initialization of private part of "Result" proved
 amortized_queue.adb:35:13: info: loop invariant initialization proved
+amortized_queue.adb:35:13: info: loop invariant preservation proved
 amortized_queue.adb:37:18: info: precondition proved
-amortized_queue.adb:37:18: medium: loop invariant might fail after first iteration, requires Element (Result, 1 + I) = Element (Right, I)
 amortized_queue.adb:37:27: info: initialization of private part of "Result" proved
 amortized_queue.adb:37:37: info: overflow check proved
 amortized_queue.adb:37:37: info: range check proved

@@ -67,12 +67,12 @@ partition_refinement.adb:97:21: info: initialization of "I" proved
 partition_refinement.adb:97:25: info: initialization of "I" proved
 partition_refinement.adb:98:07: info: assertion proved
 partition_refinement.adb:98:26: info: initialization of "A_Update" proved
-partition_refinement.adb:100:07: info: assertion proved
 partition_refinement.adb:100:22: info: precondition proved
 partition_refinement.adb:100:44: info: precondition proved
 partition_refinement.adb:100:60: info: initialization of "I" proved
 partition_refinement.adb:100:67: info: precondition proved
 partition_refinement.adb:100:83: info: initialization of "J" proved
+partition_refinement.adb:100:91: medium: assertion might fail, requires A (Element (D, C)) = Key (D, C)
 partition_refinement.adb:100:94: info: precondition proved
 partition_refinement.adb:100:112: info: precondition proved
 partition_refinement.adb:101:07: info: assertion proved
@@ -86,18 +86,18 @@ partition_refinement.adb:102:21: info: initialization of "J" proved
 partition_refinement.adb:102:25: info: initialization of "J" proved
 partition_refinement.adb:103:07: info: assertion proved
 partition_refinement.adb:103:26: info: initialization of "A_Update" proved
-partition_refinement.adb:105:07: info: assertion proved
 partition_refinement.adb:105:22: info: precondition proved
 partition_refinement.adb:105:44: info: precondition proved
 partition_refinement.adb:105:60: info: initialization of "I" proved
 partition_refinement.adb:105:67: info: precondition proved
 partition_refinement.adb:105:83: info: initialization of "J" proved
 partition_refinement.adb:105:94: info: precondition proved
+partition_refinement.adb:105:91: medium: assertion might fail, requires A (Element (D, C)) = Key (D, C)
 partition_refinement.adb:105:112: info: precondition proved
-partition_refinement.adb:106:07: info: assertion proved
 partition_refinement.adb:106:22: info: precondition proved
 partition_refinement.adb:106:44: info: precondition proved
 partition_refinement.adb:106:59: info: initialization of "I" proved
+partition_refinement.adb:106:67: medium: assertion might fail, requires A (Element (D, C)) = Key (D, C)
 partition_refinement.adb:106:70: info: precondition proved
 partition_refinement.adb:106:88: info: precondition proved
 partition_refinement.adb:107:07: info: assertion proved

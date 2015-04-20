@@ -384,6 +384,7 @@ module Ada__containers__formal_hashed_maps__replace
   use import int.Int
   use import "_gnatprove_standard".Main
   use  "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__key_type
+  use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__oeq
   use import Ada__containers__formal_hashed_maps__witness
   use import Ada__containers__formal_hashed_maps__map
   use import Ada__containers__formal_hashed_maps__length
@@ -397,8 +398,7 @@ module Ada__containers__formal_hashed_maps__replace
   predicate replace (co1:map) (k:Ada__containers__formal_hashed_maps__key_type.base_type) (e:Ada__containers__formal_hashed_maps__element_type.base_type) (co2:map) =
     (position co1 (find_ co1 (witness k)) > 0 /\
       length_ co1 = length_ co2 /\
-       key__logic co2 (find_ co1 (witness k)) = k /\
-       element__logic co2 (find_ co1 (witness k)) = e /\
+       Ada__containers__formal_hashed_maps__oeq.oeq (element__logic co2 (find_ co1 (witness k))) e /\
         (forall cun:cursor [position co2 cun | position co1 cun]. position co2 cun = position co1 cun) /\
          (forall cun:cursor [key__logic co2 cun | key__logic co1 cun].
            position co1 cun > 0 /\ not cun = find_ co1 (witness k) ->
@@ -426,6 +426,7 @@ module Ada__containers__formal_hashed_maps__replace_element
   use import int.Int
   use import "_gnatprove_standard".Main
   use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__key_type
+  use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__oeq
   use import Ada__containers__formal_hashed_maps__map
   use import Ada__containers__formal_hashed_maps__length
   use import Ada__containers__formal_hashed_maps__cursor
@@ -462,7 +463,7 @@ module Ada__containers__formal_hashed_maps__replace_element
   axiom replace_element_element_in:
     forall co1 co2:map, cu:cursor, e:Ada__containers__formal_hashed_maps__element_type.base_type
       [replace_element co1 cu e co2].
-      replace_element co1 cu e co2 -> element__logic co2 cu = e
+      replace_element co1 cu e co2 -> Ada__containers__formal_hashed_maps__oeq.oeq (element__logic co2 cu) e
 
   axiom replace_element_element_ext:
     forall co1 co2:map, cu cun:cursor, e:Ada__containers__formal_hashed_maps__element_type.base_type
@@ -495,6 +496,7 @@ module Ada__containers__formal_hashed_maps__insert
   use import "_gnatprove_standard".Main
   use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__key_type
   use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__element_type
+  use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__oeq
   use import Ada__containers__formal_hashed_maps__witness
   use import Ada__containers__formal_hashed_maps__map
   use import Ada__containers__formal_hashed_maps__length
@@ -509,7 +511,7 @@ module Ada__containers__formal_hashed_maps__insert
   axiom insert_length_:
     forall co1 co2:map,  k:Ada__containers__formal_hashed_maps__key_type.base_type, e:Ada__containers__formal_hashed_maps__element_type.base_type
       [insert co1 k e co2].
-      insert co1 k e co2 -> length_ co1 + 1 = length_ co2 /\ find_ co1 (witness k) = no_element /\ key__logic co2 (find_ co2 (witness k)) = k /\ element__logic co2 (find_ co2 (witness k)) = e
+      insert co1 k e co2 -> length_ co1 + 1 = length_ co2 /\ find_ co1 (witness k) = no_element /\ Ada__containers__formal_hashed_maps__oeq.oeq (element__logic co2 (find_ co2 (witness k))) e
 
   axiom insert_capacity:
     forall co1 co2:map,  k:Ada__containers__formal_hashed_maps__key_type.base_type, e:Ada__containers__formal_hashed_maps__element_type.base_type

@@ -559,14 +559,14 @@ indefinite_bounded_tagged.adb:36:33: info: initialization of private part of "W"
 indefinite_bounded_tagged.adb:37:10: info: assertion proved
 indefinite_bounded_tagged.adb:37:25: info: precondition proved
 indefinite_bounded_tagged.adb:37:35: info: initialization of private part of "W" proved
-indefinite_bounded_tagged.adb:38:10: info: assertion proved
 indefinite_bounded_tagged.adb:38:25: info: precondition proved
+indefinite_bounded_tagged.adb:38:25: medium: assertion might fail, requires Element (W, 1) = F(1)
 indefinite_bounded_tagged.adb:38:34: info: initialization of private part of "W" proved
-indefinite_bounded_tagged.adb:39:10: info: assertion proved
 indefinite_bounded_tagged.adb:39:25: info: precondition proved
+indefinite_bounded_tagged.adb:39:25: medium: assertion might fail, requires Element (W, 2) = F(2)
 indefinite_bounded_tagged.adb:39:34: info: initialization of private part of "W" proved
-indefinite_bounded_tagged.adb:40:10: info: assertion proved
 indefinite_bounded_tagged.adb:40:25: info: precondition proved
+indefinite_bounded_tagged.adb:40:25: medium: assertion might fail, requires Element (W, 3) = F(3)
 indefinite_bounded_tagged.adb:40:34: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:42:10: info: precondition proved
 indefinite_bounded_tagged.adb:42:18: info: initialization of private part of "W" proved
@@ -676,14 +676,14 @@ indefinite_bounded_tagged.adb:84:37: info: initialization of private part of "V"
 indefinite_bounded_tagged.adb:85:07: info: assertion proved
 indefinite_bounded_tagged.adb:85:22: info: precondition proved
 indefinite_bounded_tagged.adb:85:36: info: initialization of private part of "V" proved
-indefinite_bounded_tagged.adb:87:07: info: assertion proved
 indefinite_bounded_tagged.adb:87:22: info: precondition proved
+indefinite_bounded_tagged.adb:87:22: medium: assertion might fail, requires Find_Index (V, F(0)) = No_Index
 indefinite_bounded_tagged.adb:87:34: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:88:07: info: assertion proved
 indefinite_bounded_tagged.adb:88:22: info: precondition proved
 indefinite_bounded_tagged.adb:88:34: info: initialization of private part of "V" proved
-indefinite_bounded_tagged.adb:89:07: info: assertion proved
 indefinite_bounded_tagged.adb:89:22: info: precondition proved
+indefinite_bounded_tagged.adb:89:22: medium: assertion might fail, requires Find_Index (V, F(4), 2) = No_Index
 indefinite_bounded_tagged.adb:89:34: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:91:07: info: assertion proved
 indefinite_bounded_tagged.adb:91:22: info: precondition proved
@@ -711,7 +711,7 @@ indefinite_bounded_tagged.adb:99:26: info: precondition proved
 indefinite_bounded_tagged.adb:99:39: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:102:19: info: initialization of "Lt" proved
 indefinite_bounded_tagged.adb:103:18: info: initialization of "Olt" proved
-indefinite_bounded_tagged.adb:105:10: info: assertion proved
+indefinite_bounded_tagged.adb:105:25: medium: assertion might fail, requires not Sort.Is_Sorted (V)
 indefinite_bounded_tagged.adb:105:33: info: precondition proved
 indefinite_bounded_tagged.adb:105:45: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:106:14: info: precondition proved
@@ -728,8 +728,8 @@ indefinite_bounded_tagged.adb:109:35: info: initialization of private part of "V
 indefinite_bounded_tagged.adb:110:25: info: precondition proved
 indefinite_bounded_tagged.adb:110:25: medium: assertion might fail, requires Element (V, 1) = F(3)
 indefinite_bounded_tagged.adb:110:34: info: initialization of private part of "V" proved
-indefinite_bounded_tagged.adb:111:10: info: assertion proved
 indefinite_bounded_tagged.adb:111:25: info: precondition proved
+indefinite_bounded_tagged.adb:111:25: medium: assertion might fail, requires Element (V, 2) = F(4)
 indefinite_bounded_tagged.adb:111:34: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:112:10: info: assertion proved
 indefinite_bounded_tagged.adb:112:29: info: precondition proved
@@ -1063,14 +1063,14 @@ indefinite_unbounded_tagged.adb:37:33: info: initialization of private part of "
 indefinite_unbounded_tagged.adb:38:10: info: assertion proved
 indefinite_unbounded_tagged.adb:38:25: info: precondition proved
 indefinite_unbounded_tagged.adb:38:35: info: initialization of private part of "W" proved
-indefinite_unbounded_tagged.adb:39:10: info: assertion proved
 indefinite_unbounded_tagged.adb:39:25: info: precondition proved
+indefinite_unbounded_tagged.adb:39:25: medium: assertion might fail, requires Element (W, 1) = F(1)
 indefinite_unbounded_tagged.adb:39:34: info: initialization of private part of "W" proved
-indefinite_unbounded_tagged.adb:40:10: info: assertion proved
 indefinite_unbounded_tagged.adb:40:25: info: precondition proved
+indefinite_unbounded_tagged.adb:40:25: medium: assertion might fail, requires Element (W, 2) = F(2)
 indefinite_unbounded_tagged.adb:40:34: info: initialization of private part of "W" proved
-indefinite_unbounded_tagged.adb:41:10: info: assertion proved
 indefinite_unbounded_tagged.adb:41:25: info: precondition proved
+indefinite_unbounded_tagged.adb:41:25: medium: assertion might fail, requires Element (W, 3) = F(3)
 indefinite_unbounded_tagged.adb:41:34: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:43:10: info: precondition proved
 indefinite_unbounded_tagged.adb:43:18: info: initialization of private part of "W" proved
@@ -1093,14 +1093,14 @@ indefinite_unbounded_tagged.adb:48:34: info: initialization of private part of "
 indefinite_unbounded_tagged.adb:49:10: info: assertion proved
 indefinite_unbounded_tagged.adb:49:25: info: precondition proved
 indefinite_unbounded_tagged.adb:49:34: info: initialization of private part of "W" proved
-indefinite_unbounded_tagged.adb:50:10: info: assertion proved
 indefinite_unbounded_tagged.adb:50:25: info: precondition proved
+indefinite_unbounded_tagged.adb:50:25: medium: assertion might fail, requires Element (W, 4) = F(1)
 indefinite_unbounded_tagged.adb:50:34: info: initialization of private part of "W" proved
-indefinite_unbounded_tagged.adb:51:10: info: assertion proved
 indefinite_unbounded_tagged.adb:51:25: info: precondition proved
+indefinite_unbounded_tagged.adb:51:25: medium: assertion might fail, requires Element (W, 5) = F(2)
 indefinite_unbounded_tagged.adb:51:34: info: initialization of private part of "W" proved
-indefinite_unbounded_tagged.adb:52:10: info: assertion proved
 indefinite_unbounded_tagged.adb:52:25: info: precondition proved
+indefinite_unbounded_tagged.adb:52:25: medium: assertion might fail, requires Element (W, 6) = F(3)
 indefinite_unbounded_tagged.adb:52:34: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:54:10: info: precondition proved
 indefinite_unbounded_tagged.adb:54:18: info: initialization of private part of "W" proved
@@ -1180,14 +1180,14 @@ indefinite_unbounded_tagged.adb:85:37: info: initialization of private part of "
 indefinite_unbounded_tagged.adb:86:07: info: assertion proved
 indefinite_unbounded_tagged.adb:86:22: info: precondition proved
 indefinite_unbounded_tagged.adb:86:36: info: initialization of private part of "V" proved
-indefinite_unbounded_tagged.adb:88:07: info: assertion proved
 indefinite_unbounded_tagged.adb:88:22: info: precondition proved
+indefinite_unbounded_tagged.adb:88:22: medium: assertion might fail, requires Find_Index (V, F(0)) = No_Index
 indefinite_unbounded_tagged.adb:88:34: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:89:07: info: assertion proved
 indefinite_unbounded_tagged.adb:89:22: info: precondition proved
 indefinite_unbounded_tagged.adb:89:34: info: initialization of private part of "V" proved
-indefinite_unbounded_tagged.adb:90:07: info: assertion proved
 indefinite_unbounded_tagged.adb:90:22: info: precondition proved
+indefinite_unbounded_tagged.adb:90:22: medium: assertion might fail, requires Find_Index (V, F(4), 2) = No_Index
 indefinite_unbounded_tagged.adb:90:34: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:92:07: info: assertion proved
 indefinite_unbounded_tagged.adb:92:22: info: precondition proved
@@ -1215,7 +1215,7 @@ indefinite_unbounded_tagged.adb:100:26: info: precondition proved
 indefinite_unbounded_tagged.adb:100:39: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:103:19: info: initialization of "Lt" proved
 indefinite_unbounded_tagged.adb:104:18: info: initialization of "Olt" proved
-indefinite_unbounded_tagged.adb:106:10: info: assertion proved
+indefinite_unbounded_tagged.adb:106:25: medium: assertion might fail, requires not Sort.Is_Sorted (V)
 indefinite_unbounded_tagged.adb:106:33: info: precondition proved
 indefinite_unbounded_tagged.adb:106:45: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:107:14: info: precondition proved
@@ -1232,8 +1232,8 @@ indefinite_unbounded_tagged.adb:110:35: info: initialization of private part of 
 indefinite_unbounded_tagged.adb:111:25: info: precondition proved
 indefinite_unbounded_tagged.adb:111:25: medium: assertion might fail, requires Element (V, 1) = F(3)
 indefinite_unbounded_tagged.adb:111:34: info: initialization of private part of "V" proved
-indefinite_unbounded_tagged.adb:112:10: info: assertion proved
 indefinite_unbounded_tagged.adb:112:25: info: precondition proved
+indefinite_unbounded_tagged.adb:112:25: medium: assertion might fail, requires Element (V, 2) = F(4)
 indefinite_unbounded_tagged.adb:112:34: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:113:10: info: assertion proved
 indefinite_unbounded_tagged.adb:113:29: info: precondition proved

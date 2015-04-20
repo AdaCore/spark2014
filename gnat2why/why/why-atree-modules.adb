@@ -1721,6 +1721,13 @@ package body Why.Atree.Modules is
                      Typ    => EW_Private_Type));
                if Is_Tagged_Type (E) then
                   Insert_Symbol
+                    (E, WNE_Dispatch_Eq,
+                     New_Identifier
+                       (Symbol => NID ("__dispatch_eq"),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => EW_Bool_Type));
+                  Insert_Symbol
                     (E, WNE_Attr_Tag,
                      New_Identifier
                        (Symbol => NID ("attr__tag"),
@@ -1762,6 +1769,7 @@ package body Why.Atree.Modules is
 
                if (not Is_Constrained (E)
                    and then Has_Defaulted_Discriminants (E))
+                 --  ???
                  or else
                    (not Is_Constrained (Root)
                     and then Has_Defaulted_Discriminants (Root))

@@ -546,6 +546,7 @@ module Ada__containers__formal_doubly_linked_lists__replace_element
   use import int.Int
   use import "_gnatprove_standard".Main
   use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
+  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__oeq
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__length
   use import Ada__containers__formal_doubly_linked_lists__cursor
@@ -577,7 +578,7 @@ module Ada__containers__formal_doubly_linked_lists__replace_element
   axiom replace_element_element_in:
     forall co1 co2:list, cu:cursor, e:Ada__containers__formal_doubly_linked_lists__element_type.base_type
       [replace_element co1 cu e co2].
-      replace_element co1 cu e co2 -> element__logic co2 cu = e
+      replace_element co1 cu e co2 -> Ada__containers__formal_doubly_linked_lists__oeq.oeq (element__logic co2 cu) e
 
   axiom replace_element_element_ext:
     forall co1 co2:list, cu cun:cursor, e:Ada__containers__formal_doubly_linked_lists__element_type.base_type
@@ -645,6 +646,7 @@ module Ada__containers__formal_doubly_linked_lists__insert
   use import int.Int
   use import "_gnatprove_standard".Main
   use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
+  use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__oeq
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__length
   use import Ada__containers__formal_doubly_linked_lists__cursor
@@ -672,12 +674,12 @@ module Ada__containers__formal_doubly_linked_lists__insert
   axiom insert_new:
     forall co1 co2:list, cu:cursor, e:Ada__containers__formal_doubly_linked_lists__element_type.base_type [insert co1 cu e co2].
       insert co1 cu e co2 -> position co1 cu > 0 ->
-      (position co1 (previous__logic co2 cu) = 0 /\ element__logic co2 (previous__logic co2 cu) = e)
+      (position co1 (previous__logic co2 cu) = 0 /\ Ada__containers__formal_doubly_linked_lists__oeq.oeq (element__logic co2 (previous__logic co2 cu)) e)
 
   axiom insert_new_no_element:
     forall co1 co2:list, e:Ada__containers__formal_doubly_linked_lists__element_type.base_type [insert co1 no_element e co2].
       insert co1 no_element e co2 ->
-        position co1 (last__logic co2) = 0 /\ element__logic co2 (last__logic co2) = e
+        position co1 (last__logic co2) = 0 /\ Ada__containers__formal_doubly_linked_lists__oeq.oeq (element__logic co2 (last__logic co2)) e
 
   axiom insert_position_before:
     forall co1 co2:list, cu cun:cursor, e:Ada__containers__formal_doubly_linked_lists__element_type.base_type

@@ -182,6 +182,7 @@ package Why.Gen.Names is
       WNE_Bool_Eq,
       WNE_Check_Not_First,
       WNE_Check_Not_Last,
+      WNE_Dispatch_Eq,
       WNE_Dummy,
       WNE_Dynamic_Property,
       WNE_Dynamic_Property_BV_Int, --  for bitvector when index of an array

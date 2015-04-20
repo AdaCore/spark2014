@@ -1461,6 +1461,21 @@ package body Why.Gen.Records is
                  Binder_Array'(1 => Binder_Type'(B_Name => B_Ident,
                                                  others => <>)),
                Labels      => Name_Id_Sets.Empty_Set));
+
+         --  declare the dispatching equality function in root types
+
+         if Is_Root and then Is_Tagged_Type (E) then
+            Emit
+              (Theory,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        => To_Local (E_Symb (E, WNE_Dispatch_Eq)),
+                  Return_Type => EW_Bool_Type,
+                  Binders     => R_Binder &
+                    Binder_Array'(1 => Binder_Type'(B_Name => B_Ident,
+                                                    others => <>)),
+                  Labels      => Name_Id_Sets.Empty_Set));
+         end if;
       end Declare_Equality_Function;
 
       ----------------------------------------

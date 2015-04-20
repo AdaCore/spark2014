@@ -250,6 +250,7 @@ module Ada__containers__formal_vectors__to_vector
   use import int.Int
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_vectors__index_type_helper
+  use        "ada__containers__formal_vectors__args".Ada__containers__formal_vectors__oeq
   use import Ada__containers__formal_vectors__vector
   use import Ada__containers__formal_vectors__length
   use import Ada__containers__formal_vectors__element
@@ -267,7 +268,7 @@ module Ada__containers__formal_vectors__to_vector
         length_ (to_vector__logic e len) = len /\
         forall i : int [element_ (to_vector__logic e len) i].
           0 < i <= len ->
-            element_ (to_vector__logic e len) i = e
+            Ada__containers__formal_vectors__oeq.oeq (element_ (to_vector__logic e len) i) e
 
   val to_vector
     (e   : Ada__containers__formal_vectors__element_type.base_type)
@@ -278,7 +279,7 @@ module Ada__containers__formal_vectors__to_vector
                length_ result = len /\
                forall i : int [element_ result i].
                  0 < i <= len ->
-                   element_ (result) i = e }
+            Ada__containers__formal_vectors__oeq.oeq (element_ (result) i) e }
 end
 
 (* procedure Reserve_Capacity *)
@@ -388,6 +389,7 @@ module Ada__containers__formal_vectors__replace_element
   use import int.Int
   use import "_gnatprove_standard".Main
   use        "ada__containers__formal_vectors__args".Ada__containers__formal_vectors__element_type
+  use        "ada__containers__formal_vectors__args".Ada__containers__formal_vectors__oeq
   use import Ada__containers__formal_vectors__index_type_helper
   use import Ada__containers__formal_vectors__vector
   use import Ada__containers__formal_vectors__capacity
@@ -402,7 +404,7 @@ module Ada__containers__formal_vectors__replace_element
   =
     0 < i <= length_ v1 /\
     length_ v1 = length_ v2 /\
-    element_ v2 i = e /\
+    Ada__containers__formal_vectors__oeq.oeq (element_ v2 i) e /\
     (forall j : int [element_ v2 j | element_ v1 j].
        0 < j <= length_ v1 -> i <> j -> element_ v2 j = element_ v1 j) /\
     capacity v1 = capacity v2
@@ -480,6 +482,7 @@ module Ada__containers__formal_vectors__append__2
   use import int.Int
   use import "_gnatprove_standard".Main
   use "ada__containers__formal_vectors__args".Ada__containers__formal_vectors__element_type
+  use "ada__containers__formal_vectors__args".Ada__containers__formal_vectors__oeq
   use import Ada__containers__formal_vectors__vector
   use import Ada__containers__formal_vectors__capacity
   use import Ada__containers__formal_vectors__length
@@ -501,7 +504,7 @@ module Ada__containers__formal_vectors__append__2
                             Ada__containers__formal_vectors__vector.__split_discrs = v_cap}  in
                let old_v = {Ada__containers__formal_vectors__vector.__split_fields = old !v;
                             Ada__containers__formal_vectors__vector.__split_discrs = v_cap}  in
-                   element_ rec_v (length_ rec_v) = e /\
+                   Ada__containers__formal_vectors__oeq.oeq (element_ rec_v (length_ rec_v)) e /\
                    (* This is redundant with the following *)
                    append old_v (to_vector__logic e 1) rec_v }
 end
