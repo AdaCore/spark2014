@@ -41,7 +41,6 @@ with Nlists;                 use Nlists;
 with Opt;
 with Sem_Aux;                use Sem_Aux;
 with Sem_Disp;               use Sem_Disp;
-with Sem_Eval;               use Sem_Eval;
 with Sem_Util;               use Sem_Util;
 with Sem_Type;               use Sem_Type;
 with Sinput;                 use Sinput;
@@ -49,8 +48,6 @@ with Snames;                 use Snames;
 with Stand;                  use Stand;
 with Uintp;                  use Uintp;
 with Urealp;                 use Urealp;
-
-with SPARK_Util;             use SPARK_Util;
 
 with VC_Kinds;               use VC_Kinds;
 
@@ -1193,11 +1190,10 @@ package body Gnat2Why.Expr is
       then
          return New_Void;
       else
+         pragma Assert (Present (Base));
          declare
             Rng              : constant Node_Id := Get_Range (N);
-            Why_Base         : constant W_Type_Id :=
-              (if Is_Type (N) then Base_Why_Type (N)
-               else Base_Why_Type (Base));
+            Why_Base         : constant W_Type_Id := Base_Why_Type (Base);
             Le               : constant W_Identifier_Id :=
               (if Why_Base = EW_Real_Type then Real_Infix_Le
                elsif Why_Type_Is_BitVector (Why_Base) then
