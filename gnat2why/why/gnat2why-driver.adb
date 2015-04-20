@@ -80,7 +80,7 @@ with Gnat2Why.Types;           use Gnat2Why.Types;
 with Gnat2Why.Util;            use Gnat2Why.Util;
 
 with Flow_Computed_Globals;    use Flow_Computed_Globals;
-with Flow_Tree_Utility;        use Flow_Tree_Utility;
+with Flow_Utility;             use Flow_Utility;
 
 pragma Warnings (Off, "unit ""Why.Atree.Treepr"" is not referenced");
 with Why.Atree.Treepr;  --  To force the link of debug routines (wpn, wpt)
@@ -369,7 +369,7 @@ package body Gnat2Why.Driver is
 
       --  Set up the flow tree utility package.
 
-      Flow_Tree_Utility.Initialize;
+      Flow_Utility.Initialize;
 
       if Gnat2Why_Args.Global_Gen_Mode then
 

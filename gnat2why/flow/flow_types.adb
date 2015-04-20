@@ -33,7 +33,6 @@ with Snames;                use Snames;
 
 with Why;
 
-with Flow_Tree_Utility;     use Flow_Tree_Utility;
 with Flow_Utility;          use Flow_Utility;
 
 package body Flow_Types is

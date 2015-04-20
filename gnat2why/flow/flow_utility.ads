@@ -39,7 +39,33 @@ with Types;                use Types;
 
 use type Ada.Containers.Count_Type;
 
-package Flow_Utility is
+package Flow_Utility
+  with Initial_Condition => not Is_Initialized
+is
+
+   procedure Initialize;
+   --  Set up state required by some functions in this package.
+
+   function Is_Initialized return Boolean;
+   --  Tests if we're initialized.
+
+   function Component_Hash (E : Entity_Id) return Ada.Containers.Hash_Type
+     with Pre => Is_Initialized and then
+                 Nkind (E) in N_Entity and then
+                 Ekind (E) in E_Component | E_Discriminant;
+   --  Compute a suitable hash for the given record component.
+
+   function Same_Component (C1, C2 : Entity_Id) return Boolean
+     with Pre => Is_Initialized and then
+                 Nkind (C1) in N_Entity and then
+                 Nkind (C2) in N_Entity and then
+                 Ekind (C1) in E_Component | E_Discriminant  and then
+                 Ekind (C2) in E_Component | E_Discriminant;
+   --  Given two record components, checks if one can be considered to be
+   --  the `same' component (for purposes of flow analysis). For example a
+   --  record might contain component x, and its derived record also
+   --  contains this component x (but its a different entity). This
+   --  function can be used to check for this equivalence.
 
    function Get_Flow_Id
      (Name : Entity_Name;
@@ -439,7 +465,7 @@ package Flow_Utility is
    --  record or direct mapping, we return false. (A magic string by
    --  definition cannot be mentioned in an initializes aspect.)
    --
-   --  This mirrors Is_Initialized_At_Elaboration from Flow_Tree_Utility,
+   --  This mirrors Is_Initialized_At_Elaboration from Flow_Refinement,
    --  but works for a Flow_Id instead of an Entity_Id.
 
    function Is_Initialized_In_Specification (F : Flow_Id;
@@ -560,5 +586,14 @@ package Flow_Utility is
      with Pre => Is_Non_Visible_Constituent (F, Scope);
    --  Returns the Flow_Id of the closest enclosing state of F that
    --  Is_Visible from Scope.
+
+private
+   Init_Done : Boolean := False;
+
+   --------------------
+   -- Is_Initialized --
+   --------------------
+
+   function Is_Initialized return Boolean is (Init_Done);
 
 end Flow_Utility;
