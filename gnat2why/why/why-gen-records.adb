@@ -1307,27 +1307,21 @@ package body Why.Gen.Records is
               and then Component_Is_Visible_In_SPARK (Comp)
             then
                declare
-                  A_Access  : constant W_Expr_Id :=
-                    New_Record_Access
-                      (Name  => +A_Ident,
-                       Field =>
-                         To_Ident
-                           (if Ekind (Comp) = E_Discriminant then
-                                   WNE_Rec_Split_Discrs
-                            else WNE_Rec_Split_Fields));
-                  B_Access  : constant W_Expr_Id :=
-                    New_Record_Access
-                      (Name  => +B_Ident,
-                       Field =>
-                         To_Ident
-                           (if Ekind (Comp) = E_Discriminant then
-                                   WNE_Rec_Split_Discrs
-                            else WNE_Rec_Split_Fields));
-                  Field      : constant W_Identifier_Id :=
-                    (if Is_Root or else Ekind (Comp) /= E_Discriminant then
-                          To_Why_Id (Comp, Local => True)
+                  Field_Ident    : constant W_Identifier_Id :=
+                    To_Ident (if Ekind (Comp) = E_Discriminant
+                              then WNE_Rec_Split_Discrs
+                              else WNE_Rec_Split_Fields);
+                  A_Access       : constant W_Expr_Id :=
+                    New_Record_Access (Name  => +A_Ident,
+                                       Field => Field_Ident);
+                  B_Access       : constant W_Expr_Id :=
+                    New_Record_Access (Name  => +B_Ident,
+                                       Field => Field_Ident);
+                  Field          : constant W_Identifier_Id :=
+                    (if Is_Root or else Ekind (Comp) /= E_Discriminant
+                     then To_Why_Id (Comp, Local => True)
                      else To_Why_Id (Comp, Rec => Root));
-                  Comparison : constant W_Pred_Id :=
+                  Comparison     : constant W_Pred_Id :=
                     +New_Ada_Equality
                     (Typ    => Retysp (Etype (Comp)),
                      Domain => EW_Pred,
@@ -1369,23 +1363,19 @@ package body Why.Gen.Records is
 
          if Has_Private_Ancestor_Or_Root (E) then
             declare
-               A_Access  : constant W_Expr_Id :=
+               Field_Ident : constant W_Identifier_Id :=
+                 To_Ident (if Ekind (Comp) = E_Discriminant
+                           then WNE_Rec_Split_Discrs
+                           else WNE_Rec_Split_Fields);
+               A_Access    : constant W_Expr_Id :=
                  New_Record_Access
                    (Name  => +A_Ident,
-                    Field =>
-                      To_Ident
-                        (if Ekind (Comp) = E_Discriminant then
-                                WNE_Rec_Split_Discrs
-                         else WNE_Rec_Split_Fields));
-               B_Access  : constant W_Expr_Id :=
+                    Field => Field_Ident);
+               B_Access    : constant W_Expr_Id :=
                  New_Record_Access
                    (Name  => +B_Ident,
-                    Field =>
-                      To_Ident
-                        (if Ekind (Comp) = E_Discriminant then
-                                WNE_Rec_Split_Discrs
-                         else WNE_Rec_Split_Fields));
-               Comparison : constant W_Pred_Id :=
+                    Field => Field_Ident);
+               Comparison  : constant W_Pred_Id :=
                  +New_Comparison
                  (Symbol => Why_Eq,
                   Left   => New_Record_Access
