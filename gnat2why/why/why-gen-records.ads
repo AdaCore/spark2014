@@ -33,6 +33,7 @@ with Gnat2Why.Util;      use Gnat2Why.Util;
 with Why.Gen.Binders;    use Why.Gen.Binders;
 with Why.Ids;            use Why.Ids;
 with Why.Sinfo;          use Why.Sinfo;
+with Why.Types;          use Why.Types;
 
 package Why.Gen.Records is
    --  This package encapsulates the encoding of Ada records into Why. This
@@ -117,15 +118,26 @@ package Why.Gen.Records is
    --  Generate a Why3 expression that corresponds to an access to the
    --  additional field introduced in records for the 'Constrained attribute.
 
-   function New_Is_Constrained_Update
-     (Ada_Node : Node_Id := Empty;
-      Domain   : EW_Domain;
-      Name     : W_Expr_Id;
-      Value    : W_Expr_Id;
-      Ty       : Entity_Id)
+   function New_Record_Attributes_Update
+     (Ada_Node  : Node_Id := Empty;
+      Domain    : EW_Domain;
+      Name      : W_Expr_Id;
+      From_Expr : W_Expr_Id := Why_Empty;
+      Ty        : Entity_Id)
       return W_Expr_Id;
    --  Generate a Why3 expression that corresponds to an update to the
-   --  additional field introduced in records for the 'Constrained attribute.
+   --  additional fields introduced in records for the 'Constrained and 'Tag
+   --  attributes.
+   --  @param Ada_Node ada node associated to the object
+   --  @param Domain domain of the expression
+   --  @param Name name of the record object to update
+   --  @param From_Expr expression from which the attributes should be taken
+   --  if present. Otherwise, attributes are initialized to the default value
+   --  of their type, that is, 'Constrained is false for unconstrained types
+   --  with default discriminants and 'Tag is the type's tag for specific
+   --  tagged types.
+   --  @result Name updated with values of From_Expr attributes if present and
+   --  default ones otherwise.
 
    function New_Discriminants_Access
      (Ada_Node : Node_Id := Empty;

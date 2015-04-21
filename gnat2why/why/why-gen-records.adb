@@ -52,7 +52,6 @@ with Why.Gen.Preds;       use Why.Gen.Preds;
 with Why.Gen.Progs;       use Why.Gen.Progs;
 with Why.Gen.Terms;       use Why.Gen.Terms;
 with Why.Inter;           use Why.Inter;
-with Why.Types;           use Why.Types;
 
 package body Why.Gen.Records is
 
@@ -2688,39 +2687,90 @@ package body Why.Gen.Records is
       end if;
    end New_Is_Constrained_Access;
 
-   -------------------------------
-   -- New_Is_Constrained_Update --
-   -------------------------------
+   ----------------------------------
+   -- New_Record_Attributes_Update --
+   ----------------------------------
 
-   function New_Is_Constrained_Update
-     (Ada_Node : Node_Id := Empty;
-      Domain   : EW_Domain;
-      Name     : W_Expr_Id;
-      Value    : W_Expr_Id;
-      Ty       : Entity_Id)
+   function New_Record_Attributes_Update
+     (Ada_Node  : Node_Id := Empty;
+      Domain    : EW_Domain;
+      Name      : W_Expr_Id;
+      From_Expr : W_Expr_Id := Why_Empty;
+      Ty        : Entity_Id)
       return W_Expr_Id
    is
+      Has_Constrained : constant Boolean :=
+        Has_Defaulted_Discriminants (Ty)
+        and then not Is_Constrained (Ty);
+      --  If Ty has default discriminants and is not constrained then its
+      --  'Constrained attribute should be preserved.
+
+      Has_Tag         : constant Boolean :=
+        (Is_Tagged_Type (Ty)
+         and then (From_Expr /= Why_Empty
+           or else not Is_Class_Wide_Type (Ty)));
+      --  If Ty is tagged, its 'Tag attribute should be preserved except for
+      --  defaults of classwide types.
+
+      Num_Attr        : constant Natural :=
+        (if Has_Constrained then (if Has_Tag then 2 else 1)
+         else (if Has_Tag then 1 else 0));
+      Associations    : W_Field_Association_Array (1 .. Num_Attr);
+      Index           : Positive := 1;
    begin
-      if Has_Defaulted_Discriminants (Ty)
-        and then not Is_Constrained (Ty)
-      then
+      if Num_Attr = 0 then
+         return Name;
+      end if;
+
+      if Has_Constrained then
+         declare
+            Value : constant W_Expr_Id :=
+              (if From_Expr = Why_Empty then +False_Term
+               else New_Is_Constrained_Access
+                 (Domain => Domain,
+                  Name   => From_Expr,
+                  Ty     => Ty));
+         begin
+            Associations (Index) :=
+              New_Field_Association
+                (Domain => Domain,
+                 Field  => +New_Attribute_Expr
+                   (Ty     => Ty,
+                    Domain => Domain,
+                    Attr   => Attribute_Constrained),
+                 Value  => Value);
+            Index := Index + 1;
+         end;
+      end if;
+
+      if Has_Tag then
+         declare
+            Value : constant W_Expr_Id :=
+              (if From_Expr = Why_Empty then
+                  +E_Symb (E => Ty, S => WNE_Tag)
+               else New_Tag_Access
+                 (Domain => Domain,
+                  Name   => From_Expr,
+                  Ty     => Ty));
+         begin
+            Associations (Index) :=
+              New_Field_Association
+                (Domain => Domain,
+                 Field  => +New_Attribute_Expr
+                   (Ty     => Ty,
+                    Domain => Domain,
+                    Attr   => Attribute_Tag),
+                 Value  => Value);
+            Index := Index + 1;
+         end;
+      end if;
+
          return New_Record_Update
            (Ada_Node => Ada_Node,
             Name     => Name,
-            Updates  =>
-              (1 =>
-                   New_Field_Association
-                 (Domain => Domain,
-                  Field  => +New_Attribute_Expr
-                    (Ty     => Ty,
-                     Domain => Domain,
-                     Attr   => Attribute_Constrained),
-                  Value  => Value)),
+            Updates  => Associations,
             Typ      => Get_Type (Name));
-      else
-         return Name;
-      end if;
-   end New_Is_Constrained_Update;
+   end New_Record_Attributes_Update;
 
    --------------------
    -- New_Tag_Access --

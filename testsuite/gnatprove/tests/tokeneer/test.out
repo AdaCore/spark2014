@@ -54,7 +54,7 @@ admintoken-interfac.ads:136:07: info: initialization of "RawCert" proved
 admintoken-interfac.ads:137:07: info: initialization of "Found" proved
 admintoken.adb:123:47: info: initialization of "AuthCertContents" proved
 admintoken.adb:127:43: info: initialization of "IDCertContents" proved
-admintoken.adb:247:07: info: assertion proved
+admintoken.adb:248:10: medium: assertion might fail, requires TokenOk = (IDCert.Valid and then AuthCert.Valid and then Cert.Attr.Auth.TheRole(AuthCert.Contents) in PrivTypes.adminprivileget
 admintoken.adb:275:37: info: initialization of "Result" proved, in call inlined at admintoken.adb:366, in call inlined at admintoken.adb:502
 admintoken.adb:275:37: info: initialization of "Result" proved, in call inlined at admintoken.adb:369, in call inlined at admintoken.adb:502
 admintoken.adb:275:37: info: initialization of "Result" proved, in call inlined at admintoken.adb:476, in call inlined at admintoken.adb:504

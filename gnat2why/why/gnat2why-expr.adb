@@ -602,7 +602,8 @@ package body Gnat2Why.Expr is
                --   <v__discrs> := <v_name>__assume.discrs; if discr is mutable
                --   assume (<v__discrs> = <v_name>__assume.discrs); otherwise
                --   assume (<v__constrained>= Is_Constrained (Etype (Lvalue)));
-               --   assume (<v__tag> = <v_name>__assume.tag);
+               --   assume (<v__tag> = <v_name>__assume.tag); if classwide
+               --   assume (<v__tag> = Ty.__tag); otherwise
 
                declare
                   Tmp_Var : constant W_Identifier_Id :=
@@ -675,10 +676,12 @@ package body Gnat2Why.Expr is
                                 Args =>
                                   (1 => +Binder.Tag.Id,
                                    2 =>
-                                     New_Tag_Access
-                                       (Domain => EW_Prog,
-                                        Name   => +Tmp_Var,
-                                        Ty     => Binder.Typ)))));
+                                     (if Is_Class_Wide_Type (Binder.Typ)
+                                      then New_Tag_Access
+                                        (Domain => EW_Prog,
+                                         Name   => +Tmp_Var,
+                                         Ty     => Binder.Typ)
+                                      else +E_Symb (Binder.Typ, WNE_Tag))))));
                   end if;
 
                   return +New_Typed_Binding
@@ -758,23 +761,19 @@ package body Gnat2Why.Expr is
                begin
                   if Is_Mutable_In_Why (Lvalue) then
 
-                     --  If the type has default discriminants and is not
-                     --  constrained then the object is not constrained.
+                     --  Attributes of record objects have the default values
+                     --  of their type
 
                      return New_Assignment
                        (Ada_Node => N,
                         Name     => L_Id,
                         Value    =>
-                          (if Is_Record_Type (Etype (Lvalue))
-                           and then Has_Defaulted_Discriminants
-                             (Etype (Lvalue))
-                           and then not Is_Constrained (Etype (Lvalue))
-                           then
-                           +New_Is_Constrained_Update
+                          (if Has_Record_Type (Etype (Lvalue))
+                           or else Full_View_Not_In_SPARK (Etype (Lvalue))
+                           then +New_Record_Attributes_Update
                              (Ada_Node => N,
                               Domain   => EW_Prog,
                               Name     => +Why_Expr,
-                              Value    => +False_Term,
                               Ty       => Etype (Lvalue))
                            else Why_Expr));
 
@@ -796,7 +795,12 @@ package body Gnat2Why.Expr is
                           New_Call
                             (Name => Why_Eq,
                              Typ  => EW_Bool_Type,
-                             Args => (+Tmp_Var, +L_Id));
+                             Args => (New_Record_Attributes_Update
+                                      (Ada_Node => N,
+                                       Domain   => EW_Prog,
+                                       Name     => +Tmp_Var,
+                                       Ty       => Etype (Lvalue)),
+                                      +L_Id));
                      begin
                         return
                           +New_Typed_Binding
@@ -4059,25 +4063,19 @@ package body Gnat2Why.Expr is
       Right_Side : W_Prog_Id := Expr;
    begin
 
-      --  Is_Constrained attribute of objects is not modified by assignments
+      --  Record attributes of objects are not modified by assignments
 
       declare
          Ty : constant Entity_Id := Etype (Lvalue);
       begin
-         if Has_Record_Type (Ty) or else Is_Private_Type (Ty) then
+         if Has_Record_Type (Ty) or else Full_View_Not_In_SPARK (Ty) then
             Right_Side :=
-              +New_Is_Constrained_Update
-              (Ada_Node => Ada_Node,
-               Domain   => EW_Prog,
-               Name     => +Right_Side,
-               Value    =>
-                 New_Is_Constrained_Access
-                   (Ada_Node => Ada_Node,
-                    Domain   => EW_Prog,
-                    Name     =>
-                      Transform_Expr (Left_Side, EW_Pterm, Body_Params),
-                    Ty       => Ty),
-               Ty       => Ty);
+              +New_Record_Attributes_Update
+              (Ada_Node  => Ada_Node,
+               Domain    => EW_Prog,
+               Name      => +Right_Side,
+               From_Expr => Transform_Expr (Left_Side, EW_Pterm, Body_Params),
+               Ty        => Ty);
          end if;
       end;
 
@@ -5251,16 +5249,14 @@ package body Gnat2Why.Expr is
                  Domain,
                  Params);
 
-            --  If the component's type has mutable discriminants then the
-            --  component must be unconstrained.
+            --  Attributes of record array elements have default values
 
-            if not Is_Constrained (Element (Typ))
-              and then Has_Defaulted_Discriminants (Element (Typ))
+            if Has_Record_Type (Element (Typ))
+              or else Full_View_Not_In_SPARK (Element (Typ))
             then
-               Args (Cnt) := New_Is_Constrained_Update
+               Args (Cnt) := New_Record_Attributes_Update
                  (Domain   => Domain,
                   Name     => Args (Cnt),
-                  Value    => +False_Term,
                   Ty       => Element (Typ));
             end if;
             Next (Value);
@@ -10952,16 +10948,15 @@ package body Gnat2Why.Expr is
                             (T => EW_Abstract (Etype (Component)));
                end if;
 
-               --  If the component's type has mutable discriminants then the
-               --  component must be unconstrained.
+               --  Attributes of component's type have default values of their
+               --  type.
 
-               if not Is_Constrained (Etype (Component))
-                 and then Has_Defaulted_Discriminants (Etype (Component))
+               if Has_Record_Type (Etype (Component))
+                 or else Full_View_Not_In_SPARK (Etype (Component))
                then
-                  Expr := New_Is_Constrained_Update
+                  Expr := New_Record_Attributes_Update
                     (Domain   => Domain,
                      Name     => Expr,
-                     Value    => +False_Term,
                      Ty       => Etype (Component));
                end if;
 
