@@ -326,7 +326,9 @@ package body SPARK_Util is
             Ancestor_Typ  : Entity_Id;
             Ancestor_Comp : Entity_Id;
          begin
-            if No (Ancestor_Part (N)) then
+            if Nkind (N) /= N_Extension_Aggregate or else
+              No (Ancestor_Part (N))
+            then
                return False;
             end if;
 
