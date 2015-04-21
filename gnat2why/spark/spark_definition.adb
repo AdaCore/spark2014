@@ -2522,7 +2522,7 @@ package body SPARK_Definition is
          when Private_Kind =>
             if Is_Record_Type (E) then
                declare
-                  Field : Node_Id := First_Entity (E);
+                  Field : Node_Id := First_Component_Or_Discriminant (E);
                begin
                   while Present (Field) loop
                      if Component_Is_Visible_In_SPARK (Field) then
@@ -2539,7 +2539,7 @@ package body SPARK_Definition is
                         end if;
                      end if;
 
-                     Next_Entity (Field);
+                     Next_Component_Or_Discriminant (Field);
                   end loop;
                end;
             end if;

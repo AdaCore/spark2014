@@ -353,7 +353,8 @@ package SPARK_Util is
    --     of type From to type To. Currently a very coarse approximation
    --     to rule out obvious cases.
 
-   function Component_Is_Visible_In_SPARK (E : Entity_Id) return Boolean;
+   function Component_Is_Visible_In_SPARK (E : Entity_Id) return Boolean with
+   Pre => Ekind (E) in E_Void | E_Component | E_Discriminant;
    --  @param E component
    --  @return True iff the component E should be visible in the translation
    --     into Why3, i.e. it is a discriminant (which cannot be hidden in
