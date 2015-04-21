@@ -23,6 +23,7 @@
 
 with Aspects;    use Aspects;
 with Nlists;     use Nlists;
+with SPARK_Util; use SPARK_Util;
 with Why;
 
 package body Flow_Utility.Initialization is

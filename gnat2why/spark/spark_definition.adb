@@ -30,17 +30,17 @@ with Aspects;                use Aspects;
 with Assumption_Types;       use Assumption_Types;
 with Elists;                 use Elists;
 with Errout;                 use Errout;
+with Exp_Util;               use Exp_Util;
 with Fname;                  use Fname;
 with Lib;                    use Lib;
 with Namet;                  use Namet;
 with Nlists;                 use Nlists;
 with Opt;                    use Opt;
+with Sem_Aux;                use Sem_Aux;
 with Sem_Ch12;               use Sem_Ch12;
 with Sem_Disp;               use Sem_Disp;
 with Sem_Prag;               use Sem_Prag;
 with Sem_Util;               use Sem_Util;
-with Exp_Util;               use Exp_Util;
-with Sem_Aux;                use Sem_Aux;
 with Snames;                 use Snames;
 with Stand;                  use Stand;
 with Uintp;                  use Uintp;
@@ -331,7 +331,7 @@ package body SPARK_Definition is
                elsif Entity_Spec_In_SPARK (Id) then
                    (if Ekind (Id) = E_Package
                     and then
-                    No (Get_Package_Body (Id))
+                    No (Package_Body (Id))
                     then "all" else "spec")
                else "no");
          begin
@@ -2116,7 +2116,7 @@ package body SPARK_Definition is
          end Mark_Generic_Parameters_External_Axioms;
 
          Vis_Decls : constant List_Id :=
-           Visible_Declarations (Get_Package_Spec (E));
+           Visible_Declarations (Package_Specification (E));
 
          --  Start of Mark_Package_Entity
 
@@ -2131,7 +2131,7 @@ package body SPARK_Definition is
 
             declare
                G_Parent : constant Node_Id :=
-                 Generic_Parent (Get_Package_Spec (E));
+                 Generic_Parent (Package_Specification (E));
             begin
                if Present (G_Parent) then
                   Mark_Generic_Parameters_External_Axioms
@@ -3409,7 +3409,7 @@ package body SPARK_Definition is
       --  is no corresponding package body, otherwise it is reported when
       --  marking the package body.
 
-      if Is_In_Current_Unit (Id) and then No (Get_Package_Body (Id)) then
+      if In_Main_Unit (Id) and then No (Package_Body (Id)) then
          Generate_Output_In_Out_SPARK (Id);
       end if;
    end Mark_Package_Declaration;
@@ -3889,7 +3889,7 @@ package body SPARK_Definition is
          --  pragma separately here, to avoid passing the "Preceding" node
          --  around. All other cases are handled by Mark.
 
-         if Is_Pragma_Annotate_Gnatprove (Cur) then
+         if Is_Pragma_Annotate_GNATprove (Cur) then
 
             --  Handle all the following pragma Annotate, with the same
             --  "Preceding" node
@@ -3900,7 +3900,7 @@ package body SPARK_Definition is
                Next (Cur);
                exit when
                  not Present (Cur)
-                 or else not Is_Pragma_Annotate_Gnatprove (Cur);
+                 or else not Is_Pragma_Annotate_GNATprove (Cur);
             end loop;
          else
             Mark (Cur);

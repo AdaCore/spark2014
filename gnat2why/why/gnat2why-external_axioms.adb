@@ -216,7 +216,7 @@ package body Gnat2Why.External_Axioms is
                   when N_Package_Declaration =>
                      Add_Dependencies_Decls
                        (Decls  =>
-                           Visible_Declarations (Get_Package_Spec (N)),
+                           Visible_Declarations (Package_Specification (N)),
                         C_List => C_List);
 
                   when others =>
@@ -236,7 +236,7 @@ package body Gnat2Why.External_Axioms is
       Compute_Completions (C_List);
 
       Add_Dependencies_Decls
-        (Decls  => Visible_Declarations (Get_Package_Spec (E)),
+        (Decls  => Visible_Declarations (Package_Specification (E)),
          C_List => C_List);
    end Add_Dependencies;
 
@@ -676,7 +676,7 @@ package body Gnat2Why.External_Axioms is
             if List_Of_Entity.Element (N) = E then
                return
                  Get_Generic_Name_Scope
-                   (Generic_Parent (Get_Package_Spec (E)),
+                   (Generic_Parent (Package_Specification (E)),
                     List_Of_Entity.Next (N));
             else
 
@@ -727,7 +727,7 @@ package body Gnat2Why.External_Axioms is
             then
                Result := List_Of_Entity.Empty_List;
                Found := True;
-               if Present (Generic_Parent (Get_Package_Spec (E))) then
+               if Present (Generic_Parent (Package_Specification (E))) then
                   List_Of_Entity.Prepend (Result, E);
                end if;
                return;
@@ -748,7 +748,7 @@ package body Gnat2Why.External_Axioms is
 
             if Ekind (E) = E_Package then
                Internal_Get_Generic_Parents
-                 (Generic_Parent (Get_Package_Spec (E)), Result, Found);
+                 (Generic_Parent (Package_Specification (E)), Result, Found);
                if Found then
                   List_Of_Entity.Prepend (Result, E);
                   return;
@@ -771,7 +771,7 @@ package body Gnat2Why.External_Axioms is
    --------------------
 
    function Get_Label_List (E : Entity_Id) return List_Id is
-      P : Node_Id := Generic_Parent (Get_Package_Spec (E));
+      P : Node_Id := Generic_Parent (Package_Specification (E));
    begin
       while Nkind (P) /= N_Generic_Package_Declaration loop
          P := Parent (P);
@@ -1496,7 +1496,7 @@ package body Gnat2Why.External_Axioms is
               Nkind (N) in N_Package_Declaration
             then
                Register_Decls
-                 (Decls  => Visible_Declarations (Get_Package_Spec (N)));
+                 (Decls  => Visible_Declarations (Package_Specification (N)));
             end if;
 
             Next (N);
@@ -1507,7 +1507,7 @@ package body Gnat2Why.External_Axioms is
 
    begin
       Register_Decls
-        (Decls  => Visible_Declarations (Get_Package_Spec (E)));
+        (Decls  => Visible_Declarations (Package_Specification (E)));
    end Register_External_Entities;
 
    --------------------------------------------

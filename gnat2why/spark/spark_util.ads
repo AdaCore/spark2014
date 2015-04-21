@@ -318,6 +318,13 @@ package SPARK_Util is
    --  @return True iff E has the specified flavor A of volatility, either
    --     directly or through its type.
 
+   function Is_Declared_In_Unit
+     (E     : Entity_Id;
+      Scope : Entity_Id) return Boolean;
+   --  @param E any entity
+   --  @param Scope scope
+   --  @return True iff E is declared directly in Scope
+
    function Is_In_Analyzed_Files (E : Entity_Id) return Boolean;
    --  @param E any entity
    --  @return True iff E is contained in a file that should be analyzed
@@ -498,22 +505,23 @@ package SPARK_Util is
      (E        : Entity_Id;
       After_GG : Boolean := True) return Execution_Kind_T
      with Pre => Ekind (E) = E_Procedure;
-   --  @param E is a procedure
+   --  @param E is a procedure that never returns, either marked with No_Return
+   --     or for which flow analysis determines that no path returns.
    --  @param After_GG True if this call is made after generation of globals,
    --     so we can query the globals computed for E if not specified by the
    --     user.
    --  @return the kind of execution for E
-
-   --  Infer how the Called_Procedure abnormally ends. If a subprogram
-   --  has an output, we assume that it contains an infinite loop. If it
-   --  does not, we assume its a thinly veiled wrapper around an
+   --
+   --  Infer whether a call to E ends abnormally or loops infinitely. If a
+   --  subprogram has an output, we assume that it contains an infinite loop.
+   --  If it does not, we assume it is a thinly veiled wrapper around an
    --  exception raising program.
    --
    --  Certainly, if you have a procedure that never returns due to an
    --  exception, and it is implemented in SPARK, then you will run into
    --  trouble unless there is nothing of interest going on in it.
    --
-   --  If we get this wrong, its not the end of the world, as failure is
+   --  If we get this wrong, it is not the end of the world, as failure is
    --  safe:
    --
    --  A) If the procedure throws an exception, but we think it loops
@@ -534,15 +542,14 @@ package SPARK_Util is
    --     corresponding N_Expression_Function original node. Otherwise,
    --     return Empty.
 
-   function Get_Expr_From_Check_Only_Proc (E : Entity_Id) return Node_Id with
-     Pre => Ekind (E) = E_Procedure;
-   --  Goes through a subprogram containing only a pragma Check (Expr) and
-   --  returns Expr. Returns Empty if there is no such pragma.
-
-   function Get_Procedure_Specification (E : Entity_Id) return Node_Id
-     with Pre  => Ekind (E) = E_Procedure,
-          Post => Nkind (Get_Procedure_Specification'Result) =
-                    N_Procedure_Specification;
+   function Get_Expr_From_Check_Only_Proc (E : Entity_Id) return Node_Id
+     with Pre => Ekind (E) = E_Procedure;
+   --  @param E procedure
+   --  @return the expression in the first pragma Check found in the body of E,
+   --     if any, or Empty otherwise
+   --  Extract a condition being checked from a procedure intended to check
+   --  this condition. This is used to extract the condition checked for aspect
+   --  Default_Initialization.
 
    function Has_Contracts
      (E         : Entity_Id;
@@ -556,21 +563,29 @@ package SPARK_Util is
    --  @param Inherited True when asking only for inherited contracts
    --  @return True iff there is at least one contract Name for E
 
+   function Has_Extensions_Visible (E : Entity_Id) return Boolean
+     with Pre => Is_Subprogram (E);
+   --  @param E subprogram
+   --  @return True iff Extensions_Visible is specified for E
+
    function Has_User_Supplied_Globals (E : Entity_Id) return Boolean
-     with Pre => Nkind (E) in N_Entity and then Ekind (E) in Subprogram_Kind;
-   --  Return true if the given subprogram has been annotated with a global
-   --  (or depends) contract.
+     with Pre => Ekind (E) in Subprogram_Kind;
+   --  @param E subprogram
+   --  @return True iff Subprogram E has a data dependencies (Global) or flow
+   --  dependencies (Depends) contract
 
    function Is_Local_Subprogram_Always_Inlined (E : Entity_Id) return Boolean;
-   --  Returns True if E is a local subprogram that is always inlined by the
-   --  frontend in GNATprove mode.
+   --  @param E subprogram
+   --  @return True iff E is a local subprogram that is always inlined by the
+   --     frontend in GNATprove mode
 
    function Is_Requested_Subprogram (E : Entity_Id) return Boolean;
-   --  Returns true if entity E is the one whose analysis was specifically
-   --  requested, so it should be analyzed even if otherwise inlined.
+   --  @param E any entity
+   --  @return True iff E is a subprogram whose analysis was specifically
+   --     requested, so it should be analyzed even if otherwise inlined
 
    function Is_Simple_Shift_Or_Rotate (E : Entity_Id) return Boolean;
-   --  @param E Subprogram entity.
+   --  @param E subprogram
    --  @return True iff Subp is an intrisic shift or rotate for a modular type
    --     of modulus smaller or equal to 2 ** 64, with no functional contract
    --     (precondition, postcondition or contract cases).
@@ -581,8 +596,9 @@ package SPARK_Util is
 
    function Might_Be_Main (E : Entity_Id) return Boolean
      with Pre => Ekind (E) in Subprogram_Kind;
-   --  Returns True if E is a library level subprogram without formal
-   --  parameters (E is allowed to have global parameters).
+   --  @param E subprogram
+   --  @return True iff E is a library level subprogram without formal
+   --     parameters (E is allowed to have global parameters)
 
    function Subprogram_Full_Source_Name (E : Entity_Id) return String;
    --  For a subprogram entity, return its scoped name, e.g. for subprogram
@@ -598,13 +614,14 @@ package SPARK_Util is
    --  @return the fully scoped name of E as it appears in the source
 
    function Subprogram_Is_Ignored_For_Proof (E : Entity_Id) return Boolean with
-     Pre => Ekind (E) in E_Procedure | E_Function;
-   --  Returns true on subprograms that are not translated to Why.
+     Pre => Is_Subprogram (E);
+   --  @param E subprogram
+   --  @return True iff E should not be translated into Why3
 
    function Subp_Location (E : Entity_Id) return String
      with Pre => Ekind (E) in Subprogram_Kind | E_Package;
    --  @param E subprogram or package
-   --  @return a string of the form GP_Subp:foo.ads:12 pointing to the file
+   --  @return a String of the form GP_Subp:foo.ads:12 pointing to the file
    --    and line where this subprogram or package is declared. This allows to
    --    identify the subprogram or package by its source position and is
    --    used e.g. for the --limit-subp switch of GNATprove.
@@ -613,86 +630,61 @@ package SPARK_Util is
    -- Queries related to packages --
    ---------------------------------
 
-   function Get_Package_Spec (E : Entity_Id) return Node_Id with
-     Pre  => Ekind_In (E, E_Package, E_Generic_Package),
-     Post => Nkind (Get_Package_Spec'Result) = N_Package_Specification;
-   --  Return the specification node for a package entity E
-
-   function Get_Package_Decl (E : Entity_Id) return Node_Id with
-     Pre  => Ekind_In (E, E_Package, E_Generic_Package),
-     Post => Nkind_In (Get_Package_Decl'Result,
-                       N_Package_Declaration,
-                       N_Generic_Package_Declaration);
-   --  Return the declaration node for a package entity E
-
-   function Get_Package_Body (E : Entity_Id) return Node_Id with
-     Pre  => Ekind_In (E, E_Package, E_Generic_Package),
-     Post => (if Present (Get_Package_Body'Result) then
-                Nkind (Get_Package_Body'Result) = N_Package_Body);
-   --  Return the declaration node for the body of a package entity E, if there
-   --  is one.
-
    function In_Private_Declarations (Decl : Node_Id) return Boolean;
-   --  Returns whether Decl belongs to the list of private declarations of a
-   --  package.
-
-   function Has_Extensions_Visible_Aspect (E : Entity_Id) return Boolean
-     with Pre => Nkind (E) in N_Entity and then
-                 Ekind (E) in Subprogram_Kind;
-   --  Checks if extensions are visible for this subprogram.
+   --  @param Decl declaration node
+   --  @return True iff Decl belongs to the list of private declarations of a
+   --     package
 
    --------------------------------
    -- Queries related to pragmas --
    --------------------------------
 
    function Is_Pragma (N : Node_Id; Name : Pragma_Id) return Boolean;
-   --  Returns whether N is a pragma of the given kind
+   --  @param N any node
+   --  @param Name pragma name
+   --  @return True iff N is a pragma with the given Name
 
-   function Is_Pragma_Annotate_Gnatprove (N : Node_Id) return Boolean;
-   --  Returns True if N has the form pragma Annotate (Gnatprove,...);
+   function Is_Pragma_Annotate_GNATprove (N : Node_Id) return Boolean;
+   --  @param N any node
+   --  @return True iff N is a pragma Annotate (GNATprove, ...);
 
    function Is_Pragma_Check (N : Node_Id; Name : Name_Id) return Boolean;
-   --  Returns whether N has the form pragma Check (Name, ...)
+   --  @param N any node
+   --  @return True iff N is a pragma Check (Name, ...);
 
    function Is_Ignored_Pragma_Check (N : Node_Id) return Boolean;
-   --  Returns whether N is a pragma check that can be ignored by analysis,
-   --  because it is already taken into account elsewhere (precondition and
-   --  postcondition, static predicate), or because it is completely ignored
-   --  with a warning in SPARK.Definition (dynamic predicate).
+   --  @param N pragma
+   --  @return True iff N is a pragma Check that can be ignored by analysis,
+   --     because it is already taken into account elsewhere (precondition and
+   --     postcondition, static predicate), or because it is completely ignored
+   --     with a warning in SPARK.Definition (dynamic predicate).
 
    function Is_Pragma_Assert_And_Cut (N : Node_Id) return Boolean
-     with Pre => (Nkind (N) = N_Pragma);
-   --  @param N a pragma Node
-   --  @return True iff the pragma is a pragma Assert_And_Cut
+     with Pre => Nkind (N) = N_Pragma;
+   --  @param N pragma
+   --  @return True iff N is a pragma Assert_And_Cut
 
    procedure Get_Global_Items
-     (P      : Node_Id;
+     (P      :     Node_Id;
       Reads  : out Node_Sets.Set;
       Writes : out Node_Sets.Set);
-   --  Returns the set of input and output items in Global pragma P
+   --  @param P pragma Global
+   --  @param Reads inputs in P
+   --  @param Writes outputs in P
+   --  Computes the set of inputs and outputs in Global pragma P
 
    ---------------------------------
    -- Queries for arbitrary nodes --
    ---------------------------------
 
-   function Get_Enclosing_Declaration (N : Node_Id) return Node_Id;
-   --  Return the declaration node enclosing N, if any, by following the chain
-   --  of Parent's links.
+   function Body_File_Name (N : Node_Id) return String;
+   --  @param N any node
+   --  @return Same as [Spec_File_Name], but always return the file name of the
+   --    body, if there is one.
 
-   function Get_Enclosing_Unit (E : Entity_Id) return Entity_Id;
-   --  Return the entity of the package or subprogram enclosing E.
-
-   function Is_Declared_In_Unit (E : Entity_Id; Scope : Entity_Id)
-                                 return Boolean;
-   --  Returns True if E is declared directly in Scope.
-
-   function Spec_File_Name_Without_Suffix (N : Node_Id) return String;
-   --  @param any node
-   --  @return same as Spec_File_Name but without the suffix.
-
-   function String_Of_Node (N : Node_Id) return String;
-   --  @param any expression node
-   --  @return the node as pretty printed Ada code, limited to 50 chars
+   function In_Main_Unit (N : Node_Id) return Boolean;
+   --  @param N any node
+   --  @return True iff N is in the body or spec of the currently analyzed unit
 
    function In_Main_Unit_Body (N : Node_Id) return Boolean;
    --  @param N any node
@@ -702,71 +694,54 @@ package SPARK_Util is
    --  @param N any node
    --  @return True iff N is in the spec of the currently analyzed unit
 
-   function Is_In_Current_Unit (N : Node_Id) return Boolean;
-   --  @param N any node
-   --  @return True iff N is in the body or spec of the currently analyzed unit
-
    function Spec_File_Name (N : Node_Id) return String;
    --  @param N any node
    --  @return the name of the spec file of the unit which contains the node,
    --    if it exists, otherwise the body file. Also, we return the file name
    --    of the instance, not the generic.
 
-   function Body_File_Name (N : Node_Id) return String;
-   --  @param N any node
-   --  @return Same as [Spec_File_Name], but always return the file name of the
-   --    body, if there is one.
+   function Spec_File_Name_Without_Suffix (N : Node_Id) return String;
+   --  @param any node
+   --  @return same as Spec_File_Name but without the suffix.
 
-   function Innermost_Enclosing_Loop (N : Node_Id) return Node_Id;
-   --  Returns the innermost loop enclosing N
-
-   function Get_Enclosing (N : Node_Id; K : Node_Kind) return Node_Id
-     with Post => Nkind (Get_Enclosing'Result) = K;
-   --  Returns the first parent P of N where Nkind (P) = K.
+   function String_Of_Node (N : Node_Id) return String;
+   --  @param any expression node
+   --  @return the node as pretty printed Ada code, limited to 50 chars
 
    ----------------------------------
    -- Queries for particular nodes --
    ----------------------------------
 
-   function Get_Range (N : Node_Id) return Node_Id
-      with Post =>
-         (Present (Low_Bound (Get_Range'Result)) and then
-            Present (High_Bound (Get_Range'Result)));
-   --  @param N more or less any node which has some kind of range, e.g. a
-   --  scalar type entity or occurrence, a variable of such type, the type
-   --  declaration or a subtype indication.
-   --  @return the N_Range node of such a node
-   --  @exception Program_Error if N is not of appropriate kind (doesn't have a
-   --  range)
-
    function Aggregate_Is_Fully_Initialized (N : Node_Id) return Boolean;
    --  @param N aggregate or an extension aggregate
-   --  @return whether N is fully initialized. For the aggregate extension,
+   --  @return True iff N is fully initialized. For the aggregate extension,
    --      this only deals with the extension components.
 
-   function Is_Predicate_Function_Call (N : Node_Id) return Boolean;
-   --  Returns whether N is a call to a frontend-generated predicate function
-
    function Get_Formal_From_Actual (Actual : Node_Id) return Entity_Id
-   with
-     Pre => Nkind_In (Parent (Actual), N_Function_Call,
-                                       N_Parameter_Association,
-                                       N_Procedure_Call_Statement);
-   --  Given an actual parameter Actual of a call, returns the type of the
-   --  corresponding formal parameter.
+     with Pre => Nkind (Parent (Actual)) in N_Function_Call
+                                          | N_Parameter_Association
+                                          | N_Procedure_Call_Statement;
+   --  @param Actual actual parameter of a call
+   --  @return the type of the corresponding formal parameter
+
+   function Get_Range (N : Node_Id) return Node_Id
+     with Post => Present (Low_Bound (Get_Range'Result)) and then
+                  Present (High_Bound (Get_Range'Result));
+   --  @param N more or less any node which has some kind of range, e.g. a
+   --     scalar type entity or occurrence, a variable of such type, the type
+   --     declaration or a subtype indication.
+   --  @return the N_Range node of such a node
+
+   function Is_Predicate_Function_Call (N : Node_Id) return Boolean;
+   --  @param N any node
+   --  @return True iff N is a call to a frontend-generated predicate function
 
    generic
       with procedure Handle_Argument (Formal, Actual : Node_Id);
    procedure Iterate_Call_Arguments (Call : Node_Id);
-   --  Call "Handle_Argument" for each pair Formal/Actual of a function or
-   --  procedure call.
-   --  @param Call a node which corresponds to a function or procedure call. It
-   --    must have a "Name" field and a "Parameter_Associations" field.
-
-   function Is_Tick_Update (N : Node_Id) return Boolean
-   is (Nkind (N) = N_Attribute_Reference  and then
-         Get_Attribute_Id (Attribute_Name (N)) = Attribute_Update);
-   --  Checks if the given node is a 'Update node.
+   --  Call [Handle_Argument] for each pair of formal and actual parameters
+   --  of a function or procedure call.
+   --  @param Call function or procedure call
 
    ---------------------------------
    -- Misc operations and queries --
@@ -815,12 +790,10 @@ package SPARK_Util is
    --  Returns True if Choices is the singleton list with an "others" element
 
    function Unit_Name return String is
-     (File_Name_Without_Suffix
-        (Get_Name_String (Unit_File_Name (Main_Unit))));
+     (File_Name_Without_Suffix (Get_Name_String (Unit_File_Name (Main_Unit))));
 
    function File_Name (Loc : Source_Ptr) return String is
-     (Get_Name_String (File_Name
-                       (Get_Source_File_Index (Loc))));
+     (Get_Name_String (File_Name (Get_Source_File_Index (Loc))));
    --  @param Loc any source pointer
    --  @return the file name of the source pointer (will return the file of the
    --    generic in case of instances)

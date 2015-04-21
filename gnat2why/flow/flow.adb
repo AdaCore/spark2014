@@ -1214,8 +1214,7 @@ package body Flow is
 
             when E_Package =>
                declare
-                  Pkg_Spec   : constant Node_Id :=
-                    Get_Enclosing (E, N_Package_Specification);
+                  Pkg_Spec   : constant Node_Id := Package_Specification (E);
                   Pkg_Body   : Node_Id;
                   Needs_Body : Boolean := Unit_Requires_Body (E);
                begin

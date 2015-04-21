@@ -7266,8 +7266,9 @@ package body Gnat2Why.Expr is
 
          when Attribute_Loop_Entry =>
             Loop_Entry : declare
-               Arg     : constant Node_Id := First (Expressions (Expr));
-               Loop_Id : Entity_Id;
+               Arg       : constant Node_Id := First (Expressions (Expr));
+               Loop_Id   : Entity_Id;
+               Loop_Stmt : Node_Id;
 
             begin
                --  The loop to which attribute Loop_Entry applies is either
@@ -7276,9 +7277,20 @@ package body Gnat2Why.Expr is
 
                if Present (Arg) then
                   Loop_Id := Entity (Arg);
+
+               --  Climb the parent chain to find the nearest enclosing loop
+
                else
-                  Loop_Id :=
-                    Entity (Identifier (Innermost_Enclosing_Loop (Expr)));
+                  Loop_Stmt := Expr;
+                  while Present (Loop_Stmt) loop
+                     if Nkind (Loop_Stmt) = N_Loop_Statement then
+                        exit;
+                     end if;
+
+                     Loop_Stmt := Parent (Loop_Stmt);
+                  end loop;
+
+                  Loop_Id := Entity (Identifier (Loop_Stmt));
                end if;
 
                pragma Assert (Domain /= EW_Pred

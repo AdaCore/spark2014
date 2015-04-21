@@ -29,7 +29,6 @@ with Sem_Aux;             use Sem_Aux;
 with Sinfo;               use Sinfo;
 
 with Gnat2Why_Args;
-with SPARK_Util;          use SPARK_Util;
 with VC_Kinds;            use VC_Kinds;
 with Why;
 
@@ -332,16 +331,14 @@ package body Flow.Analysis.Sanity is
             Check_Expressions (Entry_Node);
 
          when E_Package =>
-            Entry_Node := Get_Enclosing
-              (FA.Analyzed_Entity, N_Package_Specification);
+            Entry_Node := Package_Specification (FA.Analyzed_Entity);
             Check_Expressions (Entry_Node);
 
          when E_Package_Body =>
-            Entry_Node := Get_Enclosing
-              (FA.Spec_Node, N_Package_Specification);
+            Entry_Node := Package_Specification (FA.Spec_Node);
             Check_Expressions (Entry_Node);
 
-            Entry_Node := Get_Enclosing (FA.Analyzed_Entity, N_Package_Body);
+            Entry_Node := Package_Body (FA.Analyzed_Entity);
             Check_Expressions (Entry_Node);
       end case;
 

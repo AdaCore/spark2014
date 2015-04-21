@@ -34,7 +34,6 @@ with Flow_Types;           use Flow_Types;
 with Sem_Util;             use Sem_Util;
 with Sinfo;                use Sinfo;
 with Snames;               use Snames;
-with SPARK_Util;           use SPARK_Util;
 with Types;                use Types;
 
 use type Ada.Containers.Count_Type;
@@ -409,7 +408,7 @@ is
       Expand_Synthesized_Constants : Boolean)
       return Flow_Id_Sets.Set
      with Pre => Nkind (N) = N_Selected_Component
-                 or else Is_Tick_Update (N);
+                 or else Is_Attribute_Update (N);
    --  Process a node describing one or more record fields and return a
    --  variable set with all variables referenced.
    --

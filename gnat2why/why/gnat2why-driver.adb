@@ -49,6 +49,7 @@ with Osint;                    use Osint;
 with Output;                   use Output;
 with Outputs;                  use Outputs;
 with Sem;
+with Sem_Aux;                  use Sem_Aux;
 with Sem_Util;                 use Sem_Util;
 with Sinfo;                    use Sinfo;
 with Sinput;                   use Sinput;
@@ -281,7 +282,7 @@ package body Gnat2Why.Driver is
 
       elsif Ekind (E) = E_Package
               and then
-            (if Present (Get_Package_Body (E)) then
+            (if Present (Package_Body (E)) then
                Entity_Body_In_SPARK (E)
              else
                Entity_Spec_In_SPARK (E))
@@ -662,7 +663,7 @@ package body Gnat2Why.Driver is
       --  and expression functions are defined.
 
       for E of Entity_List loop
-         if Is_In_Current_Unit (E) then
+         if In_Main_Unit (E) then
             Do_Generate_VCs (E);
          end if;
       end loop;

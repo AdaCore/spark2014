@@ -74,7 +74,7 @@ package Gnat2Why.Annotate is
      (N             : Node_Id;
       Preceding     : Node_Id;
       Consider_Next : Boolean)
-     with Pre => Is_Pragma_Annotate_Gnatprove (N) and Present (Preceding);
+     with Pre => Is_Pragma_Annotate_GNATprove (N) and Present (Preceding);
    --  Call this procedure to register a pragma Annotate. The "Preceding" node
    --  is the node in the tree to which this pragma refers to. If Consider_Next
    --  is true, "Preceding" must be part of a list, and the pragma will

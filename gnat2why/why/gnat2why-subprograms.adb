@@ -297,7 +297,7 @@ package body Gnat2Why.Subprograms is
             --  Inside a subprogram, global variables may be uninitialized if
             --  they do not occur as reads of the subprogram.
 
-            return (Get_Enclosing_Unit (Obj) = Scope
+            return (Enclosing_Package_Or_Subprogram (Obj) = Scope
                     and then Ekind (Obj) /= E_Out_Parameter)
               or else Read_Ids.Contains (Direct_Mapping_Id (Obj));
          else
@@ -1235,8 +1235,8 @@ package body Gnat2Why.Subprograms is
       E    : Entity_Id)
    is
       Name       : constant String  := Full_Name (E);
-      Spec_N     : constant Node_Id := Get_Package_Spec (E);
-      Body_N     : constant Node_Id := Get_Package_Body (E);
+      Spec_N     : constant Node_Id := Package_Specification (E);
+      Body_N     : constant Node_Id := Package_Body (E);
       Vis_Decls  : constant List_Id := Visible_Declarations (Spec_N);
       Priv_Decls : constant List_Id := Private_Declarations (Spec_N);
       Init_Cond  : constant Node_Id :=

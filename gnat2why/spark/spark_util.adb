@@ -118,7 +118,7 @@ package body SPARK_Util is
 
    function Is_Ext_Axioms_Discriminant (E : Entity_Id) return Boolean is
       Typ : constant Entity_Id :=
-        Unique_Defining_Entity (Get_Enclosing_Declaration (E));
+        Unique_Defining_Entity (Enclosing_Declaration (E));
    begin
       return Type_Based_On_Ext_Axioms (Etype (Typ));
    end Is_Ext_Axioms_Discriminant;
@@ -469,8 +469,9 @@ package body SPARK_Util is
    --------------------
 
    function Body_File_Name (N : Node_Id) return String is
-      CU       : Node_Id := Enclosing_Lib_Unit_Node (N);
-      Switch   : Boolean := False;
+      CU     : Node_Id := Enclosing_Lib_Unit_Node (N);
+      Switch : Boolean := False;
+
    begin
       case Nkind (Unit (CU)) is
          when N_Package_Body    |
@@ -479,9 +480,11 @@ package body SPARK_Util is
          when others =>
             Switch := True;
       end case;
+
       if Switch and then Present (Library_Unit (CU)) then
          CU := Library_Unit (CU);
       end if;
+
       return File_Name (Sloc (CU));
    end Body_File_Name;
 
@@ -1258,60 +1261,6 @@ package body SPARK_Util is
       end if;
    end Get_Execution_Kind;
 
-   -------------------
-   -- Get_Enclosing --
-   -------------------
-
-   function Get_Enclosing (N : Node_Id; K : Node_Kind) return Node_Id
-   is
-      Ptr : Node_Id := N;
-   begin
-      while Present (Ptr) and then Nkind (Ptr) /= K loop
-         Ptr := Parent (Ptr);
-      end loop;
-      return Ptr;
-   end Get_Enclosing;
-
-   -------------------------------
-   -- Get_Enclosing_Declaration --
-   -------------------------------
-
-   function Get_Enclosing_Declaration (N : Node_Id) return Node_Id is
-      Decl_N : Node_Id := N;
-   begin
-      while Present (Decl_N)
-        and then not (Nkind (Decl_N) in N_Declaration
-                        or else
-                      Nkind (Decl_N) in N_Later_Decl_Item)
-      loop
-         Decl_N := Parent (Decl_N);
-      end loop;
-      return Decl_N;
-   end Get_Enclosing_Declaration;
-
-   ------------------------
-   -- Get_Enclosing_Unit --
-   ------------------------
-
-   function Get_Enclosing_Unit (E : Entity_Id) return Entity_Id is
-      S : Entity_Id;
-   begin
-      S := Scope (E);
-      loop
-         if No (S) then
-            return Empty;
-         elsif Ekind_In (S, E_Package, E_Package_Body,
-                      E_Generic_Package)
-         then
-            return S;
-         elsif Ekind (S) in Subprogram_Kind then
-            return S;
-         else
-            S := Scope (S);
-         end if;
-      end loop;
-   end Get_Enclosing_Unit;
-
    -----------------------------------
    -- Get_Expr_From_Check_Only_Proc --
    -----------------------------------
@@ -1322,6 +1271,7 @@ package body SPARK_Util is
         Statements (Handled_Statement_Sequence (Body_N));
       Stmt   : Node_Id := First (Stmts);
       Arg    : Node_Id;
+
    begin
       while Present (Stmt) loop
 
@@ -1473,7 +1423,7 @@ package body SPARK_Util is
    ----------------------
 
    procedure Get_Global_Items
-     (P      : Node_Id;
+     (P      :     Node_Id;
       Reads  : out Node_Sets.Set;
       Writes : out Node_Sets.Set)
    is
@@ -1584,70 +1534,6 @@ package body SPARK_Util is
       end if;
    end Get_Global_Items;
 
-   ----------------------
-   -- Get_Package_Body --
-   ----------------------
-
-   function Get_Package_Body (E : Entity_Id) return Node_Id is
-      N : Node_Id;
-   begin
-      N := Get_Package_Decl (E);
-
-      if Present (Corresponding_Body (N)) then
-         N := Parent (Corresponding_Body (N));
-
-         if Nkind (N) = N_Defining_Program_Unit_Name then
-            N := Parent (N);
-         end if;
-      else
-         N := Empty;
-      end if;
-
-      return N;
-   end Get_Package_Body;
-
-   ----------------------
-   -- Get_Package_Decl --
-   ----------------------
-
-   function Get_Package_Decl (E : Entity_Id) return Node_Id is
-      (Parent (Get_Package_Spec (E)));
-
-   ----------------------
-   -- Get_Package_Spec --
-   ----------------------
-
-   function Get_Package_Spec (E : Entity_Id) return Node_Id is
-      N : Node_Id;
-
-   begin
-      N := Parent (E);
-
-      if Nkind (N) = N_Defining_Program_Unit_Name then
-         N := Parent (N);
-      end if;
-
-      return N;
-   end Get_Package_Spec;
-
-   ---------------------------------
-   -- Get_Procedure_Specification --
-   ---------------------------------
-
-   function Get_Procedure_Specification (E : Entity_Id) return Node_Id is
-      N : Node_Id;
-   begin
-      N := Parent (E);
-      case Nkind (N) is
-         when N_Defining_Program_Unit_Name =>
-            return Parent (N);
-         when N_Procedure_Specification =>
-            return N;
-         when others =>
-            raise Program_Error;
-      end case;
-   end Get_Procedure_Specification;
-
    ---------------
    -- Get_Range --
    ---------------
@@ -1751,14 +1637,12 @@ package body SPARK_Util is
       return not Contracts.Is_Empty;
    end Has_Contracts;
 
-   -----------------------------------
-   -- Has_Extensions_Visible_Aspect --
-   -----------------------------------
+   ----------------------------
+   -- Has_Extensions_Visible --
+   ----------------------------
 
-   function Has_Extensions_Visible_Aspect (E : Entity_Id) return Boolean is
-   begin
-      return Present (Get_Pragma (E, Pragma_Extensions_Visible));
-   end Has_Extensions_Visible_Aspect;
+   function Has_Extensions_Visible (E : Entity_Id) return Boolean is
+     (Present (Get_Pragma (E, Pragma_Extensions_Visible)));
 
    ----------------------------------
    -- Has_Private_Ancestor_Or_Root --
@@ -1807,9 +1691,9 @@ package body SPARK_Util is
    -- Has_User_Supplied_Globals --
    -------------------------------
 
-   function Has_User_Supplied_Globals (E : Entity_Id) return Boolean
-   is (Present (Get_Pragma (E, Pragma_Global)) or else
-         Present (Get_Pragma (E, Pragma_Depends)));
+   function Has_User_Supplied_Globals (E : Entity_Id) return Boolean is
+     (Present (Get_Pragma (E, Pragma_Global))
+       or else Present (Get_Pragma (E, Pragma_Depends)));
 
    ------------------
    -- Has_Volatile --
@@ -1887,6 +1771,21 @@ package body SPARK_Util is
             raise Program_Error;
       end case;
    end Has_Volatile_Flavor;
+
+   ------------------
+   -- In_Main_Unit --
+   ------------------
+
+   function In_Main_Unit (N : Node_Id) return Boolean is
+      Real_Node : constant Node_Id :=
+        (if Is_Itype (N) then Associated_Node_For_Itype (N) else N);
+   begin
+
+      --  ??? Should be made more efficient
+
+      return In_Main_Unit_Spec (Real_Node) or else
+        In_Main_Unit_Body (Real_Node);
+   end In_Main_Unit;
 
    -----------------------
    -- In_Main_Unit_Body --
@@ -1977,6 +1876,7 @@ package body SPARK_Util is
 
    function In_Private_Declarations (Decl : Node_Id) return Boolean is
       N : Node_Id;
+
    begin
       if Present (Parent (Decl))
         and then Nkind (Parent (Decl)) = N_Package_Specification
@@ -1989,31 +1889,21 @@ package body SPARK_Util is
             Next (N);
          end loop;
       end if;
+
       return False;
    end In_Private_Declarations;
-
-   ------------------------------
-   -- Innermost_Enclosing_Loop --
-   ------------------------------
-
-   function Innermost_Enclosing_Loop (N : Node_Id) return Node_Id is
-   begin
-      return Get_Enclosing (N, N_Loop_Statement);
-   end Innermost_Enclosing_Loop;
 
    -------------------------
    -- Is_Declared_In_Unit --
    -------------------------
 
-   function Is_Declared_In_Unit (E : Entity_Id; Scope : Entity_Id)
-                                 return Boolean is
-   begin
-      --  Parameters of subprograms cannot be local to a unit.
+   --  Parameters of subprograms cannot be local to a unit.
 
-      return Get_Enclosing_Unit (E) = Scope
-        and then not (Ekind (E) in E_In_Parameter
-                          | E_In_Out_Parameter | E_Out_Parameter);
-   end Is_Declared_In_Unit;
+   function Is_Declared_In_Unit
+     (E     : Entity_Id;
+      Scope : Entity_Id) return Boolean
+   is
+     (Enclosing_Package_Or_Subprogram (E) = Scope and then not Is_Formal (E));
 
    -----------------------------
    -- Is_Ignored_Pragma_Check --
@@ -2091,21 +1981,6 @@ package body SPARK_Util is
       end if;
    end Is_In_Analyzed_Files;
 
-   ------------------------
-   -- Is_In_Current_Unit --
-   ------------------------
-
-   function Is_In_Current_Unit (N : Node_Id) return Boolean is
-      Real_Node : constant Node_Id :=
-        (if Is_Itype (N) then Associated_Node_For_Itype (N) else N);
-   begin
-
-      --  ??? Should be made more efficient
-
-      return In_Main_Unit_Spec (Real_Node) or else
-        In_Main_Unit_Body (Real_Node);
-   end Is_In_Current_Unit;
-
    ----------------------------------------
    -- Is_Local_Subprogram_Always_Inlined --
    ----------------------------------------
@@ -2171,7 +2046,7 @@ package body SPARK_Util is
    -- Is_Pragma_Annotate_Gnatprove --
    ----------------------------------
 
-   function Is_Pragma_Annotate_Gnatprove (N : Node_Id) return Boolean is
+   function Is_Pragma_Annotate_GNATprove (N : Node_Id) return Boolean is
      (Is_Pragma (N, Pragma_Annotate)
         and then
       Get_Name_String
@@ -2182,9 +2057,9 @@ package body SPARK_Util is
    -- Is_Pragma_Assert_And_Cut --
    ------------------------------
 
-   function Is_Pragma_Assert_And_Cut (N : Node_Id) return Boolean
-   is
+   function Is_Pragma_Assert_And_Cut (N : Node_Id) return Boolean is
       Orig : constant Node_Id := Original_Node (N);
+
    begin
       return
         (Present (Orig) and then
@@ -2225,12 +2100,10 @@ package body SPARK_Util is
    -----------------------------
 
    function Is_Requested_Subprogram (E : Entity_Id) return Boolean is
-   begin
-      return Ekind (E) in Subprogram_Kind
-               and then
-             "GP_Subp:" & To_String (Gnat2Why_Args.Limit_Subp) =
-             SPARK_Util.Subp_Location (E);
-   end Is_Requested_Subprogram;
+     (Ekind (E) in Subprogram_Kind
+        and then
+      "GP_Subp:" & To_String (Gnat2Why_Args.Limit_Subp) =
+        SPARK_Util.Subp_Location (E));
 
    -------------------------------
    -- Is_Simple_Shift_Or_Rotate --
@@ -2419,12 +2292,11 @@ package body SPARK_Util is
    -------------------
 
    function Might_Be_Main (E : Entity_Id) return Boolean is
-   begin
-      return (Scope_Depth_Value (E) = Uint_1 or else
-                (Is_Generic_Instance (E) and then
-                   Scope_Depth_Value (E) = Uint_2))
-        and then No (First_Formal (E));
-   end Might_Be_Main;
+     ((Scope_Depth_Value (E) = Uint_1
+         or else
+      (Is_Generic_Instance (E) and then Scope_Depth_Value (E) = Uint_2))
+        and then
+      No (First_Formal (E)));
 
    --------------------
    -- Nth_Index_Type --
@@ -2624,9 +2496,9 @@ package body SPARK_Util is
    -- Spec_File_Name --
    --------------------
 
-   function Spec_File_Name (N : Node_Id) return String
-   is
+   function Spec_File_Name (N : Node_Id) return String is
       CU : Node_Id := Enclosing_Lib_Unit_Node (N);
+
    begin
       case Nkind (Unit (CU)) is
          when N_Package_Body =>
@@ -2634,6 +2506,7 @@ package body SPARK_Util is
          when others =>
             null;
       end case;
+
       return File_Name (Sloc (CU));
    end Spec_File_Name;
 
@@ -2673,8 +2546,7 @@ package body SPARK_Util is
    -- String_Of_Node --
    --------------------
 
-   function String_Of_Node (N : Node_Id) return String
-   is
+   function String_Of_Node (N : Node_Id) return String is
 
       function Real_Image (U : Ureal) return String;
       function String_Image (S : String_Id) return String;
@@ -2773,7 +2645,8 @@ package body SPARK_Util is
    -------------------------------------
 
    function Subprogram_Is_Ignored_For_Proof (E : Entity_Id) return Boolean is
-     (Is_Predicate_Function (E) or else Is_Invariant_Procedure (E)
-          or else Is_Default_Init_Cond_Procedure (E));
+     (Is_Predicate_Function (E)
+       or else Is_Invariant_Procedure (E)
+       or else Is_Default_Init_Cond_Procedure (E));
 
 end SPARK_Util;

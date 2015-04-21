@@ -40,6 +40,7 @@ with Sem_Aux;                    use Sem_Aux;
 with Sprint;                     use Sprint;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
+with SPARK_Util;           use SPARK_Util;
 with Treepr;                     use Treepr;
 with Why;
 
@@ -1008,7 +1009,7 @@ package body Flow_Utility is
       --  the_update, z).
 
       while Nkind (Root_Node) = N_Selected_Component or else
-        (Is_Tick_Update (Root_Node) and then
+        (Is_Attribute_Update (Root_Node) and then
            Ekind (Get_Full_Type_Without_Checking (Root_Node))
              in Record_Kind) or else
         Is_Ignored_Node (Root_Node)
@@ -2473,7 +2474,7 @@ package body Flow_Utility is
                     (Recurse_On
                        (Actual,
                         Consider_Extensions =>
-                          Has_Extensions_Visible_Aspect (Subprogram) or else
+                          Has_Extensions_Visible (Subprogram) or else
                           Ekind (Get_Type (Formal, Scope))
                             in Class_Wide_Kind));
                end if;
@@ -3558,7 +3559,7 @@ package body Flow_Utility is
       return Ekind (E) in Formal_Kind
         and then Is_Tagged_Type (T)
         and then Ekind (T) not in Class_Wide_Kind
-        and then Has_Extensions_Visible_Aspect (Sinfo.Scope (E));
+        and then Has_Extensions_Visible (Sinfo.Scope (E));
    end Extensions_Visible;
 
    function Extensions_Visible (F     : Flow_Id;

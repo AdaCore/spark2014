@@ -21,9 +21,11 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Flow_Utility; use Flow_Utility;
 with Ghost;        use Ghost;
+with Sem_Aux;      use Sem_Aux;
 with Sinfo;        use Sinfo;
+
+with Flow_Utility; use Flow_Utility;
 with Why;
 
 package body Flow.Control_Flow_Graph.Utility is
@@ -261,7 +263,7 @@ package body Flow.Control_Flow_Graph.Utility is
 
       Called_Procedure : constant Entity_Id := Entity (Name (Callsite));
       Procedure_Spec   : constant Node_Id   :=
-        Get_Procedure_Specification (Called_Procedure);
+        Subprogram_Specification (Called_Procedure);
    begin
       pragma Assert (Nkind (Procedure_Spec) = N_Procedure_Specification);
 
@@ -311,7 +313,7 @@ package body Flow.Control_Flow_Graph.Utility is
       Subprogram : constant Entity_Id  := Entity (Name (Call_Vertex));
       Scope      : constant Flow_Scope := Get_Flow_Scope (Call_Vertex);
       Ext_Relevant_To_Formal : constant Boolean :=
-        Has_Extensions_Visible_Aspect (Subprogram) or else
+        Has_Extensions_Visible (Subprogram) or else
         Ekind (Get_Type (Formal, Scope)) in Class_Wide_Kind;
 
       A          : V_Attributes        := Null_Attributes;

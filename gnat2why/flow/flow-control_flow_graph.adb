@@ -5119,15 +5119,12 @@ package body Flow.Control_Flow_Graph is
             end if;
 
          when E_Package =>
-            Spec_N := Get_Enclosing (FA.Analyzed_Entity,
-                                     N_Package_Specification);
+            Spec_N := Package_Specification (FA.Analyzed_Entity);
             Body_N := Spec_N;
 
          when E_Package_Body =>
-            Body_N := Get_Enclosing (FA.Analyzed_Entity,
-                                     N_Package_Body);
-            Spec_N := Get_Enclosing (Corresponding_Spec (Body_N),
-                                     N_Package_Specification);
+            Body_N := Package_Body (FA.Analyzed_Entity);
+            Spec_N := Package_Specification (Corresponding_Spec (Body_N));
 
       end case;
 
