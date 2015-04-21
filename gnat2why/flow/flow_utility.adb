@@ -420,7 +420,8 @@ package body Flow_Utility is
          then
             --  If N is of Type_Kind then T is N
             N
-         elsif Present (Etype (N)) then
+         elsif Nkind (N) in N_Has_Etype and then Present (Etype (N)) then
+            --  ??? is it necessary to still call Present if N_Has_Etype?
             --  If Etype is Present then use that
             Etype (N)
          elsif Present (Defining_Identifier (N)) then
