@@ -2302,32 +2302,32 @@ package body Gnat2Why.Expr is
          Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
          declare
-            R_Expr  : constant W_Expr_Id :=
+            R_Expr : constant W_Expr_Id :=
               Insert_Simple_Conversion (Ada_Node => Ty,
                                         Domain   => EW_Term,
                                         Expr     => Tmp,
                                         To       => EW_Abstract (Ty_Ext));
             --  Expression that should be used for the access
 
-            Discrs  : constant Natural :=
-              (if Has_Discriminants (Ty_Ext) then
-                 Natural (Number_Discriminants (Ty_Ext))
+            Discrs : constant Natural :=
+              (if Has_Discriminants (Ty_Ext)
+               then Natural (Number_Discriminants (Ty_Ext))
                else 0);
-            Tmps    : W_Identifier_Array (1 .. Discrs);
-            Binds   : W_Expr_Array (1 .. Discrs);
+            Tmps   : W_Identifier_Array (1 .. Discrs);
+            Binds  : W_Expr_Array (1 .. Discrs);
             --  Arrays to store the bindings for discriminants
 
-            Field   : Node_Id := (if Has_Discriminants (Ty_Ext)
-                                  or else Has_Unknown_Discriminants (Ty_Ext)
-                                  then First_Discriminant (Ty_Ext)
-                                  else Empty);
-            Elmt    : Elmt_Id :=
+            Field  : Node_Id := (if Has_Discriminants (Ty_Ext)
+                                 or else Has_Unknown_Discriminants (Ty_Ext)
+                                 then First_Discriminant (Ty_Ext)
+                                 else Empty);
+            Elmt   : Elmt_Id :=
               (if Has_Discriminants (Ty_Ext)
-               and then Is_Constrained (Ty_Ext) then
-                    First_Elmt (Stored_Constraint (Ty_Ext))
+               and then Is_Constrained (Ty_Ext)
+               then First_Elmt (Stored_Constraint (Ty_Ext))
                else No_Elmt);
-            T_Comp  : W_Expr_Id;
-            I       : Positive := 1;
+            T_Comp : W_Expr_Id;
+            I      : Positive := 1;
          begin
             --  if Ty_Ext as default discrs, generate
             --     <Expr>.is_constrained = False
