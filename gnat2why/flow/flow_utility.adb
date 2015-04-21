@@ -3082,7 +3082,7 @@ package body Flow_Utility is
       Root_Node : Node_Id := N;
    begin
 
-      --  First we turn the tree into a more helpful sequence. We also
+      --  First we turn the tree into a more useful sequence. We also
       --  determine the root node which should be an entire variable.
 
       Seq := Node_Lists.Empty_List;

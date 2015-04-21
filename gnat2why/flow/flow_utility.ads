@@ -318,12 +318,12 @@ is
    --  Checks the assignment target N and determines a few basic
    --  properties.
    --
-   --  * Partial_Definition: if set this indicates that the assignment to N
-   --    touches only a few elements of a larger array.
-   --  * View_Conversion: indicates that N contains a view conversion.
+   --  * Partial_Definition: the assignment to N touches only a few elements
+   --                        of a larger array.
+   --  * View_Conversion: N contains a view conversion.
    --  * Classwide: the assignment to map_root is classwide.
    --  * Map_Root: the non-flattened flow_id which is assigned to.
-   --  * Seq: the list of items used to derive Map_Root.
+   --  * Seq: items used to derive Map_Root.
 
    procedure Untangle_Assignment_Target
      (N                    : Node_Id;

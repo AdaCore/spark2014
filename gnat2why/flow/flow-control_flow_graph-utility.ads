@@ -149,8 +149,8 @@ package Flow.Control_Flow_Graph.Utility is
               Discriminants_Or_Bounds_Only;
    --  Create attributes for parameters for subprogram calls. If
    --  In_Vertex is true, create the attributes for the in version of
-   --  a parameter; if In_Vertex is false we create the attributes for
-   --  the out version. Note that variables defined and used is
+   --  a parameter; if In_Vertex is false create the attributes for
+   --  the out version. Note that variables defined and used are
    --  calculated automatically.
 
    function Make_Global_Attributes
