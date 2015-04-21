@@ -2899,7 +2899,11 @@ package body SPARK_Definition is
             --  non-SPARK type should be disallowed here
 
             declare
-               Disc : Entity_Id := First_Discriminant (E);
+               Disc : Entity_Id :=
+                 (if Has_Discriminants (E)
+                  or else Has_Unknown_Discriminants (E)
+                  then First_Discriminant (E)
+                  else Empty);
             begin
                while Present (Disc) loop
                   if not In_SPARK (Etype (Disc)) then

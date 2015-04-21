@@ -1850,7 +1850,10 @@ package body Gnat2Why.Expr is
             Binds   : W_Expr_Array (1 .. Discrs);
             --  Arrays to store the bindings for discriminants
 
-            Field   : Node_Id := First_Discriminant (Ty_Ext);
+            Field   : Node_Id := (if Has_Discriminants (Ty_Ext)
+                                  or else Has_Unknown_Discriminants (Ty_Ext)
+                                  then First_Discriminant (Ty_Ext)
+                                  else Empty);
             Elmt    : Elmt_Id :=
               (if Has_Discriminants (Ty_Ext)
                and then Is_Constrained (Ty_Ext) then
@@ -2314,7 +2317,10 @@ package body Gnat2Why.Expr is
             Binds   : W_Expr_Array (1 .. Discrs);
             --  Arrays to store the bindings for discriminants
 
-            Field   : Node_Id := First_Discriminant (Ty_Ext);
+            Field   : Node_Id := (if Has_Discriminants (Ty_Ext)
+                                  or else Has_Unknown_Discriminants (Ty_Ext)
+                                  then First_Discriminant (Ty_Ext)
+                                  else Empty);
             Elmt    : Elmt_Id :=
               (if Has_Discriminants (Ty_Ext)
                and then Is_Constrained (Ty_Ext) then

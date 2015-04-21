@@ -1586,7 +1586,10 @@ package body Why.Gen.Records is
          Binders_D  : Binder_Array (1 .. Num_Discrs);
          Binders_F  : Binder_Array (1 .. Num_Fields);
          Binders_A  : Binder_Array (1 .. Num_All);
-         Field      : Entity_Id := First_Discriminant (E);
+         Field      : Entity_Id := (if Has_Discriminants (E)
+                                    or else Has_Unknown_Discriminants (E)
+                                    then First_Discriminant (E)
+                                    else Empty);
          Index      : Positive := 1;
          Index_All  : Positive := 1;
       begin
