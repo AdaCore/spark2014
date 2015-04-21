@@ -435,7 +435,7 @@ package body Flow_Utility is
          return T;
       end if;
 
-      while Present (Full_View (T))
+      while Is_Type (T) and then Present (Full_View (T))
         and then Is_Visible (Full_View (T), Scope)
         and then Full_View (T) /= T
       loop
