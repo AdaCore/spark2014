@@ -94,7 +94,6 @@ package SPARK_Util is
                                        | E_Floating_Point_Subtype
                                        | E_Access_Subtype
                                        | E_Array_Subtype
-                                       | E_String_Subtype
                                        | E_String_Literal_Subtype
                                        | E_Class_Wide_Subtype
                                        | E_Record_Subtype
