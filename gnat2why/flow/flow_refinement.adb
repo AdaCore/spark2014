@@ -760,6 +760,7 @@ package body Flow_Refinement is
       function Proc (N : Node_Id) return Traverse_Result is
       begin
          if Nkind (N) = N_Identifier
+           and then Present (Entity (N))
            and then Ekind (Entity (N)) = E_Abstract_State
            and then State_Refinement_Is_Visible (Entity (N), Scope)
          then
