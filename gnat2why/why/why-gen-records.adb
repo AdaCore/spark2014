@@ -1823,9 +1823,22 @@ package body Why.Gen.Records is
             end loop;
          end Mark_Variant_Part;
 
-         Decl_Node  : constant Node_Id := Parent (E);
-         Def_Node : constant Node_Id := Type_Definition (Decl_Node);
-         Field : Node_Id := First (Discriminant_Specifications (Decl_Node));
+         Decl_Node : constant Node_Id := Parent (E);
+         Def_Node  : constant Node_Id :=
+           (if Nkind (Decl_Node) = N_Full_Type_Declaration
+            then Type_Definition (Decl_Node)
+            else Empty);
+         Field : Node_Id :=
+           --  ??? test for Discriminant_Specifications can be narrowed
+           (if Nkind (Decl_Node) in N_Formal_Type_Declaration       |
+                                    N_Full_Type_Declaration         |
+                                    N_Incomplete_Type_Declaration   |
+                                    N_Private_Extension_Declaration |
+                                    N_Private_Type_Declaration      |
+                                    N_Protected_Type_Declaration    |
+                                    N_Task_Type_Declaration
+            then First (Discriminant_Specifications (Decl_Node))
+            else Empty);
          Components : constant Node_Id :=
            (if Present (Def_Node) then Component_List (Def_Node)
             else Empty);
