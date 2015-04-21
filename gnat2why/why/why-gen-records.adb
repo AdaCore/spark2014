@@ -1364,9 +1364,7 @@ package body Why.Gen.Records is
          if Has_Private_Ancestor_Or_Root (E) then
             declare
                Field_Ident : constant W_Identifier_Id :=
-                 To_Ident (if Ekind (Comp) = E_Discriminant
-                           then WNE_Rec_Split_Discrs
-                           else WNE_Rec_Split_Fields);
+                 To_Ident (WNE_Rec_Split_Fields);
                A_Access    : constant W_Expr_Id :=
                  New_Record_Access
                    (Name  => +A_Ident,
@@ -1401,9 +1399,7 @@ package body Why.Gen.Records is
          if Is_Private_Type (E) then
             declare
                Field_Ident : constant W_Identifier_Id :=
-                 To_Ident (if Ekind (Comp) = E_Discriminant
-                           then WNE_Rec_Split_Discrs
-                           else WNE_Rec_Split_Fields);
+                 To_Ident (WNE_Rec_Split_Fields);
                A_Access    : constant W_Expr_Id :=
                  New_Record_Access
                    (Name  => +A_Ident,
