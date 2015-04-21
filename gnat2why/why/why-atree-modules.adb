@@ -846,16 +846,16 @@ package body Why.Atree.Modules is
    begin
       M_BVs (BV8).Module :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("BitVector8"));
+                    Name => NID ("BV8"));
       M_BVs (BV16).Module :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("BitVector16"));
+                    Name => NID ("BV16"));
       M_BVs (BV32).Module :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("BitVector32"));
+                    Name => NID ("BV32"));
       M_BVs (BV64).Module :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("BitVector64"));
+                    Name => NID ("BV64"));
       for BV in BV_Kind loop
          M_BVs (BV).T :=
            New_Type (Type_Kind  => EW_Builtin,
@@ -984,17 +984,17 @@ package body Why.Atree.Modules is
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).Lsl :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("lsl"),
+                           Symbol => NID ("lsl_bv"),
                            Module => M_BVs (BV).Module,
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).Lsr :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("lsr"),
+                           Symbol => NID ("lsr_bv"),
                            Module => M_BVs (BV).Module,
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).Asr :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("asr"),
+                           Symbol => NID ("asr_bv"),
                            Module => M_BVs (BV).Module,
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).Rotate_Left :=
@@ -1014,7 +1014,7 @@ package body Why.Atree.Modules is
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).To_Int :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("to_int"),
+                           Symbol => NID ("to_uint"),
                            Module => M_BVs (BV).Module,
                            Typ    => EW_Int_Type);
          M_BVs (BV).Two_Power_Size :=

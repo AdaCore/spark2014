@@ -699,7 +699,7 @@ ar.ads:1402:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:1407:22: medium: postcondition might fail
 ar.ads:1415:22: info: postcondition proved
 ar.ads:1420:22: info: postcondition proved
-ar.ads:1425:22: medium: postcondition might fail, requires R = R'Old'update
+ar.ads:1425:22: info: postcondition proved
 ar.ads:1430:22: info: postcondition proved
 ar.ads:1435:22: info: postcondition proved
 ar.ads:1440:22: info: postcondition proved
@@ -782,7 +782,7 @@ ar.ads:1723:22: info: postcondition proved
 ar.ads:1728:22: medium: postcondition might fail
 ar.ads:1733:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:1738:22: medium: postcondition might fail, requires A = A'Old'update
-ar.ads:1743:22: info: postcondition proved
+ar.ads:1743:22: medium: postcondition might fail
 ar.ads:1748:22: medium: postcondition might fail
 ar.ads:1753:22: medium: postcondition might fail, requires A = A'Old'update
 ar.ads:1758:22: medium: postcondition might fail, requires A = A'Old'update

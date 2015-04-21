@@ -9,7 +9,7 @@ array_applications.adb:21:32: info: overflow check proved
 array_applications.adb:21:38: info: index check proved
 array_applications.adb:25:27: medium: overflow check might fail
 array_applications.adb:32:22: medium: postcondition might fail
-array_applications.adb:34:43: medium: overflow check might fail
+array_applications.adb:34:43: info: overflow check proved
 array_applications.adb:42:10: info: loop invariant initialization proved
 array_applications.adb:42:10: medium: loop invariant might fail after first iteration
 array_applications.adb:43:22: info: range check proved

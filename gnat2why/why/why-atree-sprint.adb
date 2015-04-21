@@ -1060,13 +1060,13 @@ package body Why.Atree.Sprint is
    begin
       P (O, "( ");
       if Typ = EW_BitVector_8_Type then
-         P (O, "BitVector8.");
+         P (O, "BV8.");
       elsif Typ = EW_BitVector_16_Type then
-         P (O, "BitVector16.");
+         P (O, "BV16.");
       elsif Typ = EW_BitVector_32_Type then
-         P (O, "BitVector32.");
+         P (O, "BV32.");
       elsif Typ = EW_BitVector_64_Type then
-         P (O, "BitVector64.");
+         P (O, "BV64.");
       else
          raise Unexpected_Node;
       end if;

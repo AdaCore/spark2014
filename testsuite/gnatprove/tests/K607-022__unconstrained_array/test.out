@@ -26,8 +26,8 @@ my_test.adb:22:24: info: initialization of "T3.V" proved
 simple_unc_arrays.adb:10:07: medium: "C.V" might not be initialized
 simple_unc_arrays.adb:11:25: info: initialization of "R7b" proved
 simple_unc_arrays.adb:12:13: info: loop invariant initialization proved
-simple_unc_arrays.adb:12:13: info: loop invariant preservation proved
 simple_unc_arrays.adb:13:42: medium: "C.V" might not be initialized
+simple_unc_arrays.adb:13:42: medium: loop invariant might fail after first iteration, requires C.V (J) = A.V (J) + B.V (J)
 simple_unc_arrays.adb:13:43: info: discriminant check proved
 simple_unc_arrays.adb:13:47: info: index check proved
 simple_unc_arrays.adb:13:53: info: discriminant check proved
@@ -215,7 +215,7 @@ simple_unc_arrays.ads:76:54: info: range check proved
 simple_unc_arrays.ads:83:13: info: initialization of "Bubble_Sort.V" proved
 simple_unc_arrays.ads:84:17: medium: postcondition might fail
 simple_unc_arrays.ads:85:34: info: discriminant check proved
-simple_unc_arrays.ads:85:38: info: index check proved
+simple_unc_arrays.ads:85:38: medium: array index check might fail
 simple_unc_arrays.ads:85:62: info: discriminant check proved
 simple_unc_arrays.ads:85:67: info: overflow check proved
 simple_unc_arrays.ads:85:67: medium: array index check might fail

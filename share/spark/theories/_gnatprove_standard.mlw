@@ -575,7 +575,7 @@ theory Array__4
               (I4.sub l (I4.sub new_first_4 old_first_4))
 end
 
-module BitVectorAda
+module BVAda
   type t
 
   function abs "inline" (x : t) : t = x
@@ -619,10 +619,12 @@ module BitVectorAda
 
 end
 
-module BitVector8
-  use export bitvec.BitVector8
+module BV8
+  use export bv.BV8
 
-  clone export BitVectorAda with
+  function one : t = of_int 1
+
+  clone export BVAda with
     type t = t,
     predicate ult = ult,
     predicate ule = ule,
@@ -632,7 +634,7 @@ module BitVector8
     function one = one
 
   val of_int_ (i : int) : t
-    requires{ int_in_range i }
+    requires{ uint_in_range i }
     ensures{ result = of_int i }
 
   val udiv_ (x : t) (y : t) : t
@@ -644,10 +646,12 @@ module BitVector8
     ensures{ result = urem x y }
 end
 
-module BitVector16
-  use export bitvec.BitVector16
+module BV16
+  use export bv.BV16
 
-  clone export BitVectorAda with
+  function one : t = of_int 1
+
+  clone export BVAda with
     type t = t,
     predicate ult = ult,
     predicate ule = ule,
@@ -657,7 +661,7 @@ module BitVector16
     function one = one
 
   val of_int_ (i : int) : t
-    requires{ int_in_range i }
+    requires{ uint_in_range i }
     ensures{ result = of_int i }
 
   val udiv_ (x : t) (y : t) : t
@@ -669,10 +673,12 @@ module BitVector16
     ensures{ result = urem x y }
 end
 
-module BitVector32
-  use export bitvec.BitVector32
+module BV32
+  use export bv.BV32
 
-  clone export BitVectorAda with
+  function one : t = of_int 1
+
+  clone export BVAda with
     type t = t,
     predicate ult = ult,
     predicate ule = ule,
@@ -682,7 +688,7 @@ module BitVector32
     function one = one
 
   val of_int_ (i : int) : t
-    requires{ int_in_range i }
+    requires{ uint_in_range i }
     ensures{ result = of_int i }
 
   val udiv_ (x : t) (y : t) : t
@@ -694,10 +700,12 @@ module BitVector32
     ensures{ result = urem x y }
 end
 
-module BitVector64
-  use export bitvec.BitVector64
+module BV64
+  use export bv.BV64
 
-  clone export BitVectorAda with
+  function one : t = of_int 1
+
+  clone export BVAda with
     type t = t,
     predicate ult = ult,
     predicate ule = ule,
@@ -707,7 +715,7 @@ module BitVector64
     function one = one
 
   val of_int_ (i : int) : t
-    requires{ int_in_range i }
+    requires{ uint_in_range i }
     ensures{ result = of_int i }
 
   val udiv_ (x : t) (y : t) : t
@@ -720,49 +728,49 @@ module BitVector64
 end
 
 module BVConv_32_64
-  use export bitvec.BVConverter_32_64
+  use export bv.BVConverter_32_64
 
-  val range_check_ (f l x : BitVector64.t) : BitVector64.t
-    requires { (BitVector64.ule f x) /\ (BitVector64.ule x l) }
+  val range_check_ (f l x : BV64.t) : BV64.t
+    requires { (BV64.ule f x) /\ (BV64.ule x l) }
     ensures { result = x }
 end
 
 module BVConv_16_64
-  use export bitvec.BVConverter_16_64
+  use export bv.BVConverter_16_64
 
-  val range_check_ (f l x : BitVector64.t) : BitVector64.t
-    requires { (BitVector64.ule f x) /\ (BitVector64.ule x l) }
+  val range_check_ (f l x : BV64.t) : BV64.t
+    requires { (BV64.ule f x) /\ (BV64.ule x l) }
     ensures { result = x }
 end
 
 module BVConv_8_64
-  use export bitvec.BVConverter_8_64
+  use export bv.BVConverter_8_64
 
-  val range_check_ (f l x : BitVector64.t) : BitVector64.t
-    requires { (BitVector64.ule f x) /\ (BitVector64.ule x l) }
+  val range_check_ (f l x : BV64.t) : BV64.t
+    requires { (BV64.ule f x) /\ (BV64.ule x l) }
     ensures { result = x }
 end
 
 module BVConv_16_32
-  use export bitvec.BVConverter_16_32
+  use export bv.BVConverter_16_32
 
-  val range_check_ (f l x : BitVector32.t) : BitVector32.t
-    requires { (BitVector32.ule f x) /\ (BitVector32.ule x l) }
+  val range_check_ (f l x : BV32.t) : BV32.t
+    requires { (BV32.ule f x) /\ (BV32.ule x l) }
     ensures { result = x }
 end
 
 module BVConv_8_32
-  use export bitvec.BVConverter_8_32
+  use export bv.BVConverter_8_32
 
-  val range_check_ (f l x : BitVector32.t) : BitVector32.t
-    requires { (BitVector32.ule f x) /\ (BitVector32.ule x l) }
+  val range_check_ (f l x : BV32.t) : BV32.t
+    requires { (BV32.ule f x) /\ (BV32.ule x l) }
     ensures { result = x }
 end
 
 module BVConv_8_16
-  use export bitvec.BVConverter_8_16
+  use export bv.BVConverter_8_16
 
-  val range_check_ (f l x : BitVector16.t) : BitVector16.t
-    requires { (BitVector16.ule f x) /\ (BitVector16.ule x l) }
+  val range_check_ (f l x : BV16.t) : BV16.t
+    requires { (BV16.ule f x) /\ (BV16.ule x l) }
     ensures { result = x }
 end

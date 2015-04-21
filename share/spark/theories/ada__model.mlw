@@ -111,10 +111,10 @@ module Static_Modular_Base
 end
 
 module Static_Modular_lt64
-  use _gnatprove_standard.BitVector64
-  type rep_type = BitVector64.t
+  use _gnatprove_standard.BV64
+  type rep_type = BV64.t
 
-  function rep_to_int "inline" (x : rep_type) : int = BitVector64.to_int x
+  function rep_to_int "inline" (x : rep_type) : int = BV64.to_uint x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -124,15 +124,15 @@ module Static_Modular_lt64
 
   axiom coerce_axiom :
     forall x : rep_type [to_rep (of_rep x)].
-      let y = BitVector64.urem x attr__ATTRIBUTE_MODULUS in
+      let y = BV64.urem x attr__ATTRIBUTE_MODULUS in
         in_range y -> to_rep (of_rep x) = y
 end
 
 module Static_Modular_64
-  use _gnatprove_standard.BitVector64
-  type rep_type = BitVector64.t
+  use _gnatprove_standard.BV64
+  type rep_type = BV64.t
 
-  function rep_to_int "inline" (x : rep_type) : int = BitVector64.to_int x
+  function rep_to_int "inline" (x : rep_type) : int = BV64.to_uint x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -144,10 +144,10 @@ module Static_Modular_64
 end
 
 module Static_Modular_lt32
-  use _gnatprove_standard.BitVector32
-  type rep_type = BitVector32.t
+  use _gnatprove_standard.BV32
+  type rep_type = BV32.t
 
-  function rep_to_int "inline" (x : rep_type) : int = BitVector32.to_int x
+  function rep_to_int "inline" (x : rep_type) : int = BV32.to_uint x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -157,15 +157,15 @@ module Static_Modular_lt32
 
   axiom coerce_axiom :
     forall x : rep_type [to_rep (of_rep x)].
-      let y = BitVector32.urem x attr__ATTRIBUTE_MODULUS in
+      let y = BV32.urem x attr__ATTRIBUTE_MODULUS in
         in_range y -> to_rep (of_rep x) = y
 end
 
 module Static_Modular_32
-  use _gnatprove_standard.BitVector32
-  type rep_type = BitVector32.t
+  use _gnatprove_standard.BV32
+  type rep_type = BV32.t
 
-  function rep_to_int "inline" (x : rep_type) : int = BitVector32.to_int x
+  function rep_to_int "inline" (x : rep_type) : int = BV32.to_uint x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -177,10 +177,10 @@ module Static_Modular_32
 end
 
 module Static_Modular_lt16
-  use _gnatprove_standard.BitVector16
-  type rep_type = BitVector16.t
+  use _gnatprove_standard.BV16
+  type rep_type = BV16.t
 
-  function rep_to_int "inline" (x : rep_type) : int = BitVector16.to_int x
+  function rep_to_int "inline" (x : rep_type) : int = BV16.to_uint x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -190,15 +190,15 @@ module Static_Modular_lt16
 
   axiom coerce_axiom :
     forall x : rep_type [to_rep (of_rep x)].
-      let y = BitVector16.urem x attr__ATTRIBUTE_MODULUS in
+      let y = BV16.urem x attr__ATTRIBUTE_MODULUS in
         in_range y -> to_rep (of_rep x) = y
 end
 
 module Static_Modular_16
-  use _gnatprove_standard.BitVector16
-  type rep_type = BitVector16.t
+  use _gnatprove_standard.BV16
+  type rep_type = BV16.t
 
-  function rep_to_int "inline" (x : rep_type) : int = BitVector16.to_int x
+  function rep_to_int "inline" (x : rep_type) : int = BV16.to_uint x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -210,10 +210,10 @@ module Static_Modular_16
 end
 
 module Static_Modular_lt8
-  use _gnatprove_standard.BitVector8
-  type rep_type = BitVector8.t
+  use _gnatprove_standard.BV8
+  type rep_type = BV8.t
 
-  function rep_to_int "inline" (x : rep_type) : int = BitVector8.to_int x
+  function rep_to_int "inline" (x : rep_type) : int = BV8.to_uint x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -223,15 +223,15 @@ module Static_Modular_lt8
 
   axiom coerce_axiom :
     forall x : rep_type [to_rep (of_rep x)].
-      let y = BitVector8.urem x attr__ATTRIBUTE_MODULUS in
+      let y = BV8.urem x attr__ATTRIBUTE_MODULUS in
         in_range y -> to_rep (of_rep x) = y
 end
 
 module Static_Modular_8
-  use _gnatprove_standard.BitVector8
-  type rep_type = BitVector8.t
+  use _gnatprove_standard.BV8
+  type rep_type = BV8.t
 
-  function rep_to_int "inline" (x : rep_type) : int = BitVector8.to_int x
+  function rep_to_int "inline" (x : rep_type) : int = BV8.to_uint x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -847,7 +847,7 @@ module Array_Int_Rep_Comparison_Axiom
 end
 
 module Array_BV8_Rep_Comparison_Axiom
-  use import bitvec.BitVector8
+  use import bv.BV8
 
   clone export Array_Comparison_Axiom with
   type rep_type = t,
@@ -856,7 +856,7 @@ module Array_BV8_Rep_Comparison_Axiom
 end
 
 module Array_BV16_Rep_Comparison_Axiom
-  use import bitvec.BitVector16
+  use import bv.BV16
 
   clone export Array_Comparison_Axiom with
   type rep_type = t,
@@ -865,7 +865,7 @@ module Array_BV16_Rep_Comparison_Axiom
 end
 
 module Array_BV32_Rep_Comparison_Axiom
-  use import bitvec.BitVector32
+  use import bv.BV32
 
   clone export Array_Comparison_Axiom with
   type rep_type = t,
@@ -874,7 +874,7 @@ module Array_BV32_Rep_Comparison_Axiom
 end
 
 module Array_BV64_Rep_Comparison_Axiom
-  use import bitvec.BitVector64
+  use import bv.BV64
 
   clone export Array_Comparison_Axiom with
   type rep_type = t,
