@@ -193,9 +193,9 @@ package body Why.Gen.Records is
    -----------------------
 
    procedure Declare_Ada_Record
-     (P       : Why_Section;
-      Theory  : W_Theory_Declaration_Id;
-      E       : Entity_Id)
+     (P      : Why_Section;
+      Theory : W_Theory_Declaration_Id;
+      E      : Entity_Id)
    is
       procedure Declare_Attributes;
       --  Declare functions for the record attributes
@@ -243,18 +243,18 @@ package body Why.Gen.Records is
       --  Initialize the map which maps each component to its information
       --  record
 
-      Root       : constant Entity_Id := Root_Record_Type (E);
-      Is_Root    : constant Boolean   := Root = E;
-      Ty_Name    : constant W_Name_Id := To_Why_Type (E, Local => True);
-      Abstr_Ty   : constant W_Type_Id := New_Named_Type (Name => Ty_Name);
-      Comp_Info  : Info_Maps.Map      := Info_Maps.Empty_Map;
+      Root      : constant Entity_Id := Root_Record_Type (E);
+      Is_Root   : constant Boolean   := Root = E;
+      Ty_Name   : constant W_Name_Id := To_Why_Type (E, Local => True);
+      Abstr_Ty  : constant W_Type_Id := New_Named_Type (Name => Ty_Name);
+      Comp_Info : Info_Maps.Map      := Info_Maps.Empty_Map;
       --  This map maps each component and each N_Variant node to a
       --  Component_Info record. This map is initialized by a call to
       --  Init_Component_Info;
 
-      A_Ident    : constant W_Identifier_Id :=
+      A_Ident   : constant W_Identifier_Id :=
         New_Identifier (Name => "a", Typ => Abstr_Ty);
-      R_Binder   : constant Binder_Array :=
+      R_Binder  : constant Binder_Array :=
         (1 => (B_Name => A_Ident,
                others => <>));
 
