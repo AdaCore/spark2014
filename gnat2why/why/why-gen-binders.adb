@@ -132,15 +132,21 @@ package body Why.Gen.Binders is
       In_Fun_Decl : Boolean := False)
       return Item_Type
    is
-      Use_Ty  : constant Entity_Id :=
-        (if not In_Fun_Decl and then Ekind (E) in Object_Kind
+      Use_Ty : constant Entity_Id :=
+        (if not In_Fun_Decl
+         --  test when it is safe to call Actual_Subtype
+         and then (Ekind (E) in E_Constant                 |
+                                E_Variable                 |
+                                E_Generic_In_Out_Parameter
+           or else Is_Formal (E))
          and then Present (Actual_Subtype (E))
-         and then Entity_In_SPARK (Actual_Subtype (E)) then
-            Actual_Subtype (E) else Etype (E));
+         and then Entity_In_SPARK (Actual_Subtype (E))
+         then Actual_Subtype (E)
+         else Etype (E));
       --  If we are not in a function declaration, we use the actual subtype
       --  for the parameter if one is provided.
 
-      Ty      : constant Entity_Id :=
+      Ty     : constant Entity_Id :=
         (if Ekind (Use_Ty) in Type_Kind then Retysp (Use_Ty) else Use_Ty);
 
    begin
