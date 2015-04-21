@@ -1256,7 +1256,7 @@ shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
 
 2. A Refined_Global aspect is permitted on a body_stub (if one is
    present), subprogram body, entry body, or task body if and only if
-   the stub or body is the completion of declaration occurring in the
+   the stub or body is the completion of a declaration occurring in the
    specification of an enclosing package, the declaration has a
    Global aspect which denotes a state abstraction declared by the package and
    the refinement of the state abstraction is visible.
@@ -2024,7 +2024,7 @@ be a Boolean ``expression``.
    immediately before the evaluation of the postcondition or, if there is no
    postcondition, immediately before the point at which a postcondition would
    have been evaluated. If the Refined Postcondition evaluates to
-   False, the the exceptions Assertion.Assertion_Error is raised.
+   False, then the exception Assertion.Assertion_Error is raised.
    Otherwise, the postcondition is then evaluated and checked
    as described in the Ada RM.
 

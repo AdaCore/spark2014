@@ -9,7 +9,7 @@ task entry declarations are never in |SPARK|.
 
 Tasks may communicate with each other via synchronized objects; these include
 protected objects, suspension objects, atomic objects, constants, and
-“constant after elaboration” objects (described later).
+"constant after elaboration" objects (described later).
 
 Other objects are said to be unsynchronized and may only be referenced
 (directly or via intermediate calls) by a single task (including the
@@ -17,7 +17,7 @@ environment task) or by the protected operations of a single protected object.
 
 These rules statically eliminate the possibility of erroneous concurrent
 access to shared data (i.e., "data races").
- 
+
 Tagged task types, tagged protected types, and the various forms of
 synchronized interface types are in |SPARK|. Subject to the restrictions
 of Ravenscar, delay statements and protected procedure handlers are
@@ -26,7 +26,7 @@ are in |SPARK|.
 
 .. centered:: **Static Semantics**
 
-1.  A type is said to be *yield synchronized objects* if it is
+1.  A type is said to *yield synchronized objects* if it is
     a task type, a protected type, a synchronized interface type,
     an array type whose element type yields synchronized objects,
     an undiscriminated type (or a discriminated type
@@ -42,7 +42,7 @@ are in |SPARK|.
 
   * an atomic object; or
 
-  * a variable which is "constant after elaboration" (see section 
+  * a variable which is "constant after elaboration" (see section
     :ref:`object-declarations`); or
 
   * a constant.
@@ -64,7 +64,7 @@ are in |SPARK|.
    predefined state abstraction Ada.Tasking_Identification.Tasking_State
    (described below) as a global requires the Ravenscar Profile.
 
-3. A ''global_item'' occurring in a Global aspect specification of a
+3. A ``global_item`` occurring in a Global aspect specification of a
    task unit or of a protected operation shall not denote an object
    or state abstraction which is not synchronized unless the
    Part_Of aspect of the object or state abstraction denotes the
@@ -75,7 +75,7 @@ are in |SPARK|.
    whose Part_Of aspect denotes a task or protected unit. [In other words,
    the environment task cannot reference objects which "belong" to other
    tasks.]
-   
+
 5. If a variable or a package which declares a state abstraction is declared
    within the same declarative region as a ``single_task_declaration`` or a
    ``single_protected_declaration``, then the Part_Of aspect of the variable
@@ -104,7 +104,7 @@ are in |SPARK|.
 
 8. A constituent of a synchronized state abstraction shall be a
    synchronized object or a synchronized state abstraction.
-   
+
 .. centered:: **Verification Rules**
 
 9. A ``global_item`` occurring in the Global aspect specification of the
@@ -115,7 +115,7 @@ are in |SPARK|.
     shall ever call (directly or via intermediate calls) the protected
     entry (if any) of a given protected object. [Roughly speaking, each
     protected object which has an entry can be statically identified with
-    its "suspender task" and no other task shall call the entry of that 
+    its "suspender task" and no other task shall call the entry of that
     protected object. This rule is enforced via (potentially conservative)
     flow analysis, as opposed to by introducing verification conditions.
     This rule discharges the proof obligation associated with Ravenscar's
@@ -188,4 +188,3 @@ are in |SPARK|.
   * TBD (e.g., Ada.Execution_Time.Clock must not be passed a null Task_Id)
 
 .. _etu-tasks_and_synchronization:
-
