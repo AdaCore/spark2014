@@ -1877,8 +1877,7 @@ package body Flow.Control_Flow_Graph is
       -- Get_Loop_Range --
       --------------------
 
-      function Get_Loop_Range (N : Node_Id) return Node_Id
-      is
+      function Get_Loop_Range (N : Node_Id) return Node_Id is
          DSD : constant Node_Id := Discrete_Subtype_Definition
            (Loop_Parameter_Specification (Iteration_Scheme (N)));
 
@@ -1993,10 +1992,16 @@ package body Flow.Control_Flow_Graph is
       -- Do_While_Loop --
       -------------------
 
-      procedure Do_While_Loop
-      is
-         V : Flow_Graphs.Vertex_Id;
+      procedure Do_While_Loop is
+         V  : Flow_Graphs.Vertex_Id;
+         CA : constant List_Id := Condition_Actions (Iteration_Scheme (N));
       begin
+         --  If the Condition_Actions of the loop are not empty, then
+         --  we process them too.
+         if Present (CA) then
+            Process_Statement_List (CA, FA, CM, Ctx);
+         end if;
+
          Add_Vertex
            (FA,
             Direct_Mapping_Id (N),
@@ -2017,8 +2022,17 @@ package body Flow.Control_Flow_Graph is
            (Condition (Iteration_Scheme (N)));
 
          --  Flow for the while loops goes into the condition and then
-         --  out again.
-         CM (Union_Id (N)).Standard_Entry := V;
+         --  out again. Note that the loop's Condition_Actions are
+         --  considered to occur before the loop's condition (if they
+         --  exist).
+         if Present (CA) then
+            CM (Union_Id (N)).Standard_Entry :=
+              CM (Union_Id (CA)).Standard_Entry;
+
+            Linkup (FA, CM (Union_Id (CA)).Standard_Exits, V);
+         else
+            CM (Union_Id (N)).Standard_Entry := V;
+         end if;
          CM (Union_Id (N)).Standard_Exits.Include (V);
 
          --  Loop the loop: V -> body -> V
@@ -2030,8 +2044,7 @@ package body Flow.Control_Flow_Graph is
       -- Do_For_Loop --
       -----------------
 
-      procedure Do_For_Loop (Fully_Initialized : out Flow_Id_Sets.Set)
-      is
+      procedure Do_For_Loop (Fully_Initialized : out Flow_Id_Sets.Set) is
          LPS : constant Node_Id :=
            Loop_Parameter_Specification (Iteration_Scheme (N));
 
@@ -2231,8 +2244,7 @@ package body Flow.Control_Flow_Graph is
          -- Get_Array_Index --
          ---------------------
 
-         function Get_Array_Index (N : Node_Id) return Target
-         is
+         function Get_Array_Index (N : Node_Id) return Target is
             F : Flow_Id;
             T : Entity_Id;
             L : Entity_Vectors.Vector;
@@ -2511,7 +2523,7 @@ package body Flow.Control_Flow_Graph is
       CM.Include (Union_Id (N), No_Connections);
 
       --  Construct graph for the loop body. Please note that early
-      --  exists may alrady change the above, so be sure to only use
+      --  exists may already change the above, so be sure to only use
       --  union or include, instead of setting the standard exits.
       --
       --  We also change the context to include the current
@@ -5669,8 +5681,8 @@ package body Flow.Control_Flow_Graph is
                                            Atr.Variables_Defined);
                begin
                   for Var of Vars loop
-                     if not Synthetic (Var) and then
-                       not Known_Vars.Contains (Var)
+                     if not Synthetic (Var)
+                       and then not Known_Vars.Contains (Var)
                      then
                         FA.GG.Globals.Include (Get_Direct_Mapping_Id (Var));
                      end if;
