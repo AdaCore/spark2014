@@ -206,7 +206,7 @@ package body Gnat2Why.Annotate is
       --  - it avoids a call to Sloc_Range with a N_Subprogram_Body node, which
       --    doesn't work;
       --  - includes the spec node in the range to be considered for subprogram
-      --  bodies
+      --    bodies.
 
       if Nkind (Range_Node) = N_Subprogram_Body then
          Insert_Annotate_Range (Prgma, Kind, Pattern, Reason,
