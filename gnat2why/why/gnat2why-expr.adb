@@ -7796,13 +7796,13 @@ package body Gnat2Why.Expr is
         Get_Ada_Node (+Type_Of_Node (Return_Type));
       Comp_Type  : constant W_Type_Id :=
         EW_Abstract (Component_Type (Return_Type));
-      Index_Rep_Type : constant W_Type_Id := Nth_Index_Rep_Type_No_Bool
-        (Return_Type, 1);
 
       function Build_Last_Expr return W_Expr_Id;
       --  build the expression that yields the value of the 'Last attribute
       --  of the concatenation. It is simply
       --    first + length of left opnd + length of right_opnd - 1
+      --  Last is always computed with integer (even when dealing with modular)
+      --  in order to be coherent with length which is always an integer.
 
       ---------------------
       -- Build_Last_Expr --
@@ -7811,7 +7811,7 @@ package body Gnat2Why.Expr is
       function Build_Last_Expr return W_Expr_Id is
          One_Term : constant W_Expr_Id :=
            New_Discrete_Constant (Value => Uint_1,
-                                  Typ   => Index_Rep_Type);
+                                  Typ   => EW_Int_Type);
          Left_Length : constant W_Expr_Id :=
            (if Is_Component_Left
             then One_Term
@@ -7820,7 +7820,7 @@ package body Gnat2Why.Expr is
               (Domain => Domain,
                First => Get_Array_Attr (Domain, Left_Expr, Attribute_First, 1),
                Last => Get_Array_Attr (Domain, Left_Expr, Attribute_Last, 1),
-               Typ => Index_Rep_Type));
+               Typ => EW_Int_Type));
          Right_Length : constant W_Expr_Id :=
            (if Is_Component_Right
             then One_Term
@@ -7830,19 +7830,20 @@ package body Gnat2Why.Expr is
                First => Get_Array_Attr
                  (Domain, Right_Expr, Attribute_First, 1),
                Last => Get_Array_Attr (Domain, Right_Expr, Attribute_Last, 1),
-               Typ => Index_Rep_Type));
+               Typ => EW_Int_Type));
       begin
          return
-           New_Discrete_Substract
-             (Domain,
-              New_Discrete_Add
-                (Domain,
-                 First_Expr,
-                 New_Discrete_Add
-                   (Domain,
-                    Left_Length,
-                    Right_Length)),
-              One_Term);
+           +New_Discrete_Substract
+           (Domain,
+            New_Discrete_Add
+              (Domain,
+               First_Expr,
+               New_Discrete_Add
+                 (Domain,
+                  Left_Length,
+                  Right_Length),
+               EW_Int_Type),
+            One_Term);
       end Build_Last_Expr;
 
    --  Start of Transform_Concatenation
@@ -7950,10 +7951,14 @@ package body Gnat2Why.Expr is
          begin
             if Domain = EW_Prog then
                Last_Expr :=
-                 +Do_Range_Check (Ada_Node   => Ada_Node,
-                                  Ty         => Target,
-                                  W_Expr     => Last_Expr,
-                                  Check_Kind => RCK_Range);
+                 Insert_Simple_Conversion
+                   (Domain         => EW_Prog,
+                    Expr           =>
+                      +Do_Range_Check (Ada_Node   => Ada_Node,
+                                       Ty         => Target,
+                                       W_Expr     => Last_Expr,
+                                       Check_Kind => RCK_Range),
+                    To             => Get_Type (First_Expr));
             end if;
             T := Array_Convert_From_Base
               (Domain => Domain,
@@ -7962,6 +7967,8 @@ package body Gnat2Why.Expr is
                First  => First_Expr,
                Last   => Last_Expr);
          end;
+      else
+         pragma Assert (False);
       end if;
 
       --  If the Left operand is a null array then concatenate returns Right
