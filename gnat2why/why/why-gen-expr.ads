@@ -137,7 +137,7 @@ package Why.Gen.Expr is
    function New_Shape_Label (Node : Node_Id) return Name_Id;
    --  Return a label representing the shape of the Ada code
    --  surrounding the input node.
-   --  "Shapes" are more resistant to code refactorings than SLOCs of VSs.
+   --  "Shapes" are more resistant to code refactorings than SLOCs of VCs.
    --  This makes Why3 proofs easier to reply. (See Why3 VSTTE'13 paper for
    --  details).
 
