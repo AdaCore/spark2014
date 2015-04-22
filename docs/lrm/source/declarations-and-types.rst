@@ -111,17 +111,17 @@ Static predicates are in |SPARK|. Dynamic predicates are also in
 .. _tu-sf-subtype_predicates-02:
 
 2. If a Dynamic_Predicate applies to the subtype of a composite object,
-   then a proof obligation is generated to ensure that the object
-   satisifies its predicate immediately after any subcomponent or slice
+   then a verification condition is generated to ensure that the object
+   satisfies its predicate immediately after any subcomponent or slice
    of the given object is either
 
   * the target of an assignment statement or;
 
   * an actual parameter of mode **out** or **in out** in a call.
 
-  [These proof obligations do not correspond to any run-time check. Roughly
-  speaking, if object X is of subtype S, then proof obligations are
-  generated as if an implicitly generated
+  [These verification conditions do not correspond to any run-time
+  check. Roughly speaking, if object X is of subtype S, then verification
+  conditions are generated as if an implicitly generated
 
      pragma Assert (X in S);
 

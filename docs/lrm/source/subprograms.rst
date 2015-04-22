@@ -95,36 +95,36 @@ Preconditions and Postconditions
 .. centered:: **Verification Rules**
 
 For a call on a nondispatching operation,
-a proof obligation is introduced (as
+a verification condition is introduced (as
 for any run-time check) to ensure that the specific precondition
 check associated with the statically denoted callee will succeed.
 Upon entry to such a subprogram, the specific preconditions of
 the subprogram may then be assumed.
 
 For a call (dispatching or not) on a dispatching operation,
-a proof obligation is introduced (as
+a verification condition is introduced (as
 for any run-time check) to ensure that the class-wide precondition
 check associated with the statically denoted callee will succeed.
 
-The proof obligation associated with the specific precondition
+The verification condition associated with the specific precondition
 of a dispatching subprogram is imposed on the callee, as opposed to
 on callers of the subprogram. Upon entry to a subprogram, the
 class-wide preconditions of the subprogram may be assumed. Given
 this, the specific preconditions of the subprogram must be proven.
 
-The callee is responsible for discharging the proof obligations associated
+The callee is responsible for discharging the verification conditions associated
 with any postcondition checks, class-wide or specific. The success of these
 checks may then be assumed by the caller.
 
 In the case of an overriding dispatching operation whose Pre'Class
-attribute is explicitly specified, a proof obligation is introduced
+attribute is explicitly specified, a verification condition is introduced
 to ensure that the specified Pre'Class condition is implied by the
 Pre'Class condition of the overridden inherited subprogram(s). Similarly,
 in the case of an overriding dispatching operation whose Post'Class
-attribute is explicitly specified, a proof obligation is introduced
+attribute is explicitly specified, a verification condition is introduced
 to ensure that the specified Post'Class condition implies the
 Post'Class condition of the overridden inherited subprogram(s).
-[These proof obligations do not correspond to any run-time check.
+[These verification conditions do not correspond to any run-time check.
 They are intended to, in effect, require users to make explicit the implicit
 disjunction/conjunction of class-wide preconditions/postconditions
 that is described in Ada RM 6.1.1.]
@@ -296,10 +296,10 @@ where
 
 .. centered:: **Verification Rules**
 
-The proof obligations associated with the Contract_Cases runtime checks
+The verification conditions associated with the Contract_Cases runtime checks
 performed at the beginning of a call are assigned in the same way
 as those associated with a specific precondition check. More specifically,
-the proof obligation is imposed on the caller or on the callee depending
+the verification condition is imposed on the caller or on the callee depending
 on whether the subprogram in question is a dispatching operation.
 
 .. centered:: **Examples**
@@ -1523,7 +1523,7 @@ library package that no longer needs a body (see Ada RM 7.2(4)).
       Refined_Global, Refined_Depends, Initializes, or Refined_State.
       [For example, the Global aspect of a non-ghost subprogram might
       refer to a ghost variable.]
-    
+
    [Predicate expressions are excluded because predicates participate
    in membership tests; no Assertion_Policy pragma has any effect on
    this participation. In the case of a Static_Predicate expression,

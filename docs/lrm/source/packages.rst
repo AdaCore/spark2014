@@ -289,7 +289,7 @@ For example, consider
      pragma Assert (Y = 0);
    end Proc;
 
-The proof obligation associated with the assertion can be
+The verification condition associated with the assertion can be
 successfully discharged but this success depends on the
 Async_Writers aspect specification.
 
@@ -322,7 +322,7 @@ Async_Writers aspect specification.
 .. _tu-fe-external_state_variables-04:
 
 4. A constant object (other than a formal parameter of mode **in**)
-    shall not be effectively volatile.
+   shall not be effectively volatile.
 
 .. _tu-fe-external_state_variables-05:
 
@@ -2018,7 +2018,7 @@ be a Boolean ``expression``.
 .. _tu-pr-refined_postcondition_aspects-08:
 
 8. If a subprogram has both a Refined_Postcondition aspect and a
-   Postcondition aspect, then the proof obligation associated with
+   Postcondition aspect, then the verification condition associated with
    the Postcondition aspect is discharged in two steps. The success
    of the Refined_Postcondition run-time check must be proven as usual.
    It must also be shown that the precondition (or, in the case of a dispatching

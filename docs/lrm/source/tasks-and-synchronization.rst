@@ -59,9 +59,9 @@ are in |SPARK|.
    is not in |SPARK| if the Ravenscar profile does not apply to the
    enclosing compilation unit.] Similarly, the use of task or protected units
    also requires a Partition_Elaboration_Policy of Sequential. [This
-   is to prevent race conditions during library unit elaboration.]
+   is to prevent data races during library unit elaboration.]
    Similarly, the use of any subprogram which references the
-   predefined state abstraction Ada.Tasking_Identification.Tasking_State
+   predefined state abstraction Ada.Task_Identification.Tasking_State
    (described below) as a global requires the Ravenscar Profile.
 
 3. A ``global_item`` occurring in a Global aspect specification of a
@@ -85,8 +85,8 @@ are in |SPARK|.
    analysis will treat the object as though it were declared within
    its "owner". This can be useful if, for example, a protected object's
    operations need to reference an object whose Address aspect is specified.
-   The protected (as opposed to task) case corresponds to RavenSpark's
-   "virtual protected" objects.]
+   The protected (as opposed to task) case corresponds to the previous notion
+   of "virtual protected" objects in RavenSPARK.]
 
 6. A protected type shall define full default initialization.
    A variable whose Part_Of aspect specifies a task unit or protected unit
@@ -118,22 +118,22 @@ are in |SPARK|.
     its "suspender task" and no other task shall call the entry of that
     protected object. This rule is enforced via (potentially conservative)
     flow analysis, as opposed to by introducing verification conditions.
-    This rule discharges the proof obligation associated with Ravenscar's
+    This rule discharges the verification condition associated with Ravenscar's
     "Max_Entry_Queue_Length => 1" restriction.]
 
     For purposes of this rule, Ada.Synchronous_Task_Control.Suspension_Object
     is assumed to be a protected type having an entry and the procedure
     Suspend_Until_True is assumed to contain a call to the entry of its
-    parameter. [This rule discharges the proof obligation associated with
+    parameter. [This rule discharges the verification condition associated with
     the Ada rule that two tasks cannot simultaneously suspend on one
     suspension object (see Ada RM D.10(10)).]
 
-11. The proof obligation associated with the Ada rule that it is a bounded
+11. The verification condition associated with the Ada rule that it is a bounded
     error to invoke an operation that is potentially blocking during a
     protected action (see Ada RM 9.5.1(8)) is discharged via (potentially
     conservative) flow analysis, as opposed to by introducing verification
     conditions. [Support for the "Nonblocking" aspect discussed in AI12-0064
-    may be incorporated into |SPARK| at some point in the future.].
+    may be incorporated into |SPARK| at some point in the future.]
 
 12. The end of a task body shall not be reachable. [This follows from
     from Ravenscar's No_Task_Termination restriction.]
@@ -153,7 +153,7 @@ are in |SPARK|.
     Clock_Time. The Async_Readers and Async_Writers aspects of both state
     abstractions are True, and their Effective_Reads and Effective_Writes
     aspects are False.
-    For each of the the following language-defined functions, the
+    For each of the following language-defined functions, the
     Volatile_Function aspect of the function is defined to be True
     and the Global aspect of the function specifies that one of these
     two state abstractions is referenced as an In_Out global:
