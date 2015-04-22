@@ -82,6 +82,9 @@ package SPARK_Definition is
    procedure Mark_Standard_Package;
    --  Put marks on package Standard
 
+   function Entity_Marked (E : Entity_Id) return Boolean;
+   --  Returns True if entity E has already been considered for marking.
+
    function Entity_In_SPARK (E : Entity_Id) return Boolean;
    --  Returns True if entity E is in SPARK. Note that E may be in SPARK
    --  without being marked by the user in SPARK, in which case it can be

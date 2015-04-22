@@ -190,65 +190,76 @@ package body SPARK_Util is
    end Has_Static_Scalar_Subtype;
 
    function Retysp (T : Entity_Id) return Entity_Id is
-      Typ : Entity_Id;  --  type on the chain of Underlying_Type from T
-
+      Typ : Entity_Id := T;
    begin
-      --  If T is not in SPARK, return it
+      --  If T has not been marked yet, return it
 
-      --  ??? The code below needs comments
+      if not Entity_Marked (T) then
+         return T;
+      end if;
 
-      if Entity_Set.Contains (T)
-        and then not Entity_In_SPARK (T)
-      then
-         if Is_Full_View (T) then
-            return Partial_View (T);
-         else
-            return T;
-         end if;
+      --  If T is not in SPARK, go through the Partial_View chain to find its
+      --  first view in SPARK if any.
 
-      --  Otherwise, T is in SPARK, return its "Representative Type in SPARK"
-
-      else
-         Typ := T;
-
+      if not Entity_In_SPARK (T) then
          loop
-            --  ??? The code below needs comments
+            if Entity_In_SPARK (Typ) then
 
-            if Entity_Set.Contains (Typ)
-              and then not Entity_In_SPARK (Typ)
+               --  We found a partial view in SPARK, return it
+
+               pragma Assert (Full_View_Not_In_SPARK (Typ));
+               return Typ;
+            elsif not Entity_Marked (Typ)
+              or else not Is_Full_View (Typ)
             then
-               if Is_Full_View (Typ) then
-                  Typ := Partial_View (Typ);
-               else
-                  return Typ;
-               end if;
 
-            --  If the full view of Typ is not in SPARK, then return its
-            --  partial view, which is in SPARK if T is in SPARK.
+               --  No partial view in SPARK, return T
 
-            --  ??? The code below needs comments
-
-            elsif Full_View_Not_In_SPARK (Typ) then
-               if Entity_In_SPARK (Full_View (Typ)) then
-                  Typ := Full_View (Typ);
-                  pragma Assert (Full_View_Not_In_SPARK (Typ));
-               else
-                  return Typ;
-               end if;
-
-            --  If Typ is a private type, reach to its Underlying_Type
-
-            elsif Ekind (Typ) in Private_Kind then
-               Typ := Underlying_Type (Typ);
-               pragma Assert (Entity_In_SPARK (Typ));
-
-            --  Otherwise, we've reached the "Representative Type in SPARK"
-
+               return T;
             else
+               Typ := Partial_View (Typ);
+            end if;
+         end loop;
+      end if;
+
+      --  If T is in SPARK but not its most underlying type, then go through
+      --  the Full_View chain until the last type in SPARK is found.
+
+      if Full_View_Not_In_SPARK (T) then
+         loop
+            pragma Assert (Present (Full_View (Typ)));
+
+            --  if Typ's full_view is in SPARK, use it
+
+            if Entity_In_SPARK (Full_View (Typ)) then
+               Typ := Full_View (Typ);
+               pragma Assert (Full_View_Not_In_SPARK (Typ));
+            else
+
+               --  otherwise, we have found the last type in SPARK in T's
+               --  full views.
+
                return Typ;
             end if;
          end loop;
       end if;
+
+      --  Otherwise, T's most underlying type is in SPARK, return it.
+
+      loop
+
+         --  If Typ is a private type, reach to its Underlying_Type
+
+         if Ekind (Typ) in Private_Kind then
+            Typ := Underlying_Type (Typ);
+            pragma Assert (Entity_In_SPARK (Typ));
+
+            --  Otherwise, we've reached T's most underlying type
+
+         else
+            return Typ;
+         end if;
+      end loop;
    end Retysp;
 
    function Retysp_Kind (T : Entity_Id) return Entity_Kind is
