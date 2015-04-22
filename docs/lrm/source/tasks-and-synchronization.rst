@@ -148,40 +148,59 @@ are in |SPARK|.
     potentially blocking.]
 
 14. The package Ada.Task_Identification declares a synchronized
-    external state abstraction named Tasking_State. The Async_Readers
-    and Async_Writers aspects of this state abstraction are True,
-    and its Effective_Reads and Effective_Writes aspects are false.
+    external state abstraction named Tasking_State. The package
+    Ada.Real_Time declares a synchronized external state abstraction named
+    Clock_Time. The Async_Readers and Async_Writers aspects of both state
+    abstractions are True, and their Effective_Reads and Effective_Writes
+    aspects are false.
     For each of the the following language-defined functions, the
     Volatile_Function aspect of the function is defined to be True
-    and the Global aspect of the function specifies that the
-    Tasking_State state abstraction is referenced as an In_Out global.
+    and the Global aspect of the function specifies that one of these
+    two state abstractions is referenced as an In_Out global:
 
-  * Ada.Real_Time.Clock
+  * Ada.Real_Time.Clock references Ada.Real_Time.Clock_Time;
 
-  * Ada.Execution_Time.Clock
+  * Ada.Execution_Time.Clock references Ada.Real_Time.Clock_Time;
 
   * Ada.Execution_Time.Interrupts.Clock and Clock_For_Interrupts
+    references Ada.Real_Time.Clock_Time;
 
   * Ada.Execution_Time.Interrupts.Clock_For_Interrupts
+    references Ada.Real_Time.Clock_Time;
 
   * Ada.Task_Identification.Current_Task
+    references Ada.Task_Identification.Tasking_State;
 
   * Ada.Task_Identification.Is_Terminated
+    references Ada.Task_Identification.Tasking_State;
 
   * Ada.Task_Identification.Is_Callable
+    references Ada.Task_Identification.Tasking_State;
 
   * Ada.Task_Identification.Activation_Is_Complete
+    references Ada.Task_Identification.Tasking_State;
 
   * Ada.Dispatching.EDF.Get_Deadline
+    references Ada.Task_Identification.Tasking_State.
 
   [Functions already excluded by Ravenscar, such as Ada.Calendar.Clock, are
   not on this list.]
 
 15. For purposes of determining global inputs and outputs, a delay
-    statement is considered to require the state abstraction
-    Ada.Task_Identification.Tasking_State as both an input and an output.
+    statement is considered to reference the state abstraction
+    Ada.Real_Time.Clock_Time as both an input and an output.
+    [In other words, a delay statement can be treated like a call to
+    a procedure which takes the delay expression as an actual parameter
+    and references the Clock_Time state abstraction as an In_Out global.]
 
-15. Preconditions are added to suprogram specifications as needed in order
+16. For purposes of determining global inputs and outputs, a use of
+    any of the Callable, Caller, Count, or Terminated attributes is considered
+    to reference the state abstraction
+    Ada.Task_Identification.Tasking_State as both an input and an output.
+    [On the other hand, use of the Identity, Priority, or Storage_Size
+    attributes introduces no such dependency.]
+
+17. Preconditions are added to suprogram specifications as needed in order
     to avoid the failure of language-defined runtime checks for the
     following subprograms:
 

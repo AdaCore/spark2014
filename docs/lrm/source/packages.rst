@@ -293,32 +293,11 @@ The proof obligation associated with the assertion can be
 successfully discharged but this success depends on the
 Async_Writers aspect specification.
 
-.. centered:: **Static Semantics**
-
-1. Concurrent accesses of an effectively volatile object may cause a run-time
-   exception that cannot be proven to be absent by |SPARK|.
-
-   [An example is a strictly 32-bit machine with a 64-bit Long_Float
-   type, where some (invalid) floating point values will trap (and
-   cause program termination) when loaded into a floating point
-   register.  If, on such a system, we have a volatile object X of
-   type Long_Float, this variable will have to be stored using two
-   memory writes, so concurrent reads/writes could cause the trap, as
-   we could be unlucky and see a partially updated value that happens
-   to be invalid, even though both the old and new values would be
-   valid.]
-
-2. The key difference between accesses to atomic variables (they cause
-   expensive memory barriers to be used) and volatile accesses:
-   volatile use regular reads and writes, and use multiple memory
-   operations for doing so. Atomic accesses cause synchronization and
-   must by definition be indivisible.
-
 .. centered:: **Legality Rules**
 
-.. _tu-cbatu-external_state_variables-03:
+.. _tu-cbatu-external_state_variables-01:
 
-3. In the absence of an explicit aspect specification, the value of a
+1. In the absence of an explicit aspect specification, the value of a
    volatility refinement aspect of an effectively volatile stand-alone object
    other than a formal parameter is True. The Effective_Reads aspect of an
    effectively volatile formal parameter of mode **in** is False; in all other
@@ -328,28 +307,36 @@ Async_Writers aspect specification.
    The volatility refinement aspect values of a subcomponent of an object
    are those of the enclosing object.
 
-.. _tu-fe-external_state_variables-04:
+.. _tu-fe-external_state_variables-02:
 
-4. The value of a volatility refinement aspect shall only be specified
+2. The value of a volatility refinement aspect shall only be specified
    for an effectively volatile stand-alone object. [A formal parameter
    is not a stand-alone object; see Ada RM 3.3.1 .]
 
-.. _tu-fe-external_state_variables-05:
+.. _tu-fe-external_state_variables-03:
 
-5. The declaration of an effectively volatile stand-alone object
+3. The declaration of an effectively volatile stand-alone object
    shall be a library-level declaration. [In particular, it shall not be
    declared within a subprogram.]
 
+.. _tu-fe-external_state_variables-04:
+
+4. A constant object (other than a formal parameter of mode **in**)
+    shall not be effectively volatile.
+
+.. _tu-fe-external_state_variables-05:
+
+5. An effectively volatile type other than a protected type
+   shall not have a discriminated part.
+
 .. _tu-fe-external_state_variables-06:
 
-6. A constant object (other than a formal parameter of mode **in**)
-   shall not be effectively volatile. An effectively volatile object
-   shall not have a discriminated part.
+6. A type which is not effectively volatile shall not have an
+   effectively volatile component.
 
 .. _tu-fe-external_state_variables-07:
 
-7. A object which is not effectively volatile shall not have a
-   volatile component.
+7. A protected type shall not have an effectively volatile component.
 
 .. _tu-fe-external_state_variables-08:
 
@@ -363,8 +350,8 @@ Async_Writers aspect specification.
 
 .. _tu-fe-nt-external_state_variables-10:
 
-10. A nonvolatile function shall not have a formal parameter of an effectively
-    volatile type.
+10. A nonvolatile function shall not have a formal parameter (or result)
+    of an effectively volatile type.
 
 .. _tu-fe-external_state_variables-11:
 
@@ -1111,10 +1098,6 @@ where
 
 13. A ``constituent`` of a synchronized state abstraction shall be
     either a synchronized object or another synchronized state abstraction.
-    A ``constituent`` of a non-synchronized state abstraction shall be
-    either a non-synchronized variable, a non-synchronized state abstraction,
-    a constant, or variable which is constant after elaboration.
-    [TBD: Do we need the latter rule?]
 
 .. _etu-refined_state_aspects-lr:
 
