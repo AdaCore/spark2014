@@ -152,7 +152,7 @@ are in |SPARK|.
     Ada.Real_Time declares a synchronized external state abstraction named
     Clock_Time. The Async_Readers and Async_Writers aspects of both state
     abstractions are True, and their Effective_Reads and Effective_Writes
-    aspects are false.
+    aspects are False.
     For each of the the following language-defined functions, the
     Volatile_Function aspect of the function is defined to be True
     and the Global aspect of the function specifies that one of these
@@ -162,7 +162,7 @@ are in |SPARK|.
 
   * Ada.Execution_Time.Clock references Ada.Real_Time.Clock_Time;
 
-  * Ada.Execution_Time.Interrupts.Clock and Clock_For_Interrupts
+  * Ada.Execution_Time.Interrupts.Clock
     references Ada.Real_Time.Clock_Time;
 
   * Ada.Execution_Time.Interrupts.Clock_For_Interrupts
