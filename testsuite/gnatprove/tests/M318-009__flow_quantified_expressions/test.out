@@ -60,12 +60,12 @@ digraph G {
     24 [label="table (5) := 0;\nVU: {Table}\nVD: {Table}\n<VId: 24>"];
     25 [label="Temp_Table'initial\nVD: {Temp_Table}\n<VId: 25>",shape="plaintext",fontcolor="red"];
     26 [label="Temp_Table'final\nVU: {Temp_Table}\n<VId: 26>",shape="plaintext"];
-    28 [label="temp_table (i) := i;\nLoops:&nbsp;L_3\nVU: {Temp_Table, I}\nVD: {Temp_Table}\n<VId: 28>"];
+    28 [label="temp_table (i) := i;\nLoops:&nbsp;L_3\nVU: {I, Temp_Table}\nVD: {Temp_Table}\n<VId: 28>"];
     29 [label="I'initial\nVD: {I}\n<VId: 29>",shape="plaintext"];
     30 [label="I'final\nVU: {I}\n<VId: 30>",shape="plaintext",fontcolor="red"];
     31 [label="for i in 1 .. 9\nLoops:&nbsp;L_3\nVD: {I}\n<VId: 31>",shape="diamond"];
     32 [label="initialization in loop L_3\nVD: {Temp_Table}\n<VId: 32>"];
-    33 [label="pragma check (assert,  for all x in 1 .. 9 => table (x) /= temp_table (x));\nVU: {Temp_Table, X, Table}\nPROOF\n<VId: 33>"];
+    33 [label="pragma check (assert,  for all x in 1 .. 9 => table (x) /= temp_table (x));\nVU: {Table, X, Temp_Table}\nPROOF\n<VId: 33>"];
 
     1 ->  18 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -121,12 +121,12 @@ digraph G {
     24 [label="table (5) := 0;\nVU: {Table}\nVD: {Table}\n<VId: 24>"];
     25 [label="Temp_Table'initial\nVD: {Temp_Table}\n<VId: 25>",shape="plaintext",fontcolor="red"];
     26 [label="Temp_Table'final\nVU: {Temp_Table}\n<VId: 26>",shape="plaintext"];
-    28 [label="temp_table (i) := i;\nLoops:&nbsp;L_3\nVU: {Temp_Table, I}\nVD: {Temp_Table}\n<VId: 28>"];
+    28 [label="temp_table (i) := i;\nLoops:&nbsp;L_3\nVU: {I, Temp_Table}\nVD: {Temp_Table}\n<VId: 28>"];
     29 [label="I'initial\nVD: {I}\n<VId: 29>",shape="plaintext"];
     30 [label="I'final\nVU: {I}\n<VId: 30>",shape="plaintext",fontcolor="red"];
     31 [label="for i in 1 .. 9\nLoops:&nbsp;L_3\nVD: {I}\n<VId: 31>",shape="diamond"];
     32 [label="initialization in loop L_3\nVD: {Temp_Table}\n<VId: 32>"];
-    33 [label="pragma check (assert,  for all x in 1 .. 9 => table (x) /= temp_table (x));\nVU: {Temp_Table, X, Table}\nPROOF\n<VId: 33>"];
+    33 [label="pragma check (assert,  for all x in 1 .. 9 => table (x) /= temp_table (x));\nVU: {Table, X, Temp_Table}\nPROOF\n<VId: 33>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  18 [arrowType="normal"];
@@ -193,12 +193,12 @@ digraph G {
     24 [label="table (5) := 0;\nVU: {Table}\nVD: {Table}\n<VId: 24>"];
     25 [label="Temp_Table'initial\nVD: {Temp_Table}\n<VId: 25>",shape="plaintext",fontcolor="red"];
     26 [label="Temp_Table'final\nVU: {Temp_Table}\n<VId: 26>",shape="plaintext"];
-    28 [label="temp_table (i) := i;\nLoops:&nbsp;L_3\nVU: {Temp_Table, I}\nVD: {Temp_Table}\n<VId: 28>"];
+    28 [label="temp_table (i) := i;\nLoops:&nbsp;L_3\nVU: {I, Temp_Table}\nVD: {Temp_Table}\n<VId: 28>"];
     29 [label="I'initial\nVD: {I}\n<VId: 29>",shape="plaintext"];
     30 [label="I'final\nVU: {I}\n<VId: 30>",shape="plaintext",fontcolor="red"];
     31 [label="for i in 1 .. 9\nLoops:&nbsp;L_3\nVD: {I}\n<VId: 31>",shape="diamond"];
     32 [label="initialization in loop L_3\nVD: {Temp_Table}\n<VId: 32>"];
-    33 [label="pragma check (assert,  for all x in 1 .. 9 => table (x) /= temp_table (x));\nVU: {Temp_Table, X, Table}\nPROOF\n<VId: 33>"];
+    33 [label="pragma check (assert,  for all x in 1 .. 9 => table (x) /= temp_table (x));\nVU: {Table, X, Temp_Table}\nPROOF\n<VId: 33>"];
 
     1 ->  18 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -254,12 +254,12 @@ digraph G {
     24 [label="table (5) := 0;\nVU: {Table}\nVD: {Table}\n<VId: 24>"];
     25 [label="Temp_Table'initial\nVD: {Temp_Table}\n<VId: 25>",shape="plaintext",fontcolor="red"];
     26 [label="Temp_Table'final\nVU: {Temp_Table}\n<VId: 26>",shape="plaintext"];
-    28 [label="temp_table (i) := i;\nLoops:&nbsp;L_3\nVU: {Temp_Table, I}\nVD: {Temp_Table}\n<VId: 28>"];
+    28 [label="temp_table (i) := i;\nLoops:&nbsp;L_3\nVU: {I, Temp_Table}\nVD: {Temp_Table}\n<VId: 28>"];
     29 [label="I'initial\nVD: {I}\n<VId: 29>",shape="plaintext"];
     30 [label="I'final\nVU: {I}\n<VId: 30>",shape="plaintext",fontcolor="red"];
     31 [label="for i in 1 .. 9\nLoops:&nbsp;L_3\nVD: {I}\n<VId: 31>",shape="diamond"];
     32 [label="initialization in loop L_3\nVD: {Temp_Table}\n<VId: 32>"];
-    33 [label="pragma check (assert,  for all x in 1 .. 9 => table (x) /= temp_table (x));\nVU: {Temp_Table, X, Table}\nPROOF\n<VId: 33>"];
+    33 [label="pragma check (assert,  for all x in 1 .. 9 => table (x) /= temp_table (x));\nVU: {Table, X, Temp_Table}\nPROOF\n<VId: 33>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  18 [arrowType="normal"];
@@ -305,8 +305,8 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="test__qe_2__B_2__temp_table"];
-    2 [label="test__qe_2__table"];
+    1 [label="test__qe_2__table"];
+    2 [label="test__qe_2__B_2__temp_table"];
     3 [label="test__qe_2'Ins",shape="box"];
     4 [label="test__qe_2'Outs",shape="box"];
     5 [label="test__qe_2'Proof_Ins",shape="box"];

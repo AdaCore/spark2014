@@ -50,7 +50,7 @@ digraph G {
     7 [label="X'final\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
     8 [label="Y'initial\nVD: {Y}\n<VId: 8>",shape="plaintext"];
     9 [label="Y'final\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    13 [label="if y > x\nVU: {X, Y}\n<VId: 13>",shape="diamond"];
+    13 [label="if y > x\nVU: {Y, X}\n<VId: 13>",shape="diamond"];
     14 [label="Temp'initial\nVD: {Temp}\n<VId: 14>",shape="plaintext",fontcolor="red"];
     15 [label="Temp'final\nVU: {Temp}\n<VId: 15>",shape="plaintext"];
     17 [label="temp := x;\nVU: {X}\nVD: {Temp}\n<VId: 17>"];
@@ -83,7 +83,7 @@ digraph G {
     7 [label="X'final\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
     8 [label="Y'initial\nVD: {Y}\n<VId: 8>",shape="plaintext"];
     9 [label="Y'final\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    13 [label="if y > x\nVU: {X, Y}\n<VId: 13>",shape="diamond"];
+    13 [label="if y > x\nVU: {Y, X}\n<VId: 13>",shape="diamond"];
     14 [label="Temp'initial\nVD: {Temp}\n<VId: 14>",shape="plaintext",fontcolor="red"];
     15 [label="Temp'final\nVU: {Temp}\n<VId: 15>",shape="plaintext"];
     17 [label="temp := x;\nVU: {X}\nVD: {Temp}\n<VId: 17>"];
@@ -126,8 +126,8 @@ digraph G {
     16 [label="temp'initial\nVD: {temp}\n<VId: 16>",shape="plaintext",fontcolor="red"];
     17 [label="temp'final\nVU: {temp}\n<VId: 17>",shape="plaintext"];
     18 [label="temp : integer := y;\nVU: {Y}\nVD: {temp}\n<VId: 18>"];
-    19 [label="x := x {*} temp;\nVU: {temp, X}\nVD: {X}\n<VId: 19>"];
-    20 [label="y := y {*} temp;\nVU: {temp, Y}\nVD: {Y}\n<VId: 20>"];
+    19 [label="x := x {*} temp;\nVU: {X, temp}\nVD: {X}\n<VId: 19>"];
+    20 [label="y := y {*} temp;\nVU: {Y, temp}\nVD: {Y}\n<VId: 20>"];
     21 [label="pragma check (assert, x = y);\nVU: {X, Y}\nPROOF\n<VId: 21>"];
 
     1 ->  15 [arrowType="normal"];
@@ -164,8 +164,8 @@ digraph G {
     16 [label="temp'initial\nVD: {temp}\n<VId: 16>",shape="plaintext",fontcolor="red"];
     17 [label="temp'final\nVU: {temp}\n<VId: 17>",shape="plaintext"];
     18 [label="temp : integer := y;\nVU: {Y}\nVD: {temp}\n<VId: 18>"];
-    19 [label="x := x {*} temp;\nVU: {temp, X}\nVD: {X}\n<VId: 19>"];
-    20 [label="y := y {*} temp;\nVU: {temp, Y}\nVD: {Y}\n<VId: 20>"];
+    19 [label="x := x {*} temp;\nVU: {X, temp}\nVD: {X}\n<VId: 19>"];
+    20 [label="y := y {*} temp;\nVU: {Y, temp}\nVD: {Y}\n<VId: 20>"];
     21 [label="pragma check (assert, x = y);\nVU: {X, Y}\nPROOF\n<VId: 21>"];
 
     1 ->  2 [arrowType="normal"];
@@ -395,7 +395,7 @@ digraph G {
     7 [label="X'final\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
     8 [label="Y'initial\nVD: {Y}\n<VId: 8>",shape="plaintext"];
     9 [label="Y'final\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    13 [label="if y > x\nVU: {X, Y}\n<VId: 13>",shape="diamond"];
+    13 [label="if y > x\nVU: {Y, X}\n<VId: 13>",shape="diamond"];
     14 [label="Temp'initial\nVD: {Temp}\n<VId: 14>",shape="plaintext",fontcolor="red"];
     15 [label="Temp'final\nVU: {Temp}\n<VId: 15>",shape="plaintext"];
     17 [label="temp := x;\nVU: {X}\nVD: {Temp}\n<VId: 17>"];
@@ -428,7 +428,7 @@ digraph G {
     7 [label="X'final\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
     8 [label="Y'initial\nVD: {Y}\n<VId: 8>",shape="plaintext"];
     9 [label="Y'final\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    13 [label="if y > x\nVU: {X, Y}\n<VId: 13>",shape="diamond"];
+    13 [label="if y > x\nVU: {Y, X}\n<VId: 13>",shape="diamond"];
     14 [label="Temp'initial\nVD: {Temp}\n<VId: 14>",shape="plaintext",fontcolor="red"];
     15 [label="Temp'final\nVU: {Temp}\n<VId: 15>",shape="plaintext"];
     17 [label="temp := x;\nVU: {X}\nVD: {Temp}\n<VId: 17>"];
@@ -471,8 +471,8 @@ digraph G {
     16 [label="temp'initial\nVD: {temp}\n<VId: 16>",shape="plaintext",fontcolor="red"];
     17 [label="temp'final\nVU: {temp}\n<VId: 17>",shape="plaintext"];
     18 [label="temp : integer := y;\nVU: {Y}\nVD: {temp}\n<VId: 18>"];
-    19 [label="x := x {*} temp;\nVU: {temp, X}\nVD: {X}\n<VId: 19>"];
-    20 [label="y := y {*} temp;\nVU: {temp, Y}\nVD: {Y}\n<VId: 20>"];
+    19 [label="x := x {*} temp;\nVU: {X, temp}\nVD: {X}\n<VId: 19>"];
+    20 [label="y := y {*} temp;\nVU: {Y, temp}\nVD: {Y}\n<VId: 20>"];
     21 [label="pragma check (assert, x = y);\nVU: {X, Y}\nPROOF\n<VId: 21>"];
 
     1 ->  15 [arrowType="normal"];
@@ -509,8 +509,8 @@ digraph G {
     16 [label="temp'initial\nVD: {temp}\n<VId: 16>",shape="plaintext",fontcolor="red"];
     17 [label="temp'final\nVU: {temp}\n<VId: 17>",shape="plaintext"];
     18 [label="temp : integer := y;\nVU: {Y}\nVD: {temp}\n<VId: 18>"];
-    19 [label="x := x {*} temp;\nVU: {temp, X}\nVD: {X}\n<VId: 19>"];
-    20 [label="y := y {*} temp;\nVU: {temp, Y}\nVD: {Y}\n<VId: 20>"];
+    19 [label="x := x {*} temp;\nVU: {X, temp}\nVD: {X}\n<VId: 19>"];
+    20 [label="y := y {*} temp;\nVU: {Y, temp}\nVD: {Y}\n<VId: 20>"];
     21 [label="pragma check (assert, x = y);\nVU: {X, Y}\nPROOF\n<VId: 21>"];
 
     1 ->  2 [arrowType="normal"];
@@ -732,31 +732,31 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="test__nested_block_statements__B_4__B_5__temp"];
-    2 [label="test__parallel_block_statements__B_1__temp1"];
-    3 [label="test__parallel_block_statements__B_1__temp2"];
+    1 [label="test__compare_and_swap__x"];
+    2 [label="test__compare_and_swap__y"];
+    3 [label="test__compare_and_swap__swap__temp"];
     4 [label="test__parallel_block_statements__operation"];
-    5 [label="test__parallel_block_statements__B_3__temp1"];
-    6 [label="test__parallel_block_statements__B_3__temp2"];
-    7 [label="test__parallel_block_statements__B_2__temp1"];
-    8 [label="test__parallel_block_statements__B_2__temp2"];
-    9 [label="test__nested_block_statements__B_4__temp"];
-    10 [label="test__parallel_block_statements__x"];
-    11 [label="test__parallel_block_statements__y"];
-    12 [label="test__compare_and_swap__x"];
-    13 [label="test__compare_and_swap__y"];
-    14 [label="test__compare_and_swap__swap__temp"];
-    15 [label="test__nested_block_statements__x"];
-    16 [label="test__nested_block_statements__y"];
-    17 [label="test__parallel_block_statements'Ins",shape="box"];
-    18 [label="test__parallel_block_statements'Outs",shape="box"];
-    19 [label="test__parallel_block_statements'Proof_Ins",shape="box"];
-    20 [label="test__nested_block_statements'Ins",shape="box"];
-    21 [label="test__nested_block_statements'Outs",shape="box"];
-    22 [label="test__nested_block_statements'Proof_Ins",shape="box"];
-    23 [label="test__compare_and_swap'Ins",shape="box"];
-    24 [label="test__compare_and_swap'Outs",shape="box"];
-    25 [label="test__compare_and_swap'Proof_Ins",shape="box"];
+    5 [label="test__parallel_block_statements__y"];
+    6 [label="test__parallel_block_statements__x"];
+    7 [label="test__parallel_block_statements__B_1__temp1"];
+    8 [label="test__parallel_block_statements__B_1__temp2"];
+    9 [label="test__parallel_block_statements__B_2__temp1"];
+    10 [label="test__parallel_block_statements__B_2__temp2"];
+    11 [label="test__parallel_block_statements__B_3__temp1"];
+    12 [label="test__parallel_block_statements__B_3__temp2"];
+    13 [label="test__nested_block_statements__B_4__B_5__temp"];
+    14 [label="test__nested_block_statements__x"];
+    15 [label="test__nested_block_statements__y"];
+    16 [label="test__nested_block_statements__B_4__temp"];
+    17 [label="test__compare_and_swap'Ins",shape="box"];
+    18 [label="test__compare_and_swap'Outs",shape="box"];
+    19 [label="test__compare_and_swap'Proof_Ins",shape="box"];
+    20 [label="test__parallel_block_statements'Ins",shape="box"];
+    21 [label="test__parallel_block_statements'Outs",shape="box"];
+    22 [label="test__parallel_block_statements'Proof_Ins",shape="box"];
+    23 [label="test__nested_block_statements'Ins",shape="box"];
+    24 [label="test__nested_block_statements'Outs",shape="box"];
+    25 [label="test__nested_block_statements'Proof_Ins",shape="box"];
 
 }
 

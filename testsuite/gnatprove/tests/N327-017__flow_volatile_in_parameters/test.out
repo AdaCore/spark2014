@@ -134,8 +134,8 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="types__test_01__o"];
-    2 [label="types__test_01__i"];
+    1 [label="types__test_01__i"];
+    2 [label="types__test_01__o"];
     3 [label="types__test_01'Ins",shape="box"];
     4 [label="types__test_01'Outs",shape="box"];
     5 [label="types__test_01'Proof_Ins",shape="box"];
