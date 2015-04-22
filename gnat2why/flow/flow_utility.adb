@@ -3771,7 +3771,7 @@ package body Flow_Utility is
       begin
          --  There is no point in up-projecting if any of the
          --  following is True.
-         if not (Nkind (N) in N_Entity)
+         if not (Ekind (N) in E_Abstract_State | E_Constant | E_Variable)
            or else No (Encapsulating_State (N))
            or else Is_Visible (N, Scope)
          then
