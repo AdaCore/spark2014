@@ -225,20 +225,43 @@ package body SPARK_Util is
 
       --  If T is in SPARK but not its most underlying type, then go through
       --  the Full_View chain until the last type in SPARK is found.
+      --  This code is largely inspired from the body of Underlying_Type.
 
       elsif Full_View_Not_In_SPARK (T) then
          loop
-            pragma Assert (Present (Full_View (Typ)));
 
             --  If Full_View (Typ) is in SPARK, use it
-
-            if Entity_In_SPARK (Full_View (Typ)) then
-               Typ := Full_View (Typ);
-               pragma Assert (Full_View_Not_In_SPARK (Typ));
-
-            --  Otherwise, we have found the last type in SPARK in T's chain of
+            --  otherwise, we have found the last type in SPARK in T's chain of
             --  Full_View.
 
+            if Present (Full_View (Typ)) then
+               if Entity_In_SPARK (Full_View (Typ)) then
+                  Typ := Full_View (Typ);
+                  pragma Assert (Full_View_Not_In_SPARK (Typ));
+               else
+                  return Typ;
+               end if;
+            elsif Ekind (Typ) in Private_Kind
+              and then Present (Underlying_Full_View (Typ))
+            then
+               if Entity_In_SPARK (Underlying_Full_View (Typ)) then
+                  Typ := Underlying_Full_View (Typ);
+                  pragma Assert (Full_View_Not_In_SPARK (Typ));
+               else
+                  return Typ;
+               end if;
+            elsif From_Limited_With (Typ)
+              and then Present (Non_Limited_View (Typ))
+            then
+               if Entity_In_SPARK (Non_Limited_View (Typ)) then
+                  Typ := Non_Limited_View (Typ);
+                  pragma Assert (Full_View_Not_In_SPARK (Typ));
+               else
+                  return Typ;
+               end if;
+            elsif Get_First_Ancestor_In_SPARK (Typ) /= Typ then
+               Typ := Get_First_Ancestor_In_SPARK (Typ);
+               pragma Assert (Full_View_Not_In_SPARK (Typ));
             else
                return Typ;
             end if;
