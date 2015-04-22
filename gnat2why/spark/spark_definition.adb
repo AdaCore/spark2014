@@ -2963,7 +2963,7 @@ package body SPARK_Definition is
 
       --  Nothing to do if the entity E was already marked
 
-      if Entity_Set.Contains (E) then
+      if Entity_Marked (E) then
          return;
       end if;
 

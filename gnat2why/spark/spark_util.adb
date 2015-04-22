@@ -169,6 +169,7 @@ package body SPARK_Util is
       Under_T  : constant Entity_Id := Underlying_Type (T);
       Base_T   : constant Entity_Id := Base_Type (Under_T);
       Anc_Subt : Entity_Id;
+
    begin
       Anc_Subt := Ancestor_Subtype (Under_T);
 
@@ -191,6 +192,7 @@ package body SPARK_Util is
 
    function Retysp (T : Entity_Id) return Entity_Id is
       Typ : Entity_Id := T;
+
    begin
       --  If T has not been marked yet, return it
 
@@ -203,63 +205,62 @@ package body SPARK_Util is
 
       if not Entity_In_SPARK (T) then
          loop
+            --  If we find a partial view in SPARK, we return it
+
             if Entity_In_SPARK (Typ) then
-
-               --  We found a partial view in SPARK, return it
-
                pragma Assert (Full_View_Not_In_SPARK (Typ));
                return Typ;
+
+            --  No partial view in SPARK, return T
+
             elsif not Entity_Marked (Typ)
               or else not Is_Full_View (Typ)
             then
-
-               --  No partial view in SPARK, return T
-
                return T;
+
             else
                Typ := Partial_View (Typ);
             end if;
          end loop;
-      end if;
 
       --  If T is in SPARK but not its most underlying type, then go through
       --  the Full_View chain until the last type in SPARK is found.
 
-      if Full_View_Not_In_SPARK (T) then
+      elsif Full_View_Not_In_SPARK (T) then
          loop
             pragma Assert (Present (Full_View (Typ)));
 
-            --  if Typ's full_view is in SPARK, use it
+            --  If Full_View (Typ) is in SPARK, use it
 
             if Entity_In_SPARK (Full_View (Typ)) then
                Typ := Full_View (Typ);
                pragma Assert (Full_View_Not_In_SPARK (Typ));
+
+            --  Otherwise, we have found the last type in SPARK in T's chain of
+            --  Full_View.
+
             else
+               return Typ;
+            end if;
+         end loop;
 
-               --  otherwise, we have found the last type in SPARK in T's
-               --  full views.
+      --  Otherwise, T's most underlying type is in SPARK, return it.
 
+      else
+         loop
+            --  If Typ is a private type, reach to its Underlying_Type
+
+            if Ekind (Typ) in Private_Kind then
+               Typ := Underlying_Type (Typ);
+               pragma Assert (Entity_In_SPARK (Typ));
+
+            --  Otherwise, we've reached T's most underlying type
+
+            else
                return Typ;
             end if;
          end loop;
       end if;
-
-      --  Otherwise, T's most underlying type is in SPARK, return it.
-
-      loop
-
-         --  If Typ is a private type, reach to its Underlying_Type
-
-         if Ekind (Typ) in Private_Kind then
-            Typ := Underlying_Type (Typ);
-            pragma Assert (Entity_In_SPARK (Typ));
-
-            --  Otherwise, we've reached T's most underlying type
-
-         else
-            return Typ;
-         end if;
-      end loop;
    end Retysp;
 
    function Retysp_Kind (T : Entity_Id) return Entity_Kind is
