@@ -1768,7 +1768,9 @@ package body SPARK_Definition is
 
    procedure Mark_Call (N : Node_Id) is
       Nam     : constant Node_Id := Name (N);
-      E       : constant Entity_Id := Entity (Nam);
+      E       : constant Entity_Id := (if Nkind (Nam) in N_Has_Entity
+                                       then Entity (Nam)
+                                       else Empty);
       Actuals : constant List_Id := Parameter_Associations (N);
 
    begin
