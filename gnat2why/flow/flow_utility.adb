@@ -3678,7 +3678,9 @@ package body Flow_Utility is
       declare
          Body_N : constant Node_Id := Subprogram_Body_Entity (Subprogram);
       begin
-         Depends_Contract := Get_Pragma (Body_N, Pragma_Refined_Depends);
+         Depends_Contract := (if Present (Body_N)
+                              then Get_Pragma (Body_N, Pragma_Refined_Depends)
+                              else Empty);
       end;
       if No (Depends_Contract) then
          Depends_Contract := Get_Pragma (Subprogram, Pragma_Depends);
