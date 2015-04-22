@@ -1,0 +1,4 @@
+package_1.adb:10:16: info: initialization of "Calculate" proved
+package_1.adb:12:20: info: overflow check proved
+package_1.adb:15:30: info: overflow check proved
+package_1.ads:7:22: info: initialization of "OutputVar" proved

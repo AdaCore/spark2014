@@ -147,8 +147,9 @@ package Why.Gen.Binders is
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Name     : W_Identifier_Id;
-      Binders  : Binder_Array)
-     return W_Expr_Id;
+      Binders  : Binder_Array;
+      Typ      : W_Type_Id := Why_Empty)
+      return W_Expr_Id;
    --  Create a call to an operation in the given domain with parameters
    --  taken from Binders. Typically, from:
    --

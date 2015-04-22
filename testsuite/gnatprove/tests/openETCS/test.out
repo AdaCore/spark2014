@@ -85,8 +85,8 @@ deceleration_curve.ads:81:32: info: initialization of "Braking_Curve.curve" prov
 deceleration_curve.ads:81:32: info: initialization of "Braking_Curve.end_point" proved
 deceleration_curve.ads:85:14: warning: subprogram "Print_Curve" has no effect
 deceleration_curve_test.adb:6:31: info: precondition proved
+deceleration_curve_test.adb:15:19: info: precondition proved
 deceleration_curve_test.adb:15:19: medium: assertion might fail, requires Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000
-deceleration_curve_test.adb:15:19: medium: precondition might fail
 deceleration_curve_test.adb:15:37: info: initialization of "initial_speed" proved
 deceleration_curve_test.adb:17:04: info: precondition proved
 deceleration_curve_test.adb:17:22: info: initialization of "target.location" proved
@@ -123,7 +123,7 @@ sec_3_13_4_gradient_accel_decel.ads:26:13: info: initialization of "A_gradient" 
 sec_3_13_4_gradient_accel_decel.ads:26:24: warning: unused variable "d"
 sec_3_13_6_deceleration.adb:26:37: info: precondition proved
 sec_3_13_6_deceleration.adb:26:37: medium: range check might fail
-sec_3_13_6_deceleration.adb:27:71: medium: range check might fail
+sec_3_13_6_deceleration.adb:27:71: info: range check proved
 sec_3_13_6_deceleration.ads:34:13: info: initialization of "A_brake_emergency" proved
 sec_3_13_6_deceleration.ads:34:43: warning: unused variable "d"
 sec_3_13_6_deceleration.ads:39:06: info: postcondition proved
@@ -142,8 +142,8 @@ sec_3_13_6_deceleration.ads:47:22: medium: overflow check might fail
 sec_3_13_6_deceleration.ads:47:22: medium: range check might fail
 sec_3_13_6_deceleration.ads:47:30: medium: precondition might fail
 sec_3_13_6_deceleration.ads:51:13: info: initialization of "A_safe" proved
+sec_3_13_6_deceleration.ads:52:26: info: overflow check proved
 sec_3_13_6_deceleration.ads:52:26: info: range check proved
-sec_3_13_6_deceleration.ads:52:26: medium: overflow check might fail
 sec_3_13_8_targets_decel_curves.adb:24:07: medium: precondition might fail
 sec_3_13_8_targets_decel_curves.ads:48:13: info: initialization of "Is_Valid_Target" proved
 sec_3_13_8_targets_decel_curves.ads:70:32: info: initialization of "Braking_Curve.curve" proved
@@ -460,7 +460,7 @@ step_function_test.adb:67:19: info: precondition proved
 step_function_test.adb:67:19: medium: assertion might fail, requires Minimum_Until_Point(sfun_merge, 11) =
 step_function_test.adb:67:39: info: initialization of "sfun_merge.Number_Of_Delimiters" proved
 step_function_test.adb:67:39: info: initialization of "sfun_merge.Step" proved
-units.adb:24:38: medium: overflow check might fail
+units.adb:24:38: info: overflow check proved
 units.adb:24:48: info: division check proved
 units.adb:24:48: info: overflow check proved
 units.ads:32:13: info: initialization of "Is_Valid_Speed_km_per_h" proved

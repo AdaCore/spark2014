@@ -2793,43 +2793,100 @@ package body Gnat2Why.Subprograms is
                                             Params)));
 
       else
-         declare
-            --  Always use the Ada type for the equality between the function
-            --  result and the translation of its expression body. Using "int"
-            --  instead is tempting to facilitate the job of automatic provers,
-            --  but it is potentially incorrect. For example for:
+         --  For scalar types which are not modeled as their representation
+         --  type in Why, using instead this representation type
+         --  facilitate the job of automatic provers. As it is potentially
+         --  incorrect if there can be a runtime error in the expression
+         --  function body, it should not be done if the function may be
+         --  recursive.
+         --  For example for:
 
-            --    function F return Natural is (Largest_Int + 1);
+         --    function F return Natural is (Largest_Int + 1);
 
-            --  we should *not* generate the incorrect axiom:
+         --  we should *not* generate the incorrect axiom:
 
-            --    axiom f__def:
-            --      forall x:natural. to_int(x) = to_int(largest_int) + 1
+         --    axiom f__def:
+         --      forall x:natural. to_int(f x) = to_int(largest_int) + 1
 
-            --  but the correct one:
+         --  but the correct one:
 
-            --    axiom f__def:
-            --      forall x:natural. x = of_int (to_int(largest_int) + 1)
+         --    axiom f__def:
+         --      forall x:natural. f x = of_int (to_int(largest_int) + 1)
 
-            Ty_Ent  : constant Entity_Id := Etype (E);
-            Equ_Ty  : constant W_Type_Id := Type_Of_Node (Ty_Ent);
-            Guard   : constant W_Pred_Id :=
-               Compute_Guard_Formula (Logic_Func_Binders);
-         begin
-            Emit
-              (File.Cur_Theory,
-               New_Defining_Axiom
-                 (Ada_Node    => E,
-                  Name        => Logic_Id,
-                  Binders     => Flat_Binders,
-                  Pre         => Guard,
-                  Def         =>
-                    +Transform_Expr
-                      (Expression (Expr_Fun_N),
-                       Expected_Type => Equ_Ty,
-                       Domain        => EW_Term,
-                       Params        => Params)));
-         end;
+         if not Is_Non_Recursive_Subprogram (E)
+           or else not Has_Scalar_Type (Etype (E))
+           or else Use_Split_Form_For_Type (Etype (E))
+         then
+            declare
+               Ty_Ent  : constant Entity_Id := Etype (E);
+               Equ_Ty  : constant W_Type_Id := Type_Of_Node (Ty_Ent);
+               Guard   : constant W_Pred_Id :=
+                 Compute_Guard_Formula (Logic_Func_Binders);
+            begin
+               Emit
+                 (File.Cur_Theory,
+                  New_Defining_Axiom
+                    (Ada_Node    => E,
+                     Name        => Logic_Id,
+                     Binders     => Flat_Binders,
+                     Pre         => Guard,
+                     Def         =>
+                       +Transform_Expr
+                       (Expression (Expr_Fun_N),
+                        Expected_Type => Equ_Ty,
+                        Domain        => EW_Term,
+                        Params        => Params)));
+            end;
+         else
+            declare
+               --  Here we should use the precondition as the axiom could only
+               --  be sound in its context.
+
+               Ty_Ent  : constant Entity_Id := Etype (E);
+               Equ_Ty  : constant W_Type_Id := Base_Why_Type (Ty_Ent);
+               Guard   : constant W_Pred_Id :=
+                 Compute_Guard_Formula (Logic_Func_Binders);
+               Pre     : constant W_Pred_Id :=
+                 +Compute_Spec (Params, E, Name_Precondition, EW_Pred);
+            begin
+               Emit
+                 (File.Cur_Theory,
+                  New_Guarded_Axiom
+                    (Ada_Node => Empty,
+                     Name     => NID (Short_Name (E) & "__" & Def_Axiom),
+                     Binders  => Flat_Binders,
+                     Triggers =>
+                       New_Triggers
+                         (Triggers =>
+                              (1 => New_Trigger
+                                 (Terms =>
+                                    (1 => New_Call
+                                         (Domain  => EW_Term,
+                                          Name    => Logic_Id,
+                                          Binders => Flat_Binders))))),
+                     Pre      =>
+                       +New_And_Expr (Left   => +Guard,
+                                      Right  => +Pre,
+                                      Domain => EW_Pred),
+                     Def      =>
+                       New_Call
+                         (Name => Why_Eq,
+                          Args => (Insert_Simple_Conversion
+                                   (Domain         => EW_Term,
+                                    Expr           => +New_Call
+                                      (Name    => Logic_Id,
+                                       Domain  => EW_Term,
+                                       Binders => Flat_Binders,
+                                       Typ     => Type_Of_Node (Ty_Ent)),
+                                    To             => Equ_Ty),
+                                   +Transform_Expr
+                                     (Expression (Expr_Fun_N),
+                                      Expected_Type => Equ_Ty,
+                                      Domain        => EW_Term,
+                                      Params        => Params)),
+                          Typ  => EW_Bool_Type)));
+            end;
+         end if;
       end if;
 
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);

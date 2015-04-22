@@ -1255,7 +1255,7 @@ package body Why.Inter is
       then
          return Why_Type_Of_Entity (Entity (N));
       elsif Is_Type (E)
-        and then Use_Split_From_For_Type (E)
+        and then Use_Split_Form_For_Type (E)
       then
          return EW_Split (E);
       else

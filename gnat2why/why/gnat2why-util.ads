@@ -312,7 +312,7 @@ package Gnat2Why.Util is
    --  used instead of the Ada type
    --  This function should be used on entities denoting a type
 
-   function Use_Split_From_For_Type (E : Entity_Id) return Boolean;
+   function Use_Split_Form_For_Type (E : Entity_Id) return Boolean;
    --  Decide whether we should use a split form for expressions of a given
    --  type.
    --  This function should be used on entities denoting a type

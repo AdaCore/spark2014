@@ -469,14 +469,16 @@ package body Why.Gen.Binders is
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Name     : W_Identifier_Id;
-      Binders  : Binder_Array)
+      Binders  : Binder_Array;
+      Typ      : W_Type_Id := Why_Empty)
      return W_Expr_Id is
    begin
       return New_Call
         (Ada_Node => Ada_Node,
          Domain   => Domain,
          Name     => Name,
-         Args     => New_Expr_Array (Domain, Binders));
+         Args     => New_Expr_Array (Domain, Binders),
+         Typ      => Typ);
    end New_Call;
 
    -----------------------------

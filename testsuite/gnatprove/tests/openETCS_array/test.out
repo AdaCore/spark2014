@@ -133,8 +133,8 @@ sec_3_13_6_deceleration.ads:47:22: medium: overflow check might fail
 sec_3_13_6_deceleration.ads:47:22: medium: range check might fail
 sec_3_13_6_deceleration.ads:47:30: medium: precondition might fail
 sec_3_13_6_deceleration.ads:51:13: info: initialization of "A_safe" proved
+sec_3_13_6_deceleration.ads:52:26: info: overflow check proved
 sec_3_13_6_deceleration.ads:52:26: info: range check proved
-sec_3_13_6_deceleration.ads:52:26: medium: overflow check might fail
 sec_3_13_8_targets_decel_curves.adb:24:07: medium: precondition might fail
 sec_3_13_8_targets_decel_curves.ads:48:13: info: initialization of "Is_Valid_Target" proved
 sec_3_13_8_targets_decel_curves.ads:70:32: info: initialization of "Braking_Curve.curve" proved

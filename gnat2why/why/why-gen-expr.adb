@@ -1724,10 +1724,12 @@ package body Why.Gen.Expr is
       Expr     : W_Expr_Id) return W_Expr_Id is
       From_Base : constant W_Type_Id :=
         (if Get_Type_Kind (From) = EW_Split
+         and then Has_Discrete_Type (Get_Ada_Node (+From))
          then Base_Why_Type (Get_Ada_Node (+From))
          else From);
       To_Base   : constant W_Type_Id :=
         (if Get_Type_Kind (To) = EW_Split
+         and then Has_Discrete_Type (Get_Ada_Node (+To))
          then Base_Why_Type (Get_Ada_Node (+To))
          else To);
    begin
