@@ -135,11 +135,10 @@ package Why.Gen.Expr is
    --  Return a label that contains the Ada Sloc of the node
 
    function New_Shape_Label (Node : Node_Id) return Name_Id;
-   --  Return a label representing the shape of the Ada code
-   --  surrounding the input node.
-   --  "Shapes" are more resistant to code refactorings than SLOCs of VCs.
-   --  This makes Why3 proofs easier to reply. (See Why3 VSTTE'13 paper for
-   --  details).
+   --  Return a label representing the shape of the Ada code surrounding the
+   --  input node. "Shapes" are more resistant to code refactorings than SLOCs
+   --  of VCs. This makes Why3 proofs easier to replay. See Why3 VSTTE'13 paper
+   --  for details.
 
    function New_Comment_Label
      (Node : Node_Id; Loc : Name_Id; Reason : VC_Kind) return Name_Id;
