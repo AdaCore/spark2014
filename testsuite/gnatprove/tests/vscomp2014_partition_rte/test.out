@@ -91,8 +91,8 @@ partition_refinement.adb:105:44: info: precondition proved
 partition_refinement.adb:105:60: info: initialization of "I" proved
 partition_refinement.adb:105:67: info: precondition proved
 partition_refinement.adb:105:83: info: initialization of "J" proved
-partition_refinement.adb:105:94: info: precondition proved
 partition_refinement.adb:105:91: medium: assertion might fail, requires A (Element (D, C)) = Key (D, C)
+partition_refinement.adb:105:94: info: precondition proved
 partition_refinement.adb:105:112: info: precondition proved
 partition_refinement.adb:106:22: info: precondition proved
 partition_refinement.adb:106:44: info: precondition proved
