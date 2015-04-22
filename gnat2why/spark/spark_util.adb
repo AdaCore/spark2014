@@ -836,7 +836,9 @@ package body SPARK_Util is
             --  the type is not default initialized. Otherwise, a value of the
             --  type should be fully default initialized.
 
-            if Present (Pragma_Argument_Associations (Prag)) then
+            if Present (Prag) and then
+              Present (Pragma_Argument_Associations (Prag))
+            then
                Expr :=
                  Get_Pragma_Arg (First (Pragma_Argument_Associations (Prag)));
 
