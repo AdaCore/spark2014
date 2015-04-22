@@ -1962,6 +1962,15 @@ package body SPARK_Definition is
          Sub  : constant Entity_Id := Actual_Subtype (E);
 
       begin
+         --  A constant object (other than a formal parameter of mode in) shall
+         --  not be effectively volatile (SPARK RM 7.1.3(4)). This legality
+         --  rule is checked by the frontend for code with SPARK_Mode On, but
+         --  needs to be checked here for code with SPARK_Mode Auto.
+
+         if Ekind (E) = E_Constant and then Is_Effectively_Volatile (T) then
+            Mark_Violation ("volatile constant", Def);
+         end if;
+
          --  The object is in SPARK if-and-only-if its type is in SPARK and
          --  its initialization expression, if any, is in SPARK.
 

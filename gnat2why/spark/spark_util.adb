@@ -1773,11 +1773,6 @@ package body SPARK_Util is
          when E_In_Out_Parameter =>
             return True;
 
-         when E_Constant =>
-            --  SRM 7.1.3(6): A constant, a discriminant or a loop
-            --  parameter shall not be Volatile.
-            return False;
-
          when others =>
             raise Program_Error;
       end case;

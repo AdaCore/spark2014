@@ -310,6 +310,7 @@ package SPARK_Util is
      (E : Entity_Id;
       A : Pragma_Id) return Boolean
      with Pre => Has_Volatile (E) and then
+                 Ekind (E) /= E_Constant and then
                  A in Pragma_Async_Readers
                     | Pragma_Async_Writers
                     | Pragma_Effective_Reads

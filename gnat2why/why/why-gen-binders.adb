@@ -150,7 +150,27 @@ package body Why.Gen.Binders is
         (if Ekind (Use_Ty) in Type_Kind then Retysp (Use_Ty) else Use_Ty);
 
    begin
-      if Entity_In_SPARK (Ty)
+      --  If E is not in SPARK, only declare an object of type __private for
+      --  use in effects of program functions in Why3.
+
+      if not Entity_In_SPARK (E) then
+         declare
+            Typ    : constant W_Type_Id := EW_Private_Type;
+            Name   : constant W_Identifier_Id :=
+              To_Why_Id (E => E, Typ => Typ, Local => Local);
+            Binder : constant Binder_Type :=
+              Binder_Type'(Ada_Node => E,
+                           B_Name   => Name,
+                           B_Ent    => Null_Entity_Name,
+                           Mutable  => True);
+         begin
+            return (Regular, Binder);
+         end;
+
+      --  If E is in SPARK, decide whether it should be split into multiple
+      --  objects in Why3 or not.
+
+      elsif Entity_In_SPARK (Ty)
         and then Is_Array_Type (Ty)
         and then not Is_Static_Array_Type (Ty)
         and then Is_Mutable_In_Why (E)
@@ -201,6 +221,7 @@ package body Why.Gen.Binders is
                     Dim     => Dim,
                     Bounds  => Bounds);
          end;
+
       elsif Entity_In_SPARK (Ty)
         and then (Is_Record_Type (Ty) or else Is_Private_Type (Ty))
         and then Is_Mutable_In_Why (E)
@@ -275,6 +296,7 @@ package body Why.Gen.Binders is
 
             return Result;
          end;
+
       else
          declare
             Typ    : constant W_Type_Id :=

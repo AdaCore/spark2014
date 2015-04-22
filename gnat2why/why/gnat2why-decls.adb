@@ -32,6 +32,7 @@ with Sinfo;               use Sinfo;
 with Sinput;              use Sinput;
 with String_Utils;        use String_Utils;
 
+with SPARK_Definition;    use SPARK_Definition;
 with SPARK_Util;          use SPARK_Util;
 
 with Why.Ids;             use Why.Ids;
@@ -332,7 +333,22 @@ package body Gnat2Why.Decls is
          Labels.Include (NID (Counter_Example_Label));
       end if;
 
-      case Var.Kind is
+      --  If E is not in SPARK, only declare an object of type __private for
+      --  use in effects of program functions in Why3.
+
+      if not Entity_In_SPARK (E) then
+         Emit
+           (File.Cur_Theory,
+            New_Global_Ref_Declaration
+              (Name     => To_Local (Var.Main.B_Name),
+               Labels   => Labels,
+               Ref_Type => Get_Typ (Var.Main.B_Name)));
+
+      --  If E is in SPARK, declare various objects depending on its type and
+      --  on whether the decision has been made to split the object or not.
+
+      else
+         case Var.Kind is
          when DRecord =>
             if Var.Fields.Present then
 
@@ -449,7 +465,9 @@ package body Gnat2Why.Decls is
                   Ref_Type => Get_Typ (Var.Main.B_Name)));
          when Func =>
             raise Program_Error;
-      end case;
+         end case;
+      end if;
+
       Insert_Item (E, Var);
 
       Emit (File.Cur_Theory,

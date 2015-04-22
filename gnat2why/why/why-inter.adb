@@ -673,6 +673,7 @@ package body Why.Inter is
               and then Is_Ext_Axioms_Discriminant (E)
             then
                return WF_Context;
+
             else
                return WF_Variables;
             end if;
