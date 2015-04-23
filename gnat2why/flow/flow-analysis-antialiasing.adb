@@ -63,7 +63,7 @@ package body Flow.Analysis.Antialiasing is
    function Cannot_Alias (F : Node_Id) return Boolean
    with Pre => Present (F) and then
                Nkind (F) in N_Entity and then
-               Ekind (F) in Formal_Kind;
+               Is_Formal (F);
    --  Check if the given formal parameter cannot possibly alias with
    --  others: it is a scalar in parameter.
 

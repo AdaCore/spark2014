@@ -337,12 +337,11 @@ package body Gnat2Why.External_Axioms is
                --  type. This matters here as we're using the name of the
                --  actual type in the include declaration.
 
-               if Ekind (Actual) in E_Class_Wide_Type | E_Class_Wide_Subtype
-               then
+               if Is_Class_Wide_Type (Actual) then
                   Actual := Specific_Tagged (Actual);
                end if;
 
-               if Ekind (Formal) in Type_Kind then
+               if Is_Type (Formal) then
 
                   --  Replace:
                   --  use "<Generic_Name>__args".<Generic_Name>__<Formal>
@@ -386,7 +385,7 @@ package body Gnat2Why.External_Axioms is
                   --  To_Base_Name, Of_Base_Name, and In_Range_Name must be
                   --  replaced appropriately
 
-                  if Ekind (Formal) in Private_Kind then
+                  if Is_Private_Type (Formal) then
                      declare
                         Actual_Type : constant W_Type_OId :=
                           EW_Abstract (Actual);
@@ -971,7 +970,7 @@ package body Gnat2Why.External_Axioms is
             --  correspond to the description of this subprogram. Comment on
             --  declaration of Full_Name_Is_Not_Unique_Name should be updated.
 
-            elsif Ekind (Formal) in Type_Kind and then
+            elsif Is_Type (Formal) and then
               not Full_Name_Is_Not_Unique_Name (Formal)
             then
 
@@ -1010,7 +1009,7 @@ package body Gnat2Why.External_Axioms is
                         Alias => Type_Of_Node (Actual)));
                end if;
 
-               if Ekind (Actual) in E_Record_Type and then
+               if Is_Record_Type (Actual) and then
                  Root_Record_Type (Actual) = Actual
                then
 
@@ -1453,8 +1452,8 @@ package body Gnat2Why.External_Axioms is
                        (E,
                         To_Why_Id (E, Typ => Type_Of_Node (Etype (E)),
                                    Domain => EW_Term),
-                        Mutable => Ekind (E) in Object_Kind and then
-                        Is_Mutable_In_Why (E));
+                        Mutable => Is_Object (E) and then
+                                   Is_Mutable_In_Why (E));
                   end if;
                end;
             end if;

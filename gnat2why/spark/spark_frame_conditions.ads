@@ -34,7 +34,6 @@
 with Ada.Containers;             use Ada.Containers;
 with Ada.Containers.Hashed_Sets;
 
-with Atree;                      use Atree;
 with Common_Containers;          use Common_Containers;
 with Einfo;                      use Einfo;
 with Namet;                      use Namet;
@@ -100,7 +99,7 @@ package SPARK_Frame_Conditions is
       Inputs             : out Name_Set.Set;
       Outputs            : out Name_Set.Set;
       Called_Subprograms : out Name_Set.Set)
-   with Pre  => Ekind (E) in Subprogram_Kind,
+   with Pre  => Is_Subprogram (E),
         Post => (for all E of Outputs => Inputs.Contains (E));
    --  Collects the Computed Globals information based on the current
    --  compilation unit alone.

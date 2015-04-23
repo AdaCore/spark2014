@@ -271,13 +271,11 @@ package body Flow_Types is
             end if;
       end case;
 
-      case Ekind (T) is
-         when Array_Kind =>
-            return not Is_Constrained (T);
-
-         when others =>
-            return False;
-      end case;
+      if Is_Array_Type (T) then
+         return not Is_Constrained (T);
+      else
+         return False;
+      end if;
    end Has_Bounds;
 
    -----------------
@@ -540,7 +538,7 @@ package body Flow_Types is
       is
       begin
          if Nkind (N) in N_Entity
-           and then Ekind (N) in Subprogram_Kind
+           and then Is_Subprogram (N)
            and then Present (Overridden_Operation (N))
          then
             return Get_Unmangled_Name (Overridden_Operation (N));

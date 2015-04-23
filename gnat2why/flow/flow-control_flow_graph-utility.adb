@@ -314,7 +314,7 @@ package body Flow.Control_Flow_Graph.Utility is
       Scope      : constant Flow_Scope := Get_Flow_Scope (Call_Vertex);
       Ext_Relevant_To_Formal : constant Boolean :=
         Has_Extensions_Visible (Subprogram) or else
-        Ekind (Get_Type (Formal, Scope)) in Class_Wide_Kind;
+        Is_Class_Wide_Type (Get_Type (Formal, Scope));
 
       A          : V_Attributes        := Null_Attributes;
       Tmp_Used   : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;

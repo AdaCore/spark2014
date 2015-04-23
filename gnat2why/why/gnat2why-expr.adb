@@ -3093,8 +3093,7 @@ package body Gnat2Why.Expr is
         and then Ekind (N) in Type_Kind | E_Constant | E_Variable
         and then Present (Related_Expression (N))
         and then Nkind (Related_Expression (N)) in N_Entity
-        and then Ekind (Related_Expression (N)) in
-        E_In_Out_Parameter | E_In_Parameter | E_Out_Parameter);
+        and then Is_Formal (Related_Expression (N)));
 
    ------------------------------
    -- Discrete_Choice_Is_Range --
@@ -3107,7 +3106,7 @@ package body Gnat2Why.Expr is
          when N_Subtype_Indication | N_Range =>
             Is_Range := True;
          when N_Identifier | N_Expanded_Name =>
-            if Ekind (Entity (Choice)) in Type_Kind then
+            if Is_Type (Entity (Choice)) then
                Is_Range := True;
             else
                Is_Range := False;
@@ -3312,9 +3311,7 @@ package body Gnat2Why.Expr is
                      --  composite parameters.
 
                      Need_Check_On_Fetch : constant Boolean :=
-                       (if Ekind (Retysp (Etype (Formal)))
-                        in Scalar_Kind
-                        then
+                       (if Is_Scalar_Type (Retysp (Etype (Formal))) then
                            Ekind (Formal) /= E_Out_Parameter
                         else
                            True);
@@ -3353,9 +3350,7 @@ package body Gnat2Why.Expr is
                      --  parameters.
 
                      Need_Check_On_Store : constant Boolean :=
-                       (if Ekind (Retysp (Etype (Formal)))
-                        in Scalar_Kind
-                        then
+                       (if Is_Scalar_Type (Retysp (Etype (Formal))) then
                            Ekind (Formal) /= E_In_Parameter
                         else
                            False);
@@ -6968,7 +6963,7 @@ package body Gnat2Why.Expr is
                                     Tmp      => Lval,
                                     Context  => +T);
          end;
-      elsif Ekind (Etype (Lvalue)) in Class_Wide_Kind and then
+      elsif Is_Class_Wide_Type (Etype (Lvalue)) and then
         not Sem_Disp.Is_Tag_Indeterminate (Expression (Stmt))
       then
          declare
@@ -7094,7 +7089,7 @@ package body Gnat2Why.Expr is
             --  may be detected when computing Float'Succ(Float'Last) or
             --  Float'Pred(Float'First).
 
-            if Ekind (Etype (Var)) in Float_Kind then
+            if Is_Floating_Point_Type (Etype (Var)) then
                declare
                   Oper : constant W_Identifier_Id :=
                     (if Attr_Id = Attribute_Pred then
@@ -7118,7 +7113,7 @@ package body Gnat2Why.Expr is
             --  adding 1 to the representation value, and 'Pred is modelled
             --  as subtracting 1 to the representation value.
 
-            elsif Ekind (Etype (Var)) in Modular_Integer_Kind then
+            elsif Is_Modular_Integer_Type (Etype (Var)) then
                declare
                   W_Type : constant W_Type_Id := Base_Why_Type (Etype (Var));
                   Op     : constant W_Identifier_Id :=
@@ -7155,7 +7150,7 @@ package body Gnat2Why.Expr is
                   A_Type : constant Entity_Id := Etype (Var);
                   W_Type : W_Type_Id;
                begin
-                  if Ekind (Etype (Var)) in Discrete_Kind then
+                  if Is_Discrete_Type (Etype (Var)) then
                      if Is_Standard_Boolean_Type (A_Type) then
                         W_Type := EW_Bool_Type;
                         Ada.Text_IO.Put_Line
@@ -7168,7 +7163,7 @@ package body Gnat2Why.Expr is
                      end if;
 
                   else
-                     pragma Assert (Ekind (Etype (Var)) in Fixed_Point_Kind);
+                     pragma Assert (Is_Fixed_Point_Type (Etype (Var)));
                      W_Type := EW_Fixed_Type;
                      Offset := New_Fixed_Constant (Value => Uint_1);
                   end if;
@@ -8104,7 +8099,7 @@ package body Gnat2Why.Expr is
          --  scalar types, and then only when the range is non-static.
 
          if Nkind (N) = N_Full_Type_Declaration then
-            if Ekind (Ent) in Scalar_Kind then
+            if Is_Scalar_Type (Ent) then
                if Is_OK_Static_Range (Get_Range (Ent)) then
                   return Empty;
                end if;
@@ -9223,7 +9218,7 @@ package body Gnat2Why.Expr is
             --  represents a different base for every fixed-point type, so
             --  use full conversion to the expected type in that case.
 
-            if Ekind (Expr_Type) in Elementary_Kind
+            if Is_Elementary_Type (Expr_Type)
               and not Has_Fixed_Point_Type (Expr_Type)
             then
                T := Transform_Expr (Expression (Expr),
@@ -9835,7 +9830,7 @@ package body Gnat2Why.Expr is
          --  First handle the simpler case of s subtype mark
 
          if Nkind (In_Expr) in N_Identifier | N_Expanded_Name
-           and then Ekind (Entity (In_Expr)) in Type_Kind
+           and then Is_Type (Entity (In_Expr))
          then
             declare
                Ty : constant Entity_Id := Unique_Entity (Entity (In_Expr));
@@ -9843,7 +9838,7 @@ package body Gnat2Why.Expr is
 
                --  Record subtypes are special
 
-               if Ekind (Ty) in Record_Kind then
+               if Is_Record_Type (Ty) then
 
                   --  eliminate trivial cases first, the membership test is
                   --  always true here.

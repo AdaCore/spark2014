@@ -136,7 +136,7 @@ package body SPARK_Util is
          --  Return Typ if it is a private type defined in a package with
          --  external axiomatization.
 
-         if Ekind (Typ) in Private_Kind
+         if Is_Private_Type (Typ)
            and then Entity_In_Ext_Axioms (Typ)
          then
             return Typ;
@@ -273,7 +273,7 @@ package body SPARK_Util is
          loop
             --  If Typ is a private type, reach to its Underlying_Type
 
-            if Ekind (Typ) in Private_Kind then
+            if Is_Private_Type (Typ) then
                Typ := Underlying_Type (Typ);
                pragma Assert (Entity_In_SPARK (Typ));
 
@@ -289,7 +289,7 @@ package body SPARK_Util is
    function Retysp_Kind (T : Entity_Id) return Entity_Kind is
       Typ : Entity_Id := T;
    begin
-      while Ekind (Typ) in Private_Kind loop
+      while Is_Private_Type (Typ) loop
          Typ := Underlying_Type (Typ);
       end loop;
       return Ekind (Typ);
@@ -563,7 +563,7 @@ package body SPARK_Util is
       Orig_Rec  : constant Entity_Id := Scope (Orig_Comp);
 
    begin
-      if Ekind (E) in E_Discriminant then
+      if Ekind (E) = E_Discriminant then
          return True;
 
       else
@@ -2023,7 +2023,7 @@ package body SPARK_Util is
       --  A subprogram always inlined should have Body_To_Inline set and flag
       --  Is_Inlined_Always set to True.
 
-      return Ekind_In (E, E_Function, E_Procedure)
+      return Is_Subprogram (E)
         and then Present (Subprogram_Spec (E))
         and then Present (Body_To_Inline (Subprogram_Spec (E)))
         and then Is_Inlined_Always (E);
@@ -2132,7 +2132,7 @@ package body SPARK_Util is
    -----------------------------
 
    function Is_Requested_Subprogram (E : Entity_Id) return Boolean is
-     (Ekind (E) in Subprogram_Kind
+     (Is_Subprogram (E)
         and then
       "GP_Subp:" & To_String (Gnat2Why_Args.Limit_Subp) =
         SPARK_Util.Subp_Location (E));

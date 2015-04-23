@@ -385,7 +385,7 @@ package body Why.Inter is
 
       E   : constant W_Type_Id := Get_EW_Term_Type (N);
       Typ : Entity_Id :=
-        (if Nkind (N) in N_Entity and then Ekind (N) in Type_Kind then N
+        (if Nkind (N) in N_Entity and then Is_Type (N) then N
          else Etype (N));
    begin
       if E = Why_Empty then
@@ -396,7 +396,7 @@ package body Why.Inter is
          loop
             Typ := Retysp (Typ);
 
-            if Ekind (Typ) in Record_Kind | Private_Kind
+            if (Is_Record_Type (Typ) or Is_Private_Type (Typ))
               and then Ekind (Typ) in SPARK_Util.Subtype_Kind
             then
                Typ := Etype (Typ);
@@ -770,10 +770,10 @@ package body Why.Inter is
       --  Classwide types are translated as their corresponding specific tagged
       --  types.
 
-      elsif Ekind (N) in E_Class_Wide_Type | E_Class_Wide_Subtype then
+      elsif Is_Class_Wide_Type (N) then
          return EW_Abstract_Shared (Specific_Tagged (N), Kind);
 
-      elsif Ekind (N) in Type_Kind and then Retysp (N) /= N then
+      elsif Is_Type (N) and then Retysp (N) /= N then
          return EW_Abstract_Shared (Retysp (N), Kind);
       elsif Entity_In_SPARK (N) then
          return New_Kind_Base_Type (N, Kind);
@@ -836,9 +836,7 @@ package body Why.Inter is
    function Get_EW_Term_Type (N : Node_Id) return W_Type_Id is
       Ty : Node_Id := N;
    begin
-      if Nkind (N) /= N_Defining_Identifier
-        or else not (Ekind (N) in Type_Kind)
-      then
+      if Nkind (N) /= N_Defining_Identifier or else not (Is_Type (N)) then
          Ty := Etype (N);
       end if;
 
@@ -865,7 +863,7 @@ package body Why.Inter is
                return EW_Bool_Type;
             elsif Ty = Universal_Fixed then
                return EW_Real_Type;
-            elsif Ekind (Ty) in Modular_Integer_Kind then
+            elsif Is_Modular_Integer_Type (Ty) then
                declare
                   Size : U;
                begin
@@ -1145,7 +1143,7 @@ package body Why.Inter is
       else
          declare
             Module : constant W_Module_Id :=
-              (if Ekind (E) in Subprogram_Kind and then Domain = EW_Prog then
+              (if Is_Subprogram (E) and then Domain = EW_Prog then
                  E_Axiom_Module (E)
                else
                  E_Module (E));
@@ -1200,7 +1198,7 @@ package body Why.Inter is
       --  Classwide types are translated as their corresponding specific tagged
       --  types.
 
-      if Ekind (E) in E_Class_Wide_Type | E_Class_Wide_Subtype then
+      if Is_Class_Wide_Type (E) then
          return To_Why_Type (Specific_Tagged (E), Local);
 
       elsif Local then
@@ -1252,11 +1250,11 @@ package body Why.Inter is
       --  for objects, we want to look at the Why type of the Why object
 
       elsif Nkind (N) in N_Identifier | N_Expanded_Name
-        and then Ekind (Entity (N)) in Object_Kind
+        and then Is_Object (Entity (N))
         and then Ekind (Entity (N)) not in E_Discriminant | E_Component
       then
          return Why_Type_Of_Entity (Entity (N));
-      elsif Ekind (E) in Type_Kind
+      elsif Is_Type (E)
         and then Use_Split_From_For_Type (E)
       then
          return EW_Split (E);

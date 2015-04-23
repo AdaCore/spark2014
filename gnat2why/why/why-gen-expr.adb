@@ -665,7 +665,7 @@ package body Why.Gen.Expr is
 
             Round_Func : constant W_Identifier_Id :=
               (if Nkind (Ada_Node) = N_Type_Conversion
-                 and then Ekind (Ada_Type) in Float_Kind
+                 and then Is_Floating_Point_Type (Ada_Type)
                then E_Symb (Ada_Type, WNE_Float_Round)
                else Why_Empty);
 

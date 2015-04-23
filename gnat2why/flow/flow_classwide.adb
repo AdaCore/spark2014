@@ -36,24 +36,21 @@ with Flow_Utility;         use Flow_Utility;
 package body Flow_Classwide is
 
    function Has_Controlling_Formal_Or_Result (E : Entity_Id) return Boolean
-   with Pre => Nkind (E) in N_Entity and then
-               Ekind (E) in Subprogram_Kind;
+   with Pre => Is_Subprogram (E);
    --  Checks if the given subprogram is primitive with either a
    --  controlling formal parameter or a result (for functions).
 
    procedure Check_Classwide_Global (E     : Entity_Id;
                                      Scope : Flow_Scope;
                                      Valid : in out Boolean)
-   with Pre => Nkind (E) in N_Entity and then
-               Ekind (E) in Subprogram_Kind and then
+   with Pre => Is_Subprogram (E) and then
                Has_Controlling_Formal_Or_Result (E);
    --  Enforce the rules of SRM 6.1.6
 
    procedure Check_Classwide_Depends (E     : Entity_Id;
                                       Scope : Flow_Scope;
                                       Valid : in out Boolean)
-   with Pre => Nkind (E) in N_Entity and then
-               Ekind (E) in Subprogram_Kind and then
+   with Pre => Is_Subprogram (E) and then
                Has_Controlling_Formal_Or_Result (E);
    --  Enforce the rules of SRM 6.1.6
 
@@ -278,8 +275,7 @@ package body Flow_Classwide is
       function Get_Or_Make_Depends (E         : Entity_Id;
                                     Classwide : Boolean)
                                     return Dependency_Maps.Map
-      with Pre => Nkind (E) in N_Entity and then
-                  Ekind (E) in E_Function | E_Procedure;
+      with Pre => Is_Subprogram (E);
       --  Obtain the dependency relation for E, or synthesize one.
 
       -------------------------

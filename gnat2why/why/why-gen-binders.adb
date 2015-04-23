@@ -147,7 +147,7 @@ package body Why.Gen.Binders is
       --  for the parameter if one is provided.
 
       Ty     : constant Entity_Id :=
-        (if Ekind (Use_Ty) in Type_Kind then Retysp (Use_Ty) else Use_Ty);
+        (if Is_Type (Use_Ty) then Retysp (Use_Ty) else Use_Ty);
 
    begin
       --  If E is not in SPARK, only declare an object of type __private for

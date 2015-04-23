@@ -1180,13 +1180,11 @@ package body Flow.Control_Flow_Graph is
       Classwide       : Boolean;
       Map_Root        : Flow_Id;
       To_Cw           : constant Boolean :=
-        Ekind (Get_Type (Name (N),
-                         FA.B_Scope)) in Class_Wide_Kind
-        and then Ekind (Get_Type (Expression (N),
-                                  FA.B_Scope)) not in Class_Wide_Kind;
+        Is_Class_Wide_Type (Get_Type (Name (N), FA.B_Scope))
+          and then
+        not Is_Class_Wide_Type (Get_Type (Expression (N), FA.B_Scope));
 
    begin
-
       --  First we need to determine the root name where we assign to, and
       --  if this is a partial or full assignment. This mirror the
       --  beginning of Untangle_Assignment_Target.
@@ -1227,7 +1225,7 @@ package body Flow.Control_Flow_Graph is
                Expand_Synthesized_Constants => False);
 
             Missing := Flatten_Variable (Map_Root, FA.B_Scope);
-            if Ekind (Get_Type (Name (N), FA.B_Scope)) in Class_Wide_Kind
+            if Is_Class_Wide_Type (Get_Type (Name (N), FA.B_Scope))
               and then Map_Root.Kind = Direct_Mapping
             then
                Missing.Include (Map_Root'Update (Facet => Extension_Part));
@@ -2783,10 +2781,10 @@ package body Flow.Control_Flow_Graph is
 
       else
          --  We have a variable declaration with an initialization.
-         To_Cw := Ekind (Get_Type (Defining_Identifier (N),
-                                   FA.B_Scope)) in Class_Wide_Kind
-           and then Ekind (Get_Type (Expression (N),
-                                     FA.B_Scope)) not in Class_Wide_Kind;
+         To_Cw :=
+           Is_Class_Wide_Type (Get_Type (Defining_Identifier (N), FA.B_Scope))
+             and then
+           not Is_Class_Wide_Type (Get_Type (Expression (N), FA.B_Scope));
 
          declare
             Var_Def : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
@@ -3485,9 +3483,7 @@ package body Flow.Control_Flow_Graph is
                      Associated_Variable :=
                        Associated_Node (Expression (Argument_Association));
 
-                     if not (Ekind (Associated_Variable) in
-                               Subprogram_Kind)
-                     then
+                     if not Is_Subprogram (Associated_Variable) then
                         if Get_Pragma_Id (N) = Pragma_Unmodified then
                            --  If a pragma Unmodified was found, we insert
                            --  its associated variable to the set of
@@ -4159,7 +4155,7 @@ package body Flow.Control_Flow_Graph is
 
          Find_Actual (Actual, Formal, Call);
          pragma Assert (Entity (Name (Call)) = Called_Subprogram);
-         pragma Assert (Ekind (Formal) in Formal_Kind);
+         pragma Assert (Is_Formal (Formal));
 
          --  Build an in vertex.
          Add_Vertex
@@ -4181,9 +4177,7 @@ package body Flow.Control_Flow_Graph is
          In_List.Append (V);
 
          --  Build an out vertex.
-         if Ekind (Formal) = E_In_Out_Parameter or
-           Ekind (Formal) = E_Out_Parameter
-         then
+         if Ekind (Formal) in  E_In_Out_Parameter | E_Out_Parameter then
             Add_Vertex
               (FA,
                Direct_Mapping_Id (P, Out_View),
@@ -4409,9 +4403,9 @@ package body Flow.Control_Flow_Graph is
       function Rec (N : Node_Id) return Boolean is
          T : constant Entity_Id := Get_Type (N, Scope);
       begin
-         if Ekind (T) not in Record_Kind
+         if not Is_Record_Type (T)
            or else Is_Tagged_Type (T)
-           or else Ekind (T) in Class_Wide_Kind
+           or else Is_Class_Wide_Type (T)
          then
             --  No point in trying to split if we are not dealing with some
             --  record type.
@@ -4446,7 +4440,7 @@ package body Flow.Control_Flow_Graph is
                       Defining_Identifier (N)),
                   Scope);
    begin
-      return Ekind (T) not in Class_Wide_Kind
+      return not Is_Class_Wide_Type (T)
         and then not Is_Tagged_Type (T)
         and then Rec (Expression (N));
    end RHS_Split_Useful;

@@ -211,7 +211,7 @@ package body Flow_Utility is
 
       S := Node_Sets.Empty_Set;
       for E of Entity_Set loop
-         if Ekind (E) in Record_Kind then
+         if Is_Record_Type (E) then
             Ptr := First_Component_Or_Discriminant (E);
             while Present (Ptr) loop
                if not S.Contains (Ptr) then
@@ -417,7 +417,7 @@ package body Flow_Utility is
       T : Entity_Id :=
 
         (if Nkind (N) in N_Entity
-           and then Ekind (N) in Type_Kind
+           and then Is_Type (N)
          then
             --  If N is of Type_Kind then T is N
             N
@@ -721,8 +721,8 @@ package body Flow_Utility is
                F      : Flow_Id;
             begin
                if Extensions_Visible (Entity (N), Scope)
-                 and then ((Ekind (Map_Type) in Class_Wide_Kind and then
-                              Ekind (Etype (N)) not in Class_Wide_Kind)
+                 and then ((Is_Class_Wide_Type (Map_Type) and then
+                              not Is_Class_Wide_Type (Etype (N)))
                              or else not Extensions_Irrelevant)
                then
                   --  This is an implicit conversion to class wide, or we
@@ -773,8 +773,8 @@ package body Flow_Utility is
                --    Ekind (T_To) in Class_Wide_Kind;
 
                Class_Wide_Conversion : constant Boolean :=
-                 Ekind (T_From) not in Class_Wide_Kind and then
-                 Ekind (T_To) in Class_Wide_Kind;
+                 not Is_Class_Wide_Type (T_From) and then
+                 Is_Class_Wide_Type (T_To);
 
                Tmp : constant Flow_Id_Maps.Map :=
                  Recurse_On (Expression (N),
@@ -870,8 +870,9 @@ package body Flow_Utility is
                      F      : Flow_Id;
 
                      Class_Wide_Conversion : constant Boolean :=
-                       (Ekind (Get_Type (N, Scope)) not in Class_Wide_Kind
-                          and then Ekind (Map_Type) in Class_Wide_Kind);
+                       not Is_Class_Wide_Type (Get_Type (N, Scope))
+                         and then
+                       Is_Class_Wide_Type (Map_Type);
                   begin
                      M := Recurse_On (Prefix (N),
                                       Map_Root,
@@ -889,8 +890,8 @@ package body Flow_Utility is
 
                            F := Add_Component (Map_Root, Entity (Output));
 
-                           if Ekind (Get_Type (Entity (Output), Scope))
-                             in Record_Kind
+                           if Is_Record_Type
+                             (Get_Type (Entity (Output), Scope))
                            then
                               for C in Recurse_On (Input, F).Iterate loop
                                  M.Replace (Flow_Id_Maps.Key (C),
@@ -1010,8 +1011,8 @@ package body Flow_Utility is
 
       while Nkind (Root_Node) = N_Selected_Component or else
         (Is_Attribute_Update (Root_Node) and then
-           Ekind (Get_Full_Type_Without_Checking (Root_Node))
-             in Record_Kind) or else
+           Is_Record_Type (Get_Full_Type_Without_Checking (Root_Node)))
+          or else
         Is_Ignored_Node (Root_Node)
       loop
          if Nkind (Root_Node) = N_Selected_Component then
@@ -1059,7 +1060,7 @@ package body Flow_Utility is
       --  abort.
 
       if Nkind (Root_Node) not in N_Identifier | N_Expanded_Name or else
-        Ekind (Get_Full_Type_Without_Checking (Root_Node)) not in Record_Kind
+        not Is_Record_Type (Get_Full_Type_Without_Checking (Root_Node))
       then
          return Vars : Flow_Id_Sets.Set do
             --  Recurse on root.
@@ -1200,8 +1201,7 @@ package body Flow_Utility is
                            Write_Eol;
                         end if;
 
-                        if Ekind (Get_Type (E, Scope)) in Record_Kind
-                        then
+                        if Is_Record_Type (Get_Type (E, Scope)) then
                            --  Composite update
 
                            --  We should call Untangle_Record_Aggregate

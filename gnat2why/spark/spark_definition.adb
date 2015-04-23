@@ -27,6 +27,7 @@
 with Ada.Text_IO;            use Ada.Text_IO;
 
 with Aspects;                use Aspects;
+with Atree;                  use Atree;
 with Assumption_Types;       use Assumption_Types;
 with Elists;                 use Elists;
 with Errout;                 use Errout;
@@ -41,6 +42,7 @@ with Sem_Ch12;               use Sem_Ch12;
 with Sem_Disp;               use Sem_Disp;
 with Sem_Prag;               use Sem_Prag;
 with Sem_Util;               use Sem_Util;
+with Sinfo;                  use Sinfo;
 with Snames;                 use Snames;
 with Stand;                  use Stand;
 with Uintp;                  use Uintp;
@@ -1196,7 +1198,7 @@ package body SPARK_Definition is
                --  marked as SPARK_Mode Off. This is also used later during
                --  generation of Why.
 
-               if Ekind (E) in Private_Kind
+               if Is_Private_Type (E)
                  and then Present (Full_View (E))
                  and then not Is_Full_View (Full_View (E)) -- ??? why needed?
                then
@@ -2022,7 +2024,7 @@ package body SPARK_Definition is
                then
                   Id := Defining_Entity (Decl);
 
-                  if Ekind (Id) in Subprogram_Kind
+                  if Is_Subprogram (Id)
                     and then Is_Generic_Actual_Subprogram (Id)
                   then
 
@@ -2052,7 +2054,7 @@ package body SPARK_Definition is
                      end if;
 
                      Entity_List.Append (Id);
-                  elsif Ekind (Id) in Type_Kind then
+                  elsif Is_Type (Id) then
                      Mark_Entity (Id);
                   end if;
                end if;
@@ -2075,7 +2077,7 @@ package body SPARK_Definition is
                then
                   Id := Defining_Entity (Decl);
 
-                  if Ekind (Id) in Type_Kind | Object_Kind | Subprogram_Kind
+                  if (Is_Type (Id) or Is_Object (Id) or Is_Subprogram (Id))
                     and then not Is_Hidden (Id)
                   then
 
@@ -2487,7 +2489,7 @@ package body SPARK_Definition is
                Field : Node_Id := First_Entity (E);
             begin
                while Present (Field) loop
-                  if Ekind (Field) in Object_Kind then
+                  if Is_Object (Field) then
                      Mark_Entity (Etype (Field));
                   end if;
 
@@ -2540,7 +2542,7 @@ package body SPARK_Definition is
                begin
                   while Present (Field) loop
                      if Component_Is_Visible_In_SPARK (Field) then
-                        if Ekind (Field) in Object_Kind then
+                        if Is_Object (Field) then
                            Mark_Entity (Etype (Field));
                         end if;
 
@@ -2818,7 +2820,7 @@ package body SPARK_Definition is
                      Typ := Etype (Field);
 
                      if not Is_Tag (Field)
-                       and then Ekind (Field) in Object_Kind
+                       and then Is_Object (Field)
                        and then not In_SPARK (Typ)
                      then
                         Mark_Violation (Typ, From => Typ);
@@ -2957,7 +2959,7 @@ package body SPARK_Definition is
 
       --  Ignore predicate functions
 
-      if Ekind (E) in E_Function | E_Procedure
+      if Is_Subprogram (E)
         and then Subprogram_Is_Ignored_For_Proof (E)
       then
          return;
@@ -2980,7 +2982,7 @@ package body SPARK_Definition is
       --  declaration, to avoid out-of-order declarations in Why.
       --  Retrieve the appropriate SPARK_Mode pragma before marking.
 
-      if Ekind (E) in Type_Kind then
+      if Is_Type (E) then
          declare
             Decl : constant Node_Id :=
               (if No (Parent (Parent (E)))
@@ -3129,7 +3131,7 @@ package body SPARK_Definition is
          case Ekind (E) is
             when Object_Kind =>
                if (Ekind_In (E, E_Variable, E_Constant)
-                    or else Ekind (E) in Formal_Kind)
+                    or else Is_Formal (E))
                  and then not In_SPARK (Entity (N))
                then
                   Mark_Violation (N, From => Entity (N));

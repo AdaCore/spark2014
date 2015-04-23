@@ -250,7 +250,7 @@ package body Flow is
                       return Boolean
    is ((case X.Kind is
         when E_Subprogram_Body =>
-          Ekind (X.Analyzed_Entity) in E_Function | E_Procedure,
+          Is_Subprogram (X.Analyzed_Entity),
         when E_Package =>
           Ekind (X.Analyzed_Entity) = E_Package,
         when E_Package_Body =>
@@ -1279,7 +1279,7 @@ package body Flow is
       --  out in SRM 6.1.6.
       Success := True;
       for E of Entity_Set loop
-         if Ekind (E) in Subprogram_Kind
+         if Is_Subprogram (E)
            and then SPARK_Util.Analysis_Requested (E)
            and then Entity_In_SPARK (E)
          then

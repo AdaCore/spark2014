@@ -25,6 +25,7 @@
 
 with Ada.Containers.Hashed_Maps;
 
+with Atree;               use Atree;
 with Elists;              use Elists;
 with Namet;               use Namet;
 with Nlists;              use Nlists;

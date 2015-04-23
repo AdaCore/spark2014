@@ -54,7 +54,7 @@ package body Gnat2Why.Decls is
    Counter_Example_Label : constant String := "GP_CE_Relevant";
 
    function Entity_Relevant_For_Counter_Example (E : Entity_Id) return Boolean
-   is (Ekind (Etype (E)) in Scalar_Kind)
+   is (Is_Scalar_Type (Etype (E)))
    with Pre => Nkind (E) in N_Entity;
    --  Returns true if the given entity should be included in the
    --  counter-example model.

@@ -1861,13 +1861,12 @@ package body Flow.Analysis is
 
          The_Var_Is_Array : constant Boolean :=
            (The_Var.Kind = Direct_Mapping
-              and then Ekind (Etype (The_Var.Node)) in Type_Kind
+              and then Is_Type (Etype (The_Var.Node))
               and then Has_Array_Type (Etype (The_Var.Node)))
            or else
            (The_Var.Kind = Record_Field
               and then The_Var.Facet = Normal_Part
-              and then Ekind (Etype (The_Var.Component.Last_Element))
-                         in Type_Kind
+              and then Is_Type (Etype (The_Var.Component.Last_Element))
               and then Has_Array_Type
                          (Etype (The_Var.Component.Last_Element)));
          --  Notes if The_Var refers to an array.
@@ -2582,7 +2581,7 @@ package body Flow.Analysis is
             --  If we find a spec then we look if it has abstract
             --  state.
 
-            elsif Ekind (Scop) in E_Generic_Package | E_Package
+            elsif Is_Package_Or_Generic_Package (Scop)
               and then Present (Abstract_States (Scop))
             then
                return True;
@@ -2624,7 +2623,7 @@ package body Flow.Analysis is
          begin
             Hidden_State := First_Ent;
             while Present (Hidden_State) loop
-               if Ekind (Hidden_State) in E_Variable
+               if Ekind (Hidden_State) = E_Variable
                  and then not Is_Constant_Object (Hidden_State)
                then
                   Error_Msg_Flow

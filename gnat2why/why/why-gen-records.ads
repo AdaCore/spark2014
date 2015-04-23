@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;              use Atree;
 with Einfo;              use Einfo;
 with Types;              use Types;
 
@@ -216,11 +215,11 @@ package Why.Gen.Records is
    --  discriminants, the 'Constrained attribute and the 'Tag attribute.
 
    function Field_Type_For_Discriminants (E : Entity_Id) return W_Type_Id with
-     Pre => Ekind (E) in Type_Kind and then Has_Discriminants (E);
+     Pre => Is_Type (E) and then Has_Discriminants (E);
    --  Type of the top-level Why3 field for discriminants of E.
 
    function Field_Type_For_Fields (E : Entity_Id) return W_Type_Id with
-     Pre => Ekind (E) in Type_Kind and then Count_Why_Regular_Fields (E) > 0;
+     Pre => Is_Type (E) and then Count_Why_Regular_Fields (E) > 0;
    --  Type of the top-level Why3 field for fields of E.
 
 end Why.Gen.Records;

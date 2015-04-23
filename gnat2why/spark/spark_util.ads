@@ -179,7 +179,7 @@ package SPARK_Util is
    --     with external axiomatization.
 
    function Package_Has_Ext_Axioms (E : Entity_Id) return Boolean
-     with Pre => Ekind_In (E, E_Package, E_Generic_Package);
+     with Pre => Is_Package_Or_Generic_Package (E);
    --  @param E (possibly generic) package
    --  @return True iff E is a package with external axiomatization
 
@@ -220,12 +220,12 @@ package SPARK_Util is
    --  For non-private types, Retysp is the identity.
 
    function Retysp (T : Entity_Id) return Entity_Id
-     with Pre => Ekind (T) in Type_Kind;
+     with Pre => Is_Type (T);
    --  @param T any type
    --  @return the "Representative Type in SPARK" of type T
 
    function Retysp_Kind (T : Entity_Id) return Entity_Kind
-     with Pre => Ekind (T) in Type_Kind;
+     with Pre => Is_Type (T);
    --  @param T any type
    --  @return the entity kind of the "Representative Type in SPARK" of type T.
    --     This is not the same as Ekind (Retysp (T)), because Retysp (T) may
@@ -495,7 +495,7 @@ package SPARK_Util is
       Name      : Name_Id;
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Node_Lists.List
-     with Pre => Ekind (E) in Subprogram_Kind | E_Package and then
+     with Pre => (Is_Subprogram (E) or else Ekind (E) = E_Package) and then
                  not (Classwide and Inherited);
    --  @param E subprogram or package
    --  @param Name contract name
@@ -558,7 +558,7 @@ package SPARK_Util is
       Name      : Name_Id;
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Boolean
-   with Pre => Ekind (E) in Subprogram_Kind | E_Package;
+     with Pre => Is_Subprogram (E) or else Ekind (E) = E_Package;
    --  @param E subprogram or package
    --  @param Name contract name
    --  @param Classwide True when asking for the classwide version of contract
@@ -571,7 +571,7 @@ package SPARK_Util is
    --  @return True iff Extensions_Visible is specified for E
 
    function Has_User_Supplied_Globals (E : Entity_Id) return Boolean
-     with Pre => Ekind (E) in Subprogram_Kind;
+     with Pre => Is_Subprogram (E);
    --  @param E subprogram
    --  @return True iff Subprogram E has a data dependencies (Global) or flow
    --  dependencies (Depends) contract
@@ -597,7 +597,7 @@ package SPARK_Util is
    --  @return True iff E is an instance of Ada.Unchecked_Conversion
 
    function Might_Be_Main (E : Entity_Id) return Boolean
-     with Pre => Ekind (E) in Subprogram_Kind;
+     with Pre => Is_Subprogram (E);
    --  @param E subprogram
    --  @return True iff E is a library level subprogram without formal
    --     parameters (E is allowed to have global parameters)
@@ -621,7 +621,7 @@ package SPARK_Util is
    --  @return True iff E should not be translated into Why3
 
    function Subp_Location (E : Entity_Id) return String
-     with Pre => Ekind (E) in Subprogram_Kind | E_Package;
+     with Pre => Is_Subprogram (E) or else Ekind (E) = E_Package;
    --  @param E subprogram or package
    --  @return a String of the form GP_Subp:foo.ads:12 pointing to the file
    --    and line where this subprogram or package is declared. This allows to
