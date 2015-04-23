@@ -1683,9 +1683,17 @@ package body Flow.Control_Flow_Graph is
             declare
                Elsif_Body : constant List_Id :=
                  Then_Statements (Elsif_Statement);
+
+               CA         : constant List_Id :=
+                 Condition_Actions (Elsif_Statement);
             begin
-               --  We have a vertex V for each elsif statement, which we
-               --  link to the previous one (V_Prev).
+               --  If the Condition_Actions of the elsif statement are
+               --  not empty, then we process them too.
+               if Present (CA) then
+                  Process_Statement_List (CA, FA, CM, Ctx);
+               end if;
+
+               --  We have a vertex V for each elsif statement
                Add_Vertex
                  (FA,
                   Direct_Mapping_Id (Elsif_Statement),
@@ -1704,12 +1712,29 @@ package body Flow.Control_Flow_Graph is
                   V);
                Ctx.Folded_Function_Checks (N).Insert
                  (Condition (Elsif_Statement));
-               Linkup (FA, V_Prev, V);
 
                Process_Statement_List (Elsif_Body, FA, CM, Ctx);
                Linkup (FA,
                        V,
                        CM (Union_Id (Elsif_Body)).Standard_Entry);
+
+               --  V_Prev will be either linked to the
+               --  Condition_Actions (if they exist) or directly to V.
+               --
+               --  Note that the elsif's Condition_Actions are
+               --  considered to occur before the elsif statement (if
+               --  they exist).
+               if Present (CA) then
+                  Linkup (FA, V_Prev, CM (Union_Id (CA)).Standard_Entry);
+
+                  CM (Union_Id (Elsif_Body)).Standard_Entry :=
+                    CM (Union_Id (CA)).Standard_Entry;
+
+                  Linkup (FA, CM (Union_Id (CA)).Standard_Exits, V);
+               else
+                  Linkup (FA, V_Prev, V);
+               end if;
+
                CM (Union_Id (N)).Standard_Exits.Union
                  (CM (Union_Id (Elsif_Body)).Standard_Exits);
             end;

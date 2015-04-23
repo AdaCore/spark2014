@@ -58,6 +58,8 @@ copy.adb:210:34: info: range check proved
 copy.adb:210:44: info: initialization of "Length_Of_Yes_No" proved
 copy.adb:211:31: info: initialization of "Yes_No" proved
 copy.adb:211:31: info: range check proved
+copy.adb:211:55: info: initialization of "Last_Of_Yes_No" proved
+copy.adb:211:55: info: initialization of "R71b" proved
 copy.adb:213:31: info: precondition proved
 copy.adb:220:34: info: precondition proved
 copy.adb:221:43: info: range check proved
