@@ -208,7 +208,9 @@ package body Gnat2Why.Annotate is
       --  - includes the spec node in the range to be considered for subprogram
       --    bodies.
 
-      if Nkind (Range_Node) = N_Subprogram_Body then
+      if Nkind (Range_Node) = N_Subprogram_Body
+        and then Present (Corresponding_Spec (Range_Node))
+      then
          Insert_Annotate_Range (Prgma, Kind, Pattern, Reason,
                                 Specification (Range_Node));
          Insert_Annotate_Range (Prgma, Kind, Pattern, Reason,
