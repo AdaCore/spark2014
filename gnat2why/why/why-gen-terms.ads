@@ -41,10 +41,6 @@ package Why.Gen.Terms is
    function Has_Dereference_Or_Any (T : W_Term_Id) return Boolean;
    --  Return True if T contains a dereference
 
-   function New_Ifb (Condition, Left, Right : W_Term_Id) return W_Term_Id;
-   --  Build a if-then-else construct with a boolean test and terms in the
-   --  branches.
-
    function New_Old (Expr : W_Expr_Id; Domain : EW_Domain) return W_Expr_Id;
    --  Build the expression old Expr
 

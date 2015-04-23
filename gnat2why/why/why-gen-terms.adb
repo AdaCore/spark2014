@@ -25,10 +25,8 @@
 
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Modules;   use Why.Atree.Modules;
-with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Atree.Traversal; use Why.Atree.Traversal;
 with Why.Conversions;     use Why.Conversions;
-with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Expr;       use Why.Gen.Expr;
 
 package body Why.Gen.Terms is
@@ -98,29 +96,6 @@ package body Why.Gen.Terms is
       Traverse (SS, +T);
       return SS.Found;
    end Has_Dereference_Or_Any;
-
-   -------------
-   -- New_Ifb --
-   -------------
-
-   function New_Ifb (Condition, Left, Right : W_Term_Id) return W_Term_Id
-   is
-   begin
-      case Get_Kind (+Condition) is
-         when W_Literal =>
-            if Get_Value (+Condition) = EW_True then
-               return Left;
-            else
-               return Right;
-            end if;
-
-         when others =>
-            return
-              New_Call
-                (Name => New_Identifier (Name => "ite"),
-                 Args => (1 => +Condition, 2 => +Left, 3 => +Right));
-      end case;
-   end New_Ifb;
 
    -------------
    -- New_Old --
