@@ -421,8 +421,7 @@ package body Flow_Utility is
          then
             --  If N is of Type_Kind then T is N
             N
-         elsif Nkind (N) in N_Has_Etype and then Present (Etype (N)) then
-            --  ??? is it necessary to still call Present if N_Has_Etype?
+         elsif Nkind (N) in N_Has_Etype then
             --  If Etype is Present then use that
             Etype (N)
          elsif Present (Defining_Identifier (N)) then
@@ -437,22 +436,21 @@ package body Flow_Utility is
          return T;
       end if;
 
-      while Is_Type (T) and then Present (Full_View (T))
+      while Is_Type (T)
+        and then Present (Full_View (T))
         and then Is_Visible (Full_View (T), Scope)
         and then Full_View (T) /= T
       loop
          T := Full_View (T);
       end loop;
 
-      --  We do not want to return an Itype so we recurse on either
-      --  the Root_Type (if it is different from T) or the
-      --  Associated_Node_For_Itype.
-      if Is_Itype (T) then
-         if Root_Type (T) /= T then
-            T := Get_Type (Root_Type (T), Scope);
-         else
-            T := Get_Type (Associated_Node_For_Itype (T), Scope);
-         end if;
+      --  We do not want to return an Itype so we recurse on T's Etype
+      --  if it different to T. If we cannot do any better then we
+      --  will in fact return an Itype.
+      if Is_Itype (T)
+        and then Etype (T) /= T
+      then
+         T := Get_Type (Etype (T), Scope);
       end if;
 
       return T;
