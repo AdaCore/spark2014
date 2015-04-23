@@ -31,6 +31,10 @@ with Why.Gen.Expr;       use Why.Gen.Expr;
 
 package body Why.Gen.Terms is
 
+   --------------------------
+   -- Get_All_Dereferences --
+   --------------------------
+
    function Get_All_Dereferences (W : Why_Node_Id) return Node_Sets.Set is
       type Collect_State is new Traversal_State with record
          Found : Node_Sets.Set;
@@ -54,9 +58,9 @@ package body Why.Gen.Terms is
       return SS.Found;
    end Get_All_Dereferences;
 
-   ---------------------
-   -- Has_Dereference --
-   ---------------------
+   ----------------------------
+   -- Has_Dereference_Or_Any --
+   ----------------------------
 
    function Has_Dereference_Or_Any (T : W_Term_Id) return Boolean is
       type Search_State is new Traversal_State with record
@@ -71,6 +75,10 @@ package body Why.Gen.Terms is
         (State : in out Search_State;
          Node  : W_Any_Expr_Id);
 
+      ------------------
+      -- Deref_Pre_Op --
+      ------------------
+
       procedure Deref_Pre_Op
         (State : in out Search_State;
          Node  : W_Deref_Id)
@@ -80,6 +88,10 @@ package body Why.Gen.Terms is
          State.Found   := True;
          State.Control := Terminate_Immediately;
       end Deref_Pre_Op;
+
+      ---------------------
+      -- Any_Expr_Pre_Op --
+      ---------------------
 
       procedure Any_Expr_Pre_Op
         (State : in out Search_State;
