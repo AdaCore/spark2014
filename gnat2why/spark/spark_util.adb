@@ -224,15 +224,13 @@ package body SPARK_Util is
          end loop;
 
       --  If T is in SPARK but not its most underlying type, then go through
-      --  the Full_View chain until the last type in SPARK is found.
-      --  This code is largely inspired from the body of Underlying_Type.
+      --  the Full_View chain until the last type in SPARK is found. This code
+      --  is largely inspired from the body of Einfo.Underlying_Type.
 
       elsif Full_View_Not_In_SPARK (T) then
          loop
-
-            --  If Full_View (Typ) is in SPARK, use it
-            --  otherwise, we have found the last type in SPARK in T's chain of
-            --  Full_View.
+            --  If Full_View (Typ) is in SPARK, use it. Otherwise, we have
+            --  found the last type in SPARK in T's chain of Full_View.
 
             if Present (Full_View (Typ)) then
                if Entity_In_SPARK (Full_View (Typ)) then
@@ -241,6 +239,11 @@ package body SPARK_Util is
                else
                   return Typ;
                end if;
+
+            --  If we have a private type with an underlying full view, either
+            --  it is in SPARK and we reach it, or it is not in SPARK and we
+            --  return at this point.
+
             elsif Ekind (Typ) in Private_Kind
               and then Present (Underlying_Full_View (Typ))
             then
@@ -250,6 +253,11 @@ package body SPARK_Util is
                else
                   return Typ;
                end if;
+
+            --  If we have an incomplete entity that comes from the limited
+            --  view, either its non-limited view is in SPARK and we reach
+            --  it, or it is not in SPARK and we return at this point.
+
             elsif From_Limited_With (Typ)
               and then Present (Non_Limited_View (Typ))
             then
@@ -259,6 +267,11 @@ package body SPARK_Util is
                else
                   return Typ;
                end if;
+
+            --  Otherwise, we must have stored the first ancestor of Typ that
+            --  is in SPARK during SPARK checking. Either it is Typ and we're
+            --  done, or we reach it.
+
             elsif Get_First_Ancestor_In_SPARK (Typ) /= Typ then
                Typ := Get_First_Ancestor_In_SPARK (Typ);
                pragma Assert (Full_View_Not_In_SPARK (Typ));
