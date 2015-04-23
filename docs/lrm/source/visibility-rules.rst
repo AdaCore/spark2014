@@ -47,8 +47,10 @@ Object Renaming Declarations
 1. An expression or range occurring as part of an
    ``object_renaming_declaration`` shall not have a variable input.
    [This rule can apply to an index of an indexed_component and the range
-   of a slice.]
-
+   of a slice.] [This rule avoids the possible dependence of a subprogram
+   on an unnamed constant that cannot be mentioned in dependency contracts,
+   and it ensures that the renamed object can be mentally replaced for the
+   renaming variable in code reviews.]
 
 .. _etu-object_renaming_declarations:
 
