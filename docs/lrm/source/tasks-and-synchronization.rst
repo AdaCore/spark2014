@@ -224,17 +224,16 @@ are in |SPARK|.
     preconditions are defined [carefully, in order to avoid
     infinite recursion] to ensure that the result belongs to the result type.
 
-   * for Ada.Execution_Time.Clock_For_Interrupt
-     and for Ada.Execution_Time.Clock,
-     Separate_Interrupt_Clocks_Supported is True.
+  * for Ada.Execution_Time.Clock_For_Interrupt
+    and for Ada.Execution_Time.Clock,
+    Separate_Interrupt_Clocks_Supported is True.
 
   * for Ada.Real_Time's arithmetic and conversion  operators,
     preconditions are defined to ensure that the result belongs to the
     result type.
 
-19. All procedures declared in the visible part of Ada.Synchronous_Task
-    control have a dependency "(S => null)" despite the fact that
-    S has mode **in out**. Procedure Suspend_Until_True is defined
-    to be potentially blocking.
+19. All procedures declared in the visible part of Ada.Synchronous_Task_Control
+    have a dependency "(S => null)" despite the fact that S has mode **in
+    out**. Procedure Suspend_Until_True is defined to be potentially blocking.
 
 .. _etu-tasks_and_synchronization:

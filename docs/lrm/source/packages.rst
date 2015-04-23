@@ -347,7 +347,7 @@ Async_Writers aspect specification.
 .. _tu-fe-nt-external_state_variables-09:
 
 9. A nonvolatile function shall not have a formal parameter (or result)
-    of an effectively volatile type.
+   of an effectively volatile type.
 
 .. _tu-fe-external_state_variables-10:
 
