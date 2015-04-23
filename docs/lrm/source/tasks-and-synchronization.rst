@@ -93,9 +93,6 @@ are in |SPARK|.
    shall be of a type which defines full default initialization, or
    shall be declared with an initial value expression, or shall be
    imported.
-   A state abstraction whose Part_Of aspect specifies a task unit or
-   protected unit shall be named in the Initializes aspect of its
-   enclosing package.
 
 7. A type which does not yield synchronized objects shall not have
    a component type which yields synchronized objects.
@@ -107,11 +104,15 @@ are in |SPARK|.
 
 .. centered:: **Verification Rules**
 
-9. A ``global_item`` occurring in the Global aspect specification of the
-   main subprogram or of a task unit having a mode of Output or In_Out shall
-   not denote a variable whose Constant_After_Elaboration aspect is True.
+9. A state abstraction whose Part_Of aspect specifies a task unit or
+   protected unit shall be named in the Initializes aspect of its
+   enclosing package.
 
-10. At most one task (including the environment task)
+10. A ``global_item`` occurring in the Global aspect specification of the
+    main subprogram or of a task unit having a mode of Output or In_Out shall
+    not denote a variable whose Constant_After_Elaboration aspect is True.
+
+11. At most one task (including the environment task)
     shall ever call (directly or via intermediate calls) the protected
     entry (if any) of a given protected object. [Roughly speaking, each
     protected object which has an entry can be statically identified with
@@ -128,17 +129,17 @@ are in |SPARK|.
     the Ada rule that two tasks cannot simultaneously suspend on one
     suspension object (see Ada RM D.10(10)).]
 
-11. The verification condition associated with the Ada rule that it is a bounded
+12. The verification condition associated with the Ada rule that it is a bounded
     error to invoke an operation that is potentially blocking during a
     protected action (see Ada RM 9.5.1(8)) is discharged via (potentially
     conservative) flow analysis, as opposed to by introducing verification
     conditions. [Support for the "Nonblocking" aspect discussed in AI12-0064
     may be incorporated into |SPARK| at some point in the future.]
 
-12. The end of a task body shall not be reachable. [This follows from
+13. The end of a task body shall not be reachable. [This follows from
     from Ravenscar's No_Task_Termination restriction.]
 
-13. A nonvolatile function shall not be potentially blocking.
+14. A nonvolatile function shall not be potentially blocking.
     [Strictly speaking this rule is already implied by other rules of |SPARK|,
     notably the rule that a nonvolatile function cannot depend on a volatile
     input.]
@@ -147,7 +148,7 @@ are in |SPARK|.
     the corresponding primitive operation of any descendant of T is
     potentially blocking.]
 
-14. The package Ada.Task_Identification declares a synchronized
+15. The package Ada.Task_Identification declares a synchronized
     external state abstraction named Tasking_State. The package
     Ada.Real_Time declares a synchronized external state abstraction named
     Clock_Time. The Async_Readers and Async_Writers aspects of both state
@@ -156,7 +157,7 @@ are in |SPARK|.
     For each of the following language-defined functions, the
     Volatile_Function aspect of the function is defined to be True
     and the Global aspect of the function specifies that one of these
-    two state abstractions is referenced as an In_Out global:
+    two state abstractions is referenced as an Input global:
 
   * Ada.Real_Time.Clock references Ada.Real_Time.Clock_Time;
 
@@ -183,27 +184,57 @@ are in |SPARK|.
   * Ada.Dispatching.EDF.Get_Deadline
     references Ada.Task_Identification.Tasking_State.
 
+  * Ada.Interrupts.Is_Reserved
+    references Ada.Task_Identification.Tasking_State.
+
+  * Ada.Interrupts.Is_Attached
+    references Ada.Task_Identification.Tasking_State.
+
+  * Ada.Interrupts.Get_CPU
+    references Ada.Task_Identification.Tasking_State.
+
+  * Ada.Synchronous_Task_Control.Current_State
+    references Ada.Task_Identification.Tasking_State;
+
   [Functions already excluded by Ravenscar, such as Ada.Calendar.Clock, are
   not on this list.]
 
-15. For purposes of determining global inputs and outputs, a delay
+16. For purposes of determining global inputs and outputs, a delay
     statement is considered to reference the state abstraction
     Ada.Real_Time.Clock_Time as both an input and an output.
     [In other words, a delay statement can be treated like a call to
     a procedure which takes the delay expression as an actual parameter
     and references the Clock_Time state abstraction as an In_Out global.]
 
-16. For purposes of determining global inputs and outputs, a use of
+17. For purposes of determining global inputs and outputs, a use of
     any of the Callable, Caller, Count, or Terminated attributes is considered
     to reference the state abstraction
     Ada.Task_Identification.Tasking_State as both an input and an output.
     [On the other hand, use of the Identity, Priority, or Storage_Size
     attributes introduces no such dependency.]
 
-17. Preconditions are added to suprogram specifications as needed in order
+18. Preconditions are added to suprogram specifications as needed in order
     to avoid the failure of language-defined runtime checks for the
     following subprograms:
 
-  * TBD (e.g., Ada.Execution_Time.Clock must not be passed a null Task_Id)
+  * for Ada.Execution_Time.Clock, T does not equal
+    Task_Identification.Null_Task_Id .
+
+  * for Ada.Execution_Time."+" and Ada.Execution_Time."-" operators,
+    preconditions are defined [carefully, in order to avoid
+    infinite recursion] to ensure that the result belongs to the result type.
+
+   * for Ada.Execution_Time.Clock_For_Interrupt
+     and for Ada.Execution_Time.Clock,
+     Separate_Interrupt_Clocks_Supported is True.
+
+  * for Ada.Real_Time's arithmetic and conversion  operators,
+    preconditions are defined to ensure that the result belongs to the
+    result type.
+
+19. All procedures declared in the visible part of Ada.Synchronous_Task
+    control have a dependency "(S => null)" despite the fact that
+    S has mode **in out**. Procedure Suspend_Until_True is defined
+    to be potentially blocking.
 
 .. _etu-tasks_and_synchronization:

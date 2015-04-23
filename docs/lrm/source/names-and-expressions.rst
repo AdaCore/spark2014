@@ -167,6 +167,13 @@ which is initialized with the value of a variable.]
 currently in |SPARK|. This rule is added in anticipation of a possible
 relaxation of this restriction.]
 
+[These rules simplify analysis by eliminating the need to deal with
+implicitly created anonymous constants. An expression which does not
+have a variable input will always yield the same result if it is
+(conceptually, for purposes of static analysis) reevaluated later.
+This is not true of an expression that has a variable input because the
+value of the variable might have changed.]
+
 .. _update-expressions:
 
 Update Expressions

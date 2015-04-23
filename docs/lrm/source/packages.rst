@@ -336,26 +336,22 @@ Async_Writers aspect specification.
 
 .. _tu-fe-external_state_variables-07:
 
-7. A protected type shall not have an effectively volatile component.
+7. An effectively volatile object shall not be used as an actual parameter in a
+   generic instantiation.
 
 .. _tu-fe-external_state_variables-08:
 
-8. An effectively volatile object shall not be used as an actual parameter in a
-   generic instantiation.
-
-.. _tu-fe-external_state_variables-09:
-
-9. A ``global_item`` of a nonvolatile function shall not denote either
+8. A ``global_item`` of a nonvolatile function shall not denote either
    an effectively volatile object or an external state abstraction.
 
-.. _tu-fe-nt-external_state_variables-10:
+.. _tu-fe-nt-external_state_variables-09:
 
-10. A nonvolatile function shall not have a formal parameter (or result)
+9. A nonvolatile function shall not have a formal parameter (or result)
     of an effectively volatile type.
 
-.. _tu-fe-external_state_variables-11:
+.. _tu-fe-external_state_variables-10:
 
-11. If a procedure has an **in** mode parameter of an effectively
+10. If a procedure has an **in** mode parameter of an effectively
     volatile type, then the Effective_Reads aspect of any corresponding
     actual parameter shall be False.
     [This is because the parameter is passed by reference and the corresponding
@@ -363,16 +359,16 @@ Async_Writers aspect specification.
     volatility refining aspect of the formal parameter is True and so the
     aspect of the corresponding actual parameter may be either True or False.]
 
-.. _tu-fe-nt-external_state_variables-12:
+.. _tu-fe-nt-external_state_variables-11:
 
-12. An effectively volatile object shall only occur as an actual
+11. An effectively volatile object shall only occur as an actual
     parameter of a subprogram if the corresponding formal parameter is
     of a non-scalar effectively volatile type or as an actual
     parameter in a call to an instance of Unchecked_Conversion.
 
-.. _tu-fe-external_state_variables-13:
+.. _tu-fe-external_state_variables-12:
 
-13. Contrary to the general |SPARK| rule that expression evaluation
+12. Contrary to the general |SPARK| rule that expression evaluation
     cannot have side effects, a read of an effectively volatile object with
     the properties Async_Writers or Effective_Reads set to True is
     considered to have an effect when read. To reconcile this
@@ -413,11 +409,11 @@ Async_Writers aspect specification.
 
 .. centered:: **Dynamic Semantics**
 
-14. There are no dynamic semantics associated with these aspects.
+13. There are no dynamic semantics associated with these aspects.
 
 .. centered:: **Verification Rules**
 
-15. An effectively volatile formal parameter of mode **out** shall not be read,
+14. An effectively volatile formal parameter of mode **out** shall not be read,
     even after it has been updated. [This is because the
     Async_Writers aspect of the parameter is True].
 
