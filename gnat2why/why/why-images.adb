@@ -481,6 +481,8 @@ package body Why.Images is
             P (O, "assert");
          when EW_Check =>
             P (O, "check");
+         when EW_Assume =>
+            P (O, "assume");
       end case;
    end P;
 

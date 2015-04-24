@@ -776,6 +776,7 @@ package Why.Sinfo is
 
    type EW_Assert_Kind is
      (EW_Assert,
-      EW_Check);
+      EW_Check,
+      EW_Assume);
 
 end Why.Sinfo;
