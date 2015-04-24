@@ -23,55 +23,70 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;               use Atree;
-with Common_Containers;   use Common_Containers;
-with Sem_Eval;            use Sem_Eval;
-with Sem_Util;            use Sem_Util;
-with Sinfo;               use Sinfo;
-with Stand;               use Stand;
-with Uintp;               use Uintp;
-
-with Gnat2Why.Types;      use Gnat2Why.Types;
-with SPARK_Util;          use SPARK_Util;
-
-with Why.Conversions;     use Why.Conversions;
-with Why.Atree.Builders;  use Why.Atree.Builders;
-with Why.Gen.Decl;        use Why.Gen.Decl;
-with Why.Gen.Names;       use Why.Gen.Names;
-with Why.Gen.Binders;     use Why.Gen.Binders;
-with Why.Inter;           use Why.Inter;
-with Why.Types;           use Why.Types;
-
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with GNATCOLL.Utils;        use GNATCOLL.Utils;
-with Sinput;                use Sinput;
 
+with Atree;                 use Atree;
+with Common_Containers;     use Common_Containers;
 with GNAT.Source_Info;
+with Sem_Eval;              use Sem_Eval;
+with Sem_Util;              use Sem_Util;
+with Sinfo;                 use Sinfo;
+with Sinput;                use Sinput;
+with Stand;                 use Stand;
+with Uintp;                 use Uintp;
+
+with GNATCOLL.Utils;        use GNATCOLL.Utils;
+with Gnat2Why.Types;        use Gnat2Why.Types;
+with SPARK_Util;            use SPARK_Util;
+
+with Why.Conversions;       use Why.Conversions;
+with Why.Atree.Builders;    use Why.Atree.Builders;
 with Why.Atree.Tables;      use Why.Atree.Tables;
+with Why.Gen.Binders;       use Why.Gen.Binders;
+with Why.Gen.Decl;          use Why.Gen.Decl;
+with Why.Gen.Names;         use Why.Gen.Names;
+with Why.Inter;             use Why.Inter;
+with Why.Types;             use Why.Types;
 
 package body Why.Gen.Arrays is
 
-   procedure Declare_Constrained (Theory         : W_Theory_Declaration_Id;
-                                  Why3_Type_Name : W_Name_Id;
-                                  Und_Ent        : Entity_Id);
+   procedure Declare_Constrained
+     (Theory         : W_Theory_Declaration_Id;
+      Why3_Type_Name : W_Name_Id;
+      Und_Ent        : Entity_Id);
 
-   procedure Declare_Unconstrained (Theory         : W_Theory_Declaration_Id;
-                                    Why3_Type_Name : W_Name_Id;
-                                    Und_Ent        : Entity_Id);
+   procedure Declare_Unconstrained
+     (Theory         : W_Theory_Declaration_Id;
+      Why3_Type_Name : W_Name_Id;
+      Und_Ent        : Entity_Id);
 
    --  The following two procedures take an array [Args] and an index [Arg_Ind]
    --  as in-out parameters. They fill the array with a number of parameters,
    --  starting from the initial value of [Arg_Ind], and set the final value
    --  of [Arg_Ind] to the index after the last written value.
 
-   function Get_Array_Attr (Domain : EW_Domain;
-                            Item   : Item_Type;
-                            Attr   : Attribute_Id;
-                            Dim    : Positive) return W_Expr_Id;
+   function Get_Array_Attr
+     (Domain : EW_Domain;
+      Item   : Item_Type;
+      Attr   : Attribute_Id;
+      Dim    : Positive) return W_Expr_Id;
 
    function Get_Entity_Of_Variable (E : W_Expr_Id) return Entity_Id
      with Pre => Get_Kind (+E) in W_Identifier | W_Deref | W_Tagged;
    --  should return an object of type EW_Int_Type
+
+   function Prepare_Indices_Substitutions
+     (Theory      : W_Theory_Declaration_Id;
+      Typ         : Entity_Id;
+      Prefix      : String;
+      Declare_One : Boolean := True) return W_Clone_Substitution_Array;
+   --  @param Typ The representation type of the index
+   --  @param Prefix The prefix of the current index ("I1" e.g.)
+   --  @param Declare_One specify if the function one of the index should be
+   --         declared or not : to be set to false if this function has
+   --         allready been called for the current module.
+   --  @return the substitution array for cloning the indice module of
+   --          _gnatprove_standard.mlw
 
    -----------------
    -- Add_Map_Arg --
@@ -333,28 +348,13 @@ package body Why.Gen.Arrays is
      (Theory      : W_Theory_Declaration_Id;
       Typ         : Entity_Id;
       Prefix      : String;
-      Declare_One : Boolean := True)
-      return W_Clone_Substitution_Array;
-   --  @param Typ The representation type of the index
-   --  @param Prefix The prefix of the current index ("I1" e.g.)
-   --  @param Declare_One specify if the function one of the index should be
-   --         declared or not : to be set to false if this function has
-   --         allready been called for the current module.
-   --  @return the substitution array for cloning the indice module of
-   --          _gnatprove_standard.mlw
-
-   function Prepare_Indices_Substitutions
-     (Theory      : W_Theory_Declaration_Id;
-      Typ         : Entity_Id;
-      Prefix      : String;
-      Declare_One : Boolean := True)
-      return W_Clone_Substitution_Array
+      Declare_One : Boolean := True) return W_Clone_Substitution_Array
    is
       WTyp : constant W_Type_Id := Base_Why_Type_No_Bool (Base_Type (Typ));
       One_Id : constant W_Identifier_Id :=
         New_Identifier (Name => "index_" & Prefix & "_one");
-   begin
 
+   begin
       if Declare_One then
          Emit (Theory,
                Why.Gen.Binders.New_Function_Decl
@@ -371,8 +371,8 @@ package body Why.Gen.Arrays is
                   Return_Type => WTyp));
       end if;
 
-      --  TBD : after Johannes refacto of names use this mecanism to
-      --        print the intew operators instead of NIDs.
+      --  ??? after Johannes refacto of names use this mecanism to print the
+      --  new operators instead of NIDs.
 
       return (1 => New_Clone_Substitution
               (Kind      => EW_Type_Subst,
@@ -539,9 +539,10 @@ package body Why.Gen.Arrays is
    -- Declare_Constrained --
    -------------------------
 
-   procedure Declare_Constrained (Theory         : W_Theory_Declaration_Id;
-                                  Why3_Type_Name : W_Name_Id;
-                                  Und_Ent        : Entity_Id)
+   procedure Declare_Constrained
+     (Theory         : W_Theory_Declaration_Id;
+      Why3_Type_Name : W_Name_Id;
+      Und_Ent        : Entity_Id)
    is
       Dimension    : constant Pos := Number_Dimensions (Und_Ent);
       Index        : Entity_Id := First_Index (Und_Ent);
@@ -817,9 +818,10 @@ package body Why.Gen.Arrays is
    -- Declare_Unconstrained --
    ---------------------------
 
-   procedure Declare_Unconstrained (Theory         : W_Theory_Declaration_Id;
-                                    Why3_Type_Name : W_Name_Id;
-                                    Und_Ent        : Entity_Id)
+   procedure Declare_Unconstrained
+     (Theory         : W_Theory_Declaration_Id;
+      Why3_Type_Name : W_Name_Id;
+      Und_Ent        : Entity_Id)
    is
       Dimension  : constant Pos := Number_Dimensions (Und_Ent);
       Subst      : W_Clone_Substitution_Array
