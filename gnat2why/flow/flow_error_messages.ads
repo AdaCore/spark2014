@@ -48,7 +48,7 @@ package Flow_Error_Messages is
    --  * Warnings may be issued for suspicious situations (e.g. unused
    --    statement), or where the tool makes assumptions.
    --  * Info messages are mainly for proved checks
-   --  * check messages are for unproved VCs, and soundness-related flow
+   --  * Check messages are for unproved VCs, and soundness-related flow
    --    analysis messages. Checks come with a priority low, medium or high.
 
    Found_Flow_Error : Boolean := False;
@@ -59,7 +59,7 @@ package Flow_Error_Messages is
    function Get_Flow_JSON return JSON_Array;
    function Get_Proof_JSON return JSON_Array;
    --  Call these functions to get the messages of proof and flow in JSON form.
-   --  Should be called only when analysis is finished
+   --  Should be called only when analysis is finished.
 
    function Fresh_Trace_File return String;
    --  Returns a name for a trace file. This name should be unique for the
