@@ -41,7 +41,7 @@ package Why.Gen.Progs is
      (Ada_Node   : Node_Id;
       Check_Kind : Range_Check_Kind);
 
-   function New_Assume_Statement
+   function New_Any_Statement
      (Ada_Node    : Node_Id := Empty;
       Pre         : W_Pred_Id := True_Pred;
       Post        : W_Pred_Id;

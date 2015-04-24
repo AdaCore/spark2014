@@ -54,7 +54,7 @@ package body Why.Gen.Progs is
    -- New_Assume_Statement --
    --------------------------
 
-   function New_Assume_Statement
+   function New_Any_Statement
      (Ada_Node    : Node_Id := Empty;
       Pre         : W_Pred_Id := True_Pred;
       Post        : W_Pred_Id;
@@ -69,7 +69,7 @@ package body Why.Gen.Progs is
            Return_Type =>
              (if Return_Type = Why_Empty then EW_Unit_Type
                else Return_Type));
-   end New_Assume_Statement;
+   end New_Any_Statement;
 
    -------------------------
    -- New_Havoc_Statement --

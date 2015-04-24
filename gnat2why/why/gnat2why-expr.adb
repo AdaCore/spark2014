@@ -636,7 +636,7 @@ package body Gnat2Why.Expr is
 
                         Res := Sequence
                           (Res,
-                           New_Assume_Statement
+                           New_Any_Statement
                            (Ada_Node => N,
                             Post     =>
                               New_Call
@@ -646,7 +646,7 @@ package body Gnat2Why.Expr is
                      else
                         Res := Sequence
                           (Res,
-                           New_Assume_Statement
+                           New_Any_Statement
                            (Ada_Node => N,
                             Post     =>
                               New_Call
@@ -667,7 +667,7 @@ package body Gnat2Why.Expr is
                   if Binder.Tag.Present then
                      Res := Sequence
                        (Res,
-                        New_Assume_Statement
+                        New_Any_Statement
                           (Ada_Node => N,
                            Post     =>
                              New_Call
@@ -711,7 +711,7 @@ package body Gnat2Why.Expr is
                   for I in 1 .. Binder.Dim loop
                      Res := Sequence
                        ((1 => Res,
-                         2 => New_Assume_Statement
+                         2 => New_Any_Statement
                            (Ada_Node => N,
                             Post     =>
                               New_Call
@@ -728,7 +728,7 @@ package body Gnat2Why.Expr is
                                           Expr   => +Tmp_Var,
                                           Attr   => Attribute_First,
                                           Dim    => I))))),
-                         3 => New_Assume_Statement
+                         3 => New_Any_Statement
                            (Ada_Node => N,
                             Post     =>
                               New_Call
@@ -809,7 +809,7 @@ package body Gnat2Why.Expr is
                            Name     => Tmp_Var,
                            Def      => +Why_Expr,
                            Context  =>
-                             +New_Assume_Statement
+                             +New_Any_Statement
                              (Ada_Node => N,
                               Post     => Eq));
                      end;
@@ -868,7 +868,7 @@ package body Gnat2Why.Expr is
                  (Left  => +New_Ignore
                     (Ada_Node => Lvalue,
                      Prog     => Default_Checks),
-                  Right => New_Assume_Statement
+                  Right => New_Any_Statement
                     (Ada_Node    => N,
                      Pre         => True_Pred,
                      Post        => Init_Assumption));
@@ -893,7 +893,7 @@ package body Gnat2Why.Expr is
         Compute_Dynamic_Property (Expr, Ty, Only_Var, Initialized);
    begin
       if T /= True_Pred then
-         return New_Assume_Statement (Ada_Node => Ty,
+         return New_Any_Statement (Ada_Node => Ty,
                                       Pre      => True_Pred,
                                       Post     => T);
       else
@@ -1254,7 +1254,7 @@ package body Gnat2Why.Expr is
                             Domain   => EW_Prog,
                             Reason   => VC_Range_Check,
                             Expr     =>
-                              +New_Assume_Statement (Ada_Node => N,
+                              +New_Any_Statement (Ada_Node => N,
                                                      Pre      => Precond,
                                                      Post     => True_Pred));
 
@@ -3762,7 +3762,7 @@ package body Gnat2Why.Expr is
 
                      if Needs_Ref_For_Discrs then
                         Statement_Sequence_Append_To_Statements
-                          (Store, New_Assume_Statement
+                          (Store, New_Any_Statement
                              (Pre         => True_Pred,
                               Post        => +Assumption));
                      end if;
@@ -4115,7 +4115,7 @@ package body Gnat2Why.Expr is
                                  Ty       => Binder.Typ)));
                      else
                         Res := Sequence
-                          (Res, New_Assume_Statement
+                          (Res, New_Any_Statement
                              (Ada_Node    => Ada_Node,
                               Pre         => True_Pred,
                               Post        => +New_Comparison
@@ -5320,7 +5320,7 @@ package body Gnat2Why.Expr is
                      Base_Why_Type_No_Bool (Typ));
             begin
                A1 :=
-                 New_Assume_Statement
+                 New_Any_Statement
                    (Post =>
                       New_Call
                         (Name => Why_Eq,
@@ -5335,7 +5335,7 @@ package body Gnat2Why.Expr is
                                  EW_Term,
                                  Params))));
                A2 :=
-                 New_Assume_Statement
+                 New_Any_Statement
                    (Post =>
                       New_Call
                         (Name => Why_Eq,
@@ -9648,7 +9648,7 @@ package body Gnat2Why.Expr is
                      begin
                         if Dyn_Prop /= True_Pred then
                            T := +Sequence
-                             (New_Assume_Statement (Post => Dyn_Prop),
+                             (New_Any_Statement (Post => Dyn_Prop),
                               +T);
                         end if;
                      end;
@@ -9742,7 +9742,7 @@ package body Gnat2Why.Expr is
                --  Assume dynamic property of the object after the havoc.
 
                Havoc := +Sequence
-                 (Havoc, New_Assume_Statement (Post => Dyn_Prop));
+                 (Havoc, New_Any_Statement (Post => Dyn_Prop));
             end if;
 
             T := +Sequence (Left  => Havoc,
@@ -10435,7 +10435,7 @@ package body Gnat2Why.Expr is
       --  regular assertions.
 
       if Is_Pragma_Check (Prag, Name_Assume) then
-         T := New_Assume_Statement (Post => Pred);
+         T := New_Any_Statement (Post => Pred);
       else
          T := New_Located_Assert (Prag, Pred, Reason, EW_Assert);
       end if;
@@ -10782,7 +10782,7 @@ package body Gnat2Why.Expr is
                         (Domain    => EW_Prog,
                          Condition => +Range_Cond,
                          Then_Part => +New_Ignore (Prog => +Cond_Expr))),
-                 New_Assume_Statement
+                 New_Any_Statement
                    (Ada_Node    => Expr,
                     Return_Type => EW_Bool_Type,
                     Post        =>
