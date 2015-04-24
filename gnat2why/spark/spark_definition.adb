@@ -1045,62 +1045,57 @@ package body SPARK_Definition is
                end;
 
                --  Restrict array conversions to the cases where either:
-               --  - corresponding indices have modular types of the same size,
-               --  - both don't have a modular type.
+               --  - corresponding indices have modular types of the same size
+               --  - or both don't have a modular type.
+               --  Supporting other cases of conversions would require
+               --  generating conversion functions for each required pair of
+               --  array types and index base types.
 
                declare
                   Target_Index : Node_Id :=
                     First_Index (Retysp (Etype (N)));
                   Source_Index : Node_Id :=
                     First_Index (Retysp (Etype (Expression (N))));
-                  Dim : constant Positive :=
+                  Dim          : constant Positive :=
                     Positive (Number_Dimensions (Retysp (Etype (N))));
+                  Target_Type  : Entity_Id;
+                  Source_Type  : Entity_Id;
+
                begin
                   for I in 1 .. Dim loop
+                     Target_Type := Etype (Target_Index);
+                     Source_Type := Etype (Source_Index);
 
-                     if
-                       Has_Modular_Integer_Type (Etype (Target_Index)) and
-                       Has_Modular_Integer_Type (Etype (Source_Index))
+                     if Has_Modular_Integer_Type (Target_Type)
+                          and then
+                        Has_Modular_Integer_Type (Source_Type)
                      then
-
-                        if Esize (Etype (Target_Index)) /=
-                          Esize (Etype (Source_Index))
-                        then
-
+                        if Esize (Target_Type) /= Esize (Source_Type) then
                            Violation_Detected := True;
                            if Emit_Messages and then SPARK_Pragma_Is (Opt.On)
                            then
                               Error_Msg_N
-                              ("conversion between array types that have "
-                              & "an modular index is only supported when "
-                              & "the size of the target array index type is "
-                              & "equal to the size of the source array index "
-                              & "type",
-                              N);
+                                ("this conversion between array types is not "
+                                 & "yet supported", N);
                            end if;
                            exit;
                         end if;
 
-                     elsif
-                       Has_Modular_Integer_Type (Etype (Target_Index)) or else
-                       Has_Modular_Integer_Type (Etype (Source_Index))
+                     elsif Has_Modular_Integer_Type (Target_Type)
+                             or else
+                           Has_Modular_Integer_Type (Source_Type)
                      then
-
                         Violation_Detected := True;
                         if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
                            Error_Msg_N
-                             ("conversion between array types where one type "
-                              & "has a modular index while the other a "
-                              & "non modular index is not yet supported",
-                              N);
+                             ("this conversion between array types is not "
+                              & "yet supported", N);
                         end if;
                         exit;
-
                      end if;
 
                      Target_Index := Next_Index (Target_Index);
                      Source_Index := Next_Index (Source_Index);
-
                   end loop;
                end;
 

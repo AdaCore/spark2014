@@ -911,6 +911,12 @@ Tool Limitations
    access-to-subprogram and dynamic binding) and indirect reads/writes to
    global variables (through access variables).
 
+#. A subset of all Ada conversions between array types is supported:
+
+   * element types must be exactly the same
+   * matching index types must either be both modular with a base type of the
+     same size, or both non modular
+
 #. A subset of all Ada fixed-point types and fixed-point operations is
    supported:
 
