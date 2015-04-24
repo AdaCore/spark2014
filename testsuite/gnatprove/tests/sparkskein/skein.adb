@@ -75,8 +75,9 @@ is
                                Byte_Count : in     U64)
      with Pre => Dst'First = 0 and
                  Src'First = 0 and
-                 Dst'Last >= Dst_Offset + (Byte_Count - 1) and
-                 Byte_Count <= Src'Last * 8 + 8;
+                 Dst'Last > Dst_Offset and
+                 Dst'Last - Dst_Offset > Byte_Count and
+                 (Byte_Count - 1) / 8 <= Src'Last;
 
    procedure Get_64_LSB_First (Dst        :    out U64_Seq;
                                Src        : in     Byte_Seq;
