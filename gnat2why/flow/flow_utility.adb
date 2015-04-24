@@ -448,7 +448,7 @@ package body Flow_Utility is
       --  if it different to T. If we cannot do any better then we
       --  will in fact return an Itype.
       if Is_Itype (T)
-        and then Etype (T) /= T
+        and then not Is_Nouveau_Type (T)
       then
          T := Get_Type (Etype (T), Scope);
       end if;

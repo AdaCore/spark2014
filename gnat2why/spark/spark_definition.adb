@@ -2168,7 +2168,7 @@ package body SPARK_Definition is
       ---------------------------
 
       procedure Mark_Parameter_Entity (E : Entity_Id) is
-         T   : constant Entity_Id := Etype (E);
+         T : constant Entity_Id := Etype (E);
       begin
          if not In_SPARK (T) then
             Mark_Violation (E, From => T);
@@ -2440,8 +2440,8 @@ package body SPARK_Definition is
          --  type. We also protect ourselves against the case where the Etype
          --  of a full view points to the partial view.
 
-         if Etype (E) /= E and then
-           (Underlying_Type (Etype (E)) /= E)
+         if not Is_Nouveau_Type (E)
+           and then Underlying_Type (Etype (E)) /= E
          then
             Mark_Entity (Etype (E));
          end if;
@@ -2560,19 +2560,24 @@ package body SPARK_Definition is
             --  need to mark its underlying type. Indeed, either it is
             --  shared with an ancestor of E and was already handled or it will
             --  not be used.
-            --  The same is true for a subtype or a derived type of such a
-            --  type or of types whose fullview is not in SPARK.
 
-            if Etype (E) = E and then
-              (Entity_In_Ext_Axioms (E) or else
-               Is_Private_Entity_Mode_Off (E))
+            if Is_Nouveau_Type (E)
+              and then (Entity_In_Ext_Axioms (E)
+                          or else
+                        Is_Private_Entity_Mode_Off (E))
             then
                Full_Views_Not_In_SPARK.Insert (E, E);
                Discard_Underlying_Type (E);
-            elsif Etype (E) /= E and then Full_View_Not_In_SPARK (Etype (E))
+
+            --  The same is true for a subtype or a derived type of such a
+            --  type or of types whose fullview is not in SPARK.
+
+            elsif not Is_Nouveau_Type (E)
+              and then Full_View_Not_In_SPARK (Etype (E))
             then
                Full_Views_Not_In_SPARK.Insert (E, Etype (E));
                Discard_Underlying_Type (E);
+
             else
                declare
                   Utype : constant Entity_Id :=

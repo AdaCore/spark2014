@@ -142,11 +142,10 @@ package body SPARK_Util is
             return Typ;
          end if;
 
-         --  If Etype (Typ) is the same as Typ, there is no possible parent
-         --  type or base type from a package with external axiomatization.
-         --  Return Empty.
+         --  If Typ is a nouveau type, there is no possible parent type or base
+         --  type from a package with external axiomatization. Return Empty.
 
-         if Etype (Typ) = Typ then
+         if Is_Nouveau_Type (Typ) then
             return Empty;
          end if;
 
@@ -850,7 +849,7 @@ package body SPARK_Util is
                            or else Has_Inherited_Default_Init_Cond (B_Type))
 
            --  Stop if we cannot make any progress
-           and then Etype (B_Type) /= B_Type
+           and then not Is_Nouveau_Type (B_Type)
          loop
             B_Type := Etype (B_Type);
          end loop;

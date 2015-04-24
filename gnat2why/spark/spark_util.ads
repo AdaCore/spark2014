@@ -434,6 +434,15 @@ package SPARK_Util is
    --  @param E any type
    --  @return True iff E is a discrete type with a static predicate
 
+   function Is_Nouveau_Type (T : Entity_Id) return Boolean is
+     (Etype (T) = T);
+   --  @param T any type
+   --  @return True iff T is neither a derived type, nor a subtype, nor
+   --     a classwide type (see description of Etype field in einfo.ads),
+   --     something generally useful to know in gnat2why, that we call being
+   --     a "nouveau" type. [Calling it a "new" type would be confusing with
+   --     derived types.]
+
    function Is_Null_Range (T : Entity_Id) return Boolean;
    --  @param T any type
    --  @returns True iff T is a scalar type whose range is statically known to
