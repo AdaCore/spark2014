@@ -27,6 +27,7 @@ with Errout;
 with Namet;                              use Namet;
 with Nlists;                             use Nlists;
 with Sem_Aux;                            use Sem_Aux;
+with Sem_Ch12;                           use Sem_Ch12;
 with Sem_Eval;                           use Sem_Eval;
 with Sem_Util;                           use Sem_Util;
 with Sinfo;                              use Sinfo;
@@ -5204,12 +5205,13 @@ package body Flow.Control_Flow_Graph is
             if Is_Generic_Instance (FA.Analyzed_Entity) then
                declare
                   Instance    : constant Node_Id :=
-                    (if FA.Kind = E_Package
-                     then Next (Parent (Spec_N))
-                     else Next (Next (Parent (Spec_N))));
+                   Get_Package_Instantiation_Node (FA.Analyzed_Entity);
                   Association : Node_Id;
                   Parameter   : Node_Id;
                begin
+                  --  Sanity check that Instance is indeed an
+                  --  N_Package_Instantiation.
+                  pragma Assert (Nkind (Instance) = N_Package_Instantiation);
                   Association := First (Generic_Associations (Instance));
                   while Present (Association) loop
                      Parameter := Explicit_Generic_Actual_Parameter
