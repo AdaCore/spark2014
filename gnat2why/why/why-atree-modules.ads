@@ -68,7 +68,7 @@ package Why.Atree.Modules is
    EW_BitVector_64_Type : W_Type_Id;
    EW_Unit_Type         : W_Type_Id;
 
-   Array_Modules             : W_Module_Array (1 .. Max_Array_Dimensions);
+   Array_Modules        : W_Module_Array (1 .. Max_Array_Dimensions);
 
    --  Modules of file "ada__model.mlw"
 

@@ -29,8 +29,9 @@ with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Ordered_Sets;
 with Ada.Containers.Vectors;
 with Ada.Strings.Unbounded;
-with Types; use Types;
+
 with Namet; use Namet;
+with Types; use Types;
 
 --  This package contains a few common types (and expression functions)
 --  which are used throughout gnat2why (frame conditions, flow and why

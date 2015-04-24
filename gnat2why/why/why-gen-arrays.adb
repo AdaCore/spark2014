@@ -1487,20 +1487,22 @@ package body Why.Gen.Arrays is
    -- Create_Rep_Array_Theory --
    -----------------------------
 
-   procedure Create_Rep_Array_Theory (File : in out Why_Section;
-                                      E : Entity_Id;
-                                      Name : Name_Id;
-                                      Module : out W_Module_Id);
+   procedure Create_Rep_Array_Theory
+     (File   : in out Why_Section;
+      E      :        Entity_Id;
+      Name   :        Name_Id;
+      Module :    out W_Module_Id);
    --  Create an Array theory
    --  @param File the current why file
    --  @param E the entity of type array
    --  @param Nam the name of the theory to be created, must be the one
    --         given by "Get_Array_Theory_Name"
 
-   procedure Create_Rep_Array_Theory (File : in out Why_Section;
-                                      E : Entity_Id;
-                                      Name : Name_Id;
-                                      Module : out W_Module_Id)
+   procedure Create_Rep_Array_Theory
+     (File   : in out Why_Section;
+      E      :        Entity_Id;
+      Name   :        Name_Id;
+      Module :    out W_Module_Id)
    is
       Typ : constant Entity_Id := Retysp (Etype (E));
 
@@ -1510,7 +1512,6 @@ package body Why.Gen.Arrays is
       Subst : W_Clone_Substitution_Array (1 .. Dim * 7);
 
    begin
-
       Module := New_Module (File => No_Name,
                             Name => Name);
 
@@ -1550,20 +1551,20 @@ package body Why.Gen.Arrays is
                Substitutions => Subst));
 
       Close_Theory (File, Kind => Definition_Theory);
-
    end Create_Rep_Array_Theory;
 
    ---------------------------------------
    -- Create_Rep_Array_Theory_If_Needed --
    ---------------------------------------
 
-   procedure Create_Rep_Array_Theory_If_Needed (File : in out Why_Section;
-                                                E : Entity_Id)
+   procedure Create_Rep_Array_Theory_If_Needed
+     (File : in out Why_Section;
+      E    :        Entity_Id)
    is
       Name : constant Name_Id := Get_Array_Theory_Name (E);
       Module : W_Module_Id;
-   begin
 
+   begin
       if M_Arrays.Contains (Key => Name) then
          return;
       end if;
@@ -1580,7 +1581,6 @@ package body Why.Gen.Arrays is
          M_Arrays_1.Include (Key      => Name,
                              New_Item => Init_Array_1_Module (Module));
       end if;
-
    end Create_Rep_Array_Theory_If_Needed;
 
    ----------------------
@@ -1588,19 +1588,13 @@ package body Why.Gen.Arrays is
    ----------------------
 
    function Get_Array_Theory (E : Entity_Id) return M_Array_Type is
-      Name : constant Name_Id := Get_Array_Theory_Name (E);
-   begin
-      return M_Arrays.Element (Name);
-   end Get_Array_Theory;
+      (M_Arrays.Element (Get_Array_Theory_Name (E)));
 
    ------------------------
    -- Get_Array_Theory_1 --
    ------------------------
 
    function Get_Array_Theory_1 (E : Entity_Id) return M_Array_1_Type is
-      Name : constant Name_Id := Get_Array_Theory_Name (E);
-   begin
-      return M_Arrays_1.Element (Name);
-   end Get_Array_Theory_1;
+     (M_Arrays_1.Element (Get_Array_Theory_Name (E)));
 
 end Why.Gen.Arrays;

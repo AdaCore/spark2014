@@ -1458,18 +1458,13 @@ package body Gnat2Why.External_Axioms is
                end;
             end if;
 
-            --  check if there is a declaration of an array type
+            --  If there is a user declaration of an array type, possibly
+            --  create a new type of array by cloning underlying Why3 theories.
 
-            if Comes_From_Source (N) and then
-              Nkind (N) in
-              N_Full_Type_Declaration     | N_Private_Extension_Declaration |
-              N_Private_Type_Declaration  | N_Protected_Type_Declaration    |
-              N_Subtype_Declaration       | N_Task_Type_Declaration
-              and then
-                Is_Array_Type (Defining_Identifier (N))
+            if Comes_From_Source (N)
+              and then Nkind (N) = N_Full_Type_Declaration
+              and then Is_Array_Type (Defining_Identifier (N))
             then
-               --  in which case, check if we need to create it,
-               --  and do it if so.
                declare
                   File : Why_Section :=
                     Why_Sections (Dispatch_Entity (Defining_Identifier (N)));
