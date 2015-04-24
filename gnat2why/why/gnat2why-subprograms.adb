@@ -1466,10 +1466,9 @@ package body Gnat2Why.Subprograms is
 
       Call_Effects := Sequence
         (Call_Effects,
-         New_Any_Statement
+         New_Assume_Statement
            (Ada_Node    => E,
-            Pre         => True_Pred,
-            Post        => Compute_Dynamic_Property_For_Effects (E, Params)));
+            Pred        => Compute_Dynamic_Property_For_Effects (E, Params)));
 
       --  If E has a class-wide precondition, check that it cannot raise a
       --  run-time error in an empty context.
@@ -1488,7 +1487,7 @@ package body Gnat2Why.Subprograms is
         and then not Classwide_Pre_List.Is_Empty
       then
          Inherited_Pre_Assume :=
-           New_Any_Statement (Post => Inherited_Pre_Spec);
+           New_Assume_Statement (Pred => Inherited_Pre_Spec);
 
          Classwide_Pre_Check := New_Located_Assert
            (Ada_Node => Get_Location_For_Aspect (E, Name_Precondition,
@@ -1513,7 +1512,7 @@ package body Gnat2Why.Subprograms is
 
       if not Pre_List.Is_Empty then
          Classwide_Pre_Assume :=
-           New_Any_Statement (Post =>
+           New_Assume_Statement (Pred =>
              Get_Dispatching_Contract (Params, E, Name_Precondition));
 
          Pre_Check := New_Located_Assert
@@ -1550,10 +1549,10 @@ package body Gnat2Why.Subprograms is
                       Inherited_Post_List.Is_Empty)
       then
          Pre_Assume :=
-           New_Any_Statement (Post =>
+           New_Assume_Statement (Pred =>
              Get_Static_Call_Contract (Params, E, Name_Precondition));
 
-         Post_Assume := New_Any_Statement (Post => Post_Spec);
+         Post_Assume := New_Assume_Statement (Pred => Post_Spec);
 
          Classwide_Post_Check := New_Located_Assert
            (Ada_Node => Get_Location_For_Aspect (E, Name_Postcondition),
@@ -1596,7 +1595,7 @@ package body Gnat2Why.Subprograms is
 
          if Is_Overriding_Subprogram (E) then
             Classwide_Post_Assume :=
-              New_Any_Statement (Post => Classwide_Post_Spec);
+              New_Assume_Statement (Pred => Classwide_Post_Spec);
 
             Inherited_Post_Check := New_Located_Assert
               (Ada_Node => Get_Location_For_Aspect (E, Name_Postcondition,
@@ -1798,7 +1797,7 @@ package body Gnat2Why.Subprograms is
                  Reason   => VC_Precondition_Main,
                  Kind     => EW_Assert);
          else
-            Precondition := New_Any_Statement (Post => Pre);
+            Precondition := New_Assume_Statement (Pred => Pre);
          end if;
       end;
 

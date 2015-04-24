@@ -1079,8 +1079,7 @@ package body Gnat2Why.Expr.Loops is
                     & (if Sloc (Loop_Id) > 0 then
                          " " & Build_Location_String (Sloc (Loop_Id))
                       else ""))),
-                   2 => New_Any_Statement
-                     (Ada_Node => Empty, Post => Implicit_Invariant),
+                   2 => New_Assume_Statement (Pred => Implicit_Invariant),
                    3 => New_Comment
                      (Comment =>
                           NID ("Check for absence of RTE in the invariant"
