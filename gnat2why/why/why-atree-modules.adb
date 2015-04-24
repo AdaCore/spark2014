@@ -180,20 +180,6 @@ package body Why.Atree.Modules is
       RealInfix := New_Module (File => Real_File, Name => NID ("RealInfix"));
       Ref_Module := New_Module (File => Ref_File, Name => NID ("Ref"));
 
-      Array_Modules :=
-        (1 =>
-           New_Module (File => Gnatprove_Standard_File,
-                       Name => NID ("Array__1")),
-         2 =>
-           New_Module (File => Gnatprove_Standard_File,
-                       Name => NID ("Array__2")),
-         3 =>
-           New_Module (File => Gnatprove_Standard_File,
-                       Name => NID ("Array__3")),
-         4 =>
-           New_Module (File => Gnatprove_Standard_File,
-                       Name => NID ("Array__4")));
-
       --  builtin Why types
 
       EW_Bool_Type :=
@@ -499,6 +485,22 @@ package body Why.Atree.Modules is
         New_Identifier
           (Symbol => NID ("def"),
            Domain => EW_Term);
+
+      --  modules of _gnatprove_standard file
+
+      Array_Modules :=
+        (1 =>
+           New_Module (File => Gnatprove_Standard_File,
+                       Name => NID ("Array__1")),
+         2 =>
+           New_Module (File => Gnatprove_Standard_File,
+                       Name => NID ("Array__2")),
+         3 =>
+           New_Module (File => Gnatprove_Standard_File,
+                       Name => NID ("Array__3")),
+         4 =>
+           New_Module (File => Gnatprove_Standard_File,
+                       Name => NID ("Array__4")));
    end Initialize;
 
    ------------------------

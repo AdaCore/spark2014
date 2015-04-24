@@ -544,14 +544,16 @@ package body Why.Gen.Arrays is
       Why3_Type_Name : W_Name_Id;
       Und_Ent        : Entity_Id)
    is
-      Dimension    : constant Pos := Number_Dimensions (Und_Ent);
-      Index        : Entity_Id := First_Index (Und_Ent);
-      Subst        : W_Clone_Substitution_Array
-        (1 .. Integer (Dimension * 3) + 2);
-      Cursor       : Integer := 1;
-      Clone        : constant W_Module_Id :=
+      Dimension       : constant Pos := Number_Dimensions (Und_Ent);
+      Index           : Entity_Id := First_Index (Und_Ent);
+      Subst_Per_Index : constant Int := 3;
+      Subst           : W_Clone_Substitution_Array
+        (1 .. Integer (Dimension * Subst_Per_Index) + 2);
+      Cursor          : Integer := 1;
+      Clone           : constant W_Module_Id :=
         Constr_Arrays (Positive (Dimension));
-      Array_Theory : constant W_Module_Id := Get_Array_Theory (Und_Ent).Module;
+      Array_Theory    : constant W_Module_Id :=
+        Get_Array_Theory (Und_Ent).Module;
 
       procedure Declare_Attribute
         (Kind      : Why_Name_Enum;
@@ -823,15 +825,16 @@ package body Why.Gen.Arrays is
       Why3_Type_Name : W_Name_Id;
       Und_Ent        : Entity_Id)
    is
-      Dimension  : constant Pos := Number_Dimensions (Und_Ent);
-      Subst      : W_Clone_Substitution_Array
-        (1 .. Integer (Dimension * 7) + 2);
-      Cursor     : Integer := 1;
-      Index      : Node_Id := First_Index (Und_Ent);
-      Dim_Count  : Integer := 1;
-      Clone      : constant W_Module_Id :=
+      Dimension       : constant Pos := Number_Dimensions (Und_Ent);
+      Subst_Per_Index : constant Int := 7;
+      Subst           : W_Clone_Substitution_Array
+        (1 .. Integer (Dimension * Subst_Per_Index) + 2);
+      Cursor          : Integer := 1;
+      Index           : Node_Id := First_Index (Und_Ent);
+      Dim_Count       : Integer := 1;
+      Clone           : constant W_Module_Id :=
         Unconstr_Arrays (Positive (Dimension));
-      Array_Theory     : constant W_Module_Id :=
+      Array_Theory    : constant W_Module_Id :=
         Get_Array_Theory (Und_Ent).Module;
    begin
 
