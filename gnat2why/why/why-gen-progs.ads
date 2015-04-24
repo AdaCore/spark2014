@@ -46,10 +46,24 @@ package Why.Gen.Progs is
       Pre         : W_Pred_Id := True_Pred;
       Post        : W_Pred_Id;
       Return_Type : W_Type_Id := Why_Empty)
-       return W_Prog_Id;
-   --  Generate an assumption statement. There is no such thing in Why2, so it
-   --  is encoded as follows:
-   --    [ { true } <return_type> { P} ]
+      return W_Prog_Id;
+   --  Generate a node of the form "any type requires {pre} ensures {post}"
+   --  Such a node in Why is a bit like a function call with pre, post and
+   --  return type, but can be used at any place.
+   --  @param Ada_Node Ada_Node used for the any node
+   --  @param Pre the precondition used for the any statement
+   --  @param Post the postcondition used for the any statement
+   --  @param Return_Type the type used for the any statement
+   --  @return an any node
+
+   function New_Assume_Statement
+     (Ada_Node : Node_Id := Empty;
+      Pred     : W_Pred_Id)
+     return W_Prog_Id;
+   --  generate an assume statement, which inserts a hypothesis in the context
+   --  @param Ada_Node Ada_Node used for the assume node
+   --  @param Pred the predicate which will be inserted in the context
+   --  @return an assume statement
 
    function New_Havoc_Statement
      (Ada_Node : Node_Id := Empty;

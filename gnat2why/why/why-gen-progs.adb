@@ -50,9 +50,9 @@ package body Why.Gen.Progs is
          Current_Subp);
    end Emit_Always_True_Range_Check;
 
-   --------------------------
-   -- New_Assume_Statement --
-   --------------------------
+   -----------------------
+   -- New_Any_Statement --
+   -----------------------
 
    function New_Any_Statement
      (Ada_Node    : Node_Id := Empty;
@@ -70,6 +70,22 @@ package body Why.Gen.Progs is
              (if Return_Type = Why_Empty then EW_Unit_Type
                else Return_Type));
    end New_Any_Statement;
+
+   --------------------------
+   -- New_Assume_Statement --
+   --------------------------
+
+   function New_Assume_Statement
+     (Ada_Node : Node_Id := Empty;
+      Pred     : W_Pred_Id)
+      return W_Prog_Id is
+   begin
+      return
+        New_Assert
+          (Ada_Node    => Ada_Node,
+           Pred        => Pred,
+           Assert_Kind => EW_Assume);
+   end New_Assume_Statement;
 
    -------------------------
    -- New_Havoc_Statement --
