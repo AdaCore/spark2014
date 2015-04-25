@@ -403,7 +403,11 @@ Async_Writers aspect specification.
 
    * the expression of a type conversion occurring in a non-interfering context.
 
-   The same restrictions also apply to a call to a volatile function.
+   The same restrictions also apply to a call to a volatile function
+   and to the evaluation of any attribute which is defined to introduce
+   an implicit dependency on a volatile state abstraction [(these are
+   the Callable, Caller, Count, and Terminated attributes; see section
+   :ref:`tasks-and-synchronization`)].
 
 .. _etu-external_state_variables-lr:
 

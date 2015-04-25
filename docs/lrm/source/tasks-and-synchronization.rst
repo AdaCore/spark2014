@@ -201,15 +201,19 @@ are in |SPARK|.
 
 16. For purposes of determining global inputs and outputs, a delay
     statement is considered to reference the state abstraction
-    Ada.Real_Time.Clock_Time as both an input and an output.
+    Ada.Real_Time.Clock_Time as an input.
     [In other words, a delay statement can be treated like a call to
     a procedure which takes the delay expression as an actual parameter
-    and references the Clock_Time state abstraction as an In_Out global.]
+    and references the Clock_Time state abstraction as an Input global.]
 
 17. For purposes of determining global inputs and outputs, a use of
     any of the Callable, Caller, Count, or Terminated attributes is considered
     to reference the state abstraction
-    Ada.Task_Identification.Tasking_State as both an input and an output.
+    Ada.Task_Identification.Tasking_State as an Input.
+    [In other words, evaluation of one of these attributes can be treated
+    like a call to a volatile function which takes the attribute prefix
+    as a parameter (in the case where the prefix denotes an object or value)
+    and references the Tasking_State state abstraction as an Input global.]
     [On the other hand, use of the Identity, Priority, or Storage_Size
     attributes introduces no such dependency.]
 
