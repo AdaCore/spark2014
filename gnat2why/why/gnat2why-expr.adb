@@ -10047,7 +10047,11 @@ package body Gnat2Why.Expr is
 
       case Op is
 
-         --  Transform (-Y) into (Modulus - Y) modulo 230
+         --  Transform (-Y) into:
+         --    (Modulus - Y) modulo Modulus
+         --  We add the extra modulo in order to deal with the special case
+         --  of -0. We use modulo instead of a test in order to have a fully
+         --  computational interpretation.
 
          when N_Op_Minus =>
             pragma Assert (Left_Opnd = Why_Empty);
