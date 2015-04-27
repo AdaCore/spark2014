@@ -234,14 +234,15 @@ package body Why.Gen.Records is
       --  elsewhere (i.e. in the module for the root record type, prefix the
       --  call accordingly and add a conversion.
 
+      procedure Init_Component_Info (E : Entity_Id)
+        with Pre => Ekind (E) in E_Record_Type | E_Record_Subtype;
+      --  @param E record type
+      --  For each subcomponent of E, create an entry in map Comp_Info
+
       function Transform_Discrete_Choices
         (Case_N : Node_Id;
          Expr   : W_Term_Id) return W_Pred_Id;
       --  Wrapper for the function in Gnat2Why.Expr;
-
-      procedure Init_Component_Info (E : Entity_Id);
-      --  Initialize the map which maps each component to its information
-      --  record
 
       Root      : constant Entity_Id := Root_Record_Type (E);
       Is_Root   : constant Boolean   := Root = E;
@@ -1765,18 +1766,18 @@ package body Why.Gen.Records is
       procedure Init_Component_Info (E : Entity_Id) is
 
          procedure Mark_Component_List
-           (N : Node_Id;
+           (N               : Node_Id;
             Parent_Var_Part : Node_Id;
             Parent_Variant  : Node_Id);
 
          procedure Mark_Variant_Part
-           (N : Node_Id;
+           (N               : Node_Id;
             Parent_Var_Part : Node_Id;
             Parent_Variant  : Node_Id);
 
-         --------------------------
-         -- Mark_Component_Items --
-         --------------------------
+         -------------------------
+         -- Mark_Component_List --
+         -------------------------
 
          procedure Mark_Component_List
            (N               : Node_Id;
@@ -1832,50 +1833,42 @@ package body Why.Gen.Records is
            (if Nkind (Decl_Node) = N_Full_Type_Declaration
             then Type_Definition (Decl_Node)
             else Empty);
-         Field : Node_Id :=
-           --  ??? test for Discriminant_Specifications can be narrowed
-           (if Nkind (Decl_Node) in N_Formal_Type_Declaration       |
-                                    N_Full_Type_Declaration         |
-                                    N_Incomplete_Type_Declaration   |
-                                    N_Private_Extension_Declaration |
-                                    N_Private_Type_Declaration      |
-                                    N_Protected_Type_Declaration    |
-                                    N_Task_Type_Declaration
+         Discr : Node_Id :=
+           (if Nkind (Decl_Node) in N_Full_Type_Declaration
             then First (Discriminant_Specifications (Decl_Node))
             else Empty);
          Components : constant Node_Id :=
-           (if Present (Def_Node) then Component_List (Def_Node)
-            else Empty);
-         Extension_Components : constant Node_Id :=
-           (if Nkind (Def_Node) = N_Derived_Type_Definition
-            and then Present (Record_Extension_Part (Def_Node))
-            then Component_List (Record_Extension_Part (Def_Node))
+           (if Present (Def_Node) then
+              (case Nkind (Def_Node) is
+                 when N_Record_Definition =>
+                   Component_List (Def_Node),
+                 when N_Derived_Type_Definition =>
+                   (if Present (Record_Extension_Part (Def_Node)) then
+                      Component_List (Record_Extension_Part (Def_Node))
+                    else Empty),
+                 when others =>
+                   raise Program_Error)
             else Empty);
          Ancestor_Type : constant Entity_Id :=
            (if Full_View_Not_In_SPARK (E) then Get_First_Ancestor_In_SPARK (E)
-            else Underlying_Type (Etype (E)));
+            else Retysp (Etype (E)));
 
       --  Start of Init_Component_Info
 
       begin
-         while Present (Field) loop
+         while Present (Discr) loop
             Comp_Info.Insert
-              (Defining_Identifier (Field),
+              (Defining_Identifier (Discr),
                Component_Info'
                  (Parent_Variant  => Empty,
                   Parent_Var_Part => Empty,
                   Ident           =>
-                    To_Why_Id (Defining_Identifier (Field),
-                      Local => True)));
-            Next (Field);
+                    To_Why_Id (Defining_Identifier (Discr), Local => True)));
+            Next (Discr);
          end loop;
 
          if Present (Components) then
             Mark_Component_List (Components, Empty, Empty);
-         end if;
-
-         if Present (Extension_Components) then
-            Mark_Component_List (Extension_Components, Empty, Empty);
          end if;
 
          if Ancestor_Type /= E then
@@ -2034,8 +2027,8 @@ package body Why.Gen.Records is
          return;
       end if;
 
-      if Ekind (E) in E_Record_Subtype | E_Record_Subtype_With_Private then
-         Init_Component_Info (Unique_Entity (Etype (E)));
+      if Ekind (E) = E_Record_Subtype then
+         Init_Component_Info (Retysp (Etype (E)));
       else
          Init_Component_Info (E);
       end if;
