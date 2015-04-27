@@ -484,32 +484,32 @@ package body Gnat2Why.Expr is
    --  @param Params the translation parameters
    --  @return the Why expression corresponding to the shift or rotate
 
-   function Is_Non_Standard_Modulus (E : Entity_Id) return Boolean;
-   --  @param E the node of a type
-   --  @return wether E is a modular type and its modulus is not a
-   --          power of 2 and smaller than 2**32.
-
-   function Transform_Non_Standard_Modulus_Operation
-     (Ada_Node : Node_Id;
-      Domain : EW_Domain;
-      Op : N_Op;
-      Left_Opnd : W_Expr_Id := Why_Empty;
+   function Transform_Non_Binary_Modular_Operation
+     (Ada_Node   : Node_Id;
+      Ada_Type   : Entity_Id;
+      Domain     : EW_Domain;
+      Op         : N_Op;
+      Left_Opnd  : W_Expr_Id := Why_Empty;
       Right_Opnd : W_Expr_Id;
-      Rep_Type : W_Type_Id;
-      Modulus : Uint)
-      return W_Expr_Id
-     with Pre => UI_Lt (Modulus, UI_Expon (2, 32));
+      Rep_Type   : W_Type_Id;
+      Modulus    : Uint) return W_Expr_Id
+     with Pre => Modulus < UI_Expon (2, 32);
+   --  For non binary modular types, it is incorrect to apply the arithmetic
+   --  operations - + * on the base type and then apply the modulus on the
+   --  result. The special treatment needed in this case is implemented here.
+   --
+   --  @param Ada_Type type of the Ada node, used to retrieve type Size in bits
    --  @param Op the operation, should be either Minus, Add, Sub or Mul
-   --  @Left_Opnd the left operand of type Rep_Type, should be empty if
-   --             Op is N_Op_Minus.
-   --  @Right_Opnd the right operand of type Rep_Type
-   --  @Rep_Type the representation type in which the operation is done,
-   --            both operand should already be converted to this type.
-   --  @Modulus the modulus of the type in which the operation is done
-   --           should be a non power of two smaller than 2 ** 32
-   --  @return the why expression corresponding to the operation with
-   --          modulus applied. One should not call
-   --          "apply_modulus_or_rounding" after calling this function.
+   --  @param Left_Opnd the left operand of type [Rep_Type], should be empty if
+   --     Op is N_Op_Minus.
+   --  @param Right_Opnd the right operand of type [Rep_Type]
+   --  @param Rep_Type the representation type in which the operation is done.
+   --     Both operand should already be converted to this type.
+   --  @param Modulus the modulus of the type in which the operation is done.
+   --     It should be a non power of two smaller than 2 ** 32.
+   --  @return the Why3 expression corresponding to the operation with
+   --     modulus applied. One should not call Apply_Modulus_Or_Rounding after
+   --     calling this function.
 
    function Has_Visibility_On_Refined
      (Expr : Node_Id;
@@ -530,6 +530,7 @@ package body Gnat2Why.Expr is
    is
       Modulus_Val : Uint;
       BV_Type     : W_Type_Id;
+
    begin
       if Is_Modular_Integer_Type (E) and then Op /= N_Op_Divide then
          Modulus_Val := Modulus (E);
@@ -542,12 +543,11 @@ package body Gnat2Why.Expr is
          if Modulus_Val = UI_Expon (2, Esize (E)) then
             return T;
 
-         --  Otherwise, either the base type is a bitvector of modulus a power
-         --  of two and we perform the modulo on bitvectors.
+         --  Otherwise, the base type should be a binary modular type and
+         --  we perform the modulo on bitvectors.
 
-         elsif (for some N in Int range 0 .. 63 =>
-                  Modulus_Val = UI_Expon (2, N))
-         then
+         else
+            pragma Assert (not Non_Binary_Modulus (E));
             return New_Call (Name   => MF_BVs (BV_Type).Urem,
                              Domain => Domain,
                              Args   => (1 => T,
@@ -555,15 +555,6 @@ package body Gnat2Why.Expr is
                                                (Value => Modulus_Val,
                                                 Typ   => BV_Type)),
                              Typ    => BV_Type);
-
-         --  Or the modulus is smaller than 2**32, and has been dealt with
-         --  during evaluation of the operator by
-         --  "Transform_Non_Standard_Modulus_Operation".
-         else
-            pragma Assert (Why_Type_Is_BitVector (BV_Type)
-                           and then UI_Le (Modulus_Val, UI_Expon (2, 32)));
-
-            return T;
          end if;
 
       elsif Is_Floating_Point_Type (E) then
@@ -3843,9 +3834,9 @@ package body Gnat2Why.Expr is
       return Ref_Context;
    end Insert_Ref_Context;
 
-   --------------------
-   -- Is_Pretty_Node --
-   --------------------
+   ----------------------
+   -- Is_Terminal_Node --
+   ----------------------
 
    function Is_Terminal_Node (N : Node_Id) return Boolean is
    begin
@@ -4175,6 +4166,7 @@ package body Gnat2Why.Expr is
       Ada_Node    : Node_Id := Empty) return W_Expr_Id
    is
       T : W_Expr_Id;
+
    begin
       case Op is
          when N_Op_Compare =>
@@ -4366,18 +4358,21 @@ package body Gnat2Why.Expr is
                   Domain   => Domain,
                   Expr     => Right,
                   To       => Typ);
-            begin
 
-               if Is_Non_Standard_Modulus (Return_Type) then
-                  T := Transform_Non_Standard_Modulus_Operation
+            begin
+               if Has_Modular_Integer_Type (Return_Type)
+                 and then Non_Binary_Modulus (Return_Type)
+               then
+                  T := Transform_Non_Binary_Modular_Operation
                     (Ada_Node   => Ada_Node,
+                     Ada_Type   => Return_Type,
                      Domain     => Domain,
                      Op         => N_Op_Minus,
                      Right_Opnd => Right_Rep,
                      Rep_Type   => Typ,
                      Modulus    => Modulus (Return_Type));
-               else
 
+               else
                   T :=
                     New_Call
                       (Domain   => Domain,
@@ -4442,17 +4437,21 @@ package body Gnat2Why.Expr is
                                            Domain   => Domain,
                                            Expr     => Right,
                                            To       => Base);
-            begin
 
-               if Is_Non_Standard_Modulus (Return_Type) then
-                  T := Transform_Non_Standard_Modulus_Operation
+            begin
+               if Has_Modular_Integer_Type (Return_Type)
+                 and then Non_Binary_Modulus (Return_Type)
+               then
+                  T := Transform_Non_Binary_Modular_Operation
                     (Ada_Node   => Ada_Node,
+                     Ada_Type   => Return_Type,
                      Domain     => Domain,
                      Op         => Op,
                      Left_Opnd  => Left_Rep,
                      Right_Opnd => Right_Rep,
                      Rep_Type   => Base,
                      Modulus    => Modulus (Return_Type));
+
                else
                   T :=
                     New_Call
@@ -4522,19 +4521,23 @@ package body Gnat2Why.Expr is
                   T := New_Call (Ada_Node => Ada_Node,
                                  Domain   => Domain,
                                  Name     => E_Symb (Return_Type, Oper),
-                                 Args     =>
-                                   (1 => L_Why,
-                                    2 => R_Why),
+                                 Args     => (1 => L_Why,
+                                              2 => R_Why),
                                  Typ      => Base);
-               elsif Is_Non_Standard_Modulus (Return_Type) then
-                  T := Transform_Non_Standard_Modulus_Operation
+
+               elsif Has_Modular_Integer_Type (Return_Type)
+                 and then Non_Binary_Modulus (Return_Type)
+               then
+                  T := Transform_Non_Binary_Modular_Operation
                     (Ada_Node   => Ada_Node,
+                     Ada_Type   => Return_Type,
                      Domain     => Domain,
                      Op         => Op,
                      Left_Opnd  => L_Why,
                      Right_Opnd => R_Why,
                      Rep_Type   => Base,
                      Modulus    => Modulus (Return_Type));
+
                else
                   declare
                      Name : constant W_Identifier_Id :=
@@ -4552,9 +4555,8 @@ package body Gnat2Why.Expr is
                           Args     => (1 => L_Why, 2 => R_Why),
                           Typ      => Base);
                   end;
+                  T := Apply_Modulus_Or_Rounding (Op, Return_Type, T, Domain);
                end if;
-
-               T := Apply_Modulus_Or_Rounding (Op, Return_Type, T, Domain);
             end;
 
          when N_Op_Divide =>
@@ -10018,6 +10020,202 @@ package body Gnat2Why.Expr is
       return Result;
    end Transform_Membership_Expression;
 
+   ----------------------------------------------
+   -- Transform_Non_Standard_Modulus_Operation --
+   ----------------------------------------------
+
+   function Transform_Non_Binary_Modular_Operation
+     (Ada_Node   : Node_Id;
+      Ada_Type   : Entity_Id;
+      Domain     : EW_Domain;
+      Op         : N_Op;
+      Left_Opnd  : W_Expr_Id := Why_Empty;
+      Right_Opnd : W_Expr_Id;
+      Rep_Type   : W_Type_Id;
+      Modulus    : Uint) return W_Expr_Id
+   is
+      T : W_Expr_Id;
+
+   begin
+      --  GNAT only supports non binary modulus up to 2**32. We use this
+      --  limitation here to simplify the implementation, so we check this
+      --  is the case here.
+
+      if Modulus >= UI_Expon (2, 32) then
+         raise Program_Error;
+      end if;
+
+      case Op is
+
+         --  Transform (-Y) into (Modulus - Y)
+
+         when N_Op_Minus =>
+            pragma Assert (Left_Opnd = Why_Empty);
+
+            T := New_Call
+              (Ada_Node => Ada_Node,
+               Domain   => Domain,
+               Name     => MF_BVs (Rep_Type).Sub,
+               Args     =>
+                 (1 => New_Modular_Constant (Value => Modulus,
+                                             Typ   => Rep_Type),
+                  2 => Right_Opnd),
+               Typ      => Rep_Type);
+
+         --  Transform (X + Y) into:
+         --    if Modulus - X <= Y
+         --    then (X + Y) - Modulus
+         --    else X + Y
+
+         when N_Op_Add =>
+            declare
+               BV            : constant M_BV_Type := MF_BVs (Rep_Type);
+               Modulus_Expr : constant W_Expr_Id :=
+                 New_Modular_Constant (Value => Modulus,
+                                       Typ   => Rep_Type);
+               Add_Expr      : constant W_Expr_Id :=
+                 New_Call (Ada_Node => Ada_Node,
+                           Domain   => Domain,
+                           Name     => BV.Add,
+                           Args     => (1 => Left_Opnd,
+                                        2 => Right_Opnd),
+                           Typ   => Rep_Type);
+               Add_Id        : constant W_Expr_Id :=
+                 New_Temp_For_Expr (E => Add_Expr);
+               Overflow_Test : constant W_Expr_Id :=
+                 New_Call (Domain => Domain,
+                           Name   => BV.Ule,
+                           Args   =>
+                             (1 => New_Call (Domain => Domain,
+                                             Name   => BV.Sub,
+                                             Args   => (1 => Modulus_Expr,
+                                                        2 => Left_Opnd),
+                                             Typ    => Rep_Type),
+                              2 => Right_Opnd),
+                           Typ    => EW_Bool_Type);
+               Modulo_Expr   : constant W_Expr_Id :=
+                 New_Call (Ada_Node => Ada_Node,
+                           Domain   => Domain,
+                           Name     => BV.Sub,
+                           Args     => (1 => Add_Id,
+                                        2 => Modulus_Expr),
+                           Typ      => Rep_Type);
+               Ite_Expr      : constant W_Conditional_Id :=
+                 New_Conditional (Ada_Node    => Ada_Node,
+                                  Domain      => Domain,
+                                  Condition   => Overflow_Test,
+                                  Then_Part   => Modulo_Expr,
+                                  Else_Part   => Add_Id,
+                                  Typ         => Rep_Type);
+            begin
+               T := Binding_For_Temp (Ada_Node => Ada_Node,
+                                      Domain   => Domain,
+                                      Tmp      => Add_Id,
+                                      Context  => +Ite_Expr);
+            end;
+
+         --  Transform (X - Y) into:
+         --    if Y > X
+         --    then (X - Y) + Modulus
+         --    else X - Y
+
+         when N_Op_Subtract =>
+            declare
+               BV            : constant M_BV_Type := MF_BVs (Rep_Type);
+               Modulus_Expr : constant W_Expr_Id :=
+                 New_Modular_Constant (Value => Modulus,
+                                       Typ   => Rep_Type);
+               Sub_Expr      : constant W_Expr_Id :=
+                 New_Call (Ada_Node => Ada_Node,
+                           Domain   => Domain,
+                           Name     => BV.Sub,
+                           Args     => (1 => Left_Opnd,
+                                        2 => Right_Opnd),
+                           Typ   => Rep_Type);
+               Sub_Id        : constant W_Expr_Id :=
+                 New_Temp_For_Expr (E => Sub_Expr);
+               Overflow_Test  : constant W_Expr_Id :=
+                 New_Call (Domain   => Domain,
+                           Name     => BV.Ult,
+                           Args     => (1 => Left_Opnd,
+                                        2 => Right_Opnd),
+                           Typ      => EW_Bool_Type);
+               Modulo_Expr   : constant W_Expr_Id :=
+                 New_Call (Ada_Node => Ada_Node,
+                           Domain   => Domain,
+                           Name     => BV.Add,
+                           Args     => (1 => Sub_Id,
+                                        2 => Modulus_Expr),
+                           Typ      => Rep_Type);
+               Ite_Expr      : constant W_Conditional_Id :=
+                 New_Conditional (Ada_Node    => Ada_Node,
+                                  Domain      => Domain,
+                                  Condition   => Overflow_Test,
+                                  Then_Part   => Modulo_Expr,
+                                  Else_Part   => Sub_Id,
+                                  Typ         => Rep_Type);
+            begin
+               T := Binding_For_Temp (Ada_Node => Ada_Node,
+                                      Domain   => Domain,
+                                      Tmp      => Sub_Id,
+                                      Context  => +Ite_Expr);
+            end;
+
+         --  In those cases where the multiplication may not fit in the size of
+         --  bitvector of [Rep_Type], convert both operands to the next size of
+         --  bitvector, do the multiplication without overflow in that larger
+         --  type, then apply the modulus and convert back to the original
+         --  type.
+
+         when N_Op_Multiply =>
+            declare
+               Next_Bv    : constant W_Type_Id :=
+                 (if Modulus < UI_Expon (2, 8) then
+                    (if Esize (Ada_Type) < 16 then EW_BitVector_16_Type
+                     else Rep_Type)
+                  elsif Modulus < UI_Expon (2, 16) then
+                     (if Esize (Ada_Type) < 32 then EW_BitVector_32_Type
+                     else Rep_Type)
+                  else
+                     EW_BitVector_64_Type);
+               Modulus_Expr : constant W_Expr_Id :=
+                 New_Modular_Constant (Value => Modulus,
+                                       Typ   => Next_Bv);
+               Next_Left  : constant W_Expr_Id :=
+                 Insert_Simple_Conversion (Domain => Domain,
+                                           Expr   => Left_Opnd,
+                                           To     => Next_Bv);
+               Next_Right : constant W_Expr_Id :=
+                 Insert_Simple_Conversion (Domain => Domain,
+                                           Expr   => Right_Opnd,
+                                           To     => Next_Bv);
+               Mul_Expr   : constant W_Expr_Id :=
+                 New_Call (Ada_Node => Ada_Node,
+                           Domain   => Domain,
+                           Name     => MF_BVs (Next_Bv).Mult,
+                           Args     => (1 => Next_Left,
+                                        2 => Next_Right),
+                           Typ      => Next_Bv);
+               Modulo_Expr : constant W_Expr_Id :=
+                 New_Call (Name   => MF_BVs (Next_Bv).Urem,
+                           Domain => Domain,
+                           Args   => (1 => Mul_Expr,
+                                      2 => Modulus_Expr),
+                           Typ    => Next_Bv);
+            begin
+               T := Insert_Simple_Conversion (Ada_Node => Ada_Node,
+                                              Domain   => Domain,
+                                              Expr     => Modulo_Expr,
+                                              To       => Rep_Type);
+            end;
+
+         when others =>
+            raise Program_Error;
+      end case;
+
+      return T;
+   end Transform_Non_Binary_Modular_Operation;
+
    ----------------------
    -- Transform_Pragma --
    ----------------------
@@ -11686,199 +11884,6 @@ package body Gnat2Why.Expr is
          Decl_File.Cur_Theory := Params.Theory;
       end if;
    end Transform_String_Literal;
-
-   function Is_Non_Standard_Modulus (E : Entity_Id) return Boolean
-   is
-      Modulus_Val : Uint;
-   begin
-      if not Has_Modular_Integer_Type (E)
-      then
-         return False;
-      else
-
-         Modulus_Val := Modulus (E);
-
-         return (UI_Lt (Modulus_Val, UI_Expon (2, 32)) and then not
-                   (for some N in Int range 0 .. 63 =>
-                      Modulus_Val = UI_Expon (2, N)));
-
-      end if;
-   end Is_Non_Standard_Modulus;
-
-   function Transform_Non_Standard_Modulus_Operation
-     (Ada_Node : Node_Id;
-      Domain : EW_Domain;
-      Op : N_Op;
-      Left_Opnd : W_Expr_Id := Why_Empty;
-      Right_Opnd : W_Expr_Id;
-      Rep_Type : W_Type_Id;
-      Modulus : Uint)
-      return W_Expr_Id
-   is
-      T : W_Expr_Id;
-   begin
-      case Op is
-         when N_Op_Minus =>
-
-            --  transform (-Y) in (modulus - Y)
-
-            pragma Assert (Left_Opnd = Why_Empty);
-
-            T := New_Call
-              (Ada_Node => Ada_Node,
-               Domain   => Domain,
-               Name     => MF_BVs (Rep_Type).Sub,
-               Args     =>
-                 (1 => New_Modular_Constant (Value => Modulus,
-                                             Typ   => Rep_Type),
-                  2 => Right_Opnd),
-               Typ      => Rep_Type);
-
-         when N_Op_Add =>
-
-            --  tansform (X + Y) in:
-            --    if Modulus - X =< Y
-            --     then (X + Y) - modulus
-            --     else X + Y
-
-            declare
-               BV : constant M_BV_Type := MF_BVs (Rep_Type);
-               Add_Id : constant W_Expr_Id :=
-                 New_Temp_For_Expr (E         =>
-                                      +W_Call_Id'(New_Call
-                                    (Ada_Node => Ada_Node,
-                                     Domain   => Domain,
-                                     Name     => BV.Add,
-                                     Args     => (1 => Left_Opnd,
-                                                  2 => Right_Opnd),
-                                     Typ   => Rep_Type)));
-               Modulus_Why : constant W_Expr_Id :=
-                 New_Modular_Constant (Value => Modulus,
-                                       Typ   => Rep_Type);
-               Add_Overflows : constant W_Expr_Id :=
-                 New_Call (Domain => Domain,
-                           Name   => BV.Ule,
-                           Args   => (1 => New_Call
-                                      (Domain => Domain,
-                                       Name   => BV.Sub,
-                                       Args   => (1 => Modulus_Why,
-                                                  2 => Left_Opnd),
-                                       Typ    => Rep_Type),
-                                      2 => Right_Opnd),
-                           Typ    => EW_Bool_Type);
-               Ite_Expr : constant W_Conditional_Id := New_Conditional
-                 (Ada_Node    => Ada_Node,
-                  Domain      => Domain,
-                  Condition   => Add_Overflows,
-                  Then_Part   => +W_Call_Id'(New_Call
-                    (Ada_Node => Ada_Node,
-                     Domain   => Domain,
-                     Name     => BV.Sub,
-                     Args     => (1 => +Add_Id,
-                                  2 => Modulus_Why),
-                     Typ      => Rep_Type)),
-                  Else_Part   => +Add_Id,
-                  Typ         => Rep_Type);
-            begin
-               T := Binding_For_Temp (Ada_Node => Ada_Node,
-                                      Domain   => Domain,
-                                      Tmp      => Add_Id,
-                                      Context  => +Ite_Expr);
-            end;
-
-         when N_Op_Subtract =>
-
-            --  tansform (X - Y) in:
-            --    if Y > X
-            --     then (X - Y) + modulus
-            --     else X - Y
-
-            declare
-               BV : constant M_BV_Type := MF_BVs (Rep_Type);
-               Sub_Id : constant W_Expr_Id :=
-                 New_Temp_For_Expr (E => +W_Call_Id'(New_Call
-                                    (Ada_Node => Ada_Node,
-                                     Domain   => Domain,
-                                     Name     => BV.Sub,
-                                     Args     => (1 => Left_Opnd,
-                                                  2 => Right_Opnd),
-                                     Typ   => Rep_Type)));
-               Sub_Overflows : constant W_Expr_Id :=
-                 New_Call (Domain   => Domain,
-                           Name     => BV.Ult,
-                           Args     => (1 => Left_Opnd,
-                                        2 => Right_Opnd),
-                           Typ      => EW_Bool_Type);
-               Ite_Expr : constant W_Conditional_Id := New_Conditional
-                 (Ada_Node    => Ada_Node,
-                  Domain      => Domain,
-                  Condition   => Sub_Overflows,
-                  Then_Part   => +W_Call_Id'(New_Call
-                    (Ada_Node => Ada_Node,
-                     Domain   => Domain,
-                     Name     => BV.Add,
-                     Args     => (1 => +Sub_Id,
-                                  2 => New_Modular_Constant
-                                    (Value => Modulus,
-                                     Typ   => Rep_Type)),
-                     Typ      => Rep_Type)),
-                  Else_Part   => +Sub_Id,
-                  Typ         => Rep_Type);
-            begin
-               T := Binding_For_Temp (Ada_Node => Ada_Node,
-                                      Domain   => Domain,
-                                      Tmp      => Sub_Id,
-                                      Context  => +Ite_Expr);
-            end;
-
-         when N_Op_Multiply =>
-
-            --  cast both operand to the next size of bitvector, do the
-            --  multiplication there, apply the modulus and cast back to
-            --  rep_type.
-
-            declare
-               Next_Bv : constant W_Type_Id :=
-                 (if UI_Lt (Modulus, UI_Expon (2, 8))
-                  then EW_BitVector_16_Type
-                  elsif UI_Lt (Modulus, UI_Expon (2, 16))
-                  then EW_BitVector_32_Type
-                  else EW_BitVector_64_Type);
-               Next_Left : constant W_Expr_Id := Insert_Simple_Conversion
-                 (Domain => Domain,
-                  Expr   => Left_Opnd,
-                  To     => Next_Bv);
-               Next_Right : constant W_Expr_Id := Insert_Simple_Conversion
-                 (Domain => Domain,
-                  Expr   => Right_Opnd,
-                  To     => Next_Bv);
-               Mul_Expr : constant W_Expr_Id := New_Call
-                 (Ada_Node => Ada_Node,
-                  Domain   => Domain,
-                  Name     => MF_BVs (Next_Bv).Mult,
-                  Args     =>
-                    (1 => Next_Left,
-                     2 => Next_Right),
-                  Typ      => Next_Bv);
-            begin
-               T := Insert_Simple_Conversion
-                 (Ada_Node       => Ada_Node,
-                  Domain         => Domain,
-                  Expr           => New_Call
-                    (Name   => MF_BVs (Next_Bv).Urem,
-                     Domain => Domain,
-                     Args   => (1 => Mul_Expr,
-                                2 => New_Modular_Constant (Value => Modulus,
-                                                           Typ   => Next_Bv)),
-                     Typ    => Next_Bv),
-                  To             => Rep_Type);
-            end;
-
-         when others => raise Program_Error;
-      end case;
-
-      return T;
-   end Transform_Non_Standard_Modulus_Operation;
 
    -------------------------------
    -- Why_Subp_Has_Precondition --
