@@ -20,10 +20,11 @@ is
      Global => (Input => Memory),
      Post => (ReadMem8'Result = Memory(addr));
 
-
    procedure WriteMem8(addr : in Unsigned64; Val : in Unsigned8) with
      Global => (In_Out => Memory),
-     Post => (ReadMem8(addr) = Val);
+               Post => (ReadMem8(Addr) = Val and
+                  (For all X in Unsigned64 =>
+                       X = Addr or Memory(X) = Memory'Old(X)));
 
    function ReadMem16(addr: in Unsigned64) return Unsigned16 with
      Global => (Input => Memory),
@@ -38,7 +39,6 @@ is
      Global => (In_Out => Memory),
      Post => ((Unsigned16(ReadMem8(addr)) or --@POSTCONDITION:PASS
                 Shift_Left(Unsigned16(ReadMem8(addr+1)),8)) = Val);
-
 
 end X86;
 
