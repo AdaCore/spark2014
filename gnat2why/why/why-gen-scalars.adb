@@ -168,10 +168,7 @@ package body Why.Gen.Scalars is
          Mod_Clone_Subst : constant W_Clone_Substitution_Array :=
            (if Is_Static
               and then Has_Modular_Integer_Type (E)
-              and then Modulus (E) /= UI_Expon (2, 8)
-              and then Modulus (E) /= UI_Expon (2, 16)
-              and then Modulus (E) /= UI_Expon (2, 32)
-              and then Modulus (E) /= UI_Expon (2, 64)
+              and then Modulus (E) /= UI_Expon (2, Esize (E))
             then
                 (1 => New_Clone_Substitution
                  (Kind      => EW_Function,
