@@ -105,7 +105,8 @@ package body Flow_Error_Messages is
    function Print_Regular_Msg
      (Msg  : String;
       Slc  : Source_Ptr;
-      Kind : Msg_Kind) return Message_Id;
+      Kind : Msg_Kind;
+      Continuation : Boolean := False) return Message_Id;
    --  Print a regular error, warning or info message using the frontend
    --  mechanism. Return an Id which can be used to identify this message.
 
@@ -130,7 +131,8 @@ package body Flow_Error_Messages is
       return Unbounded_String;
    --  Find the first '&' or '%' and substitute with the given flow id,
    --  with or without enclosing quotes respectively. Alternatively, '#'
-   --  works like '&', but is followed by a line reference.
+   --  works like '&', but is followed by a line reference. Use '@' to
+   --  substitute only with sloc of F.
 
    File_Counter : Integer := 0;
    Message_Id_Counter : Message_Id := 0;
@@ -216,17 +218,18 @@ package body Flow_Error_Messages is
    --------------------
 
    procedure Error_Msg_Flow
-     (E          : Entity_Id;
-      Msg        : String;
-      Kind       : Msg_Kind;
-      N          : Node_Id;
-      Suppressed : out Boolean;
-      F1         : Flow_Id       := Null_Flow_Id;
-      F2         : Flow_Id       := Null_Flow_Id;
-      F3         : Flow_Id       := Null_Flow_Id;
-      Tag        : Flow_Tag_Kind := Empty_Tag;
-      SRM_Ref    : String        := "";
-      Tracefile  : String        := "")
+     (E            : Entity_Id;
+      Msg          : String;
+      Kind         : Msg_Kind;
+      N            : Node_Id;
+      Suppressed   : out Boolean;
+      F1           : Flow_Id       := Null_Flow_Id;
+      F2           : Flow_Id       := Null_Flow_Id;
+      F3           : Flow_Id       := Null_Flow_Id;
+      Tag          : Flow_Tag_Kind := Empty_Tag;
+      SRM_Ref      : String        := "";
+      Tracefile    : String        := "";
+      Continuation : Boolean := False)
    is
       Msg2    : constant String :=
         (if SRM_Ref'Length > 0 then Msg & " (SPARK RM " & SRM_Ref & ")"
@@ -307,7 +310,7 @@ package body Flow_Error_Messages is
          --  the specified line (errors are emitted anyway).
 
          if not Suppressed and then Is_Specified_Line then
-            Msg_Id := Print_Regular_Msg (Msg3, Slc, Kind);
+            Msg_Id := Print_Regular_Msg (Msg3, Slc, Kind, Continuation);
          end if;
 
          Add_Json_Msg
@@ -323,17 +326,18 @@ package body Flow_Error_Messages is
    end Error_Msg_Flow;
 
    procedure Error_Msg_Flow
-     (FA        : in out Flow_Analysis_Graphs;
-      Msg       : String;
-      Kind      : Msg_Kind;
-      N         : Node_Id;
-      F1        : Flow_Id               := Null_Flow_Id;
-      F2        : Flow_Id               := Null_Flow_Id;
-      F3        : Flow_Id               := Null_Flow_Id;
-      Tag       : Flow_Tag_Kind         := Empty_Tag;
-      SRM_Ref   : String                := "";
-      Tracefile : String                := "";
-      Vertex    : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex)
+     (FA           : in out Flow_Analysis_Graphs;
+      Msg          : String;
+      Kind         : Msg_Kind;
+      N            : Node_Id;
+      F1           : Flow_Id               := Null_Flow_Id;
+      F2           : Flow_Id               := Null_Flow_Id;
+      F3           : Flow_Id               := Null_Flow_Id;
+      Tag          : Flow_Tag_Kind         := Empty_Tag;
+      SRM_Ref      : String                := "";
+      Tracefile    : String                := "";
+      Vertex       : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
+      Continuation : Boolean               := False)
    is
       E       : Entity_Id;
       Img     : constant String := Natural'Image
@@ -352,17 +356,18 @@ package body Flow_Error_Messages is
             E := Spec_Entity (FA.Analyzed_Entity);
       end case;
 
-      Error_Msg_Flow (E          => E,
-                      Msg        => Tmp,
-                      Kind       => Kind,
-                      N          => N,
-                      Suppressed => Suppressed,
-                      F1         => F1,
-                      F2         => F2,
-                      F3         => F3,
-                      Tag        => Tag,
-                      SRM_Ref    => SRM_Ref,
-                      Tracefile  => Tracefile);
+      Error_Msg_Flow (E            => E,
+                      Msg          => Tmp,
+                      Kind         => Kind,
+                      N            => N,
+                      Suppressed   => Suppressed,
+                      F1           => F1,
+                      F2           => F2,
+                      F3           => F3,
+                      Tag          => Tag,
+                      SRM_Ref      => SRM_Ref,
+                      Tracefile    => Tracefile,
+                      Continuation => Continuation);
 
       --  Set the No_Errors_Or_Warnings flag to False for this
       --  entity if we are dealing with anything but a suppressed
@@ -577,11 +582,13 @@ package body Flow_Error_Messages is
    function Print_Regular_Msg
      (Msg  : String;
       Slc  : Source_Ptr;
-      Kind : Msg_Kind)
+      Kind : Msg_Kind;
+      Continuation : Boolean := False)
       return Message_Id
    is
       Id         : constant Message_Id := Message_Id_Counter;
       Prefix     : constant String :=
+        (if Continuation then "\" else "") &
         (case Kind is
             when Info_Kind         => "info: ?",
             when Low_Check_Kind    => "low: ",
@@ -629,10 +636,12 @@ package body Flow_Error_Messages is
 
    begin
       for Index in Positive range 1 .. Length (S) loop
-         if Do_Sub and then Element (S, Index) in '&' | '#' | '%' then
-            Quote := Element (S, Index) in '&' | '#';
+         if Do_Sub then
+            case Element (S, Index) is
+            when '&' | '#' | '%' =>
+               Quote := Element (S, Index) in '&' | '#';
 
-            case F.Kind is
+               case F.Kind is
                when Null_Value =>
                   raise Program_Error;
 
@@ -656,6 +665,21 @@ package body Flow_Error_Messages is
                      Append_Quote;
                      Append (R, Flow_Id_To_String
                                (F'Update (Facet => Normal_Part)));
+                  elsif Is_Constituent (F) then
+                     Append_Quote;
+                     Append (R, Flow_Id_To_String (F));
+                     Append_Quote;
+                     Append (R, " constituent of ");
+                     Append_Quote;
+                     declare
+                        Encaps_State : constant Node_Id :=
+                          Encapsulating_State (Get_Direct_Mapping_Id (F));
+                     begin
+                        Get_Name_String (Chars (Encaps_State));
+                        Adjust_Name_Case (Sloc (Encaps_State));
+
+                        Append (R, Name_Buffer (1 .. Name_Len));
+                     end;
                   else
                      Append_Quote;
                      Append (R, Flow_Id_To_String (F));
@@ -691,12 +715,12 @@ package body Flow_Error_Messages is
                         end loop;
                      end;
                   end if;
-            end case;
+               end case;
 
-            Append_Quote;
+               Append_Quote;
 
-            if Element (S, Index) = '#' then
-               case F.Kind is
+               if Element (S, Index) = '#' then
+                  case F.Kind is
                   when Direct_Mapping | Record_Field =>
                      declare
                         N : constant Node_Id := Get_Direct_Mapping_Id (F);
@@ -710,11 +734,23 @@ package body Flow_Error_Messages is
                      --  Can't really add source information for stuff that
                      --  doesn't come from the tree.
                      null;
-               end case;
-            end if;
+                  end case;
+               end if;
 
-            Do_Sub := False;
+               Do_Sub := False;
 
+            when '@' =>
+               declare
+                  N : constant Node_Id := Get_Direct_Mapping_Id (F);
+               begin
+                  Msglen := 0;
+                  Set_Msg_Insertion_Line_Number (Sloc (N), Flag);
+                  Append (R, Msg_Buffer (1 .. Msglen));
+               end;
+
+            when others =>
+               Append (R, Element (S, Index));
+            end case;
          else
             Append (R, Element (S, Index));
          end if;

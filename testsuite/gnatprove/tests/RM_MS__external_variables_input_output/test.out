@@ -7,4 +7,4 @@ copy_14.adb:25:21: info: initialization of "The_Stack" proved
 copy_14.adb:26:36: info: initialization of "Value" proved
 copy_14.adb:27:36: info: initialization of "The_Stack" proved
 input_port_14.ads:5:29: info: initialization of "Input_Value" proved
-output_port_14.adb:13:41: info: initialization of "Output_S" proved
+output_port_14.adb:13:41: info: initialization of "Output_S" constituent of "Output_State" proved

@@ -44,25 +44,25 @@ admin.ads:233:08: info: length check proved
 admin.ads:233:48: info: length check proved
 admin.ads:235:48: info: length check proved
 admin.ads:237:48: info: length check proved
-admintoken.adb:95:42: info: initialization of "AuthCert.Contents" proved
-admintoken.adb:95:42: info: initialization of "AuthCert.Valid" proved
-admintoken.adb:96:42: info: initialization of "IDCert.Contents" proved
-admintoken.adb:96:42: info: initialization of "IDCert.Valid" proved
-admintoken.adb:97:50: info: initialization of "Interfac.State" proved
-admintoken.adb:98:42: info: initialization of "TokenID" proved
-admintoken.adb:99:42: info: initialization of "TokenPresence" proved
-admintoken.adb:100:42: info: initialization of "TokenTry" proved
-admintoken.adb:127:43: info: initialization of "TokenPresence" proved
-admintoken.adb:168:41: info: initialization of "AuthCert.Contents" proved
-admintoken.adb:168:41: info: initialization of "AuthCert.Valid" proved
-admintoken.adb:169:41: info: initialization of "IDCert.Contents" proved
-admintoken.adb:169:41: info: initialization of "IDCert.Valid" proved
-admintoken.adb:170:41: info: initialization of "TokenTry" proved
+admintoken.adb:95:42: info: initialization of "AuthCert.Contents" constituent of "State" proved
+admintoken.adb:95:42: info: initialization of "AuthCert.Valid" constituent of "State" proved
+admintoken.adb:96:42: info: initialization of "IDCert.Contents" constituent of "State" proved
+admintoken.adb:96:42: info: initialization of "IDCert.Valid" constituent of "State" proved
+admintoken.adb:97:50: info: initialization of "Interfac.State" constituent of "State" proved
+admintoken.adb:98:42: info: initialization of "TokenID" constituent of "State" proved
+admintoken.adb:99:42: info: initialization of "TokenPresence" constituent of "State" proved
+admintoken.adb:100:42: info: initialization of "TokenTry" constituent of "State" proved
+admintoken.adb:127:43: info: initialization of "TokenPresence" constituent of "State" proved
+admintoken.adb:168:41: info: initialization of "AuthCert.Contents" constituent of "State" proved
+admintoken.adb:168:41: info: initialization of "AuthCert.Valid" constituent of "State" proved
+admintoken.adb:169:41: info: initialization of "IDCert.Contents" constituent of "State" proved
+admintoken.adb:169:41: info: initialization of "IDCert.Valid" constituent of "State" proved
+admintoken.adb:170:41: info: initialization of "TokenTry" constituent of "State" proved
 admintoken.adb:199:30: info: initialization of "TokenOK" proved
 admintoken.adb:199:30: info: refined post proved
-admintoken.adb:199:41: info: initialization of "IDCert.Valid" proved
-admintoken.adb:200:41: info: initialization of "AuthCert.Valid" proved
-admintoken.adb:202:44: info: initialization of "AuthCert.Contents" proved
+admintoken.adb:199:41: info: initialization of "IDCert.Valid" constituent of "State" proved
+admintoken.adb:200:41: info: initialization of "AuthCert.Valid" constituent of "State" proved
+admintoken.adb:202:44: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.adb:218:16: info: initialization of "MakeDescription" proved
 admintoken.adb:225:37: info: initialization of "Result" proved
 admintoken.adb:225:37: info: length check proved
@@ -104,7 +104,7 @@ admintoken.adb:425:23: info: initialization of "Verified" proved
 admintoken.adb:427:19: info: precondition proved
 admintoken.adb:428:23: info: initialization of "Current" proved
 admintoken.adb:430:19: info: precondition proved
-admintoken.adb:446:10: info: initialization of "TokenTry" proved
+admintoken.adb:446:10: info: initialization of "TokenTry" constituent of "State" proved
 admintoken.adb:449:10: info: initialization of "IDCertContents" proved
 admintoken.adb:451:10: info: initialization of "AuthCertContents" proved
 admintoken.adb:451:10: info: initialization of "Description" proved
@@ -123,44 +123,44 @@ admintoken.adb:481:22: info: initialization of "AuthValid" proved
 admintoken.adb:482:22: info: initialization of "AuthCertContents" proved
 admintoken.adb:533:14: info: initialization of "Result" proved
 admintoken.adb:546:21: info: range check proved
-admintoken.adb:557:42: info: initialization of "AuthCert.Contents" proved
-admintoken.adb:557:42: info: initialization of "AuthCert.Valid" proved
-admintoken.adb:558:42: info: initialization of "IDCert.Contents" proved
-admintoken.adb:558:42: info: initialization of "IDCert.Valid" proved
-admintoken.adb:559:42: info: initialization of "TokenID" proved
-admintoken.adb:560:42: info: initialization of "TokenPresence" proved
-admintoken.adb:561:42: info: initialization of "TokenTry" proved
+admintoken.adb:557:42: info: initialization of "AuthCert.Contents" constituent of "State" proved
+admintoken.adb:557:42: info: initialization of "AuthCert.Valid" constituent of "State" proved
+admintoken.adb:558:42: info: initialization of "IDCert.Contents" constituent of "State" proved
+admintoken.adb:558:42: info: initialization of "IDCert.Valid" constituent of "State" proved
+admintoken.adb:559:42: info: initialization of "TokenID" constituent of "State" proved
+admintoken.adb:560:42: info: initialization of "TokenPresence" constituent of "State" proved
+admintoken.adb:561:42: info: initialization of "TokenTry" constituent of "State" proved
 admintoken.adb:577:47: info: initialization of "AuthCertContents" proved
 admintoken.adb:581:43: info: initialization of "IDCertContents" proved
 admintoken.ads:40:13: info: initialization of "TheAuthCertRole" proved
 admintoken.ads:44:13: info: initialization of "IsGood" proved
 admintoken.ads:48:13: info: initialization of "AuthCertValid" proved
 admintoken.ads:66:22: info: postcondition proved
-admintoken.ads:66:26: info: initialization of "IDCert.Contents" proved
-admintoken.ads:66:26: info: initialization of "IDCert.Valid" proved
-admintoken.ads:67:26: info: initialization of "AuthCert.Contents" proved
-admintoken.ads:67:26: info: initialization of "AuthCert.Valid" proved
+admintoken.ads:66:26: info: initialization of "IDCert.Contents" constituent of "State" proved
+admintoken.ads:66:26: info: initialization of "IDCert.Valid" constituent of "State" proved
+admintoken.ads:67:26: info: initialization of "AuthCert.Contents" constituent of "State" proved
+admintoken.ads:67:26: info: initialization of "AuthCert.Valid" constituent of "State" proved
 admintoken.ads:101:22: info: postcondition proved
 admintoken.ads:118:07: info: initialization of "Description" proved
 admintoken.ads:119:07: info: initialization of "TokenOK" proved
 admintoken.ads:148:22: info: initialization of "TokenOK" proved
 admintoken.ads:148:22: info: postcondition proved
-admintoken.ads:148:33: info: initialization of "IDCert.Contents" proved
-admintoken.ads:148:33: info: initialization of "IDCert.Valid" proved
-admintoken.ads:149:33: info: initialization of "AuthCert.Contents" proved
-admintoken.ads:149:33: info: initialization of "AuthCert.Valid" proved
+admintoken.ads:148:33: info: initialization of "IDCert.Contents" constituent of "State" proved
+admintoken.ads:148:33: info: initialization of "IDCert.Valid" constituent of "State" proved
+admintoken.ads:149:33: info: initialization of "AuthCert.Contents" constituent of "State" proved
+admintoken.ads:149:33: info: initialization of "AuthCert.Valid" constituent of "State" proved
 admintoken.ads:161:13: info: initialization of "IsPresent" proved
 admintoken.ads:173:13: info: initialization of "IsCurrent" proved
 admintoken.ads:186:13: info: initialization of "ExtractUser" proved
 admintoken.ads:199:13: info: initialization of "GetRole" proved
 admintoken.ads:217:22: medium: postcondition might fail
-admintoken.ads:217:26: info: initialization of "IDCert.Contents" proved
-admintoken.ads:217:26: info: initialization of "IDCert.Valid" proved
-admintoken.ads:218:26: info: initialization of "AuthCert.Contents" proved
-admintoken.ads:218:26: info: initialization of "AuthCert.Valid" proved
-admintoken.ads:219:27: info: initialization of "AuthCert.Contents" proved
-admintoken.ads:219:27: info: initialization of "AuthCert.Valid" proved
-alarm.adb:43:49: info: initialization of "Interfac.Output" proved
+admintoken.ads:217:26: info: initialization of "IDCert.Contents" constituent of "State" proved
+admintoken.ads:217:26: info: initialization of "IDCert.Valid" constituent of "State" proved
+admintoken.ads:218:26: info: initialization of "AuthCert.Contents" constituent of "State" proved
+admintoken.ads:218:26: info: initialization of "AuthCert.Valid" constituent of "State" proved
+admintoken.ads:219:27: info: initialization of "AuthCert.Contents" constituent of "State" proved
+admintoken.ads:219:27: info: initialization of "AuthCert.Valid" constituent of "State" proved
+alarm.adb:43:49: info: initialization of "Interfac.Output" constituent of "Output" proved
 alarm.adb:46:30: info: refined post proved
 alarm.ads:41:13: info: initialization of "IsAlarming" proved
 alarm.ads:70:22: info: postcondition proved
@@ -180,7 +180,7 @@ auditlog.adb:79:32: info: length check proved
 auditlog.adb:88:45: info: length check proved
 auditlog.adb:93:53: info: length check proved
 auditlog.adb:104:54: info: length check proved
-auditlog.adb:132:04: info: initialization of "LogFiles" proved
+auditlog.adb:132:04: info: initialization of "LogFiles" constituent of "FileState" proved
 auditlog.adb:132:46: info: length check proved
 auditlog.adb:151:20: info: length check proved
 auditlog.adb:151:26: info: length check proved
@@ -298,7 +298,7 @@ auditlog.adb:871:10: info: precondition proved
 auditlog.adb:879:10: info: precondition proved
 auditlog.adb:886:44: info: range check proved
 auditlog.adb:900:26: info: initialization of "Description" proved
-auditlog.adb:901:35: info: initialization of "AuditAlarm" proved
+auditlog.adb:901:35: info: initialization of "AuditAlarm" constituent of "State" proved
 auditlog.adb:922:60: info: overflow check proved
 auditlog.adb:923:22: info: postcondition proved
 auditlog.adb:928:60: info: overflow check proved
@@ -321,27 +321,27 @@ auditlog.adb:1021:10: info: precondition proved
 auditlog.adb:1023:10: info: precondition proved
 auditlog.adb:1027:28: info: initialization of "TruncateDescription" proved
 auditlog.adb:1031:07: info: precondition proved
-auditlog.adb:1053:42: info: initialization of "AuditAlarm" proved
-auditlog.adb:1054:42: info: initialization of "AuditSystemFault" proved
-auditlog.adb:1055:42: info: initialization of "CurrentLogFile" proved
-auditlog.adb:1056:42: info: initialization of "LogFileEntries" proved
-auditlog.adb:1057:42: info: initialization of "LogFilesStatus" proved
-auditlog.adb:1058:42: info: initialization of "NumberLogEntries" proved
-auditlog.adb:1059:42: info: initialization of "UsedLogFiles.Head" proved
-auditlog.adb:1059:42: info: initialization of "UsedLogFiles.LastI" proved
-auditlog.adb:1059:42: info: initialization of "UsedLogFiles.Length" proved
-auditlog.adb:1059:42: info: initialization of "UsedLogFiles.List" proved
-auditlog.adb:1070:30: info: initialization of "UsedLogFiles.Length" proved
+auditlog.adb:1053:42: info: initialization of "AuditAlarm" constituent of "State" proved
+auditlog.adb:1054:42: info: initialization of "AuditSystemFault" constituent of "State" proved
+auditlog.adb:1055:42: info: initialization of "CurrentLogFile" constituent of "State" proved
+auditlog.adb:1056:42: info: initialization of "LogFileEntries" constituent of "State" proved
+auditlog.adb:1057:42: info: initialization of "LogFilesStatus" constituent of "State" proved
+auditlog.adb:1058:42: info: initialization of "NumberLogEntries" constituent of "State" proved
+auditlog.adb:1059:42: info: initialization of "UsedLogFiles.Head" constituent of "State" proved
+auditlog.adb:1059:42: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
+auditlog.adb:1059:42: info: initialization of "UsedLogFiles.Length" constituent of "State" proved
+auditlog.adb:1059:42: info: initialization of "UsedLogFiles.List" constituent of "State" proved
+auditlog.adb:1070:30: info: initialization of "UsedLogFiles.Length" constituent of "State" proved
 auditlog.adb:1070:30: info: refined post proved
-auditlog.adb:1071:30: info: initialization of "NumberLogEntries" proved
+auditlog.adb:1071:30: info: initialization of "NumberLogEntries" constituent of "State" proved
 auditlog.adb:1072:67: info: range check proved
 auditlog.adb:1072:72: info: overflow check proved
 auditlog.adb:1073:50: info: overflow check proved
-auditlog.adb:1074:32: info: initialization of "LogFileEntries" proved
-auditlog.adb:1074:47: info: initialization of "CurrentLogFile" proved
+auditlog.adb:1074:32: info: initialization of "LogFileEntries" constituent of "State" proved
+auditlog.adb:1074:47: info: initialization of "CurrentLogFile" constituent of "State" proved
 auditlog.adb:1095:36: info: initialization of "FileAges" proved
-auditlog.adb:1096:36: info: initialization of "LogFileEntries" proved
-auditlog.adb:1097:36: info: initialization of "LogFilesStatus" proved
+auditlog.adb:1096:36: info: initialization of "LogFileEntries" constituent of "State" proved
+auditlog.adb:1097:36: info: initialization of "LogFilesStatus" constituent of "State" proved
 auditlog.adb:1123:39: info: initialization of "FileH" proved
 auditlog.adb:1124:39: info: initialization of "FirstTime" proved
 auditlog.adb:1125:39: info: initialization of "NumberEntries" proved
@@ -363,53 +363,53 @@ auditlog.adb:1178:37: info: initialization of "FileH" proved
 auditlog.adb:1180:22: info: initialization of "OK" proved
 auditlog.adb:1180:32: info: initialization of "TimeOK" proved
 auditlog.adb:1216:31: info: initialization of "OK" proved
-auditlog.adb:1218:07: info: initialization of "AuditSystemFault" proved
-auditlog.adb:1224:13: info: initialization of "LogFilesStatus" proved
-auditlog.adb:1225:16: info: initialization of "UsedLogFiles.Length" proved
-auditlog.adb:1230:53: info: initialization of "UsedLogFiles.Head" proved
-auditlog.adb:1230:53: info: initialization of "UsedLogFiles.List" proved
+auditlog.adb:1218:07: info: initialization of "AuditSystemFault" constituent of "State" proved
+auditlog.adb:1224:13: info: initialization of "LogFilesStatus" constituent of "State" proved
+auditlog.adb:1225:16: info: initialization of "UsedLogFiles.Length" constituent of "State" proved
+auditlog.adb:1230:53: info: initialization of "UsedLogFiles.Head" constituent of "State" proved
+auditlog.adb:1230:53: info: initialization of "UsedLogFiles.List" constituent of "State" proved
 auditlog.adb:1232:20: info: range check proved
-auditlog.adb:1232:48: info: initialization of "UsedLogFiles.LastI" proved
+auditlog.adb:1232:48: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
 auditlog.adb:1232:60: info: initialization of "R95b" proved
 auditlog.adb:1233:47: info: initialization of "FileAges" proved
-auditlog.adb:1233:56: info: initialization of "UsedLogFiles.List" proved
-auditlog.adb:1236:45: info: initialization of "UsedLogFiles.LastI" proved
+auditlog.adb:1233:56: info: initialization of "UsedLogFiles.List" constituent of "State" proved
+auditlog.adb:1236:45: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
 auditlog.adb:1236:64: medium: range check might fail
-auditlog.adb:1237:45: info: initialization of "UsedLogFiles.Length" proved
+auditlog.adb:1237:45: info: initialization of "UsedLogFiles.Length" constituent of "State" proved
 auditlog.adb:1237:65: medium: range check might fail
 auditlog.adb:1238:26: info: range check proved
 auditlog.adb:1239:32: info: overflow check proved
-auditlog.adb:1239:37: info: initialization of "UsedLogFiles.LastI" proved
+auditlog.adb:1239:37: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
 auditlog.adb:1239:49: info: initialization of "R97b" proved
 auditlog.adb:1241:43: info: index check proved
-auditlog.adb:1241:49: info: initialization of "UsedLogFiles.List" proved
+auditlog.adb:1241:49: info: initialization of "UsedLogFiles.List" constituent of "State" proved
 auditlog.adb:1241:69: info: index check proved
 auditlog.adb:1241:69: info: overflow check proved
-auditlog.adb:1243:43: info: initialization of "UsedLogFiles.List" proved
-auditlog.adb:1246:26: info: initialization of "UsedLogFiles.LastI" proved
-auditlog.adb:1248:45: info: initialization of "UsedLogFiles.LastI" proved
+auditlog.adb:1243:43: info: initialization of "UsedLogFiles.List" constituent of "State" proved
+auditlog.adb:1246:26: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
+auditlog.adb:1248:45: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
 auditlog.adb:1248:64: medium: range check might fail
-auditlog.adb:1249:45: info: initialization of "UsedLogFiles.Length" proved
+auditlog.adb:1249:45: info: initialization of "UsedLogFiles.Length" constituent of "State" proved
 auditlog.adb:1249:65: medium: range check might fail
-auditlog.adb:1250:60: info: initialization of "UsedLogFiles.LastI" proved
-auditlog.adb:1250:60: info: initialization of "UsedLogFiles.List" proved
-auditlog.adb:1258:10: info: initialization of "UsedLogFiles.Length" proved
-auditlog.adb:1264:47: info: initialization of "UsedLogFiles.Head" proved
-auditlog.adb:1264:47: info: initialization of "UsedLogFiles.List" proved
-auditlog.adb:1264:50: info: initialization of "CurrentLogFile" proved
-auditlog.adb:1265:41: info: initialization of "CurrentLogFile" proved
-auditlog.adb:1265:41: info: initialization of "LogFilesStatus" proved
-auditlog.adb:1267:28: info: initialization of "UsedLogFiles.List" proved
-auditlog.adb:1267:46: info: initialization of "UsedLogFiles.LastI" proved
-auditlog.adb:1270:42: info: initialization of "UsedLogFiles.Length" proved
+auditlog.adb:1250:60: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
+auditlog.adb:1250:60: info: initialization of "UsedLogFiles.List" constituent of "State" proved
+auditlog.adb:1258:10: info: initialization of "UsedLogFiles.Length" constituent of "State" proved
+auditlog.adb:1264:47: info: initialization of "UsedLogFiles.Head" constituent of "State" proved
+auditlog.adb:1264:47: info: initialization of "UsedLogFiles.List" constituent of "State" proved
+auditlog.adb:1264:50: info: initialization of "CurrentLogFile" constituent of "State" proved
+auditlog.adb:1265:41: info: initialization of "CurrentLogFile" constituent of "State" proved
+auditlog.adb:1265:41: info: initialization of "LogFilesStatus" constituent of "State" proved
+auditlog.adb:1267:28: info: initialization of "UsedLogFiles.List" constituent of "State" proved
+auditlog.adb:1267:46: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
+auditlog.adb:1270:42: info: initialization of "UsedLogFiles.Length" constituent of "State" proved
 auditlog.adb:1270:62: info: range check proved
 auditlog.adb:1270:67: info: overflow check proved
 auditlog.adb:1271:27: info: overflow check proved
 auditlog.adb:1271:27: info: range check proved
-auditlog.adb:1271:29: info: initialization of "LogFileEntries" proved
-auditlog.adb:1271:44: info: initialization of "CurrentLogFile" proved
-auditlog.adb:1274:07: info: initialization of "AuditAlarm" proved
-auditlog.adb:1274:07: info: initialization of "NumberLogEntries" proved
+auditlog.adb:1271:29: info: initialization of "LogFileEntries" constituent of "State" proved
+auditlog.adb:1271:44: info: initialization of "CurrentLogFile" constituent of "State" proved
+auditlog.adb:1274:07: info: initialization of "AuditAlarm" constituent of "State" proved
+auditlog.adb:1274:07: info: initialization of "NumberLogEntries" constituent of "State" proved
 auditlog.adb:1332:30: info: refined post proved
 auditlog.adb:1334:67: info: range check proved
 auditlog.adb:1334:72: info: overflow check proved
@@ -471,13 +471,13 @@ auditlog.adb:1607:10: info: initialization of "OldAlarm" proved
 auditlog.adb:1611:10: info: precondition proved
 auditlog.adb:1619:07: info: precondition proved
 auditlog.ads:33:13: info: initialization of "Valid_NumberLogEntries" proved
-auditlog.ads:60:22: info: initialization of "CurrentLogFile" proved
-auditlog.ads:60:22: info: initialization of "LogFileEntries" proved
-auditlog.ads:60:22: info: initialization of "NumberLogEntries" proved
-auditlog.ads:60:22: info: initialization of "UsedLogFiles.Head" proved
-auditlog.ads:60:22: info: initialization of "UsedLogFiles.LastI" proved
-auditlog.ads:60:22: info: initialization of "UsedLogFiles.Length" proved
-auditlog.ads:60:22: info: initialization of "UsedLogFiles.List" proved
+auditlog.ads:60:22: info: initialization of "CurrentLogFile" constituent of "State" proved
+auditlog.ads:60:22: info: initialization of "LogFileEntries" constituent of "State" proved
+auditlog.ads:60:22: info: initialization of "NumberLogEntries" constituent of "State" proved
+auditlog.ads:60:22: info: initialization of "UsedLogFiles.Head" constituent of "State" proved
+auditlog.ads:60:22: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
+auditlog.ads:60:22: info: initialization of "UsedLogFiles.Length" constituent of "State" proved
+auditlog.ads:60:22: info: initialization of "UsedLogFiles.List" constituent of "State" proved
 auditlog.ads:60:22: info: postcondition proved
 auditlog.ads:92:22: info: postcondition proved
 auditlog.ads:105:26: info: initialization of "Archive" proved
@@ -997,7 +997,7 @@ cert.ads:127:13: info: initialization of "GetSignature.SigLength" proved
 cert.ads:141:26: info: initialization of "IsKnown" proved
 cert.ads:169:20: info: initialization of "IsVerified" proved
 certificatestore.adb:38:42: info: length check proved
-certificatestore.adb:46:04: info: initialization of "StoreFile" proved
+certificatestore.adb:46:04: info: initialization of "StoreFile" constituent of "FileState" proved
 certificatestore.adb:190:35: info: initialization of "Success" proved
 certificatestore.adb:213:32: info: initialization of "Text" proved
 certificatestore.adb:214:32: info: initialization of "Length" proved
@@ -1021,15 +1021,15 @@ certificatestore.adb:241:40: info: initialization of "RawNext" proved
 certificatestore.adb:242:40: info: initialization of "Stop" proved
 certificatestore.adb:249:18: info: initialization of "Opened" proved
 certificatestore.adb:249:29: info: initialization of "Closed" proved
-certificatestore.adb:262:42: info: initialization of "NextSerialNumber" proved
-certificatestore.adb:263:42: info: initialization of "Overflow" proved
+certificatestore.adb:262:42: info: initialization of "NextSerialNumber" constituent of "State" proved
+certificatestore.adb:263:42: info: initialization of "Overflow" constituent of "State" proved
 certificatestore.adb:287:17: info: initialization of "ReadOK" proved
 certificatestore.adb:288:21: medium: precondition might fail
-certificatestore.adb:314:41: info: initialization of "Overflow" proved
+certificatestore.adb:314:41: info: initialization of "Overflow" constituent of "State" proved
 certificatestore.adb:334:47: info: range check proved
 certificatestore.adb:343:13: info: initialization of "Exists" proved
 certificatestore.adb:350:10: info: initialization of "Exists" proved
-certificatestore.adb:352:41: info: initialization of "Overflow" proved
+certificatestore.adb:352:41: info: initialization of "Overflow" constituent of "State" proved
 certificatestore.adb:357:15: info: initialization of "Exists" proved
 certificatestore.adb:357:26: info: initialization of "Written" proved
 certificatestore.adb:358:18: medium: precondition might fail
@@ -1043,10 +1043,10 @@ clock.adb:74:54: info: initialization of "V" proved
 clock.adb:74:56: info: division check proved
 clock.adb:75:18: info: initialization of "V" proved
 clock.adb:75:20: info: division check proved
-clock.adb:93:41: info: initialization of "CurrentTimeVar.Day" proved
-clock.adb:93:41: info: initialization of "CurrentTimeVar.MilliSec" proved
-clock.adb:93:41: info: initialization of "CurrentTimeVar.Month" proved
-clock.adb:93:41: info: initialization of "CurrentTimeVar.Year" proved
+clock.adb:93:41: info: initialization of "CurrentTimeVar.Day" constituent of "CurrentTime" proved
+clock.adb:93:41: info: initialization of "CurrentTimeVar.MilliSec" constituent of "CurrentTime" proved
+clock.adb:93:41: info: initialization of "CurrentTimeVar.Month" constituent of "CurrentTime" proved
+clock.adb:93:41: info: initialization of "CurrentTimeVar.Year" constituent of "CurrentTime" proved
 clock.adb:208:32: info: range check proved
 clock.adb:209:33: info: range check proved
 clock.adb:210:31: info: range check proved
@@ -1159,7 +1159,7 @@ configdata.adb:131:47: info: length check proved
 configdata.adb:144:06: info: length check proved
 configdata.adb:144:38: info: length check proved
 configdata.adb:145:38: info: length check proved
-configdata.adb:165:04: info: initialization of "ConfigFile" proved
+configdata.adb:165:04: info: initialization of "ConfigFile" constituent of "FileState" proved
 configdata.adb:207:30: info: initialization of "Value" proved
 configdata.adb:209:36: info: initialization of "Success" proved
 configdata.adb:229:13: info: initialization of "Success" proved
@@ -1370,32 +1370,32 @@ configdata.adb:1148:69: info: division check proved
 configdata.adb:1158:68: info: division check proved
 configdata.adb:1179:18: info: initialization of "CloseOK" proved
 configdata.adb:1179:30: info: initialization of "Success" proved
-configdata.adb:1191:41: info: initialization of "LatchUnlockDuration" proved
-configdata.adb:1192:41: info: initialization of "AlarmSilentDuration" proved
-configdata.adb:1193:41: info: initialization of "FingerWaitDuration" proved
-configdata.adb:1194:41: info: initialization of "TokenRemovalDuration" proved
-configdata.adb:1195:41: info: initialization of "EnclaveClearance" proved
-configdata.adb:1196:41: info: initialization of "WorkingHoursStart" proved
-configdata.adb:1197:41: info: initialization of "WorkingHoursEnd" proved
-configdata.adb:1198:41: info: initialization of "MaxAuthDuration" proved
-configdata.adb:1199:41: info: initialization of "AccessPolicy" proved
-configdata.adb:1200:41: info: initialization of "MinEntryClass" proved
-configdata.adb:1201:41: info: initialization of "MinPreservedLogSize" proved
-configdata.adb:1202:41: info: initialization of "AlarmThresholdSize" proved
-configdata.adb:1203:41: info: initialization of "SystemMaxFar" proved
-configdata.adb:1246:37: info: initialization of "LatchUnlockDuration" proved
-configdata.adb:1247:37: info: initialization of "AlarmSilentDuration" proved
-configdata.adb:1248:37: info: initialization of "FingerWaitDuration" proved
-configdata.adb:1249:37: info: initialization of "TokenRemovalDuration" proved
-configdata.adb:1250:37: info: initialization of "EnclaveClearance" proved
-configdata.adb:1251:37: info: initialization of "WorkingHoursStart" proved
-configdata.adb:1252:37: info: initialization of "WorkingHoursEnd" proved
-configdata.adb:1253:37: info: initialization of "MaxAuthDuration" proved
-configdata.adb:1254:37: info: initialization of "AccessPolicy" proved
-configdata.adb:1255:37: info: initialization of "MinEntryClass" proved
-configdata.adb:1256:37: info: initialization of "MinPreservedLogSize" proved
-configdata.adb:1257:37: info: initialization of "AlarmThresholdSize" proved
-configdata.adb:1258:37: info: initialization of "SystemMaxFar" proved
+configdata.adb:1191:41: info: initialization of "LatchUnlockDuration" constituent of "State" proved
+configdata.adb:1192:41: info: initialization of "AlarmSilentDuration" constituent of "State" proved
+configdata.adb:1193:41: info: initialization of "FingerWaitDuration" constituent of "State" proved
+configdata.adb:1194:41: info: initialization of "TokenRemovalDuration" constituent of "State" proved
+configdata.adb:1195:41: info: initialization of "EnclaveClearance" constituent of "State" proved
+configdata.adb:1196:41: info: initialization of "WorkingHoursStart" constituent of "State" proved
+configdata.adb:1197:41: info: initialization of "WorkingHoursEnd" constituent of "State" proved
+configdata.adb:1198:41: info: initialization of "MaxAuthDuration" constituent of "State" proved
+configdata.adb:1199:41: info: initialization of "AccessPolicy" constituent of "State" proved
+configdata.adb:1200:41: info: initialization of "MinEntryClass" constituent of "State" proved
+configdata.adb:1201:41: info: initialization of "MinPreservedLogSize" constituent of "State" proved
+configdata.adb:1202:41: info: initialization of "AlarmThresholdSize" constituent of "State" proved
+configdata.adb:1203:41: info: initialization of "SystemMaxFar" constituent of "State" proved
+configdata.adb:1246:37: info: initialization of "LatchUnlockDuration" constituent of "State" proved
+configdata.adb:1247:37: info: initialization of "AlarmSilentDuration" constituent of "State" proved
+configdata.adb:1248:37: info: initialization of "FingerWaitDuration" constituent of "State" proved
+configdata.adb:1249:37: info: initialization of "TokenRemovalDuration" constituent of "State" proved
+configdata.adb:1250:37: info: initialization of "EnclaveClearance" constituent of "State" proved
+configdata.adb:1251:37: info: initialization of "WorkingHoursStart" constituent of "State" proved
+configdata.adb:1252:37: info: initialization of "WorkingHoursEnd" constituent of "State" proved
+configdata.adb:1253:37: info: initialization of "MaxAuthDuration" constituent of "State" proved
+configdata.adb:1254:37: info: initialization of "AccessPolicy" constituent of "State" proved
+configdata.adb:1255:37: info: initialization of "MinEntryClass" constituent of "State" proved
+configdata.adb:1256:37: info: initialization of "MinPreservedLogSize" constituent of "State" proved
+configdata.adb:1257:37: info: initialization of "AlarmThresholdSize" constituent of "State" proved
+configdata.adb:1258:37: info: initialization of "SystemMaxFar" constituent of "State" proved
 configdata.adb:1301:10: info: initialization of "OK" proved
 configdata.adb:1318:13: info: initialization of "OK" proved
 configdata.adb:1320:37: info: initialization of "LocalLatchUnlockDuration" proved
@@ -1411,19 +1411,19 @@ configdata.adb:1329:37: info: initialization of "LocalMinEntryClass" proved
 configdata.adb:1330:37: info: initialization of "LocalMinPreservedLogSize" proved
 configdata.adb:1331:37: info: initialization of "LocalAlarmThresholdSize" proved
 configdata.adb:1332:37: info: initialization of "LocalSystemMaxFar" proved
-configdata.adb:1373:43: info: initialization of "LatchUnlockDuration" proved
-configdata.adb:1374:43: info: initialization of "AlarmSilentDuration" proved
-configdata.adb:1375:43: info: initialization of "FingerWaitDuration" proved
-configdata.adb:1376:43: info: initialization of "TokenRemovalDuration" proved
-configdata.adb:1377:43: info: initialization of "EnclaveClearance" proved
-configdata.adb:1378:43: info: initialization of "WorkingHoursStart" proved
-configdata.adb:1379:43: info: initialization of "WorkingHoursEnd" proved
-configdata.adb:1380:43: info: initialization of "MaxAuthDuration" proved
-configdata.adb:1381:43: info: initialization of "AccessPolicy" proved
-configdata.adb:1382:43: info: initialization of "MinEntryClass" proved
-configdata.adb:1383:43: info: initialization of "MinPreservedLogSize" proved
-configdata.adb:1384:43: info: initialization of "AlarmThresholdSize" proved
-configdata.adb:1385:43: info: initialization of "SystemMaxFar" proved
+configdata.adb:1373:43: info: initialization of "LatchUnlockDuration" constituent of "State" proved
+configdata.adb:1374:43: info: initialization of "AlarmSilentDuration" constituent of "State" proved
+configdata.adb:1375:43: info: initialization of "FingerWaitDuration" constituent of "State" proved
+configdata.adb:1376:43: info: initialization of "TokenRemovalDuration" constituent of "State" proved
+configdata.adb:1377:43: info: initialization of "EnclaveClearance" constituent of "State" proved
+configdata.adb:1378:43: info: initialization of "WorkingHoursStart" constituent of "State" proved
+configdata.adb:1379:43: info: initialization of "WorkingHoursEnd" constituent of "State" proved
+configdata.adb:1380:43: info: initialization of "MaxAuthDuration" constituent of "State" proved
+configdata.adb:1381:43: info: initialization of "AccessPolicy" constituent of "State" proved
+configdata.adb:1382:43: info: initialization of "MinEntryClass" constituent of "State" proved
+configdata.adb:1383:43: info: initialization of "MinPreservedLogSize" constituent of "State" proved
+configdata.adb:1384:43: info: initialization of "AlarmThresholdSize" constituent of "State" proved
+configdata.adb:1385:43: info: initialization of "SystemMaxFar" constituent of "State" proved
 configdata.adb:1511:14: info: initialization of "Result" proved
 configdata.adb:1542:70: info: range check proved
 configdata.adb:1549:42: info: initialization of "DayStart.Day" proved
@@ -1695,7 +1695,7 @@ display.adb:152:14: info: initialization of "Result.Text" proved, in call inline
 display.adb:152:14: info: initialization of "Result.Text" proved, in call inlined at display.adb:280
 display.adb:184:18: medium: precondition might fail
 display.adb:188:32: info: initialization of "C28b.Text" proved
-display.adb:235:49: medium: "Interfac.Output" might not be written
+display.adb:235:49: medium: "Interfac.Output" constituent of "Output" might not be written
 display.adb:264:18: warning: statement has no effect
 display.adb:266:36: info: initialization of "TheMsg.Top.Len" proved
 display.adb:267:35: info: initialization of "TheMsg.Bottom.Len" proved
@@ -1709,10 +1709,10 @@ display.adb:280:57: info: initialization of "C35b.Len" proved
 display.adb:280:57: info: initialization of "C35b.Text" proved
 display.adb:285:17: info: initialization of "Written" proved
 display.adb:286:21: medium: precondition might fail
-display.adb:305:42: info: initialization of "CurrentDisplay" proved
-display.adb:306:42: info: initialization of "CurrentlyDisplayed" proved
-display.adb:307:42: info: initialization of "Sizes.Bottom" proved
-display.adb:307:42: info: initialization of "Sizes.Top" proved
+display.adb:305:42: info: initialization of "CurrentDisplay" constituent of "State" proved
+display.adb:306:42: info: initialization of "CurrentlyDisplayed" constituent of "State" proved
+display.adb:307:42: info: initialization of "Sizes.Bottom" constituent of "State" proved
+display.adb:307:42: info: initialization of "Sizes.Top" constituent of "State" proved
 display.ads:65:24: info: length check proved
 door.adb:88:22: info: postcondition proved
 door.adb:113:23: info: initialization of "LocalAlarm" proved
@@ -1728,15 +1728,15 @@ door.adb:212:16: info: initialization of "NewDoor" proved
 door.adb:218:21: medium: precondition might fail
 door.adb:219:54: info: initialization of "ID" proved
 door.adb:225:28: info: initialization of "NewDoor" proved
-door.adb:249:41: info: initialization of "AlarmTimeout.Day" proved
-door.adb:249:41: info: initialization of "AlarmTimeout.MilliSec" proved
-door.adb:249:41: info: initialization of "AlarmTimeout.Month" proved
-door.adb:249:41: info: initialization of "AlarmTimeout.Year" proved
+door.adb:249:41: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
+door.adb:249:41: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
+door.adb:249:41: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
+door.adb:249:41: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
 door.adb:277:30: info: refined post proved
-door.adb:280:57: info: initialization of "AlarmTimeout.Day" proved
-door.adb:280:57: info: initialization of "AlarmTimeout.MilliSec" proved
-door.adb:280:57: info: initialization of "AlarmTimeout.Month" proved
-door.adb:280:57: info: initialization of "AlarmTimeout.Year" proved
+door.adb:280:57: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
+door.adb:280:57: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
+door.adb:280:57: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
+door.adb:280:57: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
 door.adb:298:32: info: initialization of "LatchTimeout.Day" proved
 door.adb:298:32: info: initialization of "LatchTimeout.MilliSec" proved
 door.adb:298:32: info: initialization of "LatchTimeout.Month" proved
@@ -1745,35 +1745,35 @@ door.adb:301:44: info: initialization of "LatchTimeout.Day" proved
 door.adb:301:44: info: initialization of "LatchTimeout.MilliSec" proved
 door.adb:301:44: info: initialization of "LatchTimeout.Month" proved
 door.adb:301:44: info: initialization of "LatchTimeout.Year" proved
-door.adb:306:07: info: initialization of "AlarmTimeout.Day" proved
-door.adb:306:07: info: initialization of "AlarmTimeout.MilliSec" proved
-door.adb:306:07: info: initialization of "AlarmTimeout.Month" proved
-door.adb:306:07: info: initialization of "AlarmTimeout.Year" proved
-door.adb:322:41: info: initialization of "AlarmTimeout.Day" proved
-door.adb:322:41: info: initialization of "AlarmTimeout.MilliSec" proved
-door.adb:322:41: info: initialization of "AlarmTimeout.Month" proved
-door.adb:322:41: info: initialization of "AlarmTimeout.Year" proved
+door.adb:306:07: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
+door.adb:306:07: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
+door.adb:306:07: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
+door.adb:306:07: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
+door.adb:322:41: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
+door.adb:322:41: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
+door.adb:322:41: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
+door.adb:322:41: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
 door.adb:347:30: medium: refined postcondition might fail
-door.adb:350:57: info: initialization of "AlarmTimeout.Day" proved
-door.adb:350:57: info: initialization of "AlarmTimeout.MilliSec" proved
-door.adb:350:57: info: initialization of "AlarmTimeout.Month" proved
-door.adb:350:57: info: initialization of "AlarmTimeout.Year" proved
-door.adb:360:07: info: initialization of "AlarmTimeout.Day" proved
-door.adb:360:07: info: initialization of "AlarmTimeout.MilliSec" proved
-door.adb:360:07: info: initialization of "AlarmTimeout.Month" proved
-door.adb:360:07: info: initialization of "AlarmTimeout.Year" proved
-door.adb:372:42: info: initialization of "AlarmTimeout.Day" proved
-door.adb:372:42: info: initialization of "AlarmTimeout.MilliSec" proved
-door.adb:372:42: info: initialization of "AlarmTimeout.Month" proved
-door.adb:372:42: info: initialization of "AlarmTimeout.Year" proved
-door.adb:373:42: info: initialization of "CurrentDoor" proved
-door.adb:374:42: info: initialization of "DoorAlarm" proved
-door.adb:413:42: info: initialization of "AlarmTimeout.Day" proved
-door.adb:413:42: info: initialization of "AlarmTimeout.MilliSec" proved
-door.adb:413:42: info: initialization of "AlarmTimeout.Month" proved
-door.adb:413:42: info: initialization of "AlarmTimeout.Year" proved
-door.adb:414:42: info: initialization of "CurrentDoor" proved
-door.adb:415:42: info: initialization of "DoorAlarm" proved
+door.adb:350:57: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
+door.adb:350:57: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
+door.adb:350:57: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
+door.adb:350:57: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
+door.adb:360:07: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
+door.adb:360:07: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
+door.adb:360:07: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
+door.adb:360:07: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
+door.adb:372:42: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
+door.adb:372:42: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
+door.adb:372:42: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
+door.adb:372:42: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
+door.adb:373:42: info: initialization of "CurrentDoor" constituent of "State" proved
+door.adb:374:42: info: initialization of "DoorAlarm" constituent of "State" proved
+door.adb:413:42: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
+door.adb:413:42: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
+door.adb:413:42: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
+door.adb:413:42: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
+door.adb:414:42: info: initialization of "CurrentDoor" constituent of "State" proved
+door.adb:415:42: info: initialization of "DoorAlarm" constituent of "State" proved
 door.adb:416:47: info: initialization of "Latch.State" proved
 door.ads:47:13: info: initialization of "Alarm_Timeout.Day" proved
 door.ads:47:13: info: initialization of "Alarm_Timeout.MilliSec" proved
@@ -1784,15 +1784,15 @@ door.ads:72:13: info: initialization of "TheDoorAlarm" proved
 door.ads:87:20: info: initialization of "SystemFault" proved
 door.ads:116:22: info: postcondition proved
 door.ads:169:22: info: postcondition proved
-door.ads:172:48: info: initialization of "AlarmTimeout.Day" proved
-door.ads:172:48: info: initialization of "AlarmTimeout.MilliSec" proved
-door.ads:172:48: info: initialization of "AlarmTimeout.Month" proved
-door.ads:172:48: info: initialization of "AlarmTimeout.Year" proved
+door.ads:172:48: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
+door.ads:172:48: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
+door.ads:172:48: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
+door.ads:172:48: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
 door.ads:213:22: info: postcondition proved
-door.ads:216:48: info: initialization of "AlarmTimeout.Day" proved
-door.ads:216:48: info: initialization of "AlarmTimeout.MilliSec" proved
-door.ads:216:48: info: initialization of "AlarmTimeout.Month" proved
-door.ads:216:48: info: initialization of "AlarmTimeout.Year" proved
+door.ads:216:48: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
+door.ads:216:48: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
+door.ads:216:48: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
+door.ads:216:48: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
 doorapi.adb:25:13: info: initialization of "GetDoorStateRaw" proved
 doorapi.adb:33:29: medium: length check might fail
 doorapi.adb:33:29: warning: assuming "Overwrite" has no effect on global items
@@ -1816,25 +1816,25 @@ enclave.adb:113:14: info: initialization of "Result" proved
 enclave.adb:128:13: info: initialization of "AdminTokenHasExpired" proved
 enclave.adb:147:13: info: initialization of "AdminHasDeparted" proved
 enclave.adb:189:22: info: postcondition proved
-enclave.adb:226:33: info: initialization of "Status" proved
+enclave.adb:226:33: info: initialization of "Status" constituent of "State" proved
 enclave.adb:250:22: info: postcondition proved
-enclave.adb:250:23: info: initialization of "Status" proved
+enclave.adb:250:23: info: initialization of "Status" constituent of "State" proved
 enclave.adb:267:10: info: initialization of "DataOK" proved
 enclave.adb:274:18: medium: precondition might fail
 enclave.adb:286:18: medium: precondition might fail
 enclave.adb:290:28: info: initialization of "Description" proved
 enclave.adb:329:22: info: postcondition proved
-enclave.adb:382:33: info: initialization of "Status" proved
-enclave.adb:394:22: info: initialization of "Status" proved
+enclave.adb:382:33: info: initialization of "Status" constituent of "State" proved
+enclave.adb:394:22: info: initialization of "Status" constituent of "State" proved
 enclave.adb:394:22: info: postcondition proved
 enclave.adb:396:07: info: assertion proved
-enclave.adb:396:29: info: initialization of "Status" proved
+enclave.adb:396:29: info: initialization of "Status" constituent of "State" proved
 enclave.adb:399:15: medium: precondition might fail
-enclave.adb:438:33: info: initialization of "Status" proved
+enclave.adb:438:33: info: initialization of "Status" constituent of "State" proved
 enclave.adb:481:18: medium: precondition might fail
 enclave.adb:487:19: medium: precondition might fail
 enclave.adb:490:06: medium: postcondition might fail
-enclave.adb:490:07: info: initialization of "Status" proved
+enclave.adb:490:07: info: initialization of "Status" constituent of "State" proved
 enclave.adb:504:18: medium: precondition might fail
 enclave.adb:510:19: medium: precondition might fail
 enclave.adb:528:18: medium: precondition might fail
@@ -1843,8 +1843,8 @@ enclave.adb:537:21: info: precondition proved
 enclave.adb:547:48: info: precondition proved
 enclave.adb:553:21: info: precondition proved
 enclave.adb:557:31: info: initialization of "Description" proved
-enclave.adb:582:33: info: initialization of "Status" proved
-enclave.adb:597:23: info: initialization of "Status" proved
+enclave.adb:582:33: info: initialization of "Status" constituent of "State" proved
+enclave.adb:597:23: info: initialization of "Status" constituent of "State" proved
 enclave.adb:597:23: info: postcondition proved
 enclave.adb:601:15: medium: precondition might fail
 enclave.adb:636:39: medium: "Floppy.Output" might not be written
@@ -1859,8 +1859,8 @@ enclave.adb:741:42: medium: "Floppy.Output" might not be written
 enclave.adb:766:25: info: postcondition proved
 enclave.adb:774:21: medium: precondition might fail
 enclave.adb:780:37: info: initialization of "TheLog" proved
-enclave.adb:806:36: info: initialization of "Status" proved
-enclave.adb:831:26: info: initialization of "Status" proved
+enclave.adb:806:36: info: initialization of "Status" constituent of "State" proved
+enclave.adb:831:26: info: initialization of "Status" constituent of "State" proved
 enclave.adb:831:26: info: postcondition proved
 enclave.adb:844:16: info: initialization of "WriteOK" proved
 enclave.adb:846:24: medium: precondition might fail
@@ -1874,11 +1874,11 @@ enclave.adb:945:06: info: postcondition proved
 enclave.adb:956:18: info: precondition proved
 enclave.adb:990:13: info: initialization of "ConfigDataOK" proved
 enclave.adb:997:15: info: precondition proved
-enclave.adb:1020:33: info: initialization of "Status" proved
+enclave.adb:1020:33: info: initialization of "Status" constituent of "State" proved
 enclave.adb:1048:11: medium: precondition might fail
 enclave.adb:1057:18: medium: precondition might fail
 enclave.adb:1063:19: medium: precondition might fail
-enclave.adb:1072:06: info: initialization of "Status" proved
+enclave.adb:1072:06: info: initialization of "Status" constituent of "State" proved
 enclave.adb:1072:06: info: postcondition proved
 enclave.adb:1094:18: medium: precondition might fail
 enclave.adb:1100:19: medium: precondition might fail
@@ -1907,9 +1907,9 @@ enclave.adb:1470:13: info: precondition proved
 enclave.adb:1473:13: info: precondition proved
 enclave.adb:1476:13: info: precondition proved
 enclave.adb:1479:13: info: precondition proved
-enclave.adb:1504:41: info: initialization of "Status" proved
+enclave.adb:1504:41: info: initialization of "Status" constituent of "State" proved
 enclave.adb:1506:30: info: refined post proved
-enclave.adb:1507:37: info: initialization of "Status" proved
+enclave.adb:1507:37: info: initialization of "Status" constituent of "State" proved
 enclave.adb:1552:16: info: initialization of "AdminActivityInProgress" proved
 enclave.adb:1614:31: info: refined post proved
 enclave.adb:1621:39: info: range check proved
@@ -1964,7 +1964,7 @@ enclave.ads:82:13: info: initialization of "statusIsEnclaveQuiescent" proved
 enclave.ads:86:13: info: initialization of "statusIsShutdown" proved
 enclave.ads:100:13: info: initialization of "EnrolmentIsInProgress" proved
 enclave.ads:117:22: info: postcondition proved
-enclave.ads:117:56: info: initialization of "Status" proved
+enclave.ads:117:56: info: initialization of "Status" constituent of "State" proved
 enclave.ads:131:13: info: initialization of "AdminMustLogout" proved
 enclave.ads:146:13: info: initialization of "CurrentAdminActivityPossible" proved
 enclave.ads:159:13: info: initialization of "HasShutdown" proved
@@ -2263,15 +2263,15 @@ keystore.adb:479:29: info: initialization of "ActualCount" proved
 keystore.adb:482:10: info: initialization of "ActualCount" proved
 keystore.adb:485:18: medium: precondition might fail
 keystore.adb:494:27: info: initialization of "Handles" proved
-keystore.adb:513:41: info: initialization of "ThisTISInfo.IsPresent" proved
-keystore.adb:513:41: info: initialization of "ThisTISInfo.Owner.ID" proved
-keystore.adb:513:41: info: initialization of "ThisTISInfo.Owner.Name" proved
-keystore.adb:513:41: info: initialization of "ThisTISInfo.Owner.NameLength" proved
+keystore.adb:513:41: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
+keystore.adb:513:41: info: initialization of "ThisTISInfo.Owner.ID" constituent of "State" proved
+keystore.adb:513:41: info: initialization of "ThisTISInfo.Owner.Name" constituent of "State" proved
+keystore.adb:513:41: info: initialization of "ThisTISInfo.Owner.NameLength" constituent of "State" proved
 keystore.adb:536:19: info: initialization of "RetVal" proved
 keystore.adb:538:18: medium: precondition might fail
 keystore.adb:542:32: info: initialization of "C103b" proved
 keystore.adb:548:33: info: initialization of "ThePrivateKeyH" proved
-keystore.adb:550:10: info: initialization of "ThisTISInfo.IsPresent" proved
+keystore.adb:550:10: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
 keystore.adb:551:52: info: initialization of "ThePrivateKeyH" proved
 keystore.adb:552:52: info: initialization of "ThePrivateKey.AttrMask" proved
 keystore.adb:552:52: info: initialization of "ThePrivateKey.IsPublic" proved
@@ -2320,10 +2320,10 @@ keystore.adb:833:10: info: initialization of "Added" proved
 keystore.adb:842:19: info: initialization of "RetVal" proved
 keystore.adb:843:18: medium: precondition might fail
 keystore.adb:847:33: info: initialization of "C141b" proved
-keystore.adb:863:41: info: initialization of "ThisTISInfo.IsPresent" proved
-keystore.adb:863:41: info: initialization of "ThisTISInfo.Owner.ID" proved
-keystore.adb:863:41: info: initialization of "ThisTISInfo.Owner.Name" proved
-keystore.adb:863:41: info: initialization of "ThisTISInfo.Owner.NameLength" proved
+keystore.adb:863:41: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
+keystore.adb:863:41: info: initialization of "ThisTISInfo.Owner.ID" constituent of "State" proved
+keystore.adb:863:41: info: initialization of "ThisTISInfo.Owner.Name" constituent of "State" proved
+keystore.adb:863:41: info: initialization of "ThisTISInfo.Owner.NameLength" constituent of "State" proved
 keystore.ads:74:40: info: initialization of "IsPresent" proved
 keystore.ads:100:13: info: initialization of "PrivateKeyPresent" proved
 keystore.ads:112:13: info: initialization of "IssuerIsThisTIS" proved
@@ -2338,39 +2338,39 @@ keystore.ads:202:22: info: initialization of "Added" proved
 keystore.ads:227:22: info: postcondition proved
 keystore.ads:227:23: info: initialization of "Added" proved
 keystore.ads:245:22: info: postcondition proved
-keystore.ads:245:26: info: initialization of "ThisTISInfo.IsPresent" proved
-keystore.ads:245:26: info: initialization of "ThisTISInfo.Owner.ID" proved
-keystore.ads:245:26: info: initialization of "ThisTISInfo.Owner.Name" proved
-keystore.ads:245:26: info: initialization of "ThisTISInfo.Owner.NameLength" proved
-latch.adb:51:42: info: initialization of "CurrentLatch" proved
-latch.adb:52:42: info: initialization of "LatchTimeout.Day" proved
-latch.adb:52:42: info: initialization of "LatchTimeout.MilliSec" proved
-latch.adb:52:42: info: initialization of "LatchTimeout.Month" proved
-latch.adb:52:42: info: initialization of "LatchTimeout.Year" proved
+keystore.ads:245:26: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
+keystore.ads:245:26: info: initialization of "ThisTISInfo.Owner.ID" constituent of "State" proved
+keystore.ads:245:26: info: initialization of "ThisTISInfo.Owner.Name" constituent of "State" proved
+keystore.ads:245:26: info: initialization of "ThisTISInfo.Owner.NameLength" constituent of "State" proved
+latch.adb:51:42: info: initialization of "CurrentLatch" constituent of "State" proved
+latch.adb:52:42: info: initialization of "LatchTimeout.Day" constituent of "State" proved
+latch.adb:52:42: info: initialization of "LatchTimeout.MilliSec" constituent of "State" proved
+latch.adb:52:42: info: initialization of "LatchTimeout.Month" constituent of "State" proved
+latch.adb:52:42: info: initialization of "LatchTimeout.Year" constituent of "State" proved
 latch.adb:96:30: info: refined post proved
 latch.adb:112:26: info: initialization of "LocalLatch" proved
 latch.adb:113:18: medium: precondition might fail
 latch.adb:114:32: info: initialization of "ID" proved
 latch.adb:121:23: info: initialization of "LocalLatch" proved
-latch.adb:136:49: info: initialization of "Interfac.Output" proved
+latch.adb:136:49: info: initialization of "Interfac.Output" constituent of "Output" proved
 latch.adb:147:30: info: refined post proved
 latch.adb:147:62: info: initialization of "SystemFault" proved
 latch.adb:156:10: info: initialization of "SystemFault" proved
 latch.adb:158:18: medium: precondition might fail
-latch.adb:176:41: info: initialization of "LatchTimeout.Day" proved
-latch.adb:176:41: info: initialization of "LatchTimeout.MilliSec" proved
-latch.adb:176:41: info: initialization of "LatchTimeout.Month" proved
-latch.adb:176:41: info: initialization of "LatchTimeout.Year" proved
-latch.adb:178:30: info: initialization of "LatchTimeout.Day" proved
-latch.adb:178:30: info: initialization of "LatchTimeout.MilliSec" proved
-latch.adb:178:30: info: initialization of "LatchTimeout.Month" proved
-latch.adb:178:30: info: initialization of "LatchTimeout.Year" proved
+latch.adb:176:41: info: initialization of "LatchTimeout.Day" constituent of "State" proved
+latch.adb:176:41: info: initialization of "LatchTimeout.MilliSec" constituent of "State" proved
+latch.adb:176:41: info: initialization of "LatchTimeout.Month" constituent of "State" proved
+latch.adb:176:41: info: initialization of "LatchTimeout.Year" constituent of "State" proved
+latch.adb:178:30: info: initialization of "LatchTimeout.Day" constituent of "State" proved
+latch.adb:178:30: info: initialization of "LatchTimeout.MilliSec" constituent of "State" proved
+latch.adb:178:30: info: initialization of "LatchTimeout.Month" constituent of "State" proved
+latch.adb:178:30: info: initialization of "LatchTimeout.Year" constituent of "State" proved
 latch.adb:178:30: info: refined post proved
-latch.adb:192:42: info: initialization of "CurrentLatch" proved
-latch.adb:193:42: info: initialization of "LatchTimeout.Day" proved
-latch.adb:193:42: info: initialization of "LatchTimeout.MilliSec" proved
-latch.adb:193:42: info: initialization of "LatchTimeout.Month" proved
-latch.adb:193:42: info: initialization of "LatchTimeout.Year" proved
+latch.adb:192:42: info: initialization of "CurrentLatch" constituent of "State" proved
+latch.adb:193:42: info: initialization of "LatchTimeout.Day" constituent of "State" proved
+latch.adb:193:42: info: initialization of "LatchTimeout.MilliSec" constituent of "State" proved
+latch.adb:193:42: info: initialization of "LatchTimeout.Month" constituent of "State" proved
+latch.adb:193:42: info: initialization of "LatchTimeout.Year" constituent of "State" proved
 latch.ads:38:13: info: initialization of "Current_Latch" proved
 latch.ads:42:13: info: initialization of "Latch_Timeout.Day" proved
 latch.ads:42:13: info: initialization of "Latch_Timeout.MilliSec" proved
@@ -2383,10 +2383,10 @@ latch.ads:106:22: info: postcondition proved
 latch.ads:120:28: info: initialization of "SystemFault" proved
 latch.ads:135:22: info: postcondition proved
 latch.ads:135:50: info: initialization of "SystemFault" proved
-latch.ads:150:22: info: initialization of "LatchTimeout.Day" proved
-latch.ads:150:22: info: initialization of "LatchTimeout.MilliSec" proved
-latch.ads:150:22: info: initialization of "LatchTimeout.Month" proved
-latch.ads:150:22: info: initialization of "LatchTimeout.Year" proved
+latch.ads:150:22: info: initialization of "LatchTimeout.Day" constituent of "State" proved
+latch.ads:150:22: info: initialization of "LatchTimeout.MilliSec" constituent of "State" proved
+latch.ads:150:22: info: initialization of "LatchTimeout.Month" constituent of "State" proved
+latch.ads:150:22: info: initialization of "LatchTimeout.Year" constituent of "State" proved
 latch.ads:150:22: info: postcondition proved
 latchapi.adb:95:37: medium: length check might fail
 latchapi.adb:95:37: warning: assuming "Overwrite" has no effect on global items
@@ -2430,16 +2430,16 @@ screen.adb:125:07: info: length check proved
 screen.adb:126:07: info: length check proved
 screen.adb:127:07: info: length check proved
 screen.adb:156:28: info: initialization of "OK" proved
-screen.adb:158:41: medium: "Interfac.Output" might not be written
+screen.adb:158:41: medium: "Interfac.Output" constituent of "Output" might not be written
 screen.adb:191:07: info: initialization of "OK" proved
-screen.adb:192:41: medium: "Interfac.Output" might not be written
+screen.adb:192:41: medium: "Interfac.Output" constituent of "Output" might not be written
 screen.adb:219:16: info: initialization of "ConsoleOK" proved
 screen.adb:237:16: info: initialization of "OK" proved
 screen.adb:237:22: info: initialization of "ConsoleOK" proved
 screen.adb:252:31: info: initialization of "OK" proved
-screen.adb:253:41: info: initialization of "Interfac.Output" proved
+screen.adb:253:41: info: initialization of "Interfac.Output" constituent of "Output" proved
 screen.adb:276:33: info: initialization of "OK" proved
-screen.adb:277:41: info: initialization of "Interfac.Output" proved
+screen.adb:277:41: info: initialization of "Interfac.Output" constituent of "Output" proved
 screen.adb:302:13: info: initialization of "OK" proved
 screen.adb:302:20: info: initialization of "ConsoleOK" proved
 screen.adb:308:13: info: initialization of "OK" proved
@@ -2465,7 +2465,7 @@ screen.adb:362:20: info: initialization of "ConsoleOK" proved
 screen.adb:368:13: info: initialization of "OK" proved
 screen.adb:368:20: info: initialization of "ConsoleOK" proved
 screen.adb:383:31: info: initialization of "OK" proved
-screen.adb:385:41: medium: "Interfac.Output" might not be written
+screen.adb:385:41: medium: "Interfac.Output" constituent of "Output" might not be written
 screen.adb:434:39: info: length check proved, in call inlined at screen.adb:591
 screen.adb:434:39: info: length check proved, in call inlined at screen.adb:597
 screen.adb:434:39: info: length check proved, in call inlined at screen.adb:603
@@ -2659,9 +2659,9 @@ screen.adb:669:32: info: initialization of "NewConfig.TokenRemove" proved
 screen.adb:669:32: info: initialization of "NewConfig.WorkEnd" proved
 screen.adb:669:32: info: initialization of "NewConfig.WorkStart" proved
 screen.adb:689:26: info: initialization of "OK" proved
-screen.adb:690:41: info: initialization of "Interfac.Output" proved
+screen.adb:690:41: info: initialization of "Interfac.Output" constituent of "Output" proved
 screen.adb:712:32: info: initialization of "OK" proved
-screen.adb:713:41: info: initialization of "Interfac.Output" proved
+screen.adb:713:41: info: initialization of "Interfac.Output" constituent of "Output" proved
 screen.adb:728:13: info: initialization of "OK" proved
 screen.adb:728:20: info: initialization of "ConsoleOK" proved
 screen.adb:734:13: info: initialization of "OK" proved
@@ -2669,7 +2669,7 @@ screen.adb:734:20: info: initialization of "ConsoleOK" proved
 screen.adb:740:13: info: initialization of "OK" proved
 screen.adb:740:20: info: initialization of "ConsoleOK" proved
 screen.adb:755:30: info: initialization of "OK" proved
-screen.adb:757:41: medium: "Interfac.Output" might not be written
+screen.adb:757:41: medium: "Interfac.Output" constituent of "Output" might not be written
 screen.adb:781:50: info: initialization of "FailBio" proved, in call inlined at screen.adb:824
 screen.adb:781:50: info: initialization of "FailEntry" proved, in call inlined at screen.adb:812
 screen.adb:781:50: info: initialization of "SuccessBio" proved, in call inlined at screen.adb:818
@@ -2715,13 +2715,13 @@ screen.adb:824:35: info: initialization of "C269b" proved
 screen.adb:828:16: info: initialization of "OK" proved
 screen.adb:828:23: info: initialization of "ConsoleOK" proved
 screen.adb:845:32: info: initialization of "OK" proved
-screen.adb:847:41: info: initialization of "Interfac.Output" proved
+screen.adb:847:41: info: initialization of "Interfac.Output" constituent of "Output" proved
 screen.adb:854:48: info: initialization of "TheTime.Day" proved
 screen.adb:854:48: info: initialization of "TheTime.MilliSec" proved
 screen.adb:854:48: info: initialization of "TheTime.Month" proved
 screen.adb:854:48: info: initialization of "TheTime.Year" proved
 screen.adb:888:18: medium: precondition might fail
-screen.adb:912:49: info: initialization of "Interfac.Output" proved
+screen.adb:912:49: info: initialization of "Interfac.Output" constituent of "Output" proved
 screen.adb:964:19: info: initialization of "WriteOK" proved
 screen.adb:964:31: info: initialization of "ScreenOK" proved
 screen.adb:970:19: info: initialization of "WriteOK" proved
@@ -2744,34 +2744,34 @@ screen.adb:1012:37: info: initialization of "ScreenOK" proved
 screen.adb:1016:36: info: initialization of "ShouldDisplayConfig" proved
 screen.adb:1018:14: info: initialization of "ScreenOK" proved
 screen.adb:1020:18: medium: precondition might fail
-screen.adb:1045:42: info: initialization of "CurrentConfig.Data.AlarmSilent" proved
-screen.adb:1045:42: info: initialization of "CurrentConfig.Data.AlarmThreshold" proved
-screen.adb:1045:42: info: initialization of "CurrentConfig.Data.AuthDuration" proved
-screen.adb:1045:42: info: initialization of "CurrentConfig.Data.Clearance" proved
-screen.adb:1045:42: info: initialization of "CurrentConfig.Data.FingerWait" proved
-screen.adb:1045:42: info: initialization of "CurrentConfig.Data.LatchUnlock" proved
-screen.adb:1045:42: info: initialization of "CurrentConfig.Data.MaxFAR" proved
-screen.adb:1045:42: info: initialization of "CurrentConfig.Data.MinEntry" proved
-screen.adb:1045:42: info: initialization of "CurrentConfig.Data.MinPreservedLog" proved
-screen.adb:1045:42: info: initialization of "CurrentConfig.Data.Policy" proved
-screen.adb:1045:42: info: initialization of "CurrentConfig.Data.TokenRemove" proved
-screen.adb:1045:42: info: initialization of "CurrentConfig.Data.WorkEnd" proved
-screen.adb:1045:42: info: initialization of "CurrentConfig.Data.WorkStart" proved
-screen.adb:1045:42: info: initialization of "CurrentConfig.IsDisplayed" proved
-screen.adb:1046:42: info: initialization of "CurrentDoorAlarm" proved
-screen.adb:1047:42: info: initialization of "CurrentLogAlarm" proved
-screen.adb:1048:42: info: initialization of "CurrentMsg" proved
-screen.adb:1049:42: info: initialization of "CurrentStats.Data" proved
-screen.adb:1049:42: info: initialization of "CurrentStats.IsDisplayed" proved
-screen.adb:1050:50: info: initialization of "Interfac.Output" proved
-screen.adb:1051:42: info: initialization of "TheMsg" proved
+screen.adb:1045:42: info: initialization of "CurrentConfig.Data.AlarmSilent" constituent of "State" proved
+screen.adb:1045:42: info: initialization of "CurrentConfig.Data.AlarmThreshold" constituent of "State" proved
+screen.adb:1045:42: info: initialization of "CurrentConfig.Data.AuthDuration" constituent of "State" proved
+screen.adb:1045:42: info: initialization of "CurrentConfig.Data.Clearance" constituent of "State" proved
+screen.adb:1045:42: info: initialization of "CurrentConfig.Data.FingerWait" constituent of "State" proved
+screen.adb:1045:42: info: initialization of "CurrentConfig.Data.LatchUnlock" constituent of "State" proved
+screen.adb:1045:42: info: initialization of "CurrentConfig.Data.MaxFAR" constituent of "State" proved
+screen.adb:1045:42: info: initialization of "CurrentConfig.Data.MinEntry" constituent of "State" proved
+screen.adb:1045:42: info: initialization of "CurrentConfig.Data.MinPreservedLog" constituent of "State" proved
+screen.adb:1045:42: info: initialization of "CurrentConfig.Data.Policy" constituent of "State" proved
+screen.adb:1045:42: info: initialization of "CurrentConfig.Data.TokenRemove" constituent of "State" proved
+screen.adb:1045:42: info: initialization of "CurrentConfig.Data.WorkEnd" constituent of "State" proved
+screen.adb:1045:42: info: initialization of "CurrentConfig.Data.WorkStart" constituent of "State" proved
+screen.adb:1045:42: info: initialization of "CurrentConfig.IsDisplayed" constituent of "State" proved
+screen.adb:1046:42: info: initialization of "CurrentDoorAlarm" constituent of "State" proved
+screen.adb:1047:42: info: initialization of "CurrentLogAlarm" constituent of "State" proved
+screen.adb:1048:42: info: initialization of "CurrentMsg" constituent of "State" proved
+screen.adb:1049:42: info: initialization of "CurrentStats.Data" constituent of "State" proved
+screen.adb:1049:42: info: initialization of "CurrentStats.IsDisplayed" constituent of "State" proved
+screen.adb:1050:50: info: initialization of "Interfac.Output" constituent of "Output" proved
+screen.adb:1051:42: info: initialization of "TheMsg" constituent of "State" proved
 screen.adb:1077:52: info: initialization of "LocalStats" proved
-screen.adb:1087:07: info: initialization of "CurrentDoorAlarm" proved
-screen.adb:1087:07: info: initialization of "CurrentLogAlarm" proved
+screen.adb:1087:07: info: initialization of "CurrentDoorAlarm" constituent of "State" proved
+screen.adb:1087:07: info: initialization of "CurrentLogAlarm" constituent of "State" proved
 screen.adb:1090:19: info: initialization of "ScreenOK" proved
 screen.adb:1090:32: info: initialization of "WriteOK" proved
-screen.adb:1099:07: info: initialization of "CurrentMsg" proved
-screen.adb:1099:07: info: initialization of "TheMsg" proved
+screen.adb:1099:07: info: initialization of "CurrentMsg" constituent of "State" proved
+screen.adb:1099:07: info: initialization of "TheMsg" constituent of "State" proved
 screen.adb:1100:19: info: initialization of "ScreenOK" proved
 screen.adb:1100:32: info: initialization of "WriteOK" proved
 screen.adb:1102:14: info: initialization of "ScreenOK" proved
@@ -2987,8 +2987,8 @@ tokenreader.adb:182:23: medium: range check might fail
 tokenreader.adb:188:07: info: initialization of "Result" proved
 tokenreader.adb:188:07: info: initialization of "TheCodeName" proved
 tokenreader.adb:189:14: info: initialization of "Result" proved
-tokenreader.adb:207:41: info: initialization of "ReaderStatus" proved
-tokenreader.adb:251:36: info: initialization of "ReaderStatus" proved
+tokenreader.adb:207:41: info: initialization of "ReaderStatus" constituent of "State" proved
+tokenreader.adb:251:36: info: initialization of "ReaderStatus" constituent of "State" proved
 tokenreader.adb:268:44: info: initialization of "NumberReaders" proved
 tokenreader.adb:271:10: info: initialization of "ResponseCode" proved
 tokenreader.adb:273:13: info: initialization of "NumberReaders" proved
@@ -3007,11 +3007,11 @@ tokenreader.adb:286:49: info: initialization of "NumberReaders" proved
 tokenreader.adb:286:49: info: range check proved
 tokenreader.adb:287:51: info: initialization of "NumberReaders" proved
 tokenreader.adb:289:47: info: initialization of "Readers" proved
-tokenreader.adb:290:22: info: initialization of "ReaderStatus" proved
+tokenreader.adb:290:22: info: initialization of "ReaderStatus" constituent of "State" proved
 tokenreader.adb:291:49: info: initialization of "Readers" proved
-tokenreader.adb:297:16: info: initialization of "ReaderStatus" proved
+tokenreader.adb:297:16: info: initialization of "ReaderStatus" constituent of "State" proved
 tokenreader.adb:299:24: medium: precondition might fail
-tokenreader.adb:308:16: info: initialization of "ReaderStatus" proved
+tokenreader.adb:308:16: info: initialization of "ReaderStatus" constituent of "State" proved
 tokenreader.adb:310:24: medium: precondition might fail
 tokenreader.adb:321:21: medium: precondition might fail
 tokenreader.adb:332:18: medium: precondition might fail
@@ -3037,7 +3037,7 @@ tokenreader.adb:694:34: info: initialization of "ResponseCode" proved
 tokenreader.adb:801:19: info: initialization of "StatusOK" proved
 tokenreader.adb:801:32: info: initialization of "Exists" proved
 tokenreader.adb:802:16: info: initialization of "ResponseCode" proved
-tokenreader.adb:821:49: info: initialization of "Interfac.ReaderOutput" proved
+tokenreader.adb:821:49: info: initialization of "Interfac.ReaderOutput" constituent of "Output" proved
 tokenreader.adb:838:20: info: initialization of "StatusOK" proved
 tokenreader.adb:839:16: info: initialization of "ResponseCode" proved
 tokenreader.ads:105:13: info: initialization of "TheTokenPresence" proved
@@ -3058,19 +3058,19 @@ updates.ads:102:39: info: initialization of "Latch.Output" proved
 updates.ads:103:40: info: initialization of "Screen.Output" proved
 updates.ads:143:22: info: postcondition proved
 updates.ads:146:25: info: initialization of "SystemFault" proved
-userentry.adb:56:04: info: initialization of "Status" proved
-userentry.adb:58:04: info: initialization of "FingerTimeout.Day" proved
-userentry.adb:58:04: info: initialization of "FingerTimeout.MilliSec" proved
-userentry.adb:58:04: info: initialization of "FingerTimeout.Month" proved
-userentry.adb:58:04: info: initialization of "FingerTimeout.Year" proved
-userentry.adb:59:04: info: initialization of "TokenRemovalTimeout.Day" proved
-userentry.adb:59:04: info: initialization of "TokenRemovalTimeout.MilliSec" proved
-userentry.adb:59:04: info: initialization of "TokenRemovalTimeout.Month" proved
-userentry.adb:59:04: info: initialization of "TokenRemovalTimeout.Year" proved
+userentry.adb:56:04: info: initialization of "Status" constituent of "State" proved
+userentry.adb:58:04: info: initialization of "FingerTimeout.Day" constituent of "State" proved
+userentry.adb:58:04: info: initialization of "FingerTimeout.MilliSec" constituent of "State" proved
+userentry.adb:58:04: info: initialization of "FingerTimeout.Month" constituent of "State" proved
+userentry.adb:58:04: info: initialization of "FingerTimeout.Year" constituent of "State" proved
+userentry.adb:59:04: info: initialization of "TokenRemovalTimeout.Day" constituent of "State" proved
+userentry.adb:59:04: info: initialization of "TokenRemovalTimeout.MilliSec" constituent of "State" proved
+userentry.adb:59:04: info: initialization of "TokenRemovalTimeout.Month" constituent of "State" proved
+userentry.adb:59:04: info: initialization of "TokenRemovalTimeout.Year" constituent of "State" proved
 userentry.adb:77:13: info: initialization of "UserHasDeparted" proved
-userentry.adb:97:33: info: initialization of "Status" proved
+userentry.adb:97:33: info: initialization of "Status" constituent of "State" proved
 userentry.adb:116:15: medium: precondition might fail
-userentry.adb:159:33: info: initialization of "Status" proved
+userentry.adb:159:33: info: initialization of "Status" constituent of "State" proved
 userentry.adb:216:13: info: initialization of "AuthCertOK" proved
 userentry.adb:220:21: medium: precondition might fail
 userentry.adb:229:21: info: precondition proved
@@ -3083,7 +3083,7 @@ userentry.adb:291:34: info: initialization of "Description" proved
 userentry.adb:361:21: medium: precondition might fail
 userentry.adb:375:16: info: initialization of "FingerPresence" proved
 userentry.adb:379:24: medium: precondition might fail
-userentry.adb:419:33: info: initialization of "Status" proved
+userentry.adb:419:33: info: initialization of "Status" constituent of "State" proved
 userentry.adb:456:16: info: initialization of "AchievedFARDescription" proved
 userentry.adb:476:15: medium: range check might fail
 userentry.adb:482:45: info: length check proved
@@ -3107,19 +3107,19 @@ userentry.adb:533:21: medium: precondition might fail
 userentry.adb:537:32: info: initialization of "AchievedFAR" proved
 userentry.adb:548:21: medium: precondition might fail
 userentry.adb:552:32: info: initialization of "AchievedFAR" proved
-userentry.adb:588:34: info: initialization of "Status" proved
+userentry.adb:588:34: info: initialization of "Status" constituent of "State" proved
 userentry.adb:589:43: medium: "UserToken.Output" might not be written
 userentry.adb:651:19: info: precondition proved
 userentry.adb:658:13: info: initialization of "UpdateOK" proved
 userentry.adb:663:13: info: initialization of "UpdateOK" proved
 userentry.adb:667:21: medium: precondition might fail
 userentry.adb:682:21: medium: precondition might fail
-userentry.adb:715:33: info: initialization of "Status" proved
+userentry.adb:715:33: info: initialization of "Status" constituent of "State" proved
 userentry.adb:753:21: medium: precondition might fail
 userentry.adb:772:21: medium: precondition might fail
 userentry.adb:859:13: medium: postcondition might fail
 userentry.adb:887:21: medium: precondition might fail
-userentry.adb:923:33: info: initialization of "Status" proved
+userentry.adb:923:33: info: initialization of "Status" constituent of "State" proved
 userentry.adb:941:15: medium: precondition might fail
 userentry.adb:1027:47: info: initialization of "NewMsg" proved
 userentry.adb:1045:50: medium: "UserToken.Output" might not be written
@@ -3129,45 +3129,45 @@ userentry.adb:1199:12: info: initialization of "LocalStatus" proved
 userentry.adb:1203:13: info: precondition proved
 userentry.adb:1207:13: info: precondition proved
 userentry.adb:1211:13: info: precondition proved
-userentry.adb:1228:41: info: initialization of "Status" proved
+userentry.adb:1228:41: info: initialization of "Status" constituent of "State" proved
 userentry.ads:74:13: info: initialization of "CurrentActivityPossible" proved
 userentry.ads:88:13: info: initialization of "CanStart" proved
 userentry.ads:101:13: info: initialization of "InProgress" proved
 userentry.ads:264:13: info: postcondition proved
-usertoken.adb:118:33: info: initialization of "IDCert.Contents" proved
-usertoken.adb:118:33: info: initialization of "IDCert.IDStatus" proved
-usertoken.adb:118:33: info: initialization of "IDCert.Valid" proved
+usertoken.adb:118:33: info: initialization of "IDCert.Contents" constituent of "State" proved
+usertoken.adb:118:33: info: initialization of "IDCert.IDStatus" constituent of "State" proved
+usertoken.adb:118:33: info: initialization of "IDCert.Valid" constituent of "State" proved
 usertoken.adb:128:43: info: initialization of "IDCertContents" proved
-usertoken.adb:143:42: info: initialization of "AuthCert.Contents" proved
-usertoken.adb:143:42: info: initialization of "AuthCert.Valid" proved
-usertoken.adb:144:42: info: initialization of "IandACert.Contents" proved
-usertoken.adb:144:42: info: initialization of "IandACert.Valid" proved
-usertoken.adb:145:42: info: initialization of "IDCert.Contents" proved
-usertoken.adb:145:42: info: initialization of "IDCert.IDStatus" proved
-usertoken.adb:145:42: info: initialization of "IDCert.Valid" proved
-usertoken.adb:146:42: info: initialization of "PrivCert.Contents" proved
-usertoken.adb:146:42: info: initialization of "PrivCert.Valid" proved
-usertoken.adb:147:42: info: initialization of "TokenID" proved
-usertoken.adb:148:42: info: initialization of "TokenPresence" proved
-usertoken.adb:149:42: info: initialization of "TokenTry" proved
+usertoken.adb:143:42: info: initialization of "AuthCert.Contents" constituent of "State" proved
+usertoken.adb:143:42: info: initialization of "AuthCert.Valid" constituent of "State" proved
+usertoken.adb:144:42: info: initialization of "IandACert.Contents" constituent of "State" proved
+usertoken.adb:144:42: info: initialization of "IandACert.Valid" constituent of "State" proved
+usertoken.adb:145:42: info: initialization of "IDCert.Contents" constituent of "State" proved
+usertoken.adb:145:42: info: initialization of "IDCert.IDStatus" constituent of "State" proved
+usertoken.adb:145:42: info: initialization of "IDCert.Valid" constituent of "State" proved
+usertoken.adb:146:42: info: initialization of "PrivCert.Contents" constituent of "State" proved
+usertoken.adb:146:42: info: initialization of "PrivCert.Valid" constituent of "State" proved
+usertoken.adb:147:42: info: initialization of "TokenID" constituent of "State" proved
+usertoken.adb:148:42: info: initialization of "TokenPresence" constituent of "State" proved
+usertoken.adb:149:42: info: initialization of "TokenTry" constituent of "State" proved
 usertoken.adb:170:47: info: initialization of "AuthCertContents" proved
 usertoken.adb:174:47: info: initialization of "PrivCertContents" proved
 usertoken.adb:178:49: info: initialization of "IandACertContents" proved
-usertoken.adb:191:42: info: initialization of "AuthCert.Contents" proved
-usertoken.adb:191:42: info: initialization of "AuthCert.Valid" proved
-usertoken.adb:192:42: info: initialization of "IandACert.Contents" proved
-usertoken.adb:192:42: info: initialization of "IandACert.Valid" proved
-usertoken.adb:193:42: info: initialization of "IDCert.Contents" proved
-usertoken.adb:193:42: info: initialization of "IDCert.IDStatus" proved
-usertoken.adb:193:42: info: initialization of "IDCert.Valid" proved
-usertoken.adb:194:50: info: initialization of "Interfac.State" proved
-usertoken.adb:195:42: info: initialization of "PrivCert.Contents" proved
-usertoken.adb:195:42: info: initialization of "PrivCert.Valid" proved
-usertoken.adb:196:42: info: initialization of "TokenID" proved
-usertoken.adb:197:42: info: initialization of "TokenPresence" proved
-usertoken.adb:198:42: info: initialization of "TokenTry" proved
-usertoken.adb:233:41: info: initialization of "TokenPresence" proved
-usertoken.adb:270:49: medium: "Interfac.Output" might not be written
+usertoken.adb:191:42: info: initialization of "AuthCert.Contents" constituent of "State" proved
+usertoken.adb:191:42: info: initialization of "AuthCert.Valid" constituent of "State" proved
+usertoken.adb:192:42: info: initialization of "IandACert.Contents" constituent of "State" proved
+usertoken.adb:192:42: info: initialization of "IandACert.Valid" constituent of "State" proved
+usertoken.adb:193:42: info: initialization of "IDCert.Contents" constituent of "State" proved
+usertoken.adb:193:42: info: initialization of "IDCert.IDStatus" constituent of "State" proved
+usertoken.adb:193:42: info: initialization of "IDCert.Valid" constituent of "State" proved
+usertoken.adb:194:50: info: initialization of "Interfac.State" constituent of "State" proved
+usertoken.adb:195:42: info: initialization of "PrivCert.Contents" constituent of "State" proved
+usertoken.adb:195:42: info: initialization of "PrivCert.Valid" constituent of "State" proved
+usertoken.adb:196:42: info: initialization of "TokenID" constituent of "State" proved
+usertoken.adb:197:42: info: initialization of "TokenPresence" constituent of "State" proved
+usertoken.adb:198:42: info: initialization of "TokenTry" constituent of "State" proved
+usertoken.adb:233:41: info: initialization of "TokenPresence" constituent of "State" proved
+usertoken.adb:270:49: medium: "Interfac.Output" constituent of "Output" might not be written
 usertoken.adb:299:38: info: initialization of "RawCert" proved
 usertoken.adb:304:11: info: initialization of "SignedOK" proved
 usertoken.adb:305:43: info: initialization of "RawCert" proved
@@ -3175,15 +3175,15 @@ usertoken.adb:305:52: info: initialization of "Signature.SigData" proved
 usertoken.adb:305:52: info: initialization of "Signature.SigLength" proved
 usertoken.adb:308:25: info: initialization of "SignedCert" proved
 usertoken.adb:350:14: info: initialization of "Result" proved
-usertoken.adb:376:42: info: initialization of "AuthCert.Contents" proved
-usertoken.adb:376:42: info: initialization of "AuthCert.Valid" proved
-usertoken.adb:377:42: info: initialization of "IDCert.Contents" proved
-usertoken.adb:377:42: info: initialization of "IDCert.IDStatus" proved
-usertoken.adb:377:42: info: initialization of "IDCert.Valid" proved
-usertoken.adb:378:42: info: initialization of "TokenTry" proved
-usertoken.adb:427:36: info: initialization of "IDCert.Contents" proved
-usertoken.adb:427:36: info: initialization of "IDCert.IDStatus" proved
-usertoken.adb:427:36: info: initialization of "IDCert.Valid" proved
+usertoken.adb:376:42: info: initialization of "AuthCert.Contents" constituent of "State" proved
+usertoken.adb:376:42: info: initialization of "AuthCert.Valid" constituent of "State" proved
+usertoken.adb:377:42: info: initialization of "IDCert.Contents" constituent of "State" proved
+usertoken.adb:377:42: info: initialization of "IDCert.IDStatus" constituent of "State" proved
+usertoken.adb:377:42: info: initialization of "IDCert.Valid" constituent of "State" proved
+usertoken.adb:378:42: info: initialization of "TokenTry" constituent of "State" proved
+usertoken.adb:427:36: info: initialization of "IDCert.Contents" constituent of "State" proved
+usertoken.adb:427:36: info: initialization of "IDCert.IDStatus" constituent of "State" proved
+usertoken.adb:427:36: info: initialization of "IDCert.Valid" constituent of "State" proved
 usertoken.adb:466:13: info: initialization of "CertFound" proved
 usertoken.adb:469:28: info: initialization of "RawCert" proved
 usertoken.adb:473:16: info: initialization of "ExtractOK" proved
@@ -3211,19 +3211,19 @@ usertoken.adb:591:37: info: initialization of "ExtractOK" proved
 usertoken.adb:592:25: info: initialization of "BaseIDMatches" proved
 usertoken.adb:592:43: info: initialization of "Verified" proved
 usertoken.adb:592:56: info: initialization of "Current" proved
-usertoken.adb:607:10: info: initialization of "TokenTry" proved
+usertoken.adb:607:10: info: initialization of "TokenTry" constituent of "State" proved
 usertoken.adb:612:10: info: initialization of "AuthCertContents" proved
-usertoken.adb:612:10: info: initialization of "IDCert.Contents" proved
-usertoken.adb:612:10: info: initialization of "IDCert.IDStatus" proved
-usertoken.adb:612:10: info: initialization of "IDCert.Valid" proved
+usertoken.adb:612:10: info: initialization of "IDCert.Contents" constituent of "State" proved
+usertoken.adb:612:10: info: initialization of "IDCert.IDStatus" constituent of "State" proved
+usertoken.adb:612:10: info: initialization of "IDCert.Valid" constituent of "State" proved
 usertoken.adb:619:22: info: initialization of "AuthValid" proved
 usertoken.adb:620:22: info: initialization of "AuthCertContents" proved
 usertoken.adb:622:21: info: initialization of "AuthValid" proved
-usertoken.adb:622:35: info: initialization of "IDCert.Valid" proved
-usertoken.adb:643:42: info: initialization of "IandACert.Contents" proved
-usertoken.adb:643:42: info: initialization of "IandACert.Valid" proved
-usertoken.adb:644:42: info: initialization of "PrivCert.Contents" proved
-usertoken.adb:644:42: info: initialization of "PrivCert.Valid" proved
+usertoken.adb:622:35: info: initialization of "IDCert.Valid" constituent of "State" proved
+usertoken.adb:643:42: info: initialization of "IandACert.Contents" constituent of "State" proved
+usertoken.adb:643:42: info: initialization of "IandACert.Valid" constituent of "State" proved
+usertoken.adb:644:42: info: initialization of "PrivCert.Contents" constituent of "State" proved
+usertoken.adb:644:42: info: initialization of "PrivCert.Valid" constituent of "State" proved
 usertoken.adb:693:37: info: initialization of "Result" proved, in call inlined at usertoken.adb:737
 usertoken.adb:693:37: info: initialization of "Result" proved, in call inlined at usertoken.adb:740
 usertoken.adb:693:37: info: initialization of "Result" proved, in call inlined at usertoken.adb:743
@@ -3350,8 +3350,8 @@ usertoken.adb:991:22: info: initialization of "PrivValid" proved
 usertoken.adb:992:22: info: initialization of "PrivCertContents" proved
 usertoken.adb:995:22: info: initialization of "IandAValid" proved
 usertoken.adb:996:22: info: initialization of "IandACertContents" proved
-usertoken.adb:1014:41: info: initialization of "AuthCert.Contents" proved
-usertoken.adb:1014:41: info: initialization of "AuthCert.Valid" proved
+usertoken.adb:1014:41: info: initialization of "AuthCert.Contents" constituent of "State" proved
+usertoken.adb:1014:41: info: initialization of "AuthCert.Valid" constituent of "State" proved
 usertoken.adb:1042:10: info: initialization of "Clearance.Class" proved
 usertoken.adb:1059:45: info: precondition proved
 usertoken.adb:1064:18: medium: precondition might fail

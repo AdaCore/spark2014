@@ -1,7 +1,7 @@
 outer.adb:7:10: info: initialization of "Used" proved
 outer.adb:9:19: info: initialization of "F" proved
-outer.adb:15:10: info: initialization of "Nested_Var" proved
-outer.adb:16:10: info: initialization of "Nested_Var2" proved
+outer.adb:15:10: info: initialization of "Nested_Var" constituent of "State" proved
+outer.adb:16:10: info: initialization of "Nested_Var2" constituent of "State" proved
 outer.adb:18:51: medium: overflow check might fail
 outer.adb:18:65: medium: overflow check might fail
 outer.adb:22:18: info: initialization of "Nested.State" proved

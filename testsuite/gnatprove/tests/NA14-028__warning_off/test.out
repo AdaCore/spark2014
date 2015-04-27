@@ -1,7 +1,7 @@
-foo.adb:8:04: info: initialization of "Value" proved
+foo.adb:8:04: info: initialization of "Value" constituent of "State" proved
 foo.adb:15:25: info: refined post proved
-foo.adb:25:37: info: initialization of "Value" proved
-foo.adb:27:26: info: initialization of "Value" proved
+foo.adb:25:37: info: initialization of "Value" constituent of "State" proved
+foo.adb:27:26: info: initialization of "Value" constituent of "State" proved
 foo.adb:27:26: info: refined post proved
 foo.ads:8:13: info: initialization of "Get_Data" proved
 main.adb:6:28: info: initialization of "Foo.State" proved

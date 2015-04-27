@@ -1,5 +1,5 @@
-test.adb:4:04: info: initialization of "Foo" proved
-test.adb:4:09: info: initialization of "Bar" proved
+test.adb:4:04: info: initialization of "Foo" constituent of "State" proved
+test.adb:4:09: info: initialization of "Bar" constituent of "State" proved
 test.adb:12:12: info: initialization of "Tmp" proved
 test.adb:20:29: info: refined post proved
 test.adb:24:19: medium: overflow check might fail

@@ -1,6 +1,6 @@
-stack_14.adb:10:04: info: initialization of "S" proved
+stack_14.adb:10:04: info: initialization of "S" constituent of "State" proved
 stack_14.adb:10:18: info: length check proved
-stack_14.adb:11:04: info: initialization of "Pointer" proved
+stack_14.adb:11:04: info: initialization of "Pointer" constituent of "State" proved
 stack_14.adb:18:26: medium: range check might fail
 stack_14.adb:19:10: info: index check proved
 stack_14.adb:27:15: medium: array index check might fail

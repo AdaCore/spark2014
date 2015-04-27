@@ -66,17 +66,18 @@ package Flow_Error_Messages is
    --  project.
 
    procedure Error_Msg_Flow
-     (E          : Entity_Id;
-      Msg        : String;
-      Kind       : Msg_Kind;
-      N          : Node_Id;
-      Suppressed : out Boolean;
-      F1         : Flow_Id       := Null_Flow_Id;
-      F2         : Flow_Id       := Null_Flow_Id;
-      F3         : Flow_Id       := Null_Flow_Id;
-      Tag        : Flow_Tag_Kind := Empty_Tag;
-      SRM_Ref    : String        := "";
-      Tracefile  : String        := "")
+     (E            : Entity_Id;
+      Msg          : String;
+      Kind         : Msg_Kind;
+      N            : Node_Id;
+      Suppressed   : out Boolean;
+      F1           : Flow_Id       := Null_Flow_Id;
+      F2           : Flow_Id       := Null_Flow_Id;
+      F3           : Flow_Id       := Null_Flow_Id;
+      Tag          : Flow_Tag_Kind := Empty_Tag;
+      SRM_Ref      : String        := "";
+      Tracefile    : String        := "";
+      Continuation : Boolean       := False)
    with Pre => (if Present (F2) then Present (F1)) and
                (if Present (F3) then Present (F2));
    --  Output a message attached to the given node with a substitution
@@ -89,22 +90,24 @@ package Flow_Error_Messages is
    --    with or without double quotes respectively.
    --  * Use # to insert both the quoted name of the entity, and a line
    --    reference.
+   --  * Use @ to insert the sloc of the entity.
    --
    --  SRM_Ref should be a pointer into the SPARK RM. For example:
    --     "1.2.3(4)"
 
    procedure Error_Msg_Flow
-     (FA        : in out Flow_Analysis_Graphs;
-      Msg       : String;
-      Kind      : Msg_Kind;
-      N         : Node_Id;
-      F1        : Flow_Id               := Null_Flow_Id;
-      F2        : Flow_Id               := Null_Flow_Id;
-      F3        : Flow_Id               := Null_Flow_Id;
-      Tag       : Flow_Tag_Kind         := Empty_Tag;
-      SRM_Ref   : String                := "";
-      Tracefile : String                := "";
-      Vertex    : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex)
+     (FA           : in out Flow_Analysis_Graphs;
+      Msg          : String;
+      Kind         : Msg_Kind;
+      N            : Node_Id;
+      F1           : Flow_Id               := Null_Flow_Id;
+      F2           : Flow_Id               := Null_Flow_Id;
+      F3           : Flow_Id               := Null_Flow_Id;
+      Tag          : Flow_Tag_Kind         := Empty_Tag;
+      SRM_Ref      : String                := "";
+      Tracefile    : String                := "";
+      Vertex       : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
+      Continuation : Boolean               := False)
    with Pre => (if Present (F2) then Present (F1)) and
                (if Present (F3) then Present (F2));
    --  As above, but:

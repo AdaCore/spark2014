@@ -2202,6 +2202,31 @@ package body Flow.Analysis is
                           when Unknown => Medium_Check_Kind,
                           when Err     => High_Check_Kind),
             Vertex    => Vertex);
+
+         if Is_Constituent (Var)
+           and then Kind in Unknown | Err
+           and then FA.Kind in E_Package | E_Package_Body
+         then
+            Msg := To_Unbounded_String
+              ("initialization of & is specified @");
+            Error_Msg_Flow
+              (FA           => FA,
+               Tracefile    => To_String (Tracefile),
+               Msg          => To_String (Msg),
+               N            => N,
+               F1           =>
+                 Direct_Mapping_Id (
+                   Encapsulating_State (Var.Node)),
+               F2           => Direct_Mapping_Id (FA.Initializes_N),
+               Tag          => Uninitialized,
+               Kind         => (case Kind is
+                                   when Init    => Info_Kind,
+                                   when Unknown => Medium_Check_Kind,
+                                   when Err     => High_Check_Kind),
+               Vertex       => Vertex,
+               Continuation => True);
+         end if;
+
          if Kind /= Init then
             Mark_Definition_Free_Path
               (From      => FA.Start_Vertex,

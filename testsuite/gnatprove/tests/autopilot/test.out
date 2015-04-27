@@ -1,4 +1,4 @@
-ap-altitude-pitch-rate.adb:13:04: info: initialization of "Pitch_History_C" proved
+ap-altitude-pitch-rate.adb:13:04: info: initialization of "Pitch_History_C" constituent of "Pitch_History" proved
 ap-altitude-pitch-rate.adb:13:51: info: length check proved
 ap-altitude-pitch-rate.adb:22:10: info: loop invariant initialization proved, in call inlined at ap-altitude-pitch-rate.adb:58
 ap-altitude-pitch-rate.adb:22:10: info: loop invariant preservation proved, in call inlined at ap-altitude-pitch-rate.adb:58
@@ -54,8 +54,8 @@ ap-altitude-pitch.adb:74:53: info: division check proved, in call inlined at ap-
 ap-altitude-pitch.adb:77:14: info: initialization of "Target_Angle" proved, in call inlined at ap-altitude-pitch.adb:104
 ap-altitude-pitch.adb:86:49: info: initialization of "Surfaces.Elevators" proved
 ap-altitude-pitch.adb:106:31: info: initialization of "Elevator_Movement" proved
-ap-altitude.adb:7:04: info: initialization of "Target_Altitude" proved
-ap-altitude.adb:8:04: info: initialization of "Switch_Pressed_Before" proved
+ap-altitude.adb:7:04: info: initialization of "Target_Altitude" constituent of "State" proved
+ap-altitude.adb:8:04: info: initialization of "Switch_Pressed_Before" constituent of "State" proved
 ap-altitude.adb:15:49: medium: "Surfaces.Elevators" might not be written
 ap-heading-roll.adb:28:10: info: initialization of "Offset" proved, in call inlined at ap-heading-roll.adb:48, in call inlined at ap-heading-roll.adb:94
 ap-heading-roll.adb:30:13: info: initialization of "Offset" proved, in call inlined at ap-heading-roll.adb:48, in call inlined at ap-heading-roll.adb:94

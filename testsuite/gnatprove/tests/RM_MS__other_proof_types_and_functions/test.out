@@ -1,6 +1,6 @@
 stack.adb:16:36: info: length check proved
-stack.adb:18:04: info: initialization of "My_Stack.Pointer" proved
-stack.adb:18:04: info: initialization of "My_Stack.S" proved
+stack.adb:18:04: info: initialization of "My_Stack.Pointer" constituent of "State" proved
+stack.adb:18:04: info: initialization of "My_Stack.S" constituent of "State" proved
 stack.adb:26:32: info: range check proved
 stack.adb:34:44: info: range check proved
 stack.adb:35:26: info: index check proved
@@ -14,8 +14,8 @@ stack.adb:53:44: info: initialization of "Temp" proved
 stack.adb:56:16: info: initialization of "Initial_Stack.Pointer" proved
 stack.adb:56:16: info: initialization of "Initial_Stack.S" proved
 stack.ads:5:08: info: initial condition proved
-stack.ads:5:29: info: initialization of "My_Stack.Pointer" proved
-stack.ads:5:29: info: initialization of "My_Stack.S" proved
+stack.ads:5:29: info: initialization of "My_Stack.Pointer" constituent of "State" proved
+stack.ads:5:29: info: initialization of "My_Stack.S" constituent of "State" proved
 stack.ads:18:13: info: initialization of "Max_Stack_Size" proved
 stack.ads:22:13: info: initialization of "Count" proved
 stack.ads:28:13: info: initialization of "Stack_Entry" proved
@@ -34,8 +34,8 @@ stack.ads:71:21: info: precondition proved
 stack.ads:71:40: info: range check proved
 stack.ads:71:47: info: precondition proved
 stack_external_prover.adb:16:36: info: length check proved
-stack_external_prover.adb:18:04: info: initialization of "My_Stack.Pointer" proved
-stack_external_prover.adb:18:04: info: initialization of "My_Stack.S" proved
+stack_external_prover.adb:18:04: info: initialization of "My_Stack.Pointer" constituent of "State" proved
+stack_external_prover.adb:18:04: info: initialization of "My_Stack.S" constituent of "State" proved
 stack_external_prover.adb:24:44: medium: range check might fail
 stack_external_prover.adb:25:26: info: index check proved
 stack_external_prover.adb:32:32: medium: array index check might fail
@@ -48,8 +48,8 @@ stack_external_prover.adb:43:44: info: initialization of "Temp" proved
 stack_external_prover.adb:46:16: info: initialization of "Initial_Stack.Pointer" proved
 stack_external_prover.adb:46:16: info: initialization of "Initial_Stack.S" proved
 stack_external_prover.ads:5:08: medium: initial condition might fail
-stack_external_prover.ads:5:29: info: initialization of "My_Stack.Pointer" proved
-stack_external_prover.ads:5:29: info: initialization of "My_Stack.S" proved
+stack_external_prover.ads:5:29: info: initialization of "My_Stack.Pointer" constituent of "State" proved
+stack_external_prover.ads:5:29: info: initialization of "My_Stack.S" constituent of "State" proved
 stack_external_prover.ads:42:21: medium: postcondition might fail
 stack_external_prover.ads:42:39: medium: overflow check might fail
 stack_external_prover.ads:45:19: info: initialization of "X" proved
@@ -58,8 +58,8 @@ stack_external_prover.ads:53:21: medium: postcondition might fail
 stack_external_prover.ads:54:62: info: range check proved
 stack_external_prover.ads:55:40: medium: range check might fail
 stack_functional_spec.adb:6:36: info: length check proved
-stack_functional_spec.adb:20:04: info: initialization of "My_Stack.Pointer" proved
-stack_functional_spec.adb:20:04: info: initialization of "My_Stack.S" proved
+stack_functional_spec.adb:20:04: info: initialization of "My_Stack.Pointer" constituent of "State" proved
+stack_functional_spec.adb:20:04: info: initialization of "My_Stack.S" constituent of "State" proved
 stack_functional_spec.adb:32:25: info: range check proved
 stack_functional_spec.adb:38:44: info: range check proved
 stack_functional_spec.adb:39:26: info: index check proved
@@ -73,8 +73,8 @@ stack_functional_spec.adb:57:44: info: initialization of "Temp" proved
 stack_functional_spec.adb:60:16: info: initialization of "Initial_Stack.Pointer" proved
 stack_functional_spec.adb:60:16: info: initialization of "Initial_Stack.S" proved
 stack_functional_spec.ads:5:08: info: initial condition proved
-stack_functional_spec.ads:5:29: info: initialization of "My_Stack.Pointer" proved
-stack_functional_spec.ads:5:29: info: initialization of "My_Stack.S" proved
+stack_functional_spec.ads:5:29: info: initialization of "My_Stack.Pointer" constituent of "State" proved
+stack_functional_spec.ads:5:29: info: initialization of "My_Stack.S" constituent of "State" proved
 stack_functional_spec.ads:18:13: info: initialization of "State__2.Pointer" proved
 stack_functional_spec.ads:18:13: info: initialization of "State__2.S" proved
 stack_functional_spec.ads:21:13: info: initialization of "Max_Stack_Size" proved

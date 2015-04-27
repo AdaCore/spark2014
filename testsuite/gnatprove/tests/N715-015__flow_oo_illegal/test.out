@@ -41,9 +41,9 @@ illegal_1.ads:34:14: info: initialization of "G" proved
 
 
 gnatprove: error during flow analysis and proof
-root.adb:4:04: info: initialization of "Counter" proved
+root.adb:4:04: info: initialization of "Counter" constituent of "State" proved
 root.adb:11:29: info: overflow check proved
-root.adb:43:40: info: initialization of "Counter" proved
+root.adb:43:40: info: initialization of "Counter" constituent of "State" proved
 root.ads:14:13: info: initialization of "New_Object.X" proved
 root.ads:16:13: info: initialization of "New_Object__2.X" proved
 root.ads:18:13: info: initialization of "New_Object_From_State.X" proved

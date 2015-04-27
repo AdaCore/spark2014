@@ -446,14 +446,14 @@ sensfusion6_pack.ads:27:07: info: initialization of "Euler_Roll_Actual" proved
 sensfusion6_pack.ads:28:07: info: initialization of "Euler_Pitch_Actual" proved
 sensfusion6_pack.ads:29:07: info: initialization of "Euler_Yaw_Actual" proved
 sensfusion6_pack.ads:32:13: info: initialization of "SensFusion6_Get_AccZ_Without_Gravity" proved
-sensfusion6_pack.ads:40:04: info: initialization of "Is_Init" proved
-sensfusion6_pack.ads:42:04: info: initialization of "Q0" proved
-sensfusion6_pack.ads:44:04: info: initialization of "Q1" proved
-sensfusion6_pack.ads:46:04: info: initialization of "Q2" proved
-sensfusion6_pack.ads:49:04: info: initialization of "Q3" proved
-sensfusion6_pack.ads:70:04: info: initialization of "Two_Kp" proved
-sensfusion6_pack.ads:72:04: info: initialization of "Two_Ki" proved
-sensfusion6_pack.ads:76:04: info: initialization of "Integral_FBx" proved
-sensfusion6_pack.ads:78:04: info: initialization of "Integral_FBy" proved
-sensfusion6_pack.ads:80:04: info: initialization of "Integral_FBz" proved
-sensfusion6_pack.ads:86:04: info: initialization of "Beta" proved
+sensfusion6_pack.ads:40:04: info: initialization of "Is_Init" constituent of "SensFusion6_State" proved
+sensfusion6_pack.ads:42:04: info: initialization of "Q0" constituent of "SensFusion6_State" proved
+sensfusion6_pack.ads:44:04: info: initialization of "Q1" constituent of "SensFusion6_State" proved
+sensfusion6_pack.ads:46:04: info: initialization of "Q2" constituent of "SensFusion6_State" proved
+sensfusion6_pack.ads:49:04: info: initialization of "Q3" constituent of "SensFusion6_State" proved
+sensfusion6_pack.ads:70:04: info: initialization of "Two_Kp" constituent of "SensFusion6_State" proved
+sensfusion6_pack.ads:72:04: info: initialization of "Two_Ki" constituent of "SensFusion6_State" proved
+sensfusion6_pack.ads:76:04: info: initialization of "Integral_FBx" constituent of "SensFusion6_State" proved
+sensfusion6_pack.ads:78:04: info: initialization of "Integral_FBy" constituent of "SensFusion6_State" proved
+sensfusion6_pack.ads:80:04: info: initialization of "Integral_FBz" constituent of "SensFusion6_State" proved
+sensfusion6_pack.ads:86:04: info: initialization of "Beta" constituent of "SensFusion6_State" proved

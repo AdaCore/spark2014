@@ -1,12 +1,12 @@
-clock.adb:8:40: info: initialization of "Current_Time.Hours" proved
-clock.adb:8:40: info: initialization of "Current_Time.Minutes" proved
-clock.adb:8:40: info: initialization of "Current_Time.Seconds" proved
+clock.adb:8:40: info: initialization of "Current_Time.Hours" constituent of "State" proved
+clock.adb:8:40: info: initialization of "Current_Time.Minutes" constituent of "State" proved
+clock.adb:8:40: info: initialization of "Current_Time.Seconds" constituent of "State" proved
 clock.ads:7:13: info: initialization of "Get_Current_Time.Hours" proved
 clock.ads:7:13: info: initialization of "Get_Current_Time.Minutes" proved
 clock.ads:7:13: info: initialization of "Get_Current_Time.Seconds" proved
-clock.ads:13:16: info: initialization of "Current_Time.Hours" proved
-clock.ads:13:16: info: initialization of "Current_Time.Minutes" proved
-clock.ads:13:16: info: initialization of "Current_Time.Seconds" proved
+clock.ads:13:16: info: initialization of "Current_Time.Hours" constituent of "State" proved
+clock.ads:13:16: info: initialization of "Current_Time.Minutes" constituent of "State" proved
+clock.ads:13:16: info: initialization of "Current_Time.Seconds" constituent of "State" proved
 time.adb:7:28: info: initialization of "Result.Seconds" proved
 time.adb:8:17: info: initialization of "Result.Hours" proved
 time.adb:8:17: info: initialization of "Result.Minutes" proved

@@ -20,26 +20,26 @@ devtest.adb:23:38: info: initialization of "Y" proved
 devtest.adb:39:36: info: initialization of "X" proved
 devtest.adb:50:20: info: initialization of "X" proved
 tests_async_readers.adb:29:17: info: initialization of "Z" proved
-tests_async_readers.adb:30:33: info: initialization of "Vol" proved
-tests_async_readers.adb:37:14: info: initialization of "Vol" proved
+tests_async_readers.adb:30:33: info: initialization of "Vol" constituent of "State_With_Async_Readers" proved
+tests_async_readers.adb:37:14: info: initialization of "Vol" constituent of "State_With_Async_Readers" proved
 tests_async_readers.adb:41:25: info: initialization of "Z" proved
 tests_async_readers.adb:41:28: info: initialization of "W" proved
-tests_async_readers.adb:42:32: info: initialization of "Vol" proved
-tests_async_readers.adb:50:12: info: initialization of "Vol" proved
+tests_async_readers.adb:42:32: info: initialization of "Vol" constituent of "State_With_Async_Readers" proved
+tests_async_readers.adb:50:12: info: initialization of "Vol" constituent of "State_With_Async_Readers" proved
 tests_async_readers.adb:54:17: info: initialization of "Z" proved
 tests_async_readers.adb:54:20: info: initialization of "W" proved
 tests_async_readers.adb:75:25: info: initialization of "Z" proved
 tests_async_readers.adb:75:28: info: initialization of "W" proved
 tests_async_readers.adb:75:31: info: initialization of "V" proved
-tests_async_readers.adb:76:33: info: initialization of "Vol" proved
-tests_async_readers.adb:84:07: info: initialization of "Vol" proved
-tests_async_readers.adb:85:12: info: initialization of "Vol" proved
+tests_async_readers.adb:76:33: info: initialization of "Vol" constituent of "State_With_Async_Readers" proved
+tests_async_readers.adb:84:07: info: initialization of "Vol" constituent of "State_With_Async_Readers" proved
+tests_async_readers.adb:85:12: info: initialization of "Vol" constituent of "State_With_Async_Readers" proved
 tests_async_readers.adb:89:31: info: initialization of "Z" proved
 tests_async_readers.adb:89:34: info: initialization of "W" proved
 tests_async_readers.adb:89:37: info: initialization of "V" proved
-tests_async_readers.adb:90:34: info: initialization of "Vol" proved
-tests_async_readers.adb:99:12: info: initialization of "Vol" proved
-tests_async_readers.adb:101:12: info: initialization of "Vol" proved
+tests_async_readers.adb:90:34: info: initialization of "Vol" constituent of "State_With_Async_Readers" proved
+tests_async_readers.adb:99:12: info: initialization of "Vol" constituent of "State_With_Async_Readers" proved
+tests_async_readers.adb:101:12: info: initialization of "Vol" constituent of "State_With_Async_Readers" proved
 tests_async_readers.adb:104:22: info: initialization of "Z" proved
 tests_async_readers.adb:113:25: info: initialization of "X" proved
 tests_async_readers.adb:113:28: info: initialization of "Y" proved
@@ -59,13 +59,13 @@ tests_async_writers.adb:83:23: info: initialization of "X" proved
 tests_async_writers.adb:90:13: info: initialization of "X" proved
 tests_async_writers.adb:95:23: info: initialization of "X" proved
 tests_async_writers.adb:102:13: info: initialization of "X" proved
-tests_external_state.adb:12:04: info: initialization of "Vol_AR" proved
-tests_external_state.adb:16:04: info: initialization of "Vol_AR_EW" proved
-tests_external_state.adb:33:41: info: initialization of "Vol" proved
-tests_external_state.adb:51:41: info: initialization of "Vol_AR" proved
-tests_external_state.adb:69:41: info: initialization of "Vol_AR_EW" proved
-tests_external_state.adb:87:41: info: initialization of "Vol_AW" proved
-tests_external_state.adb:105:41: info: initialization of "Vol_AW_ER" proved
+tests_external_state.adb:12:04: info: initialization of "Vol_AR" constituent of "State_AR" proved
+tests_external_state.adb:16:04: info: initialization of "Vol_AR_EW" constituent of "State_AR_EW" proved
+tests_external_state.adb:33:41: info: initialization of "Vol" constituent of "State" proved
+tests_external_state.adb:51:41: info: initialization of "Vol_AR" constituent of "State_AR" proved
+tests_external_state.adb:69:41: info: initialization of "Vol_AR_EW" constituent of "State_AR_EW" proved
+tests_external_state.adb:87:41: info: initialization of "Vol_AW" constituent of "State_AW" proved
+tests_external_state.adb:105:41: info: initialization of "Vol_AW_ER" constituent of "State_AW_ER" proved
 tests_external_state.ads:20:19: info: initialization of "X" proved
 tests_external_state.ads:31:22: info: initialization of "X" proved
 tests_external_state.ads:42:25: info: initialization of "X" proved

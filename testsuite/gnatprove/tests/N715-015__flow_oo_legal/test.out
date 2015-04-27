@@ -1,5 +1,5 @@
-people.adb:4:04: info: initialization of "Today" proved
-people.adb:7:40: info: initialization of "Today" proved
+people.adb:4:04: info: initialization of "Today" constituent of "Date" proved
+people.adb:7:40: info: initialization of "Today" constituent of "Date" proved
 people.ads:15:13: info: initialization of "New_Person.Alive" proved
 people.ads:15:13: info: initialization of "New_Person.DOB" proved
 people.ads:15:13: info: initialization of "New_Person.Name" proved

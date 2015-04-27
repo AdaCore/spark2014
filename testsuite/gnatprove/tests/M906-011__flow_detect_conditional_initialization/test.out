@@ -4,21 +4,21 @@ uninitialized.adb:24:04: warning: analyzing unreferenced procedure "Init_Var_War
 uninitialized.adb:24:29: info: initialization of "X" proved
 uninitialized.adb:29:12: medium: "X" might not be initialized
 uninitialized.adb:29:14: info: overflow check proved
-uninitialized.adb:34:32: info: initialization of "Var" proved
-uninitialized.adb:40:17: high: "Var" is not initialized
+uninitialized.adb:34:32: info: initialization of "Var" constituent of "State" proved
+uninitialized.adb:40:17: high: "Var" constituent of "State" is not initialized
 uninitialized.adb:40:21: info: overflow check proved
-uninitialized.adb:46:32: medium: "Var" might not be initialized
+uninitialized.adb:46:32: medium: "Var" constituent of "State" might not be initialized
 uninitialized.adb:55:04: warning: analyzing unreferenced procedure "Init_Arr_Warn"
 uninitialized.adb:55:29: info: initialization of "An_Arr" proved
 uninitialized.adb:58:21: info: initialization of "An_Arr" proved
-uninitialized.adb:64:32: info: initialization of "Arr" proved
-uninitialized.adb:68:21: high: "Arr" is not initialized
+uninitialized.adb:64:32: info: initialization of "Arr" constituent of "State" proved
+uninitialized.adb:68:21: high: "Arr" constituent of "State" is not initialized
 uninitialized.adb:68:28: info: division check proved
 uninitialized.adb:68:28: medium: array index check might fail
-uninitialized.adb:74:32: info: initialization of "Rec.Arr" proved
-uninitialized.adb:74:32: info: initialization of "Rec.Boo" proved
-uninitialized.adb:80:22: medium: "Rec.Boo" might not be initialized
-uninitialized.adb:83:22: info: initialization of "Rec.Arr" proved
+uninitialized.adb:74:32: info: initialization of "Rec.Arr" constituent of "State" proved
+uninitialized.adb:74:32: info: initialization of "Rec.Boo" constituent of "State" proved
+uninitialized.adb:80:22: medium: "Rec.Boo" constituent of "State" might not be initialized
+uninitialized.adb:83:22: info: initialization of "Rec.Arr" constituent of "State" proved
 uninitialized.adb:88:04: warning: analyzing unreferenced procedure "Init_Record_Error"
 uninitialized.adb:88:33: info: initialization of "A_Rec.Arr" proved
 uninitialized.adb:88:33: info: initialization of "A_Rec.Boo" proved

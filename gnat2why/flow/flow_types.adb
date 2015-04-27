@@ -387,6 +387,25 @@ package body Flow_Types is
       end case;
    end Is_Abstract_State;
 
+   --------------------
+   -- Is_Constituent --
+   --------------------
+
+   function Is_Constituent (F : Flow_Id) return Boolean is
+   begin
+      case F.Kind is
+         when Direct_Mapping | Record_Field =>
+            return
+              Nkind (F.Node) in N_Entity
+              and then Ekind (F.Node) in E_Abstract_State |
+                                         E_Constant       |
+                                         E_Variable
+              and then Present (Encapsulating_State (F.Node));
+         when others =>
+            return False;
+      end case;
+   end Is_Constituent;
+
    ---------------------
    -- Magic_String_Id --
    ---------------------

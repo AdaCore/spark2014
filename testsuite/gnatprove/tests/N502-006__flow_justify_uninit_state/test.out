@@ -1,2 +1,3 @@
-foo.adb:13:41: info: initialization of "Length" proved
-foo.adb:13:49: low: unused global "Data" (SPARK RM 6.1.4(13))
+foo.adb:13:41: info: initialization of "Length" constituent of "State" proved
+foo.adb:13:49: high: "Data" constituent of "State" is not initialized
+foo.adb:13:49: low: unused global "Data" constituent of "State" (SPARK RM 6.1.4(13))

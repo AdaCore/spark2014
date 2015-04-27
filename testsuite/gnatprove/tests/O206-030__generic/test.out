@@ -18,61 +18,61 @@ gen_func_pragmas.ads:14:18: medium: incorrect dependency "Func_Inst_2r'Result =>
 gen_func_pragmas.ads:15:14: medium: incorrect dependency "Func_Inst_2r'Result => Inner", in instantiation at main.adb:20
 gen_pack.adb:9:20: low: unused global "External" (SPARK RM 6.1.4(13)), in instantiation at main.adb:24
 gen_pack.adb:10:16: low: unused global "Outer" (SPARK RM 6.1.4(13)), in instantiation at main.adb:24
-gen_pack.adb:11:16: low: unused global "Constit" (SPARK RM 6.1.4(13)), in instantiation at main.adb:24
+gen_pack.adb:11:16: low: unused global "Constit" constituent of "State" (SPARK RM 6.1.4(13)), in instantiation at main.adb:24
 gen_pack.adb:12:16: low: unused global "Pack_Inner" (SPARK RM 6.1.4(13)), in instantiation at main.adb:24
 gen_pack.adb:16:20: medium: incorrect dependency "Func'Result => External", in instantiation at main.adb:24
 gen_pack.adb:17:16: medium: incorrect dependency "Func'Result => Outer", in instantiation at main.adb:24
-gen_pack.adb:18:16: medium: incorrect dependency "Func'Result => Constit", in instantiation at main.adb:24
+gen_pack.adb:18:16: medium: incorrect dependency "Func'Result => Constit constituent of State", in instantiation at main.adb:24
 gen_pack.adb:19:16: medium: incorrect dependency "Func'Result => Pack_Inner", in instantiation at main.adb:24
 gen_pack.ads:7:26: warning: no procedure exists that can initialize abstract state "Pack_Inst_1.State", in instantiation at main.adb:24
 gen_pack.ads:9:13: info: initialization of "Func" proved, in instantiation at main.adb:24
-gen_pack.ads:17:11: medium: missing dependency "null => Constit", in instantiation at main.adb:24
+gen_pack.ads:17:11: medium: missing dependency "null => Constit constituent of State", in instantiation at main.adb:24
 gen_pack.ads:17:11: medium: missing dependency "null => External", in instantiation at main.adb:24
 gen_pack.ads:17:11: medium: missing dependency "null => Outer", in instantiation at main.adb:24
 gen_pack.ads:17:11: medium: missing dependency "null => Pack_Inner", in instantiation at main.adb:24
 gen_pack_gen.adb:9:20: low: unused global "External" (SPARK RM 6.1.4(13)), in instantiation at main.adb:33
 gen_pack_gen.adb:10:16: low: unused global "Outer" (SPARK RM 6.1.4(13)), in instantiation at main.adb:33
-gen_pack_gen.adb:11:16: low: unused global "Constit" (SPARK RM 6.1.4(13)), in instantiation at main.adb:33
+gen_pack_gen.adb:11:16: low: unused global "Constit" constituent of "State" (SPARK RM 6.1.4(13)), in instantiation at main.adb:33
 gen_pack_gen.adb:12:16: low: unused global "Pack_Inner" (SPARK RM 6.1.4(13)), in instantiation at main.adb:33
 gen_pack_gen.adb:13:16: low: unused global "Inner" (SPARK RM 6.1.4(13)), in instantiation at main.adb:33
 gen_pack_gen.adb:17:20: medium: incorrect dependency "Func_Inst_3r'Result => External", in instantiation at main.adb:33
 gen_pack_gen.adb:18:16: medium: incorrect dependency "Func_Inst_3r'Result => Outer", in instantiation at main.adb:33
-gen_pack_gen.adb:19:16: medium: incorrect dependency "Func_Inst_3r'Result => Constit", in instantiation at main.adb:33
+gen_pack_gen.adb:19:16: medium: incorrect dependency "Func_Inst_3r'Result => Constit constituent of State", in instantiation at main.adb:33
 gen_pack_gen.adb:20:16: medium: incorrect dependency "Func_Inst_3r'Result => Pack_Inner", in instantiation at main.adb:33
 gen_pack_gen.adb:21:16: medium: incorrect dependency "Func_Inst_3r'Result => Inner", in instantiation at main.adb:33
 gen_pack_gen.ads:7:26: warning: no procedure exists that can initialize abstract state "Pack_Inst_3.State", in instantiation at main.adb:32
-gen_pack_gen.ads:21:11: medium: missing dependency "null => Constit", in instantiation at main.adb:33
+gen_pack_gen.ads:21:11: medium: missing dependency "null => Constit constituent of State", in instantiation at main.adb:33
 gen_pack_gen.ads:21:11: medium: missing dependency "null => External", in instantiation at main.adb:33
 gen_pack_gen.ads:21:11: medium: missing dependency "null => Inner", in instantiation at main.adb:33
 gen_pack_gen.ads:21:11: medium: missing dependency "null => Outer", in instantiation at main.adb:33
 gen_pack_gen.ads:21:11: medium: missing dependency "null => Pack_Inner", in instantiation at main.adb:33
 gen_pack_gen_pragmas.adb:9:24: low: unused global "External" (SPARK RM 6.1.4(13)), in instantiation at main.adb:38
 gen_pack_gen_pragmas.adb:10:20: low: unused global "Outer" (SPARK RM 6.1.4(13)), in instantiation at main.adb:38
-gen_pack_gen_pragmas.adb:11:20: low: unused global "Constit" (SPARK RM 6.1.4(13)), in instantiation at main.adb:38
+gen_pack_gen_pragmas.adb:11:20: low: unused global "Constit" constituent of "State" (SPARK RM 6.1.4(13)), in instantiation at main.adb:38
 gen_pack_gen_pragmas.adb:12:20: low: unused global "Pack_Inner" (SPARK RM 6.1.4(13)), in instantiation at main.adb:38
 gen_pack_gen_pragmas.adb:13:20: low: unused global "Inner" (SPARK RM 6.1.4(13)), in instantiation at main.adb:38
 gen_pack_gen_pragmas.adb:17:24: medium: incorrect dependency "Func_Inst_4r'Result => External", in instantiation at main.adb:38
 gen_pack_gen_pragmas.adb:18:20: medium: incorrect dependency "Func_Inst_4r'Result => Outer", in instantiation at main.adb:38
-gen_pack_gen_pragmas.adb:19:20: medium: incorrect dependency "Func_Inst_4r'Result => Constit", in instantiation at main.adb:38
+gen_pack_gen_pragmas.adb:19:20: medium: incorrect dependency "Func_Inst_4r'Result => Constit constituent of State", in instantiation at main.adb:38
 gen_pack_gen_pragmas.adb:20:20: medium: incorrect dependency "Func_Inst_4r'Result => Pack_Inner", in instantiation at main.adb:38
 gen_pack_gen_pragmas.adb:21:20: medium: incorrect dependency "Func_Inst_4r'Result => Inner", in instantiation at main.adb:38
 gen_pack_gen_pragmas.ads:7:27: warning: no procedure exists that can initialize abstract state "Pack_Inst_4.State", in instantiation at main.adb:37
-gen_pack_gen_pragmas.ads:21:04: medium: missing dependency "null => Constit", in instantiation at main.adb:38
+gen_pack_gen_pragmas.ads:21:04: medium: missing dependency "null => Constit constituent of State", in instantiation at main.adb:38
 gen_pack_gen_pragmas.ads:21:04: medium: missing dependency "null => External", in instantiation at main.adb:38
 gen_pack_gen_pragmas.ads:21:04: medium: missing dependency "null => Inner", in instantiation at main.adb:38
 gen_pack_gen_pragmas.ads:21:04: medium: missing dependency "null => Outer", in instantiation at main.adb:38
 gen_pack_gen_pragmas.ads:21:04: medium: missing dependency "null => Pack_Inner", in instantiation at main.adb:38
 gen_pack_pragmas.adb:9:24: low: unused global "External" (SPARK RM 6.1.4(13)), in instantiation at main.adb:28
 gen_pack_pragmas.adb:10:20: low: unused global "Outer" (SPARK RM 6.1.4(13)), in instantiation at main.adb:28
-gen_pack_pragmas.adb:11:20: low: unused global "Constit" (SPARK RM 6.1.4(13)), in instantiation at main.adb:28
+gen_pack_pragmas.adb:11:20: low: unused global "Constit" constituent of "State" (SPARK RM 6.1.4(13)), in instantiation at main.adb:28
 gen_pack_pragmas.adb:12:20: low: unused global "Pack_Inner" (SPARK RM 6.1.4(13)), in instantiation at main.adb:28
 gen_pack_pragmas.adb:16:24: medium: incorrect dependency "Func'Result => External", in instantiation at main.adb:28
 gen_pack_pragmas.adb:17:20: medium: incorrect dependency "Func'Result => Outer", in instantiation at main.adb:28
-gen_pack_pragmas.adb:18:20: medium: incorrect dependency "Func'Result => Constit", in instantiation at main.adb:28
+gen_pack_pragmas.adb:18:20: medium: incorrect dependency "Func'Result => Constit constituent of State", in instantiation at main.adb:28
 gen_pack_pragmas.adb:19:20: medium: incorrect dependency "Func'Result => Pack_Inner", in instantiation at main.adb:28
 gen_pack_pragmas.ads:7:27: warning: no procedure exists that can initialize abstract state "Pack_Inst_2.State", in instantiation at main.adb:28
 gen_pack_pragmas.ads:9:13: info: initialization of "Func" proved, in instantiation at main.adb:28
-gen_pack_pragmas.ads:17:04: medium: missing dependency "null => Constit", in instantiation at main.adb:28
+gen_pack_pragmas.ads:17:04: medium: missing dependency "null => Constit constituent of State", in instantiation at main.adb:28
 gen_pack_pragmas.ads:17:04: medium: missing dependency "null => External", in instantiation at main.adb:28
 gen_pack_pragmas.ads:17:04: medium: missing dependency "null => Outer", in instantiation at main.adb:28
 gen_pack_pragmas.ads:17:04: medium: missing dependency "null => Pack_Inner", in instantiation at main.adb:28
@@ -93,30 +93,30 @@ main.adb:42:47: info: initialization of "Local" proved
 main.adb:46:13: info: initialization of "Func_Inst_7r" proved
 main.adb:46:55: info: initialization of "Local" proved
 main_refs.adb:5:13: info: initialization of "Func_Instr" proved
-pack_gen.adb:4:04: info: initialization of "Constit" proved
+pack_gen.adb:4:04: info: initialization of "Constit" constituent of "State" proved
 pack_gen.adb:9:20: low: unused global "External" (SPARK RM 6.1.4(13)), in instantiation at main.adb:42
-pack_gen.adb:10:16: low: unused global "Constit" (SPARK RM 6.1.4(13)), in instantiation at main.adb:42
+pack_gen.adb:10:16: low: unused global "Constit" constituent of "State" (SPARK RM 6.1.4(13)), in instantiation at main.adb:42
 pack_gen.adb:11:16: low: unused global "Pack_Inner" (SPARK RM 6.1.4(13)), in instantiation at main.adb:42
 pack_gen.adb:12:16: low: unused global "Inner" (SPARK RM 6.1.4(13)), in instantiation at main.adb:42
 pack_gen.adb:16:20: medium: incorrect dependency "Func_Inst_6r'Result => External", in instantiation at main.adb:42
-pack_gen.adb:17:16: medium: incorrect dependency "Func_Inst_6r'Result => Constit", in instantiation at main.adb:42
+pack_gen.adb:17:16: medium: incorrect dependency "Func_Inst_6r'Result => Constit constituent of State", in instantiation at main.adb:42
 pack_gen.adb:18:16: medium: incorrect dependency "Func_Inst_6r'Result => Pack_Inner", in instantiation at main.adb:42
 pack_gen.adb:19:16: medium: incorrect dependency "Func_Inst_6r'Result => Inner", in instantiation at main.adb:42
-pack_gen.ads:18:11: medium: missing dependency "null => Constit", in instantiation at main.adb:42
+pack_gen.ads:18:11: medium: missing dependency "null => Constit constituent of State", in instantiation at main.adb:42
 pack_gen.ads:18:11: medium: missing dependency "null => External", in instantiation at main.adb:42
 pack_gen.ads:18:11: medium: missing dependency "null => Inner", in instantiation at main.adb:42
 pack_gen.ads:18:11: medium: missing dependency "null => Pack_Inner", in instantiation at main.adb:42
 pack_gen.ads:26:04: info: initialization of "Pack_Inner" proved
-pack_gen_pragmas.adb:4:04: info: initialization of "Constit" proved
+pack_gen_pragmas.adb:4:04: info: initialization of "Constit" constituent of "State" proved
 pack_gen_pragmas.adb:9:24: low: unused global "External" (SPARK RM 6.1.4(13)), in instantiation at main.adb:46
-pack_gen_pragmas.adb:10:20: low: unused global "Constit" (SPARK RM 6.1.4(13)), in instantiation at main.adb:46
+pack_gen_pragmas.adb:10:20: low: unused global "Constit" constituent of "State" (SPARK RM 6.1.4(13)), in instantiation at main.adb:46
 pack_gen_pragmas.adb:11:20: low: unused global "Pack_Inner" (SPARK RM 6.1.4(13)), in instantiation at main.adb:46
 pack_gen_pragmas.adb:12:20: low: unused global "Inner" (SPARK RM 6.1.4(13)), in instantiation at main.adb:46
 pack_gen_pragmas.adb:16:24: medium: incorrect dependency "Func_Inst_7r'Result => External", in instantiation at main.adb:46
-pack_gen_pragmas.adb:17:20: medium: incorrect dependency "Func_Inst_7r'Result => Constit", in instantiation at main.adb:46
+pack_gen_pragmas.adb:17:20: medium: incorrect dependency "Func_Inst_7r'Result => Constit constituent of State", in instantiation at main.adb:46
 pack_gen_pragmas.adb:18:20: medium: incorrect dependency "Func_Inst_7r'Result => Pack_Inner", in instantiation at main.adb:46
 pack_gen_pragmas.adb:19:20: medium: incorrect dependency "Func_Inst_7r'Result => Inner", in instantiation at main.adb:46
-pack_gen_pragmas.ads:18:04: medium: missing dependency "null => Constit", in instantiation at main.adb:46
+pack_gen_pragmas.ads:18:04: medium: missing dependency "null => Constit constituent of State", in instantiation at main.adb:46
 pack_gen_pragmas.ads:18:04: medium: missing dependency "null => External", in instantiation at main.adb:46
 pack_gen_pragmas.ads:18:04: medium: missing dependency "null => Inner", in instantiation at main.adb:46
 pack_gen_pragmas.ads:18:04: medium: missing dependency "null => Pack_Inner", in instantiation at main.adb:46

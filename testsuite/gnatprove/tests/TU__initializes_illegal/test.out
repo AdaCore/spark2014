@@ -17,9 +17,9 @@ initializes_illegal_3.ads:49:04: indicator Part_Of is required in this context (
 initializes_illegal_3_helper.ads:5:67: "S2" not declared in "Initializes_Illegal_3"
 initializes_illegal_4.adb:9:07: warning: initialization of Z is not mentioned in contract "Initializes" at initializes_illegal_4.ads:17
 initializes_illegal_4.adb:11:09: warning: unused assignment
-initializes_illegal_4.adb:19:07: info: initialization of "Body_Var" proved
+initializes_illegal_4.adb:19:07: info: initialization of "Body_Var" constituent of "State" proved
 initializes_illegal_4.adb:22:17: warning: unused assignment
-initializes_illegal_4.adb:22:20: info: initialization of "Body_Var" proved
+initializes_illegal_4.adb:22:20: info: initialization of "Body_Var" constituent of "State" proved
 initializes_illegal_4.adb:28:16: info: initialization of "F1" proved
 initializes_illegal_4.ads:16:29: warning: no procedure exists that can initialize abstract state "Pac1.State"
 initializes_illegal_4.ads:32:37: warning: no procedure exists that can initialize abstract state "Pac2.State2"
@@ -40,5 +40,6 @@ initializes_illegal_4.ads:64:22: info: initialization of "G_Var" proved
 gnatprove: error during flow analysis and proof
 initializes_illegal_5.ads:1:14: current unit must also be private descendant of "Initializes_Illegal_5"
 initializes_illegal_5.ads:14:66: "Pr_Var" not declared in "Pr_Child"
-initializes_illegal_6.adb:8:04: high: "Var" is not initialized in "Initializes_Illegal_6"
+initializes_illegal_6.adb:8:04: high: "Var" constituent of "State" is not initialized in "Initializes_Illegal_6"
+initializes_illegal_6.adb:8:04: high: initialization of "Initializes_Illegal_6.State" is specified at initializes_illegal_6.ads:14
 initializes_illegal_6.ads:16:13: info: initialization of "F1" proved
