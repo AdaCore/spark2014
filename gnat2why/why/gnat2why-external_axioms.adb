@@ -109,8 +109,9 @@ package body Gnat2Why.External_Axioms is
    function Get_Label_List (E : Entity_Id) return List_Id;
    --  Use Parent field to reach N_Generic_Package_Declaration
 
-   procedure Parse_Parameters (Package_Entity : Entity_Id;
-                               G_Parents : List_Of_Entity.List);
+   procedure Parse_Parameters
+     (Package_Entity : Entity_Id;
+      G_Parents      : List_Of_Entity.List);
    --  Declares a Why type per formal of type kind of the first element of
    --  G_Parents and a Why function per formal of function kind of the first
    --  element of G_Parents
@@ -783,8 +784,10 @@ package body Gnat2Why.External_Axioms is
    -- Parse_Parameters --
    ----------------------
 
-   procedure Parse_Parameters (Package_Entity : Entity_Id;
-                               G_Parents : List_Of_Entity.List) is
+   procedure Parse_Parameters
+     (Package_Entity : Entity_Id;
+      G_Parents      : List_Of_Entity.List)
+   is
       Assoc : constant List_Id :=  Get_Association_List (Package_Entity);
       Labs  : constant List_Id :=  Get_Label_List (Package_Entity);
       Instance_Name : constant String := Get_Instance_Name (Package_Entity);
@@ -800,6 +803,10 @@ package body Gnat2Why.External_Axioms is
       function Get_Actual_Type_Of_Ada_Generic_Type
         (Ty       : Node_Id) return Entity_Id;
       --  Return the associated actual if Ty is a generic formal parameter.
+
+      -----------------------------------------
+      -- Get_Actual_Type_Of_Ada_Generic_Type --
+      -----------------------------------------
 
       function Get_Actual_Type_Of_Ada_Generic_Type
         (Ty         : Node_Id) return Entity_Id is
@@ -860,6 +867,10 @@ package body Gnat2Why.External_Axioms is
          end if;
       end Get_Actual_Type_Of_Ada_Generic_Type;
 
+      --------------------------------
+      -- Get_Logic_Type_Of_Ada_Type --
+      --------------------------------
+
       function Get_Logic_Type_Of_Ada_Type
         (Ty       : Node_Id;
          Is_Input : Boolean) return W_Type_Id is
@@ -882,16 +893,19 @@ package body Gnat2Why.External_Axioms is
       CurAssoc  : Node_Id := First (Assoc);
       CurLabs   : Node_Id := First (Labs);
 
+   --  Start of Parse_Parameters
+
    begin
       while Present (CurAssoc) loop
          declare
             Par    : constant Node_Id :=
               Explicit_Generic_Actual_Parameter (CurAssoc);
-            A      : constant Entity_Id := Entity (Par);
             Actual : constant Entity_Id :=
-              (if Ekind (A) = E_Function then
-                  Get_Renamed_Entity (A)
-               else A);
+              (if Nkind (Par) in N_Has_Entity then
+                 (if Ekind (Entity (Par)) = E_Function then
+                    Get_Renamed_Entity (Entity (Par))
+                  else Entity (Par))
+               else Empty);
             Formal : constant Entity_Id := Defining_Entity (CurLabs);
 
          begin
@@ -902,16 +916,16 @@ package body Gnat2Why.External_Axioms is
 
             if Ekind (Formal) = E_Generic_In_Parameter then
                declare
-                  Typ  : constant W_Type_Id  := Type_Of_Node (Etype (Formal));
-                  Def  : W_Term_Id;
-                  Params             : constant Transformation_Params :=
+                  Typ    : constant W_Type_Id := Type_Of_Node (Etype (Formal));
+                  Def    : W_Term_Id;
+                  Params : constant Transformation_Params :=
                     (File        => TFile.File,
                      Theory      => TFile.Cur_Theory,
                      Phase       => Generate_Logic,
-                     Gen_Marker   => False,
+                     Gen_Marker  => False,
                      Ref_Allowed => False);
-               begin
 
+               begin
                   --  Start with opening the theory to define, as the creation
                   --  of a function for the logic term needs the current theory
                   --  to insert an include declaration.
@@ -973,7 +987,6 @@ package body Gnat2Why.External_Axioms is
             elsif Is_Type (Formal) and then
               not Full_Name_Is_Not_Unique_Name (Formal)
             then
-
                --  For type parameters, generate a theory that renames the
                --  theory of the actual. Necessary for conversion functions.
 
