@@ -2029,7 +2029,7 @@ package body Why.Gen.Records is
 
       if Ekind (E) = E_Record_Subtype then
          Init_Component_Info (Retysp (Etype (E)));
-      else
+      elsif Ekind (E) = E_Record_Type then
          Init_Component_Info (E);
       end if;
 
