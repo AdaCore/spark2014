@@ -5205,7 +5205,7 @@ package body Flow.Control_Flow_Graph is
             if Is_Generic_Instance (FA.Analyzed_Entity) then
                declare
                   Instance    : constant Node_Id :=
-                   Get_Package_Instantiation_Node (FA.Analyzed_Entity);
+                   Get_Package_Instantiation_Node (FA.Spec_Node);
                   Association : Node_Id;
                   Parameter   : Node_Id;
                begin
