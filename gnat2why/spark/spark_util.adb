@@ -269,11 +269,11 @@ package body SPARK_Util is
 
             --  Otherwise, we must have stored the first ancestor of Typ that
             --  is in SPARK during SPARK checking. Either it is Typ and we're
-            --  done, or we reach it.
+            --  done, or we return it.
 
             elsif Get_First_Ancestor_In_SPARK (Typ) /= Typ then
-               Typ := Get_First_Ancestor_In_SPARK (Typ);
                pragma Assert (Full_View_Not_In_SPARK (Typ));
+               return Get_First_Ancestor_In_SPARK (Typ);
             else
                return Typ;
             end if;
