@@ -1,0 +1,16 @@
+t.adb:8:13: info: initialization of "MMin" proved
+t.adb:9:19: info: postcondition proved
+t.adb:15:13: info: initialization of "MAdd" proved
+t.adb:16:19: info: postcondition proved
+t.adb:16:59: info: division check proved
+t.adb:22:13: info: initialization of "MSub" proved
+t.adb:23:11: info: disjoint contract cases proved
+t.adb:23:46: info: contract case proved
+t.adb:24:47: info: contract case proved
+t.adb:25:47: info: contract case proved
+t.adb:26:46: info: contract case proved
+t.adb:27:46: info: contract case proved
+t.adb:28:37: info: contract case proved
+t.adb:34:13: info: initialization of "MMul" proved
+t.adb:35:19: info: postcondition proved
+t.adb:35:59: info: division check proved

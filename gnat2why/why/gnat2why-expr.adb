@@ -10047,20 +10047,33 @@ package body Gnat2Why.Expr is
 
       case Op is
 
-         --  Transform (-Y) into (Modulus - Y)
+         --  Transform (-Y) into (Modulus - Y) modulo 230
 
          when N_Op_Minus =>
             pragma Assert (Left_Opnd = Why_Empty);
 
-            T := New_Call
-              (Ada_Node => Ada_Node,
-               Domain   => Domain,
-               Name     => MF_BVs (Rep_Type).Sub,
-               Args     =>
-                 (1 => New_Modular_Constant (Value => Modulus,
-                                             Typ   => Rep_Type),
-                  2 => Right_Opnd),
-               Typ      => Rep_Type);
+            declare
+               Modulus_Expr : constant W_Expr_Id :=
+                 New_Modular_Constant
+                   (Value => Modulus,
+                    Typ   => Rep_Type);
+               Sub : constant W_Expr_Id :=
+                 New_Call
+                   (Ada_Node => Ada_Node,
+                    Domain   => Domain,
+                    Name     => MF_BVs (Rep_Type).Sub,
+                    Args     =>
+                      (1 => Modulus_Expr,
+                       2 => Right_Opnd),
+                    Typ      => Rep_Type);
+            begin
+               T :=  New_Call (Domain => Domain,
+                               Name   => MF_BVs (Rep_Type).Urem,
+                               Args   =>
+                                 (1 => Sub,
+                                  2 => Modulus_Expr),
+                               Typ    => Rep_Type);
+            end;
 
          --  Transform (X + Y) into:
          --    if Modulus - X <= Y
