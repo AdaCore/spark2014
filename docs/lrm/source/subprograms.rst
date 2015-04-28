@@ -1231,42 +1231,40 @@ calls.
 
 .. centered:: **Static Semantics**
 
-1. Objects are assumed to have overlapping locations if it cannot be established
-   statically that they do not.
-
-.. todo:: This definition of overlapping is necessary since
-          these anti-aliasing checks are implemented by flow analysis;
-          If checks are implemented by the proof engine instead, these static
-          checking may be suppressed.
-
-.. centered:: **Dynamic Semantics**
-
-No extra dynamic semantics are associated with anti-aliasing.
+1. Two names which denote parts of the
+   same unsynchronized (see section :ref:`tasks-and-synchronization`)
+   stand-alone object whose Constant_After_Elaboration aspect is False,
+   or which denote parts of the same unsynchronized parameter, are said
+   to *potentially introduce aliasing*.
+   [This definition has the effect of exempting most synchronized objects
+   from the anti-aliasing rules given below; aliasing of most synchronized
+   objects via parameter passing is allowed.] 
 
 .. centered:: **Verification Rules**
 
 .. _tu-anti_aliasing-02:
 
-2. A procedure call shall not pass actual parameters which denote objects
-   with overlapping locations, when at least one of the corresponding formal
-   parameters is of mode **out** or **in out**, unless the other corresponding
-   formal parameter is of mode **in** and is of a by-copy type.
+2. A procedure call shall not pass two actual parameters which potentially
+   introduce aliasing unless either
+
+ * both of the corresponding formal parameters are of mode **in**; or
+
+ * at least one of the corresponding formal parameters is of mode **in**
+   and is of a by-copy type.
 
 .. _tu-anti_aliasing-03:
 
-3. A procedure call shall not pass an actual parameter, whose corresponding
-   formal parameter is mode **out** or **in out**, that denotes an object which
-   overlaps with any ``global_item`` referenced by the subprogram.
+3. If an actual parameter in a procedure call and a ``global_item`` referenced
+   by the called procedure potentially introduce aliasing, then
+
+ * the mode of the corresponding formal parameter shall be **in**; and
+
+ * if the ``global_item``'s mode is Output or In_Out, then the parameter's
+   corresponding formal parameter shall be of a by-copy type.
 
 .. _tu-anti_aliasing-04:
 
-4. A procedure call shall not pass an actual parameter which denotes an object
-   which overlaps a ``global_item`` of mode **out** or **in out** of the subprogram,
-   unless the corresponding formal parameter is of mode **in** and by-copy.
-
-.. _tu-anti_aliasing-05:
-
-5. Where one of these rules prohibits the occurrence of an object V or any of its subcomponents
+4. Where one of these rules prohibits the occurrence of an object V or any of its subcomponents
    as an actual parameter, the following constructs are also prohibited in this context:
 
    * A type conversion whose operand is a prohibited construct;

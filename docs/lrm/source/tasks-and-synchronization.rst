@@ -40,7 +40,7 @@ are in |SPARK|.
 
   * of a type which yields synchronized objects; or
 
-  * an atomic object; or
+  * an atomic object whose Async_Writers aspect is True; or
 
   * a variable which is "constant after elaboration" (see section
     :ref:`object-declarations`); or
@@ -48,7 +48,8 @@ are in |SPARK|.
   * a constant.
 
   [Synchronized objects may be referenced by multiple tasks without causing
-  erroneous execution.]
+  erroneous execution. The declaration of a synchronized stand-alone
+  variable shall be a library-level declaration.]
 
 .. centered:: **Legality Rules**
 
@@ -64,19 +65,7 @@ are in |SPARK|.
    predefined state abstraction Ada.Task_Identification.Tasking_State
    (described below) as a global requires the Ravenscar Profile.
 
-3. A ``global_item`` occurring in a Global aspect specification of a
-   task unit or of a protected operation shall not denote an object
-   or state abstraction which is not synchronized unless the
-   Part_Of aspect of the object or state abstraction denotes the
-   task or protected unit.
-
-4. A ``global_item`` occurring in the Global aspect specification of
-   the main subprogram shall not denote an object or state abstraction
-   whose Part_Of aspect denotes a task or protected unit. [In other words,
-   the environment task cannot reference objects which "belong" to other
-   tasks.]
-
-5. If a variable or a package which declares a state abstraction is declared
+3. If a variable or a package which declares a state abstraction is declared
    within the same declarative region as a ``single_task_declaration`` or a
    ``single_protected_declaration``, then the Part_Of aspect of the variable
    or state abstraction may denote the protected or task object. This indicates
@@ -88,21 +77,33 @@ are in |SPARK|.
    The protected (as opposed to task) case corresponds to the previous notion
    of "virtual protected" objects in RavenSPARK.]
 
-6. A protected type shall define full default initialization.
+4. A protected type shall define full default initialization.
    A variable whose Part_Of aspect specifies a task unit or protected unit
    shall be of a type which defines full default initialization, or
    shall be declared with an initial value expression, or shall be
    imported.
 
-7. A type which does not yield synchronized objects shall not have
+5. A type which does not yield synchronized objects shall not have
    a component type which yields synchronized objects.
    [Roughly speaking, no mixing of synchronized and unsynchronized
    component types.]
 
-8. A constituent of a synchronized state abstraction shall be a
+6. A constituent of a synchronized state abstraction shall be a
    synchronized object or a synchronized state abstraction.
 
 .. centered:: **Verification Rules**
+
+7. A ``global_item`` occurring in a Global aspect specification of a
+   task unit or of a protected operation shall not denote an object
+   or state abstraction which is not synchronized unless the
+   Part_Of aspect of the object or state abstraction denotes the
+   task or protected unit.
+
+8. A ``global_item`` occurring in the Global aspect specification of
+   the main subprogram shall not denote an object or state abstraction
+   whose Part_Of aspect denotes a task or protected unit. [In other words,
+   the environment task cannot reference objects which "belong" to other
+   tasks.]
 
 9. A state abstraction whose Part_Of aspect specifies a task unit or
    protected unit shall be named in the Initializes aspect of its
@@ -133,8 +134,12 @@ are in |SPARK|.
     error to invoke an operation that is potentially blocking during a
     protected action (see Ada RM 9.5.1(8)) is discharged via (potentially
     conservative) flow analysis, as opposed to by introducing verification
-    conditions. [Support for the "Nonblocking" aspect discussed in AI12-0064
-    may be incorporated into |SPARK| at some point in the future.]
+    conditions. [Support for the "Potentially_Blocking" aspect discussed in
+    AI12-0064 may be incorporated into |SPARK| at some point in the future.]
+
+    The verification condition associated with the Ada rule that
+    it is a bounded error to call the Current_Task function from an
+    entry_body, or an interrupt handler is discharged similarly.
 
 13. The end of a task body shall not be reachable. [This follows from
     from Ravenscar's No_Task_Termination restriction.]
@@ -190,6 +195,9 @@ are in |SPARK|.
   * Ada.Interrupts.Is_Attached
     references Ada.Task_Identification.Tasking_State.
 
+  * Ada.Interrupts.Detach_Handler
+    references Ada.Task_Identification.Tasking_State.
+
   * Ada.Interrupts.Get_CPU
     references Ada.Task_Identification.Tasking_State.
 
@@ -199,14 +207,21 @@ are in |SPARK|.
   [Functions already excluded by Ravenscar, such as Ada.Calendar.Clock, are
   not on this list.]
 
-16. For purposes of determining global inputs and outputs, a delay
+16. For each of the following language-defined procedures, the
+    Global aspect of the procedure specifies that the
+    state abstraction Ada.Task_Identification.Tasking_State
+    is referenced as an In_Out global:
+
+  * Ada.Interrupts.Detach_Handler.
+
+17. For purposes of determining global inputs and outputs, a delay
     statement is considered to reference the state abstraction
     Ada.Real_Time.Clock_Time as an input.
     [In other words, a delay statement can be treated like a call to
     a procedure which takes the delay expression as an actual parameter
     and references the Clock_Time state abstraction as an Input global.]
 
-17. For purposes of determining global inputs and outputs, a use of
+18. For purposes of determining global inputs and outputs, a use of
     any of the Callable, Caller, Count, or Terminated attributes is considered
     to reference the state abstraction
     Ada.Task_Identification.Tasking_State as an Input.
@@ -217,26 +232,25 @@ are in |SPARK|.
     [On the other hand, use of the Identity, Priority, or Storage_Size
     attributes introduces no such dependency.]
 
-18. Preconditions are added to suprogram specifications as needed in order
+19. Preconditions are added to suprogram specifications as needed in order
     to avoid the failure of language-defined runtime checks for the
     following subprograms:
 
   * for Ada.Execution_Time.Clock, T does not equal
     Task_Identification.Null_Task_Id .
 
-  * for Ada.Execution_Time."+" and Ada.Execution_Time."-" operators,
-    preconditions are defined [carefully, in order to avoid
-    infinite recursion] to ensure that the result belongs to the result type.
-
-  * for Ada.Execution_Time.Clock_For_Interrupt
-    and for Ada.Execution_Time.Clock,
+  * for Ada.Execution_Time.Interrupts.Clock,
     Separate_Interrupt_Clocks_Supported is True.
 
-  * for Ada.Real_Time's arithmetic and conversion  operators,
+  * for Ada.Execution_Time's arithmetic and conversion operators (including
+    Time_Of), preconditions are defined to ensure that the result belongs to
+    the result type.
+
+  * for Ada.Real_Time's arithmetic and conversion operators (including Time_Of),
     preconditions are defined to ensure that the result belongs to the
     result type.
 
-19. All procedures declared in the visible part of Ada.Synchronous_Task_Control
+20. All procedures declared in the visible part of Ada.Synchronous_Task_Control
     have a dependency "(S => null)" despite the fact that S has mode **in
     out**. Procedure Suspend_Until_True is defined to be potentially blocking.
 
