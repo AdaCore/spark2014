@@ -1,5 +1,3 @@
-complex.ads:11:13: info: initialization of "Create.I" proved
-complex.ads:11:13: info: initialization of "Create.R" proved
 private_a.adb:12:30: info: initialization of "Dst" proved
 private_a.adb:14:22: info: initialization of "Dst" proved
 private_a.adb:14:22: info: postcondition proved

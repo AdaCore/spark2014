@@ -17,7 +17,6 @@ advancebutton.adb:86:34: info: range check proved
 advancebutton.adb:98:41: info: initialization of "AdvPressed" constituent of "State" proved
 advancebutton.adb:105:21: info: initialization of "Pressed" proved
 advancebutton.adb:106:21: info: initialization of "Pressed" proved
-advancebutton.ads:25:13: info: initialization of "CurrentMode" proved
 advancebutton.ads:36:27: info: initialization of "Result" proved
 advancebutton.ads:44:26: info: initialization of "Result" proved
 advancebutton.ads:54:26: info: initialization of "Result" proved
@@ -62,7 +61,6 @@ heatingsystem_dfa.adb:180:43: info: initialization of "Indicator.Outputs" proved
 heatingsystem_dfa.adb:181:42: info: initialization of "Actuator.Outputs" proved
 heatingsystem_dfa.adb:201:44: medium: "Actuator.Outputs" might not be written
 heatingsystem_dfa.adb:214:44: medium: "Actuator.Outputs" might not be written
-heatingsystem_dfa.adb:227:16: info: initialization of "IsBetween" proved
 heatingsystem_dfa.adb:237:45: info: initialization of "Actuator.Outputs" proved
 heatingsystem_dfa.adb:238:46: info: initialization of "Indicator.Outputs" proved
 heatingsystem_dfa.adb:263:17: info: initialization of "CurrentTime" proved

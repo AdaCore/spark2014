@@ -406,6 +406,22 @@ package body Flow_Types is
       end case;
    end Is_Constituent;
 
+   ------------------------
+   -- Is_Function_Entity --
+   ------------------------
+
+   function Is_Function_Entity (F : Flow_Id) return Boolean
+   is
+   begin
+      case F.Kind is
+         when Direct_Mapping | Record_Field =>
+            return Nkind (F.Node) in N_Entity
+                   and then Ekind (F.Node) in E_Function | E_Operator;
+         when others =>
+            return False;
+      end case;
+   end Is_Function_Entity;
+
    ---------------------
    -- Magic_String_Id --
    ---------------------

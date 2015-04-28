@@ -42,9 +42,4 @@ shapes5.adb:54:29: info: overflow check proved
 shapes5.adb:55:29: info: overflow check proved
 shapes5.adb:56:29: info: overflow check proved
 shapes5.adb:57:29: info: overflow check proved
-shapes5.ads:10:13: info: initialization of "Make_Circle.Center_X" proved
-shapes5.ads:10:13: info: initialization of "Make_Circle.Center_Y" proved
-shapes5.ads:10:13: info: initialization of "Make_Circle.Radius" proved
 shapes5.ads:13:18: medium: postcondition might fail, requires In_Bounds (Make_Circle'result)
-shapes5.ads:16:13: info: initialization of "Inside_Circle" proved
-shapes5.ads:23:13: info: initialization of "In_Bounds" proved

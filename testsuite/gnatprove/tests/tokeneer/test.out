@@ -19,16 +19,11 @@ admin.adb:152:13: info: initialization of "Matched" proved
 admin.adb:156:36: info: index check proved
 admin.adb:163:14: info: initialization of "TheOp" proved
 admin.adb:253:16: info: range check proved
-admin.ads:47:13: info: initialization of "RolePresent" proved
-admin.ads:59:13: info: initialization of "IsDoingOp" proved
-admin.ads:72:13: info: initialization of "TheCurrentOp" proved
-admin.ads:86:13: info: initialization of "IsPresent" proved
 admin.ads:99:20: info: initialization of "TheAdmin.CurrentOp" proved
 admin.ads:99:20: info: initialization of "TheAdmin.RolePresent" proved
 admin.ads:103:26: info: postcondition proved
 admin.ads:103:40: info: initialization of "TheAdmin.CurrentOp" proved
 admin.ads:103:40: info: initialization of "TheAdmin.RolePresent" proved
-admin.ads:119:13: info: initialization of "OpIsAvailable" proved
 admin.ads:135:21: info: initialization of "TheAdmin.CurrentOp" proved
 admin.ads:135:21: info: initialization of "TheAdmin.RolePresent" proved
 admin.ads:143:07: info: postcondition proved
@@ -42,14 +37,10 @@ admin.ads:163:40: info: initialization of "TheAdmin.RolePresent" proved
 admin.ads:190:07: medium: postcondition might fail
 admin.ads:191:07: info: precondition proved
 admin.ads:215:26: info: postcondition proved
-admin.ads:231:13: info: initialization of "SecurityOfficerIsPresent" proved
 admin.ads:245:29: info: length check proved
 admin.ads:246:58: info: length check proved
 admin.ads:250:58: info: length check proved
 admin.ads:254:58: info: length check proved
-admintoken-interfac.ads:96:13: info: initialization of "TheTokenPresence" proved
-admintoken-interfac.ads:107:13: info: initialization of "TheTokenID" proved
-admintoken-interfac.ads:120:13: info: initialization of "TheTokenTry" proved
 admintoken-interfac.ads:136:07: info: initialization of "RawCert" proved
 admintoken-interfac.ads:137:07: info: initialization of "Found" proved
 admintoken.adb:123:47: info: initialization of "AuthCertContents" proved
@@ -158,9 +149,6 @@ admintoken.adb:535:22: info: initialization of "AuthCertContents" proved
 admintoken.adb:592:14: info: initialization of "Result" proved
 admintoken.adb:609:28: medium: assertion might fail, requires Cert.Attr.Auth.TheRole(AuthCert.Contents) in PrivTypes.adminprivileget
 admintoken.adb:612:28: info: range check proved
-admintoken.ads:55:13: info: initialization of "TheAuthCertRole" proved
-admintoken.ads:56:13: info: initialization of "IsGood" proved
-admintoken.ads:57:13: info: initialization of "AuthCertValid" proved
 admintoken.ads:69:14: info: initialization of "TokenID" proved
 admintoken.ads:69:14: info: initialization of "TokenPresence" proved
 admintoken.ads:69:14: info: initialization of "TokenTry" proved
@@ -172,19 +160,13 @@ admintoken.ads:142:07: info: initialization of "Description" proved
 admintoken.ads:143:07: info: initialization of "TokenOK" proved
 admintoken.ads:178:07: info: initialization of "TokenOK" proved
 admintoken.ads:178:07: medium: postcondition might fail, requires TokenOk = (IsGood and then AuthCertValid and then TheAuthCertRole in PrivTypes.adminprivileget
-admintoken.ads:193:13: info: initialization of "IsPresent" proved
-admintoken.ads:205:13: info: initialization of "IsCurrent" proved
-admintoken.ads:219:13: info: initialization of "ExtractUser" proved
-admintoken.ads:233:13: info: initialization of "GetRole" proved
 admintoken.ads:255:14: info: initialization of "TokenID" proved
 admintoken.ads:255:14: info: initialization of "TokenPresence" proved
 admintoken.ads:255:14: info: initialization of "TokenTry" proved
 admintoken.ads:263:07: medium: postcondition might fail
-alarm-interfac.ads:40:13: info: initialization of "IsAlarming" proved
 alarm-interfac.ads:54:26: medium: postcondition might fail, requires (IsAlarming)
 alarm-interfac.ads:70:26: medium: postcondition might fail, requires not (IsAlarming)
 alarm.adb:62:07: info: assertion proved
-alarm.ads:50:13: info: initialization of "IsAlarming" proved
 alarm.ads:82:07: medium: postcondition might fail, requires Door.TheDoorAlarm = AlarmTypes.Alarming) <= (IsAlarming)
 auditlog.adb:80:32: info: length check proved
 auditlog.adb:89:45: info: length check proved
@@ -611,8 +593,6 @@ auditlog.ads:50:14: info: initialization of "UsedLogFiles.LastI" proved
 auditlog.ads:50:14: info: initialization of "UsedLogFiles.Length" proved
 auditlog.ads:50:14: info: initialization of "UsedLogFiles.List" proved
 auditlog.ads:103:26: info: initialization of "Archive" proved
-auditlog.ads:165:13: info: initialization of "TheAuditAlarm" proved
-auditlog.ads:177:13: info: initialization of "SystemFaultOccurred" proved
 audittypes.ads:94:58: info: length check proved
 audittypes.ads:107:06: info: length check proved
 bio-interfac.adb:38:14: info: initialization of "IsPresent" proved
@@ -621,7 +601,6 @@ bio-interfac.adb:72:10: info: initialization of "Matched" proved
 bio-interfac.adb:78:38: info: initialization of "LocalFARAchieved" proved
 bio-interfac.adb:78:38: medium: range check might fail
 bio-interfac.adb:79:45: info: initialization of "LocalReturn" proved
-bio-interfac.ads:37:13: info: initialization of "IsSamplePresent" proved
 bio-interfac.ads:51:22: info: initialization of "MatchResult" proved
 bio-interfac.ads:52:22: info: initialization of "AchievedFAR" proved
 bio-interfac.ads:53:22: info: initialization of "BioReturn" proved
@@ -629,7 +608,6 @@ bio.adb:129:13: info: initialization of "Result" proved, in call inlined at bio.
 bio.adb:129:20: medium: assertion might fail, requires Result = InternalError, in call inlined at bio.adb:198
 bio.adb:130:25: info: initialization of "C27b" proved, in call inlined at bio.adb:198
 bio.adb:135:14: info: initialization of "Result" proved, in call inlined at bio.adb:198
-bio.adb:149:13: info: initialization of "MakeDescription" proved
 bio.adb:181:38: medium: range check might fail, in call inlined at bio.adb:200
 bio.adb:182:12: medium: range check might fail, in call inlined at bio.adb:200
 bio.adb:182:28: info: initialization of "TheCodeName" proved, in call inlined at bio.adb:200
@@ -681,8 +659,6 @@ certificatestore.adb:376:26: info: initialization of "Written" proved
 certificatestore.ads:47:14: info: initialization of "NextSerialNumber" proved
 certificatestore.ads:47:14: info: initialization of "Overflow" proved
 certificatestore.ads:80:14: info: initialization of "Overflow" proved
-certificatestore.ads:112:13: info: initialization of "SerialNumberHasOverflowed" proved
-certificatestore.ads:127:13: info: initialization of "SerialNumber" proved
 certtypes.ads:39:22: info: initialization of "MaxRawCertLength" proved
 certtypes.ads:39:22: info: length check proved
 clock.adb:68:07: info: assertion proved
@@ -756,18 +732,6 @@ clock.ads:107:14: info: initialization of "CurrentTime.Day" proved
 clock.ads:107:14: info: initialization of "CurrentTime.MilliSec" proved
 clock.ads:107:14: info: initialization of "CurrentTime.Month" proved
 clock.ads:107:14: info: initialization of "CurrentTime.Year" proved
-clock.ads:122:13: info: initialization of "TheCurrentTime.Day" proved
-clock.ads:122:13: info: initialization of "TheCurrentTime.MilliSec" proved
-clock.ads:122:13: info: initialization of "TheCurrentTime.Month" proved
-clock.ads:122:13: info: initialization of "TheCurrentTime.Year" proved
-clock.ads:135:13: info: initialization of "GetNow.Day" proved
-clock.ads:135:13: info: initialization of "GetNow.MilliSec" proved
-clock.ads:135:13: info: initialization of "GetNow.Month" proved
-clock.ads:135:13: info: initialization of "GetNow.Year" proved
-clock.ads:149:13: info: initialization of "GreaterThan" proved
-clock.ads:161:13: info: initialization of "LessThan" proved
-clock.ads:173:13: info: initialization of "GreaterThanOrEqual" proved
-clock.ads:185:13: info: initialization of "LessThanOrEqual" proved
 clock.ads:203:07: info: initialization of "TheTime.Day" proved
 clock.ads:203:07: info: initialization of "TheTime.MilliSec" proved
 clock.ads:203:07: info: initialization of "TheTime.Month" proved
@@ -778,16 +742,6 @@ clock.ads:224:07: info: initialization of "Month" proved
 clock.ads:225:07: info: initialization of "Day" proved
 clock.ads:226:07: info: initialization of "Hour" proved
 clock.ads:227:07: info: initialization of "Min" proved
-clock.ads:243:13: info: initialization of "StartOfDay.Day" proved
-clock.ads:243:13: info: initialization of "StartOfDay.MilliSec" proved
-clock.ads:243:13: info: initialization of "StartOfDay.Month" proved
-clock.ads:243:13: info: initialization of "StartOfDay.Year" proved
-clock.ads:254:13: info: initialization of "PrintDuration" proved
-clock.ads:265:13: info: initialization of "PrintTime" proved
-clock.ads:276:13: info: initialization of "AddDuration.Day" proved
-clock.ads:276:13: info: initialization of "AddDuration.MilliSec" proved
-clock.ads:276:13: info: initialization of "AddDuration.Month" proved
-clock.ads:276:13: info: initialization of "AddDuration.Year" proved
 configdata.adb:90:09: info: length check proved
 configdata.adb:92:09: info: length check proved
 configdata.adb:94:09: info: length check proved
@@ -1119,7 +1073,6 @@ configdata.ads:208:07: info: initialization of "TheMinEntryClass" proved
 configdata.ads:209:07: info: initialization of "TheMinPreservedLogSize" proved
 configdata.ads:210:07: info: initialization of "TheAlarmThresholdSize" proved
 configdata.ads:211:07: info: initialization of "TheSystemMaxFar" proved
-configdata.ads:238:13: info: initialization of "AuthPeriodIsEmpty" proved
 configdata.ads:252:08: info: initialization of "NotBefore.Day" proved
 configdata.ads:252:08: info: initialization of "NotBefore.MilliSec" proved
 configdata.ads:252:08: info: initialization of "NotBefore.Month" proved
@@ -1128,14 +1081,6 @@ configdata.ads:253:08: info: initialization of "NotAfter.Day" proved
 configdata.ads:253:08: info: initialization of "NotAfter.MilliSec" proved
 configdata.ads:253:08: info: initialization of "NotAfter.Month" proved
 configdata.ads:253:08: info: initialization of "NotAfter.Year" proved
-configdata.ads:269:13: info: initialization of "IsInEntryPeriod" proved
-configdata.ads:283:13: info: initialization of "TheLatchUnlockDuration" proved
-configdata.ads:295:13: info: initialization of "TheAlarmSilentDuration" proved
-configdata.ads:307:13: info: initialization of "TheFingerWaitDuration" proved
-configdata.ads:319:13: info: initialization of "TheTokenRemovalDuration" proved
-configdata.ads:331:13: info: initialization of "TheEnclaveClearance" proved
-configdata.ads:343:13: info: initialization of "TheSystemMaxFar" proved
-configdata.ads:355:13: info: initialization of "TheAlarmThresholdEntries" proved
 configuration.adb:112:34: info: initialization of "TheAlarmSilentDuration" proved, in call inlined at configuration.adb:178
 configuration.adb:112:57: info: division check proved, in call inlined at configuration.adb:178
 configuration.adb:112:63: medium: range check might fail, in call inlined at configuration.adb:178
@@ -1236,8 +1181,6 @@ configuration.ads:75:07: info: initialization of "DataValid" proved
 display-interfac.adb:75:39: info: range check proved
 display-interfac.adb:92:45: info: range check proved
 display-interfac.adb:109:45: info: range check proved
-display-interfac.ads:34:13: info: initialization of "GetMaxTextSizeTop" proved
-display-interfac.ads:44:13: info: initialization of "GetMaxTextSizeBottom" proved
 display-interfac.ads:55:25: info: initialization of "Written" proved
 display-interfac.ads:69:28: info: initialization of "Written" proved
 display-interfac.ads:83:35: info: initialization of "Written" proved
@@ -1359,12 +1302,6 @@ door.adb:341:44: info: initialization of "LatchTimeout.MilliSec" proved
 door.adb:341:44: info: initialization of "LatchTimeout.Month" proved
 door.adb:341:44: info: initialization of "LatchTimeout.Year" proved
 door.adb:398:07: medium: assertion might fail
-door.ads:57:13: info: initialization of "Alarm_Timeout.Day" proved
-door.ads:57:13: info: initialization of "Alarm_Timeout.MilliSec" proved
-door.ads:57:13: info: initialization of "Alarm_Timeout.Month" proved
-door.ads:57:13: info: initialization of "Alarm_Timeout.Year" proved
-door.ads:69:13: info: initialization of "TheCurrentDoor" proved
-door.ads:83:13: info: initialization of "TheDoorAlarm" proved
 door.ads:100:19: info: initialization of "SystemFault" proved
 door.ads:148:08: info: postcondition proved
 door.ads:215:08: medium: postcondition might fail
@@ -1526,7 +1463,6 @@ enclave.adb:2701:07: medium: assertion might fail
 enclave.adb:2728:19: info: precondition proved
 enclave.adb:2737:19: info: precondition proved
 enclave.adb:2742:24: info: precondition proved
-enclave.adb:2784:16: info: initialization of "AdminOpCanStart" proved
 enclave.adb:2889:10: info: assertion proved
 enclave.adb:2902:22: info: precondition proved
 enclave.adb:2907:27: info: precondition proved
@@ -1546,17 +1482,7 @@ enclave.adb:2966:42: info: range check proved
 enclave.adb:2972:35: info: initialization of "KeyedData.Text" proved
 enclave.adb:2983:35: info: initialization of "KeyedData.Text" proved
 enclave.adb:2997:10: medium: precondition might fail
-enclave.ads:77:14: info: initialization of "statusIsGotAdminToken" proved
-enclave.ads:78:14: info: initialization of "statusIsWaitingRemoveAdminTokenFail" proved
-enclave.ads:79:14: info: initialization of "statusIsWaitingStartAdminOp" proved
-enclave.ads:80:14: info: initialization of "statusIsWaitingFinishAdminOp" proved
-enclave.ads:81:14: info: initialization of "statusIsEnclaveQuiescent" proved
-enclave.ads:82:14: info: initialization of "statusIsShutdown" proved
-enclave.ads:95:13: info: initialization of "EnrolmentIsInProgress" proved
 enclave.ads:118:07: medium: postcondition might fail
-enclave.ads:134:13: info: initialization of "AdminMustLogout" proved
-enclave.ads:150:13: info: initialization of "CurrentAdminActivityPossible" proved
-enclave.ads:164:13: info: initialization of "HasShutdown" proved
 enclave.ads:226:07: medium: postcondition might fail
 enclave.ads:286:07: medium: postcondition might fail
 enclave.ads:576:19: info: precondition proved
@@ -1693,13 +1619,10 @@ enrolment.ads:58:24: info: initialization of "Description" proved
 enrolment.ads:85:07: info: initialization of "DataOK" proved
 enrolment.ads:85:07: medium: postcondition might fail, requires DataOK = KeyStore(KeyStore.privatekeypresent)
 floppy.adb:43:37: info: length check proved
-floppy.adb:60:13: info: initialization of "FilePathAndName" proved
 floppy.adb:66:33: medium: range check might fail
 floppy.adb:66:39: medium: range check might fail
 floppy.adb:68:32: info: initialization of "FullName" proved
-floppy.ads:43:13: info: initialization of "IsPresent" proved
 floppy.ads:92:26: info: initialization of "WriteOK" proved
-floppy.ads:110:13: info: initialization of "CurrentFloppy" proved
 iandatypes.ads:49:22: info: length check proved
 iandatypes.ads:67:38: info: length check proved
 iandatypes.ads:68:26: info: initialization of "NullTemplatePad" proved
@@ -1904,7 +1827,6 @@ keystore.adb:137:21: info: initialization of "TheDigest.Pad" proved
 keystore.adb:137:21: info: initialization of "TheDigest.SignReturn" proved
 keystore.adb:137:21: info: initialization of "TheDigest.VerifyReturn" proved
 keystore.adb:138:21: info: initialization of "Success" proved
-keystore.adb:180:16: info: initialization of "GetBlock" proved
 keystore.adb:190:10: info: assertion proved
 keystore.adb:195:30: info: range check proved
 keystore.adb:195:41: info: overflow check proved
@@ -2073,11 +1995,6 @@ keystore.ads:50:14: info: initialization of "ThisTISInfo.Owner.ID" proved
 keystore.ads:50:14: info: initialization of "ThisTISInfo.Owner.Name" proved
 keystore.ads:50:14: info: initialization of "ThisTISInfo.Owner.NameLength" proved
 keystore.ads:86:39: info: initialization of "IsPresent" proved
-keystore.ads:115:13: info: initialization of "PrivateKeyPresent" proved
-keystore.ads:128:13: info: initialization of "IssuerIsThisTIS" proved
-keystore.ads:142:13: info: initialization of "ThisTIS.ID" proved
-keystore.ads:142:13: info: initialization of "ThisTIS.Name" proved
-keystore.ads:142:13: info: initialization of "ThisTIS.NameLength" proved
 keystore.ads:160:28: info: initialization of "Verified" proved
 keystore.ads:194:20: info: initialization of "Signature.SigData" proved
 keystore.ads:194:20: info: initialization of "Signature.SigLength" proved
@@ -2088,7 +2005,6 @@ keystore.ads:255:12: info: initialization of "Added" proved
 keystore.ads:275:26: info: postcondition proved
 latch-interfac.adb:48:14: info: initialization of "Fault" proved
 latch-interfac.adb:65:14: info: initialization of "Fault" proved
-latch-interfac.ads:30:13: info: initialization of "isLocked" proved
 latch-interfac.ads:40:19: info: initialization of "Fault" proved
 latch-interfac.ads:45:26: medium: postcondition might fail, requires isLocked or Fault
 latch-interfac.ads:45:38: info: initialization of "Fault" proved
@@ -2102,17 +2018,11 @@ latch.adb:130:23: info: initialization of "LocalLatch" proved
 latch.adb:164:10: medium: assertion might fail, requires IsLocked = Interfac.isLocked ) or SystemFault
 latch.adb:174:10: info: initialization of "SystemFault" proved
 latch.adb:200:07: info: assertion proved
-latch.ads:43:13: info: initialization of "LatchIsLocked" proved
-latch.ads:44:13: info: initialization of "Latch_Timeout.Day" proved
-latch.ads:44:13: info: initialization of "Latch_Timeout.MilliSec" proved
-latch.ads:44:13: info: initialization of "Latch_Timeout.Month" proved
-latch.ads:44:13: info: initialization of "Latch_Timeout.Year" proved
 latch.ads:56:14: info: initialization of "CurrentLatch" proved
 latch.ads:56:14: info: initialization of "LatchTimeout.Day" proved
 latch.ads:56:14: info: initialization of "LatchTimeout.MilliSec" proved
 latch.ads:56:14: info: initialization of "LatchTimeout.Month" proved
 latch.ads:56:14: info: initialization of "LatchTimeout.Year" proved
-latch.ads:71:13: info: initialization of "IsLocked" proved
 latch.ads:107:07: info: postcondition proved
 latch.ads:124:27: info: initialization of "SystemFault" proved
 latch.ads:142:08: medium: postcondition might fail, requires IsLocked = LatchisLocked or SystemFault
@@ -2487,8 +2397,6 @@ tokenreader-interfac.adb:40:19: info: length check proved, in call inlined at to
 tokenreader-interfac.adb:40:19: info: length check proved, in call inlined at tokenreader-interfac.adb:252
 tokenreader-interfac.adb:40:19: info: length check proved, in call inlined at tokenreader-interfac.adb:278
 tokenreader-interfac.adb:40:19: info: length check proved, in call inlined at tokenreader-interfac.adb:305
-tokenreader-interfac.adb:52:13: info: initialization of "ConvertFromTISRawCert.CertData" proved
-tokenreader-interfac.adb:52:13: info: initialization of "ConvertFromTISRawCert.CertLength" proved
 tokenreader-interfac.adb:55:48: warning: assuming "Trim" has no effect on global items
 tokenreader-interfac.adb:55:48: warning: no Global contract available for "Trim"
 tokenreader-interfac.adb:60:49: medium: length check might fail
@@ -2567,7 +2475,6 @@ tokenreader.adb:149:10: info: initialization of "C68b" proved, in call inlined a
 tokenreader.adb:153:44: info: initialization of "C68b" proved, in call inlined at tokenreader.adb:675
 tokenreader.adb:153:44: info: range check proved, in call inlined at tokenreader.adb:675
 tokenreader.adb:157:14: info: initialization of "Result" proved, in call inlined at tokenreader.adb:675
-tokenreader.adb:170:13: info: initialization of "MakeDescription" proved
 tokenreader.adb:202:38: medium: range check might fail, in call inlined at tokenreader.adb:221
 tokenreader.adb:203:12: medium: range check might fail, in call inlined at tokenreader.adb:221
 tokenreader.adb:203:43: info: initialization of "TheCodeName" proved, in call inlined at tokenreader.adb:221
@@ -2618,9 +2525,6 @@ tokenreader.adb:903:16: info: initialization of "ResponseCode" proved
 tokenreader.adb:942:20: info: initialization of "StatusOK" proved
 tokenreader.adb:943:16: info: initialization of "ResponseCode" proved
 tokenreader.ads:56:14: info: initialization of "ReaderStatus" proved
-tokenreader.ads:114:13: info: initialization of "TheTokenPresence" proved
-tokenreader.ads:126:13: info: initialization of "TheTokenID" proved
-tokenreader.ads:139:13: info: initialization of "TheTokenTry" proved
 tokenreader.ads:156:30: info: initialization of "RawCert" proved
 tokenreader.ads:157:30: info: initialization of "Found" proved
 tokenreader.ads:185:07: info: initialization of "Success" proved
@@ -2636,7 +2540,6 @@ userentry.adb:308:35: info: initialization of "Description" proved, in call inli
 userentry.adb:367:07: info: assertion proved
 userentry.adb:396:16: info: initialization of "FingerPresence" proved
 userentry.adb:439:14: info: initialization of "Status" proved
-userentry.adb:485:13: info: initialization of "AchievedFARDescription" proved
 userentry.adb:508:12: medium: range check might fail, in call inlined at userentry.adb:526
 userentry.adb:514:42: info: initialization of "Result" proved, in call inlined at userentry.adb:526
 userentry.adb:514:42: info: length check proved, in call inlined at userentry.adb:526
@@ -2673,14 +2576,8 @@ userentry.adb:1297:12: info: initialization of "LocalStatus" proved
 userentry.adb:1301:13: info: precondition proved
 userentry.adb:1305:13: info: precondition proved
 userentry.adb:1309:13: info: precondition proved
-userentry.ads:68:13: info: initialization of "CurrentActivityPossible" proved
-userentry.ads:82:13: info: initialization of "CanStart" proved
-userentry.ads:95:13: info: initialization of "InProgress" proved
 userentry.ads:287:14: info: initialization of "Status" proved
 usertoken-interfac.ads:53:14: info: initialization of "tokenreader.readerstatus" proved
-usertoken-interfac.ads:110:13: info: initialization of "TheTokenPresence" proved
-usertoken-interfac.ads:121:13: info: initialization of "TheTokenID" proved
-usertoken-interfac.ads:133:13: info: initialization of "TheTokenTry" proved
 usertoken-interfac.ads:149:07: info: initialization of "RawCert" proved
 usertoken-interfac.ads:150:07: info: initialization of "Found" proved
 usertoken-interfac.ads:175:07: info: initialization of "Success" proved
@@ -2891,8 +2788,6 @@ usertoken.ads:67:14: info: initialization of "TokenTry" proved
 usertoken.ads:67:14: info: initialization of "tokenreader.readerstatus" proved
 usertoken.ads:97:14: info: initialization of "TokenPresence" proved
 usertoken.ads:132:30: info: initialization of "Success" proved
-usertoken.ads:169:13: info: initialization of "ExtractUser" proved
-usertoken.ads:181:13: info: initialization of "IsPresent" proved
 usertoken.ads:196:14: info: initialization of "AuthCert.Contents" proved
 usertoken.ads:196:14: info: initialization of "AuthCert.Valid" proved
 usertoken.ads:196:14: info: initialization of "IDCert.Contents" proved
@@ -2909,11 +2804,6 @@ usertoken.ads:242:07: info: initialization of "TokenOK" proved
 usertoken.ads:283:14: info: initialization of "AuthCert.Contents" proved
 usertoken.ads:283:14: info: initialization of "AuthCert.Valid" proved
 usertoken.ads:283:27: info: initialization of "Success" proved
-usertoken.ads:317:13: info: initialization of "GetIandATemplate.ID" proved
-usertoken.ads:317:13: info: initialization of "GetIandATemplate.Length" proved
-usertoken.ads:317:13: info: initialization of "GetIandATemplate.Pad" proved
-usertoken.ads:317:13: info: initialization of "GetIandATemplate.RequiredMaxFAR" proved
-usertoken.ads:330:13: info: initialization of "GetClass" proved
 usertoken.ads:343:14: info: initialization of "AuthCert.Contents" proved
 usertoken.ads:343:14: info: initialization of "AuthCert.Valid" proved
 usertoken.ads:343:14: info: initialization of "IDCert.Contents" proved

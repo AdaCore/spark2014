@@ -36,6 +36,4 @@ partition_refinement.adb:23:47: info: range check proved
 partition_refinement.adb:23:66: info: overflow check proved
 partition_refinement.adb:23:89: info: index check proved
 partition_refinement.adb:23:107: info: index check proved
-partition_refinement.ads:20:13: info: initialization of "Eq_Interval" proved
-partition_refinement.ads:21:12: info: initialization of "Oeq" proved
 partition_refinement.ads:32:07: warning: "P" is not modified, could be IN

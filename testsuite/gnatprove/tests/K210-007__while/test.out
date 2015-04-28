@@ -11,5 +11,4 @@ s.ads:11:07: info: initialization of "Index" proved
 s.ads:12:17: info: postcondition proved
 s.ads:12:22: info: initialization of "Found" proved
 s.ads:12:42: info: initialization of "Index" proved
-s.ads:14:13: info: initialization of "Check_Index" proved
 s.ads:19:17: info: postcondition proved

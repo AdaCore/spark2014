@@ -10,7 +10,6 @@ sorters.adb:24:15: info: index check proved
 sorters.adb:24:29: info: index check proved
 sorters.adb:25:15: info: index check proved
 sorters.adb:25:21: info: initialization of "Temp" proved
-sorters.adb:48:13: info: initialization of "Index_Of_Minimum" proved
 sorters.adb:53:10: info: postcondition proved
 sorters.adb:55:39: info: index check proved
 sorters.adb:55:61: info: index check proved

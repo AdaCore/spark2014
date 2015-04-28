@@ -7,7 +7,6 @@ bad_refinement.ads:6:11: global input "Bad_Refinement.State" of "Liar" not read
 bad_refinement.ads:9:11: "Bad_Refinement.State" must be a global input of "Liar2" (SPARK RM 6.1.4)
 bad_refinement.ads:12:11: "Bad_Refinement.State" must be a global output of "Liar3" (SPARK RM 6.1.4)
 bad_refinement.ads:12:11: global input "Bad_Refinement.State" of "Liar3" not read
-bad_refinement.ads:14:13: info: initialization of "Liar4" proved
 bad_refinement.ads:15:28: medium: missing dependency "Liar4'Result => Bad_Refinement.State2"
 bad_refinement.ads:17:21: info: initialization of "I" proved
 bad_refinement.ads:19:23: medium: missing dependency "Bad_Refinement.State2 => Bad_Refinement.State2"
@@ -69,9 +68,6 @@ lots_of_tests.ads:105:14: info: initialization of "B" constituent of "State" pro
 refinement_needed.adb:14:17: medium: overflow check might fail
 refinement_needed.ads:5:27: warning: no procedure exists that can initialize abstract state "Refinement_Needed.State"
 refinement_needed.ads:5:34: warning: no procedure exists that can initialize abstract state "Refinement_Needed.State2"
-refinement_needed.ads:9:13: info: initialization of "Foo" proved
-refinement_needed.ads:12:13: info: initialization of "Bar" proved
-refinement_needed.ads:15:13: info: initialization of "Hmmm" proved
 user.ads:4:36: info: initialization of "X" proved
 user.ads:7:14: info: initialization of "Lots_Of_Tests.State3" proved
 user.ads:10:40: info: initialization of "Y" proved

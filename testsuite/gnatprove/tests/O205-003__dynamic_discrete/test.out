@@ -9,7 +9,6 @@ test_dynamic_property.adb:8:31: info: range check proved
 test_dynamic_property.adb:11:17: info: postcondition proved
 test_dynamic_property.adb:18:20: info: overflow check proved
 test_dynamic_property.adb:18:20: info: range check proved
-test_dynamic_property.adb:23:13: info: initialization of "Dyn_Return" proved
 test_dynamic_property.adb:28:17: info: range check proved
 test_dynamic_property.adb:30:17: info: range check proved
 test_dynamic_property.adb:39:17: info: overflow check proved

@@ -41,5 +41,4 @@ kmp.adb:25:21: info: initialization of "Next" proved
 kmp.adb:25:27: info: index check proved
 kmp.adb:25:27: info: initialization of "J" proved
 kmp.adb:29:14: info: initialization of "Next" proved
-kmp.ads:7:13: info: initialization of "Init_Next" proved
 kmp.ads:9:17: info: postcondition proved

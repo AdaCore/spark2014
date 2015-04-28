@@ -114,10 +114,7 @@ instr.adb:115:07: warning: assuming "Put" has no effect on global items
 instr.adb:115:07: warning: no Global contract available for "Put"
 instr.ads:19:14: warning: subprogram "Display_Value" has no effect
 instr.ads:29:14: warning: subprogram "Display_Value" has no effect
-instr.ads:34:14: info: initialization of "Value" proved
 instr.ads:45:14: warning: subprogram "Display_Value" has no effect
-instr.ads:49:14: info: initialization of "Value__2" proved
 instr.ads:54:14: warning: subprogram "Display_Value" has no effect
 instr.ads:65:14: warning: subprogram "Display_Value" has no effect
-instr.ads:72:13: info: initialization of "Seconds" proved
 instr.ads:80:14: warning: subprogram "Display_Value" has no effect

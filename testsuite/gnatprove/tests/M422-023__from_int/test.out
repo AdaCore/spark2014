@@ -12,8 +12,6 @@ sgs.adb:21:07: info: assertion proved
 sgs.adb:21:22: info: initialization of "R2" proved
 sgs.adb:22:07: info: assertion proved
 sgs.adb:22:22: info: initialization of "R2" proved
-sgs.ads:5:13: info: initialization of "C" proved
 sgs.ads:5:53: info: range check proved
 sgs.ads:10:14: warning: subprogram "F" has no effect
-sgs.ads:12:13: info: initialization of "A" proved
 sgs.ads:13:17: info: postcondition proved

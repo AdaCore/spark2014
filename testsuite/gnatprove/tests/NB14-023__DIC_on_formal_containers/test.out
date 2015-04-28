@@ -32,17 +32,4 @@ dic_of_cont.adb:20:07: info: assertion proved
 dic_of_cont.adb:20:29: info: precondition proved
 dic_of_cont.adb:20:40: info: initialization of private part of "Dfove" proved
 dic_of_cont.adb:21:07: info: assertion proved
-dic_of_cont.ads:10:13: info: initialization of "Hash" proved
-dic_of_cont.ads:11:12: info: initialization of "Oeq" proved
-dic_of_cont.ads:13:12: info: initialization of "Equivalent_Keys" proved
-dic_of_cont.ads:13:12: info: initialization of "Hash" proved
-dic_of_cont.ads:13:12: info: initialization of "Oeq" proved
-dic_of_cont.ads:18:12: info: initialization of "Equivalent_Elements" proved
-dic_of_cont.ads:18:12: info: initialization of "Hash" proved
-dic_of_cont.ads:18:12: info: initialization of "Oeq" proved
-dic_of_cont.ads:22:12: info: initialization of "Oeq" proved
-dic_of_cont.ads:22:12: info: initialization of "Olt" proved
-dic_of_cont.ads:25:12: info: initialization of "Oeq" proved
-dic_of_cont.ads:25:12: info: initialization of "Olt" proved
-dic_of_cont.ads:27:12: info: initialization of "Oeq" proved
 dic_of_cont.ads:31:14: warning: subprogram "Main" has no effect

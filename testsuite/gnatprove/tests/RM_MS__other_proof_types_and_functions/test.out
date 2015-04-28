@@ -16,11 +16,6 @@ stack.adb:56:16: info: initialization of "Initial_Stack.S" proved
 stack.ads:5:08: info: initial condition proved
 stack.ads:5:29: info: initialization of "My_Stack.Pointer" constituent of "State" proved
 stack.ads:5:29: info: initialization of "My_Stack.S" constituent of "State" proved
-stack.ads:18:13: info: initialization of "Max_Stack_Size" proved
-stack.ads:22:13: info: initialization of "Count" proved
-stack.ads:28:13: info: initialization of "Stack_Entry" proved
-stack.ads:35:13: info: initialization of "Is_Empty" proved
-stack.ads:39:13: info: initialization of "Is_Full" proved
 stack.ads:53:21: info: postcondition proved
 stack.ads:53:39: info: overflow check proved
 stack.ads:55:21: info: precondition proved
@@ -75,13 +70,6 @@ stack_functional_spec.adb:60:16: info: initialization of "Initial_Stack.S" prove
 stack_functional_spec.ads:5:08: info: initial condition proved
 stack_functional_spec.ads:5:29: info: initialization of "My_Stack.Pointer" constituent of "State" proved
 stack_functional_spec.ads:5:29: info: initialization of "My_Stack.S" constituent of "State" proved
-stack_functional_spec.ads:18:13: info: initialization of "State__2.Pointer" proved
-stack_functional_spec.ads:18:13: info: initialization of "State__2.S" proved
-stack_functional_spec.ads:21:13: info: initialization of "Max_Stack_Size" proved
-stack_functional_spec.ads:27:13: info: initialization of "Count" proved
-stack_functional_spec.ads:32:13: info: initialization of "Stack_Entry" proved
-stack_functional_spec.ads:38:13: info: initialization of "Is_Empty" proved
-stack_functional_spec.ads:42:13: info: initialization of "Is_Full" proved
 stack_functional_spec.ads:57:21: info: postcondition proved
 stack_functional_spec.ads:57:55: info: overflow check proved
 stack_functional_spec.ads:59:21: info: precondition proved

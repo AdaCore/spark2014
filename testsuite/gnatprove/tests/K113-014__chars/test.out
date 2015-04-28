@@ -10,5 +10,4 @@ chars.adb:15:07: warning: initialization of WWF has no effect
 chars.adb:17:15: info: initialization of "Z" proved
 chars.adb:17:26: info: initialization of "WZ" proved
 chars.adb:17:38: info: initialization of "WWZ" proved
-chars.ads:2:13: info: initialization of "DoIt" proved
 chars.ads:3:20: info: postcondition proved

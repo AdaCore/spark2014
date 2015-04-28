@@ -1,6 +1,5 @@
 fb20a00.adb:9:07: info: range check proved
 fb20a00.adb:10:07: info: range check proved
-fb20a00.adb:15:16: info: initialization of "Upper_Case" proved
 fb20a00.adb:18:10: info: range check proved
 fb20a00.adb:25:24: medium: "Ret" might not be initialized
 fb20a00.adb:25:38: info: initialization of "Pos" proved
@@ -26,4 +25,3 @@ fb20a00.adb:45:18: info: initialization of "New_Str" proved
 fb20a00.adb:45:30: info: overflow check proved
 fb20a00.adb:45:31: info: initialization of "New_Sub" proved
 fb20a00.adb:45:45: info: overflow check proved
-fb20a00.ads:43:13: info: initialization of "Find" proved

@@ -8,10 +8,6 @@ stackp.adb:34:28: info: range check proved
 stackp.adb:35:18: info: index check proved
 stackp.adb:40:28: info: range check proved
 stackp.adb:44:29: info: range check proved
-stackp.ads:11:13: info: initialization of "Size" proved
-stackp.ads:15:13: info: initialization of "Is_Full" proved
-stackp.ads:16:13: info: initialization of "Is_Empty" proved
-stackp.ads:33:13: info: initialization of "Get_Model" proved
 stackp.ads:33:13: info: postcondition proved
 stackp.ads:36:14: info: postcondition proved
 stackp.ads:36:21: high: "S.Content" is not initialized in "Reset"
@@ -25,7 +21,6 @@ stackp.ads:42:20: medium: class-wide postcondition might be weaker than overridd
 stackp.ads:42:54: info: range check proved
 stackp.ads:49:20: medium: postcondition might fail, requires Get_Model (S) = E & Get_Model (S)'old
 stackp.ads:49:38: info: range check proved
-stackp.ads:52:13: info: initialization of "Get_Model" proved
 stackp.ads:52:13: info: postcondition proved
 stackp.ads:55:14: info: postcondition proved
 stackp.ads:55:21: high: "S.Content" is not initialized in "Reset"
@@ -42,8 +37,6 @@ stackp.ads:65:04: medium: type "Stack_Root" is not fully initialized
 stackp.ads:71:04: medium: type "Stack" is not fully initialized
 stackp.ads:73:15: info: range check proved
 stackp.ads:77:04: medium: type "Buffer" is not fully initialized
-stackp.ads:82:13: info: initialization of "Wraps_Around" proved
-stackp.ads:84:13: info: initialization of "Last" proved
 stackp.ads:85:55: info: range check proved
 stackp.ads:86:35: info: range check proved
 stackp.ads:90:20: info: range check proved

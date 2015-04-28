@@ -12,18 +12,11 @@ admin.adb:119:33: info: initialization of "TheOp" proved
 admin.adb:125:36: info: index check proved
 admin.adb:131:14: info: initialization of "TheOp" proved
 admin.adb:206:64: info: range check proved
-admin.ads:42:13: info: initialization of "RolePresent" proved
-admin.ads:55:13: info: initialization of "IsDoingOp" proved
-admin.ads:67:13: info: initialization of "TheCurrentOp" proved
-admin.ads:77:13: info: initialization of "Str_Comp" proved
-admin.ads:88:13: info: initialization of "AllowedOp" proved
-admin.ads:103:13: info: initialization of "IsPresent" proved
 admin.ads:115:20: info: initialization of "TheAdmin.CurrentOp" proved
 admin.ads:115:20: info: initialization of "TheAdmin.RolePresent" proved
 admin.ads:118:22: info: postcondition proved
 admin.ads:118:36: info: initialization of "TheAdmin.CurrentOp" proved
 admin.ads:118:36: info: initialization of "TheAdmin.RolePresent" proved
-admin.ads:132:13: info: initialization of "OpIsAvailable" proved
 admin.ads:137:21: info: postcondition proved
 admin.ads:138:28: info: precondition proved
 admin.ads:151:21: info: initialization of "TheAdmin.CurrentOp" proved
@@ -39,7 +32,6 @@ admin.ads:170:36: info: initialization of "TheAdmin.RolePresent" proved
 admin.ads:188:22: info: postcondition proved
 admin.ads:191:28: info: precondition proved
 admin.ads:206:22: info: postcondition proved
-admin.ads:219:13: info: initialization of "SecurityOfficerIsPresent" proved
 admin.ads:233:08: info: length check proved
 admin.ads:233:48: info: length check proved
 admin.ads:235:48: info: length check proved
@@ -63,7 +55,6 @@ admintoken.adb:199:30: info: refined post proved
 admintoken.adb:199:41: info: initialization of "IDCert.Valid" constituent of "State" proved
 admintoken.adb:200:41: info: initialization of "AuthCert.Valid" constituent of "State" proved
 admintoken.adb:202:44: info: initialization of "AuthCert.Contents" constituent of "State" proved
-admintoken.adb:218:16: info: initialization of "MakeDescription" proved
 admintoken.adb:225:37: info: initialization of "Result" proved
 admintoken.adb:225:37: info: length check proved
 admintoken.adb:225:40: info: length check proved
@@ -132,9 +123,6 @@ admintoken.adb:560:42: info: initialization of "TokenPresence" constituent of "S
 admintoken.adb:561:42: info: initialization of "TokenTry" constituent of "State" proved
 admintoken.adb:577:47: info: initialization of "AuthCertContents" proved
 admintoken.adb:581:43: info: initialization of "IDCertContents" proved
-admintoken.ads:40:13: info: initialization of "TheAuthCertRole" proved
-admintoken.ads:44:13: info: initialization of "IsGood" proved
-admintoken.ads:48:13: info: initialization of "AuthCertValid" proved
 admintoken.ads:66:22: info: postcondition proved
 admintoken.ads:66:26: info: initialization of "IDCert.Contents" constituent of "State" proved
 admintoken.ads:66:26: info: initialization of "IDCert.Valid" constituent of "State" proved
@@ -149,10 +137,6 @@ admintoken.ads:148:33: info: initialization of "IDCert.Contents" constituent of 
 admintoken.ads:148:33: info: initialization of "IDCert.Valid" constituent of "State" proved
 admintoken.ads:149:33: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.ads:149:33: info: initialization of "AuthCert.Valid" constituent of "State" proved
-admintoken.ads:161:13: info: initialization of "IsPresent" proved
-admintoken.ads:173:13: info: initialization of "IsCurrent" proved
-admintoken.ads:186:13: info: initialization of "ExtractUser" proved
-admintoken.ads:199:13: info: initialization of "GetRole" proved
 admintoken.ads:217:22: medium: postcondition might fail
 admintoken.ads:217:26: info: initialization of "IDCert.Contents" constituent of "State" proved
 admintoken.ads:217:26: info: initialization of "IDCert.Valid" constituent of "State" proved
@@ -162,7 +146,6 @@ admintoken.ads:219:27: info: initialization of "AuthCert.Contents" constituent o
 admintoken.ads:219:27: info: initialization of "AuthCert.Valid" constituent of "State" proved
 alarm.adb:43:49: info: initialization of "Interfac.Output" constituent of "Alarm.Output" proved
 alarm.adb:46:30: info: refined post proved
-alarm.ads:41:13: info: initialization of "IsAlarming" proved
 alarm.ads:70:22: info: postcondition proved
 alarmapi.adb:38:29: medium: length check might fail
 alarmapi.adb:38:29: warning: assuming "Overwrite" has no effect on global items
@@ -203,10 +186,7 @@ auditlog.adb:167:27: info: length check proved
 auditlog.adb:177:44: info: range check proved
 auditlog.adb:177:49: info: overflow check proved
 auditlog.adb:177:69: info: overflow check proved
-auditlog.adb:196:13: info: initialization of "AgeLessThan" proved
-auditlog.adb:209:13: info: initialization of "NextListIndex" proved
 auditlog.adb:211:18: info: range check proved
-auditlog.adb:247:13: info: initialization of "ConvertToAuditDescription" proved
 auditlog.adb:254:40: info: index check proved
 auditlog.adb:254:40: info: overflow check proved
 auditlog.adb:254:45: info: initialization of "LocalDesc" proved
@@ -217,7 +197,6 @@ auditlog.adb:260:46: info: index check proved
 auditlog.adb:260:46: info: overflow check proved
 auditlog.adb:264:14: info: initialization of "LocalDesc" proved
 auditlog.adb:280:07: info: initialization of "Description" proved
-auditlog.adb:303:16: info: initialization of "ConvertTimesToText" proved
 auditlog.adb:306:24: info: range check proved
 auditlog.adb:306:36: info: range check proved
 auditlog.adb:306:46: info: range check proved
@@ -232,7 +211,6 @@ auditlog.adb:355:54: info: initialization of "OK" proved
 auditlog.adb:359:22: info: initialization of "FirstTime" proved
 auditlog.adb:359:22: info: initialization of "LastTime" proved
 auditlog.adb:359:22: info: initialization of "TimeOK" proved
-auditlog.adb:399:16: info: initialization of "OverwriteTimeInText" proved
 auditlog.adb:416:23: info: length check proved
 auditlog.adb:416:23: info: range check proved
 auditlog.adb:416:35: info: initialization of "Offset" proved
@@ -470,7 +448,6 @@ auditlog.adb:1598:47: info: range check proved
 auditlog.adb:1607:10: info: initialization of "OldAlarm" proved
 auditlog.adb:1611:10: info: precondition proved
 auditlog.adb:1619:07: info: precondition proved
-auditlog.ads:33:13: info: initialization of "Valid_NumberLogEntries" proved
 auditlog.ads:60:22: info: initialization of "CurrentLogFile" constituent of "State" proved
 auditlog.ads:60:22: info: initialization of "LogFileEntries" constituent of "State" proved
 auditlog.ads:60:22: info: initialization of "NumberLogEntries" constituent of "State" proved
@@ -483,8 +460,6 @@ auditlog.ads:92:22: info: postcondition proved
 auditlog.ads:105:26: info: initialization of "Archive" proved
 auditlog.ads:119:22: info: postcondition proved
 auditlog.ads:143:22: info: postcondition proved
-auditlog.ads:167:13: info: initialization of "TheAuditAlarm" proved
-auditlog.ads:179:13: info: initialization of "SystemFaultOccurred" proved
 audittypes.ads:93:58: info: length check proved
 audittypes.ads:106:06: info: length check proved
 audittypes.ads:106:06: info: length check proved
@@ -494,7 +469,6 @@ bio.adb:119:10: info: loop invariant preservation proved, in call inlined at bio
 bio.adb:121:33: info: initialization of "Result" proved, in call inlined at bio.adb:181
 bio.adb:122:25: info: initialization of "C27b" proved, in call inlined at bio.adb:181
 bio.adb:127:14: info: initialization of "Result" proved, in call inlined at bio.adb:181
-bio.adb:140:13: info: initialization of "MakeDescription" proved
 bio.adb:165:38: medium: range check might fail, in call inlined at bio.adb:183
 bio.adb:166:12: medium: range check might fail, in call inlined at bio.adb:183
 bio.adb:166:28: info: initialization of "TheCodeName" proved, in call inlined at bio.adb:183
@@ -573,8 +547,6 @@ cert-attr-auth.adb:157:48: info: initialization of "LocalContents.Privilege.Role
 cert-attr-auth.adb:157:48: info: initialization of "LocalContents.SerialNumber" proved
 cert-attr-auth.adb:157:48: info: initialization of "LocalContents.SigAlgId" proved
 cert-attr-auth.adb:203:21: info: initialization of "IsVerified" proved
-cert-attr-auth.ads:54:13: info: initialization of "TheRole" proved
-cert-attr-auth.ads:66:13: info: initialization of "TheClearance.Class" proved
 cert-attr-auth.ads:79:23: info: initialization of "Contents.BaseCertID.Issuer.ID" proved
 cert-attr-auth.ads:79:23: info: initialization of "Contents.BaseCertID.Issuer.Name" proved
 cert-attr-auth.ads:79:23: info: initialization of "Contents.BaseCertID.Issuer.NameLength" proved
@@ -635,36 +607,6 @@ cert-attr-auth.ads:166:21: info: initialization of "Contents.NotBefore.MilliSec"
 cert-attr-auth.ads:166:21: info: initialization of "Contents.NotBefore.Month" proved
 cert-attr-auth.ads:166:21: info: initialization of "Contents.NotBefore.Year" proved
 cert-attr-auth.ads:166:21: info: initialization of "Contents.Role" proved
-cert-attr-auth.ads:171:13: info: initialization of "Cert_Attr_Auth_To_Cert.ID.Issuer.ID" proved
-cert-attr-auth.ads:171:13: info: initialization of "Cert_Attr_Auth_To_Cert.ID.Issuer.Name" proved
-cert-attr-auth.ads:171:13: info: initialization of "Cert_Attr_Auth_To_Cert.ID.Issuer.NameLength" proved
-cert-attr-auth.ads:171:13: info: initialization of "Cert_Attr_Auth_To_Cert.ID.SerialNumber" proved
-cert-attr-auth.ads:171:13: info: initialization of "Cert_Attr_Auth_To_Cert.Mechanism" proved
-cert-attr-auth.ads:171:13: info: initialization of "Cert_Attr_Auth_To_Cert.NotAfter.Day" proved
-cert-attr-auth.ads:171:13: info: initialization of "Cert_Attr_Auth_To_Cert.NotAfter.MilliSec" proved
-cert-attr-auth.ads:171:13: info: initialization of "Cert_Attr_Auth_To_Cert.NotAfter.Month" proved
-cert-attr-auth.ads:171:13: info: initialization of "Cert_Attr_Auth_To_Cert.NotAfter.Year" proved
-cert-attr-auth.ads:171:13: info: initialization of "Cert_Attr_Auth_To_Cert.NotBefore.Day" proved
-cert-attr-auth.ads:171:13: info: initialization of "Cert_Attr_Auth_To_Cert.NotBefore.MilliSec" proved
-cert-attr-auth.ads:171:13: info: initialization of "Cert_Attr_Auth_To_Cert.NotBefore.Month" proved
-cert-attr-auth.ads:171:13: info: initialization of "Cert_Attr_Auth_To_Cert.NotBefore.Year" proved
-cert-attr-auth.ads:175:13: info: initialization of "Cert_Attr_Auth_To_Cert_Attr.BaseCertID.Issuer.ID" proved
-cert-attr-auth.ads:175:13: info: initialization of "Cert_Attr_Auth_To_Cert_Attr.BaseCertID.Issuer.Name" proved
-cert-attr-auth.ads:175:13: info: initialization of "Cert_Attr_Auth_To_Cert_Attr.BaseCertID.Issuer.NameLength" proved
-cert-attr-auth.ads:175:13: info: initialization of "Cert_Attr_Auth_To_Cert_Attr.BaseCertID.SerialNumber" proved
-cert-attr-auth.ads:175:13: info: initialization of "Cert_Attr_Auth_To_Cert_Attr.ID.Issuer.ID" proved
-cert-attr-auth.ads:175:13: info: initialization of "Cert_Attr_Auth_To_Cert_Attr.ID.Issuer.Name" proved
-cert-attr-auth.ads:175:13: info: initialization of "Cert_Attr_Auth_To_Cert_Attr.ID.Issuer.NameLength" proved
-cert-attr-auth.ads:175:13: info: initialization of "Cert_Attr_Auth_To_Cert_Attr.ID.SerialNumber" proved
-cert-attr-auth.ads:175:13: info: initialization of "Cert_Attr_Auth_To_Cert_Attr.Mechanism" proved
-cert-attr-auth.ads:175:13: info: initialization of "Cert_Attr_Auth_To_Cert_Attr.NotAfter.Day" proved
-cert-attr-auth.ads:175:13: info: initialization of "Cert_Attr_Auth_To_Cert_Attr.NotAfter.MilliSec" proved
-cert-attr-auth.ads:175:13: info: initialization of "Cert_Attr_Auth_To_Cert_Attr.NotAfter.Month" proved
-cert-attr-auth.ads:175:13: info: initialization of "Cert_Attr_Auth_To_Cert_Attr.NotAfter.Year" proved
-cert-attr-auth.ads:175:13: info: initialization of "Cert_Attr_Auth_To_Cert_Attr.NotBefore.Day" proved
-cert-attr-auth.ads:175:13: info: initialization of "Cert_Attr_Auth_To_Cert_Attr.NotBefore.MilliSec" proved
-cert-attr-auth.ads:175:13: info: initialization of "Cert_Attr_Auth_To_Cert_Attr.NotBefore.Month" proved
-cert-attr-auth.ads:175:13: info: initialization of "Cert_Attr_Auth_To_Cert_Attr.NotBefore.Year" proved
 cert-attr-ianda.adb:53:35: info: initialization of "LocalContents.Issuer.ID" proved
 cert-attr-ianda.adb:53:35: info: initialization of "LocalContents.Issuer.Name" proved
 cert-attr-ianda.adb:53:35: info: initialization of "LocalContents.Issuer.NameLength" proved
@@ -691,10 +633,6 @@ cert-attr-ianda.adb:76:27: info: initialization of "LocalContents.AttCertValidit
 cert-attr-ianda.adb:80:18: info: initialization of "Extracted" proved
 cert-attr-ianda.adb:80:32: info: initialization of "NotBeforeOk" proved
 cert-attr-ianda.adb:80:48: info: initialization of "NotAfterOk" proved
-cert-attr-ianda.ads:54:13: info: initialization of "TheTemplate.ID" proved
-cert-attr-ianda.ads:54:13: info: initialization of "TheTemplate.Length" proved
-cert-attr-ianda.ads:54:13: info: initialization of "TheTemplate.Pad" proved
-cert-attr-ianda.ads:54:13: info: initialization of "TheTemplate.RequiredMaxFAR" proved
 cert-attr-ianda.ads:66:23: info: initialization of "Contents.BaseCertID.Issuer.ID" proved
 cert-attr-ianda.ads:66:23: info: initialization of "Contents.BaseCertID.Issuer.Name" proved
 cert-attr-ianda.ads:66:23: info: initialization of "Contents.BaseCertID.Issuer.NameLength" proved
@@ -738,36 +676,6 @@ cert-attr-ianda.ads:80:21: info: initialization of "Contents.Template.ID" proved
 cert-attr-ianda.ads:80:21: info: initialization of "Contents.Template.Length" proved
 cert-attr-ianda.ads:80:21: info: initialization of "Contents.Template.Pad" proved
 cert-attr-ianda.ads:80:21: info: initialization of "Contents.Template.RequiredMaxFAR" proved
-cert-attr-ianda.ads:85:13: info: initialization of "Cert_Attr_Ianda_To_Cert.ID.Issuer.ID" proved
-cert-attr-ianda.ads:85:13: info: initialization of "Cert_Attr_Ianda_To_Cert.ID.Issuer.Name" proved
-cert-attr-ianda.ads:85:13: info: initialization of "Cert_Attr_Ianda_To_Cert.ID.Issuer.NameLength" proved
-cert-attr-ianda.ads:85:13: info: initialization of "Cert_Attr_Ianda_To_Cert.ID.SerialNumber" proved
-cert-attr-ianda.ads:85:13: info: initialization of "Cert_Attr_Ianda_To_Cert.Mechanism" proved
-cert-attr-ianda.ads:85:13: info: initialization of "Cert_Attr_Ianda_To_Cert.NotAfter.Day" proved
-cert-attr-ianda.ads:85:13: info: initialization of "Cert_Attr_Ianda_To_Cert.NotAfter.MilliSec" proved
-cert-attr-ianda.ads:85:13: info: initialization of "Cert_Attr_Ianda_To_Cert.NotAfter.Month" proved
-cert-attr-ianda.ads:85:13: info: initialization of "Cert_Attr_Ianda_To_Cert.NotAfter.Year" proved
-cert-attr-ianda.ads:85:13: info: initialization of "Cert_Attr_Ianda_To_Cert.NotBefore.Day" proved
-cert-attr-ianda.ads:85:13: info: initialization of "Cert_Attr_Ianda_To_Cert.NotBefore.MilliSec" proved
-cert-attr-ianda.ads:85:13: info: initialization of "Cert_Attr_Ianda_To_Cert.NotBefore.Month" proved
-cert-attr-ianda.ads:85:13: info: initialization of "Cert_Attr_Ianda_To_Cert.NotBefore.Year" proved
-cert-attr-ianda.ads:89:13: info: initialization of "Cert_Attr_Ianda_To_Cert_Attr.BaseCertID.Issuer.ID" proved
-cert-attr-ianda.ads:89:13: info: initialization of "Cert_Attr_Ianda_To_Cert_Attr.BaseCertID.Issuer.Name" proved
-cert-attr-ianda.ads:89:13: info: initialization of "Cert_Attr_Ianda_To_Cert_Attr.BaseCertID.Issuer.NameLength" proved
-cert-attr-ianda.ads:89:13: info: initialization of "Cert_Attr_Ianda_To_Cert_Attr.BaseCertID.SerialNumber" proved
-cert-attr-ianda.ads:89:13: info: initialization of "Cert_Attr_Ianda_To_Cert_Attr.ID.Issuer.ID" proved
-cert-attr-ianda.ads:89:13: info: initialization of "Cert_Attr_Ianda_To_Cert_Attr.ID.Issuer.Name" proved
-cert-attr-ianda.ads:89:13: info: initialization of "Cert_Attr_Ianda_To_Cert_Attr.ID.Issuer.NameLength" proved
-cert-attr-ianda.ads:89:13: info: initialization of "Cert_Attr_Ianda_To_Cert_Attr.ID.SerialNumber" proved
-cert-attr-ianda.ads:89:13: info: initialization of "Cert_Attr_Ianda_To_Cert_Attr.Mechanism" proved
-cert-attr-ianda.ads:89:13: info: initialization of "Cert_Attr_Ianda_To_Cert_Attr.NotAfter.Day" proved
-cert-attr-ianda.ads:89:13: info: initialization of "Cert_Attr_Ianda_To_Cert_Attr.NotAfter.MilliSec" proved
-cert-attr-ianda.ads:89:13: info: initialization of "Cert_Attr_Ianda_To_Cert_Attr.NotAfter.Month" proved
-cert-attr-ianda.ads:89:13: info: initialization of "Cert_Attr_Ianda_To_Cert_Attr.NotAfter.Year" proved
-cert-attr-ianda.ads:89:13: info: initialization of "Cert_Attr_Ianda_To_Cert_Attr.NotBefore.Day" proved
-cert-attr-ianda.ads:89:13: info: initialization of "Cert_Attr_Ianda_To_Cert_Attr.NotBefore.MilliSec" proved
-cert-attr-ianda.ads:89:13: info: initialization of "Cert_Attr_Ianda_To_Cert_Attr.NotBefore.Month" proved
-cert-attr-ianda.ads:89:13: info: initialization of "Cert_Attr_Ianda_To_Cert_Attr.NotBefore.Year" proved
 cert-attr-priv.adb:60:35: info: initialization of "LocalContents.Issuer.ID" proved
 cert-attr-priv.adb:60:35: info: initialization of "LocalContents.Issuer.Name" proved
 cert-attr-priv.adb:60:35: info: initialization of "LocalContents.Issuer.NameLength" proved
@@ -792,8 +700,6 @@ cert-attr-priv.adb:84:27: info: initialization of "LocalContents.AttCertValidity
 cert-attr-priv.adb:88:18: info: initialization of "Extracted" proved
 cert-attr-priv.adb:88:32: info: initialization of "NotBeforeOk" proved
 cert-attr-priv.adb:88:48: info: initialization of "NotAfterOk" proved
-cert-attr-priv.ads:53:13: info: initialization of "TheRole" proved
-cert-attr-priv.ads:64:13: info: initialization of "TheClearance.Class" proved
 cert-attr-priv.ads:76:23: info: initialization of "Contents.BaseCertID.Issuer.ID" proved
 cert-attr-priv.ads:76:23: info: initialization of "Contents.BaseCertID.Issuer.Name" proved
 cert-attr-priv.ads:76:23: info: initialization of "Contents.BaseCertID.Issuer.NameLength" proved
@@ -833,36 +739,6 @@ cert-attr-priv.ads:91:21: info: initialization of "Contents.NotBefore.MilliSec" 
 cert-attr-priv.ads:91:21: info: initialization of "Contents.NotBefore.Month" proved
 cert-attr-priv.ads:91:21: info: initialization of "Contents.NotBefore.Year" proved
 cert-attr-priv.ads:91:21: info: initialization of "Contents.Role" proved
-cert-attr-priv.ads:96:13: info: initialization of "Cert_Attr_Priv_To_Cert.ID.Issuer.ID" proved
-cert-attr-priv.ads:96:13: info: initialization of "Cert_Attr_Priv_To_Cert.ID.Issuer.Name" proved
-cert-attr-priv.ads:96:13: info: initialization of "Cert_Attr_Priv_To_Cert.ID.Issuer.NameLength" proved
-cert-attr-priv.ads:96:13: info: initialization of "Cert_Attr_Priv_To_Cert.ID.SerialNumber" proved
-cert-attr-priv.ads:96:13: info: initialization of "Cert_Attr_Priv_To_Cert.Mechanism" proved
-cert-attr-priv.ads:96:13: info: initialization of "Cert_Attr_Priv_To_Cert.NotAfter.Day" proved
-cert-attr-priv.ads:96:13: info: initialization of "Cert_Attr_Priv_To_Cert.NotAfter.MilliSec" proved
-cert-attr-priv.ads:96:13: info: initialization of "Cert_Attr_Priv_To_Cert.NotAfter.Month" proved
-cert-attr-priv.ads:96:13: info: initialization of "Cert_Attr_Priv_To_Cert.NotAfter.Year" proved
-cert-attr-priv.ads:96:13: info: initialization of "Cert_Attr_Priv_To_Cert.NotBefore.Day" proved
-cert-attr-priv.ads:96:13: info: initialization of "Cert_Attr_Priv_To_Cert.NotBefore.MilliSec" proved
-cert-attr-priv.ads:96:13: info: initialization of "Cert_Attr_Priv_To_Cert.NotBefore.Month" proved
-cert-attr-priv.ads:96:13: info: initialization of "Cert_Attr_Priv_To_Cert.NotBefore.Year" proved
-cert-attr-priv.ads:99:13: info: initialization of "Cert_Attr_Priv_To_Cert_Attr.BaseCertID.Issuer.ID" proved
-cert-attr-priv.ads:99:13: info: initialization of "Cert_Attr_Priv_To_Cert_Attr.BaseCertID.Issuer.Name" proved
-cert-attr-priv.ads:99:13: info: initialization of "Cert_Attr_Priv_To_Cert_Attr.BaseCertID.Issuer.NameLength" proved
-cert-attr-priv.ads:99:13: info: initialization of "Cert_Attr_Priv_To_Cert_Attr.BaseCertID.SerialNumber" proved
-cert-attr-priv.ads:99:13: info: initialization of "Cert_Attr_Priv_To_Cert_Attr.ID.Issuer.ID" proved
-cert-attr-priv.ads:99:13: info: initialization of "Cert_Attr_Priv_To_Cert_Attr.ID.Issuer.Name" proved
-cert-attr-priv.ads:99:13: info: initialization of "Cert_Attr_Priv_To_Cert_Attr.ID.Issuer.NameLength" proved
-cert-attr-priv.ads:99:13: info: initialization of "Cert_Attr_Priv_To_Cert_Attr.ID.SerialNumber" proved
-cert-attr-priv.ads:99:13: info: initialization of "Cert_Attr_Priv_To_Cert_Attr.Mechanism" proved
-cert-attr-priv.ads:99:13: info: initialization of "Cert_Attr_Priv_To_Cert_Attr.NotAfter.Day" proved
-cert-attr-priv.ads:99:13: info: initialization of "Cert_Attr_Priv_To_Cert_Attr.NotAfter.MilliSec" proved
-cert-attr-priv.ads:99:13: info: initialization of "Cert_Attr_Priv_To_Cert_Attr.NotAfter.Month" proved
-cert-attr-priv.ads:99:13: info: initialization of "Cert_Attr_Priv_To_Cert_Attr.NotAfter.Year" proved
-cert-attr-priv.ads:99:13: info: initialization of "Cert_Attr_Priv_To_Cert_Attr.NotBefore.Day" proved
-cert-attr-priv.ads:99:13: info: initialization of "Cert_Attr_Priv_To_Cert_Attr.NotBefore.MilliSec" proved
-cert-attr-priv.ads:99:13: info: initialization of "Cert_Attr_Priv_To_Cert_Attr.NotBefore.Month" proved
-cert-attr-priv.ads:99:13: info: initialization of "Cert_Attr_Priv_To_Cert_Attr.NotBefore.Year" proved
 cert-attr.adb:38:09: medium: range check might fail
 cert-attr.adb:39:09: medium: range check might fail
 cert-attr.adb:40:09: medium: range check might fail
@@ -874,11 +750,6 @@ cert-attr.adb:49:23: info: initialization of "FullString" proved
 cert-attr.adb:49:23: info: length check proved
 cert-attr.adb:49:23: info: range check proved
 cert-attr.adb:52:14: info: initialization of "LocalUser" proved
-cert-attr.ads:55:13: info: initialization of "ExtractUser" proved
-cert-attr.ads:66:13: info: initialization of "TheBaseCert.Issuer.ID" proved
-cert-attr.ads:66:13: info: initialization of "TheBaseCert.Issuer.Name" proved
-cert-attr.ads:66:13: info: initialization of "TheBaseCert.Issuer.NameLength" proved
-cert-attr.ads:66:13: info: initialization of "TheBaseCert.SerialNumber" proved
 cert-id.adb:71:36: info: initialization of "LocalContents.Issuer.ID" proved
 cert-id.adb:71:36: info: initialization of "LocalContents.Issuer.Name" proved
 cert-id.adb:71:36: info: initialization of "LocalContents.Issuer.NameLength" proved
@@ -906,12 +777,6 @@ cert-id.adb:116:18: info: initialization of "Extracted" proved
 cert-id.adb:116:32: info: initialization of "NotBeforeOk" proved
 cert-id.adb:116:48: info: initialization of "NotAfterOk" proved
 cert-id.adb:116:63: info: initialization of "KeyLengthOK" proved
-cert-id.ads:54:13: info: initialization of "TheSubject.ID" proved
-cert-id.ads:54:13: info: initialization of "TheSubject.Name" proved
-cert-id.ads:54:13: info: initialization of "TheSubject.NameLength" proved
-cert-id.ads:65:13: info: initialization of "ThePublicKey.AlgorithmID" proved
-cert-id.ads:65:13: info: initialization of "ThePublicKey.KeyID" proved
-cert-id.ads:65:13: info: initialization of "ThePublicKey.KeyLength" proved
 cert-id.ads:77:23: info: initialization of "Contents.ID.Issuer.ID" proved
 cert-id.ads:77:23: info: initialization of "Contents.ID.Issuer.Name" proved
 cert-id.ads:77:23: info: initialization of "Contents.ID.Issuer.NameLength" proved
@@ -951,19 +816,6 @@ cert-id.ads:92:21: info: initialization of "Contents.Subject.NameLength" proved
 cert-id.ads:92:21: info: initialization of "Contents.SubjectPublicKey.AlgorithmID" proved
 cert-id.ads:92:21: info: initialization of "Contents.SubjectPublicKey.KeyID" proved
 cert-id.ads:92:21: info: initialization of "Contents.SubjectPublicKey.KeyLength" proved
-cert-id.ads:97:13: info: initialization of "Cert_Id_To_Cert.ID.Issuer.ID" proved
-cert-id.ads:97:13: info: initialization of "Cert_Id_To_Cert.ID.Issuer.Name" proved
-cert-id.ads:97:13: info: initialization of "Cert_Id_To_Cert.ID.Issuer.NameLength" proved
-cert-id.ads:97:13: info: initialization of "Cert_Id_To_Cert.ID.SerialNumber" proved
-cert-id.ads:97:13: info: initialization of "Cert_Id_To_Cert.Mechanism" proved
-cert-id.ads:97:13: info: initialization of "Cert_Id_To_Cert.NotAfter.Day" proved
-cert-id.ads:97:13: info: initialization of "Cert_Id_To_Cert.NotAfter.MilliSec" proved
-cert-id.ads:97:13: info: initialization of "Cert_Id_To_Cert.NotAfter.Month" proved
-cert-id.ads:97:13: info: initialization of "Cert_Id_To_Cert.NotAfter.Year" proved
-cert-id.ads:97:13: info: initialization of "Cert_Id_To_Cert.NotBefore.Day" proved
-cert-id.ads:97:13: info: initialization of "Cert_Id_To_Cert.NotBefore.MilliSec" proved
-cert-id.ads:97:13: info: initialization of "Cert_Id_To_Cert.NotBefore.Month" proved
-cert-id.ads:97:13: info: initialization of "Cert_Id_To_Cert.NotBefore.Year" proved
 cert.adb:63:09: medium: range check might fail
 cert.adb:64:09: medium: range check might fail
 cert.adb:65:09: medium: range check might fail
@@ -980,20 +832,6 @@ cert.adb:116:14: info: initialization of "LocalRawData.RawData" proved
 cert.adb:136:14: info: initialization of "LocalSig.SigData" proved
 cert.adb:136:14: info: initialization of "LocalSig.SigLength" proved
 cert.adb:170:11: info: initialization of "IsKnown" proved
-cert.ads:58:13: info: initialization of "TheIssuer.ID" proved
-cert.ads:58:13: info: initialization of "TheIssuer.Name" proved
-cert.ads:58:13: info: initialization of "TheIssuer.NameLength" proved
-cert.ads:69:13: info: initialization of "TheID.Issuer.ID" proved
-cert.ads:69:13: info: initialization of "TheID.Issuer.Name" proved
-cert.ads:69:13: info: initialization of "TheID.Issuer.NameLength" proved
-cert.ads:69:13: info: initialization of "TheID.SerialNumber" proved
-cert.ads:80:13: info: initialization of "ExtractUser" proved
-cert.ads:91:13: info: initialization of "TheMechanism" proved
-cert.ads:102:13: info: initialization of "IsCurrent" proved
-cert.ads:114:13: info: initialization of "GetData.DataLength" proved
-cert.ads:114:13: info: initialization of "GetData.RawData" proved
-cert.ads:127:13: info: initialization of "GetSignature.SigData" proved
-cert.ads:127:13: info: initialization of "GetSignature.SigLength" proved
 cert.ads:141:26: info: initialization of "IsKnown" proved
 cert.ads:169:20: info: initialization of "IsVerified" proved
 certificatestore.adb:38:42: info: length check proved
@@ -1033,8 +871,6 @@ certificatestore.adb:352:41: info: initialization of "Overflow" constituent of "
 certificatestore.adb:357:15: info: initialization of "Exists" proved
 certificatestore.adb:357:26: info: initialization of "Written" proved
 certificatestore.adb:358:18: medium: precondition might fail
-certificatestore.ads:95:13: info: initialization of "SerialNumberHasOverflowed" proved
-certificatestore.ads:108:13: info: initialization of "SerialNumber" proved
 certtypes.ads:35:22: info: initialization of "MaxRawCertLength" proved
 certtypes.ads:35:22: info: length check proved
 clock.adb:73:11: info: range check proved
@@ -1104,18 +940,6 @@ clock.adb:378:24: info: initialization of "LocalText" proved
 clock.adb:379:50: info: division check proved
 clock.adb:380:32: info: division check proved
 clock.adb:384:14: info: initialization of "LocalText" proved
-clock.ads:110:13: info: initialization of "TheCurrentTime.Day" proved
-clock.ads:110:13: info: initialization of "TheCurrentTime.MilliSec" proved
-clock.ads:110:13: info: initialization of "TheCurrentTime.Month" proved
-clock.ads:110:13: info: initialization of "TheCurrentTime.Year" proved
-clock.ads:122:13: info: initialization of "GetNow.Day" proved
-clock.ads:122:13: info: initialization of "GetNow.MilliSec" proved
-clock.ads:122:13: info: initialization of "GetNow.Month" proved
-clock.ads:122:13: info: initialization of "GetNow.Year" proved
-clock.ads:134:13: info: initialization of "GreaterThan" proved
-clock.ads:145:13: info: initialization of "LessThan" proved
-clock.ads:156:13: info: initialization of "GreaterThanOrEqual" proved
-clock.ads:167:13: info: initialization of "LessThanOrEqual" proved
 clock.ads:185:07: info: initialization of "TheTime.Day" proved
 clock.ads:185:07: info: initialization of "TheTime.MilliSec" proved
 clock.ads:185:07: info: initialization of "TheTime.Month" proved
@@ -1126,16 +950,6 @@ clock.ads:206:07: info: initialization of "Month" proved
 clock.ads:207:07: info: initialization of "Day" proved
 clock.ads:208:07: info: initialization of "Hour" proved
 clock.ads:209:07: info: initialization of "Min" proved
-clock.ads:225:13: info: initialization of "StartOfDay.Day" proved
-clock.ads:225:13: info: initialization of "StartOfDay.MilliSec" proved
-clock.ads:225:13: info: initialization of "StartOfDay.Month" proved
-clock.ads:225:13: info: initialization of "StartOfDay.Year" proved
-clock.ads:236:13: info: initialization of "PrintDuration" proved
-clock.ads:247:13: info: initialization of "PrintTime" proved
-clock.ads:258:13: info: initialization of "AddDuration.Day" proved
-clock.ads:258:13: info: initialization of "AddDuration.MilliSec" proved
-clock.ads:258:13: info: initialization of "AddDuration.Month" proved
-clock.ads:258:13: info: initialization of "AddDuration.Year" proved
 configdata.adb:89:09: info: length check proved
 configdata.adb:91:09: info: length check proved
 configdata.adb:93:09: info: length check proved
@@ -1469,7 +1283,6 @@ configdata.ads:201:07: info: initialization of "TheMinEntryClass" proved
 configdata.ads:202:07: info: initialization of "TheMinPreservedLogSize" proved
 configdata.ads:203:07: info: initialization of "TheAlarmThresholdSize" proved
 configdata.ads:204:07: info: initialization of "TheSystemMaxFar" proved
-configdata.ads:232:13: info: initialization of "AuthPeriodIsEmpty" proved
 configdata.ads:246:08: info: initialization of "NotBefore.Day" proved
 configdata.ads:246:08: info: initialization of "NotBefore.MilliSec" proved
 configdata.ads:246:08: info: initialization of "NotBefore.Month" proved
@@ -1478,15 +1291,6 @@ configdata.ads:247:08: info: initialization of "NotAfter.Day" proved
 configdata.ads:247:08: info: initialization of "NotAfter.MilliSec" proved
 configdata.ads:247:08: info: initialization of "NotAfter.Month" proved
 configdata.ads:247:08: info: initialization of "NotAfter.Year" proved
-configdata.ads:263:13: info: initialization of "IsInEntryPeriod" proved
-configdata.ads:277:13: info: initialization of "TheLatchUnlockDuration" proved
-configdata.ads:289:13: info: initialization of "TheAlarmSilentDuration" proved
-configdata.ads:301:13: info: initialization of "TheFingerWaitDuration" proved
-configdata.ads:313:13: info: initialization of "TheTokenRemovalDuration" proved
-configdata.ads:325:13: info: initialization of "TheEnclaveClearance" proved
-configdata.ads:337:13: info: initialization of "TheSystemMaxFar" proved
-configdata.ads:349:13: info: initialization of "TheAlarmThresholdEntries" proved
-configuration.adb:81:16: info: initialization of "MakeDescription" proved
 configuration.adb:99:57: info: division check proved
 configuration.adb:99:63: medium: range check might fail
 configuration.adb:100:12: medium: range check might fail
@@ -1775,12 +1579,6 @@ door.adb:413:42: info: initialization of "AlarmTimeout.Year" constituent of "Sta
 door.adb:414:42: info: initialization of "CurrentDoor" constituent of "State" proved
 door.adb:415:42: info: initialization of "DoorAlarm" constituent of "State" proved
 door.adb:416:47: info: initialization of "Latch.State" proved
-door.ads:47:13: info: initialization of "Alarm_Timeout.Day" proved
-door.ads:47:13: info: initialization of "Alarm_Timeout.MilliSec" proved
-door.ads:47:13: info: initialization of "Alarm_Timeout.Month" proved
-door.ads:47:13: info: initialization of "Alarm_Timeout.Year" proved
-door.ads:60:13: info: initialization of "TheCurrentDoor" proved
-door.ads:72:13: info: initialization of "TheDoorAlarm" proved
 door.ads:87:20: info: initialization of "SystemFault" proved
 door.ads:116:22: info: postcondition proved
 door.ads:169:22: info: postcondition proved
@@ -1793,7 +1591,6 @@ door.ads:216:48: info: initialization of "AlarmTimeout.Day" constituent of "Stat
 door.ads:216:48: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
 door.ads:216:48: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
 door.ads:216:48: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
-doorapi.adb:25:13: info: initialization of "GetDoorStateRaw" proved
 doorapi.adb:33:29: medium: length check might fail
 doorapi.adb:33:29: warning: assuming "Overwrite" has no effect on global items
 doorapi.adb:33:29: warning: no Global contract available for "Overwrite"
@@ -1810,11 +1607,8 @@ doorapi.adb:58:47: info: initialization of "StateDict" proved
 doorapi.adb:61:13: info: initialization of "IsOp" proved
 doorapi.adb:62:16: info: initialization of "IsClosed" proved
 doorapi.adb:70:14: info: initialization of "DoorState" proved
-enclave.adb:98:13: info: initialization of "PresentAdminHasDeparted" proved
 enclave.adb:105:18: info: precondition proved
 enclave.adb:113:14: info: initialization of "Result" proved
-enclave.adb:128:13: info: initialization of "AdminTokenHasExpired" proved
-enclave.adb:147:13: info: initialization of "AdminHasDeparted" proved
 enclave.adb:189:22: info: postcondition proved
 enclave.adb:226:33: info: initialization of "Status" constituent of "State" proved
 enclave.adb:250:22: info: postcondition proved
@@ -1910,7 +1704,6 @@ enclave.adb:1479:13: info: precondition proved
 enclave.adb:1504:41: info: initialization of "Status" constituent of "State" proved
 enclave.adb:1506:30: info: refined post proved
 enclave.adb:1507:37: info: initialization of "Status" constituent of "State" proved
-enclave.adb:1552:16: info: initialization of "AdminActivityInProgress" proved
 enclave.adb:1614:31: info: refined post proved
 enclave.adb:1621:39: info: range check proved
 enclave.adb:1623:12: info: initialization of "LocalStatus" proved
@@ -1934,8 +1727,6 @@ enclave.adb:2040:06: info: refined post proved
 enclave.adb:2068:18: medium: precondition might fail
 enclave.adb:2078:18: medium: precondition might fail
 enclave.adb:2084:19: medium: precondition might fail
-enclave.adb:2101:16: info: initialization of "AdminLogonCanStart" proved
-enclave.adb:2122:16: info: initialization of "AdminOpCanStart" proved
 enclave.adb:2179:21: medium: precondition might fail
 enclave.adb:2185:22: medium: precondition might fail
 enclave.adb:2188:09: medium: postcondition might fail
@@ -1955,19 +1746,8 @@ enclave.adb:2252:34: info: initialization of "KeyedData.Text" proved
 enclave.adb:2258:24: medium: precondition might fail
 enclave.adb:2262:34: info: initialization of "KeyedData.Text" proved
 enclave.adb:2275:10: info: precondition proved
-enclave.ads:62:13: info: initialization of "GetStatus" proved
-enclave.ads:66:13: info: initialization of "statusIsGotAdminToken" proved
-enclave.ads:70:13: info: initialization of "statusIsWaitingRemoveAdminTokenFail" proved
-enclave.ads:74:13: info: initialization of "statusIsWaitingStartAdminOp" proved
-enclave.ads:78:13: info: initialization of "statusIsWaitingFinishAdminOp" proved
-enclave.ads:82:13: info: initialization of "statusIsEnclaveQuiescent" proved
-enclave.ads:86:13: info: initialization of "statusIsShutdown" proved
-enclave.ads:100:13: info: initialization of "EnrolmentIsInProgress" proved
 enclave.ads:117:22: info: postcondition proved
 enclave.ads:117:56: info: initialization of "Status" constituent of "State" proved
-enclave.ads:131:13: info: initialization of "AdminMustLogout" proved
-enclave.ads:146:13: info: initialization of "CurrentAdminActivityPossible" proved
-enclave.ads:159:13: info: initialization of "HasShutdown" proved
 enclave.ads:210:22: info: postcondition proved
 enclave.ads:252:22: info: postcondition proved
 enclave.ads:433:25: medium: precondition might fail
@@ -1985,7 +1765,6 @@ enclave.ads:603:13: info: postcondition proved
 enclave.ads:632:29: medium: precondition might fail
 enclave.ads:642:29: medium: precondition might fail
 enclave.ads:648:30: medium: precondition might fail
-enrolment.adb:60:16: info: initialization of "MakeDescription" proved
 enrolment.adb:66:66: medium: range check might fail
 enrolment.adb:67:55: medium: range check might fail
 enrolment.adb:67:63: medium: range check might fail
@@ -2176,7 +1955,6 @@ keystore.adb:136:22: info: initialization of "TheDigest.Pad" proved
 keystore.adb:136:22: info: initialization of "TheDigest.SignReturn" proved
 keystore.adb:136:22: info: initialization of "TheDigest.VerifyReturn" proved
 keystore.adb:137:22: info: initialization of "Success" proved
-keystore.adb:179:16: info: initialization of "GetBlock" proved
 keystore.adb:186:42: info: range check proved
 keystore.adb:186:53: info: overflow check proved
 keystore.adb:186:69: info: overflow check proved
@@ -2325,11 +2103,6 @@ keystore.adb:863:41: info: initialization of "ThisTISInfo.Owner.ID" constituent 
 keystore.adb:863:41: info: initialization of "ThisTISInfo.Owner.Name" constituent of "State" proved
 keystore.adb:863:41: info: initialization of "ThisTISInfo.Owner.NameLength" constituent of "State" proved
 keystore.ads:74:40: info: initialization of "IsPresent" proved
-keystore.ads:100:13: info: initialization of "PrivateKeyPresent" proved
-keystore.ads:112:13: info: initialization of "IssuerIsThisTIS" proved
-keystore.ads:124:13: info: initialization of "ThisTIS.ID" proved
-keystore.ads:124:13: info: initialization of "ThisTIS.Name" proved
-keystore.ads:124:13: info: initialization of "ThisTIS.NameLength" proved
 keystore.ads:140:28: info: initialization of "Verified" proved
 keystore.ads:172:20: info: initialization of "Signature.SigData" proved
 keystore.ads:172:20: info: initialization of "Signature.SigLength" proved
@@ -2371,14 +2144,6 @@ latch.adb:193:42: info: initialization of "LatchTimeout.Day" constituent of "Sta
 latch.adb:193:42: info: initialization of "LatchTimeout.MilliSec" constituent of "State" proved
 latch.adb:193:42: info: initialization of "LatchTimeout.Month" constituent of "State" proved
 latch.adb:193:42: info: initialization of "LatchTimeout.Year" constituent of "State" proved
-latch.ads:38:13: info: initialization of "Current_Latch" proved
-latch.ads:42:13: info: initialization of "Latch_Timeout.Day" proved
-latch.ads:42:13: info: initialization of "Latch_Timeout.MilliSec" proved
-latch.ads:42:13: info: initialization of "Latch_Timeout.Month" proved
-latch.ads:42:13: info: initialization of "Latch_Timeout.Year" proved
-latch.ads:46:13: info: initialization of "LatchIsLocked" proved
-latch.ads:51:13: info: initialization of "Interfac_IsLocked" proved
-latch.ads:78:13: info: initialization of "IsLocked" proved
 latch.ads:106:22: info: postcondition proved
 latch.ads:120:28: info: initialization of "SystemFault" proved
 latch.ads:135:22: info: postcondition proved
@@ -2966,13 +2731,9 @@ tokenreader.adb:62:34: info: initialization of "NoReaderInfo.TokenTry" proved
 tokenreader.adb:67:23: info: length check proved
 tokenreader.adb:67:33: info: length check proved
 tokenreader.adb:68:33: info: length check proved
-tokenreader.adb:91:13: info: initialization of "GetResponseCode" proved
 tokenreader.adb:97:40: info: range check proved
-tokenreader.adb:110:13: info: initialization of "GetReaderState" proved
 tokenreader.adb:116:39: info: range check proved
-tokenreader.adb:129:13: info: initialization of "GetCardState" proved
 tokenreader.adb:135:37: info: range check proved
-tokenreader.adb:148:13: info: initialization of "MakeDescription" proved
 tokenreader.adb:173:47: medium: range check might fail
 tokenreader.adb:174:12: medium: range check might fail
 tokenreader.adb:174:55: medium: range check might fail
@@ -3040,9 +2801,6 @@ tokenreader.adb:802:16: info: initialization of "ResponseCode" proved
 tokenreader.adb:821:49: info: initialization of "Interfac.ReaderOutput" constituent of "TokenReader.Output" proved
 tokenreader.adb:838:20: info: initialization of "StatusOK" proved
 tokenreader.adb:839:16: info: initialization of "ResponseCode" proved
-tokenreader.ads:105:13: info: initialization of "TheTokenPresence" proved
-tokenreader.ads:116:13: info: initialization of "TheTokenID" proved
-tokenreader.ads:127:13: info: initialization of "TheTokenTry" proved
 tokenreader.ads:142:30: info: initialization of "RawCert" proved
 tokenreader.ads:143:30: info: initialization of "Found" proved
 tokenreader.ads:168:07: info: initialization of "Success" proved
@@ -3067,7 +2825,6 @@ userentry.adb:59:04: info: initialization of "TokenRemovalTimeout.Day" constitue
 userentry.adb:59:04: info: initialization of "TokenRemovalTimeout.MilliSec" constituent of "State" proved
 userentry.adb:59:04: info: initialization of "TokenRemovalTimeout.Month" constituent of "State" proved
 userentry.adb:59:04: info: initialization of "TokenRemovalTimeout.Year" constituent of "State" proved
-userentry.adb:77:13: info: initialization of "UserHasDeparted" proved
 userentry.adb:97:33: info: initialization of "Status" constituent of "State" proved
 userentry.adb:116:15: medium: precondition might fail
 userentry.adb:159:33: info: initialization of "Status" constituent of "State" proved
@@ -3084,7 +2841,6 @@ userentry.adb:361:21: medium: precondition might fail
 userentry.adb:375:16: info: initialization of "FingerPresence" proved
 userentry.adb:379:24: medium: precondition might fail
 userentry.adb:419:33: info: initialization of "Status" constituent of "State" proved
-userentry.adb:456:16: info: initialization of "AchievedFARDescription" proved
 userentry.adb:476:15: medium: range check might fail
 userentry.adb:482:45: info: length check proved
 userentry.adb:482:48: info: initialization of "FullString" proved
@@ -3130,9 +2886,6 @@ userentry.adb:1203:13: info: precondition proved
 userentry.adb:1207:13: info: precondition proved
 userentry.adb:1211:13: info: precondition proved
 userentry.adb:1228:41: info: initialization of "Status" constituent of "State" proved
-userentry.ads:74:13: info: initialization of "CurrentActivityPossible" proved
-userentry.ads:88:13: info: initialization of "CanStart" proved
-userentry.ads:101:13: info: initialization of "InProgress" proved
 userentry.ads:264:13: info: postcondition proved
 usertoken.adb:118:33: info: initialization of "IDCert.Contents" constituent of "State" proved
 usertoken.adb:118:33: info: initialization of "IDCert.IDStatus" constituent of "State" proved
@@ -3371,14 +3124,7 @@ usertoken.adb:1079:60: info: initialization of "IDCertContents" proved
 usertoken.adb:1081:24: info: initialization of "Clearance.Class" proved
 usertoken.adb:1085:47: info: initialization of "AuthCertContents" proved
 usertoken.ads:121:30: info: initialization of "Success" proved
-usertoken.ads:152:13: info: initialization of "ExtractUser" proved
-usertoken.ads:164:13: info: initialization of "IsPresent" proved
 usertoken.ads:179:36: info: initialization of "AuthCertOK" proved
 usertoken.ads:223:07: info: initialization of "Description" proved
 usertoken.ads:224:07: info: initialization of "TokenOK" proved
 usertoken.ads:263:27: info: initialization of "Success" proved
-usertoken.ads:295:13: info: initialization of "GetIandATemplate.ID" proved
-usertoken.ads:295:13: info: initialization of "GetIandATemplate.Length" proved
-usertoken.ads:295:13: info: initialization of "GetIandATemplate.Pad" proved
-usertoken.ads:295:13: info: initialization of "GetIandATemplate.RequiredMaxFAR" proved
-usertoken.ads:307:13: info: initialization of "GetClass" proved

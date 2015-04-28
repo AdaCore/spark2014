@@ -1,4 +1,3 @@
-tab.adb:6:16: info: initialization of "Prev" proved
 tab.adb:6:49: medium: range check might fail
 tab.adb:9:10: info: loop invariant initialization proved
 tab.adb:9:10: info: loop invariant preservation proved

@@ -1,2 +1,1 @@
-p.ads:6:13: info: initialization of "Compare" proved
 p.ads:7:43: medium: postcondition might fail, requires not (Left = Right

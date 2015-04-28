@@ -9,9 +9,6 @@ segway.adb:89:10: info: loop invariant initialization proved
 segway.adb:89:10: info: loop invariant preservation proved
 segway.adb:91:13: info: precondition proved
 segway.adb:93:13: info: precondition proved
-segway.ads:16:13: info: initialization of "Current_Status" proved
-segway.ads:19:13: info: initialization of "Current_Speed" proved
-segway.ads:22:13: info: initialization of "Speed_Is_Valid" proved
 segway.ads:35:22: info: initialization of "Speed" constituent of "State" proved
 segway.ads:35:22: info: initialization of "Status" constituent of "State" proved
 segway.ads:35:22: info: postcondition proved

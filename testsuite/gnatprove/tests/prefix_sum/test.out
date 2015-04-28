@@ -98,10 +98,6 @@ prefixsum.adb:127:34: info: initialization of "Space" proved
 prefixsum.adb:127:40: info: overflow check proved
 prefixsum.adb:129:19: info: initialization of "Space" proved
 prefixsum.adb:129:25: info: division check proved
-prefixsum.ads:7:13: info: initialization of "All_Elements_In" proved
-prefixsum.ads:10:13: info: initialization of "All_Left_Elements_In" proved
-prefixsum.ads:15:13: info: initialization of "All_Right_Elements_In" proved
-prefixsum.ads:20:13: info: initialization of "Intermediate_Form" proved
 prefixsum.ads:26:23: info: division check proved
 prefixsum.ads:27:28: info: overflow check proved
 prefixsum.ads:27:36: info: overflow check proved
@@ -221,10 +217,6 @@ prefixsum_expanded.adb:189:19: info: initialization of "Space" proved
 prefixsum_expanded.adb:189:25: info: division check proved
 prefixsum_expanded.adb:192:07: medium: assertion might fail
 prefixsum_expanded.adb:193:18: info: initialization of "Saved_A" proved
-prefixsum_expanded.ads:7:13: info: initialization of "All_Elements_In" proved
-prefixsum_expanded.ads:10:13: info: initialization of "All_Left_Elements_In" proved
-prefixsum_expanded.ads:15:13: info: initialization of "All_Right_Elements_In" proved
-prefixsum_expanded.ads:20:13: info: initialization of "Intermediate_Form" proved
 prefixsum_expanded.ads:25:23: info: overflow check proved
 prefixsum_expanded.ads:25:31: info: overflow check proved
 prefixsum_expanded.ads:25:39: info: overflow check proved
@@ -335,15 +327,12 @@ prefixsum_general.adb:97:34: info: initialization of "Space" proved
 prefixsum_general.adb:97:40: info: overflow check proved
 prefixsum_general.adb:99:19: info: initialization of "Space" proved
 prefixsum_general.adb:99:25: info: division check proved
-prefixsum_general.adb:108:16: info: initialization of "Rec_Summation" proved
 prefixsum_general.adb:114:17: info: postcondition proved
 prefixsum_general.adb:123:27: medium: overflow check might fail
 prefixsum_general.adb:123:29: info: precondition proved
 prefixsum_general.adb:123:66: info: range check proved
 prefixsum_general.adb:126:14: info: precondition proved
-prefixsum_general.ads:8:13: info: initialization of "Is_Even" proved
 prefixsum_general.ads:8:56: info: division check proved
-prefixsum_general.ads:10:13: info: initialization of "Summation" proved
 prefixsum_general.ads:13:14: info: postcondition proved
 prefixsum_general.ads:15:41: info: initialization of "Output_Space" proved
 prefixsum_general.ads:17:14: medium: postcondition might fail

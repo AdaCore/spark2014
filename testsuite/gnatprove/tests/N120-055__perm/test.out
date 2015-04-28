@@ -5,7 +5,6 @@ sort.adb:17:15: info: index check proved
 sort.adb:17:29: info: index check proved
 sort.adb:18:15: info: index check proved
 sort.adb:18:21: info: initialization of "Temp" proved
-sort.adb:22:13: info: initialization of "Index_Of_Minimum" proved
 sort.adb:25:16: info: postcondition proved
 sort.adb:29:20: info: range check proved
 sort.adb:31:10: info: loop invariant initialization proved

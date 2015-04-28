@@ -20,5 +20,4 @@ escape.adb:22:28: info: initialization of "TI" proved
 escape.adb:23:22: info: initialization of "TI" proved
 escape.adb:23:25: medium: overflow check might fail
 escape.adb:26:17: medium: "Result" might not be initialized
-escape.ads:5:13: info: initialization of "Backslash_Escape" proved
 escape.ads:6:20: info: postcondition proved

@@ -43,11 +43,6 @@ skp-subjects.adb:422:07: info: assertion proved
 skp-subjects.adb:422:53: info: division check proved
 skp-subjects.adb:428:12: medium: assertion might fail, requires Subject_Specs (Subject).PML4_Address mod 4096 = 0
 skp-subjects.adb:428:50: info: division check proved
-skp-subjects.ads:44:13: info: initialization of "Get_PML4_Address" proved
 skp-subjects.ads:49:17: info: postcondition proved
 skp-subjects.ads:49:42: info: division check proved
-skp-subjects.ads:51:13: info: initialization of "Get_Event.Dst_Subject" proved
-skp-subjects.ads:51:13: info: initialization of "Get_Event.Dst_Vector" proved
-skp-subjects.ads:51:13: info: initialization of "Get_Event.Handover" proved
-skp-subjects.ads:51:13: info: initialization of "Get_Event.Send_IPI" proved
 skp-subjects.ads:57:17: info: postcondition proved

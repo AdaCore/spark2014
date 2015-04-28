@@ -25,5 +25,3 @@ parse.ads:16:27: info: initialization of "Result.Header.ID" proved
 parse.ads:16:27: info: initialization of "Result.Header.OPCODE" proved
 parse.ads:16:27: info: initialization of "Result.Header.QDCOUNT" proved
 util.adb:7:36: info: index check proved
-util.ads:5:13: info: initialization of "Extract_Unsigned_16" proved
-util.ads:11:13: info: initialization of "Extract_Bits_Of_Octet" proved

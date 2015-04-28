@@ -9,7 +9,6 @@ advancebutton.adb:55:10: info: initialization of "StillPressed" proved
 advancebutton.adb:56:13: info: initialization of "TimeNow" proved
 advancebutton.adb:72:21: info: initialization of "Pressed" proved
 advancebutton.adb:73:21: info: initialization of "Pressed" proved
-advancebutton.ads:23:13: info: initialization of "CurrentMode" proved
 advancebutton.ads:25:14: info: initialization of "AdvanceMode" proved
 advancebutton.ads:27:14: info: initialization of "AdvanceMode" proved
 advancebutton.ads:29:27: info: initialization of "Result" proved
@@ -56,7 +55,6 @@ heatingsystem_dfa.adb:111:39: info: initialization of "OnOffTime" proved, in cal
 heatingsystem_dfa.adb:111:39: info: initialization of "SwitchPosition" proved, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:111:42: info: initialization of "Timer" proved, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:114:07: info: initialization of "Timer" proved, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:143:16: info: initialization of "IsBetween" proved
 heatingsystem_dfa.adb:153:13: info: initialization of "MayOperate" proved, in call inlined at heatingsystem_dfa.adb:185
 heatingsystem_dfa.adb:155:16: info: initialization of "AboveTemp" proved, in call inlined at heatingsystem_dfa.adb:185
 heatingsystem_dfa.adb:169:07: info: initialization of "CurrentTime" proved

@@ -10,7 +10,6 @@ test.adb:44:13: info: initialization of "I" proved
 test.adb:53:29: warning: unused initial value of "A"
 test.adb:74:12: info: initialization of "Tmp" proved
 test.adb:83:12: info: initialization of "Tmp" proved
-test.adb:114:13: info: initialization of "Factorial" proved
 test.adb:123:04: warning: analyzing unreferenced procedure "Calling_Function_01"
 test.adb:138:30: info: initialization of "N" proved
 test.adb:148:33: medium: "Counter" might not be initialized
@@ -27,7 +26,6 @@ test.adb:185:18: warning: unused assignment, in call inlined at test.adb:191
 test.adb:185:21: info: initialization of "N" proved, in call inlined at test.adb:191
 test.adb:190:07: info: initialization of "N" proved
 test.adb:195:30: info: initialization of "B" proved
-test.adb:199:16: info: initialization of "F" proved
 test.adb:211:12: info: initialization of "S" proved
 test.adb:215:14: warning: subprogram "Global_Test_04" has no effect
 test.adb:223:35: info: initialization of "S" proved

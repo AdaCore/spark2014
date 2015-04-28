@@ -7,7 +7,5 @@ sub.adb:30:04: warning: analyzing unreferenced procedure "P"
 sub.adb:30:14: warning: subprogram "P__2" has no effect
 sub.adb:32:18: info: initialization of "Y" proved
 sub.adb:32:18: info: range check proved
-sub.ads:6:13: info: initialization of "Remove_Absent" proved
 sub.ads:8:10: info: postcondition proved
-sub.ads:10:13: info: initialization of "Remove_Absent__2" proved
 sub.ads:12:10: info: postcondition proved

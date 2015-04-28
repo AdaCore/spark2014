@@ -13,8 +13,6 @@ init.ads:5:29: info: initialization of "B" constituent of "State" proved
 init.ads:5:29: info: initialization of "C" constituent of "State" proved
 init.ads:5:29: info: initialization of "D" constituent of "State" proved
 init.ads:7:04: info: initialization of "A" proved
-init.ads:9:13: info: initialization of "Sum_State" proved
-init.ads:12:13: info: initialization of "Sum_All" proved
 init.ads:15:04: info: initialization of "B" constituent of "State" proved
 init_2.ads:8:08: medium: initial condition might fail
 init_2.ads:8:29: info: initialization of "X" proved
@@ -34,7 +32,6 @@ initializes_legal.ads:7:08: medium: initialization of V must not depend on Init.
 initializes_legal.ads:15:04: info: initialization of "W" proved
 initializes_legal.ads:16:04: info: initialization of "V" proved
 initializes_legal.ads:17:04: info: initialization of "X" proved
-initializes_legal.ads:19:13: info: initialization of "Add" proved
 initializes_illegal.adb:5:04: high: "Y" constituent of "SA" is not initialized in "Initializes_Illegal"
 initializes_illegal.adb:5:04: high: initialization of "Initializes_Illegal.SA" is specified at initializes_illegal.ads:7
 initializes_illegal.adb:5:07: info: initialization of "Z" constituent of "SA" proved

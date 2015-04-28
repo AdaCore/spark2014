@@ -27,12 +27,6 @@ parameter_tests.adb:36:32: info: initialization of "G.X" proved
 parameter_tests.adb:50:33: warning: unused initial value of "G"
 parameter_tests.adb:50:36: warning: "H" is not modified, could be INPUT
 test.adb:26:04: warning: analyzing unreferenced function "New_Player_01"
-test.adb:26:13: info: initialization of "New_Player_01.Ammo" proved
-test.adb:26:13: info: initialization of "New_Player_01.Look_Pitch" proved
-test.adb:26:13: info: initialization of "New_Player_01.Look_Yaw" proved
-test.adb:26:13: info: initialization of "New_Player_01.Position.X" proved
-test.adb:26:13: info: initialization of "New_Player_01.Position.Y" proved
-test.adb:26:13: info: initialization of "New_Player_01.Position.Z" proved
 test.adb:33:14: info: initialization of "P.Ammo" proved
 test.adb:33:14: info: initialization of "P.Look_Pitch" proved
 test.adb:33:14: info: initialization of "P.Look_Yaw" proved
@@ -40,12 +34,6 @@ test.adb:33:14: info: initialization of "P.Position.X" proved
 test.adb:33:14: info: initialization of "P.Position.Y" proved
 test.adb:33:14: info: initialization of "P.Position.Z" proved
 test.adb:36:04: warning: analyzing unreferenced function "New_Player_02"
-test.adb:36:13: info: initialization of "New_Player_02.Ammo" proved
-test.adb:36:13: info: initialization of "New_Player_02.Look_Pitch" proved
-test.adb:36:13: info: initialization of "New_Player_02.Look_Yaw" proved
-test.adb:36:13: info: initialization of "New_Player_02.Position.X" proved
-test.adb:36:13: info: initialization of "New_Player_02.Position.Y" proved
-test.adb:36:13: info: initialization of "New_Player_02.Position.Z" proved
 test.adb:43:14: info: initialization of "P.Ammo" proved
 test.adb:43:14: info: initialization of "P.Look_Pitch" proved
 test.adb:43:14: info: initialization of "P.Look_Yaw" proved
@@ -53,12 +41,6 @@ test.adb:43:14: info: initialization of "P.Position.X" proved
 test.adb:43:14: info: initialization of "P.Position.Y" proved
 test.adb:43:14: info: initialization of "P.Position.Z" proved
 test.adb:46:04: warning: analyzing unreferenced function "New_Player_03"
-test.adb:46:13: info: initialization of "New_Player_03.Ammo" proved
-test.adb:46:13: info: initialization of "New_Player_03.Look_Pitch" proved
-test.adb:46:13: info: initialization of "New_Player_03.Look_Yaw" proved
-test.adb:46:13: info: initialization of "New_Player_03.Position.X" proved
-test.adb:46:13: info: initialization of "New_Player_03.Position.Y" proved
-test.adb:46:13: info: initialization of "New_Player_03.Position.Z" proved
 test.adb:55:14: info: initialization of "P.Ammo" proved
 test.adb:55:14: info: initialization of "P.Look_Pitch" proved
 test.adb:55:14: info: initialization of "P.Look_Yaw" proved
@@ -66,10 +48,6 @@ test.adb:55:14: info: initialization of "P.Position.X" proved
 test.adb:55:14: info: initialization of "P.Position.Y" proved
 test.adb:55:14: info: initialization of "P.Position.Z" proved
 untangle_tests.adb:22:04: warning: analyzing unreferenced function "New_Coordinate"
-untangle_tests.adb:22:13: info: initialization of "New_Coordinate.W" proved
-untangle_tests.adb:22:13: info: initialization of "New_Coordinate.X" proved
-untangle_tests.adb:22:13: info: initialization of "New_Coordinate.Y" proved
-untangle_tests.adb:22:13: info: initialization of "New_Coordinate.Z" proved
 untangle_tests.adb:30:14: info: initialization of "R.W" proved
 untangle_tests.adb:30:14: info: initialization of "R.X" proved
 untangle_tests.adb:30:14: info: initialization of "R.Y" proved

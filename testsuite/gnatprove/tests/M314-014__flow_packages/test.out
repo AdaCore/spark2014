@@ -1,6 +1,5 @@
 ic.adb:14:32: info: initialization of "X" constituent of "IC.State_A" proved
 ic.adb:16:07: info: initialization of "X" constituent of "IC.State_A" proved
-ic.adb:19:16: info: initialization of "Get_Stuff" proved
 ic.adb:30:36: "Y" constituent of "IC.State_B" must be initialized at elaboration
 ic.adb:32:07: info: initialization of "X" constituent of "IC.State_A" proved
 ic.adb:44:32: info: initialization of "X" constituent of "IC.State_A" proved
@@ -19,13 +18,11 @@ ic.adb:131:14: info: initialization of "X" constituent of "IC.State_A" proved
 ic.adb:132:41: info: initialization of "X" constituent of "IC.State_A" proved
 ic.ads:2:36: warning: no procedure exists that can initialize abstract state "IC.State_B"
 initialized.adb:5:04: info: initialization of "Var" constituent of "State" proved
-initialized.ads:6:13: info: initialization of "Get" proved
 main.adb:7:44: info: initialization of "Uninitialized.State" proved
 no_init.ads:3:26: warning: no procedure exists that can initialize abstract state "No_Init.S"
 pkg_a.adb:7:04: high: "A" constituent of "State_A" is not initialized in "Pkg_A"
 pkg_a.adb:7:04: high: initialization of "Pkg_A.State_A" is specified at pkg_a.ads:3
 pkg_a.adb:9:04: warning: initialization of C is not mentioned in contract "Initializes" at pkg_a.ads:3
-pkg_a.adb:11:13: info: initialization of "Do_Something" proved
 pkg_a.adb:16:23: high: "X" is not initialized
 pkg_a.adb:17:06: warning: unused assignment
 pkg_a.ads:2:36: warning: no procedure exists that can initialize abstract state "Pkg_A.State_B"

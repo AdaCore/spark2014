@@ -52,11 +52,8 @@ binary_search.adb:44:42: info: initialization of "Med" proved
 binary_search.adb:44:62: info: index check proved
 binary_search.adb:44:73: info: index check proved
 binary_search.adb:46:20: info: initialization of "Med" proved
-binary_search.ads:24:13: info: initialization of "Empty" proved
-binary_search.ads:26:13: info: initialization of "Sorted" proved
 binary_search.ads:28:44: info: index check proved
 binary_search.ads:28:54: info: index check proved
-binary_search.ads:30:13: info: initialization of "Search" proved
 binary_search.ads:32:14: info: postcondition proved
 binary_search.ads:32:57: info: index check proved
 binary_search.ads:33:52: info: index check proved

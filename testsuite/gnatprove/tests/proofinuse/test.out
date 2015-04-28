@@ -142,8 +142,6 @@ floating_point.ads:16:44: info: initialization of "Res" proved
 floating_point.ads:19:56: info: initialization of "Res" proved
 floating_point.ads:24:36: info: initialization of "Res" proved
 floating_point.ads:27:52: info: initialization of "Res" proved
-floating_point.ads:30:13: info: initialization of "Float_To_Long_Float" proved
-floating_point.ads:45:13: info: initialization of "Approximate_Inverse_Square_Root" proved
 floating_point.ads:52:29: info: initialization of "Res" proved
 nonlinear.adb:10:17: info: overflow check proved
 nonlinear.adb:10:22: info: division check proved
@@ -182,7 +180,6 @@ nonlinear.ads:11:42: info: initialization of "Res" proved
 nonlinear.ads:14:14: warning: subprogram "Power" has no effect
 nonlinear.ads:17:36: info: initialization of "Res" proved
 nonlinear.ads:20:44: info: initialization of "Res" proved
-quantifiers.adb:7:16: info: initialization of "All_Zero" proved
 quantifiers.adb:8:17: info: postcondition proved
 quantifiers.adb:10:37: info: length check proved
 quantifiers.adb:16:07: medium: assertion might fail

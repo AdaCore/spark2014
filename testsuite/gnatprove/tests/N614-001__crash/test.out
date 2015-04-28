@@ -75,22 +75,14 @@ part.adb:79:07: info: range check proved
 part.adb:79:07: medium: array index check might fail
 part.adb:79:27: info: initialization of "Last_Index" proved
 part.adb:79:27: info: initialization of "R42b" proved
-part.ads:7:13: info: initialization of "Mem" proved
 part.ads:8:41: info: index check proved
-part.ads:10:13: info: initialization of "Subset" proved
 part.ads:11:42: info: index check proved
-part.ads:13:13: info: initialization of "Same_Set" proved
-part.ads:16:13: info: initialization of "Disjoint" proved
 part.ads:17:47: info: index check proved
-part.ads:21:13: info: initialization of "Ascending" proved
 part.ads:23:41: info: overflow check proved
 part.ads:23:51: info: index check proved
 part.ads:23:61: info: index check proved
 part.ads:23:61: info: overflow check proved
-part.ads:25:13: info: initialization of "Is_Partition" proved
 part.ads:29:44: info: index check proved
-part.ads:31:13: info: initialization of "Disjoint_Or_Subset" proved
-part.ads:34:13: info: initialization of "Get_Part" proved
 part.ads:38:27: info: range check proved
 part.ads:38:44: info: index check proved
 part.ads:39:12: info: range check proved

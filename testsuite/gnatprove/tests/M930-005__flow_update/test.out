@@ -16,8 +16,6 @@ update_uninitialized_3.adb:9:04: info: initialization of "Rec.X" constituent of 
 update_uninitialized_3.adb:9:04: info: initialization of "Rec.Y" constituent of "State" proved
 update_uninitialized_3.adb:10:04: info: initialization of "A" constituent of "State" proved
 update_uninitialized_3.adb:11:04: info: initialization of "B" constituent of "State" proved
-update_uninitialized_3.adb:13:13: info: initialization of "Create_Rec.X" proved
-update_uninitialized_3.adb:13:13: info: initialization of "Create_Rec.Y" proved
 update_uninitialized_3.adb:16:08: warning: unused assignment
 update_uninitialized_3.adb:17:28: info: initialization of "A" constituent of "State" proved
 update_uninitialized_3.adb:17:36: high: "B" constituent of "State" is not initialized

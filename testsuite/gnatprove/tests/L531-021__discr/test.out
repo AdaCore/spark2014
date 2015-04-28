@@ -3,10 +3,6 @@ basic.adb:13:17: medium: discriminant check might fail
 basic.adb:17:17: info: discriminant check proved
 basic.adb:18:22: info: discriminant check proved
 basic.ads:45:14: warning: subprogram "P" has no effect
-conv.adb:5:13: info: initialization of "Id.A_Field" proved
-conv.adb:5:13: info: initialization of "Id.Base" proved
-conv.adb:5:13: info: initialization of "Id.C_Field1" proved
-conv.adb:5:13: info: initialization of "Id.C_Field2" proved
 conv.adb:6:20: info: postcondition proved
 conv.adb:15:17: info: discriminant check proved
 conv.adb:17:17: info: discriminant check proved

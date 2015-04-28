@@ -183,7 +183,6 @@ evoting.ads:60:14: warning: subprogram "Print_A_Candidate" has no effect
 evoting.ads:63:14: warning: subprogram "Print_Candidates" has no effect
 evoting.ads:67:25: info: initialization of "candidates" proved
 evoting.ads:68:25: info: initialization of "last_candidate" proved
-evoting.ads:78:13: info: initialization of "Counters_Sum" proved
 evoting.ads:95:11: medium: postcondition might fail, requires counters(i) = 0
 evoting.ads:95:20: info: index check proved
 evoting.ads:102:29: info: initialization of "winners" proved

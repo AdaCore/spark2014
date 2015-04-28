@@ -311,6 +311,10 @@ package Flow_Types is
    function Is_Constituent (F : Flow_Id) return Boolean;
    --  Checks if F is a constituent of an abstract state.
 
+   function Is_Function_Entity (F : Flow_Id) return Boolean;
+   --  Checks if F is a function entity (and thus used to capture the
+   --  function's return value).
+
    function Change_Variant (F       : Flow_Id;
                             Variant : Flow_Id_Variant)
                             return Flow_Id;

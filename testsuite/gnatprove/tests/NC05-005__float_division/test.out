@@ -1,4 +1,3 @@
-pi_euler.adb:2:10: info: initialization of "Pi_Euler" proved
 pi_euler.adb:9:15: info: initialization of "Erreur" proved
 pi_euler.adb:11:19: info: initialization of "Index" proved
 pi_euler.adb:11:24: medium: overflow check might fail
@@ -16,7 +15,6 @@ pi_euler.adb:15:16: info: initialization of "Pi" proved
 pi_euler.adb:15:18: medium: overflow check might fail
 pi_euler.adb:15:19: info: initialization of "Erreur" proved
 pi_euler.adb:19:12: info: initialization of "Pi" proved
-pi_euler_2.adb:2:10: info: initialization of "Pi_Euler_2" proved
 pi_euler_2.adb:7:10: warning: unused assignment
 pi_euler_2.adb:10:15: info: initialization of "Erreur" proved
 pi_euler_2.adb:12:16: warning: unused assignment

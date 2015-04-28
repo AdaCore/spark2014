@@ -175,9 +175,7 @@ fib.adb:158:13: info: index check proved
 fib.adb:158:16: medium: "A2" might not be initialized
 fib.adb:158:24: info: index check proved
 fib.adb:158:24: info: overflow check proved
-fib.ads:6:13: info: initialization of "Fibonacci" proved
 fib.ads:14:14: info: postcondition proved
-fib.ads:17:13: info: initialization of "Factorial" proved
 fib.ads:23:48: info: initialization of "p1" proved
 fib.ads:23:52: info: initialization of "p2" proved
 fib.ads:25:14: info: postcondition proved

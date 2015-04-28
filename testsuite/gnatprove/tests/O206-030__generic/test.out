@@ -25,7 +25,6 @@ gen_pack.adb:17:16: medium: incorrect dependency "Func'Result => Outer", in inst
 gen_pack.adb:18:16: medium: incorrect dependency "Func'Result => Constit constituent of State", in instantiation at main.adb:24
 gen_pack.adb:19:16: medium: incorrect dependency "Func'Result => Pack_Inner", in instantiation at main.adb:24
 gen_pack.ads:7:26: warning: no procedure exists that can initialize abstract state "Pack_Inst_1.State", in instantiation at main.adb:24
-gen_pack.ads:9:13: info: initialization of "Func" proved, in instantiation at main.adb:24
 gen_pack.ads:17:11: medium: missing dependency "null => Constit constituent of State", in instantiation at main.adb:24
 gen_pack.ads:17:11: medium: missing dependency "null => External", in instantiation at main.adb:24
 gen_pack.ads:17:11: medium: missing dependency "null => Outer", in instantiation at main.adb:24
@@ -71,28 +70,20 @@ gen_pack_pragmas.adb:17:20: medium: incorrect dependency "Func'Result => Outer",
 gen_pack_pragmas.adb:18:20: medium: incorrect dependency "Func'Result => Constit constituent of State", in instantiation at main.adb:28
 gen_pack_pragmas.adb:19:20: medium: incorrect dependency "Func'Result => Pack_Inner", in instantiation at main.adb:28
 gen_pack_pragmas.ads:7:27: warning: no procedure exists that can initialize abstract state "Pack_Inst_2.State", in instantiation at main.adb:28
-gen_pack_pragmas.ads:9:13: info: initialization of "Func" proved, in instantiation at main.adb:28
 gen_pack_pragmas.ads:17:04: medium: missing dependency "null => Constit constituent of State", in instantiation at main.adb:28
 gen_pack_pragmas.ads:17:04: medium: missing dependency "null => External", in instantiation at main.adb:28
 gen_pack_pragmas.ads:17:04: medium: missing dependency "null => Outer", in instantiation at main.adb:28
 gen_pack_pragmas.ads:17:04: medium: missing dependency "null => Pack_Inner", in instantiation at main.adb:28
-main.adb:16:13: info: initialization of "Func_Inst_1r" proved
 main.adb:16:42: info: initialization of "Local" proved
-main.adb:20:13: info: initialization of "Func_Inst_2r" proved
 main.adb:20:50: info: initialization of "Local" proved
 main.adb:24:41: info: initialization of "Pack_Local" proved
 main.adb:28:49: info: initialization of "Pack_Local" proved
 main.adb:32:45: info: initialization of "Pack_Local" proved
-main.adb:33:13: info: initialization of "Func_Inst_3r" proved
 main.adb:33:50: info: initialization of "Local" proved
 main.adb:37:53: info: initialization of "Pack_Local" proved
-main.adb:38:13: info: initialization of "Func_Inst_4r" proved
 main.adb:38:50: info: initialization of "Local" proved
-main.adb:42:13: info: initialization of "Func_Inst_6r" proved
 main.adb:42:47: info: initialization of "Local" proved
-main.adb:46:13: info: initialization of "Func_Inst_7r" proved
 main.adb:46:55: info: initialization of "Local" proved
-main_refs.adb:5:13: info: initialization of "Func_Instr" proved
 pack_gen.adb:4:04: info: initialization of "Constit" constituent of "State" proved
 pack_gen.adb:9:20: low: unused global "External" (SPARK RM 6.1.4(13)), in instantiation at main.adb:42
 pack_gen.adb:10:16: low: unused global "Constit" constituent of "State" (SPARK RM 6.1.4(13)), in instantiation at main.adb:42

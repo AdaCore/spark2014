@@ -1,6 +1,4 @@
 dynamic_types.adb:4:15: info: range check proved
-dynamic_types.adb:13:16: info: initialization of "Search_Range.From" proved
-dynamic_types.adb:13:16: info: initialization of "Search_Range.Result" proved
 dynamic_types.adb:18:17: info: postcondition proved
 dynamic_types.adb:20:35: info: index check proved
 dynamic_types.adb:22:49: info: index check proved
@@ -26,6 +24,5 @@ dynamic_types.adb:46:13: info: initialization of "From" proved
 dynamic_types.adb:49:21: info: initialization of "From" proved
 dynamic_types.adb:49:26: info: overflow check proved
 dynamic_types.adb:49:26: info: range check proved
-dynamic_types.ads:4:13: info: initialization of "Search" proved
 dynamic_types.ads:6:14: info: postcondition proved
 dynamic_types.ads:7:58: info: index check proved

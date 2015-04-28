@@ -26,7 +26,6 @@ indexbis.adb:32:16: info: initialization of "Courant" proved
 indexbis.adb:33:35: info: range check proved
 indexbis.adb:33:42: info: initialization of "Courant" proved
 indexbis.adb:33:42: info: overflow check proved
-indexbis.ads:2:10: info: initialization of "IndexBis" proved
 indexbis.ads:4:05: info: postcondition proved
 indexbis.ads:5:72: info: index check proved
 indexbis.ads:5:80: info: index check proved

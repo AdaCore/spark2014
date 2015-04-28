@@ -27,7 +27,6 @@ s.adb:53:42: info: index check proved
 s.adb:53:63: info: index check proved
 s.adb:55:43: info: index check proved
 s.adb:55:64: info: index check proved
-s.ads:7:13: info: initialization of "Contains" proved
 s.ads:8:14: info: postcondition proved
 s.ads:11:14: warning: subprogram "Test_Index" has no effect
 s.ads:13:20: info: initialization of "Dest" proved

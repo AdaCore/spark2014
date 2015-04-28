@@ -1,5 +1,4 @@
 skein-trace.adb:42:41: info: initialization of "Debug_None" proved
-skein.adb:70:13: info: initialization of "To_LittleEndian" proved
 skein.adb:80:35: info: division check proved
 skein.adb:82:32: info: initialization of "Dst" proved
 skein.adb:114:19: medium: postcondition might fail
@@ -265,8 +264,6 @@ skein.ads:126:21: info: length check proved
 skein.ads:129:21: info: length check proved
 skein.ads:132:21: info: length check proved
 skein.ads:138:21: info: length check proved
-skein.ads:146:13: info: initialization of "Hash_Bit_Len_Of" proved
-skein.ads:149:13: info: initialization of "Byte_Count_Of" proved
 skein.ads:152:30: info: initialization of "Ctx.B" proved
 skein.ads:152:30: info: initialization of "Ctx.H.Byte_Count" proved
 skein.ads:152:30: info: initialization of "Ctx.H.Hash_Bit_Len" proved
@@ -295,7 +292,6 @@ skein.ads:155:36: info: initialization of "Ctx.X" proved
 skein.ads:168:20: medium: postcondition might fail
 skein.ads:173:31: info: initialization of "Hash" proved
 skein.ads:178:47: info: division check proved
-skein.ads:181:13: info: initialization of "Skein_512_Hash" proved
 skein.ads:191:14: warning: subprogram "Set_Debug_Flags" has no effect
 skein.ads:196:14: warning: subprogram "Show_Msg_8" has no effect
 skein.ads:332:38: info: initialization of "Null_Tweak_Value.Bit_Pad" proved

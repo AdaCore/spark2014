@@ -71,8 +71,6 @@ indefinite_bounded.adb:95:36: info: initialization of private part of "V" proved
 indefinite_bounded.adb:96:35: info: initialization of private part of "V" proved
 indefinite_bounded.adb:97:39: info: initialization of private part of "V" proved
 indefinite_bounded.adb:98:39: info: initialization of private part of "V" proved
-indefinite_bounded.adb:101:19: info: initialization of "Lt" proved
-indefinite_bounded.adb:102:18: info: initialization of "Olt" proved
 indefinite_bounded.adb:104:45: info: initialization of private part of "V" proved
 indefinite_bounded.adb:105:21: info: initialization of private part of "V" proved
 indefinite_bounded.adb:106:39: info: initialization of private part of "V" proved
@@ -88,5 +86,4 @@ indefinite_bounded.adb:117:32: info: initialization of private part of "V" prove
 indefinite_bounded.ads:6:04: warning: in instantiation at a-cfinve.ads:240
 indefinite_bounded.ads:6:04: warning: in instantiation at a-coboho.ads:102
 indefinite_bounded.ads:6:04: warning: pragma "No_Strict_Aliasing" ignored in flow analysis (not yet supported)
-indefinite_bounded.ads:6:12: info: initialization of "Oeq" proved
 indefinite_bounded.ads:14:14: warning: subprogram "Test" has no effect

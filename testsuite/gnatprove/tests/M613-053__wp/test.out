@@ -1,6 +1,5 @@
 sorters_not_global.adb:11:08: info: postcondition proved
 sorters_not_global.adb:24:21: info: initialization of "Temp" proved
-sorters_not_global.adb:28:13: info: initialization of "Index_Of_Minimum" proved
 sorters_not_global.adb:34:08: info: postcondition proved
 sorters_not_global.adb:36:17: info: range check proved
 sorters_not_global.adb:37:57: info: index check proved

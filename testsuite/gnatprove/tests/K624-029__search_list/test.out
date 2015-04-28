@@ -11,9 +11,6 @@ linked_list.adb:11:25: info: initialization of "Cu" proved
 linked_list.adb:12:20: info: initialization of "Cu" proved
 linked_list.adb:15:10: info: precondition proved
 linked_list.adb:15:19: info: initialization of "Cu" proved
-linked_list.ads:5:13: info: initialization of "Eq" proved
-linked_list.ads:7:12: info: initialization of "Oeq" proved
-linked_list.ads:11:13: info: initialization of "Search" proved
 linked_list.ads:12:14: info: postcondition proved
 linked_list.ads:12:56: info: precondition proved
 linked_list.ads:13:07: info: precondition proved

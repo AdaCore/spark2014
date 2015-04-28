@@ -43,16 +43,11 @@ ng_v1.adb:33:41: info: initialization of "D2" proved
 ng_v1.adb:33:53: medium: divide by zero might fail
 ng_v1.adb:33:56: info: initialization of "T1" proved
 ng_v1.adb:33:61: info: initialization of "T2" proved
-ng_v1.ads:24:13: info: initialization of "DistanceFromLastClickToLastUpdate" proved
 ng_v1.ads:26:14: info: initialization of "EstimatedGroundVelocityIsAvailable" proved
 ng_v1.ads:27:18: info: initialization of "EstimatedGroundVelocityIsAvailable" proved
 ng_v1.ads:28:17: medium: postcondition might fail, requires EstimatedGroundVelocity = (((WHCF * (ThisCount - PrevCount)) + ((WHCF * (ThisCount - PrevCount)) * (CurrTime - ThisTime)) / (ThisTime - PrevTime)) * 3600) / (CurrTime - PrevTime
 ng_v1.ads:31:23: info: division check proved
 ng_v1.ads:32:28: medium: divide by zero might fail
-ng_v2.adb:32:13: info: initialization of "DistanceSinceLastUpdate" proved
-ng_v2.adb:35:13: info: initialization of "TimeFromLastClickToLastUpdate" proved
-ng_v2.adb:38:13: info: initialization of "TimeSinceLastUpdate" proved
-ng_v2.adb:44:13: info: initialization of "DistanceFromLastClickToLastUpdate" proved
 ng_v2.adb:49:09: info: division check proved
 ng_v2.adb:52:44: medium: precondition might fail
 ng_v2.adb:65:13: info: precondition proved
@@ -61,8 +56,6 @@ ng_v2.adb:68:41: info: initialization of "D2" proved
 ng_v2.adb:68:53: medium: divide by zero might fail
 ng_v2.adb:68:56: info: initialization of "T1" proved
 ng_v2.adb:68:61: info: initialization of "T2" proved
-ng_v2.ads:8:13: info: initialization of "DistanceSinceLastClickBeforeLastUpdate" proved
-ng_v2.ads:9:13: info: initialization of "TimeSinceLastClickBeforeLastUpdate" proved
 ng_v2.ads:11:14: info: initialization of "EstimatedGroundVelocityIsAvailable" proved
 ng_v2.ads:12:18: info: initialization of "EstimatedGroundVelocityIsAvailable" proved
 ng_v2.ads:13:17: medium: postcondition might fail, requires EstimatedGroundVelocity = (DistanceSinceLastClickBeforeLastUpdate * 3600) / (TimeSinceLastClickBeforeLastUpdate)

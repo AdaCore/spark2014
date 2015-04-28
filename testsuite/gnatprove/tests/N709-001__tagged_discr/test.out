@@ -1,6 +1,3 @@
-classwide.ads:13:13: info: initialization of "Is_Zero" proved
-classwide.ads:20:13: info: initialization of "C_Is_Zero" proved
-classwide.ads:25:13: info: initialization of "D_Is_Zero" proved
 classwide.ads:35:22: info: initialization of "V.X" proved
 classwide.ads:35:22: info: initialization of "V.Y" proved
 classwide.ads:35:22: info: initialization of "V.Z" proved
@@ -23,12 +20,8 @@ classwide.ads:44:22: warning: unused initial value of "V"
 classwide.ads:45:14: info: postcondition proved
 classwide.ads:49:14: medium: postcondition might fail, requires C_Is_Zero (V)
 classwide.ads:53:14: info: postcondition proved
-classwide.ads:59:13: info: initialization of "Is_Zero" proved
 classwide.ads:70:22: warning: unused initial value of "V"
 classwide.ads:71:14: info: postcondition proved
-classwide.ads:76:13: info: initialization of "C_U1_Is_Zero" proved
-classwide.ads:81:13: info: initialization of "D_Is_Zero" proved
-classwide.ads:93:13: info: initialization of "Is_Zero" proved
 classwide.ads:106:14: info: postcondition proved
 tagged_discr.adb:7:09: info: discriminant check proved
 tagged_discr.adb:12:08: info: discriminant check proved
@@ -49,7 +42,6 @@ tagged_discr.adb:40:13: info: initialization of "R12b.Z" proved
 tagged_discr.adb:46:08: info: discriminant check proved
 tagged_discr.adb:47:08: info: discriminant check proved
 tagged_discr.adb:48:08: info: discriminant check proved
-tagged_discr.ads:16:13: info: initialization of "Is_Zero" proved
 tagged_discr.ads:17:09: info: discriminant check proved
 tagged_discr.ads:19:28: info: discriminant check proved
 tagged_discr.ads:20:29: info: discriminant check proved
@@ -61,7 +53,6 @@ tagged_discr.ads:24:28: info: initialization of "V.X" proved
 tagged_discr.ads:24:28: info: initialization of "V.Y" proved
 tagged_discr.ads:24:28: info: initialization of "V.Z" proved
 tagged_discr.ads:27:14: info: postcondition proved
-tagged_discr.ads:33:13: info: initialization of "Is_Zero" proved
 tagged_discr.ads:34:09: info: discriminant check proved
 tagged_discr.ads:36:28: info: discriminant check proved
 tagged_discr.ads:37:29: info: discriminant check proved
@@ -76,7 +67,6 @@ tagged_discr.ads:41:23: info: initialization of "V.X" proved
 tagged_discr.ads:41:23: info: initialization of "V.Y" proved
 tagged_discr.ads:41:23: info: initialization of "V.Z" proved
 tagged_discr.ads:44:14: info: postcondition proved
-tagged_discr.ads:52:13: info: initialization of "Is_Zero" proved
 tagged_discr.ads:54:09: info: discriminant check proved
 tagged_discr.ads:55:09: info: discriminant check proved
 tagged_discr.ads:56:09: info: discriminant check proved

@@ -38,7 +38,6 @@ array_arith.adb:38:12: info: initialization of "X" proved
 array_arith.adb:39:12: info: initialization of "X" proved
 array_arith.adb:40:12: info: initialization of "X" proved
 array_arith.adb:41:13: info: initialization of "X" proved
-array_arith.adb:46:16: info: initialization of "Ident" proved
 array_arith.adb:50:15: medium: "X" might not be initialized, in call inlined at array_arith.adb:66
 array_arith.adb:50:18: info: initialization of "One" proved, in call inlined at array_arith.adb:66
 array_arith.adb:51:15: info: initialization of "X" proved, in call inlined at array_arith.adb:66
@@ -104,14 +103,11 @@ ident.adb:53:07: info: assertion proved
 ident.adb:53:22: info: initialization of "Y" proved
 ident.adb:55:07: info: assertion proved
 ident.adb:55:22: info: initialization of "Y" proved
-ident.ads:4:13: info: initialization of "Id_Public" proved
 ident.ads:5:44: info: initialization of "Y" proved
 ident.ads:6:14: warning: subprogram "Test" has no effect
 incr_expr_fun.adb:4:62: medium: overflow check might fail
 incr_expr_fun.adb:6:63: medium: overflow check might fail
-incr_expr_fun.adb:8:13: info: initialization of "Incr_Body" proved
 incr_expr_fun.adb:8:58: medium: overflow check might fail
-incr_expr_fun.adb:10:13: info: initialization of "Incr_Body_Body" proved
 incr_expr_fun.adb:11:63: medium: overflow check might fail
 incr_expr_fun.adb:16:07: info: assertion proved
 incr_expr_fun.adb:16:32: info: initialization of "X" proved
@@ -140,16 +136,9 @@ incr_expr_fun.adb:23:40: info: overflow check proved
 incr_expr_fun.adb:24:07: info: assertion proved
 incr_expr_fun.adb:24:38: info: initialization of "X" proved
 incr_expr_fun.adb:24:45: info: overflow check proved
-incr_expr_fun.ads:4:13: info: initialization of "Incr_Pub" proved
 incr_expr_fun.ads:4:57: medium: overflow check might fail
-incr_expr_fun.ads:6:13: info: initialization of "Incr_Pub_Pub" proved
 incr_expr_fun.ads:7:61: medium: overflow check might fail
-incr_expr_fun.ads:9:13: info: initialization of "Incr_Pub_Priv" proved
-incr_expr_fun.ads:11:13: info: initialization of "Incr_Pub_Body" proved
 incr_expr_fun.ads:13:14: warning: subprogram "Test" has no effect
 incr_expr_fun.ads:15:62: medium: overflow check might fail
-incr_expr_fun.ads:17:13: info: initialization of "Incr_Priv" proved
 incr_expr_fun.ads:17:58: medium: overflow check might fail
-incr_expr_fun.ads:19:13: info: initialization of "Incr_Priv_Priv" proved
 incr_expr_fun.ads:20:63: medium: overflow check might fail
-incr_expr_fun.ads:22:13: info: initialization of "Incr_Priv_Body" proved

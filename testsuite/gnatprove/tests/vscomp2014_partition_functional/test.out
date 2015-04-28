@@ -369,14 +369,6 @@ partition_refinement.adb:262:153: medium: loop invariant might fail after first 
 partition_refinement.adb:262:153: medium: loop invariant might fail in first iteration, requires F(K) = J
 partition_refinement.adb:262:155: medium: array index check might fail
 partition_refinement.adb:268:07: medium: precondition might fail
-partition_refinement.ads:15:13: info: initialization of "Eq_Positive" proved
-partition_refinement.ads:16:12: info: initialization of "Oeq" proved
-partition_refinement.ads:22:13: info: initialization of "Lt_Positive" proved
-partition_refinement.ads:23:13: info: initialization of "Eq_Index" proved
-partition_refinement.ads:24:12: info: initialization of "Oeq" proved
-partition_refinement.ads:24:12: info: initialization of "Olt" proved
-partition_refinement.ads:38:13: info: initialization of "Eq_Interval" proved
-partition_refinement.ads:39:12: info: initialization of "Oeq" proved
 partition_refinement.ads:57:17: medium: overflow check might fail
 partition_refinement.ads:57:19: info: precondition proved
 partition_refinement.ads:57:33: info: precondition proved

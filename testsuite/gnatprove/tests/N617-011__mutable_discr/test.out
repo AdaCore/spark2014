@@ -28,7 +28,6 @@ discr.adb:72:07: info: assertion proved
 discr.adb:73:07: info: assertion proved
 discr.adb:77:48: info: range check proved
 discr.adb:77:48: medium: overflow check might fail
-discr.adb:80:16: info: initialization of "F" proved
 discr.adb:80:53: info: range check proved
 discr.adb:83:46: medium: precondition might fail
 discr.adb:92:09: info: discriminant check proved

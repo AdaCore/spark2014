@@ -54,21 +54,11 @@ tetris_flow.ads:123:08: info: length check proved
 tetris_flow.ads:124:08: info: length check proved
 tetris_flow.ads:125:08: info: length check proved
 tetris_flow.ads:126:08: info: length check proved
-tetris_flow.ads:132:13: info: initialization of "Is_Empty" proved
 tetris_flow.ads:133:54: info: index check proved
 tetris_flow.ads:133:57: info: index check proved
-tetris_flow.ads:135:13: info: initialization of "Is_Complete_Line" proved
-tetris_flow.ads:138:13: info: initialization of "Is_Empty_Line" proved
-tetris_flow.ads:141:13: info: initialization of "No_Complete_Lines" proved
-tetris_flow.ads:144:13: info: initialization of "No_Overlap" proved
 tetris_flow.ads:155:46: info: index check proved
-tetris_flow.ads:164:13: info: initialization of "Turn_Direction" proved
 tetris_flow.ads:167:77: info: range check proved
 tetris_flow.ads:169:77: info: range check proved
-tetris_flow.ads:171:13: info: initialization of "Move.D" proved
-tetris_flow.ads:171:13: info: initialization of "Move.S" proved
-tetris_flow.ads:171:13: info: initialization of "Move.X" proved
-tetris_flow.ads:171:13: info: initialization of "Move.Y" proved
 tetris_flow.ads:173:49: medium: range check might fail
 tetris_flow.ads:174:49: medium: range check might fail
 tetris_flow.ads:175:49: medium: range check might fail
@@ -144,23 +134,11 @@ tetris_functional.ads:135:08: info: length check proved
 tetris_functional.ads:136:08: info: length check proved
 tetris_functional.ads:137:08: info: length check proved
 tetris_functional.ads:138:08: info: length check proved
-tetris_functional.ads:144:13: info: initialization of "Is_Empty" proved
 tetris_functional.ads:145:54: info: index check proved
 tetris_functional.ads:145:57: info: index check proved
-tetris_functional.ads:147:13: info: initialization of "Is_Complete_Line" proved
-tetris_functional.ads:150:13: info: initialization of "Is_Empty_Line" proved
-tetris_functional.ads:153:13: info: initialization of "No_Complete_Lines" proved
-tetris_functional.ads:157:13: info: initialization of "No_Overlap" proved
 tetris_functional.ads:168:46: info: index check proved
-tetris_functional.ads:170:13: info: initialization of "Valid_Configuration" proved
-tetris_functional.ads:184:13: info: initialization of "Turn_Direction" proved
 tetris_functional.ads:187:77: info: range check proved
 tetris_functional.ads:189:77: info: range check proved
-tetris_functional.ads:191:13: info: initialization of "Move_Is_Possible" proved
-tetris_functional.ads:198:13: info: initialization of "Move.D" proved
-tetris_functional.ads:198:13: info: initialization of "Move.S" proved
-tetris_functional.ads:198:13: info: initialization of "Move.X" proved
-tetris_functional.ads:198:13: info: initialization of "Move.Y" proved
 tetris_functional.ads:200:49: info: range check proved
 tetris_functional.ads:201:49: info: range check proved
 tetris_functional.ads:202:49: info: range check proved
@@ -225,20 +203,11 @@ tetris_initial.ads:123:08: info: length check proved
 tetris_initial.ads:124:08: info: length check proved
 tetris_initial.ads:125:08: info: length check proved
 tetris_initial.ads:126:08: info: length check proved
-tetris_initial.ads:132:13: info: initialization of "Is_Empty" proved
 tetris_initial.ads:133:54: info: index check proved
 tetris_initial.ads:133:57: info: index check proved
-tetris_initial.ads:135:13: info: initialization of "Is_Complete_Line" proved
-tetris_initial.ads:138:13: info: initialization of "Is_Empty_Line" proved
-tetris_initial.ads:141:13: info: initialization of "No_Overlap" proved
 tetris_initial.ads:152:46: info: index check proved
-tetris_initial.ads:161:13: info: initialization of "Turn_Direction" proved
 tetris_initial.ads:164:77: info: range check proved
 tetris_initial.ads:166:77: info: range check proved
-tetris_initial.ads:168:13: info: initialization of "Move.D" proved
-tetris_initial.ads:168:13: info: initialization of "Move.S" proved
-tetris_initial.ads:168:13: info: initialization of "Move.X" proved
-tetris_initial.ads:168:13: info: initialization of "Move.Y" proved
 tetris_initial.ads:170:49: medium: range check might fail
 tetris_initial.ads:171:49: medium: range check might fail
 tetris_initial.ads:172:49: medium: range check might fail
@@ -307,21 +276,11 @@ tetris_integrity.ads:123:08: info: length check proved
 tetris_integrity.ads:124:08: info: length check proved
 tetris_integrity.ads:125:08: info: length check proved
 tetris_integrity.ads:126:08: info: length check proved
-tetris_integrity.ads:132:13: info: initialization of "Is_Empty" proved
 tetris_integrity.ads:133:54: info: index check proved
 tetris_integrity.ads:133:57: info: index check proved
-tetris_integrity.ads:135:13: info: initialization of "Is_Complete_Line" proved
-tetris_integrity.ads:138:13: info: initialization of "Is_Empty_Line" proved
-tetris_integrity.ads:141:13: info: initialization of "No_Overlap" proved
 tetris_integrity.ads:152:46: info: index check proved
-tetris_integrity.ads:161:13: info: initialization of "Turn_Direction" proved
 tetris_integrity.ads:164:77: info: range check proved
 tetris_integrity.ads:166:77: info: range check proved
-tetris_integrity.ads:168:13: info: initialization of "Move_Is_Possible" proved
-tetris_integrity.ads:175:13: info: initialization of "Move.D" proved
-tetris_integrity.ads:175:13: info: initialization of "Move.S" proved
-tetris_integrity.ads:175:13: info: initialization of "Move.X" proved
-tetris_integrity.ads:175:13: info: initialization of "Move.Y" proved
 tetris_integrity.ads:177:49: info: range check proved
 tetris_integrity.ads:178:49: info: range check proved
 tetris_integrity.ads:179:49: info: range check proved

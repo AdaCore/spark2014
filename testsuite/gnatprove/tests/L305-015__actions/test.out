@@ -41,5 +41,4 @@ actions.adb:41:42: info: initialization of "A" proved
 actions.adb:41:45: info: index check proved
 actions.adb:41:53: warning: statement has no effect
 actions.adb:47:10: warning: initialization of V has no effect
-actions.adb:48:19: info: initialization of "F" proved
 actions.adb:51:22: info: overflow check proved

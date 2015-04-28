@@ -96,16 +96,12 @@ slice_sums.adb:99:44: info: range check proved
 slice_sums.adb:100:19: info: initialization of "Current_Sum" proved
 slice_sums.adb:106:14: info: initialization of "Result.Hi" proved
 slice_sums.adb:106:14: info: initialization of "Result.Lo" proved
-slice_sums.ads:5:13: info: initialization of "Maximal_Sum_Slice_Bounds.Hi" proved
-slice_sums.ads:5:13: info: initialization of "Maximal_Sum_Slice_Bounds.Lo" proved
 slice_sums.ads:6:14: medium: postcondition might fail
 slice_sums.ads:10:31: info: range check proved
 slice_sums.ads:11:34: info: range check proved
 slice_sums.ads:12:31: info: precondition proved
 slice_sums.ads:13:37: info: precondition proved
 slice_sums.ads:14:23: info: precondition proved
-slice_sums.ads:16:14: info: initialization of "Maximal_Sum_Slice_Bounds_2.Hi" proved
-slice_sums.ads:16:14: info: initialization of "Maximal_Sum_Slice_Bounds_2.Lo" proved
 slice_sums.ads:17:14: medium: postcondition might fail
 slice_sums.ads:21:31: info: range check proved
 slice_sums.ads:22:34: info: range check proved

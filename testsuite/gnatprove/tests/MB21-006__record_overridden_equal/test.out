@@ -1,4 +1,3 @@
-test_equal.adb:14:13: info: initialization of "Oeq" proved
 test_equal.adb:22:46: info: initialization of "Content_X.Content" proved
 test_equal.adb:23:46: info: initialization of "Content_Y.Content" proved
 test_equal.adb:25:04: info: assertion proved

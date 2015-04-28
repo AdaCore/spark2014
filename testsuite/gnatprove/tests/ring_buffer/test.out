@@ -34,8 +34,6 @@ ring_buf.adb:15:36: info: division check proved
 ring_buf.adb:16:28: info: range check proved
 ring_buf.adb:23:32: info: division check proved
 ring_buf.adb:24:28: info: range check proved
-ring_buf.ads:35:13: info: initialization of "Is_Full" proved
-ring_buf.ads:37:13: info: initialization of "Is_Empty" proved
 ring_buf.ads:39:21: info: initialization of "R.Data" proved
 ring_buf.ads:39:21: info: initialization of "R.First" proved
 ring_buf.ads:39:21: info: initialization of "R.Length" proved
@@ -43,7 +41,6 @@ ring_buf.ads:40:19: info: postcondition proved
 ring_buf.ads:40:30: info: initialization of "R.Data" proved
 ring_buf.ads:40:30: info: initialization of "R.First" proved
 ring_buf.ads:40:30: info: initialization of "R.Length" proved
-ring_buf.ads:42:13: info: initialization of "Head" proved
 ring_buf.ads:47:19: info: postcondition proved
 ring_buf.ads:49:43: info: initialization of "Element" proved
 ring_buf.ads:52:15: info: postcondition proved

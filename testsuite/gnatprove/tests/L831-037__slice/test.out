@@ -22,7 +22,6 @@ lcp.adb:14:41: info: initialization of "L" proved
 lcp.adb:16:12: info: initialization of "L" proved
 lcp.adb:16:14: medium: overflow check might fail
 lcp.adb:19:11: info: initialization of "L" proved
-lcp.ads:3:10: info: initialization of "LCP" proved
 lcp.ads:7:06: medium: postcondition might fail
 lcp.ads:7:06: medium: range check might fail
 lcp.ads:7:16: info: overflow check proved

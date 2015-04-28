@@ -21,7 +21,6 @@ binary_search.adb:34:25: info: range check proved
 binary_search.adb:36:22: info: initialization of "Med" proved
 binary_search.adb:36:26: info: range check proved
 binary_search.adb:38:20: info: initialization of "Med" proved
-binary_search.ads:17:13: info: initialization of "Search" proved
 binary_search.ads:21:33: info: index check proved
 binary_search.ads:23:14: info: postcondition proved
 binary_search.ads:23:57: info: index check proved

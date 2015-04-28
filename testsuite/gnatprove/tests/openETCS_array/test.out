@@ -1,4 +1,3 @@
-com_map.ads:47:13: info: initialization of "Contains" proved
 deceleration_curve.adb:36:13: info: initialization of "speed" proved
 deceleration_curve.adb:37:10: info: assertion proved
 deceleration_curve.adb:39:10: medium: assertion might fail
@@ -70,8 +69,6 @@ deceleration_curve.adb:110:12: medium: precondition might fail
 deceleration_curve.adb:111:10: warning: assuming "New_Line" has no effect on global items
 deceleration_curve.adb:111:10: warning: no Global contract available for "New_Line"
 deceleration_curve.ads:27:06: info: precondition proved
-deceleration_curve.ads:60:13: info: initialization of "Distance_To_Speed" proved
-deceleration_curve.ads:74:13: info: initialization of "Curve_Index_From_Location" proved
 deceleration_curve.ads:80:32: info: initialization of "Braking_Curve.curve" proved
 deceleration_curve.ads:80:32: info: initialization of "Braking_Curve.end_point" proved
 deceleration_curve.ads:84:14: warning: subprogram "Print_Curve" has no effect
@@ -87,41 +84,31 @@ deceleration_curve_test.adb:18:16: info: initialization of "braking_curve.curve"
 deceleration_curve_test.adb:18:16: info: initialization of "braking_curve.end_point" proved
 example.adb:4:13: info: overflow check proved
 example.adb:5:20: info: overflow check proved
-example.ads:2:13: info: initialization of "Saturated_Sum" proved
 example.ads:5:14: info: postcondition proved
 sec_3_13_2_monitoring_inputs.adb:31:27: info: precondition proved
 sec_3_13_2_monitoring_inputs.adb:32:61: medium: range check might fail
 sec_3_13_2_monitoring_inputs.adb:37:27: info: precondition proved
 sec_3_13_2_monitoring_inputs.adb:38:61: medium: range check might fail
-sec_3_13_2_monitoring_inputs.ads:55:13: info: initialization of "Is_Valid_Deceleration_Model" proved
 sec_3_13_2_monitoring_inputs.ads:70:15: info: length check proved
 sec_3_13_2_monitoring_inputs.ads:164:15: info: length check proved
 sec_3_13_2_monitoring_inputs.ads:169:15: info: length check proved
-sec_3_13_2_monitoring_inputs.ads:174:13: info: initialization of "Is_Valid_Kdry_rst" proved
-sec_3_13_2_monitoring_inputs.ads:179:13: info: initialization of "Kdry_rst" proved
 sec_3_13_2_monitoring_inputs.ads:183:08: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:184:24: info: precondition proved
 sec_3_13_2_monitoring_inputs.ads:185:58: info: range check proved
-sec_3_13_2_monitoring_inputs.ads:190:13: info: initialization of "Is_Valid_Kwet_rst" proved
-sec_3_13_2_monitoring_inputs.ads:195:13: info: initialization of "Kwet_rst" proved
 sec_3_13_2_monitoring_inputs.ads:199:08: info: postcondition proved
 sec_3_13_2_monitoring_inputs.ads:200:24: info: precondition proved
 sec_3_13_2_monitoring_inputs.ads:201:58: info: range check proved
-sec_3_13_2_monitoring_inputs.ads:211:13: info: initialization of "Is_Valid_Kn" proved
 sec_3_13_2_monitoring_inputs.ads:243:46: info: precondition proved
 sec_3_13_2_monitoring_inputs.ads:247:14: warning: subprogram "dummy" has no effect
-sec_3_13_4_gradient_accel_decel.ads:26:13: info: initialization of "A_gradient" proved
 sec_3_13_4_gradient_accel_decel.ads:26:24: warning: unused variable "d"
 sec_3_13_6_deceleration.adb:26:37: info: precondition proved
 sec_3_13_6_deceleration.adb:26:37: medium: range check might fail
 sec_3_13_6_deceleration.adb:27:71: medium: range check might fail
-sec_3_13_6_deceleration.ads:34:13: info: initialization of "A_brake_emergency" proved
 sec_3_13_6_deceleration.ads:34:43: warning: unused variable "d"
 sec_3_13_6_deceleration.ads:39:06: info: postcondition proved
 sec_3_13_6_deceleration.ads:40:37: info: precondition proved
 sec_3_13_6_deceleration.ads:40:37: medium: range check might fail
 sec_3_13_6_deceleration.ads:41:71: info: range check proved
-sec_3_13_6_deceleration.ads:44:13: info: initialization of "A_brake_safe" proved
 sec_3_13_6_deceleration.ads:45:23: info: precondition proved
 sec_3_13_6_deceleration.ads:46:23: medium: overflow check might fail
 sec_3_13_6_deceleration.ads:46:26: info: precondition proved
@@ -132,30 +119,17 @@ sec_3_13_6_deceleration.ads:46:59: info: precondition proved
 sec_3_13_6_deceleration.ads:47:22: medium: overflow check might fail
 sec_3_13_6_deceleration.ads:47:22: medium: range check might fail
 sec_3_13_6_deceleration.ads:47:30: medium: precondition might fail
-sec_3_13_6_deceleration.ads:51:13: info: initialization of "A_safe" proved
 sec_3_13_6_deceleration.ads:52:26: info: overflow check proved
 sec_3_13_6_deceleration.ads:52:26: info: range check proved
 sec_3_13_8_targets_decel_curves.adb:24:07: medium: precondition might fail
-sec_3_13_8_targets_decel_curves.ads:48:13: info: initialization of "Is_Valid_Target" proved
 sec_3_13_8_targets_decel_curves.ads:70:32: info: initialization of "Braking_Curve.curve" proved
 sec_3_13_8_targets_decel_curves.ads:70:32: info: initialization of "Braking_Curve.end_point" proved
 section_3_5_3.adb:35:16: info: initialization of "connection_attemps" proved
 section_3_5_3.adb:41:35: info: initialization of "connection_attemps" proved
 section_3_5_3.adb:41:54: info: overflow check proved
-section_3_5_3.ads:55:13: info: initialization of "Authorize_New_Communication_Session" proved
 section_3_5_3.ads:70:14: warning: subprogram "Initiate_Communication_Session" has no effect
 section_3_5_3.ads:77:14: medium: postcondition might fail, requires Contains(Connections, destination)
 section_3_5_3.ads:82:14: warning: subprogram "Contact_RBC" has no effect
-section_4_6.ads:56:13: info: initialization of "condition_1" proved
-section_4_6.ads:59:13: info: initialization of "condition_5" proved
-section_4_6.ads:65:13: info: initialization of "condition_6" proved
-section_4_6.ads:70:13: info: initialization of "condition_10" proved
-section_4_6.ads:75:13: info: initialization of "condition_50" proved
-section_4_6.ads:84:13: info: initialization of "condition_transition_SB_to_SH" proved
-section_4_6.ads:87:13: info: initialization of "condition_transition_SB_to_FS" proved
-section_4_6.ads:90:13: info: initialization of "condition_transition_SB_to_IS" proved
-section_4_6.ads:94:13: info: initialization of "disjoint_condition_transitions" proved
-section_4_6.ads:102:13: info: initialization of "transition" proved
 section_4_6.ads:102:24: warning: unused variable "mode"
 section_4_6.ads:105:06: medium: contract cases might not be complete
 section_4_6.ads:105:06: medium: contract cases might not be disjoint
@@ -322,21 +296,16 @@ step_function.adb:190:42: info: initialization of "im" proved
 step_function.adb:190:44: info: index check proved
 step_function.adb:190:73: info: index check proved
 step_function.adb:197:37: info: initialization of "im" proved
-step_function.ads:39:13: info: initialization of "Min" proved
 step_function.ads:40:17: info: postcondition proved
-step_function.ads:42:13: info: initialization of "Is_Valid" proved
 step_function.ads:46:24: info: index check proved
 step_function.ads:46:24: info: overflow check proved
 step_function.ads:46:50: info: index check proved
-step_function.ads:48:13: info: initialization of "Has_Same_Delimiters" proved
 step_function.ads:52:23: info: index check proved
 step_function.ads:52:49: info: index check proved
-step_function.ads:54:13: info: initialization of "Get_Value" proved
 step_function.ads:56:12: info: postcondition proved
 step_function.ads:58:27: info: index check proved
 step_function.ads:59:36: info: index check proved
 step_function.ads:60:50: info: index check proved
-step_function.ads:66:13: info: initialization of "Minimum_Until_Point" proved
 step_function.ads:72:06: info: postcondition proved
 step_function.ads:73:28: info: index check proved
 step_function.ads:74:50: info: index check proved
@@ -435,8 +404,4 @@ units.adb:24:39: info: overflow check proved
 units.adb:29:38: medium: overflow check might fail
 units.adb:29:48: info: division check proved
 units.adb:29:48: info: overflow check proved
-units.ads:35:13: info: initialization of "Is_Valid_Speed_km_per_h" proved
-units.ads:38:13: info: initialization of "m_per_s_From_km_per_h" proved
-units.ads:49:13: info: initialization of "Is_Valid_Speed" proved
 units.ads:51:20: info: precondition proved
-units.ads:53:13: info: initialization of "km_per_h_From_m_per_s" proved

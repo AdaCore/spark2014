@@ -1,12 +1,9 @@
 full.adb:9:16: info: overflow check proved
 full.adb:14:12: info: precondition proved
-full.ads:7:13: info: initialization of "Id" proved
-full.ads:9:13: info: initialization of "Bump" proved
 full.ads:11:20: info: postcondition proved
 full.ads:11:36: info: overflow check proved
 full.ads:16:22: info: postcondition proved
 my_pack.adb:15:07: info: precondition proved
-my_pack.ads:7:13: info: initialization of "Id" proved
 my_pack.ads:16:22: info: postcondition proved
 my_pack.ads:16:36: info: overflow check proved
   Full at full.ads:1 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
@@ -37,29 +34,11 @@ my_pack.ads:16:36: info: overflow check proved
 
   absence of run-time errors of My_Pack.Id
 
-  effects on parameters and Global variables of Full.Bump
-
-  effects on parameters and Global variables of Full.Bump
-
-  effects on parameters and Global variables of Full.Bump
-
-  effects on parameters and Global variables of Full.Id
-
-  effects on parameters and Global variables of Full.Id
-
-  effects on parameters and Global variables of Full.Id
-
   effects on parameters and Global variables of My_Pack.Bump
 
   effects on parameters and Global variables of My_Pack.Bump
 
   effects on parameters and Global variables of My_Pack.Bump
-
-  effects on parameters and Global variables of My_Pack.Id
-
-  effects on parameters and Global variables of My_Pack.Id
-
-  effects on parameters and Global variables of My_Pack.Id
 
   the postcondition of My_Pack.Bump
 
@@ -73,7 +52,13 @@ absence of run-time errors of Full.Use_Bump depends on
 
 absence of run-time errors of My_Pack.Use_Bump depends on
 
-effects on parameters and Global variables of Full.Use_Bump depends on
+effects on parameters and Global variables of Full.Bump fully established
+
+effects on parameters and Global variables of Full.Id fully established
+
+effects on parameters and Global variables of Full.Use_Bump fully established
+
+effects on parameters and Global variables of My_Pack.Id fully established
 
 effects on parameters and Global variables of My_Pack.Use_Bump depends on
 

@@ -10,4 +10,3 @@ casper.ads:9:26: info: initialization of "Par" proved
 casper.ads:14:17: info: initialization of "Par" proved
 casper.ads:17:34: info: initialization of "Ghost_G1" proved
 casper.ads:24:07: info: initialization of "Nested_Global" proved
-casper.ads:26:16: info: initialization of "Is_OK" proved

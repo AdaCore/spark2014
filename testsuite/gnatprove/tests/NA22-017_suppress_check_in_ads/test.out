@@ -19,7 +19,6 @@ test.adb:38:16: info: initialization of "Result" proved
 test.adb:38:24: info: index check proved
 test.adb:38:43: info: index check proved
 test.adb:38:56: info: index check proved
-test.ads:14:13: info: initialization of "XOR2" proved
 test.ads:15:19: info: postcondition proved
 test.ads:30:10: info: postcondition proved
 test.ads:30:19: info: range check proved

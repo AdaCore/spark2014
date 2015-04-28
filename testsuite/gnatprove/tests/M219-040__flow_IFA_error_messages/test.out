@@ -1,8 +1,6 @@
 test.adb:7:04: warning: analyzing unreferenced function "Uninitialized_1"
-test.adb:7:13: info: initialization of "Uninitialized_1" proved
 test.adb:16:14: medium: "Y" might not be initialized
 test.adb:16:18: info: initialization of "X" proved
-test.adb:23:13: info: initialization of "Uninitialized_2" proved
 test.adb:38:04: warning: analyzing unreferenced procedure "Uninitialized_3"
 test.adb:38:51: medium: "C" might not be initialized in "Uninitialized_3"
 test.adb:56:04: warning: analyzing unreferenced procedure "Uninitialized_4"
@@ -36,13 +34,10 @@ test.adb:135:07: warning: statement has no effect
 test.adb:135:07: warning: unused assignment to "Temp"
 test.adb:137:17: info: initialization of "Temp" proved
 test.adb:144:14: warning: subprogram "Ineffective_Statements_4" has no effect
-test.adb:147:16: info: initialization of "Factorial" proved
 test.adb:163:14: warning: subprogram "Unused_Variables_1" has no effect
 test.adb:173:25: info: initialization of "Unused" proved, in instantiation at test.adb:176
-test.adb:185:13: info: initialization of "Unused_Variables_2" proved
 test.adb:185:39: warning: unused variable "Par2"
 test.adb:187:13: warning: unused variable "Z"
-test.adb:189:16: info: initialization of "Return_X" proved
 test.adb:190:29: low: unused global "Y" (SPARK RM 6.1.4(13))
 test.adb:199:14: info: initialization of "X" proved
 test.adb:199:14: info: initialization of "Y" proved

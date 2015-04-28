@@ -2,7 +2,6 @@ very_longs-divide.adb:15:12: info: range check proved
 very_longs-divide.adb:19:12: info: range check proved
 very_longs-divide.adb:20:48: info: overflow check proved
 very_longs-divide.adb:20:64: info: overflow check proved
-very_longs-divide.adb:36:13: info: initialization of "Get_Shift_Distance" proved
 very_longs-divide.adb:47:14: info: initialization of "Distance" proved
 very_longs-divide.adb:52:30: info: initialization of "Result.Long_Digits" proved
 very_longs-divide.adb:61:13: info: discriminant check proved
@@ -455,24 +454,13 @@ very_longs.adb:350:38: info: overflow check proved
 very_longs.adb:350:43: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:350:61: info: initialization of "Carry" proved
 very_longs.adb:352:14: info: initialization of "Result.Long_Digits" proved
-very_longs.ads:12:13: info: initialization of "Make_From_Natural.Long_Digits" proved
 very_longs.ads:14:20: info: postcondition proved
 very_longs.ads:17:36: info: initialization of "Result.Long_Digits" proved
 very_longs.ads:18:36: info: initialization of "Valid" proved
 very_longs.ads:21:34: info: overflow check proved
-very_longs.ads:24:13: info: initialization of "Olt" proved
-very_longs.ads:27:13: info: initialization of "Ole" proved
-very_longs.ads:30:13: info: initialization of "Ogt" proved
-very_longs.ads:33:13: info: initialization of "Oge" proved
-very_longs.ads:37:13: info: initialization of "Is_Zero" proved
-very_longs.ads:40:13: info: initialization of "Number_Of_Digits" proved
-very_longs.ads:43:13: info: initialization of "ModAdd.Long_Digits" proved
 very_longs.ads:46:18: info: postcondition proved
-very_longs.ads:49:13: info: initialization of "ModSubtract.Long_Digits" proved
 very_longs.ads:52:18: info: postcondition proved
-very_longs.ads:55:13: info: initialization of "ModMultiply.Long_Digits" proved
 very_longs.ads:58:18: info: postcondition proved
-very_longs.ads:61:13: info: initialization of "Omultiply.Long_Digits" proved
 very_longs.ads:62:19: info: postcondition proved
 very_longs.ads:67:22: info: initialization of "Quotient.Long_Digits" proved
 very_longs.ads:68:22: info: initialization of "Remainder.Long_Digits" proved

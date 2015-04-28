@@ -1,7 +1,5 @@
 other.ads:4:14: info: initialization of "X" proved
 other.ads:4:14: info: initialization of "Y" proved
-other.ads:6:13: info: initialization of "Get_X" proved
-other.ads:8:13: info: initialization of "Get_Y" proved
 test.adb:9:04: warning: analyzing unreferenced procedure "Test_01"
 test.adb:9:14: info: initialization of "other.x" proved
 test.adb:9:14: info: initialization of "other.y" proved

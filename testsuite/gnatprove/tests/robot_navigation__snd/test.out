@@ -485,14 +485,4 @@ algorithm.adb:874:29: info: initialization of "driveSpeed" proved
 algorithm.adb:874:41: info: initialization of "driveTurnRate" proved
 algorithm.adb:878:28: info: initialization of "driveSpeed" proved
 algorithm.adb:880:33: info: initialization of "driveTurnRate" proved
-algorithm.ads:40:12: info: initialization of "Oeq" proved
-algorithm.ads:70:13: info: initialization of "isFilterClear" proved
-algorithm.ads:78:13: info: initialization of "isRisingGapSafe" proved
 algorithm.ads:91:14: info: postcondition proved
-algorithm.ads:93:13: info: initialization of "findBestValley.value.otherGap.bearing" proved
-algorithm.ads:93:13: info: initialization of "findBestValley.value.otherGap.distance" proved
-algorithm.ads:93:13: info: initialization of "findBestValley.value.otherGap.iDir" proved
-algorithm.ads:93:13: info: initialization of "findBestValley.value.risingGap.bearing" proved
-algorithm.ads:93:13: info: initialization of "findBestValley.value.risingGap.distance" proved
-algorithm.ads:93:13: info: initialization of "findBestValley.value.risingGap.iDir" proved
-algorithm.ads:100:13: info: initialization of "ObsAvoidDelta" proved

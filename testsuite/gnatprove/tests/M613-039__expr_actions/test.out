@@ -43,10 +43,7 @@ list.adb:37:46: info: precondition proved
 list.adb:37:61: info: overflow check proved
 list.adb:37:65: info: overflow check proved
 list.adb:37:65: info: range check proved
-list.ads:9:13: info: initialization of "Eq" proved
-list.ads:10:12: info: initialization of "Oeq" proved
 list.ads:10:12: medium: range check might fail
-list.ads:14:13: info: initialization of private part of "Reverse_List" proved
 list.ads:15:14: info: postcondition proved
 list.ads:15:28: info: precondition proved
 list.ads:15:47: info: precondition proved
@@ -69,11 +66,6 @@ stack.adb:5:55: info: range check proved
 stack.adb:20:22: info: range check proved
 stack.adb:21:19: info: index check proved
 stack.adb:32:22: info: range check proved
-stack.ads:6:16: info: initialization of "To" proved
-stack.ads:7:16: info: initialization of "To_But_Top" proved
-stack.ads:9:16: info: initialization of "Is_Full" proved
-stack.ads:10:16: info: initialization of "Is_Empty" proved
-stack.ads:14:13: info: initialization of "Top" proved
 stack.ads:19:14: info: precondition proved
 stack.ads:19:14: medium: postcondition might fail
 stack.ads:23:14: info: postcondition proved

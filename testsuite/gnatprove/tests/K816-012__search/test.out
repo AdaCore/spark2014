@@ -46,7 +46,6 @@ search.ads:13:50: medium: array index check might fail
 search.ads:14:29: info: initialization of "Found2" proved
 search.ads:14:50: info: initialization of "Index2" proved
 search.ads:14:50: medium: array index check might fail
-search.ads:16:12: info: initialization of "Check_Index" proved
 search.ads:24:25: info: postcondition proved
 search.ads:24:53: info: index check proved
 search.ads:25:55: info: index check proved

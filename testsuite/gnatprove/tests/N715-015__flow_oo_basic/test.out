@@ -1,6 +1,3 @@
-tests.adb:14:13: info: initialization of "F_Get_Item" proved
-tests.adb:15:13: info: initialization of "F_Get_Item_C" proved
-tests.adb:16:13: info: initialization of "F_Get_Item_E" proved
 tests.adb:19:28: info: initialization of "B" proved
 tests.adb:22:28: info: initialization of "B" proved
 tests.adb:25:28: info: initialization of "B" proved
@@ -78,10 +75,8 @@ tests.adb:301:23: info: initialization of "X" proved
 tests.adb:315:13: info: initialization of "A" proved
 tests.adb:316:16: info: initialization of "A" proved
 tests.adb:320:23: info: initialization of "X" proved
-tests.adb:333:16: info: initialization of "Id.Content.Field" proved
 tests.adb:336:16: high: "H1.Content.Field" is not initialized
 tests.adb:340:23: info: initialization of "R" proved
-tests.adb:351:16: info: initialization of "F" proved
 tests.adb:356:15: info: initialization of "B.X" proved
 tests.adb:360:23: info: initialization of "N" proved
 tests.adb:361:23: info: initialization of "M" proved
@@ -165,7 +160,6 @@ tests.adb:624:16: info: initialization of extension of "Tmp" proved
 tests.adb:629:33: info: initialization of "W2.X" proved
 tests.adb:629:33: info: initialization of "W2.Y" proved
 tests.adb:629:33: info: initialization of extension of "W2" proved
-untangle.adb:33:13: info: initialization of "Wibble" proved
 // fa_pkg_body_standard__tests_cfg
 digraph G {
    graph [splines=True];

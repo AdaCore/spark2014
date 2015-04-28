@@ -1,5 +1,3 @@
-discrimrec.adb:8:13: info: initialization of "Convert_Bit_64_To_Bit_32.Ignore_32a" proved
-discrimrec.adb:8:13: info: initialization of "Convert_Bit_64_To_Bit_32.Value_32" proved
 discrimrec.adb:9:24: info: discriminant check proved
 discrimrec.adb:11:53: info: discriminant check proved
 discrimrec.adb:11:63: info: division check proved

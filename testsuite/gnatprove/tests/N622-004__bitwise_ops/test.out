@@ -201,7 +201,6 @@ aco-math-very_longs.adb:307:93: info: overflow check proved
 aco-math-very_longs.adb:307:115: info: overflow check proved
 aco-math-very_longs.adb:316:36: info: overflow check proved
 aco-math-very_longs.adb:316:58: info: overflow check proved
-aco-math-very_longs.adb:323:16: info: initialization of "Get_MSD" proved
 aco-math-very_longs.adb:326:19: info: postcondition proved
 aco-math-very_longs.adb:326:25: info: discriminant check proved
 aco-math-very_longs.adb:326:45: medium: array index check might fail
@@ -228,7 +227,6 @@ aco-math-very_longs.adb:337:85: info: overflow check proved
 aco-math-very_longs.adb:337:103: info: discriminant check proved
 aco-math-very_longs.adb:337:116: info: index check proved
 aco-math-very_longs.adb:339:17: info: initialization of "Digit_Index" proved
-aco-math-very_longs.adb:343:16: info: initialization of "Get_Shift_Distance" proved
 aco-math-very_longs.adb:355:17: info: initialization of "Distance" proved
 aco-math-very_longs.adb:359:56: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:362:60: medium: overflow check might fail
@@ -479,33 +477,20 @@ aco-math-very_longs.adb:611:13: info: discriminant check proved
 aco-math-very_longs.adb:611:26: info: index check proved
 aco-math-very_longs.adb:611:40: info: initialization of "Digit_Number" proved
 aco-math-very_longs.adb:611:43: info: initialization of "Digit" proved
-aco-math-very_longs.ads:22:13: info: initialization of "Make_From_Natural.Long_Digits" proved
 aco-math-very_longs.ads:24:16: info: postcondition proved
 aco-math-very_longs.ads:26:55: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.ads:26:79: info: initialization of "Valid" proved
 aco-math-very_longs.ads:29:32: medium: overflow check might fail
-aco-math-very_longs.ads:32:13: info: initialization of "OLT" proved
-aco-math-very_longs.ads:36:13: info: initialization of "OLE" proved
-aco-math-very_longs.ads:40:13: info: initialization of "OGT" proved
-aco-math-very_longs.ads:44:13: info: initialization of "OGE" proved
-aco-math-very_longs.ads:49:13: info: initialization of "Is_Zero" proved
-aco-math-very_longs.ads:52:13: info: initialization of "ModAdd.Long_Digits" proved
 aco-math-very_longs.ads:55:16: info: postcondition proved
-aco-math-very_longs.ads:58:13: info: initialization of "ModSubtract.Long_Digits" proved
 aco-math-very_longs.ads:61:16: info: postcondition proved
-aco-math-very_longs.ads:64:13: info: initialization of "ModMultiply.Long_Digits" proved
 aco-math-very_longs.ads:67:16: info: postcondition proved
-aco-math-very_longs.ads:70:13: info: initialization of "OMULTIPLY.Long_Digits" proved
 aco-math-very_longs.ads:72:16: info: postcondition proved
 aco-math-very_longs.ads:72:57: info: overflow check proved
 aco-math-very_longs.ads:75:70: info: initialization of "Quotient.Long_Digits" proved
 aco-math-very_longs.ads:75:96: info: initialization of "Remainder.Long_Digits" proved
 aco-math-very_longs.ads:81:45: medium: overflow check might fail
-aco-math-very_longs.ads:86:13: info: initialization of "Add_Fp.Long_Digits" proved
 aco-math-very_longs.ads:90:16: info: postcondition proved
-aco-math-very_longs.ads:92:13: info: initialization of "Subtract_Fp.Long_Digits" proved
 aco-math-very_longs.ads:96:16: info: postcondition proved
-aco-math-very_longs.ads:99:14: info: initialization of "Get_Bit" proved
 aco-math-very_longs.ads:114:26: info: discriminant check proved
 aco-math-very_longs.ads:114:54: info: discriminant check proved
 aco-math-very_longs.ads:114:67: info: index check proved

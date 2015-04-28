@@ -3,4 +3,3 @@ over.adb:7:25: info: range check proved
 over.adb:9:19: info: overflow check proved
 over.adb:9:19: info: range check proved
 over.adb:11:14: info: initialization of "Res" proved
-over.ads:4:13: info: initialization of "F" proved

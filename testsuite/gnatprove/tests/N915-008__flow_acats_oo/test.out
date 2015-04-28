@@ -2,16 +2,7 @@ c3900050.ads:55:33: warning: assuming "Time_Of" has no effect on global items
 c3900050.ads:55:33: warning: no Global contract available for "Time_Of"
 c3900050.ads:57:33: warning: assuming "Time_Of" has no effect on global items
 c3900050.ads:57:33: warning: no Global contract available for "Time_Of"
-c3900050.ads:84:13: info: initialization of "Get_Time" proved
-c3900050.ads:86:13: info: initialization of "Get_Display" proved
-c3900050.ads:88:13: info: initialization of "Initial_Values_Okay" proved
-c3900050.ads:91:13: info: initialization of "Bad_Final_Values" proved
 c3900050.ads:97:43: info: initialization of "Default_Time" proved
-c3900051.ads:67:13: info: initialization of "Get_Level" proved
-c3900051.ads:69:13: info: initialization of "Initial_Values_Okay" proved
-c3900051.ads:73:13: info: initialization of "Bad_Final_Values" proved
-c3900052.ads:74:13: info: initialization of "Initial_Values_Okay" proved
-c3900052.ads:78:13: info: initialization of "Bad_Final_Values" proved
 c3900053.adb:95:11: medium: "Display_Count_For" might not be initialized after elaboration of main program "C3900053"
 c3900053.adb:108:38: info: initialization of "Alarm" proved
 c3900053.adb:112:18: info: initialization of "Alarm" proved
@@ -26,16 +17,7 @@ c3900060.ads:57:33: warning: assuming "Time_Of" has no effect on global items
 c3900060.ads:57:33: warning: no Global contract available for "Time_Of"
 c3900060.ads:59:33: warning: assuming "Time_Of" has no effect on global items
 c3900060.ads:59:33: warning: no Global contract available for "Time_Of"
-c3900060.ads:86:13: info: initialization of "Get_Time" proved
-c3900060.ads:88:13: info: initialization of "Get_Display" proved
-c3900060.ads:90:13: info: initialization of "Initial_Values_Okay" proved
-c3900060.ads:93:13: info: initialization of "Bad_Final_Values" proved
 c3900060.ads:99:43: info: initialization of "Default_Time" proved
-c3900061.ads:68:13: info: initialization of "Get_Level" proved
-c3900061.ads:70:13: info: initialization of "Initial_Values_Okay" proved
-c3900061.ads:74:13: info: initialization of "Bad_Final_Values" proved
-c3900062.ads:77:13: info: initialization of "Initial_Values_Okay" proved
-c3900062.ads:81:13: info: initialization of "Bad_Final_Values" proved
 c3900063.adb:94:11: medium: "Display_Count_For" might not be initialized after elaboration of main program "C3900063"
 c3900063.adb:113:38: info: initialization of "Medium_Alarm.Action_Officer" proved
 c3900063.adb:113:38: info: initialization of private part of "Medium_Alarm" proved
@@ -114,7 +96,6 @@ c392008.adb:89:08: info: initialization of "C_Acct.Current_Balance" proved
 c392008.adb:90:08: info: initialization of "IC_Acct.Current_Balance" proved
 c392008_0.adb:33:48: info: initialization of "Interest_On_Account" proved
 c392008_0.adb:39:28: info: initialization of "Initial_Deposit" proved
-c392008_0.ads:156:14: info: initialization of "Balance" proved
 c392008_0.ads:159:30: warning: unused initial value of "A"
 c392008_1.adb:12:28: info: initialization of "Initial_Deposit" proved
 c392008_1.adb:13:28: info: initialization of "Check_Guarantee" proved
@@ -165,7 +146,6 @@ cc1311a.adb:392:48: info: initialization of "TODAY.YEAR" proved
 cc1311a.adb:401:48: info: initialization of "TODAY.DAY" proved
 cc1311a.adb:401:48: info: initialization of "TODAY.MONTH" proved
 cc1311a.adb:401:48: info: initialization of "TODAY.YEAR" proved
-cc1311a.adb:405:16: info: initialization of "NEW_FUNC_WITH_3D_FUNCR" proved
 cc1311a.adb:410:48: info: initialization of "TODAY.DAY" proved
 cc1311a.adb:410:48: info: initialization of "TODAY.MONTH" proved
 cc1311a.adb:410:48: info: initialization of "TODAY.YEAR" proved
@@ -176,22 +156,12 @@ cc1311a.adb:419:48: info: initialization of "TODAY.YEAR" proved
 cc1311a.adb:428:47: info: initialization of "TODAY.DAY" proved
 cc1311a.adb:428:47: info: initialization of "TODAY.MONTH" proved
 cc1311a.adb:428:47: info: initialization of "TODAY.YEAR" proved
-cc1311a.adb:432:15: info: initialization of "NEW_FUNC_WITH_3D_PROCR" proved
 cc1311a.adb:437:48: info: initialization of "TODAY.DAY" proved
 cc1311a.adb:437:48: info: initialization of "TODAY.MONTH" proved
 cc1311a.adb:437:48: info: initialization of "TODAY.YEAR" proved
-cc1311a.adb:441:16: info: initialization of "NFUNC1R" proved
 cc1311a.adb:443:16: warning: subprogram "NPROC1R" has no effect
-cc1311a.adb:445:16: info: initialization of "NFUNC2R" proved
 cc1311a.adb:447:16: warning: subprogram "NPROC2R" has no effect
-report.ads:112:15: info: initialization of "IDENT_INT" proved
-report.ads:117:15: info: initialization of "IDENT_CHAR" proved
-report.ads:123:15: info: initialization of "IDENT_WIDE_CHAR" proved
-report.ads:129:15: info: initialization of "IDENT_BOOL" proved
-report.ads:134:15: info: initialization of "IDENT_STR" proved
-report.ads:139:15: info: initialization of "IDENT_WIDE_STR" proved
-report.ads:144:15: info: initialization of "EQUAL" proved
-compilation of c392008_2.adb failed
+   compilation of c392008_2.adb failed
 
 
 gnatprove: error during analysis of data and information flow

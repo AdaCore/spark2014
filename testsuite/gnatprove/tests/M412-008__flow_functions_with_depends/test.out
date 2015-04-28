@@ -1,5 +1,3 @@
-foo.adb:9:13: info: initialization of "Wibble" proved
-foo.adb:22:13: info: initialization of "Wobble" proved
 foo.adb:22:24: warning: unused variable "Y"
 foo.adb:29:26: info: initialization of "R" proved
 foo.adb:43:25: info: initialization of "B" proved
@@ -27,6 +25,3 @@ function_depends_on_state.adb:8:04: info: initialization of "A" constituent of "
 function_depends_on_state.adb:8:07: info: initialization of "B" constituent of "S" proved
 function_depends_on_state.adb:8:10: info: initialization of "C" constituent of "S2" proved
 function_depends_on_state.adb:8:13: info: initialization of "D" constituent of "S2" proved
-function_depends_on_state.ads:6:13: info: initialization of "F1" proved
-function_depends_on_state.ads:10:13: info: initialization of "F2" proved
-function_depends_on_state.ads:14:13: info: initialization of "F3" proved

@@ -1,10 +1,7 @@
 main.adb:1:11: warning: subprogram "Main" has no effect
-main.adb:11:13: info: initialization of "Get_Rec.Comp" proved
 main.adb:12:14: info: postcondition proved
-main.adb:14:13: info: initialization of "Get_Arr" proved
 main.adb:15:14: info: postcondition proved
 main.adb:15:35: info: length check proved
-main.adb:17:13: info: initialization of "Get_Index" proved
 main.adb:18:14: info: postcondition proved
 main.adb:23:14: info: initialization of "Result.Comp" proved
 main.adb:27:32: info: length check proved

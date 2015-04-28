@@ -31,6 +31,4 @@ sub.adb:43:17: info: initialization of "Global" proved
 sub.adb:43:24: info: range check proved
 sub.ads:7:12: warning: dynamic type predicate ignored (not yet supported)
 sub.ads:11:12: warning: dynamic type predicate ignored (not yet supported)
-sub.ads:18:13: info: initialization of "Incorrect" proved
-sub.ads:20:13: info: initialization of "F" proved
 sub.ads:24:14: info: initialization of "Global" proved

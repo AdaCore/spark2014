@@ -13,7 +13,6 @@ test.adb:41:26: info: initialization of "Y" proved
 test.adb:45:18: info: initialization of "Y" proved
 test.adb:46:15: info: initialization of "Y" proved
 test.adb:50:04: warning: analyzing unreferenced function "Bergeretti_Fig9_Correct"
-test.adb:50:13: info: initialization of "Bergeretti_Fig9_Correct" proved
 test.adb:56:13: info: initialization of "D" proved
 test.adb:57:15: info: initialization of "C" proved
 test.adb:57:19: info: initialization of "D" proved
@@ -30,7 +29,6 @@ test.adb:62:10: info: initialization of "Y" proved
 test.adb:63:15: info: initialization of "Y" proved
 test.adb:65:14: info: initialization of "Y" proved
 test.adb:68:04: warning: analyzing unreferenced function "Bergeretti_Fig9_Incorrect"
-test.adb:68:13: info: initialization of "Bergeretti_Fig9_Incorrect" proved
 test.adb:74:13: info: initialization of "D" proved
 test.adb:75:15: info: initialization of "C" proved
 test.adb:75:19: info: initialization of "D" proved
@@ -56,7 +54,5 @@ test.adb:113:12: warning: this statement is never reached
 test.adb:117:04: warning: analyzing unreferenced procedure "For_Test_02"
 test.adb:117:27: info: initialization of "X" proved
 test.adb:138:04: warning: analyzing unreferenced function "Loop_Stability"
-test.adb:138:13: info: initialization of "Loop_Stability" proved
-test.adb:140:16: info: initialization of "Return_5" proved
 test.adb:145:20: info: initialization of "A" proved
 test.adb:147:14: info: initialization of "A" proved

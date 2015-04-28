@@ -20,8 +20,6 @@ p.adb:24:50: info: initialization of private part of "L_In" proved
 p.adb:25:07: info: precondition proved
 p.adb:31:07: info: precondition proved
 p.adb:32:07: info: precondition proved
-p.ads:7:13: info: initialization of "My_Eq" proved
-p.ads:10:12: info: initialization of "Oeq" proved
 p.ads:15:13: info: precondition proved
 p.ads:16:07: info: precondition proved
 p.ads:17:14: info: postcondition proved

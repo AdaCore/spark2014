@@ -105,7 +105,6 @@ ap.adb:98:25: info: initialization of "Slip" proved
 main.adb:12:39: info: initialization of "Surfaces.Ailerons" proved
 main.adb:13:39: info: initialization of "Surfaces.Elevators" proved
 main.adb:14:39: info: initialization of "Surfaces.Rudder" proved
-scale.adb:11:13: info: initialization of "Inverse" proved
 scale.adb:19:20: info: overflow check proved
 scale.adb:19:32: info: division check proved
 scale.adb:19:32: info: overflow check proved
@@ -145,6 +144,4 @@ scale.adb:78:30: info: initialization of "V" proved
 scale.adb:79:38: info: initialization of "V" proved
 scale.adb:79:38: info: range check proved
 scale.adb:80:14: info: initialization of "Ans" proved
-scale.ads:9:13: info: initialization of "Scale_Movement" proved
 scale.ads:16:19: medium: postcondition might fail
-scale.ads:21:13: info: initialization of "Heading_Offset" proved

@@ -5,7 +5,6 @@ count.adb:7:17: info: initialization of "Res" proved
 count.adb:7:21: info: overflow check proved
 count.adb:8:13: info: initialization of "Res" proved
 count.adb:12:14: info: initialization of "Res" proved
-count.ads:2:13: info: initialization of "Count" proved
 count.ads:4:63: info: overflow check proved
 count.ads:5:14: info: postcondition proved
 count.ads:5:55: info: overflow check proved

@@ -41,7 +41,6 @@ pck.adb:59:59: info: initialization of "Result_Hi" proved
 pck.adb:68:14: info: initialization of "Result_Hi" proved
 pck.adb:68:24: info: overflow check proved
 pck.adb:68:26: info: initialization of "Result_Lo" proved
-pck.ads:4:13: info: initialization of "Mul_Div" proved
 pck.ads:6:14: medium: postcondition might fail, requires Int64 (Mul_Div'Result) = Int64 (V) * Int64 (M) / D
 pck.ads:6:49: medium: overflow check might fail
 pck.ads:6:61: medium: divide by zero might fail

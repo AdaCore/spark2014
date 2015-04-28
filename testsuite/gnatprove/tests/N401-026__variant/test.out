@@ -1,4 +1,3 @@
-loop_tutorial.adb:9:12: info: initialization of "ISQRT" proved
 loop_tutorial.adb:10:19: info: postcondition proved
 loop_tutorial.adb:10:32: info: overflow check proved
 loop_tutorial.adb:11:35: info: overflow check proved

@@ -11,7 +11,6 @@ sorters.adb:33:29: info: index check proved
 sorters.adb:34:15: info: index check proved
 sorters.adb:34:21: info: initialization of "Temp" proved
 sorters.adb:35:28: info: initialization of "Values_Old" proved
-sorters.adb:40:13: info: initialization of "Index_Of_Minimum" proved
 sorters.adb:45:10: info: postcondition proved
 sorters.adb:47:39: info: index check proved
 sorters.adb:47:61: info: index check proved

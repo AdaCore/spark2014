@@ -182,7 +182,6 @@ static_discr.adb:123:52: info: initialization of "R54b" proved
 static_discr.adb:123:52: info: initialization of "R55b" proved
 static_discr.adb:123:60: info: discriminant check proved
 static_discr.adb:125:14: info: initialization of "Result" proved
-static_discr.ads:17:13: info: initialization of "Search_Max" proved
 static_discr.ads:18:15: info: discriminant check proved
 static_discr.ads:19:14: info: postcondition proved
 static_discr.ads:19:36: info: discriminant check proved
@@ -193,7 +192,6 @@ static_discr.ads:21:70: info: index check proved
 static_discr.ads:22:28: info: discriminant check proved
 static_discr.ads:22:36: info: discriminant check proved
 static_discr.ads:22:56: info: index check proved
-static_discr.ads:24:13: info: initialization of "Search" proved
 static_discr.ads:25:22: info: discriminant check proved
 static_discr.ads:26:14: info: postcondition proved
 static_discr.ads:26:32: info: discriminant check proved
@@ -204,7 +202,6 @@ static_discr.ads:28:70: info: index check proved
 static_discr.ads:29:28: info: discriminant check proved
 static_discr.ads:29:36: info: discriminant check proved
 static_discr.ads:29:52: info: index check proved
-static_discr.ads:31:13: info: initialization of "Search_Array" proved
 static_discr.ads:33:14: info: postcondition proved
 static_discr.ads:35:48: info: index check proved
 static_discr.ads:36:42: info: index check proved

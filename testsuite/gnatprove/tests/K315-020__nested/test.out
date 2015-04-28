@@ -11,5 +11,4 @@ nested.adb:12:42: info: overflow check proved
 nested.adb:13:20: info: overflow check proved
 nested.adb:14:29: info: initialization of "X" proved
 nested.adb:17:14: info: initialization of "X" proved
-nested.ads:3:13: info: initialization of "Search" proved
 nested.ads:4:20: info: postcondition proved

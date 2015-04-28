@@ -27,14 +27,3 @@ vectors.ads:16:27: info: initialization of "Container.Elements" proved
 vectors.ads:16:27: info: initialization of "Container.Id" proved
 vectors.ads:16:27: info: initialization of "Container.Last_Index" proved
 vectors.ads:16:27: info: initialization of "Container.Sig" proved
-vectors.ads:19:13: info: initialization of "Length" proved
-vectors.ads:21:13: info: initialization of "First_Cursor.Container_Id" proved
-vectors.ads:21:13: info: initialization of "First_Cursor.Container_Sig" proved
-vectors.ads:21:13: info: initialization of "First_Cursor.Index" proved
-vectors.ads:21:13: info: initialization of "First_Cursor.Last_Index" proved
-vectors.ads:23:13: info: initialization of "Last_Cursor.Container_Id" proved
-vectors.ads:23:13: info: initialization of "Last_Cursor.Container_Sig" proved
-vectors.ads:23:13: info: initialization of "Last_Cursor.Index" proved
-vectors.ads:23:13: info: initialization of "Last_Cursor.Last_Index" proved
-vectors.ads:25:13: info: initialization of "Associated" proved
-vectors.ads:29:13: info: initialization of "Element_At" proved

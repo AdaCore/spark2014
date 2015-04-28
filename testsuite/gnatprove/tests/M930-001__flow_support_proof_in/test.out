@@ -2,7 +2,6 @@ proof_in_legal.adb:5:04: info: initialization of "Body_Var" constituent of "Stat
 proof_in_legal.adb:16:22: medium: assertion might fail, requires Var = 0
 proof_in_legal.adb:18:14: medium: overflow check might fail
 proof_in_legal.ads:6:04: info: initialization of "Var" proved
-proof_in_legal.ads:8:13: info: initialization of "Is_OK_To_Increase" proved
 proof_in_legal.ads:16:22: info: postcondition proved
 proof_in_illegal.adb:8:43: export "Error_Derived_From_Proof_In" must not depend on Proof_In "Body_Var" constituent of "State" (SPARK RM 6.1.4(17))
 proof_in_illegal.adb:9:43: export "Error_Derived_From_Proof_In" must not depend on Proof_In "Var" (SPARK RM 6.1.4(17))
@@ -11,8 +10,6 @@ proof_in_illegal.adb:15:14: info: initialization of "Temp" proved
 proof_in_illegal.adb:20:43: low: unused global "Body_Var" constituent of "State" (SPARK RM 6.1.4(13))
 proof_in_illegal.adb:21:43: low: unused global "Var" (SPARK RM 6.1.4(13))
 proof_in_illegal.ads:3:26: warning: no procedure exists that can initialize abstract state "Proof_In_Illegal.State"
-proof_in_illegal.ads:7:13: info: initialization of "Error_Derived_From_Proof_In" proved
-proof_in_illegal.ads:11:13: info: initialization of "Warning_Proof_In_Not_Used" proved
    compilation of proof_in_illegal.adb failed
 
 

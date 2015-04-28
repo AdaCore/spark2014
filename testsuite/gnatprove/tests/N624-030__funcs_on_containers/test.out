@@ -30,7 +30,6 @@ find_map.adb:22:30: info: initialization of private part of "Result" proved
 find_map.adb:23:36: info: index check proved
 find_map.adb:23:36: info: precondition proved
 find_map.adb:26:14: info: initialization of private part of "Result" proved
-find_map.adb:36:16: info: initialization of "Find_Map_Bad" proved
 find_map.adb:37:13: info: precondition proved
 find_map.adb:37:41: info: precondition proved
 find_map.adb:40:13: info: precondition proved
@@ -47,14 +46,8 @@ find_map.adb:48:10: info: precondition proved
 find_map.adb:48:20: info: initialization of private part of "M" proved
 find_map.adb:49:17: info: precondition proved
 find_map.adb:49:31: info: initialization of private part of "M" proved
-find_map.ads:8:13: info: initialization of "Hash" proved
-find_map.ads:13:13: info: initialization of "Equivalent_Keys" proved
-find_map.ads:15:12: info: initialization of "Equivalent_Keys" proved
-find_map.ads:15:12: info: initialization of "Hash" proved
-find_map.ads:15:12: info: initialization of "Oeq" proved
 find_map.ads:24:30: info: initialization of "R52s" proved
 find_map.ads:24:30: info: precondition proved
-find_map.ads:26:13: info: initialization of private part of "Find_All" proved
 find_map.ads:27:14: info: postcondition proved
 find_map.ads:28:17: info: precondition proved
 find_map.ads:28:47: info: index check proved
@@ -68,7 +61,6 @@ find_map.ads:32:13: info: precondition proved
 find_map.ads:33:14: info: precondition proved
 find_map.ads:34:17: info: index check proved
 find_map.ads:34:17: info: precondition proved
-find_map.ads:36:13: info: initialization of "Find_Upto" proved
 find_map.ads:39:14: info: postcondition proved
 find_map.ads:41:25: info: index check proved
 find_map.ads:43:30: info: index check proved

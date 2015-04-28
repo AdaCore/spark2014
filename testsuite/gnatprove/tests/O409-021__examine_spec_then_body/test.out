@@ -1,6 +1,4 @@
 test.adb:4:03: warning: analyzing unreferenced function "Fun"
-test.adb:4:12: info: initialization of "Fun" proved
 test.adb:4:17: warning: unused variable "N"
 test.adb:4:03: warning: analyzing unreferenced function "Fun"
-test.adb:4:12: info: initialization of "Fun" proved
 test.adb:4:17: warning: unused variable "N"

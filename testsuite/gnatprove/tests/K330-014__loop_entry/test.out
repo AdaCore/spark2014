@@ -45,7 +45,6 @@ optional.adb:35:07: warning: assuming "Put_Line" has no effect on global items
 optional.adb:35:07: warning: no Global contract available for "Put_Line"
 utils.adb:10:29: info: range check proved
 utils.adb:10:34: medium: overflow check might fail
-utils.ads:2:13: info: initialization of "Sum_Of" proved
 while_loops.adb:9:04: warning: assuming "Put_Line" has no effect on global items
 while_loops.adb:9:04: warning: no Global contract available for "Put_Line"
 while_loops.adb:14:29: info: initialization of "Counter" proved

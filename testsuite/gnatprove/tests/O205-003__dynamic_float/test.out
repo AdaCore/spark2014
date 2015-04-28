@@ -15,7 +15,6 @@ test_dynamic_property.adb:21:15: info: overflow check proved
 test_dynamic_property.adb:22:20: info: overflow check proved
 test_dynamic_property.adb:22:20: info: range check proved
 test_dynamic_property.adb:24:18: info: range check proved
-test_dynamic_property.adb:29:13: info: initialization of "Dyn_Return" proved
 test_dynamic_property.adb:34:17: info: range check proved
 test_dynamic_property.adb:36:17: info: range check proved
 test_dynamic_property.adb:44:12: info: overflow check proved

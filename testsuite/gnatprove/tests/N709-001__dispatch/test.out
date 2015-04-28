@@ -1,5 +1,3 @@
-object.ads:4:13: info: initialization of "Has_Stored_Area" proved
-object.ads:6:13: info: initialization of "Get_Stored_Area" proved
 object.ads:7:13: medium: precondition is stronger than the default class-wide precondition of True
 object.ads:14:20: info: postcondition proved
 object.ads:15:31: info: precondition proved

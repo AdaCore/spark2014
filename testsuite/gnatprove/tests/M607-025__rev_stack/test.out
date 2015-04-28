@@ -51,9 +51,6 @@ list.adb:43:23: info: precondition proved
 list.adb:43:28: info: initialization of "S" proved
 list.adb:44:10: info: precondition proved
 list.adb:44:15: info: initialization of "S" proved
-list.ads:8:13: info: initialization of "Eq" proved
-list.ads:9:12: info: initialization of "Oeq" proved
-list.ads:12:13: info: initialization of private part of "Reverse_List" proved
 list.ads:13:14: info: postcondition proved
 list.ads:13:28: info: precondition proved
 list.ads:13:47: info: precondition proved
@@ -72,14 +69,8 @@ stack.adb:29:22: info: range check proved
 stack.adb:37:28: info: length check proved
 stack.adb:38:14: info: initialization of "E.Content" proved
 stack.adb:38:14: info: initialization of "E.Top" proved
-stack.ads:11:16: info: initialization of "To" proved
 stack.ads:12:17: info: postcondition proved
-stack.ads:17:13: info: initialization of "Is_Full" proved
-stack.ads:19:13: info: initialization of "Is_Empty" proved
-stack.ads:22:13: info: initialization of "Empty_Stack.Content" proved
-stack.ads:22:13: info: initialization of "Empty_Stack.Top" proved
 stack.ads:23:14: info: postcondition proved
-stack.ads:25:13: info: initialization of "Top" proved
 stack.ads:27:14: info: postcondition proved
 stack.ads:27:41: info: index check proved
 stack.ads:31:14: info: postcondition proved

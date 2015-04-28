@@ -29,8 +29,6 @@ reverse_ord.adb:20:51: info: index check proved
 reverse_ord.adb:24:21: info: index check proved
 reverse_ord.adb:24:40: info: index check proved
 up_timer.adb:14:36: info: overflow check proved
-up_timer.ads:10:13: info: initialization of "Get" proved
-f.adb:1:10: info: initialization of "F" proved
 f.adb:3:16: info: postcondition proved
 f.adb:10:16: info: range check proved
 f.adb:10:38: info: overflow check proved
@@ -89,11 +87,8 @@ stacks_1.adb:24:18: info: index check proved
 stacks_1.adb:28:27: medium: refined postcondition might fail
 stacks_1.adb:34:33: info: range check proved
 stacks_1.adb:38:64: info: index check proved
-stacks_1.ads:6:13: info: initialization of "Is_Empty" proved
-stacks_1.ads:9:13: info: initialization of "Is_Full" proved
 stacks_1.ads:14:19: info: postcondition proved
 stacks_1.ads:17:19: info: postcondition proved
-stacks_1.ads:19:13: info: initialization of "Top" proved
 stacks_2.adb:7:04: info: initialization of "A_Pointer" constituent of "The_Stack" proved
 stacks_2.adb:8:04: info: initialization of "A_Vector" constituent of "The_Stack" proved
 stacks_2.adb:8:31: info: length check proved
@@ -106,11 +101,8 @@ stacks_2.adb:41:17: info: index check proved
 stacks_2.adb:46:29: info: refined post proved
 stacks_2.adb:51:30: medium: range check might fail
 stacks_2.adb:54:46: info: index check proved
-stacks_2.ads:6:13: info: initialization of "Is_Empty" proved
-stacks_2.ads:10:13: info: initialization of "Is_Full" proved
 stacks_2.ads:17:21: info: postcondition proved
 stacks_2.ads:21:16: info: postcondition proved
-stacks_2.ads:23:13: info: initialization of "Top" proved
 externals.adb:36:25: info: initialization of "Press" proved
 externals.adb:36:31: medium: overflow check might fail
 externals.adb:36:33: info: initialization of "Temp" proved
@@ -125,7 +117,6 @@ externals.adb:91:20: warning: unused assignment
 externals.adb:94:13: warning: statement has no effect
 externals.adb:94:23: info: initialization of "Status" proved
 externals.ads:10:20: info: initialization of "Combined_Value" proved
-externals.ads:24:13: info: initialization of "Last_Value_Sent" proved
 hal.adb:76:20: info: initialization of "Current_Status" proved
 hal.adb:78:13: info: initialization of "Next_Byte" proved
 hal.adb:94:41: info: initialization of "Write_FIFO" constituent of "Serial_Out" proved
@@ -144,10 +135,7 @@ intra_unit_elaboration_order_examples.adb:42:07: info: initialization of "X" pro
 intra_unit_elaboration_order_examples.ads:12:04: info: initialization of "X" proved
 intra_unit_elaboration_order_examples.ads:17:04: info: initialization of "Y" proved
 intra_unit_elaboration_order_examples.ads:20:19: info: postcondition proved
-intra_unit_elaboration_order_examples.ads:26:13: info: initialization of "F" proved
-intra_unit_elaboration_order_examples.ads:27:13: info: initialization of "G" proved
 intra_unit_elaboration_order_examples.ads:27:50: medium: overflow check might fail
 initialization_and_elaboration.ads:8:08: medium: initial condition might fail
 initialization_and_elaboration.ads:8:29: info: initialization of "V" proved
 initialization_and_elaboration.ads:10:04: info: initialization of "V" proved
-initialization_and_elaboration.ads:15:13: info: initialization of "Get_It" proved

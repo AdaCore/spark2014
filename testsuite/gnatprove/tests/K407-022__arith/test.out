@@ -1,4 +1,3 @@
-arith.adb:1:10: info: initialization of "Arith" proved
 arith.adb:7:09: warning: unused assignment
 arith.adb:7:12: warning: possible reassociation due to missing parentheses
 arith.adb:7:14: medium: overflow check might fail

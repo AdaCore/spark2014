@@ -208,8 +208,6 @@ bounded.adb:97:39: info: initialization of private part of "V" proved
 bounded.adb:98:07: info: assertion proved
 bounded.adb:98:26: info: precondition proved
 bounded.adb:98:39: info: initialization of private part of "V" proved
-bounded.adb:101:19: info: initialization of "Lt" proved
-bounded.adb:102:18: info: initialization of "Olt" proved
 bounded.adb:104:10: info: assertion proved
 bounded.adb:104:33: info: precondition proved
 bounded.adb:104:45: info: initialization of private part of "V" proved
@@ -246,7 +244,6 @@ bounded.adb:117:07: info: assertion proved
 bounded.adb:117:22: info: precondition proved
 bounded.adb:117:32: info: initialization of private part of "V" proved
 bounded.adb:119:37: medium: assertion might fail, requires false
-bounded.ads:6:12: info: initialization of "Oeq" proved
 bounded.ads:13:14: warning: subprogram "Test" has no effect
 indefinite_bounded.adb:10:07: info: precondition proved
 indefinite_bounded.adb:10:14: info: initialization of private part of "V" proved
@@ -456,8 +453,6 @@ indefinite_bounded.adb:97:39: info: initialization of private part of "V" proved
 indefinite_bounded.adb:98:07: info: assertion proved
 indefinite_bounded.adb:98:26: info: precondition proved
 indefinite_bounded.adb:98:39: info: initialization of private part of "V" proved
-indefinite_bounded.adb:101:19: info: initialization of "Lt" proved
-indefinite_bounded.adb:102:18: info: initialization of "Olt" proved
 indefinite_bounded.adb:104:10: info: assertion proved
 indefinite_bounded.adb:104:33: info: precondition proved
 indefinite_bounded.adb:104:45: info: initialization of private part of "V" proved
@@ -497,10 +492,7 @@ indefinite_bounded.adb:119:37: medium: assertion might fail, requires false
 indefinite_bounded.ads:6:04: warning: in instantiation at a-cfinve.ads:240
 indefinite_bounded.ads:6:04: warning: in instantiation at a-coboho.ads:102
 indefinite_bounded.ads:6:04: warning: pragma "No_Strict_Aliasing" ignored in flow analysis (not yet supported)
-indefinite_bounded.ads:6:12: info: initialization of "Oeq" proved
 indefinite_bounded.ads:14:14: warning: subprogram "Test" has no effect
-indefinite_bounded_tagged.adb:6:13: info: initialization of "F.C" proved
-indefinite_bounded_tagged.adb:6:13: info: initialization of extension of "F" proved
 indefinite_bounded_tagged.adb:11:07: info: precondition proved
 indefinite_bounded_tagged.adb:11:14: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:12:07: info: assertion proved
@@ -709,8 +701,6 @@ indefinite_bounded_tagged.adb:98:39: info: initialization of private part of "V"
 indefinite_bounded_tagged.adb:99:07: info: assertion proved
 indefinite_bounded_tagged.adb:99:26: info: precondition proved
 indefinite_bounded_tagged.adb:99:39: info: initialization of private part of "V" proved
-indefinite_bounded_tagged.adb:102:19: info: initialization of "Lt" proved
-indefinite_bounded_tagged.adb:103:18: info: initialization of "Olt" proved
 indefinite_bounded_tagged.adb:105:25: medium: assertion might fail, requires not Sort.Is_Sorted (V)
 indefinite_bounded_tagged.adb:105:33: info: precondition proved
 indefinite_bounded_tagged.adb:105:45: info: initialization of private part of "V" proved
@@ -750,7 +740,6 @@ indefinite_bounded_tagged.adb:120:37: medium: assertion might fail, requires fal
 indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:240
 indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-coboho.ads:102
 indefinite_bounded_tagged.ads:12:04: warning: pragma "No_Strict_Aliasing" ignored in flow analysis (not yet supported)
-indefinite_bounded_tagged.ads:12:12: info: initialization of "Oeq" proved
 indefinite_bounded_tagged.ads:20:14: warning: subprogram "Test" has no effect
 indefinite_unbounded.adb:10:07: info: precondition proved
 indefinite_unbounded.adb:10:14: info: initialization of private part of "V" proved
@@ -960,8 +949,6 @@ indefinite_unbounded.adb:98:39: info: initialization of private part of "V" prov
 indefinite_unbounded.adb:99:07: info: assertion proved
 indefinite_unbounded.adb:99:26: info: precondition proved
 indefinite_unbounded.adb:99:39: info: initialization of private part of "V" proved
-indefinite_unbounded.adb:102:19: info: initialization of "Lt" proved
-indefinite_unbounded.adb:103:18: info: initialization of "Olt" proved
 indefinite_unbounded.adb:105:10: info: assertion proved
 indefinite_unbounded.adb:105:33: info: precondition proved
 indefinite_unbounded.adb:105:45: info: initialization of private part of "V" proved
@@ -1001,10 +988,7 @@ indefinite_unbounded.adb:121:37: medium: assertion might fail, requires false
 indefinite_unbounded.ads:8:04: warning: in instantiation at a-cfinve.ads:240
 indefinite_unbounded.ads:8:04: warning: in instantiation at a-coboho.ads:102
 indefinite_unbounded.ads:8:04: warning: pragma "No_Strict_Aliasing" ignored in flow analysis (not yet supported)
-indefinite_unbounded.ads:8:12: info: initialization of "Oeq" proved
 indefinite_unbounded.ads:16:14: warning: subprogram "Test" has no effect
-indefinite_unbounded_tagged.adb:6:13: info: initialization of "F.C" proved
-indefinite_unbounded_tagged.adb:6:13: info: initialization of extension of "F" proved
 indefinite_unbounded_tagged.adb:11:07: info: precondition proved
 indefinite_unbounded_tagged.adb:11:14: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:12:07: info: assertion proved
@@ -1213,8 +1197,6 @@ indefinite_unbounded_tagged.adb:99:39: info: initialization of private part of "
 indefinite_unbounded_tagged.adb:100:07: info: assertion proved
 indefinite_unbounded_tagged.adb:100:26: info: precondition proved
 indefinite_unbounded_tagged.adb:100:39: info: initialization of private part of "V" proved
-indefinite_unbounded_tagged.adb:103:19: info: initialization of "Lt" proved
-indefinite_unbounded_tagged.adb:104:18: info: initialization of "Olt" proved
 indefinite_unbounded_tagged.adb:106:25: medium: assertion might fail, requires not Sort.Is_Sorted (V)
 indefinite_unbounded_tagged.adb:106:33: info: precondition proved
 indefinite_unbounded_tagged.adb:106:45: info: initialization of private part of "V" proved
@@ -1254,7 +1236,6 @@ indefinite_unbounded_tagged.adb:122:37: medium: assertion might fail, requires f
 indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:240
 indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-coboho.ads:102
 indefinite_unbounded_tagged.ads:14:04: warning: pragma "No_Strict_Aliasing" ignored in flow analysis (not yet supported)
-indefinite_unbounded_tagged.ads:14:12: info: initialization of "Oeq" proved
 indefinite_unbounded_tagged.ads:22:14: warning: subprogram "Test" has no effect
 unbounded.adb:8:07: info: initialization of private part of "V" proved
 unbounded.adb:10:07: info: precondition proved
@@ -1466,8 +1447,6 @@ unbounded.adb:98:39: info: initialization of private part of "V" proved
 unbounded.adb:99:07: info: assertion proved
 unbounded.adb:99:26: info: precondition proved
 unbounded.adb:99:39: info: initialization of private part of "V" proved
-unbounded.adb:102:19: info: initialization of "Lt" proved
-unbounded.adb:103:18: info: initialization of "Olt" proved
 unbounded.adb:105:10: info: assertion proved
 unbounded.adb:105:33: info: precondition proved
 unbounded.adb:105:45: info: initialization of private part of "V" proved
@@ -1504,5 +1483,4 @@ unbounded.adb:119:22: info: precondition proved
 unbounded.adb:119:22: medium: assertion might fail, requires Capacity (V) = 10
 unbounded.adb:119:32: info: initialization of private part of "V" proved
 unbounded.adb:121:37: medium: assertion might fail, requires false
-unbounded.ads:8:12: info: initialization of "Oeq" proved
 unbounded.ads:15:14: warning: subprogram "Test" has no effect

@@ -9,5 +9,3 @@ pack.ads:15:14: info: initialization of "B1" proved
 test.adb:6:10: warning: unused assignment to "B1"
 test.adb:56:13: warning: unused assignment
 test.ads:5:14: info: initialization of "B1" proved
-test.ads:11:13: info: initialization of "My_B1" proved
-test.ads:12:13: info: initialization of "My_B2" proved

@@ -16,9 +16,7 @@ simple_arrays.adb:68:27: info: initialization of "B" proved
 simple_arrays.adb:73:13: info: initialization of "B" proved
 simple_arrays.adb:81:13: info: postcondition proved
 simple_arrays.adb:89:22: medium: assertion might fail, requires A'Update (1 => 5,  N => 6) = A'update
-simple_arrays.adb:97:13: info: initialization of "Array_Axiom_Transitivity" proved
 simple_arrays.adb:101:22: medium: postcondition might fail, requires Array_Axiom_Transitivity'Result = 42
-simple_arrays.adb:108:13: info: initialization of "Array_Axiom_Transitivity_Worse" proved
 simple_arrays.adb:116:22: info: postcondition proved
 simple_arrays.adb:127:22: info: postcondition proved
 simple_arrays.adb:142:22: info: postcondition proved

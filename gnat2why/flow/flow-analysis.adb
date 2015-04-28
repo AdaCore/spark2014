@@ -2189,6 +2189,14 @@ package body Flow.Analysis is
             V_Goal := V_Error;
          end if;
 
+         if Kind = Init and then Is_Function_Entity (Var) then
+            pragma Assert (Var.Node = FA.Analyzed_Entity);
+            --  We special case this, so we don't emit "X" is initialized
+            --  messages for the "variable" we use to model the value of
+            --  the function return.
+            return;
+         end if;
+
          Error_Msg_Flow
            (FA        => FA,
             Tracefile => To_String (Tracefile),

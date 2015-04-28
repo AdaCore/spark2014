@@ -12,10 +12,6 @@ sorted_lists.adb:14:10: info: precondition proved
 sorted_lists.adb:14:27: info: initialization of "Current" proved
 sorted_lists.adb:17:07: info: precondition proved
 sorted_lists.adb:17:26: info: initialization of "Current" proved
-sorted_lists.ads:8:13: info: initialization of "My_Eq" proved
-sorted_lists.ads:11:13: info: initialization of "My_Lt" proved
-sorted_lists.ads:14:12: info: initialization of "Oeq" proved
-sorted_lists.ads:18:12: info: initialization of "Olt" proved
 sorted_lists.ads:22:25: info: initialization of "Position" proved
 sorted_lists.ads:23:14: info: precondition proved
 sorted_lists.ads:25:08: info: precondition proved

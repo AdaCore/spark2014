@@ -7,7 +7,6 @@ adt_stack-child.ads:7:20: info: initialization of "S.Child_Stack_Vector" proved
 adt_stack-child.ads:7:20: info: initialization of "S.Next_Value" proved
 adt_stack-child.ads:7:20: info: initialization of "S.STack_Top" proved
 adt_stack-child.ads:7:20: info: initialization of "S.STack_Vector" proved
-adt_stack-child.ads:10:13: info: initialization of "Top_Identity" proved
 adt_stack.adb:21:25: info: length check proved
 adt_stack.adb:28:10: medium: exception might be raised
 adt_stack.adb:30:33: medium: range check might fail
@@ -17,19 +16,14 @@ adt_stack.adb:40:28: medium: array index check might fail
 adt_stack.adb:41:33: info: range check proved
 adt_stack.adb:48:10: info: range check proved
 adt_stack.adb:48:45: info: range check proved
-adt_stack.ads:10:13: info: initialization of "Is_Empty" proved
-adt_stack.ads:11:13: info: initialization of "Is_Full" proved
 adt_stack.ads:13:20: info: initialization of "S.STack_Top" proved
 adt_stack.ads:13:20: info: initialization of "S.STack_Vector" proved
 adt_stack.ads:20:36: info: initialization of "X" proved
-adt_stack.ads:23:13: info: initialization of "Oeq" proved
 asm_stack.adb:30:23: info: length check proved
 asm_stack.adb:37:10: medium: exception might be raised
 asm_stack.adb:39:29: medium: range check might fail
 asm_stack.adb:40:20: info: index check proved
 asm_stack.adb:58:20: info: length check proved
-asm_stack.ads:7:13: info: initialization of "Is_Empty" proved
-asm_stack.ads:8:13: info: initialization of "Is_Full" proved
 asm_stack.ads:9:14: info: initialization of "Stack_Top" proved
 asm_stack.ads:9:14: info: initialization of "Stack_Vector" proved
 generic_stack.adb:16:10: medium: exception might be raised, in instantiation at use_stacks.adb:47
@@ -72,7 +66,6 @@ random_numbers.adb:28:29: info: division check proved
 random_numbers.ads:9:14: info: initialization of "Seed" constituent of "State" proved
 random_numbers.ads:9:14: warning: "asm_stack.stack_top" is not modified, could be INPUT
 random_numbers.ads:9:22: info: initialization of "Res" proved
-random_numbers.ads:10:13: info: initialization of "GCD" proved
 use_stacks.adb:15:25: info: initialization of "V" proved
 use_stacks.adb:28:25: info: initialization of "My_Stack" proved
 use_stacks.adb:28:35: info: initialization of "V" proved

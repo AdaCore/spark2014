@@ -1,5 +1,4 @@
 p.adb:1:01: warning: pragma Overflow_Mode in code is ignored
-p.adb:3:10: info: initialization of "P" proved
 p.adb:5:04: warning: pragma Overflow_Mode in code is ignored
 p.adb:8:07: info: loop invariant initialization proved
 p.adb:8:07: info: loop invariant preservation proved

@@ -32,7 +32,6 @@ p.ads:55:18: subtype constraint cannot depend on "A" (SPARK RM 4.4(2))
 p.ads:55:18: subtype constraint cannot depend on "B" (SPARK RM 4.4(2))
 p.ads:64:19: info: initialization of "L" proved
 p.ads:68:19: info: initialization of "L" proved
-p.ads:71:13: info: initialization of "Same_Length" proved
    compilation of p.adb failed
 
 
