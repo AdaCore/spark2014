@@ -245,7 +245,7 @@ package body Flow_Error_Messages is
 
       function Is_Specified_Line return Boolean;
       --  Returns True if command line argument "--limit-line" was not
-      --  given, or if the the message currently being processed is to
+      --  given, or if the message currently being processed is to
       --  be emitted on the line specified by the "--limit-line"
       --  argument.
 
