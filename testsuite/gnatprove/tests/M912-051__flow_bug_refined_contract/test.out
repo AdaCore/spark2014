@@ -1,4 +1,4 @@
-outer.adb:33:46: info: initialization of "Inner.B1" constituent of "A1" proved
+outer.adb:33:46: info: initialization of "Inner.B1" constituent of "Outer.A1" proved
 outer.adb:41:42: info: initialization of "Hidden_State" constituent of "A2" proved
 outer.adb:41:56: info: initialization of "State_In_Body" constituent of "A2" proved
 outer.ads:25:16: warning: subprogram "Init_B1" has no effect

@@ -115,8 +115,8 @@ externals.adb:36:25: info: initialization of "Press" proved
 externals.adb:36:31: medium: overflow check might fail
 externals.adb:36:33: info: initialization of "Temp" proved
 externals.adb:36:38: medium: overflow check might fail
-externals.adb:40:54: info: initialization of "Main_Display.State" constituent of "Displays" proved
-externals.adb:41:59: info: initialization of "Secondary_Display.State" constituent of "Displays" proved
+externals.adb:40:54: info: initialization of "Main_Display.State" constituent of "Externals.Displays" proved
+externals.adb:41:59: info: initialization of "Secondary_Display.State" constituent of "Externals.Displays" proved
 externals.adb:52:04: info: initialization of "Saved_Value" constituent of "Complex_Device" proved
 externals.adb:54:04: high: "Out_Reg" constituent of "Complex_Device" is not written in "Externals"
 externals.adb:54:04: high: initialization of "Externals.Complex_Device" is specified at externals.ads:8

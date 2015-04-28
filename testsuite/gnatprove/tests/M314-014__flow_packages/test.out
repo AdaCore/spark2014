@@ -1,22 +1,22 @@
-ic.adb:14:32: info: initialization of "X" constituent of "State_A" proved
-ic.adb:16:07: info: initialization of "X" constituent of "State_A" proved
+ic.adb:14:32: info: initialization of "X" constituent of "IC.State_A" proved
+ic.adb:16:07: info: initialization of "X" constituent of "IC.State_A" proved
 ic.adb:19:16: info: initialization of "Get_Stuff" proved
-ic.adb:30:36: "Y" constituent of "State_B" must be initialized at elaboration
-ic.adb:32:07: info: initialization of "X" constituent of "State_A" proved
-ic.adb:44:32: info: initialization of "X" constituent of "State_A" proved
-ic.adb:46:07: info: initialization of "X" constituent of "State_A" proved
-ic.adb:58:43: "Y" constituent of "State_B" must be listed in the Initializes aspect of "Test_04" (SPARK RM 7.1.5(12))
-ic.adb:60:07: info: initialization of "X" constituent of "State_A" proved
-ic.adb:73:34: "X" constituent of "State_A" must be listed in the Initializes aspect of "Test_05" (SPARK RM 7.1.5(12))
-ic.adb:73:34: "Y" constituent of "State_B" must be listed in the Initializes aspect of "Test_05" (SPARK RM 7.1.5(12))
-ic.adb:82:24: warning: no procedure exists that can initialize abstract state "Test_06.S" constituent of "State_B"
+ic.adb:30:36: "Y" constituent of "IC.State_B" must be initialized at elaboration
+ic.adb:32:07: info: initialization of "X" constituent of "IC.State_A" proved
+ic.adb:44:32: info: initialization of "X" constituent of "IC.State_A" proved
+ic.adb:46:07: info: initialization of "X" constituent of "IC.State_A" proved
+ic.adb:58:43: "Y" constituent of "IC.State_B" must be listed in the Initializes aspect of "Test_04" (SPARK RM 7.1.5(12))
+ic.adb:60:07: info: initialization of "X" constituent of "IC.State_A" proved
+ic.adb:73:34: "X" constituent of "IC.State_A" must be listed in the Initializes aspect of "Test_05" (SPARK RM 7.1.5(12))
+ic.adb:73:34: "Y" constituent of "IC.State_B" must be listed in the Initializes aspect of "Test_05" (SPARK RM 7.1.5(12))
+ic.adb:82:24: warning: no procedure exists that can initialize abstract state "Test_06.S" constituent of "IC.State_B"
 ic.adb:97:31: "Y" constituent of "S" must be listed in the Refined_Global aspect of "Sanity_Check_5" (SPARK RM 6.1.4(12))
-ic.adb:108:35: "Y" constituent of "State_B" must be listed in the Global aspect of "Sanity_Check_1" (SPARK RM 6.1.4(12))
-ic.adb:117:41: "Y" constituent of "State_B" must be listed in the Global aspect of "Sanity_Check_2" (SPARK RM 6.1.4(12))
-ic.adb:124:14: info: initialization of "X" constituent of "State_A" proved
-ic.adb:125:21: info: initialization of "X" constituent of "State_A" proved
-ic.adb:131:14: info: initialization of "X" constituent of "State_A" proved
-ic.adb:132:41: info: initialization of "X" constituent of "State_A" proved
+ic.adb:108:35: "Y" constituent of "IC.State_B" must be listed in the Global aspect of "Sanity_Check_1" (SPARK RM 6.1.4(12))
+ic.adb:117:41: "Y" constituent of "IC.State_B" must be listed in the Global aspect of "Sanity_Check_2" (SPARK RM 6.1.4(12))
+ic.adb:124:14: info: initialization of "X" constituent of "IC.State_A" proved
+ic.adb:125:21: info: initialization of "X" constituent of "IC.State_A" proved
+ic.adb:131:14: info: initialization of "X" constituent of "IC.State_A" proved
+ic.adb:132:41: info: initialization of "X" constituent of "IC.State_A" proved
 ic.ads:2:36: warning: no procedure exists that can initialize abstract state "IC.State_B"
 initialized.adb:5:04: info: initialization of "Var" constituent of "State" proved
 initialized.ads:6:13: info: initialization of "Get" proved

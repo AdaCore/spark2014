@@ -674,7 +674,19 @@ package body Flow_Error_Messages is
                      declare
                         Encaps_State : constant Node_Id :=
                           Encapsulating_State (Get_Direct_Mapping_Id (F));
+                        Encaps_Scope : constant Node_Id :=
+                          Scope (Encaps_State);
                      begin
+                        --  If scopes of the abstract state and its constituent
+                        --  differ then prefix the name of the abstract state
+                        --  with its immediate scope.
+                        if Encaps_Scope /= Scope (F.Node) then
+                           Get_Name_String (Chars (Encaps_Scope));
+                           Adjust_Name_Case (Sloc (Encaps_Scope));
+
+                           Append (R, Name_Buffer (1 .. Name_Len) & ".");
+                        end if;
+
                         Get_Name_String (Chars (Encaps_State));
                         Adjust_Name_Case (Sloc (Encaps_State));
 

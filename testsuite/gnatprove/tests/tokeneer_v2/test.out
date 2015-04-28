@@ -48,7 +48,7 @@ admintoken.adb:95:42: info: initialization of "AuthCert.Contents" constituent of
 admintoken.adb:95:42: info: initialization of "AuthCert.Valid" constituent of "State" proved
 admintoken.adb:96:42: info: initialization of "IDCert.Contents" constituent of "State" proved
 admintoken.adb:96:42: info: initialization of "IDCert.Valid" constituent of "State" proved
-admintoken.adb:97:50: info: initialization of "Interfac.State" constituent of "State" proved
+admintoken.adb:97:50: info: initialization of "Interfac.State" constituent of "AdminToken.State" proved
 admintoken.adb:98:42: info: initialization of "TokenID" constituent of "State" proved
 admintoken.adb:99:42: info: initialization of "TokenPresence" constituent of "State" proved
 admintoken.adb:100:42: info: initialization of "TokenTry" constituent of "State" proved
@@ -160,7 +160,7 @@ admintoken.ads:218:26: info: initialization of "AuthCert.Contents" constituent o
 admintoken.ads:218:26: info: initialization of "AuthCert.Valid" constituent of "State" proved
 admintoken.ads:219:27: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.ads:219:27: info: initialization of "AuthCert.Valid" constituent of "State" proved
-alarm.adb:43:49: info: initialization of "Interfac.Output" constituent of "Output" proved
+alarm.adb:43:49: info: initialization of "Interfac.Output" constituent of "Alarm.Output" proved
 alarm.adb:46:30: info: refined post proved
 alarm.ads:41:13: info: initialization of "IsAlarming" proved
 alarm.ads:70:22: info: postcondition proved
@@ -1695,7 +1695,7 @@ display.adb:152:14: info: initialization of "Result.Text" proved, in call inline
 display.adb:152:14: info: initialization of "Result.Text" proved, in call inlined at display.adb:280
 display.adb:184:18: medium: precondition might fail
 display.adb:188:32: info: initialization of "C28b.Text" proved
-display.adb:235:49: medium: "Interfac.Output" constituent of "Output" might not be written
+display.adb:235:49: medium: "Interfac.Output" constituent of "Display.Output" might not be written
 display.adb:264:18: warning: statement has no effect
 display.adb:266:36: info: initialization of "TheMsg.Top.Len" proved
 display.adb:267:35: info: initialization of "TheMsg.Bottom.Len" proved
@@ -2352,7 +2352,7 @@ latch.adb:112:26: info: initialization of "LocalLatch" proved
 latch.adb:113:18: medium: precondition might fail
 latch.adb:114:32: info: initialization of "ID" proved
 latch.adb:121:23: info: initialization of "LocalLatch" proved
-latch.adb:136:49: info: initialization of "Interfac.Output" constituent of "Output" proved
+latch.adb:136:49: info: initialization of "Interfac.Output" constituent of "Latch.Output" proved
 latch.adb:147:30: info: refined post proved
 latch.adb:147:62: info: initialization of "SystemFault" proved
 latch.adb:156:10: info: initialization of "SystemFault" proved
@@ -2430,16 +2430,16 @@ screen.adb:125:07: info: length check proved
 screen.adb:126:07: info: length check proved
 screen.adb:127:07: info: length check proved
 screen.adb:156:28: info: initialization of "OK" proved
-screen.adb:158:41: medium: "Interfac.Output" constituent of "Output" might not be written
+screen.adb:158:41: medium: "Interfac.Output" constituent of "Screen.Output" might not be written
 screen.adb:191:07: info: initialization of "OK" proved
-screen.adb:192:41: medium: "Interfac.Output" constituent of "Output" might not be written
+screen.adb:192:41: medium: "Interfac.Output" constituent of "Screen.Output" might not be written
 screen.adb:219:16: info: initialization of "ConsoleOK" proved
 screen.adb:237:16: info: initialization of "OK" proved
 screen.adb:237:22: info: initialization of "ConsoleOK" proved
 screen.adb:252:31: info: initialization of "OK" proved
-screen.adb:253:41: info: initialization of "Interfac.Output" constituent of "Output" proved
+screen.adb:253:41: info: initialization of "Interfac.Output" constituent of "Screen.Output" proved
 screen.adb:276:33: info: initialization of "OK" proved
-screen.adb:277:41: info: initialization of "Interfac.Output" constituent of "Output" proved
+screen.adb:277:41: info: initialization of "Interfac.Output" constituent of "Screen.Output" proved
 screen.adb:302:13: info: initialization of "OK" proved
 screen.adb:302:20: info: initialization of "ConsoleOK" proved
 screen.adb:308:13: info: initialization of "OK" proved
@@ -2465,7 +2465,7 @@ screen.adb:362:20: info: initialization of "ConsoleOK" proved
 screen.adb:368:13: info: initialization of "OK" proved
 screen.adb:368:20: info: initialization of "ConsoleOK" proved
 screen.adb:383:31: info: initialization of "OK" proved
-screen.adb:385:41: medium: "Interfac.Output" constituent of "Output" might not be written
+screen.adb:385:41: medium: "Interfac.Output" constituent of "Screen.Output" might not be written
 screen.adb:434:39: info: length check proved, in call inlined at screen.adb:591
 screen.adb:434:39: info: length check proved, in call inlined at screen.adb:597
 screen.adb:434:39: info: length check proved, in call inlined at screen.adb:603
@@ -2659,9 +2659,9 @@ screen.adb:669:32: info: initialization of "NewConfig.TokenRemove" proved
 screen.adb:669:32: info: initialization of "NewConfig.WorkEnd" proved
 screen.adb:669:32: info: initialization of "NewConfig.WorkStart" proved
 screen.adb:689:26: info: initialization of "OK" proved
-screen.adb:690:41: info: initialization of "Interfac.Output" constituent of "Output" proved
+screen.adb:690:41: info: initialization of "Interfac.Output" constituent of "Screen.Output" proved
 screen.adb:712:32: info: initialization of "OK" proved
-screen.adb:713:41: info: initialization of "Interfac.Output" constituent of "Output" proved
+screen.adb:713:41: info: initialization of "Interfac.Output" constituent of "Screen.Output" proved
 screen.adb:728:13: info: initialization of "OK" proved
 screen.adb:728:20: info: initialization of "ConsoleOK" proved
 screen.adb:734:13: info: initialization of "OK" proved
@@ -2669,7 +2669,7 @@ screen.adb:734:20: info: initialization of "ConsoleOK" proved
 screen.adb:740:13: info: initialization of "OK" proved
 screen.adb:740:20: info: initialization of "ConsoleOK" proved
 screen.adb:755:30: info: initialization of "OK" proved
-screen.adb:757:41: medium: "Interfac.Output" constituent of "Output" might not be written
+screen.adb:757:41: medium: "Interfac.Output" constituent of "Screen.Output" might not be written
 screen.adb:781:50: info: initialization of "FailBio" proved, in call inlined at screen.adb:824
 screen.adb:781:50: info: initialization of "FailEntry" proved, in call inlined at screen.adb:812
 screen.adb:781:50: info: initialization of "SuccessBio" proved, in call inlined at screen.adb:818
@@ -2715,13 +2715,13 @@ screen.adb:824:35: info: initialization of "C269b" proved
 screen.adb:828:16: info: initialization of "OK" proved
 screen.adb:828:23: info: initialization of "ConsoleOK" proved
 screen.adb:845:32: info: initialization of "OK" proved
-screen.adb:847:41: info: initialization of "Interfac.Output" constituent of "Output" proved
+screen.adb:847:41: info: initialization of "Interfac.Output" constituent of "Screen.Output" proved
 screen.adb:854:48: info: initialization of "TheTime.Day" proved
 screen.adb:854:48: info: initialization of "TheTime.MilliSec" proved
 screen.adb:854:48: info: initialization of "TheTime.Month" proved
 screen.adb:854:48: info: initialization of "TheTime.Year" proved
 screen.adb:888:18: medium: precondition might fail
-screen.adb:912:49: info: initialization of "Interfac.Output" constituent of "Output" proved
+screen.adb:912:49: info: initialization of "Interfac.Output" constituent of "Screen.Output" proved
 screen.adb:964:19: info: initialization of "WriteOK" proved
 screen.adb:964:31: info: initialization of "ScreenOK" proved
 screen.adb:970:19: info: initialization of "WriteOK" proved
@@ -2763,7 +2763,7 @@ screen.adb:1047:42: info: initialization of "CurrentLogAlarm" constituent of "St
 screen.adb:1048:42: info: initialization of "CurrentMsg" constituent of "State" proved
 screen.adb:1049:42: info: initialization of "CurrentStats.Data" constituent of "State" proved
 screen.adb:1049:42: info: initialization of "CurrentStats.IsDisplayed" constituent of "State" proved
-screen.adb:1050:50: info: initialization of "Interfac.Output" constituent of "Output" proved
+screen.adb:1050:50: info: initialization of "Interfac.Output" constituent of "Screen.Output" proved
 screen.adb:1051:42: info: initialization of "TheMsg" constituent of "State" proved
 screen.adb:1077:52: info: initialization of "LocalStats" proved
 screen.adb:1087:07: info: initialization of "CurrentDoorAlarm" constituent of "State" proved
@@ -3037,7 +3037,7 @@ tokenreader.adb:694:34: info: initialization of "ResponseCode" proved
 tokenreader.adb:801:19: info: initialization of "StatusOK" proved
 tokenreader.adb:801:32: info: initialization of "Exists" proved
 tokenreader.adb:802:16: info: initialization of "ResponseCode" proved
-tokenreader.adb:821:49: info: initialization of "Interfac.ReaderOutput" constituent of "Output" proved
+tokenreader.adb:821:49: info: initialization of "Interfac.ReaderOutput" constituent of "TokenReader.Output" proved
 tokenreader.adb:838:20: info: initialization of "StatusOK" proved
 tokenreader.adb:839:16: info: initialization of "ResponseCode" proved
 tokenreader.ads:105:13: info: initialization of "TheTokenPresence" proved
@@ -3160,14 +3160,14 @@ usertoken.adb:192:42: info: initialization of "IandACert.Valid" constituent of "
 usertoken.adb:193:42: info: initialization of "IDCert.Contents" constituent of "State" proved
 usertoken.adb:193:42: info: initialization of "IDCert.IDStatus" constituent of "State" proved
 usertoken.adb:193:42: info: initialization of "IDCert.Valid" constituent of "State" proved
-usertoken.adb:194:50: info: initialization of "Interfac.State" constituent of "State" proved
+usertoken.adb:194:50: info: initialization of "Interfac.State" constituent of "UserToken.State" proved
 usertoken.adb:195:42: info: initialization of "PrivCert.Contents" constituent of "State" proved
 usertoken.adb:195:42: info: initialization of "PrivCert.Valid" constituent of "State" proved
 usertoken.adb:196:42: info: initialization of "TokenID" constituent of "State" proved
 usertoken.adb:197:42: info: initialization of "TokenPresence" constituent of "State" proved
 usertoken.adb:198:42: info: initialization of "TokenTry" constituent of "State" proved
 usertoken.adb:233:41: info: initialization of "TokenPresence" constituent of "State" proved
-usertoken.adb:270:49: medium: "Interfac.Output" constituent of "Output" might not be written
+usertoken.adb:270:49: medium: "Interfac.Output" constituent of "UserToken.Output" might not be written
 usertoken.adb:299:38: info: initialization of "RawCert" proved
 usertoken.adb:304:11: info: initialization of "SignedOK" proved
 usertoken.adb:305:43: info: initialization of "RawCert" proved
