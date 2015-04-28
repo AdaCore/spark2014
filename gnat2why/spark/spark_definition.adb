@@ -1644,7 +1644,7 @@ package body SPARK_Definition is
               (if Etype (N) = Universal_Fixed then
                  Etype (Parent (N))
                else
-                  Etype (N));
+                 Etype (N));
             E_Type : constant Entity_Id := Base_Type (Expr_Type);
          begin
             if Is_Fixed_Point_Type (L_Type)
@@ -1902,7 +1902,7 @@ package body SPARK_Definition is
    --------------------------------
 
    procedure Mark_Component_Declaration (N : Node_Id) is
-      Def : constant Node_Id   := Component_Definition (N);
+      Def : constant Node_Id := Component_Definition (N);
 
    begin
       if Present (Access_Definition (Def)) then
@@ -2064,11 +2064,11 @@ package body SPARK_Definition is
                   Declare_In_Package_With_External_Axioms
                     (Visible_Declarations (Specification (Decl)));
                elsif Nkind (Decl) in N_Full_Type_Declaration         |
-               N_Private_Type_Declaration      |
-               N_Private_Extension_Declaration |
-               N_Subtype_Declaration           |
-               N_Subprogram_Declaration        |
-               N_Object_Declaration
+                                     N_Private_Type_Declaration      |
+                                     N_Private_Extension_Declaration |
+                                     N_Subtype_Declaration           |
+                                     N_Subprogram_Declaration        |
+                                     N_Object_Declaration
                then
                   Id := Defining_Entity (Decl);
 
@@ -2339,11 +2339,11 @@ package body SPARK_Definition is
          Prag := Get_Pragma (E, Pragma_Contract_Cases);
          if Present (Prag) then
             declare
-               Aggr           : constant Node_Id :=
+               Aggr          : constant Node_Id :=
                  Expression (First (Pragma_Argument_Associations (Prag)));
-               Case_Guard     : Node_Id;
-               Conseq         : Node_Id;
-               Contract_Case  : Node_Id;
+               Case_Guard    : Node_Id;
+               Conseq        : Node_Id;
+               Contract_Case : Node_Id;
             begin
                Contract_Case := First (Component_Associations (Aggr));
                while Present (Contract_Case) loop
