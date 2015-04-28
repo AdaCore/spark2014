@@ -235,7 +235,7 @@ package body Why.Gen.Records is
       --  call accordingly and add a conversion.
 
       procedure Init_Component_Info (E : Entity_Id)
-        with Pre => Ekind (E) in E_Record_Type | E_Record_Subtype;
+        with Pre => Is_Record_Type (E);
       --  @param E record type
       --  For each subcomponent of E, create an entry in map Comp_Info
 
@@ -2027,9 +2027,9 @@ package body Why.Gen.Records is
          return;
       end if;
 
-      if Ekind (E) = E_Record_Subtype then
+      if Ekind (E) in E_Record_Subtype | E_Record_Subtype_With_Private then
          Init_Component_Info (Retysp (Etype (E)));
-      elsif Ekind (E) = E_Record_Type then
+      elsif Ekind (E) in E_Record_Type | E_Record_Type_With_Private then
          Init_Component_Info (E);
       end if;
 
