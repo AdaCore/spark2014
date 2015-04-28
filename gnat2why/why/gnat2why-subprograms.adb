@@ -2063,18 +2063,16 @@ package body Gnat2Why.Subprograms is
 
       --  Generate assumptions for dynamic types used in the program.
 
-      if Present (Body_N) and then Entity_Body_In_SPARK (E) then
-         Prog := Sequence
-           ((1 => New_Comment
-             (Comment => NID ("Assume dynamic property of params of the"
-              & " subprogram"
-              & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
-                else ""))),
-             2 => Compute_Dynamic_Property_For_Inputs (W      => +Prog,
-                                                       Params => Params,
-                                                       Scope  => E),
-             3 => Prog));
-      end if;
+      Prog := Sequence
+        ((1 => New_Comment
+          (Comment => NID ("Assume dynamic property of params of the"
+           & " subprogram"
+           & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
+             else ""))),
+          2 => Compute_Dynamic_Property_For_Inputs (W      => +Prog,
+                                                    Params => Params,
+                                                    Scope  => E),
+          3 => Prog));
 
       --  We always need to add the int theory as
       --  Compute_Contract_Cases_Entry_Checks may make use of the
