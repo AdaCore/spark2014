@@ -1,3 +1,4 @@
+addition.adb:1:10: info: initialization of "Addition" proved
 addition.adb:4:16: medium: overflow check might fail
 addition.adb:5:14: info: postcondition proved
 addition.adb:5:34: info: overflow check proved

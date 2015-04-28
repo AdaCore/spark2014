@@ -1,1 +1,2 @@
-no output
+logging_discr.ads:21:13: info: initialization of "Log_Size" proved
+logging_discr.ads:23:13: info: initialization of "Last_Entry" proved

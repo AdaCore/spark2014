@@ -1,1 +1,2 @@
+logging_priv.ads:9:13: info: initialization of "Log_Size" proved
 logging_priv.ads:18:04: medium: type "Log_Type" is not fully initialized
