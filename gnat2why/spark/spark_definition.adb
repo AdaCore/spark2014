@@ -197,20 +197,20 @@ package body SPARK_Definition is
    -----------------------
 
    function Is_Enclosed_By_Simple_If_Statement (N : Node_Id) return Boolean
-     with Pre => Nkind (N) = N_Procedure_Call_Statement or
-                 Nkind (N) = N_Raise_Statement or
-                 Nkind (N) in N_Raise_xxx_Error;
+     with Pre => Nkind (N) in N_Procedure_Call_Statement |
+                              N_Raise_Statement          |
+                              N_Raise_xxx_Error;
    --  Return True if N is enclosed by an if statement that has no
    --  else or elsif parts and if N is the only statement in the then
-   --  part.  e.g. the call to S in:
+   --  part. E.g. the call to S in:
    --    if A then
    --       S;
    --    end if;
 
    function Is_Last_Statement_Of_Subprogram (N : Node_Id) return Boolean
-     with Pre => Nkind (N) = N_Procedure_Call_Statement or
-                 Nkind (N) = N_Raise_Statement or
-                 Nkind (N) in N_Raise_xxx_Error;
+     with Pre => Nkind (N) in N_Procedure_Call_Statement |
+                              N_Raise_Statement          |
+                              N_Raise_xxx_Error;
    --  Returns True if N is the last statement at the outermost level
    --  of the sequence of statements in its enclosing subprogram body.
 

@@ -153,7 +153,7 @@ package body Flow.Analysis.Sanity is
             for F of Flow_Ids loop
                if (if F.Kind in Direct_Mapping | Record_Field
                    then not
-                     (Is_Constant_Object (Get_Direct_Mapping_Id (F)) or
+                     (Is_Constant_Object (Get_Direct_Mapping_Id (F)) or else
                         Is_Bound (F)))
                then
                   Error_Msg_Flow
@@ -381,7 +381,7 @@ package body Flow.Analysis.Sanity is
             for Var of Written_Vars loop
                F := Change_Variant (Var, Normal_Use);
 
-               if not (FA.All_Vars.Contains (F) or Synthetic (F)) and
+               if not (FA.All_Vars.Contains (F) or else Synthetic (F)) and then
                  FA.Kind in E_Package | E_Package_Body
                then
 

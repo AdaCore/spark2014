@@ -521,9 +521,9 @@ package body Flow.Analysis.Antialiasing is
                   raise Why.Unexpected_Node;
             end case;
 
-         elsif (Nkind (Ptr_A) = N_Slice and
+         elsif (Nkind (Ptr_A) = N_Slice and then
                   Nkind (Ptr_B) = N_Indexed_Component) or else
-           (Nkind (Ptr_A) = N_Indexed_Component and
+           (Nkind (Ptr_A) = N_Indexed_Component and then
               Nkind (Ptr_B) = N_Slice)
          then
             --  We also need to check this. One possibility:

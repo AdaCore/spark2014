@@ -68,7 +68,7 @@ package Flow.Slice is
         Post => (for all E of Definite_Calls =>
                    not Conditional_Calls.Contains (E)) and then
                 (for all E of Proof_Calls =>
-                   not (Definite_Calls.Contains (E) or
+                   not (Definite_Calls.Contains (E) or else
                           Conditional_Calls.Contains (E))) and then
                 (for all E of Inputs_Proof =>
                    not (Inputs.Contains (E) or Outputs.Contains (E)));

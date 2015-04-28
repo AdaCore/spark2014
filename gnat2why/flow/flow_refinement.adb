@@ -637,7 +637,7 @@ package body Flow_Refinement is
          Ptr : Natural := 0;
       begin
          loop
-            if Count_Type (Ptr) = L1.Length or
+            if Count_Type (Ptr) = L1.Length or else
               Count_Type (Ptr) = L2.Length
             then
                if Ptr >= 1 then

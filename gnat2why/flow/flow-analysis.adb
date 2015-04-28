@@ -436,7 +436,7 @@ package body Flow.Analysis is
          --  variable of interest.
 
          if Check_Read then
-            if Atr.Variables_Used.Contains (Var_Normal) or
+            if Atr.Variables_Used.Contains (Var_Normal) or else
               (not Precise and then
                  To_Entire_Variables (Atr.Variables_Used).Contains
                  (E_Var_Normal))
@@ -445,7 +445,7 @@ package body Flow.Analysis is
             end if;
          end if;
          if Check_Write then
-            if Atr.Variables_Defined.Contains (Var_Normal) or
+            if Atr.Variables_Defined.Contains (Var_Normal) or else
               (not Precise and then
                  To_Entire_Variables (Atr.Variables_Defined).Contains
                  (E_Var_Normal))
@@ -895,7 +895,7 @@ package body Flow.Analysis is
             Disuse_Not_Bad : Boolean;
             Skip_This      : Boolean;
          begin
-            if Key.Variant = Initial_Value and
+            if Key.Variant = Initial_Value and then
               Key.Kind /= Synthetic_Null_Export
             then
 
@@ -955,8 +955,8 @@ package body Flow.Analysis is
                         Final_V : constant Flow_Graphs.Vertex_Id :=
                           FA.PDG.Child (V);
                      begin
-                        if FA.PDG.Get_Key (Final_V).Variant /= Final_Value or
-                          FA.PDG.In_Neighbour_Count (Final_V) > 1
+                        if FA.PDG.Get_Key (Final_V).Variant /= Final_Value
+                          or else FA.PDG.In_Neighbour_Count (Final_V) > 1
                         then
                            if Disuse_Not_Bad then
                               EV_Considered_Objects.Include (E);

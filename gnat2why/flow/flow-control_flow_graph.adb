@@ -2698,8 +2698,7 @@ package body Flow.Control_Flow_Graph is
          Direct_Mapping_Id (N),
          Make_Aux_Vertex_Attributes
            (E_Loc     => N,
-            Execution => (if Nkind (N) = N_Raise_Statement or
-                             Nkind (N) in N_Raise_xxx_Error
+            Execution => (if Nkind (N) in N_Raise_Statement | N_Raise_xxx_Error
                           then Abnormal_Termination
                           else Normal_Execution)),
          V);
@@ -3866,7 +3865,7 @@ package body Flow.Control_Flow_Graph is
          Process_Statement (Handled_Statement_Sequence (N), FA, CM, Ctx);
       end if;
 
-      if Present (Declarations (N)) and
+      if Present (Declarations (N)) and then
         Present (Handled_Statement_Sequence (N))
       then
          Linkup

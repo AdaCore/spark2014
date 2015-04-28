@@ -356,19 +356,19 @@ package body Flow is
          elsif V = Start_Vertex then
             Write_Str ("start");
             Rv.Shape := Shape_None;
-            Rv.Show  := G.In_Neighbour_Count (V) > 0 or
+            Rv.Show  := G.In_Neighbour_Count (V) > 0 or else
               G.Out_Neighbour_Count (V) > 0;
 
          elsif V = Helper_End_Vertex then
             Write_Str ("helper end");
             Rv.Shape := Shape_None;
-            Rv.Show  := G.In_Neighbour_Count (V) > 0 or
+            Rv.Show  := G.In_Neighbour_Count (V) > 0 or else
               G.Out_Neighbour_Count (V) > 0;
 
          elsif V = End_Vertex then
             Write_Str ("end");
             Rv.Shape := Shape_None;
-            Rv.Show  := G.In_Neighbour_Count (V) > 0 or
+            Rv.Show  := G.In_Neighbour_Count (V) > 0 or else
               G.Out_Neighbour_Count (V) > 0;
 
          elsif F.Kind = Synthetic_Null_Export then
@@ -1227,7 +1227,7 @@ package body Flow is
                     --  emitted on them would be confusing.
                   then
                      Pkg_Body := Pkg_Spec;
-                     while Present (Pkg_Body) and
+                     while Present (Pkg_Body) and then
                        Nkind (Pkg_Body) /= N_Package_Declaration
                      loop
                         Pkg_Body := Parent (Pkg_Body);

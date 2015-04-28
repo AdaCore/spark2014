@@ -115,7 +115,7 @@ package body Flow_Utility.Initialization is
                   --  This is a field with a default initalization.
 
                   --  We can try and untangle any record aggregates.
-                  while Comp_Id < Positive (F.Component.Length) and
+                  while Comp_Id < Positive (F.Component.Length) and then
                     Nkind (N) = N_Aggregate
                   loop
                      Comp_Id := Comp_Id + 1;
