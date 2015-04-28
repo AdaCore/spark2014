@@ -1,3 +1,1 @@
-functional.ads:33:13: info: initialization of "Invariant" proved
-functional.ads:35:13: info: initialization of "Max_Value_Seen" proved
-functional.ads:37:13: info: initialization of "Second_Max_Value_Seen" proved
+no output

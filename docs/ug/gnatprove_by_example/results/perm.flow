@@ -1,4 +1,1 @@
-perm.ads:6:13: info: initialization of "Remove_Last" proved
-perm.ads:10:13: info: initialization of "Occ_Def" proved
-perm.ads:17:13: info: initialization of "Occ" proved
-perm.ads:21:13: info: initialization of "Is_Perm" proved
+no output
