@@ -2540,7 +2540,7 @@ Thus, |GNATprove| checks that property 2 holds but not property 1:
 
 .. literalinclude:: gnatprove_by_example/results/simple_loops.prove
    :language: none
-   :lines: 1-2
+   :lines: 1,3
 
 Conversely, in the following loop, the loop invariant is true during the first
 iteration and false in all remaining iterations:
@@ -2553,7 +2553,7 @@ Thus, |GNATprove| checks that property 1 holds but not property 2:
 
 .. literalinclude:: gnatprove_by_example/results/simple_loops.prove
    :language: none
-   :lines: 3-4
+   :lines: 4,6
 
 The following loop shows a case where the loop invariant holds both during the
 first iteration and all remaining iterations:
@@ -2566,7 +2566,7 @@ first iteration and all remaining iterations:
 
 .. literalinclude:: gnatprove_by_example/results/simple_loops.prove
    :language: none
-   :lines: 5-6
+   :lines: 7,8
 
 But it is not sufficient that a loop invariant is true for |GNATprove| to prove
 it. The loop invariant should also be `inductive`: it should be precise enough
@@ -2583,7 +2583,7 @@ inductive:
 
 .. literalinclude:: gnatprove_by_example/results/simple_loops.prove
    :language: none
-   :lines: 7-8
+   :lines: 11,13
 
 The reasoning of |GNATprove| for checking property 2 in that case can be
 summarized as follows:
@@ -2614,7 +2614,7 @@ the boolean array ``Arr`` already seen has been set to ``True``:
 
 .. literalinclude:: gnatprove_by_example/results/array_loops.prove
    :language: none
-   :lines: 2-3
+   :lines: 3,5
 
 Let's add a loop invariant stating that the part of the boolean array ``Arr``
 not already seen is still set to ``False`` (the frame condition):
@@ -2627,7 +2627,7 @@ not already seen is still set to ``False`` (the frame condition):
 
 .. literalinclude:: gnatprove_by_example/results/array_loops.prove
    :language: none
-   :lines: 6-7,9-10
+   :lines: 9-10,13-14
 
 See :ref:`How to Write Loop Invariants` for further guidelines.
 
