@@ -2074,9 +2074,7 @@ A property can also be conceptually provable, but the model used by
 |GNATProve|.) In particular using the following features of the language
 may yield VCs that should be true, but cannot be discharged:
 
-* Subtypes of discriminated records
 * Floating point arithmetic
-* Bitwise operations for modular types
 * The content of string literals
 
 In these cases the missing information can usually be added using ``pragma
