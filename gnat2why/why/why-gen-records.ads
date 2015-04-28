@@ -53,7 +53,14 @@ package Why.Gen.Records is
       Ty       : Entity_Id)
       return W_Expr_Id;
    --  Generate a Why3 expression that corresponds to the access to an Ada
-   --  record field. Emit all necessary checks.
+   --  record field.
+   --  @param Ada_Node  the Ada Node that corresponds to the record access
+   --  @param Domain    the domain of the Why expression
+   --  @param Name      the prefix fo the record expression, as an Ada node
+   --  @param Field     the field access, as an Ada entity
+   --  @param Ty        the type of the record
+   --  @return a Why expression which corresponds to the Ada record
+   --    access
 
    function New_Ada_Record_Check_For_Field
      (Ada_Node : Node_Id := Empty;

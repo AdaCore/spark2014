@@ -2425,7 +2425,8 @@ package body Why.Gen.Records is
                Field    => To_Why_Id (Component),
                Value    => New_Ada_Record_Access
                  (Ada_Node => Ada_Node,
-                  Domain   => Domain,
+                  Domain   => (if Domain in EW_Prog | EW_Pterm then EW_Pterm
+                               else EW_Term),
                   Name     => Expr,
                   Field    => Anc_Comp,
                   Ty       => Anc_Ty));
