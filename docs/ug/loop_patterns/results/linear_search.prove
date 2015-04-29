@@ -11,6 +11,5 @@ find.adb:42:10: info: loop invariant preservation proved
 find.adb:43:13: info: initialization of "Free_Slot" proved
 find.adb:45:25: info: index check proved
 find.adb:53:13: info: initialization of "Free_Slot" proved
-find.ads:6:13: info: initialization of "Find_Slot" proved
 find.ads:9:14: info: postcondition proved
 find.ads:10:37: info: index check proved

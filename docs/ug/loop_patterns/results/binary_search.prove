@@ -15,5 +15,4 @@ sqrt.adb:29:20: info: overflow check proved
 sqrt.adb:30:22: info: initialization of "Middle" proved
 sqrt.adb:32:22: info: initialization of "Middle" proved
 sqrt.adb:35:14: info: initialization of "Lower" proved
-sqrt.ads:7:13: info: initialization of "SQRT" proved
 sqrt.ads:8:19: info: postcondition proved
