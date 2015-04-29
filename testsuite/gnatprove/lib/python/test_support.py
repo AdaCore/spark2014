@@ -544,3 +544,9 @@ def check_dot_files(opt=None):
     # Dump the contents of all dot files on stdout
     for dot_file in sorted(dot_files):
         cat(dot_file)
+
+
+def spark_install_path():
+    """the location of the SPARK install"""
+    exec_loc = fileutils.which("gnatprove")
+    return os.path.dirname(os.path.dirname(exec_loc))

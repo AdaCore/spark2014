@@ -1,8 +1,7 @@
 from test_support import *
 from gnatpython.ex import Run
-from gnatpython import fileutils
 
-installdir = os.path.dirname(os.path.dirname(fileutils.which('gnatprove')))
+installdir = spark_install_path()
 driverdir = os.path.join(installdir, 'share', 'why3', 'drivers')
 driverfile = os.path.join(driverdir, 'coq.drv')
 
