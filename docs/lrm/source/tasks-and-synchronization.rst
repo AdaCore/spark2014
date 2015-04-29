@@ -239,6 +239,9 @@ are in |SPARK|.
   * for Ada.Execution_Time.Clock, T does not equal
     Task_Identification.Null_Task_Id .
 
+  * for Ada.Execution_Time.Clock_For_Interrupts,
+    Interrupt_Clocks_Supported is True.
+
   * for Ada.Execution_Time.Interrupts.Clock,
     Separate_Interrupt_Clocks_Supported is True.
 
