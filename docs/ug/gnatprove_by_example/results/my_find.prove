@@ -11,7 +11,6 @@ my_find.adb:10:22: info: initialization of "Cu" proved
 my_find.adb:11:17: info: initialization of "Cu" proved
 my_find.adb:14:07: info: precondition proved
 my_find.adb:14:16: info: initialization of "Cu" proved
-my_find.ads:3:10: info: initialization of "My_Find" proved
 my_find.ads:5:03: info: complete contract cases proved
 my_find.ads:5:03: info: disjoint contract cases proved
 my_find.ads:6:06: info: precondition proved
