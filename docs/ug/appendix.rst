@@ -117,17 +117,6 @@ configuration file ``.why3.conf`` in your ``HOME``, or a configuration file
 given in argument with switch ``-C <file>``.  This file consists of a few
 general settings and a section for each prover which is supported.
 
-There currently is a problem with why3config, because the tool generates an
-incorrect commandline like this (example for CVC4)::
-
-    command = "why3cpulimit %t %m -s cvc4 ..."
-
-The file needs to be manually edited to remove everything before the actual
-prover command (here: cvc4) in that command, so that the new command looks
-like this::
-
-    command = "cvc4 ..."
-
 |GNATprove| reads the default configuration file ``.why3.conf`` in your
 ``HOME``, or the configuration file given in argument with switch
 ``--why3-conf=<file>``. Any prover name configured in this configuration file
