@@ -53,6 +53,8 @@ copy.adb:206:30: info: initialization of "No" proved
 copy.adb:206:30: info: range check proved
 copy.adb:207:31: info: initialization of "Yes_No" proved
 copy.adb:207:31: info: range check proved
+copy.adb:207:55: info: initialization of "Last_Of_Yes_No" proved
+copy.adb:207:55: info: initialization of "R65b" proved
 copy.adb:210:34: info: initialization of "Yes" proved
 copy.adb:210:34: info: range check proved
 copy.adb:210:44: info: initialization of "Length_Of_Yes_No" proved

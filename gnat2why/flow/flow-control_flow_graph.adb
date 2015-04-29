@@ -69,6 +69,31 @@ package body Flow.Control_Flow_Graph is
    --  Local types
    ------------------------------------------------------------
 
+   subtype Nodes_Ignored_By_Process_Statement is Node_Kind
+     with Static_Predicate => Nodes_Ignored_By_Process_Statement in
+                                N_Abstract_Subprogram_Declaration |
+                                N_Freeze_Entity                   |
+                                N_Freeze_Generic_Entity           |
+                                N_Generic_Instantiation           |
+                                N_Generic_Package_Declaration     |
+                                N_Generic_Subprogram_Declaration  |
+                                N_Implicit_Label_Declaration      |
+                                N_Incomplete_Type_Declaration     |
+                                N_Itype_Reference                 |
+                                N_Label                           |
+                                N_Number_Declaration              |
+                                N_Object_Renaming_Declaration     |
+                                N_Package_Renaming_Declaration    |
+                                N_Private_Type_Declaration        |
+                                N_Representation_Clause           |
+                                N_Subprogram_Body                 |
+                                N_Subprogram_Body_Stub            |
+                                N_Subprogram_Declaration          |
+                                N_Subprogram_Renaming_Declaration |
+                                N_Use_Package_Clause              |
+                                N_Use_Type_Clause                 |
+                                N_Validate_Unchecked_Conversion;
+
    ---------------------
    -- Connection_Maps --
    ---------------------
@@ -315,6 +340,30 @@ package body Flow.Control_Flow_Graph is
    --  Join up the standard entry and standard exits of the given
    --  nodes. Block contains the combined standard entry and exits of
    --  the joined up sequence.
+
+   procedure Stitch_Actions_In_Front
+     (N   : Union_Id;
+      C   : Node_Id;
+      V   : Flow_Graphs.Vertex_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context;
+      V_P : Flow_Graphs.Vertex_Id :=     Flow_Graphs.Null_Vertex);
+   --  Processes N and Traverses the AST under C looking for the
+   --  Else_Actions, Then_Actions and Actions lists. All actions are
+   --  processed and stitched in front of N. V is the first vertex
+   --  that N introduces. Additionally, all variables defined by the
+   --  newly created vertices are added to the variables used by
+   --  V. When V_P is no the null vertex, we stitch the actions in
+   --  between V_P and V.
+   --  @param N is the node that we are processing
+   --  @param C is the condition under which we perform the AST
+   --    traversal
+   --  @param V is the first vertex introduced by N
+   --  @param FA is the flow analysis graph
+   --  @param CM is the connections map
+   --  @param Ctx is the context
+   --  @param V_P is the vertex previous to V
 
    procedure Create_Record_Tree
      (F        : Flow_Id;
@@ -928,6 +977,212 @@ package body Flow.Control_Flow_Graph is
       end if;
    end Join;
 
+   -----------------------------
+   -- Stitch_Actions_In_Front --
+   -----------------------------
+
+   procedure Stitch_Actions_In_Front
+     (N   : Union_Id;
+      C   : Node_Id;
+      V   : Flow_Graphs.Vertex_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context;
+      V_P : Flow_Graphs.Vertex_Id        := Flow_Graphs.Null_Vertex)
+   is
+      First_F : Flow_Id  := Null_Flow_Id;
+      Prev    : Union_Id := Union_Id (No_List);
+
+      procedure Add_Newly_Defined_Vars_To_Vars_Used_Of_V;
+      --  This procedure gathers up all variables defined in vertices
+      --  introduced from processing the actions and adds them to the
+      --  Variables_Used of V.
+
+      procedure Process_Node (P : Node_Id);
+      --  This procedure processes a single node P. If P has an
+      --  Actions, Then_Actions, Else_Actions or Condition_Actions
+      --  list then that list is processed.
+
+      function Proc (N : Node_Id) return Traverse_Result;
+      --  Proc uses Process_Node to do an AST traversal.
+
+      ----------------------------------------------
+      -- Add_Newly_Defined_Vars_To_Vars_Used_Of_V --
+      ----------------------------------------------
+
+      procedure Add_Newly_Defined_Vars_To_Vars_Used_Of_V is
+         Start              : constant Flow_Graphs.Vertex_Id :=
+           FA.CFG.Get_Vertex (First_F);
+
+         Newly_Defined_Vars : Flow_Id_Sets.Set               :=
+           Flow_Id_Sets.Empty_Set;
+
+         procedure Add_Vars_Defined
+           (Current  : Flow_Graphs.Vertex_Id;
+            TV       : out Flow_Graphs.Simple_Traversal_Instruction);
+         --  Stops the DFS search when we reach vertex V and adds any
+         --  variables defined by traversed vertices to
+         --  Newly_Defined_Vars.
+
+         ----------------------
+         -- Add_Vars_Defined --
+         ----------------------
+
+         procedure Add_Vars_Defined
+           (Current : Flow_Graphs.Vertex_Id;
+            TV      : out Flow_Graphs.Simple_Traversal_Instruction)
+         is
+         begin
+            if Current = V then
+               TV := Flow_Graphs.Abort_Traversal;
+            else
+               --  Add variables defined of Current to
+               --  New_Defined_Vars.
+               Newly_Defined_Vars.Union (FA.Atr (Current).Variables_Defined);
+
+               TV := Flow_Graphs.Continue;
+            end if;
+         end Add_Vars_Defined;
+
+      begin
+         --  Sanity check that Start actually exists
+         pragma Assert (Start /= Flow_Graphs.Null_Vertex);
+
+         FA.CFG.DFS (Start         => Start,
+                     Include_Start => True,
+                     Visitor       => Add_Vars_Defined'Access,
+                     Reversed      => False);
+
+         FA.Atr (V).Variables_Used.Union (Newly_Defined_Vars);
+      end Add_Newly_Defined_Vars_To_Vars_Used_Of_V;
+
+      ------------------
+      -- Process_Node --
+      ------------------
+
+      procedure Process_Node (P : Node_Id) is
+
+         procedure Process_Actions_List (L : List_Id);
+         --  This procedure calls Process_Statement_List on L and then
+         --  appends the newly created vertices to the end of the
+
+         --------------------------
+         -- Process_Actions_List --
+         --------------------------
+
+         procedure Process_Actions_List (L : List_Id) is
+         begin
+            Process_Statement_List (L, FA, CM, Ctx);
+            if List_Id (Prev) /= No_List then
+               --  Connect this statement to the previous one.
+               Linkup (FA,
+                       CM (Prev).Standard_Exits,
+                       CM (Union_Id (L)).Standard_Entry);
+            else
+               if V_P = Flow_Graphs.Null_Vertex then
+                  --  This is the first actions list that we process
+                  --  so set this as the entry.
+                  CM (N).Standard_Entry :=
+                    CM (Union_Id (L)).Standard_Entry;
+               else
+                  --  When V_P is provided we stitch the actions in
+                  --  between V_P and V. Notice that V_P and V are
+                  --  initially connected so we also need to remove
+                  --  the edge between them.
+                  FA.CFG.Remove_Edge (V_P, V);
+                  Linkup (FA, V_P, CM (Union_Id (L)).Standard_Entry);
+               end if;
+
+               --  Also take a note of the first Flow_Id that we
+               --  process. We will need that to get to the first
+               --  vertex that will be introduced by
+               --  Stitch_Actions_In_Front. Notice that we skip over
+               --  nodes for which vertices are not created.
+               declare
+                  Elem : Node_Id;
+               begin
+                  Elem := First (L);
+                  while Present (Elem)
+                    and then Nkind (Elem) in Nodes_Ignored_By_Process_Statement
+                  loop
+                     Next (Elem);
+                  end loop;
+
+                  if Present (Elem) then
+                     First_F := Direct_Mapping_Id (Elem);
+                  end if;
+               end;
+            end if;
+            Prev := Union_Id (L);
+         end Process_Actions_List;
+
+      begin
+         case Nkind (P) is
+            --  Actions
+            when N_And_Then                    |
+                 N_Or_Else                     |
+                 N_Case_Expression_Alternative =>
+               if Present (Actions (P)) then
+                  Process_Actions_List (Actions (P));
+               end if;
+
+            --  Then_Actions
+            --  Else_Actions
+            when N_If_Expression =>
+               if Present (Then_Actions (P)) then
+                  Process_Actions_List (Then_Actions (P));
+               end if;
+
+               if Present (Else_Actions (P)) then
+                  Process_Actions_List (Else_Actions (P));
+               end if;
+
+            --  Condition_Actions in elsif parts
+            when N_Elsif_Part =>
+               if Present (Condition_Actions (P)) then
+                  Process_Actions_List (Condition_Actions (P));
+               end if;
+
+            --  Condition_Actions in while loops
+            when N_Loop_Statement =>
+               if Present (Iteration_Scheme (P))
+                 and then Present (Condition_Actions (Iteration_Scheme (P)))
+               then
+                  Process_Actions_List
+                    (Condition_Actions (Iteration_Scheme (P)));
+               end if;
+
+            when others =>
+               null;
+         end case;
+      end Process_Node;
+
+      ----------
+      -- Proc --
+      ----------
+
+      function Proc (N : Node_Id) return Traverse_Result is
+      begin
+         Process_Node (N);
+         return OK;
+      end Proc;
+
+      procedure Process_All_Actions is new Traverse_Proc (Process => Proc);
+
+   begin
+      Process_Node (Node_Id (N));
+      Process_All_Actions (C);
+      if List_Id (Prev) /= No_List then
+         --  Link the standard exits of the last actions to V
+         Linkup (FA, CM (Prev).Standard_Exits, V);
+
+         --  Add defined variables to variables used of vertex V
+         if First_F /= Null_Flow_Id then
+            Add_Newly_Defined_Vars_To_Vars_Used_Of_V;
+         end if;
+      end if;
+   end Stitch_Actions_In_Front;
+
    ------------------------
    -- Create_Record_Tree --
    ------------------------
@@ -1181,9 +1436,8 @@ package body Flow.Control_Flow_Graph is
       Classwide       : Boolean;
       Map_Root        : Flow_Id;
       To_Cw           : constant Boolean :=
-        Is_Class_Wide_Type (Get_Type (Name (N), FA.B_Scope))
-          and then
-        not Is_Class_Wide_Type (Get_Type (Expression (N), FA.B_Scope));
+        Is_Class_Wide_Type (Get_Type (Name (N), FA.B_Scope)) and then
+          not Is_Class_Wide_Type (Get_Type (Expression (N), FA.B_Scope));
 
    begin
       --  First we need to determine the root name where we assign to, and
@@ -1368,6 +1622,11 @@ package body Flow.Control_Flow_Graph is
                   Graph_Connections'
                     (Standard_Entry => Verts.First_Element,
                      Standard_Exits => To_Set (Verts.Last_Element)));
+
+      --  Stitch all actions occurring under Expression (N) in front
+      --  of Verts.First_Element.
+      Stitch_Actions_In_Front
+        (Union_Id (N), Expression (N), Verts.First_Element, FA, CM, Ctx);
    end Do_Assignment_Statement;
 
    -------------------------
@@ -1425,6 +1684,11 @@ package body Flow.Control_Flow_Graph is
 
          Next (Alternative);
       end loop;
+
+      --  Stitch all actions occurring under Expression (N) in front
+      --  of V.
+      Stitch_Actions_In_Front
+        (Union_Id (N), Expression (N), V, FA, CM, Ctx);
    end Do_Case_Statement;
 
    -------------------------
@@ -1491,6 +1755,10 @@ package body Flow.Control_Flow_Graph is
                      Trivial_Connection (V));
 
          CM (Union_Id (L)).Standard_Exits.Include (V);
+
+         --  Stitch all actions occurring under Condition (N) in front
+         --  of V.
+         Stitch_Actions_In_Front (Union_Id (N), Condition (N), V, FA, CM, Ctx);
       end if;
    end Do_Exit_Statement;
 
@@ -1504,10 +1772,11 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      V            : Flow_Graphs.Vertex_Id;
+      V, V_P       : Flow_Graphs.Vertex_Id;
       Ret_Object_L : constant List_Id := Return_Object_Declarations (N);
       Ret_Entity   : constant Node_Id := Return_Statement_Entity (N);
       Ret_Object   : Node_Id;
+      Ret_Object_D : Node_Id;
    begin
       --  We create a null vertex for the extended return statement
       Add_Vertex
@@ -1528,16 +1797,20 @@ package body Flow.Control_Flow_Graph is
          Ret_Object := Next (Ret_Object);
          pragma Assert (Present (Ret_Object));
       end loop;
-      Ret_Object := Defining_Identifier (Ret_Object);
+      Ret_Object_D := Ret_Object;
+      --  Ret_Object_D now holds the N_Object_Declaration
+
+      Ret_Object   := Defining_Identifier (Ret_Object);
 
       --  Process the statements of Ret_Object_L
       Process_Statement_List (Ret_Object_L, FA, CM, Ctx);
 
       --  Link the entry vertex V (the extended return statement) to
       --  standard entry of its return_object_declarations.
-      Linkup (FA,
-              V,
-              CM (Union_Id (Ret_Object_L)).Standard_Entry);
+      Linkup (FA, V, CM (Union_Id (Ret_Object_L)).Standard_Entry);
+
+      V_P := V;
+      --  V_P now holds the initial value of V
 
       --  We create a vertex for the Return_Statement_Entity
       Add_Vertex
@@ -1558,6 +1831,13 @@ package body Flow.Control_Flow_Graph is
       CM.Include (Union_Id (Ret_Entity), No_Connections);
       CM (Union_Id (Ret_Entity)).Standard_Entry := V;
 
+      --  If the returned object's declaration has an expression then
+      --  stitch all actions occurring under it in front of V.
+      if Present (Expression (Ret_Object_D)) then
+         Stitch_Actions_In_Front
+           (Union_Id (N), Expression (Ret_Object_D), V, FA, CM, Ctx, V_P);
+      end if;
+
       if Present (Handled_Statement_Sequence (N)) then
          declare
             Statement_Sequence : constant List_Id :=
@@ -1574,22 +1854,17 @@ package body Flow.Control_Flow_Graph is
             --  We link the standard exits of the sequence of
             --  statements to the standard entry of the implicit
             --  return statement.
-            Linkup (FA,
-                    CM (Union_Id (Statement_Sequence)).Standard_Exits,
-                    V);
+            Linkup (FA, CM (Union_Id (Statement_Sequence)).Standard_Exits, V);
          end;
       else
          --  No sequence of statements is present. We link the
          --  standard exits of Ret_Object_L to the implicit return
          --  statement.
-         Linkup (FA,
-                 CM (Union_Id (Ret_Object_L)).Standard_Exits,
-                 V);
+         Linkup (FA, CM (Union_Id (Ret_Object_L)).Standard_Exits, V);
       end if;
 
       --  We link the implicit return statement to the helper end vertex
       Linkup (FA, V, FA.Helper_End_Vertex);
-
    end Do_Extended_Return_Statement;
 
    -----------------------------------------
@@ -1646,6 +1921,10 @@ package body Flow.Control_Flow_Graph is
       CM.Include (Union_Id (N), No_Connections);
       CM (Union_Id (N)).Standard_Entry := V;
 
+      --  Stitch all actions occurring under Condition (N) in front of
+      --  V.
+      Stitch_Actions_In_Front (Union_Id (N), Condition (N), V, FA, CM, Ctx);
+
       --  We hang the if part off that.
       Process_Statement_List (If_Part, FA, CM, Ctx);
       Linkup (FA, V, CM (Union_Id (If_Part)).Standard_Entry);
@@ -1684,16 +1963,7 @@ package body Flow.Control_Flow_Graph is
             declare
                Elsif_Body : constant List_Id :=
                  Then_Statements (Elsif_Statement);
-
-               CA         : constant List_Id :=
-                 Condition_Actions (Elsif_Statement);
             begin
-               --  If the Condition_Actions of the elsif statement are
-               --  not empty, then we process them too.
-               if Present (CA) then
-                  Process_Statement_List (CA, FA, CM, Ctx);
-               end if;
-
                --  We have a vertex V for each elsif statement
                Add_Vertex
                  (FA,
@@ -1714,30 +1984,21 @@ package body Flow.Control_Flow_Graph is
                Ctx.Folded_Function_Checks (N).Insert
                  (Condition (Elsif_Statement));
 
+               --  Link V_Prev to V
+               Linkup (FA, V_Prev, V);
+
+               --  Process statements of elsif and link V to them
                Process_Statement_List (Elsif_Body, FA, CM, Ctx);
-               Linkup (FA,
-                       V,
-                       CM (Union_Id (Elsif_Body)).Standard_Entry);
+               Linkup (FA, V, CM (Union_Id (Elsif_Body)).Standard_Entry);
 
-               --  V_Prev will be either linked to the
-               --  Condition_Actions (if they exist) or directly to V.
-               --
-               --  Note that the elsif's Condition_Actions are
-               --  considered to occur before the elsif statement (if
-               --  they exist).
-               if Present (CA) then
-                  Linkup (FA, V_Prev, CM (Union_Id (CA)).Standard_Entry);
-
-                  CM (Union_Id (Elsif_Body)).Standard_Entry :=
-                    CM (Union_Id (CA)).Standard_Entry;
-
-                  Linkup (FA, CM (Union_Id (CA)).Standard_Exits, V);
-               else
-                  Linkup (FA, V_Prev, V);
-               end if;
-
+               --  Add the exits of Elsif_Body to the exits of N
                CM (Union_Id (N)).Standard_Exits.Union
                  (CM (Union_Id (Elsif_Body)).Standard_Exits);
+
+               --  Process all actions
+               Stitch_Actions_In_Front
+                 (Union_Id (Elsif_Statement),
+                  Condition (Elsif_Statement), V, FA, CM, Ctx, V_Prev);
             end;
 
             V_Prev := V;
@@ -2017,15 +2278,8 @@ package body Flow.Control_Flow_Graph is
       -------------------
 
       procedure Do_While_Loop is
-         V  : Flow_Graphs.Vertex_Id;
-         CA : constant List_Id := Condition_Actions (Iteration_Scheme (N));
+         V : Flow_Graphs.Vertex_Id;
       begin
-         --  If the Condition_Actions of the loop are not empty, then
-         --  we process them too.
-         if Present (CA) then
-            Process_Statement_List (CA, FA, CM, Ctx);
-         end if;
-
          Add_Vertex
            (FA,
             Direct_Mapping_Id (N),
@@ -2046,18 +2300,13 @@ package body Flow.Control_Flow_Graph is
            (Condition (Iteration_Scheme (N)));
 
          --  Flow for the while loops goes into the condition and then
-         --  out again. Note that the loop's Condition_Actions are
-         --  considered to occur before the loop's condition (if they
-         --  exist).
-         if Present (CA) then
-            CM (Union_Id (N)).Standard_Entry :=
-              CM (Union_Id (CA)).Standard_Entry;
-
-            Linkup (FA, CM (Union_Id (CA)).Standard_Exits, V);
-         else
-            CM (Union_Id (N)).Standard_Entry := V;
-         end if;
+         --  out again.
+         CM (Union_Id (N)).Standard_Entry := V;
          CM (Union_Id (N)).Standard_Exits.Include (V);
+
+         --  Process all actions
+         Stitch_Actions_In_Front
+           (Union_Id (N), Condition (Iteration_Scheme (N)), V, FA, CM, Ctx);
 
          --  Loop the loop: V -> body -> V
          Linkup (FA, V, CM (Union_Id (Statements (N))).Standard_Entry);
@@ -3451,8 +3700,7 @@ package body Flow.Control_Flow_Graph is
       -- Proc --
       ----------
 
-      function Proc (N : Node_Id) return Traverse_Result
-      is
+      function Proc (N : Node_Id) return Traverse_Result is
          Loop_Name : Node_Id;
       begin
          case Nkind (N) is
@@ -3566,6 +3814,9 @@ package body Flow.Control_Flow_Graph is
 
       CM.Include (Union_Id (N), Trivial_Connection (V));
 
+      --  Stitch all actions occurring under N in front of V
+      Stitch_Actions_In_Front (Union_Id (N), N, V, FA, CM, Ctx);
+
       --  We make a note of 'Loop_Entry uses.
       case Get_Pragma_Id (N) is
          when Pragma_Check | Pragma_Loop_Variant | Pragma_Loop_Invariant =>
@@ -3587,8 +3838,6 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      pragma Unreferenced (Ctx);
-
       V : Flow_Graphs.Vertex_Id;
    begin
       --  We just need to check for uninitialized variables.
@@ -3610,6 +3859,9 @@ package body Flow.Control_Flow_Graph is
          V);
 
       CM.Include (Union_Id (Pre), Trivial_Connection (V));
+
+      --  Stitch all actions occurring under Pre in front of V
+      Stitch_Actions_In_Front (Union_Id (Pre), Pre, V, FA, CM, Ctx);
    end Do_Precondition;
 
    -----------------------------------
@@ -3736,6 +3988,19 @@ package body Flow.Control_Flow_Graph is
          for V of Combined_List loop
             if Prev /= Flow_Graphs.Null_Vertex then
                FA.CFG.Add_Edge (Prev, V, EC_Default);
+
+               --  Stitch all actions related to a procedure's formal
+               --  parameter in between Prev and V.
+               declare
+                  F_Par : constant Flow_Id := FA.CFG.Get_Key (V);
+                  N_Par : Node_Id;
+               begin
+                  if F_Par.Kind in Direct_Mapping | Record_Field then
+                     N_Par := Get_Direct_Mapping_Id (F_Par);
+                     Stitch_Actions_In_Front
+                       (Union_Id (N), N_Par, V, FA, CM, Ctx, Prev);
+                  end if;
+               end;
             end if;
             FA.CFG.Set_Cluster (V, C);
 
@@ -3772,8 +4037,6 @@ package body Flow.Control_Flow_Graph is
       CM   : in out Connection_Maps.Map;
       Ctx  : in out Context)
    is
-      pragma Unreferenced (Ctx);
-
       V : Flow_Graphs.Vertex_Id;
    begin
       --  We only need to check for uninitialized variables.
@@ -3795,6 +4058,9 @@ package body Flow.Control_Flow_Graph is
          V);
 
       CM.Include (Union_Id (Post), Trivial_Connection (V));
+
+      --  Stitch all actions occurring under Post in front of V
+      Stitch_Actions_In_Front (Union_Id (Post), Post, V, FA, CM, Ctx);
    end Do_Postcondition;
 
    ----------------------------------
@@ -3844,6 +4110,9 @@ package body Flow.Control_Flow_Graph is
 
       --  Instead we link this vertex directly to the helper end vertex.
       Linkup (FA, V, FA.Helper_End_Vertex);
+
+      --  Stitch all actions occurring under N in front of V
+      Stitch_Actions_In_Front (Union_Id (N), Expression (N), V, FA, CM, Ctx);
    end Do_Simple_Return_Statement;
 
    ----------------------------
@@ -4241,29 +4510,7 @@ package body Flow.Control_Flow_Graph is
       P := First (L);
       while Present (P) loop
          case Nkind (P) is
-            when
-              N_Abstract_Subprogram_Declaration |
-              N_Freeze_Entity                   |
-              N_Freeze_Generic_Entity           |
-              N_Generic_Instantiation           |
-              N_Generic_Package_Declaration     |
-              N_Generic_Subprogram_Declaration  |
-              N_Implicit_Label_Declaration      |
-              N_Incomplete_Type_Declaration     |
-              N_Itype_Reference                 |
-              N_Label                           |
-              N_Number_Declaration              |
-              N_Object_Renaming_Declaration     |
-              N_Package_Renaming_Declaration    |
-              N_Private_Type_Declaration        |
-              N_Representation_Clause           |
-              N_Subprogram_Body                 |
-              N_Subprogram_Body_Stub            |
-              N_Subprogram_Declaration          |
-              N_Subprogram_Renaming_Declaration |
-              N_Use_Package_Clause              |
-              N_Use_Type_Clause                 |
-              N_Validate_Unchecked_Conversion   =>
+            when Nodes_Ignored_By_Process_Statement =>
                --  We completely skip these.
                null;
 
