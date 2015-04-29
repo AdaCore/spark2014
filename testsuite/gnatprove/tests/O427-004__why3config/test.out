@@ -1,4 +1,4 @@
 warning: cannot read config file toto.conf:
   toto.conf: No such file or directory
-0 provers detected
+0 provers detected and 0 provers detected with unsupported version
 Save config to toto.conf
