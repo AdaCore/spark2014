@@ -1,0 +1,7 @@
+search_vec_zero.adb:3:39: info: initialization of "Pos" proved
+search_vec_zero.adb:3:62: info: initialization of "Success" proved
+search_vec_zero.adb:5:11: info: initialization of "Success" proved
+search_vec_zero.adb:6:15: info: initialization of "Success" proved
+search_vec_zero.adb:6:40: info: initialization of "Pos" proved
+search_vec_zero.adb:9:13: info: initialization of "R5b" proved
+search_vec_zero.adb:9:32: info: initialization of "R6b" proved

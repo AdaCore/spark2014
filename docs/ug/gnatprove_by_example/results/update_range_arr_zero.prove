@@ -1,0 +1,5 @@
+update_range_arr_zero.adb:5:11: info: postcondition proved
+update_range_arr_zero.adb:11:07: info: loop invariant initialization proved
+update_range_arr_zero.adb:11:07: info: loop invariant preservation proved
+update_range_arr_zero.adb:11:34: info: initialization of "A_Old" proved
+update_range_arr_zero.adb:11:57: info: range check proved

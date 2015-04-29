@@ -2187,7 +2187,7 @@ producing and attempting to prove.
 deductive verification. It is very different both from compilers, which do very
 little analysis of the code, and static analyzers, which execute symbolically
 the program. |GNATprove| does a very powerful local analysis of the program,
-but it does not cross subprogram boundaries. Instead, it uses the
+but it generally does not cross subprogram boundaries. Instead, it uses the
 :ref:`Subprogram Contracts` provided by users to analyze calls. |GNATprove|
 also requires sometimes that users direct the analysis with :ref:`Assertion
 Pragmas`. Thus, it is essential to understand how |GNATprove| uses contracts
@@ -2202,10 +2202,6 @@ of small code examples.
 .. _loop_examples:
 
 .. include:: gnatprove_by_example/loop.rst
-
-.. _loop_patterns:
-
-.. include:: gnatprove_by_example/loop_patterns.rst
 
 .. _manual_proof:
 

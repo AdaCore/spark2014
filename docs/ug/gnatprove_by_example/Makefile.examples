@@ -28,10 +28,12 @@ prove:
 	cp examples/*.gpr prove
 	echo "" > prove/illegal.txt
 	echo "" > prove/flow_error.txt
-	cp examples/spark_mode.txt prove
-	cat examples/spark_mode.txt examples/illegal.txt examples/flow_error.txt > prove/spark_mode_or_illegal.txt
-	cd prove && gnatprove -f -q -j0 -P intro.gpr --report=all --warnings=on --mode=prove \
-	  --timeout=5 > prove.results
+	cp examples/spark_mode.txt examples/long.txt prove
+	cat examples/spark_mode.txt examples/illegal.txt examples/flow_error.txt examples/long.txt > prove/spark_mode_or_illegal.txt
+	cd prove && gnatprove -f -q -j0 -P intro.gpr --report=all --warnings=on --mode=prove --timeout=5 \
+	  > prove.results
+	cd prove && gnatprove -f -q -j0 -P long.gpr --report=all --warnings=on --mode=prove --timeout=60 \
+	  >> prove.results
 
 results: $(ALL_FLOW_MSG) $(ALL_PROVE_MSG)
 

@@ -1,4 +1,4 @@
-.. _spark tutorial:
+.. _SPARK Tutorial:
 
 ****************
 |SPARK| Tutorial

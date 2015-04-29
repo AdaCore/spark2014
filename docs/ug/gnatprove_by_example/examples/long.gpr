@@ -1,0 +1,6 @@
+project Long is
+
+   for Source_Dirs use ("../examples");
+   for Source_List_File use "long.txt";
+
+end Long;
