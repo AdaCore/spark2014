@@ -111,11 +111,11 @@ platform (see complete list on `Why3 webpage
 your Why3 configuration file.
 
 To create or update automatically a Why3 configuration file, call the command
-``why3config --detect-provers``. It searches your ``PATH`` for any supported
-provers and adds them to the default configuration file ``.why3.conf`` in your
-``HOME``, or a configuration file given in argument with switch ``-C <file>``.
-This file consists of a few general settings and a section for each prover
-which is supported.
+``<spark2014-install>/libexec/spark/bin/why3config --detect-provers``. It
+searches your ``PATH`` for any supported provers and adds them to the default
+configuration file ``.why3.conf`` in your ``HOME``, or a configuration file
+given in argument with switch ``-C <file>``.  This file consists of a few
+general settings and a section for each prover which is supported.
 
 There currently is a problem with why3config, because the tool generates an
 incorrect commandline like this (example for CVC4)::
