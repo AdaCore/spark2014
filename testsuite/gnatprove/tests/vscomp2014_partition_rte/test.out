@@ -32,7 +32,7 @@ partition_refinement.adb:43:40: info: precondition proved
 partition_refinement.adb:43:68: info: precondition proved
 partition_refinement.adb:43:68: medium: postcondition might fail, requires Key (D'Old, C) = Key (D, C)
 partition_refinement.adb:43:85: info: precondition proved
-partition_refinement.adb:49:17: medium: overflow check might fail
+partition_refinement.adb:49:17: info: overflow check proved
 partition_refinement.adb:49:19: info: precondition proved
 partition_refinement.adb:49:33: info: precondition proved
 partition_refinement.adb:50:15: info: precondition proved
@@ -196,7 +196,7 @@ partition_refinement.adb:191:44: info: precondition proved
 partition_refinement.adb:191:52: info: precondition proved
 partition_refinement.adb:191:72: info: initialization of "C" proved
 partition_refinement.adb:194:07: info: precondition proved
-partition_refinement.ads:57:17: medium: overflow check might fail
+partition_refinement.ads:57:17: info: overflow check proved
 partition_refinement.ads:57:19: info: precondition proved
 partition_refinement.ads:57:33: info: precondition proved
 partition_refinement.ads:58:15: info: precondition proved

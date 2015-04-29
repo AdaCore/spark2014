@@ -21,24 +21,30 @@ init_list_zero.adb:12:07: info: precondition proved
 init_list_zero.adb:12:13: info: initialization of private part of "L" proved
 init_list_zero.adb:12:16: info: initialization of "Cu" proved
 init_vec_zero.adb:3:26: medium: private part of "V" might not be initialized in "Init_Vec_Zero"
+init_vec_zero.adb:5:11: info: postcondition proved
 init_vec_zero.adb:5:25: info: precondition proved
 init_vec_zero.adb:5:44: info: precondition proved
 init_vec_zero.adb:5:56: medium: private part of "V" might not be initialized
 init_vec_zero.adb:5:62: info: precondition proved
-init_vec_zero.adb:5:62: medium: postcondition might fail, requires Element (V, J) = 0
-init_vec_zero.adb:5:74: medium: range check might fail
-init_vec_zero.adb:8:12: info: initialization of "R4b" proved
-init_vec_zero.adb:8:12: info: precondition proved
-init_vec_zero.adb:8:25: high: private part of "V" is not initialized
-init_vec_zero.adb:8:31: info: initialization of "R5b" proved
-init_vec_zero.adb:8:31: info: precondition proved
-init_vec_zero.adb:8:43: high: private part of "V" is not initialized
-init_vec_zero.adb:9:06: medium: precondition might fail
-init_vec_zero.adb:9:23: medium: private part of "V" might not be initialized
-init_vec_zero.adb:9:26: medium: range check might fail
-init_vec_zero.adb:10:06: info: loop invariant initialization proved
-init_vec_zero.adb:10:06: info: loop invariant preservation proved
-init_vec_zero.adb:10:42: info: precondition proved
-init_vec_zero.adb:10:55: info: initialization of private part of "V" proved
-init_vec_zero.adb:10:66: medium: precondition might fail
-init_vec_zero.adb:10:78: medium: range check might fail
+init_vec_zero.adb:5:74: info: range check proved
+init_vec_zero.adb:8:13: info: initialization of "R4b" proved
+init_vec_zero.adb:8:13: info: precondition proved
+init_vec_zero.adb:8:26: high: private part of "V" is not initialized
+init_vec_zero.adb:8:32: info: initialization of "R5b" proved
+init_vec_zero.adb:8:32: info: precondition proved
+init_vec_zero.adb:8:44: high: private part of "V" is not initialized
+init_vec_zero.adb:9:07: info: precondition proved
+init_vec_zero.adb:9:24: medium: private part of "V" might not be initialized
+init_vec_zero.adb:9:27: info: range check proved
+init_vec_zero.adb:10:07: info: loop invariant initialization proved
+init_vec_zero.adb:10:07: info: loop invariant preservation proved
+init_vec_zero.adb:10:30: info: precondition proved
+init_vec_zero.adb:10:42: info: initialization of private part of "V" proved
+init_vec_zero.adb:10:47: info: precondition proved
+init_vec_zero.adb:10:61: high: private part of "V" is not initialized
+init_vec_zero.adb:11:07: info: loop invariant initialization proved
+init_vec_zero.adb:11:07: info: loop invariant preservation proved
+init_vec_zero.adb:11:43: info: precondition proved
+init_vec_zero.adb:11:56: info: initialization of private part of "V" proved
+init_vec_zero.adb:11:67: info: precondition proved
+init_vec_zero.adb:11:79: info: range check proved

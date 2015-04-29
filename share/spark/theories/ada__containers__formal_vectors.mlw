@@ -51,12 +51,15 @@ module Ada__containers__formal_vectors__extended_index
 
   function last : int = Ada__containers__formal_vectors__index_type.last
 
-  function attr__ATTRIBUTE_MODULUS : int
+  predicate in_range
+   (x : int)  =
+   ( (first <= x) /\ (x <= last) )
 
   clone export "ada__model".Static_Discrete with
     type t = extended_index,
     function first = first,
-    function last = last
+    function last = last,
+    predicate in_range = in_range
 end
 
 (* useful helper functions in extended index type *)
@@ -95,12 +98,15 @@ module Ada__containers__formal_vectors__capacity_range
 
   function last : int = index_type_length
 
-  function attr__ATTRIBUTE_MODULUS : int
+  predicate in_range
+   (x : int)  =
+   ( (first <= x) /\ (x <= last) )
 
   clone export "ada__model".Static_Discrete with
     type t = capacity_range,
     function first = first,
-    function last = last
+    function last = last,
+    predicate in_range = in_range
 end
 
 (* type Vector *)

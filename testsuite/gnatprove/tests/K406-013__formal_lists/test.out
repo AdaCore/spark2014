@@ -98,8 +98,8 @@ test_vdll.adb:69:30: info: precondition proved
 test_vdll.adb:69:40: info: precondition proved
 test_vdll.adb:69:50: info: precondition proved
 test_vdll.adb:69:57: info: initialization of private part of "L1" proved
-test_vdll.adb:70:04: info: assertion proved
 test_vdll.adb:70:19: info: precondition proved
+test_vdll.adb:70:19: medium: assertion might fail, requires Length (L3) = 2
 test_vdll.adb:70:27: info: initialization of private part of "L3" proved
 test_vdll.adb:73:04: info: assertion proved
 test_vdll.adb:73:19: info: precondition proved
@@ -142,8 +142,8 @@ test_vdll.adb:85:19: info: precondition proved
 test_vdll.adb:85:25: info: initialization of private part of "L3" proved
 test_vdll.adb:85:46: info: precondition proved
 test_vdll.adb:85:60: info: precondition proved
+test_vdll.adb:88:04: info: assertion proved
 test_vdll.adb:88:19: info: precondition proved
-test_vdll.adb:88:19: medium: assertion might fail, requires Find (L3, 1, Next (L3, First (L3))) = No_Element
 test_vdll.adb:88:32: info: precondition proved
 test_vdll.adb:88:42: info: precondition proved
 test_vdll.adb:88:49: info: initialization of private part of "L3" proved
@@ -175,8 +175,8 @@ test_vdll.adb:111:40: info: precondition proved
 test_vdll.adb:111:46: info: initialization of private part of "L1" proved
 test_vdll.adb:111:50: info: precondition proved
 test_vdll.adb:111:57: info: initialization of private part of "L4" proved
-test_vdll.adb:114:04: info: assertion proved
 test_vdll.adb:114:19: info: precondition proved
+test_vdll.adb:114:19: medium: assertion might fail, requires Find (L4, 1, No_Element) = First (L4)
 test_vdll.adb:114:25: info: initialization of private part of "L4" proved
 test_vdll.adb:114:47: info: precondition proved
 test_vdll.adb:122:12: medium: precondition might fail
@@ -249,8 +249,8 @@ test_vdll.adb:163:38: info: precondition proved
 test_vdll.adb:163:48: info: precondition proved
 test_vdll.adb:163:58: info: precondition proved
 test_vdll.adb:163:65: info: initialization of private part of "L1" proved
+test_vdll.adb:164:04: info: assertion proved
 test_vdll.adb:164:19: info: precondition proved
-test_vdll.adb:164:19: medium: assertion might fail, requires Length (L4) = 1
 test_vdll.adb:164:27: info: initialization of private part of "L4" proved
 test_vdll.adb:167:04: info: assertion proved
 test_vdll.adb:167:19: info: precondition proved

@@ -300,7 +300,7 @@ module Ada__containers__formal_doubly_linked_lists__first_to_previous
 
   axiom first_to_previous_length_:
     forall co:list, cu:cursor [first_to_previous__logic co cu].
-	position co cu > 0 -> length_ (first_to_previous__logic co cu) = position co cu - 1
+	position co cu > 0 -> length_ (first_to_previous__logic co cu) = position co cu - 1 /\ list_inv (first_to_previous__logic co cu)
 
   axiom first_to_previous_position_in:
     forall co:list, cu cun:cursor [position (first_to_previous__logic co cu) cun | first_to_previous__logic co cu, position co cun].
@@ -319,7 +319,7 @@ module Ada__containers__formal_doubly_linked_lists__first_to_previous
 
   val first_to_previous (co:list) (cu:cursor) : list
      requires { cu = no_element \/ position co cu > 0 }
-     ensures  { result = first_to_previous__logic co cu /\ list_inv result }
+     ensures  { result = first_to_previous__logic co cu }
 end
 
 module Ada__containers__formal_doubly_linked_lists__current_to_last
@@ -338,8 +338,8 @@ module Ada__containers__formal_doubly_linked_lists__current_to_last
     forall co:list [current_to_last__logic co no_element]. current_to_last__logic co no_element = empty_list
 
   axiom current_to_last_length_:
-    forall co:list, cu:cursor [length_ (current_to_last__logic co cu) ].
-	position co cu > 0 -> length_ (current_to_last__logic co cu) = (length_ co) - (position co cu) + 1
+    forall co:list, cu:cursor [current_to_last__logic co cu].
+	position co cu > 0 -> length_ (current_to_last__logic co cu) = (length_ co) - (position co cu) + 1 /\ list_inv (current_to_last__logic co cu)
 
   axiom current_to_last_position_in:
     forall co:list, cu cun:cursor [position (current_to_last__logic co cu) cun | current_to_last__logic co cu, position co cun].
@@ -357,7 +357,7 @@ module Ada__containers__formal_doubly_linked_lists__current_to_last
 
   val current_to_last (co:list) (cu:cursor) : list
      requires { cu = no_element \/ position co cu > 0 }
-     ensures  { result = current_to_last__logic co cu /\ list_inv result }
+     ensures  { result = current_to_last__logic co cu }
 end
 
 module Ada__containers__formal_doubly_linked_lists__find
@@ -1317,7 +1317,7 @@ module Ada__containers__formal_doubly_linked_lists__copy
 
   axiom copy__def:
     forall co : list, cap : int [copy__logic co cap].
-       strict_equal__logic co (copy__logic co cap) = True /\
+       strict_equal__logic co (copy__logic co cap) = True /\ list_inv (copy__logic co cap) /\
        (cap = 0 -> capacity co = capacity (copy__logic co cap)) /\
        (cap >= capacity co ->  capacity (copy__logic co cap) = cap)
 
