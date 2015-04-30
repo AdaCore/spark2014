@@ -61,6 +61,7 @@ with Why.Gen.Names;          use Why.Gen.Names;
 with Why.Gen.Preds;          use Why.Gen.Preds;
 with Why.Gen.Progs;          use Why.Gen.Progs;
 with Why.Gen.Records;        use Why.Gen.Records;
+with Why.Gen.Terms;          use Why.Gen.Terms;
 with Why.Inter;              use Why.Inter;
 with Why.Types;              use Why.Types;
 
@@ -426,14 +427,18 @@ package body Gnat2Why.Subprograms is
                                       else +Tmp_Var),
                                       +L_Id));
                            begin
-                              Prop_For_Include := Sequence
-                                (Prop_For_Include,
-                                 +New_Typed_Binding
-                                   (Domain   => EW_Prog,
-                                    Name     => Tmp_Var,
-                                    Def      => +Expr,
-                                    Context  =>
-                                      +New_Assume_Statement (Pred => Eq)));
+                              if Node_Sets.Is_Empty
+                                (Get_All_Dereferences (+Expr))
+                              then
+                                 Prop_For_Include := Sequence
+                                   (Prop_For_Include,
+                                    +New_Typed_Binding
+                                      (Domain   => EW_Prog,
+                                       Name     => Tmp_Var,
+                                       Def      => +Expr,
+                                       Context  =>
+                                         +New_Assume_Statement (Pred => Eq)));
+                              end if;
                            end;
                         end if;
                      end;
