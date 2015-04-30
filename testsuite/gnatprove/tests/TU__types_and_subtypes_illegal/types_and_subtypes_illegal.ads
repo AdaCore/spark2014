@@ -1,12 +1,6 @@
 package Types_And_Subtypes_Illegal
   with SPARK_Mode
 is
-   -- TU: 1. A Dynamic_Predicate aspect shall not occur in an aspect
-   --        specification.
-   subtype S1 is Integer
-     with Dynamic_Predicate => S1 mod 2 = 0;
-
-
    type T0 is private;
 
    type T1 is tagged private;
@@ -17,7 +11,6 @@ is
 
    procedure Op (X : in T1'Class);
 
-
    function Foo return Integer;
 
    subtype One_To_Ten is Integer range 1 .. 10
@@ -26,5 +19,4 @@ private
    type T0 is new Integer;
 
    type T1 is tagged null record;
-
 end Types_And_Subtypes_Illegal;

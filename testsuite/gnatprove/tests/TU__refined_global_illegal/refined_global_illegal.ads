@@ -5,11 +5,13 @@ is
       Var : Integer;
 
       procedure P1
-        --  TU: 2. A Refined_Global aspect is permitted on a body_stub (if one
-        --  is present) or subprogram body if and only if it has a declaration
-        --  in the specification of an enclosing package, the declaration has a
-        --  Global aspect which denotes a state abstraction declared by the
-        --  package and the refinement of the state abstraction is visible.
+        --  TU: 2. A Refined_Global aspect is permitted on a body_stub
+        --  (if one is present), subprogram body, entry body, or task
+        --  body if and only if the stub or body is the completion of
+        --  a declaration occurring in the specification of an
+        --  enclosing package, the declaration has a Global aspect
+        --  which denotes a state abstraction declared by the package
+        --  and the refinement of the state abstraction is visible.
         with Global => Var;
    end No_Abstract_State;
 
@@ -18,11 +20,13 @@ is
      with Abstract_State => State
    is
       procedure No_Global_Contract;
-      --  TU: 2. A Refined_Global aspect is permitted on a body_stub (if one
-      --  is present) or subprogram body if and only if it has a declaration
-      --  in the specification of an enclosing package, the declaration has a
-      --  Global aspect which denotes a state abstraction declared by the
-      --  package and the refinement of the state abstraction is visible.
+      --  TU: 2. A Refined_Global aspect is permitted on a body_stub
+      --  (if one is present), subprogram body, entry body, or task
+      --  body if and only if the stub or body is the completion of a
+      --  declaration occurring in the specification of an enclosing
+      --  package, the declaration has a Global aspect which denotes a
+      --  state abstraction declared by the package and the refinement
+      --  of the state abstraction is visible.
    end No_Contract;
 
 

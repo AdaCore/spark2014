@@ -1,14 +1,14 @@
 refined_global_illegal.adb:6:14: useless refinement, subprogram "P1" does not depend on abstract state with visible refinement
 refined_global_illegal.adb:20:14: useless refinement, declaration of subprogram "No_Global_Contract" lacks aspect or pragma Global
-refined_global_illegal.adb:33:14: aspect "Refined_Global" cannot apply to a stand alone body
-refined_global_illegal.adb:49:43: cannot mention state "State" in global refinement
-refined_global_illegal.adb:49:43: use its constituents instead
-refined_global_illegal.adb:57:14: extra constituent "Y"
-refined_global_illegal.adb:65:47: duplicate global item
-refined_global_illegal.adb:73:14: global refinement of state "State" redefines the mode of its constituents
-refined_global_illegal.adb:81:14: global refinement of state "State" redefines the mode of its constituents
-refined_global_illegal.adb:89:14: constituent "Z" is missing in output list
-refined_global_illegal.adb:89:14: output state "State2" must be replaced by all its constituents in global refinement
+refined_global_illegal.adb:35:14: aspect "Refined_Global" cannot apply to a stand alone body
+refined_global_illegal.adb:51:43: cannot mention state "State" in global refinement
+refined_global_illegal.adb:51:43: use its constituents instead
+refined_global_illegal.adb:59:14: extra constituent "Y"
+refined_global_illegal.adb:67:47: duplicate global item
+refined_global_illegal.adb:75:14: global refinement of state "State" redefines the mode of its constituents
+refined_global_illegal.adb:83:14: global refinement of state "State" redefines the mode of its constituents
+refined_global_illegal.adb:91:14: constituent "Z" is missing in output list
+refined_global_illegal.adb:91:14: output state "State2" must be replaced by all its constituents in global refinement
 refined_global_illegal_2.adb:5:04: info: initialization of "X" constituent of "State" proved
 refined_global_illegal_2.adb:5:07: info: initialization of "Y" constituent of "State" proved
 refined_global_illegal_2.adb:12:18: "Y" constituent of "State" must be listed in the Refined_Global aspect of "P1" (SPARK RM 6.1.4(12))

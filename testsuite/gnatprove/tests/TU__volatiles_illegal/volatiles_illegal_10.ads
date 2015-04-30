@@ -5,9 +5,8 @@ package Volatiles_Illegal_10
 is
    type Vol_Int_T is new Integer with Volatile;
 
-   --  TU: 6. A constant object (other than a formal parameter of mode
-   --  **in**) shall not be effectively volatile. An effectively
-   --  volatile object shall not have a discriminated part.
+   --  TU: 5. An effectively volatile type other than a protected type
+   --  shall not have a discriminated part.
    type Disc_Rec(D : Vol_Int_T) is record
       case D is
          when 0  => B : Boolean;

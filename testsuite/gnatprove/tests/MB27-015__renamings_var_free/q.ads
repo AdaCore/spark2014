@@ -11,9 +11,8 @@ package Q is
    --  such an expression shall not read a variable, nor shall it call a
    --  function which (directly or indirectly) reads a variable. These
    --  contexts include:
-   --   * a constraint excluding the range of a loop parameter
-   --     specification where variables may be used in the expressions
-   --     defining the range (see :ref:`subtype_declarations`);
+   --   * a constraint other than the range of a loop parameter
+   --     specification (see :ref:`subtype_declarations`);
    --   * the default_expression of a component declaration (see
    --     :ref:`record_types`);
    --   * the default_expression of a discriminant_specification

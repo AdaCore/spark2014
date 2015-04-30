@@ -1,7 +1,9 @@
 package TAA
   with SPARK_Mode => On
 is
-   -- TU: 1. All forms of access type and parameter declarations are prohibited.
+   -- TU: 1. All forms of access type and parameter declarations are
+   --  prohibited. [This follows from the rule forbidding use of the
+   --  Ada reserved word **access**.]
 
    -- TU: 2. The attribute 'Access shall not be denoted.
 

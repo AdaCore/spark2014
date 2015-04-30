@@ -8,7 +8,7 @@ is
    --  of volatile composite objects, which are introduced in SPARK 14.0.2+
    --  as a result of adding the fifth bullet below to RM rule 7.1.3(13)
 
-   --  TU: 13. Contrary to the general |SPARK| rule that expression evaluation
+   --  TU: 12. Contrary to the general |SPARK| rule that expression evaluation
    --  cannot have side effects, a read of an effectively volatile object with
    --  the properties Async_Writers or Effective_Reads set to True is
    --  considered to have an effect when read. To reconcile this
@@ -23,11 +23,22 @@ is
    --    whose result is renamed [in an object renaming declaration]; or
    --  * the actual parameter in a procedure call of which the corresponding
    --    formal parameter is of a non-scalar effectively volatile type; or
+   --  * the (protected) prefix of a name denoting a protected operation; or
+   --  * the return expression of a ``simple_return_statement`` which applies
+   --    to a volatile function; or
+   --  * the initial value expression of the
+   --    ``extended_return_object_declaration`` of an
+   --   ``extended_return_statement`` which applies to a volatile function; or
    --  * the prefix of a ``slice``, ``selected_component``,
    --    ``indexed_component``, or ``attribute_reference`` which is itself a
    --    name occurring in a non-interfering context; or
    --  * the expression of a type conversion occurring in a non-interfering
    --    context.
+   --  The same restrictions also apply to a call to a volatile function
+   --  and to the evaluation of any attribute which is defined to introduce
+   --  an implicit dependency on a volatile state abstraction [(these are
+   --  the Callable, Caller, Count, and Terminated attributes; see section
+   --  :ref:`tasks-and-synchronization`)].
 
    type R is record
       F1 : Integer;

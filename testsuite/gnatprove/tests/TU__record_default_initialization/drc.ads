@@ -2,13 +2,14 @@ package DRC
   with SPARK_Mode => On
 is
 
-   -- TU: 1. If at least one non-discriminant component (either explicitly
-   --     declared or inherited) of a record type or type extension either is
-   --     of a type which defines full default initialization or is declared
-   --     by a ``component_declaration`` which includes a
-   --     ``default_expression``, and if that component's type has at least
-   --     one elementary non-discriminant part, then the record type or type
-   --     extension shall define full default initialization.
+   -- TU: 1. If at least one nondiscriminant component (either
+   --  explicitly declared or inherited) of a record type or type
+   --  extension either is of a type which defines full default
+   --  initialization or is declared by a ``component_declaration``
+   --  which includes a ``default_expression``, and if that
+   --  component's type has at least one elementary nondiscriminant
+   --  part, then the record type or type extension shall define full
+   --  default initialization.
 
    -- Below, "DI" = "Default Initialization"
    --

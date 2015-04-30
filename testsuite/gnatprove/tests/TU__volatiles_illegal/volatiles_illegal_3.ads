@@ -18,15 +18,16 @@ is
           Address => System.Storage_Elements.To_Address (16#CAB0#);
 
    package P is new Volatiles_Illegal_Helper.Gen (Size => Vol);
-   --  TU: 8. An effectively volatile object shall not be used as an
+   --  TU: 7. An effectively volatile object shall not be used as an
    --  actual parameter in a generic instantiation.
 
    function F return Boolean
      with Global => Vol;
-   --  TU: 9. An effectively volatile object shall not be a
-   --  ``global_item`` of a function.
+   --  TU: 8. A ``global_item`` of a nonvolatile function shall not
+   --  denote either an effectively volatile object or an external
+   --  state abstraction.
 
    function F2 (Par : Vol_T) return Boolean;
-   --  TU: 10. A function shall not have a formal parameter of an
-   --  effectively volatile type.
+   --  TU: 9. A nonvolatile function shall not have a formal parameter
+   --  (or result) of an effectively volatile type.
 end Volatiles_Illegal_3;

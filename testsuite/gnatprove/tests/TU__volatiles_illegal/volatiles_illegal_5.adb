@@ -3,10 +3,8 @@ package body Volatiles_Illegal_5
 is
    procedure Vol_Loop_Par (Par : in out Integer) is
    begin
-      --  TU: 6. A constant object (other than a formal parameter of
-      --  mode **in**) shall not be effectively volatile. An
-      --  effectively volatile object shall not have a discriminated
-      --  part.
+      --  TU: 4. A constant object (other than a formal parameter of
+      --  mode **in**) shall not be effectively volatile.
       for J in 0 .. Vol_Var loop
          Par := Par + 1;
       end loop;

@@ -11,7 +11,7 @@ is
      --  option_list              ::= option { , option }
      --  option                   ::= simple_option
      --                             | name_value_option
-     --  simple_option            ::= Ghost
+     --  simple_option            ::= Ghost | Synchronous
      --  name_value_option        ::= Part_Of => abstract_state
      --                             | External [=> external_property_list]
      --  external_property_list   ::= external_property

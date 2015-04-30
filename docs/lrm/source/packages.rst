@@ -1963,10 +1963,10 @@ be a Boolean ``expression``.
 
 1. A Refined_Post aspect may only appear on a body_stub (if one is
    present) or the body (if no stub is present) of a subprogram or
-   entry which is declared in the specification of a package,
-   its abstract view. If the
-   initial declaration in the visible part has no explicit postcondition, a
-   postcondition of True is assumed for the abstract view.
+   entry which is declared in the specification of a package, its
+   abstract view. If the initial declaration in the visible part has
+   no explicit postcondition, a postcondition of True is assumed for
+   the abstract view.
 
 .. _tu-cbatu-refined_postcondition_aspects-02:
 

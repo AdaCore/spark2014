@@ -6,9 +6,10 @@ is
    Z    : constant Integer := 0;
 
    procedure P1 (Par1 : Integer)
-     --  TU: 5. The Global aspect may only be specified for the
+     --  TU: 6. The Global aspect may only be specified for the
      --  initial declaration of a subprogram (which may be a
-     --  declaration, a body or a body stub).
+     --  declaration, a body or a body stub), of a protected entry, or
+     --  of a task unit.
      with Global => (Output => X)
    is
    begin

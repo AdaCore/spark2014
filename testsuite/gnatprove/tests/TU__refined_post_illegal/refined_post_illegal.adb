@@ -8,12 +8,12 @@ is
 
 
    function Inv_Func_2 return Integer
-     --  TU: 1. A Refined_Post aspect may only appear on a body_stub (if one is
-     --  present) or the body (if no stub is present) of a subprogram which is
-     --  declared in the specification of a package, its abstract view. If the
-     --  subprogram declaration in the visible part has no explicit
-     --  postcondition, a postcondition of True is assumed for the abstract
-     --  view.
+     --  TU: 1. A Refined_Post aspect may only appear on a body_stub
+     --  (if one is present) or the body (if no stub is present) of a
+     --  subprogram or entry which is declared in the specification of
+     --  a package, its abstract view. If the initial declaration in
+     --  the visible part has no explicit postcondition, a
+     --  postcondition of True is assumed for the abstract view.
      with Refined_Post => Inv_Func_2'Result > 10
    is
    begin
@@ -26,12 +26,12 @@ is
 
 
    function Inv_Func_3 (X : Integer) return Boolean
-     --  TU: 1. A Refined_Post aspect may only appear on a body_stub (if one is
-     --  present) or the body (if no stub is present) of a subprogram which is
-     --  declared in the specification of a package, its abstract view. If the
-     --  subprogram declaration in the visible part has no explicit
-     --  postcondition, a postcondition of True is assumed for the abstract
-     --  view.
+     --  TU: 1. A Refined_Post aspect may only appear on a body_stub
+     --  (if one is present) or the body (if no stub is present) of a
+     --  subprogram or entry which is declared in the specification of
+     --  a package, its abstract view. If the initial declaration in
+     --  the visible part has no explicit postcondition, a
+     --  postcondition of True is assumed for the abstract view.
      with Refined_Post => (if X >= 10 then Inv_Func_3'Result)
    is
    begin
@@ -43,12 +43,12 @@ is
 
 
    function Inv_Func_4 (X, Y : Boolean) return Boolean is (X and Y)
-     --  TU: 1. A Refined_Post aspect may only appear on a body_stub (if one is
-     --  present) or the body (if no stub is present) of a subprogram which is
-     --  declared in the specification of a package, its abstract view. If the
-     --  subprogram declaration in the visible part has no explicit
-     --  postcondition, a postcondition of True is assumed for the abstract
-     --  view.
+     --  TU: 1. A Refined_Post aspect may only appear on a body_stub
+     --  (if one is present) or the body (if no stub is present) of a
+     --  subprogram or entry which is declared in the specification of
+     --  a package, its abstract view. If the initial declaration in
+     --  the visible part has no explicit postcondition, a
+     --  postcondition of True is assumed for the abstract view.
      with Refined_Post => (if (X or Y) then Inc_Func_4'Result);
 
 

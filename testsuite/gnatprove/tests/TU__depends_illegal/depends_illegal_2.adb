@@ -6,9 +6,10 @@ is
 
 
    procedure P1 (Par1 : in Natural)
-     --  TU: 2. The Depends aspect shall only be specified for the initial
-     --  declaration of a subprogram (which may be a declaration, a body or a
-     --  body stub).
+     --  TU: 2. The Depends aspect shall only be specified for the
+     --  initial declaration of a subprogram (which may be a
+     --  declaration, a body or a body stub), of a protected entry, or
+     --  of a task unit.
      with Depends => ((X, Y) =>+ Par1)
    is
    begin

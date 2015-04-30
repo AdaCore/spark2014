@@ -25,11 +25,13 @@ is
 
 
       procedure Refined_Global_On_Body_As_Spec
-        --  TU: 2. A Refined_Global aspect is permitted on a body_stub (if one
-        --  is present) or subprogram body if and only if it has a declaration
-        --  in the specification of an enclosing package, the declaration has a
-        --  Global aspect which denotes a state abstraction declared by the
-        --  package and the refinement of the state abstraction is visible.
+        --  TU: 2. A Refined_Global aspect is permitted on a body_stub
+        --  (if one is present), subprogram body, entry body, or task
+        --  body if and only if the stub or body is the completion of
+        --  a declaration occurring in the specification of an
+        --  enclosing package, the declaration has a Global aspect
+        --  which denotes a state abstraction declared by the package
+        --  and the refinement of the state abstraction is visible.
         with Refined_Global => (Output => Var)
       is
       begin
