@@ -81,9 +81,9 @@ package Flow.Analysis is
 
    procedure Find_Use_Of_Uninitialized_Variables
      (FA : in out Flow_Analysis_Graphs);
-   --  Check all variables read (explicit and implicit) and issue either
-   --  info messages or med/high checks depending on wheather the variable
-   --  is initialized.
+   --  Check all variables read (explicit and implicit) and issue
+   --  either info messages or low/med/high checks depending on
+   --  whether the variable is initialized/default initialized.
    --
    --  Complexity is O(N^2)
 

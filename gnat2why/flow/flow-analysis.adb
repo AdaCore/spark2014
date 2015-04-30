@@ -22,32 +22,27 @@
 ------------------------------------------------------------------------------
 
 with Ada.Text_IO;
-
-with Elists;               use Elists;
-with Errout;               use Errout;
-with Namet;                use Namet;
-with Nlists;               use Nlists;
-with Sem_Aux;              use Sem_Aux;
-with Sem_Util;             use Sem_Util;
-with Sinfo;                use Sinfo;
-with Sinput;               use Sinput;
-with Snames;               use Snames;
-with Stand;                use Stand;
-with Ghost;                use Ghost;
-
-with Output;               use Output;
-
-with Why;
-
-with VC_Kinds;             use VC_Kinds;
-with SPARK_Util;           use SPARK_Util;
-
-with Flow.Analysis.Sanity;
+with Elists;                      use Elists;
+with Errout;                      use Errout;
 with Flow.Analysis.Antialiasing;
-
-with Flow_Debug;           use Flow_Debug;
-with Flow_Error_Messages;  use Flow_Error_Messages;
-with Flow_Utility;         use Flow_Utility;
+with Flow.Analysis.Sanity;
+with Flow_Debug;                  use Flow_Debug;
+with Flow_Error_Messages;         use Flow_Error_Messages;
+with Flow_Utility;                use Flow_Utility;
+with Flow_Utility.Initialization; use Flow_Utility.Initialization;
+with Ghost;                       use Ghost;
+with Namet;                       use Namet;
+with Nlists;                      use Nlists;
+with Output;                      use Output;
+with SPARK_Util;                  use SPARK_Util;
+with Sem_Aux;                     use Sem_Aux;
+with Sem_Util;                    use Sem_Util;
+with Sinfo;                       use Sinfo;
+with Sinput;                      use Sinput;
+with Snames;                      use Snames;
+with Stand;                       use Stand;
+with VC_Kinds;                    use VC_Kinds;
+with Why;
 
 package body Flow.Analysis is
 
@@ -2125,6 +2120,7 @@ package body Flow.Analysis is
 
          Is_Final_Use : constant Boolean := V_Key.Variant = Final_Value;
          Is_Global    : constant Boolean := Atr_Initial.Is_Global;
+         Default_Init : constant Boolean := Is_Default_Initialized (Var);
 
       begin
          case Kind is
@@ -2151,17 +2147,25 @@ package body Flow.Analysis is
             when Init =>
                Msg := To_Unbounded_String ("initialization of & proved");
             when Unknown =>
-               Msg := To_Unbounded_String ("& might not be ");
+               Msg := (if Default_Init
+                       then To_Unbounded_String
+                              ("input value of & might be used")
+                       else To_Unbounded_String ("& might not be "));
             when Err =>
-               Msg := To_Unbounded_String ("& is not ");
+               Msg := (if Default_Init
+                       then To_Unbounded_String
+                              ("input value of & will be used")
+                       else To_Unbounded_String ("& is not "));
          end case;
 
          case Kind is
             when Unknown | Err =>
-               if Has_Async_Readers (Var) then
-                  Append (Msg, "written");
-               else
-                  Append (Msg, "initialized");
+               if not Default_Init then
+                  if Has_Async_Readers (Var) then
+                     Append (Msg, "written");
+                  else
+                     Append (Msg, "initialized");
+                  end if;
                end if;
                if Is_Final_Use and not Is_Global then
                   Append (Msg, " in &");
@@ -2207,8 +2211,12 @@ package body Flow.Analysis is
             Tag       => Uninitialized,
             Kind      => (case Kind is
                           when Init    => Info_Kind,
-                          when Unknown => Medium_Check_Kind,
-                          when Err     => High_Check_Kind),
+                          when Unknown => (if Default_Init
+                                           then Low_Check_Kind
+                                           else Medium_Check_Kind),
+                          when Err     => (if Default_Init
+                                           then Medium_Check_Kind
+                                           else High_Check_Kind)),
             Vertex    => Vertex);
 
          if Is_Constituent (Var)
