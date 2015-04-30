@@ -1757,7 +1757,7 @@ were declared within a protected unit or task unit (see section
 
          procedure Init_A2
            --  The Global sparct is already in terms of the constituent
-           --  Hidden_State which is part of of A2, so no refined
+           --  Hidden_State which is part of A2, so no refined
            --  Global or Depends aspects are required.
          is
          begin

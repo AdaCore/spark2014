@@ -2388,7 +2388,7 @@ Ghost Packages
 
 Ghost packages are useful to encapsulate all types and operations for a
 specific kind of ghost code. For example, we can define a ghost package
-``Logging`` to deal with all all logging operations on package ``Account``:
+``Logging`` to deal with all logging operations on package ``Account``:
 
 .. code-block:: ada
 

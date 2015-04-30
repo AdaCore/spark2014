@@ -120,7 +120,7 @@ Generalized Loop Iteration
    which shall be of type T. The "iteration cursor subtype" of T
    is defined to be result subtype of the First function. The
    First function's name shall be resolvable from these rules alone.
-   [This means the the iteration cursor subtype of T can be determined
+   [This means the iteration cursor subtype of T can be determined
    without examining the other subprogram names].
    The iteration cursor subtype of T shall be definite and shall not be
    limited.
