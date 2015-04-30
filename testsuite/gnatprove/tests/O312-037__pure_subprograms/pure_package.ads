@@ -1,6 +1,7 @@
 package Pure_Package is
 
-   function Pure_Function (X : Integer) return Integer
-     with Pure_Function;
+   pragma Pure;
+
+   function Pure_Function (X : Integer) return Integer;
 
 end Pure_Package;

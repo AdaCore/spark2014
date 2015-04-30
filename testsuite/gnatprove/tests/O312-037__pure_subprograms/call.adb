@@ -1,5 +1,6 @@
 with Pure_Package;
-with Pure_Procedure;
+with Impure_Package;
+with Impure_Procedure;
 with Ada.Numerics.Elementary_Functions;
 
 procedure Call
@@ -18,8 +19,10 @@ begin
    --  that is declared pure
    X := Pure_Package.Pure_Function (X);
 
-   --  a Pure_Function pragma applies to the subprogram
-   Pure_Procedure (X);
+   X := Impure_Package.Impure_Function (X);
+
+   --  a Impure_Function pragma applies to the subprogram
+   Impure_Procedure (X);
 
    --  These implicit assumptions should be verified when analyzing these
    --  subprograms.
