@@ -614,7 +614,7 @@ package body Flow.Analysis is
 
             SRM_Ref : constant String :=
               (case FA.Kind is
-                  when E_Subprogram_Body => "6.1.4(12)",
+                  when E_Subprogram_Body => "6.1.4(13)",
                   when others            => "7.1.5(12)");
 
          begin
@@ -996,7 +996,7 @@ package body Flow.Analysis is
                   Error_Msg_Flow
                     (FA       => FA,
                      Msg      => "unused global &",
-                     SRM_Ref  => "6.1.4(13)",
+                     SRM_Ref  => "6.1.4(14)",
                      N        => Find_Global (FA.Analyzed_Entity, F),
                      F1       => F,
                      Tag      => Unused,
@@ -2557,7 +2557,7 @@ package body Flow.Analysis is
                            Tracefile => Tracefile,
                            Msg       => "export & must not depend " &
                              "on Proof_In &",
-                           SRM_Ref   => "6.1.4(17)",
+                           SRM_Ref   => "6.1.4(18)",
                            N         => Find_Global (FA.Analyzed_Entity,
                                                      Input),
                            F1        => Output,
