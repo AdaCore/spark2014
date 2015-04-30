@@ -45,15 +45,14 @@ themselves records.
 
 1. The visible state of a package P consists of:
 
-   * any variables declared immediately within the visible part of
-     package P; and
+   * any variables, or constants *with variable inputs*, declared immediately
+     within the visible part of package P; and
 
    * the state abstractions declared by the Abstract_State aspect specification
      (if any) of package P; and
 
-   * the visible state of any packages declared immediately within the visible part
-     of package P.
-
+   * the visible state of any packages declared immediately within the visible
+     part of package P.
 
 2. The hidden state of a package P consists of:
 
