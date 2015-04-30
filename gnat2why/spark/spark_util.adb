@@ -2369,6 +2369,32 @@ package body SPARK_Util is
       return Etype (Index);
    end Nth_Index_Type;
 
+   ------------------------------------
+   -- Number_Of_Assocs_In_Expression --
+   ------------------------------------
+
+   function Number_Of_Assocs_In_Expression (N : Node_Id) return Natural is
+      Count : Natural := 0;
+
+      function Find_Assoc (N : Node_Id) return Traverse_Result;
+      --  Increments Count if N is a N_Component_Association
+
+      function Find_Assoc (N : Node_Id) return Traverse_Result is
+      begin
+         case Nkind (N) is
+            when N_Component_Association =>
+               Count := Count + 1;
+            when others => null;
+         end case;
+         return OK;
+      end Find_Assoc;
+
+      procedure Count_Assoc is new Traverse_Proc (Find_Assoc);
+   begin
+      Count_Assoc (N);
+      return Count;
+   end Number_Of_Assocs_In_Expression;
+
    ---------------------------
    -- Root_Record_Component --
    ---------------------------

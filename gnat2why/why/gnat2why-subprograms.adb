@@ -60,6 +60,7 @@ with Why.Gen.Expr;           use Why.Gen.Expr;
 with Why.Gen.Names;          use Why.Gen.Names;
 with Why.Gen.Preds;          use Why.Gen.Preds;
 with Why.Gen.Progs;          use Why.Gen.Progs;
+with Why.Gen.Records;        use Why.Gen.Records;
 with Why.Inter;              use Why.Inter;
 with Why.Types;              use Why.Types;
 
@@ -281,7 +282,12 @@ package body Gnat2Why.Subprograms is
       Scope       : Entity_Id;
       Initialized : Boolean := False) return W_Prog_Id
    is
-      Read_Ids : Flow_Types.Flow_Id_Sets.Set;
+      Max_Assocs : constant Natural := 100;
+      --  if the defining expression of a constant contains more than
+      --  Max_Assocs N_Component_Association nodes, its definition will not be
+      --  inlined.
+
+      Read_Ids   : Flow_Types.Flow_Id_Sets.Set;
 
       function Is_Initialized (Obj : Entity_Id) return Boolean with
         Pre => not Is_Declared_In_Unit (Obj, Scope)
@@ -309,7 +315,7 @@ package body Gnat2Why.Subprograms is
          end if;
       end Is_Initialized;
 
-      Includes            : constant Node_Sets.Set := Compute_Ada_Node_Set (W);
+      Includes            : Node_Sets.Set := Compute_Ada_Node_Set (W);
       Dynamic_Prop_Inputs : W_Prog_Id := New_Void;
    begin
       --  Collect global variables read in scope if it is a subprogam
@@ -325,41 +331,122 @@ package body Gnat2Why.Subprograms is
          end;
       end if;
 
-      for Obj of Includes loop
+      declare
+         Already_Included : Node_Sets.Set := Node_Sets.Empty_Set;
+         Prop_For_Include : W_Prog_Id;
+         L_Id             : W_Expr_Id;
+      begin
+         while not Node_Sets.Is_Empty (Includes) loop
+            Prop_For_Include := New_Void;
+            for Obj of Includes loop
 
-         --  No need to assume anything if Obj is a local object of the
-         --  unit.
+               --  No need to assume anything if Obj is a local object of the
+               --  unit.
 
-         if not (Nkind (Obj) in N_Entity)
-           or else not Is_Object (Obj)
-           or else not Ada_Ent_To_Why.Has_Element (Symbol_Table, Obj)
-           or else Is_Declared_In_Unit (Obj, Scope)
-         then
-            null;
-         elsif Is_Mutable_In_Why (Obj) then
+               if not (Nkind (Obj) in N_Entity)
+                 or else not (Is_Object (Obj) or else Is_Named_Number (Obj))
+                 or else not Ada_Ent_To_Why.Has_Element (Symbol_Table, Obj)
+                 or else Is_Declared_In_Unit (Obj, Scope)
+               then
+                  null;
+               else
+
+                  --  Assume dynamic property
+
+                  if Is_Object (Obj) and then Is_Mutable_In_Why (Obj) then
+                     L_Id := Transform_Identifier (Params   => Params,
+                                                   Expr     => Obj,
+                                                   Ent      => Obj,
+                                                   Domain   => EW_Term);
+                     Prop_For_Include := Sequence
+                       (Prop_For_Include,
+                        Assume_Dynamic_Property
+                          (Expr        => L_Id,
+                           Ty          => Etype (Obj),
+                           Only_Var    => False,
+                           Initialized => Is_Initialized (Obj)));
+                  else
+                     L_Id := +To_Why_Id (E => Obj,
+                                         Typ => Why_Type_Of_Entity (Obj));
+                     Prop_For_Include := Sequence
+                       (Prop_For_Include,
+                        Assume_Dynamic_Property
+                          (Expr        => L_Id,
+                           Ty          => Etype (Obj),
+                           Only_Var    => False,
+                           Initialized => True));
+                  end if;
+
+                  --  Assume value if constant
+
+                  if (Is_Object (Obj) and then Ekind (Obj) = E_Constant)
+                    or else Is_Named_Number (Obj)
+                  then
+                     declare
+                        Typ  : constant W_Type_Id := Why_Type_Of_Entity (Obj);
+                        FV   : constant Entity_Id :=
+                          (if Is_Object (Obj) and then Is_Partial_View (Obj)
+                           and then Entity_In_SPARK (Full_View (Obj))
+                           then Full_View (Obj) else Obj);
+                        Decl : constant Node_Id := Parent (FV);
+                        Expr : W_Expr_Id;
+                     begin
+                        if Ekind (FV) /= E_In_Parameter
+                          and then Present (Expression (Decl))
+                          and then Comes_From_Source (FV)
+                          and then Number_Of_Assocs_In_Expression
+                            (Expression (Decl)) <= Max_Assocs
+                        then
+
+                           --  We do not issue checks here. Checks for this
+                           --  declaration will be issued when verifying its
+                           --  enclosing unit.
+
+                           Expr :=
+                             +Transform_Expr (Expression (Decl),
+                                              Typ,
+                                              EW_Pterm,
+                                              Params => Body_Params);
+                           declare
+                              Tmp_Var : constant W_Identifier_Id :=
+                                New_Temp_Identifier (Typ => Typ);
+                              Eq      : constant W_Pred_Id :=
+                                New_Call
+                                  (Name => Why_Eq,
+                                   Typ  => EW_Bool_Type,
+                                   Args =>
+                                     ((if Has_Record_Type (Etype (Obj))
+                                      or else Full_View_Not_In_SPARK
+                                        (Etype (Obj))
+                                      then
+                                         New_Record_Attributes_Update
+                                        (Domain   => EW_Prog,
+                                         Name     => +Tmp_Var,
+                                         Ty       => Etype (Obj))
+                                      else +Tmp_Var),
+                                      +L_Id));
+                           begin
+                              Prop_For_Include := Sequence
+                                (Prop_For_Include,
+                                 +New_Typed_Binding
+                                   (Domain   => EW_Prog,
+                                    Name     => Tmp_Var,
+                                    Def      => +Expr,
+                                    Context  =>
+                                      +New_Assume_Statement (Pred => Eq)));
+                           end;
+                        end if;
+                     end;
+                  end if;
+               end if;
+            end loop;
             Dynamic_Prop_Inputs := Sequence
-              (Dynamic_Prop_Inputs,
-               Assume_Dynamic_Property
-                 (Expr        => Transform_Identifier
-                      (Params   => Params,
-                       Expr     => Obj,
-                       Ent      => Obj,
-                       Domain   => EW_Term),
-                  Ty          => Etype (Obj),
-                  Only_Var    => False,
-                  Initialized => Is_Initialized (Obj)));
-         else
-            Dynamic_Prop_Inputs := Sequence
-              (Dynamic_Prop_Inputs,
-               Assume_Dynamic_Property
-                 (Expr        => +To_Why_Id
-                      (E => Obj,
-                       Typ => Why_Type_Of_Entity (Obj)),
-                  Ty          => Etype (Obj),
-                  Only_Var    => False,
-                  Initialized => True));
-         end if;
-      end loop;
+              (Prop_For_Include, Dynamic_Prop_Inputs);
+            Node_Sets.Union (Already_Included, Includes);
+            Includes := Compute_Ada_Node_Set (+Prop_For_Include);
+            Node_Sets.Difference (Includes, Already_Included);
+         end loop;
+      end;
       return Dynamic_Prop_Inputs;
    end Compute_Dynamic_Property_For_Inputs;
 

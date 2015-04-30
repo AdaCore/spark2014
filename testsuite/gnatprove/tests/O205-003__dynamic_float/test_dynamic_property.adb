@@ -11,7 +11,7 @@ procedure Test_Dynamic_Property (D : Float) with SPARK_Mode,
       Y : Dynamic_Float := X; --@RANGE_CHECK:PASS
 
       procedure Dyn_Param (X : in out Dynamic_Float) with
-        Pre  => C in 1.0 .. 100.0,
+        Pre  => True,
         Post => X >= 1.0;
    end Nested;
 
@@ -27,7 +27,7 @@ procedure Test_Dynamic_Property (D : Float) with SPARK_Mode,
    end Nested;
 
    function Dyn_Return (X : Float) return Pos_Dynamic_Float with
-     Pre  => C in 1.0 .. 100.0
+     Pre => True
    is
    begin
       if X > C or else X < 1.0 then
@@ -38,7 +38,7 @@ procedure Test_Dynamic_Property (D : Float) with SPARK_Mode,
    end Dyn_Return;
 
    procedure Dyn_Param (X : in out Pos_Dynamic_Float) with
-     Pre  => C in 1.0 .. 100.0
+     Pre  => True
    is
    begin
       if X + 1.0 <= C then

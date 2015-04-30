@@ -1,4 +1,4 @@
-package_1.adb:11:29: medium: overflow check might fail
+package_1.adb:11:29: info: overflow check proved
 package_1.adb:12:29: info: overflow check proved
 package_1.adb:12:31: info: initialization of "Temp" proved
 package_1.ads:15:27: info: initialization of "Res_1" proved
