@@ -1,4 +1,4 @@
-call.adb:22:23: called subprogram "Impure_Function" requires GLOBAL aspect to make state "state.y" visible
+call.adb:30:23: called subprogram "Pure_Function" requires GLOBAL aspect to make state "state.y" visible
    compilation of call.adb failed
 
 
