@@ -728,10 +728,6 @@ package SPARK_Util is
    --  @return True iff N is fully initialized. For the aggregate extension,
    --      this only deals with the extension components.
 
-   function Number_Of_Assocs_In_Expression (N : Node_Id) return Natural;
-   --  @param N any node
-   --  @return the number of N_Component_Association nodes in N.
-
    function Get_Formal_From_Actual (Actual : Node_Id) return Entity_Id
      with Pre => Nkind (Parent (Actual)) in N_Function_Call
                                           | N_Parameter_Association
@@ -757,6 +753,10 @@ package SPARK_Util is
    --  Call [Handle_Argument] for each pair of formal and actual parameters
    --  of a function or procedure call.
    --  @param Call function or procedure call
+
+   function Number_Of_Assocs_In_Expression (N : Node_Id) return Natural;
+   --  @param N any node
+   --  @return the number of N_Component_Association nodes in N.
 
    ---------------------------------
    -- Misc operations and queries --
