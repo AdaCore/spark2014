@@ -1009,7 +1009,7 @@ package body SPARK_Definition is
             --  For expression functions that have a unique declaration, the
             --  body inserted by the frontend may be far from the original
             --  point of declaration, after the private declarations of the
-            --  package (to avoid premature freezing.) In those cases, mark the
+            --  package (to avoid premature freezing). In those cases, mark the
             --  subprogram body at the same point as the subprogram
             --  declaration, so that entities declared afterwards have access
             --  to the axiom defining the expression function.
