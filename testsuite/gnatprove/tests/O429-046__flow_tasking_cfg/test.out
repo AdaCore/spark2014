@@ -1,0 +1,5 @@
+foo.adb:6:14: warning: subprogram "Test_Delay_01" has no effect
+foo.adb:9:19: warning: assuming "Clock" has no effect on global items
+foo.adb:9:19: warning: no Global contract available for "Clock"
+foo.adb:9:27: warning: assuming "Seconds" has no effect on global items
+foo.adb:9:27: warning: no Global contract available for "Seconds"

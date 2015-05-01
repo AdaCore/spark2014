@@ -437,6 +437,18 @@ package body Flow.Control_Flow_Graph is
    --  The standard exits of all parts feed into the standard
    --  exits of the entire case statement.
 
+   procedure Do_Delay_Statement
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+      with Pre => Nkind (N) in N_Delay_Until_Statement;
+   --  Deal with delay until X statements. We simply make a vertex where we
+   --  use all variables from the expression.
+   --
+   --  !!! O429-042 to add Clock_Time to the standard library
+   --  !!! O429-050 to add the magic global Clock_Time
+
    procedure Do_Exit_Statement
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
@@ -1690,6 +1702,36 @@ package body Flow.Control_Flow_Graph is
       Stitch_Actions_In_Front
         (Union_Id (N), Expression (N), V, FA, CM, Ctx);
    end Do_Case_Statement;
+
+   ------------------------
+   -- Do_Delay_Statement --
+   ------------------------
+
+   procedure Do_Delay_Statement
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+   is
+      V : Flow_Graphs.Vertex_Id;
+   begin
+      Add_Vertex
+        (FA,
+         Direct_Mapping_Id (N),
+         Make_Basic_Attributes
+           (FA,
+            Var_Ex_Use => Get_Variable_Set
+              (Expression (N),
+               Scope                => FA.B_Scope,
+               Local_Constants      => FA.Local_Constants,
+               Fold_Functions       => True,
+               Use_Computed_Globals => not FA.Compute_Globals),
+            Sub_Called => Get_Function_Set (Expression (N)),
+            Loops      => Ctx.Current_Loops,
+            E_Loc      => N),
+         V);
+      CM.Include (Union_Id (N), Trivial_Connection (V));
+   end Do_Delay_Statement;
 
    -------------------------
    --  Do_Exit_Statement  --
@@ -4589,6 +4631,8 @@ package body Flow.Control_Flow_Graph is
          when N_Exception_Declaration |
               N_Exception_Renaming_Declaration =>
             Do_Null_Or_Raise_Statement (N, FA, CM, Ctx);
+         when N_Delay_Until_Statement =>
+            Do_Delay_Statement (N, FA, CM, Ctx);
          when others =>
             Print_Node_Subtree (N);
             --  ??? To be added by various future tickets. Eventually
