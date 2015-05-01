@@ -528,7 +528,7 @@ shall follow the grammar of ``abstract_state_list`` given below.
 .. _tu-fe-abstract_state_aspects-04:
 
 4. A package_declaration or generic_package_declaration that contains a
-   non-null Abstract_State aspect must have a completion (i.e. such a
+   non-null Abstract_State aspect must have a completion (i.e., such a
    package requires a body).
 
 .. _tu-abstract_state_aspects-05:

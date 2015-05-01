@@ -472,7 +472,7 @@ Some are expanded in subsequent sections within this chapter.
   Ada 2012 features as practical, there is another goal which is to support good
   programming practice guidelines and coding standards applicable to certain
   domains or standards. This goal is met either by standard Ada Restrictions and
-  Profile pragmas, or via existing tools (e.g. pragma Restriction_Warnings in
+  Profile pragmas, or via existing tools (e.g., pragma Restriction_Warnings in
   GNAT, or the coding standard checker gnatcheck).
 
 - |SPARK| shall allow the mixing of code written in the |SPARK| subset
