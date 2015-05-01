@@ -689,6 +689,9 @@ package body SPARK_Definition is
          when N_Component_Declaration =>
             Mark_Component_Declaration (N);
 
+         when N_Delay_Until_Statement =>
+            Mark (Expression (N));
+
          when N_Exit_Statement =>
             if Present (Condition (N)) then
                Mark (Condition (N));
@@ -1219,23 +1222,28 @@ package body SPARK_Definition is
                end if;
             end;
 
-         when N_Abort_Statement            |
-              N_Accept_Statement           |
-              N_Asynchronous_Select        |
-              N_Conditional_Entry_Call     |
-              N_Delay_Relative_Statement   |
-              N_Delay_Until_Statement      |
-              N_Entry_Body                 |
-              N_Entry_Call_Statement       |
-              N_Entry_Declaration          |
-              N_Protected_Body             |
-              N_Protected_Body_Stub        |
-              N_Requeue_Statement          |
-              N_Selective_Accept           |
-              N_Single_Task_Declaration    |
-              N_Task_Body                  |
-              N_Task_Body_Stub             |
-              N_Timed_Entry_Call           =>
+         --  Supported tasking constructs
+
+         when N_Entry_Call_Statement |
+              N_Protected_Body       |
+              N_Protected_Body_Stub  |
+              N_Task_Body            |
+              N_Task_Body_Stub       =>
+            null;
+
+         --  Unsupported tasking constructs
+
+         when N_Abort_Statement          |
+              N_Accept_Statement         |
+              N_Asynchronous_Select      |
+              N_Conditional_Entry_Call   |
+              N_Delay_Relative_Statement |
+              N_Entry_Body               |
+              N_Entry_Declaration        |
+              N_Requeue_Statement        |
+              N_Selective_Accept         |
+              N_Single_Task_Declaration  |
+              N_Timed_Entry_Call         =>
             Mark_Violation ("tasking", N);
 
          --  The following kinds can be safely ignored by marking
@@ -2895,7 +2903,7 @@ package body SPARK_Definition is
             Mark_Violation ("access type", E);
 
          elsif Is_Concurrent_Type (E) then
-            Mark_Violation ("tasking", E);
+            null;
 
          else
             raise Program_Error;
