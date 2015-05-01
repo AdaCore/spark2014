@@ -18,4 +18,12 @@ package Tasks is
       The_Guard : Boolean := False;
    end Store;
 
+   protected type Store_Stub
+   is
+      procedure Put (X : in Integer);
+      entry Wait;
+   private
+      The_Stored_Data : Integer := 0;
+   end Store_Stub;
+
 end Tasks;

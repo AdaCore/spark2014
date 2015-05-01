@@ -1224,12 +1224,31 @@ package body SPARK_Definition is
 
          --  Supported tasking constructs
 
-         when N_Entry_Call_Statement |
-              N_Protected_Body       |
-              N_Protected_Body_Stub  |
-              N_Task_Body            |
-              N_Task_Body_Stub       =>
-            null;
+         when N_Protected_Body =>
+            Mark_Stmt_Or_Decl_List (Declarations (N));
+
+         when N_Task_Body =>
+            Mark_Stmt_Or_Decl_List (Declarations (N));
+            Mark (Handled_Statement_Sequence (N));
+
+         when N_Protected_Body_Stub |
+              N_Task_Body_Stub      =>
+            Mark (Get_Body_From_Stub (N));
+
+         when N_Entry_Body =>
+            --  Entry barriers in Ravenscar are always of N_Identifier kind
+            Mark_Identifier_Or_Expanded_Name
+              (Condition (Entry_Body_Formal_Part (N)));
+            Mark_Stmt_Or_Decl_List (Declarations (N));
+            Mark (Handled_Statement_Sequence (N));
+            Mark_Identifier_Or_Expanded_Name (N);
+
+         when N_Entry_Call_Statement =>
+            Mark_Call (N);
+
+         when N_Entry_Declaration =>
+            --  FIXME: test once support in Mark_Type_Entity is done
+            Mark_Subprogram_Declaration (N);
 
          --  Unsupported tasking constructs
 
@@ -1238,11 +1257,9 @@ package body SPARK_Definition is
               N_Asynchronous_Select      |
               N_Conditional_Entry_Call   |
               N_Delay_Relative_Statement |
-              N_Entry_Body               |
-              N_Entry_Declaration        |
               N_Requeue_Statement        |
               N_Selective_Accept         |
-              N_Single_Task_Declaration  |
+              N_Single_Task_Declaration  | -- FIXME: do not see this in AST
               N_Timed_Entry_Call         =>
             Mark_Violation ("tasking", N);
 
@@ -1820,10 +1837,16 @@ package body SPARK_Definition is
             end if;
 
          else
-            --  Are there cases where we reach here??? For the moment, issue a
-            --  generic error message about "indirect calls".
+            if Nkind (N) = N_Entry_Call_Statement then
+               --  Entry calls are now in SPARK
+               --  FIXME: what is "indirect call"? should we check more?
+               null;
+            else
+               --  Are there cases where we reach here??? For the moment,
+               --  issue a generic error message about "indirect calls".
 
-            Mark_Violation ("indirect call", N);
+               Mark_Violation ("indirect call", N);
+            end if;
          end if;
 
       --  If the subprogram called is not in SPARK then the call is not in
@@ -2903,6 +2926,7 @@ package body SPARK_Definition is
             Mark_Violation ("access type", E);
 
          elsif Is_Concurrent_Type (E) then
+            --  FIXME: recurse into declarations
             null;
 
          else

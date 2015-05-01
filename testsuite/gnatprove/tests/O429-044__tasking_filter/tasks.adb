@@ -1,4 +1,5 @@
 with Ada.Real_Time; use Ada.Real_Time;
+with Ada.Task_Identification;
 
 package body Tasks is
 
@@ -16,6 +17,8 @@ package body Tasks is
 
    task body Timer_Stub is separate;
 
+   Last_Caller : Ada.Task_Identification.Task_Id;
+
    protected body Store is
       function Get return Integer is
       begin
@@ -31,16 +34,31 @@ package body Tasks is
       entry Wait when The_Guard is
       begin
          null;
+         --  Last_Caller := Wait'Caller;
+         --  delay 1.0;
       end Wait;
    end Store;
 
+   protected body Store_Stub is separate;
+
    The_Store : Store;
+   The_Timer : Timer;
 
    procedure Entry_Call
      with Global => null
    is
+      B : Boolean;
    begin
+      null;
       The_Store.Wait;
+      --  B := The_Timer'Callable;
    end Entry_Call;
+
+   task Single_Task;
+
+   task body Single_Task is
+   begin
+      null;
+   end Single_Task;
 
 end Tasks;
