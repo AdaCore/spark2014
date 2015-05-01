@@ -6,11 +6,11 @@ fruit-priv_child.ads:21:46: info: initialization of "Profit" proved
 fruit-priv_child.ads:25:04: info: initialization of "Extra_Cost" constituent of "Price_Related_Stuff" proved
 fruit-pub_child.adb:27:23: info: initialization of "Fruit_Salads_Made" proved
 fruit-pub_child.adb:28:24: info: initialization of "Fruit_Salads_Made" proved
-fruit-pub_child.adb:36:30: low: unused global "Fruit.Fruits" (SPARK RM 6.1.4(13))
+fruit-pub_child.adb:36:30: low: unused global "Fruit.Fruits" (SPARK RM 6.1.4(14))
 fruit-pub_child.ads:5:37: info: initialization of "Fruit_Salads_Made" proved
-fruit-pub_child.ads:13:13: low: unused global "Apples" constituent of "Fruits" (SPARK RM 6.1.4(13))
-fruit-pub_child.ads:13:13: low: unused global "Oranges" constituent of "Fruits" (SPARK RM 6.1.4(13))
-fruit-pub_child.ads:13:13: low: unused global "Priv_Child.Price_Related_Stuff" constituent of "Fruit.Fruits" (SPARK RM 6.1.4(13))
+fruit-pub_child.ads:13:13: low: unused global "Apples" constituent of "Fruits" (SPARK RM 6.1.4(14))
+fruit-pub_child.ads:13:13: low: unused global "Oranges" constituent of "Fruits" (SPARK RM 6.1.4(14))
+fruit-pub_child.ads:13:13: low: unused global "Priv_Child.Price_Related_Stuff" constituent of "Fruit.Fruits" (SPARK RM 6.1.4(14))
 fruit-pub_child.ads:17:04: info: initialization of "Apples_In_Fruit_Salad" constituent of "Fruit_Salad" proved
 fruit-pub_child.ads:19:04: info: initialization of "Oranges_In_Fruit_Salad" constituent of "Fruit_Salad" proved
 fruit.ads:37:04: info: initialization of "Apples" constituent of "Fruits" proved
