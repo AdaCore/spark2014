@@ -1504,7 +1504,7 @@ package body SPARK_Definition is
 
    begin
       --  This case statement must agree with the table specified
-      --  in SPARK RM 16.2 "Language Defined Attributes".
+      --  in SPARK RM 15.2 "Language Defined Attributes".
       --
       --  See also the analysis in Gnat2Why.Expr.Transform_Attr
       --  which defines which of these attributes are supported
@@ -1516,7 +1516,7 @@ package body SPARK_Definition is
             null;
 
          --  Support a subset of the aspects defined in Ada RM. These
-         --  are the attributes marked "Yes" in RM 16.2
+         --  are the attributes marked "Yes" in SPARK RM 15.2
          when Attribute_Adjacent       |
            Attribute_Aft               |
            Attribute_Body_Version      |
@@ -1586,7 +1586,7 @@ package body SPARK_Definition is
          --  These attributes are supported, but generate a warning
          --  in "pedantic" mode, owing to their implemention-
          --  defined status. These are the attributes marked
-         --  "Warn" in RM 16.2
+         --  "Warn" in SPARK RM 15.2
          when Attribute_Address     |
            Attribute_Alignment      |
            Attribute_Bit_Order      |
