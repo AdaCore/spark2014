@@ -1052,9 +1052,18 @@ package body Why.Gen.Expr is
          Check_Type : out Entity_Id;
          Check_Kind : out Range_Check_Kind)
       is
-         Par : constant Node_Id := Parent (Expr);
+         Par : Node_Id := Parent (Expr);
 
       begin
+         --  In proof, we use the original node for unchecked conversions
+         --  coming from source.
+
+         if Nkind (Par) = N_Unchecked_Type_Conversion
+           and then Comes_From_Source (Par)
+         then
+            Par := Original_Node (Par);
+         end if;
+
          --  Set the appropriate entity in Check_Type giving the bounds for the
          --  check, depending on the parent node Par.
 
@@ -1073,8 +1082,7 @@ package body Why.Gen.Expr is
 
          --  Frontend may have introduced unchecked type conversions on
          --  expressions or variables assigned to, which require range
-         --  checking. Look at the parent of the N_Unchecked_Type_Conversion
-         --  node in that case.
+         --  checking.
 
          when N_Type_Conversion | N_Unchecked_Type_Conversion =>
             Check_Type := Etype (Par);

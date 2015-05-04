@@ -1436,7 +1436,12 @@ package body SPARK_Util is
       procedure Find_Expr_In_Call_Args is new
         Iterate_Call_Arguments (Check_Call_Arg);
 
-      Par : constant Node_Id := Parent (Actual);
+      Par : constant Node_Id :=
+        (if Nkind (Parent (Actual)) = N_Unchecked_Type_Conversion
+           and then Comes_From_Source (Parent (Actual))
+         then Original_Node (Parent (Actual)) else Parent (Actual));
+      --  N_Unchecked_Type_Conversion coming from source are handled using
+      --  their original node.
 
    begin
       if Nkind (Par) = N_Parameter_Association then
