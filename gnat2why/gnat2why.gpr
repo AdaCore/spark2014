@@ -15,7 +15,10 @@ project GNAT2Why is
    type Build_Type is ("Debug", "Production");
    Build : Build_Type := External ("Build", "Debug");
 
-   Common_Switches := ("-gnatg", "-g");
+   Common_Switches := ("-gnatg",
+                       "-g",
+                       "-gnatdQ"   --  !!! Workaround for O503-001
+                      );
 
    package Compiler is
       for Local_Configuration_Pragmas use "gnat.adc";
