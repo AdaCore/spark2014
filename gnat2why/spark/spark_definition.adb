@@ -1532,7 +1532,7 @@ package body SPARK_Definition is
          when Attribute_Loop_Entry =>
             null;
 
-         --  Support a subset of the aspects defined in Ada RM. These
+         --  Support a subset of the attributes defined in Ada RM. These
          --  are the attributes marked "Yes" in SPARK RM 15.2
          when Attribute_Adjacent       |
            Attribute_Aft               |
