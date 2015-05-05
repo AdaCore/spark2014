@@ -402,6 +402,8 @@ def gnatprove_(opt=["-P", "test.gpr"]):
             f_prj.write('end Test;\n')
         with open("test.adc", 'w') as f_adc:
             f_adc.write('pragma SPARK_Mode (On);\n')
+            f_adc.write('pragma Profile (Ravenscar);\n')
+            f_adc.write('pragma Partition_Elaboration_Policy (Sequential);\n')
 
     cmd = ["gnatprove"]
     # Continue on errors, to get the maximum number of messages for tests
