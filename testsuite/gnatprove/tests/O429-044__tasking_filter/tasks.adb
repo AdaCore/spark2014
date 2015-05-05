@@ -34,7 +34,7 @@ package body Tasks is
       entry Wait when The_Guard is
       begin
          null;
-         --  Last_Caller := Wait'Caller;
+         Last_Caller := Wait'Caller;
          --  delay 1.0;
       end Wait;
    end Store;
@@ -51,7 +51,11 @@ package body Tasks is
    begin
       null;
       The_Store.Wait;
-      --  B := The_Timer'Callable;
+      if The_Timer'Terminated then
+         B := The_Timer'Callable;
+      else
+         Last_Caller := The_Timer'Identity;
+      end if;
    end Entry_Call;
 
    task Single_Task;

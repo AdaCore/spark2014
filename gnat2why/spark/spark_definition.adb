@@ -1537,6 +1537,8 @@ package body SPARK_Definition is
          when Attribute_Adjacent       |
            Attribute_Aft               |
            Attribute_Body_Version      |
+           Attribute_Callable          |
+           Attribute_Caller            |
            Attribute_Ceiling           |
            Attribute_Constrained       |
            Attribute_Copy_Sign         |
@@ -1549,6 +1551,7 @@ package body SPARK_Definition is
            Attribute_Floor             |
            Attribute_Fore              |
            Attribute_Image             |
+           Attribute_Identity          |
            Attribute_Last              |
            Attribute_Last_Valid        |
            Attribute_Length            |
@@ -1584,6 +1587,7 @@ package body SPARK_Definition is
            Attribute_Scaling           |
            Attribute_Small             |
            Attribute_Succ              |
+           Attribute_Terminated        |
            Attribute_Truncation        |
            Attribute_Unbiased_Rounding |
            Attribute_Update            |
@@ -3169,8 +3173,12 @@ package body SPARK_Definition is
             when E_Abstract_State =>
                raise Program_Error;
 
-            when E_Entry                 |
-                 E_Entry_Family          |
+            --  Entry name appears for example in Sub'Caller
+
+            when E_Entry =>
+               null;
+
+            when E_Entry_Family          |
                  E_Entry_Index_Parameter |
                  E_Protected_Object      |
                  E_Protected_Body        |
