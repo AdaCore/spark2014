@@ -65,4 +65,6 @@ package body Tasks is
       null;
    end Single_Task;
 
+   --  type Serial_Device is task interface;
+
 end Tasks;
