@@ -33,7 +33,7 @@ case $confirm in
     echo "
     installing package..."
     mkdir -p $prefix
-    tar cf - bin lib libexec share | (cd $prefix && tar xf -)
+    tar cf - bin libexec share | (cd $prefix && tar xf -)
     echo "    installation completed.
     To use SPARK 2014, users must put $prefix/bin
     in front of their PATH environment variable.
