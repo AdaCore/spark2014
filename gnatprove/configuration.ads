@@ -84,6 +84,8 @@ package Configuration is
    --  Set to non-empty string when option --limit-subp= was given
    Alter_Prover      : aliased GNAT.Strings.String_Access;
    --  Set to non-empty string when option --prover= was given
+   Benchmark_Mode    : aliased Boolean;
+   --  Provides the fake_* binaries instead of the real prover binaries.
 
    type GP_Mode is (GPM_Check, GPM_Flow, GPM_Prove, GPM_All);
    --  The four feature modes of GNATprove:

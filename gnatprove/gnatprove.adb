@@ -625,6 +625,12 @@ procedure Gnatprove is
       Filename : constant String :=
          Ada.Directories.Compose (Gnatprove_Subdir, "why3.conf");
 
+      Altergo_Binary : constant String :=
+        (if Benchmark_Mode then "fake_" else "") & "alt-ergo";
+
+      CVC4_Binary : constant String :=
+        (if Benchmark_Mode then "fake_" else "") & "cvc4";
+
       procedure Put_Keyval (Key : String; Value : String);
       procedure Put_Keyval (Key : String; Value : Integer);
       procedure Start_Section (Section : String);
@@ -656,7 +662,8 @@ procedure Gnatprove is
       ------------------------------
 
       procedure Generate_Altergo_Section is
-         Altergo_Command : constant String := "alt-ergo -max-split 5 %f";
+         Altergo_Command : constant String :=
+           Altergo_Binary & " -max-split 5 %f";
       begin
          Start_Section ("prover");
          if Steps /= 0 then
@@ -679,7 +686,7 @@ procedure Gnatprove is
       ---------------------------
 
       procedure Generate_CVC4_Section is
-         Command : constant String := "cvc4 " & Common_CVC4_Options;
+         Command : constant String := CVC4_Binary & " " & Common_CVC4_Options;
       begin
          Start_Section ("prover");
          if Steps /= 0 then
@@ -711,7 +718,7 @@ procedure Gnatprove is
          --    expand function definitions, and eliminate quantifiers, making
          --    it possible to return sat on more queries (instead of unknown)
 
-         Command : constant String := "cvc4 " &
+         Command : constant String := CVC4_Binary & " " &
            Common_CVC4_Options &
            " --macros-quant" &
            " --finite-model-find";

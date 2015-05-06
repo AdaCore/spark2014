@@ -21,3 +21,5 @@ gnat_src
 stdlib_tmp
 install
 gnat2why/obj
+benchmark_script/data
+benchmark_script/bench

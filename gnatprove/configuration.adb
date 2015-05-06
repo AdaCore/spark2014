@@ -857,6 +857,13 @@ ASCII.LF;
         (Config, Why3_Config_File'Access,
          Long_Switch => "--why3-conf=");
 
+      --  This switch is not documented on purpose. We provide the fake_*
+      --  binaries instead of the real prover binaries. This helps when
+      --  collecting benchmarks for prover developers.
+      Define_Switch
+         (Config, Benchmark_Mode'Access,
+          Long_Switch => "--benchmark");
+
       Define_Section (Config, "cargs");
       Define_Switch (Config, "*", Section => "cargs");
 

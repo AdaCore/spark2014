@@ -36,6 +36,8 @@ def run_testsuite(test_driver):
         os.environ["verbose"] = "true"
     if options.inverse_prover:
         os.environ["inverse_prover"] = "true"
+    if options.benchmarks:
+        os.environ["benchmarks"] = "true"
 
     if options.exact_name:
         test_name = os.path.join('tests/', options.run_test)
@@ -86,6 +88,8 @@ def __parse_options():
     m = Main(add_targets_options=False)
     add_mainloop_options(m, extended_options=True)
     add_run_test_options(m)
+    m.add_option("--benchmarks", dest="benchmarks", action="store_true",
+                 default=False, help="collect benchmarks")
     m.add_option("--debug", dest="debug", action="store_true",
                  default=False, help="output debugging information")
     m.add_option("--diffs", dest="view_diffs", action="store_true",

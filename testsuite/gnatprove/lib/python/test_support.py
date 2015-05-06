@@ -46,6 +46,10 @@ def inverse_prover():
         os.environ["inverse_prover"] == "true"
 
 
+def benchmark_mode():
+    return "benchmarks" in os.environ and os.environ["benchmarks"] == "true"
+
+
 def vc_timeout():
     if "vc_timeout" in os.environ:
         return int(os.environ["vc_timeout"])
@@ -408,6 +412,8 @@ def gnatprove_(opt=["-P", "test.gpr"]):
     cmd = ["gnatprove"]
     # Continue on errors, to get the maximum number of messages for tests
     cmd += ["-k"]
+    if benchmark_mode():
+        cmd += ["--benchmark"]
     if quick_mode():
         cmd += ["--proof=no_wp"]
     if debug_mode():
@@ -463,6 +469,8 @@ def prove(opt=None, steps=max_steps, procs=parallel_procs,
     fullopt += ["--steps=%d" % (steps)]
     fullopt += ["--mode=%s" % (mode)]
     fullopt += ["-j%d" % (procs)]
+    if benchmark_mode():
+        fullopt += ["--benchmark"]
     if inverse_prover():
         fullopt += ["--prover=altergo,cvc4"]
     # Add opt last, so that it may include switch -cargs
