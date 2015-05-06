@@ -1,0 +1,104 @@
+state_machine_with_discriminant.adb:5:15: info: discriminant check proved
+state_machine_with_discriminant.adb:5:29: info: discriminant check proved
+state_machine_with_discriminant.adb:5:51: info: discriminant check proved
+state_machine_with_discriminant.adb:10:15: info: discriminant check proved
+state_machine_with_discriminant.adb:10:29: info: discriminant check proved
+state_machine_with_discriminant.adb:15:15: info: discriminant check proved
+state_machine_with_discriminant.adb:15:29: info: discriminant check proved
+state_machine_with_discriminant.adb:15:51: info: discriminant check proved
+state_machine_with_discriminant.adb:20:35: info: precondition proved
+state_machine_with_discriminant.adb:21:17: info: discriminant check proved
+state_machine_with_discriminant.adb:21:41: info: discriminant check proved
+state_machine_with_discriminant.adb:21:55: info: overflow check proved
+state_machine_with_discriminant.adb:29:13: info: precondition proved
+state_machine_with_discriminant.adb:31:13: info: precondition proved
+state_machine_with_discriminant.adb:33:13: info: precondition proved
+state_machine_with_discriminant.adb:35:13: info: precondition proved
+state_machine_with_discriminant.ads:20:14: info: discriminant check proved
+state_machine_with_discriminant.ads:26:14: info: postcondition proved
+state_machine_with_discriminant.ads:30:14: info: postcondition proved
+state_machine_with_discriminant.ads:34:14: info: postcondition proved
+state_machine_with_discriminant.ads:40:14: info: postcondition proved
+state_machine_with_oop.adb:4:07: info: raise statement proved unreachable
+state_machine_with_oop.adb:18:07: medium: exception might be raised
+state_machine_with_oop.adb:23:07: info: raise statement proved unreachable
+state_machine_with_oop.adb:28:07: info: raise statement proved unreachable
+state_machine_with_oop.adb:33:07: info: raise statement proved unreachable
+state_machine_with_oop.adb:39:55: info: overflow check proved
+state_machine_with_oop.adb:50:07: info: raise statement proved unreachable
+state_machine_with_oop.adb:55:07: info: raise statement proved unreachable
+state_machine_with_oop.adb:60:52: medium: overflow check might fail
+state_machine_with_oop.adb:66:16: info: initialization of "R10b" proved
+state_machine_with_oop.adb:66:16: info: precondition proved
+state_machine_with_oop.adb:66:40: info: initialization of "R11b" proved
+state_machine_with_oop.adb:66:40: info: precondition proved
+state_machine_with_oop.adb:67:10: info: loop invariant initialization proved
+state_machine_with_oop.adb:67:10: info: loop invariant preservation proved
+state_machine_with_oop.adb:68:13: info: precondition proved
+state_machine_with_oop.adb:68:35: info: precondition proved
+state_machine_with_oop.adb:70:37: info: precondition proved
+state_machine_with_oop.adb:72:31: info: initialization of "E.Common_Value" proved
+state_machine_with_oop.adb:72:31: info: initialization of extension of "E" proved
+state_machine_with_oop.adb:73:16: info: precondition proved
+state_machine_with_oop.adb:73:44: medium: precondition might fail
+state_machine_with_oop.adb:73:55: info: initialization of "E.Common_Value" proved
+state_machine_with_oop.adb:73:55: info: initialization of extension of "E" proved
+state_machine_with_oop.adb:75:16: info: precondition proved
+state_machine_with_oop.adb:75:44: medium: precondition might fail
+state_machine_with_oop.adb:75:55: info: initialization of "E.Common_Value" proved
+state_machine_with_oop.adb:75:55: info: initialization of extension of "E" proved
+state_machine_with_oop.adb:77:16: info: precondition proved
+state_machine_with_oop.adb:77:44: medium: precondition might fail
+state_machine_with_oop.adb:77:55: info: initialization of "E.Common_Value" proved
+state_machine_with_oop.adb:77:55: info: initialization of extension of "E" proved
+state_machine_with_oop.adb:79:16: info: precondition proved
+state_machine_with_oop.adb:79:27: info: initialization of "E.Common_Value" proved
+state_machine_with_oop.adb:79:27: info: initialization of extension of "E" proved
+state_machine_with_oop.adb:80:16: info: precondition proved
+state_machine_with_oop.adb:80:44: info: initialization of "E.Common_Value" proved
+state_machine_with_oop.adb:80:44: info: initialization of extension of "E" proved
+state_machine_with_oop.ads:8:28: warning: unused variable "Current"
+state_machine_with_oop.ads:9:28: warning: unused variable "Current"
+state_machine_with_oop.ads:10:28: warning: unused variable "Current"
+state_machine_with_oop.ads:34:28: warning: unused variable "Current"
+state_machine_with_oop.ads:40:13: high: "Move_To_A.Common_Value" is not initialized in "Move_To_A"
+state_machine_with_oop.ads:40:13: high: extension of "Move_To_A" is not initialized in "Move_To_A"
+state_machine_with_oop.ads:40:13: high: no paths in subprogram will return normally
+state_machine_with_oop.ads:40:13: warning: unused variable "Move_To_A"
+state_machine_with_oop.ads:40:24: warning: unused variable "Current"
+state_machine_with_oop.ads:43:14: high: no paths in subprogram will return normally
+state_machine_with_oop.ads:43:25: warning: "Current" is not modified, could be IN
+state_machine_with_oop.ads:43:25: warning: unused variable "Current"
+state_machine_with_oop.ads:47:28: warning: unused variable "Current"
+state_machine_with_oop.ads:48:28: warning: unused variable "Current"
+state_machine_with_oop.ads:49:28: warning: unused variable "Current"
+state_machine_with_oop.ads:51:13: high: "Move_To_A.Common_Value" is not initialized in "Move_To_A"
+state_machine_with_oop.ads:51:13: high: extension of "Move_To_A" is not initialized in "Move_To_A"
+state_machine_with_oop.ads:51:13: high: no paths in subprogram will return normally
+state_machine_with_oop.ads:51:13: warning: unused variable "Move_To_A"
+state_machine_with_oop.ads:51:24: warning: unused variable "Current"
+state_machine_with_oop.ads:52:13: high: "Move_To_B.Common_Value" is not initialized in "Move_To_B"
+state_machine_with_oop.ads:52:13: high: extension of "Move_To_B" is not initialized in "Move_To_B"
+state_machine_with_oop.ads:52:13: high: no paths in subprogram will return normally
+state_machine_with_oop.ads:52:13: warning: unused variable "Move_To_B"
+state_machine_with_oop.ads:52:24: warning: unused variable "Current"
+state_machine_with_oop.ads:53:13: high: "Move_To_C.Common_Value" is not initialized in "Move_To_C"
+state_machine_with_oop.ads:53:13: high: extension of "Move_To_C" is not initialized in "Move_To_C"
+state_machine_with_oop.ads:53:13: high: no paths in subprogram will return normally
+state_machine_with_oop.ads:53:13: warning: unused variable "Move_To_C"
+state_machine_with_oop.ads:53:24: warning: unused variable "Current"
+state_machine_with_oop.ads:65:28: warning: unused variable "Current"
+state_machine_with_oop.ads:66:28: warning: unused variable "Current"
+state_machine_with_oop.ads:69:13: high: "Move_To_B.Common_Value" is not initialized in "Move_To_B"
+state_machine_with_oop.ads:69:13: high: extension of "Move_To_B" is not initialized in "Move_To_B"
+state_machine_with_oop.ads:69:13: high: no paths in subprogram will return normally
+state_machine_with_oop.ads:69:13: warning: unused variable "Move_To_B"
+state_machine_with_oop.ads:69:24: warning: unused variable "Current"
+state_machine_with_oop.ads:70:13: high: "Move_To_C.Common_Value" is not initialized in "Move_To_C"
+state_machine_with_oop.ads:70:13: high: extension of "Move_To_C" is not initialized in "Move_To_C"
+state_machine_with_oop.ads:70:13: high: no paths in subprogram will return normally
+state_machine_with_oop.ads:70:13: warning: unused variable "Move_To_C"
+state_machine_with_oop.ads:70:24: warning: unused variable "Current"
+state_machine_with_oop.ads:75:04: warning: in instantiation at a-cfinve.ads:240
+state_machine_with_oop.ads:75:04: warning: in instantiation at a-coboho.ads:102
+state_machine_with_oop.ads:75:04: warning: pragma "No_Strict_Aliasing" ignored in flow analysis (not yet supported)
