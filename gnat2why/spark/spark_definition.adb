@@ -175,7 +175,7 @@ package body SPARK_Definition is
      (Entities_In_SPARK.Contains (E));
 
    function Entity_Marked (E : Entity_Id) return Boolean is
-      (Entity_Set.Contains (E));
+     (Entity_Set.Contains (E));
 
    function Entity_Spec_In_SPARK (E : Entity_Id) return Boolean is
      (Specs_In_SPARK.Contains (E));
