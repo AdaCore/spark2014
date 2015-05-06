@@ -1,0 +1,33 @@
+<!--
+                              IPSTACK COMPONENTS
+               Copyright (C) 2010, Free Software Foundation, Inc.
+
+                   RFC826 - Address Resolution Protocol
+
+-->
+
+<package name="AIP.ARPH" types_unit="AIP">
+  <enum name="ARP_Hw">
+    <literal name="Ethernet" value="1" />
+  </enum>
+  <enum name="ARP_Op">
+    <literal name="Request" value="1" />
+    <literal name="Reply"   value="2" />
+  </enum>
+  <message name="ARP_Header" prefix="ARPH_">
+    <field name="Hardware_Type" length="16" />
+    <field name="Protocol"      length="16" />
+    <field name="Hw_Len"        length= "8" />
+    <field name="Pr_Len"        length= "8" />
+    <field name="Operation"     length="16" />
+
+    <!-- Note: following fields are valid only for Ethernet / IP   -->
+    <!-- Should be: name="Src_Hw_Address" length="Hw_Len" & so on. -->
+    <field name="Src_Eth_Address" length="48"
+                                  class="private" type="AIP.Ethernet_Address" />
+    <field name="Src_IP_Address" length="32" class="modular" />
+    <field name="Dst_Eth_Address" length="48"
+                                  class="private" type="AIP.Ethernet_Address" />
+    <field name="Dst_IP_Address" length="32" class="modular" />
+  </message>
+</package>

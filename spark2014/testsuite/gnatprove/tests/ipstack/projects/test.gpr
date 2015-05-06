@@ -1,0 +1,7 @@
+with "ipstack";
+
+project Test is
+   for Source_Dirs use ("../test");
+   for Object_Dir use "../build/test";
+   for Main use ("ipdump");
+end Test;

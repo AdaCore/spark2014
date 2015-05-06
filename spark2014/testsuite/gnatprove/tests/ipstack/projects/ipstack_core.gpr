@@ -1,0 +1,43 @@
+with "ipstack_config";
+with "ipstack_support";
+
+project IPStack_Core is
+   Subdir := "src/core";
+   SPARK_Subdir := "src/spark";
+   for Library_Name use "aip-core";
+   for Library_Kind use "static";
+
+   for Source_Dirs use
+     ("../" & Subdir,
+      "../" & SPARK_Subdir,
+      "../src/include");
+
+   for Object_Dir      use IPStack_Config.Obj_Prefix & Subdir;
+   for Library_Dir     use IPStack_Config.Lib_Prefix & Subdir;
+   for Library_ALI_Dir use IPStack_Config.ALI_Prefix & Subdir;
+
+   type Mode_Type is ("Prove", "Compile");
+   Mode : Mode_Type := external ("Mode", "Compile");
+
+   case Mode is
+      when "Prove" =>
+         for Languages use ("C", "Ada", "Metafile");
+      when "Compile" =>
+         for Languages use ("C", "Ada");
+   end case;
+
+   package Compiler is
+      for Default_Switches ("Ada")
+        use IPStack_Config.Compiler'Default_Switches ("Ada");
+      for Local_Configuration_Pragmas
+        use IPStack_Config.Compiler'Local_Configuration_Pragmas;
+   end Compiler;
+
+   package Ide is
+      for Default_Switches ("examiner") use
+          ("-flow=data", 
+           "-index_file=../" & SPARK_Subdir & "/aip.idx",
+           "-config_file=../" & SPARK_Subdir & "/config.shs",
+           "-warning_file=../" & SPARK_Subdir & "/aip.wrn");
+   end Ide;
+end IPStack_Core;

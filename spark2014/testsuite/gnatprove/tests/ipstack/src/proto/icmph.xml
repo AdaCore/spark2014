@@ -1,0 +1,82 @@
+<!--
+                              IPSTACK COMPONENTS
+               Copyright (C) 2010, Free Software Foundation, Inc.
+
+                  RFC792 - Internet Control Message Protocol
+
+-->
+
+<package name="AIP.ICMPH" types_unit="AIP">
+ <import name="AIP.IPH" />
+ <enum name="ICMP_Type">
+  <literal name="Echo_Reply"        value= "0" />
+  <literal name="Dest_Unreachable"  value= "3" />
+  <literal name="Source_Quench"     value= "4" />
+  <literal name="Redirect"          value= "5" />
+  <literal name="Echo"              value= "8" />
+  <literal name="Time_Exceeded"     value="11" />
+  <literal name="Parameter_Problem" value="12" />
+  <literal name="Timestamp"         value="13" />
+  <literal name="Timestamp_Reply"   value="14" />
+  <literal name="Info_Request"      value="15" />
+  <literal name="Info_Reply"        value="16" />
+ </enum>
+
+ <enum name="ICMP_Unreach_Code">
+  <literal name="Net_Unreachable"   value="0" />
+  <literal name="Host_Unreachable"  value="1" />
+  <literal name="Proto_Unreachable" value="2" />
+  <literal name="Port_Unreachable"  value="3" />
+  <literal name="Must_Fragment"     value="4" />
+  <literal name="Src_Route_Failed"  value="5" />
+ </enum>
+
+ <enum name="ICMP_Redirect_Code">
+  <literal name="Redirect_Net"      value="0" />
+  <literal name="Redirect_Host"     value="1" />
+  <literal name="Redirect_TOS_Net"  value="2" />
+  <literal name="Redirect_TOS_Host" value="3" />
+ </enum>
+
+ <message name="ICMP_Header" prefix="ICMPH_">
+  <field name="I_Type"    length= "8" />
+  <field name="Code"      length= "8" />
+  <field name="Checksum"  length="16" class="modular"/>
+ </message>
+
+ <message name="ICMP_Timestamp_Header" prefix="ICMP_TSH_">
+<!--
+  <field name="ICMPH"     class="nested" type="ICMP_Header" />
+  -->
+  <field name="ICMPH"      length="32" />
+  <field name="Identifier" length="16" />
+  <field name="Sequence"   length="16" />
+  <field name="Originate"  length="32" />
+  <field name="Receive"    length="32" />
+  <field name="Transmit"   length="32" />
+ </message>
+
+ <message name="ICMP_Redirect_Header" prefix="ICMP_RH_">
+<!--
+  <field name="ICMPH"     class="nested" type="ICMP_Header" />
+  -->
+  <field name="ICMPH"           length="32" />
+  <field name="Gateway_Address" length="32" />
+  <!-- Followed by IP header (including options) + 64 bits of payload -->
+ </message>
+
+ <!--
+   ICMP_Generic_Header is used for Destination Unreachable,
+   Source_Quench, Time_Exceeded and Parameter_Problem.
+   -->
+
+ <message name="ICMP_Generic_Header" prefix="ICMP_Generic_H_">
+<!--
+  <field name="ICMPH"     class="nested" type="ICMP_Header" />
+  -->
+  <field name="ICMPH"           length="32" />
+  <field name="Pointer"         length= "8" />
+  <field name="Unused"          length="24" />
+  <!-- Followed by IP header (including options) + 64 bits of payload -->
+ </message>
+</package>

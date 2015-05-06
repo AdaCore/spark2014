@@ -1,0 +1,11 @@
+Output_Dir:= "build/ipstack.output";
+Database_Dir:= "build/ipstack.db";
+Source(Directory=>"build/obj/src/core/codepeer/SCIL",
+       Files => ("*.scil"),
+       Language => SCIL);
+Source(Directory=>"build/obj/src/support/codepeer/SCIL",
+       Files => ("*.scil"),
+       Language => SCIL);
+Source(Directory=>"build/obj/src/services/codepeer/SCIL",
+       Files => ("*.scil"),
+       Language => SCIL);

@@ -1,0 +1,23 @@
+<!--
+                              IPSTACK COMPONENTS
+            Copyright (C) 2010-2012, Free Software Foundation, Inc.
+
+                                  Ethernet
+
+-->
+
+<package name="AIP.EtherH" types_unit="AIP">
+  <enum name="Ether_Type">
+    <literal name="ARP"        value="16#0806#" />
+    <literal name="IP"         value="16#0800#" />
+    <literal name="PPPoE_Disc" value="16#8863#" />
+    <literal name="PPPoE"      value="16#8864#" />
+  </enum>
+  <message name="Ether_Header" prefix="EtherH_">
+    <field name="Dst_MAC_Address" length="48"
+                                  class="private" type="AIP.Ethernet_Address" />
+    <field name="Src_MAC_Address" length="48"
+                                  class="private" type="AIP.Ethernet_Address" />
+    <field name="Frame_Type"      length="16" />
+  </message>
+</package>

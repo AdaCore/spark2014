@@ -1,0 +1,46 @@
+AIP_Constants       specification is in ../../build/gen/aip_constants.ads
+AIP.ARPH            specification is in ../../build/gen/aip-arph.ads
+AIP.EtherH          specification is in ../../build/gen/aip-etherh.ads
+AIP.ICMPH           specification is in ../../build/gen/aip-icmph.ads
+AIP.IPH             specification is in ../../build/gen/aip-iph.ads
+AIP.TCPH            specification is in ../../build/gen/aip-tcph.ads
+AIP.UDPH            specification is in ../../build/gen/aip-udph.ads
+AIP                 specification is in ../support/aip.ads
+AIP.ARP             specification is in ../core/aip-arp.ads
+AIP.ARP             body          is in ../core/aip-arp.adb
+AIP.Buffers         specification is in ../core/aip-buffers.ads
+AIP.Buffers         components    are   AIP.Buffers.Common,
+                                        AIP.Buffers.Data,
+                                        AIP.Buffers.No_Data
+AIP.Buffers         body          is in ../core/aip-buffers.adb
+AIP.Buffers.Common  specification is in ../core/aip-buffers-common.ads
+AIP.Buffers.Data    specification is in ../core/aip-buffers-data.ads
+AIP.Buffers.Data    body          is in ../core/aip-buffers-data.adb
+AIP.Buffers.No_Data specification is in ../core/aip-buffers-no_data.ads
+AIP.Buffers.No_Data body          is in ../core/aip-buffers-no_data.adb
+AIP.Callbacks       specification is in ../core/aip-callbacks.ads
+AIP.Checksum        specification is in ../core/aip-checksum.ads
+AIP.Config          specification is in ../support/aip-config.ads
+AIP.Conversions     specification is in ../core/aip-conversions.ads
+AIP.ICMP            specification is in ../core/aip-icmp.ads
+AIP.ICMP            body          is in ../core/aip-icmp.adb
+AIP.IPaddrs         specification is in ../core/aip-ipaddrs.ads
+AIP.IPaddrs         body          is in ../core/aip-ipaddrs.adb
+AIP.NIF             specification is in ../core/aip-nif.ads
+AIP.NIF             body          is in ../core/aip-nif.adb
+AIP.Inet            specification is in ../core/aip-inet.ads
+AIP.Inet            body          is in ../core/aip-inet.adb
+AIP.Pbufs           specification is in ../core/aip-pbufs.ads
+AIP.Pbufs           body          is in ../core/aip-pbufs.adb
+AIP.PCBs            specification is in ../core/aip-pcbs.ads
+AIP.PCBs            body          is in ../core/aip-pcbs.adb
+AIP.Pools           specification is in ../core/aip-pools.ads
+AIP.Support         specification is in ../core/aip-support.ads
+AIP.Support         body          is in ../core/aip-support.adb
+AIP.TCP             specification is in ../core/aip-tcp.ads
+AIP.TCP             body          is in ../core/aip-tcp.adb
+AIP.Timers          specification is in ../core/aip-timers.ads
+AIP.Timers          body          is in ../core/aip-timers.adb
+AIP.IP              specification is in ../core/aip-ip.ads
+AIP.UDP             specification is in ../core/aip-udp.ads
+AIP.UDP             body          is in ../core/aip-udp.adb

@@ -1,0 +1,22 @@
+with "ipstack_config";
+
+project IPStack_Support is
+   Subdir := "src/support";
+   for Library_Name use "aip-support";
+   for Library_Kind use "static";
+
+   for Source_Dirs use
+     ("../" & Subdir,
+      "../src/support.native",
+      IPStack_Config.Gen_Prefix);
+   for Object_Dir      use IPStack_Config.Obj_Prefix & Subdir;
+   for Library_Dir     use IPStack_Config.Lib_Prefix & Subdir;
+   for Library_ALI_Dir use IPStack_Config.ALI_Prefix & Subdir;
+
+   package Compiler is
+      for Default_Switches ("Ada")
+        use IPStack_Config.Compiler'Default_Switches ("Ada");
+      for Local_Configuration_Pragmas
+        use IPStack_Config.Compiler'Local_Configuration_Pragmas;
+   end Compiler;
+end IPStack_Support;
