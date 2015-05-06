@@ -1427,19 +1427,13 @@ library package that no longer needs a body (see Ada RM 7.2(4)).
    [A Ghost assertion policy of Ignore can be used to ensure that
    a compiler generates no code for ghost constructs.]
 
-.. _tu-nt-ghost_entities-05:
-
-5. A ghost subprogram profile and a non-ghost subprogram profile
-   are not subtype conformant. [In other words, the Ghost aspect participates
-   in conformance checking in much the same way as the Convention aspect.]
-
 .. _etu-ghost_entities-ss:
 
 .. centered:: **Legality Rules**
 
-.. _tu-fe-ghost_entities-06:
+.. _tu-fe-ghost_entities-05:
 
-6. The Ghost aspect may only be specified [explicitly] for
+5. The Ghost aspect may only be specified [explicitly] for
    the declaration of a subprogram, a
    generic subprogram, a type (including a partial view thereof),
    an object (or list of objects, in the case of an ``aspect_specification``
@@ -1450,13 +1444,13 @@ library package that no longer needs a body (see Ada RM 7.2(4)).
    argument, a name denoting one or more entities whose Ghost aspect is
    then specified to be True.
    [In particular, |SPARK| does not currently include any form of
-   ghost components of non-ghost record types, ghost parameters of non-ghost
-   subprograms, or ghost extensions of non-ghost types. |SPARK| does define
+   ghost components of non-ghost record types, or ghost parameters of non-ghost
+   subprograms. |SPARK| does define
    ghost state abstractions, but these are described elsewhere.]
 
-.. _tu-fe-ghost_entities-07:
+.. _tu-fe-ghost_entities-06:
 
-7. A Ghost aspect value of False shall not be explicitly specified
+6. A Ghost aspect value of False shall not be explicitly specified
    except in a confirming aspect specification. [For example, a
    non-ghost declaration cannot occur within a ghost subprogram.]
 
@@ -1466,31 +1460,37 @@ library package that no longer needs a body (see Ada RM 7.2(4)).
    are not permitted.] The Ghost assertion policy in effect at any
    point of a SPARK program shall be either Check or Ignore.
 
-.. _tu-fe-ghost_entities-08:
+.. _tu-fe-ghost_entities-07:
 
-8.  A ghost type or object shall not be effectively volatile.
+7.  A ghost type or object shall not be effectively volatile.
     A ghost object shall not be imported or exported.
     [In other words, no ghost objects for which reading or writing
     would constitute an external effect (see Ada RM 1.1.3).]
 
+.. _tu-fe-ghost_entities-08:
+
+8.  A ghost primitive subprogram of a non-ghost type extension shall
+    not override an inherited non-ghost primitive subprogram.
+    A non-ghost primitive subprogram of a type extension shall
+    not override an inherited ghost primitive subprogram.
+    [A ghost subprogram may be a primitive subprogram of a non-ghost tagged
+    type.
+    A ghost type extension may have a non-ghost parent type or progenitor;
+    primitive subprograms of such a type may override inherited (ghost or
+    non-ghost) subprograms.]
+
 .. _tu-fe-ghost_entities-09:
 
-9.  A type extension shall be a ghost type if and only if
-    its parent type and all of its progenitor types are ghost types.
-    [However, a non-ghost tagged type may have a ghost primitive subprogram.]
+9.  A Ghost pragma which applies to a declaration occuring
+    in the visible part of a package shall not occur in the
+    private part of that package.
+    [This rule is to ensure that the ghostliness of a visible entity can be
+    determined without having to look into the private part of the
+    enclosing package.]
 
 .. _tu-fe-ghost_entities-10:
 
-10.  A Ghost pragma which applies to a declaration occuring
-     in the visible part of a package shall not occur in the
-     private part of that package.
-     [This rule is to ensure that the ghostliness of a visible entity can be
-     determined without having to look into the private part of the
-     enclosing package.]
-
-.. _tu-fe-ghost_entities-11:
-
-11. A ghost entity shall only be referenced:
+10. A ghost entity shall only be referenced:
 
     * from within an assertion expression; or
 
@@ -1507,9 +1507,9 @@ library package that no longer needs a body (see Ada RM 7.2(4)).
     * within a renaming_declaration which either renames a ghost entity
       or occurs within a ghost subprogram or package.
 
-.. _tu-fe-ghost_entities-12:
+.. _tu-fe-ghost_entities-11:
 
-12. A ghost entity shall not be referenced within an aspect specification
+11. A ghost entity shall not be referenced within an aspect specification
     [(including an aspect-specifying pragma)]
     which specifies an aspect of a non-ghost entity except in the
     following cases:
@@ -1527,14 +1527,14 @@ library package that no longer needs a body (see Ada RM 7.2(4)).
    this participation. In the case of a Static_Predicate expression,
    there are also other reasons (e.g., case statements).]
 
-.. _tu-fe-ghost_entities-13:
+.. _tu-fe-ghost_entities-12:
 
-13. An **out** or **in out** mode actual parameter in a call to a ghost
+12. An **out** or **in out** mode actual parameter in a call to a ghost
     subprogram shall be a ghost variable.
 
-.. _tu-fe-ghost_entities-14:
+.. _tu-fe-ghost_entities-13:
 
-14. If the Ghost assertion policy in effect at the point of the declaration
+13. If the Ghost assertion policy in effect at the point of the declaration
     of a ghost entity is Ignore, then the Ghost assertion policy in effect
     at the point of any reference to that entity shall be Ignore.
     If the Ghost assertion policy in effect at the point of the declaration
@@ -1543,9 +1543,9 @@ library package that no longer needs a body (see Ada RM 7.2(4)).
     [This includes both assignment statements and passing a ghost variable
     as an **out** or **in out** mode actual parameter.]
 
-.. _tu-fe-ghost_entities-15:
+.. _tu-fe-ghost_entities-14:
 
-15. An Assertion_Policy pragma specifying a Ghost assertion policy
+14. An Assertion_Policy pragma specifying a Ghost assertion policy
     shall not occur within a ghost subprogram or package.
     If a ghost entity has a completion then the Ghost assertion policies in
     effect at the declaration and at the completion of the entity shall
@@ -1556,31 +1556,29 @@ library package that no longer needs a body (see Ada RM 7.2(4)).
     of an entity and at the point of an aspect specification
     which applies to that entity shall be the same.
 
-.. _tu-fe-ghost_entities-16:
+.. _tu-fe-ghost_entities-15:
 
-16. The Ghost assertion policies in effect at the declaration of a
+15. The Ghost assertion policies in effect at the declaration of a
     state abstraction and at the declaration of each constituent of that
     abstraction shall be the same.
 
+.. _tu-fe-ghost_entities-16:
+
+16. The Ghost assertion policies in effect at the declaration of a
+    primitive subprogram of a ghost tagged type and at
+    the declaration of the ghost tagged type shall be the same.
+
 .. _tu-fe-ghost_entities-17:
 
-17. The Ghost assertion policies in effect at the declaration of an
-    overriding ghost primitive subprogram of a tagged type and at
-    the declaration of the (ancestor's or progenitor's) primitive
-    subprogram corresponding to the overridden inherited subprogram
-    shall be the same.
-
-.. _tu-fe-ghost_entities-18:
-
-18. If the Ghost assertion policy in effect at the point of an
+17. If the Ghost assertion policy in effect at the point of an
     a reference to a Ghost entity which occurs within an assertion expression
     is Ignore, then the assertion policy which governs the assertion
     expression (e.g., Pre for a precondition expression, Assert for the
     argument of an Assert pragma) shall [also] be Ignore.
 
-.. _tu-fe-ghost_entities-19:
+.. _tu-fe-ghost_entities-18:
 
-19. A task or protected type shall not be a ghost type.
+18. A task or protected type shall not be a ghost type.
     A synchronized object shall not be a ghost object.
     [Note that any object with a task or protected part is
     a synchronized object; see section :ref:`tasks-and-synchronization`).]
@@ -1591,19 +1589,19 @@ library package that no longer needs a body (see Ada RM 7.2(4)).
 
 .. centered:: **Verification Rules**
 
-.. _tu-fe-ghost_entities-20:
+.. _tu-fe-ghost_entities-19:
 
-20. A ghost procedure shall not have a non-ghost [global] output.
+19. A ghost procedure shall not have a non-ghost [global] output.
 
-.. _tu-cbatu-ghost_entities-21:
+.. _tu-cbatu-ghost_entities-20:
 
-21. An output of a non-ghost subprogram other than a ghost global
+20. An output of a non-ghost subprogram other than a ghost global
     shall not depend on a ghost input. [It is intended that this follows
     as a consequence of other rules.]
 
-.. _tu-fe-ghost_entities-22:
+.. _tu-fe-ghost_entities-21:
 
-22. A ghost procedure shall not have an effectively volatile global input
+21. A ghost procedure shall not have an effectively volatile global input
     with the properties Async_Writers or Effective_Reads set to True.
     [This rule says, in effect, that ghost procedures are
     subject to the same restrictions as non-ghost functions with respect
@@ -1613,9 +1611,9 @@ library package that no longer needs a body (see Ada RM 7.2(4)).
     Effective_Reads set to True. [In other words, a ghost statement is
     subject to effectively the same restrictions as a ghost procedure.]
 
-.. _tu-fe-ghost_entities-23:
+.. _tu-fe-ghost_entities-22:
 
-23. If the Ghost assertion policy in effect at the point of the declaration
+22. If the Ghost assertion policy in effect at the point of the declaration
     of a ghost variable or ghost state abstraction is Check, then the Ghost
     assertion policy in effect at the point of any call to a procedure
     for which that variable or state abstraction is a global output shall
