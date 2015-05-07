@@ -3653,7 +3653,6 @@ package body SPARK_Definition is
            Pragma_C_Pass_By_Copy                 |
            Pragma_Check_Float_Overflow           |
            Pragma_Check_Name                     |
-           Pragma_CIL_Constructor                |
            Pragma_Comment                        |
            Pragma_Common_Object                  |
            Pragma_Compile_Time_Error             |
@@ -3705,8 +3704,6 @@ package body SPARK_Definition is
            Pragma_Interface_Name                 |
            Pragma_Interrupt_Handler              |
            Pragma_Interrupt_State                |
-           Pragma_Java_Constructor               |
-           Pragma_Java_Interface                 |
            Pragma_Keep_Names                     |
            Pragma_License                        |
            Pragma_Link_With                      |
