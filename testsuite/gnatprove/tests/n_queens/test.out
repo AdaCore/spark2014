@@ -41,6 +41,6 @@ queen.ads:31:76: info: index check proved
 queen.ads:36:44: info: index check proved
 queen.ads:36:51: info: index check proved
 queen.ads:37:38: info: range check proved
-queen.ads:38:14: medium: postcondition might fail
+queen.ads:38:14: info: postcondition proved
 queen.ads:39:44: info: index check proved
 queen.ads:39:56: info: index check proved

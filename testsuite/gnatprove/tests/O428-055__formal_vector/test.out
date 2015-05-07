@@ -1,7 +1,7 @@
 init_list_zero.adb:3:27: low: input value of private part of "L" might be used in "Init_List_Zero"
+init_list_zero.adb:5:11: info: postcondition proved
 init_list_zero.adb:5:12: info: precondition proved
 init_list_zero.adb:5:25: low: input value of private part of "L" might be used
-init_list_zero.adb:5:30: medium: postcondition might fail, requires E = 0
 init_list_zero.adb:7:19: info: precondition proved
 init_list_zero.adb:7:26: medium: input value of private part of "L" will be used
 init_list_zero.adb:9:10: info: precondition proved

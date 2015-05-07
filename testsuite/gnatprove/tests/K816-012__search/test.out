@@ -39,7 +39,7 @@ search.ads:9:06: info: initialization of "Found1" proved
 search.ads:10:06: info: initialization of "Found2" proved
 search.ads:11:06: info: initialization of "Index1" proved
 search.ads:12:06: info: initialization of "Index2" proved
-search.ads:13:25: medium: postcondition might fail
+search.ads:13:25: info: postcondition proved
 search.ads:13:29: info: initialization of "Found1" proved
 search.ads:13:50: info: initialization of "Index1" proved
 search.ads:13:50: medium: array index check might fail

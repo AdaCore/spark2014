@@ -64,7 +64,7 @@ arithmetic.adb:140:10: info: loop invariant initialization proved
 arithmetic.adb:140:10: info: loop invariant preservation proved
 arithmetic.adb:140:33: info: initialization of "R" proved
 arithmetic.adb:144:14: info: initialization of "R" proved
-arithmetic.adb:148:19: medium: postcondition might fail, requires Halve_D'Result = N / 2
+arithmetic.adb:148:19: info: postcondition proved
 arithmetic.adb:148:38: info: division check proved
 arithmetic.adb:155:20: info: initialization of "R" proved
 arithmetic.adb:156:10: info: loop invariant initialization proved

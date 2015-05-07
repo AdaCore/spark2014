@@ -115,7 +115,7 @@ infoflow.adb:187:16: info: index check proved
 infoflow.adb:187:22: medium: "A_V1" might not be initialized
 infoflow.adb:187:36: info: index check proved
 infoflow.adb:187:36: info: overflow check proved
-infoflow.adb:190:07: medium: assertion might fail
+infoflow.adb:190:07: info: assertion proved
 infoflow.adb:192:13: medium: "A_V1" might not be initialized
 infoflow.adb:192:19: info: index check proved
 infoflow.adb:192:30: info: index check proved
@@ -210,7 +210,7 @@ infoflow.ads:129:06: info: disjoint contract cases proved
 infoflow.ads:129:06: medium: contract cases might not be complete
 infoflow.ads:131:33: info: index check proved
 infoflow.ads:131:44: info: index check proved
-infoflow.ads:132:24: medium: contract case might fail
+infoflow.ads:132:24: info: contract case proved
 infoflow.ads:132:27: medium: "A_V1" might not be initialized
 infoflow.ads:132:33: info: index check proved
 infoflow.ads:132:38: medium: "A_V2" might not be initialized

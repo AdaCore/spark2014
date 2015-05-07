@@ -113,8 +113,8 @@ amortized_queue.adb:60:24: info: precondition proved
 amortized_queue.adb:60:41: info: precondition proved
 amortized_queue.adb:61:21: info: precondition proved
 amortized_queue.adb:61:44: info: precondition proved
+amortized_queue.adb:62:14: info: postcondition proved
 amortized_queue.adb:62:14: info: precondition proved
-amortized_queue.adb:62:14: medium: postcondition might fail
 amortized_queue.adb:62:31: info: precondition proved
 amortized_queue.adb:62:49: info: precondition proved
 amortized_queue.adb:63:15: info: precondition proved
@@ -126,7 +126,7 @@ amortized_queue.adb:65:58: info: range check proved
 amortized_queue.adb:66:34: info: precondition proved
 amortized_queue.adb:67:18: info: precondition proved
 amortized_queue.adb:67:34: info: precondition proved
-amortized_queue.adb:67:57: medium: range check might fail
+amortized_queue.adb:67:57: info: range check proved
 amortized_queue.adb:67:64: info: precondition proved
 amortized_queue.adb:67:80: info: range check proved
 amortized_queue.adb:70:31: info: initialization of "R51b" proved
@@ -210,8 +210,8 @@ amortized_queue.adb:107:92: info: initialization of private part of "Result.Rear
 amortized_queue.adb:114:14: info: precondition proved
 amortized_queue.ads:18:23: info: precondition proved
 amortized_queue.ads:18:39: info: precondition proved
+amortized_queue.ads:19:14: info: postcondition proved
 amortized_queue.ads:19:14: info: precondition proved
-amortized_queue.ads:19:14: medium: postcondition might fail
 amortized_queue.ads:19:36: info: precondition proved
 amortized_queue.ads:19:52: info: precondition proved
 amortized_queue.ads:20:34: info: precondition proved

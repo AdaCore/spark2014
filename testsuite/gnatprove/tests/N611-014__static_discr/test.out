@@ -173,7 +173,7 @@ static_discr.adb:121:10: info: precondition proved
 static_discr.adb:121:23: info: initialization of "Current.Content.Content" proved
 static_discr.adb:121:23: info: initialization of "Current.Length" proved
 static_discr.adb:122:10: info: assertion proved
-static_discr.adb:123:25: medium: assertion might fail, requires A.Content.Content = Current.Content.Content
+static_discr.adb:123:10: info: assertion proved
 static_discr.adb:123:26: info: discriminant check proved
 static_discr.adb:123:34: info: discriminant check proved
 static_discr.adb:123:45: info: initialization of "Current.Content.Content" proved

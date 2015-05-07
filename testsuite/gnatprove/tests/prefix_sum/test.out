@@ -230,7 +230,7 @@ prefixsum_expanded.ads:27:39: info: overflow check proved
 prefixsum_expanded.ads:29:23: info: overflow check proved
 prefixsum_expanded.ads:31:23: info: overflow check proved
 prefixsum_expanded.ads:41:41: info: initialization of "Output_Space" proved
-prefixsum_expanded.ads:43:14: medium: postcondition might fail
+prefixsum_expanded.ads:43:14: info: postcondition proved
 prefixsum_expanded.ads:44:17: info: initialization of "Output_Space" proved
 prefixsum_expanded.ads:45:17: info: precondition proved
 prefixsum_expanded.ads:53:17: info: precondition proved

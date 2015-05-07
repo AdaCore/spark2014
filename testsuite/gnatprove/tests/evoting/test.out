@@ -186,10 +186,10 @@ evoting.ads:68:25: info: initialization of "last_candidate" proved
 evoting.ads:95:11: medium: postcondition might fail, requires counters(i) = 0
 evoting.ads:95:20: info: index check proved
 evoting.ads:102:29: info: initialization of "winners" proved
+evoting.ads:104:12: info: postcondition proved
 evoting.ads:105:25: info: range check proved
 evoting.ads:106:25: info: initialization of "winners" proved
 evoting.ads:106:57: info: index check proved
-evoting.ads:107:22: medium: postcondition might fail, requires counters(winner) > counters(i)
 evoting.ads:107:50: info: index check proved
 evoting.ads:109:55: info: index check proved
 evoting.ads:110:52: info: index check proved

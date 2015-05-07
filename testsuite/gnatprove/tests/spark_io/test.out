@@ -21,8 +21,8 @@ copy.adb:110:22: info: precondition proved
 copy.adb:113:22: info: precondition proved
 copy.adb:122:13: info: precondition proved
 copy.adb:124:13: info: precondition proved
-copy.adb:133:07: medium: loop invariant might fail after first iteration
-copy.adb:133:07: medium: loop invariant might fail in first iteration
+copy.adb:133:07: info: loop invariant initialization proved
+copy.adb:133:07: info: loop invariant preservation proved
 copy.adb:140:10: info: precondition proved
 copy.adb:142:10: info: precondition proved
 copy.adb:151:09: info: initialization of "Last" proved
@@ -74,9 +74,9 @@ copy.adb:249:19: info: precondition proved
 copy.adb:256:13: info: precondition proved
 copy.adb:259:13: info: precondition proved
 copy.adb:262:10: info: precondition proved
-copy.adb:269:14: medium: precondition might fail
+copy.adb:269:14: info: precondition proved
+copy.adb:270:07: info: loop invariant initialization proved
 copy.adb:270:07: info: loop invariant preservation proved
-copy.adb:270:07: medium: loop invariant might fail in first iteration
 copy.adb:278:07: info: precondition proved
 copy.adb:281:13: info: precondition proved
 copy.adb:281:31: info: initialization of "C.Item" proved
@@ -105,8 +105,8 @@ copy.adb:327:10: info: precondition proved
 copy.adb:331:10: info: precondition proved
 copy.adb:335:10: info: precondition proved
 copy.adb:340:07: info: precondition proved
-copy.adb:343:07: medium: precondition might fail
-copy.adb:347:07: medium: precondition might fail
+copy.adb:343:07: info: precondition proved
+copy.adb:347:07: info: precondition proved
 echo.adb:32:18: medium: precondition of main program might fail
 echo.adb:37:07: info: loop invariant initialization proved
 echo.adb:37:07: info: loop invariant preservation proved

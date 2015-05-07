@@ -146,7 +146,7 @@ tetris_functional.ads:203:66: info: range check proved
 tetris_functional.ads:207:37: info: initialization of "Success" proved
 tetris_functional.ads:209:14: info: postcondition proved
 tetris_functional.ads:215:16: info: postcondition proved
-tetris_functional.ads:224:16: medium: postcondition might fail
+tetris_functional.ads:224:16: info: postcondition proved
 tetris_initial.adb:41:33: medium: array index check might fail
 tetris_initial.adb:41:47: medium: array index check might fail
 tetris_initial.adb:42:36: info: index check proved

@@ -81,4 +81,4 @@ trains.ads:151:51: info: index check proved
 trains.ads:152:31: info: index check proved
 trains.ads:152:65: info: index check proved
 trains.ads:220:07: info: initialization of "Result" proved
-trains.ads:228:14: medium: postcondition might fail
+trains.ads:228:14: info: postcondition proved

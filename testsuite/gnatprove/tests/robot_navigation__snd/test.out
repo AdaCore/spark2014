@@ -74,8 +74,8 @@ algorithm.adb:231:151: info: initialization of "rayL.second" proved
 algorithm.adb:234:13: info: initialization of "dist" proved
 algorithm.adb:235:13: info: precondition proved
 algorithm.adb:235:37: info: initialization of "rayR.second" proved
-algorithm.adb:246:17: medium: postcondition might fail, requires This.robot.robot_radius = This.robot.robot_radius'old
-algorithm.adb:250:17: medium: postcondition might fail, requires This.robot.robot_radius = This.robot.robot_radius'old
+algorithm.adb:246:17: info: postcondition proved
+algorithm.adb:250:17: info: postcondition proved
 algorithm.adb:255:19: info: precondition proved
 algorithm.adb:256:19: info: initialization of "iterL" proved
 algorithm.adb:257:10: info: precondition proved
@@ -116,16 +116,16 @@ algorithm.adb:290:32: info: initialization of "iterL" proved
 algorithm.adb:296:13: info: initialization of "iterR" proved
 algorithm.adb:296:42: info: precondition proved
 algorithm.adb:297:22: info: precondition proved
-algorithm.adb:299:25: medium: precondition might fail
+algorithm.adb:299:25: info: precondition proved
 algorithm.adb:299:47: info: initialization of "iterR" proved
 algorithm.adb:299:63: info: precondition proved
 algorithm.adb:299:85: info: initialization of "iterL" proved
 algorithm.adb:299:107: medium: overflow check might fail
 algorithm.adb:300:15: info: precondition proved
-algorithm.adb:300:62: medium: precondition might fail
+algorithm.adb:300:62: info: precondition proved
 algorithm.adb:304:36: info: precondition proved
 algorithm.adb:304:58: info: initialization of "iterR" proved
-algorithm.adb:309:16: medium: precondition might fail
+algorithm.adb:309:16: info: precondition proved
 algorithm.adb:309:37: info: initialization of "iterR" proved
 algorithm.adb:318:20: info: precondition proved
 algorithm.adb:319:20: info: initialization of "riterR" proved
@@ -162,15 +162,15 @@ algorithm.adb:348:52: info: precondition proved
 algorithm.adb:349:23: info: precondition proved
 algorithm.adb:351:25: info: precondition proved
 algorithm.adb:351:47: info: initialization of "riterR" proved
-algorithm.adb:351:64: medium: precondition might fail
+algorithm.adb:351:64: info: precondition proved
 algorithm.adb:351:86: info: initialization of "riterL" proved
-algorithm.adb:351:109: medium: overflow check might fail
-algorithm.adb:352:15: medium: precondition might fail
+algorithm.adb:351:109: info: overflow check proved
+algorithm.adb:352:15: info: precondition proved
 algorithm.adb:352:64: info: precondition proved
 algorithm.adb:356:36: info: precondition proved
 algorithm.adb:356:58: info: precondition proved
 algorithm.adb:356:81: info: initialization of "riterL" proved
-algorithm.adb:361:27: medium: precondition might fail
+algorithm.adb:361:27: info: precondition proved
 algorithm.adb:361:49: info: initialization of "riterL" proved
 algorithm.adb:381:15: info: range check proved
 algorithm.adb:381:63: info: initialization of "Existing_Gap_Id_Last" proved

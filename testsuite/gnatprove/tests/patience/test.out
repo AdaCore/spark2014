@@ -51,7 +51,7 @@ patience.adb:47:24: info: range check proved
 patience.adb:48:15: info: index check proved
 patience.adb:48:20: info: initialization of "Idx" proved
 patience.adb:48:23: info: initialization of "Pred" proved
-patience.adb:48:23: medium: range check might fail
+patience.adb:48:23: info: range check proved
 patience.adb:49:10: info: initialization of "I" proved
 patience.adb:53:40: info: range check proved
 patience.adb:54:26: info: index check proved
@@ -66,14 +66,14 @@ patience.adb:56:32: info: initialization of "I" proved
 patience.adb:56:32: info: range check proved
 patience.adb:57:25: info: index check proved
 patience.adb:57:30: info: initialization of "Idx" proved
+patience.adb:62:40: info: index check proved
 patience.adb:62:40: info: initialization of "I" proved
-patience.adb:62:40: medium: array index check might fail
 patience.adb:63:26: info: index check proved
 patience.adb:63:29: info: initialization of "I" proved
 patience.adb:63:32: info: initialization of "StackISize" proved
 patience.adb:63:43: medium: range check might fail
 patience.adb:64:22: info: index check proved
-patience.adb:64:25: medium: array index check might fail
+patience.adb:64:25: info: index check proved
 patience.adb:64:37: info: initialization of "I" proved
 patience.adb:64:37: info: initialization of "StackISize" proved
 patience.adb:64:40: info: initialization of "Idx" proved
