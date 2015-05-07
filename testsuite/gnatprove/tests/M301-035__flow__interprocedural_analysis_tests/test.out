@@ -266,12 +266,12 @@ digraph G {
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\n(global)\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\n(global)\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 8>",shape="plaintext"];
-    9 [label="Y'final\n(global)\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    10 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 10>",shape="plaintext"];
-    11 [label="Z'final\n(global)\nVU: {Z}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    6 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 6>",shape="plaintext"];
+    7 [label="Z'final\n(global)\nVU: {Z}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="X'initial\n(global)\nVD: {X}\n<VId: 8>",shape="plaintext"];
+    9 [label="X'final\n(global)\nVU: {X}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    10 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 10>",shape="plaintext"];
+    11 [label="Y'final\n(global)\nVU: {Y}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
 
 subgraph cluster1 {
   style=filled;
@@ -322,12 +322,12 @@ digraph G {
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\n(global)\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\n(global)\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 8>",shape="plaintext"];
-    9 [label="Y'final\n(global)\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    10 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 10>",shape="plaintext"];
-    11 [label="Z'final\n(global)\nVU: {Z}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    6 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 6>",shape="plaintext"];
+    7 [label="Z'final\n(global)\nVU: {Z}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="X'initial\n(global)\nVD: {X}\n<VId: 8>",shape="plaintext"];
+    9 [label="X'final\n(global)\nVU: {X}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    10 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 10>",shape="plaintext"];
+    11 [label="Y'final\n(global)\nVU: {Y}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
     15 [label="call swap\nSC: {Swap}\n<VId: 15>",shape="box"];
     16 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 16>",shape="plaintext"];
     17 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 17>",shape="plaintext"];
@@ -342,9 +342,9 @@ digraph G {
     1 ->  2 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
     1 ->  20 [arrowType="normal"];
-    6 ->  16 [arrowType="normal",color="red",fontcolor="red"];
-    8 ->  18 [arrowType="normal",color="red",fontcolor="red"];
-    10 ->  23 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  23 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  16 [arrowType="normal",color="red",fontcolor="red"];
+    10 ->  18 [arrowType="normal",color="red",fontcolor="red"];
     15 ->  16 [arrowType="normal"];
     15 ->  17 [arrowType="normal"];
     15 ->  18 [arrowType="normal"];
@@ -354,17 +354,17 @@ digraph G {
     17 ->  21 [arrowType="normal",color="red",fontcolor="red"];
     18 ->  17 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
     18 ->  19 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
-    19 ->  9 [arrowType="normal",color="red",fontcolor="red"];
+    19 ->  11 [arrowType="normal",color="red",fontcolor="red"];
     20 ->  21 [arrowType="normal"];
     20 ->  22 [arrowType="normal"];
     20 ->  23 [arrowType="normal"];
     20 ->  24 [arrowType="normal"];
     21 ->  22 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
     21 ->  24 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
-    22 ->  7 [arrowType="normal",color="red",fontcolor="red"];
+    22 ->  9 [arrowType="normal",color="red",fontcolor="red"];
     23 ->  22 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
     23 ->  24 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
-    24 ->  11 [arrowType="normal",color="red",fontcolor="red"];
+    24 ->  7 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_across_compilation_units__child__round_swap_2_cfg
@@ -375,12 +375,12 @@ digraph G {
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\n(global)\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\n(global)\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 8>",shape="plaintext"];
-    9 [label="Y'final\n(global)\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    10 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 10>",shape="plaintext"];
-    11 [label="Z'final\n(global)\nVU: {Z}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    6 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 6>",shape="plaintext"];
+    7 [label="Z'final\n(global)\nVU: {Z}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="X'initial\n(global)\nVD: {X}\n<VId: 8>",shape="plaintext"];
+    9 [label="X'final\n(global)\nVU: {X}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    10 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 10>",shape="plaintext"];
+    11 [label="Y'final\n(global)\nVU: {Y}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
 
 subgraph cluster1 {
   style=filled;
@@ -431,12 +431,12 @@ digraph G {
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\n(global)\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\n(global)\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 8>",shape="plaintext"];
-    9 [label="Y'final\n(global)\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    10 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 10>",shape="plaintext"];
-    11 [label="Z'final\n(global)\nVU: {Z}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    6 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 6>",shape="plaintext"];
+    7 [label="Z'final\n(global)\nVU: {Z}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="X'initial\n(global)\nVD: {X}\n<VId: 8>",shape="plaintext"];
+    9 [label="X'final\n(global)\nVU: {X}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    10 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 10>",shape="plaintext"];
+    11 [label="Y'final\n(global)\nVU: {Y}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
     15 [label="call swap_with_depends\nSC: {Swap_With_Depends}\n<VId: 15>",shape="box"];
     16 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 16>",shape="plaintext"];
     17 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 17>",shape="plaintext"];
@@ -451,9 +451,9 @@ digraph G {
     1 ->  2 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
     1 ->  20 [arrowType="normal"];
-    6 ->  16 [arrowType="normal",color="red",fontcolor="red"];
-    8 ->  18 [arrowType="normal",color="red",fontcolor="red"];
-    10 ->  23 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  23 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  16 [arrowType="normal",color="red",fontcolor="red"];
+    10 ->  18 [arrowType="normal",color="red",fontcolor="red"];
     15 ->  16 [arrowType="normal"];
     15 ->  17 [arrowType="normal"];
     15 ->  18 [arrowType="normal"];
@@ -461,15 +461,15 @@ digraph G {
     16 ->  19 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
     17 ->  21 [arrowType="normal",color="red",fontcolor="red"];
     18 ->  17 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
-    19 ->  9 [arrowType="normal",color="red",fontcolor="red"];
+    19 ->  11 [arrowType="normal",color="red",fontcolor="red"];
     20 ->  21 [arrowType="normal"];
     20 ->  22 [arrowType="normal"];
     20 ->  23 [arrowType="normal"];
     20 ->  24 [arrowType="normal"];
     21 ->  24 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
-    22 ->  7 [arrowType="normal",color="red",fontcolor="red"];
+    22 ->  9 [arrowType="normal",color="red",fontcolor="red"];
     23 ->  22 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
-    24 ->  11 [arrowType="normal",color="red",fontcolor="red"];
+    24 ->  7 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_across_compilation_units__child__round_swap_with_depends_1_cfg
@@ -480,12 +480,12 @@ digraph G {
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\n(global)\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\n(global)\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 8>",shape="plaintext"];
-    9 [label="Y'final\n(global)\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    10 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 10>",shape="plaintext"];
-    11 [label="Z'final\n(global)\nVU: {Z}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    6 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 6>",shape="plaintext"];
+    7 [label="Z'final\n(global)\nVU: {Z}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="X'initial\n(global)\nVD: {X}\n<VId: 8>",shape="plaintext"];
+    9 [label="X'final\n(global)\nVU: {X}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    10 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 10>",shape="plaintext"];
+    11 [label="Y'final\n(global)\nVU: {Y}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
 
 subgraph cluster1 {
   style=filled;
@@ -536,12 +536,12 @@ digraph G {
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\n(global)\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\n(global)\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 8>",shape="plaintext"];
-    9 [label="Y'final\n(global)\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    10 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 10>",shape="plaintext"];
-    11 [label="Z'final\n(global)\nVU: {Z}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    6 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 6>",shape="plaintext"];
+    7 [label="Z'final\n(global)\nVU: {Z}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="X'initial\n(global)\nVD: {X}\n<VId: 8>",shape="plaintext"];
+    9 [label="X'final\n(global)\nVU: {X}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    10 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 10>",shape="plaintext"];
+    11 [label="Y'final\n(global)\nVU: {Y}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
     15 [label="call swap\nSC: {Swap}\n<VId: 15>",shape="box"];
     16 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 16>",shape="plaintext"];
     17 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 17>",shape="plaintext"];
@@ -556,9 +556,9 @@ digraph G {
     1 ->  2 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
     1 ->  20 [arrowType="normal"];
-    6 ->  16 [arrowType="normal",color="red",fontcolor="red"];
-    8 ->  18 [arrowType="normal",color="red",fontcolor="red"];
-    10 ->  23 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  23 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  16 [arrowType="normal",color="red",fontcolor="red"];
+    10 ->  18 [arrowType="normal",color="red",fontcolor="red"];
     15 ->  16 [arrowType="normal"];
     15 ->  17 [arrowType="normal"];
     15 ->  18 [arrowType="normal"];
@@ -568,17 +568,17 @@ digraph G {
     17 ->  21 [arrowType="normal",color="red",fontcolor="red"];
     18 ->  17 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
     18 ->  19 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
-    19 ->  9 [arrowType="normal",color="red",fontcolor="red"];
+    19 ->  11 [arrowType="normal",color="red",fontcolor="red"];
     20 ->  21 [arrowType="normal"];
     20 ->  22 [arrowType="normal"];
     20 ->  23 [arrowType="normal"];
     20 ->  24 [arrowType="normal"];
     21 ->  22 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
     21 ->  24 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
-    22 ->  7 [arrowType="normal",color="red",fontcolor="red"];
+    22 ->  9 [arrowType="normal",color="red",fontcolor="red"];
     23 ->  22 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
     23 ->  24 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
-    24 ->  11 [arrowType="normal",color="red",fontcolor="red"];
+    24 ->  7 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_across_compilation_units__child__round_swap_with_depends_2_cfg
@@ -589,12 +589,12 @@ digraph G {
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\n(global)\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\n(global)\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 8>",shape="plaintext"];
-    9 [label="Y'final\n(global)\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    10 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 10>",shape="plaintext"];
-    11 [label="Z'final\n(global)\nVU: {Z}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    6 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 6>",shape="plaintext"];
+    7 [label="Z'final\n(global)\nVU: {Z}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="X'initial\n(global)\nVD: {X}\n<VId: 8>",shape="plaintext"];
+    9 [label="X'final\n(global)\nVU: {X}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    10 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 10>",shape="plaintext"];
+    11 [label="Y'final\n(global)\nVU: {Y}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
 
 subgraph cluster1 {
   style=filled;
@@ -645,12 +645,12 @@ digraph G {
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\n(global)\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\n(global)\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 8>",shape="plaintext"];
-    9 [label="Y'final\n(global)\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    10 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 10>",shape="plaintext"];
-    11 [label="Z'final\n(global)\nVU: {Z}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    6 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 6>",shape="plaintext"];
+    7 [label="Z'final\n(global)\nVU: {Z}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="X'initial\n(global)\nVD: {X}\n<VId: 8>",shape="plaintext"];
+    9 [label="X'final\n(global)\nVU: {X}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    10 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 10>",shape="plaintext"];
+    11 [label="Y'final\n(global)\nVU: {Y}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
     15 [label="call swap_with_depends\nSC: {Swap_With_Depends}\n<VId: 15>",shape="box"];
     16 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 16>",shape="plaintext"];
     17 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 17>",shape="plaintext"];
@@ -665,9 +665,9 @@ digraph G {
     1 ->  2 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
     1 ->  20 [arrowType="normal"];
-    6 ->  16 [arrowType="normal",color="red",fontcolor="red"];
-    8 ->  18 [arrowType="normal",color="red",fontcolor="red"];
-    10 ->  23 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  23 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  16 [arrowType="normal",color="red",fontcolor="red"];
+    10 ->  18 [arrowType="normal",color="red",fontcolor="red"];
     15 ->  16 [arrowType="normal"];
     15 ->  17 [arrowType="normal"];
     15 ->  18 [arrowType="normal"];
@@ -675,15 +675,15 @@ digraph G {
     16 ->  19 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
     17 ->  21 [arrowType="normal",color="red",fontcolor="red"];
     18 ->  17 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
-    19 ->  9 [arrowType="normal",color="red",fontcolor="red"];
+    19 ->  11 [arrowType="normal",color="red",fontcolor="red"];
     20 ->  21 [arrowType="normal"];
     20 ->  22 [arrowType="normal"];
     20 ->  23 [arrowType="normal"];
     20 ->  24 [arrowType="normal"];
     21 ->  24 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
-    22 ->  7 [arrowType="normal",color="red",fontcolor="red"];
+    22 ->  9 [arrowType="normal",color="red",fontcolor="red"];
     23 ->  22 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
-    24 ->  11 [arrowType="normal",color="red",fontcolor="red"];
+    24 ->  7 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // fa_subprogram_across_compilation_units__prime_cfg
@@ -892,7 +892,7 @@ digraph G {
     17 [label="R4b'initial\nVD: {R4b}\n<VId: 17>",shape="plaintext",fontcolor="red"];
     18 [label="R4b'final\nVU: {R4b}\n<VId: 18>",shape="plaintext"];
     19 [label="R4b : constant natural := min (x, y);\nVU: {X, Y}\nSC: {Min}\nVD: {R4b}\n<VId: 19>"];
-    20 [label="if (x mod i) = 0 and then (y mod i) = 0\nLoops:&nbsp;L_1\nVU: {I, X, Y}\n<VId: 20>",shape="diamond"];
+    20 [label="if (x mod i) = 0 and then (y mod i) = 0\nLoops:&nbsp;L_1\nVU: {X, Y, I}\n<VId: 20>",shape="diamond"];
     21 [label="return false;\nLoops:&nbsp;L_1\nVD: {Coprime}\n<VId: 21>"];
     22 [label="I'initial\nVD: {I}\n<VId: 22>",shape="plaintext"];
     23 [label="I'final\nVU: {I}\n<VId: 23>",shape="plaintext",fontcolor="red"];
@@ -941,7 +941,7 @@ digraph G {
     17 [label="R4b'initial\nVD: {R4b}\n<VId: 17>",shape="plaintext",fontcolor="red"];
     18 [label="R4b'final\nVU: {R4b}\n<VId: 18>",shape="plaintext"];
     19 [label="R4b : constant natural := min (x, y);\nVU: {X, Y}\nSC: {Min}\nVD: {R4b}\n<VId: 19>"];
-    20 [label="if (x mod i) = 0 and then (y mod i) = 0\nLoops:&nbsp;L_1\nVU: {I, X, Y}\n<VId: 20>",shape="diamond"];
+    20 [label="if (x mod i) = 0 and then (y mod i) = 0\nLoops:&nbsp;L_1\nVU: {X, Y, I}\n<VId: 20>",shape="diamond"];
     21 [label="return false;\nLoops:&nbsp;L_1\nVD: {Coprime}\n<VId: 21>"];
     22 [label="I'initial\nVD: {I}\n<VId: 22>",shape="plaintext"];
     23 [label="I'final\nVU: {I}\n<VId: 23>",shape="plaintext",fontcolor="red"];
@@ -1334,12 +1334,12 @@ digraph G {
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="Condition'initial\n(global)\nVD: {Condition}\n<VId: 6>",shape="plaintext"];
-    7 [label="Condition'final\n(global)\nVU: {Condition}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="X'initial\n(global)\nVD: {X}\n<VId: 8>",shape="plaintext"];
-    9 [label="X'final\n(global)\nVU: {X}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    10 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 10>",shape="plaintext"];
-    11 [label="Y'final\n(global)\nVU: {Y}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    6 [label="X'initial\n(global)\nVD: {X}\n<VId: 6>",shape="plaintext"];
+    7 [label="X'final\n(global)\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 8>",shape="plaintext"];
+    9 [label="Y'final\n(global)\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    10 [label="Condition'initial\n(global)\nVD: {Condition}\n<VId: 10>",shape="plaintext"];
+    11 [label="Condition'final\n(global)\nVU: {Condition}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
     15 [label="if condition\nVU: {Condition}\n<VId: 15>",shape="diamond"];
     16 [label="condition := false;\nVD: {Condition}\n<VId: 16>"];
     17 [label="x := 2 {*} x;\nVU: {X}\nVD: {X}\n<VId: 17>"];
@@ -1349,12 +1349,12 @@ subgraph cluster1 {
   color=lightgrey;
   node [style=filled,color=white];
     18 [label="call mutual_recursion_b\nSC: {Mutual_Recursion_B}\n<VId: 18>",shape="box"];
-    19 [label="global&nbsp;Condition'in\nVU: {Condition}\n<VId: 19>",shape="plaintext"];
-    20 [label="global&nbsp;X'in\nVU: {X}\n<VId: 20>",shape="plaintext"];
-    21 [label="global&nbsp;Y'in\nVU: {Y}\n<VId: 21>",shape="plaintext"];
-    22 [label="global&nbsp;Condition'out\nVD: {Condition}\n<VId: 22>",shape="plaintext"];
-    23 [label="global&nbsp;X'out\nVD: {X}\n<VId: 23>",shape="plaintext"];
-    24 [label="global&nbsp;Y'out\nVD: {Y}\n<VId: 24>",shape="plaintext"];
+    19 [label="global&nbsp;X'in\nVU: {X}\n<VId: 19>",shape="plaintext"];
+    20 [label="global&nbsp;Y'in\nVU: {Y}\n<VId: 20>",shape="plaintext"];
+    21 [label="global&nbsp;Condition'in\nVU: {Condition}\n<VId: 21>",shape="plaintext"];
+    22 [label="global&nbsp;X'out\nVD: {X}\n<VId: 22>",shape="plaintext"];
+    23 [label="global&nbsp;Y'out\nVD: {Y}\n<VId: 23>",shape="plaintext"];
+    24 [label="global&nbsp;Condition'out\nVD: {Condition}\n<VId: 24>",shape="plaintext"];
 }
 
     1 ->  15 [arrowType="normal"];
@@ -1385,36 +1385,36 @@ digraph G {
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="Condition'initial\n(global)\nVD: {Condition}\n<VId: 6>",shape="plaintext"];
-    7 [label="Condition'final\n(global)\nVU: {Condition}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="X'initial\n(global)\nVD: {X}\n<VId: 8>",shape="plaintext"];
-    9 [label="X'final\n(global)\nVU: {X}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    10 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 10>",shape="plaintext"];
-    11 [label="Y'final\n(global)\nVU: {Y}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    6 [label="X'initial\n(global)\nVD: {X}\n<VId: 6>",shape="plaintext"];
+    7 [label="X'final\n(global)\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 8>",shape="plaintext"];
+    9 [label="Y'final\n(global)\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    10 [label="Condition'initial\n(global)\nVD: {Condition}\n<VId: 10>",shape="plaintext"];
+    11 [label="Condition'final\n(global)\nVU: {Condition}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
     15 [label="if condition\nVU: {Condition}\n<VId: 15>",shape="diamond"];
     16 [label="condition := false;\nVD: {Condition}\n<VId: 16>"];
     17 [label="x := 2 {*} x;\nVU: {X}\nVD: {X}\n<VId: 17>"];
     18 [label="call mutual_recursion_b\nSC: {Mutual_Recursion_B}\n<VId: 18>",shape="box"];
-    19 [label="global&nbsp;Condition'in\nVU: {Condition}\n<VId: 19>",shape="plaintext"];
-    20 [label="global&nbsp;X'in\nVU: {X}\n<VId: 20>",shape="plaintext"];
-    21 [label="global&nbsp;Y'in\nVU: {Y}\n<VId: 21>",shape="plaintext"];
-    22 [label="global&nbsp;Condition'out\nVD: {Condition}\n<VId: 22>",shape="plaintext"];
-    23 [label="global&nbsp;X'out\nVD: {X}\n<VId: 23>",shape="plaintext"];
-    24 [label="global&nbsp;Y'out\nVD: {Y}\n<VId: 24>",shape="plaintext"];
+    19 [label="global&nbsp;X'in\nVU: {X}\n<VId: 19>",shape="plaintext"];
+    20 [label="global&nbsp;Y'in\nVU: {Y}\n<VId: 20>",shape="plaintext"];
+    21 [label="global&nbsp;Condition'in\nVU: {Condition}\n<VId: 21>",shape="plaintext"];
+    22 [label="global&nbsp;X'out\nVD: {X}\n<VId: 22>",shape="plaintext"];
+    23 [label="global&nbsp;Y'out\nVD: {Y}\n<VId: 23>",shape="plaintext"];
+    24 [label="global&nbsp;Condition'out\nVD: {Condition}\n<VId: 24>",shape="plaintext"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
-    6 ->  15 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  17 [arrowType="normal",color="red",fontcolor="red"];
     6 ->  19 [arrowType="normal",color="red",fontcolor="red"];
-    8 ->  17 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  9 [arrowType="normal",color="red",fontcolor="red"];
     8 ->  20 [arrowType="normal",color="red",fontcolor="red"];
-    10 ->  11 [arrowType="normal",color="red",fontcolor="red"];
+    10 ->  15 [arrowType="normal",color="red",fontcolor="red"];
     10 ->  21 [arrowType="normal",color="red",fontcolor="red"];
     15 ->  16 [arrowType="normal"];
     15 ->  17 [arrowType="normal"];
     15 ->  18 [arrowType="normal"];
-    16 ->  7 [arrowType="normal",color="red",fontcolor="red"];
-    17 ->  9 [arrowType="normal",color="red",fontcolor="red"];
+    16 ->  11 [arrowType="normal",color="red",fontcolor="red"];
+    17 ->  7 [arrowType="normal",color="red",fontcolor="red"];
     17 ->  17 [arrowType="normal",color="red",fontcolor="red"];
     18 ->  19 [arrowType="normal"];
     18 ->  20 [arrowType="normal"];
@@ -1423,9 +1423,9 @@ digraph G {
     18 ->  23 [arrowType="normal"];
     18 ->  24 [arrowType="normal"];
     19 ->  22 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
-    19 ->  23 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
-    19 ->  24 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
     20 ->  23 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
+    21 ->  22 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
+    21 ->  23 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
     21 ->  24 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
     22 ->  7 [arrowType="normal",color="red",fontcolor="red"];
     23 ->  9 [arrowType="normal",color="red",fontcolor="red"];
@@ -1440,12 +1440,12 @@ digraph G {
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="Condition'initial\n(global)\nVD: {Condition}\n<VId: 6>",shape="plaintext"];
-    7 [label="Condition'final\n(global)\nVU: {Condition}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="X'initial\n(global)\nVD: {X}\n<VId: 8>",shape="plaintext"];
-    9 [label="X'final\n(global)\nVU: {X}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    10 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 10>",shape="plaintext"];
-    11 [label="Y'final\n(global)\nVU: {Y}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    6 [label="X'initial\n(global)\nVD: {X}\n<VId: 6>",shape="plaintext"];
+    7 [label="X'final\n(global)\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 8>",shape="plaintext"];
+    9 [label="Y'final\n(global)\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    10 [label="Condition'initial\n(global)\nVD: {Condition}\n<VId: 10>",shape="plaintext"];
+    11 [label="Condition'final\n(global)\nVU: {Condition}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
     15 [label="if condition\nVU: {Condition}\n<VId: 15>",shape="diamond"];
     16 [label="condition := false;\nVD: {Condition}\n<VId: 16>"];
     17 [label="y := 2 {*} y;\nVU: {Y}\nVD: {Y}\n<VId: 17>"];
@@ -1455,12 +1455,12 @@ subgraph cluster1 {
   color=lightgrey;
   node [style=filled,color=white];
     18 [label="call mutual_recursion_a\nSC: {Mutual_Recursion_A}\n<VId: 18>",shape="box"];
-    19 [label="global&nbsp;Condition'in\nVU: {Condition}\n<VId: 19>",shape="plaintext"];
-    20 [label="global&nbsp;X'in\nVU: {X}\n<VId: 20>",shape="plaintext"];
-    21 [label="global&nbsp;Y'in\nVU: {Y}\n<VId: 21>",shape="plaintext"];
-    22 [label="global&nbsp;Condition'out\nVD: {Condition}\n<VId: 22>",shape="plaintext"];
-    23 [label="global&nbsp;X'out\nVD: {X}\n<VId: 23>",shape="plaintext"];
-    24 [label="global&nbsp;Y'out\nVD: {Y}\n<VId: 24>",shape="plaintext"];
+    19 [label="global&nbsp;X'in\nVU: {X}\n<VId: 19>",shape="plaintext"];
+    20 [label="global&nbsp;Y'in\nVU: {Y}\n<VId: 20>",shape="plaintext"];
+    21 [label="global&nbsp;Condition'in\nVU: {Condition}\n<VId: 21>",shape="plaintext"];
+    22 [label="global&nbsp;X'out\nVD: {X}\n<VId: 22>",shape="plaintext"];
+    23 [label="global&nbsp;Y'out\nVD: {Y}\n<VId: 23>",shape="plaintext"];
+    24 [label="global&nbsp;Condition'out\nVD: {Condition}\n<VId: 24>",shape="plaintext"];
 }
 
     1 ->  15 [arrowType="normal"];
@@ -1491,36 +1491,36 @@ digraph G {
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="Condition'initial\n(global)\nVD: {Condition}\n<VId: 6>",shape="plaintext"];
-    7 [label="Condition'final\n(global)\nVU: {Condition}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="X'initial\n(global)\nVD: {X}\n<VId: 8>",shape="plaintext"];
-    9 [label="X'final\n(global)\nVU: {X}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    10 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 10>",shape="plaintext"];
-    11 [label="Y'final\n(global)\nVU: {Y}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    6 [label="X'initial\n(global)\nVD: {X}\n<VId: 6>",shape="plaintext"];
+    7 [label="X'final\n(global)\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 8>",shape="plaintext"];
+    9 [label="Y'final\n(global)\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    10 [label="Condition'initial\n(global)\nVD: {Condition}\n<VId: 10>",shape="plaintext"];
+    11 [label="Condition'final\n(global)\nVU: {Condition}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
     15 [label="if condition\nVU: {Condition}\n<VId: 15>",shape="diamond"];
     16 [label="condition := false;\nVD: {Condition}\n<VId: 16>"];
     17 [label="y := 2 {*} y;\nVU: {Y}\nVD: {Y}\n<VId: 17>"];
     18 [label="call mutual_recursion_a\nSC: {Mutual_Recursion_A}\n<VId: 18>",shape="box"];
-    19 [label="global&nbsp;Condition'in\nVU: {Condition}\n<VId: 19>",shape="plaintext"];
-    20 [label="global&nbsp;X'in\nVU: {X}\n<VId: 20>",shape="plaintext"];
-    21 [label="global&nbsp;Y'in\nVU: {Y}\n<VId: 21>",shape="plaintext"];
-    22 [label="global&nbsp;Condition'out\nVD: {Condition}\n<VId: 22>",shape="plaintext"];
-    23 [label="global&nbsp;X'out\nVD: {X}\n<VId: 23>",shape="plaintext"];
-    24 [label="global&nbsp;Y'out\nVD: {Y}\n<VId: 24>",shape="plaintext"];
+    19 [label="global&nbsp;X'in\nVU: {X}\n<VId: 19>",shape="plaintext"];
+    20 [label="global&nbsp;Y'in\nVU: {Y}\n<VId: 20>",shape="plaintext"];
+    21 [label="global&nbsp;Condition'in\nVU: {Condition}\n<VId: 21>",shape="plaintext"];
+    22 [label="global&nbsp;X'out\nVD: {X}\n<VId: 22>",shape="plaintext"];
+    23 [label="global&nbsp;Y'out\nVD: {Y}\n<VId: 23>",shape="plaintext"];
+    24 [label="global&nbsp;Condition'out\nVD: {Condition}\n<VId: 24>",shape="plaintext"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
-    6 ->  15 [arrowType="normal",color="red",fontcolor="red"];
+    6 ->  7 [arrowType="normal",color="red",fontcolor="red"];
     6 ->  19 [arrowType="normal",color="red",fontcolor="red"];
-    8 ->  9 [arrowType="normal",color="red",fontcolor="red"];
+    8 ->  17 [arrowType="normal",color="red",fontcolor="red"];
     8 ->  20 [arrowType="normal",color="red",fontcolor="red"];
-    10 ->  17 [arrowType="normal",color="red",fontcolor="red"];
+    10 ->  15 [arrowType="normal",color="red",fontcolor="red"];
     10 ->  21 [arrowType="normal",color="red",fontcolor="red"];
     15 ->  16 [arrowType="normal"];
     15 ->  17 [arrowType="normal"];
     15 ->  18 [arrowType="normal"];
-    16 ->  7 [arrowType="normal",color="red",fontcolor="red"];
-    17 ->  11 [arrowType="normal",color="red",fontcolor="red"];
+    16 ->  11 [arrowType="normal",color="red",fontcolor="red"];
+    17 ->  9 [arrowType="normal",color="red",fontcolor="red"];
     17 ->  17 [arrowType="normal",color="red",fontcolor="red"];
     18 ->  19 [arrowType="normal"];
     18 ->  20 [arrowType="normal"];
@@ -1529,9 +1529,9 @@ digraph G {
     18 ->  23 [arrowType="normal"];
     18 ->  24 [arrowType="normal"];
     19 ->  22 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
-    19 ->  23 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
-    19 ->  24 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
     20 ->  23 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
+    21 ->  22 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
+    21 ->  23 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
     21 ->  24 [arrowType="normal",color="cornflowerblue",fontcolor="cornflowerblue"];
     22 ->  7 [arrowType="normal",color="red",fontcolor="red"];
     23 ->  9 [arrowType="normal",color="red",fontcolor="red"];
@@ -1912,7 +1912,7 @@ digraph G {
     17 [label="R4b'initial\nVD: {R4b}\n<VId: 17>",shape="plaintext",fontcolor="red"];
     18 [label="R4b'final\nVU: {R4b}\n<VId: 18>",shape="plaintext"];
     19 [label="R4b : constant natural := min (x, y);\nVU: {X, Y}\nSC: {Min}\nVD: {R4b}\n<VId: 19>"];
-    20 [label="if (x mod i) = 0 and then (y mod i) = 0\nLoops:&nbsp;L_1\nVU: {I, X, Y}\n<VId: 20>",shape="diamond"];
+    20 [label="if (x mod i) = 0 and then (y mod i) = 0\nLoops:&nbsp;L_1\nVU: {X, Y, I}\n<VId: 20>",shape="diamond"];
     21 [label="return false;\nLoops:&nbsp;L_1\nVD: {Coprime}\n<VId: 21>"];
     22 [label="I'initial\nVD: {I}\n<VId: 22>",shape="plaintext"];
     23 [label="I'final\nVU: {I}\n<VId: 23>",shape="plaintext",fontcolor="red"];
@@ -1969,7 +1969,7 @@ digraph G {
     17 [label="R4b'initial\nVD: {R4b}\n<VId: 17>",shape="plaintext",fontcolor="red"];
     18 [label="R4b'final\nVU: {R4b}\n<VId: 18>",shape="plaintext"];
     19 [label="R4b : constant natural := min (x, y);\nVU: {X, Y}\nSC: {Min}\nVD: {R4b}\n<VId: 19>"];
-    20 [label="if (x mod i) = 0 and then (y mod i) = 0\nLoops:&nbsp;L_1\nVU: {I, X, Y}\n<VId: 20>",shape="diamond"];
+    20 [label="if (x mod i) = 0 and then (y mod i) = 0\nLoops:&nbsp;L_1\nVU: {X, Y, I}\n<VId: 20>",shape="diamond"];
     21 [label="return false;\nLoops:&nbsp;L_1\nVD: {Coprime}\n<VId: 21>"];
     22 [label="I'initial\nVD: {I}\n<VId: 22>",shape="plaintext"];
     23 [label="I'final\nVU: {I}\n<VId: 23>",shape="plaintext",fontcolor="red"];

@@ -50,7 +50,7 @@ digraph G {
     7 [label="X'final\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
     8 [label="Y'initial\nVD: {Y}\n<VId: 8>",shape="plaintext"];
     9 [label="Y'final\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    13 [label="if y > x\nVU: {Y, X}\n<VId: 13>",shape="diamond"];
+    13 [label="if y > x\nVU: {X, Y}\n<VId: 13>",shape="diamond"];
     14 [label="Temp'initial\nVD: {Temp}\n<VId: 14>",shape="plaintext",fontcolor="red"];
     15 [label="Temp'final\nVU: {Temp}\n<VId: 15>",shape="plaintext"];
     17 [label="temp := x;\nVU: {X}\nVD: {Temp}\n<VId: 17>"];
@@ -83,7 +83,7 @@ digraph G {
     7 [label="X'final\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
     8 [label="Y'initial\nVD: {Y}\n<VId: 8>",shape="plaintext"];
     9 [label="Y'final\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    13 [label="if y > x\nVU: {Y, X}\n<VId: 13>",shape="diamond"];
+    13 [label="if y > x\nVU: {X, Y}\n<VId: 13>",shape="diamond"];
     14 [label="Temp'initial\nVD: {Temp}\n<VId: 14>",shape="plaintext",fontcolor="red"];
     15 [label="Temp'final\nVU: {Temp}\n<VId: 15>",shape="plaintext"];
     17 [label="temp := x;\nVU: {X}\nVD: {Temp}\n<VId: 17>"];
@@ -395,7 +395,7 @@ digraph G {
     7 [label="X'final\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
     8 [label="Y'initial\nVD: {Y}\n<VId: 8>",shape="plaintext"];
     9 [label="Y'final\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    13 [label="if y > x\nVU: {Y, X}\n<VId: 13>",shape="diamond"];
+    13 [label="if y > x\nVU: {X, Y}\n<VId: 13>",shape="diamond"];
     14 [label="Temp'initial\nVD: {Temp}\n<VId: 14>",shape="plaintext",fontcolor="red"];
     15 [label="Temp'final\nVU: {Temp}\n<VId: 15>",shape="plaintext"];
     17 [label="temp := x;\nVU: {X}\nVD: {Temp}\n<VId: 17>"];
@@ -428,7 +428,7 @@ digraph G {
     7 [label="X'final\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
     8 [label="Y'initial\nVD: {Y}\n<VId: 8>",shape="plaintext"];
     9 [label="Y'final\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    13 [label="if y > x\nVU: {Y, X}\n<VId: 13>",shape="diamond"];
+    13 [label="if y > x\nVU: {X, Y}\n<VId: 13>",shape="diamond"];
     14 [label="Temp'initial\nVD: {Temp}\n<VId: 14>",shape="plaintext",fontcolor="red"];
     15 [label="Temp'final\nVU: {Temp}\n<VId: 15>",shape="plaintext"];
     17 [label="temp := x;\nVU: {X}\nVD: {Temp}\n<VId: 17>"];
