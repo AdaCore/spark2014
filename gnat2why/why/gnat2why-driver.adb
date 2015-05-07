@@ -129,10 +129,10 @@ package body Gnat2Why.Driver is
    --  After generating the Why file, run the proof tool
 
    procedure Create_JSON_File (Proof_Done : Boolean);
-   --  at the very end, write the analysis results to disk
+   --  At the very end, write the analysis results to disk
 
    procedure Generate_Assumptions;
-   --  for all calls from a SPARK subprogram to another, register assumptions
+   --  For all calls from a SPARK subprogram to another, register assumptions
 
    ----------------------
    -- Create_JSON_File --

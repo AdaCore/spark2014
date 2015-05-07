@@ -48,7 +48,7 @@ with Types;             use Types;
 package SPARK_Definition is
 
    Entity_List : Node_Lists.List;
-   --  Lists of entities that should be translated to Why3. This list contains
+   --  List of entities that should be translated to Why3. This list contains
    --  both entities in SPARK and entities not in SPARK. VCs should be
    --  generated only for entities in the current unit. Each entity may
    --  be attached to a declaration or not (for Itypes).
