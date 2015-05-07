@@ -222,10 +222,10 @@ package body SPARK_Definition is
      (Msg           : String;
       N             : Node_Id;
       SRM_Reference : String := "");
-   --  Mark node N as a violation of SPARK. An error message is issued if
-   --  current SPARK_Mode is On, which points to the current SPARK_Mode
-   --  pragma/aspect. If SRM_Reference is set, the reference to the SRM
-   --  is appended to the error message.
+   --  Mark node N as a violation of SPARK. An error message pointing to the
+   --  current SPARK_Mode pragma/aspect is issued if current SPARK_Mode is On.
+   --  If SRM_Reference is set, the reference to the SRM is appended to the
+   --  error message.
 
    procedure Mark_Violation
      (N    : Node_Id;
