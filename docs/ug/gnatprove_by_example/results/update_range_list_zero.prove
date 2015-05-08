@@ -12,9 +12,9 @@ update_range_list_zero.adb:7:43: info: precondition proved
 update_range_list_zero.adb:7:65: info: precondition proved
 update_range_list_zero.adb:7:92: medium: precondition might fail
 update_range_list_zero.adb:8:12: info: precondition proved
-update_range_list_zero.adb:8:26: medium: precondition might fail
+update_range_list_zero.adb:8:26: info: precondition proved
 update_range_list_zero.adb:8:46: info: precondition proved
-update_range_list_zero.adb:8:65: medium: precondition might fail
+update_range_list_zero.adb:8:65: info: precondition proved
 update_range_list_zero.adb:8:83: medium: precondition might fail
 update_range_list_zero.adb:13:07: info: loop invariant initialization proved
 update_range_list_zero.adb:13:30: info: precondition proved

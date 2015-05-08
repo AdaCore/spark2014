@@ -1,6 +1,6 @@
+update_list_zero.adb:5:11: info: postcondition proved
 update_list_zero.adb:5:12: info: precondition proved
 update_list_zero.adb:5:31: info: precondition proved
-update_list_zero.adb:5:31: medium: postcondition might fail, requires Element (L, Cu) = (if (Element (L'old, Cu)) <= Threshold then 0 else (Element (L'old, Cu))
 update_list_zero.adb:5:53: medium: precondition might fail
 update_list_zero.adb:5:98: medium: precondition might fail
 update_list_zero.adb:7:19: info: precondition proved

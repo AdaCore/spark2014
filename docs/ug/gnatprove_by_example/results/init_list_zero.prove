@@ -1,5 +1,5 @@
+init_list_zero.adb:5:11: info: postcondition proved
 init_list_zero.adb:5:12: info: precondition proved
-init_list_zero.adb:5:30: medium: postcondition might fail, requires E = 0
 init_list_zero.adb:7:19: info: precondition proved
 init_list_zero.adb:9:10: info: precondition proved
 init_list_zero.adb:9:26: info: initialization of "Cu" proved
