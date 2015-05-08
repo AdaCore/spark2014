@@ -233,6 +233,10 @@ package body SPARK_Definition is
    --  Mark node N as a violation of SPARK, due to the use of entity From which
    --  is not in SPARK. An error message is issued if current SPARK_Mode is On.
 
+   procedure Mark_Violation_Of_SPARK_Mode (N : Node_Id);
+   --  Issue an error continuation message for node N with the location of the
+   --  violated SPARK_Mode pragma/aspect.
+
    ------------------------------
    -- Output SPARK Information --
    ------------------------------
@@ -4197,18 +4201,7 @@ package body SPARK_Definition is
             Error_Msg_F (Msg & " is not allowed in SPARK", N);
          end if;
 
-         Error_Msg_Sloc := Sloc (Current_SPARK_Pragma);
-
-         if Nkind (Current_SPARK_Pragma) /= N_Pragma then
-            pragma Assert (Nkind (Current_SPARK_Pragma) in N_Entity);
-            Error_Msg_FE
-              ("\\delayed type aspect on & is required to be in SPARK", N,
-               Current_SPARK_Pragma);
-         elsif From_Aspect_Specification (Current_SPARK_Pragma) then
-            Error_Msg_F ("\\violation of aspect SPARK_Mode #", N);
-         else
-            Error_Msg_F ("\\violation of pragma SPARK_Mode #", N);
-         end if;
+         Mark_Violation_Of_SPARK_Mode (N);
       end if;
    end Mark_Violation;
 
@@ -4225,20 +4218,31 @@ package body SPARK_Definition is
 
       if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
          Error_Msg_FE ("& is not allowed in SPARK", N, From);
-         Error_Msg_Sloc := Sloc (Current_SPARK_Pragma);
 
-         if Nkind (Current_SPARK_Pragma) /= N_Pragma then
-            pragma Assert (Nkind (Current_SPARK_Pragma) in N_Entity);
-            Error_Msg_FE
-              ("\\delayed type aspect on & is required to be in SPARK", N,
-               Current_SPARK_Pragma);
-         elsif From_Aspect_Specification (Current_SPARK_Pragma) then
-            Error_Msg_F ("\\violation of aspect SPARK_Mode #", N);
-         else
-            Error_Msg_F ("\\violation of pragma SPARK_Mode #", N);
-         end if;
+         Mark_Violation_Of_SPARK_Mode (N);
       end if;
    end Mark_Violation;
+
+   ----------------------------------
+   -- Mark_Violation_Of_SPARK_Mode --
+   ----------------------------------
+
+   procedure Mark_Violation_Of_SPARK_Mode (N : Node_Id)
+   is
+   begin
+      Error_Msg_Sloc := Sloc (Current_SPARK_Pragma);
+
+      if Nkind (Current_SPARK_Pragma) /= N_Pragma then
+         pragma Assert (Nkind (Current_SPARK_Pragma) in N_Entity);
+         Error_Msg_FE
+           ("\\delayed type aspect on & is required to be in SPARK", N,
+            Current_SPARK_Pragma);
+      elsif From_Aspect_Specification (Current_SPARK_Pragma) then
+         Error_Msg_F ("\\violation of aspect SPARK_Mode #", N);
+      else
+         Error_Msg_F ("\\violation of pragma SPARK_Mode #", N);
+      end if;
+   end Mark_Violation_Of_SPARK_Mode;
 
    ----------------------------------
    -- Most_Underlying_Type_In_SPARK --
