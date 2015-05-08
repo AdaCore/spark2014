@@ -287,7 +287,7 @@ package body SPARK_Definition is
    procedure Mark_Unary_Op                    (N : Node_Id);
 
    procedure Mark_Stmt_Or_Decl_List           (L : List_Id);
-   --  mark a list of statements and declarations, and register any pragma
+   --  Mark a list of statements and declarations, and register any pragma
    --  Annotate (Gnatprove) which may be part of that list
 
    procedure Mark_Actions (N : Node_Id; L : List_Id);
@@ -3014,13 +3014,13 @@ package body SPARK_Definition is
          end;
       end if;
 
-      --  Include entity E in the set of entities marked
+      --  Include entity E in the set of marked entities
 
       Entity_Set.Insert (E);
 
       --  If the entity is declared in the scope of SPARK_Mode => Off, then
       --  do not consider whether it could be in SPARK or not. An exception to
-      --  this rule is abstract state, which has to be added to the entity_list
+      --  this rule is abstract state, which has to be added to the Entity_List
       --  regardless of SPARK status.
 
       if SPARK_Pragma_Is (Opt.Off)
