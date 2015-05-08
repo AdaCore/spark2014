@@ -2,7 +2,6 @@ c3900050.ads:55:33: warning: assuming "Time_Of" has no effect on global items
 c3900050.ads:55:33: warning: no Global contract available for "Time_Of"
 c3900050.ads:57:33: warning: assuming "Time_Of" has no effect on global items
 c3900050.ads:57:33: warning: no Global contract available for "Time_Of"
-c3900050.ads:97:43: info: initialization of "Default_Time" proved
 c3900053.adb:95:11: medium: "Display_Count_For" might not be initialized after elaboration of main program "C3900053"
 c3900053.adb:108:38: info: initialization of "Alarm" proved
 c3900053.adb:112:18: info: initialization of "Alarm" proved
@@ -17,7 +16,6 @@ c3900060.ads:57:33: warning: assuming "Time_Of" has no effect on global items
 c3900060.ads:57:33: warning: no Global contract available for "Time_Of"
 c3900060.ads:59:33: warning: assuming "Time_Of" has no effect on global items
 c3900060.ads:59:33: warning: no Global contract available for "Time_Of"
-c3900060.ads:99:43: info: initialization of "Default_Time" proved
 c3900063.adb:94:11: medium: "Display_Count_For" might not be initialized after elaboration of main program "C3900063"
 c3900063.adb:113:38: info: initialization of "Medium_Alarm.Action_Officer" proved
 c3900063.adb:113:38: info: initialization of private part of "Medium_Alarm" proved
@@ -161,6 +159,18 @@ cc1311a.adb:437:48: info: initialization of "TODAY.MONTH" proved
 cc1311a.adb:437:48: info: initialization of "TODAY.YEAR" proved
 cc1311a.adb:443:16: warning: subprogram "NPROC1R" has no effect
 cc1311a.adb:447:16: warning: subprogram "NPROC2R" has no effect
+cc1311a.adb:464:06: info: initialization of "DEFAULT_VALUE.DAY" proved
+cc1311a.adb:464:06: info: initialization of "DEFAULT_VALUE.MONTH" proved
+cc1311a.adb:464:06: info: initialization of "DEFAULT_VALUE.YEAR" proved
+cc1311a.adb:466:13: info: initialization of "DEFAULT_VALUE.DAY" proved
+cc1311a.adb:466:13: info: initialization of "DEFAULT_VALUE.MONTH" proved
+cc1311a.adb:466:13: info: initialization of "DEFAULT_VALUE.YEAR" proved
+cc1311a.adb:471:06: info: initialization of "DEFAULT_VALUE.DAY" proved
+cc1311a.adb:471:06: info: initialization of "DEFAULT_VALUE.MONTH" proved
+cc1311a.adb:471:06: info: initialization of "DEFAULT_VALUE.YEAR" proved
+cc1311a.adb:473:13: info: initialization of "DEFAULT_VALUE.DAY" proved
+cc1311a.adb:473:13: info: initialization of "DEFAULT_VALUE.MONTH" proved
+cc1311a.adb:473:13: info: initialization of "DEFAULT_VALUE.YEAR" proved
    compilation of c392008_2.adb failed
 
 

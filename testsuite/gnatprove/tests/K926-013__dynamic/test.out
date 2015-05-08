@@ -3,12 +3,9 @@ dynamic.adb:5:07: warning: initialization of M has no effect
 dynamic.adb:5:24: info: overflow check proved
 dynamic.adb:6:15: info: range check proved
 dynamic.adb:7:15: info: range check proved
-dynamic.adb:7:40: info: initialization of "Z" proved
 dynamic.adb:9:15: info: range check proved
 dynamic.adb:10:15: info: range check proved
-dynamic.adb:10:35: info: initialization of "Z" proved
 dynamic.adb:11:15: info: range check proved
-dynamic.adb:11:35: info: initialization of "Z" proved
 dynamic.adb:14:12: info: range check proved
 dynamic.adb:16:07: warning: initialization of OA has no effect
 dynamic.adb:16:17: info: range check proved

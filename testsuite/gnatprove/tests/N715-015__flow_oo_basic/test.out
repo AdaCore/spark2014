@@ -2463,7 +2463,7 @@ digraph G {
     19 [label="Id.Content.Field'final\nVU: {Id.Content.Field}\n<VId: 19>",shape="plaintext",fontcolor="blue"];
     20 [label="Id.Present'initial\nVD: {Id.Present}\n<VId: 20>",shape="plaintext",fontcolor="purple"];
     21 [label="Id.Present'final\nVU: {Id.Present}\n<VId: 21>",shape="plaintext",fontcolor="blue"];
-    24 [label="subtype S16b is holder (h.present);\nVU: {H.Present}\n<VId: 24>"];
+    24 [label="subtype S16b is holder (h.present);\n<VId: 24>"];
     25 [label="return (h);\nVU: {H.Content.Present, H.Content.Field, H.Present}\nVD: {Id.Content.Present, Id.Content.Field, Id.Present}\n<VId: 25>"];
 
     1 ->  24 [arrowType="normal"];
@@ -2511,7 +2511,7 @@ digraph G {
     19 [label="Id.Content.Field'final\nVU: {Id.Content.Field}\n<VId: 19>",shape="plaintext",fontcolor="blue"];
     20 [label="Id.Present'initial\nVD: {Id.Present}\n<VId: 20>",shape="plaintext",fontcolor="purple"];
     21 [label="Id.Present'final\nVU: {Id.Present}\n<VId: 21>",shape="plaintext",fontcolor="blue"];
-    24 [label="subtype S16b is holder (h.present);\nVU: {H.Present}\n<VId: 24>"];
+    24 [label="subtype S16b is holder (h.present);\n<VId: 24>"];
     25 [label="return (h);\nVU: {H.Content.Present, H.Content.Field, H.Present}\nVD: {Id.Content.Present, Id.Content.Field, Id.Present}\n<VId: 25>"];
 
     1 ->  2 [arrowType="normal"];
@@ -2522,7 +2522,6 @@ digraph G {
     9 ->  11 [arrowType="normal",color="red",fontcolor="red"];
     9 ->  25 [arrowType="normal",color="red",fontcolor="red"];
     12 ->  13 [arrowType="normal",color="red",fontcolor="red"];
-    12 ->  24 [arrowType="normal",color="red",fontcolor="red"];
     12 ->  25 [arrowType="normal",color="red",fontcolor="red"];
     25 ->  16 [arrowType="normal",color="red",fontcolor="red"];
     25 ->  19 [arrowType="normal",color="red",fontcolor="red"];
@@ -2560,7 +2559,7 @@ digraph G {
     29 [label="R19b.Present'initial\nVD: {R19b.Present}\n<VId: 29>",shape="plaintext",fontcolor="purple"];
     30 [label="R19b.Present'final\nVU: {R19b.Present}\n<VId: 30>",shape="plaintext"];
     31 [label="R19b : constant holder := id (h1);\nVU: {H1.Content.Present, H1.Content.Field, H1.Present}\nSC: {Id}\nVD: {R19b.Present, R19b.Content.Field, R19b.Content.Present}\n<VId: 31>"];
-    32 [label="subtype S20b is record_with_mutable_discrs (R19b.present);\nVU: {R19b.Present}\n<VId: 32>"];
+    32 [label="subtype S20b is record_with_mutable_discrs (R19b.present);\n<VId: 32>"];
     33 [label="x := R19b.content.present;\nVU: {R19b.Content.Present}\nVD: {X}\n<VId: 33>"];
 
     1 ->  11 [arrowType="normal"];
@@ -2622,7 +2621,7 @@ digraph G {
     29 [label="R19b.Present'initial\nVD: {R19b.Present}\n<VId: 29>",shape="plaintext",fontcolor="purple"];
     30 [label="R19b.Present'final\nVU: {R19b.Present}\n<VId: 30>",shape="plaintext"];
     31 [label="R19b : constant holder := id (h1);\nVU: {H1.Content.Present, H1.Content.Field, H1.Present}\nSC: {Id}\nVD: {R19b.Present, R19b.Content.Field, R19b.Content.Present}\n<VId: 31>"];
-    32 [label="subtype S20b is record_with_mutable_discrs (R19b.present);\nVU: {R19b.Present}\n<VId: 32>"];
+    32 [label="subtype S20b is record_with_mutable_discrs (R19b.present);\n<VId: 32>"];
     33 [label="x := R19b.content.present;\nVU: {R19b.Content.Present}\nVD: {X}\n<VId: 33>"];
 
     1 ->  2 [arrowType="normal"];
@@ -2642,7 +2641,6 @@ digraph G {
     31 ->  25 [arrowType="normal",color="red",fontcolor="red"];
     31 ->  28 [arrowType="normal",color="red",fontcolor="red"];
     31 ->  30 [arrowType="normal",color="red",fontcolor="red"];
-    31 ->  32 [arrowType="normal",color="red",fontcolor="red"];
     31 ->  33 [arrowType="normal",color="red",fontcolor="red"];
     33 ->  7 [arrowType="normal",color="red",fontcolor="red"];
 }
@@ -2662,7 +2660,7 @@ digraph G {
     10 [label="X.D'final\nVU: {X.D}\n<VId: 10>",shape="plaintext",fontcolor="red"];
     11 [label="F'initial\nVD: {F}\n<VId: 11>",shape="plaintext",fontcolor="red"];
     12 [label="F'final\nVU: {F}\n<VId: 12>",shape="plaintext",fontcolor="blue"];
-    15 [label="subtype S22b is t (x.d);\nVU: {X.D}\n<VId: 15>"];
+    15 [label="subtype S22b is t (x.d);\n<VId: 15>"];
     16 [label="return (x.d);\nVU: {X.D}\nVD: {F}\n<VId: 16>"];
 
     1 ->  15 [arrowType="normal"];
@@ -2692,7 +2690,7 @@ digraph G {
     10 [label="X.D'final\nVU: {X.D}\n<VId: 10>",shape="plaintext",fontcolor="red"];
     11 [label="F'initial\nVD: {F}\n<VId: 11>",shape="plaintext",fontcolor="red"];
     12 [label="F'final\nVU: {F}\n<VId: 12>",shape="plaintext",fontcolor="blue"];
-    15 [label="subtype S22b is t (x.d);\nVU: {X.D}\n<VId: 15>"];
+    15 [label="subtype S22b is t (x.d);\n<VId: 15>"];
     16 [label="return (x.d);\nVU: {X.D}\nVD: {F}\n<VId: 16>"];
 
     1 ->  2 [arrowType="normal"];
@@ -2700,7 +2698,6 @@ digraph G {
     1 ->  16 [arrowType="normal"];
     6 ->  8 [arrowType="normal",color="red",fontcolor="red"];
     9 ->  10 [arrowType="normal",color="red",fontcolor="red"];
-    9 ->  15 [arrowType="normal",color="red",fontcolor="red"];
     9 ->  16 [arrowType="normal",color="red",fontcolor="red"];
     16 ->  12 [arrowType="normal",color="red",fontcolor="red"];
 }
@@ -5534,7 +5531,7 @@ digraph G {
     19 [label="Id.Content.Field'final\nVU: {Id.Content.Field}\n<VId: 19>",shape="plaintext",fontcolor="blue"];
     20 [label="Id.Present'initial\nVD: {Id.Present}\n<VId: 20>",shape="plaintext",fontcolor="purple"];
     21 [label="Id.Present'final\nVU: {Id.Present}\n<VId: 21>",shape="plaintext",fontcolor="blue"];
-    24 [label="subtype S16b is holder (h.present);\nVU: {H.Present}\n<VId: 24>"];
+    24 [label="subtype S16b is holder (h.present);\n<VId: 24>"];
     25 [label="return (h);\nVU: {H.Content.Present, H.Content.Field, H.Present}\nVD: {Id.Content.Present, Id.Content.Field, Id.Present}\n<VId: 25>"];
 
     1 ->  24 [arrowType="normal"];
@@ -5582,7 +5579,7 @@ digraph G {
     19 [label="Id.Content.Field'final\nVU: {Id.Content.Field}\n<VId: 19>",shape="plaintext",fontcolor="blue"];
     20 [label="Id.Present'initial\nVD: {Id.Present}\n<VId: 20>",shape="plaintext",fontcolor="purple"];
     21 [label="Id.Present'final\nVU: {Id.Present}\n<VId: 21>",shape="plaintext",fontcolor="blue"];
-    24 [label="subtype S16b is holder (h.present);\nVU: {H.Present}\n<VId: 24>"];
+    24 [label="subtype S16b is holder (h.present);\n<VId: 24>"];
     25 [label="return (h);\nVU: {H.Content.Present, H.Content.Field, H.Present}\nVD: {Id.Content.Present, Id.Content.Field, Id.Present}\n<VId: 25>"];
 
     1 ->  2 [arrowType="normal"];
@@ -5593,7 +5590,6 @@ digraph G {
     9 ->  11 [arrowType="normal",color="red",fontcolor="red"];
     9 ->  25 [arrowType="normal",color="red",fontcolor="red"];
     12 ->  13 [arrowType="normal",color="red",fontcolor="red"];
-    12 ->  24 [arrowType="normal",color="red",fontcolor="red"];
     12 ->  25 [arrowType="normal",color="red",fontcolor="red"];
     25 ->  16 [arrowType="normal",color="red",fontcolor="red"];
     25 ->  19 [arrowType="normal",color="red",fontcolor="red"];
@@ -5615,7 +5611,7 @@ digraph G {
     10 [label="X.D'final\nVU: {X.D}\n<VId: 10>",shape="plaintext",fontcolor="red"];
     11 [label="F'initial\nVD: {F}\n<VId: 11>",shape="plaintext",fontcolor="red"];
     12 [label="F'final\nVU: {F}\n<VId: 12>",shape="plaintext",fontcolor="blue"];
-    15 [label="subtype S22b is t (x.d);\nVU: {X.D}\n<VId: 15>"];
+    15 [label="subtype S22b is t (x.d);\n<VId: 15>"];
     16 [label="return (x.d);\nVU: {X.D}\nVD: {F}\n<VId: 16>"];
 
     1 ->  15 [arrowType="normal"];
@@ -5645,7 +5641,7 @@ digraph G {
     10 [label="X.D'final\nVU: {X.D}\n<VId: 10>",shape="plaintext",fontcolor="red"];
     11 [label="F'initial\nVD: {F}\n<VId: 11>",shape="plaintext",fontcolor="red"];
     12 [label="F'final\nVU: {F}\n<VId: 12>",shape="plaintext",fontcolor="blue"];
-    15 [label="subtype S22b is t (x.d);\nVU: {X.D}\n<VId: 15>"];
+    15 [label="subtype S22b is t (x.d);\n<VId: 15>"];
     16 [label="return (x.d);\nVU: {X.D}\nVD: {F}\n<VId: 16>"];
 
     1 ->  2 [arrowType="normal"];
@@ -5653,7 +5649,6 @@ digraph G {
     1 ->  16 [arrowType="normal"];
     6 ->  8 [arrowType="normal",color="red",fontcolor="red"];
     9 ->  10 [arrowType="normal",color="red",fontcolor="red"];
-    9 ->  15 [arrowType="normal",color="red",fontcolor="red"];
     9 ->  16 [arrowType="normal",color="red",fontcolor="red"];
     16 ->  12 [arrowType="normal",color="red",fontcolor="red"];
 }

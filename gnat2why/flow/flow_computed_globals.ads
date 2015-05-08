@@ -228,6 +228,10 @@ package Flow_Computed_Globals is
    -- Query --
    -----------
 
+   function GG_Has_Been_Generated return Boolean;
+   --  This function checks if the Globals Graph has been generated
+   --  @return True iff the Globals Graph has been generated
+
    function GG_Exist (E : Entity_Id) return Boolean
    with Pre => GG_Mode = GG_Read_Mode;
    --  Returns True if generated globals have been computed for the
@@ -309,10 +313,21 @@ private
 
    Current_Mode : GG_Mode_T := GG_No_Mode;
 
+   GG_Generated : Boolean   := False;
+   --  This variable will be set to True by GG_Read once the Global
+   --  Graph has been generated.
+
    -------------
    -- GG_Mode --
    -------------
 
    function GG_Mode return GG_Mode_T is (Current_Mode);
+
+   ---------------------------
+   -- GG_Has_Been_Generated --
+   ---------------------------
+
+   function GG_Has_Been_Generated return Boolean is (GG_Generated);
+   --  @return True iff the Global Graph has been generated
 
 end Flow_Computed_Globals;

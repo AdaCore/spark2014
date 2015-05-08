@@ -173,7 +173,6 @@ algorithm.adb:356:81: info: initialization of "riterL" proved
 algorithm.adb:361:27: info: precondition proved
 algorithm.adb:361:49: info: initialization of "riterL" proved
 algorithm.adb:381:15: info: range check proved
-algorithm.adb:381:63: info: initialization of "Existing_Gap_Id_Last" proved
 algorithm.adb:381:71: info: precondition proved
 algorithm.adb:381:71: medium: range check might fail
 algorithm.adb:393:22: info: precondition proved

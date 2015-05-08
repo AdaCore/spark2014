@@ -8,7 +8,6 @@ escape.adb:14:48: info: range check proved
 escape.adb:14:48: medium: overflow check might fail
 escape.adb:14:50: info: initialization of "Count_Bs" proved
 escape.adb:15:10: info: range check proved
-escape.adb:15:32: info: initialization of "Len" proved
 escape.adb:19:21: medium: array index check might fail
 escape.adb:19:25: info: initialization of "TI" proved
 escape.adb:19:25: medium: "Result" might not be initialized

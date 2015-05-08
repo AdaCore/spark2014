@@ -1,6 +1,5 @@
 main.adb:11:07: info: initialization of "Branch.M_Nodes" proved
 main.adb:14:13: info: discriminant check proved
-main.adb:14:13: info: initialization of "R7b" proved
 main.adb:14:22: info: length check proved
 main.adb:14:25: info: initialization of "R7b" proved
 main.adb:14:25: info: length check proved

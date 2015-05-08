@@ -1,7 +1,6 @@
 amortized_queue.adb:5:07: info: initialization of private part of "Result" proved
 amortized_queue.adb:5:14: info: initialization of private part of "Result" proved
 amortized_queue.adb:5:43: info: precondition proved
-amortized_queue.adb:5:57: info: initialization of "R2b" proved
 amortized_queue.adb:5:59: info: precondition proved
 amortized_queue.adb:6:26: info: initialization of "R4b" proved
 amortized_queue.adb:6:26: info: precondition proved
@@ -55,7 +54,6 @@ amortized_queue.adb:22:62: info: precondition proved
 amortized_queue.adb:22:78: info: range check proved
 amortized_queue.adb:29:07: info: initialization of private part of "Result" proved
 amortized_queue.adb:29:14: info: initialization of private part of "Result" proved
-amortized_queue.adb:29:45: info: initialization of "R21b" proved
 amortized_queue.adb:29:47: info: precondition proved
 amortized_queue.adb:30:10: info: precondition proved
 amortized_queue.adb:30:18: info: initialization of private part of "Result" proved
@@ -87,7 +85,6 @@ amortized_queue.adb:37:60: info: range check proved
 amortized_queue.adb:44:07: info: initialization of private part of "Result" proved
 amortized_queue.adb:44:14: info: initialization of private part of "Result" proved
 amortized_queue.adb:44:43: info: precondition proved
-amortized_queue.adb:44:57: info: initialization of "R31b" proved
 amortized_queue.adb:45:21: info: initialization of "R33b" proved
 amortized_queue.adb:45:21: info: precondition proved
 amortized_queue.adb:45:43: info: initialization of "R34b" proved

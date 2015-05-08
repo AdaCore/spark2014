@@ -100,9 +100,17 @@ package Flow.Analysis is
    --  precomputed dependency map)
 
    procedure Find_Hidden_Unexposed_State (FA : in out Flow_Analysis_Graphs);
-   --  Finds hidden states that are not constituents of any state
-   --  abstractions even though an enclosing package declares a state
-   --  abstraction.
+   --  This procedure performs two checks:
+   --
+   --    * It issues medium checks for hidden states that are not
+   --      constituents of any state abstractions even though an
+   --      enclosing package declares a state abstraction.
+   --
+   --    * It issues medium checks for hidden states that are not
+   --      constituents of any state abstractions even though
+   --      the enclosing package declares a state abstraction.
+   --      The front end performs this check for variables but
+   --      not for constants with variable input.
    --
    --  Complexity is O(N)
 

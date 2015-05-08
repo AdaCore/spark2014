@@ -67,12 +67,20 @@ is
    --  function can be used to check for this equivalence.
 
    function Get_Flow_Id
-     (Name : Entity_Name;
-      View : Parameter_Variant)
+     (Name  : Entity_Name;
+      View  : Parameter_Variant;
+      Scope : Flow_Scope)
       return Flow_Id;
-   --  Return a suitable flow id for the unique_name of an entity. We
+   --  Return a suitable Flow_Id for the unique_name of an entity. We
    --  try our best to get a direct mapping, resorting to the magic
-   --  string only as a last resort.
+   --  string only as a last resort. When an entity is found we use
+   --  Scope to determine if we should return its Full_View instead.
+   --  @param Name is the Entity_Name whose corresponding entity we
+   --    are looking for
+   --  @param View is the view that the returned Flow_Id will have
+   --  @param Scope is the scope from which Get_Flow_Id is called
+   --  @return a Flow_Id with either an entity or a magic_string if
+   --    an entity cannot be found.
 
    function Has_Depends (Subprogram : Entity_Id) return Boolean
      with Pre => Ekind (Subprogram) in Subprogram_Kind;
@@ -544,21 +552,23 @@ is
                     in Object_Kind | E_Function | E_Abstract_State);
    --  As above, but using a flow_id.
 
-   function Search_Depends (Subprogram : Entity_Id;
-                            Output     : Entity_Id;
-                            Input      : Entity_Id := Empty)
-                            return Node_Id
-     with Pre  => Nkind (Subprogram) in N_Entity and then
-                  Ekind (Subprogram) in Subprogram_Kind and then
-                  Nkind (Output) in N_Entity and then
-                  (if Present (Input) then Nkind (Input) in N_Entity),
-          Post => Present (Search_Depends'Result);
-   --  Search the depends (or refined depends) of the given subprogram for
-   --  the given output. If input is also given, search for that input in
-   --  the dependency list for the given output.
+   function Search_Contract (Unit     : Node_Id;
+                             Contract : Pragma_Id;
+                             Output   : Entity_Id;
+                             Input    : Entity_Id := Empty)
+                             return Node_Id
+     with Pre  => Contract in Pragma_Depends | Pragma_Initializes
+                    and then Nkind (Output) in N_Entity
+                    and then (if Present (Input)
+                              then Nkind (Input) in N_Entity),
+          Post => Present (Search_Contract'Result);
+   --  Search the Contract of Unit for the given Output. If Input is
+   --  also given, search for that Input of the given Output. For now
+   --  Search_Contract only works with either subprograms and pragma
+   --  depends or packages and pragma initializes.
    --
-   --  If we can't find what we're looking for, we return the subprogram
-   --  itself.
+   --  If we can't find what we're looking for, we return either the
+   --  Unit itself or the corresponding contract (if it exists).
 
    function All_Components (E : Entity_Id) return Node_Lists.List
      with Pre => Nkind (E) in N_Entity and then
@@ -586,6 +596,22 @@ is
    --  Returns the Flow_Id of the closest enclosing state of F that
    --  Is_Visible from Scope.
 
+   function Has_Variable_Input (F : Flow_Id) return Boolean
+     with Pre => F.Kind in Direct_Mapping | Record_Field;
+   --  Returns True if F corresponds to a constant with variable
+   --  input. If this function is called before the globals graph has
+   --  been generated then the results might not be perfectly accurate
+   --  (this means that some constant that might not actually have
+   --  variable will be reported as having variable input).
+   --  @param F is the Flow_Id which we check for variable input
+   --  @return True iff F is a constant with variable input
+
+   function Is_Variable (F : Flow_Id) return Boolean;
+   --  Returns True if F is either not a constant or is a constant
+   --  with variable input.
+   --  @param F is the Flow_Id that we check
+   --  @return True if F is either not a constant or if it is a constant
+   --     which Has_Variable_Input
 private
    Init_Done : Boolean := False;
 

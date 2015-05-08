@@ -1,4 +1,3 @@
-logger.adb:39:38: info: initialization of "Tmp" proved
 logger.adb:42:51: info: initialization of "R4b" proved
 logger.adb:42:70: info: initialization of "R5b" proved
 logger.adb:45:43: info: initialization of "R8b" proved

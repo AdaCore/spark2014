@@ -21,17 +21,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  with Output;               use Output;
---  with Treepr;               use Treepr;
---  with Flow_Debug;           use Flow_Debug;
-
-with Sem_Util;             use Sem_Util;
-
 with Flow_Dependency_Maps; use Flow_Dependency_Maps;
 with Flow_Error_Messages;  use Flow_Error_Messages;
 with Flow_Refinement;      use Flow_Refinement;
 with Flow_Types;           use Flow_Types;
 with Flow_Utility;         use Flow_Utility;
+with Sem_Util;             use Sem_Util;
+with Snames;               use Snames;
 
 package body Flow_Classwide is
 
@@ -58,8 +54,7 @@ package body Flow_Classwide is
    -- Has_Controlling_Formal_Or_Result --
    --------------------------------------
 
-   function Has_Controlling_Formal_Or_Result (E : Entity_Id) return Boolean
-   is
+   function Has_Controlling_Formal_Or_Result (E : Entity_Id) return Boolean is
       Ptr : Node_Id;
    begin
       if not Is_Primitive (E) then
@@ -421,10 +416,11 @@ package body Flow_Classwide is
                     "class-wide dependency ""% => %"" is not a " &
                     "class-wide dependency of overridden subprogram #",
                   Kind       => Error_Kind,
-                  N          => Search_Depends
-                    (E,
-                     Get_Direct_Mapping_Id (My_Output),
-                     Get_Direct_Mapping_Id (F)),
+                  N          => Search_Contract
+                                  (E,
+                                   Pragma_Depends,
+                                   Get_Direct_Mapping_Id (My_Output),
+                                   Get_Direct_Mapping_Id (F)),
                   Suppressed => Suppressed,
                   F1         => My_Output,
                   F2         => F,

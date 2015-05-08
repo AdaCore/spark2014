@@ -55,7 +55,6 @@ with_default.adb:201:27: info: discriminant check proved
 with_default.adb:202:07: info: assertion proved
 with_default.adb:202:22: info: initialization of "Wrap.Content.F1" proved
 with_default.adb:202:26: info: discriminant check proved
-with_default.adb:202:26: info: initialization of "R26b" proved
 with_default.adb:202:34: info: discriminant check proved
 with_default.adb:206:39: medium: range check might fail
 with_default.adb:219:39: medium: range check might fail

@@ -46,7 +46,6 @@ find_map.adb:48:10: info: precondition proved
 find_map.adb:48:20: info: initialization of private part of "M" proved
 find_map.adb:49:17: info: precondition proved
 find_map.adb:49:31: info: initialization of private part of "M" proved
-find_map.ads:24:30: info: initialization of "R52s" proved
 find_map.ads:24:30: info: precondition proved
 find_map.ads:27:14: info: postcondition proved
 find_map.ads:28:17: info: precondition proved

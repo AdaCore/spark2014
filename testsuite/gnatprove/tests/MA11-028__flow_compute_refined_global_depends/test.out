@@ -10,12 +10,12 @@ bad_refinement.ads:12:11: global input "Bad_Refinement.State" of "Liar3" not rea
 bad_refinement.ads:15:28: medium: missing dependency "Liar4'Result => Bad_Refinement.State2"
 bad_refinement.ads:17:21: info: initialization of "I" proved
 bad_refinement.ads:19:23: medium: missing dependency "Bad_Refinement.State2 => Bad_Refinement.State2"
-bad_refinement.ads:21:14: medium: incorrect dependency "I => Bad_Refinement.State"
 bad_refinement.ads:21:21: info: initialization of "I" proved
 bad_refinement.ads:21:24: info: initialization of "J" proved
-bad_refinement.ads:25:14: medium: incorrect dependency "I => Bad_Refinement.State"
+bad_refinement.ads:23:11: medium: incorrect dependency "I => Bad_Refinement.State"
 bad_refinement.ads:25:21: info: initialization of "I" proved
 bad_refinement.ads:25:24: info: initialization of "J" proved
+bad_refinement.ads:26:11: medium: incorrect dependency "I => Bad_Refinement.State"
 bad_refinement.ads:33:14: info: initialization of "X" constituent of "State" proved
 bad_refinement.ads:33:21: info: initialization of "I" proved
 bad_refinement.ads:34:11: expected to see "Bad_Refinement.State" on the left-hand-side of a dependency relation

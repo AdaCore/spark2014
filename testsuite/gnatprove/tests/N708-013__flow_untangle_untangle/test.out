@@ -20,7 +20,6 @@ foo.adb:83:13: warning: unused assignment
 foo.adb:84:16: info: initialization of "Tmp.X" proved
 foo.adb:87:23: info: initialization of "A.N" proved
 foo.adb:88:23: info: initialization of "B" proved
-foo.adb:92:17: info: initialization of "Tmp_1" proved
 foo.adb:103:04: warning: analyzing unreferenced procedure "Test_07"
 foo.adb:104:23: info: initialization of "O" proved
 foo.adb:109:16: info: initialization of "Tmp.A" proved

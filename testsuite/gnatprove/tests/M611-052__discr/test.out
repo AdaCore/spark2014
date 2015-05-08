@@ -1,4 +1,3 @@
-list.adb:12:26: info: initialization of "R1b" proved
 list.adb:12:35: info: precondition proved
 list.adb:14:07: info: initialization of private part of "Res" proved
 list.adb:14:14: info: initialization of private part of "Res" proved

@@ -596,8 +596,7 @@ package body Flow_Refinement is
       -- Ancestor --
       --------------
 
-      function Ancestor (S : Flow_Scope) return Flow_Scope
-      is
+      function Ancestor (S : Flow_Scope) return Flow_Scope is
       begin
          case Valid_Section_T'(S.Section) is
             when Body_Part =>
@@ -629,8 +628,7 @@ package body Flow_Refinement is
       -- Common_Ancestor --
       ---------------------
 
-      function Common_Ancestor (A, B : Flow_Scope) return Flow_Scope
-      is
+      function Common_Ancestor (A, B : Flow_Scope) return Flow_Scope is
          L1  : constant Scope_Vectors.Vector := Heritage (A);
          L2  : constant Scope_Vectors.Vector := Heritage (B);
 
@@ -688,16 +686,14 @@ package body Flow_Refinement is
          end if;
 
          case Ekind (Ent) is
-            when E_Abstract_State =>
+            when E_Abstract_State |
+                 E_Constant       =>
                null;
 
             when E_Variable =>
                if not Is_Package_State (Ent) then
                   return False;
                end if;
-
-            when E_Constant =>
-               return False;
 
             when others =>
                Print_Tree_Node (Ent);

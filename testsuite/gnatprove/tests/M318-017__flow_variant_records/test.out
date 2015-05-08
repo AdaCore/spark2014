@@ -89,7 +89,6 @@ test.adb:108:32: info: initialization of "X.Reason" proved
 test.adb:120:04: warning: analyzing unreferenced procedure "Test_Definite_05"
 test.adb:120:32: info: initialization of "X.Index" proved
 test.adb:120:32: info: initialization of "X.Reason" proved
-test.adb:123:28: info: initialization of "Tmp" proved
 test.adb:132:12: info: initialization of "R.Index" proved
 test.adb:132:12: medium: "R.Reason" might not be initialized
 test.adb:135:32: info: initialization of "X.Index" proved

@@ -989,18 +989,30 @@ package body Flow.Analysis is
             A : constant V_Attributes          := FA.Atr.Element (V);
          begin
             if A.Is_Global then
-               --  We have an unused global, we need to give the error on
-               --  the subprogram, instead of the global. In generative
-               --  mode we don't produce this warning.
+               --  We have an unused global, we need to give the error
+               --  on the subprogram, instead of the global. In
+               --  generative mode we don't emit this message.
                if not FA.Is_Generative then
-                  Error_Msg_Flow
-                    (FA       => FA,
-                     Msg      => "unused global &",
-                     SRM_Ref  => "6.1.4(14)",
-                     N        => Find_Global (FA.Analyzed_Entity, F),
-                     F1       => F,
-                     Tag      => Unused,
-                     Kind     => Low_Check_Kind);
+                  if Is_Variable (F) then
+                     Error_Msg_Flow
+                       (FA       => FA,
+                        Msg      => "unused global &",
+                        SRM_Ref  => "6.1.4(14)",
+                        N        => Find_Global (FA.Analyzed_Entity, F),
+                        F1       => F,
+                        Tag      => Unused,
+                        Kind     => Low_Check_Kind);
+                  else
+                     --  Issue a different message if the global is a
+                     --  constant.
+                     Error_Msg_Flow
+                       (FA       => FA,
+                        Msg      => "constant & cannot appear in Globals",
+                        N        => Find_Global (FA.Analyzed_Entity, F),
+                        F1       => F,
+                        Tag      => Unused,
+                        Kind     => Medium_Check_Kind);
+                  end if;
                end if;
             else
                --  ??? distinguish between variables and parameters
@@ -2593,7 +2605,11 @@ package body Flow.Analysis is
       --  necessarily direcly) which has a state abstraction.
 
       procedure Warn_About_Hidden_States (E : Entity_Id);
-      --  Issues one warning per hidden state found in package E
+      --  Issues a medium check per hidden state found in package E
+
+      procedure Warn_About_Unreferenced_Constants (E : Entity_Id);
+      --  Issues a high check for every constant with variable input
+      --  which is not exposed through a state abstraction.
 
       ---------------------------------
       -- Enclosing_Package_Has_State --
@@ -2641,7 +2657,6 @@ package body Flow.Analysis is
 
          --  If we reach this point then there is no enclosing package
          --  which has state.
-
          return False;
       end Enclosing_Package_Has_State;
 
@@ -2652,8 +2667,8 @@ package body Flow.Analysis is
       procedure Warn_About_Hidden_States (E : Entity_Id) is
 
          procedure Warn_On_Non_Constant (First_Ent : Entity_Id);
-         --  Goes through a list of entities and issues warnings for
-         --  any non-constant variables.
+         --  Goes through a list of entities and issues medium checks
+         --  for any non-constant variables.
 
          --------------------------
          -- Warn_On_Non_Constant --
@@ -2664,13 +2679,13 @@ package body Flow.Analysis is
          begin
             Hidden_State := First_Ent;
             while Present (Hidden_State) loop
-               if Ekind (Hidden_State) = E_Variable
-                 and then not Is_Constant_Object (Hidden_State)
+               if Ekind (Hidden_State) in Object_Kind
+                 and then Is_Variable (Direct_Mapping_Id (Hidden_State))
                then
                   Error_Msg_Flow
                     (FA   => FA,
                      Msg  => "& needs to be a constituent of " &
-                       "some state abstraction",
+                               "some state abstraction",
                      N    => Hidden_State,
                      F1   => Direct_Mapping_Id (Hidden_State),
                      Tag  => Hidden_Unexposed_State,
@@ -2682,32 +2697,102 @@ package body Flow.Analysis is
          end Warn_On_Non_Constant;
 
       begin
-         --  Warn about hidden state that lies in the private part
+         --  Warn about hidden states that lie in the private part
          Warn_On_Non_Constant (First_Private_Entity (E));
 
-         --  Warn about hidden state that lies in the body
+         --  Warn about hidden states that lie in the body
          if Present (Body_Entity (E)) then
             Warn_On_Non_Constant (First_Entity (Body_Entity (E)));
          end if;
       end Warn_About_Hidden_States;
 
-   begin
-      --  If the package has state abstraction then there is nothing
-      --  to do here.
+      ---------------------------------------
+      -- Warn_About_Unreferenced_Constants --
+      ---------------------------------------
 
-      if Present (Abstract_States (FA.Spec_Node)) then
-         return;
+      procedure Warn_About_Unreferenced_Constants (E : Entity_Id) is
+         Refined_State_N  : constant Node_Id :=
+           Get_Pragma (Body_Entity (E),
+                       Pragma_Refined_State);
+
+         DM               : Dependency_Maps.Map;
+         All_Constituents : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+
+         procedure Warn_On_Unexposed_Constant (First_Ent : Entity_Id);
+         --  Goes through a list of entities and issues medium checks
+         --  for any unexposed constants with variable inputs.
+
+         --------------------------------
+         -- Warn_On_Unexposed_Constant --
+         --------------------------------
+
+         procedure Warn_On_Unexposed_Constant (First_Ent : Entity_Id) is
+            Hidden_State : Entity_Id;
+            F            : Flow_Id;
+         begin
+            Hidden_State := First_Ent;
+            while Present (Hidden_State) loop
+               F := Direct_Mapping_Id (Hidden_State);
+
+               if Ekind (Hidden_State) in Object_Kind
+                 and then Is_Constant_Object (Hidden_State)
+                 and then Has_Variable_Input (F)
+                 and then not All_Constituents.Contains (F)
+               then
+                  Error_Msg_Flow
+                    (FA   => FA,
+                     Msg  => "& needs to be a constituent of " &
+                               "some state abstraction",
+                     N    => Hidden_State,
+                     F1   => F,
+                     Tag  => Hidden_Unexposed_State,
+                     Kind => Medium_Check_Kind);
+               end if;
+
+               Next_Entity (Hidden_State);
+            end loop;
+         end Warn_On_Unexposed_Constant;
+
+      begin
+         --  Sanity check that we do have a Refined_State aspect
+         pragma Assert (Present (Refined_State_N));
+
+         --  Gather up all constituents mentioned in the Refined_State
+         --  aspect.
+         DM := Parse_Refined_State (Refined_State_N);
+         for State in DM.Iterate loop
+            All_Constituents.Union (Dependency_Maps.Element (State));
+         end loop;
+
+         --  Warn about hidden unexposed constants with variable input
+         --  that lie in the private part.
+         Warn_On_Unexposed_Constant (First_Private_Entity (E));
+
+         --  Warn about hidden unexposed constants with variable input
+         --  that lie in the body.
+         Warn_On_Unexposed_Constant (First_Entity (Body_Entity (E)));
+      end Warn_About_Unreferenced_Constants;
+
+   begin  --  Find_Hidden_Unexposed_State
+
+      if not Present (Abstract_States (FA.Spec_Node))
+        and then Enclosing_Package_Has_State (FA.Spec_Node)
+      then
+         --  If the package does not have an abstract state aspect and
+         --  an enclosing package does introduces a state abstraction
+         --  then issue a medium check per hidden state.
+         Warn_About_Hidden_States (FA.Spec_Node);
       end if;
 
-      --  If there is no enclosing package that introduces a state
-      --  abstraction then there is nothing to do here.
-
-      if not Enclosing_Package_Has_State (FA.Spec_Node) then
-         return;
+      if Present (Abstract_States (FA.Spec_Node))
+        and then Present (Body_Entity (FA.Spec_Node))
+      then
+         --  If the package has an abstract state aspect then issue
+         --  high checks for every constant with variable input that
+         --  is part of the package's hidden state and is not exposed
+         --  through a state abstraction.
+         Warn_About_Unreferenced_Constants (FA.Spec_Node);
       end if;
-
-      --  Issue one message per hidden state
-      Warn_About_Hidden_States (FA.Spec_Node);
 
    end Find_Hidden_Unexposed_State;
 
@@ -2791,7 +2876,8 @@ package body Flow.Analysis is
          return FS;
       end Outputs_Of_Procedures;
 
-   begin
+   begin  --  Find_Impossible_To_Initialize_State
+
       --  If the package either has no state abstractions, or has
       --  "Abstract_State => null" then there is nothing to do here.
 
@@ -3062,8 +3148,9 @@ package body Flow.Analysis is
                Error_Msg_Flow
                  (FA   => FA,
                   Msg  => "incorrect dependency & is not an output of &",
-                  N    => Search_Depends (FA.Analyzed_Entity,
-                                          Get_Direct_Mapping_Id (F_Out)),
+                  N    => Search_Contract (FA.Analyzed_Entity,
+                                           Pragma_Depends,
+                                           Get_Direct_Mapping_Id (F_Out)),
                   F1   => F_Out,
                   F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
                   Tag  => Depends_Null,
@@ -3147,7 +3234,16 @@ package body Flow.Analysis is
                      else
                         --  Something that the user dependency fails to
                         --  mention.
-                        if F_Out = Null_Flow_Id then
+                        if not Is_Variable (Missing_Var) then
+                           --  Dealing with a constant
+                           Error_Msg_Flow
+                             (FA   => FA,
+                              Msg  => "constant & cannot appear in Depends",
+                              N    => Depends_Location,
+                              F1   => Missing_Var,
+                              Tag  => Depends_Null,
+                              Kind => Medium_Check_Kind);
+                        elsif F_Out = Null_Flow_Id then
                            Error_Msg_Flow
                              (FA   => FA,
                               Msg  => "missing dependency ""null => %""",
@@ -3160,11 +3256,11 @@ package body Flow.Analysis is
                         then
                            Error_Msg_Flow
                              (FA   => FA,
-                              Msg  =>
-                                "missing dependency ""%'Result => %""",
-                              N    => Search_Depends
-                                (FA.Analyzed_Entity,
-                                 Get_Direct_Mapping_Id (F_Out)),
+                              Msg  => "missing dependency ""%'Result => %""",
+                              N    => Search_Contract
+                                        (FA.Analyzed_Entity,
+                                         Pragma_Depends,
+                                         Get_Direct_Mapping_Id (F_Out)),
                               F1   => F_Out,
                               F2   => Missing_Var,
                               Tag  => Depends_Missing,
@@ -3173,9 +3269,10 @@ package body Flow.Analysis is
                            Error_Msg_Flow
                              (FA   => FA,
                               Msg  => "missing dependency ""% => %""",
-                              N    => Search_Depends
-                                (FA.Analyzed_Entity,
-                                 Get_Direct_Mapping_Id (F_Out)),
+                              N    => Search_Contract
+                                        (FA.Analyzed_Entity,
+                                         Pragma_Depends,
+                                         Get_Direct_Mapping_Id (F_Out)),
                               F1   => F_Out,
                               F2   => Missing_Var,
                               Tag  => Depends_Missing,
@@ -3189,7 +3286,15 @@ package body Flow.Analysis is
                for Wrong_Var of Wrong_Deps loop
                   --  Something the user dependency claims, but does
                   --  not happen in reality.
-                  if F_Out = Null_Flow_Id then
+                  if not Is_Variable (Wrong_Var) then
+                     Error_Msg_Flow
+                       (FA   => FA,
+                        Msg  => "constant & cannot appear in Depends",
+                        N    => Depends_Location,
+                        F1   => Wrong_Var,
+                        Tag  => Depends_Wrong,
+                        Kind => Medium_Check_Kind);
+                  elsif F_Out = Null_Flow_Id then
                      Error_Msg_Flow
                        (FA   => FA,
                         Msg  => "incorrect dependency ""null => %""",
@@ -3204,10 +3309,11 @@ package body Flow.Analysis is
                      Error_Msg_Flow
                        (FA   => FA,
                         Msg  => "incorrect dependency ""%'Result => %""",
-                        N    => Search_Depends
-                          (FA.Analyzed_Entity,
-                           Get_Direct_Mapping_Id (F_Out),
-                           Get_Direct_Mapping_Id (Wrong_Var)),
+                        N    => Search_Contract
+                                  (FA.Analyzed_Entity,
+                                   Pragma_Depends,
+                                   Get_Direct_Mapping_Id (F_Out),
+                                   Get_Direct_Mapping_Id (Wrong_Var)),
                         F1   => F_Out,
                         F2   => Wrong_Var,
                         Tag  => Depends_Wrong,
@@ -3216,10 +3322,11 @@ package body Flow.Analysis is
                      Error_Msg_Flow
                        (FA   => FA,
                         Msg  => "incorrect dependency ""% => %""",
-                        N    => Search_Depends
-                          (FA.Analyzed_Entity,
-                           Get_Direct_Mapping_Id (F_Out),
-                           Get_Direct_Mapping_Id (Wrong_Var)),
+                        N    => Search_Contract
+                                  (FA.Analyzed_Entity,
+                                   Pragma_Depends,
+                                   Get_Direct_Mapping_Id (F_Out),
+                                   Get_Direct_Mapping_Id (Wrong_Var)),
                         F1   => F_Out,
                         F2   => Wrong_Var,
                         Tag  => Depends_Wrong,
@@ -3236,16 +3343,6 @@ package body Flow.Analysis is
    --------------------------------
 
    procedure Check_Initializes_Contract (FA : in out Flow_Analysis_Graphs) is
-
-      function Find_Entity
-        (E    : Entity_Id;
-         E_In : Entity_Id := Empty) return Node_Id;
-      --  Looks through the initializes aspect on FA.Analyzed_Entity
-      --  and returns the node which represents E in the
-      --  initializes_item. If E_In is not Empty then we look at the
-      --  right hand side of an initializes_item. Otherwise, by
-      --  default, we look at the left hand side. If no node can be
-      --  found, we return FA.Initializes_N as a fallback.
 
       function Node_Id_Set_To_Flow_Id_Set
         (NS : Node_Sets.Set)
@@ -3269,88 +3366,13 @@ package body Flow.Analysis is
       --  tracefile containing all vertices in between (From
       --  and To excluded).
 
-      -----------------
-      -- Find_Entity --
-      -----------------
-
-      function Find_Entity
-        (E    : Entity_Id;
-         E_In : Entity_Id := Empty) return Node_Id
-      is
-         Initializes_Contract : constant Node_Id := FA.Initializes_N;
-         Needle               : Node_Id := Empty;
-
-         function Proc (N : Node_Id) return Traverse_Result;
-         --  Searches initializes aspect for export E and sets needle
-         --  to the node, if found.
-
-         function Proc (N : Node_Id) return Traverse_Result is
-            Tmp : Node_Id;
-         begin
-            case Nkind (N) is
-               when N_Component_Association =>
-                  Tmp := First (Choices (N));
-
-                  while Present (Tmp) loop
-                     if Entity (Tmp) = E then
-                        if not Present (E_In) then
-                           Needle := Tmp;
-                           return Abandon;
-                        else
-                           Tmp := Expression (N);
-
-                           case Nkind (Tmp) is
-                              when N_Aggregate =>
-                                 Tmp := First (Expressions (Tmp));
-
-                                 while Present (Tmp) loop
-                                    if Entity (Tmp) = E_In then
-                                       Needle := Tmp;
-                                       return Abandon;
-                                    end if;
-
-                                    Tmp := Next (Tmp);
-                                 end loop;
-
-                                 return Skip;
-
-                              when others =>
-                                 Needle := Tmp;
-                                 return Abandon;
-                           end case;
-                        end if;
-                     end if;
-
-                     Tmp := Next (Tmp);
-                  end loop;
-
-                  return Skip;
-
-               when others =>
-                  null;
-            end case;
-
-            return OK;
-         end Proc;
-
-         procedure Find_Export_Internal is new Traverse_Proc (Proc);
-
-      begin
-         Find_Export_Internal (Initializes_Contract);
-         if Present (Needle) then
-            return Needle;
-         else
-            return Initializes_Contract;
-         end if;
-      end Find_Entity;
-
       --------------------------------
       -- Node_Id_Set_To_Flow_Id_Set --
       --------------------------------
 
       function Node_Id_Set_To_Flow_Id_Set
         (NS : Node_Sets.Set)
-        return Flow_Id_Sets.Set
+         return Flow_Id_Sets.Set
       is
          Tmp : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
       begin
@@ -3395,8 +3417,7 @@ package body Flow.Analysis is
             Instruction : out Flow_Graphs.Traversal_Instruction);
          --  Visitor procedure for Shortest_Path.
 
-         procedure Add_Loc
-           (V : Flow_Graphs.Vertex_Id);
+         procedure Add_Loc (V : Flow_Graphs.Vertex_Id);
          --  Step procedure for Shortest_Path.
 
          ----------------------
@@ -3420,9 +3441,7 @@ package body Flow.Analysis is
          -- Add_Loc --
          -------------
 
-         procedure Add_Loc
-           (V : Flow_Graphs.Vertex_Id)
-         is
+         procedure Add_Loc (V : Flow_Graphs.Vertex_Id) is
             F : constant Flow_Id := FA.CFG.Get_Key (V);
          begin
             if (not To.Contains (V)) and F.Kind = Direct_Mapping then
@@ -3477,9 +3496,11 @@ package body Flow.Analysis is
                   Error_Msg_Flow
                     (FA   => FA,
                      Msg  => "% must be initialized at elaboration",
-                     N    => Find_Entity
-                       (E    => Get_Direct_Mapping_Id (The_Out),
-                        E_In => Get_Direct_Mapping_Id (G)),
+                     N    => Search_Contract
+                               (FA.Spec_Node,
+                                Pragma_Initializes,
+                                Get_Direct_Mapping_Id (The_Out),
+                                Get_Direct_Mapping_Id (G)),
                      F1   => G,
                      Kind => High_Check_Kind,
                      Tag  => Uninitialized);
@@ -3550,8 +3571,10 @@ package body Flow.Analysis is
                         Msg       =>
                           "initialization of % must not depend on %",
                         SRM_Ref   => "7.1.5(11)",
-                        N         => Find_Entity
-                          (Get_Direct_Mapping_Id (The_Out)),
+                        N         => Search_Contract
+                                       (FA.Spec_Node,
+                                        Pragma_Initializes,
+                                        Get_Direct_Mapping_Id (The_Out)),
                         F1        => The_Out,
                         F2        => Actual_In,
                         Tag       => Initializes_Wrong,
@@ -3567,19 +3590,57 @@ package body Flow.Analysis is
                end if;
             end loop;
 
-            --  Raise warnings for inputs mentioned in the Initializes
-            --  that are not actual inputs.
+            --  Raise medium checks for inputs mentioned in the
+            --  Initializes that are not actual inputs.
             for Contract_In of All_Contract_Ins loop
                if not All_Actual_Ins.Contains (Contract_In) then
+                  if Is_Variable (Contract_In) then
+                     Error_Msg_Flow
+                       (FA      => FA,
+                        Msg     => "initialization of & does not depend on &",
+                        SRM_Ref => "7.1.5(11)",
+                        N       => Search_Contract
+                                       (FA.Spec_Node,
+                                        Pragma_Initializes,
+                                        Get_Direct_Mapping_Id (The_Out)),
+                        F1      => The_Out,
+                        F2      => Contract_In,
+                        Tag     => Initializes_Wrong,
+                        Kind    => Medium_Check_Kind);
+                  else
+                     --  The input is a constant without variable
+                     --  input.
+                     Error_Msg_Flow
+                      (FA   => FA,
+                       Msg  => "constant & cannot appear in Initializes",
+                       N    => Search_Contract
+                                 (FA.Spec_Node,
+                                  Pragma_Initializes,
+                                  Get_Direct_Mapping_Id (The_Out),
+                                  Get_Direct_Mapping_Id (Contract_In)),
+                       F1   => Contract_In,
+                       Tag  => Initializes_Wrong,
+                       Kind => Medium_Check_Kind);
+                  end if;
+               end if;
+            end loop;
+
+            --  Raise medium checks for outputs that are constants and
+            --  should consequently not be mention in an initializes
+            --  aspect.
+            for Contract_Out of All_Contract_Outs loop
+               if not Is_Variable (Contract_Out) then
+                  --  Output is a constant without variable input
                   Error_Msg_Flow
-                    (FA      => FA,
-                     Msg     => "initialization of % does not depend on %",
-                     SRM_Ref => "7.1.5(11)",
-                     N       => Find_Entity (Get_Direct_Mapping_Id (The_Out)),
-                     F1      => The_Out,
-                     F2      => Contract_In,
-                     Tag     => Initializes_Wrong,
-                     Kind    => Medium_Check_Kind);
+                    (FA   => FA,
+                     Msg  => "constant & cannot appear in Initializes",
+                     N    => Search_Contract
+                               (FA.Spec_Node,
+                                Pragma_Initializes,
+                                Get_Direct_Mapping_Id (Contract_Out)),
+                     F1   => Contract_Out,
+                     Tag  => Initializes_Wrong,
+                     Kind => Medium_Check_Kind);
                end if;
             end loop;
          end loop;

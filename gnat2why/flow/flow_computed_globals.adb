@@ -27,15 +27,17 @@ with Ada.Text_IO.Unbounded_IO;   use Ada.Text_IO.Unbounded_IO;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Containers.Hashed_Sets;
 with ALI;                        use ALI;
+with Atree;                      use Atree;
+with Einfo;                      use Einfo;
 with Flow_Utility;               use Flow_Utility;
 with Gnat2Why_Args;
 with Graph;
+with Lib.Util;                   use Lib.Util;
 with Namet;                      use Namet;
 with Osint;                      use Osint;
 with Osint.C;                    use Osint.C;
 with Output;                     use Output;
 with Sem_Util;                   use Sem_Util;
-with Lib.Util;                   use Lib.Util;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Util;                 use SPARK_Util;
 
@@ -433,6 +435,13 @@ package body Flow_Computed_Globals is
       procedure Create_All_Vertices;
       --  Creates all the vertices of the Global_Graph
 
+      procedure Edit_Proof_Ins;
+      --  A variable cannot be simultaneously a Proof_In and an Input
+      --  of a subprogram. In this case we need to remove the Proof_In
+      --  edge. Furthermore, a variable cannot be simultaneously a
+      --  Proof_In and an Output (but not an input). In this case we
+      --  need to change the Proof_In variable into an Input.
+
       procedure Load_GG_Info_From_ALI (ALI_File_Name : File_Name_Type);
       --  Gets the GG info from an ALI file and stores them in the
       --  Info_Set table.
@@ -453,12 +462,8 @@ package body Flow_Computed_Globals is
       procedure Remove_Edges_To_Local_Variables;
       --  Removes edges between subprograms and their local variables
 
-      procedure Edit_Proof_Ins;
-      --  A variable cannot be simultaneously a Proof_In and an Input
-      --  of a subprogram. In this case we need to remove the Proof_In
-      --  edge. Furthermore, a variable cannot be simultaneously a
-      --  Proof_In and an Output (but not an input). In this case we
-      --  need to change the Proof_In variable into an Input.
+      procedure Remove_Constants_Without_Variable_Input;
+      --  Removes edges leading to constants without variable input
 
       -------------------
       -- Add_All_Edges --
@@ -728,6 +733,81 @@ package body Flow_Computed_Globals is
          end loop;
       end Create_All_Vertices;
 
+      --------------------
+      -- Edit_Proof_Ins --
+      --------------------
+
+      procedure Edit_Proof_Ins is
+         function Get_Variable_Neighbours
+           (Start : Vertex_Id)
+            return Vertex_Sets.Set;
+         --  Returns a set of all Neighbours of Start that correspond
+         --  to variables.
+
+         function Get_Variable_Neighbours
+           (Start : Vertex_Id)
+            return Vertex_Sets.Set
+         is
+            VS : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+         begin
+            for V of Global_Graph.Get_Collection (Start,
+                                                  Out_Neighbours)
+            loop
+               if Global_Graph.Get_Key (V).Kind = Variable_Kind then
+                  VS.Include (V);
+               end if;
+            end loop;
+
+            return VS;
+         end Get_Variable_Neighbours;
+      begin
+         for Info of Info_Set loop
+            declare
+               G_Ins       : constant Global_Id :=
+                 Global_Id'(Kind => Ins_Kind,
+                            Name => Info.Subprogram);
+
+               G_Outs      : constant Global_Id :=
+                 Global_Id'(Kind => Outs_Kind,
+                            Name => Info.Subprogram);
+
+               G_Proof_Ins : constant Global_Id :=
+                 Global_Id'(Kind => Proof_Ins_Kind,
+                            Name => Info.Subprogram);
+
+               V_Ins       : constant Vertex_Id :=
+                 Global_Graph.Get_Vertex (G_Ins);
+
+               V_Outs      : constant Vertex_Id :=
+                 Global_Graph.Get_Vertex (G_Outs);
+
+               V_Proof_Ins : constant Vertex_Id :=
+                 Global_Graph.Get_Vertex (G_Proof_Ins);
+
+               Inputs      : constant Vertex_Sets.Set :=
+                 Get_Variable_Neighbours (V_Ins);
+
+               Outputs     : constant Vertex_Sets.Set :=
+                 Get_Variable_Neighbours (V_Outs);
+
+               Proof_Ins   : constant Vertex_Sets.Set :=
+                 Get_Variable_Neighbours (V_Proof_Ins);
+            begin
+               for V of Proof_Ins loop
+                  if Inputs.Contains (V)
+                    or else Outputs.Contains (V)
+                  then
+                     if not Global_Graph.Edge_Exists (V_Ins, V) then
+                        Global_Graph.Add_Edge (V_Ins, V, EC_Default);
+                     end if;
+
+                     Global_Graph.Remove_Edge (V_Proof_Ins, V);
+                  end if;
+               end loop;
+            end;
+         end loop;
+      end Edit_Proof_Ins;
+
       ---------------------------
       -- Load_GG_Info_From_ALI --
       ---------------------------
@@ -912,6 +992,7 @@ package body Flow_Computed_Globals is
                         elsif GO = "XR" then XR
                         else  raise Program_Error);
                      GG_Subprograms.Include (EN);
+                     All_Subprograms.Include (EN);
                   end;
 
                elsif Length (Line) >= 5 then
@@ -949,6 +1030,7 @@ package body Flow_Computed_Globals is
 
                      Line_Found (5) := True;
                      New_Info.Proof_Calls := Get_Names_From_Line;
+                     All_Subprograms.Union (New_Info.Proof_Calls);
 
                   elsif Slice (Line, 4, 5) = "CD" then
                      if Line_Found (6) then
@@ -957,6 +1039,7 @@ package body Flow_Computed_Globals is
 
                      Line_Found (6) := True;
                      New_Info.Definite_Calls := Get_Names_From_Line;
+                     All_Subprograms.Union (New_Info.Definite_Calls);
 
                   elsif Slice (Line, 4, 5) = "CC" then
                      if Line_Found (7) then
@@ -965,6 +1048,7 @@ package body Flow_Computed_Globals is
 
                      Line_Found (7) := True;
                      New_Info.Conditional_Calls := Get_Names_From_Line;
+                     All_Subprograms.Union (New_Info.Conditional_Calls);
 
                   elsif Slice (Line, 4, 5) = "LV" then
                      if Line_Found (8) then
@@ -982,6 +1066,7 @@ package body Flow_Computed_Globals is
 
                      Line_Found (9) := True;
                      New_Info.Local_Subprograms := Get_Names_From_Line;
+                     All_Subprograms.Union (New_Info.Local_Subprograms);
 
                   else
                      --  Unexpected type of line. Something is wrong
@@ -1126,80 +1211,42 @@ package body Flow_Computed_Globals is
          end loop;
       end Remove_Edges_To_Local_Variables;
 
-      --------------------
-      -- Edit_Proof_Ins --
-      --------------------
+      ---------------------------------------------
+      -- Remove_Constants_Without_Variable_Input --
+      ---------------------------------------------
 
-      procedure Edit_Proof_Ins is
-         function Get_Variable_Neighbours
-           (Start : Vertex_Id)
-            return Vertex_Sets.Set;
-         --  Returns a set of all Neighbours of Start that correspond
-         --  to variables.
-
-         function Get_Variable_Neighbours
-           (Start : Vertex_Id)
-            return Vertex_Sets.Set
-         is
-            VS : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
-         begin
-            for V of Global_Graph.Get_Collection (Start,
-                                                  Out_Neighbours)
-            loop
-               if Global_Graph.Get_Key (V).Kind = Variable_Kind then
-                  VS.Include (V);
-               end if;
-            end loop;
-
-            return VS;
-         end Get_Variable_Neighbours;
+      procedure Remove_Constants_Without_Variable_Input is
+         All_Constants : Name_Set.Set  := Name_Set.Empty_Set;
       begin
-         for Info of Info_Set loop
+         --  Gather up all constants without variable input
+         for Glob of All_Globals loop
             declare
-               G_Ins       : constant Global_Id :=
-                 Global_Id'(Kind => Ins_Kind,
-                            Name => Info.Subprogram);
-
-               G_Outs      : constant Global_Id :=
-                 Global_Id'(Kind => Outs_Kind,
-                            Name => Info.Subprogram);
-
-               G_Proof_Ins : constant Global_Id :=
-                 Global_Id'(Kind => Proof_Ins_Kind,
-                            Name => Info.Subprogram);
-
-               V_Ins       : constant Vertex_Id :=
-                 Global_Graph.Get_Vertex (G_Ins);
-
-               V_Outs      : constant Vertex_Id :=
-                 Global_Graph.Get_Vertex (G_Outs);
-
-               V_Proof_Ins : constant Vertex_Id :=
-                 Global_Graph.Get_Vertex (G_Proof_Ins);
-
-               Inputs      : constant Vertex_Sets.Set :=
-                 Get_Variable_Neighbours (V_Ins);
-
-               Outputs     : constant Vertex_Sets.Set :=
-                 Get_Variable_Neighbours (V_Outs);
-
-               Proof_Ins   : constant Vertex_Sets.Set :=
-                 Get_Variable_Neighbours (V_Proof_Ins);
+               Const : constant Entity_Id := Find_Entity (Glob);
             begin
-               for V of Proof_Ins loop
-                  if Inputs.Contains (V)
-                    or else Outputs.Contains (V)
-                  then
-                     if not Global_Graph.Edge_Exists (V_Ins, V) then
-                        Global_Graph.Add_Edge (V_Ins, V, EC_Default);
-                     end if;
-
-                     Global_Graph.Remove_Edge (V_Proof_Ins, V);
-                  end if;
-               end loop;
+               if Const /= Empty
+                 and then Ekind (Const) = E_Constant
+                 and then not Has_Variable_Input (Direct_Mapping_Id (Const))
+               then
+                  All_Constants.Include (Glob);
+               end if;
             end;
          end loop;
-      end Edit_Proof_Ins;
+
+         --  Remove all edges going in and out of a constant without
+         --  variable input.
+         for Const of All_Constants loop
+            declare
+               Const_G_Id : constant Global_Id :=
+                 Global_Id'(Kind => Variable_Kind,
+                            Name => Const);
+
+               Const_V    : constant Vertex_Id :=
+                 Global_Graph.Get_Vertex (Const_G_Id);
+            begin
+               Global_Graph.Clear_Vertex (Const_V);
+            end;
+         end loop;
+      end Remove_Constants_Without_Variable_Input;
 
    begin  --  Beginning of GG_Read
       Current_Mode := GG_Read_Mode;
@@ -1227,19 +1274,6 @@ package body Flow_Computed_Globals is
          end loop;
       end if;
 
-      --  Populated the All_Subprograms set
-      All_Subprograms := GG_Subprograms;
-      for Info of Info_Set loop
-         --  Add all subprograms mentioned in the proof calls
-         All_Subprograms.Union (Info.Proof_Calls);
-         --  Add all subprograms mentioned in the definite calls
-         All_Subprograms.Union (Info.Definite_Calls);
-         --  Add all subprograms mentioned in the conditional calls
-         All_Subprograms.Union (Info.Conditional_Calls);
-         --  Add all local subprograms
-         All_Subprograms.Union (Info.Local_Subprograms);
-      end loop;
-
       --  Populated the All_Other_Subprograms set
       All_Other_Subprograms := All_Subprograms - GG_Subprograms;
 
@@ -1257,6 +1291,18 @@ package body Flow_Computed_Globals is
 
       --  Edit Proof_Ins
       Edit_Proof_Ins;
+
+      --  Now that the Globals Graph has been generated we set
+      --  GG_Generated to True. Notice that we set GG_Generated to
+      --  True before we remove edges leading to constants without
+      --  variable input. The reasoning behind this is to use the
+      --  generated globals instead of the computed globals when we
+      --  call Get_Globals from within Has_Variable_Input.
+      GG_Generated := True;
+
+      --  Remove edges leading to constants which do not have variable
+      --  input.
+      Remove_Constants_Without_Variable_Input;
 
       if Debug_Print_Global_Graph then
          declare
@@ -1490,7 +1536,7 @@ package body Flow_Computed_Globals is
                   if not (for all C of Constituents =>
                             Most_Refined.Contains (C))
                   then
-                     Reads.Include (Get_Flow_Id (AS, In_View));
+                     Reads.Include (Get_Flow_Id (AS, In_View, S));
                   end if;
                end;
             end loop;
@@ -1557,7 +1603,7 @@ package body Flow_Computed_Globals is
             FS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
          begin
             for N of NS loop
-               FS.Include (Get_Flow_Id (N, View));
+               FS.Include (Get_Flow_Id (N, View, S));
             end loop;
 
             return FS;

@@ -1,14 +1,6 @@
 p.adb:7:30: subtype constraint cannot depend on "A" (SPARK RM 4.4(2))
-p.adb:29:37: info: initialization of "AF" proved
-p.adb:29:43: info: initialization of "AL" proved
-p.adb:31:37: info: initialization of "AF" proved
-p.adb:32:48: info: initialization of "AL" proved
 p.adb:39:15: info: initialization of "T" proved
 p.adb:41:12: info: initialization of "T" proved
-p.adb:54:37: info: initialization of "AF" proved
-p.adb:54:43: info: initialization of "AL" proved
-p.adb:56:37: info: initialization of "AF" proved
-p.adb:57:48: info: initialization of "AL" proved
 p.adb:64:15: info: initialization of "T" proved
 p.adb:67:12: info: initialization of "T" proved
 p.adb:73:31: info: initialization of "Result" proved

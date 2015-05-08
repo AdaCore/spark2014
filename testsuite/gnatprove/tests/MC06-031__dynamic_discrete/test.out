@@ -10,7 +10,6 @@ dynamic_ranges.adb:24:49: info: overflow check proved
 dynamic_ranges.adb:25:38: info: overflow check proved
 dynamic_ranges.adb:25:38: info: range check proved
 dynamic_ranges.adb:26:15: info: range check proved
-dynamic_ranges.adb:26:39: info: initialization of "C" proved
 dynamic_ranges.adb:32:46: info: overflow check proved
 dynamic_ranges.adb:33:17: info: postcondition proved
 dynamic_ranges.adb:34:60: info: index check proved
@@ -28,6 +27,7 @@ dynamic_ranges.adb:56:23: info: index check proved
 dynamic_ranges.adb:56:23: info: overflow check proved
 dynamic_ranges.adb:57:24: info: overflow check proved
 dynamic_ranges.adb:57:24: info: range check proved
+dynamic_ranges.adb:59:17: info: initialization of "C" proved
 dynamic_ranges.adb:59:17: info: precondition proved
 dynamic_ranges.adb:65:10: info: index check proved
 dynamic_ranges.adb:71:10: info: precondition proved
@@ -37,7 +37,6 @@ dynamic_ranges.adb:72:10: info: loop invariant preservation proved
 dynamic_ranges.adb:73:45: info: index check proved
 dynamic_ranges.ads:9:04: info: range check proved
 dynamic_ranges.ads:9:46: info: initialization of "C" proved
-dynamic_ranges.ads:9:46: info: initialization of "R3s" proved
 dynamic_ranges.ads:15:14: info: postcondition proved
 dynamic_ranges.ads:17:25: info: index check proved
 dynamic_ranges.ads:20:47: info: overflow check proved

@@ -56,7 +56,6 @@ simple_unc_arrays.adb:32:54: info: index check proved
 simple_unc_arrays.adb:32:75: medium: array index check might fail
 simple_unc_arrays.adb:34:10: medium: precondition might fail
 simple_unc_arrays.adb:34:23: info: discriminant check proved
-simple_unc_arrays.adb:34:23: info: initialization of "R22b" proved
 simple_unc_arrays.adb:34:23: info: length check proved
 simple_unc_arrays.adb:34:27: info: initialization of "Low" proved
 simple_unc_arrays.adb:34:32: info: initialization of "High" proved
@@ -119,7 +118,6 @@ simple_unc_arrays.adb:120:39: info: index check proved
 simple_unc_arrays.adb:121:16: info: precondition proved
 simple_unc_arrays.adb:121:28: info: initialization of "Res.V" proved
 simple_unc_arrays.adb:121:31: info: discriminant check proved
-simple_unc_arrays.adb:121:31: info: initialization of "R59b" proved
 simple_unc_arrays.adb:121:31: info: length check proved
 simple_unc_arrays.adb:121:39: info: overflow check proved
 simple_unc_arrays.adb:126:14: info: initialization of "Res.V" proved
@@ -145,7 +143,6 @@ simple_unc_arrays.adb:161:26: info: initialization of "Left" proved
 simple_unc_arrays.adb:161:34: info: initialization of "Right" proved
 simple_unc_arrays.adb:163:16: info: precondition proved
 simple_unc_arrays.adb:163:29: info: discriminant check proved
-simple_unc_arrays.adb:163:29: info: initialization of "R63b" proved
 simple_unc_arrays.adb:163:29: info: length check proved
 simple_unc_arrays.adb:163:33: info: initialization of "Left" proved
 simple_unc_arrays.adb:163:33: info: range check proved

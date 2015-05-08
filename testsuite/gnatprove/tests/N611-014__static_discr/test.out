@@ -140,8 +140,6 @@ static_discr.adb:98:45: info: discriminant check proved
 static_discr.adb:98:53: info: discriminant check proved
 static_discr.adb:98:63: info: index check proved
 static_discr.adb:103:20: info: discriminant check proved
-static_discr.adb:103:20: info: initialization of "R42b" proved
-static_discr.adb:103:20: info: initialization of "R43b" proved
 static_discr.adb:103:28: info: discriminant check proved
 static_discr.adb:103:45: info: discriminant check proved
 static_discr.adb:103:45: info: index check proved
@@ -178,8 +176,6 @@ static_discr.adb:123:26: info: discriminant check proved
 static_discr.adb:123:34: info: discriminant check proved
 static_discr.adb:123:45: info: initialization of "Current.Content.Content" proved
 static_discr.adb:123:52: info: discriminant check proved
-static_discr.adb:123:52: info: initialization of "R54b" proved
-static_discr.adb:123:52: info: initialization of "R55b" proved
 static_discr.adb:123:60: info: discriminant check proved
 static_discr.adb:125:14: info: initialization of "Result" proved
 static_discr.ads:18:15: info: discriminant check proved

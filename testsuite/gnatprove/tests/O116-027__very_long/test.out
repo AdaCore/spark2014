@@ -5,7 +5,6 @@ very_longs-divide.adb:20:64: info: overflow check proved
 very_longs-divide.adb:47:14: info: initialization of "Distance" proved
 very_longs-divide.adb:52:30: info: initialization of "Result.Long_Digits" proved
 very_longs-divide.adb:61:13: info: discriminant check proved
-very_longs-divide.adb:61:13: info: initialization of "R118b" proved
 very_longs-divide.adb:61:26: info: length check proved
 very_longs-divide.adb:61:29: info: initialization of "R118b" proved
 very_longs-divide.adb:61:29: info: length check proved
@@ -162,12 +161,10 @@ very_longs-divide.adb:206:50: info: overflow check proved
 very_longs-divide.adb:206:50: medium: array index check might fail
 very_longs-divide.adb:206:72: info: initialization of "Carry" proved
 very_longs-divide.adb:211:12: info: discriminant check proved
-very_longs-divide.adb:211:12: info: initialization of "R132b" proved
 very_longs-divide.adb:211:26: info: length check proved
 very_longs-divide.adb:211:29: info: initialization of "R132b" proved
 very_longs-divide.adb:211:29: info: length check proved
 very_longs-divide.adb:212:13: info: discriminant check proved
-very_longs-divide.adb:212:13: info: initialization of "R136b" proved
 very_longs-divide.adb:212:26: info: length check proved
 very_longs-divide.adb:212:29: info: initialization of "R136b" proved
 very_longs-divide.adb:212:29: info: length check proved
@@ -220,7 +217,6 @@ very_longs.adb:33:73: info: initialization of "Valid" proved
 very_longs.adb:50:28: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:50:52: info: initialization of "Carry" proved
 very_longs.adb:59:13: info: discriminant check proved
-very_longs.adb:59:13: info: initialization of "R9b" proved
 very_longs.adb:59:26: info: length check proved
 very_longs.adb:59:29: info: initialization of "R9b" proved
 very_longs.adb:59:29: info: length check proved
@@ -248,7 +244,6 @@ very_longs.adb:76:50: info: initialization of "Sum" proved
 very_longs.adb:83:28: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:83:52: info: initialization of "Borrow" proved
 very_longs.adb:92:13: info: discriminant check proved
-very_longs.adb:92:13: info: initialization of "R19b" proved
 very_longs.adb:92:26: info: length check proved
 very_longs.adb:92:29: info: initialization of "R19b" proved
 very_longs.adb:92:29: info: length check proved
@@ -292,7 +287,6 @@ very_longs.adb:138:18: info: initialization of "Temp" proved
 very_longs.adb:138:23: info: division check proved
 very_longs.adb:140:14: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:154:13: info: discriminant check proved
-very_longs.adb:154:13: info: initialization of "R32b" proved
 very_longs.adb:154:26: info: length check proved
 very_longs.adb:154:29: info: initialization of "R32b" proved
 very_longs.adb:154:29: info: length check proved
