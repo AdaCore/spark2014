@@ -1548,7 +1548,6 @@ package body SPARK_Definition is
               N_Delay_Relative_Statement |
               N_Requeue_Statement        |
               N_Selective_Accept         |
-              N_Single_Task_Declaration  | -- FIXME: do not see this in AST
               N_Timed_Entry_Call         =>
             Mark_Violation ("tasking", N);
 
@@ -1612,7 +1611,9 @@ package body SPARK_Definition is
 
          --  The following nodes are rewritten by semantic analysis
 
-         when N_Expression_Function =>
+         when N_Expression_Function          |
+              N_Single_Protected_Declaration |
+              N_Single_Task_Declaration      =>
             raise Program_Error;
 
          --  The following nodes are never generated in GNATprove mode
@@ -1689,7 +1690,6 @@ package body SPARK_Definition is
               N_SCIL_Dispatching_Call |
               N_SCIL_Membership_Test |
               N_Signed_Integer_Type_Definition |
-              N_Single_Protected_Declaration |
               N_Subunit |
               N_Task_Definition |
               N_Terminate_Alternative |
