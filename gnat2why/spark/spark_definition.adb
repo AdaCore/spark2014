@@ -255,21 +255,25 @@ package body SPARK_Definition is
    --  This flag is set to True if the Ravenscar_Profile_Result contains the
    --  correct cached result of Ravenscar_Profile calls.
 
-   function Sequential_Elaboration return Boolean;
-   --  Check if Partition_Elaboration_Policy is set to Sequential.
-
    function Ravenscar_Profile return Boolean;
    --  Tests if restrictions corresponding to Profile (Ravenscar) are
    --  currently in effect (set by pragma Profile, or by an appropriate set of
    --  individual Restrictions pragmas). Returns True only if all the required
    --  restrictions are set.
 
-   function Sequential_Elaboration return Boolean
-   is (Partition_Elaboration_Policy = 'S');
+   function Sequential_Elaboration return Boolean;
+   --  Check if Partition_Elaboration_Policy is set to Sequential.
 
    function Is_SPARK_Tasking_Configuration return Boolean;
    --  Check tasking configuration required by SPARK and possibly
    --  mark violation on node N.
+
+   function Is_SPARK_Tasking_Configuration return Boolean
+   is (Ravenscar_Profile and then Sequential_Elaboration);
+
+   -----------------------
+   -- Ravenscar_Profile --
+   -----------------------
 
    --  Check that the current settings match those in
    --  Sem_Prag.Set_Ravenscar_Profile.
@@ -487,8 +491,12 @@ package body SPARK_Definition is
       end if;
    end Ravenscar_Profile;
 
-   function Is_SPARK_Tasking_Configuration return Boolean
-   is (Ravenscar_Profile and then Sequential_Elaboration);
+   ----------------------------
+   -- Sequential_Elaboration --
+   ----------------------------
+
+   function Sequential_Elaboration return Boolean
+   is (Partition_Elaboration_Policy = 'S');
 
    ------------------------------
    -- Output SPARK Information --
