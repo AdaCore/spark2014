@@ -35,8 +35,11 @@ with Exp_Util;               use Exp_Util;
 with Fname;                  use Fname;
 with Lib;                    use Lib;
 with Namet;                  use Namet;
+with Nmake;                  use Nmake;
 with Nlists;                 use Nlists;
 with Opt;                    use Opt;
+with Rident;                 use Rident;
+with Restrict;               use Restrict;
 with Sem_Aux;                use Sem_Aux;
 with Sem_Ch12;               use Sem_Ch12;
 with Sem_Disp;               use Sem_Disp;
@@ -233,9 +236,259 @@ package body SPARK_Definition is
    --  Mark node N as a violation of SPARK, due to the use of entity From which
    --  is not in SPARK. An error message is issued if current SPARK_Mode is On.
 
+   procedure Mark_Violation_In_Tasking
+     (N : Node_Id)
+     with Pre => not Is_SPARK_Tasking_Configuration;
+   --  Mark node N as a violation of SPARK because of unsupported tasking
+   --  configuration. An error message is issued if current SPARK_Mode is On.
+
    procedure Mark_Violation_Of_SPARK_Mode (N : Node_Id);
    --  Issue an error continuation message for node N with the location of the
    --  violated SPARK_Mode pragma/aspect.
+
+   Ravenscar_Profile_Result : Boolean := False;
+   --  This switch memoizes the result of Ravenscar_Profile function calls for
+   --  improved efficiency. Valid only if Ravenscar_Profile_Cached is True.
+   --  Note: if this switch is ever set True, it is never turned off again.
+
+   Ravenscar_Profile_Cached : Boolean := False;
+   --  This flag is set to True if the Ravenscar_Profile_Result contains the
+   --  correct cached result of Ravenscar_Profile calls.
+
+   function Sequential_Elaboration return Boolean;
+   --  Check if Partition_Elaboration_Policy is set to Sequential.
+
+   function Ravenscar_Profile return Boolean;
+   --  Tests if restrictions corresponding to Profile (Ravenscar) are
+   --  currently in effect (set by pragma Profile, or by an appropriate set of
+   --  individual Restrictions pragmas). Returns True only if all the required
+   --  restrictions are set.
+
+   function Sequential_Elaboration return Boolean
+   is (Partition_Elaboration_Policy = 'S');
+
+   function Is_SPARK_Tasking_Configuration return Boolean;
+   --  Check tasking configuration required by SPARK and possibly
+   --  mark violation on node N.
+
+   --  Check that the current settings match those in
+   --  Sem_Prag.Set_Ravenscar_Profile.
+   --  ??? Older versions of Ada are also supported to ease reuse once this
+   --  code is moved to Restrict package.
+
+   function Ravenscar_Profile return Boolean is
+      Prefix_Entity   : Entity_Id;
+      Selector_Entity : Entity_Id;
+      Prefix_Node     : Node_Id;
+      Node            : Node_Id;
+
+      function Restriction_No_Dependence (Unit : Node_Id) return Boolean;
+      --  Check if restriction No_Dependence is set for Unit.
+
+      function Same_Unit (U1, U2 : Node_Id) return Boolean;
+      --  Returns True iff U1 and U2 represent the same library unit. Used for
+      --  handling of No_Dependence => Unit restriction case.
+      --  ??? This duplicates the code from Restrict package.
+
+      -------------------------------
+      -- Restriction_No_Dependence --
+      -------------------------------
+
+      function Restriction_No_Dependence (Unit : Node_Id) return Boolean
+      is
+      begin
+         --  Loop to look for entry
+
+         for J in No_Dependences.First .. No_Dependences.Last loop
+
+            --  Entry is in table
+
+            if Same_Unit (Unit, No_Dependences.Table (J).Unit) then
+               return True;
+            end if;
+
+         end loop;
+
+         --  Entry is not in table
+
+         return False;
+      end Restriction_No_Dependence;
+
+      ---------------
+      -- Same_Unit --
+      ---------------
+
+      function Same_Unit (U1, U2 : Node_Id) return Boolean is
+      begin
+         if Nkind (U1) = N_Identifier and then Nkind (U2) = N_Identifier then
+            return Chars (U1) = Chars (U2);
+
+         elsif Nkind_In (U1, N_Selected_Component, N_Expanded_Name)
+           and then
+             Nkind_In (U2, N_Selected_Component, N_Expanded_Name)
+         then
+            return Same_Unit (Prefix (U1), Prefix (U2))
+              and then
+                Same_Unit (Selector_Name (U1), Selector_Name (U2));
+         else
+            return False;
+         end if;
+      end Same_Unit;
+
+   begin
+      if Ravenscar_Profile_Cached then
+         return Ravenscar_Profile_Result;
+
+      else
+         Ravenscar_Profile_Result := True;
+         Ravenscar_Profile_Cached := True;
+
+         --  pragma Task_Dispatching_Policy (FIFO_Within_Priorities)
+
+         if Task_Dispatching_Policy /= 'F' then
+            Ravenscar_Profile_Result := False;
+            return False;
+         end if;
+
+         --  pragma Locking_Policy (Ceiling_Locking)
+
+         if Locking_Policy /= 'C' then
+            Ravenscar_Profile_Result := False;
+            return False;
+         end if;
+
+         --  pragma Detect_Blocking
+
+         if not Detect_Blocking then
+            Ravenscar_Profile_Result := False;
+            return False;
+         end if;
+
+         declare
+            R : Restriction_Flags  renames Profile_Info (Ravenscar).Set;
+            V : Restriction_Values renames Profile_Info (Ravenscar).Value;
+         begin
+            for J in R'Range loop
+               if R (J)
+                 and then (Restrictions.Set (J) = False
+                             or else Restriction_Warnings (J)
+                             or else
+                               (J in All_Parameter_Restrictions
+                                  and then Restrictions.Value (J) > V (J)))
+               then
+                  Ravenscar_Profile_Result := False;
+                  return False;
+               end if;
+            end loop;
+         end;
+
+         --  The following No_Dependence restrictions:
+         --    No_Dependence => Ada.Asynchronous_Task_Control
+         --    No_Dependence => Ada.Calendar
+         --    No_Dependence => Ada.Task_Attributes
+         --  are already checked by the above loop.
+
+         --  The following restrictions were added to Ada 2005:
+         --    No_Dependence => Ada.Execution_Time.Group_Budget
+         --    No_Dependence => Ada.Execution_Time.Timers
+
+         if Ada_Version >= Ada_2005 then
+
+            Name_Buffer (1 .. 3) := "ada";
+            Name_Len := 3;
+
+            Prefix_Entity := Make_Identifier (No_Location, Name_Find);
+
+            Name_Buffer (1 .. 14) := "execution_time";
+            Name_Len := 14;
+
+            Selector_Entity := Make_Identifier (No_Location, Name_Find);
+
+            Prefix_Node :=
+              Make_Selected_Component
+                (Sloc          => No_Location,
+                 Prefix        => Prefix_Entity,
+                 Selector_Name => Selector_Entity);
+
+            Name_Buffer (1 .. 13) := "group_budgets";
+            Name_Len := 13;
+
+            Selector_Entity := Make_Identifier (No_Location, Name_Find);
+
+            Node :=
+              Make_Selected_Component
+                (Sloc          => No_Location,
+                 Prefix        => Prefix_Node,
+                 Selector_Name => Selector_Entity);
+
+            if not Restriction_No_Dependence (Unit => Node) then
+               Ravenscar_Profile_Result := False;
+               return False;
+            end if;
+
+            Name_Buffer (1 .. 6) := "timers";
+            Name_Len := 6;
+
+            Selector_Entity := Make_Identifier (No_Location, Name_Find);
+
+            Node :=
+              Make_Selected_Component
+                (Sloc          => No_Location,
+                 Prefix        => Prefix_Node,
+                 Selector_Name => Selector_Entity);
+
+            if not Restriction_No_Dependence (Unit => Node) then
+               Ravenscar_Profile_Result := False;
+               return False;
+            end if;
+
+         end if;
+
+         --  The following restriction was added to Ada 2005:
+         --    No_Dependence => System.Multiprocessors.Dispatching_Domains
+
+         if Ada_Version >= Ada_2012 then
+
+            Name_Buffer (1 .. 6) := "system";
+            Name_Len := 6;
+
+            Prefix_Entity := Make_Identifier (No_Location, Name_Find);
+
+            Name_Buffer (1 .. 15) := "multiprocessors";
+            Name_Len := 15;
+
+            Selector_Entity := Make_Identifier (No_Location, Name_Find);
+
+            Prefix_Node :=
+              Make_Selected_Component
+                (Sloc          => No_Location,
+                 Prefix        => Prefix_Entity,
+                 Selector_Name => Selector_Entity);
+
+            Name_Buffer (1 .. 19) := "dispatching_domains";
+            Name_Len := 19;
+
+            Selector_Entity := Make_Identifier (No_Location, Name_Find);
+
+            Node :=
+              Make_Selected_Component
+                (Sloc          => No_Location,
+                 Prefix        => Prefix_Node,
+                 Selector_Name => Selector_Entity);
+
+            if not Restriction_No_Dependence (Unit => Node) then
+               Ravenscar_Profile_Result := False;
+               return False;
+            end if;
+
+         end if;
+
+         return True;
+      end if;
+   end Ravenscar_Profile;
+
+   function Is_SPARK_Tasking_Configuration return Boolean
+   is (Ravenscar_Profile and then Sequential_Elaboration);
 
    ------------------------------
    -- Output SPARK Information --
@@ -274,6 +527,9 @@ package body SPARK_Definition is
    --  counting a stub as a declaration).
 
    --  Special treatment for marking some kinds of nodes
+   --  ??? Do we want preconditions on these? For example
+   --  Mark_Identifier_Or_Expanded_Name on N_Entry_Body is wrong but does
+   --  not fail.
 
    procedure Mark_Attribute_Reference         (N : Node_Id);
    procedure Mark_Binary_Op                   (N : Node_Id);
@@ -694,7 +950,11 @@ package body SPARK_Definition is
             Mark_Component_Declaration (N);
 
          when N_Delay_Until_Statement =>
-            Mark (Expression (N));
+            if Is_SPARK_Tasking_Configuration then
+               Mark (Expression (N));
+            else
+               Mark_Violation_In_Tasking (N);
+            end if;
 
          when N_Exit_Statement =>
             if Present (Condition (N)) then
@@ -1229,30 +1489,55 @@ package body SPARK_Definition is
          --  Supported tasking constructs
 
          when N_Protected_Body =>
-            Mark_Stmt_Or_Decl_List (Declarations (N));
+            if Is_SPARK_Tasking_Configuration then
+               Mark_Stmt_Or_Decl_List (Declarations (N));
+            else
+               Mark_Violation_In_Tasking (N);
+            end if;
 
          when N_Task_Body =>
-            Mark_Stmt_Or_Decl_List (Declarations (N));
-            Mark (Handled_Statement_Sequence (N));
+            if Is_SPARK_Tasking_Configuration then
+               Mark_Stmt_Or_Decl_List (Declarations (N));
+               Mark (Handled_Statement_Sequence (N));
+            else
+               Mark_Violation_In_Tasking (N);
+            end if;
 
          when N_Protected_Body_Stub |
               N_Task_Body_Stub      =>
-            Mark (Get_Body_From_Stub (N));
+            if Is_SPARK_Tasking_Configuration then
+               Mark (Get_Body_From_Stub (N));
+            else
+               Mark_Violation_In_Tasking (N);
+            end if;
 
          when N_Entry_Body =>
-            --  Entry barriers in Ravenscar are always of N_Identifier kind
-            Mark_Identifier_Or_Expanded_Name
-              (Condition (Entry_Body_Formal_Part (N)));
-            Mark_Stmt_Or_Decl_List (Declarations (N));
-            Mark (Handled_Statement_Sequence (N));
-            Mark_Identifier_Or_Expanded_Name (N);
+            if Is_SPARK_Tasking_Configuration then
+               --  Entry barriers in Ravenscar are always of N_Identifier kind
+               Mark_Identifier_Or_Expanded_Name
+                 (Condition (Entry_Body_Formal_Part (N)));
+               Mark_Stmt_Or_Decl_List (Declarations (N));
+               Mark (Handled_Statement_Sequence (N));
+               Mark_Identifier_Or_Expanded_Name (N);
+            else
+               Mark_Violation_In_Tasking (N);
+            end if;
 
          when N_Entry_Call_Statement =>
-            Mark_Call (N);
+            if Is_SPARK_Tasking_Configuration then
+               Mark_Call (N);
+            else
+               Mark_Violation_In_Tasking (N);
+            end if;
 
          when N_Entry_Declaration =>
-            --  FIXME: test once support in Mark_Type_Entity is done
-            Mark_Subprogram_Declaration (N);
+            if Is_SPARK_Tasking_Configuration then
+               --  entries are not supported until O506-007 is fixed
+               Mark_Violation ("entry", N);
+               --  Mark_Subprogram_Declaration (N);
+            else
+               Mark_Violation_In_Tasking (N);
+            end if;
 
          --  Unsupported tasking constructs
 
@@ -1845,11 +2130,9 @@ package body SPARK_Definition is
             end if;
 
          else
-            if Nkind (N) = N_Entry_Call_Statement then
-               --  Entry calls are now in SPARK
-               --  FIXME: what is "indirect call"? should we check more?
-               null;
-            else
+            --  Entry calls are now in SPARK
+            --  FIXME: what is "indirect call"? should we check more?
+            if Nkind (N) /= N_Entry_Call_Statement then
                --  Are there cases where we reach here??? For the moment,
                --  issue a generic error message about "indirect calls".
 
@@ -2496,6 +2779,46 @@ package body SPARK_Definition is
          --  to be in SPARK. For a private type, we're only interested here in
          --  its publicly visible components.
 
+         --  FIXME: this should be merged with the following code for records
+         --  (see O508-008).
+         if Is_Concurrent_Type (E) then
+            declare
+               --  Einfo.First_Component_Or_Discriminant does not work for
+               --  concurrent types.
+               function First_Component_Or_Discriminant
+                 (Id : Entity_Id) return Entity_Id;
+
+               function First_Component_Or_Discriminant
+                 (Id : Entity_Id) return Entity_Id is
+                  Comp_Id : Entity_Id;
+               begin
+                  Comp_Id := First_Entity (Id);
+                  while Present (Comp_Id) loop
+                     exit when Ekind_In (Comp_Id, E_Component, E_Discriminant);
+                     Comp_Id := Next_Entity (Comp_Id);
+                  end loop;
+
+                  return Comp_Id;
+               end First_Component_Or_Discriminant;
+
+               Comp : Node_Id := First_Component_Or_Discriminant (E);
+            begin
+               while Present (Comp) loop
+                  if Component_Is_Visible_In_SPARK (Comp) then
+                     Mark_Entity (Etype (Comp));
+
+                     --  Mark default value of component or discriminant
+
+                     if Present (Expression (Parent (Comp))) then
+                        Mark (Expression (Parent (Comp)));
+                     end if;
+                  end if;
+
+                  Next_Component_Or_Discriminant (Comp);
+               end loop;
+            end;
+         end if;
+
          if Is_Record_Type (E) then
             declare
                Comp : Node_Id := First_Component_Or_Discriminant (E);
@@ -2934,9 +3257,40 @@ package body SPARK_Definition is
             Mark_Violation ("access type", E);
 
          elsif Is_Concurrent_Type (E) then
-            --  FIXME: recurse into declarations
-            null;
 
+            if Is_SPARK_Tasking_Configuration then
+
+               case Ekind (E) is
+                  when E_Protected_Subtype | E_Task_Subtype =>
+                     if not In_SPARK (Base_Type (E))
+                     then
+                        Mark_Violation (E, From => Base_Type (E));
+                     end if;
+
+                  when E_Protected_Type | E_Task_Type =>
+                     declare
+                        Type_Decl : constant Node_Id := Parent (E);
+                        Type_Def  : constant Node_Id :=
+                          (if Ekind (E) = E_Protected_Type
+                           then Protected_Definition (Type_Decl)
+                           else Task_Definition (Type_Decl));
+                     begin
+                        --  FIXME: Interface_List
+                        if Present (Type_Def) then
+                           Mark_Stmt_Or_Decl_List
+                             (Visible_Declarations (Type_Def));
+                           Mark_Stmt_Or_Decl_List
+                             (Private_Declarations (Type_Def));
+                        end if;
+                     end;
+
+                  when others =>
+                     raise Program_Error;
+
+               end case;
+            else
+               Mark_Violation_In_Tasking (E);
+            end if;
          else
             raise Program_Error;
          end if;
@@ -3068,6 +3422,8 @@ package body SPARK_Definition is
          --  Mark_Entity is called on all abstract state variables
 
          when E_Abstract_State => null;
+
+         when E_Entry => Mark_Subprogram_Entity (E);
 
          when others           =>
             Ada.Text_IO.Put_Line ("[Mark_Entity] kind ="
@@ -3972,7 +4328,9 @@ package body SPARK_Definition is
 
       --  Ignore predicate functions and invariant procedures
 
-      elsif Subprogram_Is_Ignored_For_Proof (E) then
+      elsif Ekind (E) /= E_Entry
+        and then Subprogram_Is_Ignored_For_Proof (E)
+      then
          return;
 
       else
@@ -4077,7 +4435,9 @@ package body SPARK_Definition is
 
       --  Ignore predicate functions and invariant procedures
 
-      elsif Subprogram_Is_Ignored_For_Proof (E) then
+      elsif Ekind (E) /= E_Entry
+        and then Subprogram_Is_Ignored_For_Proof (E)
+      then
          return;
 
       --  Mark entity
@@ -4222,6 +4582,35 @@ package body SPARK_Definition is
          Mark_Violation_Of_SPARK_Mode (N);
       end if;
    end Mark_Violation;
+
+   ----------------------------
+   -- Mark_Violation_In_Tasking --
+   ----------------------------
+
+   procedure Mark_Violation_In_Tasking (N : Node_Id)
+   is
+      Msg_Prefix : constant String := "tasking in SPARK requires ";
+      Msg_Suffix : constant String := " (SPARK RM 9.1(2))";
+   begin
+      --  Flag the violation, so that the current entity is marked accordingly
+
+      Violation_Detected := True;
+
+      --  If SPARK_Mode is On, raise an error
+
+      if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+
+         if not Ravenscar_Profile then
+            Error_Msg_F (Msg_Prefix &
+                           "Ravenscar profile" & Msg_Suffix, N);
+         elsif not Sequential_Elaboration then
+            Error_Msg_F (Msg_Prefix &
+                           "sequential elaboration" & Msg_Suffix, N);
+         end if;
+
+         Mark_Violation_Of_SPARK_Mode (N);
+      end if;
+   end Mark_Violation_In_Tasking;
 
    ----------------------------------
    -- Mark_Violation_Of_SPARK_Mode --

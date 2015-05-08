@@ -5,14 +5,17 @@ tasks-timer_stub.adb:8:21: warning: assuming "+" has no effect on global items
 tasks-timer_stub.adb:8:21: warning: no Global contract available for "+"
 tasks-timer_stub.adb:8:23: warning: assuming "Seconds" has no effect on global items
 tasks-timer_stub.adb:8:23: warning: no Global contract available for "Seconds"
-tasks.adb:10:55: warning: assuming "Clock" has no effect on global items
-tasks.adb:10:55: warning: no Global contract available for "Clock"
-tasks.adb:14:35: warning: assuming "+" has no effect on global items
-tasks.adb:14:35: warning: no Global contract available for "+"
-tasks.adb:14:50: warning: assuming "Seconds" has no effect on global items
-tasks.adb:14:50: warning: no Global contract available for "Seconds"
-tasks.adb:23:07: warning: analyzing unreferenced function "Get"
-tasks.adb:28:07: warning: analyzing unreferenced procedure "Put"
+tasks.adb:15:55: warning: assuming "Clock" has no effect on global items
+tasks.adb:15:55: warning: no Global contract available for "Clock"
+tasks.adb:19:35: warning: assuming "+" has no effect on global items
+tasks.adb:19:35: warning: no Global contract available for "+"
+tasks.adb:19:50: warning: assuming "Seconds" has no effect on global items
+tasks.adb:19:50: warning: no Global contract available for "Seconds"
+tasks.adb:28:07: warning: analyzing unreferenced function "Get"
+tasks.adb:33:07: warning: analyzing unreferenced procedure "Put"
+tasks.ads:10:07: warning: pragma "Priority" ignored (not yet supported)
+tasks.ads:15:07: warning: pragma "Priority" ignored (not yet supported)
+tasks.ads:22:07: warning: pragma "Priority" ignored (not yet supported)
 Phase 1 of 2: generation of Global contracts ...
 Phase 2 of 2: checking of SPARK legality rules ...
 Summary logged in gnatprove/gnatprove.out
