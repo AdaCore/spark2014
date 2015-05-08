@@ -1,16 +1,12 @@
 procedure Foo (N : Natural) is
 
-   package Nested
-   --  computed global should probably not involve N
-   is
+   package Nested is
       type Glob is private;
       type Wrong_Glob is private;
 
       function Glob_Ok (X : Glob) return Boolean;
-      --  computed global should invlove N
 
       function Wrong_Glob_Ok (X : Wrong_Glob) return Boolean;
-      --  computed glboal should not involve N
    private
       type Glob is record
          F : Natural := N;
