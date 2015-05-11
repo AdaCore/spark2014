@@ -237,7 +237,7 @@ are in |SPARK|.
     following subprograms:
 
   * for Ada.Execution_Time.Clock, T does not equal
-    Task_Identification.Null_Task_Id .
+    Task_Identification.Null_Task_Id.
 
   * for Ada.Execution_Time.Clock_For_Interrupts,
     Interrupt_Clocks_Supported is True.
