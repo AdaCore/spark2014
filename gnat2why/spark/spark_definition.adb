@@ -2689,7 +2689,7 @@ package body SPARK_Definition is
          end if;
 
          --  Enforce the current limitation that a subprogram is only inherited
-         --  from a single source, so that there at most one inherited
+         --  from a single source, so that there is at most one inherited
          --  Pre'Class or Post'Class to consider for LSP.
 
          if Is_Dispatching_Operation (E) then
