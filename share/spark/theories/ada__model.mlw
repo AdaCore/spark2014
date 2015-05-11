@@ -71,7 +71,7 @@ module Static_Discrete_Base
     ensures { result = n /\ in_range n}
 
   axiom range_axiom :
-    forall x : t. in_range (to_rep x)
+    forall x : t [to_rep x]. in_range (to_rep x)
 
   predicate dynamic_property "inline" (f l x : rep_type) = in_range x
 end
@@ -105,7 +105,7 @@ module Static_Modular_Base
     ensures { result = n /\ in_range_int n }
 
   axiom range_int_axiom :
-    forall x : t. in_range_int (to_int x)
+    forall x : t [to_int x]. in_range_int (to_int x)
 
   predicate dynamic_property_int "inline" (f l x : int) = in_range_int x
 end

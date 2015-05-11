@@ -41,7 +41,7 @@ skp-subjects.adb:421:07: info: assertion proved
 skp-subjects.adb:421:53: info: division check proved
 skp-subjects.adb:422:07: info: assertion proved
 skp-subjects.adb:422:53: info: division check proved
-skp-subjects.adb:428:12: medium: assertion might fail, requires Subject_Specs (Subject).PML4_Address mod 4096 = 0
+skp-subjects.adb:426:07: info: assertion proved
 skp-subjects.adb:428:50: info: division check proved
 skp-subjects.ads:49:17: info: postcondition proved
 skp-subjects.ads:49:42: info: division check proved

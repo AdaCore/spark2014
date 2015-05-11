@@ -197,9 +197,9 @@ x86.ads:410:48: info: length check proved
 x86.ads:414:14: info: postcondition proved
 x86.ads:418:14: info: postcondition proved
 x86.ads:427:14: info: postcondition proved
-x86.ads:432:14: medium: postcondition might fail
+x86.ads:432:14: info: postcondition proved
 x86.ads:440:14: info: postcondition proved
-x86.ads:447:14: medium: postcondition might fail
+x86.ads:447:14: info: postcondition proved
 x86.ads:456:14: info: postcondition proved
 x86.ads:463:14: medium: postcondition might fail
 x86.ads:476:14: info: postcondition proved
