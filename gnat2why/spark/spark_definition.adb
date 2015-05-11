@@ -1252,14 +1252,14 @@ package body SPARK_Definition is
             then
                null;
 
-            --  In GNATprove_Mode, a separate declaration is generated
-            --  before the body for a subprogram if not defined by the
-            --  user, unless the subprogram defines a unit. So in general
-            --  Mark_Subprogram_Declaration is always called on the declaration
-            --  before Mark_Subprogram_Body is called on the body. In the
-            --  remaining cases where a subprogram unit body does not have
-            --  a prior declaration, call Mark_Subprogram_Declaration on the
-            --  subprogram body.
+            --  In GNATprove_Mode, a separate declaration is usually generated
+            --  before the body for a subprogram if not defined by the user
+            --  (unless the subprogram defines a unit or has a contract). So
+            --  in general Mark_Subprogram_Declaration is always called on the
+            --  declaration before Mark_Subprogram_Body is called on the body.
+            --  In the remaining cases where a subprogram unit body does not
+            --  have a prior declaration, call Mark_Subprogram_Declaration on
+            --  the subprogram body.
 
             else
                if Acts_As_Spec (N) then
