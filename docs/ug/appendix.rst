@@ -949,51 +949,8 @@ Legality Rules
    This limitation is corrected in versions of the toolset based
    on GNAT Pro 7.2.2, GPL 2014, or later.
 
-#. Constants *with variable inputs* are currently not allowed in contracts.
-
 Flow Analysis Limitations
 -------------------------
-
-#. Flow analysis currently treats all constants, types and array bounds as
-   static. The consequence is that information flow through constants, type
-   and array bounds is not captured by flow analysis.
-
-   Information flow through constants declared *locally* is captured, but
-   only in the subprogram they have been declared in (they are again
-   considered to be static objects in nested subprograms).
-
-#. A variable or state abstraction not declared within a package, V,
-   which is read during the elaboration of the package, P, but is not
-   used in initializing any of the variables or state abstractions P
-   (e.g., it could be used in defining the value of a constant) will
-   cause a flow error::
-
-      "V" must be listed in the Initializes aspect of "P" (SPARK RM 7.1.5(12))
-
-   To work around this limitation a variable (either visible or hidden
-   and represented by a state abstraction) has to be declared in P and
-   initialized using V.  This may give rise to a suppressible warning
-   that V is not used.
-
-   For example:
-
-   .. code-block:: ada
-
-	pragma SPARK_Mode(On);
-	with Q;
-	package P
-	  with Initializes => (Not_Used => Q.V)
-	is
-	   -- Attempting to initialize this constant with a variable
-	   -- will cause a flow error.
-	   -- The work around is to introduce a visible variable as here or
-	   -- a state abstraction for a variable declared in the body. In
-           -- either case the variable should be initialized using the variable
-           -- or state abstraction from the other package.
-
-	   Not_Used : Integer := Q.V;
-	   C : constant Integer := Q.V;
-	end P;
 
 
 Proof Limitations
@@ -1006,9 +963,9 @@ Proof Limitations
 #. Attribute 'Valid is currently assumed to always return True.
 
 #. Values read from an external source are assumed to be valid values.
-   Currently there is no model of invalidity or undefinedness.  The onus
+   Currently there is no model of invalidity or undefinedness. The onus
    is on the user to ensure that all values read from an external source are
-   valid.  The use of an invalid value invalidates any proofs associated with
+   valid. The use of an invalid value invalidates any proofs associated with
    the value.
 
 #. The following attributes are not yet supported in proof: Address, Adjacent,
