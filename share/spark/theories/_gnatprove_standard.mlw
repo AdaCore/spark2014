@@ -288,7 +288,9 @@ theory Array__1
   type map 'a
 
   function get (map 'a) I1.t : 'a
+  meta "encoding : lskept" function get
   function set (map 'a) I1.t 'a : map 'a
+  meta "encoding : lskept" function set
 
   axiom Select_eq :
     forall m : map 'a. forall i : I1.t.
@@ -300,6 +302,7 @@ theory Array__1
     i <> j -> get (set m i a) j = get m j
 
   function bool_eq (map 'a) I1.t I1.t (map 'a) I1.t I1.t : bool
+  meta "encoding : lskept" function bool_eq
 
    axiom T__ada_array___equal_def:
      forall a:map 'a.
@@ -313,6 +316,7 @@ theory Array__1
          <-> bool_eq a af al b bf bl = True
 
   function slide (map 'a) I1.t I1.t : map 'a
+  meta "encoding : lskept" function slide
 
   axiom slide_eq :
     forall a : map 'a.
@@ -336,6 +340,7 @@ theory Array__1
      original "first" value. *)
 
   function concat (map 'a) I1.t I1.t (map 'a) I1.t I1.t : map 'a
+  meta "encoding : lskept" function concat
 
   axiom concat_def :
     forall a b : map 'a.
@@ -350,18 +355,24 @@ theory Array__1
    (* Comparison between arrays. Only defined for arrays of discrete.  *)
 
    function compare (map 'a) I1.t I1.t (map 'a) I1.t I1.t : int
+   meta "encoding : lskept" function compare
 
    (* Logical operators on arrays. Only defined for arrays of boolean. *)
 
    function xorb (map 'a) I1.t I1.t (map 'a) I1.t I1.t : map 'a
+   meta "encoding : lskept" function xorb
    function andb (map 'a) I1.t I1.t (map 'a) I1.t I1.t : map 'a
+   meta "encoding : lskept" function andb
    function orb (map 'a) I1.t I1.t (map 'a) I1.t I1.t : map 'a
+   meta "encoding : lskept" function orb
    function notb (map 'a) I1.t I1.t : map 'a
+   meta "encoding : lskept" function notb
 
    (* a singleton array is the array which is defined only at the given
    position, and yields the given value. *)
 
    function singleton 'a I1.t : map 'a
+   meta "encoding : lskept" function singleton
 
    axiom singleton_def :
     forall v : 'a.
@@ -378,7 +389,9 @@ theory Array__2
   type map 'a
 
   function get (map 'a) I1.t I2.t : 'a
+  meta "encoding : lskept" function get
   function set (map 'a) I1.t I2.t 'a : map 'a
+  meta "encoding : lskept" function set
 
   axiom Select_eq :
     forall m : map 'a.
@@ -394,6 +407,7 @@ theory Array__2
     not (i = i2 /\ j = j2) -> get (set m i j a) i2 j2 = get m i2 j2
 
   function bool_eq (map 'a) I1.t I1.t I2.t I2.t (map 'a) I1.t I1.t I2.t I2.t : bool
+  meta "encoding : lskept" function bool_eq
 
    axiom T__ada_array___equal_def:
      forall a:map 'a.
@@ -411,6 +425,7 @@ theory Array__2
          <-> bool_eq a af al af2 al2 b bf bl bf2 bl2 = True
 
   function slide (map 'a) I1.t I1.t I2.t I2.t : map 'a
+  meta "encoding : lskept" function slide
 
   axiom slide_def :
     forall a : map 'a.
@@ -433,7 +448,9 @@ theory Array__3
   type map 'a
 
   function get (map 'a) I1.t I2.t I3.t : 'a
+  meta "encoding : lskept" function get
   function set (map 'a) I1.t I2.t I3.t 'a : map 'a
+  meta "encoding : lskept" function set
 
   axiom Select_eq :
     forall m : map 'a.
@@ -453,6 +470,7 @@ theory Array__3
 
   function bool_eq (map 'a)
     I1.t I1.t I2.t I2.t I3.t I3.t (map 'a) I1.t I1.t I2.t I2.t I3.t I3.t : bool
+  meta "encoding : lskept" function bool_eq
 
    axiom T__ada_array___equal_def:
      forall a:map 'a.
@@ -475,6 +493,7 @@ theory Array__3
          <-> bool_eq a af al af2 al2 af3 al3 b bf bl bf2 bl2 bf3 bl3 = True
 
   function slide (map 'a) I1.t I1.t I2.t I2.t I3.t I3.t : map 'a
+  meta "encoding : lskept" function slide
 
   axiom slide_def :
     forall a : map 'a.
@@ -504,7 +523,9 @@ theory Array__4
   type map 'a
 
   function get (map 'a) I1.t I2.t I3.t I4.t : 'a
+  meta "encoding : lskept" function get
   function set (map 'a) I1.t I2.t I3.t I4.t 'a : map 'a
+  meta "encoding : lskept" function set
 
   axiom Select_eq :
     forall m : map 'a.
@@ -528,6 +549,7 @@ theory Array__4
 
   function bool_eq (map 'a)
     I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t (map 'a) I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t : bool
+  meta "encoding : lskept" function bool_eq
 
    axiom T__ada_array___equal_def:
      forall a:map 'a.
@@ -554,6 +576,7 @@ theory Array__4
          <-> bool_eq a af al af2 al2 af3 al3 af4 al4 b bf bl bf2 bl2 bf3 bl3 bf4 bl4 = True
 
   function slide (map 'a) I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t : map 'a
+  meta "encoding : lskept" function slide
 
   axiom slide_def :
     forall a : map 'a.

@@ -294,7 +294,7 @@ ar.ads:142:22: info: postcondition proved
 ar.ads:147:22: info: postcondition proved
 ar.ads:152:22: info: postcondition proved
 ar.ads:158:22: info: postcondition proved
-ar.ads:164:22: medium: postcondition might fail, requires A = A'Old'update
+ar.ads:164:22: info: postcondition proved
 ar.ads:169:22: info: postcondition proved
 ar.ads:174:22: medium: postcondition might fail, requires I < IT1'Last and then( (E > ET1'First and then A = A'Old'Update (I => E, I+1 => E-1)) or else (E = ET1'First and then A = A'Old'Update (I => E, I+1 => ET1'Last)) )) or else (I = IT1'Last and then ( (E > ET1'First and then A = A'Old'Update (I => E, IT1'First => E-1)) or else (E = ET1'First and then A = A'Old'update
 ar.ads:174:99: info: range check proved
@@ -703,16 +703,16 @@ ar.ads:1425:22: info: postcondition proved
 ar.ads:1430:22: info: postcondition proved
 ar.ads:1435:22: info: postcondition proved
 ar.ads:1440:22: info: postcondition proved
-ar.ads:1445:22: medium: postcondition might fail, requires R = R'Old'update
+ar.ads:1445:22: info: postcondition proved
 ar.ads:1450:22: info: postcondition proved
 ar.ads:1455:22: info: postcondition proved
 ar.ads:1460:22: info: postcondition proved
-ar.ads:1465:22: medium: postcondition might fail, requires R = R'Old'update
+ar.ads:1465:22: info: postcondition proved
 ar.ads:1470:22: info: postcondition proved
 ar.ads:1475:22: info: postcondition proved
 ar.ads:1481:22: info: postcondition proved
-ar.ads:1487:22: medium: postcondition might fail, requires R = R'Old'update
-ar.ads:1493:22: medium: postcondition might fail
+ar.ads:1487:22: info: postcondition proved
+ar.ads:1493:22: info: postcondition proved
 ar.ads:1496:14: info: initialization of "R.S1" proved
 ar.ads:1496:14: info: initialization of "R.T1" proved
 ar.ads:1498:22: info: postcondition proved
