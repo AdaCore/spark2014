@@ -325,9 +325,10 @@ Attribute Loop_Entry
 
 .. _tu-fe-attribute_loop_entry-02:
 
-2. The value of X'Loop_Entry [(loop_name)] is the value of X on entry to the loop
-   that is denoted by ``loop_name``. If the optional ``loop_name`` parameter is
-   not provided, the closest enclosing loop is the default.
+2. X'Loop_Entry [(loop_name)] denotes a constant object of the type of X.
+   [The value of this constant is the value of X on entry to the loop that
+   is denoted by ``loop_name`` or, if no ``loop_name`` is provided,
+   on entry to the closest enclosing loop.]
 
 .. _etu-attribute_loop_entry:
 
