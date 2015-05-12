@@ -47,16 +47,16 @@ is
    end Internal_State;
 
    procedure Initialize with
-     Refined_Global  => (In_Out => Internal_State),
-     Refined_Depends => (Internal_State => Internal_State)
+     Refined_Global  => (Output => Internal_State),
+     Refined_Depends => (Internal_State => null)
    is
    begin
       Internal_State.Reset;
    end Initialize;
 
    procedure AddSecond with
-     Refined_Global  => (Output => Internal_State),
-     Refined_Depends => (Internal_State => null)
+     Refined_Global  => (In_Out => Internal_State),
+     Refined_Depends => (Internal_State => Internal_State)
    is
    begin
       Internal_State.Increment;
