@@ -1,6 +1,14 @@
 
+----------------------------------------------------
+-- SPARK 2014 - Linear Search Example             --
+--                                                --
+-- This example illustrates the use of Pre, Post  --
+-- and Contract_Cases aspects in SPARK 2014.      --
+----------------------------------------------------
 
-package Search is 
+package Linear_Search
+  with SPARK_Mode
+is
 
    type Index is range 1 .. 10;
    type Element is new Integer;
@@ -22,19 +30,19 @@ package Search is
       Low, Up : Index) return Boolean
    is (for some J in Low .. Up => A(J) = Val);
 
-   function Linear_Search
+   function Search
      (A   : Arr;
       Val : Element) return Search_Result
    with
      Pre  => Val >= 0,
-     Post => (if Linear_Search'Result.Found then
-                A (Linear_Search'Result.At_Index) = Val),
+     Post => (if Search'Result.Found then
+                A (Search'Result.At_Index) = Val),
      Contract_Cases =>
        (A(1) = Val =>
-          Linear_Search'Result.At_Index = 1,
+          Search'Result.At_Index = 1,
         A(1) /= Val and then Value_Found_In_Range (A, Val, 2, 10) =>
-          Linear_Search'Result.Found,
+          Search'Result.Found,
         (for all J in Arr'Range => A(J) /= Val) =>
-          not Linear_Search'Result.Found);
+          not Search'Result.Found);
 
-end Search;
+end Linear_Search;

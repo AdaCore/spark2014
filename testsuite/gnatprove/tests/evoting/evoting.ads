@@ -48,76 +48,77 @@ package eVoting is
    type Counters_t is array (Candidate_Number_t) of Counter_Range_t;
    type Election_Result_t is array (Candidate_Number_t) of Boolean;
 
-   procedure Read_Candidates(program_phase : Program_Phase_t;
-                             candidates : out Candidate_Name_Array_t;
-                             last_candidate : out Candidate_Number_t)
-   with Pre => (program_phase = Setup_Phase),
-   Post => (-- untouched entries should contain only spaces
-            (for all i in last_candidate.. Candidate_Number_t'Last
-             => (for all j in Candidate_Name_t'Range
-                 	=> (candidates(i)(j) = ' ')))) ;
+   procedure Read_Candidates
+     (program_phase  :     Program_Phase_t;
+      candidates     : out Candidate_Name_Array_t;
+      last_candidate : out Candidate_Number_t)
+   with Pre  => program_phase = Setup_Phase,
+        Post => -- untouched entries should contain only spaces
+                (for all i in last_candidate + 1 .. Candidate_Number_t'Last =>
+                   (for all j in Candidate_Name_t'Range =>
+                      candidates(i)(j) = ' '));
 
-   procedure Print_A_Candidate(candidates : Candidate_Name_Array_t;
-                               candidate_id : Candidate_Number_t);
+   procedure Print_A_Candidate
+     (candidates   : Candidate_Name_Array_t;
+      candidate_id : Candidate_Number_t);
 
-   procedure Print_Candidates(candidates : Candidate_Name_Array_t;
-                              last_candidate : Candidate_Number_t);
+   procedure Print_Candidates
+     (candidates     : Candidate_Name_Array_t;
+      last_candidate : Candidate_Number_t);
 
-   procedure Vote_Setup(program_phase : Program_Phase_t;
-                        candidates : out Candidate_Name_Array_t;
-                        last_candidate : out Candidate_Number_t)
-   with Pre => (program_phase = Setup_Phase);
+   procedure Vote_Setup
+     (program_phase  :     Program_Phase_t;
+      candidates     : out Candidate_Name_Array_t;
+      last_candidate : out Candidate_Number_t)
+   with Pre => program_phase = Setup_Phase;
 
-   procedure Get_Vote(program_phase : Program_Phase_t;
-                      candidates : Candidate_Name_Array_t;
-                      last_candidate : Candidate_Number_t;
-                      chosen_vote : out Candidate_Number_t)
-   with Pre => (program_phase = Voting_Phase),
-   Post => (chosen_vote <= last_candidate);
+   procedure Get_Vote
+     (program_phase  :     Program_Phase_t;
+      candidates     :     Candidate_Name_Array_t;
+      last_candidate :     Candidate_Number_t;
+      chosen_vote    : out Candidate_Number_t)
+   with Pre =>  program_phase = Voting_Phase,
+        Post => chosen_vote <= last_candidate;
 
    function Counters_Sum(counters : in Counters_t) return Natural;
 
-   procedure Voting(program_phase : Program_Phase_t;
-                    candidates : in Candidate_Name_Array_t;
-                    last_candidate : in Candidate_Number_t;
-                    counters : in out Counters_t;
-                    number_of_votes : in out Natural)
-   with
+   procedure Voting
+     (program_phase   :        Program_Phase_t;
+      candidates      :        Candidate_Name_Array_t;
+      last_candidate  :        Candidate_Number_t;
+      counters        : in out Counters_t;
+      number_of_votes : in out Natural)
    -- FIXME: How to specify that input is only voter input from Get_Vote?
-     Pre =>
-       ((program_phase = Voting_Phase)
-        and
-          (for all i in Candidate_Number_t'Range => counters(i) = 0)
-        and
-          (number_of_votes = 0)),
-   Post =>
-     ((for all i in last_candidate .. Candidate_Number_t'Last
-       => counters(i) = 0)
-      and
-        (Counters_Sum(counters) = number_of_votes));
+   with
+     Pre => program_phase = Voting_Phase and then
+            (for all i in Candidate_Number_t'Range => counters(i) = 0) and then
+            number_of_votes = 0,
+     Post => (for all i in last_candidate + 1 .. Candidate_Number_t'Last =>
+                counters(i) = 0);
 
-   procedure Compute_Winner(program_phase : Program_Phase_t;
-                            last_candidate : in Candidate_Number_t;
-                            counters : in Counters_t;
-                            winners : out Election_Result_t)
-   with Pre => (program_phase = Counting_Phase),
-   Post => ((for all winner in Candidate_Number_t'Range
-            => (for all i in Candidate_Number_t range 1 .. Last_Candidate
-                => ((if winners(winner) and not winners(i) then
-                     counters(winner) > counters(i))
-                    )and
+   procedure Compute_Winner
+     (program_phase  :     Program_Phase_t;
+      last_candidate :     Candidate_Number_t;
+      counters       :     Counters_t;
+      winners        : out Election_Result_t)
+   with Pre => program_phase = Counting_Phase,
+        Post => (for all winner in Candidate_Number_t'Range =>
+                   (for all i in Candidate_Number_t range 1 .. Last_Candidate =>
+                      (if winners(winner) and not winners(i) then
+                         counters(winner) > counters(i))
+                         and then
                       (if winners(winner) and winners(i) then
-                       counters(winner) = counters(i)))
-               )
-            and
-              (for all i in (last_candidate + 1)..Candidate_Number_t'Last
-               => Winners(I) = False));
+                         counters(winner) = counters(i))))
+                   and then
+                (for all i in (last_candidate + 1)..Candidate_Number_t'Last =>
+                   Winners(I) = False);
 
-   procedure Compute_Print_Results(program_phase : Program_Phase_t;
-                                   candidates : in Candidate_Name_Array_t;
-                                   last_candidate : in Candidate_Number_t;
-                                   counters : in Counters_t)
-   with Pre => (program_phase = Counting_Phase);
+   procedure Compute_Print_Results
+     (program_phase  : Program_Phase_t;
+      candidates     : Candidate_Name_Array_t;
+      last_candidate : Candidate_Number_t;
+      counters       : Counters_t)
+   with Pre => program_phase = Counting_Phase;
 
    procedure Do_Vote;
 end;

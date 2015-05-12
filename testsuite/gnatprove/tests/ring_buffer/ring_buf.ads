@@ -52,4 +52,3 @@ is
              (R.Length = R.Length'Old - 1 and then Head (R'Old) = Element);
 
 end Ring_Buf;
-

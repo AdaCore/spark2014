@@ -1734,7 +1734,7 @@ subprogram, by adding a contract to it, for example a simple ``Pre => True`` or
 Otherwise, both flow analysis and proof are done for the subprogram in the
 context of its calls.
 
-.. _how to write loop invariants:
+.. _How to Write Loop Invariants:
 
 How to Write Loop Invariants
 ============================
@@ -2003,7 +2003,7 @@ that are useful for the proof.
 
 In yet other cases, where the difficulty is related to the size of the loop
 rather than the complexity of the properties, it may be useful to factor the
-loop into local subprograms so that the subprograms' preconditions and
+loop into into local subprograms so that the subprograms' preconditions and
 postconditions provide the intermediate assertions that are needed to prove the
 loop invariant.
 
@@ -2207,13 +2207,171 @@ of small code examples.
 
 .. include:: gnatprove_by_example/manual_proof.rst
 
-|SPARK| Examples in the Toolset Distribution
-============================================
+Examples in the Toolset Distribution
+====================================
 
-Further examples of |SPARK| are distributed with the |SPARK| toolset.
-These are contained in the ``share/examples/spark`` directory
-below the directory where the toolset is installed.
+Further examples of |SPARK| are distributed with the |SPARK| toolset.  These
+are contained in the ``share/examples/spark`` directory below the directory
+where the toolset is installed.
 
-A subset of these examples can be accessed from the IDE (either
-GPS or GNATBench) via the :menuselection:`Help --> SPARK --> Examples` menu
-item.
+A subset of these examples can be accessed from the IDE (either GPS or
+GNATBench) via the :menuselection:`Help --> SPARK --> Examples` menu item.
+
+These examples range from single subprograms to demo programs with dozens of
+units. In this section, we describe briefly the code in each example, the
+properties specified, and the results of |GNATprove|'s analysis.
+
+Individual Subprograms
+----------------------
+
+These examples contain usually a single subprogram, and are typically very
+small (a few dozens slocs).
+
+.. rubric:: ``binary_search`` and ``binary_search_unconstrained``
+
+These programs search for a given value in an ordered array. The postcondition
+of the main function ``Binary_Search`` expresses that the search is successful
+if-and-only-if the array contains the value searched, and if so the index
+returned is one at which the array contains this value. |GNATprove| proves all
+checks on these programs. The version with an unconstrained array is the same
+as the one presented in the section on :ref:`How to Write Loop Invariants`.
+
+.. rubric:: ``intro``
+
+This program computes the price of a basket of items. The postcondition of the
+main function ``Price_Of_Basket`` checks that the resulting price is at least
+the price of the most expensive item. |GNATprove| proves all checks on that
+program.
+
+.. rubric:: ``linear_search``
+
+This program searches for a given value in an unordered array. The
+postcondition of the main function ``Linear_Search`` expresses that if the
+search is successful then the index returned is one at which the array contains
+the value searched. |GNATprove| proves all checks on that program. This program
+is the same as the one presented in the :ref:`SPARK Tutorial`.
+
+.. rubric:: ``longest_common_prefix``
+
+This program computes the length of the longest common prefix between two
+substrings of a common text. The postcondition of the main function ``LCP``
+expresses this property. |GNATprove| proves all checks on that program. This
+program was proposed as a formal verification challenge during VerifyThis
+Verification Competition in 2012 (see http://fm2012.verifythis.org/).
+
+.. rubric:: ``search_linked_list``
+
+This program searches for a given value in an unordered linked list. The
+postcondition of the main function ``Search`` expresses that the search is
+successful if-and-only-if the list contains the value searched, and if so the
+cursor returned is one at which the list contains this value. |GNATprove|
+proves all checks on these programs.
+
+Single Units
+------------
+
+These examples contain a single unit, and are usually small (a few hundreds
+slocs at most).
+
+.. rubric:: ``evoting``
+
+This program implements an toy e-voting interface, to get candidates and votes
+from a file, compute the winner of the vote and print it. The API is annotated
+with functional contracts, some partial and some complete. |GNATprove| proves
+all checks on this program, except for initialization of an array initialized
+piecewise (known limitation of flow analysis) and an array access in a string
+returned by the standard library function ``Get_Line`` (which would require
+using a wrapper with contracts).
+
+.. rubric:: ``formal_queue``
+
+This program implements a queue of integers using a doubly linked list, with
+full functional contracts on the API of the queue. |GNATprove| proves all
+checks on this program.
+
+.. rubric:: ``natural``
+
+This program implements an interface to manipulate sets of natural numbers,
+stored in an array. Contracts on the interface subprograms express partial
+correctness properties, for example that the set contains an element after it
+has been inserted. |GNATprove| proves all checks on this program.
+
+.. rubric:: ``n_queens``
+
+This program implements the solution to the N queens problem, to place N queens
+on an N x N chess board so that no queen can capture another one with a legal
+move. The API is annotated with full functional contracts. |GNATprove| proves
+all checks on this program. This program was proposed as a formal verification
+challenge during VSTTE Verification Competition in 2019 (see
+https://sites.google.com/a/vscomp.org/main/).
+
+.. rubric:: ``patience``
+
+This program implements the game of Patience Solitaire, taking cards one-by-one
+from a deck of cards and arranging them face up in a sequence of stacks. The
+invariant maintained when playing is a complex relation between multiple arrays
+storing the current state of the game. |GNATprove| proves all checks on this
+program, when using provers CVC4, Alt-Ergo and Z3. This program was proposed as
+a formal verification challenge during VSTTE Verification Competition in 2014
+(see http://vscomp.org/).
+
+.. rubric:: ``railway_signaling``
+
+This program implements a simple signaling algorithm to avoid collision of
+trains. The main procedure ``Move`` moving a given train along the railroad
+should preserve the collision-free property ``One_Train_At_Most_Per_Track`` and
+the correctness of signaling ``Safe_Signaling``, namely that:
+
+* tracks that are occupied by a train are signalled in red, and
+* tracks that precede an occupied track are signalled in orange.
+
+As the algorithm in ``Move`` relies on the correctness of the signaling, the
+preservation of the collision-free property depends also on the the correctness
+of the signaling. :ref:`Pragma Assume` is used to express an essential property
+of the railroad on which correctness depends, namely that no track precedes
+itself. |GNATprove| proves all checks on this program, when using provers
+CVC4, Alt-Ergo and Z3.
+
+.. rubric:: ``ring_buffer``
+
+This program implements a ring buffer stored in an array of fixed size, with
+partial contracts on the API of the ring buffer. |GNATprove| proves all checks
+on this program. This program was proposed as a formal verification challenge
+during VSTTE Verification Competition in 2012 (see
+https://sites.google.com/site/vstte2012/compet).
+
+.. rubric:: ``segway``
+
+This program implements a state machine controlling a segway states. The global
+invariant maintained across states is expressed in an expression function
+called from preconditions and postconditions. |GNATprove| proves all checks
+on this program.
+
+.. rubric:: ``tetris``
+
+This program implements a simple version of the game of Tetris. An invariant of
+the game is stated in function ``Valid_Configuration``, that all procedures of
+the unit must maintain. This invariant depends on the state of the game which
+if updated by every procedure. Both the invariant and the state of the game are
+encoded as :ref:`Ghost Code`. The invariant expresses two properties:
+
+#. A falling piece never exits the game board, and it does not overlap with
+   pieces that have already fallen.
+
+#. After a piece has fallen, the complete lines it may create are removed from
+   the game board.
+
+|GNATprove| proves all checks on the full version of this program found in
+``tetris_functional.adb``. Intermediate versions of the program show the
+initial code without any contracts in ``tetris_initial.adb``, the code with
+contracts for data dependencies in ``tetris_flow.adb`` and the code with
+contracts to guard against run-time errors in ``tetris_integrity.adb``. The
+complete program, including the BSP to run it on the ATMEL SAM4S board, is
+available online (see
+http://blog.adacore.com/tetris-in-spark-on-arm-cortex-m4).
+
+Multi-Units Demos
+-----------------
+
+These examples contain larger demo programs (of a few hundreds or thousands
+slocs).

@@ -1,7 +1,19 @@
-
 package Patience with
-  SPARK_Mode 
+  SPARK_Mode
 is
+
+   -------------------------------------------------------
+   --         SPARK 2014 - Patience Example             --
+   --                                                   --
+   -- This example illustrates the use of quantifiers   --
+   -- in SPARK 2014. In this example multiple arrays    --
+   -- are used to store the current state of the game.  --
+   --                                                   --
+   --  This is problem 1 of the VSTTE 2014 Competition. --
+   --                                                   --
+   --  http://vscomp.org/                               --
+   --                                                   --
+   -------------------------------------------------------
 
    type Card is range 1..52;
    MaxNumCards : constant := 100;
@@ -58,22 +70,22 @@ is
                0 <= S.Stacks(I)(J) and S.Stacks(I)(J) < S.NumElts)
             -- contents of stacks are valid card indexes
          )
-         and then  
+         and then
          (for all I in 0 .. S.NumElts -1 =>
             S.PosStack(I) in 0 .. S.NumStacks - 1
             and then
-            S.PosHeight(I) in 0 .. S.StackSizes(S.PosStack(I)) - 1 
+            S.PosHeight(I) in 0 .. S.StackSizes(S.PosStack(I)) - 1
             and then S.Stacks(S.PosStack(I))(S.PosHeight(I)) = I)
          -- the position table of cards is correct, i.e. card I indeed
          -- occurs in stack S.PosStack(I) at height S.PosHeight(I)
-         and then 
+         and then
          (for all IST in 0 .. S.NumStacks - 1 =>
           (for all IP in 0 .. S.StackSizes(IST) - 1 =>
              IST = S.PosStack(S.Stacks(IST)(IP))
              and
              IP = S.PosHeight(S.Stacks(IST)(IP))))
          -- positions is the proper inverse of stacks
-         and then 
+         and then
          (for all I in 0 .. S.NumStacks -1 =>
             (for all J in 0 .. S.StackSizes(I) - 2 =>
                (for all K in J+1 .. S.StackSizes(I) - 1 =>
@@ -84,7 +96,7 @@ is
             (for all J in 0 .. S.StackSizes(I) - 2 =>
                (for all K in J+1 .. S.StackSizes(I) - 1 =>
                   S.Values(S.Stacks(I)(J)) >= S.Values(S.Stacks(I)(K)))))
-         -- in a given stack, card values are decreasing from bottom to top 
+         -- in a given stack, card values are decreasing from bottom to top
          and then
          (for all I in 0 .. S.NumElts - 1 =>
             S.Preds(I) in -1 .. S.NumElts - 1
@@ -118,4 +130,3 @@ is
      Post => Inv(PlayGame'Result);
 
 end Patience;
-

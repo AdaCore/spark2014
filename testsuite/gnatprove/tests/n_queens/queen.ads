@@ -1,4 +1,18 @@
-package Queen is 
+package Queen is
+
+   -------------------------------------------------------
+   --         SPARK 2014 - Queen Example                --
+   --                                                   --
+   -- This example illustrates the use of quantifiers   --
+   -- in SPARK 2014. In this example an array is used   --
+   -- to store a partial solution to the N queens       --
+   -- problem.                                          --
+   --                                                   --
+   --  This is problem 4 of the VSTTE 2010 Competition. --
+   --                                                   --
+   --  https://sites.google.com/a/vscomp.org/main/      --
+   --                                                   --
+   -------------------------------------------------------
 
    N : constant Positive := 8;
    subtype Index is Positive range 1 .. N;

@@ -1,8 +1,8 @@
+package body Linear_Search
+  with SPARK_Mode
+is
 
-
-package body Search is 
-
-   function Linear_Search
+   function Search
      (A   : Arr;
       Val : Element) return Search_Result
    is
@@ -27,6 +27,6 @@ package body Search is
 
       Res := (Found => False);
       return Res;
-   end Linear_Search;
+   end Search;
 
-end Search;
+end Linear_Search;
