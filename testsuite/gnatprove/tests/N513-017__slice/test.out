@@ -49,8 +49,8 @@ sorters.adb:70:40: info: overflow check proved
 sorters.adb:71:22: info: range check proved
 sorters.adb:72:24: info: index check proved
 sorters.adb:72:44: info: index check proved
-sorters.ads:11:19: info: postcondition proved
 sorters.ads:11:61: info: overflow check proved
+sorters.ads:12:20: medium: postcondition might fail, requires Values (J) <= Values (J + 1)
 sorters.ads:12:28: info: index check proved
 sorters.ads:12:44: info: index check proved
 sorters.ads:12:44: info: overflow check proved

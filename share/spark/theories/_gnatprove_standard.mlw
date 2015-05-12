@@ -280,26 +280,16 @@ theory Array__Index
 end
 
 theory Array__1
+  use map.Map
 
   use import bool.Bool
 
   clone Array__Index as I1
 
-  type map 'a
+  type map 'a = Map.map I1.t 'a
 
-  function get (map 'a) I1.t : 'a
-  meta "encoding : lskept" function get
-  function set (map 'a) I1.t 'a : map 'a
-  meta "encoding : lskept" function set
-
-  axiom Select_eq :
-    forall m : map 'a. forall i : I1.t.
-    forall a : 'a [set m i a].  get (set m i a) i = a
-
-  axiom Select_neq :
-    forall m : map 'a. forall i j : I1.t.
-    forall a : 'a [get (set m i a) j| set m i a, get m j].
-    i <> j -> get (set m i a) j = get m j
+  function get "inline" (a : map 'a) (i : I1.t) : 'a = Map.get a i 
+  function set "inline" (a : map 'a) (i : I1.t) (v : 'a) : map 'a = Map.set a i v
 
   function bool_eq (map 'a) I1.t I1.t (map 'a) I1.t I1.t : bool
   meta "encoding : lskept" function bool_eq

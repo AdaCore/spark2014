@@ -105,7 +105,8 @@ infoflow.adb:179:18: info: index check proved
 infoflow.adb:179:29: info: index check proved
 infoflow.adb:181:22: medium: overflow check might fail
 infoflow.adb:182:10: info: loop invariant initialization proved
-infoflow.adb:182:10: info: loop invariant preservation proved
+
+infoflow.adb:182:10: medium: loop invariant might fail after first iteration
 infoflow.adb:183:36: medium: "A_V1" might not be initialized
 infoflow.adb:183:42: info: index check proved
 infoflow.adb:183:53: info: index check proved
@@ -115,7 +116,7 @@ infoflow.adb:187:16: info: index check proved
 infoflow.adb:187:22: medium: "A_V1" might not be initialized
 infoflow.adb:187:36: info: index check proved
 infoflow.adb:187:36: info: overflow check proved
-infoflow.adb:190:07: info: assertion proved
+infoflow.adb:190:07: medium: assertion might fail
 infoflow.adb:192:13: medium: "A_V1" might not be initialized
 infoflow.adb:192:19: info: index check proved
 infoflow.adb:192:30: info: index check proved
@@ -139,7 +140,7 @@ infoflow.adb:213:19: info: index check proved
 infoflow.adb:213:30: info: index check proved
 infoflow.adb:215:22: medium: overflow check might fail
 infoflow.adb:216:10: info: loop invariant initialization proved
-infoflow.adb:216:10: info: loop invariant preservation proved
+infoflow.adb:216:10: medium: loop invariant might fail after first iteration
 infoflow.adb:217:36: medium: "A_V2" might not be initialized
 infoflow.adb:217:42: info: index check proved
 infoflow.adb:217:53: info: index check proved

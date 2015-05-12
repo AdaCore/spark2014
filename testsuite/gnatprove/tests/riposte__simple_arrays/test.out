@@ -16,7 +16,7 @@ simple_arrays.adb:68:27: info: initialization of "B" proved
 simple_arrays.adb:73:13: info: initialization of "B" proved
 simple_arrays.adb:81:13: info: postcondition proved
 simple_arrays.adb:89:22: medium: assertion might fail, requires A'Update (1 => 5,  N => 6) = A'update
-simple_arrays.adb:101:22: medium: postcondition might fail, requires Array_Axiom_Transitivity'Result = 42
+simple_arrays.adb:101:22: info: postcondition proved
 simple_arrays.adb:116:22: info: postcondition proved
 simple_arrays.adb:127:22: info: postcondition proved
 simple_arrays.adb:142:22: info: postcondition proved
@@ -29,15 +29,15 @@ simple_arrays.adb:162:22: info: initialization of "A_Old" proved
 simple_arrays.adb:179:22: info: postcondition proved
 simple_arrays.adb:192:07: info: assertion proved
 simple_arrays.adb:204:07: info: assertion proved
-simple_arrays.adb:216:36: medium: assertion might fail, requires B = A'Update (I => (42))) = (A (I) = A'Update (I => 42) (I)
-simple_arrays.adb:229:36: medium: assertion might fail, requires B = C'Update (I => 42)) = (A (I) = A'Update (I => 42) (I)
-simple_arrays.adb:244:27: medium: assertion might fail, requires B = D) = (A (I) = A'Update (I => 42) (I)
-simple_arrays.adb:259:27: medium: assertion might fail, requires B = D) = (E (I) = A'Update (I => 42) (I)
-simple_arrays.adb:275:27: medium: assertion might fail, requires B = D) = (E (I) = F'Update (I => 42) (I)
-simple_arrays.adb:292:27: medium: assertion might fail, requires B = D) = (E (I) = G (I)
-simple_arrays.adb:310:27: medium: assertion might fail, requires B = D) = (X = G (I)
-simple_arrays.adb:329:27: medium: assertion might fail, requires B = D) = (X = Y
-simple_arrays.adb:349:27: medium: assertion might fail, requires B = D) = (X = Y
+simple_arrays.adb:216:07: info: assertion proved
+simple_arrays.adb:228:07: info: assertion proved
+simple_arrays.adb:241:07: info: assertion proved
+simple_arrays.adb:255:07: info: assertion proved
+simple_arrays.adb:270:07: info: assertion proved
+simple_arrays.adb:286:07: info: assertion proved
+simple_arrays.adb:303:07: info: assertion proved
+simple_arrays.adb:321:07: info: assertion proved
+simple_arrays.adb:340:07: info: assertion proved
 simple_arrays.adb:360:22: info: postcondition proved
 simple_arrays.adb:376:07: info: assertion proved
 simple_arrays.adb:385:07: info: assertion proved

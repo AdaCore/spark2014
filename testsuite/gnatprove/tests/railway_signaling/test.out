@@ -25,7 +25,7 @@ trains.adb:86:16: info: precondition proved
 trains.adb:86:37: info: initialization of "Prev" proved
 trains.adb:86:37: info: range check proved
 trains.adb:89:13: info: loop invariant initialization proved
-trains.adb:89:13: medium: loop invariant might fail after first iteration
+trains.adb:89:13: info: loop invariant preservation proved
 trains.adb:94:32: info: range check proved
 trains.adb:95:52: info: index check proved
 trains.adb:100:25: medium: assertion might fail, requires (Occupied_Tracks_On_Red)

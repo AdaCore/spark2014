@@ -1,5 +1,5 @@
 dumbledore.adb:31:07: info: assertion proved
-dumbledore.adb:40:21: medium: assertion might fail, requires X86.ReadMem64(X86.RBP - 16#10#) = X86.rsi
+dumbledore.adb:40:07: info: assertion proved
 dumbledore.ads:16:43: low: unused global "RAX" (SPARK RM 6.1.4(14))
 dumbledore.ads:16:43: warning: "RAX" is not modified, could be INPUT
 dumbledore.ads:16:52: low: unused global "RDX" (SPARK RM 6.1.4(14))
@@ -66,14 +66,14 @@ x86.adb:425:07: warning: initialization of tmp has no effect
 x86.adb:434:57: info: range check proved
 x86.adb:436:57: info: range check proved
 x86.adb:446:07: info: assertion proved
-x86.adb:449:22: medium: assertion might fail, requires Shift_Left(Unsigned32(ReadMem8(addr + 2)), 16) or Shift_Left(Unsigned32(ReadMem8(addr + 3)), 24)) = Shift_Left(Unsigned32(ReadMem16(addr + 2)), 16)
+x86.adb:449:07: info: assertion proved
 x86.adb:463:58: info: range check proved
 x86.adb:464:58: info: range check proved
 x86.adb:465:58: info: range check proved
 x86.adb:466:58: info: range check proved
 x86.adb:467:64: info: range check proved
 x86.adb:468:55: info: range check proved
-x86.adb:469:22: medium: assertion might fail, requires Unsigned32(ReadMem16(addr)) or Shift_Left(Unsigned32(ReadMem16(addr + 2)), 16)) = Val
+x86.adb:469:07: info: assertion proved
 x86.adb:485:22: info: initialization of "Result" proved
 x86.adb:488:14: info: initialization of "Result" proved
 x86.adb:497:56: info: range check proved
@@ -201,7 +201,7 @@ x86.ads:432:14: info: postcondition proved
 x86.ads:440:14: info: postcondition proved
 x86.ads:447:14: info: postcondition proved
 x86.ads:456:14: info: postcondition proved
-x86.ads:463:14: medium: postcondition might fail
+x86.ads:463:14: info: postcondition proved
 x86.ads:476:14: info: postcondition proved
 x86.ads:480:14: info: postcondition proved
 x86.ads:489:14: info: postcondition proved

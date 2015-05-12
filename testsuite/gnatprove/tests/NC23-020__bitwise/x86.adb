@@ -62,14 +62,14 @@ is
    begin
       -- SPARK should be able to prove the following assert, but it cannot (yet)
 --      pragma Assert ((Val and 16#FFFFFFFFFFFFFF00#) < 256);
-      Memory(addr) := Unsigned8'Mod(Val and 16#FFFFFFFFFFFFFF00#);
-      Memory(addr + 1) := Unsigned8'Mod(Shift_Right(Val, 8) and 16#FFFFFFFFFFFFFF00#);
-      Memory(addr + 2) := Unsigned8'Mod(Shift_Right(Val, 16) and 16#FFFFFFFFFFFFFF00#);
-      Memory(addr + 3) := Unsigned8'Mod(Shift_Right(Val, 24) and 16#FFFFFFFFFFFFFF00#);
-      Memory(addr + 4) := Unsigned8'Mod(Shift_Right(Val, 32) and 16#FFFFFFFFFFFFFF00#);
-      Memory(addr + 5) := Unsigned8'Mod(Shift_Right(Val, 40) and 16#FFFFFFFFFFFFFF00#);
-      Memory(addr + 6) := Unsigned8'Mod(Shift_Right(Val, 48) and 16#FFFFFFFFFFFFFF00#);
-      Memory(addr + 7) := Unsigned8'Mod(Shift_Right(Val, 56) and 16#FFFFFFFFFFFFFF00#);
+      Memory(addr) := Unsigned8'Mod(Val and 16#FF#);
+      Memory(addr + 1) := Unsigned8'Mod(Shift_Right(Val, 8) and 16#FF#);
+      Memory(addr + 2) := Unsigned8'Mod(Shift_Right(Val, 16) and 16#FF#);
+      Memory(addr + 3) := Unsigned8'Mod(Shift_Right(Val, 24) and 16#FF#);
+      Memory(addr + 4) := Unsigned8'Mod(Shift_Right(Val, 32) and 16#FF#);
+      Memory(addr + 5) := Unsigned8'Mod(Shift_Right(Val, 40) and 16#FF#);
+      Memory(addr + 6) := Unsigned8'Mod(Shift_Right(Val, 48) and 16#FF#);
+      Memory(addr + 7) := Unsigned8'Mod(Shift_Right(Val, 56) and 16#FF#);
    end WriteMem64;
 
 end X86;

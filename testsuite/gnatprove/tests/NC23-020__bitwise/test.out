@@ -16,4 +16,4 @@ x86.ads:45:45: info: range check proved
 x86.ads:49:16: info: postcondition proved
 x86.ads:57:16: info: postcondition proved
 x86.ads:65:48: info: length check proved
-x86.ads:71:14: medium: postcondition might fail
+x86.ads:71:14: info: postcondition proved

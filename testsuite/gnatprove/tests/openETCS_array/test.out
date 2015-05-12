@@ -283,15 +283,16 @@ step_function.adb:185:13: info: initialization of "scan_sfun1" proved
 step_function.adb:185:27: info: initialization of "scan_sfun2" proved
 step_function.adb:186:19: info: initialization of "im" proved
 step_function.adb:186:22: info: range check proved
-step_function.adb:187:13: info: assertion proved
 step_function.adb:187:44: info: initialization of "im" proved
 step_function.adb:188:30: info: initialization of "Merge.Step" proved
+step_function.adb:188:30: medium: assertion might fail, requires Merge.Step(I-1).Delimiter < Merge.Step(I).Delimiter
 step_function.adb:188:42: info: index check proved
 step_function.adb:188:69: info: index check proved
 step_function.adb:189:13: warning: statement has no effect
 step_function.adb:189:16: info: initialization of "im" proved
-step_function.adb:190:16: info: assertion proved
+
 step_function.adb:190:31: info: initialization of "Merge.Step" proved
+step_function.adb:190:31: medium: assertion might fail, requires Merge.Step(Im-2).Delimiter < Merge.Step(Im-1).Delimiter
 step_function.adb:190:42: info: initialization of "im" proved
 step_function.adb:190:44: info: index check proved
 step_function.adb:190:73: info: index check proved

@@ -456,10 +456,10 @@ is
               (Unsigned64(Memory(addr + 1)) * (256)) +
               (Unsigned64(Memory(addr + 2)) * (2**16)) +
               (Unsigned64(Memory(addr + 3)) * (2**24)) +
-              (Unsigned64(Memory(addr + 4)) * (2**24)) +
-              (Unsigned64(Memory(addr + 5)) * (2**24)) +
-              (Unsigned64(Memory(addr + 6)) * (2**24)) +
-              (Unsigned64(Memory(addr + 7)) * (2**24))) = Val) and
+              (Unsigned64(Memory(addr + 4)) * (2**32)) +
+              (Unsigned64(Memory(addr + 5)) * (2**40)) +
+              (Unsigned64(Memory(addr + 6)) * (2**48)) +
+              (Unsigned64(Memory(addr + 7)) * (2**56))) = Val) and
                 (for all i in Unsigned64 =>
                      (if ((i /= addr) and (i /= addr + 1) and
                             (i /= addr + 2) and (i /= addr + 3) and

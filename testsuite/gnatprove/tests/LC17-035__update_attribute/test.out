@@ -25,16 +25,16 @@ arrays.adb:84:14: info: initialization of "Arr" proved
 arrays.adb:85:14: info: initialization of "Arr" proved
 arrays.adb:90:10: info: index check proved
 arrays.ads:5:34: info: length check proved
-arrays.ads:14:19: info: postcondition proved
+arrays.ads:14:19: medium: postcondition might fail, requires F1'Result = Array_1DArray_1D'(1..2 => X), (3 => Init_Val + 1), (others => An_Arr (5))
 arrays.ads:15:31: info: length check proved
 arrays.ads:16:51: info: overflow check proved
 arrays.ads:23:19: info: postcondition proved
 arrays.ads:31:19: info: postcondition proved
 arrays.ads:35:19: info: postcondition proved
-arrays.ads:39:19: info: postcondition proved
+arrays.ads:39:19: medium: postcondition might fail, requires F3'Result = Arr_In'update
 arrays.ads:45:19: info: postcondition proved
 arrays.ads:49:19: info: postcondition proved
-arrays.ads:53:19: info: postcondition proved
+arrays.ads:53:19: medium: postcondition might fail, requires F6'Result = Arr_In'update
 arrays.ads:56:29: info: initialization of "A" proved
 arrays.ads:57:19: info: initialization of "A" proved
 arrays.ads:57:19: info: postcondition proved
