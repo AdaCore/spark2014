@@ -1,7 +1,8 @@
 package Surfaces
   with Abstract_State => ((Elevators with External => Async_Readers),
-                          (Ailerons with External => Async_Readers),
-                          (Rudder with External => Async_Readers))
+                          (Ailerons  with External => Async_Readers),
+                          (Rudder    with External => Async_Readers)),
+       Initializes    => (Elevators, Ailerons, Rudder)
 is
    type Controlangle is new Short_Short_Integer range -45 .. 45;
 

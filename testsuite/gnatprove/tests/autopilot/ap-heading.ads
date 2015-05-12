@@ -11,20 +11,20 @@ is
       Target_Heading  : in Instruments.Headdegree;
       Bank            : in Instruments.Bankangle;
       Slip            : in Instruments.Slipangle)
-     with Global  => (Output => (Surfaces.Ailerons,
-                                 Surfaces.Rudder),
-                      In_Out => State),
-          Depends => (State =>+ (Bank,
-                                 Slip,
-                                 Switch_Pressed),
-                      Surfaces.Ailerons => (Bank,
-                                            Mach,
-                                            Present_Heading,
-                                            State,
-                                            Switch_Pressed,
-                                            Target_Heading),
-                      Surfaces.Rudder => (Mach,
-                                          Slip,
-                                          State,
-                                          Switch_Pressed));
+     with Global  => (In_Out => (Surfaces.Ailerons,
+                                 Surfaces.Rudder,
+                                 State)),
+          Depends => (State             =>+ (Bank,
+                                             Slip,
+                                             Switch_Pressed),
+                      Surfaces.Ailerons =>+ (Bank,
+                                             Mach,
+                                             Present_Heading,
+                                             State,
+                                             Switch_Pressed,
+                                             Target_Heading),
+                      Surfaces.Rudder   =>+ (Mach,
+                                             Slip,
+                                             State,
+                                             Switch_Pressed));
 end AP.Heading;

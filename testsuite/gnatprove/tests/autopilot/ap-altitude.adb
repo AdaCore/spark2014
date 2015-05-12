@@ -12,24 +12,24 @@ is
 		      Mach             : in Instruments.Machnumber;
 		      Climb_Rate       : in Instruments.Feetpermin;
 		      The_Pitch        : in Instruments.Pitchangle)
-     with Refined_Global  => (Output => Surfaces.Elevators,
-                              In_Out => (Pitch.State,
+     with Refined_Global  => (In_Out => (Surfaces.Elevators,
+                                         Pitch.State,
                                          Switch_Pressed_Before,
                                          Target_Altitude)),
-          Refined_Depends => (Pitch.State =>+ (Switch_Pressed,
-                                               The_Pitch),
-                              Surfaces.Elevators => (Climb_Rate,
-                                                     Mach,
-                                                     Pitch.State,
-                                                     Present_Altitude,
-                                                     Switch_Pressed,
-                                                     Switch_Pressed_Before,
-                                                     Target_Altitude,
-                                                     The_Pitch),
-                              Switch_Pressed_Before => Switch_Pressed,
-                              Target_Altitude =>+ (Present_Altitude,
-                                                   Switch_Pressed,
-                                                   Switch_Pressed_Before))
+          Refined_Depends => (Pitch.State           =>+ (Switch_Pressed,
+                                                         The_Pitch),
+                              Surfaces.Elevators    =>+ (Climb_Rate,
+                                                         Mach,
+                                                         Pitch.State,
+                                                         Present_Altitude,
+                                                         Switch_Pressed,
+                                                         Switch_Pressed_Before,
+                                                         Target_Altitude,
+                                                         The_Pitch),
+                              Switch_Pressed_Before =>  Switch_Pressed,
+                              Target_Altitude       =>+ (Present_Altitude,
+                                                         Switch_Pressed,
+                                                         Switch_Pressed_Before))
    is
    begin
       case Switch_Pressed is

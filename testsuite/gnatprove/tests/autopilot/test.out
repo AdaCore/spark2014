@@ -56,7 +56,6 @@ ap-altitude-pitch.adb:86:49: info: initialization of "Surfaces.Elevators" proved
 ap-altitude-pitch.adb:106:31: info: initialization of "Elevator_Movement" proved
 ap-altitude.adb:7:04: info: initialization of "Target_Altitude" constituent of "State" proved
 ap-altitude.adb:8:04: info: initialization of "Switch_Pressed_Before" constituent of "State" proved
-ap-altitude.adb:15:49: medium: "Surfaces.Elevators" might not be written
 ap-heading-roll.adb:28:10: info: initialization of "Offset" proved, in call inlined at ap-heading-roll.adb:48, in call inlined at ap-heading-roll.adb:94
 ap-heading-roll.adb:30:13: info: initialization of "Offset" proved, in call inlined at ap-heading-roll.adb:48, in call inlined at ap-heading-roll.adb:94
 ap-heading-roll.adb:33:42: info: initialization of "Offset" proved, in call inlined at ap-heading-roll.adb:48, in call inlined at ap-heading-roll.adb:94
@@ -83,11 +82,6 @@ ap-heading-yaw.adb:27:53: info: division check proved, in call inlined at ap-hea
 ap-heading-yaw.adb:31:14: info: initialization of "Target_Angle" proved, in call inlined at ap-heading-yaw.adb:47
 ap-heading-yaw.adb:36:49: info: initialization of "Surfaces.Rudder" proved
 ap-heading-yaw.adb:48:28: info: initialization of "Rudder_Movement" proved
-ap-heading.adb:13:50: medium: "Surfaces.Ailerons" might not be written
-ap-heading.adb:14:50: medium: "Surfaces.Rudder" might not be written
-ap.adb:25:50: info: initialization of "Surfaces.Ailerons" proved
-ap.adb:26:50: info: initialization of "Surfaces.Elevators" proved
-ap.adb:27:50: info: initialization of "Surfaces.Rudder" proved
 ap.adb:72:12: info: initialization of "Master_Switch" proved
 ap.adb:74:34: info: initialization of "Altitude_Switch" proved
 ap.adb:75:34: info: initialization of "Heading_Switch" proved
@@ -102,9 +96,6 @@ ap.adb:95:25: info: initialization of "Present_Heading" proved
 ap.adb:96:25: info: initialization of "Target_Heading" proved
 ap.adb:97:25: info: initialization of "Bank" proved
 ap.adb:98:25: info: initialization of "Slip" proved
-main.adb:12:39: info: initialization of "Surfaces.Ailerons" proved
-main.adb:13:39: info: initialization of "Surfaces.Elevators" proved
-main.adb:14:39: info: initialization of "Surfaces.Rudder" proved
 scale.adb:19:20: info: overflow check proved
 scale.adb:19:32: info: division check proved
 scale.adb:19:32: info: overflow check proved

@@ -10,24 +10,24 @@ is
       Target_Heading  : in Instruments.Headdegree;
       Bank            : in Instruments.Bankangle;
       Slip            : in Instruments.Slipangle)
-     with Refined_Global  => (Output => (Surfaces.Ailerons,
-                                         Surfaces.Rudder),
-                              In_Out => (Roll.State,
+     with Refined_Global  => (In_Out => (Surfaces.Ailerons,
+                                         Surfaces.Rudder,
+                                         Roll.State,
                                          Yaw.State)),
-          Refined_Depends => (Roll.State =>+ (Bank,
-                                              Switch_Pressed),
-                              Surfaces.Ailerons => (Bank,
-                                                    Mach,
-                                                    Present_Heading,
-                                                    Roll.State,
-                                                    Switch_Pressed,
-                                                    Target_Heading),
-                              Surfaces.Rudder => (Mach,
-                                                  Slip,
-                                                  Switch_Pressed,
-                                                  Yaw.State),
-                              Yaw.State =>+ (Slip,
-                                             Switch_Pressed))
+          Refined_Depends => (Roll.State        =>+ (Bank,
+                                                     Switch_Pressed),
+                              Surfaces.Ailerons =>+ (Bank,
+                                                     Mach,
+                                                     Present_Heading,
+                                                     Roll.State,
+                                                     Switch_Pressed,
+                                                     Target_Heading),
+                              Surfaces.Rudder   =>+ (Mach,
+                                                     Slip,
+                                                     Switch_Pressed,
+                                                     Yaw.State),
+                              Yaw.State         =>+ (Slip,
+                                                     Switch_Pressed))
    is
    begin
       case Switch_Pressed is
