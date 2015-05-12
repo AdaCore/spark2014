@@ -1,3 +1,26 @@
+------------------------------------------------------------------------------
+-- (C) Altran Praxis Limited
+------------------------------------------------------------------------------
+--
+-- SPARKSkein is free software; you can redistribute it and/or modify it
+-- under terms of the GNU General Public License as published by the Free
+-- Software Foundation; either version 3, or (at your option) any later
+-- version. SPARKSkein is distributed in the hope that it will be
+-- useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+-- Public License for more details. You should have received a copy of the GNU
+-- General Public License distributed with SPARKSkein; see file
+-- COPYING3. If not, go to http://www.gnu.org/licenses for a complete copy of
+-- the license.
+--
+-- As a special exception, if other files instantiate generics from this unit,
+-- or you link this unit with other files to produce an executable, this unit
+-- does not by itself cause the resulting executable to be covered by the GNU
+-- General Public License. This exception does not however invalidate any other
+-- reasons why the executable file might be covered by the GNU Public License.
+--
+--==============================================================================
+
 with System;
 with Interfaces;
 
@@ -91,16 +114,9 @@ is
    subtype Positive_Block_512_Count_T is U64
      range 1 .. Block_512_Count_T'Last;
 
-   --  Make the context limited private to prevent assignment and comparison
-   --  of contexts. These operations almost certainly don't make sense.
-   --   type Skein_512_Context is limited private;
-
-   --  In SPARK2014, the 'Old attribute cannot be applied to limited
-   --  private types, so we must relax it here to just "private"
+   --  Make the context private to prevent comparison of contexts. These
+   --  operations almost certainly don't make sense.
    type Skein_512_Context is private;
-
-
-
 
    -------------------------------------------------------------------
    --  Debug Flags
@@ -138,10 +154,15 @@ is
      Debug_Flag_Set'(Permute   => False, -- all flags except Permute
                      others    => True);
 
-
    -------------------------------------------------------------------
    --  Skein 512 Exported Operations
    -------------------------------------------------------------------
+
+   function Sub_In_Range (X, Y : U64) return Boolean is (Y <= X);
+   --  Subtraction X - Y is not causing wraparound
+
+   function Add_In_Range (X, Y : U64) return Boolean is (Y <= U64'Last - X);
+   --  Addition X + Y is not causing wraparound
 
    function Hash_Bit_Len_Of (Ctx : in Skein_512_Context)
                             return Hash_Bit_Length;
@@ -160,28 +181,30 @@ is
    procedure Skein_512_Update (Ctx : in out Skein_512_Context;
                                Msg : in     Byte_Seq)
      with Global => null,
-          Pre => Hash_Bit_Len_Of (Ctx) in Initialized_Hash_Bit_Length and
-                 Byte_Count_Of (Ctx) in Skein_512_Block_Bytes_Count and
-                 Msg'First = 0 and
-                 Msg'Last < U64'Last and
-                 Msg'Last + Skein_512_Block_Bytes_C < U64'Last,
-          Post  => Hash_Bit_Len_Of (Ctx) in Initialized_Hash_Bit_Length and
-                   Hash_Bit_Len_Of (Ctx) = Hash_Bit_Len_Of (Ctx'Old) and
-                   Byte_Count_Of (Ctx) in Skein_512_Block_Bytes_Count;
+          Pre  => Hash_Bit_Len_Of (Ctx) in Initialized_Hash_Bit_Length and
+                  Byte_Count_Of (Ctx) in Skein_512_Block_Bytes_Count and
+                  Msg'First = 0 and
+                  Msg'Last < U64'Last and
+                  Add_In_Range (Msg'Last, Skein_512_Block_Bytes_C) and
+                  Msg'Last + Skein_512_Block_Bytes_C < U64'Last,
+          Post => Hash_Bit_Len_Of (Ctx) in Initialized_Hash_Bit_Length and
+                  Hash_Bit_Len_Of (Ctx) = Hash_Bit_Len_Of (Ctx)'Old and
+                  Byte_Count_Of (Ctx) in Skein_512_Block_Bytes_Count;
 
    procedure Skein_512_Final (Ctx  : in     Skein_512_Context;
                               Hash :    out Byte_Seq)
      with Global => null,
-          Pre =>  Hash_Bit_Len_Of (Ctx) in Initialized_Hash_Bit_Length and
-                  Byte_Count_Of (Ctx) in Skein_512_Block_Bytes_Count and
-                  Hash'First = 0 and
-                  (Hash_Bit_Len_Of (Ctx) + 7) / 8 <= Hash'Last + 1;
+          Pre => Hash_Bit_Len_Of (Ctx) in Initialized_Hash_Bit_Length and
+                 Byte_Count_Of (Ctx) in Skein_512_Block_Bytes_Count and
+                 Hash'First = 0 and
+                 (Hash_Bit_Len_Of (Ctx) + 7) / 8 - 1 <= Hash'Last;
 
    --  Returns a 512-bit hash of Data using 512-bit block size.
    function Skein_512_Hash (Data : in Byte_Seq) return Skein_512_State_Bytes
      with Global => null,
           Pre => Data'First = 0 and
-                 Data'Last + Skein_512_Block_Bytes_C + 1 <= U64'Last;
+                 Add_In_Range (Data'Last, Skein_512_Block_Bytes_C) and
+                 Data'Last + Skein_512_Block_Bytes_C < U64'Last;
 
    -------------------------------------------------------------------
    --  Debugging control
@@ -197,11 +220,12 @@ is
                          S     : in Byte_Seq;
                          Count : in U64)
      with Global => null,
-          Depends => (null => (Msg, S, Count));
+          Depends => (null => (Msg, S, Count)),
+          Pre => S'First = 0 and
+                 Count <= S'Length;
    pragma Warnings (On,  "unused initial value*");
 
 private
-
 
    Skein_Max_State_Words_C : constant := 16;
 
@@ -305,7 +329,6 @@ private
                   First_Block    => False,
                   Final_Block    => False);
 
-
    --  Context header common to all block sizes
    type Context_Header is record
       Tweak_Words  : Tweak_Value;
@@ -323,7 +346,6 @@ private
       --  on the specific _Init, _Update, and _Final
       --  procedures above for each block size.
       Byte_Count   : U64;
-
    end record;
 
    Null_Context_Header : constant Context_Header :=

@@ -1,3 +1,26 @@
+------------------------------------------------------------------------------
+-- (C) Altran Praxis Limited
+------------------------------------------------------------------------------
+--
+-- SPARKSkein is free software; you can redistribute it and/or modify it
+-- under terms of the GNU General Public License as published by the Free
+-- Software Foundation; either version 3, or (at your option) any later
+-- version. SPARKSkein is distributed in the hope that it will be
+-- useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+-- Public License for more details. You should have received a copy of the GNU
+-- General Public License distributed with SPARKSkein; see file
+-- COPYING3. If not, go to http://www.gnu.org/licenses for a complete copy of
+-- the license.
+--
+-- As a special exception, if other files instantiate generics from this unit,
+-- or you link this unit with other files to produce an executable, this unit
+-- does not by itself cause the resulting executable to be covered by the GNU
+-- General Public License. This exception does not however invalidate any other
+-- reasons why the executable file might be covered by the GNU Public License.
+--
+--==============================================================================
+
 with Ada.Unchecked_Conversion;
 with GNAT.Byte_Swapping;
 
@@ -67,7 +90,8 @@ is
    Skein_Cfg_Str_Len : constant := 4*8;
 
    --  Local subprogram declarations
-   function To_LittleEndian (W : in Unsigned_64) return Unsigned_64;
+   function To_LittleEndian (W : in Unsigned_64) return Unsigned_64
+     with Global => null;
 
    procedure Put_64_LSB_First (Dst        : in out Byte_Seq;
                                Dst_Offset : in     U64;
@@ -75,7 +99,7 @@ is
                                Byte_Count : in     U64)
      with Pre => Dst'First = 0 and
                  Src'First = 0 and
-                 Dst'Last > Dst_Offset and
+                 Sub_In_Range (Dst'Last, Dst_Offset) and
                  Dst'Last - Dst_Offset > Byte_Count and
                  (Byte_Count - 1) / 8 <= Src'Last;
 
@@ -84,38 +108,14 @@ is
                                Src_Offset : in     U64)
      with Pre => Src'First = 0 and
                  Dst'First = 0 and
-                 Dst'Last >= 0 and
-                 Src_Offset <= Src'Last and
-                 Src_Offset + 7 <= Src'Last and
-                 Dst'Last in Word_Count_T and -- ???
-                 Src_Offset + (Dst'Last * 8) + 7 <= Src'Last;
-
+                 Sub_In_Range (Src'Last, Src_Offset) and
+                 Sub_In_Range (Src'Last - Src_Offset, 7) and
+                 Dst'Last * 8 <= Src'Last - Src_Offset - 7;
 
    procedure Skein_Start_New_Type (Field_Type  : in     U6;
                                    First_Block : in     Boolean;
                                    Final_Block : in     Boolean;
                                    Ctx         : in out Context_Header);
-
-   procedure Skein_512_Process_Block
-     (Ctx             : in out Skein_512_Context;
-      Block           : in     Byte_Seq;
-      Starting_Offset : in     U64;
-      Block_Count     : in     Positive_Block_512_Count_T;
-      Byte_Count_Add  : in     U64)
-     with Global => null,
-          Pre => Ctx.H.Hash_Bit_Len in Initialized_Hash_Bit_Length and
-                 Ctx.H.Byte_Count in Skein_512_Block_Bytes_Count and
-                 Block'First = 0 and
-                 Starting_Offset +
-                   ((Block_Count - 1) * Skein_512_Block_Bytes_C) + 63 <=
-                     Block'Last and
-                 Starting_Offset + 63 <= Block'Last and
-                 Block'Last <= U64'Last and
-                 Starting_Offset <= U64'Last - 63,
-          Post => Ctx.H.Hash_Bit_Len in Initialized_Hash_Bit_Length and
-                  Ctx.H.Hash_Bit_Len = Ctx'Old.H.Hash_Bit_Len and
-                  Ctx.H.Byte_Count in Skein_512_Block_Bytes_Count and
-                  Ctx.H.Byte_Count   = Ctx'Old.H.Byte_Count;
 
    --  Local packages
    package Trace
@@ -256,11 +256,12 @@ is
       Dst_Index : Word_Count_T;
       Src_Index : U64;
    begin
-      --pragma Annotate
-      --   (Gnatprove, False_Positive, " *Dst* might not be initialized", "");
       Dst_Index := 0;
       Src_Index := Src_Offset;
       loop
+         pragma Annotate
+           (GNATprove, False_Positive, """Dst"" might not be initialized",
+            "array Dst is initialized from Dst'First = 0 to Dst'Last");
          Dst (Dst_Index) :=
            U64 (Src (Src_Index)) +
            Shift_Left (U64 (Src (Src_Index + 1)), 8) +
@@ -279,8 +280,6 @@ is
          Dst_Index := Dst_Index + 1;
          Src_Index := Src_Index + 8;
 
-         pragma Assert (Dst_Index <= Dst'Last);
-         pragma Assert (Dst_Index * 8 <= Dst'Last * 8);
          pragma Assert (Src_Offset + 7 + (Dst_Index * 8) <= Src_Offset + 7 + (Dst'Last * 8));
          pragma Assert (Src_Index = Src_Offset + Dst_Index * 8);
          pragma Assert (Src_Index <= Src'Last);
@@ -312,6 +311,20 @@ is
       Starting_Offset : in     U64;
       Block_Count     : in     Positive_Block_512_Count_T;
       Byte_Count_Add  : in     U64)
+     with Global => null,
+          Pre  => Ctx.H.Hash_Bit_Len in Initialized_Hash_Bit_Length and
+                  Ctx.H.Byte_Count in Skein_512_Block_Bytes_Count and
+                  Block'First = 0 and
+                  Add_In_Range (Starting_Offset,
+                    ((Block_Count - 1) * Skein_512_Block_Bytes_C) + 63) and
+                  Starting_Offset +
+                    ((Block_Count - 1) * Skein_512_Block_Bytes_C) + 63 <=
+                      Block'Last and
+                  Starting_Offset + 63 <= Block'Last,
+          Post => Ctx.H.Hash_Bit_Len in Initialized_Hash_Bit_Length and
+                  Ctx.H.Hash_Bit_Len = Ctx.H.Hash_Bit_Len'Old and
+                  Ctx.H.Byte_Count in Skein_512_Block_Bytes_Count and
+                  Ctx.H.Byte_Count = Ctx.H.Byte_Count'Old
    is
       TS   : U64_Seq_3; -- Key schedule: tweak
       KS   : U64_Seq_9; -- Key schedule: chaining vars
@@ -348,8 +361,9 @@ is
          --  OK, since type-safety is later re-established by the proof system.
 
          KS (WCNT_512) := Skein_KS_Parity;
-         --pragma Annotate (Gnatprove, False_Positive,
-         --                 "Ks* might not be initialized", "");
+         pragma Annotate
+           (GNATprove, False_Positive, """KS"" might not be initialized",
+            "array KS is initialized at index 8, then from 0 to 7");
 
          for I in I8 loop
             KS (I)    := Ctx.X (I);
@@ -622,6 +636,13 @@ is
       J := 1;
 
       loop
+         pragma Loop_Invariant
+           (Ctx.H.Hash_Bit_Len = Ctx.H.Hash_Bit_Len'Loop_Entry and
+            Ctx.H.Byte_Count   = Ctx.H.Byte_Count'Loop_Entry and
+            J >= 1 and
+            J <= Block_Count and
+            Src_Offset = Starting_Offset + (J - 1) * Skein_512_Block_Bytes_C);
+
          --  This implementation only supports 2**64 input bytes,
          --  so no carry over to Byte_Count_MSB here.
          Ctx.H.Tweak_Words.Byte_Count_LSB :=
@@ -740,13 +761,18 @@ is
 
       procedure Copy_Msg_To_B (Msg_Offset : in     U64;
                                Num_Bytes  : in     U64)
-        with Pre => Ctx.H.Hash_Bit_Len > 0 and
-             Msg'First = 0 and
-             Msg_Offset in Msg'Range and
-             (Msg_Offset + (Num_Bytes - 1)) <=
-                Msg'Last and
-             (Ctx.H.Byte_Count + (Num_Bytes) - 1) <=
-                Ctx.B'Last;
+        with Pre  => Ctx.H.Hash_Bit_Len > 0 and
+                     Msg'First = 0 and
+                     Msg_Offset in Msg'Range and
+                     Sub_In_Range (Num_Bytes, 1) and
+                     Add_In_Range (Msg_Offset, Num_Bytes - 1) and
+                     Msg_Offset + Num_Bytes - 1 <= Msg'Last and
+                     Add_In_Range (Ctx.H.Byte_Count, Num_Bytes - 1) and
+                     Ctx.H.Byte_Count + Num_Bytes - 1 <= Ctx.B'Last,
+             Post => Ctx.H.Hash_Bit_Len > 0 and
+                     Ctx.H.Hash_Bit_Len = Ctx.H.Hash_Bit_Len'Old and
+                     Ctx.H.Byte_Count = Ctx.H.Byte_Count'Old + Num_Bytes and
+                     Ctx.H.Byte_Count in Skein_512_Block_Bytes_Count;
 
       procedure Copy_Msg_To_B (Msg_Offset : in     U64;
                                Num_Bytes  : in     U64)
@@ -768,6 +794,14 @@ is
 
             loop
                Ctx.B (Dst) := Msg (Src);
+
+               pragma Loop_Invariant
+                 (Ctx.H.Hash_Bit_Len > 0 and
+                  Ctx.H.Hash_Bit_Len = Ctx.H.Hash_Bit_Len'Loop_Entry and
+                  Ctx.H.Byte_Count = Ctx.H.Byte_Count'Loop_Entry and
+                  Ctx.H.Byte_Count in Skein_512_Block_Bytes_Count and
+                  Ctx.H.Byte_Count + Num_Bytes - 1 <= Ctx.B'Last and
+                  Final_Src <= Msg'Last);
 
                exit when Dst >= Final_Dst or Src >= Final_Src;
 

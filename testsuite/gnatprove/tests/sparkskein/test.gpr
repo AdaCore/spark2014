@@ -3,7 +3,7 @@ project Test is
    for Source_Dirs use ("./**");
 
    package Compiler is
-      for Default_Switches ("ada") use ("-g", "-O2", "-gnatwa", "-gnaty", "-gnata");
+      for Default_Switches ("ada") use ("-g", "-O2", "-gnatwa", "-gnata");
       for Local_Configuration_Pragmas use "skein.adc";
    end Compiler;
 
@@ -12,4 +12,3 @@ project Test is
    end Prove;
 
 end Test;
-
