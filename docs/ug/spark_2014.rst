@@ -1274,6 +1274,8 @@ assumed to have all four aspects set to ``True``. A volatile variable on which
 some of the four aspects are set to ``True`` is assumed to have the remaining
 ones set to ``False``. See SPARK RM 7.1.3 for details.
 
+.. _External State Abstraction:
+
 External State Abstraction
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 

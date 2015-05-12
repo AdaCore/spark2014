@@ -85,8 +85,9 @@ is
      with Pre => Src'First = 0 and
                  Dst'First = 0 and
                  Dst'Last >= 0 and
+                 Src_Offset <= Src'Last and
                  Src_Offset + 7 <= Src'Last and
-                 Dst'Last in Word_Count_T and
+                 Dst'Last in Word_Count_T and -- ???
                  Src_Offset + (Dst'Last * 8) + 7 <= Src'Last;
 
 
@@ -270,10 +271,19 @@ is
            Shift_Left (U64 (Src (Src_Index + 6)), 48) +
            Shift_Left (U64 (Src (Src_Index + 7)), 56);
 
+         pragma Loop_Invariant (Dst_Index in Dst'Range);
+         pragma Loop_Invariant (Src_Index = Src_Offset + Dst_Index * 8);
+
          exit when Dst_Index = Dst'Last;
 
          Dst_Index := Dst_Index + 1;
          Src_Index := Src_Index + 8;
+
+         pragma Assert (Dst_Index <= Dst'Last);
+         pragma Assert (Dst_Index * 8 <= Dst'Last * 8);
+         pragma Assert (Src_Offset + 7 + (Dst_Index * 8) <= Src_Offset + 7 + (Dst'Last * 8));
+         pragma Assert (Src_Index = Src_Offset + Dst_Index * 8);
+         pragma Assert (Src_Index <= Src'Last);
       end loop;
 
    end Get_64_LSB_First;
