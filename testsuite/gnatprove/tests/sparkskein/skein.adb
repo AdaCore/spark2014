@@ -89,34 +89,6 @@ is
 
    Skein_Cfg_Str_Len : constant := 4*8;
 
-   --  Local subprogram declarations
-   function To_LittleEndian (W : in Unsigned_64) return Unsigned_64
-     with Global => null;
-
-   procedure Put_64_LSB_First (Dst        : in out Byte_Seq;
-                               Dst_Offset : in     U64;
-                               Src        : in     U64_Seq;
-                               Byte_Count : in     U64)
-     with Pre => Dst'First = 0 and
-                 Src'First = 0 and
-                 Sub_In_Range (Dst'Last, Dst_Offset) and
-                 Dst'Last - Dst_Offset > Byte_Count and
-                 (Byte_Count - 1) / 8 <= Src'Last;
-
-   procedure Get_64_LSB_First (Dst        :    out U64_Seq;
-                               Src        : in     Byte_Seq;
-                               Src_Offset : in     U64)
-     with Pre => Src'First = 0 and
-                 Dst'First = 0 and
-                 Sub_In_Range (Src'Last, Src_Offset) and
-                 Sub_In_Range (Src'Last - Src_Offset, 7) and
-                 Dst'Last * 8 <= Src'Last - Src_Offset - 7;
-
-   procedure Skein_Start_New_Type (Field_Type  : in     U6;
-                                   First_Block : in     Boolean;
-                                   Final_Block : in     Boolean;
-                                   Ctx         : in out Context_Header);
-
    --  Local packages
    package Trace
    is
@@ -217,7 +189,9 @@ is
 
 
    --  Local subprogram bodies
-   function To_LittleEndian (W : in Unsigned_64) return Unsigned_64 is
+   function To_LittleEndian (W : in Unsigned_64) return Unsigned_64
+     with Global => null
+   is
       function LSwap is new
         GNAT.Byte_Swapping.Swapped8 (Interfaces.Unsigned_64);
 
@@ -234,6 +208,11 @@ is
                                Dst_Offset : in     U64;
                                Src        : in     U64_Seq;
                                Byte_Count : in     U64)
+     with Pre => Dst'First = 0 and
+                 Src'First = 0 and
+                 Sub_In_Range (Dst'Last, Dst_Offset) and
+                 Dst'Last - Dst_Offset > Byte_Count and
+                 (Byte_Count - 1) / 8 <= Src'Last
    is
    begin
       if Byte_Count >= 1 then
@@ -246,12 +225,15 @@ is
       end if;
    end Put_64_LSB_First;
 
-
-
    --  This version is fully portable (big- or little-endian), but slow
    procedure Get_64_LSB_First (Dst        :    out U64_Seq;
                                Src        : in     Byte_Seq;
                                Src_Offset : in     U64)
+     with Pre => Src'First = 0 and
+                 Dst'First = 0 and
+                 Sub_In_Range (Src'Last, Src_Offset) and
+                 Sub_In_Range (Src'Last - Src_Offset, 7) and
+                 Dst'Last * 8 <= Src'Last - Src_Offset - 7
    is
       Dst_Index : Word_Count_T;
       Src_Index : U64;
@@ -284,7 +266,6 @@ is
          pragma Assert (Src_Index = Src_Offset + Dst_Index * 8);
          pragma Assert (Src_Index <= Src'Last);
       end loop;
-
    end Get_64_LSB_First;
 
    procedure Skein_Start_New_Type (Field_Type  : in     U6;
@@ -303,7 +284,6 @@ is
                                       Final_Block    => Final_Block);
       Ctx.Byte_Count := 0;
    end Skein_Start_New_Type;
-
 
    procedure Skein_512_Process_Block
      (Ctx             : in out Skein_512_Context;
@@ -372,7 +352,6 @@ is
          end loop;
       end Initialize_Key_Schedule;
 
-
       procedure Initialize_TS
       is
          W0 : U64;
@@ -384,7 +363,6 @@ is
                           1 => W1,
                           2 => W0 xor W1);
       end Initialize_TS;
-
 
       procedure Do_First_Key_Injection
       is
@@ -400,7 +378,6 @@ is
          X (WCNT_512 - 3) := X (WCNT_512 - 3) + TS (0);
          X (WCNT_512 - 2) := X (WCNT_512 - 2) + TS (1);
       end Do_First_Key_Injection;
-
 
       procedure Threefish_Block
       is
@@ -452,8 +429,6 @@ is
             X (7) := Rotate_Left (X (7), R_512_0_3);
             X (7) := X (7) xor X (6);
          end Round_1;
-
-
 
          procedure Round_2
          is
@@ -639,7 +614,6 @@ is
          pragma Loop_Invariant
            (Ctx.H.Hash_Bit_Len = Ctx.H.Hash_Bit_Len'Loop_Entry and
             Ctx.H.Byte_Count   = Ctx.H.Byte_Count'Loop_Entry and
-            J >= 1 and
             J <= Block_Count and
             Src_Offset = Starting_Offset + (J - 1) * Skein_512_Block_Bytes_C);
 
@@ -691,23 +665,13 @@ is
       end loop;
    end Skein_512_Process_Block;
 
-
    --  Exported subprograms
 
    function Hash_Bit_Len_Of (Ctx : in Skein_512_Context) return Hash_Bit_Length
-   is
-   begin
-      return Ctx.H.Hash_Bit_Len;
-   end Hash_Bit_Len_Of;
-
+   is (Ctx.H.Hash_Bit_Len);
 
    function Byte_Count_Of   (Ctx : in Skein_512_Context) return U64
-   is
-   begin
-      return Ctx.H.Byte_Count;
-   end Byte_Count_Of;
-
-
+   is (Ctx.H.Byte_Count);
 
    procedure Skein_512_Init (Ctx        :    out Skein_512_Context;
                              HashBitLen : in     Initialized_Hash_Bit_Length)
@@ -734,7 +698,6 @@ is
       --  First, zero the chaining bytes
       Ctx.X := Skein_512_State_Words'(others => 0);
 
-
       Skein_512_Process_Block
         (Ctx             => Ctx,
          Block           => Skein_512_State_Words_To_Bytes (Cfg),
@@ -747,7 +710,6 @@ is
 
    end Skein_512_Init;
 
-
    procedure Skein_512_Update (Ctx : in out Skein_512_Context;
                                Msg : in     Byte_Seq)
    is
@@ -758,24 +720,19 @@ is
       Bytes_Hashed       : U64;
       Tmp_B              : Skein_512_Block_Bytes;
 
-
       procedure Copy_Msg_To_B (Msg_Offset : in     U64;
                                Num_Bytes  : in     U64)
         with Pre  => Ctx.H.Hash_Bit_Len > 0 and
                      Msg'First = 0 and
                      Msg_Offset in Msg'Range and
-                     Sub_In_Range (Num_Bytes, 1) and
-                     Add_In_Range (Msg_Offset, Num_Bytes - 1) and
-                     Msg_Offset + Num_Bytes - 1 <= Msg'Last and
-                     Add_In_Range (Ctx.H.Byte_Count, Num_Bytes - 1) and
-                     Ctx.H.Byte_Count + Num_Bytes - 1 <= Ctx.B'Last,
+                     Add_In_Range (Msg_Offset, Num_Bytes) and
+                     Msg_Offset + Num_Bytes <= Msg'Last + 1 and
+                     Add_In_Range (Ctx.H.Byte_Count, Num_Bytes) and
+                     Ctx.H.Byte_Count + Num_Bytes <= Ctx.B'Last + 1,
              Post => Ctx.H.Hash_Bit_Len > 0 and
                      Ctx.H.Hash_Bit_Len = Ctx.H.Hash_Bit_Len'Old and
                      Ctx.H.Byte_Count = Ctx.H.Byte_Count'Old + Num_Bytes and
-                     Ctx.H.Byte_Count in Skein_512_Block_Bytes_Count;
-
-      procedure Copy_Msg_To_B (Msg_Offset : in     U64;
-                               Num_Bytes  : in     U64)
+                     Ctx.H.Byte_Count in Skein_512_Block_Bytes_Count
       is
          Src       : U64;
          Dst       : Skein_512_Block_Bytes_Index;
@@ -812,9 +769,6 @@ is
             Ctx.H.Byte_Count := Ctx.H.Byte_Count + Num_Bytes;
          end if;
       end Copy_Msg_To_B;
-
-
-
 
    begin
       Msg_Byte_Count     := Msg'Last + 1;
@@ -870,7 +824,6 @@ is
 
    end Skein_512_Update;
 
-
    procedure Skein_512_Final (Ctx  : in     Skein_512_Context;
                               Hash :    out Byte_Seq)
    is
@@ -913,10 +866,10 @@ is
 
             pragma Loop_Invariant
               (Local_Ctx.H.Hash_Bit_Len =
-                 Local_Ctx'Loop_Entry.H.Hash_Bit_Len and
+                 Local_Ctx.H.Hash_Bit_Len'Loop_Entry and
                Local_Ctx.H.Hash_Bit_Len > 0 and
                Local_Ctx.H.Byte_Count < Skein_512_Block_Bytes_C and
-               Local_Ctx.H.Byte_Count = Local_Ctx'Loop_Entry.H.Byte_Count);
+               Local_Ctx.H.Byte_Count = Local_Ctx.H.Byte_Count'Loop_Entry);
 
             Local_Ctx.B (I) := 0;
          end loop;
@@ -934,7 +887,6 @@ is
          Local_Ctx.B (6) := Byte (Shift_Right (Counter, 48) and 16#FF#);
          Local_Ctx.B (7) := Byte (Shift_Right (Counter, 56) and 16#FF#);
       end Set_Counter;
-
 
    begin
       Local_Ctx := Ctx;
@@ -967,7 +919,19 @@ is
       Blocks_Required := (Byte_Count + 63) / 64;
       Blocks_Done := 0;
 
+      pragma Assert (Blocks_Required * Skein_512_Block_Bytes_C <= Byte_Count);
+
       loop
+         pragma Loop_Invariant
+           (Local_Ctx.H.Hash_Bit_Len > 0 and
+            Byte_Count - 1 <= Hash'Last and
+            Blocks_Done * Skein_512_Block_Bytes_C < Byte_Count and
+            (Blocks_Done = 0
+               or
+             Blocks_Done * Skein_512_Block_Bytes_C - 1 < Hash'Last) and
+            Blocks_Done < Blocks_Required and
+            Blocks_Required = (Byte_Count + 63) / 64);
+
          Set_Counter (Blocks_Done);
 
          Skein_Start_New_Type (Field_Type  => Skein_Block_Type_Out,
@@ -1009,11 +973,9 @@ is
 
          Blocks_Done := Blocks_Done + 1;
          exit when Blocks_Done >= Blocks_Required;
-
       end loop;
 
    end Skein_512_Final;
-
 
    function Skein_512_Hash (Data : in Byte_Seq) return Skein_512_State_Bytes
    is
