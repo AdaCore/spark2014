@@ -1,0 +1,223 @@
+stable_marriage.adb:5:43: info: length check proved
+stable_marriage.adb:8:10: info: loop invariant initialization proved
+stable_marriage.adb:8:10: info: loop invariant preservation proved
+stable_marriage.adb:10:16: info: initialization of "Seen" proved
+stable_marriage.adb:11:26: info: range check proved
+stable_marriage.adb:12:26: info: index check proved
+stable_marriage.adb:13:27: info: initialization of "Seen" proved
+stable_marriage.adb:15:07: info: assertion proved
+stable_marriage.adb:15:23: info: initialization of "Seen" proved
+stable_marriage.adb:15:43: info: length check proved
+stable_marriage.adb:19:14: info: initialization of "Seen" proved
+stable_marriage.adb:19:34: info: length check proved
+stable_marriage.adb:26:43: info: length check proved
+stable_marriage.adb:29:10: info: loop invariant initialization proved
+stable_marriage.adb:29:10: info: loop invariant preservation proved
+stable_marriage.adb:31:16: info: initialization of "Seen" proved
+stable_marriage.adb:32:26: info: range check proved
+stable_marriage.adb:33:26: info: index check proved
+stable_marriage.adb:34:27: info: initialization of "Seen" proved
+stable_marriage.adb:36:07: info: assertion proved
+stable_marriage.adb:36:23: info: initialization of "Seen" proved
+stable_marriage.adb:36:43: info: length check proved
+stable_marriage.adb:40:14: info: initialization of "Seen" proved
+stable_marriage.adb:40:34: info: length check proved
+stable_marriage.adb:48:36: info: length check proved
+stable_marriage.adb:51:07: info: precondition proved
+stable_marriage.adb:53:10: info: loop invariant initialization proved
+stable_marriage.adb:53:10: info: loop invariant preservation proved
+stable_marriage.adb:54:21: info: range check proved
+stable_marriage.adb:55:16: info: initialization of "Result" proved
+stable_marriage.adb:55:28: info: index check proved
+stable_marriage.adb:56:10: info: loop invariant initialization proved
+stable_marriage.adb:56:10: info: loop invariant preservation proved
+stable_marriage.adb:58:29: info: range check proved
+stable_marriage.adb:59:28: info: index check proved
+stable_marriage.adb:59:50: info: initialization of "Result" proved
+stable_marriage.adb:60:29: info: initialization of "Result" proved
+stable_marriage.adb:62:14: info: initialization of "Result" proved
+stable_marriage.adb:68:36: info: length check proved
+stable_marriage.adb:71:07: info: precondition proved
+stable_marriage.adb:73:10: info: loop invariant initialization proved
+stable_marriage.adb:73:10: info: loop invariant preservation proved
+stable_marriage.adb:74:21: info: range check proved
+stable_marriage.adb:75:16: info: initialization of "Result" proved
+stable_marriage.adb:75:28: info: index check proved
+stable_marriage.adb:76:10: info: loop invariant initialization proved
+stable_marriage.adb:76:10: info: loop invariant preservation proved
+stable_marriage.adb:78:29: info: range check proved
+stable_marriage.adb:79:28: info: index check proved
+stable_marriage.adb:79:50: info: initialization of "Result" proved
+stable_marriage.adb:80:29: info: initialization of "Result" proved
+stable_marriage.adb:82:14: info: initialization of "Result" proved
+stable_marriage.adb:89:19: info: precondition proved
+stable_marriage.adb:90:14: info: initialization of "Inverted" proved
+stable_marriage.adb:97:19: info: precondition proved
+stable_marriage.adb:98:14: info: initialization of "Inverted" proved
+stable_marriage.adb:104:45: info: length check proved
+stable_marriage.adb:107:07: medium: precondition might fail
+stable_marriage.adb:109:10: info: loop invariant initialization proved
+stable_marriage.adb:109:10: info: loop invariant preservation proved
+stable_marriage.adb:110:21: info: range check proved
+stable_marriage.adb:111:16: info: initialization of "Result" proved
+stable_marriage.adb:111:34: info: index check proved
+stable_marriage.adb:112:10: info: loop invariant initialization proved
+stable_marriage.adb:112:10: info: loop invariant preservation proved
+stable_marriage.adb:114:29: info: range check proved
+stable_marriage.adb:115:35: info: index check proved
+stable_marriage.adb:116:29: info: initialization of "Result" proved
+stable_marriage.adb:117:33: info: initialization of "Result" proved
+stable_marriage.adb:119:14: info: initialization of "Result" proved
+stable_marriage.adb:149:41: info: length check proved
+stable_marriage.adb:153:50: info: length check proved
+stable_marriage.adb:156:51: info: length check proved
+stable_marriage.adb:159:45: info: length check proved
+stable_marriage.adb:167:11: info: postcondition proved
+stable_marriage.adb:168:36: info: precondition proved
+stable_marriage.adb:172:37: info: length check proved
+stable_marriage.adb:173:67: info: length check proved
+stable_marriage.adb:177:13: info: loop invariant initialization proved
+stable_marriage.adb:177:13: info: loop invariant preservation proved
+stable_marriage.adb:178:24: info: range check proved
+stable_marriage.adb:179:19: info: initialization of "Result" proved
+stable_marriage.adb:179:27: info: index check proved
+stable_marriage.adb:179:35: info: precondition proved
+stable_marriage.adb:179:49: info: index check proved
+stable_marriage.adb:180:25: info: initialization of "Result" proved
+stable_marriage.adb:180:28: info: precondition proved
+stable_marriage.adb:182:17: info: initialization of "Result" proved
+stable_marriage.adb:186:18: info: range check proved
+stable_marriage.adb:188:23: info: range check proved
+stable_marriage.adb:191:50: info: index check proved
+stable_marriage.adb:192:56: info: index check proved
+stable_marriage.adb:206:29: info: range check proved
+stable_marriage.adb:208:51: info: index check proved
+stable_marriage.adb:225:26: info: range check proved
+stable_marriage.adb:227:63: info: index check proved
+stable_marriage.adb:228:56: info: index check proved
+stable_marriage.adb:229:35: info: precondition proved
+stable_marriage.adb:230:70: info: index check proved
+stable_marriage.adb:231:66: info: index check proved
+stable_marriage.adb:239:32: info: range check proved
+stable_marriage.adb:241:53: info: index check proved
+stable_marriage.adb:249:30: info: range check proved
+stable_marriage.adb:251:52: info: index check proved
+stable_marriage.adb:254:39: info: range check proved
+stable_marriage.adb:264:55: info: index check proved, in call inlined at stable_marriage.adb:299
+stable_marriage.adb:265:71: info: range check proved, in call inlined at stable_marriage.adb:299
+stable_marriage.adb:270:42: info: initialization of "Unmatched_G1_Set.Cardinality" proved, in call inlined at stable_marriage.adb:385
+stable_marriage.adb:270:71: info: range check proved, in call inlined at stable_marriage.adb:321
+stable_marriage.adb:270:71: info: range check proved, in call inlined at stable_marriage.adb:326
+stable_marriage.adb:270:71: info: range check proved, in call inlined at stable_marriage.adb:385
+stable_marriage.adb:271:53: info: index check proved, in call inlined at stable_marriage.adb:321
+stable_marriage.adb:271:53: info: index check proved, in call inlined at stable_marriage.adb:326
+stable_marriage.adb:271:53: info: index check proved, in call inlined at stable_marriage.adb:385
+stable_marriage.adb:272:12: info: initialization of "Unmatched_G1_Set.Cardinality" proved, in call inlined at stable_marriage.adb:385
+stable_marriage.adb:272:12: info: initialization of "Unmatched_G1_Set.Elements" proved, in call inlined at stable_marriage.adb:385
+stable_marriage.adb:272:15: info: initialization of "C131b" proved, in call inlined at stable_marriage.adb:321
+stable_marriage.adb:272:15: info: initialization of "G1" proved, in call inlined at stable_marriage.adb:326
+stable_marriage.adb:277:18: info: precondition proved
+stable_marriage.adb:279:17: medium: postcondition might fail, requires (Invariant_Holds)
+stable_marriage.adb:300:25: medium: assertion might fail, requires Proposals_Made (G1) < Count'last
+stable_marriage.adb:300:41: info: initialization of "G1" proved
+stable_marriage.adb:302:43: info: initialization of "G1" proved
+stable_marriage.adb:303:13: info: initialization of "Already_Asked" proved
+stable_marriage.adb:304:30: info: initialization of "Already_Asked" proved
+stable_marriage.adb:304:30: info: range check proved
+stable_marriage.adb:304:45: info: range check proved
+stable_marriage.adb:305:13: info: assertion proved
+stable_marriage.adb:306:21: info: precondition proved
+stable_marriage.adb:306:70: info: index check proved
+stable_marriage.adb:307:38: info: initialization of "G1" proved
+stable_marriage.adb:307:43: info: initialization of "Rank" proved
+stable_marriage.adb:307:48: info: index check proved
+stable_marriage.adb:310:27: info: initialization of "G1" proved
+stable_marriage.adb:310:32: info: initialization of "Rank" proved
+stable_marriage.adb:311:49: info: initialization of "G1" proved
+stable_marriage.adb:311:53: info: range check proved
+stable_marriage.adb:313:31: info: initialization of "G2" proved
+stable_marriage.adb:316:35: info: initialization of "G2" proved
+stable_marriage.adb:321:39: info: initialization of "G2" proved
+stable_marriage.adb:322:28: info: precondition proved
+stable_marriage.adb:322:28: medium: assertion might fail, requires Is_Preferred_1 (G1, Result (G2), Ranking_2 (G2)
+stable_marriage.adb:322:44: info: initialization of "G1" proved
+stable_marriage.adb:322:72: info: initialization of "G2" proved
+stable_marriage.adb:329:13: info: initialization of "Accepted" proved
+stable_marriage.adb:330:24: info: initialization of "G2" proved
+stable_marriage.adb:330:27: info: initialization of "G1" proved
+stable_marriage.adb:333:10: info: assertion proved
+stable_marriage.adb:335:10: info: assertion proved
+stable_marriage.adb:343:10: info: assertion proved
+stable_marriage.adb:346:29: info: range check proved
+stable_marriage.adb:348:51: info: index check proved
+stable_marriage.adb:350:10: medium: assertion might fail
+stable_marriage.adb:352:24: info: range check proved
+stable_marriage.adb:354:61: info: index check proved
+stable_marriage.adb:355:54: info: index check proved
+stable_marriage.adb:356:33: info: precondition proved
+stable_marriage.adb:357:61: info: index check proved
+stable_marriage.adb:358:59: info: index check proved
+stable_marriage.adb:360:10: info: assertion proved
+stable_marriage.adb:362:40: info: range check proved
+stable_marriage.adb:364:61: info: index check proved
+stable_marriage.adb:366:10: medium: assertion might fail
+stable_marriage.adb:368:28: info: range check proved
+stable_marriage.adb:370:46: info: index check proved
+stable_marriage.adb:373:31: info: range check proved
+stable_marriage.adb:377:29: info: precondition proved
+stable_marriage.adb:380:10: info: loop invariant initialization proved
+stable_marriage.adb:380:10: info: loop invariant preservation proved
+stable_marriage.adb:380:33: info: initialization of "Unmatched_G1_Set.Cardinality" proved
+stable_marriage.adb:381:10: info: loop invariant initialization proved
+stable_marriage.adb:381:10: info: loop invariant preservation proved
+stable_marriage.adb:381:33: info: initialization of "Unmatched_G1_Set.Cardinality" proved
+stable_marriage.adb:381:33: info: initialization of "Unmatched_G1_Set.Elements" proved
+stable_marriage.adb:382:10: info: loop invariant initialization proved
+stable_marriage.adb:382:10: info: loop invariant preservation proved
+stable_marriage.adb:383:21: info: range check proved
+stable_marriage.adb:384:18: info: initialization of "Unmatched_G1_Set.Elements" proved
+stable_marriage.adb:384:45: info: index check proved
+stable_marriage.adb:384:64: info: range check proved
+stable_marriage.adb:388:07: info: assertion proved
+stable_marriage.adb:388:22: info: initialization of "Unmatched_G1_Set.Cardinality" proved
+stable_marriage.adb:388:22: info: initialization of "Unmatched_G1_Set.Elements" proved
+stable_marriage.adb:390:07: info: assertion proved
+stable_marriage.adb:391:25: info: initialization of "Proposals_Made" proved
+stable_marriage.adb:392:28: info: initialization of "Unmatched_G1_Set.Elements" proved
+stable_marriage.adb:394:13: info: initialization of "Unmatched_G1_Set.Cardinality" proved
+stable_marriage.adb:395:10: info: loop invariant preservation proved
+stable_marriage.adb:395:33: info: initialization of "Proposals_Made" proved
+stable_marriage.adb:395:33: info: initialization of "Result" proved
+stable_marriage.adb:395:33: info: initialization of "Unmatched_G1_Set.Cardinality" proved
+stable_marriage.adb:395:33: info: initialization of "Unmatched_G1_Set.Elements" proved
+stable_marriage.adb:395:33: info: initialization of "Unmatched_G2_Set" proved
+stable_marriage.adb:395:33: medium: loop invariant might fail in first iteration, requires (Invariant_Holds)
+stable_marriage.adb:396:10: info: initialization of "Proposals_Made" proved
+stable_marriage.adb:396:10: info: initialization of "Ranking_2_Inverted" proved
+stable_marriage.adb:396:10: info: initialization of "Result" proved
+stable_marriage.adb:396:10: info: initialization of "Unmatched_G1_Set.Cardinality" proved
+stable_marriage.adb:396:10: info: initialization of "Unmatched_G1_Set.Elements" proved
+stable_marriage.adb:396:10: info: initialization of "Unmatched_G2_Set" proved
+stable_marriage.adb:396:10: info: precondition proved
+stable_marriage.adb:399:14: info: initialization of "Result" proved
+stable_marriage.ads:21:14: medium: postcondition might fail, requires Is_Permutation_1'Result = (for all G1 in Group1_Id => (for some Rank in Ranking => (R1 (Rank) = G1
+stable_marriage.ads:25:14: warning: subprogram "Invert_Permutation_1" has no effect
+stable_marriage.ads:30:49: medium: postcondition might fail, requires R1 (Rank1) /= R1 (Rank2)
+stable_marriage.ads:33:14: medium: postcondition might fail, requires Is_Permutation_2'Result = (for all G2 in Group2_Id => (for some Rank in Ranking => (R2 (Rank) = G2
+stable_marriage.ads:37:14: warning: subprogram "Invert_Permutation_2" has no effect
+stable_marriage.ads:42:49: medium: postcondition might fail, requires R2 (Rank1) /= R2 (Rank2)
+stable_marriage.ads:50:14: medium: postcondition might fail
+stable_marriage.ads:56:14: medium: postcondition might fail
+stable_marriage.ads:59:14: warning: subprogram "Invert_Ranking_Of_Group_1" has no effect
+stable_marriage.ads:65:45: medium: postcondition might fail, requires G2_To_G1 (G21) /= G2_To_G1 (G22)
+stable_marriage.ads:71:07: medium: postcondition might fail
+stable_marriage.ads:77:14: info: postcondition proved
+stable_marriage.ads:78:09: info: precondition proved
+stable_marriage.ads:78:33: info: precondition proved
+stable_marriage.ads:83:14: info: postcondition proved
+stable_marriage.ads:84:09: info: precondition proved
+stable_marriage.ads:84:33: info: precondition proved
+stable_marriage.ads:95:08: medium: postcondition might fail
+stable_marriage.ads:99:16: info: precondition proved
+stable_marriage.ads:100:17: medium: precondition might fail
+stable_marriage.ads:101:18: info: precondition proved
