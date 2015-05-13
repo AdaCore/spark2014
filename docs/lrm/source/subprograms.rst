@@ -1426,6 +1426,9 @@ library package that no longer needs a body (see Ada RM 7.2(4)).
    initial declaration is Ignore.
    [A Ghost assertion policy of Ignore can be used to ensure that
    a compiler generates no code for ghost constructs.]
+   Such a declaration is said to be a *disabled ghost declaration*;
+   terms such as "disabled ghost type" and "disabled ghost subprogram"
+   are defined analogously.
 
 .. _etu-ghost_entities-ss:
 
@@ -1570,18 +1573,26 @@ library package that no longer needs a body (see Ada RM 7.2(4)).
 
 .. _tu-fe-ghost_entities-17:
 
-17. If the Ghost assertion policy in effect at the point of an
+17. If a tagged type is not a disabled ghost type, and if a
+    primitive operation of the tagged type overrides an inherited operation,
+    then the corresponding operation of the ancestor type shall be
+    a disabled ghost subprogram if and only if the overriding subprogram
+    is a disabled ghost subprogram.
+
+.. _tu-fe-ghost_entities-18:
+
+18. If the Ghost assertion policy in effect at the point of an
     a reference to a Ghost entity which occurs within an assertion expression
     is Ignore, then the assertion policy which governs the assertion
     expression (e.g., Pre for a precondition expression, Assert for the
     argument of an Assert pragma) shall [also] be Ignore.
 
-.. _tu-fe-ghost_entities-18:
+.. _tu-fe-ghost_entities-19:
 
-18. A task or protected type shall not be a ghost type.
-    A synchronized object shall not be a ghost object.
-    [Note that any object with a task or protected part is
-    a synchronized object; see section :ref:`tasks-and-synchronization`).]
+19. A ghost type shall not have a task or protected part.
+    A ghost object shall not be of a type which yields synchronized objects
+    (see section :ref:`tasks-and-synchronization`).
+    A ghost object shall not have a volatile part.
     A synchronized state abstraction shall not be a ghost state abstraction
     (see :ref:`abstract-state-aspect`).
 
@@ -1589,31 +1600,31 @@ library package that no longer needs a body (see Ada RM 7.2(4)).
 
 .. centered:: **Verification Rules**
 
-.. _tu-fe-ghost_entities-19:
+.. _tu-fe-ghost_entities-20:
 
-19. A ghost procedure shall not have a non-ghost [global] output.
+20. A ghost procedure shall not have a non-ghost [global] output.
 
-.. _tu-cbatu-ghost_entities-20:
+.. _tu-cbatu-ghost_entities-21:
 
-20. An output of a non-ghost subprogram other than a ghost global
+21. An output of a non-ghost subprogram other than a ghost global
     shall not depend on a ghost input. [It is intended that this follows
     as a consequence of other rules.]
 
-.. _tu-fe-ghost_entities-21:
+.. _tu-fe-ghost_entities-22:
 
-21. A ghost procedure shall not have an effectively volatile global input
+22. A ghost procedure shall not have an effectively volatile global input
     with the properties Async_Writers or Effective_Reads set to True.
     [This rule says, in effect, that ghost procedures are
-    subject to the same restrictions as non-ghost functions with respect
-    to reading volatile objects.]
+    subject to the same restrictions as non-ghost nonvolatile
+    functions with respect to reading volatile objects.]
     A name occurring within a ghost statement shall not denote an
     effectively volatile object with the properties Async_Writers or
     Effective_Reads set to True. [In other words, a ghost statement is
     subject to effectively the same restrictions as a ghost procedure.]
 
-.. _tu-fe-ghost_entities-22:
+.. _tu-fe-ghost_entities-23:
 
-22. If the Ghost assertion policy in effect at the point of the declaration
+23. If the Ghost assertion policy in effect at the point of the declaration
     of a ghost variable or ghost state abstraction is Check, then the Ghost
     assertion policy in effect at the point of any call to a procedure
     for which that variable or state abstraction is a global output shall
