@@ -26,26 +26,33 @@ are in |SPARK|.
 
 .. centered:: **Static Semantics**
 
-1.  A type is said to *yield synchronized objects* if it is
-    a task type, a protected type, a synchronized interface type,
-    an array type whose element type yields synchronized objects,
-    an undiscriminated type (or a discriminated type
-    whose discriminants lack default values) all of whose
-    nondiscriminant component types
-    (including, in the case of a type extension, inherited components),
-    yield synchronized objects, or it is a descendant of the type
-    Ada.Synchronous_Task_Control.Suspension_Object;
+1. A type is said to *yield synchronized objects* if it is
+    
+   * a task type; or
+
+   *  a protected type; or
+
+   *  a synchronized interface type; or
+
+   * an array type whose element type yields synchronized objects; or
+
+   * a record type or type extension whose discriminants, if any, lack default
+     values, which has at least one nondiscriminant component (possibly
+     inherited), and all of whose nondiscriminant component types
+     yield synchronized objects; or
+
+   * a descendant of the type Ada.Synchronous_Task_Control.Suspension_Object.
 
    An object is said to be *synchronized* if it is
 
-  * of a type which yields synchronized objects; or
+   * of a type which yields synchronized objects; or
 
-  * an atomic object whose Async_Writers aspect is True; or
+   * an atomic object whose Async_Writers aspect is True; or
 
-  * a variable which is "constant after elaboration" (see section
-    :ref:`object-declarations`); or
+   * a variable which is "constant after elaboration" (see section
+     :ref:`object-declarations`); or
 
-  * a constant.
+   * a constant.
 
   [Synchronized objects may be referenced by multiple tasks without causing
   erroneous execution. The declaration of a synchronized stand-alone
@@ -86,7 +93,11 @@ are in |SPARK|.
 5. A type which does not yield synchronized objects shall not have
    a component type which yields synchronized objects.
    [Roughly speaking, no mixing of synchronized and unsynchronized
-   component types.]
+   component types.] In enforcing this rule, privacy of types is
+   ignored (that is, any partial views of types are ignored and the
+   corresponding full view is unconditionally used instead).
+   [TBD: add an aspect to allow this property to be expressed explicitly
+   when a partial view of a type is declared.]
 
 6. A constituent of a synchronized state abstraction shall be a
    synchronized object or a synchronized state abstraction.
