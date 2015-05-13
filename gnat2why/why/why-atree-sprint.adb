@@ -285,7 +285,7 @@ package body Why.Atree.Sprint is
       --  needs being parenthesized.
 
       P (O, "(");
-      if Get_Infix (Name) then
+      if Get_Infix (Get_Name (Name)) then
          declare
             use Why_Node_Lists;
 
@@ -1000,25 +1000,8 @@ package body Why.Atree.Sprint is
    -----------------------
 
    procedure Print_Identifier (Node : W_Identifier_Id) is
-      Module    : constant W_Module_Id := Get_Module (Node);
-      Namespace : constant Name_Id := Get_Namespace (Node);
    begin
-      if not Get_Infix (Node)
-        and then Module /= Why_Empty
-        and then Get_Name (Module) /= No_Name
-      then
-         Print_Module_Id (Module);
-         P (O, ".");
-      end if;
-
-      if not Get_Infix (Node)
-        and then Namespace /= No_Name
-      then
-         P (O, Namespace);
-         P (O, ".");
-      end if;
-
-      P (O, Get_Symbol (Node));
+      Print_Name (Get_Name (Node));
    end Print_Identifier;
 
    --------------------------------
@@ -1161,14 +1144,24 @@ package body Why.Atree.Sprint is
    ----------------
 
    procedure Print_Name (Node : W_Name_Id) is
-      Module : constant W_Module_Id := Get_Module (Node);
+      Module    : constant W_Module_Id := Get_Module (Node);
+      Namespace : constant Name_Id := Get_Namespace (Node);
    begin
-      if Module /= Why_Empty
+      if not Get_Infix (Node)
+        and then Module /= Why_Empty
         and then Get_Name (Module) /= No_Name
       then
          Print_Module_Id (Module);
          P (O, ".");
       end if;
+
+      if not Get_Infix (Node)
+        and then Namespace /= No_Name
+      then
+         P (O, Namespace);
+         P (O, ".");
+      end if;
+
       P (O, Get_Symbol (Node));
    end Print_Name;
 

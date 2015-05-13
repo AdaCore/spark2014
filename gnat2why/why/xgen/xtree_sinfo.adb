@@ -81,7 +81,9 @@ package body Xtree_Sinfo is
       ------------
 
       New_Field (W_Name, "Symbol", "Name_Id");
+      New_Field (W_Name, "Namespace", "Name_Id", "No_Name");
       New_Field (W_Name, "Module", "W_Module", Id_Lone);
+      New_Field (W_Name, "Infix", "Boolean", "False");
       Set_Domain (W_Name, EW_Term);
 
       ------------
@@ -263,11 +265,8 @@ package body Xtree_Sinfo is
       -- W_Identifier --
       ------------------
 
-      New_Field (W_Identifier, "Symbol", "Name_Id");
-      New_Field (W_Identifier, "Namespace", "Name_Id", "No_Name");
-      New_Field (W_Identifier, "Module", "W_Module", Id_Lone);
+      New_Field (W_Identifier, "Name", "W_Name", Id_One);
       New_Field (W_Identifier, "Typ", "W_Type", Id_Lone);
-      New_Field (W_Identifier, "Infix", "Boolean", "False");
 
       --------------
       -- W_Tagged --
