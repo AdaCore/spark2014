@@ -182,8 +182,8 @@ package body Why.Inter is
          --  ??? Little optimization that also works around a bug
          --  We only need to traverse the name node, type node is not required
          --  because the module for the name will already point to the module
-         --  for the type. This also avoids cases where the apparently type
-         --  node points to some entity which should not be used
+         --  for the type. This also avoids cases where apparently the type
+         --  node points to some module which should not be used
 
          Traverse (State, +Get_Name (Node));
          State.Control := Abandon_Children;
