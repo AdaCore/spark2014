@@ -782,23 +782,6 @@ package body Why.Gen.Names is
       return New_Name (Symbol => NID (To_String (W)));
    end To_Name;
 
-   ------------
-   -- Prefix --
-   ------------
-
-   function Prefix (M        : W_Module_Id;
-                    W        : Why_Name_Enum;
-                    Ada_Node : Node_Id := Empty;
-                    Typ      : W_Type_Id := Why_Empty) return W_Identifier_Id
-   is
-   begin
-      return New_Identifier
-        (Module   => M,
-         Name     => To_String (W),
-         Ada_Node => Ada_Node,
-         Typ      => Typ);
-   end Prefix;
-
    ----------------------
    -- Range_Check_Name --
    ----------------------
