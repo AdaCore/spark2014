@@ -141,10 +141,16 @@ Object Declarations
 
 The Boolean aspect Constant_After_Elaboration may be specified as part of
 the declaration of a library level variable.
+If the aspect is directly specified, the aspect_definition, if any,
+shall be a static [Boolean] expression. [As with most Boolean-valued
+aspects,] the aspect defaults to False if unspecified and to True if
+it is specified without an aspect_definition.
+
 A variable whose Constant_After_Elaboration aspect is True, or any part
 thereof, is said to be "constant after elaboration".
 [The Constant_After_Elaboration aspect indicates that the variable will not
-be modified after execution of the main subprogram begins.]
+be modified after execution of the main subprogram begins
+(see section :ref:`tasks-and-synchronization`).]
 
 A constant is a *constant with variable inputs* if its initialization
 expression depends on:

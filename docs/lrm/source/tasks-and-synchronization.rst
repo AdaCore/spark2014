@@ -122,7 +122,7 @@ are in |SPARK|.
 
 10. A ``global_item`` occurring in the Global aspect specification of the
     main subprogram or of a task unit having a mode of Output or In_Out shall
-    not denote a variable whose Constant_After_Elaboration aspect is True.
+    not denote a variable which is "constant after elaboration".
 
 11. At most one task (including the environment task)
     shall ever call (directly or via intermediate calls) the protected
