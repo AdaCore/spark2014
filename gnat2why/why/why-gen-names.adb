@@ -780,16 +780,6 @@ package body Why.Gen.Names is
       return New_Name (Symbol => NID (To_String (W)));
    end To_Name;
 
-   function To_Name (I : W_Identifier_Id) return W_Name_Id
-   is
-      W_Name : constant W_Name_Id := Get_Name (I);
-   begin
-      return New_Name
-        (Symbol => Get_Symbol (W_Name),
-         Ada_Node => Get_Ada_Node (+I),
-         Module   => Get_Module (W_Name));
-   end To_Name;
-
    ------------
    -- Prefix --
    ------------

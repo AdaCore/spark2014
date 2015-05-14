@@ -383,7 +383,7 @@ package body Why.Gen.Arrays is
                  Orig_Name => New_Name (Symbol => NID (Prefix & ".le")),
                  Image     =>
                    (if Is_Modular_Integer_Type (Typ) then
-                         To_Name (MF_BVs (WTyp).Ule)
+                         Get_Name (MF_BVs (WTyp).Ule)
                     else
                        New_Name (Symbol => NID ("(<=)"),
                                  Module => Int_Module))),
@@ -392,7 +392,7 @@ package body Why.Gen.Arrays is
                  Orig_Name => New_Name (Symbol => NID (Prefix & ".lt")),
                  Image     =>
                    (if Is_Modular_Integer_Type (Typ) then
-                         To_Name (MF_BVs (WTyp).Ult)
+                         Get_Name (MF_BVs (WTyp).Ult)
                     else
                        New_Name (Symbol => NID ("Int.(<)")))),
               4 => New_Clone_Substitution
@@ -400,7 +400,7 @@ package body Why.Gen.Arrays is
                  Orig_Name => New_Name (Symbol => NID (Prefix & ".gt")),
                  Image     =>
                    (if Is_Modular_Integer_Type (Typ) then
-                         To_Name (MF_BVs (WTyp).Ugt)
+                         Get_Name (MF_BVs (WTyp).Ugt)
                     else
                        New_Name (Symbol => NID ("Int.(>)")))),
               5 => New_Clone_Substitution
@@ -408,7 +408,7 @@ package body Why.Gen.Arrays is
                  Orig_Name => New_Name (Symbol => NID (Prefix & ".add")),
                  Image     =>
                    (if Is_Modular_Integer_Type (Typ) then
-                         To_Name (MF_BVs (WTyp).Add)
+                         Get_Name (MF_BVs (WTyp).Add)
                     else
                        New_Name (Symbol => NID ("Int.(+)")))),
               6 => New_Clone_Substitution
@@ -416,7 +416,7 @@ package body Why.Gen.Arrays is
                  Orig_Name => New_Name (Symbol => NID (Prefix & ".sub")),
                  Image     =>
                    (if Is_Modular_Integer_Type (Typ) then
-                         To_Name (MF_BVs (WTyp).Sub)
+                         Get_Name (MF_BVs (WTyp).Sub)
                     else
                        New_Name (Symbol => NID ("Int.(-)")))),
               7 => New_Clone_Substitution
@@ -424,9 +424,9 @@ package body Why.Gen.Arrays is
                  Orig_Name => New_Name (Symbol => NID (Prefix & ".one")),
                  Image     =>
                    (if Is_Modular_Integer_Type (Typ) then
-                             To_Name (MF_BVs (WTyp).One)
+                         Get_Name (MF_BVs (WTyp).One)
                     else
-                       To_Name (One_Id))));
+                       Get_Name (One_Id))));
    end Prepare_Indices_Substitutions;
 
    --------------------------------------------------
@@ -523,7 +523,7 @@ package body Why.Gen.Arrays is
          (Kind      => EW_Function,
           Orig_Name => New_Name (Symbol => NID ("to_int")),
           Image     =>
-             To_Name (Conversion_Name
+             Get_Name (Conversion_Name
                       (From =>
                           +EW_Abstract (Component_Type (Und_Ent)),
                        To   => +EW_Int_Type)))));
@@ -707,7 +707,7 @@ package body Why.Gen.Arrays is
                     Orig_Name =>
                       To_Local (E_Symb (Und_Ent, WNE_To_Rep)),
                     Image     =>
-                      To_Name
+                      Get_Name
                         (Conversion_Name
                            (From =>
                                   EW_Abstract
@@ -887,7 +887,7 @@ package body Why.Gen.Arrays is
                  Orig_Name => New_Name
                    (Symbol => NID (Append_Num ("to_rep", Dim_Count))),
                  Image     =>
-                   To_Name (Conversion_Name (From => +B_Type,
+                   Get_Name (Conversion_Name (From => +B_Type,
                                              To => R_Ty)));
             Cursor := Cursor + 1;
 
@@ -915,7 +915,7 @@ package body Why.Gen.Arrays is
                        Orig_Name => New_Name
                          (Symbol => NID
                             (Append_Num ("rep_to_int", Dim_Count))),
-                       Image     => To_Name (Id_Id));
+                       Image     => Get_Name (Id_Id));
                end;
             else
                Subst (Cursor) :=
@@ -924,7 +924,7 @@ package body Why.Gen.Arrays is
                     Orig_Name => New_Name
                       (Symbol => NID (Append_Num ("rep_to_int", Dim_Count))),
                     Image     =>
-                      To_Name (Conversion_Name (From => R_Ty,
+                      Get_Name (Conversion_Name (From => R_Ty,
                                                 To => EW_Int_Type)));
             end if;
             Cursor := Cursor + 1;
@@ -937,7 +937,7 @@ package body Why.Gen.Arrays is
                    To_Local
                      (E_Symb (Und_Ent, WNE_Array_Base_Range_Pred (Dim_Count))),
                  Image     =>
-                    To_Name (Range_Pred_Name (B_Ty)));
+                    Get_Name (Range_Pred_Name (B_Ty)));
             Cursor := Cursor + 1;
 
             Subst (Cursor) :=
@@ -947,7 +947,7 @@ package body Why.Gen.Arrays is
                    To_Local (E_Symb (Und_Ent,
                      WNE_Index_Dynamic_Property (Dim_Count))),
                  Image     =>
-                       To_Name (Dynamic_Prop_Name (Ind_Ty)));
+                       Get_Name (Dynamic_Prop_Name (Ind_Ty)));
             Cursor := Cursor + 1;
 
             Subst (Cursor) :=
@@ -957,7 +957,7 @@ package body Why.Gen.Arrays is
                    (Symbol => NID (Append_Num ("index_rep_le", Dim_Count))),
                  Image     =>
                    (if Is_Modular_Integer_Type (Ind_Ty) then
-                           To_Name (MF_BVs (R_Ty).Ule)
+                           Get_Name (MF_BVs (R_Ty).Ule)
                       else
                          New_Name (Symbol => NID ("(<=)"),
                                    Module => Int_Module)));
@@ -1047,7 +1047,7 @@ package body Why.Gen.Arrays is
                     Orig_Name =>
                       To_Local (E_Symb (Und_Ent, WNE_To_Rep)),
                     Image     =>
-                      To_Name
+                      Get_Name
                         (Conversion_Name
                            (From =>
                                   EW_Abstract

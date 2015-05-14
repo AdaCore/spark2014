@@ -326,7 +326,6 @@ package Why.Gen.Names is
                       return W_Identifier_Id;
 
    function To_Name (W : Why_Name_Enum) return W_Name_Id;
-   function To_Name (I : W_Identifier_Id) return W_Name_Id;
 
    function To_Local (Name : W_Identifier_Id) return W_Identifier_Id;
    function To_Local (Name : W_Identifier_Id) return W_Name_Id;

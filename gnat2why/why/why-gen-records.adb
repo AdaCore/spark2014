@@ -1630,7 +1630,7 @@ package body Why.Gen.Records is
                       New_Type
                         (Type_Kind  => EW_Abstract,
                          Name       =>
-                           (if not Is_Root then To_Name
+                           (if not Is_Root then Get_Name
                               (Prefix (E_Module (Root), WNE_Rec_Split_Discrs))
                             else To_Name (WNE_Rec_Split_Discrs)),
                          Is_Mutable => False)),
@@ -2201,11 +2201,11 @@ package body Why.Gen.Records is
                 Is_Mutable => False,
                 Type_Kind  => EW_Abstract,
                 Name       =>
-                   To_Name (Prefix
-                            (Ada_Node => E,
-                             W        => WNE_Rec_Split_Discrs,
-                             M        => E_Module
-                               (Unique_Entity (Root_Record_Type (E)))))));
+                   Get_Name (Prefix
+                             (Ada_Node => E,
+                              W        => WNE_Rec_Split_Discrs,
+                              M        => E_Module
+                                (Unique_Entity (Root_Record_Type (E)))))));
 
    ---------------------------
    -- Field_Type_For_Fields --
@@ -2216,10 +2216,10 @@ package body Why.Gen.Records is
                 Is_Mutable => False,
                 Type_Kind  => EW_Abstract,
                 Name       =>
-                   To_Name (Prefix
-                            (Ada_Node => E,
-                             W        => WNE_Rec_Split_Fields,
-                             M        => E_Module (E)))));
+                   Get_Name (Prefix
+                             (Ada_Node => E,
+                              W        => WNE_Rec_Split_Fields,
+                              M        => E_Module (E)))));
 
    ---------------------------------------
    -- Insert_Subtype_Discriminant_Check --

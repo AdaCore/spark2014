@@ -125,7 +125,7 @@ package body Why.Gen.Scalars is
               (1 => New_Clone_Substitution
                    (Kind      => EW_Function,
                     Orig_Name => To_Local (E_Symb (E, WNE_Float_Round_Tmp)),
-                    Image     => To_Name (Round_Id)))
+                    Image     => Get_Name (Round_Id)))
             else (1 .. 0 => <>));
          Static_Clone_Subst : constant W_Clone_Substitution_Array :=
            (if Is_Static then
@@ -148,7 +148,7 @@ package body Why.Gen.Scalars is
                 (Kind      => EW_Function,
                  Orig_Name => New_Name (Symbol => NID ("base_to_rep")),
                  Image     =>
-                   To_Name
+                   Get_Name
                      (Conversion_Name
                         (From => Base_Type_In_Why,
                          To   => Base_Why_Type (E)))),
@@ -156,7 +156,7 @@ package body Why.Gen.Scalars is
                 (Kind      => EW_Function,
                  Orig_Name => New_Name (Symbol => NID ("base_of_rep")),
                  Image     =>
-                   To_Name
+                   Get_Name
                      (Conversion_Name
                         (From => Base_Why_Type (E),
                          To   => Base_Type_In_Why))),
