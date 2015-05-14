@@ -565,7 +565,7 @@ package body Why.Gen.Records is
          if Num_Discrs > 0 then
             declare
                Orig_D_Id       : constant W_Identifier_Id :=
-                 Prefix (E_Module (Root), WNE_Rec_Split_Discrs);
+                 E_Symb (Root, WNE_Rec_Split_Discrs);
                E_Discr_Access : constant W_Expr_Id :=
                  New_Record_Access (Name  => +A_Ident,
                                     Field => To_Ident (WNE_Rec_Split_Discrs));
@@ -1631,7 +1631,7 @@ package body Why.Gen.Records is
                         (Type_Kind  => EW_Abstract,
                          Name       =>
                            (if not Is_Root then Get_Name
-                              (Prefix (E_Module (Root), WNE_Rec_Split_Discrs))
+                              (E_Symb (Root, WNE_Rec_Split_Discrs))
                             else To_Name (WNE_Rec_Split_Discrs)),
                          Is_Mutable => False)),
                others => <>);
@@ -2086,8 +2086,7 @@ package body Why.Gen.Records is
          else 0);
       R_Access   : constant W_Expr_Id :=
         New_Record_Access (Name  => +A_Ident,
-                           Field =>
-                             Prefix (E_Module (Root), WNE_Rec_Split_Discrs));
+                           Field => E_Symb (Root, WNE_Rec_Split_Discrs));
       Discr      : Node_Id := First_Discriminant (E);
       Post       : constant W_Pred_Id :=
         New_Call
@@ -2201,11 +2200,8 @@ package body Why.Gen.Records is
                 Is_Mutable => False,
                 Type_Kind  => EW_Abstract,
                 Name       =>
-                   Get_Name (Prefix
-                             (Ada_Node => E,
-                              W        => WNE_Rec_Split_Discrs,
-                              M        => E_Module
-                                (Unique_Entity (Root_Record_Type (E)))))));
+                   Get_Name (E_Symb (Unique_Entity (Root_Record_Type (E)),
+                                     WNE_Rec_Split_Discrs))));
 
    ---------------------------
    -- Field_Type_For_Fields --
@@ -2340,7 +2336,7 @@ package body Why.Gen.Records is
       if Num_Discr > 0 then
          Assoc := New_Field_Association
            (Domain   => Domain,
-            Field    => Prefix (E_Module (Ty), WNE_Rec_Split_Discrs),
+            Field    => E_Symb (Ty, WNE_Rec_Split_Discrs),
             Value    => New_Record_Aggregate (Associations => Discr_Assocs));
          Index := Index + 1;
          Assocs (Index) := Assoc;
@@ -2588,7 +2584,7 @@ package body Why.Gen.Records is
    is
      (New_Call
         (Ada_Node => Ada_Node,
-         Name     => Prefix (E_Module (Ty), WNE_Rec_Split_Discrs),
+         Name     => E_Symb (Ty, WNE_Rec_Split_Discrs),
          Args     => (1 => Name),
          Domain   => Domain));
 
@@ -2610,7 +2606,7 @@ package body Why.Gen.Records is
          Updates  =>
            (1 => New_Field_Association
                 (Domain => Domain,
-                 Field  => Prefix (E_Module (Ty), WNE_Rec_Split_Discrs),
+                 Field  => E_Symb (Ty, WNE_Rec_Split_Discrs),
                  Value  => Value)),
          Typ      => EW_Abstract (Ty)));
 
@@ -2855,7 +2851,7 @@ package body Why.Gen.Records is
       if Has_Discriminants (Ty) then
          Associations (Index) := New_Field_Association
            (Domain   => EW_Term,
-            Field    => Prefix (E_Module (Ty), WNE_Rec_Split_Discrs),
+            Field    => E_Symb (Ty, WNE_Rec_Split_Discrs),
             Value    => A (Index));
          Index := Index + 1;
       end if;
