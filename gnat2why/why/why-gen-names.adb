@@ -630,8 +630,6 @@ package body Why.Gen.Names is
          when WNE_Attr_First             => return "first";
          when WNE_Attr_Last              => return "last";
          when WNE_Attr_Tag               => return "attr__tag";
-         when WNE_Rec_Split_Discrs       => return "__split_discrs";
-         when WNE_Rec_Split_Fields       => return "__split_fields";
          when WNE_Rec_Extension_Suffix   => return "ext__";
          when WNE_Rec_Ancestor_Suffix    => return "anc__";
          when WNE_Rec_Comp_Prefix        => return "rec__";
@@ -641,6 +639,11 @@ package body Why.Gen.Names is
          when WNE_Hide_Extension         => return "hide_ext__";
          when WNE_Dispatch_Module        => return "Dispatch";
          when WNE_Refine_Module          => return "Refine";
+
+         --  these are used both by E_Symb function and by To_String
+
+         when WNE_Rec_Split_Discrs       => return "__split_discrs";
+         when WNE_Rec_Split_Fields       => return "__split_fields";
 
          --  please use these only in conjunction with E_Symb function
 

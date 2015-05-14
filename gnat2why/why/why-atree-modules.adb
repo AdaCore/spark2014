@@ -1735,6 +1735,12 @@ package body Why.Atree.Modules is
                     (Symbol => NID (To_String (WNE_Rec_Split_Discrs)),
                      Module => M,
                      Domain => EW_Term));
+               Insert_Symbol
+                 (E, WNE_Rec_Split_Fields,
+                  New_Identifier
+                    (Symbol => NID (To_String (WNE_Rec_Split_Fields)),
+                     Module => M,
+                     Domain => EW_Term));
 
                if Is_Tagged_Type (E) then
                   Insert_Symbol

@@ -599,7 +599,7 @@ package body Why.Gen.Records is
                From_Root_Field :
                W_Field_Association_Array (1 .. Num_E_Fields);
                Orig_F_Id       : constant W_Identifier_Id :=
-                 Prefix (E_Module (Root), WNE_Rec_Split_Fields);
+                 E_Symb (Root, WNE_Rec_Split_Fields);
                E_Field_Access : constant W_Expr_Id :=
                  New_Record_Access (Name  => +A_Ident,
                                     Field => To_Ident (WNE_Rec_Split_Fields));
@@ -2212,10 +2212,7 @@ package body Why.Gen.Records is
                 Is_Mutable => False,
                 Type_Kind  => EW_Abstract,
                 Name       =>
-                   Get_Name (Prefix
-                             (Ada_Node => E,
-                              W        => WNE_Rec_Split_Fields,
-                              M        => E_Module (E)))));
+                   Get_Name (E_Symb (E, WNE_Rec_Split_Fields))));
 
    ---------------------------------------
    -- Insert_Subtype_Discriminant_Check --
@@ -2360,7 +2357,7 @@ package body Why.Gen.Records is
 
             Assoc := New_Field_Association
               (Domain   => Domain,
-               Field    => Prefix (E_Module (Ty), WNE_Rec_Split_Fields),
+               Field    => E_Symb (Ty, WNE_Rec_Split_Fields),
                Value    => New_Record_Aggregate
                  (Associations => All_Field_Assocs));
             Index := Index + 1;
@@ -2623,7 +2620,7 @@ package body Why.Gen.Records is
    is
      (New_Call
         (Ada_Node => Ada_Node,
-         Name     => Prefix (E_Module (Ty), WNE_Rec_Split_Fields),
+         Name     => E_Symb (Ty, WNE_Rec_Split_Fields),
          Args     => (1 => Name),
          Domain   => Domain));
 
@@ -2645,7 +2642,7 @@ package body Why.Gen.Records is
          Updates  =>
            (1 => New_Field_Association
                 (Domain => Domain,
-                 Field  => Prefix (E_Module (Ty), WNE_Rec_Split_Fields),
+                 Field  => E_Symb (Ty, WNE_Rec_Split_Fields),
                  Value  => Value)),
          Typ      => EW_Abstract (Ty)));
 
@@ -2841,7 +2838,7 @@ package body Why.Gen.Records is
       if Count_Why_Regular_Fields (Ty) > 0 then
          Associations (Index) := New_Field_Association
            (Domain   => EW_Term,
-            Field    => Prefix (E_Module (Ty), WNE_Rec_Split_Fields),
+            Field    => E_Symb (Ty, WNE_Rec_Split_Fields),
             Value    => A (Index));
          Index := Index + 1;
       end if;
