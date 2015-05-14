@@ -1,0 +1,40 @@
+info_flow_tests.adb:15:23: info: initialization of "C2" proved
+info_flow_tests.adb:16:23: info: initialization of "C1" proved
+info_flow_tests.adb:20:23: warning: unused initial value of "A"
+info_flow_tests.adb:21:23: warning: unused initial value of "B"
+info_flow_tests.adb:23:06: medium: missing dependency "null => A"
+info_flow_tests.adb:23:06: medium: missing dependency "null => B"
+info_flow_tests.adb:23:23: medium: incorrect dependency "A => B"
+info_flow_tests.adb:24:23: medium: incorrect dependency "B => A"
+info_flow_tests.adb:35:26: "C2" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(13))
+info_flow_tests.adb:36:26: "C1" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(13))
+info_flow_tests.adb:55:34: info: initialization of "A" proved
+info_flow_tests.adb:55:37: info: initialization of "B" proved
+info_flow_tests.adb:64:07: info: initialization of "C1" proved
+info_flow_tests.adb:64:07: info: initialization of "C2" proved
+info_flow_tests.adb:82:17: medium: constant "C1" cannot appear in Globals
+info_flow_tests.adb:82:25: info: initialization of "X" proved
+info_flow_tests.adb:83:29: medium: constant "C2" cannot appear in Globals
+info_flow_tests.adb:83:37: medium: constant "C4" cannot appear in Globals
+info_flow_tests.adb:89:10: info: initialization of "C1" proved
+info_flow_tests.adb:89:10: info: initialization of "C2" proved
+info_flow_tests.adb:89:10: info: initialization of "C3" proved
+info_flow_tests.adb:89:10: info: initialization of "C4" proved
+info_flow_tests.adb:89:10: info: initialization of "C5" proved
+info_flow_tests.adb:106:25: info: initialization of "X" proved
+info_flow_tests.adb:113:07: info: initialization of "C3" proved
+info_flow_tests.adb:113:07: info: initialization of "C5" proved
+info_flow_tests.adb:118:23: info: initialization of "C" proved
+info_flow_tests.adb:123:25: info: initialization of "X" proved
+info_flow_tests.adb:129:15: info: initialization of "V" proved
+info_flow_tests.adb:132:07: info: initialization of "C1" proved
+info_flow_tests.adb:133:12: info: initialization of "C2" proved
+info_flow_tests.adb:138:23: info: initialization of "C" proved
+info_flow_tests.adb:143:25: info: initialization of "X" proved
+info_flow_tests.adb:144:22: low: unused global "C1" (SPARK RM 6.1.4(14))
+info_flow_tests.adb:154:07: info: initialization of "C1" proved
+info_flow_tests.adb:155:12: info: initialization of "C2" proved
+   compilation of info_flow_tests.adb failed
+
+
+gnatprove: error during analysis of data and information flow
