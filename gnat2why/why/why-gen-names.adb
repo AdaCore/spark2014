@@ -626,7 +626,6 @@ package body Why.Gen.Names is
       case W is
          when WNE_Array_Component_Type   => return "component_type";
          when WNE_Array_Type             => return "__t";
-         when WNE_Dummy                  => return "dummy";
          when WNE_Attr_Constrained       => return "attr__constrained";
          when WNE_Attr_First             => return "first";
          when WNE_Attr_Last              => return "last";
@@ -710,8 +709,8 @@ package body Why.Gen.Names is
               WNE_Rec_Main |
               WNE_Tag  |
               WNE_Rec_Ancestor |
-              WNE_Hide_Ancestor
-
+              WNE_Hide_Ancestor |
+              WNE_Dummy
             =>
 
             raise Program_Error;

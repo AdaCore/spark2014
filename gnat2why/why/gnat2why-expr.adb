@@ -8648,14 +8648,9 @@ package body Gnat2Why.Expr is
                   --  here.
 
                   if Count_Why_Top_Level_Fields (Expr_Type) = 0 then
-
-                     return +New_Identifier
-                       (Ada_Node  => Expr,
-                        Name      => To_String (WNE_Dummy),
-                        Module    =>
-                          E_Module
-                            (Unique_Entity (Root_Record_Type (Expr_Type))),
-                        Typ       => Type_Of_Node (Expr_Type));
+                     return
+                       +E_Symb (Unique_Entity (Root_Record_Type (Expr_Type)),
+                                WNE_Dummy);
                   else
                      declare
                         Assocs : constant W_Field_Association_Array :=

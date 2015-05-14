@@ -1386,6 +1386,14 @@ package body Why.Atree.Modules is
                Domain => EW_Term,
                Typ    => EW_Bool_Type));
 
+         Insert_Symbol
+           (E, WNE_Dummy,
+            New_Identifier
+              (Symbol => NID ("dummy"),
+               Module => M,
+               Domain => EW_Term,
+               Typ    => Ty));
+
       --  symbols for scalar types
 
          if Is_Scalar_Type (E) then

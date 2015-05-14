@@ -250,7 +250,7 @@ package body Gnat2Why.Types is
               (File.Cur_Theory,
                Why.Atree.Builders.New_Function_Decl
                  (Domain      => EW_Term,
-                  Name        => To_Ident (WNE_Dummy),
+                  Name        => To_Local (E_Symb (E, WNE_Dummy)),
                   Binders     => (1 .. 0 => <>),
                   Labels      => Name_Id_Sets.Empty_Set,
                   Return_Type =>
