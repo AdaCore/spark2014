@@ -36,9 +36,8 @@ mixed at a fine level in accordance with the following two general principles:
 
 More specifically, non-SPARK completions of SPARK declarations are allowed
 for subprogram declarations, package declarations, private type declarations,
-and deferred constant declarations. [When tagged types are
-fully supported in |SPARK|, this list will also include private extension
-declarations.] [Strictly speaking, a package's private part is considered
+private extension declarations, and deferred constant declarations.
+[Strictly speaking, a package's private part is considered
 to be part of its completion for purposes of the above rules; this is
 described in more detail below].
 

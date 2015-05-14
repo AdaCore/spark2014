@@ -287,9 +287,10 @@ the subprogram declared a local variable of an
 access type (recall that access types are not in |SPARK|).
 
 A package is defined to have 4 sections: its visible part, its private part,
-its body declarations, and its body statements. Non-package declarations which
-require a completion have two sections, as noted above; all other entities and
-constructs have only one section.
+its body declarations, and its body statements. A protected or task unit has
+3 sections: its visible part, its private part, and its body.
+Other declarations which require a completion have two sections, as noted
+above; all other entities and constructs have only one section.
 
 If the SPARK_Mode of a section of an entity is Off, then the SPARK_Mode
 of a later section of that entity shall not be On. [For example, a subprogram
@@ -339,11 +340,17 @@ contexts and has the described semantics:
   be accomplished via a SPARK_Mode aspect specification as part of the
   package_specification.
 
+* When the pragma appears at the start of the visible declarations (preceded
+  only by other pragmas) of a task or protected unit, it specifies the
+  SPARK_Mode aspect of the visible part of the unit. This can also
+  be accomplished via a SPARK_Mode aspect specification as part of the
+  declaration.
+
 * When the pragma appears at the start of the private declarations of a
-  package (only other pragmas can appear between the ``private`` keyword
-  and the ``SPARK_Mode`` pragma), it specifies the SPARK_Mode aspect
-  of the private part of the package. [This cannot be accomplished via
-  an aspect_specification.]
+  package, a protected unit, or a task unit (only other pragmas can appear
+  between the ``private`` keyword and the ``SPARK_Mode`` pragma), it
+  specifies the SPARK_Mode aspect of the private part. [This cannot be
+  accomplished via an aspect_specification.]
 
 * When the pragma appears immediately at the start of the declarations of a
   package body (preceded only by other pragmas),
@@ -357,6 +364,12 @@ contexts and has the described semantics:
   it specifies the SPARK_Mode aspect of the body
   statements of the package. [This cannot be accomplished via
   an aspect_specification.]
+
+* When the pragma appears immediately at the start of the declarations of a
+  protected or task body (preceded only by other pragmas),
+  it specifies the SPARK_Mode aspect of the body.
+  This can also be accomplished via a SPARK_Mode aspect specification
+  as part of the protected or task body.
 
 * When the pragma appears after a subprogram declaration (with only other
   pragmas intervening), it specifies the SPARK_Mode aspect of the
@@ -396,13 +409,11 @@ Ada entity or construct is then defined to be the following value
 - If SPARK_Mode has been specified for the given section of the
   given entity or construct, then the specified value;
 
-- else for the private part of a package, if SPARK_Mode has been specified
-  for the public part of the same package, then the SPARK_Mode of
-  the public part;
+- else for the private part of a package or a protected or task unit,
+  the SPARK_Mode of the visible part;
 
-- else for a package body statements, if SPARK_Mode has been specified for the
-  body declarations of the same package, then the SPARK_Mode of the
-  body declarations;
+- else for a package body's statements, the SPARK_Mode of the
+  package body's declarations;
 
 - else for any of the visible part or body declarations of a library
   unit package or either section of a library unit subprogram,
@@ -436,6 +447,7 @@ Similarly, code where SPARK_Mode is On shall not enclose code where
 SPARK_Mode is Off unless the non-SPARK code is part of the "completion"
 (using that term imprecisely, because we are including the private
 part of a package as part of its "completion" here) of a SPARK declaration.
+There are also exceptions to this rule (described below) for protected units.
 
 Code where SPARK_Mode is Off shall not enclose code where Spark_Mode is On.
 However, if an instance of a generic unit is enclosed
@@ -448,17 +460,60 @@ entire instance is Off. Similarly, such an ignored SPARK_Mode specification
 could not violate the preceding rule that a SPARK_Mode specification
 shall only apply to a (section of a) library-level entity.]
 
-If SPARK_Mode is off in the visible part of a library unit package, then
+If SPARK_Mode is Off in the visible part of a library unit package, then
 SPARK_Mode shall be off for the visible part of any visible child unit of
 the package.
-If SPARK_Mode is off in the private part of a library unit package, then
+If SPARK_Mode is Off in the private part of a library unit package, then
 SPARK_Mode shall be off for the visible part  of any private child unit of
 the package.
-If SPARK_Mode is off in the private part of a library unit package, then
+If SPARK_Mode is Off in the private part of a library unit package, then
 SPARK_Mode shall be off in any subsequent sections of any child unit
 of the package.
 [These rules express the general "Off shall not enclose On" principle
 as it applies to child units.]
+
+All of the above notwithstanding, the interactions between SPARK_Mode
+and protected units follow a slightly different model, not so closely tied
+to syntactic enclosure. Roughly speaking, the rules for a protected
+unit follow from the rules given for other constructs after notionally
+rewriting the protected unit as a package. 
+
+A protected unit declaration such as ::
+
+   protected type Prot
+     with SPARK_Mode => On
+   is
+     procedure Op1 (X : in out Integer);
+     procedure Op2;
+     procedure Non_SPARK_Profile (Ptr : access Integer)
+       with SPARK_Mode => Off;
+   private
+    Aaa, Bbb : Integer := 0;
+   end Prot;
+
+can be thought of, for purposes of SPARK_Mode rules, as being
+a lot like ::
+
+   package Pkg is
+     type Prot is limited private;
+     procedure Op1 (Obj : in out Prot; X : in out Integer);
+     procedure Op2 (Obj : in out Prot);
+     procedure Non_SPARK_Profile
+       (Obj : in out Prot; Ptr : access Integer) with SPARK_Mode => Off;
+   private
+     type Prot is
+        limited record
+           Aaa, Bbb : Integer := 0;
+        end record;
+   end Pkg;
+
+which would be legal. The point is that a protected type which is
+in |SPARK| can have protected operation whose declaration is not in |SPARK|
+despite the fact that this violates the usual "On shall not enclose
+non-completion Off" rule. The declaration of the |SPARK| type no longer
+encloses the non-|SPARK| subprogram declaration after this notional rewriting,
+so this case is not considered to be a violation. [No such notional rewriting
+is needed for task units because task entries are not in |SPARK|.]
 
 SPARK_Mode is an implementation-defined Ada aspect; it is not (strictly
 speaking) part of the |SPARK| language. It is used to notionally transform
