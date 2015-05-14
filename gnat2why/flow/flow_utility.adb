@@ -2591,7 +2591,7 @@ package body Flow_Utility is
                         then
                            --  If this constant:
                            --    * comes from source and is in Local_Constants
-                           --    * or might have variable input
+                           --    * or has variable input
                            --  then add it.
                            if Reduced then
                               VS.Include (Direct_Mapping_Id
@@ -2619,6 +2619,19 @@ package body Flow_Utility is
                            VS.Include (Direct_Mapping_Id
                                          (Unique_Entity (Entity (N)),
                                           Facet => Extension_Part));
+                        end if;
+
+                     when Discrete_Or_Fixed_Point_Kind =>
+                        if Is_Constrained (Entity (N)) then
+                           declare
+                              E  : constant Entity_Id := Entity (N);
+                              SR : constant Node_Id   := Scalar_Range (E);
+                              LB : constant Node_Id   := Low_Bound (SR);
+                              HB : constant Node_Id   := High_Bound (SR);
+                           begin
+                              VS.Union (Recurse_On (LB));
+                              VS.Union (Recurse_On (HB));
+                           end;
                         end if;
 
                      when others =>
@@ -2651,6 +2664,18 @@ package body Flow_Utility is
                                          (Unique_Entity (N),
                                           Facet => Extension_Part));
                         end if;
+                     end if;
+
+                  when Discrete_Or_Fixed_Point_Kind =>
+                     if Is_Constrained (N) then
+                        declare
+                           SR : constant Node_Id := Scalar_Range (N);
+                           LB : constant Node_Id := Low_Bound (SR);
+                           HB : constant Node_Id := High_Bound (SR);
+                        begin
+                           VS.Union (Recurse_On (LB));
+                           VS.Union (Recurse_On (HB));
+                        end;
                      end if;
 
                   when others =>
@@ -2758,54 +2783,56 @@ package body Flow_Utility is
                        Attribute_Range  =>
 
                      declare
-                        T  : constant Node_Id :=
-                          Get_Type (Prefix (N), Scope);
-
-                        LB : constant Node_Id :=
-                          (if Is_Array_Type (T)
-                           then Type_Low_Bound (Etype (First_Index (T)))
-                           else Low_Bound (Scalar_Range (T)));
-
-                        HB : constant Node_Id :=
-                          (if Is_Array_Type (T)
-                           then Type_High_Bound (Etype (First_Index (T)))
-                           else High_Bound (Scalar_Range (T)));
+                        T  : constant Node_Id := Get_Type (Prefix (N), Scope);
+                        LB : Node_Id;
+                        HB : Node_Id;
                      begin
-                        case Get_Attribute_Id (Attribute_Name (N)) is
-                           when Attribute_First =>
-                              --  Add variables from Low_Bound
-                              VS.Union (Recurse_On (LB));
+                        if Is_Constrained (T) then
+                           if Is_Array_Type (T) then
+                              LB := Type_Low_Bound (Etype (First_Index (T)));
+                              HB := Type_High_Bound (Etype (First_Index (T)));
+                           else
+                              LB := Low_Bound (Scalar_Range (T));
+                              HB := High_Bound (Scalar_Range (T));
+                           end if;
 
-                           when Attribute_Last  =>
-                              --  Add variables from High_Bound
-                              VS.Union (Recurse_On (HB));
+                           case Get_Attribute_Id (Attribute_Name (N)) is
+                              when Attribute_First =>
+                                 --  Add variables from Low_Bound
+                                 VS.Union (Recurse_On (LB));
 
-                           when Attribute_Length | Attribute_Range =>
-                              --  Add variables from Low_Bound and
-                              --  High_Bound
-                              VS.Union (Recurse_On (LB));
-                              VS.Union (Recurse_On (HB));
+                              when Attribute_Last  =>
+                                 --  Add variables from High_Bound
+                                 VS.Union (Recurse_On (HB));
 
-                           when others =>
-                              raise Why.Unexpected_Node;
-                        end case;
-                     end;
+                              when Attribute_Length | Attribute_Range =>
+                                 --  Add variables from Low_Bound and
+                                 --  High_Bound.
+                                 VS.Union (Recurse_On (LB));
+                                 VS.Union (Recurse_On (HB));
 
-                     for F of Recurse_On (Prefix (N)) loop
-                        if F.Kind in Direct_Mapping | Record_Field
-                          and then F.Facet = Normal_Part
-                          and then Has_Bounds (F, Scope)
-                        then
-                           --  This is not a bound variable, but it
-                           --  requires bounds tracking. We make it a
-                           --  bound variable.
-                           VS.Include (F'Update (Facet => The_Bounds));
-
+                              when others =>
+                                 raise Why.Unexpected_Node;
+                           end case;
                         else
-                           --  This is something else. We just copy it.
-                           VS.Include (F);
+                           for F of Recurse_On (Prefix (N)) loop
+                              if F.Kind in Direct_Mapping | Record_Field
+                                and then F.Facet = Normal_Part
+                                and then Has_Bounds (F, Scope)
+                              then
+                                 --  This is not a bound variable, but
+                                 --  it requires bounds tracking. We
+                                 --  make it a bound variable.
+                                 VS.Include (F'Update (Facet => The_Bounds));
+
+                              else
+                                 --  This is something else. We just
+                                 --  copy it.
+                                 VS.Include (F);
+                              end if;
+                           end loop;
                         end if;
-                     end loop;
+                     end;
                      return Skip;
 
                   when Attribute_Loop_Entry =>

@@ -22,15 +22,12 @@ const3.adb:3:19: info: initialization of "F" proved
 const3.adb:4:19: info: initialization of "L" proved
 const3.adb:5:19: info: initialization of "R" proved
 const3.adb:14:12: info: range check proved
-const3.adb:18:28: info: initialization of "C1" proved
-const3.adb:18:28: info: initialization of "C2" proved
-const3.adb:18:28: info: length check proved
+const3.adb:18:04: warning: unused variable "A"
 const3.adb:20:22: info: initialization of "F" proved
 const3.adb:21:22: info: initialization of "L" proved
 const3.adb:22:22: info: initialization of "R" proved
 const3.adb:31:15: info: initialization of "R" proved
 const3.adb:31:17: medium: overflow check might fail
-const3.adb:38:04: info: initialization of "A" proved
 const3.adb:38:04: info: initialization of "C1" proved
 const3.adb:38:04: info: initialization of "C2" proved
 const4.adb:4:04: info: initialization of "C2" constituent of "State" proved

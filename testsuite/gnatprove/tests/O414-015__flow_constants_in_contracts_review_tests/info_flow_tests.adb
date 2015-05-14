@@ -161,7 +161,7 @@ is
          subtype T is Natural range C1 .. C2;
       begin
          X := 0;
-         for I in T loop -- !!! Missing dependency here
+         for I in T loop
             X := I;
          end loop;
       end Nested;
@@ -178,7 +178,6 @@ is
    is
       subtype T is Natural range A .. A;
    begin
-      --  !!! Missing dependency in quantifier
       C := (for all I in T => I = B);  --  C := A = B
    end Test_08;
 
@@ -190,7 +189,6 @@ is
    is
       subtype T is Natural range A .. A;
    begin
-      --  !!!  Missing dependency here
       --  Another strange way of writing C := A = B
       if B in T then
          C := True;
@@ -207,7 +205,6 @@ is
    is
       subtype T is Natural range A .. A;
    begin
-      --  !!!  Missing dependency here
       --  Another strange way of writing C := A = B
       C := (if B in T then True else False);
    end Test_11;

@@ -15,15 +15,15 @@ is
 
    type Array_T is array (Range_T) of Integer;
 
-   A  : Array_T := Array_T'(others => 0);
+   A  : Array_T;
 
    procedure Nested (F : out Integer;
                      L : out Integer;
                      R : out Integer)
-     with Global  => (C1, C2, A),
+     with Global  => (C1, C2),
           Depends => (F => C1,
                       L => C2,
-                      R => (C1, C2, A))
+                      R => (C1, C2))
    is
    begin
       R := 0;

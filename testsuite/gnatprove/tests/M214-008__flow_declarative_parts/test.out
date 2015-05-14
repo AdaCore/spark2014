@@ -12,7 +12,7 @@ test.adb:90:33: high: "A" is not initialized
 test.adb:93:12: info: initialization of "Tmp" proved
 test.adb:96:24: info: initialization of "A" proved
 test.adb:100:31: high: "A" is not initialized
-test.adb:103:15: info: initialization of "C" proved
+test.adb:103:12: info: initialization of "C" proved
 test.adb:111:24: info: initialization of "A" proved
 test.adb:112:24: info: initialization of "B" proved
 test.adb:122:24: warning: unused initial value of "A"

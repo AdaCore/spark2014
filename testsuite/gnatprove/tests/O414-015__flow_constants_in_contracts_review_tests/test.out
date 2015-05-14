@@ -1,13 +1,13 @@
-info_flow_tests.adb:15:23: info: initialization of "C2" proved
-info_flow_tests.adb:16:23: info: initialization of "C1" proved
+info_flow_tests.adb:15:21: info: initialization of "C2" proved
+info_flow_tests.adb:16:21: info: initialization of "C1" proved
 info_flow_tests.adb:20:23: warning: unused initial value of "A"
 info_flow_tests.adb:21:23: warning: unused initial value of "B"
 info_flow_tests.adb:23:06: medium: missing dependency "null => A"
 info_flow_tests.adb:23:06: medium: missing dependency "null => B"
 info_flow_tests.adb:23:23: medium: incorrect dependency "A => B"
 info_flow_tests.adb:24:23: medium: incorrect dependency "B => A"
-info_flow_tests.adb:35:26: "C2" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(13))
-info_flow_tests.adb:36:26: "C1" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(13))
+info_flow_tests.adb:35:24: "C2" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(13))
+info_flow_tests.adb:36:24: "C1" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(13))
 info_flow_tests.adb:55:34: info: initialization of "A" proved
 info_flow_tests.adb:55:37: info: initialization of "B" proved
 info_flow_tests.adb:64:07: info: initialization of "C1" proved
@@ -40,27 +40,16 @@ info_flow_tests.adb:143:15: info: initialization of "V" proved
 info_flow_tests.adb:146:07: info: initialization of "C1" proved
 info_flow_tests.adb:147:12: info: initialization of "C2" proved
 info_flow_tests.adb:153:23: info: initialization of "C" proved
-info_flow_tests.adb:158:25: info: initialization of "X" proved
-info_flow_tests.adb:159:22: low: unused global "C1" (SPARK RM 6.1.4(14))
+info_flow_tests.adb:164:19: "C2" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(13))
 info_flow_tests.adb:169:07: info: initialization of "C1" proved
 info_flow_tests.adb:170:12: info: initialization of "C2" proved
-info_flow_tests.adb:173:23: warning: unused variable "A"
 info_flow_tests.adb:175:23: info: initialization of "C" proved
-info_flow_tests.adb:177:09: medium: missing dependency "null => A"
-info_flow_tests.adb:177:27: medium: incorrect dependency "C => A"
-info_flow_tests.adb:185:23: warning: unused variable "A"
-info_flow_tests.adb:187:23: info: initialization of "C" proved
-info_flow_tests.adb:189:09: medium: missing dependency "null => A"
-info_flow_tests.adb:189:27: medium: incorrect dependency "C => A"
-info_flow_tests.adb:202:23: warning: unused variable "A"
-info_flow_tests.adb:204:23: info: initialization of "C" proved
-info_flow_tests.adb:206:09: medium: missing dependency "null => A"
-info_flow_tests.adb:206:27: medium: incorrect dependency "C => A"
-info_flow_tests.adb:217:23: info: initialization of "C" proved
-info_flow_tests.adb:218:23: info: initialization of "D" proved
-info_flow_tests.adb:219:23: info: initialization of "E" proved
-info_flow_tests.adb:220:23: info: initialization of "F" proved
-info_flow_tests.adb:222:09: medium: incorrect dependency "F => B"
+info_flow_tests.adb:186:23: info: initialization of "C" proved
+info_flow_tests.adb:202:23: info: initialization of "C" proved
+info_flow_tests.adb:214:23: info: initialization of "C" proved
+info_flow_tests.adb:215:23: info: initialization of "D" proved
+info_flow_tests.adb:216:23: info: initialization of "E" proved
+info_flow_tests.adb:217:23: info: initialization of "F" proved
    compilation of info_flow_tests.adb failed
 
 
