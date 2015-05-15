@@ -2437,6 +2437,28 @@ modelled as :ref:`External State Abstraction` for sensors and actuators. Data
 and flow dependency contracts are given for all subprograms. |GNATprove| proves
 all checks on this program.
 
+.. rubric:: ``ipstack``
+
+This program is an implementation of a TCP/IP stack targeted to bare-board
+embedded applications in certifiable systems. The API is an event driven
+architecture (based on LWIP design), with an application interface based on
+callbacks. The protocols supported are:
+
+  * IPv4
+  * ARP
+  * UDP
+  * TCP
+  * UCMP
+
+This TCP/IP stack can be used either on a PowerPC bare-board system or on a
+Linux host as a native process. In the latter case, the TAP device is used for
+communication between the stack and the host system. For more details, see the
+corresponding README file.
+
+Data dependency contracts are given for most subprograms. These contracts are
+proved by |GNATprove| flow analysis, which also proves the absence of reads of
+uninitialized data.
+
 .. rubric:: ``openETCS``
 
 This program is a case study performed by David Mentré in the context of the
