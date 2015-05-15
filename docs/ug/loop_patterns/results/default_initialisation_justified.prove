@@ -1,6 +1,0 @@
-init.adb:12:10: info: loop invariant initialization proved
-init.adb:12:10: info: loop invariant preservation proved
-init.adb:13:44: info: initialization of "A" proved
-init.adb:13:47: info: index check proved
-init.ads:8:14: info: postcondition proved
-init.ads:8:42: info: index check proved

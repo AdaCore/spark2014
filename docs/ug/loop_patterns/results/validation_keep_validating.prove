@@ -1,5 +1,0 @@
-validation.adb:25:10: info: loop invariant initialization proved
-validation.adb:25:10: info: loop invariant preservation proved
-validation.adb:26:57: info: index check proved
-validation.ads:15:14: info: postcondition proved
-validation.ads:16:48: info: index check proved
