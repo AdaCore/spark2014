@@ -2234,11 +2234,19 @@ returned is one at which the array contains this value. |GNATprove| proves all
 checks on these programs. The version with an unconstrained array is the same
 as the one presented in the section on :ref:`How to Write Loop Invariants`.
 
+.. rubric:: ``euclidian_division``
+
+This program implements the Euclidian division of two integers ``Dividend`` and
+``Divisor``, returning their quotient and remainder in ``Quotient`` and
+``Remainder`` respectively. The postcondition of procedure ``Linear_Div``
+expresses the expected mathematical relation between inputs and
+outputs. |GNATprove| proves all checks on this program.
+
 .. rubric:: ``intro``
 
 This program computes the price of a basket of items. The postcondition of the
 main function ``Price_Of_Basket`` checks that the resulting price is at least
-the price of the most expensive item. |GNATprove| proves all checks on that
+the price of the most expensive item. |GNATprove| proves all checks on this
 program.
 
 .. rubric:: ``linear_search``
@@ -2246,14 +2254,14 @@ program.
 This program searches for a given value in an unordered array. The
 postcondition of the main function ``Linear_Search`` expresses that if the
 search is successful then the index returned is one at which the array contains
-the value searched. |GNATprove| proves all checks on that program. This program
+the value searched. |GNATprove| proves all checks on this program. This program
 is the same as the one presented in the :ref:`SPARK Tutorial`.
 
 .. rubric:: ``longest_common_prefix``
 
 This program computes the length of the longest common prefix between two
 substrings of a common text. The postcondition of the main function ``LCP``
-expresses this property. |GNATprove| proves all checks on that program. This
+expresses this property. |GNATprove| proves all checks on this program. This
 program was proposed as a formal verification challenge during VerifyThis
 Verification Competition in 2012 (see http://fm2012.verifythis.org/).
 
