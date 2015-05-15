@@ -5166,6 +5166,7 @@ package body Flow.Control_Flow_Graph is
               Pragma_Assume_No_Invalid_Values     |
               Pragma_Async_Readers                |
               Pragma_Async_Writers                |
+              Pragma_Constant_After_Elaboration   |
               Pragma_Contract_Cases               |
               Pragma_Depends                      |
               Pragma_Default_Initial_Condition    |
