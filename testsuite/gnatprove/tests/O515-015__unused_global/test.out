@@ -1,0 +1,5 @@
+justifinit.adb:12:17: warning: "Y" is not modified, could be IN
+justifinit.adb:12:17: warning: unused variable "Y"
+justifinit.adb:13:31: low: unused global "X" constituent of "State" (SPARK RM 6.1.4(14))
+justifinit.ads:3:26: warning: no procedure exists that can initialize abstract state "Justifinit.State"
+justifinit.ads:6:11: low: global input "Justifinit.State" of "P" not read
