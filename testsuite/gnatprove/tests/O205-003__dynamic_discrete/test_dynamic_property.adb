@@ -2,7 +2,7 @@ procedure Test_Dynamic_Property (C : Positive) with SPARK_Mode is
    subtype Pos_Dynamic_Discrete is Positive range 1 .. C;
    X : Pos_Dynamic_Discrete := C;
 
-   package Nested with Initializes => (Y => (X, C))
+   package Nested with Initializes => (Y => X)
    is
       subtype Dynamic_Discrete is Natural range 0 .. C;
       Y : Dynamic_Discrete := X; --@RANGE_CHECK:PASS

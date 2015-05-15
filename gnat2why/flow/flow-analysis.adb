@@ -3469,11 +3469,9 @@ package body Flow.Analysis is
         Parse_Initializes (FA.Initializes_N, FA.Spec_Node);
 
    begin  --  Check_Initializes_Contract
-      if DM.Is_Empty
-        or else not Is_Library_Level_Entity (FA.Analyzed_Entity)
-      then
-         --  If there is no Initializes contract or if we are not analyzing
-         --  a library level entity then we have nothing to do.
+      if DM.Is_Empty then
+         --  If there is no Initializes contract then we have nothing
+         --  to do.
          return;
       end if;
 
@@ -3485,29 +3483,32 @@ package body Flow.Analysis is
          All_Actual_Ins      : Flow_Id_Sets.Set;
          Found_Uninitialized : Boolean := False;
       begin
-         --  Check if everything in the RHS of an initialization_item
+         --  If we are dealing with a library level package then we
+         --  check if everything in the RHS of an initialization_item
          --  has been initialized.
-         for C in DM.Iterate loop
-            The_Out := Dependency_Maps.Key (C);
-            The_Ins := Dependency_Maps.Element (C);
+         if Is_Library_Level_Entity (FA.Analyzed_Entity) then
+            for C in DM.Iterate loop
+               The_Out := Dependency_Maps.Key (C);
+               The_Ins := Dependency_Maps.Element (C);
 
-            for G of The_Ins loop
-               if not Is_Initialized_At_Elaboration (G, FA.B_Scope) then
-                  Error_Msg_Flow
-                    (FA   => FA,
-                     Msg  => "% must be initialized at elaboration",
-                     N    => Search_Contract
-                               (FA.Spec_Node,
-                                Pragma_Initializes,
-                                Get_Direct_Mapping_Id (The_Out),
-                                Get_Direct_Mapping_Id (G)),
-                     F1   => G,
-                     Kind => High_Check_Kind,
-                     Tag  => Uninitialized);
-                  Found_Uninitialized := True;
-               end if;
+               for G of The_Ins loop
+                  if not Is_Initialized_At_Elaboration (G, FA.B_Scope) then
+                     Error_Msg_Flow
+                       (FA   => FA,
+                        Msg  => "% must be initialized at elaboration",
+                        N    => Search_Contract
+                                  (FA.Spec_Node,
+                                   Pragma_Initializes,
+                                   Get_Direct_Mapping_Id (The_Out),
+                                   Get_Direct_Mapping_Id (G)),
+                        F1   => G,
+                        Kind => High_Check_Kind,
+                        Tag  => Uninitialized);
+                     Found_Uninitialized := True;
+                  end if;
+               end loop;
             end loop;
-         end loop;
+         end if;
 
          if Found_Uninitialized then
             --  If a variable or state abstraction that has not been
@@ -3556,7 +3557,7 @@ package body Flow.Analysis is
                end;
             end loop;
 
-            --  Raise warnings for actual inputs that are not
+            --  Raise medium checks for actual inputs that are not
             --  mentioned by the Initializes.
             for Actual_In of All_Actual_Ins loop
                if not All_Contract_Ins.Contains (Actual_In)
