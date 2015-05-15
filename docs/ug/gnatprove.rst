@@ -2459,6 +2459,13 @@ Data dependency contracts are given for most subprograms. These contracts are
 proved by |GNATprove| flow analysis, which also proves the absence of reads of
 uninitialized data.
 
+.. note::
+
+   IPstack is not directly available under GPS and GNATbench as an example via
+   the :menuselection:`Help --> SPARK --> Examples` menu item, as some files
+   need to be generated (through command ``make ipstack``) and the environment
+   properly set for analysis (see script ``test.cmd``).
+
 .. rubric:: ``openETCS``
 
 This program is a case study performed by David Mentré in the context of the
