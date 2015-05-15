@@ -13,6 +13,15 @@ procedure Duration_Div is
       return ID (Duration'First) / Right <= Duration (0.0);
    end Foo;
 
+   --  similar code but without identity function is proved
+
+   function Bar (Right : Integer) return Boolean with
+     Pre => Right > 0
+   is
+   begin
+      return    (Duration'First) / Right <= Duration (0.0);
+   end Bar;
+
 begin
    null;
 end Duration_Div;
