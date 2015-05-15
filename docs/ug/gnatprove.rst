@@ -2210,11 +2210,9 @@ of small code examples.
 Examples in the Toolset Distribution
 ====================================
 
-Further examples of |SPARK| are distributed with the |SPARK| toolset.  These
-are contained in the ``share/examples/spark`` directory below the directory
-where the toolset is installed.
-
-A subset of these examples can be accessed from the IDE (either GPS or
+Further examples of |SPARK| are distributed with the |SPARK| toolset. These are
+contained in the ``share/examples/spark`` directory below the directory where
+the toolset is installed, and can be accessed from the IDE (either GPS or
 GNATBench) via the :menuselection:`Help --> SPARK --> Examples` menu item.
 
 These examples range from single subprograms to demo programs with dozens of
@@ -2273,9 +2271,20 @@ Single Units
 These examples contain a single unit, and are usually small (a few hundreds
 slocs at most).
 
+.. rubric:: ``database``
+
+This program implements a toy interface to a bank account database, with
+procedures to deposit and withdraw money, and functions to query the account
+balance and information. This program was used as running example in the paper
+`"Integrating Formal Program Verification with Testing"` (at
+http://www.open-do.org/wp-content/uploads/2011/12/hi-lite-erts2012.pdf). The
+API is annotated with full functional contracts, as well as test cases
+expressed with aspect ``Test_Case``. |GNATprove| proves all checks on this
+program.
+
 .. rubric:: ``evoting``
 
-This program implements an toy e-voting interface, to get candidates and votes
+This program implements a toy e-voting interface, to get candidates and votes
 from a file, compute the winner of the vote and print it. The API is annotated
 with functional contracts, some partial and some complete. |GNATprove| proves
 all checks on this program, except for initialization of an array initialized
@@ -2403,6 +2412,36 @@ Data and flow dependency contracts are given for all subprograms. |GNATprove|
 proves all checks on this program, except for 4 runtime checks related to
 scaling quantities using a division (a known limitation of automatic provers).
 
+.. rubric:: ``heatingsystem``
+
+This program is a standard example of controller, turning on and off the
+heating depending on the value of the current temperature read by a thermostat
+and the current mode of operation. Interfaces to the physical world are
+modelled as :ref:`External State Abstraction` for sensors and actuators. Data
+and flow dependency contracts are given for all subprograms. |GNATprove| proves
+all checks on this program.
+
+.. rubric:: ``openETCS``
+
+This program is a case study performed by David Mentré in the context of the
+openETCS European project aiming at making an open-source, open-proof reference
+model of ETCS (European Train Control System). ETCS is a radio-based train
+control system aiming at unifying train signaling and control over all European
+countries. The results of this case study are described in the paper `"Rail,
+Space, Security: Three Case Studies for SPARK 2014"`.
+
+Package ``Section_4_6`` models a subset of the transitions allowed in the
+overall state automaton that the system should follow. Guards for transitions
+are expressed by using :ref:`Expression Functions`, and the disjointness of
+these guards is expressed by using :ref:`Contract Cases`. |GNATprove| proves
+all checks on this part of the program.
+
+Package ``Step_Function`` implements piecewise constant functions used to model
+for example speed restrictions against distance. Full functional contracts are
+given for all the services of this package. |GNATprove| proves all checks on
+this part of the program, except the more complex postcondition of procedure
+``Restrictive_Merge``.
+
 .. rubric:: ``sparkskein``
 
 This program is an implementation of the Skein cryptographic hash algorithm
@@ -2417,3 +2456,45 @@ the toolset distribution is the SPARK 2014 version of this case study.
 
 As not all contracts and loop invariants have been translated in the new
 version, currently |GNATprove| does not prove all checks on this version.
+
+.. rubric:: ``spark_io``
+
+This program is an example wrapping of Ada standard input output library in a
+SPARK compatible library interface. For example, the standard unit
+``Ada.Text_IO`` is wrapped in a unit called ``SPARK.Text_IO`` that provides the
+same services, but uses normal control flow to signal errors instead of
+exceptions. A type ``File_Status`` decribes either a normal status for a file
+(``Unopened`` or ``Success``) or an error status (``Status_Error``,
+``Mode_Error``, etc.). The standard type for a file ``Ada.Text_IO.File_Type``
+is wrapped into a record type ``SPARK.Text_IO_File_Type`` together with the
+status described above.
+
+Wrapper units are also given for most children of the Ada standard input output
+library ``Ada.Text_IO``, for example the generic unit
+``SPARK.Text_IO.Integer_IO`` wraps the services of the standard unit
+``Ada.Text_IO.Integer_IO``. Partial function contracts are expressed on all
+subprograms. |GNATprove| proves all checks on the implementation of these
+wrapper units.
+
+.. rubric:: ``tokeneer``
+
+This program is a highly secure biometric software system that was originally
+developed by Altran. The system provides protection to secure information held
+on a network of workstations situated in a physically secure enclave. The
+Tokeneer project was commissioned by the US National Security Agency (NSA) to
+demonstrate the feasibility of developing systems to the level of rigor
+required by the higher assurance levels of the Common Criteria. The
+requirements of the system were captured using the Z notation and the
+implementation was in SPARK 2005. The original development artifacts, including
+all source code, are publicly available (see
+http://www.adacore.com/sparkpro/tokeneer).
+
+The program in the toolset distribution is a translation of the original
+Tokeneer code into SPARK 2014. The core system now consists of approximately
+10,000 lines of SPARK 2014 code. There are also approximately 3,700 lines of
+supporting code written in Ada which mimick the drivers to peripherals
+connected to the core system.
+
+Data and information flow contracts are given for all subprograms. Partial
+functional contracts are also given for a subset of subprograms. |GNATprove|
+currently proves automatically 90% of all checks in Tokeneer.
