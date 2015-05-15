@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010-2015, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with AIP.Support;
@@ -509,13 +509,14 @@ is
    -- Buffer_Init --
    -----------------
 
-   pragma Warnings (Off, "unused global ""Data_Array""",
-                    Reason => "Data_Array not initialized for efficiency");
    procedure Buffer_Init with
      Refined_Global => (Output => (Buf_List, Data_Array, Free_List))
    is
       pragma Annotate (GNATprove, Intentional,
-                       """Data_Array"" is not initialized",
+                       "unused",
+                       "Data_Array not initialized for efficiency");
+      pragma Annotate (GNATprove, Intentional,
+                       "not initialized",
                        "Data_Array not initialized for efficiency");
    begin
       --  First initialize all the memory for buffers to zero, except for
@@ -536,8 +537,6 @@ is
 
       Free_List := Buf_List'First;
    end Buffer_Init;
-   pragma Warnings (On, "unused global ""Data_Array""",
-                    Reason => "Data_Array not initialized for efficiency");
 
    ------------------
    -- Buffer_Alloc --

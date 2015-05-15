@@ -86,15 +86,11 @@ run: $(APP_IMAGE).bin
 	qemu-system-ppc -nographic -s -M prep -L $(dir $<) -bios $(notdir $<) -net nic -net tap,script=testsuite/qemu/qemu-ifup
 
 # Currently apply only flow analysis.
-# Ideally expected.out should be empty. Use until SPARK tools corrected to
-# avoid generating useless messages in some cases.
 spark: force
 	mkdir -p spark && \
 	cd spark && \
 	GPR_PROJECT_PATH=../projects:../projects.$(TARGET) \
-	gnatprove -P../projects.native/ipstack_dev.gpr --mode=flow --warnings=continue --quiet | sort \
-	> actual.out && \
-	diff ../src/spark/expected.out actual.out
+	gnatprove -P../projects.native/ipstack_dev.gpr --mode=flow --warnings=continue --quiet | sort
 
 codepeer: force
 	$(MAKE) TARGET=$(TARGET) \

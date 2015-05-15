@@ -1,3 +1,0 @@
-package System is
-   type Address is private;
-end System;
