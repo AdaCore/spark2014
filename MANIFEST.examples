@@ -15,6 +15,15 @@
 --      Help/SPARK/Examples menu.
 --   3. As 2, but in GNATBench.
 --
+-- The examples that follow do not get an entry in GPS or GNATbench
+-- menu, as running SPARK analysis requires first generating files /
+-- setting the environment.
+--
+ipstack
+--
+-- The examples that follow all provide a test.gpr project file that
+-- should be opened in GPS or GNATbench when selecting the example.
+--
 autopilot
 binary_search
 binary_search_unconstrained
