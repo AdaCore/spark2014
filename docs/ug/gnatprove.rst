@@ -1,4 +1,4 @@
-.. _formal verification with gnatprove:
+.. _Formal Verification with GNATprove:
 
 ************************************
 Formal Verification with |GNATprove|
@@ -2194,6 +2194,14 @@ Pragmas`. Thus, it is essential to understand how |GNATprove| uses contracts
 and assertion pragmas. This section aims at providing a deeper insight into how
 |GNATprove|'s flow analysis and proof work, through a step-by-step exploration
 of small code examples.
+
+All the examples presented in this section, as well as some code snippets
+presented in the :ref:`Overview of SPARK Language`, are available in the
+example called ``gnatprove_by_example`` distributed with the |SPARK|
+toolset. It can be found in the ``share/examples/spark`` directory below the
+directory where the toolset is installed, and can be accessed from the IDE
+(either GPS or GNATBench) via the :menuselection:`Help --> SPARK --> Examples`
+menu item.
 
 .. _basic_examples:
 

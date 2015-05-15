@@ -40,13 +40,13 @@ The remainder of this document is structured as follows:
 
 * :ref:`Identifying SPARK Code` describes the various means to identify the
   part of the program in |SPARK| that should be analyzed.
-* :ref:`introduction to spark` provides an overview of the |SPARK|
+* :ref:`Overview of SPARK Language` provides an overview of the |SPARK|
   language.
-* :ref:`spark tutorial` gives an introduction
+* :ref:`SPARK Tutorial` gives an introduction
   to writing, testing and proving |SPARK| programs.
-* :ref:`formal verification with gnatprove` describes the use of the
+* :ref:`Formal Verification with GNATprove` describes the use of the
   |GNATprove| formal verification tool.
-* :ref:`usage scenarios for spark` lists the main usage
+* :ref:`Usage Scenarios for SPARK` lists the main usage
   scenarios for |SPARK|.
-* :ref:`proof and test` explains how to combine the results of formal
-  verification and classical verification by testing.
+* :ref:`Combining Formal Verification and Testing` explains how to combine the
+  results of formal verification and classical verification by testing.

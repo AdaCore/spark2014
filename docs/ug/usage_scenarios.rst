@@ -1,4 +1,4 @@
-.. _usage scenarios for spark:
+.. _Usage Scenarios for SPARK:
 
 ***************************
 Usage Scenarios for |SPARK|

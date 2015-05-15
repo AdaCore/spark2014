@@ -1,4 +1,4 @@
-.. _introduction to SPARK:
+.. _Overview of SPARK Language:
 
 ****************************
 Overview of |SPARK| Language
@@ -29,6 +29,12 @@ to denote that a feature defined in Ada 2005 (resp. Ada 2012) is supported in
 |SPARK|, and the marker [|SPARK|] is used to denote that a feature is specific
 to |SPARK|. Both the |GNAT Pro| compiler and |GNATprove| analyzer support all
 features listed here.
+
+Some code snippets presented in this section are available in the example
+called ``gnatprove_by_example`` distributed with the |SPARK| toolset. It can be
+found in the ``share/examples/spark`` directory below the directory where the
+toolset is installed, and can be accessed from the IDE (either GPS or
+GNATBench) via the :menuselection:`Help --> SPARK --> Examples` menu item.
 
 Language Restrictions
 =====================

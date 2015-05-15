@@ -1,4 +1,4 @@
-.. _proof and test:
+.. _Combining Formal Verification and Testing:
 
 *****************************************
 Combining Formal Verification and Testing
