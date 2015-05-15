@@ -2439,7 +2439,7 @@ all checks on this program.
 
 .. rubric:: ``ipstack``
 
-This program is an implementation of a TCP/IP stack targeted to bare-board
+This program is an implementation of a TCP/IP stack targeted at bare-board
 embedded applications in certifiable systems. The API is an event driven
 architecture (based on LWIP design), with an application interface based on
 callbacks. The protocols supported are:
