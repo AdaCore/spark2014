@@ -525,6 +525,50 @@ def grep(regex, strlist, invert=False):
     return [line for line in strlist if matches(p, line, invert)]
 
 
+def touch(fname, times=None):
+    """touch a file so that it appears altered
+
+    PARAMETERS
+    fname: a string corresponding to a filename
+    times: optional paramter so set the access time
+    """
+    with open(fname, 'a'):
+        os.utime(fname, times)
+
+
+def spark_install_path():
+    """the location of the SPARK install"""
+    exec_loc = fileutils.which("gnatprove")
+    return os.path.dirname(os.path.dirname(exec_loc))
+
+
+def write_why3_config_file_with_coq(fname):
+    """write a standard why config file with a prover definition for Coq
+
+    PARAMETERS
+    fname: a string corresponding to a filename
+    times: optional paramter so set the access time
+    """
+    installdir = spark_install_path()
+    driverdir = os.path.join(installdir, 'share', 'why3', 'drivers')
+    driverfile = os.path.join(driverdir, 'coq.drv')
+    conf_content = """[main]
+magic = 14
+
+[prover]
+command = "coqtop -batch -R %%o/why3_libs/coq_tactic Why3\
+-R %%o/why3_libs/coq Why3 -l %%f"
+driver = "%s"
+in_place = false
+interactive = true
+name = "Coq"
+shortcut = "coq"
+version = "8.4pl6"
+""" % driverfile
+    with open(fname, "w") as file:
+        file.write(conf_content)
+
+
 def check_all_spark(result_file, expected_len):
     """Using a gnatprove result file, check that all subprograms of that unit
        are in SPARK. Also check that there are as many entries as expected.
@@ -554,9 +598,3 @@ def check_dot_files(opt=None):
     # Dump the contents of all dot files on stdout
     for dot_file in sorted(dot_files):
         cat(dot_file)
-
-
-def spark_install_path():
-    """the location of the SPARK install"""
-    exec_loc = fileutils.which("gnatprove")
-    return os.path.dirname(os.path.dirname(exec_loc))
