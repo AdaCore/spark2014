@@ -57,23 +57,20 @@ heatingsystem_dfa.adb:168:23: info: initialization of "SwitchPosition" proved
 heatingsystem_dfa.adb:168:39: info: initialization of "SwitchPosition" proved
 heatingsystem_dfa.adb:168:42: info: initialization of "Timer" proved
 heatingsystem_dfa.adb:171:22: info: initialization of "Timer" proved
-heatingsystem_dfa.adb:180:43: info: initialization of "Indicator.Outputs" proved
-heatingsystem_dfa.adb:181:42: info: initialization of "Actuator.Outputs" proved
-heatingsystem_dfa.adb:201:44: medium: "Actuator.Outputs" might not be written
-heatingsystem_dfa.adb:214:44: medium: "Actuator.Outputs" might not be written
-heatingsystem_dfa.adb:237:45: info: initialization of "Actuator.Outputs" proved
-heatingsystem_dfa.adb:238:46: info: initialization of "Indicator.Outputs" proved
-heatingsystem_dfa.adb:263:17: info: initialization of "CurrentTime" proved
-heatingsystem_dfa.adb:266:12: info: initialization of "ModeSetting" proved
-heatingsystem_dfa.adb:272:37: info: initialization of "CurrentTime" proved
-heatingsystem_dfa.adb:279:07: info: initialization of "AboveTemp" proved
-heatingsystem_dfa.adb:279:07: info: initialization of "MayOperate" proved
-heatingsystem_dfa.adb:288:28: info: length check proved
-heatingsystem_dfa.adb:294:07: info: initialization of "ClockOffset" proved
-heatingsystem_dfa.adb:294:07: info: initialization of "OnOffTime" proved
-heatingsystem_dfa.adb:295:07: info: initialization of "ClockOffset" proved
-heatingsystem_dfa.adb:295:07: info: initialization of "HeatingIsOn" proved
-heatingsystem_dfa.adb:295:07: info: initialization of "OnOffTime" proved
+heatingsystem_dfa.adb:180:42: info: initialization of "Indicator.Outputs" proved
+heatingsystem_dfa.adb:240:45: info: initialization of "Indicator.Outputs" proved
+heatingsystem_dfa.adb:267:17: info: initialization of "CurrentTime" proved
+heatingsystem_dfa.adb:270:12: info: initialization of "ModeSetting" proved
+heatingsystem_dfa.adb:276:37: info: initialization of "CurrentTime" proved
+heatingsystem_dfa.adb:283:07: info: initialization of "AboveTemp" proved
+heatingsystem_dfa.adb:283:07: info: initialization of "MayOperate" proved
+heatingsystem_dfa.adb:292:28: info: length check proved
+heatingsystem_dfa.adb:298:07: info: initialization of "ClockOffset" proved
+heatingsystem_dfa.adb:298:07: info: initialization of "OnOffTime" proved
+heatingsystem_dfa.adb:299:07: info: initialization of "Actuator.Outputs" proved
+heatingsystem_dfa.adb:299:07: info: initialization of "ClockOffset" proved
+heatingsystem_dfa.adb:299:07: info: initialization of "HeatingIsOn" proved
+heatingsystem_dfa.adb:299:07: info: initialization of "OnOffTime" proved
 indicator.adb:14:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
 indicator.adb:22:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
 modeswitch.ads:6:20: info: initialization of "Value" proved
