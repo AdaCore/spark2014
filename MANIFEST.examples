@@ -15,15 +15,25 @@
 --      Help/SPARK/Examples menu.
 --   3. As 2, but in GNATBench.
 --
+autopilot
 binary_search
 binary_search_unconstrained
-contract_cases
 database
+evoting
 formal_queue
+heatingsystem
 intro
+linear_search
 longest_common_prefix
-max_and_sum
 natural
+n_queens
+openETCS
+patience
+railway_signaling
 ring_buffer
+search_linked_list
 segway
+sparkskein
 spark_io
+tetris
+tokeneer
