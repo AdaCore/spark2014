@@ -177,20 +177,25 @@ is
                                  ModeSwitch.Inputs,
                                  OnOffTime,
                                  ClockOffset),
-                      Output => (Indicator.Outputs,
-                                 Actuator.Outputs),
-                      In_Out => HeatingIsOn),
-          Depends => ((Actuator.Outputs,
-                       HeatingIsOn)      => (Thermostat.Inputs,
-                                             Clock.Ticks,
-                                             ModeSwitch.Inputs,
-                                             OnOffTime,
-                                             ClockOffset,
-                                             HeatingIsOn),
-                      Indicator.Outputs  => (Clock.Ticks,
-                                             ModeSwitch.Inputs,
-                                             OnOffTime,
-                                             ClockOffset))
+                      Output => Indicator.Outputs,
+                      In_Out => (Actuator.Outputs,
+                                 HeatingIsOn)),
+          Depends => (Actuator.Outputs =>+ (Thermostat.Inputs,
+                                            Clock.Ticks,
+                                            ModeSwitch.Inputs,
+                                            OnOffTime,
+                                            ClockOffset,
+                                            HeatingIsOn),
+                      HeatingIsOn       => (Thermostat.Inputs,
+                                            Clock.Ticks,
+                                            ModeSwitch.Inputs,
+                                            OnOffTime,
+                                            ClockOffset,
+                                            HeatingIsOn),
+                      Indicator.Outputs => (Clock.Ticks,
+                                            ModeSwitch.Inputs,
+                                            OnOffTime,
+                                            ClockOffset))
    is
       MayOperate,
       AboveTemp   : Boolean;
@@ -198,10 +203,9 @@ is
       ModeSetting : ModeSwitch.Modes;
 
       procedure TurnOn -- idempotent operation
-        with Global  => (Output => Actuator.Outputs,
-                         In_Out => HeatingIsOn),
-             Depends => ((Actuator.Outputs,
-                          HeatingIsOn)      => HeatingIsOn)
+        with Global  => (In_Out => (Actuator.Outputs, HeatingIsOn)),
+             Depends => (Actuator.Outputs =>+ HeatingIsOn,
+                         HeatingIsOn      => HeatingIsOn)
       is
       begin
          if not HeatingIsOn then
@@ -211,10 +215,9 @@ is
       end TurnOn;
 
       procedure TurnOff -- idempotent operation
-        with Global  => (Output => Actuator.Outputs,
-                         In_Out => HeatingIsOn),
-             Depends => ((Actuator.Outputs,
-                          HeatingIsOn)      => HeatingIsOn)
+        with Global  => (In_Out => (Actuator.Outputs, HeatingIsOn)),
+             Depends => (Actuator.Outputs =>+ HeatingIsOn,
+                         HeatingIsOn      => HeatingIsOn)
       is
       begin
          if HeatingIsOn then
@@ -234,13 +237,14 @@ is
       procedure OperateIfNeeded
         with Global  => (Input  => (MayOperate,
                                     AboveTemp),
-                         Output => (Actuator.Outputs,
-                                    Indicator.Outputs),
-                         In_Out => HeatingIsOn),
-             Depends => (Indicator.Outputs  => MayOperate,
-                         (Actuator.Outputs,
-                          HeatingIsOn)      => (HeatingIsOn,
+                         Output => Indicator.Outputs,
+                         In_Out => (Actuator.Outputs,
+                                    HeatingIsOn)),
+             Depends => (Indicator.Outputs => MayOperate,
+                         Actuator.Outputs  =>+ (HeatingIsOn,
                                                 MayOperate,
+                                                AboveTemp),
+                         HeatingIsOn       =>+ (MayOperate,
                                                 AboveTemp))
       is
       begin -- OperateIfNeeded
