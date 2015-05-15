@@ -1,0 +1,9 @@
+project Test is
+
+   for Excluded_Source_List_File use "illegal.txt";
+
+   package Builder is
+      for Global_Configuration_Pragmas use "test.adc";
+   end Builder;
+
+end Test;

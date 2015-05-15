@@ -135,11 +135,17 @@ gnatprove-nightly:
 
 install-examples:
 	mkdir -p $(EXAMPLESDIR)
+        # install examples from the testsuite as identified in file
+        # MANIFEST.examples
 	for dir in `grep -v "^--" MANIFEST.examples` ; do \
 	   $(CP) testsuite/gnatprove/tests/$$dir $(EXAMPLESDIR); \
 	done
 	find $(EXAMPLESDIR) -name test.py -exec rm -f {} \;
 	find $(EXAMPLESDIR) -name test.out -exec rm -f {} \;
+        # install examples in GNATprove-by-Example section of User's Guide
+        # a special example
+	$(CP) docs/ug/gnatprove_by_example/examples \
+	  $(EXAMPLESDIR)/gnatprove_by_example
 
 clean:
 	$(MAKE) -C gnat2why/why/xgen clean
