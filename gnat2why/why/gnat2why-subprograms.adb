@@ -2256,7 +2256,7 @@ package body Gnat2Why.Subprograms is
 
       Why_Type := Type_Of_Node (Etype (E));
 
-      --  If the function has a postcondition is not mutually recursive
+      --  If the function has a postcondition, is not mutually recursive
       --  and is not annotated with No_Return, then generate an axiom:
       --  axiom def_axiom:
       --     forall args [f (args)]. pre (args) ->
@@ -2270,7 +2270,7 @@ package body Gnat2Why.Subprograms is
          Ref_Allowed => False);
 
       --  We fill the map of parameters, so that in the pre and post, we use
-      --  local names of the parameters, instead of the global names
+      --  local names of the parameters, instead of the global names.
 
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
@@ -2290,9 +2290,9 @@ package body Gnat2Why.Subprograms is
                                       Binder);
             elsif Binder.Main.B_Ent /= Null_Entity_Name then
 
-               --  if there is no Ada_Node, this is a binder generated
+               --  If there is no Ada_Node, this is a binder generated
                --  from an effect; we add the parameter in the name
-               --  map using its unique name
+               --  map using its unique name.
 
                Ada_Ent_To_Why.Insert
                  (Symbol_Table,
@@ -2401,6 +2401,7 @@ package body Gnat2Why.Subprograms is
          --  ??? clean up this code duplication for dispatch and refine
 
          Emit_Post_Axiom (Post_Axiom, Logic_Id, Pre, Post);
+
          if Is_Dispatching_Operation (E) then
             Emit_Post_Axiom (Post_Dispatch_Axiom,
                              Dispatch_Logic_Id,
