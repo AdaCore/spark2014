@@ -3,7 +3,7 @@ Generic Units
 
 Enforcement of |SPARK|'s rules within a generic unit is not
 guaranteed. Violations might not be reported until an
-instance of the generic unit is analyzed. 
+instance of the generic unit is analyzed.
 If an instance of a generic unit occurs within another generic unit,
 this principle is applied recursively.
 
@@ -23,7 +23,7 @@ Generic Instantiation
 .. _etu-generic_instantiation:
 
 [For example, a generic which takes a formal limited private type
-would be in |SPARK|. An instantiation which passes in a task type
+would be in |SPARK|. An instantiation which passes in an access type
 as the actual type would not be in |SPARK|; another instantiation
 of the same generic which passes in, for example, Standard.Integer,
 might be in |SPARK|.]
