@@ -5,7 +5,7 @@ is
    X, Y : Integer;
 
    procedure P
---     with Refined_Global => (Output => (X, Y))
+   --  with Refined_Global => (Output => (X, Y))
    is
    begin
       X := 0;

@@ -577,6 +577,21 @@ package body Flow.Analysis.Sanity is
       Sane :    out Boolean)
    is
 
+      --  Globals provided by the user
+      User_Proof_Ins             : Flow_Id_Sets.Set;
+      User_Reads                 : Flow_Id_Sets.Set;
+      User_Writes                : Flow_Id_Sets.Set;
+
+      --  Globals calculated by the tools
+      Actual_Proof_Ins           : Flow_Id_Sets.Set;
+      Actual_Reads               : Flow_Id_Sets.Set;
+      Actual_Writes              : Flow_Id_Sets.Set;
+
+      --  Calculated globals projected upwards
+      Projected_Actual_Proof_Ins : Flow_Id_Sets.Set;
+      Projected_Actual_Reads     : Flow_Id_Sets.Set;
+      Projected_Actual_Writes    : Flow_Id_Sets.Set;
+
       function Extended_Set_Contains
         (F  : Flow_Id;
          FS : Flow_Id_Sets.Set)
@@ -589,6 +604,12 @@ package body Flow.Analysis.Sanity is
       --  @param F is the Flow_Id that we look for
       --  @param FS is the Flow_Set in which we look
       --  @return whether FS contains F or a contituent of F
+
+      function State_Partially_Written
+        (F : Flow_Id)
+        return Boolean;
+      --  Returns True if F represents a state abstraction
+      --  that is partially written.
 
       function Up_Project_Flow_Set
         (FS      : Flow_Id_Sets.Set;
@@ -647,6 +668,56 @@ package body Flow.Analysis.Sanity is
          return False;
       end Extended_Set_Contains;
 
+      -----------------------------
+      -- State_Partially_Written --
+      -----------------------------
+
+      function State_Partially_Written
+        (F : Flow_Id)
+        return Boolean
+      is
+         E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+      begin
+         --  Trivially False when we are not dealing with a
+         --  state abstraction.
+         if Ekind (E) /= E_Abstract_State then
+            return False;
+         end if;
+
+         declare
+            Ptr                 : Elmt_Id;
+            Constit             : Flow_Id;
+            Writes_At_Least_One : Boolean := False;
+            One_Is_Missing      : Boolean := False;
+         begin
+            Ptr := First_Elmt (Refinement_Constituents (E));
+            while Present (Ptr) loop
+               --  Check that at least one constituent is written
+               if Nkind (Node (Ptr)) /= N_Null then
+                  Constit := Direct_Mapping_Id (Node (Ptr), Out_View);
+
+                  if Actual_Writes.Contains (Constit) then
+                     Writes_At_Least_One := True;
+                  end if;
+
+                  if not Actual_Writes.Contains (Constit) then
+                     One_Is_Missing := True;
+                  end if;
+               end if;
+
+               Ptr := Next_Elmt (Ptr);
+            end loop;
+
+            if Writes_At_Least_One
+              and then One_Is_Missing
+            then
+               return True;
+            end if;
+         end;
+
+         return False;
+      end State_Partially_Written;
+
       -------------------------
       -- Up_Project_Flow_Set --
       -------------------------
@@ -699,213 +770,160 @@ package body Flow.Analysis.Sanity is
          return;
       end if;
 
-      declare
-         User_Proof_Ins             : Flow_Id_Sets.Set;
-         User_Reads                 : Flow_Id_Sets.Set;
-         User_Writes                : Flow_Id_Sets.Set;
+      --  Read the Global contract (user globals)
+      Get_Globals (Subprogram => FA.Analyzed_Entity,
+                   Scope      => FA.S_Scope,
+                   Classwide  => False,
+                   Proof_Ins  => User_Proof_Ins,
+                   Reads      => User_Reads,
+                   Writes     => User_Writes);
 
-         Actual_Proof_Ins           : Flow_Id_Sets.Set;
-         Actual_Reads               : Flow_Id_Sets.Set;
-         Actual_Writes              : Flow_Id_Sets.Set;
+      --  Read the Generated Globals (actual globals)
+      Get_Globals (Subprogram => FA.Analyzed_Entity,
+                   Scope      => FA.B_Scope,
+                   Classwide  => False,
+                   Proof_Ins  => Actual_Proof_Ins,
+                   Reads      => Actual_Reads,
+                   Writes     => Actual_Writes);
 
-         Projected_Actual_Proof_Ins : Flow_Id_Sets.Set;
-         Projected_Actual_Reads     : Flow_Id_Sets.Set;
-         Projected_Actual_Writes    : Flow_Id_Sets.Set;
-      begin
-         --  Read the Global contract (user globals)
-         Get_Globals (Subprogram => FA.Analyzed_Entity,
-                      Scope      => FA.S_Scope,
-                      Classwide  => False,
-                      Proof_Ins  => User_Proof_Ins,
-                      Reads      => User_Reads,
-                      Writes     => User_Writes);
+      --  Up project actual globals
+      Projected_Actual_Writes    := Up_Project_Flow_Set (Actual_Writes,
+                                                         Out_View);
+      Projected_Actual_Reads     := Up_Project_Flow_Set (Actual_Reads,
+                                                         In_View);
+      Projected_Actual_Proof_Ins := Up_Project_Flow_Set (Actual_Proof_Ins,
+                                                         In_View);
 
-         --  Read the Generated Globals (actual globals)
-         Get_Globals (Subprogram => FA.Analyzed_Entity,
-                      Scope      => FA.B_Scope,
-                      Classwide  => False,
-                      Proof_Ins  => Actual_Proof_Ins,
-                      Reads      => Actual_Reads,
-                      Writes     => Actual_Writes);
+      --  Remove Reads from Proof_Ins
+      Projected_Actual_Proof_Ins := Projected_Actual_Proof_Ins -
+                                      Projected_Actual_Reads;
 
-         --  Up project actual globals
-         Projected_Actual_Writes    := Up_Project_Flow_Set (Actual_Writes,
-                                                            Out_View);
-         Projected_Actual_Reads     := Up_Project_Flow_Set (Actual_Reads,
-                                                            In_View);
-         Projected_Actual_Proof_Ins := Up_Project_Flow_Set (Actual_Proof_Ins,
-                                                            In_View);
+      --  Compare writes
+      for W of Projected_Actual_Writes loop
+         if not User_Writes.Contains (W) then
+            Sane := False;
 
-         --  Remove Reads from Proof_Ins
-         Projected_Actual_Proof_Ins := Projected_Actual_Proof_Ins -
-                                         Projected_Actual_Reads;
+            Error_Msg_Flow
+              (FA      => FA,
+               Msg     => "& must be a global output of &",
+               SRM_Ref => "6.1.4",
+               N       => FA.Global_N,
+               Kind    => Error_Kind,
+               F1      => W,
+               F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
+               Tag     => Global_Missing);
+         end if;
+      end loop;
 
-         --  Compare writes
-         for W of Projected_Actual_Writes loop
-            if not User_Writes.Contains (W) then
-               Sane := False;
-
-               Error_Msg_Flow
-                 (FA      => FA,
-                  Msg     => "& must be a global output of &",
-                  SRM_Ref => "6.1.4",
-                  N       => FA.Global_N,
-                  Kind    => Error_Kind,
-                  F1      => W,
-                  F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
-                  Tag     => Global_Missing);
-            end if;
-         end loop;
-
-         for W of User_Writes loop
+      for W of User_Writes loop
+         declare
+            E : constant Entity_Id := Get_Direct_Mapping_Id (W);
+         begin
             if not Extended_Set_Contains (W, Projected_Actual_Writes) then
                --  Don't issue this error for state abstractions that
                --  have a null refinement
-               declare
-                  E : constant Entity_Id := Get_Direct_Mapping_Id (W);
-               begin
-                  if Ekind (E) /= E_Abstract_State
-                    or else Has_Non_Null_Refinement (E)
-                  then
-                     Sane := False;
 
-                     Error_Msg_Flow
-                       (FA   => FA,
-                        Msg  => "global output & of & not written",
-                        N    => FA.Global_N,
-                        Kind => Error_Kind,
-                        F1   => W,
-                        F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
-                        Tag  => Global_Wrong);
-                  end if;
-               end;
-            end if;
-         end loop;
-
-         --  Compare reads
-         for R of Projected_Actual_Reads loop
-            if not User_Reads.Contains (R) then
-               Sane := False;
-
-               Error_Msg_Flow
-                 (FA      => FA,
-                  Msg     => "& must be a global input of &",
-                  SRM_Ref => "6.1.4",
-                  N       => FA.Global_N,
-                  Kind    => Error_Kind,
-                  F1      => R,
-                  F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
-                  Tag     => Global_Missing);
-            end if;
-         end loop;
-
-         for R of User_Reads loop
-            declare
-               function State_Partially_Written
-                 (F : Flow_Id)
-                  return Boolean;
-               --  Returns True if F represents a state abstraction
-               --  that is partially written.
-
-               function State_Partially_Written
-                 (F : Flow_Id)
-                  return Boolean
-               is
-                  E : constant Entity_Id := Get_Direct_Mapping_Id (F);
-               begin
-                  --  Trivially False when we are not dealing with a
-                  --  state abstraction.
-                  if Ekind (E) /= E_Abstract_State then
-                     return False;
-                  end if;
-
-                  declare
-                     Ptr                 : Elmt_Id;
-                     Constit             : Flow_Id;
-                     Writes_At_Least_One : Boolean := False;
-                     One_Is_Missing      : Boolean := False;
-                  begin
-                     Ptr := First_Elmt (Refinement_Constituents (E));
-                     while Present (Ptr) loop
-                        --  Check that at least one constituent is written
-                        if Nkind (Node (Ptr)) /= N_Null then
-                           Constit := Direct_Mapping_Id (Node (Ptr),
-                                                         Out_View);
-
-                           if Actual_Writes.Contains (Constit) then
-                              Writes_At_Least_One := True;
-                           end if;
-
-                           if not Actual_Writes.Contains (Constit) then
-                              One_Is_Missing := True;
-                           end if;
-                        end if;
-
-                        Ptr := Next_Elmt (Ptr);
-                     end loop;
-
-                     if Writes_At_Least_One
-                       and then One_Is_Missing
-                     then
-                        return True;
-                     end if;
-                  end;
-
-                  return False;
-               end State_Partially_Written;
-
-            begin
-               if not Extended_Set_Contains (R, Projected_Actual_Reads)
-                 and then not State_Partially_Written (R)
-                 --  Don't issue this error if we are dealing with a
-                 --  partially written state abstraction.
+               if Ekind (E) /= E_Abstract_State
+                 or else Has_Non_Null_Refinement (E)
                then
                   Sane := False;
 
                   Error_Msg_Flow
                     (FA   => FA,
-                     Msg  => "global input & of & not read",
+                     Msg  => "global output & of & not written",
                      N    => FA.Global_N,
                      Kind => Error_Kind,
-                     F1   => R,
+                     F1   => W,
                      F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
                      Tag  => Global_Wrong);
                end if;
-            end;
-         end loop;
 
-         --  Compare Proof_Ins
-         for P of Projected_Actual_Proof_Ins loop
-            if not User_Proof_Ins.Contains (P) then
-               Sane := False;
-
-               Error_Msg_Flow
-                 (FA      => FA,
-                  Msg     => "& must be a global Proof_In of &",
-                  SRM_Ref => "6.1.4",
-                  N       => FA.Global_N,
-                  Kind    => Error_Kind,
-                  F1      => P,
-                  F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
-                  Tag     => Global_Missing);
-            end if;
-         end loop;
-
-         for P of User_Proof_Ins loop
-            if not Extended_Set_Contains (P, Projected_Actual_Proof_Ins) then
+            elsif Ekind (E) = E_Abstract_State
+              and then not User_Reads.Contains (W)
+              and then State_Partially_Written (W)
+            then
+               --  The synthesized Refined_Global is not fully written
                Sane := False;
 
                Error_Msg_Flow
                  (FA   => FA,
-                  Msg  => "global Proof_In & of & not read",
+                  Msg  => "global output & of & not fully written",
                   N    => FA.Global_N,
                   Kind => Error_Kind,
-                  F1   => P,
+                  F1   => W,
                   F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
                   Tag  => Global_Wrong);
             end if;
-         end loop;
-      end;
+         end;
+      end loop;
+
+      --  Compare reads
+      for R of Projected_Actual_Reads loop
+         if not User_Reads.Contains (R) then
+            Sane := False;
+
+            Error_Msg_Flow
+              (FA      => FA,
+               Msg     => "& must be a global input of &",
+               SRM_Ref => "6.1.4",
+               N       => FA.Global_N,
+               Kind    => Error_Kind,
+               F1      => R,
+               F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
+               Tag     => Global_Missing);
+         end if;
+      end loop;
+
+      for R of User_Reads loop
+         if not Extended_Set_Contains (R, Projected_Actual_Reads)
+           and then not State_Partially_Written (R)
+           --  Don't issue this error if we are dealing with a
+           --  partially written state abstraction.
+         then
+            Sane := False;
+
+            Error_Msg_Flow
+              (FA   => FA,
+               Msg  => "global input & of & not read",
+               N    => FA.Global_N,
+               Kind => Error_Kind,
+               F1   => R,
+               F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
+               Tag  => Global_Wrong);
+         end if;
+      end loop;
+
+      --  Compare Proof_Ins
+      for P of Projected_Actual_Proof_Ins loop
+         if not User_Proof_Ins.Contains (P) then
+            Sane := False;
+
+            Error_Msg_Flow
+              (FA      => FA,
+               Msg     => "& must be a global Proof_In of &",
+               SRM_Ref => "6.1.4",
+               N       => FA.Global_N,
+               Kind    => Error_Kind,
+               F1      => P,
+               F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
+               Tag     => Global_Missing);
+         end if;
+      end loop;
+
+      for P of User_Proof_Ins loop
+         if not Extended_Set_Contains (P, Projected_Actual_Proof_Ins) then
+            Sane := False;
+
+            Error_Msg_Flow
+              (FA   => FA,
+               Msg  => "global Proof_In & of & not read",
+               N    => FA.Global_N,
+               Kind => Error_Kind,
+               F1   => P,
+               F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
+               Tag  => Global_Wrong);
+         end if;
+      end loop;
    end Check_Generated_Refined_Global;
 
 end Flow.Analysis.Sanity;
