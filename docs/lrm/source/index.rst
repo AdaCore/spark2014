@@ -13,7 +13,7 @@ SPARK 2014 Reference Manual
 
 .. only:: html
 
-   Copyright (C) 2011-2014, AdaCore and Altran UK Ltd
+   Copyright (C) 2011-2015, AdaCore and Altran UK Ltd
 
    Permission is granted to copy, distribute and/or modify this document
    under the terms of the GNU Free Documentation License, Version 1.1
@@ -57,4 +57,3 @@ SPARK 2014 Reference Manual
 
 .. uncomment and rename todo-summary.rst.wip to todo-summary.rst to enable todo
    C. To-Do Summary <todo-summary>
-
