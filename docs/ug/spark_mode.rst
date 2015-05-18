@@ -88,7 +88,7 @@ For example, the following combinations may be typical:
 
 Such patterns are intended to allow for application of formal verification to a
 subset of a program, and the combination of formal verification with more
-traditional testing (see :ref:`proof and test`).
+traditional testing (see :ref:`Combining Formal Verification and Testing`).
 
 Project File Setup
 ==================
