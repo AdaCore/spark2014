@@ -476,32 +476,38 @@ All of the above notwithstanding, the interactions between SPARK_Mode
 and protected units follow a slightly different model, not so closely tied
 to syntactic enclosure. Roughly speaking, the rules for a protected
 unit follow from the rules given for other constructs after notionally
-rewriting the protected unit as a package. 
+rewriting the protected unit as a package.
 
-A protected unit declaration such as ::
+A protected unit declaration such as
+
+.. code-block:: ada
 
    protected type Prot
      with SPARK_Mode => On
    is
-     procedure Op1 (X : in out Integer);
-     procedure Op2;
-     procedure Non_SPARK_Profile (Ptr : access Integer)
-       with SPARK_Mode => Off;
+      procedure Op1 (X : in out Integer);
+      procedure Op2;
+      procedure Non_SPARK_Profile (Ptr : access Integer)
+        with SPARK_Mode => Off;
    private
-    Aaa, Bbb : Integer := 0;
+      Aaa, Bbb : Integer := 0;
    end Prot;
 
 can be thought of, for purposes of SPARK_Mode rules, as being
-a lot like ::
+a lot like
 
-   package Pkg is
-     type Prot is limited private;
-     procedure Op1 (Obj : in out Prot; X : in out Integer);
-     procedure Op2 (Obj : in out Prot);
-     procedure Non_SPARK_Profile
-       (Obj : in out Prot; Ptr : access Integer) with SPARK_Mode => Off;
+.. code-block:: ada
+
+   package Pkg
+     with SPARK_Mode => On
+   is
+      type Prot is limited private;
+      procedure Op1 (Obj : in out Prot; X : in out Integer);
+      procedure Op2 (Obj : in out Prot);
+      procedure Non_SPARK_Profile (Obj : in out Prot; Ptr : access Integer)
+        with SPARK_Mode => Off;
    private
-     type Prot is
+      type Prot is
         limited record
            Aaa, Bbb : Integer := 0;
         end record;
