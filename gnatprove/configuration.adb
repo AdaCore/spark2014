@@ -135,6 +135,9 @@ package body Configuration is
    --  Set_Target_Dir: if -gnateT is not set in
    --  Builder.Global_Configuration_Switches
 
+   function Is_Coq_Prover return Boolean;
+   --  @return True iff the alternate prover is "coq"
+
    Usage_Message : constant String :=
      "-Pproj [files] [switches] [-cargs switches]";
 
@@ -493,6 +496,36 @@ ASCII.LF;
       end if;
    end Handle_Switch;
 
+   ----------------------
+   -- Is_Manual_Prover --
+   ----------------------
+
+   function Is_Manual_Prover return Boolean is
+   begin
+      if Alter_Prover = null or else Alter_Prover.all = "" then
+         return False;
+      elsif
+        Alter_Prover.all = "coq" or else
+        Alter_Prover.all = "isabelle"
+      then
+         return True;
+      else
+         return False;
+      end if;
+   end Is_Manual_Prover;
+
+   -------------------
+   -- Is_Coq_Prover --
+   -------------------
+
+   function Is_Coq_Prover return Boolean is
+   begin
+      if Is_Manual_Prover and then Alter_Prover.all = "coq" then
+         return True;
+      end if;
+      return False;
+   end Is_Coq_Prover;
+
    ------------------------
    -- Prepare_Prover_Lib --
    ------------------------
@@ -500,10 +533,9 @@ ASCII.LF;
    procedure Prepare_Prover_Lib (Success : out Boolean) is
    begin
       Success := True;
-      if Alter_Prover = null or else Alter_Prover.all = "" then
+      if not Is_Coq_Prover then
          return;
       end if;
-
       declare
          Prover_Name : constant String :=
            Ada.Characters.Handling.To_Lower (Alter_Prover.all);
@@ -512,43 +544,41 @@ ASCII.LF;
          Prover_Obj_Dir : constant String := Compose
            (Compose (Main_Subdir.all, "why3_libs"), Name => Prover_Name);
       begin
-         if Prover_Name = "coq" then
-            if not Exists (Compose (Prover_Obj_Dir, Name => "BuiltIn.vo")) then
+         if not Exists (Compose (Prover_Obj_Dir, Name => "BuiltIn.vo")) then
+            declare
+               Source_Dest : String_Access :=
+                 new String'(Compose (Prover_Obj_Dir, Name => "BuiltIn.v"));
+            begin
+               --  Copy file
+               Create_Path (Prover_Obj_Dir);
+               Copy_File (Compose (Prover_Lib_Dir, Name => "BuiltIn.v"),
+                          Source_Dest.all);
+               --  Build it
                declare
-                  Source_Dest : String_Access := new String'(Compose
-                    (Prover_Obj_Dir, Name => "BuiltIn.v"));
+                  Coqc_Bin : String_Access :=
+                    GNAT.OS_Lib.Locate_Exec_On_Path ("coqc");
+                  Args : GNAT.OS_Lib.Argument_List :=
+                    (1 => new String'("-R"),
+                     2 => new String'(Containing_Directory
+                       (Source_Dest.all)),
+                     3 => new String'("Why3"),
+                     4 => Source_Dest);
                begin
-                  --  Copy file
-                  Create_Path (Prover_Obj_Dir);
-                  Copy_File (Compose (Prover_Lib_Dir, Name => "BuiltIn.v"),
-                             Source_Dest.all);
-                  --  Build it
-                  declare
-                     Coqc_Bin : String_Access :=
-                       GNAT.OS_Lib.Locate_Exec_On_Path ("coqc");
-                     Args : GNAT.OS_Lib.Argument_List :=
-                       (1 => new String'("-R"),
-                        2 => new String'(Containing_Directory
-                          (Source_Dest.all)),
-                        3 => new String'("Why3"),
-                        4 => Source_Dest);
-                  begin
-                     if Coqc_Bin = null then
-                        Success := False;
-                     else
-                        GNAT.OS_Lib.Spawn (Program_Name => Coqc_Bin.all,
-                                           Args         => Args,
-                                           Success      => Success);
-                        GNAT.OS_Lib.Free (Coqc_Bin);
-                     end if;
+                  if Coqc_Bin = null then
+                     Success := False;
+                  else
+                     GNAT.OS_Lib.Spawn (Program_Name => Coqc_Bin.all,
+                                        Args         => Args,
+                                        Success      => Success);
+                     GNAT.OS_Lib.Free (Coqc_Bin);
+                  end if;
 
-                     for It in Args'Range loop
-                        Free (Args (It));
-                     end loop;
-                     Source_Dest := null;
-                  end;
+                  for It in Args'Range loop
+                     Free (Args (It));
+                  end loop;
+                  Source_Dest := null;
                end;
-            end if;
+            end;
          end if;
       end;
    end Prepare_Prover_Lib;

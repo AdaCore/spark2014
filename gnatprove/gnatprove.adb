@@ -200,7 +200,7 @@ procedure Gnatprove is
          Args.Prepend ("-k");
       end if;
 
-      if Force then
+      if Force or else Is_Manual_Prover then
          Args.Prepend ("-f");
       end if;
 

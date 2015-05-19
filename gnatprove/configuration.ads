@@ -192,6 +192,9 @@ package Configuration is
 
    procedure Read_Command_Line (Tree : out Project_Tree);
 
+   function Is_Manual_Prover return Boolean;
+   --  @return True iff the alternate prover is "coq" or "isabelle"
+
    function To_String (P : Proof_Mode) return String;
    --  transform the proof mode into a string for gnatwhy3 command line option
 end Configuration;
