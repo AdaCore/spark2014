@@ -3760,8 +3760,8 @@ package body Flow.Analysis is
       E : Entity_Id;
 
       function Is_Constant_After_Elaboration (N : Node_Id) return Boolean;
-      --  @param N is a the node corresponding to the
-      --     constant_after_elaboration_pragma
+      --  @param N is the node corresponding to the
+      --     Pragma_Constant_After_Elaboration. N might be Empty.
       --  @return True iff Constant_After_Elaboration is True
 
       -----------------------------------
