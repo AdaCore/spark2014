@@ -381,52 +381,51 @@ package body Why.Gen.Arrays is
               2 => New_Clone_Substitution
                 (Kind      => EW_Predicate,
                  Orig_Name => New_Name (Symbol => NID (Prefix & ".le")),
-                 Image     =>
+                 Image     => Get_Name
                    (if Is_Modular_Integer_Type (Typ) then
-                         Get_Name (MF_BVs (WTyp).Ule)
+                         MF_BVs (WTyp).Ule
                     else
-                       New_Name (Symbol => NID ("(<=)"),
-                                 Module => Int_Module))),
+                       Int_Infix_Le)),
               3 => New_Clone_Substitution
                 (Kind      => EW_Predicate,
                  Orig_Name => New_Name (Symbol => NID (Prefix & ".lt")),
-                 Image     =>
+                 Image     => Get_Name
                    (if Is_Modular_Integer_Type (Typ) then
-                         Get_Name (MF_BVs (WTyp).Ult)
+                         MF_BVs (WTyp).Ult
                     else
-                       New_Name (Symbol => NID ("Int.(<)")))),
+                       Int_Infix_Lt)),
               4 => New_Clone_Substitution
                 (Kind      => EW_Predicate,
                  Orig_Name => New_Name (Symbol => NID (Prefix & ".gt")),
-                 Image     =>
+                 Image     => Get_Name
                    (if Is_Modular_Integer_Type (Typ) then
-                         Get_Name (MF_BVs (WTyp).Ugt)
+                         MF_BVs (WTyp).Ugt
                     else
-                       New_Name (Symbol => NID ("Int.(>)")))),
+                       Int_Infix_Gt)),
               5 => New_Clone_Substitution
                 (Kind      => EW_Function,
                  Orig_Name => New_Name (Symbol => NID (Prefix & ".add")),
-                 Image     =>
+                 Image     => Get_Name
                    (if Is_Modular_Integer_Type (Typ) then
-                         Get_Name (MF_BVs (WTyp).Add)
+                         MF_BVs (WTyp).Add
                     else
-                       New_Name (Symbol => NID ("Int.(+)")))),
+                       Int_Infix_Add)),
               6 => New_Clone_Substitution
                 (Kind      => EW_Function,
                  Orig_Name => New_Name (Symbol => NID (Prefix & ".sub")),
-                 Image     =>
+                 Image     => Get_Name
                    (if Is_Modular_Integer_Type (Typ) then
-                         Get_Name (MF_BVs (WTyp).Sub)
+                         MF_BVs (WTyp).Sub
                     else
-                       New_Name (Symbol => NID ("Int.(-)")))),
+                       Int_Infix_Subtr)),
               7 => New_Clone_Substitution
                 (Kind      => EW_Function,
                  Orig_Name => New_Name (Symbol => NID (Prefix & ".one")),
-                 Image     =>
+                 Image     => Get_Name
                    (if Is_Modular_Integer_Type (Typ) then
-                         Get_Name (MF_BVs (WTyp).One)
+                         MF_BVs (WTyp).One
                     else
-                       Get_Name (One_Id))));
+                       One_Id)));
    end Prepare_Indices_Substitutions;
 
    --------------------------------------------------
@@ -955,12 +954,11 @@ package body Why.Gen.Arrays is
                 (Kind      => EW_Predicate,
                  Orig_Name => New_Name
                    (Symbol => NID (Append_Num ("index_rep_le", Dim_Count))),
-                 Image     =>
+                 Image     => Get_Name
                    (if Is_Modular_Integer_Type (Ind_Ty) then
-                           Get_Name (MF_BVs (R_Ty).Ule)
-                      else
-                         New_Name (Symbol => NID ("(<=)"),
-                                   Module => Int_Module)));
+                           MF_BVs (R_Ty).Ule
+                    else
+                       Int_Infix_Le));
             Cursor := Cursor + 1;
          end;
          Dim_Count := Dim_Count + 1;

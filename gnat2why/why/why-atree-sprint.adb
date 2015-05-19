@@ -98,6 +98,7 @@ package body Why.Atree.Sprint is
    procedure Print_Label (Node : W_Label_Id);
    procedure Print_Literal (Node : W_Literal_Id);
    procedure Print_Name (Node : W_Name_Id);
+   procedure Print_Name_Force_Prefix (Node : W_Name_Id);
    procedure Print_Namespace_Declaration (Node : W_Namespace_Declaration_Id);
    procedure Print_Not (Node : W_Not_Id);
    procedure Print_Postcondition (Node : W_Postcondition_Id);
@@ -359,7 +360,7 @@ package body Why.Atree.Sprint is
       P (O, " ");
       Print_Node (+Get_Orig_Name (Node));
       P (O, " = ");
-      Print_Node (+Get_Image (Node));
+      Print_Name_Force_Prefix (Get_Image (Node));
    end Print_Clone_Substitution;
 
    -------------------
@@ -1164,6 +1165,37 @@ package body Why.Atree.Sprint is
 
       P (O, Get_Symbol (Node));
    end Print_Name;
+
+   -----------------------------
+   -- Print_Name_Force_Prefix --
+   -----------------------------
+
+   procedure Print_Name_Force_Prefix (Node : W_Name_Id) is
+      Module    : constant W_Module_Id := Get_Module (Node);
+      Namespace : constant Name_Id := Get_Namespace (Node);
+   begin
+      if Module /= Why_Empty
+        and then Get_Name (Module) /= No_Name
+      then
+         Print_Module_Id (Module);
+         P (O, ".");
+      end if;
+
+      if Namespace /= No_Name
+      then
+         P (O, Namespace);
+         P (O, ".");
+      end if;
+
+      if Get_Infix (Node)
+      then
+         P (O, "(");
+         P (O, Get_Symbol (Node));
+         P (O, ")");
+      else
+         P (O, Get_Symbol (Node));
+      end if;
+   end Print_Name_Force_Prefix;
 
    ---------------------------------
    -- Print_Namespace_Declaration --
