@@ -2827,26 +2827,6 @@ package body SPARK_Definition is
             end;
          end if;
 
-         if Is_Record_Type (E) then
-            declare
-               Comp : Node_Id := First_Component_Or_Discriminant (E);
-            begin
-               while Present (Comp) loop
-                  if Component_Is_Visible_In_SPARK (Comp) then
-                     Mark_Entity (Etype (Comp));
-
-                     --  Mark default value of component or discriminant
-
-                     if Present (Expression (Parent (Comp))) then
-                        Mark (Expression (Parent (Comp)));
-                     end if;
-                  end if;
-
-                  Next_Component_Or_Discriminant (Comp);
-               end loop;
-            end;
-         end if;
-
          if Is_Array_Type (E) then
             declare
                Component_Typ : constant Node_Id := Component_Type (E);
@@ -2967,6 +2947,26 @@ package body SPARK_Definition is
          end if;
 
          --  Now mark the type itself
+
+         if Is_Record_Type (E) then
+            declare
+               Comp : Node_Id := First_Component_Or_Discriminant (E);
+            begin
+               while Present (Comp) loop
+                  if Component_Is_Visible_In_SPARK (Comp) then
+                     Mark_Entity (Etype (Comp));
+
+                     --  Mark default value of component or discriminant
+
+                     if Present (Expression (Parent (Comp))) then
+                        Mark (Expression (Parent (Comp)));
+                     end if;
+                  end if;
+
+                  Next_Component_Or_Discriminant (Comp);
+               end loop;
+            end;
+         end if;
 
          if Has_Invariants (E) then
 
