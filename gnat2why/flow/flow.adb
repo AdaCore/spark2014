@@ -1368,6 +1368,7 @@ package body Flow is
                   Analysis.Find_Non_Elaborated_State_Abstractions (FA);
                   Analysis.Find_Use_Of_Uninitialized_Variables (FA);
                   Analysis.Check_Initializes_Contract (FA);
+                  Analysis.Check_Constant_After_Elaboration (FA);
             end case;
          end if;
 

@@ -143,6 +143,10 @@ package VC_Kinds is
       Missing_Return,
       --  Function has a path without a return statement
 
+      Not_Constant_After_Elaboration,
+      --  Variable that has been marked as Constant_After_Elaboration
+      --  can potentially be updated.
+
       Pragma_Elaborate_All_Needed,
       --  A remote state abstraction has been used during elaboration
       --  so a pragma Elaborate_All is needed.

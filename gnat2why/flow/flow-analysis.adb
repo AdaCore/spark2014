@@ -36,6 +36,7 @@ with Nlists;                      use Nlists;
 with Output;                      use Output;
 with SPARK_Util;                  use SPARK_Util;
 with Sem_Aux;                     use Sem_Aux;
+with Sem_Eval;                    use Sem_Eval;
 with Sem_Util;                    use Sem_Util;
 with Sinfo;                       use Sinfo;
 with Sinput;                      use Sinput;
@@ -3748,5 +3749,98 @@ package body Flow.Analysis is
          end;
       end loop;
    end Check_Aliasing;
+
+   --------------------------------------
+   -- Check_Constant_After_Elaboration --
+   --------------------------------------
+
+   procedure Check_Constant_After_Elaboration
+     (FA : in out Flow_Analysis_Graphs)
+   is
+      E : Entity_Id;
+
+      function Is_Constant_After_Elaboration (N : Node_Id) return Boolean;
+      --  @param N is a the node corresponding to the
+      --     constant_after_elaboration_pragma
+      --  @return True iff Constant_After_Elaboration is True
+
+      -----------------------------------
+      -- Is_Constant_After_Elaboration --
+      -----------------------------------
+
+      function Is_Constant_After_Elaboration (N : Node_Id) return Boolean is
+         Expr : Node_Id;
+      begin
+         if No (N) then
+            --  Trivially false
+            return False;
+         end if;
+
+         Expr := Expression (First (Pragma_Argument_Associations (N)));
+
+         --  The pragma has an optional Boolean expression, the
+         --  related property is enabled only when the expression
+         --  evaluates to True.
+
+         if Present (Expr) then
+            return Is_True (Expr_Value (Get_Pragma_Arg (Expr)));
+         else
+            --  Otherwise the lack of expression enables the property
+            --  by default.
+            return True;
+         end if;
+      end Is_Constant_After_Elaboration;
+
+   begin
+      --  Go through all entities lying in the public and private part
+      --  and check that procedures do not modify variables that have
+      --  Constant_After_Elaboration set.
+      E := First_Entity (FA.Spec_Node);
+      while Present (E) loop
+         if Ekind (E) = E_Procedure then
+            declare
+               Proof_Ins : Flow_Id_Sets.Set;
+               Reads     : Flow_Id_Sets.Set;
+               Writes    : Flow_Id_Sets.Set;
+
+               G_Out     : Entity_Id;
+               CAE       : Node_Id;
+            begin
+               Get_Globals (Subprogram => E,
+                            Scope      => FA.B_Scope,
+                            Classwide  => False,
+                            Proof_Ins  => Proof_Ins,
+                            Reads      => Reads,
+                            Writes     => Writes);
+
+               for W of Writes loop
+                  if W.Kind in Direct_Mapping | Record_Field then
+                     G_Out := Get_Direct_Mapping_Id (W);
+                     CAE   := Empty;
+
+                     if Ekind (G_Out) in E_Variable then
+                        CAE := Get_Pragma (G_Out,
+                                           Pragma_Constant_After_Elaboration);
+                     end if;
+
+                     if Is_Constant_After_Elaboration (CAE) then
+                        Error_Msg_Flow
+                          (FA   => FA,
+                           Msg  => "& must not be an output of publicly"
+                                     & " visible procedure &",
+                           Kind => High_Check_Kind,
+                           N    => E,
+                           F1   => W,
+                           F2   => Direct_Mapping_Id (E),
+                           Tag  => Not_Constant_After_Elaboration);
+                     end if;
+                  end if;
+               end loop;
+            end;
+         end if;
+
+         Next_Entity (E);
+      end loop;
+   end Check_Constant_After_Elaboration;
 
 end Flow.Analysis;

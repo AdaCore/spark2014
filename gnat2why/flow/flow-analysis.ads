@@ -149,6 +149,15 @@ package Flow.Analysis is
    --
    --  Complexity is O(N^2)
 
+   procedure Check_Constant_After_Elaboration
+     (FA : in out Flow_Analysis_Graphs)
+     with Pre => FA.Kind in E_Package | E_Package_Body;
+   --  Check that subprograms defined in the public and private part
+   --  of the package do not modify variables that have
+   --  Constant_After_Elaboration set.
+   --
+   --  Complexity is O(N)
+
 private
 
    type Var_Use_Kind is (Use_Read, Use_Write, Use_Any);
