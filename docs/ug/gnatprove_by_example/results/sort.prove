@@ -1,84 +1,11 @@
-sort.adb:15:16: medium: postcondition might fail, requires Values = Set (Set (Values'Old, X, Values'Old (Y)), Y, Values'Old (X)
-sort.adb:16:10: info: precondition proved
-sort.adb:16:15: info: precondition proved
-sort.adb:16:32: info: range check proved
-sort.adb:16:47: info: index check proved
-sort.adb:16:52: info: range check proved
-sort.adb:16:67: info: index check proved
-sort.adb:21:53: info: length check proved
-sort.adb:25:29: info: index check proved
-sort.adb:26:15: info: index check proved
-sort.adb:26:29: info: index check proved
-sort.adb:29:22: medium: assertion might fail, requires Values = Set (Init, X, Init (Y)
-sort.adb:29:31: info: precondition proved
-sort.adb:29:42: info: range check proved
 sort.adb:29:45: info: initialization of "Init" proved
-sort.adb:29:51: info: index check proved
-sort.adb:30:14: info: length check proved
-sort.adb:30:17: info: length check proved
-sort.adb:32:15: info: index check proved
 sort.adb:32:21: info: initialization of "Temp" proved
-sort.adb:32:21: info: range check proved
-sort.adb:35:22: medium: assertion might fail, requires Values = Set (Interm, Y, Init (X)
-sort.adb:35:31: info: precondition proved
 sort.adb:35:36: info: initialization of "Interm" proved
-sort.adb:35:44: info: range check proved
 sort.adb:35:47: info: initialization of "Init" proved
-sort.adb:35:53: info: index check proved
-sort.adb:43:16: info: postcondition proved
-sort.adb:45:35: info: index check proved
-sort.adb:45:55: info: index check proved
-sort.adb:49:20: info: range check proved
-sort.adb:51:38: info: index check proved
 sort.adb:51:38: info: initialization of "Min" proved
-sort.adb:52:20: info: range check proved
-sort.adb:54:10: info: loop invariant initialization proved
-sort.adb:54:10: info: loop invariant preservation proved
 sort.adb:55:13: info: initialization of "Min" proved
-sort.adb:57:28: info: index check proved
-sort.adb:57:44: info: index check proved
 sort.adb:59:14: info: initialization of "Min" proved
-sort.adb:71:19: info: precondition proved
-sort.adb:71:24: info: precondition proved
-sort.adb:71:48: info: index check proved
-sort.adb:71:64: info: index check proved
-sort.adb:72:17: info: postcondition proved
-sort.adb:75:13: info: precondition proved
-sort.adb:75:41: info: index check proved
-sort.adb:76:13: info: precondition proved
-sort.adb:76:22: info: precondition proved
-sort.adb:76:46: info: index check proved
-sort.adb:76:62: info: index check proved
-sort.adb:77:13: info: precondition proved
-sort.adb:77:27: info: precondition proved
-sort.adb:77:32: info: precondition proved
-sort.adb:77:56: info: index check proved
-sort.adb:77:72: info: index check proved
-sort.adb:78:13: info: loop invariant initialization proved
-sort.adb:78:13: info: loop invariant preservation proved
-sort.adb:88:50: info: overflow check proved
-sort.adb:89:22: info: precondition proved
-sort.adb:89:40: info: range check proved
 sort.adb:91:13: info: initialization of "Smallest" proved
-sort.adb:94:22: info: length check proved
-sort.adb:94:25: info: length check proved
-sort.adb:96:13: info: precondition proved
-sort.adb:97:29: info: range check proved
 sort.adb:98:29: info: initialization of "Smallest" proved
-sort.adb:101:13: info: precondition proved
 sort.adb:101:30: info: initialization of "Previous" proved
-sort.adb:101:48: info: range check proved
 sort.adb:101:57: info: initialization of "Smallest" proved
-sort.adb:101:57: info: range check proved
-sort.adb:106:31: info: overflow check proved
-sort.adb:107:20: medium: loop invariant might fail after first iteration, requires Values (I) <= Values (J)
-sort.adb:107:20: medium: loop invariant might fail in first iteration, requires Values (I) <= Values (J)
-sort.adb:107:28: info: index check proved
-sort.adb:107:42: info: index check proved
-sort.adb:108:10: info: loop invariant initialization proved
-sort.adb:108:10: info: loop invariant preservation proved
-sort.ads:8:16: info: postcondition proved
-sort.ads:10:51: info: overflow check proved
-sort.ads:11:22: info: index check proved
-sort.ads:11:38: info: index check proved
-sort.ads:11:38: info: overflow check proved
