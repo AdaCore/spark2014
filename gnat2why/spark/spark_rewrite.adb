@@ -248,13 +248,16 @@ package body SPARK_Rewrite is
    --   Start of Rewrite_Compilation_Unit
 
    begin
+      if Is_Generic_Unit (Unique_Defining_Entity (N)) then
+         null;
+
       --  Rewrite_Compilation_Unit is called on the declaration or body of a
       --  library unit (see spec of Sem.Walk_Library_Items), but we need here
       --  to call Rewrite_Nodes on the parent compilation unit node when there
       --  is one, so that aspects rewritten as pragmas after the library unit
       --  declaration or body (listed in Pragmas_After) are also rewritten.
 
-      if Present (Parent (N)) then
+      elsif Present (Parent (N)) then
          Rewrite_Nodes (Parent (N));
       else
          Rewrite_Nodes (N);
