@@ -2448,7 +2448,7 @@ callbacks. The protocols supported are:
   * ARP
   * UDP
   * TCP
-  * UCMP
+  * ICMP
 
 This TCP/IP stack can be used either on a PowerPC bare-board system or on a
 Linux host as a native process. In the latter case, the TAP device is used for
