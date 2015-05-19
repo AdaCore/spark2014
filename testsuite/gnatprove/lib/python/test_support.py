@@ -552,19 +552,20 @@ def write_why3_config_file_with_coq(fname):
     installdir = spark_install_path()
     driverdir = os.path.join(installdir, 'share', 'why3', 'drivers')
     driverfile = os.path.join(driverdir, 'coq.drv')
+    commandline = "coqtop -batch -R %%o/why3_libs/coq_tactic Why3" +\
+                  " -R %%o/why3_libs/coq Why3 -l %%f"
     conf_content = """[main]
 magic = 14
 
 [prover]
-command = "coqtop -batch -R %%o/why3_libs/coq_tactic Why3\
--R %%o/why3_libs/coq Why3 -l %%f"
+command = "%s"
 driver = "%s"
 in_place = false
 interactive = true
 name = "Coq"
 shortcut = "coq"
 version = "8.4pl6"
-""" % driverfile
+""" % (commandline, driverfile)
     with open(fname, "w") as file:
         file.write(conf_content)
 
