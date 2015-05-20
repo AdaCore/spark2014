@@ -24,15 +24,18 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with AA_Util;              use AA_Util;
+with AA_Util;               use AA_Util;
 with Ada.Containers.Vectors;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Common_Containers;
-with Errout;               use Errout;
-with GNAT.Regpat;          use GNAT.Regpat;
-with Namet;                use Namet;
-with Nlists;               use Nlists;
-with Sinfo;                use Sinfo;
-with Sinput;               use Sinput;
+with Errout;                use Errout;
+with Gnat2Why_Args;
+with GNAT.Regpat;           use GNAT.Regpat;
+with Namet;                 use Namet;
+with Nlists;                use Nlists;
+with Sem_Util;              use Sem_Util;
+with Sinfo;                 use Sinfo;
+with Sinput;                use Sinput;
 
 package body Gnat2Why.Annotate is
 
@@ -43,7 +46,7 @@ package body Gnat2Why.Annotate is
 
    Pragma_Set : Common_Containers.Node_Sets.Set :=
      Common_Containers.Node_Sets.Empty_Set;
-   --  After marking, this set contains all pragma Annotate Nodes. They are
+   --  After marking, this set contains all pragma Annotate nodes. They are
    --  removed from the set one by one when messages which are covered by these
    --  pragmas are encountered. At the end, only pragmas which don't cover a
    --  message will be in this set.
@@ -299,11 +302,34 @@ package body Gnat2Why.Annotate is
       Ok              : Boolean;
       Pattern, Reason : String_Id;
       Kind            : Annotate_Kind;
+
    begin
       Syntax_Check_Pragma_Annotate_Gnatprove (N, Ok, Kind, Pattern, Reason);
+
       if not Ok then
          return;
       end if;
+
+      --  If the analysis is requested for a specific subprogram (possibly the
+      --  implicit elaboration subprogram for a package) or line, check whether
+      --  the annotation is on this subprogram spec or body. If not, ignore the
+      --  annotation.
+
+      if Gnat2Why_Args.Limit_Subp /= Null_Unbounded_String then
+         declare
+            Decl : constant Node_Id := Enclosing_Declaration (Preceding);
+            Ent  : constant Entity_Id := Unique_Defining_Entity (Decl);
+         begin
+            if not (Is_Requested_Subprogram (Ent)
+                      or else
+                    Is_Requested_Subprogram
+                      (Unique_Entity (Enclosing_Package_Or_Subprogram (Ent))))
+            then
+               return;
+            end if;
+         end;
+      end if;
+
       if Consider_Next then
          Insert_With_Next (N, Kind, Pattern, Reason, Preceding);
       else

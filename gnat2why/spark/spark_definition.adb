@@ -3313,7 +3313,6 @@ package body SPARK_Definition is
    --  Start of Mark_Entity
 
    begin
-
       --  For entities in external axioms, mark the package entity.
 
       if Entity_In_Ext_Axioms (E) then
@@ -4292,6 +4291,7 @@ package body SPARK_Definition is
                  not Present (Cur)
                  or else not Is_Pragma_Annotate_GNATprove (Cur);
             end loop;
+
          else
             Mark (Cur);
 
