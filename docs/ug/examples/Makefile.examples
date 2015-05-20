@@ -26,7 +26,8 @@ $(RESULTS)/%.prove: force
 	done && \
 	res=`gnatprove -f -q -j0 -P search.gpr --warnings=on --timeout=60`; \
         rc=$$?; \
-        echo "$$res" | python $(PWD)/../sort_messages.py >$@; \
+        echo -n "$$res" | python $(PWD)/../sort_messages.py >$@; \
+	test -s $@ || echo "no output" > $@; \
         [ $$rc -eq 0 ] || $$c
 
 clean:
