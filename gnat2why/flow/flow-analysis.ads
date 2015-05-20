@@ -151,8 +151,8 @@ package Flow.Analysis is
 
    procedure Check_Constant_After_Elaboration
      (FA : in out Flow_Analysis_Graphs)
-     with Pre => FA.Kind in E_Subprogram_Body;
-   --  Check that the subprogram does not modify variables that have
+     with Pre => FA.Kind = E_Subprogram_Body;
+   --  Checks that the subprogram does not modify variables that have
    --  Constant_After_Elaboration set.
    --
    --  Complexity is O(N)
