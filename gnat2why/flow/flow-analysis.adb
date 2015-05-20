@@ -3820,7 +3820,7 @@ package body Flow.Analysis is
    begin
       if In_Body_Part then
          --  If the Analyzed_Entity is declared in the body part of a
-         --  package then any .
+         --  package then we have nothing to do here.
          return;
       end if;
 
