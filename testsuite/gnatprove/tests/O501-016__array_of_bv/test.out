@@ -84,12 +84,12 @@ x86.adb:501:56: info: range check proved
 x86.adb:502:56: info: range check proved
 x86.adb:503:56: info: range check proved
 x86.adb:504:56: info: range check proved
-x86.adb:538:10: medium: loop variant might fail
+x86.adb:538:10: info: loop variant proved
 x86.adb:543:24: info: initialization of "Val1" proved
 x86.adb:543:31: info: initialization of "Val2" proved
 x86.adb:544:35: info: initialization of "Val1" proved
 x86.adb:544:54: info: initialization of "Val2" proved
-x86.adb:562:10: medium: loop variant might fail
+x86.adb:562:10: info: loop variant proved
 x86.adb:567:24: info: initialization of "Val1" proved
 x86.adb:567:31: info: initialization of "Val2" proved
 x86.adb:568:35: info: initialization of "Val1" proved

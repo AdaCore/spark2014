@@ -1312,7 +1312,8 @@ package body Gnat2Why.Expr.Loops is
            (if Domain = EW_Prog then Body_Params else Assert_Params);
       begin
          return Transform_Expr (Expr          => Expr,
-                                Expected_Type => EW_Int_Type,
+                                Expected_Type =>
+                                  Base_Why_Type_No_Bool (Expr),
                                 Domain        => Domain,
                                 Params        => Params);
       end Variant_Expr;
@@ -1326,16 +1327,22 @@ package body Gnat2Why.Expr.Loops is
          Name    : W_Identifier_Id) return W_Pred_Id
       is
          Expr : constant Node_Id := Expression (Variant);
+         WTyp : constant W_Type_Id := Base_Why_Type_No_Bool (Expr);
          Cmp  : constant W_Identifier_Id :=
-           (if Chars (Variant) = Name_Decreases then Int_Infix_Lt
-            else Int_Infix_Gt);
+           (if Chars (Variant) = Name_Decreases
+            then (if Why_Type_Is_BitVector (WTyp)
+              then MF_BVs (WTyp).Ult
+              else Int_Infix_Lt)
+            else (if Why_Type_Is_BitVector (WTyp)
+              then MF_BVs (WTyp).Ugt
+              else Int_Infix_Gt));
       begin
          return
            +New_Comparison
            (Symbol => Cmp,
             Left   => Variant_Expr (Expr, EW_Term),
             Right  =>  New_Deref (Right => +Name,
-                                  Typ   => EW_Int_Type),
+                                  Typ   => WTyp),
             Domain => EW_Pred);
       end Variant_Part_Does_Progress;
 
@@ -1355,7 +1362,7 @@ package body Gnat2Why.Expr.Loops is
             Left   => Variant_Expr (Expr, EW_Term),
             Right  =>
               New_Deref (Right => +Name,
-                         Typ   => EW_Int_Type),
+                         Typ   => Base_Why_Type_No_Bool (Expr)),
             Domain => EW_Pred);
       end Variant_Part_Stays_Constant;
 
@@ -1380,8 +1387,9 @@ package body Gnat2Why.Expr.Loops is
       Variant := Last (Pragma_Argument_Associations (Stmt));
       while Present (Variant) loop
          declare
-            Name : constant W_Identifier_Id := New_Temp_Identifier;
             Expr : constant Node_Id := Expression (Variant);
+            Name : constant W_Identifier_Id :=
+              New_Temp_Identifier (Typ => Base_Why_Type_No_Bool (Expr));
 
             Pred_Progress : constant W_Pred_Id :=
               Variant_Part_Does_Progress (Variant, Name);
