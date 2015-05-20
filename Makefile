@@ -103,7 +103,8 @@ install:
 doc: $(DOC)
 
 doc-nightly: $(DOC)
-	cd docs/ug; $(MAKE) generate-nightly
+	# cd docs/ug; $(MAKE) generate-nightly
+	echo "disabled for today, see O520-003"
 
 $(DOC):
 	$(MAKE) -C docs/$@ latexpdf LATEXOPTS="-interaction=nonstopmode"
