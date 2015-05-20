@@ -314,11 +314,9 @@ package body Gnat2Why.Driver is
 
       --  this Boolean indicates whether proof have been attempted
       --  anywhere in the unit
-
       Proof_Done : Boolean := False;
 
    begin
-
       if Is_Generic_Unit (Unique_Defining_Entity (N))
         and then Analysis_Requested (Unique_Defining_Entity (N))
       then
@@ -338,8 +336,8 @@ package body Gnat2Why.Driver is
                             Msg => "!Generic unit is not analyzed");
             end if;
          end if;
-         return;
 
+         return;
       end if;
 
       --  All temporaries created for this unit should be different from
@@ -383,7 +381,6 @@ package body Gnat2Why.Driver is
          end if;
 
       else
-
          --  Finalize has to be called before we call Compilation_Errors.
          Finalize (Last_Call => False);
 
@@ -417,7 +414,6 @@ package body Gnat2Why.Driver is
             Run_Gnatwhy3;
             Generate_Useless_Pragma_Annotate_Warnings;
          end if;
-
       end if;
 
       Create_JSON_File (Proof_Done);
@@ -462,6 +458,7 @@ package body Gnat2Why.Driver is
    function Is_Back_End_Switch (Switch : String) return Boolean is
       First : constant Positive := Switch'First + 1;
       Last  : Natural           := Switch'Last;
+
    begin
       if Last >= First
         and then Switch (Last) = ASCII.NUL
@@ -539,10 +536,12 @@ package body Gnat2Why.Driver is
       Fn      : constant String :=
         Compose (Current_Directory, Why_File_Name.all);
       Old_Dir : constant String := Current_Directory;
+
    begin
       if Has_Registered_VCs then
          Set_Directory (To_String (Gnat2Why_Args.Why3_Dir));
          Gnat2Why_Args.Why3_Args.Append (Fn);
+
          if Gnat2Why_Args.Debug_Mode then
             Ada.Text_IO.Put ("gnatwhy3 ");
             for Elt of Gnat2Why_Args.Why3_Args loop
@@ -551,6 +550,7 @@ package body Gnat2Why.Driver is
             end loop;
             Ada.Text_IO.New_Line;
          end if;
+
          Parse_Why3_Results
            (GNAT.Expect.Get_Command_Output
               ("gnatwhy3",
@@ -827,6 +827,7 @@ package body Gnat2Why.Driver is
    procedure Translate_Standard_Package is
       Decl : Node_Id :=
         First (Visible_Declarations (Specification (Standard_Package_Node)));
+
    begin
       while Present (Decl) loop
          case Nkind (Decl) is
