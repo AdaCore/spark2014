@@ -1,1 +1,1 @@
-no output
+swap_bad_post.adb:3:11: medium: postcondition might fail

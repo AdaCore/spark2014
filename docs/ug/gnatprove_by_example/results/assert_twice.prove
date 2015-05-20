@@ -1,1 +1,2 @@
-no output
+assert_twice.adb:5:19: medium: assertion might fail, requires X > 0
+assert_twice.adb:6:04: info: assertion proved

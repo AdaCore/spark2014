@@ -1,6 +1,29 @@
+update_list_zero.adb:5:11: info: postcondition proved
+update_list_zero.adb:5:12: info: precondition proved
+update_list_zero.adb:5:31: info: precondition proved
+update_list_zero.adb:5:53: medium: precondition might fail
+update_list_zero.adb:5:98: medium: precondition might fail
+update_list_zero.adb:7:19: info: precondition proved
+update_list_zero.adb:9:10: info: precondition proved
 update_list_zero.adb:9:26: info: initialization of "Cu" proved
+update_list_zero.adb:10:07: info: loop invariant initialization proved
+update_list_zero.adb:10:07: medium: loop invariant might fail after first iteration
+update_list_zero.adb:10:30: info: precondition proved
+update_list_zero.adb:10:45: info: precondition proved
 update_list_zero.adb:10:67: info: initialization of "Cu" proved
+update_list_zero.adb:11:32: info: precondition proved
+update_list_zero.adb:12:32: info: precondition proved
+update_list_zero.adb:12:55: info: precondition proved
+update_list_zero.adb:12:108: info: precondition proved
+update_list_zero.adb:13:07: info: loop invariant initialization proved
+update_list_zero.adb:13:30: info: precondition proved
+update_list_zero.adb:13:30: medium: loop invariant might fail after first iteration, requires Strict_Equal (Current_To_Last (L'Loop_Entry, Cu), Current_To_Last (L, Cu)
+update_list_zero.adb:13:44: medium: precondition might fail
+update_list_zero.adb:13:80: info: precondition proved
 update_list_zero.adb:13:100: info: initialization of "Cu" proved
+update_list_zero.adb:14:10: info: precondition proved
 update_list_zero.adb:14:22: info: initialization of "Cu" proved
+update_list_zero.adb:15:10: info: precondition proved
 update_list_zero.adb:15:30: info: initialization of "Cu" proved
+update_list_zero.adb:17:07: info: precondition proved
 update_list_zero.adb:17:16: info: initialization of "Cu" proved
