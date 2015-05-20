@@ -3757,7 +3757,6 @@ package body Flow.Analysis is
    procedure Check_Constant_After_Elaboration
      (FA : in out Flow_Analysis_Graphs)
    is
-      E : Entity_Id;
 
       function In_Body_Part return Boolean;
       --  @return True iff the Analyzed_Entity is defined in a
@@ -3818,61 +3817,70 @@ package body Flow.Analysis is
       end Is_Constant_After_Elaboration;
 
    begin
-      if In_Body_Part then
-         --  If the Analyzed_Entity is declared in the body part of a
-         --  package then we have nothing to do here.
+      if Ekind (FA.Analyzed_Entity) /= E_Procedure
+        or else In_Body_Part
+      then
+         --  If we are:
+         --     * either not dealing with a procedure
+         --     * or the Analyzed_Entity is declared in the body part
+         --       of a package
+         --  then we do not need to perform this check.
          return;
       end if;
 
-      --  Go through all entities lying in the public and private part
-      --  and check that procedures do not modify variables that have
+      --  Check that the procedure does not modify variables that have
       --  Constant_After_Elaboration set.
-      E := First_Entity (FA.Spec_Node);
-      while Present (E) loop
-         if Ekind (E) = E_Procedure then
-            declare
-               Proof_Ins : Flow_Id_Sets.Set;
-               Reads     : Flow_Id_Sets.Set;
-               Writes    : Flow_Id_Sets.Set;
+      declare
+         Proof_Ins : Flow_Id_Sets.Set;
+         Reads     : Flow_Id_Sets.Set;
+         Writes    : Flow_Id_Sets.Set;
 
-               G_Out     : Entity_Id;
-               CAE       : Node_Id;
-            begin
-               Get_Globals (Subprogram => E,
-                            Scope      => FA.B_Scope,
-                            Classwide  => False,
-                            Proof_Ins  => Proof_Ins,
-                            Reads      => Reads,
-                            Writes     => Writes);
+         G_Out     : Entity_Id;
+         CAE       : Node_Id;
+      begin
+         Get_Globals (Subprogram => FA.Analyzed_Entity,
+                      Scope      => FA.B_Scope,
+                      Classwide  => False,
+                      Proof_Ins  => Proof_Ins,
+                      Reads      => Reads,
+                      Writes     => Writes);
 
-               for W of Writes loop
-                  if W.Kind in Direct_Mapping | Record_Field then
-                     G_Out := Get_Direct_Mapping_Id (W);
-                     CAE   := Empty;
+         for W of Writes loop
+            if W.Kind in Direct_Mapping | Record_Field then
+               G_Out := Get_Direct_Mapping_Id (W);
+               CAE   := Empty;
 
-                     if Ekind (G_Out) in E_Variable then
-                        CAE := Get_Pragma (G_Out,
-                                           Pragma_Constant_After_Elaboration);
-                     end if;
+               if Ekind (G_Out) in E_Variable then
+                  CAE := Get_Pragma (G_Out,
+                                     Pragma_Constant_After_Elaboration);
+               end if;
 
-                     if Is_Constant_After_Elaboration (CAE) then
-                        Error_Msg_Flow
-                          (FA   => FA,
-                           Msg  => "& must not be an output of publicly"
-                                     & " visible procedure &",
-                           Kind => High_Check_Kind,
-                           N    => E,
-                           F1   => W,
-                           F2   => Direct_Mapping_Id (E),
-                           Tag  => Not_Constant_After_Elaboration);
-                     end if;
+               if Is_Constant_After_Elaboration (CAE) then
+                  if Present (FA.S_Scope) then
+                     Error_Msg_Flow
+                      (FA   => FA,
+                       Msg  => "& must not be an output of publicly"
+                                  & " visible procedure &",
+                       Kind => High_Check_Kind,
+                       N    => FA.Analyzed_Entity,
+                       F1   => W,
+                       F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
+                       Tag  => Not_Constant_After_Elaboration);
+                  else
+                     Error_Msg_Flow
+                       (FA   => FA,
+                        Msg  => "constant after elaboration & must not be an "
+                                   & "output of procedure &",
+                        Kind => High_Check_Kind,
+                        N    => FA.Analyzed_Entity,
+                        F1   => W,
+                        F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
+                        Tag  => Not_Constant_After_Elaboration);
                   end if;
-               end loop;
-            end;
-         end if;
-
-         Next_Entity (E);
-      end loop;
+               end if;
+            end if;
+         end loop;
+      end;
    end Check_Constant_After_Elaboration;
 
 end Flow.Analysis;

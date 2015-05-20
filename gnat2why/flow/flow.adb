@@ -1344,6 +1344,7 @@ package body Flow is
                   Analysis.Check_Prefixes_Of_Attribute_Old (FA);
                   Analysis.Find_Exports_Derived_From_Proof_Ins (FA);
                   Analysis.Analyse_Main (FA);
+                  Analysis.Check_Constant_After_Elaboration (FA);
 
                   --  If no errors or warnings were found during flow
                   --  analysis of the subprogram then emit the
@@ -1368,7 +1369,6 @@ package body Flow is
                   Analysis.Find_Non_Elaborated_State_Abstractions (FA);
                   Analysis.Find_Use_Of_Uninitialized_Variables (FA);
                   Analysis.Check_Initializes_Contract (FA);
-                  Analysis.Check_Constant_After_Elaboration (FA);
             end case;
          end if;
 
