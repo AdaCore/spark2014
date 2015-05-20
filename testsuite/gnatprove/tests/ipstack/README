@@ -26,7 +26,7 @@ Supported protocols:
   * ARP
   * UDP
   * TCP
-  * UCMP
+  * ICMP
 
 Environment:
   * No requirement for an underlying OS
