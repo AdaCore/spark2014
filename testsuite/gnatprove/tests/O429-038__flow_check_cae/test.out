@@ -1,4 +1,5 @@
-cae.adb:22:04: warning: analyzing unreferenced procedure "P4"
+cae.adb:8:17: info: initialization of "Var" proved
+cae.adb:33:04: warning: analyzing unreferenced procedure "P4"
 cae.ads:7:14: high: "Var" must not be an output of publicly visible procedure "P"
 cae.ads:7:14: info: initialization of "Var" proved
 cae.ads:9:14: high: "Priv_Var" constituent of "State" must not be an output of publicly visible procedure "P2"

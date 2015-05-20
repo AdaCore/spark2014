@@ -3759,10 +3759,36 @@ package body Flow.Analysis is
    is
       E : Entity_Id;
 
+      function In_Body_Part return Boolean;
+      --  @return True iff the Analyzed_Entity is defined in a
+      --     package's body.
+
       function Is_Constant_After_Elaboration (N : Node_Id) return Boolean;
       --  @param N is the node corresponding to the
       --     Pragma_Constant_After_Elaboration. N might be Empty.
       --  @return True iff Constant_After_Elaboration is True
+
+      ---------------------------------
+      -- In_Body_Part return Boolean --
+      ---------------------------------
+
+      function In_Body_Part return Boolean is
+         Scope : Flow_Scope;
+      begin
+         --  We start from the spec scope of the analyzed entity and
+         --  work our way up until we find either the null flow scope
+         --  or a body scope.
+         Scope := FA.S_Scope;
+         while Present (Scope) loop
+            if Scope.Section = Body_Part then
+               return True;
+            else
+               Scope := Get_Enclosing_Flow_Scope (Scope);
+            end if;
+         end loop;
+
+         return False;
+      end In_Body_Part;
 
       -----------------------------------
       -- Is_Constant_After_Elaboration --
@@ -3792,6 +3818,12 @@ package body Flow.Analysis is
       end Is_Constant_After_Elaboration;
 
    begin
+      if In_Body_Part then
+         --  If the Analyzed_Entity is declared in the body part of a
+         --  package then any .
+         return;
+      end if;
+
       --  Go through all entities lying in the public and private part
       --  and check that procedures do not modify variables that have
       --  Constant_After_Elaboration set.

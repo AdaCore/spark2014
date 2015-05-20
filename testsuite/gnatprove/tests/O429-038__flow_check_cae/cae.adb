@@ -4,6 +4,17 @@ is
    Body_Var : Integer := 3
      with Constant_After_Elaboration => False;
 
+   package Nested is
+      procedure OK;  --  OK
+   end Nested;
+
+   package body Nested is
+      procedure OK is
+      begin
+         Var := 10;
+      end OK;
+   end Nested;
+
    procedure P is
    begin
       Var := 10;
