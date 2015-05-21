@@ -2201,6 +2201,13 @@ package body SPARK_Definition is
       Context_N : Node_Id;
 
    begin
+      --  Avoid rewriting generic units which are only preanalyzed, which may
+      --  cause rewriting to fail, as this is not needed.
+
+      if Is_Generic_Unit (Unique_Defining_Entity (N)) then
+         return;
+      end if;
+
       Initialize;
 
       --  Separately mark declarations from Standard as in SPARK or not

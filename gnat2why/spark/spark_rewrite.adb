@@ -248,6 +248,9 @@ package body SPARK_Rewrite is
    --   Start of Rewrite_Compilation_Unit
 
    begin
+      --  Avoid rewriting generic units which are only preanalyzed, which may
+      --  cause rewriting to fail, as this is not needed.
+
       if Is_Generic_Unit (Unique_Defining_Entity (N)) then
          null;
 
