@@ -1238,7 +1238,7 @@ calls.
    to *potentially introduce aliasing*.
    [This definition has the effect of exempting most synchronized objects
    from the anti-aliasing rules given below; aliasing of most synchronized
-   objects via parameter passing is allowed.] 
+   objects via parameter passing is allowed.]
 
 .. centered:: **Verification Rules**
 
@@ -1292,32 +1292,20 @@ No extensions or restrictions.
 Nonreturning Procedures
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-.. centered:: **Legality Rules**
-
-.. _tu-sf-nonreturning_procedures-01:
-
-1. For a call to a nonreturning procedure to be in |SPARK|, it must be either
-
-   * immediately enclosed by an if statement which encloses no other
-     statement; or
-
-   * the last statement of a subprogram.
-
-.. _etu-nonreturning_procedures-lr:
-
 .. centered:: **Verification Rules**
 
-.. _tu-nonreturning_procedures-02:
+.. _tu-nonreturning_procedures-01:
 
-2. A call to a nonreturning procedure introduces an obligation to prove that the statement
-   will not be executed, much like the verification condition associated with
+1. A call to a nonreturning procedure introduces an obligation to prove that
+   the statement will not be executed, much like the verification condition
+   associated with
 
        ``pragma Assert (False);``
 
-   [In other words, the verification conditions introduced for a call to a nonreturning procedure
-   are the same as those introduced for a runtime check which fails
-   unconditionally. See also section :ref:`exceptions`, where a similar restriction is
-   imposed on ``raise_statements``.]
+   [In other words, the verification conditions introduced for a call to a
+   nonreturning procedure are the same as those introduced for a runtime check
+   which fails unconditionally. See also section :ref:`exceptions`, where a
+   similar verification rule is imposed on ``raise_statements``.]
 
 .. _etu-nonreturning_procedures-vr:
 
