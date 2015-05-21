@@ -11,7 +11,6 @@ package body P is
      end loop;
   end Help_Doing_Nothing;
 
-  Dummy : Integer;
   procedure Do_Nothing is
   begin
      Dummy := 0;

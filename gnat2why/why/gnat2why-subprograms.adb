@@ -2501,31 +2501,11 @@ package body Gnat2Why.Subprograms is
 
       Effects := Compute_Effects (E);
 
-      --  A procedure can be marked No_Return either to denote an error
-      --  reporting subprogram, or because it is the subprogram of a main loop.
+      Pre := Get_Static_Call_Contract (Params, E, Name_Precondition);
 
-      --  For a subprogram reporting an error, the precondition at call site
-      --  should be "False", so that calling it is an error.
-
-      if No_Return (E)
-        and then Get_Execution_Kind (E) = Abnormal_Termination
-      then
-         Pre := False_Pred;
-
-         if Is_Dispatching_Operation (E) then
-            Dispatch_Pre := False_Pred;
-         end if;
-
-      --  In other cases (including the subprogram of a main loop), the
-      --  precondition is extracted from the subprogram contract.
-
-      else
-         Pre := Get_Static_Call_Contract (Params, E, Name_Precondition);
-
-         if Is_Dispatching_Operation (E) then
-            Dispatch_Pre :=
-              Get_Dispatching_Contract (Params, E, Name_Precondition);
-         end if;
+      if Is_Dispatching_Operation (E) then
+         Dispatch_Pre :=
+           Get_Dispatching_Contract (Params, E, Name_Precondition);
       end if;
 
       --  For a subprogram marked with No_Return, the postcondition at call
@@ -2659,6 +2639,7 @@ package body Gnat2Why.Subprograms is
                              Pre      => Dispatch_Pre,
                              Post     => Dispatch_Post))));
             end if;
+
             if Has_Contracts (E, Name_Refined_Post) then
                Emit
                  (File.Cur_Theory,
@@ -2679,8 +2660,8 @@ package body Gnat2Why.Subprograms is
          declare
             Dynamic_Prop_Effects : constant W_Pred_Id :=
               Compute_Dynamic_Property_For_Effects (E, Params);
-         begin
 
+         begin
             Emit
               (File.Cur_Theory,
                New_Function_Decl
@@ -2715,6 +2696,31 @@ package body Gnat2Why.Subprograms is
                                 Right  => +Dynamic_Prop_Effects,
                                 Domain => EW_Pred)))));
             end if;
+
+            --  For error-signaling procedures, define a variant of the
+            --  program function with a precondition of False inside the
+            --  namespace No_Return. This variant is used when calling the
+            --  error-signaling procedure outside another error-signaling
+            --  procedure. This ensures that a check is issued for each
+            --  such call, to detect when they are reachable.
+
+            if Is_Error_Signaling_Procedure (E) then
+               Emit
+                 (File.Cur_Theory,
+                  New_Namespace_Declaration
+                    (Name    => NID (To_String (WNE_No_Return_Module)),
+                     Declarations =>
+                       (1 => New_Function_Decl
+                            (Domain      => EW_Prog,
+                             Name        => Prog_Id,
+                             Binders     => Func_Why_Binders,
+                             Labels      => Name_Id_Sets.Empty_Set,
+                             Return_Type => EW_Unit_Type,
+                             Effects     => Effects,
+                             Pre         => False_Pred,
+                             Post        => False_Pred))));
+            end if;
+
             if Has_Contracts (E, Name_Refined_Post) then
                Emit
                  (File.Cur_Theory,

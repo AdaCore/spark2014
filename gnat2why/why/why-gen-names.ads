@@ -270,9 +270,13 @@ package Why.Gen.Names is
       --  dispatching version of a primitive operation of a tagged type.
       WNE_Dispatch_Module,  --  Dispatch
 
+      --  Name of module containing the functions which correspond to the
+      --  no-return version of an error-signaling procedure.
+      WNE_No_Return_Module,  --  No_Return
+
       --  Name of module containing the function which corresponds to the
       --  refined version (refined_post) of a subprogram.
-      WNE_Refine_Module,  --  Dispatch
+      WNE_Refine_Module,  --  Refine
 
       WNE_Of_Array,
       WNE_Of_Base,

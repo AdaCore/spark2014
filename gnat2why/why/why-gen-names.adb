@@ -638,6 +638,7 @@ package body Why.Gen.Names is
          when WNE_Ancestor_Prefix        => return "extract_anc__";
          when WNE_Hide_Extension         => return "hide_ext__";
          when WNE_Dispatch_Module        => return "Dispatch";
+         when WNE_No_Return_Module       => return "No_Return";
          when WNE_Refine_Module          => return "Refine";
 
          --  these are used both by E_Symb function and by To_String

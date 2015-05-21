@@ -1,0 +1,5 @@
+p.adb:5:13: warning: subprogram "Help_Doing_Nothing" has no effect
+p.adb:23:06: medium: call to nonreturning subprogram might be executed
+p.ads:7:13: warning: subprogram "Do_Nothing" has no effect
+p.ads:9:13: high: no paths in subprogram will return normally
+p.ads:9:13: warning: subprogram "Do_Something" has no effect

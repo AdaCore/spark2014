@@ -2,8 +2,10 @@ pragma SPARK_Mode;
 
 package P is
 
-  procedure Do_Nothing with No_Return;
+  Dummy : Integer;
 
-  procedure Do_Something;
+  procedure Do_Nothing with No_Return, Global => null;
+
+  procedure Do_Something with Global => null;
 
 end P;

@@ -29,7 +29,6 @@ with Ada.Containers.Hashed_Sets;
 with Ada.Text_IO;
 
 with Atree;                use Atree;
-with Einfo;                use Einfo;
 with Errout;               use Errout;
 with Osint;                use Osint;
 with Sinfo;                use Sinfo;
@@ -249,10 +248,7 @@ package body Gnat2Why.Error_Messages is
             return "default initial condition might fail";
          when VC_Precondition              =>
             if Nkind (Node) in N_Function_Call | N_Procedure_Call_Statement
-              and then No_Return (Entity (Name (Node)))
-              and then
-                Get_Execution_Kind (Entity (Name (Node))) =
-                Abnormal_Termination
+              and then Is_Error_Signaling_Procedure (Entity (Name (Node)))
             then
                return
                  "call to nonreturning subprogram might be executed";
@@ -366,7 +362,7 @@ package body Gnat2Why.Error_Messages is
            (if Has_Field (V, "editor_cmd") then Get (Get (V, "editor_cmd"))
             else "");
       begin
-         if  Proved then
+         if Proved then
             Mark_VC_As_Proved_For_Entity (Id, Kind, VC.Entity);
          end if;
          Errout.Error_Msg_String (1 .. Extra_Text'Length) := Extra_Text;
@@ -445,10 +441,7 @@ package body Gnat2Why.Error_Messages is
             return "default initial condition proved";
          when VC_Precondition              =>
             if Nkind (Node) in N_Function_Call | N_Procedure_Call_Statement
-              and then No_Return (Entity (Name (Node)))
-              and then
-                Get_Execution_Kind (Entity (Name (Node))) =
-                Abnormal_Termination
+              and then Is_Error_Signaling_Procedure (Entity (Name (Node)))
             then
                return "call to nonreturning procedure never executed";
             else

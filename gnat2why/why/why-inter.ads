@@ -119,7 +119,29 @@ package Why.Inter is
       return W_Name_Id;
    --  transform a loop entity into a name for a Why exception.
 
-   type Selection_Kind is (Standard, Dispatch, Refine);
+   --  A given subprogram declaration in SPARK may be translated into multiple
+   --  variants in Why3, with different contracts. This type defines the
+   --  variants that may be used. For each applicable variant, a namespace is
+   --  defined in the module for the function, with the specialized definitions
+   --  inside the namespace. This allows using the same name for the different
+   --  variants.
+   type Selection_Kind is
+     (Standard,   --  Standard variant of the program function (defined outside
+                  --  any namespace, directly in the module for the program
+                  --  function).
+
+      Dispatch,   --  Variant of the program function used when the call is
+                  --  dispatching. It has the appropriate contract.
+
+      No_Return,  --  Variant of the program function used when calling
+                  --  an error-signaling procedure outside another
+                  --  error-signaling procedure. It has a precondition of
+                  --  False. This ensures that a check is issued for each
+                  --  such call, to detect when they are reachable.
+
+      Refine);    --  Variant of the program function used when the call
+                  --  has visibility over the refined postcondition of the
+                  --  subprogram. It has the appropriate refined contract.
 
    function To_Why_Id
      (E        : Entity_Id;

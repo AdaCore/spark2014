@@ -582,8 +582,15 @@ package SPARK_Util is
    function Has_User_Supplied_Globals (E : Entity_Id) return Boolean
      with Pre => Is_Subprogram (E);
    --  @param E subprogram
-   --  @return True iff Subprogram E has a data dependencies (Global) or flow
-   --  dependencies (Depends) contract
+   --  @return True iff E has a data dependencies (Global) or flow
+   --     dependencies (Depends) contract
+
+   function Is_Error_Signaling_Procedure (E : Entity_Id) return Boolean is
+     (No_Return (E)
+       and then Get_Execution_Kind (E) = Abnormal_Termination);
+   --  @param E subprogram
+   --  @return True iff E is marked No_Return and is considered to always
+   --     terminate abnormally.
 
    function Is_Local_Subprogram_Always_Inlined (E : Entity_Id) return Boolean;
    --  @param E subprogram

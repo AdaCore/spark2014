@@ -1152,9 +1152,10 @@ package body Why.Inter is
                  E_Module (E));
             Namespace : constant Name_Id :=
               (case Selector is
-               when Dispatch => NID (To_String (WNE_Dispatch_Module)),
-               when Refine => NID (To_String (WNE_Refine_Module)),
-               when Standard => No_Name);
+                 when Dispatch  => NID (To_String (WNE_Dispatch_Module)),
+                 when No_Return => NID (To_String (WNE_No_Return_Module)),
+                 when Refine    => NID (To_String (WNE_Refine_Module)),
+                 when Standard  => No_Name);
          begin
             return
               New_Identifier

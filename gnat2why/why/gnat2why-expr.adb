@@ -155,7 +155,7 @@ package body Gnat2Why.Expr is
 
    function Why_Subp_Has_Precondition
      (E        : Entity_Id;
-      Dispatch : Boolean := False) return Boolean;
+      Selector : Selection_Kind := Why.Inter.Standard) return Boolean;
    --  Return true whenever the Why declaration that corresponds to the given
    --  subprogram has a precondition.
 
@@ -1332,6 +1332,7 @@ package body Gnat2Why.Expr is
       Subp    : constant Entity_Id := Entity (Name (Call));
       Binders : constant Item_Array :=
         Compute_Subprogram_Parameters (Subp, Domain);
+
    begin
       Nb_Of_Refs := 0;
       Nb_Of_Lets := 0;
@@ -1372,7 +1373,6 @@ package body Gnat2Why.Expr is
                                           Get_Typ
                                             (Binders (Bind_Cnt).Main.B_Name))
                   then
-
                      --  We should never use the Formal for the Ada_Node,
                      --  because there is no real dependency here; We only
                      --  use the Formal to get a sensible name.
@@ -1384,6 +1384,7 @@ package body Gnat2Why.Expr is
                                           Get_Typ
                                             (Binders (Bind_Cnt).Main.B_Name));
                      Nb_Of_Refs := Nb_Of_Refs + 1;
+
                   else
                      case Ekind (Formal) is
                      when E_In_Out_Parameter | E_Out_Parameter =>
@@ -1542,8 +1543,8 @@ package body Gnat2Why.Expr is
                               Arg_Cnt := Arg_Cnt + 1;
                            end if;
                         end;
-                     else
 
+                     else
                         --  We use a temporary variable to avoid recomputing
                         --  the actual several times.
 
@@ -3405,6 +3406,7 @@ package body Gnat2Why.Expr is
                      Ref_Index := Ref_Index + 1;
                   end;
                end if;
+
             when UCArray =>
                if Get_Type_Kind (Type_Of_Node (Actual)) = EW_Abstract
                  or else not (Nkind (Actual) in N_Identifier |
@@ -3520,6 +3522,7 @@ package body Gnat2Why.Expr is
                      end if;
                   end;
                end if;
+
             when DRecord =>
                if not (Nkind (Actual) in N_Identifier | N_Expanded_Name
                        and then Eq_Base (EW_Abstract (Binders (Bind_Cnt).Typ),
@@ -3579,7 +3582,6 @@ package body Gnat2Why.Expr is
                      --  modified.
 
                   begin
-
                      --  We initialize the remaining elements of the first
                      --  phase.
 
@@ -9324,6 +9326,7 @@ package body Gnat2Why.Expr is
             else
                T := Transform_Function_Call (Expr, Domain, Local_Params);
             end if;
+
          when N_Indexed_Component | N_Selected_Component =>
             T := One_Level_Access (Expr,
                                    Transform_Expr
@@ -9582,12 +9585,35 @@ package body Gnat2Why.Expr is
       Domain   : EW_Domain;
       Params   : Transformation_Params) return W_Expr_Id
    is
+      Nb_Of_Refs : Natural;
+      Nb_Of_Lets : Natural;
+      T          : W_Expr_Id;
       Subp       : constant Entity_Id := Entity (Name (Expr));
+
+      Args       : constant W_Expr_Array :=
+        Compute_Call_Args (Expr, Domain, Nb_Of_Refs, Nb_Of_Lets, Params);
+
       Selector   : constant Selection_Kind :=
+         --  When the call is dispatching, use the Dispatch variant of
+         --  the program function, which has the appropriate contract.
+
         (if Present (Controlling_Argument (Expr)) then Dispatch
-         elsif Has_Contracts (Subp, Name_Refined_Post) and then
-               Has_Visibility_On_Refined (Expr, Subp) then Refine
+
+         --  When the call has visibility over the refined postcondition of the
+         --  subprogram, use the Refine variant of the program function, which
+         --  has the appropriate refined contract.
+
+         elsif Has_Contracts (Subp, Name_Refined_Post)
+           and then Has_Visibility_On_Refined (Expr, Subp)
+         then
+            Refine
+
+         --  Otherwise use the Standard variant of the program function
+         --  (defined outside any namespace, directly in the module for
+         --  the program function).
+
          else Why.Inter.Standard);
+
       Why_Name   : constant W_Identifier_Id :=
         W_Identifier_Id
           (Transform_Identifier (Params   => Params,
@@ -9595,16 +9621,9 @@ package body Gnat2Why.Expr is
                                  Ent      => Subp,
                                  Domain   => Domain,
                                  Selector => Selector));
-      Nb_Of_Refs : Natural;
-      Nb_Of_Lets : Natural;
-      Args       : constant W_Expr_Array :=
-        Compute_Call_Args (Expr, Domain, Nb_Of_Refs, Nb_Of_Lets, Params);
-      T          : W_Expr_Id;
 
    begin
-
-      if Why_Subp_Has_Precondition (Subp, Dispatch => (Selector = Dispatch))
-      then
+      if Why_Subp_Has_Precondition (Subp, Selector) then
          T := +New_VC_Call
            (Ada_Node => Expr,
             Name     => Why_Name,
@@ -11596,18 +11615,48 @@ package body Gnat2Why.Expr is
             declare
                Nb_Of_Refs : Natural;
                Nb_Of_Lets : Natural;
+               Call       : W_Expr_Id;
+               Subp       : constant Entity_Id := Entity (Name (Stmt_Or_Decl));
+
                Args       : constant W_Expr_Array :=
                  Compute_Call_Args
                    (Stmt_Or_Decl, EW_Prog, Nb_Of_Refs, Nb_Of_Lets,
                     Params => Body_Params);
-               Subp       : constant Entity_Id := Entity (Name (Stmt_Or_Decl));
+
                Selector   : constant Selection_Kind :=
-                 (if Present (Controlling_Argument (Stmt_Or_Decl)) then
+                  --  When calling an error-signaling procedure outside another
+                  --  error-signaling procedure, use the No_Return variant of
+                  --  the program function, which has a precondition of False.
+                  --  This ensures that a check is issued for each such call,
+                  --  to detect when they are reachable.
+
+                 (if Is_Error_Signaling_Procedure (Subp)
+                    and then not Is_Error_Signaling_Procedure (Current_Subp)
+                  then
+                     No_Return
+
+                  --  When the call is dispatching, use the Dispatch variant of
+                  --  the program function, which has the appropriate contract.
+
+                  elsif Present (Controlling_Argument (Stmt_Or_Decl)) then
                      Dispatch
-                  elsif Has_Contracts (Subp, Name_Refined_Post) and then
-                        Has_Visibility_On_Refined (Stmt_Or_Decl, Subp) then
+
+                  --  When the call has visibility over the refined
+                  --  postcondition of the subprogram, use the Refine variant
+                  --  of the program function, which has the appropriate
+                  --  refined contract.
+
+                  elsif Has_Contracts (Subp, Name_Refined_Post)
+                    and then Has_Visibility_On_Refined (Stmt_Or_Decl, Subp)
+                  then
                      Refine
+
+                  --  Otherwise use the Standard variant of the program
+                  --  function (defined outside any namespace, directly in
+                  --  the module for the program function).
+
                   else Why.Inter.Standard);
+
                Why_Name   : constant W_Identifier_Id :=
                  W_Identifier_Id
                    (Transform_Identifier (Params   => Body_Params,
@@ -11615,12 +11664,8 @@ package body Gnat2Why.Expr is
                                           Ent      => Subp,
                                           Domain   => EW_Prog,
                                           Selector => Selector));
-               Call       : W_Expr_Id;
             begin
-
-               if Why_Subp_Has_Precondition
-                 (Subp, Dispatch => (Selector = Dispatch))
-               then
+               if Why_Subp_Has_Precondition (Subp, Selector) then
                   Call :=
                     +New_VC_Call
                       (Stmt_Or_Decl,
@@ -11901,7 +11946,7 @@ package body Gnat2Why.Expr is
 
    function Why_Subp_Has_Precondition
      (E        : Entity_Id;
-      Dispatch : Boolean := False) return Boolean
+      Selector : Selection_Kind := Why.Inter.Standard) return Boolean
    is
       Has_Precondition : constant Boolean :=
         Has_Contracts (E, Name_Precondition);
@@ -11910,13 +11955,14 @@ package body Gnat2Why.Expr is
                        Classwide => True,
                        Inherited => True);
    begin
-      return (not Dispatch and Has_Precondition) or else
-        Has_Classwide_Or_Inherited_Precondition or else
-        Entity_In_Ext_Axioms (E) or else
+      return (Selector /= Dispatch and Has_Precondition)
+        or else Has_Classwide_Or_Inherited_Precondition
+        or else Entity_In_Ext_Axioms (E)
 
-        --  E is an error signaling subprogram, for which an implicit
-        --  precondition of False is used.
+        --  E is an error-signaling procedure called outside another
+        --  error-signaling procedure (this is what the No_Return variant
+        --  means) for which an implicit precondition of False is used.
 
-        (No_Return (E) and then Get_Execution_Kind (E) = Abnormal_Termination);
+        or else (Selector = No_Return and Is_Error_Signaling_Procedure (E));
    end Why_Subp_Has_Precondition;
 end Gnat2Why.Expr;
