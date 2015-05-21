@@ -1,0 +1,1 @@
+ALL XFAIL bad interplay of No_Return and inlining in proof
