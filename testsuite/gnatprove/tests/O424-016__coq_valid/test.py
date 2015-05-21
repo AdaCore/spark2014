@@ -1,5 +1,4 @@
 from test_support import *
-from time import sleep
 
 conf_file = "test.whyconf"
 

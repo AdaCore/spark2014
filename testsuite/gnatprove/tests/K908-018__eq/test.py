@@ -1,6 +1,6 @@
 from test_support import *
 from os.path import join
-import json, time
+import time
 
 # The purpose of this test is to check that all the code is in SPARK
 
