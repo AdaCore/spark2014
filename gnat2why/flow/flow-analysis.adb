@@ -1846,12 +1846,14 @@ package body Flow.Analysis is
                                Search        => Are_We_There_Yet'Access,
                                Step          => Add_Loc'Access);
 
-         --  A little sanity check can't hurt.
-         pragma Assert (Path_Found);
+         --  When dealing with an exceptional path it is possible for
+         --  Path_Found to be false.
 
-         Write_Vertex_Set (FA       => FA,
-                           Set      => Path,
-                           Filename => To_String (Tracefile));
+         if Path_Found then
+            Write_Vertex_Set (FA       => FA,
+                              Set      => Path,
+                              Filename => To_String (Tracefile));
+         end if;
       end Mark_Definition_Free_Path;
 
       ------------------------------------
@@ -2243,9 +2245,8 @@ package body Flow.Analysis is
                Tracefile    => To_String (Tracefile),
                Msg          => To_String (Msg),
                N            => N,
-               F1           =>
-                 Direct_Mapping_Id (
-                   Encapsulating_State (Var.Node)),
+               F1           => Direct_Mapping_Id
+                                 (Encapsulating_State (Var.Node)),
                F2           => Direct_Mapping_Id (FA.Initializes_N),
                Tag          => Uninitialized,
                Kind         => (case Kind is
