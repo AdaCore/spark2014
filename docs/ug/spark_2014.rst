@@ -290,8 +290,10 @@ Multiple error signaling mechanisms are treated the same way:
  * raising an exception
  * ``pragma Assert (X)`` where ``X`` is an expression statically equivalent to
    ``False``
- * calling a subprogram with an aspect or pragma ``No_Return`` that has no
-   outputs
+ * calling a procedure with an aspect or pragma ``No_Return`` that has no
+   outputs (unless the call is itself inside such a procedure, in which case
+   the check is only generated on the call to the enclosing error-signaling
+   procedure)
 
 For example, consider the artificial subprogram ``Check_OK`` which raises an
 exception when parameter ``OK`` is ``False``:
