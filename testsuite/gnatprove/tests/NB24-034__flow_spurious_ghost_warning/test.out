@@ -10,7 +10,7 @@ sorters.adb:31:15: info: index check proved
 sorters.adb:31:29: info: index check proved
 sorters.adb:32:15: info: index check proved
 sorters.adb:32:21: info: initialization of "Temp" proved
-sorters.adb:33:28: info: initialization of "Values_Old" proved
+sorters.adb:33:28: info: initialization of constant with variable input "Values_Old" proved
 sorters.adb:40:19: info: postcondition proved
 sorters.adb:42:45: info: index check proved
 sorters.adb:42:67: info: index check proved

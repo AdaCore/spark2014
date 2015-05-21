@@ -9,7 +9,7 @@ p1.adb:11:33: info: index check proved
 p1.adb:13:09: info: index check proved
 p1.adb:13:17: info: index check proved
 p1.adb:14:09: info: index check proved
-p1.adb:14:15: info: initialization of "T" proved
+p1.adb:14:15: info: initialization of constant with variable input "T" proved
 p1.adb:25:13: info: range check proved
 p1.adb:26:13: info: range check proved
 p1.adb:27:13: info: initialization of "I" proved

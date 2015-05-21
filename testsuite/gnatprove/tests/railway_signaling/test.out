@@ -2,23 +2,23 @@ trains.adb:9:14: info: postcondition proved
 trains.adb:9:28: info: range check proved
 trains.adb:10:48: info: index check proved
 trains.adb:28:11: info: range check proved
-trains.adb:28:40: info: initialization of "R4b" proved
+trains.adb:28:40: info: initialization of constant with variable input "R4b" proved
 trains.adb:33:10: info: loop invariant initialization proved
 trains.adb:33:10: info: loop invariant preservation proved
 trains.adb:35:47: info: index check proved
-trains.adb:53:40: info: initialization of "Cur_Position.Pos_Begin" proved
-trains.adb:53:40: info: initialization of "Cur_Position.Track_Begin" proved
-trains.adb:53:40: info: initialization of "Cur_Position.Track_End" proved
+trains.adb:53:40: info: initialization of constant with variable input "Cur_Position.Pos_Begin" proved
+trains.adb:53:40: info: initialization of constant with variable input "Cur_Position.Track_Begin" proved
+trains.adb:53:40: info: initialization of constant with variable input "Cur_Position.Track_End" proved
 trains.adb:57:10: info: assertion proved
 trains.adb:58:25: medium: assertion might fail, requires (Previous_Tracks_On_Orange_Or_Red)
 trains.adb:59:10: info: assertion proved
 trains.adb:65:25: medium: assertion might fail, requires (Previous_Tracks_On_Orange_Or_Red)
-trains.adb:69:49: info: initialization of "Cur_Position.Track_End" proved
+trains.adb:69:49: info: initialization of constant with variable input "Cur_Position.Track_End" proved
 trains.adb:72:10: info: assertion proved
 trains.adb:73:10: info: assertion proved
-trains.adb:81:41: info: initialization of "Cur_Position.Pos_Begin" proved
-trains.adb:81:41: info: initialization of "Cur_Position.Track_Begin" proved
-trains.adb:81:41: info: initialization of "Cur_Position.Track_End" proved
+trains.adb:81:41: info: initialization of constant with variable input "Cur_Position.Pos_Begin" proved
+trains.adb:81:41: info: initialization of constant with variable input "Cur_Position.Track_Begin" proved
+trains.adb:81:41: info: initialization of constant with variable input "Cur_Position.Track_End" proved
 trains.adb:83:16: info: initialization of "Prev" proved
 trains.adb:84:39: info: index check proved
 trains.adb:86:16: info: precondition proved

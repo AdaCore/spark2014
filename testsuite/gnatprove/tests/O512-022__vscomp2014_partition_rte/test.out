@@ -36,74 +36,74 @@ partition_refinement.adb:49:17: info: overflow check proved
 partition_refinement.adb:49:19: info: precondition proved
 partition_refinement.adb:49:33: info: precondition proved
 partition_refinement.adb:50:15: info: precondition proved
-partition_refinement.adb:63:15: info: initialization of "Tmp" proved
+partition_refinement.adb:63:15: info: initialization of constant with variable input "Tmp" proved
 partition_refinement.adb:77:29: info: precondition proved
 partition_refinement.adb:78:28: info: precondition proved
-partition_refinement.adb:78:42: info: initialization of "I" proved
+partition_refinement.adb:78:42: info: initialization of constant with variable input "I" proved
 partition_refinement.adb:83:22: info: initialization of "P_Elem.First" proved
 partition_refinement.adb:83:37: info: initialization of "P_Elem.Count" proved
 partition_refinement.adb:84:29: info: initialization of "P_Elem.First" proved
 partition_refinement.adb:84:42: info: range check proved
 partition_refinement.adb:84:44: info: initialization of "P_Elem.Count" proved
-partition_refinement.adb:87:34: info: initialization of "A_Old" proved
-partition_refinement.adb:87:63: info: initialization of "J" proved
-partition_refinement.adb:87:74: info: initialization of "I" proved
-partition_refinement.adb:90:16: info: initialization of "I" proved
-partition_refinement.adb:90:19: info: initialization of "J" proved
+partition_refinement.adb:87:34: info: initialization of constant with variable input "A_Old" proved
+partition_refinement.adb:87:63: info: initialization of constant with variable input "J" proved
+partition_refinement.adb:87:74: info: initialization of constant with variable input "I" proved
+partition_refinement.adb:90:16: info: initialization of constant with variable input "I" proved
+partition_refinement.adb:90:19: info: initialization of constant with variable input "J" proved
 partition_refinement.adb:91:07: info: assertion proved
-partition_refinement.adb:91:26: info: initialization of "A_Update" proved
+partition_refinement.adb:91:26: info: initialization of constant with variable input "A_Update" proved
 partition_refinement.adb:93:07: info: assertion proved
 partition_refinement.adb:93:22: info: precondition proved
 partition_refinement.adb:93:44: info: precondition proved
-partition_refinement.adb:93:60: info: initialization of "I" proved
+partition_refinement.adb:93:60: info: initialization of constant with variable input "I" proved
 partition_refinement.adb:93:67: info: precondition proved
-partition_refinement.adb:93:83: info: initialization of "J" proved
+partition_refinement.adb:93:83: info: initialization of constant with variable input "J" proved
 partition_refinement.adb:93:94: info: precondition proved
 partition_refinement.adb:93:112: info: precondition proved
 partition_refinement.adb:96:07: info: assertion proved
 partition_refinement.adb:96:44: info: precondition proved
 partition_refinement.adb:97:07: info: precondition proved
-partition_refinement.adb:97:21: info: initialization of "I" proved
-partition_refinement.adb:97:25: info: initialization of "I" proved
+partition_refinement.adb:97:21: info: initialization of constant with variable input "I" proved
+partition_refinement.adb:97:25: info: initialization of constant with variable input "I" proved
 partition_refinement.adb:98:07: info: assertion proved
-partition_refinement.adb:98:26: info: initialization of "A_Update" proved
+partition_refinement.adb:98:26: info: initialization of constant with variable input "A_Update" proved
 partition_refinement.adb:100:22: info: precondition proved
 partition_refinement.adb:100:44: info: precondition proved
-partition_refinement.adb:100:60: info: initialization of "I" proved
+partition_refinement.adb:100:60: info: initialization of constant with variable input "I" proved
 partition_refinement.adb:100:67: info: precondition proved
-partition_refinement.adb:100:83: info: initialization of "J" proved
+partition_refinement.adb:100:83: info: initialization of constant with variable input "J" proved
 partition_refinement.adb:100:91: medium: assertion might fail, requires A (Element (D, C)) = Key (D, C)
 partition_refinement.adb:100:94: info: precondition proved
 partition_refinement.adb:100:112: info: precondition proved
 partition_refinement.adb:101:07: info: assertion proved
 partition_refinement.adb:101:22: info: precondition proved
 partition_refinement.adb:101:44: info: precondition proved
-partition_refinement.adb:101:59: info: initialization of "I" proved
+partition_refinement.adb:101:59: info: initialization of constant with variable input "I" proved
 partition_refinement.adb:101:70: info: precondition proved
 partition_refinement.adb:101:88: info: precondition proved
 partition_refinement.adb:102:07: info: precondition proved
-partition_refinement.adb:102:21: info: initialization of "J" proved
-partition_refinement.adb:102:25: info: initialization of "J" proved
+partition_refinement.adb:102:21: info: initialization of constant with variable input "J" proved
+partition_refinement.adb:102:25: info: initialization of constant with variable input "J" proved
 partition_refinement.adb:103:07: info: assertion proved
-partition_refinement.adb:103:26: info: initialization of "A_Update" proved
+partition_refinement.adb:103:26: info: initialization of constant with variable input "A_Update" proved
 partition_refinement.adb:105:22: info: precondition proved
 partition_refinement.adb:105:44: info: precondition proved
-partition_refinement.adb:105:60: info: initialization of "I" proved
+partition_refinement.adb:105:60: info: initialization of constant with variable input "I" proved
 partition_refinement.adb:105:67: info: precondition proved
-partition_refinement.adb:105:83: info: initialization of "J" proved
+partition_refinement.adb:105:83: info: initialization of constant with variable input "J" proved
 partition_refinement.adb:105:91: medium: assertion might fail, requires A (Element (D, C)) = Key (D, C)
 partition_refinement.adb:105:94: info: precondition proved
 partition_refinement.adb:105:112: info: precondition proved
 partition_refinement.adb:106:22: info: precondition proved
 partition_refinement.adb:106:44: info: precondition proved
-partition_refinement.adb:106:59: info: initialization of "I" proved
+partition_refinement.adb:106:59: info: initialization of constant with variable input "I" proved
 partition_refinement.adb:106:67: medium: assertion might fail, requires A (Element (D, C)) = Key (D, C)
 partition_refinement.adb:106:70: info: precondition proved
 partition_refinement.adb:106:88: info: precondition proved
 partition_refinement.adb:107:07: info: assertion proved
 partition_refinement.adb:107:22: info: precondition proved
 partition_refinement.adb:107:44: info: precondition proved
-partition_refinement.adb:107:59: info: initialization of "J" proved
+partition_refinement.adb:107:59: info: initialization of constant with variable input "J" proved
 partition_refinement.adb:107:70: info: precondition proved
 partition_refinement.adb:107:88: info: precondition proved
 partition_refinement.adb:108:07: info: assertion proved
@@ -113,17 +113,17 @@ partition_refinement.adb:108:61: info: precondition proved
 partition_refinement.adb:110:23: info: initialization of "P_Elem.Count" proved
 partition_refinement.adb:110:36: info: range check proved
 partition_refinement.adb:111:07: info: precondition proved
-partition_refinement.adb:111:29: info: initialization of "I" proved
+partition_refinement.adb:111:29: info: initialization of constant with variable input "I" proved
 partition_refinement.adb:111:33: info: initialization of "P_Elem.Count" proved
 partition_refinement.adb:111:33: info: initialization of "P_Elem.First" proved
 partition_refinement.adb:111:33: info: initialization of "P_Elem.Last" proved
 partition_refinement.adb:113:07: info: assertion proved
-partition_refinement.adb:113:26: info: initialization of "A_Update" proved
-partition_refinement.adb:115:85: info: initialization of "J" proved
-partition_refinement.adb:115:98: info: initialization of "I" proved
-partition_refinement.adb:115:106: info: initialization of "A_Old" proved
+partition_refinement.adb:113:26: info: initialization of constant with variable input "A_Update" proved
+partition_refinement.adb:115:85: info: initialization of constant with variable input "J" proved
+partition_refinement.adb:115:98: info: initialization of constant with variable input "I" proved
+partition_refinement.adb:115:106: info: initialization of constant with variable input "A_Old" proved
 partition_refinement.adb:129:43: info: precondition proved
-partition_refinement.adb:129:55: info: initialization of "R24b" proved
+partition_refinement.adb:129:55: info: initialization of constant with variable input "R24b" proved
 partition_refinement.adb:134:10: info: loop invariant initialization proved
 partition_refinement.adb:134:10: info: loop invariant preservation proved
 partition_refinement.adb:134:33: info: precondition proved
@@ -154,9 +154,9 @@ partition_refinement.adb:147:24: info: initialization of "P_Prime.Count" proved
 partition_refinement.adb:147:24: info: initialization of "P_Prime.First" proved
 partition_refinement.adb:147:24: info: initialization of "P_Prime.Last" proved
 partition_refinement.adb:149:22: info: initialization of "P_Prime.First" proved
-partition_refinement.adb:149:29: info: initialization of "R26b" proved
+partition_refinement.adb:149:29: info: initialization of constant with variable input "R26b" proved
 partition_refinement.adb:149:39: info: initialization of "P_Prime.Last" proved
-partition_refinement.adb:149:46: info: initialization of "R27b" proved
+partition_refinement.adb:149:46: info: initialization of constant with variable input "R27b" proved
 partition_refinement.adb:150:24: info: initialization of "P_Prime_Index" proved
 partition_refinement.adb:167:39: info: precondition proved
 partition_refinement.adb:170:07: info: initialization of private part of "D_Old" proved

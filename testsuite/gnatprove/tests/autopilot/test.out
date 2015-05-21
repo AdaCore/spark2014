@@ -33,9 +33,9 @@ ap-altitude-pitch.adb:28:69: info: range check proved, in call inlined at ap-alt
 ap-altitude-pitch.adb:29:10: info: initialization of "Result" proved, in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:32:10: info: initialization of "Result" proved, in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:34:14: info: initialization of "Result" proved, in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
-ap-altitude-pitch.adb:46:10: info: initialization of "C9B" proved, in call inlined at ap-altitude-pitch.adb:101
-ap-altitude-pitch.adb:48:13: info: initialization of "C9B" proved, in call inlined at ap-altitude-pitch.adb:101
-ap-altitude-pitch.adb:51:30: info: initialization of "C9B" proved, in call inlined at ap-altitude-pitch.adb:101
+ap-altitude-pitch.adb:46:10: info: initialization of constant with variable input "C9B" proved, in call inlined at ap-altitude-pitch.adb:101
+ap-altitude-pitch.adb:48:13: info: initialization of constant with variable input "C9B" proved, in call inlined at ap-altitude-pitch.adb:101
+ap-altitude-pitch.adb:51:30: info: initialization of constant with variable input "C9B" proved, in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:51:30: info: range check proved, in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:53:07: info: assertion proved, in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:53:30: info: initialization of "Floor_Climb_Rate" proved, in call inlined at ap-altitude-pitch.adb:101

@@ -10,14 +10,14 @@ kmp.adb:16:17: medium: loop invariant might fail after first iteration, requires
 kmp.adb:16:17: medium: loop invariant might fail in first iteration, requires P (I - J .. J) = P (0..R12b)
 kmp.adb:16:17: medium: range check might fail
 kmp.adb:16:20: info: initialization of "I" proved
-kmp.adb:16:22: info: initialization of "R8b" proved
+kmp.adb:16:22: info: initialization of constant with variable input "R8b" proved
 kmp.adb:16:22: medium: overflow check might fail
 kmp.adb:16:24: info: initialization of "J" proved
 kmp.adb:16:29: info: initialization of "J" proved
-kmp.adb:16:29: info: initialization of "R9b" proved
+kmp.adb:16:29: info: initialization of constant with variable input "R9b" proved
 kmp.adb:16:34: medium: range check might fail
 kmp.adb:16:42: info: initialization of "J" proved
-kmp.adb:16:44: info: initialization of "R12b" proved
+kmp.adb:16:44: info: initialization of constant with variable input "R12b" proved
 kmp.adb:16:44: medium: overflow check might fail
 kmp.adb:17:19: info: initialization of "I" proved
 kmp.adb:17:19: medium: array index check might fail

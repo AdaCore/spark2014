@@ -27,14 +27,14 @@ model.ads:41:14: info: postcondition proved
 model.ads:64:14: info: postcondition proved
 model.ads:69:14: info: postcondition proved
 model.ads:83:06: info: length check proved
-model.ads:83:17: info: initialization of "No_UML_Action.Name_Data" proved
+model.ads:83:17: info: initialization of constant without variable input "No_UML_Action.Name_Data" proved
 model.ads:100:06: info: length check proved
-model.ads:100:17: info: initialization of "No_UML_Control_Flow.From_Data" proved
-model.ads:100:17: info: initialization of "No_UML_Control_Flow.To_Data" proved
+model.ads:100:17: info: initialization of constant without variable input "No_UML_Control_Flow.From_Data" proved
+model.ads:100:17: info: initialization of constant without variable input "No_UML_Control_Flow.To_Data" proved
 model.ads:111:14: info: postcondition proved
 model.ads:115:14: info: postcondition proved
-model.ads:126:28: info: initialization of "No_UML_Action_Vector" proved
-model.ads:127:26: info: initialization of "No_UML_Control_Flow_Vector" proved
+model.ads:126:28: info: initialization of constant without variable input "No_UML_Action_Vector" proved
+model.ads:127:26: info: initialization of constant without variable input "No_UML_Control_Flow_Vector" proved
 model.ads:141:14: info: postcondition proved
 model.ads:147:14: info: postcondition proved
 model.ads:163:06: info: postcondition proved

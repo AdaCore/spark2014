@@ -4,19 +4,19 @@ pack.adb:4:32: info: range check proved
 pack.adb:12:34: info: length check proved
 pack.adb:12:51: medium: array index check might fail
 pack.adb:13:41: info: length check proved
-pack.adb:14:41: info: initialization of "My_A" proved
+pack.adb:14:41: info: initialization of constant without variable input "My_A" proved
 pack.adb:14:41: info: length check proved
 pack.adb:14:41: info: range check proved
 pack.adb:16:07: info: assertion proved
-pack.adb:16:22: info: initialization of "My_A" proved
+pack.adb:16:22: info: initialization of constant without variable input "My_A" proved
 pack.adb:17:07: info: assertion proved
-pack.adb:17:22: info: initialization of "My_B" proved
-pack.adb:18:22: info: initialization of "My_B" proved
+pack.adb:17:22: info: initialization of constant without variable input "My_B" proved
+pack.adb:18:22: info: initialization of constant without variable input "My_B" proved
 pack.adb:18:22: medium: assertion might fail, requires My_B /= (1..4 => 42)
 pack.adb:23:34: info: length check proved
 pack.adb:23:34: medium: range check might fail
 pack.adb:24:41: info: length check proved
-pack.adb:25:41: info: initialization of "My_A" proved
+pack.adb:25:41: info: initialization of constant without variable input "My_A" proved
 pack.adb:25:41: info: length check proved
 pack.adb:25:41: info: range check proved
 pack.adb:27:07: info: assertion proved
@@ -24,8 +24,8 @@ pack.adb:27:22: info: initialization of "My_S2" proved
 pack.adb:27:22: info: range check proved
 pack.adb:27:39: info: range check proved
 pack.adb:28:07: info: assertion proved
-pack.adb:28:22: info: initialization of "My_B" proved
-pack.adb:28:29: info: initialization of "My_A" proved
+pack.adb:28:22: info: initialization of constant without variable input "My_B" proved
+pack.adb:28:29: info: initialization of constant without variable input "My_A" proved
 pack.adb:28:29: info: range check proved
 pack.adb:29:22: info: initialization of "My_S2" proved
 pack.adb:29:22: info: range check proved
@@ -36,7 +36,7 @@ pack.adb:33:14: warning: subprogram "AN21" has no effect
 pack.adb:34:34: info: length check proved
 pack.adb:34:34: medium: range check might fail
 pack.adb:35:41: info: length check proved
-pack.adb:36:41: info: initialization of "My_A" proved
+pack.adb:36:41: info: initialization of constant without variable input "My_A" proved
 pack.adb:36:41: info: length check proved
 pack.adb:36:41: info: range check proved
 pack.adb:38:07: info: assertion proved
@@ -52,7 +52,7 @@ pack.adb:43:14: warning: subprogram "AN22" has no effect
 pack.adb:44:34: info: length check proved
 pack.adb:44:34: medium: range check might fail
 pack.adb:45:41: info: length check proved
-pack.adb:46:41: info: initialization of "My_A" proved
+pack.adb:46:41: info: initialization of constant without variable input "My_A" proved
 pack.adb:46:41: info: length check proved
 pack.adb:46:41: info: range check proved
 pack.adb:48:07: info: assertion proved

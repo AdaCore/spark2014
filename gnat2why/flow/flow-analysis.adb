@@ -1008,7 +1008,7 @@ package body Flow.Analysis is
                      --  constant.
                      Error_Msg_Flow
                        (FA       => FA,
-                        Msg      => "constant & cannot appear in Globals",
+                        Msg      => "& cannot appear in Globals",
                         N        => Find_Global (FA.Analyzed_Entity, F),
                         F1       => F,
                         Tag      => Unused,
@@ -3240,7 +3240,7 @@ package body Flow.Analysis is
                            --  Dealing with a constant
                            Error_Msg_Flow
                              (FA   => FA,
-                              Msg  => "constant & cannot appear in Depends",
+                              Msg  => "& cannot appear in Depends",
                               N    => Depends_Location,
                               F1   => Missing_Var,
                               Tag  => Depends_Null,
@@ -3291,7 +3291,7 @@ package body Flow.Analysis is
                   if not Is_Variable (Wrong_Var) then
                      Error_Msg_Flow
                        (FA   => FA,
-                        Msg  => "constant & cannot appear in Depends",
+                        Msg  => "& cannot appear in Depends",
                         N    => Depends_Location,
                         F1   => Wrong_Var,
                         Tag  => Depends_Wrong,
@@ -3615,7 +3615,7 @@ package body Flow.Analysis is
                      --  input.
                      Error_Msg_Flow
                       (FA   => FA,
-                       Msg  => "constant & cannot appear in Initializes",
+                       Msg  => "& cannot appear in Initializes",
                        N    => Search_Contract
                                  (FA.Spec_Node,
                                   Pragma_Initializes,
@@ -3636,7 +3636,7 @@ package body Flow.Analysis is
                   --  Output is a constant without variable input
                   Error_Msg_Flow
                     (FA   => FA,
-                     Msg  => "constant & cannot appear in Initializes",
+                     Msg  => "& cannot appear in Initializes",
                      N    => Search_Contract
                                (FA.Spec_Node,
                                 Pragma_Initializes,

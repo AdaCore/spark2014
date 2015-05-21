@@ -21,11 +21,11 @@ simple_arrays.adb:116:22: info: postcondition proved
 simple_arrays.adb:127:22: info: postcondition proved
 simple_arrays.adb:142:22: info: postcondition proved
 simple_arrays.adb:152:07: info: assertion proved
-simple_arrays.adb:152:22: info: initialization of "A_Old" proved
+simple_arrays.adb:152:22: info: initialization of constant with variable input "A_Old" proved
 simple_arrays.adb:157:07: info: assertion proved
-simple_arrays.adb:157:22: info: initialization of "A_Old" proved
+simple_arrays.adb:157:22: info: initialization of constant with variable input "A_Old" proved
 simple_arrays.adb:162:07: info: assertion proved
-simple_arrays.adb:162:22: info: initialization of "A_Old" proved
+simple_arrays.adb:162:22: info: initialization of constant with variable input "A_Old" proved
 simple_arrays.adb:179:22: info: postcondition proved
 simple_arrays.adb:192:07: info: assertion proved
 simple_arrays.adb:204:07: info: assertion proved

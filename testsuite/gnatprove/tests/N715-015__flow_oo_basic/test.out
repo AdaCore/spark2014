@@ -11,15 +11,15 @@ tests.adb:140:23: info: initialization of "N" proved
 tests.adb:151:23: info: initialization of "N" proved
 tests.adb:153:09: medium: incorrect dependency "null => C"
 tests.adb:153:21: medium: missing dependency "N => C"
-tests.adb:159:35: info: initialization of "Obj.X" proved
-tests.adb:159:35: info: initialization of "Obj.Y" proved
+tests.adb:159:35: info: initialization of constant with variable input "Obj.X" proved
+tests.adb:159:35: info: initialization of constant with variable input "Obj.Y" proved
 tests.adb:161:12: info: initialization of "Tmp.X" proved
 tests.adb:161:12: info: initialization of "Tmp.Y" proved
 tests.adb:166:23: info: initialization of "N" proved
 tests.adb:168:09: medium: incorrect dependency "null => C"
 tests.adb:168:21: medium: missing dependency "N => C"
-tests.adb:175:22: info: initialization of "Obj.X" proved
-tests.adb:175:22: info: initialization of "Obj.Y" proved
+tests.adb:175:22: info: initialization of constant with variable input "Obj.X" proved
+tests.adb:175:22: info: initialization of constant with variable input "Obj.Y" proved
 tests.adb:180:23: info: initialization of "N" proved
 tests.adb:182:09: medium: incorrect dependency "null => A"
 tests.adb:182:09: medium: incorrect dependency "null => B"
@@ -35,16 +35,16 @@ tests.adb:209:12: info: initialization of "Obj.Y" proved
 tests.adb:215:23: info: initialization of "N" proved
 tests.adb:217:09: medium: incorrect dependency "null => C"
 tests.adb:217:21: medium: missing dependency "N => C"
-tests.adb:224:27: info: initialization of "Obj.Round" proved
-tests.adb:224:27: info: initialization of "Obj.X" proved
-tests.adb:224:27: info: initialization of "Obj.Y" proved
+tests.adb:224:27: info: initialization of constant with variable input "Obj.Round" proved
+tests.adb:224:27: info: initialization of constant with variable input "Obj.X" proved
+tests.adb:224:27: info: initialization of constant with variable input "Obj.Y" proved
 tests.adb:225:36: info: initialization of "Tmp.B.X" proved
 tests.adb:225:36: info: initialization of "Tmp.B.Y" proved
 tests.adb:227:12: info: initialization of "Tmp2.X" proved
 tests.adb:227:12: info: initialization of "Tmp2.Y" proved
 tests.adb:233:23: info: initialization of "N" proved
-tests.adb:239:35: info: initialization of "Obj.B.X" proved
-tests.adb:239:35: info: initialization of "Obj.B.Y" proved
+tests.adb:239:35: info: initialization of constant with variable input "Obj.B.X" proved
+tests.adb:239:35: info: initialization of constant with variable input "Obj.B.Y" proved
 tests.adb:241:12: info: initialization of "Tmp.X" proved
 tests.adb:241:12: info: initialization of "Tmp.Y" proved
 tests.adb:245:23: info: initialization of "N" proved

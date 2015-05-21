@@ -2,7 +2,7 @@ very_longs.adb:11:13: info: discriminant check proved
 very_longs.adb:11:26: info: length check proved
 very_longs.adb:11:29: info: length check proved
 very_longs.adb:13:26: info: discriminant check proved
-very_longs.adb:13:38: info: initialization of "R4b" proved
+very_longs.adb:13:38: info: initialization of constant with variable input "R4b" proved
 very_longs.adb:14:16: info: discriminant check proved
 very_longs.adb:14:29: info: index check proved
 very_longs.adb:14:36: info: initialization of "Result.Long_Digits" proved

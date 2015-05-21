@@ -11,9 +11,9 @@ bitwise.adb:22:07: info: assertion proved
 bitwise.adb:22:22: info: initialization of "Res" proved
 bitwise.adb:22:30: info: division check proved
 bitwise.adb:32:07: info: assertion proved
-bitwise.adb:32:26: info: initialization of "YY" proved
+bitwise.adb:32:26: info: initialization of constant with variable input "YY" proved
 bitwise.adb:33:07: info: assertion proved
-bitwise.adb:33:26: info: initialization of "XX" proved
+bitwise.adb:33:26: info: initialization of constant with variable input "XX" proved
 bitwise.adb:38:34: info: range check proved
 bitwise.adb:39:50: info: range check proved
 bitwise.adb:40:07: info: assertion proved
@@ -94,7 +94,7 @@ floating_point.adb:120:22: info: initialization of "I" proved
 floating_point.adb:121:12: info: initialization of "Y" proved
 floating_point.adb:121:14: medium: overflow check might fail
 floating_point.adb:121:28: medium: overflow check might fail
-floating_point.adb:121:31: info: initialization of "X2" proved
+floating_point.adb:121:31: info: initialization of constant with variable input "X2" proved
 floating_point.adb:121:34: medium: overflow check might fail
 floating_point.adb:121:39: medium: overflow check might fail
 floating_point.adb:124:22: medium: assertion might fail, requires Y * Y) * X in 1.0 - 0.005 .. 1.0 +
@@ -106,13 +106,13 @@ floating_point.adb:133:40: info: overflow check proved
 floating_point.adb:134:40: info: overflow check proved
 floating_point.adb:135:40: info: overflow check proved
 floating_point.adb:136:40: info: overflow check proved
-floating_point.adb:138:37: info: initialization of "Vec_BA_X" proved
+floating_point.adb:138:37: info: initialization of constant with variable input "Vec_BA_X" proved
 floating_point.adb:138:46: medium: overflow check might fail
-floating_point.adb:138:48: info: initialization of "Vec_BC_X" proved
+floating_point.adb:138:48: info: initialization of constant with variable input "Vec_BC_X" proved
 floating_point.adb:138:57: medium: overflow check might fail
-floating_point.adb:139:37: info: initialization of "Vec_BA_Y" proved
+floating_point.adb:139:37: info: initialization of constant with variable input "Vec_BA_Y" proved
 floating_point.adb:139:46: medium: overflow check might fail
-floating_point.adb:139:48: info: initialization of "Vec_BC_Y" proved
+floating_point.adb:139:48: info: initialization of constant with variable input "Vec_BC_Y" proved
 floating_point.adb:142:15: info: overflow check proved
 floating_point.adb:142:22: medium: overflow check might fail
 floating_point.adb:142:27: medium: overflow check might fail
@@ -123,14 +123,14 @@ floating_point.adb:145:22: medium: overflow check might fail
 floating_point.adb:145:27: medium: overflow check might fail
 floating_point.adb:145:34: info: overflow check proved
 floating_point.adb:145:41: medium: overflow check might fail
-floating_point.adb:147:22: info: initialization of "Length_BA" proved
-floating_point.adb:148:22: info: initialization of "Length_BC" proved
-floating_point.adb:149:14: info: initialization of "BA_Dot_BC" proved
+floating_point.adb:147:22: info: initialization of constant with variable input "Length_BA" proved
+floating_point.adb:148:22: info: initialization of constant with variable input "Length_BC" proved
+floating_point.adb:149:14: info: initialization of constant with variable input "BA_Dot_BC" proved
 floating_point.adb:149:24: medium: divide by zero might fail
 floating_point.adb:149:24: medium: overflow check might fail
-floating_point.adb:149:27: info: initialization of "Length_BA" proved
+floating_point.adb:149:27: info: initialization of constant with variable input "Length_BA" proved
 floating_point.adb:149:37: medium: overflow check might fail
-floating_point.adb:149:39: info: initialization of "Length_BC" proved
+floating_point.adb:149:39: info: initialization of constant with variable input "Length_BC" proved
 floating_point.adb:150:22: info: initialization of "Res" proved
 floating_point.adb:150:22: medium: assertion might fail, requires Res in -1.00001 ..
 floating_point.adb:151:22: info: initialization of "Res" proved

@@ -20,7 +20,7 @@ infoflow.adb:89:47: info: initialization of "OutKeys_V2" proved
 infoflow.adb:89:47: medium: "OutKeys_V2" might not be initialized
 infoflow.adb:99:28: info: division check proved
 infoflow.adb:100:36: info: initialization of "M_V1" proved
-infoflow.adb:100:36: info: initialization of "R11b" proved
+infoflow.adb:100:36: info: initialization of constant with variable input "R11b" proved
 infoflow.adb:101:13: medium: loop invariant might fail after first iteration
 infoflow.adb:101:13: medium: loop invariant might fail in first iteration
 infoflow.adb:103:40: info: index check proved
@@ -42,7 +42,7 @@ infoflow.adb:109:35: info: initialization of "T_V1" proved
 infoflow.adb:113:07: info: assertion proved
 infoflow.adb:121:28: info: division check proved
 infoflow.adb:122:36: info: initialization of "M_V2" proved
-infoflow.adb:122:36: info: initialization of "R17b" proved
+infoflow.adb:122:36: info: initialization of constant with variable input "R17b" proved
 infoflow.adb:123:13: medium: loop invariant might fail after first iteration
 infoflow.adb:123:13: medium: loop invariant might fail in first iteration
 infoflow.adb:125:40: info: index check proved
@@ -71,7 +71,7 @@ infoflow.adb:141:43: info: index check proved
 infoflow.adb:141:51: info: division check proved
 infoflow.adb:147:22: info: division check proved
 infoflow.adb:148:30: info: initialization of "M" proved
-infoflow.adb:148:30: info: initialization of "R28b" proved
+infoflow.adb:148:30: info: initialization of constant with variable input "R28b" proved
 infoflow.adb:149:13: medium: loop invariant might fail after first iteration
 infoflow.adb:149:13: medium: loop invariant might fail in first iteration
 infoflow.adb:150:48: info: index check proved
@@ -105,7 +105,6 @@ infoflow.adb:179:18: info: index check proved
 infoflow.adb:179:29: info: index check proved
 infoflow.adb:181:22: medium: overflow check might fail
 infoflow.adb:182:10: info: loop invariant initialization proved
-
 infoflow.adb:182:10: medium: loop invariant might fail after first iteration
 infoflow.adb:183:36: medium: "A_V1" might not be initialized
 infoflow.adb:183:42: info: index check proved

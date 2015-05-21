@@ -150,13 +150,13 @@ alarm.ads:70:22: info: postcondition proved
 alarmapi.adb:38:29: medium: length check might fail
 alarmapi.adb:38:29: warning: assuming "Overwrite" has no effect on global items
 alarmapi.adb:38:29: warning: no Global contract available for "Overwrite"
-alarmapi.adb:45:41: info: initialization of "OutMsg.Data" proved
-alarmapi.adb:45:41: info: initialization of "OutMsg.Length" proved
+alarmapi.adb:45:41: info: initialization of constant without variable input "OutMsg.Data" proved
+alarmapi.adb:45:41: info: initialization of constant without variable input "OutMsg.Length" proved
 alarmapi.adb:62:29: medium: length check might fail
 alarmapi.adb:62:29: warning: assuming "Overwrite" has no effect on global items
 alarmapi.adb:62:29: warning: no Global contract available for "Overwrite"
-alarmapi.adb:69:41: info: initialization of "OutMsg.Data" proved
-alarmapi.adb:69:41: info: initialization of "OutMsg.Length" proved
+alarmapi.adb:69:41: info: initialization of constant without variable input "OutMsg.Data" proved
+alarmapi.adb:69:41: info: initialization of constant without variable input "OutMsg.Length" proved
 alarmapi.ads:29:14: warning: subprogram "Activate" has no effect
 alarmapi.ads:38:14: warning: subprogram "Deactivate" has no effect
 auditlog.adb:79:32: info: length check proved
@@ -214,10 +214,10 @@ auditlog.adb:359:22: info: initialization of "TimeOK" proved
 auditlog.adb:416:23: info: length check proved
 auditlog.adb:416:23: info: range check proved
 auditlog.adb:416:35: info: initialization of "Offset" proved
-auditlog.adb:416:42: info: initialization of "R55b" proved
+auditlog.adb:416:42: info: initialization of constant with variable input "R55b" proved
 auditlog.adb:416:42: info: overflow check proved
 auditlog.adb:417:35: info: initialization of "Offset" proved
-auditlog.adb:417:42: info: initialization of "R56b" proved
+auditlog.adb:417:42: info: initialization of constant with variable input "R56b" proved
 auditlog.adb:417:42: info: overflow check proved
 auditlog.adb:419:13: info: initialization of "BothTimesOK" proved
 auditlog.adb:421:24: info: range check proved
@@ -348,7 +348,7 @@ auditlog.adb:1230:53: info: initialization of "UsedLogFiles.Head" constituent of
 auditlog.adb:1230:53: info: initialization of "UsedLogFiles.List" constituent of "State" proved
 auditlog.adb:1232:20: info: range check proved
 auditlog.adb:1232:48: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
-auditlog.adb:1232:60: info: initialization of "R95b" proved
+auditlog.adb:1232:60: info: initialization of constant with variable input "R95b" proved
 auditlog.adb:1233:47: info: initialization of "FileAges" proved
 auditlog.adb:1233:56: info: initialization of "UsedLogFiles.List" constituent of "State" proved
 auditlog.adb:1236:45: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
@@ -358,7 +358,7 @@ auditlog.adb:1237:65: medium: range check might fail
 auditlog.adb:1238:26: info: range check proved
 auditlog.adb:1239:32: info: overflow check proved
 auditlog.adb:1239:37: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
-auditlog.adb:1239:49: info: initialization of "R97b" proved
+auditlog.adb:1239:49: info: initialization of constant with variable input "R97b" proved
 auditlog.adb:1241:43: info: index check proved
 auditlog.adb:1241:49: info: initialization of "UsedLogFiles.List" constituent of "State" proved
 auditlog.adb:1241:69: info: index check proved
@@ -841,18 +841,18 @@ certificatestore.adb:213:32: info: initialization of "Text" proved
 certificatestore.adb:214:32: info: initialization of "Length" proved
 certificatestore.adb:221:31: medium: range check might fail
 certificatestore.adb:222:18: info: initialization of "Length" proved
-certificatestore.adb:222:26: info: initialization of "R6b" proved
+certificatestore.adb:222:26: info: initialization of constant with variable input "R6b" proved
 certificatestore.adb:222:26: info: length check proved
 certificatestore.adb:222:26: medium: "Text" might not be initialized
 certificatestore.adb:222:29: info: initialization of "Str" proved
 certificatestore.adb:222:29: info: length check proved
 certificatestore.adb:222:29: medium: range check might fail
 certificatestore.adb:222:36: info: initialization of "Length" proved
-certificatestore.adb:222:43: info: initialization of "R10b" proved
+certificatestore.adb:222:43: info: initialization of constant with variable input "R10b" proved
 certificatestore.adb:223:15: info: initialization of "Length" proved
 certificatestore.adb:223:42: info: initialization of "Text" proved
 certificatestore.adb:223:42: info: length check proved
-certificatestore.adb:223:45: info: initialization of "R13b" proved
+certificatestore.adb:223:45: info: initialization of constant with variable input "R13b" proved
 certificatestore.adb:223:45: info: length check proved
 certificatestore.adb:229:10: info: initialization of "Opened" proved
 certificatestore.adb:241:40: info: initialization of "RawNext" proved
@@ -871,7 +871,7 @@ certificatestore.adb:352:41: info: initialization of "Overflow" constituent of "
 certificatestore.adb:357:15: info: initialization of "Exists" proved
 certificatestore.adb:357:26: info: initialization of "Written" proved
 certificatestore.adb:358:18: medium: precondition might fail
-certtypes.ads:35:22: info: initialization of "MaxRawCertLength" proved
+certtypes.ads:35:22: info: initialization of constant without variable input "MaxRawCertLength" proved
 certtypes.ads:35:22: info: length check proved
 clock.adb:73:11: info: range check proved
 clock.adb:74:12: info: index check proved
@@ -992,8 +992,8 @@ configdata.adb:293:28: info: initialization of "Value" proved
 configdata.adb:295:36: info: initialization of "Success" proved
 configdata.adb:308:16: info: initialization of "Stop" proved
 configdata.adb:313:20: info: range check proved
-configdata.adb:313:47: info: initialization of "R30b" proved
 configdata.adb:313:47: info: initialization of "Stop" proved
+configdata.adb:313:47: info: initialization of constant with variable input "R30b" proved
 configdata.adb:315:19: info: loop invariant initialization proved
 configdata.adb:315:19: info: loop invariant preservation proved
 configdata.adb:315:42: info: initialization of "Stop" proved
@@ -1062,8 +1062,8 @@ configdata.adb:693:13: info: initialization of "Stop" proved
 configdata.adb:694:12: info: initialization of "TheTitle" proved
 configdata.adb:699:19: info: initialization of "Stop" proved
 configdata.adb:703:23: info: range check proved
-configdata.adb:703:51: info: initialization of "R32b" proved
 configdata.adb:703:51: info: initialization of "Stop" proved
+configdata.adb:703:51: info: initialization of constant with variable input "R32b" proved
 configdata.adb:704:22: info: loop invariant initialization proved
 configdata.adb:704:22: info: loop invariant preservation proved
 configdata.adb:704:45: info: initialization of "Stop" proved
@@ -1112,9 +1112,9 @@ configdata.adb:952:50: info: initialization of "TheMinEntryClass" proved
 configdata.adb:1012:35: info: length check proved, in call inlined at configdata.adb:1098
 configdata.adb:1012:35: info: length check proved, in call inlined at configdata.adb:1108
 configdata.adb:1012:35: info: length check proved, in call inlined at configdata.adb:1118
-configdata.adb:1017:24: info: initialization of "C38b" proved, in call inlined at configdata.adb:1098
-configdata.adb:1017:24: info: initialization of "C43b" proved, in call inlined at configdata.adb:1108
-configdata.adb:1017:24: info: initialization of "C48b" proved, in call inlined at configdata.adb:1118
+configdata.adb:1017:24: info: initialization of constant with variable input "C38b" proved, in call inlined at configdata.adb:1098
+configdata.adb:1017:24: info: initialization of constant with variable input "C43b" proved, in call inlined at configdata.adb:1108
+configdata.adb:1017:24: info: initialization of constant with variable input "C48b" proved, in call inlined at configdata.adb:1118
 configdata.adb:1017:30: info: division check proved, in call inlined at configdata.adb:1098
 configdata.adb:1017:30: info: division check proved, in call inlined at configdata.adb:1108
 configdata.adb:1017:30: info: division check proved, in call inlined at configdata.adb:1118
@@ -1139,9 +1139,9 @@ configdata.adb:1020:61: info: initialization of "LocalValue" proved, in call inl
 configdata.adb:1020:72: info: division check proved, in call inlined at configdata.adb:1098
 configdata.adb:1020:72: info: division check proved, in call inlined at configdata.adb:1108
 configdata.adb:1020:72: info: division check proved, in call inlined at configdata.adb:1118
-configdata.adb:1023:25: info: initialization of "C38b" proved, in call inlined at configdata.adb:1098
-configdata.adb:1023:25: info: initialization of "C43b" proved, in call inlined at configdata.adb:1108
-configdata.adb:1023:25: info: initialization of "C48b" proved, in call inlined at configdata.adb:1118
+configdata.adb:1023:25: info: initialization of constant with variable input "C38b" proved, in call inlined at configdata.adb:1098
+configdata.adb:1023:25: info: initialization of constant with variable input "C43b" proved, in call inlined at configdata.adb:1108
+configdata.adb:1023:25: info: initialization of constant with variable input "C48b" proved, in call inlined at configdata.adb:1118
 configdata.adb:1023:31: info: division check proved, in call inlined at configdata.adb:1098
 configdata.adb:1023:31: info: division check proved, in call inlined at configdata.adb:1108
 configdata.adb:1023:31: info: division check proved, in call inlined at configdata.adb:1118
@@ -1379,7 +1379,7 @@ configuration.adb:193:18: medium: precondition might fail
 configuration.ads:46:43: info: initialization of "ConfigData.State" proved
 configuration.ads:67:07: info: initialization of "DataValid" proved
 cryptotypes.ads:28:40: info: length check proved
-cryptotypes.ads:41:29: info: initialization of "BlankName" proved
+cryptotypes.ads:41:29: info: initialization of constant without variable input "BlankName" proved
 display.adb:42:57: info: length check proved
 display.adb:45:43: info: length check proved
 display.adb:50:43: info: length check proved
@@ -1392,42 +1392,42 @@ display.adb:72:43: info: length check proved
 display.adb:76:43: info: length check proved
 display.adb:79:43: info: length check proved
 display.adb:84:43: info: length check proved
-display.adb:87:32: info: initialization of "BlankLine.Len" proved
-display.adb:87:32: info: initialization of "BlankLine.Text" proved
+display.adb:87:32: info: initialization of constant without variable input "BlankLine.Len" proved
+display.adb:87:32: info: initialization of constant without variable input "BlankLine.Text" proved
 display.adb:89:43: info: length check proved
 display.adb:123:41: info: length check proved, in call inlined at display.adb:188
 display.adb:123:41: info: length check proved, in call inlined at display.adb:280
 display.adb:128:11: info: range check proved, in call inlined at display.adb:188
 display.adb:128:11: info: range check proved, in call inlined at display.adb:280
-display.adb:128:37: info: initialization of "C27b.Top.Len" proved, in call inlined at display.adb:188
 display.adb:128:37: info: initialization of "TheMsg.Top.Len" proved, in call inlined at display.adb:280
-display.adb:128:47: info: initialization of "R40b" proved, in call inlined at display.adb:280
+display.adb:128:37: info: initialization of constant with variable input "C27b.Top.Len" proved, in call inlined at display.adb:188
+display.adb:128:47: info: initialization of constant with variable input "R40b" proved, in call inlined at display.adb:280
 display.adb:129:10: info: loop invariant initialization proved, in call inlined at display.adb:188
 display.adb:129:10: info: loop invariant initialization proved, in call inlined at display.adb:280
 display.adb:129:10: info: loop invariant preservation proved, in call inlined at display.adb:188
 display.adb:129:10: info: loop invariant preservation proved, in call inlined at display.adb:280
-display.adb:130:38: info: initialization of "C27b.Top.Len" proved, in call inlined at display.adb:188
 display.adb:130:38: info: initialization of "TheMsg.Top.Len" proved, in call inlined at display.adb:280
-display.adb:131:33: info: initialization of "C27b.Bottom.Len" proved, in call inlined at display.adb:188
-display.adb:131:33: info: initialization of "C27b.Bottom.Text" proved, in call inlined at display.adb:188
-display.adb:131:33: info: initialization of "C27b.Top.Text" proved, in call inlined at display.adb:188
+display.adb:130:38: info: initialization of constant with variable input "C27b.Top.Len" proved, in call inlined at display.adb:188
 display.adb:131:33: info: initialization of "TheMsg.Bottom.Len" proved, in call inlined at display.adb:280
 display.adb:131:33: info: initialization of "TheMsg.Bottom.Text" proved, in call inlined at display.adb:280
 display.adb:131:33: info: initialization of "TheMsg.Top.Text" proved, in call inlined at display.adb:280
-display.adb:131:48: info: initialization of "C27b.Bottom.Len" proved, in call inlined at display.adb:188
-display.adb:131:48: info: initialization of "C27b.Bottom.Text" proved, in call inlined at display.adb:188
-display.adb:131:48: info: initialization of "C27b.Top.Len" proved, in call inlined at display.adb:188
-display.adb:131:48: info: initialization of "C27b.Top.Text" proved, in call inlined at display.adb:188
+display.adb:131:33: info: initialization of constant with variable input "C27b.Bottom.Len" proved, in call inlined at display.adb:188
+display.adb:131:33: info: initialization of constant with variable input "C27b.Bottom.Text" proved, in call inlined at display.adb:188
+display.adb:131:33: info: initialization of constant with variable input "C27b.Top.Text" proved, in call inlined at display.adb:188
 display.adb:131:48: info: initialization of "TheMsg.Bottom.Len" proved, in call inlined at display.adb:280
 display.adb:131:48: info: initialization of "TheMsg.Bottom.Text" proved, in call inlined at display.adb:280
 display.adb:131:48: info: initialization of "TheMsg.Top.Len" proved, in call inlined at display.adb:280
 display.adb:131:48: info: initialization of "TheMsg.Top.Text" proved, in call inlined at display.adb:280
+display.adb:131:48: info: initialization of constant with variable input "C27b.Bottom.Len" proved, in call inlined at display.adb:188
+display.adb:131:48: info: initialization of constant with variable input "C27b.Bottom.Text" proved, in call inlined at display.adb:188
+display.adb:131:48: info: initialization of constant with variable input "C27b.Top.Len" proved, in call inlined at display.adb:188
+display.adb:131:48: info: initialization of constant with variable input "C27b.Top.Text" proved, in call inlined at display.adb:188
 display.adb:132:25: info: initialization of "Result.Text" proved, in call inlined at display.adb:188
 display.adb:132:25: info: initialization of "Result.Text" proved, in call inlined at display.adb:280
-display.adb:132:28: info: initialization of "C27b.Top.Text" proved, in call inlined at display.adb:188
 display.adb:132:28: info: initialization of "TheMsg.Top.Text" proved, in call inlined at display.adb:280
-display.adb:134:21: info: initialization of "C27b.Top.Len" proved, in call inlined at display.adb:188
+display.adb:132:28: info: initialization of constant with variable input "C27b.Top.Text" proved, in call inlined at display.adb:188
 display.adb:134:21: info: initialization of "TheMsg.Top.Len" proved, in call inlined at display.adb:280
+display.adb:134:21: info: initialization of constant with variable input "C27b.Top.Len" proved, in call inlined at display.adb:188
 display.adb:137:30: info: index check proved, in call inlined at display.adb:188
 display.adb:137:30: info: index check proved, in call inlined at display.adb:280
 display.adb:137:35: info: initialization of "Result.Len" proved, in call inlined at display.adb:188
@@ -1452,29 +1452,29 @@ display.adb:140:32: info: range check proved, in call inlined at display.adb:188
 display.adb:140:32: info: range check proved, in call inlined at display.adb:280
 display.adb:143:11: info: range check proved, in call inlined at display.adb:188
 display.adb:143:11: info: range check proved, in call inlined at display.adb:280
-display.adb:143:37: info: initialization of "C27b.Bottom.Len" proved, in call inlined at display.adb:188
 display.adb:143:37: info: initialization of "TheMsg.Bottom.Len" proved, in call inlined at display.adb:280
-display.adb:143:50: info: initialization of "R42b" proved, in call inlined at display.adb:280
+display.adb:143:37: info: initialization of constant with variable input "C27b.Bottom.Len" proved, in call inlined at display.adb:188
+display.adb:143:50: info: initialization of constant with variable input "R42b" proved, in call inlined at display.adb:280
 display.adb:144:10: info: loop invariant initialization proved, in call inlined at display.adb:188
 display.adb:144:10: info: loop invariant initialization proved, in call inlined at display.adb:280
 display.adb:144:10: info: loop invariant preservation proved, in call inlined at display.adb:188
 display.adb:144:10: info: loop invariant preservation proved, in call inlined at display.adb:280
-display.adb:145:38: info: initialization of "C27b.Bottom.Len" proved, in call inlined at display.adb:188
 display.adb:145:38: info: initialization of "TheMsg.Bottom.Len" proved, in call inlined at display.adb:280
-display.adb:146:33: info: initialization of "C27b.Bottom.Text" proved, in call inlined at display.adb:188
-display.adb:146:33: info: initialization of "C27b.Top.Len" proved, in call inlined at display.adb:188
-display.adb:146:33: info: initialization of "C27b.Top.Text" proved, in call inlined at display.adb:188
+display.adb:145:38: info: initialization of constant with variable input "C27b.Bottom.Len" proved, in call inlined at display.adb:188
 display.adb:146:33: info: initialization of "TheMsg.Bottom.Text" proved, in call inlined at display.adb:280
 display.adb:146:33: info: initialization of "TheMsg.Top.Len" proved, in call inlined at display.adb:280
 display.adb:146:33: info: initialization of "TheMsg.Top.Text" proved, in call inlined at display.adb:280
-display.adb:146:48: info: initialization of "C27b.Bottom.Len" proved, in call inlined at display.adb:188
-display.adb:146:48: info: initialization of "C27b.Bottom.Text" proved, in call inlined at display.adb:188
-display.adb:146:48: info: initialization of "C27b.Top.Len" proved, in call inlined at display.adb:188
-display.adb:146:48: info: initialization of "C27b.Top.Text" proved, in call inlined at display.adb:188
+display.adb:146:33: info: initialization of constant with variable input "C27b.Bottom.Text" proved, in call inlined at display.adb:188
+display.adb:146:33: info: initialization of constant with variable input "C27b.Top.Len" proved, in call inlined at display.adb:188
+display.adb:146:33: info: initialization of constant with variable input "C27b.Top.Text" proved, in call inlined at display.adb:188
 display.adb:146:48: info: initialization of "TheMsg.Bottom.Len" proved, in call inlined at display.adb:280
 display.adb:146:48: info: initialization of "TheMsg.Bottom.Text" proved, in call inlined at display.adb:280
 display.adb:146:48: info: initialization of "TheMsg.Top.Len" proved, in call inlined at display.adb:280
 display.adb:146:48: info: initialization of "TheMsg.Top.Text" proved, in call inlined at display.adb:280
+display.adb:146:48: info: initialization of constant with variable input "C27b.Bottom.Len" proved, in call inlined at display.adb:188
+display.adb:146:48: info: initialization of constant with variable input "C27b.Bottom.Text" proved, in call inlined at display.adb:188
+display.adb:146:48: info: initialization of constant with variable input "C27b.Top.Len" proved, in call inlined at display.adb:188
+display.adb:146:48: info: initialization of constant with variable input "C27b.Top.Text" proved, in call inlined at display.adb:188
 display.adb:147:33: info: initialization of "Result.Len" proved, in call inlined at display.adb:188
 display.adb:147:33: info: initialization of "Result.Len" proved, in call inlined at display.adb:280
 display.adb:148:33: info: index check proved, in call inlined at display.adb:188
@@ -1485,14 +1485,14 @@ display.adb:148:38: info: initialization of "Result.Len" proved, in call inlined
 display.adb:148:38: info: initialization of "Result.Len" proved, in call inlined at display.adb:280
 display.adb:148:38: info: initialization of "Result.Text" proved, in call inlined at display.adb:188
 display.adb:148:38: info: initialization of "Result.Text" proved, in call inlined at display.adb:280
-display.adb:148:41: info: initialization of "C27b.Bottom.Text" proved, in call inlined at display.adb:188
 display.adb:148:41: info: initialization of "TheMsg.Bottom.Text" proved, in call inlined at display.adb:280
+display.adb:148:41: info: initialization of constant with variable input "C27b.Bottom.Text" proved, in call inlined at display.adb:188
 display.adb:150:21: info: initialization of "Result.Len" proved, in call inlined at display.adb:188
 display.adb:150:21: info: initialization of "Result.Len" proved, in call inlined at display.adb:280
 display.adb:150:32: info: range check proved, in call inlined at display.adb:188
 display.adb:150:32: info: range check proved, in call inlined at display.adb:280
-display.adb:150:34: info: initialization of "C27b.Bottom.Len" proved, in call inlined at display.adb:188
 display.adb:150:34: info: initialization of "TheMsg.Bottom.Len" proved, in call inlined at display.adb:280
+display.adb:150:34: info: initialization of constant with variable input "C27b.Bottom.Len" proved, in call inlined at display.adb:188
 display.adb:152:14: info: initialization of "Result.Len" proved, in call inlined at display.adb:188
 display.adb:152:14: info: initialization of "Result.Len" proved, in call inlined at display.adb:280
 display.adb:152:14: info: initialization of "Result.Text" proved, in call inlined at display.adb:188
@@ -1594,8 +1594,8 @@ door.ads:216:48: info: initialization of "AlarmTimeout.Year" constituent of "Sta
 doorapi.adb:33:29: medium: length check might fail
 doorapi.adb:33:29: warning: assuming "Overwrite" has no effect on global items
 doorapi.adb:33:29: warning: no Global contract available for "Overwrite"
-doorapi.adb:44:22: info: initialization of "OutMsg.Data" proved
-doorapi.adb:44:22: info: initialization of "OutMsg.Length" proved
+doorapi.adb:44:22: info: initialization of constant without variable input "OutMsg.Data" proved
+doorapi.adb:44:22: info: initialization of constant without variable input "OutMsg.Length" proved
 doorapi.adb:48:10: info: initialization of "CommsIsOK" proved
 doorapi.adb:50:63: info: initialization of "InMsg.Data" proved
 doorapi.adb:50:63: info: initialization of "InMsg.Length" proved
@@ -1770,9 +1770,9 @@ enrolment.adb:67:55: medium: range check might fail
 enrolment.adb:67:63: medium: range check might fail
 enrolment.adb:71:40: info: initialization of "Result" proved
 enrolment.adb:71:40: info: length check proved
-enrolment.adb:71:43: info: initialization of "TheDesc" proved
+enrolment.adb:71:43: info: initialization of constant with variable input "TheDesc" proved
 enrolment.adb:71:43: info: length check proved
-enrolment.adb:73:23: info: initialization of "TheDesc" proved
+enrolment.adb:73:23: info: initialization of constant with variable input "TheDesc" proved
 enrolment.adb:73:23: info: length check proved
 enrolment.adb:73:23: info: range check proved
 enrolment.adb:75:17: info: initialization of "Result" proved
@@ -1840,7 +1840,7 @@ enrolment.ads:78:22: info: initialization of "DataOK" proved
 enrolment.ads:78:22: medium: postcondition might fail, requires DataOK = KeyStore(KeyStore.privatekeypresent)
 iandatypes.ads:45:19: info: length check proved
 iandatypes.ads:62:47: info: length check proved
-iandatypes.ads:63:35: info: initialization of "NullTemplatePad" proved
+iandatypes.ads:63:35: info: initialization of constant without variable input "NullTemplatePad" proved
 keyboard.adb:75:32: info: initialization of "LocalLength" proved
 keyboard.adb:76:32: info: initialization of "LocalData" proved
 keyboard.ads:47:14: warning: subprogram "Init" has no effect
@@ -1890,16 +1890,16 @@ keystore.adb:116:41: info: length check proved, in call inlined at keystore.adb:
 keystore.adb:116:41: info: length check proved, in call inlined at keystore.adb:694
 keystore.adb:116:41: info: length check proved, in call inlined at keystore.adb:762
 keystore.adb:116:41: info: length check proved, in call inlined at keystore.adb:847
-keystore.adb:116:44: info: initialization of "TheString" proved, in call inlined at keystore.adb:268
-keystore.adb:116:44: info: initialization of "TheString" proved, in call inlined at keystore.adb:276
-keystore.adb:116:44: info: initialization of "TheString" proved, in call inlined at keystore.adb:284
-keystore.adb:116:44: info: initialization of "TheString" proved, in call inlined at keystore.adb:347
-keystore.adb:116:44: info: initialization of "TheString" proved, in call inlined at keystore.adb:355
-keystore.adb:116:44: info: initialization of "TheString" proved, in call inlined at keystore.adb:363
-keystore.adb:116:44: info: initialization of "TheString" proved, in call inlined at keystore.adb:542
-keystore.adb:116:44: info: initialization of "TheString" proved, in call inlined at keystore.adb:694
-keystore.adb:116:44: info: initialization of "TheString" proved, in call inlined at keystore.adb:762
-keystore.adb:116:44: info: initialization of "TheString" proved, in call inlined at keystore.adb:847
+keystore.adb:116:44: info: initialization of constant with variable input "TheString" proved, in call inlined at keystore.adb:268
+keystore.adb:116:44: info: initialization of constant with variable input "TheString" proved, in call inlined at keystore.adb:276
+keystore.adb:116:44: info: initialization of constant with variable input "TheString" proved, in call inlined at keystore.adb:284
+keystore.adb:116:44: info: initialization of constant with variable input "TheString" proved, in call inlined at keystore.adb:347
+keystore.adb:116:44: info: initialization of constant with variable input "TheString" proved, in call inlined at keystore.adb:355
+keystore.adb:116:44: info: initialization of constant with variable input "TheString" proved, in call inlined at keystore.adb:363
+keystore.adb:116:44: info: initialization of constant with variable input "TheString" proved, in call inlined at keystore.adb:542
+keystore.adb:116:44: info: initialization of constant with variable input "TheString" proved, in call inlined at keystore.adb:694
+keystore.adb:116:44: info: initialization of constant with variable input "TheString" proved, in call inlined at keystore.adb:762
+keystore.adb:116:44: info: initialization of constant with variable input "TheString" proved, in call inlined at keystore.adb:847
 keystore.adb:116:44: info: length check proved, in call inlined at keystore.adb:268
 keystore.adb:116:44: info: length check proved, in call inlined at keystore.adb:276
 keystore.adb:116:44: info: length check proved, in call inlined at keystore.adb:284
@@ -1910,16 +1910,16 @@ keystore.adb:116:44: info: length check proved, in call inlined at keystore.adb:
 keystore.adb:116:44: info: length check proved, in call inlined at keystore.adb:694
 keystore.adb:116:44: info: length check proved, in call inlined at keystore.adb:762
 keystore.adb:116:44: info: length check proved, in call inlined at keystore.adb:847
-keystore.adb:118:20: info: initialization of "TheString" proved, in call inlined at keystore.adb:268
-keystore.adb:118:20: info: initialization of "TheString" proved, in call inlined at keystore.adb:276
-keystore.adb:118:20: info: initialization of "TheString" proved, in call inlined at keystore.adb:284
-keystore.adb:118:20: info: initialization of "TheString" proved, in call inlined at keystore.adb:347
-keystore.adb:118:20: info: initialization of "TheString" proved, in call inlined at keystore.adb:355
-keystore.adb:118:20: info: initialization of "TheString" proved, in call inlined at keystore.adb:363
-keystore.adb:118:20: info: initialization of "TheString" proved, in call inlined at keystore.adb:542
-keystore.adb:118:20: info: initialization of "TheString" proved, in call inlined at keystore.adb:694
-keystore.adb:118:20: info: initialization of "TheString" proved, in call inlined at keystore.adb:762
-keystore.adb:118:20: info: initialization of "TheString" proved, in call inlined at keystore.adb:847
+keystore.adb:118:20: info: initialization of constant with variable input "TheString" proved, in call inlined at keystore.adb:268
+keystore.adb:118:20: info: initialization of constant with variable input "TheString" proved, in call inlined at keystore.adb:276
+keystore.adb:118:20: info: initialization of constant with variable input "TheString" proved, in call inlined at keystore.adb:284
+keystore.adb:118:20: info: initialization of constant with variable input "TheString" proved, in call inlined at keystore.adb:347
+keystore.adb:118:20: info: initialization of constant with variable input "TheString" proved, in call inlined at keystore.adb:355
+keystore.adb:118:20: info: initialization of constant with variable input "TheString" proved, in call inlined at keystore.adb:363
+keystore.adb:118:20: info: initialization of constant with variable input "TheString" proved, in call inlined at keystore.adb:542
+keystore.adb:118:20: info: initialization of constant with variable input "TheString" proved, in call inlined at keystore.adb:694
+keystore.adb:118:20: info: initialization of constant with variable input "TheString" proved, in call inlined at keystore.adb:762
+keystore.adb:118:20: info: initialization of constant with variable input "TheString" proved, in call inlined at keystore.adb:847
 keystore.adb:118:20: info: length check proved, in call inlined at keystore.adb:268
 keystore.adb:118:20: info: length check proved, in call inlined at keystore.adb:276
 keystore.adb:118:20: info: length check proved, in call inlined at keystore.adb:284
@@ -1969,7 +1969,7 @@ keystore.adb:204:17: info: initialization of "Result" proved
 keystore.adb:216:10: info: initialization of "RetValIni" proved
 keystore.adb:218:51: info: division check proved
 keystore.adb:221:24: info: initialization of "LoopMax" proved
-keystore.adb:221:24: info: initialization of "R29b" proved
+keystore.adb:221:24: info: initialization of constant with variable input "R29b" proved
 keystore.adb:222:13: info: loop invariant initialization proved
 keystore.adb:222:13: info: loop invariant preservation proved
 keystore.adb:223:16: info: initialization of "LoopMax" proved
@@ -2073,9 +2073,9 @@ keystore.adb:687:23: info: initialization of "RetVal" proved
 keystore.adb:689:22: info: initialization of "RetVal" proved
 keystore.adb:690:21: medium: precondition might fail
 keystore.adb:694:36: info: initialization of "C117b" proved
-keystore.adb:741:29: info: initialization of "Mechanism" proved
+keystore.adb:741:29: info: initialization of constant without variable input "Mechanism" proved
 keystore.adb:746:10: info: initialization of "Digested" proved
-keystore.adb:749:39: info: initialization of "Mechanism" proved
+keystore.adb:749:39: info: initialization of constant without variable input "Mechanism" proved
 keystore.adb:750:39: info: initialization of "ThePrivateKeyH" proved
 keystore.adb:751:39: info: initialization of "TheDigest.DigestID" proved
 keystore.adb:751:39: info: initialization of "TheDigest.Pad" proved
@@ -2156,8 +2156,8 @@ latch.ads:150:22: info: postcondition proved
 latchapi.adb:95:37: medium: length check might fail
 latchapi.adb:95:37: warning: assuming "Overwrite" has no effect on global items
 latchapi.adb:95:37: warning: no Global contract available for "Overwrite"
-latchapi.adb:104:41: info: initialization of "OutMsg.Data" proved
-latchapi.adb:104:41: info: initialization of "OutMsg.Length" proved
+latchapi.adb:104:41: info: initialization of constant without variable input "OutMsg.Data" proved
+latchapi.adb:104:41: info: initialization of constant without variable input "OutMsg.Length" proved
 latchapi.adb:105:29: warning: unused assignment to "InMsg"
 latchapi.adb:108:10: info: initialization of "CommsIsOK" proved
 latchapi.adb:112:20: info: initialization of "IsLocked" proved
@@ -2165,8 +2165,8 @@ latchapi.adb:112:36: info: initialization of "ReadBackOK" proved
 latchapi.adb:129:37: medium: length check might fail
 latchapi.adb:129:37: warning: assuming "Overwrite" has no effect on global items
 latchapi.adb:129:37: warning: no Global contract available for "Overwrite"
-latchapi.adb:139:22: info: initialization of "OutMsg.Data" proved
-latchapi.adb:139:22: info: initialization of "OutMsg.Length" proved
+latchapi.adb:139:22: info: initialization of constant without variable input "OutMsg.Data" proved
+latchapi.adb:139:22: info: initialization of constant without variable input "OutMsg.Length" proved
 latchapi.adb:140:10: warning: unused assignment to "InMsg"
 latchapi.adb:143:10: info: initialization of "CommsIsOK" proved
 latchapi.adb:146:24: info: initialization of "IsLocked" proved
@@ -2235,10 +2235,10 @@ screen.adb:434:39: info: length check proved, in call inlined at screen.adb:591
 screen.adb:434:39: info: length check proved, in call inlined at screen.adb:597
 screen.adb:434:39: info: length check proved, in call inlined at screen.adb:603
 screen.adb:434:39: info: length check proved, in call inlined at screen.adb:609
-screen.adb:435:58: info: initialization of "C111b" proved, in call inlined at screen.adb:591
-screen.adb:435:58: info: initialization of "C121b" proved, in call inlined at screen.adb:597
-screen.adb:435:58: info: initialization of "C131b" proved, in call inlined at screen.adb:603
-screen.adb:435:58: info: initialization of "C141b" proved, in call inlined at screen.adb:609
+screen.adb:435:58: info: initialization of constant with variable input "C111b" proved, in call inlined at screen.adb:591
+screen.adb:435:58: info: initialization of constant with variable input "C121b" proved, in call inlined at screen.adb:597
+screen.adb:435:58: info: initialization of constant with variable input "C131b" proved, in call inlined at screen.adb:603
+screen.adb:435:58: info: initialization of constant with variable input "C141b" proved, in call inlined at screen.adb:609
 screen.adb:437:17: info: initialization of "Str" proved, in call inlined at screen.adb:591
 screen.adb:437:17: info: initialization of "Str" proved, in call inlined at screen.adb:597
 screen.adb:437:17: info: initialization of "Str" proved, in call inlined at screen.adb:603
@@ -2251,10 +2251,10 @@ screen.adb:437:37: medium: array index check might fail, in call inlined at scre
 screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:597
 screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:603
 screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:609
-screen.adb:438:13: info: initialization of "C111b" proved, in call inlined at screen.adb:591
-screen.adb:438:13: info: initialization of "C121b" proved, in call inlined at screen.adb:597
-screen.adb:438:13: info: initialization of "C131b" proved, in call inlined at screen.adb:603
-screen.adb:438:13: info: initialization of "C141b" proved, in call inlined at screen.adb:609
+screen.adb:438:13: info: initialization of constant with variable input "C111b" proved, in call inlined at screen.adb:591
+screen.adb:438:13: info: initialization of constant with variable input "C121b" proved, in call inlined at screen.adb:597
+screen.adb:438:13: info: initialization of constant with variable input "C131b" proved, in call inlined at screen.adb:603
+screen.adb:438:13: info: initialization of constant with variable input "C141b" proved, in call inlined at screen.adb:609
 screen.adb:440:41: info: initialization of "Str" proved, in call inlined at screen.adb:591
 screen.adb:440:41: info: initialization of "Str" proved, in call inlined at screen.adb:597
 screen.adb:440:41: info: initialization of "Str" proved, in call inlined at screen.adb:603
@@ -2721,13 +2721,13 @@ tismain.adb:1542:23: medium: precondition might fail
 tismain.adb:1549:22: medium: precondition might fail
 tokenreader.adb:51:37: info: length check proved
 tokenreader.adb:62:23: info: length check proved
-tokenreader.adb:62:34: info: initialization of "NoReaderInfo.CurrentStatus" proved
-tokenreader.adb:62:34: info: initialization of "NoReaderInfo.LastFault" proved
-tokenreader.adb:62:34: info: initialization of "NoReaderInfo.Name" proved
-tokenreader.adb:62:34: info: initialization of "NoReaderInfo.TokenConnected" proved
-tokenreader.adb:62:34: info: initialization of "NoReaderInfo.TokenHandle" proved
-tokenreader.adb:62:34: info: initialization of "NoReaderInfo.TokenID" proved
-tokenreader.adb:62:34: info: initialization of "NoReaderInfo.TokenTry" proved
+tokenreader.adb:62:34: info: initialization of constant without variable input "NoReaderInfo.CurrentStatus" proved
+tokenreader.adb:62:34: info: initialization of constant without variable input "NoReaderInfo.LastFault" proved
+tokenreader.adb:62:34: info: initialization of constant without variable input "NoReaderInfo.Name" proved
+tokenreader.adb:62:34: info: initialization of constant without variable input "NoReaderInfo.TokenConnected" proved
+tokenreader.adb:62:34: info: initialization of constant without variable input "NoReaderInfo.TokenHandle" proved
+tokenreader.adb:62:34: info: initialization of constant without variable input "NoReaderInfo.TokenID" proved
+tokenreader.adb:62:34: info: initialization of constant without variable input "NoReaderInfo.TokenTry" proved
 tokenreader.adb:67:23: info: length check proved
 tokenreader.adb:67:33: info: length check proved
 tokenreader.adb:68:33: info: length check proved
@@ -2740,9 +2740,9 @@ tokenreader.adb:174:55: medium: range check might fail
 tokenreader.adb:175:12: medium: range check might fail
 tokenreader.adb:175:56: medium: range check might fail
 tokenreader.adb:180:43: info: length check proved
-tokenreader.adb:180:46: info: initialization of "FullString" proved
+tokenreader.adb:180:46: info: initialization of constant with variable input "FullString" proved
 tokenreader.adb:180:46: medium: length check might fail
-tokenreader.adb:182:23: info: initialization of "FullString" proved
+tokenreader.adb:182:23: info: initialization of constant with variable input "FullString" proved
 tokenreader.adb:182:23: info: length check proved
 tokenreader.adb:182:23: medium: range check might fail
 tokenreader.adb:188:07: info: initialization of "Result" proved
@@ -2754,7 +2754,7 @@ tokenreader.adb:268:44: info: initialization of "NumberReaders" proved
 tokenreader.adb:271:10: info: initialization of "ResponseCode" proved
 tokenreader.adb:273:13: info: initialization of "NumberReaders" proved
 tokenreader.adb:278:17: info: range check proved
-tokenreader.adb:279:32: info: initialization of "R22b" proved
+tokenreader.adb:279:32: info: initialization of constant with variable input "R22b" proved
 tokenreader.adb:279:46: info: initialization of "NumberReaders" proved
 tokenreader.adb:279:46: info: range check proved
 tokenreader.adb:281:16: info: loop invariant initialization proved
@@ -2997,16 +2997,16 @@ usertoken.adb:693:37: info: length check proved, in call inlined at usertoken.ad
 usertoken.adb:693:37: info: length check proved, in call inlined at usertoken.adb:958
 usertoken.adb:693:37: info: length check proved, in call inlined at usertoken.adb:961
 usertoken.adb:693:37: info: length check proved, in call inlined at usertoken.adb:985
-usertoken.adb:693:40: info: initialization of "C16b" proved, in call inlined at usertoken.adb:737
-usertoken.adb:693:40: info: initialization of "C25b" proved, in call inlined at usertoken.adb:740
-usertoken.adb:693:40: info: initialization of "C34b" proved, in call inlined at usertoken.adb:743
-usertoken.adb:693:40: info: initialization of "C43b" proved, in call inlined at usertoken.adb:846
-usertoken.adb:693:40: info: initialization of "C52b" proved, in call inlined at usertoken.adb:849
-usertoken.adb:693:40: info: initialization of "C61b" proved, in call inlined at usertoken.adb:852
-usertoken.adb:693:40: info: initialization of "C70b" proved, in call inlined at usertoken.adb:955
-usertoken.adb:693:40: info: initialization of "C79b" proved, in call inlined at usertoken.adb:958
-usertoken.adb:693:40: info: initialization of "C88b" proved, in call inlined at usertoken.adb:961
-usertoken.adb:693:40: info: initialization of "C97b" proved, in call inlined at usertoken.adb:985
+usertoken.adb:693:40: info: initialization of constant without variable input "C16b" proved, in call inlined at usertoken.adb:737
+usertoken.adb:693:40: info: initialization of constant without variable input "C25b" proved, in call inlined at usertoken.adb:740
+usertoken.adb:693:40: info: initialization of constant without variable input "C34b" proved, in call inlined at usertoken.adb:743
+usertoken.adb:693:40: info: initialization of constant without variable input "C43b" proved, in call inlined at usertoken.adb:846
+usertoken.adb:693:40: info: initialization of constant without variable input "C52b" proved, in call inlined at usertoken.adb:849
+usertoken.adb:693:40: info: initialization of constant without variable input "C61b" proved, in call inlined at usertoken.adb:852
+usertoken.adb:693:40: info: initialization of constant without variable input "C70b" proved, in call inlined at usertoken.adb:955
+usertoken.adb:693:40: info: initialization of constant without variable input "C79b" proved, in call inlined at usertoken.adb:958
+usertoken.adb:693:40: info: initialization of constant without variable input "C88b" proved, in call inlined at usertoken.adb:961
+usertoken.adb:693:40: info: initialization of constant without variable input "C97b" proved, in call inlined at usertoken.adb:985
 usertoken.adb:693:40: medium: length check might fail, in call inlined at usertoken.adb:737
 usertoken.adb:693:40: medium: length check might fail, in call inlined at usertoken.adb:740
 usertoken.adb:693:40: medium: length check might fail, in call inlined at usertoken.adb:743
@@ -3017,16 +3017,16 @@ usertoken.adb:693:40: medium: length check might fail, in call inlined at userto
 usertoken.adb:693:40: medium: length check might fail, in call inlined at usertoken.adb:958
 usertoken.adb:693:40: medium: length check might fail, in call inlined at usertoken.adb:961
 usertoken.adb:693:40: medium: length check might fail, in call inlined at usertoken.adb:985
-usertoken.adb:695:23: info: initialization of "C16b" proved, in call inlined at usertoken.adb:737
-usertoken.adb:695:23: info: initialization of "C25b" proved, in call inlined at usertoken.adb:740
-usertoken.adb:695:23: info: initialization of "C34b" proved, in call inlined at usertoken.adb:743
-usertoken.adb:695:23: info: initialization of "C43b" proved, in call inlined at usertoken.adb:846
-usertoken.adb:695:23: info: initialization of "C52b" proved, in call inlined at usertoken.adb:849
-usertoken.adb:695:23: info: initialization of "C61b" proved, in call inlined at usertoken.adb:852
-usertoken.adb:695:23: info: initialization of "C70b" proved, in call inlined at usertoken.adb:955
-usertoken.adb:695:23: info: initialization of "C79b" proved, in call inlined at usertoken.adb:958
-usertoken.adb:695:23: info: initialization of "C88b" proved, in call inlined at usertoken.adb:961
-usertoken.adb:695:23: info: initialization of "C97b" proved, in call inlined at usertoken.adb:985
+usertoken.adb:695:23: info: initialization of constant without variable input "C16b" proved, in call inlined at usertoken.adb:737
+usertoken.adb:695:23: info: initialization of constant without variable input "C25b" proved, in call inlined at usertoken.adb:740
+usertoken.adb:695:23: info: initialization of constant without variable input "C34b" proved, in call inlined at usertoken.adb:743
+usertoken.adb:695:23: info: initialization of constant without variable input "C43b" proved, in call inlined at usertoken.adb:846
+usertoken.adb:695:23: info: initialization of constant without variable input "C52b" proved, in call inlined at usertoken.adb:849
+usertoken.adb:695:23: info: initialization of constant without variable input "C61b" proved, in call inlined at usertoken.adb:852
+usertoken.adb:695:23: info: initialization of constant without variable input "C70b" proved, in call inlined at usertoken.adb:955
+usertoken.adb:695:23: info: initialization of constant without variable input "C79b" proved, in call inlined at usertoken.adb:958
+usertoken.adb:695:23: info: initialization of constant without variable input "C88b" proved, in call inlined at usertoken.adb:961
+usertoken.adb:695:23: info: initialization of constant without variable input "C97b" proved, in call inlined at usertoken.adb:985
 usertoken.adb:695:23: info: length check proved, in call inlined at usertoken.adb:737
 usertoken.adb:695:23: info: length check proved, in call inlined at usertoken.adb:740
 usertoken.adb:695:23: info: length check proved, in call inlined at usertoken.adb:743

@@ -13,7 +13,7 @@ number_theory.adb:23:32: info: initialization of "Temp" proved
 number_theory.adb:25:23: info: initialization of "Old" proved
 number_theory.adb:27:14: info: initialization of "Result" proved
 number_theory.adb:33:09: info: length check proved
-number_theory.adb:47:14: info: initialization of "Lookup_Table" proved
+number_theory.adb:47:14: info: initialization of constant without variable input "Lookup_Table" proved
 number_theory.ads:20:32: info: range check proved
 number_theory.ads:20:37: medium: overflow check might fail
 number_theory.ads:20:45: info: range check proved

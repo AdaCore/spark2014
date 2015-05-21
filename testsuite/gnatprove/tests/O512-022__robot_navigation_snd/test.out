@@ -1,26 +1,26 @@
-algorithm.adb:90:21: info: initialization of "deltaAngle" proved
+algorithm.adb:90:21: info: initialization of constant with variable input "deltaAngle" proved
 algorithm.adb:92:65: info: division check proved
 algorithm.adb:92:65: info: overflow check proved
-algorithm.adb:108:30: info: initialization of "deltaAngle" proved
+algorithm.adb:108:30: info: initialization of constant with variable input "deltaAngle" proved
 algorithm.adb:108:44: medium: precondition might fail
 algorithm.adb:108:64: info: division check proved
 algorithm.adb:108:64: info: overflow check proved
 algorithm.adb:109:49: medium: divide by zero might fail
 algorithm.adb:109:49: medium: overflow check might fail
 algorithm.adb:109:51: info: precondition proved
-algorithm.adb:109:56: info: initialization of "deltaAngle" proved
+algorithm.adb:109:56: info: initialization of constant with variable input "deltaAngle" proved
 algorithm.adb:111:42: info: division check proved
 algorithm.adb:111:42: info: overflow check proved
 algorithm.adb:111:49: medium: divide by zero might fail
 algorithm.adb:111:49: medium: overflow check might fail
 algorithm.adb:111:51: info: precondition proved
-algorithm.adb:111:56: info: initialization of "deltaAngle" proved
+algorithm.adb:111:56: info: initialization of constant with variable input "deltaAngle" proved
 algorithm.adb:114:43: info: initialization of "d" proved
 algorithm.adb:150:63: info: range check proved
 algorithm.adb:150:70: medium: overflow check might fail
-algorithm.adb:153:19: info: initialization of "deltaAngle" proved
+algorithm.adb:153:19: info: initialization of constant with variable input "deltaAngle" proved
 algorithm.adb:154:70: medium: overflow check might fail
-algorithm.adb:155:31: info: initialization of "posGapCorner" proved
+algorithm.adb:155:31: info: initialization of constant with variable input "posGapCorner" proved
 algorithm.adb:184:07: info: assertion proved
 algorithm.adb:186:07: info: precondition proved
 algorithm.adb:195:36: info: initialization of "rayR.first" proved
@@ -35,7 +35,7 @@ algorithm.adb:195:121: medium: overflow check might fail
 algorithm.adb:195:124: info: precondition proved
 algorithm.adb:195:138: info: initialization of "rayR.second" proved
 algorithm.adb:195:151: info: initialization of "rayL.second" proved
-algorithm.adb:197:13: info: initialization of "dist" proved
+algorithm.adb:197:13: info: initialization of constant with variable input "dist" proved
 algorithm.adb:198:13: info: precondition proved
 algorithm.adb:198:37: info: initialization of "rayL.second" proved
 algorithm.adb:202:07: info: assertion proved
@@ -48,13 +48,13 @@ algorithm.adb:209:18: info: initialization of "rayL.second" proved
 algorithm.adb:213:38: info: initialization of "rayL.first" proved
 algorithm.adb:213:49: medium: overflow check might fail
 algorithm.adb:213:51: info: initialization of "rayR.first" proved
-algorithm.adb:216:17: info: initialization of "dist" proved
+algorithm.adb:216:17: info: initialization of constant with variable input "dist" proved
 algorithm.adb:216:47: info: initialization of "rayL.first" proved
 algorithm.adb:216:79: info: initialization of "rayR.first" proved
 algorithm.adb:217:16: info: precondition proved
 algorithm.adb:217:40: info: initialization of "rayR.second" proved
 algorithm.adb:217:53: info: initialization of "rayR.first" proved
-algorithm.adb:218:20: info: initialization of "dist" proved
+algorithm.adb:218:20: info: initialization of constant with variable input "dist" proved
 algorithm.adb:218:51: info: initialization of "rayR.first" proved
 algorithm.adb:219:16: info: precondition proved
 algorithm.adb:219:40: info: initialization of "rayL.second" proved
@@ -71,7 +71,7 @@ algorithm.adb:231:121: medium: overflow check might fail
 algorithm.adb:231:124: info: precondition proved
 algorithm.adb:231:138: info: initialization of "rayR.second" proved
 algorithm.adb:231:151: info: initialization of "rayL.second" proved
-algorithm.adb:234:13: info: initialization of "dist" proved
+algorithm.adb:234:13: info: initialization of constant with variable input "dist" proved
 algorithm.adb:235:13: info: precondition proved
 algorithm.adb:235:37: info: initialization of "rayR.second" proved
 algorithm.adb:246:17: info: postcondition proved
@@ -193,28 +193,28 @@ algorithm.adb:409:42: info: precondition proved
 algorithm.adb:409:64: info: initialization of "iR" proved
 algorithm.adb:410:40: info: discriminant check proved
 algorithm.adb:411:54: info: initialization of "iR" proved
-algorithm.adb:411:67: info: initialization of "iL" proved
+algorithm.adb:411:67: info: initialization of constant with variable input "iL" proved
 algorithm.adb:415:34: info: precondition proved
 algorithm.adb:415:56: info: initialization of "iR" proved
 algorithm.adb:421:16: info: precondition proved
-algorithm.adb:421:38: info: initialization of "iL" proved
+algorithm.adb:421:38: info: initialization of constant with variable input "iL" proved
 algorithm.adb:422:42: info: precondition proved
-algorithm.adb:422:64: info: initialization of "iL" proved
+algorithm.adb:422:64: info: initialization of constant with variable input "iL" proved
 algorithm.adb:427:38: info: precondition proved
-algorithm.adb:427:60: info: initialization of "iL" proved
+algorithm.adb:427:60: info: initialization of constant with variable input "iL" proved
 algorithm.adb:427:74: info: precondition proved
 algorithm.adb:428:39: info: precondition proved
 algorithm.adb:428:61: info: initialization of "Candidate_Valley_IDS.rising" proved
 algorithm.adb:428:81: info: discriminant check proved
 algorithm.adb:428:100: info: precondition proved
 algorithm.adb:430:46: info: discriminant check proved
-algorithm.adb:431:60: info: initialization of "iL" proved
+algorithm.adb:431:60: info: initialization of constant with variable input "iL" proved
 algorithm.adb:431:73: info: initialization of "iR" proved
 algorithm.adb:442:43: info: discriminant check proved
-algorithm.adb:443:57: info: initialization of "iL" proved
+algorithm.adb:443:57: info: initialization of constant with variable input "iL" proved
 algorithm.adb:443:70: info: initialization of "iR" proved
 algorithm.adb:448:34: info: precondition proved
-algorithm.adb:448:56: info: initialization of "iL" proved
+algorithm.adb:448:56: info: initialization of constant with variable input "iL" proved
 algorithm.adb:463:39: info: precondition proved
 algorithm.adb:466:34: info: precondition proved
 algorithm.adb:466:56: info: initialization of "Candidate_Valley_IDS.rising" proved
@@ -374,7 +374,7 @@ algorithm.adb:746:93: info: initialization of "pBestValley.value.risingGap.dista
 algorithm.adb:746:104: info: discriminant check proved
 algorithm.adb:757:33: info: initialization of "pBestValley.value.risingGap.bearing" proved
 algorithm.adb:757:44: info: discriminant check proved
-algorithm.adb:760:33: info: initialization of "safetyDeltaAngle" proved
+algorithm.adb:760:33: info: initialization of constant with variable input "safetyDeltaAngle" proved
 algorithm.adb:763:13: info: assertion proved
 algorithm.adb:763:37: info: initialization of "distToClosestObstacle" proved
 algorithm.adb:766:35: info: initialization of "pBestValley.value.risingGap.bearing" proved
@@ -383,7 +383,7 @@ algorithm.adb:766:88: info: initialization of "pBestValley.value.risingGap.iDir"
 algorithm.adb:766:99: info: discriminant check proved
 algorithm.adb:766:115: info: range check proved
 algorithm.adb:766:122: medium: overflow check might fail
-algorithm.adb:766:131: info: initialization of "safetyDeltaAngle" proved
+algorithm.adb:766:131: info: initialization of constant with variable input "safetyDeltaAngle" proved
 algorithm.adb:768:16: info: initialization of "pBestValley.value.risingGap.iDir" proved
 algorithm.adb:768:27: info: discriminant check proved
 algorithm.adb:769:42: info: initialization of "pBestValley.value.risingGap.bearing" proved

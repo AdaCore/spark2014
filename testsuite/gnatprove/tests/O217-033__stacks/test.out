@@ -42,6 +42,6 @@ stackp.ads:86:35: info: range check proved
 stackp.ads:90:20: info: range check proved
 stackp.ads:90:46: info: range check proved
 stackp.ads:90:49: info: range check proved
-stackp.ads:90:64: info: initialization of "R37s" proved
+stackp.ads:90:64: info: initialization of constant with variable input "R37s" proved
 stackp.ads:91:20: info: range check proved
-stackp.ads:91:41: info: initialization of "R40s" proved
+stackp.ads:91:41: info: initialization of constant with variable input "R40s" proved

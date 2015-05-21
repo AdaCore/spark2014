@@ -4,8 +4,8 @@ list.adb:18:07: info: initialization of private part of "Res" proved
 list.adb:18:14: info: initialization of private part of "Res" proved
 list.adb:19:07: info: precondition proved
 list.adb:19:14: info: initialization of private part of "Res" proved
-list.adb:21:16: info: initialization of "First" proved
-list.adb:21:25: info: initialization of "Last" proved
+list.adb:21:16: info: initialization of constant with variable input "First" proved
+list.adb:21:25: info: initialization of constant with variable input "Last" proved
 list.adb:22:10: info: precondition proved
 list.adb:22:16: info: initialization of "S" proved
 list.adb:22:19: info: precondition proved
@@ -14,23 +14,23 @@ list.adb:23:10: info: loop invariant initialization proved
 list.adb:23:10: info: loop invariant preservation proved
 list.adb:25:23: info: initialization of "S" proved
 list.adb:25:35: info: overflow check proved
-list.adb:25:37: info: initialization of "First" proved
+list.adb:25:37: info: initialization of constant with variable input "First" proved
 list.adb:25:43: info: overflow check proved
 list.adb:28:35: info: overflow check proved
 list.adb:28:43: info: index check proved
 list.adb:28:43: info: overflow check proved
 list.adb:28:50: info: precondition proved
 list.adb:28:62: info: range check proved
-list.adb:31:17: info: initialization of "First" proved
-list.adb:31:26: info: initialization of "Last" proved
+list.adb:31:17: info: initialization of constant with variable input "First" proved
+list.adb:31:26: info: initialization of constant with variable input "Last" proved
 list.adb:32:10: info: loop invariant initialization proved
 list.adb:32:10: info: loop invariant preservation proved
 list.adb:34:22: info: precondition proved
 list.adb:34:30: info: initialization of private part of "Res" proved
 list.adb:34:40: info: overflow check proved
-list.adb:34:42: info: initialization of "First" proved
+list.adb:34:42: info: initialization of constant with variable input "First" proved
 list.adb:36:23: info: initialization of "S" proved
-list.adb:36:33: info: initialization of "Last" proved
+list.adb:36:33: info: initialization of constant with variable input "Last" proved
 list.adb:36:38: info: overflow check proved
 list.adb:36:42: info: overflow check proved
 list.adb:38:39: info: overflow check proved

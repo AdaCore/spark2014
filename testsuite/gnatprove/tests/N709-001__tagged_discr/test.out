@@ -28,17 +28,17 @@ tagged_discr.adb:12:08: info: discriminant check proved
 tagged_discr.adb:15:14: info: discriminant check proved
 tagged_discr.adb:17:14: info: discriminant check proved
 tagged_discr.adb:23:08: info: discriminant check proved
-tagged_discr.adb:23:13: info: initialization of "R7b.X" proved
-tagged_discr.adb:23:13: info: initialization of "R7b.Y" proved
-tagged_discr.adb:23:13: info: initialization of "R7b.Z" proved
+tagged_discr.adb:23:13: info: initialization of constant without variable input "R7b.X" proved
+tagged_discr.adb:23:13: info: initialization of constant without variable input "R7b.Y" proved
+tagged_discr.adb:23:13: info: initialization of constant without variable input "R7b.Z" proved
 tagged_discr.adb:28:08: info: discriminant check proved
 tagged_discr.adb:31:14: info: discriminant check proved
 tagged_discr.adb:33:14: info: discriminant check proved
 tagged_discr.adb:35:08: info: discriminant check proved
 tagged_discr.adb:40:08: info: discriminant check proved
-tagged_discr.adb:40:13: info: initialization of "R12b.X" proved
-tagged_discr.adb:40:13: info: initialization of "R12b.Y" proved
-tagged_discr.adb:40:13: info: initialization of "R12b.Z" proved
+tagged_discr.adb:40:13: info: initialization of constant without variable input "R12b.X" proved
+tagged_discr.adb:40:13: info: initialization of constant without variable input "R12b.Y" proved
+tagged_discr.adb:40:13: info: initialization of constant without variable input "R12b.Z" proved
 tagged_discr.adb:46:08: info: discriminant check proved
 tagged_discr.adb:47:08: info: discriminant check proved
 tagged_discr.adb:48:08: info: discriminant check proved

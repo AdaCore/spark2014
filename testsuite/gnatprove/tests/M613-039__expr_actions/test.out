@@ -2,8 +2,8 @@ list.adb:17:35: info: precondition proved
 list.adb:18:35: info: precondition proved
 list.adb:20:07: info: initialization of private part of "Res" proved
 list.adb:20:14: info: initialization of private part of "Res" proved
-list.adb:22:16: info: initialization of "First" proved
-list.adb:22:25: info: initialization of "Last" proved
+list.adb:22:16: info: initialization of constant with variable input "First" proved
+list.adb:22:25: info: initialization of constant with variable input "Last" proved
 list.adb:23:10: medium: precondition might fail
 list.adb:23:16: info: initialization of "S" proved
 list.adb:23:19: info: precondition proved
@@ -12,13 +12,13 @@ list.adb:24:10: medium: loop invariant might fail after first iteration
 list.adb:24:10: medium: loop invariant might fail in first iteration
 list.adb:25:23: info: initialization of "S" proved
 list.adb:25:35: info: overflow check proved
-list.adb:25:37: info: initialization of "First" proved
+list.adb:25:37: info: initialization of constant with variable input "First" proved
 list.adb:25:43: info: overflow check proved
 list.adb:26:54: medium: array index check might fail
 list.adb:26:59: info: precondition proved
 list.adb:26:71: info: range check proved
-list.adb:29:17: info: initialization of "First" proved
-list.adb:29:26: info: initialization of "Last" proved
+list.adb:29:17: info: initialization of constant with variable input "First" proved
+list.adb:29:26: info: initialization of constant with variable input "Last" proved
 list.adb:30:10: medium: precondition might fail
 list.adb:30:18: info: initialization of private part of "Res" proved
 list.adb:30:23: medium: precondition might fail
@@ -28,14 +28,14 @@ list.adb:31:15: info: initialization of "S" proved
 list.adb:32:10: medium: loop invariant might fail after first iteration
 list.adb:32:10: medium: loop invariant might fail in first iteration
 list.adb:33:23: info: initialization of "S" proved
-list.adb:33:33: info: initialization of "Last" proved
+list.adb:33:33: info: initialization of constant with variable input "Last" proved
 list.adb:33:38: info: overflow check proved
-list.adb:34:21: info: initialization of "R16b" proved
+list.adb:34:21: info: initialization of constant with variable input "R16b" proved
 list.adb:34:21: medium: range check might fail
 list.adb:34:26: info: initialization of "S" proved
-list.adb:34:30: info: initialization of "First" proved
+list.adb:34:30: info: initialization of constant with variable input "First" proved
 list.adb:34:44: info: overflow check proved
-list.adb:35:24: info: initialization of "R20b" proved
+list.adb:35:24: info: initialization of constant without variable input "R20b" proved
 list.adb:35:24: medium: range check might fail
 list.adb:35:58: info: overflow check proved
 list.adb:37:15: medium: precondition might fail

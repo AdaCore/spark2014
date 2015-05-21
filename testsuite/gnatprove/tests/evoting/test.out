@@ -21,15 +21,15 @@ evoting.adb:65:10: warning: assuming "Get_Line" has no effect on global items
 evoting.adb:65:10: warning: no Global contract available for "Get_Line"
 evoting.adb:65:27: info: initialization of "file" proved
 evoting.adb:66:43: info: initialization of "last" proved
-evoting.adb:66:49: info: initialization of "R17b" proved
 evoting.adb:66:49: info: initialization of "candidates" proved
 evoting.adb:66:49: info: initialization of "current_candidate" proved
+evoting.adb:66:49: info: initialization of constant with variable input "R17b" proved
 evoting.adb:66:49: info: length check proved
 evoting.adb:66:52: info: initialization of "item" proved
 evoting.adb:66:52: info: length check proved
 evoting.adb:66:52: medium: range check might fail
-evoting.adb:66:60: info: initialization of "R20b" proved
 evoting.adb:66:60: info: initialization of "last" proved
+evoting.adb:66:60: info: initialization of constant with variable input "R20b" proved
 evoting.adb:69:07: warning: assuming "Close" has no effect on global items
 evoting.adb:69:07: warning: no Global contract available for "Close"
 evoting.adb:69:07: warning: statement has no effect

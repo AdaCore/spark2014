@@ -6,14 +6,14 @@ const.adb:3:26: info: overflow check proved
 const.adb:3:30: medium: overflow check might fail
 const.adb:3:34: info: overflow check proved
 const.adb:3:38: info: overflow check proved
-const.ads:9:04: info: initialization of "A" proved
-const.ads:10:04: info: initialization of "B" proved
+const.ads:9:04: info: initialization of constant with variable input "A" proved
+const.ads:10:04: info: initialization of constant with variable input "B" proved
 const.ads:10:33: info: precondition proved
-const.ads:11:04: info: initialization of "C" proved
-const.ads:11:28: info: initialization of "B" proved
+const.ads:11:04: info: initialization of constant with variable input "C" proved
+const.ads:11:28: info: initialization of constant with variable input "B" proved
 const.ads:12:33: info: precondition proved
 const.ads:15:33: info: precondition proved
-const2.adb:7:04: medium: "C" needs to be a constituent of some state abstraction
+const2.adb:7:04: medium: constant with variable input "C" needs to be a constituent of some state abstraction
 const2.adb:7:28: info: initialization of "V" proved
 const2.adb:7:28: info: precondition proved
 const2.adb:13:14: medium: overflow check might fail
@@ -28,21 +28,21 @@ const3.adb:21:22: info: initialization of "L" proved
 const3.adb:22:22: info: initialization of "R" proved
 const3.adb:31:15: info: initialization of "R" proved
 const3.adb:31:17: medium: overflow check might fail
-const3.adb:38:04: info: initialization of "C1" proved
-const3.adb:38:04: info: initialization of "C2" proved
-const4.adb:4:04: info: initialization of "C2" constituent of "State" proved
+const3.adb:38:04: info: initialization of constant with variable input "C1" proved
+const3.adb:38:04: info: initialization of constant with variable input "C2" proved
+const4.adb:4:04: info: initialization of constant without variable input "C2" proved
 const4.adb:5:04: info: initialization of "H" constituent of "State" proved
-const4.ads:7:37: high: S must be initialized at elaboration
-const4.ads:9:04: info: initialization of "C" proved
+const4.ads:7:37: high: constant without variable input S must be initialized at elaboration
+const4.ads:9:04: info: initialization of constant without variable input "C" proved
 const4.ads:10:04: info: initialization of "V" proved
-const4.ads:12:13: medium: constant "C" cannot appear in Globals
-const4.ads:15:14: medium: constant "C" cannot appear in Globals
+const4.ads:12:13: medium: constant without variable input "C" cannot appear in Globals
+const4.ads:15:14: medium: constant without variable input "C" cannot appear in Globals
 const4.ads:15:17: info: initialization of "X" proved
-const4.ads:16:11: medium: constant "C" cannot appear in Depends
+const4.ads:16:11: medium: constant without variable input "C" cannot appear in Depends
 const4.ads:18:14: info: initialization of "H" constituent of "State" proved
 const4.ads:19:23: medium: missing dependency "Const4.State => Const4.State"
 other.adb:4:49: medium: overflow check might fail
 other.ads:4:04: info: initialization of "V" proved
-other.ads:6:04: info: initialization of "C" proved
+other.ads:6:04: info: initialization of constant with variable input "C" proved
 other.ads:6:28: info: initialization of "V" proved
 other.ads:21:21: info: postcondition proved

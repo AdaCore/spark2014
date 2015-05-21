@@ -10,17 +10,17 @@ pupils.adb:34:26: info: index check proved
 pupils.adb:35:26: info: index check proved
 pupils.adb:36:26: info: index check proved
 pupils.ads:40:17: info: length check proved
-pupils.ads:40:28: info: initialization of "Null_Participation.Score" proved
-pupils.ads:40:28: info: initialization of "Null_Participation.Studying" proved
+pupils.ads:40:28: info: initialization of constant without variable input "Null_Participation.Score" proved
+pupils.ads:40:28: info: initialization of constant without variable input "Null_Participation.Studying" proved
 pupils.ads:46:46: info: length check proved
-pupils.ads:58:28: info: initialization of "Null_Name" proved
-pupils.ads:60:28: info: initialization of "Null_Results" proved
-pupils.ads:76:32: info: initialization of "MaxPupils" proved
+pupils.ads:58:28: info: initialization of constant without variable input "Null_Name" proved
+pupils.ads:60:28: info: initialization of constant without variable input "Null_Results" proved
+pupils.ads:76:32: info: initialization of constant without variable input "MaxPupils" proved
 pupils.ads:76:32: info: length check proved
-pupils.ads:76:43: info: initialization of "Null_Pupil.Forename" proved
-pupils.ads:76:43: info: initialization of "Null_Pupil.Form" proved
-pupils.ads:76:43: info: initialization of "Null_Pupil.Scores" proved
-pupils.ads:76:43: info: initialization of "Null_Pupil.Surname" proved
+pupils.ads:76:43: info: initialization of constant without variable input "Null_Pupil.Forename" proved
+pupils.ads:76:43: info: initialization of constant without variable input "Null_Pupil.Form" proved
+pupils.ads:76:43: info: initialization of constant without variable input "Null_Pupil.Scores" proved
+pupils.ads:76:43: info: initialization of constant without variable input "Null_Pupil.Surname" proved
 pupils.ads:99:44: info: initialization of "Success" proved
 pupils.ads:102:16: medium: postcondition might fail
 pupils.ads:102:25: info: range check proved

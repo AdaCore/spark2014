@@ -11,8 +11,8 @@ stack.adb:52:27: info: index check proved
 stack.adb:52:69: info: index check proved
 stack.adb:53:36: info: index check proved
 stack.adb:53:44: info: initialization of "Temp" proved
-stack.adb:56:16: info: initialization of "Initial_Stack.Pointer" proved
-stack.adb:56:16: info: initialization of "Initial_Stack.S" proved
+stack.adb:56:16: info: initialization of constant without variable input "Initial_Stack.Pointer" proved
+stack.adb:56:16: info: initialization of constant without variable input "Initial_Stack.S" proved
 stack.ads:5:08: info: initial condition proved
 stack.ads:5:29: info: initialization of "My_Stack.Pointer" constituent of "State" proved
 stack.ads:5:29: info: initialization of "My_Stack.S" constituent of "State" proved
@@ -40,8 +40,8 @@ stack_external_prover.adb:42:27: info: index check proved
 stack_external_prover.adb:42:69: medium: array index check might fail
 stack_external_prover.adb:43:36: info: index check proved
 stack_external_prover.adb:43:44: info: initialization of "Temp" proved
-stack_external_prover.adb:46:16: info: initialization of "Initial_Stack.Pointer" proved
-stack_external_prover.adb:46:16: info: initialization of "Initial_Stack.S" proved
+stack_external_prover.adb:46:16: info: initialization of constant without variable input "Initial_Stack.Pointer" proved
+stack_external_prover.adb:46:16: info: initialization of constant without variable input "Initial_Stack.S" proved
 stack_external_prover.ads:5:08: medium: initial condition might fail
 stack_external_prover.ads:5:29: info: initialization of "My_Stack.Pointer" constituent of "State" proved
 stack_external_prover.ads:5:29: info: initialization of "My_Stack.S" constituent of "State" proved
@@ -65,8 +65,8 @@ stack_functional_spec.adb:56:27: info: index check proved
 stack_functional_spec.adb:56:69: info: index check proved
 stack_functional_spec.adb:57:36: info: index check proved
 stack_functional_spec.adb:57:44: info: initialization of "Temp" proved
-stack_functional_spec.adb:60:16: info: initialization of "Initial_Stack.Pointer" proved
-stack_functional_spec.adb:60:16: info: initialization of "Initial_Stack.S" proved
+stack_functional_spec.adb:60:16: info: initialization of constant without variable input "Initial_Stack.Pointer" proved
+stack_functional_spec.adb:60:16: info: initialization of constant without variable input "Initial_Stack.S" proved
 stack_functional_spec.ads:5:08: info: initial condition proved
 stack_functional_spec.ads:5:29: info: initialization of "My_Stack.Pointer" constituent of "State" proved
 stack_functional_spec.ads:5:29: info: initialization of "My_Stack.S" constituent of "State" proved

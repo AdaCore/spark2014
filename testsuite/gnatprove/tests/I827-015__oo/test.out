@@ -34,20 +34,20 @@ instr.adb:40:07: warning: no Global contract available for "Put"
 instr.adb:54:39: medium: overflow check might fail
 instr.adb:54:49: info: division check proved
 instr.adb:55:07: info: range check proved
-instr.adb:55:34: info: initialization of "Lg" proved
+instr.adb:55:34: info: initialization of constant with variable input "Lg" proved
 instr.adb:55:41: info: length check proved
 instr.adb:56:07: medium: range check might fail
-instr.adb:56:29: info: initialization of "Lg" proved
+instr.adb:56:29: info: initialization of constant with variable input "Lg" proved
 instr.adb:56:32: info: overflow check proved
 instr.adb:56:50: info: length check proved
 instr.adb:59:07: warning: assuming "Put" has no effect on global items
 instr.adb:59:07: warning: no Global contract available for "Put"
 instr.adb:60:07: warning: assuming "Put" has no effect on global items
 instr.adb:60:07: warning: no Global contract available for "Put"
-instr.adb:60:12: info: initialization of "S1" proved
+instr.adb:60:12: info: initialization of constant with variable input "S1" proved
 instr.adb:61:07: warning: assuming "Put" has no effect on global items
 instr.adb:61:07: warning: no Global contract available for "Put"
-instr.adb:61:12: info: initialization of "S2" proved
+instr.adb:61:12: info: initialization of constant with variable input "S2" proved
 instr.adb:62:07: warning: assuming "Put" has no effect on global items
 instr.adb:62:07: warning: no Global contract available for "Put"
 instr.adb:68:07: warning: assuming "Put" has no effect on global items

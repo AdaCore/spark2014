@@ -1,48 +1,48 @@
-info_flow_tests.adb:15:21: info: initialization of "C2" proved
-info_flow_tests.adb:16:21: info: initialization of "C1" proved
+info_flow_tests.adb:15:21: info: initialization of constant with variable input "C2" proved
+info_flow_tests.adb:16:21: info: initialization of constant with variable input "C1" proved
 info_flow_tests.adb:20:23: warning: unused initial value of "A"
 info_flow_tests.adb:21:23: warning: unused initial value of "B"
 info_flow_tests.adb:23:06: medium: missing dependency "null => A"
 info_flow_tests.adb:23:06: medium: missing dependency "null => B"
 info_flow_tests.adb:23:23: medium: incorrect dependency "A => B"
 info_flow_tests.adb:24:23: medium: incorrect dependency "B => A"
-info_flow_tests.adb:35:24: "C2" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(13))
-info_flow_tests.adb:36:24: "C1" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(13))
+info_flow_tests.adb:35:24: constant with variable input "C2" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(13))
+info_flow_tests.adb:36:24: constant with variable input "C1" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(13))
 info_flow_tests.adb:55:34: info: initialization of "A" proved
 info_flow_tests.adb:55:37: info: initialization of "B" proved
-info_flow_tests.adb:64:07: info: initialization of "C1" proved
-info_flow_tests.adb:64:07: info: initialization of "C2" proved
-info_flow_tests.adb:86:40: info: initialization of "C3" proved
-info_flow_tests.adb:87:36: info: initialization of "C3" proved
-info_flow_tests.adb:87:40: info: initialization of "C4" proved
-info_flow_tests.adb:89:17: medium: constant "C1" cannot appear in Globals
+info_flow_tests.adb:64:07: info: initialization of constant with variable input "C1" proved
+info_flow_tests.adb:64:07: info: initialization of constant with variable input "C2" proved
+info_flow_tests.adb:86:40: info: initialization of constant with variable input "C3" proved
+info_flow_tests.adb:87:36: info: initialization of constant with variable input "C3" proved
+info_flow_tests.adb:87:40: info: initialization of constant without variable input "C4" proved
+info_flow_tests.adb:89:17: medium: constant without variable input "C1" cannot appear in Globals
 info_flow_tests.adb:89:25: info: initialization of "X" proved
-info_flow_tests.adb:90:29: medium: constant "C2" cannot appear in Globals
-info_flow_tests.adb:90:37: medium: constant "C4" cannot appear in Globals
-info_flow_tests.adb:90:45: medium: constant "C6" cannot appear in Globals
-info_flow_tests.adb:96:10: info: initialization of "C1" proved
-info_flow_tests.adb:96:10: info: initialization of "C2" proved
-info_flow_tests.adb:96:10: info: initialization of "C3" proved
-info_flow_tests.adb:96:10: info: initialization of "C4" proved
-info_flow_tests.adb:96:10: info: initialization of "C5" proved
-info_flow_tests.adb:96:10: info: initialization of "C6" proved
-info_flow_tests.adb:96:10: info: initialization of "C7" proved
-info_flow_tests.adb:117:40: info: initialization of "C3" proved
-info_flow_tests.adb:118:36: info: initialization of "C3" proved
-info_flow_tests.adb:118:40: info: initialization of "C4" proved
+info_flow_tests.adb:90:29: medium: constant without variable input "C2" cannot appear in Globals
+info_flow_tests.adb:90:37: medium: constant without variable input "C4" cannot appear in Globals
+info_flow_tests.adb:90:45: medium: constant without variable input "C6" cannot appear in Globals
+info_flow_tests.adb:96:07: info: initialization of constant with variable input "C3" proved
+info_flow_tests.adb:96:07: info: initialization of constant with variable input "C5" proved
+info_flow_tests.adb:96:07: info: initialization of constant with variable input "C7" proved
+info_flow_tests.adb:96:07: info: initialization of constant without variable input "C1" proved
+info_flow_tests.adb:96:07: info: initialization of constant without variable input "C2" proved
+info_flow_tests.adb:96:07: info: initialization of constant without variable input "C4" proved
+info_flow_tests.adb:96:07: info: initialization of constant without variable input "C6" proved
+info_flow_tests.adb:117:40: info: initialization of constant with variable input "C3" proved
+info_flow_tests.adb:118:36: info: initialization of constant with variable input "C3" proved
+info_flow_tests.adb:118:40: info: initialization of constant without variable input "C4" proved
 info_flow_tests.adb:120:25: info: initialization of "X" proved
-info_flow_tests.adb:127:07: info: initialization of "C3" proved
-info_flow_tests.adb:127:07: info: initialization of "C5" proved
-info_flow_tests.adb:127:07: info: initialization of "C7" proved
+info_flow_tests.adb:127:07: info: initialization of constant with variable input "C3" proved
+info_flow_tests.adb:127:07: info: initialization of constant with variable input "C5" proved
+info_flow_tests.adb:127:07: info: initialization of constant with variable input "C7" proved
 info_flow_tests.adb:132:23: info: initialization of "C" proved
 info_flow_tests.adb:137:25: info: initialization of "X" proved
 info_flow_tests.adb:143:15: info: initialization of "V" proved
-info_flow_tests.adb:146:07: info: initialization of "C1" proved
-info_flow_tests.adb:147:12: info: initialization of "C2" proved
+info_flow_tests.adb:146:07: info: initialization of constant with variable input "C1" proved
+info_flow_tests.adb:147:12: info: initialization of constant with variable input "C2" proved
 info_flow_tests.adb:153:23: info: initialization of "C" proved
-info_flow_tests.adb:164:19: "C2" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(13))
-info_flow_tests.adb:169:07: info: initialization of "C1" proved
-info_flow_tests.adb:170:12: info: initialization of "C2" proved
+info_flow_tests.adb:164:19: constant with variable input "C2" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(13))
+info_flow_tests.adb:169:07: info: initialization of constant with variable input "C1" proved
+info_flow_tests.adb:170:12: info: initialization of constant with variable input "C2" proved
 info_flow_tests.adb:175:23: info: initialization of "C" proved
 info_flow_tests.adb:186:23: info: initialization of "C" proved
 info_flow_tests.adb:202:23: info: initialization of "C" proved
@@ -50,6 +50,18 @@ info_flow_tests.adb:214:23: info: initialization of "C" proved
 info_flow_tests.adb:215:23: info: initialization of "D" proved
 info_flow_tests.adb:216:23: info: initialization of "E" proved
 info_flow_tests.adb:217:23: info: initialization of "F" proved
+info_flow_tests.adb:235:23: warning: unused initial value of "B"
+info_flow_tests.adb:236:23: info: initialization of "C" proved
+info_flow_tests.adb:241:12: medium: constant without variable input "C3" cannot appear in Initializes
+info_flow_tests.adb:245:10: info: initialization of constant with variable input "C2" proved
+info_flow_tests.adb:252:10: info: initialization of constant without variable input "C3" proved
+info_flow_tests.adb:253:10: info: initialization of constant with variable input "C4" proved
+info_flow_tests.adb:257:28: medium: constant without variable input "C5" cannot appear in Initializes
+info_flow_tests.adb:257:35: medium: constant without variable input "C1" cannot appear in Initializes
+info_flow_tests.adb:260:10: info: initialization of constant without variable input "C5" proved
+info_flow_tests.adb:261:10: info: initialization of constant with variable input "C6" proved
+info_flow_tests.adb:261:36: info: initialization of constant with variable input "C2" proved
+info_flow_tests.adb:266:20: info: initialization of constant with variable input "C6" proved
    compilation of info_flow_tests.adb failed
 
 

@@ -1,6 +1,6 @@
-ber.adb:70:09: info: initialization of "Tag_Class_Lookup_Table" proved
-ber.adb:71:09: info: initialization of "Structured_Flag_Lookup_Table" proved
-ber.adb:72:09: info: initialization of "Leading_Number_Lookup_Table" proved
+ber.adb:70:09: info: initialization of constant without variable input "Tag_Class_Lookup_Table" proved
+ber.adb:71:09: info: initialization of constant without variable input "Structured_Flag_Lookup_Table" proved
+ber.adb:72:09: info: initialization of constant without variable input "Leading_Number_Lookup_Table" proved
 ber.adb:120:46: info: initialization of "Tag_Class" proved
 ber.adb:136:46: info: initialization of "Structured_Flag" proved
 ber.adb:150:46: info: initialization of "Tag" proved

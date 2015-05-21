@@ -16,10 +16,10 @@ fb20a00.adb:37:49: medium: overflow check might fail
 fb20a00.adb:39:11: info: initialization of "New_Str" proved
 fb20a00.adb:39:11: medium: range check might fail
 fb20a00.adb:39:21: info: initialization of "Pos" proved
-fb20a00.adb:39:21: info: initialization of "R6B" proved
+fb20a00.adb:39:21: info: initialization of constant with variable input "R6B" proved
 fb20a00.adb:39:28: info: initialization of "Pos" proved
 fb20a00.adb:39:31: medium: overflow check might fail
-fb20a00.adb:39:46: info: initialization of "R7B" proved
+fb20a00.adb:39:46: info: initialization of constant with variable input "R7B" proved
 fb20a00.adb:39:46: info: overflow check proved
 fb20a00.adb:39:54: info: initialization of "New_Sub" proved
 fb20a00.adb:42:17: info: initialization of "Pos" proved

@@ -1,17 +1,17 @@
 list.adb:12:35: info: precondition proved
 list.adb:14:07: info: initialization of private part of "Res" proved
 list.adb:14:14: info: initialization of private part of "Res" proved
-list.adb:15:16: info: initialization of "R4b" proved
+list.adb:15:16: info: initialization of constant with variable input "R4b" proved
 list.adb:15:16: info: precondition proved
-list.adb:15:35: info: initialization of "R5b" proved
+list.adb:15:35: info: initialization of constant with variable input "R5b" proved
 list.adb:15:35: info: precondition proved
 list.adb:16:10: medium: precondition might fail
 list.adb:16:16: medium: private part of "S" might not be initialized
 list.adb:16:19: info: precondition proved
 list.adb:16:31: info: range check proved
-list.adb:19:17: info: initialization of "R7b" proved
+list.adb:19:17: info: initialization of constant with variable input "R7b" proved
 list.adb:19:17: info: precondition proved
-list.adb:19:36: info: initialization of "R8b" proved
+list.adb:19:36: info: initialization of constant with variable input "R8b" proved
 list.adb:19:36: info: precondition proved
 list.adb:20:10: medium: precondition might fail
 list.adb:20:18: info: initialization of private part of "Res" proved

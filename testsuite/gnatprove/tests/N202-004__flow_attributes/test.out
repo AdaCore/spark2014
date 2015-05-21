@@ -17,5 +17,5 @@ foo.adb:128:30: info: initialization of "Data" proved
 foo.adb:129:30: info: initialization of "Octet_Count" proved
 foo.adb:136:24: info: initialization of "Octet_Count" proved
 foo.adb:140:35: info: initialization of "Octet_Count" proved
-foo.adb:140:35: info: initialization of "R51b" proved
+foo.adb:140:35: info: initialization of constant with variable input "R51b" proved
 foo.adb:141:35: info: initialization of "Data" proved

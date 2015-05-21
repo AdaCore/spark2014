@@ -2,7 +2,7 @@ amortized_queue.adb:5:07: info: initialization of private part of "Result" prove
 amortized_queue.adb:5:14: info: initialization of private part of "Result" proved
 amortized_queue.adb:5:43: info: precondition proved
 amortized_queue.adb:5:59: info: precondition proved
-amortized_queue.adb:6:26: info: initialization of "R4b" proved
+amortized_queue.adb:6:26: info: initialization of constant with variable input "R4b" proved
 amortized_queue.adb:6:26: info: precondition proved
 amortized_queue.adb:7:13: info: precondition proved
 amortized_queue.adb:7:21: info: initialization of private part of "Result" proved
@@ -23,7 +23,7 @@ amortized_queue.adb:13:10: info: assertion proved
 amortized_queue.adb:13:34: info: precondition proved
 amortized_queue.adb:13:42: info: initialization of private part of "Result" proved
 amortized_queue.adb:13:53: info: precondition proved
-amortized_queue.adb:14:26: info: initialization of "R10b" proved
+amortized_queue.adb:14:26: info: initialization of constant with variable input "R10b" proved
 amortized_queue.adb:14:26: info: precondition proved
 amortized_queue.adb:15:13: info: precondition proved
 amortized_queue.adb:15:21: info: initialization of private part of "Result" proved
@@ -57,9 +57,9 @@ amortized_queue.adb:29:14: info: initialization of private part of "Result" prov
 amortized_queue.adb:29:47: info: precondition proved
 amortized_queue.adb:30:10: info: precondition proved
 amortized_queue.adb:30:18: info: initialization of private part of "Result" proved
-amortized_queue.adb:31:21: info: initialization of "R23b" proved
+amortized_queue.adb:31:21: info: initialization of constant with variable input "R23b" proved
 amortized_queue.adb:31:21: info: precondition proved
-amortized_queue.adb:31:44: info: initialization of "R24b" proved
+amortized_queue.adb:31:44: info: initialization of constant with variable input "R24b" proved
 amortized_queue.adb:31:44: info: precondition proved
 amortized_queue.adb:32:13: info: precondition proved
 amortized_queue.adb:32:21: info: initialization of private part of "Result" proved
@@ -85,9 +85,9 @@ amortized_queue.adb:37:60: info: range check proved
 amortized_queue.adb:44:07: info: initialization of private part of "Result" proved
 amortized_queue.adb:44:14: info: initialization of private part of "Result" proved
 amortized_queue.adb:44:43: info: precondition proved
-amortized_queue.adb:45:21: info: initialization of "R33b" proved
+amortized_queue.adb:45:21: info: initialization of constant with variable input "R33b" proved
 amortized_queue.adb:45:21: info: precondition proved
-amortized_queue.adb:45:43: info: initialization of "R34b" proved
+amortized_queue.adb:45:43: info: initialization of constant with variable input "R34b" proved
 amortized_queue.adb:45:43: info: precondition proved
 amortized_queue.adb:46:13: info: precondition proved
 amortized_queue.adb:46:21: info: initialization of private part of "Result" proved
@@ -126,7 +126,7 @@ amortized_queue.adb:67:34: info: precondition proved
 amortized_queue.adb:67:57: info: range check proved
 amortized_queue.adb:67:64: info: precondition proved
 amortized_queue.adb:67:80: info: range check proved
-amortized_queue.adb:70:31: info: initialization of "R51b" proved
+amortized_queue.adb:70:31: info: initialization of constant with variable input "R51b" proved
 amortized_queue.adb:70:31: info: precondition proved
 amortized_queue.adb:71:10: info: precondition proved
 amortized_queue.adb:71:25: info: precondition proved

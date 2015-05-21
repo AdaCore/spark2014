@@ -5,7 +5,7 @@ aco-math-very_longs.adb:39:76: info: initialization of "Carry" proved
 aco-math-very_longs.adb:43:16: medium: postcondition might fail, requires Result.Octet_Length = L.Octet_Length
 aco-math-very_longs.adb:49:13: info: discriminant check proved
 aco-math-very_longs.adb:49:26: info: length check proved
-aco-math-very_longs.adb:49:29: info: initialization of "R8B" proved
+aco-math-very_longs.adb:49:29: info: initialization of constant with variable input "R8B" proved
 aco-math-very_longs.adb:49:29: info: length check proved
 aco-math-very_longs.adb:51:17: info: discriminant check proved
 aco-math-very_longs.adb:52:39: info: discriminant check proved
@@ -25,7 +25,7 @@ aco-math-very_longs.adb:62:82: info: initialization of "Borrow" proved
 aco-math-very_longs.adb:66:16: medium: postcondition might fail, requires Result.Octet_Length = L.Octet_Length
 aco-math-very_longs.adb:72:13: info: discriminant check proved
 aco-math-very_longs.adb:72:26: info: length check proved
-aco-math-very_longs.adb:72:29: info: initialization of "R19B" proved
+aco-math-very_longs.adb:72:29: info: initialization of constant with variable input "R19B" proved
 aco-math-very_longs.adb:72:29: info: length check proved
 aco-math-very_longs.adb:74:17: info: discriminant check proved
 aco-math-very_longs.adb:75:42: info: discriminant check proved
@@ -44,7 +44,7 @@ aco-math-very_longs.adb:100:13: info: discriminant check proved
 aco-math-very_longs.adb:100:26: info: length check proved
 aco-math-very_longs.adb:100:29: info: length check proved
 aco-math-very_longs.adb:102:26: info: discriminant check proved
-aco-math-very_longs.adb:102:38: info: initialization of "R26B" proved
+aco-math-very_longs.adb:102:38: info: initialization of constant with variable input "R26B" proved
 aco-math-very_longs.adb:103:16: info: discriminant check proved
 aco-math-very_longs.adb:103:29: info: index check proved
 aco-math-very_longs.adb:103:36: info: initialization of "Result.Long_Digits" proved
@@ -56,7 +56,7 @@ aco-math-very_longs.adb:104:23: info: division check proved
 aco-math-very_longs.adb:106:14: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:119:13: info: discriminant check proved
 aco-math-very_longs.adb:119:26: info: length check proved
-aco-math-very_longs.adb:119:29: info: initialization of "R31B" proved
+aco-math-very_longs.adb:119:29: info: initialization of constant with variable input "R31B" proved
 aco-math-very_longs.adb:119:29: info: length check proved
 aco-math-very_longs.adb:122:29: info: discriminant check proved
 aco-math-very_longs.adb:122:41: info: range check proved
@@ -146,7 +146,7 @@ aco-math-very_longs.adb:257:42: info: discriminant check proved
 aco-math-very_longs.adb:257:55: info: index check proved
 aco-math-very_longs.adb:258:18: medium: overflow check might fail
 aco-math-very_longs.adb:258:35: info: discriminant check proved
-aco-math-very_longs.adb:258:47: info: initialization of "R82B" proved
+aco-math-very_longs.adb:258:47: info: initialization of constant with variable input "R82B" proved
 aco-math-very_longs.adb:259:44: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:259:50: info: discriminant check proved
 aco-math-very_longs.adb:259:65: info: overflow check proved
@@ -229,7 +229,7 @@ aco-math-very_longs.adb:359:56: info: initialization of "Result.Long_Digits" pro
 aco-math-very_longs.adb:362:60: medium: overflow check might fail
 aco-math-very_longs.adb:368:16: info: discriminant check proved
 aco-math-very_longs.adb:368:29: info: length check proved
-aco-math-very_longs.adb:368:32: info: initialization of "R122B" proved
+aco-math-very_longs.adb:368:32: info: initialization of constant with variable input "R122B" proved
 aco-math-very_longs.adb:368:32: info: length check proved
 aco-math-very_longs.adb:370:25: info: discriminant check proved
 aco-math-very_longs.adb:371:64: info: discriminant check proved
@@ -253,7 +253,7 @@ aco-math-very_longs.adb:376:47: info: index check proved
 aco-math-very_longs.adb:376:54: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:376:57: info: initialization of "Old_Overflow" proved
 aco-math-very_longs.adb:389:25: info: discriminant check proved
-aco-math-very_longs.adb:389:37: info: initialization of "R126B" proved
+aco-math-very_longs.adb:389:37: info: initialization of constant with variable input "R126B" proved
 aco-math-very_longs.adb:390:64: info: discriminant check proved
 aco-math-very_longs.adb:390:77: info: index check proved
 aco-math-very_longs.adb:390:84: info: initialization of "Overflow_Mask" proved
@@ -268,7 +268,7 @@ aco-math-very_longs.adb:392:57: info: index check proved
 aco-math-very_longs.adb:392:63: info: initialization of "Old_Overflow" proved
 aco-math-very_longs.adb:393:29: info: initialization of "New_Overflow" proved
 aco-math-very_longs.adb:407:33: info: discriminant check proved
-aco-math-very_longs.adb:407:45: info: initialization of "R128B" proved
+aco-math-very_longs.adb:407:45: info: initialization of constant with variable input "R128B" proved
 aco-math-very_longs.adb:408:35: info: discriminant check proved
 aco-math-very_longs.adb:408:48: info: index check proved
 aco-math-very_longs.adb:408:55: info: initialization of "Overflow_Mask" proved
@@ -319,7 +319,7 @@ aco-math-very_longs.adb:437:133: info: index check proved
 aco-math-very_longs.adb:438:25: info: initialization of "Q_Hat" proved
 aco-math-very_longs.adb:446:59: info: initialization of "Current_Borrow" proved
 aco-math-very_longs.adb:456:14: info: range check proved
-aco-math-very_longs.adb:456:59: info: initialization of "R130B" proved
+aco-math-very_longs.adb:456:59: info: initialization of constant with variable input "R130B" proved
 aco-math-very_longs.adb:457:50: info: discriminant check proved
 aco-math-very_longs.adb:457:63: info: index check proved
 aco-math-very_longs.adb:457:81: info: initialization of "Carry" proved
@@ -363,7 +363,7 @@ aco-math-very_longs.adb:493:34: info: index check proved
 aco-math-very_longs.adb:493:48: info: discriminant check proved
 aco-math-very_longs.adb:493:61: info: index check proved
 aco-math-very_longs.adb:495:17: info: range check proved
-aco-math-very_longs.adb:495:62: info: initialization of "R132B" proved
+aco-math-very_longs.adb:495:62: info: initialization of constant with variable input "R132B" proved
 aco-math-very_longs.adb:496:41: info: discriminant check proved
 aco-math-very_longs.adb:496:56: medium: overflow check might fail
 aco-math-very_longs.adb:496:72: medium: array index check might fail
@@ -384,11 +384,11 @@ aco-math-very_longs.adb:500:61: info: index check proved
 aco-math-very_longs.adb:500:83: info: initialization of "Carry" proved
 aco-math-very_longs.adb:505:15: info: discriminant check proved
 aco-math-very_longs.adb:505:29: info: length check proved
-aco-math-very_longs.adb:505:32: info: initialization of "R135B" proved
+aco-math-very_longs.adb:505:32: info: initialization of constant with variable input "R135B" proved
 aco-math-very_longs.adb:505:32: info: length check proved
 aco-math-very_longs.adb:506:16: info: discriminant check proved
 aco-math-very_longs.adb:506:29: info: length check proved
-aco-math-very_longs.adb:506:32: info: initialization of "R139B" proved
+aco-math-very_longs.adb:506:32: info: initialization of constant with variable input "R139B" proved
 aco-math-very_longs.adb:506:32: info: length check proved
 aco-math-very_longs.adb:509:12: info: precondition proved
 aco-math-very_longs.adb:509:29: medium: overflow check might fail
@@ -426,7 +426,7 @@ aco-math-very_longs.adb:533:15: info: initialization of "J" proved
 aco-math-very_longs.adb:533:17: info: range check proved
 aco-math-very_longs.adb:537:11: info: range check proved
 aco-math-very_longs.adb:537:56: info: initialization of "N" proved
-aco-math-very_longs.adb:537:56: info: initialization of "R142B" proved
+aco-math-very_longs.adb:537:56: info: initialization of constant with variable input "R142B" proved
 aco-math-very_longs.adb:538:19: info: discriminant check proved
 aco-math-very_longs.adb:538:32: info: index check proved
 aco-math-very_longs.adb:538:47: info: initialization of "Remainder.Long_Digits" proved

@@ -10,12 +10,12 @@ lcp.adb:13:30: medium: loop invariant might fail after first iteration, requires
 lcp.adb:13:30: medium: range check might fail
 lcp.adb:13:40: info: overflow check proved
 lcp.adb:13:42: info: initialization of "L" proved
-lcp.adb:13:44: info: initialization of "R6B" proved
+lcp.adb:13:44: info: initialization of constant with variable input "R6B" proved
 lcp.adb:13:44: info: overflow check proved
 lcp.adb:13:51: medium: range check might fail
 lcp.adb:13:61: info: overflow check proved
 lcp.adb:13:63: info: initialization of "L" proved
-lcp.adb:13:65: info: initialization of "R9B" proved
+lcp.adb:13:65: info: initialization of constant with variable input "R9B" proved
 lcp.adb:13:65: info: overflow check proved
 lcp.adb:14:07: info: loop variant proved
 lcp.adb:14:41: info: initialization of "L" proved

@@ -29,8 +29,8 @@ heatingsystem_dfa.adb:11:11: medium: "indicator.output_ext" might not be initial
 heatingsystem_dfa.adb:11:11: medium: "modeswitch.input_ext" might not be initialized after elaboration of main program "HeatingSystem_DFA"
 heatingsystem_dfa.adb:11:11: medium: "programswitch.input_ext" might not be initialized after elaboration of main program "HeatingSystem_DFA"
 heatingsystem_dfa.adb:11:11: medium: "thermostat.input_ext" might not be initialized after elaboration of main program "HeatingSystem_DFA"
-heatingsystem_dfa.adb:35:15: info: initialization of "C40b" proved, in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:36:18: info: initialization of "C40b" proved, in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:35:15: info: initialization of constant with variable input "C40b" proved, in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:36:18: info: initialization of constant with variable input "C40b" proved, in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:39:39: info: initialization of "Hour" proved, in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:41:39: info: initialization of "Minute" proved, in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:42:22: info: initialization of "TheDisplay" proved, in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200

@@ -51,13 +51,13 @@ records.adb:191:22: medium: postcondition might fail
 records.adb:200:23: info: initialization of "Tmp" proved
 records.adb:205:22: medium: postcondition might fail
 records.adb:214:07: info: assertion proved
-records.adb:214:34: info: initialization of "X_Old.Exists" proved
-records.adb:214:34: info: initialization of "X_Old.The_Pair.A" proved
-records.adb:214:34: info: initialization of "X_Old.The_Pair.B" proved
+records.adb:214:34: info: initialization of constant with variable input "X_Old.Exists" proved
+records.adb:214:34: info: initialization of constant with variable input "X_Old.The_Pair.A" proved
+records.adb:214:34: info: initialization of constant with variable input "X_Old.The_Pair.B" proved
 records.adb:215:36: info: initialization of "Tmp" proved
 records.adb:217:07: info: assertion proved
-records.adb:218:14: info: initialization of "X_Old.Exists" proved
-records.adb:218:14: info: initialization of "X_Old.The_Pair.B" proved
+records.adb:218:14: info: initialization of constant with variable input "X_Old.Exists" proved
+records.adb:218:14: info: initialization of constant with variable input "X_Old.The_Pair.B" proved
 records.adb:220:16: info: initialization of "Tmp" proved
 records.adb:221:23: info: initialization of "Tmp" proved
 records.adb:226:22: info: postcondition proved
@@ -103,8 +103,8 @@ records.adb:428:22: info: initialization of "X.The_Pair.A" proved
 records.adb:428:22: info: initialization of "X.The_Pair.B" proved
 records.adb:435:22: medium: assertion might fail, requires not X.Exists
 records.adb:435:26: info: initialization of "X.Exists" proved
-records.adb:441:25: info: initialization of "C62b.B" proved, in call inlined at records.adb:457
-records.adb:442:25: info: initialization of "C62b.A" proved, in call inlined at records.adb:457
+records.adb:441:25: info: initialization of constant with variable input "C62b.B" proved, in call inlined at records.adb:457
+records.adb:442:25: info: initialization of constant with variable input "C62b.A" proved, in call inlined at records.adb:457
 records.adb:445:04: warning: analyzing unreferenced function "Apply_Command"
 records.adb:452:20: info: initialization of "R.A" proved
 records.adb:452:24: medium: range check might fail
@@ -112,12 +112,12 @@ records.adb:459:14: info: initialization of "R.A" proved
 records.adb:459:14: info: initialization of "R.B" proved
 records.adb:465:22: info: postcondition proved
 records.adb:473:07: info: assertion proved
-records.adb:473:34: info: initialization of "R_Old.Exists" proved
-records.adb:473:34: info: initialization of "R_Old.The_Pair.B" proved
+records.adb:473:34: info: initialization of constant with variable input "R_Old.Exists" proved
+records.adb:473:34: info: initialization of constant with variable input "R_Old.The_Pair.B" proved
 records.adb:482:22: medium: postcondition might fail, requires R = R'Old'update
 records.adb:490:07: info: assertion proved
-records.adb:490:34: info: initialization of "R_Old.Exists" proved
-records.adb:490:34: info: initialization of "R_Old.The_Pair.B" proved
+records.adb:490:34: info: initialization of constant with variable input "R_Old.Exists" proved
+records.adb:490:34: info: initialization of constant with variable input "R_Old.The_Pair.B" proved
 records.adb:500:19: info: postcondition proved
 records.adb:503:22: medium: assertion might fail, requires R.Exists
 records.adb:513:22: info: postcondition proved

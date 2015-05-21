@@ -23,19 +23,19 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Sets;
-with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Strings.Unbounded.Hash;
-
+with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Assumption_Types;           use Assumption_Types;
 with Atree;                      use Atree;
 with Csets;                      use Csets;
 with Einfo;                      use Einfo;
-with Errout;                     use Errout;
 with Erroutc;                    use Erroutc;
-with GNATCOLL.Utils;             use GNATCOLL.Utils;
+with Errout;                     use Errout;
+with Flow_Utility;               use Flow_Utility;
 with Gnat2Why.Annotate;          use Gnat2Why.Annotate;
-with Gnat2Why.Assumptions;       use Gnat2Why.Assumptions;
 with Gnat2Why_Args;              use Gnat2Why_Args;
+with Gnat2Why.Assumptions;       use Gnat2Why.Assumptions;
+with GNATCOLL.Utils;             use GNATCOLL.Utils;
 with Namet;                      use Namet;
 with Sinfo;                      use Sinfo;
 with Sinput;                     use Sinput;
@@ -665,6 +665,16 @@ package body Flow_Error_Messages is
                      Append_Quote;
                      Append (R, Flow_Id_To_String
                                (F'Update (Facet => Normal_Part)));
+                  elsif Nkind (Get_Direct_Mapping_Id (F)) in N_Entity
+                    and then Ekind (Get_Direct_Mapping_Id (F)) = E_Constant
+                  then
+                     Append (R, "constant with");
+                     if not Has_Variable_Input (F) then
+                        Append (R, "out");
+                     end if;
+                     Append (R, " variable input ");
+                     Append_Quote;
+                     Append (R, Flow_Id_To_String (F));
                   elsif Is_Constituent (F) then
                      Append_Quote;
                      Append (R, Flow_Id_To_String (F));
@@ -680,7 +690,8 @@ package body Flow_Error_Messages is
                         --  If scopes of the abstract state and its constituent
                         --  differ then prefix the name of the abstract state
                         --  with its immediate scope.
-                        if Encaps_Scope /= Scope (F.Node) then
+                        if Encaps_Scope /= Scope (Get_Direct_Mapping_Id (F))
+                        then
                            Get_Name_String (Chars (Encaps_Scope));
                            Adjust_Name_Case (Sloc (Encaps_Scope));
 

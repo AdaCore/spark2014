@@ -3708,6 +3708,15 @@ package body Flow_Utility is
                         O := Entity (Tmp);
                      when N_Null | N_Aggregate =>
                         O := Empty;
+                     when N_Numeric_Or_String_Literal =>
+                        --  We should only ever get here if we are
+                        --  dealing with a rewritten constant.
+                        pragma Assert (Present (Original_Node (Tmp)));
+
+                        --  We process the entity of the
+                        --  Original_Node instead
+                        O := Entity (Original_Node (Tmp));
+
                      when others =>
                         raise Program_Error;
                   end case;

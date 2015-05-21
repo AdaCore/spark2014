@@ -25,4 +25,4 @@ put.adb:28:09: info: initialization of "S" proved
 put.adb:28:09: info: range check proved
 put.adb:28:09: medium: "S" might not be initialized
 put.adb:28:12: info: initialization of "First" proved
-put.adb:28:12: info: initialization of "R1b" proved
+put.adb:28:12: info: initialization of constant with variable input "R1b" proved

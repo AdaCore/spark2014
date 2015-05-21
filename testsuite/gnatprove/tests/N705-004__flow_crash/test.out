@@ -2,7 +2,7 @@ very_longs.adb:33:54: info: initialization of "Digit" proved
 very_longs.adb:33:73: info: initialization of "Valid" proved
 very_longs.adb:51:52: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:51:76: info: initialization of "Carry" proved
-very_longs.adb:61:29: info: initialization of "R10b" proved
+very_longs.adb:61:29: info: initialization of constant with variable input "R10b" proved
 very_longs.adb:66:21: info: initialization of "L_Digit" proved
 very_longs.adb:66:31: info: initialization of "R_Digit" proved
 very_longs.adb:66:41: info: initialization of "Carry" proved
@@ -11,19 +11,19 @@ very_longs.adb:68:32: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:68:50: info: initialization of "Sum" proved
 very_longs.adb:74:58: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:74:82: info: initialization of "Borrow" proved
-very_longs.adb:84:29: info: initialization of "R21b" proved
+very_longs.adb:84:29: info: initialization of constant with variable input "R21b" proved
 very_longs.adb:89:25: info: initialization of "L_Digit" proved
 very_longs.adb:89:35: info: initialization of "R_Digit" proved
 very_longs.adb:89:46: info: initialization of "Borrow" proved
 very_longs.adb:90:14: info: initialization of "Difference" proved
 very_longs.adb:95:32: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:95:50: info: initialization of "Difference" proved
-very_longs.adb:114:38: info: initialization of "R28b" proved
+very_longs.adb:114:38: info: initialization of constant with variable input "R28b" proved
 very_longs.adb:115:36: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:115:45: info: initialization of "Temp" proved
 very_longs.adb:116:18: info: initialization of "Temp" proved
 very_longs.adb:118:14: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:131:29: info: initialization of "R33b" proved
+very_longs.adb:131:29: info: initialization of constant with variable input "R33b" proved
 very_longs.adb:137:32: info: initialization of "String_Index" proved
 very_longs.adb:137:87: info: initialization of "Index" proved
 very_longs.adb:139:31: info: initialization of "String_Index" proved
@@ -52,7 +52,7 @@ very_longs.adb:230:14: info: initialization of "Difference" proved
 very_longs.adb:235:32: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:235:50: info: initialization of "Difference" proved
 very_longs.adb:237:14: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:261:47: info: initialization of "R84b" proved
+very_longs.adb:261:47: info: initialization of constant with variable input "R84b" proved
 very_longs.adb:262:40: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:263:28: info: initialization of "L_Digit" proved
 very_longs.adb:263:38: info: initialization of "R_Digit" proved
@@ -78,7 +78,7 @@ very_longs.adb:340:73: info: initialization of "Digit_Index" proved
 very_longs.adb:342:17: info: initialization of "Digit_Index" proved
 very_longs.adb:358:17: info: initialization of "Distance" proved
 very_longs.adb:362:56: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:371:32: info: initialization of "R124b" proved
+very_longs.adb:371:32: info: initialization of constant with variable input "R124b" proved
 very_longs.adb:374:67: info: initialization of "Overflow_Mask" proved
 very_longs.adb:375:35: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:376:38: info: initialization of "Result.Long_Digits" proved
@@ -86,11 +86,11 @@ very_longs.adb:376:63: info: initialization of "Old_Overflow" proved
 very_longs.adb:377:29: info: initialization of "New_Overflow" proved
 very_longs.adb:379:54: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:379:57: info: initialization of "Old_Overflow" proved
-very_longs.adb:392:37: info: initialization of "R128b" proved
+very_longs.adb:392:37: info: initialization of constant with variable input "R128b" proved
 very_longs.adb:393:67: info: initialization of "Overflow_Mask" proved
 very_longs.adb:395:63: info: initialization of "Old_Overflow" proved
 very_longs.adb:396:29: info: initialization of "New_Overflow" proved
-very_longs.adb:410:45: info: initialization of "R130b" proved
+very_longs.adb:410:45: info: initialization of constant with variable input "R130b" proved
 very_longs.adb:411:55: info: initialization of "Overflow_Mask" proved
 very_longs.adb:413:74: info: initialization of "Old_Overflow" proved
 very_longs.adb:414:29: info: initialization of "New_Overflow" proved
@@ -106,7 +106,7 @@ very_longs.adb:440:16: info: initialization of "Q_Hat" proved
 very_longs.adb:440:82: info: initialization of "R_Hat" proved
 very_longs.adb:441:25: info: initialization of "Q_Hat" proved
 very_longs.adb:449:59: info: initialization of "Current_Borrow" proved
-very_longs.adb:459:59: info: initialization of "R132b" proved
+very_longs.adb:459:59: info: initialization of constant with variable input "R132b" proved
 very_longs.adb:460:77: info: initialization of "Carry" proved
 very_longs.adb:461:34: info: initialization of "Product" proved
 very_longs.adb:463:32: info: initialization of "Product" proved
@@ -120,13 +120,13 @@ very_longs.adb:475:63: info: initialization of "Current_Borrow" proved
 very_longs.adb:480:87: info: initialization of "Carry" proved
 very_longs.adb:480:96: info: initialization of "Current_Borrow" proved
 very_longs.adb:481:28: info: initialization of "Future_Borrow" proved
-very_longs.adb:498:62: info: initialization of "R134b" proved
+very_longs.adb:498:62: info: initialization of constant with variable input "R134b" proved
 very_longs.adb:499:121: info: initialization of "Carry" proved
 very_longs.adb:500:71: info: initialization of "Sum" proved
 very_longs.adb:501:37: info: initialization of "Sum" proved
 very_longs.adb:503:83: info: initialization of "Carry" proved
-very_longs.adb:508:32: info: initialization of "R137b" proved
-very_longs.adb:509:32: info: initialization of "R141b" proved
+very_longs.adb:508:32: info: initialization of constant with variable input "R137b" proved
+very_longs.adb:509:32: info: initialization of constant with variable input "R141b" proved
 very_longs.adb:513:17: info: initialization of "N" proved
 very_longs.adb:516:64: info: initialization of "N" proved
 very_longs.adb:517:36: info: initialization of "Shift_Distance" proved
@@ -152,7 +152,7 @@ very_longs.adb:532:10: info: initialization of "V.Long_Digits" proved
 very_longs.adb:535:20: info: initialization of "J" proved
 very_longs.adb:536:15: info: initialization of "J" proved
 very_longs.adb:540:56: info: initialization of "N" proved
-very_longs.adb:540:56: info: initialization of "R144b" proved
+very_longs.adb:540:56: info: initialization of constant with variable input "R144b" proved
 very_longs.adb:541:47: info: initialization of "Remainder.Long_Digits" proved
 very_longs.adb:541:50: info: initialization of "U.Long_Digits" proved
 very_longs.adb:543:19: info: initialization of "Remainder.Long_Digits" proved

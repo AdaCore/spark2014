@@ -1,9 +1,9 @@
-flight_manager.adb:15:13: info: initialization of "C4b" proved, in call inlined at flight_manager.adb:42
-flight_manager.adb:15:13: info: initialization of "C7b" proved, in call inlined at flight_manager.adb:43
+flight_manager.adb:15:13: info: initialization of constant with variable input "C4b" proved, in call inlined at flight_manager.adb:42
+flight_manager.adb:15:13: info: initialization of constant with variable input "C7b" proved, in call inlined at flight_manager.adb:43
 flight_manager.adb:16:21: medium: overflow check might fail, in call inlined at flight_manager.adb:42
 flight_manager.adb:16:21: medium: overflow check might fail, in call inlined at flight_manager.adb:43
-flight_manager.adb:16:23: info: initialization of "C4b" proved, in call inlined at flight_manager.adb:42
-flight_manager.adb:16:23: info: initialization of "C7b" proved, in call inlined at flight_manager.adb:43
+flight_manager.adb:16:23: info: initialization of constant with variable input "C4b" proved, in call inlined at flight_manager.adb:42
+flight_manager.adb:16:23: info: initialization of constant with variable input "C7b" proved, in call inlined at flight_manager.adb:43
 flight_manager.adb:16:43: info: division check proved, in call inlined at flight_manager.adb:42
 flight_manager.adb:16:43: info: division check proved, in call inlined at flight_manager.adb:43
 flight_manager.adb:23:20: medium: overflow check might fail

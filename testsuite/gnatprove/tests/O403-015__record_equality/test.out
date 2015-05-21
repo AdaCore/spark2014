@@ -18,11 +18,11 @@ record_equality.adb:14:29: info: initialization of "G_Pu1.F1" proved
 record_equality.adb:14:29: info: initialization of "G_Pu1.F2" proved
 record_equality.adb:14:45: info: initialization of "G_Pu2.F1" proved
 record_equality.adb:14:45: info: initialization of "G_Pu2.F2" proved
-record_equality.adb:15:22: info: initialization of "C_GP1.F1" proved
-record_equality.adb:15:22: info: initialization of "C_GP1.F2" proved
+record_equality.adb:15:22: info: initialization of constant with variable input "C_GP1.F1" proved
+record_equality.adb:15:22: info: initialization of constant with variable input "C_GP1.F2" proved
 record_equality.adb:15:22: medium: assertion might fail, requires C_GP1 = C_GP2
-record_equality.adb:15:30: info: initialization of "C_GP2.F1" proved
-record_equality.adb:15:30: info: initialization of "C_GP2.F2" proved
+record_equality.adb:15:30: info: initialization of constant with variable input "C_GP2.F1" proved
+record_equality.adb:15:30: info: initialization of constant with variable input "C_GP2.F2" proved
 record_equality.adb:16:22: info: initialization of "G_Pu1.F1" proved
 record_equality.adb:16:22: info: initialization of "G_Pu1.F2" proved
 record_equality.adb:16:22: info: initialization of "G_Pu1.F3" proved
