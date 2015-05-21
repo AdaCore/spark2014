@@ -92,9 +92,9 @@ is
       begin
          X := C1 + C2 + C3 + C4 + C5 + C6 + C7;
       end Nested;
-      begin
-         Nested (A);
-      end Test_04;
+   begin
+      Nested (A);
+   end Test_04;
 
    procedure Test_05 (A : in out Natural)
    with Global => null
@@ -231,5 +231,39 @@ is
       F := 5 in T4;
    end Test_12;
 
+   procedure Test_13 (A : in out Natural;
+                      B : in     Natural;
+                      C :    out Natural)
+   is
+
+      package P
+      with Abstract_State => State,
+           Initializes => (C2    => A,
+                           State => B)
+      is
+         C1 : constant Natural := 5; -- no vi
+         C2 : constant Natural := A; -- vi
+      end P;
+
+      package body P
+      with Refined_State => (State => (C3,   -- illegal
+                                       C4))
+      is
+         C3 : constant Natural := 5; -- no vi
+         C4 : constant Natural := B; -- vi
+      end P;
+
+      package Q
+      with Initializes => (C5 => P.C1,  -- illegal me thinks
+                           C6 => P.C2)
+      is
+         C5 : constant Natural := P.C1; -- no vi
+         C6 : constant Natural := P.C2; -- vi
+      end Q;
+
+   begin
+      A := A + 1;
+      C := Q.C5 + Q.C6;
+   end Test_13;
 
 end Info_Flow_Tests;
