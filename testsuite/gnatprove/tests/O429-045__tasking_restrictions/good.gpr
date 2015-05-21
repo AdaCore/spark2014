@@ -1,0 +1,6 @@
+project Good is
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnatdk", "-gnato13", "-gnatws");
+      for Local_Configuration_Pragmas use "good.adc";
+   end Compiler;
+end Good;

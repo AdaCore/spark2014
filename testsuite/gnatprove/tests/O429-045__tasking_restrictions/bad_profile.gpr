@@ -1,0 +1,6 @@
+project Bad_Profile is
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnatdk", "-gnato13", "-gnatws");
+      for Local_Configuration_Pragmas use "bad_profile.adc";
+   end Compiler;
+end Bad_Profile;

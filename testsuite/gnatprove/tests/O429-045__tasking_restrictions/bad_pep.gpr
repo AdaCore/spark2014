@@ -1,0 +1,6 @@
+project Bad_PEP is
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnatdk", "-gnato13", "-gnatws");
+      for Local_Configuration_Pragmas use "bad_pep.adc";
+   end Compiler;
+end Bad_PEP;
