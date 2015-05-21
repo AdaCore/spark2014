@@ -644,6 +644,18 @@ package SPARK_Util is
    --    identify the subprogram or package by its source position and is
    --    used e.g. for the --limit-subp switch of GNATprove.
 
+   ------------------------------
+   -- Queries related to tasks --
+   ------------------------------
+
+   function Task_Body (E : Entity_Id) return Node_Id
+     with Pre  => Nkind (E) in N_Entity and then Ekind (E) in Task_Kind,
+          Post => (if Present (Task_Body'Result)
+                   then Nkind (Task_Body'Result) = N_Task_Body);
+   --  @param E task type
+   --  @return the task body for the given type, similar to what
+   --    subprogram_body might produce.
+
    ---------------------------------
    -- Queries related to packages --
    ---------------------------------

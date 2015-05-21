@@ -2727,4 +2727,17 @@ package body SPARK_Util is
        or else Is_Invariant_Procedure (E)
        or else Is_Default_Init_Cond_Procedure (E));
 
+   ---------------
+   -- Task_Body --
+   ---------------
+
+   function Task_Body (E : Entity_Id) return Node_Id
+   is
+      Ptr : Node_Id;
+   begin
+      Ptr := Parent (E);
+      pragma Assert (Nkind (Ptr) = N_Task_Type_Declaration);
+      return Parent (Corresponding_Body (Ptr));
+   end Task_Body;
+
 end SPARK_Util;
