@@ -1,2 +1,3 @@
 no_return_b.adb:2:24: info: initialization of "Y" proved
+no_return_b.adb:15:07: medium: call to nonreturning subprogram might be executed
 no_return_b.adb:17:11: info: division check proved

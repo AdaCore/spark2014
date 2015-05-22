@@ -1,2 +1,2 @@
-update_vec_zero.adb:8:13: info: initialization of "R4b" proved
-update_vec_zero.adb:8:32: info: initialization of "R5b" proved
+update_vec_zero.adb:8:13: info: initialization of constant with variable input "R4b" proved
+update_vec_zero.adb:8:32: info: initialization of constant with variable input "R5b" proved

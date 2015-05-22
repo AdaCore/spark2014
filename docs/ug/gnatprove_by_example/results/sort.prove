@@ -12,7 +12,7 @@ sort.adb:26:29: info: index check proved
 sort.adb:29:22: medium: assertion might fail, requires Values = Set (Init, X, Init (Y)
 sort.adb:29:31: info: precondition proved
 sort.adb:29:42: info: range check proved
-sort.adb:29:45: info: initialization of "Init" proved
+sort.adb:29:45: info: initialization of constant with variable input "Init" proved
 sort.adb:29:51: info: index check proved
 sort.adb:30:14: info: length check proved
 sort.adb:30:17: info: length check proved
@@ -23,7 +23,7 @@ sort.adb:35:22: medium: assertion might fail, requires Values = Set (Interm, Y, 
 sort.adb:35:31: info: precondition proved
 sort.adb:35:36: info: initialization of "Interm" proved
 sort.adb:35:44: info: range check proved
-sort.adb:35:47: info: initialization of "Init" proved
+sort.adb:35:47: info: initialization of constant with variable input "Init" proved
 sort.adb:35:53: info: index check proved
 sort.adb:43:16: info: postcondition proved
 sort.adb:45:35: info: index check proved

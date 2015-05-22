@@ -1,1 +1,1 @@
-only_flow_dependencies.adb:13:12: info: initialization of "Tmp" proved
+only_flow_dependencies.adb:13:12: info: initialization of constant with variable input "Tmp" proved

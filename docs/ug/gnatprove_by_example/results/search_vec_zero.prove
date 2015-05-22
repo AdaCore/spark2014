@@ -10,9 +10,9 @@ search_vec_zero.adb:6:15: info: initialization of "Success" proved
 search_vec_zero.adb:6:28: info: precondition proved
 search_vec_zero.adb:6:40: info: initialization of "Pos" proved
 search_vec_zero.adb:6:40: info: range check proved
-search_vec_zero.adb:9:13: info: initialization of "R5b" proved
+search_vec_zero.adb:9:13: info: initialization of constant with variable input "R5b" proved
 search_vec_zero.adb:9:13: info: precondition proved
-search_vec_zero.adb:9:32: info: initialization of "R6b" proved
+search_vec_zero.adb:9:32: info: initialization of constant with variable input "R6b" proved
 search_vec_zero.adb:9:32: info: precondition proved
 search_vec_zero.adb:10:10: info: precondition proved
 search_vec_zero.adb:10:22: info: range check proved
