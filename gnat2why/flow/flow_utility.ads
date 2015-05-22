@@ -446,7 +446,7 @@ is
    function Get_Postcondition_Expressions (E       : Entity_Id;
                                            Refined : Boolean)
                                            return Node_Lists.List
-     with Pre => Ekind (E) in Subprogram_Kind | E_Package;
+     with Pre => Ekind (E) in Subprogram_Kind | E_Task_Type | E_Package;
    --  Given the entity for a subprogram or package, return all
    --  expression(s) associated with postconditions: the
    --  postcondition, the rhs for contract cases and the initial

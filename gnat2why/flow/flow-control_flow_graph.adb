@@ -79,11 +79,17 @@ package body Flow.Control_Flow_Graph is
                                 N_Object_Renaming_Declaration     |
                                 N_Package_Renaming_Declaration    |
                                 N_Private_Type_Declaration        |
+                                N_Protected_Body                  |
+                                N_Protected_Body_Stub             |
+                                N_Protected_Type_Declaration      |
                                 N_Representation_Clause           |
                                 N_Subprogram_Body                 |
                                 N_Subprogram_Body_Stub            |
                                 N_Subprogram_Declaration          |
                                 N_Subprogram_Renaming_Declaration |
+                                N_Task_Body                       |
+                                N_Task_Body_Stub                  |
+                                N_Task_Type_Declaration           |
                                 N_Use_Package_Clause              |
                                 N_Use_Type_Clause                 |
                                 N_Validate_Unchecked_Conversion;
@@ -436,7 +442,8 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-      with Pre => Nkind (N) in N_Delay_Until_Statement;
+   with Pre => Nkind (N) in N_Delay_Until_Statement    |
+                            N_Delay_Relative_Statement;
    --  Deal with delay until X statements. We simply make a vertex where we
    --  use all variables from the expression.
    --
@@ -740,8 +747,10 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-      with Pre => Nkind (N) in
-        N_Subprogram_Body | N_Block_Statement | N_Package_Body;
+   with Pre => Nkind (N) in N_Subprogram_Body |
+                            N_Task_Body       |
+                            N_Block_Statement |
+                            N_Package_Body;
    --  This is the top level procedure which deals with a subprogram,
    --  block or package elaboration statement. The declarations and
    --  sequence of statements is processed and linked.
@@ -4616,7 +4625,7 @@ package body Flow.Control_Flow_Graph is
          when N_Exception_Declaration          |
               N_Exception_Renaming_Declaration =>
             Do_Null_Or_Raise_Statement (N, FA, CM, Ctx);
-         when N_Delay_Until_Statement =>
+         when N_Delay_Until_Statement | N_Delay_Relative_Statement =>
             Do_Delay_Statement (N, FA, CM, Ctx);
          when others =>
             Print_Node_Subtree (N);
@@ -5423,6 +5432,13 @@ package body Flow.Control_Flow_Graph is
                Subprogram_Spec := Corresponding_Spec (Body_N);
             end if;
 
+         when E_Task_Body =>
+            Body_N          := Task_Body (FA.Analyzed_Entity);
+            Subprogram_Spec := Corresponding_Spec (Body_N);
+
+            --  !!! O429-046 Can a task have preconditions?
+            Preconditions   := Node_Lists.Empty_List;
+
          when E_Package =>
             Spec_N := Package_Specification (FA.Analyzed_Entity);
             Body_N := Spec_N;
@@ -5473,6 +5489,11 @@ package body Flow.Control_Flow_Graph is
                   E := Next_Formal (E);
                end loop;
             end;
+
+         when E_Task_Body =>
+            --  !!! O429-046 Not sure if tasks can have parameters. Maybe
+            --      its discriminant?
+            null;
 
          when E_Package | E_Package_Body =>
             if Is_Generic_Instance (FA.Analyzed_Entity) then
@@ -5610,6 +5631,10 @@ package body Flow.Control_Flow_Graph is
                end;
             end if;
 
+         when E_Task_Body =>
+            --  !!!T O429-046 TODO: Globals for tasks
+            null;
+
          when E_Package | E_Package_Body =>
             --  Packages have no obvious globals, but we can extract a
             --  list of global variables used from the optional rhs of
@@ -5708,23 +5733,26 @@ package body Flow.Control_Flow_Graph is
       --     - declarative part
       --     - body
       case FA.Kind is
-         when E_Subprogram_Body =>
+         when E_Subprogram_Body | E_Task_Body =>
             for Precondition of Preconditions loop
                Process_Quantified_Expressions
                  (Precondition, FA, Connection_Map, The_Context);
             end loop;
-            for Refined in Boolean loop
-               declare
-                  Postconditions : constant Node_Lists.List :=
-                    Get_Postcondition_Expressions (FA.Analyzed_Entity,
-                                                   Refined);
-               begin
-                  for Postcondition of Postconditions loop
-                     Process_Quantified_Expressions
-                       (Postcondition, FA, Connection_Map, The_Context);
-                  end loop;
-               end;
-            end loop;
+            if FA.Kind = E_Subprogram_Body then
+               --  !!! O429-046 Ignoring postconditions for tasks right now
+               for Refined in Boolean loop
+                  declare
+                     Postconditions : constant Node_Lists.List :=
+                       Get_Postcondition_Expressions (FA.Analyzed_Entity,
+                                                      Refined);
+                  begin
+                     for Postcondition of Postconditions loop
+                        Process_Quantified_Expressions
+                          (Postcondition, FA, Connection_Map, The_Context);
+                     end loop;
+                  end;
+               end loop;
+            end if;
             Process_Quantified_Expressions
               (Declarations (Body_N), FA, Connection_Map, The_Context);
             Process_Quantified_Expressions
@@ -5792,7 +5820,7 @@ package body Flow.Control_Flow_Graph is
       --  Produce flowgraph for the precondition and postcondition if
       --  any.
       case FA.Kind is
-         when E_Subprogram_Body =>
+         when E_Subprogram_Body | E_Task_Body =>
             --  Flowgraph for preconditions and left hand sides of
             --  contract cases.
             declare
@@ -5813,28 +5841,31 @@ package body Flow.Control_Flow_Graph is
 
             --  Flowgraph for postconditions and right hand sides of
             --  contract cases.
-            declare
-               NL             : Union_Lists.List := Union_Lists.Empty_List;
-               Postconditions : Node_Lists.List;
-            begin
-               for Refined in Boolean loop
-                  Postconditions := Get_Postcondition_Expressions
-                    (FA.Analyzed_Entity,
-                     Refined);
+            if FA.Kind = E_Subprogram_Body then
+               --  !!! O429-046 Ignoring postconditions for tasks right now
+               declare
+                  NL             : Union_Lists.List := Union_Lists.Empty_List;
+                  Postconditions : Node_Lists.List;
+               begin
+                  for Refined in Boolean loop
+                     Postconditions := Get_Postcondition_Expressions
+                       (FA.Analyzed_Entity,
+                        Refined);
 
-                  for Postcondition of Postconditions loop
-                     Do_Postcondition (Postcondition,
-                                       FA,
-                                       Connection_Map,
-                                       The_Context);
-                     NL.Append (Union_Id (Postcondition));
+                     for Postcondition of Postconditions loop
+                        Do_Postcondition (Postcondition,
+                                          FA,
+                                          Connection_Map,
+                                          The_Context);
+                        NL.Append (Union_Id (Postcondition));
+                     end loop;
                   end loop;
-               end loop;
-               Join (FA    => FA,
-                     CM    => Connection_Map,
-                     Nodes => NL,
-                     Block => Postcon_Block);
-            end;
+                  Join (FA    => FA,
+                        CM    => Connection_Map,
+                        Nodes => NL,
+                        Block => Postcon_Block);
+               end;
+            end if;
 
          when E_Package | E_Package_Body =>
             --  Flowgraph for initial_condition aspect
@@ -5884,6 +5915,26 @@ package body Flow.Control_Flow_Graph is
                     Postcon_Block.Standard_Entry);
             Linkup (FA,
                     Postcon_Block.Standard_Exits,
+                    FA.End_Vertex);
+
+         when E_Task_Body =>
+            --  !!! O429-046 If we do have postconditions, we can simply
+            --      this by just merging with the above...
+
+            Do_Subprogram_Or_Block (Body_N, FA, Connection_Map, The_Context);
+
+            --  Connect up all the dots...
+            Linkup (FA,
+                    FA.Start_Vertex,
+                    Precon_Block.Standard_Entry);
+            Linkup (FA,
+                    Precon_Block.Standard_Exits,
+                    Connection_Map (Union_Id (Body_N)).Standard_Entry);
+            Linkup (FA,
+                    Connection_Map (Union_Id (Body_N)).Standard_Exits,
+                    FA.Helper_End_Vertex);
+            Linkup (FA,
+                    FA.Helper_End_Vertex,
                     FA.End_Vertex);
 
          when E_Package | E_Package_Body =>

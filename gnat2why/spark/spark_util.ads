@@ -649,7 +649,7 @@ package SPARK_Util is
    ------------------------------
 
    function Task_Body (E : Entity_Id) return Node_Id
-     with Pre  => Nkind (E) in N_Entity and then Ekind (E) in Task_Kind,
+     with Pre  => Nkind (E) in N_Entity and then Ekind (E) = E_Task_Type,
           Post => (if Present (Task_Body'Result)
                    then Nkind (Task_Body'Result) = N_Task_Body);
    --  @param E task type

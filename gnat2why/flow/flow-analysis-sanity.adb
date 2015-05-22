@@ -29,6 +29,7 @@ with Sem_Aux;             use Sem_Aux;
 with Sinfo;               use Sinfo;
 
 with Gnat2Why_Args;
+with SPARK_Util;          use SPARK_Util;
 with VC_Kinds;            use VC_Kinds;
 with Why;
 
@@ -328,6 +329,11 @@ package body Flow.Analysis.Sanity is
          when E_Subprogram_Body =>
             Entry_Node := Subprogram_Body (FA.Analyzed_Entity);
             pragma Assert (Nkind (Entry_Node) = N_Subprogram_Body);
+            Check_Expressions (Entry_Node);
+
+         when E_Task_Body =>
+            Entry_Node := Task_Body (FA.Analyzed_Entity);
+            pragma Assert (Nkind (Entry_Node) = N_Task_Body);
             Check_Expressions (Entry_Node);
 
          when E_Package =>

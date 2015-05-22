@@ -95,7 +95,10 @@ package body Flow is
                                  S               : Node_Id;
                                  Compute_Globals : Boolean)
                                  return Flow_Analysis_Graphs
-     with Pre  => Ekind (E) in Subprogram_Kind | E_Package | E_Package_Body,
+     with Pre  => Ekind (E) in Subprogram_Kind |
+                               E_Task_Type     |
+                               E_Package       |
+                               E_Package_Body,
           Post => Is_Valid (Flow_Analyse_Entity'Result);
    --  Flow analyse the given entity E. S should be the node
    --  representing the specification of E (i.e. where the N_Contract
@@ -109,6 +112,12 @@ package body Flow is
      with Post => (if not Compute_Globals then
                      Info_Set = Info_Sets.Empty_Set);
    --  Construct all flow graphs for the current compilation unit.
+
+   function Last_Statement_Is_Raise (E : Entity_Id) return Boolean
+     with Pre => Ekind (E) in Subprogram_Kind | E_Task_Type;
+   --  Returns True if the last statement in the
+   --  Handled_Sequence_Of_Statements of subprogram E is an
+   --  N_Raise_Statement.
 
    -------------------------
    -- Add_To_Temp_String  --
@@ -251,12 +260,14 @@ package body Flow is
    is ((case X.Kind is
         when E_Subprogram_Body =>
           Is_Subprogram (X.Analyzed_Entity),
+        when E_Task_Body =>
+          Ekind (X.Analyzed_Entity) = E_Task_Type,
         when E_Package =>
           Ekind (X.Analyzed_Entity) = E_Package,
         when E_Package_Body =>
-            Ekind (X.Analyzed_Entity) = E_Package_Body)
-       and then (if not X.Compute_Globals then not X.GG.Aborted and
-                                               X.GG.Globals.Is_Empty)
+          Ekind (X.Analyzed_Entity) = E_Package_Body)
+            and then (if not X.Compute_Globals
+                      then not X.GG.Aborted and X.GG.Globals.Is_Empty)
       );
 
    -------------------------------
@@ -818,6 +829,7 @@ package body Flow is
       Tmp : Flow_Analysis_Graphs_Root
          (Kind            => (case Ekind (E) is
                               when Subprogram_Kind => E_Subprogram_Body,
+                              when E_Task_Type     => E_Task_Body,
                               when others          => Ekind (E)),
           Compute_Globals => Compute_Globals);
 
@@ -878,6 +890,34 @@ package body Flow is
                Tmp.Refined_Global_N  := Get_Pragma (Body_N,
                                                     Pragma_Refined_Global);
             end;
+
+            Tmp.Is_Generative := Refinement_Needed (E);
+
+            Tmp.Function_Side_Effects_Present := False;
+
+         when E_Task_Type =>
+            --  !!! O429-046 Set contract nodes
+
+            Tmp.B_Scope := Get_Flow_Scope (Task_Body (E));
+            Tmp.S_Scope := Get_Flow_Scope (E);
+
+            Append (Tmp.Base_Filename, "task_");
+
+            Tmp.Is_Main := True;
+
+            Tmp.Last_Statement_Is_Raise := Last_Statement_Is_Raise (E);
+
+            Tmp.Depends_N := Empty; -- Get_Pragma (E, Pragma_Depends);
+            Tmp.Global_N  := Empty; -- Get_Pragma (E, Pragma_Global);
+
+            --  declare
+            --     Body_N : constant Node_Id := Subprogram_Body_Entity (E);
+            --  begin
+            Tmp.Refined_Depends_N := Empty;  --  Get_Pragma (Body_N,
+                                             --    Pragma_Refined_Depends);
+            Tmp.Refined_Global_N  := Empty;  --  Get_Pragma (Body_N,
+                                             --    Pragma_Refined_Global);
+            --  end;
 
             Tmp.Is_Generative := Refinement_Needed (E);
 
@@ -962,13 +1002,17 @@ package body Flow is
             --  There are a number of cases where we don't want to produce
             --  graphs as we already have all the contracts we need.
             case FA.Kind is
-               when E_Subprogram_Body =>
+               when E_Subprogram_Body | E_Task_Body =>
                   if not FA.Is_Generative then
                      if Gnat2Why_Args.Flow_Advanced_Debug then
                         if Present (FA.Global_N) then
                            Write_Str ("skipped (global found)");
-                        else
+                        elsif Present (FA.Depends_N) then
                            Write_Str ("skipped (depends found)");
+                        elsif FA.Kind = E_Task_Body then
+                           Write_Str ("skipped (task)");
+                        else
+                           raise Program_Error;
                         end if;
                         Write_Eol;
                      end if;
@@ -980,11 +1024,13 @@ package body Flow is
                                                      then "yes"
                                                      else "no"));
                      Write_Eol;
-                     Write_Str ("Body in SPARK: " &
-                                  (if Entity_Body_Valid_SPARK (E)
-                                   then "yes"
-                                   else "no"));
-                     Write_Eol;
+                     if FA.Kind = E_Subprogram_Body then
+                        Write_Str ("Body in SPARK: " &
+                                     (if Entity_Body_Valid_SPARK (E)
+                                        then "yes"
+                                        else "no"));
+                        Write_Eol;
+                     end if;
                   end if;
 
                when E_Package =>
@@ -1212,6 +1258,15 @@ package body Flow is
                   end if;
                end if;
 
+            when E_Task_Type =>
+               --  !!! O429-046 Globals for tasks
+               if SPARK_Util.Analysis_Requested (E) then
+                  FA_Graphs.Include (E, Flow_Analyse_Entity
+                                       (E,
+                                        E,
+                                        Compute_Globals));
+               end if;
+
             when E_Package =>
                declare
                   Pkg_Spec   : constant Node_Id := Package_Specification (E);
@@ -1353,6 +1408,10 @@ package body Flow is
                      Register_Claim ((E    => FA.Analyzed_Entity,
                                       Kind => Claim_Effects));
                   end if;
+
+               when E_Task_Body =>
+                  --  !!! O429-046 analyze tasks
+                  null;
 
                when E_Package | E_Package_Body =>
                   --  In "Prove" mode we do not care about hidden
@@ -1541,13 +1600,20 @@ package body Flow is
    -- Last_Statement_Is_Raise --
    -----------------------------
 
-   function Last_Statement_Is_Raise (E : Entity_Id) return Boolean is
-      The_Body       : constant Node_Id := Subprogram_Body (E);
-      Last_Statement : constant Node_Id :=
-        Last (Statements (Handled_Statement_Sequence (The_Body)));
+   function Last_Statement_Is_Raise (E : Entity_Id) return Boolean
+   is
+      Ptr : Node_Id;
    begin
-      return (Nkind (Last_Statement) = N_Raise_Statement
-                or else Nkind (Last_Statement) in N_Raise_xxx_Error);
+      case Ekind (E) is
+         when Subprogram_Kind =>
+            Ptr := Subprogram_Body (E);
+         when E_Task_Type =>
+            Ptr := Task_Body (E);
+         when others =>
+            raise Program_Error;
+      end case;
+      Ptr := Last (Statements (Handled_Statement_Sequence (Ptr)));
+      return Nkind (Ptr) in N_Raise_xxx_Error | N_Raise_Statement;
    end Last_Statement_Is_Raise;
 
 end Flow;

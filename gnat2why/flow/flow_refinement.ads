@@ -168,7 +168,17 @@ package Flow_Refinement is
    --  abstraction whose refinement is visible from Scope.
 
    function Refinement_Needed (E : Entity_Id) return Boolean
-     with Pre => Ekind (E) in Subprogram_Kind;
-   --  Returns True if a refinement is needed for E
+     with Pre => Ekind (E) in Subprogram_Kind | E_Task_Type;
+   --  Returns True if a refinement is needed for the given subprogram or
+   --  task E.
+   --
+   --  If no body is present then we return false since we can't decide
+   --  (nor need an answer, since we won't analyze the body).
+   --
+   --  If a body is present then we need a refinement if either:
+   --     * no global or depends present
+   --     * no refined global, but global mentions state with visible
+   --       refinement
+   --     * ditto for depends and refined repends
 
 end Flow_Refinement;

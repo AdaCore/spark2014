@@ -652,6 +652,10 @@ package body Flow.Analysis is
                         end loop;
                      end;
 
+                  when E_Task_Body =>
+                     --  !!! O429-046 To do...
+                     null;
+
                   when E_Package | E_Package_Body =>
                      Vars_Known := To_Flow_Id_Set
                        (Down_Project (To_Node_Set (To_Entire_Variables
@@ -673,6 +677,11 @@ package body Flow.Analysis is
                            Fold_Functions       => False,
                            Reduced              => True,
                            Use_Computed_Globals => True));
+
+                  when E_Task_Body =>
+                     --  !!! O429-046 To do...
+                     Vars_Used := Flow_Id_Sets.Empty_Set;
+
                   when others =>
                      Vars_Used := To_Entire_Variables
                        (Get_Variable_Set

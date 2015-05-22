@@ -3501,6 +3501,10 @@ package body Flow_Utility is
                end if;
             end if;
 
+         when E_Task_Type =>
+            --  !!! O429-046 To do...
+            return Node_Lists.Empty_List;
+
          when E_Package =>
             if Refined then
                P_Expr := Node_Lists.Empty_List;

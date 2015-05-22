@@ -781,8 +781,18 @@ package body Flow_Refinement is
    -----------------------
 
    function Refinement_Needed (E : Entity_Id) return Boolean is
-      Body_N : constant Node_Id := Subprogram_Body_Entity (E);
+      Body_N : Node_Id;
    begin
+      case Ekind (E) is
+         when Subprogram_Kind =>
+            Body_N := Subprogram_Body_Entity (E);
+         when E_Task_Type =>
+            --  !!! O429-046 Workaround for now
+            return False;
+         when others =>
+            raise Program_Error;
+      end case;
+
       if Present (Body_N) then
          declare
             Depends_N         : constant Node_Id :=

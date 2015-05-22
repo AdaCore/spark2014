@@ -142,6 +142,7 @@ package Flow is
    subtype Valid_Analyzed_Entity is Entity_Kind
      with Static_Predicate =>
        Valid_Analyzed_Entity in E_Subprogram_Body |
+                                E_Task_Body |
                                 E_Package |
                                 E_Package_Body;
 
@@ -246,7 +247,7 @@ package Flow is
       --  Information for globals computation.
 
       case Kind is
-         when E_Subprogram_Body =>
+         when E_Subprogram_Body | E_Task_Body =>
             Is_Main : Boolean;
             --  True if this is the main program. In order to be the
             --  main it has to be a library level subprogram without
@@ -327,12 +328,6 @@ package Flow is
    --  Generate flow globals for the current compilation unit.
 
 private
-
-   function Last_Statement_Is_Raise (E : Entity_Id) return Boolean
-     with Pre => Ekind (E) in Subprogram_Kind;
-   --  Returns True if the last statement in the
-   --  Handled_Sequence_Of_Statements of subprogram E is an
-   --  N_Raise_Statement.
 
    FA_Graphs : Analysis_Maps.Map := Analysis_Maps.Empty_Map;
    --  All analysis results are stashed here in case we need them later. In
