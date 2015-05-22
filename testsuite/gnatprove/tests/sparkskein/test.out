@@ -300,8 +300,6 @@ skein.ads:176:36: info: initialization of "Ctx.X" proved
 skein.ads:190:19: info: postcondition proved
 skein.ads:195:31: info: initialization of "Hash" proved
 skein.ads:200:46: info: division check proved
-skein.ads:214:14: warning: subprogram "Set_Debug_Flags" has no effect
-skein.ads:219:14: warning: subprogram "Show_Msg_8" has no effect
 skein.ads:354:38: info: initialization of constant without variable input "Null_Tweak_Value.Bit_Pad" proved
 skein.ads:354:38: info: initialization of constant without variable input "Null_Tweak_Value.Byte_Count_LSB" proved
 skein.ads:354:38: info: initialization of constant without variable input "Null_Tweak_Value.Byte_Count_MSB" proved

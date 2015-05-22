@@ -1377,7 +1377,12 @@ package body Flow is
                   if not Gnat2Why_Args.Prove_Mode then
                      Analysis.Find_Unwritten_Exports (FA);
                      if FA.No_Effects then
-                        if not FA.Is_Main then
+                        if not FA.Is_Main
+                          and then not Is_Error_Signaling_Procedure
+                                         (FA.Analyzed_Entity)
+                          and then not Has_User_Supplied_Globals
+                                         (FA.Analyzed_Entity)
+                        then
                            Error_Msg_Flow
                              (FA   => FA,
                               Msg  => "subprogram & has no effect",

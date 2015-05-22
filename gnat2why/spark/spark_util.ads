@@ -585,10 +585,15 @@ package SPARK_Util is
    --  @return True iff E has a data dependencies (Global) or flow
    --     dependencies (Depends) contract
 
-   function Is_Error_Signaling_Procedure (E : Entity_Id) return Boolean is
+   function Is_Error_Signaling_Procedure
+     (E        : Entity_Id;
+      After_GG : Boolean := True)
+      return Boolean
+   is
      (No_Return (E)
-       and then Get_Execution_Kind (E) = Abnormal_Termination);
+       and then Get_Execution_Kind (E, After_GG) = Abnormal_Termination);
    --  @param E subprogram
+   --  @param After_GG is True when we can use the generated globals
    --  @return True iff E is marked No_Return and is considered to always
    --     terminate abnormally.
 

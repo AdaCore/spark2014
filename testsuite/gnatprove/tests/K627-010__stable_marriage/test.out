@@ -201,14 +201,11 @@ stable_marriage.adb:396:10: info: initialization of "Unmatched_G2_Set" proved
 stable_marriage.adb:396:10: info: precondition proved
 stable_marriage.adb:399:14: info: initialization of "Result" proved
 stable_marriage.ads:21:14: medium: postcondition might fail, requires Is_Permutation_1'Result = (for all G1 in Group1_Id => (for some Rank in Ranking => (R1 (Rank) = G1
-stable_marriage.ads:25:14: warning: subprogram "Invert_Permutation_1" has no effect
 stable_marriage.ads:30:49: medium: postcondition might fail, requires R1 (Rank1) /= R1 (Rank2)
 stable_marriage.ads:33:14: medium: postcondition might fail, requires Is_Permutation_2'Result = (for all G2 in Group2_Id => (for some Rank in Ranking => (R2 (Rank) = G2
-stable_marriage.ads:37:14: warning: subprogram "Invert_Permutation_2" has no effect
 stable_marriage.ads:42:49: medium: postcondition might fail, requires R2 (Rank1) /= R2 (Rank2)
 stable_marriage.ads:50:14: medium: postcondition might fail
 stable_marriage.ads:56:14: medium: postcondition might fail
-stable_marriage.ads:59:14: warning: subprogram "Invert_Ranking_Of_Group_1" has no effect
 stable_marriage.ads:65:45: medium: postcondition might fail, requires G2_To_G1 (G21) /= G2_To_G1 (G22)
 stable_marriage.ads:71:07: medium: postcondition might fail
 stable_marriage.ads:77:14: info: postcondition proved

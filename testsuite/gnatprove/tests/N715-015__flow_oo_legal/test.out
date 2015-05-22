@@ -4,7 +4,6 @@ simple_oo_with_contracts.adb:26:21: info: initialization of constant with variab
 simple_oo_with_contracts.ads:12:34: info: initialization of "G4" proved
 simple_oo_with_contracts.ads:22:34: info: initialization of "G4" proved
 simple_oo_with_contracts.ads:31:34: info: initialization of "G4" proved
-simple_oo_with_contracts.ads:38:14: warning: subprogram "Do_Stuff" has no effect
 simple_oo_without_contracts.adb:26:21: info: initialization of constant with variable input "R1b" proved
 simple_oo_without_contracts.ads:8:14: info: initialization of "G4" proved
 simple_oo_without_contracts.ads:15:14: info: initialization of "G4" proved

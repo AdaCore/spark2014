@@ -14,4 +14,3 @@ stabilizer_pack.ads:24:04: info: initialization of "Asl_Long" constituent of "As
 stabilizer_pack.ads:28:04: info: initialization of "Asl_Err_Deadband" constituent of "Asl_Parameters" proved
 stabilizer_pack.ads:30:04: info: initialization of "Asl_Alpha" constituent of "Asl_Parameters" proved
 stabilizer_pack.ads:32:04: info: initialization of "Asl_Alpha_Long" constituent of "Asl_Parameters" proved
-stabilizer_pack.ads:37:14: warning: subprogram "Stabilizer_Alt_Hold_Update" has no effect

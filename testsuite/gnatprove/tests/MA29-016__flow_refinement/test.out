@@ -32,8 +32,6 @@ levels.adb:150:15: info: initialization of "X" proved
 levels.adb:150:19: info: initialization of "Tmp" proved
 levels.adb:157:25: info: initialization of "A" proved
 levels.ads:2:26: warning: no procedure exists that can initialize abstract state "Levels.Abs_0"
-levels.ads:14:14: warning: subprogram "Post_Test_01" has no effect
-levels.ads:18:14: warning: subprogram "Post_Test_02" has no effect
 levels.ads:22:23: info: initialization of "A" proved
 levels.ads:25:25: info: initialization of "X" proved
 par-priv.adb:13:04: warning: analyzing unreferenced procedure "Test"

@@ -153,7 +153,6 @@ array_aggregates.adb:421:60: info: length check proved
 array_aggregates.adb:422:07: info: assertion proved
 array_aggregates.adb:423:25: info: initialization of "X" proved
 array_aggregates.adb:425:59: info: length check proved
-array_aggregates.adb:432:14: warning: subprogram "Aggregate_Test_AJ_Simplified" has no effect
 array_aggregates.adb:436:07: info: assertion proved
 array_aggregates.adb:436:36: info: length check proved
 array_aggregates.adb:437:38: info: length check proved

@@ -235,7 +235,6 @@ auditlog.adb:452:16: info: initialization of "TimeCount" proved
 auditlog.adb:462:53: info: initialization of "OK" proved
 auditlog.adb:466:22: info: initialization of "LastTime" proved
 auditlog.adb:466:22: info: initialization of "TimeOK" proved
-auditlog.adb:481:14: warning: subprogram "DeleteArchiveFile" has no effect
 auditlog.adb:491:22: info: precondition proved
 auditlog.adb:493:32: info: initialization of "Archive" proved
 auditlog.adb:495:30: info: initialization of "Archive" proved
@@ -490,7 +489,6 @@ bio.adb:250:35: info: initialization of "NumericReturn" proved
 bio.ads:40:20: info: initialization of "FingerPresent" proved
 bio.ads:56:22: info: initialization of "MatchResult" proved
 bio.ads:57:22: info: initialization of "AchievedFAR" proved
-bio.ads:85:14: warning: subprogram "Flush" has no effect
 cert-attr-auth.adb:66:35: info: initialization of "LocalContents.Issuer.ID" proved
 cert-attr-auth.adb:66:35: info: initialization of "LocalContents.Issuer.Name" proved
 cert-attr-auth.adb:66:35: info: initialization of "LocalContents.Issuer.NameLength" proved
@@ -1843,12 +1841,9 @@ iandatypes.ads:62:47: info: length check proved
 iandatypes.ads:63:35: info: initialization of constant without variable input "NullTemplatePad" proved
 keyboard.adb:75:32: info: initialization of "LocalLength" proved
 keyboard.adb:76:32: info: initialization of "LocalData" proved
-keyboard.ads:47:14: warning: subprogram "Init" has no effect
-keyboard.ads:60:14: warning: subprogram "Finalise" has no effect
 keyboard.ads:76:20: info: initialization of "DataPresence" proved
 keyboard.ads:77:20: info: initialization of "Data.Length" proved
 keyboard.ads:77:20: info: initialization of "Data.Text" proved
-keyboard.ads:90:14: warning: subprogram "Poll" has no effect
 keystore.adb:58:06: info: length check proved
 keystore.adb:112:09: medium: range check might fail, in call inlined at keystore.adb:268
 keystore.adb:112:09: medium: range check might fail, in call inlined at keystore.adb:276
@@ -2777,7 +2772,6 @@ tokenreader.adb:310:24: medium: precondition might fail
 tokenreader.adb:321:21: medium: precondition might fail
 tokenreader.adb:332:18: medium: precondition might fail
 tokenreader.adb:338:31: info: initialization of "ResponseCode" proved
-tokenreader.adb:386:17: warning: subprogram "DisconnectToken" has no effect
 tokenreader.adb:515:22: info: initialization of "ResponseCode" proved
 tokenreader.adb:518:22: info: initialization of "TheCardHandle" proved
 tokenreader.adb:589:13: info: initialization of "ResponseCode" proved

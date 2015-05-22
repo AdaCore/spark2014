@@ -1,4 +1,3 @@
-aip-arp.ads:4:14: warning: subprogram "Send_Request" has no effect
 aip-net.adb:17:18: info: initialization of "Room" proved
 aip-net.adb:17:23: info: overflow check proved
 aip-net.adb:20:18: info: initialization of "Room" proved
