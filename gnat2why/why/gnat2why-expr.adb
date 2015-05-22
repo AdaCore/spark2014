@@ -2918,8 +2918,7 @@ package body Gnat2Why.Expr is
             while Present (Field) loop
                if (Is_Record_Type (Ty_Ext)
                    or else Ekind (Field) = E_Discriminant)
-                 and then not (Ekind (Field) in E_Discriminant
-                             and then Is_Completely_Hidden (Field))
+                 and then Is_Not_Hidden_Discriminant (Field)
                then
 
                   R_Acc := New_Ada_Record_Access

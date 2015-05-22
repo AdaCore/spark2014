@@ -330,6 +330,13 @@ package SPARK_Util is
    --  @param E any entity
    --  @return True iff E is contained in a file that should be analyzed
 
+   function Is_Not_Hidden_Discriminant (E : Entity_Id) return Boolean is
+     (not (Ekind (E) = E_Discriminant and then Is_Completely_Hidden (E)));
+   --  @param E any entity
+   --  @return The opposite of Einfo.Is_Completely_Hidden
+   --  Contrary to Einfo.Is_Completely_Hidden, this function can be called on
+   --  any entity E, not only discriminants.
+
    function Is_Package_State (E : Entity_Id) return Boolean;
    --  @param E any entity
    --  @return True iff E is an abstract state or a package level variable

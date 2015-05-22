@@ -132,11 +132,6 @@ package body Why.Gen.Records is
       Equivalent_Keys => "=",
       "="             => "=");
 
-   function Is_Not_Hidden_Discriminant (E : Entity_Id) return Boolean is
-     (not (Ekind (E) = E_Discriminant and then Is_Completely_Hidden (E)));
-   --  Opposite of Einfo.Is_Completely_Hidden, which also returns True if E is
-   --  not a discriminant.
-
    function Count_Fields_Not_In_Root (E : Entity_Id) return Natural;
    --  Counts the number of fields for the Why3 record representing type E that
    --  are not present in the representation of the root type for E.
@@ -2406,7 +2401,7 @@ package body Why.Gen.Records is
 
    begin
       while Present (Anc_Comp) loop
-         pragma Assert (not Is_Completely_Hidden (Anc_Comp));
+         pragma Assert (Is_Not_Hidden_Discriminant (Anc_Comp));
 
          Component := Search_Component_By_Name (Ty, Anc_Comp);
 
