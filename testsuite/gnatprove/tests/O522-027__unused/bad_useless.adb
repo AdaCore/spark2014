@@ -1,7 +1,7 @@
 procedure Bad_Useless (X : in out Integer)
   with SPARK_Mode
 is
-   Tmp : Integer;
+   Tmp : Integer with Ghost;
 begin
    Tmp := X;
    for J in 1 .. 10 loop
