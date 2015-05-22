@@ -233,7 +233,7 @@ package Why.Gen.Names is
       --  type with private ancestor
       WNE_Hide_Ancestor,  --  hide_anc__
 
-      --  Division operator for a fixed-point type
+      --  Division operators for a fixed-point type
       WNE_Fixed_Point_Div,
       WNE_Fixed_Point_Div_Int,
 
