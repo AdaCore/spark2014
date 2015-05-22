@@ -270,8 +270,8 @@ package Why.Gen.Expr is
       Domain   : EW_Domain;
       Expr     : W_Expr_Id;
       To       : W_Type_Id) return W_Expr_Id;
-   --  Returns the expression of type To that converts Expr of type From,
-   --  possibly inserting checks during the conversion.
+   --  Returns the expression of type To that converts Expr possibly inserting
+   --  checks during the conversion.
 
    function Insert_Simple_Conversion
      (Ada_Node : Node_Id := Empty;
