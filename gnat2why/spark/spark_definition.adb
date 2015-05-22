@@ -234,10 +234,10 @@ package body SPARK_Definition is
    --  correct cached result of Ravenscar_Profile calls.
 
    function Ravenscar_Profile return Boolean;
-   --  Tests if restrictions corresponding to Profile (Ravenscar) are
-   --  currently in effect (set by pragma Profile, or by an appropriate set of
-   --  individual Restrictions pragmas). Returns True only if all the required
-   --  restrictions are set.
+   --  Tests if configuration pragmas and restrictions corresponding to Profile
+   --  (Ravenscar) are currently in effect (set by pragma Profile, or by an
+   --  appropriate set of individual Restrictions pragmas). Returns True only
+   --  if all the required settings are set.
 
    function Sequential_Elaboration return Boolean;
    --  Check if Partition_Elaboration_Policy is set to Sequential.
