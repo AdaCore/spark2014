@@ -1509,7 +1509,7 @@ package body Gnat2Why.Subprograms is
          --  in the program.
 
          Collect_Bounds_For_Dynamic_Types (Params    => Params,
-                                           Scope     => E,
+                                           Subp      => E,
                                            Dyn_Types => Used_Dyn_Types,
                                            Objects   => Used_Objects);
 
@@ -1518,7 +1518,7 @@ package body Gnat2Why.Subprograms is
 
          Assume_Dynamic_Property_For_Objects (Assume  => Assume,
                                               Objects => Used_Objects,
-                                              Scope   => E);
+                                              Subp    => E);
          Why_Body :=
            Sequence (Assume, Why_Body);
       end;
@@ -2161,9 +2161,9 @@ package body Gnat2Why.Subprograms is
             --  in the program
 
             Collect_Bounds_For_Dynamic_Types (Params    => Params,
-                                             Scope     => E,
-                                             Dyn_Types => Used_Dyn_Types,
-                                             Objects   => Used_Objects);
+                                              Subp      => E,
+                                              Dyn_Types => Used_Dyn_Types,
+                                              Objects   => Used_Objects);
 
             --  We assume that objects used in the program are in range, if
             --  they are of a dynamic type
