@@ -210,9 +210,12 @@ is
                                Byte_Count : in     U64)
      with Pre => Dst'First = 0 and
                  Src'First = 0 and
-                 Sub_In_Range (Dst'Last, Dst_Offset) and
-                 Dst'Last - Dst_Offset > Byte_Count and
-                 (Byte_Count - 1) / 8 <= Src'Last
+                 (Byte_Count = 0
+                    or
+                  Add_In_Range (Dst_Offset, Byte_Count - 1)) and
+                 Dst'Last >= Dst_Offset + (Byte_Count - 1) and
+                 Src'Last < U64'Last / 8 and
+                 Byte_Count <= (Src'Last + 1) * 8
    is
    begin
       if Byte_Count >= 1 then
@@ -231,9 +234,11 @@ is
                                Src_Offset : in     U64)
      with Pre => Src'First = 0 and
                  Dst'First = 0 and
-                 Sub_In_Range (Src'Last, Src_Offset) and
-                 Sub_In_Range (Src'Last - Src_Offset, 7) and
-                 Dst'Last * 8 <= Src'Last - Src_Offset - 7
+                 Src_Offset <= Src'Last and
+                 Dst'Last < U64'Last / 8 and
+                 Add_In_Range (Dst'Last * 8, 7) and
+                 Add_In_Range (Src_Offset, Dst'Last * 8 + 7) and
+                 Src_Offset + Dst'Last * 8 + 7 <= Src'Last
    is
       Dst_Index : Word_Count_T;
       Src_Index : U64;
@@ -261,10 +266,6 @@ is
 
          Dst_Index := Dst_Index + 1;
          Src_Index := Src_Index + 8;
-
-         pragma Assert (Src_Offset + 7 + (Dst_Index * 8) <= Src_Offset + 7 + (Dst'Last * 8));
-         pragma Assert (Src_Index = Src_Offset + Dst_Index * 8);
-         pragma Assert (Src_Index <= Src'Last);
       end loop;
    end Get_64_LSB_First;
 
