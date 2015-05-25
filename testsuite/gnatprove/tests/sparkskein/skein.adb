@@ -315,27 +315,7 @@ is
 
       Src_Offset : U64;
 
-
-      procedure Initialize_Key_Schedule;
-        --  with Global => (Input  => Ctx,
-        --                  Output => KS);
-
-      procedure Initialize_TS;
-        --  with Global => (Input  => Ctx,
-        --                  Output => TS);
-
-      procedure Do_First_Key_Injection;
-        --  with Global => (Input => (W, TS, KS),
-        --                  Output => X);
-
-      procedure Threefish_Block
-        with Global => (Input  => (KS, TS),
-                        In_Out => X);
-
-      procedure Update_Context;
-
-      procedure Initialize_Key_Schedule
-      is
+      procedure Initialize_Key_Schedule is
       begin
          --  For speed, we avoid a complete aggregate assignemnt to KS here.
          --  This generates a false-alarm from the flow-analyser, but this is
@@ -353,8 +333,7 @@ is
          end loop;
       end Initialize_Key_Schedule;
 
-      procedure Initialize_TS
-      is
+      procedure Initialize_TS is
          W0 : U64;
          W1 : U64;
       begin
@@ -365,8 +344,7 @@ is
                           2 => W0 xor W1);
       end Initialize_TS;
 
-      procedure Do_First_Key_Injection
-      is
+      procedure Do_First_Key_Injection is
       begin
          X := U64_Seq_8'(0 => W (0) + KS (0),
                          1 => W (1) + KS (1),
@@ -381,22 +359,10 @@ is
       end Do_First_Key_Injection;
 
       procedure Threefish_Block
+        with Global => (Input  => (KS, TS),
+                        In_Out => X)
       is
-         procedure Inject_Key (R : in U64);
-           --  with Global => (Input  => (KS, TS),
-           --                  In_Out => X);
-
-         procedure Round_1;
-         procedure Round_2;
-         procedure Round_3;
-         procedure Round_4;
-         procedure Round_5;
-         procedure Round_6;
-         procedure Round_7;
-         procedure Round_8;
-
-         procedure Inject_Key (R : in U64)
-         is
+         procedure Inject_Key (R : in U64) is
             subtype Injection_Range is U64 range 0 .. (WCNT_512 - 1);
          begin
             for I in Injection_Range loop
@@ -411,8 +377,7 @@ is
                             (S512, Ctx.H, Trace.Skein_Rnd_Key_Inject, X));
          end Inject_Key;
 
-         procedure Round_1
-         is
+         procedure Round_1 is
          begin
             X (0) := X (0) + X (1);
             X (1) := Rotate_Left (X (1), R_512_0_0);
@@ -431,8 +396,7 @@ is
             X (7) := X (7) xor X (6);
          end Round_1;
 
-         procedure Round_2
-         is
+         procedure Round_2 is
          begin
             X (2) := X (2) + X (1);
             X (1) := Rotate_Left (X (1), R_512_1_0);
@@ -451,8 +415,7 @@ is
             X (3) := X (3) xor X (0);
          end Round_2;
 
-         procedure Round_3
-         is
+         procedure Round_3 is
          begin
             X (4) := X (4) + X (1);
             X (1) := Rotate_Left (X (1), R_512_2_0);
@@ -471,8 +434,7 @@ is
             X (7) := X (7) xor X (2);
          end Round_3;
 
-         procedure Round_4
-         is
+         procedure Round_4 is
          begin
             X (6) := X (6) + X (1);
             X (1) := Rotate_Left (X (1), R_512_3_0);
@@ -491,8 +453,7 @@ is
             X (3) := X (3) xor X (4);
          end Round_4;
 
-         procedure Round_5
-         is
+         procedure Round_5 is
          begin
             X (0) := X (0) + X (1);
             X (1) := Rotate_Left (X (1), R_512_4_0);
@@ -511,8 +472,7 @@ is
             X (7) := X (7) xor X (6);
          end Round_5;
 
-         procedure Round_6
-         is
+         procedure Round_6 is
          begin
             X (2) := X (2) + X (1);
             X (1) := Rotate_Left (X (1), R_512_5_0);
@@ -531,8 +491,7 @@ is
             X (3) := X (3) xor X (0);
          end Round_6;
 
-         procedure Round_7
-         is
+         procedure Round_7 is
          begin
             X (4) := X (4) + X (1);
             X (1) := Rotate_Left (X (1), R_512_6_0);
@@ -551,8 +510,7 @@ is
             X (7) := X (7) xor X (2);
          end Round_7;
 
-         procedure Round_8
-         is
+         procedure Round_8 is
          begin
             X (6) := X (6) + X (1);
             X (1) := Rotate_Left (X (1), R_512_7_0);
@@ -594,8 +552,7 @@ is
          end loop;
       end Threefish_Block;
 
-      procedure Update_Context
-      is
+      procedure Update_Context is
       begin
          Ctx.X := Skein_512_State_Words'(0 => X (0) xor W (0),
                                          1 => X (1) xor W (1),
@@ -844,22 +801,7 @@ is
       Tmp_B              : Skein_512_Block_Bytes;
       Tmp_Byte_Count_Add : U64;
 
-      procedure Zero_Pad;
-        --  with Pre => Local_Ctx.H.Byte_Count < Skein_512_Block_Bytes_C and
-        --              Local_Ctx.H.Hash_Bit_Len > 0,
-        --       Post => Local_Ctx.H.Hash_Bit_Len =
-        --                 Local_Ctx'Old.H.Hash_Bit_Len and
-        --               Local_Ctx.H.Hash_Bit_Len > 0 and
-        --               Local_Ctx.H.Byte_Count < Skein_512_Block_Bytes_C and
-        --               Local_Ctx.H.Byte_Count = Local_Ctx'Old.H.Byte_Count;
-
-      procedure Set_Counter (Counter : in U64);
-        --  with Global => (In_Out => Local_Ctx),
-        --       Pre => Local_Ctx.H.Hash_Bit_Len > 0,
-        --       Post => Local_Ctx.H.Hash_Bit_Len > 0;
-
-      procedure Zero_Pad
-      is
+      procedure Zero_Pad is
       begin
          for I in Skein_512_Block_Bytes_Index
            range Local_Ctx.H.Byte_Count ..
@@ -876,8 +818,7 @@ is
          end loop;
       end Zero_Pad;
 
-      procedure Set_Counter (Counter : in U64)
-      is
+      procedure Set_Counter (Counter : in U64) is
       begin
          Local_Ctx.B (0) := Byte (Counter and 16#FF#);
          Local_Ctx.B (1) := Byte (Shift_Right (Counter, 8)  and 16#FF#);
@@ -954,6 +895,8 @@ is
          if (N >= Skein_512_Block_Bytes_C) then
             N := Skein_512_Block_Bytes_C;
          end if;
+
+         pragma Assert (Hash'Last >= Blocks_Done * Skein_512_Block_Bytes_C + (N - 1));
 
          --  Push the output Local_Ctx.X into output buffer Hash
          Put_64_LSB_First
