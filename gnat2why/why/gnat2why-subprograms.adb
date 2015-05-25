@@ -75,13 +75,14 @@ package body Gnat2Why.Subprograms is
    -- Local Subprograms --
    -----------------------
 
-   procedure Collect_Bounds_For_Dynamic_Types
+   procedure Assign_Bounds_For_Dynamic_Types
      (Params    :        Transformation_Params;
       Subp      :        Entity_Id;
+      Assume    : in out W_Prog_Id;
       Dyn_Types : in out Node_Sets.Set;
       Objects   : in out Node_Sets.Set);
-   --  For each element of Dyn_Types not declared in Subp, add to Objects
-   --  every object used for the bounds. If a dynamic type is a subtype or a
+   --  For each element of Dyn_Types not declared in Subp, add to Assume an
+   --  updates of the corresponding bounds. If a dynamic type is a subtype or a
    --  derived type of a dynamic type, this type is added to Dyn_Types.
 
    procedure Assume_Dynamic_Property_For_Objects
@@ -226,24 +227,25 @@ package body Gnat2Why.Subprograms is
 
    end Add_Dependencies_For_Effects;
 
-   --------------------------------------
-   -- Collect_Bounds_For_Dynamic_Types --
-   --------------------------------------
+   -------------------------------------
+   -- Assume_Bounds_For_Dynamic_Types --
+   -------------------------------------
 
-   procedure Collect_Bounds_For_Dynamic_Types
+   procedure Assign_Bounds_For_Dynamic_Types
      (Params    :        Transformation_Params;
       Subp      :        Entity_Id;
+      Assume    : in out W_Prog_Id;
       Dyn_Types : in out Node_Sets.Set;
       Objects   : in out Node_Sets.Set) is
 
-      procedure Collect_Constraints_For_Type (Ty : Entity_Id);
+      procedure Assume_Constraints_For_Type (Ty : Entity_Id);
       --  Calls itself recursively on the parent type used in Ty's declaration
       --  Adds affectations to the bounds of Ty to Assume
       --  Collects objects and types from bounds of Ty
 
       Input_Set : Node_Sets.Set;
 
-      procedure Collect_Constraints_For_Type (Ty : Entity_Id) is
+      procedure Assume_Constraints_For_Type (Ty : Entity_Id) is
       begin
          if Is_Discrete_Type (Ty)
            and then not Is_Static_Subtype (Ty)
@@ -263,7 +265,7 @@ package body Gnat2Why.Subprograms is
                --  The constraints for Ty's parent type should be assumed
                --  before the constraints for Ty
 
-               Collect_Constraints_For_Type (Base);
+               Assume_Constraints_For_Type (Base);
 
                --  No need to assume anything if Ty is declared in Subp
 
@@ -290,6 +292,16 @@ package body Gnat2Why.Subprograms is
                                      EW_Term, Params);
                   New_Types : Node_Sets.Set;
                begin
+
+                  --  Assuming the value of Ty's bounds
+
+                  Assume := Sequence (Left  => Assume,
+                                      Right => Assume_Of_Scalar_Subtype
+                                        (Params   => Params,
+                                         N        => Ty,
+                                         Base     => Base,
+                                         Do_Check => False));
+
                   --  Add Ty to the set of already handled types
 
                   Dyn_Types.Include (Ty);
@@ -304,12 +316,12 @@ package body Gnat2Why.Subprograms is
                   Collect_Dynamic_Types (+High_Expr, New_Types);
 
                   for E of New_Types loop
-                     Collect_Constraints_For_Type (E);
+                     Assume_Constraints_For_Type (E);
                   end loop;
                end;
             end;
          end if;
-      end Collect_Constraints_For_Type;
+      end Assume_Constraints_For_Type;
 
    begin
       Node_Sets.Move (Input_Set, Dyn_Types);
@@ -317,9 +329,9 @@ package body Gnat2Why.Subprograms is
       --  Add affectations to the ranges of elements of Dyn_Types to Assume
 
       for E of Input_Set loop
-         Collect_Constraints_For_Type (E);
+         Assume_Constraints_For_Type (E);
       end loop;
-   end Collect_Bounds_For_Dynamic_Types;
+   end Assign_Bounds_For_Dynamic_Types;
 
    -----------------------------------------
    -- Assume_Dynamic_Property_For_Objects --
@@ -1496,34 +1508,6 @@ package body Gnat2Why.Subprograms is
       end if;
 
       declare
-         Used_Dyn_Types : Node_Sets.Set;
-         Used_Objects   : Node_Sets.Set;
-         Assume         : W_Prog_Id := New_Void;
-      begin
-         Collect_Dynamic_Types (W      => +Why_Body,
-                                Result => Used_Dyn_Types);
-         Collect_Objects (W      => +Why_Body,
-                          Result => Used_Objects);
-
-         --  Collect objects refered in bounds of external dynamic types used
-         --  in the program.
-
-         Collect_Bounds_For_Dynamic_Types (Params    => Params,
-                                           Scope     => E,
-                                           Dyn_Types => Used_Dyn_Types,
-                                           Objects   => Used_Objects);
-
-         --  We assume that objects used in the program are in range, if
-         --  they are of a dynamic type
-
-         Assume_Dynamic_Property_For_Objects (Assume  => Assume,
-                                              Objects => Used_Objects,
-                                              Scope   => E);
-         Why_Body :=
-           Sequence (Assume, Why_Body);
-      end;
-
-      declare
          Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
       begin
          Label_Set.Include (NID ("W:diverges:N"));
@@ -2157,11 +2141,11 @@ package body Gnat2Why.Subprograms is
             Collect_Objects (W      => +Prog,
                              Result => Used_Objects);
 
-            --  Collect object refered in bounds of external dynamic types used
-            --  in the program
+            --  Assume bounds of external dynamic types used in the program
 
-            Collect_Bounds_For_Dynamic_Types (Params    => Params,
-                                             Scope     => E,
+            Assign_Bounds_For_Dynamic_Types (Params    => Params,
+                                             Subp      => E,
+                                             Assume    => Assume,
                                              Dyn_Types => Used_Dyn_Types,
                                              Objects   => Used_Objects);
 
