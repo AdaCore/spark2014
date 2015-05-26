@@ -300,16 +300,16 @@ package Gnat2Why.Util is
 
    function Is_Mutable_In_Why (N : Node_Id) return Boolean;
    --  Given an N_Defining_Identifier, decide if the variable is mutable in
-   --  the Why translation
+   --  the Why translation.
 
    function Use_Why_Base_Type (E : Entity_Id) return Boolean;
    --  Decide whether for function declarations, the Why base type should be
-   --  used instead of the Ada type
+   --  used instead of the Ada type.
    --  This function should be used on entities denoting an object
 
    function Use_Base_Type_For_Type (E : Entity_Id) return Boolean;
    --  Decide whether for function declarations, the Why base type should be
-   --  used instead of the Ada type
+   --  used instead of the Ada type.
    --  This function should be used on entities denoting a type
 
    function Use_Split_Form_For_Type (E : Entity_Id) return Boolean;
