@@ -1366,9 +1366,9 @@ package body Why.Gen.Expr is
       --        (Other boolean types in Ada have a base type of EW_Int.)
 
       if Eq_Base (To, From)
-        and then (not Do_Check
-                    or else  To = EW_Bool_Type)
         and then No (Round_Func)
+        and then (not Do_Check
+                  or else To = EW_Bool_Type)
       then
          return Expr;
       end if;
