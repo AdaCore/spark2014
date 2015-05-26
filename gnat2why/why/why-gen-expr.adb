@@ -637,11 +637,10 @@ package body Why.Gen.Expr is
 
       else
          declare
-            --  Node whose Etype gives the bounds for a range check, if not
-            --  Empty. This node is directly Expr when Do_Range_Check is
-            --  set, or the expression of a type conversion whose flag
-            --  Do_Overflow_Check is set. (See description of these flags
-            --  in sinfo.ads for details.)
+            --  Flag for a range check; set if the expression node has
+            --  Do_Range_Check flag set, if it is a type conversion whose flag
+            --  Do_Overflow_Check is set. (See description of these flags in
+            --  sinfo.ads for details.)
 
             --  We can't rely on check flags for subtype predicates, so force
             --  check_node in that case.
