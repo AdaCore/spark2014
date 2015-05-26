@@ -8,8 +8,36 @@ Representation Issues
 Operational and Representation Aspects
 ---------------------------------------
 
-No restrictions or additions.
+|SPARK| defines several Boolean-valued aspects. These include the
+Async_Readers, Async_Writers, Constant_After_Elaboration,
+Effective_Reads, Effective_Writes, Extensions_Visible, Ghost,
+and Volatile_Function aspects.
+[Note that this list does not include expression-valued aspects,
+such as Default_Initial_Condition or Initial_Condition.]
 
+The following rules apply to each of these aspects unless specified
+otherwise for a particular aspect:
+
+1. In the absence of an aspect specification (explicit or inherited),
+   the default value of the given aspect is False.
+
+2. If the given aspect is specified via an aspect_specification
+   [(as opposed to via a pragma)] then the aspect_definition
+   (if any) shall be a static Boolean expression.
+   [Omitting the aspect_definition in an aspect_specification is equivalent
+   to specifying a value of True as described in Ada RM 13.1.1(15).]
+
+3. The usage names in an aspect_definition for the given aspect are
+   resolved at the point of the associated declaration. [This supercedes 
+   the name resolution rule given in Ada RM 13.1.1 that states that such names
+   are resolved at the end of the enclosing declaration list.]
+
+[One case where the "unless specified otherwise" clause applies
+is illustrated by
+
+   X : Integer with Volatile;
+
+where the Async_Readers aspect of X is True, not False.]
 
 Packed Types
 ------------
