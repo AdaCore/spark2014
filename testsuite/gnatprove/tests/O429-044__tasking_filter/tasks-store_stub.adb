@@ -6,9 +6,9 @@ protected body Store_Stub is
       The_Stored_Data := X;
    end Put;
 
---     entry Wait when True is
---     begin
---        null;
---     end Wait;
+   entry Wait when True is
+   begin
+      null;
+   end Wait;
 
 end Store_Stub;

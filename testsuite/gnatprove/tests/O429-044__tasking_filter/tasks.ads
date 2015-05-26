@@ -22,7 +22,7 @@ package Tasks is
       pragma Priority (10);
       function Get return Integer;
       procedure Put (X : in Integer);
-      --  entry Wait;
+      entry Wait;
    private
       The_Stored_Data : Integer := 0;
       The_Guard : Boolean := False;
@@ -34,7 +34,7 @@ package Tasks is
    protected type Store_Stub
    is
       procedure Put (X : in Integer);
-      --  entry Wait;
+      entry Wait;
    private
       The_Stored_Data : Integer := 0;
    end Store_Stub;

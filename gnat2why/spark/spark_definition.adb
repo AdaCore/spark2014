@@ -1489,9 +1489,7 @@ package body SPARK_Definition is
 
          when N_Entry_Declaration =>
             if Is_SPARK_Tasking_Configuration then
-               --  entries are not supported until O506-007 is fixed
-               Mark_Violation ("entry", N);
-               --  Mark_Subprogram_Declaration (N);
+               Mark_Subprogram_Declaration (N);
             else
                Mark_Violation_In_Tasking (N);
             end if;
@@ -2584,7 +2582,9 @@ package body SPARK_Definition is
 
       begin
 
-         Mark_Subprogram_Specification (Subprogram_Specification (E));
+         Mark_Subprogram_Specification (if Ekind (E) = E_Entry
+                                        then Parent (E)
+                                        else Subprogram_Specification (E));
 
          if Present (Contract (E)) then
             Prag := Pre_Post_Conditions (Contract (E));
@@ -4389,7 +4389,11 @@ package body SPARK_Definition is
       --  Mark entity
 
       else
-         Current_SPARK_Pragma := SPARK_Pragma (E);
+         --  For entries and task bodies reuse the value of SPARK_Pragma from
+         --  the context; workaround for O506-007.
+         Current_SPARK_Pragma := (if Ekind (E) in E_Entry | E_Task_Body
+                                  then Current_SPARK_Pragma
+                                  else SPARK_Pragma (E));
 
          if SPARK_Pragma_Is (Opt.On) then
             Specs_In_SPARK.Include (E);
