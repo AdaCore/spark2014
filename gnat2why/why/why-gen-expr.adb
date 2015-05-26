@@ -79,7 +79,7 @@ package body Why.Gen.Expr is
       To       : W_Type_Id;
       Expr     : W_Expr_Id) return W_Expr_Id;
    --  Assuming that there is at most one step between To and From in the
-   --  type hierarchy (i.e. that it exists a conversion from From
+   --  type hierarchy (i.e. that there exists a conversion from From
    --  to To; a counterexample would be two abstract types whose base
    --  types differ), insert the corresponding conversion.
 
@@ -1468,7 +1468,7 @@ package body Why.Gen.Expr is
       --  The regular case, we take care to insert the range check at a
       --  valid place where the expression is of the appropriate Why base
       --  type (real for a range check of a floating point type, bitvector_?
-      --  for a range check of a modular type, int for a  range check of a
+      --  for a range check of a modular type, int for a range check of a
       --  discrete type).
 
       --  1. If From is an abstract type, convert it to type int, __fixed,
