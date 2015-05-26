@@ -5,4 +5,6 @@ from test_support import *
 # CVC4 reported in O525-023. To be investigated.
 prove_all(opt=["--prover=cvc4"],steps=100000,procs=4)
 
-# With --prover=cvcv4,altergo,z3 --timeout=60, everything is proved
+# With --prover=cvc4,z3,altergo --timeout=60 everything is proved except the
+# assertion on line 580, which simply repeats the value assigned to constant
+# Src_Offset at declaration line 564.

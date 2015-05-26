@@ -240,32 +240,29 @@ is
                  Add_In_Range (Src_Offset, Dst'Last * 8 + 7) and
                  Src_Offset + Dst'Last * 8 + 7 <= Src'Last
    is
-      Dst_Index : Word_Count_T;
-      Src_Index : U64;
+      pragma Annotate
+        (GNATprove, False_Positive, """Dst"" might not be initialized",
+         "array Dst is initialized from Dst'First = 0 to Dst'Last");
+      -- so even if the loop is not entered, all elements of Dst are
+      -- initialized (zero elements in that case)
    begin
-      Dst_Index := 0;
-      Src_Index := Src_Offset;
-      loop
-         pragma Annotate
-           (GNATprove, False_Positive, """Dst"" might not be initialized",
-            "array Dst is initialized from Dst'First = 0 to Dst'Last");
-         Dst (Dst_Index) :=
-           U64 (Src (Src_Index)) +
-           Shift_Left (U64 (Src (Src_Index + 1)), 8) +
-           Shift_Left (U64 (Src (Src_Index + 2)), 16) +
-           Shift_Left (U64 (Src (Src_Index + 3)), 24) +
-           Shift_Left (U64 (Src (Src_Index + 4)), 32) +
-           Shift_Left (U64 (Src (Src_Index + 5)), 40) +
-           Shift_Left (U64 (Src (Src_Index + 6)), 48) +
-           Shift_Left (U64 (Src (Src_Index + 7)), 56);
-
-         pragma Loop_Invariant (Dst_Index in Dst'Range);
-         pragma Loop_Invariant (Src_Index = Src_Offset + Dst_Index * 8);
-
-         exit when Dst_Index = Dst'Last;
-
-         Dst_Index := Dst_Index + 1;
-         Src_Index := Src_Index + 8;
+      for Dst_Index in Dst'Range loop
+         declare
+            Src_Index : constant U64 := Src_Offset + Dst_Index * 8;
+         begin
+            pragma Annotate
+              (GNATprove, False_Positive, """Dst"" might not be initialized",
+               "array Dst is initialized from Dst'First = 0 to Dst'Last");
+            Dst (Dst_Index) :=
+              U64 (Src (Src_Index)) +
+              Shift_Left (U64 (Src (Src_Index + 1)), 8) +
+              Shift_Left (U64 (Src (Src_Index + 2)), 16) +
+              Shift_Left (U64 (Src (Src_Index + 3)), 24) +
+              Shift_Left (U64 (Src (Src_Index + 4)), 32) +
+              Shift_Left (U64 (Src (Src_Index + 5)), 40) +
+              Shift_Left (U64 (Src (Src_Index + 6)), 48) +
+              Shift_Left (U64 (Src (Src_Index + 7)), 56);
+         end;
       end loop;
    end Get_64_LSB_First;
 
@@ -311,9 +308,6 @@ is
       KS   : U64_Seq_9; -- Key schedule: chaining vars
       X    : U64_Seq_8; -- Local copy of vars
       W    : U64_Seq_8; -- Local copy of input block
-      J    : Positive_Block_512_Count_T; -- loop counter
-
-      Src_Offset : U64;
 
       procedure Initialize_Key_Schedule is
       begin
@@ -565,61 +559,58 @@ is
       end Update_Context;
 
    begin -- Skein_512_Process_Block
-      Src_Offset := Starting_Offset;
-      J := 1;
+      for J in Positive_Block_512_Count_T range 1 .. Block_Count loop
+         declare
+            Src_Offset : constant U64 :=
+              Starting_Offset + (J - 1) * Skein_512_Block_Bytes_C;
+         begin
+            pragma Loop_Invariant
+              (Ctx.H.Hash_Bit_Len = Ctx.H.Hash_Bit_Len'Loop_Entry and
+               Ctx.H.Byte_Count   = Ctx.H.Byte_Count'Loop_Entry);
 
-      loop
-         pragma Loop_Invariant
-           (Ctx.H.Hash_Bit_Len = Ctx.H.Hash_Bit_Len'Loop_Entry and
-            Ctx.H.Byte_Count   = Ctx.H.Byte_Count'Loop_Entry and
-            J <= Block_Count and
-            Src_Offset = Starting_Offset + (J - 1) * Skein_512_Block_Bytes_C);
+            --  This implementation only supports 2**64 input bytes,
+            --  so no carry over to Byte_Count_MSB here.
+            Ctx.H.Tweak_Words.Byte_Count_LSB :=
+              Ctx.H.Tweak_Words.Byte_Count_LSB + Byte_Count_Add;
 
-         --  This implementation only supports 2**64 input bytes,
-         --  so no carry over to Byte_Count_MSB here.
-         Ctx.H.Tweak_Words.Byte_Count_LSB :=
-           Ctx.H.Tweak_Words.Byte_Count_LSB + Byte_Count_Add;
+            Initialize_Key_Schedule;
 
-         Initialize_Key_Schedule;
+            Initialize_TS;
 
-         Initialize_TS;
+            pragma Assert (Src_Offset =
+              Starting_Offset + (J - 1) * Skein_512_Block_Bytes_C);
 
-         Get_64_LSB_First (Dst        => W,
-                           Src        => Block,
-                           Src_Offset => Src_Offset);
+            Get_64_LSB_First (Dst        => W,
+                              Src        => Block,
+                              Src_Offset => Src_Offset);
 
-         pragma Debug (Trace.Show_Block (Bits         => S512,
-                                         H            => Ctx.H,
-                                         X            => Ctx.X,
-                                         Block        => Block,
-                                         Block_Offset => Src_Offset,
-                                         W            => W,
-                                         KS           => KS,
-                                         TS           => TS));
+            pragma Debug (Trace.Show_Block (Bits         => S512,
+                                            H            => Ctx.H,
+                                            X            => Ctx.X,
+                                            Block        => Block,
+                                            Block_Offset => Src_Offset,
+                                            W            => W,
+                                            KS           => KS,
+                                            TS           => TS));
 
-         --  Do the first full key injection
-         Do_First_Key_Injection;
+            --  Do the first full key injection
+            Do_First_Key_Injection;
 
-         pragma Debug (Trace.Show_Round (Bits => S512,
-                                         H    => Ctx.H,
-                                         R    => Trace.Skein_Rnd_Key_Initial,
-                                         X    => X));
+            pragma Debug (Trace.Show_Round (Bits => S512,
+                                            H    => Ctx.H,
+                                            R    => Trace.Skein_Rnd_Key_Initial,
+                                            X    => X));
 
-         Threefish_Block;
+            Threefish_Block;
 
-         --  Do the final "feedforward" xor, update context chaining vars
-         Update_Context;
+            --  Do the final "feedforward" xor, update context chaining vars
+            Update_Context;
 
-         pragma Debug (Trace.Show_Round
-                         (S512, Ctx.H, Trace.Skein_Rnd_Feed_Fwd, Ctx.X));
+            pragma Debug (Trace.Show_Round
+                          (S512, Ctx.H, Trace.Skein_Rnd_Feed_Fwd, Ctx.X));
 
-         Ctx.H.Tweak_Words.First_Block := False;
-
-         exit when J >= Block_Count;
-
-         J := J + 1;
-
-         Src_Offset := Src_Offset + Skein_512_Block_Bytes_C;
+            Ctx.H.Tweak_Words.First_Block := False;
+         end;
       end loop;
    end Skein_512_Process_Block;
 
@@ -790,7 +781,6 @@ is
 
       Local_Ctx          : Skein_512_Context;
       N                  : U64;
-      Blocks_Done        : Output_Block_Count_T;
       Blocks_Required    : Positive_Output_Block_Count_T;
       Byte_Count         : Output_Byte_Count_T;
       X                  : Skein_512_State_Words;
@@ -853,16 +843,10 @@ is
       X := Local_Ctx.X; -- Keep a local copy of counter mode "key"
 
       Blocks_Required := (Byte_Count + 63) / 64;
-      Blocks_Done := 0;
 
-      loop
+      for Blocks_Done in 0 .. Blocks_Required - 1 loop
          pragma Loop_Invariant
-           (Local_Ctx.H.Hash_Bit_Len > 0 and
-            Blocks_Done * Skein_512_Block_Bytes_C < Byte_Count and
-            (Blocks_Done = 0
-               or
-             Blocks_Done * Skein_512_Block_Bytes_C - 1 < Hash'Last) and
-            Blocks_Done < Blocks_Required);
+           (Local_Ctx.H.Hash_Bit_Len = Local_Ctx.H.Hash_Bit_Len'Loop_Entry);
 
          Set_Counter (Blocks_Done);
 
@@ -902,9 +886,6 @@ is
                             Blocks_Done * Skein_512_Block_Bytes_C));
 
          Local_Ctx.X := X; -- restore the counter mode key for next time
-
-         Blocks_Done := Blocks_Done + 1;
-         exit when Blocks_Done >= Blocks_Required;
       end loop;
 
    end Skein_512_Final;
