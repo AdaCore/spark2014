@@ -5,5 +5,4 @@ from test_support import *
 # CVC4 reported in O525-023. To be investigated.
 prove_all(opt=["--prover=cvc4"],steps=100000,procs=4)
 
-# With --prover=cvcv4,altergo,z3 --timeout=60, only assertion on line 864 is
-# not proved.
+# With --prover=cvcv4,altergo,z3 --timeout=60, everything is proved

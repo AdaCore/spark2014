@@ -861,8 +861,6 @@ is
       Blocks_Required := (Byte_Count + 63) / 64;
       Blocks_Done := 0;
 
-      pragma Assert (Blocks_Required * Skein_512_Block_Bytes_C <= Byte_Count);
-
       loop
          pragma Loop_Invariant
            (Local_Ctx.H.Hash_Bit_Len > 0 and
@@ -895,8 +893,6 @@ is
          if (N >= Skein_512_Block_Bytes_C) then
             N := Skein_512_Block_Bytes_C;
          end if;
-
-         pragma Assert (Hash'Last >= Blocks_Done * Skein_512_Block_Bytes_C + (N - 1));
 
          --  Push the output Local_Ctx.X into output buffer Hash
          Put_64_LSB_First
