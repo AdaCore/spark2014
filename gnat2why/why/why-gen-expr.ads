@@ -172,8 +172,7 @@ package Why.Gen.Expr is
    --  Generate VC and location labels for the given Ada node, with the given
    --  VC reason
 
-   function Cur_Subp_Sloc return Name_Id
-     with Pre => Is_Subprogram (E) or else Ekind (E) = E_Package;
+   function Cur_Subp_Sloc return Name_Id;
    --  Return a label that identifies the current subprogram or package
 
    function New_Range_Expr
