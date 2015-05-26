@@ -644,7 +644,7 @@ package body Why.Gen.Expr is
             --  in sinfo.ads for details.)
 
             --  We can't rely on check flags for subtype predicates, so force
-            --  check_node in that case
+            --  check_node in that case.
 
             Do_Check : constant Boolean :=
               (if Domain = EW_Prog and Check_Needed then
