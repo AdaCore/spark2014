@@ -711,12 +711,8 @@ is
                Ctx.B (Dst) := Msg (Src);
 
                pragma Loop_Invariant
-                 (Ctx.H.Hash_Bit_Len > 0 and
-                  Ctx.H.Hash_Bit_Len = Ctx.H.Hash_Bit_Len'Loop_Entry and
-                  Ctx.H.Byte_Count = Ctx.H.Byte_Count'Loop_Entry and
-                  Ctx.H.Byte_Count in Skein_512_Block_Bytes_Count and
-                  Ctx.H.Byte_Count + Num_Bytes - 1 <= Ctx.B'Last and
-                  Final_Src <= Msg'Last);
+                 (Ctx.H.Hash_Bit_Len = Ctx.H.Hash_Bit_Len'Loop_Entry and
+                  Ctx.H.Byte_Count = Ctx.H.Byte_Count'Loop_Entry);
 
                exit when Dst >= Final_Dst or Src >= Final_Src;
 
@@ -810,8 +806,6 @@ is
             pragma Loop_Invariant
               (Local_Ctx.H.Hash_Bit_Len =
                  Local_Ctx.H.Hash_Bit_Len'Loop_Entry and
-               Local_Ctx.H.Hash_Bit_Len > 0 and
-               Local_Ctx.H.Byte_Count < Skein_512_Block_Bytes_C and
                Local_Ctx.H.Byte_Count = Local_Ctx.H.Byte_Count'Loop_Entry);
 
             Local_Ctx.B (I) := 0;
@@ -864,13 +858,11 @@ is
       loop
          pragma Loop_Invariant
            (Local_Ctx.H.Hash_Bit_Len > 0 and
-            Byte_Count - 1 <= Hash'Last and
             Blocks_Done * Skein_512_Block_Bytes_C < Byte_Count and
             (Blocks_Done = 0
                or
              Blocks_Done * Skein_512_Block_Bytes_C - 1 < Hash'Last) and
-            Blocks_Done < Blocks_Required and
-            Blocks_Required = (Byte_Count + 63) / 64);
+            Blocks_Done < Blocks_Required);
 
          Set_Counter (Blocks_Done);
 
