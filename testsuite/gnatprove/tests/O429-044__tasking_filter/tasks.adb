@@ -36,7 +36,7 @@ package body Tasks is
          The_Guard := X > 0;
       end Put;
 
-      entry Wait when The_Guard is
+      entry Wait (Dummy : Integer) when The_Guard is
       begin
          null;
          Last_Caller := Wait'Caller;
@@ -76,7 +76,7 @@ package body Tasks is
       B : Boolean;
    begin
       null;
-      The_Store.Wait;
+      The_Store.Wait (0);
       if The_Timer'Terminated then
          B := The_Timer'Callable;
       else

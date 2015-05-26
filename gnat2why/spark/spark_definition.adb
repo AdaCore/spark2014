@@ -1470,12 +1470,7 @@ package body SPARK_Definition is
 
          when N_Entry_Body =>
             if Is_SPARK_Tasking_Configuration then
-               --  Entry barriers in Ravenscar are always of N_Identifier kind
-               Mark_Identifier_Or_Expanded_Name
-                 (Condition (Entry_Body_Formal_Part (N)));
-               Mark_Stmt_Or_Decl_List (Declarations (N));
-               Mark (Handled_Statement_Sequence (N));
-               Mark_Identifier_Or_Expanded_Name (N);
+               Mark_Subprogram_Body (N);
             else
                Mark_Violation_In_Tasking (N);
             end if;
@@ -4307,13 +4302,24 @@ package body SPARK_Definition is
 
             Bodies_In_SPARK.Include (E);
 
+            --  Mark entry barrier
+
+            if Nkind (E) = N_Entry_Body then
+               --  Entry barriers in Ravenscar are always of N_Identifier kind
+               Mark_Identifier_Or_Expanded_Name
+                (Condition (Entry_Body_Formal_Part (N)));
+            end if;
+
             --  Mark Actual_Subtypes of parameters if any
 
             declare
                Formals    : constant List_Id :=
                  (if Nkind (N) = N_Task_Body
                   then No_List
-                  else Parameter_Specifications (Specification (N)));
+                  else Parameter_Specifications
+                    (if Nkind (N) = N_Entry_Body
+                     then Entry_Body_Formal_Part (N)
+                     else Specification (N)));
                Param_Spec : Node_Id;
                Formal     : Node_Id;
                Sub        : Node_Id;
