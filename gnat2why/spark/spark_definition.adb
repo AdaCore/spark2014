@@ -1455,8 +1455,7 @@ package body SPARK_Definition is
 
          when N_Task_Body =>
             if Is_SPARK_Tasking_Configuration then
-               Mark_Stmt_Or_Decl_List (Declarations (N));
-               Mark (Handled_Statement_Sequence (N));
+               Mark_Subprogram_Body (N);
             else
                Mark_Violation_In_Tasking (N);
             end if;
@@ -4271,13 +4270,16 @@ package body SPARK_Definition is
 
       --  Ignore predicate functions and invariant procedures
 
-      elsif Ekind (E) /= E_Entry
-        and then Subprogram_Is_Ignored_For_Proof (E)
+      elsif Subprogram_Is_Ignored_For_Proof (E)
       then
          return;
 
       else
-         Current_SPARK_Pragma := SPARK_Pragma (Defining_Entity (N));
+         --  For entries and task bodies reuse the value of SPARK_Pragma from
+         --  the context; workaround for O506-007.
+         Current_SPARK_Pragma := (if Ekind (E) in E_Entry | E_Task_Body
+                                  then Current_SPARK_Pragma
+                                  else SPARK_Pragma (Defining_Entity (N)));
 
          --  Only analyze subprogram body declarations in SPARK_Mode => On
 
@@ -4309,7 +4311,9 @@ package body SPARK_Definition is
 
             declare
                Formals    : constant List_Id :=
-                 Parameter_Specifications (Specification (N));
+                 (if Nkind (N) = N_Task_Body
+                  then No_List
+                  else Parameter_Specifications (Specification (N)));
                Param_Spec : Node_Id;
                Formal     : Node_Id;
                Sub        : Node_Id;
@@ -4378,8 +4382,7 @@ package body SPARK_Definition is
 
       --  Ignore predicate functions and invariant procedures
 
-      elsif Ekind (E) /= E_Entry
-        and then Subprogram_Is_Ignored_For_Proof (E)
+      elsif Subprogram_Is_Ignored_For_Proof (E)
       then
          return;
 

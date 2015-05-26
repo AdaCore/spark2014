@@ -5,7 +5,7 @@ package Tasks is
          null;
       end record;
 
-   task type Bad_Timer (Countdown : Natural)
+   task type Bad_Timer (Countdown : access Natural)
    is
       pragma Priority (10);
    end Bad_Timer;

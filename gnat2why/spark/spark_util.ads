@@ -644,7 +644,7 @@ package SPARK_Util is
    --  @return the fully scoped name of E as it appears in the source
 
    function Subprogram_Is_Ignored_For_Proof (E : Entity_Id) return Boolean with
-     Pre => Is_Subprogram (E);
+     Pre => Ekind (E) in E_Function | E_Procedure | E_Task_Body | E_Entry;
    --  @param E subprogram
    --  @return True iff E should not be translated into Why3
 

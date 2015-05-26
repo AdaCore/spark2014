@@ -5,4 +5,4 @@ from os.path import join
 
 gnatprove(opt=["-P", "test.gpr", "--mode=check"])
 result_file = os.path.join("gnatprove", "tasks.spark")
-check_all_spark(result_file, expected_len = 5)
+check_all_spark(result_file, expected_len = 9)

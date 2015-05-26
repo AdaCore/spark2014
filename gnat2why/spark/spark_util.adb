@@ -2723,9 +2723,10 @@ package body SPARK_Util is
    -------------------------------------
 
    function Subprogram_Is_Ignored_For_Proof (E : Entity_Id) return Boolean is
-     (Is_Predicate_Function (E)
-       or else Is_Invariant_Procedure (E)
-       or else Is_Default_Init_Cond_Procedure (E));
+     (Ekind (E) in E_Function | E_Procedure and then
+          (Is_Predicate_Function (E)
+           or else Is_Invariant_Procedure (E)
+           or else Is_Default_Init_Cond_Procedure (E)));
 
    ---------------
    -- Task_Body --
