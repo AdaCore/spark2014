@@ -37,6 +37,7 @@ with Why.Ids;                            use Why.Ids;
 with Why.Types;                          use Why.Types;
 with Common_Containers;                  use Common_Containers;
 with Gnat2Why.Util;                      use Gnat2Why.Util;
+with Stand;                              use Stand;
 
 package Why.Inter is
    --  This package contains types that are used to represent intermediate
@@ -172,17 +173,17 @@ package Why.Inter is
 
    function To_Why_Type (T : String) return W_Type_Id;
 
-   function EW_Abstract (N : Node_Id) return W_Type_Id
-     with Pre => Is_Type (N);
+   function EW_Abstract (N : Node_Id) return W_Type_Id with
+     Pre => Is_Type (N) or else N = Standard_Void_Type;
    --  Convert an Ada type entity into a Why type. This function respects the
    --  gnat2why encoding. For example, for N = Boolean the function returns
    --  EW_Bool_Type, for non-SPARK types and abstract states, EW_Private_Type
    --  is returned. For all the details, see the implementation.
 
-   function EW_Split (N : Node_Id) return W_Type_Id
-     with Pre => Is_Type (N);
+   function EW_Split (N : Node_Id) return W_Type_Id with
+     Pre => Is_Type (N) or else N = Standard_Void_Type;
    --  This function does the exact same thing as EW_Abstract, but changes the
-   --  kind of the node to EW_Split
+   --  kind of the node to EW_Split.
 
    function New_Abstract_Base_Type (E : Entity_Id) return W_Type_Id;
    function New_Named_Type (S : String) return W_Type_Id;

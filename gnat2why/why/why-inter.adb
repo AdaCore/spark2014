@@ -29,7 +29,6 @@ with SPARK_Xrefs;   use SPARK_Xrefs;
 with Sem_Util;      use Sem_Util;
 with Sinfo;         use Sinfo;
 with Snames;        use Snames;
-with Stand;         use Stand;
 with String_Utils;  use String_Utils;
 
 with SPARK_Definition;       use SPARK_Definition;
