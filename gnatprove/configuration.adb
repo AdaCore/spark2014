@@ -842,9 +842,11 @@ ASCII.LF;
          (Config, Steps'Access,
           Long_Switch => "--steps=");
 
+      --  If not specified on the command-line, value of timeout is 1s.
       Define_Switch
          (Config, Timeout'Access,
-          Long_Switch => "--timeout=");
+          Long_Switch => "--timeout=",
+          Initial => 1);
 
       Define_Switch
          (Config,

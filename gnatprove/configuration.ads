@@ -115,7 +115,8 @@ package Configuration is
    --  The number of parallel processes. Specified with -j.
    Timeout      : aliased Integer;
    --  The number of seconds to try to prove each VC. Specified with
-   --  --timeout=.
+   --  --timeout=. Default timeout of 1s is set by Read_Command_Line.
+   --  Value 0 should be passed explicitly to force absence of timeout.
    Steps        : aliased Integer;
    --  The number of steps to try to prove each VC. Specified with --steps=.
    Project_File : aliased GNAT.Strings.String_Access;
