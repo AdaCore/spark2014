@@ -82,8 +82,8 @@ package body Why.Inter is
      (N    : Node_Id;
       Kind : EW_Type) return W_Type_Id
      with Pre => Kind in EW_Abstract | EW_Split;
-   --  Build an type node from an Ada type node, either of kind Split or
-   --  Abstract
+   --  Build a type node from an Ada type node, either of kind Split or
+   --  Abstract.
 
    function New_Kind_Base_Type (E : Entity_Id; Kind : EW_Type) return W_Type_Id
      with Pre => Kind in EW_Abstract | EW_Split;
