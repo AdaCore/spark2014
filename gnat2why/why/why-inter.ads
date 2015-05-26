@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Einfo;                              use Einfo;
 with Types;                              use Types;
 with Why.Atree.Tables;                   use Why.Atree.Tables;
 pragma Warnings (Off);
@@ -171,13 +172,15 @@ package Why.Inter is
 
    function To_Why_Type (T : String) return W_Type_Id;
 
-   function EW_Abstract (N : Node_Id) return W_Type_Id;
+   function EW_Abstract (N : Node_Id) return W_Type_Id
+     with Pre => Is_Type (N);
    --  Convert an Ada type entity into a Why type. This function respects the
    --  gnat2why encoding. For example, for N = Boolean the function returns
    --  EW_Bool_Type, for non-SPARK types and abstract states, EW_Private_Type
    --  is returned. For all the details, see the implementation.
 
-   function EW_Split (N : Node_Id) return W_Type_Id;
+   function EW_Split (N : Node_Id) return W_Type_Id
+     with Pre => Is_Type (N);
    --  This function does the exact same thing as EW_Abstract, but changes the
    --  kind of the node to EW_Split
 

@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Atree;         use Atree;
-with Einfo;         use Einfo;
 with Namet;         use Namet;
 with SPARK_Xrefs;   use SPARK_Xrefs;
 with Sem_Util;      use Sem_Util;
