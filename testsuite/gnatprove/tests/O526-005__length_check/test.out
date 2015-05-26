@@ -1,0 +1,2 @@
+length_others.adb:6:09: medium: length check might fail
+length_others.ads:6:20: info: initialization of "S" proved
