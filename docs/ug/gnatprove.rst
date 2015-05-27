@@ -2243,7 +2243,10 @@ of the main function ``Binary_Search`` expresses that the search is successful
 if-and-only-if the array contains the value searched, and if so the index
 returned is one at which the array contains this value. |GNATprove| proves all
 checks on these programs. The version with an unconstrained array is the same
-as the one presented in the section on :ref:`How to Write Loop Invariants`.
+as the one presented in the section on :ref:`How to Write Loop Invariants`, and
+used in a series of two articles published by Johannes Kanig in Electronic
+Design to compare dynamic and static verification techniques (see
+http://blog.adacore.com/testing-static-formal).
 
 .. rubric:: ``euclidian_division``
 
