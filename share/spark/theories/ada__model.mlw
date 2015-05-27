@@ -432,7 +432,7 @@ module Fixed_Point_Base
   function fxp_div (x : __fixed) (y : __fixed) : __fixed
 
   val fxp_div_ (x : __fixed) (y : __fixed) : __fixed
-     requires { y<>0 }
+     requires { y <> 0 }
      ensures { result = fxp_div x y }
 
   axiom fxp_div_def :
@@ -478,7 +478,7 @@ module Fixed_Point_Base
   function fxp_div_int (x : __fixed) (y : int) : __fixed
 
   val fxp_div_int_ (x : __fixed) (y : int) : __fixed
-     requires { y<>0 }
+     requires { y <> 0 }
      ensures { result = fxp_div_int x y }
 
   axiom fxp_div_int_def :
