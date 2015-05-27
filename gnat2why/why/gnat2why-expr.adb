@@ -4590,7 +4590,7 @@ package body Gnat2Why.Expr is
 
                Name :=
                  (if Is_Fixed_Point_Type (Return_Type) then
-                       E_Symb (Return_Type, Oper)
+                     E_Symb (Return_Type, Oper)
                   else
                      New_Division (Base));
 
