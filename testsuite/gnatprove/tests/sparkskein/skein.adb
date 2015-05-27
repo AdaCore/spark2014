@@ -208,14 +208,15 @@ is
                                Dst_Offset : in     U64;
                                Src        : in     U64_Seq;
                                Byte_Count : in     U64)
-     with Pre => Dst'First = 0 and
-                 Src'First = 0 and
-                 (Byte_Count = 0
-                    or
-                  Add_In_Range (Dst_Offset, Byte_Count - 1)) and
-                 Dst'Last >= Dst_Offset + (Byte_Count - 1) and
-                 Src'Last < U64'Last / 8 and
-                 Byte_Count <= (Src'Last + 1) * 8
+--  UNCOMMENT TO VERIFY Put_64_LSB_First SEPARATELY
+--       with Pre => Dst'First = 0 and
+--                   Src'First = 0 and
+--                   (Byte_Count = 0
+--                      or
+--                    Add_In_Range (Dst_Offset, Byte_Count - 1)) and
+--                   Dst'Last >= Dst_Offset + (Byte_Count - 1) and
+--                   Src'Last < U64'Last / 8 and
+--                   Byte_Count <= (Src'Last + 1) * 8
    is
    begin
       if Byte_Count >= 1 then
@@ -232,13 +233,14 @@ is
    procedure Get_64_LSB_First (Dst        :    out U64_Seq;
                                Src        : in     Byte_Seq;
                                Src_Offset : in     U64)
-     with Pre => Src'First = 0 and
-                 Dst'First = 0 and
-                 Src_Offset <= Src'Last and
-                 Dst'Last < U64'Last / 8 and
-                 Add_In_Range (Dst'Last * 8, 7) and
-                 Add_In_Range (Src_Offset, Dst'Last * 8 + 7) and
-                 Src_Offset + Dst'Last * 8 + 7 <= Src'Last
+--  UNCOMMENT TO VERIFY Get_64_LSB_First SEPARATELY
+--       with Pre => Src'First = 0 and
+--                   Dst'First = 0 and
+--                   Src_Offset <= Src'Last and
+--                   Dst'Last < U64'Last / 8 and
+--                   Add_In_Range (Dst'Last * 8, 7) and
+--                   Add_In_Range (Src_Offset, Dst'Last * 8 + 7) and
+--                   Src_Offset + Dst'Last * 8 + 7 <= Src'Last
    is
       pragma Annotate
         (GNATprove, False_Positive, """Dst"" might not be initialized",
@@ -671,17 +673,18 @@ is
 
       procedure Copy_Msg_To_B (Msg_Offset : in     U64;
                                Num_Bytes  : in     U64)
-        with Pre  => Ctx.H.Hash_Bit_Len > 0 and
-                     Msg'First = 0 and
-                     Msg_Offset in Msg'Range and
-                     Add_In_Range (Msg_Offset, Num_Bytes) and
-                     Msg_Offset + Num_Bytes <= Msg'Last + 1 and
-                     Add_In_Range (Ctx.H.Byte_Count, Num_Bytes) and
-                     Ctx.H.Byte_Count + Num_Bytes <= Ctx.B'Last + 1,
-             Post => Ctx.H.Hash_Bit_Len > 0 and
-                     Ctx.H.Hash_Bit_Len = Ctx.H.Hash_Bit_Len'Old and
-                     Ctx.H.Byte_Count = Ctx.H.Byte_Count'Old + Num_Bytes and
-                     Ctx.H.Byte_Count in Skein_512_Block_Bytes_Count
+--  UNCOMMENT TO VERIFY Copy_Msg_To_B SEPARATELY
+--          with Pre  => Ctx.H.Hash_Bit_Len > 0 and
+--                       Msg'First = 0 and
+--                       Msg_Offset in Msg'Range and
+--                       Add_In_Range (Msg_Offset, Num_Bytes) and
+--                       Msg_Offset + Num_Bytes <= Msg'Last + 1 and
+--                       Add_In_Range (Ctx.H.Byte_Count, Num_Bytes) and
+--                       Ctx.H.Byte_Count + Num_Bytes <= Ctx.B'Last + 1,
+--               Post => Ctx.H.Hash_Bit_Len > 0 and
+--                       Ctx.H.Hash_Bit_Len = Ctx.H.Hash_Bit_Len'Old and
+--                       Ctx.H.Byte_Count = Ctx.H.Byte_Count'Old + Num_Bytes and
+--                       Ctx.H.Byte_Count in Skein_512_Block_Bytes_Count
       is
          Src       : U64;
          Dst       : Skein_512_Block_Bytes_Index;
