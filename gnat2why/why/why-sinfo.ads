@@ -93,7 +93,7 @@ package Why.Sinfo is
    --  be fully qualified.
 
    --  The Base_Type field determines the kind of type. Why simple types are
-   --  represented directly as EW_Int, EW_Bool etc.
+   --  represented directly as EW_Int, EW_Bool, etc.
 
    --  The type of Base_Type kind EW_Private is used for all objects that are
    --  of private type (and their full view is not in SPARK) and for objects
@@ -214,7 +214,7 @@ package Why.Sinfo is
    --  Right       W_Expr_Id
    --  More_Right  W_Expr_List
    --
-   --  Logical connectors: "and", "or" etc. The type of such expressions is
+   --  Logical connectors: "and", "or", etc. The type of such expressions is
    --  always "bool".
    --
    --  -------------
