@@ -142,8 +142,8 @@ package Flow is
    subtype Valid_Analyzed_Entity is Entity_Kind
      with Static_Predicate =>
        Valid_Analyzed_Entity in E_Subprogram_Body |
-                                E_Task_Body |
-                                E_Package |
+                                E_Task_Body       |
+                                E_Package         |
                                 E_Package_Body;
 
    --  ??? This should be a variant record, but O325-005 and AI12-0047 make

@@ -24,38 +24,34 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Text_IO;            use Ada.Text_IO;
-
-with Aspects;                use Aspects;
-with Atree;                  use Atree;
-with Assumption_Types;       use Assumption_Types;
-with Elists;                 use Elists;
-with Errout;                 use Errout;
-with Exp_Util;               use Exp_Util;
-with Fname;                  use Fname;
-with Lib;                    use Lib;
-with Namet;                  use Namet;
-with Nmake;                  use Nmake;
-with Nlists;                 use Nlists;
-with Opt;                    use Opt;
-with Rident;                 use Rident;
-with Restrict;               use Restrict;
-with Sem_Aux;                use Sem_Aux;
-with Sem_Ch12;               use Sem_Ch12;
-with Sem_Disp;               use Sem_Disp;
-with Sem_Prag;               use Sem_Prag;
-with Sem_Util;               use Sem_Util;
-with Sinfo;                  use Sinfo;
-with Snames;                 use Snames;
-with Stand;                  use Stand;
-with Uintp;                  use Uintp;
-with Urealp;                 use Urealp;
-
-with SPARK_Util;             use SPARK_Util;
-
+with Ada.Text_IO;          use Ada.Text_IO;
+with Aspects;              use Aspects;
+with Assumption_Types;     use Assumption_Types;
+with Elists;               use Elists;
+with Errout;               use Errout;
+with Exp_Util;             use Exp_Util;
+with Fname;                use Fname;
+with Gnat2Why.Annotate;    use Gnat2Why.Annotate;
 with Gnat2Why_Args;
-with Gnat2Why.Annotate;      use Gnat2Why.Annotate;
-with Gnat2Why.Assumptions;   use Gnat2Why.Assumptions;
+with Gnat2Why.Assumptions; use Gnat2Why.Assumptions;
+with Lib;                  use Lib;
+with Namet;                use Namet;
+with Nlists;               use Nlists;
+with Nmake;                use Nmake;
+with Opt;                  use Opt;
+with Restrict;             use Restrict;
+with Rident;               use Rident;
+with Sem_Aux;              use Sem_Aux;
+with Sem_Ch12;             use Sem_Ch12;
+with Sem_Disp;             use Sem_Disp;
+with Sem_Prag;             use Sem_Prag;
+with Sem_Util;             use Sem_Util;
+with Sinfo;                use Sinfo;
+with Snames;               use Snames;
+with SPARK_Util;           use SPARK_Util;
+with Stand;                use Stand;
+with Uintp;                use Uintp;
+with Urealp;               use Urealp;
 
 package body SPARK_Definition is
 
@@ -161,7 +157,9 @@ package body SPARK_Definition is
    --  Subprograms, entries, tasks and packages whose body is marked in SPARK
 
    Bodies_Valid_SPARK : Node_Sets.Set;
-   --  Entities for which the body contains no SPARK violations.
+   --  Entities for which the body contains no SPARK violations. This
+   --  set only ever contains subprograms' bodies and tasks'
+   --  bodies.
 
    Full_Views_Not_In_SPARK : Node_Maps.Map;
    --  Maps type entities in SPARK whose full view was declared in a private

@@ -105,7 +105,7 @@ package Flow_Refinement is
    function Subprogram_Refinement_Is_Visible (E : Entity_Id;
                                               S : Flow_Scope)
                                               return Boolean
-     with Pre => Ekind (E) in Subprogram_Kind;
+     with Pre => Ekind (E) in Subprogram_Kind | E_Task_Type;
    --  Return true iff the implementation (and thus refined global or
    --  depends) of subprogram E is visible from S.
 
@@ -119,7 +119,7 @@ package Flow_Refinement is
                                S : Flow_Scope;
                                C : Contract_T)
                                return Node_Id
-     with Pre => Ekind (E) in Subprogram_Kind;
+     with Pre => Ekind (E) in Subprogram_Kind | E_Task_Type;
    --  A helpful wrapper around Refinement_Is_Visible: given a subprogram E
    --  and scope S (from which it is called), return the appropriate node
    --  for the abstract or refined version of the global or depends aspect.

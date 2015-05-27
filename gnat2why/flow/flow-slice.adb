@@ -579,8 +579,13 @@ package body Flow.Slice is
             end loop;
          end;
 
-         Gather_Local_Variables_And_Subprograms
-           (Subprogram_Body (FA.Analyzed_Entity));
+         if FA.Kind = E_Task_Body then
+            Gather_Local_Variables_And_Subprograms
+              (Task_Body (FA.Analyzed_Entity));
+         else
+            Gather_Local_Variables_And_Subprograms
+              (Subprogram_Body (FA.Analyzed_Entity));
+         end if;
       end Get_Local_Variables_And_Subprograms;
 
       -----------------------------------

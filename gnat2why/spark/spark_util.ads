@@ -280,11 +280,11 @@ package SPARK_Util is
    ---------------------------------
 
    function Analysis_Requested (E : Entity_Id) return Boolean;
-   --  @param E subprogram or package
-   --  @return True iff subprogram or package E must be analyzed, because it
-   --     belongs to one of the analyzed units, and either the complete unit is
-   --     analyzed, or E is the specific subprogram/package whose analysis was
-   --     requested.
+   --  @param E subprogram, task or package
+   --  @return True iff subprogramm, task or package E must be analyzed,
+   --     because it belongs to one of the analyzed units, and either the
+   --     complete unit is analyzed, or E is the specific subprogram/task
+   --     whose analysis was requested.
 
    function Full_Name (E : Entity_Id) return String
      with Pre => Nkind (E) in N_Entity;
@@ -609,9 +609,9 @@ package SPARK_Util is
    --  @return True iff E is a local subprogram that is always inlined by the
    --     frontend in GNATprove mode
 
-   function Is_Requested_Subprogram (E : Entity_Id) return Boolean;
+   function Is_Requested_Subprogram_Or_Task (E : Entity_Id) return Boolean;
    --  @param E any entity
-   --  @return True iff E is a subprogram whose analysis was specifically
+   --  @return True iff E is a subprogram/task whose analysis was specifically
    --     requested, so it should be analyzed even if otherwise inlined
 
    function Is_Simple_Shift_Or_Rotate (E : Entity_Id) return Boolean;
@@ -666,7 +666,15 @@ package SPARK_Util is
                    then Nkind (Task_Body'Result) = N_Task_Body);
    --  @param E task type
    --  @return the task body for the given type, similar to what
-   --    subprogram_body might produce.
+   --    Subprogram_Body might produce.
+
+   function Task_Body_Entity (E : Entity_Id) return Entity_Id
+     with Pre  => Nkind (E) in N_Entity and then Ekind (E) = E_Task_Type,
+          Post => (if Present (Task_Body_Entity'Result)
+                   then Ekind (Task_Body_Entity'Result) = E_Task_Body);
+   --  @param E task type
+   --  @return the entity of the task body for the given type, similar
+   --    to what Subprogram_Body_Entity might produce.
 
    ---------------------------------
    -- Queries related to packages --

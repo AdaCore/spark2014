@@ -1,10 +1,8 @@
-foo.adb:13:10: "B" must be listed in the Initializes aspect of "Test_Task_01tk" (SPARK RM 7.1.5(12))
 foo.adb:17:14: warning: subprogram "Test_Delay_01" has no effect
 foo.adb:20:19: warning: assuming "Clock" has no effect on global items
 foo.adb:20:19: warning: no Global contract available for "Clock"
 foo.adb:20:27: warning: assuming "Seconds" has no effect on global items
 foo.adb:20:27: warning: no Global contract available for "Seconds"
-   compilation of foo.adb failed
-
-
-gnatprove: error during analysis of data and information flow
+tasks.adb:4:04: info: initialization of "Hidden" constituent of "State" proved
+tasks.adb:5:04: info: initialization of "Hidden2" constituent of "State" proved
+tasks.ads:5:04: info: initialization of "Visible" proved

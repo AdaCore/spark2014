@@ -367,8 +367,14 @@ package body Flow_Refinement is
                                               S : Flow_Scope)
                                               return Boolean
    is
-      Body_E : constant Entity_Id := Subprogram_Body_Entity (E);
+      Body_E : Entity_Id;
    begin
+      if Ekind (E) in Subprogram_Kind then
+         Body_E := Subprogram_Body_Entity (E);
+      else
+         Body_E := Task_Body_Entity (E);
+      end if;
+
       if not Present (S) then
          --  From the standard scope we won't be able to see much...
          return False;
@@ -413,8 +419,17 @@ package body Flow_Refinement is
       Body_E : Node_Id;
       N      : Node_Id := Empty;
    begin
+      --  For now tasks cannot have contracts
+      if Ekind (E) in Task_Kind then
+         return Empty;
+      end if;
+
       if Subprogram_Refinement_Is_Visible (E, S) then
-         Body_E := Subprogram_Body_Entity (E);
+         if Ekind (E) in Subprogram_Kind then
+            Body_E := Subprogram_Body_Entity (E);
+         else
+            Body_E := Task_Body_Entity (E);
+         end if;
          pragma Assert (Present (Body_E));
 
          N := Get_Pragma
@@ -787,8 +802,9 @@ package body Flow_Refinement is
          when Subprogram_Kind =>
             Body_N := Subprogram_Body_Entity (E);
          when E_Task_Type =>
-            --  !!! O429-046 Workaround for now
-            return False;
+            Body_N := Task_Body (E);
+            --  For now we always generate generate globals for Tasks
+            return True;
          when others =>
             raise Program_Error;
       end case;
@@ -808,26 +824,26 @@ package body Flow_Refinement is
             B_Scope           : constant Flow_Scope :=
               Get_Flow_Scope (Body_N);
          begin
-            if (No (Global_N) and then No (Depends_N)) or else
+            if
               --  1) Subprogram has no Global and no Depends aspect
+              (No (Global_N) and then No (Depends_N)) or else
 
+              --  2) Subprogram has a Global that refers to a state
+              --     abstraction with visible refinement but has no
+              --     Refined_Global.
               (Present (Global_N) and then
                  No (Refined_Global_N) and then
                  No (Refined_Depends_N) and then
                  Mentions_State_With_Visible_Refinement (Global_N,
                                                          B_Scope)) or else
-              --  2) Subprogram has a Global that refers to a state
-              --     abstraction with visible refinement but has no
-              --     Refined_Global.
 
-              (Present (Depends_N) and then
-                 No (Refined_Depends_N) and then
-                 No (Refined_Global_N) and then
-                 Mentions_State_With_Visible_Refinement (Depends_N,
-                                                         B_Scope))
               --  3) Subprogram has a Depends aspect that refers to a
               --     state abstraction with visible refinement but has
               --     no Refined_Depends.
+              (Present (Depends_N) and then
+                 No (Refined_Depends_N) and then
+                 No (Refined_Global_N) and then
+                 Mentions_State_With_Visible_Refinement (Depends_N, B_Scope))
             then
                return True;
             end if;

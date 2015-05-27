@@ -2249,17 +2249,20 @@ package body Flow_Utility is
    ------------------------------
 
    function Rely_On_Generated_Global
-     (Subprogram : Entity_Id;
-      Scope      : Flow_Scope)
+     (E     : Entity_Id;
+      Scope : Flow_Scope)
       return Boolean
    is
-      Body_N : constant Node_Id := Subprogram_Body_Entity (Subprogram);
+      Body_N : constant Node_Id :=
+        (if Ekind (E) = E_Task_Type
+         then Task_Body_Entity (E)
+         else Subprogram_Body_Entity (E));
    begin
       if Present (Body_N)
-        and then Entity_Body_In_SPARK (Subprogram)
-        and then Entity_Body_Valid_SPARK (Subprogram)
+        and then Entity_Body_In_SPARK (E)
+        and then Entity_Body_Valid_SPARK (E)
         and then Is_Visible (Body_N, Scope)
-        and then Refinement_Needed (Subprogram)
+        and then Refinement_Needed (E)
       then
          return True;
       end if;
@@ -2274,17 +2277,20 @@ package body Flow_Utility is
    -------------------------------
 
    function Rely_On_Generated_Depends
-     (Subprogram : Entity_Id;
-      Scope      : Flow_Scope)
+     (E     : Entity_Id;
+      Scope : Flow_Scope)
       return Boolean
    is
-      Body_N : constant Node_Id := Subprogram_Body_Entity (Subprogram);
+      Body_N : constant Node_Id :=
+        (if Ekind (E) = E_Task_Type
+         then Task_Body_Entity (E)
+         else Subprogram_Body_Entity (E));
    begin
-      if Rely_On_Generated_Global (Subprogram, Scope) then
+      if Rely_On_Generated_Global (E, Scope) then
          if Present (Body_N) then
             declare
                Depends_N         : constant Node_Id :=
-                 Get_Pragma (Subprogram, Pragma_Depends);
+                 Get_Pragma (E, Pragma_Depends);
 
                Refined_Depends_N : constant Node_Id :=
                  Get_Pragma (Body_N, Pragma_Refined_Depends);

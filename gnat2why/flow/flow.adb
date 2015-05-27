@@ -1006,37 +1006,37 @@ package body Flow is
                   if not FA.Is_Generative then
                      if Gnat2Why_Args.Flow_Advanced_Debug then
                         if Present (FA.Global_N) then
-                           Write_Str ("skipped (global found)");
+                           Write_Line ("skipped (global found)");
                         elsif Present (FA.Depends_N) then
-                           Write_Str ("skipped (depends found)");
-                        elsif FA.Kind = E_Task_Body then
-                           Write_Str ("skipped (task)");
+                           Write_Line ("skipped (depends found)");
                         else
                            raise Program_Error;
                         end if;
-                        Write_Eol;
                      end if;
                      FA.GG.Aborted := True;
                   end if;
 
                   if Gnat2Why_Args.Flow_Advanced_Debug then
-                     Write_Str ("Spec in SPARK: " & (if Entity_In_SPARK (E)
-                                                     then "yes"
-                                                     else "no"));
-                     Write_Eol;
+                     Write_Line ("Spec in SPARK: " & (if Entity_In_SPARK (E)
+                                                      then "yes"
+                                                      else "no"));
                      if FA.Kind = E_Subprogram_Body then
-                        Write_Str ("Body in SPARK: " &
-                                     (if Entity_Body_Valid_SPARK (E)
-                                        then "yes"
-                                        else "no"));
-                        Write_Eol;
+                        Write_Line ("Body in SPARK: " &
+                                      (if Entity_Body_Valid_SPARK (E)
+                                       then "yes"
+                                       else "no"));
+                     elsif FA.Kind = E_Task_Body then
+                        Write_Line ("Body in SPARK: " &
+                                      (if Entity_Body_Valid_SPARK
+                                            (Task_Body_Entity (E))
+                                       then "yes"
+                                       else "no"));
                      end if;
                   end if;
 
                when E_Package =>
                   if Gnat2Why_Args.Flow_Advanced_Debug then
-                     Write_Str ("skipped (package spec)");
-                     Write_Eol;
+                     Write_Line ("skipped (package spec)");
                   end if;
                   FA.GG.Aborted := True;
 
@@ -1051,8 +1051,7 @@ package body Flow is
                   begin
                      if Present (Refined_State_N) then
                         if Gnat2Why_Args.Flow_Advanced_Debug then
-                           Write_Str ("Refinement found: yes");
-                           Write_Eol;
+                           Write_Line ("Refinement found: yes");
                         end if;
 
                         DM := Parse_Refined_State (Refined_State_N);
@@ -1073,8 +1072,7 @@ package body Flow is
                         end if;
                      else
                         if Gnat2Why_Args.Flow_Advanced_Debug then
-                           Write_Str ("Refinement found: no");
-                           Write_Eol;
+                           Write_Line ("Refinement found: no");
                         end if;
                         FA.GG.Aborted := True;
                      end if;
@@ -1156,16 +1154,21 @@ package body Flow is
       FA_Graphs       : out Analysis_Maps.Map;
       Info_Set        : out Info_Sets.Set)
    is
+      Body_E : Entity_Id;
    begin
       --  Initialize the Info_Set to the empty set
       Info_Set := Info_Sets.Empty_Set;
 
       for E of Entity_Set loop
          case Ekind (E) is
-            when Subprogram_Kind =>
-               if SPARK_Util.Analysis_Requested (E) then
-                  if Entity_Body_In_SPARK (E)
-                    and then Entity_Body_Valid_SPARK (E)
+            when Subprogram_Kind | E_Task_Type =>
+               Body_E := (if Ekind (E) = E_Task_Type
+                          then Task_Body_Entity (E)
+                          else E);
+
+               if SPARK_Util.Analysis_Requested (Body_E) then
+                  if Entity_Body_In_SPARK (Body_E)
+                    and then Entity_Body_Valid_SPARK (Body_E)
                   then
                      --  Produce a GG graph
                      FA_Graphs.Include (E, Flow_Analyse_Entity
@@ -1175,8 +1178,7 @@ package body Flow is
                   elsif Compute_Globals then
                      declare
                         Scope        : constant Flow_Scope :=
-                          Get_Flow_Scope (E);
-
+                          Get_Flow_Scope (Body_E);
                         Global_Node  : constant Node_Id :=
                           Get_Contract_Node (E,
                                              Scope,
@@ -1208,7 +1210,11 @@ package body Flow is
                                            Use_Computed_Globals => False);
 
                               Subprogram_Info := Subprogram_Phase_1_Info'
-                                (Subprogram        => To_Entity_Name (E),
+                                (Name              => To_Entity_Name (E),
+                                 Kind              =>
+                                   (if Ekind (E) in Subprogram_Kind
+                                    then S_Kind
+                                    else T_Kind),
                                  Globals_Origin    => UG,
                                  Inputs_Proof      => To_Name_Set (Proof_Ins),
                                  Inputs            => To_Name_Set (Reads),
@@ -1240,7 +1246,11 @@ package body Flow is
                                                                 Calls);
 
                               Subprogram_Info := Subprogram_Phase_1_Info'
-                                (Subprogram        => To_Entity_Name (E),
+                                (Name              => To_Entity_Name (E),
+                                 Kind              =>
+                                   (if Ekind (E) in Subprogram_Kind
+                                    then S_Kind
+                                    else T_Kind),
                                  Globals_Origin    => XR,
                                  Inputs_Proof      => Name_Set.Empty_Set,
                                  Inputs            => Reads,
@@ -1256,15 +1266,6 @@ package body Flow is
                         end if;
                      end;
                   end if;
-               end if;
-
-            when E_Task_Type =>
-               --  !!! O429-046 Globals for tasks
-               if SPARK_Util.Analysis_Requested (E) then
-                  FA_Graphs.Include (E, Flow_Analyse_Entity
-                                       (E,
-                                        E,
-                                        Compute_Globals));
                end if;
 
             when E_Package =>
@@ -1504,7 +1505,7 @@ package body Flow is
             if Gnat2Why_Args.Flow_Advanced_Debug then
                Write_Line ("aborted earlier");
             end if;
-         elsif FA.Kind = E_Subprogram_Body then
+         elsif FA.Kind in E_Subprogram_Body | E_Task_Body then
             declare
                Inputs_Proof      : Node_Sets.Set;
                Inputs            : Node_Sets.Set;
@@ -1553,7 +1554,10 @@ package body Flow is
                end if;
 
                Subprogram_Info := Subprogram_Phase_1_Info'
-                 (Subprogram        => To_Entity_Name (FA.Analyzed_Entity),
+                 (Name              => To_Entity_Name (FA.Analyzed_Entity),
+                  Kind              => (if FA.Kind in E_Subprogram_Body
+                                        then S_Kind
+                                        else T_Kind),
                   Globals_Origin    => Flow_Computed_Globals.FA,
                   Inputs_Proof      => To_Name_Set (Inputs_Proof),
                   Inputs            => To_Name_Set (Inputs),
@@ -1594,10 +1598,9 @@ package body Flow is
       GG_Write_Finalize;
 
       if Gnat2Why_Args.Flow_Advanced_Debug then
-         Write_Str (Character'Val (8#33#) & "[33m" &
-                      "Global generation complete for current CU" &
-                      Character'Val (8#33#) & "[0m");
-         Write_Eol;
+         Write_Line (Character'Val (8#33#) & "[33m" &
+                       "Global generation complete for current CU" &
+                       Character'Val (8#33#) & "[0m");
       end if;
    end Generate_Flow_Globals;
 
@@ -1605,8 +1608,7 @@ package body Flow is
    -- Last_Statement_Is_Raise --
    -----------------------------
 
-   function Last_Statement_Is_Raise (E : Entity_Id) return Boolean
-   is
+   function Last_Statement_Is_Raise (E : Entity_Id) return Boolean is
       Ptr : Node_Id;
    begin
       case Ekind (E) is

@@ -40,6 +40,7 @@
 --  in SPARK, and listed for translation, or not listed for translation if a
 --  violation was detected in the body.
 
+with Atree;             use Atree;
 with Common_Containers; use Common_Containers;
 with Einfo;             use Einfo;
 with GNATCOLL.JSON;     use GNATCOLL.JSON;
@@ -103,7 +104,8 @@ package SPARK_Definition is
    --  only that SPARK_Mode is On.
 
    function Entity_Body_Valid_SPARK (E : Entity_Id) return Boolean
-     with Pre => Is_Subprogram (E) and then
+     with Pre => (Is_Subprogram (E)
+                    or else Ekind (E) = E_Task_Body) and then
                  Entity_Body_In_SPARK (E);
    --  Returns true if the given entitys' body contains no SPARK
    --  violations.

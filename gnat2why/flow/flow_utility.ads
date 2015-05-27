@@ -130,7 +130,7 @@ is
                           Consider_Discriminants : Boolean := False;
                           Globals_For_Proof      : Boolean := False;
                           Use_Computed_Globals   : Boolean := True)
-     with Pre  => Ekind (Subprogram) in E_Procedure | E_Function,
+     with Pre  => Ekind (Subprogram) in E_Procedure | E_Function | E_Task_Type,
           Post => (for all G of Proof_Ins => G.Variant = In_View) and
                   (for all G of Reads     => G.Variant = In_View) and
                   (for all G of Writes    => G.Variant = Out_View);
@@ -176,18 +176,18 @@ is
    --  whether user-defined or generated.
 
    function Rely_On_Generated_Global
-     (Subprogram : Entity_Id;
-      Scope      : Flow_Scope)
+     (E     : Entity_Id;
+      Scope : Flow_Scope)
       return Boolean;
-   --  Returns True if Scope has visibility of Subprogram's body and
-   --  Generated Globals will be produced for Subprogram.
+   --  Returns True if Scope has visibility of E's body and Generated
+   --  Globals will be produced for E.
 
    function Rely_On_Generated_Depends
-     (Subprogram : Entity_Id;
-      Scope      : Flow_Scope)
+     (E     : Entity_Id;
+      Scope : Flow_Scope)
       return Boolean;
-   --  Returns True if Scope has visibility of Subprogram's body and
-   --  a Generated Depends will be produced for Subprogram.
+   --  Returns True if Scope has visibility of E's body and a
+   --  Generated Depends will be produced for E.
 
    function Get_Function_Set (N : Node_Id) return Node_Sets.Set;
    --  Obtains all function calls used in an expression.

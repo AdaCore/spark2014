@@ -5406,8 +5406,7 @@ package body Flow.Control_Flow_Graph is
    -- Create --
    -------------
 
-   procedure Create (FA : in out Flow_Analysis_Graphs)
-   is
+   procedure Create (FA : in out Flow_Analysis_Graphs) is
       Connection_Map  : Connection_Maps.Map := Connection_Maps.Empty_Map;
       The_Context     : Context             := No_Context;
       Subprogram_Spec : Entity_Id;
@@ -5535,7 +5534,7 @@ package body Flow.Control_Flow_Graph is
       --  Collect globals for the analyzed entity and create initial
       --  and final vertices.
       case FA.Kind is
-         when E_Subprogram_Body =>
+         when E_Subprogram_Body | E_Task_Body =>
             if not FA.Compute_Globals then
                declare
                   type G_Prop is record
@@ -5630,10 +5629,6 @@ package body Flow.Control_Flow_Graph is
                   end loop;
                end;
             end if;
-
-         when E_Task_Body =>
-            --  !!!T O429-046 TODO: Globals for tasks
-            null;
 
          when E_Package | E_Package_Body =>
             --  Packages have no obvious globals, but we can extract a

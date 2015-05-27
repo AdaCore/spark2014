@@ -493,7 +493,7 @@ package body Flow.Analysis.Sanity is
       function Find_Aspect_To_Fix return String is
       begin
          case FA.Kind is
-            when E_Subprogram_Body =>
+            when E_Subprogram_Body | E_Task_Body =>
                if Present (FA.Refined_Global_N) then
                   return "Refined_Global";
                elsif Present (FA.Global_N) then
@@ -530,7 +530,8 @@ package body Flow.Analysis.Sanity is
 
             SRM_Ref : constant String :=
               (case FA.Kind is
-                  when E_Subprogram_Body => "6.1.4(13)",
+                  when E_Subprogram_Body |
+                       E_Task_Body       => "6.1.4(13)",
                   when others            => "7.1.5(12)");
 
             F : Flow_Id;

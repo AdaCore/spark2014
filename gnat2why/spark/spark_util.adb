@@ -471,11 +471,11 @@ package body SPARK_Util is
       return Is_In_Analyzed_Files (E)
 
        --  Either the analysis is requested for the complete unit, or if it is
-       --  requested for a specific subprogram, check whether it is E.
+       --  requested for a specific subprogram/task, check whether it is E.
 
         and then (Gnat2Why_Args.Limit_Subp = Null_Unbounded_String
                     or else
-                  Is_Requested_Subprogram (E))
+                  Is_Requested_Subprogram_Or_Task (E))
 
         --  Ignore inlined subprograms that are referenced. Unreferenced
         --  subprograms are analyzed anyway, as they are likely to correspond
@@ -486,7 +486,7 @@ package body SPARK_Util is
                     or else
                   not Referenced (E)
                     or else
-                  Is_Requested_Subprogram (E));
+                  Is_Requested_Subprogram_Or_Task (E));
    end Analysis_Requested;
 
    ------------
@@ -2147,12 +2147,12 @@ package body SPARK_Util is
        and then Present (Parent (Scope (E)))
        and then Nkind (Parent (Scope (E))) = N_Quantified_Expression);
 
-   -----------------------------
-   -- Is_Requested_Subprogram --
-   -----------------------------
+   -------------------------------------
+   -- Is_Requested_Subprogram_Or_Task --
+   -------------------------------------
 
-   function Is_Requested_Subprogram (E : Entity_Id) return Boolean is
-     (Is_Subprogram (E)
+   function Is_Requested_Subprogram_Or_Task (E : Entity_Id) return Boolean is
+     ((Is_Subprogram (E) or else Ekind (E) in Task_Kind | E_Task_Body)
         and then
       "GP_Subp:" & To_String (Gnat2Why_Args.Limit_Subp) =
         SPARK_Util.Subp_Location (E));
@@ -2732,13 +2732,27 @@ package body SPARK_Util is
    -- Task_Body --
    ---------------
 
-   function Task_Body (E : Entity_Id) return Node_Id
-   is
+   function Task_Body (E : Entity_Id) return Node_Id is
       Ptr : Node_Id;
    begin
       Ptr := Parent (E);
       pragma Assert (Nkind (Ptr) = N_Task_Type_Declaration);
       return Parent (Corresponding_Body (Ptr));
    end Task_Body;
+
+   ----------------------
+   -- Task_Body_Entity --
+   ----------------------
+
+   function Task_Body_Entity (E : Entity_Id) return Entity_Id is
+      T_Body : constant Node_Id := Task_Body (E);
+   begin
+      if Present (T_Body) then
+         pragma Assert (Present (Defining_Identifier (T_Body)));
+         return Defining_Identifier (T_Body);
+      else
+         return Empty;
+      end if;
+   end Task_Body_Entity;
 
 end SPARK_Util;

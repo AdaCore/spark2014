@@ -99,7 +99,8 @@ package SPARK_Frame_Conditions is
       Inputs             : out Name_Set.Set;
       Outputs            : out Name_Set.Set;
       Called_Subprograms : out Name_Set.Set)
-   with Pre  => Is_Subprogram (E),
+   with Pre  => Is_Subprogram (E)
+                  or else Is_Task_Type (E),
         Post => (for all E of Outputs => Inputs.Contains (E));
    --  Collects the Computed Globals information based on the current
    --  compilation unit alone.

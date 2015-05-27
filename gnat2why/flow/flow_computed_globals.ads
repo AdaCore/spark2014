@@ -39,10 +39,10 @@ package Flow_Computed_Globals is
    --  -- Flow_Computed_Globals Algorithm --
    --  -------------------------------------
 
-   --  This algorithm is applied on a per Compilation Unit basis.
+   --  This algorithm is applied on a per compilation unit basis.
 
    --  During the first pass:
-   --    * For every subprogram in SPARK a GG graph is created. The
+   --    * For every subprogram and task in SPARK a GG graph is created. The
    --      graph is then traversed and all global variables are classified
    --      as proof ins, ins and outs. During the traversal we also
    --      classify called subprograms as proof only calls, definite calls
@@ -64,16 +64,16 @@ package Flow_Computed_Globals is
    --    * All information stored in the ALI files during the first
    --      pass is read back.
    --    * A Global Graph for the entire compilation unit is created.
-   --      This graph contains subprograms and variables only. No
+   --      This graph contains subprograms, tasks and variables only. No
    --      abstract states and packages are present on this graph.
-   --      We create 3 vertices per subprogram. These represent the
+   --      We create 3 vertices per subprogram/task. These represent the
    --      subprogram's proof inputs, inputs and outputs. For each
    --      variable we create a single vertex that represents the
    --      variable.
    --    * We then draw edges between those vertices based on the GG
    --      info that we read from the ALI files. For subprograms that
    --      are marked as SPARK_Mode Off or that contain illegal SPARK
-   --      contracts we use the Get_Globals function instead of the GG
+   --      constructs we use the Get_Globals function instead of the GG
    --      info from the ALI files.
    --    * Lastly we use the compilation unit's Global Graph and
    --      information that we have about state abstractions and their
@@ -104,10 +104,10 @@ package Flow_Computed_Globals is
    --       GG AS test__state2
    --       GG AS test__state3 test_state2
 
-   --  2) The second kind has to do with subprograms. For subprograms we
-   --     store the following:
+   --  2) The second kind has to do with subprograms and tasks. For these
+   --     we store the following:
 
-   --       * the subprogram's name and where the info comes from    (S)
+   --       * the subprogram/task's name                             (S/T)
    --       * the global variables read in proof contexts only       (VP)
    --       * the global variables read    (input)                   (VI)
    --       * the global variables written (output)                  (VO)
@@ -143,10 +143,15 @@ package Flow_Computed_Globals is
    --  XR = xref
    --  NO = No Origin (we should never get this)
 
-   type Subprogram_Phase_1_Info is record
-      Subprogram        : Entity_Name;
-      Globals_Origin    : Globals_Origin_T;
+   type Info_Kind is (S_Kind, T_Kind, Undef);
+   --  S_Kind = Subprogram
+   --  T_Kind = Task
+   --  Undef  = Undefined (we should never get this)
 
+   type Subprogram_Phase_1_Info is record
+      Name              : Entity_Name;
+      Kind              : Info_Kind;
+      Globals_Origin    : Globals_Origin_T;
       Inputs_Proof      : Name_Set.Set;
       Inputs            : Name_Set.Set;
       Outputs           : Name_Set.Set;
@@ -158,7 +163,8 @@ package Flow_Computed_Globals is
    end record;
 
    Null_Subprogram_Info : constant Subprogram_Phase_1_Info :=
-     Subprogram_Phase_1_Info'(Subprogram        => Null_Entity_Name,
+     Subprogram_Phase_1_Info'(Name              => Null_Entity_Name,
+                              Kind              => Undef,
                               Globals_Origin    => NO,
                               Inputs_Proof      => Name_Set.Empty_Set,
                               Inputs            => Name_Set.Empty_Set,
@@ -170,7 +176,7 @@ package Flow_Computed_Globals is
                               Local_Subprograms => Name_Set.Empty_Set);
 
    function Preceeds (A, B : Subprogram_Phase_1_Info) return Boolean
-   is (A.Subprogram.Id < B.Subprogram.Id);
+   is (A.Name.Id < B.Name.Id);
 
    package Info_Sets is new Ada.Containers.Ordered_Sets
      (Element_Type => Subprogram_Phase_1_Info,

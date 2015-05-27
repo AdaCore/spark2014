@@ -59,8 +59,8 @@ package body Flow_Computed_Globals is
    ----------------------------------------------------------------------
 
    type State_Phase_1_Info is record
-      State             : Entity_Name;
-      Constituents      : Name_Set.Set;
+      State        : Entity_Name;
+      Constituents : Name_Set.Set;
    end record;
 
    function Preceeds (A, B : State_Phase_1_Info) return Boolean
@@ -155,7 +155,14 @@ package body Flow_Computed_Globals is
 
    procedure Print_Subprogram_Phase_1_Info (Info : Subprogram_Phase_1_Info) is
    begin
-      Write_Line ("Subprogram " & Info.Subprogram.S.all);
+      case Info.Kind is
+         when S_Kind =>
+            Write_Line ("Subprogram " & Info.Name.S.all);
+         when T_Kind =>
+            Write_Line ("Task " & Info.Name.S.all);
+         when others =>
+            raise Program_Error;
+      end case;
 
       Write_Line ("Proof_Ins        :");
       for Name of Info.Inputs_Proof loop
@@ -333,8 +340,7 @@ package body Flow_Computed_Globals is
    -- GG_Write_Finalize --
    -----------------------
 
-   procedure GG_Write_Finalize
-   is
+   procedure GG_Write_Finalize is
       procedure Write_Name_Set (S : Name_Set.Set);
 
       --------------------
@@ -358,7 +364,15 @@ package body Flow_Computed_Globals is
       end loop;
 
       for Info of Info_Set loop
-         Write_Info_Str ("GG S ");
+         case Info.Kind is
+            when S_Kind =>
+               Write_Info_Str ("GG S ");
+            when T_Kind =>
+               Write_Info_Str ("GG T ");
+            when others =>
+               raise Program_Error;
+         end case;
+
          case Info.Globals_Origin is
             when UG =>
                Write_Info_Str ("UG ");
@@ -369,7 +383,7 @@ package body Flow_Computed_Globals is
             when others =>
                raise Program_Error;
          end case;
-         Write_Info_Str (Info.Subprogram.S.all);
+         Write_Info_Str (Info.Name.S.all);
          Write_Info_Terminate;
 
          Write_Info_Str ("GG VP");
@@ -489,13 +503,13 @@ package body Flow_Computed_Globals is
          --  Go through everything in Info_Set and add edges
          for Info of Info_Set loop
             G_Ins       := Global_Id'(Kind => Ins_Kind,
-                                      Name => Info.Subprogram);
+                                      Name => Info.Name);
 
             G_Outs      := Global_Id'(Kind => Outs_Kind,
-                                      Name => Info.Subprogram);
+                                      Name => Info.Name);
 
             G_Proof_Ins := Global_Id'(Kind => Proof_Ins_Kind,
-                                      Name => Info.Subprogram);
+                                      Name => Info.Name);
 
             --  Connecting the subprogram's Proof_In variables to the
             --  subprogram's Proof_Ins vertex.
@@ -765,15 +779,15 @@ package body Flow_Computed_Globals is
             declare
                G_Ins       : constant Global_Id :=
                  Global_Id'(Kind => Ins_Kind,
-                            Name => Info.Subprogram);
+                            Name => Info.Name);
 
                G_Outs      : constant Global_Id :=
                  Global_Id'(Kind => Outs_Kind,
-                            Name => Info.Subprogram);
+                            Name => Info.Name);
 
                G_Proof_Ins : constant Global_Id :=
                  Global_Id'(Kind => Proof_Ins_Kind,
-                            Name => Info.Subprogram);
+                            Name => Info.Name);
 
                V_Ins       : constant Vertex_Id :=
                  Global_Graph.Get_Vertex (G_Ins);
@@ -833,7 +847,7 @@ package body Flow_Computed_Globals is
             --  of the following format while populating the record.
             --  The order is as follow:
             --
-            --  array slot 1 is True if we have found "GG S *"
+            --  array slot 1 is True if we have found "GG S/T *"
             --  array slot 2 is True if we have found "GG VP *"
             --  array slot 3 is True if we have found "GG VI *"
             --  array slot 4 is True if we have found "GG VO *"
@@ -961,14 +975,24 @@ package body Flow_Computed_Globals is
             while (for some I in 1 .. 9 => not Line_Found (I)) loop
                Check_GG_Format;
 
-               if Length (Line) >= 6 and then
-                 Slice (Line, 4, 5) = "S "
+               if Length (Line) >= 6
+                 and then (Slice (Line, 4, 5) = "S "
+                             or else Slice (Line, 4, 5) = "T ")
                then
                   --  Line format: GG S *
+                  --      or       GG T *
                   if Line_Found (1) then
                      --  We have already processed this line.
                      --  Something is wrong with the ali file.
                      raise Program_Error;
+                  end if;
+
+                  if Slice (Line, 4, 5) = "S " then
+                     --  Reading back a subprogram
+                     New_Info.Kind := S_Kind;
+                  else
+                     --  Reading back a task
+                     New_Info.Kind := T_Kind;
                   end if;
 
                   Line_Found (1) := True;
@@ -985,7 +1009,7 @@ package body Flow_Computed_Globals is
                                           Length (Line)));
 
                   begin
-                     New_Info.Subprogram := EN;
+                     New_Info.Name := EN;
                      New_Info.Globals_Origin :=
                        (if GO = "UG" then UG
                         elsif GO = "FA" then FA
@@ -1156,8 +1180,8 @@ package body Flow_Computed_Globals is
             for Sub_Called of All_Subs_Called loop
                if GG_Subprograms.Contains (Sub_Called) then
                   for I of Info_Set loop
-                     if I.Subprogram = Sub_Called then
-                        if not I.Local_Subprograms.Contains (Info.Subprogram)
+                     if I.Name = Sub_Called then
+                        if not I.Local_Subprograms.Contains (Info.Name)
                         then
                            All_Local_Variables.Union (I.Local_Variables);
                         end if;
@@ -1185,15 +1209,15 @@ package body Flow_Computed_Globals is
             declare
                G_Ins       : constant Global_Id :=
                  Global_Id'(Kind => Ins_Kind,
-                            Name => Info.Subprogram);
+                            Name => Info.Name);
 
                G_Outs      : constant Global_Id :=
                  Global_Id'(Kind => Outs_Kind,
-                            Name => Info.Subprogram);
+                            Name => Info.Name);
 
                G_Proof_Ins : constant Global_Id :=
                  Global_Id'(Kind => Proof_Ins_Kind,
-                            Name => Info.Subprogram);
+                            Name => Info.Name);
 
                V_Ins       : constant Vertex_Id :=
                  Global_Graph.Get_Vertex (G_Ins);
@@ -1324,7 +1348,7 @@ package body Flow_Computed_Globals is
    function GG_Exist (E : Entity_Id) return Boolean is
       Name : constant Entity_Name := To_Entity_Name (E);
    begin
-      return (for some Info of Info_Set => Name.Id = Info.Subprogram.Id);
+      return (for some Info of Info_Set => Name.Id = Info.Name.Id);
    end GG_Exist;
 
    -----------------------
