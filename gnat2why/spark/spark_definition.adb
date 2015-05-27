@@ -155,10 +155,10 @@ package body SPARK_Definition is
    --  entities are individually added to this set.
 
    Specs_In_SPARK     : Node_Sets.Set;
-   --  Subprograms and packages whose spec is marked in SPARK
+   --  Subprograms, entries and packages whose spec is marked in SPARK
 
    Bodies_In_SPARK    : Node_Sets.Set;
-   --  Subprograms and packages whose body is marked in SPARK
+   --  Subprograms, entries, tasks and packages whose body is marked in SPARK
 
    Bodies_Valid_SPARK : Node_Sets.Set;
    --  Entities for which the body contains no SPARK violations.
