@@ -8977,8 +8977,8 @@ package body Gnat2Why.Expr is
                elsif Nkind (Expr) = N_Op_Multiply
                  and then Has_Fixed_Point_Type (Etype (Right))
                then
-                     L_Type := EW_Int_Type;
-                     R_Type := EW_Fixed_Type;
+                  L_Type := EW_Int_Type;
+                  R_Type := EW_Fixed_Type;
 
                else
                   L_Type := Base_Why_Type (Left, Right);
