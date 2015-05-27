@@ -51,7 +51,7 @@ package Why.Inter is
 
    function Compute_Module_Set (W : Why_Node_Id) return Why_Node_Sets.Set;
    --  For a given Why node, compute the required modules, to be included to
-   --  make this Why node a valid node
+   --  make this Why node a valid node.
 
    function Compute_Ada_Node_Set (W : Why_Node_Id) return Node_Sets.Set;
 
@@ -76,7 +76,7 @@ package Why.Inter is
                           Module  : W_Module_Id;
                           Comment : String)
      with Pre => (P.Cur_Theory = Why_Empty);
-   --  Open a new theory in the file.
+   --  Open a new theory in the file
 
    procedure Add_Use_For_Entity
      (P               : Why_Section;
@@ -105,18 +105,18 @@ package Why.Inter is
    --  Add all import clauses that are necessary for the given set of variables
 
    function Dispatch_Entity (E : Entity_Id) return Why_Section_Enum;
-   --  Given an Ada Entity, return the appropriate Why File to insert the
+   --  Given an Ada Entity, return the appropriate Why file to insert the
    --  entity.
 
    function Dispatch_Entity_Completion (E : Entity_Id) return Why_Section_Enum;
-   --  Given an Ada Entity, return the appropriate Why File to insert the
+   --  Given an Ada Entity, return the appropriate Why file to insert the
    --  completion theory for the entity.
 
    function Loop_Exception_Name
      (E     : Entity_Id;
       Local : Boolean := False)
       return W_Name_Id;
-   --  transform a loop entity into a name for a Why exception.
+   --  Transform a loop entity into a name for a Why exception
 
    --  A given subprogram declaration in SPARK may be translated into multiple
    --  variants in Why3, with different contracts. This type defines the
@@ -150,10 +150,10 @@ package Why.Inter is
       Rec      : Entity_Id := Empty;
       Typ      : W_Type_Id := Why_Empty) return W_Identifier_Id;
    --  The one and only way to transform an Ada Entity to a Why identifier.
-   --  However, sometimes the exact way differs between program and logic world
-   --  There is also a local and a global name of each identifier. The local
-   --  name is to be used when referring to the entity in the Why3 module in
-   --  which it is being defined. The global name is to be used everywhere
+   --  However, sometimes the exact way differs between program and logic
+   --  worlds. There is also a local and a global name of each identifier. The
+   --  local name is to be used when referring to the entity in the Why3 module
+   --  in which it is being defined. The global name is to be used everywhere
    --  else.
    --  The Rec entity is used only for record components and specifies the
    --  (sub-)type which contains the component.
