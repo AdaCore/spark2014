@@ -303,9 +303,8 @@ package body SPARK_Definition is
          if Nkind (U1) = N_Identifier and then Nkind (U2) = N_Identifier then
             return Chars (U1) = Chars (U2);
 
-         elsif Nkind_In (U1, N_Selected_Component, N_Expanded_Name)
-           and then
-             Nkind_In (U2, N_Selected_Component, N_Expanded_Name)
+         elsif Nkind (U1) in N_Selected_Component | N_Expanded_Name and then
+               Nkind (U2) in N_Selected_Component | N_Expanded_Name
          then
             return Same_Unit (Prefix (U1), Prefix (U2))
               and then
@@ -1343,7 +1342,7 @@ package body SPARK_Definition is
                   --  conversion.
 
                   Expr_Type : constant Entity_Id :=
-                    (if Nkind_In (Expr, N_Op_Multiply, N_Op_Divide)
+                    (if Nkind (Expr) in N_Op_Multiply | N_Op_Divide
                        and then Etype (Expr) = Universal_Fixed
                      then
                        (if Has_Fixed_Point_Type (Etype (Left_Opnd (Expr))) then
@@ -1980,7 +1979,7 @@ package body SPARK_Definition is
             when N_Op_Add | N_Op_Subtract =>
                if Emit_Messages
                  and then SPARK_Pragma_Is (Opt.On)
-                 and then Nkind_In (Left_Opnd (N), N_Op_Add, N_Op_Subtract)
+                 and then Nkind (Left_Opnd (N)) in N_Op_Add | N_Op_Subtract
                  and then Paren_Count (Left_Opnd (N)) = 0
                then
                   Error_Msg_F
@@ -1990,7 +1989,7 @@ package body SPARK_Definition is
 
                if Emit_Messages
                  and then SPARK_Pragma_Is (Opt.On)
-                 and then Nkind_In (Right_Opnd (N), N_Op_Add, N_Op_Subtract)
+                 and then Nkind (Right_Opnd (N)) in N_Op_Add | N_Op_Subtract
                  and then Paren_Count (Right_Opnd (N)) = 0
                then
                   Error_Msg_F

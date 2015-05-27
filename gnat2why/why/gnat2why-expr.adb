@@ -8577,7 +8577,7 @@ package body Gnat2Why.Expr is
       --  and in that case use the target type of the enclosing conversion.
 
       Expr_Type : constant Entity_Id :=
-        (if Nkind_In (Expr, N_Op_Multiply, N_Op_Divide)
+        (if Nkind (Expr) in N_Op_Multiply | N_Op_Divide
            and then Etype (Expr) = Universal_Fixed
            and then Nkind (Parent (Expr)) = N_Type_Conversion
          then

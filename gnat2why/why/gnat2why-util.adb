@@ -409,7 +409,7 @@ package body Gnat2Why.Util is
 
       function Is_Variable_Reference (N : Node_Id) return Traverse_Result is
       begin
-         if Nkind_In (N, N_Identifier, N_Expanded_Name)
+         if Nkind (N) in N_Identifier | N_Expanded_Name
            and then Present (Entity (N))
            and then
              (case Ekind (Entity (N)) is
