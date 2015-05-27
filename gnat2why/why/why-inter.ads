@@ -62,10 +62,7 @@ package Why.Inter is
    --  Close the current theory by adding all necessary imports and adding
    --  the theory to the file. If not Empty, Defined_Entity is the entity
    --  defined by the current theory, which is used to complete the graph
-   --  of dependencies for this entity. If Do_Closure is True, then these
-   --  dependencies are used to get all entities on which this definition
-   --  depends. With_Completion is True if the completion theories should be
-   --  added too.
+   --  of dependencies for this entity.
 
    procedure Add_Extra_Dependency
      (Defined_Entity : Entity_Id;
