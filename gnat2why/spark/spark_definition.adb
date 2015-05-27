@@ -2061,7 +2061,7 @@ package body SPARK_Definition is
 
          else
             --  Entry calls are now in SPARK
-            --  FIXME: what is "indirect call"? should we check more?
+            --  ??? what is "indirect call"? should we check more?
             if Nkind (N) /= N_Entry_Call_Statement then
                --  Are there cases where we reach here??? For the moment,
                --  issue a generic error message about "indirect calls".
@@ -2718,7 +2718,7 @@ package body SPARK_Definition is
          --  to be in SPARK. For a private type, we're only interested here in
          --  its publicly visible components.
 
-         --  FIXME: this should be merged with the following code for records
+         --  ??? this should be merged with the following code for records
          --  (see O508-008).
          if Is_Concurrent_Type (E) then
             declare
@@ -3214,7 +3214,7 @@ package body SPARK_Definition is
                            then Protected_Definition (Type_Decl)
                            else Task_Definition (Type_Decl));
                      begin
-                        --  FIXME: Interface_List
+                        --  ??? Interface_List
                         pragma Assert (Interface_List (Type_Decl) = No_List);
                         if Present (Type_Def) then
                            Mark_Stmt_Or_Decl_List
