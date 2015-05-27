@@ -8603,7 +8603,7 @@ package body Gnat2Why.Expr is
       end if;
 
       --  Expressions that cannot be translated to predicates directly are
-      --  translated to (boolean) terms, and compared to "True"
+      --  translated to (boolean) terms, and compared to "True".
 
       if Domain = EW_Pred and then
          not (Nkind (Expr) in N_Op_Compare | N_Op_Not | N_Op_And | N_And_Then
