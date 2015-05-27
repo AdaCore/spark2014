@@ -2546,7 +2546,7 @@ requires the user to write it, to debug it, and finally to prove it.
   while no such work was needed in the new version. Despite this and other
   differences in efficiency between the two toolsets, the analysis time to
   ensure complete absence of run-time errors is similar between the two
-  toolsets: 5 mn with the previous toolset, half of that with |GNATprove|.
+  toolsets: 5 min with the previous toolset, half of that with |GNATprove|.
 
 * Out of the 367 generated VCs, 29 were not proved automatically with the
   previous toolset: 6 VCs required the insertion of user-defined lemmas in the
