@@ -3215,6 +3215,7 @@ package body SPARK_Definition is
                            else Task_Definition (Type_Decl));
                      begin
                         --  FIXME: Interface_List
+                        pragma Assert (Interface_List (Type_Decl) = No_List);
                         if Present (Type_Def) then
                            Mark_Stmt_Or_Decl_List
                              (Visible_Declarations (Type_Def));
