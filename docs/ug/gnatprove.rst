@@ -2543,10 +2543,10 @@ requires the user to write it, to debug it, and finally to prove it.
   given that everything was done in the original version to control the
   explosion of the number of VCs, with the insertion of 24 special annotations
   in the source code similar to :ref:`Pragma Assert_And_Cut` in SPARK 2014,
-  while no such work was needed in the new version. This and other differences
-  in inefficiency between the two toolsets explain the huge difference in
-  analysis time to ensure complete absence of run-time errors: a dozen hours
-  with the previous toolset, a few minutes with |GNATprove|.
+  while no such work was needed in the new version. Despite this and other
+  differences in efficiency between the two toolsets, the analysis time to
+  ensure complete absence of run-time errors is similar between the two
+  toolsets: 5 mn with the previous toolset, half of that with |GNATprove|.
 
 * Out of the 367 generated VCs, 29 were not proved automatically with the
   previous toolset: 6 VCs required the insertion of user-defined lemmas in the
