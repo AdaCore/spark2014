@@ -456,7 +456,7 @@ module Fixed_Point_Base
 
   (* division between a fixed-point value and an integer
      case 1:
-         If the dividant is zero, then the result is zero.
+         If the divident is zero, then the result is zero.
      case 2:
          If both arguments are of the same sign, then the mathematical
          result is either exact, or between exact and exact+1, which are the
