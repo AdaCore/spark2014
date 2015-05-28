@@ -269,8 +269,7 @@ package body SPARK_Definition is
       -- Restriction_No_Dependence --
       -------------------------------
 
-      function Restriction_No_Dependence (Unit : Node_Id) return Boolean
-      is
+      function Restriction_No_Dependence (Unit : Node_Id) return Boolean is
          function Same_Unit (U1, U2 : Node_Id) return Boolean;
          --  Returns True iff U1 and U2 represent the same library unit. Used
          --  for handling of No_Dependence => Unit restriction case.
