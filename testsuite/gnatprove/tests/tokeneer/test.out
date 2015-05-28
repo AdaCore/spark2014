@@ -1787,6 +1787,15 @@ enrolment.ads:55:24: info: initialization of "DataOK" proved
 enrolment.ads:56:24: info: initialization of "Description" proved
 enrolment.ads:78:22: info: initialization of "DataOK" proved
 enrolment.ads:78:22: medium: postcondition might fail, requires DataOK = KeyStore(KeyStore.privatekeypresent)
+file.adb:93:36: warning: index for "TheName" may assume lower bound of 1
+file.adb:93:36: warning: suggested replacement: "TheName'First"
+file.adb:93:39: warning: index for "TheName" may assume lower bound of 1
+file.adb:93:39: warning: suggested replacement: "TheName'First - 1 + MaxNameLength"
+file.adb:114:41: warning: index for "TheName" may assume lower bound of 1
+file.adb:114:41: warning: suggested replacement: "TheName'First"
+file.adb:114:44: warning: index for "TheName" may assume lower bound of 1
+file.adb:114:44: warning: suggested replacement: "TheName'First - 1 + MaxNameLength"
+floppy.adb:48:04: warning: variable "CFloppyDrive" is never read and never assigned
 iandatypes.ads:45:19: info: length check proved
 iandatypes.ads:62:47: info: length check proved
 keyboard.adb:75:32: info: initialization of "LocalLength" proved
@@ -2075,6 +2084,7 @@ latch.ads:150:22: info: initialization of "LatchTimeout.MilliSec" constituent of
 latch.ads:150:22: info: initialization of "LatchTimeout.Month" constituent of "State" proved
 latch.ads:150:22: info: initialization of "LatchTimeout.Year" constituent of "State" proved
 latch.ads:150:22: info: postcondition proved
+latchapi.adb:76:07: info: no contextual analysis of "ReadBack" (exception handler)
 latchapi.adb:95:37: medium: length check might fail
 latchapi.adb:95:37: warning: assuming "Overwrite" has no effect on global items
 latchapi.adb:95:37: warning: no Global contract available for "Overwrite"
@@ -2451,6 +2461,8 @@ screen.adb:1100:19: info: initialization of "ScreenOK" proved
 screen.adb:1100:32: info: initialization of "WriteOK" proved
 screen.adb:1102:14: info: initialization of "ScreenOK" proved
 screen.adb:1104:18: medium: precondition might fail
+spark_io.adb:128:42: warning: cannot copy object of a limited type in Ada 2005 (RM-2005 6.5(5.5/2))
+spark_io.adb:128:42: warning: consider switching to return of access type
 stats.adb:49:57: info: overflow check proved
 stats.adb:64:51: info: overflow check proved
 stats.adb:79:53: info: overflow check proved
@@ -2637,6 +2649,7 @@ tokenreader.adb:68:33: info: length check proved
 tokenreader.adb:97:40: info: range check proved
 tokenreader.adb:116:39: info: range check proved
 tokenreader.adb:135:37: info: range check proved
+tokenreader.adb:164:07: info: no contextual analysis of "MakeDescription" (nested subprogram)
 tokenreader.adb:173:47: medium: range check might fail
 tokenreader.adb:174:12: medium: range check might fail
 tokenreader.adb:174:55: medium: range check might fail
@@ -2926,6 +2939,10 @@ usertoken.adb:695:23: medium: range check might fail, in call inlined at usertok
 usertoken.adb:695:23: medium: range check might fail, in call inlined at usertoken.adb:958
 usertoken.adb:695:23: medium: range check might fail, in call inlined at usertoken.adb:961
 usertoken.adb:695:23: medium: range check might fail, in call inlined at usertoken.adb:985
+usertoken.adb:695:29: warning: index for "Text" may assume lower bound of 1
+usertoken.adb:695:29: warning: suggested replacement: "Text'First"
+usertoken.adb:695:34: warning: index for "Text" may assume lower bound of 1
+usertoken.adb:695:34: warning: suggested replacement: "Text'First - 1 + Result'Last"
 usertoken.adb:697:17: info: initialization of "Result" proved, in call inlined at usertoken.adb:737
 usertoken.adb:697:17: info: initialization of "Result" proved, in call inlined at usertoken.adb:740
 usertoken.adb:697:17: info: initialization of "Result" proved, in call inlined at usertoken.adb:743
