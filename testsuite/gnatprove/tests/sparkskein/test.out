@@ -1,21 +1,15 @@
-skein-trace.adb:42:41: info: initialization of constant without variable input "Debug_None" proved
-skein.adb:222:10: info: initialization of constant with variable input "C255b" proved, in call inlined at skein.adb:877
 skein.adb:223:14: info: range check proved, in call inlined at skein.adb:877
-skein.adb:223:35: info: initialization of constant with variable input "C255b" proved, in call inlined at skein.adb:877
 skein.adb:224:29: medium: array index check might fail, in call inlined at skein.adb:877
 skein.adb:224:34: info: initialization of "Hash" proved, in call inlined at skein.adb:877
-skein.adb:224:34: info: initialization of constant with variable input "C253b" proved, in call inlined at skein.adb:877
 skein.adb:226:44: info: division check proved, in call inlined at skein.adb:877
 skein.adb:226:44: info: index check proved, in call inlined at skein.adb:877
 skein.adb:227:35: info: range check proved, in call inlined at skein.adb:877
 skein.adb:227:49: info: range check proved, in call inlined at skein.adb:877
 skein.adb:245:07: warning: no check message justified by this pragma
-skein.adb:253:41: info: initialization of constant with variable input "Src_Offset" proved, in call inlined at skein.adb:585
 skein.adb:253:52: info: range check proved, in call inlined at skein.adb:585
 skein.adb:255:13: warning: no check message justified by this pragma
 skein.adb:258:29: info: initialization of "W" proved, in call inlined at skein.adb:585
 skein.adb:259:25: info: index check proved, in call inlined at skein.adb:585
-skein.adb:259:25: info: initialization of constant with variable input "Src_Index" proved, in call inlined at skein.adb:585
 skein.adb:260:47: info: index check proved, in call inlined at skein.adb:585
 skein.adb:261:47: info: index check proved, in call inlined at skein.adb:585
 skein.adb:262:47: info: index check proved, in call inlined at skein.adb:585
@@ -37,20 +31,12 @@ skein.adb:353:30: info: initialization of "X" proved, in call inlined at skein.a
 skein.adb:353:49: info: initialization of "TS" proved, in call inlined at skein.adb:599
 skein.adb:354:30: info: initialization of "X" proved, in call inlined at skein.adb:599
 skein.adb:354:49: info: initialization of "TS" proved, in call inlined at skein.adb:599
-skein.adb:365:38: info: initialization of constant with variable input "C181b" proved, in call inlined at skein.adb:538
-skein.adb:365:38: info: initialization of constant with variable input "C192b" proved, in call inlined at skein.adb:547
 skein.adb:365:45: info: division check proved, in call inlined at skein.adb:538
 skein.adb:365:45: info: division check proved, in call inlined at skein.adb:547
-skein.adb:368:56: info: initialization of constant with variable input "C181b" proved, in call inlined at skein.adb:538
-skein.adb:368:56: info: initialization of constant with variable input "C192b" proved, in call inlined at skein.adb:547
 skein.adb:368:58: info: division check proved, in call inlined at skein.adb:538
 skein.adb:368:58: info: division check proved, in call inlined at skein.adb:547
-skein.adb:369:57: info: initialization of constant with variable input "C181b" proved, in call inlined at skein.adb:538
-skein.adb:369:57: info: initialization of constant with variable input "C192b" proved, in call inlined at skein.adb:547
 skein.adb:369:64: info: division check proved, in call inlined at skein.adb:538
 skein.adb:369:64: info: division check proved, in call inlined at skein.adb:547
-skein.adb:370:52: info: initialization of constant with variable input "C181b" proved, in call inlined at skein.adb:538
-skein.adb:370:52: info: initialization of constant with variable input "C192b" proved, in call inlined at skein.adb:547
 skein.adb:553:41: info: length check proved, in call inlined at skein.adb:609
 skein.adb:560:47: info: initialization of "X" proved, in call inlined at skein.adb:609
 skein.adb:560:57: info: initialization of "W" proved, in call inlined at skein.adb:609
@@ -58,7 +44,6 @@ skein.adb:564:11: info: range check proved
 skein.adb:567:31: info: range check proved
 skein.adb:569:13: info: loop invariant initialization proved
 skein.adb:569:13: info: loop invariant preservation proved
-skein.adb:582:28: info: initialization of constant with variable input "Src_Offset" proved
 skein.adb:582:28: medium: assertion might fail, requires Src_Offset = Starting_Offset + (J - 1) * Skein_512_Block_Bytes_C
 skein.adb:606:13: info: initialization of "KS" proved
 skein.adb:606:13: info: initialization of "TS" proved
@@ -80,8 +65,6 @@ skein.adb:653:29: info: initialization of "Ctx.H.Tweak_Words.Tree_Level" proved
 skein.adb:653:29: info: initialization of "Ctx.X" proved
 skein.adb:654:61: info: initialization of "Cfg" proved
 skein.adb:654:61: info: length check proved
-skein.adb:694:13: info: initialization of constant with variable input "C232b" proved, in call inlined at skein.adb:731
-skein.adb:694:13: info: initialization of constant with variable input "C234b" proved, in call inlined at skein.adb:771
 skein.adb:696:20: info: initialization of "Current_Msg_Offset" proved, in call inlined at skein.adb:731
 skein.adb:696:20: info: initialization of "Current_Msg_Offset" proved, in call inlined at skein.adb:771
 skein.adb:698:25: info: range check proved, in call inlined at skein.adb:731
@@ -90,12 +73,8 @@ skein.adb:700:26: info: initialization of "Dst" proved, in call inlined at skein
 skein.adb:700:26: info: initialization of "Dst" proved, in call inlined at skein.adb:771
 skein.adb:700:30: info: range check proved, in call inlined at skein.adb:731
 skein.adb:700:30: info: range check proved, in call inlined at skein.adb:771
-skein.adb:700:33: info: initialization of constant with variable input "C232b" proved, in call inlined at skein.adb:731
-skein.adb:700:33: info: initialization of constant with variable input "C234b" proved, in call inlined at skein.adb:771
 skein.adb:702:26: info: initialization of "Src" proved, in call inlined at skein.adb:731
 skein.adb:702:26: info: initialization of "Src" proved, in call inlined at skein.adb:771
-skein.adb:702:33: info: initialization of constant with variable input "C232b" proved, in call inlined at skein.adb:731
-skein.adb:702:33: info: initialization of constant with variable input "C234b" proved, in call inlined at skein.adb:771
 skein.adb:705:28: info: initialization of "Dst" proved, in call inlined at skein.adb:731
 skein.adb:705:28: info: initialization of "Dst" proved, in call inlined at skein.adb:771
 skein.adb:705:36: info: index check proved, in call inlined at skein.adb:731
@@ -120,8 +99,6 @@ skein.adb:713:27: info: range check proved, in call inlined at skein.adb:731
 skein.adb:713:27: info: range check proved, in call inlined at skein.adb:771
 skein.adb:714:23: info: initialization of "Src" proved, in call inlined at skein.adb:731
 skein.adb:714:23: info: initialization of "Src" proved, in call inlined at skein.adb:771
-skein.adb:717:52: info: initialization of constant with variable input "C232b" proved, in call inlined at skein.adb:731
-skein.adb:717:52: info: initialization of constant with variable input "C234b" proved, in call inlined at skein.adb:771
 skein.adb:725:11: info: initialization of "Msg_Byte_Count" proved
 skein.adb:729:42: info: range check proved
 skein.adb:731:48: info: initialization of "N" proved
@@ -146,7 +123,6 @@ skein.adb:763:56: info: initialization of "Bytes_Hashed" proved
 skein.adb:771:07: info: initialization of "Msg_Byte_Count" proved
 skein.adb:795:14: info: range check proved, in call inlined at skein.adb:826
 skein.adb:796:18: info: initialization of "Local_Ctx.H.Byte_Count" proved, in call inlined at skein.adb:826
-skein.adb:796:29: info: initialization of constant with variable input "R243b" proved, in call inlined at skein.adb:826
 skein.adb:799:13: info: loop invariant initialization proved, in call inlined at skein.adb:826
 skein.adb:799:13: info: loop invariant preservation proved, in call inlined at skein.adb:826
 skein.adb:800:16: info: initialization of "Local_Ctx.H.Hash_Bit_Len" proved, in call inlined at skein.adb:826
@@ -155,28 +131,20 @@ skein.adb:802:16: info: initialization of "Local_Ctx.H.Byte_Count" proved, in ca
 skein.adb:802:63: info: initialization of "Local_Ctx.H.Byte_Count" proved, in call inlined at skein.adb:826
 skein.adb:804:29: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:826
 skein.adb:810:26: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:854
-skein.adb:810:35: info: initialization of constant with variable input "C249b" proved, in call inlined at skein.adb:854
 skein.adb:810:43: info: range check proved, in call inlined at skein.adb:854
 skein.adb:811:26: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:854
-skein.adb:811:48: info: initialization of constant with variable input "C249b" proved, in call inlined at skein.adb:854
 skein.adb:811:61: info: range check proved, in call inlined at skein.adb:854
 skein.adb:812:26: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:854
-skein.adb:812:48: info: initialization of constant with variable input "C249b" proved, in call inlined at skein.adb:854
 skein.adb:812:61: info: range check proved, in call inlined at skein.adb:854
 skein.adb:813:26: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:854
-skein.adb:813:48: info: initialization of constant with variable input "C249b" proved, in call inlined at skein.adb:854
 skein.adb:813:61: info: range check proved, in call inlined at skein.adb:854
 skein.adb:814:26: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:854
-skein.adb:814:48: info: initialization of constant with variable input "C249b" proved, in call inlined at skein.adb:854
 skein.adb:814:61: info: range check proved, in call inlined at skein.adb:854
 skein.adb:815:26: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:854
-skein.adb:815:48: info: initialization of constant with variable input "C249b" proved, in call inlined at skein.adb:854
 skein.adb:815:61: info: range check proved, in call inlined at skein.adb:854
 skein.adb:816:26: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:854
-skein.adb:816:48: info: initialization of constant with variable input "C249b" proved, in call inlined at skein.adb:854
 skein.adb:816:61: info: range check proved, in call inlined at skein.adb:854
 skein.adb:817:26: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:854
-skein.adb:817:48: info: initialization of constant with variable input "C249b" proved, in call inlined at skein.adb:854
 skein.adb:817:61: info: range check proved, in call inlined at skein.adb:854
 skein.adb:822:12: medium: length check might fail
 skein.adb:825:11: info: initialization of "Local_Ctx.H.Byte_Count" proved
@@ -205,7 +173,6 @@ skein.adb:846:12: info: initialization of "Local_Ctx.X" proved
 skein.adb:848:27: info: initialization of "Byte_Count" proved
 skein.adb:848:44: info: division check proved
 skein.adb:850:31: info: initialization of "Blocks_Required" proved
-skein.adb:850:47: info: initialization of constant with variable input "R247b" proved
 skein.adb:851:10: info: loop invariant initialization proved
 skein.adb:851:10: info: loop invariant preservation proved
 skein.adb:852:13: info: initialization of "Local_Ctx.H.Hash_Bit_Len" proved
@@ -290,23 +257,5 @@ skein.ads:176:36: info: initialization of "Ctx.X" proved
 skein.ads:190:19: info: postcondition proved
 skein.ads:195:31: info: initialization of "Hash" proved
 skein.ads:200:46: info: division check proved
-skein.ads:354:38: info: initialization of constant without variable input "Null_Tweak_Value.Bit_Pad" proved
-skein.ads:354:38: info: initialization of constant without variable input "Null_Tweak_Value.Byte_Count_LSB" proved
-skein.ads:354:38: info: initialization of constant without variable input "Null_Tweak_Value.Byte_Count_MSB" proved
-skein.ads:354:38: info: initialization of constant without variable input "Null_Tweak_Value.Field_Type" proved
-skein.ads:354:38: info: initialization of constant without variable input "Null_Tweak_Value.Final_Block" proved
-skein.ads:354:38: info: initialization of constant without variable input "Null_Tweak_Value.First_Block" proved
-skein.ads:354:38: info: initialization of constant without variable input "Null_Tweak_Value.Reserved" proved
-skein.ads:354:38: info: initialization of constant without variable input "Null_Tweak_Value.Tree_Level" proved
-skein.ads:368:30: info: initialization of constant without variable input "Null_Context_Header.Byte_Count" proved
-skein.ads:368:30: info: initialization of constant without variable input "Null_Context_Header.Hash_Bit_Len" proved
-skein.ads:368:30: info: initialization of constant without variable input "Null_Context_Header.Tweak_Words.Bit_Pad" proved
-skein.ads:368:30: info: initialization of constant without variable input "Null_Context_Header.Tweak_Words.Byte_Count_LSB" proved
-skein.ads:368:30: info: initialization of constant without variable input "Null_Context_Header.Tweak_Words.Byte_Count_MSB" proved
-skein.ads:368:30: info: initialization of constant without variable input "Null_Context_Header.Tweak_Words.Field_Type" proved
-skein.ads:368:30: info: initialization of constant without variable input "Null_Context_Header.Tweak_Words.Final_Block" proved
-skein.ads:368:30: info: initialization of constant without variable input "Null_Context_Header.Tweak_Words.First_Block" proved
-skein.ads:368:30: info: initialization of constant without variable input "Null_Context_Header.Tweak_Words.Reserved" proved
-skein.ads:368:30: info: initialization of constant without variable input "Null_Context_Header.Tweak_Words.Tree_Level" proved
 skein.ads:369:52: info: length check proved
 skein.ads:370:52: info: length check proved

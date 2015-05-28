@@ -1,6 +1,4 @@
-no_inlining.adb:12:13: info: initialization of constant with variable input "C4b" proved, in call inlined at no_inlining.adb:26
 no_inlining.adb:15:20: warning: no contextual analysis of "Recurse2" (body not seen yet)
-no_inlining.adb:15:34: info: initialization of constant with variable input "C4b" proved, in call inlined at no_inlining.adb:26
 no_inlining.adb:17:17: info: initialization of "Tmp" proved, in call inlined at no_inlining.adb:26
 no_inlining.adb:17:17: info: initialization of "Tmp" proved, in call inlined at no_inlining.adb:31
 no_inlining.adb:28:17: info: initialization of "Tmp" proved

@@ -1760,6 +1760,14 @@ package body Flow.Analysis is
    is
       Tracefile : Unbounded_String;
 
+      function Consider_Vertex (V : Flow_Graphs.Vertex_Id) return Boolean;
+      --  Returns True iff V should be considered for uninitialized
+      --  variables.
+      --
+      --  We consider all vertices except for:
+      --     * exceptional ones and
+      --     * synthetic null output.
+
       procedure Mark_Definition_Free_Path
         (From      : Flow_Graphs.Vertex_Id;
          To        : Flow_Graphs.Vertex_Id;
@@ -1794,6 +1802,26 @@ package body Flow.Analysis is
       --
       --  They can be both set, in which case we're most likely going to
       --  produce a medium check, but this is not always the case in loops.
+
+      function Consider_Vertex (V : Flow_Graphs.Vertex_Id) return Boolean is
+         V_Key : constant Flow_Id      := FA.PDG.Get_Key (V);
+         V_Atr : constant V_Attributes := FA.Atr.Element (V);
+      begin
+         --  Ignore exceptional paths
+         if V_Atr.Is_Exceptional_Path then
+            return False;
+         end if;
+
+         --  Ignore synthetic null output
+         if V_Key.Variant = Final_Value
+           and then (not V_Atr.Is_Export or else Synthetic (V_Key))
+         then
+            return False;
+         end if;
+
+         --  If we reach this point then the Vertex must be considered
+         return True;
+      end Consider_Vertex;
 
       -------------------------------
       -- Mark_Definition_Free_Path --
@@ -2081,7 +2109,7 @@ package body Flow.Analysis is
          --  implicit dependency. Instead, we use
          --  Variables_Explicitly_Used.
 
-         if (not Found) and then Use_Vertex_Points_To_Itself then
+         if not Found and then Use_Vertex_Points_To_Itself then
             case The_Var.Kind is
                when Direct_Mapping | Record_Field =>
                   --  Check if node corresponds to an array.
@@ -2278,7 +2306,6 @@ package body Flow.Analysis is
       end Emit_Message;
 
       V_Atr            : V_Attributes;
-      V_Key            : Flow_Id;
       Def_Atr          : V_Attributes;
       Def_Key          : Flow_Id;
       Var_Atr          : V_Attributes;
@@ -2287,15 +2314,12 @@ package body Flow.Analysis is
 
    begin --  Find_Use_Of_Uninitialized_Variables
 
-      --  We look at all vertices (except for exceptional ones or the
-      --  synthetic null output)...
+      --  We look at all vertices except for:
+      --     * exceptional ones and
+      --     * synthetic null output
       for V of FA.DDG.Get_Collection (Flow_Graphs.All_Vertices) loop
-         V_Key := FA.PDG.Get_Key (V);
          V_Atr := FA.Atr.Element (V);
-         if not V_Atr.Is_Exceptional_Path
-           and then (if V_Key.Variant = Final_Value
-                     then V_Atr.Is_Export and then not Synthetic (V_Key))
-         then
+         if Consider_Vertex (V) then
             --  For each variable read...
             for Var_Read of V_Atr.Variables_Used loop
                Is_Uninitialized := False;
@@ -2308,6 +2332,9 @@ package body Flow.Analysis is
                  and then (if Ekind (FA.Analyzed_Entity) in
                              E_Package | E_Package_Body
                            then not Is_Abstract_State (Var_Read))
+                 and then (if Var_Read.Kind in Direct_Mapping | Record_Field
+                           then not Is_Constant_Object
+                                      (Get_Direct_Mapping_Id (Var_Read)))
                then
                   --  ... we check the in neighbours in the DDG and see if
                   --  they define it. We record initialized / uninitialized

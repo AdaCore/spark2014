@@ -4,7 +4,6 @@ arrays.adb:62:22: medium: postcondition might fail, requires Contains_B'Result =
 arrays.adb:71:19: info: postcondition proved
 arrays.adb:80:19: medium: postcondition might fail, requires Is_Id_2'Result = (M (C) = C
 arrays.adb:94:07: info: assertion proved
-arrays.adb:94:26: info: initialization of constant with variable input "C_Old" proved
 arrays.adb:104:22: medium: assertion might fail, requires C = 'a'
 arrays.adb:112:22: medium: assertion might fail, requires M ('a') = 'a'
 arrays.adb:120:22: medium: assertion might fail, requires M (Elem_0) = Elem_0

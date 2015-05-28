@@ -1,291 +1,77 @@
 amortized_queue.adb:5:07: info: initialization of private part of "Result" proved
 amortized_queue.adb:5:14: info: initialization of private part of "Result" proved
-amortized_queue.adb:5:43: info: precondition proved
-amortized_queue.adb:5:59: info: precondition proved
-amortized_queue.adb:6:26: info: initialization of constant with variable input "R4b" proved
-amortized_queue.adb:6:26: info: precondition proved
-amortized_queue.adb:7:13: info: precondition proved
 amortized_queue.adb:7:21: info: initialization of private part of "Result" proved
-amortized_queue.adb:7:29: info: precondition proved
-amortized_queue.adb:7:44: info: range check proved
-amortized_queue.adb:8:13: info: loop invariant initialization proved
-amortized_queue.adb:8:13: info: loop invariant preservation proved
-amortized_queue.adb:8:44: info: precondition proved
 amortized_queue.adb:8:52: info: initialization of private part of "Result" proved
-amortized_queue.adb:9:13: info: loop invariant initialization proved
-amortized_queue.adb:9:13: info: loop invariant preservation proved
-amortized_queue.adb:11:20: info: precondition proved
 amortized_queue.adb:11:29: info: initialization of private part of "Result" proved
-amortized_queue.adb:11:37: info: range check proved
-amortized_queue.adb:11:42: info: precondition proved
-amortized_queue.adb:11:57: info: range check proved
-amortized_queue.adb:13:10: info: assertion proved
-amortized_queue.adb:13:34: info: precondition proved
 amortized_queue.adb:13:42: info: initialization of private part of "Result" proved
-amortized_queue.adb:13:53: info: precondition proved
-amortized_queue.adb:14:26: info: initialization of constant with variable input "R10b" proved
-amortized_queue.adb:14:26: info: precondition proved
-amortized_queue.adb:15:13: info: precondition proved
 amortized_queue.adb:15:21: info: initialization of private part of "Result" proved
-amortized_queue.adb:15:29: info: precondition proved
-amortized_queue.adb:15:45: info: range check proved
-amortized_queue.adb:16:13: info: loop invariant initialization proved
-amortized_queue.adb:16:13: info: loop invariant preservation proved
-amortized_queue.adb:16:44: info: precondition proved
 amortized_queue.adb:16:52: info: initialization of private part of "Result" proved
-amortized_queue.adb:16:63: info: precondition proved
-amortized_queue.adb:16:81: info: overflow check proved
-amortized_queue.adb:17:13: info: loop invariant initialization proved
-amortized_queue.adb:17:13: info: loop invariant preservation proved
-amortized_queue.adb:18:34: info: precondition proved
-amortized_queue.adb:19:20: info: precondition proved
 amortized_queue.adb:19:29: info: initialization of private part of "Result" proved
-amortized_queue.adb:19:37: info: range check proved
-amortized_queue.adb:19:42: info: precondition proved
-amortized_queue.adb:19:57: info: range check proved
-amortized_queue.adb:20:13: info: loop invariant initialization proved
-amortized_queue.adb:20:13: info: loop invariant preservation proved
-amortized_queue.adb:22:20: info: precondition proved
 amortized_queue.adb:22:29: info: initialization of private part of "Result" proved
-amortized_queue.adb:22:37: info: precondition proved
-amortized_queue.adb:22:55: info: overflow check proved
-amortized_queue.adb:22:55: info: range check proved
-amortized_queue.adb:22:62: info: precondition proved
-amortized_queue.adb:22:78: info: range check proved
 amortized_queue.adb:29:07: info: initialization of private part of "Result" proved
 amortized_queue.adb:29:14: info: initialization of private part of "Result" proved
-amortized_queue.adb:29:47: info: precondition proved
-amortized_queue.adb:30:10: info: precondition proved
 amortized_queue.adb:30:18: info: initialization of private part of "Result" proved
-amortized_queue.adb:31:21: info: initialization of constant with variable input "R23b" proved
-amortized_queue.adb:31:21: info: precondition proved
-amortized_queue.adb:31:44: info: initialization of constant with variable input "R24b" proved
-amortized_queue.adb:31:44: info: precondition proved
-amortized_queue.adb:32:13: info: precondition proved
 amortized_queue.adb:32:21: info: initialization of private part of "Result" proved
-amortized_queue.adb:32:29: info: precondition proved
-amortized_queue.adb:32:45: info: range check proved
-amortized_queue.adb:33:13: info: loop invariant initialization proved
-amortized_queue.adb:33:13: info: loop invariant preservation proved
-amortized_queue.adb:33:44: info: precondition proved
 amortized_queue.adb:33:52: info: initialization of private part of "Result" proved
-amortized_queue.adb:33:65: info: overflow check proved
-amortized_queue.adb:34:13: info: loop invariant initialization proved
-amortized_queue.adb:34:13: info: loop invariant preservation proved
-amortized_queue.adb:34:36: info: precondition proved
 amortized_queue.adb:34:45: info: initialization of private part of "Result" proved
-amortized_queue.adb:35:13: info: loop invariant initialization proved
-amortized_queue.adb:35:13: info: loop invariant preservation proved
-amortized_queue.adb:37:18: info: precondition proved
 amortized_queue.adb:37:27: info: initialization of private part of "Result" proved
-amortized_queue.adb:37:37: info: overflow check proved
-amortized_queue.adb:37:37: info: range check proved
-amortized_queue.adb:37:44: info: precondition proved
-amortized_queue.adb:37:60: info: range check proved
 amortized_queue.adb:44:07: info: initialization of private part of "Result" proved
 amortized_queue.adb:44:14: info: initialization of private part of "Result" proved
-amortized_queue.adb:44:43: info: precondition proved
-amortized_queue.adb:45:21: info: initialization of constant with variable input "R33b" proved
-amortized_queue.adb:45:21: info: precondition proved
-amortized_queue.adb:45:43: info: initialization of constant with variable input "R34b" proved
-amortized_queue.adb:45:43: info: precondition proved
-amortized_queue.adb:46:13: info: precondition proved
 amortized_queue.adb:46:21: info: initialization of private part of "Result" proved
-amortized_queue.adb:46:29: info: precondition proved
-amortized_queue.adb:46:44: info: range check proved
-amortized_queue.adb:47:13: info: loop invariant initialization proved
-amortized_queue.adb:47:13: info: loop invariant preservation proved
-amortized_queue.adb:47:44: info: precondition proved
 amortized_queue.adb:47:52: info: initialization of private part of "Result" proved
-amortized_queue.adb:48:13: info: loop invariant initialization proved
-amortized_queue.adb:48:13: info: loop invariant preservation proved
-amortized_queue.adb:50:18: info: precondition proved
 amortized_queue.adb:50:27: info: initialization of private part of "Result" proved
-amortized_queue.adb:50:35: info: range check proved
-amortized_queue.adb:50:40: info: precondition proved
-amortized_queue.adb:50:55: info: range check proved
-amortized_queue.adb:52:09: info: precondition proved
 amortized_queue.adb:52:17: info: initialization of private part of "Result" proved
-amortized_queue.adb:60:24: info: precondition proved
-amortized_queue.adb:60:41: info: precondition proved
-amortized_queue.adb:61:21: info: precondition proved
-amortized_queue.adb:61:44: info: precondition proved
-amortized_queue.adb:62:14: info: postcondition proved
-amortized_queue.adb:62:14: info: precondition proved
-amortized_queue.adb:62:31: info: precondition proved
-amortized_queue.adb:62:49: info: precondition proved
-amortized_queue.adb:63:15: info: precondition proved
-amortized_queue.adb:64:34: info: precondition proved
-amortized_queue.adb:65:20: info: precondition proved
-amortized_queue.adb:65:36: info: range check proved
-amortized_queue.adb:65:41: info: precondition proved
-amortized_queue.adb:65:58: info: range check proved
-amortized_queue.adb:66:34: info: precondition proved
-amortized_queue.adb:67:18: info: precondition proved
-amortized_queue.adb:67:34: info: precondition proved
-amortized_queue.adb:67:57: info: range check proved
-amortized_queue.adb:67:64: info: precondition proved
-amortized_queue.adb:67:80: info: range check proved
-amortized_queue.adb:70:31: info: initialization of constant with variable input "R51b" proved
-amortized_queue.adb:70:31: info: precondition proved
-amortized_queue.adb:71:10: info: precondition proved
-amortized_queue.adb:71:25: info: precondition proved
-amortized_queue.adb:71:40: info: range check proved
-amortized_queue.adb:72:10: info: loop invariant initialization proved
-amortized_queue.adb:72:10: info: loop invariant preservation proved
-amortized_queue.adb:72:41: info: precondition proved
-amortized_queue.adb:72:68: info: precondition proved
-amortized_queue.adb:72:87: info: precondition proved
-amortized_queue.adb:73:10: info: loop invariant initialization proved
-amortized_queue.adb:73:10: info: loop invariant preservation proved
-amortized_queue.adb:74:31: info: precondition proved
-amortized_queue.adb:75:15: info: precondition proved
-amortized_queue.adb:75:31: info: range check proved
-amortized_queue.adb:75:36: info: precondition proved
-amortized_queue.adb:75:53: info: range check proved
-amortized_queue.adb:76:10: info: loop invariant initialization proved
-amortized_queue.adb:76:10: info: loop invariant preservation proved
-amortized_queue.adb:77:33: info: precondition proved
-amortized_queue.adb:78:15: info: precondition proved
-amortized_queue.adb:78:31: info: precondition proved
-amortized_queue.adb:78:50: info: overflow check proved
-amortized_queue.adb:78:56: info: overflow check proved
-amortized_queue.adb:78:56: info: range check proved
-amortized_queue.adb:78:63: info: precondition proved
-amortized_queue.adb:78:78: info: range check proved
-amortized_queue.adb:80:07: info: precondition proved
 amortized_queue.adb:84:07: info: initialization of private part of "RevRear" proved
-amortized_queue.adb:84:27: info: precondition proved
-amortized_queue.adb:86:07: info: precondition proved
 amortized_queue.adb:86:25: info: initialization of private part of "RevRear" proved
 amortized_queue.adb:87:14: info: initialization of private part of "RevRear" proved
-amortized_queue.adb:87:22: info: precondition proved
 amortized_queue.adb:92:07: info: initialization of private part of "Result.Front" proved
 amortized_queue.adb:92:07: info: initialization of private part of "Result.Rear" proved
-amortized_queue.adb:92:42: info: discriminant check proved
-amortized_queue.adb:92:42: info: precondition proved
-amortized_queue.adb:93:41: info: discriminant check proved
-amortized_queue.adb:93:41: info: precondition proved
-amortized_queue.adb:94:09: info: precondition proved
 amortized_queue.adb:94:22: info: initialization of private part of "Result.Front" proved
-amortized_queue.adb:95:12: info: precondition proved
 amortized_queue.adb:95:20: info: initialization of private part of "Result.Front" proved
-amortized_queue.adb:95:36: info: precondition proved
 amortized_queue.adb:95:44: info: initialization of private part of "Result.Rear" proved
-amortized_queue.adb:96:12: info: precondition proved
 amortized_queue.adb:96:28: info: initialization of private part of "Result.Front" proved
 amortized_queue.adb:96:34: info: non-aliasing of formal parameters "Front" and "Rear" proved
 amortized_queue.adb:96:42: info: initialization of private part of "Result.Rear" proved
-amortized_queue.adb:96:55: info: discriminant check proved
-amortized_queue.adb:96:55: info: precondition proved
 amortized_queue.adb:96:61: info: initialization of private part of "Result.Front" proved
-amortized_queue.adb:96:86: info: discriminant check proved
-amortized_queue.adb:96:86: info: precondition proved
 amortized_queue.adb:96:92: info: initialization of private part of "Result.Rear" proved
 amortized_queue.adb:103:07: info: initialization of private part of "Result.Front" proved
 amortized_queue.adb:103:07: info: initialization of private part of "Result.Rear" proved
-amortized_queue.adb:103:42: info: discriminant check proved
-amortized_queue.adb:103:42: info: precondition proved
-amortized_queue.adb:104:41: info: discriminant check proved
-amortized_queue.adb:104:41: info: precondition proved
-amortized_queue.adb:105:09: info: precondition proved
 amortized_queue.adb:105:17: info: initialization of private part of "Result.Rear" proved
-amortized_queue.adb:106:12: info: precondition proved
 amortized_queue.adb:106:20: info: initialization of private part of "Result.Front" proved
-amortized_queue.adb:106:36: info: precondition proved
 amortized_queue.adb:106:44: info: initialization of private part of "Result.Rear" proved
-amortized_queue.adb:107:12: info: precondition proved
 amortized_queue.adb:107:28: info: initialization of private part of "Result.Front" proved
 amortized_queue.adb:107:34: info: non-aliasing of formal parameters "Front" and "Rear" proved
 amortized_queue.adb:107:42: info: initialization of private part of "Result.Rear" proved
-amortized_queue.adb:107:55: info: discriminant check proved
-amortized_queue.adb:107:55: info: precondition proved
 amortized_queue.adb:107:61: info: initialization of private part of "Result.Front" proved
-amortized_queue.adb:107:86: info: discriminant check proved
-amortized_queue.adb:107:86: info: precondition proved
 amortized_queue.adb:107:92: info: initialization of private part of "Result.Rear" proved
-amortized_queue.adb:114:14: info: precondition proved
-amortized_queue.ads:18:23: info: precondition proved
-amortized_queue.ads:18:39: info: precondition proved
-amortized_queue.ads:19:14: info: postcondition proved
-amortized_queue.ads:19:14: info: precondition proved
-amortized_queue.ads:19:36: info: precondition proved
-amortized_queue.ads:19:52: info: precondition proved
-amortized_queue.ads:20:34: info: precondition proved
-amortized_queue.ads:21:20: info: precondition proved
-amortized_queue.ads:21:41: info: range check proved
-amortized_queue.ads:21:46: info: precondition proved
-amortized_queue.ads:21:61: info: range check proved
-amortized_queue.ads:22:34: info: precondition proved
-amortized_queue.ads:23:20: info: precondition proved
-amortized_queue.ads:23:41: info: precondition proved
-amortized_queue.ads:23:59: info: overflow check proved
-amortized_queue.ads:23:59: info: range check proved
-amortized_queue.ads:23:66: info: precondition proved
-amortized_queue.ads:23:82: info: range check proved
-amortized_queue.ads:25:27: info: precondition proved
-amortized_queue.ads:26:14: info: postcondition proved
-amortized_queue.ads:26:14: info: precondition proved
-amortized_queue.ads:26:40: info: precondition proved
-amortized_queue.ads:27:15: info: precondition proved
-amortized_queue.ads:28:34: info: precondition proved
-amortized_queue.ads:29:20: info: precondition proved
-amortized_queue.ads:29:43: info: overflow check proved
-amortized_queue.ads:29:43: info: range check proved
-amortized_queue.ads:29:50: info: precondition proved
-amortized_queue.ads:29:66: info: range check proved
-amortized_queue.ads:31:23: info: precondition proved
-amortized_queue.ads:32:14: info: postcondition proved
-amortized_queue.ads:32:14: info: precondition proved
-amortized_queue.ads:32:36: info: precondition proved
-amortized_queue.ads:33:34: info: precondition proved
-amortized_queue.ads:34:20: info: precondition proved
-amortized_queue.ads:34:41: info: range check proved
-amortized_queue.ads:34:46: info: precondition proved
-amortized_queue.ads:34:61: info: range check proved
-amortized_queue.ads:35:15: info: precondition proved
-amortized_queue.ads:35:36: info: precondition proved
-amortized_queue.ads:35:54: info: range check proved
-amortized_queue.ads:50:07: info: precondition proved
-amortized_queue.ads:50:27: info: precondition proved
-amortized_queue.ads:51:26: info: precondition proved
-amortized_queue.ads:51:46: info: precondition proved
-amortized_queue.ads:55:07: info: precondition proved
-amortized_queue.ads:55:26: info: precondition proved
-amortized_queue.ads:55:44: info: precondition proved
-amortized_queue.ads:56:07: info: precondition proved
-amortized_queue.ads:57:20: info: range check proved
-amortized_queue.ads:57:51: info: precondition proved
-amortized_queue.ads:58:17: info: precondition proved
-amortized_queue.ads:58:29: info: range check proved
-amortized_queue.ads:59:18: info: precondition proved
-amortized_queue.ads:59:44: info: precondition proved
-amortized_queue.ads:59:65: info: range check proved
-amortized_queue.ads:60:18: info: range check proved
-amortized_queue.ads:60:49: info: precondition proved
-amortized_queue.ads:61:15: info: precondition proved
-amortized_queue.ads:61:29: info: overflow check proved
-amortized_queue.ads:61:29: info: range check proved
-amortized_queue.ads:61:40: info: precondition proved
-amortized_queue.ads:62:14: info: precondition proved
-amortized_queue.ads:62:32: info: range check proved
-amortized_queue.ads:66:14: info: postcondition proved
-amortized_queue.ads:69:31: info: precondition proved
-amortized_queue.ads:70:14: info: postcondition proved
-amortized_queue.ads:70:14: info: precondition proved
-amortized_queue.ads:70:28: info: precondition proved
-amortized_queue.ads:73:31: info: precondition proved
-amortized_queue.ads:74:14: medium: postcondition might fail
-amortized_queue.ads:75:06: info: precondition proved
-amortized_queue.ads:75:16: info: precondition proved
-amortized_queue.ads:75:18: info: precondition proved
-amortized_queue.ads:75:38: info: precondition proved
-amortized_queue.ads:75:40: info: precondition proved
-amortized_queue.ads:75:54: info: precondition proved
-amortized_queue.ads:79:25: info: precondition proved
-amortized_queue.ads:79:44: info: precondition proved
-amortized_queue.ads:80:14: medium: postcondition might fail
-amortized_queue.ads:81:08: info: precondition proved
-amortized_queue.ads:81:10: info: precondition proved
-amortized_queue.ads:81:20: info: precondition proved
-amortized_queue.ads:81:22: info: precondition proved
+   compilation of amortized_queue.adb failed
+
+
+
+
+
++==========================================================================+
++===========================GNAT BUG DETECTED==============================+
+/tmp/tmp-test-K624-029__amortize_queue-12107/src/amortized_queue.adb
+/tmp/tmp-test-K624-029__amortize_queue-12107/src/amortized_queue.ads
+Consider also -gnatd.n switch (see debug.adb).
+File "/tmp/tmp-test-K624-029__amortize_queue-12107/src/gnatprove/amortized_queue/../amortized_queue.mlw", line 7190, characters 60-64:
+Internal error
+Note that list may not be accurate in some cases,
+Please include these source files with error report
+This term has type ref t, but is expected to have type t.
+be reproduced with the set of files listed.
+compilation abandoned
+gnatprove: error during flow analysis and proof
+so please double check that the problem can still
+| Also include sources listed below.                                       |
+| Error detected at amortized_queue.adb:107:105                            |
+| Include the entire contents of this bug box in the report.               |
+| Include the exact command that you entered.                              |
+| Please submit a bug report using GNAT Tracker:                           |
+| Pro 7.4.0w (19940713) (spark) Program_Error unhandled signal             |
+| Use a subject line meaningful to you and us to track the bug.            |
+| Use plain ASCII or MIME attachment(s).                                   |
+| alternatively submit a bug report by email to report@adacore.com,        |
+| http://www.adacore.com/gnattracker/ section 'send a report'.             |
+| including your customer number #nnn in the subject line.                 |

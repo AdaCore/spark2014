@@ -6,6 +6,4 @@ ext.ads:13:53: medium: overflow check might fail
 ext.ads:17:14: warning: subprogram "Test" has no effect
 notag_base.ads:9:14: info: postcondition proved
 notag_ext.adb:8:07: info: assertion proved
-notag_ext.adb:8:28: info: initialization of constant without variable input "A" proved
-notag_ext.adb:8:41: info: initialization of constant without variable input "B" proved
 notag_ext.ads:12:14: warning: subprogram "Test" has no effect

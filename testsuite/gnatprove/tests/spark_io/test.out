@@ -7,7 +7,6 @@ copy.adb:77:09: info: initialization of "Last" proved
 copy.adb:81:45: info: initialization of "Last" proved
 copy.adb:82:40: info: initialization of "Response" proved
 copy.adb:82:40: info: range check proved
-copy.adb:82:68: info: initialization of constant with variable input "CLast" proved
 copy.adb:84:13: info: precondition proved
 copy.adb:92:22: info: precondition proved
 copy.adb:92:51: info: range check proved
@@ -29,7 +28,6 @@ copy.adb:151:09: info: initialization of "Last" proved
 copy.adb:154:45: info: initialization of "Last" proved
 copy.adb:155:40: info: initialization of "Response" proved
 copy.adb:155:40: info: range check proved
-copy.adb:155:68: info: initialization of constant with variable input "CLast" proved
 copy.adb:157:13: info: precondition proved
 copy.adb:165:22: info: precondition proved
 copy.adb:166:32: info: range check proved
@@ -47,21 +45,14 @@ copy.adb:194:22: info: loop invariant preservation proved
 copy.adb:202:25: info: initialization of "Last_Of_Yes_No" proved
 copy.adb:202:55: info: overflow check proved
 copy.adb:202:55: info: range check proved
-copy.adb:204:28: info: initialization of constant with variable input "Length_Of_Yes_No" proved
-copy.adb:205:31: info: initialization of constant with variable input "Length_Of_Yes_No" proved
-copy.adb:206:30: info: initialization of constant without variable input "No" proved
 copy.adb:206:30: info: range check proved
 copy.adb:207:31: info: initialization of "Yes_No" proved
 copy.adb:207:31: info: range check proved
 copy.adb:207:55: info: initialization of "Last_Of_Yes_No" proved
-copy.adb:207:55: info: initialization of constant with variable input "R65b" proved
-copy.adb:210:34: info: initialization of constant without variable input "Yes" proved
 copy.adb:210:34: info: range check proved
-copy.adb:210:44: info: initialization of constant with variable input "Length_Of_Yes_No" proved
 copy.adb:211:31: info: initialization of "Yes_No" proved
 copy.adb:211:31: info: range check proved
 copy.adb:211:55: info: initialization of "Last_Of_Yes_No" proved
-copy.adb:211:55: info: initialization of constant with variable input "R71b" proved
 copy.adb:213:31: info: precondition proved
 copy.adb:220:34: info: precondition proved
 copy.adb:221:43: info: range check proved

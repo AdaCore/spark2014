@@ -30,7 +30,6 @@ root.adb:4:04: info: initialization of "Counter" constituent of "State" proved
 root.adb:11:29: info: overflow check proved
 root.adb:43:40: info: initialization of "Counter" constituent of "State" proved
 root.ads:28:52: info: initialization of "O.X" proved
-root.ads:41:28: info: initialization of constant without variable input "Default_Object.X" proved
 simple_illegal_with_contracts.adb:50:13: info: initialization of "IO" proved
 simple_illegal_with_contracts.ads:19:34: info: initialization of "O" proved
 simple_illegal_with_contracts.ads:25:14: class-wide input "PI" must also be a class-wide input of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)

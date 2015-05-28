@@ -10,7 +10,6 @@ main.adb:18:10: warning: assuming "Put_Line" has no effect on global items
 main.adb:18:10: warning: no Global contract available for "Put_Line"
 main.adb:21:38: warning: assuming "Get_Line" has no effect on global items
 main.adb:21:38: warning: no Global contract available for "Get_Line"
-main.adb:26:40: info: initialization of constant without variable input "Cmd" proved
 main.adb:26:40: medium: range check might fail
 main.adb:27:16: medium: private part of "S" might not be initialized
 main.adb:27:17: medium: precondition might fail
@@ -22,7 +21,6 @@ main.adb:30:16: warning: no Global contract available for "New_Line"
 main.adb:32:44: medium: range check might fail
 main.adb:33:16: warning: assuming "Get" has no effect on global items
 main.adb:33:16: warning: no Global contract available for "Get"
-main.adb:33:21: info: initialization of constant without variable input "Cmd" proved
 main.adb:33:21: info: range check proved
 main.adb:34:16: medium: private part of "S" might not be initialized
 main.adb:34:17: medium: precondition might fail
@@ -32,7 +30,6 @@ main.adb:35:16: warning: no Global contract available for "Put_Line"
 main.adb:36:16: info: initialization of private part of "S" proved
 main.adb:37:16: warning: assuming "New_Line" has no effect on global items
 main.adb:37:16: warning: no Global contract available for "New_Line"
-main.adb:39:19: info: initialization of constant without variable input "Cmd" proved
 stacks.adb:11:08: info: discriminant check proved
 stacks.adb:11:17: info: discriminant check proved
 stacks.adb:11:22: medium: overflow check might fail
@@ -45,7 +42,6 @@ stacks.adb:21:22: info: range check proved
 stacks.adb:26:07: warning: assuming "Put" has no effect on global items
 stacks.adb:26:07: warning: no Global contract available for "Put"
 stacks.adb:27:30: info: discriminant check proved
-stacks.adb:27:30: info: initialization of constant with variable input "R5b" proved
 stacks.adb:28:10: warning: assuming "Put" has no effect on global items
 stacks.adb:28:10: warning: no Global contract available for "Put"
 stacks.adb:28:31: info: discriminant check proved

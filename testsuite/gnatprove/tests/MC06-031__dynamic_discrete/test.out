@@ -2,7 +2,6 @@ dynamic_ranges.adb:7:20: info: range check proved
 dynamic_ranges.adb:15:34: info: range check proved
 dynamic_ranges.adb:17:07: info: assertion proved
 dynamic_ranges.adb:18:07: info: assertion proved
-dynamic_ranges.adb:19:29: info: initialization of constant with variable input "A2" proved
 dynamic_ranges.adb:19:29: info: length check proved
 dynamic_ranges.adb:23:15: info: range check proved
 dynamic_ranges.adb:24:15: info: range check proved
@@ -15,7 +14,6 @@ dynamic_ranges.adb:33:17: info: postcondition proved
 dynamic_ranges.adb:34:60: info: index check proved
 dynamic_ranges.adb:35:61: info: index check proved
 dynamic_ranges.adb:41:43: info: index check proved
-dynamic_ranges.adb:43:19: info: initialization of constant with variable input "E" proved
 dynamic_ranges.adb:44:26: info: range check proved
 dynamic_ranges.adb:47:13: info: loop invariant initialization proved
 dynamic_ranges.adb:47:13: info: loop invariant preservation proved
@@ -27,7 +25,6 @@ dynamic_ranges.adb:56:23: info: index check proved
 dynamic_ranges.adb:56:23: info: overflow check proved
 dynamic_ranges.adb:57:24: info: overflow check proved
 dynamic_ranges.adb:57:24: info: range check proved
-dynamic_ranges.adb:59:17: info: initialization of constant with variable input "C" proved
 dynamic_ranges.adb:59:17: info: precondition proved
 dynamic_ranges.adb:65:10: info: index check proved
 dynamic_ranges.adb:71:10: info: precondition proved

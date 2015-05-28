@@ -63,7 +63,5 @@ test.adb:285:15: info: non-aliasing of formal parameters "X" and "Y" proved
 test.adb:288:04: warning: analyzing unreferenced procedure "UCC_04"
 test.adb:291:15: info: non-aliasing of formal parameters "X" and "Y" proved
 test.adb:317:15: info: non-aliasing of formal parameters "A" and "B" proved
-test.adb:329:16: info: initialization of constant with variable input "C113b" proved, in call inlined at test.adb:335
-test.adb:329:16: info: initialization of constant with variable input "C116b" proved, in call inlined at test.adb:341
 test.adb:332:04: warning: analyzing unreferenced procedure "Test_TC_1"
 test.adb:338:04: warning: analyzing unreferenced procedure "Test_TC_2"

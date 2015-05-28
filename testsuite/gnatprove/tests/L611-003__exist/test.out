@@ -1,6 +1,5 @@
 stack.adb:4:30: info: precondition proved
 stack.adb:6:12: info: index check proved
-stack.adb:6:17: info: initialization of constant with variable input "N" proved
 stack.adb:7:12: medium: precondition might fail
 stack.adb:13:10: info: loop invariant initialization proved
 stack.adb:13:10: info: loop invariant preservation proved

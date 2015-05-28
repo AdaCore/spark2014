@@ -24,7 +24,6 @@ my_test.adb:22:19: info: initialization of "T1.V" proved
 my_test.adb:22:19: medium: assertion might fail, requires T1 = T3
 my_test.adb:22:24: info: initialization of "T3.V" proved
 simple_unc_arrays.adb:10:07: medium: "C.V" might not be initialized
-simple_unc_arrays.adb:11:25: info: initialization of constant with variable input "R7b" proved
 simple_unc_arrays.adb:12:13: info: loop invariant initialization proved
 simple_unc_arrays.adb:12:13: info: loop invariant preservation proved
 simple_unc_arrays.adb:13:42: medium: "C.V" might not be initialized
@@ -66,7 +65,6 @@ simple_unc_arrays.adb:36:18: info: initialization of "High" proved
 simple_unc_arrays.adb:36:23: info: range check proved
 simple_unc_arrays.adb:45:22: info: discriminant check proved
 simple_unc_arrays.adb:45:26: info: index check proved
-simple_unc_arrays.adb:47:22: info: initialization of constant with variable input "R25b" proved
 simple_unc_arrays.adb:48:10: info: loop invariant initialization proved
 simple_unc_arrays.adb:48:10: info: loop invariant preservation proved
 simple_unc_arrays.adb:48:60: info: initialization of "Res" proved
@@ -81,7 +79,6 @@ simple_unc_arrays.adb:55:14: info: initialization of "Res" proved
 simple_unc_arrays.adb:64:06: info: initialization of "Res" proved
 simple_unc_arrays.adb:64:29: info: discriminant check proved
 simple_unc_arrays.adb:64:33: info: index check proved
-simple_unc_arrays.adb:65:23: info: initialization of constant with variable input "R35b" proved
 simple_unc_arrays.adb:66:11: info: loop invariant initialization proved
 simple_unc_arrays.adb:66:11: info: loop invariant preservation proved
 simple_unc_arrays.adb:66:61: info: initialization of "Res" proved
@@ -92,7 +89,6 @@ simple_unc_arrays.adb:68:20: info: discriminant check proved
 simple_unc_arrays.adb:68:24: info: index check proved
 simple_unc_arrays.adb:69:21: info: discriminant check proved
 simple_unc_arrays.adb:69:25: info: index check proved
-simple_unc_arrays.adb:83:22: info: initialization of constant with variable input "R43b" proved
 simple_unc_arrays.adb:84:16: info: initialization of "Sum" proved
 simple_unc_arrays.adb:84:20: medium: overflow check might fail
 simple_unc_arrays.adb:84:23: info: discriminant check proved
@@ -108,7 +104,6 @@ simple_unc_arrays.adb:100:14: info: discriminant check proved
 simple_unc_arrays.adb:100:18: info: index check proved
 simple_unc_arrays.adb:106:14: info: initialization of "Pos" proved
 simple_unc_arrays.adb:117:13: info: initialization of "Bull" proved
-simple_unc_arrays.adb:119:33: info: initialization of constant with variable input "R56b" proved
 simple_unc_arrays.adb:120:16: info: initialization of "Res.V" proved
 simple_unc_arrays.adb:120:19: info: discriminant check proved
 simple_unc_arrays.adb:120:25: info: index check proved

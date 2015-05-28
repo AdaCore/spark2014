@@ -1,5 +1,4 @@
 dyn.adb:3:04: info: range check proved
 dyn.adb:3:27: info: length check proved
-dyn.adb:3:30: info: initialization of constant without variable input "R3b" proved
 dyn.adb:3:30: info: overflow check proved
 dyn.adb:3:30: medium: range check might fail

@@ -115,7 +115,6 @@ stable_marriage.adb:271:53: info: index check proved, in call inlined at stable_
 stable_marriage.adb:272:12: info: initialization of "Unmatched_G1_Set.Cardinality" proved, in call inlined at stable_marriage.adb:385
 stable_marriage.adb:272:12: info: initialization of "Unmatched_G1_Set.Elements" proved, in call inlined at stable_marriage.adb:385
 stable_marriage.adb:272:15: info: initialization of "G1" proved, in call inlined at stable_marriage.adb:326
-stable_marriage.adb:272:15: info: initialization of constant with variable input "C131b" proved, in call inlined at stable_marriage.adb:321
 stable_marriage.adb:277:18: info: precondition proved
 stable_marriage.adb:279:17: medium: postcondition might fail, requires (Invariant_Holds)
 stable_marriage.adb:300:25: medium: assertion might fail, requires Proposals_Made (G1) < Count'last

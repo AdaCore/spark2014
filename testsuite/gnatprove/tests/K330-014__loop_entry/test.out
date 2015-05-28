@@ -1,28 +1,22 @@
 for_loops.adb:9:04: warning: assuming "Put_Line" has no effect on global items
 for_loops.adb:9:04: warning: no Global contract available for "Put_Line"
-for_loops.adb:14:24: info: initialization of constant without variable input "R2b" proved
 for_loops.adb:16:10: info: loop invariant preservation proved
 for_loops.adb:16:33: medium: loop invariant might fail in first iteration, requires Sum_Of (Counter)'Loop_Entry (Test1) > 0
 for_loops.adb:16:49: info: initialization of "Counter" proved
 for_loops.adb:18:10: warning: assuming "Put_Line" has no effect on global items
 for_loops.adb:18:10: warning: no Global contract available for "Put_Line"
-for_loops.adb:25:29: info: initialization of constant without variable input "R5b" proved
 for_loops.adb:29:10: info: loop invariant preservation proved
 for_loops.adb:29:33: medium: loop invariant might fail in first iteration, requires Sum_Of (Counter)'Loop_Entry (Test2) < 0
 for_loops.adb:29:49: info: initialization of "Counter" proved
 for_loops.adb:32:10: warning: assuming "Put_Line" has no effect on global items
 for_loops.adb:32:10: warning: no Global contract available for "Put_Line"
-for_loops.adb:40:30: info: initialization of constant with variable input "R8b" proved
 for_loops.adb:40:38: info: initialization of "Counter" proved
-for_loops.adb:42:28: info: initialization of constant without variable input "R10b" proved
 for_loops.adb:44:13: info: loop invariant initialization proved
 for_loops.adb:44:13: info: loop invariant preservation proved
 for_loops.adb:44:43: info: initialization of "Counter" proved
 for_loops.adb:46:13: warning: assuming "Put_Line" has no effect on global items
 for_loops.adb:46:13: warning: no Global contract available for "Put_Line"
-for_loops.adb:55:30: info: initialization of constant with variable input "R13b" proved
 for_loops.adb:55:38: info: initialization of "Counter" proved
-for_loops.adb:57:28: info: initialization of constant without variable input "R15b" proved
 for_loops.adb:59:13: warning: assuming "Put_Line" has no effect on global items
 for_loops.adb:59:13: warning: no Global contract available for "Put_Line"
 for_loops.adb:61:13: info: loop invariant initialization proved

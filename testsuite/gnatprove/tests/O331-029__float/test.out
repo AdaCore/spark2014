@@ -37,46 +37,28 @@ safety_pack.ads:59:38: info: contract case proved
 safety_pack.ads:60:39: info: contract case proved
 sensfusion6_pack.adb:79:21: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:79:28: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:79:30: info: initialization of constant with variable input "C8b" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:79:33: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:79:38: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:79:40: info: initialization of constant with variable input "C9b" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:79:43: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:79:48: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:79:50: info: initialization of constant with variable input "C10b" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:80:21: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:80:27: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:80:29: info: initialization of constant with variable input "C8b" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:80:32: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:80:37: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:80:39: info: initialization of constant with variable input "C10b" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:80:42: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:80:47: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:80:49: info: initialization of constant with variable input "C9b" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:81:21: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:81:27: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:81:29: info: initialization of constant with variable input "C9b" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:81:32: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:81:37: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:81:39: info: initialization of constant with variable input "C10b" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:81:42: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:81:47: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:81:49: info: initialization of constant with variable input "C8b" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:82:21: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:82:27: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:82:29: info: initialization of constant with variable input "C10b" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:82:32: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:82:37: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:82:39: info: initialization of constant with variable input "C9b" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:82:42: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:82:47: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:82:49: info: initialization of constant with variable input "C8b" proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:86:17: info: initialization of constant with variable input "C11b" proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:86:32: info: initialization of constant with variable input "C12b" proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:86:47: info: initialization of constant with variable input "C13b" proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:88:41: info: initialization of constant with variable input "C11b" proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:89:41: info: initialization of constant with variable input "C12b" proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:90:41: info: initialization of constant with variable input "C13b" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:91:24: info: initialization of "Ax_Tmp" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:91:31: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:91:40: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
@@ -86,11 +68,8 @@ sensfusion6_pack.adb:91:58: info: overflow check proved, in call inlined at sens
 sensfusion6_pack.adb:91:60: info: initialization of "Az_Tmp" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:91:67: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:92:34: info: initialization of "Square_Sum" proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:93:31: info: initialization of constant with variable input "C11b" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:93:36: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:94:31: info: initialization of constant with variable input "C12b" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:94:36: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:95:31: info: initialization of constant with variable input "C13b" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:95:36: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:98:23: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:99:23: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
@@ -161,13 +140,9 @@ sensfusion6_pack.adb:130:36: info: initialization of "S2" proved, in call inline
 sensfusion6_pack.adb:131:20: info: initialization of "Q_Dot4" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:131:36: info: initialization of "S3" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:135:22: info: initialization of "Q_Dot1" proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:135:31: info: initialization of constant with variable input "C14b" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:136:22: info: initialization of "Q_Dot2" proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:136:31: info: initialization of constant with variable input "C14b" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:137:22: info: initialization of "Q_Dot3" proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:137:31: info: initialization of constant with variable input "C14b" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:138:22: info: initialization of "Q_Dot4" proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:138:31: info: initialization of constant with variable input "C14b" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:142:10: info: initialization of "Q0_Tmp" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:142:28: info: initialization of "Q1_Tmp" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:142:46: info: initialization of "Q2_Tmp" proved, in call inlined at sensfusion6_pack.adb:265
@@ -199,28 +174,19 @@ sensfusion6_pack.adb:173:35: info: overflow check proved, in call inlined at sen
 sensfusion6_pack.adb:173:40: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:173:46: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:173:51: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:187:17: info: initialization of constant with variable input "C3b" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:187:32: info: initialization of constant with variable input "C4b" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:187:47: info: initialization of constant with variable input "C5b" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:189:24: medium: precondition might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:190:13: info: initialization of constant with variable input "C3b" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:190:16: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:190:21: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:190:23: info: initialization of constant with variable input "C4b" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:190:26: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:190:31: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:190:33: info: initialization of constant with variable input "C5b" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:190:36: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:191:21: info: range check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:191:31: info: initialization of constant with variable input "C3b" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:191:34: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:191:36: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:192:21: info: range check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:192:31: info: initialization of constant with variable input "C4b" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:192:34: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:192:36: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:193:21: info: range check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:193:31: info: initialization of constant with variable input "C5b" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:193:34: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:193:36: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:197:22: info: initialization of "Norm_Ay" proved, in call inlined at sensfusion6_pack.adb:258
@@ -248,17 +214,14 @@ sensfusion6_pack.adb:203:42: medium: overflow check might fail, in call inlined 
 sensfusion6_pack.adb:203:51: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:203:53: info: initialization of "Half_Ex" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:203:61: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:203:63: info: initialization of constant with variable input "C6b" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:204:42: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:204:51: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:204:53: info: initialization of "Half_Ey" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:204:61: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:204:63: info: initialization of constant with variable input "C6b" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:205:42: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:205:51: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:205:53: info: initialization of "Half_Ez" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:205:61: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:205:63: info: initialization of constant with variable input "C6b" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:206:23: info: initialization of "Rad_Gx" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:206:30: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:207:23: info: initialization of "Rad_Gy" proved, in call inlined at sensfusion6_pack.adb:258
@@ -280,15 +243,12 @@ sensfusion6_pack.adb:218:38: info: initialization of "Half_Ez" proved, in call i
 sensfusion6_pack.adb:222:17: info: initialization of "Rad_Gx" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:222:24: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:222:31: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:222:33: info: initialization of constant with variable input "C6b" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:223:17: info: initialization of "Rad_Gy" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:223:24: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:223:31: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:223:33: info: initialization of constant with variable input "C6b" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:224:17: info: initialization of "Rad_Gz" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:224:24: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:224:31: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:224:33: info: initialization of constant with variable input "C6b" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:226:20: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:226:24: info: initialization of "Qb" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:226:27: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258

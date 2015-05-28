@@ -40,8 +40,6 @@ part.adb:45:10: info: loop invariant initialization proved, in call inlined at p
 part.adb:45:33: medium: loop invariant might fail after first iteration, requires Same_Set (A'Loop_Entry, A), in call inlined at part.adb:72
 part.adb:45:33: medium: loop invariant might fail after first iteration, requires Same_Set (A'Loop_Entry, A), in call inlined at part.adb:79
 part.adb:45:33: medium: loop invariant might fail in first iteration, requires Same_Set (A'Loop_Entry, A), in call inlined at part.adb:79
-part.adb:45:44: info: initialization of constant with variable input "R14b" proved, in call inlined at part.adb:72
-part.adb:45:44: info: initialization of constant with variable input "R42b" proved, in call inlined at part.adb:79
 part.adb:47:32: medium: overflow check might fail, in call inlined at part.adb:72
 part.adb:47:32: medium: overflow check might fail, in call inlined at part.adb:79
 part.adb:48:27: info: initialization of "Num_Part" proved, in call inlined at part.adb:72
@@ -68,13 +66,11 @@ part.adb:72:10: info: range check proved
 part.adb:72:10: medium: array index check might fail
 part.adb:72:10: medium: range check might fail
 part.adb:72:30: info: initialization of "Last_Index" proved
-part.adb:72:30: info: initialization of constant with variable input "R14b" proved
 part.adb:72:47: info: index check proved
 part.adb:79:07: info: initialization of "Num_Part" proved
 part.adb:79:07: info: range check proved
 part.adb:79:07: medium: array index check might fail
 part.adb:79:27: info: initialization of "Last_Index" proved
-part.adb:79:27: info: initialization of constant with variable input "R42b" proved
 part.ads:8:41: info: index check proved
 part.ads:11:42: info: index check proved
 part.ads:17:47: info: index check proved

@@ -1,3 +1,2 @@
 foo.adb:19:18: medium: missing dependency "Log_In => Log"
 foo.adb:19:18: medium: missing dependency "Log_In => Log_Size"
-foo.adb:35:25: info: initialization of constant with variable input "Tmp" proved

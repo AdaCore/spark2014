@@ -6,9 +6,6 @@ foo.adb:18:16: info: initialization of "Tmp_A" proved
 foo.adb:19:14: info: initialization of "Tmp_A" proved
 foo.adb:23:23: info: initialization of "B" proved
 foo.adb:26:35: info: initialization of "C5b" proved
-foo.adb:29:12: info: initialization of constant with variable input "Tmp_B" proved
 foo.adb:33:23: info: initialization of "B" proved
-foo.adb:39:12: info: initialization of constant with variable input "Tmp_B" proved
 foo.adb:42:23: info: initialization of "A" proved
 foo.adb:44:35: info: initialization of "C8b" proved
-foo.adb:46:12: info: initialization of constant with variable input "Tmp_B" proved

@@ -1,4 +1,3 @@
-legal.adb:48:33: info: initialization of constant with variable input "R1b" proved
 legal.adb:48:33: medium: range check might fail
 legal.adb:80:12: info: initialization of "Tmp" proved
 legal.ads:67:19: info: initialization of "X" proved

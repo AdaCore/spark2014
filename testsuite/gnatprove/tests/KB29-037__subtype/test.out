@@ -13,11 +13,8 @@ sub.adb:6:17: info: division check proved
 sub.adb:6:17: info: range check proved
 sub.adb:11:34: info: division check proved
 sub.adb:11:34: info: range check proved
-sub.adb:13:10: info: initialization of constant with variable input "Tmp" proved
 sub.adb:13:14: info: division check proved
-sub.adb:14:17: info: initialization of constant with variable input "Tmp" proved
 sub.adb:14:17: info: range check proved
-sub.adb:16:17: info: initialization of constant with variable input "Tmp" proved
 sub.adb:16:21: info: range check proved
 sub.adb:23:14: info: division check proved
 sub.adb:23:14: info: range check proved

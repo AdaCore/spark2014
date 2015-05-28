@@ -34,12 +34,9 @@ dynamic_array.adb:42:07: info: loop invariant preservation proved
 dynamic_array.adb:43:37: info: initialization of "H.Content" proved
 dynamic_array.adb:43:38: info: discriminant check proved
 dynamic_array.adb:43:48: info: index check proved
-dynamic_array.adb:46:31: info: initialization of constant with variable input "HH.Content" proved
 dynamic_array.adb:46:33: info: discriminant check proved
 dynamic_array.adb:46:43: info: index check proved
-dynamic_array.adb:50:18: info: initialization of constant with variable input "R.F1" proved
 dynamic_array.adb:50:19: info: discriminant check proved
-dynamic_array.adb:52:18: info: initialization of constant with variable input "R.F2" proved
 dynamic_array.adb:52:19: info: discriminant check proved
 dynamic_array.adb:55:13: info: initialization of "F" proved
 dynamic_array.adb:56:18: info: initialization of "F" proved

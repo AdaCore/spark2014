@@ -12,12 +12,9 @@ tetris_flow.adb:58:54: info: index check proved
 tetris_flow.adb:59:45: medium: array index check might fail
 tetris_flow.adb:59:63: medium: array index check might fail
 tetris_flow.adb:71:37: info: length check proved
-tetris_flow.adb:81:37: info: initialization of constant without variable input "Empty_Line" proved
 tetris_flow.adb:89:10: info: initialization of "Has_Complete_Lines" proved
 tetris_flow.adb:90:52: info: initialization of "To_Line" proved
-tetris_flow.adb:90:60: info: initialization of constant with variable input "R3b" proved
 tetris_flow.adb:92:36: info: initialization of "To_Line" proved
-tetris_flow.adb:93:41: info: initialization of constant without variable input "Empty_Line" proved
 tetris_flow.adb:94:27: info: initialization of "To_Line" proved
 tetris_flow.adb:94:35: medium: range check might fail
 tetris_flow.adb:109:33: info: initialization of "Candidate.D" proved
@@ -81,21 +78,18 @@ tetris_functional.adb:72:54: info: index check proved
 tetris_functional.adb:73:45: info: index check proved
 tetris_functional.adb:73:63: info: index check proved
 tetris_functional.adb:89:37: info: length check proved
-tetris_functional.adb:99:37: info: initialization of constant without variable input "Empty_Line" proved
 tetris_functional.adb:102:13: info: assertion proved
 tetris_functional.adb:104:10: info: loop invariant initialization proved
 tetris_functional.adb:104:10: info: loop invariant preservation proved
 tetris_functional.adb:105:88: info: index check proved
 tetris_functional.adb:110:10: info: initialization of "Has_Complete_Lines" proved
 tetris_functional.adb:111:52: info: initialization of "To_Line" proved
-tetris_functional.adb:111:60: info: initialization of constant with variable input "R11b" proved
 tetris_functional.adb:112:13: info: loop invariant initialization proved
 tetris_functional.adb:112:13: info: loop invariant preservation proved
 tetris_functional.adb:113:13: info: loop invariant initialization proved
 tetris_functional.adb:113:13: info: loop invariant preservation proved
 tetris_functional.adb:113:48: info: initialization of "To_Line" proved
 tetris_functional.adb:115:36: info: initialization of "To_Line" proved
-tetris_functional.adb:116:41: info: initialization of constant without variable input "Empty_Line" proved
 tetris_functional.adb:117:27: info: initialization of "To_Line" proved
 tetris_functional.adb:117:35: info: range check proved
 tetris_functional.adb:118:16: info: assertion proved
@@ -161,12 +155,9 @@ tetris_initial.adb:58:54: info: index check proved
 tetris_initial.adb:59:45: medium: array index check might fail
 tetris_initial.adb:59:63: medium: array index check might fail
 tetris_initial.adb:71:37: info: length check proved
-tetris_initial.adb:81:37: info: initialization of constant without variable input "Empty_Line" proved
 tetris_initial.adb:89:10: info: initialization of "Has_Complete_Lines" proved
 tetris_initial.adb:90:52: info: initialization of "To_Line" proved
-tetris_initial.adb:90:60: info: initialization of constant with variable input "R3b" proved
 tetris_initial.adb:92:36: info: initialization of "To_Line" proved
-tetris_initial.adb:93:41: info: initialization of constant without variable input "Empty_Line" proved
 tetris_initial.adb:94:27: info: initialization of "To_Line" proved
 tetris_initial.adb:94:35: medium: range check might fail
 tetris_initial.adb:109:33: info: initialization of "Candidate.D" proved
@@ -230,15 +221,12 @@ tetris_integrity.adb:72:54: info: index check proved
 tetris_integrity.adb:73:45: info: index check proved
 tetris_integrity.adb:73:63: info: index check proved
 tetris_integrity.adb:85:37: info: length check proved
-tetris_integrity.adb:95:37: info: initialization of constant without variable input "Empty_Line" proved
 tetris_integrity.adb:103:10: info: initialization of "Has_Complete_Lines" proved
 tetris_integrity.adb:104:52: info: initialization of "To_Line" proved
-tetris_integrity.adb:104:60: info: initialization of constant with variable input "R7b" proved
 tetris_integrity.adb:105:13: info: loop invariant initialization proved
 tetris_integrity.adb:105:13: info: loop invariant preservation proved
 tetris_integrity.adb:105:48: info: initialization of "To_Line" proved
 tetris_integrity.adb:107:36: info: initialization of "To_Line" proved
-tetris_integrity.adb:108:41: info: initialization of constant without variable input "Empty_Line" proved
 tetris_integrity.adb:109:27: info: initialization of "To_Line" proved
 tetris_integrity.adb:109:35: info: range check proved
 tetris_integrity.adb:123:23: info: precondition proved

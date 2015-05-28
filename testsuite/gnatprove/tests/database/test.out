@@ -1,21 +1,12 @@
 database.adb:39:07: warning: initialization of Links is not mentioned in contract
 database.adb:40:35: info: length check proved
-database.adb:40:46: info: initialization of constant without variable input "No_Account_Link.Available" proved
-database.adb:40:46: info: initialization of constant without variable input "No_Account_Link.Next" proved
-database.adb:40:46: info: initialization of constant without variable input "No_Account_Link.Prev" proved
 database.adb:50:42: info: initialization of "Account" proved
 database.adb:53:17: info: postcondition proved
 database.adb:53:35: info: initialization of "Account" proved
 database.adb:55:31: info: initialization of "Account" proved
 database.adb:61:17: info: postcondition proved
 database.adb:106:52: info: length check proved
-database.adb:106:63: info: initialization of constant without variable input "No_Account_Rec.Account" proved
-database.adb:106:63: info: initialization of constant without variable input "No_Account_Rec.Owner_Id" proved
-database.adb:106:63: info: initialization of constant without variable input "No_Account_Rec.Owner_Name" proved
 database.adb:110:46: info: length check proved
-database.adb:110:57: info: initialization of constant without variable input "No_Account_Balance.Account" proved
-database.adb:110:57: info: initialization of constant without variable input "No_Account_Balance.Value.Currency" proved
-database.adb:110:57: info: initialization of constant without variable input "No_Account_Balance.Value.Raw" proved
 database.adb:123:21: info: range check proved
 database.adb:124:17: info: index check proved
 database.adb:125:36: info: index check proved
