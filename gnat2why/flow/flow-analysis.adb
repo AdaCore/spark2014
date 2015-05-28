@@ -654,15 +654,14 @@ package body Flow.Analysis is
                         end loop;
                      end;
 
-                  when E_Task_Body =>
-                     --  !!! O429-046 To do...
-                     null;
-
                   when E_Package | E_Package_Body =>
                      Vars_Known := To_Flow_Id_Set
                        (Down_Project (To_Node_Set (To_Entire_Variables
                                                      (FA.Visible_Vars)),
                                       FA.S_Scope));
+
+                  when E_Protected_Type | E_Task_Body =>
+                     raise Program_Error;
                end case;
             end if;
 
@@ -680,9 +679,9 @@ package body Flow.Analysis is
                            Reduced              => True,
                            Use_Computed_Globals => True));
 
-                  when E_Task_Body =>
-                     --  !!! O429-046 To do...
-                     Vars_Used := Flow_Id_Sets.Empty_Set;
+                  when E_Task_Body | E_Protected_Type =>
+                     --  Nothing to do - no pre or postconditions.
+                     null;
 
                   when others =>
                      Vars_Used := To_Entire_Variables

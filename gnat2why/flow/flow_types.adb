@@ -238,7 +238,9 @@ package body Flow_Types is
             else
                return Ekind (F.Component.Last_Element) = E_Discriminant;
             end if;
-         when Direct_Mapping | Magic_String | Synthetic_Null_Export =>
+         when Direct_Mapping =>
+            return Ekind (F.Node) = E_Discriminant;
+         when Magic_String | Synthetic_Null_Export =>
             return False;
          when Null_Value =>
             raise Why.Unexpected_Node;

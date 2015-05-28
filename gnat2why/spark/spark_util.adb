@@ -2400,6 +2400,32 @@ package body SPARK_Util is
       return Count;
    end Number_Of_Assocs_In_Expression;
 
+   -------------
+   -- PO_Body --
+   -------------
+
+   function PO_Body (E : Entity_Id) return Node_Id
+   is
+      Ptr : Node_Id;
+   begin
+      Ptr := Parent (E);
+      pragma Assert (Nkind (Ptr) = N_Protected_Type_Declaration);
+      return Parent (Corresponding_Body (Ptr));
+   end PO_Body;
+
+   -------------------
+   -- PO_Definition --
+   -------------------
+
+   function PO_Definition (E : Entity_Id) return Node_Id
+   is
+      Ptr : Node_Id;
+   begin
+      Ptr := Parent (E);
+      pragma Assert (Nkind (Ptr) = N_Protected_Type_Declaration);
+      return Protected_Definition (Ptr);
+   end PO_Definition;
+
    ---------------------------
    -- Root_Record_Component --
    ---------------------------

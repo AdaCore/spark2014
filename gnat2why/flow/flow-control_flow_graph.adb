@@ -385,10 +385,12 @@ package body Flow.Control_Flow_Graph is
    --           /     \
    --      R.A.X       R.A.Y*
 
+   type Var_Kind is (Variable_Kind, Parameter_Kind, Discriminant_Kind);
+
    procedure Create_Initial_And_Final_Vertices
-     (E        : Entity_Id;
-      Is_Param : Boolean;
-      FA       : in out Flow_Analysis_Graphs);
+     (E    : Entity_Id;
+      Kind : Var_Kind;
+      FA   : in out Flow_Analysis_Graphs);
    --  Create the 'initial and 'final vertices for the given entity
    --  and link them up to the start and end vertices.
 
@@ -400,6 +402,15 @@ package body Flow.Control_Flow_Graph is
    with Pre => F.Kind in Direct_Mapping | Magic_String;
    --  Create the 'initial and 'final vertices for the given global
    --  and link them up to the start and end vertices.
+
+   function Replace_Flow_Ids
+     (Of_This   : Entity_Id;
+      With_This : Entity_Id;
+      The_Set   : Flow_Id_Sets.Set)
+     return Flow_Id_Sets.Set;
+   --  Returns a flow set that replaces all Flow_Ids of The_Set that
+   --  correspond to Of_This with equivalent Flow_Ids that correspond to
+   --  With_This.
 
    procedure Do_Assignment_Statement
      (N   : Node_Id;
@@ -562,7 +573,9 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-      with Pre => Nkind (N) = N_Object_Declaration;
+     with Pre => Nkind (N) = N_Object_Declaration or
+                 (if Nkind (N) = N_Component_Declaration
+                  then FA.Kind = E_Protected_Type);
    --  Deal with declarations (with an optional initialization). We
    --  either generate a null vertex which is then stripped from the
    --  graph or a simple defining vertex. Additionally, if the
@@ -829,7 +842,8 @@ package body Flow.Control_Flow_Graph is
    function RHS_Split_Useful (N     : Node_Id;
                               Scope : Flow_Scope)
                               return Boolean
-   with Pre => Nkind (N) in N_Assignment_Statement |
+   with Pre => Nkind (N) in N_Assignment_Statement  |
+                            N_Component_Declaration |
                             N_Object_Declaration
                and then Present (Expression (N));
    --  Checks the right hand side of an assignment statement (or the
@@ -1281,9 +1295,9 @@ package body Flow.Control_Flow_Graph is
    ----------------------------------------
 
    procedure Create_Initial_And_Final_Vertices
-     (E        : Entity_Id;
-      Is_Param : Boolean;
-      FA       : in out Flow_Analysis_Graphs)
+     (E    : Entity_Id;
+      Kind : Var_Kind;
+      FA   : in out Flow_Analysis_Graphs)
    is
       M : Param_Mode;
 
@@ -1301,11 +1315,12 @@ package body Flow.Control_Flow_Graph is
          --  Setup the n'initial vertex. Note that initialization for
          --  variables is detected (and set) when building the flow graph
          --  for declarative parts.
-         A := Make_Variable_Attributes (FA    => FA,
-                                        F_Ent => Change_Variant
-                                          (F, Initial_Value),
-                                        Mode  => M,
-                                        E_Loc => E);
+         A := Make_Variable_Attributes
+           (FA    => FA,
+            F_Ent => Change_Variant (F, Initial_Value),
+            Mode  => M,
+            E_Loc => E);
+
          Add_Vertex
            (FA,
             Change_Variant (F, Initial_Value),
@@ -1313,9 +1328,13 @@ package body Flow.Control_Flow_Graph is
             V);
          Linkup (FA, V, FA.Start_Vertex);
 
-         Create_Record_Tree (Change_Variant (F, Initial_Value),
-                             A,
-                             FA);
+         if Kind /= Discriminant_Kind then
+            --  For discriminants that act like they are parameters (tasks
+            --  and POs), we do not attempt to make the tree.
+            Create_Record_Tree (Change_Variant (F, Initial_Value),
+                                A,
+                                FA);
+         end if;
 
          --  Setup the n'final vertex.
          Add_Vertex
@@ -1337,17 +1356,27 @@ package body Flow.Control_Flow_Graph is
          return;
       end if;
 
-      if Is_Param then
-         case Ekind (E) is
-            when E_Out_Parameter    => M := Mode_Out;
-            when E_In_Out_Parameter => M := Mode_In_Out;
-            when E_In_Parameter     => M := Mode_In;
-            when others =>
-               raise Program_Error;
-         end case;
-      else
-         M := Mode_Invalid;
-      end if;
+      case Ekind (E) is
+         when E_Out_Parameter    =>
+            pragma Assert (Kind = Parameter_Kind);
+            M := Mode_Out;
+
+         when E_In_Out_Parameter =>
+            pragma Assert (Kind = Parameter_Kind);
+            M := Mode_In_Out;
+
+         when E_In_Parameter     =>
+            pragma Assert (Kind = Parameter_Kind);
+            M := Mode_In;
+
+         when E_Discriminant     =>
+            pragma Assert (Kind = Discriminant_Kind);
+            M := Mode_In;
+
+         when others =>
+            pragma Assert (Kind = Variable_Kind);
+            M := Mode_Invalid;
+      end case;
 
       declare
          FS : constant Flow_Id_Sets.Set := Flatten_Variable (E, FA.B_Scope);
@@ -1429,6 +1458,30 @@ package body Flow.Control_Flow_Graph is
          Process (F'Update (Facet => Extension_Part));
       end if;
    end Create_Initial_And_Final_Vertices;
+
+   ----------------------
+   -- Replace_Flow_Ids --
+   ----------------------
+
+   function Replace_Flow_Ids
+     (Of_This   : Entity_Id;
+      With_This : Entity_Id;
+      The_Set   : Flow_Id_Sets.Set)
+      return Flow_Id_Sets.Set
+   is
+      FS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+   begin
+      for F of The_Set loop
+         if F.Kind in Direct_Mapping | Record_Field
+           and then F.Node = Of_This
+         then
+            FS.Include (F'Update (Node => With_This));
+         else
+            FS.Include (F);
+         end if;
+      end loop;
+      return FS;
+   end Replace_Flow_Ids;
 
    -------------------------------
    --  Do_Assignment_Statement  --
@@ -2375,7 +2428,7 @@ package body Flow.Control_Flow_Graph is
       begin
          --  We have a new variable here which we have not picked up
          --  in Create, so we should set it up.
-         Create_Initial_And_Final_Vertices (LP, False, FA);
+         Create_Initial_And_Final_Vertices (LP, Variable_Kind, FA);
 
          --  Work out which of the three variants (empty, full,
          --  unknown) we have...
@@ -3009,47 +3062,19 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      function Replace_Flow_Ids
-        (Of_This   : Entity_Id;
-         With_This : Entity_Id;
-         The_Set   : Flow_Id_Sets.Set)
-         return Flow_Id_Sets.Set;
-      --  Returns a flow set that replaces all Flow_Ids of The_Set that
-      --  correspond to Of_This with equivalent Flow_Ids that correspond to
-      --  With_This.
-
-      ----------------------
-      -- Replace_Flow_Ids --
-      ----------------------
-
-      function Replace_Flow_Ids
-        (Of_This   : Entity_Id;
-         With_This : Entity_Id;
-         The_Set   : Flow_Id_Sets.Set)
-         return Flow_Id_Sets.Set
-      is
-         FS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-      begin
-         for F of The_Set loop
-            if F.Kind in Direct_Mapping | Record_Field
-              and then F.Node = Of_This
-            then
-               FS.Include (F'Update (Node => With_This));
-            else
-               FS.Include (F);
-            end if;
-         end loop;
-         return FS;
-      end Replace_Flow_Ids;
-
       V     : Flow_Graphs.Vertex_Id;
       Inits : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
       FS    : Flow_Id_Sets.Set;
       To_Cw : Boolean;
+
+      Is_Constant : constant Boolean :=
+        (if Nkind (N) = N_Object_Declaration
+         then Constant_Present (N)
+         else False);
    begin
       --  We are dealing with a local constant. These constants are *not*
       --  ignored.
-      if Constant_Present (N) then
+      if Is_Constant then
          if Present (Expression (N)) then
             FA.Local_Constants.Include (Defining_Identifier (N));
          else
@@ -3067,7 +3092,9 @@ package body Flow.Control_Flow_Graph is
       end if;
 
       --  First, we need a 'initial and 'final vertex for this object.
-      Create_Initial_And_Final_Vertices (Defining_Identifier (N), False, FA);
+      Create_Initial_And_Final_Vertices (Defining_Identifier (N),
+                                         Variable_Kind,
+                                         FA);
 
       if not Present (Expression (N)) then
          --  No initializing expression, so we fall back to the
@@ -3409,9 +3436,7 @@ package body Flow.Control_Flow_Graph is
                   if Final_V_Id = Flow_Graphs.Null_Vertex then
 
                      Create_Initial_And_Final_Vertices
-                       (New_E,
-                        Is_Param => False,
-                        FA       => FA);
+                       (New_E, Variable_Kind, FA);
 
                      Final_V_Id := FA.CFG.Get_Vertex (Final_F_Id);
 
@@ -4338,12 +4363,12 @@ package body Flow.Control_Flow_Graph is
                if Present (Iterator_Specification (N)) then
                   Create_Initial_And_Final_Vertices
                     (Defining_Identifier (Iterator_Specification (N)),
-                     False,
+                     Variable_Kind,
                      FA);
                elsif Present (Loop_Parameter_Specification (N)) then
                   Create_Initial_And_Final_Vertices
                     (Defining_Identifier (Loop_Parameter_Specification (N)),
-                     False,
+                     Variable_Kind,
                      FA);
                else
                   Print_Tree_Node (N);
@@ -4627,6 +4652,8 @@ package body Flow.Control_Flow_Graph is
             Do_Null_Or_Raise_Statement (N, FA, CM, Ctx);
          when N_Delay_Until_Statement | N_Delay_Relative_Statement =>
             Do_Delay_Statement (N, FA, CM, Ctx);
+         when N_Component_Declaration =>
+            Do_Object_Declaration (N, FA, CM, Ctx);
          when others =>
             Print_Node_Subtree (N);
             --  ??? To be added by various future tickets. Eventually
@@ -5432,11 +5459,15 @@ package body Flow.Control_Flow_Graph is
             end if;
 
          when E_Task_Body =>
+            --  Tasks cannot have pre- or postconditions right now. This is
+            --  a matter for the ARG perhaps.
             Body_N          := Task_Body (FA.Analyzed_Entity);
             Subprogram_Spec := Corresponding_Spec (Body_N);
 
-            --  !!! O429-046 Can a task have preconditions?
-            Preconditions   := Node_Lists.Empty_List;
+         when E_Protected_Type =>
+            --  For POs we only look at their private declaration.
+            Body_N          := PO_Definition (FA.Analyzed_Entity);
+            Subprogram_Spec := FA.Analyzed_Entity;
 
          when E_Package =>
             Spec_N := Package_Specification (FA.Analyzed_Entity);
@@ -5484,15 +5515,25 @@ package body Flow.Control_Flow_Graph is
             begin
                E := First_Formal (Subprogram_Spec);
                while Present (E) loop
-                  Create_Initial_And_Final_Vertices (E, True, FA);
+                  Create_Initial_And_Final_Vertices (E, Parameter_Kind, FA);
                   E := Next_Formal (E);
                end loop;
             end;
 
-         when E_Task_Body =>
-            --  !!! O429-046 Not sure if tasks can have parameters. Maybe
-            --      its discriminant?
-            null;
+         when E_Task_Body | E_Protected_Type =>
+            --  Tasks and POs see their discriminants as parameters
+            declare
+               E : Entity_Id := First_Entity (FA.Analyzed_Entity);
+            begin
+               while Present (E) loop
+                  if Ekind (E) = E_Discriminant then
+                     Create_Initial_And_Final_Vertices (E,
+                                                        Discriminant_Kind,
+                                                        FA);
+                  end if;
+                  Next_Entity (E);
+               end loop;
+            end;
 
          when E_Package | E_Package_Body =>
             if Is_Generic_Instance (FA.Analyzed_Entity) then
@@ -5630,6 +5671,10 @@ package body Flow.Control_Flow_Graph is
                end;
             end if;
 
+         when E_Protected_Type =>
+            --  !!!T O429-046 TODO: Globals for pos
+            null;
+
          when E_Package | E_Package_Body =>
             --  Packages have no obvious globals, but we can extract a
             --  list of global variables used from the optional rhs of
@@ -5728,30 +5773,39 @@ package body Flow.Control_Flow_Graph is
       --     - declarative part
       --     - body
       case FA.Kind is
-         when E_Subprogram_Body | E_Task_Body =>
+         when E_Subprogram_Body =>
             for Precondition of Preconditions loop
                Process_Quantified_Expressions
                  (Precondition, FA, Connection_Map, The_Context);
             end loop;
-            if FA.Kind = E_Subprogram_Body then
-               --  !!! O429-046 Ignoring postconditions for tasks right now
-               for Refined in Boolean loop
-                  declare
-                     Postconditions : constant Node_Lists.List :=
-                       Get_Postcondition_Expressions (FA.Analyzed_Entity,
-                                                      Refined);
-                  begin
-                     for Postcondition of Postconditions loop
-                        Process_Quantified_Expressions
-                          (Postcondition, FA, Connection_Map, The_Context);
-                     end loop;
-                  end;
-               end loop;
-            end if;
+            for Refined in Boolean loop
+               declare
+                  Postconditions : constant Node_Lists.List :=
+                    Get_Postcondition_Expressions (FA.Analyzed_Entity,
+                                                   Refined);
+               begin
+                  for Postcondition of Postconditions loop
+                     Process_Quantified_Expressions
+                       (Postcondition, FA, Connection_Map, The_Context);
+                  end loop;
+               end;
+            end loop;
             Process_Quantified_Expressions
               (Declarations (Body_N), FA, Connection_Map, The_Context);
             Process_Quantified_Expressions
               (Statements (Handled_Statement_Sequence (Body_N)),
+               FA, Connection_Map, The_Context);
+
+         when E_Task_Body =>
+            Process_Quantified_Expressions
+              (Declarations (Body_N), FA, Connection_Map, The_Context);
+            Process_Quantified_Expressions
+              (Statements (Handled_Statement_Sequence (Body_N)),
+               FA, Connection_Map, The_Context);
+
+         when E_Protected_Type =>
+            Process_Quantified_Expressions
+              (Private_Declarations (Body_N),
                FA, Connection_Map, The_Context);
 
          when E_Package =>
@@ -5805,7 +5859,9 @@ package body Flow.Control_Flow_Graph is
       --  If we are dealing with a function, we use its entity to deal
       --  with the value returned.
       if Ekind (FA.Analyzed_Entity) = E_Function then
-         Create_Initial_And_Final_Vertices (FA.Analyzed_Entity, False, FA);
+         Create_Initial_And_Final_Vertices (FA.Analyzed_Entity,
+                                            Variable_Kind,
+                                            FA);
       end if;
 
       --  If you're now wondering where we deal with locally declared
@@ -5815,7 +5871,7 @@ package body Flow.Control_Flow_Graph is
       --  Produce flowgraph for the precondition and postcondition if
       --  any.
       case FA.Kind is
-         when E_Subprogram_Body | E_Task_Body =>
+         when E_Subprogram_Body =>
             --  Flowgraph for preconditions and left hand sides of
             --  contract cases.
             declare
@@ -5836,31 +5892,32 @@ package body Flow.Control_Flow_Graph is
 
             --  Flowgraph for postconditions and right hand sides of
             --  contract cases.
-            if FA.Kind = E_Subprogram_Body then
-               --  !!! O429-046 Ignoring postconditions for tasks right now
-               declare
-                  NL             : Union_Lists.List := Union_Lists.Empty_List;
-                  Postconditions : Node_Lists.List;
-               begin
-                  for Refined in Boolean loop
-                     Postconditions := Get_Postcondition_Expressions
-                       (FA.Analyzed_Entity,
-                        Refined);
+            declare
+               NL             : Union_Lists.List := Union_Lists.Empty_List;
+               Postconditions : Node_Lists.List;
+            begin
+               for Refined in Boolean loop
+                  Postconditions := Get_Postcondition_Expressions
+                    (FA.Analyzed_Entity,
+                     Refined);
 
-                     for Postcondition of Postconditions loop
-                        Do_Postcondition (Postcondition,
-                                          FA,
-                                          Connection_Map,
-                                          The_Context);
-                        NL.Append (Union_Id (Postcondition));
-                     end loop;
+                  for Postcondition of Postconditions loop
+                     Do_Postcondition (Postcondition,
+                                       FA,
+                                       Connection_Map,
+                                       The_Context);
+                     NL.Append (Union_Id (Postcondition));
                   end loop;
-                  Join (FA    => FA,
-                        CM    => Connection_Map,
-                        Nodes => NL,
-                        Block => Postcon_Block);
-               end;
-            end if;
+               end loop;
+               Join (FA    => FA,
+                     CM    => Connection_Map,
+                     Nodes => NL,
+                     Block => Postcon_Block);
+            end;
+
+         when E_Task_Body | E_Protected_Type =>
+            --  No pre or post here.
+            null;
 
          when E_Package | E_Package_Body =>
             --  Flowgraph for initial_condition aspect
@@ -5913,20 +5970,33 @@ package body Flow.Control_Flow_Graph is
                     FA.End_Vertex);
 
          when E_Task_Body =>
-            --  !!! O429-046 If we do have postconditions, we can simply
-            --      this by just merging with the above...
-
             Do_Subprogram_Or_Block (Body_N, FA, Connection_Map, The_Context);
 
-            --  Connect up all the dots...
             Linkup (FA,
                     FA.Start_Vertex,
-                    Precon_Block.Standard_Entry);
-            Linkup (FA,
-                    Precon_Block.Standard_Exits,
                     Connection_Map (Union_Id (Body_N)).Standard_Entry);
             Linkup (FA,
                     Connection_Map (Union_Id (Body_N)).Standard_Exits,
+                    FA.Helper_End_Vertex);
+            Linkup (FA,
+                    FA.Helper_End_Vertex,
+                    FA.End_Vertex);
+
+         when E_Protected_Type =>
+            Process_Statement_List (Private_Declarations (Body_N),
+                                    FA,
+                                    Connection_Map,
+                                    The_Context);
+
+            Linkup (FA,
+                    FA.Start_Vertex,
+                    Connection_Map
+                      (Union_Id
+                         (Private_Declarations (Body_N))).Standard_Entry);
+            Linkup (FA,
+                    Connection_Map
+                      (Union_Id
+                         (Private_Declarations (Body_N))).Standard_Exits,
                     FA.Helper_End_Vertex);
             Linkup (FA,
                     FA.Helper_End_Vertex,

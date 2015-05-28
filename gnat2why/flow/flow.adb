@@ -95,9 +95,10 @@ package body Flow is
                                  S               : Node_Id;
                                  Compute_Globals : Boolean)
                                  return Flow_Analysis_Graphs
-     with Pre  => Ekind (E) in Subprogram_Kind |
-                               E_Task_Type     |
-                               E_Package       |
+     with Pre  => Ekind (E) in Subprogram_Kind  |
+                               E_Task_Type      |
+                               E_Protected_Type |
+                               E_Package        |
                                E_Package_Body,
           Post => Is_Valid (Flow_Analyse_Entity'Result);
    --  Flow analyse the given entity E. S should be the node
@@ -259,15 +260,17 @@ package body Flow is
                       return Boolean
    is ((case X.Kind is
         when E_Subprogram_Body =>
-          Is_Subprogram (X.Analyzed_Entity),
+           Is_Subprogram (X.Analyzed_Entity),
         when E_Task_Body =>
-          Ekind (X.Analyzed_Entity) = E_Task_Type,
+           Ekind (X.Analyzed_Entity) = E_Task_Type,
+        when E_Protected_Type =>
+           Ekind (X.Analyzed_Entity) = E_Protected_Type,
         when E_Package =>
-          Ekind (X.Analyzed_Entity) = E_Package,
+           Ekind (X.Analyzed_Entity) = E_Package,
         when E_Package_Body =>
-          Ekind (X.Analyzed_Entity) = E_Package_Body)
-            and then (if not X.Compute_Globals
-                      then not X.GG.Aborted and X.GG.Globals.Is_Empty)
+           Ekind (X.Analyzed_Entity) = E_Package_Body)
+           and then (if not X.Compute_Globals
+                     then not X.GG.Aborted and X.GG.Globals.Is_Empty)
       );
 
    -------------------------------
@@ -828,9 +831,9 @@ package body Flow is
    is
       Tmp : Flow_Analysis_Graphs_Root
          (Kind            => (case Ekind (E) is
-                              when Subprogram_Kind => E_Subprogram_Body,
-                              when E_Task_Type     => E_Task_Body,
-                              when others          => Ekind (E)),
+                              when Subprogram_Kind  => E_Subprogram_Body,
+                              when E_Task_Type      => E_Task_Body,
+                              when others           => Ekind (E)),
           Compute_Globals => Compute_Globals);
 
       Phase : constant String :=
@@ -922,6 +925,16 @@ package body Flow is
             Tmp.Is_Generative := Refinement_Needed (E);
 
             Tmp.Function_Side_Effects_Present := False;
+
+         when E_Protected_Type =>
+            --  Note we're analyzing the definitions, and B_Scope should
+            --  point to the thing we're actually analyzing. We do not
+            --  analyze anything in the protected body itself since it
+            --  can't contain anything but procedure and entry bodies.
+            Tmp.B_Scope := Get_Flow_Scope (PO_Definition (E));
+            Tmp.S_Scope := Get_Flow_Scope (E);
+
+            Append (Tmp.Base_Filename, "po_");
 
          when E_Package =>
             Tmp.B_Scope       := Flow_Scope'(E, Private_Part);
@@ -1033,6 +1046,14 @@ package body Flow is
                                        else "no"));
                      end if;
                   end if;
+
+               when E_Protected_Type =>
+                  --  !!! O429-046 we need to do something for globals here
+                  if Gnat2Why_Args.Flow_Advanced_Debug then
+                     Write_Str ("skipped (protected body)");
+                     Write_Eol;
+                  end if;
+                  FA.GG.Aborted := True;
 
                when E_Package =>
                   if Gnat2Why_Args.Flow_Advanced_Debug then
@@ -1268,6 +1289,15 @@ package body Flow is
                   end if;
                end if;
 
+            when E_Protected_Type =>
+               --  !!! O429-046 Globals for pos
+               if SPARK_Util.Analysis_Requested (E) then
+                  FA_Graphs.Include (E, Flow_Analyse_Entity
+                                       (E,
+                                        E,
+                                        Compute_Globals));
+               end if;
+
             when E_Package =>
                declare
                   Pkg_Spec   : constant Node_Id := Package_Specification (E);
@@ -1365,7 +1395,13 @@ package body Flow is
 
          Analysis.Sanity_Check (FA, Success);
          if Success then
-            Analysis.Sanity_Check_Postcondition (FA, Success);
+            case FA.Kind is
+               when E_Subprogram_Body | E_Package | E_Package_Body =>
+                  Analysis.Sanity_Check_Postcondition (FA, Success);
+               when E_Protected_Type | E_Task_Body =>
+                  --  No postconditions for tasks and pos.
+                  null;
+            end case;
          end if;
          if Success then
             FA.Dependency_Map := Compute_Dependency_Relation (FA);
@@ -1415,8 +1451,8 @@ package body Flow is
                                       Kind => Claim_Effects));
                   end if;
 
-               when E_Task_Body =>
-                  --  !!! O429-046 analyze tasks
+               when E_Task_Body | E_Protected_Type =>
+                  --  !!! O429-046 analyze tasks and pos
                   null;
 
                when E_Package | E_Package_Body =>

@@ -2613,19 +2613,29 @@ package body Flow_Utility is
                           E_In_Parameter     |
                           E_In_Out_Parameter =>
 
-                        if Reduced then
-                           VS.Include (Direct_Mapping_Id
-                                       (Unique_Entity (Entity (N))));
-                        else
-                           VS.Union (Flatten_Variable (Entity (N), Scope));
-                        end if;
-                        if Consider_Extensions
-                          and then Extensions_Visible (Entity (N), Scope)
-                        then
-                           VS.Include (Direct_Mapping_Id
-                                         (Unique_Entity (Entity (N)),
-                                          Facet => Extension_Part));
-                        end if;
+                        declare
+                           E : Entity_Id := Entity (N);
+                        begin
+                           if Ekind (E) = E_In_Parameter
+                             and then Present (Discriminal_Link (E))
+                           then
+                              E := Discriminal_Link (E);
+                           end if;
+
+                           if Reduced then
+                              VS.Include (Direct_Mapping_Id
+                                            (Unique_Entity (E)));
+                           else
+                              VS.Union (Flatten_Variable (E, Scope));
+                           end if;
+                           if Consider_Extensions
+                             and then Extensions_Visible (E, Scope)
+                           then
+                              VS.Include (Direct_Mapping_Id
+                                            (Unique_Entity (E),
+                                             Facet => Extension_Part));
+                           end if;
+                        end;
 
                      when Discrete_Or_Fixed_Point_Kind =>
                         if Is_Constrained (Entity (N)) then
@@ -2653,24 +2663,35 @@ package body Flow_Utility is
                        E_Out_Parameter    |
                        E_In_Parameter     |
                        E_In_Out_Parameter =>
-                     if Ekind (N) /= E_Constant
-                       or else Local_Constants.Contains (N)
-                       or else Has_Variable_Input
-                                 (Direct_Mapping_Id (Unique_Entity (N)))
-                     then
-                        if Reduced then
-                           VS.Include (Direct_Mapping_Id (Unique_Entity (N)));
-                        else
-                           VS.Union (Flatten_Variable (N, Scope));
-                        end if;
-                        if Consider_Extensions
-                          and then Extensions_Visible (N, Scope)
+                     declare
+                        E : Entity_Id := N;
+                     begin
+                        if Ekind (E) in E_Constant | E_In_Parameter
+                          and then Present (Discriminal_Link (E))
                         then
-                           VS.Include (Direct_Mapping_Id
-                                         (Unique_Entity (N),
-                                          Facet => Extension_Part));
+                           E := Discriminal_Link (E);
                         end if;
-                     end if;
+
+                        if Ekind (E) /= E_Constant
+                          or else Local_Constants.Contains (E)
+                          or else Has_Variable_Input
+                          (Direct_Mapping_Id (Unique_Entity (E)))
+                        then
+                           if Reduced then
+                              VS.Include (Direct_Mapping_Id
+                                            (Unique_Entity (E)));
+                           else
+                              VS.Union (Flatten_Variable (E, Scope));
+                           end if;
+                           if Consider_Extensions
+                             and then Extensions_Visible (E, Scope)
+                           then
+                              VS.Include (Direct_Mapping_Id
+                                            (Unique_Entity (E),
+                                             Facet => Extension_Part));
+                           end if;
+                        end if;
+                     end;
 
                   when Discrete_Or_Fixed_Point_Kind =>
                      if Is_Constrained (N) then
@@ -3506,10 +3527,6 @@ package body Flow_Utility is
                   end;
                end if;
             end if;
-
-         when E_Task_Type =>
-            --  !!! O429-046 To do...
-            return Node_Lists.Empty_List;
 
          when E_Package =>
             if Refined then

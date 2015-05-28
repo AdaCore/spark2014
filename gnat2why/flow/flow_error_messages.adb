@@ -350,7 +350,10 @@ package body Flow_Error_Messages is
       Suppressed : Boolean;
    begin
       case FA.Kind is
-         when E_Subprogram_Body | E_Package | E_Task_Body =>
+         when E_Subprogram_Body |
+              E_Package         |
+              E_Task_Body       |
+              E_Protected_Type  =>
             E := FA.Analyzed_Entity;
          when E_Package_Body =>
             E := Spec_Entity (FA.Analyzed_Entity);

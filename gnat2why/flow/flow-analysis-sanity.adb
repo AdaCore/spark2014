@@ -333,7 +333,10 @@ package body Flow.Analysis.Sanity is
 
          when E_Task_Body =>
             Entry_Node := Task_Body (FA.Analyzed_Entity);
-            pragma Assert (Nkind (Entry_Node) = N_Task_Body);
+            Check_Expressions (Entry_Node);
+
+         when E_Protected_Type =>
+            Entry_Node := PO_Definition (FA.Analyzed_Entity);
             Check_Expressions (Entry_Node);
 
          when E_Package =>
@@ -511,8 +514,11 @@ package body Flow.Analysis.Sanity is
                else
                   return "Global";
                end if;
-            when others =>
+            when E_Package | E_Package_Body  =>
                return "Initializes";
+            when E_Protected_Type =>
+               --  !!! O429-046 Hack for now, later to be removed
+               return "Global";
          end case;
       end Find_Aspect_To_Fix;
 

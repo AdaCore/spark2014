@@ -676,6 +676,25 @@ package SPARK_Util is
    --  @return the entity of the task body for the given type, similar
    --    to what Subprogram_Body_Entity might produce.
 
+   ------------------------------------------
+   -- Queries related to protected objects --
+   ------------------------------------------
+
+   function PO_Body (E : Entity_Id) return Node_Id
+   with Pre  => Nkind (E) in N_Entity and then Ekind (E) = E_Protected_Type,
+        Post => (if Present (PO_Body'Result)
+                 then Nkind (PO_Body'Result) = N_Protected_Body);
+   --  @param E protected type
+   --  @return the protected body for the given type, similar to what
+   --    subprogram_body might produce.
+
+   function PO_Definition (E : Entity_Id) return Node_Id
+   with Pre  => Nkind (E) in N_Entity and then Ekind (E) = E_Protected_Type,
+        Post => (if Present (PO_Definition'Result)
+                 then Nkind (PO_Definition'Result) = N_Protected_Definition);
+   --  @param E protected type
+   --  @return the protected definition for the given type
+
    ---------------------------------
    -- Queries related to packages --
    ---------------------------------
