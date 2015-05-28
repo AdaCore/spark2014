@@ -265,17 +265,37 @@ package body SPARK_Definition is
       function Restriction_No_Dependence (Unit : Node_Id) return Boolean;
       --  Check if restriction No_Dependence is set for Unit.
 
-      function Same_Unit (U1, U2 : Node_Id) return Boolean;
-      --  Returns True iff U1 and U2 represent the same library unit. Used for
-      --  handling of No_Dependence => Unit restriction case.
-      --  ??? This duplicates the code from Restrict package.
-
       -------------------------------
       -- Restriction_No_Dependence --
       -------------------------------
 
       function Restriction_No_Dependence (Unit : Node_Id) return Boolean
       is
+         function Same_Unit (U1, U2 : Node_Id) return Boolean;
+         --  Returns True iff U1 and U2 represent the same library unit. Used
+         --  for handling of No_Dependence => Unit restriction case.
+         --  ??? This duplicates the code from Restrict package.
+
+         ---------------
+         -- Same_Unit --
+         ---------------
+
+         function Same_Unit (U1, U2 : Node_Id) return Boolean is
+         begin
+            if Nkind (U1) = N_Identifier and then Nkind (U2) = N_Identifier
+            then
+               return Chars (U1) = Chars (U2);
+
+            elsif Nkind (U1) in N_Selected_Component | N_Expanded_Name and then
+                  Nkind (U2) in N_Selected_Component | N_Expanded_Name
+            then
+               return Same_Unit (Prefix (U1), Prefix (U2))
+                 and then
+                   Same_Unit (Selector_Name (U1), Selector_Name (U2));
+            else
+               return False;
+            end if;
+         end Same_Unit;
       begin
          --  Loop to look for entry
 
@@ -293,26 +313,6 @@ package body SPARK_Definition is
 
          return False;
       end Restriction_No_Dependence;
-
-      ---------------
-      -- Same_Unit --
-      ---------------
-
-      function Same_Unit (U1, U2 : Node_Id) return Boolean is
-      begin
-         if Nkind (U1) = N_Identifier and then Nkind (U2) = N_Identifier then
-            return Chars (U1) = Chars (U2);
-
-         elsif Nkind (U1) in N_Selected_Component | N_Expanded_Name and then
-               Nkind (U2) in N_Selected_Component | N_Expanded_Name
-         then
-            return Same_Unit (Prefix (U1), Prefix (U2))
-              and then
-                Same_Unit (Selector_Name (U1), Selector_Name (U2));
-         else
-            return False;
-         end if;
-      end Same_Unit;
 
    begin
       if Ravenscar_Profile_Cached then
