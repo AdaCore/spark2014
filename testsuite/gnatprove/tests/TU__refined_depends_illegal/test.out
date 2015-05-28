@@ -1,9 +1,8 @@
 refined_depends_illegal.adb:6:14: useless refinement, subprogram "P1" does not depend on abstract state with visible refinement
 refined_depends_illegal.adb:20:14: useless refinement, declaration of subprogram "No_Depends_Contract" lacks aspect or pragma Depends
 refined_depends_illegal.adb:35:14: aspect "Refined_Depends" cannot apply to a stand alone body
-refined_depends_illegal.adb:52:48: global "X" must appear in exactly one output dependence list
-refined_depends_illegal.adb:61:51: global "Var2" must appear in at least one input dependence list
-refined_depends_illegal.adb:62:44: global "Var" must appear in exactly one output dependence list
+refined_depends_illegal.adb:53:14: global "X" is missing from output dependence list
+refined_depends_illegal.adb:63:14: global "Var2" is missing from input dependence list
 refined_depends_illegal.adb:71:14: constituent "Z" is missing in output list
 refined_depends_illegal.adb:71:14: output state "State2" must be replaced by all its constituents in dependence refinement
 refined_depends_illegal.adb:81:48: duplicate use of item "W"
