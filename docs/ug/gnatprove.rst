@@ -2563,8 +2563,7 @@ requires the user to write it, to debug it, and finally to prove it.
   previous toolset: 6 VCs required the insertion of user-defined lemmas in the
   theorem prover, and 23 VCs required manual proof in a proof assistant. With
   |GNATprove| and provers CVC4, Z3 and Alt-Ergo, all checks are proved
-  automatically except for a trivial assertion repeating the value of a
-  constant, which can be reviewed manually.
+  automatically.
 
 .. rubric:: ``spark_io``
 
