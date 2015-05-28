@@ -564,8 +564,46 @@ is used purely for static analysis purposes and is not executed.
 .. _tu-fa-global_aspects-18:
 
 18. A ``global_item`` shall not denote a constant object other than a formal
-    parameter [of an enclosing subprogram] of mode **in** or a *constant
-    with variable inputs*.
+    parameter [of an enclosing subprogram] of mode **in**, a generic formal
+    object of mode **in**, or a *constant with variable inputs*.
+
+    If a ``global_item`` denotes a generic formal object of mode **in**,
+    then the corresponding ``global_item`` in an instance of the generic
+    unit may denote a constant which has no variable inputs. [This can occur
+    if the corresponding actual parameter is an expression which has no
+    variable inputs]. Outside of the instance, such a ``global_item`` is
+    ignored. For example,
+
+.. code-block:: ada
+
+        generic
+           Xxx : Integer;
+        package Ggg is
+           procedure Ppp (Yyy : in out Integer) with Global => Xxx,
+                                                     Depends => (Yyy =>+ Xxx);
+        end Ggg;
+
+        package body Ggg is
+           procedure Ppp (Yyy : in out Integer) is
+           begin
+              Yyy := Integer'Max (Xxx, Yyy);
+           end Ppp;
+        end Ggg;
+
+        package Iii is new Ggg
+          (Xxx => 123); -- actual parameter lacks variable inputs
+
+        procedure Qqq (Zzz : in out Integer) with Global => null,
+                                                  Depends => (Zzz =>+ null);
+        procedure Qqq (Zzz : in out Integer) is
+        begin
+           Iii.Ppp (Yyy => Zzz);
+        end Qqq;
+
+        -- Qqq's Global and Depends aspects don't mention Iii.Xxx even though
+        -- Qqq calls Iii.Ppp which does reference Iii.Xxx as a global.
+        -- As seen from outside of Iii, Iii.Ppp's references to Iii.Xxx in its
+        -- Global and Depends aspect specifications are ignored.
 
 .. _tu-fa-global_aspects-19:
 
