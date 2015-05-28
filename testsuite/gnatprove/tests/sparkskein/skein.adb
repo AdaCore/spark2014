@@ -562,14 +562,14 @@ is
 
    begin -- Skein_512_Process_Block
       for J in Positive_Block_512_Count_T range 1 .. Block_Count loop
+         pragma Loop_Invariant
+           (Ctx.H.Hash_Bit_Len = Ctx.H.Hash_Bit_Len'Loop_Entry and
+            Ctx.H.Byte_Count   = Ctx.H.Byte_Count'Loop_Entry);
+
          declare
             Src_Offset : constant U64 :=
               Starting_Offset + (J - 1) * Skein_512_Block_Bytes_C;
          begin
-            pragma Loop_Invariant
-              (Ctx.H.Hash_Bit_Len = Ctx.H.Hash_Bit_Len'Loop_Entry and
-               Ctx.H.Byte_Count   = Ctx.H.Byte_Count'Loop_Entry);
-
             --  This implementation only supports 2**64 input bytes,
             --  so no carry over to Byte_Count_MSB here.
             Ctx.H.Tweak_Words.Byte_Count_LSB :=
@@ -578,9 +578,6 @@ is
             Initialize_Key_Schedule;
 
             Initialize_TS;
-
-            pragma Assert (Src_Offset =
-              Starting_Offset + (J - 1) * Skein_512_Block_Bytes_C);
 
             Get_64_LSB_First (Dst        => W,
                               Src        => Block,
