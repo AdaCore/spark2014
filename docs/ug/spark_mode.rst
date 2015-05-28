@@ -34,40 +34,42 @@ mixed at a fine level in accordance with the following two general principles:
 - SPARK code shall only enclose SPARK code, except that SPARK code
   may enclose a non-SPARK completion of an enclosed SPARK declaration.
 
-More specifically, non-SPARK completions of SPARK declarations are allowed
-for subprogram declarations, package declarations, private type declarations,
+More specifically, non-SPARK completions of SPARK declarations are
+allowed for subprogram declarations, package declarations, task type
+declarations, protected type declarations, private type declarations,
 private extension declarations, and deferred constant declarations.
-[Strictly speaking, a package's private part is considered
-to be part of its completion for purposes of the above rules; this is
-described in more detail below].
+[Strictly speaking, a package's, a task type's or a protected type's
+private part is considered to be part of its completion for purposes
+of the above rules; this is described in more detail below].
 
 When a non-SPARK completion is provided for a SPARK declaration, the
-user has an obligation to ensure that the non-SPARK completion
-is consistent (with respect to the semantics of |SPARK|) with its SPARK
+user has an obligation to ensure that the non-SPARK completion is
+consistent (with respect to the semantics of |SPARK|) with its SPARK
 declaration. For example, |SPARK| requires that a function call has no
 side effects. If the body of a given function is in |SPARK|, then this
 rule is enforced via various language rules; otherwise, it is the
 responsibility of the user to ensure that the function body does not
-violate this rule. As with other
-such constructs (notably pragma Assume), failure to meet this obligation
-can invalidate any or all analysis (i.e., proofs and/or flow analysis)
-associated with the SPARK portion of a program. A non-SPARK completion
-meets this obligation if it is semantically equivalent (with respect to
-dynamic semantics) to some notional completion that could have been
-written in |SPARK|.
+violate this rule. As with other such constructs (notably pragma
+Assume), failure to meet this obligation can invalidate any or all
+analysis (i.e., proofs and/or flow analysis) associated with the SPARK
+portion of a program. A non-SPARK completion meets this obligation if
+it is semantically equivalent (with respect to dynamic semantics) to
+some notional completion that could have been written in |SPARK|.
 
-The |SPARK| semantics (specifically including flow analysis and proofs) of
-a "mixed" program which meets the aforementioned requirement is well defined -
-it is the semantics of the equivalent 100% |SPARK| program.
-For the semantics of other "mixed" programs, go look in the Ada Reference
-Manual.
+The |SPARK| semantics (specifically including flow analysis and
+proof) of a "mixed" program which meets the aforementioned
+requirement are well defined - they are the semantics of the
+equivalent 100% |SPARK| program. For the semantics of other "mixed"
+programs refer to the Ada Reference Manual.
 
-In the case of a package, the specification/completion division described
-above is a simplification of the true situation. A package is divided into
-4 sections, not just 2: its visible part, its private part, the declarations
-of its body, and the statement list of its body. For a given package and
-any number N in the range 0 .. 4, the first N sections of the package might
-be in |SPARK| while the remainder is not.
+In the case of a package, a task type, or a protected type, the
+specification/completion division described above is a simplification
+of the true situation. For instance, a package is divided into 4
+sections, not just 2: its visible part, its private part, the
+declarations of its body, and the statement list of its body. For a
+given package and any number N in the range 0 .. 4, the first N
+sections of the package might be in |SPARK| while the remainder is
+not.
 
 For example, the following combinations may be typical:
 
@@ -85,6 +87,10 @@ For example, the following combinations may be typical:
 - Package specification contains a mixture of declarations which are in |SPARK|
   and not in |SPARK|.  The latter declarations are only visible and usable from
   client units which are not in |SPARK|.
+
+Task types and protected types are similar to packages but only have 3
+sections instead of 4. The statement list section of the body is
+missing.
 
 Such patterns are intended to allow for application of formal verification to a
 subset of a program, and the combination of formal verification with more
