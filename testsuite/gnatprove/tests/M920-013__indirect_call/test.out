@@ -6,8 +6,6 @@ calls.ads:7:07: access type is not allowed in SPARK
 calls.ads:7:07: violation of pragma SPARK_Mode at line 1
 calls.ads:7:13: access to subprogram is not allowed in SPARK
 calls.ads:7:13: violation of pragma SPARK_Mode at line 1
-calls.ads:10:10: entry is not allowed in SPARK
-calls.ads:10:10: violation of pragma SPARK_Mode at line 1
    compilation of calls.adb failed
 
 
