@@ -316,15 +316,33 @@ be used in the following places in the code:
 
 * immediately within a library-level subprogram body
 
+* immediately within a library-level task spec
+
+* immediately within a library-level task body
+
+* immediately following the ``private`` keyword of a library-level task spec
+
+* immediately within a library-level protected object spec
+
+* immediately within a library-level protected object body
+
+* immediately following the ``private`` keyword of a library-level
+  protected object spec
+
 The ``SPARK_Mode`` aspect can be used in the following places in the code:
 
 * on a library-level package spec or body
 
 * on a library-level subprogram spec or body
 
-If a ``SPARK_Mode`` pragma or aspect is not specified for a subprogram or
-package spec/body, its value is inherited from the current mode that is active
-at the point where the subprogram or package is declared.
+* on a library-level task spec or body
+
+* on a library-level protected object spec or body
+
+If a ``SPARK_Mode`` pragma or aspect is not specified for a
+subprogram, package, task or protected object spec/body, then its
+value is inherited from the current mode that is active at the point
+where the declaration occurs.
 
 Consistency Rules
 -----------------
