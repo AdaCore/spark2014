@@ -28,31 +28,31 @@ verification.
 Within a single Ada unit, constructs which are "in" and "not in" |SPARK| may be
 mixed at a fine level in accordance with the following two general principles:
 
-- SPARK code shall only reference SPARK declarations, but a SPARK
-  declaration which requires a completion may have a non-SPARK completion.
+* |SPARK| code shall only reference |SPARK| declarations, but a |SPARK|
+  declaration which requires a completion may have a non-|SPARK| completion.
 
-- SPARK code shall only enclose SPARK code, except that SPARK code
-  may enclose a non-SPARK completion of an enclosed SPARK declaration.
+* |SPARK| code shall only enclose |SPARK| code, except that |SPARK| code
+  may enclose a non-|SPARK| completion of an enclosed |SPARK| declaration.
 
-More specifically, non-SPARK completions of SPARK declarations are
+More specifically, non-|SPARK| completions of |SPARK| declarations are
 allowed for subprogram declarations, package declarations, task type
 declarations, protected type declarations, private type declarations,
 private extension declarations, and deferred constant declarations.
-[Strictly speaking, a package's, a task type's or a protected type's
-private part is considered to be part of its completion for purposes
+[Strictly speaking, the private part of a package, a task type or a
+protected type is considered to be part of its completion for purposes
 of the above rules; this is described in more detail below].
 
-When a non-SPARK completion is provided for a SPARK declaration, the
-user has an obligation to ensure that the non-SPARK completion is
-consistent (with respect to the semantics of |SPARK|) with its SPARK
+When a non-|SPARK| completion is provided for a |SPARK| declaration, the
+user has an obligation to ensure that the non-|SPARK| completion is
+consistent (with respect to the semantics of |SPARK|) with its |SPARK|
 declaration. For example, |SPARK| requires that a function call has no
 side effects. If the body of a given function is in |SPARK|, then this
 rule is enforced via various language rules; otherwise, it is the
 responsibility of the user to ensure that the function body does not
 violate this rule. As with other such constructs (notably pragma
 Assume), failure to meet this obligation can invalidate any or all
-analysis (i.e., proofs and/or flow analysis) associated with the SPARK
-portion of a program. A non-SPARK completion meets this obligation if
+analysis (i.e., proofs and/or flow analysis) associated with the |SPARK|
+portion of a program. A non-|SPARK| completion meets this obligation if
 it is semantically equivalent (with respect to dynamic semantics) to
 some notional completion that could have been written in |SPARK|.
 
@@ -322,12 +322,12 @@ be used in the following places in the code:
 
 * immediately following the ``private`` keyword of a library-level task spec
 
-* immediately within a library-level protected object spec
+* immediately within a library-level protected spec
 
-* immediately within a library-level protected object body
+* immediately within a library-level protected body
 
 * immediately following the ``private`` keyword of a library-level
-  protected object spec
+  protected spec
 
 The ``SPARK_Mode`` aspect can be used in the following places in the code:
 
@@ -337,10 +337,10 @@ The ``SPARK_Mode`` aspect can be used in the following places in the code:
 
 * on a library-level task spec or body
 
-* on a library-level protected object spec or body
+* on a library-level protected spec or body
 
 If a ``SPARK_Mode`` pragma or aspect is not specified for a
-subprogram, package, task or protected object spec/body, then its
+subprogram, package, task or protected spec/body, then its
 value is inherited from the current mode that is active at the point
 where the declaration occurs.
 
