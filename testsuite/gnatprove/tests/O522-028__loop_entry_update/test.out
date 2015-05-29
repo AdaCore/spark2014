@@ -1,9 +1,7 @@
 loop_entry_test.adb:18:20: warning: unused assignment
-loop_entry_test.adb:21:10: info: loop invariant initialization proved
-loop_entry_test.adb:21:10: info: loop invariant preservation proved
+loop_entry_test.adb:21:33: medium: loop invariant might fail after first iteration, requires A = A_Loop_Entry'update
+loop_entry_test.adb:21:33: medium: loop invariant might fail in first iteration, requires A = A_Loop_Entry'update
 loop_entry_test.adb:21:37: info: initialization of "A_Loop_Entry" proved
 loop_entry_test.adb:21:67: info: range check proved
 loop_entry_test.ads:8:14: medium: postcondition might fail, requires A = A'Old'update
 loop_entry_test.ads:11:14: info: postcondition proved
-loop_types.ads:13:12: info: initialization of "Oeq" proved
-loop_types.ads:16:12: info: initialization of "Oeq" proved
