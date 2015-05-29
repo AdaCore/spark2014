@@ -1,5 +1,5 @@
 from test_support import *
 
-gcc("global_illegal.ads")
-gcc("global_illegal_2.adb")
-prove_all(opt=["-u", "global_illegal_3.adb"])
+gcc("global_illegal.ads",opt=["-c", "-gnatf"])
+gcc("global_illegal_2.adb",opt=["-c", "-gnatf"])
+prove_all(opt=["-u", "global_illegal_3.adb", "-cargs", "-gnatf"])

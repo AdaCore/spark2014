@@ -2,6 +2,9 @@ refined_state_illegal.adb:5:43: cannot mix null and non-null constituents
 refined_state_illegal.adb:24:12: useless refinement, package "Pac4" does not define abstract states
 refined_state_illegal.adb:31:35: constituent "F1" must denote object or state
 refined_state_illegal.adb:40:44: malformed constituent
+refined_state_illegal.adb:58:36: cannot use "Pr_Var1" in refinement, constituent is not a hidden state of package "Pac8"
+refined_state_illegal.adb:59:37: cannot use "Pr_Var1" in refinement, constituent is not a hidden state of package "Pac8"
+refined_state_illegal.adb:59:46: cannot use "Pr_Var2" in refinement, constituent is not a hidden state of package "Pac8"
 refined_state_illegal.adb:65:17: body of package "Pac9" has unused hidden states
 refined_state_illegal.adb:65:17: variable "Var1" defined at line 68
 refined_state_illegal.adb:71:33: extra global item "Var1"
