@@ -110,7 +110,7 @@ of this restriction please see the GNAT Reference Manual.
 
 .. _analyze legacy Ada software:
 
-Analyze legacy Ada software
+Analyze Legacy Ada Software
 ---------------------------
 
 If a legacy system has been developed in Ada then analyzing it with the |SPARK|
