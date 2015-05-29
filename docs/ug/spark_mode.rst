@@ -368,6 +368,14 @@ mode on by default everywhere, and one particular package spec has pragma
 ``SPARK_Mode (Off)``, then that pragma will need to be repeated in the package
 body.
 
+Tasks and protected types work like packages (i.e., if ``SPARK_Mode`` is
+set to Off on one part, all following parts have to also set it to Off)
+but they only have three parts:
+
+#. the spec
+#. the private part
+#. the body
+
 There is an exception to this rule, when ``SPARK_Mode`` occurs in the code of a
 generic instantiated in code where ``SPARK_Mode`` is Off. In that case,
 occurrences of ``SPARK_Mode`` in the generic are ignored for this instance.
