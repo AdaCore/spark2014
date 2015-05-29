@@ -16,7 +16,7 @@ skein.adb:262:47: info: index check proved, in call inlined at skein.adb:582
 skein.adb:263:47: info: index check proved, in call inlined at skein.adb:582
 skein.adb:264:47: info: index check proved, in call inlined at skein.adb:582
 skein.adb:265:47: info: index check proved, in call inlined at skein.adb:582
-skein.adb:266:47: medium: array index check might fail, in call inlined at skein.adb:582
+skein.adb:266:47: info: index check proved, in call inlined at skein.adb:582
 skein.adb:304:19: info: postcondition proved
 skein.adb:321:10: warning: no check message justified by this pragma
 skein.adb:326:23: info: initialization of "KS" proved, in call inlined at skein.adb:578

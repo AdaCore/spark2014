@@ -46,7 +46,7 @@ init_vec_zero.adb:11:43: info: precondition proved
 init_vec_zero.adb:11:56: info: initialization of private part of "V" proved
 init_vec_zero.adb:11:67: info: precondition proved
 init_vec_zero.adb:11:79: info: range check proved
-update_list_zero.adb:5:11: medium: postcondition might fail
+update_list_zero.adb:5:11: info: postcondition proved
 update_list_zero.adb:5:12: info: precondition proved
 update_list_zero.adb:5:31: info: precondition proved
 update_list_zero.adb:6:16: info: precondition proved
@@ -70,8 +70,8 @@ update_list_zero.adb:14:32: info: precondition proved
 update_list_zero.adb:14:55: info: precondition proved
 update_list_zero.adb:14:108: info: precondition proved
 update_list_zero.adb:15:07: info: loop invariant initialization proved
+update_list_zero.adb:15:07: info: loop invariant preservation proved
 update_list_zero.adb:15:30: info: precondition proved
-update_list_zero.adb:15:30: medium: loop invariant might fail after first iteration, requires Strict_Equal (Current_To_Last (L'Loop_Entry, Cu), Current_To_Last (L, Cu)
 update_list_zero.adb:15:44: info: precondition proved
 update_list_zero.adb:15:80: info: precondition proved
 update_list_zero.adb:15:100: info: initialization of "Cu" proved

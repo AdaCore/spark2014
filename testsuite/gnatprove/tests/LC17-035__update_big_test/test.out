@@ -352,7 +352,7 @@ ar.ads:227:14: info: initialization of "A" proved
 ar.ads:229:22: info: postcondition proved
 ar.ads:229:44: info: initialization of "A" proved
 ar.ads:232:14: info: initialization of "A" proved
-ar.ads:234:43: medium: postcondition might fail, requires A(N) = 0
+ar.ads:234:22: info: postcondition proved
 ar.ads:234:44: info: initialization of "A" proved
 ar.ads:237:14: info: initialization of "A" proved
 ar.ads:239:22: info: initialization of "A" proved
@@ -456,7 +456,7 @@ ar.ads:389:22: info: postcondition proved
 ar.ads:394:22: info: postcondition proved
 ar.ads:399:22: info: postcondition proved
 ar.ads:404:22: info: postcondition proved
-ar.ads:410:22: medium: postcondition might fail
+ar.ads:410:22: info: postcondition proved
 ar.ads:416:22: info: postcondition proved
 ar.ads:421:22: info: postcondition proved
 ar.ads:426:22: info: postcondition proved
@@ -506,7 +506,7 @@ ar.ads:523:22: info: postcondition proved
 ar.ads:528:22: info: postcondition proved
 ar.ads:533:22: info: postcondition proved
 ar.ads:538:22: info: postcondition proved
-ar.ads:544:22: medium: postcondition might fail
+ar.ads:544:22: info: postcondition proved
 ar.ads:550:22: info: postcondition proved
 ar.ads:555:22: info: postcondition proved
 ar.ads:558:14: info: initialization of "A" proved
@@ -519,7 +519,7 @@ ar.ads:574:22: info: postcondition proved
 ar.ads:579:22: info: postcondition proved
 ar.ads:584:22: info: postcondition proved
 ar.ads:590:22: info: postcondition proved
-ar.ads:597:22: medium: postcondition might fail
+ar.ads:597:22: info: postcondition proved
 ar.ads:604:22: info: postcondition proved
 ar.ads:609:22: info: postcondition proved
 ar.ads:614:22: info: postcondition proved
@@ -684,19 +684,19 @@ ar.ads:1317:22: info: postcondition proved
 ar.ads:1322:22: info: postcondition proved
 ar.ads:1327:22: info: postcondition proved
 ar.ads:1332:22: info: postcondition proved
-ar.ads:1337:22: medium: postcondition might fail
+ar.ads:1337:22: info: postcondition proved
 ar.ads:1345:22: info: postcondition proved
 ar.ads:1350:22: info: postcondition proved
 ar.ads:1355:22: info: postcondition proved
-ar.ads:1360:22: medium: postcondition might fail
+ar.ads:1360:22: info: postcondition proved
 ar.ads:1366:22: info: postcondition proved
 ar.ads:1372:22: info: postcondition proved
 ar.ads:1378:22: info: postcondition proved
-ar.ads:1384:22: medium: postcondition might fail
+ar.ads:1384:22: info: postcondition proved
 ar.ads:1392:22: info: postcondition proved
 ar.ads:1397:22: info: postcondition proved
 ar.ads:1402:22: info: postcondition proved
-ar.ads:1407:22: medium: postcondition might fail
+ar.ads:1407:22: info: postcondition proved
 ar.ads:1415:22: info: postcondition proved
 ar.ads:1420:22: info: postcondition proved
 ar.ads:1425:22: info: postcondition proved
@@ -735,7 +735,7 @@ ar.ads:1526:22: info: postcondition proved
 ar.ads:1531:22: info: postcondition proved
 ar.ads:1536:22: info: postcondition proved
 ar.ads:1542:22: info: postcondition proved
-ar.ads:1548:22: medium: postcondition might fail
+ar.ads:1548:22: info: postcondition proved
 ar.ads:1553:22: info: postcondition proved
 ar.ads:1558:22: info: postcondition proved
 ar.ads:1563:22: medium: postcondition might fail, requires R = R'Old'update
@@ -783,9 +783,9 @@ ar.ads:1728:22: info: postcondition proved
 ar.ads:1733:22: info: postcondition proved
 ar.ads:1738:22: info: postcondition proved
 ar.ads:1743:22: info: postcondition proved
-ar.ads:1748:22: medium: postcondition might fail
-ar.ads:1753:22: medium: postcondition might fail, requires A = A'Old'update
-ar.ads:1758:22: medium: postcondition might fail, requires A = A'Old'update
+ar.ads:1748:22: info: postcondition proved
+ar.ads:1753:22: info: postcondition proved
+ar.ads:1758:22: info: postcondition proved
 ar.ads:1766:22: info: postcondition proved
 ar.ads:1771:22: info: postcondition proved
 ar.ads:1776:22: info: postcondition proved
@@ -798,7 +798,7 @@ ar.ads:1809:22: info: postcondition proved
 ar.ads:1814:22: info: postcondition proved
 ar.ads:1819:22: info: postcondition proved
 ar.ads:1824:22: info: postcondition proved
-ar.ads:1829:22: medium: postcondition might fail
+ar.ads:1829:22: info: postcondition proved
 ar.ads:1835:22: info: postcondition proved
 ar.ads:1841:22: info: postcondition proved
 ar.ads:1847:22: info: postcondition proved
