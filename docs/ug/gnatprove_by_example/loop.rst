@@ -405,33 +405,35 @@ prove the postcondition of ``Update_Vec_Zero``:
 .. literalinclude:: gnatprove_by_example/results/update_vec_zero.prove
    :language: none
 
-We don't show here a variant of the same update loop over a list, which
-requires more involved postconditions and loop invariants, and is not proved
-completely with the default provers Alt-Ergo and CVC4.
+Similarly, consider a variant of the same update loop over a list:
 
-..
-   THIS IS COMMENTED AS CURRENTLY GNATPROVE DOES NOT PROVE MANY CHECKS ON THAT CODE
+.. literalinclude:: gnatprove_by_example/examples/update_list_zero.adb
+   :language: ada
+   :linenos:
 
-   Similarly, consider a variant of the same update loop over a list:
+The loop invariant expresses that all elements up to the current cursor ``Cu``
+have been zeroed out if initially smaller than ``Threshold`` (using function
+``First_To_Previous`` to retrieve the part of the list up to the current
+cursor), and that elements that follow the current loop index have not been
+modified (using function ``Current_To_Last`` to retrieve the part of the list
+following the current cursor). Note that it is necessary to state here that
+the rest of the list at the current iteration is the same as at loop entry,
+using function ``Strict_Equal``, which is stronger that using operator ``=``
+on lists, as the latter only compares element values, while the former compares
+also positions of elements in the internal data structure (that is, the value
+of cursors to these elements). This is needed because we are using the same
+cursor ``Cu`` to denote an element in the current list and the same element
+in the list at loop entry.
 
-   .. literalinclude:: gnatprove_by_example/examples/update_list_zero.adb
-      :language: ada
-      :linenos:
+With this loop invariant, |GNATprove| is able to prove the postcondition of
+``Update_List_Zero``, namely that all elements initially smaller than
+``Threshold`` have been zeroed out, and that other elements have not been
+modified:
 
-   The loop invariant expresses that all elements up to the current cursor ``Cu``
-   have been zeroed out if initially smaller than ``Threshold`` (using function
-   ``First_To_Previous`` to retrieve the part of the list up to the current
-   cursor), and that elements that follow the current loop index have not been
-   modified (using function ``Current_To_Last`` to retrieve the part of the list
-   following the current cursor). With this loop invariant, |GNATprove| is able to
-   prove the postcondition of ``Update_List_Zero``, namely that all elements
-   initially smaller than ``Threshold`` have been zeroed out, and that other
-   elements have not been modified:
+.. literalinclude:: gnatprove_by_example/results/update_list_zero.prove
+                    :language: none
 
-   .. literalinclude:: gnatprove_by_example/results/update_list_zero.prove
-      :language: none
-
-   The case of sets and maps is similar to the case of lists.
+The case of sets and maps is similar to the case of lists.
 
 The second pattern of update loops that we consider now is the one that updates
 elements based on their position:
