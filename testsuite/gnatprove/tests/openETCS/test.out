@@ -35,13 +35,10 @@ deceleration_curve.adb:64:14: info: initialization of "distance" proved
 deceleration_curve.adb:70:36: info: division check proved
 deceleration_curve.adb:70:36: info: range check proved
 deceleration_curve.adb:82:09: info: precondition proved
-deceleration_curve.adb:85:47: info: initialization of constant with variable input "end_point" proved
 deceleration_curve.adb:85:47: medium: "Braking_Curve.curve" might not be initialized
 deceleration_curve.adb:85:50: info: initialization of "location" proved
 deceleration_curve.adb:86:44: info: initialization of "Braking_Curve.curve" proved
-deceleration_curve.adb:86:44: info: initialization of constant with variable input "end_point" proved
 deceleration_curve.adb:86:47: info: initialization of "speed" proved
-deceleration_curve.adb:88:53: info: initialization of constant with variable input "end_point" proved
 deceleration_curve.adb:90:13: info: initialization of "speed" proved
 deceleration_curve.adb:90:19: medium: overflow check might fail
 deceleration_curve.adb:90:21: warning: assuming "Sqrt" has no effect on global items
@@ -60,7 +57,6 @@ deceleration_curve.adb:99:42: info: initialization of "Braking_Curve.curve" prov
 deceleration_curve.adb:99:45: info: initialization of "location" proved
 deceleration_curve.adb:100:39: info: initialization of "Braking_Curve.curve" proved
 deceleration_curve.adb:100:42: info: initialization of "speed" proved
-deceleration_curve.adb:107:09: info: initialization of constant with variable input "R44b" proved
 deceleration_curve.adb:107:09: medium: precondition might fail
 deceleration_curve.adb:108:10: warning: assuming "Put" has no effect on global items
 deceleration_curve.adb:108:10: warning: no Global contract available for "Put"
@@ -147,7 +143,6 @@ step_function.adb:30:10: info: loop invariant preservation proved
 step_function.adb:31:50: info: index check proved
 step_function.adb:32:61: info: index check proved
 step_function.adb:32:61: info: overflow check proved
-step_function.adb:44:50: info: initialization of constant with variable input "R10b" proved
 step_function.adb:45:10: info: loop invariant initialization proved
 step_function.adb:45:10: info: loop invariant preservation proved
 step_function.adb:47:34: info: index check proved

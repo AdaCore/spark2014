@@ -1,8 +1,6 @@
 p.adb:9:13: info: loop invariant preservation proved
 p.adb:9:36: medium: loop invariant might fail in first iteration, requires F'Loop_Entry = Saved
-p.adb:9:51: info: initialization of constant with variable input "Saved" proved
 partition_refinement.adb:11:43: info: precondition proved
-partition_refinement.adb:11:55: info: initialization of constant with variable input "R1b" proved
 partition_refinement.adb:12:20: info: precondition proved
 partition_refinement.adb:13:13: info: initialization of "P_Elem.Count" proved
 partition_refinement.adb:13:34: info: initialization of "P_Elem.Last" proved
@@ -14,9 +12,7 @@ partition_refinement.adb:15:43: info: initialization of "P_Elem.Last" proved
 partition_refinement.adb:17:47: info: precondition proved
 partition_refinement.adb:17:47: medium: range check might fail
 partition_refinement.adb:19:22: info: initialization of "P_Prime.First" proved
-partition_refinement.adb:19:29: info: initialization of constant with variable input "R3b" proved
 partition_refinement.adb:19:39: info: initialization of "P_Prime.Last" proved
-partition_refinement.adb:19:46: info: initialization of constant with variable input "R4b" proved
 partition_refinement.adb:20:24: info: initialization of "P_Prime_Index" proved
 partition_refinement.adb:21:16: info: loop invariant initialization proved
 partition_refinement.adb:21:16: info: loop invariant preservation proved
