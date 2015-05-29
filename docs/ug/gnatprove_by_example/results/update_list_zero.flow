@@ -1,6 +1,8 @@
-update_list_zero.adb:9:26: info: initialization of "Cu" proved
-update_list_zero.adb:10:67: info: initialization of "Cu" proved
-update_list_zero.adb:13:100: info: initialization of "Cu" proved
-update_list_zero.adb:14:22: info: initialization of "Cu" proved
-update_list_zero.adb:15:30: info: initialization of "Cu" proved
-update_list_zero.adb:17:16: info: initialization of "Cu" proved
+update_list_zero.adb:11:26: info: initialization of "Cu" proved
+update_list_zero.adb:12:67: info: initialization of "Cu" proved
+update_list_zero.adb:14:67: info: initialization of "Cu" proved
+update_list_zero.adb:16:100: info: initialization of "Cu" proved
+update_list_zero.adb:17:57: info: initialization of "Cu" proved
+update_list_zero.adb:18:22: info: initialization of "Cu" proved
+update_list_zero.adb:19:30: info: initialization of "Cu" proved
+update_list_zero.adb:21:16: info: initialization of "Cu" proved

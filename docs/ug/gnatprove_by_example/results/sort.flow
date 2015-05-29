@@ -1,8 +1,6 @@
-sort.adb:29:45: info: initialization of constant with variable input "Init" proved
 sort.adb:30:14: warning: unused assignment
 sort.adb:32:21: info: initialization of "Temp" proved
 sort.adb:35:36: info: initialization of "Interm" proved
-sort.adb:35:47: info: initialization of constant with variable input "Init" proved
 sort.adb:51:38: info: initialization of "Min" proved
 sort.adb:55:13: info: initialization of "Min" proved
 sort.adb:59:14: info: initialization of "Min" proved

@@ -1,2 +1,1 @@
-init_vec_zero.adb:8:13: info: initialization of constant with variable input "R4b" proved
-init_vec_zero.adb:8:32: info: initialization of constant with variable input "R5b" proved
+no output
