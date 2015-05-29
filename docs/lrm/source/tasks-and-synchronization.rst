@@ -121,9 +121,18 @@ are in |SPARK|.
    protected unit shall be named in the Initializes aspect of its
    enclosing package.
 
-10. A ``global_item`` occurring in the Global aspect specification of the
-    main subprogram or of a task unit having a mode of Output or In_Out shall
-    not denote a variable which is "constant after elaboration".
+10. A ``global_item`` having a mode of Output or In_Out that denotes a variable
+    which is constant after elaboration shall not occur in the Global or
+    Refined_Global aspect specification of either the main subprogram or of a
+    task unit.
+
+    If a variable V which is constant after elaboration is a constituent
+    of a state abstraction Pkg.S (where Pkg is a package), then the initial
+    declaration of any subprogram for which V is an output (including any
+    subprogram which calls such a subprogram) shall occur within the body of
+    Pkg; in addition, any such subprogram shall not be a dispatching operation.
+    [This rule ensures that a subprogram which modifies V cannot be called
+    other than during the elaboration of Pkg.]
 
 11. At most one task (including the environment task)
     shall ever call (directly or via intermediate calls) the protected
