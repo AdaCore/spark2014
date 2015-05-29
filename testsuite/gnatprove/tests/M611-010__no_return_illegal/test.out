@@ -1,9 +1,6 @@
-no_return_illegal.adb:27:10: call to No_Return procedure in this context is not allowed in SPARK
-no_return_illegal.adb:27:10: violation of pragma SPARK_Mode at test.adc:1
-no_return_illegal.adb:35:10: call to No_Return procedure in this context is not allowed in SPARK
-no_return_illegal.adb:35:10: violation of pragma SPARK_Mode at test.adc:1
-no_return_illegal.adb:44:10: call to No_Return procedure in this context is not allowed in SPARK
-no_return_illegal.adb:44:10: violation of pragma SPARK_Mode at test.adc:1
+no_return_illegal.adb:18:12: "X" must be a global output of "P2" (SPARK RM 6.1.4(16))
+no_return_illegal.ads:12:14: high: no paths in subprogram will return normally
+no_return_illegal.ads:12:14: warning: "X" is not modified, could be INPUT
    compilation of no_return_illegal.adb failed
 
 
