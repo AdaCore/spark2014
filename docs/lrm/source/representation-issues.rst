@@ -39,6 +39,24 @@ is illustrated by
 
 where the Async_Readers aspect of X is True, not False.]
 
+Ada allows aspect specifications for package declarations and package
+bodies but does not define any aspects which can be specified in this
+way. |SPARK| defines, for example, the Initial_Condition and Refined_State
+aspects (the former can be specified for a package declaration; the latter
+for a package body). Ada's usual rule that
+
+   The usage names in an aspect_definition [ are not resolved at the point of
+   the associated declaration, but rather] are resolved at the end of the
+   immediately enclosing declaration list.
+
+is applied for such aspects as though "the immediately enclosing
+declaration list" is that of the visible part (in the former case) or of
+the body (in the latter case).
+[For example, the Initial_Condition expression of a package which declares a
+variable in its visible part can (directly) name that variable. Simlarly, the
+Refined_State aspect specification for a package body can name variables
+declared within the package body.]
+
 Packed Types
 ------------
 
