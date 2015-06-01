@@ -1035,6 +1035,16 @@ package body SPARK_Definition is
                      N);
                end if;
             end if;
+
+            if Has_Class_Wide_Type (Etype (Right_Opnd (N))) then
+               Violation_Detected := True;
+               if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+                  Error_Msg_N
+                    ("membership test in class-wide type is not yet supported",
+                     N);
+               end if;
+            end if;
+
             Mark (Left_Opnd (N));
             if Present (Alternatives (N)) then
                Mark_List (Alternatives (N));
@@ -1777,6 +1787,7 @@ package body SPARK_Definition is
            Attribute_Callable          |
            Attribute_Caller            |
            Attribute_Ceiling           |
+           Attribute_Class             |
            Attribute_Constrained       |
            Attribute_Copy_Sign         |
            Attribute_Definite          |
@@ -2353,6 +2364,9 @@ package body SPARK_Definition is
                   Actual : constant Node_Id :=
                     Explicit_Generic_Actual_Parameter (Cur_Assoc);
                begin
+                  --  For entities passed as actual, mark the entity directly
+                  --  instead of the expression.
+
                   if Nkind (Actual) in N_Identifier | N_Expanded_Name then
                      declare
                         EActual : constant Entity_Id :=
@@ -2367,11 +2381,21 @@ package body SPARK_Definition is
                            Mark_Entity (EActual);
                         end if;
                      end;
-                  else
-                     --  For constant parameters, the actual may be an
-                     --  expression instead of a name.
-                     --  In that case, mark the expression of the actual.
 
+                  --  For anonymous classwide types T'Class passed as actual,
+                  --  mark the corresponding type entity.
+
+                  elsif Nkind (Actual) in N_Attribute_Reference
+                    and then Get_Attribute_Id (Attribute_Name (Actual)) =
+                      Attribute_Class
+                  then
+                     Mark_Entity (Etype (Actual));
+
+                  --  For constant parameters, the actual may be an expression
+                  --  instead of a name. In that case, mark the expression of
+                  --  the actual.
+
+                  else
                      Mark (Actual);
                   end if;
                end;

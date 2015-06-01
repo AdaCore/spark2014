@@ -244,6 +244,9 @@ package SPARK_Util is
    function Has_Array_Type (T : Entity_Id) return Boolean is
      (Retysp_Kind (T) in Array_Kind);
 
+   function Has_Class_Wide_Type (T : Entity_Id) return Boolean is
+     (Retysp_Kind (T) in Class_Wide_Kind);
+
    function Has_Composite_Type (T : Entity_Id) return Boolean is
      (Retysp_Kind (T) in Composite_Kind);
 

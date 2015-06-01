@@ -1,0 +1,5 @@
+mem.adb:10:66: membership test in class-wide type is not yet supported
+   compilation of mem.adb failed
+
+
+gnatprove: error during flow analysis and proof
