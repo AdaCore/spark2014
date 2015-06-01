@@ -3,8 +3,8 @@ Representation Issues
 
 .. todo:: Provide full detail on Representation Issues.
           To be completed in a post-Release 1 version of this document.
-          
-          
+
+
 Operational and Representation Aspects
 ---------------------------------------
 
@@ -28,7 +28,7 @@ otherwise for a particular aspect:
    to specifying a value of True as described in Ada RM 13.1.1(15).]
 
 3. The usage names in an aspect_definition for the given aspect are
-   resolved at the point of the associated declaration. [This supercedes 
+   resolved at the point of the associated declaration. [This supercedes
    the name resolution rule given in Ada RM 13.1.1 that states that such names
    are resolved at the end of the enclosing declaration list.]
 
@@ -45,7 +45,7 @@ way. |SPARK| defines, for example, the Initial_Condition and Refined_State
 aspects (the former can be specified for a package declaration; the latter
 for a package body). Ada's usual rule that
 
-   The usage names in an aspect_definition [ are not resolved at the point of
+   The usage names in an aspect_definition [are not resolved at the point of
    the associated declaration, but rather] are resolved at the end of the
    immediately enclosing declaration list.
 
@@ -134,7 +134,7 @@ attribute) may invalidate any proofs performed on the program.
 
 .. todo:: Introduce checks for data validity into the proof model as necessary.
           To be completed in a post-Release 1 version of this document.
-   
+
 Unchecked Access Value Creation
 -------------------------------
 
@@ -160,7 +160,7 @@ Storage Management
 Pragma Restrictions and Pragma Profile
 --------------------------------------
 
-Restrictions and Profiles will be available with |SPARK| to provide profiles 
+Restrictions and Profiles will be available with |SPARK| to provide profiles
 suitable for different application environments.
 
 Streams
@@ -178,6 +178,3 @@ Freezing Rules
 --------------
 
 No restrictions or additions.
-
-
-
