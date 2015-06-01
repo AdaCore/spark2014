@@ -51,7 +51,7 @@ rule is enforced via various language rules; otherwise, it is the
 responsibility of the user to ensure that the function body does not
 violate this rule. As with other such constructs (notably pragma
 Assume), failure to meet this obligation can invalidate any or all
-analysis (i.e., proofs and/or flow analysis) associated with the |SPARK|
+analysis (proofs and/or flow analysis) associated with the |SPARK|
 portion of a program. A non-|SPARK| completion meets this obligation if
 it is semantically equivalent (with respect to dynamic semantics) to
 some notional completion that could have been written in |SPARK|.
@@ -368,9 +368,9 @@ mode on by default everywhere, and one particular package spec has pragma
 ``SPARK_Mode (Off)``, then that pragma will need to be repeated in the package
 body.
 
-Tasks and protected types work like packages (i.e., if ``SPARK_Mode`` is
-set to Off on one part, all following parts have to also set it to Off)
-but they only have three parts:
+Task types and protected types are handled similarly. If ``SPARK_Mode`` is set
+to Off on one part, it cannot be set to On on the following parts, among the
+three parts:
 
 #. the spec
 #. the private part
