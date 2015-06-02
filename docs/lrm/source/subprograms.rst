@@ -567,6 +567,8 @@ is used purely for static analysis purposes and is not executed.
     parameter [of an enclosing subprogram] of mode **in**, a generic formal
     object of mode **in**, or a *constant with variable inputs*.
 
+.. _etu-global_aspects-vr1:
+
     If a ``global_item`` denotes a generic formal object of mode **in**,
     then the corresponding ``global_item`` in an instance of the generic
     unit may denote a constant which has no variable inputs. [This can occur
