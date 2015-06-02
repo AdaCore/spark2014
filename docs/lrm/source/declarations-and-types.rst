@@ -251,23 +251,28 @@ and the default initialization expressions must not have variable inputs.
    one elementary nondiscriminant part, then the record type or type
    extension shall define full default initialization.
 
+  [In the unusual case of a nondiscriminant component which has no
+  nondiscriminant scalar parts (e.g., an array of null records),
+  the preceding "at least one elementary" wording means that the component
+  is ignored for purposes of this rule.]
+
 .. _tu-record_types-02:
 
 2. The ``default_expression`` of a ``component_declaration`` shall not
    have any variable inputs, nor shall it contain a name denoting
    the current instance of the enclosing type.
 
+   [The enforcement of this rule may require looking at the
+   ``full_type_declaration`` of a ``private_type`` declaration if the
+   private type's Default_Initial_Condition aspect is not specified.]
+
 .. _etu-record_types:
 
-[In the unusual case of a nondiscriminant component which has no
-nondiscriminant scalar parts (e.g., an array of null records),
-the preceding "at least one elementary" wording means that the component
-is ignored for purposes of this rule.]
-
-[The enforcement of this rule may require looking at the
-``full_type_declaration`` of a ``private_type`` declaration if the
-private type's Default_Initial_Condition aspect is not specified.]
-
+[The rules in this section apply to any ``component_declaration``; this
+includes the case of a ``component_declaration`` which is a
+``protected_element_declaration``. In other words, these rules also apply to
+components of a protected type.]
+   
 Tagged Types and Type Extensions
 --------------------------------
 
