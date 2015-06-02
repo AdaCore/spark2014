@@ -129,7 +129,9 @@ as Boolean aspects or as external properties of an external state abstraction.
 The Boolean aspect Volatile_Function may be specified as part of the
 (explicit) initial declaration of a function. A function whose
 Volatile_Function aspect is True is said to be a *volatile function*.
-A protected function is also defined to be a *volatile function*.
+A protected function is also defined to be a *volatile function*, as is
+an instance of Unchecked_Conversion where one or both of the actual
+Source and Target types are effectively volatile types.
 [Unlike nonvolatile functions, two calls to a volatile function with all
 inputs equal need not return the same result.]
 
