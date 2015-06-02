@@ -1954,10 +1954,23 @@ package body SPARK_Definition is
                      or else
                   (Is_Fixed_Point_Type (R_Type) and then R_Type /= E_Type)
             then
-               Violation_Detected := True;
-               if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-                  Error_Msg_N ("operation on fixed-point type with different"
-                               & " result type is not yet supported", N);
+               --  Division by 'Small with integer result is always exact;
+               --  this is simple and useful, so we support it.
+
+               if Nkind (N) = N_Op_Divide and then
+                 Is_Integer_Type (E_Type) and then
+                 Is_Fixed_Point_Type (L_Type) and then
+                 Nkind (Right_Opnd (N)) = N_Real_Literal and then
+                 Corresponding_Integer_Value (Right_Opnd (N)) = Uint_1
+               then
+                  null;
+               else
+                  Violation_Detected := True;
+                  if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+                     Error_Msg_N ("operation on fixed-point type"
+                                  & " with different result type"
+                                  & " is not yet supported", N);
+                  end if;
                end if;
             end if;
          end;

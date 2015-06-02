@@ -496,6 +496,27 @@ module Fixed_Point_Base
       else (* y = 0 *)
         true
 
+  (* division between two fixed-point values with integer result
+     case 1:
+         If the divident is small, then the result is exact and it is equal to
+         the internal representation of the divident.
+     otherwise:
+         The result may be inexact and is not yet supported.
+  *)
+
+  function fxp_div_result_int (x : __fixed) (y : __fixed) : int
+
+  val fxp_div_result_int_ (x : __fixed) (y : __fixed) : int
+     requires { y <> 0 }
+     ensures { result = fxp_div_result_int x y }
+
+  axiom fxp_div_result_int_def :
+    forall x : __fixed. forall y : __fixed [fxp_div_result_int x y].
+      if y = 1 then
+        fxp_div_result_int x y = x
+      else
+        true
+
   (* conversion functions to/from int. 3 cases for the conversion to int:
      case 1:
          If the argument is zero, then the result is zero.

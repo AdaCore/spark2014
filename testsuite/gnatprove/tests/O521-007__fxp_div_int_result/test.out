@@ -1,0 +1,6 @@
+fxp_div.adb:22:30: info: division check proved
+fxp_div.adb:22:30: info: overflow check proved
+fxp_div.adb:22:30: info: range check proved
+fxp_div.adb:23:60: info: division check proved
+fxp_div.adb:31:19: medium: overflow check might fail
+fxp_div.adb:34:29: info: precondition proved

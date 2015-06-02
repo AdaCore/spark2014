@@ -1609,6 +1609,13 @@ package body Why.Atree.Modules is
                         Domain => EW_Term,
                         Typ    => EW_Fixed_Type));
                   Insert_Symbol
+                    (E, WNE_Fixed_Point_Div_Result_Int,
+                     New_Identifier
+                       (Symbol => NID ("fxp_div_result_int"),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => EW_Int_Type));
+                  Insert_Symbol
                     (E, WNE_To_Real,
                      New_Identifier
                        (Symbol => NID ("to_real"),

@@ -4573,8 +4573,20 @@ package body Gnat2Why.Expr is
                then
                   L_Type := EW_Fixed_Type;
                   R_Type := EW_Fixed_Type;
-                  Base := EW_Fixed_Type;
-                  Oper := WNE_Fixed_Point_Div;
+
+                  case Ekind (Return_Type) is
+                     when Fixed_Point_Kind =>
+                        Oper := WNE_Fixed_Point_Div;
+                        Base := EW_Fixed_Type;
+
+                     when Integer_Kind =>
+                        Oper := WNE_Fixed_Point_Div_Result_Int;
+                        Base := EW_Int_Type;
+
+                     when others =>
+                        raise Program_Error;
+
+                  end case;
 
                elsif Has_Fixed_Point_Type (Left_Type) then
                   L_Type := EW_Fixed_Type;
@@ -4591,6 +4603,11 @@ package body Gnat2Why.Expr is
                Name :=
                  (if Is_Fixed_Point_Type (Return_Type) then
                      E_Symb (Return_Type, Oper)
+                  elsif Has_Fixed_Point_Type (Left_Type) and then
+                     Oper = WNE_Fixed_Point_Div_Result_Int then
+                     --  Explicit support for division of a fixed point type
+                     --  by its small with integer result
+                     E_Symb (Left_Type, Oper)
                   else
                      New_Division (Base));
 
