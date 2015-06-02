@@ -83,7 +83,4 @@ indefinite_bounded.adb:114:24: info: initialization of private part of "V" prove
 indefinite_bounded.adb:114:39: info: initialization of private part of "V" proved
 indefinite_bounded.adb:115:66: info: initialization of private part of "V" proved
 indefinite_bounded.adb:117:32: info: initialization of private part of "V" proved
-indefinite_bounded.ads:6:04: warning: in instantiation at a-cfinve.ads:240
-indefinite_bounded.ads:6:04: warning: in instantiation at a-coboho.ads:102
-indefinite_bounded.ads:6:04: warning: pragma "No_Strict_Aliasing" ignored in flow analysis (not yet supported)
 indefinite_bounded.ads:14:14: warning: subprogram "Test" has no effect

@@ -787,7 +787,8 @@ package body Flow.Control_Flow_Graph is
    --  This procedure goes through a given list of statements and
    --  recursively looks at each one, setting up the 'initial and
    --  'final vertices for symbols introduced by quantified
-   --  expressions. We do not descend into nested subprograms.
+   --  expressions. We do not descend into nested subprograms, tasks
+   --  or packages.
 
    procedure Process_Quantified_Expressions
      (N   : Node_Id;
@@ -4346,8 +4347,12 @@ package body Flow.Control_Flow_Graph is
       function Proc (N : Node_Id) return Traverse_Result is
       begin
          case Nkind (N) is
-            when N_Subprogram_Body        |
-                 N_Subprogram_Declaration =>
+            when N_Package_Body           |
+                 N_Package_Declaration    |
+                 N_Subprogram_Body        |
+                 N_Subprogram_Declaration |
+                 N_Task_Body              |
+                 N_Task_Definition        =>
                --  If we ever get one of these we skip the rest of the
                --  nodes that hang under them.
                return Skip;
