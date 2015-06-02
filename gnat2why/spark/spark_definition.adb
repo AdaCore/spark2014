@@ -3934,6 +3934,7 @@ package body SPARK_Definition is
               Pragma_Refined_State                |
               Pragma_SPARK_Mode                   |
               Pragma_Unevaluated_Use_Of_Old       |
+              Pragma_Volatile_Function            |
 
          --  Group 1c - RM Table 16.3, GNAT implementation-defined pragmas
          --  marked "Yes".
