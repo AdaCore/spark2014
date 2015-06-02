@@ -295,6 +295,7 @@ package body SPARK_Definition is
                return False;
             end if;
          end Same_Unit;
+
       begin
          --  Loop to look for entry
 
