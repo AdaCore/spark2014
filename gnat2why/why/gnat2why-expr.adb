@@ -5015,9 +5015,19 @@ package body Gnat2Why.Expr is
                                   Var_Type  => +EW_Int_Type,
                                   Labels      => Name_Id_Sets.Empty_Set,
                                   Pred      => Def);
+               Bounds      : constant W_Pred_Id :=
+                 (if Type_Get_Type_Kind (+Get_Type (Pref)) = EW_Abstract
+                  then New_Bounds_Equality (Left_Arr  => Prefix_Name,
+                                            Right_Arr => +Result_Id,
+                                            Dim       => Positive (Dim))
+                  else True_Pred);
                Result      : W_Expr_Id :=
                  +New_Simpl_Any_Prog (T    => Get_Type (Pref),
-                                      Pred => +Quantif);
+                                      Pred =>
+                                        +New_And_Then_Expr
+                                          (Left   => +Bounds,
+                                           Right  => Quantif,
+                                           Domain => EW_Pred));
             begin
                Result := Binding_For_Temp (Domain  => EW_Prog,
                                            Tmp     => Value_Name,

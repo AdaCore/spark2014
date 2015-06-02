@@ -45,6 +45,7 @@ with Why.Atree.Tables;      use Why.Atree.Tables;
 with Why.Gen.Binders;       use Why.Gen.Binders;
 with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Names;         use Why.Gen.Names;
+with Why.Gen.Preds;         use Why.Gen.Preds;
 with Why.Inter;             use Why.Inter;
 with Why.Types;             use Why.Types;
 
@@ -1391,6 +1392,49 @@ package body Why.Gen.Arrays is
          end;
       end if;
    end New_Array_Update;
+
+   --------------------------
+   -- NNew_Bounds_Equality --
+   --------------------------
+
+   function New_Bounds_Equality
+     (Left_Arr   : W_Expr_Id;
+      Right_Arr  : W_Expr_Id;
+      Dim        : Positive) return W_Pred_Id is
+      Result : W_Expr_Id := +True_Pred;
+   begin
+      for I in 1 .. Dim loop
+         Result :=
+           New_And_Then_Expr
+             (Result,
+              New_And_Then_Expr
+                (New_Comparison
+                   (Symbol => Why_Eq,
+                    Left   => Get_Array_Attr (Domain => EW_Term,
+                                              Expr   => Left_Arr,
+                                              Attr   => Attribute_First,
+                                              Dim    => I),
+                    Right  => Get_Array_Attr (Domain => EW_Term,
+                                              Expr   => Right_Arr,
+                                              Attr   => Attribute_First,
+                                              Dim    => I),
+                    Domain => EW_Pred),
+                 New_Comparison
+                   (Symbol => Why_Eq,
+                    Left   => Get_Array_Attr (Domain => EW_Term,
+                                              Expr   => Left_Arr,
+                                              Attr   => Attribute_Last,
+                                              Dim    => I),
+                    Right  => Get_Array_Attr (Domain => EW_Term,
+                                              Expr   => Right_Arr,
+                                              Attr   => Attribute_Last,
+                                              Dim    => I),
+                    Domain => EW_Pred),
+                 EW_Pred),
+              EW_Pred);
+      end loop;
+      return +Result;
+   end New_Bounds_Equality;
 
    ---------------------
    -- New_Concat_Call --

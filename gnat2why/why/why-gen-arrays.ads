@@ -207,6 +207,15 @@ package Why.Gen.Arrays is
        Value     : W_Expr_Id;
        Domain    : EW_Domain) return W_Expr_Id;
 
+   function New_Bounds_Equality
+     (Left_Arr   : W_Expr_Id;
+      Right_Arr  : W_Expr_Id;
+      Dim        : Positive) return W_Pred_Id;
+   --  Return a predicate of the form:
+   --
+   --    <left_arr>.first1 = <right_arr>.first1 /\
+   --    <left_arr>.last1 = <right_arr>.last1 /\ ...
+
    function New_Element_Equality
      (Ada_Node   : Node_Id := Empty;
       Left_Arr   : W_Expr_Id;

@@ -8,5 +8,5 @@ bounded_strings.adb:11:42: info: length check proved
 bounded_strings.adb:12:08: info: discriminant check proved
 bounded_strings.adb:13:14: info: initialization of "B.Size" proved
 bounded_strings.adb:13:14: info: initialization of "B.Text" proved
-bounded_strings.ads:20:16: medium: postcondition might fail, requires Size(Make'Result) = Initializer'length
+bounded_strings.ads:20:16: info: postcondition proved
 bounded_strings.ads:31:08: info: discriminant check proved
