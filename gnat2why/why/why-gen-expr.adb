@@ -450,7 +450,7 @@ package body Why.Gen.Expr is
             Args      : W_Expr_Array (1 .. 1 + 2 * Dim);
             Arg_Ind   : Positive := 1;
             Need_Conv : constant Boolean := not Is_Static_Array_Type (To_Ent)
-              and then Get_Type_Kind (To) /= EW_Split;
+              and then Get_Base_Type (To) /= EW_Split;
             Split_Typ : constant W_Type_Id :=
               (if not Need_Conv then To
                else EW_Split (To_Ent));
@@ -505,7 +505,7 @@ package body Why.Gen.Expr is
             end if;
          end;
       elsif not Is_Static_Array_Type (To_Ent)
-        and then Get_Type_Kind (To) /= EW_Split
+        and then Get_Base_Type (To) /= EW_Split
       then
 
          --  To is not in split form. Reconstruct array from base.
@@ -527,7 +527,7 @@ package body Why.Gen.Expr is
          end;
 
       elsif Is_Static_Array_Type (From_Ent)
-        or else Get_Type_Kind (From) = EW_Split
+        or else Get_Base_Type (From) = EW_Split
       then
 
          --  Both are in split form.
