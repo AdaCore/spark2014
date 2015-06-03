@@ -1090,6 +1090,11 @@ Proof Limitations
    supported in classwide preconditions. GNATprove does not raise an
    error, but results of proof may be incorrect.
 
+#. Constants declared in loops after the loop-invariant are handled as
+   variables by the tool. This means in particular that any information
+   about their values needed after the loop-invariant must be stated explicitly
+   in the invariant.
+
 Portability Issues
 ==================
 
