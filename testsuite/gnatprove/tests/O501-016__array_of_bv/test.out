@@ -1,31 +1,31 @@
 dumbledore.adb:31:07: info: assertion proved
 dumbledore.adb:40:07: info: assertion proved
-dumbledore.ads:16:43: low: unused global "RAX" (SPARK RM 6.1.4(14))
+dumbledore.ads:16:43: low: unused global "RAX"
 dumbledore.ads:16:43: warning: "RAX" is not modified, could be INPUT
-dumbledore.ads:16:52: low: unused global "RDX" (SPARK RM 6.1.4(14))
+dumbledore.ads:16:52: low: unused global "RDX"
 dumbledore.ads:16:52: warning: "RDX" is not modified, could be INPUT
-dumbledore.ads:16:61: low: unused global "RCX" (SPARK RM 6.1.4(14))
+dumbledore.ads:16:61: low: unused global "RCX"
 dumbledore.ads:16:61: warning: "RCX" is not modified, could be INPUT
-dumbledore.ads:16:70: low: unused global "RBX" (SPARK RM 6.1.4(14))
+dumbledore.ads:16:70: low: unused global "RBX"
 dumbledore.ads:16:70: warning: "RBX" is not modified, could be INPUT
-dumbledore.ads:17:40: low: unused global "RDI" (SPARK RM 6.1.4(14))
+dumbledore.ads:17:40: low: unused global "RDI"
 dumbledore.ads:17:40: warning: "RDI" is not modified, could be INPUT
 dumbledore.ads:17:58: warning: "RSI" is not modified, could be INPUT
-dumbledore.ads:17:67: low: unused global "R8" (SPARK RM 6.1.4(14))
+dumbledore.ads:17:67: low: unused global "R8"
 dumbledore.ads:17:67: warning: "R8" is not modified, could be INPUT
-dumbledore.ads:18:31: low: unused global "Exit_Called" (SPARK RM 6.1.4(14))
+dumbledore.ads:18:31: low: unused global "Exit_Called"
 dumbledore.ads:18:31: warning: "Exit_Called" is not modified, could be INPUT
-dumbledore.ads:19:31: low: unused global "SignFlag" (SPARK RM 6.1.4(14))
+dumbledore.ads:19:31: low: unused global "SignFlag"
 dumbledore.ads:19:31: warning: "SignFlag" is not modified, could be INPUT
-dumbledore.ads:19:45: low: unused global "OverflowFlag" (SPARK RM 6.1.4(14))
+dumbledore.ads:19:45: low: unused global "OverflowFlag"
 dumbledore.ads:19:45: warning: "OverflowFlag" is not modified, could be INPUT
-dumbledore.ads:20:31: low: unused global "ZeroFlag" (SPARK RM 6.1.4(14))
+dumbledore.ads:20:31: low: unused global "ZeroFlag"
 dumbledore.ads:20:31: warning: "ZeroFlag" is not modified, could be INPUT
-dumbledore.ads:20:45: low: unused global "CarryFlag" (SPARK RM 6.1.4(14))
+dumbledore.ads:20:45: low: unused global "CarryFlag"
 dumbledore.ads:20:45: warning: "CarryFlag" is not modified, could be INPUT
-dumbledore.ads:21:31: low: unused global "StackAddressSize" (SPARK RM 6.1.4(14))
-dumbledore.ads:21:53: low: unused global "FS" (SPARK RM 6.1.4(14))
-dumbledore.ads:21:61: low: unused global "GS" (SPARK RM 6.1.4(14))
+dumbledore.ads:21:31: low: unused global "StackAddressSize"
+dumbledore.ads:21:53: low: unused global "FS"
+dumbledore.ads:21:61: low: unused global "GS"
 x86.adb:17:28: info: range check proved
 x86.adb:27:55: info: division check proved
 x86.adb:27:55: info: range check proved
@@ -208,7 +208,7 @@ x86.ads:489:14: info: postcondition proved
 x86.ads:495:14: info: postcondition proved
 x86.ads:504:14: info: postcondition proved
 x86.ads:509:14: info: postcondition proved
-x86.ads:515:26: low: unused global "Memory" (SPARK RM 6.1.4(14))
+x86.ads:515:26: low: unused global "Memory"
 x86.ads:516:14: info: postcondition proved
-x86.ads:527:26: low: unused global "Memory" (SPARK RM 6.1.4(14))
+x86.ads:527:26: low: unused global "Memory"
 x86.ads:528:14: info: postcondition proved

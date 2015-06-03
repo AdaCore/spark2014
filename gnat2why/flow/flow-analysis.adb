@@ -1008,7 +1008,6 @@ package body Flow.Analysis is
                      Error_Msg_Flow
                        (FA       => FA,
                         Msg      => "unused global &",
-                        SRM_Ref  => "6.1.4(14)",
                         N        => Find_Global (FA.Analyzed_Entity, F),
                         F1       => F,
                         Tag      => Unused,
