@@ -2172,7 +2172,11 @@ package body SPARK_Definition is
 
       for Cur in Delayed_Type_Aspects.Iterate loop
          Current_SPARK_Pragma := Node_Maps.Element (Cur);
-         Mark (Node_Maps.Key (Cur));
+         if Nkind (Current_SPARK_Pragma) = N_Pragma
+           or else Entity_In_SPARK (Current_SPARK_Pragma)
+         then
+            Mark (Node_Maps.Key (Cur));
+         end if;
       end loop;
    end Mark_Compilation_Unit;
 
@@ -4665,6 +4669,7 @@ package body SPARK_Definition is
    function SPARK_Pragma_Is (Mode : Opt.SPARK_Mode_Type) return Boolean is
      (Present (Current_SPARK_Pragma)
       and then (if Nkind (Current_SPARK_Pragma) = N_Pragma then
-                   Get_SPARK_Mode_From_Pragma (Current_SPARK_Pragma) = Mode));
+                   Get_SPARK_Mode_From_Pragma (Current_SPARK_Pragma) = Mode
+                else Mode = Opt.On));
 
 end SPARK_Definition;
