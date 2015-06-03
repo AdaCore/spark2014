@@ -22,7 +22,8 @@ is
           Depends => (Displays => (D_Main, D_Secondary));
 
    function Last_Value_Sent return Integer
-     with Global => Complex_Device;  -- Complex_Device is an External
+     with Volatile_Function,
+          Global => Complex_Device;  -- Complex_Device is an External
                                      -- state.  It can be a global_item of
                                      -- a function provided the Refined_Global
                                      -- aspect only refers to non-volatile

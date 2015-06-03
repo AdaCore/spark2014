@@ -4,10 +4,12 @@ package Raw_Data
        Initializes    => State
 is
    function Data_Is_Valid return Boolean
-     with Global => State;
+     with Volatile_Function,
+          Global => State;
 
    function Get_Value return Integer
-     with Global => State;
+     with Volatile_Function,
+          Global => State;
 
    procedure Read_Next
      with Global  => (In_Out => State),

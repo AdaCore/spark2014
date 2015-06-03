@@ -120,7 +120,8 @@ is
    -- Traceto: FD.MonitoredRealWorld.State
    ------------------------------------------------------------------
    function GetNow return TimeT
-     with Global => Now;
+     with Volatile_Function,
+          Global => Now;
 
    ------------------------------------------------------------------
    -- GreaterThan

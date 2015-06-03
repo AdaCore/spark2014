@@ -59,6 +59,7 @@ is
 
    function F_Many_Moded_Global_Lists (Par : Integer) return Integer
      --  global_specification ::= moded_global_list {, moded_global_list}
-     with Global => (Input    => (X, A1, Comp),
+     with Volatile_Function,
+          Global => (Input    => (X, A1, Comp),
                      Proof_In => (A3, A4, A7));
 end Global_Legal;

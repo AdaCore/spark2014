@@ -928,16 +928,16 @@ clock.adb:378:24: info: initialization of "LocalText" proved
 clock.adb:379:50: info: division check proved
 clock.adb:380:32: info: division check proved
 clock.adb:384:14: info: initialization of "LocalText" proved
-clock.ads:185:07: info: initialization of "TheTime.Day" proved
-clock.ads:185:07: info: initialization of "TheTime.MilliSec" proved
-clock.ads:185:07: info: initialization of "TheTime.Month" proved
-clock.ads:185:07: info: initialization of "TheTime.Year" proved
-clock.ads:186:07: info: initialization of "Success" proved
-clock.ads:205:07: info: initialization of "Year" proved
-clock.ads:206:07: info: initialization of "Month" proved
-clock.ads:207:07: info: initialization of "Day" proved
-clock.ads:208:07: info: initialization of "Hour" proved
-clock.ads:209:07: info: initialization of "Min" proved
+clock.ads:186:07: info: initialization of "TheTime.Day" proved
+clock.ads:186:07: info: initialization of "TheTime.MilliSec" proved
+clock.ads:186:07: info: initialization of "TheTime.Month" proved
+clock.ads:186:07: info: initialization of "TheTime.Year" proved
+clock.ads:187:07: info: initialization of "Success" proved
+clock.ads:206:07: info: initialization of "Year" proved
+clock.ads:207:07: info: initialization of "Month" proved
+clock.ads:208:07: info: initialization of "Day" proved
+clock.ads:209:07: info: initialization of "Hour" proved
+clock.ads:210:07: info: initialization of "Min" proved
 configdata.adb:89:09: info: length check proved
 configdata.adb:91:09: info: length check proved
 configdata.adb:93:09: info: length check proved

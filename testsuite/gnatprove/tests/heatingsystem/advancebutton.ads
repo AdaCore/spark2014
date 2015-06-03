@@ -23,7 +23,8 @@ is
    -- determines rate of advance when button held down
 
    function CurrentMode return AdvanceModes
-     with Global => State;
+     with Volatile_Function,
+          Global => State;
 
    procedure SetSlowMode
      with Global  => (In_Out => State),

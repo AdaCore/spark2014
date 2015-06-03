@@ -36,7 +36,8 @@ is
    --
    ------------------------------------------------------------------
    function IsSamplePresent return BasicTypes.PresenceT
-     with Global => Input;
+     with Volatile_Function,
+          Global => Input;
 
    ------------------------------------------------------------------
    -- Verify

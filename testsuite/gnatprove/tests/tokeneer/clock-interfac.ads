@@ -36,7 +36,8 @@ is
    --
    ------------------------------------------------------------------
    function TheTime return Clock.TimeT
-     with Global => Now;
+     with Volatile_Function,
+          Global => Now;
 
    ------------------------------------------------------------------
    -- AddDuration

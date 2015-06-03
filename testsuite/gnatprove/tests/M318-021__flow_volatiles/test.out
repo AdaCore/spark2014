@@ -71,9 +71,19 @@ tests_external_state.ads:31:22: info: initialization of "X" proved
 tests_external_state.ads:42:25: info: initialization of "X" proved
 tests_external_state.ads:53:22: info: initialization of "X" proved
 tests_external_state.ads:64:25: info: initialization of "X" proved
-types.adb:56:12: illegal reading of volatile "out" parameter
-types.adb:64:12: illegal reading of volatile "out" parameter
-   compilation of types.adb failed
-
-
-gnatprove: error during generation of Global contracts
+types.adb:34:04: warning: analyzing unreferenced procedure "Test_01"
+types.adb:34:14: warning: subprogram "Test_01" has no effect
+types.adb:40:04: warning: analyzing unreferenced procedure "Test_02"
+types.adb:40:23: high: "R.X" is not written in "Test_02"
+types.adb:40:23: warning: unused variable "R"
+types.adb:46:04: warning: analyzing unreferenced procedure "Test_03"
+types.adb:46:23: warning: "R" is not modified, could be IN
+types.adb:46:23: warning: unused variable "R"
+types.adb:52:04: warning: analyzing unreferenced procedure "Test_04"
+types.adb:52:23: high: "R.X" is not written in "Test_04"
+types.adb:53:23: info: initialization of "X" proved
+types.adb:56:12: high: "R.X" is not written
+types.adb:59:04: warning: analyzing unreferenced procedure "Test_05"
+types.adb:59:23: info: initialization of "R.X" proved
+types.adb:60:23: info: initialization of "X" proved
+types.adb:64:12: info: initialization of "R.X" proved

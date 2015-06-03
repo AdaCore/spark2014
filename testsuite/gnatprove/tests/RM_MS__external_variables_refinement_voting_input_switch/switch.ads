@@ -5,5 +5,6 @@ is
    type Reading is (on, off, unknown);
 
    function ReadValue return Reading
-     with Global => (Input => State);
+     with Volatile_Function,
+          Global => (Input => State);
 end Switch;

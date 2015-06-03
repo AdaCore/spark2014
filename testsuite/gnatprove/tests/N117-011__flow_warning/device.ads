@@ -13,6 +13,7 @@ is
           Depends => (OK => State);
 
    function Last_Written return Integer
-     with Global => State;
+     with Volatile_Function,
+          Global => State;
 
 end Device;
