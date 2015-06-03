@@ -764,7 +764,9 @@ package body Flow.Analysis.Sanity is
          return Up_Projected_Set;
       end Up_Project_Flow_Set;
 
-   begin  --  Check_Generated_Refined_Global
+   --  Start of processing for Check_Generated_Refined_Global
+
+   begin
 
       Sane := True;
 
