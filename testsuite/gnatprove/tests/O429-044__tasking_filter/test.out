@@ -21,6 +21,4 @@ tasks.ads:22:07: warning: pragma "Priority" ignored (not yet supported)
    compilation of tasks.adb failed
 
 
-Phase 1 of 2: generation of Global contracts ...
-Phase 2 of 2: checking of SPARK legality rules ...
-Summary logged in gnatprove/gnatprove.out
+gnatprove: error during flow analysis and proof
