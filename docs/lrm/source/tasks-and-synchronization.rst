@@ -208,22 +208,22 @@ are in |SPARK|.
     references Ada.Task_Identification.Tasking_State;
 
   * Ada.Dispatching.EDF.Get_Deadline
-    references Ada.Task_Identification.Tasking_State.
+    references Ada.Task_Identification.Tasking_State;
 
   * Ada.Interrupts.Is_Reserved
-    references Ada.Task_Identification.Tasking_State.
+    references Ada.Task_Identification.Tasking_State;
 
   * Ada.Interrupts.Is_Attached
-    references Ada.Task_Identification.Tasking_State.
+    references Ada.Task_Identification.Tasking_State;
 
   * Ada.Interrupts.Detach_Handler
-    references Ada.Task_Identification.Tasking_State.
+    references Ada.Task_Identification.Tasking_State;
 
   * Ada.Interrupts.Get_CPU
-    references Ada.Task_Identification.Tasking_State.
+    references Ada.Task_Identification.Tasking_State;
 
   * Ada.Synchronous_Task_Control.Current_State
-    references Ada.Task_Identification.Tasking_State;
+    references Ada.Task_Identification.Tasking_State.
 
   [Functions already excluded by Ravenscar, such as Ada.Calendar.Clock, are
   not on this list.]
