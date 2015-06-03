@@ -982,7 +982,7 @@ package body Flow.Control_Flow_Graph is
 
       Prev := Union_Id (Empty);
       for P of Nodes loop
-         if Present (Node_Id (Prev)) then
+         if Prev /= Empty_List_Or_Node then
             --  Connect this statement to the previous one.
             Linkup (FA,
                     CM (Prev).Standard_Exits,
@@ -996,7 +996,7 @@ package body Flow.Control_Flow_Graph is
          Prev := P;
       end loop;
 
-      if Present (Node_Id (Prev)) then
+      if Prev /= Empty_List_Or_Node then
          --  Set the standard exits of the list, if we processed at
          --  least one element.
          Block.Standard_Exits := CM (Prev).Standard_Exits;
@@ -4197,62 +4197,21 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
+      L     : Union_Lists.List := Union_Lists.Empty_List;
+      Block : Graph_Connections;
    begin
       if Present (Declarations (N)) then
          Process_Statement_List (Declarations (N), FA, CM, Ctx);
+         L.Append (Union_Id (Declarations (N)));
       end if;
 
       if Present (Handled_Statement_Sequence (N)) then
          Process_Statement (Handled_Statement_Sequence (N), FA, CM, Ctx);
+         L.Append (Union_Id (Handled_Statement_Sequence (N)));
       end if;
 
-      if Present (Declarations (N)) and then
-        Present (Handled_Statement_Sequence (N))
-      then
-         Linkup
-           (FA,
-            CM (Union_Id (Declarations (N))).Standard_Exits,
-            CM (Union_Id (Handled_Statement_Sequence (N))).Standard_Entry);
-
-         CM.Include
-           (Union_Id (N),
-            Graph_Connections'
-              (Standard_Entry => CM.Element
-                 (Union_Id (Declarations (N))).Standard_Entry,
-               Standard_Exits => CM.Element
-                 (Union_Id (Handled_Statement_Sequence (N))).Standard_Exits));
-
-      elsif Present (Declarations (N)) then
-         CM.Include
-           (Union_Id (N),
-            Graph_Connections'
-              (Standard_Entry => CM.Element
-                 (Union_Id (Declarations (N))).Standard_Entry,
-               Standard_Exits => CM.Element
-                 (Union_Id (Declarations (N))).Standard_Exits));
-
-      elsif Present (Handled_Statement_Sequence (N)) then
-         CM.Include
-           (Union_Id (N),
-            Graph_Connections'
-              (Standard_Entry => CM.Element
-                 (Union_Id (Handled_Statement_Sequence (N))).Standard_Entry,
-               Standard_Exits => CM.Element
-                 (Union_Id (Handled_Statement_Sequence (N))).Standard_Exits));
-
-      else
-         declare
-            V : Flow_Graphs.Vertex_Id;
-         begin
-            Add_Vertex
-              (FA,
-               Direct_Mapping_Id (N),
-               Make_Aux_Vertex_Attributes (E_Loc => N),
-               V);
-            CM.Include (Union_Id (N), Trivial_Connection (V));
-         end;
-      end if;
-
+      Join (FA, CM, L, Block);
+      CM.Include (Union_Id (N), Block);
    end Do_Subprogram_Or_Block;
 
    -------------------------
