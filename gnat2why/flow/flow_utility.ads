@@ -130,7 +130,10 @@ is
                           Consider_Discriminants : Boolean := False;
                           Globals_For_Proof      : Boolean := False;
                           Use_Computed_Globals   : Boolean := True)
-     with Pre  => Ekind (Subprogram) in E_Procedure | E_Function | E_Task_Type,
+     with Pre  => Ekind (Subprogram) in E_Procedure |
+                                        E_Function  |
+                                        E_Entry     |
+                                        E_Task_Type,
           Post => (for all G of Proof_Ins => G.Variant = In_View) and
                   (for all G of Reads     => G.Variant = In_View) and
                   (for all G of Writes    => G.Variant = Out_View);
@@ -178,14 +181,22 @@ is
    function Rely_On_Generated_Global
      (E     : Entity_Id;
       Scope : Flow_Scope)
-      return Boolean;
+      return Boolean
+   with Pre => Nkind (E) in N_Entity and then
+               Ekind (E) in Subprogram_Kind |
+                            E_Task_Type     |
+                            E_Entry;
    --  Returns True if Scope has visibility of E's body and Generated
    --  Globals will be produced for E.
 
    function Rely_On_Generated_Depends
      (E     : Entity_Id;
       Scope : Flow_Scope)
-      return Boolean;
+      return Boolean
+   with Pre => Nkind (E) in N_Entity and then
+               Ekind (E) in Subprogram_Kind |
+                            E_Task_Type     |
+                            E_Entry;
    --  Returns True if Scope has visibility of E's body and a
    --  Generated Depends will be produced for E.
 
@@ -438,7 +449,8 @@ is
    --  function should never be called when its true...)
 
    function Get_Precondition_Expressions (E : Entity_Id) return Node_Lists.List
-     with Pre => Ekind (E) in Subprogram_Kind;
+   with Pre => Ekind (E) in Subprogram_Kind |
+                            E_Entry;
    --  Given the entity for a subprogram, return the expression(s) for
    --  its precondition and the condition(s) of its Contract_Cases (or
    --  return the empty list if none of these exist).
@@ -446,7 +458,8 @@ is
    function Get_Postcondition_Expressions (E       : Entity_Id;
                                            Refined : Boolean)
                                            return Node_Lists.List
-   with Pre => Ekind (E) in Subprogram_Kind  |
+   with Pre => Ekind (E) in Subprogram_Kind |
+                            E_Entry         |
                             E_Package;
    --  Given the entity for a subprogram or package, return all
    --  expression(s) associated with postconditions: the

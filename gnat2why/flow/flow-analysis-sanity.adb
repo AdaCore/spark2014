@@ -331,6 +331,10 @@ package body Flow.Analysis.Sanity is
             pragma Assert (Nkind (Entry_Node) = N_Subprogram_Body);
             Check_Expressions (Entry_Node);
 
+         when E_Entry =>
+            Entry_Node := Entry_Body (FA.Analyzed_Entity);
+            Check_Expressions (Entry_Node);
+
          when E_Task_Body =>
             Entry_Node := Task_Body (FA.Analyzed_Entity);
             Check_Expressions (Entry_Node);
@@ -496,7 +500,7 @@ package body Flow.Analysis.Sanity is
       function Find_Aspect_To_Fix return String is
       begin
          case FA.Kind is
-            when E_Subprogram_Body | E_Task_Body =>
+            when E_Subprogram_Body | E_Task_Body | E_Entry =>
                if Present (FA.Refined_Global_N) then
                   return "Refined_Global";
                elsif Present (FA.Global_N) then

@@ -419,8 +419,8 @@ package body Flow_Refinement is
       Body_E : Node_Id;
       N      : Node_Id := Empty;
    begin
-      --  For now tasks cannot have contracts
-      if Ekind (E) in Task_Kind then
+      --  ??? O429-046 For now tasks and entries cannot have contracts
+      if Ekind (E) in Task_Kind | E_Entry then
          return Empty;
       end if;
 
@@ -801,9 +801,9 @@ package body Flow_Refinement is
       case Ekind (E) is
          when Subprogram_Kind =>
             Body_N := Subprogram_Body_Entity (E);
-         when E_Task_Type =>
-            Body_N := Task_Body (E);
-            --  For now we always generate generate globals for Tasks
+         when E_Task_Type | E_Entry =>
+            --  ??? O429-046 For now we always generate generate globals
+            --  for tasks and entries
             return True;
          when others =>
             raise Program_Error;

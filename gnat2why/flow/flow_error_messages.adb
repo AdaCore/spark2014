@@ -353,6 +353,7 @@ package body Flow_Error_Messages is
          when E_Subprogram_Body |
               E_Package         |
               E_Task_Body       |
+              E_Entry           |
               E_Protected_Type  =>
             E := FA.Analyzed_Entity;
          when E_Package_Body =>

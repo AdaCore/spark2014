@@ -514,7 +514,7 @@ package SPARK_Util is
       Name      : Name_Id;
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Node_Lists.List
-     with Pre => (Is_Subprogram (E) or else Ekind (E) = E_Package) and then
+     with Pre => (Ekind (E) in Subprogram_Kind | E_Package | E_Entry) and then
                  not (Classwide and Inherited);
    --  @param E subprogram or package
    --  @param Name contract name
@@ -697,6 +697,32 @@ package SPARK_Util is
                  then Nkind (PO_Definition'Result) = N_Protected_Definition);
    --  @param E protected type
    --  @return the protected definition for the given type
+
+   --------------------------------
+   -- Queries related to entries --
+   --------------------------------
+
+   function Entry_Body (E : Entity_Id) return Node_Id
+     with Pre  => (Nkind (E) in N_Entity and then
+                   Ekind (E) = E_Entry and then
+                   Nkind (Parent (E)) = N_Entry_Declaration),
+          Post => (if Present (Entry_Body'Result)
+                   then Nkind (Entry_Body'Result) = N_Entry_Body);
+   --  @param E entry
+   --  @return the entry body for the given entry, similar to what
+   --    Subprogram_Body might produce.
+
+   function Entry_Body_Entity (E : Entity_Id) return Node_Id
+     with Pre  => (Nkind (E) in N_Entity and then
+                   Ekind (E) = E_Entry and then
+                   Nkind (Parent (E)) = N_Entry_Declaration),
+          Post => (if Present (Entry_Body_Entity'Result)
+                   then Nkind (Entry_Body_Entity'Result) in N_Entity and then
+                        Ekind (Entry_Body_Entity'Result) = E_Entry and then
+                        Nkind (Parent (Entry_Body_Entity'Result)) =
+                          N_Entry_Body);
+   --  @param E entry
+   --  @return the entry body entity for the given entry
 
    ---------------------------------
    -- Queries related to packages --

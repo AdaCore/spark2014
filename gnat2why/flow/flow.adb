@@ -98,6 +98,7 @@ package body Flow is
      with Pre  => Ekind (E) in Subprogram_Kind  |
                                E_Task_Type      |
                                E_Protected_Type |
+                               E_Entry          |
                                E_Package        |
                                E_Package_Body,
           Post => Is_Valid (Flow_Analyse_Entity'Result);
@@ -115,7 +116,7 @@ package body Flow is
    --  Construct all flow graphs for the current compilation unit.
 
    function Last_Statement_Is_Raise (E : Entity_Id) return Boolean
-     with Pre => Ekind (E) in Subprogram_Kind | E_Task_Type;
+     with Pre => Ekind (E) in Subprogram_Kind | E_Task_Type | E_Entry;
    --  Returns True if the last statement in the
    --  Handled_Sequence_Of_Statements of subprogram E is an
    --  N_Raise_Statement.
@@ -263,6 +264,8 @@ package body Flow is
            Is_Subprogram (X.Analyzed_Entity),
         when E_Task_Body =>
            Ekind (X.Analyzed_Entity) = E_Task_Type,
+        when E_Entry =>
+           Ekind (X.Analyzed_Entity) = E_Entry,
         when E_Protected_Type =>
            Ekind (X.Analyzed_Entity) = E_Protected_Type,
         when E_Package =>
@@ -886,13 +889,33 @@ package body Flow is
             Tmp.Global_N  := Get_Pragma (E, Pragma_Global);
 
             declare
-               Body_N : constant Node_Id := Subprogram_Body_Entity (E);
+               Body_E : constant Entity_Id := Subprogram_Body_Entity (E);
             begin
-               Tmp.Refined_Depends_N := Get_Pragma (Body_N,
+               Tmp.Refined_Depends_N := Get_Pragma (Body_E,
                                                     Pragma_Refined_Depends);
-               Tmp.Refined_Global_N  := Get_Pragma (Body_N,
+               Tmp.Refined_Global_N  := Get_Pragma (Body_E,
                                                     Pragma_Refined_Global);
             end;
+
+            Tmp.Is_Generative := Refinement_Needed (E);
+
+            Tmp.Function_Side_Effects_Present := False;
+
+         when E_Entry =>
+            Tmp.B_Scope := Get_Flow_Scope (Entry_Body (E));
+            Tmp.S_Scope := Get_Flow_Scope (E);
+
+            Append (Tmp.Base_Filename, "entry_");
+
+            Tmp.Is_Main := False;
+
+            Tmp.Last_Statement_Is_Raise := Last_Statement_Is_Raise (E);
+
+            --  ??? O429-046 requires FE work for contracts on entries
+            Tmp.Depends_N         := Empty;
+            Tmp.Global_N          := Empty;
+            Tmp.Refined_Depends_N := Empty;
+            Tmp.Refined_Global_N  := Empty;
 
             Tmp.Is_Generative := Refinement_Needed (E);
 
@@ -910,17 +933,11 @@ package body Flow is
 
             Tmp.Last_Statement_Is_Raise := Last_Statement_Is_Raise (E);
 
-            Tmp.Depends_N := Empty; -- Get_Pragma (E, Pragma_Depends);
-            Tmp.Global_N  := Empty; -- Get_Pragma (E, Pragma_Global);
-
-            --  declare
-            --     Body_N : constant Node_Id := Subprogram_Body_Entity (E);
-            --  begin
-            Tmp.Refined_Depends_N := Empty;  --  Get_Pragma (Body_N,
-                                             --    Pragma_Refined_Depends);
-            Tmp.Refined_Global_N  := Empty;  --  Get_Pragma (Body_N,
-                                             --    Pragma_Refined_Global);
-            --  end;
+            --  ??? O429-046 requires FE work for contracts on tasks
+            Tmp.Depends_N         := Empty;
+            Tmp.Global_N          := Empty;
+            Tmp.Refined_Depends_N := Empty;
+            Tmp.Refined_Global_N  := Empty;
 
             Tmp.Is_Generative := Refinement_Needed (E);
 
@@ -1015,7 +1032,7 @@ package body Flow is
             --  There are a number of cases where we don't want to produce
             --  graphs as we already have all the contracts we need.
             case FA.Kind is
-               when E_Subprogram_Body | E_Task_Body =>
+               when E_Subprogram_Body | E_Task_Body | E_Entry =>
                   if not FA.Is_Generative then
                      if Gnat2Why_Args.Flow_Advanced_Debug then
                         if Present (FA.Global_N) then
@@ -1044,11 +1061,13 @@ package body Flow is
                                             (Task_Body_Entity (E))
                                        then "yes"
                                        else "no"));
+                        --   ??? O429-046 need to do something for entries
+                        --       here.
                      end if;
                   end if;
 
                when E_Protected_Type =>
-                  --  !!! O429-046 we need to do something for globals here
+                  --  ??? O429-046 we need to do something for globals here
                   if Gnat2Why_Args.Flow_Advanced_Debug then
                      Write_Str ("skipped (protected body)");
                      Write_Eol;
@@ -1182,10 +1201,11 @@ package body Flow is
 
       for E of Entity_Set loop
          case Ekind (E) is
-            when Subprogram_Kind | E_Task_Type =>
-               Body_E := (if Ekind (E) = E_Task_Type
-                          then Task_Body_Entity (E)
-                          else E);
+            when Subprogram_Kind | E_Task_Type | E_Entry =>
+               Body_E := (case Ekind (E) is
+                          when E_Task_Type => Task_Body_Entity (E),
+                          when E_Entry     => Entry_Body_Entity (E),
+                          when others      => E);
 
                if SPARK_Util.Analysis_Requested (Body_E) then
                   if Entity_Body_In_SPARK (Body_E)
@@ -1396,9 +1416,13 @@ package body Flow is
          Analysis.Sanity_Check (FA, Success);
          if Success then
             case FA.Kind is
-               when E_Subprogram_Body | E_Package | E_Package_Body =>
+               when E_Subprogram_Body |
+                    E_Package         |
+                    E_Package_Body    |
+                    E_Entry           =>
                   Analysis.Sanity_Check_Postcondition (FA, Success);
-               when E_Protected_Type | E_Task_Body =>
+               when E_Protected_Type |
+                    E_Task_Body      =>
                   --  No postconditions for tasks and pos.
                   null;
             end case;
@@ -1451,8 +1475,12 @@ package body Flow is
                                       Kind => Claim_Effects));
                   end if;
 
+               when E_Entry =>
+                  --  ??? O429-046 analyze entries (like subprograms)
+                  null;
+
                when E_Task_Body | E_Protected_Type =>
-                  --  !!! O429-046 analyze tasks and pos
+                  --  ??? O429-046 analyze tasks and pos
                   null;
 
                when E_Package | E_Package_Body =>
@@ -1652,6 +1680,8 @@ package body Flow is
             Ptr := Subprogram_Body (E);
          when E_Task_Type =>
             Ptr := Task_Body (E);
+         when E_Entry =>
+            Ptr := Entry_Body (E);
          when others =>
             raise Program_Error;
       end case;

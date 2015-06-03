@@ -763,7 +763,8 @@ package body Flow.Control_Flow_Graph is
    with Pre => Nkind (N) in N_Subprogram_Body |
                             N_Task_Body       |
                             N_Block_Statement |
-                            N_Package_Body;
+                            N_Package_Body    |
+                            N_Entry_Body;
    --  This is the top level procedure which deals with a subprogram,
    --  block or package elaboration statement. The declarations and
    --  sequence of statements is processed and linked.
@@ -5464,6 +5465,13 @@ package body Flow.Control_Flow_Graph is
                Subprogram_Spec := Corresponding_Spec (Body_N);
             end if;
 
+         when E_Entry =>
+            Body_N          := Entry_Body (FA.Analyzed_Entity);
+            Preconditions   :=
+              Get_Precondition_Expressions (FA.Analyzed_Entity);
+
+            Subprogram_Spec := FA.Analyzed_Entity;
+
          when E_Task_Body =>
             --  Tasks cannot have pre- or postconditions right now. This is
             --  a matter for the ARG perhaps.
@@ -5515,7 +5523,7 @@ package body Flow.Control_Flow_Graph is
       --  Collect parameters of the analyzed entity and produce
       --  initial and final vertices.
       case FA.Kind is
-         when E_Subprogram_Body =>
+         when E_Subprogram_Body | E_Entry =>
             declare
                E : Entity_Id;
             begin
@@ -5581,7 +5589,7 @@ package body Flow.Control_Flow_Graph is
       --  Collect globals for the analyzed entity and create initial
       --  and final vertices.
       case FA.Kind is
-         when E_Subprogram_Body | E_Task_Body =>
+         when E_Subprogram_Body | E_Task_Body | E_Entry =>
             if not FA.Compute_Globals then
                declare
                   type G_Prop is record
@@ -5678,7 +5686,7 @@ package body Flow.Control_Flow_Graph is
             end if;
 
          when E_Protected_Type =>
-            --  !!!T O429-046 TODO: Globals for pos
+            --  ??? O429-046 TODO: Globals for pos
             null;
 
          when E_Package | E_Package_Body =>
@@ -5779,7 +5787,7 @@ package body Flow.Control_Flow_Graph is
       --     - declarative part
       --     - body
       case FA.Kind is
-         when E_Subprogram_Body =>
+         when E_Subprogram_Body | E_Entry =>
             for Precondition of Preconditions loop
                Process_Quantified_Expressions
                  (Precondition, FA, Connection_Map, The_Context);
@@ -5801,6 +5809,7 @@ package body Flow.Control_Flow_Graph is
             Process_Quantified_Expressions
               (Statements (Handled_Statement_Sequence (Body_N)),
                FA, Connection_Map, The_Context);
+            --  ?? O429-046 look into entry barriers
 
          when E_Task_Body =>
             Process_Quantified_Expressions
@@ -5877,7 +5886,7 @@ package body Flow.Control_Flow_Graph is
       --  Produce flowgraph for the precondition and postcondition if
       --  any.
       case FA.Kind is
-         when E_Subprogram_Body =>
+         when E_Subprogram_Body | E_Entry  =>
             --  Flowgraph for preconditions and left hand sides of
             --  contract cases.
             declare
@@ -5955,7 +5964,7 @@ package body Flow.Control_Flow_Graph is
       --  Produce flowgraphs for the body and link to start, helper
       --  end and end vertex.
       case FA.Kind is
-         when E_Subprogram_Body =>
+         when E_Subprogram_Body | E_Entry =>
             Do_Subprogram_Or_Block (Body_N, FA, Connection_Map, The_Context);
 
             --  Connect up all the dots...

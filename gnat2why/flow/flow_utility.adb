@@ -1528,6 +1528,11 @@ package body Flow_Utility is
       Reads     := Flow_Id_Sets.Empty_Set;
       Writes    := Flow_Id_Sets.Empty_Set;
 
+      if Ekind (Subprogram) = E_Entry then
+         --  ??? O429-046 Hack until Pavlos implements globals for entries
+         return;
+      end if;
+
       if Debug_Trace_Get_Global then
          Write_Str ("Get_Global (");
          Sprint_Node (Subprogram);
@@ -2253,15 +2258,16 @@ package body Flow_Utility is
       Scope : Flow_Scope)
       return Boolean
    is
-      Body_N : constant Node_Id :=
-        (if Ekind (E) = E_Task_Type
-         then Task_Body_Entity (E)
-         else Subprogram_Body_Entity (E));
+      Body_E : constant Entity_Id :=
+        (case Ekind (E) is
+         when E_Task_Type => Task_Body_Entity (E),
+         when E_Entry     => Entry_Body_Entity (E),
+         when others      => Subprogram_Body_Entity (E));
    begin
-      if Present (Body_N)
+      if Present (Body_E)
         and then Entity_Body_In_SPARK (E)
         and then Entity_Body_Valid_SPARK (E)
-        and then Is_Visible (Body_N, Scope)
+        and then Is_Visible (Body_E, Scope)
         and then Refinement_Needed (E)
       then
          return True;
@@ -2281,22 +2287,23 @@ package body Flow_Utility is
       Scope : Flow_Scope)
       return Boolean
    is
-      Body_N : constant Node_Id :=
-        (if Ekind (E) = E_Task_Type
-         then Task_Body_Entity (E)
-         else Subprogram_Body_Entity (E));
+      Body_E : constant Entity_Id :=
+        (case Ekind (E) is
+         when E_Task_Type => Task_Body_Entity (E),
+         when E_Entry     => Entry_Body_Entity (E),
+         when others      => Subprogram_Body_Entity (E));
    begin
       if Rely_On_Generated_Global (E, Scope) then
-         if Present (Body_N) then
+         if Present (Body_E) then
             declare
                Depends_N         : constant Node_Id :=
                  Get_Pragma (E, Pragma_Depends);
 
                Refined_Depends_N : constant Node_Id :=
-                 Get_Pragma (Body_N, Pragma_Refined_Depends);
+                 Get_Pragma (Body_E, Pragma_Refined_Depends);
 
                B_Scope           : constant Flow_Scope :=
-                 Get_Flow_Scope (Body_N);
+                 Get_Flow_Scope (Body_E);
             begin
                if Present (Depends_N)
                  and then No (Refined_Depends_N)
@@ -3505,7 +3512,7 @@ package body Flow_Utility is
       P_CC   : Node_Lists.List;
    begin
       case Ekind (E) is
-         when Subprogram_Kind =>
+         when Subprogram_Kind | E_Entry =>
             if Refined then
                P_Expr := Find_Contracts (E, Name_Refined_Post);
             else

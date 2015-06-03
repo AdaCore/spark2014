@@ -142,6 +142,7 @@ package Flow is
    subtype Valid_Analyzed_Entity is Entity_Kind
      with Static_Predicate =>
        Valid_Analyzed_Entity in E_Subprogram_Body |
+                                E_Entry           |
                                 E_Task_Body       |
                                 E_Protected_Type  |
                                 E_Package         |
@@ -248,7 +249,7 @@ package Flow is
       --  Information for globals computation.
 
       case Kind is
-         when E_Subprogram_Body | E_Task_Body =>
+         when E_Subprogram_Body | E_Task_Body | E_Entry =>
             Is_Main : Boolean;
             --  True if this is the main program. In order to be the
             --  main it has to be a library level subprogram without

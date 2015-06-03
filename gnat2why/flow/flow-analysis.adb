@@ -625,7 +625,7 @@ package body Flow.Analysis is
                Vars_Known := To_Entire_Variables (FA.All_Vars);
             else
                case FA.Kind is
-                  when E_Subprogram_Body =>
+                  when E_Subprogram_Body | E_Entry =>
                      Vars_Known := Flow_Id_Sets.Empty_Set;
 
                      --  We need to assemble the variables known from

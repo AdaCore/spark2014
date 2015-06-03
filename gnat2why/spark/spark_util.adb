@@ -1124,6 +1124,33 @@ package body SPARK_Util is
       return Result;
    end Default_Initialization;
 
+   ----------------
+   -- Entry_Body --
+   ----------------
+
+   function Entry_Body (E : Entity_Id) return Node_Id
+   is
+      Ptr : Node_Id := Entry_Body_Entity (E);
+   begin
+      if Present (Ptr) then
+         Ptr := Parent (Ptr);
+      end if;
+      return Ptr;
+   end Entry_Body;
+
+   -----------------------
+   -- Entry_Body_Entity --
+   -----------------------
+
+   function Entry_Body_Entity (E : Entity_Id) return Entity_Id
+   is
+      Ptr : Node_Id;
+   begin
+      Ptr := Parent (E);
+      pragma Assert (Nkind (Ptr) = N_Entry_Declaration);
+      return Corresponding_Body (Ptr);
+   end Entry_Body_Entity;
+
    --------------------
    -- Find_Contracts --
    --------------------
@@ -1170,9 +1197,13 @@ package body SPARK_Util is
               Name_Initial_Condition =>
 
             if Name = Name_Refined_Post then
-               if Present (Subprogram_Body (E)) then
+               if Ekind (E) in Subprogram_Kind and then
+                 Present (Subprogram_Body (E))
+               then
                   C := Contract (Defining_Entity (Specification
-                                 (Subprogram_Body (E))));
+                                                    (Subprogram_Body (E))));
+               elsif Ekind (E) = E_Entry and then Present (Entry_Body (E)) then
+                  C := Contract (Entry_Body_Entity (E));
                else
                   C := Empty;
                end if;

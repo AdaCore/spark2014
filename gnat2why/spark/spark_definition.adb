@@ -3417,7 +3417,7 @@ package body SPARK_Definition is
 
          when E_Abstract_State => null;
 
-         when E_Entry => Mark_Subprogram_Entity (E);
+         when E_Entry          => Mark_Subprogram_Entity (E);
 
          when others           =>
             Ada.Text_IO.Put_Line ("[Mark_Entity] kind ="
