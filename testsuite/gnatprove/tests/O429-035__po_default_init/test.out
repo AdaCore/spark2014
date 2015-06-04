@@ -1,0 +1,5 @@
+tasks.ads:8:37: default initialization cannot depend on "X" (SPARK RM 4.4(2))
+   compilation of tasks.adb failed
+
+
+gnatprove: error during flow analysis and proof
