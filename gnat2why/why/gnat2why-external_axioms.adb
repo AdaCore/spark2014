@@ -329,20 +329,29 @@ package body Gnat2Why.External_Axioms is
       begin
          while Present (CurAssoc) loop
             declare
-               Actual : Entity_Id :=
-                 Entity (Explicit_Generic_Actual_Parameter (CurAssoc));
+
+               Actual : Entity_Id;
                Formal : constant Entity_Id := Defining_Entity (CurLabs);
-
             begin
-               --  Classwide types are represented by their underlying tagged
-               --  type. This matters here as we're using the name of the
-               --  actual type in the include declaration.
-
-               if Is_Class_Wide_Type (Actual) then
-                  Actual := Specific_Tagged (Actual);
-               end if;
 
                if Is_Type (Formal) then
+
+                  --  make sure that it is safe to call Entity
+
+                  pragma Assert
+                    (Nkind (Explicit_Generic_Actual_Parameter (CurAssoc)) =
+                       N_Identifier);
+
+                  Actual :=
+                    Entity (Explicit_Generic_Actual_Parameter (CurAssoc));
+
+                  --  Classwide types are represented by their underlying
+                  --  tagged type. This matters here as we're using the name of
+                  --  the actual type in the include declaration.
+
+                  if Is_Class_Wide_Type (Actual) then
+                     Actual := Specific_Tagged (Actual);
+                  end if;
 
                   --  Replace:
                   --  use "<Generic_Name>__args".<Generic_Name>__<Formal>
@@ -565,35 +574,6 @@ package body Gnat2Why.External_Axioms is
                        (Name => Capitalize_First (Instance_Name)
                         & "__" & Short_Name (Formal) & "." &
                          Short_Name (Formal))));
-                  Subst_Cur := Subst_Cur + 1;
-
-               --  When do we reach here???
-
-               else
-                  --  Replace:
-                  --  use "<Generic_Name>__args".<Generic_Name>__<Formal>
-                  --  by: use Name_Of_Node (Actual)
-
-                  Subst (Subst_Cur) := New_Custom_Substitution
-                    (Domain   => EW_Prog,
-                     From     => NID ("use\s+" & """" & Generic_Name &
-                         "__args""\." & Capitalize_First (Generic_Name)
-                       & "__" & Short_Name (Formal) & "\s"),
-                     To       => W_Any_Node_Id (New_Identifier
-                       (Name => "use " & Capitalize_First
-                        (Full_Name (Actual)) & ASCII.LF)));
-                  Subst_Cur := Subst_Cur + 1;
-
-                  --  Replace: <Generic_Name>__<Formal>.<Formal>
-                  --  by: To_Why_Id (Actual)
-
-                  Subst (Subst_Cur) := New_Custom_Substitution
-                    (Domain   => EW_Prog,
-                     From     => NID (Capitalize_First (Generic_Name)
-                       & "__" & Short_Name (Formal) & "\." &
-                         Short_Name (Formal)),
-                     To       => W_Any_Node_Id
-                       (To_Why_Id (Actual, Domain => EW_Term)));
                   Subst_Cur := Subst_Cur + 1;
                end if;
             end;
