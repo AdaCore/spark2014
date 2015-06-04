@@ -487,10 +487,8 @@ package body SPARK_Definition is
    --  Generic procedure for marking code
 
    function In_SPARK (E : Entity_Id) return Boolean;
-   --  Returns whether the entity E is in SPARK. If not already done, it
-   --  computes this information by calling Mark_Entity.
-
-   --  Marking of entities
+   --  Returns whether the entity E is in SPARK; computes this information by
+   --  calling Mark_Entity, which is very cheap.
 
    procedure Mark_Entity (E : Entity_Id);
    --  Push entity E on the stack, mark E, and pop E from the stack. Always
