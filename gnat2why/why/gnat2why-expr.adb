@@ -5015,6 +5015,11 @@ package body Gnat2Why.Expr is
                                   Var_Type  => +EW_Int_Type,
                                   Labels      => Name_Id_Sets.Empty_Set,
                                   Pred      => Def);
+
+               --  If the prefix is not in split form, then its bounds are
+               --  contained in the object. We should assume that they are
+               --  preserved by the assignment.
+
                Bounds      : constant W_Pred_Id :=
                  (if Type_Get_Type_Kind (+Get_Type (Pref)) = EW_Abstract
                   then New_Bounds_Equality (Left_Arr  => Prefix_Name,

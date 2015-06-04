@@ -2168,7 +2168,11 @@ package body SPARK_Definition is
 
       Mark (N);
 
-      --  Mark delayed type aspects
+      --  Mark delayed type aspects.
+      --  If no SPARK_Mode is set for the type, we only mark delayed aspects
+      --  for types which have been found to be in SPARK. In this case, every
+      --  violation is considered an error as we can't easily backtrack the
+      --  type to be out of SPARK.
 
       for Cur in Delayed_Type_Aspects.Iterate loop
          Current_SPARK_Pragma := Node_Maps.Element (Cur);
@@ -4671,5 +4675,11 @@ package body SPARK_Definition is
       and then (if Nkind (Current_SPARK_Pragma) = N_Pragma then
                    Get_SPARK_Mode_From_Pragma (Current_SPARK_Pragma) = Mode
                 else Mode = Opt.On));
+
+   --  If Current_SPARK_Pragma is not a pragma node, then we are analyzing a
+   --  deferred type aspect of a type marked to be in SPARK although no
+   --  SPARK_Mode was set for the enclosing unit (discovery mode). In this
+   --  case, we consider SPARK_Mode to be On as we can't mark the type out of
+   --  SPARK easily.
 
 end SPARK_Definition;

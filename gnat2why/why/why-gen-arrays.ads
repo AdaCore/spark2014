@@ -211,7 +211,10 @@ package Why.Gen.Arrays is
      (Left_Arr   : W_Expr_Id;
       Right_Arr  : W_Expr_Id;
       Dim        : Positive) return W_Pred_Id;
-   --  Return a predicate of the form:
+   --  @param Left_Arr array expression whose bounds should be compared to
+   --  @param Right_Arr
+   --  @param Dim number of dimensions in the arrays
+   --  @return a predicate of the form:
    --
    --    <left_arr>.first1 = <right_arr>.first1 /\
    --    <left_arr>.last1 = <right_arr>.last1 /\ ...

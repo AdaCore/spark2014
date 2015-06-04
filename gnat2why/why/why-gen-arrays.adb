@@ -1405,10 +1405,13 @@ package body Why.Gen.Arrays is
    begin
       for I in 1 .. Dim loop
          Result :=
-           New_And_Then_Expr
-             (Result,
-              New_And_Then_Expr
-                (New_Comparison
+           New_And_Expr
+             (Conjuncts =>
+                (1 => Result,
+
+                 --  <left_arr>.first__I = <right_arr>.first__I
+
+                 2 => New_Comparison
                    (Symbol => Why_Eq,
                     Left   => Get_Array_Attr (Domain => EW_Term,
                                               Expr   => Left_Arr,
@@ -1419,7 +1422,10 @@ package body Why.Gen.Arrays is
                                               Attr   => Attribute_First,
                                               Dim    => I),
                     Domain => EW_Pred),
-                 New_Comparison
+
+                 --  <left_arr>.last__I = <right_arr>.last__I
+
+                 3 => New_Comparison
                    (Symbol => Why_Eq,
                     Left   => Get_Array_Attr (Domain => EW_Term,
                                               Expr   => Left_Arr,
@@ -1429,9 +1435,8 @@ package body Why.Gen.Arrays is
                                               Expr   => Right_Arr,
                                               Attr   => Attribute_Last,
                                               Dim    => I),
-                    Domain => EW_Pred),
-                 EW_Pred),
-              EW_Pred);
+                    Domain => EW_Pred)),
+              Domain    => EW_Pred);
       end loop;
       return +Result;
    end New_Bounds_Equality;
