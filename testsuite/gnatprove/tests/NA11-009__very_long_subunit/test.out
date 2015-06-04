@@ -118,14 +118,14 @@ very_longs-divide.adb:212:13: info: discriminant check proved
 very_longs-divide.adb:212:26: info: length check proved
 very_longs-divide.adb:212:29: info: length check proved
 very_longs-divide.adb:215:09: medium: range check might fail
-very_longs-divide.adb:216:25: medium: range check might fail
-very_longs-divide.adb:219:22: medium: precondition might fail
+very_longs-divide.adb:216:25: info: range check proved
+very_longs-divide.adb:219:22: info: precondition proved
 very_longs-divide.adb:219:48: info: discriminant check proved
 very_longs-divide.adb:219:61: info: index check proved
 very_longs-divide.adb:220:04: info: precondition proved
 very_longs-divide.adb:221:09: info: discriminant check proved
 very_longs-divide.adb:225:08: medium: range check might fail
-very_longs-divide.adb:225:51: medium: overflow check might fail
+very_longs-divide.adb:225:51: info: overflow check proved
 very_longs-divide.adb:227:07: medium: precondition might fail
 very_longs-divide.adb:227:10: medium: range check might fail
 very_longs-divide.adb:230:10: medium: range check might fail

@@ -7,8 +7,8 @@ ng.adb:39:22: medium: divide by zero might fail
 ng.adb:40:19: medium: overflow check might fail
 ng.adb:41:19: medium: divide by zero might fail
 ng.adb:41:19: medium: range check might fail
-ng.adb:61:18: medium: overflow check might fail
-ng.adb:61:18: medium: range check might fail
+ng.adb:61:18: info: overflow check proved
+ng.adb:61:18: info: range check proved
 ng.adb:62:17: medium: overflow check might fail
 ng.adb:62:23: medium: divide by zero might fail
 ng.adb:62:23: medium: range check might fail
@@ -29,7 +29,7 @@ ng_v1.ads:32:28: medium: divide by zero might fail
 ng_v2.adb:5:13: warning: null global effect assumed on imported subprogram
 ng_v2.adb:8:13: warning: null global effect assumed on imported subprogram
 ng_v2.adb:11:13: warning: null global effect assumed on imported subprogram
-ng_v2.adb:49:09: info: division check proved
+ng_v2.adb:49:09: medium: divide by zero might fail
 ng_v2.adb:52:44: medium: precondition might fail
 ng_v2.adb:65:13: info: precondition proved
 ng_v2.adb:68:53: medium: divide by zero might fail
