@@ -985,7 +985,7 @@ subprogram rather than with the Global aspect.]
 
 .. centered:: **Verification Rules**
 
-When analyzing a dispatching call, the Global and Class aspects
+When analyzing a dispatching call, the Global and Depends aspects
 of the statically denoted callee play no role; the corresponding
 class-wide aspects are used instead.
 
