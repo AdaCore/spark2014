@@ -3049,7 +3049,7 @@ package body SPARK_Definition is
                   Mark_Violation ("access type", E);
                end if;
 
-               --  Check that component type is in SPARK.
+               --  Check that component type is in SPARK
 
                if not In_SPARK (Component_Typ) then
                   Mark_Violation (E, From => Component_Typ);
@@ -3149,7 +3149,7 @@ package body SPARK_Definition is
          elsif Is_Private_Type (E) then
 
             --  Private types may export discriminants. Discriminants with
-            --  non-SPARK type should be disallowed here
+            --  non-SPARK type should be disallowed here.
 
             declare
                Disc : Entity_Id :=
