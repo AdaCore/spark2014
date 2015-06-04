@@ -1,4 +1,6 @@
 mem.adb:10:66: membership test in class-wide type is not yet supported
+mem.adb:11:67: membership test in class-wide type is not yet supported
+mem.adb:12:67: membership test in class-wide type is not yet supported
    compilation of mem.adb failed
 
 

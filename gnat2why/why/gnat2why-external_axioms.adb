@@ -339,8 +339,8 @@ package body Gnat2Why.External_Axioms is
                   --  make sure that it is safe to call Entity
 
                   pragma Assert
-                    (Nkind (Explicit_Generic_Actual_Parameter (CurAssoc)) =
-                       N_Identifier);
+                    (Nkind (Explicit_Generic_Actual_Parameter (CurAssoc)) in
+                       N_Has_Entity);
 
                   Actual :=
                     Entity (Explicit_Generic_Actual_Parameter (CurAssoc));

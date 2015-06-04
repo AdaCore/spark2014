@@ -1035,14 +1035,43 @@ package body SPARK_Definition is
                end if;
             end if;
 
-            if Has_Class_Wide_Type (Etype (Right_Opnd (N))) then
-               Violation_Detected := True;
-               if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-                  Error_Msg_N
-                    ("membership test in class-wide type is not yet supported",
-                     N);
+            declare
+               function Has_Classwide_Choice return Boolean;
+               --  @return True iff the membership test contains a choice of
+               --     the form T'Class or TC where TC is a class-wide type.
+
+               --------------------------
+               -- Has_Classwide_Choice --
+               --------------------------
+
+               function Has_Classwide_Choice return Boolean is
+                  Choice : Node_Id;
+               begin
+                  if Present (Right_Opnd (N)) then
+                     return Has_Class_Wide_Type (Etype (Right_Opnd (N)));
+                  else
+                     Choice := First (Alternatives (N));
+                     while Present (Choice) loop
+                        if Has_Class_Wide_Type (Etype (Choice)) then
+                           return True;
+                        end if;
+                        Next (Choice);
+                     end loop;
+                     return False;
+                  end if;
+               end Has_Classwide_Choice;
+
+            begin
+               if Has_Classwide_Choice then
+                  Violation_Detected := True;
+                  if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+                     Error_Msg_N
+                       ("membership test in class-wide type is " &
+                        "not yet supported",
+                        N);
+                  end if;
                end if;
-            end if;
+            end;
 
             Mark (Left_Opnd (N));
             if Present (Alternatives (N)) then
