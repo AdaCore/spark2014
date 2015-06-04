@@ -571,16 +571,17 @@ package body SPARK_Util is
    -----------------------------------
 
    function Component_Is_Visible_In_SPARK (E : Entity_Id) return Boolean is
-      Orig_Comp : constant Entity_Id := Original_Record_Component (E);
-      Orig_Rec  : constant Entity_Id := Scope (Orig_Comp);
-
    begin
       if Ekind (E) = E_Discriminant then
          return True;
-
       else
-         return Entity_In_SPARK (Orig_Rec)
-           and then not Full_View_Not_In_SPARK (Orig_Rec);
+         declare
+            Orig_Comp : constant Entity_Id := Original_Record_Component (E);
+            Orig_Rec  : constant Entity_Id := Scope (Orig_Comp);
+         begin
+            return Entity_In_SPARK (Orig_Rec)
+              and then not Full_View_Not_In_SPARK (Orig_Rec);
+         end;
       end if;
    end Component_Is_Visible_In_SPARK;
 
