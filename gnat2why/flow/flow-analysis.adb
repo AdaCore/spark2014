@@ -837,12 +837,12 @@ package body Flow.Analysis is
         or else FA.Atr.Element (V).Is_Precondition
         or else FA.Atr.Element (V).Is_Postcondition
         or else FA.Atr.Element (V).Is_Proof;
-      --  Checks if the given vertex V is a final-use vertex or useful for
+      --  Checks if the given vertex V is a final-use vertex or is useful for
       --  proof.
 
       Suppressed_Entire_Ids : Flow_Id_Sets.Set;
-      --  Entire variables appearing in a "null => Blah" dependency
-      --  relation, for these we suppress the ineffective import warning.
+      --  Entire variables appearing in a "null => Blah" dependency relation;
+      --  for these we suppress the ineffective import warning.
 
       EV_Considered_Imports : Flow_Id_Sets.Set;
       EV_Considered_Objects : Flow_Id_Sets.Set;
@@ -859,8 +859,8 @@ package body Flow.Analysis is
       --  unconstrained array) to determine the final value of at least one
       --  export.
 
-      EV_Unused      : Flow_Id_Sets.Set;
-      EV_Ineffective : Flow_Id_Sets.Set;
+      EV_Unused             : Flow_Id_Sets.Set;
+      EV_Ineffective        : Flow_Id_Sets.Set;
 
    begin
 
@@ -1001,7 +1001,7 @@ package body Flow.Analysis is
          begin
             if A.Is_Global then
                --  We have an unused global, we need to give the error
-               --  on the subprogram, instead of the global. In
+               --  on the subprogram, instead of on the global. In
                --  generative mode we don't emit this message.
                if not FA.Is_Generative then
                   if Is_Variable (F) then
@@ -1013,8 +1013,7 @@ package body Flow.Analysis is
                         Tag      => Unused,
                         Kind     => Low_Check_Kind);
                   else
-                     --  Issue a different message if the global is a
-                     --  constant.
+                     --  Issue a different message if the global is a constant.
                      Error_Msg_Flow
                        (FA       => FA,
                         Msg      => "& cannot appear in Globals",
