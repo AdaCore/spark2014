@@ -17,6 +17,8 @@ package Tasks is
 
    task type Timer_Stub;
 
+   X : aliased Integer;
+
    protected type Store
    is
       pragma Priority (10);
@@ -24,6 +26,8 @@ package Tasks is
       procedure Put (X : in Integer);
       entry Wait (Dummy : Integer);
    private
+      No_Default_Value : Integer;
+      Forbidden_Integer : access Integer := X'Access;
       The_Stored_Data : Integer := 0;
       The_Guard : Boolean := False;
    end Store;

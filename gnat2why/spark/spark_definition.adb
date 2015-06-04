@@ -2771,50 +2771,6 @@ package body SPARK_Definition is
          --  type definition. So we start here with marking all needed types
          --  if not already marked.
 
-         --  Components of a record type should be in SPARK for the record type
-         --  to be in SPARK. For a private type, we're only interested here in
-         --  its publicly visible components.
-
-         --  ??? this should be merged with the following code for records
-         --  (see O508-008).
-         if Is_Concurrent_Type (E) then
-            declare
-               --  Einfo.First_Component_Or_Discriminant does not work for
-               --  concurrent types.
-               function First_Component_Or_Discriminant
-                 (Id : Entity_Id) return Entity_Id;
-
-               function First_Component_Or_Discriminant
-                 (Id : Entity_Id) return Entity_Id is
-                  Comp_Id : Entity_Id;
-               begin
-                  Comp_Id := First_Entity (Id);
-                  while Present (Comp_Id) loop
-                     exit when Ekind_In (Comp_Id, E_Component, E_Discriminant);
-                     Comp_Id := Next_Entity (Comp_Id);
-                  end loop;
-
-                  return Comp_Id;
-               end First_Component_Or_Discriminant;
-
-               Comp : Node_Id := First_Component_Or_Discriminant (E);
-            begin
-               while Present (Comp) loop
-                  if Component_Is_Visible_In_SPARK (Comp) then
-                     Mark_Entity (Etype (Comp));
-
-                     --  Mark default value of component or discriminant
-
-                     if Present (Expression (Parent (Comp))) then
-                        Mark (Expression (Parent (Comp)));
-                     end if;
-                  end if;
-
-                  Next_Component_Or_Discriminant (Comp);
-               end loop;
-            end;
-         end if;
-
          if Is_Array_Type (E) then
             declare
                Component_Typ : constant Node_Id := Component_Type (E);
@@ -2936,8 +2892,36 @@ package body SPARK_Definition is
 
          --  Now mark the type itself
 
-         if Is_Record_Type (E) then
+         --  Components of a record type should be in SPARK for the record type
+         --  to be in SPARK. For a private type, we're only interested here in
+         --  its publicly visible components. The same applies to protected
+         --  types.
+
+         if Ekind (E) in Record_Kind | Protected_Kind then
             declare
+               --  ??? Einfo.First_Component_Or_Discriminant does not work for
+               --  concurrent types; see O508-008.
+
+               function First_Component_Or_Discriminant
+                 (Id : Entity_Id) return Entity_Id;
+
+               -------------------------------------
+               -- First_Component_Or_Discriminant --
+               -------------------------------------
+
+               function First_Component_Or_Discriminant
+                 (Id : Entity_Id) return Entity_Id is
+                  Comp_Id : Entity_Id;
+               begin
+                  Comp_Id := First_Entity (Id);
+                  while Present (Comp_Id) loop
+                     exit when Ekind_In (Comp_Id, E_Component, E_Discriminant);
+                     Comp_Id := Next_Entity (Comp_Id);
+                  end loop;
+
+                  return Comp_Id;
+               end First_Component_Or_Discriminant;
+
                Comp : Node_Id := First_Component_Or_Discriminant (E);
             begin
                while Present (Comp) loop
@@ -3273,9 +3257,12 @@ package body SPARK_Definition is
                      begin
                         --  ??? Interface_List
                         pragma Assert (Interface_List (Type_Decl) = No_List);
+
                         if Present (Type_Def) then
                            Mark_Stmt_Or_Decl_List
                              (Visible_Declarations (Type_Def));
+                           --  ??? components of protected types were already
+                           --  marked when dealing with discriminants
                            Mark_Stmt_Or_Decl_List
                              (Private_Declarations (Type_Def));
                         end if;
