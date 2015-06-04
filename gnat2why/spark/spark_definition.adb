@@ -4672,14 +4672,20 @@ package body SPARK_Definition is
 
    function SPARK_Pragma_Is (Mode : Opt.SPARK_Mode_Type) return Boolean is
      (Present (Current_SPARK_Pragma)
-      and then (if Nkind (Current_SPARK_Pragma) = N_Pragma then
-                   Get_SPARK_Mode_From_Pragma (Current_SPARK_Pragma) = Mode
-                else Mode = Opt.On));
+        and then
 
-   --  If Current_SPARK_Pragma is not a pragma node, then we are analyzing a
-   --  deferred type aspect of a type marked to be in SPARK although no
-   --  SPARK_Mode was set for the enclosing unit (discovery mode). In this
-   --  case, we consider SPARK_Mode to be On as we can't mark the type out of
-   --  SPARK easily.
+     --  In the usual case where Current_SPARK_Pragma is a pragma node, get the
+     --  current mode from the pragma.
+
+     (if Nkind (Current_SPARK_Pragma) = N_Pragma then
+        Get_SPARK_Mode_From_Pragma (Current_SPARK_Pragma) = Mode
+
+     --  If Current_SPARK_Pragma is not a pragma node, then we are analyzing a
+     --  deferred type aspect of a type marked to be in SPARK although no
+     --  SPARK_Mode was set for the enclosing unit (discovery mode). In this
+     --  case, we consider SPARK_Mode to be On as we can't mark the type out of
+     --  SPARK easily.
+
+      else Mode = Opt.On));
 
 end SPARK_Definition;
