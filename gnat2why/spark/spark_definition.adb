@@ -2429,7 +2429,7 @@ package body SPARK_Definition is
          Vis_Decls : constant List_Id :=
            Visible_Declarations (Package_Specification (E));
 
-         --  Start of Mark_Package_Entity
+      --  Start of Mark_Package_Entity
 
       begin
          --  Do not analyze specs for instantiations of the formal containers.
@@ -4480,8 +4480,8 @@ package body SPARK_Definition is
    -----------------------------
 
    procedure Mark_Subtype_Indication (N : Node_Id) is
-      T       : Entity_Id;
-      Cstr    : Node_Id;
+      T    : Entity_Id;
+      Cstr : Node_Id;
 
    begin
       if Nkind (N) = N_Subtype_Indication then
