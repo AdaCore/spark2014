@@ -130,7 +130,7 @@ update_logic_fn.ads:43:24: info: initialization of "A" proved
 update_logic_fn.ads:49:14: medium: postcondition might fail, requires A = A_2D_Arr'update
 update_logic_fn.ads:49:15: info: initialization of "A" proved
 update_logic_fn.ads:55:18: info: initialization of "A" proved
-update_logic_fn.ads:62:14: medium: postcondition might fail, requires A = A3'(others => (others => (others => 1000 ))) 'update
+update_logic_fn.ads:62:14: info: postcondition proved
 update_logic_fn.ads:62:15: info: initialization of "A" proved
 update_logic_fn.ads:62:22: info: length check proved
 update_logic_fn.ads:68:24: info: initialization of "A" proved

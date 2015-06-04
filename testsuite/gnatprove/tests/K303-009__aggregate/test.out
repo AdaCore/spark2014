@@ -7,7 +7,7 @@ aggregate.adb:7:12: info: initialization of "Agg" proved
 aggregate.ads:6:09: info: length check proved
 aggregate.ads:8:30: info: initialization of "K" proved
 aggregate.ads:10:21: info: initialization of "K" proved
-aggregate.ads:10:21: medium: postcondition might fail
+aggregate.ads:10:21: info: postcondition proved
 aggregate.ads:10:40: info: initialization of "K" proved
 aggregate.ads:10:60: info: initialization of "K" proved
 arr_aggregate.adb:6:18: info: length check proved
