@@ -4,3 +4,9 @@ fxp_div.adb:22:30: info: range check proved
 fxp_div.adb:23:60: info: division check proved
 fxp_div.adb:31:19: medium: overflow check might fail
 fxp_div.adb:34:29: info: precondition proved
+fxp_div2.adb:8:49: operation on fixed-point type with different result type is not fully supported
+fxp_div2.adb:9:49: operation on fixed-point type with different result type is not fully supported
+   compilation of fxp_div2.adb failed
+
+
+gnatprove: error during flow analysis and proof

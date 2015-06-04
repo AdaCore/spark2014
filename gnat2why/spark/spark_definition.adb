@@ -1968,7 +1968,7 @@ package body SPARK_Definition is
                   if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
                      Error_Msg_N ("operation on fixed-point type"
                                   & " with different result type"
-                                  & " is not yet supported", N);
+                                  & " is not fully supported", N);
                   end if;
                end if;
             end if;
