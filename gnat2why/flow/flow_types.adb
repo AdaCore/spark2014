@@ -21,18 +21,16 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-
+with Ada.Strings;
 with Errout;                use Errout;
+with Flow_Computed_Globals; use Flow_Computed_Globals;
+with Flow_Utility;          use Flow_Utility;
 with Namet;                 use Namet;
 with Output;                use Output;
 with Sem_Util;              use Sem_Util;
 with Snames;                use Snames;
-
 with Why;
-
-with Flow_Utility;          use Flow_Utility;
 
 package body Flow_Types is
 
@@ -287,8 +285,14 @@ package body Flow_Types is
    function Is_Volatile (F : Flow_Id) return Boolean is
    begin
       case F.Kind is
-         when Null_Value | Magic_String =>
+         when Null_Value =>
             return False;
+         when Magic_String =>
+            if not GG_Has_Been_Generated then
+               return False;
+            else
+               return GG_Is_Volatile (F.Name);
+            end if;
          when Direct_Mapping | Record_Field =>
             declare
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
@@ -318,6 +322,9 @@ package body Flow_Types is
       case F.Kind is
          when Synthetic_Null_Export =>
             return True;
+         when Magic_String =>
+            return Is_Volatile (F) and then
+              GG_Has_Async_Readers (F.Name);
          when others =>
             return Is_Volatile (F) and then
               Has_Volatile_Flavor (Get_Direct_Mapping_Id (F),
@@ -334,6 +341,9 @@ package body Flow_Types is
       case F.Kind is
          when Synthetic_Null_Export =>
             return False;
+         when Magic_String =>
+            return Is_Volatile (F) and then
+              GG_Has_Async_Writers (F.Name);
          when others =>
             return Is_Volatile (F) and then
               Has_Volatile_Flavor (Get_Direct_Mapping_Id (F),
@@ -350,6 +360,9 @@ package body Flow_Types is
       case F.Kind is
          when Synthetic_Null_Export =>
             return False;
+         when Magic_String =>
+            return Is_Volatile (F) and then
+              GG_Has_Effective_Reads (F.Name);
          when others =>
             return Is_Volatile (F) and then
               Has_Volatile_Flavor (Get_Direct_Mapping_Id (F),
@@ -366,6 +379,9 @@ package body Flow_Types is
       case F.Kind is
          when Synthetic_Null_Export =>
             return True;
+         when Magic_String =>
+            return Is_Volatile (F) and then
+              GG_Has_Effective_Writes (F.Name);
          when others =>
             return Is_Volatile (F) and then
               Has_Volatile_Flavor (Get_Direct_Mapping_Id (F),

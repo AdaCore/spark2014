@@ -164,8 +164,11 @@ package VC_Kinds is
       Unused,
       --  A parameter has not been used
 
-      Unused_Initial_Value
+      Unused_Initial_Value,
       --  Initial value has not been used
+
+      Non_Volatile_Function_With_Volatile_Effects
+      --  Non Volatile_Function refers to globals with volatile effects
      );
 
    --  Returns True if this kind of VC should be considered like an assertion

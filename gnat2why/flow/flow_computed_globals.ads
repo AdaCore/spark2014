@@ -89,7 +89,7 @@ package Flow_Computed_Globals is
    --  All lines introducing information related to the Generated Globals
    --  have the string "GG" appearing in the beginning.
 
-   --  The Generated Globals section holds two kinds of information:
+   --  The Generated Globals section holds three kinds of information:
 
    --  1) The first kind has to do with Abstract States and the
    --     constituents thereof.
@@ -130,6 +130,22 @@ package Flow_Computed_Globals is
    --       GG CC test__proc_3
    --       GG LV test__proc__nested_proc__v
    --       GG LS test__proc__nested_proc__nested_proc
+
+   --  3) The third kind occupies at most 4 lines of an ALI file. It is the
+   --     set of all volatile variables and external state abstractions
+   --     arranged based on their volatile properties.
+   --     Names following AW are those with Async_Writers set.
+   --     Names following AR are those with Async_Readers set.
+   --     Names following ER are those with Effective_Reads set.
+   --     Names following EW are those with Effective_Writes set.
+   --     Notice here that if a name appears on ER then it has to also appear
+   --     on the AW line. The same holds for EW and AR.
+
+   --     Example entry:
+   --     GG AW test__fully_vol test__vol_er2 test__ext_state
+   --     GG AR test__fully_vol test__vol_ew3
+   --     GG ER test__fully_vol test__vol_er2
+   --     GG EW test__fully_vol test__vol_ew3
 
    ----------------------------------------------------------------------
 
@@ -184,6 +200,7 @@ package Flow_Computed_Globals is
       "="          => "=");
 
    Info_Set : Info_Sets.Set;
+   --  This set will hold the generated global info of every subprogram.
 
    ----------------------------------------------------------------------
 
@@ -209,17 +226,20 @@ package Flow_Computed_Globals is
    --  Records information related to state abstractions and the
    --  refinements thereof. This will later be used to return the
    --  appropriate view depending on the caller (as opposed to always
-   --  returning the most refined view).
+   --  returning the most refined view). It also stores information
+   --  related to external states.
 
    procedure GG_Write_Subprogram_Info (SI : Subprogram_Phase_1_Info)
    with Pre  => GG_Mode = GG_Write_Mode,
         Post => GG_Mode = GG_Write_Mode;
    --  Records the information we need to later compute globals.
    --  Compute_Globals in Flow.Slice is used to produce the inputs.
+   --  It also stores information related to volatiles.
 
    procedure GG_Write_Finalize
    with Pre => GG_Mode = GG_Write_Mode;
-   --  Appends all subprogram and package information to the ALI file.
+   --  Appends all subprogram, package and volatile information to the ALI
+   --  file.
 
    -------------------------
    -- Reading & Computing --
@@ -312,8 +332,41 @@ package Flow_Computed_Globals is
 
    function GG_Get_All_State_Abstractions return Name_Set.Set
    with Pre => GG_Mode = GG_Read_Mode;
-   --  Returns a set of Entity_Names with all the state abstractions
-   --  that the Generated Globals know of.
+   --  @return a set of Entity_Names with all the state abstractions
+   --    that the Generated Globals know of.
+
+   function GG_Is_Volatile (EN : Entity_Name) return Boolean
+   with Pre => GG_Has_Been_Generated;
+   --  @param EN is the entity name that we check for being volatile
+   --  @return True iff EN is volatile.
+
+   function GG_Has_Async_Writers (EN : Entity_Name) return Boolean
+   with Pre  => GG_Has_Been_Generated,
+        Post => (if GG_Has_Async_Writers'Result
+                 then GG_Is_Volatile (EN));
+   --  @param EN is the entity name that we check for having Async_Writers
+   --  @return True iff EN has Async_Writers set.
+
+   function GG_Has_Async_Readers (EN : Entity_Name) return Boolean
+   with Pre  => GG_Has_Been_Generated,
+        Post => (if GG_Has_Async_Readers'Result
+                 then GG_Is_Volatile (EN));
+   --  @param EN is the entity name that we check for having Async_Readers
+   --  @return True iff EN has Async_Readers set.
+
+   function GG_Has_Effective_Reads (EN : Entity_Name) return Boolean
+   with Pre  => GG_Has_Been_Generated,
+        Post => (if GG_Has_Effective_Reads'Result
+                 then GG_Has_Async_Writers (EN));
+   --  @param EN is the entity name that we check for having Effective_Reads
+   --  @return True iff EN has Effective_Reads set.
+
+   function GG_Has_Effective_Writes (EN : Entity_Name) return Boolean
+   with Pre  => GG_Has_Been_Generated,
+        Post => (if GG_Has_Effective_Writes'Result
+                 then GG_Has_Async_Readers (EN));
+   --  @param EN is the entity name that we check for having Effective_Writes
+   --  @return True iff EN has Effective_Writes set.
 
 private
 

@@ -3919,4 +3919,65 @@ package body Flow.Analysis is
       end;
    end Check_Constant_After_Elaboration;
 
+   -----------------------------------------
+   -- Check_Function_For_Volatile_Effects --
+   -----------------------------------------
+
+   procedure Check_Function_For_Volatile_Effects
+     (FA : in out Flow_Analysis_Graphs)
+   is
+   begin
+      if not (Ekind (FA.Analyzed_Entity) in E_Function | E_Generic_Function)
+        or else Is_Volatile_Function (FA.Analyzed_Entity)
+      then
+         --  If we are either not dealing with a [generic] function or aspect
+         --  Volatile_Function has been specified then we have nothing to do
+         --  here.
+         return;
+      end if;
+
+      declare
+         procedure Check_Set_For_Volatiles (FS : Flow_Id_Sets.Set);
+         --  Emits a high check for every volatile variable found in FS.
+         --  @param FS is the Flow_Ids set that will be checked for volatiles
+
+         -----------------------------
+         -- Check_Set_For_Volatiles --
+         -----------------------------
+
+         procedure Check_Set_For_Volatiles (FS : Flow_Id_Sets.Set) is
+         begin
+            for F of FS loop
+               if Is_Volatile (Change_Variant (F, Normal_Use)) then
+                  Error_Msg_Flow
+                    (FA   => FA,
+                     Msg  => "& cannot act as global item of nonvolatile "
+                               & "function &",
+                     Kind => Error_Kind,
+                     N    => FA.Analyzed_Entity,
+                     F1   => F,
+                     F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
+                     Tag  => Non_Volatile_Function_With_Volatile_Effects);
+               end if;
+            end loop;
+         end Check_Set_For_Volatiles;
+
+         Proof_Ins : Flow_Id_Sets.Set;
+         Reads     : Flow_Id_Sets.Set;
+         Writes    : Flow_Id_Sets.Set;
+      begin
+         Get_Globals (Subprogram => FA.Analyzed_Entity,
+                      Scope      => FA.B_Scope,
+                      Classwide  => False,
+                      Proof_Ins  => Proof_Ins,
+                      Reads      => Reads,
+                      Writes     => Writes);
+
+         --  Check globals for volatiles and emit messages
+         Check_Set_For_Volatiles (Proof_Ins);
+         Check_Set_For_Volatiles (Reads);
+         Check_Set_For_Volatiles (Writes);
+      end;
+   end Check_Function_For_Volatile_Effects;
+
 end Flow.Analysis;

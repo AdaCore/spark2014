@@ -1465,6 +1465,7 @@ package body Flow is
                   Analysis.Check_Prefixes_Of_Attribute_Old (FA);
                   Analysis.Find_Exports_Derived_From_Proof_Ins (FA);
                   Analysis.Analyse_Main (FA);
+                  Analysis.Check_Function_For_Volatile_Effects (FA);
                   Analysis.Check_Constant_After_Elaboration (FA);
 
                   --  If no errors or warnings were found during flow
@@ -1545,11 +1546,9 @@ package body Flow is
 
       --  Consider the subprogram info in case a graph was not
       --  created.
-      if Info_Set /= Info_Sets.Empty_Set then
-         for S of Info_Set loop
-            GG_Write_Subprogram_Info (SI => S);
-         end loop;
-      end if;
+      for S of Info_Set loop
+         GG_Write_Subprogram_Info (SI => S);
+      end loop;
 
       --  Writing Generated Globals to the ALI file
       for FA of FA_Graphs loop

@@ -74,6 +74,16 @@ package body Flow_Computed_Globals is
    State_Info_Set : State_Info_Sets.Set;
 
    ----------------------------------------------------------------------
+   --  Volatile information
+   ----------------------------------------------------------------------
+
+   All_Volatile_Vars     : Name_Set.Set;
+   Async_Writers_Vars    : Name_Set.Set;
+   Async_Readers_Vars    : Name_Set.Set;
+   Effective_Reads_Vars  : Name_Set.Set;
+   Effective_Writes_Vars : Name_Set.Set;
+
+   ----------------------------------------------------------------------
    --  Global_Id
    ----------------------------------------------------------------------
 
@@ -294,13 +304,24 @@ package body Flow_Computed_Globals is
    -- GG_Write_Initialize --
    -------------------------
 
-   procedure GG_Write_Initialize
-   is
+   procedure GG_Write_Initialize is
    begin
       Open_Output_Library_Info;
-      Info_Set := Info_Sets.Empty_Set;
-      State_Info_Set := State_Info_Sets.Empty_Set;
 
+      --  Initialze subprogram info
+      Info_Set              := Info_Sets.Empty_Set;
+
+      --  Initialize state info
+      State_Info_Set        := State_Info_Sets.Empty_Set;
+
+      --  Initialize volatile info
+      All_Volatile_Vars     := Name_Set.Empty_Set;
+      Async_Writers_Vars    := Name_Set.Empty_Set;
+      Async_Readers_Vars    := Name_Set.Empty_Set;
+      Effective_Reads_Vars  := Name_Set.Empty_Set;
+      Effective_Writes_Vars := Name_Set.Empty_Set;
+
+      --  Set mode to writing mode
       Current_Mode := GG_Write_Mode;
    end GG_Write_Initialize;
 
@@ -312,17 +333,46 @@ package body Flow_Computed_Globals is
    begin
       for S in DM.Iterate loop
          declare
-            State        : constant Entity_Name :=
-              To_Entity_Name (Get_Direct_Mapping_Id (Dependency_Maps.Key (S)));
+            State_F      : constant Flow_Id := Dependency_Maps.Key (S);
+
+            State_N      : constant Entity_Name :=
+              To_Entity_Name (Get_Direct_Mapping_Id (State_F));
 
             Constituents : constant Name_Set.Set :=
               To_Name_Set (To_Node_Set (Dependency_Maps.Element (S)));
 
             State_Info   : constant State_Phase_1_Info :=
-              State_Phase_1_Info'(State        => State,
+              State_Phase_1_Info'(State        => State_N,
                                   Constituents => Constituents);
          begin
+            --  Insert new state info into State_Info_Set
             State_Info_Set.Insert (State_Info);
+
+            --  Check if State_F if volatile and if it is then add it on the
+            --  appropriate sets depending on its properties.
+            if Is_Volatile (State_F) then
+               All_Volatile_Vars.Insert (State_N);
+
+               if Has_Async_Readers (State_F) then
+                  --  Add to Async_Readers_Vars set
+                  Async_Readers_Vars.Insert (State_N);
+               end if;
+
+               if Has_Async_Writers (State_F) then
+                  --  Add to Async_Writers_Vars set
+                  Async_Writers_Vars.Insert (State_N);
+               end if;
+
+               if Has_Effective_Writes (State_F) then
+                  --  Add to Effective_Writes_Vars set
+                  Effective_Writes_Vars.Insert (State_N);
+               end if;
+
+               if Has_Effective_Reads (State_F) then
+                  --  Add to Effective_Reads_Vars set
+                  Effective_Reads_Vars.Insert (State_N);
+               end if;
+            end if;
          end;
       end loop;
    end GG_Write_Package_Info;
@@ -332,8 +382,59 @@ package body Flow_Computed_Globals is
    ------------------------------
 
    procedure GG_Write_Subprogram_Info (SI : Subprogram_Phase_1_Info) is
+      procedure Process_Volatiles (S : Name_Set.Set);
+      --  Goes through S, finds volatiles and saves them on the appropriate
+      --  sets based on their properties.
+
+      ------------------------
+      -- Processs_Volatiles --
+      ------------------------
+
+      procedure Process_Volatiles (S : Name_Set.Set) is
+         E : Entity_Id;
+         F : Flow_Id;
+      begin
+         for Name of S loop
+            E := Find_Entity (Name);
+
+            if Present (E) then
+               F := Direct_Mapping_Id (E);
+
+               if Is_Volatile (F) then
+                  All_Volatile_Vars.Include (Name);
+
+                  if Has_Async_Readers (F) then
+                     --  Add to Async_Readers_Vars set
+                     Async_Readers_Vars.Include (Name);
+                  end if;
+
+                  if Has_Async_Writers (F) then
+                     --  Add to Async_Writers_Vars set
+                     Async_Writers_Vars.Include (Name);
+                  end if;
+
+                  if Has_Effective_Writes (F) then
+                     --  Add to Effective_Writes_Vars set
+                     Effective_Writes_Vars.Include (Name);
+                  end if;
+
+                  if Has_Effective_Reads (F) then
+                     --  Add to Effective_Reads_Vars set
+                     Effective_Reads_Vars.Include (Name);
+                  end if;
+               end if;
+            end if;
+         end loop;
+      end Process_Volatiles;
+
    begin
       Info_Set.Insert (SI);
+
+      --  Gather and save volatile variables
+      Process_Volatiles (SI.Inputs_Proof);
+      Process_Volatiles (SI.Inputs);
+      Process_Volatiles (SI.Outputs);
+      Process_Volatiles (SI.Local_Variables);
    end GG_Write_Subprogram_Info;
 
    -----------------------
@@ -356,6 +457,7 @@ package body Flow_Computed_Globals is
          end loop;
       end Write_Name_Set;
    begin
+      --  Write State info
       for State_Info of State_Info_Set loop
          Write_Info_Str ("GG AS ");
          Write_Info_Str (State_Info.State.S.all);
@@ -363,6 +465,7 @@ package body Flow_Computed_Globals is
          Write_Info_Terminate;
       end loop;
 
+      --  Write Subprogram info
       for Info of Info_Set loop
          case Info.Kind is
             when S_Kind =>
@@ -419,6 +522,36 @@ package body Flow_Computed_Globals is
          Write_Info_Terminate;
       end loop;
 
+      --  Write Volatile info
+
+      --  Write Async_Writers
+      if not Async_Writers_Vars.Is_Empty then
+         Write_Info_Str ("GG AW");
+         Write_Name_Set (Async_Writers_Vars);
+         Write_Info_Terminate;
+      end if;
+
+      --  Write Async_Readers
+      if not Async_Readers_Vars.Is_Empty then
+         Write_Info_Str ("GG AR");
+         Write_Name_Set (Async_Readers_Vars);
+         Write_Info_Terminate;
+      end if;
+
+      --  Write Effective_Reads
+      if not Effective_Reads_Vars.Is_Empty then
+         Write_Info_Str ("GG ER");
+         Write_Name_Set (Effective_Reads_Vars);
+         Write_Info_Terminate;
+      end if;
+
+      --  Write Effective_Writes
+      if not Effective_Writes_Vars.Is_Empty then
+         Write_Info_Str ("GG EW");
+         Write_Name_Set (Effective_Writes_Vars);
+         Write_Info_Terminate;
+      end if;
+
       Close_Output_Library_Info;
       Current_Mode := GG_No_Mode;
    end GG_Write_Finalize;
@@ -457,8 +590,8 @@ package body Flow_Computed_Globals is
       --  need to change the Proof_In variable into an Input.
 
       procedure Load_GG_Info_From_ALI (ALI_File_Name : File_Name_Type);
-      --  Gets the GG info from an ALI file and stores them in the
-      --  Info_Set table.
+      --  Loads the GG info from an ALI file and stores them in the
+      --  Info_Set, State_Info_Set and volatile info sets.
       --
       --  The info that we read look as follows:
       --
@@ -472,6 +605,10 @@ package body Flow_Computed_Globals is
       --  GG CC test__proc_3
       --  GG LV test__proc__nested_proc__v
       --  GG LS test__proc__nested_proc
+      --  GG AW test__fully_vol test__vol_er2 test__ext_state
+      --  GG AR test__fully_vol test__vol_ew3
+      --  GG ER test__fully_vol test__vol_er2
+      --  GG EW test__fully_vol test__vol_ew3
 
       procedure Remove_Edges_To_Local_Variables;
       --  Removes edges between subprograms and their local variables
@@ -827,15 +964,20 @@ package body Flow_Computed_Globals is
       ---------------------------
 
       procedure Load_GG_Info_From_ALI (ALI_File_Name : File_Name_Type) is
-         ALI_File_Name_Str : constant String :=
+         ALI_File_Name_Str   : constant String :=
            Name_String (Name_Id (Full_Lib_File_Name (ALI_File_Name)));
 
-         ALI_File          : Ada.Text_IO.File_Type;
-         Line              : Unbounded_String;
+         ALI_File            : Ada.Text_IO.File_Type;
+         Line                : Unbounded_String;
+
+         AR_Found            : Boolean := False;
+         AW_Found            : Boolean := False;
+         EW_Found            : Boolean := False;
+         ER_Found            : Boolean := False;
 
          procedure Parse_Record;
          --  Parses a GG record from the ALI file and if no problems
-         --  occurred it adds it to Info_Set.
+         --  occurred it adds it to the relevant set.
 
          ------------------
          -- Parse_Record --
@@ -877,7 +1019,7 @@ package body Flow_Computed_Globals is
                if Length (Line) <= 3 or else
                  Slice (Line, 1, 3) /= "GG "
                then
-                  --  Either the ali file has been tampered with
+                  --  Either the ALI file has been tampered with
                   --  or we are dealing with a new kind of line
                   --  that we are not aware of.
                   raise Program_Error;
@@ -889,9 +1031,7 @@ package body Flow_Computed_Globals is
             -------------------------
 
             function Get_Names_From_Line return Name_Set.Set is
-               Names_In_Line : Name_Set.Set :=
-                 Name_Set.Empty_Set;
-
+               Names_In_Line : Name_Set.Set := Name_Set.Empty_Set;
                Start_Of_Word : Natural      := 7;
                End_Of_Word   : Natural;
             begin
@@ -918,8 +1058,8 @@ package body Flow_Computed_Globals is
                   declare
                      EN : constant Entity_Name :=
                        To_Entity_Name (Slice (Line,
-                                          Start_Of_Word,
-                                          End_Of_Word));
+                                              Start_Of_Word,
+                                              End_Of_Word));
                   begin
                      Names_In_Line.Insert (EN);
                   end;
@@ -929,6 +1069,8 @@ package body Flow_Computed_Globals is
 
                return Names_In_Line;
             end Get_Names_From_Line;
+
+         --  Start of Parse_Record
 
          begin
             --  We special case lines that contain info about state
@@ -955,8 +1097,8 @@ package body Flow_Computed_Globals is
                   end if;
 
                   State := To_Entity_Name (Slice (Line,
-                                              Start_Of_Word,
-                                              End_Of_Word));
+                                                  Start_Of_Word,
+                                                  End_Of_Word));
 
                   Constituents.Exclude (State);
 
@@ -965,10 +1107,66 @@ package body Flow_Computed_Globals is
                                          Constituents => Constituents));
                end;
 
-               --  Go to the next line
-               if not End_Of_File (ALI_File) then
-                  Get_Line (ALI_File, Line);
+               --  State line parsed. We will now return.
+               return;
+
+            --  We special case lines that contain info about volatile
+            --  variables and external state abstractions.
+
+            elsif Length (Line) > 6
+              and then Slice (Line, 1, 6) in "GG AW " |
+                                             "GG AR " |
+                                             "GG ER " |
+                                             "GG EW "
+            then
+               if Slice (Line, 1, 6) = "GG AW " then
+                  if AW_Found then
+                     raise Program_Error;
+                  end if;
+
+                  --  Found AW
+                  AW_Found := True;
+                  --  Read and save AW line
+                  Async_Writers_Vars.Union (Get_Names_From_Line);
+
+               elsif Slice (Line, 1, 6) = "GG AR " then
+                  if AR_Found then
+                     raise Program_Error;
+                  end if;
+
+                  --  Found AR
+                  AR_Found := True;
+                  --  Read and save AR line
+                  Async_Readers_Vars.Union (Get_Names_From_Line);
+
+               elsif Slice (Line, 1, 6) = "GG ER " then
+                  if ER_Found then
+                     raise Program_Error;
+                  end if;
+
+                  --  Found ER
+                  ER_Found := True;
+                  --  Read and save ER line
+                  Effective_Reads_Vars.Union (Get_Names_From_Line);
+
+               elsif Slice (Line, 1, 6) = "GG EW " then
+                  if EW_Found then
+                     raise Program_Error;
+                  end if;
+
+                  --  Found EW
+                  EW_Found := True;
+                  --  Read and save EW line
+                  Effective_Writes_Vars.Union (Get_Names_From_Line);
+
+               else
+                  --  We should never get here
+                  raise Program_Error;
                end if;
+
+               --  Save all names from the line in the All_Volatile_Vars
+               --  set and return.
+               All_Volatile_Vars.Union (Get_Names_From_Line);
                return;
             end if;
 
@@ -1103,19 +1301,32 @@ package body Flow_Computed_Globals is
                   raise Program_Error;
                end if;
 
-               --  Go to the next line
-               if not End_Of_File (ALI_File) then
+               if not End_Of_File (ALI_File)
+                 and then (for some I in 1 .. 9 => not Line_Found (I))
+               then
+                  --  Go to the next line
                   Get_Line (ALI_File, Line);
-               elsif (for some I in 1 .. 9 => Line_Found (I) = False) then
+               elsif End_Of_File (ALI_File)
+                 and then (for some I in 1 .. 9 => not Line_Found (I))
+               then
                   --  We reached the end of the file and our New_Info
                   --  is not yet complete. Something is missing from
                   --  the ALI file.
                   raise Program_Error;
                end if;
+
+               if (for all I in 1 .. 9 => Line_Found (I)) then
+                  --  If all lines have been found then we add New_Info to
+                  --  Info_Set and return.
+                  Info_Set.Include (New_Info);
+                  return;
+               end if;
+
             end loop;
 
-            --  Add New_Info to Info_Set
-            Info_Set.Include (New_Info);
+            --  We should never reach here
+            raise Program_Error;
+
          end Parse_Record;
 
       begin
@@ -1134,7 +1345,9 @@ package body Flow_Computed_Globals is
          end loop;
 
          --  We have now reached the "GG" section of the ALI file
+         Parse_Record;
          while not End_Of_File (ALI_File) loop
+            Get_Line (ALI_File, Line);
             Parse_Record;
          end loop;
 
@@ -1272,8 +1485,17 @@ package body Flow_Computed_Globals is
          end loop;
       end Remove_Constants_Without_Variable_Input;
 
-   begin  --  Beginning of GG_Read
+   --  Beginning of GG_Read
+
+   begin
       Current_Mode := GG_Read_Mode;
+
+      --  Initialize volatile info
+      All_Volatile_Vars     := Name_Set.Empty_Set;
+      Async_Writers_Vars    := Name_Set.Empty_Set;
+      Async_Readers_Vars    := Name_Set.Empty_Set;
+      Effective_Reads_Vars  := Name_Set.Empty_Set;
+      Effective_Writes_Vars := Name_Set.Empty_Set;
 
       --  Go through all ALI files and populate the Info_Set
       for Index in ALIs.First .. ALIs.Last loop
@@ -1295,6 +1517,29 @@ package body Flow_Computed_Globals is
             for Name of State_Info.Constituents loop
                Write_Line ("   " & Name.S.all);
             end loop;
+         end loop;
+
+         --  Print all volatile info
+         Write_Eol;
+
+         Write_Line ("Async_Writers    :");
+         for Name of Async_Writers_Vars loop
+            Write_Line ("   " & Name.S.all);
+         end loop;
+
+         Write_Line ("Async_Readers    :");
+         for Name of Async_Readers_Vars loop
+            Write_Line ("   " & Name.S.all);
+         end loop;
+
+         Write_Line ("Effective_Reads  :");
+         for Name of Effective_Reads_Vars loop
+            Write_Line ("   " & Name.S.all);
+         end loop;
+
+         Write_Line ("Effective_Writes :");
+         for Name of Effective_Writes_Vars loop
+            Write_Line ("   " & Name.S.all);
          end loop;
       end if;
 
@@ -1735,5 +1980,50 @@ package body Flow_Computed_Globals is
 
       return Tmp;
    end GG_Get_All_State_Abstractions;
+
+   --------------------
+   -- GG_Is_Volatile --
+   --------------------
+
+   function GG_Is_Volatile (EN : Entity_Name) return Boolean is
+   begin
+      return All_Volatile_Vars.Contains (EN);
+   end GG_Is_Volatile;
+
+   --------------------------
+   -- GG_Has_Async_Writers --
+   --------------------------
+
+   function GG_Has_Async_Writers (EN : Entity_Name) return Boolean is
+   begin
+      return Async_Writers_Vars.Contains (EN);
+   end GG_Has_Async_Writers;
+
+   --------------------------
+   -- GG_Has_Async_Readers --
+   --------------------------
+
+   function GG_Has_Async_Readers (EN : Entity_Name) return Boolean is
+   begin
+      return Async_Readers_Vars.Contains (EN);
+   end GG_Has_Async_Readers;
+
+   ----------------------------
+   -- GG_Has_Effective_Reads --
+   ----------------------------
+
+   function GG_Has_Effective_Reads (EN : Entity_Name) return Boolean is
+   begin
+      return Effective_Reads_Vars.Contains (EN);
+   end GG_Has_Effective_Reads;
+
+   -----------------------------
+   -- GG_Has_Effective_Writes --
+   -----------------------------
+
+   function GG_Has_Effective_Writes (EN : Entity_Name) return Boolean is
+   begin
+      return Effective_Writes_Vars.Contains (EN);
+   end GG_Has_Effective_Writes;
 
 end Flow_Computed_Globals;

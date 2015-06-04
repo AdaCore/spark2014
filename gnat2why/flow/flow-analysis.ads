@@ -158,6 +158,15 @@ package Flow.Analysis is
    --
    --  Complexity is O(N)
 
+   procedure Check_Function_For_Volatile_Effects
+     (FA : in out Flow_Analysis_Graphs)
+     with Pre => FA.Kind = E_Subprogram_Body;
+   --  Checks that the subprogram does not have any volatile effects except if
+   --  so specified. This check is only doing something when called on
+   --  functions.
+   --
+   --  Complexity is O(N)
+
 private
 
    type Var_Use_Kind is (Use_Read, Use_Write, Use_Any);
