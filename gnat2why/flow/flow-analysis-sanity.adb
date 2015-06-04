@@ -905,7 +905,7 @@ package body Flow.Analysis.Sanity is
               (FA   => FA,
                Msg  => "global input & of & not read",
                N    => FA.Global_N,
-               Kind => Error_Kind,
+               Kind => Low_Check_Kind,
                F1   => R,
                F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
                Tag  => Global_Wrong);
