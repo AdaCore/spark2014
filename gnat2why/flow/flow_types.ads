@@ -75,6 +75,11 @@ package Flow_Types is
    type Edge_Colours is (EC_Default,
                          --  Control-flow dependencies
 
+                         EC_Barrier,
+                         --  For the `wait' edges for barriers. They
+                         --  introduce control dependence, but are
+                         --  otherwise not traversible.
+
                          EC_Abend,
                          --  For abnormal termination we need to add an
                          --  edge, but it should not be traversed for the
@@ -419,7 +424,8 @@ package Flow_Types is
                                 Pretty_Print_DIC,
                                 Pretty_Print_Folded_Function_Check,
                                 Pretty_Print_Loop_Init,
-                                Pretty_Print_Record_Field);
+                                Pretty_Print_Record_Field,
+                                Pretty_Print_Entry_Barrier);
 
    type V_Attributes is record
       Is_Null_Node        : Boolean;

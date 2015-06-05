@@ -5303,7 +5303,7 @@ digraph G {
     13 [label="F_Get_Item_C'initial\nVD: {F_Get_Item_C}\n<VId: 13>",shape="plaintext",fontcolor="red"];
     14 [label="F_Get_Item_C'final\nVU: {F_Get_Item_C}\n<VId: 14>",shape="plaintext",fontcolor="blue"];
     18 [label="return (hash__2 (w) > 0);\nVU: {W'Extensions, W.Y, W.X}\nSC: {Hash}\nVD: {F_Get_Item_C}\n<VId: 18>"];
-    19 [label="Hash'initial\nVD: {Hash}\n<VId: 19>",shape="plaintext",fontcolor="red"];
+    19 [label="Hash'initial\nVD: {Hash}\n<VId: 19>",shape="plaintext"];
     20 [label="Hash'final\nVU: {Hash}\n<VId: 20>",shape="plaintext",fontcolor="blue"];
 
     1 ->  18 [arrowType="normal"];
@@ -5341,7 +5341,7 @@ digraph G {
     13 [label="F_Get_Item_C'initial\nVD: {F_Get_Item_C}\n<VId: 13>",shape="plaintext",fontcolor="red"];
     14 [label="F_Get_Item_C'final\nVU: {F_Get_Item_C}\n<VId: 14>",shape="plaintext",fontcolor="blue"];
     18 [label="return (hash__2 (w) > 0);\nVU: {W'Extensions, W.Y, W.X}\nSC: {Hash}\nVD: {F_Get_Item_C}\n<VId: 18>"];
-    19 [label="Hash'initial\nVD: {Hash}\n<VId: 19>",shape="plaintext",fontcolor="red"];
+    19 [label="Hash'initial\nVD: {Hash}\n<VId: 19>",shape="plaintext"];
     20 [label="Hash'final\nVU: {Hash}\n<VId: 20>",shape="plaintext",fontcolor="blue"];
 
     1 ->  2 [arrowType="normal"];
@@ -5375,7 +5375,7 @@ digraph G {
     11 [label="F_Get_Item'initial\nVD: {F_Get_Item}\n<VId: 11>",shape="plaintext",fontcolor="red"];
     12 [label="F_Get_Item'final\nVU: {F_Get_Item}\n<VId: 12>",shape="plaintext",fontcolor="blue"];
     16 [label="return (hash__2 (w) > 0);\nVU: {W.Y, W.X}\nSC: {Hash}\nVD: {F_Get_Item}\n<VId: 16>"];
-    17 [label="Hash'initial\nVD: {Hash}\n<VId: 17>",shape="plaintext",fontcolor="red"];
+    17 [label="Hash'initial\nVD: {Hash}\n<VId: 17>",shape="plaintext"];
     18 [label="Hash'final\nVU: {Hash}\n<VId: 18>",shape="plaintext",fontcolor="blue"];
 
     1 ->  16 [arrowType="normal"];
@@ -5411,7 +5411,7 @@ digraph G {
     13 [label="F_Get_Item_E'initial\nVD: {F_Get_Item_E}\n<VId: 13>",shape="plaintext",fontcolor="red"];
     14 [label="F_Get_Item_E'final\nVU: {F_Get_Item_E}\n<VId: 14>",shape="plaintext",fontcolor="blue"];
     18 [label="return (f_get_item_c (w));\nVU: {W.Y, W.X, W'Extensions}\nSC: {F_Get_Item_C}\nVD: {F_Get_Item_E}\n<VId: 18>"];
-    19 [label="F_Get_Item_C'initial\nVD: {F_Get_Item_C}\n<VId: 19>",shape="plaintext",fontcolor="red"];
+    19 [label="F_Get_Item_C'initial\nVD: {F_Get_Item_C}\n<VId: 19>",shape="plaintext"];
     20 [label="F_Get_Item_C'final\nVU: {F_Get_Item_C}\n<VId: 20>",shape="plaintext",fontcolor="blue"];
 
     1 ->  18 [arrowType="normal"];
@@ -5449,7 +5449,7 @@ digraph G {
     13 [label="F_Get_Item_E'initial\nVD: {F_Get_Item_E}\n<VId: 13>",shape="plaintext",fontcolor="red"];
     14 [label="F_Get_Item_E'final\nVU: {F_Get_Item_E}\n<VId: 14>",shape="plaintext",fontcolor="blue"];
     18 [label="return (f_get_item_c (w));\nVU: {W.Y, W.X, W'Extensions}\nSC: {F_Get_Item_C}\nVD: {F_Get_Item_E}\n<VId: 18>"];
-    19 [label="F_Get_Item_C'initial\nVD: {F_Get_Item_C}\n<VId: 19>",shape="plaintext",fontcolor="red"];
+    19 [label="F_Get_Item_C'initial\nVD: {F_Get_Item_C}\n<VId: 19>",shape="plaintext"];
     20 [label="F_Get_Item_C'final\nVU: {F_Get_Item_C}\n<VId: 20>",shape="plaintext",fontcolor="blue"];
 
     1 ->  2 [arrowType="normal"];
@@ -5482,7 +5482,7 @@ digraph G {
     11 [label="F_Get_Item'initial\nVD: {F_Get_Item}\n<VId: 11>",shape="plaintext",fontcolor="red"];
     12 [label="F_Get_Item'final\nVU: {F_Get_Item}\n<VId: 12>",shape="plaintext",fontcolor="blue"];
     16 [label="return (hash__2 (w) > 0);\nVU: {W.Y, W.X}\nSC: {Hash}\nVD: {F_Get_Item}\n<VId: 16>"];
-    17 [label="Hash'initial\nVD: {Hash}\n<VId: 17>",shape="plaintext",fontcolor="red"];
+    17 [label="Hash'initial\nVD: {Hash}\n<VId: 17>",shape="plaintext"];
     18 [label="Hash'final\nVU: {Hash}\n<VId: 18>",shape="plaintext",fontcolor="blue"];
 
     1 ->  2 [arrowType="normal"];
@@ -5660,9 +5660,9 @@ digraph G {
     14 [label="Tmp.X'initial\nVD: {Tmp.X}\n<VId: 14>",shape="plaintext",fontcolor="red"];
     15 [label="Tmp.X'final\nVU: {Tmp.X}\n<VId: 15>",shape="plaintext"];
     20 [label="n := hash__2 (tmp);\nVU: {Tmp.X, Tmp.Y}\nSC: {Hash}\nVD: {N}\n<VId: 20>"];
-    21 [label="Hash'initial\nVD: {Hash}\n<VId: 21>",shape="plaintext",fontcolor="red"];
+    21 [label="Hash'initial\nVD: {Hash}\n<VId: 21>",shape="plaintext"];
     22 [label="Hash'final\nVU: {Hash}\n<VId: 22>",shape="plaintext",fontcolor="blue"];
-    23 [label="New_Widget'initial\nVD: {New_Widget}\n<VId: 23>",shape="plaintext",fontcolor="red"];
+    23 [label="New_Widget'initial\nVD: {New_Widget}\n<VId: 23>",shape="plaintext"];
     24 [label="New_Widget'final\nVU: {New_Widget}\n<VId: 24>",shape="plaintext"];
 
 subgraph cluster1 {
@@ -5714,9 +5714,9 @@ digraph G {
     18 [label="x'in&nbsp;:=&nbsp;tmp'discr_or_bounds\n<VId: 18>",shape="plaintext"];
     19 [label="tmp&nbsp;:=&nbsp;x'out\nVD: {Tmp.Y, Tmp.X}\n<VId: 19>",shape="plaintext"];
     20 [label="n := hash__2 (tmp);\nVU: {Tmp.X, Tmp.Y}\nSC: {Hash}\nVD: {N}\n<VId: 20>"];
-    21 [label="Hash'initial\nVD: {Hash}\n<VId: 21>",shape="plaintext",fontcolor="red"];
+    21 [label="Hash'initial\nVD: {Hash}\n<VId: 21>",shape="plaintext"];
     22 [label="Hash'final\nVU: {Hash}\n<VId: 22>",shape="plaintext",fontcolor="blue"];
-    23 [label="New_Widget'initial\nVD: {New_Widget}\n<VId: 23>",shape="plaintext",fontcolor="red"];
+    23 [label="New_Widget'initial\nVD: {New_Widget}\n<VId: 23>",shape="plaintext"];
     24 [label="New_Widget'final\nVU: {New_Widget}\n<VId: 24>",shape="plaintext"];
 
     1 ->  2 [arrowType="normal"];

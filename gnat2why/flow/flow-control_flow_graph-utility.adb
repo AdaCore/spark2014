@@ -526,8 +526,9 @@ package body Flow.Control_Flow_Graph.Utility is
          when Initial_Value =>
             A.Is_Initialized := Ekind (Entire_Var) in
               E_In_Out_Parameter |
-                 E_In_Parameter  |
-                 E_Loop_Parameter;
+              E_In_Parameter     |
+              E_Loop_Parameter
+              or else A.Mode in Initialized_Global_Modes;
 
             A.Is_Import := Ekind (Entire_Var) in
               E_In_Out_Parameter | E_In_Parameter;

@@ -520,9 +520,9 @@ digraph G {
     25 [label="Speed'final\n(global)\nVU: {Speed}\n<VId: 25>",shape="plaintext",fontcolor="blue"];
     26 [label="State'initial\n(global)\nVD: {State}\n<VId: 26>",shape="plaintext"];
     27 [label="State'final\n(global)\nVU: {State}\n<VId: 27>",shape="plaintext",fontcolor="blue"];
-    28 [label="Speed_Is_Valid'initial\nVD: {Speed_Is_Valid}\n<VId: 28>",shape="plaintext",fontcolor="red"];
+    28 [label="Speed_Is_Valid'initial\nVD: {Speed_Is_Valid}\n<VId: 28>",shape="plaintext"];
     29 [label="Speed_Is_Valid'final\nVU: {Speed_Is_Valid}\n<VId: 29>",shape="plaintext",fontcolor="blue"];
-    30 [label="State_Update'initial\nVD: {State_Update}\n<VId: 30>",shape="plaintext",fontcolor="red"];
+    30 [label="State_Update'initial\nVD: {State_Update}\n<VId: 30>",shape="plaintext"];
     31 [label="State_Update'final\nVU: {State_Update}\n<VId: 31>",shape="plaintext"];
 
 subgraph cluster1 {
@@ -608,9 +608,9 @@ digraph G {
     25 [label="Speed'final\n(global)\nVU: {Speed}\n<VId: 25>",shape="plaintext",fontcolor="blue"];
     26 [label="State'initial\n(global)\nVD: {State}\n<VId: 26>",shape="plaintext"];
     27 [label="State'final\n(global)\nVU: {State}\n<VId: 27>",shape="plaintext",fontcolor="blue"];
-    28 [label="Speed_Is_Valid'initial\nVD: {Speed_Is_Valid}\n<VId: 28>",shape="plaintext",fontcolor="red"];
+    28 [label="Speed_Is_Valid'initial\nVD: {Speed_Is_Valid}\n<VId: 28>",shape="plaintext"];
     29 [label="Speed_Is_Valid'final\nVU: {Speed_Is_Valid}\n<VId: 29>",shape="plaintext",fontcolor="blue"];
-    30 [label="State_Update'initial\nVD: {State_Update}\n<VId: 30>",shape="plaintext",fontcolor="red"];
+    30 [label="State_Update'initial\nVD: {State_Update}\n<VId: 30>",shape="plaintext"];
     31 [label="State_Update'final\nVU: {State_Update}\n<VId: 31>",shape="plaintext"];
 
     1 ->  2 [arrowType="normal"];

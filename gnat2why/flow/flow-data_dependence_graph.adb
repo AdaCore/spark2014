@@ -117,7 +117,7 @@ package body Flow.Data_Dependence_Graph is
                      case FA.CFG.Edge_Colour (A, B) is
                         when EC_Default | EC_Inf =>
                            return True;
-                        when EC_Abend =>
+                        when EC_Abend | EC_Barrier =>
                            return False;
                         when others =>
                            raise Program_Error;

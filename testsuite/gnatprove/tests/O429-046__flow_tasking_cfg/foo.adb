@@ -5,14 +5,16 @@ is
 
    B : Boolean := False;
 
-   protected type Thing (D : Natural) is
+   protected type Thing is
       -- only procedure decl here
       function Test return Boolean with Global => null;
-      entry Ent; --  only one allowed
+      entry Ent (N : Natural)
+        with Pre => N > 10 and B,
+             Post => B;
    private
       -- only place data can appear
       A : Boolean := False;
-      X : Boolean := D > 5;
+      X : Boolean := True; -- D > 5;
    end Thing;
 
    protected body Thing is
@@ -22,13 +24,13 @@ is
          return A;
       end Test;
 
-      entry Ent when A is
+      entry Ent (N : Natural) when A is
       begin
-         A := False;
+         X := False;
       end Ent;
    end Thing;
 
-   Po_1 : Thing (12);
+   Po_1 : Thing;
 
    task type Test_Task_01 (D : Natural);
 

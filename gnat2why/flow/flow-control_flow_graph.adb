@@ -385,7 +385,10 @@ package body Flow.Control_Flow_Graph is
    --           /     \
    --      R.A.X       R.A.Y*
 
-   type Var_Kind is (Variable_Kind, Parameter_Kind, Discriminant_Kind);
+   type Var_Kind is (Variable_Kind,
+                     Protected_Component_Kind,
+                     Parameter_Kind,
+                     Discriminant_Kind);
 
    procedure Create_Initial_And_Final_Vertices
      (E    : Entity_Id;
@@ -954,6 +957,7 @@ package body Flow.Control_Flow_Graph is
       function Get_Colour (V : Flow_Graphs.Vertex_Id) return Edge_Colours
         is (case FA.Atr (V).Execution is
                when Normal_Execution     => EC_Default,
+               when Barrier              => EC_Barrier,
                when Abnormal_Termination => EC_Abend,
                when Infinite_Loop        => EC_Inf);
    begin
@@ -1376,8 +1380,16 @@ package body Flow.Control_Flow_Graph is
             M := Mode_In;
 
          when others =>
-            pragma Assert (Kind = Variable_Kind);
-            M := Mode_Invalid;
+            pragma Assert (Kind in Variable_Kind | Protected_Component_Kind);
+            if Kind = Protected_Component_Kind then
+               if Ekind (FA.Analyzed_Entity) in E_Function then
+                  M := Mode_In;
+               else
+                  M := Mode_In_Out;
+               end if;
+            else
+               M := Mode_Invalid;
+            end if;
       end case;
 
       declare
@@ -4211,6 +4223,48 @@ package body Flow.Control_Flow_Graph is
       end if;
 
       Join (FA, CM, L, Block);
+
+      if Nkind (N) = N_Entry_Body then
+         declare
+            Cond : constant Node_Id := Condition (Entry_Body_Formal_Part (N));
+            V_C  : Flow_Graphs.Vertex_Id;
+            V    : Flow_Graphs.Vertex_Id;
+         begin
+            Add_Vertex
+              (FA,
+               Direct_Mapping_Id (Cond),
+               Make_Basic_Attributes
+                 (FA         => FA,
+                  Var_Ex_Use => Get_Variable_Set
+                    (Cond,
+                     Scope                => FA.B_Scope,
+                     Local_Constants      => FA.Local_Constants,
+                     Fold_Functions       => False,
+                     Use_Computed_Globals => not FA.Compute_Globals),
+                  Sub_Called => Get_Function_Set (Cond),
+                  Loops      => Ctx.Current_Loops,
+                  E_Loc      => Cond,
+                  Print_Hint => Pretty_Print_Entry_Barrier),
+               V_C);
+            --  Ctx.Folded_Function_Checks (N).Insert (Cond);
+            --  ??? O429-046 stitch actions?
+
+            Add_Vertex
+              (FA,
+               Direct_Mapping_Id (Entry_Body_Formal_Part (N)),
+               Make_Aux_Vertex_Attributes
+                 (E_Loc     => Entry_Body_Formal_Part (N),
+                  Execution => Barrier),
+               V);
+
+            Linkup (FA, V_C, Block.Standard_Entry);
+            Linkup (FA, V_C, V);
+
+            Block.Standard_Entry := V_C;
+            Block.Standard_Exits.Include (V);
+         end;
+      end if;
+
       CM.Include (Union_Id (N), Block);
    end Do_Subprogram_Or_Block;
 
@@ -4814,9 +4868,9 @@ package body Flow.Control_Flow_Graph is
       is
       begin
          case FA.CFG.Edge_Colour (A, B) is
-            when EC_Default | EC_Inf => return True;
-            when EC_Abend            => return False;
-            when others              => raise Program_Error;
+            when EC_Default | EC_Barrier | EC_Inf => return True;
+            when EC_Abend                         => return False;
+            when others                           => raise Program_Error;
          end case;
       end Ignore_Abend_Edges;
 
@@ -5482,7 +5536,7 @@ package body Flow.Control_Flow_Graph is
       --  Collect parameters of the analyzed entity and produce
       --  initial and final vertices.
       case FA.Kind is
-         when E_Subprogram_Body | E_Entry =>
+         when E_Subprogram_Body =>
             declare
                E : Entity_Id;
             begin
@@ -5490,6 +5544,37 @@ package body Flow.Control_Flow_Graph is
                while Present (E) loop
                   Create_Initial_And_Final_Vertices (E, Parameter_Kind, FA);
                   E := Next_Formal (E);
+               end loop;
+            end;
+
+         when E_Entry =>
+            --  Note that SPARK 2014 only supports entries for protected
+            --  types, not for tasks.
+            declare
+               E : Entity_Id;
+            begin
+               --  Parameters
+               E := First_Formal (Subprogram_Spec);
+               while Present (E) loop
+                  Create_Initial_And_Final_Vertices (E, Parameter_Kind, FA);
+                  E := Next_Formal (E);
+               end loop;
+
+               --  Discriminants and components of the enclosing protected
+               --  type
+               E := First_Entity (Scope (Subprogram_Spec));
+               while Present (E) loop
+                  case Ekind (E) is
+                     when E_Discriminant =>
+                        Create_Initial_And_Final_Vertices
+                          (E, Discriminant_Kind, FA);
+                     when E_Component =>
+                        Create_Initial_And_Final_Vertices
+                          (E, Protected_Component_Kind, FA);
+                     when others =>
+                        null;
+                  end case;
+                  E := Next_Entity (E);
                end loop;
             end;
 

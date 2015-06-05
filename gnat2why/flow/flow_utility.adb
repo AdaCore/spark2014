@@ -2615,6 +2615,8 @@ package body Flow_Utility is
                         end if;
 
                      when E_Variable         |
+                          E_Component        |
+                          E_Discriminant     |
                           E_Loop_Parameter   |
                           E_Out_Parameter    |
                           E_In_Parameter     |
@@ -2628,6 +2630,20 @@ package body Flow_Utility is
                            then
                               E := Discriminal_Link (E);
                            end if;
+
+                           case Ekind (E) is
+                              when E_Discriminant | E_Component =>
+                                 if Ekind (Sinfo.Scope (E)) /=
+                                   E_Protected_Type
+                                 then
+                                    --  We include stuff from POs, but
+                                    --  otherwise we need to ignore
+                                    --  discriminants and components.
+                                    return OK;
+                                 end if;
+                              when others =>
+                                 null;
+                           end case;
 
                            if Reduced then
                               VS.Include (Direct_Mapping_Id
@@ -2666,6 +2682,8 @@ package body Flow_Utility is
                case Ekind (N) is
                   when E_Constant         |
                        E_Variable         |
+                       E_Component        |
+                       E_Discriminant     |
                        E_Loop_Parameter   |
                        E_Out_Parameter    |
                        E_In_Parameter     |
@@ -2678,6 +2696,19 @@ package body Flow_Utility is
                         then
                            E := Discriminal_Link (E);
                         end if;
+
+                        case Ekind (E) is
+                           when E_Discriminant | E_Component =>
+                              if Ekind (Sinfo.Scope (E)) /= E_Protected_Type
+                              then
+                                 --  We include stuff from POs, but
+                                 --  otherwise we need to ignore
+                                 --  discriminants and components.
+                                 return OK;
+                              end if;
+                           when others =>
+                              null;
+                        end case;
 
                         if Ekind (E) /= E_Constant
                           or else Local_Constants.Contains (E)

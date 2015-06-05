@@ -447,6 +447,14 @@ package body Flow is
                end loop;
             end;
 
+         elsif A.Pretty_Print_Kind = Pretty_Print_Entry_Barrier then
+            Rv.Shape := Shape_Diamond;
+            Write_Str ("when ");
+            Print_Node (Get_Direct_Mapping_Id (F));
+
+         elsif A.Pretty_Print_Kind /= Pretty_Print_Null then
+            raise Program_Error;
+
          elsif A.Is_Parameter then
             Rv.Shape := Shape_None;
 
@@ -609,6 +617,10 @@ package body Flow is
                            --  returns "null;" for this node.
                            Write_Str ("null;");
 
+                        when N_Entry_Body_Formal_Part =>
+                           Rv.Shape := Shape_None;
+                           Write_Str ("barrier");
+
                         when others =>
                            Print_Node (N);
                      end case;
@@ -742,6 +754,8 @@ package body Flow is
          case A.Execution is
             when Normal_Execution =>
                null;
+            when Barrier =>
+               Write_Str ("\nExecution: BARRIER");
             when Abnormal_Termination =>
                Write_Str ("\nExecution: ABEND");
             when Infinite_Loop =>
@@ -791,7 +805,15 @@ package body Flow is
             when EC_Default =>
                null;
 
+            when EC_Barrier =>
+               Rv.Colour := To_Unbounded_String ("gold");
+               Rv.Label  := To_Unbounded_String ("barrier");
+
             when EC_Abend =>
+               --  Using the same colour as for barriers, since this one
+               --  won't ever show up normally (we prune all such paths).
+               --  But in some debug modes you can see it, and they are
+               --  reasonably similar...
                Rv.Colour := To_Unbounded_String ("gold");
                Rv.Label  := To_Unbounded_String ("abend");
 

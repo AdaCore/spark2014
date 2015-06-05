@@ -76,6 +76,7 @@ package SPARK_Util is
 
    type Execution_Kind_T is
      (Normal_Execution,      --  regular subprogram
+      Barrier,               --  conditional execution
       Abnormal_Termination,  --  No_Return, no output
       Infinite_Loop);        --  No_Return, some output
    --  Expected kind of execution for a called procedure. This does not apply
@@ -525,7 +526,10 @@ package SPARK_Util is
    function Get_Execution_Kind
      (E        : Entity_Id;
       After_GG : Boolean := True) return Execution_Kind_T
-     with Pre => Ekind (E) = E_Procedure;
+     with Pre  => Ekind (E) = E_Procedure,
+          Post => Get_Execution_Kind'Result in Normal_Execution     |
+                                               Abnormal_Termination |
+                                               Infinite_Loop;
    --  @param E is a procedure that never returns, either marked with No_Return
    --     or for which flow analysis determines that no path returns.
    --  @param After_GG True if this call is made after generation of globals,

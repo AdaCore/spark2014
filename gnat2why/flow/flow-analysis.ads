@@ -45,7 +45,10 @@ package Flow.Analysis is
    procedure Sanity_Check_Postcondition (FA   : in out Flow_Analysis_Graphs;
                                          Sane : in out Boolean)
    with Pre => Sane and then
-               FA.Kind in E_Subprogram_Body | E_Package_Body | E_Package;
+               FA.Kind in E_Subprogram_Body |
+                          E_Entry           |
+                          E_Package_Body    |
+                          E_Package;
    --  Check post, refined_post and initializes for use of variables
    --  we have not introduced through a global or parameter.
    --
