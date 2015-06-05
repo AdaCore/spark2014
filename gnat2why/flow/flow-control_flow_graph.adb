@@ -771,6 +771,22 @@ package body Flow.Control_Flow_Graph is
    --  This is the top level procedure which deals with a subprogram,
    --  block or package elaboration statement. The declarations and
    --  sequence of statements is processed and linked.
+   --
+   --  If we are given an entry body, we also have to deal with the
+   --  barrier. We do this by adding a node for the condition with two
+   --  paths, one leading to the subprogram and one non-traversable path
+   --  (EC_Barrier) skipping it; this is to introduce a control dependence
+   --  on the barrier:
+   --
+   --                      |
+   --                 when BARRIER
+   --                /            \
+   --  (EC_Default) /              \ (EC_Barrier)
+   --              /                \
+   --          SUBPROGRAM          null
+   --                    \         /
+   --                     \---+---/
+   --                         |
 
    procedure Do_Type_Declaration
      (N   : Node_Id;
