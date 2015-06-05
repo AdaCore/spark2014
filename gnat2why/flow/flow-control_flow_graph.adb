@@ -2281,6 +2281,24 @@ package body Flow.Control_Flow_Graph is
       --  one (unknown range) as subsequent code may rely on any
       --  initializations in the loop body.
 
+      procedure Do_Iterator_Loop;
+      --  Helper procedure to deal with for loops using iterators. Very
+      --  similar to general for loops, except that we always produce
+      --  unknown-if-executed loops.
+      --
+      --       |
+      --       v
+      --   PARAMETER --\
+      --   ^   |       |
+      --   |   v       |
+      --   |  BODY     |
+      --   |   |       |
+      --   \---/       v
+      --
+      --  This means the loop body may not be executed, so any
+      --  initializations in the loop which subsequent code depends on
+      --  will be flagged up.
+
       function Variables_Initialized_By_Loop (N : Node_Id)
                                               return Flow_Id_Sets.Set;
       --  A conservative heuristic to determine the set of possible
@@ -2916,6 +2934,52 @@ package body Flow.Control_Flow_Graph is
          return Fully_Initialized;
       end Variables_Initialized_By_Loop;
 
+      ----------------------
+      -- Do_Iterator_Loop --
+      ----------------------
+
+      procedure Do_Iterator_Loop
+      is
+         I_Spec : constant Node_Id :=
+           Iterator_Specification (Iteration_Scheme (N));
+
+         Param : constant Entity_Id := Defining_Identifier (I_Spec);
+         Cont  : constant Node_Id   := Name (I_Spec);
+
+         V : Flow_Graphs.Vertex_Id;
+      begin
+         --  Set up parameter variable.
+         Create_Initial_And_Final_Vertices (Param, Variable_Kind, FA);
+
+         --  Create vertex for the container expression. We also define the
+         --  loop parameter here.
+         Add_Vertex
+           (FA,
+            Direct_Mapping_Id (N),
+            Make_Basic_Attributes
+              (FA         => FA,
+               Var_Def    => Flatten_Variable (Param, FA.B_Scope),
+               Var_Ex_Use => Get_Variable_Set
+                 (Cont,
+                  Scope                => FA.B_Scope,
+                  Local_Constants      => FA.Local_Constants,
+                  Fold_Functions       => True,
+                  Use_Computed_Globals => not FA.Compute_Globals),
+               Sub_Called => Get_Function_Set (Cont),
+               Loops      => Ctx.Current_Loops,
+               E_Loc      => Cont),
+            V);
+         Ctx.Folded_Function_Checks (N).Insert (Cont);
+
+         --  Pretty normal flow (see while loops)
+         CM (Union_Id (N)) := Trivial_Connection (V);
+
+         --  Loop the loop: V -> body -> V
+         Linkup (FA, V, CM (Union_Id (Statements (N))).Standard_Entry);
+         Linkup (FA, CM (Union_Id (Statements (N))).Standard_Exits, V);
+      end Do_Iterator_Loop;
+
+      I_Scheme          : constant Node_Id   := Iteration_Scheme (N);
       Loop_Id           : constant Entity_Id := Entity (Identifier (N));
       Fully_Initialized : Flow_Id_Sets.Set   := Flow_Id_Sets.Empty_Set;
 
@@ -2944,31 +3008,24 @@ package body Flow.Control_Flow_Graph is
          Ctx.Active_Loop := Tmp;
       end;
 
-      if not Present (Iteration_Scheme (N)) then
-         --  We have a loop.
+      if No (I_Scheme) then
+         --  We have a general (possibly infinite) loop.
          Do_Loop;
 
+      elsif Present (Condition (I_Scheme)) then
+         --  We have a while loop.
+         Do_While_Loop;
+
+      elsif Present (Loop_Parameter_Specification (I_Scheme)) then
+         --  This is a normal for loop over a type or range.
+         Do_For_Loop (Fully_Initialized);
+
+      elsif Present (Iterator_Specification (I_Scheme)) then
+         --  This is a `in' or `of' loop over some container.
+         Do_Iterator_Loop;
+
       else
-         --  We have either a while loop or a for loop.
-
-         --  We have a vertex for the loop condition, depending on its
-         --  iteration scheme.
-         if Present (Condition (Iteration_Scheme (N))) then
-            --  We have a while loop.
-            Do_While_Loop;
-
-         elsif Present (Iterator_Specification (Iteration_Scheme (N))) then
-            --  N_Iterator_Specification is not in SPARK2014
-            raise Why.Not_SPARK;
-
-         else
-            --  We have a for loop. Make sure we don't have an
-            --  iterator, but a normal range.
-            pragma Assert (Present (Loop_Parameter_Specification (
-                             Iteration_Scheme (N))));
-
-            Do_For_Loop (Fully_Initialized);
-         end if;
+         raise Program_Error;
       end if;
 
       --  If we need an init vertex, we add it before the loop itself.

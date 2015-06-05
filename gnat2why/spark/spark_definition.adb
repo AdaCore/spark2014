@@ -3639,7 +3639,8 @@ package body SPARK_Definition is
       else
          pragma Assert (No (Condition_Actions (N)));
          pragma Assert (Present (Iterator_Specification (N)));
-         Mark_Violation ("loop with iterator", N);
+
+         Mark (Iterator_Specification (N));
       end if;
    end Mark_Iteration_Scheme;
 
