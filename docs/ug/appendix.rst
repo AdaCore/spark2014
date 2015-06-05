@@ -975,7 +975,7 @@ Tool Limitations
      universal real are rejected
    * multiplication and division whose result type is not the same fixed-point
      type as its fixed-point argument(s) are rejected, except for the special
-     case of dividing a fixed-point value by its the small of its type
+     case of dividing a fixed-point value by the small of its type
      (T'Small) to yield an integer result which is always exact.
 
    These restrictions ensure that the result of fixed-point operations always
