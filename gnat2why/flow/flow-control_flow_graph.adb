@@ -5536,24 +5536,10 @@ package body Flow.Control_Flow_Graph is
       --  Collect parameters of the analyzed entity and produce
       --  initial and final vertices.
       case FA.Kind is
-         when E_Subprogram_Body =>
+         when E_Subprogram_Body | E_Entry =>
             declare
                E : Entity_Id;
             begin
-               E := First_Formal (Subprogram_Spec);
-               while Present (E) loop
-                  Create_Initial_And_Final_Vertices (E, Parameter_Kind, FA);
-                  E := Next_Formal (E);
-               end loop;
-            end;
-
-         when E_Entry =>
-            --  Note that SPARK 2014 only supports entries for protected
-            --  types, not for tasks.
-            declare
-               E : Entity_Id;
-            begin
-               --  Parameters
                E := First_Formal (Subprogram_Spec);
                while Present (E) loop
                   Create_Initial_And_Final_Vertices (E, Parameter_Kind, FA);
@@ -5561,21 +5547,24 @@ package body Flow.Control_Flow_Graph is
                end loop;
 
                --  Discriminants and components of the enclosing protected
-               --  type
-               E := First_Entity (Scope (Subprogram_Spec));
-               while Present (E) loop
-                  case Ekind (E) is
-                     when E_Discriminant =>
-                        Create_Initial_And_Final_Vertices
-                          (E, Discriminant_Kind, FA);
-                     when E_Component =>
-                        Create_Initial_And_Final_Vertices
-                          (E, Protected_Component_Kind, FA);
-                     when others =>
-                        null;
-                  end case;
-                  E := Next_Entity (E);
-               end loop;
+               --  type (if any)
+               E := Scope (Subprogram_Spec);
+               if Ekind (E) = E_Protected_Type then
+                  E := First_Entity (E);
+                  while Present (E) loop
+                     case Ekind (E) is
+                        when E_Discriminant =>
+                           Create_Initial_And_Final_Vertices
+                             (E, Discriminant_Kind, FA);
+                        when E_Component =>
+                           Create_Initial_And_Final_Vertices
+                             (E, Protected_Component_Kind, FA);
+                        when others =>
+                           null;
+                     end case;
+                     E := Next_Entity (E);
+                  end loop;
+               end if;
             end;
 
          when E_Task_Body | E_Protected_Type =>
