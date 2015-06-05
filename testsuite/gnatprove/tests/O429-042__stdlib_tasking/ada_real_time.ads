@@ -63,7 +63,7 @@ is
                  To_Duration (Time_Span_First) - To_Duration (Right)
              elsif Right > Time_Span_Zero then
                To_Duration (Left) <=
-                 To_Duration (Time_Span_Last)  - To_Duration (Right));
+                 To_Duration (Time_Span_Last) - To_Duration (Right));
 
    function "+"  (Left : Time_Span; Right : Time)      return Time with
      Pre => (if Left < Time_Span_Zero then
@@ -71,12 +71,12 @@ is
                  To_Duration (Time_Span_First) - To_Duration (Left)
              elsif Left > Time_Span_Zero then
                To_Duration (Right) <=
-                 To_Duration (Time_Span_Last)  - To_Duration (Left));
+                 To_Duration (Time_Span_Last) - To_Duration (Left));
 
    function "-"  (Left : Time;      Right : Time_Span) return Time with
      Pre => (if Right < Time_Span_Zero then
                To_Duration (Left) <=
-                 To_Duration (Time_Span_Last)  + To_Duration (Right)
+                 To_Duration (Time_Span_Last) + To_Duration (Right)
              elsif Right > Time_Span_Zero then
                To_Duration (Left) >=
                  To_Duration (Time_Span_First) + To_Duration (Right));
@@ -84,7 +84,7 @@ is
    function "-"  (Left : Time;      Right : Time)      return Time_Span with
      Pre => (if To_Duration (Right) < 0.0 then
                To_Duration (Left) <=
-                 Duration'Last  + To_Duration (Right)
+                 Duration'Last + To_Duration (Right)
              elsif To_Duration (Right) > 0.0 then
                To_Duration (Left) >=
                  Duration'First + To_Duration (Right));
@@ -100,12 +100,12 @@ is
                  To_Duration (Time_Span_First) - To_Duration (Right)
              elsif Right > Time_Span_Zero then
                To_Duration (Left) <=
-                 To_Duration (Time_Span_Last)  - To_Duration (Right));
+                 To_Duration (Time_Span_Last) - To_Duration (Right));
 
    function "-"  (Left, Right : Time_Span)             return Time_Span with
      Pre => (if Right < Time_Span_Zero then
                To_Duration (Left) <=
-                 To_Duration (Time_Span_Last)  + To_Duration (Right)
+                 To_Duration (Time_Span_Last) + To_Duration (Right)
              elsif Right > Time_Span_Zero then
                To_Duration (Left) >=
                  To_Duration (Time_Span_First) + To_Duration (Right));
@@ -118,7 +118,7 @@ is
        (if Right > 0 then
          (if Left > Time_Span_Zero then
             Duration_Rep (To_Duration (Left) / Duration (Duration'Small)) <=
-              Duration_Rep (To_Duration (Time_Span_Last)  /
+              Duration_Rep (To_Duration (Time_Span_Last) /
                             Duration (Duration'Small)) /
               Duration_Rep (Right)
           elsif Left < Time_Span_Zero then
@@ -145,7 +145,7 @@ is
        (if Left > 0 then
          (if Right > Time_Span_Zero then
             Duration_Rep (To_Duration (Right) / Duration (Duration'Small)) <=
-              Duration_Rep (To_Duration (Time_Span_Last)  /
+              Duration_Rep (To_Duration (Time_Span_Last) /
                             Duration (Duration'Small)) /
               Duration_Rep (Left)
           elsif Right < Time_Span_Zero then
@@ -196,7 +196,7 @@ is
    pragma Ada_05 (Seconds);
 
    function Minutes (M : Integer) return Time_Span with
-     Pre => Duration_Rep (M) <= Duration_Rep'Last / (1_000_000_000 * 60 * 60);
+     Pre => Duration_Rep (M) <= Duration_Rep'Last / (1_000_000_000 * 60);
    pragma Ada_05 (Minutes);
 
    type Seconds_Count is new Long_Long_Integer;
