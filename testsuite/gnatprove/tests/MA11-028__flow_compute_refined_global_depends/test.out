@@ -3,10 +3,10 @@ bad_refinement.adb:5:07: info: initialization of "Y" constituent of "State2" pro
 bad_refinement.adb:5:10: info: initialization of "Z" constituent of "State2" proved
 bad_refinement.adb:50:12: "Z" constituent of "State2" must be listed in the Refined_Depends aspect of "Liar8" (SPARK RM 6.1.4(13))
 bad_refinement.ads:6:11: "Bad_Refinement.State2" must be a global input of "Liar" (SPARK RM 6.1.4)
-bad_refinement.ads:6:11: global input "Bad_Refinement.State" of "Liar" not read
+bad_refinement.ads:6:11: low: global input "Bad_Refinement.State" of "Liar" not read
 bad_refinement.ads:9:11: "Bad_Refinement.State" must be a global input of "Liar2" (SPARK RM 6.1.4)
 bad_refinement.ads:12:11: "Bad_Refinement.State" must be a global output of "Liar3" (SPARK RM 6.1.4)
-bad_refinement.ads:12:11: global input "Bad_Refinement.State" of "Liar3" not read
+bad_refinement.ads:12:11: low: global input "Bad_Refinement.State" of "Liar3" not read
 bad_refinement.ads:15:28: medium: missing dependency "Liar4'Result => Bad_Refinement.State2"
 bad_refinement.ads:17:21: info: initialization of "I" proved
 bad_refinement.ads:19:23: medium: missing dependency "Bad_Refinement.State2 => Bad_Refinement.State2"
@@ -53,7 +53,7 @@ lots_of_tests.ads:25:14: info: initialization of "G2" proved
 lots_of_tests.ads:25:32: info: initialization of "Y" proved
 lots_of_tests.ads:29:52: info: initialization of "Y" proved
 lots_of_tests.ads:34:11: "Lots_Of_Tests.State2" must be a global input of "Internal_User_Of_Dep_BAD" (SPARK RM 6.1.4)
-lots_of_tests.ads:34:11: global input "G1" of "Internal_User_Of_Dep_BAD" not read
+lots_of_tests.ads:34:11: low: global input "G1" of "Internal_User_Of_Dep_BAD" not read
 lots_of_tests.ads:37:19: info: initialization of "X" proved
 lots_of_tests.ads:39:33: info: initialization of "G2" proved
 lots_of_tests.ads:43:39: info: initialization of "X" proved
