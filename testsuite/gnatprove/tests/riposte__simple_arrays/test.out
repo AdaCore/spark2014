@@ -2,10 +2,14 @@ simple_arrays.adb:19:07: info: assertion proved
 simple_arrays.adb:24:49: info: initialization of "A" proved
 simple_arrays.adb:27:22: info: initialization of "A" proved
 simple_arrays.adb:27:22: info: postcondition proved
+simple_arrays.adb:34:55: info: initialization of "A" proved
+simple_arrays.adb:37:22: info: initialization of "A" proved
 simple_arrays.adb:37:22: info: postcondition proved
 simple_arrays.adb:42:10: info: loop invariant initialization proved
 simple_arrays.adb:42:10: info: loop invariant preservation proved
-simple_arrays.adb:42:41: info: range check proved
+simple_arrays.adb:43:21: info: range check proved
+simple_arrays.adb:43:62: info: initialization of "A" proved
+simple_arrays.adb:43:62: medium: "A" might not be initialized
 simple_arrays.adb:49:42: info: initialization of "B" proved
 simple_arrays.adb:53:23: info: postcondition proved
 simple_arrays.adb:53:27: info: initialization of "B" proved

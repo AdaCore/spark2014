@@ -24,23 +24,23 @@ is
    procedure Array_Equality_On_Bulk_Assignment (A : out IntI_IntC;
                                                 B : in IntI_IntC)
      with Depends => (A => B),
-          Post    => A = B
+          Post    => A = B  -- @POSTCONDITION:PASS
    is
    begin
       A := B;
    end Array_Equality_On_Bulk_Assignment;
 
 
-   procedure Array_Equality_On_Individual_Assignment (A : in out IntI_IntC;
-                                                      B : in IntI_IntC)
-     with Depends => (A =>+ B),
-          Post    => A = B
+   procedure Array_Equality_On_Individual_Assignment (A : out IntI_IntC;
+                                                      B : IntI_IntC)
+     with Depends => (A => B),
+          Post    => A = B  -- @POSTCONDITION:PASS
    is
    begin
-      for I in Integer range Integer'First .. Integer'Last loop
+      for I in Integer loop
          A(I) := B(I);
-         pragma Loop_Invariant (for all J in Integer  --  @LOOP_INVARIANT_INIT:PASS @LOOP_INVARIANT_PRESERV:PASS
-                                  range Integer'First .. I => A(J) = B(J));
+         pragma Loop_Invariant  -- @LOOP_INVARIANT_INIT:PASS @LOOP_INVARIANT_PRESERV:PASS
+           (for all J in Integer range Integer'First .. I => A(J) = B(J));
       end loop;
    end Array_Equality_On_Individual_Assignment;
 
@@ -50,7 +50,7 @@ is
                                          I : in Integer;
                                          V : in Integer)
       with Depends => ((A, B) => (A, I, V)),
-           Post    => A = B
+           Post    => A = B  --  @POSTCONDITION:PASS
    is
    begin
       A(I) := V;
@@ -399,17 +399,17 @@ is
    -- Enum Index Enum Content tests --
 
    procedure EE_Constant_Access (A : in EnumI_EnumC)
-     with Depends => (null => A)
+   with Depends => (null => A)
    is
    begin
-      pragma Assert (A(Elem_0) = Elem_0);
+      pragma Assert (A(Elem_0) = Elem_0);  -- @ASSERT:FAIL
    end EE_Constant_Access;
 
    procedure EE_Variable_Access (A : in EnumI_EnumC; I : in Enum_T)
      with Depends => (null => (A, I))
    is
    begin
-      pragma Assert (A(I) = Elem_0);
+      pragma Assert (A(I) = Elem_0);  -- @ASSERT:FAIL
    end EE_Variable_Access;
 
 
