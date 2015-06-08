@@ -83,7 +83,7 @@ is
    --    an entity cannot be found.
 
    function Has_Depends (Subprogram : Entity_Id) return Boolean
-     with Pre => Ekind (Subprogram) in Subprogram_Kind;
+   with Pre => Ekind (Subprogram) in Subprogram_Kind | E_Entry;
    --  Return true if the given subprogram has been annotated with a
    --  dependency relation.
 

@@ -223,6 +223,26 @@ package body Flow_Types is
       return Tmp;
    end Add_Component;
 
+   ----------------------------
+   -- Is_Record_Discriminant --
+   ----------------------------
+
+   function Is_Record_Discriminant (F : Flow_Id) return Boolean is
+   begin
+      case F.Kind is
+         when Record_Field =>
+            if F.Facet /= Normal_Part then
+               return False;
+            else
+               return Ekind (F.Component.Last_Element) = E_Discriminant;
+            end if;
+         when Direct_Mapping | Magic_String | Synthetic_Null_Export =>
+            return False;
+         when Null_Value =>
+            raise Why.Unexpected_Node;
+      end case;
+   end Is_Record_Discriminant;
+
    ---------------------
    -- Is_Discriminant --
    ---------------------

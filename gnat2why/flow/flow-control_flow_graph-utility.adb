@@ -22,7 +22,6 @@
 ------------------------------------------------------------------------------
 
 with Ghost;        use Ghost;
-with Sem_Aux;      use Sem_Aux;
 with Sinfo;        use Sinfo;
 
 with Flow_Utility; use Flow_Utility;
@@ -260,13 +259,7 @@ package body Flow.Control_Flow_Graph.Utility is
       return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
-
-      Called_Procedure : constant Entity_Id := Entity (Name (Callsite));
-      Procedure_Spec   : constant Node_Id   :=
-        Subprogram_Specification (Called_Procedure);
    begin
-      pragma Assert (Nkind (Procedure_Spec) = N_Procedure_Specification);
-
       A.Subprograms_Called := Sub_Called;
       A.Is_Program_Node    := True;
       A.Loops              := Loops;
@@ -280,6 +273,8 @@ package body Flow.Control_Flow_Graph.Utility is
       --  Make sure that once this is implemented, the mechanism for analysing
       --  single subprograms is not broken.
 
+      --  pragma Assert (Nkind (Procedure_Spec) = N_Procedure_Specification);
+      --
       --  case Nkind (Parent (Procedure_Spec)) is
       --     when N_Subprogram_Body =>
       --        A.Perform_IPFA := True;
@@ -310,7 +305,7 @@ package body Flow.Control_Flow_Graph.Utility is
       E_Loc                        : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
-      Subprogram : constant Entity_Id  := Entity (Name (Call_Vertex));
+      Subprogram : constant Entity_Id  := Get_Called_Entity (Call_Vertex);
       Scope      : constant Flow_Scope := Get_Flow_Scope (Call_Vertex);
       Ext_Relevant_To_Formal : constant Boolean :=
         Has_Extensions_Visible (Subprogram) or else
@@ -344,7 +339,7 @@ package body Flow.Control_Flow_Graph.Utility is
 
          for F of Tmp_Used loop
             if (if Discriminants_Or_Bounds_Only
-                then Is_Discriminant (F))
+                then Is_Record_Discriminant (F))
             then
                A.Variables_Used.Include (F);
                A.Variables_Explicitly_Used.Include (F);
@@ -441,7 +436,7 @@ package body Flow.Control_Flow_Graph.Utility is
 
             for F of Tmp loop
                if not Discriminants_Or_Bounds_Only or else
-                 Is_Discriminant (F)
+                 Is_Record_Discriminant (F)
                then
                   A.Variables_Used.Include (F);
                   A.Variables_Explicitly_Used.Include (F);
@@ -561,7 +556,8 @@ package body Flow.Control_Flow_Graph.Utility is
             A.Is_Export := Ekind (Entire_Var) in
               E_In_Out_Parameter |
                  E_Out_Parameter |
-                 E_Function;
+                 E_Function
+              or else A.Mode in Exported_Global_Modes;
 
             if Is_Bound (F_Ent) then
                --  Array bounds are not exported.

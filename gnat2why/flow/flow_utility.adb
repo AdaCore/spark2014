@@ -2634,12 +2634,13 @@ package body Flow_Utility is
 
                            case Ekind (E) is
                               when E_Discriminant | E_Component =>
-                                 if Ekind (Sinfo.Scope (E)) /=
-                                   E_Protected_Type
+                                 if Ekind (Sinfo.Scope (E)) not in
+                                   E_Protected_Type | E_Task_Type
                                  then
-                                    --  We include stuff from POs, but
-                                    --  otherwise we need to ignore
-                                    --  discriminants and components.
+                                    --  We include stuff from tasks and
+                                    --  POs, but otherwise we need to
+                                    --  ignore discriminants and
+                                    --  components.
                                     return OK;
                                  end if;
                               when others =>
@@ -2700,10 +2701,11 @@ package body Flow_Utility is
 
                         case Ekind (E) is
                            when E_Discriminant | E_Component =>
-                              if Ekind (Sinfo.Scope (E)) /= E_Protected_Type
+                              if Ekind (Sinfo.Scope (E)) not in
+                                E_Protected_Type | E_Task_Type
                               then
-                                 --  We include stuff from POs, but
-                                 --  otherwise we need to ignore
+                                 --  We include stuff from tasks and POs,
+                                 --  but otherwise we need to ignore
                                  --  discriminants and components.
                                  return OK;
                               end if;

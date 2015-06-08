@@ -927,7 +927,9 @@ package body Flow is
             Tmp.B_Scope := Get_Flow_Scope (Entry_Body (E));
             Tmp.S_Scope := Get_Flow_Scope (E);
 
-            Append (Tmp.Base_Filename, "entry_");
+            --  This is intentional, no clash here with functions and
+            --  procedures.
+            Append (Tmp.Base_Filename, "subprogram_");
 
             Tmp.Is_Main := False;
 
@@ -944,7 +946,7 @@ package body Flow is
             Tmp.Function_Side_Effects_Present := False;
 
          when E_Task_Type =>
-            --  !!! O429-046 Set contract nodes
+            --  ??? O429-046 Set contract nodes
 
             Tmp.B_Scope := Get_Flow_Scope (Task_Body (E));
             Tmp.S_Scope := Get_Flow_Scope (E);

@@ -25,6 +25,7 @@ with Sem_Util;       use Sem_Util;
 with Sinfo;          use Sinfo;
 
 with Why;
+with SPARK_Util;     use SPARK_Util;
 
 with Flow_Utility;   use Flow_Utility;
 with Flow_Classwide; use Flow_Classwide;
@@ -120,13 +121,14 @@ package body Flow.Interprocedural is
       V  : Flow_Graphs.Vertex_Id)
    is
       N : constant Node_Id := Get_Direct_Mapping_Id (FA.CFG.Get_Key (V));
-      pragma Assert (Nkind (N) = N_Procedure_Call_Statement);
+      pragma Assert (Nkind (N) in N_Procedure_Call_Statement |
+                                  N_Entry_Call_Statement);
 
       A : constant V_Attributes := FA.Atr (V);
       pragma Assert (A.Is_Callsite);
       pragma Assert (not A.Perform_IPFA);
 
-      Called_Procedure : constant Entity_Id := Entity (Name (N));
+      Called_Procedure : constant Entity_Id := Get_Called_Entity (N);
 
       procedure Add_TD_Edge (A, B : Flow_Id);
       --  Add a parameter dependency edge from the input A to the
@@ -239,6 +241,19 @@ package body Flow.Interprocedural is
                end case;
                E := Next_Formal (E);
             end loop;
+
+            --  Add something for the PO in an entry call
+            if Nkind (N) = N_Entry_Call_Statement then
+               declare
+                  The_PO : constant Flow_Id :=
+                    Direct_Mapping_Id (Entity (Prefix (Name (N))));
+               begin
+                  Inputs.Insert (Change_Variant (The_PO, In_View));
+                  if Ekind (Called_Procedure) /= E_Function then
+                     Outputs.Insert (Change_Variant (The_PO, Out_View));
+                  end if;
+               end;
+            end if;
 
             if Flow_Id_Sets."/=" (Outputs, Flow_Id_Sets.Empty_Set) then
                --  Each output depends on all inputs.

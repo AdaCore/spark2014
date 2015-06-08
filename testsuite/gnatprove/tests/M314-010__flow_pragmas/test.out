@@ -523,7 +523,7 @@ digraph G {
     28 [label="Speed_Is_Valid'initial\nVD: {Speed_Is_Valid}\n<VId: 28>",shape="plaintext"];
     29 [label="Speed_Is_Valid'final\nVU: {Speed_Is_Valid}\n<VId: 29>",shape="plaintext",fontcolor="blue"];
     30 [label="State_Update'initial\nVD: {State_Update}\n<VId: 30>",shape="plaintext"];
-    31 [label="State_Update'final\nVU: {State_Update}\n<VId: 31>",shape="plaintext"];
+    31 [label="State_Update'final\nVU: {State_Update}\n<VId: 31>",shape="plaintext",fontcolor="blue"];
 
 subgraph cluster1 {
   style=filled;
@@ -611,7 +611,7 @@ digraph G {
     28 [label="Speed_Is_Valid'initial\nVD: {Speed_Is_Valid}\n<VId: 28>",shape="plaintext"];
     29 [label="Speed_Is_Valid'final\nVU: {Speed_Is_Valid}\n<VId: 29>",shape="plaintext",fontcolor="blue"];
     30 [label="State_Update'initial\nVD: {State_Update}\n<VId: 30>",shape="plaintext"];
-    31 [label="State_Update'final\nVU: {State_Update}\n<VId: 31>",shape="plaintext"];
+    31 [label="State_Update'final\nVU: {State_Update}\n<VId: 31>",shape="plaintext",fontcolor="blue"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  6 [arrowType="normal"];

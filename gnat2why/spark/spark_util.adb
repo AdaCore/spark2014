@@ -1277,6 +1277,25 @@ package body SPARK_Util is
    function Full_Name_Is_Not_Unique_Name (E : Entity_Id) return Boolean is
      (Is_Standard_Boolean_Type (E) or else E = Universal_Fixed);
 
+   -----------------------
+   -- Get_Called_Entity --
+   -----------------------
+
+   function Get_Called_Entity (N : Node_Id) return Entity_Id
+   is
+   begin
+      case Nkind (N) is
+         when N_Procedure_Call_Statement =>
+            return Entity (Name (N));
+         when N_Entry_Call_Statement =>
+            pragma Assert (Nkind (Name (N)) = N_Selected_Component);
+            return Entity (Selector_Name (Name (N)));
+         when others =>
+            --  This will violate the postcondition, but it can't happen.
+            return Empty;
+      end case;
+   end Get_Called_Entity;
+
    ------------------------
    -- Get_Execution_Kind --
    ------------------------

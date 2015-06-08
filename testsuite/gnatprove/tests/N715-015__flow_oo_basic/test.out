@@ -5663,7 +5663,7 @@ digraph G {
     21 [label="Hash'initial\nVD: {Hash}\n<VId: 21>",shape="plaintext"];
     22 [label="Hash'final\nVU: {Hash}\n<VId: 22>",shape="plaintext",fontcolor="blue"];
     23 [label="New_Widget'initial\nVD: {New_Widget}\n<VId: 23>",shape="plaintext"];
-    24 [label="New_Widget'final\nVU: {New_Widget}\n<VId: 24>",shape="plaintext"];
+    24 [label="New_Widget'final\nVU: {New_Widget}\n<VId: 24>",shape="plaintext",fontcolor="blue"];
 
 subgraph cluster1 {
   style=filled;
@@ -5717,7 +5717,7 @@ digraph G {
     21 [label="Hash'initial\nVD: {Hash}\n<VId: 21>",shape="plaintext"];
     22 [label="Hash'final\nVU: {Hash}\n<VId: 22>",shape="plaintext",fontcolor="blue"];
     23 [label="New_Widget'initial\nVD: {New_Widget}\n<VId: 23>",shape="plaintext"];
-    24 [label="New_Widget'final\nVU: {New_Widget}\n<VId: 24>",shape="plaintext"];
+    24 [label="New_Widget'final\nVU: {New_Widget}\n<VId: 24>",shape="plaintext",fontcolor="blue"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  8 [arrowType="normal"];

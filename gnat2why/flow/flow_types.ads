@@ -254,6 +254,10 @@ package Flow_Types is
    --  Create a Flow_Id for the given magic string.
 
    function Is_Discriminant (F : Flow_Id) return Boolean;
+   --  Returns True if the given Flow_Id is discriminant (this includes
+   --  discriminants for protected types and tasks).
+
+   function Is_Record_Discriminant (F : Flow_Id) return Boolean;
    --  Returns True if the given Flow_Id is a record field
    --  representing a discriminant.
 

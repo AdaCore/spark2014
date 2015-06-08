@@ -699,16 +699,17 @@ package body Flow.Control_Flow_Graph is
       Ctx : in out Context);
    --  Deals with the given precondition expression.
 
-   procedure Do_Procedure_Call_Statement
+   procedure Do_Call_Statement
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-      with Pre => Nkind (N) = N_Procedure_Call_Statement;
-   --  Deal with procedure calls. We follow the ideas of the SDG paper
-   --  by Horowitz, Reps and Binkley and have a separate vertex for
-   --  each parameter (if a paramater is an in out, we have two
-   --  vertices modelling it).
+   with Pre => Nkind (N) in N_Procedure_Call_Statement |
+                            N_Entry_Call_Statement;
+   --  Deal with procedure and entry calls. We follow the ideas of the SDG
+   --  paper by Horowitz, Reps and Binkley and have a separate vertex for
+   --  each parameter (if a paramater is an in out, we have two vertices
+   --  modelling it).
    --
    --  For a procedure P (A : in     Integer;
    --                     B : in out Integer;
@@ -725,9 +726,14 @@ package body Flow.Control_Flow_Graph is
    --     |
    --     z := c_out
    --
-   --  Globals are treated like parameters. Each of these vertices
-   --  will also have call_vertex set in its attributes so that we can
-   --  fiddle the CDG to look like this:
+   --  Globals are treated like parameters.
+   --
+   --  For entries (procedures, functions and entries in protected types)
+   --  we also have the protected object as an implicit volatile input
+   --  and/or output).
+   --
+   --  Each of these vertices will also have call_vertex set in its
+   --  attributes so that we can fiddle the CDG to look like this:
    --
    --                     call P
    --                    / |  | \
@@ -4021,17 +4027,17 @@ package body Flow.Control_Flow_Graph is
       Stitch_Actions_In_Front (Union_Id (Pre), Pre, V, FA, CM, Ctx);
    end Do_Precondition;
 
-   -----------------------------------
-   --  Do_Procedure_Call_Statement  --
-   -----------------------------------
+   -------------------------
+   --  Do_Call_Statement  --
+   -------------------------
 
-   procedure Do_Procedure_Call_Statement
+   procedure Do_Call_Statement
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      Called_Procedure : constant Entity_Id := Entity (Name (N));
+      Called_Procedure : constant Entity_Id := Get_Called_Entity (N);
 
       In_List  : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
       Out_List : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
@@ -4046,12 +4052,12 @@ package body Flow.Control_Flow_Graph is
       Add_Vertex
         (FA,
          Direct_Mapping_Id (N),
-         Make_Call_Attributes (FA         => FA,
-                               Callsite   => N,
-                               Sub_Called => Node_Sets.To_Set
-                                               (Called_Procedure),
-                               Loops      => Ctx.Current_Loops,
-                               E_Loc      => N),
+         Make_Call_Attributes
+           (FA         => FA,
+            Callsite   => N,
+            Sub_Called => Node_Sets.To_Set (Called_Procedure),
+            Loops      => Ctx.Current_Loops,
+            E_Loc      => N),
          V);
       FA.CFG.Set_Cluster (V, C);
 
@@ -4073,6 +4079,46 @@ package body Flow.Control_Flow_Graph is
          Process_Subprogram_Globals (N,
                                      In_List, Out_List,
                                      FA, CM, Ctx);
+      end if;
+
+      --  For entry calls, we need an extra magic parameter that models the
+      --  protected object.
+      if Nkind (N) = N_Entry_Call_Statement then
+         declare
+            The_PO : constant Flow_Id :=
+              Direct_Mapping_Id (Entity (Prefix (Name (N))));
+            V      : Flow_Graphs.Vertex_Id;
+         begin
+            --  Reading (for all)
+            Add_Vertex
+              (FA,
+               Make_Global_Attributes
+                 (FA                           => FA,
+                  Call_Vertex                  => N,
+                  Global                       => Change_Variant (The_PO,
+                                                                  In_View),
+                  Discriminants_Or_Bounds_Only => False,
+                  Loops                        => Ctx.Current_Loops,
+                  E_Loc                        => N),
+               V);
+            In_List.Append (V);
+
+            --  Writing (not for functions)
+            if Ekind (Called_Procedure) /= E_Function then
+               Add_Vertex
+                 (FA,
+                  Make_Global_Attributes
+                    (FA                           => FA,
+                     Call_Vertex                  => N,
+                     Global                       => Change_Variant (The_PO,
+                                                                     Out_View),
+                     Discriminants_Or_Bounds_Only => False,
+                     Loops                        => Ctx.Current_Loops,
+                     E_Loc                        => N),
+                  V);
+               Out_List.Append (V);
+            end if;
+         end;
       end if;
 
       --  A magic null export is needed when:
@@ -4182,7 +4228,7 @@ package body Flow.Control_Flow_Graph is
                   Standard_Exits => Vertex_Sets.To_Set (Prev)));
          end if;
       end;
-   end Do_Procedure_Call_Statement;
+   end Do_Call_Statement;
 
    ----------------------
    -- Do_Postcondition --
@@ -4514,7 +4560,7 @@ package body Flow.Control_Flow_Graph is
    begin
       --  Obtain globals (either from contracts or the computed
       --  stuff).
-      Get_Globals (Subprogram           => Entity (Name (Callsite)),
+      Get_Globals (Subprogram           => Get_Called_Entity (Callsite),
                    Scope                => FA.B_Scope,
                    Classwide            => Is_Dispatching_Call (Callsite),
                    Proof_Ins            => Proof_Reads,
@@ -4578,7 +4624,7 @@ package body Flow.Control_Flow_Graph is
    is
       pragma Unreferenced (CM);
 
-      Called_Subprogram : constant Entity_Id := Entity (Name (Callsite));
+      Called_Subprogram : constant Entity_Id := Get_Called_Entity (Callsite);
 
       P                 : Node_Id;
 
@@ -4601,7 +4647,7 @@ package body Flow.Control_Flow_Graph is
          end case;
 
          Find_Actual (Actual, Formal, Call);
-         pragma Assert (Entity (Name (Call)) = Called_Subprogram);
+         pragma Assert (Get_Called_Entity (Call) = Called_Subprogram);
          pragma Assert (Is_Formal (Formal));
 
          --  Build an in vertex.
@@ -4728,8 +4774,8 @@ package body Flow.Control_Flow_Graph is
             Do_Package_Body_Or_Stub (N, FA, CM, Ctx);
          when N_Pragma =>
             Do_Pragma (N, FA, CM, Ctx);
-         when N_Procedure_Call_Statement =>
-            Do_Procedure_Call_Statement (N, FA, CM, Ctx);
+         when N_Procedure_Call_Statement | N_Entry_Call_Statement =>
+            Do_Call_Statement (N, FA, CM, Ctx);
          when N_Simple_Return_Statement =>
             Do_Simple_Return_Statement (N, FA, CM, Ctx);
          when N_Full_Type_Declaration         |

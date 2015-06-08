@@ -581,7 +581,7 @@ package SPARK_Util is
       Name      : Name_Id;
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Boolean
-     with Pre => Is_Subprogram (E) or else Ekind (E) = E_Package;
+   with Pre => Ekind (E) in Subprogram_Kind | E_Entry | E_Package;
    --  @param E subprogram or package
    --  @param Name contract name
    --  @param Classwide True when asking for the classwide version of contract
@@ -589,12 +589,12 @@ package SPARK_Util is
    --  @return True iff there is at least one contract Name for E
 
    function Has_Extensions_Visible (E : Entity_Id) return Boolean
-     with Pre => Is_Subprogram (E);
+   with Pre => Ekind (E) in Subprogram_Kind | E_Entry;
    --  @param E subprogram
    --  @return True iff Extensions_Visible is specified for E
 
    function Has_User_Supplied_Globals (E : Entity_Id) return Boolean
-     with Pre => Is_Subprogram (E);
+   with Pre => Ekind (E) in Subprogram_Kind | E_Entry;
    --  @param E subprogram
    --  @return True iff E has a data dependencies (Global) or flow
    --     dependencies (Depends) contract
@@ -818,6 +818,15 @@ package SPARK_Util is
    --  @param N aggregate or an extension aggregate
    --  @return True iff N is fully initialized. For the aggregate extension,
    --      this only deals with the extension components.
+
+   function Get_Called_Entity (N : Node_Id) return Entity_Id
+   with Pre  => Nkind (N) in N_Subprogram_Call | N_Entry_Call_Statement,
+        Post => Nkind (Get_Called_Entity'Result) in N_Entity and then
+                Ekind (Get_Called_Entity'Result) in E_Function  |
+                                                    E_Procedure |
+                                                    E_Entry;
+   --  @param N a call statement
+   --  @return the subprogram or entry called
 
    function Get_Formal_From_Actual (Actual : Node_Id) return Entity_Id
      with Pre => Nkind (Parent (Actual)) in N_Function_Call

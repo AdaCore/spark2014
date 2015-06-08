@@ -1552,7 +1552,7 @@ digraph G {
     23 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 23>",shape="plaintext"];
     24 [label="Z'final\n(global)\nVU: {Z}\n<VId: 24>",shape="plaintext",fontcolor="blue"];
     25 [label="Swap'initial\nVD: {Swap}\n<VId: 25>",shape="plaintext"];
-    26 [label="Swap'final\nVU: {Swap}\n<VId: 26>",shape="plaintext"];
+    26 [label="Swap'final\nVU: {Swap}\n<VId: 26>",shape="plaintext",fontcolor="blue"];
 
 subgraph cluster1 {
   style=filled;
@@ -1622,7 +1622,7 @@ digraph G {
     23 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 23>",shape="plaintext"];
     24 [label="Z'final\n(global)\nVU: {Z}\n<VId: 24>",shape="plaintext",fontcolor="blue"];
     25 [label="Swap'initial\nVD: {Swap}\n<VId: 25>",shape="plaintext"];
-    26 [label="Swap'final\nVU: {Swap}\n<VId: 26>",shape="plaintext"];
+    26 [label="Swap'final\nVU: {Swap}\n<VId: 26>",shape="plaintext",fontcolor="blue"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  9 [arrowType="normal"];
@@ -1668,7 +1668,7 @@ digraph G {
     23 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 23>",shape="plaintext"];
     24 [label="Z'final\n(global)\nVU: {Z}\n<VId: 24>",shape="plaintext",fontcolor="blue"];
     25 [label="Swap_With_Depends'initial\nVD: {Swap_With_Depends}\n<VId: 25>",shape="plaintext"];
-    26 [label="Swap_With_Depends'final\nVU: {Swap_With_Depends}\n<VId: 26>",shape="plaintext"];
+    26 [label="Swap_With_Depends'final\nVU: {Swap_With_Depends}\n<VId: 26>",shape="plaintext",fontcolor="blue"];
 
 subgraph cluster1 {
   style=filled;
@@ -1738,7 +1738,7 @@ digraph G {
     23 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 23>",shape="plaintext"];
     24 [label="Z'final\n(global)\nVU: {Z}\n<VId: 24>",shape="plaintext",fontcolor="blue"];
     25 [label="Swap_With_Depends'initial\nVD: {Swap_With_Depends}\n<VId: 25>",shape="plaintext"];
-    26 [label="Swap_With_Depends'final\nVU: {Swap_With_Depends}\n<VId: 26>",shape="plaintext"];
+    26 [label="Swap_With_Depends'final\nVU: {Swap_With_Depends}\n<VId: 26>",shape="plaintext",fontcolor="blue"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  9 [arrowType="normal"];
@@ -2090,7 +2090,7 @@ digraph G {
     21 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 21>",shape="plaintext"];
     22 [label="Y'final\n(global)\nVU: {Y}\n<VId: 22>",shape="plaintext",fontcolor="blue"];
     23 [label="Max'initial\nVD: {Max}\n<VId: 23>",shape="plaintext"];
-    24 [label="Max'final\nVU: {Max}\n<VId: 24>",shape="plaintext"];
+    24 [label="Max'final\nVU: {Max}\n<VId: 24>",shape="plaintext",fontcolor="blue"];
 
 subgraph cluster1 {
   style=filled;
@@ -2145,7 +2145,7 @@ digraph G {
     21 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 21>",shape="plaintext"];
     22 [label="Y'final\n(global)\nVU: {Y}\n<VId: 22>",shape="plaintext",fontcolor="blue"];
     23 [label="Max'initial\nVD: {Max}\n<VId: 23>",shape="plaintext"];
-    24 [label="Max'final\nVU: {Max}\n<VId: 24>",shape="plaintext"];
+    24 [label="Max'final\nVU: {Max}\n<VId: 24>",shape="plaintext",fontcolor="blue"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  13 [arrowType="normal"];
@@ -2182,7 +2182,7 @@ digraph G {
     18 [label="fact := {fact {*} var};\nVU: {Var, Fact}\nVD: {Fact}\n<VId: 18>"];
     19 [label="fact := 1;\nVD: {Fact}\n<VId: 19>"];
     20 [label="Factorial'initial\nVD: {Factorial}\n<VId: 20>",shape="plaintext"];
-    21 [label="Factorial'final\nVU: {Factorial}\n<VId: 21>",shape="plaintext"];
+    21 [label="Factorial'final\nVU: {Factorial}\n<VId: 21>",shape="plaintext",fontcolor="blue"];
 
 subgraph cluster1 {
   style=filled;
@@ -2231,7 +2231,7 @@ digraph G {
     18 [label="fact := {fact {*} var};\nVU: {Var, Fact}\nVD: {Fact}\n<VId: 18>"];
     19 [label="fact := 1;\nVD: {Fact}\n<VId: 19>"];
     20 [label="Factorial'initial\nVD: {Factorial}\n<VId: 20>",shape="plaintext"];
-    21 [label="Factorial'final\nVU: {Factorial}\n<VId: 21>",shape="plaintext"];
+    21 [label="Factorial'final\nVU: {Factorial}\n<VId: 21>",shape="plaintext",fontcolor="blue"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  13 [arrowType="normal"];

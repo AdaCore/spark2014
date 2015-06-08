@@ -6,8 +6,10 @@ is
    B : Boolean := False;
 
    protected type Thing (D : Natural) is
-      -- only procedure decl here
-      function Test return Boolean with Global => null;
+      -- only subprogram/entry decl here
+      function P_Func return Boolean with Global => null;
+
+      procedure P_Proc (F : Boolean; G : out Boolean) with Global => null;
 
       entry Ent (N : Natural)
         with Pre => N > 10 and B,
@@ -20,10 +22,17 @@ is
 
    protected body Thing is
       -- only bodies here
-      function Test return Boolean is
+      function P_Func return Boolean is
       begin
          return A or D = 3;
-      end Test;
+      end P_Func;
+
+      procedure P_Proc (F : Boolean; G : out Boolean)
+      is
+      begin
+         A := F;
+         G := X;
+      end P_Proc;
 
       entry Ent (N : Natural) when A is
       begin
@@ -37,10 +46,10 @@ is
 
    task body Test_Task_01 is
    begin
-      B := D > 8;
+      Po_1.P_Proc (D > 8, B);
       loop
-         --B := Po_1.Test;
-         --Po_1.Ent;
+         B := Po_1.P_Func;
+         Po_1.Ent (42);
          B := not B;
       end loop;
    end Test_Task_01;

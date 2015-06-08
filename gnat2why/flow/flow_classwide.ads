@@ -32,9 +32,13 @@ with Types; use Types;
 package Flow_Classwide is
 
    function Is_Dispatching_Call (N : Node_Id) return Boolean
-   is (Present (Controlling_Argument (N)))
-   with Pre => Nkind (N) in N_Subprogram_Call;
+   is (if Nkind (N) in N_Subprogram_Call
+       then Present (Controlling_Argument (N))
+       else False)
+   with Pre => Nkind (N) in N_Subprogram_Call | N_Entry_Call_Statement;
    --  Checks if the given call node is dispatching.
+   --
+   --  ??? O429-046 can entry calls be dispatching? I guess not...
 
    procedure Check_Classwide_Contracts (E     : Entity_Id;
                                         Valid : out Boolean)
