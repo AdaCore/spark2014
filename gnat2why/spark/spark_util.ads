@@ -287,8 +287,8 @@ package SPARK_Util is
    --  @param E subprogram, task or package
    --  @return True iff subprogramm, task or package E must be analyzed,
    --     because it belongs to one of the analyzed units, and either the
-   --     complete unit is analyzed, or E is the specific subprogram/task
-   --     whose analysis was requested.
+   --     complete unit is analyzed, or E is the specific entity whose analysis
+   --     was requested.
 
    function Full_Name (E : Entity_Id) return String
      with Pre => Nkind (E) in N_Entity;
