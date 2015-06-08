@@ -152,7 +152,8 @@ package body Flow_Utility is
       E : constant Entity_Id := Find_Entity (Name);
    begin
       if Present (E) then
-         if Present (Full_View (E))
+         if Ekind (E) in Type_Kind | E_Constant
+           and then Present (Full_View (E))
            and then Is_Visible (Full_View (E), Scope)
          then
             return Direct_Mapping_Id (Full_View (E), View);
