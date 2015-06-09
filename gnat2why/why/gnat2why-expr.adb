@@ -241,6 +241,7 @@ package body Gnat2Why.Expr is
      (Expr   : Node_Id;
       Domain : EW_Domain;
       Params : Transformation_Params) return W_Expr_Id;
+   --  @return the Why3 expression for SPARK quantified expression [Expr]
 
    function Transform_Declaration (Decl : Node_Id) return W_Prog_Id;
    --  Transform a declaration. Return a program that takes into account the
@@ -10771,15 +10772,44 @@ package body Gnat2Why.Expr is
       -- Local Subprograms --
       -----------------------
 
-      function Extract_Index_Entity
+      function Get_Bound_Variable
         (N          : Node_Id;
          Over_Range : Boolean) return Entity_Id;
-      --  Return the entity used for indexing in the quantification
+      --  @return the entity representing the bound variable of the
+      --     quantification.
 
-      function Extract_Set_Node
+      function Get_Expr_Quantified_Over
         (N          : Node_Id;
          Over_Range : Boolean) return Node_Id;
-      --  Return the set over which the quantification is performed
+      --  @return the expression over which quantification is performed
+
+      function Make_Binding_For_Array
+        (Ada_Node    : Node_Id;
+         W_Arr_Expr  : W_Expr_Id;
+         W_Index_Var : W_Identifier_Id;
+         W_Quant_Var : W_Identifier_Id;
+         Domain      : EW_Domain) return W_Expr_Id;
+      --  @param Ada_Node quantified expression over an array
+      --  @param W_Arr_Expr Why3 expression for the array value
+      --  @param W_Index_Var Why3 name for the index of the quantification
+      --  @param W_Quant_Var Why3 name for the bound variable of the
+      --     quantified expression in SPARK.
+      --  @return the expression that binds the value of variable [W_Quant_Var]
+      --     to the value of index variable [W_Index_Var]. For example, given
+      --     a quantified expression (for all E of Arr => ...) and index
+      --     variable J, it returns arr(j) suitably converted to E's type.
+
+      function Make_Binding_For_Iterable
+        (Ada_Node    : Node_Id;
+         Container   : Node_Id;
+         W_Index_Var : W_Identifier_Id;
+         Index_Type  : Entity_Id;
+         Domain      : EW_Domain;
+         Element_T   : W_Type_Id;
+         Params      : Transformation_Params) return W_Expr_Id;
+      --  Constructs an expression that should be used to bind the index of a
+      --  "of" quantified expression on a type with the Iterable aspect.
+      --  Returns Element (Container, Quant_Var)
 
       function Make_Constraint_For_Iterable
         (Ada_Node   : Node_Id;
@@ -10792,23 +10822,11 @@ package body Gnat2Why.Expr is
       --  expression on a type with the Iterable aspect.
       --  Returns Has_Element (Container, Quant_Var)
 
-      function Make_Binding_For_Iterable
-        (Ada_Node   : Node_Id;
-         Container  : Node_Id;
-         Quant_Var  : W_Expr_Id;
-         Quant_Type : Entity_Id;
-         Domain     : EW_Domain;
-         Element_T  : W_Type_Id;
-         Params     : Transformation_Params) return W_Expr_Id;
-      --  Constructs an expression that should be used to bind the index of a
-      --  "of" quantified expression on a type with the Iterable aspect.
-      --  Returns Element (Container, Quant_Var)
+      ------------------------
+      -- Get_Bound_Variable --
+      ------------------------
 
-      --------------------------
-      -- Extract_Index_Entity --
-      --------------------------
-
-      function Extract_Index_Entity
+      function Get_Bound_Variable
         (N          : Node_Id;
          Over_Range : Boolean) return Entity_Id
       is
@@ -10818,13 +10836,13 @@ package body Gnat2Why.Expr is
          else
             return Defining_Identifier (Iterator_Specification (N));
          end if;
-      end Extract_Index_Entity;
+      end Get_Bound_Variable;
 
-      ----------------------
-      -- Extract_Set_Node --
-      ----------------------
+      ------------------------------
+      -- Get_Expr_Quantified_Over --
+      ------------------------------
 
-      function Extract_Set_Node
+      function Get_Expr_Quantified_Over
         (N          : Node_Id;
          Over_Range : Boolean) return Node_Id
       is
@@ -10836,11 +10854,78 @@ package body Gnat2Why.Expr is
             return Get_Container_In_Iterator_Specification
               (Iterator_Specification (N));
          end if;
-      end Extract_Set_Node;
+      end Get_Expr_Quantified_Over;
 
-      ---------------------
-      -- Make_Constraint --
-      ---------------------
+      ----------------------------
+      -- Make_Binding_For_Array --
+      ----------------------------
+
+      function Make_Binding_For_Array
+        (Ada_Node    : Node_Id;
+         W_Arr_Expr  : W_Expr_Id;
+         W_Index_Var : W_Identifier_Id;
+         W_Quant_Var : W_Identifier_Id;
+         Domain      : EW_Domain) return W_Expr_Id
+      is
+         W_Acc_Expr : constant W_Expr_Id :=
+           New_Array_Access (Ada_Node => Ada_Node,
+                             Domain   => Domain,
+                             Ar       => W_Arr_Expr,
+                             Index    => (1 => +W_Index_Var));
+      begin
+         return Insert_Simple_Conversion (Domain => Domain,
+                                          Expr   => W_Acc_Expr,
+                                          To     => Get_Type (+W_Quant_Var));
+      end Make_Binding_For_Array;
+
+      -------------------------------
+      -- Make_Binding_For_Iterable --
+      -------------------------------
+
+      function Make_Binding_For_Iterable
+        (Ada_Node    : Node_Id;
+         Container   : Node_Id;
+         W_Index_Var : W_Identifier_Id;
+         Index_Type  : Entity_Id;
+         Domain      : EW_Domain;
+         Element_T   : W_Type_Id;
+         Params      : Transformation_Params) return W_Expr_Id
+      is
+         Element_E : constant Entity_Id :=
+           Get_Iterable_Type_Primitive (Etype (Container), Name_Element);
+         Cont_Expr : constant W_Expr_Id :=
+           Insert_Simple_Conversion
+             (Domain   => Domain,
+              Expr     => Transform_Expr (Container, Domain, Params),
+              To       => Type_Of_Node (Etype (First_Entity (Element_E))));
+         Curs_Expr : constant W_Expr_Id :=
+           Insert_Simple_Conversion
+             (Ada_Node => Empty,
+              Domain   => Domain,
+              Expr     => +W_Index_Var,
+              To       =>
+                (if Use_Base_Type_For_Type (Index_Type) then
+                      Base_Why_Type (Get_Type (+W_Index_Var))
+                 else Get_Type (+W_Index_Var)));
+      begin
+         return New_VC_Call
+           (Ada_Node => Ada_Node,
+            Name     =>
+                 W_Identifier_Id
+                   (Transform_Identifier (Params       => Params,
+                                          Expr         => Element_E,
+                                          Ent          => Element_E,
+                                          Domain       => Domain)),
+            Progs    => (1 => Cont_Expr,
+                         2 => Curs_Expr),
+            Reason   => VC_Precondition,
+            Domain   => Domain,
+            Typ      => Element_T);
+      end Make_Binding_For_Iterable;
+
+      ----------------------------------
+      -- Make_Constraint_For_Iterable --
+      ----------------------------------
 
       function Make_Constraint_For_Iterable
         (Ada_Node   : Node_Id;
@@ -10896,164 +10981,213 @@ package body Gnat2Why.Expr is
          return T;
       end Make_Constraint_For_Iterable;
 
-      ------------------
-      -- Make_Binding --
-      ------------------
-
-      function Make_Binding_For_Iterable
-        (Ada_Node   : Node_Id;
-         Container  : Node_Id;
-         Quant_Var  : W_Expr_Id;
-         Quant_Type : Entity_Id;
-         Domain     : EW_Domain;
-         Element_T  : W_Type_Id;
-         Params     : Transformation_Params) return W_Expr_Id
-      is
-         Subdomain  : constant EW_Domain :=
-           (if Domain = EW_Pred then EW_Term else Domain);
-         Element_E  : constant Entity_Id := Get_Iterable_Type_Primitive
-           (Etype (Container), Name_Element);
-         Cont_Expr  : constant W_Expr_Id :=
-           Insert_Simple_Conversion
-             (Domain   => Subdomain,
-              Expr     => Transform_Expr (Container, Subdomain, Params),
-              To       => Type_Of_Node (Etype (First_Entity (Element_E))));
-         Curs_Expr  : constant W_Expr_Id :=
-           Insert_Simple_Conversion
-             (Ada_Node => Empty,
-              Domain   => Subdomain,
-              Expr     => +Quant_Var,
-              To       =>
-                (if Use_Base_Type_For_Type (Quant_Type) then
-                      Base_Why_Type (Get_Type (+Quant_Var))
-                 else Get_Type (+Quant_Var)));
-      begin
-         return New_VC_Call
-           (Ada_Node => Ada_Node,
-            Name     =>
-                 W_Identifier_Id
-                   (Transform_Identifier (Params       => Params,
-                                          Expr         => Element_E,
-                                          Ent          => Element_E,
-                                          Domain       => Subdomain)),
-            Progs    => (1 => Cont_Expr,
-                         2 => Curs_Expr),
-            Reason   => VC_Precondition,
-            Domain   => Subdomain,
-            Typ      => Element_T);
-      end Make_Binding_For_Iterable;
+      --  We distinguish between 4 types of quantified expressions:
+      --  . over a scalar range (for all V in Low .. High)
+      --  . over an array (for all V of Arr)
+      --  . over a container's content (for all V of Cont)
+      --  . over a container's cursors (for all V in Cont)
+      --  The boolean variables below correspond to these 4 mutually exclusive
+      --  cases.
 
       Over_Range : constant Boolean :=
-                     Present (Loop_Parameter_Specification (Expr));
-      --  The quantification is either over a scalar range, in which case
-      --  there is a loop-parameter-specification component, otherwise
-      --  the quantification is over a container and there is an
-      --  iterator-specification component.
+        Present (Loop_Parameter_Specification (Expr));
 
-      Index_Ent  : constant Entity_Id :=
-        Extract_Index_Entity (Expr, Over_Range);
-      Range_E    : constant Node_Id   := Extract_Set_Node (Expr, Over_Range);
-      Index_Type : constant Entity_Id := Etype (Index_Ent);
-      Index_Base : constant W_Type_Id :=
-        (if Over_Range then Base_Why_Type (Index_Type)
-         else Type_Of_Node (Index_Type));
-      Cond_Expr  : W_Expr_Id;
-      Why_Id     : constant W_Identifier_Id :=
-        New_Identifier (Name => Short_Name (Index_Ent),
-                        Typ  => Index_Base);
-      Quant_Type : constant Entity_Id :=
-        (if not Over_Range and then Of_Present (Iterator_Specification (Expr))
-         then Get_Cursor_Type (Etype (Range_E))
-         else Etype (Index_Ent));
-      Quant_Base : constant W_Type_Id :=
-        (if Over_Range then Index_Base else Type_Of_Node (Quant_Type));
-      Quant_Var  : constant W_Identifier_Id :=
-        (if not Over_Range and then Of_Present (Iterator_Specification (Expr))
-         then New_Temp_Identifier (Typ => Quant_Base) else Why_Id);
+      Over_Array : constant Boolean :=
+        Present (Iterator_Specification (Expr))
+          and then Is_Iterator_Over_Array (Iterator_Specification (Expr));
 
-         --  Start of Transform_Quantified_Expression
+      Over_Content : constant Boolean :=
+        Present (Iterator_Specification (Expr))
+          and then not Over_Array
+          and then Of_Present (Iterator_Specification (Expr));
+
+      Over_Cursors : constant Boolean :=
+        Present (Iterator_Specification (Expr))
+          and then not Over_Array
+          and then not Over_Content;
+      pragma Unreferenced (Over_Cursors);
+
+      --  We distinguish the bound variable from the index variable in our
+      --  translation. For quantifications over a scalar range, they are the
+      --  same. For quantifications over an array or a container of the form
+      --  (for V of E) the bound variable is V, and the index variable is
+      --  the variable over which quantification is done in Why3, over the
+      --  underlying scalar range for array/container E.
+
+      Quant_Var  : Entity_Id;  --  Bound variable for quantification
+      Over_Expr  : Node_Id;    --  Expression over which quantification is done
+      Quant_Type : Entity_Id;  --  Type of the bound variable
+      Bound_Expr : Node_Id;    --  Bound expression for the quantification
+      Index_Type : Entity_Id;  --  Index type for the quantification
+
+      W_Quant_Type : W_Type_Id;  --  Why3 type for the bound variable
+      W_Index_Type : W_Type_Id;  --  Why3 type for the index variable
+
+      W_Over_Expr  : W_Expr_Id;  --  Why3 expression for the expression over
+                                 --  which quantification is done. This is only
+                                 --  used in those cases where the bound and
+                                 --  the index variables are not the same, thus
+                                 --  needing binding between the two that
+                                 --  relies on this expression.
+      W_Bound_Expr : W_Expr_Id;  --  Why3 expression for the constraint giving
+                                 --  the bounds over which quantification is
+                                 --  done.
+      Result       : W_Expr_Id;  --  Why3 expression for the quantification
+
+      W_Quant_Var  : W_Identifier_Id;  --  Why3 name for the bound variable
+      W_Index_Var  : W_Identifier_Id;  --  Why3 name for the index variable
+
+   --  Start of Transform_Quantified_Expression
+
    begin
+      --  The usual translation of quantified expression into Why3 is as a
+      --  predicate (Domain = EW_Pred), into a forall or exists quantification
+      --  in Why3. For programs (Domain = EW_Prog), we also need to check the
+      --  absence of run-time errors in sub-expressions. The case of terms
+      --  (Domain in EW_Terms) appears when the quantified expression needs
+      --  to be considered of type bool in Why3, for example because it is
+      --  assigned into a Boolean variable in SPARK. In this case, we transform
+      --  the quantified expression into a predicate, and convert this
+      --  predicate (pred) into a term (if pred then True else False).
 
-      if Domain = EW_Term then
-
-         --  It is trivial to promote a predicate to a term, by doing
-         --    if pred then True else False
-
+      if Domain in EW_Terms then
          declare
             Pred : constant W_Expr_Id :=
-                     Transform_Quantified_Expression
-                       (Expr, EW_Pred, Params);
+              Transform_Quantified_Expression (Expr, EW_Pred, Params);
          begin
-            return
-              New_Conditional (Domain    => EW_Term,
-                               Condition => Pred,
-                               Then_Part =>
-                                 New_Literal (Value => EW_True,
-                                              Domain => Domain,
-                                              Ada_Node => Standard_Boolean),
-                               Else_Part =>
-                                 New_Literal (Value => EW_False,
-                                              Domain => Domain,
-                                              Ada_Node => Standard_Boolean),
-                               Typ       => EW_Bool_Type);
+            return New_Conditional (Domain    => Domain,
+                                    Condition => Pred,
+                                    Then_Part => +True_Term,
+                                    Else_Part => +False_Term,
+                                    Typ       => EW_Bool_Type);
          end;
       end if;
 
-      --  We are now in domain Prog or Pred, and have to translate the
-      --  condition of the quantified expression, where the context is
-      --  enriched by the loop parameter
+      --  Domain = EW_Pred or Domain = EW_Prog
 
-      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-      Insert_Entity (Index_Ent, Why_Id);
-      Cond_Expr := Transform_Expr (Condition (Expr), Domain, Params);
-      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+      --  Step 1: extract relevant nodes and entities from the expression
 
-      if not Over_Range and then
-        Of_Present (Iterator_Specification (Expr))
-      then
-         Cond_Expr := New_Binding
-           (Domain   => Domain,
-            Name     => Why_Id,
-            Def      =>
-              Make_Binding_For_Iterable (Expr, Range_E, +Quant_Var, Quant_Type,
-                Domain, Index_Base, Params),
-            Context  => Cond_Expr);
+      Quant_Var  := Get_Bound_Variable (Expr, Over_Range);
+      Over_Expr  := Get_Expr_Quantified_Over (Expr, Over_Range);
+      Quant_Type := Etype (Quant_Var);
+
+      if Over_Array then
+         Bound_Expr := Etype (First_Index (Etype (Over_Expr)));
+      else
+         Bound_Expr := Over_Expr;
       end if;
 
-      --  In the predicate case the quantification in Ada is translated as a
-      --  quantification in Why3.
+      if Over_Array then
+         Index_Type := First_Index (Etype (Over_Expr));
+      elsif Over_Content then
+         Index_Type := Get_Cursor_Type (Etype (Bound_Expr));
+      else
+         Index_Type := Etype (Quant_Var);
+      end if;
+
+      --  Step 2: create the base Why3 variables/expressions
+
+      W_Quant_Type := Base_Why_Type (Quant_Type);
+      W_Index_Type := Base_Why_Type (Index_Type);
+
+      W_Quant_Var := New_Identifier (Name => Short_Name (Quant_Var),
+                                     Typ  => W_Quant_Type);
+
+      if Over_Array or Over_Content then
+         W_Index_Var := New_Temp_Identifier (Typ => W_Index_Type);
+      else
+         W_Index_Var := W_Quant_Var;
+      end if;
+
+      if Over_Range or Over_Array then
+         W_Bound_Expr := Range_Expr (Bound_Expr, +W_Index_Var, Domain, Params);
+      else
+         W_Bound_Expr :=
+           +Make_Constraint_For_Iterable
+             (Expr, Bound_Expr, +W_Index_Var, Index_Type, Domain, Params);
+      end if;
+
+      --  Step 3: translate the expression over which the quantification is
+      --          applied, and save it in a temporary, which can then be
+      --          referred to in any context (including predicates even when
+      --          Domain = EW_Prog), which requires that the expression is
+      --          first evaluated in the appropriate context to possibly
+      --          generate run-time checks.
+
+      if Over_Array or Over_Content then
+         W_Over_Expr :=
+           New_Temp_For_Expr
+             (Transform_Expr
+                (Over_Expr, Prog_Or_Term_Domain (Domain), Params));
+      else
+         W_Over_Expr := Why_Empty;  --  safe assignment in the unused case
+      end if;
+
+      --  Step 4: translate the condition in the quantified expression, in a
+      --          context where the bound variable is known.
+
+      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+      Insert_Entity (Quant_Var, W_Quant_Var);
+      Result := Transform_Expr (Condition (Expr), Domain, Params);
+      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
+      --  Step 5: in those cases where the bound variable and the index
+      --          variable are not the same, wrap the result in an expression
+      --          that gives a value to the bound variable based on the value
+      --          of the index variable.
+
+      if Over_Array or Over_Content then
+         declare
+            W_Binding_Expr : W_Expr_Id;
+         begin
+            if Over_Array then
+               W_Binding_Expr :=
+                 Make_Binding_For_Array
+                   (Expr, W_Over_Expr, W_Index_Var, W_Quant_Var,
+                    Term_Domain (Domain));
+            else --  Over_Content
+               W_Binding_Expr :=
+                 Make_Binding_For_Iterable
+                   (Expr, Bound_Expr, +W_Index_Var, Index_Type,
+                    Prog_Or_Term_Domain (Domain), W_Index_Type, Params);
+            end if;
+
+            Result := New_Typed_Binding (Domain  => Domain,
+                                         Name    => W_Quant_Var,
+                                         Def     => W_Binding_Expr,
+                                         Context => Result);
+         end;
+      end if;
+
+      --  Step 6: translate the quantified expression into a quantification in
+      --          the predicate case, and an 'any' expression with a
+      --          postcondition that uses the translation to predicate in the
+      --          program case.
 
       if Domain = EW_Pred then
          declare
-            Constraint : constant W_Pred_Id :=
-              (if Over_Range then
-               +Range_Expr (Range_E, +Quant_Var, EW_Pred, Params)
-               else
-               +Make_Constraint_For_Iterable
-                 (Expr, Range_E, +Quant_Var, Quant_Type, EW_Pred, Params));
             Connector  : constant EW_Connector :=
               (if All_Present (Expr) then EW_Imply else EW_And);
             Quant_Body : constant W_Pred_Id :=
-              New_Connection
-                (Op     => Connector,
-                 Left   => +Constraint,
-                 Right  => Cond_Expr);
+              New_Connection (Op    => Connector,
+                              Left  => W_Bound_Expr,
+                              Right => Result);
          begin
             if All_Present (Expr) then
-               return
+               Result :=
                   New_Universal_Quantif
                      (Ada_Node  => Expr,
-                      Variables => (1 => Quant_Var),
+                      Variables => (1 => W_Index_Var),
                       Labels    => Name_Id_Sets.Empty_Set,
-                      Var_Type  => Quant_Base,
+                      Var_Type  => W_Index_Type,
                       Pred      => Quant_Body);
             else
-               return
+               Result :=
                   New_Existential_Quantif
                      (Ada_Node  => Expr,
-                      Variables => (1 => Quant_Var),
+                      Variables => (1 => W_Index_Var),
                       Labels    => Name_Id_Sets.Empty_Set,
-                      Var_Type  => Quant_Base,
+                      Var_Type  => W_Index_Type,
                       Pred      => Quant_Body);
             end if;
          end;
@@ -11072,51 +11206,51 @@ package body Gnat2Why.Expr is
       --  The condition is a formula that expresses that i is in the
       --  range given by the quantification.
 
-      elsif Domain = EW_Prog then
+      else  --  Domain = EW_Prog
          declare
-            Range_Cond : constant W_Prog_Id :=
-              (if Over_Range then
-               +Range_Expr (Range_E, +Why_Id, EW_Prog, Params)
-               else
-               +Make_Constraint_For_Iterable
-                 (Expr, Range_E, +Quant_Var, Quant_Type, EW_Prog, Params));
+            W_RTE : constant W_Prog_Id :=
+              +New_Typed_Binding
+                (Name    => W_Index_Var,
+                 Domain  => EW_Prog,
+                 Def     => +New_Simpl_Any_Prog (W_Index_Type),
+                 Context =>
+                   New_Conditional
+                     (Domain    => EW_Prog,
+                      Condition => W_Bound_Expr,
+                      Then_Part => +New_Ignore (Prog => +Result)));
+            W_Expr_Pred : constant W_Expr_Id :=
+              Transform_Expr (Expr, EW_Pred, Params);
+            W_Equiv : constant W_Expr_Id :=
+              New_Connection
+                (Domain   => EW_Pred,
+                 Left     =>
+                   New_Call (Domain => EW_Pred,
+                             Name   => Why_Eq,
+                             Typ    => EW_Bool_Type,
+                             Args   => (+New_Result_Ident (EW_Bool_Type),
+                                        +True_Term)),
+                 Op       => EW_Equivalent,
+                 Right    => W_Expr_Pred);
+            W_Assume : constant W_Prog_Id :=
+              New_Any_Statement (Ada_Node    => Expr,
+                                 Return_Type => EW_Bool_Type,
+                                 Post        => +W_Equiv);
          begin
-            return
-              +Sequence
-                (+New_Typed_Binding
-                   (Name    => Quant_Var,
-                    Domain  => EW_Prog,
-                    Def     =>
-                      +New_Simpl_Any_Prog (Quant_Base),
-                    Context =>
-                      New_Conditional
-                        (Domain    => EW_Prog,
-                         Condition => +Range_Cond,
-                         Then_Part => +New_Ignore (Prog => +Cond_Expr))),
-                 New_Any_Statement
-                   (Ada_Node    => Expr,
-                    Return_Type => EW_Bool_Type,
-                    Post        =>
-                      +W_Expr_Id'(New_Connection
-                        (Domain   => EW_Pred,
-                         Left     =>
-                           New_Call
-                             (Domain => EW_Pred,
-                              Name   => Why_Eq,
-                              Typ    => EW_Bool_Type,
-                              Args   =>
-                                (+New_Result_Ident (EW_Bool_Type),
-                                 +True_Term)),
-                         Op       => EW_Equivalent,
-                         Right    =>
-                           +Transform_Expr (Expr, EW_Pred, Params)))));
+            Result := +Sequence (W_RTE, W_Assume);
          end;
-      else
-
-         --  case Domain = EW_Term already handled
-
-         raise Program_Error;
       end if;
+
+      --  Step 7: possibly bind the value of the temporary introduced for
+      --          the expression over which quantification is done.
+
+      if Over_Array or Over_Content then
+         Result := Binding_For_Temp (Ada_Node => Expr,
+                                     Domain   => Domain,
+                                     Tmp      => W_Over_Expr,
+                                     Context  => Result);
+      end if;
+
+      return Result;
    end Transform_Quantified_Expression;
 
    ---------------------

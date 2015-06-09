@@ -377,8 +377,7 @@ package Why.Gen.Expr is
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Tmp      : W_Expr_Id;
-      Context  : W_Expr_Id)
-      return W_Expr_Id;
+      Context  : W_Expr_Id) return W_Expr_Id;
    --  Introduce a let binding for Tmp on top of "Context". The value of Tmp is
    --  the one provided to the corresponding call to New_Temp_For_Expr.
 

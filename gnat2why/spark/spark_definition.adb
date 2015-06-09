@@ -1002,6 +1002,25 @@ package body SPARK_Definition is
 
                   Mark (Name (N));
 
+               elsif Of_Present (N)
+                 and then Has_Array_Type (Etype (Name (N)))
+               then
+                  if Number_Dimensions (Etype (Name (N))) > 1 then
+                     Violation_Detected := True;
+                     if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+                        Error_Msg_Uint_1 :=
+                          UI_From_Int (Number_Dimensions (Etype (Name (N))));
+                        Error_Msg_N ("iterator specification over array of "
+                                     & "dimension ^ is not yet supported",
+                                     N);
+                     end if;
+                  end if;
+
+                  if Present (Subtype_Indication (N)) then
+                     Mark (Subtype_Indication (N));
+                  end if;
+                  Mark (Name (N));
+
                else
 
                   --  if no Iterable aspect is found, raise a violation
@@ -1015,10 +1034,14 @@ package body SPARK_Definition is
          when N_Loop_Statement =>
             Check_Loop_Invariant_Placement (Statements (N));
 
-            --  Mark the entity for the loop, which is used in the
-            --  translation phase to generate exceptions for this loop.
+            --  Mark the entity for the loop, which is used in the translation
+            --  phase to generate exceptions for this loop. Inner loops for
+            --  multi-dimensional iteration loops on arrays that are generated
+            --  by the frontend do not get an identifier.
 
-            Mark_Entity (Entity (Identifier (N)));
+            if Present (Identifier (N)) then
+               Mark_Entity (Entity (Identifier (N)));
+            end if;
 
             if Present (Iteration_Scheme (N)) then
                Mark_Iteration_Scheme (Iteration_Scheme (N));

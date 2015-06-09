@@ -346,7 +346,7 @@ package SPARK_Util is
    --  @return True iff E is an abstract state or a package level variable
 
    function Is_Quantified_Loop_Param (E : Entity_Id) return Boolean
-     with Pre => Ekind (E) = E_Loop_Parameter;
+     with Pre => Ekind (E) in E_Loop_Parameter | E_Variable;
    --  @param E loop parameter
    --  @return True iff E has been introduced by a quantified expression
 
