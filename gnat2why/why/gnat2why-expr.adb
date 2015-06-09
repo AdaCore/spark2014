@@ -10772,10 +10772,10 @@ package body Gnat2Why.Expr is
       -- Local Subprograms --
       -----------------------
 
-      function Get_Bound_Variable
+      function Get_Quantified_Variable
         (N          : Node_Id;
          Over_Range : Boolean) return Entity_Id;
-      --  @return the entity representing the bound variable of the
+      --  @return the entity representing the quantified variable of the
       --     quantification.
 
       function Get_Expr_Quantified_Over
@@ -10792,7 +10792,7 @@ package body Gnat2Why.Expr is
       --  @param Ada_Node quantified expression over an array
       --  @param W_Arr_Expr Why3 expression for the array value
       --  @param W_Index_Var Why3 name for the index of the quantification
-      --  @param W_Quant_Var Why3 name for the bound variable of the
+      --  @param W_Quant_Var Why3 name for the quantified variable of the
       --     quantified expression in SPARK.
       --  @return the expression that binds the value of variable [W_Quant_Var]
       --     to the value of index variable [W_Index_Var]. For example, given
@@ -10809,24 +10809,24 @@ package body Gnat2Why.Expr is
          Params      : Transformation_Params) return W_Expr_Id;
       --  Constructs an expression that should be used to bind the index of a
       --  "of" quantified expression on a type with the Iterable aspect.
-      --  Returns Element (Container, Quant_Var)
+      --  Returns Element (Container, W_Index_Var)
 
       function Make_Constraint_For_Iterable
-        (Ada_Node   : Node_Id;
-         Container  : Node_Id;
-         Quant_Var  : W_Expr_Id;
-         Quant_Type : Entity_Id;
-         Domain     : EW_Domain;
-         Params     : Transformation_Params) return W_Expr_Id;
+        (Ada_Node    : Node_Id;
+         Container   : Node_Id;
+         W_Index_Var : W_Expr_Id;
+         Index_Type  : Entity_Id;
+         Domain      : EW_Domain;
+         Params      : Transformation_Params) return W_Expr_Id;
       --  Constructs an expression for the constraint of a quantified
       --  expression on a type with the Iterable aspect.
-      --  Returns Has_Element (Container, Quant_Var)
+      --  Returns Has_Element (Container, W_Index_Var)
 
-      ------------------------
-      -- Get_Bound_Variable --
-      ------------------------
+      -----------------------------
+      -- Get_Quantified_Variable --
+      -----------------------------
 
-      function Get_Bound_Variable
+      function Get_Quantified_Variable
         (N          : Node_Id;
          Over_Range : Boolean) return Entity_Id
       is
@@ -10836,7 +10836,7 @@ package body Gnat2Why.Expr is
          else
             return Defining_Identifier (Iterator_Specification (N));
          end if;
-      end Get_Bound_Variable;
+      end Get_Quantified_Variable;
 
       ------------------------------
       -- Get_Expr_Quantified_Over --
@@ -10928,13 +10928,13 @@ package body Gnat2Why.Expr is
       ----------------------------------
 
       function Make_Constraint_For_Iterable
-        (Ada_Node   : Node_Id;
-         Container  : Node_Id;
-         Quant_Var  : W_Expr_Id;
-         Quant_Type : Entity_Id;
-         Domain     : EW_Domain;
-         Params     : Transformation_Params) return W_Expr_Id
-      is
+        (Ada_Node    : Node_Id;
+         Container   : Node_Id;
+         W_Index_Var : W_Expr_Id;
+         Index_Type  : Entity_Id;
+         Domain      : EW_Domain;
+         Params      : Transformation_Params) return W_Expr_Id
+       is
          Subdomain   : constant EW_Domain :=
            (if Domain = EW_Pred then EW_Term else Domain);
          Has_Element : constant Entity_Id := Get_Iterable_Type_Primitive
@@ -10949,11 +10949,11 @@ package body Gnat2Why.Expr is
            Insert_Simple_Conversion
              (Ada_Node => Empty,
               Domain   => Subdomain,
-              Expr     => +Quant_Var,
+              Expr     => +W_Index_Var,
               To       =>
-                (if Use_Base_Type_For_Type (Quant_Type) then
-                      Base_Why_Type (Get_Type (+Quant_Var))
-                 else Get_Type (+Quant_Var)));
+                (if Use_Base_Type_For_Type (Index_Type) then
+                      Base_Why_Type (Get_Type (+W_Index_Var))
+                 else Get_Type (+W_Index_Var)));
       begin
          T := New_VC_Call
            (Ada_Node => Ada_Node,
@@ -11007,34 +11007,35 @@ package body Gnat2Why.Expr is
           and then not Over_Content;
       pragma Unreferenced (Over_Cursors);
 
-      --  We distinguish the bound variable from the index variable in our
+      --  We distinguish the quantified variable from the index variable in our
       --  translation. For quantifications over a scalar range, they are the
       --  same. For quantifications over an array or a container of the form
-      --  (for V of E) the bound variable is V, and the index variable is
+      --  (for V of E) the quantified variable is V, and the index variable is
       --  the variable over which quantification is done in Why3, over the
       --  underlying scalar range for array/container E.
 
-      Quant_Var  : Entity_Id;  --  Bound variable for quantification
+      Quant_Var  : Entity_Id;  --  Quantified variable for quantification
       Over_Expr  : Node_Id;    --  Expression over which quantification is done
-      Quant_Type : Entity_Id;  --  Type of the bound variable
+      Quant_Type : Entity_Id;  --  Type of the quantified variable
       Bound_Expr : Node_Id;    --  Bound expression for the quantification
       Index_Type : Entity_Id;  --  Index type for the quantification
 
-      W_Quant_Type : W_Type_Id;  --  Why3 type for the bound variable
+      W_Quant_Type : W_Type_Id;  --  Why3 type for the quantified variable
       W_Index_Type : W_Type_Id;  --  Why3 type for the index variable
 
       W_Over_Expr  : W_Expr_Id;  --  Why3 expression for the expression over
                                  --  which quantification is done. This is only
-                                 --  used in those cases where the bound and
-                                 --  the index variables are not the same, thus
-                                 --  needing binding between the two that
+                                 --  used in those cases where the quantified
+                                 --  and the index variables are not the same,
+                                 --  thus needing binding between the two that
                                  --  relies on this expression.
       W_Bound_Expr : W_Expr_Id;  --  Why3 expression for the constraint giving
                                  --  the bounds over which quantification is
                                  --  done.
       Result       : W_Expr_Id;  --  Why3 expression for the quantification
 
-      W_Quant_Var  : W_Identifier_Id;  --  Why3 name for the bound variable
+      W_Quant_Var  : W_Identifier_Id;  --  Why3 name for the quantified
+                                       --  variable.
       W_Index_Var  : W_Identifier_Id;  --  Why3 name for the index variable
 
    --  Start of Transform_Quantified_Expression
@@ -11067,7 +11068,7 @@ package body Gnat2Why.Expr is
 
       --  Step 1: extract relevant nodes and entities from the expression
 
-      Quant_Var  := Get_Bound_Variable (Expr, Over_Range);
+      Quant_Var  := Get_Quantified_Variable (Expr, Over_Range);
       Over_Expr  := Get_Expr_Quantified_Over (Expr, Over_Range);
       Quant_Type := Etype (Quant_Var);
 
@@ -11124,17 +11125,17 @@ package body Gnat2Why.Expr is
       end if;
 
       --  Step 4: translate the condition in the quantified expression, in a
-      --          context where the bound variable is known.
+      --          context where the quantified variable is known.
 
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
       Insert_Entity (Quant_Var, W_Quant_Var);
       Result := Transform_Expr (Condition (Expr), Domain, Params);
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
 
-      --  Step 5: in those cases where the bound variable and the index
+      --  Step 5: in those cases where the quantified variable and the index
       --          variable are not the same, wrap the result in an expression
-      --          that gives a value to the bound variable based on the value
-      --          of the index variable.
+      --          that gives a value to the quantified variable based on the
+      --          value of the index variable.
 
       if Over_Array or Over_Content then
          declare
