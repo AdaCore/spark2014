@@ -388,7 +388,8 @@ package body Flow.Control_Flow_Graph is
    type Var_Kind is (Variable_Kind,
                      Protected_Component_Kind,
                      Parameter_Kind,
-                     Discriminant_Kind);
+                     Discriminant_Kind,
+                     Quantified_Variable_Kind);
 
    procedure Create_Initial_And_Final_Vertices
      (E    : Entity_Id;
@@ -1402,13 +1403,17 @@ package body Flow.Control_Flow_Graph is
             M := Mode_In;
 
          when others =>
-            pragma Assert (Kind in Variable_Kind | Protected_Component_Kind);
+            pragma Assert (Kind in Variable_Kind            |
+                                   Quantified_Variable_Kind |
+                                   Protected_Component_Kind);
             if Kind = Protected_Component_Kind then
                if Ekind (FA.Analyzed_Entity) in E_Function then
                   M := Mode_In;
                else
                   M := Mode_In_Out;
                end if;
+            elsif Kind = Quantified_Variable_Kind then
+               M := Mode_In;
             else
                M := Mode_Invalid;
             end if;
@@ -4480,12 +4485,16 @@ package body Flow.Control_Flow_Graph is
       function Proc (N : Node_Id) return Traverse_Result is
       begin
          case Nkind (N) is
-            when N_Package_Body           |
-                 N_Package_Declaration    |
-                 N_Subprogram_Body        |
-                 N_Subprogram_Declaration |
-                 N_Task_Body              |
-                 N_Task_Definition        =>
+            when N_Package_Body                |
+                 N_Package_Declaration         |
+                 N_Subprogram_Body             |
+                 N_Subprogram_Declaration      |
+                 N_Protected_Body              |
+                 N_Protected_Type_Declaration  |
+                 N_Entry_Body                  |
+                 N_Entry_Declaration           |
+                 N_Task_Body                   |
+                 N_Task_Definition             =>
                --  If we ever get one of these we skip the rest of the
                --  nodes that hang under them.
                return Skip;
@@ -4501,12 +4510,12 @@ package body Flow.Control_Flow_Graph is
                if Present (Iterator_Specification (N)) then
                   Create_Initial_And_Final_Vertices
                     (Defining_Identifier (Iterator_Specification (N)),
-                     Variable_Kind,
+                     Quantified_Variable_Kind,
                      FA);
                elsif Present (Loop_Parameter_Specification (N)) then
                   Create_Initial_And_Final_Vertices
                     (Defining_Identifier (Loop_Parameter_Specification (N)),
-                     Variable_Kind,
+                     Quantified_Variable_Kind,
                      FA);
                else
                   Print_Tree_Node (N);
