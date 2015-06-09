@@ -232,7 +232,7 @@ where
 .. _tu-fe-contract_cases-01:
 
 1. A Contract_Cases aspect may have at most one **others**
-   ``contract_case`` and if it exists it must be the last one in the
+   ``contract_case`` and if it exists it shall be the last one in the
    ``contract_case_list``.
 
 .. _tu-fe-contract_cases-02:
@@ -341,7 +341,7 @@ are used or affected by a call of the subprogram.
 The Global aspect shall only be specified for the initial declaration of a
 subprogram (which may be a declaration, a body or a body stub), of a
 protected entry, or of a task unit.
-The implementation of a subprogram body must be consistent with the
+The implementation of a subprogram body shall be consistent with the
 subprogram's Global aspect.
 
 Note that a Refined_Global aspect may be applied to a subprogram body when
@@ -458,7 +458,7 @@ entry body.]
 8. A ``global_item`` shall not denote a state abstraction whose
    refinement is visible. [A state abstraction cannot be named within
    its enclosing package's body other than in its refinement. Its
-   constituents must be used rather than the state abstraction.]
+   constituents shall be used rather than the state abstraction.]
 
 .. _tu-fe-global_aspects-09:
 
@@ -610,7 +610,17 @@ is used purely for static analysis purposes and is not executed.
 .. _tu-fa-global_aspects-19:
 
 19. The ``mode_selector`` of a ``global_item`` denoting a *constant with
-    variable inputs* must be ``Input`` or ``Proof_In``.
+    variable inputs* shall be ``Input`` or ``Proof_In``.
+
+.. _tu-fa-global_aspects-20:
+
+20. The ``mode_selector`` of a ``global_item`` denoting a variable marked
+    as a *constant after elaboration* shall be ``Input`` or ``Proof_In`` [,
+    to ensure that such variables are only updated directly by package
+    elaboration code].
+    A subprogram or entry having such a ``global_item`` shall not be called
+    during library unit elaboration[, to ensure only the final ("constant")
+    value of the object is referenced].
 
 .. _etu-global_aspects-vr:
 
@@ -811,7 +821,7 @@ where
 
 12. In a ``dependency_relation`` there can be at most one
     ``dependency_clause`` which is a ``null_dependency_clause`` and if
-    it exists it must be the last ``dependency_clause`` in the
+    it exists it shall be the last ``dependency_clause`` in the
     ``dependency_relation``.
 
 .. _tu-fe-depends_aspects-13:
@@ -896,8 +906,8 @@ as it is used purely for static analysis purposes and is not executed.
 .. _tu-fa-depends_aspects-23:
 
 23. Each entity denoted by an ``output`` given in the Depends aspect
-    of a subprogram must be an output in the implementation of the
-    subprogram body and the output must depend on all, but only, the
+    of a subprogram shall be an output in the implementation of the
+    subprogram body and the output shall depend on all, but only, the
     entities denoted by the ``inputs`` given in the ``input_list``
     associated with the ``output``.
 
@@ -1117,13 +1127,13 @@ Extensions_Visible Aspects
 .. centered:: **Verification Rules**
 
 8. |SPARK| requires that an actual parameter corresponding
-   to an in mode or in out mode formal parameter in a call must be fully
+   to an in mode or in out mode formal parameter in a call shall be fully
    initialized before the call; similarly, the callee is responsible
    for fully initializing any out-mode parameters before returning.
 
 #. In the case of a formal parameter of a specific tagged type T (or of a
    private type whose full view is a specific tagged type), the set of
-   components which must be initialized in order to meet these requirements
+   components which shall be initialized in order to meet these requirements
    depends on the Extensions_Visible aspect of the callee.
    If the aspect is False, then that set of components is the
    [statically known] set of nondiscriminant components of T.
@@ -1271,7 +1281,7 @@ calls.
 
 .. centered:: **Static Semantics**
 
-1. Two names which denote parts of the
+1. Two names that denote parts of the
    same unsynchronized (see section :ref:`tasks-and-synchronization`)
    stand-alone object whose Constant_After_Elaboration aspect is False,
    or which denote parts of the same unsynchronized parameter, are said

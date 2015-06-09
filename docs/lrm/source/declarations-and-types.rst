@@ -147,7 +147,7 @@ aspects,] the aspect defaults to False if unspecified and to True if
 it is specified without an aspect_definition.
 
 A variable whose Constant_After_Elaboration aspect is True, or any part
-thereof, is said to be "constant after elaboration".
+thereof, is said to be *constant after elaboration*.
 [The Constant_After_Elaboration aspect indicates that the variable will not
 be modified after execution of the main subprogram begins
 (see section :ref:`tasks-and-synchronization`).]

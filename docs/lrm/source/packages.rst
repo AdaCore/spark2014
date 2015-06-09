@@ -91,9 +91,9 @@ strictly under control of the program. It is not known precisely when a value
 will be written or read by an external reader or writer. These are called
 *asynchronous readers* and *asynchronous writers* in |SPARK|.
 
-Each read or update of an external state may be significant for
-instance reading or writing a stream of characters to a file or,
-individual reads or writes may not be significant, for instance
+Each read or update of an external state might be significant, for
+instance reading or writing a stream of characters to a file, or
+individual reads or writes might not be significant, for instance
 reading a temperature from a device or writing the same value to a
 lamp driver or display. |SPARK| provides a mechanism to indicate
 whether a read or write is always significant.
