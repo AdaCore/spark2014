@@ -990,6 +990,10 @@ Tool Limitations
    per-object constrained fields are badly supported by the tool and may
    result in crashes in some cases.
 
+#. Quantified expressions with an iterator over a multi dimensional array (for
+   example ``for all Elem of Arr`` where ``Arr`` is a multi dimensional array)
+   are not supported.
+
 Legality Rules
 --------------
 
