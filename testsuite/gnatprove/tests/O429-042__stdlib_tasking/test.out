@@ -34,47 +34,64 @@ ada_real_time.ads:111:48: medium: overflow check might fail
 ada_real_time.ads:119:19: warning: assuming ">" has no effect on global items
 ada_real_time.ads:119:19: warning: no Global contract available for ">"
 ada_real_time.ads:120:46: info: division check proved
+ada_real_time.ads:120:46: info: overflow check proved
 ada_real_time.ads:120:46: info: range check proved
 ada_real_time.ads:121:58: info: division check proved
+ada_real_time.ads:121:58: info: overflow check proved
 ada_real_time.ads:121:58: info: range check proved
 ada_real_time.ads:122:56: info: division check proved
+ada_real_time.ads:122:56: info: overflow check proved
 ada_real_time.ads:124:22: warning: assuming "<" has no effect on global items
 ada_real_time.ads:124:22: warning: no Global contract available for "<"
 ada_real_time.ads:125:46: info: division check proved
+ada_real_time.ads:125:46: info: overflow check proved
 ada_real_time.ads:125:46: info: range check proved
 ada_real_time.ads:126:59: info: division check proved
+ada_real_time.ads:126:59: info: overflow check proved
 ada_real_time.ads:126:59: info: range check proved
 ada_real_time.ads:127:56: info: division check proved
+ada_real_time.ads:127:56: info: overflow check proved
 ada_real_time.ads:130:19: warning: assuming ">" has no effect on global items
 ada_real_time.ads:130:19: warning: no Global contract available for ">"
 ada_real_time.ads:132:16: medium: precondition might fail
 ada_real_time.ads:132:22: warning: assuming ">=" has no effect on global items
 ada_real_time.ads:132:22: warning: no Global contract available for ">="
 ada_real_time.ads:134:50: info: division check proved
+ada_real_time.ads:134:50: info: overflow check proved
 ada_real_time.ads:134:50: info: range check proved
 ada_real_time.ads:135:61: info: division check proved
+ada_real_time.ads:135:61: info: overflow check proved
 ada_real_time.ads:135:61: info: range check proved
 ada_real_time.ads:136:58: info: division check proved
+ada_real_time.ads:136:58: medium: overflow check might fail
 ada_real_time.ads:138:22: warning: assuming "<" has no effect on global items
 ada_real_time.ads:138:22: warning: no Global contract available for "<"
 ada_real_time.ads:139:46: info: division check proved
+ada_real_time.ads:139:46: info: overflow check proved
 ada_real_time.ads:139:46: info: range check proved
 ada_real_time.ads:140:29: info: range check proved
 ada_real_time.ads:140:59: info: division check proved
+ada_real_time.ads:140:59: medium: overflow check might fail
 ada_real_time.ads:146:20: warning: assuming ">" has no effect on global items
 ada_real_time.ads:146:20: warning: no Global contract available for ">"
 ada_real_time.ads:147:47: info: division check proved
+ada_real_time.ads:147:47: info: overflow check proved
 ada_real_time.ads:147:47: info: range check proved
 ada_real_time.ads:148:58: info: division check proved
+ada_real_time.ads:148:58: info: overflow check proved
 ada_real_time.ads:148:58: info: range check proved
 ada_real_time.ads:149:56: info: division check proved
+ada_real_time.ads:149:56: info: overflow check proved
 ada_real_time.ads:151:23: warning: assuming "<" has no effect on global items
 ada_real_time.ads:151:23: warning: no Global contract available for "<"
 ada_real_time.ads:152:47: info: division check proved
+ada_real_time.ads:152:47: info: overflow check proved
 ada_real_time.ads:152:47: info: range check proved
 ada_real_time.ads:153:59: info: division check proved
+ada_real_time.ads:153:59: info: overflow check proved
 ada_real_time.ads:153:59: info: range check proved
 ada_real_time.ads:154:56: info: division check proved
+ada_real_time.ads:154:56: info: overflow check proved
 ada_real_time.ads:157:20: warning: assuming ">" has no effect on global items
 ada_real_time.ads:157:20: warning: no Global contract available for ">"
 ada_real_time.ads:159:16: medium: precondition might fail
@@ -82,11 +99,15 @@ ada_real_time.ads:159:23: warning: assuming ">=" has no effect on global items
 ada_real_time.ads:159:23: warning: no Global contract available for ">="
 ada_real_time.ads:161:31: info: range check proved
 ada_real_time.ads:162:61: info: division check proved
+ada_real_time.ads:162:61: info: overflow check proved
 ada_real_time.ads:162:61: info: range check proved
 ada_real_time.ads:163:58: info: division check proved
+ada_real_time.ads:163:58: medium: overflow check might fail
 ada_real_time.ads:165:23: warning: assuming "<" has no effect on global items
 ada_real_time.ads:165:23: warning: no Global contract available for "<"
 ada_real_time.ads:166:47: info: division check proved
+ada_real_time.ads:166:47: info: overflow check proved
 ada_real_time.ads:166:47: info: range check proved
 ada_real_time.ads:167:29: info: range check proved
 ada_real_time.ads:167:59: info: division check proved
+ada_real_time.ads:167:59: medium: overflow check might fail
