@@ -27,8 +27,10 @@
 with Ada.Text_IO;
 
 with Atree;              use Atree;
+with Einfo;              use Einfo;
 with Namet;              use Namet;
 with Nlists;             use Nlists;
+with Sem_Util;           use Sem_Util;
 with Sinfo;              use Sinfo;
 with Sinput;             use Sinput;
 with Snames;             use Snames;
@@ -52,7 +54,6 @@ with Why.Gen.Preds;      use Why.Gen.Preds;
 with Why.Inter;          use Why.Inter;
 
 with Gnat2Why.Util;      use Gnat2Why.Util;
-with Einfo; use Einfo;
 
 package body Gnat2Why.Expr.Loops is
 
@@ -399,13 +400,22 @@ package body Gnat2Why.Expr.Loops is
 
       pragma Assert (not In_Loop_Initial_Statements);
 
+      --  add the loop index to the entity table.
+
       if Present (Scheme)
         and then not Present (Condition (Scheme))
-        and then Present (Loop_Parameter_Specification (Scheme))
       then
-         Loop_Param_Ent  :=
-           Defining_Identifier (Loop_Parameter_Specification (Scheme));
-         Loop_Index_Type := Base_Why_Type_No_Bool (Loop_Param_Ent);
+         if Present (Loop_Parameter_Specification (Scheme)) then
+            Loop_Param_Ent  :=
+              Defining_Identifier (Loop_Parameter_Specification (Scheme));
+            Loop_Index_Type := Base_Why_Type_No_Bool (Loop_Param_Ent);
+         else
+            pragma Assert (Present (Iterator_Specification (Scheme)));
+            Loop_Param_Ent :=
+              Defining_Identifier (Iterator_Specification (Scheme));
+            Loop_Index_Type := Type_Of_Node (Loop_Param_Ent);
+         end if;
+
          Loop_Index      := To_Why_Id (E      => Loop_Param_Ent,
                                        Domain => EW_Prog,
                                        Typ    => Loop_Index_Type);
@@ -632,98 +642,507 @@ package body Gnat2Why.Expr.Loops is
 
          elsif Nkind (Condition (Scheme)) = N_Empty then
             For_Loop : declare
+               Over_Range   : constant Boolean :=
+                 Present (Loop_Parameter_Specification (Scheme));
+               --  For loops my iterate either on a range or on an iterator.
+
                LParam_Spec  : constant Node_Id :=
-                 Loop_Parameter_Specification (Scheme);
-               Loop_Range   : constant Node_Id :=
-                 Discrete_Subtype_Definition (LParam_Spec);
-               Is_Reverse   : constant Boolean :=
-                 Reverse_Present (LParam_Spec);
+                 (if Over_Range then Loop_Parameter_Specification (Scheme)
+                  else Iterator_Specification (Scheme));
+               Over_Node    : constant Node_Id :=
+                 (if Over_Range then Discrete_Subtype_Definition (LParam_Spec)
+                  else Get_Container_In_Iterator_Specification (LParam_Spec));
                Index_Deref  : constant W_Prog_Id :=
                  New_Deref
                    (Ada_Node => Stmt,
                     Right    => +Loop_Index,
                     Typ      => Loop_Index_Type);
-               Update_Op    : constant W_Identifier_Id :=
-                 (if Why_Type_Is_BitVector (Loop_Index_Type) then
-                    (if Is_Reverse then
-                       MF_BVs (Loop_Index_Type).Sub
-                       else
-                          MF_BVs (Loop_Index_Type).Add)
-                  else
-                    (if Is_Reverse then Int_Infix_Subtr
-                     else Int_Infix_Add));
-               Update_Expr  : constant W_Prog_Id :=
-                 New_Call
-                   (Ada_Node => Stmt,
-                    Name     => Update_Op,
-                    Args     =>
-                      (1 => +Index_Deref,
-                       2 =>
-                         (if Why_Type_Is_BitVector (Loop_Index_Type) then
-                               New_Modular_Constant
-                            (Ada_Node => Stmt,
-                             Value    => Uint_1,
-                             Typ      => Loop_Index_Type)
-                          else
-                             New_Integer_Constant
-                            (Ada_Node => Stmt,
-                             Value     => Uint_1))),
-                   Typ      => Loop_Index_Type);
-               Update_Stmt  : constant W_Prog_Id :=
-                 New_Assignment
-                   (Ada_Node => Stmt,
-                    Name     => Loop_Index,
-                    Value    => Update_Expr);
 
-               --  In the range expression of the invariant, explicitly
-               --  set T_Type to handle the special case of
-               --  Standard.Boolean, where bounds and index are of
-               --  different base types (bool for bounds, int for index).
+               --  Constants specific to range quantification
 
-               Cond_Pred    : constant W_Pred_Id :=
-                 +Range_Expr (Loop_Range,
-                              New_Deref (Right => Loop_Index,
-                                         Typ => Loop_Index_Type),
-                              EW_Pred,
-                              Params => Body_Params,
-                              T_Type => Loop_Index_Type);
-               Actual_Range : constant Node_Id := Get_Range (Loop_Range);
-               Low_Ident    : constant W_Identifier_Id :=
+               Low_Id       : constant W_Identifier_Id :=
                  New_Temp_Identifier (Typ => Loop_Index_Type);
-               High_Ident   : constant W_Identifier_Id :=
+               High_Id      : constant W_Identifier_Id :=
                  New_Temp_Identifier (Typ => Loop_Index_Type);
-               Init_Index   : constant W_Identifier_Id :=
-                 (if Is_Reverse then High_Ident else Low_Ident);
-               Exit_Index   : constant W_Identifier_Id :=
-                 (if Is_Reverse then Low_Ident else High_Ident);
-               Exit_Cmp     : constant W_Identifier_Id :=
-                 (if Why_Type_Is_BitVector (Loop_Index_Type) then
-                    (if Is_Reverse then MF_BVs (Loop_Index_Type).Uge
-                     else MF_BVs (Loop_Index_Type).Ule)
+
+               --  Constants specific to iterator specification
+
+               Typ_For_Cont : constant W_Type_Id :=
+                 (if Over_Range then EW_Int_Type
+                  else Type_Of_Node
+                    (Etype (First_Entity
+                     (Get_Iterable_Type_Primitive
+                          (Etype (Over_Node), Name_First)))));
+               W_Container  : constant W_Expr_Id :=
+                 (if Over_Range then Why_Empty
+                  else Insert_Simple_Conversion
+                    (Domain   => EW_Prog,
+                     Expr     => Transform_Expr
+                       (Over_Node, EW_Prog, Body_Params),
+                     To       => Typ_For_Cont));
+
+               --  For for of loops, we need an identifier for the additional
+               --  variable holding the iterator.
+
+               Need_Iter    : constant Boolean :=
+                 not Over_Range and then Of_Present (LParam_Spec);
+               Typ_For_Iter : constant W_Type_Id := Type_Of_Node
+                 (Get_Iterable_Type_Primitive (Typ => Etype (Over_Node),
+                                               Nam => Name_First));
+               Nam_For_Iter : constant W_Identifier_Id :=
+                 (if not Need_Iter then Loop_Index
+                  else New_Temp_Identifier
+                    (Ada_Node => Empty,
+                     Typ      => Typ_For_Iter));
+               Iter_Deref   : constant W_Prog_Id :=
+                 New_Deref
+                   (Ada_Node => Stmt,
+                    Right    => +Nam_For_Iter,
+                    Typ      => Typ_For_Iter);
+
+               -------------------------------------
+               -- Helper Subprograms for Iterable --
+               -------------------------------------
+
+               function Constraint_For_Iterable
+                 (Domain : EW_Domain) return W_Expr_Id
+               with
+                 Pre => not Over_Range;
+               --  @param Domain in which the constraint should be created
+               --  @result Has_Element (W_Container, Iter_Deref)
+
+               function Init_Iter return W_Prog_Id with
+                 Pre => not Over_Range;
+               --  @result First (W_Container)
+
+               function Loop_Index_Value (Domain : EW_Domain) return W_Expr_Id
+               with
+                 Pre => not Over_Range and then Of_Present (LParam_Spec);
+               --  @result Element (W_Container, Iter_Deref)
+
+               function Update_Index return W_Prog_Id
+               with
+                 Pre => not Over_Range and then Of_Present (LParam_Spec);
+               --  @result if Has_Element (W_Container, Iter_Deref)
+               --       then Loop_Index := Element (W_Container, Iter_Deref)
+
+               -----------------------------
+               -- Constraint_For_Iterable --
+               -----------------------------
+
+               function Constraint_For_Iterable
+                 (Domain : EW_Domain) return W_Expr_Id is
+                  H_Elmt   : constant Entity_Id :=
+                    Get_Iterable_Type_Primitive
+                      (Etype (Over_Node), Name_Has_Element);
+                  W_H_Elmt : constant W_Identifier_Id :=
+                    +Transform_Identifier
+                              (Params       => Body_Params,
+                               Expr         => H_Elmt,
+                               Ent          => H_Elmt,
+                               Domain       => Domain);
+                  Cur_Expr  : constant W_Expr_Id :=
+                    Insert_Simple_Conversion
+                      (Domain         => EW_Term,
+                       Expr           => +Iter_Deref,
+                       To             => Typ_For_Iter,
+                       Force_No_Slide => True);
+               begin
+                  if Domain = EW_Prog then
+                     return +New_VC_Call
+                       (Ada_Node => LParam_Spec,
+                        Name     => W_H_Elmt,
+                        Progs    => (1 => W_Container,
+                                     2 => Cur_Expr),
+                        Reason   => VC_Precondition,
+                        Domain   => EW_Prog,
+                        Typ      => EW_Bool_Type);
                   else
-                    (if Is_Reverse then Int_Infix_Ge else Int_Infix_Le));
-               Exit_Cond    : constant W_Expr_Id :=
-                 New_Call (Domain => EW_Prog,
-                           Name   => Exit_Cmp,
-                           Typ    => EW_Bool_Type,
-                           Args   => (+Index_Deref, +Exit_Index));
-               Cond_Prog    : constant W_Prog_Id :=
-                 +New_Range_Expr (Domain    => EW_Prog,
-                                  Low       => +Low_Ident,
-                                  High      => +High_Ident,
-                                  Expr      => +Index_Deref);
-               Impl_Inv  : constant W_Pred_Id :=
+                     return New_Call
+                       (Ada_Node => LParam_Spec,
+                        Domain   => Domain,
+                        Name     => W_H_Elmt,
+                        Args     => (1 => W_Container,
+                                     2 => Cur_Expr),
+                        Typ      => EW_Bool_Type);
+                  end if;
+               end Constraint_For_Iterable;
+
+               ---------------
+               -- Init_Iter --
+               ---------------
+
+               function Init_Iter return W_Prog_Id is
+                  First      : constant Entity_Id :=
+                    Get_Iterable_Type_Primitive
+                      (Etype (Over_Node), Name_First);
+                  Call_First : constant W_Expr_Id := +New_VC_Call
+                    (Ada_Node => LParam_Spec,
+                     Name     =>
+                       W_Identifier_Id
+                         (Transform_Identifier
+                              (Params       => Body_Params,
+                               Expr         => First,
+                               Ent          => First,
+                               Domain       => EW_Prog)),
+                     Progs    => (1 => W_Container),
+                     Reason   => VC_Precondition,
+                     Domain   => EW_Prog,
+                     Typ      => Typ_For_Iter);
+               begin
+                  return +Call_First;
+               end Init_Iter;
+
+               ----------------------
+               -- Loop_Index_Value --
+               ----------------------
+
+               function Loop_Index_Value (Domain : EW_Domain) return W_Expr_Id
+               is
+                  Elmt      : constant Entity_Id :=
+                    Get_Iterable_Type_Primitive
+                      (Etype (Over_Node), Name_Element);
+                  Cur_Expr  : constant W_Expr_Id :=
+                    Insert_Simple_Conversion
+                      (Domain         => EW_Term,
+                       Expr           => +Iter_Deref,
+                       To             => Typ_For_Iter,
+                       Force_No_Slide => True);
+                  W_Elmt    : constant W_Identifier_Id :=
+                    +Transform_Identifier
+                      (Params       => Body_Params,
+                       Expr         => Elmt,
+                       Ent          => Elmt,
+                       Domain       => Domain);
+               begin
+                  if Domain = EW_Prog then
+                     return New_VC_Call
+                       (Ada_Node => LParam_Spec,
+                        Name     => W_Elmt,
+                        Progs    =>
+                          (1 => W_Container,
+                           2 => Cur_Expr),
+                        Reason   => VC_Precondition,
+                        Domain   => EW_Prog,
+                        Typ      => Type_Of_Node (Etype (Elmt)));
+                  else
+                     return New_Call
+                       (Ada_Node => LParam_Spec,
+                        Domain   => Domain,
+                        Name     => W_Elmt,
+                        Args     =>
+                          (1 => W_Container,
+                           2 => Cur_Expr),
+                        Typ      => Type_Of_Node (Etype (Elmt)));
+                  end if;
+               end Loop_Index_Value;
+
+               ------------------
+               -- Update_Index --
+               ------------------
+
+               function Update_Index return W_Prog_Id is
+                  Call_Elmt : constant W_Prog_Id :=
+                    +Loop_Index_Value (EW_Prog);
+                  Upd_Elmt : constant W_Expr_Id :=
+                    New_Conditional
+                      (Domain      => EW_Prog,
+                       Condition   =>
+                         Constraint_For_Iterable (EW_Prog),
+                       Then_Part   =>
+                         New_Assignment
+                           (Ada_Node => Stmt,
+                            Name     => Loop_Index,
+                            Value    => +Insert_Simple_Conversion
+                              (Domain         => EW_Term,
+                               Expr           => +Call_Elmt,
+                               To             => Loop_Index_Type,
+                               Force_No_Slide => True)));
+               begin
+                  return +Upd_Elmt;
+               end Update_Index;
+
+               -----------------------
+               -- Local Subprograms --
+               -----------------------
+
+               function Construct_Cond return W_Prog_Id;
+               --  @return Condition to enter the loop
+
+               function Construct_Exit_Cond return W_Prog_Id;
+               --  @return Condition to not exit the loop
+
+               function Construct_Init_Prog return W_Prog_Id;
+               --  @return Initialization of Loop_Index
+
+               function Construct_Inv_For_Index return W_Pred_Id;
+               --  @return Implicit loop invariant about Loop_Index and
+               --  Nam_For_Iter
+
+               function Construct_Update_Stmt return W_Prog_Id;
+               --  @return Update of Loop_Index and Nam_For_Iter when necessary
+
+               --------------------
+               -- Construct_Cond --
+               --------------------
+
+               function Construct_Cond return W_Prog_Id is
+               begin
+                  if Over_Range then
+
+                     --  Low_Id <= Index_Deref <= High_Id
+
+                     return +New_Range_Expr (Domain    => EW_Prog,
+                                             Low       => +Low_Id,
+                                             High      => +High_Id,
+                                             Expr      => +Index_Deref);
+                  else
+
+                     --  Has_Element (W_Container, Iter_Deref)
+
+                     return +Constraint_For_Iterable (EW_Prog);
+                  end if;
+               end Construct_Cond;
+
+               -------------------------
+               -- Construct_Exit_Cond --
+               -------------------------
+
+               function Construct_Exit_Cond return W_Prog_Id is
+               begin
+                  if Over_Range then
+
+                     --  Index_Deref >= Low_Id if Is_Reverse
+                     --  Index_Deref <= High_Id otherwise
+
+                     declare
+                        Is_Reverse : constant Boolean :=
+                          Reverse_Present (LParam_Spec);
+                        Exit_Index : constant W_Expr_Id :=
+                          (if Is_Reverse then +Low_Id else +High_Id);
+                        Exit_Cmp   : constant W_Identifier_Id :=
+                          (if Why_Type_Is_BitVector (Loop_Index_Type) then
+                               (if Is_Reverse then MF_BVs (Loop_Index_Type).Uge
+                                else MF_BVs (Loop_Index_Type).Ule)
+                           else
+                             (if Is_Reverse then Int_Infix_Ge
+                              else Int_Infix_Le));
+                        Exit_Cond  : constant W_Expr_Id :=
+                          New_Call (Domain => EW_Prog,
+                                    Name   => Exit_Cmp,
+                                    Typ    => EW_Bool_Type,
+                                    Args   => (+Index_Deref, +Exit_Index));
+                     begin
+                        return +Exit_Cond;
+                     end;
+                  else
+
+                     --  Has_Element (W_Container, Iter_Deref);
+
+                     return +Constraint_For_Iterable (EW_Prog);
+                  end if;
+               end Construct_Exit_Cond;
+
+               -------------------------
+               -- Construct_Init_Prog --
+               -------------------------
+
+               function Construct_Init_Prog return W_Prog_Id is
+               begin
+                  if Over_Range then
+
+                     --  Loop_Index := High_Id if Is_Reverse
+                     --  Loop_Index := Low_Id otherwise
+
+                     declare
+                        Is_Reverse   : constant Boolean :=
+                          Reverse_Present (LParam_Spec);
+                        Init_Index : constant W_Expr_Id :=
+                          (if Is_Reverse then +High_Id else +Low_Id);
+                     begin
+                        return New_Assignment
+                          (Name  => Loop_Index,
+                           Value => +Init_Index);
+                     end;
+                  else
+                     if Need_Iter then
+
+                        --  if Has_Element (W_Container, Iter_Deref) then
+                        --    Loop_Index := Element (W_Container, Iter_Deref)
+
+                        return Update_Index;
+                     else
+
+                        --  Loop_Index := First (W_Container)
+
+                        return New_Assignment
+                          (Name  => Nam_For_Iter,
+                           Value => Init_Iter);
+                     end if;
+                  end if;
+               end Construct_Init_Prog;
+
+               -----------------------------
+               -- Construct_Inv_For_Index --
+               -----------------------------
+
+               function Construct_Inv_For_Index return W_Pred_Id is
+               begin
+                  if Over_Range then
+
+                     --  In the range expression of the invariant, explicitly
+                     --  set T_Type to handle the special case of
+                     --  Standard.Boolean, where bounds and index are of
+                     --  different base types (bool for bounds, int for index).
+
+                     return
+                       +Range_Expr (Over_Node,
+                                    New_Deref (Right => Loop_Index,
+                                               Typ => Loop_Index_Type),
+                                    EW_Pred,
+                                    Params => Body_Params,
+                                    T_Type => Loop_Index_Type);
+
+                  elsif Need_Iter then
+
+                     --  Has_Element (W_Container, Iter_Deref) and then
+                     --    Index_Deref = Element (W_Container, Iter_Deref)
+
+                     declare
+                        H_Elmt    : constant W_Expr_Id :=
+                          Constraint_For_Iterable (EW_Pred);
+                        Elmt_Iter : constant W_Expr_Id :=
+                          New_Comparison
+                            (Why_Eq,
+                             +Index_Deref,
+                             Loop_Index_Value (EW_Term),
+                             EW_Pred);
+                     begin
+                        return W_Pred_Id (New_And_Then_Expr
+                                          (H_Elmt, Elmt_Iter, EW_Pred));
+                     end;
+                  else
+
+                     --  Has_Element (W_Container, Iter_Deref)
+
+                     return +Constraint_For_Iterable (EW_Pred);
+                  end if;
+               end Construct_Inv_For_Index;
+
+               ---------------------------
+               -- Construct_Update_Stmt --
+               ---------------------------
+
+               function Construct_Update_Stmt return W_Prog_Id is
+               begin
+                  if Over_Range then
+
+                     --  Loop_Index := Index_Deref - 1 if Is_Reverse
+                     --  Loop_Index := Index_Deref + 1 otherwise
+
+                     declare
+                        Is_Reverse   : constant Boolean :=
+                          Reverse_Present (LParam_Spec);
+                        Update_Op    : constant W_Identifier_Id :=
+                          (if Why_Type_Is_BitVector (Loop_Index_Type) then
+                               (if Is_Reverse then
+                                     MF_BVs (Loop_Index_Type).Sub
+                                else
+                                   MF_BVs (Loop_Index_Type).Add)
+                           else
+                             (if Is_Reverse then Int_Infix_Subtr
+                              else Int_Infix_Add));
+                        One_Expr     : constant W_Expr_Id :=
+                          (if Why_Type_Is_BitVector (Loop_Index_Type) then
+                                New_Modular_Constant
+                             (Ada_Node => Stmt,
+                              Value    => Uint_1,
+                              Typ      => Loop_Index_Type)
+                           else
+                              New_Integer_Constant
+                             (Ada_Node => Stmt,
+                              Value     => Uint_1));
+                        Update_Expr  : constant W_Prog_Id :=
+                          New_Call
+                            (Ada_Node => Stmt,
+                             Name     => Update_Op,
+                             Args     =>
+                               (1 => +Index_Deref,
+                                2 => One_Expr),
+                             Typ      => Loop_Index_Type);
+                     begin
+                        return New_Assignment
+                          (Ada_Node => Stmt,
+                           Name     => Loop_Index,
+                           Value    => +Update_Expr);
+                     end;
+                  else
+                     declare
+                        Next      : constant Entity_Id :=
+                          Get_Iterable_Type_Primitive
+                            (Etype (Over_Node), Name_Next);
+                        Cur_Expr  : constant W_Expr_Id :=
+                          Insert_Simple_Conversion
+                            (Domain         => EW_Term,
+                             Expr           => +Iter_Deref,
+                             To             => Typ_For_Iter,
+                             Force_No_Slide => True);
+                        Call_Next : constant W_Expr_Id := +New_VC_Call
+                          (Ada_Node => LParam_Spec,
+                           Name     =>
+                             W_Identifier_Id
+                               (Transform_Identifier
+                                    (Params       => Body_Params,
+                                     Expr         => Next,
+                                     Ent          => Next,
+                                     Domain       => EW_Prog)),
+                           Progs    => (1 => W_Container,
+                                        2 => Cur_Expr),
+                           Reason   => VC_Precondition,
+                           Domain   => EW_Prog,
+                           Typ      => Typ_For_Iter);
+                        Upd_Next  : constant W_Prog_Id :=
+                          New_Assignment
+                            (Ada_Node => Stmt,
+                             Name     => Nam_For_Iter,
+                             Value    => +Insert_Simple_Conversion
+                               (Domain         => EW_Term,
+                                Expr           => +Call_Next,
+                                To             => Get_Type (+Iter_Deref),
+                                Force_No_Slide => True));
+                     begin
+                        if Need_Iter then
+
+                           --  Nam_For_Iter := Next (W_Container, Iter_Deref)
+                           --  Loop_Index := Element (W_Container, Iter_Deref)
+
+                           return Sequence (Upd_Next, Update_Index);
+                        else
+
+                           --  Nam_For_Iter := Next (W_Container, Iter_Deref)
+
+                           return Upd_Next;
+                        end if;
+                     end;
+                  end if;
+               end Construct_Update_Stmt;
+
+               Index_Inv   : constant W_Pred_Id := Construct_Inv_For_Index;
+               Cond_Prog   : constant W_Prog_Id := Construct_Cond;
+               Update_Stmt : constant W_Prog_Id := Construct_Update_Stmt;
+               Exit_Cond   : constant W_Prog_Id := Construct_Exit_Cond;
+               Impl_Inv    : constant W_Pred_Id :=
                  +New_And_Expr (Left   => +Dyn_Types_Inv,
-                                Right  => +Cond_Pred,
+                                Right  => +Index_Inv,
                                 Domain => EW_Prog);
-               Entire_Loop  : W_Prog_Id :=
+               Entire_Loop : W_Prog_Id :=
                  Wrap_Loop (Loop_Id            => Loop_Id,
                             Loop_Start         => Initial_Prog,
                             Loop_End           =>
                               Sequence (Final_Prog, Update_Stmt),
                             Loop_Restart       => Initial_Prog,
                             Enter_Condition    => Cond_Prog,
-                            Loop_Condition     => +Exit_Cond,
+                            Loop_Condition     => Exit_Cond,
                             Implicit_Invariant => Impl_Inv,
                             User_Invariants    => Why_Invariants,
                             Invariant_Check    => Inv_Check,
@@ -737,42 +1156,55 @@ package body Gnat2Why.Expr.Loops is
                Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
                Entire_Loop :=
                  Sequence
-                   (New_Assignment
-                      (Name => Loop_Index,
-                       Value  => +Init_Index),
+                   (Construct_Init_Prog,
                     Entire_Loop);
-               Entire_Loop :=
-                 +New_Typed_Binding
-                 (Name    => High_Ident,
-                  Domain  => EW_Prog,
-                  Def     => +Transform_Expr (High_Bound (Actual_Range),
-                    Loop_Index_Type,
-                    EW_Prog,
-                    Params => Body_Params),
-                  Context => +Entire_Loop);
-               Entire_Loop :=
-                 +New_Typed_Binding
-                 (Name    => Low_Ident,
-                  Domain  => EW_Prog,
-                  Def     =>
-                    +Transform_Expr
-                    (Low_Bound (Actual_Range),
-                     Loop_Index_Type,
-                     EW_Prog,
-                     Params => Body_Params),
-                  Context => +Entire_Loop);
+
+               --  Create new variable for iterator if needed
+
+               if Need_Iter then
+                  Entire_Loop :=
+                    New_Binding_Ref
+                      (Name    => Nam_For_Iter,
+                       Def     => Init_Iter,
+                       Context => Entire_Loop,
+                       Typ     => Typ_For_Iter);
+               end if;
+
+               --  Add let bindings for bounds
+
+               if Over_Range then
+                  declare
+                     Actual_Range : constant Node_Id :=
+                       Get_Range (Over_Node);
+                     High_Expr    : constant W_Expr_Id :=
+                       Transform_Expr (High_Bound (Actual_Range),
+                                       Loop_Index_Type,
+                                       EW_Prog,
+                                       Params => Body_Params);
+                     Low_Expr     : constant W_Expr_Id :=
+                       Transform_Expr (Low_Bound (Actual_Range),
+                                       Loop_Index_Type,
+                                       EW_Prog,
+                                       Params => Body_Params);
+                  begin
+                     Entire_Loop := +New_Typed_Binding
+                       (Stmt, EW_Prog, Low_Id, Low_Expr, +Entire_Loop);
+                     Entire_Loop := +New_Typed_Binding
+                       (Stmt, EW_Prog, High_Id, High_Expr, +Entire_Loop);
+                  end;
+               end if;
 
                --  For loop_parameter_specification whose
                --  discrete_subtype_definition is a subtype_indication,
                --  we generate a check that the range_constraint of the
                --  subtype_indication is compatible with the given subtype.
 
-               if Nkind (Loop_Range) = N_Subtype_Indication then
+               if Nkind (Over_Node) = N_Subtype_Indication then
                   Entire_Loop :=
                     Sequence
                       (Check_Subtype_Indication
                          (Params   => Body_Params,
-                          N        => Loop_Range,
+                          N        => Over_Node,
                           Sub_Type =>
                             Etype (Defining_Identifier (LParam_Spec))),
                        Entire_Loop);

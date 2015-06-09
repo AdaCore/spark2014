@@ -13,4 +13,15 @@ package For_Loops_On_Lists with SPARK_Mode is
 
    function Contains_0_For_Of (L : List) return Boolean with
      Post => (if Contains_0_For_Of'Result then (for some E of L => E = 0));
+
+   procedure Search_For_In (L : in out List; P : out Cursor) with
+     Post => (if Has_Element (L, P) then Element (L, P) = 0)
+     and then (for all Cu in First_To_Previous (L, P) =>
+                   Has_Element (L'Old, Cu) and then
+                   Element (L'Old, Cu) > 0 and then
+                   Element (L, Cu) = Element (L'Old, Cu) - 1);
+
+   function Count_For_Of (L : List) return Boolean with
+     Post => (if Count_For_Of'Result then
+                ((for some E of L => E = 0)  and (for some E of L => E = 1)));
 end For_Loops_On_Lists;

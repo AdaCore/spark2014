@@ -1031,6 +1031,10 @@ package body SPARK_Definition is
                end if;
             end;
 
+            --  Mark iterator's identifier
+
+            Mark_Entity (Defining_Identifier (N));
+
          when N_Loop_Statement =>
             Check_Loop_Invariant_Placement (Statements (N));
 
