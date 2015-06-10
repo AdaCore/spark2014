@@ -1,4 +1,4 @@
-package body Sums is
+package body Sums with SPARK_Mode => Off is
 
     function Sum (X : Vector; Bounds : Slice_Bounds) return Integer is
         Result : Integer := 0;

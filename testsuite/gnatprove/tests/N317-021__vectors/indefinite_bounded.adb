@@ -3,6 +3,8 @@ pragma Check_Policy (Only_For_Proof, Ignore);
 package body Indefinite_Bounded with
   SPARK_Mode
 is
+   function Lt (Left, Right : Integer) return Boolean is (Left < Right);
+   package Sort is new Generic_Sorting ("<" => Lt);
 
    procedure Test is
       V : Vector (5);
@@ -97,19 +99,14 @@ is
       pragma Assert (not Has_Element (V, No_Index));
       pragma Assert (not Has_Element (V, 3));
 
-      declare
-         function Lt (Left, Right : Integer) return Boolean is (Left < Right);
-         package Sort is new Generic_Sorting ("<" => Lt);
-      begin
-         pragma Assert (not Sort.Is_Sorted (V));
-         Sort.Sort (V);
-         pragma Assert (not Is_Empty (V));
-         pragma Assert (Length (V) = 2);
-         pragma Assert (Capacity (V) = 5);
-         pragma Assert (Element (V, 1) = 3);
-         pragma Assert (Element (V, 2) = 4);
-         pragma Assert (Sort.Is_Sorted (V));
-      end;
+      pragma Assert (not Sort.Is_Sorted (V));
+      Sort.Sort (V);
+      pragma Assert (not Is_Empty (V));
+      pragma Assert (Length (V) = 2);
+      pragma Assert (Capacity (V) = 5);
+      pragma Assert (Element (V, 1) = 3);
+      pragma Assert (Element (V, 2) = 4);
+      pragma Assert (Sort.Is_Sorted (V));
 
       Replace_Element (V, 1, Element (V, 2));
       pragma Assert (First_To_Previous (V, 2) = Current_To_Last (V, 2));

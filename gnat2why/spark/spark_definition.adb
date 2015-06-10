@@ -3723,13 +3723,24 @@ package body SPARK_Definition is
          return;
       end if;
 
-      --  Do not analyze bodies for packages with external axioms
+      Current_SPARK_Pragma := SPARK_Pragma (Defining_Entity (N));
+
+      --  Do not analyze bodies for packages with external axioms.
+      --  Only check that their SPARK_Mode is Off.
 
       if Entity_In_Ext_Axioms (Id) then
+         if Present (SPARK_Pragma (Defining_Entity (N)))
+           and then Get_SPARK_Mode_From_Pragma
+             (SPARK_Pragma (Defining_Entity (N))) /= Off
+         then
+            Mark_Violation
+                 ("Body of package with External_Axiomatization",
+                  N);
+         end if;
+
+         Current_SPARK_Pragma := Save_SPARK_Pragma;
          return;
       end if;
-
-      Current_SPARK_Pragma := SPARK_Pragma (Defining_Entity (N));
 
       Mark_Stmt_Or_Decl_List (Declarations (N));
 
@@ -3787,9 +3798,22 @@ package body SPARK_Definition is
          end if;
       end if;
 
-      --  Nothing more to do for packages with external axiomatization
+      --  For packages with external axiomatization, check that the private
+      --  part (if any) has SPARK_Mode Off.
 
       if Entity_In_Ext_Axioms (Id) then
+         if Present (Priv_Decls)
+           and then Present (SPARK_Aux_Pragma (Defining_Entity (N)))
+           and then Get_SPARK_Mode_From_Pragma
+           (SPARK_Aux_Pragma (Defining_Entity (N))) /= Off
+         then
+            Mark_Violation
+                 ("Private part of package with External_Axiomatization",
+                  N);
+         end if;
+
+         Current_SPARK_Pragma := Save_SPARK_Pragma;
+
          return;
       end if;
 

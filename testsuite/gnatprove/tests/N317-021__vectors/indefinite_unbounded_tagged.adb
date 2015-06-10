@@ -5,6 +5,9 @@ package body Indefinite_Unbounded_Tagged with
 is
    function F (X : Integer) return T'Class is (T'Class(T'(C => X)));
 
+   function Lt (Left, Right : T'Class) return Boolean is (T(Left).C < T(Right).C);
+   package Sort is new Generic_Sorting ("<" => Lt);
+
    procedure Test is
       V : Vector (2);
    begin
@@ -99,19 +102,14 @@ is
       pragma Assert (not Has_Element (V, No_Index));
       pragma Assert (not Has_Element (V, 3));
 
-      declare
-         function Lt (Left, Right : T'Class) return Boolean is (T(Left).C < T(Right).C);
-         package Sort is new Generic_Sorting ("<" => Lt);
-      begin
-         pragma Assert (not Sort.Is_Sorted (V));
-         Sort.Sort (V);
-         pragma Assert (not Is_Empty (V));
-         pragma Assert (Length (V) = 2);
-         pragma Assert (Capacity (V) >= 3);
-         pragma Assert (Element (V, 1) = F(3));
-         pragma Assert (Element (V, 2) = F(4));
-         pragma Assert (Sort.Is_Sorted (V));
-      end;
+      pragma Assert (not Sort.Is_Sorted (V));
+      Sort.Sort (V);
+      pragma Assert (not Is_Empty (V));
+      pragma Assert (Length (V) = 2);
+      pragma Assert (Capacity (V) >= 3);
+      pragma Assert (Element (V, 1) = F(3));
+      pragma Assert (Element (V, 2) = F(4));
+      pragma Assert (Sort.Is_Sorted (V));
 
       Replace_Element (V, 1, Element (V, 2));
       pragma Assert (First_To_Previous (V, 2) = Current_To_Last (V, 2));

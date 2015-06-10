@@ -1,0 +1,14 @@
+bad_ext_ax.ads:1:09: cannot read theory file bad_ext_ax.mlw
+bad_ext_ax_with_body.adb:1:01: Body of package with External_Axiomatization is not allowed in SPARK
+bad_ext_ax_with_body.adb:1:01: violation of aspect SPARK_Mode at line 1
+bad_ext_ax_with_both.adb:1:01: Body of package with External_Axiomatization is not allowed in SPARK
+bad_ext_ax_with_both.adb:1:01: violation of aspect SPARK_Mode at line 1
+bad_ext_ax_with_both.ads:1:01: Private part of package with External_Axiomatization is not allowed in SPARK
+bad_ext_ax_with_both.ads:1:01: violation of aspect SPARK_Mode at line 1
+bad_ext_ax_with_private.ads:1:01: Private part of package with External_Axiomatization is not allowed in SPARK
+bad_ext_ax_with_private.ads:1:01: violation of aspect SPARK_Mode at line 1
+compilation of bad_ext_ax.ads failed
+compilation of bad_ext_ax_with_body.adb failed
+compilation of bad_ext_ax_with_both.adb failed
+compilation of bad_ext_ax_with_private.ads failed
+gnatprove: error during flow analysis and proof

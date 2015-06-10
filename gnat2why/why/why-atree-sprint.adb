@@ -549,7 +549,8 @@ package body Why.Atree.Sprint is
                Name_Buffer (1 .. Name_Len) := From_Command;
                Error_Msg_Name_1 := Name_Enter;
                Error_Msg_N
-                 ("cannot read theory file %%", Get_Ada_Node (+Node));
+                 ("cannot read theory file " & File_Name,
+                  Get_Ada_Node (+Node));
                return "";
             end if;
          end;

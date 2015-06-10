@@ -1,4 +1,4 @@
-package Sums is
+package Sums with SPARK_Mode is
    pragma Annotate (GNATprove, External_Axiomatization);
 
    subtype Extended_Index is Integer range 0 .. 2 ** 16;
