@@ -686,9 +686,12 @@ package body Gnat2Why.Expr.Loops is
 
                Need_Iter    : constant Boolean :=
                  not Over_Range and then Of_Present (LParam_Spec);
-               Typ_For_Iter : constant W_Type_Id := Type_Of_Node
-                 (Get_Iterable_Type_Primitive (Typ => Etype (Over_Node),
-                                               Nam => Name_First));
+               Typ_For_Iter : constant W_Type_Id :=
+                 (if Need_Iter
+                  then Type_Of_Node
+                    (Get_Iterable_Type_Primitive (Typ => Etype (Over_Node),
+                                                  Nam => Name_First))
+                  else Loop_Index_Type);
                Nam_For_Iter : constant W_Identifier_Id :=
                  (if not Need_Iter then Loop_Index
                   else New_Temp_Identifier
