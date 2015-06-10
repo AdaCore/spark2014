@@ -7,7 +7,7 @@ from test_support import *
 # BY
 #   @ASSERT:FAIL
 # IN THOSE TESTS AT THIS POINT
-prove_all(steps=1000)
+prove_all()
 
 call(["gnatmake", "-gnata", "-q", "test_vectors.adb"])
 call(["./test_vectors"])

@@ -455,13 +455,14 @@ procedure Gnatprove is
                                   Theory_Check);
 
       CVC4_Resource : constant array (CVC4_Resource_Kind) of Natural :=
-        (Rewrite    => 0,
-         Bitblast   => 0,
-         CNF        => 0,
-         Parse      => 0,
-         Preprocess => 0,
-         Decision   => 0,
-         others     => 1);
+        (Rewrite         => 0,
+         Bitblast        => 0,
+         CNF             => 0,
+         Parse           => 0,
+         Preprocess      => 0,
+         Decision        => 0,
+         BV_SAT_Conflict => 5,
+         others          => 10);
 
       function Flag_Name (R : CVC4_Resource_Kind) return String;
       --  Produce the command-line option for the given resource.
@@ -697,7 +698,7 @@ procedure Gnatprove is
       CVC4_Binary : constant String :=
         (if Benchmark_Mode then "fake_" else "") & "cvc4";
 
-      CVC4_Steps    : constant Natural := 5_000 + Steps * 25;
+      CVC4_Resource : constant Natural := 50_000 + Steps * 250;
       Altergo_Steps : constant Natural := Steps;
 
       --  The CVC4 options explained.
@@ -757,7 +758,7 @@ procedure Gnatprove is
          if Steps /= 0 then
             Put_Keyval ("command",
                         Command &
-                          " --rlimit=" & Image (CVC4_Steps, 1) &
+                          " --rlimit=" & Image (CVC4_Resource, 1) &
                           " %f");
          else
             Put_Keyval ("command", Command & " %f");
@@ -767,7 +768,7 @@ procedure Gnatprove is
                        (Why3_Drivers_Dir, "cvc4_gnatprove.drv"));
          Put_Keyval ("name", "CVC4");
          Put_Keyval ("shortcut", "cvc4");
-         Put_Keyval ("version", "1.3");
+         Put_Keyval ("version", "1.5");
       end Generate_CVC4_Section;
 
       ------------------------------
@@ -794,7 +795,7 @@ procedure Gnatprove is
             Put_Keyval ("command",
                         Command &
                           " --rlimit=" &
-                          Image (CVC4_Steps, 1) &
+                          Image (CVC4_Resource, 1) &
                           " %f");
          else
             Put_Keyval ("command", Command & " %f");
@@ -804,7 +805,7 @@ procedure Gnatprove is
                        (Why3_Drivers_Dir, "cvc4_gnatprove.drv"));
          Put_Keyval ("name", "CVC4_CE");
          Put_Keyval ("shortcut", "cvc4_ce");
-         Put_Keyval ("version", "1.3");
+         Put_Keyval ("version", "1.5");
       end Generate_CVC4_CE_Section;
 
       ---------------------------

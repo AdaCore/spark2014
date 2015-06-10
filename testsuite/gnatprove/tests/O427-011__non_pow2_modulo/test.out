@@ -32,5 +32,5 @@ t3.adb:25:47: info: contract case proved
 t3.adb:26:46: info: contract case proved
 t3.adb:27:46: info: contract case proved
 t3.adb:28:37: info: contract case proved
-t3.adb:35:19: medium: postcondition might fail, requires U16 (MMul'Result) = (U16 (X) * U16 (Y)) mod 230
+t3.adb:35:19: info: postcondition proved
 t3.adb:35:59: info: division check proved

@@ -7,8 +7,8 @@ def cat_traces():
     for file in files:
         cat (file, sort=True)
 
-prove_all(opt=["--limit-line=test.ads:4", "--proof=progressive"], steps=10)
+prove_all(opt=["--limit-line=test.ads:4", "--proof=progressive"])
 cat_traces()
 clean()
-prove_all(opt=["--limit-line=test2.ads:4", "--proof=progressive"], steps=10)
+prove_all(opt=["--limit-line=test2.ads:4", "--proof=progressive"])
 cat_traces()
