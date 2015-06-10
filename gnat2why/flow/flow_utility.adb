@@ -3214,9 +3214,7 @@ package body Flow_Utility is
          case Valid_Assignment_Kinds (Nkind (Ptr)) is
             when N_Identifier | N_Expanded_Name =>
                return True;
-            when N_Type_Conversion =>
-               Ptr := Expression (Ptr);
-            when N_Unchecked_Type_Conversion =>
+            when N_Type_Conversion | N_Unchecked_Type_Conversion =>
                Ptr := Expression (Ptr);
             when N_Indexed_Component | N_Slice | N_Selected_Component =>
                Ptr := Prefix (Ptr);
