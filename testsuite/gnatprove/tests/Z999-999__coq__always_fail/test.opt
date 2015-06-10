@@ -1,0 +1,2 @@
+ALL XFAIL should always fail
+coq REQUIRED
