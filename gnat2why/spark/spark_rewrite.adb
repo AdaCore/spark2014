@@ -49,9 +49,9 @@ package body SPARK_Rewrite is
    --  Replace identifiers by their compile-time known constant value when
    --  possible.
 
-   procedure Rewrite_Instantiation (N : Node_Id);
-   --  Replace names in instances of generic functions with names of
-   --  the original functions; we prefer the original names when outputting
+   procedure Rewrite_Subprogram_Instantiation (N : Node_Id);
+   --  Replace names in instances of generic subprograms with names of
+   --  the original subprograms; we prefer the original names when outputting
    --  error messages and generating Why code.
 
    ------------------
@@ -158,11 +158,11 @@ package body SPARK_Rewrite is
       end if;
    end Rewrite_Identifier;
 
-   ---------------------------
-   -- Rewrite_Instantiation --
-   ---------------------------
+   --------------------------------------
+   -- Rewrite_Subprogram_Instantiation --
+   --------------------------------------
 
-   procedure Rewrite_Instantiation (N : Node_Id) is
+   procedure Rewrite_Subprogram_Instantiation (N : Node_Id) is
       Orig_Name_Id : constant Name_Id := Chars (Defining_Unit_Name (N));
       Wrapper_Package_Spec_Decls : constant List_Id :=
         Visible_Declarations (Specification (Instance_Spec (N)));
@@ -202,7 +202,7 @@ package body SPARK_Rewrite is
    begin
       Set_Chars (Defining_Unit_Name (Specification (Internal_Instance)),
                  Orig_Name_Id);
-   end Rewrite_Instantiation;
+   end Rewrite_Subprogram_Instantiation;
 
    ------------------------------
    -- Rewrite_Compilation_Unit --
@@ -287,8 +287,8 @@ package body SPARK_Rewrite is
             when N_Subprogram_Call =>
                Rewrite_Call (N);
 
-            when N_Function_Instantiation =>
-               Rewrite_Instantiation (N);
+            when N_Subprogram_Instantiation =>
+               Rewrite_Subprogram_Instantiation (N);
 
             --  Recursively call the tree rewriting procedure on subunits.
 

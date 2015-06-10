@@ -97,7 +97,7 @@ cc1311a.adb:331:14: info: initialization of "RESULTS" proved, in instantiation a
 cc1311a.adb:346:14: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:447
 cc1311a.adb:362:15: warning: subprogram "D209B" has no effect
 cc1311a.adb:375:16: warning: subprogram "D345B" has no effect
-cc1311a.adb:387:16: warning: subprogram "NEW_PROC_WITH_3D_FUNCR" has no effect
+cc1311a.adb:387:16: warning: subprogram "NEW_PROC_WITH_3D_FUNC" has no effect
 cc1311a.adb:392:48: info: initialization of "TODAY.DAY" proved
 cc1311a.adb:392:48: info: initialization of "TODAY.MONTH" proved
 cc1311a.adb:392:48: info: initialization of "TODAY.YEAR" proved
@@ -107,7 +107,7 @@ cc1311a.adb:401:48: info: initialization of "TODAY.YEAR" proved
 cc1311a.adb:410:48: info: initialization of "TODAY.DAY" proved
 cc1311a.adb:410:48: info: initialization of "TODAY.MONTH" proved
 cc1311a.adb:410:48: info: initialization of "TODAY.YEAR" proved
-cc1311a.adb:414:16: warning: subprogram "NEW_PROC_WITH_3D_PROCR" has no effect
+cc1311a.adb:414:16: warning: subprogram "NEW_PROC_WITH_3D_PROC" has no effect
 cc1311a.adb:419:48: info: initialization of "TODAY.DAY" proved
 cc1311a.adb:419:48: info: initialization of "TODAY.MONTH" proved
 cc1311a.adb:419:48: info: initialization of "TODAY.YEAR" proved
@@ -117,8 +117,8 @@ cc1311a.adb:428:47: info: initialization of "TODAY.YEAR" proved
 cc1311a.adb:437:48: info: initialization of "TODAY.DAY" proved
 cc1311a.adb:437:48: info: initialization of "TODAY.MONTH" proved
 cc1311a.adb:437:48: info: initialization of "TODAY.YEAR" proved
-cc1311a.adb:443:16: warning: subprogram "NPROC1R" has no effect
-cc1311a.adb:447:16: warning: subprogram "NPROC2R" has no effect
+cc1311a.adb:443:16: warning: subprogram "NPROC1" has no effect
+cc1311a.adb:447:16: warning: subprogram "NPROC2" has no effect
    compilation of c392008_2.adb failed
 
 
