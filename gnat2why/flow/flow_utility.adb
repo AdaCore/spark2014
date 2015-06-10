@@ -3378,7 +3378,7 @@ package body Flow_Utility is
       --
       --    * Type conversion: we trim the variables defined to remove the
       --      fields we no longer change. For this we use Idx to work out
-      --      which level of components (in the flow_id) we are looking at.
+      --      which level of components (in the Flow_Id) we are looking at.
       --
       --    * Array index and slice: we process the expressions and add to
       --      the variables used in code and proof. We also make sure to

@@ -339,7 +339,7 @@ is
    --                        of a larger array.
    --  * View_Conversion: N contains a view conversion.
    --  * Classwide: the assignment to map_root is classwide.
-   --  * Map_Root: the non-flattened flow_id which is assigned to.
+   --  * Map_Root: the non-flattened Flow_Id which is assigned to.
    --  * Seq: items used to derive Map_Root.
 
    procedure Untangle_Assignment_Target
@@ -563,7 +563,7 @@ is
      with Pre => (if F.Kind in Direct_Mapping | Record_Field
                   then Ekind (Get_Direct_Mapping_Id (F))
                     in Object_Kind | E_Function | E_Abstract_State);
-   --  As above, but using a flow_id.
+   --  As above, but using a Flow_Id.
 
    function Search_Contract (Unit     : Node_Id;
                              Contract : Pragma_Id;

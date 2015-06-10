@@ -140,7 +140,7 @@ package Flow_Types is
                              );
    --  Not all things can be represented by just X. For example a
    --  discriminated private type might need X'Private_Part and
-   --  X.D. Most flow_id objects will describe the Normal_Part.
+   --  X.D. Most Flow_Id objects will describe the Normal_Part.
    --
    --  Flo's note on naming: I did want to use the name "aspect", but this
    --  is perhaps asking for confusion; hence I went for "facet".
@@ -404,12 +404,12 @@ package Flow_Types is
 
    function To_Node_Set (S : Flow_Id_Sets.Set) return Node_Sets.Set
      with Pre => (for all F of S => F.Kind = Direct_Mapping);
-   --  Convert a simple flow_id set to a node set.
+   --  Convert a simple Flow_Id set to a node set.
 
    function To_Flow_Id_Set (S : Node_Sets.Set) return Flow_Id_Sets.Set
      with Post => (for all F of To_Flow_Id_Set'Result =>
                      F.Kind = Direct_Mapping);
-   --  Convert a node set to a flow_id set.
+   --  Convert a node set to a Flow_Id set.
 
    function Change_Variant (FS      : Flow_Id_Sets.Set;
                             Variant : Flow_Id_Variant)
