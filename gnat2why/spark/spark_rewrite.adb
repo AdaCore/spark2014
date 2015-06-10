@@ -49,6 +49,11 @@ package body SPARK_Rewrite is
    --  Replace identifiers by their compile-time known constant value when
    --  possible.
 
+   procedure Rewrite_Instantiation (N : Node_Id);
+   --  Replace names in instances of generic functions with names of
+   --  the original functions; we prefer the original names when outputting
+   --  error messages and generating Why code.
+
    ------------------
    -- Rewrite_Call --
    ------------------
@@ -153,6 +158,52 @@ package body SPARK_Rewrite is
       end if;
    end Rewrite_Identifier;
 
+   ---------------------------
+   -- Rewrite_Instantiation --
+   ---------------------------
+
+   procedure Rewrite_Instantiation (N : Node_Id) is
+      Orig_Name_Id : constant Name_Id := Chars (Defining_Unit_Name (N));
+      Wrapper_Package_Spec_Decls : constant List_Id :=
+        Visible_Declarations (Specification (Instance_Spec (N)));
+
+      function First_Subprogram_Declaration return Node_Id with
+        Post => Present (First_Subprogram_Declaration'Result)
+                and then Nkind (First_Subprogram_Declaration'Result) =
+                           N_Subprogram_Declaration;
+
+      --  Return first subprogram declaration in a list of visible declarations
+      --  of the wrapper package specification.
+
+      ----------------------------------
+      -- First_Subprogram_Declaration --
+      ----------------------------------
+
+      function First_Subprogram_Declaration return Node_Id is
+         First_Subp_Decl : Node_Id := First (Wrapper_Package_Spec_Decls);
+      begin
+
+         --  The first/next entity chain of a generic subprogram instance
+         --  contains all generic formal parameters, followed by the
+         --  subprogram declaration. Go directly to that declaration by
+         --  skipping the formal part.
+
+         while Nkind (First_Subp_Decl) /= N_Subprogram_Declaration
+         loop
+            Next (First_Subp_Decl);
+         end loop;
+
+         return First_Subp_Decl;
+      end First_Subprogram_Declaration;
+
+      Internal_Instance : constant Node_Id := First_Subprogram_Declaration;
+
+   --  Start of processing for Rewrite_Instantiation
+   begin
+      Set_Chars (Defining_Unit_Name (Specification (Internal_Instance)),
+                 Orig_Name_Id);
+   end Rewrite_Instantiation;
+
    ------------------------------
    -- Rewrite_Compilation_Unit --
    ------------------------------
@@ -227,12 +278,17 @@ package body SPARK_Rewrite is
             Register_Entity (Defining_Entity (N));
          end if;
 
+         --  And finally rewrite the node.
+
          case Nkind (N) is
             when N_Identifier | N_Expanded_Name =>
                Rewrite_Identifier (N);
 
             when N_Subprogram_Call =>
                Rewrite_Call (N);
+
+            when N_Function_Instantiation =>
+               Rewrite_Instantiation (N);
 
             --  Recursively call the tree rewriting procedure on subunits.
 
