@@ -3250,7 +3250,13 @@ package body Flow_Utility is
       Seq := Node_Lists.Empty_List;
       while Nkind (Root_Node) in Interesting_Nodes loop
          Seq.Prepend (Root_Node);
-         Root_Node := Prefix (Root_Node);
+         case Nkind (Root_Node) is
+            when N_Type_Conversion | N_Unchecked_Type_Conversion =>
+               Root_Node := Expression (Root_Node);
+
+            when others =>
+               Root_Node := Prefix (Root_Node);
+         end case;
       end loop;
       pragma Assert (Nkind (Root_Node) in N_Identifier | N_Expanded_Name);
 
