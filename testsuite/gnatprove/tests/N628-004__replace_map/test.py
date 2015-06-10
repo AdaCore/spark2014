@@ -1,2 +1,2 @@
 from test_support import *
-prove_all(steps=400)
+prove_all()
