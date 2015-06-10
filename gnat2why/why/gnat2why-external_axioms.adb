@@ -158,10 +158,12 @@ package body Gnat2Why.External_Axioms is
             while Present (CurAssoc) loop
                declare
                   Actual : constant Entity_Id :=
-                    Entity (Explicit_Generic_Actual_Parameter (CurAssoc));
+                    Explicit_Generic_Actual_Parameter (CurAssoc);
                begin
-                  if Ekind (Actual) = E_Function then
-                     List_Of_Entity.Append (Compl, Actual);
+                  if Nkind (Actual) in N_Has_Entity
+                    and then Ekind (Entity (Actual)) = E_Function
+                  then
+                     List_Of_Entity.Append (Compl, Entity (Actual));
                   end if;
                end;
                Next (CurAssoc);
