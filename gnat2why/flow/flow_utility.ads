@@ -333,8 +333,7 @@ is
           Post =>
             Map_Root.Kind in Direct_Mapping | Record_Field and then
             (for all X of Seq => Nkind (X) in Valid_Assignment_Kinds);
-   --  Checks the assignment target N and determines a few basic
-   --  properties.
+   --  Checks the assignment target N and determines a few basic properties
    --
    --  * Partial_Definition: the assignment to N touches only a few elements
    --                        of a larger array.
