@@ -2957,6 +2957,9 @@ package body SPARK_Definition is
                function First_Component_Or_Discriminant
                  (Id : Entity_Id) return Entity_Id;
 
+               function Mentions_Type_Name (N : Node_Id) return Boolean;
+               --  Returns True iff node [N] mentions the type name [E]
+
                -------------------------------------
                -- First_Component_Or_Discriminant --
                -------------------------------------
@@ -2974,7 +2977,37 @@ package body SPARK_Definition is
                   return Comp_Id;
                end First_Component_Or_Discriminant;
 
+               ------------------------
+               -- Mentions_Type_Name --
+               ------------------------
+
+               function Mentions_Type_Name (N : Node_Id) return Boolean is
+                  Found : Boolean := False;
+
+                  function Find_Type (N : Node_Id) return Traverse_Result;
+                  --  Sets [Found] to True if type name for [E] is found
+
+                  function Find_Type (N : Node_Id) return Traverse_Result is
+                  begin
+                     case Nkind (N) is
+                        when N_Identifier | N_Expanded_Name =>
+                           if Unique_Entity (Entity (N)) = Unique_Entity (E)
+                           then
+                              Found := True;
+                           end if;
+                        when others => null;
+                     end case;
+                     return OK;
+                  end Find_Type;
+
+                  procedure Maybe_Find_Type is new Traverse_Proc (Find_Type);
+               begin
+                  Maybe_Find_Type (N);
+                  return Found;
+               end Mentions_Type_Name;
+
                Comp : Node_Id := First_Component_Or_Discriminant (E);
+
             begin
                while Present (Comp) loop
                   if Component_Is_Visible_In_SPARK (Comp) then
@@ -2983,6 +3016,21 @@ package body SPARK_Definition is
                      --  Mark default value of component or discriminant
 
                      if Present (Expression (Parent (Comp))) then
+
+                        --  The default expression of a component declaration
+                        --  shall not contain a name denoting the current
+                        --  instance of the enclosing type. (SPARK RM 3.8(2))
+
+                        if Mentions_Type_Name (Expression (Parent (Comp))) then
+                           Violation_Detected := True;
+                           if Emit_Messages and then SPARK_Pragma_Is (Opt.On)
+                           then
+                              Error_Msg_Node_1 := E;
+                              Error_Msg_N
+                                ("default expression cannot mention }", E);
+                           end if;
+                        end if;
+
                         Mark (Expression (Parent (Comp)));
                      end if;
                   end if;

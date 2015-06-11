@@ -1,0 +1,5 @@
+late_init.adb:6:12: default expression cannot mention type "T" defined at line 6
+   compilation of late_init.adb failed
+
+
+gnatprove: error during flow analysis and proof
