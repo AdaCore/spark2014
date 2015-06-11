@@ -2338,7 +2338,7 @@ package body Flow.Analysis is
                   --  reads accordingly.
                   --
                   --  Note we skip this check for abstract state iff we
-                  --  analyze a package, since its OK to leave some state
+                  --  analyze a package, since it is OK to leave some state
                   --  uninitialized (Check_Initializes_Contract will pick
                   --  this up).
                   for V_Def of FA.DDG.Get_Collection
