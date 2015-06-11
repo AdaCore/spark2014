@@ -13,6 +13,8 @@ tasks.adb:19:50: warning: assuming "Seconds" has no effect on global items
 tasks.adb:19:50: warning: no Global contract available for "Seconds"
 tasks.adb:28:07: warning: analyzing unreferenced function "Get"
 tasks.adb:33:07: warning: analyzing unreferenced procedure "Put"
+tasks.ads:8:25: access type is not allowed in SPARK
+tasks.ads:8:25: violation of pragma SPARK_Mode at test.adc:1
 tasks.ads:10:07: warning: pragma "Priority" ignored (not yet supported)
 tasks.ads:15:07: warning: pragma "Priority" ignored (not yet supported)
 tasks.ads:22:19: type with partial default initialization is not allowed in SPARK (SPARK RM 3.8(1))

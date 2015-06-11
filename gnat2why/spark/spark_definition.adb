@@ -2946,10 +2946,10 @@ package body SPARK_Definition is
 
          --  Components of a record type should be in SPARK for the record type
          --  to be in SPARK. For a private type, we're only interested here in
-         --  its publicly visible components. The same applies to protected
+         --  its publicly visible components. The same applies to concurrent
          --  types.
 
-         if Ekind (E) in Record_Kind | Protected_Kind then
+         if Ekind (E) in Record_Kind | Concurrent_Kind then
             declare
                --  ??? Einfo.First_Component_Or_Discriminant does not work for
                --  concurrent types; see O508-008.
