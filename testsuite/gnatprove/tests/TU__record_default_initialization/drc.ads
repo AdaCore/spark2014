@@ -2,7 +2,7 @@ package DRC
   with SPARK_Mode => On
 is
 
-   -- TU: 1. If at least one nondiscriminant component (either
+   --  TU: 1. If at least one nondiscriminant component (either
    --  explicitly declared or inherited) of a record type or type
    --  extension either is of a type which defines full default
    --  initialization or is declared by a ``component_declaration``
@@ -10,6 +10,10 @@ is
    --  component's type has at least one elementary nondiscriminant
    --  part, then the record type or type extension shall define full
    --  default initialization.
+   --  [In the unusual case of a nondiscriminant component which has no
+   --  nondiscriminant scalar parts (e.g., an array of null records),
+   --  the preceding "at least one elementary" wording means that the component
+   --  is ignored for purposes of this rule.]
 
    -- Below, "DI" = "Default Initialization"
    --

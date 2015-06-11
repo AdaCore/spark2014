@@ -7,7 +7,7 @@ is
 
    procedure Proc (X : Integer ; Y : Integer ; Z : out Integer)
      --  TU: 1. A Contract_Cases aspect may have at most one **others**
-     --  ``contract_case`` and if it exists it must be the last one in the
+     --  ``contract_case`` and if it exists it shall be the last one in the
      --  ``contract_case_list``.
      with Pre            => (X in -1_000 .. 1_000 and Y in -1_000 .. 1_000),
           Post           => Z = X * Y,

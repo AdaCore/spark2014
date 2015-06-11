@@ -8,8 +8,8 @@ is
                  Par2 :    out Natural;
                  Par3 : in out Natural)
      --  TU: 23. Each entity denoted by an ``output`` given in the Depends
-     --  aspect of a subprogram must be an output in the implementation of the
-     --  subprogram body and the output must depend on all, but only, the
+     --  aspect of a subprogram shall be an output in the implementation of the
+     --  subprogram body and the output shall depend on all, but only, the
      --  entities denoted by the ``inputs`` given in the ``input_list``
      --  associated with the ``output``.
      with Depends => (Par2 => (Par1, X),

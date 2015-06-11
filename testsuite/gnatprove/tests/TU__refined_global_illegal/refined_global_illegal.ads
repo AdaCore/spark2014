@@ -70,30 +70,24 @@ is
 
       --  TU: 5. The mode of each ``global_item`` in a Refined_Global aspect
       --  shall match that of the corresponding ``global_item`` in the Global
-      --  aspect unless: the ``mode_selector`` specified in the Global aspect
-      --  is In_Out; the corresponding ``global_item`` of Global aspect shall
-      --  denote a state abstraction whose refinement is visible; and the
-      --  ``global_item`` in the Refined_Global aspect is a ``constituent``
-      --  of the state abstraction.
-      --  a. For this special case when the ``mode_selector`` is In_Out, the
-      --     Refined_Global aspect may denote individual ``constituents`` of
-      --     the state abstraction as Input, Output, or In_Out (given that
-      --     the constituent itself may have any of these ``mode_selectors``)
-      --     so long as one or more of the following conditions are
-      --     satisfied:
-      --     * at least one of the ``constituents`` has a ``mode_selector``
-      --       of In_Out; or
-      --     * there is at least one of each of a ``constituent`` with a
-      --       ``mode_selector`` of Input and of Output; or
-      --     * the Refined_Global aspect does not denote all of the
-      --       ``constituents`` of the state abstraction but denotes at least
-      --       one ``constituent`` that has a ``mode_selector`` of Output.
-      --  [This rule ensures that a state abstraction with the
-      --  ``mode_selector`` In_Out cannot be refined onto a set of
-      --  ``constituents`` that are Output or Input only. The last condition
-      --  satisfies this requirement because not all of the ``constituents``
-      --  are updated, some are preserved, that is the state abstraction has
-      --  a self-dependency.]
+      --  aspect unless that corresponding ``global_item`` denotes a state
+      --  abstraction whose refinement is visible. In that case, the modes of
+      --  the ``global_items`` in the Refined_Global aspect which denote
+      --  (direct or indirect) constituents of that state abstraction
+      --  collectively determine (as described below) an "effective mode" for
+      --  the abstraction. That "effective mode" shall match that of the
+      --  corresponding ``global_item`` in the Global aspect; it is determined
+      --  as follows:
+      --  a. If every constituent of the abstraction is mentioned in the
+      --     Refined_Global aspect with a mode of Output, then the effective
+      --     mode is Output;
+      --  b. Otherwise, if at least one consistituent of the abstraction is
+      --     mentioned in the Refined_Global aspect with a mode of Output or
+      --     In_Out, then the effective mode is In_Out;
+      --  c. Otherwise, if at least one constituent of the abstraction is
+      --     mentioned in the Refined_Global aspect with a mode of Input, then
+      --     the effective mode is Input;
+      --  d. Otherwise, the effective mode is Proof_In.
       procedure In_Out_Refinement_Without_Input
         with Global => (In_Out => State);
 

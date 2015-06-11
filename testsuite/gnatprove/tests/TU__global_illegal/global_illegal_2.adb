@@ -18,10 +18,10 @@ is
 
 
    procedure P2 (Par1 : out Integer)
-     --  TU: 7. A ``global_item`` shall not denote a state abstraction
+     --  TU: 8. A ``global_item`` shall not denote a state abstraction
      --  whose refinement is visible. [A state abstraction cannot be
      --  named within its enclosing package's body other than in its
-     --  refinement. Its constituents must be used rather than the
+     --  refinement. Its constituents shall be used rather than the
      --  state abstraction.]
      with Global => (Input => A)
    is

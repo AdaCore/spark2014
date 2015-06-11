@@ -76,7 +76,7 @@ is
    procedure P3 (Par1 : out Integer ; Par2 : Integer)
      --  TU: 12. In a ``dependency_relation`` there can be at most one
      --  ``dependency_clause`` which is a ``null_dependency_clause`` and if
-     --  it exists it must be the last ``dependency_clause`` in the
+     --  it exists it shall be the last ``dependency_clause`` in the
      --    ``dependency_relation``.
 
      --  TU: 10. Every member of the output set of a subprogram shall be
