@@ -2,7 +2,7 @@ SUBDIR=realize
 SPARKDEV=$(realpath ../../../)
 WHY3DIR=$(SPARKDEV)/why3
 WHY3=$(WHY3DIR)/bin/why3realize.opt
-REALIZED=Integer Int_Power Int_Minmax Int_Abs Int_Division
+REALIZED=Integer Int_Power Int_Minmax Int_Abs Int_Division Array__1
 FILE_NAMES=$(addsuffix .v, $(REALIZED))
 COQ_FILES=$(addprefix $(SUBDIR)/, $(FILE_NAMES))
 
