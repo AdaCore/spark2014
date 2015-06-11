@@ -883,7 +883,9 @@ package body Gnat2Why.External_Axioms is
             Par    : constant Node_Id :=
               Explicit_Generic_Actual_Parameter (CurAssoc);
             Actual : constant Entity_Id :=
-              (if Nkind (Par) in N_Has_Entity then
+              (if Nkind (Par) in N_Has_Entity
+                 and then Present (Par)
+               then
                  (if Ekind (Entity (Par)) = E_Function then
                     Get_Renamed_Entity (Entity (Par))
                   else Entity (Par))
