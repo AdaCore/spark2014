@@ -163,15 +163,15 @@ package body SPARK_Rewrite is
    --------------------------------------
 
    procedure Rewrite_Subprogram_Instantiation (N : Node_Id) is
+
       Orig_Name_Id : constant Name_Id := Chars (Defining_Unit_Name (N));
       Wrapper_Package_Spec_Decls : constant List_Id :=
         Visible_Declarations (Specification (Instance_Spec (N)));
 
       function First_Subprogram_Declaration return Node_Id with
-        Post => Present (First_Subprogram_Declaration'Result)
-                and then Nkind (First_Subprogram_Declaration'Result) =
-                           N_Subprogram_Declaration;
-
+        Post => Present (First_Subprogram_Declaration'Result) and then
+                Nkind (First_Subprogram_Declaration'Result) =
+                  N_Subprogram_Declaration;
       --  Return first subprogram declaration in a list of visible declarations
       --  of the wrapper package specification.
 
@@ -198,7 +198,8 @@ package body SPARK_Rewrite is
 
       Internal_Instance : constant Node_Id := First_Subprogram_Declaration;
 
-   --  Start of processing for Rewrite_Instantiation
+   --  Start of Rewrite_Subprogram_Instantiation
+
    begin
       Set_Chars (Defining_Unit_Name (Specification (Internal_Instance)),
                  Orig_Name_Id);
