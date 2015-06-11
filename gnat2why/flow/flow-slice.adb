@@ -539,7 +539,7 @@ package body Flow.Slice is
                      end if;
                   end;
 
-               when N_Subprogram_Declaration | N_Entry_Declaration =>
+               when N_Entry_Declaration | N_Subprogram_Declaration =>
                   if Defining_Entity (N) /= FA.Analyzed_Entity then
                      Local_Subs.Include (Defining_Entity (N));
                   end if;
@@ -563,35 +563,66 @@ package body Flow.Slice is
          Local_Vars := Node_Sets.Empty_Set;
          Local_Subs := Node_Sets.Empty_Set;
 
-         --  Gather formal parameters of the subprogram itself.
+         --  Gather formal parameters of the entry/subprogram/task.
          declare
             E : Entity_Id;
          begin
-            E := First_Formal (FA.Analyzed_Entity);
+            case FA.Kind is
+               when E_Entry | E_Subprogram_Body =>
+                  E := First_Formal (FA.Analyzed_Entity);
 
-            while Present (E) loop
-               if Ekind (E) = E_Constant
-                 and then Present (Full_View (E))
-               then
-                  --  If the Full_View is present then add that
-                  Local_Vars.Include (Full_View (E));
-               else
-                  Local_Vars.Include (E);
-               end if;
-               Next_Formal (E);
-            end loop;
+                  while Present (E) loop
+                     if Ekind (E) = E_Constant
+                       and then Present (Full_View (E))
+                     then
+                        --  If the Full_View is present then add that
+                        Local_Vars.Include (Full_View (E));
+                     else
+                        Local_Vars.Include (E);
+                     end if;
+                     Next_Formal (E);
+                  end loop;
+
+               when E_Task_Body =>
+                  --  The discriminants of a task effectively act as its formal
+                  --  parameters.
+                  if Has_Discriminants (FA.Analyzed_Entity) then
+                     E := First_Discriminant (FA.Analyzed_Entity);
+
+                     while Present (E) loop
+                        if Ekind (E) = E_Constant
+                          and then Present (Full_View (E))
+                        then
+                           --  If the Full_View is present then add that
+                           Local_Vars.Include (Full_View (E));
+                        else
+                           Local_Vars.Include (E);
+                        end if;
+                        Next_Discriminant (E);
+                     end loop;
+                  end if;
+
+               when others =>
+                  raise Why.Unexpected_Node;
+            end case;
          end;
 
+         --  Gather local parameters and subprograms
          case FA.Kind is
-            when E_Task_Body =>
-               Gather_Local_Variables_And_Subprograms
-                 (Task_Body (FA.Analyzed_Entity));
             when E_Entry =>
                Gather_Local_Variables_And_Subprograms
                  (Entry_Body (FA.Analyzed_Entity));
-            when others =>
+
+            when E_Subprogram_Body =>
                Gather_Local_Variables_And_Subprograms
                  (Subprogram_Body (FA.Analyzed_Entity));
+
+            when E_Task_Body =>
+               Gather_Local_Variables_And_Subprograms
+                 (Task_Body (FA.Analyzed_Entity));
+
+            when others =>
+               raise Why.Unexpected_Node;
          end case;
       end Get_Local_Variables_And_Subprograms;
 
