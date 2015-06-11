@@ -2621,11 +2621,11 @@ package body SPARK_Definition is
                      Item_Id := Entity_Of (Item);
                   end if;
 
-                  if From_Limited_With (Item_Id) then
-                     Item_Id := Non_Limited_View (Item_Id);
-                  end if;
-
                   if Present (Item_Id) then
+                     if From_Limited_With (Item_Id) then
+                        Item_Id := Non_Limited_View (Item_Id);
+                     end if;
+
                      Mark_Entity (Item_Id);
                   end if;
 
