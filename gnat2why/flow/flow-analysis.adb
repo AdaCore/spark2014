@@ -3844,7 +3844,9 @@ package body Flow.Analysis is
             return False;
          end if;
 
-         Expr := Expression (First (Pragma_Argument_Associations (N)));
+         Expr := (if Present (Pragma_Argument_Associations (N))
+                  then Expression (First (Pragma_Argument_Associations (N)))
+                  else Empty);
 
          --  The pragma has an optional Boolean expression, the
          --  related property is enabled only when the expression
