@@ -1,6 +1,5 @@
 var_test.adb:12:12: info: initialization of "Kind" proved
 var_test.adb:14:38: info: initialization of "D.Id" proved
-var_test.adb:14:39: info: discriminant check proved
 var_test.adb:16:27: info: precondition proved
 var_test.adb:16:42: info: initialization of "D.Operand" proved
 var_test.adb:16:43: info: discriminant check proved

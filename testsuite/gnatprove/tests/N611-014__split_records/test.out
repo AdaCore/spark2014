@@ -16,9 +16,7 @@ split_records.adb:32:07: info: assertion proved
 split_records.adb:33:33: info: initialization of "C2.Field" proved
 split_records.adb:34:22: medium: assertion might fail, requires not C2.Present
 split_records.adb:35:33: info: initialization of "H1.Content.Field" proved
-split_records.adb:35:35: info: discriminant check proved
 split_records.adb:36:07: info: assertion proved
-split_records.adb:36:28: info: discriminant check proved
 split_records.adb:37:07: info: assertion proved
 split_records.adb:38:18: info: discriminant check proved
 split_records.adb:39:07: info: assertion proved

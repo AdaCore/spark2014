@@ -25,7 +25,6 @@ subty.adb:4:16: info: discriminant check proved
 subty.adb:6:07: info: assertion proved
 subty.adb:7:07: info: assertion proved
 subty.adb:7:22: info: initialization of "Z.Base" proved
-subty.adb:7:23: info: discriminant check proved
 subty.adb:8:07: info: assertion proved
 subty.adb:8:22: info: initialization of "Z.A_Field" proved
 subty.adb:8:23: info: discriminant check proved

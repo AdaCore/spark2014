@@ -30,21 +30,13 @@ main.adb:35:16: warning: no Global contract available for "Put_Line"
 main.adb:36:16: info: initialization of private part of "S" proved
 main.adb:37:16: warning: assuming "New_Line" has no effect on global items
 main.adb:37:16: warning: no Global contract available for "New_Line"
-stacks.adb:11:08: info: discriminant check proved
-stacks.adb:11:17: info: discriminant check proved
 stacks.adb:11:22: medium: overflow check might fail
-stacks.adb:12:08: info: discriminant check proved
-stacks.adb:12:16: info: discriminant check proved
 stacks.adb:12:16: medium: array index check might fail
-stacks.adb:21:08: info: discriminant check proved
-stacks.adb:21:17: info: discriminant check proved
 stacks.adb:21:22: info: range check proved
 stacks.adb:26:07: warning: assuming "Put" has no effect on global items
 stacks.adb:26:07: warning: no Global contract available for "Put"
-stacks.adb:27:30: info: discriminant check proved
 stacks.adb:28:10: warning: assuming "Put" has no effect on global items
 stacks.adb:28:10: warning: no Global contract available for "Put"
-stacks.adb:28:31: info: discriminant check proved
 stacks.adb:28:38: medium: array index check might fail
 stacks.adb:30:07: warning: assuming "Put" has no effect on global items
 stacks.adb:30:07: warning: no Global contract available for "Put"
@@ -55,7 +47,4 @@ stacks.ads:47:14: medium: precondition is stronger than the default class-wide p
 stacks.ads:48:14: info: postcondition proved
 stacks.ads:67:13: medium: precondition is stronger than the default class-wide precondition of True
 stacks.ads:69:14: warning: subprogram "Print" has no effect
-stacks.ads:78:50: info: discriminant check proved
-stacks.ads:84:50: info: discriminant check proved
-stacks.ads:84:58: info: discriminant check proved
 stacks.ads:84:58: medium: array index check might fail

@@ -24,5 +24,4 @@ parse.adb:75:47: info: initialization of "Header.QDCOUNT" proved
 parse.ads:16:27: info: initialization of "Result.Header.ID" proved
 parse.ads:16:27: info: initialization of "Result.Header.OPCODE" proved
 parse.ads:16:27: info: initialization of "Result.Header.QDCOUNT" proved
-test.adb:6:18: info: discriminant check proved
 util.adb:7:36: info: index check proved

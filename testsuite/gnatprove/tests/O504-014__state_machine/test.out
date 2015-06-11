@@ -1,20 +1,14 @@
 state_machine_with_discriminant.adb:5:15: info: discriminant check proved
-state_machine_with_discriminant.adb:5:29: info: discriminant check proved
 state_machine_with_discriminant.adb:5:51: info: discriminant check proved
 state_machine_with_discriminant.adb:10:15: info: discriminant check proved
-state_machine_with_discriminant.adb:10:29: info: discriminant check proved
 state_machine_with_discriminant.adb:15:15: info: discriminant check proved
-state_machine_with_discriminant.adb:15:29: info: discriminant check proved
 state_machine_with_discriminant.adb:15:51: info: discriminant check proved
 state_machine_with_discriminant.adb:20:35: info: precondition proved
-state_machine_with_discriminant.adb:21:17: info: discriminant check proved
-state_machine_with_discriminant.adb:21:41: info: discriminant check proved
 state_machine_with_discriminant.adb:21:55: info: overflow check proved
 state_machine_with_discriminant.adb:29:13: info: precondition proved
 state_machine_with_discriminant.adb:31:13: info: precondition proved
 state_machine_with_discriminant.adb:33:13: info: precondition proved
 state_machine_with_discriminant.adb:35:13: info: precondition proved
-state_machine_with_discriminant.ads:20:14: info: discriminant check proved
 state_machine_with_discriminant.ads:26:14: info: postcondition proved
 state_machine_with_discriminant.ads:30:14: info: postcondition proved
 state_machine_with_discriminant.ads:34:14: info: postcondition proved
