@@ -1370,12 +1370,18 @@ package body SPARK_Util is
 
    function Get_Expr_From_Check_Only_Proc (E : Entity_Id) return Node_Id is
       Body_N : constant Node_Id := Subprogram_Body (E);
-      Stmts  : constant List_Id :=
-        Statements (Handled_Statement_Sequence (Body_N));
-      Stmt   : Node_Id := First (Stmts);
+      Stmt   : Node_Id;
       Arg    : Node_Id;
-
    begin
+
+      --  If there is no associated body, return Empty.
+
+      if No (Body_N) then
+         return Empty;
+      end if;
+
+      Stmt := First (Statements (Handled_Statement_Sequence (Body_N)));
+
       while Present (Stmt) loop
 
          --  Return the second argument of the first pragma Check in the
