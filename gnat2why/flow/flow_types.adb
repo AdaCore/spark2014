@@ -209,11 +209,11 @@ package body Flow_Types is
    is
       Tmp : Flow_Id;
    begin
-      Tmp := (Kind        => Record_Field,
-              Variant     => F.Variant,
-              Node        => F.Node,
-              Facet       => F.Facet,
-              Component   => Entity_Vectors.Empty_Vector);
+      Tmp := (Kind      => Record_Field,
+              Variant   => F.Variant,
+              Node      => F.Node,
+              Facet     => F.Facet,
+              Component => Entity_Vectors.Empty_Vector);
 
       if F.Kind = Record_Field then
          Tmp.Component := F.Component;
@@ -223,25 +223,25 @@ package body Flow_Types is
       return Tmp;
    end Add_Component;
 
-   ----------------------------
-   -- Is_Record_Discriminant --
-   ----------------------------
+   ---------------------------------
+   -- Belongs_To_Protected_Object --
+   ---------------------------------
 
-   function Is_Record_Discriminant (F : Flow_Id) return Boolean is
+   function Belongs_To_Protected_Object (F : Flow_Id) return Boolean is
    begin
-      case F.Kind is
-         when Record_Field =>
-            if F.Facet /= Normal_Part then
-               return False;
-            else
-               return Ekind (F.Component.Last_Element) = E_Discriminant;
-            end if;
-         when Direct_Mapping | Magic_String | Synthetic_Null_Export =>
-            return False;
-         when Null_Value =>
-            raise Why.Unexpected_Node;
-      end case;
-   end Is_Record_Discriminant;
+      return F.Kind in Direct_Mapping | Record_Field
+        and then Ekind (Scope (Get_Direct_Mapping_Id (F))) = E_Protected_Type;
+   end Belongs_To_Protected_Object;
+
+   -------------------------------
+   -- Is_Protected_Comp_Or_Disc --
+   -------------------------------
+
+   function Is_Protected_Comp_Or_Disc (F : Flow_Id) return Boolean is
+   begin
+      return Belongs_To_Protected_Object (F)
+        and then not (Ekind (Get_Direct_Mapping_Id (F)) in Subprogram_Kind);
+   end Is_Protected_Comp_Or_Disc;
 
    ---------------------
    -- Is_Discriminant --
@@ -264,6 +264,36 @@ package body Flow_Types is
             raise Why.Unexpected_Node;
       end case;
    end Is_Discriminant;
+
+   ----------------------------
+   -- Is_Record_Discriminant --
+   ----------------------------
+
+   function Is_Record_Discriminant (F : Flow_Id) return Boolean is
+   begin
+      case F.Kind is
+         when Record_Field =>
+            if F.Facet /= Normal_Part then
+               return False;
+            else
+               return Ekind (F.Component.Last_Element) = E_Discriminant;
+            end if;
+         when Direct_Mapping | Magic_String | Synthetic_Null_Export =>
+            return False;
+         when Null_Value =>
+            raise Why.Unexpected_Node;
+      end case;
+   end Is_Record_Discriminant;
+
+   -------------------------------
+   -- Is_Protected_Discriminant --
+   -------------------------------
+
+   function Is_Protected_Discriminant (F : Flow_Id) return Boolean is
+   begin
+      return Is_Discriminant (F)
+        and then Is_Protected_Comp_Or_Disc (F);
+   end Is_Protected_Discriminant;
 
    ----------------
    -- Has_Bounds --
@@ -323,6 +353,9 @@ package body Flow_Types is
                      return Is_External_State (E);
                   when Object_Kind =>
                      return Is_Effectively_Volatile (E);
+                  --  ??? Do we need this???
+                  --  when E_Protected_Type =>
+                  --     return True;
                   when others =>
                      return False;
                end case;
@@ -510,6 +543,15 @@ package body Flow_Types is
 
    function Parent_Record (F : Flow_Id) return Flow_Id is
    begin
+      --  When we are dealing with the constituent of a protected object then
+      --  we consider the protected object to be the parent record.
+      if Is_Protected_Comp_Or_Disc (F) then
+         return Flow_Id'(Kind    => Direct_Mapping,
+                         Variant => F.Variant,
+                         Node    => Scope (F.Node),
+                         Facet   => F.Facet);
+      end if;
+
       return R : Flow_Id := F do
          if R.Facet /= Normal_Part then
             R.Facet := Normal_Part;
@@ -529,22 +571,26 @@ package body Flow_Types is
    -- Entire_Variable --
    ---------------------
 
-   function Entire_Variable (F : Flow_Id) return Flow_Id
-   is
+   function Entire_Variable (F : Flow_Id) return Flow_Id is
    begin
       case F.Kind is
-         when Null_Value |
-              Magic_String |
+         when Null_Value            |
+              Magic_String          |
               Synthetic_Null_Export =>
             return F;
 
          when Direct_Mapping | Record_Field =>
-            return R : Flow_Id do
-               R := (Kind    => Direct_Mapping,
-                     Variant => F.Variant,
-                     Node    => F.Node,
-                     Facet   => Normal_Part);
-            end return;
+            if Is_Protected_Comp_Or_Disc (F) then
+               return Flow_Id'(Kind    => Direct_Mapping,
+                               Variant => F.Variant,
+                               Node    => Scope (F.Node),
+                               Facet   => Normal_Part);
+            else
+               return Flow_Id'(Kind    => Direct_Mapping,
+                               Variant => F.Variant,
+                               Node    => F.Node,
+                               Facet   => Normal_Part);
+            end if;
       end case;
    end Entire_Variable;
 

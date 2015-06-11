@@ -1248,14 +1248,20 @@ package body Flow.Control_Flow_Graph is
    procedure Create_Record_Tree
      (F        : Flow_Id;
       Leaf_Atr : V_Attributes;
-      FA       : in out Flow_Analysis_Graphs) is
+      FA       : in out Flow_Analysis_Graphs)
+   is
    begin
-      if Is_Discriminant (F) then
+      if Is_Record_Discriminant (F)
+        or else Is_Protected_Discriminant (F)
+      then
          --  The discriminants (for example r.x.d) do not live in the tree,
          --  but we should make the parent tree anyway, so that we get the
          --  important root node (in this example r). This is important for
          --  discriminated null records which have no other way of
          --  producing this otherwise.
+         --
+         --  Notice that discriminants of tasks are excluded from the tree
+         --  creation.
          declare
             P : constant Flow_Id :=
               Change_Variant (Entire_Variable (F),
@@ -1279,6 +1285,7 @@ package body Flow.Control_Flow_Graph is
                when Direct_Mapping | Record_Field =>
                   if F.Kind = Record_Field
                     or else F.Facet in Private_Part | Extension_Part
+                    or else Is_Protected_Comp_Or_Disc (F)
                   then
                      declare
                         P : constant Flow_Id :=
@@ -1357,13 +1364,9 @@ package body Flow.Control_Flow_Graph is
             V);
          Linkup (FA, V, FA.Start_Vertex);
 
-         if Kind /= Discriminant_Kind then
-            --  For discriminants that act like they are parameters (tasks
-            --  and POs), we do not attempt to make the tree.
-            Create_Record_Tree (Change_Variant (F, Initial_Value),
-                                A,
-                                FA);
-         end if;
+         Create_Record_Tree (Change_Variant (F, Initial_Value),
+                             A,
+                             FA);
 
          --  Setup the n'final vertex.
          Add_Vertex
@@ -1447,8 +1450,7 @@ package body Flow.Control_Flow_Graph is
       -- Process --
       -------------
 
-      procedure Process (F : Flow_Id)
-      is
+      procedure Process (F : Flow_Id) is
          A : V_Attributes;
          V : Flow_Graphs.Vertex_Id;
       begin
@@ -5673,26 +5675,6 @@ package body Flow.Control_Flow_Graph is
                   Create_Initial_And_Final_Vertices (E, Parameter_Kind, FA);
                   E := Next_Formal (E);
                end loop;
-
-               --  Discriminants and components of the enclosing protected
-               --  type (if any)
-               E := Scope (Subprogram_Spec);
-               if Ekind (E) = E_Protected_Type then
-                  E := First_Entity (E);
-                  while Present (E) loop
-                     case Ekind (E) is
-                        when E_Discriminant =>
-                           Create_Initial_And_Final_Vertices
-                             (E, Discriminant_Kind, FA);
-                        when E_Component =>
-                           Create_Initial_And_Final_Vertices
-                             (E, Protected_Component_Kind, FA);
-                        when others =>
-                           null;
-                     end case;
-                     E := Next_Entity (E);
-                  end loop;
-               end if;
             end;
 
          when E_Task_Body | E_Protected_Type =>

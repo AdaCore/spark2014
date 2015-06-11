@@ -107,7 +107,7 @@ package Flow_Computed_Globals is
    --  2) The second kind has to do with subprograms and tasks. For these
    --     we store the following:
 
-   --       * the subprogram/task's name                             (S/T)
+   --       * the subprogram/task/entry's name                       (S/T/E)
    --       * the global variables read in proof contexts only       (VP)
    --       * the global variables read    (input)                   (VI)
    --       * the global variables written (output)                  (VO)
@@ -159,9 +159,10 @@ package Flow_Computed_Globals is
    --  XR = xref
    --  NO = No Origin (we should never get this)
 
-   type Info_Kind is (S_Kind, T_Kind, Undef);
+   type Info_Kind is (S_Kind, T_Kind, E_Kind, Undef);
    --  S_Kind = Subprogram
    --  T_Kind = Task
+   --  E_Kind = Entry
    --  Undef  = Undefined (we should never get this)
 
    type Subprogram_Phase_1_Info is record

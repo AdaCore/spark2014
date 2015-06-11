@@ -428,7 +428,6 @@ package body Flow.Slice is
 
       function Get_Proof_Ins return Node_Sets.Set is
          All_Proof_Ins : Node_Sets.Set := Get_Inputs_Or_Proof_Ins;
-
          A             : V_Attributes;
       begin
          for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
@@ -530,22 +529,24 @@ package body Flow.Slice is
                   declare
                      E : constant Entity_Id := Defining_Entity (N);
                   begin
-                     if Ekind (E) = E_Constant and then Present (Full_View (E))
+                     if Ekind (E) = E_Constant
+                       and then Present (Full_View (E))
                      then
+                        --  If the Full_View is present then add that
                         Local_Vars.Include (Full_View (E));
                      else
                         Local_Vars.Include (E);
                      end if;
                   end;
 
-               when N_Subprogram_Declaration =>
+               when N_Subprogram_Declaration | N_Entry_Declaration =>
                   if Defining_Entity (N) /= FA.Analyzed_Entity then
                      Local_Subs.Include (Defining_Entity (N));
                   end if;
 
                when N_Subprogram_Body =>
-                  if Acts_As_Spec (N) and then
-                    Defining_Entity (N) /= FA.Analyzed_Entity
+                  if Acts_As_Spec (N)
+                    and then Defining_Entity (N) /= FA.Analyzed_Entity
                   then
                      Local_Subs.Include (Defining_Entity (N));
                   end if;
@@ -569,8 +570,10 @@ package body Flow.Slice is
             E := First_Formal (FA.Analyzed_Entity);
 
             while Present (E) loop
-               if Ekind (E) = E_Constant and then Present (Full_View (E))
+               if Ekind (E) = E_Constant
+                 and then Present (Full_View (E))
                then
+                  --  If the Full_View is present then add that
                   Local_Vars.Include (Full_View (E));
                else
                   Local_Vars.Include (E);
@@ -579,13 +582,17 @@ package body Flow.Slice is
             end loop;
          end;
 
-         if FA.Kind = E_Task_Body then
-            Gather_Local_Variables_And_Subprograms
-              (Task_Body (FA.Analyzed_Entity));
-         else
-            Gather_Local_Variables_And_Subprograms
-              (Subprogram_Body (FA.Analyzed_Entity));
-         end if;
+         case FA.Kind is
+            when E_Task_Body =>
+               Gather_Local_Variables_And_Subprograms
+                 (Task_Body (FA.Analyzed_Entity));
+            when E_Entry =>
+               Gather_Local_Variables_And_Subprograms
+                 (Entry_Body (FA.Analyzed_Entity));
+            when others =>
+               Gather_Local_Variables_And_Subprograms
+                 (Subprogram_Body (FA.Analyzed_Entity));
+         end case;
       end Get_Local_Variables_And_Subprograms;
 
       -----------------------------------

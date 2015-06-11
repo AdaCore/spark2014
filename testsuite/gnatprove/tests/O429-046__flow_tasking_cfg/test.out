@@ -1,15 +1,21 @@
-foo.adb:3:14: flow analysis of "Foo" abandoned due to expressions with variable inputs
-foo.adb:8:19: flow analysis of "Thing" abandoned due to expressions with variable inputs
-foo.adb:15:24: default initialization cannot depend on "D" (SPARK RM 4.4(2))
-foo.adb:27:12: "A" must be listed in the Global aspect of "Ent" (SPARK RM 7.1.5(12))
-foo.adb:45:14: warning: subprogram "Test_Delay_01" has no effect
-foo.adb:48:19: warning: assuming "Clock" has no effect on global items
-foo.adb:48:19: warning: no Global contract available for "Clock"
-foo.adb:48:27: warning: assuming "Seconds" has no effect on global items
-foo.adb:48:27: warning: no Global contract available for "Seconds"
+foo.adb:51:15: indirect call is not allowed in SPARK
+foo.adb:51:15: violation of pragma SPARK_Mode at test.adc:1
+foo.adb:60:19: warning: assuming "Clock" has no effect on global items
+foo.adb:60:19: warning: no Global contract available for "Clock"
+foo.adb:60:27: warning: assuming "Seconds" has no effect on global items
+foo.adb:60:27: warning: no Global contract available for "Seconds"
+prot.adb:4:04: info: initialization of "Hidden" constituent of "State" proved
+prot.adb:5:04: info: initialization of "Hidden2" constituent of "State" proved
+prot.adb:8:07: warning: analyzing unreferenced procedure "Get"
+prot.adb:17:07: warning: analyzing unreferenced function "Weird_Get"
+prot.adb:25:39: info: initialization of "Hidden" constituent of "State" proved
+prot.ads:5:04: info: initialization of "Visible" proved
+prot.ads:8:22: info: initialization of "X" proved
+prot.ads:12:13: info: initialization of "Hidden" constituent of "State" proved
 tasks.adb:4:04: info: initialization of "Hidden" constituent of "State" proved
 tasks.adb:5:04: info: initialization of "Hidden2" constituent of "State" proved
 tasks.ads:5:04: info: initialization of "Visible" proved
+tasks.ads:11:14: info: initialization of "Visible" proved
    compilation of foo.adb failed
 
 

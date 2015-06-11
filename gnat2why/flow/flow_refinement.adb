@@ -702,6 +702,7 @@ package body Flow_Refinement is
 
          case Ekind (Ent) is
             when E_Abstract_State |
+                 E_Component      |
                  E_Constant       =>
                null;
 

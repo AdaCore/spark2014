@@ -170,6 +170,8 @@ package body Flow_Computed_Globals is
             Write_Line ("Subprogram " & Info.Name.S.all);
          when T_Kind =>
             Write_Line ("Task " & Info.Name.S.all);
+         when E_Kind =>
+            Write_Line ("Entry " & Info.Name.S.all);
          when others =>
             raise Program_Error;
       end case;
@@ -465,13 +467,15 @@ package body Flow_Computed_Globals is
          Write_Info_Terminate;
       end loop;
 
-      --  Write Subprogram info
+      --  Write Subprogram/Task/Entry info
       for Info of Info_Set loop
          case Info.Kind is
             when S_Kind =>
                Write_Info_Str ("GG S ");
             when T_Kind =>
                Write_Info_Str ("GG T ");
+            when E_Kind =>
+               Write_Info_Str ("GG E ");
             when others =>
                raise Program_Error;
          end case;
@@ -1175,10 +1179,12 @@ package body Flow_Computed_Globals is
 
                if Length (Line) >= 6
                  and then (Slice (Line, 4, 5) = "S "
-                             or else Slice (Line, 4, 5) = "T ")
+                             or else Slice (Line, 4, 5) = "T "
+                             or else Slice (Line, 4, 5) = "E ")
                then
                   --  Line format: GG S *
                   --      or       GG T *
+                  --      or       GG E *
                   if Line_Found (1) then
                      --  We have already processed this line.
                      --  Something is wrong with the ali file.
@@ -1188,23 +1194,23 @@ package body Flow_Computed_Globals is
                   if Slice (Line, 4, 5) = "S " then
                      --  Reading back a subprogram
                      New_Info.Kind := S_Kind;
-                  else
+                  elsif Slice (Line, 4, 5) = "T " then
                      --  Reading back a task
                      New_Info.Kind := T_Kind;
+                  elsif Slice (Line, 4, 5) = "E " then
+                     --  Reading back an entry
+                     New_Info.Kind := E_Kind;
+                  else
+                     raise Program_Error;
                   end if;
 
                   Line_Found (1) := True;
 
                   declare
-                     GO : constant String :=
-                       Slice (Line,
-                              6,
-                              7);
+                     GO : constant String := Slice (Line, 6, 7);
 
                      EN : constant Entity_Name :=
-                       To_Entity_Name (Slice (Line,
-                                          9,
-                                          Length (Line)));
+                       To_Entity_Name (Slice (Line, 9, Length (Line)));
 
                   begin
                      New_Info.Name := EN;
@@ -1212,7 +1218,7 @@ package body Flow_Computed_Globals is
                        (if GO = "UG" then UG
                         elsif GO = "FA" then FA
                         elsif GO = "XR" then XR
-                        else  raise Program_Error);
+                        else raise Program_Error);
                      GG_Subprograms.Include (EN);
                      All_Subprograms.Include (EN);
                   end;

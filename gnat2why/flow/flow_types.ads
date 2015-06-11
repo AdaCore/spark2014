@@ -253,13 +253,30 @@ package Flow_Types is
       return Flow_Id;
    --  Create a Flow_Id for the given magic string.
 
+   function Belongs_To_Protected_Object (F : Flow_Id) return Boolean;
+   --  @param F is the Flow_Id which will be checked
+   --  @return True iff F belongs to a protected object
+
+   function Is_Protected_Comp_Or_Disc (F : Flow_Id) return Boolean;
+   --  @param F is the Flow_Id which will be checked
+   --  @return True iff F is a component or discriminant of a protected
+   --    object. It will return False for subprograms that belong to
+   --    protected objects.
+
    function Is_Discriminant (F : Flow_Id) return Boolean;
-   --  Returns True if the given Flow_Id is discriminant (this includes
-   --  discriminants for protected types and tasks).
+   --  @param F is the Flow_Id which will be checked
+   --  @return True iff the given Flow_Id is discriminant (this includes
+   --    discriminants for protected types and tasks).
 
    function Is_Record_Discriminant (F : Flow_Id) return Boolean;
-   --  Returns True if the given Flow_Id is a record field
-   --  representing a discriminant.
+   --  @param F is the Flow_Id which will be checked
+   --  @return True iff the given Flow_Id is a record field
+   --    representing a discriminant.
+
+   function Is_Protected_Discriminant (F : Flow_Id) return Boolean;
+   --  @param F is the Flow_Id which will be checked
+   --  @return True iff the given Flow_Id is a discriminant belonging
+   --    to a PO.
 
    function Has_Bounds
      (F     : Flow_Id;
@@ -331,12 +348,16 @@ package Flow_Types is
    --  variant.
 
    function Parent_Record (F : Flow_Id) return Flow_Id
-   with Pre  => F.Kind in Direct_Mapping | Record_Field and then
-                (F.Kind = Record_Field or else F.Facet /= Normal_Part),
+   with Pre  => F.Kind in Direct_Mapping | Record_Field
+                  and then (F.Kind = Record_Field
+                              or else F.Facet /= Normal_Part
+                              or else Belongs_To_Protected_Object (F)),
         Post => Parent_Record'Result.Kind in Direct_Mapping | Record_Field;
    --  Return the parent record for the given record field. If given the
    --  hidden fields of a record, returns the visible part (i.e. clears the
-   --  hidden_part flag before moving up the component list).
+   --  hidden_part flag before moving up the component list). If given a
+   --  constituent of a protected object then the protected object is
+   --  returned.
 
    function Entire_Variable (F : Flow_Id) return Flow_Id
    with Post => Entire_Variable'Result.Kind /= Record_Field;

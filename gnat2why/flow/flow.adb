@@ -1225,11 +1225,12 @@ package body Flow is
 
       for E of Entity_Set loop
          case Ekind (E) is
-            when Subprogram_Kind | E_Task_Type | E_Entry =>
+            when  E_Entry | E_Task_Type | Subprogram_Kind =>
                Body_E := (case Ekind (E) is
-                          when E_Task_Type => Task_Body_Entity (E),
-                          when E_Entry     => Entry_Body_Entity (E),
-                          when others      => E);
+                          when E_Entry         => Entry_Body_Entity (E),
+                          when E_Task_Type     => Task_Body_Entity (E),
+                          when Subprogram_Kind => E,
+                          when others          => raise Why.Unexpected_Node);
 
                if SPARK_Util.Analysis_Requested (Body_E) then
                   if Entity_Body_In_SPARK (Body_E)
@@ -1277,9 +1278,12 @@ package body Flow is
                               Subprogram_Info := Subprogram_Phase_1_Info'
                                 (Name              => To_Entity_Name (E),
                                  Kind              =>
-                                   (if Ekind (E) in Subprogram_Kind
-                                    then S_Kind
-                                    else T_Kind),
+                                   (case Ekind (E) is
+                                    when E_Entry         => E_Kind,
+                                    when E_Task_Type     => T_Kind,
+                                    when Subprogram_Kind => S_Kind,
+                                    when others          =>
+                                      raise Why.Unexpected_Node),
                                  Globals_Origin    => UG,
                                  Inputs_Proof      => To_Name_Set (Proof_Ins),
                                  Inputs            => To_Name_Set (Reads),
@@ -1440,10 +1444,10 @@ package body Flow is
          Analysis.Sanity_Check (FA, Success);
          if Success then
             case FA.Kind is
-               when E_Subprogram_Body |
+               when E_Entry           |
                     E_Package         |
                     E_Package_Body    |
-                    E_Entry           =>
+                    E_Subprogram_Body =>
                   Analysis.Sanity_Check_Postcondition (FA, Success);
                when E_Protected_Type |
                     E_Task_Body      =>
@@ -1455,7 +1459,7 @@ package body Flow is
             FA.Dependency_Map := Compute_Dependency_Relation (FA);
 
             case FA.Kind is
-               when E_Subprogram_Body =>
+               when E_Entry | E_Task_Body | E_Subprogram_Body =>
                   --  In "Prove" mode we do not care about unwritten
                   --  exports, ineffective statements, dead code and
                   --  incorrect Depends aspects.
@@ -1486,7 +1490,11 @@ package body Flow is
                   end if;
                   Analysis.Check_Aliasing (FA);
                   Analysis.Find_Use_Of_Uninitialized_Variables (FA);
-                  Analysis.Check_Prefixes_Of_Attribute_Old (FA);
+                  if FA.Kind /= E_Task_Body then
+                     --  We exclude Tasks from this check since they don't
+                     --  have pre and post conditions.
+                     Analysis.Check_Prefixes_Of_Attribute_Old (FA);
+                  end if;
                   Analysis.Find_Exports_Derived_From_Proof_Ins (FA);
                   Analysis.Analyse_Main (FA);
                   Analysis.Check_Function_For_Volatile_Effects (FA);
@@ -1500,12 +1508,8 @@ package body Flow is
                                       Kind => Claim_Effects));
                   end if;
 
-               when E_Entry =>
-                  --  ??? O429-046 analyze entries (like subprograms)
-                  null;
-
-               when E_Task_Body | E_Protected_Type =>
-                  --  ??? O429-046 analyze tasks and pos
+               when E_Protected_Type =>
+                  --  ??? O429-046 analyze POs
                   null;
 
                when E_Package | E_Package_Body =>
@@ -1532,10 +1536,9 @@ package body Flow is
       end loop;
 
       if Gnat2Why_Args.Flow_Advanced_Debug then
-         Write_Str (Character'Val (8#33#) & "[33m" &
-                      "Flow analysis complete for current CU" &
-                      Character'Val (8#33#) & "[0m");
-         Write_Eol;
+         Write_Line (Character'Val (8#33#) & "[33m" &
+                       "Flow analysis complete for current CU" &
+                       Character'Val (8#33#) & "[0m");
       end if;
 
       --  If an error was found then print all errors/warnings and return
@@ -1577,14 +1580,13 @@ package body Flow is
       --  Writing Generated Globals to the ALI file
       for FA of FA_Graphs loop
          if Gnat2Why_Args.Flow_Advanced_Debug then
-            Write_Str (Character'Val (8#33#) & "[32m" &
-                         "Global generation (slice) for " &
-                         Entity_Kind'Image (FA.Kind) &
-                         " " &
-                         Character'Val (8#33#) & "[1m" &
-                         Get_Name_String (Chars (FA.Analyzed_Entity)) &
-                         Character'Val (8#33#) & "[0m");
-            Write_Eol;
+            Write_Line (Character'Val (8#33#) & "[32m" &
+                          "Global generation (slice) for " &
+                          Entity_Kind'Image (FA.Kind) &
+                          " " &
+                          Character'Val (8#33#) & "[1m" &
+                          Get_Name_String (Chars (FA.Analyzed_Entity)) &
+                          Character'Val (8#33#) & "[0m");
             Indent;
          end if;
 
@@ -1592,7 +1594,7 @@ package body Flow is
             if Gnat2Why_Args.Flow_Advanced_Debug then
                Write_Line ("aborted earlier");
             end if;
-         elsif FA.Kind in E_Subprogram_Body | E_Task_Body then
+         elsif FA.Kind in E_Subprogram_Body | E_Task_Body | E_Entry then
             declare
                Inputs_Proof      : Node_Sets.Set;
                Inputs            : Node_Sets.Set;
@@ -1642,9 +1644,12 @@ package body Flow is
 
                Subprogram_Info := Subprogram_Phase_1_Info'
                  (Name              => To_Entity_Name (FA.Analyzed_Entity),
-                  Kind              => (if FA.Kind in E_Subprogram_Body
-                                        then S_Kind
-                                        else T_Kind),
+                  Kind              =>
+                    (case FA.Kind is
+                     when E_Subprogram_Body => S_Kind,
+                     when E_Task_Body       => T_Kind,
+                     when E_Entry           => E_Kind,
+                     when others            => raise Why.Unexpected_Node),
                   Globals_Origin    => Flow_Computed_Globals.FA,
                   Inputs_Proof      => To_Name_Set (Inputs_Proof),
                   Inputs            => To_Name_Set (Inputs),
@@ -1706,7 +1711,7 @@ package body Flow is
          when E_Entry =>
             Ptr := Entry_Body (E);
          when others =>
-            raise Program_Error;
+            raise Why.Unexpected_Node;
       end case;
       Ptr := Last (Statements (Handled_Statement_Sequence (Ptr)));
       return Nkind (Ptr) in N_Raise_xxx_Error | N_Raise_Statement;

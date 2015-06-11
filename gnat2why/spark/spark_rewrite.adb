@@ -269,6 +269,13 @@ package body SPARK_Rewrite is
             end;
          end if;
 
+         --  Register protected types and entries
+         if Nkind (N) in N_Entity
+           and then Ekind (N) in E_Protected_Type | E_Entry
+         then
+            Register_Entity (N);
+         end if;
+
          --  In some cases, an object still needs to be registered although
          --  it does not appear in an expression. This is the case for example
          --  for a formal generic constant parameter which is simplified out in

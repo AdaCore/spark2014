@@ -171,8 +171,7 @@ package body Flow_Utility is
    -- Initialize --
    ----------------
 
-   procedure Initialize
-   is
+   procedure Initialize is
       use Component_Graphs;
 
       function Node_Info (G : T'Class;
@@ -227,7 +226,9 @@ package body Flow_Utility is
 
       S := Node_Sets.Empty_Set;
       for E of Entity_Set loop
-         if Is_Record_Type (E) then
+         if Is_Record_Type (E)
+           or else Ekind (E) = E_Protected_Type
+         then
             Ptr := First_Component_Or_Discriminant (E);
             while Present (Ptr) loop
                if not S.Contains (Ptr) then
@@ -337,8 +338,7 @@ package body Flow_Utility is
    -- Component_Hash --
    --------------------
 
-   function Component_Hash (E : Entity_Id) return Ada.Containers.Hash_Type
-   is
+   function Component_Hash (E : Entity_Id) return Ada.Containers.Hash_Type is
    begin
       return Ada.Containers.Hash_Type
         (Comp_Graph.Cluster_To_Natural
@@ -349,8 +349,7 @@ package body Flow_Utility is
    -- Same_Component --
    --------------------
 
-   function Same_Component (C1, C2 : Entity_Id) return Boolean
-   is
+   function Same_Component (C1, C2 : Entity_Id) return Boolean is
       use Component_Graphs;
 
       A : constant Cluster_Id :=
@@ -1528,11 +1527,6 @@ package body Flow_Utility is
       Proof_Ins := Flow_Id_Sets.Empty_Set;
       Reads     := Flow_Id_Sets.Empty_Set;
       Writes    := Flow_Id_Sets.Empty_Set;
-
-      if Ekind (Subprogram) = E_Entry then
-         --  ??? O429-046 Hack until Pavlos implements globals for entries
-         return;
-      end if;
 
       if Debug_Trace_Get_Global then
          Write_Str ("Get_Global (");
@@ -3098,8 +3092,7 @@ package body Flow_Utility is
       if Debug_Trace_Flatten then
          Write_Str ("Branching on type: ");
          Sprint_Node_Inline (T);
-         Write_Str (" (" & Ekind (T)'Img & ")");
-         Write_Eol;
+         Write_Line (" (" & Ekind (T)'Img & ")");
       end if;
 
       --  If we are dealing with a derived type then we want to get to
@@ -3132,8 +3125,7 @@ package body Flow_Utility is
       case Ekind (T) is
          when E_Private_Type .. Private_Kind'Last =>
             if Debug_Trace_Flatten then
-               Write_Str ("processing private type");
-               Write_Eol;
+               Write_Line ("processing private type");
             end if;
 
             if Has_Discriminants (T) then
@@ -3149,10 +3141,13 @@ package body Flow_Utility is
                Ids := Flow_Id_Sets.To_Set (F);
             end if;
 
-         when Record_Kind =>
+         when Record_Kind | E_Protected_Type =>
             if Debug_Trace_Flatten then
-               Write_Str ("processing record type");
-               Write_Eol;
+               if Ekind (T) in Record_Kind then
+                  Write_Line ("processing record type");
+               elsif Ekind (T) = E_Protected_Type then
+                  Write_Line ("processing protected object type");
+               end if;
             end if;
 
             --  this includes classwide types and privates with
@@ -3162,8 +3157,13 @@ package body Flow_Utility is
 
             for Ptr of All_Components (T) loop
                if Is_Visible (Get_Root_Component (Ptr), Scope) then
-                  Ids.Union (Flatten_Variable (Add_Component (F, Ptr),
-                                               Scope));
+                  if Ekind (T) = E_Protected_Type then
+                     Ids.Union (Flatten_Variable (Direct_Mapping_Id (Ptr),
+                                                  Scope));
+                  else
+                     Ids.Union (Flatten_Variable (Add_Component (F, Ptr),
+                                                  Scope));
+                  end if;
                else
                   Contains_Non_Visible := True;
                end if;
@@ -3188,8 +3188,7 @@ package body Flow_Utility is
 
          when others =>
             if Debug_Trace_Flatten then
-               Write_Str ("processing misc type");
-               Write_Eol;
+               Write_Line ("processing misc type");
             end if;
 
             Ids := Flow_Id_Sets.To_Set (F);
@@ -3206,8 +3205,7 @@ package body Flow_Utility is
    -- Is_Valid_Assignment_Target --
    --------------------------------
 
-   function Is_Valid_Assignment_Target (N : Node_Id) return Boolean
-   is
+   function Is_Valid_Assignment_Target (N : Node_Id) return Boolean is
       Ptr : Node_Id := N;
    begin
       while Nkind (Ptr) in Valid_Assignment_Kinds loop
@@ -3983,6 +3981,7 @@ package body Flow_Utility is
 
    begin
       if not (Is_Record_Type (E)
+                or else Is_Protected_Type (E)
                 or else Is_Incomplete_Or_Private_Type (E)
                 or else Has_Discriminants (E))
       then

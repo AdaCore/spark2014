@@ -259,15 +259,24 @@ package body Flow.Analysis is
             Haystack_A := Empty;
             Haystack_B := Get_Pragma (S, Pragma_Initializes);
 
+         when Subprogram_Kind | E_Task_Type | E_Entry =>
+            declare
+               Body_E : constant Entity_Id :=
+                 (case Ekind (S) is
+                    when Subprogram_Kind => Subprogram_Body_Entity (S),
+                    when E_Task_Type     => Task_Body_Entity (S),
+                    when E_Entry         => Entry_Body_Entity (S),
+                    when others          => raise Why.Unexpected_Node);
+            begin
+               if Present (Body_E) then
+                  Haystack_A := Get_Pragma (Body_E, Pragma_Refined_Global);
+               else
+                  Haystack_A := Empty;
+               end if;
+               Haystack_B := Get_Pragma (S, Pragma_Global);
+            end;
          when others =>
-            if Present (Subprogram_Body_Entity (S)) then
-               Haystack_A :=
-                 Get_Pragma (Subprogram_Body_Entity (S),
-                             Pragma_Refined_Global);
-            else
-               Haystack_A := Empty;
-            end if;
-            Haystack_B := Get_Pragma (S, Pragma_Global);
+            raise Why.Unexpected_Node;
       end case;
 
       case F.Kind is
@@ -1681,8 +1690,7 @@ package body Flow.Analysis is
    -- Find_Dead_Code --
    --------------------
 
-   procedure Find_Dead_Code (FA : in out Flow_Analysis_Graphs)
-   is
+   procedure Find_Dead_Code (FA : in out Flow_Analysis_Graphs) is
       Dead_Code : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
 
       procedure Flag_Live (V  : Flow_Graphs.Vertex_Id;
@@ -1699,13 +1707,12 @@ package body Flow.Analysis is
          TV := Flow_Graphs.Continue;
       end Flag_Live;
 
-      function Edge_Selector (A, B : Flow_Graphs.Vertex_Id) return Boolean
-      is
+      function Edge_Selector (A, B : Flow_Graphs.Vertex_Id) return Boolean is
       begin
          case FA.CFG.Edge_Colour (A, B) is
             when EC_Default =>
                return True;
-            when EC_Abend | EC_Inf =>
+            when EC_Abend | EC_Inf | EC_Barrier =>
                return True;
             when others =>
                raise Program_Error;
