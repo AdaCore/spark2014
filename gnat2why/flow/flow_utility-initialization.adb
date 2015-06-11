@@ -162,9 +162,16 @@ package body Flow_Utility.Initialization is
       function Call_Default_Initialization return Boolean is
          Typ : Node_Id := Get_Direct_Mapping_Id (F);
       begin
-         if not Is_Type (Typ) then
-            Typ := Etype (Typ);
-         end if;
+         case Ekind (Typ) is
+            when E_Abstract_State =>
+               return False;
+
+            when Type_Kind =>
+               null;
+
+            when others =>
+               Typ := Etype (Typ);
+         end case;
 
          return Default_Initialization (Typ, Explicit_Only) =
                   Full_Default_Initialization;
