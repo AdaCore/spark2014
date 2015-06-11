@@ -1039,13 +1039,9 @@ package body SPARK_Definition is
             Check_Loop_Invariant_Placement (Statements (N));
 
             --  Mark the entity for the loop, which is used in the translation
-            --  phase to generate exceptions for this loop. Inner loops for
-            --  multi-dimensional iteration loops on arrays that are generated
-            --  by the frontend do not get an identifier.
+            --  phase to generate exceptions for this loop.
 
-            if Present (Identifier (N)) then
-               Mark_Entity (Entity (Identifier (N)));
-            end if;
+            Mark_Entity (Entity (Identifier (N)));
 
             if Present (Iteration_Scheme (N)) then
                Mark_Iteration_Scheme (Iteration_Scheme (N));
