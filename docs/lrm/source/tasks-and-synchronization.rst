@@ -27,7 +27,7 @@ are in |SPARK|.
 .. centered:: **Static Semantics**
 
 1. A type is said to *yield synchronized objects* if it is
-    
+
    * a task type; or
 
    *  a protected type; or
@@ -72,6 +72,8 @@ are in |SPARK|.
    predefined state abstraction Ada.Task_Identification.Tasking_State
    (described below) as a global requires the Ravenscar Profile.
 
+.. _tu-tasks_and_synchronization-02:
+
 3. If a variable or a package which declares a state abstraction is declared
    immediately within the same declarative region as a
    ``single_task_declaration`` or a ``single_protected_declaration``, then
@@ -85,11 +87,15 @@ are in |SPARK|.
    The protected (as opposed to task) case corresponds to the previous notion
    of "virtual protected" objects in RavenSPARK.]
 
+.. _tu-tasks_and_synchronization-03:
+
 4. A protected type shall define full default initialization.
    A variable whose Part_Of aspect specifies a task unit or protected unit
    shall be of a type which defines full default initialization, or
    shall be declared with an initial value expression, or shall be
    imported.
+
+.. _tu-tasks_and_synchronization-04:
 
 5. A type which does not yield synchronized objects shall not have
    a component type which yields synchronized objects.
@@ -100,10 +106,16 @@ are in |SPARK|.
    [TBD: add an aspect to allow this property to be expressed explicitly
    when a partial view of a type is declared.]
 
+.. _tu-tasks_and_synchronization-05:
+
 6. A constituent of a synchronized state abstraction shall be a
    synchronized object or a synchronized state abstraction.
 
+.. _etu-tasks_and_synchronization-lr:
+
 .. centered:: **Verification Rules**
+
+.. _tu-tasks_and_synchronization-06:
 
 7. A ``global_item`` occurring in a Global aspect specification of a
    task unit or of a protected operation shall not denote an object
@@ -111,18 +123,26 @@ are in |SPARK|.
    Part_Of aspect of the object or state abstraction denotes the
    task or protected unit.
 
+.. _tu-tasks_and_synchronization-07:
+
 8. A ``global_item`` occurring in the Global aspect specification of
    the main subprogram shall not denote an object or state abstraction
    whose Part_Of aspect denotes a task or protected unit. [In other words,
    the environment task cannot reference objects which "belong" to other
    tasks.]
 
+.. _tu-tasks_and_synchronization-08:
+
 9. A state abstraction whose Part_Of aspect specifies a task unit or
    protected unit shall be named in the Initializes aspect of its
    enclosing package.
 
+.. _tu-tasks_and_synchronization-09:
+
 10. The precondition of a protected operation shall not reference a global
     variable, unless it is *constant after elaboration*.
+
+.. _tu-tasks_and_synchronization-10:
 
 11. At most one task (including the environment task)
     shall ever call (directly or via intermediate calls) the protected
@@ -141,6 +161,8 @@ are in |SPARK|.
     the Ada rule that two tasks cannot simultaneously suspend on one
     suspension object (see Ada RM D.10(10)).]
 
+.. _tu-tasks_and_synchronization-11:
+
 12. The verification condition associated with the Ada rule that it is a bounded
     error to invoke an operation that is potentially blocking during a
     protected action (see Ada RM 9.5.1(8)) is discharged via (potentially
@@ -152,8 +174,12 @@ are in |SPARK|.
     it is a bounded error to call the Current_Task function from an
     entry_body, or an interrupt handler is discharged similarly.
 
+.. _tu-tasks_and_synchronization-12:
+
 13. The end of a task body shall not be reachable. [This follows from
     from Ravenscar's No_Task_Termination restriction.]
+
+.. _tu-tasks_and_synchronization-13:
 
 14. A nonvolatile function shall not be potentially blocking.
     [Strictly speaking this rule is already implied by other rules of |SPARK|,
@@ -163,6 +189,8 @@ are in |SPARK|.
     of a tagged type T is a potentially blocking operation if
     the corresponding primitive operation of any descendant of T is
     potentially blocking.]
+
+.. _tu-tasks_and_synchronization-14:
 
 15. The package Ada.Task_Identification declares a synchronized
     external state abstraction named Tasking_State. The package
@@ -218,6 +246,8 @@ are in |SPARK|.
   [Functions already excluded by Ravenscar, such as Ada.Calendar.Clock, are
   not on this list.]
 
+.. _tu-tasks_and_synchronization-15:
+
 16. For each of the following language-defined procedures, the
     Global aspect of the procedure specifies that the
     state abstraction Ada.Task_Identification.Tasking_State
@@ -225,12 +255,16 @@ are in |SPARK|.
 
   * Ada.Interrupts.Detach_Handler.
 
+.. _tu-tasks_and_synchronization-16:
+
 17. For purposes of determining global inputs and outputs, a delay
     statement is considered to reference the state abstraction
     Ada.Real_Time.Clock_Time as an input.
     [In other words, a delay statement can be treated like a call to
     a procedure which takes the delay expression as an actual parameter
     and references the Clock_Time state abstraction as an Input global.]
+
+.. _tu-tasks_and_synchronization-17:
 
 18. For purposes of determining global inputs and outputs, a use of
     any of the Callable, Caller, Count, or Terminated attributes is considered
@@ -242,6 +276,8 @@ are in |SPARK|.
     and references the Tasking_State state abstraction as an Input global.]
     [On the other hand, use of the Identity, Priority, or Storage_Size
     attributes introduces no such dependency.]
+
+.. _tu-tasks_and_synchronization-18:
 
 19. Preconditions are added to suprogram specifications as needed in order
     to avoid the failure of language-defined runtime checks for the
@@ -264,8 +300,10 @@ are in |SPARK|.
     preconditions are defined to ensure that the result belongs to the
     result type.
 
+.. _tu-tasks_and_synchronization-19:
+
 20. All procedures declared in the visible part of Ada.Synchronous_Task_Control
     have a dependency "(S => null)" despite the fact that S has mode **in
     out**. Procedure Suspend_Until_True is defined to be potentially blocking.
 
-.. _etu-tasks_and_synchronization:
+.. _etu-tasks_and_synchronization-vr:
