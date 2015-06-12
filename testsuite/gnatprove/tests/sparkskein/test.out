@@ -1,5 +1,5 @@
 skein.adb:223:14: info: range check proved, in call inlined at skein.adb:874
-skein.adb:224:29: medium: array index check might fail, in call inlined at skein.adb:874
+skein.adb:224:29: info: index check proved, in call inlined at skein.adb:874
 skein.adb:224:34: info: initialization of "Hash" proved, in call inlined at skein.adb:874
 skein.adb:226:44: info: division check proved, in call inlined at skein.adb:874
 skein.adb:226:44: info: index check proved, in call inlined at skein.adb:874
@@ -16,7 +16,7 @@ skein.adb:262:47: info: index check proved, in call inlined at skein.adb:582
 skein.adb:263:47: info: index check proved, in call inlined at skein.adb:582
 skein.adb:264:47: info: index check proved, in call inlined at skein.adb:582
 skein.adb:265:47: info: index check proved, in call inlined at skein.adb:582
-skein.adb:266:47: info: index check proved, in call inlined at skein.adb:582
+skein.adb:266:47: medium: array index check might fail, in call inlined at skein.adb:582
 skein.adb:304:19: info: postcondition proved
 skein.adb:321:10: warning: no check message justified by this pragma
 skein.adb:326:23: info: initialization of "KS" proved, in call inlined at skein.adb:578
@@ -145,7 +145,7 @@ skein.adb:813:26: info: initialization of "Local_Ctx.B" proved, in call inlined 
 skein.adb:813:61: info: range check proved, in call inlined at skein.adb:851
 skein.adb:814:26: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:851
 skein.adb:814:61: info: range check proved, in call inlined at skein.adb:851
-skein.adb:819:12: medium: length check might fail
+skein.adb:819:12: info: length check proved
 skein.adb:822:11: info: initialization of "Local_Ctx.H.Byte_Count" proved
 skein.adb:826:16: info: initialization of "Local_Ctx.B" proved
 skein.adb:827:29: info: initialization of "Local_Ctx.H.Byte_Count" proved
@@ -258,3 +258,18 @@ skein.ads:195:31: info: initialization of "Hash" proved
 skein.ads:200:46: info: division check proved
 skein.ads:369:52: info: length check proved
 skein.ads:370:52: info: length check proved
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
