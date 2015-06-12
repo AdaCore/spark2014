@@ -44,6 +44,13 @@ package body Tasks is
       end Wait;
    end Store;
 
+   protected body Unreferenced_PO is
+      entry Dummy when True is
+      begin
+         null;
+      end Dummy;
+   end Unreferenced_PO;
+
    protected body Store_Stub is separate;
 
    The_Store : Store;

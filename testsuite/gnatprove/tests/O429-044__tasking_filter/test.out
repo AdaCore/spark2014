@@ -16,14 +16,14 @@ tasks.adb:33:07: warning: analyzing unreferenced procedure "Put"
 tasks.ads:8:25: access type is not allowed in SPARK
 tasks.ads:8:25: violation of pragma SPARK_Mode at test.adc:1
 tasks.ads:10:07: warning: pragma "Priority" ignored (not yet supported)
-tasks.ads:15:07: warning: pragma "Priority" ignored (not yet supported)
-tasks.ads:22:19: type with partial default initialization is not allowed in SPARK (SPARK RM 3.8(1))
-tasks.ads:22:19: violation of pragma SPARK_Mode at test.adc:1
-tasks.ads:24:07: warning: pragma "Priority" ignored (not yet supported)
-tasks.ads:30:07: access type is not allowed in SPARK
-tasks.ads:30:07: violation of pragma SPARK_Mode at test.adc:1
-tasks.ads:30:27: access type is not allowed in SPARK
-tasks.ads:30:27: violation of pragma SPARK_Mode at test.adc:1
+tasks.ads:16:07: warning: pragma "Priority" ignored (not yet supported)
+tasks.ads:23:19: type with partial default initialization is not allowed in SPARK (SPARK RM 3.8(1))
+tasks.ads:23:19: violation of pragma SPARK_Mode at test.adc:1
+tasks.ads:25:07: warning: pragma "Priority" ignored (not yet supported)
+tasks.ads:31:07: access type is not allowed in SPARK
+tasks.ads:31:07: violation of pragma SPARK_Mode at test.adc:1
+tasks.ads:31:27: access type is not allowed in SPARK
+tasks.ads:31:27: violation of pragma SPARK_Mode at test.adc:1
    compilation of tasks.adb failed
 
 

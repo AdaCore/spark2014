@@ -8,6 +8,7 @@ package Tasks is
    task type Bad_Timer (Countdown : access Natural)
    is
       pragma Priority (10);
+      entry Dummy;
    end Bad_Timer;
 
    task type Timer (Countdown : Natural)
@@ -31,6 +32,11 @@ package Tasks is
       The_Stored_Data : Integer := 0;
       The_Guard : Boolean := False;
    end Store;
+
+   protected type Unreferenced_PO
+   is
+     entry Dummy;
+   end Unreferenced_PO;
 
    subtype Sub_Store is Store;
    subtype Sub_Timer is Timer (5);

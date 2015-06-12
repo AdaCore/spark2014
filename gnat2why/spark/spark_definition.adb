@@ -4461,15 +4461,19 @@ package body SPARK_Definition is
             if Is_Local_Subprogram_Always_Inlined (E)
               and then not Referenced (E)
               and then not Has_Unreferenced (E)
+              and then Emit_Messages and then SPARK_Pragma_Is (Opt.On)
             then
-               if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-                  if Ekind (E) = E_Function then
-                     Error_Msg_NE ("?analyzing unreferenced function &", N, E);
-                  else
-                     Error_Msg_NE ("?analyzing unreferenced procedure &",
-                                   N, E);
-                  end if;
-               end if;
+               case Ekind (E) is
+               when E_Function =>
+                  Error_Msg_NE ("?analyzing unreferenced function &", N, E);
+
+               when E_Procedure =>
+                  Error_Msg_NE ("?analyzing unreferenced procedure &", N, E);
+
+               when others =>
+                  raise Program_Error;
+
+               end case;
             end if;
 
             --  Always mark the body in SPARK
