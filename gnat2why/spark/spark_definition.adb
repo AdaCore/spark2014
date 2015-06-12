@@ -157,9 +157,9 @@ package body SPARK_Definition is
    --  Subprograms, entries, tasks and packages whose body is marked in SPARK
 
    Bodies_Valid_SPARK : Node_Sets.Set;
-   --  Entities for which the body contains no SPARK violations. This
-   --  set only ever contains subprograms' bodies and tasks'
-   --  bodies.
+   --  Entities whose bodies contain no SPARK violations. This set contains
+   --  only bodies of subprograms, entries, and tasks; it does not contain
+   --  package bodies because they are never called by anyone.
 
    Full_Views_Not_In_SPARK : Node_Maps.Map;
    --  Maps type entities in SPARK whose full view was declared in a private
