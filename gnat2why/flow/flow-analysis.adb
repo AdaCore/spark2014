@@ -1073,8 +1073,8 @@ package body Flow.Analysis is
                --  Proof_Ins are never ineffective imports, for now.
                null;
             elsif Atr.Is_Global then
-               if FA.Kind = E_Subprogram_Body and then
-                 not FA.Is_Generative
+               if FA.Kind = E_Subprogram_Body
+                 and then not FA.Is_Generative
                then
                   Error_Msg_Flow
                     (FA   => FA,
@@ -1874,8 +1874,7 @@ package body Flow.Analysis is
          -- Add_Loc --
          -------------
 
-         procedure Add_Loc (V : Flow_Graphs.Vertex_Id)
-         is
+         procedure Add_Loc (V : Flow_Graphs.Vertex_Id) is
             F : constant Flow_Id := FA.CFG.Get_Key (V);
          begin
             if V /= To and F.Kind = Direct_Mapping then
@@ -3774,8 +3773,7 @@ package body Flow.Analysis is
    -- Check_Aliasing --
    --------------------
 
-   procedure Check_Aliasing (FA : in out Flow_Analysis_Graphs)
-   is
+   procedure Check_Aliasing (FA : in out Flow_Analysis_Graphs) is
    begin
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
@@ -3862,19 +3860,19 @@ package body Flow.Analysis is
       end Is_Constant_After_Elaboration;
 
    begin
-      if Ekind (FA.Analyzed_Entity) /= E_Procedure
+      if Ekind (FA.Analyzed_Entity) = E_Function
         or else In_Body_Part
       then
          --  If we are:
-         --     * either not dealing with a procedure
+         --     * either dealing with a function
          --     * or the Analyzed_Entity is declared in the body part
          --       of a package
          --  then we do not need to perform this check.
          return;
       end if;
 
-      --  Check that the procedure does not modify variables that have
-      --  Constant_After_Elaboration set.
+      --  Check that the procedure/entry/task does not modify variables that
+      --  have Constant_After_Elaboration set.
       declare
          Proof_Ins : Flow_Id_Sets.Set;
          Reads     : Flow_Id_Sets.Set;
