@@ -1,1 +1,1 @@
-ALL XFAIL constants should not be part of Initializes contract
+ALL XFAIL constants should not be part of Initializes contract (O309-040)

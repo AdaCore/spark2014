@@ -1,2 +1,2 @@
-ALL XFAIL Ada.Real_Time.Clock is not seen as volatile, so proof wrong
+ALL XFAIL Ada.Real_Time.Clock is not seen as volatile, so proof wrong (O429-042)
 
