@@ -10,7 +10,7 @@ xfail_re = re.compile(r'XFAIL')
 
 
 def get_tn_info(tn):
-    """return the infor text for a TN (a string)"""
+    """return the info text for a TN (a string)"""
     return check_output(["ssh", host, "bugtool", "info", tn])
 
 
@@ -31,10 +31,10 @@ def tn_is_open(tn):
 
 
 def test_is_xfail(testdir):
-    """returns the list of TNs mentioned in test.opt and test name if the test
-       contained in testdir is marked XFAIL on at least one platform. return
-       empty list if the TN is XFAIL but there are no such TNs. Returns None
-       if test is not xfail
+    """return the list of TNs mentioned in test.opt and test name if the test
+       contained in testdir is marked XFAIL on at least one platform. Return
+       empty list if the test is XFAIL but there are no such TNs. Return None
+       if test is not XFAIL.
     """
     test_opt = os.path.join(testdir, "test.opt")
     if os.path.exists(test_opt):
@@ -52,9 +52,8 @@ def test_is_xfail(testdir):
 
 
 def check_xfail_tests():
-    """
-        print a message for all tests that are XFAIL and for which no open TN
-        exists.
+    """print a message for all tests that are XFAIL and for which no open TN
+       exists.
     """
     tests = glob.glob("tests/*")
     interesting_tests = []
@@ -63,7 +62,7 @@ def check_xfail_tests():
         if xfail_list is None:
             pass
         elif xfail_list == []:
-            print "test %s is xfail, but there is no TN" % test
+            print "test %s is XFAIL, but there is no TN" % test
         else:
             all_closed = True
             for tn in xfail_list:
