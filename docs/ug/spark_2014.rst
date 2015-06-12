@@ -2521,6 +2521,60 @@ unproved assertions should be inspected carefully to ensure that the property
 asserted will indeed hold at run time. This is true of all assertion pragmas,
 which |GNATprove| analyzes like pragma ``Assert`` in that respect.
 
+.. _Pragma Assertion_Policy:
+
+Pragma ``Assertion_Policy``
+---------------------------
+
+[Ada 2005/Ada 2012]
+
+Assertions can be enabled either globally or locally. Here, *assertions* denote
+either :ref:`Assertion Pragmas` of all kinds (among which :ref:`Pragma Assert`)
+or functional contracts of all kinds (among which :ref:`Preconditions` and
+:ref:`Postconditions`).
+
+By default, assertions are ignored in compilation, and can be enabled globally
+by using the compilation switch ``-gnata``. They can be enabled locally by
+using pragma ``Assertion_Policy`` in the program, or globally if the pragma is
+put in a configuration file. They can be enabled for all kinds of assertions or
+specific ones only by using the version of pragma ``Assertion_Policy`` that
+takes named associations which was introduced in Ada 2012.
+
+When used with the standard policies ``Check`` (for enabling assertions) or
+``Ignore`` (for ignoring assertions) , pragma ``Assertion_Policy`` has no
+effect on |GNATprove|. |GNATprove| takes all assertions into account, whatever
+the assertion policy in effect at the point of the assertion. For example,
+consider a code with some assertions enabled and some ignored:
+
+.. literalinclude:: gnatprove_by_example/examples/assert_enabled.adb
+   :language: ada
+   :linenos:
+
+Although the postcondition and the second assertion are not executed at run
+time, |GNATprove| analyzes them and issues corresponding messages:
+
+.. literalinclude:: gnatprove_by_example/results/assert_enabled.prove
+   :language: none
+
+On the contrary, when used with the GNAT-specific policy ``Disable``, pragma
+``Assertion_Policy`` causes the corresponding assertions to be skipped both
+during execution and analysis with |GNATprove|. For example, consider the same
+code as above where policy ``Ignore`` is replaced with policy ``Disable``:
+
+.. literalinclude:: gnatprove_by_example/examples/assert_disabled.adb
+   :language: ada
+   :linenos:
+
+On this program, |GNATprove| does not analyze the postcondition and the second
+assertion, and it does not issue corresponding messages:
+
+.. literalinclude:: gnatprove_by_example/results/assert_disabled.prove
+   :language: none
+
+The policy of ``Disable`` should thus be reserved for assertions that are not
+compilable, typically because a given build environment does not define the
+necessary entities.
+
 .. _Loop Invariants:
 
 Loop Invariants
