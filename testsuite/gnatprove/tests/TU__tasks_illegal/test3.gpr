@@ -1,0 +1,7 @@
+project Test3 is
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnatdk", "-gnato13", "-gnatws");
+      for Local_Configuration_Pragmas use "test3.adc";
+   end Compiler;
+end Test3;
+
