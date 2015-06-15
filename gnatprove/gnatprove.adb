@@ -698,6 +698,9 @@ procedure Gnatprove is
       CVC4_Binary : constant String :=
         (if Benchmark_Mode then "fake_" else "") & "cvc4";
 
+      Z3_Binary : constant String :=
+        (if Benchmark_Mode then "fake_" else "") & "z3";
+
       CVC4_Resource : constant Natural := 50_000 + Steps * 250;
       Altergo_Steps : constant Natural := Steps;
 
@@ -722,6 +725,7 @@ procedure Gnatprove is
       procedure Generate_Altergo_Section;
       procedure Generate_CVC4_Section;
       procedure Generate_CVC4_CE_Section;
+      procedure Generate_Z3_Section;
 
       ------------------------------
       -- Generate_Altergo_Section --
@@ -858,6 +862,23 @@ procedure Gnatprove is
          Put_Line (File, "]");
       end Start_Section;
 
+      ---------------------------
+      -- Generate_Z3_Section --
+      ---------------------------
+
+      procedure Generate_Z3_Section is
+         Command : constant String := Z3_Binary & " -smt2 %f";
+      begin
+         Start_Section ("prover");
+         Put_Keyval ("command", Command);
+         Put_Keyval ("driver",
+                     Ada.Directories.Compose
+                       (Why3_Drivers_Dir, "z3_432.drv"));
+         Put_Keyval ("name", "Z3");
+         Put_Keyval ("shortcut", "z3");
+         Put_Keyval ("version", "4.3.2");
+      end Generate_Z3_Section;
+
       --  begin processing for Generate_Why3_Conf_File
    begin
       Create (File, Out_File, Filename);
@@ -867,6 +888,7 @@ procedure Gnatprove is
 
       Generate_CVC4_Section;
       Generate_CVC4_CE_Section;
+      Generate_Z3_Section;
 
       Close (File);
    end Generate_Why3_Conf_File;
