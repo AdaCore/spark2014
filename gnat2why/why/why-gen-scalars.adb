@@ -266,7 +266,11 @@ package body Why.Gen.Scalars is
                   declare
                      Rng   : constant Node_Id := Get_Range (Pred);
                      First : constant W_Term_Id :=
-                       (if Why_Type_Is_BitVector (Ty) then
+                       (if Has_Modular_Integer_Type (E) and Ty = EW_Int_Type
+                        then
+                           New_Integer_Constant
+                          (Value => Expr_Value (Low_Bound (Rng)))
+                        elsif Why_Type_Is_BitVector (Ty) then
                              +Insert_Simple_Conversion
                           (Domain => EW_Term,
                            Expr   => +Num_Constant (E, Low_Bound (Rng)),
@@ -274,7 +278,11 @@ package body Why.Gen.Scalars is
                         else
                            Num_Constant (E, Low_Bound (Rng)));
                      Last  : constant W_Term_Id :=
-                       (if Why_Type_Is_BitVector (Ty) then
+                       (if Has_Modular_Integer_Type (E) and Ty = EW_Int_Type
+                        then
+                           New_Integer_Constant
+                          (Value => Expr_Value (High_Bound (Rng)))
+                        elsif Why_Type_Is_BitVector (Ty) then
                              +Insert_Simple_Conversion
                           (Domain => EW_Term,
                            Expr   => +Num_Constant (E, High_Bound (Rng)),
