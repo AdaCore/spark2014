@@ -4522,23 +4522,25 @@ package body SPARK_Definition is
             Mark_Stmt_Or_Decl_List (Declarations (N));
             Mark (HSS);
 
-            --  For entries, functions and procedures in concurrent types
-            --  detect also violations in the enclosing concurrent object,
-            --  which is an implicit argument to these subprograms.
+            --  For entries, functions and procedures of concurrent types
+            --  detect also violations in the enclosing type, which acts as an
+            --  implicit argument to these subprograms.
 
             declare
-               Enclosing_Concurrent_Object : constant Node_Id :=
+               Enclosing_Concurrent_Type : constant Entity_Id :=
                  (if Nkind (N) in N_Task_Body then
-                     Parent (Corresponding_Spec (N))
+                     Corresponding_Spec (N)
                   elsif Nkind (N) in N_Entry_Body then
-                     Parent (Scope (Defining_Identifier (N)))
+                     Scope (Defining_Identifier (N))
                   elsif Convention (E) = Convention_Protected then
-                     Parent (Scope (E))
+                     Scope (E)
                   else
                      Empty);
             begin
-               if Present (Enclosing_Concurrent_Object) then
-                  Mark (Enclosing_Concurrent_Object);
+               if Present (Enclosing_Concurrent_Type)
+                 and then not Entity_In_SPARK (Enclosing_Concurrent_Type)
+               then
+                  Mark_Violation (N, From => Enclosing_Concurrent_Type);
                end if;
             end;
 
