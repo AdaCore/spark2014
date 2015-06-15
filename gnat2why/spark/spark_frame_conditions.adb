@@ -1313,22 +1313,30 @@ package body SPARK_Frame_Conditions is
       Outputs            : out Name_Set.Set;
       Called_Subprograms : out Name_Set.Set)
    is
-      E_Alias : constant Entity_Id :=
-        (if Present (Alias (E)) then Ultimate_Alias (E) else E);
-      E_Name  : constant Entity_Name := To_Entity_Name (E_Alias);
+      E_Alias : Entity_Id;
+      E_Name  : Entity_Name;
 
    begin
-      --  ??? O429-046 Task types, entries and Abstract subprograms not yet
-      --  supported. Avoid issuing an error on those, which do not have
-      --  effects, instead return empty sets.
+
+      --  Initialize to empty sets
+      Inputs             := Name_Set.Empty_Set;
+      Outputs            := Name_Set.Empty_Set;
+      Called_Subprograms := Name_Set.Empty_Set;
+
+      --  ??? O429-046, O603-033 Task types, entries and Abstract subprograms
+      --  not yet supported. Avoid issuing an error on those, instead return
+      --  empty sets.
 
       if Is_Task_Type (E)
         or else Is_Entry (E)
-        or else Is_Abstract_Subprogram (E_Alias)
       then
-         Inputs             := Name_Set.Empty_Set;
-         Outputs            := Name_Set.Empty_Set;
-         Called_Subprograms := Name_Set.Empty_Set;
+         return;
+      end if;
+
+      E_Alias := (if Present (Alias (E)) then Ultimate_Alias (E) else E);
+      E_Name  := To_Entity_Name (E_Alias);
+
+      if Is_Abstract_Subprogram (E_Alias) then
          return;
       end if;
 
