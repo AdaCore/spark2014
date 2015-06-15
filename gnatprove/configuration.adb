@@ -1106,9 +1106,11 @@ ASCII.LF;
                          (Ptype.File_From_Unit (Unit_Name (Info),
                           Unit_Body,
                           "Ada"));
-                     File_List.Replace_Element
-                       (Cursor,
-                        String (Base_Name (Other_VF)));
+                     if Is_Regular_File (Other_VF) then
+                        File_List.Replace_Element
+                          (Cursor,
+                           String (Base_Name (Other_VF)));
+                     end if;
                   end;
             end case;
          end;
