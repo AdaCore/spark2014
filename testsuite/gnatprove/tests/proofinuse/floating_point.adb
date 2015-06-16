@@ -151,4 +151,68 @@ is
       pragma Assert (Res in -1.0 .. 1.0);          -- probably not
    end Angle_Between;
 
+   procedure User_Rule_2 (X, Y, Z : Float;
+                          Res     : out Boolean)
+   is
+   begin
+      pragma Assume (X >= 0.0);
+      pragma Assume (Y >= 0.0);
+      pragma Assume (Z >= 0.0);
+      pragma Assume (X <= 16777216.0);
+      pragma Assume (Y <= 16777216.0);
+      Res := - (X * Y) <= Z;
+      pragma Assert (Res);     -- valid
+   end User_Rule_2;
+
+   procedure User_Rule_3 (X, Y : Float;
+                          Res  : out Boolean)
+   is
+   begin
+      pragma Assume (X < Y);
+      pragma Assume (Y > 0.0);
+      Res := X / Y <= 1.0;
+      pragma Assert (Res);     -- valid
+   end User_Rule_3;
+
+   procedure User_Rule_4 (X, Y : Float;
+                          Res  : out Boolean)
+   is
+   begin
+      pragma Assume (X <= Y);
+      pragma Assume (Y > 0.0);
+      Res := X / Y <= 1.0;
+      pragma Assert (Res);     -- valid
+   end User_Rule_4;
+
+   --  User_Rule_5 requires square root, omitted for now
+
+   procedure User_Rule_6 (X, Y, Z, A : Float;
+                          Res        : out Boolean)
+   is
+   begin
+      pragma Assume (Z >= 0.0);
+      pragma Assume (X >= Y);
+      pragma Assume (Y >= Z);
+      pragma Assume (X > Z);
+      pragma Assume (A <= 0.0);
+      Res := (X - Y) / (X - Z) >= A;
+      pragma Assert (Res);     -- valid
+   end User_Rule_6;
+
+   --  User_Rule_7 (although very similar to 6) is surprisingly difficult
+   --  to verify.
+
+   procedure User_Rule_7 (X, Y, Z, A : Float;
+                          Res        : out Boolean)
+   is
+   begin
+      pragma Assume (Z >= 0.0);
+      pragma Assume (X >= Y);
+      pragma Assume (Y >= Z);
+      pragma Assume (X > Z);
+      pragma Assume (A >= 1.0);
+      Res := (X - Y) / (X - Z) <= A;
+      pragma Assert (Res);     -- valid
+   end User_Rule_7;
+
 end Floating_Point;

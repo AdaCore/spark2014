@@ -51,4 +51,24 @@ is
                             C_X, C_Y : Coord;
                             Res      : out Float);
 
+   --  The following User_Rule_* are user-written axioms from OldSPARK from
+   --  a real world project. They are also submitted to SMTCOMP.
+
+   procedure User_Rule_2 (X, Y, Z : Float;
+                          Res     : out Boolean);
+
+   procedure User_Rule_3 (X, Y : Float;
+                          Res  : out Boolean);
+
+   procedure User_Rule_4 (X, Y : Float;
+                          Res  : out Boolean);
+
+   --  User_Rule_5 requires square root, omitted for now
+
+   procedure User_Rule_6 (X, Y, Z, A : Float;
+                          Res        : out Boolean);
+
+   procedure User_Rule_7 (X, Y, Z, A : Float;
+                          Res        : out Boolean);
+
 end Floating_Point;
