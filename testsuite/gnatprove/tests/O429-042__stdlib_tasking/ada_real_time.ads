@@ -55,8 +55,6 @@ is
    Time_Span_Zero  : constant Time_Span;
    Time_Span_Unit  : constant Time_Span;
 
-   function To_Duration (T : Time) return Duration with Ghost;
-
    function "+"  (Left : Time;      Right : Time_Span) return Time with
      Pre => (if Right < Time_Span_Zero then
                To_Duration (Left) >=
@@ -137,7 +135,8 @@ is
                 Duration_Rep (Right))
           elsif Left < Time_Span_Zero then
             Duration_Rep (To_Duration (Left) / Duration (Duration'Small)) >=
-              Duration_Rep (To_Duration (Time_Span_Last)) /
+              Duration_Rep (To_Duration (Time_Span_Last) /
+                            Duration (Duration'Small)) /
               Duration_Rep (Right)));
 
    function "*"  (Left : Integer;   Right : Time_Span) return Time_Span with
@@ -164,10 +163,11 @@ is
                 Duration_Rep (Left))
           elsif Right < Time_Span_Zero then
             Duration_Rep (To_Duration (Right) / Duration (Duration'Small)) >=
-              Duration_Rep (To_Duration (Time_Span_Last)) /
+              Duration_Rep (To_Duration (Time_Span_Last) /
+                            Duration (Duration'Small)) /
               Duration_Rep (Left)));
 
-   --  ??? Precondition for this one is tricky; see RM G.2.3 (16-18)
+   --  ??? Precondition for division is tricky; see RM G.2.3 (16-18)
 
    function "/"  (Left, Right : Time_Span)             return Integer;
 
@@ -183,6 +183,7 @@ is
    function ">"  (Left, Right : Time_Span) return Boolean;
    function ">=" (Left, Right : Time_Span) return Boolean;
 
+   function To_Duration  (T : Time)       return Duration with Ghost;
    function To_Duration  (TS : Time_Span) return Duration;
    function To_Time_Span (D : Duration)   return Time_Span;
 
@@ -196,7 +197,8 @@ is
    pragma Ada_05 (Seconds);
 
    function Minutes (M : Integer) return Time_Span with
-     Pre => Duration_Rep (M) <= Duration_Rep'Last / (1_000_000_000 * 60);
+     Pre => Duration_Rep (M) in Duration_Rep'First / (1_000_000_000 * 60) ..
+                                Duration_Rep'Last / (1_000_000_000 * 60);
    pragma Ada_05 (Minutes);
 
    type Seconds_Count is new Long_Long_Integer;
@@ -208,10 +210,32 @@ is
    --  in the case of CodePeer with a target configuration file with a maximum
    --  integer size of 32, it allows analysis of this unit.
 
-   --  ??? Preconditions for these will require some ghost functions
-
    procedure Split (T : Time; SC : out Seconds_Count; TS : out Time_Span);
-   function Time_Of (SC : Seconds_Count; TS : Time_Span) return Time;
+
+   --  Helper functions and constants
+   function TS_SC (TS : Time_Span) return Seconds_Count is
+      (Seconds_Count (To_Duration (TS))) with Ghost;
+
+   function TS_Fraction (TS : Time_Span) return Duration is
+      (To_Duration (TS) - Duration (TS_SC (TS))) with Ghost;
+
+   function Result_SC (SC : Seconds_Count; TS : Time_Span)
+      return Seconds_Count is (SC + TS_SC (TS)) with Ghost;
+
+   SC_Lo : constant Seconds_Count with Ghost;
+   SC_Hi : constant Seconds_Count with Ghost;
+   Fudge : constant Seconds_Count with Ghost;
+   FudgeD : constant Duration with Ghost;
+
+   function Time_Of (SC : Seconds_Count; TS : Time_Span) return Time with
+     Pre => SC in 3 * SC_Lo .. 3 * SC_Hi and then
+            Result_SC (SC, TS) in SC_Lo - 1 .. SC_Hi + 1 and then
+            (if Result_SC (SC, TS) > 0 then
+               Duration (Result_SC (SC, TS) - Fudge) + TS_Fraction (TS) <=
+               Duration'Last - FudgeD
+             else
+               Duration (Result_SC (SC, TS) + Fudge) + TS_Fraction (TS) >=
+               Duration'First + FudgeD);
 
 private
    pragma SPARK_Mode (Off);
@@ -225,6 +249,12 @@ private
    Time_First : constant Time := Time'First;
 
    Time_Last  : constant Time := Time'Last;
+
+   -----------------
+   -- To_Duration --
+   -----------------
+
+   function To_Duration (T : Time) return Duration is (Duration (T));
 
    type Time_Span is new Duration;
 
@@ -245,9 +275,22 @@ private
    --  Ghost type cannot appear in Compile_Time_Error expressions
    Duration_Rep_Last : constant := Duration_Rep'Last;
 
+   --  Conversion from Integer value of Minutes to Time_Span needs a
+   --  precondition; make sure that other conversions are always safe.
    pragma Compile_Time_Error
      (Integer'Last * 1_000_000_000 > Duration_Rep_Last,
       "at least Seconds to Time_Span conversion needs a precondition");
+
+   --  Helper constant values for Time_Of; see the package body for details
+   SC_Lo : constant Seconds_Count :=
+             Seconds_Count (Duration'First + Duration'(0.5));
+
+   SC_Hi : constant Seconds_Count :=
+             Seconds_Count (Duration'Last  - Duration'(0.5));
+
+   Fudge : constant Seconds_Count := 10;
+
+   FudgeD : constant Duration := Duration (Fudge);
 
    pragma Import (Intrinsic, "<");
    pragma Import (Intrinsic, "<=");

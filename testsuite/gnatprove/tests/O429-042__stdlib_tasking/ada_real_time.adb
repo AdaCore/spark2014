@@ -338,15 +338,6 @@ is
    -- To_Duration --
    -----------------
 
-   function To_Duration (T : Time) return Duration is
-   begin
-      return Duration (T);
-   end To_Duration;
-
-   -----------------
-   -- To_Duration --
-   -----------------
-
    function To_Duration (TS : Time_Span) return Duration is
    begin
       return Duration (TS);
