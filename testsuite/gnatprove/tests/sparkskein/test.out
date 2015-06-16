@@ -258,18 +258,5 @@ skein.ads:195:31: info: initialization of "Hash" proved
 skein.ads:200:46: info: division check proved
 skein.ads:369:52: info: length check proved
 skein.ads:370:52: info: length check proved
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+warning: prover z3 does not support step limit
+warning: running z3 without step limit
