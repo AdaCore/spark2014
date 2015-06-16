@@ -1762,7 +1762,7 @@ package body Flow.Analysis is
    procedure Find_Use_Of_Uninitialized_Variables
      (FA : in out Flow_Analysis_Graphs)
    is
-      Tracefile : Unbounded_String;
+      Tracefile : constant String := Fresh_Trace_File;
 
       function Consider_Vertex (V : Flow_Graphs.Vertex_Id) return Boolean;
       --  Returns True iff V should be considered for uninitialized
@@ -1894,7 +1894,7 @@ package body Flow.Analysis is
          if Path_Found then
             Write_Vertex_Set (FA       => FA,
                               Set      => Path,
-                              Filename => To_String (Tracefile));
+                              Filename => Tracefile);
          end if;
       end Mark_Definition_Free_Path;
 
@@ -2260,7 +2260,7 @@ package body Flow.Analysis is
 
          Error_Msg_Flow
            (FA        => FA,
-            Tracefile => To_String (Tracefile),
+            Tracefile => Tracefile,
             Msg       => To_String (Msg),
             N         => N,
             F1        => Var,
@@ -2284,7 +2284,7 @@ package body Flow.Analysis is
               ("initialization of & is specified @");
             Error_Msg_Flow
               (FA           => FA,
-               Tracefile    => To_String (Tracefile),
+               Tracefile    => Tracefile,
                Msg          => To_String (Msg),
                N            => N,
                F1           => Direct_Mapping_Id
