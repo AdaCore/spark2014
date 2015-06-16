@@ -599,3 +599,17 @@ def check_dot_files(opt=None):
     # Dump the contents of all dot files on stdout
     for dot_file in sorted(dot_files):
         cat(dot_file)
+
+
+def check_trace_files(opt=None):
+    """Call prove_all"""
+    prove_all()
+
+    # Create a list that contains all trace files lying under directory
+    # gnatprove.
+    trace_files = glob.glob('gnatprove/*.trace')
+
+    print "Trace files' contents:"
+    # Dump the contents of all trace files on stdout
+    for trace_file in sorted(trace_files):
+        cat(trace_file)
