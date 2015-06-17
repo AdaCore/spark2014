@@ -1,0 +1,37 @@
+sorters.adb:15:16: medium: postcondition might fail, requires Values = Values'Old'update
+sorters.adb:15:62: info: index check proved
+sorters.adb:16:62: info: index check proved
+sorters.adb:19:15: medium: length check might fail
+sorters.adb:19:46: info: index check proved
+sorters.adb:20:46: info: index check proved
+sorters.adb:30:10: info: postcondition proved
+sorters.adb:32:39: info: index check proved
+sorters.adb:32:61: info: index check proved
+sorters.adb:36:22: info: range check proved
+sorters.adb:38:10: info: loop invariant initialization proved
+sorters.adb:38:10: info: loop invariant preservation proved
+sorters.adb:39:13: info: initialization of "Min" proved
+sorters.adb:40:50: info: overflow check proved
+sorters.adb:41:25: info: index check proved
+sorters.adb:41:43: info: index check proved
+sorters.adb:43:42: info: index check proved
+sorters.adb:43:42: info: initialization of "Min" proved
+sorters.adb:44:20: info: range check proved
+sorters.adb:47:14: info: initialization of "Min" proved
+sorters.adb:55:50: info: overflow check proved
+sorters.adb:56:22: info: precondition proved
+sorters.adb:56:40: info: range check proved
+sorters.adb:58:13: info: initialization of "Smallest" proved
+sorters.adb:59:13: info: precondition proved
+sorters.adb:60:29: info: range check proved
+sorters.adb:61:29: info: initialization of "Smallest" proved
+sorters.adb:73:18: medium: loop invariant might fail after first iteration, requires Values (Current) <= Values (J)
+sorters.adb:73:18: medium: loop invariant might fail in first iteration, requires Values (Current) <= Values (J)
+sorters.adb:73:26: info: index check proved
+sorters.adb:73:46: info: index check proved
+sorters.adb:75:11: info: loop invariant initialization proved
+sorters.adb:76:52: info: overflow check proved
+sorters.adb:77:17: medium: loop invariant might fail after first iteration, requires Values (J) <= Values (J + 1)
+sorters.adb:77:25: info: index check proved
+sorters.adb:77:41: info: index check proved
+sorters.adb:77:41: info: overflow check proved
