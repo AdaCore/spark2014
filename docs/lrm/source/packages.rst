@@ -113,10 +113,10 @@ abstraction; see :ref:`abstract-state-aspect`).
 Four Boolean valued *properties* of external states that may be specified are
 defined:
 
-  * Async_Readers - A component of the system external to the program might
+  * Async_Readers - a component of the system external to the program might
     read/consume a value written to an external state.
 
-  * Async_Writers - A component of the system external to the program might
+  * Async_Writers - a component of the system external to the program might
     update the value of an external state.
 
   * Effective_Writes - every update of the external state is significant.
