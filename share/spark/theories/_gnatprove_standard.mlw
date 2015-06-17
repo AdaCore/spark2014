@@ -288,7 +288,7 @@ theory Array__1
 
   type map 'a = Map.map I1.t 'a
 
-  function get "inline" (a : map 'a) (i : I1.t) : 'a = Map.get a i 
+  function get "inline" (a : map 'a) (i : I1.t) : 'a = Map.get a i
   function set "inline" (a : map 'a) (i : I1.t) (v : 'a) : map 'a = Map.set a i v
 
   function bool_eq (map 'a) I1.t I1.t (map 'a) I1.t I1.t : bool
@@ -598,6 +598,8 @@ module BVAda
   predicate ugt t t
   predicate uge t t
 
+  function to_uint t : int
+
   use import bool.Bool
   function bool_eq (x: t) (y: t) : bool = x = y
   function bool_ne (x: t) (y: t) : bool = x <> y
@@ -630,6 +632,17 @@ module BVAda
   lemma Power_mult2 : forall x y: t, n: int. 0 <= n ->
     power (x * y) n = power x n * power y n
 
+  function bv_min (x y : t) : t = if ule x y then x else y
+  function bv_max (x y : t) : t = if ule x y then y else x
+
+  use int.MinMax
+
+  lemma bv_min_to_uint: forall x y.
+    to_uint (bv_min x y) = MinMax.min (to_uint x) (to_uint y)
+
+  lemma bv_max_to_uint: forall x y.
+    to_uint (bv_max x y) = MinMax.max (to_uint x) (to_uint y)
+
 end
 
 module BV8
@@ -643,6 +656,7 @@ module BV8
     predicate ule = ule,
     predicate ugt = ugt,
     predicate uge = uge,
+    function to_uint = to_uint,
     function ( * ) = mul,
     function one = one
 
@@ -670,6 +684,7 @@ module BV16
     predicate ule = ule,
     predicate ugt = ugt,
     predicate uge = uge,
+    function to_uint = to_uint,
     function ( * ) = mul,
     function one = one
 
@@ -697,6 +712,7 @@ module BV32
     predicate ule = ule,
     predicate ugt = ugt,
     predicate uge = uge,
+    function to_uint = to_uint,
     function ( * ) = mul,
     function one = one
 
@@ -724,6 +740,7 @@ module BV64
     predicate ule = ule,
     predicate ugt = ugt,
     predicate uge = uge,
+    function to_uint = to_uint,
     function ( * ) = mul,
     function one = one
 

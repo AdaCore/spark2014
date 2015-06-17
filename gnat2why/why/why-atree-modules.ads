@@ -236,6 +236,8 @@ package Why.Atree.Modules is
       Bool_Lt        : W_Identifier_Id;
       Bool_Ge        : W_Identifier_Id;
       Bool_Gt        : W_Identifier_Id;
+      BV_Min         : W_Identifier_Id;
+      BV_Max         : W_Identifier_Id;
       One            : W_Identifier_Id;
       Add            : W_Identifier_Id;
       Sub            : W_Identifier_Id;

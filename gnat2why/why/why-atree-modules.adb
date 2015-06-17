@@ -884,6 +884,16 @@ package body Why.Atree.Modules is
                            Symbol => NID ("uge"),
                            Module => M_BVs (BV).Module,
                            Typ    => EW_Bool_Type);
+         M_BVs (BV).BV_Min :=
+           New_Identifier (Domain => EW_Term,
+                           Symbol => NID ("bv_min"),
+                           Module => M_BVs (BV).Module,
+                           Typ    => M_BVs (BV).T);
+         M_BVs (BV).BV_Max :=
+           New_Identifier (Domain => EW_Term,
+                           Symbol => NID ("bv_max"),
+                           Module => M_BVs (BV).Module,
+                           Typ    => M_BVs (BV).T);
          M_BVs (BV).Bool_Eq :=
            New_Identifier (Domain => EW_Term,
                            Symbol => NID ("bool_eq"),

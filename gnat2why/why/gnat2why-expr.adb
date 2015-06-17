@@ -7669,8 +7669,13 @@ package body Gnat2Why.Expr is
                                  Params);
                Func : constant W_Identifier_Id :=
                  (if Is_Discrete_Type (Ada_Ty) then
-                      (if Attr_Id = Attribute_Min then M_Int_Minmax.Min
-                       else M_Int_Minmax.Max)
+                      (if Is_Modular_Integer_Type (Ada_Ty) then
+                         (if Attr_Id = Attribute_Min
+                          then MF_BVs (Base).BV_Min
+                          else MF_BVs (Base).BV_Max)
+                       else
+                         (if Attr_Id = Attribute_Min then M_Int_Minmax.Min
+                          else M_Int_Minmax.Max))
                   else (if Attr_Id = Attribute_Min then M_Floating.Min
                         else M_Floating.Max));
             begin
