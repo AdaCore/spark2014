@@ -412,7 +412,9 @@ package body Gnat2Why.Driver is
             Translate_Standard_Package;
             Translate_CUnit;
             Run_Gnatwhy3;
-            Generate_Useless_Pragma_Annotate_Warnings;
+            if Gnat2Why_Args.Limit_Line = Null_Unbounded_String then
+               Generate_Useless_Pragma_Annotate_Warnings;
+            end if;
          end if;
       end if;
 
