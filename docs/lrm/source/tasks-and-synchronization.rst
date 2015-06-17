@@ -207,10 +207,10 @@ are in |SPARK|.
 
   * Ada.Execution_Time.Clock references Ada.Real_Time.Clock_Time;
 
-  * Ada.Execution_Time.Interrupts.Clock
+  * Ada.Execution_Time.Clock_For_Interrupts
     references Ada.Real_Time.Clock_Time;
 
-  * Ada.Execution_Time.Interrupts.Clock_For_Interrupts
+  * Ada.Execution_Time.Interrupts.Clock
     references Ada.Real_Time.Clock_Time;
 
   * Ada.Task_Identification.Current_Task
