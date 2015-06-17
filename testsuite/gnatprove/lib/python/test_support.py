@@ -602,8 +602,9 @@ def check_dot_files(opt=None):
 
 
 def check_trace_files(opt=None):
-    """Call prove_all"""
-    prove_all()
+    # Note that in order for check_trace_files to work, we have to call one of
+    # the other functions first. Otherwise, no trace files will have been
+    # generated.
 
     # Create a list that contains all trace files lying under directory
     # gnatprove.
