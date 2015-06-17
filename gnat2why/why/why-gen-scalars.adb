@@ -260,7 +260,11 @@ package body Why.Gen.Scalars is
 
                --  The compiler has already prepared the static predicate
                --  in such a way that it is simply a list of ranges which
-               --  represent the type
+               --  represent the type.
+               --  In case we're generating a range predicate for bitvectors
+               --  from integers we need to force First and Last to be
+               --  Integer constants, we detect this case by checking that
+               --  E has a modular type while Ty is ew_int_type.
 
                while Present (Pred) loop
                   declare
