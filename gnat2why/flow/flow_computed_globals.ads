@@ -374,8 +374,7 @@ private
    Current_Mode : GG_Mode_T := GG_No_Mode;
 
    GG_Generated : Boolean   := False;
-   --  This variable will be set to True by GG_Read once the Global
-   --  Graph has been generated.
+   --  Set to True by GG_Read once the Global Graph has been generated
 
    -------------
    -- GG_Mode --
