@@ -205,7 +205,7 @@ package Flow_Computed_Globals is
       "="          => "=");
 
    Info_Set : Info_Sets.Set;
-   --  This set will hold the generated global info of every subprogram.
+   --  This set will hold the generated global info of every subprogram
 
    ----------------------------------------------------------------------
 
@@ -213,7 +213,7 @@ package Flow_Computed_Globals is
    --  Takes a set of Node_Ids and returns a set of Entity_Names
 
    function GG_Mode return GG_Mode_T;
-   --  Returns the current mode.
+   --  Returns the current mode
 
    -------------
    -- Writing --
@@ -253,14 +253,14 @@ package Flow_Computed_Globals is
    procedure GG_Read (GNAT_Root : Node_Id)
    with Pre  => GG_Mode = GG_No_Mode,
         Post => GG_Mode = GG_Read_Mode;
-   --  Reads all ALI files and produces the transitive closure.
+   --  Reads all ALI files and produces the transitive closure
 
    -----------
    -- Query --
    -----------
 
    function GG_Has_Been_Generated return Boolean;
-   --  This function checks if the Globals Graph has been generated
+   --  Checks if the Globals Graph has been generated
    --  @return True iff the Globals Graph has been generated
 
    function GG_Exist (E : Entity_Id) return Boolean
@@ -271,12 +271,12 @@ package Flow_Computed_Globals is
    function GG_Has_Refinement (EN : Entity_Name) return Boolean
    with Pre => GG_Mode = GG_Read_Mode;
    --  Returns true if E is a state abstraction whose constituents we
-   --  loaded while reading the ali files.
+   --  loaded while reading the ALI files.
 
    function GG_Is_Constituent (EN : Entity_Name) return Boolean
    with Pre => GG_Mode = GG_Read_Mode;
    --  Returns true if E is a constituent of some state abstraction
-   --  that we loaded while reading the ali files.
+   --  that we loaded while reading the ALI files.
 
    function GG_Get_Constituents (EN : Entity_Name) return Name_Set.Set
    with Pre => GG_Mode = GG_Read_Mode;
@@ -301,7 +301,7 @@ package Flow_Computed_Globals is
    with Pre  => GG_Mode = GG_Read_Mode and then
                 GG_Exist (E),
         Post => GG_Mode = GG_Read_Mode;
-   --  Determines the set of all globals.
+   --  Determines the set of all globals
 
    function GG_Get_Proof_Reads
      (E : Entity_Id;
