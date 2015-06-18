@@ -338,11 +338,8 @@ package body Flow_Types is
          when Null_Value =>
             return False;
          when Magic_String =>
-            if not GG_Has_Been_Generated then
-               return False;
-            else
-               return GG_Is_Volatile (F.Name);
-            end if;
+            return GG_Has_Been_Generated
+              and then GG_Is_Volatile (F.Name);
          when Direct_Mapping | Record_Field =>
             declare
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
