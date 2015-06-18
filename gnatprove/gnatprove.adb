@@ -1072,6 +1072,10 @@ procedure Gnatprove is
          Args.Append ("-m");
       end if;
 
+      if IDE_Progress_Bar then
+         Args.Append ("-d");
+      end if;
+
       for File of File_List loop
          Args.Append (File);
       end loop;
