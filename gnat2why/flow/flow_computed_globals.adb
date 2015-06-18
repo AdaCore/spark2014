@@ -63,8 +63,8 @@ package body Flow_Computed_Globals is
       Constituents : Name_Set.Set;
    end record;
 
-   function Preceeds (A, B : State_Phase_1_Info) return Boolean
-   is (A.State.Id < B.State.Id);
+   function Preceeds (A, B : State_Phase_1_Info) return Boolean is
+     (A.State.Id < B.State.Id);
 
    package State_Info_Sets is new Ada.Containers.Ordered_Sets
      (Element_Type => State_Phase_1_Info,
@@ -109,7 +109,7 @@ package body Flow_Computed_Globals is
    end record;
 
    function "=" (Left, Right : Global_Id) return Boolean is
-      (Left.Kind = Right.Kind and then Left.Name.Id = Right.Name.Id);
+     (Left.Kind = Right.Kind and then Left.Name.Id = Right.Name.Id);
    --  Equality for Global_Id
 
    Null_Global_Id : constant Global_Id :=
@@ -144,7 +144,7 @@ package body Flow_Computed_Globals is
 
    procedure Print_Global_Graph (Filename : String;
                                  G        : T);
-   --  Writes a dot and pdf file for the Global_Graph
+   --  Writes dot and pdf files for the Global_Graph
 
    -----------------
    -- To_Name_Set --
@@ -222,7 +222,7 @@ package body Flow_Computed_Globals is
       function NDI
         (G : T'Class;
          V : Vertex_Id) return Node_Display_Info;
-      --  Pretty-printing for each vertex in the dot output.
+      --  Pretty-printing for each vertex in the dot output
 
       function EDI
         (G      : T'Class;
@@ -230,7 +230,7 @@ package body Flow_Computed_Globals is
          B      : Vertex_Id;
          Marked : Boolean;
          Colour : Edge_Colours) return Edge_Display_Info;
-      --  Pretty-printing for each edge in the dot output.
+      --  Pretty-printing for each edge in the dot output
 
       ---------
       -- NDI --
