@@ -39,88 +39,87 @@ package Flow_Computed_Globals is
    --  -- Flow_Computed_Globals Algorithm --
    --  -------------------------------------
 
-   --  This algorithm is applied on a per compilation unit basis.
-
+   --  This algorithm is applied to individual compilation units
+   --
    --  During the first pass:
+   --
    --    * For every subprogram and task in SPARK a GG graph is created. The
-   --      graph is then traversed and all global variables are classified
-   --      as proof ins, ins and outs. During the traversal we also
-   --      classify called subprograms as proof only calls, definite calls
-   --      and conditional calls. Lastly we take note of all local
-   --      variables. This info is then appended on the ALI file.
-   --    * For every subprogram that is NOT in SPARK and does NOT have
-   --      a user-provided contract a GG graph is NOT created. However, we
-   --      do create GG entries for those subprograms in the ALI file.
-   --      Those GG entries mirror the information that (Yannick's)
-   --      computed globals store in the ALI file. As a result, all
-   --      subprogram calls are considered to be conditional calls and all
-   --      writes to variables are considered to be read-writes (pure reads
-   --      are also included in the reads of course).
-   --    * For every package we gather all know state abstractions and
-   --      all their constituents and that info is then appended on the
-   --      ALI file.
-
+   --      graph is then traversed to classify global variables as proof ins,
+   --      ins and outs, and called subprograms as proof only calls, definite
+   --      calls and conditional calls. Also we take note of all local
+   --      variables. This info is then stored in the ALI file.
+   --
+   --    * For every subprogram and task that is NOT in SPARK and does NOT have
+   --      a user-provided contract only GG entries and not a GG graph is
+   --      created and stored in the ALI file. Those GG entries mirror the
+   --      information that (Yannick's) computed globals store in the ALI file.
+   --      As a result, all subprogram calls are considered to be conditional
+   --      calls and all writes to variables are considered to be read-writes
+   --      (pure reads are also included in the reads of course).
+   --
+   --    * For every package all known state abstractions and all their
+   --      constituents are collected and this info is stored in the ALI file.
+   --
    --  During the second pass:
-   --    * All information stored in the ALI files during the first
-   --      pass is read back.
-   --    * A Global Graph for the entire compilation unit is created.
-   --      This graph contains subprograms, tasks and variables only. No
-   --      abstract states and packages are present on this graph.
-   --      We create 3 vertices per subprogram/task. These represent the
-   --      subprogram's proof inputs, inputs and outputs. For each
-   --      variable we create a single vertex that represents the
-   --      variable.
-   --    * We then draw edges between those vertices based on the GG
-   --      info that we read from the ALI files. For subprograms that
-   --      are marked as SPARK_Mode Off or that contain illegal SPARK
-   --      constructs we use the Get_Globals function instead of the GG
-   --      info from the ALI files.
-   --    * Lastly we use the compilation unit's Global Graph and
-   --      information that we have about state abstractions and their
-   --      constituents to return globals relatively to the caller's
-   --      scope.
+   --
+   --    * All information stored in the ALI files during the first pass is
+   --      read back.
+   --
+   --    * A Global Graph for the entire compilation unit is created. This
+   --      graph contains only subprograms, tasks and variables; it does not
+   --      contain abstract states and packages. There are 3 vertices per
+   --      subprogram/task that represent the subprogram's proof inputs, inputs
+   --      and outputs. Each variable is represented by a vertex.
+   --
+   --    * We then draw edges between those vertices based on the GG info that
+   --      we read from the ALI files. For subprograms that are marked as
+   --      SPARK_Mode Off or that contain illegal SPARK constructs we use the
+   --      Get_Globals function instead of the GG info from the ALI files.
+   --
+   --    * Lastly we use the compilation unit's Global Graph and information
+   --      that we have about state abstractions and their constituents to
+   --      return globals relatively to the caller's scope.
 
    --  -------------------------------
    --  -- Generated Globals Section --
    --  -------------------------------
 
-   --  The Generated Globals section is located at the end of the ALI file.
-
-   --  All lines introducing information related to the Generated Globals
-   --  have the string "GG" appearing in the beginning.
-
-   --  The Generated Globals section holds three kinds of information:
-
-   --  1) The first kind has to do with Abstract States and the
-   --     constituents thereof.
-
-   --     Information related to this kind occupy single lines and have
-   --     the string "AS" immediately after "GG". Following "AS" comes
-   --     the name of the Abstract State and following that are all its
-   --     constituents.
-
-   --     Example entries:
+   --  The Generated Globals section is located at the end of the ALI file
+   --
+   --  All lines with information related to the Generated Globals start with a
+   --  "GG" string.
+   --
+   --  The Generated Globals section stores three kinds of information:
+   --
+   --  1) The first kind is related to Abstract States and their constituents
+   --
+   --     This information is stored in single lines that start with "GG"
+   --     followed by "AS"; then comes the name of the Abstract State and then
+   --     the names of its constituents.
+   --
+   --     Examples:
    --       GG AS test__state test__constit_1 test__constit_2
    --       GG AS test__state2
    --       GG AS test__state3 test_state2
-
-   --  2) The second kind has to do with subprograms and tasks. For these
-   --     we store the following:
-
-   --       * the subprogram/task/entry's name                       (S/T/E)
-   --       * the global variables read in proof contexts only       (VP)
-   --       * the global variables read    (input)                   (VI)
-   --       * the global variables written (output)                  (VO)
-   --       * the subprograms that are called only in proof contexts (CP)
-   --       * the subprograms that are called definitely             (CD)
-   --       * the subprograms that are called conditionally          (CC)
-   --       * the local variables of the subprogram                  (LV)
-   --       * the local subprograms of the subprogram                (LS)
+   --
+   --  2) The second kind is related to subprograms, tasks and entries. For
+   --     these we store the names of:
+   --
+   --       * subprogram/task/entry together with the origin of the entry
+   --         (see Globals_Origin_T)                             (S/T/E)
+   --       * global variables read in proof contexts only       (VP)
+   --       * global variables read    (input)                   (VI)
+   --       * global variables written (output)                  (VO)
+   --       * subprograms that are called only in proof contexts (CP)
+   --       * subprograms that are called definitely             (CD)
+   --       * subprograms that are called conditionally          (CC)
+   --       * local variables of the subprogram                  (LV)
+   --       * local subprograms of the subprogram                (LS)
 
    --     For an entry of the second kind to be complete/correct all of the
    --     afformentioned lines must be present (order does not matter).
 
-   --     Example entry:
+   --     Examples:
    --       GG S FA test__proc
    --       GG VP test__proof_var
    --       GG VI test__g test__g2
@@ -130,18 +129,23 @@ package Flow_Computed_Globals is
    --       GG CC test__proc_3
    --       GG LV test__proc__nested_proc__v
    --       GG LS test__proc__nested_proc__nested_proc
-
-   --  3) The third kind occupies at most 4 lines of an ALI file. It is the
-   --     set of all volatile variables and external state abstractions
-   --     arranged based on their volatile properties.
-   --     Names following AW are those with Async_Writers set.
-   --     Names following AR are those with Async_Readers set.
-   --     Names following ER are those with Effective_Reads set.
-   --     Names following EW are those with Effective_Writes set.
-   --     Notice here that if a name appears on ER then it has to also appear
-   --     on the AW line. The same holds for EW and AR.
-
-   --     Example entry:
+   --
+   --  3) The third kind is related to volatile variables and external state
+   --     abstractions.
+   --
+   --     There are at most 4 lines in the ALI file; one line for each of the
+   --     property, with names of the variables and external state
+   --     abstractions:
+   --
+   --       * Async_Writers    (AW)
+   --       * Async_Readers    (AR)
+   --       * Effective_Reads  (ER)
+   --       * Effective_Writes (EW)
+   --
+   --     Note here that names appearing on ER line have to also appear on the
+   --     AW line; the same holds for EW and AR.
+   --
+   --     Examples:
    --     GG AW test__fully_vol test__vol_er2 test__ext_state
    --     GG AR test__fully_vol test__vol_ew3
    --     GG ER test__fully_vol test__vol_er2
