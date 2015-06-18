@@ -373,12 +373,12 @@ package body Flow_Types is
          when Synthetic_Null_Export =>
             return True;
          when Magic_String =>
-            return Is_Volatile (F) and then
-              GG_Has_Async_Readers (F.Name);
+            return Is_Volatile (F)
+              and then GG_Has_Async_Readers (F.Name);
          when others =>
-            return Is_Volatile (F) and then
-              Has_Volatile_Flavor (Get_Direct_Mapping_Id (F),
-                                   Pragma_Async_Readers);
+            return Is_Volatile (F)
+              and then Has_Volatile_Flavor (Get_Direct_Mapping_Id (F),
+                                            Pragma_Async_Readers);
       end case;
    end Has_Async_Readers;
 
@@ -392,12 +392,12 @@ package body Flow_Types is
          when Synthetic_Null_Export =>
             return False;
          when Magic_String =>
-            return Is_Volatile (F) and then
-              GG_Has_Async_Writers (F.Name);
+            return Is_Volatile (F)
+              and then GG_Has_Async_Writers (F.Name);
          when others =>
-            return Is_Volatile (F) and then
-              Has_Volatile_Flavor (Get_Direct_Mapping_Id (F),
-                                   Pragma_Async_Writers);
+            return Is_Volatile (F)
+              and then Has_Volatile_Flavor (Get_Direct_Mapping_Id (F),
+                                            Pragma_Async_Writers);
       end case;
    end Has_Async_Writers;
 
@@ -411,12 +411,12 @@ package body Flow_Types is
          when Synthetic_Null_Export =>
             return False;
          when Magic_String =>
-            return Is_Volatile (F) and then
-              GG_Has_Effective_Reads (F.Name);
+            return Is_Volatile (F)
+              and then GG_Has_Effective_Reads (F.Name);
          when others =>
-            return Is_Volatile (F) and then
-              Has_Volatile_Flavor (Get_Direct_Mapping_Id (F),
-                                   Pragma_Effective_Reads);
+            return Is_Volatile (F)
+               and then Has_Volatile_Flavor (Get_Direct_Mapping_Id (F),
+                                             Pragma_Effective_Reads);
       end case;
    end Has_Effective_Reads;
 
@@ -430,12 +430,12 @@ package body Flow_Types is
          when Synthetic_Null_Export =>
             return True;
          when Magic_String =>
-            return Is_Volatile (F) and then
-              GG_Has_Effective_Writes (F.Name);
+            return Is_Volatile (F)
+              and then GG_Has_Effective_Writes (F.Name);
          when others =>
-            return Is_Volatile (F) and then
-              Has_Volatile_Flavor (Get_Direct_Mapping_Id (F),
-                                   Pragma_Effective_Writes);
+            return Is_Volatile (F)
+              and then Has_Volatile_Flavor (Get_Direct_Mapping_Id (F),
+                                            Pragma_Effective_Writes);
       end case;
    end Has_Effective_Writes;
 
@@ -447,9 +447,8 @@ package body Flow_Types is
    begin
       case F.Kind is
          when Direct_Mapping =>
-            return Nkind (F.Node) in N_Entity and then
-              Ekind (F.Node) = E_Abstract_State;
-
+            return Nkind (F.Node) in N_Entity
+              and then Ekind (F.Node) = E_Abstract_State;
          when others =>
             return False;
       end case;
@@ -669,8 +668,8 @@ package body Flow_Types is
    begin
       case F.Kind is
          when Direct_Mapping | Record_Field =>
-            if Nkind (F.Node) in N_Entity and then
-              Ekind (F.Node) = E_Abstract_State
+            if Nkind (F.Node) in N_Entity
+              and then Ekind (F.Node) = E_Abstract_State
             then
                --  Print "Prefix.State" instead of just "State", but only
                --  for abstract state for now. (However, the code below
