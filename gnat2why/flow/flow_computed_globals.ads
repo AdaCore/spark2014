@@ -21,8 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This package implements writing, reading and computing global
---  contracts.
+--  This package implements writing, reading and computing global contracts
 
 with Types;                       use Types;
 
@@ -243,8 +242,7 @@ package Flow_Computed_Globals is
 
    procedure GG_Write_Finalize
    with Pre => GG_Mode = GG_Write_Mode;
-   --  Appends all subprogram, package and volatile information to the ALI
-   --  file.
+   --  Appends all collected information to the ALI file
 
    -------------------------
    -- Reading & Computing --
@@ -255,9 +253,9 @@ package Flow_Computed_Globals is
         Post => GG_Mode = GG_Read_Mode;
    --  Reads all ALI files and produces the transitive closure
 
-   -----------
-   -- Query --
-   -----------
+   --------------
+   -- Querying --
+   --------------
 
    function GG_Has_Been_Generated return Boolean;
    --  Checks if the Globals Graph has been generated

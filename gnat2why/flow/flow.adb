@@ -1571,13 +1571,12 @@ package body Flow is
                                          FA_Graphs       => FA_Graphs,
                                          Info_Set        => Info_Set);
 
-      --  Consider the subprogram info in case a graph was not
-      --  created.
+      --  Consider the subprogram info in case a graph was not created
       for S of Info_Set loop
          GG_Write_Subprogram_Info (SI => S);
       end loop;
 
-      --  Writing Generated Globals to the ALI file
+      --  Write Generated Globals to the ALI file
       for FA of FA_Graphs loop
          if Gnat2Why_Args.Flow_Advanced_Debug then
             Write_Line (Character'Val (8#33#) & "[32m" &

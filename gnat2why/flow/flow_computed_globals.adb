@@ -640,6 +640,9 @@ package body Flow_Computed_Globals is
          begin
             Global_Graph.Add_Edge (G1, G2, EC_Default);
          end Add_Edge;
+
+      --  Start of Add_All_Edges
+
       begin
          --  Go through everything in Info_Set and add edges
          for Info of Info_Set loop
@@ -834,8 +837,8 @@ package body Flow_Computed_Globals is
             end;
          end loop;
 
-         --  Lastly we have to create vertices for variables that come
-         --  from the Get_Globals function.
+         --  Lastly, create vertices for variables that come from the
+         --  Get_Globals function.
          for N of All_Other_Subprograms loop
             declare
                Subprogram   : constant Entity_Id := Find_Entity (N);
@@ -1335,6 +1338,8 @@ package body Flow_Computed_Globals is
 
          end Parse_Record;
 
+      --  Start of Load_GG_Info_From_ALI
+
       begin
          Open (ALI_File, In_File, ALI_File_Name_Str);
 
@@ -1371,7 +1376,7 @@ package body Flow_Computed_Globals is
             Info  : Subprogram_Phase_1_Info);
          --  Removes all edges starting from Start and leading to:
          --    * this subprogram's local variables,
-         --    * local variables of called subprograms which do not
+         --    * local variables of called subprograms that do not
          --      enclose this subprogram
 
          -------------------------------------
@@ -1422,6 +1427,8 @@ package body Flow_Computed_Globals is
                Global_Graph.Remove_Edge (Start, V);
             end loop;
          end Remove_Local_Variables_From_Set;
+
+      --  Start of Remove_Edges_From_Local_Variables
 
       begin
          for Info of Info_Set loop
@@ -1491,7 +1498,7 @@ package body Flow_Computed_Globals is
          end loop;
       end Remove_Constants_Without_Variable_Input;
 
-   --  Beginning of GG_Read
+   --  Start of GG_Read
 
    begin
       Current_Mode := GG_Read_Mode;
