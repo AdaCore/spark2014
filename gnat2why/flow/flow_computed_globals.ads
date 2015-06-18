@@ -305,7 +305,7 @@ package Flow_Computed_Globals is
       return Flow_Id_Sets.Set
    with Pre => GG_Mode = GG_Read_Mode and then
                GG_Exist (E);
-   --  Returns the set of variables read in proof contexts.
+   --  Returns the set of variables read in proof contexts
 
    function GG_Get_Reads
      (E : Entity_Id;
@@ -313,7 +313,7 @@ package Flow_Computed_Globals is
       return Flow_Id_Sets.Set
    with Pre => GG_Mode = GG_Read_Mode and then
                GG_Exist (E);
-   --  Returns the set of variables read.
+   --  Returns the set of variables read
 
    function GG_Get_All_Reads
      (E : Entity_Id;
@@ -321,7 +321,7 @@ package Flow_Computed_Globals is
       return Flow_Id_Sets.Set
    with Pre => GG_Mode = GG_Read_Mode and then
                GG_Exist (E);
-   --  Returns the set of all (proof and ordinary) variables read.
+   --  Returns the set of all (proof and ordinary) variables read
 
    function GG_Get_Writes
      (E : Entity_Id;
@@ -329,7 +329,7 @@ package Flow_Computed_Globals is
       return Flow_Id_Sets.Set
    with Pre => GG_Mode = GG_Read_Mode and then
                GG_Exist (E);
-   --  Returns the set of all variables written.
+   --  Returns the set of all variables written
 
    function GG_Get_All_State_Abstractions return Name_Set.Set
    with Pre => GG_Mode = GG_Read_Mode;
