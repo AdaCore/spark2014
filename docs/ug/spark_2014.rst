@@ -2163,6 +2163,12 @@ function publicly and defining it in the private part. For example:
 
    end Increment_Utils;
 
+If an expression function is defined in a unit spec, |GNATprove| can use its
+implicit postcondition at every call. If an expression function is defined in a
+unit body, |GNATprove| can use its implicit postcondition at every call in the
+same unit, but not at calls inside other units. This is true even if the
+expression function is declared in the unit spec and defined in the unit body.
+
 .. _Ghost Code:
 
 Ghost Code
