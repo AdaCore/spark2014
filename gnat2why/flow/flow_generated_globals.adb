@@ -41,7 +41,7 @@ with Sem_Util;                   use Sem_Util;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Util;                 use SPARK_Util;
 
-package body Flow_Computed_Globals is
+package body Flow_Generated_Globals is
 
    --  Debug flags
 
@@ -2039,4 +2039,4 @@ package body Flow_Computed_Globals is
       return Effective_Writes_Vars.Contains (EN);
    end GG_Has_Effective_Writes;
 
-end Flow_Computed_Globals;
+end Flow_Generated_Globals;

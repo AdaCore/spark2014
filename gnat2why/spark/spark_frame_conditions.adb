@@ -40,7 +40,7 @@ with Uname;
 
 with Flow_Types;                 use Flow_Types;
 with Flow_Utility;               use Flow_Utility;
-with Flow_Computed_Globals;      use Flow_Computed_Globals;
+with Flow_Generated_Globals;     use Flow_Generated_Globals;
 
 package body SPARK_Frame_Conditions is
 

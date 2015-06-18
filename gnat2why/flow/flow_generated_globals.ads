@@ -32,10 +32,10 @@ with Flow_Types;                  use Flow_Types;
 with Flow_Refinement;             use Flow_Refinement;
 with Flow_Dependency_Maps;        use Flow_Dependency_Maps;
 
-package Flow_Computed_Globals is
+package Flow_Generated_Globals is
 
    --  -------------------------------------
-   --  -- Flow_Computed_Globals Algorithm --
+   --  -- Flow_Generated_Globals Algorithm --
    --  -------------------------------------
 
    --  This algorithm is applied to individual compilation units
@@ -180,6 +180,7 @@ package Flow_Computed_Globals is
       Conditional_Calls : Name_Set.Set;
       Local_Variables   : Name_Set.Set;
       Local_Subprograms : Name_Set.Set;
+      --  Possibly_Blocking : Boolean;
    end record;
 
    Null_Subprogram_Info : constant Subprogram_Phase_1_Info :=
@@ -194,6 +195,7 @@ package Flow_Computed_Globals is
                               Conditional_Calls => Name_Set.Empty_Set,
                               Local_Variables   => Name_Set.Empty_Set,
                               Local_Subprograms => Name_Set.Empty_Set);
+                              --  Possibly_Blocking => False);
 
    function Preceeds (A, B : Subprogram_Phase_1_Info) return Boolean is
      (A.Name.Id < B.Name.Id);
@@ -238,7 +240,8 @@ package Flow_Computed_Globals is
         Post => GG_Mode = GG_Write_Mode;
    --  Records the information we need to later compute globals.
    --  Compute_Globals in Flow.Slice is used to produce the inputs.
-   --  It also stores information related to volatiles.
+   --  It also stores information related to volatiles and possibly blocking
+   --  property.
 
    procedure GG_Write_Finalize
    with Pre => GG_Mode = GG_Write_Mode;
@@ -391,4 +394,4 @@ private
    function GG_Has_Been_Generated return Boolean is (GG_Generated);
    --  @return True iff the Global Graph has been generated
 
-end Flow_Computed_Globals;
+end Flow_Generated_Globals;

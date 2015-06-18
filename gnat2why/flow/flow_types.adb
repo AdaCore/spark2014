@@ -21,15 +21,15 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
 with Ada.Strings;
-with Errout;                use Errout;
-with Flow_Computed_Globals; use Flow_Computed_Globals;
-with Flow_Utility;          use Flow_Utility;
-with Namet;                 use Namet;
-with Output;                use Output;
-with Sem_Util;              use Sem_Util;
-with Snames;                use Snames;
+with Errout;                 use Errout;
+with Flow_Generated_Globals; use Flow_Generated_Globals;
+with Flow_Utility;           use Flow_Utility;
+with Namet;                  use Namet;
+with Output;                 use Output;
+with Sem_Util;               use Sem_Util;
+with Snames;                 use Snames;
 with Why;
 
 package body Flow_Types is

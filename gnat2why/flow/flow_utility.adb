@@ -29,7 +29,7 @@ with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Elists;                     use Elists;
 with Errout;                     use Errout;
 with Flow_Classwide;             use Flow_Classwide;
-with Flow_Computed_Globals;      use Flow_Computed_Globals;
+with Flow_Generated_Globals;     use Flow_Generated_Globals;
 with Flow_Debug;                 use Flow_Debug;
 with Gnat2Why.Util;
 with Graph;

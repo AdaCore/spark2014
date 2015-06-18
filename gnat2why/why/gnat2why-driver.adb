@@ -80,7 +80,7 @@ with Gnat2Why.Subprograms;     use Gnat2Why.Subprograms;
 with Gnat2Why.Types;           use Gnat2Why.Types;
 with Gnat2Why.Util;            use Gnat2Why.Util;
 
-with Flow_Computed_Globals;    use Flow_Computed_Globals;
+with Flow_Generated_Globals;   use Flow_Generated_Globals;
 with Flow_Utility;             use Flow_Utility;
 
 pragma Warnings (Off, "unit ""Why.Atree.Treepr"" is not referenced");

@@ -41,7 +41,7 @@ with Flow.Interprocedural;
 with Flow.Program_Dependence_Graph;
 with Flow.Slice;                    use Flow.Slice;
 with Flow_Classwide;                use Flow_Classwide;
-with Flow_Computed_Globals;         use Flow_Computed_Globals;
+with Flow_Generated_Globals;        use Flow_Generated_Globals;
 with Flow_Debug;                    use Flow_Debug;
 with Flow_Error_Messages;           use Flow_Error_Messages;
 with Flow_Utility;                  use Flow_Utility;
@@ -1649,7 +1649,7 @@ package body Flow is
                      when E_Task_Body       => T_Kind,
                      when E_Entry           => E_Kind,
                      when others            => raise Why.Unexpected_Node),
-                  Globals_Origin    => Flow_Computed_Globals.FA,
+                  Globals_Origin    => Flow_Generated_Globals.FA,
                   Inputs_Proof      => To_Name_Set (Inputs_Proof),
                   Inputs            => To_Name_Set (Inputs),
                   Outputs           => To_Name_Set (Outputs),
