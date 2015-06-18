@@ -192,8 +192,8 @@ package Flow_Computed_Globals is
                               Local_Variables   => Name_Set.Empty_Set,
                               Local_Subprograms => Name_Set.Empty_Set);
 
-   function Preceeds (A, B : Subprogram_Phase_1_Info) return Boolean
-   is (A.Name.Id < B.Name.Id);
+   function Preceeds (A, B : Subprogram_Phase_1_Info) return Boolean is
+     (A.Name.Id < B.Name.Id);
 
    package Info_Sets is new Ada.Containers.Ordered_Sets
      (Element_Type => Subprogram_Phase_1_Info,
