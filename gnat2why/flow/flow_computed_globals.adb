@@ -1181,9 +1181,7 @@ package body Flow_Computed_Globals is
                Check_GG_Format;
 
                if Length (Line) >= 6
-                 and then (Slice (Line, 4, 5) = "S "
-                             or else Slice (Line, 4, 5) = "T "
-                             or else Slice (Line, 4, 5) = "E ")
+                 and then (Slice (Line, 4, 5) in "S " | "T " | "E ")
                then
                   --  Line format: GG S *
                   --      or       GG T *
