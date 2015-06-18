@@ -1348,7 +1348,9 @@ package body Flow_Computed_Globals is
             end if;
 
             Get_Line (ALI_File, Line);
-            if Length (Line) > 0 and then Element (Line, 1) = 'G' then
+
+            --  Check if now reached the "GG" section
+            if Length (Line) >= 3 and then Slice (Line, 1, 3) = "GG " then
                exit;
             end if;
          end loop;
