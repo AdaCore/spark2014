@@ -54,7 +54,7 @@ ipstack: build/gen/aip_constants.ads  \
 
 build/bldtools/tranxgen: src/bldtools/tranxgen.adb
 	mkdir -p build/bldtools
-	gnatmake -g -D build/bldtools -o $@ $< `xmlada-config`
+	gprbuild -g tranxgen.gpr
 
 build/gen/aip-%.ads build/gen/aip-%.adb: src/proto/%.xml build/bldtools/tranxgen
 	mkdir -p build/gen
