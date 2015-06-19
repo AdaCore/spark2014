@@ -113,7 +113,7 @@ package body Flow is
       Info_Set        : out Info_Sets.Set)
      with Post => (if not Compute_Globals then
                      Info_Set = Info_Sets.Empty_Set);
-   --  Construct all flow graphs for the current compilation unit.
+   --  Build all flow graphs for the current compilation unit
 
    function Last_Statement_Is_Raise (E : Entity_Id) return Boolean
      with Pre => Ekind (E) in Subprogram_Kind | E_Task_Type | E_Entry;
@@ -1258,7 +1258,7 @@ package body Flow is
                           or else Present (Depends_Node)
                         then
                            --  If we have a user-provided Global or
-                           --  Depends aspect then we use Get_Globals
+                           --  Depends contract then we use Get_Globals
                            --  to get that.
 
                            declare
@@ -1299,7 +1299,7 @@ package body Flow is
 
                         else
                            --  Use (Yannick's) Computed Globals info
-                           --  to add a GG entry on the ALI file.
+                           --  to add a GG entry to the ALI file.
                            declare
                               Reads           : Name_Set.Set;
                               Writes          : Name_Set.Set;
@@ -1387,8 +1387,7 @@ package body Flow is
                            Flow_Analyse_Entity (E, E, Compute_Globals));
                      else
                         null;
-                        --  ??? warning that we can't flow analyze
-                        --      elaboration?
+                        --  ??? warn that we can't flow analyze elaboration?
                      end if;
 
                   end if;

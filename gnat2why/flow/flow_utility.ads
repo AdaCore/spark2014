@@ -136,7 +136,7 @@ is
         Post => (for all G of Proof_Ins => G.Variant = In_View) and
                 (for all G of Reads     => G.Variant = In_View) and
                 (for all G of Writes    => G.Variant = Out_View);
-   --  Given a subprogram call, work out globals from the appropriate
+   --  Given a subprogram, work out globals from the appropriate
    --  global aspect (relative to Scope), or the depends aspect (if no
    --  global aspect is given). If the Global and Depends aspects are
    --  not present then use the generated globals or finally, if non
@@ -144,11 +144,11 @@ is
    --  returned will contain Flow_Id with the variant set to In_View
    --  and Out_View.
    --
-   --  If Consider_Discriminants is provided then an out global will
+   --  If Consider_Discriminants is True then an out global will
    --  include a corresponding read if the global includes at least
    --  one discriminant.
    --
-   --  If Globals_For_Proof is set then the calls to
+   --  If Globals_For_Proof is True then the calls to
    --  Get_Generated_Reads will not specify Include_Constants.
 
    procedure Get_Proof_Globals (Subprogram           : Entity_Id;

@@ -1568,6 +1568,10 @@ package body Flow_Utility is
             --  Add the given global to the reads, writes or proof_in
             --  list, depending on the mode.
 
+            -------------
+            -- Process --
+            -------------
+
             procedure Process (The_Mode   : Name_Id;
                                The_Global : Entity_Id)
             is
@@ -1650,8 +1654,7 @@ package body Flow_Utility is
                         --  dealing with a rewritten constant.
                         pragma Assert (Present (Original_Node (RHS)));
 
-                        --  We process the entity of the Original_Node
-                        --  instead.
+                        --  We process the entity of the Original_Node instead
                         Process (Name_Input, Entity (Original_Node (RHS)));
 
                      when others =>
@@ -1737,9 +1740,8 @@ package body Flow_Utility is
             declare
 
                function Trimming_Required return Boolean;
-               --  Checks if the projected Global constituents need to
-               --  be trimmed (based on a user-provided
-               --  Refined_Depends aspect).
+               --  Checks if the projected Global constituents need to be
+               --  trimmed (based on a user-provided Refined_Depends aspect).
 
                -----------------------
                -- Trimming_Required --
@@ -1758,9 +1760,9 @@ package body Flow_Utility is
                      --
                      --    a) no user-provided Depends contract
                      --
-                     --    b) there is a user-provided Refined_Global
+                     --    b) a user-provided Refined_Global
                      --
-                     --    c) there is no user-provided Refined_Depends
+                     --    c) no user-provided Refined_Depends
                      --
                      --    d) the Global aspect does not mention state with
                      --       visible refinement

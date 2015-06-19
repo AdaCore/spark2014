@@ -179,8 +179,7 @@ package Flow is
       --  entity. The two scopes might be the same in some cases.
 
       Spec_Node             : Entity_Id;
-      --  Useful shorthand to the node where the n_contract node is
-      --  attached.
+      --  Useful shorthand to the node where the N_Contract node is attached
 
       Start_Vertex          : Flow_Graphs.Vertex_Id;
       Helper_End_Vertex     : Flow_Graphs.Vertex_Id;
