@@ -1,7 +1,5 @@
 foo.adb:51:15: indirect call is not allowed in SPARK
 foo.adb:51:15: violation of pragma SPARK_Mode at test.adc:1
-foo.adb:60:19: warning: assuming "Clock" has no effect on global items
-foo.adb:60:19: warning: no Global contract available for "Clock"
 foo.adb:60:27: warning: assuming "Seconds" has no effect on global items
 foo.adb:60:27: warning: no Global contract available for "Seconds"
 prot.adb:4:04: info: initialization of "Hidden" constituent of "State" proved
