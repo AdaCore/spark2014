@@ -459,11 +459,9 @@ package body Flow.Control_Flow_Graph is
       Ctx : in out Context)
    with Pre => Nkind (N) in N_Delay_Until_Statement    |
                             N_Delay_Relative_Statement;
-   --  Deal with delay until X statements. We simply make a vertex where we
-   --  use all variables from the expression.
-   --
-   --  !!! O429-042 to add Clock_Time to the standard library
-   --  !!! O429-050 to add the magic global Clock_Time
+   --  Deal with delay until X statements. We make a vertex where we use all
+   --  variables from the expression and we also implicitly use
+   --  Ada.Real_Time.Clock_Time.
 
    procedure Do_Exit_Statement
      (N   : Node_Id;
@@ -1812,19 +1810,29 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      V : Flow_Graphs.Vertex_Id;
+      V         : Flow_Graphs.Vertex_Id;
+      Vars_Used : Flow_Id_Sets.Set;
    begin
+      --  Gather variables used in the expression of the delay statement
+      Vars_Used := Get_Variable_Set
+                     (Expression (N),
+                      Scope                => FA.B_Scope,
+                      Local_Constants      => FA.Local_Constants,
+                      Fold_Functions       => True,
+                      Use_Computed_Globals => not FA.Compute_Globals);
+
+      --  Add the implicit use of Ada.Real_Time.Clock_Time
+      Vars_Used.Include
+        (Get_Flow_Id (To_Entity_Name ("ada__real_time__clock_time"),
+                      Normal_Use,
+                      FA.B_Scope));
+
       Add_Vertex
         (FA,
          Direct_Mapping_Id (N),
          Make_Basic_Attributes
            (FA,
-            Var_Ex_Use => Get_Variable_Set
-              (Expression (N),
-               Scope                => FA.B_Scope,
-               Local_Constants      => FA.Local_Constants,
-               Fold_Functions       => True,
-               Use_Computed_Globals => not FA.Compute_Globals),
+            Var_Ex_Use => Vars_Used,
             Sub_Called => Get_Function_Set (Expression (N)),
             Loops      => Ctx.Current_Loops,
             E_Loc      => N),

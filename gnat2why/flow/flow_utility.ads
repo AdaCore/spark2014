@@ -68,7 +68,7 @@ is
 
    function Get_Flow_Id
      (Name  : Entity_Name;
-      View  : Parameter_Variant;
+      View  : Flow_Id_Variant;
       Scope : Flow_Scope)
       return Flow_Id;
    --  Return a suitable Flow_Id for the unique_name of an entity. We

@@ -145,7 +145,7 @@ package body Flow_Utility is
 
    function Get_Flow_Id
      (Name  : Entity_Name;
-      View  : Parameter_Variant;
+      View  : Flow_Id_Variant;
       Scope : Flow_Scope)
       return Flow_Id
    is
@@ -2902,6 +2902,19 @@ package body Flow_Utility is
                      --  are dealt with by Do_Pragma and
                      --  Do_Loop_Statement in the CFG construction.
                      return Skip;
+
+                  when Attribute_Callable   |
+                       Attribute_Caller     |
+                       Attribute_Count      |
+                       Attribute_Terminated =>
+                     --  Add the implicit use of
+                     --  Ada.Task_Identification.Tasking_State
+                     VS.Include
+                       (Get_Flow_Id
+                          (To_Entity_Name
+                             ("ada__task_identification__tasking_state"),
+                           Normal_Use,
+                           Scope));
 
                   when others =>
                      null;
