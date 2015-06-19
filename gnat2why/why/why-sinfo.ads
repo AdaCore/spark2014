@@ -140,13 +140,22 @@ package Why.Sinfo is
    --
    --  Used in W_Type_Decl nodes, and represents a simple type alias.
 
+   --  ----------------------
+   --  -- W_Record_Binder --
+   --  ----------------------
+   --  Name       W_Identifier_Id
+   --  Arg_Type   W_Type_Id
+   --  Is_Mutable Boolean
+   --
+   --  Used to declare fields of record types
+
    --  -------------------------
    --  -- W_Record_Definition --
    --  -------------------------
-   --  Fields     W_Binder_List
+   --  Fields     W_Record_Binder_List
    --
    --  Used in W_Type_Decl nodes, and represents a record structure: a list of
-   --  field names with a type.
+   --  field names with a type and possibly a mutable keyword.
    --
    --  ----------------
    --  -- W_Triggers --
@@ -626,6 +635,7 @@ package Why.Sinfo is
       W_Effects,
       W_Binder,
       W_Transparent_Type_Definition,
+      W_Record_Binder,
       W_Record_Definition,
 
       -------------------------

@@ -123,6 +123,7 @@ package body Why.Atree.Sprint is
    procedure Print_Real_Constant (Node : W_Real_Constant_Id);
    procedure Print_Record_Access (Node : W_Record_Access_Id);
    procedure Print_Record_Aggregate (Node : W_Record_Aggregate_Id);
+   procedure Print_Record_Binder (Node : W_Record_Binder_Id);
    procedure Print_Record_Definition (Node : W_Record_Definition_Id);
    procedure Print_Record_Update (Node : W_Record_Update_Id);
    procedure Print_Statement_Sequence (Node : W_Statement_Sequence_Id);
@@ -1301,6 +1302,9 @@ package body Why.Atree.Sprint is
          when W_Transparent_Type_Definition =>
             Print_Transparent_Type_Definition (+N);
 
+         when W_Record_Binder =>
+            Print_Record_Binder (+N);
+
          when W_Record_Definition =>
             Print_Record_Definition (+N);
 
@@ -1546,6 +1550,21 @@ package body Why.Atree.Sprint is
       Print_List (+Get_Associations (Node), "; ");
       P (O, " }");
    end Print_Record_Aggregate;
+
+   -------------------------
+   -- Print_Record_Binder --
+   -------------------------
+
+   procedure Print_Record_Binder (Node  : W_Record_Binder_Id)
+   is
+   begin
+      if Get_Is_Mutable (Node) then
+         P (O, "mutable ");
+      end if;
+      Print_Node (+Get_Name (Node));
+      P (O, " : ");
+      Print_Node (+Get_Arg_Type (Node));
+   end Print_Record_Binder;
 
    ------------------------------
    -- Print_Record_Definition --

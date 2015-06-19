@@ -128,12 +128,23 @@ package body Xtree_Sinfo is
                  "Type_Definition", "W_Type", Id_One);
       Set_Domain (W_Effects, EW_Term);
 
+      ----------------------
+      -- W_Record_Binder --
+      ----------------------
+
+      New_Field (W_Record_Binder,
+                 "Name", "W_Identifier", Id_Lone);
+      New_Field (W_Record_Binder,
+                 "Arg_Type", "W_Type", Id_One);
+      New_Field (W_Record_Binder,
+                 "Is_Mutable", "Boolean", "False");
+
       -------------------------
       -- W_Record_Definition --
       -------------------------
 
       New_Field (W_Record_Definition,
-                 "Fields", "W_Binder", Id_Some);
+                 "Fields", "W_Record_Binder", Id_Some);
       Set_Domain (W_Record_Definition, EW_Term);
 
       ----------------

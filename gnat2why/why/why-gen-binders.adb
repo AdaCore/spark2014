@@ -45,7 +45,12 @@ package body Why.Gen.Binders is
    function New_Binders
      (Domain  : EW_Domain;
       Binders : Binder_Array)
-     return W_Binder_Array;
+      return W_Binder_Array;
+
+   function New_Constant_Record_Binders
+     (Domain  : EW_Domain;
+      Binders : Binder_Array)
+      return W_Record_Binder_Array;
 
    function New_Expr_Array
      (Domain  : EW_Domain;
@@ -320,6 +325,50 @@ package body Why.Gen.Binders is
          end;
       end if;
    end Mk_Item_Of_Entity;
+
+   ---------------------------------
+   -- New_Constant_Record_Binders --
+   ---------------------------------
+
+   function New_Constant_Record_Binders
+     (Domain  : EW_Domain;
+      Binders : Binder_Array)
+      return W_Record_Binder_Array is
+
+      function New_Arg_Type
+        (Binder : Binder_Type)
+         return W_Type_Id;
+
+      ------------------
+      -- New_Arg_Type --
+      ------------------
+
+      function New_Arg_Type
+        (Binder : Binder_Type)
+         return W_Type_Id is
+      begin
+         if Domain = EW_Prog and then Binder.Mutable then
+            return New_Ref_Type (Ty => Get_Type (+Binder.B_Name));
+         else
+            return Get_Type (+Binder.B_Name);
+         end if;
+      end New_Arg_Type;
+
+      Result : W_Record_Binder_Array (Binders'Range);
+
+      --  Start of processing for New_Constant_Record_Binders
+
+   begin
+      for B in Binders'Range loop
+         Result (B) := New_Record_Binder
+           (Ada_Node => Binders (B).Ada_Node,
+            Domain   => Domain,
+            Name     => Binders (B).B_Name,
+            Arg_Type => New_Arg_Type (Binders (B)));
+      end loop;
+
+      return Result;
+   end New_Constant_Record_Binders;
 
    -----------------
    -- New_Binders --
@@ -607,7 +656,7 @@ package body Why.Gen.Binders is
             Labels     => Name_Id_Sets.Empty_Set,
             Definition =>
               New_Record_Definition
-                (Fields => New_Binders (EW_Pred, Binders)));
+                (Fields => New_Constant_Record_Binders (EW_Pred, Binders)));
    end New_Record_Definition;
 
    ---------------------------
