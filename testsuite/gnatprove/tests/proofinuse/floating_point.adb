@@ -184,7 +184,14 @@ is
       pragma Assert (Res);     -- valid
    end User_Rule_4;
 
-   --  User_Rule_5 requires square root, omitted for now
+   procedure User_Rule_5 (X   : Float;
+                          Res : out Boolean)
+   is
+   begin
+      pragma Assume (X in 0.0 .. 1.0);
+      Res := Sqrt (X) <= 1.0;
+      pragma Assert (Res);     -- valid
+   end User_Rule_5;
 
    procedure User_Rule_6 (X, Y, Z, A : Float;
                           Res        : out Boolean)
@@ -214,5 +221,106 @@ is
       Res := (X - Y) / (X - Z) <= A;
       pragma Assert (Res);     -- valid
    end User_Rule_7;
+
+   procedure User_Rule_8 (A, B, C : Float;
+                          Res     : out Boolean)
+   is
+   begin
+      pragma Assume (abs A * abs C < 5800.0 * abs B);
+      Res := not (B = 0.0);
+      pragma Assert (Res);     -- valid
+   end User_Rule_8;
+
+   procedure User_Rule_9 (A, B : Float;
+                          Res  : out Boolean)
+   is
+   begin
+      pragma Assume (abs A < 5800.0 * abs B);
+      Res := A / B <= 5800.0;
+      pragma Assert (Res);     -- valid
+   end User_Rule_9;
+
+   procedure User_Rule_10 (A, B : Float;
+                           Res  : out Boolean)
+   is
+   begin
+      pragma Assume (abs A < 5800.0 * abs B);
+      Res := A / B >= -5800.0;
+      pragma Assert (Res);     -- valid
+   end User_Rule_10;
+
+   --  The counter-example to 11 involves infinity.
+
+   procedure User_Rule_11 (A, B, C, D : Float;
+                           Res        : out Boolean)
+   is
+   begin
+      pragma Assume (A >= 0.0);
+      pragma Assume (B >= 0.0);
+      Res := (C * C) * A + (D * D) * B >= 0.0;
+      pragma Assert (Res);     --@ASSERT:FAIL
+   end User_Rule_11;
+
+   procedure User_Rule_12 (A, B, C, D : Float;
+                           Res        : out Boolean)
+   is
+   begin
+      pragma Assume (A >= 0.0);
+      pragma Assume (B >= 0.0);
+      --  ensures C*C and D*D is finite
+      pragma Assume (C in Squarable_Float);
+      pragma Assume (D in Squarable_Float);
+      Res := (C * C) * A + (D * D) * B >= 0.0;
+      pragma Assert (Res);     -- valid
+   end User_Rule_12;
+
+   procedure User_Rule_13 (D0, D1, R : Float;
+                           Res       : out Boolean)
+   is
+   begin
+      pragma Assume (D1 > D0);
+      pragma Assume (R in 0.0 .. 1.0);
+      pragma Assume (D0 >= 0.0);
+      Res := D1 - ((D1 - D0) * R) >= 0.0;
+      pragma Assert (Res);     -- valid
+   end User_Rule_13;
+
+   procedure User_Rule_14 (D0, D1, R, X : Float;
+                           Res          : out Boolean)
+   is
+   begin
+      pragma Assume (D1 > D0);
+      pragma Assume (R in 0.0 .. 1.0);
+      pragma Assume (D0 >= 0.0);
+      pragma Assume (D1 <= X);
+      Res := D1 - ((D1 - D0) * R) <= X;
+      pragma Assert (Res);     -- valid
+   end User_Rule_14;
+
+   procedure User_Rule_15 (X, Y : Float;
+                           Res  : out Boolean)
+   is
+   begin
+      pragma Assume (X in -7800.0 .. 7800.0);
+      pragma Assume (Y in -7800.0 .. 7800.0);
+      pragma Assume (X > abs Y);
+      Res := X * X - Y * Y >= 0.0;
+      pragma Assert (Res);     -- valid
+   end User_Rule_15;
+
+   procedure User_Rule_16 (X, Y : Float;
+                           Res  : out Boolean)
+   is
+   begin
+      pragma Assume (X in -7800.0 .. 7800.0);
+      pragma Assume (Y in -7800.0 .. 7800.0);
+      pragma Assume (X > abs Y);
+      Res := Sqrt (X * X - Y * Y) <= X;
+      pragma Assert (Res);     --@ASSERT:FAIL
+   end User_Rule_16;
+
+   --  user_rule_17 omitted until I have worked out how to deal with
+   --  subnormals in ada
+
 
 end Floating_Point;

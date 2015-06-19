@@ -141,31 +141,91 @@ floating_point.adb:183:16: info: division check proved
 floating_point.adb:183:16: medium: overflow check might fail
 floating_point.adb:184:22: info: initialization of "Res" proved
 floating_point.adb:184:22: medium: assertion might fail, requires Res
-floating_point.adb:198:17: info: overflow check proved
-floating_point.adb:198:22: medium: divide by zero might fail
-floating_point.adb:198:22: medium: overflow check might fail
-floating_point.adb:198:27: info: overflow check proved
-floating_point.adb:199:22: info: initialization of "Res" proved
-floating_point.adb:199:22: medium: assertion might fail, requires Res
-floating_point.adb:214:17: info: overflow check proved
-floating_point.adb:214:22: medium: divide by zero might fail
-floating_point.adb:214:22: medium: overflow check might fail
-floating_point.adb:214:27: info: overflow check proved
-floating_point.adb:215:22: info: initialization of "Res" proved
-floating_point.adb:215:22: medium: assertion might fail, requires Res
-floating_point.ads:7:39: info: initialization of "Res" proved
-floating_point.ads:10:40: info: initialization of "Res" proved
-floating_point.ads:13:50: info: initialization of "Res" proved
-floating_point.ads:16:44: info: initialization of "Res" proved
-floating_point.ads:19:56: info: initialization of "Res" proved
-floating_point.ads:24:36: info: initialization of "Res" proved
-floating_point.ads:27:52: info: initialization of "Res" proved
-floating_point.ads:52:29: info: initialization of "Res" proved
-floating_point.ads:58:27: info: initialization of "Res" proved
-floating_point.ads:61:27: info: initialization of "Res" proved
-floating_point.ads:64:27: info: initialization of "Res" proved
-floating_point.ads:69:27: info: initialization of "Res" proved
-floating_point.ads:72:27: info: initialization of "Res" proved
+floating_point.adb:193:22: info: initialization of "Res" proved
+floating_point.adb:193:22: medium: assertion might fail, requires Res
+floating_point.adb:205:17: info: overflow check proved
+floating_point.adb:205:22: medium: divide by zero might fail
+floating_point.adb:205:22: medium: overflow check might fail
+floating_point.adb:205:27: info: overflow check proved
+floating_point.adb:206:22: info: initialization of "Res" proved
+floating_point.adb:206:22: medium: assertion might fail, requires Res
+floating_point.adb:221:17: info: overflow check proved
+floating_point.adb:221:22: medium: divide by zero might fail
+floating_point.adb:221:22: medium: overflow check might fail
+floating_point.adb:221:27: info: overflow check proved
+floating_point.adb:222:22: info: initialization of "Res" proved
+floating_point.adb:222:22: medium: assertion might fail, requires Res
+floating_point.adb:229:28: medium: overflow check might fail
+floating_point.adb:229:45: medium: overflow check might fail
+floating_point.adb:231:07: info: assertion proved
+floating_point.adb:231:22: info: initialization of "Res" proved
+floating_point.adb:238:37: medium: overflow check might fail
+floating_point.adb:239:16: info: division check proved
+floating_point.adb:239:16: medium: overflow check might fail
+floating_point.adb:240:22: info: initialization of "Res" proved
+floating_point.adb:240:22: medium: assertion might fail, requires Res
+floating_point.adb:247:37: medium: overflow check might fail
+floating_point.adb:248:16: info: division check proved
+floating_point.adb:248:16: medium: overflow check might fail
+floating_point.adb:249:22: info: initialization of "Res" proved
+floating_point.adb:249:22: medium: assertion might fail, requires Res
+floating_point.adb:260:17: medium: overflow check might fail
+floating_point.adb:260:22: medium: overflow check might fail
+floating_point.adb:260:26: medium: overflow check might fail
+floating_point.adb:260:31: medium: overflow check might fail
+floating_point.adb:260:36: medium: overflow check might fail
+floating_point.adb:261:22: info: initialization of "Res" proved
+floating_point.adb:261:22: medium: assertion might fail, requires Res
+floating_point.adb:273:17: info: overflow check proved
+floating_point.adb:273:22: medium: overflow check might fail
+floating_point.adb:273:26: medium: overflow check might fail
+floating_point.adb:273:31: info: overflow check proved
+floating_point.adb:273:36: medium: overflow check might fail
+floating_point.adb:274:22: info: initialization of "Res" proved
+floating_point.adb:274:22: medium: assertion might fail, requires Res
+floating_point.adb:284:17: medium: overflow check might fail
+floating_point.adb:284:24: info: overflow check proved
+floating_point.adb:284:30: medium: overflow check might fail
+floating_point.adb:285:22: info: initialization of "Res" proved
+floating_point.adb:285:22: medium: assertion might fail, requires Res
+floating_point.adb:296:17: medium: overflow check might fail
+floating_point.adb:296:24: info: overflow check proved
+floating_point.adb:296:30: medium: overflow check might fail
+floating_point.adb:297:22: info: initialization of "Res" proved
+floating_point.adb:297:22: medium: assertion might fail, requires Res
+floating_point.adb:307:16: info: overflow check proved
+floating_point.adb:307:20: medium: overflow check might fail
+floating_point.adb:307:24: info: overflow check proved
+floating_point.adb:308:22: info: initialization of "Res" proved
+floating_point.adb:308:22: medium: assertion might fail, requires Res
+floating_point.adb:318:22: info: overflow check proved
+floating_point.adb:318:26: medium: overflow check might fail
+floating_point.adb:318:30: info: overflow check proved
+floating_point.adb:319:22: info: initialization of "Res" proved
+floating_point.adb:319:22: medium: assertion might fail, requires Res
+floating_point.ads:8:39: info: initialization of "Res" proved
+floating_point.ads:11:40: info: initialization of "Res" proved
+floating_point.ads:14:50: info: initialization of "Res" proved
+floating_point.ads:17:44: info: initialization of "Res" proved
+floating_point.ads:20:56: info: initialization of "Res" proved
+floating_point.ads:25:36: info: initialization of "Res" proved
+floating_point.ads:28:52: info: initialization of "Res" proved
+floating_point.ads:53:29: info: initialization of "Res" proved
+floating_point.ads:62:27: info: initialization of "Res" proved
+floating_point.ads:65:27: info: initialization of "Res" proved
+floating_point.ads:68:27: info: initialization of "Res" proved
+floating_point.ads:71:27: info: initialization of "Res" proved
+floating_point.ads:74:27: info: initialization of "Res" proved
+floating_point.ads:77:27: info: initialization of "Res" proved
+floating_point.ads:80:27: info: initialization of "Res" proved
+floating_point.ads:83:27: info: initialization of "Res" proved
+floating_point.ads:86:28: info: initialization of "Res" proved
+floating_point.ads:89:28: info: initialization of "Res" proved
+floating_point.ads:92:28: info: initialization of "Res" proved
+floating_point.ads:95:28: info: initialization of "Res" proved
+floating_point.ads:98:28: info: initialization of "Res" proved
+floating_point.ads:101:28: info: initialization of "Res" proved
+floating_point.ads:104:28: info: initialization of "Res" proved
 nonlinear.adb:10:17: info: overflow check proved
 nonlinear.adb:10:22: info: division check proved
 nonlinear.adb:10:22: info: range check proved
