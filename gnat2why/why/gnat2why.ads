@@ -279,9 +279,21 @@
 --     This label is required for all subprograms that generate VCs. It is
 --     used to easily filter the subprogram in VC selection.
 --
---  "GP_CE_Relevant"
---     This label identifies things that should be included in the
---     counter-example model.
+--  "model"
+--      This label identifies elements that should be included in the
+--      counter-example model.
+--
+--  "model_projected"
+--      This label identifies elements that should be included in the
+--      counter-example model.
+--      Unlike to the label "model", there will be displayed the value of the
+--      element projected using a projection function (specified using the meta
+--      model_projection)
+--
+--  "model_trace:name"
+--      This label specifies the name that will be reported in a
+--      counter-example for this element.
+--      Should be always used together with label "model" or "model_projected"
 
 package Gnat2Why is
 

@@ -252,8 +252,11 @@ ASCII.LF &
 " --limit-line=s     Limit analysis to given file and line" &
 ASCII.LF &
 " --limit-subp=s     Limit analysis to subprogram defined by file and line" &
-  ASCII.LF &
+ASCII.LF &
 " --prover=s[,s]*    Use given provers (s=altergo*, cvc4, ...)" &
+ASCII.LF &
+" --counter-example=on|off Get a counter-example for unproved formula " &
+"(default: off)" &
 ASCII.LF &
 ASCII.LF &
 " * Proof mode values for generation" &
@@ -954,6 +957,11 @@ ASCII.LF;
         (Config,
          Alter_Prover'Access,
          Long_Switch => "--prover=");
+
+      Define_Switch
+        (Config,
+         Counter_Example'Access,
+         Long_Switch => "--counter-example=");
 
       Define_Switch
         (Config, Why3_Config_File'Access,

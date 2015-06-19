@@ -41,10 +41,27 @@ with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Ids;             use Why.Ids;
 with Why.Images;          use Why.Images;
 with Why.Conversions;     use Why.Conversions;
+with Sinput;              use Sinput;
 
 package body Why.Atree.Sprint is
 
    O : Output_Id := Stdout;
+
+   Prev_Slc : Source_Ptr := -1;
+   --  The source code location of the node that was printed before
+   --  the currently printed node
+   Curr_Slc : Source_Ptr := -1;
+   --  The souce code location of currently printed node.
+
+   function Get_Sloc_Tag (File : String; Line : Physical_Line_Number)
+                          return String;
+   --  Get the location tag for the given file and line number.
+
+   procedure Print_Sloc_Tag;
+   --  Print the location tag for currently printed node.
+   --  The tag is printed only if the location of the ada node corresponing
+   --  to the currently printed node is different from the location of the
+   --  ada node corresponding to the previously printed node.
 
    procedure Print_Node (N : Why_Node_Id);
    --  printing function for any node, calls the other functions in this
@@ -128,6 +145,8 @@ package body Why.Atree.Sprint is
 
    procedure Print_Abstract_Expr (Node : W_Abstract_Expr_Id) is
    begin
+      Print_Sloc_Tag;
+
       P (O, "abstract ensures {");
       Print_Node (+Get_Post (Node));
       P (O, "}");
@@ -145,6 +164,8 @@ package body Why.Atree.Sprint is
       Pre     : constant W_Pred_Id := Get_Pre (Node);
       Post    : constant W_Pred_Id := Get_Post (Node);
    begin
+      Print_Sloc_Tag;
+
       P (O, "(any ");
       Print_Node (+Res_Ty);
       NL (O);
@@ -171,6 +192,8 @@ package body Why.Atree.Sprint is
 
    procedure Print_Assert (Node : W_Assert_Id) is
    begin
+      Print_Sloc_Tag;
+
       P (O, Get_Assert_Kind (Node));
       P (O, " { ");
       Print_Node (+Get_Pred (Node));
@@ -183,6 +206,7 @@ package body Why.Atree.Sprint is
 
    procedure Print_Assignment (Node : W_Assignment_Id) is
    begin
+      Print_Sloc_Tag;
       Print_Node (+Get_Name (Node));
       P (O, " := ( ");
       Print_Node (+Get_Value (Node));
@@ -254,6 +278,8 @@ package body Why.Atree.Sprint is
       Binding_Sequence : constant Boolean :=
         Get_Kind (+Context) = W_Binding_Ref;
    begin
+      Print_Sloc_Tag;
+
       P (O, "let ");
       Print_Node (+Get_Name (Node));
       P (O, " = ref (");
@@ -850,6 +876,7 @@ package body Why.Atree.Sprint is
             Print_Node (+Name);
 
             P (O, " ");
+            Print_Sloc_Tag;
             P (O, Get_Labels (Node), As_String => True);
 
             NL (O);
@@ -880,6 +907,7 @@ package body Why.Atree.Sprint is
 
             Print_Node (+Name);
             P (O, " ");
+            Print_Sloc_Tag;
             P (O, Get_Labels (Node), As_String => True);
             Relative_Indent (O, 1);
             NL (O);
@@ -927,6 +955,9 @@ package body Why.Atree.Sprint is
 
             Print_Node (+Name);
 
+            P (O, " ");
+            Print_Sloc_Tag;
+
             NL (O);
             Relative_Indent (O, 1);
 
@@ -957,6 +988,7 @@ package body Why.Atree.Sprint is
       Print_Node (+Get_Name (Node));
 
       P (O, " ");
+      Print_Sloc_Tag;
       P (O, Get_Labels (Node), As_String => True);
 
       P (O, " : ref ");
@@ -1214,12 +1246,45 @@ package body Why.Atree.Sprint is
       PL (O, "end");
    end Print_Namespace_Declaration;
 
+   ------------------
+   -- Get_Sloc_Tag --
+   ------------------
+
+   function Get_Sloc_Tag (File : String; Line : Physical_Line_Number)
+                          return String is
+   begin
+      return "#""" & File & """ " & Physical_Line_Number'Image (Line) &
+        " " &
+        "0" & " " &
+        "0" & "#";
+   end Get_Sloc_Tag;
+
+   --------------------
+   -- Print_Sloc_Tag --
+   --------------------
+
+   procedure Print_Sloc_Tag is
+      File   : constant String := File_Name (Curr_Slc);
+      Line   : constant Physical_Line_Number :=
+        Get_Physical_Line_Number (Curr_Slc);
+   begin
+      if Line /=  Get_Physical_Line_Number (Prev_Slc) or
+        File /= File_Name (Prev_Slc)
+      then
+         P (O, Get_Sloc_Tag (File, Line));
+         P (O, " ");
+      end if;
+   end Print_Sloc_Tag;
+
    ----------------
    -- Print_Node --
    ----------------
 
    procedure Print_Node (N : Why_Node_Id) is
    begin
+      Prev_Slc := Curr_Slc;
+      Curr_Slc := First_Sloc (Get_Ada_Node (N));
+
       case Get_Kind (N) is
          when W_Unused_At_Start =>
             null;
@@ -1437,6 +1502,8 @@ package body Why.Atree.Sprint is
    procedure Print_Raise (Node : W_Raise_Id) is
       Exn_Type : constant W_Type_OId := Get_Exn_Type (Node);
    begin
+      Print_Sloc_Tag;
+
       P (O, "raise ");
 
       Print_Node (+Get_Name (Node));
@@ -1611,6 +1678,8 @@ package body Why.Atree.Sprint is
 
    procedure Print_Try_Block (Node : W_Try_Block_Id) is
    begin
+      Print_Sloc_Tag;
+
       PL (O, "try");
       Relative_Indent (O, 1);
       Print_Node (+Get_Prog (Node));
@@ -1670,6 +1739,7 @@ package body Why.Atree.Sprint is
       Print_Node (+Name);
 
       P (O, " ");
+      Print_Sloc_Tag;
       P (O, Get_Labels (Node));
 
       if Nb_Args > 1 then
@@ -1770,6 +1840,8 @@ package body Why.Atree.Sprint is
       Loop_Content : constant W_Prog_Id := Get_Loop_Content (Node);
 
    begin
+      Print_Sloc_Tag;
+
       P (O, "while ");
       Print_Node (+Condition);
       PL (O, " do");

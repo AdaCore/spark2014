@@ -132,14 +132,15 @@ package body Gnat2Why.Error_Messages is
       -----------------------
 
    procedure Emit_Proof_Result
-     (Node       : Node_Id;
-      Kind       : VC_Kind;
-      Proved     : Boolean;
-      E          : Entity_Id;
-      Extra_Msg  : String := "";
-      Tracefile  : String := "";
-      VC_File    : String := "";
-      Editor_Cmd : String := "") is
+     (Node        : Node_Id;
+      Kind        : VC_Kind;
+      Proved      : Boolean;
+      E           : Entity_Id;
+      Extra_Msg   : String := "";
+      Tracefile   : String := "";
+      Cntexmpfile : String := "";
+      VC_File     : String := "";
+      Editor_Cmd  : String := "") is
       Msg : constant String :=
         (if Proved then Proved_Message (Node, Kind)
          else Not_Proved_Message (Node, Kind)) &
@@ -152,6 +153,7 @@ package body Gnat2Why.Error_Messages is
          To_Tag (Kind),
          Place_First => Locate_On_First_Token (Kind),
          Tracefile   => Tracefile,
+         Cntexmpfile => Cntexmpfile,
          VC_File     => VC_File,
          Editor_Cmd  => Editor_Cmd,
          E           => E);
@@ -355,6 +357,9 @@ package body Gnat2Why.Error_Messages is
          Tracefile : constant String :=
            (if Has_Field (V, "tracefile") then Get (Get (V, "tracefile"))
             else "");
+         Cntexmpfile : constant String :=
+           (if Has_Field (V, "cntexmpfile") then Get (Get (V, "cntexmpfile"))
+            else "");
          VC_File : constant String :=
            (if Has_Field (V, "vc_file") then Get (Get (V, "vc_file"))
             else "");
@@ -368,14 +373,15 @@ package body Gnat2Why.Error_Messages is
          Errout.Error_Msg_String (1 .. Extra_Text'Length) := Extra_Text;
          Errout.Error_Msg_Strlen := Extra_Text'Length;
          Emit_Proof_Result
-           (Node       => Node,
-            Kind       => Kind,
-            Proved     => Proved,
-            E          => VC.Entity,
-            Tracefile  => Tracefile,
-            VC_File    => VC_File,
-            Editor_Cmd => Editor_Cmd,
-            Extra_Msg  => Extra_Msg);
+           (Node        => Node,
+            Kind        => Kind,
+            Proved      => Proved,
+            E           => VC.Entity,
+            Tracefile   => Tracefile,
+            Cntexmpfile => Cntexmpfile,
+            VC_File     => VC_File,
+            Editor_Cmd  => Editor_Cmd,
+            Extra_Msg   => Extra_Msg);
       end Handle_Result;
 
    begin

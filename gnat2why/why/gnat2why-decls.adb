@@ -51,7 +51,12 @@ with Gnat2Why.Expr;       use Gnat2Why.Expr;
 
 package body Gnat2Why.Decls is
 
-   Counter_Example_Label : constant String := "GP_CE_Relevant";
+   Model_Label : constant String := "model";
+   Model_Proj_Label : constant String := "model_projected";
+
+   procedure Add_Counter_Example_Labels (E : Entity_Id;
+                                         Labels : out Name_Id_Sets.Set);
+   --  Add labels relevant for generating counter-example model
 
    function Entity_Relevant_For_Counter_Example (E : Entity_Id) return Boolean
    is (Is_Scalar_Type (Etype (E)))
@@ -120,9 +125,7 @@ package body Gnat2Why.Decls is
 
       --  We generate a "logic", whose axiom will be given in a completion
 
-      if Entity_Relevant_For_Counter_Example (E) then
-         Labels.Include (NID (Counter_Example_Label));
-      end if;
+      Add_Counter_Example_Labels (E, Labels);
 
       Emit (File.Cur_Theory,
             Why.Atree.Builders.New_Function_Decl
@@ -309,6 +312,29 @@ package body Gnat2Why.Decls is
                     Kind => Standalone_Theory);
    end Translate_Loop_Entity;
 
+   --------------------------------
+   -- Add_Counter_Example_Labels --
+   --------------------------------
+
+   procedure Add_Counter_Example_Labels (E : Entity_Id;
+                                         Labels : out Name_Id_Sets.Set) is
+   begin
+      if Entity_Relevant_For_Counter_Example (E) then
+         Labels.Include (NID ("model_trace:" &
+                           Get_Name_String (Chars (E))));
+
+         if SPARK_Util.Has_Discrete_Type (Etype (E)) then
+            --  These types do not need projection, get the value
+            --  of the variable in the counterexample
+            Labels.Include (NID (Model_Label));
+         else
+            --  These types need projection, get the value of
+            --  projeciton function applied to the variable
+            Labels.Include (NID (Model_Proj_Label));
+         end if;
+      end if;
+   end Add_Counter_Example_Labels;
+
    ------------------------
    -- Translate_Variable --
    ------------------------
@@ -328,10 +354,6 @@ package body Gnat2Why.Decls is
                             " defined at " & Build_Location_String (Sloc (E))
                           else "")
                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-      if Entity_Relevant_For_Counter_Example (E) then
-         Labels.Include (NID (Counter_Example_Label));
-      end if;
 
       --  If E is not in SPARK, only declare an object of type __private for
       --  use in effects of program functions in Why3.
@@ -454,15 +476,19 @@ package body Gnat2Why.Decls is
                end;
             end loop;
          when Regular =>
+            begin
+               Add_Counter_Example_Labels (E, Labels);
 
-            --  generate a global ref
+               --  generate a global ref
 
-            Emit
-              (File.Cur_Theory,
-               New_Global_Ref_Declaration
-                 (Name     => To_Local (Var.Main.B_Name),
-                  Labels   => Labels,
-                  Ref_Type => Get_Typ (Var.Main.B_Name)));
+               Emit
+                 (File.Cur_Theory,
+                  New_Global_Ref_Declaration
+                    (Name     => To_Local (Var.Main.B_Name),
+                     Labels   => Labels,
+                     Ref_Type => Get_Typ (Var.Main.B_Name)));
+            end;
+
          when Func =>
             raise Program_Error;
          end case;
@@ -475,7 +501,7 @@ package body Gnat2Why.Decls is
               (Domain      => EW_Term,
                Name        => To_Local (E_Symb (E, WNE_Attr_Address)),
                Binders     => (1 .. 0 => <>),
-               Labels      => Labels,
+               Labels      => Name_Id_Sets.Empty_Set,
                Return_Type => EW_Int_Type));
 
       Close_Theory (File,

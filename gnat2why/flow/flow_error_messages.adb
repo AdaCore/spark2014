@@ -86,6 +86,7 @@ package body Flow_Error_Messages is
       E           : Entity_Id;
       Msg_Id      : Message_Id;
       Tracefile   : String := "";
+      Cntexmpfile : String := "";
       VC_File     : String := "";
       Editor_Cmd  : String := "");
 
@@ -392,6 +393,7 @@ package body Flow_Error_Messages is
       Is_Proved   : Boolean;
       Tag         : String;
       Tracefile   : String;
+      Cntexmpfile : String;
       VC_File     : String;
       Editor_Cmd  : String;
       E           : Entity_Id;
@@ -431,16 +433,17 @@ package body Flow_Error_Messages is
       end case;
 
       Add_Json_Msg
-        (Suppr      => Suppr,
-         Tag        => Tag,
-         Kind       => Kind,
-         Slc        => Slc,
-         Msg_List   => Proof_Msgs,
-         Msg_Id     => Msg_Id,
-         E          => E,
-         Tracefile  => Tracefile,
-         VC_File    => VC_File,
-         Editor_Cmd => Editor_Cmd);
+        (Suppr       => Suppr,
+         Tag         => Tag,
+         Kind        => Kind,
+         Slc         => Slc,
+         Msg_List    => Proof_Msgs,
+         Msg_Id      => Msg_Id,
+         E           => E,
+         Tracefile   => Tracefile,
+         Cntexmpfile => Cntexmpfile,
+         VC_File     => VC_File,
+         Editor_Cmd  => Editor_Cmd);
 
    end Error_Msg_Proof;
 
@@ -525,6 +528,7 @@ package body Flow_Error_Messages is
       E           : Entity_Id;
       Msg_Id      : Message_Id;
       Tracefile   : String := "";
+      Cntexmpfile : String := "";
       VC_File     : String := "";
       Editor_Cmd  : String := "")
    is
@@ -562,6 +566,10 @@ package body Flow_Error_Messages is
 
       if Tracefile /= "" then
          Set_Field (Value, "tracefile", Tracefile);
+      end if;
+
+      if Cntexmpfile /= "" then
+         Set_Field (Value, "cntexmpfile", Cntexmpfile);
       end if;
 
       if VC_File /= "" then

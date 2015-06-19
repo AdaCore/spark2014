@@ -41,13 +41,14 @@ package Gnat2Why.Error_Messages is
    procedure Parse_Why3_Results (S : String);
 
    procedure Emit_Proof_Result
-     (Node       : Node_Id;
-      Kind       : VC_Kind;
-      Proved     : Boolean;
-      E          : Entity_Id;
-      Extra_Msg  : String := "";
-      Tracefile  : String := "";
-      VC_File    : String := "";
-      Editor_Cmd : String := "");
+     (Node        : Node_Id;
+      Kind        : VC_Kind;
+      Proved      : Boolean;
+      E           : Entity_Id;
+      Extra_Msg   : String := "";
+      Tracefile   : String := "";
+      Cntexmpfile : String := "";
+      VC_File     : String := "";
+      Editor_Cmd  : String := "");
 
 end Gnat2Why.Error_Messages;

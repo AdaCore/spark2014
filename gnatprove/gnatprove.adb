@@ -340,13 +340,17 @@ procedure Gnatprove is
                4 => new String'("--proof-dir"),
                5 => new String'(Proof_Dir.all),
                6 => new String'("--why3-conf"),
-               7 => new String'(Gnatwhy3_Conf))
+               7 => new String'(Gnatwhy3_Conf),
+               8 => new String'("--counter-example"),
+               9 => new String'(Counter_Example.all))
             else
               (1 => new String'("--prepare-shared"),
                2 => new String'("--prover"),
                3 => new String'(Alter_Prover.all),
                4 => new String'("--proof-dir"),
-               5 => new String'(Proof_Dir.all)));
+               5 => new String'(Proof_Dir.all),
+               6 => new String'("--counter-example"),
+               7 => new String'(Counter_Example.all)));
          Res : Boolean;
          Old_Dir  : constant String := Current_Directory;
          Gnatwhy3 : constant String := Compose (Libexec_Bin_Dir, "gnatwhy3");
@@ -430,6 +434,9 @@ procedure Gnatprove is
          Args.Append ("--why3-conf");
          Args.Append (Gnatwhy3_Conf);
       end if;
+
+      Args.Append ("--counter-example");
+      Args.Append (Counter_Example.all);
 
       return Args;
    end Compute_Why3_Args;
@@ -788,11 +795,15 @@ procedure Gnatprove is
          --  * macros-quant
          --    expand function definitions, and eliminate quantifiers, making
          --    it possible to return sat on more queries (instead of unknown)
+         --
+         --  * quiet
+         --    decrease verbosity of the output
 
          Command : constant String := CVC4_Binary & " " &
            Common_CVC4_Options &
-           " --macros-quant" &
-           " --finite-model-find";
+           " --macros-quant " &
+           " --finite-model-find " &
+           " --quiet ";
       begin
          Start_Section ("prover");
          if Steps /= 0 then
@@ -806,7 +817,7 @@ procedure Gnatprove is
          end if;
          Put_Keyval ("driver",
                      Ada.Directories.Compose
-                       (Why3_Drivers_Dir, "cvc4_gnatprove.drv"));
+                       (Why3_Drivers_Dir, "cvc4_gnatprove_ce.drv"));
          Put_Keyval ("name", "CVC4_CE");
          Put_Keyval ("shortcut", "cvc4_ce");
          Put_Keyval ("version", "1.5");
