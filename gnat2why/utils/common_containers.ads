@@ -41,7 +41,7 @@ package Common_Containers is
 
    package Node_Lists is new Ada.Containers.Doubly_Linked_Lists (Node_Id);
    --  Standard list of nodes. It is often more convenient to use these,
-   --  compared to List_Id in the GNAT frontend as a Node_Id can be in
+   --  compared to List_Id in the GNAT frontend, as a Node_Id can be in
    --  any number of these lists, while it can be only in one List_Id.
 
    package Entity_Vectors is new Ada.Containers.Vectors
@@ -50,14 +50,14 @@ package Common_Containers is
 
    function Node_Hash (X : Node_Id) return Ada.Containers.Hash_Type
    is (Ada.Containers.Hash_Type (X));
-   --  Compute the hash of a node
+   --  Compute a hash of a node
 
    package Node_Sets is new Ada.Containers.Ordered_Sets
      (Element_Type => Node_Id,
       "<"          => "<",
       "="          => "=");
-   --  Sets of ordered nodes. We prefer ordered nodes instead of hashed nodes,
-   --  as the order in these sets influence the generation of Why code, which
+   --  Sets of ordered nodes. We prefer ordered rather than hashed sets, as the
+   --  order of iterating over them influence the generation of Why code, which
    --  we intend to be as predictable as possible on all machines, to get the
    --  same proof results on all machines when possible.
 
