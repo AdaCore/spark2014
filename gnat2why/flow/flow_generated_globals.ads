@@ -198,13 +198,13 @@ package Flow_Generated_Globals is
    function Preceeds (A, B : Subprogram_Phase_1_Info) return Boolean is
      (A.Name.Id < B.Name.Id);
 
-   package Info_Sets is new Ada.Containers.Ordered_Sets
+   package Subprogram_Info_Sets is new Ada.Containers.Ordered_Sets
      (Element_Type => Subprogram_Phase_1_Info,
       "<"          => Preceeds,
       "="          => "=");
 
-   Info_Set : Info_Sets.Set;
-   --  This set will hold the generated global info of every subprogram
+   Subprogram_Info_Set : Subprogram_Info_Sets.Set;
+   --  Information about subprograms from the "generated globals" algorithm
 
    ----------------------------------------------------------------------
 

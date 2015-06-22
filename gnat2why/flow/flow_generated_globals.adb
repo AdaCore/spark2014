@@ -46,7 +46,7 @@ package body Flow_Generated_Globals is
    --  Debug flags
 
    Debug_Print_Info_Sets_Read : constant Boolean := False;
-   --  Enables printing of Info_Sets as read from ALI files
+   --  Enables printing of Subprogram_Info_Sets as read from ALI files
 
    Debug_Print_Global_Graph   : constant Boolean := True;
    --  Enables printing of the Global_Graph
@@ -311,7 +311,7 @@ package body Flow_Generated_Globals is
       Open_Output_Library_Info;
 
       --  Initialze subprogram info
-      Info_Set              := Info_Sets.Empty_Set;
+      Subprogram_Info_Set   := Subprogram_Info_Sets.Empty_Set;
 
       --  Initialize state info
       State_Info_Set        := State_Info_Sets.Empty_Set;
@@ -430,7 +430,7 @@ package body Flow_Generated_Globals is
       end Process_Volatiles;
 
    begin
-      Info_Set.Insert (SI);
+      Subprogram_Info_Set.Insert (SI);
 
       --  Gather and save volatile variables
       Process_Volatiles (SI.Inputs_Proof);
@@ -468,7 +468,7 @@ package body Flow_Generated_Globals is
       end loop;
 
       --  Write Subprogram/Task/Entry info
-      for Info of Info_Set loop
+      for Info of Subprogram_Info_Set loop
          case Info.Kind is
             when S_Kind =>
                Write_Info_Str ("GG S ");
@@ -580,8 +580,8 @@ package body Flow_Generated_Globals is
       --  exist.
 
       procedure Add_All_Edges;
-      --  Reads the populated Info_Set and generates all the edges of
-      --  the Global_Graph.
+      --  Reads the populated Subprogram_Info_Set and generates all the edges
+      --  of the Global_Graph.
 
       procedure Create_All_Vertices;
       --  Creates all the vertices of the Global_Graph
@@ -595,7 +595,7 @@ package body Flow_Generated_Globals is
 
       procedure Load_GG_Info_From_ALI (ALI_File_Name : File_Name_Type);
       --  Loads the GG info from an ALI file and stores them in the
-      --  Info_Set, State_Info_Set and volatile info sets.
+      --  Subprogram_Info_Set, State_Info_Set and volatile info sets.
       --
       --  The info that we read look as follows:
       --
@@ -644,8 +644,8 @@ package body Flow_Generated_Globals is
       --  Start of Add_All_Edges
 
       begin
-         --  Go through everything in Info_Set and add edges
-         for Info of Info_Set loop
+         --  Go through the Subprogram_Info_Set and add edges
+         for Info of Subprogram_Info_Set loop
             G_Ins       := Global_Id'(Kind => Ins_Kind,
                                       Name => Info.Name);
 
@@ -919,7 +919,7 @@ package body Flow_Generated_Globals is
             return VS;
          end Get_Variable_Neighbours;
       begin
-         for Info of Info_Set loop
+         for Info of Subprogram_Info_Set loop
             declare
                G_Ins       : constant Global_Id :=
                  Global_Id'(Kind => Ins_Kind,
@@ -1324,8 +1324,8 @@ package body Flow_Generated_Globals is
 
                if (for all I in 1 .. 9 => Line_Found (I)) then
                   --  If all lines have been found then we add New_Info to
-                  --  Info_Set and return.
-                  Info_Set.Include (New_Info);
+                  --  Subprogram_Info_Set and return.
+                  Subprogram_Info_Set.Include (New_Info);
                   return;
                end if;
 
@@ -1403,7 +1403,7 @@ package body Flow_Generated_Globals is
 
             for Sub_Called of All_Subs_Called loop
                if GG_Subprograms.Contains (Sub_Called) then
-                  for I of Info_Set loop
+                  for I of Subprogram_Info_Set loop
                      if I.Name = Sub_Called then
                         if not I.Local_Subprograms.Contains (Info.Name)
                         then
@@ -1431,7 +1431,7 @@ package body Flow_Generated_Globals is
       --  Start of Remove_Edges_From_Local_Variables
 
       begin
-         for Info of Info_Set loop
+         for Info of Subprogram_Info_Set loop
             declare
                G_Ins       : constant Global_Id :=
                  Global_Id'(Kind => Ins_Kind,
@@ -1510,14 +1510,14 @@ package body Flow_Generated_Globals is
       Effective_Reads_Vars  := Name_Set.Empty_Set;
       Effective_Writes_Vars := Name_Set.Empty_Set;
 
-      --  Go through all ALI files and populate the Info_Set
+      --  Go through all ALI files and populate the Subprogram_Info_Set
       for Index in ALIs.First .. ALIs.Last loop
          Load_GG_Info_From_ALI (ALIs.Table (Index).Afile);
       end loop;
 
       if Debug_Print_Info_Sets_Read then
          --  Print all GG related info gathered from the ALI files.
-         for Info of Info_Set loop
+         for Info of Subprogram_Info_Set loop
             Write_Eol;
             Print_Subprogram_Phase_1_Info (Info);
          end loop;
@@ -1606,7 +1606,7 @@ package body Flow_Generated_Globals is
    function GG_Exist (E : Entity_Id) return Boolean is
       Name : constant Entity_Name := To_Entity_Name (E);
    begin
-      return (for some Info of Info_Set => Name.Id = Info.Name.Id);
+      return (for some Info of Subprogram_Info_Set => Name.Id = Info.Name.Id);
    end GG_Exist;
 
    -----------------------

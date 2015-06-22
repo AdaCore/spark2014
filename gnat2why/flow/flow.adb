@@ -79,7 +79,7 @@ package body Flow is
    ------------------------------------------------------------
 
    use Flow_Graphs;
-   use Info_Sets;
+   use Subprogram_Info_Sets;
 
    Temp_String : Unbounded_String := Null_Unbounded_String;
 
@@ -107,11 +107,11 @@ package body Flow is
    --  or not in SPARK 2014.
 
    procedure Build_Graphs_For_Compilation_Unit
-     (Compute_Globals : Boolean;
-      FA_Graphs       : out Analysis_Maps.Map;
-      Info_Set        : out Info_Sets.Set)
+     (Compute_Globals     : Boolean;
+      FA_Graphs           : out Analysis_Maps.Map;
+      Subprogram_Info_Set : out Subprogram_Info_Sets.Set)
      with Post => (if not Compute_Globals then
-                     Info_Set = Info_Sets.Empty_Set);
+                     Subprogram_Info_Set = Subprogram_Info_Sets.Empty_Set);
    --  Build all flow graphs for the current compilation unit
 
    function Last_Statement_Is_Raise (E : Entity_Id) return Boolean
@@ -1213,14 +1213,14 @@ package body Flow is
    ---------------------------------------
 
    procedure Build_Graphs_For_Compilation_Unit
-     (Compute_Globals : Boolean;
-      FA_Graphs       : out Analysis_Maps.Map;
-      Info_Set        : out Info_Sets.Set)
+     (Compute_Globals     : Boolean;
+      FA_Graphs           : out Analysis_Maps.Map;
+      Subprogram_Info_Set : out Subprogram_Info_Sets.Set)
    is
       Body_E : Entity_Id;
    begin
-      --  Initialize the Info_Set to the empty set
-      Info_Set := Info_Sets.Empty_Set;
+      --  Initialize the Subprogram_Info_Set to the empty set
+      Subprogram_Info_Set := Subprogram_Info_Sets.Empty_Set;
 
       for E of Entity_Set loop
          case Ekind (E) is
@@ -1293,7 +1293,7 @@ package body Flow is
                                  Local_Variables   => Name_Set.Empty_Set,
                                  Local_Subprograms => Name_Set.Empty_Set);
 
-                              Info_Set.Include (Subprogram_Info);
+                              Subprogram_Info_Set.Include (Subprogram_Info);
                            end;
 
                         else
@@ -1329,7 +1329,7 @@ package body Flow is
                                  Local_Variables   => Name_Set.Empty_Set,
                                  Local_Subprograms => Name_Set.Empty_Set);
 
-                              Info_Set.Include (Subprogram_Info);
+                              Subprogram_Info_Set.Include (Subprogram_Info);
                            end;
                         end if;
                      end;
@@ -1404,7 +1404,7 @@ package body Flow is
 
    procedure Flow_Analyse_CUnit is
       Success : Boolean;
-      Unused  : Info_Sets.Set;
+      Unused  : Subprogram_Info_Sets.Set;
    begin
 
       --  Check that classwide contracts conform to the legality rules laid
@@ -1420,9 +1420,9 @@ package body Flow is
       end loop;
 
       --  Process entities and construct graphs if necessary
-      Build_Graphs_For_Compilation_Unit (Compute_Globals => False,
-                                         FA_Graphs       => FA_Graphs,
-                                         Info_Set        => Unused);
+      Build_Graphs_For_Compilation_Unit (Compute_Globals     => False,
+                                         FA_Graphs           => FA_Graphs,
+                                         Subprogram_Info_Set => Unused);
 
       --  ??? Perform interprocedural analysis
 
@@ -1560,17 +1560,18 @@ package body Flow is
 
    procedure Generate_Flow_Globals (GNAT_Root : Node_Id) is
       pragma Unreferenced (GNAT_Root);
-      Info_Set : Info_Sets.Set;
+      Subprogram_Info_Set : Subprogram_Info_Sets.Set;
    begin
       GG_Write_Initialize;
 
       --  Process entities and construct graphs if necessary
-      Build_Graphs_For_Compilation_Unit (Compute_Globals => True,
-                                         FA_Graphs       => FA_Graphs,
-                                         Info_Set        => Info_Set);
+      Build_Graphs_For_Compilation_Unit
+        (Compute_Globals     => True,
+         FA_Graphs           => FA_Graphs,
+         Subprogram_Info_Set => Subprogram_Info_Set);
 
       --  Consider the subprogram info in case a graph was not created
-      for S of Info_Set loop
+      for S of Subprogram_Info_Set loop
          GG_Write_Subprogram_Info (SI => S);
       end loop;
 
