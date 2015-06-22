@@ -5587,9 +5587,9 @@ package body Flow.Control_Flow_Graph is
    --  Package functions and procedures
    ------------------------------------------------------------
 
-   -------------
+   ------------
    -- Create --
-   -------------
+   ------------
 
    procedure Create (FA : in out Flow_Analysis_Graphs) is
       Connection_Map  : Connection_Maps.Map := Connection_Maps.Empty_Map;
