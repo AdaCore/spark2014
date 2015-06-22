@@ -140,8 +140,8 @@ package body Flow is
       return Ada.Containers.Hash_Type is
       use Ada.Containers;
    begin
-      return 3 * Flow_Graphs.Vertex_Hash (VD.To) + 5 *
-        Flow_Graphs.Vertex_Hash (VD.From);
+      return 3 * Flow_Graphs.Vertex_Hash (VD.To) +
+             5 * Flow_Graphs.Vertex_Hash (VD.From);
    end Vertex_Pair_Hash;
 
    ------------------------
