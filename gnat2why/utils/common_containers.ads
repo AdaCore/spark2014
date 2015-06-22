@@ -96,13 +96,13 @@ package Common_Containers is
    function Name_Hash (E : Entity_Name) return Ada.Containers.Hash_Type is
       (Ada.Containers.Hash_Type (E.Id));
 
-   package Name_Set is new Ada.Containers.Hashed_Sets
+   package Name_Sets is new Ada.Containers.Hashed_Sets
      (Element_Type        => Entity_Name,
       Hash                => Name_Hash,
       Equivalent_Elements => Name_Equal,
       "="                 => Name_Equal);
 
-   package Name_Map is new Ada.Containers.Hashed_Maps
+   package Name_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Name,
       Element_Type    => Entity_Name,
       Hash            => Name_Hash,

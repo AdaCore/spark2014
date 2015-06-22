@@ -172,28 +172,28 @@ package Flow_Generated_Globals is
       Name              : Entity_Name;
       Kind              : Info_Kind;
       Globals_Origin    : Globals_Origin_T;
-      Inputs_Proof      : Name_Set.Set;
-      Inputs            : Name_Set.Set;
-      Outputs           : Name_Set.Set;
-      Proof_Calls       : Name_Set.Set;
-      Definite_Calls    : Name_Set.Set;
-      Conditional_Calls : Name_Set.Set;
-      Local_Variables   : Name_Set.Set;
-      Local_Subprograms : Name_Set.Set;
+      Inputs_Proof      : Name_Sets.Set;
+      Inputs            : Name_Sets.Set;
+      Outputs           : Name_Sets.Set;
+      Proof_Calls       : Name_Sets.Set;
+      Definite_Calls    : Name_Sets.Set;
+      Conditional_Calls : Name_Sets.Set;
+      Local_Variables   : Name_Sets.Set;
+      Local_Subprograms : Name_Sets.Set;
    end record;
 
    Null_Subprogram_Info : constant Subprogram_Phase_1_Info :=
      Subprogram_Phase_1_Info'(Name              => Null_Entity_Name,
                               Kind              => Undef,
                               Globals_Origin    => NO,
-                              Inputs_Proof      => Name_Set.Empty_Set,
-                              Inputs            => Name_Set.Empty_Set,
-                              Outputs           => Name_Set.Empty_Set,
-                              Proof_Calls       => Name_Set.Empty_Set,
-                              Definite_Calls    => Name_Set.Empty_Set,
-                              Conditional_Calls => Name_Set.Empty_Set,
-                              Local_Variables   => Name_Set.Empty_Set,
-                              Local_Subprograms => Name_Set.Empty_Set);
+                              Inputs_Proof      => Name_Sets.Empty_Set,
+                              Inputs            => Name_Sets.Empty_Set,
+                              Outputs           => Name_Sets.Empty_Set,
+                              Proof_Calls       => Name_Sets.Empty_Set,
+                              Definite_Calls    => Name_Sets.Empty_Set,
+                              Conditional_Calls => Name_Sets.Empty_Set,
+                              Local_Variables   => Name_Sets.Empty_Set,
+                              Local_Subprograms => Name_Sets.Empty_Set);
 
    function Preceeds (A, B : Subprogram_Phase_1_Info) return Boolean is
      (A.Name.Id < B.Name.Id);
@@ -208,7 +208,7 @@ package Flow_Generated_Globals is
 
    ----------------------------------------------------------------------
 
-   function To_Name_Set (S : Node_Sets.Set) return Name_Set.Set;
+   function To_Name_Set (S : Node_Sets.Set) return Name_Sets.Set;
    --  Takes a set of Node_Ids and returns a set of Entity_Names
 
    function GG_Mode return GG_Mode_T;
@@ -277,7 +277,7 @@ package Flow_Generated_Globals is
    --  Returns true if E is a constituent of some state abstraction
    --  that we loaded while reading the ALI files.
 
-   function GG_Get_Constituents (EN : Entity_Name) return Name_Set.Set
+   function GG_Get_Constituents (EN : Entity_Name) return Name_Sets.Set
    with Pre => GG_Mode = GG_Read_Mode;
    --  Returns the set of direct constituents of a state abstraction
    --  or an Empty_Set if they do not exist.
@@ -287,7 +287,7 @@ package Flow_Generated_Globals is
    --  Returns the Entity_Name of the directly enclosing state. If one
    --  does not exist it returns Null_Entity_Name.
 
-   function GG_Fully_Refine (EN : Entity_Name) return Name_Set.Set
+   function GG_Fully_Refine (EN : Entity_Name) return Name_Sets.Set
    with Pre => GG_Mode = GG_Read_Mode and then
                GG_Has_Refinement (EN);
    --  Returns the most refined constituents of state abstraction EN
@@ -334,7 +334,7 @@ package Flow_Generated_Globals is
                GG_Exist (E);
    --  Returns the set of all variables written
 
-   function GG_Get_All_State_Abstractions return Name_Set.Set
+   function GG_Get_All_State_Abstractions return Name_Sets.Set
    with Pre => GG_Mode = GG_Read_Mode;
    --  @return a set of Entity_Names with all the state abstractions
    --    that the Generated Globals know of.

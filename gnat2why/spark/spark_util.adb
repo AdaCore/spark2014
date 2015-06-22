@@ -1320,7 +1320,7 @@ package body SPARK_Util is
 
          Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
          Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
-         Write_Names : Name_Set.Set;
+         Write_Names : Name_Sets.Set;
 
       begin
          --  Consider output parameters

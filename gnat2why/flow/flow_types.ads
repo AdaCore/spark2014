@@ -419,7 +419,7 @@ package Flow_Types is
    --  Convert a set containing flattened records into a set
    --  containing only entire variables.
 
-   function To_Name_Set (S : Flow_Id_Sets.Set) return Name_Set.Set;
+   function To_Name_Set (S : Flow_Id_Sets.Set) return Name_Sets.Set;
    --  Convert a flow id set to a name set. Any record fields are
    --  changed into entire variables.
 

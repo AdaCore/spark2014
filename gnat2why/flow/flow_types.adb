@@ -800,8 +800,8 @@ package body Flow_Types is
    -- To_Name_Set --
    -----------------
 
-   function To_Name_Set (S : Flow_Id_Sets.Set) return Name_Set.Set is
-      N : Name_Set.Set := Name_Set.Empty_Set;
+   function To_Name_Set (S : Flow_Id_Sets.Set) return Name_Sets.Set is
+      N : Name_Sets.Set := Name_Sets.Empty_Set;
    begin
       for X of S loop
          case X.Kind is

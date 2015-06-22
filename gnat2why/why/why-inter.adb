@@ -263,7 +263,7 @@ package body Why.Inter is
    ------------------------
 
    procedure Add_Effect_Imports (T : W_Theory_Declaration_Id;
-                                 S : Name_Set.Set)
+                                 S : Name_Sets.Set)
    is
    begin
       for Var of S loop
@@ -284,7 +284,7 @@ package body Why.Inter is
    ------------------------
 
    procedure Add_Effect_Imports (P : Why_Section;
-                                 S : Name_Set.Set)
+                                 S : Name_Sets.Set)
    is
    begin
       Add_Effect_Imports (P.Cur_Theory, S);

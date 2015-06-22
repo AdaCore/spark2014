@@ -1287,11 +1287,11 @@ package body Flow is
                                  Inputs_Proof      => To_Name_Set (Proof_Ins),
                                  Inputs            => To_Name_Set (Reads),
                                  Outputs           => To_Name_Set (Writes),
-                                 Proof_Calls       => Name_Set.Empty_Set,
-                                 Definite_Calls    => Name_Set.Empty_Set,
-                                 Conditional_Calls => Name_Set.Empty_Set,
-                                 Local_Variables   => Name_Set.Empty_Set,
-                                 Local_Subprograms => Name_Set.Empty_Set);
+                                 Proof_Calls       => Name_Sets.Empty_Set,
+                                 Definite_Calls    => Name_Sets.Empty_Set,
+                                 Conditional_Calls => Name_Sets.Empty_Set,
+                                 Local_Variables   => Name_Sets.Empty_Set,
+                                 Local_Subprograms => Name_Sets.Empty_Set);
 
                               Subprogram_Info_Set.Include (Subprogram_Info);
                            end;
@@ -1300,9 +1300,9 @@ package body Flow is
                            --  Use (Yannick's) Computed Globals info
                            --  to add a GG entry to the ALI file.
                            declare
-                              Reads           : Name_Set.Set;
-                              Writes          : Name_Set.Set;
-                              Calls           : Name_Set.Set;
+                              Reads           : Name_Sets.Set;
+                              Writes          : Name_Sets.Set;
+                              Calls           : Name_Sets.Set;
                               Subprogram_Info : Subprogram_Phase_1_Info;
                            begin
                               --  Collect the computed globals using
@@ -1320,14 +1320,14 @@ package body Flow is
                                     then S_Kind
                                     else T_Kind),
                                  Globals_Origin    => XR,
-                                 Inputs_Proof      => Name_Set.Empty_Set,
+                                 Inputs_Proof      => Name_Sets.Empty_Set,
                                  Inputs            => Reads,
                                  Outputs           => Writes,
-                                 Proof_Calls       => Name_Set.Empty_Set,
-                                 Definite_Calls    => Name_Set.Empty_Set,
+                                 Proof_Calls       => Name_Sets.Empty_Set,
+                                 Definite_Calls    => Name_Sets.Empty_Set,
                                  Conditional_Calls => Calls,
-                                 Local_Variables   => Name_Set.Empty_Set,
-                                 Local_Subprograms => Name_Set.Empty_Set);
+                                 Local_Variables   => Name_Sets.Empty_Set,
+                                 Local_Subprograms => Name_Sets.Empty_Set);
 
                               Subprogram_Info_Set.Include (Subprogram_Info);
                            end;

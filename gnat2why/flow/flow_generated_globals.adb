@@ -54,13 +54,13 @@ package body Flow_Generated_Globals is
    ----------------------------------------------------------------------
 
    use type Flow_Id_Sets.Set;
-   use type Name_Set.Set;
+   use type Name_Sets.Set;
 
    ----------------------------------------------------------------------
 
    type State_Phase_1_Info is record
       State        : Entity_Name;
-      Constituents : Name_Set.Set;
+      Constituents : Name_Sets.Set;
    end record;
 
    function Preceeds (A, B : State_Phase_1_Info) return Boolean is
@@ -77,11 +77,11 @@ package body Flow_Generated_Globals is
    --  Volatile information
    ----------------------------------------------------------------------
 
-   All_Volatile_Vars     : Name_Set.Set;
-   Async_Writers_Vars    : Name_Set.Set;
-   Async_Readers_Vars    : Name_Set.Set;
-   Effective_Reads_Vars  : Name_Set.Set;
-   Effective_Writes_Vars : Name_Set.Set;
+   All_Volatile_Vars     : Name_Sets.Set;
+   Async_Writers_Vars    : Name_Sets.Set;
+   Async_Readers_Vars    : Name_Sets.Set;
+   Effective_Reads_Vars  : Name_Sets.Set;
+   Effective_Writes_Vars : Name_Sets.Set;
 
    ----------------------------------------------------------------------
    --  Global_Id
@@ -150,8 +150,8 @@ package body Flow_Generated_Globals is
    -- To_Name_Set --
    -----------------
 
-   function To_Name_Set (S : Node_Sets.Set) return Name_Set.Set is
-      Rv : Name_Set.Set := Name_Set.Empty_Set;
+   function To_Name_Set (S : Node_Sets.Set) return Name_Sets.Set is
+      Rv : Name_Sets.Set := Name_Sets.Empty_Set;
    begin
       for E of S loop
          Rv.Insert (To_Entity_Name (E));
@@ -317,11 +317,11 @@ package body Flow_Generated_Globals is
       State_Info_Set        := State_Info_Sets.Empty_Set;
 
       --  Initialize volatile info
-      All_Volatile_Vars     := Name_Set.Empty_Set;
-      Async_Writers_Vars    := Name_Set.Empty_Set;
-      Async_Readers_Vars    := Name_Set.Empty_Set;
-      Effective_Reads_Vars  := Name_Set.Empty_Set;
-      Effective_Writes_Vars := Name_Set.Empty_Set;
+      All_Volatile_Vars     := Name_Sets.Empty_Set;
+      Async_Writers_Vars    := Name_Sets.Empty_Set;
+      Async_Readers_Vars    := Name_Sets.Empty_Set;
+      Effective_Reads_Vars  := Name_Sets.Empty_Set;
+      Effective_Writes_Vars := Name_Sets.Empty_Set;
 
       --  Set mode to writing mode
       Current_Mode := GG_Write_Mode;
@@ -340,7 +340,7 @@ package body Flow_Generated_Globals is
             State_N      : constant Entity_Name :=
               To_Entity_Name (Get_Direct_Mapping_Id (State_F));
 
-            Constituents : constant Name_Set.Set :=
+            Constituents : constant Name_Sets.Set :=
               To_Name_Set (To_Node_Set (Dependency_Maps.Element (S)));
 
             State_Info   : constant State_Phase_1_Info :=
@@ -384,7 +384,7 @@ package body Flow_Generated_Globals is
    ------------------------------
 
    procedure GG_Write_Subprogram_Info (SI : Subprogram_Phase_1_Info) is
-      procedure Process_Volatiles (S : Name_Set.Set);
+      procedure Process_Volatiles (S : Name_Sets.Set);
       --  Goes through S, finds volatiles and stores them in the appropriate
       --  sets based on their properties.
 
@@ -392,7 +392,7 @@ package body Flow_Generated_Globals is
       -- Processs_Volatiles --
       ------------------------
 
-      procedure Process_Volatiles (S : Name_Set.Set) is
+      procedure Process_Volatiles (S : Name_Sets.Set) is
          E : Entity_Id;
          F : Flow_Id;
       begin
@@ -444,13 +444,13 @@ package body Flow_Generated_Globals is
    -----------------------
 
    procedure GG_Write_Finalize is
-      procedure Write_Name_Set (S : Name_Set.Set);
+      procedure Write_Name_Set (S : Name_Sets.Set);
 
       --------------------
       -- Write_Name_Set --
       --------------------
 
-      procedure Write_Name_Set (S : Name_Set.Set)
+      procedure Write_Name_Set (S : Name_Sets.Set)
       is
       begin
          for N of S loop
@@ -565,17 +565,17 @@ package body Flow_Generated_Globals is
    -------------
 
    procedure GG_Read (GNAT_Root : Node_Id) is
-      All_Globals           : Name_Set.Set := Name_Set.Empty_Set;
+      All_Globals           : Name_Sets.Set := Name_Sets.Empty_Set;
       --  Contains all global variables
 
-      GG_Subprograms        : Name_Set.Set := Name_Set.Empty_Set;
+      GG_Subprograms        : Name_Sets.Set := Name_Sets.Empty_Set;
       --  Contains all subprograms for which a GG entry exists
 
-      All_Subprograms       : Name_Set.Set := Name_Set.Empty_Set;
+      All_Subprograms       : Name_Sets.Set := Name_Sets.Empty_Set;
       --  Contains all subprograms that we know of, even if a
       --  GG entry does not exist for them.
 
-      All_Other_Subprograms : Name_Set.Set := Name_Set.Empty_Set;
+      All_Other_Subprograms : Name_Sets.Set := Name_Sets.Empty_Set;
       --  Contains all subprograms for which a GG entry does not
       --  exist.
 
@@ -1014,7 +1014,7 @@ package body Flow_Generated_Globals is
             procedure Check_GG_Format;
             --  Checks if the line start with "GG "
 
-            function Get_Names_From_Line return Name_Set.Set;
+            function Get_Names_From_Line return Name_Sets.Set;
             --  Returns a set of all names appearing in a line
 
             ---------------------
@@ -1037,8 +1037,8 @@ package body Flow_Generated_Globals is
             -- Get_Names_From_Line --
             -------------------------
 
-            function Get_Names_From_Line return Name_Set.Set is
-               Names_In_Line : Name_Set.Set := Name_Set.Empty_Set;
+            function Get_Names_From_Line return Name_Sets.Set is
+               Names_In_Line : Name_Sets.Set := Name_Sets.Empty_Set;
                Start_Of_Word : Natural      := 7;
                End_Of_Word   : Natural;
             begin
@@ -1087,7 +1087,7 @@ package body Flow_Generated_Globals is
             then
                declare
                   State         : Entity_Name;
-                  Constituents  : Name_Set.Set := Get_Names_From_Line;
+                  Constituents  : Name_Sets.Set := Get_Names_From_Line;
                   Start_Of_Word : constant Natural := 7;
                   End_Of_Word   : Natural := 7;
                begin
@@ -1389,8 +1389,8 @@ package body Flow_Generated_Globals is
          is
             G                   : Global_Id;
             VS                  : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
-            All_Subs_Called     : Name_Set.Set    := Name_Set.Empty_Set;
-            All_Local_Variables : Name_Set.Set    := Info.Local_Variables;
+            All_Subs_Called     : Name_Sets.Set    := Name_Sets.Empty_Set;
+            All_Local_Variables : Name_Sets.Set    := Info.Local_Variables;
          begin
             for V of Global_Graph.Get_Collection (Start, Out_Neighbours) loop
                if Global_Graph.Get_Key (V).Kind in Proof_Ins_Kind |
@@ -1466,7 +1466,7 @@ package body Flow_Generated_Globals is
       ---------------------------------------------
 
       procedure Remove_Constants_Without_Variable_Input is
-         All_Constants : Name_Set.Set  := Name_Set.Empty_Set;
+         All_Constants : Name_Sets.Set  := Name_Sets.Empty_Set;
       begin
          --  Gather up all constants without variable input
          for Glob of All_Globals loop
@@ -1504,11 +1504,11 @@ package body Flow_Generated_Globals is
       Current_Mode := GG_Read_Mode;
 
       --  Initialize volatile info
-      All_Volatile_Vars     := Name_Set.Empty_Set;
-      Async_Writers_Vars    := Name_Set.Empty_Set;
-      Async_Readers_Vars    := Name_Set.Empty_Set;
-      Effective_Reads_Vars  := Name_Set.Empty_Set;
-      Effective_Writes_Vars := Name_Set.Empty_Set;
+      All_Volatile_Vars     := Name_Sets.Empty_Set;
+      Async_Writers_Vars    := Name_Sets.Empty_Set;
+      Async_Readers_Vars    := Name_Sets.Empty_Set;
+      Effective_Reads_Vars  := Name_Sets.Empty_Set;
+      Effective_Writes_Vars := Name_Sets.Empty_Set;
 
       --  Go through all ALI files and populate the Subprogram_Info_Set
       for Index in ALIs.First .. ALIs.Last loop
@@ -1632,7 +1632,7 @@ package body Flow_Generated_Globals is
    -- GG_Get_Constituents --
    -------------------------
 
-   function GG_Get_Constituents (EN : Entity_Name) return Name_Set.Set is
+   function GG_Get_Constituents (EN : Entity_Name) return Name_Sets.Set is
    begin
       for S of State_Info_Set loop
          if S.State.Id = EN.Id then
@@ -1640,7 +1640,7 @@ package body Flow_Generated_Globals is
          end if;
       end loop;
 
-      return Name_Set.Empty_Set;
+      return Name_Sets.Empty_Set;
    end GG_Get_Constituents;
 
    ------------------------
@@ -1664,8 +1664,8 @@ package body Flow_Generated_Globals is
    -- GG_Fully_Refine --
    ---------------------
 
-   function GG_Fully_Refine (EN : Entity_Name) return Name_Set.Set is
-      NS       : Name_Set.Set;
+   function GG_Fully_Refine (EN : Entity_Name) return Name_Sets.Set is
+      NS       : Name_Sets.Set;
       Tmp_Name : Entity_Name;
    begin
       NS := GG_Get_Constituents (EN);
@@ -1698,9 +1698,9 @@ package body Flow_Generated_Globals is
                              Reads       : out Flow_Id_Sets.Set;
                              Writes      : out Flow_Id_Sets.Set)
    is
-      MR_Proof_Reads  : Name_Set.Set := Name_Set.Empty_Set;
-      MR_Reads        : Name_Set.Set := Name_Set.Empty_Set;
-      MR_Writes       : Name_Set.Set := Name_Set.Empty_Set;
+      MR_Proof_Reads  : Name_Sets.Set := Name_Sets.Empty_Set;
+      MR_Reads        : Name_Sets.Set := Name_Sets.Empty_Set;
+      MR_Writes       : Name_Sets.Set := Name_Sets.Empty_Set;
       --  The above 3 sets will contain the most refined views of
       --  their respective globals.
 
@@ -1730,8 +1730,8 @@ package body Flow_Generated_Globals is
       --  Outs and Proof_Ins.
 
       procedure Up_Project
-        (Most_Refined      : Name_Set.Set;
-         Final_View        : out Name_Set.Set;
+        (Most_Refined      : Name_Sets.Set;
+         Final_View        : out Name_Sets.Set;
          Processing_Writes : Boolean := False);
       --  Distinguishes between simple vars and constituents. For
       --  constituents, it checks if they are visible and if they are
@@ -1746,14 +1746,14 @@ package body Flow_Generated_Globals is
       ----------------
 
       procedure Up_Project
-        (Most_Refined      : Name_Set.Set;
-         Final_View        : out Name_Set.Set;
+        (Most_Refined      : Name_Sets.Set;
+         Final_View        : out Name_Sets.Set;
          Processing_Writes : Boolean := False)
       is
-         Abstract_States : Name_Set.Set := Name_Set.Empty_Set;
+         Abstract_States : Name_Sets.Set := Name_Sets.Empty_Set;
       begin
          --  Initializing Final_View to empty
-         Final_View := Name_Set.Empty_Set;
+         Final_View := Name_Sets.Empty_Set;
 
          for N of Most_Refined loop
             if GG_Enclosing_State (N) /= Null_Entity_Name and then
@@ -1812,7 +1812,7 @@ package body Flow_Generated_Globals is
          if Processing_Writes then
             for AS of Abstract_States loop
                declare
-                  Constituents : constant Name_Set.Set :=
+                  Constituents : constant Name_Sets.Set :=
                     GG_Fully_Refine (AS);
                begin
                   if not (for all C of Constituents =>
@@ -1833,7 +1833,7 @@ package body Flow_Generated_Globals is
 
       --  Calculate MR_Proof_Reads, MR_Reads and MR_Writes
       declare
-         function Calculate_MR (Start : Vertex_Id) return Name_Set.Set;
+         function Calculate_MR (Start : Vertex_Id) return Name_Sets.Set;
          --  Returns a set of all vertices that can be reached from
          --  Start and are of the Variable_Kind.
 
@@ -1841,8 +1841,8 @@ package body Flow_Generated_Globals is
          -- Calculate_MR --
          ------------------
 
-         function Calculate_MR (Start : Vertex_Id) return Name_Set.Set is
-            NS : Name_Set.Set := Name_Set.Empty_Set;
+         function Calculate_MR (Start : Vertex_Id) return Name_Sets.Set is
+            NS : Name_Sets.Set := Name_Sets.Empty_Set;
             G  : Global_Id;
          begin
             for V of Global_Graph.Get_Collection (Start, Out_Neighbours) loop
@@ -1865,10 +1865,10 @@ package body Flow_Generated_Globals is
       --  Up project variables based on scope S and give Flow_Ids
       --  their correct views.
       declare
-         Temp_NS : Name_Set.Set;
+         Temp_NS : Name_Sets.Set;
 
          function To_Flow_Id_Set
-           (NS   : Name_Set.Set;
+           (NS   : Name_Sets.Set;
             View : Parameter_Variant)
             return Flow_Id_Sets.Set;
          --  Takes a Name_Set and returns a set of Flow_Id_Set
@@ -1878,7 +1878,7 @@ package body Flow_Generated_Globals is
          --------------------
 
          function To_Flow_Id_Set
-           (NS   : Name_Set.Set;
+           (NS   : Name_Sets.Set;
             View : Parameter_Variant)
             return Flow_Id_Sets.Set
          is
@@ -1984,8 +1984,8 @@ package body Flow_Generated_Globals is
    -- GG_Get_All_State_Abstractions --
    -----------------------------------
 
-   function GG_Get_All_State_Abstractions return Name_Set.Set is
-      Tmp : Name_Set.Set := Name_Set.Empty_Set;
+   function GG_Get_All_State_Abstractions return Name_Sets.Set is
+      Tmp : Name_Sets.Set := Name_Sets.Empty_Set;
    begin
       for S of State_Info_Set loop
          Tmp.Include (S.State);

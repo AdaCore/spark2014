@@ -88,7 +88,7 @@ package Why.Inter is
    --  added too.
 
    procedure Add_Effect_Imports (P : Why_Section;
-                                 S : Name_Set.Set);
+                                 S : Name_Sets.Set);
 
    procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
                               Module   : W_Module_Id;
@@ -101,7 +101,7 @@ package Why.Inter is
                               Th_Type  : EW_Theory_Type := EW_Module);
 
    procedure Add_Effect_Imports (T : W_Theory_Declaration_Id;
-                                 S : Name_Set.Set);
+                                 S : Name_Sets.Set);
    --  Add all import clauses that are necessary for the given set of variables
 
    function Dispatch_Entity (E : Entity_Id) return Why_Section_Enum;

@@ -2009,10 +2009,10 @@ package body Flow_Utility is
             --  We exclude constants here, since any *analyzed* spark
             --  program (as opposed to called programs) will have the new
             --  generated globals. To be revisited in M314-013.
-            ALI_Reads  : constant Name_Set.Set :=
+            ALI_Reads  : constant Name_Sets.Set :=
               Get_Generated_Reads (Subprogram,
                                    Include_Constants => False);
-            ALI_Writes : constant Name_Set.Set :=
+            ALI_Writes : constant Name_Sets.Set :=
               Get_Generated_Writes (Subprogram);
 
             F : Flow_Id;

@@ -100,7 +100,7 @@ package body SPARK_Frame_Conditions is
    Scopes       : Id_Set.Set;  --  All scope entities
    Constants    : Id_Set.Set;  --  All constants
 
-   File_Defines : Name_Map.Map;  --  File defining each entities
+   File_Defines : Name_Maps.Map;  --  File defining each entities
    Defines      : Id_Map.Map;  --  Entities defined by each scope
    Writes       : Id_Map.Map;  --  Entities written in each scope
    Reads        : Id_Map.Map;  --  Entities read in each scope
@@ -141,10 +141,10 @@ package body SPARK_Frame_Conditions is
    --  Make sure each element in Set has an entry in Map. If not already
    --  present, add one which maps the element to the empty set.
 
-   function To_Names (Ids : Id_Set.Set) return Name_Set.Set;
+   function To_Names (Ids : Id_Set.Set) return Name_Sets.Set;
    --  Convert set of identities to set of names
 
-   function To_Ids (Names : Name_Set.Set) return Id_Set.Set;
+   function To_Ids (Names : Name_Sets.Set) return Id_Set.Set;
    --  Convert set of names to set of ids
 
    ----------------
@@ -517,10 +517,10 @@ package body SPARK_Frame_Conditions is
          for Elt of S loop
             if not Constants.Contains (Elt) then
                declare
-                  C : constant Name_Set.Cursor :=
+                  C : constant Name_Sets.Cursor :=
                     Translated_Object_Entities.Find (Elt);
                begin
-                  if not (Name_Set.Has_Element (C)) then
+                  if not (Name_Sets.Has_Element (C)) then
                      Process (Elt);
                   end if;
                end;
@@ -573,7 +573,7 @@ package body SPARK_Frame_Conditions is
 
    function Get_Generated_Reads
      (E                 : Entity_Id;
-      Include_Constants : Boolean) return Name_Set.Set
+      Include_Constants : Boolean) return Name_Sets.Set
    is
       E_Alias  : constant Entity_Id :=
         (if Present (Alias (E)) then Ultimate_Alias (E) else E);
@@ -585,7 +585,7 @@ package body SPARK_Frame_Conditions is
       --  those, which do not have effects, instead return the empty set.
 
       if Is_Abstract_Subprogram (E_Alias) then
-         return Name_Set.Empty_Set;
+         return Name_Sets.Empty_Set;
       end if;
 
       Read_Ids := Reads.Element (E_Name);
@@ -601,7 +601,7 @@ package body SPARK_Frame_Conditions is
             raise Constraint_Error with
               ("missing effects for subprogram " & E_Name.S.all);
          else
-            return Name_Set.Empty_Set;
+            return Name_Sets.Empty_Set;
          end if;
    end Get_Generated_Reads;
 
@@ -609,7 +609,7 @@ package body SPARK_Frame_Conditions is
    -- Get_Generated_Writes --
    --------------------------
 
-   function Get_Generated_Writes (E : Entity_Id) return Name_Set.Set is
+   function Get_Generated_Writes (E : Entity_Id) return Name_Sets.Set is
       E_Alias   : constant Entity_Id :=
         (if Present (Alias (E)) then Ultimate_Alias (E) else E);
       E_Name    : constant Entity_Name    := To_Entity_Name (E_Alias);
@@ -620,7 +620,7 @@ package body SPARK_Frame_Conditions is
       --  those, which do not have effects, instead return the empty set.
 
       if Is_Abstract_Subprogram (E_Alias) then
-         return Name_Set.Empty_Set;
+         return Name_Sets.Empty_Set;
       end if;
 
       --  Go through the reads and check if the entities corresponding to
@@ -649,7 +649,7 @@ package body SPARK_Frame_Conditions is
             raise Constraint_Error with
               ("missing effects for subprogram " & E_Name.S.all);
          else
-            return Name_Set.Empty_Set;
+            return Name_Sets.Empty_Set;
          end if;
    end Get_Generated_Writes;
 
@@ -1308,9 +1308,9 @@ package body SPARK_Frame_Conditions is
 
    procedure Collect_Current_Computed_Globals
      (E                  : Entity_Id;
-      Inputs             : out Name_Set.Set;
-      Outputs            : out Name_Set.Set;
-      Called_Subprograms : out Name_Set.Set)
+      Inputs             : out Name_Sets.Set;
+      Outputs            : out Name_Sets.Set;
+      Called_Subprograms : out Name_Sets.Set)
    is
       E_Alias : Entity_Id;
       E_Name  : Entity_Name;
@@ -1318,9 +1318,9 @@ package body SPARK_Frame_Conditions is
    begin
 
       --  Initialize to empty sets
-      Inputs             := Name_Set.Empty_Set;
-      Outputs            := Name_Set.Empty_Set;
-      Called_Subprograms := Name_Set.Empty_Set;
+      Inputs             := Name_Sets.Empty_Set;
+      Outputs            := Name_Sets.Empty_Set;
+      Called_Subprograms := Name_Sets.Empty_Set;
 
       --  ??? O429-046, O603-033 Task types, entries and Abstract subprograms
       --  not yet supported. Avoid issuing an error on those, instead return
@@ -1360,8 +1360,8 @@ package body SPARK_Frame_Conditions is
    -- To_Names --
    --------------
 
-   function To_Names (Ids : Id_Set.Set) return Name_Set.Set is
-      Names : Name_Set.Set;
+   function To_Names (Ids : Id_Set.Set) return Name_Sets.Set is
+      Names : Name_Sets.Set;
       C : Id_Set.Cursor;
    begin
       C := Ids.First;
@@ -1376,12 +1376,12 @@ package body SPARK_Frame_Conditions is
    -- To_Ids --
    ------------
 
-   function To_Ids (Names : Name_Set.Set) return Id_Set.Set is
+   function To_Ids (Names : Name_Sets.Set) return Id_Set.Set is
       Ids : Id_Set.Set;
-      C : Name_Set.Cursor;
+      C : Name_Sets.Cursor;
    begin
       C := Names.First;
-      while C /= Name_Set.No_Element loop
+      while C /= Name_Sets.No_Element loop
          Ids.Include (Element (C));
          Next (C);
       end loop;

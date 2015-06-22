@@ -203,8 +203,8 @@ package body Gnat2Why.Subprograms is
    is
       Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
       Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
-      Read_Names  : Name_Set.Set;
-      Write_Names : Name_Set.Set;
+      Read_Names  : Name_Sets.Set;
+      Write_Names : Name_Sets.Set;
    begin
       --  Collect global variables potentially read and written
 
@@ -494,7 +494,7 @@ package body Gnat2Why.Subprograms is
       declare
          Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
          Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
-         Write_Names : Name_Set.Set;
+         Write_Names : Name_Sets.Set;
       begin
          Flow_Utility.Get_Proof_Globals (Subprogram => E,
                                          Classwide  => True,
@@ -546,8 +546,8 @@ package body Gnat2Why.Subprograms is
    is
       Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
       Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
-      Read_Names  : Name_Set.Set;
-      Write_Names : Name_Set.Set;
+      Read_Names  : Name_Sets.Set;
+      Write_Names : Name_Sets.Set;
       Eff         : constant W_Effects_Id := New_Effects;
 
       generic
@@ -787,7 +787,7 @@ package body Gnat2Why.Subprograms is
 
       Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
       Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
-      Read_Names  : Name_Set.Set;
+      Read_Names  : Name_Sets.Set;
 
    begin
       --  Collect global variables potentially read

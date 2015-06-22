@@ -42,10 +42,10 @@ with Types;                      use Types;
 
 package SPARK_Frame_Conditions is
 
-   use Name_Set;
-   use Name_Map;
+   use Name_Sets;
+   use Name_Maps;
 
-   Translated_Object_Entities : Name_Set.Set := Name_Set.Empty_Set;
+   Translated_Object_Entities : Name_Sets.Set := Name_Sets.Empty_Set;
    --  Is filled by gnat2why-driver.adb, and represents all object entities
    --  that are actually translated to Why
 
@@ -76,12 +76,12 @@ package SPARK_Frame_Conditions is
 
    function Get_Generated_Reads
      (E                 : Entity_Id;
-      Include_Constants : Boolean) return Name_Set.Set;
+      Include_Constants : Boolean) return Name_Sets.Set;
    --  Get the variables read by subprogram E. Include_Constants is True for
    --  including constants in the returned set (for flow analysis) and False
    --  for not including them in the returned set (for proof).
 
-   function Get_Generated_Writes (E : Entity_Id) return Name_Set.Set;
+   function Get_Generated_Writes (E : Entity_Id) return Name_Sets.Set;
    --  Get the variables written by subprogram E
 
    function File_Of_Entity (E : Entity_Name) return Entity_Name;
@@ -97,9 +97,9 @@ package SPARK_Frame_Conditions is
 
    procedure Collect_Current_Computed_Globals
      (E                  : Entity_Id;
-      Inputs             : out Name_Set.Set;
-      Outputs            : out Name_Set.Set;
-      Called_Subprograms : out Name_Set.Set)
+      Inputs             : out Name_Sets.Set;
+      Outputs            : out Name_Sets.Set;
+      Called_Subprograms : out Name_Sets.Set)
    with Pre  => Ekind (E) in Subprogram_Kind | Task_Kind | Entry_Kind,
         Post => (for all E of Outputs => Inputs.Contains (E));
    --  Collects the Computed Globals information based on the current
