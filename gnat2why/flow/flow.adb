@@ -1224,7 +1224,7 @@ package body Flow is
 
       for E of Entity_Set loop
          case Ekind (E) is
-            when  E_Entry | E_Task_Type | Subprogram_Kind =>
+            when E_Entry | E_Task_Type | Subprogram_Kind =>
                Body_E := (case Ekind (E) is
                           when E_Entry         => Entry_Body_Entity (E),
                           when E_Task_Type     => Task_Body_Entity (E),
