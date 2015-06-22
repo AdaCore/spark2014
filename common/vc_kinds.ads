@@ -167,8 +167,11 @@ package VC_Kinds is
       Unused_Initial_Value,
       --  Initial value has not been used
 
-      Non_Volatile_Function_With_Volatile_Effects
+      Non_Volatile_Function_With_Volatile_Effects,
       --  Non Volatile_Function refers to globals with volatile effects
+
+      Volatile_Function_Without_Volatile_Effects
+      --  Function has been marked as volatile but has no volatile effects
      );
 
    --  Returns True if this kind of VC should be considered like an assertion

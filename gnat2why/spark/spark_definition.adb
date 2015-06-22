@@ -2550,11 +2550,12 @@ package body SPARK_Definition is
          begin
             --  A nonvolatile function shall not have a result of an
             --  effectively volatile type (SPARK RM 7.1.3(9)).
-            --  ??? Update test when volatile function supported
 
-            if Is_Effectively_Volatile (Etype (Id)) then
+            if not Is_Volatile_Function (Id)
+              and then Is_Effectively_Volatile (Etype (Id))
+            then
                Mark_Violation
-                 ("function with effectively volatile result", Id);
+                 ("nonvolatile function with effectively volatile result", Id);
             end if;
 
             if Is_Non_Empty_List (Params) then
@@ -2564,11 +2565,13 @@ package body SPARK_Definition is
 
                   --  A nonvolatile function shall not have a formal parameter
                   --  of an effectively volatile type (SPARK RM 7.1.3(9)).
-                  --  ??? Update test when volatile function supported
 
-                  if Is_Effectively_Volatile (Etype (Param_Id)) then
+                  if not Is_Volatile_Function (Id)
+                    and then Is_Effectively_Volatile (Etype (Param_Id))
+                  then
                      Mark_Violation
-                       ("function with effectively volatile parameter", Id);
+                       ("nonvolatile function with effectively volatile " &
+                          "parameter", Id);
                   end if;
 
                   case Ekind (Param_Id) is

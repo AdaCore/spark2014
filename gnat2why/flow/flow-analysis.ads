@@ -166,7 +166,8 @@ package Flow.Analysis is
      with Pre => FA.Kind in E_Subprogram_Body | E_Task_Body | E_Entry;
    --  Checks that the subprogram does not have any volatile effects except if
    --  so specified. This check is only doing something when called on
-   --  functions.
+   --  functions. We also issue a warning if we are dealing with a volatile
+   --  function that has no volatile effects.
    --
    --  Complexity is O(N)
 

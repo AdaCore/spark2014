@@ -3933,46 +3933,56 @@ package body Flow.Analysis is
    procedure Check_Function_For_Volatile_Effects
      (FA : in out Flow_Analysis_Graphs)
    is
-   begin
-      if not (Ekind (FA.Analyzed_Entity) in E_Function | E_Generic_Function)
-        or else Is_Volatile_Function (FA.Analyzed_Entity)
-      then
-         --  If we are either not dealing with a [generic] function or aspect
-         --  Volatile_Function has been specified then we have nothing to do
-         --  here.
-         return;
-      end if;
+      Found_Volatile_Effect : Boolean := False;
 
-      declare
-         procedure Check_Set_For_Volatiles (FS : Flow_Id_Sets.Set);
-         --  Emits a high check for every volatile variable found in FS.
-         --  @param FS is the Flow_Ids set that will be checked for volatiles
+      procedure Check_Set_For_Volatiles (FS : Flow_Id_Sets.Set);
+      --  Emits a high check for every volatile variable found in FS.
+      --  @param FS is the Flow_Ids set that will be checked for volatiles
 
-         -----------------------------
-         -- Check_Set_For_Volatiles --
-         -----------------------------
+      -----------------------------
+      -- Check_Set_For_Volatiles --
+      -----------------------------
 
-         procedure Check_Set_For_Volatiles (FS : Flow_Id_Sets.Set) is
-         begin
-            for F of FS loop
-               if Is_Volatile (Change_Variant (F, Normal_Use)) then
+      procedure Check_Set_For_Volatiles (FS : Flow_Id_Sets.Set) is
+      begin
+         for F of FS loop
+            if Is_Volatile (Change_Variant (F, Normal_Use)) then
+               --  We just found a volatile effect
+               Found_Volatile_Effect := True;
+
+               --  Issue error if dealing with nonvolatile function
+               if not Is_Volatile_Function (FA.Analyzed_Entity) then
                   Error_Msg_Flow
                     (FA   => FA,
                      Msg  => "& cannot act as global item of nonvolatile "
-                               & "function &",
+                                & "function &",
                      Kind => Error_Kind,
                      N    => FA.Analyzed_Entity,
                      F1   => F,
                      F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
                      Tag  => Non_Volatile_Function_With_Volatile_Effects);
                end if;
-            end loop;
-         end Check_Set_For_Volatiles;
+            end if;
+         end loop;
+      end Check_Set_For_Volatiles;
 
-         Proof_Ins : Flow_Id_Sets.Set;
-         Reads     : Flow_Id_Sets.Set;
-         Writes    : Flow_Id_Sets.Set;
+   begin
+      if not (Ekind (FA.Analyzed_Entity) in E_Function | E_Generic_Function)
+      then
+         --  If we are not dealing with a [generic] function then we have
+         --  nothing to do here.
+         return;
+      end if;
+
+      declare
+         Proof_Ins         : Flow_Id_Sets.Set;
+         Reads             : Flow_Id_Sets.Set;
+         Writes            : Flow_Id_Sets.Set;
+         Formal_Parameters : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+
+         E                 : Entity_Id;
       begin
+         --  Populate global sets
          Get_Globals (Subprogram => FA.Analyzed_Entity,
                       Scope      => FA.B_Scope,
                       Classwide  => False,
@@ -3980,11 +3990,34 @@ package body Flow.Analysis is
                       Reads      => Reads,
                       Writes     => Writes);
 
-         --  Check globals for volatiles and emit messages
+         --  Populate formal parameters set
+         E := First_Formal (FA.Spec_Node);
+         while Present (E) loop
+            Formal_Parameters.Include (Direct_Mapping_Id (E));
+            E := Next_Formal (E);
+         end loop;
+
+         --  Check globals and formal parameters for volatiles and emit
+         --  messages if needed
          Check_Set_For_Volatiles (Proof_Ins);
          Check_Set_For_Volatiles (Reads);
          Check_Set_For_Volatiles (Writes);
+         Check_Set_For_Volatiles (Formal_Parameters);
       end;
+
+      --  Issue warning if dealing with volatile function without volatile
+      --  effects.
+      if Is_Volatile_Function (FA.Analyzed_Entity)
+        and then not Found_Volatile_Effect
+      then
+         Error_Msg_Flow
+           (FA   => FA,
+            Msg  => "volatile function & has no volatile effects",
+            Kind => Warning_Kind,
+            N    => FA.Analyzed_Entity,
+            F1   => Direct_Mapping_Id (FA.Analyzed_Entity),
+            Tag  => Volatile_Function_Without_Volatile_Effects);
+      end if;
    end Check_Function_For_Volatile_Effects;
 
 end Flow.Analysis;

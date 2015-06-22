@@ -13,3 +13,5 @@ processing.ads:5:26: warning: no procedure exists that can initialize abstract s
 processing.ads:7:34: info: initialization of "Value" proved
 raw_data.adb:12:04: info: initialization of "Last_Read" constituent of "State" proved
 raw_data.adb:30:40: info: initialization of "Last_Read" constituent of "State" proved
+raw_data.ads:6:13: warning: volatile function "Data_Is_Valid" has no volatile effects
+raw_data.ads:10:13: warning: volatile function "Get_Value" has no volatile effects
