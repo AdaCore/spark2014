@@ -92,8 +92,8 @@ package SPARK_Frame_Conditions is
                                Already_Loaded  : Boolean := False);
    --  Extract xref information from an ALI file.
    --
-   --  If Already_Loaded is set then the info is actually already
-   --  present and we do NOT actually need to read the ALI file.
+   --  If Already_Loaded is set then the information is already present
+   --  and we do NOT need to read the ALI file.
 
    procedure Collect_Current_Computed_Globals
      (E                  : Entity_Id;
@@ -105,13 +105,12 @@ package SPARK_Frame_Conditions is
    --  Collects the Computed Globals information based on the current
    --  compilation unit alone.
    --
-   --  This procedure is only ever called during phase 1 so no ALI
-   --  file is actually read. This procedure is used to create flow
-   --  analysis' Generated Globals when a subprogram is NOT in SPARK.
+   --  This procedure is only called in phase 1 so no ALI file is actually
+   --  read; it creates flow analysis' Generated Globals when a subprogram is
+   --  NOT in SPARK.
    --
-   --  The Inputs set will contain all variables purely read as well
-   --  as all the variables written (since the Computed Globals are an
-   --  over approximation).
+   --  The Inputs set will contain both variables that are either read or
+   --  written (since the Computed Globals are an over-approximation).
 
    procedure Set_Ignore_Errors (Ignore_Errors : Boolean);
    --  Set a flag to ignore failures to find some scope that should have been
@@ -139,7 +138,7 @@ package SPARK_Frame_Conditions is
    --  The following two procedures are used to fill in and query a map that
    --  stores the entity (if present) for a given entity_name. Basically, if
    --  the entity name is present somewhere in the closure of the with'ed specs
-   --  of the current unit, then Find_Entity will return it.
+   --  of the current compilation unit, then Find_Entity will return it.
 
    procedure Register_Entity (E : Entity_Id);
    --  Register the entity

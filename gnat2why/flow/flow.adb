@@ -102,10 +102,9 @@ package body Flow is
                                E_Package        |
                                E_Package_Body,
           Post => Is_Valid (Flow_Analyse_Entity'Result);
-   --  Flow analyse the given entity E. S should be the node
-   --  representing the specification of E (i.e. where the N_Contract
-   --  node is attached). This subprogram does nothing for entities
-   --  without a body and not in SPARK 2014.
+   --  Flow analyse the given entity E with a specification node S (i.e. where
+   --  the N_Contract node is attached). Do nothing for entities with no body
+   --  or not in SPARK 2014.
 
    procedure Build_Graphs_For_Compilation_Unit
      (Compute_Globals : Boolean;
@@ -1338,7 +1337,7 @@ package body Flow is
                end if;
 
             when E_Protected_Type =>
-               --  !!! O429-046 Globals for pos
+               --  !!! O429-046 Globals for protected objects
                if SPARK_Util.Analysis_Requested (E) then
                   FA_Graphs.Include (E, Flow_Analyse_Entity
                                        (E,

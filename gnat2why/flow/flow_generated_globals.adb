@@ -385,7 +385,7 @@ package body Flow_Generated_Globals is
 
    procedure GG_Write_Subprogram_Info (SI : Subprogram_Phase_1_Info) is
       procedure Process_Volatiles (S : Name_Set.Set);
-      --  Goes through S, finds volatiles and saves them on the appropriate
+      --  Goes through S, finds volatiles and stores them in the appropriate
       --  sets based on their properties.
 
       ------------------------
