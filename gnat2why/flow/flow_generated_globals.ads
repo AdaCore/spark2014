@@ -180,7 +180,6 @@ package Flow_Generated_Globals is
       Conditional_Calls : Name_Set.Set;
       Local_Variables   : Name_Set.Set;
       Local_Subprograms : Name_Set.Set;
-      --  Possibly_Blocking : Boolean;
    end record;
 
    Null_Subprogram_Info : constant Subprogram_Phase_1_Info :=
@@ -195,7 +194,6 @@ package Flow_Generated_Globals is
                               Conditional_Calls => Name_Set.Empty_Set,
                               Local_Variables   => Name_Set.Empty_Set,
                               Local_Subprograms => Name_Set.Empty_Set);
-                              --  Possibly_Blocking => False);
 
    function Preceeds (A, B : Subprogram_Phase_1_Info) return Boolean is
      (A.Name.Id < B.Name.Id);
