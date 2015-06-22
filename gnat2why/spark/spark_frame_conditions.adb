@@ -28,7 +28,6 @@ with Unchecked_Deallocation;
 
 with Ada.Text_IO;                use Ada.Text_IO;
 
-with Atree;                      use Atree;
 with Fname.UF;
 with Get_SPARK_Xrefs;
 with Lib;
