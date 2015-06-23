@@ -28,9 +28,12 @@ with Ada.Containers.Indefinite_Doubly_Linked_Lists;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Common_Containers;     use Common_Containers;
 with Namet;                 use Namet;
+with Sinfo;                 use Sinfo;
+with SPARK_Util;            use SPARK_Util;
 with Types;                 use Types;
 with Uintp;                 use Uintp;
 with VC_Kinds;              use VC_Kinds;
+with Why.Atree.Accessors;   use Why.Atree.Accessors;
 with Why.Atree.Tables;      use Why.Atree.Tables;
 with Why.Gen.Binders;       use Why.Gen.Binders;
 with Why.Ids;               use Why.Ids;
@@ -300,16 +303,6 @@ package Gnat2Why.Util is
    -- Queries --
    -------------
 
-   function Type_Is_Modeled_As_Base (T : Entity_Id) return Boolean;
-   --  Returns True if T is a scalar type that should be translated into Why
-   --  as a renaming of its base type. This is currently done for dynamic
-   --  discrete types and dynamic types defined inside loops, which should not
-   --  be treated as having constants bounds, because translation of the loop
-   --  in Why may lead to having two coexisting versions of the type.
-
-   function Is_Locally_Defined_In_Loop (N : Node_Id) return Boolean;
-   --  Returns True if node N is defined locally to a loop
-
    function Expression_Depends_On_Variables (N : Node_Id) return Boolean;
    --  Returns whether the expression E depends on a variable, either directly,
    --  or through the read effects of a function call. This is used to decide
@@ -317,14 +310,19 @@ package Gnat2Why.Util is
    --  constant (for an initialization expression) or the
    --  corresponding aggregate/slice/string literal should be declared.
 
+   function Is_Locally_Defined_In_Loop (N : Node_Id) return Boolean;
+   --  Returns True if node N is defined locally to a loop
+
    function Is_Mutable_In_Why (N : Node_Id) return Boolean;
    --  Given an N_Defining_Identifier, decide if the variable is mutable in
    --  the Why translation.
 
-   function Use_Why_Base_Type (E : Entity_Id) return Boolean;
-   --  Decide whether for function declarations, the Why base type should be
-   --  used instead of the Ada type.
-   --  This function should be used on entities denoting an object
+   function Type_Is_Modeled_As_Base (T : Entity_Id) return Boolean;
+   --  Returns True if T is a scalar type that should be translated into Why
+   --  as a renaming of its base type. This is currently done for dynamic
+   --  discrete types and dynamic types defined inside loops, which should not
+   --  be treated as having constants bounds, because translation of the loop
+   --  in Why may lead to having two coexisting versions of the type.
 
    function Use_Base_Type_For_Type (E : Entity_Id) return Boolean;
    --  Decide whether for function declarations, the Why base type should be
@@ -335,6 +333,11 @@ package Gnat2Why.Util is
    --  Decide whether we should use a split form for expressions of a given
    --  type.
    --  This function should be used on entities denoting a type
+
+   function Use_Why_Base_Type (E : Entity_Id) return Boolean;
+   --  Decide whether for function declarations, the Why base type should be
+   --  used instead of the Ada type.
+   --  This function should be used on entities denoting an object
 
    ------------------------------
    -- Symbol table subprograms --
@@ -349,6 +352,12 @@ package Gnat2Why.Util is
    function Why_Type_Of_Entity (E : Entity_Id) return W_Type_Id;
    --  For an object entity in Ada, return the Why type that has been
    --  registered for it in the symbol table.
+
+   function Has_Builtin_Why_Type (E : Entity_Id) return Boolean is
+     (Get_Type_Kind (Why_Type_Of_Entity (E)) in EW_Builtin | EW_Split)
+   with Pre => Has_Scalar_Type (Etype (E));
+   --  @param E variable or constant of scalar type
+   --  @return True iff E has a builtin type in Why3
 
    function Why_Type_Is_BitVector (Typ : W_Type_Id) return Boolean;
    --  Return wether Typ is a bitvector type.
