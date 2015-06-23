@@ -11993,6 +11993,7 @@ package body Gnat2Why.Expr is
             | N_Subprogram_Body
             | N_Subprogram_Declaration
             | N_Use_Package_Clause
+            | N_Use_Type_Clause
             | N_Validate_Unchecked_Conversion =>
             return New_Void;
 
