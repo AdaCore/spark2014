@@ -33,6 +33,7 @@ with GNAT.OS_Lib;         use GNAT.OS_Lib;
 with Gnat2Why_Args;
 with Gnat2Why.Util;       use Gnat2Why.Util;
 with Namet;               use Namet;
+with Sinput;              use Sinput;
 with SPARK_Util;          use SPARK_Util;
 with String_Utils;        use String_Utils;
 with Uintp;               use Uintp;
@@ -41,27 +42,35 @@ with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Ids;             use Why.Ids;
 with Why.Images;          use Why.Images;
 with Why.Conversions;     use Why.Conversions;
-with Sinput;              use Sinput;
 
 package body Why.Atree.Sprint is
 
    O : Output_Id := Stdout;
 
-   Prev_Slc : Source_Ptr := -1;
-   --  The source code location of the node that was printed before
-   --  the currently printed node
-   Curr_Slc : Source_Ptr := -1;
-   --  The souce code location of currently printed node.
+   ------------------------------------
+   -- Locations for counter-examples --
+   ------------------------------------
 
-   function Get_Sloc_Tag (File : String; Line : Physical_Line_Number)
-                          return String;
-   --  Get the location tag for the given file and line number.
+   --  Counter-examples use Why3 locations, contrary to VCs which are based
+   --  on special GP_Sloc labels. Location information is printed in the Why3
+   --  output file for every change of file or line.
+
+   Prev_Sloc : Source_Ptr := -1;
+   --  The source code location of the node that was printed before the
+   --  currently printed node.
+
+   Curr_Sloc : Source_Ptr := -1;
+   --  The source code location of currently printed node
 
    procedure Print_Sloc_Tag;
    --  Print the location tag for currently printed node.
    --  The tag is printed only if the location of the ada node corresponing
    --  to the currently printed node is different from the location of the
    --  ada node corresponding to the previously printed node.
+
+   -----------------------
+   -- Local Subprograms --
+   -----------------------
 
    procedure Print_Node (N : Why_Node_Id);
    --  printing function for any node, calls the other functions in this
@@ -1247,44 +1256,14 @@ package body Why.Atree.Sprint is
       PL (O, "end");
    end Print_Namespace_Declaration;
 
-   ------------------
-   -- Get_Sloc_Tag --
-   ------------------
-
-   function Get_Sloc_Tag (File : String; Line : Physical_Line_Number)
-                          return String is
-   begin
-      return "#""" & File & """ " & Physical_Line_Number'Image (Line) &
-        " " &
-        "0" & " " &
-        "0" & "#";
-   end Get_Sloc_Tag;
-
-   --------------------
-   -- Print_Sloc_Tag --
-   --------------------
-
-   procedure Print_Sloc_Tag is
-      File   : constant String := File_Name (Curr_Slc);
-      Line   : constant Physical_Line_Number :=
-        Get_Physical_Line_Number (Curr_Slc);
-   begin
-      if Line /=  Get_Physical_Line_Number (Prev_Slc) or
-        File /= File_Name (Prev_Slc)
-      then
-         P (O, Get_Sloc_Tag (File, Line));
-         P (O, " ");
-      end if;
-   end Print_Sloc_Tag;
-
    ----------------
    -- Print_Node --
    ----------------
 
    procedure Print_Node (N : Why_Node_Id) is
    begin
-      Prev_Slc := Curr_Slc;
-      Curr_Slc := First_Sloc (Get_Ada_Node (N));
+      Prev_Sloc := Curr_Sloc;
+      Curr_Sloc := First_Sloc (Get_Ada_Node (N));
 
       case Get_Kind (N) is
          when W_Unused_At_Start =>
@@ -1590,6 +1569,29 @@ package body Why.Atree.Sprint is
       Print_List (+Get_Updates (Node), "; ");
       P (O, " }");
    end Print_Record_Update;
+
+   --------------------
+   -- Print_Sloc_Tag --
+   --------------------
+
+   procedure Print_Sloc_Tag is
+      File : constant String := File_Name (Curr_Sloc);
+      Line : constant Physical_Line_Number :=
+        Get_Physical_Line_Number (Curr_Sloc);
+
+      Sloc_Tag : constant String :=
+        "#""" & File & """ " &
+        Physical_Line_Number'Image (Line) & " " &
+        "0" & " " &  --  dummy line 0
+        "0" & "#";   --  dummy column 0
+   begin
+      if Line /= Get_Physical_Line_Number (Prev_Sloc)
+        or else File /= File_Name (Prev_Sloc)
+      then
+         P (O, Sloc_Tag);
+         P (O, " ");
+      end if;
+   end Print_Sloc_Tag;
 
    ---------------------
    -- Sprint_Why_Node --

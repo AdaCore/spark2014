@@ -23,18 +23,16 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNAT.Source_Info;
-
 with Atree;               use Atree;
 with Einfo;               use Einfo;
+with GNAT.Source_Info;
+with Gnat2Why.Expr;       use Gnat2Why.Expr;
 with Namet;               use Namet;
 with Sinfo;               use Sinfo;
 with Sinput;              use Sinput;
-with String_Utils;        use String_Utils;
-
 with SPARK_Definition;    use SPARK_Definition;
 with SPARK_Util;          use SPARK_Util;
-
+with String_Utils;        use String_Utils;
 with Why.Ids;             use Why.Ids;
 with Why.Sinfo;           use Why.Sinfo;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
@@ -47,22 +45,7 @@ with Why.Gen.Expr;        use Why.Gen.Expr;
 with Why.Inter;           use Why.Inter;
 with Why.Types;           use Why.Types;
 
-with Gnat2Why.Expr;       use Gnat2Why.Expr;
-
 package body Gnat2Why.Decls is
-
-   Model_Label : constant String := "model";
-   Model_Proj_Label : constant String := "model_projected";
-
-   procedure Add_Counter_Example_Labels (E : Entity_Id;
-                                         Labels : out Name_Id_Sets.Set);
-   --  Add labels relevant for generating counter-example model
-
-   function Entity_Relevant_For_Counter_Example (E : Entity_Id) return Boolean
-   is (Is_Scalar_Type (Etype (E)))
-   with Pre => Nkind (E) in N_Entity;
-   --  Returns true if the given entity should be included in the
-   --  counter-example model.
 
    ------------------------------
    -- Translate_Abstract_State --
@@ -312,29 +295,6 @@ package body Gnat2Why.Decls is
                     Kind => Standalone_Theory);
    end Translate_Loop_Entity;
 
-   --------------------------------
-   -- Add_Counter_Example_Labels --
-   --------------------------------
-
-   procedure Add_Counter_Example_Labels (E : Entity_Id;
-                                         Labels : out Name_Id_Sets.Set) is
-   begin
-      if Entity_Relevant_For_Counter_Example (E) then
-         Labels.Include (NID ("model_trace:" &
-                           Get_Name_String (Chars (E))));
-
-         if SPARK_Util.Has_Discrete_Type (Etype (E)) then
-            --  These types do not need projection, get the value
-            --  of the variable in the counterexample
-            Labels.Include (NID (Model_Label));
-         else
-            --  These types need projection, get the value of
-            --  projeciton function applied to the variable
-            Labels.Include (NID (Model_Proj_Label));
-         end if;
-      end if;
-   end Add_Counter_Example_Labels;
-
    ------------------------
    -- Translate_Variable --
    ------------------------
@@ -475,8 +435,12 @@ package body Gnat2Why.Decls is
                         Return_Type => Ty_Last));
                end;
             end loop;
+
          when Regular =>
             begin
+               --  Currently only generate values for scalar variables in
+               --  counter-examples, which are always of the Regular kind.
+
                Add_Counter_Example_Labels (E, Labels);
 
                --  generate a global ref

@@ -280,15 +280,14 @@
 --     used to easily filter the subprogram in VC selection.
 --
 --  "model"
---      This label identifies elements that should be included in the
---      counter-example model.
+--     This label identifies elements that should be included in the
+--     counter-example model.
 --
 --  "model_projected"
---      This label identifies elements that should be included in the
---      counter-example model.
---      Unlike to the label "model", there will be displayed the value of the
---      element projected using a projection function (specified using the meta
---      model_projection)
+--     This label identifies elements that should be included in the
+--     counter-example model.
+--     Unlike the label "model", the value of the element will be projected
+--     using a projection function (specified using the meta model_projection)
 --
 --  "model_trace:name"
 --      This label specifies the name that will be reported in a

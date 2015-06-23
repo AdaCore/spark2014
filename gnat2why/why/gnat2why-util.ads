@@ -35,7 +35,7 @@ with Why.Atree.Tables;      use Why.Atree.Tables;
 with Why.Gen.Binders;       use Why.Gen.Binders;
 with Why.Ids;               use Why.Ids;
 with Why.Sinfo;             use Why.Sinfo;
-with Why.Types;
+with Why.Types;             use Why.Types;
 
 package Gnat2Why.Util is
 
@@ -241,6 +241,11 @@ package Gnat2Why.Util is
    --------------
    -- Builders --
    --------------
+
+   procedure Add_Counter_Example_Labels
+     (E      : Entity_Id;
+      Labels : in out Name_Id_Sets.Set);
+   --  Add labels relevant for generating counter-example model
 
    function Compute_Spec
      (Params : Transformation_Params;

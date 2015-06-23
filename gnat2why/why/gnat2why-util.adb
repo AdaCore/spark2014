@@ -38,8 +38,8 @@ with Why.Atree.Builders;     use Why.Atree.Builders;
 with Why.Atree.Modules;      use Why.Atree.Modules;
 with Why.Conversions;        use Why.Conversions;
 with Why.Gen.Expr;           use Why.Gen.Expr;
+with Why.Gen.Names;          use Why.Gen.Names;
 with Why.Inter;              use Why.Inter;
-with Why.Types;              use Why.Types;
 
 package body Gnat2Why.Util is
 
@@ -256,6 +256,37 @@ package body Gnat2Why.Util is
       end Push_Scope;
 
    end Ada_Ent_To_Why;
+
+   --------------------------------
+   -- Add_Counter_Example_Labels --
+   --------------------------------
+
+   procedure Add_Counter_Example_Labels
+     (E      : Entity_Id;
+      Labels : in out Name_Id_Sets.Set)
+   is
+   begin
+      --  Currently only generate values for scalar variables in
+      --  counter-examples.
+
+      if Is_Scalar_Type (Etype (E)) then
+         Labels.Include (NID ("model_trace:" &
+                           Get_Name_String (Chars (E))));
+
+         --  If E's type is directly a native prover type, simply request the
+         --  value of E in the counter-example.
+
+         if SPARK_Util.Has_Discrete_Type (Etype (E)) then
+            Labels.Include (NID (Model_Label));
+
+         --  If E's type needs a projection to a native prover type, request
+         --  the value of the projection of E in the counter-example.
+
+         else
+            Labels.Include (NID (Model_Proj_Label));
+         end if;
+      end if;
+   end Add_Counter_Example_Labels;
 
    ------------------
    -- Add_To_Graph --

@@ -184,9 +184,24 @@ package VC_Kinds is
                 when VC_LSP_Kind    => True);
 
    SPARK_Suffix : constant String := "spark";
-
-   Flow_Suffix : constant String := "flow";
-
+   Flow_Suffix  : constant String := "flow";
    Proof_Suffix : constant String := "proof";
+
+   --  A few labels are used to communicate information from gnat2why to
+   --  gnatwhy3. Changes here should be propagated to the code of gnatwhy3.
+
+   GP_Ada_Name_Marker   : constant String := "GP_Ada_Name:";
+   GP_Id_Marker         : constant String := "GP_Id:";
+   GP_Pretty_Ada_Marker : constant String := "GP_Pretty_Ada:";
+   GP_Reason_Marker     : constant String := "GP_Reason:";
+   GP_Shape_Marker      : constant String := "GP_Shape:";
+   GP_Sloc_Marker       : constant String := "GP_Sloc:";
+   GP_Subp_Marker       : constant String := "GP_Subp:";
+
+   --  A few labels are used in Why3 to identify variables and terms whose
+   --  value is interesting in counter-examples.
+
+   Model_Label      : constant String := "model";
+   Model_Proj_Label : constant String := "model_projected";
 
 end VC_Kinds;

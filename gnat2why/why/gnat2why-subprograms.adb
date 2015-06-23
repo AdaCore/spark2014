@@ -1735,7 +1735,8 @@ package body Gnat2Why.Subprograms is
               (Name     => Result_Name,
                Labels =>
                  Name_Id_Sets.To_Set
-                   (NID ("""GP_Ada_Name:" & Source_Name (E) & "'Result""")),
+                   (NID ("""" & GP_Ada_Name_Marker &
+                         Source_Name (E) & "'Result""")),
                Ref_Type => Type_Of_Node (Etype (E))));
       end if;
 
@@ -1974,7 +1975,8 @@ package body Gnat2Why.Subprograms is
                  (Name     => Result_Name,
                   Labels =>
                     Name_Id_Sets.To_Set
-                      (NID ("""GP_Ada_Name:" & Source_Name (E) & "'Result""")),
+                      (NID ("""" & GP_Ada_Name_Marker
+                            & Source_Name (E) & "'Result""")),
                   Ref_Type => Type_Of_Node (Etype (E))));
          end if;
 

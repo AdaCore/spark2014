@@ -26,32 +26,29 @@
 with Ada.Strings;               use Ada.Strings;
 with Ada.Strings.Equal_Case_Insensitive;
 with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
-
+with Assumption_Types;          use Assumption_Types;
 with Csets;                     use Csets;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with Gnat2Why_Args;
+with Gnat2Why.Assumptions;      use Gnat2Why.Assumptions;
+with GNATCOLL.Utils;            use GNATCOLL.Utils;
 with Exp_Util;                  use Exp_Util;
+with Flow_Types;                use Flow_Types;
+with Flow_Utility;              use Flow_Utility;
 with Fname;                     use Fname;
 with Nlists;                    use Nlists;
+with Pprint;                    use Pprint;
 with Sem_Aux;                   use Sem_Aux;
 with Sem_Disp;                  use Sem_Disp;
 with Sem_Eval;                  use Sem_Eval;
 with Sem_Util;                  use Sem_Util;
-with Pprint;                    use Pprint;
+with SPARK_Definition;          use SPARK_Definition;
 with Stand;                     use Stand;
 with Stringt;                   use Stringt;
 with String_Utils;              use String_Utils;
 with Treepr;                    use Treepr;
 with Urealp;                    use Urealp;
-
-with Assumption_Types;          use Assumption_Types;
-with SPARK_Definition;          use SPARK_Definition;
-
-with Flow_Types;                use Flow_Types;
-with Flow_Utility;              use Flow_Utility;
-
-with Gnat2Why_Args;
-with Gnat2Why.Assumptions;      use Gnat2Why.Assumptions;
-with GNATCOLL.Utils;            use GNATCOLL.Utils;
+with VC_Kinds;                  use VC_Kinds;
 
 package body SPARK_Util is
 
@@ -2211,7 +2208,7 @@ package body SPARK_Util is
    function Is_Requested_Subprogram_Or_Task (E : Entity_Id) return Boolean is
      ((Is_Subprogram (E) or else Ekind (E) in Task_Kind | E_Task_Body)
         and then
-      "GP_Subp:" & To_String (Gnat2Why_Args.Limit_Subp) =
+      GP_Subp_Marker & To_String (Gnat2Why_Args.Limit_Subp) =
         SPARK_Util.Subp_Location (E));
 
    -------------------------------
@@ -2779,8 +2776,7 @@ package body SPARK_Util is
    begin
       --  ??? Probably need to change this code to take M412-032 into account
 
-      return
-        "GP_Subp:" & Base_Sloc_File (B) & ":" & Image (B.Line, 1);
+      return GP_Subp_Marker & Base_Sloc_File (B) & ":" & Image (B.Line, 1);
    end Subp_Location;
 
    ---------------------------------

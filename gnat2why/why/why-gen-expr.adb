@@ -62,8 +62,6 @@ with Why.Inter;               use Why.Inter;
 
 package body Why.Gen.Expr is
 
-   Pretty_Ada_Tag : constant String := "GP_Pretty_Ada";
-
    function Args_For_Scalar_Dynamic_Property
      (Ty     : Entity_Id;
       Expr   : W_Expr_Id) return W_Expr_Array
@@ -2311,11 +2309,10 @@ package body Why.Gen.Expr is
       Left_Most : Boolean := False)
       return Name_Id
    is
-      Slc    : Source_Ptr;
-      Buf    : Unbounded_String := Null_Unbounded_String;
-      Prefix : constant String := "GP_Sloc:";
-   begin
+      Slc : Source_Ptr;
+      Buf : Unbounded_String := Null_Unbounded_String;
 
+   begin
       --  For VCs, we mostly want to point directly to the relevant node [N].
       --  For other nodes (e.g. pretty printing labels) it's more sensible to
       --  point to the beginning of the expression instead of the operator.
@@ -2365,7 +2362,7 @@ package body Why.Gen.Expr is
             Slc := Instantiation_Location (Slc);
          end;
       end loop;
-      return NID (Prefix & To_String (Buf));
+      return NID (GP_Sloc_Marker & To_String (Buf));
    end New_Located_Label;
 
    --------------------
@@ -2379,9 +2376,9 @@ package body Why.Gen.Expr is
           (if Buf /= Null_Unbounded_String then "__" & Buf
            else Null_Unbounded_String);
 
-      GP_Prefix : constant String := "GP_Shape:";
-      Buf : Unbounded_String := Null_Unbounded_String;
+      Buf     : Unbounded_String := Null_Unbounded_String;
       Node_It : Node_Id := Node;
+
    begin
       while Present (Node_It) loop
          case Nkind (Node_It) is
@@ -2635,7 +2632,7 @@ package body Why.Gen.Expr is
       end loop;
 
       if To_String (Buf) /= "" then
-         return NID (GP_Prefix & To_String (Buf));
+         return NID (GP_Shape_Marker & To_String (Buf));
       else
          return No_Name;
       end if;
@@ -2853,7 +2850,7 @@ package body Why.Gen.Expr is
          Used_Node := Right_Opnd (Original_Node (N));
       end if;
 
-      return NID (Pretty_Ada_Tag & ":" & Image (Integer (Used_Node), 1));
+      return NID (GP_Pretty_Ada_Marker & Image (Integer (Used_Node), 1));
    end New_Sub_VC_Marker;
 
    --------------------
@@ -3047,8 +3044,8 @@ package body Why.Gen.Expr is
       Id  : constant VC_Id := Register_VC (N, Current_Subp);
       Location_Lab : Name_Id;
    begin
-      Set.Include (NID ("GP_Reason:" & VC_Kind'Image (Reason)));
-      Set.Include (NID ("GP_Id:" & Image (Integer (Id), 1)));
+      Set.Include (NID (GP_Reason_Marker & VC_Kind'Image (Reason)));
+      Set.Include (NID (GP_Id_Marker & Image (Integer (Id), 1)));
 
       Location_Lab := New_Located_Label
         (N, Left_Most => Locate_On_First_Token (Reason));
