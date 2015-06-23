@@ -1,0 +1,3 @@
+main.adb:6:04: medium: assertion might fail
+main.adb:6:19: info: initialization of "X" proved
+main.adb:6:23: info: initialization of "Y" proved
