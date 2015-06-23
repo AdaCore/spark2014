@@ -202,6 +202,7 @@ package Flow_Generated_Globals is
      (Element_Type => Subprogram_Phase_1_Info,
       "<"          => Preceeds,
       "="          => "=");
+   --  ??? Ordered sets seem to be faster here than hashed sets
 
    Subprogram_Info_Set : Subprogram_Info_Sets.Set;
    --  Information about subprograms from the "generated globals" algorithm

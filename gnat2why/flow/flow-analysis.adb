@@ -249,6 +249,9 @@ package body Flow.Analysis is
       end Find_It;
 
       procedure Look_For_Global is new Traverse_Proc (Find_It);
+
+   --  Start of processing for Find_Global
+
    begin
       case Ekind (S) is
          when E_Package_Body =>

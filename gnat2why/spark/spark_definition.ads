@@ -55,8 +55,8 @@ package SPARK_Definition is
    --  be attached to a declaration or not (for Itypes).
 
    Entity_Set : Node_Sets.Set;
-   --  Set of all entities marked so far. This contains both entities from the
-   --  current compiled unit, and entities from other units.
+   --  Set of all entities marked so far. It contains entities from both the
+   --  current compilation unit and other units.
 
    Loop_Entity_Set : Node_Sets.Set;
    --  Set of entities defined in loops before the invariant, which may require
