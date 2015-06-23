@@ -62,6 +62,8 @@ Command Line Invocation
   --limit-line=s     Limit analysis to given file and line
   --limit-subp=s     Limit analysis to subprogram defined by file and line
   --prover=s[,s]*    Use given provers (s=altergo*, cvc4, ...)
+  --counter-example=c Generate a counter-example for unproved formulas
+                     (c=on, off*)
 
   * Proof mode values for generation
     . per_check    - Generate one formula per check (default)

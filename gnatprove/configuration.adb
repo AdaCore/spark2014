@@ -255,8 +255,9 @@ ASCII.LF &
 ASCII.LF &
 " --prover=s[,s]*    Use given provers (s=altergo*, cvc4, ...)" &
 ASCII.LF &
-" --counter-example=on|off Get a counter-example for unproved formula " &
-"(default: off)" &
+" --counter-example=c Generate a counter-example for unproved formulas" &
+ASCII.LF &
+"                    (c=on, off*)" &
 ASCII.LF &
 ASCII.LF &
 " * Proof mode values for generation" &
