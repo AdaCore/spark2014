@@ -2994,7 +2994,9 @@ package body SPARK_Definition is
                   begin
                      case Nkind (N) is
                         when N_Identifier | N_Expanded_Name =>
-                           if Unique_Entity (Entity (N)) = Unique_Entity (E)
+                           if Present (Entity (N))
+                                and then
+                              Unique_Entity (Entity (N)) = Unique_Entity (E)
                            then
                               Found := True;
                            end if;
