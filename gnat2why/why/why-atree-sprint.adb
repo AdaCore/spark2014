@@ -877,6 +877,10 @@ package body Why.Atree.Sprint is
             Print_Node (+Name);
 
             P (O, " ");
+            --  Printing of function declaration must be interleaved with
+            --  printing of location tag, because location tag before
+            --  "function" keyword is not alowed in why.
+            --  See printing of location tags in [Print_Node].
             Print_Sloc_Tag;
             P (O, Get_Labels (Node), As_String => True);
 
@@ -908,6 +912,10 @@ package body Why.Atree.Sprint is
 
             Print_Node (+Name);
             P (O, " ");
+            --  Printing of value declaration must be interleaved with
+            --  printing of location tag, because location tag before
+            --  "val" or "let" keywords is not alowed in why.
+            --  See printing of location tags in [Print_Node].
             Print_Sloc_Tag;
             P (O, Get_Labels (Node), As_String => True);
             Relative_Indent (O, 1);
@@ -957,6 +965,10 @@ package body Why.Atree.Sprint is
             Print_Node (+Name);
 
             P (O, " ");
+            --  Printing of predicate declaration must be interleaved with
+            --  printing of location tag, because location tag before
+            --  "predicate" keyword is not alowed in why.
+            --  See printing of location tags in [Print_Node].
             Print_Sloc_Tag;
 
             NL (O);
@@ -989,6 +1001,10 @@ package body Why.Atree.Sprint is
       Print_Node (+Get_Name (Node));
 
       P (O, " ");
+      --  Printing of global ref declaration must be interleaved with
+      --  printing of location tag, because location tag before
+      --  "val" keyword is not alowed in why.
+      --  See printing of location tags in [Print_Node].
       Print_Sloc_Tag;
       P (O, Get_Labels (Node), As_String => True);
 
@@ -1769,6 +1785,10 @@ package body Why.Atree.Sprint is
       Print_Node (+Name);
 
       P (O, " ");
+      --  Printing of type declaration must be interleaved with
+      --  printing of location tag, because location tag before
+      --  "type" keyword is not alowed in why.
+      --  See printing of location tags in [Print_Node].
       Print_Sloc_Tag;
       P (O, Get_Labels (Node));
 
