@@ -155,8 +155,6 @@ package body Why.Atree.Sprint is
 
    procedure Print_Abstract_Expr (Node : W_Abstract_Expr_Id) is
    begin
-      Print_Sloc_Tag;
-
       P (O, "abstract ensures {");
       Print_Node (+Get_Post (Node));
       P (O, "}");
@@ -174,8 +172,6 @@ package body Why.Atree.Sprint is
       Pre     : constant W_Pred_Id := Get_Pre (Node);
       Post    : constant W_Pred_Id := Get_Post (Node);
    begin
-      Print_Sloc_Tag;
-
       P (O, "(any ");
       Print_Node (+Res_Ty);
       NL (O);
@@ -202,8 +198,6 @@ package body Why.Atree.Sprint is
 
    procedure Print_Assert (Node : W_Assert_Id) is
    begin
-      Print_Sloc_Tag;
-
       P (O, Get_Assert_Kind (Node));
       P (O, " { ");
       Print_Node (+Get_Pred (Node));
@@ -216,7 +210,6 @@ package body Why.Atree.Sprint is
 
    procedure Print_Assignment (Node : W_Assignment_Id) is
    begin
-      Print_Sloc_Tag;
       Print_Node (+Get_Name (Node));
       P (O, " := ( ");
       Print_Node (+Get_Value (Node));
@@ -288,8 +281,6 @@ package body Why.Atree.Sprint is
       Binding_Sequence : constant Boolean :=
         Get_Kind (+Context) = W_Binding_Ref;
    begin
-      Print_Sloc_Tag;
-
       P (O, "let ");
       Print_Node (+Get_Name (Node));
       P (O, " = ref (");
@@ -1261,11 +1252,33 @@ package body Why.Atree.Sprint is
    ----------------
 
    procedure Print_Node (N : Why_Node_Id) is
+      N_Kind : constant Why_Node_Kind := Get_Kind (N);
    begin
       Prev_Sloc := Curr_Sloc;
       Curr_Sloc := First_Sloc (Get_Ada_Node (N));
 
-      case Get_Kind (N) is
+      case N_Kind is
+         when W_Raise |
+              W_Try_Block |
+              W_While_Loop |
+              W_Abstract_Expr |
+              W_Any_Expr |
+              W_Assert |
+              W_Assignment |
+              W_Binding_Ref =>
+            --  Nodes where the location tag has to be printed and when it can
+            --  be printed before the nodes.
+            --  Note that the location tag has to be printed also inside the
+            --  nodes W_Type_Decl, W_Function_Decl, and
+            --  W_Global_Ref_Declaration. See their printing functions.
+
+            --  Location tags are printed in order to display correct locations
+            --  in counter-examples.
+            Print_Sloc_Tag;
+         when others => null;
+      end case;
+
+      case N_Kind is
          when W_Unused_At_Start =>
             null;
 
@@ -1485,8 +1498,6 @@ package body Why.Atree.Sprint is
    procedure Print_Raise (Node : W_Raise_Id) is
       Exn_Type : constant W_Type_OId := Get_Exn_Type (Node);
    begin
-      Print_Sloc_Tag;
-
       P (O, "raise ");
 
       Print_Node (+Get_Name (Node));
@@ -1699,8 +1710,6 @@ package body Why.Atree.Sprint is
 
    procedure Print_Try_Block (Node : W_Try_Block_Id) is
    begin
-      Print_Sloc_Tag;
-
       PL (O, "try");
       Relative_Indent (O, 1);
       Print_Node (+Get_Prog (Node));
@@ -1861,8 +1870,6 @@ package body Why.Atree.Sprint is
       Loop_Content : constant W_Prog_Id := Get_Loop_Content (Node);
 
    begin
-      Print_Sloc_Tag;
-
       P (O, "while ");
       Print_Node (+Condition);
       PL (O, " do");
