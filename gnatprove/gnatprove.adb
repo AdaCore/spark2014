@@ -376,10 +376,6 @@ procedure Gnatprove is
          Args.Append (Image (Timeout, 1));
       end if;
 
-      --  The steps option is passed to alt-ergo via the why3.conf file. We
-      --  still need to pass it to gnatwhy3 as well so that it is aware of the
-      --  value of that switch.
-
       if Steps /= 0 then
          Args.Append ("--steps");
          Args.Append (Image (Steps, 1));
@@ -708,9 +704,6 @@ procedure Gnatprove is
       Z3_Binary : constant String :=
         (if Benchmark_Mode then "fake_" else "") & "z3";
 
-      CVC4_Resource : constant Natural := 50_000 + Steps * 250;
-      Altergo_Steps : constant Natural := Steps;
-
       --  The CVC4 options explained.
       --
       --  * lang=smt2
@@ -743,13 +736,9 @@ procedure Gnatprove is
            Altergo_Binary & " -max-split 5 %f";
       begin
          Start_Section ("prover");
-         if Steps /= 0 then
-            Put_Keyval ("command",
-                        Altergo_Command & " -steps-bound " &
-                          Image (Altergo_Steps, 1));
-         else
-            Put_Keyval ("command", Altergo_Command);
-         end if;
+         Put_Keyval ("command", Altergo_Command);
+         Put_Keyval ("command_steps",
+                     Altergo_Command & " -steps-bound %S");
          Put_Keyval ("driver",
                      Ada.Directories.Compose
                        (Why3_Drivers_Dir, "alt_ergo.drv"));
@@ -766,14 +755,13 @@ procedure Gnatprove is
          Command : constant String := CVC4_Binary & " " & Common_CVC4_Options;
       begin
          Start_Section ("prover");
-         if Steps /= 0 then
-            Put_Keyval ("command",
-                        Command &
-                          " --rlimit=" & Image (CVC4_Resource, 1) &
-                          " %f");
-         else
-            Put_Keyval ("command", Command & " %f");
-         end if;
+         Put_Keyval ("command",
+                     Command &
+                       " %f");
+         Put_Keyval ("command_steps",
+                     Command &
+                       " --rlimit=%S" &
+                       " %f");
          Put_Keyval ("driver",
                      Ada.Directories.Compose
                        (Why3_Drivers_Dir, "cvc4_gnatprove.drv"));
@@ -806,15 +794,13 @@ procedure Gnatprove is
            " --quiet ";
       begin
          Start_Section ("prover");
-         if Steps /= 0 then
-            Put_Keyval ("command",
-                        Command &
-                          " --rlimit=" &
-                          Image (CVC4_Resource, 1) &
-                          " %f");
-         else
-            Put_Keyval ("command", Command & " %f");
-         end if;
+         Put_Keyval ("command",
+                     Command &
+                       " %f");
+         Put_Keyval ("command_steps",
+                     Command &
+                       " --rlimit=%S" &
+                       " %f");
          Put_Keyval ("driver",
                      Ada.Directories.Compose
                        (Why3_Drivers_Dir, "cvc4_gnatprove_ce.drv"));
@@ -882,6 +868,7 @@ procedure Gnatprove is
       begin
          Start_Section ("prover");
          Put_Keyval ("command", Command);
+         Put_Keyval ("command_steps", Command);
          Put_Keyval ("driver",
                      Ada.Directories.Compose
                        (Why3_Drivers_Dir, "z3_432.drv"));
