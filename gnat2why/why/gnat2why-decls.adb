@@ -108,6 +108,8 @@ package body Gnat2Why.Decls is
 
       --  We generate a "logic", whose axiom will be given in a completion
 
+      Insert_Entity (E, To_Why_Id (E, Typ => Typ));
+
       Add_Counter_Example_Labels (E, Labels);
 
       Emit (File.Cur_Theory,
@@ -118,7 +120,6 @@ package body Gnat2Why.Decls is
                Labels      => Labels,
                Return_Type => Typ));
 
-      Insert_Entity (E, To_Why_Id (E, Typ => Typ));
       Close_Theory (File,
                     Kind => Definition_Theory,
                     Defined_Entity => E);
@@ -313,7 +314,9 @@ package body Gnat2Why.Decls is
                        & (if Sloc (E) > 0 then
                             " defined at " & Build_Location_String (Sloc (E))
                           else "")
-                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+                   & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      Insert_Item (E, Var);
 
       --  If E is not in SPARK, only declare an object of type __private for
       --  use in effects of program functions in Why3.
@@ -457,8 +460,6 @@ package body Gnat2Why.Decls is
             raise Program_Error;
          end case;
       end if;
-
-      Insert_Item (E, Var);
 
       Emit (File.Cur_Theory,
             Why.Atree.Builders.New_Function_Decl

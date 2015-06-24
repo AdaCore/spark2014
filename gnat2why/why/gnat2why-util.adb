@@ -274,7 +274,7 @@ package body Gnat2Why.Util is
          --  If E's type is directly a native prover type, simply request the
          --  value of E in the counter-example.
 
-         if Has_Builtin_Why_Type (Etype (E)) then
+         if Has_Builtin_Why_Type (E) then
             Labels.Include (NID (Model_Label));
 
          --  If E's type needs a projection to a native prover type, request

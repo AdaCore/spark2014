@@ -356,6 +356,9 @@ package Gnat2Why.Util is
    function Has_Builtin_Why_Type (E : Entity_Id) return Boolean is
      (Get_Type_Kind (Why_Type_Of_Entity (E)) in EW_Builtin | EW_Split)
    with Pre => Has_Scalar_Type (Etype (E));
+   --  For a variable or constant decide whether it has a builtin type in Why3.
+   --  Must be called after E has been registered in the symbol table (see
+   --  [Insert_Entity] and [Insert_Item]).
    --  @param E variable or constant of scalar type
    --  @return True iff E has a builtin type in Why3
 
