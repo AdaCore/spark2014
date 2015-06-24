@@ -2570,6 +2570,10 @@ package body Gnat2Why.Subprograms is
                Ty          => Etype (E),
                Only_Var    => False,
                Initialized => True);
+            Volatile_State  : constant W_Identifier_Id :=
+              New_Identifier
+                (Domain => EW_Term,
+                 Name   => "volatile__effect");
 
             function Create_Function_Decl
               (Logic_Id : W_Identifier_Id;
@@ -2593,35 +2597,61 @@ package body Gnat2Why.Subprograms is
                --  equal to the application of the corresponding logic function
                --  to the same arguments.
 
-               Param_Post : constant W_Pred_Id :=
+               Param_Post : W_Pred_Id :=
                  +New_And_Expr
-                 (Left   =>
-                    New_Call
-                      (Name   => Why_Eq,
-                       Domain => EW_Pred,
-                       Typ    => EW_Bool_Type,
-                       Args   => (+New_Result_Ident (Why_Type),
-                                  New_Call
-                                    (Domain => EW_Term,
-                                     Name   => Logic_Id,
-                                     Args   => Logic_Func_Args))),
-                  Right  =>
-                    +New_And_Expr
-                    (Left   => +Dynamic_Prop_Result,
-                     Right  => +Post,
-                     Domain => EW_Pred),
+                 (Left   => +Dynamic_Prop_Result,
+                  Right  => +Post,
                   Domain => EW_Pred);
+
+               Effects : constant W_Effects_Id := New_Effects;
             begin
+
+               --  A volatile function has an effect, and should not have the
+               --  special postcondition which says it's result is equal to the
+               --  logic function
+
+               --  for a volatile function, we need to generate a dummy effect
+
+               if Is_Volatile_Function (E) then
+                  Effects_Append_To_Writes (Effects, Volatile_State);
+               else
+                  Param_Post :=
+                    +New_And_Expr
+                    (Domain => EW_Pred,
+                     Left   =>
+                       New_Call
+                         (Name   => Why_Eq,
+                          Domain => EW_Pred,
+                          Typ    => EW_Bool_Type,
+                          Args   => (+New_Result_Ident (Why_Type),
+                                     New_Call
+                                       (Domain => EW_Term,
+                                        Name   => Logic_Id,
+                                        Args   => Logic_Func_Args))),
+                     Right  => +Param_Post);
+               end if;
                return New_Function_Decl
                  (Domain      => EW_Prog,
                   Name        => Prog_Id,
                   Binders     => Func_Why_Binders,
                   Return_Type => Type_Of_Node (Etype (E)),
                   Labels      => Name_Id_Sets.Empty_Set,
+                  Effects     => Effects,
                   Pre         => Pre,
                   Post        => Param_Post);
             end Create_Function_Decl;
+
          begin
+            if Is_Volatile_Function (E) then
+               Emit
+                 (File.Cur_Theory,
+                  New_Global_Ref_Declaration
+                    (Ada_Node => E,
+                     Labels   => Name_Id_Sets.Empty_Set,
+                     Name     => Volatile_State,
+                     Ref_Type => EW_Private_Type));
+            end if;
+
             Emit
               (File.Cur_Theory,
                Create_Function_Decl (Logic_Id => Logic_Id,
