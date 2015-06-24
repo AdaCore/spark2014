@@ -15,23 +15,22 @@ procedure CXD4006 is
    end Distributor;
 
    protected Priority_Normal is
-    procedure Check;
-  private
-    Count : Integer := 0;
-  end Priority_Normal;
+      procedure Check;
+   private
+      Count : Integer := 0;
+   end Priority_Normal;
 
-  protected body Priority_Normal is
-    procedure Check is
-    begin
-       null;
-    end Check;
-  end Priority_Normal;
+   protected body Priority_Normal is
+      procedure Check is
+      begin
+         null;
+      end Check;
+   end Priority_Normal;
 
-  procedure Assert_High_Priority is
-  begin
-    Priority_Normal.Check;
-  end Assert_High_Priority;
-
+   procedure Assert_High_Priority is
+   begin
+      Priority_Normal.Check;
+   end Assert_High_Priority;
 
 begin
    null;
