@@ -1848,7 +1848,7 @@ package body Why.Gen.Records is
            (if Full_View_Not_In_SPARK (E) then Get_First_Ancestor_In_SPARK (E)
             else Retysp (Etype (E)));
 
-      --  Start of Init_Component_Info
+      --  Start of processing for Init_Component_Info
 
       begin
          while Present (Discr) loop
@@ -1887,7 +1887,7 @@ package body Why.Gen.Records is
             Params       => Logic_Params);
       end Transform_Discrete_Choices;
 
-   --  Start of Declare_Ada_Record
+   --  Start of processing for Declare_Ada_Record
 
    begin
       --  Get the empty record case out of the way

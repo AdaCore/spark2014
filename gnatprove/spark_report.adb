@@ -294,7 +294,7 @@ procedure SPARK_Report is
 
       Save_Dir : constant String := Ada.Directories.Current_Directory;
 
-   --  Start of Handle_Source_Dir
+   --  Start of processing for Handle_Source_Dir
 
    begin
       Ada.Directories.Set_Directory (Dir);
@@ -507,7 +507,7 @@ procedure SPARK_Report is
 
       N_Un : constant Integer := Num_Units;
 
-   --  Start of Print_Analysis_Report
+   --  Start of processing for Print_Analysis_Report
 
    begin
       if N_Un > 0 then
@@ -548,7 +548,7 @@ procedure SPARK_Report is
 
    Handle : File_Type;
 
-   --  Start of SPARK_Report
+--  Start of processing for SPARK_Report
 
 begin
    Iterate_Source_Dirs (Source_Directories_File);

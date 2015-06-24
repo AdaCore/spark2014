@@ -278,7 +278,7 @@ package body Why.Images is
       Den    : constant Uint := Denominator (Value);
       Base   : constant Nat  := Rbase (Value);
 
-   --  Start of P
+   --  Start of processing for P
 
    begin
       --  ??? Same remark as in the case of integer constants:

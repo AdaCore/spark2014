@@ -641,7 +641,7 @@ package body Flow_Generated_Globals is
             Global_Graph.Add_Edge (G1, G2, EC_Default);
          end Add_Edge;
 
-      --  Start of Add_All_Edges
+      --  Start of processing for Add_All_Edges
 
       begin
          --  Go through the Subprogram_Info_Set and add edges
@@ -1077,7 +1077,7 @@ package body Flow_Generated_Globals is
                return Names_In_Line;
             end Get_Names_From_Line;
 
-         --  Start of Parse_Record
+         --  Start of processing for Parse_Record
 
          begin
             --  We special case lines that contain info about state
@@ -1336,7 +1336,7 @@ package body Flow_Generated_Globals is
 
          end Parse_Record;
 
-      --  Start of Load_GG_Info_From_ALI
+      --  Start of processing for Load_GG_Info_From_ALI
 
       begin
          Open (ALI_File, In_File, ALI_File_Name_Str);
@@ -1428,7 +1428,7 @@ package body Flow_Generated_Globals is
             end loop;
          end Remove_Local_Variables_From_Set;
 
-      --  Start of Remove_Edges_From_Local_Variables
+      --  Start of processing for Remove_Edges_From_Local_Variables
 
       begin
          for Info of Subprogram_Info_Set loop
@@ -1498,7 +1498,7 @@ package body Flow_Generated_Globals is
          end loop;
       end Remove_Constants_Without_Variable_Input;
 
-   --  Start of GG_Read
+   --  Start of processing for GG_Read
 
    begin
       Current_Mode := GG_Read_Mode;

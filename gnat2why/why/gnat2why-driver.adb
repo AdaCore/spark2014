@@ -639,7 +639,7 @@ package body Gnat2Why.Driver is
          end loop;
       end Translate_List_Entities;
 
-   --  Start of Translate_CUnit
+   --  Start of processing for Translate_CUnit
 
    begin
       --  Translate Ada entities into Why3
@@ -713,7 +713,7 @@ package body Gnat2Why.Driver is
         Why_Sections (Dispatch_Entity_Completion (E));
       New_Theory : Boolean;
 
-   --  Start of Translate_Entity
+   --  Start of processing for Translate_Entity
 
    begin
       case Ekind (E) is

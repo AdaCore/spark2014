@@ -1352,7 +1352,7 @@ package body Why.Gen.Expr is
       Range_Type : Entity_Id := Empty;
       Check_Kind : Range_Check_Kind := RCK_Range;
 
-   --  Start of Insert_Scalar_Conversion
+   --  Start of processing for Insert_Scalar_Conversion
 
    begin
       --  Do nothing when
@@ -1408,7 +1408,7 @@ package body Why.Gen.Expr is
       --  Set to True after range check has been applied
       Range_Check_Applied : Boolean := False;
 
-   --  Start of Insert_Scalar_Conversion
+   --  Start of processing for Insert_Scalar_Conversion
 
    begin
 

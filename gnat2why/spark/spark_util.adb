@@ -410,7 +410,7 @@ package body SPARK_Util is
       Not_Init    : constant Boolean :=
         Default_Initialization (Typ) /= Full_Default_Initialization;
 
-   --  Start of Aggregate_Is_Fully_Initialized
+   --  Start of processing for Aggregate_Is_Fully_Initialized
 
    begin
       if Is_Record_Type (Typ) or else Is_Private_Type (Typ) then
@@ -817,7 +817,7 @@ package body SPARK_Util is
       B_Type : Entity_Id;
       Result : Default_Initialization_Kind;
 
-   --  Start of Default_Initialization
+   --  Start of processing for Default_Initialization
 
    begin
       --  For types that are not in SPARK we trust the declaration.
@@ -1568,7 +1568,7 @@ package body SPARK_Util is
          end case;
       end Process;
 
-   --  Start of Get_Global_Items
+   --  Start of processing for Get_Global_Items
 
    begin
       Reads  := Node_Sets.Empty_Set;
@@ -2629,7 +2629,7 @@ package body SPARK_Util is
       Loc  : Source_Ptr := Sloc (E);
       Buf  : Source_Buffer_Ptr;
 
-   --  Start of Source_Name
+   --  Start of processing for Source_Name
 
    begin
       if Name /= "" and then Loc >= First_Source_Ptr then

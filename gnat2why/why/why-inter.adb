@@ -251,7 +251,7 @@ package body Why.Inter is
 
       SS : Search_State := (Control => Continue, S => Empty_Set);
 
-   --  Start of Compute_Ada_Nodeset
+   --  Start of processing for Compute_Ada_Nodeset
 
    begin
       Traverse (SS, +W);
@@ -314,7 +314,7 @@ package body Why.Inter is
       With_Completion : Boolean := True)
    is
       Module      : constant W_Module_Id := E_Module (N);
-   --  Start of Add_Use_For_Entity
+   --  Start of processing for Add_Use_For_Entity
 
    begin
       --  In the few special cases for which the Full_Name of N is not based on
@@ -547,7 +547,7 @@ package body Why.Inter is
          end loop;
       end Record_Dependencies;
 
-   --  Start of Close_Theory
+   --  Start of processing for Close_Theory
 
    begin
       Add_With_Clause (P, M_Main.Module, EW_Import);

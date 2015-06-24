@@ -208,7 +208,7 @@ package body Gnat2Why.Types is
          end case;
       end Translate_Underlying_Type;
 
-   --  Start of Translate_Type
+   --  Start of processing for Translate_Type
 
    begin
       if Is_Standard_Boolean_Type (E)

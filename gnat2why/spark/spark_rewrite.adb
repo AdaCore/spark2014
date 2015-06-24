@@ -198,7 +198,7 @@ package body SPARK_Rewrite is
 
       Internal_Instance : constant Node_Id := First_Subprogram_Declaration;
 
-   --  Start of Rewrite_Subprogram_Instantiation
+   --  Start of processing for Rewrite_Subprogram_Instantiation
 
    begin
       Set_Chars (Defining_Unit_Name (Specification (Internal_Instance)),
@@ -309,7 +309,7 @@ package body SPARK_Rewrite is
          return OK;
       end Rewrite_Node;
 
-   --   Start of Rewrite_Compilation_Unit
+   --   Start of processing for Rewrite_Compilation_Unit
 
    begin
       --  Avoid rewriting generic units which are only preanalyzed, which may

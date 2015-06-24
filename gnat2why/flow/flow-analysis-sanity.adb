@@ -212,8 +212,9 @@ package body Flow.Analysis.Sanity is
          procedure Check_Name_Indexes_And_Slices is new
            Traverse_Proc (Check_Name);
 
-      begin  --  Start of Check_Expressions_Variable_Free
+      --  Start of processing for Check_Expressions_Variable_Free
 
+      begin
          --  We do not sanity check any node which does not come from
          --  source. This way we ignore a number of issues related to
          --  compiler-generated types. See N116-011 for an example.

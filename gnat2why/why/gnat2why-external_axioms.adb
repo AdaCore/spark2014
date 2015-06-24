@@ -171,7 +171,7 @@ package body Gnat2Why.External_Axioms is
             end loop;
          end Compute_Completions_Package;
 
-         --  Start of Compute_Completions
+         --  Start of processing for Compute_Completions
 
       begin
          for GParent of G_Parents loop
@@ -234,7 +234,7 @@ package body Gnat2Why.External_Axioms is
 
       C_List : List_Of_Entity.List;
 
-      --  Start of Add_Dependencies
+      --  Start of processing for Add_Dependencies
 
    begin
       Compute_Completions (C_List);
@@ -876,7 +876,7 @@ package body Gnat2Why.External_Axioms is
       CurAssoc  : Node_Id := First (Assoc);
       CurLabs   : Node_Id := First (Labs);
 
-   --  Start of Parse_Parameters
+   --  Start of processing for Parse_Parameters
 
    begin
       while Present (CurAssoc) loop
@@ -1502,7 +1502,7 @@ package body Gnat2Why.External_Axioms is
          end loop;
       end Register_Decls;
 
-   --  Start of Register_External_Entities
+   --  Start of processing for Register_External_Entities
 
    begin
       Register_Decls
@@ -1523,7 +1523,7 @@ package body Gnat2Why.External_Axioms is
         Get_Generic_Parents (Package_Entity);
       Subst_Length : Natural;
 
-   --  Start of Translate_Package_With_External_Axioms
+   --  Start of processing for Translate_Package_With_External_Axioms
 
    begin
       Register_External_Entities (Package_Entity);

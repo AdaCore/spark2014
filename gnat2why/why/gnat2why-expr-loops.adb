@@ -1153,7 +1153,7 @@ package body Gnat2Why.Expr.Loops is
                             Variant_Update     => Variant_Update,
                             Variant_Check      => Variant_Check);
 
-               --  Start of For_Loop
+            --  Start of processing for For_Loop
 
             begin
                Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
@@ -1369,7 +1369,7 @@ package body Gnat2Why.Expr.Loops is
             Domain => EW_Pred);
       end Variant_Part_Stays_Constant;
 
-   --  Start of Transform_Loop_Variant
+   --  Start of processing for Transform_Loop_Variant
 
    begin
       --  Unused initialization to avoid compiler warning that variable may be

@@ -1012,7 +1012,7 @@ package body Gnat2Why.Subprograms is
       Result      : W_Prog_Id := New_Void;
       --  Why program for these checks
 
-   --  Start of Compute_Contract_Cases_Entry_Checks
+   --  Start of processing for Compute_Contract_Cases_Entry_Checks
 
    begin
       --  If no Contract_Cases on this subprogram, return the void program
@@ -1202,7 +1202,7 @@ package body Gnat2Why.Subprograms is
 
       Result : W_Prog_Id := New_Void;
 
-   --  Start of Compute_Contract_Cases_Exit_Checks
+   --  Start of processing for Compute_Contract_Cases_Exit_Checks
 
    begin
       --  If no Contract_Cases on this subprogram, return
@@ -1272,7 +1272,7 @@ package body Gnat2Why.Subprograms is
 
       Result : W_Pred_Id := New_Literal (Value => EW_True);
 
-   --  Start of Compute_Contract_Cases_Postcondition
+   --  Start of processing for Compute_Contract_Cases_Postcondition
 
    begin
       --  If no Contract_Cases on this subprogram, return True

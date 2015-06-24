@@ -1784,7 +1784,7 @@ package body SPARK_Definition is
 
       Save_Inside_Actions : constant Boolean := Inside_Actions;
 
-   --  Start of Mark_Actions
+   --  Start of processing for Mark_Actions
 
    begin
       Inside_Actions := True;
@@ -2479,7 +2479,7 @@ package body SPARK_Definition is
          Vis_Decls : constant List_Id :=
            Visible_Declarations (Package_Specification (E));
 
-      --  Start of Mark_Package_Entity
+      --  Start of processing for Mark_Package_Entity
 
       begin
          --  Do not analyze specs for instantiations of the formal containers.
@@ -2647,7 +2647,7 @@ package body SPARK_Definition is
             Global_Seen  : Boolean;
             pragma Unreferenced (Global_Seen);
 
-         --  Start of Mark_Subprogram_Specification
+         --  Start of processing for Mark_Subprogram_Specification
 
          begin
             if Ekind (Id) = E_Function then
@@ -2688,7 +2688,7 @@ package body SPARK_Definition is
          Prag : Node_Id;
          Expr : Node_Id;
 
-      --  Start of Mark_Subprogram_Entity
+      --  Start of processing for Mark_Subprogram_Entity
 
       begin
 
@@ -3391,7 +3391,7 @@ package body SPARK_Definition is
       Save_Violation_Detected : constant Boolean := Violation_Detected;
       Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
 
-   --  Start of Mark_Entity
+   --  Start of processing for Mark_Entity
 
    begin
       --  For entities in external axioms, mark the package entity.

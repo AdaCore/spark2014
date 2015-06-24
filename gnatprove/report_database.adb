@@ -135,7 +135,7 @@ package body Report_Database is
          end if;
       end Process;
 
-   --  Start of Add_Flow_Result
+   --  Start of processing for Add_Flow_Result
 
    begin
       Update_Subp_Entry (Unit, Subp, Process'Access);
@@ -165,7 +165,7 @@ package body Report_Database is
          end if;
       end Process;
 
-   --  Start of Add_Proof_Result
+   --  Start of processing for Add_Proof_Result
 
    begin
       Update_Subp_Entry (Unit, Subp, Process'Access);
@@ -194,7 +194,7 @@ package body Report_Database is
          Stat.Analysis := Analysis;
       end Process;
 
-   --  Start of Add_SPARK_Status
+   --  Start of processing for Add_SPARK_Status
 
    begin
 
@@ -420,7 +420,7 @@ package body Report_Database is
          Count := Count + 1;
       end Update;
 
-   --  Start of Num_Units
+   --  Start of processing for Num_Units
 
    begin
       Iter_Units (Update'Access);
@@ -482,7 +482,7 @@ package body Report_Database is
       C        : Cursor;
       Inserted : Boolean;
 
-   --  Start of Update_Subp_Entry
+   --  Start of processing for Update_Subp_Entry
 
    begin
       Unit_Map.Insert (Unit, Subp_Maps.Empty_Map, C, Inserted);

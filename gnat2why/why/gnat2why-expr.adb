@@ -988,7 +988,7 @@ package body Gnat2Why.Expr is
 
       Result : W_Prog_Id := Expr;
 
-   --  Start of Bind_From_Mapping_In_Expr
+   --  Start of processing for Bind_From_Mapping_In_Expr
 
    begin
       for C in Map.Iterate loop
@@ -3897,7 +3897,7 @@ package body Gnat2Why.Expr is
          Result := Loop_Map.Element (Expr);
       end Get_Name;
 
-   --  Start of Name_For_Loop_Entry
+   --  Start of processing for Name_For_Loop_Entry
 
    begin
       if not Loop_Entry_Map.Contains (Loop_Id) then
@@ -5514,7 +5514,7 @@ package body Gnat2Why.Expr is
 
          Decl_File     : Why_Section := Why_Sections (Dispatch_Entity (Expr));
 
-      --  Start of Generate_Logic_Function
+      --  Start of processing for Generate_Logic_Function
 
       begin
          --  Store the logic function
@@ -5836,7 +5836,7 @@ package body Gnat2Why.Expr is
             end loop;
          end Traverse_Rec_Aggregate;
 
-         --  Start of Get_Aggregate_Elements
+         --  Start of processing for Get_Aggregate_Elements
 
       begin
          --  In the case of a 'Update attribute_reference, add the prefix to be
@@ -6493,7 +6493,7 @@ package body Gnat2Why.Expr is
             end if;
          end Transform_Rec_Simple_Aggregate;
 
-      --  Start of Transform_Array_Component_Associations
+      --  Start of processing for Transform_Array_Component_Associations
 
       begin
          --  Fill the array of index nodes
@@ -6537,7 +6537,7 @@ package body Gnat2Why.Expr is
       Index_Values : Node_Lists.List;
       Index_Types  : Node_Lists.List;
 
-   --  Start of Transform_Aggregate
+   --  Start of processing for Transform_Aggregate
 
    begin
       --  Get the aggregate elements that should be passed in parameter
@@ -7934,7 +7934,7 @@ package body Gnat2Why.Expr is
             One_Term);
       end Build_Last_Expr;
 
-   --  Start of Transform_Concatenation
+   --  Start of processing for Transform_Concatenation
 
    begin
 
@@ -8235,7 +8235,7 @@ package body Gnat2Why.Expr is
 
       R : W_Prog_Id := New_Void;
 
-   --  Start of Transform_Declaration
+   --  Start of processing for Transform_Declaration
 
    begin
       case Nkind (Decl) is
@@ -9206,7 +9206,7 @@ package body Gnat2Why.Expr is
                   end if;
                end New_Short_Circuit_Expr;
 
-            --  Start of Short_Circuit
+            --  Start of processing for Short_Circuit
 
             begin
                Ada_Ent_To_Why.Push_Scope (Symbol_Table);
@@ -10306,7 +10306,7 @@ package body Gnat2Why.Expr is
          null;
       end tip;
 
-   --  Start of Transform_Pragma
+   --  Start of processing for Transform_Pragma
 
    begin
       case Prag_Id is
@@ -11043,7 +11043,7 @@ package body Gnat2Why.Expr is
                                        --  variable.
       W_Index_Var  : W_Identifier_Id;  --  Why3 name for the index variable
 
-   --  Start of Transform_Quantified_Expression
+   --  Start of processing for Transform_Quantified_Expression
 
    begin
       --  The usual translation of quantified expression into Why3 is as a
@@ -11345,7 +11345,7 @@ package body Gnat2Why.Expr is
       CL          : List_Id;
       Choice      : Node_Id;
 
-   --  Start of Transform_Record_Component_Associations
+   --  Start of processing for Transform_Record_Component_Associations
 
    begin
       --  Normal record aggregates are required to be fully initialized, but

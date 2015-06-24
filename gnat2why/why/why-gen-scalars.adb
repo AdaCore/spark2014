@@ -423,7 +423,7 @@ package body Why.Gen.Scalars is
       First, Last, Modul, Small : W_Term_OId := Why_Empty;
       Rng                       : constant Node_Id := Get_Range (E);
 
-   --  Start of Declare_Scalar_Type
+   --  Start of processing for Declare_Scalar_Type
 
    begin
 
