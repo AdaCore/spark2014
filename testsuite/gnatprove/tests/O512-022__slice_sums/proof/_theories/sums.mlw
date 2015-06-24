@@ -70,6 +70,48 @@ module Sums__vector_element
 
 end
 
+module Array__Int__Sums__vector_element
+ use import "_gnatprove_standard".Main
+ use import "int".Int
+ use        Sums__vector_element
+
+ function index_I1_one 
+   :int =
+  1
+ 
+ type component_type  = 
+  Sums__vector_element.vector_element
+ 
+ clone export "_gnatprove_standard".Array__1 with
+ type I1.t = int, 
+ predicate I1.le = Int.(<=), 
+ predicate I1.lt = Int.(<), 
+ predicate I1.gt = Int.(>), 
+ function I1.add = Int.(+), 
+ function I1.sub = Int.(-), 
+ function I1.one = index_I1_one, 
+ type component_type = component_type
+ 
+ function index_Index_one 
+   :int =
+  1
+ 
+ clone export "ada__model".Array_Int_Rep_Comparison_Axiom with
+ type component_type = component_type, 
+ function to_rep = Sums__vector_element.to_rep, 
+ type map = map, 
+ type Index.t = int, 
+ predicate Index.le = Int.(<=), 
+ predicate Index.lt = Int.(<), 
+ predicate Index.gt = Int.(>), 
+ function Index.add = Int.(+), 
+ function Index.sub = Int.(-), 
+ function Index.one = index_Index_one, 
+ function get = get, 
+ function bool_eq = bool_eq
+
+end
+
 module Sums__vector
  use import "int".Int
  use import "_gnatprove_standard".Main
@@ -77,7 +119,7 @@ module Sums__vector
  use import Standard__integer
  use import Sums__index
  use import Sums__vector_element
- use        Array__Int
+ use        Array__Int__Sums__vector_element
 
  predicate index_dynamic_property (first : int) (last : int) (x : int) =
       first <= x /\ x <= last
@@ -91,8 +133,8 @@ module Sums__vector
   x
 
  clone export "ada__model".Unconstr_Array with
- type map = Array__Int.map component_type,
- function array_bool_eq = Array__Int.bool_eq,
+ type map = Array__Int__Sums__vector_element.map,
+ function array_bool_eq = Array__Int__Sums__vector_element.bool_eq,
  type index_base_type = Standard__integer.integer,
  type index_rep_type = int,
  function to_rep = Standard__integer.to_rep,
@@ -105,7 +147,7 @@ module Sums__vector
 
  (* Helper function *)
  function _get "inline" (v : vector) (i : int) : int =
-   	  Sums__vector_element.to_rep (Array__Int.get (to_array v) i)
+   	  Sums__vector_element.to_rep (Array__Int__Sums__vector_element.get (to_array v) i)
 end
 
 module Sums__slice_bounds

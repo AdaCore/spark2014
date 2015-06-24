@@ -28,6 +28,7 @@ with GNAT.Source_Info;
 with Atree;                use Atree;
 with Einfo;                use Einfo;
 with Errout;               use Errout;
+with Exp_Util;             use Exp_Util;
 with Namet;                use Namet;
 with Nlists;               use Nlists;
 with Sem_Aux;              use Sem_Aux;
@@ -1457,6 +1458,9 @@ package body Gnat2Why.External_Axioms is
 
             --  If there is a user declaration of an array type, possibly
             --  create a new type of array by cloning underlying Why3 theories.
+            --  If the type of the array's component is declared locally to the
+            --  package with external axioms, it is the responsability of the
+            --  theory file to provide the new array type.
 
             if Comes_From_Source (N)
               and then Nkind (N) = N_Full_Type_Declaration
@@ -1465,10 +1469,14 @@ package body Gnat2Why.External_Axioms is
                declare
                   File : Why_Section :=
                     Why_Sections (Dispatch_Entity (Defining_Identifier (N)));
+                  Element_Is_Local : constant Boolean :=
+                    Containing_Package_With_Ext_Axioms
+                      (Component_Type (Defining_Identifier (N))) = E;
                begin
                   Create_Rep_Array_Theory_If_Needed
-                    (File => File,
-                     E    => Defining_Identifier (N));
+                    (File          => File,
+                     E             => Defining_Identifier (N),
+                     Register_Only => Element_Is_Local);
                end;
             end if;
 

@@ -32,6 +32,7 @@ with Namet;                 use Namet;
 with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with Snames;                use Snames;
+with Stand;                 use Stand;
 with Types;                 use Types;
 with Uintp;                 use Uintp;
 
@@ -244,6 +245,9 @@ package SPARK_Util is
 
    function Has_Array_Type (T : Entity_Id) return Boolean is
      (Retysp_Kind (T) in Array_Kind);
+
+   function Has_Boolean_Type (T : Entity_Id) return Boolean is
+     (Root_Type (Retysp (T)) = Standard_Boolean);
 
    function Has_Class_Wide_Type (T : Entity_Id) return Boolean is
      (Retysp_Kind (T) in Class_Wide_Kind);

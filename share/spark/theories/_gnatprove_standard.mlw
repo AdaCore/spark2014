@@ -286,18 +286,20 @@ theory Array__1
 
   clone Array__Index as I1
 
-  type map 'a = Map.map I1.t 'a
+  type component_type
 
-  function get "inline" (a : map 'a) (i : I1.t) : 'a = Map.get a i
-  function set "inline" (a : map 'a) (i : I1.t) (v : 'a) : map 'a = Map.set a i v
+  type map = Map.map I1.t component_type
 
-  function bool_eq (map 'a) I1.t I1.t (map 'a) I1.t I1.t : bool
+  function get "inline" (a : map) (i : I1.t) : component_type = Map.get a i
+  function set "inline" (a : map) (i : I1.t) (v : component_type) : map = Map.set a i v
+
+  function bool_eq map I1.t I1.t map I1.t I1.t : bool
   meta "encoding : lskept" function bool_eq
 
    axiom T__ada_array___equal_def:
-     forall a:map 'a.
+     forall a:map.
      forall af : I1.t. forall al : I1.t.
-     forall b:map 'a.
+     forall b:map.
      forall bf : I1.t. forall bl : I1.t [bool_eq a af al b bf bl].
          ((if I1.le af al then I1.add (I1.sub al af) I1.one = I1.add (I1.sub bl bf) I1.one else I1.gt bf bl)
           /\ (forall i:I1.t[get a i].
@@ -305,17 +307,17 @@ theory Array__1
                 (get a i = get b (I1.add (I1.sub bf af) i))))
          <-> bool_eq a af al b bf bl = True
 
-  function slide (map 'a) I1.t I1.t : map 'a
+  function slide map I1.t I1.t : map
   meta "encoding : lskept" function slide
 
   axiom slide_eq :
-    forall a : map 'a.
+    forall a : map.
     forall first : I1.t
       [slide a first first].
       slide a first first = a
 
   axiom slide_def :
-    forall a : map 'a.
+    forall a : map.
     forall old_first : I1.t.
     forall new_first : I1.t.
     forall i : I1.t
@@ -329,11 +331,11 @@ theory Array__1
      interested in the second argument, a shift must be made depending on the
      original "first" value. *)
 
-  function concat (map 'a) I1.t I1.t (map 'a) I1.t I1.t : map 'a
+  function concat map I1.t I1.t map I1.t I1.t : map
   meta "encoding : lskept" function concat
 
   axiom concat_def :
-    forall a b : map 'a.
+    forall a b : map.
     forall a_first a_last b_first b_last : I1.t.
     forall i : I1.t [get (concat a a_first a_last b b_first b_last) i].
       ((I1.le a_first i /\ I1.le i a_last) ->
@@ -342,30 +344,14 @@ theory Array__1
       ((I1.gt i a_last) ->
         get (concat a a_first a_last b b_first b_last) i = get b (I1.add (I1.sub i a_last) (I1.sub b_first I1.one)))
 
-   (* Comparison between arrays. Only defined for arrays of discrete.  *)
-
-   function compare (map 'a) I1.t I1.t (map 'a) I1.t I1.t : int
-   meta "encoding : lskept" function compare
-
-   (* Logical operators on arrays. Only defined for arrays of boolean. *)
-
-   function xorb (map 'a) I1.t I1.t (map 'a) I1.t I1.t : map 'a
-   meta "encoding : lskept" function xorb
-   function andb (map 'a) I1.t I1.t (map 'a) I1.t I1.t : map 'a
-   meta "encoding : lskept" function andb
-   function orb (map 'a) I1.t I1.t (map 'a) I1.t I1.t : map 'a
-   meta "encoding : lskept" function orb
-   function notb (map 'a) I1.t I1.t : map 'a
-   meta "encoding : lskept" function notb
-
    (* a singleton array is the array which is defined only at the given
    position, and yields the given value. *)
 
-   function singleton 'a I1.t : map 'a
+   function singleton component_type I1.t : map
    meta "encoding : lskept" function singleton
 
    axiom singleton_def :
-    forall v : 'a.
+    forall v : component_type.
     forall i : I1.t  [get (singleton v i) i].
       get (singleton v i) i = v
 end
@@ -376,34 +362,36 @@ theory Array__2
   clone Array__Index as I1
   clone Array__Index as I2
 
-  type map 'a
+  type component_type
 
-  function get (map 'a) I1.t I2.t : 'a
+  type map
+
+  function get map I1.t I2.t : component_type
   meta "encoding : lskept" function get
-  function set (map 'a) I1.t I2.t 'a : map 'a
+  function set map I1.t I2.t component_type : map
   meta "encoding : lskept" function set
 
   axiom Select_eq :
-    forall m : map 'a.
+    forall m : map.
     forall i : I1.t.
     forall j : I2.t.
-    forall a : 'a [set m i j a].  get (set m i j a) i j = a
+    forall a : component_type [set m i j a].  get (set m i j a) i j = a
 
   axiom Select_neq :
-    forall m : map 'a.
+    forall m : map.
     forall i i2 : I1.t.
     forall j j2 : I2.t.
-    forall a : 'a [get (set m i j a) i2 j2| set m i j a, get m i2 j2].
+    forall a : component_type [get (set m i j a) i2 j2| set m i j a, get m i2 j2].
     not (i = i2 /\ j = j2) -> get (set m i j a) i2 j2 = get m i2 j2
 
-  function bool_eq (map 'a) I1.t I1.t I2.t I2.t (map 'a) I1.t I1.t I2.t I2.t : bool
+  function bool_eq map I1.t I1.t I2.t I2.t map I1.t I1.t I2.t I2.t : bool
   meta "encoding : lskept" function bool_eq
 
    axiom T__ada_array___equal_def:
-     forall a:map 'a.
+     forall a:map.
      forall af al : I1.t.
      forall af2 al2 : I2.t.
-     forall b:map 'a.
+     forall b:map.
      forall bf bl : I1.t.
      forall bf2 bl2 : I2.t [bool_eq a af al af2 al2 b bf bl bf2 bl2].
          ((if I1.le af al then I1.add (I1.sub al af) I1.one = I1.add (I1.sub bl bf) I1.one else I1.gt bf bl) /\
@@ -414,11 +402,11 @@ theory Array__2
                 (get a i j = get b (I1.add (I1.sub bf af) i) (I2.add (I2.sub bf2 af2) j))))
          <-> bool_eq a af al af2 al2 b bf bl bf2 bl2 = True
 
-  function slide (map 'a) I1.t I1.t I2.t I2.t : map 'a
+  function slide map I1.t I1.t I2.t I2.t : map
   meta "encoding : lskept" function slide
 
   axiom slide_def :
-    forall a : map 'a.
+    forall a : map.
     forall new_first    old_first   : I1.t.
     forall new_first_2  old_first_2 : I2.t.
     forall i : I1.t.
@@ -435,39 +423,41 @@ theory Array__3
   clone Array__Index as I2
   clone Array__Index as I3
 
-  type map 'a
+  type component_type
 
-  function get (map 'a) I1.t I2.t I3.t : 'a
+  type map
+
+  function get map I1.t I2.t I3.t : component_type
   meta "encoding : lskept" function get
-  function set (map 'a) I1.t I2.t I3.t 'a : map 'a
+  function set map I1.t I2.t I3.t component_type : map
   meta "encoding : lskept" function set
 
   axiom Select_eq :
-    forall m : map 'a.
+    forall m : map.
     forall i : I1.t.
     forall j : I2.t.
     forall k : I3.t.
-    forall a : 'a [set m i j k a].  get (set m i j k a) i j k = a
+    forall a : component_type [set m i j k a].  get (set m i j k a) i j k = a
 
   axiom Select_neq :
-    forall m : map 'a.
+    forall m : map.
     forall i i2 : I1.t.
     forall j j2 : I2.t.
     forall k k2 : I3.t.
-    forall a : 'a [get (set m i j k a) i2 j2 k2| set m i j k a, get m i2 j2 k2].
+    forall a : component_type [get (set m i j k a) i2 j2 k2| set m i j k a, get m i2 j2 k2].
     not (i = i2 /\ j = j2 /\ k = k2) ->
       get (set m i j k a) i2 j2 k2 = get m i2 j2 k2
 
-  function bool_eq (map 'a)
-    I1.t I1.t I2.t I2.t I3.t I3.t (map 'a) I1.t I1.t I2.t I2.t I3.t I3.t : bool
+  function bool_eq map
+    I1.t I1.t I2.t I2.t I3.t I3.t map I1.t I1.t I2.t I2.t I3.t I3.t : bool
   meta "encoding : lskept" function bool_eq
 
    axiom T__ada_array___equal_def:
-     forall a:map 'a.
+     forall a:map.
      forall af al   : I1.t.
      forall af2 al2 : I2.t.
      forall af3 al3 : I3.t.
-     forall b:map 'a.
+     forall b:map.
      forall bf bl   : I1.t.
      forall bf2 bl2 : I2.t.
      forall bf3 bl3 : I3.t
@@ -482,11 +472,11 @@ theory Array__3
                 (get a i j k = get b (I1.add (I1.sub bf af) i) (I2.add (I2.sub bf2 af2) j) (I3.add (I3.sub bf3 af3) k))))
          <-> bool_eq a af al af2 al2 af3 al3 b bf bl bf2 bl2 bf3 bl3 = True
 
-  function slide (map 'a) I1.t I1.t I2.t I2.t I3.t I3.t : map 'a
+  function slide map I1.t I1.t I2.t I2.t I3.t I3.t : map
   meta "encoding : lskept" function slide
 
   axiom slide_def :
-    forall a : map 'a.
+    forall a : map.
     forall old_first   new_first   : I1.t.
     forall old_first_2 new_first_2 : I2.t.
     forall old_first_3 new_first_3 : I3.t.
@@ -510,44 +500,46 @@ theory Array__4
   clone Array__Index as I3
   clone Array__Index as I4
 
-  type map 'a
+  type component_type
 
-  function get (map 'a) I1.t I2.t I3.t I4.t : 'a
+  type map
+
+  function get map I1.t I2.t I3.t I4.t : component_type
   meta "encoding : lskept" function get
-  function set (map 'a) I1.t I2.t I3.t I4.t 'a : map 'a
+  function set map I1.t I2.t I3.t I4.t component_type : map
   meta "encoding : lskept" function set
 
   axiom Select_eq :
-    forall m : map 'a.
+    forall m : map.
     forall i : I1.t.
     forall j : I2.t.
     forall k : I3.t.
     forall l : I4.t.
-    forall a : 'a [set m i j k l a].  get (set m i j k l a) i j k l = a
+    forall a : component_type [set m i j k l a].  get (set m i j k l a) i j k l = a
 
   axiom Select_neq :
-    forall m : map 'a.
+    forall m : map.
     forall i i2 : I1.t.
     forall j j2 : I2.t.
     forall k k2 : I3.t.
     forall l l2 : I4.t.
-    forall a : 'a
+    forall a : component_type
       [get (set m i j k l a) i2 j2 k2 l2|
        set m i j k l a, get m i2 j2 k2 l2].
     not (i = i2 /\ j = j2 /\ k = k2 /\ l = l2) ->
       get (set m i j k l a) i2 j2 k2 l2 = get m i2 j2 k2 l2
 
-  function bool_eq (map 'a)
-    I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t (map 'a) I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t : bool
+  function bool_eq map
+    I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t map I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t : bool
   meta "encoding : lskept" function bool_eq
 
    axiom T__ada_array___equal_def:
-     forall a:map 'a.
+     forall a:map.
      forall af al   : I1.t.
      forall af2 al2 : I2.t.
      forall af3 al3 : I3.t.
      forall af4 al4 : I4.t.
-     forall b:map 'a.
+     forall b:map.
      forall bf bl   : I1.t.
      forall bf2 bl2 : I2.t.
      forall bf3 bl3 : I3.t.
@@ -565,11 +557,11 @@ theory Array__4
                 (get a i j k l = get b (I1.add (I1.sub bf af) i) (I2.add (I2.sub bf2 af2) j) (I3.add (I3.sub bf3 af3) k) (I4.add (I4.sub bf4 af4) l))))
          <-> bool_eq a af al af2 al2 af3 al3 af4 al4 b bf bl bf2 bl2 bf3 bl3 bf4 bl4 = True
 
-  function slide (map 'a) I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t : map 'a
+  function slide map I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t : map
   meta "encoding : lskept" function slide
 
   axiom slide_def :
-    forall a : map 'a.
+    forall a : map.
     forall old_first   new_first   : I1.t.
     forall old_first_2 new_first_2 : I2.t.
     forall old_first_3 new_first_3 : I3.t.

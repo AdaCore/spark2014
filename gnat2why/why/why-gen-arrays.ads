@@ -312,17 +312,20 @@ package Why.Gen.Arrays is
 
    function Get_Array_Theory_Name (E : Entity_Id) return Name_Id;
    --  @param E the entity of type array
-   --  @return A name of the form "Array(_(Int|BV8|BV16|BV32|BV64))*"
+   --  @return A name of the form "Array_(_(Int|BV8|BV16|BV32|BV64))*__t"
    --          of the theory associated to the array type E.
    --          The name is the key to this theory in M_Array(_1) hash maps.
 
    procedure Create_Rep_Array_Theory_If_Needed
-     (File : in out Why_Section;
-      E    :        Entity_Id);
+     (File          : in out Why_Section;
+      E             :        Entity_Id;
+      Register_Only :        Boolean := False);
    --  Check if the Array theory of the representation type of E has already
    --  been created. If not create it.
    --  @param File the current why file
    --  @param E the entity of type array
+   --  @param Register_Only if Register_Only is true, the declaration is not
+   --         emited.
 
    function Get_Array_Theory (E : Entity_Id) return M_Array_Type;
    --  Return the m_array_type containing the theory of the type of E
@@ -330,6 +333,15 @@ package Why.Gen.Arrays is
 
    function Get_Array_Theory_1 (E : Entity_Id) return M_Array_1_Type;
    --  Return the m_array_1_type containing the theory of the type of E
+   --  @param E the entity of type array
+
+   function Get_Array_Theory_1_Comp (E : Entity_Id) return M_Array_1_Comp_Type;
+   --  Return the m_array_1_comp_type containing the theory of the type of E
+   --  @param E the entity of type array
+
+   function Get_Array_Theory_1_Bool_Op (E : Entity_Id)
+                                        return M_Array_1_Bool_Op_Type;
+   --  Return the m_array_1_bool_op_type containing the theory of the type of E
    --  @param E the entity of type array
 
 end Why.Gen.Arrays;

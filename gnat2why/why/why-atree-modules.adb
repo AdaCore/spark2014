@@ -559,11 +559,43 @@ package body Why.Atree.Modules is
                         Domain => EW_Term,
                         Symbol => NID ("concat"),
                         Typ    => Ty);
+      M_Array_1.Singleton :=
+        New_Identifier (Module => Module,
+                        Domain => EW_Term,
+                        Symbol => NID ("singleton"),
+                        Typ    => Ty);
+
+      return M_Array_1;
+   end Init_Array_1_Module;
+
+   function Init_Array_1_Comp_Module (Module : W_Module_Id)
+                                      return M_Array_1_Comp_Type
+   is
+      M_Array_1 : M_Array_1_Comp_Type;
+   begin
+
+      M_Array_1.Module := Module;
       M_Array_1.Compare :=
         New_Identifier (Module => Module,
                         Domain => EW_Term,
                         Symbol => NID ("compare"),
                         Typ    => EW_Int_Type);
+
+      return M_Array_1;
+   end Init_Array_1_Comp_Module;
+
+   function Init_Array_1_Bool_Op_Module (Module : W_Module_Id)
+                                      return M_Array_1_Bool_Op_Type
+   is
+      M_Array_1 : M_Array_1_Bool_Op_Type;
+      Ty : constant W_Type_Id :=
+        New_Type (Type_Kind  => EW_Builtin,
+                  Name       => New_Name (Symbol => NID ("map"),
+                                          Module => Module),
+                  Is_Mutable => False);
+   begin
+
+      M_Array_1.Module := Module;
       M_Array_1.Xorb :=
         New_Identifier (Module => Module,
                         Domain => EW_Term,
@@ -584,14 +616,9 @@ package body Why.Atree.Modules is
                         Domain => EW_Term,
                         Symbol => NID ("notb"),
                         Typ    => Ty);
-      M_Array_1.Singleton :=
-        New_Identifier (Module => Module,
-                        Domain => EW_Term,
-                        Symbol => NID ("singleton"),
-                        Typ    => Ty);
 
       return M_Array_1;
-   end Init_Array_1_Module;
+   end Init_Array_1_Bool_Op_Module;
 
    -------------------------
    -- Init_Boolean_Module --

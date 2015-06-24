@@ -750,30 +750,6 @@ module Dynamic_Floating_Point
     ensures { result = n /\ dynamic_property first last n }
 end
 
-module Unconstrained_Private_Type
-  (* The module that is used as basis for unconstrained subtypes or derived types
- of  a private type from a module with External_Axiomatization. *)
-
-   type t
-
-   function to_base "inline" (x : t) : t = x
-   function of_base "inline" (x : t) : t = x
-end
-
-module Constrained_Private_Type
-  (* The module that is used as basis for constrained subtypes or derived types
- of  a private type from a module with External_Axiomatization. *)
-
-   type t
-   type base_type
-
-   function to_base t : base_type
-   function of_base base_type : t
-
-   axiom inversion_axiom :
-      forall x : t [of_base (to_base x)]. of_base (to_base x) = x
-end
-
 (* The following modules are templates for unconstrained and constrained array
 types. Only the one for one dimension is commented, the others are very similar *)
 
@@ -832,13 +808,15 @@ module Array_Comparison_Axiom
   clone _gnatprove_standard.Array__Index as Index
 
   function get map Index.t : component_type
-  function compare map Index.t Index.t map Index.t Index.t : int
   function bool_eq map Index.t Index.t map Index.t Index.t : bool
 
   predicate rep_lt rep_type rep_type
   predicate rep_gt rep_type rep_type
 
   function to_rep component_type : rep_type
+
+  function compare map Index.t Index.t map Index.t Index.t : int
+  meta "encoding : lskept" function compare
 
   axiom compare_def :
     forall a b : map.
@@ -912,8 +890,9 @@ module Array_Generic_Op_Axiom
   function get map Index.t : component_type
 
   function to_bool component_type : bool
-  function array_op map Index.t Index.t map Index.t Index.t : map
   function base_op bool bool : bool
+
+  function array_op map Index.t Index.t map Index.t Index.t : map
 
   axiom op_def:
    forall a b : map.
@@ -937,10 +916,15 @@ module Array_Logical_Op_Generic_Axioms
    clone _gnatprove_standard.Array__Index as Index
 
    function get map Index.t : component_type
+
    function xorb map Index.t Index.t map Index.t Index.t : map
+   meta "encoding : lskept" function xorb
    function andb map Index.t Index.t map Index.t Index.t : map
+   meta "encoding : lskept" function andb
    function orb  map Index.t Index.t map Index.t Index.t : map
+   meta "encoding : lskept" function orb
    function notb map Index.t Index.t : map
+   meta "encoding : lskept" function notb
 
    clone Array_Generic_Op_Axiom as Or_Axiom with
      type component_type = component_type,
@@ -1051,11 +1035,11 @@ module Unconstr_Array
 
   (* An unconstrained array comes with its bounds *)
   type __t =
-    { elts : __split; rt : I1.t }
+    { elts : map; rt : I1.t }
 
-  function to_array (a : __t) : __split = a.elts
+  function to_array (a : __t) : map = a.elts
 
-  function of_array (a : __split) (f l : index_rep_type) : __t =
+  function of_array (a : map) (f l : index_rep_type) : __t =
     { elts = a; rt = I1.mk f l }
 
   use import int.Int
@@ -1071,13 +1055,13 @@ module Unconstr_Array
 
   function value__size : int
 
-  function object__size (a : __split) : int
+  function object__size (a : map) : int
 
   axiom value__size_axiom :
     value__size >= 0
 
   axiom object__size_axiom :
-    forall a : __split.
+    forall a : map.
     object__size (a) >= 0
 
   function bool_eq (x : __t) (y : __t) : bool =
@@ -1135,15 +1119,15 @@ module Unconstr_Array_2
 
   type __split = map
   type __t =
-    { elts : __split;
+    { elts : map;
       rt   : I1.t;
       rt_2 : I2.t
     }
 
-  function to_array (a : __t) : __split =
+  function to_array (a : __t) : map =
     a.elts
 
-  function of_array (a : __split)
+  function of_array (a : map)
     (f l : index_rep_type) (f2 l2 : index_rep_type_2) : __t =
     { elts = a;
       rt = I1.mk f l;
@@ -1169,13 +1153,13 @@ module Unconstr_Array_2
 
   function value__size : int
 
-  function object__size (a : __split) : int
+  function object__size (a : map) : int
 
   axiom value__size_axiom :
     value__size >= 0
 
   axiom object__size_axiom :
-    forall a : __split.
+    forall a : map.
     object__size (a) >= 0
 
   function bool_eq (x : __t) (y : __t) : bool =
@@ -1253,16 +1237,16 @@ module Unconstr_Array_3
 
   type __split = map
   type __t =
-    { elts : __split;
+    { elts : map;
       rt   : I1.t;
       rt_2 : I2.t;
       rt_3 : I3.t
     }
 
-  function to_array (a : __t) : __split =
+  function to_array (a : __t) : map =
     a.elts
 
-  function of_array (a : __split)
+  function of_array (a : map)
     (f l : index_rep_type) (f2 l2 : index_rep_type_2) (f3 l3 : index_rep_type_3) : __t =
     { elts = a;
       rt = I1.mk f l;
@@ -1299,13 +1283,13 @@ module Unconstr_Array_3
 
   function value__size : int
 
-  function object__size (a : __split) : int
+  function object__size (a : map) : int
 
   axiom value__size_axiom :
     value__size >= 0
 
   axiom object__size_axiom :
-    forall a : __split.
+    forall a : map.
     object__size (a) >= 0
 
   function bool_eq (x : __t) (y : __t) : bool =
@@ -1404,17 +1388,17 @@ module Unconstr_Array_4
   type __split = map
 
   type __t =
-    { elts : __split;
+    { elts : map;
       rt   : I1.t;
       rt_2 : I2.t;
       rt_3 : I3.t;
       rt_4 : I4.t
     }
 
-  function to_array (a : __t) : __split =
+  function to_array (a : __t) : map =
     a.elts
 
-  function of_array (a : __split)
+  function of_array (a : map)
     (f l : index_rep_type)
     (f2 l2 : index_rep_type_2)
     (f3 l3 : index_rep_type_3)
@@ -1463,13 +1447,13 @@ module Unconstr_Array_4
 
   function value__size : int
 
-  function object__size (a : __split) : int
+  function object__size (a : map) : int
 
   axiom value__size_axiom :
     value__size >= 0
 
   axiom object__size_axiom :
-    forall a : __split.
+    forall a : map.
     object__size (a) >= 0
 
   function bool_eq (x : __t) (y : __t) : bool =

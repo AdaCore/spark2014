@@ -43,7 +43,6 @@ with Sem_Disp;                  use Sem_Disp;
 with Sem_Eval;                  use Sem_Eval;
 with Sem_Util;                  use Sem_Util;
 with SPARK_Definition;          use SPARK_Definition;
-with Stand;                     use Stand;
 with Stringt;                   use Stringt;
 with String_Utils;              use String_Utils;
 with Treepr;                    use Treepr;

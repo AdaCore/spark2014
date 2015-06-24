@@ -27,7 +27,7 @@ module Perm__nat_array
  use        Perm__index
  use        "_gnatprove_standard".Integer
  use import "int".Int
- use        Array__Int
+ use        Array__Int__Standard__natural
 
  type component_type =
   Standard__natural.natural
@@ -38,8 +38,8 @@ module Perm__nat_array
 
  (* Copy of the model of modules for unconstrained array types *)
  clone export "ada__model".Unconstr_Array with
- type map = Array__Int.map component_type,
- function array_bool_eq = Array__Int.bool_eq,
+ type map = Array__Int__Standard__natural.map,
+ function array_bool_eq = Array__Int__Standard__natural.bool_eq,
  type index_base_type = Standard__integer.integer,
  type index_rep_type = int,
  function to_rep = Standard__integer.to_rep,
@@ -49,26 +49,6 @@ module Perm__nat_array
  predicate index_rep_le = Int.(<=)
 
  type nat_array  = __t
-
- function index_Index_one
-   :int =
-  1
-
- clone export "ada__model".Array_Int_Rep_Comparison_Axiom with
- type component_type = component_type,
- function to_rep = Standard__natural.to_rep,
- type map = Array__Int.map component_type,
- type Index.t = int,
- predicate Index.le = Int.(<=),
- predicate Index.lt = Int.(<),
- predicate Index.gt = Int.(>),
- function Index.add = Int.(+),
- function Index.sub = Int.(-),
- function Index.one = index_Index_one,
- function get = Array__Int.get,
- function compare = Array__Int.compare,
- function bool_eq = Array__Int.bool_eq
-
 end
 
 module Perm__is_perm
@@ -76,7 +56,7 @@ module Perm__is_perm
   use import int.Int
   use import Standard__natural
   use import Perm__nat_array
-  use import Array__Int
+  use import Array__Int__Standard__natural
 
   (* Number of occurrences of v in a *)
   function occ (v: natural) (a: nat_array) : int

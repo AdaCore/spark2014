@@ -33,6 +33,7 @@ with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with Stand;                 use Stand;
+with String_Utils;          use String_Utils;
 with Uintp;                 use Uintp;
 
 with GNATCOLL.Utils;        use GNATCOLL.Utils;
@@ -88,6 +89,28 @@ package body Why.Gen.Arrays is
    --         allready been called for the current module.
    --  @return the substitution array for cloning the indice module of
    --          _gnatprove_standard.mlw
+
+   function Prepare_Standard_Array_Logical_Substitutions
+     (Theory       : W_Theory_Declaration_Id;
+      Und_Ent      : Entity_Id)
+      return W_Clone_Substitution_Array;
+   --  @param Und_Ent Entity of the array type.
+   --  @return An array of substitutions for cloning the module
+   --          Standard_Array_Logical_Ax.
+
+   function Prepare_Subtype_Array_Logical_Substitutions
+     (Theory       : W_Theory_Declaration_Id;
+      Und_Ent      : Entity_Id)
+      return W_Clone_Substitution_Array;
+   --  @param Und_E!nt Entity of the array type.
+   --  @return An array of substitutions for cloning the module
+   --          Subtype_Array_Logical_Ax.
+
+   procedure Declare_Additional_Symbols (E      : Entity_Id;
+                                         Theory : W_Theory_Declaration_Id);
+   --  @param E Entity of the one dimensional array type.
+   --  @return Declares logical operators and comparison function when
+   --          necessary.
 
    -----------------
    -- Add_Map_Arg --
@@ -341,6 +364,129 @@ package body Why.Gen.Arrays is
       end if;
    end Declare_Ada_Array;
 
+   --------------------------------
+   -- Declare_Additional_Symbols --
+   --------------------------------
+
+   procedure Declare_Additional_Symbols (E      : Entity_Id;
+                                         Theory : W_Theory_Declaration_Id) is
+   begin
+
+      if Has_Discrete_Type (Component_Type (E)) then
+
+         --  For discrete arrays of dimension 1 we need the to_int function on
+         --  component_type to define the comparison functions.
+         --  We clone a specific module Array_Comparison_Axiom which needs an
+         --  additional parameter to_rep.
+
+         declare
+            Base : constant W_Type_Id :=
+              Base_Why_Type_No_Bool (Component_Type (E));
+
+            Fst_Idx : constant Node_Id :=
+              (if Ekind (E) = E_String_Literal_Subtype then Standard_Integer
+               else First_Index (E));
+
+            Sbst : constant W_Clone_Substitution_Array :=
+              (1 => New_Clone_Substitution
+                 (Kind      => EW_Type_Subst,
+                  Orig_Name => To_Name (WNE_Array_Component_Type),
+                  Image     => To_Name (WNE_Array_Component_Type)),
+               2 =>
+                 New_Clone_Substitution
+                   (Kind      => EW_Function,
+                    Orig_Name => New_Name (Symbol => NID ("to_rep")),
+                    Image     =>
+                      Get_Name
+                        (Conversion_Name
+                           (From => EW_Abstract (Component_Type (E)),
+                            To   => Base))),
+               3 =>
+                 New_Clone_Substitution
+                   (Kind      => EW_Type_Subst,
+                    Orig_Name => New_Name (Symbol => NID ("map")),
+                    Image     => New_Name (Symbol => NID ("map"))))
+              &
+              Prepare_Indices_Substitutions
+              (Theory, Base_Type (Etype (Fst_Idx)), "Index")
+              &
+              (1 =>
+                 New_Clone_Substitution
+                   (Kind      => EW_Function,
+                    Orig_Name => New_Name (Symbol => NID ("get")),
+                    Image     => New_Name (Symbol => NID ("get"))),
+               2 =>
+                 New_Clone_Substitution
+                   (Kind      => EW_Function,
+                    Orig_Name => New_Name (Symbol => NID ("bool_eq")),
+                    Image     => New_Name (Symbol => NID ("bool_eq"))));
+         begin
+
+            if Has_Modular_Integer_Type (Component_Type (E)) then
+               Emit (Theory,
+                     New_Clone_Declaration
+                       (Theory_Kind   => EW_Module,
+                        Clone_Kind    => EW_Export,
+                        Origin        =>
+                          (if Base = EW_BitVector_8_Type then
+                                Array_BV8_Rep_Comparison_Ax
+                           elsif Base = EW_BitVector_16_Type then
+                              Array_BV16_Rep_Comparison_Ax
+                           elsif Base = EW_BitVector_32_Type then
+                              Array_BV32_Rep_Comparison_Ax
+                           elsif Base = EW_BitVector_64_Type then
+                              Array_BV64_Rep_Comparison_Ax
+                           else raise Program_Error),
+                        As_Name       => No_Name,
+                        Substitutions => Sbst));
+            else
+               Emit (Theory,
+                     New_Clone_Declaration
+                       (Theory_Kind   => EW_Module,
+                        Clone_Kind    => EW_Export,
+                        Origin        => Array_Int_Rep_Comparison_Ax,
+                        As_Name       => No_Name,
+                        Substitutions => Sbst));
+            end if;
+         end;
+      end if;
+
+      if Has_Boolean_Type (Component_Type (E)) then
+
+         --  For arrays of boolean types of dimension 1 we need to define the
+         --  logical operators.
+
+         if Is_Standard_Boolean_Type (Component_Type (E)) then
+
+            --  For Boolean, use the module Standard_Array_Logical_Op_Axioms
+
+            Emit (Theory,
+                  New_Clone_Declaration
+                    (Theory_Kind   => EW_Module,
+                     Clone_Kind    => EW_Export,
+                     Origin        => Standard_Array_Logical_Ax,
+                     As_Name       => No_Name,
+                     Substitutions =>
+                       Prepare_Standard_Array_Logical_Substitutions
+                         (Theory, E)));
+         else
+
+            --  We clone a specific module Subtype_Array_Logical_Op_Axioms
+            --  which needs an additional parameter to_int.
+
+            Emit (Theory,
+                  New_Clone_Declaration
+                    (Theory_Kind   => EW_Module,
+                     Clone_Kind    => EW_Export,
+                     Origin        => Subtype_Array_Logical_Ax,
+                     As_Name       => No_Name,
+                     Substitutions =>
+                       Prepare_Subtype_Array_Logical_Substitutions
+                         (Theory, E)));
+         end if;
+      end if;
+   end Declare_Additional_Symbols;
+
    -----------------------------------
    -- Prepare_Indices_Substitutions --
    -----------------------------------
@@ -435,17 +581,6 @@ package body Why.Gen.Arrays is
 
    function Prepare_Standard_Array_Logical_Substitutions
      (Theory       : W_Theory_Declaration_Id;
-      Array_Theory : W_Module_Id;
-      Und_Ent      : Entity_Id)
-      return W_Clone_Substitution_Array;
-   --  @param Array_Theory the module of the array theory used for the current
-   --         type.
-   --  @return An array of substitutions for cloning the module
-   --          Standard_Array_Logical_Ax.
-
-   function Prepare_Standard_Array_Logical_Substitutions
-     (Theory       : W_Theory_Declaration_Id;
-      Array_Theory : W_Module_Id;
       Und_Ent      : Entity_Id)
       return W_Clone_Substitution_Array
    is
@@ -453,39 +588,12 @@ package body Why.Gen.Arrays is
           New_Clone_Substitution
          (Kind      => EW_Type_Subst,
           Orig_Name => New_Name (Symbol => NID ("map")),
-          Image     => New_Name (Symbol => NID
-                                 ("map component_type"),
-                                 Module => Array_Theory)),
+          Image     => New_Name (Symbol => NID ("map"))),
        2 =>
           New_Clone_Substitution
          (Kind      => EW_Function,
           Orig_Name => New_Name (Symbol => NID ("get")),
-          Image     => New_Name (Symbol => NID ("get"),
-                                 Module => Array_Theory)),
-       3 =>
-          New_Clone_Substitution
-         (Kind      => EW_Function,
-          Orig_Name => New_Name (Symbol => NID ("xorb")),
-          Image     => New_Name (Symbol => NID ("xorb"),
-                                 Module => Array_Theory)),
-       4 =>
-          New_Clone_Substitution
-         (Kind      => EW_Function,
-          Orig_Name => New_Name (Symbol => NID ("andb")),
-          Image     => New_Name (Symbol => NID ("andb"),
-                                 Module => Array_Theory)),
-       5 =>
-          New_Clone_Substitution
-         (Kind      => EW_Function,
-          Orig_Name => New_Name (Symbol => NID ("orb")),
-          Image     => New_Name (Symbol => NID ("orb"),
-                                 Module => Array_Theory)),
-       6 =>
-          New_Clone_Substitution
-         (Kind      => EW_Function,
-          Orig_Name => New_Name (Symbol => NID ("notb")),
-          Image     => New_Name (Symbol => NID ("notb"),
-                                 Module => Array_Theory)))
+          Image     => New_Name (Symbol => NID ("get"))))
       & Prepare_Indices_Substitutions
         (Theory, Etype (First_Index (Und_Ent)), "Index",
          False));
@@ -496,23 +604,10 @@ package body Why.Gen.Arrays is
 
    function Prepare_Subtype_Array_Logical_Substitutions
      (Theory       : W_Theory_Declaration_Id;
-      Array_Theory : W_Module_Id;
-      Und_Ent      : Entity_Id)
-      return W_Clone_Substitution_Array;
-   --  @param Array_Theory the module of the array theory used for the current
-   --         type.
-   --  @return An array of substitutions for cloning the module
-   --          Subtype_Array_Logical_Ax.
-
-   function Prepare_Subtype_Array_Logical_Substitutions
-     (Theory       : W_Theory_Declaration_Id;
-      Array_Theory : W_Module_Id;
       Und_Ent      : Entity_Id)
       return W_Clone_Substitution_Array
    is
-     (Prepare_Standard_Array_Logical_Substitutions (Theory,
-                                                    Array_Theory,
-                                                    Und_Ent)
+     (Prepare_Standard_Array_Logical_Substitutions (Theory, Und_Ent)
       & (1 =>
             New_Clone_Substitution
          (Kind      => EW_Type_Subst,
@@ -599,7 +694,7 @@ package body Why.Gen.Arrays is
         New_Clone_Substitution
           (Kind      => EW_Type_Subst,
            Orig_Name => New_Name (Symbol => NID ("map")),
-           Image     => New_Name (Symbol => NID ("map component_type"),
+           Image     => New_Name (Symbol => NID ("map"),
                                   Module => Array_Theory));
       Cursor := Cursor + 1;
 
@@ -675,145 +770,6 @@ package body Why.Gen.Arrays is
               (Why3_Type_Name,
                Alias =>
                  +New_Named_Type (To_String (WNE_Array_Type))));
-
-      if Dimension = 1 and then
-        Is_Discrete_Type (Component_Type (Und_Ent))
-      then
-
-         --  For discrete arrays of dimension 1 we need the to_rep
-         --  function on component_type to define the comparison functions.
-         --  We clone a specific module Array_Comparison_Axiom which needs an
-         --  additional parameter to_rep.
-
-         declare
-            Base : constant W_Type_Id :=
-              Base_Why_Type_No_Bool (Component_Type (Und_Ent));
-
-            --  First_Index on stream is empty so we need to
-            Fst_Idx : constant Node_Id :=
-              (if Ekind (Und_Ent) = E_String_Literal_Subtype then
-                 Standard_Integer
-               else
-                 First_Index (Und_Ent));
-
-            Sbst : constant W_Clone_Substitution_Array :=
-              (1 => New_Clone_Substitution
-                 (Kind      => EW_Type_Subst,
-                  Orig_Name => To_Name (WNE_Array_Component_Type),
-                  Image     => To_Name (WNE_Array_Component_Type)),
-               2 =>
-                 New_Clone_Substitution
-                   (Kind      => EW_Function,
-                    Orig_Name =>
-                      To_Local (E_Symb (Und_Ent, WNE_To_Rep)),
-                    Image     =>
-                      Get_Name
-                        (Conversion_Name
-                           (From =>
-                                  EW_Abstract
-                              (Component_Type (Und_Ent)),
-                            To   => Base))),
-               3 =>
-                    New_Clone_Substitution
-                   (Kind      => EW_Type_Subst,
-                    Orig_Name => New_Name (Symbol => NID ("map")),
-                    Image     => New_Name (Symbol => NID
-                                           ("map component_type"),
-                                           Module => Array_Theory)))
-              &
-                 Prepare_Indices_Substitutions
-              (Theory, Etype (Fst_Idx), "Index")
-              &
-            (1 =>
-               New_Clone_Substitution
-                 (Kind      => EW_Function,
-                  Orig_Name => New_Name (Symbol => NID ("get")),
-                  Image     => New_Name (Symbol => NID ("get"),
-                                         Module => Array_Theory)),
-             2 =>
-                  New_Clone_Substitution
-                 (Kind      => EW_Function,
-                  Orig_Name => New_Name (Symbol => NID ("compare")),
-                  Image     => New_Name (Symbol => NID ("compare"),
-                                         Module => Array_Theory)),
-             3 =>
-                  New_Clone_Substitution
-                 (Kind      => EW_Function,
-                  Orig_Name => New_Name (Symbol => NID ("bool_eq")),
-                  Image     => New_Name (Symbol => NID ("bool_eq"),
-                                         Module => Array_Theory)));
-         begin
-
-            if Is_Modular_Integer_Type (Component_Type (Und_Ent)) then
-               Emit (Theory,
-                     New_Clone_Declaration
-                       (Theory_Kind   => EW_Module,
-                        Clone_Kind    => EW_Export,
-                        Origin        =>
-                          (if Base = EW_BitVector_8_Type then
-                                Array_BV8_Rep_Comparison_Ax
-                           elsif Base = EW_BitVector_16_Type then
-                              Array_BV16_Rep_Comparison_Ax
-                           elsif Base = EW_BitVector_32_Type then
-                              Array_BV32_Rep_Comparison_Ax
-                           elsif Base = EW_BitVector_64_Type then
-                              Array_BV64_Rep_Comparison_Ax
-                           else raise Program_Error),
-                        As_Name       => No_Name,
-                        Substitutions => Sbst));
-            else
-               Emit (Theory,
-                     New_Clone_Declaration
-                       (Theory_Kind   => EW_Module,
-                        Clone_Kind    => EW_Export,
-                        Origin        => Array_Int_Rep_Comparison_Ax,
-                        As_Name       => No_Name,
-                        Substitutions => Sbst));
-            end if;
-         end;
-      end if;
-
-      if Dimension = 1 and then
-        Is_Boolean_Type (Component_Type (Und_Ent))
-      then
-
-         --  For arrays of boolean types of dimension 1 we need to define the
-         --  logical operators.
-
-         if Is_Standard_Boolean_Type (Component_Type (Und_Ent)) then
-
-            --  For Boolean, use the module Standard_Array_Logical_Op_Axioms
-
-            Emit (Theory,
-                  New_Clone_Declaration
-                    (Theory_Kind   => EW_Module,
-                     Clone_Kind    => EW_Export,
-                     Origin        => Standard_Array_Logical_Ax,
-                     As_Name       => No_Name,
-                     Substitutions =>
-                       Prepare_Standard_Array_Logical_Substitutions
-                         (Theory,
-                          Array_Theory,
-                          Und_Ent)));
-
-         else
-
-            --  We clone a specific module Subtype_Array_Logical_Op_Axioms
-            --  which needs an additional parameter to_int.
-
-            Emit (Theory,
-                  New_Clone_Declaration
-                    (Theory_Kind   => EW_Module,
-                     Clone_Kind    => EW_Export,
-                     Origin        => Subtype_Array_Logical_Ax,
-                     As_Name       => No_Name,
-                     Substitutions =>
-                       Prepare_Subtype_Array_Logical_Substitutions
-                         (Theory,
-                          Array_Theory,
-                          Und_Ent)));
-         end if;
-      end if;
    end Declare_Constrained;
 
    ---------------------------
@@ -846,7 +802,7 @@ package body Why.Gen.Arrays is
         New_Clone_Substitution
           (Kind      => EW_Type_Subst,
            Orig_Name => New_Name (Symbol => NID ("map")),
-           Image     => New_Name (Symbol => NID ("map component_type"),
+           Image     => New_Name (Symbol => NID ("map"),
                                   Module => Array_Theory));
       Cursor := Cursor + 1;
 
@@ -1014,145 +970,6 @@ package body Why.Gen.Arrays is
                           B_Name   => Dummy_Ident2)),
                      Return_Type => M_Main.String_Image_Type));
          end;
-      end if;
-
-      if Dimension = 1 and then
-        Is_Discrete_Type (Component_Type (Und_Ent))
-      then
-
-         --  For discrete arrays of dimension 1 we need the to_int function on
-         --  component_type to define the comparison functions.
-         --  We clone a specific module Array_Comparison_Axiom which needs an
-         --  additional parameter to_rep.
-
-         declare
-            Base : constant W_Type_Id :=
-              Base_Why_Type_No_Bool (Component_Type (Und_Ent));
-
-            Fst_Idx : constant Node_Id :=
-              (if Ekind (Und_Ent) = E_String_Literal_Subtype then
-                    Standard_Integer
-                    else
-                       First_Index (Und_Ent));
-
-            Sbst : constant W_Clone_Substitution_Array :=
-              (1 => New_Clone_Substitution
-                 (Kind      => EW_Type_Subst,
-                  Orig_Name => To_Name (WNE_Array_Component_Type),
-                  Image     => To_Name (WNE_Array_Component_Type)),
-               2 =>
-                 New_Clone_Substitution
-                   (Kind      => EW_Function,
-                    Orig_Name =>
-                      To_Local (E_Symb (Und_Ent, WNE_To_Rep)),
-                    Image     =>
-                      Get_Name
-                        (Conversion_Name
-                           (From =>
-                                  EW_Abstract
-                              (Component_Type (Und_Ent)),
-                            To   => Base))),
-               3 =>
-                 New_Clone_Substitution
-                   (Kind      => EW_Type_Subst,
-                    Orig_Name => New_Name (Symbol => NID ("map")),
-                    Image     => New_Name (Symbol => NID
-                                           ("map component_type"),
-                                           Module => Array_Theory)))
-              &
-              Prepare_Indices_Substitutions
-              (Theory, Base_Type (Etype (Fst_Idx)), "Index")
-              &
-               (1 =>
-                 New_Clone_Substitution
-                   (Kind      => EW_Function,
-                    Orig_Name => New_Name (Symbol => NID ("get")),
-                    Image     => New_Name (Symbol => NID ("get"),
-                                           Module => Array_Theory)),
-               2 =>
-                 New_Clone_Substitution
-                   (Kind      => EW_Function,
-                    Orig_Name => New_Name (Symbol => NID ("compare")),
-                    Image     => New_Name (Symbol => NID ("compare"),
-                                           Module => Array_Theory)),
-               3 =>
-                 New_Clone_Substitution
-                   (Kind      => EW_Function,
-                    Orig_Name => New_Name (Symbol => NID ("bool_eq")),
-                    Image     => New_Name (Symbol => NID ("bool_eq"),
-                                           Module => Array_Theory)));
-         begin
-
-            if Is_Modular_Integer_Type (Component_Type (Und_Ent)) then
-               Emit (Theory,
-                     New_Clone_Declaration
-                       (Theory_Kind   => EW_Module,
-                        Clone_Kind    => EW_Export,
-                        Origin        =>
-                          (if Base = EW_BitVector_8_Type then
-                                Array_BV8_Rep_Comparison_Ax
-                           elsif Base = EW_BitVector_16_Type then
-                              Array_BV16_Rep_Comparison_Ax
-                           elsif Base = EW_BitVector_32_Type then
-                              Array_BV32_Rep_Comparison_Ax
-                           elsif Base = EW_BitVector_64_Type then
-                              Array_BV64_Rep_Comparison_Ax
-                           else raise Program_Error),
-                        As_Name       => No_Name,
-                        Substitutions => Sbst));
-            else
-               Emit (Theory,
-                     New_Clone_Declaration
-                       (Theory_Kind   => EW_Module,
-                        Clone_Kind    => EW_Export,
-                        Origin        => Array_Int_Rep_Comparison_Ax,
-                        As_Name       => No_Name,
-                        Substitutions => Sbst));
-            end if;
-
-         end;
-
-      end if;
-
-      if Dimension = 1 and then
-        Is_Boolean_Type (Component_Type (Und_Ent))
-      then
-
-         --  For arrays of boolean types of dimension 1 we need to define the
-         --  logical operators.
-
-         if Is_Standard_Boolean_Type (Component_Type (Und_Ent)) then
-
-            --  For Boolean, use the module Standard_Array_Logical_Op_Axioms
-
-            Emit (Theory,
-                  New_Clone_Declaration
-                    (Theory_Kind   => EW_Module,
-                     Clone_Kind    => EW_Export,
-                     Origin        => Standard_Array_Logical_Ax,
-                     As_Name       => No_Name,
-                     Substitutions =>
-                       Prepare_Standard_Array_Logical_Substitutions
-                         (Theory,
-                          Array_Theory,
-                          Und_Ent)));
-         else
-
-            --  We clone a specific module Subtype_Array_Logical_Op_Axioms
-            --  which needs an additional parameter to_int.
-
-            Emit (Theory,
-                  New_Clone_Declaration
-                    (Theory_Kind   => EW_Module,
-                     Clone_Kind    => EW_Export,
-                     Origin        => Subtype_Array_Logical_Ax,
-                     As_Name       => No_Name,
-                     Substitutions =>
-                       Prepare_Subtype_Array_Logical_Substitutions
-                         (Theory,
-                          Array_Theory,
-                          Und_Ent)));
-         end if;
       end if;
    end Declare_Unconstrained;
 
@@ -1532,6 +1349,12 @@ package body Why.Gen.Arrays is
          Next_Index (Index);
       end loop;
 
+      Type_Name := (To_Unbounded_String
+                    ("__" &
+                         Capitalize_First
+                         (Full_Name (Retysp (Component_Type (Etype (E)))))));
+      Name := Name & Type_Name;
+
       return NID (To_String (Name));
    end Get_Array_Theory_Name;
 
@@ -1561,7 +1384,7 @@ package body Why.Gen.Arrays is
       Dim : constant Positive :=
         Positive (Number_Dimensions (Typ));
 
-      Subst : W_Clone_Substitution_Array (1 .. Dim * 7);
+      Subst : W_Clone_Substitution_Array (1 .. Dim * 7 + 1);
 
    begin
       Module := New_Module (File => No_Name,
@@ -1570,7 +1393,7 @@ package body Why.Gen.Arrays is
       Open_Theory
         (File, Module,
          Comment =>
-           "Module for axiomatizing The array theory associated to type "
+           "Module for axiomatizing the array theory associated to type "
          & """" & Get_Name_String (Chars (E)) & """"
          & (if Sloc (E) > 0 then
               " defined at " & Build_Location_String (Sloc (E))
@@ -1579,6 +1402,7 @@ package body Why.Gen.Arrays is
 
       --  Start by generating all the substitutions for the theory(ies)
       --  Array__Index
+
       declare
          Index : Node_Id := First_Index (Typ);
       begin
@@ -1594,6 +1418,20 @@ package body Why.Gen.Arrays is
          end loop;
       end;
 
+      --  Add the substitution for the component type
+
+      Subst (Subst'Last) :=
+        New_Clone_Substitution
+          (Kind      => EW_Type_Subst,
+           Orig_Name => To_Name (WNE_Array_Component_Type),
+           Image     => To_Name (WNE_Array_Component_Type));
+
+      --  Declare the component type and clone the appropriate array theory.
+
+      Emit (File.Cur_Theory,
+            New_Type_Decl (Name  => To_Name (WNE_Array_Component_Type),
+                           Alias => EW_Abstract (Component_Type (Typ))));
+
       Emit (File.Cur_Theory,
             New_Clone_Declaration
               (Theory_Kind   => EW_Theory,
@@ -1601,6 +1439,15 @@ package body Why.Gen.Arrays is
                Origin        => Array_Modules (Dim),
                As_Name       => No_Name,
                Substitutions => Subst));
+
+      --  For arrays of dimension 1, we may need to clone additional modules
+      --  containing definition for the comparison function (if the component
+      --  type is discrete) or of boolean operators (if the component type is
+      --  boolean).
+
+      if Dim = 1 then
+         Declare_Additional_Symbols (Typ, File.Cur_Theory);
+      end if;
 
       Close_Theory (File, Kind => Definition_Theory);
    end Create_Rep_Array_Theory;
@@ -1610,8 +1457,9 @@ package body Why.Gen.Arrays is
    ---------------------------------------
 
    procedure Create_Rep_Array_Theory_If_Needed
-     (File : in out Why_Section;
-      E    :        Entity_Id)
+     (File          : in out Why_Section;
+      E             :        Entity_Id;
+      Register_Only :        Boolean := False)
    is
       Name : constant Name_Id := Get_Array_Theory_Name (E);
       Module : W_Module_Id;
@@ -1621,10 +1469,18 @@ package body Why.Gen.Arrays is
          return;
       end if;
 
-      --  If Nam was inserted it means that the theory is not present:
+      --  If Name was inserted it means that the theory is not present:
       --  Let's create it.
 
-      Create_Rep_Array_Theory (File, E, Name, Module);
+      if not Register_Only then
+         Create_Rep_Array_Theory (File, E, Name, Module);
+      else
+         Module := New_Module (File => No_Name,
+                               Name => Name);
+      end if;
+
+      --  Include the different parts of the declared module in the appropriate
+      --  maps.
 
       M_Arrays.Include (Key      => Name,
                         New_Item => Init_Array_Module (Module));
@@ -1632,6 +1488,18 @@ package body Why.Gen.Arrays is
       if Number_Dimensions (Retysp (Etype (E))) = 1 then
          M_Arrays_1.Include (Key      => Name,
                              New_Item => Init_Array_1_Module (Module));
+
+         if Has_Boolean_Type (Component_Type (Retysp (Etype (E)))) then
+            M_Arrays_1_Bool_Op.Include
+              (Key      => Name,
+               New_Item => Init_Array_1_Bool_Op_Module (Module));
+         end if;
+
+         if Has_Discrete_Type (Component_Type (Retysp (Etype (E)))) then
+            M_Arrays_1_Comp.Include
+              (Key      => Name,
+               New_Item => Init_Array_1_Comp_Module (Module));
+         end if;
       end if;
    end Create_Rep_Array_Theory_If_Needed;
 
@@ -1648,5 +1516,21 @@ package body Why.Gen.Arrays is
 
    function Get_Array_Theory_1 (E : Entity_Id) return M_Array_1_Type is
      (M_Arrays_1.Element (Get_Array_Theory_Name (E)));
+
+   -----------------------------
+   -- Get_Array_Theory_1_Comp --
+   -----------------------------
+
+   function Get_Array_Theory_1_Comp (E : Entity_Id) return M_Array_1_Comp_Type
+   is
+     (M_Arrays_1_Comp.Element (Get_Array_Theory_Name (E)));
+
+   --------------------------------
+   -- Get_Array_Theory_1_Bool_Op --
+   --------------------------------
+
+   function Get_Array_Theory_1_Bool_Op (E : Entity_Id)
+                                        return M_Array_1_Bool_Op_Type is
+     (M_Arrays_1_Bool_Op.Element (Get_Array_Theory_Name (E)));
 
 end Why.Gen.Arrays;
