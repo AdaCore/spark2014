@@ -5,26 +5,16 @@ t.adb:28:07: sequential elaboration supported only in restricted profile
 
 
 gnatprove: error during generation of Global contracts
-t.adb:26:12: tasking in SPARK requires sequential elaboration (SPARK RM 9.1(2))
-t.adb:26:12: violation of pragma SPARK_Mode at test2.adc:1
-t.adb:27:12: tasking in SPARK requires sequential elaboration (SPARK RM 9.1(2))
-t.adb:27:12: violation of pragma SPARK_Mode at test2.adc:1
-t.adb:28:12: tasking in SPARK requires sequential elaboration (SPARK RM 9.1(2))
-t.adb:28:12: violation of pragma SPARK_Mode at test2.adc:1
-t.adb:30:07: tasking in SPARK requires sequential elaboration (SPARK RM 9.1(2))
-t.adb:30:07: violation of pragma SPARK_Mode at test2.adc:1
-t.adb:39:07: tasking in SPARK requires sequential elaboration (SPARK RM 9.1(2))
-t.adb:39:07: violation of pragma SPARK_Mode at test2.adc:1
-t.adb:48:07: tasking in SPARK requires sequential elaboration (SPARK RM 9.1(2))
-t.adb:48:07: violation of pragma SPARK_Mode at test2.adc:1
-t.adb:58:07: tasking in SPARK requires sequential elaboration (SPARK RM 9.1(2))
-t.adb:58:07: violation of pragma SPARK_Mode at test2.adc:1
-t.adb:61:07: tasking in SPARK requires sequential elaboration (SPARK RM 9.1(2))
-t.adb:61:07: violation of pragma SPARK_Mode at test2.adc:1
+t.adb:26:07: from profile "Ravenscar" at test2.adc:2
+t.adb:26:07: violation of restriction "No_Task_Hierarchy"
+t.adb:27:07: from profile "Ravenscar" at test2.adc:2
+t.adb:27:07: violation of restriction "No_Task_Hierarchy"
+t.adb:28:07: from profile "Ravenscar" at test2.adc:2
+t.adb:28:07: violation of restriction "No_Task_Hierarchy"
    compilation of t.adb failed
 
 
-gnatprove: error during flow analysis and proof
+gnatprove: error during generation of Global contracts
 t.adb:26:12: tasking in SPARK requires Ravenscar profile (SPARK RM 9.1(2))
 t.adb:26:12: violation of pragma SPARK_Mode at test3.adc:1
 t.adb:27:12: tasking in SPARK requires Ravenscar profile (SPARK RM 9.1(2))

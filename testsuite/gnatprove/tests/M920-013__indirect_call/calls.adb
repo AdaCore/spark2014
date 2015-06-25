@@ -5,11 +5,6 @@ package body Calls is
    package body Inner is
       procedure C1 is begin null; end;
 
-      task body T is
-      begin
-         accept C2;
-      end;
-
       protected body P is
          procedure C3 is begin null; end;
       end;
@@ -21,9 +16,6 @@ package body Calls is
    begin
       --  call through access to subprogram
       Inner.PC1.all;
-
-      --  entry call
-      Inner.T.C2;
 
       --  call to protected object
       Inner.P.C3;

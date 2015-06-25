@@ -6,10 +6,6 @@ package Calls is
       procedure C1;
       PC1 : access procedure := C1'Access;
 
-      task T is
-         entry C2;
-      end;
-
       protected P is
          procedure C3;
       end;

@@ -8,7 +8,6 @@ package Tasks is
    task type Bad_Timer (Countdown : access Natural)
    is
       pragma Priority (10);
-      entry Dummy;
    end Bad_Timer;
 
    task type Timer (Countdown : Natural)
