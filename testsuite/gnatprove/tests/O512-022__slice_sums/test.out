@@ -59,7 +59,7 @@ slice_sums.adb:73:52: info: initialization of "Current_Lo" proved
 slice_sums.adb:74:36: info: overflow check proved
 slice_sums.adb:74:36: info: range check proved
 slice_sums.adb:75:13: info: loop invariant initialization proved
-slice_sums.adb:75:13: medium: loop invariant might fail after first iteration
+slice_sums.adb:75:13: info: loop invariant preservation proved
 slice_sums.adb:77:30: info: initialization of "Result.Lo" proved
 slice_sums.adb:78:19: info: initialization of "Result.Hi" proved
 slice_sums.adb:79:19: info: initialization of "Max_Sum" proved

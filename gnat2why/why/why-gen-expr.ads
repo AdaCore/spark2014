@@ -351,6 +351,10 @@ package Why.Gen.Expr is
    function Get_Type (E : W_Expr_Id) return W_Type_Id;
    --  extract the type of a given expression
 
+   function New_Havoc_Call (Id : W_Identifier_Id) return W_Prog_Id;
+   --  @param Id Identifier of a variable
+   --  @result Program havocing the value of Id
+
    -------------------------------------
    -- Introducing temporary variables --
    -------------------------------------

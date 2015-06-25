@@ -635,7 +635,8 @@ package body Gnat2Why.Expr is
                         Name     => Binder.Fields.Binder.B_Name,
                         Value    => +New_Fields_Access (Domain => EW_Prog,
                                                         Name   => +Tmp_Var,
-                                                        Ty     => Binder.Typ));
+                                                        Ty     => Binder.Typ),
+                        Typ      => Get_Typ (Binder.Fields.Binder.B_Name));
                   end if;
 
                   if Binder.Discrs.Present then
@@ -648,7 +649,9 @@ package body Gnat2Why.Expr is
                               Value    => +New_Discriminants_Access
                                 (Domain => EW_Prog,
                                  Name   => +Tmp_Var,
-                                 Ty     => Binder.Typ)));
+                                 Ty     => Binder.Typ),
+                              Typ      =>
+                                Get_Typ (Binder.Discrs.Binder.B_Name)));
 
                         pragma Assert (Binder.Constr.Present);
 
@@ -724,7 +727,8 @@ package body Gnat2Why.Expr is
                   Res     : W_Prog_Id := New_Assignment
                     (Ada_Node => N,
                      Name     => Binder.Content.B_Name,
-                     Value    => +Array_Convert_To_Base (EW_Prog, +Tmp_Var));
+                     Value    => +Array_Convert_To_Base (EW_Prog, +Tmp_Var),
+                     Typ      => Get_Typ (Binder.Content.B_Name));
                begin
                   for I in 1 .. Binder.Dim loop
                      Res := Sequence
@@ -793,7 +797,8 @@ package body Gnat2Why.Expr is
                               Domain   => EW_Prog,
                               Name     => +Why_Expr,
                               Ty       => Etype (Lvalue))
-                           else Why_Expr));
+                           else Why_Expr),
+                          Typ    => Why_Ty);
 
                   elsif Is_Static_Expression (Rexpr) then
 
@@ -3821,7 +3826,8 @@ package body Gnat2Why.Expr is
            New_Binding_Ref
              (Name    => Ref_Tmp_Vars (J),
               Def     => Ref_Fetch (J),
-              Context => Ref_Context);
+              Context => Ref_Context,
+              Typ     => Get_Typ (Ref_Tmp_Vars (J)));
       end loop;
 
       for J in Let_Fetch'Range loop
@@ -4098,12 +4104,20 @@ package body Gnat2Why.Expr is
            Ada_Ent_To_Why.Element (Symbol_Table, Entity (Left_Side));
       begin
          case Binder.Kind is
-            when Regular | UCArray =>
+            when Regular =>
                return
                  New_Assignment
                    (Ada_Node => Ada_Node,
-                    Name     => To_Why_Id (Entity (Left_Side)),
-                    Value    => Right_Side);
+                    Name     => Binder.Main.B_Name,
+                    Value    => Right_Side,
+                    Typ      => Get_Typ (Binder.Main.B_Name));
+            when UCArray =>
+               return
+                 New_Assignment
+                   (Ada_Node => Ada_Node,
+                    Name     => Binder.Content.B_Name,
+                    Value    => Right_Side,
+                    Typ      => Get_Typ (Binder.Content.B_Name));
             when DRecord =>
                declare
                   Tmp : constant W_Expr_Id := New_Temp_For_Expr (+Right_Side);
@@ -4116,7 +4130,8 @@ package body Gnat2Why.Expr is
                         Value    => +New_Fields_Access
                           (Domain   => EW_Prog,
                            Name     => Tmp,
-                           Ty       => Binder.Typ));
+                           Ty       => Binder.Typ),
+                        Typ      => Get_Typ (Binder.Fields.Binder.B_Name));
                   end if;
                   if Binder.Discrs.Present then
                      if Binder.Discrs.Binder.Mutable then
@@ -4127,7 +4142,9 @@ package body Gnat2Why.Expr is
                               Value    => +New_Discriminants_Access
                                 (Domain   => EW_Prog,
                                  Name     => Tmp,
-                                 Ty       => Binder.Typ)));
+                                 Ty       => Binder.Typ),
+                              Typ      =>
+                                Get_Typ (Binder.Discrs.Binder.B_Name)));
                      else
                         Res := Sequence
                           (Res, New_Assume_Statement
@@ -9764,8 +9781,7 @@ package body Gnat2Why.Expr is
                         pragma Assert (E.Fields.Binder.Mutable);
 
                         T := +Sequence
-                          (New_Call (Name => M_Main.Havoc_Fun,
-                                     Args => (1 => +E.Fields.Binder.B_Name)),
+                          (New_Havoc_Call (E.Fields.Binder.B_Name),
                            +T);
                      end if;
 
@@ -9777,9 +9793,7 @@ package body Gnat2Why.Expr is
 
                         declare
                            Havoc_Discr      : constant W_Prog_Id :=
-                             New_Call
-                               (Name => M_Main.Havoc_Fun,
-                                Args => (1 => +E.Discrs.Binder.B_Name));
+                             New_Havoc_Call (E.Discrs.Binder.B_Name);
                            Havoc_Discr_Cond : constant W_Expr_Id :=
                              New_Conditional
                                (Domain      => EW_Prog,
@@ -9838,9 +9852,7 @@ package body Gnat2Why.Expr is
                  Ty          => Etype (Ent),
                  Only_Var    => True,
                  Initialized => True);
-            Havoc    : W_Prog_Id :=
-              New_Call (Name => M_Main.Havoc_Fun,
-                        Args => (1 => T));
+            Havoc    : W_Prog_Id := New_Havoc_Call (+T);
          begin
             if Dyn_Prop /= True_Pred then
 
@@ -11735,7 +11747,8 @@ package body Gnat2Why.Expr is
                             +Transform_Expr (Expression (Stmt_Or_Decl),
                                              Return_Type,
                                              EW_Prog,
-                                             Params => Body_Params));
+                            Params => Body_Params),
+                          Typ      => Return_Type);
                      return Sequence (Result_Stmt, Raise_Stmt);
                   end;
                else
@@ -11754,6 +11767,8 @@ package body Gnat2Why.Expr is
                    (Return_Object_Declarations (Stmt_Or_Decl));
                Ret_Obj     : constant Entity_Id :=
                  Get_Return_Object (Stmt_Or_Decl);
+               Ret_Type    : constant W_Type_Id :=
+                 Type_Of_Node (Etype (Current_Subp));
                Obj_Deref   : constant W_Prog_Id :=
                  +Insert_Simple_Conversion
                    (Domain => EW_Prog,
@@ -11762,7 +11777,7 @@ package body Gnat2Why.Expr is
                        Expr   => Ret_Obj,
                        Ent    => Ret_Obj,
                        Domain => EW_Prog),
-                    To     => Type_Of_Node (Etype (Current_Subp)));
+                    To     => Ret_Type);
             begin
                Expr :=
                  Sequence
@@ -11775,7 +11790,8 @@ package body Gnat2Why.Expr is
                    (Expr,
                     New_Assignment
                       (Name  => Name_For_Result,
-                       Value => Obj_Deref));
+                       Value => Obj_Deref,
+                       Typ   => Ret_Type));
                return Sequence (Expr, Raise_Stmt);
             end;
 

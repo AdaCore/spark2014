@@ -279,6 +279,11 @@ package Why.Gen.Names is
       --  refined version (refined_post) of a subprogram.
       WNE_Refine_Module,  --  Refine
 
+      --  Suffixes for handling of references
+      WNE_Ref,
+      WNE_Content,
+      WNE_Havoc,
+
       WNE_Of_Array,
       WNE_Of_Base,
       WNE_Of_Rep,
@@ -323,6 +328,13 @@ package Why.Gen.Names is
 
    function Field_Append (Base  : W_Identifier_Id;
                           Typ   : W_Type_Id) return W_Identifier_Id;
+
+   function Ref_Append (Base : W_Name_Id) return W_Name_Id;
+
+   function Content_Append (Base : W_Name_Id;
+                            Typ  : W_Type_Id) return W_Identifier_Id;
+
+   function Havoc_Append (Base : W_Name_Id) return W_Identifier_Id;
 
    function To_String (W : Why_Name_Enum) return String;
 

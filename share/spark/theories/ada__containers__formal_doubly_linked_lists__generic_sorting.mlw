@@ -29,11 +29,11 @@ module Ada__containers__formal_doubly_linked_lists__generic_sorting__sort
   use import "ada__containers__formal_doubly_linked_lists".Ada__containers__formal_doubly_linked_lists__contains
   use import Ada__containers__formal_doubly_linked_lists__generic_sorting__is_sorted
 
-  val sort (co:ref Ada__containers__formal_doubly_linked_lists__list.__split_fields) (cap : Ada__containers__formal_doubly_linked_lists__list.__split_discrs) : bool
+  val sort (co:Ada__containers__formal_doubly_linked_lists__list.__split_fields__ref) (cap : Ada__containers__formal_doubly_linked_lists__list.__split_discrs) : bool
      writes { co }
-     ensures  { let rec_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !co;
+     ensures  { let rec_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = co.Ada__containers__formal_doubly_linked_lists__list.__split_fields__content;
                              Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
-               let old_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = old !co;
+               let old_co = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = old co.Ada__containers__formal_doubly_linked_lists__list.__split_fields__content;
                              Ada__containers__formal_doubly_linked_lists__list.__split_discrs = cap}  in
                is_sorted__logic rec_co = True /\ length_ rec_co = length_ old_co /\
             (forall e : Ada__containers__formal_doubly_linked_lists__element_type.base_type
@@ -51,20 +51,20 @@ module Ada__containers__formal_doubly_linked_lists__generic_sorting__merge
   use import "ada__containers__formal_doubly_linked_lists".Ada__containers__formal_doubly_linked_lists__contains
   use import Ada__containers__formal_doubly_linked_lists__generic_sorting__is_sorted
 
-  val merge (target:ref Ada__containers__formal_doubly_linked_lists__list.__split_fields) (t_cap : Ada__containers__formal_doubly_linked_lists__list.__split_discrs) (source:ref Ada__containers__formal_doubly_linked_lists__list.__split_fields) (s_cap : Ada__containers__formal_doubly_linked_lists__list.__split_discrs) : bool
+  val merge (target:Ada__containers__formal_doubly_linked_lists__list.__split_fields__ref) (t_cap : Ada__containers__formal_doubly_linked_lists__list.__split_discrs) (source:Ada__containers__formal_doubly_linked_lists__list.__split_fields__ref) (s_cap : Ada__containers__formal_doubly_linked_lists__list.__split_discrs) : bool
      writes { target, source }
-     requires { let rec_t = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !target;
+     requires { let rec_t = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = target.Ada__containers__formal_doubly_linked_lists__list.__split_fields__content;
                              Ada__containers__formal_doubly_linked_lists__list.__split_discrs = t_cap}  in
-               let rec_s = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !source;
+               let rec_s = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = source.Ada__containers__formal_doubly_linked_lists__list.__split_fields__content;
                              Ada__containers__formal_doubly_linked_lists__list.__split_discrs = s_cap}  in
                 length_ rec_s <= capacity rec_t - length_ rec_t }
-     ensures  { let rec_t = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !target;
+     ensures  { let rec_t = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = target.Ada__containers__formal_doubly_linked_lists__list.__split_fields__content;
                              Ada__containers__formal_doubly_linked_lists__list.__split_discrs = t_cap}  in
-               let old_t = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = old !target;
+               let old_t = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = old target.Ada__containers__formal_doubly_linked_lists__list.__split_fields__content;
                              Ada__containers__formal_doubly_linked_lists__list.__split_discrs = t_cap}  in
-               let rec_s = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = !source;
+               let rec_s = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = source.Ada__containers__formal_doubly_linked_lists__list.__split_fields__content;
                              Ada__containers__formal_doubly_linked_lists__list.__split_discrs = s_cap}  in
-               let old_s = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = old !source;
+               let old_s = {Ada__containers__formal_doubly_linked_lists__list.__split_fields = old source.Ada__containers__formal_doubly_linked_lists__list.__split_fields__content;
                              Ada__containers__formal_doubly_linked_lists__list.__split_discrs = s_cap}  in
                (is_sorted__logic old_t = True -> is_sorted__logic old_s = True -> is_sorted__logic rec_t = True) /\ 
 	length_ rec_t = length_ old_t + length_ old_s /\ length_ rec_s = 0 /\

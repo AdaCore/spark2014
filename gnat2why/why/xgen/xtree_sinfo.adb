@@ -379,7 +379,7 @@ package body Xtree_Sinfo is
       New_Field (W_Deref,
                  "Right", "W_Identifier", Id_One);
       New_Field (W_Deref,
-                 "Typ", "W_Type", Id_Lone);
+                 "Typ", "W_Type", Id_One);
 
       ---------------------
       -- W_Record_Access --
@@ -433,6 +433,8 @@ package body Xtree_Sinfo is
                  "Name", "W_Identifier", Id_One);
       New_Field (W_Assignment,
                  "Value", "W_Prog", Id_One);
+      New_Field (W_Assignment,
+                 "Typ", "W_Type", Id_One);
 
       -------------------
       -- W_Binding_Ref --
@@ -445,7 +447,7 @@ package body Xtree_Sinfo is
       New_Field (W_Binding_Ref,
                  "Context", "W_Prog", Id_One);
       New_Field (W_Binding_Ref,
-                 "Typ", "W_Type", Id_Lone);
+                 "Typ", "W_Type", Id_One);
 
       ------------------
       -- W_While_Loop --

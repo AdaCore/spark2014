@@ -47,6 +47,10 @@ module Ada__containers__formal_vectors__extended_index
 
   type extended_index
 
+  type extended_index__ref = { mutable extended_index__content : extended_index }
+  val extended_index__havoc (x : extended_index__ref) : unit
+     writes { x }
+
   function first : int = Ada__containers__formal_vectors__index_type.first - 1
 
   function last : int = Ada__containers__formal_vectors__index_type.last
@@ -94,6 +98,10 @@ module Ada__containers__formal_vectors__capacity_range
 
   type capacity_range
 
+  type capacity_range__ref = { mutable capacity_range__content : capacity_range }
+  val capacity_range__havoc (x : capacity_range__ref) : unit
+     writes { x }
+
   function first : int = 0
 
   function last : int = index_type_length
@@ -118,9 +126,21 @@ module Ada__containers__formal_vectors__vector
 
   type __split_discrs = {rec__capacity : Ada__containers__formal_vectors__capacity_range.capacity_range}
 
+  type __split_discrs__ref = { mutable __split_discrs__content : __split_discrs }
+  val __split_discrs__havoc (x : __split_discrs__ref) : unit
+     writes { x }
+
   type __split_fields = { rec__main__ : __private }
 
+  type __split_fields__ref = { mutable __split_fields__content : __split_fields }
+  val __split_fields__havoc (x : __split_fields__ref) : unit
+     writes { x }
+
   type vector = { __split_discrs : __split_discrs; __split_fields : __split_fields }
+
+  type vector__ref = { mutable vector__content : vector }
+  val vector__havoc (x : vector__ref) : unit
+     writes { x }
 
   predicate vector_inv "inline" (l : vector) =
      l = { __split_discrs = { rec__capacity = l.__split_discrs.rec__capacity }; __split_fields = { rec__main__ = l.__split_fields.rec__main__ } }
@@ -297,16 +317,16 @@ module Ada__containers__formal_vectors__reserve_capacity
   use        "ada__containers__formal_vectors__args".Ada__containers__formal_vectors__bounded
   use import Ada__containers__formal_vectors__Oeq__2
 
-  val reserve_capacity (v:ref Ada__containers__formal_vectors__vector.__split_fields) (v_cap :Ada__containers__formal_vectors__vector.__split_discrs) (cap : int) : unit
+  val reserve_capacity (v:Ada__containers__formal_vectors__vector.__split_fields__ref) (v_cap :Ada__containers__formal_vectors__vector.__split_discrs) (cap : int) : unit
     requires { Ada__containers__formal_vectors__bounded.bounded -> cap <= Ada__containers__formal_vectors__capacity_range.to_rep v_cap.rec__capacity }
     writes   { v }
     reads    { v }
-    ensures  { let rec_v = {Ada__containers__formal_vectors__vector.__split_fields = !v;
+    ensures  { let rec_v = {Ada__containers__formal_vectors__vector.__split_fields = v.Ada__containers__formal_vectors__vector.__split_fields__content;
                             Ada__containers__formal_vectors__vector.__split_discrs = v_cap}  in
-               let old_v = {Ada__containers__formal_vectors__vector.__split_fields = old !v;
+               let old_v = {Ada__containers__formal_vectors__vector.__split_fields = old v.Ada__containers__formal_vectors__vector.__split_fields__content;
                             Ada__containers__formal_vectors__vector.__split_discrs = v_cap}  in
                    if cap <= capacity old_v then
-                     !v = old !v
+                     v.Ada__containers__formal_vectors__vector.__split_fields__content = old v.Ada__containers__formal_vectors__vector.__split_fields__content
                    else
                      (capacity rec_v >= cap /\ oeq__2__logic old_v rec_v) }
 end
@@ -337,10 +357,10 @@ module Ada__containers__formal_vectors__clear
   use import Ada__containers__formal_vectors__length
   use        "ada__containers__formal_vectors__args".Ada__containers__formal_vectors__bounded
 
-  val clear (v:ref Ada__containers__formal_vectors__vector.__split_fields) (v_cap :Ada__containers__formal_vectors__vector.__split_discrs) : unit
+  val clear (v:Ada__containers__formal_vectors__vector.__split_fields__ref) (v_cap :Ada__containers__formal_vectors__vector.__split_discrs) : unit
      writes  { v }
      reads   { v }
-     ensures { let rec_v = {Ada__containers__formal_vectors__vector.__split_fields = !v;
+     ensures { let rec_v = {Ada__containers__formal_vectors__vector.__split_fields = v.Ada__containers__formal_vectors__vector.__split_fields__content;
                             Ada__containers__formal_vectors__vector.__split_discrs = v_cap}  in
                    length_ rec_v = 0 }
 end
@@ -355,12 +375,12 @@ module Ada__containers__formal_vectors__assign
   use import Ada__containers__formal_vectors__Oeq__2
   use        "ada__containers__formal_vectors__args".Ada__containers__formal_vectors__bounded
 
-  val assign (target:ref Ada__containers__formal_vectors__vector.__split_fields) (t_cap :Ada__containers__formal_vectors__vector.__split_discrs) (source : vector) : unit
+  val assign (target:Ada__containers__formal_vectors__vector.__split_fields__ref) (t_cap :Ada__containers__formal_vectors__vector.__split_discrs) (source : vector) : unit
     requires { Ada__containers__formal_vectors__bounded.bounded ->
                  length_ source <= Ada__containers__formal_vectors__capacity_range.to_rep t_cap.rec__capacity }
     writes   { target }
     reads    { target }
-    ensures  { let rec_t = {Ada__containers__formal_vectors__vector.__split_fields = !target;
+    ensures  { let rec_t = {Ada__containers__formal_vectors__vector.__split_fields = target.Ada__containers__formal_vectors__vector.__split_fields__content;
                             Ada__containers__formal_vectors__vector.__split_discrs = t_cap}  in
                    oeq__2__logic rec_t source }
 end
@@ -416,18 +436,18 @@ module Ada__containers__formal_vectors__replace_element
     capacity v1 = capacity v2
 
   val replace_element
-    (v:ref Ada__containers__formal_vectors__vector.__split_fields) (v_cap :Ada__containers__formal_vectors__vector.__split_discrs)
+    (v:Ada__containers__formal_vectors__vector.__split_fields__ref) (v_cap :Ada__containers__formal_vectors__vector.__split_discrs)
     (i : int)
     (e : Ada__containers__formal_vectors__element_type.base_type)
   : unit
-    requires { let rec_v = {Ada__containers__formal_vectors__vector.__split_fields = !v;
+    requires { let rec_v = {Ada__containers__formal_vectors__vector.__split_fields = v.Ada__containers__formal_vectors__vector.__split_fields__content;
                             Ada__containers__formal_vectors__vector.__split_discrs = v_cap}  in
                    0 < index_type__to_index i <= length_ rec_v }
     writes   { v }
     reads    { v }
-    ensures  { let rec_v = {Ada__containers__formal_vectors__vector.__split_fields = !v;
+    ensures  { let rec_v = {Ada__containers__formal_vectors__vector.__split_fields = v.Ada__containers__formal_vectors__vector.__split_fields__content;
                             Ada__containers__formal_vectors__vector.__split_discrs = v_cap}  in
-               let old_v = {Ada__containers__formal_vectors__vector.__split_fields = old !v;
+               let old_v = {Ada__containers__formal_vectors__vector.__split_fields = old v.Ada__containers__formal_vectors__vector.__split_fields__content;
                             Ada__containers__formal_vectors__vector.__split_discrs = v_cap}  in
                    replace_element old_v ( index_type__to_index i) e rec_v }
 end
@@ -469,16 +489,16 @@ module Ada__containers__formal_vectors__append
         length_ v1 < j <= length_ v1 + length_ nv ->
           element_ nv (j - length_ v1) = element_ v2 j
 
-  val append (v:ref Ada__containers__formal_vectors__vector.__split_fields) (v_cap :Ada__containers__formal_vectors__vector.__split_discrs) (nv : vector) : unit
-     requires { let rec_v = {Ada__containers__formal_vectors__vector.__split_fields = !v;
+  val append (v:Ada__containers__formal_vectors__vector.__split_fields__ref) (v_cap :Ada__containers__formal_vectors__vector.__split_discrs) (nv : vector) : unit
+     requires { let rec_v = {Ada__containers__formal_vectors__vector.__split_fields = v.Ada__containers__formal_vectors__vector.__split_fields__content;
                             Ada__containers__formal_vectors__vector.__split_discrs = v_cap}  in
                    Ada__containers__formal_vectors__bounded.bounded ->
                         length_ rec_v + length_ nv <= capacity rec_v }
      writes   { v }
      reads    { v }
-     ensures  { let rec_v = {Ada__containers__formal_vectors__vector.__split_fields = !v;
+     ensures  { let rec_v = {Ada__containers__formal_vectors__vector.__split_fields = v.Ada__containers__formal_vectors__vector.__split_fields__content;
                             Ada__containers__formal_vectors__vector.__split_discrs = v_cap}  in
-               let old_v = {Ada__containers__formal_vectors__vector.__split_fields = old !v;
+               let old_v = {Ada__containers__formal_vectors__vector.__split_fields = old v.Ada__containers__formal_vectors__vector.__split_fields__content;
                             Ada__containers__formal_vectors__vector.__split_discrs = v_cap}  in
                    append old_v nv rec_v }
 end
@@ -498,17 +518,17 @@ module Ada__containers__formal_vectors__append__2
   use        "ada__containers__formal_vectors__args".Ada__containers__formal_vectors__bounded
 
   val append__2
-    (v:ref Ada__containers__formal_vectors__vector.__split_fields) (v_cap :Ada__containers__formal_vectors__vector.__split_discrs)
+    (v:Ada__containers__formal_vectors__vector.__split_fields__ref) (v_cap :Ada__containers__formal_vectors__vector.__split_discrs)
     (e : Ada__containers__formal_vectors__element_type.base_type)
   : unit
-    requires { let rec_v = {Ada__containers__formal_vectors__vector.__split_fields = !v;
+    requires { let rec_v = {Ada__containers__formal_vectors__vector.__split_fields = v.Ada__containers__formal_vectors__vector.__split_fields__content;
                             Ada__containers__formal_vectors__vector.__split_discrs = v_cap}  in
                    Ada__containers__formal_vectors__bounded.bounded -> length_ rec_v < capacity rec_v }
     writes   { v }
     reads    { v }
-    ensures  { let rec_v = {Ada__containers__formal_vectors__vector.__split_fields = !v;
+    ensures  { let rec_v = {Ada__containers__formal_vectors__vector.__split_fields = v.Ada__containers__formal_vectors__vector.__split_fields__content;
                             Ada__containers__formal_vectors__vector.__split_discrs = v_cap}  in
-               let old_v = {Ada__containers__formal_vectors__vector.__split_fields = old !v;
+               let old_v = {Ada__containers__formal_vectors__vector.__split_fields = old v.Ada__containers__formal_vectors__vector.__split_fields__content;
                             Ada__containers__formal_vectors__vector.__split_discrs = v_cap}  in
                    Ada__containers__formal_vectors__oeq.oeq (element_ rec_v (length_ rec_v)) e /\
                    (* This is redundant with the following *)
@@ -541,12 +561,12 @@ module Ada__containers__formal_vectors__delete_last
            [delete_last v1 v2, element_ v1 j | delete_last v1 v2, element_ v2 j].
       delete_last v1 v2 -> 0 < j < length_ (v1) -> element_ v1 j = element_ v2 j
 
-  val delete_last (v:ref Ada__containers__formal_vectors__vector.__split_fields) (v_cap :Ada__containers__formal_vectors__vector.__split_discrs) : unit
+  val delete_last (v:Ada__containers__formal_vectors__vector.__split_fields__ref) (v_cap :Ada__containers__formal_vectors__vector.__split_discrs) : unit
     writes  { v }
     reads   { v }
-    ensures { let rec_v = {Ada__containers__formal_vectors__vector.__split_fields = !v;
+    ensures { let rec_v = {Ada__containers__formal_vectors__vector.__split_fields = v.Ada__containers__formal_vectors__vector.__split_fields__content;
                             Ada__containers__formal_vectors__vector.__split_discrs = v_cap}  in
-               let old_v = {Ada__containers__formal_vectors__vector.__split_fields = old !v;
+               let old_v = {Ada__containers__formal_vectors__vector.__split_fields = old v.Ada__containers__formal_vectors__vector.__split_fields__content;
                             Ada__containers__formal_vectors__vector.__split_discrs = v_cap}  in
                    if length_ old_v = 0 then
                      (length_ rec_v = 0 /\ capacity rec_v = capacity old_v)
@@ -583,12 +603,12 @@ module Ada__containers__formal_vectors__reverse_elements
       reverse_elements v1 v2 -> 0 < i <= length_ v1 ->
         element_ v1 i = element_ v2 (length_ v1 - i + 1)
 
-  val reverse_elements (v:ref Ada__containers__formal_vectors__vector.__split_fields) (v_cap :Ada__containers__formal_vectors__vector.__split_discrs) : unit
+  val reverse_elements (v:Ada__containers__formal_vectors__vector.__split_fields__ref) (v_cap :Ada__containers__formal_vectors__vector.__split_discrs) : unit
      writes  { v }
      reads   { v }
-     ensures { let rec_v = {Ada__containers__formal_vectors__vector.__split_fields = !v;
+     ensures { let rec_v = {Ada__containers__formal_vectors__vector.__split_fields = v.Ada__containers__formal_vectors__vector.__split_fields__content;
                             Ada__containers__formal_vectors__vector.__split_discrs = v_cap}  in
-               let old_v = {Ada__containers__formal_vectors__vector.__split_fields = old !v;
+               let old_v = {Ada__containers__formal_vectors__vector.__split_fields = old v.Ada__containers__formal_vectors__vector.__split_fields__content;
                             Ada__containers__formal_vectors__vector.__split_discrs = v_cap}  in
                    reverse_elements rec_v old_v }
 end
@@ -626,18 +646,18 @@ module Ada__containers__formal_vectors__swap
         0 < i2 <= length_ v1 /\
         element_ v1 i2 = element_ v2 i1
 
-  val swap (v:ref Ada__containers__formal_vectors__vector.__split_fields) (v_cap :Ada__containers__formal_vectors__vector.__split_discrs) (i1 i2 : int) : unit
-    requires { let rec_v = {Ada__containers__formal_vectors__vector.__split_fields = !v;
+  val swap (v:Ada__containers__formal_vectors__vector.__split_fields__ref) (v_cap :Ada__containers__formal_vectors__vector.__split_discrs) (i1 i2 : int) : unit
+    requires { let rec_v = {Ada__containers__formal_vectors__vector.__split_fields = v.Ada__containers__formal_vectors__vector.__split_fields__content;
                             Ada__containers__formal_vectors__vector.__split_discrs = v_cap}  in
                    0 < index_type__to_index i1 <= length_ rec_v /\
                    0 < index_type__to_index i2 <= length_ rec_v }
      writes  { v }
      reads   { v }
-     ensures { let rec_v = {Ada__containers__formal_vectors__vector.__split_fields = !v;
+     ensures { let rec_v = {Ada__containers__formal_vectors__vector.__split_fields = v.Ada__containers__formal_vectors__vector.__split_fields__content;
                             Ada__containers__formal_vectors__vector.__split_discrs = v_cap}  in
-               let old_v = {Ada__containers__formal_vectors__vector.__split_fields = old !v;
+               let old_v = {Ada__containers__formal_vectors__vector.__split_fields = old v.Ada__containers__formal_vectors__vector.__split_fields__content;
                             Ada__containers__formal_vectors__vector.__split_discrs = v_cap}  in
-                   (i1 = i2 /\ !v = (old !v)) \/
+                   (i1 = i2 /\ v.Ada__containers__formal_vectors__vector.__split_fields__content = (old v.Ada__containers__formal_vectors__vector.__split_fields__content)) \/
                    (i1 <> i2 /\ swap old_v (index_type__to_index i1) (index_type__to_index i2) rec_v) }
 end
 

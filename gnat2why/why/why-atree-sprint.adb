@@ -211,7 +211,11 @@ package body Why.Atree.Sprint is
    procedure Print_Assignment (Node : W_Assignment_Id) is
    begin
       Print_Node (+Get_Name (Node));
-      P (O, " := ( ");
+      P (O, ".");
+      pragma Assert (Get_Typ (Node) /= Why_Empty);
+      Print_Node (+Get_Typ (Node));
+      P (O, "__content");
+      P (O, " <- ( ");
       Print_Node (+Get_Value (Node));
       P (O, " )");
    end Print_Assignment;
@@ -283,9 +287,12 @@ package body Why.Atree.Sprint is
    begin
       P (O, "let ");
       Print_Node (+Get_Name (Node));
-      P (O, " = ref (");
+      P (O, " = { ");
+      pragma Assert (Get_Typ (Node) /= Why_Empty);
+      Print_Node (+Get_Typ (Node));
+      P (O, "__content = ");
       Print_Node (+Get_Def (Node));
-      PL (O, ") in ");
+      PL (O, " } in ");
 
       if not Binding_Sequence then
          Relative_Indent (O, 1);
@@ -712,8 +719,11 @@ package body Why.Atree.Sprint is
 
    procedure Print_Deref (Node : W_Deref_Id) is
    begin
-      P (O, "!");
+      pragma Assert (Get_Typ (Node) /= Why_Empty);
       Print_Node (+Get_Right (Node));
+      P (O, ".");
+      Print_Node (+Get_Typ (Node));
+      P (O, "__content");
    end Print_Deref;
 
    --------------------
@@ -1008,8 +1018,9 @@ package body Why.Atree.Sprint is
       Print_Sloc_Tag;
       P (O, Get_Labels (Node), As_String => True);
 
-      P (O, " : ref ");
+      P (O, " : ");
       Print_Node (+Get_Ref_Type (Node));
+      P (O, "__ref ");
       NL (O);
    end Print_Global_Ref_Declaration;
 
@@ -1748,9 +1759,6 @@ package body Why.Atree.Sprint is
       Base_Type : constant EW_Type := Get_Type_Kind (Node);
       Name      : constant W_Name_Id := Get_Name (Node);
    begin
-      if Get_Is_Mutable (Node) then
-         P (O, "ref ");
-      end if;
       if Present (Name) then
          Print_Node (+Name);
       elsif Base_Type = EW_Abstract then
@@ -1764,6 +1772,9 @@ package body Why.Atree.Sprint is
          end;
       else
          P (O, Base_Type);
+      end if;
+      if Get_Is_Mutable (Node) then
+         P (O, "__ref");
       end if;
    end Print_Type;
 

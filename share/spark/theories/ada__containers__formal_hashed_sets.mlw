@@ -18,9 +18,21 @@ module Ada__containers__formal_hashed_sets__set
   type __split_discrs = { rec__capacity : Ada__containers__count_type.count_type;
                           rec__modulus : Ada__containers__hash_type.hash_type }
 
+  type __split_discrs__ref = { mutable __split_discrs__content : __split_discrs }
+  val __split_discrs__havoc (x : __split_discrs__ref) : unit
+     writes { x }
+
   type __split_fields = { rec__main__ : __private }
 
+  type __split_fields__ref = { mutable __split_fields__content : __split_fields }
+  val __split_fields__havoc (x : __split_fields__ref) : unit
+     writes { x }
+
   type set = { __split_discrs : __split_discrs; __split_fields : __split_fields }
+
+  type set__ref = { mutable set__content : set }
+  val set__havoc (x : set__ref) : unit
+     writes { x }
 
   predicate set_inv "inline" (l : set) =
      l = { __split_discrs = { rec__capacity = l.__split_discrs.rec__capacity; rec__modulus = l.__split_discrs.rec__modulus }; __split_fields = { rec__main__ = l.__split_fields.rec__main__ } }
@@ -57,7 +69,17 @@ module Ada__containers__formal_hashed_sets__cursor
   use import Ada__containers__formal_hashed_sets__set
   use import Ada__containers__formal_hashed_sets__length
 
-  type cursor = __private
+  type __split_fields = { rec__main__ : __private }
+
+  type __split_fields__ref = { mutable __split_fields__content : __split_fields }
+  val __split_fields__havoc (x : __split_fields__ref) : unit
+     writes { x }
+
+  type cursor = { __split_fields : __split_fields }
+
+  type cursor__ref = { mutable cursor__content : cursor }
+  val cursor__havoc (x : cursor__ref) : unit
+     writes { x }
 
   function dummy : cursor
 
@@ -173,11 +195,11 @@ module Ada__containers__formal_hashed_sets__next__2
   use import Ada__containers__formal_hashed_sets__no_element
   use import Ada__containers__formal_hashed_sets__next
 
-  val next__2 (co:set) (cu:ref cursor) : unit
-     requires { !cu = no_element \/ position co !cu > 0 }
+  val next__2 (co:set) (cu:cursor__ref) : unit
+     requires { cu.cursor__content = no_element \/ position co cu.cursor__content > 0 }
      writes     { cu }
      reads      { cu }
-     ensures  { !cu = next__logic co (old !cu) }
+     ensures  { cu.cursor__content = next__logic co (old cu.cursor__content) }
 end
 
 module Ada__containers__formal_hashed_sets__first
@@ -357,15 +379,15 @@ module Ada__containers__formal_hashed_sets__replace
           (forall w:real [find_ co1 w | find_ co2 w]. find_ co1 w = find_ co2 w)) /\
      capacity co1 = capacity co2
 
-  val replace (co:ref Ada__containers__formal_hashed_sets__set.__split_fields) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (e:Ada__containers__formal_hashed_sets__element_type.base_type) : unit
-     requires { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = !co;
+  val replace (co:Ada__containers__formal_hashed_sets__set.__split_fields__ref) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (e:Ada__containers__formal_hashed_sets__element_type.base_type) : unit
+     requires { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = co.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
                    find_ rec_co (witness e) <> no_element }
      writes { co }
      reads { co }
-     ensures { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = !co;
+     ensures { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = co.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
-               let old_co = {Ada__containers__formal_hashed_sets__set.__split_fields = old !co;
+               let old_co = {Ada__containers__formal_hashed_sets__set.__split_fields = old co.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
                    replace old_co e rec_co }
 end
@@ -420,15 +442,15 @@ module Ada__containers__formal_hashed_sets__replace_element
        replace_element co1 cu e co2 -> not witness e = w ->
        find_ co1 w = find_ co2 w
 
-  val replace_element (co:ref Ada__containers__formal_hashed_sets__set.__split_fields) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (cu:cursor) (e:Ada__containers__formal_hashed_sets__element_type.base_type) : unit
-     requires { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = !co;
+  val replace_element (co:Ada__containers__formal_hashed_sets__set.__split_fields__ref) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (cu:cursor) (e:Ada__containers__formal_hashed_sets__element_type.base_type) : unit
+     requires { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = co.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
                    position rec_co cu > 0 /\ (find_ rec_co (witness e) = no_element \/ find_ rec_co (witness e) = cu) }
      writes     { co }
      reads      { co }
-     ensures { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = !co;
+     ensures { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = co.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
-               let old_co = {Ada__containers__formal_hashed_sets__set.__split_fields = old !co;
+               let old_co = {Ada__containers__formal_hashed_sets__set.__split_fields = old co.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
                    replace_element old_co cu e rec_co }
 end
@@ -494,19 +516,19 @@ module Ada__containers__formal_hashed_sets__insert
      [insert co1 e co2, find_ co1 w| insert co1 e co2, find_ co2 w].
       insert co1 e co2 -> not witness e = w -> find_ co1 w = find_ co2 w
 
-  val insert (co:ref Ada__containers__formal_hashed_sets__set.__split_fields) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (e:Ada__containers__formal_hashed_sets__element_type.base_type)  (p:ref cursor) (inserted : ref bool) : unit
-     requires { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = !co;
+  val insert (co:Ada__containers__formal_hashed_sets__set.__split_fields__ref) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (e:Ada__containers__formal_hashed_sets__element_type.base_type)  (p:cursor__ref) (inserted : bool__ref) : unit
+     requires { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = co.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
                    length_ rec_co < capacity rec_co }
      writes     { co, p, inserted }
      reads      { co }
-     ensures { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = !co;
+     ensures { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = co.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
-               let old_co = {Ada__containers__formal_hashed_sets__set.__split_fields = old !co;
+               let old_co = {Ada__containers__formal_hashed_sets__set.__split_fields = old co.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
-                   (!inserted = True <-> find_ old_co (witness e) = no_element) /\ !p = find_ rec_co (witness e) /\
-                          if !inserted = True then (insert old_co e rec_co)
-                                                                 else (!co = old !co) }
+                   (inserted.bool__content = True <-> find_ old_co (witness e) = no_element) /\ p.cursor__content = find_ rec_co (witness e) /\
+                          if inserted.bool__content = True then (insert old_co e rec_co)
+                                                                 else (co.Ada__containers__formal_hashed_sets__set.__split_fields__content = old co.Ada__containers__formal_hashed_sets__set.__split_fields__content) }
 end
 
 module Ada__containers__formal_hashed_sets__insert__2
@@ -521,15 +543,15 @@ module Ada__containers__formal_hashed_sets__insert__2
   use import Ada__containers__formal_hashed_sets__insert
   use import Ada__containers__formal_hashed_sets__find
 
-  val insert__2 (co:ref Ada__containers__formal_hashed_sets__set.__split_fields) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (e:Ada__containers__formal_hashed_sets__element_type.base_type) : unit
-     requires { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = !co;
+  val insert__2 (co:Ada__containers__formal_hashed_sets__set.__split_fields__ref) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (e:Ada__containers__formal_hashed_sets__element_type.base_type) : unit
+     requires { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = co.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
                    length_ rec_co < capacity rec_co /\ find_ rec_co (witness e) = no_element }
      writes     { co }
      reads      { co }
-     ensures { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = !co;
+     ensures { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = co.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
-               let old_co = {Ada__containers__formal_hashed_sets__set.__split_fields = old !co;
+               let old_co = {Ada__containers__formal_hashed_sets__set.__split_fields = old co.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
                    insert old_co e rec_co }
 end
@@ -595,15 +617,15 @@ module Ada__containers__formal_hashed_sets__delete
      find_ co1 w| delete co1 cu co2, find_ co2 w].
      delete co1 cu co2 -> not witness (element__logic co1 cu) = w -> find_ co1 w = find_ co2 w
 
-  val delete (co:ref Ada__containers__formal_hashed_sets__set.__split_fields) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (e : Ada__containers__formal_hashed_sets__element_type.base_type) : unit
-     requires { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = !co;
+  val delete (co:Ada__containers__formal_hashed_sets__set.__split_fields__ref) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (e : Ada__containers__formal_hashed_sets__element_type.base_type) : unit
+     requires { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = co.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
                    find_ rec_co (witness e) <> no_element }
      writes     { co }
      reads      { co }
-     ensures { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = !co;
+     ensures { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = co.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
-               let old_co = {Ada__containers__formal_hashed_sets__set.__split_fields = old !co;
+               let old_co = {Ada__containers__formal_hashed_sets__set.__split_fields = old co.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
                    delete old_co (find_ old_co (witness e)) rec_co }
 end
@@ -617,17 +639,17 @@ module Ada__containers__formal_hashed_sets__delete__2
   use import Ada__containers__formal_hashed_sets__no_element
   use import Ada__containers__formal_hashed_sets__delete
 
-  val delete__2 (co:ref Ada__containers__formal_hashed_sets__set.__split_fields) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (cu:ref cursor) : unit
-     requires { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = !co;
+  val delete__2 (co:Ada__containers__formal_hashed_sets__set.__split_fields__ref) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (cu:cursor__ref) : unit
+     requires { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = co.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
-                   position rec_co !cu > 0 }
+                   position rec_co cu.cursor__content > 0 }
      writes     { co, cu }
      reads      { co }
-     ensures { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = !co;
+     ensures { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = co.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
-               let old_co = {Ada__containers__formal_hashed_sets__set.__split_fields = old !co;
+               let old_co = {Ada__containers__formal_hashed_sets__set.__split_fields = old co.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
-                   delete old_co (old !cu) rec_co /\ !cu = no_element}
+                   delete old_co (old cu.cursor__content) rec_co /\ cu.cursor__content = no_element}
  end
 
 module Ada__containers__formal_hashed_sets__include
@@ -643,15 +665,15 @@ module Ada__containers__formal_hashed_sets__include
   use import Ada__containers__formal_hashed_sets__insert
   use import Ada__containers__formal_hashed_sets__find
 
-  val include (co:ref Ada__containers__formal_hashed_sets__set.__split_fields) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (e :Ada__containers__formal_hashed_sets__element_type.base_type) : unit
-     requires {  let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = !co;
+  val include (co:Ada__containers__formal_hashed_sets__set.__split_fields__ref) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (e :Ada__containers__formal_hashed_sets__element_type.base_type) : unit
+     requires {  let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = co.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
                    length_ rec_co  < capacity rec_co}
      writes     { co }
      reads      { co }
-     ensures { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = !co;
+     ensures { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = co.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
-               let old_co = {Ada__containers__formal_hashed_sets__set.__split_fields = old !co;
+               let old_co = {Ada__containers__formal_hashed_sets__set.__split_fields = old co.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
                    if find_ old_co (witness e) <> no_element then replace old_co e rec_co
                          else insert old_co e rec_co  }
@@ -669,14 +691,14 @@ module Ada__containers__formal_hashed_sets__exclude
   use import Ada__containers__formal_hashed_sets__delete
   use import Ada__containers__formal_hashed_sets__find
 
-  val exclude (co:ref Ada__containers__formal_hashed_sets__set.__split_fields) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (e :Ada__containers__formal_hashed_sets__element_type.base_type) : unit
+  val exclude (co:Ada__containers__formal_hashed_sets__set.__split_fields__ref) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (e :Ada__containers__formal_hashed_sets__element_type.base_type) : unit
      writes     { co }
      reads      { co }
-     ensures { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = !co;
+     ensures { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = co.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
-               let old_co = {Ada__containers__formal_hashed_sets__set.__split_fields = old !co;
+               let old_co = {Ada__containers__formal_hashed_sets__set.__split_fields = old co.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
-                   if find_ old_co (witness e) = no_element then  old !co = !co
+                   if find_ old_co (witness e) = no_element then  old co.Ada__containers__formal_hashed_sets__set.__split_fields__content = co.Ada__containers__formal_hashed_sets__set.__split_fields__content
                          else delete old_co (find_ old_co (witness e)) rec_co  }
 end
 
@@ -863,12 +885,12 @@ module Ada__containers__formal_hashed_sets__intersection
       is_inter s1 s2 (intersection__logic s1 s2) /\
        length_ (intersection__logic s1 s2) = length_ (intersection__logic s2 s1)
 
-  val intersection (co1:ref Ada__containers__formal_hashed_sets__set.__split_fields) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (co2:set) :unit
+  val intersection (co1:Ada__containers__formal_hashed_sets__set.__split_fields__ref) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (co2:set) :unit
      reads { co1 }
      writes { co1 }
-     ensures { let rec_co1 = {Ada__containers__formal_hashed_sets__set.__split_fields = !co1;
+     ensures { let rec_co1 = {Ada__containers__formal_hashed_sets__set.__split_fields = co1.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
-               let old_co1 = {Ada__containers__formal_hashed_sets__set.__split_fields = old !co1;
+               let old_co1 = {Ada__containers__formal_hashed_sets__set.__split_fields = old co1.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
                    rec_co1 = intersection__logic old_co1 co2 }
 end
@@ -909,15 +931,15 @@ module Ada__containers__formal_hashed_sets__union
   axiom union_is_union :
     forall s1:set. forall s2:set [union__logic s1 s2]. is_union s1 s2 (union__logic s1 s2)
 
-  val union (co1:ref Ada__containers__formal_hashed_sets__set.__split_fields) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (co2:set) :unit
-     requires { let rec_co1 = {Ada__containers__formal_hashed_sets__set.__split_fields = !co1;
+  val union (co1:Ada__containers__formal_hashed_sets__set.__split_fields__ref) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (co2:set) :unit
+     requires { let rec_co1 = {Ada__containers__formal_hashed_sets__set.__split_fields = co1.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
                    length_ (union__logic rec_co1 co2) <= capacity rec_co1}
      reads { co1 }
      writes { co1 }
-     ensures { let rec_co1 = {Ada__containers__formal_hashed_sets__set.__split_fields = !co1;
+     ensures { let rec_co1 = {Ada__containers__formal_hashed_sets__set.__split_fields = co1.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
-               let old_co1 = {Ada__containers__formal_hashed_sets__set.__split_fields = old !co1;
+               let old_co1 = {Ada__containers__formal_hashed_sets__set.__split_fields = old co1.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
                    rec_co1 = union__logic old_co1 co2 }
 end
@@ -965,12 +987,12 @@ module Ada__containers__formal_hashed_sets__difference
     forall s1:set.
      forall s2:set [difference__logic s1 s2]. is_diff s1 s2 (difference__logic s1 s2)
 
-  val difference (co1:ref Ada__containers__formal_hashed_sets__set.__split_fields) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (co2:set) :unit
+  val difference (co1:Ada__containers__formal_hashed_sets__set.__split_fields__ref) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (co2:set) :unit
      reads { co1 }
      writes { co1 }
-     ensures { let rec_co1 = {Ada__containers__formal_hashed_sets__set.__split_fields = !co1;
+     ensures { let rec_co1 = {Ada__containers__formal_hashed_sets__set.__split_fields = co1.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
-               let old_co1 = {Ada__containers__formal_hashed_sets__set.__split_fields = old !co1;
+               let old_co1 = {Ada__containers__formal_hashed_sets__set.__split_fields = old co1.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
                    rec_co1 = difference__logic old_co1 co2 }
 end
@@ -1018,15 +1040,15 @@ module Ada__containers__formal_hashed_sets__symmetric_difference
      forall s2:set [symmetric_difference__logic s1 s2].
       is_sdiff s1 s2 (symmetric_difference__logic s1 s2)
 
-  val symmetric_difference (co1:ref Ada__containers__formal_hashed_sets__set.__split_fields) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (co2:set) :unit
-     requires { let rec_co1 = {Ada__containers__formal_hashed_sets__set.__split_fields = !co1;
+  val symmetric_difference (co1:Ada__containers__formal_hashed_sets__set.__split_fields__ref) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (co2:set) :unit
+     requires { let rec_co1 = {Ada__containers__formal_hashed_sets__set.__split_fields = co1.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
                length_ (symmetric_difference__logic rec_co1 co2) <= capacity rec_co1}
      reads { co1 }
      writes { co1 }
-     ensures { let rec_co1 = {Ada__containers__formal_hashed_sets__set.__split_fields = !co1;
+     ensures { let rec_co1 = {Ada__containers__formal_hashed_sets__set.__split_fields = co1.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
-               let old_co1 = {Ada__containers__formal_hashed_sets__set.__split_fields = old !co1;
+               let old_co1 = {Ada__containers__formal_hashed_sets__set.__split_fields = old co1.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
                    rec_co1 = symmetric_difference__logic old_co1 co2 }
 end
@@ -1111,9 +1133,9 @@ module Ada__containers__formal_hashed_sets__reserve_capacity
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_hashed_sets__set
 
-  val reserve_capacity (co:ref Ada__containers__formal_hashed_sets__set.__split_fields) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (c : int) : unit
+  val reserve_capacity (co:Ada__containers__formal_hashed_sets__set.__split_fields__ref) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (c : int) : unit
     requires { Ada__containers__count_type.to_rep cap.rec__capacity >= c }
-    ensures { !co = old !co }
+    ensures { co.Ada__containers__formal_hashed_sets__set.__split_fields__content = old co.Ada__containers__formal_hashed_sets__set.__split_fields__content }
 end
 
 module Ada__containers__formal_hashed_sets__default_modulus
@@ -1177,9 +1199,9 @@ module Ada__containers__formal_hashed_sets__clear
   use import Ada__containers__formal_hashed_sets__set
   use import Ada__containers__formal_hashed_sets__length
 
-  val clear (co:ref Ada__containers__formal_hashed_sets__set.__split_fields) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) : unit
+  val clear (co:Ada__containers__formal_hashed_sets__set.__split_fields__ref) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) : unit
      writes     { co }
-     ensures { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = !co;
+     ensures { let rec_co = {Ada__containers__formal_hashed_sets__set.__split_fields = co.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
                    length_ rec_co = 0 }
 end
@@ -1191,11 +1213,11 @@ module Ada__containers__formal_hashed_sets__assign
   use import Ada__containers__formal_hashed_sets__length
   use import Ada__containers__formal_hashed_sets__Oeq__2
 
-  val assign (target:ref Ada__containers__formal_hashed_sets__set.__split_fields) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (source:set) : unit
+  val assign (target:Ada__containers__formal_hashed_sets__set.__split_fields__ref) (cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (source:set) : unit
      requires { Ada__containers__count_type.to_rep cap.rec__capacity >= length_ source }
      writes     { target }
      reads      { target }
-     ensures { let rec_t = {Ada__containers__formal_hashed_sets__set.__split_fields = !target;
+     ensures { let rec_t = {Ada__containers__formal_hashed_sets__set.__split_fields = target.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = cap}  in
                    oeq__2__logic rec_t source = True }
 end
@@ -1207,17 +1229,17 @@ module Ada__containers__formal_hashed_sets__move
   use import Ada__containers__formal_hashed_sets__length
   use import Ada__containers__formal_hashed_sets__Oeq__2
 
-  val move (target:ref Ada__containers__formal_hashed_sets__set.__split_fields) (t_cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (source:ref Ada__containers__formal_hashed_sets__set.__split_fields) (s_cap : Ada__containers__formal_hashed_sets__set.__split_discrs) : unit
-     requires { let rec_s = {Ada__containers__formal_hashed_sets__set.__split_fields = !source;
+  val move (target:Ada__containers__formal_hashed_sets__set.__split_fields__ref) (t_cap : Ada__containers__formal_hashed_sets__set.__split_discrs) (source:Ada__containers__formal_hashed_sets__set.__split_fields__ref) (s_cap : Ada__containers__formal_hashed_sets__set.__split_discrs) : unit
+     requires { let rec_s = {Ada__containers__formal_hashed_sets__set.__split_fields = source.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = s_cap}  in
                    Ada__containers__count_type.to_rep t_cap.rec__capacity >= length_ rec_s }
      writes     { target, source }
      reads      { target, source }
-     ensures { let rec_t = {Ada__containers__formal_hashed_sets__set.__split_fields = !target;
+     ensures { let rec_t = {Ada__containers__formal_hashed_sets__set.__split_fields = target.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = t_cap}  in
-               let rec_s = {Ada__containers__formal_hashed_sets__set.__split_fields = !source;
+               let rec_s = {Ada__containers__formal_hashed_sets__set.__split_fields = source.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = s_cap}  in
-               let old_s = {Ada__containers__formal_hashed_sets__set.__split_fields = old !source;
+               let old_s = {Ada__containers__formal_hashed_sets__set.__split_fields = old source.Ada__containers__formal_hashed_sets__set.__split_fields__content;
                               Ada__containers__formal_hashed_sets__set.__split_discrs = s_cap}  in
                    oeq__2__logic rec_t old_s = True /\ length_ rec_s = 0 }
 end

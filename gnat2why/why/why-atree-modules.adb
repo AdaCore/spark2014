@@ -1326,12 +1326,6 @@ package body Why.Atree.Modules is
       M_Main.Return_Exc :=
         New_Name (Symbol => NID ("Return__exc"));
 
-      M_Main.Havoc_Fun :=
-        New_Identifier (Domain => EW_Term,
-                        Module => M,
-                        Symbol => NID ("__havoc"),
-                        Typ    => EW_Unit_Type);
-
       M_Main.Ignore_Id :=
         New_Identifier (Domain => EW_Term,
                         Module => M,

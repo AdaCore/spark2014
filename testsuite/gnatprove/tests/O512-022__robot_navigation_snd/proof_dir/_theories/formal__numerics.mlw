@@ -95,6 +95,10 @@ module Formal__numerics__positive_float
  function attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST, 
  function attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST,
  predicate in_range = in_range
+
+ type positive_float__ref = { mutable positive_float__content : positive_float }
+ val positive_float__havoc (x : positive_float__ref) : unit
+   writes { x }
 end
 
 module Formal__numerics__nonnegative_float
@@ -119,6 +123,11 @@ module Formal__numerics__nonnegative_float
  function attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST, 
  function attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST,
  predicate in_range = in_range
+
+ type nonnegative_float__ref = 
+      { mutable nonnegative_float__content : nonnegative_float }
+ val nonnegative_float__havoc (x : nonnegative_float__ref) : unit
+   writes { x }
 end
 
 module Formal__numerics__negative_float
@@ -143,6 +152,11 @@ module Formal__numerics__negative_float
  function attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST, 
  function attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST,
  predicate in_range = in_range
+
+ type negative_float__ref = 
+      { mutable negative_float__content : negative_float }
+ val negative_float__havoc (x : negative_float__ref) : unit
+   writes { x }
 end
 
 module Formal__numerics__unbounded_float
@@ -167,6 +181,11 @@ module Formal__numerics__unbounded_float
  function attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST, 
  function attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST,
  predicate in_range = in_range
+
+ type unbounded_float__ref = 
+      { mutable unbounded_float__content : unbounded_float }
+ val unbounded_float__havoc (x : unbounded_float__ref) : unit
+   writes { x }
 end
 
 module Formal__numerics__nonzero_float
@@ -191,6 +210,11 @@ module Formal__numerics__nonzero_float
  function attr__ATTRIBUTE_FIRST = attr__ATTRIBUTE_FIRST, 
  function attr__ATTRIBUTE_LAST = attr__ATTRIBUTE_LAST,
  predicate in_range = in_range
+
+ type nonzero_float__ref = 
+      { mutable nonzero_float__content : nonzero_float }
+ val nonzero_float__havoc (x : nonzero_float__ref) : unit
+   writes { x }
 end
 
 module Formal__numerics__pi

@@ -20,6 +20,10 @@ module Sums__extended_index
  function last = last,
  predicate in_range = in_range
 
+ type extended_index__ref = { mutable extended_index__content : extended_index }
+ val extended_index__havoc (x : extended_index__ref) : unit
+   writes { x }
+
 end
 
 module Sums__index
@@ -44,6 +48,10 @@ module Sums__index
  function last = last,
  predicate in_range = in_range
 
+ type index__ref = { mutable index__content : index }
+ val index__havoc (x : index__ref) : unit
+   writes { x }
+
 end
 
 module Sums__vector_element
@@ -67,6 +75,10 @@ module Sums__vector_element
  function first = first,
  function last = last,
  predicate in_range = in_range
+
+ type vector_element__ref = { mutable vector_element__content : vector_element }
+ val vector_element__havoc (x : vector_element__ref) : unit
+   writes { x }
 
 end
 
@@ -145,6 +157,10 @@ module Sums__vector
 
  type vector  = __t
 
+ type vector__ref = { mutable vector__content : vector }
+ val vector__havoc (x : vector__ref) : unit
+   writes { x }
+
  (* Helper function *)
  function _get "inline" (v : vector) (i : int) : int =
    	  Sums__vector_element.to_rep (Array__Int__Sums__vector_element.get (to_array v) i)
@@ -161,9 +177,17 @@ module Sums__slice_bounds
  type __split_fields  =
   { rec__lo : Sums__index.index; rec__hi : Sums__extended_index.extended_index }
 
+ type __split_fields__ref = { mutable __split_fields__content : __split_fields }
+ val __split_fields__havoc (x : __split_fields__ref) : unit
+   writes { x }
+
  (* Record type *)
  type slice_bounds  =
   { __split_fields : __split_fields }
+
+ type slice_bounds__ref = { mutable slice_bounds__content : slice_bounds }
+ val slice_bounds__havoc (x : slice_bounds__ref) : unit
+   writes { x }
 
  (* Helper function *)
  function _rec__lo "inline" (b : slice_bounds) : int =

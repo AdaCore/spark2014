@@ -51,12 +51,12 @@ module Ada__containers__formal_vectors__generic_sorting__sort
   use import "ada__containers__formal_vectors".Ada__containers__formal_vectors__find_index
   use import Ada__containers__formal_vectors__generic_sorting__is_sorted
 
-  val sort (v:ref Ada__containers__formal_vectors__vector.__split_fields) (v_cap :Ada__containers__formal_vectors__vector.__split_discrs) : bool
+  val sort (v:Ada__containers__formal_vectors__vector.__split_fields__ref) (v_cap :Ada__containers__formal_vectors__vector.__split_discrs) : bool
     writes  { v }
     reads   { v }
-    ensures { let rec_v = {Ada__containers__formal_vectors__vector.__split_fields = !v;
+    ensures { let rec_v = {Ada__containers__formal_vectors__vector.__split_fields = v.Ada__containers__formal_vectors__vector.__split_fields__content;
                             Ada__containers__formal_vectors__vector.__split_discrs = v_cap}  in
-              let old_v = {Ada__containers__formal_vectors__vector.__split_fields = old !v;
+              let old_v = {Ada__containers__formal_vectors__vector.__split_fields = old v.Ada__containers__formal_vectors__vector.__split_fields__content;
                             Ada__containers__formal_vectors__vector.__split_discrs = v_cap}  in
                    is_sorted__logic rec_v /\
                    length_ rec_v = length_ old_v /\

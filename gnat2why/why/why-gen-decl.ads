@@ -35,6 +35,14 @@ package Why.Gen.Decl is
      (Name  : W_Name_Id;
       Alias : W_Type_Id) return W_Declaration_Id;
 
+   function New_Havoc_Declaration (Name : W_Name_Id) return W_Declaration_Id;
+   --  @param  Name name of the type for which we want a havoc function
+   --  @return Definition of a val havocing its only argument of type name__ref
+
+   function New_Ref_Type_Definition (Name : W_Name_Id) return W_Declaration_Id;
+   --  @param  Name name of the type for which we want a reference
+   --  @return Definition of a record type with one mutable field of type Name
+
    procedure Emit
      (Theory : W_Theory_Declaration_Id;
       Decl : W_Declaration_Id);

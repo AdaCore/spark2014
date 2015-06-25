@@ -117,15 +117,15 @@ module Ada__containers__formal_ordered_sets__generic_keys__replace
   use import "ada__containers__formal_ordered_sets".Ada__containers__formal_ordered_sets__find 
   use import "ada__containers__formal_ordered_sets".Ada__containers__formal_ordered_sets__replace_element
 
-  val replace (co:ref Ada__containers__formal_ordered_sets__set.__split_fields) (cap : Ada__containers__formal_ordered_sets__set.__split_discrs) (k:Ada__containers__formal_ordered_sets__generic_keys__key_type.base_type) (e:Ada__containers__formal_ordered_sets__element_type.base_type) : unit
-     requires {  let rec_co = {Ada__containers__formal_ordered_sets__set.__split_fields = !co;
+  val replace (co:Ada__containers__formal_ordered_sets__set.__split_fields__ref) (cap : Ada__containers__formal_ordered_sets__set.__split_discrs) (k:Ada__containers__formal_ordered_sets__generic_keys__key_type.base_type) (e:Ada__containers__formal_ordered_sets__element_type.base_type) : unit
+     requires {  let rec_co = {Ada__containers__formal_ordered_sets__set.__split_fields = co.Ada__containers__formal_ordered_sets__set.__split_fields__content;
                               Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
                    find_ rec_co (witness k) <> no_element }
      writes { co }
      reads { co }
-     ensures {  let rec_co = {Ada__containers__formal_ordered_sets__set.__split_fields = !co;
+     ensures {  let rec_co = {Ada__containers__formal_ordered_sets__set.__split_fields = co.Ada__containers__formal_ordered_sets__set.__split_fields__content;
                               Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
-               let old_co = {Ada__containers__formal_ordered_sets__set.__split_fields = old !co;
+               let old_co = {Ada__containers__formal_ordered_sets__set.__split_fields = old co.Ada__containers__formal_ordered_sets__set.__split_fields__content;
                               Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
                    replace_element old_co (find_ old_co (witness k)) e rec_co }
 end
@@ -141,15 +141,15 @@ module Ada__containers__formal_ordered_sets__generic_keys__delete
   use import "ada__containers__formal_ordered_sets".Ada__containers__formal_ordered_sets__find
   use import "ada__containers__formal_ordered_sets".Ada__containers__formal_ordered_sets__delete
 
-  val delete (co:ref Ada__containers__formal_ordered_sets__set.__split_fields) (cap : Ada__containers__formal_ordered_sets__set.__split_discrs) (k : Ada__containers__formal_ordered_sets__generic_keys__key_type.base_type) : unit
-     requires {  let rec_co = {Ada__containers__formal_ordered_sets__set.__split_fields = !co;
+  val delete (co:Ada__containers__formal_ordered_sets__set.__split_fields__ref) (cap : Ada__containers__formal_ordered_sets__set.__split_discrs) (k : Ada__containers__formal_ordered_sets__generic_keys__key_type.base_type) : unit
+     requires {  let rec_co = {Ada__containers__formal_ordered_sets__set.__split_fields = co.Ada__containers__formal_ordered_sets__set.__split_fields__content;
                               Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
                    find_ rec_co (witness k) <> no_element }
      writes     { co }
      reads      { co }
-     ensures {  let rec_co = {Ada__containers__formal_ordered_sets__set.__split_fields = !co;
+     ensures {  let rec_co = {Ada__containers__formal_ordered_sets__set.__split_fields = co.Ada__containers__formal_ordered_sets__set.__split_fields__content;
                               Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
-               let old_co = {Ada__containers__formal_ordered_sets__set.__split_fields = old !co;
+               let old_co = {Ada__containers__formal_ordered_sets__set.__split_fields = old co.Ada__containers__formal_ordered_sets__set.__split_fields__content;
                               Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
                    delete old_co (find_ old_co (witness k)) rec_co }
 end
@@ -165,14 +165,14 @@ module Ada__containers__formal_ordered_sets__generic_keys__exclude
   use import "ada__containers__formal_ordered_sets".Ada__containers__formal_ordered_sets__find
   use import "ada__containers__formal_ordered_sets".Ada__containers__formal_ordered_sets__delete
 
-  val exclude (co:ref Ada__containers__formal_ordered_sets__set.__split_fields) (cap : Ada__containers__formal_ordered_sets__set.__split_discrs) (k:Ada__containers__formal_ordered_sets__generic_keys__key_type.base_type) : unit
+  val exclude (co:Ada__containers__formal_ordered_sets__set.__split_fields__ref) (cap : Ada__containers__formal_ordered_sets__set.__split_discrs) (k:Ada__containers__formal_ordered_sets__generic_keys__key_type.base_type) : unit
      writes     { co }
      reads      { co }
-     ensures {  let rec_co = {Ada__containers__formal_ordered_sets__set.__split_fields = !co;
+     ensures {  let rec_co = {Ada__containers__formal_ordered_sets__set.__split_fields = co.Ada__containers__formal_ordered_sets__set.__split_fields__content;
                               Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
-               let old_co = {Ada__containers__formal_ordered_sets__set.__split_fields = old !co;
+               let old_co = {Ada__containers__formal_ordered_sets__set.__split_fields = old co.Ada__containers__formal_ordered_sets__set.__split_fields__content;
                               Ada__containers__formal_ordered_sets__set.__split_discrs = cap}  in
-                   if find_ old_co (witness k) = no_element then  old !co = !co
+                   if find_ old_co (witness k) = no_element then  old co.Ada__containers__formal_ordered_sets__set.__split_fields__content = co.Ada__containers__formal_ordered_sets__set.__split_fields__content
                          else delete old_co (find_ old_co (witness k)) rec_co  }
 end
 

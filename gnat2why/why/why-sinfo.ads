@@ -351,7 +351,8 @@ package Why.Sinfo is
    --  Right      W_Identifier_Id
    --  Typ        W_Type_Id
    --
-   --  Mutable variables must be derefenced explicitly in Why3 (syntax !x).
+   --  Mutable variables must be derefenced explicitly in Why3 (syntax
+   --  x.ty__content).
    --  This is the node for this.
    --
    --  ---------------------
@@ -398,9 +399,10 @@ package Why.Sinfo is
    --  ------------------
    --  Name       W_Identifier_Id
    --  Value      W_Prog_Id
+   --  Typ        W_Type_Id
    --
-   --  Node the Why3 assignment: "x := e". The type of the expression is always
-   --  "unit".
+   --  Node the Why3 assignment: "x.typ__content <- e". The type of the
+   --  expression is always "unit".
 
    --  -------------------
    --  -- W_Binding_Ref --
@@ -411,7 +413,7 @@ package Why.Sinfo is
    --  Typ        W_Type_Id
    --
    --  Same as W_Binding, but the new introduced variable is a mutable
-   --  variable. Why3 syntax "let x = ref def in context".
+   --  variable. Why3 syntax "let x = { typ__content = def } in context".
    --
    --  ------------------
    --  -- W_While_Loop --

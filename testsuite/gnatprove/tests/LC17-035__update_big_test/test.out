@@ -382,7 +382,7 @@ ar.ads:247:14: info: initialization of "A" proved
 ar.ads:249:22: info: postcondition proved
 ar.ads:249:44: info: initialization of "A" proved
 ar.ads:252:14: info: initialization of "A" proved
-ar.ads:254:43: medium: postcondition might fail, requires A(N) = B(11-N)
+ar.ads:254:22: info: postcondition proved
 ar.ads:254:44: info: initialization of "A" proved
 ar.ads:257:14: info: initialization of "A" proved
 ar.ads:259:22: info: initialization of "A" proved
@@ -738,7 +738,7 @@ ar.ads:1542:22: info: postcondition proved
 ar.ads:1548:22: info: postcondition proved
 ar.ads:1553:22: info: postcondition proved
 ar.ads:1558:22: info: postcondition proved
-ar.ads:1563:22: medium: postcondition might fail, requires R = R'Old'update
+ar.ads:1563:22: info: postcondition proved
 ar.ads:1563:73: info: range check proved
 ar.ads:1571:22: info: postcondition proved
 ar.ads:1576:22: info: postcondition proved

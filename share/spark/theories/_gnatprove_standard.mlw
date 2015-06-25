@@ -1,6 +1,4 @@
 module Main
-  (* the module of references is needed in all modules *)
-  use export ref.Ref
   use export "_gnatprove_standard_th".Main_Main
 
   (* exception used to simulate return statements *)
@@ -11,7 +9,8 @@ module Main
      interfere with other variables, i.e., writes through pointers, aliased
      variables etc. *)
   type __type_of_heap
-  val __HEAP : ref __type_of_heap
+  type __type_of_heap__ref = { mutable __type_of_heap__content : __type_of_heap }
+  val __HEAP : __type_of_heap__ref
 
   (* the return type for the functions that correspond to 'Image *)
   type __image
@@ -21,9 +20,21 @@ module Main
        axiomatization. *)
   predicate __ignore "inline" (x : 'a) = true
 
+  (* Mutable records holding references over builtin types *)
+  type int__ref  = { mutable int__content : int  }
+  type bool__ref = { mutable bool__content : bool }
+  type real__ref = { mutable real__content : real }
+  type __private__ref = { mutable __private__content : __private }
+
   (* Program function that sets the value of its parameter to any possible
      value allowed by its type. *)
-  val __havoc (x : ref 'a) : unit
+  val int__havoc (x : int__ref) : unit
+     writes { x }
+  val bool__havoc (x : bool__ref) : unit
+     writes { x }
+  val real__havoc (x : real__ref) : unit
+     writes { x }
+  val __private__havoc (x : __private__ref) : unit
      writes { x }
 
 end
@@ -266,7 +277,7 @@ end
   the old and new value of first
 
 *)
-theory Array__Index
+module Array__Index
   type t
 
   predicate le t t
@@ -279,7 +290,7 @@ theory Array__Index
   function one : t
 end
 
-theory Array__1
+module Array__1
   use map.Map
 
   use import bool.Bool
@@ -289,6 +300,9 @@ theory Array__1
   type component_type
 
   type map = Map.map I1.t component_type
+  type map__ref = { mutable map__content : map }
+  val map__havoc (x : map__ref) : unit
+     writes { x }
 
   function get "inline" (a : map) (i : I1.t) : component_type = Map.get a i
   function set "inline" (a : map) (i : I1.t) (v : component_type) : map = Map.set a i v
@@ -356,7 +370,7 @@ theory Array__1
       get (singleton v i) i = v
 end
 
-theory Array__2
+module Array__2
   use import bool.Bool
 
   clone Array__Index as I1
@@ -365,6 +379,9 @@ theory Array__2
   type component_type
 
   type map
+  type map__ref = { mutable map__content : map }
+  val map__havoc (x : map__ref) : unit
+     writes { x }
 
   function get map I1.t I2.t : component_type
   meta "encoding : lskept" function get
@@ -416,7 +433,7 @@ theory Array__2
         get a (I1.sub i (I1.sub new_first old_first)) (I2.sub j (I2.sub new_first_2 old_first_2))
 end
 
-theory Array__3
+module Array__3
   use import bool.Bool
 
   clone Array__Index as I1
@@ -426,6 +443,9 @@ theory Array__3
   type component_type
 
   type map
+  type map__ref = { mutable map__content : map }
+  val map__havoc (x : map__ref) : unit
+     writes { x }
 
   function get map I1.t I2.t I3.t : component_type
   meta "encoding : lskept" function get
@@ -492,7 +512,7 @@ theory Array__3
               (I3.sub k (I3.sub new_first_3 old_first_3))
 end
 
-theory Array__4
+module Array__4
   use import bool.Bool
 
   clone Array__Index as I1
@@ -503,6 +523,9 @@ theory Array__4
   type component_type
 
   type map
+  type map__ref = { mutable map__content : map }
+  val map__havoc (x : map__ref) : unit
+     writes { x }
 
   function get map I1.t I2.t I3.t I4.t : component_type
   meta "encoding : lskept" function get
@@ -640,6 +663,10 @@ end
 module BV8
   use export bv.BV8
 
+  type t__ref = { mutable t__content : t }
+  val t__havoc (x : t__ref) : unit
+     writes { x }
+
   function one : t = of_int 1
 
   clone export BVAda with
@@ -667,6 +694,10 @@ end
 
 module BV16
   use export bv.BV16
+
+  type t__ref = { mutable t__content : t }
+  val t__havoc (x : t__ref) : unit
+     writes { x }
 
   function one : t = of_int 1
 
@@ -696,6 +727,10 @@ end
 module BV32
   use export bv.BV32
 
+  type t__ref = { mutable t__content : t }
+  val t__havoc (x : t__ref) : unit
+     writes { x }
+
   function one : t = of_int 1
 
   clone export BVAda with
@@ -723,6 +758,10 @@ end
 
 module BV64
   use export bv.BV64
+
+  type t__ref = { mutable t__content : t }
+  val t__havoc (x : t__ref) : unit
+     writes { x }
 
   function one : t = of_int 1
 

@@ -257,6 +257,29 @@ package body Gnat2Why.Types is
                     +New_Named_Type (Name => To_Why_Type (E, Local => True))));
          end if;
 
+         --  We generate a record type containing only one mutable field of
+         --  type t. This is used to store mutable variables of type t.
+         --  We also generate a havoc function for this type.
+         --  We do not generate these declarations for classwide types and
+         --  statically constrained array type are no new type is declared for
+         --  them.
+
+         if (not Has_Record_Type (E)
+             or else Ekind (Retysp (E)) not in E_Class_Wide_Type
+               | E_Class_Wide_Subtype)
+           and then (not Has_Array_Type (E)
+                     or else not Is_Static_Array_Type (Retysp (E)))
+         then
+            Emit
+              (File.Cur_Theory,
+               New_Ref_Type_Definition
+                 (Name => To_Why_Type (Retysp (E), Local => True)));
+            Emit
+              (File.Cur_Theory,
+               New_Havoc_Declaration
+                 (Name => To_Why_Type (Retysp (E), Local => True)));
+         end if;
+
          --  If E is the full view of a private type, use its partial view as
          --  the filtering entity, as it is the entity used everywhere in AST.
 

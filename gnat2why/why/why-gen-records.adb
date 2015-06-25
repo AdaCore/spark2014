@@ -1595,42 +1595,57 @@ package body Why.Gen.Records is
          --  and use Root's record type for discriminants otherwise.
 
          if Num_Discrs > 0 then
-            if Is_Root then
-               while Present (Field) loop
-                  if Is_Not_Hidden_Discriminant (Field) then
-                     Binders_D (Index) :=
-                       (B_Name =>
-                          To_Why_Id
-                            (Field,
-                             Local => True,
-                             Typ => EW_Abstract (Etype (Field))),
-                        others => <>);
-                     Index := Index + 1;
-                  end if;
-                  Next_Discriminant (Field);
-               end loop;
+            declare
+               Discr_Name : constant W_Name_Id :=
+                 To_Name (WNE_Rec_Split_Discrs);
+            begin
+               if Is_Root then
+                  while Present (Field) loop
+                     if Is_Not_Hidden_Discriminant (Field) then
+                        Binders_D (Index) :=
+                          (B_Name =>
+                             To_Why_Id
+                               (Field,
+                                Local => True,
+                                Typ => EW_Abstract (Etype (Field))),
+                           others => <>);
+                        Index := Index + 1;
+                     end if;
+                     Next_Discriminant (Field);
+                  end loop;
 
-               Emit (Theory,
-                     New_Record_Definition
-                       (Name    => To_Name (WNE_Rec_Split_Discrs),
-                        Binders => Binders_D));
-            end if;
+                  Emit (Theory,
+                        New_Record_Definition
+                          (Name    => Discr_Name,
+                           Binders => Binders_D));
 
-            Binders_A (Index_All) :=
-              (B_Name =>
-                 New_Identifier
-                   (Ada_Node => Empty,
-                    Name     => To_String (WNE_Rec_Split_Discrs),
-                    Typ      =>
-                      New_Type
-                        (Type_Kind  => EW_Abstract,
-                         Name       =>
-                           (if not Is_Root then Get_Name
-                              (E_Symb (Root, WNE_Rec_Split_Discrs))
-                            else To_Name (WNE_Rec_Split_Discrs)),
-                         Is_Mutable => False)),
-               others => <>);
-            Index_All := Index_All + 1;
+                  --  Generate a mutable record to hold elements of type
+                  --  __split_discrs, as well as an havoc function for it.
+
+                  Emit
+                    (Theory,
+                     New_Ref_Type_Definition (Name => Discr_Name));
+                  Emit
+                    (Theory,
+                     New_Havoc_Declaration (Name => Discr_Name));
+               end if;
+
+               Binders_A (Index_All) :=
+                 (B_Name =>
+                    New_Identifier
+                      (Ada_Node => Empty,
+                       Name     => To_String (WNE_Rec_Split_Discrs),
+                       Typ      =>
+                         New_Type
+                           (Type_Kind  => EW_Abstract,
+                            Name       =>
+                              (if not Is_Root then Get_Name
+                                 (E_Symb (Root, WNE_Rec_Split_Discrs))
+                               else Discr_Name),
+                            Is_Mutable => False)),
+                  others => <>);
+               Index_All := Index_All + 1;
+            end;
          end if;
 
          --  Generate a record type for E's normal components. This includes:
@@ -1698,6 +1713,16 @@ package body Why.Gen.Records is
                   New_Record_Definition
                     (Name    => To_Name (WNE_Rec_Split_Fields),
                      Binders => Binders_F));
+
+            --  Generate a mutable record to hold elements of type
+            --  __split_fields, as well as an havoc function for it.
+
+            Emit
+              (Theory,
+               New_Ref_Type_Definition (To_Name (WNE_Rec_Split_Fields)));
+            Emit
+              (Theory,
+               New_Havoc_Declaration (To_Name (WNE_Rec_Split_Fields)));
 
             Binders_A (Index_All) :=
               (B_Name =>

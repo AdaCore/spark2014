@@ -860,7 +860,8 @@ package body Gnat2Why.Expr.Loops is
                               (Domain         => EW_Term,
                                Expr           => +Call_Elmt,
                                To             => Loop_Index_Type,
-                               Force_No_Slide => True)));
+                               Force_No_Slide => True),
+                            Typ      => Loop_Index_Type));
                begin
                   return +Upd_Elmt;
                end Update_Index;
@@ -965,7 +966,8 @@ package body Gnat2Why.Expr.Loops is
                      begin
                         return New_Assignment
                           (Name  => Loop_Index,
-                           Value => +Init_Index);
+                           Value => +Init_Index,
+                           Typ   => Loop_Index_Type);
                      end;
                   else
                      if Need_Iter then
@@ -980,7 +982,8 @@ package body Gnat2Why.Expr.Loops is
 
                         return New_Assignment
                           (Name  => Nam_For_Iter,
-                           Value => Init_Iter);
+                           Value => Init_Iter,
+                           Typ   => Typ_For_Iter);
                      end if;
                   end if;
                end Construct_Init_Prog;
@@ -1077,7 +1080,8 @@ package body Gnat2Why.Expr.Loops is
                         return New_Assignment
                           (Ada_Node => Stmt,
                            Name     => Loop_Index,
-                           Value    => +Update_Expr);
+                           Value    => +Update_Expr,
+                           Typ      => Loop_Index_Type);
                      end;
                   else
                      declare
@@ -1112,7 +1116,8 @@ package body Gnat2Why.Expr.Loops is
                                (Domain         => EW_Term,
                                 Expr           => +Call_Next,
                                 To             => Get_Type (+Iter_Deref),
-                                Force_No_Slide => True));
+                                Force_No_Slide => True),
+                             Typ      => Typ_For_Iter);
                      begin
                         if Need_Iter then
 
@@ -1402,7 +1407,8 @@ package body Gnat2Why.Expr.Loops is
               New_Ignore (Prog => +Variant_Expr (Expr, EW_Prog));
             Assign : constant W_Assignment_Id :=
               New_Assignment (Name  => Name,
-                              Value => +Variant_Expr (Expr, EW_Term));
+                              Value => +Variant_Expr (Expr, EW_Term),
+                              Typ   => Base_Why_Type_No_Bool (Expr));
 
          begin
             Tmp_Vars.Append (+Name);

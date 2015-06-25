@@ -133,6 +133,24 @@ package body Why.Gen.Names is
       end case;
    end Attr_To_Why_Name;
 
+   --------------------
+   -- Content_Append --
+   --------------------
+
+   function Content_Append (Base : W_Name_Id;
+                            Typ  : W_Type_Id) return W_Identifier_Id
+   is
+   begin
+      return
+        Append_Num
+          (S        => Get_Name_String (Get_Symbol (Base))
+           & To_String (WNE_Content),
+           Count    => 1,
+           Typ      => Typ,
+           Module   => Get_Module (Base),
+           Ada_Node => Get_Ada_Node (+Base));
+   end Content_Append;
+
    ---------------------
    -- Conversion_Name --
    ---------------------
@@ -404,6 +422,23 @@ package body Why.Gen.Names is
       end if;
    end Get_Modular_Converter_Range_Check;
 
+   ------------------
+   -- Havoc_Append --
+   ------------------
+
+   function Havoc_Append (Base : W_Name_Id) return W_Identifier_Id
+   is
+   begin
+      return
+        Append_Num
+          (S        => Get_Name_String (Get_Symbol (Base))
+           & To_String (WNE_Havoc),
+           Count    => 1,
+           Typ      => Why_Empty,
+           Module   => Get_Module (Base),
+           Ada_Node => Get_Ada_Node (+Base));
+   end Havoc_Append;
+
    -------------
    -- New_Abs --
    -------------
@@ -602,6 +637,20 @@ package body Why.Gen.Names is
       return New_Identifier (Name => "result", Typ => Typ);
    end New_Result_Ident;
 
+   ----------------
+   -- Ref_Append --
+   ----------------
+
+   function Ref_Append (Base : W_Name_Id) return W_Name_Id is
+   begin
+      return
+        New_Name
+          (Ada_Node  => Get_Ada_Node (+Base),
+           Symbol    => NID (Get_Name_String (Get_Symbol (Base))
+             & To_String (WNE_Ref)),
+           Module    => Get_Module (Base));
+   end Ref_Append;
+
    --------------
    -- To_Exprs --
    --------------
@@ -630,10 +679,13 @@ package body Why.Gen.Names is
          when WNE_Attr_First             => return "first";
          when WNE_Attr_Last              => return "last";
          when WNE_Attr_Tag               => return "attr__tag";
+         when WNE_Content                => return "__content";
+         when WNE_Havoc                  => return "__havoc";
          when WNE_Rec_Extension_Suffix   => return "ext__";
          when WNE_Rec_Ancestor_Suffix    => return "anc__";
          when WNE_Rec_Comp_Prefix        => return "rec__";
          when WNE_Rec_Main_Suffix        => return "main__";
+         when WNE_Ref                    => return "__ref";
          when WNE_Extract_Prefix         => return "extract__";
          when WNE_Ancestor_Prefix        => return "extract_anc__";
          when WNE_Hide_Extension         => return "hide_ext__";

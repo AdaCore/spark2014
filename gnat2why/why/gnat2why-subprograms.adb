@@ -1844,7 +1844,8 @@ package body Gnat2Why.Subprograms is
         (if Ekind (E) = E_Function then
               New_Deref
            (Ada_Node => Body_N,
-            Right    => Result_Name)
+            Right    => Result_Name,
+            Typ      => Type_Of_Node (Etype (E)))
          else New_Void);
 
       Params :=
