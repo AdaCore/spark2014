@@ -54,13 +54,25 @@ package body Why.Gen.Arrays is
 
    procedure Declare_Constrained
      (Theory         : W_Theory_Declaration_Id;
-      Why3_Type_Name : W_Name_Id;
       Und_Ent        : Entity_Id);
+   --  Output a declaration for statically constrained array types.
+   --  @param Theory The theory in which the declaration should be added
+   --  @param Und_Ent The entity of the array type to be translated. It should
+   --                 be a statically constrained array type.
+   --  Here we don't need a name for the type in why as no type will be
+   --  declared in this module.
 
    procedure Declare_Unconstrained
      (Theory         : W_Theory_Declaration_Id;
       Why3_Type_Name : W_Name_Id;
       Und_Ent        : Entity_Id);
+   --  Output a declaration for unconstrained and dynamically constrained array
+   --  types.
+   --  @param Theory The theory in which the declaration should be added
+   --  @param Why3_Type_Name Name to be used in Why for the type
+   --  @param Und_Ent The entity of the array type to be translated. It should
+   --                 be either an unconstrained array type or a dynamically
+   --                 constrained array type.
 
    --  The following two procedures take an array [Args] and an index [Arg_Ind]
    --  as in-out parameters. They fill the array with a number of parameters,
@@ -358,7 +370,7 @@ package body Why.Gen.Arrays is
       Why_Name : constant W_Name_Id := To_Why_Type (E, Local => True);
    begin
       if Is_Static_Array_Type (E) then
-         Declare_Constrained (Theory, Why_Name, E);
+         Declare_Constrained (Theory, E);
       else
          Declare_Unconstrained (Theory, Why_Name, E);
       end if;
@@ -636,7 +648,6 @@ package body Why.Gen.Arrays is
 
    procedure Declare_Constrained
      (Theory         : W_Theory_Declaration_Id;
-      Why3_Type_Name : W_Name_Id;
       Und_Ent        : Entity_Id)
    is
       Dimension       : constant Pos := Number_Dimensions (Und_Ent);
@@ -765,11 +776,6 @@ package body Why.Gen.Arrays is
                As_Name       => No_Name,
                Origin        => Clone,
                Substitutions => Subst));
-      Emit (Theory,
-            New_Type_Decl
-              (Why3_Type_Name,
-               Alias =>
-                 +New_Named_Type (To_String (WNE_Array_Type))));
    end Declare_Constrained;
 
    ---------------------------

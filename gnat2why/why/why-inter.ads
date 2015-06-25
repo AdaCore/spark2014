@@ -225,8 +225,15 @@ package Why.Inter is
    --  If the node is of some scalar type, return the corresponding Why
    --  representation type. Otherwise return the empty node.
 
+   function Eq_In_Why (Left, Right : W_Type_Id) return Boolean;
+   --  @param Left Type Id to be compared with
+   --  @param Right
+   --  @return Returns True if the type output in Why is the same
+
    function Eq_Base (Left, Right : W_Type_Id) return Boolean;
-   --  Equality of type ids
+   --  @param Left Type Id to be compared with
+   --  @param Right
+   --  @return Returns True if the type Ids have the same structure.
 
 private
    Entity_Dependencies : Node_Graphs.Map;

@@ -9,8 +9,6 @@ module Discrete_Base
 
   type rep_type
 
-  type __split = rep_type
-
   function bool_eq (x : rep_type) (y : rep_type) : bool =
     if x = y then True else False
 
@@ -1031,8 +1029,6 @@ module Unconstr_Array
     predicate in_range_base = in_range_base,
     predicate index_dynamic_property = index_dynamic_property
 
-  type __split = map
-
   (* An unconstrained array comes with its bounds *)
   type __t =
     { elts : map; rt : I1.t }
@@ -1117,7 +1113,6 @@ module Unconstr_Array_2
     predicate in_range_base = in_range_base_2,
     predicate index_dynamic_property = index_dynamic_property_2
 
-  type __split = map
   type __t =
     { elts : map;
       rt   : I1.t;
@@ -1235,7 +1230,6 @@ module Unconstr_Array_3
     predicate in_range_base = in_range_base_3,
     predicate index_dynamic_property = index_dynamic_property_3
 
-  type __split = map
   type __t =
     { elts : map;
       rt   : I1.t;
@@ -1384,8 +1378,6 @@ module Unconstr_Array_4
     predicate index_le      = index_rep_le_4,
     predicate in_range_base = in_range_base_4,
     predicate index_dynamic_property = index_dynamic_property_4
-
-  type __split = map
 
   type __t =
     { elts : map;

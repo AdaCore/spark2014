@@ -41,6 +41,7 @@ with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Atree.Traversal; use Why.Atree.Traversal;
 with Why.Conversions;     use Why.Conversions;
+with Why.Gen.Arrays;      use Why.Gen.Arrays;
 with Why.Gen.Expr;        use Why.Gen.Expr;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Uintp;
@@ -87,6 +88,13 @@ package body Why.Inter is
 
    function New_Kind_Base_Type (E : Entity_Id; Kind : EW_Type) return W_Type_Id
      with Pre => Kind in EW_Abstract | EW_Split;
+   --  @param E The type entity for which we want to construct a why type
+   --  @param Kind The kind we want the Why type to have. For now, EW_Split is
+   --              only supported for arrays and discrete types.
+   --  @return The why type to be used for E. It will have the kind Kind. Its
+   --          name may be the same as another type's name to avoid name
+   --          duplication. It is the case for split forms and static array
+   --          types.
 
    --------------------------
    -- Compute_Ada_Node_Set --
@@ -720,6 +728,55 @@ package body Why.Inter is
    begin
       if Left = Right then
          return True;
+      elsif Get_Type_Kind (Left) /= Get_Type_Kind (Right) then
+
+         --  Two types with different kinds cannot be equal
+
+         return False;
+      elsif Get_Type_Kind (Left) in EW_Abstract | EW_Split then
+
+         --  For EW_Abstract and EW_Split types, compare the ada node
+
+         pragma Assert (Present (Get_Ada_Node (+Left)));
+         pragma Assert (Present (Get_Ada_Node (+Right)));
+         return Get_Ada_Node (+Left) = Get_Ada_Node (+Right);
+      else
+
+         --  For EW_Builtin types, compare the names
+
+         declare
+            N1 : constant W_Name_Id := Get_Name (+Left);
+            N2 : constant W_Name_Id := Get_Name (+Right);
+         begin
+            if N1 = N2 then
+               return True;
+            end if;
+            declare
+               M1 : constant W_Module_Id := Get_Module (N1);
+               M2 : constant W_Module_Id := Get_Module (N2);
+            begin
+               if M1 = M2 or else
+                 (M1 /= Why_Empty
+                  and then M2 /= Why_Empty
+                  and then Get_Name (M1) = Get_Name (M2))
+               then
+                  return Get_Symbol (N1) = Get_Symbol (N2);
+               else
+                  return False;
+               end if;
+            end;
+         end;
+      end if;
+   end Eq_Base;
+
+   ---------------
+   -- Eq_In_Why --
+   ---------------
+
+   function Eq_In_Why (Left, Right : W_Type_Id) return Boolean is
+   begin
+      if Left = Right then
+         return True;
       end if;
       declare
          N1 : constant W_Name_Id := Get_Name (+Left);
@@ -743,7 +800,7 @@ package body Why.Inter is
             end if;
          end;
       end;
-   end Eq_Base;
+   end Eq_In_Why;
 
    -----------------
    -- EW_Abstract --
@@ -1014,20 +1071,41 @@ package body Why.Inter is
      (E    : Entity_Id;
       Kind : EW_Type) return W_Type_Id is
    begin
-      if Kind = EW_Abstract then
+
+      --  We avoid having renaming of types in Why to allow using the same
+      --  reference type.
+
+      if Is_Static_Array_Type (Retysp (E))
+        or else (Kind = EW_Split and then Has_Array_Type (E))
+      then
+
+         --  Static array types and arrays split forms are in fact Why3 maps
+
+         return New_Type
+           (Ada_Node   => E,
+            Is_Mutable => False,
+            Type_Kind  => Kind,
+            Name       =>
+              New_Name
+                (Ada_Node => E,
+                 Symbol   => NID ("map"),
+                 Module   => New_Module (File => No_Name,
+                                         Name => Get_Array_Theory_Name (E))));
+      elsif Kind = EW_Split then
+
+         --  Discrete types split forms are their base why type
+
+         pragma Assert (Has_Discrete_Type (E));
+         return New_Type
+           (Ada_Node   => E,
+            Is_Mutable => False,
+            Type_Kind  => EW_Split,
+            Name       => Get_Name (Base_Why_Type (E)));
+      else
          return New_Type (Ada_Node   => E,
                           Is_Mutable => False,
                           Type_Kind  => EW_Abstract,
                           Name       => To_Why_Type (E));
-      else
-         return New_Type (Ada_Node   => E,
-                          Is_Mutable => False,
-                          Type_Kind  => EW_Split,
-                          Name       =>
-                            New_Name
-                              (Ada_Node => E,
-                               Symbol   => NID ("__split"),
-                               Module   => E_Module (E)));
       end if;
    end New_Kind_Base_Type;
 

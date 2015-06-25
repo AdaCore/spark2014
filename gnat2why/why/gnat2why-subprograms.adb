@@ -1509,9 +1509,11 @@ package body Gnat2Why.Subprograms is
 
       Reset_Map_For_Old;
 
-      Result_Name :=
-        New_Identifier
+      if Ekind (E) = E_Function then
+         Result_Name :=
+           New_Identifier
              (Name => Name & "__result", Typ => Type_Of_Node (Etype (E)));
+      end if;
 
       Params :=
         (File        => File.File,
@@ -1833,9 +1835,11 @@ package body Gnat2Why.Subprograms is
       --  create a new identifier for F'Result.
 
       Reset_Map_For_Old;
-      Result_Name :=
-        New_Identifier
+      if Ekind (E) = E_Function then
+         Result_Name :=
+           New_Identifier
              (Name => Name & "__result", Typ => Type_Of_Node (Etype (E)));
+      end if;
       Result_Var :=
         (if Ekind (E) = E_Function then
               New_Deref
