@@ -313,3 +313,15 @@ digraph G {
 
 }
 
+// test_Locals_Graph
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="Subprogram test__qe_2",shape="box"];
+    2 [label="test__qe_2__table"];
+    3 [label="test__qe_2__B_2__temp_table"];
+
+    1 ->  2 [arrowType="normal"];
+    1 ->  3 [arrowType="normal"];
+}
+

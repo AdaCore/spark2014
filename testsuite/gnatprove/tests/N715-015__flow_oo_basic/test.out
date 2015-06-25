@@ -5285,6 +5285,21 @@ digraph G {
 
 }
 
+// foo_Locals_Graph
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="Subprogram foo__hash",shape="box"];
+    2 [label="Subprogram foo__hash__2",shape="box"];
+    3 [label="Subprogram foo__zero_widget",shape="box"];
+    4 [label="Subprogram foo__hash__3",shape="box"];
+    5 [label="Subprogram foo__zero_widget__2",shape="box"];
+    6 [label="Subprogram foo__zero_widget__3",shape="box"];
+    7 [label="Subprogram foo__hash__4",shape="box"];
+    8 [label="Subprogram foo__modify_it",shape="box"];
+
+}
+
 // gg_subprogram_tests__f_get_item_c_cfg
 digraph G {
    graph [splines=True];
@@ -5766,6 +5781,21 @@ digraph G {
 
 }
 
+// misc_Locals_Graph
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="Subprogram foo__hash",shape="box"];
+    2 [label="Subprogram foo__hash__2",shape="box"];
+    3 [label="Subprogram foo__zero_widget",shape="box"];
+    4 [label="Subprogram foo__hash__3",shape="box"];
+    5 [label="Subprogram foo__zero_widget__2",shape="box"];
+    6 [label="Subprogram foo__zero_widget__3",shape="box"];
+    7 [label="Subprogram foo__hash__4",shape="box"];
+    8 [label="Subprogram foo__modify_it",shape="box"];
+
+}
+
 // other_Globals_Graph
 digraph G {
    graph [splines=True];
@@ -5797,6 +5827,22 @@ digraph G {
     25 [label="other__new_widget'Ins",shape="box"];
     26 [label="other__new_widget'Outs",shape="box"];
     27 [label="other__new_widget'Proof_Ins",shape="box"];
+
+}
+
+// other_Locals_Graph
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="Subprogram foo__hash",shape="box"];
+    2 [label="Subprogram foo__hash__2",shape="box"];
+    3 [label="Subprogram foo__zero_widget",shape="box"];
+    4 [label="Subprogram foo__hash__3",shape="box"];
+    5 [label="Subprogram foo__zero_widget__2",shape="box"];
+    6 [label="Subprogram foo__zero_widget__3",shape="box"];
+    7 [label="Subprogram foo__hash__4",shape="box"];
+    8 [label="Subprogram foo__modify_it",shape="box"];
+    9 [label="Subprogram other__new_widget",shape="box"];
 
 }
 
@@ -5877,7 +5923,50 @@ digraph G {
     49 ->  43 [arrowType="normal"];
 }
 
+// tests_Locals_Graph
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="Subprogram foo__hash__2",shape="box"];
+    2 [label="Subprogram tests__f_get_item_c",shape="box"];
+    3 [label="tests__f_get_item_c__w"];
+    4 [label="Subprogram tests__f_get_item",shape="box"];
+    5 [label="tests__f_get_item__w"];
+    6 [label="Subprogram tests__f_get_item_e",shape="box"];
+    7 [label="tests__f_get_item_e__w"];
+    8 [label="Subprogram foo__hash",shape="box"];
+    9 [label="Subprogram foo__zero_widget",shape="box"];
+    10 [label="Subprogram foo__hash__3",shape="box"];
+    11 [label="Subprogram foo__zero_widget__2",shape="box"];
+    12 [label="Subprogram tests__test_15__id",shape="box"];
+    13 [label="tests__test_15__id__h"];
+    14 [label="Subprogram tests__test_16__f",shape="box"];
+    15 [label="tests__test_16__f__x"];
+    16 [label="Subprogram foo__zero_widget__3",shape="box"];
+    17 [label="Subprogram foo__hash__4",shape="box"];
+    18 [label="Subprogram other__new_widget",shape="box"];
+    19 [label="Subprogram foo__modify_it",shape="box"];
+    20 [label="Subprogram tests__test_18",shape="box"];
+    21 [label="tests__test_18__tmp"];
+    22 [label="tests__test_18__n"];
+
+    2 ->  3 [arrowType="normal"];
+    4 ->  5 [arrowType="normal"];
+    6 ->  7 [arrowType="normal"];
+    12 ->  13 [arrowType="normal"];
+    14 ->  15 [arrowType="normal"];
+    20 ->  21 [arrowType="normal"];
+    20 ->  22 [arrowType="normal"];
+}
+
 // untangle_Globals_Graph
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+
+}
+
+// untangle_Locals_Graph
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];

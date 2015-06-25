@@ -142,3 +142,15 @@ digraph G {
 
 }
 
+// types_Locals_Graph
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="Subprogram types__test_01",shape="box"];
+    2 [label="types__test_01__i"];
+    3 [label="types__test_01__o"];
+
+    1 ->  2 [arrowType="normal"];
+    1 ->  3 [arrowType="normal"];
+}
+

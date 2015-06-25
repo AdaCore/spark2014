@@ -1349,10 +1349,10 @@ package body Graph is
       for V in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
          for W of Sets (Succ (V)) loop
             if not G.Edge_Exists (V, W) then
+               G.Add_Edge (V, W, G.Default_Colour);
                if Visitor /= null then
                   Visitor (V, W);
                end if;
-               G.Add_Edge (V, W, G.Default_Colour);
             end if;
          end loop;
       end loop;

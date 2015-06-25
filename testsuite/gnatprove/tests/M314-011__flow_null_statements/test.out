@@ -94,3 +94,11 @@ digraph G {
 
 }
 
+// test_Locals_Graph
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="Subprogram test__null_statement",shape="box"];
+
+}
+

@@ -90,6 +90,9 @@ package body Flow_Generated_Globals is
    type Global_Id_Kind is (Null_Kind,
                            --  Does not represent anything yet
 
+                           Subprogram_Kind,
+                           --  This kind should only be used in Local_Graphs
+
                            Ins_Kind,
                            --  Represents subprogram's Ins
 
@@ -131,7 +134,14 @@ package body Flow_Generated_Globals is
       Equivalent_Elements => Global_Graphs."=",
       "="                 => Global_Graphs."=");
 
+   Local_Graph  : Global_Graphs.T;
+   --  This graph will represent the hierarchy of subprograms (which subprogram
+   --  is nested in which one) and will be used to determine which local
+   --  variables can act as globals to which subprograms.
+
    Global_Graph : Global_Graphs.T;
+   --  This graph will represent the globals that each subprogram has as
+   --  inputs, outputs and proof inputs.
 
    use Global_Graphs;
 
@@ -248,11 +258,12 @@ package body Flow_Generated_Globals is
 
          Label : constant String :=
            (case G_Id.Kind is
-              when Proof_Ins_Kind => G_Id.Name.S.all & "'Proof_Ins",
-              when Ins_Kind       => G_Id.Name.S.all & "'Ins",
-              when Outs_Kind      => G_Id.Name.S.all & "'Outs",
-              when Variable_Kind  => G_Id.Name.S.all,
-              when Null_Kind      => "");
+              when Subprogram_Kind => "Subprogram " & G_Id.Name.S.all,
+              when Proof_Ins_Kind  => G_Id.Name.S.all & "'Proof_Ins",
+              when Ins_Kind        => G_Id.Name.S.all & "'Ins",
+              when Outs_Kind       => G_Id.Name.S.all & "'Outs",
+              when Variable_Kind   => G_Id.Name.S.all,
+              when Null_Kind       => "");
 
          Rv : constant Node_Display_Info := Node_Display_Info'
            (Show        => True,
@@ -450,8 +461,7 @@ package body Flow_Generated_Globals is
       -- Write_Name_Set --
       --------------------
 
-      procedure Write_Name_Set (S : Name_Sets.Set)
-      is
+      procedure Write_Name_Set (S : Name_Sets.Set) is
       begin
          for N of S loop
             Write_Info_Char (' ');
@@ -580,11 +590,16 @@ package body Flow_Generated_Globals is
       --  exist.
 
       procedure Add_All_Edges;
-      --  Reads the populated Subprogram_Info_Set and generates all the edges
-      --  of the Global_Graph.
+      --  Reads the populated Info_Set and generates all the edges of the
+      --  Global_Graph. While adding edges we consult the Local_Graph so as not
+      --  to add edges to local variables.
 
       procedure Create_All_Vertices;
       --  Creates all the vertices of the Global_Graph
+
+      procedure Create_Local_Graph;
+      --  Creates the Local_Graph. This graph will be used to prevent adding
+      --  edges to local variables on the Global_Graph.
 
       procedure Edit_Proof_Ins;
       --  A variable cannot be simultaneously a Proof_In and an Input
@@ -613,9 +628,6 @@ package body Flow_Generated_Globals is
       --  GG AR test__fully_vol test__vol_ew3
       --  GG ER test__fully_vol test__vol_er2
       --  GG EW test__fully_vol test__vol_ew3
-
-      procedure Remove_Edges_To_Local_Variables;
-      --  Removes edges between subprograms and their local variables
 
       procedure Remove_Constants_Without_Variable_Input;
       --  Removes edges leading to constants without variable input
@@ -801,7 +813,42 @@ package body Flow_Generated_Globals is
          end loop;
 
          --  Close graph
-         Global_Graph.Close;
+         declare
+            procedure Visitor (A, B : Vertex_Id);
+            --  Visitor procedure that checks if the vertex corresponding to B
+            --  is linked to the vertex corresponding to A on the Local_Graph
+            --  before adding the edge.
+
+            procedure Visitor (A, B : Vertex_Id) is
+               Key_A :          Global_Id := Global_Graph.Get_Key (A);
+               Key_B : constant Global_Id := Global_Graph.Get_Key (B);
+            begin
+               if Key_B.Kind /= Variable_Kind
+                 or else not (Key_A.Kind in Proof_Ins_Kind |
+                                            Ins_Kind       |
+                                            Outs_Kind)
+               then
+                  --  We only need to consult the Local_Graph when we are
+                  --  attempting to establish a link between a subprogram and a
+                  --  variable.
+                  return;
+               end if;
+
+               --  Convert kind so that it can be used on Local_Graph
+               Key_A.Kind := Subprogram_Kind;
+
+               --  Check if local variable B can act as global of subprogram A
+               if Local_Graph.Get_Vertex (Key_A) /= Null_Vertex
+                 and then Local_Graph.Get_Vertex (Key_B) /= Null_Vertex
+                 and then not Local_Graph.Edge_Exists (Key_B, Key_A)
+               then
+                  Global_Graph.Remove_Edge (A, B);
+               end if;
+            end Visitor;
+
+         begin
+            Global_Graph.Close (Visitor'Access);
+         end;
       end Add_All_Edges;
 
       -------------------------
@@ -890,6 +937,92 @@ package body Flow_Generated_Globals is
             end;
          end loop;
       end Create_All_Vertices;
+
+      ------------------------
+      -- Create_Local_Graph --
+      ------------------------
+
+      procedure Create_Local_Graph is
+
+         procedure Add_Edge (G1, G2 : Global_Id);
+         --  Adds an edge between the vertices V1 and V2 that correspond to G1
+         --  and G2 (V1 --> V2). The edge has the default colour. This
+         --  procedure operates on the Local_Graph.
+
+         --------------
+         -- Add_Edge --
+         --------------
+
+         procedure Add_Edge (G1, G2 : Global_Id) is
+         begin
+            Local_Graph.Add_Edge (G1, G2, EC_Default);
+         end Add_Edge;
+
+         G_Subp       : Global_Id;
+         G_Local_Subp : Global_Id;
+         G_Local_Var  : Global_Id;
+
+      begin
+         for Info of Subprogram_Info_Set loop
+            G_Subp := Global_Id'(Kind => Subprogram_Kind,
+                                 Name => Info.Name);
+
+            if Local_Graph.Get_Vertex (G_Subp) = Null_Vertex then
+               --  Create a vertex for the subprogram if one does not already
+               --  exist.
+               Local_Graph.Add_Vertex (G_Subp);
+            end if;
+
+            --  Create a vertex for every local variable and link it to the
+            --  enclosing subprogram.
+            for Local_Variable of Info.Local_Variables loop
+               G_Local_Var := Global_Id'(Kind => Variable_Kind,
+                                         Name => Local_Variable);
+
+               --  Create a vertex for every local variable if one does not
+               --  already exist.
+               if Local_Graph.Get_Vertex (G_Local_Var) = Null_Vertex then
+                  Local_Graph.Add_Vertex (G_Local_Var);
+               end if;
+
+               --  Link enclosing subprogram to local variable
+               Add_Edge (G_Subp, G_Local_Var);
+            end loop;
+
+            --  Create a vertex for every local subprogram and link it to the
+            --  enclosing subprogram.
+            for Local_Subprogram of Info.Local_Subprograms loop
+               G_Local_Subp := Global_Id'(Kind => Subprogram_Kind,
+                                          Name => Local_Subprogram);
+
+               if Local_Graph.Get_Vertex (G_Local_Subp) = Null_Vertex then
+                  --  Create a vertex for every local subprogram if one does
+                  --  not already exist.
+                  Local_Graph.Add_Vertex (G_Local_Subp);
+               end if;
+
+               --  Link enclosing subprogram to local subprogram
+               Add_Edge (G_Subp, G_Local_Subp);
+            end loop;
+
+            --  Link all local variables to all local subprograms (this
+            --  effectively means that they can act as their globals).
+            for Local_Variable of Info.Local_Variables loop
+               G_Local_Var := Global_Id'(Kind => Variable_Kind,
+                                         Name => Local_Variable);
+
+               for Local_Subprogram of Info.Local_Subprograms loop
+                  G_Local_Subp := Global_Id'(Kind => Subprogram_Kind,
+                                             Name => Local_Subprogram);
+
+                  Add_Edge (G_Local_Var, G_Local_Subp);
+               end loop;
+            end loop;
+         end loop;
+
+         --  Close graph
+         Local_Graph.Close;
+      end Create_Local_Graph;
 
       --------------------
       -- Edit_Proof_Ins --
@@ -1365,102 +1498,6 @@ package body Flow_Generated_Globals is
          Close (ALI_File);
       end Load_GG_Info_From_ALI;
 
-      -------------------------------------
-      -- Remove_Edges_To_Local_Variables --
-      -------------------------------------
-
-      procedure Remove_Edges_To_Local_Variables is
-
-         procedure Remove_Local_Variables_From_Set
-           (Start : Vertex_Id;
-            Info  : Subprogram_Phase_1_Info);
-         --  Removes all edges starting from Start and leading to:
-         --    * this subprogram's local variables,
-         --    * local variables of called subprograms that do not
-         --      enclose this subprogram
-
-         -------------------------------------
-         -- Remove_Local_Variables_From_Set --
-         -------------------------------------
-
-         procedure Remove_Local_Variables_From_Set
-           (Start : Vertex_Id;
-            Info  : Subprogram_Phase_1_Info)
-         is
-            G                   : Global_Id;
-            VS                  : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
-            All_Subs_Called     : Name_Sets.Set    := Name_Sets.Empty_Set;
-            All_Local_Variables : Name_Sets.Set    := Info.Local_Variables;
-         begin
-            for V of Global_Graph.Get_Collection (Start, Out_Neighbours) loop
-               if Global_Graph.Get_Key (V).Kind in Proof_Ins_Kind |
-                                                   Ins_Kind       |
-                                                   Outs_Kind
-               then
-                  All_Subs_Called.Include (Global_Graph.Get_Key (V).Name);
-               end if;
-            end loop;
-
-            for Sub_Called of All_Subs_Called loop
-               if GG_Subprograms.Contains (Sub_Called) then
-                  for I of Subprogram_Info_Set loop
-                     if I.Name = Sub_Called then
-                        if not I.Local_Subprograms.Contains (Info.Name)
-                        then
-                           All_Local_Variables.Union (I.Local_Variables);
-                        end if;
-                        exit;
-                     end if;
-                  end loop;
-               end if;
-            end loop;
-
-            for V of Global_Graph.Get_Collection (Start, Out_Neighbours) loop
-               G := Global_Graph.Get_Key (V);
-
-               if All_Local_Variables.Contains (G.Name) then
-                  VS.Include (V);
-               end if;
-            end loop;
-
-            for V of VS loop
-               Global_Graph.Remove_Edge (Start, V);
-            end loop;
-         end Remove_Local_Variables_From_Set;
-
-      --  Start of processing for Remove_Edges_From_Local_Variables
-
-      begin
-         for Info of Subprogram_Info_Set loop
-            declare
-               G_Ins       : constant Global_Id :=
-                 Global_Id'(Kind => Ins_Kind,
-                            Name => Info.Name);
-
-               G_Outs      : constant Global_Id :=
-                 Global_Id'(Kind => Outs_Kind,
-                            Name => Info.Name);
-
-               G_Proof_Ins : constant Global_Id :=
-                 Global_Id'(Kind => Proof_Ins_Kind,
-                            Name => Info.Name);
-
-               V_Ins       : constant Vertex_Id :=
-                 Global_Graph.Get_Vertex (G_Ins);
-
-               V_Outs      : constant Vertex_Id :=
-                 Global_Graph.Get_Vertex (G_Outs);
-
-               V_Proof_Ins : constant Vertex_Id :=
-                 Global_Graph.Get_Vertex (G_Proof_Ins);
-            begin
-               Remove_Local_Variables_From_Set (V_Ins, Info);
-               Remove_Local_Variables_From_Set (V_Outs, Info);
-               Remove_Local_Variables_From_Set (V_Proof_Ins, Info);
-            end;
-         end loop;
-      end Remove_Edges_To_Local_Variables;
-
       ---------------------------------------------
       -- Remove_Constants_Without_Variable_Input --
       ---------------------------------------------
@@ -1559,17 +1596,18 @@ package body Flow_Generated_Globals is
       --  Populated the All_Other_Subprograms set
       All_Other_Subprograms := All_Subprograms - GG_Subprograms;
 
-      --  Initialize Global_Graph
+      --  Initialize Local_Graph and Global_Graph
+      Local_Graph  := Global_Graphs.Create;
       Global_Graph := Global_Graphs.Create;
+
+      --  Create the Local_Graph
+      Create_Local_Graph;
 
       --  Create all vertices of the Global_Graph
       Create_All_Vertices;
 
       --  Add all edges in the Global_Graph
       Add_All_Edges;
-
-      --  Remove edges between a subprogram and its local variables
-      Remove_Edges_To_Local_Variables;
 
       --  Edit Proof_Ins
       Edit_Proof_Ins;
@@ -1588,11 +1626,20 @@ package body Flow_Generated_Globals is
 
       if Debug_Print_Global_Graph then
          declare
-            Filename : constant String :=
+            Common_Prefix : constant String :=
               Spec_File_Name_Without_Suffix
-                (Enclosing_Comp_Unit_Node (GNAT_Root)) & "_Globals_Graph";
+                (Enclosing_Comp_Unit_Node (GNAT_Root));
+
+            LG_Filename   : constant String :=
+              Common_Prefix & "_Locals_Graph";
+
+            GG_Filename   : constant String :=
+              Common_Prefix & "_Globals_Graph";
          begin
-            Print_Global_Graph (Filename => Filename,
+            Print_Global_Graph (Filename => LG_Filename,
+                                G        => Local_Graph);
+
+            Print_Global_Graph (Filename => GG_Filename,
                                 G        => Global_Graph);
          end;
       end if;

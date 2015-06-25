@@ -735,6 +735,13 @@ digraph G {
 
 }
 
+// uninitialized_Locals_Graph
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+
+}
+
 // vehicle_Globals_Graph
 digraph G {
    graph [splines=True];
@@ -756,5 +763,14 @@ digraph G {
     7 ->  2 [arrowType="normal"];
     8 ->  3 [arrowType="normal"];
     8 ->  5 [arrowType="normal"];
+}
+
+// vehicle_Locals_Graph
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="Subprogram vehicle__speed_is_valid",shape="box"];
+    2 [label="Subprogram vehicle__halt",shape="box"];
+
 }
 

@@ -51,6 +51,25 @@ digraph G {
     18 ->  3 [arrowType="normal"];
 }
 
+// across_compilation_units-child_Locals_Graph
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="Subprogram across_compilation_units__swap",shape="box"];
+    2 [label="across_compilation_units__swap__x"];
+    3 [label="across_compilation_units__swap__y"];
+    4 [label="across_compilation_units__swap__temp"];
+    5 [label="Subprogram across_compilation_units__prime",shape="box"];
+    6 [label="across_compilation_units__prime__x"];
+    7 [label="Subprogram across_compilation_units__child__round_swap_1",shape="box"];
+    8 [label="Subprogram across_compilation_units__child__round_swap_2",shape="box"];
+
+    1 ->  2 [arrowType="normal"];
+    1 ->  3 [arrowType="normal"];
+    1 ->  4 [arrowType="normal"];
+    5 ->  6 [arrowType="normal"];
+}
+
 // across_compilation_units_Globals_Graph
 digraph G {
    graph [splines=True];
@@ -66,6 +85,23 @@ digraph G {
     9 [label="across_compilation_units__swap'Outs",shape="box"];
     10 [label="across_compilation_units__swap'Proof_Ins",shape="box"];
 
+}
+
+// across_compilation_units_Locals_Graph
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="Subprogram across_compilation_units__prime",shape="box"];
+    2 [label="across_compilation_units__prime__x"];
+    3 [label="Subprogram across_compilation_units__swap",shape="box"];
+    4 [label="across_compilation_units__swap__x"];
+    5 [label="across_compilation_units__swap__temp"];
+    6 [label="across_compilation_units__swap__y"];
+
+    1 ->  2 [arrowType="normal"];
+    3 ->  4 [arrowType="normal"];
+    3 ->  5 [arrowType="normal"];
+    3 ->  6 [arrowType="normal"];
 }
 
 // caller_of_across_compilation_units_Globals_Graph
@@ -101,6 +137,35 @@ digraph G {
     20 ->  14 [arrowType="normal"];
     21 ->  12 [arrowType="normal"];
     21 ->  15 [arrowType="normal"];
+}
+
+// caller_of_across_compilation_units_Locals_Graph
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="Subprogram across_compilation_units__prime",shape="box"];
+    2 [label="across_compilation_units__prime__x"];
+    3 [label="Subprogram caller_of_across_compilation_units__min",shape="box"];
+    4 [label="caller_of_across_compilation_units__min__y"];
+    5 [label="caller_of_across_compilation_units__min__x"];
+    6 [label="Subprogram across_compilation_units__swap",shape="box"];
+    7 [label="across_compilation_units__swap__temp"];
+    8 [label="across_compilation_units__swap__x"];
+    9 [label="across_compilation_units__swap__y"];
+    10 [label="Subprogram caller_of_across_compilation_units__coprime",shape="box"];
+    11 [label="caller_of_across_compilation_units__coprime__y"];
+    12 [label="caller_of_across_compilation_units__coprime__x"];
+    13 [label="caller_of_across_compilation_units__coprime__L_1__R4b"];
+
+    1 ->  2 [arrowType="normal"];
+    3 ->  4 [arrowType="normal"];
+    3 ->  5 [arrowType="normal"];
+    6 ->  7 [arrowType="normal"];
+    6 ->  8 [arrowType="normal"];
+    6 ->  9 [arrowType="normal"];
+    10 ->  11 [arrowType="normal"];
+    10 ->  12 [arrowType="normal"];
+    10 ->  13 [arrowType="normal"];
 }
 
 // fa_pkg_body_across_compilation_units__child_cfg
@@ -2337,5 +2402,23 @@ digraph G {
     12 ->  12 [arrowType="normal"];
     13 ->  1 [arrowType="normal"];
     13 ->  2 [arrowType="normal"];
+}
+
+// single_compilation_unit_Locals_Graph
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="Subprogram single_compilation_unit__factorial",shape="box"];
+    2 [label="single_compilation_unit__factorial__var"];
+    3 [label="single_compilation_unit__factorial__fact"];
+    4 [label="Subprogram single_compilation_unit__fibonacci",shape="box"];
+    5 [label="single_compilation_unit__fibonacci__n"];
+    6 [label="Subprogram single_compilation_unit__double_max",shape="box"];
+    7 [label="single_compilation_unit__double_max__temp"];
+
+    1 ->  2 [arrowType="normal"];
+    1 ->  3 [arrowType="normal"];
+    4 ->  5 [arrowType="normal"];
+    6 ->  7 [arrowType="normal"];
 }
 

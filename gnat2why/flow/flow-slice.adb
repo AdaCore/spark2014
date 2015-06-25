@@ -313,10 +313,8 @@ package body Flow.Slice is
       --  Traverses the tree under FA.Analyzed_Entity and gathers all
       --  object and subprogram declarations and puts them
       --  respectivelly under Local_Vars and Local_Subs.
-      --  @param Local_Vars this set is populated with all local
-      --    variables
-      --  @param Local_Subs this set is populated with all local
-      --    subprograms
+      --  @param Local_Vars is populated with all local variables
+      --  @param Local_Subs is populated with all local subprograms
 
       function Subprograms_Without_Contracts
         (NS : Node_Sets.Set)
@@ -542,6 +540,7 @@ package body Flow.Slice is
                when N_Entry_Declaration | N_Subprogram_Declaration =>
                   if Defining_Entity (N) /= FA.Analyzed_Entity then
                      Local_Subs.Include (Defining_Entity (N));
+                     return Skip;
                   end if;
 
                when N_Subprogram_Body =>
@@ -549,6 +548,7 @@ package body Flow.Slice is
                     and then Defining_Entity (N) /= FA.Analyzed_Entity
                   then
                      Local_Subs.Include (Defining_Entity (N));
+                     return Skip;
                   end if;
 
                when others =>
