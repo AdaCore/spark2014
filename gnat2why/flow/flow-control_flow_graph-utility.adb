@@ -21,7 +21,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ghost;        use Ghost;
 with Sinfo;        use Sinfo;
 
 with Flow_Utility; use Flow_Utility;

@@ -30,7 +30,6 @@ with Flow_Debug;                  use Flow_Debug;
 with Flow_Error_Messages;         use Flow_Error_Messages;
 with Flow_Utility;                use Flow_Utility;
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
-with Ghost;                       use Ghost;
 with Namet;                       use Namet;
 with Nlists;                      use Nlists;
 with Output;                      use Output;
