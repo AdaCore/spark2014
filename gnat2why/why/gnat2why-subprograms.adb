@@ -1733,10 +1733,7 @@ package body Gnat2Why.Subprograms is
            (File.Cur_Theory,
             New_Global_Ref_Declaration
               (Name     => Result_Name,
-               Labels =>
-                 Name_Id_Sets.To_Set
-                   (NID ("""" & GP_Ada_Name_Marker &
-                         Source_Name (E) & "'Result""")),
+               Labels   => Name_Id_Sets.Empty_Set,
                Ref_Type => Type_Of_Node (Etype (E))));
       end if;
 
@@ -1973,10 +1970,7 @@ package body Gnat2Why.Subprograms is
               (File.Cur_Theory,
                New_Global_Ref_Declaration
                  (Name     => Result_Name,
-                  Labels =>
-                    Name_Id_Sets.To_Set
-                      (NID ("""" & GP_Ada_Name_Marker
-                            & Source_Name (E) & "'Result""")),
+                  Labels   => Name_Id_Sets.Empty_Set,
                   Ref_Type => Type_Of_Node (Etype (E))));
          end if;
 

@@ -260,6 +260,10 @@
 --  For VCs, we use the prefix "GP_Sloc_VC" instead of "GP_Sloc" to
 --  differentiate between VC positions and other SLOCs
 --
+--  "GP_Id:<Integer>" The number of the check. This is used a unique id
+--     identifying a check in the Ada source. It is used to communicate results
+--     back from gnatwhy3 to gnat2why.
+--
 --  "GP_Reason:<VC_Kind>"
 --     The reason for a VC. <VC_Kind> should be obtained by VC_Kind'Image.
 --     Required for all VC nodes.
@@ -267,9 +271,15 @@
 --  "keep_on_simp"
 --     Disallows simplification of that node. Required for all VC nodes.
 --
---  "GP_Pretty_Ada:<string>"
---     Gives the original Ada source for the Why3 term, as a string.
---     Is used for pretty printing explanations for a VC
+--  "GP_Pretty_Ada:<integer>"
+--     Is used for VCs which are a subgoal of some VC (like conjuncts of a
+--     postcondition). The integer is the Node_Id of some node in the GNAT
+--     tree. This node will be used for pretty-printing explanations for a VC
+--
+--  "GP_Shape:<string>"
+--     labels a node as introducing a special Ada structure (like if, while,
+--     loop etc). This is used for producing better filenames for manual proof
+--
 
 --  -----------------------------
 --  -- Labels for declarations --

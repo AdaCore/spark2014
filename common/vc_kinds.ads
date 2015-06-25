@@ -190,7 +190,6 @@ package VC_Kinds is
    --  A few labels are used to communicate information from gnat2why to
    --  gnatwhy3. Changes here should be propagated to the code of gnatwhy3.
 
-   GP_Ada_Name_Marker   : constant String := "GP_Ada_Name:";
    GP_Id_Marker         : constant String := "GP_Id:";
    GP_Pretty_Ada_Marker : constant String := "GP_Pretty_Ada:";
    GP_Reason_Marker     : constant String := "GP_Reason:";
