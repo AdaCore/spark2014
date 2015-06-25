@@ -1,0 +1,6 @@
+tasksep.ads:3:07: from profile "Ravenscar" at test.adc:2
+tasksep.ads:3:07: violation of restriction "Max_Task_Entries = 0"
+   compilation of tasksep.adb failed
+
+
+gnatprove: error during generation of Global contracts
