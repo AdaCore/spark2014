@@ -506,11 +506,13 @@ package body SPARK_Definition is
    procedure Mark_Package_Declaration         (N : Node_Id);
 
    procedure Mark_Subprogram_Body             (N : Node_Id);
+   --  Mark bodies of functions, procedures, task types and entries
+
    procedure Mark_Subprogram_Declaration      (N : Node_Id);
    --  N is either a subprogram declaration node, or a subprogram body node
    --  for those subprograms which do not have a prior declaration (not
-   --  counting a stub as a declaration); it works also for entries and task
-   --  bodies.
+   --  counting a stub as a declaration); it works also for entry and task
+   --  type declarations.
 
    --  Special treatment for marking some kinds of nodes
    --  ??? Do we want preconditions on these? For example
