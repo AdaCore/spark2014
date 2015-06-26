@@ -1128,7 +1128,7 @@ package body Flow_Generated_Globals is
 
          procedure Parse_Record;
          --  Parses a GG record from the ALI file and if no problems
-         --  occurred it adds it to the relevant set.
+         --  occurred adds it to the relevant set.
 
          ------------------
          -- Parse_Record --
