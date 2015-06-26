@@ -2810,6 +2810,8 @@ package body SPARK_Definition is
                 (SPARK_Aux_Pragma (Defining_Entity (Pack_Decl))) = Off;
          end Is_Private_Entity_Mode_Off;
 
+      --  Start of processing for Mark_Type_Entity
+
       begin
          --  The base type or original type should be marked before the current
          --  type. We also protect ourselves against the case where the Etype
