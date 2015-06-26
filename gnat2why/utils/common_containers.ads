@@ -48,8 +48,8 @@ package Common_Containers is
      (Index_Type   => Positive,
       Element_Type => Entity_Id);
 
-   function Node_Hash (X : Node_Id) return Ada.Containers.Hash_Type
-   is (Ada.Containers.Hash_Type (X));
+   function Node_Hash (X : Node_Id) return Ada.Containers.Hash_Type is
+     (Ada.Containers.Hash_Type (X));
    --  Compute a hash of a node
 
    package Node_Sets is new Ada.Containers.Ordered_Sets
