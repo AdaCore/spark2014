@@ -1121,10 +1121,24 @@ package body Flow_Generated_Globals is
          ALI_File : Ada.Text_IO.File_Type;
          Line     : Unbounded_String;
 
-         AR_Found : Boolean := False;
-         AW_Found : Boolean := False;
-         EW_Found : Boolean := False;
-         ER_Found : Boolean := False;
+         type External_State is
+           (Async_Readers,
+            Async_Writers,
+            Effective_Reads,
+            Effective_Writes
+           );
+
+         External_State_Found : array (External_State) of Boolean :=
+           (others => False);
+
+         type GG_Tag is array (Positive range 1 .. 2) of Character;
+
+         External_State_Tags : constant array (External_State) of GG_Tag :=
+           (Async_Readers    => "AR",
+            Async_Writers    => "AW",
+            Effective_Reads  => "ER",
+            Effective_Writes => "EW"
+           );
 
          procedure Parse_Record;
          --  Parses a GG record from the ALI file and if no problems
@@ -1135,12 +1149,15 @@ package body Flow_Generated_Globals is
          ------------------
 
          procedure Parse_Record is
-            type Line_Found_T is array (1 .. 9) of Boolean;
+
+            type Line_Index is range 1 .. 9;
+
+            type Line_Found_T is array (Line_Index) of Boolean;
             --  This array represents whether we have found a line
             --  of the following format while populating the record.
             --  The order is as follow:
             --
-            --  array slot 1 is True if we have found "GG S/T *"
+            --  array slot 1 is True if we have found "GG S/T/E *"
             --  array slot 2 is True if we have found "GG VP *"
             --  array slot 3 is True if we have found "GG VI *"
             --  array slot 4 is True if we have found "GG VO *"
@@ -1160,6 +1177,10 @@ package body Flow_Generated_Globals is
 
             function Get_Names_From_Line return Name_Sets.Set;
             --  Returns a set of all names appearing in a line
+
+            procedure Set_Line_Found (L : Line_Index);
+            --  Set Line_Found (L) to True or raise an exception if it is
+            --  already set.
 
             ---------------------
             -- Check_GG_Format --
@@ -1183,7 +1204,7 @@ package body Flow_Generated_Globals is
 
             function Get_Names_From_Line return Name_Sets.Set is
                Names_In_Line : Name_Sets.Set := Name_Sets.Empty_Set;
-               Start_Of_Word : Natural      := 7;
+               Start_Of_Word : Natural       := 7;
                End_Of_Word   : Natural;
             begin
                if Length (Line) = 5 then
@@ -1220,6 +1241,19 @@ package body Flow_Generated_Globals is
 
                return Names_In_Line;
             end Get_Names_From_Line;
+
+            --------------------
+            -- Set_Line_Found --
+            --------------------
+
+            procedure Set_Line_Found (L : Line_Index) is
+            begin
+               if Line_Found (L) then
+                  raise Program_Error;
+               else
+                  Line_Found (L) := True;
+               end if;
+            end Set_Line_Found;
 
          --  Start of processing for Parse_Record
 
@@ -1265,91 +1299,72 @@ package body Flow_Generated_Globals is
             --  variables and external state abstractions.
 
             elsif Length (Line) > 6
-              and then Slice (Line, 1, 6) in "GG AW " |
-                                             "GG AR " |
-                                             "GG ER " |
-                                             "GG EW "
+              and then Element (Line, 4) in 'A' | 'E'
+              and then Element (Line, 5) in 'R' | 'W'
+              and then Element (Line, 6) = ' '
             then
-               if Slice (Line, 1, 6) = "GG AW " then
-                  if AW_Found then
+               declare
+                  Names : constant Name_Sets.Set := Get_Names_From_Line;
+
+                  ES_Tag : constant GG_Tag := GG_Tag (Slice (Line, 4, 5));
+                  ES : External_State;
+
+               begin
+                  for I in External_State'Range loop
+                     if ES_Tag = External_State_Tags (I) then
+                        ES := I;
+                        exit;
+                     end if;
+                  end loop;
+
+                  --  Check if this tag was not already seen
+                  if External_State_Found (ES) then
                      raise Program_Error;
+                  else
+                     External_State_Found (ES) := True;
                   end if;
 
-                  --  Found AW
-                  AW_Found := True;
-                  --  Read and save AW line
-                  Async_Writers_Vars.Union (Get_Names_From_Line);
+                  --  Update the correponding set
+                  case ES is
+                     when Async_Writers =>
+                        Async_Writers_Vars.Union (Names);
 
-               elsif Slice (Line, 1, 6) = "GG AR " then
-                  if AR_Found then
-                     raise Program_Error;
-                  end if;
+                     when Async_Readers =>
+                        Async_Readers_Vars.Union (Names);
 
-                  --  Found AR
-                  AR_Found := True;
-                  --  Read and save AR line
-                  Async_Readers_Vars.Union (Get_Names_From_Line);
+                     when Effective_Reads =>
+                        Effective_Reads_Vars.Union (Names);
 
-               elsif Slice (Line, 1, 6) = "GG ER " then
-                  if ER_Found then
-                     raise Program_Error;
-                  end if;
+                     when Effective_Writes =>
+                        Effective_Writes_Vars.Union (Names);
+                  end case;
 
-                  --  Found ER
-                  ER_Found := True;
-                  --  Read and save ER line
-                  Effective_Reads_Vars.Union (Get_Names_From_Line);
+                  --  Store all names from the line in the All_Volatile_Vars
+                  --  set and return.
+                  All_Volatile_Vars.Union (Get_Names_From_Line);
+                  return;
+               end;
 
-               elsif Slice (Line, 1, 6) = "GG EW " then
-                  if EW_Found then
-                     raise Program_Error;
-                  end if;
-
-                  --  Found EW
-                  EW_Found := True;
-                  --  Read and save EW line
-                  Effective_Writes_Vars.Union (Get_Names_From_Line);
-
-               else
-                  --  We should never get here
-                  raise Program_Error;
-               end if;
-
-               --  Save all names from the line in the All_Volatile_Vars
-               --  set and return.
-               All_Volatile_Vars.Union (Get_Names_From_Line);
-               return;
             end if;
 
-            while (for some I in 1 .. 9 => not Line_Found (I)) loop
+            while (for some I in Line_Index => not Line_Found (I)) loop
                Check_GG_Format;
 
                if Length (Line) >= 6
-                 and then (Slice (Line, 4, 5) in "S " | "T " | "E ")
+                 and then Element (Line, 4) in 'S' | 'T' | 'E'
+                 and then Element (Line, 5) = ' '
                then
                   --  Line format: GG S *
                   --      or       GG T *
                   --      or       GG E *
-                  if Line_Found (1) then
-                     --  We have already processed this line.
-                     --  Something is wrong with the ali file.
-                     raise Program_Error;
-                  end if;
+                  Set_Line_Found (1);
 
-                  if Slice (Line, 4, 5) = "S " then
-                     --  Reading back a subprogram
-                     New_Info.Kind := S_Kind;
-                  elsif Slice (Line, 4, 5) = "T " then
-                     --  Reading back a task
-                     New_Info.Kind := T_Kind;
-                  elsif Slice (Line, 4, 5) = "E " then
-                     --  Reading back an entry
-                     New_Info.Kind := E_Kind;
-                  else
-                     raise Program_Error;
-                  end if;
-
-                  Line_Found (1) := True;
+                  New_Info.Kind := (case Element (Line, 4) is
+                                       when 'S' => S_Kind, -- subprogram
+                                       when 'T' => T_Kind, -- task
+                                       when 'E' => E_Kind, -- entry
+                                       when others => Undef
+                                   );
 
                   declare
                      GO : constant String := Slice (Line, 6, 7);
@@ -1369,88 +1384,70 @@ package body Flow_Generated_Globals is
                   end;
 
                elsif Length (Line) >= 5 then
-                  if Slice (Line, 4, 5) = "VP" then
-                     if Line_Found (2) then
+                  declare
+                     Tag : constant String := Slice (Line, 4, 5);
+                  begin
+                     if Tag = "VP" then
+                        Set_Line_Found (2);
+
+                        New_Info.Inputs_Proof := Get_Names_From_Line;
+                        All_Globals.Union (Get_Names_From_Line);
+
+                     elsif Tag = "VI" then
+                        Set_Line_Found (3);
+
+                        New_Info.Inputs := Get_Names_From_Line;
+                        All_Globals.Union (Get_Names_From_Line);
+
+                     elsif Tag = "VO" then
+                        Set_Line_Found (4);
+
+                        New_Info.Outputs := Get_Names_From_Line;
+                        All_Globals.Union (Get_Names_From_Line);
+
+                     elsif Tag = "CP" then
+                        Set_Line_Found (5);
+
+                        New_Info.Proof_Calls := Get_Names_From_Line;
+                        All_Subprograms.Union (New_Info.Proof_Calls);
+
+                     elsif Tag = "CD" then
+                        Set_Line_Found (6);
+
+                        New_Info.Definite_Calls := Get_Names_From_Line;
+                        All_Subprograms.Union (New_Info.Definite_Calls);
+
+                     elsif Tag = "CC" then
+                        Set_Line_Found (7);
+
+                        New_Info.Conditional_Calls := Get_Names_From_Line;
+                        All_Subprograms.Union (New_Info.Conditional_Calls);
+
+                     elsif Tag = "LV" then
+                        Set_Line_Found (8);
+
+                        New_Info.Local_Variables := Get_Names_From_Line;
+                        All_Globals.Union (Get_Names_From_Line);
+
+                     elsif Tag = "LS" then
+                        Set_Line_Found (9);
+
+                        New_Info.Local_Subprograms := Get_Names_From_Line;
+                        All_Subprograms.Union (New_Info.Local_Subprograms);
+
+                     elsif Tag = "NB" then
+
+                        Nonblocking_Subprograms_Set.Union
+                          (Get_Names_From_Line);
+                        return;
+
+                     else
+                        --  Unexpected type of line. Something is wrong
+                        --  with the ALI file.
                         raise Program_Error;
                      end if;
 
-                     Line_Found (2) := True;
-                     New_Info.Inputs_Proof := Get_Names_From_Line;
-                     All_Globals.Union (Get_Names_From_Line);
-
-                  elsif Slice (Line, 4, 5) = "VI" then
-                     if Line_Found (3) then
-                        raise Program_Error;
-                     end if;
-
-                     Line_Found (3) := True;
-                     New_Info.Inputs := Get_Names_From_Line;
-                     All_Globals.Union (Get_Names_From_Line);
-
-                  elsif Slice (Line, 4, 5) = "VO" then
-                     if Line_Found (4) then
-                        raise Program_Error;
-                     end if;
-
-                     Line_Found (4) := True;
-                     New_Info.Outputs := Get_Names_From_Line;
-                     All_Globals.Union (Get_Names_From_Line);
-
-                  elsif Slice (Line, 4, 5) = "CP" then
-                     if Line_Found (5) then
-                        raise Program_Error;
-                     end if;
-
-                     Line_Found (5) := True;
-                     New_Info.Proof_Calls := Get_Names_From_Line;
-                     All_Subprograms.Union (New_Info.Proof_Calls);
-
-                  elsif Slice (Line, 4, 5) = "CD" then
-                     if Line_Found (6) then
-                        raise Program_Error;
-                     end if;
-
-                     Line_Found (6) := True;
-                     New_Info.Definite_Calls := Get_Names_From_Line;
-                     All_Subprograms.Union (New_Info.Definite_Calls);
-
-                  elsif Slice (Line, 4, 5) = "CC" then
-                     if Line_Found (7) then
-                        raise Program_Error;
-                     end if;
-
-                     Line_Found (7) := True;
-                     New_Info.Conditional_Calls := Get_Names_From_Line;
-                     All_Subprograms.Union (New_Info.Conditional_Calls);
-
-                  elsif Slice (Line, 4, 5) = "LV" then
-                     if Line_Found (8) then
-                        raise Program_Error;
-                     end if;
-
-                     Line_Found (8) := True;
-                     New_Info.Local_Variables := Get_Names_From_Line;
-                     All_Globals.Union (Get_Names_From_Line);
-
-                  elsif Slice (Line, 4, 5) = "LS" then
-                     if Line_Found (9) then
-                        raise Program_Error;
-                     end if;
-
-                     Line_Found (9) := True;
-                     New_Info.Local_Subprograms := Get_Names_From_Line;
-                     All_Subprograms.Union (New_Info.Local_Subprograms);
-
-                  elsif Slice (Line, 4, 5) = "NB" then
-
-                     Nonblocking_Subprograms_Set.Union (Get_Names_From_Line);
-                     return;
-
-                  else
-                     --  Unexpected type of line. Something is wrong
-                     --  with the ALI file.
-                     raise Program_Error;
-                  end if;
+                  end;
 
                else
                   --  Something is wrong with the ALI file
@@ -1458,12 +1455,12 @@ package body Flow_Generated_Globals is
                end if;
 
                if not End_Of_File (ALI_File)
-                 and then (for some I in 1 .. 9 => not Line_Found (I))
+                 and then (for some I in Line_Index => not Line_Found (I))
                then
                   --  Go to the next line
                   Get_Line (ALI_File, Line);
                elsif End_Of_File (ALI_File)
-                 and then (for some I in 1 .. 9 => not Line_Found (I))
+                 and then (for some I in Line_Index => not Line_Found (I))
                then
                   --  We reached the end of the file and our New_Info
                   --  is not yet complete. Something is missing from
@@ -1471,7 +1468,7 @@ package body Flow_Generated_Globals is
                   raise Program_Error;
                end if;
 
-               if (for all I in 1 .. 9 => Line_Found (I)) then
+               if (for all I in Line_Index => Line_Found (I)) then
                   --  If all lines have been found then we add New_Info to
                   --  Subprogram_Info_Set and return.
                   Subprogram_Info_Set.Include (New_Info);
