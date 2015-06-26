@@ -80,6 +80,7 @@ package body Flow is
 
    use Flow_Graphs;
    use Subprogram_Info_Sets;
+   use Name_Sets;
 
    Temp_String : Unbounded_String := Null_Unbounded_String;
 
@@ -1230,6 +1231,25 @@ package body Flow is
                           when E_Task_Type     => Task_Body_Entity (E),
                           when Subprogram_Kind => E,
                           when others          => raise Why.Unexpected_Node);
+
+               --  Check for potentially blocking statements
+
+               if Compute_Globals
+                  and then Ekind (E) in Subprogram_Kind
+                  and then Entity_Body_In_SPARK (E)
+                  and then Entity_Body_Valid_SPARK (E)
+               then
+                  declare
+                     Body_N : constant Node_Id := Subprogram_Body (E);
+                  begin
+                     if Present (Body_N) and then
+                       not Is_Directly_Potentially_Blocking (Body_N)
+                     then
+                        Nonblocking_Subprograms_Set.Include
+                          (To_Entity_Name (E));
+                     end if;
+                  end;
+               end if;
 
                if SPARK_Util.Analysis_Requested (Body_E) then
                   if Entity_Body_In_SPARK (Body_E)

@@ -1877,6 +1877,66 @@ package body SPARK_Util is
       end case;
    end Has_Volatile_Flavor;
 
+   --------------------------------------
+   -- Is_Directly_Potentially_Blocking --
+   --------------------------------------
+
+   function Is_Directly_Potentially_Blocking (N : Node_Id) return Boolean is
+
+      Blocking_Statement_Found : Boolean := False;
+
+      function Proc (N : Node_Id) return Traverse_Result;
+      --  Process a node to check if it is a potentially blocking statement
+
+      procedure Traverse is new Traverse_Proc (Proc);
+      --  Traverse a tree to check if it includes blocking statements
+
+      ----------
+      -- Proc --
+      ----------
+
+      function Proc (N : Node_Id) return Traverse_Result is
+      begin
+         --  Detect a potentially blocking statement; RM 9.5.1 (8-16).
+         --  The following check mirrors the callers of
+         --  Check_Potentially_Blocking_Operation but directly rejects
+         --  all forms of the select statement.
+         case Nkind (N) is
+            when N_Abort_Statement        |
+                 N_Accept_Statement       |
+                 N_Asynchronous_Select    |
+                 N_Conditional_Entry_Call |
+                 N_Delay_Statement        |
+                 N_Entry_Call_Statement   |
+                 N_Selective_Accept       |
+                 N_Timed_Entry_Call       =>
+
+               Blocking_Statement_Found := True;
+               return Abandon;
+
+            when N_Object_Declaration =>
+               declare
+                  Id : constant Entity_Id := Defining_Identifier (N);
+               begin
+                  --  ??? what if a library-level declaration
+                  if Has_Task (Etype (Id)) then
+                     Blocking_Statement_Found := True;
+                     return Abandon;
+                  else
+                     return OK;
+                  end if;
+               end;
+
+            when others =>
+               return OK;
+         end case;
+      end Proc;
+
+   begin
+      Traverse (N);
+      return Blocking_Statement_Found;
+   end Is_Directly_Potentially_Blocking;
+
    ------------------
    -- In_Main_Unit --
    ------------------

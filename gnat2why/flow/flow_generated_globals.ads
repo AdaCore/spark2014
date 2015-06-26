@@ -207,6 +207,10 @@ package Flow_Generated_Globals is
    Subprogram_Info_Set : Subprogram_Info_Sets.Set;
    --  Information about subprograms from the "generated globals" algorithm
 
+   Nonblocking_Subprograms_Set : Name_Sets.Set;
+   --  Subprograms, entries and tasks that do not contain potentially blocking
+   --  statements (but still may call another blocking subprogram).
+
    ----------------------------------------------------------------------
 
    function To_Name_Set (S : Node_Sets.Set) return Name_Sets.Set;

@@ -928,4 +928,8 @@ package SPARK_Util is
    --  @return if the source location has been instantiated, return the
    --    instance location, otherwise Loc itself
 
+   function Is_Directly_Potentially_Blocking (N : Node_Id) return Boolean
+     with Pre => Nkind (N) in N_Subprogram_Body;
+   --  Check if subprogram body N contains a potentially blocking statement
+
 end SPARK_Util;

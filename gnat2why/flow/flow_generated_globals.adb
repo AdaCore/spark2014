@@ -322,20 +322,21 @@ package body Flow_Generated_Globals is
       Open_Output_Library_Info;
 
       --  Initialze subprogram info
-      Subprogram_Info_Set   := Subprogram_Info_Sets.Empty_Set;
+      Subprogram_Info_Set         := Subprogram_Info_Sets.Empty_Set;
+      Nonblocking_Subprograms_Set := Name_Sets.Empty_Set;
 
       --  Initialize state info
-      State_Info_Set        := State_Info_Sets.Empty_Set;
+      State_Info_Set              := State_Info_Sets.Empty_Set;
 
       --  Initialize volatile info
-      All_Volatile_Vars     := Name_Sets.Empty_Set;
-      Async_Writers_Vars    := Name_Sets.Empty_Set;
-      Async_Readers_Vars    := Name_Sets.Empty_Set;
-      Effective_Reads_Vars  := Name_Sets.Empty_Set;
-      Effective_Writes_Vars := Name_Sets.Empty_Set;
+      All_Volatile_Vars           := Name_Sets.Empty_Set;
+      Async_Writers_Vars          := Name_Sets.Empty_Set;
+      Async_Readers_Vars          := Name_Sets.Empty_Set;
+      Effective_Reads_Vars        := Name_Sets.Empty_Set;
+      Effective_Writes_Vars       := Name_Sets.Empty_Set;
 
       --  Set mode to writing mode
-      Current_Mode := GG_Write_Mode;
+      Current_Mode                := GG_Write_Mode;
    end GG_Write_Initialize;
 
    ---------------------------
@@ -468,6 +469,9 @@ package body Flow_Generated_Globals is
             Write_Info_Str (N.S.all);
          end loop;
       end Write_Name_Set;
+
+   --  Start of processing for GG_Write_Finalize
+
    begin
       --  Write State info
       for State_Info of State_Info_Set loop
@@ -563,6 +567,13 @@ package body Flow_Generated_Globals is
       if not Effective_Writes_Vars.Is_Empty then
          Write_Info_Str ("GG EW");
          Write_Name_Set (Effective_Writes_Vars);
+         Write_Info_Terminate;
+      end if;
+
+      --  Write nonblocking subprograms
+      if not Nonblocking_Subprograms_Set.Is_Empty then
+         Write_Info_Str ("GG NB");
+         Write_Name_Set (Nonblocking_Subprograms_Set);
          Write_Info_Terminate;
       end if;
 
@@ -1429,6 +1440,11 @@ package body Flow_Generated_Globals is
                      Line_Found (9) := True;
                      New_Info.Local_Subprograms := Get_Names_From_Line;
                      All_Subprograms.Union (New_Info.Local_Subprograms);
+
+                  elsif Slice (Line, 4, 5) = "NB" then
+
+                     Nonblocking_Subprograms_Set.Union (Get_Names_From_Line);
+                     return;
 
                   else
                      --  Unexpected type of line. Something is wrong
