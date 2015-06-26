@@ -1115,16 +1115,16 @@ package body Flow_Generated_Globals is
       ---------------------------
 
       procedure Load_GG_Info_From_ALI (ALI_File_Name : File_Name_Type) is
-         ALI_File_Name_Str   : constant String :=
+         ALI_File_Name_Str : constant String :=
            Name_String (Name_Id (Full_Lib_File_Name (ALI_File_Name)));
 
-         ALI_File            : Ada.Text_IO.File_Type;
-         Line                : Unbounded_String;
+         ALI_File : Ada.Text_IO.File_Type;
+         Line     : Unbounded_String;
 
-         AR_Found            : Boolean := False;
-         AW_Found            : Boolean := False;
-         EW_Found            : Boolean := False;
-         ER_Found            : Boolean := False;
+         AR_Found : Boolean := False;
+         AW_Found : Boolean := False;
+         EW_Found : Boolean := False;
+         ER_Found : Boolean := False;
 
          procedure Parse_Record;
          --  Parses a GG record from the ALI file and if no problems
