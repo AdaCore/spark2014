@@ -2893,4 +2893,46 @@ package body SPARK_Util is
       end if;
    end Task_Body_Entity;
 
+   --------------
+   -- Get_Body --
+   --------------
+
+   function Get_Body (E : Entity_Id) return Node_Id is
+   begin
+      case Ekind (E) is
+         when E_Entry =>
+            return Entry_Body (E);
+
+         when E_Task_Type =>
+            return Task_Body (E);
+
+         when Subprogram_Kind =>
+            return Subprogram_Body (E);
+
+         when others =>
+            raise Why.Unexpected_Node;
+      end case;
+   end Get_Body;
+
+   ---------------------
+   -- Get_Body_Entity --
+   ---------------------
+
+   function Get_Body_Entity (E : Entity_Id) return Entity_Id is
+   begin
+      case Ekind (E) is
+         when E_Entry =>
+            return Entry_Body_Entity (E);
+
+         when E_Task_Type =>
+            return Task_Body_Entity (E);
+
+         when Subprogram_Kind =>
+            return Subprogram_Body_Entity (E);
+
+         when others =>
+            raise Why.Unexpected_Node;
+      end case;
+   end Get_Body_Entity;
+
 end SPARK_Util;

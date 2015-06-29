@@ -34,7 +34,6 @@ with Namet;                       use Namet;
 with Nlists;                      use Nlists;
 with Output;                      use Output;
 with SPARK_Util;                  use SPARK_Util;
-with Sem_Aux;                     use Sem_Aux;
 with Sem_Eval;                    use Sem_Eval;
 with Sem_Util;                    use Sem_Util;
 with Sinfo;                       use Sinfo;
@@ -263,12 +262,7 @@ package body Flow.Analysis is
 
          when Subprogram_Kind | E_Task_Type | E_Entry =>
             declare
-               Body_E : constant Entity_Id :=
-                 (case Ekind (S) is
-                    when Subprogram_Kind => Subprogram_Body_Entity (S),
-                    when E_Task_Type     => Task_Body_Entity (S),
-                    when E_Entry         => Entry_Body_Entity (S),
-                    when others          => raise Why.Unexpected_Node);
+               Body_E : constant Entity_Id := Get_Body_Entity (S);
             begin
                if Present (Body_E) then
                   Haystack_A := Get_Pragma (Body_E, Pragma_Refined_Global);

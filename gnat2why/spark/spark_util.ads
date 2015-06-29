@@ -814,6 +814,32 @@ package SPARK_Util is
    --  @param any expression node
    --  @return the node as pretty printed Ada code, limited to 50 chars
 
+   function Get_Body (E : Entity_Id) return Node_Id
+   with Pre  => Nkind (E) in N_Entity
+                  and then Ekind (E) in E_Entry         |
+                                        E_Task_Type     |
+                                        Subprogram_Kind,
+        Post => (if Present (Get_Body'Result)
+                 then Nkind (Get_Body'Result) in N_Entry_Body      |
+                                                 N_Subprogram_Body |
+                                                 N_Task_Body);
+   --  @param E is an entry, subprogram or task
+   --  @return the body for the given entry/subprogram/task. This is a wrapper
+   --    around Entry_Body, Subprogram_Body and Task_Body.
+
+   function Get_Body_Entity (E : Entity_Id) return Entity_Id
+   with Pre  => Nkind (E) in N_Entity and then
+                Ekind (E) in E_Entry | E_Task_Type | Subprogram_Kind,
+        Post => (if Present (Get_Body_Entity'Result)
+                 then Ekind (Get_Body_Entity'Result) in E_Entry           |
+                                                        E_Subprogram_Body |
+                                                        E_Task_Body       |
+                                                        Subprogram_Kind);
+   --  @param E is an entry, subprogram or task
+   --  @return the body entity for the given entry/subprogram/task.
+   --    This is a wrapper around Entry_Body_Entity, Subprogram_Body_Entity
+   --    and Task_Body_Entity.
+
    ----------------------------------
    -- Queries for particular nodes --
    ----------------------------------

@@ -2255,11 +2255,7 @@ package body Flow_Utility is
       Scope : Flow_Scope)
       return Boolean
    is
-      Body_E : constant Entity_Id :=
-        (case Ekind (E) is
-         when E_Task_Type => Task_Body_Entity (E),
-         when E_Entry     => Entry_Body_Entity (E),
-         when others      => Subprogram_Body_Entity (E));
+      Body_E : constant Entity_Id := Get_Body_Entity (E);
    begin
       if Present (Body_E)
         and then Entity_Body_In_SPARK (E)
@@ -2284,11 +2280,7 @@ package body Flow_Utility is
       Scope : Flow_Scope)
       return Boolean
    is
-      Body_E : constant Entity_Id :=
-        (case Ekind (E) is
-         when E_Task_Type => Task_Body_Entity (E),
-         when E_Entry     => Entry_Body_Entity (E),
-         when others      => Subprogram_Body_Entity (E));
+      Body_E : constant Entity_Id := Get_Body_Entity (E);
    begin
       if Rely_On_Generated_Global (E, Scope) then
          if Present (Body_E) then
