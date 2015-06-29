@@ -161,8 +161,7 @@ package Flow is
    end record;
 
    type Flow_Analysis_Graphs_Root
-     (Kind            : Valid_Analyzed_Entity := E_Subprogram_Body;
-      Compute_Globals : Boolean               := False)
+     (Kind : Valid_Analyzed_Entity := E_Subprogram_Body)
    is record
       --  Compute_Globals: If true we are trying to compute globals and
       --  will construct the graphs slightly differently. In particular we
@@ -330,6 +329,13 @@ package Flow is
 
    procedure Generate_Flow_Globals (GNAT_Root : Node_Id);
    --  Generate flow globals for the current compilation unit
+
+   Generating_Globals : Boolean;
+   --  If true we are trying to generate globals and will construct the graphs
+   --  slightly differently. In particular we will deal with subprogram calls
+   --  differently and we don't try to create initial and final vertices for
+   --  globals.
+   --  This flag is set once and never modifed.
 
 private
 

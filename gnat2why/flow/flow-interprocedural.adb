@@ -152,7 +152,7 @@ package body Flow.Interprocedural is
 
    begin
       if Has_Depends (Called_Procedure)
-        and then (not FA.Compute_Globals
+        and then (not Generating_Globals
                     or else not Rely_On_Generated_Global (Called_Procedure,
                                                           FA.B_Scope))
       then
@@ -171,7 +171,7 @@ package body Flow.Interprocedural is
                          Scope                => FA.B_Scope,
                          Classwide            => Is_Dispatching_Call (N),
                          Depends              => Deps,
-                         Use_Computed_Globals => not FA.Compute_Globals);
+                         Use_Computed_Globals => Generating_Globals);
             for C in Deps.Iterate loop
                declare
                   Output : constant Flow_Id := Dependency_Maps.Key (C);
@@ -210,7 +210,7 @@ package body Flow.Interprocedural is
                          Reads                  => Inputs,
                          Writes                 => Outputs,
                          Consider_Discriminants => True,
-                         Use_Computed_Globals   => not FA.Compute_Globals);
+                         Use_Computed_Globals   => not Generating_Globals);
 
             --  Add parameters.
             E := First_Formal (Called_Procedure);
