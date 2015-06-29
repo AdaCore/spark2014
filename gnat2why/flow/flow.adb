@@ -861,35 +861,32 @@ package body Flow is
          then "Global generation"
          else "Flow analysis");
    begin
-      Tmp.Analyzed_Entity              := E;
-      Tmp.Spec_Node                    := S;
-      Tmp.Start_Vertex                 := Null_Vertex;
-      Tmp.Helper_End_Vertex            := Null_Vertex;
-      Tmp.End_Vertex                   := Null_Vertex;
-      Tmp.CFG                          := Create;
-      Tmp.DDG                          := Create;
-      Tmp.CDG                          := Create;
-      Tmp.TDG                          := Create;
-      Tmp.PDG                          := Create;
-      Tmp.Atr                          := Attribute_Maps.Empty_Map;
-      Tmp.Other_Fields                 := Vertex_To_Vertex_Set_Maps.Empty_Map;
-      Tmp.Local_Constants              := Node_Sets.Empty_Set;
-      Tmp.All_Vars                     := Flow_Id_Sets.Empty_Set;
-      Tmp.Unmodified_Vars              := Node_Sets.Empty_Set;
-      Tmp.Unreferenced_Vars            := Node_Sets.Empty_Set;
-      Tmp.Loops                        := Node_Sets.Empty_Set;
-      Tmp.Dependency_Map               := Dependency_Maps.Empty_Map;
-      Tmp.No_Effects                   := False;
-      Tmp.No_Errors_Or_Warnings        := True;
-      Tmp.Direct_Calls                 := Node_Sets.Empty_Set;
+      Tmp.Analyzed_Entity       := E;
+      Tmp.Spec_Node             := S;
+      Tmp.Start_Vertex          := Null_Vertex;
+      Tmp.Helper_End_Vertex     := Null_Vertex;
+      Tmp.End_Vertex            := Null_Vertex;
+      Tmp.CFG                   := Create;
+      Tmp.DDG                   := Create;
+      Tmp.CDG                   := Create;
+      Tmp.TDG                   := Create;
+      Tmp.PDG                   := Create;
+      Tmp.Atr                   := Attribute_Maps.Empty_Map;
+      Tmp.Other_Fields          := Vertex_To_Vertex_Set_Maps.Empty_Map;
+      Tmp.Local_Constants       := Node_Sets.Empty_Set;
+      Tmp.All_Vars              := Flow_Id_Sets.Empty_Set;
+      Tmp.Unmodified_Vars       := Node_Sets.Empty_Set;
+      Tmp.Unreferenced_Vars     := Node_Sets.Empty_Set;
+      Tmp.Loops                 := Node_Sets.Empty_Set;
+      Tmp.Dependency_Map        := Dependency_Maps.Empty_Map;
+      Tmp.No_Effects            := False;
+      Tmp.No_Errors_Or_Warnings := True;
+      Tmp.Direct_Calls          := Node_Sets.Empty_Set;
 
-      if Generating_Globals then
-         --  Generate Globals
-         Tmp.Base_Filename := To_Unbounded_String ("gg_");
-      else
-         --  Flow Analysis
-         Tmp.Base_Filename := To_Unbounded_String ("fa_");
-      end if;
+      --  Generate Globals (gg) or Flow Analysis (fa)
+      Tmp.Base_Filename := To_Unbounded_String (if Generating_Globals
+                                                then "gg_"
+                                                else "fa_");
 
       case Ekind (E) is
          when Subprogram_Kind =>
@@ -1148,8 +1145,7 @@ package body Flow is
 
          Control_Flow_Graph.Create (FA);
 
-         --  We print this graph first in case the other algorithms
-         --  barf.
+         --  We print this graph first in case the other algorithms barf
          if Debug_Print_CFG then
             Print_Graph (Filename          =>
                            To_String (FA.Base_Filename) & "_cfg",
