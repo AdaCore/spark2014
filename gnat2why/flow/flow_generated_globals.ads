@@ -182,19 +182,6 @@ package Flow_Generated_Globals is
       Local_Subprograms : Name_Sets.Set;
    end record;
 
-   Null_Subprogram_Info : constant Subprogram_Phase_1_Info :=
-     Subprogram_Phase_1_Info'(Name              => Null_Entity_Name,
-                              Kind              => Undef,
-                              Globals_Origin    => NO,
-                              Inputs_Proof      => Name_Sets.Empty_Set,
-                              Inputs            => Name_Sets.Empty_Set,
-                              Outputs           => Name_Sets.Empty_Set,
-                              Proof_Calls       => Name_Sets.Empty_Set,
-                              Definite_Calls    => Name_Sets.Empty_Set,
-                              Conditional_Calls => Name_Sets.Empty_Set,
-                              Local_Variables   => Name_Sets.Empty_Set,
-                              Local_Subprograms => Name_Sets.Empty_Set);
-
    function Preceeds (A, B : Subprogram_Phase_1_Info) return Boolean is
      (A.Name < B.Name);
 
