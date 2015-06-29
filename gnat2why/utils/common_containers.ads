@@ -76,9 +76,7 @@ package Common_Containers is
       "="             => Node_Sets."=");
    --  Maps of nodes to sets of nodes
 
-   type Entity_Name is record
-      Id : Integer;
-   end record;
+   type Entity_Name is new Integer range 0 .. Integer'Last;
 
    function To_Entity_Name (S : String) return Entity_Name;
 
@@ -86,31 +84,29 @@ package Common_Containers is
 
    function To_String (E : Entity_Name) return String;
 
-   function Name_Equal (Left, Right : Entity_Name) return Boolean is
-     (Left.Id = Right.Id);
-
-   function Name_Preceeds (Left, Right : Entity_Name) return Boolean is
-     (Left.Id < Right.Id);
-
-   Null_Entity_Name : constant Entity_Name := Entity_Name'(Id => 0);
+   Null_Entity_Name : constant Entity_Name;
 
    function Name_Hash (E : Entity_Name) return Ada.Containers.Hash_Type is
-      (Ada.Containers.Hash_Type (E.Id));
+      (Ada.Containers.Hash_Type (E));
 
    package Name_Sets is new Ada.Containers.Hashed_Sets
      (Element_Type        => Entity_Name,
       Hash                => Name_Hash,
-      Equivalent_Elements => Name_Equal,
-      "="                 => Name_Equal);
+      Equivalent_Elements => "=",
+      "="                 => "=");
 
    package Name_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Name,
       Element_Type    => Entity_Name,
       Hash            => Name_Hash,
-      Equivalent_Keys => Name_Equal,
-      "="             => Name_Equal);
+      Equivalent_Keys => "=",
+      "="             => "=");
 
    function Name_Id_Hash (N : Name_Id) return Ada.Containers.Hash_Type is
      (Ada.Containers.Hash_Type (N));
+
+private
+
+   Null_Entity_Name : constant Entity_Name := 0;
 
 end Common_Containers;

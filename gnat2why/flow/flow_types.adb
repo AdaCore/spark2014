@@ -102,7 +102,7 @@ package body Flow_Types is
             return True;
 
          when Magic_String =>
-            return Name_Equal (Left.Name, Right.Name);
+            return Left.Name = Right.Name;
 
          when Synthetic_Null_Export =>
             return True;

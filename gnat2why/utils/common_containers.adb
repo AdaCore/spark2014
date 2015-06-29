@@ -52,17 +52,17 @@ package body Common_Containers is
       Element_Type    => Entity_Name,
       Hash            => Node_Hash,
       Equivalent_Keys => "=",
-      "="             => Name_Equal);
+      "="             => "=");
 
    package Entity_Name_To_String_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Name,
       Element_Type    => Ada.Strings.Unbounded.String_Access,
       Hash            => Name_Hash,
-      Equivalent_Keys => Name_Equal,
+      Equivalent_Keys => "=",
       "="             => "=");
 
    Intern_Strings : Intern_Strings_Maps.Map := Intern_Strings_Maps.Empty_Map;
-   Num            : Integer := 1;
+   Num            : Entity_Name := 1;
 
    Name_Cache     : Entity_Name_Maps.Map := Entity_Name_Maps.Empty_Map;
    String_Cache   : Entity_Name_To_String_Maps.Map :=
@@ -79,7 +79,7 @@ package body Common_Containers is
          return Element (C);
       else
          declare
-            Rec : constant Entity_Name := Entity_Name'(Id => Num);
+            Rec : constant Entity_Name := Num;
          begin
             String_Cache.Insert (Rec, Tmp);
             Intern_Strings.Insert (Tmp, Rec);

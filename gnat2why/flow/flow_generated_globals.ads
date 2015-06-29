@@ -196,7 +196,7 @@ package Flow_Generated_Globals is
                               Local_Subprograms => Name_Sets.Empty_Set);
 
    function Preceeds (A, B : Subprogram_Phase_1_Info) return Boolean is
-     (Name_Preceeds (A.Name, B.Name));
+     (A.Name < B.Name);
 
    package Subprogram_Info_Sets is new Ada.Containers.Ordered_Sets
      (Element_Type => Subprogram_Phase_1_Info,

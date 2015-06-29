@@ -87,7 +87,7 @@ package body Flow.Interprocedural is
                   when Magic_String =>
                      if Parameter.Kind = Magic_String and then
                        A.Parameter_Formal.Variant = Parameter.Variant and then
-                       Name_Equal (Parameter.Name, A.Parameter_Formal.Name)
+                       Parameter.Name = A.Parameter_Formal.Name
                      then
                         return V;
                      end if;

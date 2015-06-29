@@ -83,7 +83,7 @@ package Gnat2Why.Util is
         (Key_Type => Entity_Name,
          Element_Type    => Item_Type,
          Hash            => Name_Hash,
-         Equivalent_Keys => Name_Equal,
+         Equivalent_Keys => "=",
          "="             => "=");
 
       package Ent_To_Why is new Ada.Containers.Hashed_Maps

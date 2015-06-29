@@ -50,7 +50,7 @@ package body SPARK_Frame_Conditions is
    package Id_Set is new Hashed_Sets
      (Element_Type        => Entity_Name,
       Hash                => Name_Hash,
-      Equivalent_Elements => Name_Equal,
+      Equivalent_Elements => "=",
       "="                 => "=");
    use Id_Set;
 
@@ -58,7 +58,7 @@ package body SPARK_Frame_Conditions is
      (Key_Type        => Entity_Name,
       Element_Type    => Id_Set.Set,
       Hash            => Name_Hash,
-      Equivalent_Keys => Name_Equal,
+      Equivalent_Keys => "=",
       "="             => "=");
    use Id_Map;
 
@@ -66,7 +66,7 @@ package body SPARK_Frame_Conditions is
      (Key_Type        => Entity_Name,
       Element_Type    => Integer,
       Hash            => Name_Hash,
-      Equivalent_Keys => Name_Equal,
+      Equivalent_Keys => "=",
       "="             => "=");
    --  Map used internally in strongly connected component computation. Not to
    --  be confused with map over ids.
@@ -75,7 +75,7 @@ package body SPARK_Frame_Conditions is
      (Key_Type        => Entity_Name,
       Element_Type    => Entity_Id,
       Hash            => Name_Hash,
-      Equivalent_Keys => Name_Equal,
+      Equivalent_Keys => "=",
       "="             => "=");
 
    Name_To_Entity : Name_To_Entity_Map.Map := Name_To_Entity_Map.Empty_Map;

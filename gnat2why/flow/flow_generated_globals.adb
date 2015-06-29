@@ -64,7 +64,7 @@ package body Flow_Generated_Globals is
    end record;
 
    function Preceeds (A, B : State_Phase_1_Info) return Boolean is
-     (Name_Preceeds (A.State, B.State));
+     (A.State < B.State);
 
    package State_Info_Sets is new Ada.Containers.Ordered_Sets
      (Element_Type => State_Phase_1_Info,
@@ -112,7 +112,7 @@ package body Flow_Generated_Globals is
    end record;
 
    function "=" (Left, Right : Global_Id) return Boolean is
-     (Left.Kind = Right.Kind and then Name_Equal (Left.Name, Right.Name));
+     (Left.Kind = Right.Kind and then Left.Name = Right.Name);
    --  Equality for Global_Id
 
    Null_Global_Id : constant Global_Id :=
@@ -1666,8 +1666,7 @@ package body Flow_Generated_Globals is
    function GG_Exist (E : Entity_Id) return Boolean is
       Name : constant Entity_Name := To_Entity_Name (E);
    begin
-      return (for some Info of Subprogram_Info_Set =>
-                Name_Equal (Name, Info.Name));
+      return (for some Info of Subprogram_Info_Set => Name = Info.Name);
    end GG_Exist;
 
    -----------------------
@@ -1676,7 +1675,7 @@ package body Flow_Generated_Globals is
 
    function GG_Has_Refinement (EN : Entity_Name) return Boolean is
    begin
-      return (for some S of State_Info_Set => Name_Equal (S.State, EN));
+      return (for some S of State_Info_Set => S.State = EN);
    end GG_Has_Refinement;
 
    -----------------------
@@ -1686,7 +1685,7 @@ package body Flow_Generated_Globals is
    function GG_Is_Constituent (EN : Entity_Name) return Boolean is
    begin
       return (for some S of State_Info_Set =>
-                (for some C of S.Constituents => Name_Equal (EN, C)));
+                (for some C of S.Constituents => EN = C));
    end GG_Is_Constituent;
 
    -------------------------
@@ -1696,7 +1695,7 @@ package body Flow_Generated_Globals is
    function GG_Get_Constituents (EN : Entity_Name) return Name_Sets.Set is
    begin
       for S of State_Info_Set loop
-         if Name_Equal (S.State, EN) then
+         if S.State = EN then
             return S.Constituents;
          end if;
       end loop;
@@ -1712,7 +1711,7 @@ package body Flow_Generated_Globals is
    begin
       for S of State_Info_Set loop
          for C of S.Constituents loop
-            if Name_Equal (EN, C) then
+            if EN = C then
                return S.State;
             end if;
          end loop;
