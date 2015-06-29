@@ -1066,19 +1066,15 @@ package body Flow is
                      Write_Line ("Spec in SPARK: " & (if Entity_In_SPARK (E)
                                                       then "yes"
                                                       else "no"));
-                     if FA.Kind = E_Subprogram_Body then
+
+                     if FA.Kind in E_Entry           |
+                                   E_Subprogram_Body |
+                                   E_Task_Body
+                     then
                         Write_Line ("Body in SPARK: " &
                                       (if Entity_Body_Valid_SPARK (E)
                                        then "yes"
                                        else "no"));
-                     elsif FA.Kind = E_Task_Body then
-                        Write_Line ("Body in SPARK: " &
-                                      (if Entity_Body_Valid_SPARK
-                                            (Task_Body_Entity (E))
-                                       then "yes"
-                                       else "no"));
-                        --   ??? O429-046 need to do something for entries
-                        --       here.
                      end if;
                   end if;
 
@@ -1242,8 +1238,8 @@ package body Flow is
                end if;
 
                if SPARK_Util.Analysis_Requested (Body_E) then
-                  if Entity_Body_In_SPARK (Body_E)
-                    and then Entity_Body_Valid_SPARK (Body_E)
+                  if Entity_Body_In_SPARK (E)
+                    and then Entity_Body_Valid_SPARK (E)
                   then
                      --  Produce a GG graph
                      FA_Graphs.Include (E, Flow_Analyse_Entity (E, E));
@@ -1323,9 +1319,12 @@ package body Flow is
                               Subprogram_Info := Subprogram_Phase_1_Info'
                                 (Name              => To_Entity_Name (E),
                                  Kind              =>
-                                   (if Ekind (E) in Subprogram_Kind
-                                    then S_Kind
-                                    else T_Kind),
+                                   (case Ekind (E) is
+                                    when E_Entry         => E_Kind,
+                                    when E_Task_Type     => T_Kind,
+                                    when Subprogram_Kind => S_Kind,
+                                    when others          =>
+                                      raise Why.Unexpected_Node),
                                  Globals_Origin    => XR,
                                  Inputs_Proof      => Name_Sets.Empty_Set,
                                  Inputs            => Reads,
