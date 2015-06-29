@@ -59,10 +59,10 @@ package Flow is
    ----------------------------------------------------------------------
 
    package Flow_Graphs is new Graph
-     (Vertex_Key        => Flow_Id,
-      Edge_Colours      => Edge_Colours,
-      Null_Key          => Null_Flow_Id,
-      Test_Key          => "=");
+     (Vertex_Key   => Flow_Id,
+      Edge_Colours => Edge_Colours,
+      Null_Key     => Null_Flow_Id,
+      Test_Key     => "=");
 
    package Attribute_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Flow_Graphs.Vertex_Id,
@@ -151,11 +151,11 @@ package Flow is
    --  ??? This should be a variant record, but O325-005 and AI12-0047 make
    --      this difficult.
    type Flow_Global_Generation_Info is record
-      Aborted     : Boolean;
+      Aborted : Boolean;
       --  Set if graph creation, processing or analysis raised some error;
       --  or if the entity should not be analyzed in the first place.
 
-      Globals     : Node_Sets.Set;
+      Globals : Node_Sets.Set;
       --  All obvious globals (non-local variables or parameters that are
       --  not subprogram parameters of the analyzed entity).
    end record;
@@ -189,49 +189,49 @@ package Flow is
       --  end of the procedure (i.e. returns jump here), but before
       --  postconditions are checked.
 
-      CFG                    : Flow_Graphs.T;
-      DDG                    : Flow_Graphs.T;
-      CDG                    : Flow_Graphs.T;
-      TDG                    : Flow_Graphs.T;
-      PDG                    : Flow_Graphs.T;
+      CFG                   : Flow_Graphs.T;
+      DDG                   : Flow_Graphs.T;
+      CDG                   : Flow_Graphs.T;
+      TDG                   : Flow_Graphs.T;
+      PDG                   : Flow_Graphs.T;
       --  The graphs.
 
-      Atr                    : Attribute_Maps.Map;
+      Atr                   : Attribute_Maps.Map;
       --  The vertex attributes for the above graphs.
 
-      Other_Fields           : Vertex_To_Vertex_Set_Maps.Map;
+      Other_Fields          : Vertex_To_Vertex_Set_Maps.Map;
       --  For a vertex corresponding to a record field this map will
       --  hold a vertex set of the other record fields.
 
-      Local_Constants        : Node_Sets.Set;
+      Local_Constants       : Node_Sets.Set;
       --  All constants that have been locally declared. This is used as a
       --  workaround to the issue of constants being ignored in general.
       --  This field should be removed once constants, attributes, etc. are
       --  dealt with correctly.
 
-      All_Vars               : Flow_Id_Sets.Set;
+      All_Vars              : Flow_Id_Sets.Set;
       --  A set of all variables used in the body.
 
-      Unmodified_Vars        : Node_Sets.Set;
+      Unmodified_Vars       : Node_Sets.Set;
       --  A set of all variables that are not expected to be modified
       --  because the were named in a pragma Unmodified.
 
-      Unreferenced_Vars      : Node_Sets.Set;
+      Unreferenced_Vars     : Node_Sets.Set;
       --  A set of all variables that are not expected to be referenced
       --  because the were named in a pragma Unreferenced.
 
-      Loops                  : Node_Sets.Set;
+      Loops                 : Node_Sets.Set;
       --  A set of all loops (identified by label).
 
-      Base_Filename          : Unbounded_String;
+      Base_Filename         : Unbounded_String;
       --  A string with the name of the entity that is being analysed.
       --  This string follows the convention that we use for naming the
       --  .dot and .pdf files.
 
-      Dependency_Map         : Dependency_Maps.Map;
+      Dependency_Map        : Dependency_Maps.Map;
       --  A map of all the dependencies.
 
-      No_Effects             : Boolean;
+      No_Effects            : Boolean;
       --  True if this is a subprogram with no effects. Certain analysis
       --  are disabled in this case as we would spam the user with error
       --  messages for almost every statement.
@@ -245,7 +245,7 @@ package Flow is
       --  All subprograms called
 
       GG                    : Flow_Global_Generation_Info;
-      --  Information for globals computation.
+      --  Information for globals computation
 
       case Kind is
          when E_Subprogram_Body | E_Task_Body | E_Entry =>
@@ -255,7 +255,7 @@ package Flow is
             --  formal parameters (global parameters are allowed).
 
             Is_Generative : Boolean;
-            --  True if we do not have a global contract.
+            --  True if we do not have a global contract
 
             Last_Statement_Is_Raise : Boolean;
             --  True if the last statement of the subprogram is an
@@ -326,10 +326,10 @@ package Flow is
    ----------------------------------------------------------------------
 
    procedure Flow_Analyse_CUnit;
-   --  Flow analyses the current compilation unit.
+   --  Flow analyses the current compilation unit
 
    procedure Generate_Flow_Globals (GNAT_Root : Node_Id);
-   --  Generate flow globals for the current compilation unit.
+   --  Generate flow globals for the current compilation unit
 
 private
 
