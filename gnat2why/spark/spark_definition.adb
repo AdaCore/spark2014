@@ -4457,7 +4457,7 @@ package body SPARK_Definition is
       else
          --  For entries and task bodies reuse the value of SPARK_Pragma from
          --  the context; workaround for O506-007.
-         Current_SPARK_Pragma := (if Ekind (E) in E_Entry | E_Task_Body
+         Current_SPARK_Pragma := (if Ekind (E) in E_Entry | E_Task_Type
                                   then Current_SPARK_Pragma
                                   else SPARK_Pragma (Defining_Entity (N)));
 
