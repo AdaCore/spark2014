@@ -3344,6 +3344,13 @@ package body SPARK_Definition is
                end;
             end if;
 
+            --  A record type may have a type with full_view not in SPARK as an
+            --  etype. In this case, the whole type has fullview not in SPARK.
+
+            if Full_View_Not_In_SPARK (Etype (E)) then
+               Full_Views_Not_In_SPARK.Insert (E, Etype (E));
+            end if;
+
          elsif Is_Access_Type (E) then
             Mark_Violation ("access type", E);
 

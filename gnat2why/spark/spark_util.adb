@@ -262,14 +262,6 @@ package body SPARK_Util is
                else
                   return Typ;
                end if;
-
-            --  Otherwise, we must have stored the first ancestor of Typ that
-            --  is in SPARK during SPARK checking. Either it is Typ and we're
-            --  done, or we return it.
-
-            elsif Get_First_Ancestor_In_SPARK (Typ) /= Typ then
-               pragma Assert (Full_View_Not_In_SPARK (Typ));
-               return Get_First_Ancestor_In_SPARK (Typ);
             else
                return Typ;
             end if;
@@ -574,9 +566,11 @@ package body SPARK_Util is
          declare
             Orig_Comp : constant Entity_Id := Original_Record_Component (E);
             Orig_Rec  : constant Entity_Id := Scope (Orig_Comp);
+            Pview_Rec : constant Entity_Id :=
+              (if Present (Full_View (Orig_Rec)) then Full_View (Orig_Rec)
+               else Orig_Rec);
          begin
-            return Entity_In_SPARK (Orig_Rec)
-              and then not Full_View_Not_In_SPARK (Orig_Rec);
+            return Entity_In_SPARK (Pview_Rec);
          end;
       end if;
    end Component_Is_Visible_In_SPARK;
@@ -2610,7 +2604,9 @@ package body SPARK_Util is
 
    function Root_Record_Type (E : Entity_Id) return Entity_Id is
       Result   : Entity_Id := Empty;
-      Ancestor : Entity_Id := E;
+      Ancestor : Entity_Id :=
+        (if Is_Class_Wide_Type (E) then Get_Specific_Type_From_Classwide (E)
+         else E);
    begin
       --  Climb the type derivation chain with Root_Type, applying
       --  Underlying_Type or Get_First_Ancestor_In_SPARK to pass private type
@@ -2649,11 +2645,10 @@ package body SPARK_Util is
    is
       Specific_Rec : constant Entity_Id :=
         (if Is_Class_Wide_Type (Rec) then
-           Get_Specific_Type_From_Classwide (Rec)
+           Retysp (Get_Specific_Type_From_Classwide (Rec))
          else Rec);
       Cur_Comp     : Entity_Id :=
         First_Component_Or_Discriminant (Specific_Rec);
-
    begin
       while Present (Cur_Comp) loop
          if Chars (Cur_Comp) = Chars (Comp) then
