@@ -23,6 +23,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings.Hash;
+with Ada.Strings.Unbounded;
 with Ada.Unchecked_Deallocation;
 with Sem_Util; use Sem_Util;
 
@@ -53,23 +54,34 @@ package body Common_Containers is
       Equivalent_Keys => "=",
       "="             => Name_Equal);
 
+   package Entity_Name_To_String_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Entity_Name,
+      Element_Type    => Ada.Strings.Unbounded.String_Access,
+      Hash            => Name_Hash,
+      Equivalent_Keys => Name_Equal,
+      "="             => "=");
+
    Intern_Strings : Intern_Strings_Maps.Map := Intern_Strings_Maps.Empty_Map;
    Num            : Integer := 1;
 
    Name_Cache     : Entity_Name_Maps.Map := Entity_Name_Maps.Empty_Map;
+   String_Cache   : Entity_Name_To_String_Maps.Map :=
+     Entity_Name_To_String_Maps.Empty_Map;
 
    function To_Entity_Name (S : String) return Entity_Name is
       Tmp : Ada.Strings.Unbounded.String_Access := new String'(S);
       use Intern_Strings_Maps;
       C : constant Cursor := Intern_Strings.Find (Tmp);
+      use Entity_Name_To_String_Maps;
    begin
       if Has_Element (C) then
          Free (Tmp);
          return Element (C);
       else
          declare
-            Rec : constant Entity_Name := Entity_Name'(Id => Num, S => Tmp);
+            Rec : constant Entity_Name := Entity_Name'(Id => Num);
          begin
+            String_Cache.Insert (Rec, Tmp);
             Intern_Strings.Insert (Tmp, Rec);
             Num := Num + 1;
             return Rec;
@@ -94,8 +106,9 @@ package body Common_Containers is
    end To_Entity_Name;
 
    function To_String (E : Entity_Name) return String is
+      use Entity_Name_To_String_Maps;
    begin
-      return E.S.all;
+      return Element (String_Cache, E).all;
    end To_String;
 
 end Common_Containers;

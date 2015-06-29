@@ -28,7 +28,6 @@ with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Ordered_Sets;
 with Ada.Containers.Vectors;
-with Ada.Strings.Unbounded;
 
 with Namet; use Namet;
 with Types; use Types;
@@ -79,7 +78,6 @@ package Common_Containers is
 
    type Entity_Name is record
       Id : Integer;
-      S  : Ada.Strings.Unbounded.String_Access;
    end record;
 
    function To_Entity_Name (S : String) return Entity_Name;
@@ -91,7 +89,7 @@ package Common_Containers is
    function Name_Equal (Left, Right : Entity_Name) return Boolean is
       (Left.Id = Right.Id);
 
-   Null_Entity_Name : constant Entity_Name := Entity_Name'(Id => 0, S => null);
+   Null_Entity_Name : constant Entity_Name := Entity_Name'(Id => 0);
 
    function Name_Hash (E : Entity_Name) return Ada.Containers.Hash_Type is
       (Ada.Containers.Hash_Type (E.Id));
