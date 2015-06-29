@@ -87,7 +87,10 @@ package Common_Containers is
    function To_String (E : Entity_Name) return String;
 
    function Name_Equal (Left, Right : Entity_Name) return Boolean is
-      (Left.Id = Right.Id);
+     (Left.Id = Right.Id);
+
+   function Name_Preceeds (Left, Right : Entity_Name) return Boolean is
+     (Left.Id < Right.Id);
 
    Null_Entity_Name : constant Entity_Name := Entity_Name'(Id => 0);
 
