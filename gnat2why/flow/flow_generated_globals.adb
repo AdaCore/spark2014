@@ -177,48 +177,48 @@ package body Flow_Generated_Globals is
    begin
       case Info.Kind is
          when S_Kind =>
-            Write_Line ("Subprogram " & Info.Name.S.all);
+            Write_Line ("Subprogram " & To_String (Info.Name));
          when T_Kind =>
-            Write_Line ("Task " & Info.Name.S.all);
+            Write_Line ("Task " & To_String (Info.Name));
          when E_Kind =>
-            Write_Line ("Entry " & Info.Name.S.all);
+            Write_Line ("Entry " & To_String (Info.Name));
          when others =>
             raise Program_Error;
       end case;
 
       Write_Line ("Proof_Ins        :");
       for Name of Info.Inputs_Proof loop
-         Write_Line ("   " & Name.S.all);
+         Write_Line ("   " & To_String (Name));
       end loop;
 
       Write_Line ("Inputs           :");
       for Name of Info.Inputs loop
-         Write_Line ("   " & Name.S.all);
+         Write_Line ("   " & To_String (Name));
       end loop;
 
       Write_Line ("Outputs          :");
       for Name of Info.Outputs loop
-         Write_Line ("   " & Name.S.all);
+         Write_Line ("   " & To_String (Name));
       end loop;
 
       Write_Line ("Proof calls      :");
       for Name of Info.Proof_Calls loop
-         Write_Line ("   " & Name.S.all);
+         Write_Line ("   " & To_String (Name));
       end loop;
 
       Write_Line ("Definite calls   :");
       for Name of Info.Definite_Calls loop
-         Write_Line ("   " & Name.S.all);
+         Write_Line ("   " & To_String (Name));
       end loop;
 
       Write_Line ("Conditional calls:");
       for Name of Info.Conditional_Calls loop
-         Write_Line ("   " & Name.S.all);
+         Write_Line ("   " & To_String (Name));
       end loop;
 
       Write_Line ("Local variables  :");
       for Name of Info.Local_Variables loop
-         Write_Line ("   " & Name.S.all);
+         Write_Line ("   " & To_String (Name));
       end loop;
    end Print_Subprogram_Phase_1_Info;
 
@@ -258,11 +258,11 @@ package body Flow_Generated_Globals is
 
          Label : constant String :=
            (case G_Id.Kind is
-              when Subprogram_Kind => "Subprogram " & G_Id.Name.S.all,
-              when Proof_Ins_Kind  => G_Id.Name.S.all & "'Proof_Ins",
-              when Ins_Kind        => G_Id.Name.S.all & "'Ins",
-              when Outs_Kind       => G_Id.Name.S.all & "'Outs",
-              when Variable_Kind   => G_Id.Name.S.all,
+              when Subprogram_Kind => "Subprogram " & To_String (G_Id.Name),
+              when Proof_Ins_Kind  => To_String (G_Id.Name) & "'Proof_Ins",
+              when Ins_Kind        => To_String (G_Id.Name) & "'Ins",
+              when Outs_Kind       => To_String (G_Id.Name) & "'Outs",
+              when Variable_Kind   => To_String (G_Id.Name),
               when Null_Kind       => "");
 
          Rv : constant Node_Display_Info := Node_Display_Info'
@@ -466,7 +466,7 @@ package body Flow_Generated_Globals is
       begin
          for N of S loop
             Write_Info_Char (' ');
-            Write_Info_Str (N.S.all);
+            Write_Info_Str (To_String (N));
          end loop;
       end Write_Name_Set;
 
@@ -476,7 +476,7 @@ package body Flow_Generated_Globals is
       --  Write State info
       for State_Info of State_Info_Set loop
          Write_Info_Str ("GG AS ");
-         Write_Info_Str (State_Info.State.S.all);
+         Write_Info_Str (To_String (State_Info.State));
          Write_Name_Set (State_Info.Constituents);
          Write_Info_Terminate;
       end loop;
@@ -504,7 +504,7 @@ package body Flow_Generated_Globals is
             when others =>
                raise Program_Error;
          end case;
-         Write_Info_Str (Info.Name.S.all);
+         Write_Info_Str (To_String (Info.Name));
          Write_Info_Terminate;
 
          Write_Info_Str ("GG VP");
@@ -1574,11 +1574,11 @@ package body Flow_Generated_Globals is
 
          for State_Info of State_Info_Set loop
             Write_Eol;
-            Write_Line ("Abstract state " & State_Info.State.S.all);
+            Write_Line ("Abstract state " & To_String (State_Info.State));
 
             Write_Line ("Constituents     :");
             for Name of State_Info.Constituents loop
-               Write_Line ("   " & Name.S.all);
+               Write_Line ("   " & To_String (Name));
             end loop;
          end loop;
 
@@ -1587,22 +1587,22 @@ package body Flow_Generated_Globals is
 
          Write_Line ("Async_Writers    :");
          for Name of Async_Writers_Vars loop
-            Write_Line ("   " & Name.S.all);
+            Write_Line ("   " & To_String (Name));
          end loop;
 
          Write_Line ("Async_Readers    :");
          for Name of Async_Readers_Vars loop
-            Write_Line ("   " & Name.S.all);
+            Write_Line ("   " & To_String (Name));
          end loop;
 
          Write_Line ("Effective_Reads  :");
          for Name of Effective_Reads_Vars loop
-            Write_Line ("   " & Name.S.all);
+            Write_Line ("   " & To_String (Name));
          end loop;
 
          Write_Line ("Effective_Writes :");
          for Name of Effective_Writes_Vars loop
-            Write_Line ("   " & Name.S.all);
+            Write_Line ("   " & To_String (Name));
          end loop;
       end if;
 

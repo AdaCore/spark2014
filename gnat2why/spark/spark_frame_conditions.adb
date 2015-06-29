@@ -409,7 +409,7 @@ package body SPARK_Frame_Conditions is
 
       procedure Display_Entity (E : Entity_Name) is
       begin
-         Put ("entity " & E.S.all);
+         Put ("entity " & To_String (E));
       end Display_Entity;
 
       ---------------------
@@ -599,7 +599,7 @@ package body SPARK_Frame_Conditions is
       when Constraint_Error =>
          if Propagate_Error_For_Missing_Scope then
             raise Constraint_Error with
-              ("missing effects for subprogram " & E_Name.S.all);
+              ("missing effects for subprogram " & To_String (E_Name));
          else
             return Name_Sets.Empty_Set;
          end if;
@@ -647,7 +647,7 @@ package body SPARK_Frame_Conditions is
       when Constraint_Error =>
          if Propagate_Error_For_Missing_Scope then
             raise Constraint_Error with
-              ("missing effects for subprogram " & E_Name.S.all);
+              ("missing effects for subprogram " & To_String (E_Name));
          else
             return Name_Sets.Empty_Set;
          end if;
@@ -703,7 +703,7 @@ package body SPARK_Frame_Conditions is
    ----------------------
 
    function Is_Heap_Variable (Ent : Entity_Name) return Boolean is
-      (Ent.S.all = SPARK_Xrefs.Name_Of_Heap_Variable);
+      (To_String (Ent) = SPARK_Xrefs.Name_Of_Heap_Variable);
 
    -----------------
    -- Is_Constant --
@@ -1123,9 +1123,9 @@ package body SPARK_Frame_Conditions is
             if Propagate_Error_For_Missing_Scope then
                raise Constraint_Error with
                  ("missing effects for subprogram " &
-                     Callee.S.all &
+                     To_String (Callee) &
                      " or subprogram " &
-                     Caller.S.all);
+                     To_String (Caller));
             end if;
       end Propagate_On_Call;
 
@@ -1178,8 +1178,7 @@ package body SPARK_Frame_Conditions is
          when Constraint_Error =>
             if Propagate_Error_For_Missing_Scope then
                raise Constraint_Error with
-                 ("missing effects for subprogram " &
-                     Subp.S.all);
+                 ("missing effects for subprogram " & To_String (Subp));
             end if;
       end Update_Subprogram;
 

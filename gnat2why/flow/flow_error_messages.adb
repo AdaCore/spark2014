@@ -27,6 +27,7 @@ with Ada.Strings.Unbounded.Hash;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Assumption_Types;           use Assumption_Types;
 with Atree;                      use Atree;
+with Common_Containers;          use Common_Containers;
 with Csets;                      use Csets;
 with Einfo;                      use Einfo;
 with Erroutc;                    use Erroutc;
@@ -723,18 +724,21 @@ package body Flow_Error_Messages is
                when Magic_String =>
                   --  ??? we may want to use __gnat_decode() here instead
                   Append_Quote;
-                  if F.Name.S.all = "__HEAP" then
-                     Append (R, "the heap");
-                  else
-                     declare
-                        Index : Positive := F.Name.S.all'First;
-                     begin
-                        --  Replace __ with . in the magic string.
-                        while Index <= F.Name.S.all'Last loop
-                           case F.Name.S.all (Index) is
+                  declare
+                     F_Name_String : constant String := To_String (F.Name);
+                  begin
+                     if F_Name_String = "__HEAP" then
+                        Append (R, "the heap");
+                     else
+                        declare
+                           Index : Positive := F_Name_String'First;
+                        begin
+                           --  Replace __ with . in the magic string.
+                           while Index <= F_Name_String'Last loop
+                              case F_Name_String (Index) is
                               when '_' =>
-                                 if Index < F.Name.S.all'Last and then
-                                   F.Name.S.all (Index + 1) = '_'
+                                 if Index < F_Name_String'Last and then
+                                   F_Name_String (Index + 1) = '_'
                                  then
                                     Append (R, ".");
                                     Index := Index + 2;
@@ -744,12 +748,13 @@ package body Flow_Error_Messages is
                                  end if;
 
                               when others =>
-                                 Append (R, F.Name.S.all (Index));
+                                 Append (R, F_Name_String (Index));
                                  Index := Index + 1;
-                           end case;
-                        end loop;
-                     end;
-                  end if;
+                              end case;
+                           end loop;
+                        end;
+                     end if;
+                  end;
                end case;
 
                Append_Quote;

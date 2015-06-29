@@ -47,7 +47,7 @@ package body Common_Containers is
       "="             => "=");
 
    package Entity_Name_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Node_Id,
+     (Key_Type        => Entity_Id,
       Element_Type    => Entity_Name,
       Hash            => Node_Hash,
       Equivalent_Keys => "=",

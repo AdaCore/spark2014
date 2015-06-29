@@ -617,7 +617,7 @@ package body Gnat2Why.Subprograms is
             else
                Effects_Append_To_Writes
                  (Eff,
-                  To_Why_Id (Obj => Name.S.all, Local => False));
+                  To_Why_Id (Obj => To_String (Name), Local => False));
             end if;
          end;
       end loop;
@@ -672,7 +672,7 @@ package body Gnat2Why.Subprograms is
             else
                Effects_Append_To_Reads
                  (Eff,
-                  To_Why_Id (Obj => Name.S.all, Local => False));
+                  To_Why_Id (Obj => To_String (Name), Local => False));
             end if;
          end;
       end loop;
@@ -839,8 +839,8 @@ package body Gnat2Why.Subprograms is
                      (Ada_Node => Empty,
                       B_Name   =>
                         New_Identifier
-                          (Name => R.S.all,
-                           Typ  => To_Why_Type (R.S.all)),
+                          (Name => To_String (R),
+                           Typ  => To_Why_Type (To_String (R))),
                       B_Ent    => R,
                       Mutable  => False));
                end if;
@@ -2810,7 +2810,7 @@ package body Gnat2Why.Subprograms is
               Expr     => T,
               To       => Get_Typ (Binder.B_Name));
       else
-         Id := To_Why_Id (Binder.B_Ent.S.all, Local => False);
+         Id := To_Why_Id (To_String (Binder.B_Ent), Local => False);
 
          if Ref_Allowed then
             T := New_Deref (Right => Id,
