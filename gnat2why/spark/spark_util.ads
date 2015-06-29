@@ -222,12 +222,12 @@ package SPARK_Util is
    --  For non-private types, Retysp is the identity.
 
    function Retysp (T : Entity_Id) return Entity_Id
-     with Pre => Is_Type (T);
+   with Pre => Is_Type (T);
    --  @param T any type
    --  @return the "Representative Type in SPARK" of type T
 
    function Retysp_Kind (T : Entity_Id) return Entity_Kind
-     with Pre => Is_Type (T);
+   with Pre => Is_Type (T);
    --  @param T any type
    --  @return the entity kind of the "Representative Type in SPARK" of type T.
    --     This is not the same as Ekind (Retysp (T)), because Retysp (T) may
@@ -295,7 +295,7 @@ package SPARK_Util is
    --     was requested.
 
    function Full_Name (E : Entity_Id) return String
-     with Pre => Nkind (E) in N_Entity;
+   with Pre => Nkind (E) in N_Entity;
    --  @param E any entity
    --  @return the name to use for E in Why3
 
@@ -317,12 +317,12 @@ package SPARK_Util is
    function Has_Volatile_Flavor
      (E : Entity_Id;
       A : Pragma_Id) return Boolean
-     with Pre => Has_Volatile (E) and then
-                 Ekind (E) /= E_Constant and then
-                 A in Pragma_Async_Readers
-                    | Pragma_Async_Writers
-                    | Pragma_Effective_Reads
-                    | Pragma_Effective_Writes;
+   with Pre => Has_Volatile (E) and then
+               Ekind (E) /= E_Constant and then
+               A in Pragma_Async_Readers
+                  | Pragma_Async_Writers
+                  | Pragma_Effective_Reads
+                  | Pragma_Effective_Writes;
    --  @param E an external state or a volatile object
    --  @return True iff E has the specified flavor A of volatility, either
    --     directly or through its type.
@@ -350,7 +350,7 @@ package SPARK_Util is
    --  @return True iff E is an abstract state or a package level variable
 
    function Is_Quantified_Loop_Param (E : Entity_Id) return Boolean
-     with Pre => Ekind (E) in E_Loop_Parameter | E_Variable;
+   with Pre => Ekind (E) in E_Loop_Parameter | E_Variable;
    --  @param E loop parameter
    --  @return True iff E has been introduced by a quantified expression
 
@@ -369,8 +369,8 @@ package SPARK_Util is
    --     of type From to type To. Currently a very coarse approximation
    --     to rule out obvious cases.
 
-   function Component_Is_Visible_In_SPARK (E : Entity_Id) return Boolean with
-     Pre => Ekind (E) in E_Void | E_Component | E_Discriminant;
+   function Component_Is_Visible_In_SPARK (E : Entity_Id) return Boolean
+   with Pre => Ekind (E) in E_Void | E_Component | E_Discriminant;
    --  @param E component
    --  @return True iff the component E should be visible in the translation
    --     into Why3, i.e. it is a discriminant (which cannot be hidden in
@@ -431,7 +431,7 @@ package SPARK_Util is
    --  nodes of record type.
 
    function Get_Specific_Type_From_Classwide (E : Entity_Id) return Entity_Id
-     with Pre => Is_Class_Wide_Type (E);
+   with Pre => Is_Class_Wide_Type (E);
    --  Returns the specific type associated with a class wide type.
    --  If E's Etype is a fullview, returns its partial view instead.
    --  ??? This should make the mechanism with the extra table
@@ -474,7 +474,7 @@ package SPARK_Util is
    --     bounds
 
    function Nth_Index_Type (E : Entity_Id; Dim : Positive) return Node_Id
-     with Pre => Is_Array_Type (E);
+   with Pre => Is_Array_Type (E);
    --  @param E array type
    --  @param D dimension
    --  @return the argument E in the special case where E is a string literal
@@ -482,7 +482,7 @@ package SPARK_Util is
    --    selected dimension
 
    function Nth_Index_Type (E : Entity_Id; Dim : Uint) return Node_Id
-     with Pre => Is_Array_Type (E);
+   with Pre => Is_Array_Type (E);
    --  same as above, but with Uint instead of positive
 
    function Root_Record_Type (E : Entity_Id) return Entity_Id;
@@ -505,7 +505,7 @@ package SPARK_Util is
    --  if no such component is found.
 
    function Static_Array_Length (E : Entity_Id; Dim : Positive) return Uint
-     with Pre => Is_Static_Array_Type (E);
+   with Pre => Is_Static_Array_Type (E);
    --  @param E constrained array type with statically known bounds
    --  @param Dim dimension
    --  @return the static length of dimension Dim of E
@@ -519,8 +519,8 @@ package SPARK_Util is
       Name      : Name_Id;
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Node_Lists.List
-     with Pre => (Ekind (E) in Subprogram_Kind | E_Package | E_Entry) and then
-                 not (Classwide and Inherited);
+   with Pre => (Ekind (E) in Subprogram_Kind | E_Package | E_Entry) and then
+               not (Classwide and Inherited);
    --  @param E subprogram or package
    --  @param Name contract name
    --  @param Classwide True when asking for the classwide version of contract
@@ -530,10 +530,10 @@ package SPARK_Util is
    function Get_Execution_Kind
      (E        : Entity_Id;
       After_GG : Boolean := True) return Execution_Kind_T
-     with Pre  => Ekind (E) = E_Procedure,
-          Post => Get_Execution_Kind'Result in Normal_Execution     |
-                                               Abnormal_Termination |
-                                               Infinite_Loop;
+   with Pre  => Ekind (E) = E_Procedure,
+        Post => Get_Execution_Kind'Result in Normal_Execution     |
+                                             Abnormal_Termination |
+                                             Infinite_Loop;
    --  @param E is a procedure that never returns, either marked with No_Return
    --     or for which flow analysis determines that no path returns.
    --  @param After_GG True if this call is made after generation of globals,
@@ -636,7 +636,7 @@ package SPARK_Util is
    --  @return True iff E is an instance of Ada.Unchecked_Conversion
 
    function Might_Be_Main (E : Entity_Id) return Boolean
-     with Pre => Is_Subprogram (E);
+   with Pre => Is_Subprogram (E);
    --  @param E subprogram
    --  @return True iff E is a library level subprogram without formal
    --     parameters (E is allowed to have global parameters)
@@ -654,13 +654,13 @@ package SPARK_Util is
    --  @param E subprogram
    --  @return the fully scoped name of E as it appears in the source
 
-   function Subprogram_Is_Ignored_For_Proof (E : Entity_Id) return Boolean with
-     Pre => Ekind (E) in E_Function | E_Procedure | E_Task_Type | E_Entry;
+   function Subprogram_Is_Ignored_For_Proof (E : Entity_Id) return Boolean
+   with Pre => Ekind (E) in E_Function | E_Procedure | E_Task_Type | E_Entry;
    --  @param E subprogram
    --  @return True iff E should not be translated into Why3
 
    function Subp_Location (E : Entity_Id) return String
-     with Pre => Is_Subprogram (E) or else Ekind (E) = E_Package;
+   with Pre => Is_Subprogram (E) or else Ekind (E) = E_Package;
    --  @param E subprogram or package
    --  @return a String of the form GP_Subp:foo.ads:12 pointing to the file
    --    and line where this subprogram or package is declared. This allows to
@@ -672,17 +672,17 @@ package SPARK_Util is
    ------------------------------
 
    function Task_Body (E : Entity_Id) return Node_Id
-     with Pre  => Nkind (E) in N_Entity and then Ekind (E) = E_Task_Type,
-          Post => (if Present (Task_Body'Result)
-                   then Nkind (Task_Body'Result) = N_Task_Body);
+   with Pre  => Nkind (E) in N_Entity and then Ekind (E) = E_Task_Type,
+        Post => (if Present (Task_Body'Result)
+                 then Nkind (Task_Body'Result) = N_Task_Body);
    --  @param E task type
    --  @return the task body for the given type, similar to what
    --    Subprogram_Body might produce.
 
    function Task_Body_Entity (E : Entity_Id) return Entity_Id
-     with Pre  => Nkind (E) in N_Entity and then Ekind (E) = E_Task_Type,
-          Post => (if Present (Task_Body_Entity'Result)
-                   then Ekind (Task_Body_Entity'Result) = E_Task_Body);
+   with Pre  => Nkind (E) in N_Entity and then Ekind (E) = E_Task_Type,
+        Post => (if Present (Task_Body_Entity'Result)
+                 then Ekind (Task_Body_Entity'Result) = E_Task_Body);
    --  @param E task type
    --  @return the entity of the task body for the given type, similar
    --    to what Subprogram_Body_Entity might produce.
@@ -711,24 +711,24 @@ package SPARK_Util is
    --------------------------------
 
    function Entry_Body (E : Entity_Id) return Node_Id
-     with Pre  => (Nkind (E) in N_Entity and then
-                   Ekind (E) = E_Entry and then
-                   Nkind (Parent (E)) = N_Entry_Declaration),
-          Post => (if Present (Entry_Body'Result)
-                   then Nkind (Entry_Body'Result) = N_Entry_Body);
+   with Pre  => Nkind (E) in N_Entity and then
+                Ekind (E) = E_Entry and then
+                Nkind (Parent (E)) = N_Entry_Declaration,
+        Post => (if Present (Entry_Body'Result)
+                 then Nkind (Entry_Body'Result) = N_Entry_Body);
    --  @param E entry
    --  @return the entry body for the given entry, similar to what
    --    Subprogram_Body might produce.
 
    function Entry_Body_Entity (E : Entity_Id) return Node_Id
-     with Pre  => (Nkind (E) in N_Entity and then
-                   Ekind (E) = E_Entry and then
-                   Nkind (Parent (E)) = N_Entry_Declaration),
-          Post => (if Present (Entry_Body_Entity'Result)
-                   then Nkind (Entry_Body_Entity'Result) in N_Entity and then
-                        Ekind (Entry_Body_Entity'Result) = E_Entry and then
-                        Nkind (Parent (Entry_Body_Entity'Result)) =
-                          N_Entry_Body);
+   with Pre  => Nkind (E) in N_Entity and then
+                Ekind (E) = E_Entry and then
+                Nkind (Parent (E)) = N_Entry_Declaration,
+        Post => (if Present (Entry_Body_Entity'Result)
+                 then Nkind (Entry_Body_Entity'Result) in N_Entity and then
+                      Ekind (Entry_Body_Entity'Result) = E_Entry and then
+                      Nkind (Parent (Entry_Body_Entity'Result)) =
+                        N_Entry_Body);
    --  @param E entry
    --  @return the entry body entity for the given entry
 
@@ -766,7 +766,7 @@ package SPARK_Util is
    --     with a warning in SPARK.Definition (dynamic predicate).
 
    function Is_Pragma_Assert_And_Cut (N : Node_Id) return Boolean
-     with Pre => Nkind (N) = N_Pragma;
+   with Pre => Nkind (N) = N_Pragma;
    --  @param N pragma
    --  @return True iff N is a pragma Assert_And_Cut
 
@@ -920,7 +920,7 @@ package SPARK_Util is
 
    function Translate_Location (Loc : Source_Ptr) return Source_Ptr is
      (if Instantiation_Location (Loc) /= No_Location then
-           Instantiation_Location (Loc)
+         Instantiation_Location (Loc)
       else
          Loc);
    --  ??? What is this function used for? It's strange to go only one level up

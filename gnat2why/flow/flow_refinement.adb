@@ -720,8 +720,7 @@ package body Flow_Refinement is
 
          if Ptr.Pkg = Common_Scope.Pkg or Ptr.Pkg = S.Pkg then
             if Trace then
-               Write_Str ("   -> in common scope or home");
-               Write_Eol;
+               Write_Line ("   -> in common scope or home");
             end if;
 
             if Ekind (Ent) = E_Variable and then
@@ -729,8 +728,7 @@ package body Flow_Refinement is
               Get_Flow_Scope (Encapsulating_State (Ent)).Pkg = Ptr.Pkg
             then
                if Trace then
-                  Write_Str ("   -> looking up");
-                  Write_Eol;
+                  Write_Line ("   -> looking up");
                end if;
                Init := Present (Find_Node_In_Initializes
                                   (Encapsulating_State (Ent)));

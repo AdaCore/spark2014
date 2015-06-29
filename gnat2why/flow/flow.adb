@@ -192,12 +192,11 @@ package body Flow is
       end Flow_Id_Image;
 
    begin
-      Write_Str ("Graph vertex [" &
-                   Natural'Image (G.Vertex_To_Natural (V)) &
-                   "] (" &
-                   Flow_Id_Image (F) &
-                   "):");
-      Write_Eol;
+      Write_Line ("Graph vertex [" &
+                    Natural'Image (G.Vertex_To_Natural (V)) &
+                    "] (" &
+                    Flow_Id_Image (F) &
+                    "):");
 
       Indent;
 
