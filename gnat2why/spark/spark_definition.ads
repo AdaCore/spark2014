@@ -104,7 +104,7 @@ package SPARK_Definition is
    --  only that SPARK_Mode is On.
 
    function Entity_Body_Valid_SPARK (E : Entity_Id) return Boolean
-     with Pre => Ekind (E) in Subprogram_Kind | E_Task_Body | E_Entry
+     with Pre => Ekind (E) in Subprogram_Kind | E_Task_Type | E_Entry
                  and then Entity_Body_In_SPARK (E);
    --  Returns true if the given entitys' body contains no SPARK
    --  violations.
