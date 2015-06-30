@@ -454,18 +454,20 @@ package body Flow_Generated_Globals is
    -----------------------
 
    procedure GG_Write_Finalize is
-      procedure Write_Name_Set (S : Name_Sets.Set);
+      procedure Write_Name_Set (Tag : String; S : Name_Sets.Set);
 
       --------------------
       -- Write_Name_Set --
       --------------------
 
-      procedure Write_Name_Set (S : Name_Sets.Set) is
+      procedure Write_Name_Set (Tag : String; S : Name_Sets.Set) is
       begin
+         Write_Info_Str (Tag);
          for N of S loop
             Write_Info_Char (' ');
             Write_Info_Str (To_String (N));
          end loop;
+         Write_Info_Terminate;
       end Write_Name_Set;
 
    --  Start of processing for GG_Write_Finalize
@@ -473,95 +475,58 @@ package body Flow_Generated_Globals is
    begin
       --  Write State info
       for State_Info of State_Info_Set loop
-         Write_Info_Str ("GG AS ");
-         Write_Info_Str (To_String (State_Info.State));
-         Write_Name_Set (State_Info.Constituents);
-         Write_Info_Terminate;
+         Write_Name_Set ("GG AS " & To_String (State_Info.State),
+                         State_Info.Constituents);
       end loop;
 
       --  Write Subprogram/Task/Entry info
       for Info of Subprogram_Info_Set loop
-         Write_Info_Str (case Info.Kind is
-                            when S_Kind => "GG S ",
-                            when T_Kind => "GG T ",
-                            when E_Kind => "GG E ");
+         Write_Name_Set ((case Info.Kind is
+                             when S_Kind => "GG S ",
+                             when T_Kind => "GG T ",
+                             when E_Kind => "GG E ") &
+                         (case Info.Globals_Origin is
+                             when UG => "UG ",
+                             when FA => "FA ",
+                             when XR => "XR ") &
+                         To_String (Info.Name),
+                         Name_Sets.Empty_Set);
 
-         Write_Info_Str (case Info.Globals_Origin is
-                            when UG => "UG ",
-                            when FA => "FA ",
-                            when XR => "XR ");
-
-         Write_Info_Str (To_String (Info.Name));
-         Write_Info_Terminate;
-
-         Write_Info_Str ("GG VP");
-         Write_Name_Set (Info.Inputs_Proof);
-         Write_Info_Terminate;
-
-         Write_Info_Str ("GG VI");
-         Write_Name_Set (Info.Inputs);
-         Write_Info_Terminate;
-
-         Write_Info_Str ("GG VO");
-         Write_Name_Set (Info.Outputs);
-         Write_Info_Terminate;
-
-         Write_Info_Str ("GG CP");
-         Write_Name_Set (Info.Proof_Calls);
-         Write_Info_Terminate;
-
-         Write_Info_Str ("GG CD");
-         Write_Name_Set (Info.Definite_Calls);
-         Write_Info_Terminate;
-
-         Write_Info_Str ("GG CC");
-         Write_Name_Set (Info.Conditional_Calls);
-         Write_Info_Terminate;
-
-         Write_Info_Str ("GG LV");
-         Write_Name_Set (Info.Local_Variables);
-         Write_Info_Terminate;
-
-         Write_Info_Str ("GG LS");
-         Write_Name_Set (Info.Local_Subprograms);
-         Write_Info_Terminate;
+         Write_Name_Set ("GG VP", Info.Inputs_Proof);
+         Write_Name_Set ("GG VI", Info.Inputs);
+         Write_Name_Set ("GG VO", Info.Outputs);
+         Write_Name_Set ("GG CP", Info.Proof_Calls);
+         Write_Name_Set ("GG CD", Info.Definite_Calls);
+         Write_Name_Set ("GG CC", Info.Conditional_Calls);
+         Write_Name_Set ("GG LV", Info.Local_Variables);
+         Write_Name_Set ("GG LS", Info.Local_Subprograms);
       end loop;
 
       --  Write Volatile info
 
       --  Write Async_Writers
       if not Async_Writers_Vars.Is_Empty then
-         Write_Info_Str ("GG AW");
-         Write_Name_Set (Async_Writers_Vars);
-         Write_Info_Terminate;
+         Write_Name_Set ("GG AW", Async_Writers_Vars);
       end if;
 
       --  Write Async_Readers
       if not Async_Readers_Vars.Is_Empty then
-         Write_Info_Str ("GG AR");
-         Write_Name_Set (Async_Readers_Vars);
-         Write_Info_Terminate;
+         Write_Name_Set ("GG AR", Async_Readers_Vars);
       end if;
 
       --  Write Effective_Reads
       if not Effective_Reads_Vars.Is_Empty then
-         Write_Info_Str ("GG ER");
-         Write_Name_Set (Effective_Reads_Vars);
-         Write_Info_Terminate;
+         Write_Name_Set ("GG ER", Effective_Reads_Vars);
       end if;
 
       --  Write Effective_Writes
       if not Effective_Writes_Vars.Is_Empty then
-         Write_Info_Str ("GG EW");
-         Write_Name_Set (Effective_Writes_Vars);
-         Write_Info_Terminate;
+         Write_Name_Set ("GG EW", Effective_Writes_Vars);
       end if;
 
       --  Write nonblocking subprograms
       if not Nonblocking_Subprograms_Set.Is_Empty then
-         Write_Info_Str ("GG NB");
-         Write_Name_Set (Nonblocking_Subprograms_Set);
-         Write_Info_Terminate;
+         Write_Name_Set ("GG NB", Nonblocking_Subprograms_Set);
       end if;
 
       Close_Output_Library_Info;
