@@ -1439,12 +1439,14 @@ package body Flow is
                     E_Package_Body    |
                     E_Subprogram_Body =>
                   Analysis.Sanity_Check_Postcondition (FA, Success);
+
                when E_Protected_Type |
                     E_Task_Body      =>
-                  --  No postconditions for tasks and pos.
+                  --  No postconditions for tasks and protected objects
                   null;
             end case;
          end if;
+
          if Success then
             FA.Dependency_Map := Compute_Dependency_Relation (FA);
 
@@ -1481,8 +1483,8 @@ package body Flow is
                   Analysis.Check_Aliasing (FA);
                   Analysis.Find_Use_Of_Uninitialized_Variables (FA);
                   if FA.Kind /= E_Task_Body then
-                     --  We exclude Tasks from this check since they don't
-                     --  have pre and post conditions.
+                     --  We exclude Tasks from this check since they do not
+                     --  have pre- and postconditions.
                      Analysis.Check_Prefixes_Of_Attribute_Old (FA);
                   end if;
                   Analysis.Find_Exports_Derived_From_Proof_Ins (FA);
@@ -1540,7 +1542,7 @@ package body Flow is
          Exit_Program (E_Errors);
       end if;
 
-      --  Finalize extra loop info available from Flow_Utility;
+      --  Finalize extra loop info available from Flow_Utility
 
       Freeze_Loop_Info;
 
