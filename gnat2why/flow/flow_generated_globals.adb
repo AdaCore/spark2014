@@ -481,23 +481,16 @@ package body Flow_Generated_Globals is
 
       --  Write Subprogram/Task/Entry info
       for Info of Subprogram_Info_Set loop
-         case Info.Kind is
-            when S_Kind =>
-               Write_Info_Str ("GG S ");
-            when T_Kind =>
-               Write_Info_Str ("GG T ");
-            when E_Kind =>
-               Write_Info_Str ("GG E ");
-         end case;
+         Write_Info_Str (case Info.Kind is
+                            when S_Kind => "GG S ",
+                            when T_Kind => "GG T ",
+                            when E_Kind => "GG E ");
 
-         case Info.Globals_Origin is
-            when UG =>
-               Write_Info_Str ("UG ");
-            when FA =>
-               Write_Info_Str ("FA ");
-            when XR =>
-               Write_Info_Str ("XR ");
-         end case;
+         Write_Info_Str (case Info.Globals_Origin is
+                            when UG => "UG ",
+                            when FA => "FA ",
+                            when XR => "XR ");
+
          Write_Info_Str (To_String (Info.Name));
          Write_Info_Terminate;
 
