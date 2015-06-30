@@ -21,8 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This package deals with computing slices (and thus dependency
---  relations).
+--  This package deals with computing slices (and thus dependency relations)
 
 package Flow.Slice is
 
@@ -34,7 +33,7 @@ package Flow.Slice is
    --  use the function IPFA_Dependency, which also includes
    --  dependencies on called subprograms.
    --
-   --  Complexity is O(N).
+   --  Complexity is O(N)
 
    function IPFA_Dependency
      (FA      : Flow_Analysis_Graphs;
@@ -42,13 +41,12 @@ package Flow.Slice is
       return Vertex_Sets.Set;
    --  Compute all inputs the given vertex depends on.
    --
-   --  Complexity is O(N).
+   --  Complexity is O(N)
 
    function Compute_Dependency_Relation
      (FA : Flow_Analysis_Graphs)
       return Dependency_Maps.Map;
-   --  Computes the actual dependency relation of the given
-   --  subprogram.
+   --  Computes the actual dependency relation of the given subprogram
    --
    --  Complexity is O(N^2)
 
