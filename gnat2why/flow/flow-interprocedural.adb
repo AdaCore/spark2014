@@ -171,7 +171,7 @@ package body Flow.Interprocedural is
                          Scope                => FA.B_Scope,
                          Classwide            => Is_Dispatching_Call (N),
                          Depends              => Deps,
-                         Use_Computed_Globals => Generating_Globals);
+                         Use_Computed_Globals => not Generating_Globals);
             for C in Deps.Iterate loop
                declare
                   Output : constant Flow_Id := Dependency_Maps.Key (C);
