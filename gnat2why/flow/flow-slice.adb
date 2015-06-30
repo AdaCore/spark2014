@@ -558,6 +558,8 @@ package body Flow.Slice is
             return OK;
          end Get_Object_Or_Subprogram_Declaration;
 
+      --  Start of processing for Get_Local_Variables_And_Subprograms
+
       begin
          --  Initialize Local_Vars and Local_Subs
          Local_Vars := Node_Sets.Empty_Set;

@@ -322,6 +322,8 @@ package body Flow.Analysis.Sanity is
 
       Unused : Unbounded_String;
 
+   --  Start of processing for Check_Variable_Free_Expressions
+
    begin
       Sane := True;
 
@@ -528,6 +530,8 @@ package body Flow.Analysis.Sanity is
                return "Global";
          end case;
       end Find_Aspect_To_Fix;
+
+   --  Start of processing for Check_All_Variables_Known
 
    begin
       Sane := True;
