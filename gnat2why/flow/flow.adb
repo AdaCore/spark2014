@@ -120,8 +120,7 @@ package body Flow is
    function Last_Statement_Is_Raise (E : Entity_Id) return Boolean
      with Pre => Ekind (E) in Subprogram_Kind | E_Task_Type | E_Entry;
    --  Returns True if the last statement in the
-   --  Handled_Sequence_Of_Statements of subprogram E is an
-   --  N_Raise_Statement.
+   --  Handled_Sequence_Of_Statements of E is an N_Raise_Statement.
 
    -------------------------
    -- Add_To_Temp_String  --
