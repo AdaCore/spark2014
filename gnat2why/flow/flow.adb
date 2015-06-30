@@ -1003,14 +1003,13 @@ package body Flow is
          Append (FA.Base_Filename, Unique_Name (E));
 
          if Gnat2Why_Args.Flow_Advanced_Debug then
-            Write_Str (Character'Val (8#33#) & "[32m" &
-                         Phase & " (cons) of " &
-                         Entity_Kind'Image (FA.Kind) &
-                         " " &
-                         Character'Val (8#33#) & "[1m" &
-                         Get_Name_String (Chars (E)) &
-                         Character'Val (8#33#) & "[0m");
-            Write_Eol;
+            Write_Line (Character'Val (8#33#) & "[32m" &
+                          Phase & " (cons) of " &
+                          Entity_Kind'Image (FA.Kind) &
+                          " " &
+                          Character'Val (8#33#) & "[1m" &
+                          Get_Name_String (Chars (E)) &
+                          Character'Val (8#33#) & "[0m");
 
             Indent;
 
@@ -1067,22 +1066,16 @@ package body Flow is
                                                       then "yes"
                                                       else "no"));
 
-                     if FA.Kind in E_Entry           |
-                                   E_Subprogram_Body |
-                                   E_Task_Body
-                     then
-                        Write_Line ("Body in SPARK: " &
-                                      (if Entity_Body_Valid_SPARK (E)
-                                       then "yes"
-                                       else "no"));
-                     end if;
+                     Write_Line ("Body in SPARK: " &
+                                   (if Entity_Body_Valid_SPARK (E)
+                                    then "yes"
+                                    else "no"));
                   end if;
 
                when E_Protected_Type =>
                   --  ??? O429-046 we need to do something for globals here
                   if Gnat2Why_Args.Flow_Advanced_Debug then
-                     Write_Str ("skipped (protected body)");
-                     Write_Eol;
+                     Write_Line ("skipped (protected body)");
                   end if;
                   FA.GG.Aborted := True;
 
@@ -1429,14 +1422,13 @@ package body Flow is
       --  Analyse graphs and produce error messages
       for FA of FA_Graphs loop
          if Gnat2Why_Args.Flow_Advanced_Debug then
-            Write_Str (Character'Val (8#33#) & "[32m" &
-                         "Flow analysis (errors) for " &
-                         Entity_Kind'Image (FA.Kind) &
-                         " " &
-                         Character'Val (8#33#) & "[1m" &
-                         Get_Name_String (Chars (FA.Analyzed_Entity)) &
-                         Character'Val (8#33#) & "[0m");
-            Write_Eol;
+            Write_Line (Character'Val (8#33#) & "[32m" &
+                          "Flow analysis (errors) for " &
+                          Entity_Kind'Image (FA.Kind) &
+                          " " &
+                          Character'Val (8#33#) & "[1m" &
+                          Get_Name_String (Chars (FA.Analyzed_Entity)) &
+                          Character'Val (8#33#) & "[0m");
          end if;
 
          Analysis.Sanity_Check (FA, Success);
