@@ -106,10 +106,14 @@ package body Flow is
    --  the N_Contract node is attached). Do nothing for entities with no body
    --  or not in SPARK 2014.
 
+   use type Analysis_Maps.Map;
+
    procedure Build_Graphs_For_Compilation_Unit
      (FA_Graphs           : out Analysis_Maps.Map;
       Subprogram_Info_Set : out Subprogram_Info_Sets.Set)
-     with Post => (if not Generating_Globals then
+     with Pre => FA_Graphs = Analysis_Maps.Empty_Map and then
+                 Subprogram_Info_Set = Subprogram_Info_Sets.Empty_Set,
+          Post => (if not Generating_Globals then
                      Subprogram_Info_Set = Subprogram_Info_Sets.Empty_Set);
    --  Build all flow graphs for the current compilation unit
 
