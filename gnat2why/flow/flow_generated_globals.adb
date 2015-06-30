@@ -173,51 +173,39 @@ package body Flow_Generated_Globals is
    -- Print_Subprogram_Phase_1_Info --
    -----------------------------------
 
-   procedure Print_Subprogram_Phase_1_Info (Info : Subprogram_Phase_1_Info) is
+   procedure Print_Subprogram_Phase_1_Info (Info : Subprogram_Phase_1_Info)
+   is
+      procedure Write_Name_Set (Header : String; Set : Name_Sets.Set);
+      --  Write Header followed by elements of Set
+
+      --------------------
+      -- Write_Name_Set --
+      --------------------
+
+      procedure Write_Name_Set (Header : String; Set : Name_Sets.Set) is
+      begin
+         Write_Line (Header);
+         for Name of Set loop
+            Write_Line ("   " & To_String (Name));
+         end loop;
+      end Write_Name_Set;
+
+   --  Start of processing for Print_Subprogram_Phase_1_Info
+
    begin
-      case Info.Kind is
-         when S_Kind =>
-            Write_Line ("Subprogram " & To_String (Info.Name));
-         when T_Kind =>
-            Write_Line ("Task " & To_String (Info.Name));
-         when E_Kind =>
-            Write_Line ("Entry " & To_String (Info.Name));
-      end case;
+      Write_Line ((case Info.Kind is
+                     when S_Kind => "Subprogram ",
+                     when T_Kind => "Task ",
+                     when E_Kind => "Entry ") & To_String (Info.Name));
 
-      Write_Line ("Proof_Ins        :");
-      for Name of Info.Inputs_Proof loop
-         Write_Line ("   " & To_String (Name));
-      end loop;
+      Write_Name_Set ("Proof_Ins        :", Info.Inputs_Proof);
+      Write_Name_Set ("Inputs           :", Info.Inputs);
+      Write_Name_Set ("Outputs          :", Info.Outputs);
+      Write_Name_Set ("Proof calls      :", Info.Proof_Calls);
+      Write_Name_Set ("Definite calls   :", Info.Definite_Calls);
+      Write_Name_Set ("Conditional calls:", Info.Conditional_Calls);
+      Write_Name_Set ("Local variables  :", Info.Local_Variables);
 
-      Write_Line ("Inputs           :");
-      for Name of Info.Inputs loop
-         Write_Line ("   " & To_String (Name));
-      end loop;
-
-      Write_Line ("Outputs          :");
-      for Name of Info.Outputs loop
-         Write_Line ("   " & To_String (Name));
-      end loop;
-
-      Write_Line ("Proof calls      :");
-      for Name of Info.Proof_Calls loop
-         Write_Line ("   " & To_String (Name));
-      end loop;
-
-      Write_Line ("Definite calls   :");
-      for Name of Info.Definite_Calls loop
-         Write_Line ("   " & To_String (Name));
-      end loop;
-
-      Write_Line ("Conditional calls:");
-      for Name of Info.Conditional_Calls loop
-         Write_Line ("   " & To_String (Name));
-      end loop;
-
-      Write_Line ("Local variables  :");
-      for Name of Info.Local_Variables loop
-         Write_Line ("   " & To_String (Name));
-      end loop;
    end Print_Subprogram_Phase_1_Info;
 
    ------------------------
