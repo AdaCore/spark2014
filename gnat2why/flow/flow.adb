@@ -1496,8 +1496,8 @@ package body Flow is
                   --  analysis of the subprogram then emit the
                   --  relevant claim.
                   if FA.No_Errors_Or_Warnings then
-                     Register_Claim ((E    => FA.Analyzed_Entity,
-                                      Kind => Claim_Effects));
+                     Register_Claim (Claim'(E    => FA.Analyzed_Entity,
+                                            Kind => Claim_Effects));
                   end if;
 
                when E_Protected_Type =>
