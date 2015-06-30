@@ -156,17 +156,15 @@ package Flow_Generated_Globals is
                       GG_Read_Mode,
                       GG_Write_Mode);
 
-   type Globals_Origin_T is (UG, FA, XR, NO);
+   type Globals_Origin_T is (UG, FA, XR);
    --  UG = User Globals
    --  FA = Flow Analysis
    --  XR = xref
-   --  NO = No Origin (we should never get this)
 
-   type Info_Kind is (S_Kind, T_Kind, E_Kind, Undef);
+   type Info_Kind is (S_Kind, T_Kind, E_Kind);
    --  S_Kind = Subprogram
    --  T_Kind = Task
    --  E_Kind = Entry
-   --  Undef  = Undefined (we should never get this)
 
    type Subprogram_Phase_1_Info is record
       Name              : Entity_Name;

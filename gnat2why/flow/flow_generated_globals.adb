@@ -182,8 +182,6 @@ package body Flow_Generated_Globals is
             Write_Line ("Task " & To_String (Info.Name));
          when E_Kind =>
             Write_Line ("Entry " & To_String (Info.Name));
-         when others =>
-            raise Program_Error;
       end case;
 
       Write_Line ("Proof_Ins        :");
@@ -490,8 +488,6 @@ package body Flow_Generated_Globals is
                Write_Info_Str ("GG T ");
             when E_Kind =>
                Write_Info_Str ("GG E ");
-            when others =>
-               raise Program_Error;
          end case;
 
          case Info.Globals_Origin is
@@ -501,8 +497,6 @@ package body Flow_Generated_Globals is
                Write_Info_Str ("FA ");
             when XR =>
                Write_Info_Str ("XR ");
-            when others =>
-               raise Program_Error;
          end case;
          Write_Info_Str (To_String (Info.Name));
          Write_Info_Terminate;
@@ -1363,7 +1357,7 @@ package body Flow_Generated_Globals is
                                        when 'S' => S_Kind, -- subprogram
                                        when 'T' => T_Kind, -- task
                                        when 'E' => E_Kind, -- entry
-                                       when others => Undef
+                                       when others => raise Program_Error
                                    );
 
                   declare
