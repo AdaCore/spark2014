@@ -623,7 +623,9 @@ package body Flow.Analysis is
               (case FA.Kind is
                   when E_Subprogram_Body |
                        E_Task_Body       => "6.1.4(13)",
-                  when others            => "7.1.5(12)");
+                  when E_Package         |
+                       E_Package_Body    => "7.1.5(12)",
+                  when others            => raise Program_Error);
 
          begin
             if Refined then

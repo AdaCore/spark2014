@@ -548,8 +548,12 @@ package body Flow.Analysis.Sanity is
             SRM_Ref : constant String :=
               (case FA.Kind is
                   when E_Subprogram_Body |
-                       E_Task_Body       => "6.1.4(13)",
-                  when others            => "7.1.5(12)");
+                       E_Task_Body       => "6.1.4(13)", --  ??? E_Entry
+                  when E_Package         |
+                       E_Package_Body    => "7.1.5(12)",
+                  when E_Protected_Type  |
+                       E_Entry           => "???"
+              );
 
             F : Flow_Id;
          begin
