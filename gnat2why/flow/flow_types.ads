@@ -161,8 +161,8 @@ package Flow_Types is
    type Flow_Id (Kind : Flow_Id_Kind := Null_Value) is record
       Variant : Flow_Id_Variant;
       --  In theory this doesn't have to be part of a Null_Value id,
-      --  however there are many checks for Foo.Variant throughout flow
-      --  analysis and it will be quite tedious to prefix every one of the
+      --  but there are many checks for Foo.Variant throughout flow
+      --  analysis and it will be quite tedious to prefix each of them
       --  with Present (Foo).
 
       case Kind is
@@ -186,10 +186,10 @@ package Flow_Types is
    end record;
 
    function "=" (Left, Right : Flow_Id) return Boolean;
-   --  Equality for flow id.
+   --  Equality for Flow_Id
 
    function "<" (Left, Right : Flow_Id) return Boolean;
-   --  Ordering for flow id.
+   --  Ordering for Flow_Id
 
    Null_Flow_Id : constant Flow_Id :=
      Flow_Id'(Kind    => Null_Value,
