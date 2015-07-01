@@ -2627,39 +2627,8 @@ package body Flow.Control_Flow_Graph is
                      null;
                end case;
             end record;
+
          Null_Target : constant Target := (Valid => False);
-
-         function "=" (A, B : Target) return Boolean;
-
-         ---------
-         -- "=" --
-         ---------
-
-         function "=" (A, B : Target) return Boolean
-         is
-         begin
-            if A.Valid /= B.Valid then
-               return False;
-            end if;
-
-            if A.Valid then
-               if not (A.Var = B.Var) then
-                  return False;
-               end if;
-
-               if A.D.Length /= B.D.Length then
-                  return False;
-               end if;
-
-               for I in Natural range 1 .. Natural (A.D.Length) loop
-                  if A.D (I) /= B.D (I) then
-                     return False;
-                  end if;
-               end loop;
-            end if;
-
-            return True;
-         end "=";
 
          Current_Loop      : Node_Id         := Empty;
          Active_Loops      : Node_Sets.Set   := Node_Sets.Empty_Set;

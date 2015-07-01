@@ -85,10 +85,6 @@ package Flow is
       To   : Flow_Graphs.Vertex_Id;
    end record;
 
-   function "=" (Left, Right : Vertex_Pair) return Boolean is
-     (Flow_Graphs."=" (Left.From, Right.From)
-        and then Flow_Graphs."=" (Left.To, Right.To));
-
    function Vertex_Pair_Hash
      (VD : Vertex_Pair)
       return Ada.Containers.Hash_Type;
