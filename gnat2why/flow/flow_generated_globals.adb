@@ -527,9 +527,9 @@ package body Flow_Generated_Globals is
       --  exist.
 
       procedure Add_All_Edges;
-      --  Reads the populated Info_Set and generates all the edges of the
-      --  Global_Graph. While adding edges we consult the Local_Graph so as not
-      --  to add edges to local variables.
+      --  Reads the populated Subprogram_Info_Set and generates all the edges
+      --  of the Global_Graph. While adding edges we consult the Local_Graph so
+      --  as not to add edges to local variables.
 
       procedure Create_All_Vertices;
       --  Creates all the vertices of the Global_Graph
@@ -755,6 +755,10 @@ package body Flow_Generated_Globals is
             --  Visitor procedure that checks if the vertex corresponding to B
             --  is linked to the vertex corresponding to A on the Local_Graph
             --  before adding the edge.
+
+            -------------
+            -- Visitor --
+            -------------
 
             procedure Visitor (A, B : Vertex_Id) is
                Key_A :          Global_Id := Global_Graph.Get_Key (A);
