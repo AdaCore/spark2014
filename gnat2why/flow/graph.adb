@@ -1259,7 +1259,7 @@ package body Graph is
 
    procedure Close
      (G       : in out T'Class;
-      Visitor : access procedure (A, B : Vertex_Id))
+      Visitor : access procedure (A, B : Vertex_Id) := null)
    is
       type Component is new Natural;
 
@@ -1356,11 +1356,6 @@ package body Graph is
             end if;
          end loop;
       end loop;
-   end Close;
-
-   procedure Close (G : in out T'Class) is
-   begin
-      Close (G, null);
    end Close;
 
    ----------------------------------------------------------------------

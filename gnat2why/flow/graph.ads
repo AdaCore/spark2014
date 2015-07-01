@@ -522,15 +522,12 @@ package Graph is
 
    procedure Close
      (G       : in out T'Class;
-      Visitor : access procedure (A, B : Vertex_Id));
+      Visitor : access procedure (A, B : Vertex_Id) := null);
    --  Transitively close the graph using SIMPLE_TC from Nuutila's
-   --  thesis. The visitor procedure is called for each new edge added
-   --  to the graph.
+   --  thesis. The visitor procedure, if not null, is called for each new edge
+   --  added to the graph.
    --
    --  Complexity is O(N^2)
-
-   procedure Close (G : in out T'Class);
-   --  Same as above but without a Visitor procedure.
 
    ----------------------------------------------------------------------
    --  IO
