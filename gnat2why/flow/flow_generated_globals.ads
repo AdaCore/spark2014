@@ -293,38 +293,6 @@ package Flow_Generated_Globals is
         Post => GG_Mode = GG_Read_Mode;
    --  Determines the set of all globals
 
-   function GG_Get_Proof_Reads
-     (E : Entity_Id;
-      S : Flow_Scope)
-      return Flow_Id_Sets.Set
-   with Pre => GG_Mode = GG_Read_Mode and then
-               GG_Exist (E);
-   --  Returns the set of variables read in proof contexts
-
-   function GG_Get_Reads
-     (E : Entity_Id;
-      S : Flow_Scope)
-      return Flow_Id_Sets.Set
-   with Pre => GG_Mode = GG_Read_Mode and then
-               GG_Exist (E);
-   --  Returns the set of variables read
-
-   function GG_Get_All_Reads
-     (E : Entity_Id;
-      S : Flow_Scope)
-      return Flow_Id_Sets.Set
-   with Pre => GG_Mode = GG_Read_Mode and then
-               GG_Exist (E);
-   --  Returns the set of all (proof and ordinary) variables read
-
-   function GG_Get_Writes
-     (E : Entity_Id;
-      S : Flow_Scope)
-      return Flow_Id_Sets.Set
-   with Pre => GG_Mode = GG_Read_Mode and then
-               GG_Exist (E);
-   --  Returns the set of all variables written
-
    function GG_Get_All_State_Abstractions return Name_Sets.Set
    with Pre => GG_Mode = GG_Read_Mode;
    --  @return a set of Entity_Names with all the state abstractions
