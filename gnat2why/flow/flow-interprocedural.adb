@@ -134,6 +134,10 @@ package body Flow.Interprocedural is
       --  Add a parameter dependency edge from the input A to the
       --  output B.
 
+      -----------------
+      -- Add_TD_Edge --
+      -----------------
+
       procedure Add_TD_Edge (A, B : Flow_Id) is
          V_A, V_B : Flow_Graphs.Vertex_Id;
       begin
@@ -149,6 +153,8 @@ package body Flow.Interprocedural is
 
          FA.TDG.Add_Edge (V_A, V_B, EC_TDG);
       end Add_TD_Edge;
+
+   --  Start of processing for Add_Simple_Procedure_Dependency
 
    begin
       if Has_Depends (Called_Procedure)

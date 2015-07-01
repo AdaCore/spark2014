@@ -2631,6 +2631,10 @@ package body Flow.Control_Flow_Graph is
 
          function "=" (A, B : Target) return Boolean;
 
+         ---------
+         -- "=" --
+         ---------
+
          function "=" (A, B : Target) return Boolean
          is
          begin
@@ -2940,6 +2944,8 @@ package body Flow.Control_Flow_Graph is
             Rec_Inner (N);
          end Rec;
 
+      --  Start of processing for Variables_Initialized_By_Loop
+
       begin
          if Loop_Might_Exit_Early (N) then
             return Flow_Id_Sets.Empty_Set;
@@ -3003,6 +3009,8 @@ package body Flow.Control_Flow_Graph is
       I_Scheme          : constant Node_Id   := Iteration_Scheme (N);
       Loop_Id           : constant Entity_Id := Entity (Identifier (N));
       Fully_Initialized : Flow_Id_Sets.Set   := Flow_Id_Sets.Empty_Set;
+
+   --  Start of processing for Do_Loop_Statement
 
    begin
       --  Start with a blank slate for the loops entry and exit.

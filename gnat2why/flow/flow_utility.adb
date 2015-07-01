@@ -2415,7 +2415,7 @@ package body Flow_Utility is
          V             : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
       begin
 
-         --  Determine the global effects of the called program.
+         --  Determine the global effects of the called program
 
          declare
             Proof_Reads : Flow_Id_Sets.Set;
@@ -2433,7 +2433,7 @@ package body Flow_Utility is
             end if;
          end;
 
-         --  If we fold functions we need to obtain the used inputs.
+         --  If we fold functions we need to obtain the used inputs
 
          if Folding then
             declare
@@ -2450,7 +2450,7 @@ package body Flow_Utility is
             end;
          end if;
 
-         --  Apply sanity check for functions.
+         --  Apply sanity check for functions
 
          if Nkind (Callsite) = N_Function_Call and then
            Flow_Id_Sets.Length (Global_Writes) > 0
@@ -2461,7 +2461,7 @@ package body Flow_Utility is
                E   => Subprogram);
          end if;
 
-         --  Merge globals into the variables used.
+         --  Merge globals into the variables used
 
          for G of Global_Reads loop
             if (if Folding
@@ -2482,7 +2482,7 @@ package body Flow_Utility is
             end if;
          end loop;
 
-         --  Merge the actuals into the set of variables used.
+         --  Merge the actuals into the set of variables used
 
          declare
             Actual : Node_Id;
@@ -2520,7 +2520,7 @@ package body Flow_Utility is
             end loop;
          end;
 
-         --  Finally, we expand the collected set (if necessary).
+         --  Finally, we expand the collected set (if necessary)
 
          return R : Flow_Id_Sets.Set do
             R := Flow_Id_Sets.Empty_Set;

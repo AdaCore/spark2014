@@ -756,8 +756,12 @@ package body Flow_Generated_Globals is
          --  Close graph
          declare
             procedure Visitor (A, B : Vertex_Id);
-            --  Visitor procedure that checks if the vertex B is linked to
-            --  vertex A on the Local_Graph before adding the edge.
+            --  Remove the just added edge if vertex B is linked to vertex A on
+            --  the Local_Graph.
+
+            -------------
+            -- Visitor --
+            -------------
 
             -------------
             -- Visitor --
@@ -772,9 +776,8 @@ package body Flow_Generated_Globals is
                                             Ins_Kind       |
                                             Outs_Kind)
                then
-                  --  We only need to consult the Local_Graph when we are
-                  --  attempting to establish a link between a subprogram and a
-                  --  variable.
+                  --  We only need to consult the Local_Graph when attempting
+                  --  to establish a link between a subprogram and a variable.
                   return;
                end if;
 
@@ -906,6 +909,8 @@ package body Flow_Generated_Globals is
          G_Local_Subp : Global_Id;
          G_Local_Var  : Global_Id;
 
+      --  Start of processing for Create_Local_Graph
+
       begin
          for Info of Subprogram_Info_Set loop
             G_Subp := Global_Id'(Kind => Subprogram_Kind,
@@ -979,6 +984,10 @@ package body Flow_Generated_Globals is
          --  Returns a set of all Neighbours of Start that correspond
          --  to variables.
 
+         -----------------------------
+         -- Get_Variable_Neighbours --
+         -----------------------------
+
          function Get_Variable_Neighbours
            (Start : Vertex_Id)
             return Vertex_Sets.Set
@@ -995,6 +1004,9 @@ package body Flow_Generated_Globals is
 
             return VS;
          end Get_Variable_Neighbours;
+
+      --  Start of processing for Edit_Proof_Ins
+
       begin
          for Info of Subprogram_Info_Set loop
             declare
@@ -1817,6 +1829,8 @@ package body Flow_Generated_Globals is
             end loop;
          end if;
       end Up_Project;
+
+   --  Start of processing for GG_Get_Globals
 
    begin
       --  Initialize the Proof_Reads, Reads and Writes sets
