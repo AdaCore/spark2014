@@ -923,15 +923,28 @@ package body Why.Gen.Expr is
 
             --  When converting from a bitvector of a smaller size, the
             --  expression can be safely converted to the target bitvector
-            --  and the range check performed in the target bitvector.
+            --  and the range check performed in the target bitvector, we then
+            --  convert back to W_Type.
 
             elsif BitVector_Type_Size (W_Type) <= Esize (Ty) then
-               Result := +New_VC_Call (Domain   => EW_Prog,
-                                       Ada_Node => Ada_Node,
-                                       Name     => W_Fun,
-                                       Progs    => (1 => +W_Expr),
-                                       Reason   => To_VC_Kind (Check_Kind),
-                                       Typ      => Get_Type (W_Expr));
+               declare
+                  Range_Typ : constant W_Type_Id := Type_Of_Node (Ty);
+               begin
+                  Result := +Insert_Simple_Conversion
+                    (Domain => EW_Prog,
+                     Expr   =>
+                       New_VC_Call (Domain   => EW_Prog,
+                                    Ada_Node => Ada_Node,
+                                    Name     => W_Fun,
+                                    Progs    =>
+                                      (1 => +Insert_Simple_Conversion
+                                           (Domain => EW_Prog,
+                                            Expr   => W_Expr,
+                                            To     => Range_Typ)),
+                                    Reason   => To_VC_Kind (Check_Kind),
+                                    Typ      => Range_Typ),
+                     To     => W_Type);
+               end;
 
             --  When converting to a bitvector of a stricly smaller size, the
             --  range check must be performed on the expression before it is
