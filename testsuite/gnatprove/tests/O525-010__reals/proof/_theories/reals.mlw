@@ -1,0 +1,74 @@
+module Reals__real
+ use import "real".RealInfix
+ use import "int".Int
+
+ type real__ = real
+
+ function bool_eq (a : real__) (b : real__) : bool = a = b
+
+ function user_eq (a : real__) (b : real__) : bool
+
+ function value__size : int
+
+ function object__size (a : real__) : int
+
+ axiom value__size_axiom :
+  value__size >= 0
+
+ axiom object__size_axiom :
+  forall a  : real__. (object__size a >= 0)
+
+end
+
+module Reals__zero
+ function zero__logic (x : unit) : real = 0.0
+ function zero (x : unit) : real = 0.0
+end
+
+module Reals__Oadd
+ use import real.RealInfix
+ function oadd__logic (x : real) (y : real) : real = x +. y
+ function oadd (x : real) (y : real) : real = x +. y
+end
+
+module Reals__Osubtract
+ use import real.RealInfix
+ function osubtract__logic (x : real) (y : real) : real = x -. y
+ function osubtract (x : real) (y : real) : real = x -. y
+end
+
+module Reals__Omultiply
+ use import real.RealInfix
+ function omultiply__logic (x : real) (y : real) : real = x *. y
+ function omultiply (x : real) (y : real) : real = x *. y
+end
+
+module Reals__Odivide
+ use import real.RealInfix
+ function odivide__logic (x : real) (y : real) : real = x /. y
+ function odivide (x : real) (y : real) : real = x /. y
+end
+
+module Reals__Olt
+ use import real.RealInfix
+ function olt__logic (x : real) (y : real) : bool = x <. y
+ function olt (x : real) (y : real) : bool = x <. y
+end
+
+module Reals__Ole
+ use import real.RealInfix
+ function ole__logic (x : real) (y : real) : bool = x <=. y
+ function ole (x : real) (y : real) : bool = x <=. y
+end
+
+module Reals__Ogt
+ use import real.RealInfix
+ function ogt__logic (x : real) (y : real) : bool = x >. y
+ function ogt (x : real) (y : real) : bool = x >. y
+end
+
+module Reals__Oge
+ use import real.RealInfix
+ function oge__logic (x : real) (y : real) : bool = x >=. y
+ function oge (x : real) (y : real) : bool = x >=. y
+end
