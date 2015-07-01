@@ -60,6 +60,7 @@ package Flow is
 
    package Flow_Graphs is new Graph
      (Vertex_Key   => Flow_Id,
+      Key_Hash     => Hash,
       Edge_Colours => Edge_Colours,
       Null_Key     => Null_Flow_Id,
       Test_Key     => "=");

@@ -77,6 +77,7 @@ package body Flow_Utility is
    ----------------------------------------------------------------------
 
    package Component_Graphs is new Graph (Vertex_Key   => Entity_Id,
+                                          Key_Hash     => Node_Hash,
                                           Edge_Colours => Natural,
                                           Null_Key     => Empty,
                                           Test_Key     => "=");

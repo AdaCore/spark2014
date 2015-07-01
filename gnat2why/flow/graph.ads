@@ -85,6 +85,8 @@ generic
    type Vertex_Key is private;
    type Edge_Colours is (<>);
    Null_Key : Vertex_Key;
+   with function Key_Hash (Element : Vertex_Key)
+                           return Ada.Containers.Hash_Type;
    with function Test_Key (A, B : Vertex_Key) return Boolean;
 package Graph is
    type T is tagged private;
@@ -657,11 +659,21 @@ private
    use VL;
    subtype Vertex_List is VL.Vector;
 
+   package Vertex_To_Id_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Vertex_Key,
+      Element_Type    => Vertex_Id,
+      Hash            => Key_Hash,
+      Equivalent_Keys => Test_Key,
+      "="             => "=");
+
+   type VTIMA is access Vertex_To_Id_Maps.Map;
+
    type T is tagged record
       Vertices       : Vertex_List;
       Default_Colour : Edge_Colours;
       Frozen         : Boolean;
       Clusters       : Cluster_Id;
+      Save           : VTIMA;
    end record;
 
    ----------------------------------------------------------------------

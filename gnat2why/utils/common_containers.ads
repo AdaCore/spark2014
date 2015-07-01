@@ -87,7 +87,7 @@ package Common_Containers is
    Null_Entity_Name : constant Entity_Name;
 
    function Name_Hash (E : Entity_Name) return Ada.Containers.Hash_Type is
-      (Ada.Containers.Hash_Type (E));
+     (Ada.Containers.Hash_Type (E));
 
    package Name_Sets is new Ada.Containers.Hashed_Sets
      (Element_Type        => Entity_Name,

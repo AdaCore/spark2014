@@ -119,11 +119,15 @@ package body Flow_Generated_Globals is
      Global_Id'(Kind => Null_Kind,
                 Name => Null_Entity_Name);
 
+   function Global_Hash (Element : Global_Id) return Ada.Containers.Hash_Type
+     is (Name_Hash (Element.Name));
+
    -------------------
    -- Global_Graphs --
    -------------------
 
    package Global_Graphs is new Graph (Vertex_Key   => Global_Id,
+                                       Key_Hash     => Global_Hash,
                                        Edge_Colours => Edge_Colours,
                                        Null_Key     => Null_Global_Id,
                                        Test_Key     => "=");

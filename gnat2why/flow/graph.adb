@@ -62,6 +62,8 @@ package body Graph is
       return (Vertices       => VL.Empty_Vector,
               Default_Colour => Colour,
               Frozen         => False,
+              Save           =>
+                 new Vertex_To_Id_Maps.Map'(Vertex_To_Id_Maps.Empty_Map),
               Clusters       => 0);
    end Create;
 
@@ -78,6 +80,7 @@ package body Graph is
                              Cluster        => (if Copy_Clusters
                                                 then V.Cluster
                                                 else Null_Cluster)));
+         R.Save.Include (V.Key, R.Vertices.Last_Index);
       end loop;
 
       R.Frozen   := True;
@@ -97,14 +100,15 @@ package body Graph is
    ----------------
 
    function Get_Vertex (G : T'Class; V : Vertex_Key) return Vertex_Id is
-   begin
-      for J in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
-         if Test_Key (G.Vertices (J).Key, V) then
-            return J;
-         end if;
-      end loop;
 
-      return Null_Vertex;
+      C : constant Vertex_To_Id_Maps.Cursor :=
+        G.Save.Find (V);
+   begin
+      if Vertex_To_Id_Maps.Has_Element (C) then
+         return Vertex_To_Id_Maps.Element (C);
+      else
+         return Null_Vertex;
+      end if;
    end Get_Vertex;
 
    -------------
@@ -130,6 +134,7 @@ package body Graph is
                           Out_Neighbours => EAM.Empty_Map,
                           Cluster        => Null_Cluster));
       Id := G.Vertices.Last_Index;
+      G.Save.Include (V, Id);
    end Add_Vertex;
 
    procedure Add_Vertex
@@ -151,6 +156,7 @@ package body Graph is
                           In_Neighbours  => VIS.Empty_Set,
                           Out_Neighbours => EAM.Empty_Map,
                           Cluster        => Null_Cluster));
+      G.Save.Include (V, G.Vertices.Last_Index);
    end Add_Vertex;
 
    -----------------
