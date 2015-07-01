@@ -541,8 +541,7 @@ package body Flow_Generated_Globals is
       --  GG entry does not exist for them.
 
       All_Other_Subprograms : Name_Sets.Set := Name_Sets.Empty_Set;
-      --  Contains all subprograms for which a GG entry does not
-      --  exist.
+      --  Contains all subprograms for which a GG entry does not exist
 
       procedure Add_All_Edges;
       --  Reads the populated Subprogram_Info_Set and generates all the edges
@@ -1566,7 +1565,7 @@ package body Flow_Generated_Globals is
          end loop;
       end if;
 
-      --  Populated the All_Other_Subprograms set
+      --  Populate the All_Other_Subprograms set
       All_Other_Subprograms := All_Subprograms - GG_Subprograms;
 
       --  Initialize Local_Graph and Global_Graph
