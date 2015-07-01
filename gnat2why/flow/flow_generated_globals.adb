@@ -312,6 +312,19 @@ package body Flow_Generated_Globals is
    begin
       Open_Output_Library_Info;
 
+      --  Initialze subprogram info
+      Subprogram_Info_Set         := Subprogram_Info_Sets.Empty_Set;
+
+      --  Initialize state info
+      State_Info_Set              := State_Info_Sets.Empty_Set;
+
+      --  Initialize volatile info
+      All_Volatile_Vars           := Name_Sets.Empty_Set;
+      Async_Writers_Vars          := Name_Sets.Empty_Set;
+      Async_Readers_Vars          := Name_Sets.Empty_Set;
+      Effective_Reads_Vars        := Name_Sets.Empty_Set;
+      Effective_Writes_Vars       := Name_Sets.Empty_Set;
+
       --  Set mode to writing mode
       Current_Mode := GG_Write_Mode;
    end GG_Write_Initialize;
