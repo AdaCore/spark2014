@@ -756,9 +756,8 @@ package body Flow_Generated_Globals is
          --  Close graph
          declare
             procedure Visitor (A, B : Vertex_Id);
-            --  Visitor procedure that checks if the vertex corresponding to B
-            --  is linked to the vertex corresponding to A on the Local_Graph
-            --  before adding the edge.
+            --  Visitor procedure that checks if the vertex B is linked to
+            --  vertex A on the Local_Graph before adding the edge.
 
             -------------
             -- Visitor --
