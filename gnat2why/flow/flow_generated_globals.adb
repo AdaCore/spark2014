@@ -106,18 +106,19 @@ package body Flow_Generated_Globals is
                            --  Represents a global variable
                           );
 
-   type Global_Id is record
-      Kind : Global_Id_Kind;
-      Name : Entity_Name;
+   type Global_Id (Kind : Global_Id_Kind := Null_Kind) is
+   record
+      case Kind is
+         when Null_Kind =>
+            null;
+
+         when others =>
+            Name : Entity_Name;
+      end case;
    end record;
 
-   function "=" (Left, Right : Global_Id) return Boolean is
-     (Left.Kind = Right.Kind and then Left.Name = Right.Name);
-   --  Equality for Global_Id
-
    Null_Global_Id : constant Global_Id :=
-     Global_Id'(Kind => Null_Kind,
-                Name => Null_Entity_Name);
+     Global_Id'(Kind => Null_Kind);
 
    function Global_Hash (Element : Global_Id) return Ada.Containers.Hash_Type
      is (Name_Hash (Element.Name));
@@ -782,7 +783,8 @@ package body Flow_Generated_Globals is
                end if;
 
                --  Convert kind so that it can be used on Local_Graph
-               Key_A.Kind := Subprogram_Kind;
+               Key_A := Global_Id'(Kind => Subprogram_Kind,
+                                   Name => Key_A.Name);
 
                --  Check if local variable B can act as global of subprogram A
                if Local_Graph.Get_Vertex (Key_A) /= Null_Vertex
