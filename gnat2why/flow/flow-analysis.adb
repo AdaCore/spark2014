@@ -613,7 +613,8 @@ package body Flow.Analysis is
          declare
             Aspect_To_Fix : constant String :=
               (case FA.Kind is
-                 when E_Subprogram_Body |
+                 when E_Entry           |
+                      E_Subprogram_Body |
                       E_Task_Body       => (if Refined
                                             then "Refined_Global"
                                             else "Global"),
@@ -621,7 +622,8 @@ package body Flow.Analysis is
 
             SRM_Ref : constant String :=
               (case FA.Kind is
-                  when E_Subprogram_Body |
+                  when E_Entry           |
+                       E_Subprogram_Body |
                        E_Task_Body       => "6.1.4(13)",
                   when E_Package         |
                        E_Package_Body    => "7.1.5(12)",

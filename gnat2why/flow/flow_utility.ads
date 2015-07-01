@@ -299,9 +299,7 @@ is
       Scope : Flow_Scope)
       return Flow_Id_Sets.Set
    is (Flatten_Variable (Direct_Mapping_Id (Unique_Entity (E)), Scope))
-   with Pre  => Nkind (E) in N_Entity,
-        Post => (if not Is_Null_Record (E)
-                 then not Flatten_Variable'Result.Is_Empty);
+   with Pre  => Nkind (E) in N_Entity;
    --  As above, but conveniently taking an Entity_Id instead of a Flow_Id
 
    subtype Valid_Assignment_Kinds is Node_Kind with Static_Predicate =>
