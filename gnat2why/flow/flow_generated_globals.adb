@@ -1351,19 +1351,19 @@ package body Flow_Generated_Globals is
                         Set_Line_Found (2);
 
                         New_Info.Inputs_Proof := Get_Names_From_Line;
-                        All_Globals.Union (Get_Names_From_Line);
+                        All_Globals.Union (New_Info.Inputs_Proof);
 
                      elsif Tag = "VI" then
                         Set_Line_Found (3);
 
                         New_Info.Inputs := Get_Names_From_Line;
-                        All_Globals.Union (Get_Names_From_Line);
+                        All_Globals.Union (New_Info.Inputs);
 
                      elsif Tag = "VO" then
                         Set_Line_Found (4);
 
                         New_Info.Outputs := Get_Names_From_Line;
-                        All_Globals.Union (Get_Names_From_Line);
+                        All_Globals.Union (New_Info.Outputs);
 
                      elsif Tag = "CP" then
                         Set_Line_Found (5);
@@ -1387,7 +1387,7 @@ package body Flow_Generated_Globals is
                         Set_Line_Found (8);
 
                         New_Info.Local_Variables := Get_Names_From_Line;
-                        All_Globals.Union (Get_Names_From_Line);
+                        All_Globals.Union (New_Info.Local_Variables);
 
                      elsif Tag = "LS" then
                         Set_Line_Found (9);
