@@ -536,7 +536,7 @@ package body SPARK_Definition is
 
    procedure Mark_Stmt_Or_Decl_List           (L : List_Id);
    --  Mark a list of statements and declarations, and register any pragma
-   --  Annotate (Gnatprove) which may be part of that list
+   --  Annotate (GNATprove) which may be part of that list.
 
    procedure Mark_Actions (N : Node_Id; L : List_Id);
    --  Mark a possibly null list of actions L from expression N. It should be
@@ -649,9 +649,9 @@ package body SPARK_Definition is
       --     Arr_A2D'Update ((1, 1) => 1,  (2, 2) => 2, (3, 3) => 3,
       --     where Arr_A2D is a two-dimensional array)
       --  are modelled in the AST using an aggregate node which does not have a
-      --  a type. An aggregate node is expected to have a type, but this
-      --  kind of expression (indexed components) is not, so need to detect
-      --  special case here.
+      --  a type. An aggregate node is expected to have a type, but this kind
+      --  of expression (indexed components) is not, so need to detect special
+      --  case here.
       --  Why aren't these kind of nodes Indexed_Components instead?
 
       procedure Check_Loop_Invariant_Placement
@@ -1638,79 +1638,79 @@ package body SPARK_Definition is
 
          --  Mark should not be called on other kinds
 
-         when N_Abortable_Part |
-              N_Accept_Alternative |
-              N_Access_Definition |
-              N_Access_Function_Definition |
-              N_Access_Procedure_Definition |
-              N_Access_To_Object_Definition |
-              N_Aspect_Specification |
-              N_Compilation_Unit |
-              N_Compilation_Unit_Aux |
-              N_Component_Clause |
-              N_Component_Definition |
-              N_Component_List |
-              N_Constrained_Array_Definition  |
-              N_Contract |
-              N_Decimal_Fixed_Point_Definition |
-              N_Defining_Character_Literal |
-              N_Defining_Identifier |
-              N_Defining_Operator_Symbol |
-              N_Defining_Program_Unit_Name |
-              N_Delay_Alternative |
-              N_Delta_Constraint |
-              N_Derived_Type_Definition |
-              N_Designator |
-              N_Digits_Constraint |
-              N_Discriminant_Association |
-              N_Discriminant_Specification |
-              N_Function_Specification |
-              N_Iteration_Scheme |
-              N_Loop_Parameter_Specification |
-              N_Elsif_Part |
-              N_Empty |
-              N_Entry_Body_Formal_Part |
-              N_Enumeration_Type_Definition |
-              N_Entry_Call_Alternative |
-              N_Entry_Index_Specification |
-              N_Error |
-              N_Exception_Handler |
-              N_Floating_Point_Definition |
-              N_Formal_Decimal_Fixed_Point_Definition |
-              N_Formal_Derived_Type_Definition |
-              N_Formal_Discrete_Type_Definition |
-              N_Formal_Floating_Point_Definition |
-              N_Formal_Incomplete_Type_Definition |
-              N_Formal_Modular_Type_Definition |
+         when N_Abortable_Part                         |
+              N_Accept_Alternative                     |
+              N_Access_Definition                      |
+              N_Access_Function_Definition             |
+              N_Access_Procedure_Definition            |
+              N_Access_To_Object_Definition            |
+              N_Aspect_Specification                   |
+              N_Compilation_Unit                       |
+              N_Compilation_Unit_Aux                   |
+              N_Component_Clause                       |
+              N_Component_Definition                   |
+              N_Component_List                         |
+              N_Constrained_Array_Definition           |
+              N_Contract                               |
+              N_Decimal_Fixed_Point_Definition         |
+              N_Defining_Character_Literal             |
+              N_Defining_Identifier                    |
+              N_Defining_Operator_Symbol               |
+              N_Defining_Program_Unit_Name             |
+              N_Delay_Alternative                      |
+              N_Delta_Constraint                       |
+              N_Derived_Type_Definition                |
+              N_Designator                             |
+              N_Digits_Constraint                      |
+              N_Discriminant_Association               |
+              N_Discriminant_Specification             |
+              N_Function_Specification                 |
+              N_Iteration_Scheme                       |
+              N_Loop_Parameter_Specification           |
+              N_Elsif_Part                             |
+              N_Empty                                  |
+              N_Entry_Body_Formal_Part                 |
+              N_Enumeration_Type_Definition            |
+              N_Entry_Call_Alternative                 |
+              N_Entry_Index_Specification              |
+              N_Error                                  |
+              N_Exception_Handler                      |
+              N_Floating_Point_Definition              |
+              N_Formal_Decimal_Fixed_Point_Definition  |
+              N_Formal_Derived_Type_Definition         |
+              N_Formal_Discrete_Type_Definition        |
+              N_Formal_Floating_Point_Definition       |
+              N_Formal_Incomplete_Type_Definition      |
+              N_Formal_Modular_Type_Definition         |
               N_Formal_Ordinary_Fixed_Point_Definition |
-              N_Formal_Private_Type_Definition |
-              N_Formal_Signed_Integer_Type_Definition |
-              N_Generic_Association |
-              N_Index_Or_Discriminant_Constraint |
-              N_Mod_Clause |
-              N_Modular_Type_Definition |
-              N_Ordinary_Fixed_Point_Definition |
-              N_Parameter_Specification |
-              N_Pragma_Argument_Association |
-              N_Package_Specification |
-              N_Procedure_Specification |
-              N_Protected_Definition |
-              N_Push_Pop_xxx_Label |
-              N_Range_Constraint |
-              N_Real_Range_Specification |
-              N_Record_Definition |
-              N_SCIL_Dispatch_Table_Tag_Init |
-              N_SCIL_Dispatching_Call |
-              N_SCIL_Membership_Test |
-              N_Signed_Integer_Type_Definition |
-              N_Subunit |
-              N_Task_Definition |
-              N_Terminate_Alternative |
-              N_Triggering_Alternative |
-              N_Unconstrained_Array_Definition  |
-              N_Unused_At_Start |
-              N_Unused_At_End |
-              N_Variant =>
+              N_Formal_Private_Type_Definition         |
+              N_Formal_Signed_Integer_Type_Definition  |
+              N_Generic_Association                    |
+              N_Index_Or_Discriminant_Constraint       |
+              N_Mod_Clause                             |
+              N_Modular_Type_Definition                |
+              N_Ordinary_Fixed_Point_Definition        |
+              N_Parameter_Specification                |
+              N_Pragma_Argument_Association            |
+              N_Package_Specification                  |
+              N_Procedure_Specification                |
+              N_Protected_Definition                   |
+              N_Push_Pop_xxx_Label                     |
+              N_Range_Constraint                       |
+              N_Real_Range_Specification               |
+              N_Record_Definition                      |
+              N_SCIL_Dispatch_Table_Tag_Init           |
+              N_SCIL_Dispatching_Call                  |
+              N_SCIL_Membership_Test                   |
+              N_Signed_Integer_Type_Definition         |
+              N_Subunit                                |
+              N_Task_Definition                        |
+              N_Terminate_Alternative                  |
+              N_Triggering_Alternative                 |
+              N_Unconstrained_Array_Definition         |
+              N_Unused_At_Start                        |
+              N_Unused_At_End                          |
+              N_Variant                                =>
             raise Program_Error;
       end case;
 

@@ -67,7 +67,7 @@ package SPARK_Definition is
    --  See gnat2why.ads for details.
 
    Max_Array_Dimensions : constant Positive := 4;
-   --  maximal number of dimensions that are currently supported
+   --  Maximal number of array dimensions that are currently supported
 
    Emit_Messages : Boolean := True;
    --  Emit messages only if this is set. We do not want to produce any
@@ -106,14 +106,13 @@ package SPARK_Definition is
    function Entity_Body_Valid_SPARK (E : Entity_Id) return Boolean
      with Pre => Ekind (E) in Subprogram_Kind | E_Task_Type | E_Entry
                  and then Entity_Body_In_SPARK (E);
-   --  Returns true if the given entitys' body contains no SPARK
-   --  violations.
+   --  Returns True if the given entitys' body contains no SPARK violations
 
    function Full_View_Not_In_SPARK (E : Entity_Id) return Boolean;
-   --  Returns true if the underlying type of the type E is not in SPARK,
+   --  Returns True if the underlying type of the type E is not in SPARK,
    --  declared in a private part with SPARK_Mode => Off or in a private part
-   --  of a package with external axioms. It is also true if E is a subtype or
-   --  derived type of such an entity.
+   --  of a package with external axioms. Also returns True if E is a subtype
+   --  or derived type of such an entity.
 
    function Get_First_Ancestor_In_SPARK (E : Entity_Id) return Entity_Id with
      Pre  => Full_View_Not_In_SPARK (E),
@@ -121,7 +120,7 @@ package SPARK_Definition is
    --  Returns the first type in SPARK in the ancestors of E.
 
    function Get_SPARK_JSON return JSON_Array;
-   --  should be called after marking is finished. Returns the result of
+   --  Should be called after marking is finished. Returns the result of
    --  marking as a JSON record.
 
 end SPARK_Definition;
