@@ -1,12 +1,4 @@
 tasks-store_stub.adb:4:04: warning: analyzing unreferenced procedure "Put"
-tasks-timer_stub.adb:8:21: warning: assuming "+" has no effect on global items
-tasks-timer_stub.adb:8:21: warning: no Global contract available for "+"
-tasks-timer_stub.adb:8:23: warning: assuming "Seconds" has no effect on global items
-tasks-timer_stub.adb:8:23: warning: no Global contract available for "Seconds"
-tasks.adb:19:35: warning: assuming "+" has no effect on global items
-tasks.adb:19:35: warning: no Global contract available for "+"
-tasks.adb:19:50: warning: assuming "Seconds" has no effect on global items
-tasks.adb:19:50: warning: no Global contract available for "Seconds"
 tasks.adb:28:07: "Store" is not allowed in SPARK
 tasks.adb:28:07: violation of pragma SPARK_Mode at test.adc:1
 tasks.adb:28:07: warning: analyzing unreferenced function "Get"
