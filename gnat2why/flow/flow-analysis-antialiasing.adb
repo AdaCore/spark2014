@@ -729,8 +729,15 @@ package body Flow.Analysis.Antialiasing is
          Proof_Reads : Flow_Id_Sets.Set;
          Reads       : Flow_Id_Sets.Set;
          Writes      : Flow_Id_Sets.Set;
+
+         Subprogram  : constant Entity_Id :=
+           (case Nkind (Call) is
+            when N_Entry_Call_Statement     =>
+              Entity (Selector_Name (Name (Call))),
+            when N_Procedure_Call_Statement => Entity (Name (Call)),
+            when others                     => raise Why.Unexpected_Node);
       begin
-         Get_Globals (Subprogram => Entity (Name (Call)),
+         Get_Globals (Subprogram => Subprogram,
                       Scope      => FA.B_Scope,
                       Classwide  => Is_Dispatching_Call (Call),
                       Proof_Ins  => Proof_Reads,
