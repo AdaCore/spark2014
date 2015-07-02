@@ -5,6 +5,14 @@ Require BuiltIn.
 Require bool.Bool.
 Require map.Map.
 
+(* Why3 assumption *)
+Definition unit := unit.
+
+(* Why3 goal *)
+Definition qtmark : Type.
+exact unit.
+Defined.
+
 (* Why3 goal *)
 Definition t : Type.
 exact Z.
@@ -40,39 +48,47 @@ Definition one: t.
 exact (1)%Z.
 Defined.
 
-(* Why3 assumption *)
-Definition map (a:Type) := (map.Map.map t a).
-
-Definition eq_bool {ty:Type} {ty_WT:WhyType ty} (x : ty) (y : ty) : bool.
-destruct (why_decidable_eq x y) as [H|H].
-exact true.
-exact false.
+(* Why3 goal *)
+Definition component_type : Type.
+exact Z.
 Defined.
 
-Fixpoint array_eq {ty:Type} {ty_WT:WhyType ty} (a : map.Map.map t ty)
-  (af : t) (b : map.Map.map t ty) (bf : t) (h : nat) : bool :=
+(* Why3 assumption *)
+Definition map := (map.Map.map t component_type).
+
+(* Why3 assumption *)
+Inductive map__ref :=
+  | mk_map__ref : (map.Map.map t component_type) -> map__ref.
+Axiom map__ref_WhyType : WhyType map__ref.
+Existing Instance map__ref_WhyType.
+
+(* Why3 assumption *)
+Definition map__content (v:map__ref): (map.Map.map t component_type) :=
+  match v with
+  | (mk_map__ref x) => x
+  end.
+
+Fixpoint array_eq (a : map.Map.map t component_type)
+  (af : t) (b : map.Map.map t component_type) (bf : t) (h : nat) : bool :=
   match h with
-  | O => eq_bool (map.Map.get a af) (map.Map.get b bf)
-  | S (n) => andb (eq_bool (map.Map.get a af) (map.Map.get b bf)) (array_eq a (af + 1)%Z b (bf + 1)%Z n)
+  | O => Z.eqb (map.Map.get a af) (map.Map.get b bf)
+  | S (n) => andb (Z.eqb (map.Map.get a af) (map.Map.get b bf)) (array_eq a (af + 1)%Z b (bf + 1)%Z n)
   end.
 
 Lemma array_eq_def: 
-forall {a:Type} {a_WT:WhyType a},
-forall (a1:(map.Map.map t a)),
+forall (a:(map.Map.map t component_type)),
  forall (af:t),
-  forall (b:(map.Map.map t a)),
+  forall (b:(map.Map.map t component_type)),
    forall (bf:t),
     forall (h:nat),
-      array_eq a1 af b bf h = true <->
+      array_eq a af b bf h = true <->
       (forall (i:t), 
         (af <= i <= af + Z.of_nat h)%Z ->
-            map.Map.get a1 i = map.Map.get b ((bf - af) + i))%Z.
-intros a a_WT a1 af b bf h.
+            map.Map.get a i = map.Map.get b ((bf - af) + i))%Z.
+intros a af b bf h.
 generalize af bf; clear af bf.
 induction h; intros af bf; split.
- - simpl; unfold eq_bool.
-   destruct (why_decidable_eq (Map.get a1 af) (Map.get b bf)) as [Heq | _];
-   [intros _|intro Hwrong; contradict Hwrong; auto].
+ - simpl; intro Heq; apply Z.eqb_eq in Heq.
    intros i [Hil Hir].
    rewrite <- Zplus_0_r_reverse in Hir.
    apply (Z.le_antisymm _ _ Hir) in Hil.
@@ -83,13 +99,11 @@ induction h; intros af bf; split.
  - simpl; intro Helmt.
    rewrite (Helmt af) by omega.
    rewrite Z.sub_simpl_r.
-   unfold eq_bool;
-   destruct (why_decidable_eq (Map.get b bf) (Map.get b bf)) as [_ | Hwrong];
-   [| contradict Hwrong]; auto.
- - unfold array_eq; fold array_eq; unfold eq_bool; unfold andb.
-   destruct (why_decidable_eq (Map.get a1 af) (Map.get b bf)) as [Heq | _];
-   [intro Helmt | intro Hwrong; contradict Hwrong; auto].
-   intros i [Hil Hir].
+   apply Z.eqb_eq; auto.
+ - unfold array_eq; fold array_eq; unfold andb.
+   destruct (Z.eqb (Map.get a af) (Map.get b bf)) eqn:Heq;
+   [apply Z.eqb_eq in Heq|intro Hwrong; contradict Hwrong; auto].
+   intros Helmt i [Hil Hir].
    rewrite <- NPeano.Nat.add_1_r in Hir.
    rewrite Nat2Z.inj_add in Hir; simpl in Hir.
    rewrite <- (Zminus_plus_simpl_r bf af 1%Z).
@@ -98,12 +112,11 @@ induction h; intros af bf; split.
    * rewrite <- Haf.
      rewrite Zminus_plus_simpl_r.
      rewrite Z.sub_simpl_r; auto.
- - unfold array_eq; fold array_eq; unfold eq_bool; unfold andb.
+ - unfold array_eq; fold array_eq; unfold andb.
    intro Helmt.
    rewrite (Helmt af) by omega.
    rewrite Z.sub_simpl_r.
-   destruct (why_decidable_eq (Map.get b bf) (Map.get b bf)) as [_ | Hwrong];
-   [| contradict Hwrong]; auto.
+   rewrite Z.eqb_refl.
    apply IHh.
    intros i [Hil Hir].
    rewrite Zminus_plus_simpl_r.
@@ -114,9 +127,9 @@ induction h; intros af bf; split.
 Qed.
 
 (* Why3 goal *)
-Definition bool_eq: forall {a:Type} {a_WT:WhyType a}, (map.Map.map t a) ->
-  t -> t -> (map.Map.map t a) -> t -> t -> bool.
-intros ty ty_WT a af al b bf bl.
+Definition bool_eq: (map.Map.map t component_type) -> t -> t ->
+  (map.Map.map t component_type) -> t -> t -> bool.
+intros a af al b bf bl.
 destruct (Z_gt_le_dec af al) as [Ha|Ha].
 exact (Zlt_bool bl bf).
 destruct (Z_eq_dec (al - af)%Z (bl - bf)%Z) as [He|He]; [|exact false].
@@ -125,26 +138,25 @@ Defined.
 
 (* Why3 goal *)
 Lemma T__ada_array___equal_def :
-forall {a:Type} {a_WT:WhyType a},
-forall (a1:(map.Map.map t a)),
+forall (a:(map.Map.map t component_type)),
  forall (af:t),
   forall (al:t),
-   forall (b:(map.Map.map t a)),
+   forall (b:(map.Map.map t component_type)),
     forall (bf:t),
      forall (bl:t),
       (((((le af al) /\ ((add (sub al af) one) = (add (sub bl bf) one)))
          \/ ((~ (le af al)) /\ (gt bf bl)))
         /\ forall (i:t),
             ((le af i) /\ (le i al)) ->
-            ((map.Map.get a1 i) = (map.Map.get b (add (sub bf af) i)))) ->
-       ((bool_eq a1 af al b bf bl) = true))
-      /\ (((bool_eq a1 af al b bf bl) = true) ->
+            ((map.Map.get a i) = (map.Map.get b (add (sub bf af) i)))) ->
+       ((bool_eq a af al b bf bl) = true))
+      /\ (((bool_eq a af al b bf bl) = true) ->
           ((((le af al) -> ((add (sub al af) one) = (add (sub bl bf) one)))
             /\ ((~ (le af al)) -> (gt bf bl)))
            /\ forall (i:t),
                ((le af i) /\ (le i al)) ->
-               ((map.Map.get a1 i) = (map.Map.get b (add (sub bf af) i))))).
-intros a a_WT a1 af al b bf bl.
+               ((map.Map.get a i) = (map.Map.get b (add (sub bf af) i))))).
+intros a af al b bf bl.
 unfold le; unfold gt; unfold add; unfold one; unfold sub; unfold bool_eq.
 split.
  - intros [[[Ha Heq_lgth1] | [Ha_emp Hb_emp]] Helmt].
@@ -180,9 +192,9 @@ split.
 Qed.
 
 (* Why3 goal *)
-Definition slide: forall {a:Type} {a_WT:WhyType a}, (map.Map.map t a) -> t ->
-  t -> (map.Map.map t a).
-intros ty ty_WT (a) of nf.
+Definition slide: (map.Map.map t component_type) -> t -> t ->
+  (map.Map.map t component_type).
+intros (a) of nf.
 destruct (Z.eq_dec of nf) as [_ | _].
 exact (Map._map_constr _ _ a).
 exact (Map._map_constr _ _ (fun x => a (x - nf + of)%Z)).
@@ -190,10 +202,9 @@ Defined.
 
 (* Why3 goal *)
 Lemma slide_eq :
-forall {a:Type} {a_WT:WhyType a},
-forall (a1:(map.Map.map t a)),
- forall (first:t), ((slide a1 first first) = a1).
-intros a a_WT (a1) first.
+forall (a:(map.Map.map t component_type)),
+ forall (first:t), ((slide a first first) = a).
+intros (a) first.
 unfold slide; simpl.
 destruct (Z.eq_dec first first) as [_ | Hwrong];
 [| contradict Hwrong]; auto.
@@ -201,16 +212,15 @@ Qed.
 
 (* Why3 goal *)
 Lemma slide_def :
-forall {a:Type} {a_WT:WhyType a},
-forall (a1:(map.Map.map t a)),
+forall (a:(map.Map.map t component_type)),
  forall (old_first:t),
   forall (new_first:t),
    forall (i:t),
-    ((map.Map.get (slide a1 old_first new_first) i) = (map.Map.get a1
-                                                        (sub i
-                                                          (sub new_first
-                                                            old_first)))).
-intros a a_WT (a1) old_first new_first i.
+    ((map.Map.get (slide a old_first new_first) i) = (map.Map.get a
+                                                       (sub i
+                                                         (sub new_first
+                                                           old_first)))).
+intros (a) old_first new_first i.
 unfold Map.get; unfold slide; unfold sub; simpl.
 destruct (Z.eq_dec old_first new_first) as [Ha | _].
  - rewrite Ha.
@@ -222,26 +232,25 @@ destruct (Z.eq_dec old_first new_first) as [Ha | _].
 Qed.
 
 (* Why3 goal *)
-Definition concat: forall {a:Type} {a_WT:WhyType a}, (map.Map.map t a) ->
-  t -> t -> (map.Map.map t a) -> t -> t -> (map.Map.map t a).
-intros a a_WT (a1) af al (b) bf bl.
+Definition concat: (map.Map.map t component_type) -> t -> t ->
+  (map.Map.map t component_type) -> t -> t -> (map.Map.map t component_type).
+intros (a) af al (b) bf bl.
 exact (Map._map_constr _ _
-       (fun x => if Zle_bool x al then a1 x else b ((x - al) + (bf - 1))%Z)).
+       (fun x => if Zle_bool x al then a x else b ((x - al) + (bf - 1))%Z)).
 Defined.
 
 (* Why3 goal *)
 Lemma concat_def :
-forall {a:Type} {a_WT:WhyType a},
-forall (a1:(map.Map.map t a)) (b:(map.Map.map t a)),
+forall (a:(map.Map.map t component_type)) (b:(map.Map.map t component_type)),
  forall (a_first:t) (a_last:t) (b_first:t) (b_last:t),
   forall (i:t),
    (((le a_first i) /\ (le i a_last)) ->
-    ((map.Map.get (concat a1 a_first a_last b b_first b_last) i) = (map.Map.get a1
+    ((map.Map.get (concat a a_first a_last b b_first b_last) i) = (map.Map.get a
                                                                     i)))
    /\ ((gt i a_last) ->
-       ((map.Map.get (concat a1 a_first a_last b b_first b_last) i) = 
+       ((map.Map.get (concat a a_first a_last b b_first b_last) i) = 
        (map.Map.get b (add (sub i a_last) (sub b_first one))))).
-intros a a_WT (a1) (b) a_first a_last b_first b_last i.
+intros (a) (b) a_first a_last b_first b_last i.
 unfold Map.get; unfold concat; unfold sub; unfold add; unfold one;
 unfold le; unfold gt; simpl.
 split.
@@ -253,80 +262,17 @@ split.
    rewrite Hi; auto.
 Qed.
 
-Parameter to_rep : forall {a:Type} {a_WT:WhyType a}, a -> Z.
-
-Fixpoint comp_rec {ty:Type} {ty_WT:WhyType ty} (a : map.Map.map t ty)
-  (af : t) (ha : nat) (b : map.Map.map t ty) (bf : t) (hb : nat) : Z :=
-  if Zlt_bool (to_rep (map.Map.get a af)) (to_rep (map.Map.get b bf)) then (-1)%Z
-  else if Zgt_bool (to_rep (map.Map.get a af)) (to_rep (map.Map.get b bf)) then 1%Z
-  else 
-    match (ha, hb) with
-    | (O, O)           => 0%Z
-    | (O, S (nb))      => (-1)%Z
-    | (S (na), O)      => 1%Z 
-    | (S (na), S (nb)) => comp_rec a (af + 1)%Z na b (bf + 1)%Z nb 
-end.
-
 (* Why3 goal *)
-Definition compare: forall {a:Type} {a_WT:WhyType a}, (map.Map.map t a) ->
-  t -> t -> (map.Map.map t a) -> t -> t -> Z.
-intros a a_WT a1 af al b bf bl.
-destruct (Z_gt_le_dec af al) as [Ha|Ha];
-destruct (Z_gt_le_dec bf bl) as [Hb|Hb].
-exact 0%Z.
-exact (-1)%Z.
-exact 1%Z.
-exact (comp_rec a1 af (Z.to_nat (al - af))%Z b bf (Z.to_nat (bl - bf)%Z)).
-Defined.
-
-Parameter to_bool : forall {a:Type} {a_WT:WhyType a}, a -> bool.
-
-Parameter of_bool : forall {a:Type} {a_WT:WhyType a}, bool -> a.
-
-(* Why3 goal *)
-Definition xorb: forall {a:Type} {a_WT:WhyType a}, (map.Map.map t a) -> t ->
-  t -> (map.Map.map t a) -> t -> t -> (map.Map.map t a).
-intros a a_WT (a1) af al (b) bf bl.
-exact (Map._map_constr _ _
-       (fun x => of_bool (xorb (to_bool (a1 x)) (to_bool (b x))))).
-Defined.
-
-(* Why3 goal *)
-Definition andb: forall {a:Type} {a_WT:WhyType a}, (map.Map.map t a) -> t ->
-  t -> (map.Map.map t a) -> t -> t -> (map.Map.map t a).
-intros a a_WT (a1) af al (b) bf bl.
-exact (Map._map_constr _ _
-       (fun x => of_bool (andb (to_bool (a1 x)) (to_bool (b x))))).
-Defined.
-
-(* Why3 goal *)
-Definition orb: forall {a:Type} {a_WT:WhyType a}, (map.Map.map t a) -> t ->
-  t -> (map.Map.map t a) -> t -> t -> (map.Map.map t a).
-intros a a_WT (a1) af al (b) bf bl.
-exact (Map._map_constr _ _
-       (fun x => of_bool (orb (to_bool (a1 x)) (to_bool (b x))))).
-Defined.
-
-(* Why3 goal *)
-Definition notb: forall {a:Type} {a_WT:WhyType a}, (map.Map.map t a) -> t ->
-  t -> (map.Map.map t a).
-intros a a_WT (a1) af al.
-exact (Map._map_constr _ _
-       (fun x => of_bool (negb (to_bool (a1 x))))).
-Defined.
-
-(* Why3 goal *)
-Definition singleton: forall {a:Type} {a_WT:WhyType a}, a -> t ->
-  (map.Map.map t a).
-intros a a_WT e i.
+Definition singleton: component_type -> t -> (map.Map.map t component_type).
+intros e i.
 exact (map.Map.const e).
 Defined.
 
 (* Why3 goal *)
 Lemma singleton_def :
-forall {a:Type} {a_WT:WhyType a},
-forall (v:a), forall (i:t), ((map.Map.get (singleton v i) i) = v).
-intros a a_WT v i.
+forall (v:component_type),
+ forall (i:t), ((map.Map.get (singleton v i) i) = v).
+intros v i.
 apply map.Map.Const.
 Qed.
 
