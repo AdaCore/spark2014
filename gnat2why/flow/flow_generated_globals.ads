@@ -161,14 +161,14 @@ package Flow_Generated_Globals is
    --  FA = Flow Analysis
    --  XR = xref
 
-   type Info_Kind is (S_Kind, T_Kind, E_Kind);
+   type Subprogram_Info_Kind is (S_Kind, T_Kind, E_Kind);
    --  S_Kind = Subprogram
    --  T_Kind = Task
    --  E_Kind = Entry
 
    type Subprogram_Phase_1_Info is record
       Name              : Entity_Name;
-      Kind              : Info_Kind;
+      Kind              : Subprogram_Info_Kind;
       Globals_Origin    : Globals_Origin_T;
       Inputs_Proof      : Name_Sets.Set;
       Inputs            : Name_Sets.Set;
