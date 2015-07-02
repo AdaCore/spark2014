@@ -1871,13 +1871,13 @@ package body SPARK_Util is
       end case;
    end Has_Volatile_Flavor;
 
-   --------------------------------------
-   -- Is_Directly_Potentially_Blocking --
-   --------------------------------------
+   -------------------------------------
+   -- Has_Only_Nonblocking_Statements --
+   -------------------------------------
 
-   function Is_Directly_Potentially_Blocking (N : Node_Id) return Boolean is
+   function Has_Only_Nonblocking_Statements (N : Node_Id) return Boolean is
 
-      Blocking_Statement_Found : Boolean := False;
+      Potentially_Blocking_Statement_Found : Boolean := False;
 
       function Proc (N : Node_Id) return Traverse_Result;
       --  Process a node to check if it is a potentially blocking statement
@@ -1905,7 +1905,7 @@ package body SPARK_Util is
                  N_Selective_Accept       |
                  N_Timed_Entry_Call       =>
 
-               Blocking_Statement_Found := True;
+               Potentially_Blocking_Statement_Found := True;
                return Abandon;
 
             when N_Object_Declaration =>
@@ -1914,7 +1914,7 @@ package body SPARK_Util is
                begin
                   --  ??? what if a library-level declaration
                   if Has_Task (Etype (Id)) then
-                     Blocking_Statement_Found := True;
+                     Potentially_Blocking_Statement_Found := True;
                      return Abandon;
                   else
                      return OK;
@@ -1928,8 +1928,8 @@ package body SPARK_Util is
 
    begin
       Traverse (N);
-      return Blocking_Statement_Found;
-   end Is_Directly_Potentially_Blocking;
+      return not Potentially_Blocking_Statement_Found;
+   end Has_Only_Nonblocking_Statements;
 
    ------------------
    -- In_Main_Unit --

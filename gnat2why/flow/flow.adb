@@ -1217,15 +1217,15 @@ package body Flow is
                --  Check for potentially blocking statements
 
                if Generating_Globals
-                  and then Ekind (E) in Subprogram_Kind
+                  and then Ekind (E) in Subprogram_Kind | E_Entry
                   and then Entity_Body_In_SPARK (E)
                   and then Entity_Body_Valid_SPARK (E)
                then
                   declare
-                     Body_N : constant Node_Id := Subprogram_Body (E);
+                     Body_N : constant Node_Id := Get_Body (E);
                   begin
                      if Present (Body_N) and then
-                       not Is_Directly_Potentially_Blocking (Body_N)
+                       Has_Only_Nonblocking_Statements (Body_N)
                      then
                         Nonblocking_Subprograms_Set.Include
                           (To_Entity_Name (E));
@@ -1523,6 +1523,24 @@ package body Flow is
                   Analysis.Find_Use_Of_Uninitialized_Variables (FA);
                   Analysis.Check_Initializes_Contract (FA);
             end case;
+         end if;
+
+         --  Check for potentially blocking operations in protected actions
+         if FA.Kind = E_Entry
+           or else (FA.Kind = E_Subprogram_Body
+                    and then Convention (FA.Analyzed_Entity) =
+                      Convention_Protected)
+         then
+            --  ??? issue different a warning if the blocking status is unknown
+            if Is_Potentially_Blocking (To_Entity_Name (FA.Analyzed_Entity))
+            then
+               Error_Msg_Flow (FA   => FA,
+                               Msg  => "potentially blocking operation " &
+                                 "in protected operation &",
+                               N    => FA.Analyzed_Entity,
+                               F1   => Direct_Mapping_Id (FA.Analyzed_Entity),
+                               Kind => Error_Kind);
+            end if;
          end if;
 
          --  Not really necessary, but it forces N131-017 to occur

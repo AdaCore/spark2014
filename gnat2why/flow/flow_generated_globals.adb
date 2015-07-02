@@ -1987,4 +1987,62 @@ package body Flow_Generated_Globals is
       return Effective_Writes_Vars.Contains (EN);
    end GG_Has_Effective_Writes;
 
+   -----------------------------
+   -- Is_Potentially_Blocking --
+   -----------------------------
+
+   function Is_Potentially_Blocking (EN : Entity_Name) return Boolean
+   is
+      Ins_GID       : constant Global_Id := (Kind => Ins_Kind,
+                                             Name => EN);
+
+      Outs_GID      : constant Global_Id := (Kind => Outs_Kind,
+                                             Name => EN);
+
+      Proof_Ins_GID : constant Global_Id := (Kind => Proof_Ins_Kind,
+                                             Name => EN);
+      --  Global_Ids that collectively represent subprogram EN
+
+      function Calls_Potentially_Blocking_Subprogram
+        (GID : Global_Id) return Boolean with
+        Pre => GID.Kind in Ins_Kind | Proof_Ins_Kind | Outs_Kind;
+      --  Check for calls to potentially blocking subprograms of a given Kind
+
+      -------------------------------------------
+      -- Calls_Potentially_Blocking_Subprogram --
+      -------------------------------------------
+
+      function Calls_Potentially_Blocking_Subprogram
+        (GID : Global_Id) return Boolean
+      is
+         Subp_V : constant Vertex_Id := Global_Graph.Get_Vertex (GID);
+         --  Vertex that represents subprogram dependencies of a given Kind
+
+         Callee : Global_Id;
+      begin
+         for V of Global_Graph.Get_Collection (Subp_V, Out_Neighbours) loop
+
+            Callee := Global_Graph.Get_Key (V);
+
+            if Callee.Kind in Proof_Ins_Kind | Ins_Kind | Outs_Kind
+              and then not Nonblocking_Subprograms_Set.Contains (Callee.Name)
+            then
+               return True;
+            end if;
+
+         end loop;
+
+         return False;
+
+      end Calls_Potentially_Blocking_Subprogram;
+
+   --  Start of processing for Is_Potentially_Blocking
+
+   begin
+      return (not Nonblocking_Subprograms_Set.Contains (EN))
+        or else Calls_Potentially_Blocking_Subprogram (Ins_GID)
+        or else Calls_Potentially_Blocking_Subprogram (Outs_GID)
+        or else Calls_Potentially_Blocking_Subprogram (Proof_Ins_GID);
+   end Is_Potentially_Blocking;
+
 end Flow_Generated_Globals;

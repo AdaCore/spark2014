@@ -331,6 +331,12 @@ package Flow_Generated_Globals is
    --  @param EN is the entity name that we check for having Effective_Writes
    --  @return True iff EN has Effective_Writes set.
 
+   function Is_Potentially_Blocking (EN : Entity_Name) return Boolean
+   with Pre => GG_Has_Been_Generated;
+   --  Returns True if subprogram represented by entity name EN is potentially
+   --  blocking or its blocking status is unknown; returns False it if is known
+   --  to be nonblocking.
+
 private
 
    Current_Mode : GG_Mode_T := GG_No_Mode;
