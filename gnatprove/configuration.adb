@@ -90,7 +90,7 @@ package body Configuration is
    --  recognized switches are automatic, so this procedure should only be
    --  called for unknown switches and for switches in section -cargs
 
-   procedure Prepare_Prover_Lib (Success : out Boolean);
+   procedure Prepare_Prover_Lib (Config : Command_Line_Configuration);
    --  Deal with the why3 libraries manual provers might need.
    --  Copies needed sources into gnatprove and builds the library.
    --  For the moment, only Coq is handled.
@@ -555,28 +555,41 @@ ASCII.LF;
    -- Prepare_Prover_Lib --
    ------------------------
 
-   procedure Prepare_Prover_Lib (Success : out Boolean) is
-   begin
-      Success := True;
-      if not Is_Coq_Prover then
-         return;
-      end if;
-      declare
-         Prover_Name : constant String :=
-           Ada.Characters.Handling.To_Lower (Alter_Prover.all);
-         Prover_Lib_Dir : constant String := Compose
-           (Compose (Why3_Dir, "libs"), Name => Prover_Name);
-         Prover_Obj_Dir : constant String := Compose
-           (Compose (Main_Subdir.all, "why3_libs"), Name => Prover_Name);
+   procedure Prepare_Prover_Lib (Config : Command_Line_Configuration) is
+
+      Success : Boolean := True;
+      Prover_Name : constant String :=
+        Ada.Characters.Handling.To_Lower (Alter_Prover.all);
+      Prover_Lib_Dir : constant String := Compose
+        (Compose (Why3_Dir, "libs"), Name => Prover_Name);
+      Prover_Obj_Dir : constant String := Compose
+        (Compose (Main_Subdir.all, "why3_libs"), Name => Prover_Name);
+
+      procedure Compile_Lib (Dir, File : String);
+
+      -----------------
+      -- Compile_Lib --
+      -----------------
+
+      procedure Compile_Lib (Dir, File : String) is
+         Target_Dir : constant String :=
+           (if Dir /= "" then Compose (Prover_Obj_Dir, Dir)
+            else Prover_Obj_Dir);
+         Lib_Dir    : constant String :=
+           (if Dir /= "" then Compose (Prover_Lib_Dir, Dir)
+            else Prover_Lib_Dir);
       begin
-         if not Exists (Compose (Prover_Obj_Dir, Name => "BuiltIn.vo")) then
+         if not Exists (Compose (Target_Dir, Name => File & ".vo")) then
             declare
                Source_Dest : String_Access :=
-                 new String'(Compose (Prover_Obj_Dir, Name => "BuiltIn.v"));
+                 new String'(Compose (Target_Dir, Name => File & ".v"));
             begin
                --  Copy file
                Create_Path (Prover_Obj_Dir);
-               Copy_File (Compose (Prover_Lib_Dir, Name => "BuiltIn.v"),
+               if not Exists (Target_Dir) then
+                  Create_Directory (Target_Dir);
+               end if;
+               Copy_File (Compose (Lib_Dir, Name => File & ".v"),
                           Source_Dest.all);
                --  Build it
                declare
@@ -584,19 +597,27 @@ ASCII.LF;
                     GNAT.OS_Lib.Locate_Exec_On_Path ("coqc");
                   Args : GNAT.OS_Lib.Argument_List :=
                     (1 => new String'("-R"),
-                     2 => new String'(Containing_Directory
-                       (Source_Dest.all)),
+                     2 => new String'(Prover_Obj_Dir),
                      3 => new String'("Why3"),
                      4 => Source_Dest);
                begin
                   if Coqc_Bin = null then
-                     Success := False;
-                  else
-                     GNAT.OS_Lib.Spawn (Program_Name => Coqc_Bin.all,
-                                        Args         => Args,
-                                        Success      => Success);
-                     GNAT.OS_Lib.Free (Coqc_Bin);
+                     Abort_Msg (Config,
+                                Msg       => "coq prover not present in PATH",
+                                With_Help => False);
                   end if;
+                  GNAT.OS_Lib.Spawn (Program_Name => Coqc_Bin.all,
+                                     Args         => Args,
+                                     Success      => Success);
+                  if not Success then
+                     Abort_Msg (Config,
+                                Msg       =>
+                                  "error during compilations of " &
+                                  Source_Dest.all,
+                                With_Help => False);
+                  end if;
+
+                  GNAT.OS_Lib.Free (Coqc_Bin);
 
                   for It in Args'Range loop
                      Free (Args (It));
@@ -605,7 +626,15 @@ ASCII.LF;
                end;
             end;
          end if;
-      end;
+      end Compile_Lib;
+
+   begin
+      Compile_Lib ("", "BuiltIn");
+      Compile_Lib ("bool", "Bool");
+      Compile_Lib ("int", "Int");
+      Compile_Lib ("int", "Abs");
+      Compile_Lib ("int", "EuclideanDivision");
+      Compile_Lib ("int", "ComputerDivision");
    end Prepare_Prover_Lib;
 
    ---------------
@@ -1126,17 +1155,9 @@ ASCII.LF;
          end if;
       end;
 
-      declare
-         Prover_Valid : Boolean;
-      begin
-         Prepare_Prover_Lib (Prover_Valid);
-         if not Prover_Valid then
-            Abort_Msg (Config,
-                       "Problem with the chosen prover",
-                       With_Help => False);
-         end if;
-      end;
-
+      if Is_Coq_Prover then
+         Prepare_Prover_Lib (Config);
+      end if;
       Sanitize_File_List (Tree);
       Check_Prover_List;
 

@@ -488,11 +488,16 @@ def gnatprove(opt=["-P", "test.gpr"]):
 
 def prove(opt=None, steps=max_steps, procs=parallel_procs,
           vc_timeout=vc_timeout(), mode="prove"):
-    """Call gnatprove with standard options"""
+    """Call gnatprove with standard options.
+
+       For option steps the default is max_steps set above, setting this
+       option to zero disables steps option
+    """
     fullopt = ["--report=all", "--warnings=continue"]
     fullopt += ["-P", "test.gpr", "--quiet"]
     fullopt += ["--timeout=%d" % (vc_timeout)]
-    fullopt += ["--steps=%d" % (steps)]
+    if steps != 0:
+        fullopt += ["--steps=%d" % (steps)]
     fullopt += ["--mode=%s" % (mode)]
     fullopt += ["-j%d" % (procs)]
     if benchmark_mode():
@@ -578,8 +583,8 @@ def write_why3_config_file_with_coq(fname):
     installdir = spark_install_path()
     driverdir = os.path.join(installdir, 'share', 'why3', 'drivers')
     driverfile = os.path.join(driverdir, 'coq.drv')
-    commandline = "coqtop -batch -R %%o/why3_libs/coq_tactic Why3" +\
-                  " -R %%o/why3_libs/coq Why3 -l %%f"
+    commandline = "coqtop -batch -R %o/why3_libs/coq_tactic Why3" +\
+                  " -R %o/why3_libs/coq Why3 -l %f"
     conf_content = """[main]
 magic = 14
 
