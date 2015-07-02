@@ -28,6 +28,7 @@ with AA_Util;               use AA_Util;
 with Ada.Containers.Vectors;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Common_Containers;
+with Einfo;                 use Einfo;
 with Errout;                use Errout;
 with Gnat2Why_Args;
 with GNAT.Regpat;           use GNAT.Regpat;
@@ -179,12 +180,21 @@ package body Gnat2Why.Annotate is
 
    procedure Generate_Useless_Pragma_Annotate_Warnings is
    begin
+
+      --  we do not issue any warnings on nodes which stem from inlining or
+      --  instantiation
+
       for Prag of Pragma_Set loop
-         Error_Msg_N ("?no check message justified by this pragma", Prag);
+         if Instantiation_Location (Sloc (Prag)) = No_Location then
+            Error_Msg_N ("?no check message justified by this pragma", Prag);
+         end if;
       end loop;
       for Prag of Proved_Pragma loop
-         Error_Msg_N ("?only proved check messages justified by this pragma",
-                      Prag);
+         if Instantiation_Location (Sloc (Prag)) = No_Location then
+            Error_Msg_N
+              ("?only proved check messages justified by this pragma",
+               Prag);
+         end if;
       end loop;
    end Generate_Useless_Pragma_Annotate_Warnings;
 
@@ -310,25 +320,35 @@ package body Gnat2Why.Annotate is
          return;
       end if;
 
-      --  If the analysis is requested for a specific subprogram/task
-      --  (possibly the implicit elaboration subprogram for a package)
-      --  or line, check whether the annotation is on this subprogram
-      --  spec or body. If not, ignore the annotation.
+      declare
+         Decl : constant Node_Id := Enclosing_Declaration (Preceding);
+         Ent  : constant Entity_Id := Unique_Defining_Entity (Decl);
+      begin
 
-      if Gnat2Why_Args.Limit_Subp /= Null_Unbounded_String then
-         declare
-            Decl : constant Node_Id := Enclosing_Declaration (Preceding);
-            Ent  : constant Entity_Id := Unique_Defining_Entity (Decl);
-         begin
-            if not (Is_Requested_Subprogram_Or_Task (Ent)
-                      or else
-                    Is_Requested_Subprogram_Or_Task
-                      (Unique_Entity (Enclosing_Package_Or_Subprogram (Ent))))
-            then
-               return;
-            end if;
-         end;
-      end if;
+         --  If the analysis is requested for a specific subprogram/task
+         --  (possibly the implicit elaboration subprogram for a package)
+         --  or line, check whether the annotation is on this subprogram
+         --  spec or body. If not, ignore the annotation.
+
+         if Gnat2Why_Args.Limit_Subp /= Null_Unbounded_String
+           and then
+             not (Is_Requested_Subprogram_Or_Task (Ent)
+                  or else
+                  Is_Requested_Subprogram_Or_Task
+                    (Unique_Entity (Enclosing_Package_Or_Subprogram (Ent))))
+         then
+            return;
+         end if;
+
+         --  Also, if the requested subprogram is always inlined, and also
+         --  referenced, the pragma should be ignored
+
+         if Is_Local_Subprogram_Always_Inlined (Ent)
+           and then Referenced (Ent)
+         then
+            return;
+         end if;
+      end;
 
       if Consider_Next then
          Insert_With_Next (N, Kind, Pattern, Reason, Preceding);
