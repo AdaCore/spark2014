@@ -326,22 +326,19 @@ package body Flow.Analysis.Antialiasing is
          return Impossible;
       elsif not Is_Interesting (Nkind (B)) then
          if Trace_Antialiasing then
-            Write_Str ("   -> B is not interesting");
-            Write_Eol;
+            Write_Line ("   -> B is not interesting");
          end if;
          return Impossible;
       end if;
 
       if Cannot_Alias (Formal_A) then
          if Trace_Antialiasing then
-            Write_Str ("   -> A does not require aa checking");
-            Write_Eol;
+            Write_Line ("   -> A does not require aa checking");
          end if;
          return Impossible;
       elsif Present (Formal_B) and then Cannot_Alias (Formal_B) then
          if Trace_Antialiasing then
-            Write_Str ("   -> B does not require aa checking");
-            Write_Eol;
+            Write_Line ("   -> B does not require aa checking");
          end if;
          return Impossible;
       end if;
@@ -363,14 +360,12 @@ package body Flow.Analysis.Antialiasing is
 
       if not Is_Root (Nkind (Ptr_A)) then
          if Trace_Antialiasing then
-            Write_Str ("   -> root of A is not interesting");
-            Write_Eol;
+            Write_Line ("   -> root of A is not interesting");
          end if;
          return Impossible;
       elsif not Is_Root (Nkind (Ptr_B)) then
          if Trace_Antialiasing then
-            Write_Str ("   -> root of B is not interesting");
-            Write_Eol;
+            Write_Line ("   -> root of B is not interesting");
          end if;
          return Impossible;
       end if;
@@ -380,8 +375,7 @@ package body Flow.Analysis.Antialiasing is
 
       if not Same_Entity (Ptr_A, Ptr_B) then
          if Trace_Antialiasing then
-            Write_Str ("   -> different root entities");
-            Write_Eol;
+            Write_Line ("   -> different root entities");
          end if;
          return Impossible;
       end if;
@@ -402,8 +396,7 @@ package body Flow.Analysis.Antialiasing is
       --  unchecked conversion, etc.
 
       if Trace_Antialiasing then
-         Write_Str ("   -> same root entity");
-         Write_Eol;
+         Write_Line ("   -> same root entity");
       end if;
 
       while Ptr_A /= A and Ptr_B /= B loop
@@ -427,8 +420,7 @@ package body Flow.Analysis.Antialiasing is
            Is_Conversion (Nkind (Ptr_B))
          then
             if Trace_Antialiasing then
-               Write_Str ("   -> identical tree followed by conversion");
-               Write_Eol;
+               Write_Line ("   -> identical tree followed by conversion");
             end if;
             return Definite_Aliasing;
          end if;
@@ -456,8 +448,7 @@ package body Flow.Analysis.Antialiasing is
                                       Selector_Name (Ptr_B))
                   then
                      if Trace_Antialiasing then
-                        Write_Str ("   -> selectors differ");
-                        Write_Eol;
+                        Write_Line ("   -> selectors differ");
                      end if;
                      return No_Aliasing;
                   end if;
@@ -477,8 +468,7 @@ package body Flow.Analysis.Antialiasing is
                                  Sprint_Node (Index_A);
                                  Write_Str (" and ");
                                  Sprint_Node (Index_B);
-                                 Write_Str (" statically differ");
-                                 Write_Eol;
+                                 Write_Line (" statically differ");
                               end if;
                               return No_Aliasing;
 
@@ -505,8 +495,7 @@ package body Flow.Analysis.Antialiasing is
                            Sprint_Node (Discrete_Range (Ptr_A));
                            Write_Str (" and ");
                            Sprint_Node (Discrete_Range (Ptr_B));
-                           Write_Str (" statically distinct");
-                           Write_Eol;
+                           Write_Line (" statically distinct");
                         end if;
                         return No_Aliasing;
 
@@ -555,11 +544,9 @@ package body Flow.Analysis.Antialiasing is
       --  definitely alias.
 
       if Trace_Antialiasing then
-         Write_Str ("   -> identical tree so far, hit end");
-         Write_Eol;
+         Write_Line ("   -> identical tree so far, hit end");
          if Definitive_Result then
-            Write_Str ("   -> result is definitive");
-            Write_Eol;
+            Write_Line ("   -> result is definitive");
          end if;
       end if;
 
@@ -574,8 +561,7 @@ package body Flow.Analysis.Antialiasing is
    -- Cannot_Alias --
    ------------------
 
-   function Cannot_Alias (F : Node_Id) return Boolean
-   is
+   function Cannot_Alias (F : Node_Id) return Boolean is
    begin
       case Ekind (F) is
          when E_In_Parameter =>
