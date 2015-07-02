@@ -3012,6 +3012,7 @@ package body Flow_Utility is
                   --  We always have the tag.
                   return False;
                when others =>
+                  --  ??? there should be a cheaper way to check this
                   return All_Components (E).Is_Empty;
             end case;
          else

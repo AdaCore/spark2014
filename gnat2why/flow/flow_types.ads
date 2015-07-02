@@ -168,7 +168,7 @@ package Flow_Types is
       case Kind is
          when Direct_Mapping | Record_Field =>
             Node  : Node_Or_Entity_Id;
-            Facet : Variable_Facet_T;
+            Facet : Variable_Facet_T; --  only used for records and types
 
             case Kind is
                when Record_Field =>

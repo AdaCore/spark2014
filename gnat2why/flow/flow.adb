@@ -1469,6 +1469,7 @@ package body Flow is
                         then
                            Error_Msg_Flow
                              (FA   => FA,
+                              --  ??? another message for entries and tasks
                               Msg  => "subprogram & has no effect",
                               N    => FA.Analyzed_Entity,
                               F1   => Direct_Mapping_Id (FA.Analyzed_Entity),
