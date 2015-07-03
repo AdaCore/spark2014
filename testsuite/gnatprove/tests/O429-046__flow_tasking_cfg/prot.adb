@@ -19,7 +19,7 @@ is
          return The_Protected_Int + Visible + X;
       end Weird_Get;
 
-      entry Set (X : Integer) when D > 0 is
+      entry Set (X : Integer) when Condition is
       begin
          Hidden := Visible;
          The_Protected_Int := X + D - Hidden;

@@ -21,19 +21,17 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Flow_Classwide;      use Flow_Classwide;
+with Flow_Error_Messages; use Flow_Error_Messages;
+with Flow_Utility;        use Flow_Utility;
 with Nlists;              use Nlists;
+with Output;              use Output;
 with Sem_Eval;            use Sem_Eval;
 with Sem_Util;            use Sem_Util;
-
-with Output;              use Output;
+with SPARK_Util;          use SPARK_Util;
 with Sprint;              use Sprint;
-
-with Why;
 with VC_Kinds;            use VC_Kinds;
-
-with Flow_Classwide;      use Flow_Classwide;
-with Flow_Utility;        use Flow_Utility;
-with Flow_Error_Messages; use Flow_Error_Messages;
+with Why;
 
 package body Flow.Analysis.Antialiasing is
 
@@ -730,12 +728,7 @@ package body Flow.Analysis.Antialiasing is
          Reads       : Flow_Id_Sets.Set;
          Writes      : Flow_Id_Sets.Set;
 
-         Subprogram  : constant Entity_Id :=
-           (case Nkind (Call) is
-            when N_Entry_Call_Statement     =>
-              Entity (Selector_Name (Name (Call))),
-            when N_Procedure_Call_Statement => Entity (Name (Call)),
-            when others                     => raise Why.Unexpected_Node);
+         Subprogram  : constant Entity_Id := Get_Called_Entity (Call);
       begin
          Get_Globals (Subprogram => Subprogram,
                       Scope      => FA.B_Scope,

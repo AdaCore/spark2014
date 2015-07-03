@@ -1,6 +1,31 @@
-prot.adb:22:38: from profile "Ravenscar" at test.adc:2
-prot.adb:22:38: violation of restriction "Simple_Barriers"
-   compilation of prot.adb failed
-
-
-gnatprove: error during generation of Global contracts
+foo.adb:13:18: warning: unused variable "N"
+foo.adb:43:14: info: initialization of "B" proved
+foo.adb:43:14: medium: "Po_1" might not be initialized after elaboration of main program "Test_Task_01"
+foo.adb:51:19: info: initialization of "B" proved
+foo.adb:55:14: warning: subprogram "Test_Delay_01" has no effect
+prot.adb:4:04: info: initialization of "Hidden" constituent of "State" proved
+prot.adb:5:04: info: initialization of "Hidden2" constituent of "State" proved
+prot.adb:8:07: warning: analyzing unreferenced procedure "Get"
+prot.adb:17:07: warning: analyzing unreferenced function "Weird_Get"
+prot.adb:25:39: info: initialization of "Hidden" constituent of "State" proved
+prot.ads:5:04: info: initialization of "Visible" proved
+prot.ads:8:22: info: initialization of "X" proved
+prot.ads:12:13: info: initialization of "Hidden" constituent of "State" proved
+support.adb:12:42: warning: assuming "Random" has no effect on global items
+support.adb:12:42: warning: no Global contract available for "Random"
+support.adb:14:17: info: initialization of "Rand" proved
+support.adb:18:12: warning: assuming "Reset" has no effect on global items
+support.adb:18:12: warning: no Global contract available for "Reset"
+support.adb:18:20: info: initialization of "G" proved
+support.ads:20:14: medium: "G" might not be initialized after elaboration of main program "Rand_Task"
+tasks.adb:4:04: info: initialization of "Hidden" constituent of "State" proved
+tasks.adb:5:04: info: initialization of "Hidden2" constituent of "State" proved
+tasks.ads:5:04: info: initialization of "Visible" proved
+tasks.ads:11:14: info: initialization of "Visible" proved
+test.adb:6:11: medium: "Default_Aft" might not be initialized after elaboration of main program "Test"
+test.adb:6:11: medium: "Default_Exp" might not be initialized after elaboration of main program "Test"
+test.adb:6:11: medium: "Default_Fore" might not be initialized after elaboration of main program "Test"
+test.adb:10:15: warning: assuming "Put" has no effect on global items
+test.adb:10:15: warning: no Global contract available for "Put"
+test.adb:11:21: warning: assuming "Put" has no effect on global items
+test.adb:11:21: warning: no Global contract available for "Put"

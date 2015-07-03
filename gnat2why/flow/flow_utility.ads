@@ -346,9 +346,9 @@ is
       Vars_Used            : out Flow_Id_Sets.Set;
       Vars_Proof           : out Flow_Id_Sets.Set;
       Partial_Definition   : out Boolean)
-     with Pre  => Is_Valid_Assignment_Target (N),
-          Post => (if not Is_Null_Record (Etype (N))
-                   then not Vars_Defined.Is_Empty);
+   with Pre  => Is_Valid_Assignment_Target (N),
+        Post => (if not Is_Null_Record (Etype (N))
+                 then not Vars_Defined.Is_Empty);
    --  Process the LHS of an assignment statement or an [in] out parameter,
    --  establising the sets of variables used. For example, assume we have
    --  a function Foo:
@@ -390,7 +390,7 @@ is
       Expand_Synthesized_Constants : Boolean;
       Extensions_Irrelevant        : Boolean := True)
       return Flow_Id_Maps.Map
-     with Pre => Ekind (Get_Type (N, Scope)) in Record_Kind | Private_Kind
+   with Pre => Ekind (Get_Type (N, Scope)) in Record_Kind | Private_Kind
                  and then Map_Root.Kind in Direct_Mapping | Record_Field
                  and then Nkind (Map_Type) in N_Entity
                  and then Ekind (Map_Type) in Type_Kind;

@@ -205,7 +205,7 @@ package body Flow.Analysis is
             Msg  => "called subprogram & requires GLOBAL " &
               "aspect to make state & visible",
             N    => First_Use,
-            F1   => Direct_Mapping_Id (Entity (Name (First_Use))),
+            F1   => Direct_Mapping_Id (Get_Called_Entity (First_Use)),
             F2   => Var,
             Kind => Error_Kind);
       end if;

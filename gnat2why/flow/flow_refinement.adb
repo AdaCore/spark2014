@@ -711,6 +711,10 @@ package body Flow_Refinement is
                   return False;
                end if;
 
+            when E_Protected_Type =>
+               --  Protected types are fully default initialized in SPARK
+               return True;
+
             when others =>
                Print_Tree_Node (Ent);
                raise Program_Error;

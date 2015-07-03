@@ -1271,19 +1271,14 @@ package body SPARK_Util is
    -- Get_Called_Entity --
    -----------------------
 
-   function Get_Called_Entity (N : Node_Id) return Entity_Id
-   is
+   function Get_Called_Entity (N : Node_Id) return Entity_Id is
+      Nam : constant Node_Id := Name (N);
    begin
-      case Nkind (N) is
-         when N_Procedure_Call_Statement =>
-            return Entity (Name (N));
-         when N_Entry_Call_Statement =>
-            pragma Assert (Nkind (Name (N)) = N_Selected_Component);
-            return Entity (Selector_Name (Name (N)));
-         when others =>
-            --  This will violate the postcondition, but it can't happen.
-            return Empty;
-      end case;
+      if Nkind (Nam) = N_Selected_Component then
+         return Entity (Selector_Name (Nam));
+      else
+         return Entity (Nam);
+      end if;
    end Get_Called_Entity;
 
    ------------------------

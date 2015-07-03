@@ -12,5 +12,6 @@ is
       entry Set (X : Integer);
    private
       The_Protected_Int : Integer := D;
+      Condition         : Boolean := True;
    end P_Int;
 end Prot;

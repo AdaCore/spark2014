@@ -2329,7 +2329,7 @@ package body Flow_Utility is
       function Proc (N : Node_Id) return Traverse_Result is
       begin
          if Nkind (N) = N_Function_Call then
-            NS.Include (Entity (Name (N)));
+            NS.Include (Get_Called_Entity (N));
          end if;
 
          return OK;
@@ -2400,7 +2400,7 @@ package body Flow_Utility is
         (Callsite : Node_Id)
          return Flow_Id_Sets.Set
       is
-         Subprogram    : constant Entity_Id := Entity (Name (Callsite));
+         Subprogram    : constant Entity_Id := Get_Called_Entity (Callsite);
 
          Global_Reads  : Flow_Id_Sets.Set;
          Global_Writes : Flow_Id_Sets.Set;

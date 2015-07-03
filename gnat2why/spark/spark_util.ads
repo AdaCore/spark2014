@@ -850,7 +850,7 @@ package SPARK_Util is
    --      this only deals with the extension components.
 
    function Get_Called_Entity (N : Node_Id) return Entity_Id
-   with Pre  => Nkind (N) in N_Subprogram_Call | N_Entry_Call_Statement,
+   with Pre  => Nkind (N) in N_Entry_Call_Statement | N_Subprogram_Call,
         Post => Nkind (Get_Called_Entity'Result) in N_Entity and then
                 Ekind (Get_Called_Entity'Result) in E_Function  |
                                                     E_Procedure |

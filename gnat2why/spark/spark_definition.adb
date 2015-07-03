@@ -2134,7 +2134,9 @@ package body SPARK_Definition is
          else
             --  Entry calls are now in SPARK
             --  ??? what is "indirect call"? should we check more?
-            if Nkind (N) /= N_Entry_Call_Statement then
+            if not (Nkind (N) in N_Entry_Call_Statement |
+                                 N_Function_Call)
+            then
                --  Are there cases where we reach here??? For the moment,
                --  issue a generic error message about "indirect calls".
 

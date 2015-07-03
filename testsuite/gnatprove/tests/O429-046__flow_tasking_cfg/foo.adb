@@ -1,15 +1,14 @@
 with Ada.Real_Time; use Ada.Real_Time;
 
-package body Foo
-is
+package body Foo is
 
    B : Boolean := False;
 
    protected type Thing (D : Natural) is
       -- only subprogram/entry decl here
-      function P_Func return Boolean with Global => null;
+      function P_Func return Boolean;
 
-      procedure P_Proc (F : Boolean; G : out Boolean) with Global => null;
+      procedure P_Proc (F : Boolean; G : out Boolean);
 
       entry Ent (N : Natural)
         with Pre => N > 10 and B,
@@ -27,8 +26,7 @@ is
          return A or D = 3;
       end P_Func;
 
-      procedure P_Proc (F : Boolean; G : out Boolean)
-      is
+      procedure P_Proc (F : Boolean; G : out Boolean) is
       begin
          A := F;
          G := X;
@@ -54,8 +52,7 @@ is
       end loop;
    end Test_Task_01;
 
-   procedure Test_Delay_01
-   is
+   procedure Test_Delay_01 is
    begin
       delay until Clock + Seconds (5);
    end Test_Delay_01;
