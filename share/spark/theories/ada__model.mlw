@@ -316,8 +316,10 @@ module Fixed_Point_Base
 
   use import int.Int
   use import real.RealInfix
+  use import real.FromInt
   use import "_gnatprove_standard".Main
   use import "_gnatprove_standard".Int_Division
+  use import "_gnatprove_standard".RoundingWithTiesToAway
 
   type t
 
@@ -494,26 +496,20 @@ module Fixed_Point_Base
       else (* y = 0 *)
         true
 
-  (* division between two fixed-point values with integer result
-     case 1:
-         If the divident is small, then the result is exact and it is equal to
-         the internal representation of the divident.
-     otherwise:
-         The result may be inexact and is not yet supported.
+  (* division of fixed-point values with integer result; rounding is the same
+     as for floating-point types thus they have a single axiomatization
+
+     ??? a separate axiomatization for fixed-point types would not depend on
+         reals and thus could be better handled by SMT solvers and interactive
+         theorem provers
   *)
 
-  function fxp_div_result_int (x : __fixed) (y : __fixed) : int
+  function fxp_div_result_int (x : __fixed) (y : __fixed) : int =
+     RoundingWithTiesToAway.round ((from_int x) /. (from_int y))
 
   val fxp_div_result_int_ (x : __fixed) (y : __fixed) : int
      requires { y <> 0 }
      ensures { result = fxp_div_result_int x y }
-
-  axiom fxp_div_result_int_def :
-    forall x : __fixed. forall y : __fixed [fxp_div_result_int x y].
-      if y = 1 then
-        fxp_div_result_int x y = x
-      else
-        true
 
   (* conversion functions to/from int. 3 cases for the conversion to int:
      case 1:
