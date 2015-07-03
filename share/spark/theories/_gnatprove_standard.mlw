@@ -87,19 +87,19 @@ module Int_Division
   (* These program functions are there to generate division checks *)
 
   val div_ (x:int) (y:int) : int
-     requires { y<>0 }
+     requires { y <> 0 }
      ensures { result = div x y }
 
   val euclid_div_ (x:int) (y:int) : int
-     requires { y<>0 }
+     requires { y <> 0 }
      ensures { result = euclid_div x y }
 
   val rem_ (x:int) (y:int) : int
-     requires { y<>0 }
+     requires { y <> 0 }
      ensures{ result = rem x y }
 
   val mod_ (x:int) (y:int) : int
-     requires { y<>0 }
+     requires { y <> 0 }
      ensures { result = mod x y }
 
 end
@@ -199,7 +199,7 @@ module Floating
   function div_real (x : real) (y : real) : real = x /. y
 
   val div_real_ (x:real) (y:real) : real
-    requires { y<>0.0 }
+    requires { y <> 0.0 }
     ensures { result = div_real x y }
 
 end
