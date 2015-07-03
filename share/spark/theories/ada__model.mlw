@@ -30,7 +30,7 @@ module Discrete_Base
 
   val of_rep (x : rep_type) : t
     requires { true }
-    ensures { to_rep(result) = x }
+    ensures { to_rep (result) = x }
 
   function user_eq (x : t) (y : t) : bool
 
@@ -341,7 +341,7 @@ module Fixed_Point_Base
 
   val of_fixed (x : __fixed) : t
     requires { true }
-    ensures { to_fixed(result) = x }
+    ensures { to_fixed (result) = x }
 
   (* Inverse of the "small" value of the corresponding fixed-point type.
      This is guaranteed to be a positive whole number, because we restrict
@@ -684,7 +684,7 @@ module Static_Floating_Point
 
   axiom inversion_axiom :
     forall x : t [to_real x].
-      of_real (to_real(x)) = x
+      of_real (to_real (x)) = x
 
   function first : real
 
