@@ -36,8 +36,6 @@ package Gnat2Why.Error_Messages is
    function Has_Registered_VCs return Boolean;
    --  returns true when the function Register_VC has been called
 
-   function To_Tag (Kind : VC_Kind) return String;
-
    procedure Parse_Why3_Results (S : String);
 
    procedure Emit_Proof_Result

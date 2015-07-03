@@ -209,7 +209,21 @@ p.adb:15:12: info: initialization of "X" proved
 p.adb:17:09: info: initialization of "X" proved
 p.adb:18:04: info: assertion proved
 p.adb:18:19: info: initialization of "X" proved
-Analyzed 1 units
+Summary of SPARK analysis
+=========================
+
+                            Total      Flow   Interval   Provers   Justified   Unproved
+Data Dependencies               .         .          .         .           .          .
+Flow Dependencies               .         .          .         .           .          .
+Initialization                  5         5          .         .           .          .
+Non-Aliasing                    .         .          .         .           .          .
+Run-time Checks                 .         .          .         .           .          .
+Assertions                      1         .          .         1           .          .
+Functional Contracts            .         .          .         .           .          .
+LSP Verification                .         .          .         .           .          .
+
+
+Analyzed 1 unit
 in unit p, 1 subprograms and packages out of 1 analyzed
   P at p.adb:1 flow analyzed (0 errors and 2 warnings) and proved (1 checks)
    suppressed messages:

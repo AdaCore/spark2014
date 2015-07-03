@@ -61,6 +61,32 @@ package Report_Database is
       Assumptions   : Rule_Lists.List;    --  final mapping claims->assumptions
    end record;
 
+   type Summary_Line is record
+      Flow : Natural;
+      Interval : Natural;
+      Provers : Natural;
+      Justified : Natural;
+      Unproved : Natural;
+   end record;
+
+   type Possible_Entries is
+     (No_Entry,
+      Data_Dep,
+      Flow_Dep,
+      Init,
+      Non_Aliasing,
+      Runtime_Checks,
+      Assertions,
+      Functional_Contracts,
+      LSP);
+
+   subtype Summary_Entries is Possible_Entries range Data_Dep .. LSP;
+
+   type Summary_Type is array (Summary_Entries) of Summary_Line;
+
+   Null_Summary_Line : Summary_Line := (others => 0);
+   Summary : Summary_Type := (others => Null_Summary_Line);
+
    procedure Add_Flow_Result
      (Unit  : Unit_Type;
       Subp  : Subp_Type;

@@ -150,7 +150,7 @@ package body Gnat2Why.Error_Messages is
         (Node,
          Msg,
          Proved,
-         To_Tag (Kind),
+         Kind,
          Place_First => Locate_On_First_Token (Kind),
          Tracefile   => Tracefile,
          Cntexmpfile => Cntexmpfile,
@@ -497,43 +497,5 @@ package body Gnat2Why.Error_Messages is
       Add_Id_To_Entity (Tmp, E);
       return Tmp;
    end Register_VC;
-
-   ------------
-   -- To_Tag --
-   ------------
-
-   function To_Tag (Kind : VC_Kind) return String is
-   begin
-      return
-      (case Kind is
-         when VC_Division_Check            => "division_check",
-         when VC_Index_Check               => "index_check",
-         when VC_Overflow_Check            => "overflow_check",
-         when VC_Range_Check               => "range_check",
-         when VC_Length_Check              => "length_check",
-         when VC_Discriminant_Check        => "discriminant_check",
-         when VC_Tag_Check                 => "tag_check",
-         when VC_Default_Initial_Condition => "default_initial_condition",
-         when VC_Initial_Condition         => "initial_condition",
-         when VC_Precondition              => "precondition",
-         when VC_Precondition_Main         => "precondition_main",
-         when VC_Postcondition             => "postcondition",
-         when VC_Refined_Post              => "refined_post",
-         when VC_Contract_Case             => "contract_case",
-         when VC_Disjoint_Contract_Cases   => "disjoint_contract_cases",
-         when VC_Complete_Contract_Cases   => "complete_contract_cases",
-         when VC_Loop_Invariant            => "loop_invariant",
-         when VC_Loop_Invariant_Init       => "loop_invariant_initialization",
-         when VC_Loop_Invariant_Preserv    => "loop_invariant_preservation",
-         when VC_Loop_Variant              => "loop_variant",
-         when VC_Assert                    => "assertion",
-         when VC_Raise                     => "raise_statement",
-         when VC_Weaker_Pre                => "weaker_pre",
-         when VC_Trivial_Weaker_Pre        => "trivial_weaker_pre",
-         when VC_Stronger_Post             => "stronger_post",
-         when VC_Weaker_Classwide_Pre      => "weaker_classwide_pre",
-         when VC_Stronger_Classwide_Post   => "stronger_classwide_post"
-      );
-   end To_Tag;
 
 end Gnat2Why.Error_Messages;

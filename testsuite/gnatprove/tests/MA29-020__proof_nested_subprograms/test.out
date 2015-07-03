@@ -69,6 +69,20 @@ skein.ads:121:21: info: length check proved
 skein.ads:132:31: info: initialization of "Hash" proved
 skein.ads:268:52: info: length check proved
 skein.ads:269:52: info: length check proved
+Summary of SPARK analysis
+=========================
+
+                            Total      Flow   Interval   Provers   Justified   Unproved
+Data Dependencies               .         .          .         .           .          .
+Flow Dependencies               .         .          .         .           .          .
+Initialization                 27        27          .         .           .          .
+Non-Aliasing                    .         .          .         .           .          .
+Run-time Checks                28         .          .        23           .          5
+Assertions                      .         .          .         .           .          .
+Functional Contracts            .         .          .         .           .          .
+LSP Verification                .         .          .         .           .          .
+
+
 Analyzed 1 unit
 in unit skein, 3 subprograms and packages out of 3 analyzed
   Skein at skein.ads:6 flow analyzed (0 errors and 0 warnings) and proved (6 checks)

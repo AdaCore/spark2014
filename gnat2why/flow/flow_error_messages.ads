@@ -122,7 +122,7 @@ package Flow_Error_Messages is
      (N           : Node_Id;
       Msg         : String;
       Is_Proved   : Boolean;
-      Tag         : String;
+      Tag         : VC_Kind;
       Tracefile   : String;
       Cntexmpfile : String;
       VC_File     : String;

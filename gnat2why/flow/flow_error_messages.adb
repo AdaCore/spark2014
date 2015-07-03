@@ -392,7 +392,7 @@ package body Flow_Error_Messages is
      (N           : Node_Id;
       Msg         : String;
       Is_Proved   : Boolean;
-      Tag         : String;
+      Tag         : VC_Kind;
       Tracefile   : String;
       Cntexmpfile : String;
       VC_File     : String;
@@ -435,7 +435,7 @@ package body Flow_Error_Messages is
 
       Add_Json_Msg
         (Suppr       => Suppr,
-         Tag         => Tag,
+         Tag         => VC_Kind'Image (Tag),
          Kind        => Kind,
          Slc         => Slc,
          Msg_List    => Proof_Msgs,

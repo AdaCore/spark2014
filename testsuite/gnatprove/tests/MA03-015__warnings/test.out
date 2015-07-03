@@ -3,6 +3,20 @@ warn_suppr.adb:9:12: info: initialization of "Z" proved
 warn_suppr.adb:9:14: medium: overflow check might fail
 warn_suppr.adb:9:16: info: initialization of "K" proved
 warn_suppr.ads:3:14: warning: subprogram "P" has no effect
+Summary of SPARK analysis
+=========================
+
+                            Total      Flow   Interval   Provers   Justified   Unproved
+Data Dependencies               .         .          .         .           .          .
+Flow Dependencies               .         .          .         .           .          .
+Initialization                  2         2          .         .           .          .
+Non-Aliasing                    .         .          .         .           .          .
+Run-time Checks                 3         .          .         .           1          2
+Assertions                      .         .          .         .           .          .
+Functional Contracts            .         .          .         .           .          .
+LSP Verification                .         .          .         .           .          .
+
+
 Analyzed 1 unit
 in unit warn_suppr, 2 subprograms and packages out of 2 analyzed
   Warn_Suppr at warn_suppr.ads:1 flow analyzed (0 errors and 0 warnings) and proved (0 checks)

@@ -2,7 +2,21 @@ p.adb:13:14: warning: subprogram "P1" has no effect
 p.adb:21:14: warning: subprogram "P2" has no effect
 p.adb:29:14: warning: subprogram "P3" has no effect
 p.adb:37:14: warning: subprogram "P4" has no effect
-Analyzed 1 units
+Summary of SPARK analysis
+=========================
+
+                            Total      Flow   Interval   Provers   Justified   Unproved
+Data Dependencies               .         .          .         .           .          .
+Flow Dependencies               .         .          .         .           .          .
+Initialization                  .         .          .         .           .          .
+Non-Aliasing                    .         .          .         .           .          .
+Run-time Checks                 .         .          .         .           .          .
+Assertions                      .         .          .         .           .          .
+Functional Contracts            .         .          .         .           .          .
+LSP Verification                .         .          .         .           .          .
+
+
+Analyzed 1 unit
 in unit p, 13 subprograms and packages out of 13 analyzed
   P at p.ads:1 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
   P.CF1 at p.adb:8 flow analyzed (0 errors and 0 warnings) and proved (0 checks)

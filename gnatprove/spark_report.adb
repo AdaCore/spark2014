@@ -127,9 +127,10 @@ with GNAT.Directory_Operations.Iteration;
 with GNAT.OS_Lib;             use GNAT.OS_Lib;
 with GNATCOLL.JSON;           use GNATCOLL.JSON;
 with GNATCOLL.Utils;          use GNATCOLL.Utils;
+with Print_Table;             use Print_Table;
 with Report_Database;         use Report_Database;
 with String_Utils;            use String_Utils;
-with VC_Kinds;
+with VC_Kinds;                use VC_Kinds;
 
 procedure SPARK_Report is
 
@@ -169,6 +170,27 @@ procedure SPARK_Report is
    function To_String (Sloc : My_Sloc) return String;
    --  pretty printing of slocs including instantiation chains
 
+   procedure Dump_Summary_Table (Handle : Ada.Text_IO.File_Type);
+   --  Print the summary table to a file
+   --  @param Handle the file handle to print the summary table to
+
+   procedure Increment (X : in out Integer);
+   --  @param X increment this parameter by 1
+
+   function VC_Kind_To_Summary (S : VC_Kind) return Summary_Entries;
+   --  @param S a VC kind like VC_DIVISION_CHECK etc
+   --  @return the corresponding summary entry which this VC corresponds to
+
+   function Flow_Kind_To_Summary (S : Flow_Tag_Kind) return Possible_Entries;
+   --  @param S a Flow kind like VC_DIVISION_CHECK etc
+   --  @return the corresponding summary entry which this VC corresponds to
+
+   function To_String (S : Summary_Entries) return String;
+   --  compute the string which will appear in the leftmost column of the
+   --  summary table for each check kind
+   --  @param S the table line
+   --  @return a string to be presented to the user
+
    -------------------------
    -- Compute_Assumptions --
    -------------------------
@@ -186,6 +208,119 @@ procedure SPARK_Report is
          end;
       end loop;
    end Compute_Assumptions;
+
+   ------------------------
+   -- Dump_Summary_Table --
+   ------------------------
+
+   procedure Dump_Summary_Table (Handle : Ada.Text_IO.File_Type) is
+
+      T : Table := Create_Table (Lines => 9, Cols => 7);
+
+      procedure Print_Table_Header;
+      --  print the header of the table
+
+      procedure Print_Table_Line (Line : Summary_Entries);
+      --  print a line of the table other than the header
+      --  @param Line the entry of the summary to be printed
+
+      ------------------------
+      -- Print_Table_Header --
+      ------------------------
+
+      procedure Print_Table_Header is
+      begin
+
+         --  the very first cell is the upper left corner of the table, which
+         --  is empty
+
+         Put_Cell (T, "");
+         Put_Cell (T, "Total");
+         Put_Cell (T, "Flow");
+         Put_Cell (T, "Interval");
+         Put_Cell (T, "Provers");
+         Put_Cell (T, "Justified");
+         Put_Cell (T, "Unproved");
+         New_Line (T);
+      end Print_Table_Header;
+
+      ----------------------
+      -- Print_Table_Line --
+      ----------------------
+
+      procedure Print_Table_Line (Line : Summary_Entries) is
+         Elt : constant Summary_Line := Summary (Line);
+         Total : constant Natural :=
+           Elt.Flow + Elt.Interval + Elt.Provers +
+             Elt.Justified + Elt.Unproved;
+      begin
+         Put_Cell (T, To_String (Line), Align => Left_Align);
+         Put_Cell (T, Total);
+         Put_Cell (T, Elt.Flow);
+         Put_Cell (T, Elt.Interval);
+         Put_Cell (T, Elt.Provers);
+         Put_Cell (T, Elt.Justified);
+         Put_Cell (T, Elt.Unproved);
+         New_Line (T);
+      end Print_Table_Line;
+
+   begin
+      Ada.Text_IO.Put_Line (Handle, "Summary of SPARK analysis");
+      Ada.Text_IO.Put_Line (Handle, "=========================");
+      Ada.Text_IO.New_Line (Handle);
+      Print_Table_Header;
+      for Line in Summary_Entries loop
+         Print_Table_Line (Line);
+      end loop;
+      Dump_Table (Handle, T);
+   end Dump_Summary_Table;
+
+   function Flow_Kind_To_Summary (S : Flow_Tag_Kind) return Possible_Entries is
+   begin
+      case S is
+         when Empty_Tag =>
+            return No_Entry;
+
+         when Aliasing =>
+            return Non_Aliasing;
+
+         when Global_Missing
+            | Global_Wrong
+            | Export_Depends_On_Proof_In
+            | Hidden_Unexposed_State
+            | Illegal_Update
+            | Non_Volatile_Function_With_Volatile_Effects
+            | Volatile_Function_Without_Volatile_Effects
+            | Side_Effects =>
+
+            return Data_Dep;
+
+         when  Impossible_To_Initialize_State
+            | Initializes_Wrong
+            | Uninitialized
+            | Default_Initialization_Missmatch =>
+
+            return Init;
+
+         when Depends_Null
+            | Depends_Missing
+            | Depends_Missing_Clause
+            | Depends_Wrong =>
+
+            return Flow_Dep;
+
+         when Dead_Code
+            | Ineffective
+            | Inout_Only_Read
+            | Missing_Return
+            | Not_Constant_After_Elaboration
+            | Pragma_Elaborate_All_Needed
+            | Stable
+            | Unused
+            | Unused_Initial_Value =>
+            return No_Entry;
+      end case;
+   end Flow_Kind_To_Summary;
 
    -------------------------
    -- Handle_Assume_Items --
@@ -209,6 +344,10 @@ procedure SPARK_Report is
             Result : constant JSON_Value := Get (V, Index);
             Severe : constant String     := Get (Get (Result, "severity"));
             Subp   : constant Subp_Type  := From_JSON (Get (Result, "entity"));
+            Kind   : constant Flow_Tag_Kind :=
+              Flow_Tag_Kind'Value (Get (Get (Result, "rule")));
+            Category : constant Possible_Entries :=
+              Flow_Kind_To_Summary (Kind);
          begin
             if Has_Field (Result, "suppressed") then
                Add_Suppressed_Warning
@@ -218,14 +357,22 @@ procedure SPARK_Report is
                   File   => Get (Get (Result, "file")),
                   Line   => Get (Get (Result, "line")),
                   Column => Get (Get (Result, "col")));
+               if Category /= No_Entry then
+                  Increment (Summary (Category).Justified);
+               end if;
             elsif Severe = "info" then
                --  Ignore flow info messages for now.
-               null;
+               if Category /= No_Entry then
+                  Increment (Summary (Category).Flow);
+               end if;
             else
                Add_Flow_Result
                  (Unit  => Unit,
                   Subp  => Subp,
                   Error => Severe = "error");
+               if Category /= No_Entry then
+                  Increment (Summary (Category).Unproved);
+               end if;
             end if;
          end;
       end loop;
@@ -239,11 +386,18 @@ procedure SPARK_Report is
    begin
       for Index in 1 .. Length (V) loop
          declare
-            Result : constant JSON_Value := Get (V, Index);
-            Severe : constant String     := Get (Get (Result, "severity"));
-            Subp   : constant Subp_Type  := From_JSON (Get (Result, "entity"));
+            Result   : constant JSON_Value := Get (V, Index);
+            Severe   : constant String     := Get (Get (Result, "severity"));
+            Kind     : constant VC_Kind    :=
+              VC_Kind'Value (Get (Get (Result, "rule")));
+            Subp     : constant Subp_Type :=
+              From_JSON (Get (Result, "entity"));
+            Category : constant Summary_Entries :=
+              VC_Kind_To_Summary (Kind);
+            Proved   : constant Boolean := Severe = "info";
          begin
             if Has_Field (Result, "suppressed") then
+               Increment (Summary (Category).Justified);
                Add_Suppressed_Warning
                  (Unit   => Unit,
                   Subp   => Subp,
@@ -255,7 +409,12 @@ procedure SPARK_Report is
                Add_Proof_Result
                  (Unit   => Unit,
                   Subp   => Subp,
-                  Proved => Severe = "info");
+                  Proved => Proved);
+               if Proved then
+                  Increment (Summary (Category).Provers);
+               else
+                  Increment (Summary (Category).Unproved);
+               end if;
             end if;
          end;
       end loop;
@@ -311,13 +470,14 @@ procedure SPARK_Report is
    -----------------------
 
    procedure Handle_SPARK_File (Fn : String) is
-      Dict : constant JSON_Value := Read (Read_File_Into_String (Fn), Fn);
-      Basename : constant String := Ada.Directories.Base_Name (Fn);
-      Unit : constant Unit_Type := Mk_Unit (Basename);
-      Has_Flow : constant Boolean := Has_Field (Dict, "flow");
-      Has_Proof : constant Boolean := Has_Field (Dict, "proof");
+         Dict      : constant JSON_Value :=
+           Read (Read_File_Into_String (Fn), Fn);
+         Basename  : constant String := Ada.Directories.Base_Name (Fn);
+         Unit      : constant Unit_Type := Mk_Unit (Basename);
+         Has_Flow  : constant Boolean := Has_Field (Dict, "flow");
+         Has_Proof : constant Boolean := Has_Field (Dict, "proof");
 
-      --  Status of analysis performed on all subprograms and packages of a
+         --  Status of analysis performed on all subprograms and packages of a
       --  unit depend on presence of the "flow" and "proof" files present in
       --  the .spark result file.
 
@@ -364,6 +524,15 @@ procedure SPARK_Report is
          Handle_Assume_Items (Get (Get (Dict, "assumptions")), Unit);
       end if;
    end Handle_SPARK_File;
+
+   ---------------
+   -- Increment --
+   ---------------
+
+   procedure Increment (X : in out Integer) is
+   begin
+      X := X + 1;
+   end Increment;
 
    ------------------------
    -- Parse_Command_Line --
@@ -518,6 +687,53 @@ procedure SPARK_Report is
       end if;
    end Print_Analysis_Report;
 
+   -----------------------------
+   -- String_To_Summary_Entry --
+   -----------------------------
+
+   function VC_Kind_To_Summary (S : VC_Kind) return Summary_Entries is
+   begin
+      case S is
+         when VC_Division_Check
+            | VC_Index_Check
+            | VC_Overflow_Check
+            | VC_Range_Check
+            | VC_Length_Check
+            | VC_Discriminant_Check
+            | VC_Tag_Check =>
+
+            return Runtime_Checks;
+
+         when VC_Assert =>
+            return Assertions;
+
+         when VC_Initial_Condition
+            | VC_Default_Initial_Condition
+            | VC_Precondition
+            | VC_Precondition_Main
+            | VC_Postcondition
+            | VC_Refined_Post
+            | VC_Contract_Case
+            | VC_Disjoint_Contract_Cases
+            | VC_Complete_Contract_Cases
+            | VC_Loop_Invariant
+            | VC_Loop_Invariant_Init
+            | VC_Loop_Invariant_Preserv
+            | VC_Loop_Variant
+            | VC_Raise =>
+
+            return Functional_Contracts;
+
+            when VC_Weaker_Pre
+            | VC_Trivial_Weaker_Pre
+            | VC_Stronger_Post
+            | VC_Weaker_Classwide_Pre
+            | VC_Stronger_Classwide_Post =>
+
+            return LSP;
+      end case;
+   end VC_Kind_To_Summary;
+
    ---------------
    -- To_String --
    ---------------
@@ -540,6 +756,20 @@ procedure SPARK_Report is
          Append (UB, Image (S.Line, 1));
       end loop;
       return To_String (UB);
+   end To_String;
+
+   function To_String (S : Summary_Entries) return String is
+   begin
+      case S is
+         when Data_Dep             => return "Data Dependencies";
+         when Flow_Dep             => return "Flow Dependencies";
+         when Init                 => return "Initialization";
+         when Non_Aliasing         => return "Non-Aliasing";
+         when Runtime_Checks       => return "Run-time Checks";
+         when Assertions           => return "Assertions";
+         when Functional_Contracts => return "Functional Contracts";
+         when LSP                  => return "LSP Verification";
+      end case;
    end To_String;
 
    procedure Iterate_Source_Dirs is new For_Line_In_File (Handle_Source_Dir);
@@ -565,6 +795,11 @@ begin
    if Assumptions then
       Compute_Assumptions;
    end if;
+   if not No_Analysis_Done then
+      Dump_Summary_Table (Handle);
+   end if;
+   Ada.Text_IO.New_Line (Handle);
+   Ada.Text_IO.New_Line (Handle);
    Print_Analysis_Report (Handle);
    Close (Handle);
 end SPARK_Report;
