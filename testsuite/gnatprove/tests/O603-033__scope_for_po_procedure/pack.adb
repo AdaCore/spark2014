@@ -1,3 +1,5 @@
+with Ada.Real_Time;
+
 package body Pack is
 
    protected body Store is
@@ -6,7 +8,7 @@ package body Pack is
       begin
          null;
          --  Crash happens only with a delay statement here
-         delay 0.0;
+         delay until Ada.Real_Time.Clock;
       end Dummy;
    end Store;
 
