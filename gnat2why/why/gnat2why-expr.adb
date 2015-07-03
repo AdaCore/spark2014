@@ -8983,7 +8983,7 @@ package body Gnat2Why.Expr is
 
          when N_Op_Add | N_Op_Subtract =>
             --  The arguments of arithmetic functions have to be of base
-            --  scalar types
+            --  scalar types.
             declare
                Left  : constant Node_Id := Left_Opnd (Expr);
                Right : constant Node_Id := Right_Opnd (Expr);
@@ -9008,7 +9008,7 @@ package body Gnat2Why.Expr is
 
          when N_Op_Multiply | N_Op_Divide =>
             --  The arguments of arithmetic functions have to be of base
-            --  scalar types
+            --  scalar types.
             declare
                Left  : constant Node_Id := Left_Opnd (Expr);
                Right : constant Node_Id := Right_Opnd (Expr);
