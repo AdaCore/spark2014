@@ -355,6 +355,8 @@ where ``dir`` is the default location of the run-time library. The choice of
 run-time library is described in the |GNAT Pro| User's Guide as part of the
 description of switch ``--RTS`` for tool ``gnatmake``.
 
+.. _Parenthesized Arithmetic Operations:
+
 Parenthesized Arithmetic Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
