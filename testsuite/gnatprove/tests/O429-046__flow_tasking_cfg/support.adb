@@ -9,11 +9,7 @@ package body Support is
    end Prot;
 
    task body Rand_Task is
-      Rand : Natural := Natural (Random_3.Random (G));
    begin
-      Prot.Add (Rand);
+      Prot.Add (1);
    end Rand_Task;
-
-begin
-   Random_3.Reset (G);
 end Support;

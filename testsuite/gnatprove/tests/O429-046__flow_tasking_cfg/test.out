@@ -11,13 +11,6 @@ prot.adb:25:39: info: initialization of "Hidden" constituent of "State" proved
 prot.ads:5:04: info: initialization of "Visible" proved
 prot.ads:8:22: info: initialization of "X" proved
 prot.ads:12:13: info: initialization of "Hidden" constituent of "State" proved
-support.adb:12:42: warning: assuming "Random" has no effect on global items
-support.adb:12:42: warning: no Global contract available for "Random"
-support.adb:14:17: info: initialization of "Rand" proved
-support.adb:18:12: warning: assuming "Reset" has no effect on global items
-support.adb:18:12: warning: no Global contract available for "Reset"
-support.adb:18:20: info: initialization of "G" proved
-support.ads:20:14: medium: "G" might not be initialized after elaboration of main program "Rand_Task"
 tasks.adb:4:04: info: initialization of "Hidden" constituent of "State" proved
 tasks.adb:5:04: info: initialization of "Hidden2" constituent of "State" proved
 tasks.ads:5:04: info: initialization of "Visible" proved
