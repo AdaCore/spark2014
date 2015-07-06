@@ -551,17 +551,11 @@ package body Flow_Error_Messages is
          begin
             String_To_Name_Buffer (Suppr);
             Reason_String := Name_Buffer (1 .. Len);
-            Set_Field (Value, "message", Reason_String);
+            Set_Field (Value, "suppressed", Reason_String);
          end;
       end if;
 
-      --  ??? pragma Warning is not very good ...
-
-      Set_Field (Value, "rule",
-                 (if Suppr /= No_String then
-                     "pragma_warning"
-                  else Tag));
-
+      Set_Field (Value, "rule", Tag);
       Set_Field (Value, "severity", Msg_Kind_To_String (Kind));
       Set_Field (Value, "entity", To_JSON (Entity_To_Subp (E)));
 

@@ -76,27 +76,29 @@
 --  ------------------
 --
 --  Entries for proof are of the following form: proof_result =
---    { file     : string,
---      line     : int,
---      col      : int,
---      message  : string,
---      rule     : string,
---      severity : string,
---      tracefile: string,
---      msg_id   : int,
---      entity   : entity }
---  - (file, line, col) describe the source location of the message. -
---  "message" is the message text. - "rule" describes the kind of VC,
---  the possible values are described
+--    { file       : string,
+--      line       : int,
+--      col        : int,
+--      suppressed : string,
+--      rule       : string,
+--      severity   : string,
+--      tracefile  : string,
+--      msg_id     : int,
+--      entity     : entity }
+--  - (file, line, col) describe the source location of the message.
+--  - - "rule" describes the kind of VC, the possible values are described
 --    in the file vc_kinds.ads.
+--  - "message" is the message text.
 --  - "severity" describes the kind status of the message, possible values used
 --    by gnatwhy3 are "info" and "error"
---  - "tracefile" contains the name of a trace file, if any - "entity" contains
---  the entity dictionary for the entity that this VC
+--  - "tracefile" contains the name of a trace file, if any
+--  - "entity" contains the entity dictionary for the entity that this VC
 --    belongs to
 --  - "msg_id" - if present indicates that this entry corresponds to a message
 --    issued on the commandline, with the exact same msg_id in brackets:
 --    "[#12]"
+--  - "suppressed" - if present, the message is in fact suppressed by a pragma
+--    Annotate, and this field contains the justification message.
 --
 --  -----------------
 --  --  Flow Entry --
@@ -206,14 +208,13 @@ procedure SPARK_Report is
          declare
             Result : constant JSON_Value := Get (V, Index);
             Severe : constant String     := Get (Get (Result, "severity"));
-            Kind   : constant String     := Get (Get (Result, "rule"));
             Subp   : constant Subp_Type  := From_JSON (Get (Result, "entity"));
          begin
-            if Kind = "pragma_warning" then
+            if Has_Field (Result, "suppressed") then
                Add_Suppressed_Warning
                  (Unit   => Unit,
                   Subp   => Subp,
-                  Reason => Get (Get (Result, "message")),
+                  Reason => Get (Get (Result, "suppressed")),
                   File   => Get (Get (Result, "file")),
                   Line   => Get (Get (Result, "line")),
                   Column => Get (Get (Result, "col")));
@@ -240,14 +241,13 @@ procedure SPARK_Report is
          declare
             Result : constant JSON_Value := Get (V, Index);
             Severe : constant String     := Get (Get (Result, "severity"));
-            Kind   : constant String     := Get (Get (Result, "rule"));
             Subp   : constant Subp_Type  := From_JSON (Get (Result, "entity"));
          begin
-            if Kind = "pragma_warning" then
+            if Has_Field (Result, "suppressed") then
                Add_Suppressed_Warning
                  (Unit   => Unit,
                   Subp   => Subp,
-                  Reason => Get (Get (Result, "message")),
+                  Reason => Get (Get (Result, "suppressed")),
                   File   => Get (Get (Result, "file")),
                   Line   => Get (Get (Result, "line")),
                   Column => Get (Get (Result, "col")));
