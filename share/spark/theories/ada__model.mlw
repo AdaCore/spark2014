@@ -319,7 +319,6 @@ module Fixed_Point_Base
   use import real.FromInt
   use import "_gnatprove_standard".Main
   use import "_gnatprove_standard".Int_Division
-  use import "_gnatprove_standard".RoundingWithTiesToAway
 
   type t
 
@@ -375,6 +374,24 @@ module Fixed_Point_Base
        the closest integers. *)
     else
       exact <= res <= exact + 1
+
+  (* A similar helper predicate for division of fixed-point values with integer
+     result, which rounds to nearest, ties away from zero (RM G.2.3).
+  *)
+
+  predicate pos_div_relation_rna (res : int) (num : int) (den : int) =
+    let exact = div num den in
+    (* case 1: special case for zero *)
+    if num = 0 then
+      res = 0
+    (* case 2: RM G.2.3(17) if the result is exact, that's it *)
+    else if num = exact * den then
+      res = exact
+    (* case 3: RM G.2.3(18) otherwise round to nearest, away from zero *)
+    else if num - (exact * den) < ((exact + 1) * den) - num then
+      res = exact
+    else
+      res = exact + 1
 
   (* multiplication between two fixed-point values
      case 1:
@@ -496,20 +513,28 @@ module Fixed_Point_Base
       else (* y = 0 *)
         true
 
-  (* division of fixed-point values with integer result; rounding is the same
-     as for floating-point types thus they have a single axiomatization
+  (* division of fixed-point values with integer result *)
 
-     ??? a separate axiomatization for fixed-point types would not depend on
-         reals and thus could be better handled by SMT solvers and interactive
-         theorem provers
-  *)
-
-  function fxp_div_result_int (x : __fixed) (y : __fixed) : int =
-     RoundingWithTiesToAway.round ((from_int x) /. (from_int y))
+  function fxp_div_result_int (x : __fixed) (y : __fixed) : int
 
   val fxp_div_result_int_ (x : __fixed) (y : __fixed) : int
      requires { y <> 0 }
      ensures { result = fxp_div_result_int x y }
+
+  axiom fxp_div_result_int_def :
+    forall x : __fixed. forall y : __fixed [fxp_div_result_int x y].
+      if x = 0 then
+        fxp_div_result_int x y = 0
+      else if x > 0 /\ y > 0 then
+        pos_div_relation_rna (fxp_div_result_int x y) x y
+      else if x < 0 /\ y < 0 then
+        pos_div_relation_rna (fxp_div_result_int x y) (-x) (-y)
+      else if x < 0 /\ y > 0 then
+        pos_div_relation_rna (- (fxp_div_result_int x y)) (-x) y
+      else if x > 0 /\ y < 0 then
+        pos_div_relation_rna (- (fxp_div_result_int x y)) x (-y)
+      else (* y = 0 *)
+        true
 
   (* conversion functions to/from int. 3 cases for the conversion to int:
      case 1:

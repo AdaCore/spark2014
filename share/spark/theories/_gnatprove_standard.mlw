@@ -104,58 +104,6 @@ module Int_Division
 
 end
 
-module RoundingWithTiesToAway
-  use int.Int
-  use real.Real
-  use import real.RealInfix
-  use real.FromInt
-  use export real.Truncate
-
-  use export _gnatprove_standard_th.Floating_Func
-
-  (* Rounding with ties to away is common for floating-point operations and
-     fixed-point division with integer result; see RM G.2.3 *)
-
-  function real_of_int (x : int) : real = FromInt.from_int x
-
-  function round real : int
-
-  axiom Round_down:
-    forall x:real. x -. real_of_int (floor x) <. 0.5 -> round (x) = floor (x)
-
-  axiom Round_up:
-    forall x:real. real_of_int (ceil x) -. x <. 0.5 -> round (x) = ceil (x)
-
-  axiom Round_neg_tie:
-    forall x:real.
-      x -. real_of_int (floor x) = 0.5 /\ x <. 0.0 -> round (x) = floor (x)
-
-  axiom Round_pos_tie:
-    forall x:real.
-      real_of_int (ceil x) -. x = 0.5 /\ x >. 0.0 -> round (x) = ceil (x)
-
-  axiom Round_int :
-    forall i:int [round (real_of_int i)]. round (real_of_int i) = i
-
-  axiom Round_near_int :
-    forall i:int. forall x:real.
-      -.0.5 <. x /\ x <. 0.5 -> (round (real_of_int (i) +. x) = i)
-
-  axiom Round_monotonic:
-    forall x y:real. x <=. y -> Int.(<=) (round x) (round y)
-
-  axiom Round_monotonic_int1:
-    forall x:real, i:int. x <=. real_of_int i -> Int.(<=) (round x) i
-
-  axiom Round_monotonic_int2:
-    forall x:real, i:int. real_of_int i <=. x -> Int.(<=) i (round x)
-
-  axiom Round_bound:
-    forall x:real.
-      x -. 0.5 <=. real_of_int (round x) /\ real_of_int (round x) <=. x +. 0.5
-
-end
-
 module Floating
   use real.Real
   use import real.RealInfix
@@ -163,6 +111,7 @@ module Floating
   use export real.Truncate
   use export real.PowerInt
   use real.MinMax
+  use real.FromInt
 
   use floating_point.Rounding
   use floating_point.Single
@@ -207,7 +156,45 @@ module Floating
     forall x : real [ round_single x ].
       round_double (round_single x) = round_single x
 
-  use export RoundingWithTiesToAway
+  use export _gnatprove_standard_th.Floating_Func
+
+  function real_of_int (x : int) : real = FromInt.from_int x
+
+  function round real : int
+
+  axiom Round_down:
+    forall x:real. x -. real_of_int (floor x) <. 0.5 -> round (x) = floor (x)
+
+  axiom Round_up:
+    forall x:real. real_of_int (ceil x) -. x <. 0.5 -> round (x) = ceil (x)
+
+  axiom Round_neg_tie:
+    forall x:real.
+      x -. real_of_int (floor x) = 0.5 /\ x <. 0.0 -> round (x) = floor (x)
+
+  axiom Round_pos_tie:
+    forall x:real.
+      real_of_int (ceil x) -. x = 0.5 /\ x >. 0.0 -> round (x) = ceil (x)
+
+  axiom Round_int :
+    forall i:int [round (real_of_int i)]. round (real_of_int i) = i
+
+  axiom Round_near_int :
+    forall i:int. forall x:real.
+      -.0.5 <. x /\ x <. 0.5 -> (round (real_of_int (i) +. x) = i)
+
+  axiom Round_monotonic:
+    forall x y:real. x <=. y -> Int.(<=) (round x) (round y)
+
+  axiom Round_monotonic_int1:
+    forall x:real, i:int. x <=. real_of_int i -> Int.(<=) (round x) i
+
+  axiom Round_monotonic_int2:
+    forall x:real, i:int. real_of_int i <=. x -> Int.(<=) i (round x)
+
+  axiom Round_bound:
+    forall x:real.
+      x -. 0.5 <=. real_of_int (round x) /\ real_of_int (round x) <=. x +. 0.5
 
   function div_real (x : real) (y : real) : real = x /. y
 
