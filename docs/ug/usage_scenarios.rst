@@ -454,6 +454,17 @@ non-portability in |SPARK| may come from a small list of causes:
   should be performed to ensure that these calls cannot introduce aliasing
   between parameters, or between parameters and global variables.
 
+* Possible different choices of base type for user-defined integer types
+  (contrary to derived types or subtypes, which inherit their base type from
+  their parent type). |GNATprove| follows |GNAT| in chosing as base type the
+  smallest multiple-words-size integer type that contains the type bounds. For
+  example, a user-defined type ranging from 1 to 100 will be given a base type
+  ranging from -128 to 127 by both |GNAT| and |GNATprove|. The choice of base
+  types influences in which cases intermediate overflows may be raised during
+  computation. The choice made in |GNATprove| is the strictest one among
+  existing compilers, as far as we know, which ensures that |GNATprove|'s
+  analysis detects a superset of the overflows that may occur at run time.
+
 * Issues related to errors. See section :ref:`Avoiding Errors to Enhance
   Portability`.
 
