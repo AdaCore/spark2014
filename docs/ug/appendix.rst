@@ -955,6 +955,8 @@ ada__containers__formal_doubly_linked_lists.mlw::
 |GNATprove| Limitations
 =======================
 
+.. _Tool Limitations:
+
 Tool Limitations
 ----------------
 
@@ -1184,6 +1186,8 @@ introduced in a later version of Ada must be avoided (unless it is
 expressed as a safely-ignored pragma). This seems worth mentioning because
 Ada 2012 constructs such as quantified expressions
 and conditional expressions are often heavily used in |SPARK| programs.
+
+.. _Semantics of Floating Point Operations:
 
 Semantics of Floating Point Operations
 ======================================

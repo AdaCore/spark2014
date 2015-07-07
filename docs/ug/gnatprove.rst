@@ -311,6 +311,8 @@ Note that |GNATprove| will always choose the smallest multiple of 8
 bits for the base type, which is a safe and conservative choice for any Ada
 compiler.
 
+.. _Target Parameterization:
+
 Target Parameterization
 ^^^^^^^^^^^^^^^^^^^^^^^
 
