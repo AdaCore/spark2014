@@ -165,12 +165,17 @@ to performing a full or partial conversion to |SPARK|. The suggested workflow is
 Ensure Portability of Programs
 ==============================
 
-Using |SPARK| enhances portability of programs. Still, porting a |SPARK|
-program written for a given compiler and target to another compiler and/or
-target may require changes in the program. As |SPARK| is a subset of Ada, and
-because in general only some parts of a complete program are in |SPARK|, we
-need to consider first the issue of portability in the context of Ada, and then
-specialize it in the context of |SPARK|.
+Using |SPARK| enhances portability of programs by excluding language features
+that are known to cause portability problems, and by making it possible to
+obtain guarantees that specific portability problems cannot occur. In
+particular, analyses of |SPARK| code can prove the absence of run-time errors
+in the program, and that specified functional properties always hold.
+
+Still, porting a |SPARK| program written for a given compiler and target to
+another compiler and/or target may require changes in the program. As |SPARK|
+is a subset of Ada, and because in general only some parts of a complete
+program are in |SPARK|, we need to consider first the issue of portability in
+the context of Ada, and then specialize it in the context of |SPARK|.
 
 Portability of Ada Programs
 ---------------------------
@@ -406,13 +411,28 @@ data representations, interfacing with assembler code, and similar issues (for
 example, language attribute ``Size``). When changing the compiler and/or the
 target, the program logic should be carefully reviewed for possible dependences
 on the original compiler behavior and/or original target characteristics. See
-also the section 18.4.5 "Target-specific aspects" of the GNAT Reference Manual.
+also the section 18.4.5 "Target-specific aspects" of the GNAT Reference
+Manual. By using the following restrictions (or a subset thereof), one can
+ensure that the corresponding non-portable features are not used in the program:
+
+.. code-block:: ada
+
+   pragma No_Dependence (Ada.Unchecked_Conversion);
+   pragma No_Dependence (System.Machine_code);
 
 Similarly, the program logic should be carefully reviewed for possible
 dependency on target characteristics (for example, the size of standard integer
 types). |GNATprove|'s analysis may help here as it can take into account the
 characteristics of the target. Hence, proofs of functional properties with
 |GNATprove| ensure that these properties will always hold on the target.
+
+In the specific case that the target is changing, it might be useful to run
+|GNATprove|'s analysis on the program in ``proof`` mode, even if it cannot
+prove completely the absence of run-time errors and that the specified
+functional properties (if any) hold. Indeed, by running |GNATprove| twice, once
+with the original target and once with the new target, comparing the results
+obtained in both cases might point to parts of the code that are impacted by
+the change of target, which may require more detailed manual reviews.
 
 Apart from non-portable language features and target characteristics,
 non-portability in |SPARK| may come from a small list of causes:
