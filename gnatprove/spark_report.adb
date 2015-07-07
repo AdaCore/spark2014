@@ -509,9 +509,11 @@ procedure SPARK_Report is
 
    --  Start of processing for Print_Analysis_Report
 
+      Unit_Str : constant String :=
+        (if N_Un = 1 then "unit" else "units");
    begin
       if N_Un > 0 then
-         Put_Line (Handle, "Analyzed" & N_Un'Img & " units");
+         Put_Line (Handle, "Analyzed" & N_Un'Img & " " & Unit_Str);
          Iter_Units (For_Each_Unit'Access, Ordered => True);
       end if;
    end Print_Analysis_Report;

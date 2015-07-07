@@ -69,7 +69,7 @@ skein.ads:121:21: info: length check proved
 skein.ads:132:31: info: initialization of "Hash" proved
 skein.ads:268:52: info: length check proved
 skein.ads:269:52: info: length check proved
-Analyzed 1 units
+Analyzed 1 unit
 in unit skein, 3 subprograms and packages out of 3 analyzed
   Skein at skein.ads:6 flow analyzed (0 errors and 0 warnings) and proved (6 checks)
   Skein.Skein_512_Final at skein.ads:131 flow analyzed (0 errors and 15 warnings) and not proved, 16 checks out of 21 proved
