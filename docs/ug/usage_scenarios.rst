@@ -290,9 +290,11 @@ Portability issues may arise in a number of cases related to errors:
 
 * The original program has no error, but changing the compiler and/or target
   causes an error to appear, which may or not be detected. Typically, uses of
-  low-level constructs like Unchecked_Conversion which depend on the exact
+  low-level constructs like ``Unchecked_Conversion`` which depend on the exact
   representation of values in bits may lead to errors when changing the
-  compiler and/or the target.
+  compiler and/or the target. Some run-time errors like overflow errors or
+  storage errors are also particularly sensitive to compiler and target
+  changes.
 
 To avoid portability issues, errors should be avoided by using suitable
 analyses and reviews in the context of the original and the new compiler and/or
@@ -422,12 +424,15 @@ non-portability in |SPARK| may come from a small list of causes:
   lead to an intermediate overflow (for example, if the base type is large
   enough), or the user may introduce parentheses to prevent re-ordering.
 
-* Possible aliasing between parameters of a call causing interferences.  These
-  can be detected by running |GNATprove| (see :ref:`Benefits of Using SPARK for
-  Portability`). Then, either aliasing is not possible in reality, or aliasing
-  may not cause different behaviors depending on the parameter passing
-  mechanism chosen in the compiler, or the user may change the code to avoid
-  aliasing.
+* Possible aliasing between parameters (or parameters and global variables) of
+  a call causing interferences.  These can be detected by running |GNATprove|
+  (see :ref:`Benefits of Using SPARK for Portability`). Then, either aliasing
+  is not possible in reality, or aliasing may not cause different behaviors
+  depending on the parameter passing mechanism chosen in the compiler, or the
+  user may change the code to avoid aliasing. When |SPARK| subprograms are
+  called from non-|SPARK| code (for example Ada or C code), manual reviews
+  should be performed to ensure that these calls cannot introduce aliasing
+  between parameters, or between parameters and global variables.
 
 * Issues related to errors. See section :ref:`Avoiding Errors to Enhance
   Portability`.
@@ -444,7 +449,8 @@ Avoiding Errors to Enhance Portability
 Because errors in a program make portability particularly challenging (see
 :ref:`Portability of Programs With Errors`), it is important to ensure that a
 program is error-free for portability. |GNATprove|'s analysis can help by
-ensuring that the program if free from broad kinds of errors:
+ensuring that the |SPARK| parts of a program are free from broad kinds of
+errors:
 
 * all possible reads of uninitialized data
 
@@ -458,6 +464,13 @@ ensuring that the program if free from broad kinds of errors:
   ``Assert_Error`` at run time
 
 * all possible explicit raise of exceptions in the program
+
+When parts of the program are not in |SPARK| (for example, in Ada or C), the
+results of |GNATprove|'s analysis depend on assumptions on the correct behavior
+of the non-|SPARK| code. For example, callers of a |SPARK| subprogram should
+only pass initialized input values, and non-|SPARK| subprograms called from
+|SPARK| code should respect their postcondition. See section :ref:`Managing
+Assumptions` for the complete list of assumptions.
 
 In particular, when changing the target characteristics, |GNATprove|'s analysis
 can be used to show that no possible overflow can occur as a result of changing
