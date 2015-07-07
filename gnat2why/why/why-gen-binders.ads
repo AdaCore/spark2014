@@ -252,4 +252,34 @@ package Why.Gen.Binders is
    --  @param Ref_Allowed use dereference for variables.
    --  @return an Item representing the Entity E.
 
+   function Get_Binders_From_Variables (Variables : Name_Sets.Set)
+                                        return Item_Array;
+   --  From a set of names returned by flow analysis, compute an array of
+   --  items representing the variables in Why.
+   --  @param Variables a set of names returned by flow analysis
+   --  @result An array of items used to represent these variables in Why
+
+   procedure Localize_Variable_Parts (Binders : in out Item_Array);
+   --  Changes variables components of Binders to refer to local names.
+   --  @param Binders an array of items.
+
+   procedure Push_Binders_To_Symbol_Table (Binders : Item_Array);
+   --  Modifies Symbol_Table to store bindings from Binders.
+   --  @param Binders an array of items.
+
+   function Get_Parameters_From_Binders (Binders : Item_Array)
+                                         return Binder_Array;
+   --  Return identifiers used to refer to variable parts of Binders.
+   --  @param Binders an array of items.
+   --  @result An array of items used to represent these variables in Why
+   --  @result An array of binders containing their variable parts
+
+   function Get_Args_From_Variables (Variables : Name_Sets.Set)
+                                     return W_Expr_Array;
+   --  From a set of names returned by flow analysis, compute an array of
+   --  expressions for the values of their variable parts.
+   --  @param Variables a set of names returned by flow analysis
+   --  @result An array of W_Expr_Ids used to represent the variable parts
+   --  of these variables in Why.
+
 end Why.Gen.Binders;

@@ -26,7 +26,6 @@
 with Why.Ids;            use Why.Ids;
 with Why.Types;          use Why.Types;
 with Why.Sinfo;          use Why.Sinfo;
-with Common_Containers;  use Common_Containers;
 with Why.Atree.Builders; use Why.Atree.Builders;
 
 package Why.Gen.Terms is
@@ -35,11 +34,11 @@ package Why.Gen.Terms is
    True_Term  : constant W_Term_Id := New_Literal (Value => EW_True);
    False_Term : constant W_Term_Id := New_Literal (Value => EW_False);
 
-   function Get_All_Dereferences (W : Why_Node_Id) return Node_Sets.Set;
-   --  Return a list of the variables dereferenced in T
+   function Has_Dereference (W : Why_Node_Id) return Boolean;
+   --  Return True if T contains a dereference
 
    function Has_Dereference_Or_Any (T : W_Term_Id) return Boolean;
-   --  Return True if T contains a dereference
+   --  Return True if T contains a dereference or any constructs
 
    function New_Old (Expr : W_Expr_Id; Domain : EW_Domain) return W_Expr_Id;
    --  Build the expression old Expr

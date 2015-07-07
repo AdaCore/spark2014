@@ -101,6 +101,9 @@ package body Gnat2Why.Driver is
    --  If Current_Unit_Only is set then we do not pull in the ALIs of
    --  dependent units.
 
+   procedure Complete_Declaration (E : Entity_Id);
+   --  Generate completion for every subprogram or type entity in List_Entities
+
    function Is_Translated_Subprogram (E : Entity_Id) return Boolean;
    --  @param E Subprogram entity.
    --  @return True iff subprogram E needs to be translated into Why3.
@@ -133,6 +136,62 @@ package body Gnat2Why.Driver is
 
    procedure Generate_Assumptions;
    --  For all calls from a SPARK subprogram to another, register assumptions
+
+   --------------------------
+   -- Complete_Declaration --
+   --------------------------
+
+   procedure Complete_Declaration (E : Entity_Id) is
+   begin
+      if Ekind (E) in Subprogram_Kind
+        and then Is_Translated_Subprogram (E)
+
+        --  Axioms for a SPARK expression function are issued in the same
+        --  module as the function declaration.
+        and then (not (Present (Get_Expression_Function (E)))
+                  or else not Entity_Body_In_SPARK (E))
+      then
+         declare
+            Compl_File : Why_Section :=
+              Why_Sections (Dispatch_Entity_Completion (E));
+         begin
+            Generate_Subprogram_Completion (Compl_File, E);
+         end;
+
+         --  An entity E_Subprogram_Body should be present only for
+         --  expression functions.
+         --  ??? special case of expression functions still necessary ?
+
+      elsif Ekind (E) = E_Subprogram_Body then
+         declare
+            Decl_E : constant Entity_Id := Unique_Entity (E);
+            File   : Why_Section :=
+              Why_Sections (Dispatch_Entity (E));
+         begin
+            pragma Assert (Present (Get_Expression_Function (Decl_E)));
+
+            Translate_Expression_Function_Body (File, Decl_E);
+         end;
+
+      elsif Ekind (E) in Type_Kind
+        and then Entity_In_SPARK (E)
+        and then Retysp (E) = E
+      then
+         if not Is_Standard_Boolean_Type (E)
+           and then E /= Universal_Fixed
+         then
+            declare
+               Compl_File : Why_Section :=
+                 Why_Sections (Dispatch_Entity_Completion (E));
+            begin
+               Generate_Type_Completion (Compl_File, E);
+            end;
+         end if;
+
+      elsif Ekind (E) = E_Package and then Entity_In_Ext_Axioms (E) then
+         Complete_External_Entities (E);
+      end if;
+   end Complete_Declaration;
 
    ----------------------
    -- Create_JSON_File --
@@ -584,52 +643,24 @@ package body Gnat2Why.Driver is
 
    procedure Translate_CUnit is
 
-      procedure Complete_Subprograms (List_Entities : Node_Lists.List);
-      --  Generate completion for every subprogram entity in List_Entities
+      procedure Complete_Declarations (List_Entities : Node_Lists.List);
+      --  Generate completion for every subprogram or type entity in
+      --  List_Entities
 
       procedure Translate_List_Entities (List_Entities : Node_Lists.List);
       --  Translate the list of entities from the spec or body, in batches, in
       --  order to ensure proper definition before use in Why files.
 
-      --------------------------
-      -- Complete_Subprograms --
-      --------------------------
+      ---------------------------
+      -- Complete_declarations --
+      ---------------------------
 
-      procedure Complete_Subprograms (List_Entities : Node_Lists.List) is
+      procedure Complete_Declarations (List_Entities : Node_Lists.List) is
       begin
          for E of List_Entities loop
-            if Ekind (E) in Subprogram_Kind
-              and then Is_Translated_Subprogram (E)
-
-              --  Axioms for a SPARK expression function are issued in the same
-              --  module as the function declaration.
-              and then (not (Present (Get_Expression_Function (E)))
-                        or else not Entity_Body_In_SPARK (E))
-            then
-               declare
-                  Compl_File : Why_Section :=
-                    Why_Sections (Dispatch_Entity_Completion (E));
-               begin
-                  Generate_Subprogram_Completion (Compl_File, E);
-               end;
-
-               --  An entity E_Subprogram_Body should be present only for
-               --  expression functions.
-               --  ??? special case of expression functions still necessary ?
-
-            elsif Ekind (E) = E_Subprogram_Body then
-               declare
-                  Decl_E : constant Entity_Id := Unique_Entity (E);
-                  File   : Why_Section :=
-                    Why_Sections (Dispatch_Entity (E));
-               begin
-                  pragma Assert (Present (Get_Expression_Function (Decl_E)));
-
-                  Translate_Expression_Function_Body (File, Decl_E);
-               end;
-            end if;
+            Complete_Declaration (E);
          end loop;
-      end Complete_Subprograms;
+      end Complete_Declarations;
 
       -----------------------------
       -- Translate_List_Entities --
@@ -661,7 +692,7 @@ package body Gnat2Why.Driver is
 
       For_All_External_States (Translate_External_Object'Access);
 
-      Complete_Subprograms (Entity_List);
+      Complete_Declarations (Entity_List);
 
       --  Generate VCs for entities of unit. This must follow the generation of
       --  modules for entities, so that all completions for deferred constants
@@ -727,9 +758,7 @@ package body Gnat2Why.Driver is
             --  the one with the most information that's still in SPARK.
 
             if Entity_In_SPARK (E)
-              and then (Is_Full_View (E)
-                        or else No (Full_View (E))
-                        or else Full_View_Not_In_SPARK (E))
+              and then Retysp (E) = E
             then
 
                --  Partial views of private types should not be
@@ -737,16 +766,7 @@ package body Gnat2Why.Driver is
                --  otherwise we end up with two definitions for the same
                --  private type.
 
-               if Full_View_Not_In_SPARK (E)
-                 and then Entity_In_SPARK (Full_View (E))
-               then
-                  null;
-               else
-                  Translate_Type (File, E, New_Theory);
-                  if New_Theory then
-                     Generate_Type_Completion (Compl_File, E);
-                  end if;
-               end if;
+               Translate_Type (File, E, New_Theory);
             end if;
 
          when Named_Kind =>
@@ -840,6 +860,7 @@ package body Gnat2Why.Driver is
                  N_Subtype_Declaration   |
                  N_Object_Declaration    =>
                Translate_Entity (Defining_Entity (Decl));
+               Complete_Declaration (Defining_Entity (Decl));
             when others =>
                null;
          end case;
@@ -851,11 +872,17 @@ package body Gnat2Why.Driver is
       --  still are referenced elsewhere
 
       Translate_Entity (Standard_Integer_8);
+      Complete_Declaration (Standard_Integer_8);
       Translate_Entity (Standard_Integer_16);
+      Complete_Declaration (Standard_Integer_16);
       Translate_Entity (Standard_Integer_32);
+      Complete_Declaration (Standard_Integer_32);
       Translate_Entity (Standard_Integer_64);
+      Complete_Declaration (Standard_Integer_64);
       Translate_Entity (Universal_Integer);
+      Complete_Declaration (Universal_Integer);
       Translate_Entity (Universal_Real);
+      Complete_Declaration (Universal_Real);
 
    end Translate_Standard_Package;
 

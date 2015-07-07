@@ -35,9 +35,9 @@ package body Why.Gen.Terms is
    -- Get_All_Dereferences --
    --------------------------
 
-   function Get_All_Dereferences (W : Why_Node_Id) return Node_Sets.Set is
+   function Has_Dereference (W : Why_Node_Id) return Boolean is
       type Collect_State is new Traversal_State with record
-         Found : Node_Sets.Set;
+         Found : Boolean;
       end record;
 
       procedure Deref_Pre_Op
@@ -47,16 +47,17 @@ package body Why.Gen.Terms is
       procedure Deref_Pre_Op
         (State : in out Collect_State;
          Node  : W_Deref_Id) is
+         pragma Unreferenced (Node);
       begin
-         State.Found.Include (Get_Ada_Node (+Get_Right (Node)));
+         State.Found := True;
       end Deref_Pre_Op;
 
       SS : Collect_State :=
-             (Control => Continue, Found => Node_Sets.Empty_Set);
+             (Control => Continue, Found => False);
    begin
       Traverse (SS, W);
       return SS.Found;
-   end Get_All_Dereferences;
+   end Has_Dereference;
 
    ----------------------------
    -- Has_Dereference_Or_Any --

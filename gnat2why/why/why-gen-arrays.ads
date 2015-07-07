@@ -289,7 +289,8 @@ package Why.Gen.Arrays is
      (Domain : EW_Domain;
       Ty     : Entity_Id;
       Attr   : Attribute_Id;
-      Dim    : Positive) return W_Expr_Id;
+      Dim    : Positive;
+      Params : Transformation_Params := Body_Params) return W_Expr_Id;
    --  Same as Get_Array_Attr, can be used when the type is already known.
    --  On unconstrained array types, return bounds used to constrain the index.
    --  @param Domain The domain of the returned expression.

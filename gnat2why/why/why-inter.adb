@@ -338,7 +338,7 @@ package body Why.Inter is
 
       if With_Completion
         and then Nkind (N) in N_Entity
-        and then not Entity_In_Ext_Axioms (N)
+        and then (not Entity_In_Ext_Axioms (N) or else Ekind (N) in Type_Kind)
       then
          Add_With_Clause (P, E_Axiom_Module (N), Use_Kind);
       end if;
@@ -710,14 +710,20 @@ package body Why.Inter is
 
    function Dispatch_Entity_Completion (E : Entity_Id)
                                         return Why_Section_Enum is
-      pragma Unreferenced (E);
    begin
 
-      --  Completion modules are only used by VC generation modules, so they
-      --  are not needed earlier. The VC generation modules are generated
-      --  later, so the completions will be available at that point.
+      --  Completion modules of types are only used by VC generation modules
+      --  and completion modules of subprograms. Other completion modules are
+      --  only used by VC generation modules.
+      --  Since they are generated after defining modules and before VC
+      --  generation modules, the completions of types will have all the
+      --  required definitions and they will be available when necessary.
 
-      return WF_Main;
+      if Ekind (E) in Type_Kind then
+         return WF_Context;
+      else
+         return WF_Main;
+      end if;
    end Dispatch_Entity_Completion;
 
    -------------

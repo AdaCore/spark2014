@@ -64,10 +64,8 @@ package body Why.Gen.Expr is
 
    function Args_For_Scalar_Dynamic_Property
      (Ty     : Entity_Id;
-      Expr   : W_Expr_Id) return W_Expr_Array
-   with
-       Pre => Is_Scalar_Type (Ty) and then
-         (Type_Is_Modeled_As_Base (Ty) or else Use_Base_Type_For_Type (Ty));
+      Expr   : W_Expr_Id;
+      Params : Transformation_Params := Body_Params) return W_Expr_Array;
    --  Computes the arguments to be used for a call to the dynamic property
    --  of a scalar type.
 
@@ -100,19 +98,20 @@ package body Why.Gen.Expr is
 
    function Args_For_Scalar_Dynamic_Property
      (Ty     : Entity_Id;
-      Expr   : W_Expr_Id) return W_Expr_Array
+      Expr   : W_Expr_Id;
+      Params : Transformation_Params := Body_Params) return W_Expr_Array
    is
    begin
       return (1 => New_Attribute_Expr
                  (Ty     => Ty,
                   Domain => EW_Term,
                   Attr   => Attribute_First,
-                  Params => Body_Params),
+                  Params => Params),
               2 => New_Attribute_Expr
                    (Ty     => Ty,
                     Domain => EW_Term,
                     Attr   => Attribute_Last,
-                    Params => Body_Params),
+                    Params => Params),
               3 =>
                 Insert_Simple_Conversion
                   (Ada_Node => Ty,
@@ -2128,7 +2127,8 @@ package body Why.Gen.Expr is
    function New_Dynamic_Property
      (Domain : EW_Domain;
       Ty     : Entity_Id;
-      Expr   : W_Expr_Id) return W_Expr_Id
+      Expr   : W_Expr_Id;
+      Params : Transformation_Params := Body_Params) return W_Expr_Id
    is
    begin
 
@@ -2145,7 +2145,8 @@ package body Why.Gen.Expr is
          return New_Call (Domain => Domain,
                           Name   => Dynamic_Prop_Name (Ty),
                           Args   =>
-                            Args_For_Scalar_Dynamic_Property (Ty, Expr),
+                            Args_For_Scalar_Dynamic_Property
+                              (Ty, Expr, Params),
                           Typ    => EW_Bool_Type);
       elsif Is_Array_Type (Ty) and then not Is_Static_Array_Type (Ty) then
          declare
@@ -2163,7 +2164,8 @@ package body Why.Gen.Expr is
                                                 (Domain => Domain,
                                                  Ty     => Ty,
                                                  Attr   => Attribute_First,
-                                                 Dim    => Count + 1),
+                                                 Dim    => Count + 1,
+                                                 Params => Params),
                                               To     => W_Typ);
                   Last_Expr : constant W_Expr_Id :=
                     Insert_Simple_Conversion (Domain => Domain,
@@ -2171,7 +2173,8 @@ package body Why.Gen.Expr is
                                                 (Domain => Domain,
                                                  Ty     => Ty,
                                                  Attr   => Attribute_Last,
-                                                 Dim    => Count + 1),
+                                                 Dim    => Count + 1,
+                                                 Params => Params),
                                               To     => W_Typ);
                   F_Expr    : constant W_Expr_Id :=
                     Insert_Simple_Conversion (Domain => Domain,

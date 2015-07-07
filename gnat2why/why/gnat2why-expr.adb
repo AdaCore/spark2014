@@ -33,9 +33,11 @@ with Ada.Strings.Equal_Case_Insensitive;
 with Ada.Containers;         use Ada.Containers;
 
 with Checks;                 use Checks;
+with Einfo;                  use Einfo;
 with Elists;                 use Elists;
 with Errout;                 use Errout;
 with Flow_Refinement;        use Flow_Refinement;
+with Flow_Utility;           use Flow_Utility;
 with Namet;                  use Namet;
 with Nlists;                 use Nlists;
 with Opt;
@@ -49,9 +51,9 @@ with Stand;                  use Stand;
 with Uintp;                  use Uintp;
 with Urealp;                 use Urealp;
 
-with VC_Kinds;               use VC_Kinds;
+with SPARK_Definition;       use SPARK_Definition;
 
-with Flow_Types;             use Flow_Types;
+with VC_Kinds;               use VC_Kinds;
 
 with Why;                    use Why;
 with Why.Unchecked_Ids;      use Why.Unchecked_Ids;
@@ -67,12 +69,10 @@ with Why.Gen.Expr;           use Why.Gen.Expr;
 with Why.Gen.Names;          use Why.Gen.Names;
 with Why.Gen.Progs;          use Why.Gen.Progs;
 with Why.Gen.Records;        use Why.Gen.Records;
-with Why.Gen.Terms;          use Why.Gen.Terms;
 with Why.Gen.Preds;          use Why.Gen.Preds;
 
 with Gnat2Why.Expr.Loops;    use Gnat2Why.Expr.Loops;
 with Gnat2Why.Subprograms;   use Gnat2Why.Subprograms;
-with SPARK_Definition;       use SPARK_Definition;
 
 package body Gnat2Why.Expr is
 
@@ -343,15 +343,6 @@ package body Gnat2Why.Expr is
       Params : Transformation_Params) return W_Prog_Id;
    --  Compute Why3 code to check for absence of runtime errors in default
    --  initialization of Expr of type Ty.
-
-   function Compute_Default_Init
-     (Expr           : W_Expr_Id;
-      Ty             : Entity_Id;
-      Params         : Transformation_Params;
-      Skip_Last_Cond : Boolean := False) return W_Pred_Id;
-   --  Compute Why3 code to assume values of default initialized variable Expr
-   --  of type Ty. If Skip_Last_Cond is True, do not assume the top-level
-   --  Default_Initial_Condition of Ty if any.
 
    ------------------------------------------
    -- Handling of Expressions with Actions --
@@ -871,8 +862,7 @@ package body Gnat2Why.Expr is
                     Domain   => EW_Pred,
                     Expr     => L_Deref,
                     To       => Type_Of_Node (Constrained_Ty)),
-                 Ty     => Constrained_Ty,
-                 Params => Body_Params);
+                 Ty     => Constrained_Ty);
             --  Assume initial value of L
          begin
 
@@ -911,8 +901,12 @@ package body Gnat2Why.Expr is
       Only_Var    : Boolean;
       Initialized : Boolean) return W_Prog_Id
    is
-      T : constant W_Pred_Id :=
-        Compute_Dynamic_Property (Expr, Ty, Only_Var, Initialized);
+      Init  : constant W_Term_Id :=
+        (if Initialized then True_Term else False_Term);
+      O_Var : constant W_Term_Id :=
+        (if Only_Var then True_Term else False_Term);
+      T     : constant W_Pred_Id :=
+        Compute_Dynamic_Property (Expr, Ty, O_Var, Init);
    begin
       if T /= True_Pred then
          return New_Assume_Statement (Ada_Node => Ty,
@@ -1780,7 +1774,9 @@ package body Gnat2Why.Expr is
                Checks := +Range_Check;
             end;
          end if;
-      elsif Is_Array_Type (Ty_Ext) then
+      elsif Is_Array_Type (Ty_Ext)
+        and then Ekind (Ty_Ext) /= E_String_Literal_Subtype
+      then
          pragma Assert (Is_Constrained (Ty_Ext));
 
          --  Generates:
@@ -2137,8 +2133,7 @@ package body Gnat2Why.Expr is
                              Expr     => +Binder.Main.B_Name,
                              To       => Type_Of_Node (Ty_Ext)),
                           Ty             => Ty_Ext,
-                          Params         => Params,
-                          Skip_Last_Cond => True);
+                          Skip_Last_Cond => True_Term);
                      Def_Init_Check  : constant W_Expr_Id :=
                        New_Conditional
                          (Domain      => EW_Pred,
@@ -2183,13 +2178,50 @@ package body Gnat2Why.Expr is
    function Compute_Default_Init
      (Expr           : W_Expr_Id;
       Ty             : Entity_Id;
-      Params         : Transformation_Params;
-      Skip_Last_Cond : Boolean := False) return W_Pred_Id is
+      Params         : Transformation_Params := Body_Params;
+      Skip_Last_Cond : W_Term_Id := False_Term;
+      Use_Pred       : Boolean := True) return W_Pred_Id is
 
       Ty_Ext     : constant Entity_Id := Retysp (Ty);
       Tmp        : constant W_Expr_Id := New_Temp_For_Expr (Expr);
       Assumption : W_Expr_Id := +True_Pred;
+      Variables  : Flow_Id_Sets.Set;
    begin
+
+      --  If Use_Precomputed_Func is true, then we already have generated a
+      --  predicate for the default initial value of elements of type Ty_Ext,
+      --  except if the type is an itype or if it is standard boolen.
+
+      if Use_Pred
+        and then not Is_Itype (Ty_Ext)
+        and then not Is_Standard_Boolean_Type (Ty_Ext)
+      then
+         Variables_In_Default_Init (Ty_Ext, Variables);
+
+         declare
+            Vars  : constant W_Expr_Array :=
+              Get_Args_From_Variables (To_Name_Set (Variables));
+            Num_B : constant Positive := 2 + Vars'Length;
+            Args  : W_Expr_Array (1 .. Num_B);
+         begin
+
+            Args (1) := Insert_Simple_Conversion
+              (Domain         => EW_Term,
+               Expr           => Expr,
+               To             => Type_Of_Node (Ty_Ext),
+               Force_No_Slide => True);
+            Args (2) := +Skip_Last_Cond;
+            Args (3 .. Num_B) := Vars;
+
+            return New_Call (Name => New_Identifier
+                             (Name   => "default_init_assumption",
+                              Module => E_Axiom_Module (Ty_Ext),
+                              Typ    => EW_Bool_Type),
+                             Args => Args,
+                             Typ  => EW_Bool_Type);
+         end;
+      end if;
+
       if Is_Scalar_Type (Ty_Ext) then
          if Has_Default_Aspect (Ty_Ext) then
             declare
@@ -2211,7 +2243,9 @@ package body Gnat2Why.Expr is
                   Domain => EW_Pred);
             end;
          end if;
-      elsif Is_Array_Type (Ty_Ext) then
+      elsif Is_Array_Type (Ty_Ext)
+        and then Ekind (Ty_Ext) /= E_String_Literal_Subtype
+      then
          pragma Assert (Is_Constrained (Ty_Ext));
 
          --  Generates:
@@ -2295,9 +2329,10 @@ package body Gnat2Why.Expr is
                --  otherwise, use its Component_Type default value.
 
                Assumption := +Compute_Default_Init
-                 (Expr   => T_Acc,
-                  Ty     => Component_Type (Ty_Ext),
-                  Params => Params);
+                 (Expr     => T_Acc,
+                  Ty       => Component_Type (Ty_Ext),
+                  Params   => Params,
+                  Use_Pred => Use_Pred);
             end if;
 
             if Assumption /= +True_Pred then
@@ -2513,7 +2548,9 @@ package body Gnat2Why.Expr is
                         T_Comp := +Compute_Default_Init
                           (New_Ada_Record_Access
                              (Empty, EW_Term, Tmp, Field, Ty_Ext),
-                           Etype (Field), Params);
+                           Etype (Field),
+                           Params => Params,
+                           Use_Pred => Use_Pred);
                      end if;
 
                      if T_Comp /= +True_Pred then
@@ -2556,10 +2593,8 @@ package body Gnat2Why.Expr is
       --  If Skip_Last_Cond is False, assume the default initial condition for
       --  Ty.
 
-      if not Skip_Last_Cond
-        and then (Has_Default_Init_Cond (Ty)
-                    or else
-                  Has_Inherited_Default_Init_Cond (Ty))
+      if Has_Default_Init_Cond (Ty)
+        or else Has_Inherited_Default_Init_Cond (Ty)
       then
          declare
             Default_Init_Subp : constant Entity_Id :=
@@ -2604,14 +2639,19 @@ package body Gnat2Why.Expr is
                   begin
                      Assumption := New_And_Then_Expr
                        (Left   => Assumption,
-                        Right  => New_Typed_Binding
-                          (Domain   => EW_Pred,
-                           Name     => Binder.Main.B_Name,
-                           Def      => Insert_Simple_Conversion
-                             (Domain   => EW_Term,
-                              Expr     => Tmp,
-                              To       => Get_Typ (Binder.Main.B_Name)),
-                           Context  => W_Def_Init_Expr),
+                        Right  => New_Conditional
+                          (Domain      => EW_Pred,
+                           Condition   => +Skip_Last_Cond,
+                           Then_Part   => +True_Pred,
+                           Else_Part   => New_Typed_Binding
+                             (Domain   => EW_Pred,
+                              Name     => Binder.Main.B_Name,
+                              Def      => Insert_Simple_Conversion
+                                (Domain   => EW_Term,
+                                 Expr     => Tmp,
+                                 To       => Get_Typ (Binder.Main.B_Name)),
+                              Context  => W_Def_Init_Expr),
+                           Typ         => EW_Bool_Type),
                         Domain => EW_Pred);
                   end;
                end;
@@ -2636,17 +2676,55 @@ package body Gnat2Why.Expr is
    function Compute_Dynamic_Property
      (Expr        : W_Expr_Id;
       Ty          : Entity_Id;
-      Only_Var    : Boolean;
-      Initialized : Boolean) return W_Pred_Id
+      Only_Var    : W_Term_Id;
+      Initialized : W_Term_Id;
+      Params      : Transformation_Params := Body_Params;
+      Use_Pred    : Boolean := True)
+      return W_Pred_Id
    is
 
-      T : W_Pred_Id;
+      T         : W_Pred_Id;
 
       --  If Ty's fullview is in SPARK, go to its underlying type to check its
       --  kind.
 
-      Ty_Ext : constant Entity_Id := Retysp (Ty);
+      Ty_Ext    : constant Entity_Id := Retysp (Ty);
+      Variables : Flow_Id_Sets.Set;
    begin
+
+      --  If Use_Precomputed_Func is true, then we already have generated a
+      --  predicate for the default initial value of elements of type Ty_Ext,
+      --  except if the type is an itype or if it is standard boolean.
+      --  We also avoid using the predicate for objects in split form as it
+      --  would introduce an unnecessary conversion harmful to provers.
+
+      if Use_Pred
+        and then not Is_Itype (Ty_Ext)
+        and then not Is_Standard_Boolean_Type (Ty_Ext)
+        and then Eq_Base (Type_Of_Node (Ty_Ext), Get_Type (Expr))
+      then
+         Variables_In_Dynamic_Property (Ty_Ext, Variables);
+
+         declare
+            Vars  : constant W_Expr_Array :=
+              Get_Args_From_Variables (To_Name_Set (Variables));
+            Num_B : constant Positive := 3 + Vars'Length;
+            Args  : W_Expr_Array (1 .. Num_B);
+         begin
+
+            Args (1) := Expr;
+            Args (2) := +Initialized;
+            Args (3) := +Only_Var;
+            Args (4 .. Num_B) := Vars;
+
+            return New_Call (Name => New_Identifier
+                             (Name   => "dynamic_invariant",
+                              Module => E_Axiom_Module (Ty_Ext),
+                              Typ    => EW_Bool_Type),
+                             Args => Args,
+                             Typ  => EW_Bool_Type);
+         end;
+      end if;
 
       --  Dynamic property of the type itself
 
@@ -2654,16 +2732,17 @@ package body Gnat2Why.Expr is
         or else (Is_Scalar_Type (Ty_Ext)
                  and then Get_Type_Kind (Get_Type (Expr)) = EW_Split)
       then
-         T := +New_Dynamic_Property (Domain      => EW_Pred,
-                                     Ty          => Ty_Ext,
-                                     Expr        => Expr);
+         T := +New_Dynamic_Property (Domain => EW_Pred,
+                                     Ty     => Ty_Ext,
+                                     Expr   => Expr,
+                                     Params => Params);
 
          --  If a scalar variable is not initialized, then its dynamic property
          --  may be false. As initialization is checked separately by flow
          --  analysis, we can assume that the variable is in bound as long as
          --  it does not introduce any unsoundness (the range is not empty).
 
-         if T /= True_Pred and then not Initialized then
+         if T /= True_Pred then
             declare
                Why_Rep_Type : constant W_Type_Id := Base_Why_Type (Ty_Ext);
                Le_Op        : constant W_Identifier_Id :=
@@ -2678,7 +2757,7 @@ package body Gnat2Why.Expr is
                       (Ty     => Ty_Ext,
                        Domain => EW_Term,
                        Attr   => Attribute_First,
-                       Params => Body_Params),
+                       Params => Params),
                     To       => Why_Rep_Type);
                Last        : constant W_Expr_Id :=
                  Insert_Simple_Conversion
@@ -2687,27 +2766,29 @@ package body Gnat2Why.Expr is
                       (Ty     => Ty_Ext,
                        Domain => EW_Term,
                        Attr   => Attribute_Last,
-                       Params => Body_Params),
+                       Params => Params),
                     To       => Why_Rep_Type);
                Fst_Le_Last : constant W_Pred_Id :=
                  New_Call (Name     => Le_Op,
                            Typ     => EW_Bool_Type,
                            Args    => (First, Last));
             begin
-               T := +W_Expr_Id'(New_Conditional
-                                (Domain      => EW_Pred,
-                                 Condition   => +Fst_Le_Last,
-                                 Then_Part   => +T,
-                                 Typ         => EW_Bool_Type));
+               T := +W_Expr_Id'
+                 (New_Conditional
+                    (Domain      => EW_Pred,
+                     Condition   =>
+                       New_Or_Else_Expr (+Initialized, +Fst_Le_Last, EW_Pred),
+                     Then_Part   => +T,
+                     Typ         => EW_Bool_Type));
             end;
          end if;
-      elsif not Only_Var
-        and then Is_Array_Type (Ty_Ext)
+      elsif Is_Array_Type (Ty_Ext)
         and then not Is_Static_Array_Type (Ty_Ext)
       then
          T := +New_Dynamic_Property (Domain => EW_Pred,
                                      Ty     => Ty_Ext,
-                                     Expr   => Expr);
+                                     Expr   => Expr,
+                                     Params => Params);
 
          --  For arrays, also assume the value of its bounds
 
@@ -2723,7 +2804,7 @@ package body Gnat2Why.Expr is
                            Base_Why_Type_No_Bool (Etype (Index));
                      Low_Expr  : constant W_Expr_Id :=
                        Transform_Expr (Low_Bound (Rng), Rng_Ty,
-                                       EW_Term, Body_Params);
+                                       EW_Term, Params);
                      First_Eq  : constant W_Pred_Id :=
                        New_Call
                          (Name => Why_Eq,
@@ -2739,7 +2820,7 @@ package body Gnat2Why.Expr is
                              2 => Low_Expr));
                      High_Expr : constant W_Expr_Id :=
                        Transform_Expr (High_Bound (Rng), Rng_Ty,
-                                       EW_Term, Body_Params);
+                                       EW_Term, Params);
                      Last_Eq   : constant W_Pred_Id :=
                        New_Call
                          (Name => Why_Eq,
@@ -2772,13 +2853,23 @@ package body Gnat2Why.Expr is
             end;
          end if;
 
-      elsif not Only_Var
-        and then Has_Discriminants (Ty_Ext)
+         T := New_Conditional
+           (Condition   => +Only_Var,
+            Then_Part   => +True_Pred,
+            Else_Part   => +T,
+            Typ         => EW_Bool_Type);
+
+      elsif Has_Discriminants (Ty_Ext)
         and then Is_Constrained (Ty_Ext)
       then
-         T := +New_Dynamic_Property (Domain => EW_Pred,
-                                     Ty     => Ty_Ext,
-                                     Expr   => Expr);
+         T := New_Conditional
+           (Condition   => +Only_Var,
+            Then_Part   => +True_Pred,
+            Else_Part   => +New_Dynamic_Property (Domain => EW_Pred,
+                                                  Ty     => Ty_Ext,
+                                                  Expr   => Expr,
+                                                  Params => Params),
+            Typ         => EW_Bool_Type);
       else
          T := True_Pred;
       end if;
@@ -2786,7 +2877,7 @@ package body Gnat2Why.Expr is
       --  Compute dynamic property for its components
 
       if Is_Array_Type (Ty_Ext)
-        and then not Is_String_Type (Ty_Ext)
+        and then Ekind (Ty_Ext) /= E_String_Literal_Subtype
       then
 
          --  Generates:
@@ -2841,7 +2932,8 @@ package body Gnat2Why.Expr is
             T_Comp :=
               +Compute_Dynamic_Property
                 (New_Array_Access (Empty, Expr, Indices, EW_Term),
-                 Component_Type (Ty_Ext), False, Initialized);
+                 Component_Type (Ty_Ext), False_Term, Initialized, Params,
+                 Use_Pred);
 
             --  If elements of an array have default discriminants and are not
             --  constrained then 'Constrained returns false on them.
@@ -2923,8 +3015,9 @@ package body Gnat2Why.Expr is
          begin
             while Present (Field) loop
                if (Is_Record_Type (Ty_Ext)
-                   or else Ekind (Field) = E_Discriminant)
-                 and then Is_Not_Hidden_Discriminant (Field)
+                   and then Component_Is_Visible_In_SPARK (Field))
+                 or else (Ekind (Field) = E_Discriminant
+                          and then Is_Not_Hidden_Discriminant (Field))
                then
 
                   R_Acc := New_Ada_Record_Access
@@ -2944,7 +3037,8 @@ package body Gnat2Why.Expr is
 
                   T_Comp :=
                     Compute_Dynamic_Property
-                      (R_Acc, Etype (Field), False, Initialized);
+                      (R_Acc, Etype (Field), False_Term, Initialized, Params,
+                       Use_Pred);
 
                   --  If fields of a record have default discriminants and are
                   --  not constrained then 'Constrained returns false on them.
@@ -9763,10 +9857,11 @@ package body Gnat2Why.Expr is
                      declare
                         Dyn_Prop : constant W_Pred_Id :=
                           Compute_Dynamic_Property
-                            (Expr        => +E.Fields.Binder.B_Name,
+                            (Expr        => T,
                              Ty          => E.Typ,
-                             Only_Var    => True,
-                             Initialized => True);
+                             Only_Var    => True_Term,
+                             Initialized => True_Term,
+                             Params      => Params);
                      begin
                         if Dyn_Prop /= True_Pred then
                            T := +Sequence
@@ -9850,8 +9945,9 @@ package body Gnat2Why.Expr is
               Compute_Dynamic_Property
                 (Expr        => +Deref,
                  Ty          => Etype (Ent),
-                 Only_Var    => True,
-                 Initialized => True);
+                 Only_Var    => True_Term,
+                 Initialized => True_Term,
+                 Params      => Params);
             Havoc    : W_Prog_Id := New_Havoc_Call (+T);
          begin
             if Dyn_Prop /= True_Pred then
@@ -12124,6 +12220,361 @@ package body Gnat2Why.Expr is
          Decl_File.Cur_Theory := Params.Theory;
       end if;
    end Transform_String_Literal;
+
+   -------------------------------
+   -- Variables_In_Default_Init --
+   -------------------------------
+
+   procedure Variables_In_Default_Init
+     (Ty        : Entity_Id;
+      Variables : in out Flow_Id_Sets.Set) is
+      Ty_Ext : constant Entity_Id := Retysp (Ty);
+      Scope  : constant Flow_Scope := Get_Flow_Scope (Ty_Ext);
+   begin
+      if Is_Scalar_Type (Ty_Ext) then
+         if Has_Default_Aspect (Ty_Ext) then
+            Variables.Union
+              (Get_Variable_Set
+                 (N                    => Default_Aspect_Value (Ty_Ext),
+                  Scope                => Scope,
+                  Local_Constants      => Node_Sets.Empty_Set,
+                  Fold_Functions       => False,
+                  Use_Computed_Globals => True,
+                  Reduced              => True));
+         end if;
+      elsif Is_Array_Type (Ty_Ext)
+        and then Ekind (Ty_Ext) /= E_String_Literal_Subtype
+      then
+         pragma Assert (Is_Constrained (Ty_Ext));
+
+         --  Generates:
+         --  forall i1 : int ..
+         --   in_range (i1) /\ .. ->
+         --    get (<Expr>, i1, ...) = <Default_Component_Value>    <if any>
+         --    default_init (get (<Expr>, i1, ...), Component_Type) <otherwise>
+
+         if Has_Default_Aspect (Ty_Ext) then
+
+            --  if Ty_Ext as a Default_Component_Value aspect,
+            --  generate get (<Expr>, i1, ...) = <Default_Component_Value>
+
+            Variables.Union
+              (Get_Variable_Set
+                 (N                    =>
+                      Default_Aspect_Component_Value (Ty_Ext),
+                  Scope                => Scope,
+                  Local_Constants      => Node_Sets.Empty_Set,
+                  Fold_Functions       => False,
+                  Use_Computed_Globals => True,
+                  Reduced              => True));
+         else
+
+            --  otherwise, use its Component_Type default value.
+
+            Variables_In_Default_Init (Component_Type (Ty_Ext), Variables);
+         end if;
+
+      elsif Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
+
+         --  Generates:
+         --  let tmp1 = <Expr>.rec__disc1 in
+         --  <Expr>.is_constrained = False /\ <if Ty_Ext as default discrs>
+         --  <Expr>.rec__disc1 = Discr1.default  <if Ty_Ext is unconstrained>
+         --  <Expr>.rec__disc1 = Discr1 /\ ..    <if Ty_Ext is constrained>
+         --  (check_for_field1 expr ->
+         --      <Expr>.rec__field1 = Field1.def      <if Field1 has a default>
+         --      default_init (<Expr>.rec__field1, Etype (Field1))) <otherwise>
+         --  /\ ..
+
+         declare
+            Field  : Node_Id := (if Has_Discriminants (Ty_Ext)
+                                 or else Has_Unknown_Discriminants (Ty_Ext)
+                                 then First_Discriminant (Ty_Ext)
+                                 else Empty);
+            Elmt   : Elmt_Id :=
+              (if Has_Discriminants (Ty_Ext)
+               and then Is_Constrained (Ty_Ext)
+               then First_Elmt (Stored_Constraint (Ty_Ext))
+               else No_Elmt);
+         begin
+
+            --  Go through discriminants to create
+            --  <Expr>.rec__disc1 = Discr1.default <if Ty_Ext is unconstrained>
+            --  <Expr>.rec__disc1 = Discr1 /\ ..   <if Ty_Ext is constrained>
+
+            while Present (Field) loop
+               if not Is_Completely_Hidden (Field) then
+
+                  if Is_Constrained (Ty_Ext) then
+
+                     --  Generate <Expr>.rec__disc1 = Discr
+
+                     Variables.Union
+                       (Get_Variable_Set
+                          (N                    => Node (Elmt),
+                           Scope                => Scope,
+                           Local_Constants      => Node_Sets.Empty_Set,
+                           Fold_Functions       => False,
+                           Use_Computed_Globals => True,
+                           Reduced              => True));
+                     Next_Elmt (Elmt);
+                  else
+                     pragma Assert (Has_Defaulted_Discriminants (Ty_Ext));
+
+                     --  Generate <Expr>.rec__disc1 = Discr1.default
+
+                     Variables.Union
+                       (Get_Variable_Set
+                          (N                    =>
+                               Discriminant_Default_Value (Field),
+                           Scope                => Scope,
+                           Local_Constants      => Node_Sets.Empty_Set,
+                           Fold_Functions       => False,
+                           Use_Computed_Globals => True,
+                           Reduced              => True));
+                  end if;
+               end if;
+               Next_Discriminant (Field);
+            end loop;
+
+            --  Go through other fields to create the expression
+            --  (check_for_field1 expr ->
+            --   <Expr>.rec__field1 = Field1.def      <if Field1 has a default>
+            --   default_init (<Expr>.rec__field1, Etype (Field1))) <otherwise>
+            --  /\ ..
+
+            if Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
+               Field := First_Component (Ty_Ext);
+
+               while Present (Field) loop
+                  if Component_Is_Visible_In_SPARK (Field) then
+                     if Present (Expression (Parent (Field))) then
+
+                        --  if Field has a default expression, use it.
+                        --   <Expr>.rec__field1 = Field1.default
+
+                        Variables.Union
+                          (Get_Variable_Set
+                             (N                    =>
+                                  Expression (Parent (Field)),
+                              Scope                => Scope,
+                              Local_Constants      => Node_Sets.Empty_Set,
+                              Fold_Functions       => False,
+                              Use_Computed_Globals => True,
+                              Reduced              => True));
+                     else
+
+                        --  otherwise, use its Field's Etype default value.
+                        --   default_init (<Expr>.rec__field1, Etype (Field1)))
+
+                        Variables_In_Default_Init (Etype (Field), Variables);
+                     end if;
+                  end if;
+
+                  Next_Component (Field);
+               end loop;
+            end if;
+         end;
+      end if;
+
+      --  Assume the default initial condition for Ty.
+
+      if Has_Default_Init_Cond (Ty)
+        or else Has_Inherited_Default_Init_Cond (Ty)
+      then
+         declare
+            Default_Init_Subp : constant Entity_Id :=
+              Default_Init_Cond_Procedure (Ty);
+            Default_Init_Expr : constant Node_Id :=
+              Get_Expr_From_Check_Only_Proc (Default_Init_Subp);
+         begin
+            if Present (Default_Init_Expr) then
+
+               Variables.Union
+                 (Get_Variable_Set
+                    (N                    => Default_Init_Expr,
+                     Scope                => Scope,
+                     Local_Constants      => Node_Sets.Empty_Set,
+                     Fold_Functions       => False,
+                     Use_Computed_Globals => True,
+                     Reduced              => True));
+            end if;
+         end;
+      end if;
+   end Variables_In_Default_Init;
+
+   -----------------------------------
+   -- Variables_In_Dynamic_Property --
+   -----------------------------------
+
+   procedure Variables_In_Dynamic_Property
+     (Ty        : Entity_Id;
+      Variables : in out Flow_Id_Sets.Set)
+   is
+      Ty_Ext : constant Entity_Id := Retysp (Ty);
+      Scope  : constant Flow_Scope := Get_Flow_Scope (Ty_Ext);
+   begin
+
+      --  Dynamic property of the type itself
+
+      if Type_Is_Modeled_As_Base (Ty_Ext) then
+
+         --  If a scalar type is not modeled as base, then its bounds are
+         --  constants.
+         --  Otherwise, variables may occur in their expressions.
+
+         declare
+            Rng : constant Node_Id := Get_Range (Ty_Ext);
+         begin
+            Variables.Union
+              (Get_Variable_Set
+                 (N                    => Low_Bound (Rng),
+                  Scope                => Scope,
+                  Local_Constants      => Node_Sets.Empty_Set,
+                  Fold_Functions       => False,
+                  Use_Computed_Globals => True,
+                  Reduced              => True));
+            Variables.Union
+              (Get_Variable_Set
+                 (N                    => High_Bound (Rng),
+                  Scope                => Scope,
+                  Local_Constants      => Node_Sets.Empty_Set,
+                  Fold_Functions       => False,
+                  Use_Computed_Globals => True,
+                  Reduced              => True));
+         end;
+      elsif Is_Array_Type (Ty_Ext)
+        and then not Is_Static_Array_Type (Ty_Ext)
+      then
+
+         --  Variables coming from the bounds of the index types
+
+         declare
+            Index : Node_Id := First_Index (Ty_Ext);
+         begin
+            while Present (Index) loop
+               if Type_Is_Modeled_As_Base (Etype (Index)) then
+                  declare
+                     Rng : constant Node_Id := Get_Range (Etype (Index));
+                  begin
+                     Variables.Union
+                       (Get_Variable_Set
+                          (N                    => Low_Bound (Rng),
+                           Scope                => Scope,
+                           Local_Constants      => Node_Sets.Empty_Set,
+                           Fold_Functions       => False,
+                           Use_Computed_Globals => True,
+                           Reduced              => True));
+                     Variables.Union
+                       (Get_Variable_Set
+                          (N                    => High_Bound (Rng),
+                           Scope                => Scope,
+                           Local_Constants      => Node_Sets.Empty_Set,
+                           Fold_Functions       => False,
+                           Use_Computed_Globals => True,
+                           Reduced              => True));
+                  end;
+               end if;
+               Next_Index (Index);
+            end loop;
+         end;
+
+         --  If the array is constrained, also assume the value of its bounds
+
+         if Is_Constrained (Ty_Ext) then
+            declare
+               Index : Node_Id := First_Index (Ty_Ext);
+            begin
+               while Present (Index) loop
+                  declare
+                     Rng       : constant Node_Id := Get_Range (Index);
+                  begin
+                     Variables.Union
+                       (Get_Variable_Set
+                          (N                    => Low_Bound (Rng),
+                           Scope                => Scope,
+                           Local_Constants      => Node_Sets.Empty_Set,
+                           Fold_Functions       => False,
+                           Use_Computed_Globals => True,
+                           Reduced              => True));
+                     Variables.Union
+                       (Get_Variable_Set
+                          (N                    => High_Bound (Rng),
+                           Scope                => Scope,
+                           Local_Constants      => Node_Sets.Empty_Set,
+                           Fold_Functions       => False,
+                           Use_Computed_Globals => True,
+                           Reduced              => True));
+                  end;
+                  Next_Index (Index);
+               end loop;
+            end;
+         end if;
+
+      elsif Has_Discriminants (Ty_Ext)
+        and then Is_Constrained (Ty_Ext)
+      then
+
+         --  Variables coming from the record's discriminants
+
+         declare
+            Discr     : Entity_Id := First_Discriminant (Ty_Ext);
+            Elmt      : Elmt_Id := First_Elmt (Stored_Constraint (Ty_Ext));
+         begin
+            while Present (Discr) loop
+               if Is_Not_Hidden_Discriminant (Discr) then
+                  Variables.Union
+                    (Get_Variable_Set
+                       (N                    => Node (Elmt),
+                        Scope                => Scope,
+                        Local_Constants      => Node_Sets.Empty_Set,
+                        Fold_Functions       => False,
+                        Use_Computed_Globals => True,
+                        Reduced              => True));
+                  Next_Elmt (Elmt);
+               end if;
+               Next_Discriminant (Discr);
+            end loop;
+         end;
+      end if;
+
+      --  Dynamic property of Ty_Ext's components
+
+      if Is_Array_Type (Ty_Ext)
+        and then Ekind (Ty_Ext) /= E_String_Literal_Subtype
+      then
+
+         --  Generates:
+         --  forall i1 .. in : int. in_range i1 /\ .. /\ in_range in ->
+         --    dynamic_property (get <Expr> i1 .. in)
+
+         Variables_In_Dynamic_Property (Component_Type (Ty_Ext), Variables);
+
+      elsif Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
+
+         --  Generates:
+         --  (check_for_f1 <Expr> -> dynamic_property <Expr>.rec__f1)
+         --  /\ .. /\ (check_for_fn <Expr> -> dynamic_property <Expr>.rec__fn)
+         --  As discriminants may occur in bounds of types of other fields,
+         --  store them in the Symbol_Table.
+
+         declare
+            Field : Node_Id := First_Component_Or_Discriminant (Ty_Ext);
+         begin
+            while Present (Field) loop
+               if (Is_Record_Type (Ty_Ext)
+                   and then Component_Is_Visible_In_SPARK (Field))
+                   or else (Ekind (Field) = E_Discriminant
+                            and then Is_Not_Hidden_Discriminant (Field))
+               then
+                  Variables_In_Dynamic_Property (Etype (Field), Variables);
+               end if;
+
+               Next_Component_Or_Discriminant (Field);
+            end loop;
+         end;
+      end if;
+   end Variables_In_Dynamic_Property;
 
    -------------------------------
    -- Why_Subp_Has_Precondition --

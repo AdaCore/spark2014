@@ -987,7 +987,8 @@ package body Why.Gen.Arrays is
      (Domain : EW_Domain;
       Ty     : Entity_Id;
       Attr   : Attribute_Id;
-      Dim    : Positive) return W_Expr_Id is
+      Dim    : Positive;
+      Params : Transformation_Params := Body_Params) return W_Expr_Id is
    begin
 
       if Attr in Attribute_First | Attribute_Last then
@@ -999,7 +1000,7 @@ package body Why.Gen.Arrays is
                Expr     => New_Attribute_Expr (Ty     => Index_Type,
                                                Domain => Domain,
                                                Attr   => Attr,
-                                               Params => Body_Params),
+                                               Params => Params),
                To       =>
                  (if Index_Type = Ty then
                   --  in the case of strings, force the type to int

@@ -169,7 +169,7 @@ package body SPARK_Definition is
    --  entity to its first ancester in SPARK.
 
    Delayed_Type_Aspects : Node_Maps.Map;
-   --  Stores expressions from aspects of types whose analysis should be
+   --  Stores subprograms from aspects of types whose analysis should be
    --  delayed until the end of the analysis and maps them either to their
    --  SPARK_Mode entity if there is one or to their type entity in discovery
    --  mode.
@@ -2233,7 +2233,21 @@ package body SPARK_Definition is
          if Nkind (Current_SPARK_Pragma) = N_Pragma
            or else Entity_In_SPARK (Current_SPARK_Pragma)
          then
-            Mark (Node_Maps.Key (Cur));
+            declare
+               Params            : constant List_Id :=
+                 Parameter_Specifications
+                   (Subprogram_Specification
+                      (Node_Maps.Key (Cur)));
+               Default_Init_Expr : constant Node_Id :=
+                 Get_Expr_From_Check_Only_Proc
+                   (Node_Maps.Key (Cur));
+            begin
+               pragma Assert (Present (First (Params)));
+               Mark_Entity (Defining_Identifier (First (Params)));
+               if Present (Default_Init_Expr) then
+                  Mark (Default_Init_Expr);
+               end if;
+            end;
          end if;
       end loop;
    end Mark_Compilation_Unit;
@@ -2928,25 +2942,20 @@ package body SPARK_Definition is
             end if;
 
             --  If the type has a Default_Initial_Condition aspect, store the
-            --  corresponding expression in the Delayed_Type_Aspects map.
+            --  corresponding procedure in the Delayed_Type_Aspects map.
 
             if (Has_Default_Init_Cond (E)
                   or else Has_Inherited_Default_Init_Cond (E))
               and then Present (Default_Init_Cond_Procedure (E))
             then
                declare
-                  Default_Init_Expr : constant Node_Id :=
-                    Get_Expr_From_Check_Only_Proc
-                      (Default_Init_Cond_Procedure (E));
                   Delayed_Mapping   : constant Node_Id :=
                     (if Present (Current_SPARK_Pragma) then
                           Current_SPARK_Pragma
                      else E);
                begin
-                  if Present (Default_Init_Expr) then
-                     Delayed_Type_Aspects.Include
-                       (Default_Init_Expr, Delayed_Mapping);
-                  end if;
+                  Delayed_Type_Aspects.Include
+                    (Default_Init_Cond_Procedure (E), Delayed_Mapping);
                end;
             end if;
          end if;

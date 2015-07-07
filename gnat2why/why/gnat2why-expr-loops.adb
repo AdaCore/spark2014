@@ -38,7 +38,6 @@ with Uintp;              use Uintp;
 with VC_Kinds;           use VC_Kinds;
 
 with SPARK_Util;         use SPARK_Util;
-with Flow_Types;
 with Flow_Utility;       use Flow_Utility;
 
 with Why;                use Why;
@@ -51,6 +50,7 @@ with Why.Gen.Expr;       use Why.Gen.Expr;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Progs;      use Why.Gen.Progs;
 with Why.Gen.Preds;      use Why.Gen.Preds;
+with Why.Gen.Terms;      use Why.Gen.Terms;
 with Why.Inter;          use Why.Inter;
 
 with Gnat2Why.Util;      use Gnat2Why.Util;
@@ -448,8 +448,6 @@ package body Gnat2Why.Expr.Loops is
 
          if Loop_Writes_Known (Loop_Id) then
             declare
-               use Flow_Types;
-
                Modified : constant Flow_Id_Sets.Set :=
                  To_Entire_Variables (Get_Loop_Writes (Loop_Id));
                N        : Node_Id;
@@ -470,8 +468,8 @@ package body Gnat2Why.Expr.Loops is
                         Dyn_Prop := Compute_Dynamic_Property
                           (Expr        => Expr,
                            Ty          => Etype (N),
-                           Only_Var    => True,
-                           Initialized => False);
+                           Only_Var    => True_Term,
+                           Initialized => False_Term);
 
                         if Dyn_Prop /= True_Pred then
                            Dyn_Types_Inv :=

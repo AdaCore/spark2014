@@ -31,14 +31,18 @@ with GNAT.Source_Info;
 
 with Atree;               use Atree;
 with Einfo;               use Einfo;
+with Gnat2Why.Expr;       use Gnat2Why.Expr;
 with Namet;               use Namet;
 with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
 with Sinput;              use Sinput;
 with Stand;               use Stand;
 
+with Flow_Types;          use Flow_Types;
 with SPARK_Definition;    use SPARK_Definition;
 with SPARK_Util;          use SPARK_Util;
+
+with Common_Containers;   use Common_Containers;
 
 with Why;                 use Why;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
@@ -66,9 +70,11 @@ package body Gnat2Why.Types is
      (File       : in out Why_Section;
       E          : Entity_Id)
    is
-      Eq   : Entity_Id := Get_User_Defined_Eq (E);
-      Ty   : constant W_Type_Id := EW_Abstract (E);
+      Ty        : constant W_Type_Id := EW_Abstract (E);
+      Variables : Flow_Id_Sets.Set;
+      Params    : Transformation_Params;
    begin
+
       Open_Theory
         (File, E_Axiom_Module (E),
          Comment =>
@@ -79,68 +85,206 @@ package body Gnat2Why.Types is
            else "")
          & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      --  This module only contains an axiom when there is a user-provided
-      --  equality
+      Params :=
+        (File        => File.File,
+         Theory      => File.Cur_Theory,
+         Phase       => Generate_Logic,
+         Gen_Marker  => False,
+         Ref_Allowed => False);
 
-      if Present (Eq)
-        and then Entity_In_SPARK (Eq)
-      then
+      --  Generate a predicate for E's dynamic property. For provability, it is
+      --  inlined by Why3.
+      --  We do not generate the dynamic property for Itypes as they may
+      --  depend on locally defined constants such as 'Old.
 
-         --  we may need to adjust for renamed subprograms
+      if not Is_Itype (E) then
 
-         if Present (Renamed_Entity (Eq)) then
-            Eq := Renamed_Entity (Eq);
-         end if;
+         --  Get the set of variables used in E's dynamic property
+
+         Variables_In_Dynamic_Property (E, Variables);
 
          declare
-            Need_Convert : constant Boolean :=
-              Is_Scalar_Type (E) and then not Is_Boolean_Type (E);
-            Var_A : constant W_Identifier_Id :=
-              New_Identifier (Ada_Node => E,
-                              Name     => "a",
-                              Typ      => Ty);
-            Var_B : constant W_Identifier_Id :=
-              New_Identifier (Ada_Node => E,
-                              Name     => "b",
-                              Typ      => Ty);
-            Arg_A : constant W_Expr_Id :=
-              (if Need_Convert then
-                  Insert_Simple_Conversion
-                 (Domain => EW_Term,
-                  Expr   => +Var_A,
-                  To     => Base_Why_Type (Ty))
-               else +Var_A);
-            Arg_B : constant W_Expr_Id :=
-              (if Need_Convert then
-                  Insert_Simple_Conversion
-                 (Domain => EW_Term,
-                  Expr   => +Var_B,
-                  To     => Base_Why_Type (Ty))
-               else +Var_B);
-            Def   : constant W_Expr_Id :=
-              New_Call
-                (Ada_Node => Eq,
-                 Domain   => EW_Pred,
-                 Name     => To_Why_Id (E => Eq,
-                                        Domain => EW_Pred,
-                                        Typ => EW_Bool_Type),
-                 Args     => (1 => Arg_A, 2 => Arg_B),
-                 Typ      => EW_Bool_Type);
+            Items    : Item_Array :=
+              Get_Binders_From_Variables (To_Name_Set (Variables));
+            Init_Arg : constant W_Identifier_Id :=
+              New_Temp_Identifier (Typ => EW_Bool_Type);
+            --  Is the object known to be initialized
+
+            Ovar_Arg : constant W_Identifier_Id :=
+              New_Temp_Identifier (Typ => EW_Bool_Type);
+            --  Do we need to assume the properties on constant parts
+
+            Main_Arg : constant W_Identifier_Id :=
+              New_Temp_Identifier (Typ => Type_Of_Node (E));
+            --  Expression on which we want to assume the property
          begin
-            Emit
-              (File.Cur_Theory,
-               New_Defining_Axiom
-                 (Ada_Node    => E,
-                  Binders     =>
-                    (1 => Binder_Type'(B_Name => Var_A, others => <>),
-                     2 => Binder_Type'(B_Name => Var_B, others => <>)),
-                  Name        =>
-                    New_Identifier
-                      (Module => E_Module (E),
-                       Name    => "user_eq"),
-                  Def         => +Def));
+
+            --  Use local names for variables
+
+            Localize_Variable_Parts (Items);
+
+            --  Push the names to Symbol_Table
+
+            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+            Push_Binders_To_Symbol_Table (Items);
+
+            Emit (File.Cur_Theory,
+                  New_Function_Decl
+                    (Domain  => EW_Pred,
+                     Name    => New_Identifier
+                       (Name   => "dynamic_invariant",
+                        Module => Why.Types.Why_Empty,
+                        Typ    => EW_Bool_Type),
+                     Def     => +Compute_Dynamic_Property
+                       (Expr        => +Main_Arg,
+                        Ty          => E,
+                        Only_Var    => +Ovar_Arg,
+                        Initialized => +Init_Arg,
+                        Params      => Params,
+                        Use_Pred    => False),
+                     Labels  => Name_Id_Sets.To_Set (NID ("inline")),
+                     Binders =>
+                       Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg,
+                                                       others => <>),
+                                     2 => Binder_Type'(B_Name => Init_Arg,
+                                                       others => <>),
+                                     3 => Binder_Type'(B_Name => Ovar_Arg,
+                                                       others => <>))
+                     & Get_Parameters_From_Binders (Items)));
+
+            Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
          end;
+
+         --  Generate a predicate for E's default initialization.
+         --  We do not generate default initialization for unconstrained types.
+
+         if (not Has_Array_Type (E) or else Is_Constrained (E))
+           and then (not Has_Record_Type (E)
+                     or else not Has_Discriminants (E)
+                     or else Is_Constrained (E)
+                     or else Has_Defaulted_Discriminants (E))
+           and then not Is_Class_Wide_Type (E)
+         then
+
+            --  Get the set of variables used in E's default initialization
+
+            Variables.Clear;
+            Variables_In_Default_Init (E, Variables);
+
+            declare
+               Items    : Item_Array :=
+                 Get_Binders_From_Variables (To_Name_Set (Variables));
+               Main_Arg : constant W_Identifier_Id :=
+                 New_Temp_Identifier (Typ => Type_Of_Node (E));
+               --  Expression on which we want to assume the property
+
+               Slst_Arg : constant W_Identifier_Id :=
+                 New_Temp_Identifier (Typ => EW_Bool_Type);
+               --  Only assume initial condition for the components
+            begin
+
+               --  Use local names for variables
+
+               Localize_Variable_Parts (Items);
+
+               --  Push the names to Symbol_Table
+
+               Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+               Push_Binders_To_Symbol_Table (Items);
+
+               Emit (File.Cur_Theory,
+                     New_Function_Decl
+                       (Domain  => EW_Pred,
+                        Name    => New_Identifier
+                          (Name   => "default_init_assumption",
+                           Module => Why.Types.Why_Empty,
+                           Typ    => EW_Bool_Type),
+                        Def     => +Compute_Default_Init
+                          (Expr           => +Main_Arg,
+                           Ty             => E,
+                           Skip_Last_Cond => +Slst_Arg,
+                           Params         => Params,
+                           Use_Pred       => False),
+                        Labels  => Name_Id_Sets.To_Set (NID ("inline")),
+                        Binders =>
+                          Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg,
+                                                          others => <>),
+                                        2 => Binder_Type'(B_Name => Slst_Arg,
+                                                          others => <>))
+                        & Get_Parameters_From_Binders (Items)));
+
+               Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+            end;
+         end if;
       end if;
+
+      declare
+         Eq  : Entity_Id := Get_User_Defined_Eq (E);
+      begin
+
+         --  This module only contains an axiom when there is a user-provided
+         --  equality
+
+         if Present (Eq)
+           and then Entity_In_SPARK (Eq)
+         then
+
+            --  we may need to adjust for renamed subprograms
+
+            if Present (Renamed_Entity (Eq)) then
+               Eq := Renamed_Entity (Eq);
+            end if;
+
+            declare
+               Need_Convert : constant Boolean :=
+                 Is_Scalar_Type (E) and then not Is_Boolean_Type (E);
+               Var_A : constant W_Identifier_Id :=
+                 New_Identifier (Ada_Node => E,
+                                 Name     => "a",
+                                 Typ      => Ty);
+               Var_B : constant W_Identifier_Id :=
+                 New_Identifier (Ada_Node => E,
+                                 Name     => "b",
+                                 Typ      => Ty);
+               Arg_A : constant W_Expr_Id :=
+                 (if Need_Convert then
+                     Insert_Simple_Conversion
+                    (Domain => EW_Term,
+                     Expr   => +Var_A,
+                     To     => Base_Why_Type (Ty))
+                  else +Var_A);
+               Arg_B : constant W_Expr_Id :=
+                 (if Need_Convert then
+                     Insert_Simple_Conversion
+                    (Domain => EW_Term,
+                     Expr   => +Var_B,
+                     To     => Base_Why_Type (Ty))
+                  else +Var_B);
+               Def   : constant W_Expr_Id :=
+                 New_Call
+                   (Ada_Node => Eq,
+                    Domain   => EW_Pred,
+                    Name     => To_Why_Id (E => Eq,
+                                           Domain => EW_Pred,
+                                           Typ => EW_Bool_Type),
+                    Args     => (1 => Arg_A, 2 => Arg_B),
+                    Typ      => EW_Bool_Type);
+            begin
+               Emit
+                 (File.Cur_Theory,
+                  New_Defining_Axiom
+                    (Ada_Node    => E,
+                     Binders     =>
+                       (1 => Binder_Type'(B_Name => Var_A, others => <>),
+                        2 => Binder_Type'(B_Name => Var_B, others => <>)),
+                     Name        =>
+                       New_Identifier
+                         (Module => E_Module (E),
+                          Name    => "user_eq"),
+                     Def         => +Def));
+            end;
+         end if;
+      end;
       Close_Theory (File,
                     Kind => Axiom_Theory,
                     Defined_Entity => E);

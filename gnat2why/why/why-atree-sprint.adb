@@ -980,6 +980,7 @@ package body Why.Atree.Sprint is
             --  "predicate" keyword is not alowed in why.
             --  See printing of location tags in [Print_Node].
             Print_Sloc_Tag;
+            P (O, Get_Labels (Node), As_String => True);
 
             NL (O);
             Relative_Indent (O, 1);

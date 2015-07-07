@@ -23,22 +23,23 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;               use Atree;
-with Einfo;               use Einfo;
-with Sem_Util;            use Sem_Util;
-with Sinfo;               use Sinfo;
-with Snames;              use Snames;
+with Atree;                  use Atree;
+with Einfo;                  use Einfo;
+with Sem_Util;               use Sem_Util;
+with Sinfo;                  use Sinfo;
+with Snames;                 use Snames;
 
-with SPARK_Util;          use SPARK_Util;
+with SPARK_Util;             use SPARK_Util;
+with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 
-with Gnat2Why.Util;       use Gnat2Why.Util;
-with Why.Atree.Modules;   use Why.Atree.Modules;
-with Why.Atree.Accessors; use Why.Atree.Accessors;
-with Why.Conversions;     use Why.Conversions;
-with Why.Gen.Expr;        use Why.Gen.Expr;
-with Why.Gen.Names;       use Why.Gen.Names;
-with Why.Gen.Records;     use Why.Gen.Records;
-with Why.Inter;           use Why.Inter;
+with Gnat2Why.Util;          use Gnat2Why.Util;
+with Why.Atree.Modules;      use Why.Atree.Modules;
+with Why.Atree.Accessors;    use Why.Atree.Accessors;
+with Why.Conversions;        use Why.Conversions;
+with Why.Gen.Expr;           use Why.Gen.Expr;
+with Why.Gen.Names;          use Why.Gen.Names;
+with Why.Gen.Records;        use Why.Gen.Records;
+with Why.Inter;              use Why.Inter;
 
 package body Why.Gen.Binders is
 
@@ -78,6 +79,140 @@ package body Why.Gen.Binders is
             raise Program_Error;
       end case;
    end Get_Ada_Node_From_Item;
+
+   -----------------------------
+   -- Get_Args_From_Variables --
+   -----------------------------
+
+   function Get_Args_From_Variables (Variables : Name_Sets.Set)
+                                   return W_Expr_Array is
+      Items   : constant Item_Array := Get_Binders_From_Variables (Variables);
+      Binders : constant Binder_Array := Get_Parameters_From_Binders (Items);
+      Args    : W_Expr_Array (1 .. Binders'Length);
+      I       : Positive := 1;
+   begin
+      for B of Binders loop
+         Args (I) := New_Deref (Right => B.B_Name,
+                                Typ   => Get_Typ (B.B_Name));
+         I := I + 1;
+      end loop;
+      return Args;
+   end Get_Args_From_Variables;
+
+   --------------------------------
+   -- Get_Binders_From_Variables --
+   --------------------------------
+
+   function Get_Binders_From_Variables (Variables : Name_Sets.Set)
+                                        return Item_Array is
+      Binders : Item_Array (1 .. Natural (Variables.Length));
+      I       : Positive := 1;
+   begin
+      for V of Variables loop
+         declare
+            Entity : constant Entity_Id := Find_Entity (V);
+            Use_Ent : constant Boolean := Present (Entity)
+              and then not (Ekind (Entity) = E_Abstract_State)
+              and then Entity_In_SPARK (Entity);
+            --  For state abstractions pretend there is no Entity
+
+            C : constant Ada_Ent_To_Why.Cursor :=
+              (if Use_Ent then
+                    Ada_Ent_To_Why.Find (Symbol_Table, Entity)
+               else Ada_Ent_To_Why.Find (Symbol_Table, V));
+         begin
+            if Present (Entity) and then not Is_Mutable_In_Why (Entity) then
+
+               --  Do nothing if the entity is not mutable
+
+               null;
+            elsif Ada_Ent_To_Why.Has_Element (C) then
+               Binders (I) := Ada_Ent_To_Why.Element (C);
+               I := I + 1;
+            else
+               Binders (I) :=
+                 (Regular,
+                  (Ada_Node => Empty,
+                   B_Name   =>
+                     To_Why_Id (To_String (V), Local => False),
+                   B_Ent    => V,
+                   Mutable  => True));
+               I := I + 1;
+            end if;
+         end;
+      end loop;
+
+      return Binders (1 .. I - 1);
+   end Get_Binders_From_Variables;
+
+   ---------------------------------
+   -- Get_Parameters_From_Binders --
+   ---------------------------------
+
+   function Get_Parameters_From_Binders (Binders : Item_Array)
+                                         return Binder_Array is
+
+      function Parameter_Length return Natural;
+      --  Computes the expected length of the result
+
+      ----------------------
+      -- Parameter_Length --
+      ----------------------
+
+      function Parameter_Length return Natural is
+         Length : Natural := 0;
+      begin
+         for B of Binders loop
+            case B.Kind is
+            when Regular =>
+               pragma Assert (B.Main.Mutable);
+               Length := Length + 1;
+            when UCArray =>
+               pragma Assert (B.Content.Mutable);
+               Length := Length + 1;
+            when DRecord =>
+               pragma Assert
+                 ((B.Discrs.Present and then B.Discrs.Binder.Mutable)
+                  or else (B.Fields.Present
+                    and then B.Fields.Binder.Mutable));
+               if B.Discrs.Present and then B.Discrs.Binder.Mutable then
+                  Length := Length + 1;
+               end if;
+               if B.Fields.Present and then B.Fields.Binder.Mutable then
+                  Length := Length + 1;
+               end if;
+            when Func => raise Program_Error;
+            end case;
+         end loop;
+         return Length;
+      end Parameter_Length;
+
+      Params : Binder_Array (1 .. Parameter_Length);
+      I      : Positive := 1;
+   begin
+      for B of Binders loop
+         case B.Kind is
+            when Regular =>
+               Params (I) := B.Main;
+               I := I + 1;
+            when UCArray =>
+               Params (I) := B.Content;
+               I := I + 1;
+            when DRecord =>
+               if B.Discrs.Present and then B.Discrs.Binder.Mutable then
+                  Params (I) := B.Discrs.Binder;
+                  I := I + 1;
+               end if;
+               if B.Fields.Present and then B.Fields.Binder.Mutable then
+                  Params (I) := B.Fields.Binder;
+                  I := I + 1;
+               end if;
+            when Func => raise Program_Error;
+         end case;
+      end loop;
+
+      return Params;
+   end Get_Parameters_From_Binders;
 
    ----------------------------
    -- Get_Why_Type_From_Item --
@@ -126,6 +261,71 @@ package body Why.Gen.Binders is
       end loop;
       return Count;
    end Item_Array_Length;
+
+   ------------------------------
+   -- Localize_Variable_Parts --
+   ------------------------------
+
+   procedure Localize_Variable_Parts (Binders : in out Item_Array) is
+   begin
+      for B of Binders loop
+         case B.Kind is
+            when Regular =>
+               declare
+                  Local_Name : constant String :=
+                    (if Present (B.Main.Ada_Node)
+                     then Full_Name (B.Main.Ada_Node)
+                     else To_String (B.Main.B_Ent));
+               begin
+                  pragma Assert (B.Main.Mutable);
+                  B.Main.B_Name :=
+                    New_Identifier
+                      (Ada_Node => B.Main.Ada_Node,
+                       Name     => Local_Name,
+                       Typ      => Get_Typ (B.Main.B_Name));
+               end;
+            when UCArray =>
+               declare
+                  Local_Name : constant String :=
+                    Full_Name (B.Content.Ada_Node);
+               begin
+                  pragma Assert (B.Content.Mutable);
+                  B.Content.B_Name :=
+                    New_Identifier
+                      (Ada_Node => B.Content.Ada_Node,
+                       Name     => Local_Name,
+                       Typ      => Get_Typ (B.Content.B_Name));
+               end;
+            when DRecord =>
+               declare
+                  Local_Name : constant String :=
+                    (if B.Fields.Present
+                     then Full_Name (B.Fields.Binder.Ada_Node)
+                     else Full_Name (B.Discrs.Binder.Ada_Node));
+               begin
+                  pragma Assert
+                    ((B.Discrs.Present and then B.Discrs.Binder.Mutable)
+                     or else (B.Fields.Present
+                       and then B.Fields.Binder.Mutable));
+                  if B.Discrs.Present and then B.Discrs.Binder.Mutable then
+                     B.Discrs.Binder.B_Name :=
+                       New_Identifier
+                         (Ada_Node => B.Discrs.Binder.Ada_Node,
+                          Name     => Local_Name & "__discrs",
+                          Typ      => Get_Typ (B.Discrs.Binder.B_Name));
+                  end if;
+                  if B.Fields.Present and then B.Fields.Binder.Mutable then
+                     B.Fields.Binder.B_Name :=
+                       New_Identifier
+                         (Ada_Node => B.Fields.Binder.Ada_Node,
+                          Name     => Local_Name & "__fields",
+                          Typ      => Get_Typ (B.Fields.Binder.B_Name));
+                  end if;
+               end;
+            when Func => raise Program_Error;
+         end case;
+      end loop;
+   end Localize_Variable_Parts;
 
    -------------------------
    -- Mk_Item_From_Entity --
@@ -785,6 +985,33 @@ package body Why.Gen.Binders is
 
       return T;
    end Reconstruct_Item;
+
+   ----------------------------------
+   -- Push_Binders_To_Symbol_Table --
+   ----------------------------------
+
+   procedure Push_Binders_To_Symbol_Table (Binders : Item_Array) is
+   begin
+      for B of Binders loop
+         if Present (Get_Ada_Node_From_Item (B)) then
+            Ada_Ent_To_Why.Insert (Symbol_Table,
+                                   Get_Ada_Node_From_Item (B),
+                                   B);
+         else
+            pragma Assert (B.Kind = Regular
+                           and then B.Main.B_Ent /= Null_Entity_Name);
+
+            --  If there is no Ada_Node, this is a binder generated
+            --  from an effect; we add the parameter in the name
+            --  map using its unique name.
+
+            Ada_Ent_To_Why.Insert
+              (Symbol_Table,
+               B.Main.B_Ent,
+               B);
+         end if;
+      end loop;
+   end Push_Binders_To_Symbol_Table;
 
    ---------------------
    -- To_Binder_Array --

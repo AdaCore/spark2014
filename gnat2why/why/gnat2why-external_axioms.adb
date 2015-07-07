@@ -36,10 +36,12 @@ with Sem_Ch12;             use Sem_Ch12;
 with Sem_Util;             use Sem_Util;
 with Sinfo;                use Sinfo;
 with Sinput;               use Sinput;
+with Stand;                use Stand;
 with String_Utils;         use String_Utils;
 
 with SPARK_Util;           use SPARK_Util;
 with Flow_Utility;         use Flow_Utility;
+with Common_Containers;    use Common_Containers;
 
 with Why.Ids;              use Why.Ids;
 with Why.Sinfo;            use Why.Sinfo;
@@ -59,9 +61,9 @@ with Why.Conversions;      use Why.Conversions;
 with Gnat2Why.Expr;        use Gnat2Why.Expr;
 with Gnat2Why.Util;        use Gnat2Why.Util;
 with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
+with Gnat2Why.Types;       use Gnat2Why.Types;
 
 with Ada.Containers.Doubly_Linked_Lists;
-with Common_Containers; use Common_Containers;
 
 package body Gnat2Why.External_Axioms is
 
@@ -244,6 +246,145 @@ package body Gnat2Why.External_Axioms is
         (Decls  => Visible_Declarations (Package_Specification (E)),
          C_List => C_List);
    end Add_Dependencies;
+
+   --------------------------------
+   -- Complete_External_Entities --
+   --------------------------------
+
+   procedure Complete_External_Entities (E : Entity_Id) is
+
+      procedure Complete_Decls (Decls : List_Id);
+      --  Complete declarations of type entities from the declaration list
+
+      --------------------
+      -- Complete_Decls --
+      --------------------
+
+      procedure Complete_Decls (Decls : List_Id) is
+         N : Node_Id := First (Decls);
+      begin
+         while Present (N) loop
+
+            --  For type declarations, generate a completion module
+
+            if Comes_From_Source (N)
+              and then Nkind (N) in
+              N_Full_Type_Declaration
+                | N_Private_Extension_Declaration
+                  | N_Private_Type_Declaration
+                    | N_Subtype_Declaration
+            then
+               declare
+                  E  : constant Entity_Id := Defining_Entity (N);
+               begin
+                  if not Is_Standard_Boolean_Type (E)
+                    and then E /= Universal_Fixed
+                  then
+                     declare
+                        Compl_File : Why_Section :=
+                          Why_Sections (Dispatch_Entity_Completion (E));
+                     begin
+                        Generate_Type_Completion (Compl_File, E);
+                     end;
+                  end if;
+               end;
+            end if;
+
+            --  Call Complete_Decls recursively on Package_Declaration and
+            --  Package_Instantiation.
+
+            if Comes_From_Source (N) and then
+              Nkind (N) = N_Package_Instantiation
+            then
+               Complete_Decls
+                 (Decls  => Visible_Declarations
+                    (Specification (Instance_Spec (N))));
+            end if;
+
+            if Comes_From_Source (N) and then
+              Nkind (N) in N_Package_Declaration
+            then
+               Complete_Decls
+                 (Decls  => Visible_Declarations (Package_Specification (N)));
+            end if;
+
+            Next (N);
+         end loop;
+      end Complete_Decls;
+
+   --  Start of processing for Complete_External_Entities
+
+   begin
+
+      --  If E is generaic, complete type parameter declarations
+
+      if Present (Generic_Parent (Package_Specification (E))) then
+         declare
+            Assoc : constant List_Id :=  Get_Association_List (E);
+            Labs  : constant List_Id :=  Get_Label_List (E);
+            Instance_Name : constant String := Get_Instance_Name (E);
+            CurAssoc  : Node_Id := First (Assoc);
+            CurLabs   : Node_Id := First (Labs);
+         begin
+            while Present (CurAssoc) loop
+               declare
+                  Par    : constant Node_Id :=
+                    Explicit_Generic_Actual_Parameter (CurAssoc);
+                  Actual : constant Entity_Id :=
+                    (if Nkind (Par) in N_Has_Entity
+                     and then Present (Entity (Par))
+                     then
+                       (if Ekind (Entity (Par)) = E_Function then
+                             Get_Renamed_Entity (Entity (Par))
+                        else Entity (Par))
+                     else Empty);
+                  Formal : constant Entity_Id := Defining_Entity (CurLabs);
+                  Compl_File : Why_Section;
+               begin
+                  if Is_Type (Formal)
+                    and then not Is_Boolean_Type (Retysp (Actual))
+                    and then not Is_Itype (Retysp (Actual))
+                  then
+                     Compl_File :=
+                       Why_Sections (Dispatch_Entity_Completion
+                                     (Retysp (Actual)));
+
+                     Open_Theory
+                       (Compl_File,
+                        Module =>
+                          New_Module
+                            (Name =>
+                                 NID (Capitalize_First (Instance_Name) & "__"
+                               & Short_Name (Formal) & "__axiom"),
+                             File => No_Name),
+                        Comment =>
+                          "Module giving axioms for the type entity "
+                        & """" & Get_Name_String (Chars (E)) & """"
+                        & (if Sloc (E) > 0 then
+                             " defined at " & Build_Location_String (Sloc (E))
+                          else "")
+                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+                     Add_With_Clause
+                       (Compl_File, E_Axiom_Module (Retysp (Actual)),
+                        EW_Export);
+
+                     Close_Theory (Compl_File,
+                                   Defined_Entity => Formal,
+                                   Kind => Axiom_Theory);
+                  end if;
+               end;
+               Next (CurAssoc);
+               Next (CurLabs);
+            end loop;
+         end;
+      end if;
+
+      --  Complete other type declarations
+
+      Complete_Decls
+        (Decls  => Visible_Declarations (Package_Specification (E)));
+   end Complete_External_Entities;
 
    --------------------
    -- Compute_Length --

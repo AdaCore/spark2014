@@ -222,7 +222,8 @@ package Why.Gen.Expr is
    function New_Dynamic_Property
      (Domain : EW_Domain;
       Ty     : Entity_Id;
-      Expr   : W_Expr_Id) return W_Expr_Id;
+      Expr   : W_Expr_Id;
+      Params : Transformation_Params := Body_Params) return W_Expr_Id;
    --  Function to generate a call expressing that Expr is of the dynamic type
    --  Ty
 

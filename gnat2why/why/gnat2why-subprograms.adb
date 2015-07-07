@@ -427,9 +427,7 @@ package body Gnat2Why.Subprograms is
                                       else +Tmp_Var),
                                       +L_Id));
                            begin
-                              if Node_Sets.Is_Empty
-                                (Get_All_Dereferences (+Expr))
-                              then
+                              if not Has_Dereference (+Expr) then
                                  Prop_For_Include := Sequence
                                    (Prop_For_Include,
                                     +New_Typed_Binding
@@ -472,14 +470,14 @@ package body Gnat2Why.Subprograms is
                Binder   : constant Binder_Type := Func_Why_Binders (I);
                Dyn_Prop : constant W_Pred_Id :=
                  Compute_Dynamic_Property
-                   (Expr     => Transform_Identifier
+                   (Expr        => Transform_Identifier
                       (Params   => Params,
                        Expr     => Binder.Ada_Node,
                        Ent      => Binder.Ada_Node,
                        Domain   => EW_Term),
-                    Ty       => Etype (Binder.Ada_Node),
-                    Only_Var => True,
-                    Initialized => True);
+                    Ty          => Etype (Binder.Ada_Node),
+                    Only_Var    => True_Term,
+                    Initialized => True_Term);
             begin
                Dynamic_Prop_Effects := +New_And_Expr
                  (Left   => +Dynamic_Prop_Effects,
@@ -519,8 +517,8 @@ package body Gnat2Why.Subprograms is
                              Ent      => Entity,
                              Domain   => EW_Term),
                           Ty          => Etype (Entity),
-                          Only_Var    => True,
-                          Initialized => True);
+                          Only_Var    => True_Term,
+                          Initialized => True_Term);
                   begin
                      Dynamic_Prop_Effects := +New_And_Expr
                        (Left   => +Dynamic_Prop_Effects,
@@ -727,8 +725,8 @@ package body Gnat2Why.Subprograms is
                        Compute_Dynamic_Property
                     (Expr        => Expr,
                      Ty          => Etype (Ada_Node),
-                     Only_Var    => True,
-                     Initialized => True)
+                     Only_Var    => True_Term,
+                     Initialized => True_Term)
                   else True_Pred);
             begin
                if No (Ada_Node) then
@@ -2339,8 +2337,8 @@ package body Gnat2Why.Subprograms is
          Dynamic_Prop_Result : constant W_Pred_Id := Compute_Dynamic_Property
            (Expr        => +New_Result_Ident (Why_Type),
             Ty          => Etype (E),
-            Only_Var    => False,
-            Initialized => True);
+            Only_Var    => False_Term,
+            Initialized => True_Term);
 
          procedure Emit_Post_Axiom
            (Suffix : String;
@@ -2567,8 +2565,8 @@ package body Gnat2Why.Subprograms is
               +Compute_Dynamic_Property
               (Expr        => +New_Result_Ident (Why_Type),
                Ty          => Etype (E),
-               Only_Var    => False,
-               Initialized => True);
+               Only_Var    => False_Term,
+               Initialized => True_Term);
             Volatile_State  : constant W_Identifier_Id :=
               New_Identifier
                 (Domain => EW_Term,

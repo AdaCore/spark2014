@@ -26,12 +26,14 @@
 with Ada.Containers.Hashed_Maps;
 
 with Atree;             use Atree;
-with Einfo;             use Einfo;
+with Flow_Types;        use Flow_Types;
 with Sem_Eval;          use Sem_Eval;
 with Sinfo;             use Sinfo;
 with Types;             use Types;
 
 with SPARK_Util;        use SPARK_Util;
+
+with Why.Gen.Terms;     use Why.Gen.Terms;
 
 with Why.Types;         use Why.Types;
 with Why.Ids;           use Why.Ids;
@@ -74,13 +76,44 @@ package Gnat2Why.Expr is
    function Compute_Dynamic_Property
      (Expr        : W_Expr_Id;
       Ty          : Entity_Id;
-      Only_Var    : Boolean;
-      Initialized : Boolean) return W_Pred_Id
-   with
-       Pre => Is_Type (Ty);
-   --  Computes the dynamic property of an expression Expr of a type Ty.
-   --  If Only_Var is true, does not assume properties of constant parts of
-   --  Expr.
+      Only_Var    : W_Term_Id;
+      Initialized : W_Term_Id;
+      Params      : Transformation_Params := Body_Params;
+      Use_Pred    : Boolean := True)
+      return W_Pred_Id;
+   --  @param Expr Expression for which we want the the dynamic property
+   --  @param Ty The type of the expression Expr
+   --  @param Only_Var Only assume property over variable parts of Expr
+   --  @param Initialized Assume that Expr is initialized
+   --  @param Params Transformation parameters
+   --  @param Use_Pred Use the precomputed predicate for Ty's dynamic property
+   --  @result The dynamic property of type Ty over Expr.
+
+   procedure Variables_In_Dynamic_Property
+     (Ty        : Entity_Id;
+      Variables : in out Flow_Id_Sets.Set);
+   --  @param Ty a type
+   --  @param Variables used in the expression for Ty's dynamic invariant
+
+   function Compute_Default_Init
+     (Expr           : W_Expr_Id;
+      Ty             : Entity_Id;
+      Params         : Transformation_Params := Body_Params;
+      Skip_Last_Cond : W_Term_Id := False_Term;
+      Use_Pred       : Boolean := True) return W_Pred_Id;
+   --  @param Expr Expression for which we want the default initialization
+   --  @param Ty The type of the expression Expr
+   --  @param Params Transformation parameters
+   --  @param Skip_Last_Cond Do not assume the top-level
+   --         Default_Initial_Condition of Ty if any.
+   --  @param Use_Pred Use the precomputed predicate for Ty's dynamic property
+   --  @result The dynamic property of type Ty over Expr
+
+   procedure Variables_In_Default_Init
+     (Ty        : Entity_Id;
+      Variables : in out Flow_Id_Sets.Set);
+   --  @param Ty a type
+   --  @param Variables used in the expression for Ty's default initialization
 
    function Assume_Dynamic_Property
      (Expr        : W_Expr_Id;
