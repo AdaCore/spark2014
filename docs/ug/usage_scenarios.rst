@@ -401,10 +401,10 @@ and reviews when changing the compiler and/or the target.
 
 This includes in particular language features that deal with machine addresses,
 data representations, interfacing with assembler code, and similar issues (for
-example, language attribute Size). When changing the compiler and/or the target, the
-program logic should be carefully reviewed for possible dependences on the
-original compiler behavior and/or original target characteristics. See also the
-section 18.4.5 "Target-specific aspects" of the GNAT Reference Manual.
+example, language attribute ``Size``). When changing the compiler and/or the
+target, the program logic should be carefully reviewed for possible dependences
+on the original compiler behavior and/or original target characteristics. See
+also the section 18.4.5 "Target-specific aspects" of the GNAT Reference Manual.
 
 Similarly, the program logic should be carefully reviewed for possible
 dependency on target characteristics (for example, the size of standard integer
@@ -465,7 +465,9 @@ the size of standard integer types.
 
 |GNATprove|'s analysis does not detect possible run-time errors corresponding
 to raising exception ``Storage_Error`` at run time, which should be
-independently assessed.
+independently assessed. Because access types and dynamic allocation are
+fobidden in |SPARK|, the only possible cause for raising exception
+``Storage_Error`` in a |SPARK| program is overflowing the stack.
 
 .. _Portability of Fixed-Point and Floating-Point Computations:
 
