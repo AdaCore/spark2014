@@ -33,8 +33,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-package Ada_Real_Time
-  with SPARK_Mode => On
+package Ada_Real_Time with
+  SPARK_Mode,
+  Abstract_State => (Clock_Time with External => (Async_Readers,
+                                                  Async_Writers))
 is
 
    pragma Compile_Time_Error
@@ -56,6 +58,7 @@ is
    Time_Span_Unit  : constant Time_Span;
 
    function "+"  (Left : Time;      Right : Time_Span) return Time with
+     Global => null,
      Pre => (if Right < Time_Span_Zero then
                To_Duration (Left) >=
                  To_Duration (Time_Span_First) - To_Duration (Right)
@@ -64,6 +67,7 @@ is
                  To_Duration (Time_Span_Last) - To_Duration (Right));
 
    function "+"  (Left : Time_Span; Right : Time)      return Time with
+     Global => null,
      Pre => (if Left < Time_Span_Zero then
                To_Duration (Right) >=
                  To_Duration (Time_Span_First) - To_Duration (Left)
@@ -72,6 +76,7 @@ is
                  To_Duration (Time_Span_Last) - To_Duration (Left));
 
    function "-"  (Left : Time;      Right : Time_Span) return Time with
+     Global => null,
      Pre => (if Right < Time_Span_Zero then
                To_Duration (Left) <=
                  To_Duration (Time_Span_Last) + To_Duration (Right)
@@ -80,6 +85,7 @@ is
                  To_Duration (Time_Span_First) + To_Duration (Right));
 
    function "-"  (Left : Time;      Right : Time)      return Time_Span with
+     Global => null,
      Pre => (if To_Duration (Right) < 0.0 then
                To_Duration (Left) <=
                  Duration'Last + To_Duration (Right)
@@ -87,12 +93,17 @@ is
                To_Duration (Left) >=
                  Duration'First + To_Duration (Right));
 
-   function "<"  (Left, Right : Time) return Boolean;
-   function "<=" (Left, Right : Time) return Boolean;
-   function ">"  (Left, Right : Time) return Boolean;
-   function ">=" (Left, Right : Time) return Boolean;
+   function "<"  (Left, Right : Time) return Boolean with
+     Global => null;
+   function "<=" (Left, Right : Time) return Boolean with
+     Global => null;
+   function ">"  (Left, Right : Time) return Boolean with
+     Global => null;
+   function ">=" (Left, Right : Time) return Boolean with
+     Global => null;
 
    function "+"  (Left, Right : Time_Span)             return Time_Span with
+     Global => null,
      Pre => (if Right < Time_Span_Zero then
                To_Duration (Left) >=
                  To_Duration (Time_Span_First) - To_Duration (Right)
@@ -101,6 +112,7 @@ is
                  To_Duration (Time_Span_Last) - To_Duration (Right));
 
    function "-"  (Left, Right : Time_Span)             return Time_Span with
+     Global => null,
      Pre => (if Right < Time_Span_Zero then
                To_Duration (Left) <=
                  To_Duration (Time_Span_Last) + To_Duration (Right)
@@ -109,9 +121,11 @@ is
                  To_Duration (Time_Span_First) + To_Duration (Right));
 
    function "-"  (Right : Time_Span)                   return Time_Span with
+     Global => null,
      Pre => Right /= Time_Span_First;
 
    function "*"  (Left : Time_Span; Right : Integer)   return Time_Span with
+     Global => null,
      Pre =>
        (if Right > 0 then
          (if Left > Time_Span_Zero then
@@ -140,6 +154,7 @@ is
               Duration_Rep (Right)));
 
    function "*"  (Left : Integer;   Right : Time_Span) return Time_Span with
+     Global => null,
      Pre =>
        (if Left > 0 then
          (if Right > Time_Span_Zero then
@@ -167,36 +182,56 @@ is
                             Duration (Duration'Small)) /
               Duration_Rep (Left)));
 
-   --  ??? Precondition for division is tricky; see RM G.2.3 (16-18)
-
-   function "/"  (Left, Right : Time_Span)             return Integer;
+   function "/"  (Left, Right : Time_Span)             return Integer with
+     Global => null,
+     Pre => Right /= Time_Span_Zero and then
+            (if Right = -Time_Span_Unit and then Left = Time_Span_First
+             then --  avoid an obvious overflow
+                False
+             else --  Integer'Range fits into Duration_Rep'Range
+                Duration_Rep (To_Duration (Left) / To_Duration (Right)) in
+                Duration_Rep (Integer'First) .. Duration_Rep (Integer'Last));
 
    function "/"  (Left : Time_Span; Right : Integer)   return Time_Span with
+     Global => null,
      Pre => Right /= 0 and then
             (if Right = -1 then Left /= Time_Span_First);
 
    function "abs" (Right : Time_Span) return Time_Span with
+     Global => null,
      Pre => Right /= Time_Span_First;
 
-   function "<"  (Left, Right : Time_Span) return Boolean;
-   function "<=" (Left, Right : Time_Span) return Boolean;
-   function ">"  (Left, Right : Time_Span) return Boolean;
-   function ">=" (Left, Right : Time_Span) return Boolean;
+   function "<"  (Left, Right : Time_Span) return Boolean with
+     Global => null;
+   function "<=" (Left, Right : Time_Span) return Boolean with
+     Global => null;
+   function ">"  (Left, Right : Time_Span) return Boolean with
+     Global => null;
+   function ">=" (Left, Right : Time_Span) return Boolean with
+     Global => null;
 
    function To_Duration  (T : Time)       return Duration with Ghost;
-   function To_Duration  (TS : Time_Span) return Duration;
-   function To_Time_Span (D : Duration)   return Time_Span;
 
-   function Nanoseconds  (NS : Integer) return Time_Span;
+   function To_Duration  (TS : Time_Span) return Duration with
+     Global => null;
+   function To_Time_Span (D : Duration)   return Time_Span with
+     Global => null;
 
-   function Microseconds (US : Integer) return Time_Span;
+   function Nanoseconds  (NS : Integer) return Time_Span with
+     Global => null;
 
-   function Milliseconds (MS : Integer) return Time_Span;
+   function Microseconds (US : Integer) return Time_Span with
+     Global => null;
 
-   function Seconds (S : Integer) return Time_Span;
+   function Milliseconds (MS : Integer) return Time_Span with
+     Global => null;
+
+   function Seconds (S : Integer) return Time_Span with
+     Global => null;
    pragma Ada_05 (Seconds);
 
    function Minutes (M : Integer) return Time_Span with
+     Global => null,
      Pre => Duration_Rep (M) in Duration_Rep'First / (1_000_000_000 * 60) ..
                                 Duration_Rep'Last / (1_000_000_000 * 60);
    pragma Ada_05 (Minutes);
@@ -210,7 +245,8 @@ is
    --  in the case of CodePeer with a target configuration file with a maximum
    --  integer size of 32, it allows analysis of this unit.
 
-   procedure Split (T : Time; SC : out Seconds_Count; TS : out Time_Span);
+   procedure Split (T : Time; SC : out Seconds_Count; TS : out Time_Span) with
+     Global => null;
 
    --  Helper functions and constants
    function TS_SC (TS : Time_Span) return Seconds_Count is
@@ -228,6 +264,7 @@ is
    FudgeD : constant Duration with Ghost;
 
    function Time_Of (SC : Seconds_Count; TS : Time_Span) return Time with
+     Global => null,
      Pre => SC in 3 * SC_Lo .. 3 * SC_Hi and then
             Result_SC (SC, TS) in SC_Lo - 1 .. SC_Hi + 1 and then
             (if Result_SC (SC, TS) > 0 then
