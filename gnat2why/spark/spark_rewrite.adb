@@ -245,6 +245,9 @@ package body SPARK_Rewrite is
                         end case;
                      end;
 
+                  when E_Entry =>
+                     Register_Entity (E);
+
                   when E_Constant |
                        E_Variable =>
                      begin
@@ -269,9 +272,10 @@ package body SPARK_Rewrite is
             end;
          end if;
 
-         --  Register protected types and entries
+         --  Register protected types, which act as implicit parameters of
+         --  protected actions.
          if Nkind (N) in N_Entity
-           and then Ekind (N) in E_Protected_Type | E_Entry
+           and then Ekind (N) in E_Protected_Type
          then
             Register_Entity (N);
          end if;
