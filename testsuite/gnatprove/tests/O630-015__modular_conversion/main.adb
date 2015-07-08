@@ -12,7 +12,7 @@ is
 begin
    Foo.Init;
    Foo.Get (Field => 3,
-            Data  => Interfaces.Unsigned_64 (Value));
+            Data  => Interfaces.Unsigned_64 (Value)); --@RANGE_CHECK:FAIL
 
    if Value /= 0 then
       Foo.Init;
