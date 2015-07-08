@@ -128,7 +128,20 @@ package Flow_Error_Messages is
       VC_File     : String;
       Editor_Cmd  : String;
       E           : Entity_Id;
+      How_Proved  : String;
       Place_First : Boolean);
-   --  !!! documentation needed
+   --  register a message for proof (i.e. which corresponds to a check that is
+   --  usually taken care of by proof)
+   --  @param N the node on which this VC is placed
+   --  @param Msg the message string
+   --  @param Tag the kind of VC
+   --  @param Tracefile the tracefile of the VC which describes context
+   --  @param Cntexmpfile the file which contains the counterexample
+   --  @param VC_File if the VC is a manual proof, the VC file for manual proof
+   --  @param Editor_Cmd the editor command to spawn manual prover
+   --  @param E which subprogram this VC belongs to
+   --  @param How_Proved which prover or analysis discharged this VC
+   --  @param Place_First signal if placement on the beginning of the
+   --         expression should be used (instead of the middle)
 
 end Flow_Error_Messages;

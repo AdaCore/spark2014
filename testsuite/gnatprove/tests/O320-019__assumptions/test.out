@@ -6,6 +6,14 @@ full.ads:16:22: info: postcondition proved
 my_pack.adb:15:07: info: precondition proved
 my_pack.ads:16:22: info: postcondition proved
 my_pack.ads:16:36: info: overflow check proved
+
+
+
+
+
+
+                            Total      Flow   Interval   Provers   Justified   Unproved
+
   Full at full.ads:1 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
 
   Full.Bump at full.ads:9 flow analyzed (0 errors and 0 warnings) and proved (3 checks)
@@ -44,7 +52,27 @@ my_pack.ads:16:36: info: overflow check proved
 
   the postcondition of My_Pack.Bump
 
+=========================
+
 Analyzed 2 units
+
+Assertions                      .         .          .         .           .          .
+
+Data Dependencies               .         .          .         .           .          .
+
+Flow Dependencies               .         .          .         .           .          .
+
+Functional Contracts            5         .          .         5           .          .
+
+Initialization                  .         .          .         .           .          .
+
+LSP Verification                .         .          .         .           .          .
+
+Non-Aliasing                    .         .          .         .           .          .
+
+Run-time Checks                 3         .          .         3           .          .
+
+Summary of SPARK analysis
 
 absence of run-time errors of Full.Bump fully established
 

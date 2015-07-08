@@ -84,13 +84,13 @@
 --      severity   : string,
 --      tracefile  : string,
 --      msg_id     : int,
+--      how_proved : string,
 --      entity     : entity }
 --  - (file, line, col) describe the source location of the message.
---  - - "rule" describes the kind of VC, the possible values are described
+--  - "rule" describes the kind of VC, the possible values are described
 --    in the file vc_kinds.ads.
---  - "message" is the message text.
 --  - "severity" describes the kind status of the message, possible values used
---    by gnatwhy3 are "info" and "error"
+--    by gnatwhy3 are "info", "low", "medium", "high" and "error"
 --  - "tracefile" contains the name of a trace file, if any
 --  - "entity" contains the entity dictionary for the entity that this VC
 --    belongs to
@@ -99,20 +99,18 @@
 --    "[#12]"
 --  - "suppressed" - if present, the message is in fact suppressed by a pragma
 --    Annotate, and this field contains the justification message.
+--  - "how_proved" - if present, indicates how the VC has been proved (i.e.
+--    which prover). A special value is the string "interval" which designates
+--    the special interval analysis done in the frontend, and wich corresponds
+--    to the Interval column in the summary table.
 --
 --  -----------------
 --  --  Flow Entry --
 --  -----------------
 --
 --  Flow entries are of the same form as for proof. Differences are in the
---  possible values for:
---  - severity: ??? document what severities flow uses
---  - rule:     ??? document possible values for flow
-
---  Both for flow and proof, The special value "pragma_warning" is used as a
---  possible value of the "rule" field, for suppressed warnings. In this case,
---  the field "message" contains the reason for the message to be suppressed,
---  instead of the message string.
+--  possible values for "rule", which can only be tho ones for flow messages.
+--  Also "how_proved" field is never set.
 
 with Ada.Command_Line;
 with Ada.Directories;
@@ -411,7 +409,13 @@ procedure SPARK_Report is
                   Subp   => Subp,
                   Proved => Proved);
                if Proved then
-                  Increment (Summary (Category).Provers);
+                  if Has_Field (Result, "how_proved")
+                    and then Get (Get (Result, "how_proved")) = "interval"
+                  then
+                     Increment (Summary (Category).Interval);
+                  else
+                     Increment (Summary (Category).Provers);
+                  end if;
                else
                   Increment (Summary (Category).Unproved);
                end if;

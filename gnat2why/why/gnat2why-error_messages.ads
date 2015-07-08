@@ -47,6 +47,7 @@ package Gnat2Why.Error_Messages is
       Tracefile   : String := "";
       Cntexmpfile : String := "";
       VC_File     : String := "";
+      How_Proved  : String := "";
       Editor_Cmd  : String := "");
 
 end Gnat2Why.Error_Messages;

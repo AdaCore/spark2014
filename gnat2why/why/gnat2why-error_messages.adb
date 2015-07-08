@@ -140,6 +140,7 @@ package body Gnat2Why.Error_Messages is
       Tracefile   : String := "";
       Cntexmpfile : String := "";
       VC_File     : String := "";
+      How_Proved  : String := "";
       Editor_Cmd  : String := "") is
       Msg : constant String :=
         (if Proved then Proved_Message (Node, Kind)
@@ -156,6 +157,7 @@ package body Gnat2Why.Error_Messages is
          Cntexmpfile => Cntexmpfile,
          VC_File     => VC_File,
          Editor_Cmd  => Editor_Cmd,
+         How_Proved  => How_Proved,
          E           => E);
    end Emit_Proof_Result;
 

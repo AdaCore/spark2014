@@ -77,6 +77,12 @@ package body Flow_Error_Messages is
      (N           : Node_Id;
       Place_First : Boolean := False)
       return Source_Ptr;
+   --  function to compute a better sloc for reporting of results than the Ada
+   --  Node. This takes into account generics.
+   --  @param N the node for which we compute the sloc
+   --  @param Place_First set this boolean to true to obtain placement at the
+   --                     first sloc of the node, instead of the topmost node
+   --  @return a sloc
 
    procedure Add_Json_Msg
      (Suppr       : String_Id;
@@ -89,6 +95,7 @@ package body Flow_Error_Messages is
       Tracefile   : String := "";
       Cntexmpfile : String := "";
       VC_File     : String := "";
+      How_Proved  : String := "";
       Editor_Cmd  : String := "");
 
    function Warning_Is_Suppressed
@@ -398,6 +405,7 @@ package body Flow_Error_Messages is
       VC_File     : String;
       Editor_Cmd  : String;
       E           : Entity_Id;
+      How_Proved  : String;
       Place_First : Boolean) is
       Kind     : constant Msg_Kind :=
         (if Is_Proved then Info_Kind else Medium_Check_Kind);
@@ -444,6 +452,7 @@ package body Flow_Error_Messages is
          Tracefile   => Tracefile,
          Cntexmpfile => Cntexmpfile,
          VC_File     => VC_File,
+         How_Proved  => How_Proved,
          Editor_Cmd  => Editor_Cmd);
 
    end Error_Msg_Proof;
@@ -531,6 +540,7 @@ package body Flow_Error_Messages is
       Tracefile   : String := "";
       Cntexmpfile : String := "";
       VC_File     : String := "";
+      How_Proved  : String := "";
       Editor_Cmd  : String := "")
    is
       Value : constant JSON_Value := Create_Object;
@@ -577,6 +587,10 @@ package body Flow_Error_Messages is
 
       if Msg_Id /= No_Message_Id then
          Set_Field (Value, "msg_id", Integer (Msg_Id));
+      end if;
+
+      if How_Proved /= "" then
+         Set_Field (Value, "how_proved", How_Proved);
       end if;
 
       Append (Msg_List, Value);
