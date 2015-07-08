@@ -50,7 +50,7 @@ module Static_Discrete_Base
 
   function last  : rep_type
 
-  axiom inversion_axiom  :
+  axiom inversion_axiom :
     forall x : t [to_rep x].
     of_rep (to_rep (x)) = x
 
@@ -81,7 +81,7 @@ module Static_Discrete
     type rep_type = int
 
   axiom coerce_axiom :
-    forall x  : int [to_rep (of_rep x)].
+    forall x : int [to_rep (of_rep x)].
       in_range x -> to_rep (of_rep x) = x
 end
 
@@ -236,7 +236,7 @@ module Static_Modular_8
     function rep_to_int = rep_to_int
 
   axiom coerce_axiom :
-    forall x  : rep_type [to_rep (of_rep x)].
+    forall x : rep_type [to_rep (of_rep x)].
       to_rep (of_rep x) = x
 end
 
