@@ -227,7 +227,7 @@ package body SPARK_Rewrite is
          --  comes from an object/subprogram declaration.
 
          if Nkind (N) in N_Has_Entity
-           and then Nkind (Entity (N)) in N_Entity
+           and then Present (Entity (N))
          then
             declare
                E : constant Entity_Id := Entity (N);
