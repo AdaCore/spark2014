@@ -343,13 +343,13 @@ on Formal Verification" of the SPARK Reference Manual), |GNATprove| rejects
 with an error programs which may implicitly raise a ``Program_Error`` in parts
 of code that are in |SPARK|. For example, all execution paths in a |SPARK|
 function should end with a return statement, a raise statement, or a ``pragma
-Assert(False)``.
+Assert (False)``.
 
 |GNATprove| reduces portability issues related to the use of fixed-point and
 floating-point values:
 
 * |GNATprove| supports a subset of fixed-point types and operations that
-  ensures that the result of an operation always beloogs to the *perfect result
+  ensures that the result of an operation always belongs to the *perfect result
   set* as defined in Ada RM G.2.3. Note that the perfect result set still
   contains in general two values (the two model fixed-point values above and
   below the perfect mathematical result), which means that two compilers may
@@ -374,7 +374,7 @@ description of the different modes):
   |GNATprove| issues a warning for every arithmetic operation which could be
   re-ordered by the compiler, thus leading to a possible overflow with one
   compiler and not another. For example, arithmetic operation ``A + B + C`` can
-  be interpreted as ``(A + B) + C`` by a compiler, and ``A + (B + C)`` (after
+  be interpreted as ``(A + B) + C`` by one compiler, and ``A + (B + C)`` (after
   re-ordering) by another compiler. Note that GNAT always use the former
   version without re-ordering. See :ref:`Parenthesized Arithmetic Operations`.
 
@@ -395,7 +395,7 @@ description of the different modes):
   possible run-time errors corresponding to raising exception
   ``Constraint_Error`` at run time, all possible failures of assertions
   corresponding to raising exception ``Assert_Error`` at run time, and all
-  possible explicit raise of exceptions in the program.
+  possible explicit raising of exceptions in the program.
 
 The analysis of |GNATprove| can take into account characteristics of the target
 by specifying a :ref:`Target Parameterization`.
@@ -521,7 +521,7 @@ the size of standard integer types.
 |GNATprove|'s analysis does not detect possible run-time errors corresponding
 to raising exception ``Storage_Error`` at run time, which should be
 independently assessed. Because access types and dynamic allocation are
-fobidden in |SPARK|, the only possible cause for raising exception
+forbidden in |SPARK|, the only possible cause for raising exception
 ``Storage_Error`` in a |SPARK| program is overflowing the stack.
 
 .. _Portability of Fixed-Point and Floating-Point Computations:
