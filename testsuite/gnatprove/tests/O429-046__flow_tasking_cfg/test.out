@@ -5,7 +5,6 @@ foo.adb:51:19: info: initialization of "B" proved
 foo.adb:55:14: warning: subprogram "Test_Delay_01" has no effect
 p.adb:12:07: warning: analyzing unreferenced procedure "Swap_Content"
 p.adb:16:27: info: initialization of "Tmp" proved
-p.ads:7:17: potentially blocking operation in protected operation "Swap_Content"
 prot.adb:4:04: info: initialization of "Hidden" constituent of "State" proved
 prot.adb:5:04: info: initialization of "Hidden2" constituent of "State" proved
 prot.adb:8:07: warning: analyzing unreferenced procedure "Get"
@@ -16,7 +15,6 @@ prot.ads:8:22: info: initialization of "X" proved
 prot.ads:12:13: info: initialization of "Hidden" constituent of "State" proved
 q.adb:12:07: warning: analyzing unreferenced procedure "Swap_Content"
 q.adb:16:27: info: initialization of "Tmp" proved
-q.ads:7:17: potentially blocking operation in protected operation "Swap_Content"
 tasks.adb:4:04: info: initialization of "Hidden" constituent of "State" proved
 tasks.adb:5:04: info: initialization of "Hidden2" constituent of "State" proved
 tasks.ads:5:04: info: initialization of "Visible" proved
@@ -28,8 +26,3 @@ test.adb:10:15: warning: assuming "Put" has no effect on global items
 test.adb:10:15: warning: no Global contract available for "Put"
 test.adb:11:21: warning: assuming "Put" has no effect on global items
 test.adb:11:21: warning: no Global contract available for "Put"
-   compilation of p.adb failed
-   compilation of q.adb failed
-
-
-gnatprove: error during analysis of data and information flow

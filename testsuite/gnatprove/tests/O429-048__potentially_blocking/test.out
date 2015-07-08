@@ -1,0 +1,56 @@
+p-po_stub_1.adb:3:38: warning: statement has no effect
+p-po_stub_1.adb:8:04: warning: analyzing unreferenced procedure "Nonblocking_Stub_Proc"
+p-po_stub_2.adb:3:44: warning: statement has no effect
+p-po_stub_2.adb:5:07: warning: statement has no effect
+p-po_stub_3.adb:8:04: warning: analyzing unreferenced procedure "Indirectly_Blocking_Stub_Proc"
+p.adb:5:45: "Real_Time.Clock_Time" must be listed in the Initializes aspect of "P" (SPARK RM 7.1.5(12))
+p.adb:30:07: warning: statement has no effect
+p.adb:31:10: warning: statement has no effect
+p.adb:38:07: warning: statement has no effect
+p.adb:50:41: warning: statement has no effect
+p.adb:55:07: warning: analyzing unreferenced procedure "Nonblocking_Type_Proc"
+p.adb:62:47: warning: statement has no effect
+p.adb:64:10: warning: statement has no effect
+p.adb:79:07: warning: analyzing unreferenced procedure "Indirectly_Blocking_Type_Proc"
+p.adb:92:43: warning: statement has no effect
+p.adb:97:07: warning: analyzing unreferenced procedure "Nonblocking_Object_Proc"
+p.adb:104:49: warning: statement has no effect
+p.adb:106:10: warning: statement has no effect
+p.adb:121:07: warning: analyzing unreferenced procedure "Indirectly_Blocking_Object_Proc"
+p.adb:137:07: warning: statement has no effect
+p.ads:5:14: warning: subprogram "Potentially_Blocking_Proc" has no effect
+p.ads:7:14: warning: subprogram "Blocking_Proc" has no effect
+p.ads:9:14: warning: subprogram "Nonblocking_Proc" has no effect
+p.ads:11:13: "Real_Time.Clock_Time" cannot act as global item of nonvolatile function "Potentially_Blocking_Func"
+p.ads:13:13: "Real_Time.Clock_Time" cannot act as global item of nonvolatile function "Blocking_Func"
+p.ads:19:17: warning: subprogram "Nonblocking_Type_Proc" has no effect
+p.ads:23:13: potentially blocking operation in protected operation "Directly_Blocking_Type_Entry"
+p.ads:24:17: potentially blocking operation in protected operation "Directly_Blocking_Type_Proc"
+p.ads:24:17: warning: subprogram "Directly_Blocking_Type_Proc" has no effect
+p.ads:28:13: potentially blocking operation in protected operation "Indirectly_Blocking_Type_Entry"
+p.ads:29:17: potentially blocking operation in protected operation "Indirectly_Blocking_Type_Proc"
+p.ads:29:17: warning: subprogram "Indirectly_Blocking_Type_Proc" has no effect
+p.ads:34:17: warning: subprogram "Nonblocking_Object_Proc" has no effect
+p.ads:38:13: potentially blocking operation in protected operation "Directly_Blocking_Object_Entry"
+p.ads:39:17: potentially blocking operation in protected operation "Directly_Blocking_Object_Proc"
+p.ads:39:17: warning: subprogram "Directly_Blocking_Object_Proc" has no effect
+p.ads:43:13: potentially blocking operation in protected operation "Indirectly_Blocking_Object_Entry"
+p.ads:44:17: potentially blocking operation in protected operation "Indirectly_Blocking_Object_Proc"
+p.ads:44:17: warning: subprogram "Indirectly_Blocking_Object_Proc" has no effect
+p.ads:49:17: warning: subprogram "Nonblocking_Stub_Proc" has no effect
+p.ads:53:13: potentially blocking operation in protected operation "Directly_Blocking_Stub_Entry"
+p.ads:54:17: potentially blocking operation in protected operation "Directly_Blocking_Stub_Proc"
+p.ads:54:17: warning: subprogram "Directly_Blocking_Stub_Proc" has no effect
+p.ads:58:13: potentially blocking operation in protected operation "Indirectly_Blocking_Stub_Entry"
+p.ads:59:17: potentially blocking operation in protected operation "Indirectly_Blocking_Stub_Proc"
+p.ads:59:17: warning: subprogram "Indirectly_Blocking_Stub_Proc" has no effect
+p.ads:62:14: medium: "Now" might not be initialized after elaboration of main program "Blocking_Task_Type"
+pack.ads:5:13: potentially blocking operation in protected operation "E_Proc"
+pack.ads:10:13: potentially blocking operation in protected operation "E_Func"
+pack.ads:13:14: warning: subprogram "Unrelated_Proc" has no effect
+pack.ads:14:14: warning: subprogram "Unrelated_Func" has no effect
+   compilation of p.adb failed
+   compilation of pack.adb failed
+
+
+gnatprove: error during analysis of data and information flow

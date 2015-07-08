@@ -1,0 +1,6 @@
+pack.ads:5:17: potentially blocking operation in protected operation "Dummy"
+pack.ads:5:17: warning: subprogram "Dummy" has no effect
+   compilation of pack.adb failed
+
+
+gnatprove: error during flow analysis and proof

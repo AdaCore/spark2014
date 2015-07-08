@@ -1533,7 +1533,7 @@ package body Flow is
                       Convention_Protected)
          then
             --  ??? issue different a warning if the blocking status is unknown
-            if Is_Potentially_Blocking (To_Entity_Name (FA.Analyzed_Entity))
+            if Is_Potentially_Blocking (FA.Analyzed_Entity)
             then
                Error_Msg_Flow (FA   => FA,
                                Msg  => "potentially blocking operation " &

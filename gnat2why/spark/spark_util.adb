@@ -1896,12 +1896,29 @@ package body SPARK_Util is
                  N_Asynchronous_Select    |
                  N_Conditional_Entry_Call |
                  N_Delay_Statement        |
-                 N_Entry_Call_Statement   |
                  N_Selective_Accept       |
                  N_Timed_Entry_Call       =>
 
                Potentially_Blocking_Statement_Found := True;
                return Abandon;
+
+            --  Front end rewrites calls to protected procedures as entry
+            --  calls; however, they are not potentially blocking (unless
+            --  called with the same target object as the entry's object,
+            --  RM 9.5.1(15)).
+            when N_Entry_Call_Statement =>
+               declare
+                  Orig_N : constant Node_Id := Original_Node (N);
+               begin
+                  if Orig_N = N then
+                     Potentially_Blocking_Statement_Found := True;
+                     return Abandon;
+                  end if;
+
+                  pragma Assert (Nkind (Orig_N) = N_Procedure_Call_Statement);
+
+                  return OK;
+               end;
 
             when N_Object_Declaration =>
                declare

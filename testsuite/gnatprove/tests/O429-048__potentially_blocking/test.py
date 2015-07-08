@@ -1,3 +1,5 @@
 from test_support import *
 
-prove_all ()
+# Enable proof once tasking is supported
+# prove_all () 
+do_flow ()

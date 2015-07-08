@@ -28,6 +28,9 @@ with Types;                       use Types;
 with Common_Containers;           use Common_Containers;
 with Ada.Containers.Ordered_Sets;
 
+with Atree;                       use Atree;
+with Einfo;                       use Einfo;
+
 with Flow_Types;                  use Flow_Types;
 with Flow_Refinement;             use Flow_Refinement;
 with Flow_Dependency_Maps;        use Flow_Dependency_Maps;
@@ -331,11 +334,11 @@ package Flow_Generated_Globals is
    --  @param EN is the entity name that we check for having Effective_Writes
    --  @return True iff EN has Effective_Writes set.
 
-   function Is_Potentially_Blocking (EN : Entity_Name) return Boolean
-   with Pre => GG_Has_Been_Generated;
-   --  Returns True if subprogram represented by entity name EN is potentially
-   --  blocking or its blocking status is unknown; returns False it if is known
-   --  to be nonblocking.
+   function Is_Potentially_Blocking (E : Entity_Id) return Boolean
+   with Pre => GG_Has_Been_Generated and then
+               Ekind (E) in E_Entry | E_Procedure | E_Function;
+   --  Returns True if subprogram E is potentially blocking or its blocking
+   --  status is unknown; returns False it if is known to be nonblocking.
 
 private
 

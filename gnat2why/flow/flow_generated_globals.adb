@@ -27,8 +27,6 @@ with Ada.Text_IO.Unbounded_IO;   use Ada.Text_IO.Unbounded_IO;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Containers.Hashed_Sets;
 with ALI;                        use ALI;
-with Atree;                      use Atree;
-with Einfo;                      use Einfo;
 with Flow_Utility;               use Flow_Utility;
 with Gnat2Why_Args;
 with Graph;
@@ -38,6 +36,7 @@ with Osint;                      use Osint;
 with Osint.C;                    use Osint.C;
 with Output;                     use Output;
 with Sem_Util;                   use Sem_Util;
+with Sinfo;                      use Sinfo;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Util;                 use SPARK_Util;
 
@@ -1991,8 +1990,14 @@ package body Flow_Generated_Globals is
    -- Is_Potentially_Blocking --
    -----------------------------
 
-   function Is_Potentially_Blocking (EN : Entity_Name) return Boolean
+   function Is_Potentially_Blocking (E : Entity_Id) return Boolean
    is
+      EN : constant Entity_Name := To_Entity_Name (E);
+      --  Entity name
+
+      Protected_Object_E : constant Entity_Id := Scope (E);
+      --  Entity of the enclosing protected object
+
       Ins_GID       : constant Global_Id := (Kind => Ins_Kind,
                                              Name => EN);
 
@@ -2008,6 +2013,9 @@ package body Flow_Generated_Globals is
         Pre => GID.Kind in Ins_Kind | Proof_Ins_Kind | Outs_Kind;
       --  Check for calls to potentially blocking subprograms of a given Kind
 
+      function Calls_Same_Target_Object (S : Global_Id) return Boolean;
+      --  Check if subprogram S calls the enclosing protected object of EN
+
       -------------------------------------------
       -- Calls_Potentially_Blocking_Subprogram --
       -------------------------------------------
@@ -2016,7 +2024,7 @@ package body Flow_Generated_Globals is
         (GID : Global_Id) return Boolean
       is
          Subp_V : constant Vertex_Id := Global_Graph.Get_Vertex (GID);
-         --  Vertex that represents subprogram dependencies of a given Kind
+         --  Vertex that represents called subprogram
 
          Callee : Global_Id;
       begin
@@ -2024,10 +2032,27 @@ package body Flow_Generated_Globals is
 
             Callee := Global_Graph.Get_Key (V);
 
-            if Callee.Kind in Proof_Ins_Kind | Ins_Kind | Outs_Kind
-              and then not Nonblocking_Subprograms_Set.Contains (Callee.Name)
-            then
-               return True;
+            if Callee.Kind in Proof_Ins_Kind | Ins_Kind | Outs_Kind then
+               --  Check for potentially blocking constructs
+               if not Nonblocking_Subprograms_Set.Contains (Callee.Name) then
+                  return True;
+               end if;
+
+               --  Check for external calls on a protected subprogram with the
+               --  same target object as that of the protected action???
+               declare
+                  Callee_E : constant Entity_Id := Find_Entity (Callee.Name);
+               begin
+                  --  Entities from other compilation units have empty id???
+                  if Callee_E = Empty
+                    or else not Scope_Within_Or_Same (Scope (Callee_E),
+                                                      Protected_Object_E)
+                  then
+                     if Calls_Same_Target_Object (Callee) then
+                        return True;
+                     end if;
+                  end if;
+               end;
             end if;
 
          end loop;
@@ -2035,6 +2060,40 @@ package body Flow_Generated_Globals is
          return False;
 
       end Calls_Potentially_Blocking_Subprogram;
+
+      ------------------------------
+      -- Calls_Same_Target_Object --
+      ------------------------------
+
+      function Calls_Same_Target_Object (S : Global_Id) return Boolean is
+         Subp_V : constant Vertex_Id := Global_Graph.Get_Vertex (S);
+         --  Vertex that represents subprogram S
+
+         Callee : Global_Id;
+         --  Vertex that represent subprogram called by S
+      begin
+         --  Iterate over variables accessed by subprogram S
+         for V of Global_Graph.Get_Collection (Subp_V, Out_Neighbours) loop
+
+            Callee := Global_Graph.Get_Key (V);
+
+            if Callee.Kind in Ins_Kind | Outs_Kind | Proof_Ins_Kind then
+               declare
+                  Callee_E : constant Entity_Id := Find_Entity (Callee.Name);
+               begin
+                  if Callee_E /= Empty and then
+                    Scope (Callee_E) = Protected_Object_E
+                  then
+                     return True;
+                  end if;
+               end;
+
+            end if;
+
+         end loop;
+
+         return False;
+      end Calls_Same_Target_Object;
 
    --  Start of processing for Is_Potentially_Blocking
 
