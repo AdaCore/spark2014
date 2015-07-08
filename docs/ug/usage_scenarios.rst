@@ -177,6 +177,16 @@ is a subset of Ada, and because in general only some parts of a complete
 program are in |SPARK|, we need to consider first the issue of portability in
 the context of Ada, and then specialize it in the context of |SPARK|.
 
+Note that we consider here portability in its strictest sense, whereby a
+program is portable if its observable behavior is exactly the same across a
+change of compiler and/or target. In the more common sense of the word, a
+program is portable if it can be reused without modification on a different
+target, or when changing compiler.  That's consistent with the definition of
+portability in WikiPedia: "Portability in high-level computer programming is
+the usability of the same software in different environments". As an example of
+a difference between both interpretations, many algorithms which use
+trigonometry are portable in the more common sense, not in the strictest sense.
+
 Portability of Ada Programs
 ---------------------------
 
