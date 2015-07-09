@@ -9398,13 +9398,13 @@ package body Gnat2Why.Expr is
                Then_Expr :=
                  Transform_Expr_With_Actions (Then_Part,
                                               Then_Actions (Expr),
-                                              Type_Of_Node (Expr_Type),
+                                              Expected_Type,
                                               Domain,
                                               Local_Params);
                Else_Expr :=
                  Transform_Expr_With_Actions (Else_Part,
                                               Else_Actions (Expr),
-                                              Type_Of_Node (Expr_Type),
+                                              Expected_Type,
                                               Domain,
                                               Local_Params);
                Local_Params.Gen_Marker := False;
