@@ -1326,11 +1326,6 @@ package body Why.Atree.Modules is
       M_Main.Return_Exc :=
         New_Name (Symbol => NID ("Return__exc"));
 
-      M_Main.Ignore_Id :=
-        New_Identifier (Domain => EW_Term,
-                        Module => M,
-                        Symbol => NID ("___ignore"),
-                        Typ    => EW_Unit_Type);
       M_Main.Null_Extension :=
         New_Identifier (Domain => EW_Term,
                         Module => M,

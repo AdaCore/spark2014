@@ -111,10 +111,12 @@ package body Why.Gen.Progs is
       return W_Prog_Id
    is
       Call : constant W_Prog_Id :=
-        New_Call
+        New_Binding
           (Ada_Node => Ada_Node,
-           Name     => M_Main.Ignore_Id,
-           Args     => (1 => +Prog));
+           Name     => New_Identifier (Domain => EW_Prog, Name => "_"),
+           Def      => +Prog,
+           Context  => New_Void (Ada_Node => Ada_Node),
+           Typ      => EW_Unit_Type);
    begin
       return New_Abstract_Expr (Expr => Call, Post => True_Pred);
    end New_Ignore;

@@ -100,7 +100,6 @@ package Why.Atree.Modules is
 
    type M_Main_Type is record
       Module            : W_Module_Id;
-      Ignore_Id         : W_Identifier_Id;
       Private_Type      : W_Type_Id;
       Null_Extension    : W_Identifier_Id;
       Fixed_Type        : W_Type_Id;
