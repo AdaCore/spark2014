@@ -639,6 +639,13 @@ package body Why.Gen.Expr is
             --  Do_Overflow_Check is set. (See description of these flags in
             --  sinfo.ads for details.)
 
+            --  Also, we special case a type conversion whose expression has a
+            --  range check, when this appears as the actual of an out/in-out
+            --  parameter of a call, because the current check machinery does
+            --  not allow detecting the necessary check on the out copy.
+            --  ??? It would be good if such special casing were closer to the
+            --  code which handles the call
+
             --  We can't rely on check flags for subtype predicates, so force
             --  check_node in that case.
 
@@ -647,7 +654,14 @@ package body Why.Gen.Expr is
                  (if Do_Range_Check (Ada_Node) then
                     True
                   elsif Nkind (Parent (Ada_Node)) = N_Type_Conversion
-                    and then Do_Overflow_Check (Parent (Ada_Node))
+                  and then Do_Overflow_Check (Parent (Ada_Node)) then
+                     True
+                  elsif Nkind (Ada_Node) = N_Type_Conversion
+                  and then Do_Range_Check (Expression (Ada_Node))
+                  and then Nkind (Parent (Ada_Node)) in
+                    N_Parameter_Association | N_Procedure_Call_Statement
+                  and then Ekind (Get_Formal_From_Actual (Ada_Node)) in
+                    E_In_Out_Parameter | E_Out_Parameter
                   then
                      True
                   else Get_Type_Kind (To) in EW_Abstract | EW_Split

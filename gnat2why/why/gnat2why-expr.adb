@@ -3476,18 +3476,36 @@ package body Gnat2Why.Expr is
                      --
                      --  ... with the appropriate checks if needed.
 
+                     --  if the actual is a type conversion, then in the case
+                     --  of the "store" (see point 2 below) we need to undo
+                     --  the type conversion, that is do the type conversion in
+                     --  the other direction. So we retrieve the type of that
+                     --  expression here, and use it also as an Ada_ node.
+
+                     Actual_Target_T : constant W_Type_Id :=
+                       (if Nkind (Actual) = N_Type_Conversion then
+                             Type_Of_Node (Expression (Actual))
+                        else Actual_T);
+
+                     Actual_Target_Node : constant Node_Id :=
+                       (if Nkind (Actual) = N_Type_Conversion then
+                             Expression (Actual)
+                        else Actual);
+
                      Arg_Value     : constant W_Prog_Id :=
                        (if Need_Check_On_Store then
-                        +Insert_Checked_Conversion (Ada_Node => Actual,
-                                                    Ada_Type => Etype (Actual),
-                                                    Domain   => EW_Prog,
-                                                    Expr     => +Tmp_Var_Deref,
-                                                    To       => Actual_T)
+                           +Insert_Checked_Conversion
+                            (Ada_Node => Actual,
+                             Ada_Type => Etype (Actual),
+                             Domain   => EW_Prog,
+                             Expr     => +Tmp_Var_Deref,
+                             To       => Actual_Target_T)
                         else
-                        +Insert_Simple_Conversion (Ada_Node => Actual,
-                                                   Domain   => EW_Prog,
-                                                   Expr     => +Tmp_Var_Deref,
-                                                   To       => Actual_T));
+                           +Insert_Simple_Conversion
+                             (Ada_Node => Actual_Target_Node,
+                              Domain   => EW_Prog,
+                              Expr     => +Tmp_Var_Deref,
+                              To       => Actual_Target_T));
 
                      --  ...then store it into the actual:
 

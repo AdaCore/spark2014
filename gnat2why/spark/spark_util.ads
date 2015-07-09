@@ -864,7 +864,7 @@ package SPARK_Util is
                                           | N_Procedure_Call_Statement
                                           | N_Unchecked_Type_Conversion;
    --  @param Actual actual parameter of a call
-   --  @return the type of the corresponding formal parameter
+   --  @return the corresponding formal parameter
 
    function Get_Range (N : Node_Id) return Node_Id
      with Post => Present (Low_Bound (Get_Range'Result)) and then
