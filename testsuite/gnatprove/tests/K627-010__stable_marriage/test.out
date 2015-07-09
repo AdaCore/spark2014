@@ -146,8 +146,8 @@ stable_marriage.adb:330:24: info: initialization of "G2" proved
 stable_marriage.adb:330:27: info: initialization of "G1" proved
 stable_marriage.adb:333:10: info: assertion proved
 stable_marriage.adb:335:10: info: assertion proved
-stable_marriage.adb:343:10: info: assertion proved
 stable_marriage.adb:346:29: info: range check proved
+stable_marriage.adb:348:23: medium: assertion might fail, requires Unmatched_G1_Set.Elements (Idx)/= Result (G2_Id)
 stable_marriage.adb:348:51: info: index check proved
 stable_marriage.adb:350:10: medium: assertion might fail
 stable_marriage.adb:352:24: info: range check proved

@@ -54,7 +54,7 @@ for_loops_on_lists.ads:12:18: info: precondition proved
 for_loops_on_lists.ads:15:14: info: postcondition proved
 for_loops_on_lists.ads:15:49: info: precondition proved
 for_loops_on_lists.ads:17:46: info: initialization of "P" proved
-for_loops_on_lists.ads:18:14: medium: postcondition might fail
+for_loops_on_lists.ads:18:14: info: postcondition proved
 for_loops_on_lists.ads:18:18: info: precondition proved
 for_loops_on_lists.ads:18:42: info: precondition proved
 for_loops_on_lists.ads:18:54: info: initialization of "P" proved

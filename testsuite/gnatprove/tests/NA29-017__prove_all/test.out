@@ -104,6 +104,7 @@ sorting.adb:104:18: info: overflow check proved
 sorting.adb:108:05: info: precondition proved
 sorting.adb:108:18: info: range check proved
 sorting.adb:108:34: info: overflow check proved
+sorting.adb:124:07: info: loop invariant preservation proved
 sorting.adb:126:19: medium: overflow check might fail
 sorting.adb:127:33: info: overflow check proved
 sorting.adb:127:33: info: range check proved
@@ -112,7 +113,6 @@ sorting.adb:127:49: info: range check proved
 sorting.adb:127:65: info: overflow check proved
 sorting.adb:127:69: info: overflow check proved
 sorting.adb:127:71: info: initialization of "L" proved
-sorting.adb:128:61: medium: loop invariant might fail after first iteration, requires L >= 1
 sorting.adb:128:61: medium: loop invariant might fail in first iteration, requires L >= 1
 sorting.adb:133:10: info: loop invariant initialization proved
 sorting.adb:134:13: info: initialization of "I" proved
