@@ -811,9 +811,21 @@ package body Gnat2Why.Util is
    ------------------------
 
    function Why_Type_Of_Entity (E : Entity_Id) return W_Type_Id is
-      Binder : constant Item_Type := Ada_Ent_To_Why.Element (Symbol_Table, E);
    begin
-      return Get_Why_Type_From_Item (Binder);
+
+      --  entities for ASCII characters are not translated. Instead we use
+      --  directly their integer translation.
+
+      if Sloc (E) = Standard_ASCII_Location then
+         return EW_Int_Type;
+      else
+         declare
+            Binder : constant Item_Type :=
+              Ada_Ent_To_Why.Element (Symbol_Table, E);
+         begin
+            return Get_Why_Type_From_Item (Binder);
+         end;
+      end if;
    end Why_Type_Of_Entity;
 
    ---------------------------
