@@ -1,0 +1,8 @@
+with Common; use Common;
+
+procedure Fxp_False_Check_1a is
+   MD : My_Duration := 0.0;
+   MS : My_Subduration := 0.0;
+begin
+   pragma Assert (Duration (MD) >= 1.0 or Duration (MS) >= 1.0);
+end;
