@@ -585,6 +585,18 @@ package body Flow.Slice is
                      Next_Formal (E);
                   end loop;
 
+                  --  If the analyzed entity belongs to a protected object then
+                  --  we add the protected type to the local variables. The
+                  --  protected object is tread as a formal parameter.
+                  declare
+                     F : constant Flow_Id :=
+                       Direct_Mapping_Id (FA.Analyzed_Entity);
+                  begin
+                     if Belongs_To_Protected_Object (F) then
+                        Local_Vars.Include (Scope (FA.Analyzed_Entity));
+                     end if;
+                  end;
+
                when E_Task_Body =>
                   --  The discriminants of a task effectively act as its formal
                   --  parameters.
@@ -611,17 +623,9 @@ package body Flow.Slice is
 
          --  Gather local parameters and subprograms
          case FA.Kind is
-            when E_Entry =>
+            when E_Entry | E_Subprogram_Body | E_Task_Body =>
                Gather_Local_Variables_And_Subprograms
-                 (Entry_Body (FA.Analyzed_Entity));
-
-            when E_Subprogram_Body =>
-               Gather_Local_Variables_And_Subprograms
-                 (Subprogram_Body (FA.Analyzed_Entity));
-
-            when E_Task_Body =>
-               Gather_Local_Variables_And_Subprograms
-                 (Task_Body (FA.Analyzed_Entity));
+                 (Get_Body (FA.Analyzed_Entity));
 
             when others =>
                raise Why.Unexpected_Node;
