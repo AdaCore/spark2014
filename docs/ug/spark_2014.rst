@@ -2503,14 +2503,15 @@ requirements, and where testing should ensure coverage of the object code. As
 ghost code is not present in the object code, there is no additional cost for
 maintaining its traceability and ensuring its coverage by tests.
 
-|GNAT Pro| provides an easy means to check that no ghost code is present in a
-given object code or executable, which relies on the property that, by
-definition, each ghost declaration or ghost statement mentions at least one
-ghost entity. |GNAT Pro| prefixes all names of such ghost entities in the
-object code with the string ``___ghost``. The initial triple underscore ensures
-that this substring cannot appear anywhere in the name of non-ghost
-entities. Thus, one only needs to check that the substring ``___ghost`` does
-not appear in the list of names from the object code or executable.
+|GNAT Pro| provides an easy means to check that no ignored ghost code is
+present in a given object code or executable, which relies on the property
+that, by definition, each ghost declaration or ghost statement mentions at
+least one ghost entity. |GNAT Pro| prefixes all names of such ignored ghost
+entities in the object code with the string ``___ghost``. The initial triple
+underscore ensures that this substring cannot appear anywhere in the name of
+non-ghost entities or ghost entities that are not ignored. Thus, one only
+needs to check that the substring ``___ghost`` does not appear in the list of
+names from the object code or executable.
 
 On Unix-like platforms, this can done by checking that the following command
 does not output anything::
