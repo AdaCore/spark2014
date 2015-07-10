@@ -6,11 +6,19 @@ import shutil
 
 bm = {}
 
+smt2_driver_prefix = ";; produced by "
+
 for path, dirs, files in os.walk("data"):
     for f in files:
         if f.endswith(".smt2") or f.endswith(".why"):
             # Strip extension and trailing numbers added by why3
-            vc_name = f.rsplit(".", 1)[0].rstrip("0123456789")
+            tmp = f.rsplit(".", 1)[0]
+            vc_name = tmp.rstrip("0123456789")
+            vc_index = tmp[len(vc_name):]
+            if vc_index == "":
+                vc_index = 1
+            else:
+                vc_index = int(vc_index)
 
             # Chop off prefix
             test_name = path[len("data/tmp-test-"):]
@@ -23,36 +31,59 @@ for path, dirs, files in os.walk("data"):
             name = name.replace(" ", "_")
 
             if f.endswith(".smt2"):
-                prover = "cvc4"
+                prover = None
+                with open(os.path.join(path, f)) as fd:
+                    for raw_line in fd:
+                        if raw_line.startswith(smt2_driver_prefix):
+                            prover = raw_line[len(smt2_driver_prefix):]
+                            prover = prover.split()[0].rsplit(".", 1)[0]
+                            break
+                assert prover is not None
             else:
                 prover = "altergo"
 
             if name not in bm:
-                bm[name] = {prover: os.path.join(path, f)}
+                bm[name] = {prover: [os.path.join(path, f)]}
+            elif prover not in bm[name]:
+                bm[name][prover] = [os.path.join(path, f)]
             else:
-                bm[name][prover] = os.path.join(path, f)
+                bm[name][prover].append(os.path.join(path, f))
 
-ignored = []
-for test in bm:
-    if len(bm[test]) != 2:
-        print "Ignoring test %s without comparison results..." % test
-        ignored.append(test)
+PROVERS = set()
+for name in bm:
+    PROVERS |= set(bm[name])
+    # p = False
+    # for x in bm[name]:
+    #     p |= len(bm[name][x]) > 1
+    # if p:
+    #     print bm[name]
+PROVERS = sorted(PROVERS)
 
-for i in ignored:
-    del bm[i]
-
-PROVERS = ["cvc4", "altergo"]
+# ignored = []
+# for test in sorted(bm):
+#     if len(bm[test]) == 1:
+#         print "Ignoring test %s without comparison results..." % test
+#         ignored.append(test)
+#
+# for i in ignored:
+#     del bm[i]
 
 EXT = {
-    "cvc4":    "smt2",
-    "altergo": "why"
+    "altergo": "why",
+    "cvc4_14": "smt2",
+    "cvc4_15": "smt2",
+    "z3_432":  "smt2",
 }
+
+assert sorted(EXT) == PROVERS
 
 for p in PROVERS:
     os.makedirs(os.path.join("bench", p))
 
 for test in bm:
     for p in PROVERS:
-        dst = os.path.join("bench", p, test + "." + EXT[p])
-        assert (not os.path.exists(dst))
-        shutil.copyfile(bm[test][p], dst)
+        if p in bm[test]:
+            first_test = sorted(bm[test][p])[0]
+            dst = os.path.join("bench", p, test + "." + EXT[p])
+            assert (not os.path.exists(dst))
+            shutil.copyfile(first_test, dst)
