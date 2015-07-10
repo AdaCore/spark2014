@@ -2413,6 +2413,24 @@ package body Gnat2Why.Expr is
                        2 => +False_Term));
             end if;
 
+            --  if Ty_Ext is tagged, generate
+            --     <Expr>.attr__tag = <Ty_Ext>.__tag
+
+            if Is_Tagged_Type (Ty_Ext) then
+               Assumption :=
+                 New_Call
+                   (Domain => EW_Pred,
+                    Typ    => EW_Bool_Type,
+                    Name   => Why_Eq,
+                    Args =>
+                      (1 => New_Tag_Access
+                         (Ada_Node => Ty,
+                          Domain   => EW_Term,
+                          Name     => Tmp,
+                          Ty       => Ty_Ext),
+                       2 => +E_Symb (Ty_Ext, WNE_Tag)));
+            end if;
+
             --  Go through discriminants to create
             --  <Expr>.rec__disc1 = Discr1.default <if Ty_Ext is unconstrained>
             --  <Expr>.rec__disc1 = Discr1 /\ ..   <if Ty_Ext is constrained>
@@ -10071,37 +10089,96 @@ package body Gnat2Why.Expr is
 
                if Is_Record_Type (Ty) then
 
-                  --  eliminate trivial cases first, the membership test is
-                  --  always true here.
-
-                  if Root_Type (Ty) = Ty or else
-                    not Has_Discriminants (Ty) or else
-                    not Is_Constrained (Ty)
-                  then
-                     return True_Expr;
-                  end if;
+                  --  We must check for two cases. Ty may be constrained, in
+                  --  which case we need to check its dicriminant, or it may
+                  --  be tagged, in which case we need to check its tag.
 
                   declare
-                     Call : constant W_Expr_Id :=
-                       New_Call (Domain => Domain,
-                                 Name => E_Symb (Ty, WNE_Range_Pred),
-                                 Args =>
-                                   Prepare_Args_For_Subtype_Check (Ty, Var),
-                                 Typ  => EW_Bool_Type);
+                     Discr_Cond : W_Expr_Id := True_Expr;
+                     Tag_Cond   : W_Expr_Id := True_Expr;
                   begin
-                     if Domain = EW_Pred then
-                        return Call;
-                     else
-                        return
-                          New_Conditional
-                            (Domain    => Domain,
-                             Condition => Call,
-                             Then_Part => True_Expr,
-                             Else_Part =>
-                               New_Literal (Domain => EW_Term,
-                                            Value => EW_False),
-                             Typ       => EW_Bool_Type);
+
+                     --  If Ty is constrained, we need to check its
+                     --  discriminant.
+
+                     if Root_Type (Ty) /= Ty and then
+                       Has_Discriminants (Ty) and then
+                       Is_Constrained (Ty)
+                     then
+                        Discr_Cond := New_Call
+                          (Domain => Domain,
+                           Name => E_Symb (Ty, WNE_Range_Pred),
+                           Args =>
+                             Prepare_Args_For_Subtype_Check (Ty, Var),
+                           Typ  => EW_Bool_Type);
                      end if;
+
+                     --  If Ty is tagged, we need to check its tag.
+
+                     if Is_Tagged_Type (Ty)
+                       and then Is_Class_Wide_Type (Ty)
+                     then
+
+                        --  If we are checking against a classwide type, it is
+                        --  enough to check wether Var can be converted to Ty.
+
+                        declare
+                           Var_Type : constant Entity_Id :=
+                             Get_Ada_Node (+Get_Type (Var));
+                        begin
+                           pragma Assert (Present (Var_Type));
+
+                           if not SPARK_Util.Is_Ancestor (Ty, Var_Type) then
+                              Tag_Cond := New_Call
+                                (Domain => Domain,
+                                 Name => M_Main.Compat_Tags_Id,
+                                 Args => (1 => New_Tag_Access
+                                          (Domain   => EW_Term,
+                                           Name     => Var,
+                                           Ty       => Var_Type),
+                                          2 => +E_Symb (E => Ty,
+                                                        S => WNE_Tag)),
+                                 Typ  => EW_Bool_Type);
+                           end if;
+                        end;
+                     elsif Is_Tagged_Type (Ty) then
+
+                        --  If we are checking against a specific type, then
+                        --  the tags of Var and Ty must match.
+
+                        Tag_Cond := New_Call
+                          (Domain => Domain,
+                           Name => Why_Eq,
+                           Args => (1 => New_Tag_Access
+                                    (Domain   => EW_Term,
+                                     Name     => Var,
+                                     Ty       =>
+                                       Get_Ada_Node (+Get_Type (Var))),
+                                    2 => +E_Symb (E => Ty,
+                                                  S => WNE_Tag)),
+                           Typ  => EW_Bool_Type);
+                     end if;
+
+                     --  Go back to the appropriate domain
+
+                     declare
+                        Condition : constant W_Expr_Id :=
+                          New_And_Expr (Discr_Cond, Tag_Cond, Domain);
+                     begin
+                        if Domain = EW_Pred then
+                           return Condition;
+                        else
+                           return
+                             New_Conditional
+                               (Domain    => Domain,
+                                Condition => Condition,
+                                Then_Part => True_Expr,
+                                Else_Part =>
+                                  New_Literal (Domain => EW_Term,
+                                               Value => EW_False),
+                                Typ       => EW_Bool_Type);
+                        end if;
+                     end;
                   end;
                else
                   pragma Assert (Is_Scalar_Type (Ty));
