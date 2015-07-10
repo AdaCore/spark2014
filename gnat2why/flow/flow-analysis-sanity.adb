@@ -344,10 +344,6 @@ package body Flow.Analysis.Sanity is
             Entry_Node := Task_Body (FA.Analyzed_Entity);
             Check_Expressions (Entry_Node);
 
-         when E_Protected_Type =>
-            Entry_Node := PO_Definition (FA.Analyzed_Entity);
-            Check_Expressions (Entry_Node);
-
          when E_Package =>
             Entry_Node := Package_Specification (FA.Analyzed_Entity);
             Check_Expressions (Entry_Node);
@@ -525,9 +521,6 @@ package body Flow.Analysis.Sanity is
                end if;
             when E_Package | E_Package_Body  =>
                return "Initializes";
-            when E_Protected_Type =>
-               --  !!! O429-046 Hack for now, later to be removed
-               return "Global";
          end case;
       end Find_Aspect_To_Fix;
 
@@ -548,11 +541,10 @@ package body Flow.Analysis.Sanity is
             SRM_Ref : constant String :=
               (case FA.Kind is
                   when E_Subprogram_Body |
-                       E_Task_Body       => "6.1.4(13)", --  ??? E_Entry
+                       E_Entry           |
+                       E_Task_Body       => "6.1.4(13)",
                   when E_Package         |
-                       E_Package_Body    => "7.1.5(12)",
-                  when E_Protected_Type  |
-                       E_Entry           => "???"
+                       E_Package_Body    => "7.1.5(12)"
               );
 
             F : Flow_Id;

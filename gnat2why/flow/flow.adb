@@ -97,7 +97,6 @@ package body Flow is
                                  return Flow_Analysis_Graphs
      with Pre  => Ekind (E) in Subprogram_Kind  |
                                E_Task_Type      |
-                               E_Protected_Type |
                                E_Entry          |
                                E_Package        |
                                E_Package_Body,
@@ -266,8 +265,6 @@ package body Flow is
            Ekind (X.Analyzed_Entity) = E_Task_Type,
         when E_Entry =>
            Ekind (X.Analyzed_Entity) = E_Entry,
-        when E_Protected_Type =>
-           Ekind (X.Analyzed_Entity) = E_Protected_Type,
         when E_Package =>
            Ekind (X.Analyzed_Entity) = E_Package,
         when E_Package_Body =>
@@ -962,16 +959,6 @@ package body Flow is
 
             Tmp.Function_Side_Effects_Present := False;
 
-         when E_Protected_Type =>
-            --  Note we're analyzing the definitions, and B_Scope should
-            --  point to the thing we're actually analyzing. We do not
-            --  analyze anything in the protected body itself since it
-            --  can't contain anything but procedure and entry bodies.
-            Tmp.B_Scope := Get_Flow_Scope (PO_Definition (E));
-            Tmp.S_Scope := Get_Flow_Scope (E);
-
-            Append (Tmp.Base_Filename, "po_");
-
          when E_Package =>
             Tmp.B_Scope       := Flow_Scope'(E, Private_Part);
             Tmp.S_Scope       := Flow_Scope'(E, Private_Part);
@@ -1074,13 +1061,6 @@ package body Flow is
                                     then "yes"
                                     else "no"));
                   end if;
-
-               when E_Protected_Type =>
-                  --  ??? O429-046 we need to do something for globals here
-                  if Gnat2Why_Args.Flow_Advanced_Debug then
-                     Write_Line ("skipped (protected body)");
-                  end if;
-                  FA.GG.Aborted := True;
 
                when E_Package =>
                   if Gnat2Why_Args.Flow_Advanced_Debug then
@@ -1338,12 +1318,6 @@ package body Flow is
                   end if;
                end if;
 
-            when E_Protected_Type =>
-               --  !!! O429-046 Globals for protected objects
-               if SPARK_Util.Analysis_Requested (E) then
-                  FA_Graphs.Include (E, Flow_Analyse_Entity (E, E));
-               end if;
-
             when E_Package =>
                declare
                   Pkg_Spec   : constant Node_Id := Package_Specification (E);
@@ -1443,9 +1417,8 @@ package body Flow is
                     E_Subprogram_Body =>
                   Analysis.Sanity_Check_Postcondition (FA, Success);
 
-               when E_Protected_Type |
-                    E_Task_Body      =>
-                  --  No postconditions for tasks and protected objects
+               when E_Task_Body      =>
+                  --  No postconditions for tasks
                   null;
             end case;
          end if;
@@ -1503,10 +1476,6 @@ package body Flow is
                      Register_Claim (Claim'(E    => FA.Analyzed_Entity,
                                             Kind => Claim_Effects));
                   end if;
-
-               when E_Protected_Type =>
-                  --  ??? O429-046 analyze POs
-                  null;
 
                when E_Package | E_Package_Body =>
                   --  In "Prove" mode we do not care about hidden

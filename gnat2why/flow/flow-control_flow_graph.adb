@@ -575,9 +575,7 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-     with Pre => Nkind (N) = N_Object_Declaration or
-                 (if Nkind (N) = N_Component_Declaration
-                  then FA.Kind = E_Protected_Type);
+     with Pre => Nkind (N) = N_Object_Declaration;
    --  Deal with declarations (with an optional initialization). We
    --  either generate a null vertex which is then stripped from the
    --  graph or a simple defining vertex. Additionally, if the
@@ -5606,11 +5604,6 @@ package body Flow.Control_Flow_Graph is
             Body_N          := Task_Body (FA.Analyzed_Entity);
             Subprogram_Spec := Corresponding_Spec (Body_N);
 
-         when E_Protected_Type =>
-            --  For POs we only look at their private declaration.
-            Body_N          := PO_Definition (FA.Analyzed_Entity);
-            Subprogram_Spec := FA.Analyzed_Entity;
-
          when E_Package =>
             Spec_N := Package_Specification (FA.Analyzed_Entity);
             Body_N := Spec_N;
@@ -5662,8 +5655,8 @@ package body Flow.Control_Flow_Graph is
                end loop;
             end;
 
-         when E_Task_Body | E_Protected_Type =>
-            --  Tasks and POs see their discriminants as parameters
+         when E_Task_Body =>
+            --  Tasks see their discriminants as parameters
             declare
                E : Entity_Id := First_Entity (FA.Analyzed_Entity);
             begin
@@ -5813,10 +5806,6 @@ package body Flow.Control_Flow_Graph is
                end;
             end if;
 
-         when E_Protected_Type =>
-            --  ??? O429-046 TODO: Globals for pos
-            null;
-
          when E_Package | E_Package_Body =>
             --  Packages have no obvious globals, but we can extract a
             --  list of global variables used from the optional rhs of
@@ -5946,11 +5935,6 @@ package body Flow.Control_Flow_Graph is
               (Statements (Handled_Statement_Sequence (Body_N)),
                FA, Connection_Map, The_Context);
 
-         when E_Protected_Type =>
-            Process_Quantified_Expressions
-              (Private_Declarations (Body_N),
-               FA, Connection_Map, The_Context);
-
          when E_Package =>
             Process_Quantified_Expressions
               (Visible_Declarations (Spec_N), FA, Connection_Map, The_Context);
@@ -6058,7 +6042,7 @@ package body Flow.Control_Flow_Graph is
                      Block => Postcon_Block);
             end;
 
-         when E_Task_Body | E_Protected_Type =>
+         when E_Task_Body =>
             --  No pre or post here.
             null;
 
@@ -6120,26 +6104,6 @@ package body Flow.Control_Flow_Graph is
                     Connection_Map (Union_Id (Body_N)).Standard_Entry);
             Linkup (FA,
                     Connection_Map (Union_Id (Body_N)).Standard_Exits,
-                    FA.Helper_End_Vertex);
-            Linkup (FA,
-                    FA.Helper_End_Vertex,
-                    FA.End_Vertex);
-
-         when E_Protected_Type =>
-            Process_Statement_List (Private_Declarations (Body_N),
-                                    FA,
-                                    Connection_Map,
-                                    The_Context);
-
-            Linkup (FA,
-                    FA.Start_Vertex,
-                    Connection_Map
-                      (Union_Id
-                         (Private_Declarations (Body_N))).Standard_Entry);
-            Linkup (FA,
-                    Connection_Map
-                      (Union_Id
-                         (Private_Declarations (Body_N))).Standard_Exits,
                     FA.Helper_End_Vertex);
             Linkup (FA,
                     FA.Helper_End_Vertex,

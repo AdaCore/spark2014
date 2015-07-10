@@ -669,7 +669,7 @@ package body Flow.Analysis is
                                                      (FA.Visible_Vars)),
                                       FA.S_Scope));
 
-                  when E_Protected_Type | E_Task_Body =>
+                  when E_Task_Body =>
                      raise Program_Error;
                end case;
             end if;
@@ -688,7 +688,7 @@ package body Flow.Analysis is
                            Reduced              => True,
                            Use_Computed_Globals => True));
 
-                  when E_Task_Body | E_Protected_Type =>
+                  when E_Task_Body =>
                      --  Nothing to do - no pre or postconditions.
                      null;
 

@@ -141,7 +141,6 @@ package Flow is
        Valid_Analyzed_Entity in E_Subprogram_Body |
                                 E_Entry           |
                                 E_Task_Body       |
-                                E_Protected_Type  |
                                 E_Package         |
                                 E_Package_Body;
 
@@ -259,9 +258,6 @@ package Flow is
             Function_Side_Effects_Present : Boolean;
             --  Set to True if we are dealing with a function that has side
             --  effects.
-
-         when E_Protected_Type =>
-            null;
 
          when E_Package | E_Package_Body =>
             Initializes_N : Node_Id;
