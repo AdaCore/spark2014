@@ -38,28 +38,34 @@ package Flow_Refinement is
    -- Flow_Scope --
    ----------------
 
-   --  The scope we care about in flow analysis is restricted to
-   --  packages, since we only care about refinement of abstracts state and
-   --  packages are the only entities which contain abstract state.
+   --  The scopes we care about in flow analysis are restricted to packages and
+   --  protected objects.
    --
-   --  There are three places any particular variable or subprogram can be
-   --  declared or implemented: a package's spec, its private part, or its
-   --  body. Thus a flow scope is a package entity + spec|priv|body.
+   --  There are six places any particular variable or subprogram can be
+   --  declared or implemented in a:
+   --    * package's spec
+   --    * package's private part
+   --    * package's body
+   --    * protected object's spec
+   --    * protected object's private part
+   --    * protected object's body
+   --
+   --  Therefore flow scope is an entity + spec|priv|body.
 
    type Section_T is (Null_Part, Spec_Part, Private_Part, Body_Part);
 
    subtype Valid_Section_T is Section_T range Spec_Part .. Body_Part;
 
-   subtype Package_Id is Entity_Id
-   with Dynamic_Predicate => No (Package_Id) or else
-     (Nkind (Package_Id) in N_Entity and then
-      Ekind (Package_Id) in E_Package | E_Generic_Package);
+   subtype Scope_Id is Entity_Id
+   with Dynamic_Predicate => No (Scope_Id) or else
+     (Nkind (Scope_Id) in N_Entity and then
+      Ekind (Scope_Id) in E_Package | E_Generic_Package | E_Protected_Type);
 
    type Flow_Scope is record
-      Pkg     : Package_Id;
+      Ent     : Scope_Id;
       Section : Section_T;
    end record
-   with Dynamic_Predicate => (if Present (Flow_Scope.Pkg)
+   with Dynamic_Predicate => (if Present (Flow_Scope.Ent)
                               then Flow_Scope.Section /= Null_Part
                               else Flow_Scope.Section = Null_Part);
 
@@ -75,16 +81,16 @@ package Flow_Refinement is
    -- Functions --
    ---------------
 
-   function Present (S : Flow_Scope) return Boolean is (Present (S.Pkg));
-   --  Returns true iff S is not the Null_Flow_Scope.
+   function Present (S : Flow_Scope) return Boolean is (Present (S.Ent));
+   --  Returns True iff S is not the Null_Flow_Scope.
 
    function Private_Scope (S : Flow_Scope) return Flow_Scope
-   is (Flow_Scope'(S.Pkg, Private_Part))
+   is (Flow_Scope'(S.Ent, Private_Part))
    with Pre => Present (S);
    --  Returns the private scope for a valid scope.
 
    function Body_Scope (S : Flow_Scope) return Flow_Scope
-   is (Flow_Scope'(S.Pkg, Body_Part))
+   is (Flow_Scope'(S.Ent, Body_Part))
    with Pre => Present (S);
    --  Returns the body scope for a valid scope.
 
@@ -95,19 +101,19 @@ package Flow_Refinement is
    function Is_Visible (N : Node_Id;
                         S : Flow_Scope)
                         return Boolean;
-   --  Returns true iff the node N is visible from the scope S.
+   --  Returns True iff the node N is visible from the scope S.
 
    function Get_Flow_Scope (N : Node_Id) return Flow_Scope
    with Pre => Present (N);
-   --  Given (almost) any node in the AST, work out which flow scope we're
+   --  Given (almost) any node in the AST, work out which flow scope we are
    --  in. If the scope is Standard, we return Null_Flow_Scope instead.
 
    function Subprogram_Refinement_Is_Visible (E : Entity_Id;
                                               S : Flow_Scope)
                                               return Boolean
    with Pre => Ekind (E) in Subprogram_Kind | E_Task_Type;
-   --  Return true iff the implementation (and thus refined global or
-   --  depends) of subprogram E is visible from S.
+   --  Return True iff the implementation (and thus refined global or depends)
+   --  of subprogram E is visible from S.
 
    function State_Refinement_Is_Visible (E : Entity_Id;
                                          S : Flow_Scope)
@@ -137,7 +143,7 @@ package Flow_Refinement is
 
    function Get_Enclosing_Flow_Scope (S : Flow_Scope) return Flow_Scope
    with Pre => S.Section in Spec_Part | Private_Part;
-   --  Returns the most nested scope of the parent of S.Pkg that is visible
+   --  Returns the most nested scope of the parent of S.Ent that is visible
    --  from S. Returns the null scope once we reach the Standard package.
    --
    --  This is really an internal function, but as its useful for debug and
@@ -145,8 +151,8 @@ package Flow_Refinement is
 
    function Get_Enclosing_Body_Flow_Scope (S : Flow_Scope) return Flow_Scope
    with Pre => S.Section = Body_Part;
-   --  Returns the flow scope of the enclosing package if it exists
-   --  and the null scope otherwise.
+   --  Returns the flow scope of the enclosing package or protected object if
+   --  it exists and the null scope otherwise.
 
    function Is_Initialized_At_Elaboration (E : Entity_Id;
                                            S : Flow_Scope)

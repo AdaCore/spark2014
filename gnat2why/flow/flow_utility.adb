@@ -2380,7 +2380,7 @@ package body Flow_Utility is
       function Process_Subprogram_Call
         (Callsite : Node_Id)
          return Flow_Id_Sets.Set
-        with Pre => Nkind (Callsite) in N_Subprogram_Call;
+      with Pre => Nkind (Callsite) in N_Subprogram_Call;
       --  Work out which variables (including globals) are used in the
       --  function call and add them to the given set.
 
@@ -2430,6 +2430,23 @@ package body Flow_Utility is
                          Use_Computed_Globals => Use_Computed_Globals);
             if not Fold_Functions then
                Global_Reads.Union (Proof_Reads);
+            end if;
+         end;
+
+         --  If we are dealing with a subprogram that is declared inside a PO
+         --  then we also need to add the PO.
+         declare
+            Subprogram_F : constant Flow_Id := Direct_Mapping_Id (Subprogram);
+            The_PO       : Entity_Id;
+         begin
+            if Belongs_To_Protected_Object (Subprogram_F) then
+               if Nkind (Name (Callsite)) = N_Selected_Component then
+                  The_PO := Entity (Prefix (Name (Callsite)));
+               else
+                  The_PO := Sinfo.Scope (Subprogram);
+               end if;
+
+               V.Union (Flatten_Variable (The_PO, Scope));
             end if;
          end;
 
@@ -3002,8 +3019,7 @@ package body Flow_Utility is
    -- Is_Null_Record --
    --------------------
 
-   function Is_Null_Record (E : Entity_Id) return Boolean
-   is
+   function Is_Null_Record (E : Entity_Id) return Boolean is
    begin
       if Is_Type (E) then
          if Ekind (E) in Record_Kind then
@@ -3082,8 +3098,8 @@ package body Flow_Utility is
          Indent;
       end if;
 
-      if not (F.Kind in Direct_Mapping | Record_Field and then
-                F.Facet = Normal_Part)
+      if not (F.Kind in Direct_Mapping | Record_Field
+                and then F.Facet = Normal_Part)
       then
          if Debug_Trace_Flatten then
             Outdent;

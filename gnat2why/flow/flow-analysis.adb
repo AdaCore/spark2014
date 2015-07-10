@@ -1033,14 +1033,19 @@ package body Flow.Analysis is
                   end if;
                end if;
             else
-               --  ??? distinguish between variables and parameters
-               Error_Msg_Flow
-                 (FA   => FA,
-                  Msg  => "unused variable &",
-                  N    => Error_Location (FA.PDG, FA.Atr, V),
-                  F1   => F,
-                  Tag  => Unused,
-                  Kind => Warning_Kind);
+               --  We suppress this warning when we are dealing with a
+               --  protected type.
+               if not (F.Kind = Direct_Mapping)
+                 or else Ekind (Get_Direct_Mapping_Id (F)) /= E_Protected_Type
+               then
+                  Error_Msg_Flow
+                    (FA   => FA,
+                     Msg  => "unused variable &",
+                     N    => Error_Location (FA.PDG, FA.Atr, V),
+                     F1   => F,
+                     Tag  => Unused,
+                     Kind => Warning_Kind);
+               end if;
             end if;
          end;
       end loop;

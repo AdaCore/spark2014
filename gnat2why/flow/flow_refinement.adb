@@ -49,17 +49,17 @@ package body Flow_Refinement is
    function Tree_Contains (T : Node_Id;
                            N : Node_Id)
                            return Boolean;
-   --  Returns true iff the tree rooted at T contains node N.
+   --  Returns True iff the tree rooted at T contains node N.
 
    function Tree_Contains (L : List_Id;
                            N : Node_Id)
                            return Boolean;
-   --  Returns true iff the list L contains node N.
+   --  Returns True iff the list L contains node N.
 
    function Is_Visible (Target_Scope : Flow_Scope;
                         S            : Flow_Scope)
                         return Boolean;
-   --  Returns true iff the target scope is visible from S. We do this by
+   --  Returns True iff the target scope is visible from S. We do this by
    --  moving up the scope DAG from S and testing if we have reached the
    --  target scope. If we hit the top (the null scope) without finding it,
    --  we return False.
@@ -81,9 +81,9 @@ package body Flow_Refinement is
    --  may be one of:
    --
    --     1. The first parent (just going up the AST) of S which is a
-   --        package declaration (this deals with nested packages)
+   --        package/PO declaration (this deals with nested packages)
    --
-   --     2. The first Scope (see einfo.ads) which is a package (this deals
+   --     2. The first Scope (see einfo.ads) which is a package/PO (this deals
    --        with public and private children)
    --
    --     3. null (if we have hit Standard)
@@ -93,11 +93,10 @@ package body Flow_Refinement is
    --  Unless S is a private descendant, in which case it is always "priv".
 
    function Find_Node_In_Initializes (E : Entity_Id) return Node_Id
-     with Post =>
-       not Present (Find_Node_In_Initializes'Result)
-         or else Find_Node_In_Initializes'Result = E
-         or else Find_Node_In_Initializes'Result =
-                   Encapsulating_State (E);
+   with Post => not Present (Find_Node_In_Initializes'Result)
+                  or else Find_Node_In_Initializes'Result = E
+                  or else Find_Node_In_Initializes'Result =
+                            Encapsulating_State (E);
    --  Returns the node representing E (or its immediately encapsulating
    --  state) in an initializes aspect or Empty.
 
@@ -168,8 +167,8 @@ package body Flow_Refinement is
 
          case Valid_Section_T'(Ptr.Section) is
             when Body_Part =>
-               if Flow_Scope'(Ptr.Pkg, Private_Part) = Target_Scope
-                 or else Flow_Scope'(Ptr.Pkg, Spec_Part) = Target_Scope
+               if Flow_Scope'(Ptr.Ent, Private_Part) = Target_Scope
+                 or else Flow_Scope'(Ptr.Ent, Spec_Part) = Target_Scope
                then
                   return True;
                end if;
@@ -181,7 +180,7 @@ package body Flow_Refinement is
                end if;
 
             when Private_Part =>
-               if Flow_Scope'(Ptr.Pkg, Spec_Part) = Target_Scope then
+               if Flow_Scope'(Ptr.Ent, Spec_Part) = Target_Scope then
                   return True;
                end if;
                Ptr := Get_Enclosing_Flow_Scope (Ptr);
@@ -234,29 +233,34 @@ package body Flow_Refinement is
    -- Get_Enclosing_Flow_Scope --
    ------------------------------
 
-   function Get_Enclosing_Flow_Scope (S : Flow_Scope) return Flow_Scope
-   is
+   function Get_Enclosing_Flow_Scope (S : Flow_Scope) return Flow_Scope is
       Enclosing_Scope : Flow_Scope := S;
-      Ptr             : Node_Id    := S.Pkg;
+      Ptr             : Node_Id    := S.Ent;
    begin
-      while Nkind (Ptr) /= N_Package_Declaration loop
+      while not (Nkind (Ptr) in N_Package_Declaration        |
+                                N_Protected_Type_Declaration)
+      loop
          Ptr := Parent (Ptr);
       end loop;
       Enclosing_Scope := Get_Flow_Scope (Ptr);
 
-      if Enclosing_Scope = Null_Flow_Scope and then
-        Scope (S.Pkg) /= Standard_Standard
+      if Enclosing_Scope = Null_Flow_Scope
+        and then Scope (S.Ent) /= Standard_Standard
       then
-         Ptr := Scope (S.Pkg);
-         while Present (Ptr) and then Ekind (Ptr) /= E_Package loop
+         Ptr := Scope (S.Ent);
+         while Present (Ptr)
+           and then not (Ekind (Ptr) in E_Package | E_Protected_Type)
+         loop
             Ptr := Scope (Ptr);
          end loop;
-         if Present (Ptr) and then Ptr /= Standard_Standard then
+         if Present (Ptr)
+           and then Ptr /= Standard_Standard
+         then
             Enclosing_Scope := Flow_Scope'(Ptr, S.Section);
          end if;
       end if;
 
-      if Is_Private_Descendant (S.Pkg) then
+      if Is_Private_Descendant (S.Ent) then
          Enclosing_Scope.Section := Private_Part;
       end if;
 
@@ -270,11 +274,28 @@ package body Flow_Refinement is
    function Get_Enclosing_Body_Flow_Scope (S : Flow_Scope) return Flow_Scope is
       P : Node_Id;
    begin
-      P := Body_Entity (S.Pkg);
+      P := S.Ent;
+      while Present (P)
+        and then not (Nkind (P) in N_Package_Declaration        |
+                                   N_Protected_Type_Declaration)
+      loop
+         P := Parent (P);
+      end loop;
 
-      --  We need to get to the node that is above the N_Package_Body
-      --  that corresponds to flow scope S.
-      while Nkind (P) /= N_Package_Body loop
+      case Nkind (P) is
+         when N_Package_Declaration =>
+            P := Corresponding_Body (P);
+
+         when N_Protected_Type_Declaration =>
+            P := Corresponding_Body (P);
+
+         when others =>
+            raise Why.Unexpected_Node;
+      end case;
+
+      --  We need to get to the node that is above the
+      --  N_Package_Body/N_Protected_Body that corresponds to flow scope S.
+      while not (Nkind (P) in N_Package_Body | N_Protected_Body) loop
          P := Parent (P);
       end loop;
       P := Parent (P);
@@ -293,16 +314,25 @@ package body Flow_Refinement is
       while Present (P) loop
          P := Get_Body_Or_Stub (P);
          case Nkind (P) is
-            when N_Package_Body =>
+            when N_Package_Body | N_Protected_Body =>
                V := Body_Part;
-               P := Defining_Unit_Name (P);
-               if Nkind (P) = N_Defining_Program_Unit_Name then
-                  P := Defining_Identifier (P);
-               end if;
-               P := Spec_Entity (P);
+               case Nkind (P) is
+                  when N_Package_Body =>
+                     P := Defining_Unit_Name (P);
+                     if Nkind (P) = N_Defining_Program_Unit_Name then
+                        P := Defining_Identifier (P);
+                     end if;
+                     P := Spec_Entity (P);
+
+                  when N_Protected_Body =>
+                     P := Corresponding_Spec (P);
+
+                  when others =>
+                     raise Why.Unexpected_Node;
+               end case;
                exit;
 
-            when N_Package_Specification =>
+            when N_Package_Specification | N_Protected_Definition =>
                if Tree_Contains (Private_Declarations (P),
                                  Get_Body_Or_Stub (N))
                then
@@ -310,10 +340,20 @@ package body Flow_Refinement is
                else
                   V := Spec_Part;
                end if;
-               P := Defining_Unit_Name (P);
-               if Nkind (P) = N_Defining_Program_Unit_Name then
-                  P := Defining_Identifier (P);
-               end if;
+
+               case Nkind (P) is
+                  when N_Package_Specification =>
+                     P := Defining_Unit_Name (P);
+                     if Nkind (P) = N_Defining_Program_Unit_Name then
+                        P := Defining_Identifier (P);
+                     end if;
+
+                  when N_Protected_Definition  =>
+                     P := Defining_Identifier (Parent (P));
+
+                  when others =>
+                     raise Why.Unexpected_Node;
+               end case;
                exit;
 
             when N_Aspect_Specification =>
@@ -352,7 +392,7 @@ package body Flow_Refinement is
       end loop;
 
       if Present (P) then
-         return (Pkg     => P,
+         return (Ent     => P,
                  Section => V);
       else
          return Null_Flow_Scope;
@@ -707,12 +747,17 @@ package body Flow_Refinement is
                null;
 
             when E_Variable =>
-               if not Is_Package_State (Ent) then
+               if Ekind (Etype (Ent)) = E_Protected_Type then
+                  --  Instances of a protected type are always fully default
+                  --  initialized.
+                  return True;
+               elsif not Is_Package_State (Ent) then
                   return False;
                end if;
 
             when E_Protected_Type =>
-               --  Protected types are fully default initialized in SPARK
+               --  Protected types are always fully default initialized in
+               --  SPARK.
                return True;
 
             when others =>
@@ -722,14 +767,14 @@ package body Flow_Refinement is
 
          Init := Present (Find_Node_In_Initializes (Ent));
 
-         if Ptr.Pkg = Common_Scope.Pkg or Ptr.Pkg = S.Pkg then
+         if Ptr.Ent = Common_Scope.Ent or Ptr.Ent = S.Ent then
             if Trace then
                Write_Line ("   -> in common scope or home");
             end if;
 
             if Ekind (Ent) = E_Variable and then
               Present (Encapsulating_State (Ent)) and then
-              Get_Flow_Scope (Encapsulating_State (Ent)).Pkg = Ptr.Pkg
+              Get_Flow_Scope (Encapsulating_State (Ent)).Ent = Ptr.Ent
             then
                if Trace then
                   Write_Line ("   -> looking up");
@@ -805,8 +850,8 @@ package body Flow_Refinement is
          when Subprogram_Kind =>
             Body_N := Subprogram_Body_Entity (E);
          when E_Task_Type | E_Entry =>
-            --  ??? O429-046 For now we always generate generate globals
-            --  for tasks and entries
+            --  ??? O429-046 For now we always generate globals for tasks and
+            --  entries
             return True;
          when others =>
             raise Program_Error;

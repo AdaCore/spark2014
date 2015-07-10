@@ -1401,12 +1401,20 @@ package body Flow.Control_Flow_Graph is
             pragma Assert (Kind = Discriminant_Kind);
             M := Mode_In;
 
+         when E_Protected_Type   =>
+            pragma Assert (Kind = Parameter_Kind);
+            if Ekind (FA.Analyzed_Entity) = E_Function then
+               M := Mode_In;
+            else
+               M := Mode_In_Out;
+            end if;
+
          when others =>
             pragma Assert (Kind in Variable_Kind            |
                                    Quantified_Variable_Kind |
                                    Protected_Component_Kind);
             if Kind = Protected_Component_Kind then
-               if Ekind (FA.Analyzed_Entity) in E_Function then
+               if Ekind (FA.Analyzed_Entity) = E_Function then
                   M := Mode_In;
                else
                   M := Mode_In_Out;
@@ -5647,12 +5655,22 @@ package body Flow.Control_Flow_Graph is
          when E_Subprogram_Body | E_Entry =>
             declare
                E : Entity_Id;
+               F : constant Flow_Id := Direct_Mapping_Id (FA.Analyzed_Entity);
             begin
                E := First_Formal (Subprogram_Spec);
                while Present (E) loop
                   Create_Initial_And_Final_Vertices (E, Parameter_Kind, FA);
                   E := Next_Formal (E);
                end loop;
+
+               --  Add the protected type as a formal parameter to the
+               --  subprogram.
+               if Belongs_To_Protected_Object (F) then
+                  Create_Initial_And_Final_Vertices
+                    (Sinfo.Scope (FA.Analyzed_Entity),
+                     Parameter_Kind,
+                     FA);
+               end if;
             end;
 
          when E_Task_Body =>

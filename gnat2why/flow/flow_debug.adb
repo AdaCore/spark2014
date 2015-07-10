@@ -21,14 +21,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;  use Atree;
-
-with Output; use Output;
-with Sprint; use Sprint;
-
-with Ada.Containers;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
+with Ada.Containers;
 with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
+with Atree;                  use Atree;
+with Output;                 use Output;
+with Sprint;                 use Sprint;
 
 use type Ada.Containers.Count_Type;
 
@@ -125,11 +123,9 @@ package body Flow_Debug is
    -- Print_Flow_Map --
    --------------------
 
-   procedure Print_Flow_Map (M : Flow_Id_Maps.Map)
-   is
+   procedure Print_Flow_Map (M : Flow_Id_Maps.Map) is
    begin
-      Write_Str ("Flow_Id_Map (with" & M.Length'Img & " elements):");
-      Write_Eol;
+      Write_Line ("Flow_Id_Map (with" & M.Length'Img & " elements):");
       Indent;
       for C in M.Iterate loop
          declare
@@ -156,8 +152,7 @@ package body Flow_Debug is
 
    procedure Print_Dependency_Map (M : Dependency_Maps.Map) is
    begin
-      Write_Str ("Dependency_Map:");
-      Write_Eol;
+      Write_Line ("Dependency_Map:");
       Indent;
       for C in M.Iterate loop
          declare
@@ -165,8 +160,7 @@ package body Flow_Debug is
             D : constant Flow_Id_Sets.Set := Dependency_Maps.Element (C);
          begin
             Sprint_Flow_Id (A);
-            Write_Str (" depends on:");
-            Write_Eol;
+            Write_Line (" depends on:");
             Indent;
             for B of D loop
                Print_Flow_Id (B);
@@ -181,11 +175,10 @@ package body Flow_Debug is
    -- Print_Flow_Scope --
    ----------------------
 
-   procedure Print_Flow_Scope (S : Flow_Scope)
-   is
+   procedure Print_Flow_Scope (S : Flow_Scope) is
    begin
-      if Present (S.Pkg) then
-         Sprint_Node (S.Pkg);
+      if Present (S.Ent) then
+         Sprint_Node (S.Ent);
          Write_Str ("|");
          case Valid_Section_T (S.Section) is
             when Spec_Part    => Write_Str ("spec");
@@ -201,8 +194,7 @@ package body Flow_Debug is
    -- Sprint_Node_Inline --
    ------------------------
 
-   procedure Sprint_Node_Inline (N : Node_Id)
-   is
+   procedure Sprint_Node_Inline (N : Node_Id) is
    begin
       Temp_String := Null_Unbounded_String;
       Set_Special_Output (Add_To_Temp_String'Access);
@@ -215,8 +207,7 @@ package body Flow_Debug is
    -- pfs --
    ---------
 
-   procedure pfs (S : Flow_Scope)
-   is
+   procedure pfs (S : Flow_Scope) is
    begin
       Print_Flow_Scope (S);
       Write_Eol;

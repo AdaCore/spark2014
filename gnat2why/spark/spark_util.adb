@@ -2523,8 +2523,7 @@ package body SPARK_Util is
    -- PO_Body --
    -------------
 
-   function PO_Body (E : Entity_Id) return Node_Id
-   is
+   function PO_Body (E : Entity_Id) return Node_Id is
       Ptr : Node_Id;
    begin
       Ptr := Parent (E);
@@ -2536,8 +2535,7 @@ package body SPARK_Util is
    -- PO_Definition --
    -------------------
 
-   function PO_Definition (E : Entity_Id) return Node_Id
-   is
+   function PO_Definition (E : Entity_Id) return Node_Id is
       Ptr : Node_Id;
    begin
       Ptr := Parent (E);
