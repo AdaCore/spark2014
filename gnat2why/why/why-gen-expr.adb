@@ -613,6 +613,9 @@ package body Why.Gen.Expr is
          --  perform it on all discriminant record types, as the flag
          --  Do_Discriminant_Check is not set appropriately by the frontend on
          --  type conversions.
+         --  A tag check may also be needed if we convert from a classwide type
+         --  to a type which is not an ancestor. As for the discriminant check,
+         --  we always perform it.
 
          T := Insert_Record_Conversion (Domain     => Domain,
                                         Ada_Node   => Ada_Node,
@@ -713,6 +716,11 @@ package body Why.Gen.Expr is
 
       Base : constant W_Type_Id := EW_Abstract (Root_Record_Type (L));
 
+      Need_Discr_Check : constant Boolean :=
+        Need_Check and then Is_Constrained (R);
+      Need_Tag_Check   : constant Boolean :=
+        Need_Check and then Is_Tagged_Type (R) and then not Is_Ancestor (R, L);
+
    begin
       --  When From = To and no check needs to be inserted, do nothing
 
@@ -727,15 +735,27 @@ package body Why.Gen.Expr is
                                           To       => Base,
                                           Expr     => Result);
 
-      --  2. Possibly perform the discriminant check
+      --  2.a Possibly perform the discriminant check
 
-      if Domain = EW_Prog and Need_Check then
+      if Domain = EW_Prog and Need_Discr_Check then
          declare
             Check_Entity : constant Entity_Id := Get_Ada_Node (+To);
          begin
             Result := +Insert_Subtype_Discriminant_Check (Ada_Node,
                                                           Check_Entity,
                                                           +Result);
+         end;
+      end if;
+
+      --  2.b Possibly perform the tag check
+
+      if Domain = EW_Prog and Need_Tag_Check then
+         declare
+            Check_Entity : constant Entity_Id := Get_Ada_Node (+To);
+         begin
+            Result := +Insert_Tag_Check (Ada_Node,
+                                         Check_Entity,
+                                         +Result);
          end;
       end if;
 

@@ -29,6 +29,7 @@ with Einfo;                 use Einfo;
 with Impunit;               use Impunit;
 with Lib;                   use Lib;
 with Namet;                 use Namet;
+with Sem_Type;
 with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with Snames;                use Snames;
@@ -503,6 +504,13 @@ package SPARK_Util is
    --  Given a record type entity and a component/discriminant entity, search
    --  in Rec a component/discriminant entity with the same name. Returns Empty
    --  if no such component is found.
+
+   function Is_Ancestor (Anc : Entity_Id; E : Entity_Id) return Boolean is
+     (if not Is_Class_Wide_Type (Anc) then Sem_Type.Is_Ancestor (Anc, E)
+      else Sem_Type.Is_Ancestor (Get_Specific_Type_From_Classwide (Anc), E));
+   --  @param Anc A tagged type (which may or not be class-wide).
+   --  @param E A tagged type (which may or not be class-wide).
+   --  @result True if Anc is one of the ancestors of type E.
 
    function Static_Array_Length (E : Entity_Id; Dim : Positive) return Uint
    with Pre => Is_Static_Array_Type (E);

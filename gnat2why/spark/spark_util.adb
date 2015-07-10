@@ -528,23 +528,31 @@ package body SPARK_Util is
    --------------------------------
 
    function Check_Needed_On_Conversion (From, To : Entity_Id) return Boolean is
+      To_R   : constant Entity_Id := Retysp (To);
+      From_R : constant Entity_Id := Retysp (From);
    begin
       --  No check needed if same type
 
-      if To = From then
+      if To_R = From_R then
          return False;
 
       --  No check needed when converting to base type (for a subtype) or to
       --  parent type (for a derived type).
 
-      elsif To = Etype (From) then
+      elsif To_R = Etype (From_R) then
          return False;
 
-      --  Converting to unconstrained record types does not require a check
-      --  on conversion. The needed check is inserted by the frontend using
-      --  an explicit exception.
+      --  Converting to unconstrained record types does not require a
+      --  discriminant check on conversion. The needed check is inserted by the
+      --  frontend using an explicit exception.
 
-      elsif Is_Record_Type (To) and then not Is_Constrained (To) then
+      --  Converting from a classwide type may require a tag check if the type
+      --  to which we convert is not an ancestor.
+
+      elsif Is_Record_Type (To_R)
+        and then not Is_Constrained (To_R)
+        and then (not Is_Tagged_Type (To_R) or else Is_Ancestor (To_R, From_R))
+      then
          return False;
 
       --  Otherwise a check may be needed

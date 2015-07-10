@@ -1,15 +1,15 @@
 package body Tagged_Conv with SPARK_Mode is
 
    procedure P is
-      C : Child;
-      R : Root;
-      CC : Root'Class := C;
-      RC : Root'Class := R;
+      C : constant Child := (others => <>);
+      R : constant Root := (others => <>);
+      CC : constant Root'Class := C;
+      RC : constant Root'Class := R;
 
       procedure Conv_Child_To_Root_Ok with Pre => True is
          R2 : Root := Root (C);
          RC2 : Root'Class := Root'Class (R2);
-         CC2 : Child := Child (CC);
+         CC2 : Child := Child (CC);  --@TAG_CHECK:PASS
       begin
          null;
       end Conv_Child_To_Root_Ok;

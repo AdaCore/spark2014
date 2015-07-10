@@ -1,0 +1,21 @@
+tagged_conv.adb:9:17: warning: subprogram "Conv_Child_To_Root_Ok" has no effect
+tagged_conv.adb:12:32: info: tag check proved
+tagged_conv.adb:17:17: warning: subprogram "Conv_Root_To_Child_Ok" has no effect
+tagged_conv.adb:25:17: warning: subprogram "Bad1" has no effect
+tagged_conv.adb:26:44: medium: tag check might fail
+tagged_conv.adb:31:17: warning: subprogram "Bad2" has no effect
+tagged_conv.adb:32:32: medium: tag check might fail
+tagged_conv.adb:37:17: warning: subprogram "Bad3" has no effect
+tagged_conv.adb:40:32: medium: tag check might fail
+tagged_conv.adb:45:17: warning: subprogram "Bad4" has no effect
+tagged_conv.adb:48:31: medium: tag check might fail
+tagged_conv.adb:53:17: warning: subprogram "Bad5" has no effect
+tagged_conv.adb:56:32: medium: tag check might fail
+tagged_conv.adb:61:07: info: precondition proved
+tagged_conv.adb:62:07: info: precondition proved
+tagged_conv.adb:63:07: info: precondition proved
+tagged_conv.adb:64:07: info: precondition proved
+tagged_conv.adb:65:07: info: precondition proved
+tagged_conv.adb:66:07: info: precondition proved
+tagged_conv.adb:67:07: info: precondition proved
+tagged_conv.ads:5:14: warning: subprogram "P" has no effect

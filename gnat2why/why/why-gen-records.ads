@@ -206,6 +206,13 @@ package Why.Gen.Records is
    --  together with its subtype check predicate of program function. The
    --  last argument is actually the given expression itself.
 
+   function Insert_Tag_Check
+     (Ada_Node : Node_Id;
+      Check_Ty : Entity_Id;
+      Expr     : W_Prog_Id) return W_Prog_Id;
+   --  Given a record subtype and an expression, add a call to compatible_tag
+   --  function to generate a tag check.
+
    function Record_From_Split_Form (I : Item_Type; Ref_Allowed : Boolean)
                                     return W_Expr_Id
    with

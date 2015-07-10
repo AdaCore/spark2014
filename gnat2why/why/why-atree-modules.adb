@@ -1331,6 +1331,12 @@ package body Why.Atree.Modules is
                         Module => M,
                         Symbol => NID ("__null_ext__"),
                         Typ    => M_Main.Private_Type);
+
+      M_Main.Compat_Tags_Id :=
+        New_Identifier (Domain => EW_Pred,
+                        Module => M,
+                        Symbol => NID ("__compatible_tags"),
+                        Typ    => EW_Bool_Type);
       EW_Fixed_Type := M_Main.Fixed_Type;
       EW_Private_Type := M_Main.Private_Type;
    end Init_Main_Module;

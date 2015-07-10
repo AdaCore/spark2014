@@ -107,6 +107,7 @@ package Why.Atree.Modules is
       Return_Exc        : W_Name_Id;
       String_Image_Type : W_Type_Id;
       Type_Of_Heap      : W_Type_Id;
+      Compat_Tags_Id    : W_Identifier_Id;
    end record;
 
    type M_Integer_Type is record

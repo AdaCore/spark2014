@@ -2282,6 +2282,42 @@ package body Why.Gen.Records is
          Typ      => Get_Type (+Expr));
    end Insert_Subtype_Discriminant_Check;
 
+   ----------------------
+   -- Insert_Tag_Check --
+   ----------------------
+
+   function Insert_Tag_Check
+     (Ada_Node : Node_Id;
+      Check_Ty : Entity_Id;
+      Expr     : W_Prog_Id) return W_Prog_Id
+   is
+      Root  : constant Entity_Id := Root_Record_Type (Check_Ty);
+      Id    : constant W_Expr_Id := New_Temp_For_Expr (+Expr);
+      Call  : constant W_Expr_Id := New_Call
+        (Ada_Node => Ada_Node,
+         Domain   => EW_Pred,
+         Name     => M_Main.Compat_Tags_Id,
+         Args     =>
+           (1 => New_Tag_Access (Domain   => EW_Term,
+                                 Name     => Id,
+                                 Ty       => Root),
+            2 => +E_Symb (E => Check_Ty,
+                          S => WNE_Tag)),
+         Typ      => EW_Bool_Type);
+      --  Call Compat_Tags_Id on the object's tag and the type's tag
+      Check : constant W_Prog_Id := New_Located_Assert
+        (Ada_Node => Ada_Node,
+         Pred     => +Call,
+         Reason   => VC_Tag_Check,
+         Kind     => EW_Assert);
+   begin
+      return +Binding_For_Temp (Domain   => EW_Prog,
+                                Tmp      => Id,
+                                Context  => +Sequence
+                                  (Left  => Check,
+                                   Right => +Id));
+   end Insert_Tag_Check;
+
    ---------------------------
    -- New_Ada_Record_Access --
    ---------------------------
