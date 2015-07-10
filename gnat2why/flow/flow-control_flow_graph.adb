@@ -4035,7 +4035,8 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      Called_Procedure : constant Entity_Id := Get_Called_Entity (N);
+      Called_Thing   : constant Entity_Id := Get_Called_Entity (N);
+      Called_Thing_F : constant Flow_Id   := Direct_Mapping_Id (Called_Thing);
 
       In_List  : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
       Out_List : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
@@ -4053,7 +4054,7 @@ package body Flow.Control_Flow_Graph is
          Make_Call_Attributes
            (FA         => FA,
             Callsite   => N,
-            Sub_Called => Node_Sets.To_Set (Called_Procedure),
+            Sub_Called => Node_Sets.To_Set (Called_Thing),
             Loops      => Ctx.Current_Loops,
             E_Loc      => N),
          V);
@@ -4070,8 +4071,8 @@ package body Flow.Control_Flow_Graph is
       --     * when the user has supplied them and we don't have to rely
       --       on the generated ones
       if not Generating_Globals
-        or else (Has_User_Supplied_Globals (Called_Procedure)
-                   and then not Rely_On_Generated_Global (Called_Procedure,
+        or else (Has_User_Supplied_Globals (Called_Thing)
+                   and then not Rely_On_Generated_Global (Called_Thing,
                                                           FA.B_Scope))
       then
          Process_Subprogram_Globals (N,
@@ -4079,15 +4080,19 @@ package body Flow.Control_Flow_Graph is
                                      FA, CM, Ctx);
       end if;
 
-      --  For entry calls, we need an extra magic parameter that models the
+      --  For procedure and entry calls that are declared directly inside a
+      --  protected object we need an extra magic parameter that models the
       --  protected object.
-      if Nkind (N) = N_Entry_Call_Statement then
+      if Belongs_To_Protected_Object (Called_Thing_F) then
          declare
             The_PO : constant Flow_Id :=
-              Direct_Mapping_Id (Entity (Prefix (Name (N))));
+               (if Nkind (Name (N)) = N_Selected_Component
+                then Direct_Mapping_Id (Entity (Prefix (Name (N))))
+                else Direct_Mapping_Id (Sinfo.Scope (Called_Thing)));
+
             V      : Flow_Graphs.Vertex_Id;
          begin
-            --  Reading (for all)
+            --  Reading
             Add_Vertex
               (FA,
                Make_Global_Attributes
@@ -4101,21 +4106,19 @@ package body Flow.Control_Flow_Graph is
                V);
             In_List.Append (V);
 
-            --  Writing (not for functions)
-            if Ekind (Called_Procedure) /= E_Function then
-               Add_Vertex
-                 (FA,
-                  Make_Global_Attributes
-                    (FA                           => FA,
-                     Call_Vertex                  => N,
-                     Global                       => Change_Variant (The_PO,
-                                                                     Out_View),
-                     Discriminants_Or_Bounds_Only => False,
-                     Loops                        => Ctx.Current_Loops,
-                     E_Loc                        => N),
-                  V);
-               Out_List.Append (V);
-            end if;
+            --  Writing
+            Add_Vertex
+              (FA,
+               Make_Global_Attributes
+                 (FA                           => FA,
+                  Call_Vertex                  => N,
+                  Global                       => Change_Variant (The_PO,
+                                                                  Out_View),
+                  Discriminants_Or_Bounds_Only => False,
+                  Loops                        => Ctx.Current_Loops,
+                  E_Loc                        => N),
+               V);
+            Out_List.Append (V);
          end;
       end if;
 
@@ -4126,9 +4129,9 @@ package body Flow.Control_Flow_Graph is
       --  Notice that we can only use the Depends when it:
       --    * does not need to be refined or
       --    * it has already been refined
-      if Has_Depends (Called_Procedure)
+      if Has_Depends (Called_Thing)
         and then (not Generating_Globals
-                    or else not Rely_On_Generated_Global (Called_Procedure,
+                    or else not Rely_On_Generated_Global (Called_Thing,
                                                           FA.B_Scope))
       then
          --  Check if there exists a usable Depends => (null => ...)
@@ -4136,7 +4139,7 @@ package body Flow.Control_Flow_Graph is
             D_Map : Dependency_Maps.Map;
             V     : Flow_Graphs.Vertex_Id;
          begin
-            Get_Depends (Subprogram           => Called_Procedure,
+            Get_Depends (Subprogram           => Called_Thing,
                          Scope                => FA.B_Scope,
                          Classwide            => Is_Dispatching_Call (N),
                          Depends              => D_Map,
@@ -4208,14 +4211,14 @@ package body Flow.Control_Flow_Graph is
             Prev := V;
          end loop;
 
-         if No_Return (Called_Procedure) then
+         if No_Return (Called_Thing) then
             CM.Include
               (Union_Id (N),
                Graph_Connections'
                  (Standard_Entry => V,
                   Standard_Exits => Vertex_Sets.Empty_Set));
             FA.Atr (V).Execution :=
-              Get_Execution_Kind (Called_Procedure,
+              Get_Execution_Kind (Called_Thing,
                                   After_GG => not Generating_Globals);
             Linkup (FA, Prev, FA.Helper_End_Vertex);
          else

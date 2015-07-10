@@ -217,7 +217,7 @@ package Flow_Types is
       Variant : Flow_Id_Variant  := Normal_Use;
       Facet   : Variable_Facet_T := Normal_Part)
       return Flow_Id
-      with Pre => Present (N);
+   with Pre => Present (N);
    --  Create a Flow_Id for the given node or entity.
 
    function Get_Direct_Mapping_Id
@@ -282,9 +282,9 @@ package Flow_Types is
      (F     : Flow_Id;
       Scope : Flow_Scope)
       return Boolean
-     with Pre => (if F.Kind in Direct_Mapping | Record_Field
-                    and then F.Facet = Normal_Part
-                  then Nkind (F.Node) in N_Entity);
+   with Pre => (if F.Kind in Direct_Mapping | Record_Field
+                  and then F.Facet = Normal_Part
+                then Nkind (F.Node) in N_Entity);
    --  Returns True if a Flow_Id needs separate representation for its
    --  bounds.
 

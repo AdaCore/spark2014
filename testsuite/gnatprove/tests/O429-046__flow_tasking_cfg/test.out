@@ -5,6 +5,12 @@ foo.adb:51:19: info: initialization of "B" proved
 foo.adb:55:14: warning: subprogram "Test_Delay_01" has no effect
 p.adb:12:07: warning: analyzing unreferenced procedure "Swap_Content"
 p.adb:16:27: info: initialization of "Tmp" proved
+p2.adb:5:24: warning: statement has no effect
+p2.adb:6:10: warning: initialization of X has no effect
+p2.adb:32:07: warning: analyzing unreferenced procedure "Wobble"
+p2.ads:16:25: info: initialization of "X" proved
+p2.ads:24:30: info: initialization of "X" proved
+p2.ads:26:27: info: initialization of "Y" proved
 prot.adb:4:04: info: initialization of "Hidden" constituent of "State" proved
 prot.adb:5:04: info: initialization of "Hidden2" constituent of "State" proved
 prot.adb:8:07: warning: analyzing unreferenced procedure "Get"
