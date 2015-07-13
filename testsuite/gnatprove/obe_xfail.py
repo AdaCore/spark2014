@@ -69,8 +69,8 @@ def check_xfail_tests():
                 if tn_is_open(tn):
                     all_closed = False
             if all_closed:
-                print "test %s is XFAIL, " +\
-                    "all associated TNs are not open" % test
+                print "test %s is XFAIL, " % test +\
+                    "all associated TNs are not open"
 
 
 check_xfail_tests()
