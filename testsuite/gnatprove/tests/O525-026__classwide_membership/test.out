@@ -1,7 +1,4 @@
-mem.adb:10:66: membership test in class-wide type is not yet supported
-mem.adb:11:67: membership test in class-wide type is not yet supported
-mem.adb:12:67: membership test in class-wide type is not yet supported
-   compilation of mem.adb failed
-
-
-gnatprove: error during flow analysis and proof
+mem.adb:14:04: info: assertion proved
+mem.adb:15:04: info: assertion proved
+mem.adb:16:04: info: assertion proved
+mem.adb:17:04: info: assertion proved

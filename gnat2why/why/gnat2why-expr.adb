@@ -10080,9 +10080,13 @@ package body Gnat2Why.Expr is
 
       begin
          --  First handle the simpler case of s subtype mark
+         --  Classwide types appear as a N_Attribute_Reference.
 
-         if Nkind (In_Expr) in N_Identifier | N_Expanded_Name
-           and then Is_Type (Entity (In_Expr))
+         if (Nkind (In_Expr) in N_Identifier | N_Expanded_Name
+             and then Is_Type (Entity (In_Expr)))
+           or else (Nkind (In_Expr) = N_Attribute_Reference
+                    and then Get_Attribute_Id (Attribute_Name (In_Expr)) =
+                      Attribute_Class)
          then
             declare
                Ty : constant Entity_Id := Unique_Entity (Entity (In_Expr));
@@ -10099,20 +10103,26 @@ package body Gnat2Why.Expr is
                   declare
                      Discr_Cond : W_Expr_Id := True_Expr;
                      Tag_Cond   : W_Expr_Id := True_Expr;
+                     Spec_Ty    : constant Entity_Id :=
+                       (if Is_Class_Wide_Type (Ty)
+                        then Retysp (Get_Specific_Type_From_Classwide (Ty))
+                        else Ty);
                   begin
 
                      --  If Ty is constrained, we need to check its
                      --  discriminant.
+                     --  It is also the case if Ty's specific type is
+                     --  constrained, see RM 3.9 (14)
 
-                     if Root_Type (Ty) /= Ty and then
-                       Has_Discriminants (Ty) and then
-                       Is_Constrained (Ty)
+                     if Root_Type (Spec_Ty) /= Spec_Ty and then
+                       Has_Discriminants (Spec_Ty) and then
+                       Is_Constrained (Spec_Ty)
                      then
                         Discr_Cond := New_Call
                           (Domain => Domain,
-                           Name => E_Symb (Ty, WNE_Range_Pred),
+                           Name => E_Symb (Spec_Ty, WNE_Range_Pred),
                            Args =>
-                             Prepare_Args_For_Subtype_Check (Ty, Var),
+                             Prepare_Args_For_Subtype_Check (Spec_Ty, Var),
                            Typ  => EW_Bool_Type);
                      end if;
 
