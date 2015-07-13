@@ -801,9 +801,9 @@ begin
    end if;
    if not No_Analysis_Done then
       Dump_Summary_Table (Handle);
+      Ada.Text_IO.New_Line (Handle);
+      Ada.Text_IO.New_Line (Handle);
    end if;
-   Ada.Text_IO.New_Line (Handle);
-   Ada.Text_IO.New_Line (Handle);
    Print_Analysis_Report (Handle);
    Close (Handle);
 end SPARK_Report;
