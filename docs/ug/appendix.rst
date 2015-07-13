@@ -1105,6 +1105,8 @@ Proof Limitations
    about their values needed after the loop invariant must be stated explicitly
    in the loop invariant.
 
+.. _Portability Issues:
+
 Portability Issues
 ==================
 

@@ -229,6 +229,9 @@ floating-point types:
 * The small of a fixed-point type is implementation defined (Ada RM 3.5.9(8/2))
   unless specified explicitly.
 
+* The base type of a fixed-point type is implementation defined (Ada RM
+  3.5.9(12-16)), which has an impact on possible overflows.
+
 * For some combinations of types of operands and results for fixed-point
   multiplication and division, the value of the result belongs to an
   implementation defined set of values (Ada RM G.2.3(5)).
@@ -260,6 +263,13 @@ to implementation defined or unspecified behavior:
 
 * Restriction ``No_Implementation_Pragmas`` forbids the use of implementation
   defined pragmas.
+
+.. note::
+
+   SPARK defines a few constructs (aspects, pragmas and attributes) that are
+   not defined in Ada. While |GNAT Pro| supports these constructs, care should
+   be exercized to use these constructs with other compilers, or older versions
+   of |GNAT Pro|. This issue is detailed in section :ref:`Portability Issues`.
 
 .. _Portability of Programs With Errors:
 
@@ -341,9 +351,10 @@ problematic language features (see :ref:`Excluded Ada Features`):
 As permitted by the |SPARK| language rules (see section 1.4.1 "Further Details
 on Formal Verification" of the SPARK Reference Manual), |GNATprove| rejects
 with an error programs which may implicitly raise a ``Program_Error`` in parts
-of code that are in |SPARK|. For example, all execution paths in a |SPARK|
-function should end with a return statement, a raise statement, or a ``pragma
-Assert (False)``.
+of code that are in |SPARK|. For example, all static execution paths in a
+|SPARK| function should end with a return statement, a raise statement, or a
+``pragma Assert (False)``. |GNATprove|'s analysis can be further used to ensure
+that dynamic executions can only end in a return.
 
 |GNATprove| reduces portability issues related to the use of fixed-point and
 floating-point values:
@@ -398,7 +409,8 @@ description of the different modes):
   possible explicit raising of exceptions in the program.
 
 The analysis of |GNATprove| can take into account characteristics of the target
-by specifying a :ref:`Target Parameterization`.
+(size and alignment of standard scalar types, endianness) by specifying a
+:ref:`Target Parameterization`.
 
 How to Use |SPARK| for Portability
 ----------------------------------
@@ -422,8 +434,17 @@ example, language attribute ``Size``). When changing the compiler and/or the
 target, the program logic should be carefully reviewed for possible dependences
 on the original compiler behavior and/or original target characteristics. See
 also the section 18.4.5 "Target-specific aspects" of the GNAT Reference
-Manual. By using the following restrictions (or a subset thereof), one can
-ensure that the corresponding non-portable features are not used in the program:
+Manual.
+
+In particular, features that bypass the type system of Ada for reinterpreting
+values (``Unchecked_Conversion``) and memory locations (``Address`` clause
+overlays, in which multiple objects are defined to share the same address,
+something that can also be achieved by sharing the same ``Link_Name`` or
+``External_Name``) have no impact on |SPARK| analysis, yet they may lead to
+portability issues.
+
+By using the following restrictions (or a subset thereof), one can ensure that
+the corresponding non-portable features are not used in the program:
 
 .. code-block:: ada
 
@@ -466,7 +487,7 @@ non-portability in |SPARK| may come from a small list of causes:
 
 * Possible different choices of base type for user-defined integer types
   (contrary to derived types or subtypes, which inherit their base type from
-  their parent type). |GNATprove| follows |GNAT Pro| in chosing as base type
+  their parent type). |GNATprove| follows |GNAT Pro| in choosing as base type
   the smallest multiple-words-size integer type that contains the type
   bounds. For example, a user-defined type ranging from 1 to 100 will be given
   a base type ranging from -128 to 127 by both |GNAT Pro| and |GNATprove|. The
@@ -496,11 +517,9 @@ errors:
 
 * all possible reads of uninitialized data
 
-* all possible run-time errors corresponding to raising exception
-  ``Program_Error`` at run time
-
-* all possible run-time errors corresponding to raising exception
-  ``Constraint_Error`` at run time
+* all possible run-time errors except raising exception ``Storage_Error``,
+  corresponding to raising exception ``Program_Error``, ``Constraint_Error`` or
+  ``Tasking_Error`` at run time
 
 * all possible failures of assertions corresponding to raising exception
   ``Assert_Error`` at run time
@@ -569,7 +588,7 @@ trigonometric functions), which can be ensured with a restriction:
 
 If elementary functions are used, subject to reviews for ensuring portability,
 |GNATprove|'s proof results may depend on the fact that elementary functions
-can be modelled as mathematical functions of their inputs that always return
+can be modeled as mathematical functions of their inputs that always return
 the same result when taking the same values in arguments. GNAT compiler was
 modified to ensure this property (see
 http://www.spark-2014.org/entries/detail/how-our-compiler-learnt-from-our-analyzers),
