@@ -10209,7 +10209,12 @@ package body Gnat2Why.Expr is
 
       Var       : constant Node_Id := Left_Opnd (Expr);
       Result    : W_Expr_Id;
-      Base_Type : W_Type_Id := Base_Why_Type (Var);
+      Base_Type : W_Type_Id :=
+        (if Has_Record_Type (Etype (Var)) then
+            EW_Abstract (Root_Record_Type (Etype (Var)))
+         else Base_Why_Type (Var));
+      --  For records, checks are done on the root type.
+
       Subdomain : constant EW_Domain :=
         (if Domain = EW_Pred then EW_Term else Domain);
       Var_Expr  : W_Expr_Id;
