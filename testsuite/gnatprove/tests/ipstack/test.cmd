@@ -1,2 +1,2 @@
-TARGET=native make ipstack >/dev/null 2>&1
-TARGET=native make --silent spark
+make TARGET=native ipstack >/dev/null 2>&1
+make TARGET=native --silent spark
