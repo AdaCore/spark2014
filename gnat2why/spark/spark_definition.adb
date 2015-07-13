@@ -1494,8 +1494,10 @@ package body SPARK_Definition is
                --  between primitive operations and their corresponding
                --  tagged type.
 
-               if Ekind (E) = E_Record_Type
+               if Ekind (E) in E_Record_Type | E_Record_Subtype
                  and then Is_Tagged_Type (E)
+                 and then (if Ekind (E) = E_Record_Subtype then
+                               not (Present (Cloned_Subtype (E))))
                then
                   Mark_Entity (Class_Wide_Type (E));
                   Set_Specific_Tagged (Class_Wide_Type (E), E);

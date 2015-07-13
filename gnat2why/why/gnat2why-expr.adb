@@ -2706,7 +2706,10 @@ package body Gnat2Why.Expr is
       --  If Ty's fullview is in SPARK, go to its underlying type to check its
       --  kind.
 
-      Ty_Ext    : constant Entity_Id := Retysp (Ty);
+      Ty_Spec   : constant Entity_Id :=
+        (if Is_Class_Wide_Type (Ty) then Get_Specific_Type_From_Classwide (Ty)
+         else Ty);
+      Ty_Ext    : constant Entity_Id := Retysp (Ty_Spec);
       Variables : Flow_Id_Sets.Set;
    begin
 

@@ -351,8 +351,13 @@ package body Why.Gen.Binders is
       --  If we are not in a function declaration, we use the actual subtype
       --  for the parameter if one is provided.
 
+      Spec_Ty : constant Entity_Id :=
+        (if Is_Class_Wide_Type (Use_Ty)
+         then Get_Specific_Type_From_Classwide (Use_Ty)
+         else Use_Ty);
+
       Ty     : constant Entity_Id :=
-        (if Is_Type (Use_Ty) then Retysp (Use_Ty) else Use_Ty);
+        (if Is_Type (Spec_Ty) then Retysp (Spec_Ty) else Spec_Ty);
 
    begin
       --  If E is not in SPARK, only declare an object of type __private for
