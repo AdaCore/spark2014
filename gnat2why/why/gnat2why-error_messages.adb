@@ -331,7 +331,7 @@ package body Gnat2Why.Error_Messages is
          else
             Ada.Text_IO.Put ("gnatprove: ");
             Ada.Text_IO.Put_Line (Msg);
-            raise Terminate_Program;
+            Exit_Program (E_Fatal);
          end if;
       end Handle_Error;
 
