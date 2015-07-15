@@ -1,7 +1,39 @@
-part.adb:27:16: info: initialization of "Tmp" proved
-part.adb:72:41: renamed slice cannot depend on "Last_Index" (SPARK RM 4.4(2))
-part.adb:79:38: renamed slice cannot depend on "Last_Index" (SPARK RM 4.4(2))
-   compilation of part.adb failed
+main.adb:17:07: warning: assuming "Put" has no effect on global items
+main.adb:17:07: warning: no Global contract available for "Put"
+main.adb:19:18: attribute "Img" is not permitted in SPARK
+main.adb:21:07: warning: assuming "Put_Line" has no effect on global items
+main.adb:21:07: warning: no Global contract available for "Put_Line"
+main.adb:27:07: warning: assuming "Put" has no effect on global items
+main.adb:27:07: warning: no Global contract available for "Put"
+main.adb:29:18: attribute "Img" is not permitted in SPARK
+main.adb:31:07: warning: assuming "Put_Line" has no effect on global items
+main.adb:31:07: warning: no Global contract available for "Put_Line"
+part.adb:8:07: info: postcondition proved
+part.adb:8:10: info: index check proved
+part.adb:8:22: info: index check proved
+part.adb:8:37: info: index check proved
+part.adb:8:49: info: index check proved
+part.adb:10:51: info: index check proved
+part.adb:10:63: info: index check proved
+part.adb:22:27: info: index check proved
+part.adb:24:10: info: index check proved
+part.adb:24:19: info: index check proved
+part.adb:25:10: info: index check proved
+part.adb:25:16: info: initialization of "Tmp" proved
+part.ads:6:41: info: index check proved
+part.ads:9:42: info: index check proved
+part.ads:15:47: info: index check proved
+part.ads:21:41: info: overflow check proved
+part.ads:21:51: info: index check proved
+part.ads:21:61: info: index check proved
+part.ads:21:61: info: overflow check proved
+part.ads:27:44: info: index check proved
+part.ads:36:27: info: range check proved
+part.ads:36:44: info: index check proved
+part.ads:37:12: info: range check proved
+part.ads:37:20: info: index check proved
+part.ads:37:31: info: index check proved
+   compilation of main.adb failed
 
 
 gnatprove: error during flow analysis and proof

@@ -1,8 +1,6 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
-package body Part
-with SPARK_Mode
-is
+package body Part is
 
    procedure Swap (X : in out Set; A, B : Positive)
      with Pre => A in X'Range and B in X'Range,
@@ -63,7 +61,9 @@ is
       P        : Partition;
       X        : Set;
       NP       : out Partition;
-      Num_Part : out Natural) is
+      Num_Part : out Natural)
+     with SPARK_Mode => Off
+   is
 
       Last_Index : Positive := A'First;
    begin

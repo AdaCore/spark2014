@@ -1,6 +1,4 @@
-package Part
-with SPARK_Mode
-is
+package Part is
 
    type Set is array (Positive range <>) of Integer;
 
