@@ -14,8 +14,8 @@ global_illegal.ads:91:21: global item must denote object or state
 global_illegal.ads:97:22: global mode "Output" is not applicable to functions
 global_illegal.ads:98:22: global mode "In_Out" is not applicable to functions
 global_illegal_2.adb:13:11: aspect specification must appear in subprogram declaration
-global_illegal_2.adb:26:31: reference to "A" not allowed
-global_illegal_2.adb:26:31: refinement of "A" is visible at line 3
+global_illegal_2.adb:26:31: cannot mention state "A" in global refinement
+global_illegal_2.adb:26:31: use its constituents instead
 global_illegal_2.adb:44:35: global item "X" cannot have mode In_Out or Output
 global_illegal_2.adb:44:35: item already appears as input of subprogram "P3"
 global_illegal_2.adb:45:35: global item "Y" cannot have mode In_Out or Output
