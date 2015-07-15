@@ -4,14 +4,6 @@ package body Pack
 is
    A, B : Integer;
 
-   procedure Initialize_State is separate
-     with Refined_Global => (Output => (A, B)),
-          Refined_Depends => ((A, B) => null);
-
-   procedure Double_B is separate
-     with Global => (In_Out => B),
-          Depends => (B => B);
-
    package Inner
      with Abstract_State => Inner_State,
           Initializes    => (Inner_State,
@@ -25,6 +17,14 @@ is
              Depends => (Inner_State => null,
                          Inner_Var   => Var);
    end Inner;
+
+   procedure Initialize_State is separate
+     with Refined_Global => (Output => (A, B)),
+          Refined_Depends => ((A, B) => null);
+
+   procedure Double_B is separate
+     with Global => (In_Out => B),
+          Depends => (B => B);
 
    package body Inner is separate;
 begin
