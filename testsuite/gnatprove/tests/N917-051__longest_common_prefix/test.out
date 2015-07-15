@@ -1,0 +1,52 @@
+longest_common_prefix.adb:11:15: info: overflow check proved
+longest_common_prefix.adb:11:17: info: initialization of "L" proved
+longest_common_prefix.adb:12:20: info: overflow check proved
+longest_common_prefix.adb:13:23: info: index check proved
+longest_common_prefix.adb:13:23: info: overflow check proved
+longest_common_prefix.adb:13:35: info: index check proved
+longest_common_prefix.adb:13:35: info: overflow check proved
+longest_common_prefix.adb:15:10: info: loop invariant initialization proved
+longest_common_prefix.adb:15:10: info: loop invariant preservation proved
+longest_common_prefix.adb:15:51: info: initialization of "L" proved
+longest_common_prefix.adb:15:65: info: index check proved
+longest_common_prefix.adb:15:65: info: overflow check proved
+longest_common_prefix.adb:15:77: info: index check proved
+longest_common_prefix.adb:15:77: info: overflow check proved
+longest_common_prefix.adb:16:10: info: loop variant proved
+longest_common_prefix.adb:16:44: info: initialization of "L" proved
+longest_common_prefix.adb:17:15: info: initialization of "L" proved
+longest_common_prefix.adb:17:17: info: overflow check proved
+longest_common_prefix.adb:19:14: info: initialization of "L" proved
+longest_common_prefix.adb:26:15: info: overflow check proved
+longest_common_prefix.adb:26:17: info: initialization of "L" proved
+longest_common_prefix.adb:27:20: info: overflow check proved
+longest_common_prefix.adb:28:23: info: index check proved
+longest_common_prefix.adb:28:23: info: overflow check proved
+longest_common_prefix.adb:28:35: info: index check proved
+longest_common_prefix.adb:28:35: info: overflow check proved
+longest_common_prefix.adb:30:10: info: loop invariant initialization proved
+longest_common_prefix.adb:30:10: info: loop invariant preservation proved
+longest_common_prefix.adb:30:51: info: initialization of "L" proved
+longest_common_prefix.adb:30:65: info: index check proved
+longest_common_prefix.adb:30:65: info: overflow check proved
+longest_common_prefix.adb:30:77: info: index check proved
+longest_common_prefix.adb:30:77: info: overflow check proved
+longest_common_prefix.adb:31:10: info: loop variant proved
+longest_common_prefix.adb:31:44: info: initialization of "L" proved
+longest_common_prefix.adb:32:15: info: initialization of "L" proved
+longest_common_prefix.adb:32:17: info: overflow check proved
+longest_common_prefix.adb:34:14: info: initialization of "L" proved
+longest_common_prefix.ads:6:04: info: initialization of "A" proved
+longest_common_prefix.ads:6:28: info: length check proved
+longest_common_prefix.ads:10:19: info: postcondition proved
+longest_common_prefix.ads:10:61: info: index check proved
+longest_common_prefix.ads:10:61: info: overflow check proved
+longest_common_prefix.ads:10:71: info: index check proved
+longest_common_prefix.ads:10:71: info: overflow check proved
+longest_common_prefix.ads:14:19: info: postcondition proved
+longest_common_prefix.ads:14:61: info: index check proved
+longest_common_prefix.ads:14:61: info: overflow check proved
+longest_common_prefix.ads:14:71: info: index check proved
+longest_common_prefix.ads:14:71: info: overflow check proved
+warning: prover z3 does not support step limit
+warning: running z3 without step limit
