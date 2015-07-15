@@ -297,7 +297,7 @@ package body Flow.Analysis.Sanity is
                         return Skip;
 
                      when others =>
-                        return OK;
+                        raise Program_Error;
                   end case;
                end;
 
