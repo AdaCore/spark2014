@@ -27,7 +27,9 @@ with System.Strings;
 with Ada.Text_IO;         use Ada.Text_IO;
 with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 
-with GNAT.OS_Lib;    use GNAT.OS_Lib;
+with GNAT.OS_Lib;         use GNAT.OS_Lib;
+
+with Hashing;             use Hashing;
 
 use type Ada.Containers.Count_Type;
 
@@ -62,9 +64,8 @@ package body Graph is
       return (Vertices       => VL.Empty_Vector,
               Default_Colour => Colour,
               Frozen         => False,
-              Save           =>
-                 new Vertex_To_Id_Maps.Map'(Vertex_To_Id_Maps.Empty_Map),
-              Clusters       => 0);
+              Clusters       => 0,
+              Key_To_Id      => Key_To_Id_Maps.Empty_Map);
    end Create;
 
    function Create (G             : T'Class;
@@ -80,8 +81,8 @@ package body Graph is
                              Cluster        => (if Copy_Clusters
                                                 then V.Cluster
                                                 else Null_Cluster)));
-         R.Save.Include (V.Key, R.Vertices.Last_Index);
       end loop;
+      R.Key_To_Id := G.Key_To_Id;
 
       R.Frozen   := True;
       if Copy_Clusters then
@@ -100,12 +101,10 @@ package body Graph is
    ----------------
 
    function Get_Vertex (G : T'Class; V : Vertex_Key) return Vertex_Id is
-
-      C : constant Vertex_To_Id_Maps.Cursor :=
-        G.Save.Find (V);
+      C : constant Key_To_Id_Maps.Cursor := G.Key_To_Id.Find (V);
    begin
-      if Vertex_To_Id_Maps.Has_Element (C) then
-         return Vertex_To_Id_Maps.Element (C);
+      if Key_To_Id_Maps.Has_Element (C) then
+         return Key_To_Id_Maps.Element (C);
       else
          return Null_Vertex;
       end if;
@@ -134,7 +133,7 @@ package body Graph is
                           Out_Neighbours => EAM.Empty_Map,
                           Cluster        => Null_Cluster));
       Id := G.Vertices.Last_Index;
-      G.Save.Include (V, Id);
+      G.Key_To_Id.Insert (V, Id);
    end Add_Vertex;
 
    procedure Add_Vertex
@@ -156,18 +155,15 @@ package body Graph is
                           In_Neighbours  => VIS.Empty_Set,
                           Out_Neighbours => EAM.Empty_Map,
                           Cluster        => Null_Cluster));
-      G.Save.Include (V, G.Vertices.Last_Index);
+      G.Key_To_Id.Insert (V, G.Vertices.Last_Index);
    end Add_Vertex;
 
    -----------------
    -- Vertex_Hash --
    -----------------
 
-   function Vertex_Hash
-     (Element : Vertex_Id) return Ada.Containers.Hash_Type is
-   begin
-      return Ada.Containers.Hash_Type (Element);
-   end Vertex_Hash;
+   function Vertex_Hash (Element : Vertex_Id) return Ada.Containers.Hash_Type
+   is (Generic_Integer_Hash (Integer (Element)));
 
    ----------------------------------------------------------------------
    --  Edge operations
@@ -435,6 +431,13 @@ package body Graph is
    begin
       return G.Vertices (V).Cluster;
    end Get_Cluster;
+
+   ------------------
+   -- Cluster_Hash --
+   ------------------
+
+   function Cluster_Hash (C : Cluster_Id) return Ada.Containers.Hash_Type
+   is (Generic_Integer_Hash (Integer (C)));
 
    ----------------------------------------------------------------------
    --  Iterators

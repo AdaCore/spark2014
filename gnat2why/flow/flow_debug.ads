@@ -35,6 +35,18 @@ with Flow_Types;           use Flow_Types;
 
 package Flow_Debug is
 
+   procedure Init_Time (S : String);
+   --  Debug function for printing timing information (call this one
+   --  first).
+
+   procedure Note_Time (S : String);
+   --  Debug function for printing timing information (call this one for
+   --  each substep).
+
+   procedure Final_Time (S : String);
+   --  Debug function for printing timing information (call this one at the
+   --  end to show a total).
+
    procedure Print_Node_Set (S : Node_Sets.Set);
    --  Print a mostly human-readable form the given node set.
 

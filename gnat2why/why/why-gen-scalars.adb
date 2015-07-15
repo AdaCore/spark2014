@@ -34,6 +34,7 @@ with Urealp;              use Urealp;
 
 with SPARK_Util;          use SPARK_Util;
 
+with Common_Containers;   use Common_Containers;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Modules;   use Why.Atree.Modules;

@@ -23,7 +23,9 @@
 
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Containers;
+with Ada.Real_Time;          use Ada.Real_Time;
 with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
+
 with Atree;                  use Atree;
 with Output;                 use Output;
 with Sprint;                 use Sprint;
@@ -31,6 +33,9 @@ with Sprint;                 use Sprint;
 use type Ada.Containers.Count_Type;
 
 package body Flow_Debug is
+
+   The_Time       : Time;
+   The_Start_Time : Time;
 
    Temp_String : Unbounded_String;
 
@@ -63,6 +68,45 @@ package body Flow_Debug is
          end if;
       end loop;
    end Add_To_Temp_String;
+
+   ---------------
+   -- Init_Time --
+   ---------------
+
+   procedure Init_Time (S : String)
+   is
+   begin
+      The_Time := Clock;
+      The_Start_Time := The_Time;
+      Write_Str (S);
+      Write_Eol;
+   end Init_Time;
+
+   ---------------
+   -- Note_Time --
+   ---------------
+
+   procedure Note_Time (S : String)
+   is
+      T : constant Time_Span := Clock - The_Time;
+   begin
+      The_Time := Clock;
+      Write_Str (S & " (" & To_Duration (T)'Img & ")");
+      Write_Eol;
+   end Note_Time;
+
+   ----------------
+   -- Final_Time --
+   ----------------
+
+   procedure Final_Time (S : String)
+   is
+      T : constant Time_Span := Clock - The_Start_Time;
+   begin
+      The_Time := Clock;
+      Write_Str (S & " (total: " & To_Duration (T)'Img & ")");
+      Write_Eol;
+   end Final_Time;
 
    --------------------
    -- Print_Node_Set --

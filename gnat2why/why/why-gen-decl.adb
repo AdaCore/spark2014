@@ -30,6 +30,8 @@ with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Sinfo;           use Why.Sinfo;
 with Why.Types;           use Why.Types;
 
+with Common_Containers;   use Common_Containers;
+
 package body Why.Gen.Decl is
 
    ----------

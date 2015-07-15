@@ -105,8 +105,10 @@ package Graph is
 
       --  Collections over the graph.
       All_Vertices);
+
    subtype Vertex_Based_Collection is Collection_Type_T
      range Out_Neighbours .. In_Neighbours;
+
    subtype Graph_Based_Collection is Collection_Type_T
      range All_Vertices .. All_Vertices;
 
@@ -347,6 +349,9 @@ package Graph is
    --  Returns the vertex' cluster.
    --
    --  Complexity is O(1).
+
+   function Cluster_Hash (C : Cluster_Id) return Ada.Containers.Hash_Type;
+   --  Hash a cluster_id
 
    ----------------------------------------------------------------------
    --  Iterators
@@ -659,21 +664,19 @@ private
    use VL;
    subtype Vertex_List is VL.Vector;
 
-   package Vertex_To_Id_Maps is new Ada.Containers.Hashed_Maps
+   package Key_To_Id_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Vertex_Key,
       Element_Type    => Vertex_Id,
       Hash            => Key_Hash,
       Equivalent_Keys => Test_Key,
       "="             => "=");
 
-   type VTIMA is access Vertex_To_Id_Maps.Map;
-
    type T is tagged record
       Vertices       : Vertex_List;
       Default_Colour : Edge_Colours;
       Frozen         : Boolean;
       Clusters       : Cluster_Id;
-      Save           : VTIMA;
+      Key_To_Id      : Key_To_Id_Maps.Map;
    end record;
 
    ----------------------------------------------------------------------

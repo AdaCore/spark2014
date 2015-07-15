@@ -21,66 +21,90 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with AA_Util;                    use AA_Util;
-with Ada.Text_IO;                use Ada.Text_IO;
-with Ada.Text_IO.Unbounded_IO;   use Ada.Text_IO.Unbounded_IO;
-with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
+with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
+with Ada.Containers.Vectors;
+with Ada.Strings.Maps;           use Ada.Strings.Maps;
+with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
+with Ada.Text_IO.Unbounded_IO;   use Ada.Text_IO.Unbounded_IO;
+with Ada.Text_IO;                use Ada.Text_IO;
+
+with AA_Util;                    use AA_Util;
 with ALI;                        use ALI;
-with Flow_Utility;               use Flow_Utility;
-with Gnat2Why_Args;
-with Graph;
 with Lib.Util;                   use Lib.Util;
 with Namet;                      use Namet;
-with Osint;                      use Osint;
 with Osint.C;                    use Osint.C;
+with Osint;                      use Osint;
 with Output;                     use Output;
 with Sem_Util;                   use Sem_Util;
 with Sinfo;                      use Sinfo;
+
+with Gnat2Why_Args;
+with Hashing;                    use Hashing;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Util;                 use SPARK_Util;
 
+with Flow_Utility;               use Flow_Utility;
+with Flow_Debug;                 use Flow_Debug;
+with Graph;
+
 package body Flow_Generated_Globals is
-
-   --  Debug flags
-
-   Debug_Print_Info_Sets_Read : constant Boolean := False;
-   --  Enables printing of Subprogram_Info_Sets as read from ALI files
-
-   Debug_Print_Global_Graph   : constant Boolean := True;
-   --  Enables printing of the Global_Graph
-
-   ----------------------------------------------------------------------
 
    use type Flow_Id_Sets.Set;
    use type Name_Sets.Set;
 
    ----------------------------------------------------------------------
+   --  Debug flags
+   ----------------------------------------------------------------------
 
-   type State_Phase_1_Info is record
-      State        : Entity_Name;
-      Constituents : Name_Sets.Set;
-   end record;
+   Debug_Print_Info_Sets_Read : constant Boolean := False;
+   --  Enables printing of Subprogram_Info_List as read from ALI files
 
-   function Preceeds (A, B : State_Phase_1_Info) return Boolean is
-     (A.State < B.State);
+   Debug_Print_Global_Graph   : constant Boolean := True;
+   --  Enables printing of the Global_Graph
 
-   package State_Info_Sets is new Ada.Containers.Ordered_Sets
-     (Element_Type => State_Phase_1_Info,
-      "<"          => Preceeds,
-      "="          => "=");
-
-   State_Info_Set : State_Info_Sets.Set := State_Info_Sets.Empty_Set;
+   Debug_GG_Read_Timing       : constant Boolean := False;
+   --  Enables timing information for gg_read
 
    ----------------------------------------------------------------------
-   --  Volatile information
+   --  Local state
    ----------------------------------------------------------------------
+
+   Subprogram_Info_List : Subprogram_Info_Lists.List;
+   --  Information about subprograms from the "generated globals" algorithm
+
+   GG_Exists_Cache : Name_Sets.Set;
+   --  This should be the equivalent of:
+   --     {x.name for all x of Subprogram_Info_List}
+
+   Nonblocking_Subprograms_Set : Name_Sets.Set := Name_Sets.Empty_Set;
+   --  Subprograms, entries and tasks that do not contain potentially
+   --  blocking statements (but still may call another blocking
+   --  subprogram).
+
+   package State_Info_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Entity_Name,
+      Element_Type    => Name_Sets.Set,
+      Hash            => Name_Hash,
+      Equivalent_Keys => "=",
+      "="             => Name_Sets."=");
+   use State_Info_Maps;
+
+   State_Comp_Map : State_Info_Maps.Map := State_Info_Maps.Empty_Map;
+   --  state -> {components}
+
+   Comp_State_Map : Name_Maps.Map       := Name_Maps.Empty_Map;
+   --  component -> state
+   --
+   --  this is filled in at the end of GG_Read from state_comp_map, in order
+   --  to speed up some queries
 
    All_Volatile_Vars     : Name_Sets.Set := Name_Sets.Empty_Set;
    Async_Writers_Vars    : Name_Sets.Set := Name_Sets.Empty_Set;
    Async_Readers_Vars    : Name_Sets.Set := Name_Sets.Empty_Set;
    Effective_Reads_Vars  : Name_Sets.Set := Name_Sets.Empty_Set;
    Effective_Writes_Vars : Name_Sets.Set := Name_Sets.Empty_Set;
+   --  Volatile information
 
    ----------------------------------------------------------------------
    --  Global_Id
@@ -105,8 +129,7 @@ package body Flow_Generated_Globals is
                            --  Represents a global variable
                           );
 
-   type Global_Id (Kind : Global_Id_Kind := Null_Kind) is
-   record
+   type Global_Id (Kind : Global_Id_Kind := Null_Kind) is record
       case Kind is
          when Null_Kind =>
             null;
@@ -116,11 +139,12 @@ package body Flow_Generated_Globals is
       end case;
    end record;
 
-   Null_Global_Id : constant Global_Id :=
-     Global_Id'(Kind => Null_Kind);
+   Null_Global_Id : constant Global_Id := Global_Id'(Kind => Null_Kind);
 
-   function Global_Hash (Element : Global_Id) return Ada.Containers.Hash_Type
-     is (Name_Hash (Element.Name));
+   function Global_Hash (X : Global_Id) return Ada.Containers.Hash_Type
+   is (if X.Kind = Null_Kind
+       then Generic_Integer_Hash (-1)
+       else Name_Hash (X.Name));
 
    -------------------
    -- Global_Graphs --
@@ -160,17 +184,58 @@ package body Flow_Generated_Globals is
                                  G        : T);
    --  Writes dot and pdf files for the Global_Graph
 
+   procedure Add_To_Volatile_Sets_If_Volatile (F : Flow_Id);
+   --  Processes F and adds it to All_Volatile_Vars, Async_Writers_Vars,
+   --  Async_Readers_Vars, Effective_Reads_Vars, or Effective_Writes_Vars
+   --  as appropriate
+
+   --------------------------------------
+   -- Add_To_Volatile_Sets_If_Volatile --
+   --------------------------------------
+
+   procedure Add_To_Volatile_Sets_If_Volatile (F : Flow_Id)
+   is
+      N : Entity_Name;
+   begin
+      case F.Kind is
+         when Direct_Mapping | Record_Field =>
+            N := To_Entity_Name (Get_Direct_Mapping_Id (F));
+         when others =>
+            return;
+      end case;
+
+      if Is_Volatile (F) then
+         All_Volatile_Vars.Include (N);
+
+         if Has_Async_Readers (F) then
+            Async_Readers_Vars.Include (N);
+
+            if Has_Effective_Writes (F) then
+               Effective_Writes_Vars.Include (N);
+            end if;
+         end if;
+
+         if Has_Async_Writers (F) then
+            Async_Writers_Vars.Include (N);
+
+            if Has_Effective_Reads (F) then
+               Effective_Reads_Vars.Include (N);
+            end if;
+         end if;
+      end if;
+   end Add_To_Volatile_Sets_If_Volatile;
+
    -----------------
    -- To_Name_Set --
    -----------------
 
    function To_Name_Set (S : Node_Sets.Set) return Name_Sets.Set is
-      Rv : Name_Sets.Set := Name_Sets.Empty_Set;
    begin
-      for E of S loop
-         Rv.Insert (To_Entity_Name (E));
-      end loop;
-      return Rv;
+      return X : Name_Sets.Set := Name_Sets.Empty_Set do
+         for E of S loop
+            X.Insert (To_Entity_Name (E));
+         end loop;
+      end return;
    end To_Name_Set;
 
    -----------------------------------
@@ -312,10 +377,11 @@ package body Flow_Generated_Globals is
       Open_Output_Library_Info;
 
       --  Initialze subprogram info
-      Subprogram_Info_Set         := Subprogram_Info_Sets.Empty_Set;
+      Subprogram_Info_List        := Subprogram_Info_Lists.Empty_List;
+      GG_Exists_Cache             := Name_Sets.Empty_Set;
 
       --  Initialize state info
-      State_Info_Set              := State_Info_Sets.Empty_Set;
+      State_Comp_Map              := State_Info_Maps.Empty_Map;
 
       --  Initialize volatile info
       All_Volatile_Vars           := Name_Sets.Empty_Set;
@@ -325,7 +391,7 @@ package body Flow_Generated_Globals is
       Effective_Writes_Vars       := Name_Sets.Empty_Set;
 
       --  Set mode to writing mode
-      Current_Mode := GG_Write_Mode;
+      Current_Mode                := GG_Write_Mode;
    end GG_Write_Initialize;
 
    ---------------------------
@@ -343,39 +409,13 @@ package body Flow_Generated_Globals is
 
             Constituents : constant Name_Sets.Set :=
               To_Name_Set (To_Node_Set (Dependency_Maps.Element (S)));
-
-            State_Info   : constant State_Phase_1_Info :=
-              State_Phase_1_Info'(State        => State_N,
-                                  Constituents => Constituents);
          begin
-            --  Insert new state info into State_Info_Set
-            State_Info_Set.Insert (State_Info);
+            --  Insert new state info into State_Comp_Map.
+            State_Comp_Map.Insert (State_N, Constituents);
 
-            --  Check if State_F if volatile and if it is then add it on the
-            --  appropriate sets depending on its properties.
-            if Is_Volatile (State_F) then
-               All_Volatile_Vars.Insert (State_N);
-
-               if Has_Async_Readers (State_F) then
-                  --  Add to Async_Readers_Vars set
-                  Async_Readers_Vars.Insert (State_N);
-               end if;
-
-               if Has_Async_Writers (State_F) then
-                  --  Add to Async_Writers_Vars set
-                  Async_Writers_Vars.Insert (State_N);
-               end if;
-
-               if Has_Effective_Writes (State_F) then
-                  --  Add to Effective_Writes_Vars set
-                  Effective_Writes_Vars.Insert (State_N);
-               end if;
-
-               if Has_Effective_Reads (State_F) then
-                  --  Add to Effective_Reads_Vars set
-                  Effective_Reads_Vars.Insert (State_N);
-               end if;
-            end if;
+            --  Check if State_F if volatile and if it is then add it on
+            --  the appropriate sets.
+            Add_To_Volatile_Sets_If_Volatile (State_F);
          end;
       end loop;
    end GG_Write_Package_Info;
@@ -386,52 +426,29 @@ package body Flow_Generated_Globals is
 
    procedure GG_Write_Subprogram_Info (SI : Subprogram_Phase_1_Info) is
       procedure Process_Volatiles (S : Name_Sets.Set);
-      --  Goes through S, finds volatiles and stores them in the appropriate
-      --  sets based on their properties.
+      --  Goes through S, finds volatiles and stores them in the
+      --  appropriate sets based on their properties.
 
       ------------------------
       -- Processs_Volatiles --
       ------------------------
 
       procedure Process_Volatiles (S : Name_Sets.Set) is
-         E : Entity_Id;
-         F : Flow_Id;
       begin
          for Name of S loop
-            E := Find_Entity (Name);
-
-            if Present (E) then
-               F := Direct_Mapping_Id (E);
-
-               if Is_Volatile (F) then
-                  All_Volatile_Vars.Include (Name);
-
-                  if Has_Async_Readers (F) then
-                     --  Add to Async_Readers_Vars set
-                     Async_Readers_Vars.Include (Name);
-                  end if;
-
-                  if Has_Async_Writers (F) then
-                     --  Add to Async_Writers_Vars set
-                     Async_Writers_Vars.Include (Name);
-                  end if;
-
-                  if Has_Effective_Writes (F) then
-                     --  Add to Effective_Writes_Vars set
-                     Effective_Writes_Vars.Include (Name);
-                  end if;
-
-                  if Has_Effective_Reads (F) then
-                     --  Add to Effective_Reads_Vars set
-                     Effective_Reads_Vars.Include (Name);
-                  end if;
+            declare
+               E : constant Entity_Id := Find_Entity (Name);
+            begin
+               if Present (E) then
+                  Add_To_Volatile_Sets_If_Volatile (Direct_Mapping_Id (E));
                end if;
-            end if;
+            end;
          end loop;
       end Process_Volatiles;
 
    begin
-      Subprogram_Info_Set.Insert (SI);
+      Subprogram_Info_List.Append (SI);
+      GG_Exists_Cache.Insert (SI.Name);
 
       --  Gather and save volatile variables
       Process_Volatiles (SI.Inputs_Proof);
@@ -439,6 +456,16 @@ package body Flow_Generated_Globals is
       Process_Volatiles (SI.Outputs);
       Process_Volatiles (SI.Local_Variables);
    end GG_Write_Subprogram_Info;
+
+   -----------------------------
+   -- GG_Register_Nonblocking --
+   -----------------------------
+
+   procedure GG_Register_Nonblocking (EN : Entity_Name)
+   is
+   begin
+      Nonblocking_Subprograms_Set.Insert (EN);
+   end GG_Register_Nonblocking;
 
    -----------------------
    -- GG_Write_Finalize --
@@ -465,13 +492,18 @@ package body Flow_Generated_Globals is
 
    begin
       --  Write State info
-      for State_Info of State_Info_Set loop
-         Write_Name_Set ("GG AS " & To_String (State_Info.State),
-                         State_Info.Constituents);
+      for C in State_Comp_Map.Iterate loop
+         declare
+            State        : constant Entity_Name   := Key (C);
+            Constituents : constant Name_Sets.Set := Element (C);
+         begin
+            Write_Name_Set ("GG AS " & To_String (State),
+                            Constituents);
+         end;
       end loop;
 
       --  Write Subprogram/Task/Entry info
-      for Info of Subprogram_Info_Set loop
+      for Info of Subprogram_Info_List loop
          Write_Name_Set ((case Info.Kind is
                              when S_Kind => "GG S ",
                              when T_Kind => "GG T ",
@@ -543,7 +575,7 @@ package body Flow_Generated_Globals is
       --  Contains all subprograms for which a GG entry does not exist
 
       procedure Add_All_Edges;
-      --  Reads the populated Subprogram_Info_Set and generates all the edges
+      --  Reads the populated Subprogram_Info_List and generates all the edges
       --  of the Global_Graph. While adding edges we consult the Local_Graph so
       --  as not to add edges to local variables.
 
@@ -563,7 +595,7 @@ package body Flow_Generated_Globals is
 
       procedure Load_GG_Info_From_ALI (ALI_File_Name : File_Name_Type);
       --  Loads the GG info from an ALI file and stores them in the
-      --  Subprogram_Info_Set, State_Info_Set and volatile info sets.
+      --  Subprogram_Info_List, State_Comp_Map and volatile info sets.
       --
       --  The info that we read look as follows:
       --
@@ -581,6 +613,7 @@ package body Flow_Generated_Globals is
       --  GG AR test__fully_vol test__vol_ew3
       --  GG ER test__fully_vol test__vol_er2
       --  GG EW test__fully_vol test__vol_ew3
+      --  GG NB test__proc
 
       procedure Remove_Constants_Without_Variable_Input;
       --  Removes edges leading to constants without variable input
@@ -590,6 +623,16 @@ package body Flow_Generated_Globals is
       -------------------
 
       procedure Add_All_Edges is
+         type Edge is record
+            A, B : Global_Graphs.Vertex_Id;
+         end record;
+
+         package Edge_Lists is new Ada.Containers.Vectors
+           (Index_Type   => Positive,
+            Element_Type => Edge);
+
+         Edges_To_Delete : Edge_Lists.Vector := Edge_Lists.Empty_Vector;
+
          G_Ins, G_Outs, G_Proof_Ins : Global_Id;
 
          procedure Add_Edge (G1, G2 : Global_Id);
@@ -609,8 +652,8 @@ package body Flow_Generated_Globals is
       --  Start of processing for Add_All_Edges
 
       begin
-         --  Go through the Subprogram_Info_Set and add edges
-         for Info of Subprogram_Info_Set loop
+         --  Go through the Subprogram_Info_List and add edges
+         for Info of Subprogram_Info_List loop
             G_Ins       := Global_Id'(Kind => Ins_Kind,
                                       Name => Info.Name);
 
@@ -775,10 +818,6 @@ package body Flow_Generated_Globals is
             -- Visitor --
             -------------
 
-            -------------
-            -- Visitor --
-            -------------
-
             procedure Visitor (A, B : Vertex_Id) is
                Key_A :          Global_Id := Global_Graph.Get_Key (A);
                Key_B : constant Global_Id := Global_Graph.Get_Key (B);
@@ -802,13 +841,17 @@ package body Flow_Generated_Globals is
                  and then Local_Graph.Get_Vertex (Key_B) /= Null_Vertex
                  and then not Local_Graph.Edge_Exists (Key_B, Key_A)
                then
-                  Global_Graph.Remove_Edge (A, B);
+                  Edges_To_Delete.Append (Edge'(A, B));
                end if;
             end Visitor;
 
          begin
             Global_Graph.Close (Visitor'Access);
          end;
+
+         for E of Edges_To_Delete loop
+            Global_Graph.Remove_Edge (E.A, E.B);
+         end loop;
       end Add_All_Edges;
 
       -------------------------
@@ -925,7 +968,7 @@ package body Flow_Generated_Globals is
       --  Start of processing for Create_Local_Graph
 
       begin
-         for Info of Subprogram_Info_Set loop
+         for Info of Subprogram_Info_List loop
             G_Subp := Global_Id'(Kind => Subprogram_Kind,
                                  Name => Info.Name);
 
@@ -1021,7 +1064,7 @@ package body Flow_Generated_Globals is
       --  Start of processing for Edit_Proof_Ins
 
       begin
-         for Info of Subprogram_Info_Set loop
+         for Info of Subprogram_Info_List loop
             declare
                G_Ins       : constant Global_Id :=
                  Global_Id'(Kind => Ins_Kind,
@@ -1245,9 +1288,7 @@ package body Flow_Generated_Globals is
 
                   Constituents.Exclude (State);
 
-                  State_Info_Set.Include
-                    (State_Phase_1_Info'(State        => State,
-                                         Constituents => Constituents));
+                  State_Comp_Map.Include (State, Constituents);
                end;
 
                --  State line parsed. We will now return.
@@ -1302,6 +1343,13 @@ package body Flow_Generated_Globals is
                   All_Volatile_Vars.Union (Get_Names_From_Line);
                   return;
                end;
+
+            elsif Length (Line) > 6
+              and then Slice (Line, 1, 6) = "GG NB "
+            then
+
+               Nonblocking_Subprograms_Set.Union (Get_Names_From_Line);
+               return;
 
             end if;
 
@@ -1393,12 +1441,6 @@ package body Flow_Generated_Globals is
                         New_Info.Local_Subprograms := Get_Names_From_Line;
                         All_Subprograms.Union (New_Info.Local_Subprograms);
 
-                     elsif Tag = "NB" then
-
-                        Nonblocking_Subprograms_Set.Union
-                          (Get_Names_From_Line);
-                        return;
-
                      else
                         --  Unexpected type of line. Something is wrong
                         --  with the ALI file.
@@ -1428,8 +1470,9 @@ package body Flow_Generated_Globals is
 
                if (for all I in Line_Index => Line_Found (I)) then
                   --  If all lines have been found then we add New_Info to
-                  --  Subprogram_Info_Set and return.
-                  Subprogram_Info_Set.Include (New_Info);
+                  --  Subprogram_Info_List and return.
+                  Subprogram_Info_List.Append (New_Info);
+                  GG_Exists_Cache.Insert (New_Info.Name);
                   return;
                end if;
 
@@ -1511,6 +1554,10 @@ package body Flow_Generated_Globals is
    begin
       Current_Mode := GG_Read_Mode;
 
+      if Debug_GG_Read_Timing then
+         Init_Time ("gg_read");
+      end if;
+
       --  Initialize volatile info
       All_Volatile_Vars     := Name_Sets.Empty_Set;
       Async_Writers_Vars    := Name_Sets.Empty_Set;
@@ -1518,26 +1565,53 @@ package body Flow_Generated_Globals is
       Effective_Reads_Vars  := Name_Sets.Empty_Set;
       Effective_Writes_Vars := Name_Sets.Empty_Set;
 
-      --  Go through all ALI files and populate the Subprogram_Info_Set
-      for Index in ALIs.First .. ALIs.Last loop
-         Load_GG_Info_From_ALI (ALIs.Table (Index).Afile);
-      end loop;
+      --  Go through all ALI files and populate the Subprogram_Info_List.
+      declare
+         Read_Files : Unbounded_String_Sets.Set;
+         Nam        : Unbounded_String;
+      begin
+         Read_Files := Unbounded_String_Sets.Empty_Set;
+         for Index in ALIs.First .. ALIs.Last loop
+            --  ??? The ALI table seems to incldue some entries twice, but
+            --  that is because some of them are null-terminated. See
+            --  O714-006; this is the workaround for now.
+            Nam := To_Unbounded_String
+              (Name_String (Name_Id (Full_Lib_File_Name
+                                       (ALIs.Table (Index).Afile))));
+            Nam := Trim (Source => Nam,
+                         Left   => Null_Set,
+                         Right  => To_Set (Character'Val (0)));
+            if not Read_Files.Contains (Nam) then
+               Read_Files.Insert (Nam);
+               Load_GG_Info_From_ALI (ALIs.Table (Index).Afile);
+            end if;
+         end loop;
+      end;
+
+      if Debug_GG_Read_Timing then
+         Note_Time ("gg_read - ali files read");
+      end if;
 
       if Debug_Print_Info_Sets_Read then
          --  Print all GG related info gathered from the ALI files.
-         for Info of Subprogram_Info_Set loop
+         for Info of Subprogram_Info_List loop
             Write_Eol;
             Print_Subprogram_Phase_1_Info (Info);
          end loop;
 
-         for State_Info of State_Info_Set loop
-            Write_Eol;
-            Write_Line ("Abstract state " & To_String (State_Info.State));
+         for C in State_Comp_Map.Iterate loop
+            declare
+               State : constant Entity_Name := Key (C);
+               Constituents : constant Name_Sets.Set := Element (C);
+            begin
+               Write_Eol;
+               Write_Line ("Abstract state " & To_String (State));
 
-            Write_Line ("Constituents     :");
-            for Name of State_Info.Constituents loop
-               Write_Line ("   " & To_String (Name));
-            end loop;
+               Write_Line ("Constituents     :");
+               for Name of Constituents loop
+                  Write_Line ("   " & To_String (Name));
+               end loop;
+            end;
          end loop;
 
          --  Print all volatile info
@@ -1573,15 +1647,27 @@ package body Flow_Generated_Globals is
 
       --  Create the Local_Graph
       Create_Local_Graph;
+      if Debug_GG_Read_Timing then
+         Note_Time ("gg_read - local graph done");
+      end if;
 
       --  Create all vertices of the Global_Graph
       Create_All_Vertices;
+      if Debug_GG_Read_Timing then
+         Note_Time ("gg_read - vertices added");
+      end if;
 
       --  Add all edges in the Global_Graph
       Add_All_Edges;
+      if Debug_GG_Read_Timing then
+         Note_Time ("gg_read - edges added");
+      end if;
 
       --  Edit Proof_Ins
       Edit_Proof_Ins;
+      if Debug_GG_Read_Timing then
+         Note_Time ("gg_read - proof ins");
+      end if;
 
       --  Now that the Globals Graph has been generated we set
       --  GG_Generated to True. Notice that we set GG_Generated to
@@ -1594,6 +1680,9 @@ package body Flow_Generated_Globals is
       --  Remove edges leading to constants which do not have variable
       --  input.
       Remove_Constants_Without_Variable_Input;
+      if Debug_GG_Read_Timing then
+         Note_Time ("gg_read - removed nonvariable constants");
+      end if;
 
       if Debug_Print_Global_Graph then
          declare
@@ -1615,6 +1704,18 @@ package body Flow_Generated_Globals is
          end;
       end if;
 
+      --  To speed up queries on constituents of state, we fill in a helper
+      --  structure.
+      Comp_State_Map := Name_Maps.Empty_Map;
+      for C in State_Comp_Map.Iterate loop
+         for Comp of Element (C) loop
+            Comp_State_Map.Insert (Comp, Key (C));
+         end loop;
+      end loop;
+
+      if Debug_GG_Read_Timing then
+         Final_Time ("gg_read");
+      end if;
    end GG_Read;
 
    --------------
@@ -1624,7 +1725,7 @@ package body Flow_Generated_Globals is
    function GG_Exist (E : Entity_Id) return Boolean is
       Name : constant Entity_Name := To_Entity_Name (E);
    begin
-      return (for some Info of Subprogram_Info_Set => Name = Info.Name);
+      return GG_Exists_Cache.Contains (Name);
    end GG_Exist;
 
    -----------------------
@@ -1633,7 +1734,7 @@ package body Flow_Generated_Globals is
 
    function GG_Has_Refinement (EN : Entity_Name) return Boolean is
    begin
-      return (for some S of State_Info_Set => S.State = EN);
+      return State_Comp_Map.Contains (EN);
    end GG_Has_Refinement;
 
    -----------------------
@@ -1642,8 +1743,7 @@ package body Flow_Generated_Globals is
 
    function GG_Is_Constituent (EN : Entity_Name) return Boolean is
    begin
-      return (for some S of State_Info_Set =>
-                (for some C of S.Constituents => EN = C));
+      return Comp_State_Map.Contains (EN);
    end GG_Is_Constituent;
 
    -------------------------
@@ -1652,13 +1752,9 @@ package body Flow_Generated_Globals is
 
    function GG_Get_Constituents (EN : Entity_Name) return Name_Sets.Set is
    begin
-      for S of State_Info_Set loop
-         if S.State = EN then
-            return S.Constituents;
-         end if;
-      end loop;
-
-      return Name_Sets.Empty_Set;
+      return (if State_Comp_Map.Contains (EN)
+              then State_Comp_Map.Element (EN)
+              else Name_Sets.Empty_Set);
    end GG_Get_Constituents;
 
    ------------------------
@@ -1667,15 +1763,9 @@ package body Flow_Generated_Globals is
 
    function GG_Enclosing_State (EN : Entity_Name) return Entity_Name is
    begin
-      for S of State_Info_Set loop
-         for C of S.Constituents loop
-            if EN = C then
-               return S.State;
-            end if;
-         end loop;
-      end loop;
-
-      return Null_Entity_Name;
+      return (if Comp_State_Map.Contains (EN)
+              then Comp_State_Map.Element (EN)
+              else Null_Entity_Name);
    end GG_Enclosing_State;
 
    ---------------------
@@ -1934,8 +2024,8 @@ package body Flow_Generated_Globals is
    function GG_Get_All_State_Abstractions return Name_Sets.Set is
       Tmp : Name_Sets.Set := Name_Sets.Empty_Set;
    begin
-      for S of State_Info_Set loop
-         Tmp.Include (S.State);
+      for C in State_Comp_Map.Iterate loop
+         Tmp.Insert (Key (C));
       end loop;
 
       return Tmp;

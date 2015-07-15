@@ -21,9 +21,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This package implements writing, reading and computing global contracts
+--  This package implements writing, reading and computing global
+--  contracts.
 
-with Ada.Containers.Ordered_Sets;
+with Ada.Containers.Doubly_Linked_Lists;
 with Atree;                       use Atree;
 with Common_Containers;           use Common_Containers;
 with Einfo;                       use Einfo;
@@ -38,7 +39,7 @@ package Flow_Generated_Globals is
    --  -- Flow_Generated_Globals Algorithm --
    --  -------------------------------------
 
-   --  This algorithm is applied to individual compilation units
+   --  This algorithm is applied to individual compilation units.
    --
    --  During the first pass:
    --
@@ -83,14 +84,14 @@ package Flow_Generated_Globals is
    --  -- Generated Globals Section --
    --  -------------------------------
 
-   --  The Generated Globals section is located at the end of the ALI file
+   --  The Generated Globals section is located at the end of the ALI file.
    --
-   --  All lines with information related to the Generated Globals start with a
-   --  "GG" string.
+   --  All lines with information related to the Generated Globals start
+   --  with a "GG" string.
    --
-   --  The Generated Globals section stores three kinds of information:
+   --  The Generated Globals section stores a collection of information:
    --
-   --  1) The first kind is related to Abstract States and their constituents
+   --  1) Abstract States and their constituents.
    --
    --     This information is stored in single lines that start with "GG"
    --     followed by "AS"; then comes the name of the Abstract State and then
@@ -129,8 +130,7 @@ package Flow_Generated_Globals is
    --       GG LV test__proc__nested_proc__v
    --       GG LS test__proc__nested_proc__nested_proc
    --
-   --  3) The third kind is related to volatile variables and external state
-   --     abstractions.
+   --  3) Volatile variables and external state abstractions.
    --
    --     There are at most 4 lines in the ALI file; one line for each of the
    --     property, with names of the variables and external state
@@ -149,6 +149,11 @@ package Flow_Generated_Globals is
    --     GG AR test__fully_vol test__vol_ew3
    --     GG ER test__fully_vol test__vol_er2
    --     GG EW test__fully_vol test__vol_ew3
+   --
+   --  4) Nonblocking subprograms.
+   --
+   --     Examples:
+   --     GG NB my_nonblocking_subprogram_a my_other_nonblocking_subprogram
 
    ----------------------------------------------------------------------
 
@@ -180,30 +185,16 @@ package Flow_Generated_Globals is
       Local_Subprograms : Name_Sets.Set;
    end record;
 
-   function Preceeds (A, B : Subprogram_Phase_1_Info) return Boolean is
-     (A.Name < B.Name);
-
-   package Subprogram_Info_Sets is new Ada.Containers.Ordered_Sets
-     (Element_Type => Subprogram_Phase_1_Info,
-      "<"          => Preceeds,
-      "="          => "=");
-   --  ??? Ordered sets seem to be faster here than hashed sets
-
-   Subprogram_Info_Set : Subprogram_Info_Sets.Set :=
-     Subprogram_Info_Sets.Empty_Set;
-   --  Information about subprograms from the "generated globals" algorithm
-
-   Nonblocking_Subprograms_Set : Name_Sets.Set := Name_Sets.Empty_Set;
-   --  Subprograms, entries and tasks that do not contain potentially blocking
-   --  statements (but still may call another blocking subprogram).
+   package Subprogram_Info_Lists is new Ada.Containers.Doubly_Linked_Lists
+     (Element_Type => Subprogram_Phase_1_Info);
 
    ----------------------------------------------------------------------
 
    function To_Name_Set (S : Node_Sets.Set) return Name_Sets.Set;
-   --  Takes a set of Node_Ids and returns a set of Entity_Names
+   --  Takes a set of Node_Ids and returns a set of Entity_Names.
 
    function GG_Mode return GG_Mode_T;
-   --  Returns the current mode
+   --  Returns the current mode.
 
    -------------
    -- Writing --
@@ -232,9 +223,14 @@ package Flow_Generated_Globals is
    --  It also stores information related to volatiles and possibly blocking
    --  property.
 
+   procedure GG_Register_Nonblocking (EN : Entity_Name)
+   with Pre  => GG_Mode = GG_Write_Mode,
+        Post => GG_Mode = GG_Write_Mode;
+   --  Notes that an entity is definitely not blocking.
+
    procedure GG_Write_Finalize
    with Pre => GG_Mode = GG_Write_Mode;
-   --  Appends all collected information to the ALI file
+   --  Appends all collected information to the ALI file.
 
    -------------------------
    -- Reading & Computing --
@@ -243,14 +239,14 @@ package Flow_Generated_Globals is
    procedure GG_Read (GNAT_Root : Node_Id)
    with Pre  => GG_Mode = GG_No_Mode,
         Post => GG_Mode = GG_Read_Mode;
-   --  Reads all ALI files and produces the transitive closure
+   --  Reads all ALI files and produce the transitive closure.
 
    --------------
    -- Querying --
    --------------
 
    function GG_Has_Been_Generated return Boolean;
-   --  Checks if the Globals Graph has been generated
+   --  Checks if the Globals Graph has been generated.
    --  @return True iff the Globals Graph has been generated
 
    function GG_Exist (E : Entity_Id) return Boolean
@@ -281,7 +277,7 @@ package Flow_Generated_Globals is
    function GG_Fully_Refine (EN : Entity_Name) return Name_Sets.Set
    with Pre => GG_Mode = GG_Read_Mode and then
                GG_Has_Refinement (EN);
-   --  Returns the most refined constituents of state abstraction EN
+   --  Returns the most refined constituents of state abstraction EN.
 
    procedure GG_Get_Globals (E           : Entity_Id;
                              S           : Flow_Scope;
@@ -291,7 +287,7 @@ package Flow_Generated_Globals is
    with Pre  => GG_Mode = GG_Read_Mode and then
                 GG_Exist (E),
         Post => GG_Mode = GG_Read_Mode;
-   --  Determines the set of all globals
+   --  Determines the set of all globals.
 
    function GG_Get_All_State_Abstractions return Name_Sets.Set
    with Pre => GG_Mode = GG_Read_Mode;
@@ -342,7 +338,7 @@ private
    Current_Mode : GG_Mode_T := GG_No_Mode;
 
    GG_Generated : Boolean   := False;
-   --  Set to True by GG_Read once the Global Graph has been generated
+   --  Set to True by GG_Read once the Global Graph has been generated.
 
    -------------
    -- GG_Mode --
@@ -355,6 +351,6 @@ private
    ---------------------------
 
    function GG_Has_Been_Generated return Boolean is (GG_Generated);
-   --  @return True iff the Global Graph has been generated
+   --  @return True iff the Global Graph has been generated.
 
 end Flow_Generated_Globals;

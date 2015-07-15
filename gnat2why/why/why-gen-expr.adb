@@ -49,6 +49,7 @@ with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;           use Gnat2Why.Expr;
 with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
 
+with Common_Containers;       use Common_Containers;
 with Why.Atree.Accessors;     use Why.Atree.Accessors;
 with Why.Atree.Modules;       use Why.Atree.Modules;
 with Why.Atree.Tables;        use Why.Atree.Tables;

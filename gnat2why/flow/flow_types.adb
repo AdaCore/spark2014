@@ -23,14 +23,18 @@
 
 with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
 with Ada.Strings;
+
 with Errout;                 use Errout;
-with Flow_Generated_Globals; use Flow_Generated_Globals;
-with Flow_Utility;           use Flow_Utility;
 with Namet;                  use Namet;
 with Output;                 use Output;
 with Sem_Util;               use Sem_Util;
 with Snames;                 use Snames;
+
+with Hashing;                use Hashing;
 with Why;
+
+with Flow_Generated_Globals; use Flow_Generated_Globals;
+with Flow_Utility;           use Flow_Utility;
 
 package body Flow_Types is
 
@@ -122,11 +126,11 @@ package body Flow_Types is
    begin
       case N.Kind is
          when Null_Value =>
-            return 0;
+            return Generic_Integer_Hash (-1);
          when Synthetic_Null_Export =>
-            return 1;
+            return Generic_Integer_Hash (-2);
          when Direct_Mapping | Record_Field =>
-            return Ada.Containers.Hash_Type (N.Node);
+            return Generic_Integer_Hash (Integer (N.Node));
          when Magic_String =>
             return Name_Hash (N.Name);
       end case;

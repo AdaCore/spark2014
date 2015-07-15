@@ -22,14 +22,8 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Doubly_Linked_Lists;
+
 with Errout;
-with Flow_Classwide;                     use Flow_Classwide;
-with Flow.Control_Flow_Graph.Utility;    use Flow.Control_Flow_Graph.Utility;
-with Flow_Debug;                         use Flow_Debug;
-pragma Unreferenced (Flow_Debug);
-with Flow_Error_Messages;                use Flow_Error_Messages;
-with Flow_Utility.Initialization;        use Flow_Utility.Initialization;
-with Flow_Utility;                       use Flow_Utility;
 with Namet;                              use Namet;
 with Nlists;                             use Nlists;
 with Sem_Aux;                            use Sem_Aux;
@@ -38,12 +32,23 @@ with Sem_Eval;                           use Sem_Eval;
 with Sem_Util;                           use Sem_Util;
 with Sinfo;                              use Sinfo;
 with Snames;                             use Snames;
-with SPARK_Definition;                   use SPARK_Definition;
-with SPARK_Util;                         use SPARK_Util;
 with Stand;                              use Stand;
 with Treepr;                             use Treepr;
+
+with Hashing;                            use Hashing;
+with SPARK_Definition;                   use SPARK_Definition;
+with SPARK_Util;                         use SPARK_Util;
 with VC_Kinds;                           use VC_Kinds;
 with Why;
+
+with Flow.Control_Flow_Graph.Utility;    use Flow.Control_Flow_Graph.Utility;
+with Flow_Classwide;                     use Flow_Classwide;
+with Flow_Debug;                         use Flow_Debug;
+with Flow_Error_Messages;                use Flow_Error_Messages;
+with Flow_Utility.Initialization;        use Flow_Utility.Initialization;
+with Flow_Utility;                       use Flow_Utility;
+
+pragma Unreferenced (Flow_Debug);
 
 package body Flow.Control_Flow_Graph is
 
@@ -202,7 +207,7 @@ package body Flow.Control_Flow_Graph is
    --  Produce the trivial connection.
 
    function Union_Hash (X : Union_Id) return Ada.Containers.Hash_Type
-   is (Ada.Containers.Hash_Type (abs (X)));
+   is (Generic_Integer_Hash (Integer (X)));
 
    package Connection_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Union_Id,

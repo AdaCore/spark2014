@@ -341,9 +341,8 @@ package body Flow_Utility is
 
    function Component_Hash (E : Entity_Id) return Ada.Containers.Hash_Type is
    begin
-      return Ada.Containers.Hash_Type
-        (Comp_Graph.Cluster_To_Natural
-           (Comp_Graph.Get_Cluster (Comp_Graph.Get_Vertex (E))));
+      return Component_Graphs.Cluster_Hash
+        (Comp_Graph.Get_Cluster (Comp_Graph.Get_Vertex (E)));
    end Component_Hash;
 
    --------------------

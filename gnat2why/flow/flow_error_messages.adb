@@ -22,8 +22,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Hashed_Sets;
-with Ada.Strings.Unbounded.Hash;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Assumption_Types;           use Assumption_Types;
 with Atree;                      use Atree;
@@ -46,13 +44,7 @@ with String_Utils;               use String_Utils;
 
 package body Flow_Error_Messages is
 
-   package Msgs_Sets is new Ada.Containers.Hashed_Sets
-     (Element_Type        => Unbounded_String,
-      Hash                => Ada.Strings.Unbounded.Hash,
-      Equivalent_Elements => "=",
-      "="                 => "=");
-
-   Flow_Msgs_Set : Msgs_Sets.Set;
+   Flow_Msgs_Set : Unbounded_String_Sets.Set;
    --  This set will contain flow related messages. It is used so as
    --  to not emit duplicate messages.
 

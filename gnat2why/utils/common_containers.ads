@@ -22,15 +22,19 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Ordered_Sets;
 with Ada.Containers.Vectors;
+with Ada.Containers;
+with Ada.Strings.Unbounded.Hash;
+with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
 
-with Namet; use Namet;
-with Types; use Types;
+with Namet;                              use Namet;
+with Types;                              use Types;
+
+with Hashing;                            use Hashing;
 
 --  This package contains a few common types (and expression functions)
 --  which are used throughout gnat2why (frame conditions, flow and why
@@ -47,8 +51,8 @@ package Common_Containers is
      (Index_Type   => Positive,
       Element_Type => Entity_Id);
 
-   function Node_Hash (X : Node_Id) return Ada.Containers.Hash_Type is
-     (Ada.Containers.Hash_Type (X));
+   function Node_Hash (X : Node_Id) return Ada.Containers.Hash_Type
+   is (Generic_Integer_Hash (Integer (X)));
    --  Compute a hash of a node
 
    package Node_Sets is new Ada.Containers.Ordered_Sets
@@ -87,7 +91,7 @@ package Common_Containers is
    Null_Entity_Name : constant Entity_Name;
 
    function Name_Hash (E : Entity_Name) return Ada.Containers.Hash_Type is
-     (Ada.Containers.Hash_Type (E));
+      (Generic_Integer_Hash (Integer (E)));
 
    package Name_Sets is new Ada.Containers.Hashed_Sets
      (Element_Type        => Entity_Name,
@@ -102,8 +106,19 @@ package Common_Containers is
       Equivalent_Keys => "=",
       "="             => "=");
 
-   function Name_Id_Hash (N : Name_Id) return Ada.Containers.Hash_Type is
-     (Ada.Containers.Hash_Type (N));
+   function Name_Id_Hash (N : Name_Id) return Ada.Containers.Hash_Type
+   is (Generic_Integer_Hash (Integer (N)));
+
+   package Name_Id_Sets is new Ada.Containers.Ordered_Sets
+     (Element_Type        => Name_Id,
+      "<"                 => "<",
+      "="                 => "=");
+
+   package Unbounded_String_Sets is new Ada.Containers.Hashed_Sets
+     (Element_Type        => Unbounded_String,
+      Hash                => Ada.Strings.Unbounded.Hash,
+      Equivalent_Elements => Ada.Strings.Unbounded."=",
+      "="                 => Ada.Strings.Unbounded."=");
 
 private
 

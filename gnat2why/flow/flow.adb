@@ -79,7 +79,7 @@ package body Flow is
    ------------------------------------------------------------
 
    use Flow_Graphs;
-   use Subprogram_Info_Sets;
+   use Subprogram_Info_Lists;
    use Name_Sets;
 
    Temp_String : Unbounded_String := Null_Unbounded_String;
@@ -108,12 +108,12 @@ package body Flow is
    use type Analysis_Maps.Map;
 
    procedure Build_Graphs_For_Compilation_Unit
-     (FA_Graphs           : out Analysis_Maps.Map;
-      Subprogram_Info_Set : out Subprogram_Info_Sets.Set)
+     (FA_Graphs            : out Analysis_Maps.Map;
+      Subprogram_Info_List : out Subprogram_Info_Lists.List)
      with Pre => FA_Graphs = Analysis_Maps.Empty_Map and then
-                 Subprogram_Info_Set = Subprogram_Info_Sets.Empty_Set,
+                 Subprogram_Info_List = Subprogram_Info_Lists.Empty_List,
           Post => (if not Generating_Globals then
-                     Subprogram_Info_Set = Subprogram_Info_Sets.Empty_Set);
+                     Subprogram_Info_List = Subprogram_Info_Lists.Empty_List);
    --  Build all flow graphs for the current compilation unit
 
    function Last_Statement_Is_Raise (E : Entity_Id) return Boolean
@@ -141,8 +141,8 @@ package body Flow is
       return Ada.Containers.Hash_Type is
       use Ada.Containers;
    begin
-      return 3 * Flow_Graphs.Vertex_Hash (VD.To) +
-             5 * Flow_Graphs.Vertex_Hash (VD.From);
+      return Flow_Graphs.Vertex_Hash (VD.To) +
+             Flow_Graphs.Vertex_Hash (VD.From);
    end Vertex_Pair_Hash;
 
    ------------------------
@@ -1177,13 +1177,13 @@ package body Flow is
    ---------------------------------------
 
    procedure Build_Graphs_For_Compilation_Unit
-     (FA_Graphs           : out Analysis_Maps.Map;
-      Subprogram_Info_Set : out Subprogram_Info_Sets.Set)
+     (FA_Graphs            : out Analysis_Maps.Map;
+      Subprogram_Info_List : out Subprogram_Info_Lists.List)
    is
       Body_E : Entity_Id;
    begin
-      --  Initialize the Subprogram_Info_Set to the empty set
-      Subprogram_Info_Set := Subprogram_Info_Sets.Empty_Set;
+      --  Initialize the Subprogram_Info_List to the empty set
+      Subprogram_Info_List := Subprogram_Info_Lists.Empty_List;
 
       for E of Entity_Set loop
          case Ekind (E) is
@@ -1207,8 +1207,7 @@ package body Flow is
                      if Present (Body_N) and then
                        Has_Only_Nonblocking_Statements (Body_N)
                      then
-                        Nonblocking_Subprograms_Set.Include
-                          (To_Entity_Name (E));
+                        GG_Register_Nonblocking (To_Entity_Name (E));
                      end if;
                   end;
                end if;
@@ -1272,7 +1271,7 @@ package body Flow is
                                  Local_Variables   => Name_Sets.Empty_Set,
                                  Local_Subprograms => Name_Sets.Empty_Set);
 
-                              Subprogram_Info_Set.Include (Subprogram_Info);
+                              Subprogram_Info_List.Append (Subprogram_Info);
                            end;
 
                         else
@@ -1311,7 +1310,7 @@ package body Flow is
                                  Local_Variables   => Name_Sets.Empty_Set,
                                  Local_Subprograms => Name_Sets.Empty_Set);
 
-                              Subprogram_Info_Set.Include (Subprogram_Info);
+                              Subprogram_Info_List.Append (Subprogram_Info);
                            end;
                         end if;
                      end;
@@ -1375,7 +1374,7 @@ package body Flow is
 
    procedure Flow_Analyse_CUnit is
       Success : Boolean;
-      Unused  : Subprogram_Info_Sets.Set;
+      Unused  : Subprogram_Info_Lists.List;
    begin
 
       --  Check that classwide contracts conform to the legality rules laid
@@ -1391,8 +1390,8 @@ package body Flow is
       end loop;
 
       --  Process entities and construct graphs if necessary
-      Build_Graphs_For_Compilation_Unit (FA_Graphs           => FA_Graphs,
-                                         Subprogram_Info_Set => Unused);
+      Build_Graphs_For_Compilation_Unit (FA_Graphs            => FA_Graphs,
+                                         Subprogram_Info_List => Unused);
 
       --  ??? Perform interprocedural analysis
 
@@ -1442,7 +1441,7 @@ package body Flow is
                         then
                            Error_Msg_Flow
                              (FA   => FA,
-                              --  ??? another message for entries and tasks
+                              --  ??? another message lfor entries and tasks
                               Msg  => "subprogram & has no effect",
                               N    => FA.Analyzed_Entity,
                               F1   => Direct_Mapping_Id (FA.Analyzed_Entity),
@@ -1545,17 +1544,17 @@ package body Flow is
 
    procedure Generate_Flow_Globals (GNAT_Root : Node_Id) is
       pragma Unreferenced (GNAT_Root);
-      Subprogram_Info_Set : Subprogram_Info_Sets.Set;
+      Subprogram_Info_List : Subprogram_Info_Lists.List;
    begin
       GG_Write_Initialize;
 
       --  Process entities and construct graphs if necessary
       Build_Graphs_For_Compilation_Unit
-        (FA_Graphs           => FA_Graphs,
-         Subprogram_Info_Set => Subprogram_Info_Set);
+        (FA_Graphs            => FA_Graphs,
+         Subprogram_Info_List => Subprogram_Info_List);
 
       --  Consider the subprogram info in case a graph was not created
-      for S of Subprogram_Info_Set loop
+      for S of Subprogram_Info_List loop
          GG_Write_Subprogram_Info (SI => S);
       end loop;
 
