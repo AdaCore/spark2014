@@ -193,8 +193,8 @@ auditlog.adb:260:46: info: index check proved
 auditlog.adb:260:46: info: overflow check proved
 auditlog.adb:264:14: info: initialization of "LocalDesc" proved
 auditlog.adb:280:07: info: initialization of "Description" proved
-auditlog.adb:305:13: warning: call appears in potentially unevaluated context
-auditlog.adb:305:13: warning: no contextual analysis of "ConvertToAuditDescription"
+auditlog.adb:305:13: info: call appears in potentially unevaluated context
+auditlog.adb:305:13: info: no contextual analysis of "ConvertToAuditDescription"
 auditlog.adb:306:24: info: range check proved
 auditlog.adb:306:36: info: range check proved
 auditlog.adb:306:46: info: range check proved
