@@ -4,7 +4,7 @@ package Dynamic_Ranges with SPARK_Mode is
 
    type Constr_Int_Array is new Int_Array (1 .. 100);
 
-   C : Positive := 100;
+   C : constant Positive := 100;
 
    type Dyn_Int_Array is new Int_Array (1 .. C);
 

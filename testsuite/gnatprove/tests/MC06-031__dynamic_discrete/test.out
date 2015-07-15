@@ -32,8 +32,6 @@ dynamic_ranges.adb:71:25: info: range check proved
 dynamic_ranges.adb:72:10: info: loop invariant initialization proved
 dynamic_ranges.adb:72:10: info: loop invariant preservation proved
 dynamic_ranges.adb:73:45: info: index check proved
-dynamic_ranges.ads:9:04: info: range check proved
-dynamic_ranges.ads:9:46: info: initialization of "C" proved
 dynamic_ranges.ads:15:14: info: postcondition proved
 dynamic_ranges.ads:17:25: info: index check proved
 dynamic_ranges.ads:20:47: info: overflow check proved
