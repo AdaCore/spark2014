@@ -16,13 +16,7 @@ is
       X : Integer;
       Y : Integer;
 
-      function Get_Stuff return Integer is (X + Y);
-   end Test_01;
-
-   package body Test_01
-   is
-   begin
-      X := 5;
+      function Get_Stuff return Integer;
    end Test_01;
 
    package Test_02
@@ -33,24 +27,12 @@ is
       Y : Integer;
    end Test_02;
 
-   package body Test_02
-   is
-   begin
-      X := 5;
-   end Test_02;
-
    package Test_03
      with Initializes => (X => Test_01.X),
           Initial_Condition => X = Test_01.X
    is
       X : Integer;
       Y : Integer;
-   end Test_03;
-
-   package body Test_03
-   is
-   begin
-      X := Test_01.X;
    end Test_03;
 
    package Test_04
@@ -61,20 +43,10 @@ is
       Y : Integer;
    end Test_04;
 
-   package body Test_04
-   is
-   begin
-      X := Test_01.X;
-   end Test_04;
-
    package Test_05
    with
      Initializes => null,
      Initial_Condition => Test_01.Get_Stuff > 0  --  x, y not visible
-   is
-   end Test_05;
-
-   package body Test_05
    is
    end Test_05;
 
@@ -85,6 +57,28 @@ is
         Global => (In_Out => S),
         Post   => True;
    end Test_06;
+
+   package body Test_03
+   is
+   begin
+      X := Test_01.X;
+   end Test_03;
+
+   package body Test_02
+   is
+   begin
+      X := 5;
+   end Test_02;
+
+   package body Test_04
+   is
+   begin
+      X := Test_01.X;
+   end Test_04;
+
+   package body Test_05
+   is
+   end Test_05;
 
    package body Test_06 with
      Refined_State => (S => (X, Y))
@@ -101,6 +95,13 @@ is
       end Sanity_Check_5;
 
    end Test_06;
+
+   package body Test_01
+   is
+      function Get_Stuff return Integer is (X + Y);
+   begin
+      X := 5;
+   end Test_01;
 
 
    procedure Sanity_Check_1 with
