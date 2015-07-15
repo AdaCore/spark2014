@@ -935,6 +935,23 @@ package body SPARK_Definition is
                                SRM_Reference => "SPARK RM 4.3");
             end if;
             Mark_Most_Underlying_Type_In_SPARK (Etype (N), N);
+
+            if Nkind (Ancestor_Part (N)) in N_Identifier | N_Expanded_Name
+              and then Is_Type (Entity (Ancestor_Part (N)))
+            then
+
+               --  The ancestor part of an aggregate can be either an
+               --  expression or a subtype.
+               --  The second case is not currently supported in SPARK.
+
+               Violation_Detected := True;
+               if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+                  Error_Msg_N ("extension aggregate with subtype ancestor "
+                               & "part is not yet supported",
+                               N);
+               end if;
+            end if;
+
             Mark (Ancestor_Part (N));
             Mark_List (Expressions (N));
             Mark_List (Component_Associations (N));
