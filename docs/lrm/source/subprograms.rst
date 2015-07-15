@@ -342,7 +342,8 @@ The Global aspect shall only be specified for the initial declaration of a
 subprogram (which may be a declaration, a body or a body stub), of a
 protected entry, or of a task unit.
 The implementation of a subprogram body shall be consistent with the
-subprogram's Global aspect.
+subprogram's Global aspect. Similarly, the implementation of an entry or
+task body shall be consistent with the entry or task's Global aspect.
 
 Note that a Refined_Global aspect may be applied to a subprogram body when
 using state abstraction; see section :ref:`refined-global-aspect` for further
@@ -357,7 +358,10 @@ Refined_Depends aspects, when any of these aspects are specified for a
 task unit the task unit's body is considered to be the body of a
 nonreturning procedure and the current instance of the task unit is
 considered to be a formal parameter (of that notional procedure)
-of mode **in out**. [Because a task (even a
+of mode **in out**. [For example, rules which refer to the
+"subprogram body" refer, in the case of a task unit, to the
+task body.]
+[Because a task (even a
 discriminated task) is effectively a constant, one might think that a
 mode of **in** would make more sense. However, the current instance of
 a task unit is, strictly speaking, a variable; for example, it may be
@@ -659,7 +663,11 @@ A dependency relation is a sort of formal specification which
 specifies a simple relationship between inputs and outputs of the
 subprogram.  It may be used with or without a postcondition.
 
-Unlike a post condition, the functional behavior of a subprogram is
+The Depends aspect shall only be specified for the initial declaration of a
+subprogram (which may be a declaration, a body or a body stub), of a
+protected entry, or of a task unit.
+
+Unlike a postcondition, the functional behavior of a subprogram is
 not specified by the Depends aspect but the Depends aspect has to be
 complete in the sense that every input and output of the subprogram
 must appear in it.  Whereas, a postcondition may be partial and only
