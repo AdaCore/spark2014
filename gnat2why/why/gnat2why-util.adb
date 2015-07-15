@@ -897,6 +897,7 @@ begin
    Why3_Keywords.Include ("rec");
    Why3_Keywords.Include ("real");
    Why3_Keywords.Include ("result");
+   Why3_Keywords.Include ("returns");
    Why3_Keywords.Include ("then");
    Why3_Keywords.Include ("theory");
    Why3_Keywords.Include ("to");
