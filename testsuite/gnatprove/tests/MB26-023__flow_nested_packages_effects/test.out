@@ -7,15 +7,15 @@ outer.adb:12:04: info: initialization of "Foo" constituent of "State" proved
 outer.adb:15:30: info: initialization of "Foo" constituent of "State" proved
 outer.adb:22:07: info: initialization of "X" constituent of "Outer.State" proved
 outer.adb:27:10: info: initialization of "Nested_In_Spec_Var" constituent of "Outer.State" proved
-outer.adb:45:10: info: initialization of "Deep_Var" constituent of "Inner.Inner_State" proved
-outer.adb:54:10: info: initialization of "Deep_Ref" constituent of "Deep_State" proved
-outer.adb:60:07: info: initialization of "Y" constituent of "Inner_State" proved
-outer.adb:60:36: info: initialization of "Deep_Var" constituent of "Inner.Inner_State" proved
-outer.adb:60:46: medium: overflow check might fail
-outer.adb:61:07: info: initialization of "Z" constituent of "Inner_State_2" proved
-outer.adb:66:12: info: initialization of "X" constituent of "Outer.State" proved
-outer.adb:66:14: info: overflow check proved
-outer.adb:73:07: info: initialization of "Y" constituent of "Outer.State" proved
-outer.adb:73:10: info: initialization of "Z" constituent of "Outer.State" proved
-outer.adb:79:07: info: initialization of "W" constituent of "Outer.State" proved
-outer.adb:85:58: medium: overflow check might fail
+outer.adb:37:07: info: initialization of "Y" constituent of "Outer.State" proved
+outer.adb:37:10: info: initialization of "Z" constituent of "Outer.State" proved
+outer.adb:43:07: info: initialization of "W" constituent of "Outer.State" proved
+outer.adb:49:58: medium: overflow check might fail
+outer.adb:63:10: info: initialization of "Deep_Var" constituent of "Inner.Inner_State" proved
+outer.adb:69:07: info: initialization of "Y" constituent of "Inner_State" proved
+outer.adb:69:36: info: initialization of "Deep_Var" constituent of "Inner.Inner_State" proved
+outer.adb:69:46: medium: overflow check might fail
+outer.adb:70:07: info: initialization of "Z" constituent of "Inner_State_2" proved
+outer.adb:75:10: info: initialization of "Deep_Ref" constituent of "Deep_State" proved
+outer.adb:84:12: info: initialization of "X" constituent of "Outer.State" proved
+outer.adb:84:14: info: overflow check proved

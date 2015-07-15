@@ -31,42 +31,6 @@ is
         with Global => Inner_State;
    end Inner;
 
-   package body Inner
-     with Refined_State => (Inner_State   => (Y,
-                                              Nested_In_Body.Deep_State,
-                                              Nested_In_Body.Deep_Var),
-                            Inner_State_2 => Z)
-   is
-      package Nested_In_Body
-        with Abstract_State => Deep_State,
-             Initializes    => (Deep_State => Init.Var,
-                                Deep_Var   => Foo)
-      is
-         Deep_Var : Integer := Foo;
-
-         function Get_Deep_State return Integer
-           with Global => Deep_State;
-      end Nested_In_Body;
-
-      package body Nested_In_Body
-        with Refined_State => (Deep_State => Deep_Ref)
-      is
-         Deep_Ref : Integer := Init.Var;
-
-         function Get_Deep_State return Integer is (Deep_Ref)
-           with Refined_Global => Deep_Ref;
-      end Nested_In_Body;
-
-      Y : Integer := Nested_In_Body.Deep_Var + Nested_In_Body.Get_Deep_State;
-      Z : Integer;
-
-      function Get_Inner_State return Integer is (Y)
-        with Refined_Global => Y;
-   begin
-      X := X + Init.Var;
-      Z := 0;
-   end Inner;
-
    package Inner_2
      with Initializes => (Y, Z)
    is
@@ -84,4 +48,41 @@ is
    is
       function Add (X, Y : Integer) return Integer is (X + Y);
    end Inner_4;
+
+   package body Inner
+     with Refined_State => (Inner_State   => (Y,
+                                              Nested_In_Body.Deep_State,
+                                              Nested_In_Body.Deep_Var),
+                            Inner_State_2 => Z)
+   is
+      package Nested_In_Body
+        with Abstract_State => Deep_State,
+             Initializes    => (Deep_State => Init.Var,
+                                Deep_Var   => Foo)
+      is
+         Deep_Var : Integer := Foo;
+
+         function Get_Deep_State return Integer
+           with Global => Deep_State;
+      end Nested_In_Body;
+
+      Y : Integer := Nested_In_Body.Deep_Var + Nested_In_Body.Get_Deep_State;
+      Z : Integer;
+
+      package body Nested_In_Body
+        with Refined_State => (Deep_State => Deep_Ref)
+      is
+         Deep_Ref : Integer := Init.Var;
+
+         function Get_Deep_State return Integer is (Deep_Ref)
+           with Refined_Global => Deep_Ref;
+      end Nested_In_Body;
+
+      function Get_Inner_State return Integer is (Y)
+        with Refined_Global => Y;
+   begin
+      X := X + Init.Var;
+      Z := 0;
+   end Inner;
+
 end Outer;
