@@ -646,21 +646,21 @@ digraph G {
    edge [labelfloat=True];
     1 [label="Subprogram test__if_1",shape="box"];
     2 [label="test__if_1__par1"];
-    3 [label="Subprogram test__if_2",shape="box"];
-    4 [label="test__if_2__par1"];
-    5 [label="Subprogram test__if_3",shape="box"];
-    6 [label="test__if_3__par1"];
-    7 [label="Subprogram test__if_4",shape="box"];
-    8 [label="test__if_4__par1"];
-    9 [label="Subprogram test__case_1",shape="box"];
-    10 [label="test__case_1__par1"];
-    11 [label="test__case_1__par2"];
+    3 [label="Subprogram test__if_3",shape="box"];
+    4 [label="test__if_3__par1"];
+    5 [label="Subprogram test__if_4",shape="box"];
+    6 [label="test__if_4__par1"];
+    7 [label="Subprogram test__case_1",shape="box"];
+    8 [label="test__case_1__par1"];
+    9 [label="test__case_1__par2"];
+    10 [label="Subprogram test__if_2",shape="box"];
+    11 [label="test__if_2__par1"];
 
     1 ->  2 [arrowType="normal"];
     3 ->  4 [arrowType="normal"];
     5 ->  6 [arrowType="normal"];
     7 ->  8 [arrowType="normal"];
-    9 ->  10 [arrowType="normal"];
-    9 ->  11 [arrowType="normal"];
+    7 ->  9 [arrowType="normal"];
+    10 ->  11 [arrowType="normal"];
 }
 
