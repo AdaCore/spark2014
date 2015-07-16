@@ -386,7 +386,7 @@ Async_Writers aspect specification.
    * the actual parameter in a call to an instance of Unchecked_Conversion
      whose result is renamed [in an object renaming declaration]; or
 
-   * the actual parameter in a procedure call of which the corresponding
+   * the actual parameter in a call for which the corresponding
      formal parameter is of a non-scalar effectively volatile type; or
 
    * the (protected) prefix of a name denoting a protected operation; or
