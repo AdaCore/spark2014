@@ -1074,6 +1074,10 @@ procedure Gnatprove is
          Args.Append ("-d");
       end if;
 
+      if Only_Given then
+         Args.Append ("-u");
+      end if;
+
       for File of File_List loop
          Args.Append (File);
       end loop;

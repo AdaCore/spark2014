@@ -430,7 +430,7 @@ package body Gnat2Why.Driver is
       Flow_Utility.Initialize;
 
       --  Set mode of generating globals from the command line argument
-      Flow.Generating_Globals := Gnat2Why_Args.Global_Gen_Mode;
+      Generating_Globals := Gnat2Why_Args.Global_Gen_Mode;
 
       if Generating_Globals then
 
@@ -478,9 +478,9 @@ package body Gnat2Why.Driver is
                Generate_Useless_Pragma_Annotate_Warnings;
             end if;
          end if;
+         Create_JSON_File (Proof_Done);
       end if;
 
-      Create_JSON_File (Proof_Done);
    end GNAT_To_Why;
 
    --------------------------
