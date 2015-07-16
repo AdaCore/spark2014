@@ -1330,11 +1330,12 @@ package body SPARK_Frame_Conditions is
       end if;
 
       E_Alias := (if Present (Alias (E)) then Ultimate_Alias (E) else E);
-      E_Name  := To_Entity_Name (E_Alias);
 
       if Is_Abstract_Subprogram (E_Alias) then
          return;
       end if;
+
+      E_Name  := To_Entity_Name (E_Alias);
 
       Called_Subprograms := To_Names (Calls.Element (E_Name));
       Inputs             := Get_Generated_Reads (E, False);
