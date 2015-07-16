@@ -1662,6 +1662,9 @@ package body Why.Atree.Modules is
                         Domain => EW_Term,
                         Typ    => EW_Fixed_Type));
                end if;
+
+               --  symbols for floating point types
+
                if Is_Floating_Point_Type (E) then
                   Insert_Symbol
                     (E, WNE_To_Real,
