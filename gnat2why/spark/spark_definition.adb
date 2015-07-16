@@ -1371,8 +1371,8 @@ package body SPARK_Definition is
                   Has_Fixed_Point_Type (Etype (Expression (N)))
             then
                declare
-                  Target_Base_Type : constant Entity_Id :=
-                    Base_Type (Etype (N));
+                  Target_Root_Type : constant Entity_Id :=
+                    Root_Type (Etype (N));
                   Expr : constant Node_Id := Expression (N);
 
                   --  The multiplication and division operations on fixed-point
@@ -1393,10 +1393,10 @@ package body SPARK_Definition is
                           Etype (Right_Opnd (Expr)))
                      else
                         Etype (Expr));
-                  Source_Base_Type : constant Entity_Id :=
-                    Base_Type (Expr_Type);
+                  Source_Root_Type : constant Entity_Id :=
+                    Root_Type (Expr_Type);
                begin
-                  if Target_Base_Type /= Source_Base_Type then
+                  if Target_Root_Type /= Source_Root_Type then
                      Violation_Detected := True;
                      if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
                         Error_Msg_N

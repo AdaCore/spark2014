@@ -608,6 +608,10 @@ module Static_Fixed_Point
 
   axiom range_axiom :
     forall x : t. in_range (to_fixed x)
+
+  axiom coerce_axiom :
+    forall x : __fixed [to_fixed (of_fixed x)].
+      in_range x -> to_fixed (of_fixed x) = x
 end
 
 module Dynamic_Fixed_Point
