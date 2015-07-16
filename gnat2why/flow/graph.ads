@@ -141,7 +141,7 @@ package Graph is
    function Create (G             : T'Class;
                     Copy_Clusters : Boolean := False)
                     return T
-     with Post => Create'Result.Is_Frozen;
+   with Post => Create'Result.Is_Frozen;
    --  Creates a new graph with all the vertices from G, but no edges. Both
    --  graphs are frozen by this operation.
 
@@ -164,7 +164,7 @@ package Graph is
    --  Id. If not found, a value outside the range of Valid_Vertex_Id
    --  is returned.
    --
-   --  Complexity is O(N).
+   --  Complexity is O(1) (in the general case).
 
    function Get_Key
      (G : T'Class;
@@ -234,8 +234,8 @@ package Graph is
    function Edge_Exists
      (G        : T'Class;
       V_1, V_2 : Vertex_Key) return Boolean
-      with Pre => G.Get_Vertex (V_1) /= Null_Vertex and
-                  G.Get_Vertex (V_2) /= Null_Vertex;
+   with Pre => G.Get_Vertex (V_1) /= Null_Vertex and
+               G.Get_Vertex (V_2) /= Null_Vertex;
    --  Same as above but takes Vertex_Keys as parameters.
 
    function Edge_Colour
@@ -248,9 +248,9 @@ package Graph is
      (G        : in out T'Class;
       V_1, V_2 : Vertex_Id;
       Colour   : Edge_Colours)
-      with Pre  => V_1 /= Null_Vertex and
-                   V_2 /= Null_Vertex,
-           Post => G.Edge_Exists (V_1, V_2);
+   with Pre  => V_1 /= Null_Vertex and
+                V_2 /= Null_Vertex,
+        Post => G.Edge_Exists (V_1, V_2);
    --  Adds an unmarked edge from V_1 to V_2. If the edge already
    --  exists, we do nothing (i.e. existing edge attributes do not
    --  change).
@@ -261,19 +261,19 @@ package Graph is
      (G        : in out T'Class;
       V_1, V_2 : Vertex_Key;
       Colour   : Edge_Colours)
-      with Pre  => G.Get_Vertex (V_1) /= Null_Vertex and
-                   G.Get_Vertex (V_2) /= Null_Vertex;
+   with Pre => G.Get_Vertex (V_1) /= Null_Vertex and
+               G.Get_Vertex (V_2) /= Null_Vertex;
    --  Convenience function to add an edge between two vertices given
    --  by key (instead of id).
    --
-   --  Complexity is O(N) due to Get_Vertex.
+   --  Complexity is O(1) (in general due to use of Get_Vertex).
 
    procedure Remove_Edge
      (G        : in out T'Class;
       V_1, V_2 : Vertex_Id)
-      with Pre  => V_1 /= Null_Vertex and
-                   V_2 /= Null_Vertex,
-           Post => not G.Edge_Exists (V_1, V_2);
+   with Pre  => V_1 /= Null_Vertex and
+                V_2 /= Null_Vertex,
+        Post => not G.Edge_Exists (V_1, V_2);
    --  Removes the edge from V_1 to V_2 from the graph, if it exists.
    --
    --  Complexity is O(1).
@@ -281,8 +281,8 @@ package Graph is
    procedure Mark_Edge
      (G        : in out T'Class;
       V_1, V_2 : Vertex_Id)
-      with Pre  => G.Edge_Exists (V_1, V_2),
-           Post => G.Edge_Exists (V_1, V_2);
+   with Pre  => G.Edge_Exists (V_1, V_2),
+        Post => G.Edge_Exists (V_1, V_2);
    --  Mark the edge from V_1 to V_2 in the graph.
    --
    --  Complexity is O(1).
@@ -290,7 +290,7 @@ package Graph is
    procedure Clear_Vertex
      (G : in out T'Class;
       V : Vertex_Id)
-      with Pre => V /= Null_Vertex;
+   with Pre => V /= Null_Vertex;
    --  Remove all in and out edges from the given vertex.
    --
    --  Complexity is O(N).
@@ -308,7 +308,7 @@ package Graph is
      (G : T'Class;
       V : Vertex_Id)
       return Vertex_Id
-      with Pre => G.In_Neighbour_Count (V) <= 1;
+   with Pre => G.In_Neighbour_Count (V) <= 1;
    --  Return the sole in neighbour of the vertex, if it exists, and
    --  Null_Vertex otherwise.
    --
@@ -318,7 +318,7 @@ package Graph is
      (G : T'Class;
       V : Vertex_Id)
       return Vertex_Id
-      with Pre => G.Out_Neighbour_Count (V) <= 1;
+   with Pre => G.Out_Neighbour_Count (V) <= 1;
    --  Return the sole out neighbour of the vertex, if it exists, and
    --  Null_Vertex otherwise.
    --
@@ -503,7 +503,7 @@ package Graph is
    function Dominator_Tree
      (G : T'Class;
       R : Vertex_Id) return T
-      with Pre => R /= Null_Vertex;
+   with Pre => R /= Null_Vertex;
    --  Computes the dominator tree of graph G rooted in R using the
    --  Lengauer-Tarjan dominator algorithm. This is the
    --  `sophisticated' implementation.
@@ -534,7 +534,16 @@ package Graph is
    --  thesis. The visitor procedure, if not null, is called for each new edge
    --  added to the graph.
    --
-   --  Complexity is O(N^2)
+   --  Complexity is O(N^2).
+
+   procedure Conditional_Close
+     (G             : in out T'Class;
+      Edge_Selector : access function (A, B : Vertex_Id) return Boolean);
+   --  Transitively close the graph using SIMPLE_TC from Nuutila's thesis.
+   --  A new edge is only added if the edge selector function returns true
+   --  for the given vertices.
+   --
+   --  Complexity is O(N^2) and space more or less doubled.
 
    ----------------------------------------------------------------------
    --  IO

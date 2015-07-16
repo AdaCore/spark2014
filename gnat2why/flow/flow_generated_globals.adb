@@ -23,7 +23,6 @@
 
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
-with Ada.Containers.Vectors;
 with Ada.Strings.Maps;           use Ada.Strings.Maps;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Text_IO.Unbounded_IO;   use Ada.Text_IO.Unbounded_IO;
@@ -623,22 +622,16 @@ package body Flow_Generated_Globals is
       -------------------
 
       procedure Add_All_Edges is
-         type Edge is record
-            A, B : Global_Graphs.Vertex_Id;
-         end record;
-
-         package Edge_Lists is new Ada.Containers.Vectors
-           (Index_Type   => Positive,
-            Element_Type => Edge);
-
-         Edges_To_Delete : Edge_Lists.Vector := Edge_Lists.Empty_Vector;
-
          G_Ins, G_Outs, G_Proof_Ins : Global_Id;
 
          procedure Add_Edge (G1, G2 : Global_Id);
          --  Adds an edge between the vertices V1 and V2 that
          --  correspond to G1 and G2 (V1 --> V2). The edge has the
          --  default colour.
+
+         function Edge_Selector (A, B : Vertex_Id) return Boolean;
+         --  Check if we should add the given edge to the graph based
+         --  wheather it is in the local graph or not.
 
          --------------
          -- Add_Edge --
@@ -649,9 +642,40 @@ package body Flow_Generated_Globals is
             Global_Graph.Add_Edge (G1, G2, EC_Default);
          end Add_Edge;
 
-      --  Start of processing for Add_All_Edges
+         -------------------
+         -- Edge_Selector --
+         -------------------
+
+         function Edge_Selector (A, B : Vertex_Id) return Boolean is
+            Key_A :          Global_Id := Global_Graph.Get_Key (A);
+            Key_B : constant Global_Id := Global_Graph.Get_Key (B);
+         begin
+            if Key_B.Kind /= Variable_Kind
+              or else not (Key_A.Kind in Proof_Ins_Kind |
+                             Ins_Kind       |
+                             Outs_Kind)
+            then
+               --  We only need to consult the Local_Graph when attempting
+               --  to establish a link between a subprogram and a variable.
+               return True;
+            end if;
+
+            --  Convert kind so that it can be used on Local_Graph
+            Key_A := Global_Id'(Kind => Subprogram_Kind,
+                                Name => Key_A.Name);
+
+            if Local_Graph.Get_Vertex (Key_A) = Null_Vertex
+              or else Local_Graph.Get_Vertex (Key_B) = Null_Vertex
+            then
+               return True;
+            end if;
+
+            --  Check if local variable B can act as global of subprogram A
+            return Local_Graph.Edge_Exists (Key_B, Key_A);
+         end Edge_Selector;
 
       begin
+
          --  Go through the Subprogram_Info_List and add edges
          for Info of Subprogram_Info_List loop
             G_Ins       := Global_Id'(Kind => Ins_Kind,
@@ -808,50 +832,9 @@ package body Flow_Generated_Globals is
             end;
          end loop;
 
-         --  Close graph
-         declare
-            procedure Visitor (A, B : Vertex_Id);
-            --  Remove the just added edge if vertex B is linked to vertex A on
-            --  the Local_Graph.
-
-            -------------
-            -- Visitor --
-            -------------
-
-            procedure Visitor (A, B : Vertex_Id) is
-               Key_A :          Global_Id := Global_Graph.Get_Key (A);
-               Key_B : constant Global_Id := Global_Graph.Get_Key (B);
-            begin
-               if Key_B.Kind /= Variable_Kind
-                 or else not (Key_A.Kind in Proof_Ins_Kind |
-                                            Ins_Kind       |
-                                            Outs_Kind)
-               then
-                  --  We only need to consult the Local_Graph when attempting
-                  --  to establish a link between a subprogram and a variable.
-                  return;
-               end if;
-
-               --  Convert kind so that it can be used on Local_Graph
-               Key_A := Global_Id'(Kind => Subprogram_Kind,
-                                   Name => Key_A.Name);
-
-               --  Check if local variable B can act as global of subprogram A
-               if Local_Graph.Get_Vertex (Key_A) /= Null_Vertex
-                 and then Local_Graph.Get_Vertex (Key_B) /= Null_Vertex
-                 and then not Local_Graph.Edge_Exists (Key_B, Key_A)
-               then
-                  Edges_To_Delete.Append (Edge'(A, B));
-               end if;
-            end Visitor;
-
-         begin
-            Global_Graph.Close (Visitor'Access);
-         end;
-
-         for E of Edges_To_Delete loop
-            Global_Graph.Remove_Edge (E.A, E.B);
-         end loop;
+         --  Close graph, but only add edges that are not in the local
+         --  graph.
+         Global_Graph.Conditional_Close (Edge_Selector'Access);
       end Add_All_Edges;
 
       -------------------------

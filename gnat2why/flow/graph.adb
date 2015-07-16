@@ -1355,6 +1355,8 @@ package body Graph is
          end if;
       end loop;
 
+      --  IMPORTANT NOTE: See Conditional_Close below which relies on this
+      --  post-processing.
       for V in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
          for W of Sets (Succ (V)) loop
             if not G.Edge_Exists (V, W) then
@@ -1366,6 +1368,39 @@ package body Graph is
          end loop;
       end loop;
    end Close;
+
+   -----------------------
+   -- Conditional_Close --
+   -----------------------
+
+   procedure Conditional_Close
+     (G             : in out T'Class;
+      Edge_Selector : access function (A, B : Vertex_Id) return Boolean)
+   is
+      procedure Visitor (A, B : Vertex_Id);
+      --  Obvious visitor procedure.
+
+      -------------
+      -- Visitor --
+      -------------
+
+      procedure Visitor (A, B : Vertex_Id)
+      is
+      begin
+         if not Edge_Selector (A, B) then
+            G.Remove_Edge (A, B);
+         end if;
+      end Visitor;
+   begin
+      --  IMPORTANT NOTE: This current implementation takes advantage of
+      --  the inefficient (in terms of space) implementation of Close - we
+      --  effectively cache the entire graph hence we can actually get away
+      --  with modifying it in the visitor procedure. If we get around to
+      --  improving Close to not be so wasteful we need a re-think of
+      --  Conditional_Close.
+
+      G.Close (Visitor'Access);
+   end Conditional_Close;
 
    ----------------------------------------------------------------------
    --  IO
