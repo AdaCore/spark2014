@@ -1325,9 +1325,7 @@ package body SPARK_Frame_Conditions is
       --  not yet supported. Avoid issuing an error on those, instead return
       --  empty sets.
 
-      if Is_Task_Type (E)
-        or else Is_Entry (E)
-      then
+      if Ekind (E) in Task_Kind | Entry_Kind then
          return;
       end if;
 
