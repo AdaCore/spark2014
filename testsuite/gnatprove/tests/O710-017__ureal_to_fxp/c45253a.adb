@@ -42,19 +42,19 @@ procedure C45253A is
       return T'Delta;
    end The_Delta;
 
-   function Ident_Int (X : Integer) return Integer is
-     (X) with
-     Global => null;
-
 begin
 
 -- 06/12/96      IF IDENT_INT (1) * (-0.25) IN T THEN
-   if Ident_Int (1) * (-The_Delta) in T then
+   if Integer'(1) * (-The_Delta) in T then
       pragma Assert (False);
    end if;
 
 -- 06/12/96      IF IDENT_INT (1) * 1000.25 IN T THEN
-   if Ident_Int (2) * 500.0 + The_Delta in T then
+   if Integer'(2) * 500.0 + The_Delta in T then
+      pragma Assert (False);
+   end if;
+
+   if The_Delta in T then
       pragma Assert (False);
    end if;
 
