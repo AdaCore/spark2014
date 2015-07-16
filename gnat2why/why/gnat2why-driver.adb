@@ -390,10 +390,6 @@ package body Gnat2Why.Driver is
 
          if not Gnat2Why_Args.Global_Gen_Mode then
             Touch_Main_File (Base_Name);
-            if Gnat2Why_Args.Single_File then
-               Error_Msg_N (N   => GNAT_Root,
-                            Msg => "!Generic unit is not analyzed");
-            end if;
          end if;
 
          return;

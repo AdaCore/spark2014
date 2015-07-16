@@ -40,7 +40,6 @@ with Sinfo;                      use Sinfo;
 with Sinput;                     use Sinput;
 with SPARK_Util;                 use SPARK_Util;
 with Stringt;                    use Stringt;
-with String_Utils;               use String_Utils;
 
 package body Flow_Error_Messages is
 

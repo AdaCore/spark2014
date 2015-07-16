@@ -112,10 +112,6 @@ package Gnat2Why_Args is
 
    Pedantic : Boolean := False;
 
-   --  If this list is non-empty, only units of this list should be analyzed.
-
-   Analyze_File : String_Lists.List := String_Lists.Empty_List;
-
    --  Set the report mode (only failing VCs, all VCs, details)
 
    type Report_Mode_Type is (GPR_Fail, GPR_Verbose, GPR_Statistics);
@@ -143,10 +139,6 @@ package Gnat2Why_Args is
    --  JSON dict)
 
    Ide_Mode : Boolean := False;
-
-   --  The user specifically asked to prove this file, gnatprove option "-u"
-
-   Single_File : Boolean := False;
 
    --  The cmd line args to be passed to gnatwhy3
 

@@ -52,13 +52,11 @@ package body Gnat2Why_Args is
    Prove_Mode_Name          : constant String := "prove_mode";
    Debug_Mode_Name          : constant String := "debug";
    Flow_Advanced_Debug_Name : constant String := "flow_advanced_debug";
-   Analyze_File_Name        : constant String := "analyze_file";
    Limit_Subp_Name          : constant String := "limit_subp";
    Limit_Line_Name          : constant String := "limit_line";
    Pedantic_Name            : constant String := "pedantic";
    Ide_Mode_Name            : constant String := "ide_mode";
    Report_Mode_Name         : constant String := "report_mode";
-   Single_File_Name         : constant String := "single_file";
    Why3_Args_Name           : constant String := "why3_args";
    Why3_Dir_Name            : constant String := "why3_dir";
    Prove_Only_Name          : constant String := "debug_prove_only";
@@ -118,9 +116,6 @@ package body Gnat2Why_Args is
       elsif Token = Ide_Mode_Name then
          Ide_Mode := True;
 
-      elsif Token = Single_File_Name then
-         Single_File := True;
-
       elsif GNATCOLL.Utils.Starts_With (Token, Report_Mode_Name) and then
         Token (Token'First + Report_Mode_Name'Length) = '='
       then
@@ -141,16 +136,6 @@ package body Gnat2Why_Args is
          begin
             Warning_Mode :=
               Opt.Warning_Mode_Type'Value (Token (Start .. Token'Last));
-         end;
-
-      elsif GNATCOLL.Utils.Starts_With (Token, Analyze_File_Name) and then
-        Token (Token'First + Analyze_File_Name'Length) = '='
-      then
-         declare
-            Start : constant Integer :=
-              Token'First + Analyze_File_Name'Length + 1;
-         begin
-            Analyze_File.Append (Token (Start .. Token'Last));
          end;
 
       elsif GNATCOLL.Utils.Starts_With (Token, Limit_Subp_Name) and then
@@ -293,15 +278,7 @@ package body Gnat2Why_Args is
          Add_Line (Ide_Mode_Name);
       end if;
 
-      if Single_File then
-         Add_Line (Single_File_Name);
-      end if;
-
       Add_Line (Report_Mode_Name & "=" & Report_Mode_Type'Image (Report_Mode));
-
-      for File of Analyze_File loop
-         Add_Line (Analyze_File_Name & "=" & File);
-      end loop;
 
       if Limit_Subp /= Null_Unbounded_String then
          Add_Line (Limit_Subp_Name & "=" & To_String (Limit_Subp));

@@ -28,7 +28,6 @@ with Ada.Strings.Equal_Case_Insensitive;
 with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 with Assumption_Types;          use Assumption_Types;
 with Csets;                     use Csets;
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with Gnat2Why_Args;
 with Gnat2Why.Assumptions;      use Gnat2Why.Assumptions;
 with GNATCOLL.Utils;            use GNATCOLL.Utils;
@@ -44,7 +43,6 @@ with Sem_Eval;                  use Sem_Eval;
 with Sem_Util;                  use Sem_Util;
 with SPARK_Definition;          use SPARK_Definition;
 with Stringt;                   use Stringt;
-with String_Utils;              use String_Utils;
 with Treepr;                    use Treepr;
 with Urealp;                    use Urealp;
 with VC_Kinds;                  use VC_Kinds;
@@ -2127,36 +2125,11 @@ package body SPARK_Util is
       then
          return False;
 
-      --  case 2: option -u was not present, or an empty list of files has been
-      --  provided, so all entities that are in the compilation unit that is
-      --  currently being analyzed must be analyzed.
-
-      elsif not Gnat2Why_Args.Single_File
-        or else Gnat2Why_Args.Analyze_File.Is_Empty
-      then
-         return True;
-
-      --  case 3: option -u was present, and a list of files has been provided,
-      --  so only analyze entities in these files.
+      --  gnat2why is now only called on requested files, so here the result is
+      --  always true
 
       else
-         declare
-            Spec_Prefix : constant String := Spec_File_Name (E);
-            Body_Prefix : constant String := Body_File_Name (E);
-         begin
-            for A_File of Gnat2Why_Args.Analyze_File loop
-               declare
-                  Filename : constant String := File_Name (A_File);
-               begin
-                  if Equal_Case_Insensitive (Filename, Body_Prefix)
-                    or else Equal_Case_Insensitive (Filename, Spec_Prefix)
-                  then
-                     return True;
-                  end if;
-               end;
-            end loop;
-            return False;
-         end;
+         return True;
       end if;
    end Is_In_Analyzed_Files;
 

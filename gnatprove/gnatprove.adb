@@ -972,10 +972,8 @@ procedure Gnatprove is
          Gnat2Why_Args.Check_Mode := MMode = GPM_Check;
          Gnat2Why_Args.Flow_Analysis_Mode := MMode = GPM_Flow;
          Gnat2Why_Args.Prove_Mode := MMode = GPM_Prove;
-         Gnat2Why_Args.Analyze_File := File_List;
          Gnat2Why_Args.Pedantic := Pedantic;
          Gnat2Why_Args.Ide_Mode := IDE_Progress_Bar;
-         Gnat2Why_Args.Single_File := Only_Given;
          Gnat2Why_Args.Limit_Subp :=
            Ada.Strings.Unbounded.To_Unbounded_String (Limit_Subp.all);
          Gnat2Why_Args.Limit_Line :=
