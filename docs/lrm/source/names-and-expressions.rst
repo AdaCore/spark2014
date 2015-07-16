@@ -107,14 +107,20 @@ Aggregates
 
 .. _tu-aggregates-01:
 
-1. The box symbol, <>, may only be used in an aggregate if the type(s)
+1. The box symbol, <>, shall not be used in an aggregate unless the type(s)
    of the corresponding component(s) define full default initialization.
+
+.. _tu-aggregates-02:
+
+2. If the ``ancestor_part`` of an ``extension_aggregate``
+   is a ``subtype_mark``, then the type of the denoted subtype
+   shall define full default initialization.
 
 .. _etu-aggregates:
 
 [The box symbol cannot be used in an aggregate to produce an uninitialized
 scalar value or a composite value having an uninitialized scalar value as a
-subcomponent.]
+subcomponent. Similarly for an ancestor subtype in an extension aggregate.]
 
 Expressions
 -----------
