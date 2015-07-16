@@ -83,7 +83,9 @@ for p in PROVERS:
 for test in bm:
     for p in PROVERS:
         if p in bm[test]:
-            first_test = sorted(bm[test][p])[0]
-            dst = os.path.join("bench", p, test + "." + EXT[p])
-            assert (not os.path.exists(dst))
-            shutil.copyfile(first_test, dst)
+            for id, the_test in enumerate(sorted(bm[test][p])):
+                dst = os.path.join("bench",
+                                   p,
+                                   test + ("__%02u" % id) + "." + EXT[p])
+                assert (not os.path.exists(dst))
+                shutil.copyfile(the_test, dst)

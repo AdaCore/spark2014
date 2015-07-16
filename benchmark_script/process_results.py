@@ -5,17 +5,29 @@ import sys
 
 tests = set()
 
-PROVERS = ["cvc4", "altergo"]
+# PROVERS = ["cvc4_14", "cvc4_15", "altergo", "z3"]
+PROVERS = ["z3_432"]
 
 EXT = {
-    "cvc4":    "smt2",
+    "cvc4_14": "smt2",
+    "cvc4_15": "smt2",
     "altergo": "why",
+    "z3_432":  "smt2",
 }
 
 VERDICTS = {
-    "cvc4": {"sat":     ["sat"],
-             "unsat":   ["unsat"],
-             "unknown": ["unknown"]},
+    "cvc4_14": {"sat":     ["sat"],
+                "unsat":   ["unsat"],
+                "unknown": ["unknown"]},
+    "cvc4_15": {"sat":     ["sat"],
+                "unsat":   ["unsat"],
+                "unknown": ["unknown"]},
+    "z3_432": {"sat":     ["sat"],
+               "unsat":   ["unsat"],
+               "unknown": ["unknown",
+                           "number of configured allocations exceeded",
+                           "Segmentation fault",
+                           "Aborted"]},
     "altergo": {"sat":     ["Invalid"],
                 "unsat":   ["Valid"],
                 "unknown": ["I don't know", "Timeout"]},
@@ -46,7 +58,6 @@ for t in tests:
 
         with open(base + "result", "rU") as fd:
             tmp = fd.read().strip()
-            assert (len(tmp.splitlines()) == 1)
         verdict = None
         for v in ["unsat", "sat", "unknown"]:
             for verd in VERDICTS[p][v]:
@@ -60,7 +71,20 @@ for t in tests:
         results[t][p] = verdict
 
 # Select tests we're interested in...
+# for t in results:
+#     if results[t]["altergo"] == "unsat":
+#         if results[t]["cvc4"] != "unsat":
+#             print t
+
+total_vcs = len(results)
+total_decision = 0
+time_min = None
+time_max = None
+time_total = 0.0
 for t in results:
-    if results[t]["altergo"] == "unsat":
-        if results[t]["cvc4"] != "unsat":
-            print t
+    if results[t]["z3_432"] in ("unsat", "sat"):
+        total_decision += 1
+
+print "VCs: %u / %u (%.1f%%)" % (total_decision,
+                                 total_vcs,
+                                 float(total_decision*100) / float(total_vcs))
