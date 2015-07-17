@@ -18,6 +18,8 @@ is
                          Inner_Var   => Var);
    end Inner;
 
+   package body Inner is separate;
+
    procedure Initialize_State is separate
      with Refined_Global => (Output => (A, B)),
           Refined_Depends => ((A, B) => null);
@@ -26,7 +28,6 @@ is
      with Global => (In_Out => B),
           Depends => (B => B);
 
-   package body Inner is separate;
 begin
    Initialize_State;
    Double_B;
