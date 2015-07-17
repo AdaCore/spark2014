@@ -128,6 +128,12 @@ Static predicates are in |SPARK|. Dynamic predicates are also in
   were present immediately after any assignment statement or call which
   updates a subcomponent (or slice) of X.]
 
+  [No such proof obligations are generated for assignments
+  to subcomponents of the result object of an aggregate,
+  an extension aggregate, or an update expression (see section
+  :ref:`update-expressions`).
+  These are assignment operations but not assignment statements.]
+  
 .. _etu-subtype_predicates-02:
 
 
