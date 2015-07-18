@@ -376,6 +376,11 @@ a protected procedure. [For example, rules which refer to the
 "subprogram body" refer, in the case of a protected entry, to the
 entry body.]
 
+[Note that AI12-0169 modifies the Ada RM syntax for an ``entry_body``
+to allow an optional ``aspect_specification`` immediately before the
+``entry_barrier``. This is relevant for aspects such as Refined_Globals
+and Refined_Depends.]
+
 .. centered:: **Syntax**
 
 .. _tu-fe-global_aspects-syntax:
