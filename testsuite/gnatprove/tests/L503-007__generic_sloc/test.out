@@ -8,8 +8,3 @@ gen2.ads:4:14: warning: subprogram "B" has no effect, in instantiation at gen.ad
 gen2.ads:4:14: warning: subprogram "B" has no effect, in instantiation at gen.adb:5, in instantiation at main.adb:6
 main.adb:10:09: info: initialization of "X" proved
 main.adb:11:09: info: initialization of "Y" proved
-gen2.adb:1:14: Generic unit is not analyzed
-   compilation of gen2.adb failed
-
-
-gnatprove: error during flow analysis and proof
