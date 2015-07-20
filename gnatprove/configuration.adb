@@ -104,10 +104,6 @@ package body Configuration is
    --  crash) or on a spec when there is a body (gnat2why will incorrectly
    --  assume that there is no body)
 
-   procedure Check_Prover_List;
-   --  Do sanity checks on the list of provers. Only one check for the moment:
-   --    emit warning if Z3 is provided as prover, and steps option is active
-
    procedure Print_Errors (S : String);
    --  The String in argument is an error message from gnatcoll. Print it on
    --  stderr with a prefix
@@ -141,10 +137,6 @@ package body Configuration is
 
    function Is_Coq_Prover return Boolean;
    --  @return True iff one alternate prover is "coq"
-
-   function Prover_Is_Requested (Prover : String) return Boolean;
-   --  @return True iff the given string is exactly one of the comma-separated
-   --  components of the --prover option
 
    Usage_Message : constant String :=
      "-Pproj [files] [switches] [-cargs switches]";
@@ -349,19 +341,6 @@ ASCII.LF;
          "warning: to specify target properties, specify option ""-gnateT"" " &
            " using ""Builder.Global_Configuration_Switches""");
    end Check_gnateT_Switch;
-
-   procedure Check_Prover_List is
-   begin
-      if Alter_Prover = null or else Alter_Prover.all = "" then
-         return;
-      end if;
-      if Prover_Is_Requested ("z3") and then Steps /= 0 then
-         Put_Line
-           (Standard_Error, "warning: prover z3 does not support step limit");
-         Put_Line
-           (Standard_Error, "warning: running z3 without step limit");
-      end if;
-   end Check_Prover_List;
 
    --------------
    -- Clean_Up --
@@ -660,54 +639,6 @@ ASCII.LF;
    begin
       Ada.Text_IO.Put_Line (Standard_Error, "gnatprove: " & S);
    end Print_Errors;
-
-   -------------------------
-   -- Prover_Is_Requested --
-   -------------------------
-
-   function Prover_Is_Requested (Prover : String) return Boolean is
-      Cur_Fst, Cur_Last : Integer;
-   begin
-      if Alter_Prover = null or else Alter_Prover.all = "" then
-         return False;
-      end if;
-
-      --  Cur_Fst and Cur_Last indicate the substring against which we will
-      --  compare the search string
-
-      Cur_Fst := Alter_Prover.all'First;
-      loop
-         Cur_Last := Cur_Fst;
-
-         --  search for next comma or end of string
-
-         loop
-            exit when Cur_Last = Alter_Prover.all'Last;
-            exit when Alter_Prover.all (Cur_Last) = ',';
-            Cur_Last := Cur_Last + 1;
-         end loop;
-
-         --  if the loop was exited because of end of string, we basically
-         --  encountered the last prover. Check if it is the one we are
-         --  looking for, otherwise quit the subprogram
-
-         if Cur_Last = Alter_Prover.all'Last then
-            if Prover = Alter_Prover.all (Cur_Fst .. Cur_Last) then
-               return True;
-            else
-               return False;
-            end if;
-
-         --  in the other case the previous loop was exit because of finding a
-         --  comma, we just check whether the current prover is the one we are
-         --  searching. The "last" index needs adjusting to exclude the comma
-
-         elsif Prover = Alter_Prover.all (Cur_Fst .. Cur_Last - 1) then
-            return True;
-         end if;
-         Cur_Fst := Cur_Last + 1;
-      end loop;
-   end Prover_Is_Requested;
 
    -----------------------
    -- Read_Command_Line --
@@ -1159,7 +1090,6 @@ ASCII.LF;
          Prepare_Prover_Lib (Config);
       end if;
       Sanitize_File_List (Tree);
-      Check_Prover_List;
 
    exception
       when Invalid_Switch | Exit_From_Command_Line =>

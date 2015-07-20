@@ -864,11 +864,14 @@ procedure Gnatprove is
       ---------------------------
 
       procedure Generate_Z3_Section is
-         Command : constant String := Z3_Binary & " -smt2 %f";
+         Command : constant String := Z3_Binary & " -smt2";
       begin
          Start_Section ("prover");
-         Put_Keyval ("command", Command);
-         Put_Keyval ("command_steps", Command);
+         Put_Keyval ("command", Command &
+                       " %f");
+         Put_Keyval ("command_steps", Command &
+                       " memory_max_alloc_count=%S" &
+                       " %f");
          Put_Keyval ("driver",
                      Ada.Directories.Compose
                        (Why3_Drivers_Dir, "z3_432.drv"));
