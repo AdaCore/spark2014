@@ -1,0 +1,2 @@
+client.adb:9:09: warning: assuming "Dummy" has no effect on global items
+client.adb:9:09: warning: no Global contract available for "Dummy"
