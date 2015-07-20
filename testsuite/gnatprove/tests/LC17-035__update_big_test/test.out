@@ -667,7 +667,7 @@ ar.ads:1228:22: info: postcondition proved
 ar.ads:1234:22: info: postcondition proved
 ar.ads:1239:22: info: postcondition proved
 ar.ads:1244:22: info: postcondition proved
-ar.ads:1249:22: medium: postcondition might fail
+ar.ads:1249:22: info: postcondition proved
 ar.ads:1254:22: info: postcondition proved
 ar.ads:1259:22: info: postcondition proved
 ar.ads:1264:22: info: postcondition proved

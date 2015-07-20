@@ -116,7 +116,7 @@ stable_marriage.adb:272:12: info: initialization of "Unmatched_G1_Set.Cardinalit
 stable_marriage.adb:272:12: info: initialization of "Unmatched_G1_Set.Elements" proved, in call inlined at stable_marriage.adb:385
 stable_marriage.adb:272:15: info: initialization of "G1" proved, in call inlined at stable_marriage.adb:326
 stable_marriage.adb:277:18: info: precondition proved
-stable_marriage.adb:279:17: medium: postcondition might fail, requires (Invariant_Holds)
+stable_marriage.adb:279:17: info: postcondition proved
 stable_marriage.adb:300:25: medium: assertion might fail, requires Proposals_Made (G1) < Count'last
 stable_marriage.adb:300:41: info: initialization of "G1" proved
 stable_marriage.adb:302:43: info: initialization of "G1" proved
@@ -146,8 +146,8 @@ stable_marriage.adb:330:24: info: initialization of "G2" proved
 stable_marriage.adb:330:27: info: initialization of "G1" proved
 stable_marriage.adb:333:10: info: assertion proved
 stable_marriage.adb:335:10: info: assertion proved
+stable_marriage.adb:343:10: info: assertion proved
 stable_marriage.adb:346:29: info: range check proved
-stable_marriage.adb:348:23: medium: assertion might fail, requires Unmatched_G1_Set.Elements (Idx)/= Result (G2_Id)
 stable_marriage.adb:348:51: info: index check proved
 stable_marriage.adb:350:10: medium: assertion might fail
 stable_marriage.adb:352:24: info: range check proved
@@ -184,13 +184,13 @@ stable_marriage.adb:390:07: info: assertion proved
 stable_marriage.adb:391:25: info: initialization of "Proposals_Made" proved
 stable_marriage.adb:392:28: info: initialization of "Unmatched_G1_Set.Elements" proved
 stable_marriage.adb:394:13: info: initialization of "Unmatched_G1_Set.Cardinality" proved
+stable_marriage.adb:395:10: info: loop invariant initialization proved
 stable_marriage.adb:395:10: info: loop invariant preservation proved
 stable_marriage.adb:395:33: info: initialization of "Proposals_Made" proved
 stable_marriage.adb:395:33: info: initialization of "Result" proved
 stable_marriage.adb:395:33: info: initialization of "Unmatched_G1_Set.Cardinality" proved
 stable_marriage.adb:395:33: info: initialization of "Unmatched_G1_Set.Elements" proved
 stable_marriage.adb:395:33: info: initialization of "Unmatched_G2_Set" proved
-stable_marriage.adb:395:33: medium: loop invariant might fail in first iteration, requires (Invariant_Holds)
 stable_marriage.adb:396:10: info: initialization of "Proposals_Made" proved
 stable_marriage.adb:396:10: info: initialization of "Ranking_2_Inverted" proved
 stable_marriage.adb:396:10: info: initialization of "Result" proved

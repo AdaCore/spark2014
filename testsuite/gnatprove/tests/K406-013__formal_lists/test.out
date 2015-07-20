@@ -113,7 +113,7 @@ test_vdll.adb:75:19: info: precondition proved
 test_vdll.adb:75:36: info: precondition proved
 test_vdll.adb:75:46: info: precondition proved
 test_vdll.adb:75:53: info: initialization of private part of "L3" proved
-test_vdll.adb:76:04: info: assertion proved
+test_vdll.adb:76:19: medium: assertion might fail, requires Test_Element (L3, Next (L3, First (L3)), 3)
 test_vdll.adb:76:37: info: precondition proved
 test_vdll.adb:76:47: info: precondition proved
 test_vdll.adb:76:54: info: initialization of private part of "L3" proved
@@ -129,21 +129,21 @@ test_vdll.adb:82:19: medium: assertion might fail, requires Find (L3, 3, No_Elem
 test_vdll.adb:82:25: info: initialization of private part of "L3" proved
 test_vdll.adb:82:47: info: precondition proved
 test_vdll.adb:82:57: info: precondition proved
-test_vdll.adb:83:04: info: assertion proved
 test_vdll.adb:83:19: info: precondition proved
+test_vdll.adb:83:19: medium: assertion might fail, requires Find (L3, 3, No_Element) = Last (L3)
 test_vdll.adb:83:25: info: initialization of private part of "L3" proved
 test_vdll.adb:83:46: info: precondition proved
 test_vdll.adb:84:19: info: precondition proved
 test_vdll.adb:84:19: medium: assertion might fail, requires Find (L3, 1, No_Element) = First (L3)
 test_vdll.adb:84:25: info: initialization of private part of "L3" proved
 test_vdll.adb:84:47: info: precondition proved
-test_vdll.adb:85:04: info: assertion proved
 test_vdll.adb:85:19: info: precondition proved
+test_vdll.adb:85:19: medium: assertion might fail, requires Find (L3, 1, No_Element) = Previous (L3, Last (L3)
 test_vdll.adb:85:25: info: initialization of private part of "L3" proved
 test_vdll.adb:85:46: info: precondition proved
 test_vdll.adb:85:60: info: precondition proved
-test_vdll.adb:88:04: info: assertion proved
 test_vdll.adb:88:19: info: precondition proved
+test_vdll.adb:88:19: medium: assertion might fail, requires Find (L3, 1, Next (L3, First (L3))) = No_Element
 test_vdll.adb:88:32: info: precondition proved
 test_vdll.adb:88:42: info: precondition proved
 test_vdll.adb:88:49: info: initialization of private part of "L3" proved
