@@ -22,6 +22,19 @@ package body Externals
                          -- Complex_Device is a mixture of inputs, outputs and
                          -- non-volatile constituents.
 is
+   Saved_Value : Integer := 0;  -- Initialized as required.
+
+   Out_Reg : Integer
+     with Volatile,
+          Async_Readers,
+          Effective_Writes, -- Every value written to the port is significant.
+          Address  => System.Storage_Elements.To_Address (16#ACECAFE0#);
+
+   In_Reg : Integer
+     with Volatile,
+          Async_Writers,
+          Address  => System.Storage_Elements.To_Address (16#A11CAFE0#);
+
    procedure Read (Combined_Value : out Integer)
      with Refined_Global  => (Temperature.State, Pressure.State),
           Refined_Depends => (Combined_Value => (Temperature.State,
@@ -46,21 +59,6 @@ is
       Main_Display.Display (D_Main);
       Secondary_Display.Display (D_Secondary);
    end Display;
-
-   -------------------- Complex Device --------------------
-
-   Saved_Value : Integer := 0;  -- Initialized as required.
-
-   Out_Reg : Integer
-     with Volatile,
-          Async_Readers,
-          Effective_Writes, -- Every value written to the port is significant.
-          Address  => System.Storage_Elements.To_Address (16#ACECAFE0#);
-
-   In_Reg : Integer
-     with Volatile,
-          Async_Writers,
-          Address  => System.Storage_Elements.To_Address (16#A11CAFE0#);
 
    function Last_Value_Sent return Integer
      with Refined_Global => Saved_Value -- Refined_Global aspect only
