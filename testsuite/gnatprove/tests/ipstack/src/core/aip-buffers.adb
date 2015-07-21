@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------
 --                            IPSTACK COMPONENTS                            --
---          Copyright (C) 2010-2014, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010-2015, Free Software Foundation, Inc.         --
 ------------------------------------------------------------------------------
 
 with AIP.Buffers.Common;
@@ -59,13 +59,13 @@ is
      Refined_Global => (In_Out => (Data.State, No_Data.State)),
      SPARK_Mode => Off  --  Modifications through aliasing
    is
-      type Data is array (1 .. Len) of U8_T;
+      type Data_Ty is array (1 .. Len) of U8_T;
 
-      Src_Data : Data;
+      Src_Data : Data_Ty;
       for Src_Data'Address use Buffer_Payload (Src);
       pragma Import (Ada, Src_Data);
 
-      Dst_Data : Data;
+      Dst_Data : Data_Ty;
       for Dst_Data'Address use Buffer_Payload (Dst);
       pragma Import (Ada, Dst_Data);
 
