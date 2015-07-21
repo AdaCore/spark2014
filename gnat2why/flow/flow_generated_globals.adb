@@ -2090,19 +2090,6 @@ package body Flow_Generated_Globals is
         Pre => GID.Kind in Ins_Kind | Proof_Ins_Kind | Outs_Kind;
       --  Check for calls to potentially blocking subprograms of a given Kind
 
-      function Calls_Same_Target_Object (S : Global_Id) return Boolean;
-      --  Check if subprogram S calls the enclosing protected object of EN
-
-      function Is_Predefined (E : Entity_Id) return Boolean;
-      --  Check if subprogram entity E is in a unit predefined by the Ada RM;
-      --  we assume such subprograms to be not potentially blocking unless the
-      --  Ada RM explicitly says otherwise.
-
-      function Is_Predefined_Potentially_Blocking
-        (E : Entity_Id) return Boolean;
-      --  Check if subprogram S is predefined by the Ada RM to be potentially
-      --  blocking.
-
       -------------------------------------------
       -- Calls_Potentially_Blocking_Subprogram --
       -------------------------------------------
@@ -2114,6 +2101,137 @@ package body Flow_Generated_Globals is
          --  Vertex that represents called subprogram
 
          Callee : Global_Id;
+
+         function Calls_Same_Target_Object (S : Global_Id) return Boolean;
+         --  Check if subprogram S calls the enclosing protected object of EN
+
+         function Is_Predefined (E : Entity_Id) return Boolean;
+         --  Check if subprogram entity E is in a unit predefined by the Ada RM
+
+         function Is_Predefined_Potentially_Blocking
+           (E : Entity_Id) return Boolean;
+         --  Check if subprogram S is predefined by the Ada RM to be
+         --  potentially blocking.
+
+         ------------------------------
+         -- Calls_Same_Target_Object --
+         ------------------------------
+
+         function Calls_Same_Target_Object (S : Global_Id) return Boolean is
+            Subp_V : constant Vertex_Id := Global_Graph.Get_Vertex (S);
+            --  Vertex that represents subprogram S
+
+            Callee : Global_Id;
+            --  Vertex that represent subprogram called by S
+         begin
+            --  Iterate over variables accessed by subprogram S
+            for V of Global_Graph.Get_Collection (Subp_V, Out_Neighbours) loop
+
+               Callee := Global_Graph.Get_Key (V);
+
+               if Callee.Kind in Ins_Kind | Outs_Kind | Proof_Ins_Kind then
+                  declare
+                     Callee_E : constant Entity_Id :=
+                       Find_Entity (Callee.Name);
+                  begin
+                     if Callee_E /= Empty and then
+                       Scope (Callee_E) = Protected_Object_E
+                     then
+                        return True;
+                     end if;
+                  end;
+
+               end if;
+
+            end loop;
+
+            return False;
+         end Calls_Same_Target_Object;
+
+         -------------------
+         -- Is_Predefined --
+         -------------------
+
+         function Is_Predefined (E : Entity_Id) return Boolean is
+         begin
+            return Is_Predefined_File_Name
+              (Unit_File_Name (Get_Source_Unit (Sloc (E))));
+         end Is_Predefined;
+
+         ----------------------------------------
+         -- Is_Predefined_Potentially_Blocking --
+         ----------------------------------------
+
+         function Is_Predefined_Potentially_Blocking
+           (E : Entity_Id) return Boolean is
+
+            function Chars_Eq (E : Entity_Id; Str : String) return Boolean;
+            --  Determine if chars of entity E are equal to Str
+
+            function Is_Root_Scope (E : Entity_Id; N : Name_Id) return Boolean;
+            --  Check if entity E denotes a root scope with name N
+
+            --------------
+            -- Chars_Eq --
+            --------------
+            function Chars_Eq (E : Entity_Id; Str : String) return Boolean is
+            begin
+               return Get_Name_String (Chars (E)) = To_Lower (Str);
+            end Chars_Eq;
+
+            -------------------
+            -- Is_Root_Scope --
+            -------------------
+
+            function Is_Root_Scope
+              (E : Entity_Id;
+               N : Name_Id) return Boolean is
+            begin
+               return Chars (E) = N and then Scope (E) = Standard_Standard;
+            end Is_Root_Scope;
+
+            --  Start of processing for Is_Predefined_Potentially_Blocking
+
+         begin
+            --  Check for:
+            --  Ada.Task_Identification.Abort_Task
+            --  Ada.Dispatching.Yield
+            --  Ada.Synchronous_Task_Control.Suspend_Until_True
+            --  Ada.Synchronous_Task_Control.EDF.
+            --      Suspend_Until_True_And_Set_Deadline
+            --  Ada.Synchronous_Barriers.Wait_For_Release
+            --  System.RPC.*
+            --  remote subprograms
+
+            return (Chars_Eq (E, "Abort_Task")
+                    and then Chars_Eq (Scope (E), "Task_Identification")
+                    and then Is_Root_Scope (Scope (Scope (E)), Name_Ada))
+              or else
+                (Chars_Eq (E, "Yield")
+                 and then Chars_Eq (Scope (E), "Dispatching")
+                 and then Is_Root_Scope (Scope (Scope (E)), Name_Ada))
+              or else
+                (Chars_Eq (E, "Suspend_Until_True")
+                 and then Chars_Eq (Scope (E), "Synchronous_Task_Control")
+                 and then Is_Root_Scope (Scope (Scope (E)), Name_Ada))
+              or else
+                (Chars_Eq (E, "Suspend_Until_True_And_Set_Deadline")
+                 and then Chars_Eq (Scope (E), "EDF")
+                 and then Chars_Eq (Scope (Scope (E)),
+                                    "Synchronous_Task_Control")
+                 and then Is_Root_Scope (Scope (Scope (Scope (E))), Name_Ada))
+              or else
+                (Chars_Eq (E, "Wait_For_Release")
+                 and then Chars_Eq (Scope (E), "Synchronous_Barriers")
+                 and then Is_Root_Scope (Scope (Scope (E)), Name_Ada))
+              or else
+                (Chars (Scope (E)) = Name_Rpc
+                 and then Is_Root_Scope (Scope (Scope (E)), Name_System));
+
+         end Is_Predefined_Potentially_Blocking;
+
+      --  Start of processing for Calls_Potentially_Blocking_Subprogram
+
       begin
          for V of Global_Graph.Get_Collection (Subp_V, Out_Neighbours) loop
 
@@ -2155,117 +2273,6 @@ package body Flow_Generated_Globals is
          return False;
 
       end Calls_Potentially_Blocking_Subprogram;
-
-      ------------------------------
-      -- Calls_Same_Target_Object --
-      ------------------------------
-
-      function Calls_Same_Target_Object (S : Global_Id) return Boolean is
-         Subp_V : constant Vertex_Id := Global_Graph.Get_Vertex (S);
-         --  Vertex that represents subprogram S
-
-         Callee : Global_Id;
-         --  Vertex that represent subprogram called by S
-      begin
-         --  Iterate over variables accessed by subprogram S
-         for V of Global_Graph.Get_Collection (Subp_V, Out_Neighbours) loop
-
-            Callee := Global_Graph.Get_Key (V);
-
-            if Callee.Kind in Ins_Kind | Outs_Kind | Proof_Ins_Kind then
-               declare
-                  Callee_E : constant Entity_Id := Find_Entity (Callee.Name);
-               begin
-                  if Callee_E /= Empty and then
-                    Scope (Callee_E) = Protected_Object_E
-                  then
-                     return True;
-                  end if;
-               end;
-
-            end if;
-
-         end loop;
-
-         return False;
-      end Calls_Same_Target_Object;
-
-      -------------------
-      -- Is_Predefined --
-      -------------------
-
-      function Is_Predefined (E : Entity_Id) return Boolean is
-      begin
-         return Is_Predefined_File_Name
-           (Unit_File_Name (Get_Source_Unit (Sloc (E))));
-      end Is_Predefined;
-
-      ----------------------------------------
-      -- Is_Predefined_Potentially_Blocking --
-      ----------------------------------------
-
-      function Is_Predefined_Potentially_Blocking
-        (E : Entity_Id) return Boolean is
-
-         function Chars_Eq (E : Entity_Id; Str : String) return Boolean;
-         --  Determine if chars of entity E are equal to Str
-
-         function Is_Root_Scope (E : Entity_Id; N : Name_Id) return Boolean;
-         --  Check if entity E denotes a root scope with name N
-
-         --------------
-         -- Chars_Eq --
-         --------------
-         function Chars_Eq (E : Entity_Id; Str : String) return Boolean is
-         begin
-            return Get_Name_String (Chars (E)) = To_Lower (Str);
-         end Chars_Eq;
-
-         -------------------
-         -- Is_Root_Scope --
-         -------------------
-
-         function Is_Root_Scope (E : Entity_Id; N : Name_Id) return Boolean is
-         begin
-            return Chars (E) = N and then Scope (E) = Standard_Standard;
-         end Is_Root_Scope;
-
-      begin
-         --  Check for:
-         --  Ada.Task_Identification.Abort_Task
-         --  Ada.Dispatching.Yield
-         --  Ada.Synchronous_Task_Control.Suspend_Until_True
-         --  Ada.Synchronous_Task_Control.EDF.
-         --      Suspend_Until_True_And_Set_Deadline
-         --  Ada.Synchronous_Barriers.Wait_For_Release
-         --  System.RPC.*
-         --  remote subprograms
-
-         return (Chars_Eq (E, "Abort_Task")
-                 and then Chars_Eq (Scope (E), "Task_Identification")
-                 and then Is_Root_Scope (Scope (Scope (E)), Name_Ada))
-           or else
-             (Chars_Eq (E, "Yield")
-              and then Chars_Eq (Scope (E), "Dispatching")
-              and then Is_Root_Scope (Scope (Scope (E)), Name_Ada))
-           or else
-             (Chars_Eq (E, "Suspend_Until_True")
-              and then Chars_Eq (Scope (E), "Synchronous_Task_Control")
-              and then Is_Root_Scope (Scope (Scope (E)), Name_Ada))
-           or else
-             (Chars_Eq (E, "Suspend_Until_True_And_Set_Deadline")
-              and then Chars_Eq (Scope (E), "EDF")
-              and then Chars_Eq (Scope (Scope (E)), "Synchronous_Task_Control")
-              and then Is_Root_Scope (Scope (Scope (Scope (E))), Name_Ada))
-           or else
-             (Chars_Eq (E, "Wait_For_Release")
-              and then Chars_Eq (Scope (E), "Synchronous_Barriers")
-              and then Is_Root_Scope (Scope (Scope (E)), Name_Ada))
-           or else
-             (Chars (Scope (E)) = Name_Rpc
-              and then Is_Root_Scope (Scope (Scope (E)), Name_System));
-
-      end Is_Predefined_Potentially_Blocking;
 
    --  Start of processing for Is_Potentially_Blocking
 
