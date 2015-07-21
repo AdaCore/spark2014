@@ -1,5 +1,0 @@
-not_a_suspension_object.adb:12:04: volatile variable "SO" must be declared at library level
-   compilation of not_a_suspension_object.adb failed
-
-
-gnatprove: error during generation of Global contracts

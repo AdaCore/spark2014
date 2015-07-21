@@ -1,4 +1,6 @@
-procedure Not_A_Suspension_Object is
+procedure Not_A_Suspension_Object
+  with SPARK_Mode
+is
    package Ada is
 
       package Synchronous_Task_Control is
