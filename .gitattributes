@@ -31,3 +31,4 @@ docs/booklet/* no-precommit-check
 trace_units_script/* no-precommit-check
 slides/*/* no-precommit-check
 slides/*/*/* no-precommit-check
+scripts/*/* no-precommit-check
