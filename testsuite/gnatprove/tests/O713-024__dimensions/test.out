@@ -1,0 +1,4 @@
+geom.adb:6:13: info: initialization of "Ret" proved
+geom.adb:7:17: info: initialization of "Ret" proved
+geom.adb:7:21: medium: overflow check might fail
+geom.adb:9:14: info: initialization of "Ret" proved
