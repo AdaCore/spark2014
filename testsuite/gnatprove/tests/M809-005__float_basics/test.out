@@ -40,8 +40,8 @@ generic_float_tests.adb:83:16: medium: overflow check might fail, in instantiati
 generic_float_tests.adb:83:16: medium: overflow check might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:90:45: medium: postcondition might fail, requires Inverse_Reciprocal'Result = A, in instantiation at foo.ads:10
 generic_float_tests.adb:90:45: medium: postcondition might fail, requires Inverse_Reciprocal'Result = A, in instantiation at foo.ads:15
+generic_float_tests.adb:93:18: info: division check proved, in instantiation at foo.ads:10
 generic_float_tests.adb:93:18: info: division check proved, in instantiation at foo.ads:15
-generic_float_tests.adb:93:18: medium: divide by zero might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:93:18: medium: overflow check might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:93:18: medium: overflow check might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:93:25: info: division check proved, in instantiation at foo.ads:10
