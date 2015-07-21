@@ -65,4 +65,23 @@ package P is
    task type Nonblocking_Task_Type is
    end Nonblocking_Task_Type;
 
+   protected PO_4 is
+      entry Yielding_Entry;
+      procedure Yielding_Proc;
+   end;
+
+   protected PO_5 is
+      entry Pure_Entry;
+      procedure Pure_Proc;
+   end;
+
+   protected PO_6 is
+      entry Remote_Entry;
+      procedure Remote_Proc;
+   end;
+
+   protected PO_7 is
+      entry Barrier_Entry;
+      procedure Barrier_Proc;
+   end;
 end P;

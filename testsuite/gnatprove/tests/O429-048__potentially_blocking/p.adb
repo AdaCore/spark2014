@@ -1,4 +1,4 @@
-with Ada.Real_Time;
+with Ada.Real_Time; with Ada.Dispatching; with Ada.Numerics.Elementary_Functions; with Remote; with Barrier;
 
 package body P is
 
@@ -144,5 +144,54 @@ package body P is
 
    Blocking_Task : Blocking_Task_Type;
    Nonblocking_Task : Nonblocking_Task_Type;
+
+   protected body PO_4 is
+      entry Yielding_Entry when True is
+      begin
+         Yielding_Proc;
+      end Yielding_Entry;
+
+      procedure Yielding_Proc is
+      begin
+         Ada.Dispatching.Yield;
+      end Yielding_Proc;
+   end;
+
+   protected body PO_5 is
+      entry Pure_Entry when True is
+      begin
+         Pure_Proc;
+      end Pure_Entry;
+
+      procedure Pure_Proc is
+         X : Float;
+      begin
+         X := Ada.Numerics.Elementary_Functions.Sin (0.0);
+      end Pure_Proc;
+   end;
+
+   protected body PO_6 is
+      entry Remote_Entry when True is
+      begin
+         Remote_Proc;
+      end Remote_Entry;
+
+      procedure Remote_Proc is
+      begin
+         Remote.Remote_Call;
+      end Remote_Proc;
+   end;
+
+   protected body PO_7 is
+      entry Barrier_Entry when True is
+      begin
+         Barrier_Proc;
+      end Barrier_Entry;
+
+      procedure Barrier_Proc is
+      begin
+         Barrier.Wait;
+      end Barrier_Proc;
+   end;
 
 end P;
