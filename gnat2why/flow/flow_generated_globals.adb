@@ -465,8 +465,7 @@ package body Flow_Generated_Globals is
    -- GG_Register_Nonblocking --
    -----------------------------
 
-   procedure GG_Register_Nonblocking (EN : Entity_Name)
-   is
+   procedure GG_Register_Nonblocking (EN : Entity_Name) is
    begin
       Nonblocking_Subprograms_Set.Insert (EN);
    end GG_Register_Nonblocking;

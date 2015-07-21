@@ -1204,8 +1204,8 @@ package body Flow is
                   declare
                      Body_N : constant Node_Id := Get_Body (E);
                   begin
-                     if Present (Body_N) and then
-                       Has_Only_Nonblocking_Statements (Body_N)
+                     if Present (Body_N)
+                       and then Has_Only_Nonblocking_Statements (Body_N)
                      then
                         GG_Register_Nonblocking (To_Entity_Name (E));
                      end if;
