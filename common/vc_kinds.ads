@@ -200,7 +200,10 @@ package VC_Kinds is
    --  A few labels are used in Why3 to identify variables and terms whose
    --  value is interesting in counter-examples.
 
-   Model_Label      : constant String := "model";
-   Model_Proj_Label : constant String := "model_projected";
+   Model_Label       : constant String := "model";
+   Model_Trace_Label : constant String := "model_trace:";
+   Model_Proj_Label  : constant String := "model_projected";
+   Model_VC_Label    : constant String := "model_vc";
+   Model_Func_Label  : constant String := "model_func:";
 
 end VC_Kinds;

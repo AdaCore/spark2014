@@ -159,16 +159,18 @@ package Why.Gen.Expr is
    --  labels.
 
    function New_VC_Expr
-      (Ada_Node : Node_Id;
-       Expr     : W_Expr_Id;
-       Reason   : VC_Kind;
-       Domain   : EW_Domain) return W_Expr_Id;
+      (Ada_Node   : Node_Id;
+       Expr       : W_Expr_Id;
+       Reason     : VC_Kind;
+       Domain     : EW_Domain;
+       Subprogram : String := "") return W_Expr_Id;
    --  If we are not in the "term" domain, put VC and location labels on the
    --  expression.
 
    function New_VC_Labels
      (N      : Node_Id;
-      Reason : VC_Kind) return Name_Id_Set;
+      Reason : VC_Kind;
+      Subprogram : String := "") return Name_Id_Set;
    --  Generate VC and location labels for the given Ada node, with the given
    --  VC reason
 

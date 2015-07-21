@@ -37,8 +37,10 @@ with Sinput;              use Sinput;
 with SPARK_Util;          use SPARK_Util;
 with String_Utils;        use String_Utils;
 with Uintp;               use Uintp;
+with VC_Kinds;            use VC_Kinds;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Modules;   use Why.Atree.Modules;
+with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Ids;             use Why.Ids;
 with Why.Images;          use Why.Images;
 with Why.Conversions;     use Why.Conversions;
@@ -1132,6 +1134,9 @@ package body Why.Atree.Sprint is
    begin
       if not Labels.Is_Empty then
          P (O, "( ");
+      end if;
+      if Labels.Contains (NID (Model_VC_Label)) then
+         Print_Sloc_Tag;
       end if;
       P (O, Labels, As_String => True);
       Print_Node (+Get_Def (Node));

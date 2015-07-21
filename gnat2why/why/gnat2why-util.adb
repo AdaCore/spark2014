@@ -268,8 +268,8 @@ package body Gnat2Why.Util is
       --  counter-examples.
 
       if Is_Scalar_Type (Etype (E)) then
-         Labels.Include (NID ("model_trace:" &
-                           Get_Name_String (Chars (E))));
+         Labels.Include (NID (Model_Trace_Label &
+                           Source_Name (E)));
 
          --  If E's type is directly a native prover type, simply request the
          --  value of E in the counter-example.

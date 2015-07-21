@@ -1088,7 +1088,8 @@ package body Gnat2Why.Subprograms is
                      Args =>
                        (+Count, New_Integer_Constant (Value => Uint_1))),
                   VC_Disjoint_Contract_Cases,
-                  EW_Pred),
+                  EW_Pred,
+                  Source_Name (E)),
             Assert_Kind => EW_Check));
       end if;
 
@@ -1109,7 +1110,8 @@ package body Gnat2Why.Subprograms is
                      Args => (+Count,
                               New_Integer_Constant (Value => Uint_1))),
                   VC_Complete_Contract_Cases,
-                    EW_Pred),
+                  EW_Pred,
+                  Source_Name (E)),
                Assert_Kind => EW_Check));
       end if;
 
@@ -1193,8 +1195,10 @@ package body Gnat2Why.Subprograms is
                      Condition   => Enabled_Pred,
                      Then_Part   =>
                        +Transform_Expr (Consequence, EW_Pred, Params)),
-                  VC_Contract_Case,
-                  EW_Pred),
+                    VC_Contract_Case,
+                    EW_Pred,
+                    Source_Name (E)
+                   ),
                Assert_Kind => EW_Assert));
       end Do_One_Contract_Case;
 
@@ -1372,7 +1376,8 @@ package body Gnat2Why.Subprograms is
             Params.Phase := Generate_Contract_For_Body;
             Post := +Transform_Expr (Expr, EW_Bool_Type, EW_Pred, Params);
             Post :=
-              +New_VC_Expr (Init_Cond, +Post, VC_Initial_Condition, EW_Pred);
+              +New_VC_Expr (Init_Cond, +Post, VC_Initial_Condition, EW_Pred,
+                           Source_Name (E));
 
             --  Generate program to check the absence of run-time errors in the
             --  initial condition.
@@ -1957,7 +1962,8 @@ package body Gnat2Why.Subprograms is
             Post := Get_Static_Call_Contract (Params, E, Name_Postcondition);
             Params.Gen_Marker := False;
 
-            Post := +New_VC_Expr (Post_N, +Post, VC_Postcondition, EW_Pred);
+            Post := +New_VC_Expr (Post_N, +Post, VC_Postcondition, EW_Pred,
+                                 Source_Name (E));
          end if;
 
          --  Set the phase to Generate_VCs_For_Body from now on, so that

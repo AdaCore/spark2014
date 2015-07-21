@@ -303,6 +303,13 @@
 --      This label specifies the name that will be reported in a
 --      counter-example for this element.
 --      Should be always used together with label "model" or "model_projected"
+--
+--  "model_vc"
+--      This label identifies the construct that triggers the VC.
+--
+--  "model_func:name"
+--      This label is present if VC is postcondition or precondition of the
+--      function with name "name".
 
 package Gnat2Why is
 
