@@ -2818,6 +2818,9 @@ package body SPARK_Definition is
            and then Underlying_Type (Etype (E)) /= E
          then
             Mark_Entity (Etype (E));
+            if not Entity_In_SPARK (Retysp (Etype (E))) then
+               Mark_Violation (E, From => Retysp (Etype (E)));
+            end if;
          end if;
 
          --  Type declarations may refer to private types whose full view has
@@ -2898,7 +2901,6 @@ package body SPARK_Definition is
             then
                Full_Views_Not_In_SPARK.Insert (E, Etype (E));
                Discard_Underlying_Type (E);
-
             else
                declare
                   Utype : constant Entity_Id :=
@@ -2911,8 +2913,8 @@ package body SPARK_Definition is
                   Mark_Entity (Utype);
                   if not Entity_In_SPARK (Utype) then
                      Full_Views_Not_In_SPARK.Insert
-                       (E, (if Entity_In_SPARK (Etype (E)) then Etype (E)
-                        else E));
+                       (E, (if Is_Nouveau_Type (E) then E
+                        else Retysp (Etype (E))));
                      Discard_Underlying_Type (E);
                   elsif Full_View_Not_In_SPARK (Utype) then
                      Full_Views_Not_In_SPARK.Insert

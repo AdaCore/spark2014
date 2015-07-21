@@ -2606,15 +2606,9 @@ package body SPARK_Util is
       --  ??? this code requires comments
 
       while Ancestor /= Result loop
-         pragma Assert (Entity_In_SPARK (Ancestor));
 
          Result := Ancestor;
          Ancestor := Root_Type (Result);
-
-         if not Entity_In_SPARK (Ancestor) then
-            pragma Assert (Full_View_Not_In_SPARK (Result));
-            Ancestor := Result;
-         end if;
 
          if Full_View_Not_In_SPARK (Ancestor) then
             Ancestor := Get_First_Ancestor_In_SPARK (Ancestor);
